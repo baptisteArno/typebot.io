@@ -39,6 +39,7 @@ const cssVariableNames = {
     checkbox: {
       bgColor: '--typebot-checkbox-bg-color',
       color: '--typebot-checkbox-color',
+      baseAlpha: '--selectable-base-alpha',
     },
   },
 } as const
@@ -156,18 +157,30 @@ const setTypebotBackground = (
       : cssVariableNames.general.bgColor,
     parseBackgroundValue(background)
   )
-  const backgroundColor =
-    (BackgroundType.COLOR && isNotEmpty(background.content)
-      ? background.content
-      : '#ffffff') ?? '#ffffff'
   documentStyle.setProperty(
     cssVariableNames.chat.checkbox.bgColor,
-    (BackgroundType.COLOR ? background.content : '#ffffff') ?? '#ffffff'
+    background?.type === BackgroundType.IMAGE
+      ? 'rgba(255, 255, 255, 0.75)'
+      : (background?.type === BackgroundType.COLOR
+          ? background.content
+          : '#ffffff') ?? '#ffffff'
   )
+  const backgroundColor =
+    background.type === BackgroundType.IMAGE
+      ? '#000000'
+      : background?.type === BackgroundType.COLOR &&
+        isNotEmpty(background.content)
+      ? background.content
+      : '#ffffff'
   documentStyle.setProperty(
     cssVariableNames.general.color,
     isLight(backgroundColor) ? '#303235' : '#ffffff'
   )
+  if (background.type === BackgroundType.IMAGE) {
+    documentStyle.setProperty(cssVariableNames.chat.checkbox.baseAlpha, '0.40')
+  } else {
+    documentStyle.setProperty(cssVariableNames.chat.checkbox.baseAlpha, '0')
+  }
 }
 
 const parseBackgroundValue = ({ type, content }: Background) => {

@@ -53,6 +53,8 @@ export const BackgroundContent = ({
                 _hover={{ filter: 'brightness(.9)' }}
                 transition="filter 200ms"
                 rounded="md"
+                maxH="200px"
+                objectFit="cover"
               />
             ) : (
               <Button>Select an image</Button>
