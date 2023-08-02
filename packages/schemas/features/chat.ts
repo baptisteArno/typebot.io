@@ -166,7 +166,12 @@ const startParamsSchema = z.object({
     .describe(
       '[More info about prefilled variables.](https://docs.typebot.io/editor/variables#prefilled-variables)'
     ),
-  isStreamEnabled: z.boolean().optional(),
+  isStreamEnabled: z
+    .boolean()
+    .optional()
+    .describe(
+      'Set this to `true` if you intend to stream OpenAI completions on a client.'
+    ),
 })
 
 const replyLogSchema = logSchema
@@ -189,11 +194,11 @@ export const sendMessageInputSchema = z.object({
     .describe(
       'Session ID that you get from the initial chat request to a bot. If not provided, it will create a new session.'
     ),
+  startParams: startParamsSchema.optional(),
   clientLogs: z
     .array(replyLogSchema)
     .optional()
     .describe('Logs while executing client side actions'),
-  startParams: startParamsSchema.optional(),
 })
 
 const runtimeOptionsSchema = paymentInputRuntimeOptionsSchema.optional()
