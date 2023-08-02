@@ -1,5 +1,62 @@
 # Changelog
 
+<a name="2.16.0"></a>
+## 2.16.0 (2023-08-01)
+
+### Added
+
+- ✨ Stream bubble content if placed right after Op… [[3952ae2](https://github.com/baptisteArno/typebot.io/commit/3952ae2755ac2806055072d5cfa4cd32a01693f6)]
+
+### Changed
+
+- 💄 Improve multiple choice color when image background [[ee067ce](https://github.com/baptisteArno/typebot.io/commit/ee067ceee1011d946061e9d44abcf789f1000388)]
+- ⚡ (condition) Add regex comparison item [[aa9f5bc](https://github.com/baptisteArno/typebot.io/commit/aa9f5bc7322e85e625852d71a5623c16cf485420)]
+- 💄 (embed) Improve avatar alignment and audio auto load [[14c3d95](https://github.com/baptisteArno/typebot.io/commit/14c3d95b8aae8897932fc1e7969c2eefe175e33c)]
+- ⚡ (video) Detect youtu.be URLs for video bubbles [[e34b939](https://github.com/baptisteArno/typebot.io/commit/e34b939786dd01aa912835b4c23c747051ba28db)]
+- ⚡ (paymentInput) Handle Stripe redirection [[c99298e](https://github.com/baptisteArno/typebot.io/commit/c99298e49b8dc722f7259703f22cef8dc99a919f)]
+- 🔧 Add import contact to brevo script [[c124671](https://github.com/baptisteArno/typebot.io/commit/c124671682930fca9bbaace5a007ea0aaba32f15)]
+- 💄 Fix round icons color in dark mode [[4607f0e](https://github.com/baptisteArno/typebot.io/commit/4607f0ea39fd3c35ab839c902a15f6c90ed6cc8f)]
+- 🚸 New dedicated onboarding page [[43555c1](https://github.com/baptisteArno/typebot.io/commit/43555c171ea48181e67defa0fa9cc5b3e22d0fea)]
+- 🚸 Update onboarding bot [[283c55c](https://github.com/baptisteArno/typebot.io/commit/283c55c1a406320d2cbefb50c70ab92440f3d401)]
+- ⚡ (embed) Add customizable bubble close icon [[c8bc659](https://github.com/baptisteArno/typebot.io/commit/c8bc659941ff9583299397baee33dadb5f6a2618)]
+- ⚡ Replace Google fonts with Bunny fonts [[cccf905](https://github.com/baptisteArno/typebot.io/commit/cccf905d38204c466e3ae6476152a2f266ca4e06)]
+- ⚡ (video) Add youtube shorts auto parsing [[1ebd528](https://github.com/baptisteArno/typebot.io/commit/1ebd528753909282adf4c15476a7ed3f4c822b76)]
+- ⚡ Regroup database queries of /sendMessage in one place [[aa4c16d](https://github.com/baptisteArno/typebot.io/commit/aa4c16dad78e7e4dcd9b78f9b4916fd416da3c5f)]
+- ⬆️ Upgrade giphy package [[1095cf7](https://github.com/baptisteArno/typebot.io/commit/1095cf7f0908da2660341471ab6cd9442bb8dfd3)]
+
+### Fixed
+
+- 🐛 (embed) Fix custom close icon placement in bubble button [[81c2e50](https://github.com/baptisteArno/typebot.io/commit/81c2e5022bec0e0a5cee75ac58a7dbe2b1e14939)]
+- 🐛 Fix TextBubble &#x27;Edit Link&#x27; background color in dark mode ([#653](https://github.com/baptisteArno/typebot.io/issues/653)) [[f8af76d](https://github.com/baptisteArno/typebot.io/commit/f8af76d34799f4e26de53efee4781f703d782c34)]
+- 🐛 (analytics) Fix analytics drop-off rate not computing correctly [[3df81a3](https://github.com/baptisteArno/typebot.io/commit/3df81a3cb9b9f158d940b01d02bf6f2cbedf6f0c)]
+- 🐛 (embed) Remove at functions for better compability [[320cffc](https://github.com/baptisteArno/typebot.io/commit/320cffc42001399e2a646243ba9d6ab632a6f9e8)]
+- 🐛 (analytics) Fix previous total computation max call stack exceeded [[7a7d471](https://github.com/baptisteArno/typebot.io/commit/7a7d4718051209ba70b6f2e2d23f4945426988fd)]
+- 🐛 Fix table list when empty always show &quot;add&quot; button [[b171b39](https://github.com/baptisteArno/typebot.io/commit/b171b3960640382706ccb75f71015aac60ed3da1)]
+- 🐛 (sendMessage) Return updated session in all cases [[7942ae4](https://github.com/baptisteArno/typebot.io/commit/7942ae4751703ef0599366f257a690bae9d15818)]
+- 🐛 Fix bunny fonts URL path [[defe001](https://github.com/baptisteArno/typebot.io/commit/defe00155d2977cc26ac3291f6375978723865da)]
+- 🐛 Add setInputValue to Typebot embed object [[6c54065](https://github.com/baptisteArno/typebot.io/commit/6c540657a610ec27bf4be6ded09db0b610c48724)]
+- 🐛 Fix first-time pnpm dev [[b99b58b](https://github.com/baptisteArno/typebot.io/commit/b99b58bdfe032755da249e076eff1eb29256bb72)]
+- 🐛 Fix viewer&#x27;s &#x60;.env.local.example&#x60; inline comment [[13ac469](https://github.com/baptisteArno/typebot.io/commit/13ac46975d12d8c3aac3a053ea7f612988c9b90f)]
+
+### Security
+
+- 🔒 (auth) Block disposable emails during sign up [[abc3abd](https://github.com/baptisteArno/typebot.io/commit/abc3abd86b4f970e102c1b0c5d5d5d610975f45a)]
+
+### Miscellaneous
+
+- 📝 (openai) Add troobleshoot guide for empty message issue [[482462f](https://github.com/baptisteArno/typebot.io/commit/482462f2b10f69903754d53dccf41588cca3f701)]
+- 📝 Add a guide on how to create a new block in CONTRIBUTING [[e499478](https://github.com/baptisteArno/typebot.io/commit/e499478deed7b1ac2c6c215c8e472133e28b37ab)]
+- 📦 Release WP plugin 3.2.0 [[5dc01db](https://github.com/baptisteArno/typebot.io/commit/5dc01db08201a5637d06212c1271b96fa8c23890)]
+- 📝 Remove old stripe env var [[b17177f](https://github.com/baptisteArno/typebot.io/commit/b17177f35f97ab679723a3dbade745f474367e53)]
+- 📝 Add &quot;conditionally display button&quot; video in docs [[0c923b7](https://github.com/baptisteArno/typebot.io/commit/0c923b70a60851fb3e840820b9dc5d4714adfcb3)]
+- 📝 Update README ([#632](https://github.com/baptisteArno/typebot.io/issues/632)) [[9433d3e](https://github.com/baptisteArno/typebot.io/commit/9433d3ea8f9231613d1a5a3efa3576d4e7c16b23)]
+- 🧑‍💻 (docs) Add &quot;Edit this page&quot; links in docs [[04faa3e](https://github.com/baptisteArno/typebot.io/commit/04faa3e847f856e1e4099ccfc850be831be4513a)]
+- 🧑‍💻 (results) Add get result by id API endpoint [[3283d7e](https://github.com/baptisteArno/typebot.io/commit/3283d7e26146253ae129395afdeaa4fc2bf1d84e)]
+-  Support specifying custom OAuth scope ([#619](https://github.com/baptisteArno/typebot.io/issues/619)) [[48f074c](https://github.com/baptisteArno/typebot.io/commit/48f074cdf7edf0558c0d937e855f92aba1fabbed)]
+- 📝 Add clarification for forks commercialization [[22c1e2e](https://github.com/baptisteArno/typebot.io/commit/22c1e2e6cf8592e22a682dd53fb5c06e48637991)]
+- 🧑‍💻 Exit prisma command if database url starts with &quot;postgres://&quot; [[0ea30bc](https://github.com/baptisteArno/typebot.io/commit/0ea30bc49b2979a21ceea2edfd77d8d4ea1811f5)]
+
+
 <a name="2.15.2"></a>
 ## 2.15.2 (2023-07-17)
 
