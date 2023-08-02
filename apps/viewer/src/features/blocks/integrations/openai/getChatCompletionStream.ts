@@ -52,5 +52,7 @@ export const getChatCompletionStream =
       messages,
     })
 
+    if (!response.ok) return response
+
     return OpenAIStream(response)
   }

@@ -60,15 +60,24 @@ const handler = async (req: Request) => {
   )
     return new Response('Current block is not an OpenAI block', { status: 400 })
 
-  const stream = await getChatCompletionStream(conn)(
+  const streamOrResponse = await getChatCompletionStream(conn)(
     state,
     block.options,
     messages
   )
 
-  if (!stream) return new Response('Could not create stream', { status: 400 })
+  if (!streamOrResponse)
+    return new Response('Could not create stream', { status: 400 })
 
-  return new StreamingTextResponse(stream, {
+  if ('ok' in streamOrResponse)
+    return new Response(streamOrResponse.body, {
+      status: streamOrResponse.status,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
+    })
+
+  return new StreamingTextResponse(streamOrResponse, {
     headers: {
       'Access-Control-Allow-Origin': '*',
     },

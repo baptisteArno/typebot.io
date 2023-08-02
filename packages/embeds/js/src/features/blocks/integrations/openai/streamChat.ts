@@ -37,9 +37,7 @@ export const streamChat =
 
       if (!res.ok) {
         return {
-          error: {
-            message: (await res.text()) || 'Failed to fetch the chat response.',
-          },
+          error: (await res.json()) || 'Failed to fetch the chat response.',
         }
       }
 
