@@ -64,7 +64,12 @@ export const OptionItem = styled.li`
     }
   }
   &.actived{
-    background-color: #f5f5f5;
+    background-color: rgb(19,102,201);
+    color: white
+  }
+
+  &.actived button {
+    color: black
   }
 
   &.isTitle{

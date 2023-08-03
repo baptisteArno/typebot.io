@@ -5,7 +5,6 @@ export const Container = styled.div`
   font-family: 'Noto Sans';
   display: flex;
   flex-direction: column;
-  width: 100%;
 
   .input-label{
     color: #777;
@@ -16,7 +15,7 @@ export const Container = styled.div`
   input {
     width: calc(100% - 22px);
     padding: 10px;
-    height: 32px;
+    height: 28px;
     border-radius: 5px;
     font-family: 'Noto Sans', sans-serif;
     font-size: .8rem;
@@ -39,7 +38,7 @@ export const Container = styled.div`
 export const InputMasked = styled(InputMask)`
   width: calc(100% - 22px);
   padding: 10px;
-  height: 32px;
+  height: 28px;
   border-radius: 5px;
   font-family: 'Noto Sans', sans-serif;
   font-size: .8rem;

@@ -5,7 +5,7 @@ import { Props } from './OctaInput.type';
 const OctaInput = (props: Props) => {
   const refs = useRef(null);
   return (
-    <Container {...props as any}>
+    <Container style={{ width: "100%", ...props as any}}>
       {props.label && (
         <div className="input-label">
           {props.label}

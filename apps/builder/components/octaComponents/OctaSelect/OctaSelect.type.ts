@@ -1,4 +1,5 @@
 import React, { DetailedHTMLProps, InputHTMLAttributes } from 'react'
+import { SELECT_ACTION, SELECT_ACTIONS } from './OctaSelect';
 
 export type OctaSelectProps = {
   onChange: (value: any, itemFull?: any) => void
@@ -6,6 +7,9 @@ export type OctaSelectProps = {
   label?: string;
   findable?: boolean;
   options?: Array<OptionType>;
+  showEdit?: boolean;
+  showDelete?: boolean;
+  onIconClicked?: (value: any, action: SELECT_ACTION) => {}
 } & DetailedHTMLProps<InputHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>
 
 export type OptionProps = {
@@ -15,6 +19,9 @@ export type OptionProps = {
   isTitle?: boolean;
   disabled?: boolean;
   selected: any;
+  showEdit?: boolean;
+  showDelete?: boolean;
+  onIconClicked?: (value: any, action: SELECT_ACTION) => {}
 } & DetailedHTMLProps<InputHTMLAttributes<HTMLLIElement>, HTMLLIElement>
 
 export type OptionType = {

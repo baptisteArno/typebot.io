@@ -1,27 +1,20 @@
-import { Button } from 'components/octaComponents/OctaButton/OctaButton.style'
 import OctaInput from 'components/octaComponents/OctaInput/OctaInput'
-import OctaSelect from 'components/octaComponents/OctaSelect/OctaSelect'
-import { SourceEndpoint } from 'components/shared/Graph/Endpoints'
-import { Step } from 'models'
-import { parse } from 'path'
+import OctaSelect, { SELECT_ACTION } from 'components/octaComponents/OctaSelect/OctaSelect'
 import React, {
   ChangeEvent,
-  ChangeEventHandler,
   useEffect,
   useMemo,
   useState,
 } from 'react'
 import { OfficeHoursServices } from 'services/octadesk/officehours/officeHours.services'
 import { OfficeHour } from '../../../../../../../../services/octadesk/officehours/officehours.types'
-import { DayInfo, OfficeHoursFormType } from './OfficeHours.type'
+import { OfficeHoursFormType } from './OfficeHours.type'
 import {
   ButtonCreate,
-  ButtonAddInterval,
   Container,
   ContainerCreate,
   Description,
   FormArea,
-  Label,
   Title,
   FormControl,
   OptionRadio,
@@ -29,106 +22,197 @@ import {
   Toggle,
   ButtonCancel,
   ButtonDays,
-  HoursArea,
-  HoursControl,
-  HoursPipe,
-  HoursRow,
-  HourDay,
-  HoursIntervalRow,
-  LabelInterval,
-  ButtonAddSpecialDate
+  FormControlRow
 } from './OfficeHoursBody.style'
+import { Text, useDisclosure } from '@chakra-ui/react'
+import { ItemWithId, TableList } from 'components/shared/TableList'
+import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
+import { DayOfWeekComponent } from './DayOfWeek'
+import { SpecialDateComponent } from './SpecialDate'
+import { ConfirmModal } from 'components/modals/ConfirmModal'
 
 type Props = {
-  step: Step
+  options: OfficeHour
   onOptionsChange: (options: any) => void
-  onExpand?: () => void
 }
 
-export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
+export type Interval = {
+  start?: string
+  end?: string
+  minHour?: string
+}
+
+export type DayOfWeek = {
+  dayOfWeek: number
+  hours: Array<Interval>
+}
+
+export type SpecialDate = {
+  date?: string
+  dayOfWeek?: number
+  hours?: Array<Interval>
+}
+
+export const dayPerNumber = (number: number): { min: string; full: string } => {
+  switch (number) {
+    case 1:
+      return { min: 'SEG', full: 'Segunda-feira' }
+    case 2:
+      return { min: 'TER', full: 'Terça-feira' }
+    case 3:
+      return { min: 'QUA', full: 'Quarta-feira' }
+    case 4:
+      return { min: 'QUI', full: 'Quinta-feira' }
+    case 5:
+      return { min: 'SEX', full: 'Sexta-feira' }
+    case 6:
+      return { min: 'SÁB', full: 'Sábado' }
+    case 7:
+      return { min: 'DOM', full: 'Domingo' }
+    default:
+      return { min: '', full: '' }
+  }
+}
+
+type OptionOfficeHourSelect =
+  { label: string; value: any; isTitle?: boolean; key: number }
+
+
+export const OfficeHoursBody = ({ options, onOptionsChange }: Props) => {
   const service = new OfficeHoursServices()
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [deletingId, setDeletingId] = useState<string>()
   const [officeHour, setOfficeHour] = useState<Array<OfficeHour> | undefined>()
   const [optionsTimezone, setOptionsTimezone] =
-    useState<Array<{ label: string; value: string; isTitle?: boolean }>>()
+    useState<Array<{ key: string; label: string; value: string; }>>()
   const [optionsOfficeHour, setOptionsOfficeHours] = useState<
-    Array<{ label: string; value: any; isTitle?: boolean; key: number }>
+    Array<OptionOfficeHourSelect>
   >([])
   const [screen, setScreen] = useState<'SETTINGS' | 'CREATE-OFFICE-HOURS'>(
     'SETTINGS'
   )
 
   const [is24hours, setIs24Hours] = useState<boolean>(true)
-
   const [hasSpecialDates, setHasSpecialDates] = useState<boolean>(false)
+  const [hasSameHour, setHasSameHour] = useState<boolean>(true)
 
   const handleToggle = () => {
-    setHasSpecialDates((prevHasSpecialDates) => !prevHasSpecialDates);
+    setHasSpecialDates((prevHasSpecialDates) => !prevHasSpecialDates)
   };
 
-  const WEEK_DAYS = [1, 2, 3, 4, 5, 6, 7]
-  type dayOfWeek = {
-    dayOfWeek: number
-    hours: Array<{
-      start: string
-      end: string
-    }>
+  const defaultSameHourOption = {
+    id: "-1",
+    type: 'dayofweek',
+    dayOfWeek: -1,
+    hours: [{ start: undefined, end: undefined }]
   }
-  const [daysOfWeek, setDaysOfWeek] = useState<{
-    days: Array<dayOfWeek>
-  }>()
-  const [selectedDays, setSelectedDays] = useState<Array<number>>([])
-  const [selectedDay, setSelectedDay] = useState<number>()
-  const [officeHoursName, setOfficeHoursName] = useState('')
-  const [officeHoursTimezone, setOfficeHoursTimezone] = useState('')
-  const [form, setForm] = useState<OfficeHoursFormType>()
+  const WEEK_DAYS = [7, 1, 2, 3, 4, 5, 6]
+
+  const [selectedDays, setSelectedDays] = useState<Array<number>>([1, 2, 3, 4, 5])
+  const [daysOfWeek, setDaysOfWeek] = useState<Array<ItemWithId<DayOfWeek>>>([{
+    ...defaultSameHourOption
+  }])
+  const [specialDates, setSpecialDates] = useState<Array<ItemWithId<SpecialDate>>>([{
+    id: "sp0",
+    type: 'specialDate',
+    hours: []
+  }])
+
+  const [name, setName] = useState('')
+  const [timeZone, setTimeZone] = useState('')
+  const [currentId, setCurrentId] = useState<string | undefined>(options?.id)
+
+  const handleToggleSameDayHour = () => {
+    setHasSameHour((prevHasSameHour) => !prevHasSameHour);
+    if (hasSameHour)
+      changeSelectedDay(true)
+    else
+      setDaysOfWeek([{ ...defaultSameHourOption }])
+  };
+
+  const changeSelectedDay = (forceSet?: boolean) => {
+    if (hasSameHour && !forceSet) return
+
+    const daysOfWeekReplace = selectedDays.sort().map((dayOfWeek) => {
+      const current = daysOfWeek.find(d => d.dayOfWeek === dayOfWeek)
+      return { id: dayOfWeek.toString(), type: 'dayofweek', dayOfWeek, hours: [...current?.hours || [{}]] } as ItemWithId<DayOfWeek>
+    })
+
+    setDaysOfWeek(daysOfWeekReplace)
+  }
+
+  const setCurrentOffice = (current: OfficeHour | undefined) => {
+    setTimeZone(current?.timeZone || '')
+    setName(current?.name || '')
+    setIs24Hours(current?.daysOfWeek?.is24hours !== undefined ? current.daysOfWeek.is24hours : true)
+    const sameSchedule = current?.daysOfWeek?.sameSchedule !== undefined ? current.daysOfWeek.sameSchedule : true
+    setHasSameHour(sameSchedule)
+    setHasSpecialDates(current?.specialDates?.active !== undefined ? current.specialDates.active : false)
+
+    const currentDays = current?.daysOfWeek?.days?.map(s => s.dayOfWeek)
+    setSelectedDays(currentDays || [1, 2, 3, 4, 5])
+
+    const firstDay = current?.daysOfWeek?.days?.length ? current.daysOfWeek.days[0] : undefined
+
+    const days = sameSchedule && firstDay?.hours ? [{ ...defaultSameHourOption, hours: [...firstDay.hours] }] : (current?.daysOfWeek?.days?.map((a, idx) => {
+      return { id: `d${idx}`, type: 'day', ...a }
+    }))
+
+    setDaysOfWeek(days || [{ ...defaultSameHourOption }])
+    console.log('a', {dates : current?.specialDates?.dates })
+    setSpecialDates(current?.specialDates?.dates?.map((s, idx) => {
+      return {
+        id: `sd${idx}`,
+        ...s
+      }
+    }) || [])
+  }
+
+  useEffect(() => {
+    console.log('us', { officeHour, currentId })
+    const current = officeHour?.find(s => s.id === currentId)
+    setCurrentOffice(current)
+  }, [currentId, officeHour])
+
+  useEffect(() => {
+    changeSelectedDay()
+  }, [selectedDays])
 
   const officeHoursMemo = useMemo(() => {
     return officeHour
   }, [officeHour])
 
-  const dayPerNumber = (number: number): { min: string; full: string } => {
-    switch (number) {
-      case 1:
-        return { min: 'SEG', full: 'Segunda-feira' }
-      case 2:
-        return { min: 'TER', full: 'Terça-feira' }
-      case 3:
-        return { min: 'QUA', full: 'Quarta-feira' }
-      case 4:
-        return { min: 'QUI', full: 'Quinta-feira' }
-      case 5:
-        return { min: 'SEX', full: 'Sexta-feira' }
-      case 6:
-        return { min: 'SÁB', full: 'Sábado' }
-      case 7:
-        return { min: 'DOM', full: 'Domingo' }
-      default:
-        return { min: '', full: '' }
-    }
+  const getOfficeHours = async () => {
+    const expedients = await service.getExpedients()
+
+    setOfficeHour(expedients)
   }
 
   useEffect(() => {
-    const getOfficeHours = async () => {
-      const expedients = await service.getExpedients()
-
-      setOfficeHour(expedients)
-    }
-
     if (!officeHour) {
       getOfficeHours()
     }
   })
+
+  type labelValue = {
+    key: string,
+    label: string,
+    value: string
+  }
 
   useEffect(() => {
     const getTimezones = async () => {
       const timezones = await service.getTimeZones()
 
       const sortedOptions = timezones.map((timezone) => ({
+        key: timezone.timezone,
         label: timezone.translation,
         value: timezone.timezone,
-      }))
-
-      sortedOptions.sort((a, b) => {
+      })).reduce((agg: labelValue[], curr: labelValue) => {
+        if (!agg.find(c => c.label === curr.label))
+          agg.push(curr)
+        return agg
+      }, []).sort((a, b) => {
         if (a.value === 'America/Sao_Paulo') {
           return -1
         }
@@ -147,6 +231,10 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
   }, [])
 
   useEffect(() => {
+    changeSelectedDay()
+  }, [])
+
+  useEffect(() => {
     if (officeHoursMemo && officeHoursMemo.length) {
       const options = officeHoursMemo.map((item, idx) => ({
         label: item.name,
@@ -158,36 +246,42 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
   }, [officeHoursMemo])
 
   const changeScreenToCreateOfficeHour = (): void => {
+    setCurrentId(undefined)
     setScreen('CREATE-OFFICE-HOURS')
   }
 
-  const addIntervalInputField = (): void => {
-    console.log('teste')
-  }
+  const saveOfficeHour = async (): Promise<OfficeHour | null> => {
+    const toSave = {
+      id: currentId,
+      name: name,
+      specialDates: {
+        active: hasSpecialDates,
+        dates: hasSpecialDates ? specialDates : [],
+      },
+      timeZone: timeZone,
+      daysOfWeek: {
+        days: is24hours ? [] : daysOfWeek as Array<DayOfWeek>,
+        is24hours,
+        sameSchedule: !is24hours && hasSameHour
+      }
+    }
 
-  const createOfficeHour = async (): Promise<OfficeHour | null> => {
-    // console.log('createOfficeHour', form)
-    // if (form) {
-    //   console.log('bateu aqui')
-    //    const formTest = {
-    //       "name":"teste 24/766",
-    //       "daysOfWeek":{
-    //           "is24hours":true,
-    //           days: [],
-    //           sameSchedule: false
-    //         },
-    //        "specialDates":{
-    //        "active":false
-    //       },
-    //       "timeZone":"America/Sao_Paulo"
-    //     };
-    //   const saved = await service.createOfficeHour(form)
-    //   handleOfficeHourSelect(saved)
+    if (!is24hours && hasSameHour) {
+      const sameDay = daysOfWeek.find(s => s.dayOfWeek < 0)
+      toSave.daysOfWeek.days = selectedDays.map((dayOfWeek) => {
+        return { dayOfWeek, hours: sameDay?.hours.map(h => { return { start: h.start, end: h.end } }) } as DayOfWeek
+      })
+    }
 
-    //   return saved
-    // }
+    const saved = await toSave.id ?
+      service.updateOfficeHour(toSave as OfficeHoursFormType) :
+      service.createOfficeHour(toSave as OfficeHoursFormType)
 
-    return null
+    await getOfficeHours()
+    handleOfficeHourSelect(saved)
+    setScreen('SETTINGS')
+
+    return saved
   }
 
   const cancelCreate = (): void => {
@@ -196,143 +290,62 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
 
   const handleChangeName = (event: ChangeEvent<HTMLInputElement>): void => {
     const { value } = event.target
-    setOfficeHoursName(value)
+    setName(value)
   }
 
   const handleChangeTimezone = (selectedOption: string) => {
-    setOfficeHoursTimezone(selectedOption)
-    // setForm((prevForm) => ({
-    //   ...prevForm,
-    //   timeZone: selectedOption,
-    // }))
+    setTimeZone(selectedOption)
   }
-
-  // useEffect(() => {
-  //   // setForm((prevForm) => ({
-  //   //   ...prevForm,
-  //   //   daysOfWeek: {
-  //   //     ...prevForm.daysOfWeek,
-  //   //     is24hours: is24hours,
-  //   //   },
-  //   // }))
-  // }, [is24hours])
-
-
-
-  
-  useEffect(() => {
-    if (!daysOfWeek && selectedDay) {
-      setDaysOfWeek(
-      {
-        days: [  {
-          dayOfWeek: selectedDay,
-          hours: [
-            {
-              start: '',
-              end: '',
-            },
-          ],
-        }]
-      })  
-      } else {
-      let updatedDaysOfWeek
-      const shouldRemoveDay = daysOfWeek?.days.find(
-        (day) => day.dayOfWeek === selectedDay
-      )
-      const filteredDays = daysOfWeek?.days.filter(
-        (day) => day.dayOfWeek !== selectedDay
-      )
-      if (daysOfWeek && selectedDay){
-
-        updatedDaysOfWeek = [...daysOfWeek.days]
-        updatedDaysOfWeek.push( {
-                  dayOfWeek: selectedDay,
-                  hours: [
-                    {
-                      start: '',
-                      end: '',
-                    },
-                  ],
-                })
-                setDaysOfWeek({days: updatedDaysOfWeek})
-      }
-      if (shouldRemoveDay && filteredDays) {
-        updatedDaysOfWeek = {
-          days: filteredDays
-            // days: daysOfWeek,
-        }
-        setDaysOfWeek(updatedDaysOfWeek)
-      } 
-      // else if(selectedDay && selectedDay > 0 ) {
-        
-      //   updatedDaysOfWeek = {
-      //     ...daysOfWeek,
-      //       days: [  {
-      //         dayOfWeek: selectedDay,
-      //         hours: [
-      //           {
-      //             start: '',
-      //             end: '',
-      //           },
-      //         ],
-      //       }] 
-      //   }
-      // }
-
-      // setDaysOfWeek(updatedDaysOfWeek)
-    }
-    console.log('SEEEEEE', selectedDays, selectedDay)
-  }, [selectedDays])
-
 
   const handleSelectDaysOfWeek = (number: number): void => {
     const hasSelectedDay = selectedDays.indexOf(number)
-
-    setSelectedDay(number)
 
     if (hasSelectedDay <= -1) {
       return setSelectedDays((values) => [...values, number])
     }
     const updatedSelectedDays = [...selectedDays]
     updatedSelectedDays.splice(hasSelectedDay, 1)
-    console.log('updatedSelectedDays', updatedSelectedDays)
     return setSelectedDays(updatedSelectedDays)
-  }
-
-  const handleSelectHours = (e: any): void => {
-    const { value, dataset, name } = e.target
-    e.stopPropagation()
-
-    const dayIndex = selectedDays.findIndex(
-      (selectedDay) => selectedDay.toString() === dataset.day.toString()
-    )
-
-    const day = form?.daysOfWeek.days.find(
-      (dayOfWeek) => dayOfWeek.dayOfWeek.toString() === dataset.day.toString()
-    )
-
-    const selectedHours = {
-      start: name === 'start' ? value : day?.hours[0].start,
-      end: name === 'end' ? value : day?.hours[0].end,
-    }
-
-    const mount = {
-      dayOfWeek: day?.dayOfWeek,
-      hours: [selectedHours],
-    } as any
-
-    if (form?.daysOfWeek?.days && mount) {
-      const index = form?.daysOfWeek?.days?.findIndex(
-        (s) => s.dayOfWeek.toString() === mount?.dayOfWeek.toString()
-      )
-
-      form.daysOfWeek.days[index] = mount
-      setForm({ ...form })
-    }
   }
 
   const handleOfficeHourSelect = (calendar: any): void => {
     onOptionsChange(calendar)
+  }
+
+  const handleDayOfWeekChange = (values: ItemWithId<DayOfWeek>[], add?: boolean) => {
+    setDaysOfWeek([...values])
+  }
+
+  const handleSpecialDatesChange = (values: ItemWithId<SpecialDate>[], add?: boolean) => {
+    setSpecialDates([...values])
+  }
+
+  const handleIconClicked = async (value: any, action: SELECT_ACTION) => {
+    switch (action) {
+      case SELECT_ACTION.DELETE:
+        setDeletingId(value.id)
+        onOpen()
+        return
+      case SELECT_ACTION.EDIT:
+        setCurrentId(value.id)
+        await service.getOfficeHour(value.id).then(officeHour => {
+          setCurrentOffice(officeHour)
+          setScreen('CREATE-OFFICE-HOURS')
+        })
+        
+      default:
+        return
+    }
+  }
+
+  const onDeleteClick = async () => {
+    onClose()
+    if (!deletingId) return
+
+    const deleted = await service.deleteOfficeHour(deletingId)
+    if (deleted) getOfficeHours()
+
+    setDeletingId(undefined)
   }
 
   return (
@@ -343,14 +356,34 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
           <FormArea>
             <FormControl>
               {
-                <OctaSelect
-                  key={'office-hours-select'}
-                  options={optionsOfficeHour}
-                  findable
-                  onChange={(e) => handleOfficeHourSelect(e)}
-                  placeholder="Selecione um expediente"
-                  label="Qual horário de expediente este bot irá atender?"
-                ></OctaSelect>
+                <>
+                  <ConfirmModal
+                    isOpen={isOpen}
+                    onConfirm={onDeleteClick}
+                    onClose={onClose}
+                    message={
+                      <Text>
+                        Deseja mesmo excluir esse horário de atendimento?
+                        Essa ação não poderá ser desfeita.
+                      </Text>
+                    }
+                    confirmButtonLabel={'Confirmar'}
+                    title={"Deseja continuar?"}
+                  />
+
+                  <OctaSelect
+                    key={'office-hours-select'}
+                    options={optionsOfficeHour}
+                    findable
+                    onChange={(e) => handleOfficeHourSelect(e)}
+                    placeholder="Selecione um expediente"
+                    label="Qual horário de expediente este bot irá atender?"
+                    showEdit={true}
+                    showDelete={true}
+                    onIconClicked={handleIconClicked}
+                    defaultSelected={currentId}
+                  />
+                </>
               }
             </FormControl>
           </FormArea>
@@ -369,34 +402,47 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
           </Description>
           <FormArea>
             <FormControl>
-              <OctaInput
-                name="name"
-                placeholder="Novo horário expediente"
-                label="Dê um nome para esse expediente"
-                onChange={handleChangeName}
-                required
-              />
-            </FormControl>
-          </FormArea>
-          <FormArea>
-            <FormControl>
-              {optionsTimezone && (
-                <OctaSelect
-                  findable
-                  key={'timezone-select'}
-                  options={optionsTimezone}
-                  defaultValue="America/Sao_Paulo"
-                  onChange={handleChangeTimezone}
-                  // value={form?.timeZone}
-                  placeholder="Selecione um fuso horário"
-                  label="Qual é o fuso horário do expediente?"
+              <FormControlRow>
+                <Text width={"50%"}>Dê um nome para esse expediente</Text>
+                {optionsTimezone &&
+                  <Text width={"50%"}>Qual é o fuso horário do expediente?</Text>
+                }
+              </FormControlRow>
+              <FormControlRow>
+                <OctaInput
+                  name="name"
+                  placeholder="Novo horário expediente"
+                  onChange={handleChangeName}
+                  label=""
+                  required
+                  width={"50%"}
+                  margin-right={"10px"}
+                  value={name}
                 />
-              )}
+                {optionsTimezone && (
+                  <OctaSelect
+                    findable
+                    key={'timezone-select'}
+                    options={optionsTimezone}
+                    defaultValue="America/Sao_Paulo"
+                    onChange={(value) => handleChangeTimezone(value)}
+                    value={timeZone}
+                    placeholder="Selecione um fuso horário"
+                    width={"50%"}
+                    defaultSelected={timeZone}
+                  />
+                )}
+              </FormControlRow>
             </FormControl>
           </FormArea>
           <FormArea>
             <FormControl>
-              <Label style={{ width: '70%' }}>A sua operação é 24/7?</Label>
+
+            </FormControl>
+          </FormArea>
+          <FormArea>
+            <FormControlRow>
+              <Text>A sua operação é 24/7?</Text>
               <Options>
                 <OptionRadio>
                   <input
@@ -419,7 +465,7 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
                   Não
                 </OptionRadio>
               </Options>
-            </FormControl>
+            </FormControlRow>
           </FormArea>
 
           <div>
@@ -442,119 +488,31 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
                   ))}
                 </FormArea>
                 <FormArea>
-                  <HoursArea>
-                     {daysOfWeek?.days?.sort((a, b) => a.dayOfWeek - b.dayOfWeek)
-                      .map((day) => (
-                        <div key={day.dayOfWeek}>
-                          <HourDay>{dayPerNumber(day.dayOfWeek).full}</HourDay>
-                          <HoursRow>
-                            <HoursControl>
-                              <OctaInput
-                                placeholder="Início"
-                                mask="99:99"
-                                name="start"
-                                data-day={`${day}`}
-                                onBlur={handleSelectHours}
-                              />
-                            </HoursControl>
-                            <HoursPipe>até</HoursPipe>
-                            <HoursControl>
-                              <OctaInput
-                                placeholder="Fim"
-                                mask="99:99"
-                                name="end"
-                                data-day={`${day}`}
-                                onBlur={handleSelectHours}
-                              />
-                            </HoursControl>
-                          </HoursRow>
-                          <div>
-                            <LabelInterval>Intervalos</LabelInterval>
-                            <HoursIntervalRow>
-                              <HoursControl>
-                                <OctaInput
-                                  placeholder="Início"
-                                  mask="99:99"
-                                  name="start"
-                                  data-day={`${day}`}
-                                  onBlur={handleSelectHours}
-                                />
-                              </HoursControl>
-                              <HoursPipe>até</HoursPipe>
-                              <HoursControl>
-                                <OctaInput
-                                  placeholder="Fim"
-                                  mask="99:99"
-                                  name="end"
-                                  data-day={`${day}`}
-                                  onBlur={handleSelectHours}
-                                />
-                              </HoursControl>
-                            </HoursIntervalRow>
-                          </div>
-                          <ButtonAddInterval onClick={addIntervalInputField}>+ Adicionar Intervalo</ButtonAddInterval>
-                        </div>
-                      ))}
-                    {/* {selectedDays
-                      .sort((a, b) => a - b)
-                      .map((day) => (
-                        <div key={day}>
-                          <HourDay>{dayPerNumber(day).full}</HourDay>
-                          <HoursRow>
-                            <HoursControl>
-                              <OctaInput
-                                placeholder="Início"
-                                mask="99:99"
-                                name="start"
-                                data-day={`${day}`}
-                                onBlur={handleSelectHours}
-                              />
-                            </HoursControl>
-                            <HoursPipe>até</HoursPipe>
-                            <HoursControl>
-                              <OctaInput
-                                placeholder="Fim"
-                                mask="99:99"
-                                name="end"
-                                data-day={`${day}`}
-                                onBlur={handleSelectHours}
-                              />
-                            </HoursControl>
-                          </HoursRow>
-                          <div>
-                            <LabelInterval>Intervalos</LabelInterval>
-                            <HoursIntervalRow>
-                              <HoursControl>
-                                <OctaInput
-                                  placeholder="Início"
-                                  mask="99:99"
-                                  name="start"
-                                  data-day={`${day}`}
-                                  onBlur={handleSelectHours}
-                                />
-                              </HoursControl>
-                              <HoursPipe>até</HoursPipe>
-                              <HoursControl>
-                                <OctaInput
-                                  placeholder="Fim"
-                                  mask="99:99"
-                                  name="end"
-                                  data-day={`${day}`}
-                                  onBlur={handleSelectHours}
-                                />
-                              </HoursControl>
-                            </HoursIntervalRow>
-                          </div>
-                          <ButtonAddInterval onClick={addIntervalInputField}>+ Adicionar Intervalo</ButtonAddInterval>
-                        </div>
-                      ))} */}
-                  </HoursArea>
+                  {hasSameHour}
+                  <Toggle>
+                    <input type="checkbox" id="switchSameHour" onChange={handleToggleSameDayHour} checked={hasSameHour} />
+                    <label htmlFor="switchSameHour">Toggle</label>
+                    <div className="input-label">
+                      Usar o mesmo horário para todos os dias
+                    </div>
+                  </Toggle>
                 </FormArea>
+                <TableList<ItemWithId<DayOfWeek>>
+                  initialItems={daysOfWeek}
+                  onItemsChange={handleDayOfWeekChange}
+                  itemsList={daysOfWeek}
+                  Item={DayOfWeekComponent}
+                  shouldHideButton={true}
+                  debounceTimeout={0}
+                  ComponentBetweenItems={() => <OctaDivider width='100%' />}
+                  buttonWidth='50%'
+                />
               </>
+
             )}
           </div>
           <FormArea>
-              {hasSpecialDates}
+            {hasSpecialDates}
             <Toggle>
               <input type="checkbox" id="switch" onChange={handleToggle} checked={hasSpecialDates} />
               <label htmlFor="switch">Toggle</label>
@@ -564,53 +522,23 @@ export const OfficeHoursBody = ({ step, onExpand, onOptionsChange }: Props) => {
             </Toggle>
           </FormArea>
           {hasSpecialDates && (
-              <>             
-                <FormArea>        
-                  <FormControl>
-                    <OctaInput
-                      name="special-date"
-                      placeholder="DD/MM/AAAA"
-                      type="date"
-                    />
-                  </FormControl>
-                </FormArea>
-
-                <FormArea>
-                <FormControl>
-                    <Label style={{ width: '70%' }}>O seu time estará disponível nesta data?</Label>
-                    <Options>
-                      <OptionRadio>
-                        <input
-                          type="radio"
-                          name="available-special-date"
-                          id="yes"
-                          defaultChecked={is24hours}
-                        />{' '}
-                        Sim
-                      </OptionRadio>
-                      <OptionRadio>
-                        <input
-                          type="radio"
-                          name="available-special-date"
-                          id="not"
-                          defaultChecked={!is24hours}
-                        />{' '}
-                        Não
-                      </OptionRadio>
-                    </Options>
-                  </FormControl>
-                </FormArea>
-
-                <FormArea>
-                  <ButtonAddSpecialDate>Adicionar data</ButtonAddSpecialDate>
-                </FormArea>
-                </>
+            <TableList<ItemWithId<SpecialDate>>
+              initialItems={specialDates}
+              onItemsChange={handleSpecialDatesChange}
+              Item={SpecialDateComponent}
+              addLabel="Adicionar data"
+              debounceTimeout={0}
+              ComponentBetweenItems={() => <OctaDivider width='100%' />}
+              minItems={1}
+              buttonWidth='50%'
+            />
           )}
           <FormArea>
-            <ButtonCreate onClick={createOfficeHour}>Salvar</ButtonCreate>
+            <ButtonCreate onClick={saveOfficeHour}>Salvar</ButtonCreate>
             <ButtonCancel onClick={cancelCreate}>Cancelar</ButtonCancel>
           </FormArea>
         </ContainerCreate>
+
       )}
     </>
   )

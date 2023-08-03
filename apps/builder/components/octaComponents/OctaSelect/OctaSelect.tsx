@@ -9,14 +9,23 @@ import {
   InputSearch,
 } from './OctaSelect.style'
 import { OctaSelectProps, OptionProps } from './OctaSelect.type';
-import { background, color } from '@chakra-ui/react';
+import { Button, HStack, background, color } from '@chakra-ui/react';
+import { EditIcon, PencilIcon } from 'assets/icons';
+import { DeleteIcon } from '@chakra-ui/icons';
+import { defaultLightThemeOption } from '@uiw/react-codemirror';
 
-const Option = ({ value, children, optionKey, isTitle, disabled, onClick, selected }: OptionProps) => {
+export enum SELECT_ACTION {
+  DELETE = 'DELETE',
+  EDIT = 'EDIT'
+}
+
+const Option = ({ value, children, optionKey, isTitle, disabled, onClick, selected, showEdit, showDelete, onIconClicked }: OptionProps) => {
   const hasActionToClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>): void => {
     if ((!isTitle && !disabled) && onClick) {
       onClick(e)
     }
   }
+  
   return (
     <OptionItem
       key={optionKey}
@@ -24,10 +33,28 @@ const Option = ({ value, children, optionKey, isTitle, disabled, onClick, select
       data-istitle={isTitle}
       data-disabled={!!isTitle || disabled}
       onClick={hasActionToClick}
-      className={`${value === selected ? "actived" : ""} ${isTitle ? "isTitle" : ""}`}
+      className={`${children === selected?.label ? "actived" : ""} ${isTitle ? "isTitle" : ""}`}
     >
-      <>{children}</>
-    </OptionItem>
+      <>
+        {children}
+        {showDelete && !isTitle &&
+          <Button size="xs" onClick={(e) => {
+            if (onIconClicked) onIconClicked(value, SELECT_ACTION.DELETE)
+            e.stopPropagation()
+          }} float={"right"}>
+            <DeleteIcon />
+          </Button>
+        }
+        {showEdit && !isTitle &&
+          <Button size="xs" onMouseOver={(e) => e.stopPropagation()} onClick={(e) => {
+              if (onIconClicked) onIconClicked(value, SELECT_ACTION.EDIT)
+              e.stopPropagation()
+            }} float={"right"}>
+            <EditIcon />
+          </Button>
+        }
+      </>
+    </OptionItem >
   )
 }
 
@@ -45,9 +72,12 @@ const OctaSelect = (props: OctaSelectProps) => {
 
   useEffect(() => {
     if (props.defaultSelected) {
-      setSelected(props.defaultSelected);
+      const newSelected = allOptions?.find(s => (s.value?.id || s.value) === props.defaultSelected) || props.defaultSelected
+      setSelected(newSelected)
+    } else { 
+      setSelected('')
     }
-  }, [props.defaultSelected])
+  }, [props.defaultSelected, props.options])
 
   const handleToggle = (): void => {
     setToggle((e) => !e)
@@ -76,7 +106,7 @@ const OctaSelect = (props: OctaSelectProps) => {
   }, [allOptions, search])
 
   return (
-    <Container ref={ref} onClick={handleToggle}>
+    <Container ref={ref} onClick={handleToggle} style={{ width: "100%", ...props }}>
       <>
         {(!selected && !props.findable) && props.placeholder}
         {(selected && !props.findable) && selected.label}
@@ -103,7 +133,9 @@ const OctaSelect = (props: OctaSelectProps) => {
                 onClick={() => handleChangeFind(option)}
                 isTitle={option.isTitle}
                 disabled={option.disabled}
-              >
+                showEdit={props.showEdit}
+                showDelete={props.showDelete}
+                onIconClicked={props.onIconClicked}>
                 {option.label}
               </Option>
             ))}

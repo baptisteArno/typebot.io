@@ -122,6 +122,7 @@ export type WhatsAppOptionsContent = {
 export type OfficeHourStep = StepBase & {
   type: OctaStepType.OFFICE_HOURS
   items: [OfficeHoursItem]
+  options: OfficeHoursOptions
 }
 
 export type OfficeHoursItem = ItemBase & {
