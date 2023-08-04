@@ -150,7 +150,7 @@ const startParamsSchema = z.object({
     .boolean()
     .optional()
     .describe(
-      "If set to `true`, it will start a Preview session with the unpublished bot and it won't be saved in the Results tab. You need to be authenticated for this to work."
+      "If set to `true`, it will start a Preview session with the unpublished bot and it won't be saved in the Results tab. You need to be authenticated with a bearer token for this to work."
     ),
   resultId: z
     .string()

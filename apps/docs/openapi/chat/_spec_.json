@@ -15,11 +15,6 @@
         "operationId": "sendMessage",
         "summary": "Send a message",
         "description": "To initiate a chat, do not provide a `sessionId` nor a `message`.\n\nContinue the conversation by providing the `sessionId` and the `message` that should answer the previous question.\n\nSet the `isPreview` option to `true` to chat with the non-published version of the typebot.",
-        "security": [
-          {
-            "Authorization": []
-          }
-        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -34,27 +29,6 @@
                   "sessionId": {
                     "type": "string",
                     "description": "Session ID that you get from the initial chat request to a bot. If not provided, it will create a new session."
-                  },
-                  "clientLogs": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "status": {
-                          "type": "string"
-                        },
-                        "description": {
-                          "type": "string"
-                        },
-                        "details": {}
-                      },
-                      "required": [
-                        "status",
-                        "description"
-                      ],
-                      "additionalProperties": false
-                    },
-                    "description": "Logs while executing client side actions"
                   },
                   "startParams": {
                     "type": "object",
@@ -3566,13 +3540,35 @@
                         "description": "[More info about prefilled variables.](https://docs.typebot.io/editor/variables#prefilled-variables)"
                       },
                       "isStreamEnabled": {
-                        "type": "boolean"
+                        "type": "boolean",
+                        "description": "Set this to `true` if you intend to stream OpenAI completions on a client."
                       }
                     },
                     "required": [
                       "typebot"
                     ],
                     "additionalProperties": false
+                  },
+                  "clientLogs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "details": {}
+                      },
+                      "required": [
+                        "status",
+                        "description"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "Logs while executing client side actions"
                   }
                 },
                 "additionalProperties": false
@@ -5800,6 +5796,55 @@
                   "required": [
                     "presignedUrl",
                     "hasReachedStorageLimit"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/session/{sessionId}/updateTypebot": {
+      "post": {
+        "operationId": "updateTypebotInSession",
+        "summary": "Update typebot in session",
+        "description": "Update chat session with latest typebot modifications. This is useful when you want to update the typebot in an ongoing session after making changes to it.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "enum": [
+                        "success"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "message"
                   ],
                   "additionalProperties": false
                 }
