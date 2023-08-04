@@ -88,10 +88,10 @@ export const StepNodesList = ({
   }
 
   const isFinalStep = (type: StepType) => [
-      OctaBubbleStepType.END_CONVERSATION,
-      OctaStepType.ASSIGN_TO_TEAM,
-      OctaStepType.CALL_OTHER_BOT
-    ].includes(type)
+    OctaBubbleStepType.END_CONVERSATION,
+    OctaStepType.ASSIGN_TO_TEAM,
+    OctaStepType.CALL_OTHER_BOT
+  ].includes(type)
 
   const [blockEndedIndex, setHasBlockEndedIndex] = useState<number>(-1)
   useEffect(() => {
@@ -138,15 +138,23 @@ export const StepNodesList = ({
       <Flex
         ref={handlePushElementRef(0)}
         h={
-          showSortPlaceholders && expandedPlaceholderIndex === 0
+          showSortPlaceholders ? (expandedPlaceholderIndex === 0
             ? '50px'
-            : '2px'
+            : '30px') : "2px"
         }
         bgColor={'gray.300'}
         visibility={showSortPlaceholders ? 'visible' : 'hidden'}
         rounded="lg"
         transition={showSortPlaceholders ? 'height 200ms' : 'none'}
-      />
+        alignItems={"center"}
+      >
+        <Center w={"100%"} h={"100%"}>
+          <HStack color={"gray"} fontWeight={"semibold"}>
+            <PlusIcon />
+            <Text>Adicionar aqui</Text>
+          </HStack>
+        </Center>
+      </Flex>
       {typebot &&
         steps.map((step, idx) => (
 

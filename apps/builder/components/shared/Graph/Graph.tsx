@@ -87,15 +87,13 @@ export const Graph = ({
   const handleMouseWheel = (e: WheelEvent) => {
     e.preventDefault()
     const isPinchingTrackpad = e.ctrlKey
-    user?.graphNavigation === GraphNavigation.MOUSE
-      ? zoom(-e.deltaY * 0.001, { x: e.clientX, y: e.clientY })
-      : isPinchingTrackpad
-        ? zoom(-e.deltaY * 0.01, { x: e.clientX, y: e.clientY })
-        : setGraphPosition({
-          ...graphPosition,
-          x: graphPosition.x - e.deltaX,
-          y: graphPosition.y - e.deltaY,
-        })
+    isPinchingTrackpad
+      ? zoom(-e.deltaY * 0.01, { x: e.clientX, y: e.clientY })
+      : setGraphPosition({
+        ...graphPosition,
+        x: graphPosition.x - e.deltaX,
+        y: graphPosition.y - e.deltaY,
+      })
   }
 
   const handleMouseUp = (e: MouseEvent) => {
@@ -183,7 +181,7 @@ export const Graph = ({
 
   return (
     <DraggableCore onDrag={onDrag} enableUserSelectHack={false}>
-      <Flex ref={graphContainerRef} position="relative" {...props} 
+      <Flex ref={graphContainerRef} position="relative" {...props}
         background={draggingStep ? "gray.200" : "#f4f5f8"}
         backgroundImage="radial-gradient(#c6d0e1 1px, transparent 0)"
         backgroundSize="40px 40px"

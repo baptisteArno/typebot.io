@@ -84,12 +84,6 @@ export const BoardMenuButton = (props: MenuButtonProps) => {
         <MenuItem icon={<EyeIcon />} onClick={handlePreviewClick}>
           Visualizar
         </MenuItem>
-        {/* <MenuItem icon={<SettingsIcon />} onClick={onOpen}>
-          Editor settings
-        </MenuItem> */}
-        <MenuItem icon={<DownloadIcon />} onClick={downloadFlow}>
-          Exportar bot
-        </MenuItem>
       </MenuList>
       <EditorSettingsModal isOpen={isOpen} onClose={onClose} />
     </Menu>
