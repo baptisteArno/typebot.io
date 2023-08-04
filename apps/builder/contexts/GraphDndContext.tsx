@@ -80,7 +80,7 @@ export const useDragDistance = ({
 
   const handleMouseDown = (e: MouseEvent) => {
     if (isDisabled || !ref.current) return
-    e.preventDefault()
+    if (ref?.current?.dataset && ref.current.dataset['testid'] !== 'item') e.preventDefault()
     e.stopPropagation()
     const { top, left } = ref.current.getBoundingClientRect()
     mouseDownPosition.current = {

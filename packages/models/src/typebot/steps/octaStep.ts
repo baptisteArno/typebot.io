@@ -383,7 +383,7 @@ export const defaultCommerceOptions: CommerceOptions = {
   name: '',
   subject: '',
   message: {
-    html: `<div style="margin-left: 8px;">'Este é o catálogo que selecionamos para você:'</div>`,
+    html: `<div style="margin-left: 8px;">Este é o catálogo que selecionamos para você:</div>`,
     richText: [{
       children: [{
         text: 'Este é o catálogo que selecionamos para você:',

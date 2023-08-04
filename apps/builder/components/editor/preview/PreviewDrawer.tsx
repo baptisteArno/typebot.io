@@ -1,10 +1,14 @@
 import {
   Box,
   Button,
+  Center,
   CloseButton,
   Fade,
   Flex,
   FlexProps,
+  Image,
+  Stack,
+  Text,
   useEventListener,
   useToast,
   UseToastOptions,
@@ -19,6 +23,7 @@ import { Log } from 'model'
 import React, { useMemo, useState } from 'react'
 import { parseTypebotToPublicTypebot } from 'services/publicTypebot'
 import OctaTooltip from 'components/octaComponents/OctaTooltip/OctaTooltip'
+import ShellImage from '../../../assets/teste.png';
 
 export const PreviewDrawer = () => {
   const { typebot } = useTypebot()
@@ -90,9 +95,9 @@ export const PreviewDrawer = () => {
       <VStack w="full" spacing={4}>
         <Flex justifyContent={'space-between'} w="full">
           <Flex align="center">
-            <Button onClick={handleRestartClick} mr="2">
+            {/* <Button onClick={handleRestartClick} mr="2" disabled={true}>
               Reiniciar
-            </Button>
+            </Button> */}
             <OctaTooltip
               contentText={`Made with `}
               contentLink={'Typebot'}
@@ -115,12 +120,19 @@ export const PreviewDrawer = () => {
             key={restartKey}
             pointerEvents={isResizing ? 'none' : 'auto'}
           >
-            <TypebotViewer
+            <Stack marginLeft={"30px"} marginRight={"30px"} width={"100vw"} height={"100vh"} alignContent={"center"} justifyContent={"center"}>
+              <Image src={"/images/shell.svg"} width={"191px"} height={"184px"} flexShrink={0} alignSelf={"center"} marginBottom={"24px"} />
+              {/* <Image src={ShellImage} /> */}
+              <Text color={"black"} textAlign={"center"} fontFamily={"Poppins"} fontSize={"18px"} fontStyle={"normal"} fontWeight={"600"} lineHeight={"24px"}>Em Construção...</Text>
+              <Text color={"black"} textAlign={"center"} fontFamily={"Noto Sans"} fontSize={"14px"} fontStyle={"normal"} fontWeight={"400"} lineHeight={"20px"}>Estamos trabalhando e em breve você conseguirá visualizar toda a experiência do seu bot por aqui. Aguarde!</Text>
+            </Stack>
+
+            {/* <TypebotViewer
               typebot={publicTypebot}
               onNewBlockVisible={setPreviewingEdge}
               onNewLog={handleNewLog}
               isPreview
-            />
+            /> */}
           </Flex>
         )}
       </VStack>

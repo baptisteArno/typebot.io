@@ -88,7 +88,7 @@ export const Graph = ({
     e.preventDefault()
     const isPinchingTrackpad = e.ctrlKey
     isPinchingTrackpad
-      ? zoom(-e.deltaY * 0.01, { x: e.clientX, y: e.clientY })
+      ? zoom((e.deltaY > 0 ? -1 : 1) * zoomButtonsScaleStep, { x: e.clientX, y: e.clientY })
       : setGraphPosition({
         ...graphPosition,
         x: graphPosition.x - e.deltaX,

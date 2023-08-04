@@ -1,5 +1,13 @@
 This repository is a fork from typebot (http://www.typebot.io ! https://github.com/baptisteArno/typebot.io)
 
+
+## Octadesk
+
+This fork is being used solely for bot flow construction, so, for debugging, change the upper url for 
+`http://localhost:8080/typebots/{bot_id}/edit
+
+We do not use the bot list based on this repo, this is kept on another client.
+
 __
 
 <p>

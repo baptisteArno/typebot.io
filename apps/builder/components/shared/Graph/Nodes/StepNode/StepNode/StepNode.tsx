@@ -29,6 +29,7 @@ import {
   WhatsAppOptionsListStep,
   WhatsAppButtonsListStep,
   OctaWabaStepType,
+  BubbleStepType,
 } from 'models'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
@@ -55,6 +56,7 @@ import { BlockFocusToolbar } from 'components/shared/Graph/Nodes/BlockNode/Block
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
 import { WarningIcon } from 'assets/icons'
 import OctaTooltip from 'components/octaComponents/OctaTooltip/OctaTooltip'
+import { VALIDATION_MESSAGE_TYPE, ValidationMessage, getValidationMessages } from '../../helpers/helpers'
 
 type StepNodeContextProps = {
   setIsPopoverOpened?: (isPopoverOpened: boolean) => void
@@ -112,6 +114,13 @@ export const StepNode = ({
   })
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+
+  const [validationMessages, setValidationMessages] = useState<Array<ValidationMessage>>()
+
+  useEffect(() => {
+    const currentMessages = getValidationMessages(step)
+    setValidationMessages(currentMessages)
+  }, [isEditing, isModalOpen])
 
   const {
     onOpen: onModalOpen,
@@ -229,11 +238,8 @@ export const StepNode = ({
                 w="full"
                 direction="column"
               >
-                <Stack spacing={2} 
-                  borderWidth={unreachableNode ? "1.5px" : ""}
-                  borderColor={unreachableNode ? "#e3a820" : ""}
-                  borderRadius={"10px"}>
-                  <BlockStack isOpened={isOpened} isPreviewing={isPreviewing}>
+                <Stack spacing={2}>
+                  <BlockStack isOpened={isOpened} isPreviewing={isPreviewing} style={{ borderColor: unreachableNode ? "#e3a820" : ""}}>
                     <Stack spacing={2}>
                       <HStack fontSize={"14px"}>
                         <StepIcon
@@ -245,19 +251,29 @@ export const StepNode = ({
                           type={step.type}
                           data-testid={`${step.id}-icon`}
                         />
+                        <Spacer />
                         {unreachableNode &&
                           <>
-                            <Spacer />
                             <OctaTooltip
-                              element={<WarningIcon color={"#e3a820"} alt={"O bot terminará na ação anterior e essa não será executada!"} />}
-                              contentText={'O bot terminará na ação anterior e essa não será executada!'}
+                              element={<WarningIcon color={"#FAC300"} />}
+                              contentText={'Essa ação não será executada. O bot já encerrou anteriormente.'}
                               tooltipPlacement={"auto"}
-                              popoverColor="#e3a820"
-                              textColor="gray.200"
+                              popoverColor="#FFE894"
+                              textColor="#574B24"
                               duration={3000}
                             />
                           </>
                         }
+                        {!unreachableNode && validationMessages?.map(s => {
+                          return <OctaTooltip
+                            element={<WarningIcon color={s.type === VALIDATION_MESSAGE_TYPE.ERROR ? "#D33003" : "#FAC300"} />}
+                            contentText={s.message.join(' | ')}
+                            tooltipPlacement={"auto"}
+                            popoverColor={s.type === VALIDATION_MESSAGE_TYPE.ERROR ? "#FBD9D0" : "#FFE894"}
+                            textColor={s.type === VALIDATION_MESSAGE_TYPE.ERROR ? "#5B332E" : "#574B24"}
+                            duration={3000}
+                          />
+                        })}
                       </HStack>
                       {step.type !== 'start' &&
                         <span>
@@ -296,7 +312,9 @@ export const StepNode = ({
                     >
                       <BlockFocusToolbar
                         onDuplicateClick={() => {
-                          setIsFocused(false)
+                          setTimeout(() => {
+                            setIsFocused(false)
+                          }, 750);
                           duplicateStep(indices)
                         }}
                         onDeleteClick={() => deleteStep(indices)}

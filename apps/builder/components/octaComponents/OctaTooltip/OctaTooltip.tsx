@@ -7,6 +7,7 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
+  Text,
   useDisclosure,
 } from '@chakra-ui/react'
 import { isDefined } from '@udecode/plate-core'
@@ -64,7 +65,7 @@ const OctaTooltip = ({
       <PopoverContent color={textColor} bg={popoverColor} width="100%">
         <PopoverArrow bg={popoverColor} />
         <PopoverBody onMouseLeave={() => handleMouseLeave()} onMouseEnter={onOpen}>
-          <span>{contentText}</span>
+          <Text width="500px">{contentText}</Text>
           <Link href={hrefUrl} isExternal style={{ textDecoration: "underline" }}>
             {contentLink}
           </Link>

@@ -9,6 +9,16 @@ import {
   Fade,
   Spacer,
   Portal,
+  HStack,
+  Button,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
 } from '@chakra-ui/react'
 import { InfoIcon } from '@chakra-ui/icons'
 import {
@@ -40,6 +50,7 @@ export const StepsSideBar = () => {
   const [relativeCoordinates, setRelativeCoordinates] = useState({ x: 0, y: 0 })
   const [isLocked, setIsLocked] = useState(true)
   const [isExtended, setIsExtended] = useState(true)
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const { verifyFeatureToggle } = useUser()
 
@@ -115,6 +126,14 @@ export const StepsSideBar = () => {
     return [OctaWabaStepType.COMMERCE]
   }
 
+  const getBaseUrl = () => {
+    return process.env.IS_LOCAL ?
+      "https://app.qaoctadesk.com/bot-builder/channel/whatsapp/version/2/64cd2c6f5ca37e0007968b93" :
+      (window.location != window.parent.location)
+        ? document.referrer
+        : document.location.href;
+  }
+
   return (
     <Flex
       w="375px"
@@ -142,21 +161,40 @@ export const StepsSideBar = () => {
         overflowY="scroll"
         className="hide-scrollbar"
       >
-        <Flex justifyContent="flex-end">
-          <Tooltip
-            label={
-              isLocked ? 'Desbloquear barra lateral' : 'Bloquear barra lateral'
-            }
-          >
-            <IconButton
-              icon={isLocked ? <LockedIcon /> : <UnlockedIcon />}
-              aria-label={isLocked ? 'Unlock' : 'Lock'}
-              size="sm"
-              variant="outline"
-              onClick={handleLockClick}
-            />
-          </Tooltip>
-        </Flex>
+        <HStack w="full">
+          <Button onClick={onOpen}>Primeiros passos</Button>
+          <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Primeiros passos</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <iframe src={`${getBaseUrl()}?appcue=eba38d22-a021-4c9d-a2a7-6435d5eb853c`} style={{ width: '100%', height: '400px' }} />
+              </ModalBody>
+              <ModalFooter>
+                <Button colorScheme='blue' mr={3} onClick={onClose}>
+                  Fechar
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+          <Spacer />
+          <Flex>
+            <Tooltip
+              label={
+                isLocked ? 'Desbloquear barra lateral' : 'Bloquear barra lateral'
+              }
+            >
+              <IconButton
+                icon={isLocked ? <LockedIcon /> : <UnlockedIcon />}
+                aria-label={isLocked ? 'Unlock' : 'Lock'}
+                size="sm"
+                variant="outline"
+                onClick={handleLockClick}
+              />
+            </Tooltip>
+          </Flex>
+        </HStack>
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
@@ -243,13 +281,13 @@ export const StepsSideBar = () => {
           <SimpleGrid columns={1} spacing="3">
             {Object.values(OctaStepType).map((type) => (
               shouldHideComponents(type) && (
-              <StepCard
-                key={type}
-                type={type}
-                onMouseDown={handleMouseDown}
-                isDisabled={shouldDisableComponent(type)}
-              />
-            )))}
+                <StepCard
+                  key={type}
+                  type={type}
+                  onMouseDown={handleMouseDown}
+                  isDisabled={shouldDisableComponent(type)}
+                />
+              )))}
           </SimpleGrid>
           <SimpleGrid columns={1} spacing="3">
             {Object.values(OctaBubbleStepType).map((type) => (
