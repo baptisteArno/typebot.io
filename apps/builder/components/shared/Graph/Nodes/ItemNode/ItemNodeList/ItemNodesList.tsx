@@ -106,6 +106,8 @@ export const ItemNodesList = ({
         setPosition(absolute)
         setRelativeCoordinates(relative)
         setDraggedItem(item)
+
+        console.log('handleStepMouseDown', { item, blockIndex, stepIndex, absolute, relative })
       }
 
   const stopPropagating = (e: React.MouseEvent) => e.stopPropagation()
@@ -139,10 +141,10 @@ export const ItemNodesList = ({
       /> */}
       {step.type === OctaStepType.OFFICE_HOURS && (
         <Stack paddingBottom={"10px"}>
-          {!typebot?.blocks[blockIndex].steps[stepIndex].options['name'] && <HandleSelectCalendar>
+          {!typebot?.blocks[blockIndex].steps[stepIndex]?.options['name'] && <HandleSelectCalendar>
             Selecione o expediente:
           </HandleSelectCalendar>}
-          {typebot?.blocks[blockIndex].steps[stepIndex].options['name'] &&
+          {typebot?.blocks[blockIndex].steps[stepIndex]?.options['name'] &&
             <div>
               Horário: &nbsp;&nbsp;
               <SelectedCalendar>

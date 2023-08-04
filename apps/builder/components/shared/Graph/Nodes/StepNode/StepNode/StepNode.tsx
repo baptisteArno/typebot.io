@@ -8,6 +8,8 @@ import {
   Text,
   Divider,
   SlideFade,
+  AlertIcon,
+  Spacer,
 } from '@chakra-ui/react'
 import React, { createContext, useEffect, useRef, useState } from 'react'
 import {
@@ -51,6 +53,8 @@ import { BlockStack } from './StepNode.style'
 import { StepTypeLabel } from 'components/editor/StepsSideBar/StepTypeLabel'
 import { BlockFocusToolbar } from 'components/shared/Graph/Nodes/BlockNode/BlockFocusToolbar'
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
+import { WarningIcon } from 'assets/icons'
+import OctaTooltip from 'components/octaComponents/OctaTooltip/OctaTooltip'
 
 type StepNodeContextProps = {
   setIsPopoverOpened?: (isPopoverOpened: boolean) => void
@@ -63,13 +67,15 @@ export const StepNode = ({
   isConnectable,
   indices,
   onMouseDown,
-  isStartBlock
+  isStartBlock,
+  unreachableNode
 }: {
   step: Step
   isConnectable: boolean
   indices: { stepIndex: number; blockIndex: number }
   onMouseDown?: (stepNodePosition: NodePosition, step: DraggableStep) => void
   isStartBlock: boolean
+  unreachableNode?: boolean
 }) => {
   const { query } = useRouter()
   const {
@@ -83,7 +89,6 @@ export const StepNode = ({
   const { updateStep, duplicateStep, deleteStep } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
-  const [isToolbarFocused, setIsToolbarFocused] = useState(false)
 
   const [isPopoverOpened, setIsPopoverOpened] = useState(
     openedStepId === step.id
@@ -173,17 +178,9 @@ export const StepNode = ({
     setOpenedStepId(step.id)
   }
 
-  const handleExpandClick = () => {
-    setOpenedStepId(undefined)
-    onModalOpen()
-  }
-
   const handleStepUpdate = (updates: Partial<Step>): void => {
     updateStep(indices, { ...step, ...updates })
   }
-
-  const handleContentChange = (content: BubbleStepContent) =>
-    updateStep(indices, { ...step, content } as Step)
 
   useEffect(() => {
     setIsPopoverOpened(openedStepId === step.id)
@@ -232,7 +229,10 @@ export const StepNode = ({
                 w="full"
                 direction="column"
               >
-                <Stack spacing={2}>
+                <Stack spacing={2} 
+                  borderWidth={unreachableNode ? "1.5px" : ""}
+                  borderColor={unreachableNode ? "#e3a820" : ""}
+                  borderRadius={"10px"}>
                   <BlockStack isOpened={isOpened} isPreviewing={isPreviewing}>
                     <Stack spacing={2}>
                       <HStack fontSize={"14px"}>
@@ -245,6 +245,19 @@ export const StepNode = ({
                           type={step.type}
                           data-testid={`${step.id}-icon`}
                         />
+                        {unreachableNode &&
+                          <>
+                            <Spacer />
+                            <OctaTooltip
+                              element={<WarningIcon color={"#e3a820"} alt={"O bot terminará na ação anterior e essa não será executada!"} />}
+                              contentText={'O bot terminará na ação anterior e essa não será executada!'}
+                              tooltipPlacement={"auto"}
+                              popoverColor="#e3a820"
+                              textColor="gray.200"
+                              duration={3000}
+                            />
+                          </>
+                        }
                       </HStack>
                       {step.type !== 'start' &&
                         <span>

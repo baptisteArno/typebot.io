@@ -27,7 +27,6 @@ export const BoardMenuButton = (props: MenuButtonProps) => {
   const { setRightPanel } = useEditor()
 
   const handlePreviewClick = async () => {
-    save()
     setRightPanel(RightPanel.PREVIEW)
   }
 
@@ -85,11 +84,11 @@ export const BoardMenuButton = (props: MenuButtonProps) => {
         <MenuItem icon={<EyeIcon />} onClick={handlePreviewClick}>
           Visualizar
         </MenuItem>
-        <MenuItem icon={<SettingsIcon />} onClick={onOpen}>
+        {/* <MenuItem icon={<SettingsIcon />} onClick={onOpen}>
           Editor settings
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem icon={<DownloadIcon />} onClick={downloadFlow}>
-          Export flow
+          Exportar bot
         </MenuItem>
       </MenuList>
       <EditorSettingsModal isOpen={isOpen} onClose={onClose} />

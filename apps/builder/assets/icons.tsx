@@ -670,3 +670,13 @@ export const WebhookIcon = (props: any) => (
     </div>
   </IconContext.Provider>
 )
+
+export const WarningIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdWarning />
+    </div>
+  </IconContext.Provider>
+)

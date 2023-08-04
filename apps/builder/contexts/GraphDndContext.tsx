@@ -80,6 +80,7 @@ export const useDragDistance = ({
 
   const handleMouseDown = (e: MouseEvent) => {
     if (isDisabled || !ref.current) return
+    e.preventDefault()
     e.stopPropagation()
     const { top, left } = ref.current.getBoundingClientRect()
     mouseDownPosition.current = {
@@ -101,6 +102,7 @@ export const useDragDistance = ({
       Math.abs(mouseDownPosition.current.absolute.y - clientY) >
         distanceTolerance
     ) {
+      e.preventDefault()
       onDrag(mouseDownPosition.current)
     }
   }

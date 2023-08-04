@@ -1,5 +1,5 @@
 import { useEventListener, Stack, Flex, Portal, Text, Center, HStack } from '@chakra-ui/react'
-import { DraggableStep, DraggableStepType, Step } from 'models'
+import { DraggableStep, DraggableStepType, OctaBubbleStepType, OctaStepType, Step, StepType } from 'models'
 import {
   computeNearestPlaceholderIndex,
   useStepDnd,
@@ -87,6 +87,19 @@ export const StepNodesList = ({
     setDraggedStepType(undefined)
   }
 
+  const isFinalStep = (type: StepType) => [
+      OctaBubbleStepType.END_CONVERSATION,
+      OctaStepType.ASSIGN_TO_TEAM,
+      OctaStepType.CALL_OTHER_BOT
+    ].includes(type)
+
+  const [blockEndedIndex, setHasBlockEndedIndex] = useState<number>(-1)
+  useEffect(() => {
+    const endedIndex = steps.findIndex(s => isFinalStep(s.type))
+    setHasBlockEndedIndex(endedIndex)
+  }, [steps])
+
+
   const handleStepMouseDown =
     (stepIndex: number) =>
       (
@@ -136,6 +149,7 @@ export const StepNodesList = ({
       />
       {typebot &&
         steps.map((step, idx) => (
+
           <Stack key={step.id} spacing={1}>
             <StepNode
               key={step.id}
@@ -144,27 +158,30 @@ export const StepNodesList = ({
               isConnectable={steps.length - 1 === idx}
               onMouseDown={handleStepMouseDown(idx)}
               isStartBlock={isStartBlock}
+              unreachableNode={blockEndedIndex >= 0 && blockEndedIndex < idx}
             />
-            <Flex
-              ref={handlePushElementRef(idx + 1)}
-              h={
-                showSortPlaceholders ? (expandedPlaceholderIndex === idx + 1
-                  ? '50px'
-                  : '30px') : "2px"
-              }
-              bgColor={'gray.300'}
-              visibility={showSortPlaceholders ? 'visible' : 'hidden'}
-              rounded="lg"
-              transition={showSortPlaceholders ? 'height 200ms' : 'none'}
-              alignItems={"center"}
-            >
-              <Center w={"100%"} h={"100%"}>
-                <HStack color={"gray"} fontWeight={"semibold"}>
-                  <PlusIcon />
-                  <Text>Adicionar aqui</Text>
-                </HStack>
-              </Center>
-            </Flex>
+            {!isFinalStep(step.type) &&
+              <Flex
+                ref={handlePushElementRef(idx + 1)}
+                h={
+                  showSortPlaceholders ? (expandedPlaceholderIndex === idx + 1
+                    ? '50px'
+                    : '30px') : "2px"
+                }
+                bgColor={'gray.300'}
+                visibility={showSortPlaceholders ? 'visible' : 'hidden'}
+                rounded="lg"
+                transition={showSortPlaceholders ? 'height 200ms' : 'none'}
+                alignItems={"center"}
+              >
+                <Center w={"100%"} h={"100%"}>
+                  <HStack color={"gray"} fontWeight={"semibold"}>
+                    <PlusIcon />
+                    <Text>Adicionar aqui</Text>
+                  </HStack>
+                </Center>
+              </Flex>
+            }
           </Stack>
         ))}
       {draggedStep && draggedStep.blockId === blockId && (

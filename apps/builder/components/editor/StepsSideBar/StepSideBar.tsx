@@ -94,7 +94,7 @@ export const StepsSideBar = () => {
       type !== LogicStepType.REDIRECT &&
       type !== LogicStepType.CODE &&
       type !== LogicStepType.TYPEBOT_LINK &&
-      type !== InputStepType.DATE && 
+      type !== InputStepType.DATE &&
       type !== OctaStepType.CALL_OTHER_BOT
     )
   }
@@ -222,13 +222,16 @@ export const StepsSideBar = () => {
             )}
             {workspace?.channel === 'whatsapp' && (
               Object.values(OctaWabaStepType).filter(s => !wabaMessageComponent().includes(s)).map((type) => (
-                <StepCard
-                  key={type}
-                  type={type}
-                  onMouseDown={handleMouseDown}
-                  badge={"WAB"}
-                  isDisabled={shouldDisableComponent(type)}
-                />
+                shouldHideComponents(type) && (
+                  <StepCard
+                    key={type}
+                    type={type}
+                    onMouseDown={handleMouseDown}
+                    badge={"WAB"}
+                    isDisabled={shouldDisableComponent(type)}
+                  />
+                )
+
               )))}
           </SimpleGrid>
         </Stack>
@@ -239,13 +242,14 @@ export const StepsSideBar = () => {
           </Text>
           <SimpleGrid columns={1} spacing="3">
             {Object.values(OctaStepType).map((type) => (
+              shouldHideComponents(type) && (
               <StepCard
                 key={type}
                 type={type}
                 onMouseDown={handleMouseDown}
                 isDisabled={shouldDisableComponent(type)}
               />
-            ))}
+            )))}
           </SimpleGrid>
           <SimpleGrid columns={1} spacing="3">
             {Object.values(OctaBubbleStepType).map((type) => (

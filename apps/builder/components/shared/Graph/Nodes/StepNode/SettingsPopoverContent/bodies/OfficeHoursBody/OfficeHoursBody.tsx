@@ -159,7 +159,6 @@ export const OfficeHoursBody = ({ options, onOptionsChange }: Props) => {
     }))
 
     setDaysOfWeek(days || [{ ...defaultSameHourOption }])
-    console.log('a', {dates : current?.specialDates?.dates })
     setSpecialDates(current?.specialDates?.dates?.map((s, idx) => {
       return {
         id: `sd${idx}`,
@@ -169,7 +168,6 @@ export const OfficeHoursBody = ({ options, onOptionsChange }: Props) => {
   }
 
   useEffect(() => {
-    console.log('us', { officeHour, currentId })
     const current = officeHour?.find(s => s.id === currentId)
     setCurrentOffice(current)
   }, [currentId, officeHour])
