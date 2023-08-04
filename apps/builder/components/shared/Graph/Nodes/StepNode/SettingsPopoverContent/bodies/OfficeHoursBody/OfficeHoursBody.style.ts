@@ -16,12 +16,10 @@ export const Description = styled.div`
 `;
 
 export const Container = styled.div`
-  width: 400px;
   display: block;
 `;
 
 export const ContainerCreate = styled.div`
-  width: 400px;
   display: block;
 `;
 
@@ -49,21 +47,26 @@ export const FormControl = styled.div`
   width: 100%;
 `;
 
-export const Options = styled.div`
+export const FormControlRow = styled.div`
+  display: flex;
+  flex-direction: row;
   width: 100%;
+  align-items: center;
+`;
+
+export const Options = styled.div`
   display: flex;
   flex-direction: row;
 `;
 
 export const OptionRadio = styled.div`
-  width: 50%;
   display: flex;
   flex-direction: row;
   align-items: center;
   font-size: .8rem;
 
   input[type=radio] {
-    margin: 15px;
+    margin: 8px;
   }
 `;
 
@@ -79,9 +82,27 @@ export const ButtonCreate = styled(OctaButton)`
   margin: 15px 5px;
 `;
 
+export const ButtonAddInterval = styled(OctaButton)`
+width: 40%;
+border: 2px solid rgb(19, 102, 201);
+background: rgb(19, 102, 201);
+padding: 10px;
+font-family: 'Noto Sans', sans-serif;
+font-weight: 700;
+color: #fff;
+border-radius: 15px;
+margin: 10px 3px;
+`;
+
 export const ButtonCancel = styled(OctaButton)`
   background: #fff;
   color: rgb(19, 102, 201);
+  width: 100%;
+  padding: 10px;
+  font-family: 'Noto Sans', sans-serif;
+  font-weight: 700;
+  border-radius: 15px;
+  margin: 15px 5px;
 `;
 
 export const ButtonDays = styled(OctaButton)`
@@ -93,6 +114,18 @@ export const ButtonDays = styled(OctaButton)`
     background: rgb(19, 102, 201);
     color: #fff;
   }
+`;
+
+export const ButtonAddSpecialDate = styled(OctaButton)`
+width: 40%;
+border: 2px solid rgb(19, 102, 201);
+background: rgb(19, 102, 201);
+padding: 10px;
+font-family: 'Noto Sans', sans-serif;
+font-weight: 700;
+color: #fff;
+border-radius: 15px;
+margin: 10px 3px;
 `;
 
 
@@ -163,10 +196,25 @@ export const HourDay = styled.div`
   font-weight: bold;
 `;
 
+export const LabelInterval = styled.div`
+  padding-left: 15px;
+  margin-top: 15px;
+  font-size: .8rem;
+  font-weight: bold;
+`
+
 export const HoursRow = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
 `;
+
+export const HoursIntervalRow = styled.div`
+display: flex;
+flex-direction: row;
+margin-top: 7px;
+margin-bottom 7px;
+`
 
 export const HoursPipe = styled.div`
   width: 30px;
@@ -178,8 +226,53 @@ export const HoursPipe = styled.div`
 `;
 
 export const HoursControl = styled.div`
-  width: calc(50% - 30px);
+  width: 100%;
   margin: 0 15px;
   display: flex;
   flex-direction: row;
+`;
+
+export const SelectContainer = styled.div`
+  width: 100%;
+  height: auto;
+  padding: 0px 15px;
+  margin: 0px;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Noto Sans', sans-serif;
+  position: relative;
+`;
+
+export const SpecialDateContainer = styled.div`
+font-family: 'Noto Sans';
+  display: flex;
+  flex-direction: column;
+
+  .input-label{
+    color: #777;
+    font-size: .8rem;
+    padding: 6px;
+  }
+
+  input {
+    width: calc(100% - 22px);
+    padding: 10px;
+    height: 32px;
+    border-radius: 5px;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: .8rem;
+    color: #777;
+    border: 1px solid #c2c2c2;
+    box-sizing: content-box;
+    font-weight: 400;
+    line-height: 1.1876em;
+    letter-spacing: 0.00938em;
+    background: none;
+    webkit-tap-highlight-color: transparent;
+
+    &:focus {
+      outline-color: rgb(19, 102, 201);
+      border: 2px solid rgb(19, 102, 201);
+    }
+  }
 `;

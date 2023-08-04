@@ -52,7 +52,7 @@ export const ConfirmModal = ({
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            {title ?? 'Are you sure?'}
+            {title ?? 'Tem certeza?'}
           </AlertDialogHeader>
 
           <AlertDialogBody>{message}</AlertDialogBody>

@@ -3,15 +3,14 @@ import { Button } from "./OctaButton.style";
 
 type Props = {
   children: string
+  width?: string
 } & HTMLAttributes<HTMLButtonElement>;
 
 const OctaButton = (props: Props) => {
   return (
-    <>
-      <Button {...props}>
-        {props.children}
-      </Button>
-    </>
+    <Button {...props} style={{ ...props }}>
+      {props.children}
+    </Button>
   )
 };
 

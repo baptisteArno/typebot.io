@@ -1,10 +1,10 @@
-import { Box, Button, Fade, Flex, IconButton, Stack } from '@chakra-ui/react'
+import { Box, Button, Center, Fade, Flex, IconButton, Stack } from '@chakra-ui/react'
 import { TrashIcon, PlusIcon } from 'assets/icons'
 import OctaButton from 'components/octaComponents/OctaButton/OctaButton'
 import cuid from 'cuid'
 import React, { useEffect, useState } from 'react'
 
-type ItemWithId<T> = T & { id: string; type: string }
+export type ItemWithId<T> = T & { id: string; type: string }
 
 export type TableListItemProps<T> = {
   item: T
@@ -18,10 +18,12 @@ type Props<T> = {
   itemsList?: any[]
   debounceTimeout?: number
   type?: string
-  onItemsChange?: (items: ItemWithId<T>[]) => void
+  onItemsChange?: (items: ItemWithId<T>[], addedItem?: boolean) => void
   Item: (props: TableListItemProps<T>) => JSX.Element
   shouldHideButton?: boolean
-  ComponentBetweenItems?: (props: unknown) => JSX.Element
+  ComponentBetweenItems?: (props: unknown) => JSX.Element,
+  minItems?: number,
+  buttonWidth?: string
 }
 
 export const TableList = <T,>({
@@ -34,19 +36,23 @@ export const TableList = <T,>({
   Item,
   shouldHideButton,
   ComponentBetweenItems = () => <></>,
+  minItems,
+  buttonWidth = "100%"
 }: Props<T>) => {
   const [items, setItems] = useState(initialItems)
   const [showDeleteIndex, setShowDeleteIndex] = useState<number | null>(null)
 
   useEffect(() => {
-    if (itemsList) setItems(itemsList)
+    if (itemsList) {
+      setItems(itemsList)
+    }
   }, [itemsList])
 
   const createItem = () => {
     const id = cuid()
     const newItem = { id, type } as ItemWithId<T>
     setItems([...items, newItem])
-    if (onItemsChange) onItemsChange([...items, newItem])
+    if (onItemsChange) onItemsChange([...items, newItem], true)
   }
 
   const updateItem = (itemIndex: number, updates: Partial<T>) => {
@@ -79,26 +85,30 @@ export const TableList = <T,>({
           onMouseEnter={handleMouseEnter(itemIndex)}
           onMouseLeave={handleMouseLeave}>
           {itemIndex !== 0 && <ComponentBetweenItems />}
-          <Fade in={showDeleteIndex === itemIndex}>
-            <IconButton
-              icon={<TrashIcon />}
-              aria-label="Remove cell"
-              onClick={deleteItem(itemIndex)}
-              top="10px"
-              size="sm"
-              shadow="md"
-            />
-          </Fade>
-
           <Item
             item={item}
             onItemChange={handleCellChange(itemIndex)}
             debounceTimeout={debounceTimeout}
           />
+          {items.length > (minItems || 0) && <Fade in={showDeleteIndex === itemIndex}>
+            <IconButton
+              icon={<TrashIcon />}
+              aria-label="Remove cell"
+              onClick={deleteItem(itemIndex)}
+              pos="absolute"
+              left="-15px"
+              top="-15px"
+              size="sm"
+              shadow="md"
+            />
+          </Fade>
+          }
         </Box>
       ))}
       {!shouldHideButton && (
-        <OctaButton onClick={createItem}>{addLabel}</OctaButton>
+        <Center>
+          <OctaButton onClick={createItem} width={buttonWidth}>{addLabel}</OctaButton>
+        </Center>
       )}
     </Stack>
   )

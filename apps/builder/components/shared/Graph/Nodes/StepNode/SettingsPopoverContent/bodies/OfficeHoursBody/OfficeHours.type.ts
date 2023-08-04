@@ -1,12 +1,12 @@
 export type OfficeHoursFormType = {
   name: string;
   timeZone: string;
-  daysOfWeek: {
+  daysOfWeek?: {
     days: Array<DayInfo>;
     is24hours: boolean;
     sameSchedule: boolean;
   },
-  specialDates: {
+  specialDates?: {
     active: boolean;
   }
 }

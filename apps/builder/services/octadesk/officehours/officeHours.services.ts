@@ -50,14 +50,42 @@ export class OfficeHoursServices implements IOfficeHoursServices {
   }
 
   async createOfficeHour(officeHour: OfficeHoursFormType): Promise<OfficeHour | null> {
-    await this.client().then(async (client) => {
-      await client.post("/", officeHour, loadParameterHeader()
+    return this.client().then(async (client) => {
+      return await client.post("/", officeHour, loadParameterHeader()
       ).then((res) => {
         return res.data
       })
     })
-
-    return null
   }
 
+  async updateOfficeHour(officeHour: OfficeHoursFormType): Promise<OfficeHour | null> {
+    return this.client().then(async (client) => {
+      return await client.put("/", officeHour, loadParameterHeader()
+      ).then((res) => {
+        return res.data
+      })
+    })
+  }
+
+  async deleteOfficeHour(id: string): Promise<boolean> {
+    return this.client().then(async (client) => {
+      return client.delete(`/${id}`, loadParameterHeader()
+      ).then((res) => {
+        if (res.status === 200) return true
+
+        return false
+      })
+    })
+  }
+
+  async getOfficeHour(id: string) : Promise<OfficeHour | undefined> {
+    return this.client().then(async (client) => {
+      return client.get(`/${id}`, loadParameterHeader()
+      ).then((res) => {
+        if (res.status === 200) return res.data
+
+        return undefined
+      })
+    })
+  }
 }

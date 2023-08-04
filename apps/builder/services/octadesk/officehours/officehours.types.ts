@@ -6,9 +6,9 @@ export interface IOfficeHoursServices {
 export type OfficeHour = {
   id: string;
   name: string;
-  timezone: string;
+  timeZone: string;
   daysOfWeek: {
-    is24Hours: boolean;
+    is24hours: boolean;
     sameSchedule: boolean;
     days: Array<{
       dayOfWeek: number;

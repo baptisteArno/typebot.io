@@ -246,7 +246,7 @@ export const StepSettings = ({
     }
     case OctaStepType.OFFICE_HOURS: {
       return (
-        <OfficeHoursBody step={step} onOptionsChange={handleOptionsChange} />
+        <OfficeHoursBody options={step.options} onOptionsChange={handleOptionsChange} />
       )
     }
     case OctaWabaStepType.COMMERCE: {
