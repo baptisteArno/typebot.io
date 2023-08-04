@@ -68,6 +68,10 @@ export const PreviewDrawer = () => {
   const handleNewLog = (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) =>
     toast(log as UseToastOptions)
 
+  const getShellPath = () => {
+    return (process.env.BASE_PATH || (window as any).BASE_PATH) + '/images/shell.svg'
+  }
+
   return (
     <Flex
       pos="absolute"
@@ -121,8 +125,7 @@ export const PreviewDrawer = () => {
             pointerEvents={isResizing ? 'none' : 'auto'}
           >
             <Stack marginLeft={"30px"} marginRight={"30px"} width={"100vw"} height={"100vh"} alignContent={"center"} justifyContent={"center"}>
-              <Image src={"/images/shell.svg"} width={"191px"} height={"184px"} flexShrink={0} alignSelf={"center"} marginBottom={"24px"} />
-              {/* <Image src={ShellImage} /> */}
+              <Image src={getShellPath()} width={"191px"} height={"184px"} flexShrink={0} alignSelf={"center"} marginBottom={"24px"} />
               <Text color={"black"} textAlign={"center"} fontFamily={"Poppins"} fontSize={"18px"} fontStyle={"normal"} fontWeight={"600"} lineHeight={"24px"}>Em Construção...</Text>
               <Text color={"black"} textAlign={"center"} fontFamily={"Noto Sans"} fontSize={"14px"} fontStyle={"normal"} fontWeight={"400"} lineHeight={"20px"}>Estamos trabalhando e em breve você conseguirá visualizar toda a experiência do seu bot por aqui. Aguarde!</Text>
             </Stack>

@@ -127,11 +127,7 @@ export const StepsSideBar = () => {
   }
 
   const getBaseUrl = () => {
-    return process.env.IS_LOCAL ?
-      "https://app.qaoctadesk.com/bot-builder/channel/whatsapp/version/2/64cd2c6f5ca37e0007968b93" :
-      (window.location != window.parent.location)
-        ? document.referrer
-        : document.location.href;
+    return (process.env.MAIN_CLIENT_BASE_URL || (window as any).MAIN_CLIENT_BASE_URL) + '/bot-builder/channel'
   }
 
   return (
