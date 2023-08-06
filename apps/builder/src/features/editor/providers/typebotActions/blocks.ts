@@ -189,7 +189,8 @@ export const duplicateBlockDraft =
       } as Block
     if (isWebhookBlock(block)) {
       const newWebhookId = createId()
-      onWebhookBlockDuplicated(block.webhookId, newWebhookId)
+      if (block.webhookId)
+        onWebhookBlockDuplicated(block.webhookId, newWebhookId)
       return {
         ...block,
         groupId,

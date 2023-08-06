@@ -2,7 +2,6 @@ import { createId } from '@paralleldrive/cuid2'
 import {
   isBubbleBlockType,
   blockTypeHasOption,
-  blockTypeHasWebhook,
   blockTypeHasItems,
 } from '@typebot.io/lib'
 import {
@@ -134,7 +133,7 @@ const parseDefaultBlockOptions = (type: BlockWithOptionsType): BlockOptions => {
     case IntegrationBlockType.PABBLY_CONNECT:
     case IntegrationBlockType.MAKE_COM:
     case IntegrationBlockType.WEBHOOK:
-      return defaultWebhookOptions
+      return defaultWebhookOptions(createId())
     case IntegrationBlockType.EMAIL:
       return defaultSendEmailOptions
     case IntegrationBlockType.CHATWOOT:
@@ -159,7 +158,6 @@ export const parseNewBlock = (
     options: blockTypeHasOption(type)
       ? parseDefaultBlockOptions(type)
       : undefined,
-    webhookId: blockTypeHasWebhook(type) ? createId() : undefined,
     items: blockTypeHasItems(type) ? parseDefaultItems(type, id) : undefined,
   } as DraggableBlock
 }

@@ -39,7 +39,7 @@ const resultsTablePreferencesSchema = z.object({
 })
 
 export const typebotSchema = z.object({
-  version: z.enum(['3']).nullable(),
+  version: z.enum(['3', '4']).nullable(),
   id: z.string(),
   name: z.string(),
   groups: z.array(groupSchema),

@@ -50,10 +50,45 @@ export const unsubscribeWebhook = authenticatedProcedure
         message: 'Webhook block not found',
       })
 
-    await prisma.webhook.update({
-      where: { id: webhookBlock.webhookId },
-      data: { url: null },
-    })
+    if (webhookBlock.webhookId)
+      await prisma.webhook.update({
+        where: { id: webhookBlock.webhookId },
+        data: { url: null },
+      })
+    else {
+      if (!webhookBlock.options.webhook)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Webhook block not found',
+        })
+      const updatedGroups = typebot.groups.map((group) =>
+        group.id !== webhookBlock.groupId
+          ? group
+          : {
+              ...group,
+              blocks: group.blocks.map((block) =>
+                block.id !== webhookBlock.id
+                  ? block
+                  : {
+                      ...block,
+                      options: {
+                        ...webhookBlock.options,
+                        webhook: {
+                          ...webhookBlock.options.webhook,
+                          url: undefined,
+                        },
+                      },
+                    }
+              ),
+            }
+      )
+      await prisma.typebot.updateMany({
+        where: { id: typebotId },
+        data: {
+          groups: updatedGroups,
+        },
+      })
+    }
 
     return {
       id: blockId,

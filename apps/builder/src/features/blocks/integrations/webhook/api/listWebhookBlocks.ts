@@ -2,9 +2,10 @@ import prisma from '@/lib/prisma'
 import { canReadTypebots } from '@/helpers/databaseRules'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Group, Typebot, Webhook, WebhookBlock } from '@typebot.io/schemas'
+import { Group, IntegrationBlockType, Typebot } from '@typebot.io/schemas'
 import { byId, isWebhookBlock, parseGroupTitle } from '@typebot.io/lib'
 import { z } from 'zod'
+import { Webhook } from '@typebot.io/prisma'
 
 export const listWebhookBlocks = authenticatedProcedure
   .meta({
@@ -28,6 +29,12 @@ export const listWebhookBlocks = authenticatedProcedure
       webhookBlocks: z.array(
         z.object({
           id: z.string(),
+          type: z.enum([
+            IntegrationBlockType.WEBHOOK,
+            IntegrationBlockType.ZAPIER,
+            IntegrationBlockType.MAKE_COM,
+            IntegrationBlockType.PABBLY_CONNECT,
+          ]),
           label: z.string(),
           url: z.string().optional(),
         })
@@ -46,17 +53,27 @@ export const listWebhookBlocks = authenticatedProcedure
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
 
     const webhookBlocks = (typebot?.groups as Group[]).reduce<
-      { id: string; label: string; url: string | undefined }[]
+      {
+        id: string
+        label: string
+        url: string | undefined
+        type:
+          | IntegrationBlockType.WEBHOOK
+          | IntegrationBlockType.ZAPIER
+          | IntegrationBlockType.MAKE_COM
+          | IntegrationBlockType.PABBLY_CONNECT
+      }[]
     >((webhookBlocks, group) => {
-      const blocks = group.blocks.filter((block) =>
-        isWebhookBlock(block)
-      ) as WebhookBlock[]
+      const blocks = group.blocks.filter(isWebhookBlock)
       return [
         ...webhookBlocks,
-        ...blocks.map((b) => ({
-          id: b.id,
-          label: `${parseGroupTitle(group.title)} > ${b.id}`,
-          url: typebot?.webhooks.find(byId(b.webhookId))?.url ?? undefined,
+        ...blocks.map((block) => ({
+          id: block.id,
+          type: block.type,
+          label: `${parseGroupTitle(group.title)} > ${block.id}`,
+          url: block.options.webhook
+            ? block.options.webhook.url
+            : typebot?.webhooks.find(byId(block.webhookId))?.url ?? undefined,
         })),
       ]
     }, [])

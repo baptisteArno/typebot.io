@@ -9,7 +9,7 @@ type Props = {
 
 export const ZapierContent = ({ block }: Props) => {
   const { webhooks } = useTypebot()
-  const webhook = webhooks.find(byId(block.webhookId))
+  const webhook = block.options.webhook ?? webhooks.find(byId(block.webhookId))
 
   if (isNotDefined(webhook?.body))
     return <Text color="gray.500">Configure...</Text>

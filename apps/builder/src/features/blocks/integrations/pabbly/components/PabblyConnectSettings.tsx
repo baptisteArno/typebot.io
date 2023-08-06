@@ -27,6 +27,13 @@ export const PabblyConnectSettings = ({
   )
 
   const setLocalWebhook = async (newLocalWebhook: Webhook) => {
+    if (options.webhook) {
+      onOptionsChange({
+        ...options,
+        webhook: newLocalWebhook,
+      })
+      return
+    }
     _setLocalWebhook(newLocalWebhook)
     await updateWebhook(newLocalWebhook.id, newLocalWebhook)
   }
@@ -38,11 +45,13 @@ export const PabblyConnectSettings = ({
       url,
     })
 
+  const url = options.webhook?.url ?? localWebhook?.url
+
   return (
     <Stack spacing={4}>
-      <Alert status={localWebhook?.url ? 'success' : 'info'} rounded="md">
+      <Alert status={url ? 'success' : 'info'} rounded="md">
         <AlertIcon />
-        {localWebhook?.url ? (
+        {url ? (
           <>Your scenario is correctly configured 🚀</>
         ) : (
           <Stack>
@@ -60,15 +69,15 @@ export const PabblyConnectSettings = ({
       </Alert>
       <TextInput
         placeholder="Paste webhook URL..."
-        defaultValue={localWebhook?.url ?? ''}
+        defaultValue={url ?? ''}
         onChange={handleUrlChange}
         withVariableButton={false}
         debounceTimeout={0}
       />
-      {localWebhook && (
+      {(localWebhook || options.webhook) && (
         <WebhookAdvancedConfigForm
           blockId={blockId}
-          webhook={localWebhook}
+          webhook={(options.webhook ?? localWebhook) as Webhook}
           options={options}
           onWebhookChange={setLocalWebhook}
           onOptionsChange={onOptionsChange}

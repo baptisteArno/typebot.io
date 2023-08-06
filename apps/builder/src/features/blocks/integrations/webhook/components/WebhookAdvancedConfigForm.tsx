@@ -16,7 +16,6 @@ import {
   Text,
 } from '@chakra-ui/react'
 import {
-  HttpMethod,
   KeyValue,
   VariableForTest,
   ResponseVariableMapping,
@@ -31,6 +30,7 @@ import { QueryParamsInputs, HeadersInputs } from './KeyValueInputs'
 import { DataVariableInputs } from './ResponseMappingInputs'
 import { VariableForTestInputs } from './VariableForTestInputs'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
+import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/enums'
 
 type Props = {
   blockId: string
@@ -78,9 +78,11 @@ export const WebhookAdvancedConfigForm = ({
     onOptionsChange({ ...options, isCustomBody })
 
   const executeTestRequest = async () => {
-    if (!typebot || !webhook) return
+    if (!typebot) return
     setIsTestResponseLoading(true)
-    await Promise.all([updateWebhook(webhook.id, webhook), save()])
+    if (!options.webhook)
+      await Promise.all([updateWebhook(webhook.id, webhook), save()])
+    else await save()
     const { data, error } = await executeWebhook(
       typebot.id,
       convertVariablesForTestToVariables(

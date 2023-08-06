@@ -11,7 +11,6 @@ import {
   WebhookResponse,
   WebhookOptions,
   defaultWebhookAttributes,
-  HttpMethod,
   PublicTypebot,
   KeyValue,
   ReplyLog,
@@ -26,6 +25,7 @@ import { parseSampleResult } from './parseSampleResult'
 import { ExecuteIntegrationResponse } from '@/features/chat/types'
 import { parseVariables } from '@/features/variables/parseVariables'
 import { resumeWebhookExecution } from './resumeWebhookExecution'
+import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/enums'
 
 type ParsedWebhook = ExecutableWebhook & {
   basicAuth: { username?: string; password?: string }
@@ -38,9 +38,11 @@ export const executeWebhookBlock = async (
 ): Promise<ExecuteIntegrationResponse> => {
   const { typebot, result } = state
   const logs: ReplyLog[] = []
-  const webhook = (await prisma.webhook.findUnique({
-    where: { id: block.webhookId },
-  })) as Webhook | null
+  const webhook =
+    block.options.webhook ??
+    ((await prisma.webhook.findUnique({
+      where: { id: block.webhookId },
+    })) as Webhook | null)
   if (!webhook) {
     logs.push({
       status: 'error',

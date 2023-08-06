@@ -9,7 +9,6 @@ import {
   WebhookOptions,
   WebhookResponse,
   WebhookBlock,
-  HttpMethod,
 } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
 import got, { Method, Headers, HTTPError } from 'got'
@@ -25,6 +24,7 @@ import { fetchLinkedTypebots } from '@/features/blocks/logic/typebotLink/fetchLi
 import { getPreviouslyLinkedTypebots } from '@/features/blocks/logic/typebotLink/getPreviouslyLinkedTypebots'
 import { saveErrorLog } from '@/features/logs/saveErrorLog'
 import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
+import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/enums'
 
 const cors = initMiddleware(Cors())
 
@@ -49,7 +49,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const block = typebot.groups
       .flatMap((g) => g.blocks)
       .find(byId(blockId)) as WebhookBlock
-    const webhook = typebot.webhooks.find(byId(block.webhookId))
+    const webhook =
+      block.options.webhook ?? typebot.webhooks.find(byId(block.webhookId))
     if (!webhook)
       return res
         .status(404)
@@ -84,116 +85,131 @@ const checkIfBodyIsAVariable = (body: string) => /^{{.+}}$/.test(body)
 
 export const executeWebhook =
   (typebot: Typebot) =>
-  async ({
-    webhook,
-    variables,
-    groupId,
-    resultValues,
-    resultId,
-    parentTypebotIds = [],
-  }: {
-    webhook: Webhook
-    variables: Variable[]
-    groupId: string
-    resultValues?: ResultValues
-    resultId?: string
-    parentTypebotIds: string[]
-  }): Promise<WebhookResponse> => {
-    if (!webhook.url || !webhook.method)
-      return {
-        statusCode: 400,
-        data: { message: `Webhook doesn't have url or method` },
-      }
-    const basicAuth: { username?: string; password?: string } = {}
-    const basicAuthHeaderIdx = webhook.headers.findIndex(
-      (h) =>
-        h.key?.toLowerCase() === 'authorization' &&
-        h.value?.toLowerCase()?.includes('basic')
-    )
-    const isUsernamePasswordBasicAuth =
-      basicAuthHeaderIdx !== -1 &&
-      webhook.headers[basicAuthHeaderIdx].value?.includes(':')
-    if (isUsernamePasswordBasicAuth) {
-      const [username, password] =
-        webhook.headers[basicAuthHeaderIdx].value?.slice(6).split(':') ?? []
-      basicAuth.username = username
-      basicAuth.password = password
-      webhook.headers.splice(basicAuthHeaderIdx, 1)
-    }
-    const headers = convertKeyValueTableToObject(webhook.headers, variables) as
-      | Headers
-      | undefined
-    const queryParams = stringify(
-      convertKeyValueTableToObject(webhook.queryParams, variables)
-    )
-    const contentType = headers ? headers['Content-Type'] : undefined
-    const linkedTypebotsParents = await fetchLinkedTypebots({
-      isPreview: !('typebotId' in typebot),
-      typebotIds: parentTypebotIds,
-    })
-    const linkedTypebotsChildren = await getPreviouslyLinkedTypebots({
-      isPreview: !('typebotId' in typebot),
-      typebots: [typebot],
-    })([])
-    const bodyContent = await getBodyContent(typebot, [
-      ...linkedTypebotsParents,
-      ...linkedTypebotsChildren,
-    ])({
-      body: webhook.body,
-      resultValues,
-      groupId,
+    async ({
+      webhook,
       variables,
-    })
-    const { data: body, isJson } =
-      bodyContent && webhook.method !== HttpMethod.GET
-        ? safeJsonParse(
+      groupId,
+      resultValues,
+      resultId,
+      parentTypebotIds = [],
+    }: {
+      webhook: Webhook
+      variables: Variable[]
+      groupId: string
+      resultValues?: ResultValues
+      resultId?: string
+      parentTypebotIds: string[]
+    }): Promise<WebhookResponse> => {
+      if (!webhook.url || !webhook.method)
+        return {
+          statusCode: 400,
+          data: { message: `Webhook doesn't have url or method` },
+        }
+      const basicAuth: { username?: string; password?: string } = {}
+      const basicAuthHeaderIdx = webhook.headers.findIndex(
+        (h) =>
+          h.key?.toLowerCase() === 'authorization' &&
+          h.value?.toLowerCase()?.includes('basic')
+      )
+      const isUsernamePasswordBasicAuth =
+        basicAuthHeaderIdx !== -1 &&
+        webhook.headers[basicAuthHeaderIdx].value?.includes(':')
+      if (isUsernamePasswordBasicAuth) {
+        const [username, password] =
+          webhook.headers[basicAuthHeaderIdx].value?.slice(6).split(':') ?? []
+        basicAuth.username = username
+        basicAuth.password = password
+        webhook.headers.splice(basicAuthHeaderIdx, 1)
+      }
+      const headers = convertKeyValueTableToObject(webhook.headers, variables) as
+        | Headers
+        | undefined
+      const queryParams = stringify(
+        convertKeyValueTableToObject(webhook.queryParams, variables)
+      )
+      const contentType = headers ? headers['Content-Type'] : undefined
+      const linkedTypebotsParents = await fetchLinkedTypebots({
+        isPreview: !('typebotId' in typebot),
+        typebotIds: parentTypebotIds,
+      })
+      const linkedTypebotsChildren = await getPreviouslyLinkedTypebots({
+        isPreview: !('typebotId' in typebot),
+        typebots: [typebot],
+      })([])
+      const bodyContent = await getBodyContent(typebot, [
+        ...linkedTypebotsParents,
+        ...linkedTypebotsChildren,
+      ])({
+        body: webhook.body,
+        resultValues,
+        groupId,
+        variables,
+      })
+      const { data: body, isJson } =
+        bodyContent && webhook.method !== HttpMethod.GET
+          ? safeJsonParse(
             parseVariables(variables, {
               escapeForJson: !checkIfBodyIsAVariable(bodyContent),
             })(bodyContent)
           )
-        : { data: undefined, isJson: false }
+          : { data: undefined, isJson: false }
 
-    const request = {
-      url: parseVariables(variables)(
-        webhook.url + (queryParams !== '' ? `?${queryParams}` : '')
-      ),
-      method: webhook.method as Method,
-      headers,
-      ...basicAuth,
-      json:
-        !contentType?.includes('x-www-form-urlencoded') && body && isJson
-          ? body
-          : undefined,
-      form:
-        contentType?.includes('x-www-form-urlencoded') && body
-          ? body
-          : undefined,
-      body: body && !isJson ? body : undefined,
-    }
-    try {
-      const response = await got(request.url, omit(request, 'url'))
-      await saveSuccessLog({
-        resultId,
-        message: 'Webhook successfuly executed.',
-        details: {
-          statusCode: response.statusCode,
-          request,
-          response: safeJsonParse(response.body).data,
-        },
-      })
-      return {
-        statusCode: response.statusCode,
-        data: safeJsonParse(response.body).data,
+      const request = {
+        url: parseVariables(variables)(
+          webhook.url + (queryParams !== '' ? `?${queryParams}` : '')
+        ),
+        method: webhook.method as Method,
+        headers,
+        ...basicAuth,
+        json:
+          !contentType?.includes('x-www-form-urlencoded') && body && isJson
+            ? body
+            : undefined,
+        form:
+          contentType?.includes('x-www-form-urlencoded') && body
+            ? body
+            : undefined,
+        body: body && !isJson ? body : undefined,
       }
-    } catch (error) {
-      if (error instanceof HTTPError) {
-        const response = {
-          statusCode: error.response.statusCode,
-          data: safeJsonParse(error.response.body as string).data,
+      try {
+        const response = await got(request.url, omit(request, 'url'))
+        await saveSuccessLog({
+          resultId,
+          message: 'Webhook successfuly executed.',
+          details: {
+            statusCode: response.statusCode,
+            request,
+            response: safeJsonParse(response.body).data,
+          },
+        })
+        return {
+          statusCode: response.statusCode,
+          data: safeJsonParse(response.body).data,
         }
+      } catch (error) {
+        if (error instanceof HTTPError) {
+          const response = {
+            statusCode: error.response.statusCode,
+            data: safeJsonParse(error.response.body as string).data,
+          }
+          await saveErrorLog({
+            resultId,
+            message: 'Webhook returned an error',
+            details: {
+              request,
+              response,
+            },
+          })
+          return response
+        }
+        const response = {
+          statusCode: 500,
+          data: { message: `Error from Typebot server: ${error}` },
+        }
+        console.error(error)
         await saveErrorLog({
           resultId,
-          message: 'Webhook returned an error',
+          message: 'Webhook failed to execute',
           details: {
             request,
             response,
@@ -201,51 +217,36 @@ export const executeWebhook =
         })
         return response
       }
-      const response = {
-        statusCode: 500,
-        data: { message: `Error from Typebot server: ${error}` },
-      }
-      console.error(error)
-      await saveErrorLog({
-        resultId,
-        message: 'Webhook failed to execute',
-        details: {
-          request,
-          response,
-        },
-      })
-      return response
     }
-  }
 
 const getBodyContent =
   (
     typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>,
     linkedTypebots: (Typebot | PublicTypebot)[]
   ) =>
-  async ({
-    body,
-    resultValues,
-    groupId,
-    variables,
-  }: {
-    body?: string | null
-    resultValues?: ResultValues
-    groupId: string
-    variables: Variable[]
-  }): Promise<string | undefined> => {
-    if (!body) return
-    return body === '{{state}}'
-      ? JSON.stringify(
+    async ({
+      body,
+      resultValues,
+      groupId,
+      variables,
+    }: {
+      body?: string | null
+      resultValues?: ResultValues
+      groupId: string
+      variables: Variable[]
+    }): Promise<string | undefined> => {
+      if (!body) return
+      return body === '{{state}}'
+        ? JSON.stringify(
           resultValues
             ? parseAnswers(typebot, linkedTypebots)(resultValues)
             : await parseSampleResult(typebot, linkedTypebots)(
-                groupId,
-                variables
-              )
+              groupId,
+              variables
+            )
         )
-      : body
-  }
+        : body
+    }
 
 const convertKeyValueTableToObject = (
   keyValues: KeyValue[] | undefined,

@@ -1,6 +1,6 @@
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { HttpMethod } from '@typebot.io/schemas'
+import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/enums'
 import {
   createWebhook,
   importTypebotInDatabase,

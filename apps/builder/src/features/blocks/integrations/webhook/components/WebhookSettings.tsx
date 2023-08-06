@@ -21,25 +21,33 @@ export const WebhookSettings = ({
   )
 
   const setLocalWebhook = async (newLocalWebhook: Webhook) => {
+    if (options.webhook) {
+      onOptionsChange({ ...options, webhook: newLocalWebhook })
+      return
+    }
     _setLocalWebhook(newLocalWebhook)
     await updateWebhook(newLocalWebhook.id, newLocalWebhook)
   }
 
-  const updateUrl = (url?: string) =>
-    localWebhook && setLocalWebhook({ ...localWebhook, url: url ?? null })
+  const updateUrl = (url: string) => {
+    if (options.webhook)
+      onOptionsChange({ ...options, webhook: { ...options.webhook, url } })
+    else if (localWebhook)
+      setLocalWebhook({ ...localWebhook, url: url ?? undefined })
+  }
 
-  if (!localWebhook) return <Spinner />
+  if (!localWebhook && !options.webhook) return <Spinner />
 
   return (
     <Stack spacing={4}>
       <TextInput
         placeholder="Paste webhook URL..."
-        defaultValue={localWebhook.url ?? ''}
+        defaultValue={options.webhook?.url ?? localWebhook?.url ?? ''}
         onChange={updateUrl}
       />
       <WebhookAdvancedConfigForm
         blockId={blockId}
-        webhook={localWebhook}
+        webhook={(options.webhook ?? localWebhook) as Webhook}
         options={options}
         onWebhookChange={setLocalWebhook}
         onOptionsChange={onOptionsChange}

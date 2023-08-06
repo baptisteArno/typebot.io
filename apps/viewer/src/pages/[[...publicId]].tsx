@@ -162,7 +162,7 @@ const App = ({
     return <NotFoundPage />
   if (publishedTypebot.typebot.isClosed)
     return <ErrorPage error={new Error('This bot is now closed')} />
-  return publishedTypebot.version === '3' ? (
+  return publishedTypebot.version ? (
     <TypebotPageV3
       url={props.url}
       typebot={{

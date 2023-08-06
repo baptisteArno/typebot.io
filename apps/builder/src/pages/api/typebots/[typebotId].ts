@@ -10,6 +10,7 @@ import { isReadTypebotForbidden } from '@/features/typebot/helpers/isReadTypebot
 import { removeTypebotOldProperties } from '@/features/typebot/helpers/removeTypebotOldProperties'
 import { roundGroupsCoordinate } from '@/features/typebot/helpers/roundGroupsCoordinate'
 import { archiveResults } from '@typebot.io/lib/api/helpers/archiveResults'
+import { migrateTypebotFromV3ToV4 } from '@typebot.io/lib/migrations/migrateTypebotFromV3ToV4'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res)
@@ -37,9 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       collaborators.find((c) => c.userId === user.id)?.type ===
       CollaborationType.READ
     return res.send({
-      typebot: roundGroupsCoordinate(
-        removeTypebotOldProperties(typebot) as Typebot
-      ),
+      typebot: await migrateTypebot(typebot as Typebot),
       publishedTypebot,
       isReadOnly,
       webhooks,
@@ -95,7 +94,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const updates = {
       ...omit(data, 'id', 'createdAt', 'updatedAt'),
-      version: '3',
       theme: data.theme ?? undefined,
       settings: data.settings ?? undefined,
       resultsTablePreferences: data.resultsTablePreferences ?? undefined,
@@ -140,6 +138,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.send({ typebot: updatedTypebot })
   }
   return methodNotAllowed(res)
+}
+
+const migrateTypebot = async (typebot: Typebot): Promise<Typebot> => {
+  if (typebot.version === '4') return typebot
+  const updatedTypebot = roundGroupsCoordinate(
+    removeTypebotOldProperties(typebot) as Typebot
+  )
+  return migrateTypebotFromV3ToV4(prisma)(updatedTypebot)
 }
 
 export default handler

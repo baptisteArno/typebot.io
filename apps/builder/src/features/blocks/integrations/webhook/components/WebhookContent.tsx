@@ -8,10 +8,10 @@ type Props = {
   block: WebhookBlock
 }
 
-export const WebhookContent = ({ block: { webhookId, options } }: Props) => {
+export const WebhookContent = ({ block: { options, webhookId } }: Props) => {
   const { typebot } = useTypebot()
   const { webhooks } = useTypebot()
-  const webhook = webhooks.find(byId(webhookId))
+  const webhook = options.webhook ?? webhooks.find(byId(webhookId))
 
   if (!webhook?.url) return <Text color="gray.500">Configure...</Text>
   return (

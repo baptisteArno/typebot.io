@@ -2,9 +2,10 @@ import prisma from '@/lib/prisma'
 import { canWriteTypebots } from '@/helpers/databaseRules'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Typebot, Webhook, WebhookBlock } from '@typebot.io/schemas'
+import { Typebot, WebhookBlock } from '@typebot.io/schemas'
 import { byId, isWebhookBlock } from '@typebot.io/lib'
 import { z } from 'zod'
+import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/enums'
 
 export const subscribeWebhook = authenticatedProcedure
   .meta({
@@ -34,9 +35,8 @@ export const subscribeWebhook = authenticatedProcedure
       where: canWriteTypebots(typebotId, user),
       select: {
         groups: true,
-        webhooks: true,
       },
-    })) as (Pick<Typebot, 'groups'> & { webhooks: Webhook[] }) | null
+    })) as Pick<Typebot, 'groups'> | null
 
     if (!typebot)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
@@ -51,18 +51,50 @@ export const subscribeWebhook = authenticatedProcedure
         message: 'Webhook block not found',
       })
 
-    await prisma.webhook.upsert({
-      where: { id: webhookBlock.webhookId },
-      update: { url, body: '{{state}}', method: 'POST' },
-      create: {
-        url,
-        body: '{{state}}',
-        method: 'POST',
-        typebotId,
-        headers: [],
-        queryParams: [],
-      },
-    })
+    const newWebhook = {
+      id: webhookBlock.webhookId ?? webhookBlock.id,
+      url,
+      body: '{{state}}',
+      method: HttpMethod.POST,
+      headers: [],
+      queryParams: [],
+    }
+
+    if (webhookBlock.webhookId)
+      await prisma.webhook.upsert({
+        where: { id: webhookBlock.webhookId },
+        update: { url, body: newWebhook.body, method: newWebhook.method },
+        create: {
+          typebotId,
+          ...newWebhook,
+        },
+      })
+    else {
+      const updatedGroups = typebot.groups.map((group) =>
+        group.id !== webhookBlock.groupId
+          ? group
+          : {
+              ...group,
+              blocks: group.blocks.map((block) =>
+                block.id !== webhookBlock.id
+                  ? block
+                  : {
+                      ...block,
+                      options: {
+                        ...webhookBlock.options,
+                        webhook: newWebhook,
+                      },
+                    }
+              ),
+            }
+      )
+      await prisma.typebot.updateMany({
+        where: { id: typebotId },
+        data: {
+          groups: updatedGroups,
+        },
+      })
+    }
 
     return {
       id: blockId,

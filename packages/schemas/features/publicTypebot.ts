@@ -11,7 +11,7 @@ import { z } from 'zod'
 
 export const publicTypebotSchema = z.object({
   id: z.string(),
-  version: z.enum(['3']).nullable(),
+  version: z.enum(['3', '4']).nullable(),
   createdAt: z.date(),
   updatedAt: z.date(),
   typebotId: z.string(),

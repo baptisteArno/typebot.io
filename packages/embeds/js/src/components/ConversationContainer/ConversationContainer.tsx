@@ -105,7 +105,6 @@ export const ConversationContainer = (props: Props) => {
   })
 
   const streamMessage = (content: string) => {
-    console.log('STREAM', content)
     setIsSending(false)
     const lastChunk = [...chatChunks()].pop()
     if (!lastChunk) return

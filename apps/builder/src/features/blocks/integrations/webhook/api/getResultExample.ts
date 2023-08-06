@@ -2,7 +2,7 @@ import prisma from '@/lib/prisma'
 import { canReadTypebots } from '@/helpers/databaseRules'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Typebot, Webhook } from '@typebot.io/schemas'
+import { Typebot } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { fetchLinkedTypebots } from '@/features/blocks/logic/typebotLink/helpers/fetchLinkedTypebots'
 import { parseResultExample } from '../helpers/parseResultExample'
@@ -45,20 +45,15 @@ export const getResultExample = authenticatedProcedure
         groups: true,
         edges: true,
         variables: true,
-        webhooks: true,
       },
-    })) as
-      | (Pick<Typebot, 'groups' | 'edges' | 'variables'> & {
-          webhooks: Webhook[]
-        })
-      | null
+    })) as Pick<Typebot, 'groups' | 'edges' | 'variables'> | null
 
     if (!typebot)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
 
     const block = typebot.groups
-      .flatMap((g) => g.blocks)
-      .find((s) => s.id === blockId)
+      .flatMap((group) => group.blocks)
+      .find((block) => block.id === blockId)
 
     if (!block)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Block not found' })

@@ -29,13 +29,19 @@ export const importTypebotQuery = async (typebot: Typebot, userPlan: Plan) => {
   const webhookBlocks = typebot.groups
     .flatMap((b) => b.blocks)
     .filter(isWebhookBlock)
+    .filter((block) => block.webhookId)
   await Promise.all(
-    webhookBlocks.map((s) =>
+    webhookBlocks.map((webhookBlock) =>
       duplicateWebhookQuery({
-        existingIds: { typebotId: typebot.id, webhookId: s.webhookId },
+        existingIds: {
+          typebotId: typebot.id,
+          webhookId: webhookBlock.webhookId as string,
+        },
         newIds: {
           typebotId: newTypebot.id,
-          webhookId: webhookIdsMapping.get(s.webhookId) as string,
+          webhookId: webhookIdsMapping.get(
+            webhookBlock.webhookId as string
+          ) as string,
         },
       })
     )
@@ -51,84 +57,98 @@ const duplicateTypebot = (
   webhookIdsMapping: Map<string, string>
 } => {
   const groupIdsMapping = generateOldNewIdsMapping(typebot.groups)
+  const blockIdsMapping = generateOldNewIdsMapping(
+    typebot.groups.flatMap((group) => group.blocks)
+  )
   const edgeIdsMapping = generateOldNewIdsMapping(typebot.edges)
   const webhookIdsMapping = generateOldNewIdsMapping(
     typebot.groups
-      .flatMap((b) => b.blocks)
+      .flatMap((group) => group.blocks)
       .filter(isWebhookBlock)
-      .map((s) => ({ id: s.webhookId }))
+      .map((block) => ({
+        id: block.webhookId as string,
+      }))
   )
   const id = createId()
   return {
     typebot: {
       ...typebot,
-      version: '3',
       id,
       name: `${typebot.name} copy`,
       publicId: null,
       customDomain: null,
-      groups: typebot.groups.map((b) => ({
-        ...b,
-        id: groupIdsMapping.get(b.id) as string,
-        blocks: b.blocks.map((s) => {
+      groups: typebot.groups.map((group) => ({
+        ...group,
+        id: groupIdsMapping.get(group.id) as string,
+        blocks: group.blocks.map((block) => {
           const newIds = {
-            groupId: groupIdsMapping.get(s.groupId) as string,
-            outgoingEdgeId: s.outgoingEdgeId
-              ? edgeIdsMapping.get(s.outgoingEdgeId)
+            id: blockIdsMapping.get(block.id) as string,
+            groupId: groupIdsMapping.get(block.groupId) as string,
+            outgoingEdgeId: block.outgoingEdgeId
+              ? edgeIdsMapping.get(block.outgoingEdgeId)
               : undefined,
           }
           if (
-            s.type === LogicBlockType.TYPEBOT_LINK &&
-            s.options.typebotId === 'current' &&
-            isDefined(s.options.groupId)
+            block.type === LogicBlockType.TYPEBOT_LINK &&
+            block.options.typebotId === 'current' &&
+            isDefined(block.options.groupId)
           )
             return {
-              ...s,
+              ...block,
+              ...newIds,
               options: {
-                ...s.options,
-                groupId: groupIdsMapping.get(s.options.groupId as string),
+                ...block.options,
+                groupId: groupIdsMapping.get(block.options.groupId as string),
               },
             }
-          if (s.type === LogicBlockType.JUMP)
+          if (block.type === LogicBlockType.JUMP)
             return {
-              ...s,
+              ...block,
+              ...newIds,
               options: {
-                ...s.options,
-                groupId: groupIdsMapping.get(s.options.groupId as string),
+                ...block.options,
+                groupId: groupIdsMapping.get(block.options.groupId as string),
               } satisfies JumpBlock['options'],
             }
-          if (blockHasItems(s))
+          if (blockHasItems(block))
             return {
-              ...s,
-              items: s.items.map((item) => ({
+              ...block,
+              ...newIds,
+              items: block.items.map((item) => ({
                 ...item,
                 outgoingEdgeId: item.outgoingEdgeId
                   ? (edgeIdsMapping.get(item.outgoingEdgeId) as string)
                   : undefined,
               })),
-              ...newIds,
             } as ChoiceInputBlock | ConditionBlock
-          if (isWebhookBlock(s)) {
+          if (isWebhookBlock(block) && block.webhookId) {
             return {
-              ...s,
-              webhookId: webhookIdsMapping.get(s.webhookId) as string,
+              ...block,
               ...newIds,
+              webhookId: webhookIdsMapping.get(block.webhookId) as string,
             }
           }
           return {
-            ...s,
+            ...block,
             ...newIds,
           }
         }),
       })),
-      edges: typebot.edges.map((e) => ({
-        ...e,
-        id: edgeIdsMapping.get(e.id) as string,
+      edges: typebot.edges.map((edge) => ({
+        ...edge,
+        id: edgeIdsMapping.get(edge.id) as string,
         from: {
-          ...e.from,
-          groupId: groupIdsMapping.get(e.from.groupId) as string,
+          ...edge.from,
+          blockId: blockIdsMapping.get(edge.from.blockId) as string,
+          groupId: groupIdsMapping.get(edge.from.groupId) as string,
         },
-        to: { ...e.to, groupId: groupIdsMapping.get(e.to.groupId) as string },
+        to: {
+          ...edge.to,
+          blockId: edge.to.blockId
+            ? (blockIdsMapping.get(edge.to.blockId) as string)
+            : undefined,
+          groupId: groupIdsMapping.get(edge.to.groupId) as string,
+        },
       })),
       settings:
         typebot.settings.general.isBrandingEnabled === false &&

@@ -3,7 +3,7 @@ import {
   createWebhook,
   importTypebotInDatabase,
 } from '@typebot.io/lib/playwright/databaseActions'
-import { HttpMethod } from '@typebot.io/schemas'
+import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/enums'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 import { apiToken } from '@typebot.io/lib/playwright/databaseSetup'
@@ -26,7 +26,8 @@ test.describe('Builder', () => {
     )
     await page.click('text=Test the request')
     await expect(page.locator('div[role="textbox"] >> nth=-1')).toContainText(
-      `"Group #1": "answer value", "Group #2": "20", "Group #2 (1)": "Yes"`, {timeout: 10000}
+      `"Group #1": "answer value", "Group #2": "20", "Group #2 (1)": "Yes"`,
+      { timeout: 10000 }
     )
   })
 
@@ -126,6 +127,7 @@ test.describe('API', () => {
     expect(webhookBlocks[0]).toEqual({
       id: 'webhookBlock',
       label: 'Webhook > webhookBlock',
+      type: 'Webhook',
     })
   })
 

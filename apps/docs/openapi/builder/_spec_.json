@@ -2797,6 +2797,83 @@
                                               },
                                               "isExecutedOnClient": {
                                                 "type": "boolean"
+                                              },
+                                              "webhook": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "id": {
+                                                    "type": "string"
+                                                  },
+                                                  "queryParams": {
+                                                    "type": "array",
+                                                    "items": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "id": {
+                                                          "type": "string"
+                                                        },
+                                                        "key": {
+                                                          "type": "string"
+                                                        },
+                                                        "value": {
+                                                          "type": "string"
+                                                        }
+                                                      },
+                                                      "required": [
+                                                        "id"
+                                                      ],
+                                                      "additionalProperties": false
+                                                    }
+                                                  },
+                                                  "headers": {
+                                                    "type": "array",
+                                                    "items": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "id": {
+                                                          "type": "string"
+                                                        },
+                                                        "key": {
+                                                          "type": "string"
+                                                        },
+                                                        "value": {
+                                                          "type": "string"
+                                                        }
+                                                      },
+                                                      "required": [
+                                                        "id"
+                                                      ],
+                                                      "additionalProperties": false
+                                                    }
+                                                  },
+                                                  "method": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "POST",
+                                                      "GET",
+                                                      "PUT",
+                                                      "DELETE",
+                                                      "PATCH",
+                                                      "HEAD",
+                                                      "CONNECT",
+                                                      "OPTIONS",
+                                                      "TRACE"
+                                                    ]
+                                                  },
+                                                  "url": {
+                                                    "type": "string"
+                                                  },
+                                                  "body": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "id",
+                                                  "queryParams",
+                                                  "headers",
+                                                  "method"
+                                                ],
+                                                "additionalProperties": false
                                               }
                                             },
                                             "required": [
@@ -2806,15 +2883,15 @@
                                             "additionalProperties": false
                                           },
                                           "webhookId": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "description": "Deprecated, use webhook.id instead"
                                           }
                                         },
                                         "required": [
                                           "id",
                                           "groupId",
                                           "type",
-                                          "options",
-                                          "webhookId"
+                                          "options"
                                         ],
                                         "additionalProperties": false
                                       },
@@ -3135,6 +3212,83 @@
                                               },
                                               "isExecutedOnClient": {
                                                 "type": "boolean"
+                                              },
+                                              "webhook": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "id": {
+                                                    "type": "string"
+                                                  },
+                                                  "queryParams": {
+                                                    "type": "array",
+                                                    "items": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "id": {
+                                                          "type": "string"
+                                                        },
+                                                        "key": {
+                                                          "type": "string"
+                                                        },
+                                                        "value": {
+                                                          "type": "string"
+                                                        }
+                                                      },
+                                                      "required": [
+                                                        "id"
+                                                      ],
+                                                      "additionalProperties": false
+                                                    }
+                                                  },
+                                                  "headers": {
+                                                    "type": "array",
+                                                    "items": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "id": {
+                                                          "type": "string"
+                                                        },
+                                                        "key": {
+                                                          "type": "string"
+                                                        },
+                                                        "value": {
+                                                          "type": "string"
+                                                        }
+                                                      },
+                                                      "required": [
+                                                        "id"
+                                                      ],
+                                                      "additionalProperties": false
+                                                    }
+                                                  },
+                                                  "method": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "POST",
+                                                      "GET",
+                                                      "PUT",
+                                                      "DELETE",
+                                                      "PATCH",
+                                                      "HEAD",
+                                                      "CONNECT",
+                                                      "OPTIONS",
+                                                      "TRACE"
+                                                    ]
+                                                  },
+                                                  "url": {
+                                                    "type": "string"
+                                                  },
+                                                  "body": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "id",
+                                                  "queryParams",
+                                                  "headers",
+                                                  "method"
+                                                ],
+                                                "additionalProperties": false
                                               }
                                             },
                                             "required": [
@@ -3144,15 +3298,15 @@
                                             "additionalProperties": false
                                           },
                                           "webhookId": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "description": "Deprecated, use webhook.id instead"
                                           }
                                         },
                                         "required": [
                                           "id",
                                           "groupId",
                                           "type",
-                                          "options",
-                                          "webhookId"
+                                          "options"
                                         ],
                                         "additionalProperties": false
                                       },
@@ -3303,6 +3457,83 @@
                                               },
                                               "isExecutedOnClient": {
                                                 "type": "boolean"
+                                              },
+                                              "webhook": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "id": {
+                                                    "type": "string"
+                                                  },
+                                                  "queryParams": {
+                                                    "type": "array",
+                                                    "items": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "id": {
+                                                          "type": "string"
+                                                        },
+                                                        "key": {
+                                                          "type": "string"
+                                                        },
+                                                        "value": {
+                                                          "type": "string"
+                                                        }
+                                                      },
+                                                      "required": [
+                                                        "id"
+                                                      ],
+                                                      "additionalProperties": false
+                                                    }
+                                                  },
+                                                  "headers": {
+                                                    "type": "array",
+                                                    "items": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "id": {
+                                                          "type": "string"
+                                                        },
+                                                        "key": {
+                                                          "type": "string"
+                                                        },
+                                                        "value": {
+                                                          "type": "string"
+                                                        }
+                                                      },
+                                                      "required": [
+                                                        "id"
+                                                      ],
+                                                      "additionalProperties": false
+                                                    }
+                                                  },
+                                                  "method": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "POST",
+                                                      "GET",
+                                                      "PUT",
+                                                      "DELETE",
+                                                      "PATCH",
+                                                      "HEAD",
+                                                      "CONNECT",
+                                                      "OPTIONS",
+                                                      "TRACE"
+                                                    ]
+                                                  },
+                                                  "url": {
+                                                    "type": "string"
+                                                  },
+                                                  "body": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "id",
+                                                  "queryParams",
+                                                  "headers",
+                                                  "method"
+                                                ],
+                                                "additionalProperties": false
                                               }
                                             },
                                             "required": [
@@ -3312,15 +3543,15 @@
                                             "additionalProperties": false
                                           },
                                           "webhookId": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "description": "Deprecated, now integrated in webhook block options"
                                           }
                                         },
                                         "required": [
                                           "id",
                                           "groupId",
                                           "type",
-                                          "options",
-                                          "webhookId"
+                                          "options"
                                         ],
                                         "additionalProperties": false
                                       },
@@ -3395,6 +3626,83 @@
                                               },
                                               "isExecutedOnClient": {
                                                 "type": "boolean"
+                                              },
+                                              "webhook": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "id": {
+                                                    "type": "string"
+                                                  },
+                                                  "queryParams": {
+                                                    "type": "array",
+                                                    "items": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "id": {
+                                                          "type": "string"
+                                                        },
+                                                        "key": {
+                                                          "type": "string"
+                                                        },
+                                                        "value": {
+                                                          "type": "string"
+                                                        }
+                                                      },
+                                                      "required": [
+                                                        "id"
+                                                      ],
+                                                      "additionalProperties": false
+                                                    }
+                                                  },
+                                                  "headers": {
+                                                    "type": "array",
+                                                    "items": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "id": {
+                                                          "type": "string"
+                                                        },
+                                                        "key": {
+                                                          "type": "string"
+                                                        },
+                                                        "value": {
+                                                          "type": "string"
+                                                        }
+                                                      },
+                                                      "required": [
+                                                        "id"
+                                                      ],
+                                                      "additionalProperties": false
+                                                    }
+                                                  },
+                                                  "method": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "POST",
+                                                      "GET",
+                                                      "PUT",
+                                                      "DELETE",
+                                                      "PATCH",
+                                                      "HEAD",
+                                                      "CONNECT",
+                                                      "OPTIONS",
+                                                      "TRACE"
+                                                    ]
+                                                  },
+                                                  "url": {
+                                                    "type": "string"
+                                                  },
+                                                  "body": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "id",
+                                                  "queryParams",
+                                                  "headers",
+                                                  "method"
+                                                ],
+                                                "additionalProperties": false
                                               }
                                             },
                                             "required": [
@@ -3404,15 +3712,15 @@
                                             "additionalProperties": false
                                           },
                                           "webhookId": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "description": "Deprecated, use webhook.id instead"
                                           }
                                         },
                                         "required": [
                                           "id",
                                           "groupId",
                                           "type",
-                                          "options",
-                                          "webhookId"
+                                          "options"
                                         ],
                                         "additionalProperties": false
                                       },
@@ -4528,6 +4836,15 @@
                           "id": {
                             "type": "string"
                           },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "Webhook",
+                              "Zapier",
+                              "Make.com",
+                              "Pabbly"
+                            ]
+                          },
                           "label": {
                             "type": "string"
                           },
@@ -4537,6 +4854,7 @@
                         },
                         "required": [
                           "id",
+                          "type",
                           "label"
                         ],
                         "additionalProperties": false

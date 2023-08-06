@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import {
+  executableWebhookSchema,
   googleAnalyticsOptionsSchema,
   paymentInputRuntimeOptionsSchema,
   pixelOptionsSchema,
@@ -19,7 +20,6 @@ import { answerSchema } from './answer'
 import { BubbleBlockType } from './blocks/bubbles/enums'
 import { inputBlockSchemas } from './blocks/schemas'
 import { chatCompletionMessageSchema } from './blocks/integrations/openai'
-import { executableWebhookSchema } from './webhooks'
 
 const typebotInSessionStateSchema = publicTypebotSchema.pick({
   id: true,

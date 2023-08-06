@@ -125,16 +125,6 @@ export const blockTypeHasOption = (
     .concat(Object.values(IntegrationBlockType))
     .includes(type)
 
-export const blockTypeHasWebhook = (
-  type: BlockType
-): type is IntegrationBlockType.WEBHOOK =>
-  Object.values([
-    IntegrationBlockType.WEBHOOK,
-    IntegrationBlockType.ZAPIER,
-    IntegrationBlockType.MAKE_COM,
-    IntegrationBlockType.PABBLY_CONNECT,
-  ] as string[]).includes(type)
-
 export const blockTypeHasItems = (
   type: BlockType
 ): type is

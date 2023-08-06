@@ -22,10 +22,17 @@ export const MakeComSettings = ({
 
   const setLocalWebhook = useCallback(
     async (newLocalWebhook: Webhook) => {
+      if (options.webhook) {
+        onOptionsChange({
+          ...options,
+          webhook: newLocalWebhook,
+        })
+        return
+      }
       _setLocalWebhook(newLocalWebhook)
       await updateWebhook(newLocalWebhook.id, newLocalWebhook)
     },
-    [updateWebhook]
+    [onOptionsChange, options, updateWebhook]
   )
 
   useEffect(() => {
@@ -33,20 +40,23 @@ export const MakeComSettings = ({
       !localWebhook ||
       localWebhook.url ||
       !webhook?.url ||
-      webhook.url === localWebhook.url
+      webhook.url === localWebhook.url ||
+      options.webhook
     )
       return
     setLocalWebhook({
       ...localWebhook,
       url: webhook?.url,
     })
-  }, [webhook, localWebhook, setLocalWebhook])
+  }, [webhook, localWebhook, setLocalWebhook, options.webhook])
+
+  const url = options.webhook?.url ?? localWebhook?.url
 
   return (
     <Stack spacing={4}>
-      <Alert status={localWebhook?.url ? 'success' : 'info'} rounded="md">
+      <Alert status={url ? 'success' : 'info'} rounded="md">
         <AlertIcon />
-        {localWebhook?.url ? (
+        {url ? (
           <>Your scenario is correctly configured 🚀</>
         ) : (
           <Stack>
@@ -62,10 +72,10 @@ export const MakeComSettings = ({
           </Stack>
         )}
       </Alert>
-      {localWebhook && (
+      {(localWebhook || options.webhook) && (
         <WebhookAdvancedConfigForm
           blockId={blockId}
-          webhook={localWebhook}
+          webhook={(options.webhook ?? localWebhook) as Webhook}
           options={options}
           onWebhookChange={setLocalWebhook}
           onOptionsChange={onOptionsChange}
