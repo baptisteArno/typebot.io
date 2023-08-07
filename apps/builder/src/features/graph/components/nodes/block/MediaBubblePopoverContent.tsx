@@ -77,7 +77,7 @@ export const MediaBubbleContent = ({
         <AudioBubbleForm
           content={block.content}
           fileUploadPath={`typebots/${typebotId}/blocks/${block.id}`}
-          onSubmit={onContentChange}
+          onContentChange={onContentChange}
         />
       )
     }

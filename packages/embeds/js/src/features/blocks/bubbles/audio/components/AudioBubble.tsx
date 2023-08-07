@@ -4,7 +4,7 @@ import type { AudioBubbleContent } from '@typebot.io/schemas'
 import { createSignal, onCleanup, onMount } from 'solid-js'
 
 type Props = {
-  url: AudioBubbleContent['url']
+  content: AudioBubbleContent
   onTransitionEnd: (offsetTop?: number) => void
 }
 
@@ -50,8 +50,8 @@ export const AudioBubble = (props: Props) => {
           </div>
           <audio
             ref={audioElement}
-            src={props.url}
-            autoplay
+            src={props.content.url}
+            autoplay={props.content.isAutoplayEnabled ?? true}
             class={
               'z-10 text-fade-in ' +
               (isTyping() ? 'opacity-0' : 'opacity-100 m-2')

@@ -55,7 +55,7 @@ export const HostBubble = (props: Props) => {
       </Match>
       <Match when={props.message.type === BubbleBlockType.AUDIO}>
         <AudioBubble
-          url={(props.message.content as AudioBubbleContent).url}
+          content={props.message.content as AudioBubbleContent}
           onTransitionEnd={onTransitionEnd}
         />
       </Match>

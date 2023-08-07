@@ -74,7 +74,10 @@ export const Bot = (props: BotProps & { class?: string }) => {
         return setError(new Error("The bot you're looking for doesn't exist."))
     }
 
-    if (!data) return setError(new Error("Error! Couldn't initiate the chat."))
+    if (!data) {
+      if (error) console.error(error)
+      return setError(new Error("Error! Couldn't initiate the chat."))
+    }
 
     if (data.resultId && typebotIdFromProps)
       setResultInStorage(data.typebot.settings.general.rememberUser?.storage)(
