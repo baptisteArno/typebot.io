@@ -145,7 +145,8 @@ export const continueBotFlow =
           formattedReply !== reply ? formattedReply : undefined,
       }
 
-    const chatReply = executeGroup(newSessionState)(nextGroup.group)
+    const chatReply = await executeGroup(newSessionState)(nextGroup.group)
+
     return {
       ...chatReply,
       lastMessageNewFormat:
