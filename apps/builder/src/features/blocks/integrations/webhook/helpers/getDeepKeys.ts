@@ -42,7 +42,7 @@ export const getDeepKeys = (obj: any): string[] => {
 
 const parseKey = (key: string) => {
   if (
-    key.includes(' ') &&
+    (key.includes(' ') || key.includes('-')) &&
     !key.includes('.flatMap(item => item') &&
     !key.includes("['") &&
     !key.includes("']")
