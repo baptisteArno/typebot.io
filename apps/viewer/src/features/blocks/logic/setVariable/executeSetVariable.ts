@@ -76,6 +76,7 @@ const getExpressionToEvaluate =
   (resultId: string | undefined) =>
   (options: SetVariableBlock['options']): string | null => {
     switch (options.type) {
+      case 'Now':
       case 'Today':
         return 'new Date().toISOString()'
       case 'Tomorrow': {

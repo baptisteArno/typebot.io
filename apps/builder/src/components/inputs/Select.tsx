@@ -57,7 +57,7 @@ export const Select = <T extends Item>({
         typeof item === 'string'
           ? selectedItem === item
           : selectedItem === item.value
-      )
+      ) ?? selectedItem
     )
   )
 
