@@ -25,7 +25,7 @@ import { PhoneInput } from '@/features/blocks/inputs/phone'
 import { DateForm } from '@/features/blocks/inputs/date'
 import { RatingForm } from '@/features/blocks/inputs/rating'
 import { FileUploadForm } from '@/features/blocks/inputs/fileUpload'
-import { createSignal, Switch, Match } from 'solid-js'
+import { createSignal, Switch, Match, createEffect } from 'solid-js'
 import { isNotDefined } from '@typebot.io/lib'
 import { isMobile } from '@/utils/isMobileSignal'
 import { PaymentForm } from '@/features/blocks/inputs/payment'
@@ -33,6 +33,7 @@ import { MultipleChoicesForm } from '@/features/blocks/inputs/buttons/components
 import { Buttons } from '@/features/blocks/inputs/buttons/components/Buttons'
 import { SinglePictureChoice } from '@/features/blocks/inputs/pictureChoice/SinglePictureChoice'
 import { MultiplePictureChoice } from '@/features/blocks/inputs/pictureChoice/MultiplePictureChoice'
+import { formattedMessages } from '@/utils/formattedMessagesSignal'
 
 type Props = {
   ref: HTMLDivElement | undefined
@@ -49,6 +50,7 @@ type Props = {
 
 export const InputChatBlock = (props: Props) => {
   const [answer, setAnswer] = createSignal<string>()
+  const [formattedMessage, setFormattedMessage] = createSignal<string>()
 
   const handleSubmit = async ({ label, value }: InputSubmitContent) => {
     setAnswer(label ?? value)
@@ -60,11 +62,18 @@ export const InputChatBlock = (props: Props) => {
     props.onSkip()
   }
 
+  createEffect(() => {
+    const formattedMessage = formattedMessages().find(
+      (message) => message.inputId === props.block.id
+    )?.formattedMessage
+    if (formattedMessage) setFormattedMessage(formattedMessage)
+  })
+
   return (
     <Switch>
       <Match when={answer() && !props.hasError}>
         <GuestBubble
-          message={answer() as string}
+          message={formattedMessage() ?? (answer() as string)}
           showAvatar={props.guestAvatar?.isEnabled ?? false}
           avatarSrc={props.guestAvatar?.url && props.guestAvatar.url}
         />

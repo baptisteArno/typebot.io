@@ -292,6 +292,12 @@ export const chatReplySchema = z.object({
   resultId: z.string().optional(),
   dynamicTheme: dynamicThemeSchema.optional(),
   logs: z.array(replyLogSchema).optional(),
+  lastMessageNewFormat: z
+    .string()
+    .optional()
+    .describe(
+      'The sent message is validated and formatted on the backend. This is set only if the message differs from the formatted version.'
+    ),
 })
 
 export type ChatSession = z.infer<typeof chatSessionSchema>

@@ -85,7 +85,7 @@ export const continueBotFlow =
         message: 'Current block is not an input block',
       })
 
-    let formattedReply = null
+    let formattedReply: string | undefined
 
     if (isInputBlock(block)) {
       if (reply && !isReplyValid(reply, block))
@@ -116,25 +116,46 @@ export const continueBotFlow =
     const nextEdgeId = getOutgoingEdgeId(newSessionState)(block, formattedReply)
 
     if (groupHasMoreBlocks && !nextEdgeId) {
-      return executeGroup(newSessionState)({
+      const chatReply = await executeGroup(newSessionState)({
         ...group,
         blocks: group.blocks.slice(blockIndex + 1),
       })
+      return {
+        ...chatReply,
+        lastMessageNewFormat:
+          formattedReply !== reply ? formattedReply : undefined,
+      }
     }
 
     if (!nextEdgeId && state.linkedTypebots.queue.length === 0)
-      return { messages: [], newSessionState }
+      return {
+        messages: [],
+        newSessionState,
+        lastMessageNewFormat:
+          formattedReply !== reply ? formattedReply : undefined,
+      }
 
     const nextGroup = getNextGroup(newSessionState)(nextEdgeId)
 
-    if (!nextGroup) return { messages: [], newSessionState }
+    if (!nextGroup)
+      return {
+        messages: [],
+        newSessionState,
+        lastMessageNewFormat:
+          formattedReply !== reply ? formattedReply : undefined,
+      }
 
-    return executeGroup(newSessionState)(nextGroup.group)
+    const chatReply = executeGroup(newSessionState)(nextGroup.group)
+    return {
+      ...chatReply,
+      lastMessageNewFormat:
+        formattedReply !== reply ? formattedReply : undefined,
+    }
   }
 
 const processAndSaveAnswer =
   (state: SessionState, block: InputBlock, itemId?: string) =>
-  async (reply: string | null): Promise<SessionState> => {
+  async (reply: string | undefined): Promise<SessionState> => {
     if (!reply) return state
     let newState = await saveAnswer(state, block, itemId)(reply)
     newState = saveVariableValueIfAny(newState, block)(reply)
@@ -236,7 +257,7 @@ const getOutgoingEdgeId =
   ({ typebot: { variables } }: Pick<SessionState, 'typebot'>) =>
   (
     block: InputBlock | SetVariableBlock | OpenAIBlock | WebhookBlock,
-    reply: string | null
+    reply: string | undefined
   ) => {
     if (
       block.type === InputBlockType.CHOICE &&
@@ -264,8 +285,8 @@ const getOutgoingEdgeId =
 export const formatReply = (
   inputValue: string | undefined,
   blockType: BlockType
-): string | null => {
-  if (!inputValue) return null
+): string | undefined => {
+  if (!inputValue) return
   switch (blockType) {
     case InputBlockType.PHONE:
       return formatPhoneNumber(inputValue)

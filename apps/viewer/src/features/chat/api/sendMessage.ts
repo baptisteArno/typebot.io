@@ -79,8 +79,14 @@ export const sendMessage = publicProcedure
           clientSideActions,
         }
       } else {
-        const { messages, input, clientSideActions, newSessionState, logs } =
-          await continueBotFlow(session.state)(message)
+        const {
+          messages,
+          input,
+          clientSideActions,
+          newSessionState,
+          logs,
+          lastMessageNewFormat,
+        } = await continueBotFlow(session.state)(message)
 
         const allLogs = clientLogs ? [...(logs ?? []), ...clientLogs] : logs
 
@@ -101,6 +107,7 @@ export const sendMessage = publicProcedure
           clientSideActions,
           dynamicTheme: parseDynamicThemeReply(newSessionState),
           logs,
+          lastMessageNewFormat,
         }
       }
     }

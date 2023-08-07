@@ -21,6 +21,10 @@ import { executeClientSideAction } from '@/utils/executeClientSideActions'
 import { LoadingChunk } from './LoadingChunk'
 import { PopupBlockedToast } from './PopupBlockedToast'
 import { setStreamingMessage } from '@/utils/streamingMessageSignal'
+import {
+  formattedMessages,
+  setFormattedMessages,
+} from '@/utils/formattedMessagesSignal'
 
 const parseDynamicTheme = (
   initialTheme: Theme,
@@ -164,6 +168,15 @@ export const ConversationContainer = (props: Props) => {
       ])
     }
     if (!data) return
+    if (data.lastMessageNewFormat) {
+      setFormattedMessages([
+        ...formattedMessages(),
+        {
+          inputId: [...chatChunks()].pop()?.input?.id ?? '',
+          formattedMessage: data.lastMessageNewFormat as string,
+        },
+      ])
+    }
     if (data.logs) props.onNewLogs?.(data.logs)
     if (data.dynamicTheme) setDynamicTheme(data.dynamicTheme)
     if (data.input?.id && props.onNewInputBlock) {

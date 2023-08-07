@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/react",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "Convenient library to display typebots on your Next.js website",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

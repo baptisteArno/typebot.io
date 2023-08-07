@@ -93,8 +93,6 @@ export const ChatChunk = (props: Props) => {
           ref={inputRef}
           block={props.input}
           inputIndex={props.inputIndex}
-          onSubmit={props.onSubmit}
-          onSkip={props.onSkip}
           hasHostAvatar={props.theme.chat.hostAvatar?.isEnabled ?? false}
           guestAvatar={props.theme.chat.guestAvatar}
           context={props.context}
@@ -102,6 +100,8 @@ export const ChatChunk = (props: Props) => {
             props.settings.general.isInputPrefillEnabled ?? true
           }
           hasError={props.hasError}
+          onSubmit={props.onSubmit}
+          onSkip={props.onSkip}
         />
       )}
       <Show when={props.streamingMessageId} keyed>

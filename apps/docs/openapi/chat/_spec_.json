@@ -312,6 +312,9 @@
                                                 "properties": {
                                                   "url": {
                                                     "type": "string"
+                                                  },
+                                                  "isAutoplayEnabled": {
+                                                    "type": "boolean"
                                                   }
                                                 },
                                                 "additionalProperties": false
@@ -1554,6 +1557,7 @@
                                                       "Custom",
                                                       "Empty",
                                                       "User ID",
+                                                      "Now",
                                                       "Today",
                                                       "Yesterday",
                                                       "Tomorrow",
@@ -4031,6 +4035,9 @@
                                     "properties": {
                                       "url": {
                                         "type": "string"
+                                      },
+                                      "isAutoplayEnabled": {
+                                        "type": "boolean"
                                       }
                                     },
                                     "additionalProperties": false
@@ -6021,6 +6028,10 @@
                         ],
                         "additionalProperties": false
                       }
+                    },
+                    "lastMessageNewFormat": {
+                      "type": "string",
+                      "description": "The sent message is validated and formatted on the backend. This is set only if the message differs from the formatted version."
                     }
                   },
                   "required": [

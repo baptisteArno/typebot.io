@@ -744,6 +744,9 @@
                                             "properties": {
                                               "url": {
                                                 "type": "string"
+                                              },
+                                              "isAutoplayEnabled": {
+                                                "type": "boolean"
                                               }
                                             },
                                             "additionalProperties": false
@@ -1986,6 +1989,7 @@
                                                   "Custom",
                                                   "Empty",
                                                   "User ID",
+                                                  "Now",
                                                   "Today",
                                                   "Yesterday",
                                                   "Tomorrow",
