@@ -266,21 +266,10 @@ const getOutgoingEdgeId =
       reply
     ) {
       const matchedItem = block.items.find(
-        (item) => parseVariables(variables)(item.content) === reply
+        (item) =>
+          parseVariables(variables)(item.content).normalize() ===
+          reply.normalize()
       )
-      // TEMPORARY LOG
-      if (block.id === 'n62dzuz2ye73tivnjw7bnxd5') {
-        console.log(
-          'Debug Safari bug:',
-          JSON.stringify({
-            items: block.items.map((item) =>
-              parseVariables(variables)(item.content)
-            ),
-            reply,
-          })
-        )
-      }
-
       if (matchedItem?.outgoingEdgeId) return matchedItem.outgoingEdgeId
     }
     if (
@@ -289,7 +278,9 @@ const getOutgoingEdgeId =
       reply
     ) {
       const matchedItem = block.items.find(
-        (item) => parseVariables(variables)(item.title) === reply
+        (item) =>
+          parseVariables(variables)(item.title).normalize() ===
+          reply.normalize()
       )
       if (matchedItem?.outgoingEdgeId) return matchedItem.outgoingEdgeId
     }
