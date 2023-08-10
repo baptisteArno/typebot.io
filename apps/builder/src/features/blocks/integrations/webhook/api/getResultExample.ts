@@ -61,9 +61,10 @@ export const getResultExample = authenticatedProcedure
     const linkedTypebots = await fetchLinkedTypebots(typebot, user)
 
     return {
-      resultExample: await parseResultExample(
+      resultExample: await parseResultExample({
         typebot,
-        linkedTypebots
-      )(block.groupId),
+        linkedTypebots,
+        userEmail: user.email ?? 'test@email.com',
+      })(block.groupId),
     }
   })

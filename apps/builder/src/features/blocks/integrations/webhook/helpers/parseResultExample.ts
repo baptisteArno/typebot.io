@@ -12,10 +12,15 @@ import { isInputBlock, byId, isNotDefined } from '@typebot.io/lib'
 import { parseResultHeader } from '@typebot.io/lib/results'
 
 export const parseResultExample =
-  (
-    typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>,
+  ({
+    typebot,
+    linkedTypebots,
+    userEmail,
+  }: {
+    typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>
     linkedTypebots: (Typebot | PublicTypebot)[]
-  ) =>
+    userEmail: string
+  }) =>
   async (
     currentGroupId: string
   ): Promise<
@@ -33,7 +38,11 @@ export const parseResultExample =
     return {
       message: 'This is a sample result, it has been generated ⬇️',
       'Submitted at': new Date().toISOString(),
-      ...parseResultSample(linkedInputBlocks, header),
+      ...parseResultSample({
+        inputBlocks: linkedInputBlocks,
+        headerCells: header,
+        userEmail,
+      }),
     }
   }
 
@@ -84,10 +93,15 @@ const extractLinkedInputBlocks =
     ).concat(linkedBotInputs.flatMap((l) => l))
   }
 
-const parseResultSample = (
-  inputBlocks: InputBlock[],
+const parseResultSample = ({
+  inputBlocks,
+  headerCells,
+  userEmail,
+}: {
+  inputBlocks: InputBlock[]
   headerCells: ResultHeaderCell[]
-) =>
+  userEmail: string
+}) =>
   headerCells.reduce<Record<string, string | undefined>>(
     (resultSample, cell) => {
       const inputBlock = inputBlocks.find((inputBlock) =>
@@ -101,7 +115,7 @@ const parseResultSample = (
           }
         return resultSample
       }
-      const value = getSampleValue(inputBlock)
+      const value = getSampleValue({ block: inputBlock, userEmail })
       return {
         ...resultSample,
         [cell.label]: value,
@@ -110,7 +124,13 @@ const parseResultSample = (
     {}
   )
 
-const getSampleValue = (block: InputBlock) => {
+const getSampleValue = ({
+  block,
+  userEmail,
+}: {
+  block: InputBlock
+  userEmail: string
+}) => {
   switch (block.type) {
     case InputBlockType.CHOICE:
       return block.options.isMultipleChoice
@@ -119,7 +139,7 @@ const getSampleValue = (block: InputBlock) => {
     case InputBlockType.DATE:
       return new Date().toUTCString()
     case InputBlockType.EMAIL:
-      return 'test@email.com'
+      return userEmail
     case InputBlockType.NUMBER:
       return '20'
     case InputBlockType.PHONE:
