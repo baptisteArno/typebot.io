@@ -13,6 +13,8 @@ import {
   Stack,
   ModalFooter,
   Button,
+  Alert,
+  AlertIcon,
 } from '@chakra-ui/react'
 import React, { useState } from 'react'
 
@@ -106,6 +108,11 @@ export const OpenAICredentialsModal = ({
               withVariableButton={false}
               debounceTimeout={0}
             />
+            <Alert status="warning">
+              <AlertIcon />
+              Make sure to add a payment method to your OpenAI account.
+              Otherwise, it will not work after a few messages.
+            </Alert>
           </ModalBody>
 
           <ModalFooter>
