@@ -37,26 +37,20 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const parsedUser = session.user as User
     setUser(parsedUser)
     if (parsedUser?.id) setSentryUser({ id: parsedUser.id })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session])
+  }, [session, user])
 
   useEffect(() => {
     if (!router.isReady) return
     if (status === 'loading') return
+    const isSigningIn = () => ['/signin', '/register'].includes(router.pathname)
     if (!user && status === 'unauthenticated' && !isSigningIn())
       router.replace({
         pathname: '/signin',
-        query:
-          router.pathname !== '/typebots'
-            ? {
-                redirectPath: router.asPath,
-              }
-            : undefined,
+        query: {
+          redirectPath: router.asPath,
+        },
       })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status, router])
-
-  const isSigningIn = () => ['/signin', '/register'].includes(router.pathname)
+  }, [router, status, user])
 
   const updateUser = (updates: Partial<User>) => {
     if (isNotDefined(user)) return
