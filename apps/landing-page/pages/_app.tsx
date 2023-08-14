@@ -4,6 +4,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import 'focus-visible/dist/focus-visible'
 import { theme } from '../lib/chakraTheme'
 import { AppProps } from 'next/app'
+import { Analytics } from '@vercel/analytics/react'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 
@@ -19,6 +20,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <ChakraProvider theme={theme}>
       <Component {...pageProps} />
+      <Analytics />
     </ChakraProvider>
   )
 }
