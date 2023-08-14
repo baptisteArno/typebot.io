@@ -108,6 +108,7 @@ const duplicateTypebot = (
               options: {
                 ...block.options,
                 groupId: groupIdsMapping.get(block.options.groupId as string),
+                blockId: blockIdsMapping.get(block.options.blockId as string),
               } satisfies JumpBlock['options'],
             }
           if (blockHasItems(block))
@@ -116,6 +117,7 @@ const duplicateTypebot = (
               ...newIds,
               items: block.items.map((item) => ({
                 ...item,
+                blockId: blockIdsMapping.get(item.blockId) as string,
                 outgoingEdgeId: item.outgoingEdgeId
                   ? (edgeIdsMapping.get(item.outgoingEdgeId) as string)
                   : undefined,
