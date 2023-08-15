@@ -23,6 +23,7 @@ const localeHumanReadable = {
   fr: 'Français',
   de: 'Deutsch',
   pt: 'Português',
+  pt_BR: 'Português (BR)'
 } as const
 
 export const UserPreferencesForm = () => {

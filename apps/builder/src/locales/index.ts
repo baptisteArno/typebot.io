@@ -8,8 +8,9 @@ export const {
   useCurrentLocale,
   useChangeLocale,
 } = createI18n({
-  en: () => import('./en'),
-  fr: () => import('./fr'),
-  pt: () => import('./pt'),
-  de: () => import('./de'),
+  en:    () => import('./en'),
+  fr:    () => import('./fr'),
+  pt:    () => import('./pt'),
+  pt_BR: () => import('./pt_BR'),
+  de:    () => import('./de'),
 })
