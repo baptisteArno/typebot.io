@@ -16,6 +16,7 @@ import { Plan } from '@typebot.io/prisma'
 import { trpc } from '@/lib/trpc'
 import { NewVersionPopup } from '@/components/NewVersionPopup'
 import { I18nProvider } from '@/locales'
+import en from '@/locales/en'
 import { TypebotProvider } from '@/features/editor/providers/TypebotProvider'
 import { WorkspaceProvider } from '@/features/workspace/WorkspaceProvider'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
@@ -55,7 +56,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <ToastContainer />
-      <I18nProvider locale={pageProps.locale}>
+      <I18nProvider locale={pageProps.locale} fallbackLocale={en}>
         <ChakraProvider theme={customTheme}>
           <SessionProvider session={pageProps.session}>
             <UserProvider>
