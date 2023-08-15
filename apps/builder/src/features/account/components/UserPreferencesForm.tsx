@@ -19,10 +19,10 @@ import { ChevronDownIcon } from '@/components/icons'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 
 const localeHumanReadable = {
-  en: 'English',
-  fr: 'Français',
-  de: 'Deutsch',
-  pt: 'Português',
+  en:    'English',
+  fr:    'Français',
+  de:    'Deutsch',
+  pt:    'Português',
   pt_BR: 'Português (BR)'
 } as const
 
