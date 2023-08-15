@@ -14,7 +14,7 @@ services:
       args:
         - SCOPE=builder
     depends_on:
-      - db
+      - typebot-db
     ports:
       - '8080:3000'
     extra_hosts:
