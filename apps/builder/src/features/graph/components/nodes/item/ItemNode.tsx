@@ -116,7 +116,10 @@ export const ItemNode = ({
               <SourceEndpoint
                 source={{
                   groupId: typebot.groups[indices.groupIndex].id,
-                  blockId: item.blockId,
+                  blockId:
+                    typebot.groups[indices.groupIndex].blocks[
+                      indices.blockIndex
+                    ].id,
                   itemId: item.id,
                 }}
                 pos="absolute"

@@ -141,7 +141,8 @@ export const SourceEndpoint = ({
           borderWidth="3.5px"
           shadow={`sm`}
           borderColor={
-            previewingEdge?.from.blockId === source.blockId &&
+            previewingEdge &&
+            previewingEdge.from.blockId === source.blockId &&
             previewingEdge.from.itemId === source.itemId
               ? connectedColor
               : color
