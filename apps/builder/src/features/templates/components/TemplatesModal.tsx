@@ -19,6 +19,7 @@ import { templates } from '../data'
 import { TemplateProps } from '../types'
 import { useToast } from '@/hooks/useToast'
 import { sendRequest } from '@typebot.io/lib'
+import { useScopedI18n } from '@/locales'
 
 type Props = {
   isOpen: boolean
@@ -27,6 +28,7 @@ type Props = {
 }
 
 export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
+  const scopedT = useScopedI18n('templates.modal')
   const templateCardBackgroundColor = useColorModeValue('white', 'gray.800')
   const [typebot, setTypebot] = useState<Typebot>()
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateProps>(
@@ -88,7 +90,7 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
                   pl="1"
                   color="gray.500"
                 >
-                  Marketing
+                  {scopedT('menuHeading.marketing')}
                 </Text>
                 {templates
                   .filter((template) => template.category === 'marketing')
@@ -110,7 +112,7 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
                         <Text>{template.name}</Text>
                         {template.isNew && (
                           <Tag colorScheme="orange" size="sm" flexShrink={0}>
-                            New
+                            {scopedT('menuHeading.new.tag')}
                           </Tag>
                         )}
                       </HStack>
@@ -124,7 +126,7 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
                   pl="1"
                   color="gray.500"
                 >
-                  Product
+                  {scopedT('menuHeading.product')}
                 </Text>
                 {templates
                   .filter((template) => template.category === 'product')
@@ -146,7 +148,7 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
                         <Text>{template.name}</Text>
                         {template.isNew && (
                           <Tag colorScheme="orange" size="sm" flexShrink={0}>
-                            New
+                            {scopedT('menuHeading.new.tag')}
                           </Tag>
                         )}
                       </HStack>
@@ -160,7 +162,7 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
                   pl="1"
                   color="gray.500"
                 >
-                  Other
+                  {scopedT('menuHeading.other')}
                 </Text>
                 {templates
                   .filter((template) => template.category === undefined)
@@ -182,7 +184,7 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
                         <Text>{template.name}</Text>
                         {template.isNew && (
                           <Tag colorScheme="orange" size="sm" flexShrink={0}>
-                            New
+                            {scopedT('menuHeading.new.tag')}
                           </Tag>
                         )}
                       </HStack>
@@ -229,7 +231,7 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
                 onClick={onUseThisTemplateClick}
                 isLoading={isLoading}
               >
-                Use this template
+                {scopedT('useTemplateButton.label')}
               </Button>
             </HStack>
           </Stack>

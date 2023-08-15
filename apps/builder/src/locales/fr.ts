@@ -117,6 +117,7 @@ export default {
   'billing.currentSubscription.heading': 'Abonnement',
   'billing.currentSubscription.subheading': 'Abonnement actuel du workspace :',
   'billing.currentSubscription.cancelLink': "Annuler l'abonnement",
+  'billing.currentSubscription.cancelDate': 'Sera annulé le',
   'billing.invoices.heading': 'Factures',
   'billing.invoices.empty': 'Aucune facture trouvée pour ce workspace.',
   'billing.invoices.paidAt': 'Payé le',
@@ -151,6 +152,7 @@ export default {
   'billing.pricingCard.pro.customDomains': 'Domaines personnalisés',
   'billing.pricingCard.pro.analytics': 'Analyses approfondies',
   'billing.usage.heading': 'Utilisation',
+  'billing.usage.unlimited': 'Illimité',
   'billing.usage.chats.heading': 'Chats',
   'billing.usage.chats.alert.soonReach':
     'Tes typebots sont populaires ! Tu atteindras bientôt la limite de chats de votre abonnement. 🚀',

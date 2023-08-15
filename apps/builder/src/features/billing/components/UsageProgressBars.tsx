@@ -88,7 +88,7 @@ export const UsageProgressBars = ({ workspace }: Props) => {
             <Text>
               /{' '}
               {workspaceChatsLimit === -1
-                ? 'Unlimited'
+                ? scopedT('unlimited')
                 : parseNumberWithCommas(workspaceChatsLimit)}
             </Text>
           </HStack>
@@ -141,7 +141,7 @@ export const UsageProgressBars = ({ workspace }: Props) => {
               <Text>
                 /{' '}
                 {workspaceStorageLimit === -1
-                  ? 'Unlimited'
+                  ? scopedT('unlimited')
                   : `${workspaceStorageLimit} GB`}
               </Text>
             </HStack>

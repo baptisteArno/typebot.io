@@ -119,6 +119,7 @@ export default {
   'billing.currentSubscription.subheading':
     'Assinatura atual do espaço de trabalho:',
   'billing.currentSubscription.cancelLink': 'Cancelar minha assinatura',
+  'billing.currentSubscription.cancelDate': 'Será cancelado em',
   'billing.invoices.heading': 'Faturas',
   'billing.invoices.empty':
     'Nenhuma fatura encontrada para este espaço de trabalho.',
@@ -154,6 +155,7 @@ export default {
   'billing.pricingCard.pro.customDomains': 'Domínios personalizados',
   'billing.pricingCard.pro.analytics': 'Análises aprofundadas',
   'billing.usage.heading': 'Uso',
+  'billing.usage.unlimited': 'Ilimitado',
   'billing.usage.chats.heading': 'Chats',
   'billing.usage.chats.alert.soonReach':
     'Seus typebots são populares! Você logo alcançará o limite de chats de seu plano. 🚀',
@@ -190,4 +192,22 @@ export default {
   'workspace.settings.modal.menu.version.label': 'Versão: {version}',
   'workspace.dropdown.newButton.label': 'Novo espaço de trabalho',
   'workspace.dropdown.logoutButton.label': 'Sair',
+  'templates.buttons.heading': 'Create a new typebot',
+  'templates.buttons.fromScratchButton.label': 'Start from scratch',
+  'templates.buttons.fromTemplateButton.label': 'Start from a template',
+  'templates.buttons.importFileButton.label': 'Import a file',
+  'templates.modal.menuHeading.marketing': 'Marketing',
+  'templates.modal.menuHeading.product': 'Product',
+  'templates.modal.menuHeading.other': 'Other',
+  'templates.modal.menuHeading.new.tag': 'Novo',
+  'templates.modal.useTemplateButton.label': 'Use this template',
+  'templates.importFromFileButon.toastError.description': 'Falha ao carregar arquivo. Tem certeza que é um template no formato typebot?',
+  'editor.headers.flowButton.label': 'Fluxo',
+  'editor.headers.themeButton.label': 'Tema',
+  'editor.headers.settingsButton.label': 'Configurações',
+  'editor.headers.shareButton.label': 'Compartilhar',
+  'editor.headers.resultsButton.label': 'Resultados',
+  'editor.headers.helpButton.label': 'Ajuda',
+  'editor.headers.savingSpinner.label': 'Salvando...',
+  'editor.headers.previewButton.label': 'Visualizar',
 } as const

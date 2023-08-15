@@ -119,6 +119,7 @@ export default {
   'billing.currentSubscription.subheading':
     'Subscrição actual do espaço de trabalho:',
   'billing.currentSubscription.cancelLink': 'Cancelar a minha subscrição',
+  'billing.currentSubscription.cancelDate': 'Será cancelado em',
   'billing.invoices.heading': 'Facturas',
   'billing.invoices.empty':
     'Nenhuma factura encontrada para este espaço de trabalho.',
@@ -154,6 +155,7 @@ export default {
   'billing.pricingCard.pro.customDomains': 'Domínios personalizados',
   'billing.pricingCard.pro.analytics': 'Análises aprofundadas',
   'billing.usage.heading': 'Uso',
+  'billing.usage.unlimited': 'Ilimitado',
   'billing.usage.chats.heading': 'Chats',
   'billing.usage.chats.alert.soonReach':
     'Os seus typebots são populares! Vai alcançar em breve o limite de chats do seu plano. 🚀',
