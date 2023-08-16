@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const itemBaseSchema = z.object({
   id: z.string(),
-  blockId: z.string(),
+  blockId: z.string().optional().describe('Deprecated'),
   outgoingEdgeId: z.string().optional(),
 })
 

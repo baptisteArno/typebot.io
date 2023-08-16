@@ -54,7 +54,6 @@ export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
     const newItemId = createId()
     createItem(
       {
-        blockId: item.blockId,
         type: ItemType.CONDITION,
         id: newItemId,
       },

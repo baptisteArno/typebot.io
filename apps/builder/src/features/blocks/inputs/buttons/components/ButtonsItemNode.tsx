@@ -54,10 +54,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
 
   const handlePlusClick = () => {
     const itemIndex = indices.itemIndex + 1
-    createItem(
-      { blockId: item.blockId, type: ItemType.BUTTON },
-      { ...indices, itemIndex }
-    )
+    createItem({ type: ItemType.BUTTON }, { ...indices, itemIndex })
   }
 
   const updateItemSettings = (settings: Omit<ButtonItem, 'content'>) => {
