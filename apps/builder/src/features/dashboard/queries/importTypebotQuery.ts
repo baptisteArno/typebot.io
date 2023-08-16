@@ -117,7 +117,6 @@ const duplicateTypebot = (
               ...newIds,
               items: block.items.map((item) => ({
                 ...item,
-                blockId: blockIdsMapping.get(item.blockId) as string,
                 outgoingEdgeId: item.outgoingEdgeId
                   ? (edgeIdsMapping.get(item.outgoingEdgeId) as string)
                   : undefined,

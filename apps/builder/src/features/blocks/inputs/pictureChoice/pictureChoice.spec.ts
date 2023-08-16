@@ -25,7 +25,6 @@ test.describe.parallel('Picture choice input block', () => {
           items: [
             {
               id: 'choice1',
-              blockId: 'block1',
               type: ItemType.PICTURE_CHOICE,
             },
           ],

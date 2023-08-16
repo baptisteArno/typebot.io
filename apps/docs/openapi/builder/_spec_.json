@@ -846,7 +846,8 @@
                                                   "type": "string"
                                                 },
                                                 "blockId": {
-                                                  "type": "string"
+                                                  "type": "string",
+                                                  "description": "Deprecated"
                                                 },
                                                 "outgoingEdgeId": {
                                                   "type": "string"
@@ -927,7 +928,6 @@
                                               },
                                               "required": [
                                                 "id",
-                                                "blockId",
                                                 "type"
                                               ],
                                               "additionalProperties": false
@@ -1608,7 +1608,8 @@
                                                   "type": "string"
                                                 },
                                                 "blockId": {
-                                                  "type": "string"
+                                                  "type": "string",
+                                                  "description": "Deprecated"
                                                 },
                                                 "outgoingEdgeId": {
                                                   "type": "string"
@@ -1695,7 +1696,6 @@
                                               },
                                               "required": [
                                                 "id",
-                                                "blockId",
                                                 "type"
                                               ],
                                               "additionalProperties": false
@@ -1826,7 +1826,8 @@
                                                   "type": "string"
                                                 },
                                                 "blockId": {
-                                                  "type": "string"
+                                                  "type": "string",
+                                                  "description": "Deprecated"
                                                 },
                                                 "outgoingEdgeId": {
                                                   "type": "string"
@@ -1895,7 +1896,6 @@
                                               },
                                               "required": [
                                                 "id",
-                                                "blockId",
                                                 "type",
                                                 "content"
                                               ],
@@ -2172,7 +2172,8 @@
                                                     "type": "string"
                                                   },
                                                   "blockId": {
-                                                    "type": "string"
+                                                    "type": "string",
+                                                    "description": "Deprecated"
                                                   },
                                                   "outgoingEdgeId": {
                                                     "type": "string"
@@ -2192,7 +2193,6 @@
                                                 },
                                                 "required": [
                                                   "id",
-                                                  "blockId",
                                                   "type",
                                                   "path"
                                                 ],
@@ -2205,7 +2205,8 @@
                                                     "type": "string"
                                                   },
                                                   "blockId": {
-                                                    "type": "string"
+                                                    "type": "string",
+                                                    "description": "Deprecated"
                                                   },
                                                   "outgoingEdgeId": {
                                                     "type": "string"
@@ -2225,7 +2226,6 @@
                                                 },
                                                 "required": [
                                                   "id",
-                                                  "blockId",
                                                   "type",
                                                   "path"
                                                 ],
