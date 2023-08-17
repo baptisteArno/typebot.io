@@ -1,11 +1,7 @@
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import {
-  defaultSettings,
-  defaultTheme,
-  typebotSchema,
-} from '@typebot.io/schemas'
+import { typebotSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
 import {
   isCustomDomainNotAvailable,
@@ -15,7 +11,6 @@ import {
 } from '../helpers/sanitizers'
 import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
-import { Plan } from '@typebot.io/prisma'
 
 export const updateTypebot = authenticatedProcedure
   .meta({
@@ -141,13 +136,11 @@ export const updateTypebot = authenticatedProcedure
           selectedThemeTemplateId: typebot.selectedThemeTemplateId,
           groups: typebot.groups
             ? await sanitizeGroups(existingTypebot.workspaceId)(typebot.groups)
-            : [],
-          theme: typebot.theme ? typebot.theme : defaultTheme,
+            : undefined,
+          theme: typebot.theme ? typebot.theme : undefined,
           settings: typebot.settings
             ? sanitizeSettings(typebot.settings, existingTypebot.workspace.plan)
-            : defaultSettings({
-                isBrandingEnabled: existingTypebot.workspace.plan !== Plan.FREE,
-              }),
+            : undefined,
           folderId: typebot.folderId,
           variables: typebot.variables,
           edges: typebot.edges,
