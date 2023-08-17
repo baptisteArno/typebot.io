@@ -51,7 +51,7 @@ export const listCredentials = authenticatedProcedure
         },
       },
     })
-    if (!workspace || (await isReadWorkspaceFobidden(workspace, user)))
+    if (!workspace || isReadWorkspaceFobidden(workspace, user))
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Workspace not found' })
 
     return { credentials: workspace.credentials }

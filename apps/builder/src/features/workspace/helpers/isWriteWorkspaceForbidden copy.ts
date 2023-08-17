@@ -1,6 +1,6 @@
 import { MemberInWorkspace, User } from '@typebot.io/prisma'
 
-export const isWriteWorkspaceForbidden = async (
+export const isWriteWorkspaceForbidden = (
   workspace: {
     members: MemberInWorkspace[]
   },

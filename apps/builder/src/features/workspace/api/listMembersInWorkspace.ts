@@ -37,7 +37,7 @@ export const listMembersInWorkspace = authenticatedProcedure
       },
     })
 
-    if (!workspace || (await isReadWorkspaceFobidden(workspace, user)))
+    if (!workspace || isReadWorkspaceFobidden(workspace, user))
       throw new TRPCError({ code: 'NOT_FOUND', message: 'No workspaces found' })
 
     return {

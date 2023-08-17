@@ -2,6 +2,7 @@ import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
+import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
 
 export const getUsage = authenticatedProcedure
   .meta({
@@ -25,10 +26,19 @@ export const getUsage = authenticatedProcedure
     const workspace = await prisma.workspace.findFirst({
       where: {
         id: workspaceId,
-        members: { some: { userId: user.id } },
+      },
+      select: {
+        members: {
+          select: {
+            userId: true,
+          },
+        },
+        typebots: {
+          select: { id: true, results: { select: { id: true } } },
+        },
       },
     })
-    if (!workspace)
+    if (!workspace || isReadWorkspaceFobidden(workspace, user))
       throw new TRPCError({
         code: 'NOT_FOUND',
         message: 'Workspace not found',
@@ -36,40 +46,25 @@ export const getUsage = authenticatedProcedure
 
     const now = new Date()
     const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
-    const [
-      totalChatsUsed,
-      {
-        _sum: { storageUsed: totalStorageUsed },
-      },
-    ] = await prisma.$transaction(async (tx) => {
-      const typebots = await tx.typebot.findMany({
-        where: {
-          workspace: {
-            id: workspaceId,
-          },
+    const totalChatsUsed = await prisma.result.count({
+      where: {
+        typebotId: { in: workspace.typebots.map((typebot) => typebot.id) },
+        hasStarted: true,
+        createdAt: {
+          gte: firstDayOfMonth,
         },
-      })
-
-      return Promise.all([
-        prisma.result.count({
-          where: {
-            typebotId: { in: typebots.map((typebot) => typebot.id) },
-            hasStarted: true,
-            createdAt: {
-              gte: firstDayOfMonth,
-            },
-          },
-        }),
-        prisma.answer.aggregate({
-          where: {
-            storageUsed: { gt: 0 },
-            result: {
-              typebotId: { in: typebots.map((typebot) => typebot.id) },
-            },
-          },
-          _sum: { storageUsed: true },
-        }),
-      ])
+      },
+    })
+    const {
+      _sum: { storageUsed: totalStorageUsed },
+    } = await prisma.answer.aggregate({
+      where: {
+        storageUsed: { gt: 0 },
+        result: {
+          typebotId: { in: workspace.typebots.map((typebot) => typebot.id) },
+        },
+      },
+      _sum: { storageUsed: true },
     })
 
     return {

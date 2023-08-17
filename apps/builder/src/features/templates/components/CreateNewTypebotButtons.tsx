@@ -56,7 +56,13 @@ export const CreateNewTypebotButtons = () => {
     mutate({
       workspaceId: workspace.id,
       typebot: {
-        ...(typebot ? { ...typebot } : {}),
+        ...(typebot
+          ? {
+              ...typebot,
+              publicId: undefined,
+              customDomain: undefined,
+            }
+          : {}),
         folderId,
       },
     })

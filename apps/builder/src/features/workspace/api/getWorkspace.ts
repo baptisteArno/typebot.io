@@ -31,7 +31,7 @@ export const getWorkspace = authenticatedProcedure
       include: { members: true },
     })
 
-    if (!workspace || (await isReadWorkspaceFobidden(workspace, user)))
+    if (!workspace || isReadWorkspaceFobidden(workspace, user))
       throw new TRPCError({ code: 'NOT_FOUND', message: 'No workspaces found' })
 
     return {

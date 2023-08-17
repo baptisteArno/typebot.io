@@ -48,7 +48,7 @@ export const createCredentials = authenticatedProcedure
       },
       select: { id: true, members: true },
     })
-    if (!workspace || (await isWriteWorkspaceForbidden(workspace, user)))
+    if (!workspace || isWriteWorkspaceForbidden(workspace, user))
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Workspace not found' })
 
     const { encryptedData, iv } = await encrypt(credentials.data)

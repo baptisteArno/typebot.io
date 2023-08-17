@@ -25,6 +25,7 @@ import { useScopedI18n } from '@/locales'
 import { TypebotInDashboard } from '@/features/dashboard/types'
 import { isMobile } from '@/helpers/isMobile'
 import { trpc, trpcVanilla } from '@/lib/trpc'
+import { duplicateName } from '@/features/typebot/helpers/duplicateName'
 
 type Props = {
   typebot: TypebotInDashboard
@@ -220,11 +221,4 @@ export const TypebotButton = ({
       )}
     </Button>
   )
-}
-
-const duplicateName = (name: string | `${string} (${number})`) => {
-  const match = name.match(/^(.*) \((\d+)\)$/)
-  if (!match) return `${name} (1)`
-  const [, nameWithoutNumber, number] = match
-  return `${nameWithoutNumber} (${Number(number) + 1})`
 }

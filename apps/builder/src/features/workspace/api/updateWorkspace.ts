@@ -41,7 +41,7 @@ export const updateWorkspace = authenticatedProcedure
     if (!workspace)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Workspace not found' })
 
-    if (await isAdminWriteWorkspaceForbidden(workspace, user))
+    if (isAdminWriteWorkspaceForbidden(workspace, user))
       throw new TRPCError({
         code: 'FORBIDDEN',
         message: 'You are not allowed to update this workspace',

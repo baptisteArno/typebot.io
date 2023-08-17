@@ -426,7 +426,7 @@
         }
       }
     },
-    "/linkedTypebots": {
+    "/typebots/{typebotId}/linkedTypebots": {
       "get": {
         "operationId": "getLinkedTypebots",
         "summary": "Get linked typebots",
@@ -440,21 +440,12 @@
         ],
         "parameters": [
           {
-            "name": "workspaceId",
-            "in": "query",
+            "name": "typebotId",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "typebotIds",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Comma separated list of typebot ids"
           }
         ],
         "responses": {

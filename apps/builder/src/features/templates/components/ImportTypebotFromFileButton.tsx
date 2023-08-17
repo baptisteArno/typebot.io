@@ -19,13 +19,12 @@ export const ImportTypebotFromFileButton = ({
     const file = e.target.files[0]
     const fileContent = await readFile(file)
     try {
-      const typebot = parseInvalidTypebot(JSON.parse(fileContent))
-      typebotSchema
+      const typebot = typebotSchema
         .omit({
           createdAt: true,
           updatedAt: true,
         })
-        .parse(typebot)
+        .parse(parseInvalidTypebot(JSON.parse(fileContent)))
       onNewTypebot(typebot as Typebot)
     } catch (err) {
       console.error(err)

@@ -31,7 +31,7 @@ export const listInvitationsInWorkspace = authenticatedProcedure
       include: { members: true, invitations: true },
     })
 
-    if (!workspace || (await isReadWorkspaceFobidden(workspace, user)))
+    if (!workspace || isReadWorkspaceFobidden(workspace, user))
       throw new TRPCError({ code: 'NOT_FOUND', message: 'No workspaces found' })
 
     return { invitations: workspace.invitations }

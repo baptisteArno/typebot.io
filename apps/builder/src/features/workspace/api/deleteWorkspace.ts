@@ -30,7 +30,7 @@ export const deleteWorkspace = authenticatedProcedure
       include: { members: true },
     })
 
-    if (!workspace || (await isAdminWriteWorkspaceForbidden(workspace, user)))
+    if (!workspace || isAdminWriteWorkspaceForbidden(workspace, user))
       throw new TRPCError({ code: 'NOT_FOUND', message: 'No workspaces found' })
 
     await prisma.workspace.deleteMany({
