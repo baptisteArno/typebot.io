@@ -4,6 +4,8 @@ import { TRPCError } from '@trpc/server'
 import { publicTypebotSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { isReadTypebotForbidden } from '../helpers/isReadTypebotForbidden'
+import { parseInvalidTypebot } from '../helpers/parseInvalidTypebot'
+import { PublicTypebot } from '@typebot.io/schemas'
 
 export const getPublishedTypebot = authenticatedProcedure
   .meta({
@@ -48,7 +50,7 @@ export const getPublishedTypebot = authenticatedProcedure
 
     try {
       const parsedTypebot = publicTypebotSchema.parse(
-        existingTypebot.publishedTypebot
+        parseInvalidTypebot(existingTypebot.publishedTypebot as PublicTypebot)
       )
 
       return {

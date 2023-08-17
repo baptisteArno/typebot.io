@@ -26,7 +26,7 @@ export const ImportTypebotFromFileButton = ({
           updatedAt: true,
         })
         .parse(typebot)
-      onNewTypebot(typebot)
+      onNewTypebot(typebot as Typebot)
     } catch (err) {
       console.error(err)
       showToast({

@@ -41,6 +41,11 @@ const resultsTablePreferencesSchema = z.object({
 const isPathNameCompatible = (str: string) =>
   /^([a-z0-9]+-[a-z0-9]*)*$/.test(str) || /^[a-z0-9]*$/.test(str)
 
+const isDomainNameWithPathNameCompatible = (str: string) =>
+  /^(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}(?:\/[\w-\/]*)?)$/.test(
+    str
+  )
+
 export const typebotSchema = z.object({
   version: z.enum(['3', '4', '5']).nullable(),
   id: z.string(),
@@ -56,7 +61,10 @@ export const typebotSchema = z.object({
   icon: z.string().nullable(),
   folderId: z.string().nullable(),
   publicId: z.string().refine(isPathNameCompatible).nullable(),
-  customDomain: z.string().refine(isPathNameCompatible).nullable(),
+  customDomain: z
+    .string()
+    .refine(isDomainNameWithPathNameCompatible)
+    .nullable(),
   workspaceId: z.string(),
   resultsTablePreferences: resultsTablePreferencesSchema.nullable(),
   isArchived: z.boolean(),
