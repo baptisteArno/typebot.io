@@ -119,6 +119,7 @@ export const TypebotProvider = ({
           description: error.message,
         }),
       onSuccess: () => {
+        if (!typebotId) return
         refetchTypebot()
       },
     })
