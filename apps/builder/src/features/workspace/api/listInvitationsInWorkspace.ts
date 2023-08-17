@@ -1,11 +1,9 @@
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import {
-  WorkspaceInvitation,
-  workspaceInvitationSchema,
-} from '@typebot.io/schemas'
+import { workspaceInvitationSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
+import { isReadWorkspaceFobidden } from '../helpers/isReadWorkspaceFobidden'
 
 export const listInvitationsInWorkspace = authenticatedProcedure
   .meta({
@@ -28,19 +26,13 @@ export const listInvitationsInWorkspace = authenticatedProcedure
     })
   )
   .query(async ({ input: { workspaceId }, ctx: { user } }) => {
-    const invitations = (await prisma.workspaceInvitation.findMany({
-      where: {
-        workspaceId,
-        workspace: { members: { some: { userId: user.id } } },
-      },
-      select: { createdAt: true, email: true, type: true },
-    })) as WorkspaceInvitation[]
+    const workspace = await prisma.workspace.findFirst({
+      where: { id: workspaceId },
+      include: { members: true, invitations: true },
+    })
 
-    if (!invitations)
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'No invitations found',
-      })
+    if (!workspace || (await isReadWorkspaceFobidden(workspace, user)))
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'No workspaces found' })
 
-    return { invitations }
+    return { invitations: workspace.invitations }
   })

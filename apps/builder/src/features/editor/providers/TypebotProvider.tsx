@@ -131,27 +131,28 @@ export const TypebotProvider = ({
     { redo, undo, flush, canRedo, canUndo, set: setLocalTypebot },
   ] = useUndo<Typebot>(undefined)
 
-  const linkedTypebotIds =
-    localTypebot?.groups
-      .flatMap((b) => b.blocks)
-      .reduce<string[]>(
-        (typebotIds, block) =>
-          block.type === LogicBlockType.TYPEBOT_LINK &&
-          isDefined(block.options.typebotId) &&
-          !typebotIds.includes(block.options.typebotId)
-            ? [...typebotIds, block.options.typebotId]
-            : typebotIds,
-        []
-      ) ?? []
+  const linkedTypebotIds = useMemo(
+    () =>
+      typebot?.groups
+        .flatMap((group) => group.blocks)
+        .reduce<string[]>(
+          (typebotIds, block) =>
+            block.type === LogicBlockType.TYPEBOT_LINK &&
+            isDefined(block.options.typebotId) &&
+            !typebotIds.includes(block.options.typebotId)
+              ? [...typebotIds, block.options.typebotId]
+              : typebotIds,
+          []
+        ) ?? [],
+    [typebot?.groups]
+  )
 
   const { data: linkedTypebotsData } = trpc.getLinkedTypebots.useQuery(
     {
-      workspaceId: localTypebot?.workspaceId as string,
-      typebotIds: linkedTypebotIds.join(','),
+      typebotId: typebot?.id as string,
     },
     {
-      enabled:
-        isDefined(localTypebot?.workspaceId) && linkedTypebotIds.length > 0,
+      enabled: isDefined(typebot?.id) && linkedTypebotIds.length > 0,
       onError: (error) =>
         showToast({
           title: 'Error while fetching linkedTypebots',

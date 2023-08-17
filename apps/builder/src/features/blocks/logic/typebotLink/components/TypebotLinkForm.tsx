@@ -4,6 +4,7 @@ import { TypebotLinkOptions } from '@typebot.io/schemas'
 import { byId } from '@typebot.io/lib'
 import { GroupsDropdown } from './GroupsDropdown'
 import { TypebotsDropdown } from './TypebotsDropdown'
+import { useEffect, useState } from 'react'
 
 type Props = {
   options: TypebotLinkOptions
@@ -11,12 +12,21 @@ type Props = {
 }
 
 export const TypebotLinkForm = ({ options, onOptionsChange }: Props) => {
-  const { linkedTypebots, typebot } = useTypebot()
+  const { linkedTypebots, typebot, save } = useTypebot()
+  const [linkedTypebotId, setLinkedTypebotId] = useState(options.typebotId)
 
-  const handleTypebotIdChange = (typebotId: string | 'current' | undefined) =>
-    onOptionsChange({ ...options, typebotId })
+  const handleTypebotIdChange = async (
+    typebotId: string | 'current' | undefined
+  ) => onOptionsChange({ ...options, typebotId })
+
   const handleGroupIdChange = (groupId: string | undefined) =>
     onOptionsChange({ ...options, groupId })
+
+  useEffect(() => {
+    if (linkedTypebotId === options.typebotId) return
+    setLinkedTypebotId(options.typebotId)
+    save().then()
+  }, [linkedTypebotId, options.typebotId, save])
 
   return (
     <Stack>

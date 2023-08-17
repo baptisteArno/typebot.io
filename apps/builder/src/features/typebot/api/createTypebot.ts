@@ -16,6 +16,7 @@ import {
   sanitizeSettings,
 } from '../helpers/sanitizers'
 import { createId } from '@paralleldrive/cuid2'
+import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 
 export const createTypebot = authenticatedProcedure
   .meta({
@@ -106,7 +107,21 @@ export const createTypebot = authenticatedProcedure
       },
     })
 
-    return { typebot: typebotSchema.parse(newTypebot) }
+    const parsedNewTypebot = typebotSchema.parse(newTypebot)
+
+    await sendTelemetryEvents([
+      {
+        name: 'Typebot created',
+        workspaceId: parsedNewTypebot.workspaceId,
+        typebotId: parsedNewTypebot.id,
+        userId: user.id,
+        data: {
+          name: newTypebot.name,
+        },
+      },
+    ])
+
+    return { typebot: parsedNewTypebot }
   })
 
 const defaultGroups = () => {

@@ -4,6 +4,7 @@ import { TRPCError } from '@trpc/server'
 import { typebotSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
+import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 
 export const publishTypebot = authenticatedProcedure
   .meta({
@@ -41,7 +42,7 @@ export const publishTypebot = authenticatedProcedure
     )
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
 
-    if (existingTypebot.publishedTypebot) {
+    if (existingTypebot.publishedTypebot)
       await prisma.publicTypebot.updateMany({
         where: {
           id: existingTypebot.publishedTypebot.id,
@@ -59,22 +60,35 @@ export const publishTypebot = authenticatedProcedure
           theme: typebotSchema.shape.theme.parse(existingTypebot.theme),
         },
       })
-      return { message: 'success' }
-    }
+    else
+      await prisma.publicTypebot.createMany({
+        data: {
+          version: existingTypebot.version,
+          typebotId: existingTypebot.id,
+          edges: typebotSchema.shape.edges.parse(existingTypebot.edges),
+          groups: typebotSchema.shape.groups.parse(existingTypebot.groups),
+          settings: typebotSchema.shape.settings.parse(
+            existingTypebot.settings
+          ),
+          variables: typebotSchema.shape.variables.parse(
+            existingTypebot.variables
+          ),
+          theme: typebotSchema.shape.theme.parse(existingTypebot.theme),
+        },
+      })
 
-    await prisma.publicTypebot.createMany({
-      data: {
-        version: existingTypebot.version,
+    await sendTelemetryEvents([
+      {
+        name: 'Typebot published',
+        workspaceId: existingTypebot.workspaceId,
         typebotId: existingTypebot.id,
-        edges: typebotSchema.shape.edges.parse(existingTypebot.edges),
-        groups: typebotSchema.shape.groups.parse(existingTypebot.groups),
-        settings: typebotSchema.shape.settings.parse(existingTypebot.settings),
-        variables: typebotSchema.shape.variables.parse(
-          existingTypebot.variables
-        ),
-        theme: typebotSchema.shape.theme.parse(existingTypebot.theme),
+        userId: user.id,
+        data: {
+          name: existingTypebot.name,
+          isFirstPublish: existingTypebot.publishedTypebot ? undefined : true,
+        },
       },
-    })
+    ])
 
     return { message: 'success' }
   })

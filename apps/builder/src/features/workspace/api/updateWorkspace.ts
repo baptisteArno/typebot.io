@@ -1,8 +1,9 @@
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Workspace, workspaceSchema } from '@typebot.io/schemas'
+import { workspaceSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
+import { isAdminWriteWorkspaceForbidden } from '../helpers/isAdminWriteWorkspaceForbidden'
 
 export const updateWorkspace = authenticatedProcedure
   .meta({
@@ -32,12 +33,19 @@ export const updateWorkspace = authenticatedProcedure
       data: updates,
     })
 
-    const workspace = (await prisma.workspace.findFirst({
+    const workspace = await prisma.workspace.findFirst({
       where: { members: { some: { userId: user.id } }, id: workspaceId },
-    })) as Workspace | null
+      include: { members: true },
+    })
 
     if (!workspace)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Workspace not found' })
+
+    if (await isAdminWriteWorkspaceForbidden(workspace, user))
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: 'You are not allowed to update this workspace',
+      })
 
     return {
       workspace,

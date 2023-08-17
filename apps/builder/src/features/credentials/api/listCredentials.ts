@@ -6,6 +6,7 @@ import { googleSheetsCredentialsSchema } from '@typebot.io/schemas/features/bloc
 import { openAICredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { smtpCredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/sendEmail'
 import { z } from 'zod'
+import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
 
 export const listCredentials = authenticatedProcedure
   .meta({
@@ -35,21 +36,23 @@ export const listCredentials = authenticatedProcedure
     const workspace = await prisma.workspace.findFirst({
       where: {
         id: workspaceId,
-        members: { some: { userId: user.id } },
-      },
-      select: { id: true },
-    })
-    if (!workspace)
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'Workspace not found' })
-    const credentials = await prisma.credentials.findMany({
-      where: {
-        type,
-        workspaceId,
       },
       select: {
         id: true,
-        name: true,
+        members: true,
+        credentials: {
+          where: {
+            type,
+          },
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
     })
-    return { credentials }
+    if (!workspace || (await isReadWorkspaceFobidden(workspace, user)))
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Workspace not found' })
+
+    return { credentials: workspace.credentials }
   })

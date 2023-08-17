@@ -1,8 +1,9 @@
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Workspace, workspaceSchema } from '@typebot.io/schemas'
+import { workspaceSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
+import { isReadWorkspaceFobidden } from '../helpers/isReadWorkspaceFobidden'
 
 export const getWorkspace = authenticatedProcedure
   .meta({
@@ -25,11 +26,12 @@ export const getWorkspace = authenticatedProcedure
     })
   )
   .query(async ({ input: { workspaceId }, ctx: { user } }) => {
-    const workspace = (await prisma.workspace.findFirst({
-      where: { members: { some: { userId: user.id } }, id: workspaceId },
-    })) as Workspace | null
+    const workspace = await prisma.workspace.findFirst({
+      where: { id: workspaceId },
+      include: { members: true },
+    })
 
-    if (!workspace)
+    if (!workspace || (await isReadWorkspaceFobidden(workspace, user)))
       throw new TRPCError({ code: 'NOT_FOUND', message: 'No workspaces found' })
 
     return {

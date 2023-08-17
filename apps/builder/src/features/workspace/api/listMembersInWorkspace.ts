@@ -1,8 +1,9 @@
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { WorkspaceMember, workspaceMemberSchema } from '@typebot.io/schemas'
+import { workspaceMemberSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
+import { isReadWorkspaceFobidden } from '../helpers/isReadWorkspaceFobidden'
 
 export const listMembersInWorkspace = authenticatedProcedure
   .meta({
@@ -25,13 +26,25 @@ export const listMembersInWorkspace = authenticatedProcedure
     })
   )
   .query(async ({ input: { workspaceId }, ctx: { user } }) => {
-    const members = (await prisma.memberInWorkspace.findMany({
-      where: { userId: user.id, workspaceId },
-      include: { user: { select: { name: true, email: true, image: true } } },
-    })) as WorkspaceMember[]
+    const workspace = await prisma.workspace.findFirst({
+      where: { id: workspaceId },
+      include: {
+        members: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    })
 
-    if (!members)
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'No members found' })
+    if (!workspace || (await isReadWorkspaceFobidden(workspace, user)))
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'No workspaces found' })
 
-    return { members }
+    return {
+      members: workspace.members.map((member) => ({
+        role: member.role,
+        user: member.user,
+        workspaceId,
+      })),
+    }
   })

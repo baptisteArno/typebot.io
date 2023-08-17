@@ -7,6 +7,7 @@ import { openAICredentialsSchema } from '@typebot.io/schemas/features/blocks/int
 import { smtpCredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/sendEmail'
 import { encrypt } from '@typebot.io/lib/api/encryption'
 import { z } from 'zod'
+import { isWriteWorkspaceForbidden } from '@/features/workspace/helpers/isWriteWorkspaceForbidden copy'
 
 const inputShape = {
   data: true,
@@ -44,11 +45,10 @@ export const createCredentials = authenticatedProcedure
     const workspace = await prisma.workspace.findFirst({
       where: {
         id: credentials.workspaceId,
-        members: { some: { userId: user.id } },
       },
-      select: { id: true },
+      select: { id: true, members: true },
     })
-    if (!workspace)
+    if (!workspace || (await isWriteWorkspaceForbidden(workspace, user)))
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Workspace not found' })
 
     const { encryptedData, iv } = await encrypt(credentials.data)
