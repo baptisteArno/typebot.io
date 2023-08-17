@@ -55,7 +55,7 @@ const Expression = ({
       )
     }
     case 'Empty':
-      return <Text>Reset {variableName}</Text>
+      return <Text as="span">Reset {variableName}</Text>
     case 'Random ID':
     case 'Today':
     case 'Now':

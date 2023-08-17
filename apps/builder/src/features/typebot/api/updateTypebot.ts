@@ -147,7 +147,7 @@ export const updateTypebot = authenticatedProcedure
           resultsTablePreferences: typebot.resultsTablePreferences ?? undefined,
           publicId: typebot.publicId ?? undefined,
           customDomain: typebot.customDomain ?? undefined,
-          isClosed: typebot.isClosed ?? false,
+          isClosed: typebot.isClosed,
         },
       })
 
