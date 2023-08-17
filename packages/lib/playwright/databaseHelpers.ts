@@ -21,7 +21,7 @@ export const parseTestTypebot = (
   folderId: null,
   name: 'My typebot',
   theme: defaultTheme,
-  settings: defaultSettings,
+  settings: defaultSettings({ isBrandingEnabled: true }),
   publicId: null,
   updatedAt: new Date(),
   createdAt: new Date(),

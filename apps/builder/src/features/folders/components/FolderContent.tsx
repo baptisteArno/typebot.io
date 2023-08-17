@@ -15,7 +15,6 @@ import { BackButton } from './BackButton'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'
 import { useFolders } from '../hooks/useFolders'
-import { patchTypebotQuery } from '../queries/patchTypebotQuery'
 import { createFolderQuery } from '../queries/createFolderQuery'
 import { CreateBotButton } from './CreateBotButton'
 import { CreateFolderButton } from './CreateFolderButton'
@@ -25,6 +24,7 @@ import { TypebotCardOverlay } from './TypebotButtonOverlay'
 import { useI18n } from '@/locales'
 import { useTypebots } from '@/features/dashboard/hooks/useTypebots'
 import { TypebotInDashboard } from '@/features/dashboard/types'
+import { trpc } from '@/lib/trpc'
 
 type Props = { folder: DashboardFolder | null }
 
@@ -65,6 +65,15 @@ export const FolderContent = ({ folder }: Props) => {
     },
   })
 
+  const { mutate: updateTypebot } = trpc.typebot.updateTypebot.useMutation({
+    onError: (error) => {
+      showToast({ description: error.message })
+    },
+    onSuccess: () => {
+      refetchTypebots()
+    },
+  })
+
   const {
     typebots,
     isLoading: isTypebotLoading,
@@ -81,11 +90,12 @@ export const FolderContent = ({ folder }: Props) => {
 
   const moveTypebotToFolder = async (typebotId: string, folderId: string) => {
     if (!typebots) return
-    const { error } = await patchTypebotQuery(typebotId, {
-      folderId: folderId === 'root' ? null : folderId,
+    updateTypebot({
+      typebotId,
+      typebot: {
+        folderId: folderId === 'root' ? null : folderId,
+      },
     })
-    if (error) showToast({ description: error.message })
-    refetchTypebots()
   }
 
   const handleCreateFolder = async () => {

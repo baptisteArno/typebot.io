@@ -67,10 +67,12 @@ export const ResultsTable = ({
   const changeColumnOrder = (newColumnOrder: string[]) => {
     if (typeof newColumnOrder === 'function') return
     updateTypebot({
-      resultsTablePreferences: {
-        columnsOrder: newColumnOrder,
-        columnsVisibility,
-        columnsWidth,
+      updates: {
+        resultsTablePreferences: {
+          columnsOrder: newColumnOrder,
+          columnsVisibility,
+          columnsWidth,
+        },
       },
     })
   }
@@ -80,10 +82,12 @@ export const ResultsTable = ({
   ) => {
     if (typeof newColumnVisibility === 'function') return
     updateTypebot({
-      resultsTablePreferences: {
-        columnsVisibility: newColumnVisibility,
-        columnsWidth,
-        columnsOrder,
+      updates: {
+        resultsTablePreferences: {
+          columnsVisibility: newColumnVisibility,
+          columnsWidth,
+          columnsOrder,
+        },
       },
     })
   }
@@ -93,10 +97,12 @@ export const ResultsTable = ({
   ) => {
     if (typeof newColumnSizing === 'object') return
     updateTypebot({
-      resultsTablePreferences: {
-        columnsWidth: newColumnSizing(columnsWidth),
-        columnsVisibility,
-        columnsOrder,
+      updates: {
+        resultsTablePreferences: {
+          columnsWidth: newColumnSizing(columnsWidth),
+          columnsVisibility,
+          columnsOrder,
+        },
       },
     })
   }

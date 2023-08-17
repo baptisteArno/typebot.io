@@ -1,15 +1,13 @@
 import { Text } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { ZapierBlock } from '@typebot.io/schemas'
-import { byId, isNotDefined } from '@typebot.io/lib'
+import { isNotDefined } from '@typebot.io/lib'
 
 type Props = {
   block: ZapierBlock
 }
 
 export const ZapierContent = ({ block }: Props) => {
-  const { webhooks } = useTypebot()
-  const webhook = block.options.webhook ?? webhooks.find(byId(block.webhookId))
+  const webhook = block.options.webhook
 
   if (isNotDefined(webhook?.body))
     return <Text color="gray.500">Configure...</Text>

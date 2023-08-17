@@ -1,8 +1,8 @@
+import { parseInvalidTypebot } from '@/features/typebot/helpers/parseInvalidTypebot'
 import { useToast } from '@/hooks/useToast'
 import { Button, ButtonProps, chakra } from '@chakra-ui/react'
-import { groupSchema, Typebot } from '@typebot.io/schemas'
+import { Typebot, typebotSchema } from '@typebot.io/schemas'
 import React, { ChangeEvent } from 'react'
-import { z } from 'zod'
 
 type Props = {
   onNewTypebot: (typebot: Typebot) => void
@@ -19,8 +19,13 @@ export const ImportTypebotFromFileButton = ({
     const file = e.target.files[0]
     const fileContent = await readFile(file)
     try {
-      const typebot = JSON.parse(fileContent)
-      z.array(groupSchema).parse(typebot.groups)
+      const typebot = parseInvalidTypebot(JSON.parse(fileContent))
+      typebotSchema
+        .omit({
+          createdAt: true,
+          updatedAt: true,
+        })
+        .parse(typebot)
       onNewTypebot(typebot)
     } catch (err) {
       console.error(err)

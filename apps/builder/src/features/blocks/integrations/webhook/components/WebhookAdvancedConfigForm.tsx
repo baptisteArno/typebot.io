@@ -47,7 +47,7 @@ export const WebhookAdvancedConfigForm = ({
   onWebhookChange,
   onOptionsChange,
 }: Props) => {
-  const { typebot, save, updateWebhook } = useTypebot()
+  const { typebot, save } = useTypebot()
   const [isTestResponseLoading, setIsTestResponseLoading] = useState(false)
   const [testResponse, setTestResponse] = useState<string>()
   const [responseKeys, setResponseKeys] = useState<string[]>([])
@@ -80,8 +80,7 @@ export const WebhookAdvancedConfigForm = ({
   const executeTestRequest = async () => {
     if (!typebot) return
     setIsTestResponseLoading(true)
-    if (!options.webhook)
-      await Promise.all([updateWebhook(webhook.id, webhook), save()])
+    if (!options.webhook) await save()
     else await save()
     const { data, error } = await executeWebhook(
       typebot.id,

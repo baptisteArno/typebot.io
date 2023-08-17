@@ -8,7 +8,7 @@ export const emailInputOptionsSchema = optionBaseSchema
   .merge(textInputOptionsBaseSchema)
   .merge(
     z.object({
-      retryMessageContent: z.string(),
+      retryMessageContent: z.string().optional(),
     })
   )
 
@@ -19,13 +19,14 @@ export const emailInputSchema = blockBaseSchema.merge(
   })
 )
 
+export const invalidEmailDefaultRetryMessage =
+  "This email doesn't seem to be valid. Can you type it again?"
+
 export const defaultEmailInputOptions: EmailInputOptions = {
   labels: {
     button: defaultButtonLabel,
     placeholder: 'Type your email...',
   },
-  retryMessageContent:
-    "This email doesn't seem to be valid. Can you type it again?",
 }
 
 export type EmailInputBlock = z.infer<typeof emailInputSchema>

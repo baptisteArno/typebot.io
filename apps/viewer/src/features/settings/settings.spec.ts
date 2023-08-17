@@ -12,15 +12,17 @@ import {
 } from '@typebot.io/lib/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
 
+const settings = defaultSettings({ isBrandingEnabled: true })
+
 test('Result should be overwritten on page refresh', async ({ page }) => {
   const typebotId = createId()
   await createTypebots([
     {
       id: typebotId,
       settings: {
-        ...defaultSettings,
+        ...settings,
         general: {
-          ...defaultSettings.general,
+          ...settings.general,
           rememberUser: {
             isEnabled: true,
             storage: 'session',
@@ -96,8 +98,8 @@ test('Hide query params', async ({ page }) => {
   await updateTypebot({
     id: typebotId,
     settings: {
-      ...defaultSettings,
-      general: { ...defaultSettings.general, isHideQueryParamsEnabled: false },
+      ...settings,
+      general: { ...settings.general, isHideQueryParamsEnabled: false },
     },
   })
   await page.goto(`/${typebotId}-public?Name=John`)
@@ -136,7 +138,7 @@ test('Should correctly parse metadata', async ({ page }) => {
     {
       id: typebotId,
       settings: {
-        ...defaultSettings,
+        ...settings,
         metadata: customMetadata,
       },
       ...parseDefaultGroupWithBlock({

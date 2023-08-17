@@ -174,7 +174,7 @@ test.describe('API', () => {
     expect(data.resultExample).toMatchObject({
       message: 'This is a sample result, it has been generated ⬇️',
       Welcome: 'Hi!',
-      Email: 'test@email.com',
+      Email: 'user@email.com',
       Name: 'answer value',
       Services: 'Website dev, Content Marketing, Social Media, UI / UX Design',
       'Additional information': 'answer value',

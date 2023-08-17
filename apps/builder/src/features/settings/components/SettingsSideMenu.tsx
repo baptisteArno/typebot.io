@@ -22,13 +22,17 @@ export const SettingsSideMenu = () => {
 
   const handleTypingEmulationChange = (typingEmulation: TypingEmulation) =>
     typebot &&
-    updateTypebot({ settings: { ...typebot.settings, typingEmulation } })
+    updateTypebot({
+      updates: { settings: { ...typebot.settings, typingEmulation } },
+    })
 
   const handleGeneralSettingsChange = (general: GeneralSettings) =>
-    typebot && updateTypebot({ settings: { ...typebot.settings, general } })
+    typebot &&
+    updateTypebot({ updates: { settings: { ...typebot.settings, general } } })
 
   const handleMetadataChange = (metadata: Metadata) =>
-    typebot && updateTypebot({ settings: { ...typebot.settings, metadata } })
+    typebot &&
+    updateTypebot({ updates: { settings: { ...typebot.settings, metadata } } })
 
   return (
     <Stack

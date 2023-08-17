@@ -1,10 +1,10 @@
-import { getTypebot } from '@/features/typebot/helpers/getTypebot'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Typebot } from '@typebot.io/schemas'
+import { Group } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { archiveResults } from '@typebot.io/lib/api/helpers/archiveResults'
 import prisma from '@/lib/prisma'
+import { isWriteTypebotForbidden } from '@/features/typebot/helpers/isWriteTypebotForbidden'
 
 export const deleteResults = authenticatedProcedure
   .meta({
@@ -31,18 +31,27 @@ export const deleteResults = authenticatedProcedure
   .mutation(async ({ input, ctx: { user } }) => {
     const idsArray = input.resultIds?.split(',')
     const { typebotId } = input
-    const typebot = (await getTypebot({
-      accessLevel: 'write',
-      typebotId,
-      user,
-      select: {
-        groups: true,
+    const typebot = await prisma.typebot.findUnique({
+      where: {
+        id: typebotId,
       },
-    })) as Pick<Typebot, 'groups'> | null
-    if (!typebot)
+      select: {
+        workspaceId: true,
+        groups: true,
+        collaborators: {
+          select: {
+            userId: true,
+            type: true,
+          },
+        },
+      },
+    })
+    if (!typebot || (await isWriteTypebotForbidden(typebot, user)))
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
     const { success } = await archiveResults(prisma)({
-      typebot,
+      typebot: {
+        groups: typebot.groups as Group[],
+      },
       resultsFilter: {
         id: (idsArray?.length ?? 0) > 0 ? { in: idsArray } : undefined,
         typebotId,

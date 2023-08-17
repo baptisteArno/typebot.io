@@ -1,8 +1,8 @@
-import { getTypebot } from '@/features/typebot/helpers/getTypebot'
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { logSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
+import { isReadTypebotForbidden } from '@/features/typebot/helpers/isReadTypebotForbidden'
 
 export const getResultLogs = authenticatedProcedure
   .meta({
@@ -22,12 +22,24 @@ export const getResultLogs = authenticatedProcedure
   )
   .output(z.object({ logs: z.array(logSchema) }))
   .query(async ({ input: { typebotId, resultId }, ctx: { user } }) => {
-    const typebot = await getTypebot({
-      accessLevel: 'read',
-      user,
-      typebotId,
+    const typebot = await prisma.typebot.findUnique({
+      where: {
+        id: typebotId,
+      },
+      select: {
+        id: true,
+        workspaceId: true,
+        groups: true,
+        collaborators: {
+          select: {
+            userId: true,
+            type: true,
+          },
+        },
+      },
     })
-    if (!typebot) throw new Error('Typebot not found')
+    if (!typebot || (await isReadTypebotForbidden(typebot, user)))
+      throw new Error('Typebot not found')
     const logs = await prisma.log.findMany({
       where: {
         resultId,

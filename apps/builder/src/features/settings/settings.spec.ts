@@ -12,7 +12,7 @@ test.describe.parallel('Settings page', () => {
         id: typebotId,
       })
       await page.goto(`/typebots/${typebotId}/settings`)
-    
+
       await page.click('text="Remember user"')
 
       await expect(page.getByPlaceholder('Type your answer...')).toHaveValue(

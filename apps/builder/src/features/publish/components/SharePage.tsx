@@ -33,7 +33,7 @@ export const SharePage = () => {
   const { showToast } = useToast()
 
   const handlePublicIdChange = async (publicId: string) => {
-    updateTypebot({ publicId })
+    updateTypebot({ updates: { publicId } })
   }
 
   const publicId = typebot
@@ -50,7 +50,7 @@ export const SharePage = () => {
   }
 
   const handleCustomDomainChange = (customDomain: string | null) =>
-    updateTypebot({ customDomain })
+    updateTypebot({ updates: { customDomain } })
 
   const checkIfPathnameIsValid = (pathname: string) => {
     const isCorrectlyFormatted =

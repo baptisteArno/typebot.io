@@ -584,8 +584,7 @@
                                                   }
                                                 },
                                                 "required": [
-                                                  "labels",
-                                                  "retryMessageContent"
+                                                  "labels"
                                                 ],
                                                 "additionalProperties": false
                                               }
@@ -4342,8 +4341,7 @@
                                     }
                                   },
                                   "required": [
-                                    "labels",
-                                    "retryMessageContent"
+                                    "labels"
                                   ],
                                   "additionalProperties": false
                                 }

@@ -28,6 +28,9 @@ import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
 import { isFreePlan } from '@/features/billing/helpers/isFreePlan'
 import { parseTimeSince } from '@/helpers/parseTimeSince'
 import { useI18n } from '@/locales'
+import { trpc } from '@/lib/trpc'
+import { useToast } from '@/hooks/useToast'
+import { parseDefaultPublicId } from '../helpers/parseDefaultPublicId'
 
 export const PublishButton = (props: ButtonProps) => {
   const t = useI18n()
@@ -36,36 +39,83 @@ export const PublishButton = (props: ButtonProps) => {
   const { push, query } = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const {
-    isPublishing,
     isPublished,
-    publishTypebot,
     publishedTypebot,
     restorePublishedTypebot,
     typebot,
     isSavingLoading,
     updateTypebot,
-    unpublishTypebot,
     save,
   } = useTypebot()
+  const { showToast } = useToast()
+
+  const {
+    typebot: {
+      getPublishedTypebot: { refetch: refetchPublishedTypebot },
+    },
+  } = trpc.useContext()
+
+  const { mutate: publishTypebotMutate, isLoading: isPublishing } =
+    trpc.typebot.publishTypebot.useMutation({
+      onError: (error) =>
+        showToast({
+          title: 'Error while publishing typebot',
+          description: error.message,
+        }),
+      onSuccess: () => {
+        if (!publishedTypebot) push(`/typebots/${query.typebotId}/share`)
+        refetchPublishedTypebot()
+      },
+    })
+
+  const { mutate: unpublishTypebotMutate, isLoading: isUnpublishing } =
+    trpc.typebot.unpublishTypebot.useMutation({
+      onError: (error) =>
+        showToast({
+          title: 'Error while unpublishing typebot',
+          description: error.message,
+        }),
+      onSuccess: () => {
+        if (!publishedTypebot) push(`/typebots/${query.typebotId}/share`)
+        refetchPublishedTypebot()
+      },
+    })
 
   const hasInputFile = typebot?.groups
     .flatMap((g) => g.blocks)
     .some((b) => b.type === InputBlockType.FILE)
 
-  const handlePublishClick = () => {
+  const handlePublishClick = async () => {
+    if (!typebot?.id) return
     if (isFreePlan(workspace) && hasInputFile) return onOpen()
-    publishTypebot()
-    if (!publishedTypebot) push(`/typebots/${query.typebotId}/share`)
+    if (!typebot.publicId) {
+      await updateTypebot({
+        updates: {
+          publicId: parseDefaultPublicId(typebot.name, typebot.id),
+        },
+        save: true,
+      })
+    } else await save()
+    publishTypebotMutate({
+      typebotId: typebot.id,
+    })
+  }
+
+  const unpublishTypebot = async () => {
+    if (!typebot?.id) return
+    if (typebot.isClosed)
+      await updateTypebot({ updates: { isClosed: false }, save: true })
+    unpublishTypebotMutate({
+      typebotId: typebot?.id,
+    })
   }
 
   const closeTypebot = async () => {
-    updateTypebot({ isClosed: true })
-    await save()
+    await updateTypebot({ updates: { isClosed: true }, save: true })
   }
 
   const openTypebot = async () => {
-    updateTypebot({ isClosed: false })
-    await save()
+    await updateTypebot({ updates: { isClosed: false }, save: true })
   }
 
   return (
@@ -99,8 +149,8 @@ export const PublishButton = (props: ButtonProps) => {
       >
         <Button
           colorScheme="blue"
-          isLoading={isPublishing || isSavingLoading}
-          isDisabled={isPublished}
+          isLoading={isPublishing || isUnpublishing}
+          isDisabled={isPublished || isSavingLoading}
           onClick={handlePublishClick}
           borderRightRadius={publishedTypebot ? 0 : undefined}
           {...props}

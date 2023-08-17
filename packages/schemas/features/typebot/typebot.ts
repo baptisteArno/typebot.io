@@ -38,8 +38,11 @@ const resultsTablePreferencesSchema = z.object({
   columnsWidth: z.record(z.string(), z.number()),
 })
 
+const isPathNameCompatible = (str: string) =>
+  /^([a-z0-9]+-[a-z0-9]*)*$/.test(str) || /^[a-z0-9]*$/.test(str)
+
 export const typebotSchema = z.object({
-  version: z.enum(['3', '4']).nullable(),
+  version: z.enum(['3', '4', '5']).nullable(),
   id: z.string(),
   name: z.string(),
   groups: z.array(groupSchema),
@@ -52,8 +55,8 @@ export const typebotSchema = z.object({
   updatedAt: z.date(),
   icon: z.string().nullable(),
   folderId: z.string().nullable(),
-  publicId: z.string().nullable(),
-  customDomain: z.string().nullable(),
+  publicId: z.string().refine(isPathNameCompatible).nullable(),
+  customDomain: z.string().refine(isPathNameCompatible).nullable(),
   workspaceId: z.string(),
   resultsTablePreferences: resultsTablePreferencesSchema.nullable(),
   isArchived: z.boolean(),

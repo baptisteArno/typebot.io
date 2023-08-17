@@ -1,9 +1,9 @@
-import { getTypebot } from '@/features/typebot/helpers/getTypebot'
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { ResultWithAnswers, resultWithAnswersSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
+import { isReadTypebotForbidden } from '@/features/typebot/helpers/isReadTypebotForbidden'
 
 const maxLimit = 200
 
@@ -38,12 +38,23 @@ export const getResults = authenticatedProcedure
         message: 'limit must be between 1 and 200',
       })
     const { cursor } = input
-    const typebot = await getTypebot({
-      accessLevel: 'read',
-      user,
-      typebotId: input.typebotId,
+    const typebot = await prisma.typebot.findUnique({
+      where: {
+        id: input.typebotId,
+      },
+      select: {
+        id: true,
+        workspaceId: true,
+        groups: true,
+        collaborators: {
+          select: {
+            userId: true,
+            type: true,
+          },
+        },
+      },
     })
-    if (!typebot?.id)
+    if (!typebot || (await isReadTypebotForbidden(typebot, user)))
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
     const results = (await prisma.result.findMany({
       take: limit + 1,

@@ -52,9 +52,11 @@ export const TypebotHeader = () => {
   }, 1000)
   const { isOpen, onOpen } = useDisclosure()
 
-  const handleNameSubmit = (name: string) => updateTypebot({ name })
+  const handleNameSubmit = (name: string) =>
+    updateTypebot({ updates: { name } })
 
-  const handleChangeIcon = (icon: string) => updateTypebot({ icon })
+  const handleChangeIcon = (icon: string) =>
+    updateTypebot({ updates: { icon } })
 
   const handlePreviewClick = async () => {
     setStartPreviewAtGroup(undefined)

@@ -1,17 +1,15 @@
 import { Stack, Text } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { WebhookBlock } from '@typebot.io/schemas'
-import { byId } from '@typebot.io/lib'
 import { SetVariableLabel } from '@/components/SetVariableLabel'
 
 type Props = {
   block: WebhookBlock
 }
 
-export const WebhookContent = ({ block: { options, webhookId } }: Props) => {
+export const WebhookContent = ({ block: { options } }: Props) => {
   const { typebot } = useTypebot()
-  const { webhooks } = useTypebot()
-  const webhook = options.webhook ?? webhooks.find(byId(webhookId))
+  const webhook = options.webhook
 
   if (!webhook?.url) return <Text color="gray.500">Configure...</Text>
   return (

@@ -7,6 +7,7 @@ import {
   Typebot,
 } from '@typebot.io/schemas'
 
+// TODO: remove
 export type NewTypebotProps = Omit<
   Typebot,
   | 'createdAt'
@@ -56,12 +57,6 @@ export const parseNewTypebot = ({
     variables: [],
     selectedThemeTemplateId: null,
     theme: defaultTheme,
-    settings: {
-      ...defaultSettings,
-      general: {
-        ...defaultSettings.general,
-        isBrandingEnabled,
-      },
-    },
+    settings: defaultSettings({ isBrandingEnabled }),
   }
 }

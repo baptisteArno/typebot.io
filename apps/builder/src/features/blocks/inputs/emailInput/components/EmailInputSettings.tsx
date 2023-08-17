@@ -1,7 +1,11 @@
 import { TextInput } from '@/components/inputs'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormLabel, Stack } from '@chakra-ui/react'
-import { EmailInputOptions, Variable } from '@typebot.io/schemas'
+import {
+  EmailInputOptions,
+  Variable,
+  invalidEmailDefaultRetryMessage,
+} from '@typebot.io/schemas'
 import React from 'react'
 
 type Props = {
@@ -33,7 +37,9 @@ export const EmailInputSettings = ({ options, onOptionsChange }: Props) => {
       />
       <TextInput
         label="Retry message:"
-        defaultValue={options.retryMessageContent}
+        defaultValue={
+          options.retryMessageContent ?? invalidEmailDefaultRetryMessage
+        }
         onChange={handleRetryMessageChange}
       />
       <Stack>

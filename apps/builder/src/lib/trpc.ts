@@ -1,4 +1,4 @@
-import { httpBatchLink, loggerLink } from '@trpc/client'
+import { createTRPCProxyClient, httpBatchLink, loggerLink } from '@trpc/client'
 import { createTRPCNext } from '@trpc/next'
 import type { AppRouter } from '../helpers/server/routers/v1/trpcRouter'
 import superjson from 'superjson'
@@ -24,6 +24,15 @@ export const trpc = createTRPCNext<AppRouter>({
     }
   },
   ssr: false,
+})
+
+export const trpcVanilla = createTRPCProxyClient<AppRouter>({
+  links: [
+    httpBatchLink({
+      url: `${getBaseUrl()}/api/trpc`,
+    }),
+  ],
+  transformer: superjson,
 })
 
 export const defaultQueryOptions = {

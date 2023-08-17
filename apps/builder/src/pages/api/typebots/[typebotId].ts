@@ -3,15 +3,14 @@ import prisma from '@/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { methodNotAllowed, notAuthenticated } from '@typebot.io/lib/api'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
-import { Typebot } from '@typebot.io/schemas'
+import { Group, Typebot } from '@typebot.io/schemas'
 import { omit } from '@typebot.io/lib'
-import { getTypebot } from '@/features/typebot/helpers/getTypebot'
 import { isReadTypebotForbidden } from '@/features/typebot/helpers/isReadTypebotForbidden'
-import { removeTypebotOldProperties } from '@/features/typebot/helpers/removeTypebotOldProperties'
-import { roundGroupsCoordinate } from '@/features/typebot/helpers/roundGroupsCoordinate'
 import { archiveResults } from '@typebot.io/lib/api/helpers/archiveResults'
 import { migrateTypebotFromV3ToV4 } from '@typebot.io/lib/migrations/migrateTypebotFromV3ToV4'
+import { isWriteTypebotForbidden } from '@/features/typebot/helpers/isWriteTypebotForbidden'
 
+// TODO: delete
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res)
   if (!user) return notAuthenticated(res)
@@ -46,17 +45,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (req.method === 'DELETE') {
-    const typebot = (await getTypebot({
-      accessLevel: 'write',
-      user,
-      typebotId,
-      select: {
-        groups: true,
+    const typebot = await prisma.typebot.findUnique({
+      where: {
+        id: typebotId,
       },
-    })) as Pick<Typebot, 'groups'> | null
-    if (!typebot) return res.status(404).send({ typebot: null })
+      select: {
+        id: true,
+        workspaceId: true,
+        groups: true,
+        collaborators: {
+          select: {
+            userId: true,
+            type: true,
+          },
+        },
+      },
+    })
+    if (!typebot || (await isWriteTypebotForbidden(typebot, user)))
+      return res.status(404).send({ typebot: null })
     const { success } = await archiveResults(prisma)({
-      typebot,
+      typebot: {
+        groups: typebot.groups as Group[],
+      },
       resultsFilter: { typebotId },
     })
     if (!success) return res.status(500).send({ success: false, error: '' })
@@ -75,15 +85,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as Typebot
 
-    const typebot = await getTypebot({
-      accessLevel: 'write',
-      typebotId,
-      user,
+    const typebot = await prisma.typebot.findUnique({
+      where: {
+        id: typebotId,
+      },
       select: {
+        id: true,
+        workspaceId: true,
+        groups: true,
         updatedAt: true,
+        collaborators: {
+          select: {
+            userId: true,
+            type: true,
+          },
+        },
       },
     })
-    if (!typebot) return res.status(404).send({ message: 'Typebot not found' })
+    if (!typebot || (await isWriteTypebotForbidden(typebot, user)))
+      return res.status(404).send({ message: 'Typebot not found' })
 
     if (
       (typebot.updatedAt as Date).getTime() > new Date(data.updatedAt).getTime()
@@ -124,12 +144,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (req.method === 'PATCH') {
-    const typebot = await getTypebot({
-      accessLevel: 'write',
-      typebotId,
-      user,
+    const typebot = await prisma.typebot.findUnique({
+      where: {
+        id: typebotId,
+      },
+      select: {
+        id: true,
+        workspaceId: true,
+        groups: true,
+        collaborators: {
+          select: {
+            userId: true,
+            type: true,
+          },
+        },
+      },
     })
-    if (!typebot) return res.status(404).send({ message: 'Typebot not found' })
+    if (!typebot || (await isWriteTypebotForbidden(typebot, user)))
+      return res.status(404).send({ message: 'Typebot not found' })
     const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     const updatedTypebot = await prisma.typebot.update({
       where: { id: typebotId },
@@ -142,10 +174,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const migrateTypebot = async (typebot: Typebot): Promise<Typebot> => {
   if (typebot.version === '4') return typebot
-  const updatedTypebot = roundGroupsCoordinate(
-    removeTypebotOldProperties(typebot) as Typebot
-  )
-  return migrateTypebotFromV3ToV4(prisma)(updatedTypebot)
+  return migrateTypebotFromV3ToV4(prisma)(typebot)
 }
 
 export default handler

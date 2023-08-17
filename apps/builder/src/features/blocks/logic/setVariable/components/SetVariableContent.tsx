@@ -33,7 +33,7 @@ const Expression = ({
     case 'Custom':
     case undefined:
       return (
-        <Text>
+        <Text as="span">
           {variableName} = {options.expressionToEvaluate}
         </Text>
       )
@@ -48,7 +48,7 @@ const Expression = ({
         byId(options.mapListItemParams?.targetListVariableId)
       )
       return (
-        <Text>
+        <Text as="span">
           {variableName} = item in ${targetListVariable?.name} with same index
           as ${baseItemVariable?.name} in ${baseListVariable?.name}
         </Text>
@@ -64,7 +64,7 @@ const Expression = ({
     case 'Moment of the day':
     case 'Yesterday': {
       return (
-        <Text>
+        <Text as="span">
           {variableName} = <Tag colorScheme="purple">System.{options.type}</Tag>
         </Text>
       )

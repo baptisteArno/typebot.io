@@ -5,11 +5,6 @@ import {
   createTypebots,
   importTypebotInDatabase,
 } from '@typebot.io/lib/playwright/databaseActions'
-import {
-  waitForSuccessfulDeleteRequest,
-  waitForSuccessfulPostRequest,
-  waitForSuccessfulPutRequest,
-} from '@typebot.io/lib/playwright/testHelpers'
 import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
 import { getTestAsset } from '@/test/utils/playwright'
 
@@ -236,25 +231,13 @@ test('Published typebot menu should work', async ({ page }) => {
   await expect(page.locator("text='Start'")).toBeVisible()
   await expect(page.locator('button >> text="Published"')).toBeVisible()
   await page.click('[aria-label="Show published typebot menu"]')
-  await Promise.all([
-    waitForSuccessfulPutRequest(page),
-    page.click('text="Close typebot to new responses"'),
-  ])
+  await page.click('text="Close typebot to new responses"')
   await expect(page.locator('button >> text="Closed"')).toBeDisabled()
   await page.click('[aria-label="Show published typebot menu"]')
-  await Promise.all([
-    waitForSuccessfulPutRequest(page),
-    page.click('text="Reopen typebot to new responses"'),
-  ])
+  await page.click('text="Reopen typebot to new responses"')
   await expect(page.locator('button >> text="Published"')).toBeDisabled()
   await page.click('[aria-label="Show published typebot menu"]')
-  await Promise.all([
-    waitForSuccessfulDeleteRequest(page),
-    page.click('button >> text="Unpublish typebot"'),
-  ])
-  await Promise.all([
-    waitForSuccessfulPostRequest(page),
-    page.click('button >> text="Publish"'),
-  ])
+  await page.click('button >> text="Unpublish typebot"')
+  await page.click('button >> text="Publish"')
   await expect(page.locator('button >> text="Published"')).toBeVisible()
 })

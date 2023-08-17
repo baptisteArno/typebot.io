@@ -13,6 +13,7 @@ import {
   SetVariableBlock,
   WebhookBlock,
   defaultPaymentInputOptions,
+  invalidEmailDefaultRetryMessage,
 } from '@typebot.io/schemas'
 import { isInputBlock, byId } from '@typebot.io/lib'
 import { executeGroup } from './executeGroup'
@@ -207,6 +208,8 @@ const parseRetryMessage = (
 
 const parseDefaultRetryMessage = (block: InputBlock): string => {
   switch (block.type) {
+    case InputBlockType.EMAIL:
+      return invalidEmailDefaultRetryMessage
     case InputBlockType.PAYMENT:
       return defaultPaymentInputOptions.retryMessageContent as string
     default:

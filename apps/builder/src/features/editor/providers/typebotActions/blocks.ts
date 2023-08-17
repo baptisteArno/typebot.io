@@ -37,10 +37,7 @@ export type WebhookCallBacks = {
   ) => void
 }
 
-export const blocksAction = (
-  setTypebot: SetTypebot,
-  { onWebhookBlockCreated, onWebhookBlockDuplicated }: WebhookCallBacks
-): BlocksActions => ({
+export const blocksAction = (setTypebot: SetTypebot): BlocksActions => ({
   createBlock: (
     groupId: string,
     block: DraggableBlock | DraggableBlockType,
@@ -48,13 +45,7 @@ export const blocksAction = (
   ) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
-        createBlockDraft(
-          typebot,
-          block,
-          groupId,
-          indices,
-          onWebhookBlockCreated
-        )
+        createBlockDraft(typebot, block, groupId, indices)
       })
     ),
   updateBlock: (
@@ -74,10 +65,7 @@ export const blocksAction = (
         const blocks = typebot.groups[groupIndex].blocks
         if (blockIndex === blocks.length - 1 && block.outgoingEdgeId)
           deleteEdgeDraft(typebot, block.outgoingEdgeId as string)
-        const newBlock = duplicateBlockDraft(block.groupId)(
-          block,
-          onWebhookBlockDuplicated
-        )
+        const newBlock = duplicateBlockDraft(block.groupId)(block)
         typebot.groups[groupIndex].blocks.splice(blockIndex + 1, 0, newBlock)
       })
     ),
@@ -105,8 +93,7 @@ export const createBlockDraft = (
   typebot: Draft<Typebot>,
   block: DraggableBlock | DraggableBlockType,
   groupId: string,
-  { groupIndex, blockIndex }: BlockIndices,
-  onWebhookBlockCreated?: (data: Partial<Webhook>) => void
+  { groupIndex, blockIndex }: BlockIndices
 ) => {
   const blocks = typebot.groups[groupIndex].blocks
   if (
@@ -116,13 +103,7 @@ export const createBlockDraft = (
   )
     deleteEdgeDraft(typebot, blocks[blockIndex - 1].outgoingEdgeId as string)
   typeof block === 'string'
-    ? createNewBlock(
-        typebot,
-        block,
-        groupId,
-        { groupIndex, blockIndex },
-        onWebhookBlockCreated
-      )
+    ? createNewBlock(typebot, block, groupId, { groupIndex, blockIndex })
     : moveBlockToGroup(typebot, block, groupId, { groupIndex, blockIndex })
   removeEmptyGroups(typebot)
 }
@@ -174,10 +155,7 @@ const moveBlockToGroup = (
 
 export const duplicateBlockDraft =
   (groupId: string) =>
-  (
-    block: Block,
-    onWebhookBlockDuplicated: WebhookCallBacks['onWebhookBlockDuplicated']
-  ): Block => {
+  (block: Block): Block => {
     const blockId = createId()
     if (blockHasItems(block))
       return {
@@ -189,8 +167,6 @@ export const duplicateBlockDraft =
       } as Block
     if (isWebhookBlock(block)) {
       const newWebhookId = createId()
-      if (block.webhookId)
-        onWebhookBlockDuplicated(block.webhookId, newWebhookId)
       return {
         ...block,
         groupId,

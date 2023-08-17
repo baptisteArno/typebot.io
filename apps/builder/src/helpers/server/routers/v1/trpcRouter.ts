@@ -10,6 +10,7 @@ import { typebotRouter } from '@/features/typebot/api/router'
 import { workspaceRouter } from '@/features/workspace/api/router'
 import { router } from '../../trpc'
 import { analyticsRouter } from '@/features/analytics/api/router'
+import { collaboratorsRouter } from '@/features/collaboration/api/router'
 
 export const trpcRouter = router({
   getAppVersionProcedure,
@@ -23,6 +24,7 @@ export const trpcRouter = router({
   billing: billingRouter,
   credentials: credentialsRouter,
   theme: themeRouter,
+  collaborators: collaboratorsRouter,
 })
 
 export type AppRouter = typeof trpcRouter

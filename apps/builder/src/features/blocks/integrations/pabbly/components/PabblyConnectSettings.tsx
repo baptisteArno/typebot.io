@@ -1,13 +1,11 @@
 import { Alert, AlertIcon, Button, Link, Stack, Text } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@/components/icons'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import {
   PabblyConnectBlock,
   Webhook,
   WebhookOptions,
 } from '@typebot.io/schemas'
-import React, { useState } from 'react'
-import { byId } from '@typebot.io/lib'
+import React from 'react'
 import { WebhookAdvancedConfigForm } from '../../webhook/components/WebhookAdvancedConfigForm'
 import { TextInput } from '@/components/inputs'
 
@@ -17,35 +15,23 @@ type Props = {
 }
 
 export const PabblyConnectSettings = ({
-  block: { webhookId, id: blockId, options },
+  block: { id: blockId, options },
   onOptionsChange,
 }: Props) => {
-  const { webhooks, updateWebhook } = useTypebot()
-
-  const [localWebhook, _setLocalWebhook] = useState(
-    webhooks.find(byId(webhookId))
-  )
-
   const setLocalWebhook = async (newLocalWebhook: Webhook) => {
-    if (options.webhook) {
-      onOptionsChange({
-        ...options,
-        webhook: newLocalWebhook,
-      })
-      return
-    }
-    _setLocalWebhook(newLocalWebhook)
-    await updateWebhook(newLocalWebhook.id, newLocalWebhook)
+    if (!options.webhook) return
+    onOptionsChange({
+      ...options,
+      webhook: newLocalWebhook,
+    })
   }
 
-  const handleUrlChange = (url: string) =>
-    localWebhook &&
-    setLocalWebhook({
-      ...localWebhook,
-      url,
-    })
+  const updateUrl = (url: string) => {
+    if (!options.webhook) return
+    onOptionsChange({ ...options, webhook: { ...options.webhook, url } })
+  }
 
-  const url = options.webhook?.url ?? localWebhook?.url
+  const url = options.webhook?.url
 
   return (
     <Stack spacing={4}>
@@ -70,14 +56,14 @@ export const PabblyConnectSettings = ({
       <TextInput
         placeholder="Paste webhook URL..."
         defaultValue={url ?? ''}
-        onChange={handleUrlChange}
+        onChange={updateUrl}
         withVariableButton={false}
         debounceTimeout={0}
       />
-      {(localWebhook || options.webhook) && (
+      {options.webhook && (
         <WebhookAdvancedConfigForm
           blockId={blockId}
-          webhook={(options.webhook ?? localWebhook) as Webhook}
+          webhook={options.webhook as Webhook}
           options={options}
           onWebhookChange={setLocalWebhook}
           onOptionsChange={onOptionsChange}

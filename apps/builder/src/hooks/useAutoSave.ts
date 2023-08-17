@@ -7,7 +7,8 @@ export const useAutoSave = <T>(
     item,
     debounceTimeout,
   }: {
-    handler: () => Promise<void>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    handler: () => Promise<any>
     item?: T
     debounceTimeout: number
   },

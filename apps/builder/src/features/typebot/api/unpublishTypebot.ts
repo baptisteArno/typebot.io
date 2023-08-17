@@ -1,0 +1,56 @@
+import prisma from '@/lib/prisma'
+import { authenticatedProcedure } from '@/helpers/server/trpc'
+import { TRPCError } from '@trpc/server'
+import { z } from 'zod'
+import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
+
+export const unpublishTypebot = authenticatedProcedure
+  .meta({
+    openapi: {
+      method: 'POST',
+      path: '/typebots/{typebotId}/unpublish',
+      protect: true,
+      summary: 'Unpublish a typebot',
+      tags: ['Typebot'],
+    },
+  })
+  .input(
+    z.object({
+      typebotId: z.string(),
+    })
+  )
+  .output(
+    z.object({
+      message: z.literal('success'),
+    })
+  )
+  .mutation(async ({ input: { typebotId }, ctx: { user } }) => {
+    const existingTypebot = await prisma.typebot.findFirst({
+      where: {
+        id: typebotId,
+      },
+      include: {
+        collaborators: true,
+        publishedTypebot: true,
+      },
+    })
+    if (!existingTypebot?.publishedTypebot)
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Published typebot not found',
+      })
+
+    if (
+      !existingTypebot.id ||
+      (await isWriteTypebotForbidden(existingTypebot, user))
+    )
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+
+    await prisma.publicTypebot.deleteMany({
+      where: {
+        id: existingTypebot.publishedTypebot.id,
+      },
+    })
+
+    return { message: 'success' }
+  })
