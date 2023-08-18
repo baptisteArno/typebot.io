@@ -5,6 +5,7 @@ import { Plan, WorkspaceRole } from '@typebot.io/prisma'
 import {
   defaultSettings,
   defaultTheme,
+  typebotCreateSchema,
   typebotSchema,
 } from '@typebot.io/schemas'
 import { z } from 'zod'
@@ -31,22 +32,7 @@ export const createTypebot = authenticatedProcedure
   .input(
     z.object({
       workspaceId: z.string(),
-      typebot: typebotSchema
-        .pick({
-          name: true,
-          icon: true,
-          selectedThemeTemplateId: true,
-          groups: true,
-          theme: true,
-          settings: true,
-          folderId: true,
-          variables: true,
-          edges: true,
-          resultsTablePreferences: true,
-          publicId: true,
-          customDomain: true,
-        })
-        .partial(),
+      typebot: typebotCreateSchema,
     })
   )
   .output(

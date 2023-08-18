@@ -71,6 +71,23 @@ export const typebotSchema = z.object({
   isClosed: z.boolean(),
 }) satisfies z.ZodType<TypebotPrisma>
 
+export const typebotCreateSchema = typebotSchema
+  .pick({
+    name: true,
+    icon: true,
+    selectedThemeTemplateId: true,
+    groups: true,
+    theme: true,
+    settings: true,
+    folderId: true,
+    variables: true,
+    edges: true,
+    resultsTablePreferences: true,
+    publicId: true,
+    customDomain: true,
+  })
+  .partial()
+
 export type Typebot = z.infer<typeof typebotSchema>
 export type Target = z.infer<typeof targetSchema>
 export type Source = z.infer<typeof sourceSchema>

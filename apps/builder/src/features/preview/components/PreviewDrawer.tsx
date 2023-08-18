@@ -4,7 +4,6 @@ import {
   Fade,
   Flex,
   HStack,
-  useColorMode,
   useColorModeValue,
   VStack,
 } from '@chakra-ui/react'
@@ -20,7 +19,6 @@ import { useDrag } from '@use-gesture/react'
 import { ResizeHandle } from './ResizeHandle'
 
 export const PreviewDrawer = () => {
-  const isDark = useColorMode().colorMode === 'dark'
   const { save, isSavingLoading } = useTypebot()
   const { setRightPanel } = useEditor()
   const { setPreviewingBlock } = useGraph()
@@ -69,7 +67,6 @@ export const PreviewDrawer = () => {
       <Fade in={isResizeHandleVisible}>
         <ResizeHandle
           {...useResizeHandleDrag()}
-          isDark={isDark}
           pos="absolute"
           left="-7.5px"
           top={`calc(50% - ${headerHeight}px)`}

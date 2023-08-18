@@ -63,8 +63,10 @@ export const PublishButton = (props: ButtonProps) => {
           description: error.message,
         }),
       onSuccess: () => {
+        refetchPublishedTypebot({
+          typebotId: typebot?.id as string,
+        })
         if (!publishedTypebot) push(`/typebots/${query.typebotId}/share`)
-        refetchPublishedTypebot()
       },
     })
 
@@ -76,7 +78,6 @@ export const PublishButton = (props: ButtonProps) => {
           description: error.message,
         }),
       onSuccess: () => {
-        if (!publishedTypebot) push(`/typebots/${query.typebotId}/share`)
         refetchPublishedTypebot()
       },
     })

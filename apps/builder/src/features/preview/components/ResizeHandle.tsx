@@ -1,6 +1,6 @@
 import { FlexProps, Flex, useColorModeValue, Box } from '@chakra-ui/react'
 
-export const ResizeHandle = (props: { isDark: boolean } & FlexProps) => {
+export const ResizeHandle = (props: FlexProps) => {
   return (
     <Flex
       w="15px"

@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { typebotSchema } from '@typebot.io/schemas'
+import { typebotCreateSchema, typebotSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
 import {
   isCustomDomainNotAvailable,
@@ -25,23 +25,13 @@ export const updateTypebot = authenticatedProcedure
   .input(
     z.object({
       typebotId: z.string(),
-      typebot: typebotSchema
-        .pick({
-          name: true,
-          icon: true,
-          selectedThemeTemplateId: true,
-          groups: true,
-          theme: true,
-          settings: true,
-          folderId: true,
-          variables: true,
-          edges: true,
-          isClosed: true,
-          resultsTablePreferences: true,
-          publicId: true,
-          customDomain: true,
-        })
-        .partial(),
+      typebot: typebotCreateSchema.merge(
+        typebotSchema
+          .pick({
+            isClosed: true,
+          })
+          .partial()
+      ),
       updatedAt: z
         .date()
         .optional()
