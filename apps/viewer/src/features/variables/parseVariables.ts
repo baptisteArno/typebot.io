@@ -1,6 +1,6 @@
 import { isDefined } from '@typebot.io/lib'
 import { Variable, VariableWithValue } from '@typebot.io/schemas'
-import { safeStringify } from './safeStringify'
+import { safeStringify } from '@typebot.io/lib/safeStringify'
 
 export type ParseVariablesOptions = {
   fieldToParse?: 'value' | 'id'
@@ -42,7 +42,9 @@ export const parseVariables =
         if (options.escapeForJson)
           return (
             dollarSign +
-            jsonParse(typeof value !== 'string' ? JSON.stringify(value) : value)
+            (typeof value === 'string'
+              ? jsonParse(value)
+              : JSON.stringify(value))
           )
         const parsedValue =
           dollarSign +

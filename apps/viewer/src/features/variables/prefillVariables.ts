@@ -1,5 +1,5 @@
 import { StartParams, Variable } from '@typebot.io/schemas'
-import { safeStringify } from './safeStringify'
+import { safeStringify } from '@typebot.io/lib/safeStringify'
 
 export const prefillVariables = (
   variables: Variable[],

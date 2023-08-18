@@ -1,5 +1,5 @@
-import { isNotDefined } from '@typebot.io/lib'
 import type { ScriptToExecute } from '@typebot.io/schemas'
+import { safeStringify } from '@typebot.io/lib/safeStringify'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
@@ -15,23 +15,12 @@ export const executeSetVariable = async ({
     )
     const replyToSend = await func(...args.map((arg) => arg.value))
     return {
-      replyToSend: safeStringify(replyToSend),
+      replyToSend: safeStringify(replyToSend) ?? undefined,
     }
   } catch (err) {
     console.error(err)
     return {
-      replyToSend: safeStringify(content),
+      replyToSend: safeStringify(content) ?? undefined,
     }
-  }
-}
-
-export const safeStringify = (val: unknown): string | undefined => {
-  if (isNotDefined(val)) return
-  if (typeof val === 'string') return val
-  try {
-    return JSON.stringify(val)
-  } catch {
-    console.warn('Failed to safely stringify variable value', val)
-    return
   }
 }

@@ -1,3 +1,5 @@
+import { safeStringify } from '@typebot.io/lib/safeStringify'
+import { isDefined } from '@typebot.io/lib/utils'
 import { Variable, VariableForTest } from '@typebot.io/schemas'
 
 export const convertVariablesForTestToVariables = (
@@ -13,7 +15,19 @@ export const convertVariablesForTestToVariables = (
         const variable = variables.find(
           (v) => v.id === variableForTest.variableId
         ) as Variable
-        return { ...variable, value: variableForTest.value }
+        return { ...variable, value: parseVariableValue(variableForTest.value) }
       }, {}),
   ]
+}
+
+const parseVariableValue = (value: string | undefined): string | string[] => {
+  if (!value) return ''
+  try {
+    const parsedValue = JSON.parse(value)
+    if (Array.isArray(parsedValue))
+      return parsedValue.map(safeStringify).filter(isDefined)
+    return safeStringify(parsedValue) ?? value
+  } catch (error) {
+    return value
+  }
 }

@@ -55,10 +55,10 @@ export const continueBotFlow =
       const existingVariable = state.typebot.variables.find(
         byId(block.options.variableId)
       )
-      if (existingVariable) {
+      if (existingVariable && reply) {
         const newVariable = {
           ...existingVariable,
-          value: reply,
+          value: safeJsonParse(reply),
         }
         newSessionState = updateVariables(state)([newVariable])
       }
@@ -318,3 +318,11 @@ export const isReplyValid = (inputValue: string, block: Block): boolean => {
 
 export const canSkip = (inputType: InputBlockType) =>
   inputType === InputBlockType.FILE
+
+export const safeJsonParse = (value: string): unknown => {
+  try {
+    return JSON.parse(value)
+  } catch {
+    return value
+  }
+}

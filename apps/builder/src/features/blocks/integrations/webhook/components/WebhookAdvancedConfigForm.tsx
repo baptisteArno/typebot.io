@@ -186,9 +186,7 @@ export const WebhookAdvancedConfigForm = ({
             </AccordionButton>
             <AccordionPanel pt="4">
               <TableList<VariableForTest>
-                initialItems={
-                  options?.variablesForTest ?? { byId: {}, allIds: [] }
-                }
+                initialItems={options?.variablesForTest ?? []}
                 onItemsChange={updateVariablesForTest}
                 Item={VariableForTestInputs}
                 addLabel="Add an entry"

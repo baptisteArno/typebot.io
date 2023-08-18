@@ -1,4 +1,4 @@
-import { isNotDefined } from '@typebot.io/lib'
+import { isNotDefined } from './utils'
 
 export const safeStringify = (val: unknown): string | null => {
   if (isNotDefined(val)) return null
