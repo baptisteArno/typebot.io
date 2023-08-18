@@ -218,7 +218,7 @@ export default {
   'editor.sidebarBlock.text.label': 'Texto',
   'editor.sidebarBlock.image.label': 'Imagem',
   'editor.sidebarBlock.video.label': 'Vídeo',
-  'editor.sidebarBlock.embed.label': 'Embed',
+  'editor.sidebarBlock.embed.label': 'Incorporar',
   'editor.sidebarBlock.audio.label': 'Áudio',
   'editor.sidebarBlock.number.label': 'Número',
   'editor.sidebarBlock.email.label': 'Email',
