@@ -85,7 +85,7 @@ export default {
   'auth.error.email':
     'E-mail não encontrado. Tente entrar com um provedor diferente.',
   'auth.error.oauthNotLinked':
-    'Para confirmar sua identidade, entre com a mesma conta que você usou originalmente.',
+    'Já existe uma conta vinculada a esse E-mail, entre com a mesma conta que você usou originalmente.',
   'auth.error.unknown': 'Ocorreu um erro. Tente novamente.',
   'auth.signinErrorToast.title': 'Não autorizado',
   'auth.signinErrorToast.description': 'As inscrições estão desativadas.',
