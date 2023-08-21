@@ -34,7 +34,7 @@ export const getUsage = authenticatedProcedure
           },
         },
         typebots: {
-          select: { id: true, results: { select: { id: true } } },
+          select: { id: true },
         },
       },
     })
