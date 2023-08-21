@@ -11,6 +11,7 @@ import { workspaceRouter } from '@/features/workspace/api/router'
 import { router } from '../../trpc'
 import { analyticsRouter } from '@/features/analytics/api/router'
 import { collaboratorsRouter } from '@/features/collaboration/api/router'
+import { customDomainsRouter } from '@/features/customDomains/api/router'
 
 export const trpcRouter = router({
   getAppVersionProcedure,
@@ -25,6 +26,7 @@ export const trpcRouter = router({
   credentials: credentialsRouter,
   theme: themeRouter,
   collaborators: collaboratorsRouter,
+  customDomains: customDomainsRouter,
 })
 
 export type AppRouter = typeof trpcRouter

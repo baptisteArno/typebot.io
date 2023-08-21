@@ -10,6 +10,7 @@ import {
   notAuthenticated,
 } from '@typebot.io/lib/api'
 
+// TODO: delete
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res)
   if (!user) return notAuthenticated(res)

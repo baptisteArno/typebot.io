@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react'
 import { useToast } from '@/hooks/useToast'
 import { useEffect, useRef, useState } from 'react'
-import { createCustomDomainQuery } from '../queries/createCustomDomainQuery'
+import { trpc } from '@/lib/trpc'
 
 const hostnameRegex =
   /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/
@@ -46,6 +46,24 @@ export const CustomDomainModal = ({
   })
 
   const { showToast } = useToast()
+  const { mutate } = trpc.customDomains.createCustomDomain.useMutation({
+    onMutate: () => {
+      setIsLoading(true)
+    },
+    onError: (error) => {
+      showToast({
+        title: 'Error while creating custom domain',
+        description: error.message,
+      })
+    },
+    onSettled: () => {
+      setIsLoading(false)
+    },
+    onSuccess: (data) => {
+      onNewDomain(data.customDomain.name)
+      onClose()
+    },
+  })
 
   useEffect(() => {
     if (inputValue === '' || !isOpen) return
@@ -62,15 +80,7 @@ export const CustomDomainModal = ({
 
   const onAddDomainClick = async () => {
     if (!hostnameRegex.test(inputValue)) return
-    setIsLoading(true)
-    const { error } = await createCustomDomainQuery(workspaceId, {
-      name: inputValue,
-    })
-    setIsLoading(false)
-    if (error)
-      return showToast({ title: error.name, description: error.message })
-    onNewDomain(inputValue)
-    onClose()
+    mutate({ name: inputValue, workspaceId })
   }
   return (
     <Modal

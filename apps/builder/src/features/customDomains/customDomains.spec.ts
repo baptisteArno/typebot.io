@@ -34,7 +34,7 @@ test('should be able to connect custom domain', async ({ page }) => {
     'Enter'
   )
   await expect(page.locator('text="custom-path"')).toBeVisible()
-  await page.click('[aria-label="Remove custom domain"]')
+  await page.click('[aria-label="Remove custom URL"]')
   await expect(page.locator('text=sub.yolozeeer.com')).toBeHidden()
   await page.click('button >> text=Add my domain')
   await page.click('[aria-label="Remove domain"]')

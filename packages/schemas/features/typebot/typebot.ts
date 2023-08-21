@@ -39,7 +39,7 @@ const resultsTablePreferencesSchema = z.object({
 })
 
 const isPathNameCompatible = (str: string) =>
-  /^([a-z0-9]+-[a-z0-9]*)*$/.test(str) || /^[a-z0-9]*$/.test(str)
+  /^([a-zA-Z0-9]+(-|.)[a-zA-z0-9]*)*$/.test(str) || /^[a-zA-Z0-9]*$/.test(str)
 
 const isDomainNameWithPathNameCompatible = (str: string) =>
   /^(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}(?:\/[\w-\/]*)?)$/.test(

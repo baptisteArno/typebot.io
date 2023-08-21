@@ -1,4 +1,4 @@
-import { TrashIcon } from '@/components/icons'
+import { CloseIcon } from '@/components/icons'
 import { Seo } from '@/components/Seo'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'
@@ -33,7 +33,7 @@ export const SharePage = () => {
   const { showToast } = useToast()
 
   const handlePublicIdChange = async (publicId: string) => {
-    updateTypebot({ updates: { publicId } })
+    updateTypebot({ updates: { publicId }, save: true })
   }
 
   const publicId = typebot
@@ -50,7 +50,7 @@ export const SharePage = () => {
   }
 
   const handleCustomDomainChange = (customDomain: string | null) =>
-    updateTypebot({ updates: { customDomain } })
+    updateTypebot({ updates: { customDomain }, save: true })
 
   const checkIfPathnameIsValid = (pathname: string) => {
     const isCorrectlyFormatted =
@@ -113,8 +113,8 @@ export const SharePage = () => {
                   onPathnameChange={handlePathnameChange}
                 />
                 <IconButton
-                  icon={<TrashIcon />}
-                  aria-label="Remove custom domain"
+                  icon={<CloseIcon />}
+                  aria-label="Remove custom URL"
                   size="xs"
                   onClick={() => handleCustomDomainChange(null)}
                 />

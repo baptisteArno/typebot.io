@@ -11,6 +11,7 @@ import {
 } from '../helpers/sanitizers'
 import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
+import { Prisma } from '@typebot.io/prisma'
 
 export const updateTypebot = authenticatedProcedure
   .meta({
@@ -134,9 +135,13 @@ export const updateTypebot = authenticatedProcedure
           folderId: typebot.folderId,
           variables: typebot.variables,
           edges: typebot.edges,
-          resultsTablePreferences: typebot.resultsTablePreferences ?? undefined,
-          publicId: typebot.publicId ?? undefined,
-          customDomain: typebot.customDomain ?? undefined,
+          resultsTablePreferences:
+            typebot.resultsTablePreferences === null
+              ? Prisma.DbNull
+              : typebot.resultsTablePreferences,
+          publicId: typebot.publicId === null ? null : typebot.publicId,
+          customDomain:
+            typebot.customDomain === null ? null : typebot.customDomain,
           isClosed: typebot.isClosed,
         },
       })

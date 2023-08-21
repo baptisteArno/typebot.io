@@ -15,8 +15,7 @@ import React, { useState } from 'react'
 import { CustomDomainModal } from './CustomDomainModal'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'
-import { useCustomDomains } from '../hooks/useCustomDomains'
-import { deleteCustomDomainQuery } from '../queries/deleteCustomDomainQuery'
+import { trpc } from '@/lib/trpc'
 
 type Props = Omit<MenuButtonProps, 'type'> & {
   currentCustomDomain?: string
@@ -32,10 +31,36 @@ export const CustomDomainsDropdown = ({
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { workspace } = useWorkspace()
   const { showToast } = useToast()
-  const { customDomains, mutate } = useCustomDomains({
-    workspaceId: workspace?.id,
-    onError: (error) =>
-      showToast({ title: error.name, description: error.message }),
+  const { data, refetch } = trpc.customDomains.listCustomDomains.useQuery(
+    {
+      workspaceId: workspace?.id as string,
+    },
+    {
+      enabled: !!workspace?.id,
+      onError: (error) => {
+        showToast({
+          title: 'Error while fetching custom domains',
+          description: error.message,
+        })
+      },
+    }
+  )
+  const { mutate } = trpc.customDomains.deleteCustomDomain.useMutation({
+    onMutate: ({ name }) => {
+      setIsDeleting(name)
+    },
+    onError: (error) => {
+      showToast({
+        title: 'Error while deleting custom domain',
+        description: error.message,
+      })
+    },
+    onSettled: () => {
+      setIsDeleting('')
+    },
+    onSuccess: () => {
+      refetch()
+    },
   })
 
   const handleMenuItemClick = (customDomain: string) => () =>
@@ -45,27 +70,14 @@ export const CustomDomainsDropdown = ({
     (domainName: string) => async (e: React.MouseEvent) => {
       if (!workspace) return
       e.stopPropagation()
-      setIsDeleting(domainName)
-      const { error } = await deleteCustomDomainQuery(workspace.id, domainName)
-      setIsDeleting('')
-      if (error)
-        return showToast({ title: error.name, description: error.message })
       mutate({
-        customDomains: (customDomains ?? []).filter(
-          (cd) => cd.name !== domainName
-        ),
+        name: domainName,
+        workspaceId: workspace.id,
       })
     }
 
-  const handleNewDomain = (domain: string) => {
-    if (!workspace) return
-    mutate({
-      customDomains: [
-        ...(customDomains ?? []),
-        { name: domain, workspaceId: workspace?.id },
-      ],
-    })
-    handleMenuItemClick(domain)()
+  const handleNewDomain = (name: string) => {
+    onCustomDomainSelect(name)
   }
 
   return (
@@ -92,7 +104,7 @@ export const CustomDomainsDropdown = ({
       </MenuButton>
       <MenuList maxW="500px" shadow="lg">
         <Stack maxH={'35vh'} overflowY="scroll" spacing="0">
-          {(customDomains ?? []).map((customDomain) => (
+          {(data?.customDomains ?? []).map((customDomain) => (
             <Button
               role="menuitem"
               minH="40px"
@@ -107,6 +119,7 @@ export const CustomDomainsDropdown = ({
             >
               {customDomain.name}
               <IconButton
+                as="span"
                 icon={<TrashIcon />}
                 aria-label="Remove domain"
                 size="xs"
