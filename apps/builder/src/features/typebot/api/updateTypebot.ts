@@ -139,7 +139,12 @@ export const updateTypebot = authenticatedProcedure
             typebot.resultsTablePreferences === null
               ? Prisma.DbNull
               : typebot.resultsTablePreferences,
-          publicId: typebot.publicId === null ? null : typebot.publicId,
+          publicId:
+            typebot.publicId === null
+              ? null
+              : typebot.publicId && isPublicIdValid(typebot.publicId)
+              ? typebot.publicId
+              : undefined,
           customDomain:
             typebot.customDomain === null ? null : typebot.customDomain,
           isClosed: typebot.isClosed,
@@ -149,3 +154,6 @@ export const updateTypebot = authenticatedProcedure
       return { typebot: typebotSchema.parse(newTypebot) }
     }
   )
+
+const isPublicIdValid = (str: string) =>
+  /^([a-z0-9]+-[a-z0-9]*)*$/.test(str) || /^[a-z0-9]*$/.test(str)

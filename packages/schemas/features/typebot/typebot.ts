@@ -38,9 +38,6 @@ const resultsTablePreferencesSchema = z.object({
   columnsWidth: z.record(z.string(), z.number()),
 })
 
-const isPathNameCompatible = (str: string) =>
-  /^([a-zA-Z0-9]+(-|.)[a-zA-z0-9]*)*$/.test(str) || /^[a-zA-Z0-9]*$/.test(str)
-
 const isDomainNameWithPathNameCompatible = (str: string) =>
   /^(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}(?:\/[\w-\/]*)?)$/.test(
     str
@@ -60,7 +57,10 @@ export const typebotSchema = z.object({
   updatedAt: z.date(),
   icon: z.string().nullable(),
   folderId: z.string().nullable(),
-  publicId: z.string().refine(isPathNameCompatible).nullable(),
+  publicId: z
+    .string()
+    .refine((str) => /^[a-zA-Z0-9-.]+$/.test(str))
+    .nullable(),
   customDomain: z
     .string()
     .refine(isDomainNameWithPathNameCompatible)

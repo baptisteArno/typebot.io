@@ -58,8 +58,7 @@ export const SharePage = () => {
 
     if (!isCorrectlyFormatted) {
       showToast({
-        description:
-          'Should contain only contain letters, numbers. Words can be separated by dashes.',
+        description: 'Can only contain lowercase letters, numbers and dashes.',
       })
       return false
     }
