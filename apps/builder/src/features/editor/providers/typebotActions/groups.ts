@@ -6,7 +6,7 @@ import {
   DraggableBlockType,
   BlockIndices,
 } from '@typebot.io/schemas'
-import { SetTypebot } from '../TypebotProvider'
+import { SetTypebot, I18nFunction } from '../TypebotProvider'
 import {
   deleteGroupDraft,
   createBlockDraft,
@@ -28,7 +28,7 @@ export type GroupsActions = {
   deleteGroup: (groupIndex: number) => void
 }
 
-const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
+const groupsActions = (setTypebot: SetTypebot, scopedT: I18nFunction): GroupsActions => ({
   createGroup: ({
     id,
     block,
@@ -63,11 +63,12 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
       produce(typebot, (typebot) => {
         const group = typebot.groups[groupIndex]
         const id = createId()
+      
         const newGroup: Group = {
           ...group,
           title: isEmpty(group.title)
             ? ''
-            : `${parseGroupTitle(group.title)} copy`,
+            : `${parseGroupTitle(group.title)} ${scopedT('groups.copy.title')}`,
           id,
           blocks: group.blocks.map((block) => duplicateBlockDraft(id)(block)),
           graphCoordinates: {
