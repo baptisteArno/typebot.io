@@ -2,7 +2,7 @@ import { MemberInWorkspace, User } from '@typebot.io/prisma'
 
 export const isAdminWriteWorkspaceForbidden = (
   workspace: {
-    members: MemberInWorkspace[]
+    members: Pick<MemberInWorkspace, 'role' | 'userId'>[]
   },
   user: Pick<User, 'email' | 'id'>
 ) => {

@@ -2,7 +2,7 @@ import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEven
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Plan, WorkspaceRole } from '@typebot.io/prisma'
+import { Plan } from '@typebot.io/prisma'
 import { workspaceSchema } from '@typebot.io/schemas'
 import Stripe from 'stripe'
 import { isDefined } from '@typebot.io/lib'
@@ -14,6 +14,7 @@ import {
 } from '@typebot.io/lib/pricing'
 import { chatPriceIds, storagePriceIds } from './getSubscription'
 import { createCheckoutSessionUrl } from './createCheckoutSession'
+import { isAdminWriteWorkspaceForbidden } from '@/features/workspace/helpers/isAdminWriteWorkspaceForbidden'
 
 export const updateSubscription = authenticatedProcedure
   .meta({
@@ -63,10 +64,21 @@ export const updateSubscription = authenticatedProcedure
       const workspace = await prisma.workspace.findFirst({
         where: {
           id: workspaceId,
-          members: { some: { userId: user.id, role: WorkspaceRole.ADMIN } },
+        },
+        select: {
+          stripeId: true,
+          members: {
+            select: {
+              userId: true,
+              role: true,
+            },
+          },
         },
       })
-      if (!workspace?.stripeId)
+      if (
+        !workspace?.stripeId ||
+        isAdminWriteWorkspaceForbidden(workspace, user)
+      )
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: 'Workspace not found',

@@ -1,11 +1,11 @@
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { WorkspaceRole } from '@typebot.io/prisma'
 import Stripe from 'stripe'
 import { isDefined } from '@typebot.io/lib'
 import { z } from 'zod'
 import { invoiceSchema } from '@typebot.io/schemas/features/billing/invoice'
+import { isAdminWriteWorkspaceForbidden } from '@/features/workspace/helpers/isAdminWriteWorkspaceForbidden'
 
 export const listInvoices = authenticatedProcedure
   .meta({
@@ -36,10 +36,18 @@ export const listInvoices = authenticatedProcedure
     const workspace = await prisma.workspace.findFirst({
       where: {
         id: workspaceId,
-        members: { some: { userId: user.id, role: WorkspaceRole.ADMIN } },
+      },
+      select: {
+        stripeId: true,
+        members: {
+          select: {
+            userId: true,
+            role: true,
+          },
+        },
       },
     })
-    if (!workspace?.stripeId)
+    if (!workspace?.stripeId || isAdminWriteWorkspaceForbidden(workspace, user))
       throw new TRPCError({
         code: 'NOT_FOUND',
         message: 'Workspace not found',

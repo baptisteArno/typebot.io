@@ -8,7 +8,7 @@ import { UsageProgressBars } from './UsageProgressBars'
 import { CurrentSubscriptionSummary } from './CurrentSubscriptionSummary'
 
 export const BillingSettingsLayout = () => {
-  const { workspace, refreshWorkspace } = useWorkspace()
+  const { workspace } = useWorkspace()
 
   if (!workspace) return null
   return (
@@ -20,10 +20,7 @@ export const BillingSettingsLayout = () => {
           workspace.plan !== Plan.LIFETIME &&
           workspace.plan !== Plan.UNLIMITED &&
           workspace.plan !== Plan.OFFERED && (
-            <ChangePlanForm
-              workspace={workspace}
-              onUpgradeSuccess={refreshWorkspace}
-            />
+            <ChangePlanForm workspace={workspace} />
           )}
       </Stack>
 

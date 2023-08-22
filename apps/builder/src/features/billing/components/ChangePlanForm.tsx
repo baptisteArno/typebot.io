@@ -16,10 +16,9 @@ import { StripeClimateLogo } from './StripeClimateLogo'
 
 type Props = {
   workspace: Workspace
-  onUpgradeSuccess: () => void
 }
 
-export const ChangePlanForm = ({ workspace, onUpgradeSuccess }: Props) => {
+export const ChangePlanForm = ({ workspace }: Props) => {
   const scopedT = useScopedI18n('billing')
 
   const { user } = useUser()
@@ -28,7 +27,9 @@ export const ChangePlanForm = ({ workspace, onUpgradeSuccess }: Props) => {
     useState<PreCheckoutModalProps['selectedSubscription']>()
   const [isYearly, setIsYearly] = useState(true)
 
-  const { data } = trpc.billing.getSubscription.useQuery(
+  const trpcContext = trpc.useContext()
+
+  const { data, refetch } = trpc.billing.getSubscription.useQuery(
     {
       workspaceId: workspace.id,
     },
@@ -52,7 +53,8 @@ export const ChangePlanForm = ({ workspace, onUpgradeSuccess }: Props) => {
           window.location.href = checkoutUrl
           return
         }
-        onUpgradeSuccess()
+        refetch()
+        trpcContext.workspace.getWorkspace.invalidate()
         showToast({
           status: 'success',
           description: scopedT('updateSuccessToast.description', {

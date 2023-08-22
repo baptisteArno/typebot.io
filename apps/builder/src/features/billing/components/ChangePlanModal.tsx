@@ -25,7 +25,7 @@ export const ChangePlanModal = ({
   type,
 }: ChangePlanModalProps) => {
   const t = useI18n()
-  const { workspace, refreshWorkspace } = useWorkspace()
+  const { workspace } = useWorkspace()
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="2xl">
       <ModalOverlay />
@@ -36,12 +36,7 @@ export const ChangePlanModal = ({
               {t('billing.upgradeLimitLabel', { type: type })}
             </AlertInfo>
           )}
-          {workspace && (
-            <ChangePlanForm
-              workspace={workspace}
-              onUpgradeSuccess={refreshWorkspace}
-            />
-          )}
+          {workspace && <ChangePlanForm workspace={workspace} />}
         </ModalBody>
 
         <ModalFooter>

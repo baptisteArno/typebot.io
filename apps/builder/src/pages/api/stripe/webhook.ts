@@ -133,6 +133,19 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
         case 'customer.subscription.deleted': {
           const subscription = event.data.object as Stripe.Subscription
+          const { data } = await stripe.subscriptions.list({
+            customer: subscription.customer as string,
+            limit: 1,
+            status: 'active',
+          })
+          const existingSubscription = data[0] as
+            | Stripe.Subscription
+            | undefined
+          if (existingSubscription)
+            return res.send({
+              message:
+                'An active subscription still exists. Skipping downgrade.',
+            })
           const workspace = await prisma.workspace.update({
             where: {
               stripeId: subscription.customer as string,

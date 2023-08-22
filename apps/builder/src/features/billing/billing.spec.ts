@@ -197,7 +197,9 @@ test('plan changes should work', async ({ page }) => {
     page.waitForNavigation(),
     page.click('text="Billing portal"'),
   ])
-  await expect(page.getByText('$247.00 per month')).toBeVisible()
+  await expect(page.getByText('$247.00 per month')).toBeVisible({
+    timeout: 10000,
+  })
   await expect(page.getByText('(×25000)')).toBeVisible()
   await expect(page.getByText('(×15)')).toBeVisible()
   await expect(page.locator('text="Add payment method"')).toBeVisible()

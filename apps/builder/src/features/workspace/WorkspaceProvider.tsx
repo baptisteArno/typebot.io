@@ -25,7 +25,6 @@ const workspaceContext = createContext<{
   createWorkspace: (name?: string) => Promise<void>
   updateWorkspace: (updates: { icon?: string; name?: string }) => void
   deleteCurrentWorkspace: () => Promise<void>
-  refreshWorkspace: () => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
@@ -166,11 +165,6 @@ export const WorkspaceProvider = ({
     await deleteWorkspaceMutation.mutateAsync({ workspaceId })
   }
 
-  const refreshWorkspace = () => {
-    trpcContext.workspace.getWorkspace.invalidate()
-    trpcContext.billing.getSubscription.invalidate()
-  }
-
   return (
     <workspaceContext.Provider
       value={{
@@ -181,7 +175,6 @@ export const WorkspaceProvider = ({
         createWorkspace,
         updateWorkspace,
         deleteCurrentWorkspace,
-        refreshWorkspace,
       }}
     >
       {children}
