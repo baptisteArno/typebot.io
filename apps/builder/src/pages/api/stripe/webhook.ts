@@ -7,7 +7,7 @@ import prisma from '@/lib/prisma'
 import { Plan, WorkspaceRole } from '@typebot.io/prisma'
 import { RequestHandler } from 'next/dist/server/next'
 import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
-import { PublicTypebot, Typebot } from '@typebot.io/schemas'
+import { Settings } from '@typebot.io/schemas'
 
 if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET)
   throw new Error('STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET missing')
@@ -184,36 +184,42 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             ])
           }
 
-          const typebots = (await prisma.typebot.findMany({
+          const typebots = await prisma.typebot.findMany({
             where: {
               workspaceId: workspace.id,
               isArchived: { not: true },
             },
             include: { publishedTypebot: true },
-          })) as (Typebot & { publishedTypebot: PublicTypebot })[]
+          })
           for (const typebot of typebots) {
-            if (typebot.settings.general.isBrandingEnabled) continue
+            const settings = typebot.settings as Settings
+            if (settings.general.isBrandingEnabled) continue
             await prisma.typebot.updateMany({
               where: { id: typebot.id },
               data: {
                 settings: {
-                  ...typebot.settings,
+                  ...settings,
                   general: {
-                    ...typebot.settings.general,
+                    ...settings.general,
                     isBrandingEnabled: true,
                   },
                 },
               },
             })
-            if (typebot.publishedTypebot.settings.general.isBrandingEnabled)
+            const publishedTypebotSettings = typebot.publishedTypebot
+              ?.settings as Settings | null
+            if (
+              !publishedTypebotSettings ||
+              publishedTypebotSettings?.general.isBrandingEnabled
+            )
               continue
             await prisma.publicTypebot.updateMany({
               where: { id: typebot.id },
               data: {
                 settings: {
-                  ...typebot.publishedTypebot.settings,
+                  ...publishedTypebotSettings,
                   general: {
-                    ...typebot.publishedTypebot.settings.general,
+                    ...publishedTypebotSettings.general,
                     isBrandingEnabled: true,
                   },
                 },
