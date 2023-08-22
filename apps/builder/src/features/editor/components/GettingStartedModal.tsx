@@ -21,8 +21,10 @@ import {
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { useScopedI18n } from '@/locales'
 
 export const GettingStartedModal = () => {
+  const scopedT = useScopedI18n('editor.gettingStartedModal')
   const { query } = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -38,7 +40,7 @@ export const GettingStartedModal = () => {
         <ModalCloseButton />
         <ModalBody as={Stack} spacing="8" py="10">
           <Stack spacing={4}>
-            <Heading fontSize="xl">Editor basics</Heading>
+            <Heading fontSize="xl">{scopedT('editorBasics.heading')}</Heading>
             <List spacing={4}>
               <HStack as={ListItem}>
                 <Flex
@@ -52,11 +54,10 @@ export const GettingStartedModal = () => {
                   flexShrink={0}
                   fontSize="13px"
                 >
-                  1
+                  {scopedT('editorBasics.list.one.number')}
                 </Flex>
                 <Text>
-                  The left side bar contains blocks that you can drag and drop
-                  to the board.
+                  {scopedT('editorBasics.list.one.label')}
                 </Text>
               </HStack>
               <HStack as={ListItem}>
@@ -71,11 +72,10 @@ export const GettingStartedModal = () => {
                   fontWeight="bold"
                   flexShrink={0}
                 >
-                  2
+                  {scopedT('editorBasics.list.two.number')}
                 </Flex>
                 <Text>
-                  You can group blocks together by dropping them below or above
-                  each other
+                  {scopedT('editorBasics.list.two.label')}
                 </Text>
               </HStack>
               <HStack as={ListItem}>
@@ -90,9 +90,9 @@ export const GettingStartedModal = () => {
                   flexShrink={0}
                   fontSize="13px"
                 >
-                  3
+                  {scopedT('editorBasics.list.three.number')}
                 </Flex>
-                <Text>Connect the groups together</Text>
+                <Text>{scopedT('editorBasics.list.three.label')}</Text>
               </HStack>
               <HStack as={ListItem}>
                 <Flex
@@ -106,22 +106,20 @@ export const GettingStartedModal = () => {
                   flexShrink={0}
                   fontSize="13px"
                 >
-                  4
+                  {scopedT('editorBasics.list.four.number')}
                 </Flex>
                 <Text>
-                  Preview your bot by clicking the preview button on the top
-                  right
+                  {scopedT('editorBasics.list.four.label')}
                 </Text>
               </HStack>
             </List>
           </Stack>
 
           <Text>
-            Feel free to use the bottom-right bubble to reach out if you have
-            any question. I usually answer within the next 24 hours. 😃
+            {scopedT('editorBasics.list.label')}
           </Text>
           <Stack spacing={4}>
-            <Heading fontSize="xl">See it in action ({`<`} 5 minutes)</Heading>
+            <Heading fontSize="xl">{scopedT('seeAction.label')} ({`<`} {scopedT('seeAction.time')})</Heading>
             <iframe
               width="100%"
               height="315"
@@ -135,7 +133,7 @@ export const GettingStartedModal = () => {
               <AccordionItem>
                 <AccordionButton>
                   <Box flex="1" textAlign="left">
-                    Other videos
+                    {scopedT('seeAction.item.label')}
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>

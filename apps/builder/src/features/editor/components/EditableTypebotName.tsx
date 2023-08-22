@@ -6,6 +6,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import React, { useState } from 'react'
+import { useScopedI18n } from '@/locales'
 
 type EditableProps = {
   defaultName: string
@@ -15,6 +16,7 @@ export const EditableTypebotName = ({
   defaultName,
   onNewName,
 }: EditableProps) => {
+  const scopedT = useScopedI18n('editor.editableTypebotName')
   const emptyNameBg = useColorModeValue('gray.100', 'gray.700')
   const [currentName, setCurrentName] = useState(defaultName)
 
@@ -25,7 +27,7 @@ export const EditableTypebotName = ({
   }
 
   return (
-    <Tooltip label="Rename">
+    <Tooltip label={scopedT('tooltip.rename.label')}>
       <Editable
         value={currentName}
         onChange={setCurrentName}

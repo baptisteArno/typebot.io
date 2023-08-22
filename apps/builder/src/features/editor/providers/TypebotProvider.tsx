@@ -23,6 +23,7 @@ import { areTypebotsEqual } from '@/features/publish/helpers/areTypebotsEqual'
 import { isPublished as isPublishedHelper } from '@/features/publish/helpers/isPublished'
 import { convertPublicTypebotToTypebot } from '@/features/publish/helpers/convertPublicTypebotToTypebot'
 import { trpc } from '@/lib/trpc'
+import { useScopedI18n } from '@/locales'
 
 const autoSaveTimeout = 10000
 
@@ -41,6 +42,8 @@ type UpdateTypebotPayload = Partial<
     | 'whatsAppPhoneNumberId'
   >
 >
+
+export type I18nFunction = (key: string) => string;
 
 export type SetTypebot = (
   newPresent: Typebot | ((current: Typebot) => Typebot)
@@ -79,6 +82,7 @@ export const TypebotProvider = ({
   children: ReactNode
   typebotId?: string
 }) => {
+  const scopedT = useScopedI18n('editor.provider')
   const { push } = useRouter()
   const { showToast } = useToast()
 
@@ -253,7 +257,7 @@ export const TypebotProvider = ({
         isPublished,
         updateTypebot: updateLocalTypebot,
         restorePublishedTypebot,
-        ...groupsActions(setLocalTypebot as SetTypebot),
+        ...groupsActions(setLocalTypebot as SetTypebot, scopedT as I18nFunction),
         ...blocksAction(setLocalTypebot as SetTypebot),
         ...variablesAction(setLocalTypebot as SetTypebot),
         ...edgesAction(setLocalTypebot as SetTypebot),

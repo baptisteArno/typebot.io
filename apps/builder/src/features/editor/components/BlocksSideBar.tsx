@@ -104,10 +104,10 @@ export const BlocksSideBar = () => {
         className="hide-scrollbar"
       >
         <Flex justifyContent="flex-end">
-          <Tooltip label={isLocked ? 'Unlock sidebar' : 'Lock sidebar'}>
+          <Tooltip label={isLocked ? scopedT('sidebar.unlock.label') : scopedT('sidebar.lock.label') }>
             <IconButton
               icon={isLocked ? <LockedIcon /> : <UnlockedIcon />}
-              aria-label={isLocked ? 'Unlock' : 'Lock'}
+              aria-label={isLocked ? scopedT('sidebar.icon.unlock.label') : scopedT('sidebar.icon.lock.label') }
               size="sm"
               onClick={handleLockClick}
             />
