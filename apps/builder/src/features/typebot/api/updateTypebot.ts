@@ -27,7 +27,7 @@ export const updateTypebot = authenticatedProcedure
     z.object({
       typebotId: z.string(),
       typebot: typebotCreateSchema.merge(
-        typebotSchema
+        typebotSchema._def.schema
           .pick({
             isClosed: true,
           })

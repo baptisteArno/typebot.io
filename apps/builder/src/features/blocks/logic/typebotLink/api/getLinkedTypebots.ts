@@ -24,7 +24,7 @@ export const getLinkedTypebots = authenticatedProcedure
   .output(
     z.object({
       typebots: z.array(
-        typebotSchema.pick({
+        typebotSchema._def.schema.pick({
           id: true,
           groups: true,
           variables: true,
@@ -58,7 +58,7 @@ export const getLinkedTypebots = authenticatedProcedure
       throw new TRPCError({ code: 'NOT_FOUND', message: 'No typebot found' })
 
     const linkedTypebotIds =
-      typebotSchema.shape.groups
+      typebotSchema._def.schema.shape.groups
         .parse(typebot.groups)
         .flatMap((group) => group.blocks)
         .reduce<string[]>(
@@ -102,8 +102,10 @@ export const getLinkedTypebots = authenticatedProcedure
       })
       .map((typebot) => ({
         ...typebot,
-        groups: typebotSchema.shape.groups.parse(typebot.groups),
-        variables: typebotSchema.shape.variables.parse(typebot.variables),
+        groups: typebotSchema._def.schema.shape.groups.parse(typebot.groups),
+        variables: typebotSchema._def.schema.shape.variables.parse(
+          typebot.variables
+        ),
       }))
 
     return {

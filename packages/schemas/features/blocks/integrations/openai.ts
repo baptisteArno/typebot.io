@@ -80,7 +80,10 @@ const chatCompletionOptionsSchema = z
     responseMapping: z.array(
       z.object({
         id: z.string(),
-        valueToExtract: z.enum(chatCompletionResponseValues),
+        valueToExtract: z.preprocess(
+          (val) => (!val ? 'Message content' : val),
+          z.enum(chatCompletionResponseValues)
+        ),
         variableId: z.string().optional(),
       })
     ),

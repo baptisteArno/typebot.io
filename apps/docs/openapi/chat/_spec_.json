@@ -2621,8 +2621,7 @@
                                                             }
                                                           },
                                                           "required": [
-                                                            "id",
-                                                            "valueToExtract"
+                                                            "id"
                                                           ],
                                                           "additionalProperties": false
                                                         }

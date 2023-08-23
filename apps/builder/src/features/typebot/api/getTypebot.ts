@@ -4,10 +4,7 @@ import { TRPCError } from '@trpc/server'
 import { Typebot, typebotSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { isReadTypebotForbidden } from '../helpers/isReadTypebotForbidden'
-import { omit } from '@typebot.io/lib'
-import { Typebot as TypebotFromDb } from '@typebot.io/prisma'
 import { migrateTypebotFromV3ToV4 } from '@typebot.io/lib/migrations/migrateTypebotFromV3ToV4'
-import { parseInvalidTypebot } from '../helpers/parseInvalidTypebot'
 
 export const getTypebot = authenticatedProcedure
   .meta({
@@ -46,8 +43,8 @@ export const getTypebot = authenticatedProcedure
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
 
     try {
-      const parsedTypebot = await parseTypebot(
-        omit(existingTypebot, 'collaborators')
+      const parsedTypebot = await migrateTypebot(
+        typebotSchema.parse(existingTypebot)
       )
 
       return {
@@ -66,10 +63,7 @@ export const getTypebot = authenticatedProcedure
     }
   })
 
-const parseTypebot = async (typebot: TypebotFromDb): Promise<Typebot> => {
-  const parsedTypebot = typebotSchema.parse(
-    typebot.version !== '5' ? parseInvalidTypebot(typebot as Typebot) : typebot
-  )
-  if (['4', '5'].includes(parsedTypebot.version ?? '')) return parsedTypebot
-  return migrateTypebotFromV3ToV4(prisma)(parsedTypebot)
+const migrateTypebot = async (typebot: Typebot): Promise<Typebot> => {
+  if (['4', '5'].includes(typebot.version ?? '')) return typebot
+  return migrateTypebotFromV3ToV4(prisma)(typebot)
 }

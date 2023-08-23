@@ -3044,8 +3044,7 @@
                                                         }
                                                       },
                                                       "required": [
-                                                        "id",
-                                                        "valueToExtract"
+                                                        "id"
                                                       ],
                                                       "additionalProperties": false
                                                     }
@@ -7327,8 +7326,7 @@
                                                     }
                                                   },
                                                   "required": [
-                                                    "id",
-                                                    "valueToExtract"
+                                                    "id"
                                                   ],
                                                   "additionalProperties": false
                                                 }
@@ -11184,8 +11182,7 @@
                                                       }
                                                     },
                                                     "required": [
-                                                      "id",
-                                                      "valueToExtract"
+                                                      "id"
                                                     ],
                                                     "additionalProperties": false
                                                   }
@@ -15176,8 +15173,7 @@
                                                     }
                                                   },
                                                   "required": [
-                                                    "id",
-                                                    "valueToExtract"
+                                                    "id"
                                                   ],
                                                   "additionalProperties": false
                                                 }
@@ -19049,8 +19045,7 @@
                                                       }
                                                     },
                                                     "required": [
-                                                      "id",
-                                                      "valueToExtract"
+                                                      "id"
                                                     ],
                                                     "additionalProperties": false
                                                   }
@@ -22976,8 +22971,7 @@
                                                       }
                                                     },
                                                     "required": [
-                                                      "id",
-                                                      "valueToExtract"
+                                                      "id"
                                                     ],
                                                     "additionalProperties": false
                                                   }
@@ -26966,8 +26960,7 @@
                                                       }
                                                     },
                                                     "required": [
-                                                      "id",
-                                                      "valueToExtract"
+                                                      "id"
                                                     ],
                                                     "additionalProperties": false
                                                   }
@@ -31143,7 +31136,6 @@
         "operationId": "customDomains-createCustomDomain",
         "summary": "Create custom domain",
         "tags": [
-          "Workspace",
           "Custom domains"
         ],
         "security": [
@@ -31218,7 +31210,6 @@
         "operationId": "customDomains-deleteCustomDomain",
         "summary": "Delete custom domain",
         "tags": [
-          "Workspace",
           "Custom domains"
         ],
         "security": [
@@ -31276,7 +31267,6 @@
         "operationId": "customDomains-listCustomDomains",
         "summary": "List custom domains",
         "tags": [
-          "Workspace",
           "Custom domains"
         ],
         "security": [

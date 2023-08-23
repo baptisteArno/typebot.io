@@ -49,15 +49,21 @@ export const publishTypebot = authenticatedProcedure
         },
         data: {
           version: existingTypebot.version,
-          edges: typebotSchema.shape.edges.parse(existingTypebot.edges),
-          groups: typebotSchema.shape.groups.parse(existingTypebot.groups),
-          settings: typebotSchema.shape.settings.parse(
+          edges: typebotSchema._def.schema.shape.edges.parse(
+            existingTypebot.edges
+          ),
+          groups: typebotSchema._def.schema.shape.groups.parse(
+            existingTypebot.groups
+          ),
+          settings: typebotSchema._def.schema.shape.settings.parse(
             existingTypebot.settings
           ),
-          variables: typebotSchema.shape.variables.parse(
+          variables: typebotSchema._def.schema.shape.variables.parse(
             existingTypebot.variables
           ),
-          theme: typebotSchema.shape.theme.parse(existingTypebot.theme),
+          theme: typebotSchema._def.schema.shape.theme.parse(
+            existingTypebot.theme
+          ),
         },
       })
     else
@@ -65,15 +71,21 @@ export const publishTypebot = authenticatedProcedure
         data: {
           version: existingTypebot.version,
           typebotId: existingTypebot.id,
-          edges: typebotSchema.shape.edges.parse(existingTypebot.edges),
-          groups: typebotSchema.shape.groups.parse(existingTypebot.groups),
-          settings: typebotSchema.shape.settings.parse(
+          edges: typebotSchema._def.schema.shape.edges.parse(
+            existingTypebot.edges
+          ),
+          groups: typebotSchema._def.schema.shape.groups.parse(
+            existingTypebot.groups
+          ),
+          settings: typebotSchema._def.schema.shape.settings.parse(
             existingTypebot.settings
           ),
-          variables: typebotSchema.shape.variables.parse(
+          variables: typebotSchema._def.schema.shape.variables.parse(
             existingTypebot.variables
           ),
-          theme: typebotSchema.shape.theme.parse(existingTypebot.theme),
+          theme: typebotSchema._def.schema.shape.theme.parse(
+            existingTypebot.theme
+          ),
         },
       })
 

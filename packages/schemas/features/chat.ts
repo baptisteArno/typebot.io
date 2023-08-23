@@ -21,7 +21,7 @@ import { BubbleBlockType } from './blocks/bubbles/enums'
 import { inputBlockSchemas } from './blocks/schemas'
 import { chatCompletionMessageSchema } from './blocks/integrations/openai'
 
-const typebotInSessionStateSchema = publicTypebotSchema.pick({
+const typebotInSessionStateSchema = publicTypebotSchema._def.schema.pick({
   id: true,
   groups: true,
   edges: true,
@@ -131,7 +131,7 @@ const scriptToExecuteSchema = z.object({
   ),
 })
 
-const startTypebotSchema = typebotSchema.pick({
+const startTypebotSchema = typebotSchema._def.schema.pick({
   id: true,
   groups: true,
   edges: true,
@@ -286,7 +286,7 @@ export const chatReplySchema = z.object({
     .optional(),
   clientSideActions: z.array(clientSideActionSchema).optional(),
   sessionId: z.string().optional(),
-  typebot: typebotSchema
+  typebot: typebotSchema._def.schema
     .pick({ id: true, theme: true, settings: true })
     .optional(),
   resultId: z.string().optional(),

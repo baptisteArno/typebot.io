@@ -21,7 +21,7 @@ export const listTypebots = authenticatedProcedure
   .output(
     z.object({
       typebots: z.array(
-        typebotSchema
+        typebotSchema._def.schema
           .pick({
             name: true,
             icon: true,

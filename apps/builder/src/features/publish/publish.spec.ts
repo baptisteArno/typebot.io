@@ -33,9 +33,7 @@ test('should not be able to submit taken url ID', async ({ page }) => {
   await page.getByRole('textbox').press('Enter')
   await expect(
     page
-      .getByText(
-        'Should contain only contain letters, numbers. Words can be separated by dashes.'
-      )
+      .getByText('Can only contain lowercase letters, numbers and dashes.')
       .nth(0)
   ).toBeVisible()
   await page.getByText(`${typebotId}-public`).click()
