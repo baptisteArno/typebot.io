@@ -5,6 +5,7 @@ export const preprocessTypebot = (typebot: any) => {
   if (!typebot || typebot.version === '5') return typebot
   return {
     ...typebot,
+    version: typebot.version === undefined ? null : typebot.version,
     groups: typebot.groups ? typebot.groups.map(preprocessGroup) : [],
     edges: typebot.edges
       ? typebot.edges?.filter((edge: any) => edgeSchema.safeParse(edge).success)
