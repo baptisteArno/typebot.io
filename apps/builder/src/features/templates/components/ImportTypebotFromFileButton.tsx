@@ -1,7 +1,9 @@
 import { useToast } from '@/hooks/useToast'
 import { Button, ButtonProps, chakra } from '@chakra-ui/react'
 import { Typebot, typebotCreateSchema } from '@typebot.io/schemas'
+import { preprocessTypebot } from '@typebot.io/schemas/features/typebot/helpers/preprocessTypebot'
 import React, { ChangeEvent } from 'react'
+import { z } from 'zod'
 
 type Props = {
   onNewTypebot: (typebot: Typebot) => void
@@ -18,7 +20,9 @@ export const ImportTypebotFromFileButton = ({
     const file = e.target.files[0]
     const fileContent = await readFile(file)
     try {
-      const typebot = typebotCreateSchema.parse(JSON.parse(fileContent))
+      const typebot = z
+        .preprocess(preprocessTypebot, typebotCreateSchema)
+        .parse(JSON.parse(fileContent))
       onNewTypebot(typebot as Typebot)
     } catch (err) {
       console.error(err)

@@ -1,5 +1,6 @@
 import { byId } from '@typebot.io/lib'
 import { Group, SessionState } from '@typebot.io/schemas'
+import { upsertResult } from '../queries/upsertResult'
 
 export type NextGroup = {
   group?: Group
@@ -8,12 +9,20 @@ export type NextGroup = {
 
 export const getNextGroup =
   (state: SessionState) =>
-  (edgeId?: string): NextGroup => {
+  async (edgeId?: string): Promise<NextGroup> => {
     const nextEdge = state.typebotsQueue[0].typebot.edges.find(byId(edgeId))
     if (!nextEdge) {
       if (state.typebotsQueue.length > 1) {
         const nextEdgeId = state.typebotsQueue[0].edgeIdToTriggerWhenDone
         const isMergingWithParent = state.typebotsQueue[0].isMergingWithParent
+        const currentResultId = state.typebotsQueue[0].resultId
+        if (!isMergingWithParent && currentResultId)
+          await upsertResult({
+            resultId: currentResultId,
+            typebot: state.typebotsQueue[0].typebot,
+            isCompleted: true,
+            hasStarted: state.typebotsQueue[0].answers.length > 0,
+          })
         const newSessionState = {
           ...state,
           typebotsQueue: [
@@ -48,7 +57,7 @@ export const getNextGroup =
             ...state.typebotsQueue.slice(2),
           ],
         } satisfies SessionState
-        const nextGroup = getNextGroup(newSessionState)(nextEdgeId)
+        const nextGroup = await getNextGroup(newSessionState)(nextEdgeId)
         if (!nextGroup)
           return {
             newSessionState,

@@ -8,9 +8,10 @@ import {
   SessionState,
   Variable,
   ReplyLog,
-  Typebot,
   VariableWithValue,
   Edge,
+  typebotInSessionStateSchema,
+  TypebotInSession,
 } from '@typebot.io/schemas'
 import { ExecuteLogicResponse } from '@/features/chat/types'
 import { createId } from '@paralleldrive/cuid2'
@@ -73,7 +74,7 @@ export const executeTypebotLink = async (
 const addLinkedTypebotToState = async (
   state: SessionState,
   block: TypebotLinkBlock,
-  linkedTypebot: Pick<Typebot, 'id' | 'edges' | 'groups' | 'variables'>
+  linkedTypebot: TypebotInSession
 ): Promise<SessionState> => {
   const currentTypebotInQueue = state.typebotsQueue[0]
   const isPreview = isNotDefined(currentTypebotInQueue.resultId)
@@ -191,17 +192,19 @@ const fetchTypebot = async (state: SessionState, typebotId: string) => {
     const typebot = await prisma.typebot.findUnique({
       where: { id: typebotId },
       select: {
+        version: true,
         id: true,
         edges: true,
         groups: true,
         variables: true,
       },
     })
-    return typebot as Pick<Typebot, 'id' | 'edges' | 'groups' | 'variables'>
+    return typebotInSessionStateSchema.parse(typebot)
   }
   const typebot = await prisma.publicTypebot.findUnique({
     where: { typebotId },
     select: {
+      version: true,
       id: true,
       edges: true,
       groups: true,
@@ -209,8 +212,8 @@ const fetchTypebot = async (state: SessionState, typebotId: string) => {
     },
   })
   if (!typebot) return null
-  return {
+  return typebotInSessionStateSchema.parse({
     ...typebot,
     id: typebotId,
-  } as Pick<Typebot, 'id' | 'edges' | 'groups' | 'variables'>
+  })
 }

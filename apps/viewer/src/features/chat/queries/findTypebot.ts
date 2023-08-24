@@ -9,6 +9,7 @@ export const findTypebot = ({ id, userId }: Props) =>
   prisma.typebot.findFirst({
     where: { id, workspace: { members: { some: { userId } } } },
     select: {
+      version: true,
       id: true,
       groups: true,
       edges: true,

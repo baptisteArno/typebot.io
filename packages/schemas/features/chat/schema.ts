@@ -20,6 +20,7 @@ import { inputBlockSchemas } from '../blocks/schemas'
 import { chatCompletionMessageSchema } from '../blocks/integrations/openai'
 import { sessionStateSchema } from './sessionState'
 import { dynamicThemeSchema } from './shared'
+import { preprocessTypebot } from '../typebot/helpers/preprocessTypebot'
 
 const chatSessionSchema = z.object({
   id: z.string(),
@@ -84,14 +85,18 @@ const scriptToExecuteSchema = z.object({
   ),
 })
 
-const startTypebotSchema = typebotSchema._def.schema.pick({
-  id: true,
-  groups: true,
-  edges: true,
-  variables: true,
-  settings: true,
-  theme: true,
-})
+export const startTypebotSchema = z.preprocess(
+  preprocessTypebot,
+  typebotSchema._def.schema.pick({
+    version: true,
+    id: true,
+    groups: true,
+    edges: true,
+    variables: true,
+    settings: true,
+    theme: true,
+  })
+)
 
 const startParamsSchema = z.object({
   typebot: startTypebotSchema

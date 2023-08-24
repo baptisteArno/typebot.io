@@ -10,6 +10,7 @@ import {
 } from '@typebot.io/schemas'
 
 export const leadGenerationTypebot: StartTypebot = {
+  version: null,
   id: 'clckrl4q5000t3b6sabwokaar',
   groups: [
     {

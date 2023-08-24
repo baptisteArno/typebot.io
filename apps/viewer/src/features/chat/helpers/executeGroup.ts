@@ -124,7 +124,9 @@ export const executeGroup =
     if (!nextEdgeId && state.typebotsQueue.length === 1)
       return { messages, newSessionState, clientSideActions, logs }
 
-    const nextGroup = getNextGroup(newSessionState)(nextEdgeId ?? undefined)
+    const nextGroup = await getNextGroup(newSessionState)(
+      nextEdgeId ?? undefined
+    )
 
     newSessionState = nextGroup.newSessionState
 

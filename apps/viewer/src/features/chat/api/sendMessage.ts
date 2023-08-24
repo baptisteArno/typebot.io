@@ -11,8 +11,8 @@ import {
   SessionState,
   StartParams,
   StartTypebot,
+  startTypebotSchema,
   Theme,
-  Typebot,
   Variable,
   VariableWithValue,
 } from '@typebot.io/schemas'
@@ -152,6 +152,7 @@ const startSession = async (
       {
         resultId: result?.id,
         typebot: {
+          version: typebot.version,
           id: typebot.id,
           groups: typebot.groups,
           edges: typebot.edges,
@@ -268,17 +269,14 @@ const getTypebot = async (
 
   const parsedTypebot =
     typebotQuery && 'typebot' in typebotQuery
-      ? ({
+      ? {
           id: typebotQuery.typebotId,
           ...omit(typebotQuery.typebot, 'workspace'),
           ...omit(typebotQuery, 'typebot', 'typebotId'),
-        } as StartTypebot & Pick<Typebot, 'isArchived' | 'isClosed'>)
-      : (typebotQuery as StartTypebot & Pick<Typebot, 'isArchived'>)
+        }
+      : typebotQuery
 
-  if (
-    !parsedTypebot ||
-    ('isArchived' in parsedTypebot && parsedTypebot.isArchived)
-  )
+  if (!parsedTypebot || parsedTypebot.isArchived)
     throw new TRPCError({
       code: 'NOT_FOUND',
       message: 'Typebot not found',
@@ -299,7 +297,7 @@ const getTypebot = async (
       message: 'Typebot is closed',
     })
 
-  return parsedTypebot
+  return startTypebotSchema.parse(parsedTypebot)
 }
 
 const getResult = async ({

@@ -5,7 +5,6 @@ import {
   variableSchema,
   themeSchema,
   settingsSchema,
-  typebotSchema,
 } from './typebot'
 import { z } from 'zod'
 import { preprocessTypebot } from './typebot/helpers/preprocessTypebot'
@@ -26,13 +25,4 @@ export const publicTypebotSchema = z.preprocess(
   })
 ) satisfies z.ZodType<PrismaPublicTypebot, z.ZodTypeDef, unknown>
 
-const publicTypebotWithName = publicTypebotSchema._def.schema.merge(
-  typebotSchema._def.schema.pick({
-    name: true,
-    isArchived: true,
-    isClosed: true,
-  })
-)
-
 export type PublicTypebot = z.infer<typeof publicTypebotSchema>
-export type PublicTypebotWithName = z.infer<typeof publicTypebotWithName>

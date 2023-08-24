@@ -137,7 +137,7 @@ export const continueBotFlow =
           formattedReply !== reply ? formattedReply : undefined,
       }
 
-    const nextGroup = getNextGroup(newSessionState)(nextEdgeId)
+    const nextGroup = await getNextGroup(newSessionState)(nextEdgeId)
 
     newSessionState = nextGroup.newSessionState
 

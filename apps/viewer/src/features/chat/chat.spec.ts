@@ -142,6 +142,7 @@ test('API chat execution should work on published bot', async ({ request }) => {
         data: { message: '8', sessionId: chatSessionId },
       })
     ).json()
+    console.log(messages, input)
     expect(messages[0].content.richText).toStrictEqual([
       {
         children: [{ text: "I'm gonna shoot multiple inputs now..." }],

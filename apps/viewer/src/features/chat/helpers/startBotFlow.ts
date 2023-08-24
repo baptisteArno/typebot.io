@@ -21,7 +21,7 @@ export const startBotFlow = async (
   const firstEdgeId =
     state.typebotsQueue[0].typebot.groups[0].blocks[0].outgoingEdgeId
   if (!firstEdgeId) return { messages: [], newSessionState: state }
-  const nextGroup = getNextGroup(state)(firstEdgeId)
+  const nextGroup = await getNextGroup(state)(firstEdgeId)
   if (!nextGroup.group) return { messages: [], newSessionState: state }
   return executeGroup(state)(nextGroup.group)
 }
