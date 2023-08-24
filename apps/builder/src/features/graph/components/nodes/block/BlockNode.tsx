@@ -249,7 +249,8 @@ export const BlockNode = ({
                 )}
                 {(isConnectable ||
                   (pathname.endsWith('analytics') && isInputBlock(block))) &&
-                  hasDefaultConnector(block) && (
+                  hasDefaultConnector(block) &&
+                  block.type !== LogicBlockType.JUMP && (
                     <SourceEndpoint
                       source={{
                         groupId: block.groupId,
