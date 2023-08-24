@@ -15,6 +15,7 @@ import {
 import { chatPriceIds, storagePriceIds } from './getSubscription'
 import { createCheckoutSessionUrl } from './createCheckoutSession'
 import { isAdminWriteWorkspaceForbidden } from '@/features/workspace/helpers/isAdminWriteWorkspaceForbidden'
+import { getUsage } from '@typebot.io/lib/api/getUsage'
 
 export const updateSubscription = authenticatedProcedure
   .meta({
@@ -66,6 +67,7 @@ export const updateSubscription = authenticatedProcedure
           id: workspaceId,
         },
         select: {
+          isQuarantined: true,
           stripeId: true,
           members: {
             select: {
@@ -159,13 +161,25 @@ export const updateSubscription = authenticatedProcedure
         return { checkoutUrl }
       }
 
+      let isQuarantined = workspace.isQuarantined
+
+      if (isQuarantined) {
+        const newChatsLimit = getChatsLimit({
+          plan,
+          additionalChatsIndex: additionalChats,
+          customChatsLimit: null,
+        })
+        const { totalChatsUsed } = await getUsage(prisma)(workspaceId)
+        if (totalChatsUsed < newChatsLimit) isQuarantined = false
+      }
+
       const updatedWorkspace = await prisma.workspace.update({
         where: { id: workspaceId },
         data: {
           plan,
           additionalChatsIndex: additionalChats,
           additionalStorageIndex: additionalStorage,
-          isQuarantined: false,
+          isQuarantined,
         },
       })
 

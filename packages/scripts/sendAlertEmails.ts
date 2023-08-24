@@ -6,6 +6,7 @@ import {
 } from '@typebot.io/prisma'
 import { isDefined } from '@typebot.io/lib'
 import { getChatsLimit } from '@typebot.io/lib/pricing'
+import { getUsage } from '@typebot.io/lib/api/getUsage'
 import { promptAndSetEnvironment } from './utils'
 import { Workspace } from '@typebot.io/schemas'
 import { sendAlmostReachedChatsLimitEmail } from '@typebot.io/emails/src/emails/AlmostReachedChatsLimitEmail'
@@ -123,7 +124,7 @@ const sendAlertIfLimitReached = async (
     if (taggedWorkspaces.includes(workspace.id) || workspace.isQuarantined)
       continue
     taggedWorkspaces.push(workspace.id)
-    const { totalChatsUsed } = await getUsage(workspace.id)
+    const { totalChatsUsed } = await getUsage(prisma)(workspace.id)
     const chatsLimit = getChatsLimit(workspace)
     if (
       chatsLimit > 0 &&
@@ -202,52 +203,6 @@ const sendAlertIfLimitReached = async (
     }
   }
   return events
-}
-
-const getUsage = async (workspaceId: string) => {
-  const now = new Date()
-  const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
-  const firstDayOfNextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1)
-  const typebots = await prisma.typebot.findMany({
-    where: {
-      workspace: {
-        id: workspaceId,
-      },
-    },
-    select: { id: true },
-  })
-
-  const [
-    totalChatsUsed,
-    {
-      _sum: { storageUsed: totalStorageUsed },
-    },
-  ] = await Promise.all([
-    prisma.result.count({
-      where: {
-        typebotId: { in: typebots.map((typebot) => typebot.id) },
-        hasStarted: true,
-        createdAt: {
-          gte: firstDayOfMonth,
-          lt: firstDayOfNextMonth,
-        },
-      },
-    }),
-    prisma.answer.aggregate({
-      where: {
-        storageUsed: { gt: 0 },
-        result: {
-          typebotId: { in: typebots.map((typebot) => typebot.id) },
-        },
-      },
-      _sum: { storageUsed: true },
-    }),
-  ])
-
-  return {
-    totalChatsUsed,
-    totalStorageUsed: totalStorageUsed ?? 0,
-  }
 }
 
 sendTotalResultsDigest().then()
