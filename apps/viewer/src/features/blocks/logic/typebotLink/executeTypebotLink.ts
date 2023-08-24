@@ -6,19 +6,24 @@ import prisma from '@/lib/prisma'
 import {
   TypebotLinkBlock,
   SessionState,
-  TypebotInSession,
   Variable,
   ReplyLog,
+  Typebot,
+  VariableWithValue,
+  Edge,
 } from '@typebot.io/schemas'
-import { byId } from '@typebot.io/lib'
 import { ExecuteLogicResponse } from '@/features/chat/types'
+import { createId } from '@paralleldrive/cuid2'
+import { isDefined, isNotDefined } from '@typebot.io/lib/utils'
+import { createResultIfNotExist } from '@/features/chat/queries/createResultIfNotExist'
 
 export const executeTypebotLink = async (
   state: SessionState,
   block: TypebotLinkBlock
 ): Promise<ExecuteLogicResponse> => {
   const logs: ReplyLog[] = []
-  if (!block.options.typebotId) {
+  const typebotId = block.options.typebotId
+  if (!typebotId) {
     logs.push({
       status: 'error',
       description: `Failed to link typebot`,
@@ -26,7 +31,7 @@ export const executeTypebotLink = async (
     })
     return { outgoingEdgeId: block.outgoingEdgeId, logs }
   }
-  const linkedTypebot = await getLinkedTypebot(state, block.options.typebotId)
+  const linkedTypebot = await fetchTypebot(state, typebotId)
   if (!linkedTypebot) {
     logs.push({
       status: 'error',
@@ -35,12 +40,17 @@ export const executeTypebotLink = async (
     })
     return { outgoingEdgeId: block.outgoingEdgeId, logs }
   }
-  let newSessionState = addLinkedTypebotToState(state, block, linkedTypebot)
+  let newSessionState = await addLinkedTypebotToState(
+    state,
+    block,
+    linkedTypebot
+  )
 
   const nextGroupId =
     block.options.groupId ??
-    linkedTypebot.groups.find((b) => b.blocks.some((s) => s.type === 'start'))
-      ?.id
+    linkedTypebot.groups.find((group) =>
+      group.blocks.some((block) => block.type === 'start')
+    )?.id
   if (!nextGroupId) {
     logs.push({
       status: 'error',
@@ -60,76 +70,123 @@ export const executeTypebotLink = async (
   }
 }
 
-const addLinkedTypebotToState = (
+const addLinkedTypebotToState = async (
   state: SessionState,
   block: TypebotLinkBlock,
-  linkedTypebot: TypebotInSession
-): SessionState => {
-  const incomingVariables = fillVariablesWithExistingValues(
-    linkedTypebot.variables,
-    state.typebot.variables
-  )
+  linkedTypebot: Pick<Typebot, 'id' | 'edges' | 'groups' | 'variables'>
+): Promise<SessionState> => {
+  const currentTypebotInQueue = state.typebotsQueue[0]
+  const isPreview = isNotDefined(currentTypebotInQueue.resultId)
+
+  const resumeEdge = createResumeEdgeIfNecessary(state, block)
+
+  const currentTypebotWithResumeEdge = resumeEdge
+    ? {
+        ...currentTypebotInQueue,
+        typebot: {
+          ...currentTypebotInQueue.typebot,
+          edges: [...currentTypebotInQueue.typebot.edges, resumeEdge],
+        },
+      }
+    : currentTypebotInQueue
+
+  const shouldMergeResults =
+    block.options.mergeResults !== false ||
+    currentTypebotInQueue.typebot.id === linkedTypebot.id ||
+    block.options.typebotId === 'current'
+
+  if (
+    currentTypebotInQueue.resultId &&
+    currentTypebotInQueue.answers.length === 0 &&
+    shouldMergeResults
+  ) {
+    await createResultIfNotExist({
+      resultId: currentTypebotInQueue.resultId,
+      typebot: currentTypebotInQueue.typebot,
+      hasStarted: false,
+      isCompleted: false,
+    })
+  }
+
   return {
     ...state,
-    typebot: {
-      ...state.typebot,
-      groups: [...state.typebot.groups, ...linkedTypebot.groups],
-      variables: [...state.typebot.variables, ...incomingVariables],
-      edges: [...state.typebot.edges, ...linkedTypebot.edges],
+    typebotsQueue: [
+      {
+        typebot: {
+          ...linkedTypebot,
+          variables: fillVariablesWithExistingValues(
+            linkedTypebot.variables,
+            currentTypebotInQueue.typebot.variables
+          ),
+        },
+        resultId: isPreview
+          ? undefined
+          : shouldMergeResults
+          ? currentTypebotInQueue.resultId
+          : createId(),
+        edgeIdToTriggerWhenDone: block.outgoingEdgeId ?? resumeEdge?.id,
+        answers: shouldMergeResults ? currentTypebotInQueue.answers : [],
+        isMergingWithParent: shouldMergeResults,
+      },
+      currentTypebotWithResumeEdge,
+      ...state.typebotsQueue.slice(1),
+    ],
+  }
+}
+
+const createResumeEdgeIfNecessary = (
+  state: SessionState,
+  block: TypebotLinkBlock
+): Edge | undefined => {
+  const currentTypebotInQueue = state.typebotsQueue[0]
+  const blockId = block.id
+  if (block.outgoingEdgeId) return
+  const currentGroup = currentTypebotInQueue.typebot.groups.find((group) =>
+    group.blocks.some((block) => block.id === blockId)
+  )
+  if (!currentGroup) return
+  const currentBlockIndex = currentGroup.blocks.findIndex(
+    (block) => block.id === blockId
+  )
+  const nextBlockInGroup =
+    currentBlockIndex === -1
+      ? undefined
+      : currentGroup.blocks[currentBlockIndex + 1]
+  if (!nextBlockInGroup) return
+  return {
+    id: createId(),
+    from: {
+      groupId: '',
+      blockId: '',
     },
-    linkedTypebots: {
-      typebots: [
-        ...state.linkedTypebots.typebots.filter(
-          (existingTypebots) => existingTypebots.id !== linkedTypebot.id
-        ),
-      ],
-      queue: block.outgoingEdgeId
-        ? [
-            ...state.linkedTypebots.queue,
-            { edgeId: block.outgoingEdgeId, typebotId: state.currentTypebotId },
-          ]
-        : state.linkedTypebots.queue,
+    to: {
+      groupId: nextBlockInGroup.groupId,
+      blockId: nextBlockInGroup.id,
     },
-    currentTypebotId: linkedTypebot.id,
   }
 }
 
 const fillVariablesWithExistingValues = (
   variables: Variable[],
   variablesWithValues: Variable[]
-): Variable[] =>
-  variables.map((variable) => {
-    const matchedVariable = variablesWithValues.find(
-      (variableWithValue) => variableWithValue.name === variable.name
-    )
+): VariableWithValue[] =>
+  variables
+    .map((variable) => {
+      const matchedVariable = variablesWithValues.find(
+        (variableWithValue) => variableWithValue.name === variable.name
+      )
 
-    return {
-      ...variable,
-      value: matchedVariable?.value ?? variable.value,
-    }
-  })
+      return {
+        ...variable,
+        value: matchedVariable?.value,
+      }
+    })
+    .filter((variable) => isDefined(variable.value)) as VariableWithValue[]
 
-const getLinkedTypebot = async (
-  state: SessionState,
-  typebotId: string
-): Promise<TypebotInSession | null> => {
-  const { typebot, result } = state
-  const isPreview = !result.id
-  if (typebotId === 'current') return typebot
-  const availableTypebots =
-    'linkedTypebots' in state
-      ? [typebot, ...state.linkedTypebots.typebots]
-      : [typebot]
-  const linkedTypebot =
-    availableTypebots.find(byId(typebotId)) ??
-    (await fetchTypebot(isPreview, typebotId))
-  return linkedTypebot
-}
-
-const fetchTypebot = async (
-  isPreview: boolean,
-  typebotId: string
-): Promise<TypebotInSession | null> => {
+const fetchTypebot = async (state: SessionState, typebotId: string) => {
+  const { typebot: typebotInState, resultId } = state.typebotsQueue[0]
+  const isPreview = !resultId
+  if (typebotId === 'current') return typebotInState
   if (isPreview) {
     const typebot = await prisma.typebot.findUnique({
       where: { id: typebotId },
@@ -140,7 +197,7 @@ const fetchTypebot = async (
         variables: true,
       },
     })
-    return typebot as TypebotInSession
+    return typebot as Pick<Typebot, 'id' | 'edges' | 'groups' | 'variables'>
   }
   const typebot = await prisma.publicTypebot.findUnique({
     where: { typebotId },
@@ -155,5 +212,5 @@ const fetchTypebot = async (
   return {
     ...typebot,
     id: typebotId,
-  } as TypebotInSession
+  } as Pick<Typebot, 'id' | 'edges' | 'groups' | 'variables'>
 }

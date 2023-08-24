@@ -11,6 +11,7 @@ type Props = {
   logs: ChatReply['logs']
   clientSideActions: ChatReply['clientSideActions']
 }
+
 export const saveStateToDatabase = async ({
   session: { state, id },
   input,
@@ -21,25 +22,30 @@ export const saveStateToDatabase = async ({
 
   const session = id ? { state, id } : await createSession({ state })
 
-  if (!state?.result?.id) return session
+  const resultId = state.typebotsQueue[0].resultId
+
+  if (!resultId) return session
 
   const containsSetVariableClientSideAction = clientSideActions?.some(
     (action) => 'setVariable' in action
   )
+
+  const answers = state.typebotsQueue[0].answers
+
   await upsertResult({
-    state,
+    resultId,
+    typebot: state.typebotsQueue[0].typebot,
     isCompleted: Boolean(
-      !input &&
-        !containsSetVariableClientSideAction &&
-        state.result.answers.length > 0
+      !input && !containsSetVariableClientSideAction && answers.length > 0
     ),
+    hasStarted: answers.length > 0,
   })
 
   if (logs && logs.length > 0)
     await saveLogs(
       logs.map((log) => ({
         ...log,
-        resultId: state.result.id as string,
+        resultId,
         details: formatLogDetails(log.details),
       }))
     )

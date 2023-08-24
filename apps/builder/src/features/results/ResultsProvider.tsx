@@ -1,11 +1,17 @@
 import { useToast } from '@/hooks/useToast'
-import { ResultHeaderCell, ResultWithAnswers } from '@typebot.io/schemas'
+import {
+  LogicBlockType,
+  ResultHeaderCell,
+  ResultWithAnswers,
+} from '@typebot.io/schemas'
 import { createContext, ReactNode, useContext, useMemo } from 'react'
 import { parseResultHeader } from '@typebot.io/lib/results'
 import { useTypebot } from '../editor/providers/TypebotProvider'
 import { useResultsQuery } from './hooks/useResultsQuery'
 import { TableData } from './types'
 import { convertResultsToTableData } from './helpers/convertResultsToTableData'
+import { trpc } from '@/lib/trpc'
+import { isDefined } from '@typebot.io/lib/utils'
 
 const resultsContext = createContext<{
   resultsList: { results: ResultWithAnswers[] }[] | undefined
@@ -32,7 +38,7 @@ export const ResultsProvider = ({
   totalResults: number
   onDeleteResults: (totalResultsDeleted: number) => void
 }) => {
-  const { publishedTypebot, linkedTypebots } = useTypebot()
+  const { publishedTypebot } = useTypebot()
   const { showToast } = useToast()
   const { data, fetchNextPage, hasNextPage, refetch } = useResultsQuery({
     typebotId,
@@ -40,6 +46,29 @@ export const ResultsProvider = ({
       showToast({ description: error })
     },
   })
+
+  const linkedTypebotIds =
+    publishedTypebot?.groups
+      .flatMap((group) => group.blocks)
+      .reduce<string[]>(
+        (typebotIds, block) =>
+          block.type === LogicBlockType.TYPEBOT_LINK &&
+          isDefined(block.options.typebotId) &&
+          !typebotIds.includes(block.options.typebotId) &&
+          block.options.mergeResults !== false
+            ? [...typebotIds, block.options.typebotId]
+            : typebotIds,
+        []
+      ) ?? []
+
+  const { data: linkedTypebotsData } = trpc.getLinkedTypebots.useQuery(
+    {
+      typebotId,
+    },
+    {
+      enabled: linkedTypebotIds.length > 0,
+    }
+  )
 
   const flatResults = useMemo(
     () => data?.flatMap((d) => d.results) ?? [],
@@ -49,9 +78,9 @@ export const ResultsProvider = ({
   const resultHeader = useMemo(
     () =>
       publishedTypebot
-        ? parseResultHeader(publishedTypebot, linkedTypebots)
+        ? parseResultHeader(publishedTypebot, linkedTypebotsData?.typebots)
         : [],
-    [linkedTypebots, publishedTypebot]
+    [linkedTypebotsData?.typebots, publishedTypebot]
   )
 
   const tableData = useMemo(

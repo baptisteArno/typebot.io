@@ -23,6 +23,7 @@ import { useResults } from '../../ResultsProvider'
 import { parseColumnOrder } from '../../helpers/parseColumnsOrder'
 import { convertResultsToTableData } from '../../helpers/convertResultsToTableData'
 import { parseAccessor } from '../../helpers/parseAccessor'
+import { isDefined } from '@typebot.io/lib'
 
 type Props = {
   isOpen: boolean
@@ -30,7 +31,7 @@ type Props = {
 }
 
 export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
-  const { typebot, publishedTypebot, linkedTypebots } = useTypebot()
+  const { typebot, publishedTypebot } = useTypebot()
   const workspaceId = typebot?.workspaceId
   const typebotId = typebot?.id
   const { showToast } = useToast()
@@ -40,6 +41,15 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
 
   const [areDeletedBlocksIncluded, setAreDeletedBlocksIncluded] =
     useState(false)
+
+  const { data: linkedTypebotsData } = trpc.getLinkedTypebots.useQuery(
+    {
+      typebotId: typebotId as string,
+    },
+    {
+      enabled: isDefined(typebotId),
+    }
+  )
 
   const getAllResults = async () => {
     if (!workspaceId || !typebotId) return []
@@ -71,7 +81,11 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
     const results = await getAllResults()
 
     const resultHeader = areDeletedBlocksIncluded
-      ? parseResultHeader(publishedTypebot, linkedTypebots, results)
+      ? parseResultHeader(
+          publishedTypebot,
+          linkedTypebotsData?.typebots,
+          results
+        )
       : existingResultHeader
 
     const dataToUnparse = convertResultsToTableData(results, resultHeader)

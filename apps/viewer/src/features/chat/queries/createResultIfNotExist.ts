@@ -8,7 +8,7 @@ type Props = {
   hasStarted: boolean
   isCompleted: boolean
 }
-export const upsertResult = async ({
+export const createResultIfNotExist = async ({
   resultId,
   typebot,
   hasStarted,
@@ -18,18 +18,7 @@ export const upsertResult = async ({
     where: { id: resultId },
     select: { id: true },
   })
-  const variablesWithValue = getDefinedVariables(typebot.variables)
-
-  if (existingResult) {
-    return prisma.result.updateMany({
-      where: { id: resultId },
-      data: {
-        isCompleted: isCompleted ? true : undefined,
-        hasStarted,
-        variables: variablesWithValue,
-      },
-    })
-  }
+  if (existingResult) return
   return prisma.result.createMany({
     data: [
       {
@@ -37,7 +26,7 @@ export const upsertResult = async ({
         typebotId: typebot.id,
         isCompleted: isCompleted ? true : false,
         hasStarted,
-        variables: variablesWithValue,
+        variables: getDefinedVariables(typebot.variables),
       },
     ],
   })

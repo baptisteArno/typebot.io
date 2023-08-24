@@ -15,7 +15,6 @@ import Mail from 'nodemailer/lib/mailer'
 import { DefaultBotNotificationEmail } from '@typebot.io/emails'
 import { render } from '@faire/mjml-react/utils/render'
 import prisma from '@/lib/prisma'
-import { getPreviouslyLinkedTypebots } from '@/features/blocks/logic/typebotLink/getPreviouslyLinkedTypebots'
 import { saveErrorLog } from '@/features/logs/saveErrorLog'
 import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
 
@@ -197,10 +196,20 @@ const getEmailBody = async ({
     where: { typebotId },
   })) as unknown as PublicTypebot
   if (!typebot) return
-  const linkedTypebots = await getPreviouslyLinkedTypebots({
-    typebots: [typebot],
-  })([])
-  const answers = parseAnswers(typebot, linkedTypebots)(resultValues)
+  const answers = parseAnswers({
+    answers: resultValues.answers.map((answer) => ({
+      key:
+        (answer.variableId
+          ? typebot.variables.find(
+              (variable) => variable.id === answer.variableId
+            )?.name
+          : typebot.groups.find((group) =>
+              group.blocks.find((block) => block.id === answer.blockId)
+            )?.title) ?? '',
+      value: answer.content,
+    })),
+    variables: resultValues.variables,
+  })
   return {
     html: render(
       <DefaultBotNotificationEmail

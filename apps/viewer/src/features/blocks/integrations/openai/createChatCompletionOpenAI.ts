@@ -1,6 +1,11 @@
 import { ExecuteIntegrationResponse } from '@/features/chat/types'
 import prisma from '@/lib/prisma'
-import { Block, BubbleBlockType, SessionState } from '@typebot.io/schemas'
+import {
+  Block,
+  BubbleBlockType,
+  SessionState,
+  TypebotInSession,
+} from '@typebot.io/schemas'
 import {
   ChatCompletionOpenAIOptions,
   OpenAICredentials,
@@ -51,13 +56,16 @@ export const createChatCompletionOpenAI = async (
     credentials.data,
     credentials.iv
   )) as OpenAICredentials['data']
+
+  const { typebot } = newSessionState.typebotsQueue[0]
+
   const { variablesTransformedToList, messages } = parseChatCompletionMessages(
-    newSessionState.typebot.variables
+    typebot.variables
   )(options.messages)
   if (variablesTransformedToList.length > 0)
     newSessionState = updateVariables(state)(variablesTransformedToList)
 
-  const temperature = parseVariableNumber(newSessionState.typebot.variables)(
+  const temperature = parseVariableNumber(typebot.variables)(
     options.advancedSettings?.temperature
   )
 
@@ -66,7 +74,7 @@ export const createChatCompletionOpenAI = async (
     isCredentialsV2(credentials) &&
     newSessionState.isStreamEnabled
   ) {
-    const assistantMessageVariableName = state.typebot.variables.find(
+    const assistantMessageVariableName = typebot.variables.find(
       (variable) =>
         options.responseMapping.find(
           (m) => m.valueToExtract === 'Message content'
@@ -81,9 +89,10 @@ export const createChatCompletionOpenAI = async (
               content?: string
               role: (typeof chatCompletionMessageRoles)[number]
             }[],
-            displayStream: isNextBubbleMessageWithAssistantMessage(
-              state.typebot
-            )(blockId, assistantMessageVariableName),
+            displayStream: isNextBubbleMessageWithAssistantMessage(typebot)(
+              blockId,
+              assistantMessageVariableName
+            ),
           },
         },
       ],
@@ -117,7 +126,7 @@ export const createChatCompletionOpenAI = async (
 }
 
 const isNextBubbleMessageWithAssistantMessage =
-  (typebot: SessionState['typebot']) =>
+  (typebot: TypebotInSession) =>
   (blockId: string, assistantVariableName?: string): boolean => {
     if (!assistantVariableName) return false
     const nextBlock = getNextBlock(typebot)(blockId)
@@ -131,7 +140,7 @@ const isNextBubbleMessageWithAssistantMessage =
   }
 
 const getNextBlock =
-  (typebot: SessionState['typebot']) =>
+  (typebot: TypebotInSession) =>
   (blockId: string): Block | undefined => {
     const group = typebot.groups.find((group) =>
       group.blocks.find(byId(blockId))

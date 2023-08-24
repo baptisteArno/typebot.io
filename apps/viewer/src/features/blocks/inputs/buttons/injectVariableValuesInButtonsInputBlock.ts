@@ -13,8 +13,9 @@ import { filterChoiceItems } from './filterChoiceItems'
 export const injectVariableValuesInButtonsInputBlock =
   (state: SessionState) =>
   (block: ChoiceInputBlock): ChoiceInputBlock => {
+    const { variables } = state.typebotsQueue[0].typebot
     if (block.options.dynamicVariableId) {
-      const variable = state.typebot.variables.find(
+      const variable = variables.find(
         (variable) =>
           variable.id === block.options.dynamicVariableId &&
           isDefined(variable.value)
@@ -31,18 +32,17 @@ export const injectVariableValuesInButtonsInputBlock =
         })),
       }
     }
-    return deepParseVariables(state.typebot.variables)(
-      filterChoiceItems(state.typebot.variables)(block)
-    )
+    return deepParseVariables(variables)(filterChoiceItems(variables)(block))
   }
 
 const getVariableValue =
   (state: SessionState) =>
   (variable: VariableWithValue): (string | null)[] => {
     if (!Array.isArray(variable.value)) {
-      const [transformedVariable] = transformStringVariablesToList(
-        state.typebot.variables
-      )([variable.id])
+      const { variables } = state.typebotsQueue[0].typebot
+      const [transformedVariable] = transformStringVariablesToList(variables)([
+        variable.id,
+      ])
       updateVariables(state)([transformedVariable])
       return transformedVariable.value as string[]
     }

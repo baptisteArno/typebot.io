@@ -7,6 +7,7 @@ import {
   InputBlockType,
   RuntimeOptions,
   SessionState,
+  Variable,
 } from '@typebot.io/schemas'
 import {
   isBubbleBlock,
@@ -47,7 +48,9 @@ export const executeGroup =
 
       if (isBubbleBlock(block)) {
         messages.push(
-          parseBubbleBlock(newSessionState.typebot.variables)(block)
+          parseBubbleBlock(newSessionState.typebotsQueue[0].typebot.variables)(
+            block
+          )
         )
         lastBubbleBlockId = block.id
         continue
@@ -118,14 +121,14 @@ export const executeGroup =
       }
     }
 
-    if (!nextEdgeId)
+    if (!nextEdgeId && state.typebotsQueue.length === 1)
       return { messages, newSessionState, clientSideActions, logs }
 
-    const nextGroup = getNextGroup(newSessionState)(nextEdgeId)
+    const nextGroup = getNextGroup(newSessionState)(nextEdgeId ?? undefined)
 
-    if (nextGroup?.updatedContext) newSessionState = nextGroup.updatedContext
+    newSessionState = nextGroup.newSessionState
 
-    if (!nextGroup) {
+    if (!nextGroup.group) {
       return { messages, newSessionState, clientSideActions, logs }
     }
 
@@ -141,7 +144,7 @@ export const executeGroup =
   }
 
 const computeRuntimeOptions =
-  (state: Pick<SessionState, 'result' | 'typebot'>) =>
+  (state: SessionState) =>
   (block: InputBlock): Promise<RuntimeOptions> | undefined => {
     switch (block.type) {
       case InputBlockType.PAYMENT: {
@@ -151,7 +154,7 @@ const computeRuntimeOptions =
   }
 
 const getPrefilledInputValue =
-  (variables: SessionState['typebot']['variables']) => (block: InputBlock) => {
+  (variables: Variable[]) => (block: InputBlock) => {
     const variableValue = variables.find(
       (variable) =>
         variable.id === block.options.variableId && isDefined(variable.value)
@@ -161,7 +164,7 @@ const getPrefilledInputValue =
   }
 
 const parseBubbleBlock =
-  (variables: SessionState['typebot']['variables']) =>
+  (variables: Variable[]) =>
   (block: BubbleBlock): ChatReply['messages'][0] => {
     switch (block.type) {
       case BubbleBlockType.TEXT:
@@ -197,15 +200,17 @@ const parseInput =
       }
       case InputBlockType.PICTURE_CHOICE: {
         return injectVariableValuesInPictureChoiceBlock(
-          state.typebot.variables
+          state.typebotsQueue[0].typebot.variables
         )(block)
       }
       case InputBlockType.NUMBER: {
-        const parsedBlock = deepParseVariables(state.typebot.variables)({
+        const parsedBlock = deepParseVariables(
+          state.typebotsQueue[0].typebot.variables
+        )({
           ...block,
-          prefilledValue: getPrefilledInputValue(state.typebot.variables)(
-            block
-          ),
+          prefilledValue: getPrefilledInputValue(
+            state.typebotsQueue[0].typebot.variables
+          )(block),
         })
         return {
           ...parsedBlock,
@@ -224,12 +229,12 @@ const parseInput =
         }
       }
       default: {
-        return deepParseVariables(state.typebot.variables)({
+        return deepParseVariables(state.typebotsQueue[0].typebot.variables)({
           ...block,
           runtimeOptions: await computeRuntimeOptions(state)(block),
-          prefilledValue: getPrefilledInputValue(state.typebot.variables)(
-            block
-          ),
+          prefilledValue: getPrefilledInputValue(
+            state.typebotsQueue[0].typebot.variables
+          )(block),
         })
       }
     }

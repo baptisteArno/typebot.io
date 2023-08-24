@@ -43,6 +43,7 @@ import {
   LogicBlockType,
   defaultAbTestOptions,
   BlockWithItems,
+  defaultTypebotLinkOptions,
 } from '@typebot.io/schemas'
 import { defaultPictureChoiceOptions } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
 
@@ -122,7 +123,7 @@ const parseDefaultBlockOptions = (type: BlockWithOptionsType): BlockOptions => {
     case LogicBlockType.JUMP:
       return {}
     case LogicBlockType.TYPEBOT_LINK:
-      return {}
+      return defaultTypebotLinkOptions
     case LogicBlockType.AB_TEST:
       return defaultAbTestOptions
     case IntegrationBlockType.GOOGLE_SHEETS:

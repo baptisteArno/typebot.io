@@ -19,12 +19,10 @@ export const getRow = async (
   }: { outgoingEdgeId?: string; options: GoogleSheetsGetOptions }
 ): Promise<ExecuteIntegrationResponse> => {
   const logs: ReplyLog[] = []
-  const { sheetId, cellsToExtract, referenceCell, filter } = deepParseVariables(
-    state.typebot.variables
-  )(options)
+  const { variables } = state.typebotsQueue[0].typebot
+  const { sheetId, cellsToExtract, referenceCell, filter } =
+    deepParseVariables(variables)(options)
   if (!sheetId) return { outgoingEdgeId }
-
-  const variables = state.typebot.variables
 
   const doc = await getAuthenticatedGoogleDoc({
     credentialsId: options.credentialsId,

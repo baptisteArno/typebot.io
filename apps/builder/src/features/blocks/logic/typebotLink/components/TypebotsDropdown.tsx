@@ -61,7 +61,17 @@ export const TypebotsDropdown = ({
           aria-label="Navigate to typebot"
           icon={<ExternalLinkIcon />}
           as={Link}
-          href={`/typebots/${typebotId}/edit?parentId=${query.typebotId}`}
+          href={{
+            pathname: '/typebots/[typebotId]/edit',
+            query: {
+              typebotId,
+              parentId: query.parentId
+                ? Array.isArray(query.parentId)
+                  ? query.parentId.concat(query.typebotId?.toString() ?? '')
+                  : [query.parentId, query.typebotId?.toString() ?? '']
+                : query.typebotId ?? [],
+            },
+          }}
         />
       )}
     </HStack>

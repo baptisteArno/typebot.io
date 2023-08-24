@@ -5,68 +5,21 @@ import {
   paymentInputRuntimeOptionsSchema,
   pixelOptionsSchema,
   redirectOptionsSchema,
-} from './blocks'
-import { publicTypebotSchema } from './publicTypebot'
-import { logSchema, resultSchema } from './result'
-import { listVariableValue, typebotSchema } from './typebot'
+} from '../blocks'
+import { logSchema } from '../result'
+import { listVariableValue, typebotSchema } from '../typebot'
 import {
   textBubbleContentSchema,
   imageBubbleContentSchema,
   videoBubbleContentSchema,
   audioBubbleContentSchema,
   embedBubbleContentSchema,
-} from './blocks/bubbles'
-import { answerSchema } from './answer'
-import { BubbleBlockType } from './blocks/bubbles/enums'
-import { inputBlockSchemas } from './blocks/schemas'
-import { chatCompletionMessageSchema } from './blocks/integrations/openai'
-
-const typebotInSessionStateSchema = publicTypebotSchema._def.schema.pick({
-  id: true,
-  groups: true,
-  edges: true,
-  variables: true,
-})
-
-const dynamicThemeSchema = z.object({
-  hostAvatarUrl: z.string().optional(),
-  guestAvatarUrl: z.string().optional(),
-})
-
-const answerInSessionStateSchema = answerSchema.pick({
-  content: true,
-  blockId: true,
-  variableId: true,
-})
-
-const resultInSessionStateSchema = resultSchema
-  .pick({
-    variables: true,
-  })
-  .merge(
-    z.object({
-      answers: z.array(answerInSessionStateSchema),
-      id: z.string().optional(),
-    })
-  )
-
-export const sessionStateSchema = z.object({
-  typebot: typebotInSessionStateSchema,
-  dynamicTheme: dynamicThemeSchema.optional(),
-  linkedTypebots: z.object({
-    typebots: z.array(typebotInSessionStateSchema),
-    queue: z.array(z.object({ edgeId: z.string(), typebotId: z.string() })),
-  }),
-  currentTypebotId: z.string(),
-  result: resultInSessionStateSchema,
-  currentBlock: z
-    .object({
-      blockId: z.string(),
-      groupId: z.string(),
-    })
-    .optional(),
-  isStreamEnabled: z.boolean().optional(),
-})
+} from '../blocks/bubbles'
+import { BubbleBlockType } from '../blocks/bubbles/enums'
+import { inputBlockSchemas } from '../blocks/schemas'
+import { chatCompletionMessageSchema } from '../blocks/integrations/openai'
+import { sessionStateSchema } from './sessionState'
+import { dynamicThemeSchema } from './shared'
 
 const chatSessionSchema = z.object({
   id: z.string(),
@@ -301,9 +254,7 @@ export const chatReplySchema = z.object({
 })
 
 export type ChatSession = z.infer<typeof chatSessionSchema>
-export type SessionState = z.infer<typeof sessionStateSchema>
-export type TypebotInSession = z.infer<typeof typebotInSessionStateSchema>
-export type ResultInSession = z.infer<typeof resultInSessionStateSchema>
+
 export type ChatReply = z.infer<typeof chatReplySchema>
 export type ChatMessage = z.infer<typeof chatMessageSchema>
 export type SendMessageInput = z.infer<typeof sendMessageInputSchema>

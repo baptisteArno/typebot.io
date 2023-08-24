@@ -3,7 +3,12 @@ import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { getSession } from '../queries/getSession'
 import prisma from '@/lib/prisma'
-import { PublicTypebot, SessionState, Typebot } from '@typebot.io/schemas'
+import {
+  PublicTypebot,
+  SessionState,
+  Typebot,
+  Variable,
+} from '@typebot.io/schemas'
 
 export const updateTypebotInSession = publicProcedure
   .meta({
@@ -32,7 +37,7 @@ export const updateTypebotInSession = publicProcedure
     const publicTypebot = (await prisma.publicTypebot.findFirst({
       where: {
         typebot: {
-          id: session.state.typebot.id,
+          id: session.state.typebotsQueue[0].typebot.id,
           OR: [
             {
               workspace: {
@@ -74,21 +79,28 @@ const updateSessionState = (
   newTypebot: Pick<PublicTypebot, 'edges' | 'variables' | 'groups'>
 ): SessionState => ({
   ...currentState,
-  typebot: {
-    ...currentState.typebot,
-    edges: newTypebot.edges,
-    variables: updateVariablesInSession(
-      currentState.typebot.variables,
-      newTypebot.variables
-    ),
-    groups: newTypebot.groups,
-  },
+  typebotsQueue: currentState.typebotsQueue.map((typebotInQueue, index) =>
+    index === 0
+      ? {
+          ...typebotInQueue,
+          typebot: {
+            ...typebotInQueue.typebot,
+            edges: newTypebot.edges,
+            groups: newTypebot.groups,
+            variables: updateVariablesInSession(
+              typebotInQueue.typebot.variables,
+              newTypebot.variables
+            ),
+          },
+        }
+      : typebotInQueue
+  ),
 })
 
 const updateVariablesInSession = (
-  currentVariables: SessionState['typebot']['variables'],
+  currentVariables: Variable[],
   newVariables: Typebot['variables']
-): SessionState['typebot']['variables'] => [
+): Variable[] => [
   ...currentVariables,
   ...newVariables.filter(
     (newVariable) =>

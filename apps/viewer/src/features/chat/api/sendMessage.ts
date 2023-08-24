@@ -7,7 +7,6 @@ import {
   IntegrationBlockType,
   PixelBlock,
   ReplyLog,
-  ResultInSession,
   sendMessageInputSchema,
   SessionState,
   StartParams,
@@ -148,22 +147,19 @@ const startSession = async (
       : prefilledVariables
 
   const initialState: SessionState = {
-    typebot: {
-      id: typebot.id,
-      groups: typebot.groups,
-      edges: typebot.edges,
-      variables: startVariables,
-    },
-    linkedTypebots: {
-      typebots: [],
-      queue: [],
-    },
-    result: {
-      id: result?.id,
-      variables: result?.variables ?? [],
-      answers: result?.answers ?? [],
-    },
-    currentTypebotId: typebot.id,
+    version: '2',
+    typebotsQueue: [
+      {
+        resultId: result?.id,
+        typebot: {
+          id: typebot.id,
+          groups: typebot.groups,
+          edges: typebot.edges,
+          variables: startVariables,
+        },
+        answers: [],
+      },
+    ],
     dynamicTheme: parseDynamicThemeInState(typebot.theme),
     isStreamEnabled: startParams.isStreamEnabled,
   }
@@ -212,12 +208,12 @@ const startSession = async (
         startClientSideAction.length > 0 ? startClientSideAction : undefined,
       typebot: {
         id: typebot.id,
-        settings: deepParseVariables(newSessionState.typebot.variables)(
-          typebot.settings
-        ),
-        theme: deepParseVariables(newSessionState.typebot.variables)(
-          typebot.theme
-        ),
+        settings: deepParseVariables(
+          newSessionState.typebotsQueue[0].typebot.variables
+        )(typebot.settings),
+        theme: deepParseVariables(
+          newSessionState.typebotsQueue[0].typebot.variables
+        )(typebot.theme),
       },
       dynamicTheme: parseDynamicThemeReply(newSessionState),
       logs: startLogs.length > 0 ? startLogs : undefined,
@@ -239,12 +235,12 @@ const startSession = async (
     sessionId: session.id,
     typebot: {
       id: typebot.id,
-      settings: deepParseVariables(newSessionState.typebot.variables)(
-        typebot.settings
-      ),
-      theme: deepParseVariables(newSessionState.typebot.variables)(
-        typebot.theme
-      ),
+      settings: deepParseVariables(
+        newSessionState.typebotsQueue[0].typebot.variables
+      )(typebot.settings),
+      theme: deepParseVariables(
+        newSessionState.typebotsQueue[0].typebot.variables
+      )(typebot.theme),
     },
     messages,
     input,
@@ -319,7 +315,7 @@ const getResult = async ({
   if (isPreview) return
   const existingResult =
     resultId && isRememberUserEnabled
-      ? ((await findResult({ id: resultId })) as ResultInSession)
+      ? await findResult({ id: resultId })
       : undefined
 
   const prefilledVariableWithValue = prefilledVariables.filter(
@@ -341,7 +337,7 @@ const getResult = async ({
   return {
     id: existingResult?.id ?? createId(),
     variables: updatedResult.variables,
-    answers: existingResult?.answers,
+    answers: existingResult?.answers ?? [],
   }
 }
 
@@ -369,10 +365,10 @@ const parseDynamicThemeReply = (
 ): ChatReply['dynamicTheme'] => {
   if (!state?.dynamicTheme) return
   return {
-    hostAvatarUrl: parseVariables(state?.typebot.variables)(
+    hostAvatarUrl: parseVariables(state.typebotsQueue[0].typebot.variables)(
       state.dynamicTheme.hostAvatarUrl
     ),
-    guestAvatarUrl: parseVariables(state?.typebot.variables)(
+    guestAvatarUrl: parseVariables(state.typebotsQueue[0].typebot.variables)(
       state.dynamicTheme.guestAvatarUrl
     ),
   }

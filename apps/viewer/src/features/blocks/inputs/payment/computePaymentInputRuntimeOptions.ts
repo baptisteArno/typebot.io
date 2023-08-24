@@ -11,18 +11,17 @@ import Stripe from 'stripe'
 import { decrypt } from '@typebot.io/lib/api/encryption'
 
 export const computePaymentInputRuntimeOptions =
-  (state: Pick<SessionState, 'result' | 'typebot'>) =>
-  (options: PaymentInputOptions) =>
+  (state: SessionState) => (options: PaymentInputOptions) =>
     createStripePaymentIntent(state)(options)
 
 const createStripePaymentIntent =
-  (state: Pick<SessionState, 'result' | 'typebot'>) =>
+  (state: SessionState) =>
   async (options: PaymentInputOptions): Promise<PaymentInputRuntimeOptions> => {
     const {
-      result,
+      resultId,
       typebot: { variables },
-    } = state
-    const isPreview = !result.id
+    } = state.typebotsQueue[0]
+    const isPreview = !resultId
     if (!options.credentialsId)
       throw new TRPCError({
         code: 'BAD_REQUEST',

@@ -1,15 +1,15 @@
 import {
-  SessionState,
   VariableWithValue,
   ItemType,
   PictureChoiceBlock,
+  Variable,
 } from '@typebot.io/schemas'
 import { isDefined } from '@typebot.io/lib'
 import { deepParseVariables } from '@/features/variables/deepParseVariable'
 import { filterPictureChoiceItems } from './filterPictureChoiceItems'
 
 export const injectVariableValuesInPictureChoiceBlock =
-  (variables: SessionState['typebot']['variables']) =>
+  (variables: Variable[]) =>
   (block: PictureChoiceBlock): PictureChoiceBlock => {
     if (
       block.options.dynamicItems?.isEnabled &&

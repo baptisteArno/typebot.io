@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma'
+import { Answer, Result } from '@typebot.io/schemas'
 
 type Props = {
   id: string
@@ -9,6 +10,18 @@ export const findResult = ({ id }: Props) =>
     select: {
       id: true,
       variables: true,
-      answers: { select: { blockId: true, variableId: true, content: true } },
+      hasStarted: true,
+      answers: {
+        select: {
+          content: true,
+          blockId: true,
+          variableId: true,
+        },
+      },
     },
-  })
+  }) as Promise<
+    | (Pick<Result, 'id' | 'variables' | 'hasStarted'> & {
+        answers: Pick<Answer, 'content' | 'blockId' | 'variableId'>[]
+      })
+    | null
+  >

@@ -70,17 +70,18 @@ if (window.$chatwoot) {
 `
 
 export const executeChatwootBlock = (
-  { typebot, result }: SessionState,
+  state: SessionState,
   block: ChatwootBlock
 ): ExecuteIntegrationResponse => {
+  const { typebot, resultId } = state.typebotsQueue[0]
   const chatwootCode =
     block.options.task === 'Close widget'
       ? chatwootCloseCode
-      : isDefined(result.id)
+      : isDefined(resultId)
       ? parseChatwootOpenCode({
           ...block.options,
           typebotId: typebot.id,
-          resultId: result.id,
+          resultId,
         })
       : ''
   return {

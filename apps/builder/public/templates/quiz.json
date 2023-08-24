@@ -618,7 +618,8 @@
           "groupId": "cl1r15f68005f2e6dvdtal7cp",
           "options": {
             "groupId": "cl1r09bc6000h2e6dqml18p4p",
-            "typebotId": "current"
+            "typebotId": "current",
+            "mergeResults": false
           }
         }
       ],

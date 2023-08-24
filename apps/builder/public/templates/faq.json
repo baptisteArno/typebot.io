@@ -282,7 +282,8 @@
           "type": "Typebot link",
           "options": {
             "typebotId": "current",
-            "groupId": "cl96ns9qr00043b6ii07bo25o"
+            "groupId": "cl96ns9qr00043b6ii07bo25o",
+            "mergeResults": false
           }
         }
       ]

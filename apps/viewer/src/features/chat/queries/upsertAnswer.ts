@@ -12,12 +12,13 @@ type Props = {
   state: SessionState
 }
 export const upsertAnswer = async ({ answer, reply, block, state }: Props) => {
-  if (!state.result?.id) return
+  const resultId = state.typebotsQueue[0].resultId
+  if (!resultId) return
   if (reply.includes('http') && block.type === InputBlockType.FILE) {
     answer.storageUsed = await computeStorageUsed(reply)
   }
   const where = {
-    resultId: state.result.id,
+    resultId,
     blockId: block.id,
     groupId: block.groupId,
   }
@@ -37,7 +38,7 @@ export const upsertAnswer = async ({ answer, reply, block, state }: Props) => {
       },
     })
   return prisma.answer.createMany({
-    data: [{ ...answer, resultId: state.result.id }],
+    data: [{ ...answer, resultId }],
   })
 }
 

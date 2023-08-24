@@ -1,10 +1,11 @@
 import { Stack } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { TypebotLinkOptions } from '@typebot.io/schemas'
-import { byId } from '@typebot.io/lib'
 import { GroupsDropdown } from './GroupsDropdown'
 import { TypebotsDropdown } from './TypebotsDropdown'
-import { useEffect, useState } from 'react'
+import { trpc } from '@/lib/trpc'
+import { isNotEmpty } from '@typebot.io/lib'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 
 type Props = {
   options: TypebotLinkOptions
@@ -12,21 +13,30 @@ type Props = {
 }
 
 export const TypebotLinkForm = ({ options, onOptionsChange }: Props) => {
-  const { linkedTypebots, typebot, save } = useTypebot()
-  const [linkedTypebotId, setLinkedTypebotId] = useState(options.typebotId)
+  const { typebot } = useTypebot()
 
   const handleTypebotIdChange = async (
     typebotId: string | 'current' | undefined
-  ) => onOptionsChange({ ...options, typebotId })
+  ) => onOptionsChange({ ...options, typebotId, groupId: undefined })
+
+  const { data: linkedTypebotData } = trpc.typebot.getTypebot.useQuery(
+    {
+      typebotId: options.typebotId as string,
+    },
+    {
+      enabled: isNotEmpty(options.typebotId) && options.typebotId !== 'current',
+    }
+  )
 
   const handleGroupIdChange = (groupId: string | undefined) =>
     onOptionsChange({ ...options, groupId })
 
-  useEffect(() => {
-    if (linkedTypebotId === options.typebotId) return
-    setLinkedTypebotId(options.typebotId)
-    save().then()
-  }, [linkedTypebotId, options.typebotId, save])
+  const updateMergeResults = (mergeResults: boolean) =>
+    onOptionsChange({ ...options, mergeResults })
+
+  const isCurrentTypebotSelected =
+    (typebot && options.typebotId === typebot.id) ||
+    options.typebotId === 'current'
 
   return (
     <Stack>
@@ -40,20 +50,28 @@ export const TypebotLinkForm = ({ options, onOptionsChange }: Props) => {
       )}
       {options.typebotId && (
         <GroupsDropdown
+          key={options.typebotId}
           groups={
-            typebot &&
-            (options.typebotId === typebot.id ||
-              options.typebotId === 'current')
+            typebot && isCurrentTypebotSelected
               ? typebot.groups
-              : linkedTypebots?.find(byId(options.typebotId))?.groups ?? []
+              : linkedTypebotData?.typebot?.groups ?? []
           }
           groupId={options.groupId}
           onGroupIdSelected={handleGroupIdChange}
           isLoading={
-            linkedTypebots === undefined &&
+            linkedTypebotData?.typebot === undefined &&
+            options.typebotId !== 'current' &&
             typebot &&
             typebot.id !== options.typebotId
           }
+        />
+      )}
+      {!isCurrentTypebotSelected && (
+        <SwitchWithLabel
+          label="Merge answers"
+          moreInfoContent="If enabled, the answers collected in the linked typebot will be merged with the results of the current typebot."
+          initialValue={options.mergeResults ?? true}
+          onCheckChange={updateMergeResults}
         />
       )}
     </Stack>

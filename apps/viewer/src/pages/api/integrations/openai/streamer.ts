@@ -41,7 +41,7 @@ const handler = async (req: Request) => {
 
   if (!state) return new Response('No state found', { status: 400 })
 
-  const group = state.typebot.groups.find(
+  const group = state.typebotsQueue[0].typebot.groups.find(
     (group) => group.id === state.currentBlock?.groupId
   )
   const blockIndex =

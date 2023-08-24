@@ -180,7 +180,8 @@
           "type": "Typebot link",
           "options": {
             "typebotId": "current",
-            "groupId": "vLUAPaxKwPF49iZhg4XZYa"
+            "groupId": "vLUAPaxKwPF49iZhg4XZYa",
+            "mergeResults": false
           }
         }
       ],
@@ -305,7 +306,8 @@
           "groupId": "1GvxCAAEysxJMxrVngud3X",
           "options": {
             "groupId": "vLUAPaxKwPF49iZhg4XZYa",
-            "typebotId": "current"
+            "typebotId": "current",
+            "mergeResults": false
           }
         }
       ],

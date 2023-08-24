@@ -156,13 +156,22 @@ export const TypebotHeader = () => {
             as={Link}
             aria-label="Navigate back"
             icon={<ChevronLeftIcon fontSize={25} />}
-            href={
-              router.query.parentId
-                ? `/typebots/${router.query.parentId}/edit`
+            href={{
+              pathname: router.query.parentId
+                ? '/typebots/[typebotId]/edit'
                 : typebot?.folderId
-                ? `/typebots/folders/${typebot.folderId}`
-                : '/typebots'
-            }
+                ? '/typebots/folders/[folderId]'
+                : '/typebots',
+              query: {
+                folderId: typebot?.folderId ?? [],
+                parentId: Array.isArray(router.query.parentId)
+                  ? router.query.parentId.slice(0, -1)
+                  : [],
+                typebotId: Array.isArray(router.query.parentId)
+                  ? [...router.query.parentId].pop()
+                  : router.query.parentId ?? [],
+              },
+            }}
             size="sm"
           />
           <HStack spacing={1}>
