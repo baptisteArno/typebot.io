@@ -3,12 +3,11 @@ import {
   Variable,
   InputBlock,
   ResultHeaderCell,
-  Answer,
   VariableWithValue,
   Typebot,
   ResultWithAnswers,
   InputBlockType,
-  ResultInSession,
+  AnswerInSessionState,
 } from '@typebot.io/schemas'
 import {
   isInputBlock,
@@ -16,6 +15,7 @@ import {
   byId,
   isNotEmpty,
   parseGroupTitle,
+  isEmpty,
 } from './utils'
 
 export const parseResultHeader = (
@@ -216,50 +216,36 @@ const parseResultsFromPreviousBotVersions = (
       ]
     }, [])
 
-export const parseAnswers =
-  (
-    typebot: Pick<Typebot, 'groups' | 'variables'>,
-    linkedTypebots: Pick<Typebot, 'groups' | 'variables'>[] | undefined
-  ) =>
-  ({
-    createdAt,
-    answers,
-    variables: resultVariables,
-  }: Omit<ResultInSession, 'hasStarted'> & { createdAt?: Date | string }): {
-    [key: string]: string
-  } => {
-    const header = parseResultHeader(typebot, linkedTypebots)
-    return {
-      submittedAt: !createdAt
-        ? new Date().toISOString()
-        : typeof createdAt === 'string'
-        ? createdAt
-        : createdAt.toISOString(),
-      ...[...answers, ...resultVariables].reduce<{
-        [key: string]: string
-      }>((o, answerOrVariable) => {
-        const isVariable = !('blockId' in answerOrVariable)
-        if (isVariable) {
-          const variable = answerOrVariable as VariableWithValue
-          if (variable.value === null) return o
-          return { ...o, [variable.name]: variable.value.toString() }
-        }
-        const answer = answerOrVariable as Answer
-        const key = answer.variableId
-          ? header.find(
-              (cell) =>
-                answer.variableId &&
-                cell.variableIds?.includes(answer.variableId)
-            )?.label
-          : header.find((cell) =>
-              cell.blocks?.some((block) => block.id === answer.blockId)
-            )?.label
-        if (!key) return o
-        if (isDefined(o[key])) return o
-        return {
-          ...o,
-          [key]: answer.content.toString(),
-        }
-      }, {}),
-    }
+export const parseAnswers = ({
+  answers,
+  variables: resultVariables,
+}: {
+  answers: AnswerInSessionState[]
+  variables: VariableWithValue[]
+}): {
+  [key: string]: string
+} => {
+  return {
+    submittedAt: new Date().toISOString(),
+    ...[...answers, ...resultVariables].reduce<{
+      [key: string]: string
+    }>((o, answerOrVariable) => {
+      if ('id' in answerOrVariable) {
+        const variable = answerOrVariable
+        if (variable.value === null) return o
+        return { ...o, [variable.name]: variable.value.toString() }
+      }
+      const answer = answerOrVariable as AnswerInSessionState
+      if (isEmpty(answer.key)) return o
+      return {
+        ...o,
+        [answer.key]: answer.value,
+      }
+    }, {}),
   }
+}
+
+export const getDefinedVariables = (variables: Variable[]) =>
+  variables.filter((variable) =>
+    isDefined(variable.value)
+  ) as VariableWithValue[]

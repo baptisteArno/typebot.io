@@ -22,9 +22,8 @@ export const resumeChatCompletion =
     const newVariables = options.responseMapping.reduce<
       VariableWithUnknowValue[]
     >((newVariables, mapping) => {
-      const existingVariable = newSessionState.typebot.variables.find(
-        byId(mapping.variableId)
-      )
+      const { typebot } = newSessionState.typebotsQueue[0]
+      const existingVariable = typebot.variables.find(byId(mapping.variableId))
       if (!existingVariable) return newVariables
       if (mapping.valueToExtract === 'Message content') {
         newVariables.push({

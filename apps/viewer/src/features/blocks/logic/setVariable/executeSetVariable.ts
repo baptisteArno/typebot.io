@@ -10,14 +10,14 @@ export const executeSetVariable = (
   state: SessionState,
   block: SetVariableBlock
 ): ExecuteLogicResponse => {
-  const { variables } = state.typebot
+  const { variables } = state.typebotsQueue[0].typebot
   if (!block.options?.variableId)
     return {
       outgoingEdgeId: block.outgoingEdgeId,
     }
-  const expressionToEvaluate = getExpressionToEvaluate(state.result.id)(
-    block.options
-  )
+  const expressionToEvaluate = getExpressionToEvaluate(
+    state.typebotsQueue[0].resultId
+  )(block.options)
   const isCustomValue = !block.options.type || block.options.type === 'Custom'
   if (
     expressionToEvaluate &&
@@ -25,7 +25,7 @@ export const executeSetVariable = (
       block.options.type === 'Moment of the day')
   ) {
     const scriptToExecute = parseScriptToExecuteClientSideAction(
-      state.typebot.variables,
+      variables,
       expressionToEvaluate
     )
     return {

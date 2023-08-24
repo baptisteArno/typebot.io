@@ -5,11 +5,12 @@ import { byId } from '@typebot.io/lib'
 import {
   MakeComBlock,
   PabblyConnectBlock,
+  ReplyLog,
   VariableWithUnknowValue,
   WebhookBlock,
   ZapierBlock,
 } from '@typebot.io/schemas'
-import { ReplyLog, SessionState } from '@typebot.io/schemas/features/chat'
+import { SessionState } from '@typebot.io/schemas/features/chat/sessionState'
 
 type Props = {
   state: SessionState
@@ -27,7 +28,7 @@ export const resumeWebhookExecution = ({
   logs = [],
   response,
 }: Props): ExecuteIntegrationResponse => {
-  const { typebot } = state
+  const { typebot } = state.typebotsQueue[0]
   const status = response.statusCode.toString()
   const isError = status.startsWith('4') || status.startsWith('5')
 

@@ -6,22 +6,19 @@ import {
   PabblyConnectBlock,
   SessionState,
   Webhook,
-  Typebot,
   Variable,
   WebhookResponse,
   WebhookOptions,
   defaultWebhookAttributes,
-  PublicTypebot,
   KeyValue,
   ReplyLog,
-  ResultInSession,
   ExecutableWebhook,
+  AnswerInSessionState,
 } from '@typebot.io/schemas'
 import { stringify } from 'qs'
 import { omit } from '@typebot.io/lib'
-import { parseAnswers } from '@typebot.io/lib/results'
+import { getDefinedVariables, parseAnswers } from '@typebot.io/lib/results'
 import got, { Method, HTTPError, OptionsInit } from 'got'
-import { parseSampleResult } from './parseSampleResult'
 import { ExecuteIntegrationResponse } from '@/features/chat/types'
 import { parseVariables } from '@/features/variables/parseVariables'
 import { resumeWebhookExecution } from './resumeWebhookExecution'
@@ -36,7 +33,6 @@ export const executeWebhookBlock = async (
   state: SessionState,
   block: WebhookBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock
 ): Promise<ExecuteIntegrationResponse> => {
-  const { typebot, result } = state
   const logs: ReplyLog[] = []
   const webhook =
     block.options.webhook ??
@@ -52,9 +48,8 @@ export const executeWebhookBlock = async (
   }
   const preparedWebhook = prepareWebhookAttributes(webhook, block.options)
   const parsedWebhook = await parseWebhookAttributes(
-    typebot,
-    block.groupId,
-    result
+    state,
+    state.typebotsQueue[0].answers
   )(preparedWebhook)
   if (!parsedWebhook) {
     logs.push({
@@ -97,14 +92,10 @@ const prepareWebhookAttributes = (
 const checkIfBodyIsAVariable = (body: string) => /^{{.+}}$/.test(body)
 
 const parseWebhookAttributes =
-  (
-    typebot: SessionState['typebot'],
-    groupId: string,
-    result: ResultInSession
-  ) =>
+  (state: SessionState, answers: AnswerInSessionState[]) =>
   async (webhook: Webhook): Promise<ParsedWebhook | undefined> => {
     if (!webhook.url || !webhook.method) return
-    const { variables } = typebot
+    const { typebot } = state.typebotsQueue[0]
     const basicAuth: { username?: string; password?: string } = {}
     const basicAuthHeaderIdx = webhook.headers.findIndex(
       (h) =>
@@ -121,32 +112,29 @@ const parseWebhookAttributes =
       basicAuth.password = password
       webhook.headers.splice(basicAuthHeaderIdx, 1)
     }
-    const headers = convertKeyValueTableToObject(webhook.headers, variables) as
-      | ExecutableWebhook['headers']
-      | undefined
+    const headers = convertKeyValueTableToObject(
+      webhook.headers,
+      typebot.variables
+    ) as ExecutableWebhook['headers'] | undefined
     const queryParams = stringify(
-      convertKeyValueTableToObject(webhook.queryParams, variables)
+      convertKeyValueTableToObject(webhook.queryParams, typebot.variables)
     )
-    const bodyContent = await getBodyContent(
-      typebot,
-      []
-    )({
+    const bodyContent = await getBodyContent({
       body: webhook.body,
-      result,
-      groupId,
-      variables,
+      answers,
+      variables: typebot.variables,
     })
     const { data: body, isJson } =
       bodyContent && webhook.method !== HttpMethod.GET
         ? safeJsonParse(
-            parseVariables(variables, {
+            parseVariables(typebot.variables, {
               escapeForJson: !checkIfBodyIsAVariable(bodyContent),
             })(bodyContent)
           )
         : { data: undefined, isJson: false }
 
     return {
-      url: parseVariables(variables)(
+      url: parseVariables(typebot.variables)(
         webhook.url + (queryParams !== '' ? `?${queryParams}` : '')
       ),
       basicAuth,
@@ -229,34 +217,25 @@ export const executeWebhook = async (
   }
 }
 
-const getBodyContent =
-  (
-    typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>,
-    linkedTypebots: (Typebot | PublicTypebot)[]
-  ) =>
-  async ({
-    body,
-    result,
-    groupId,
-    variables,
-  }: {
-    body?: string | null
-    result?: ResultInSession
-    groupId: string
-    variables: Variable[]
-  }): Promise<string | undefined> => {
-    if (!body) return
-    return body === '{{state}}'
-      ? JSON.stringify(
-          result
-            ? parseAnswers(typebot, linkedTypebots)(result)
-            : await parseSampleResult(typebot, linkedTypebots)(
-                groupId,
-                variables
-              )
-        )
-      : body
-  }
+const getBodyContent = async ({
+  body,
+  answers,
+  variables,
+}: {
+  body?: string | null
+  answers: AnswerInSessionState[]
+  variables: Variable[]
+}): Promise<string | undefined> => {
+  if (!body) return
+  return body === '{{state}}'
+    ? JSON.stringify(
+        parseAnswers({
+          answers,
+          variables: getDefinedVariables(variables),
+        })
+      )
+    : body
+}
 
 const convertKeyValueTableToObject = (
   keyValues: KeyValue[] | undefined,

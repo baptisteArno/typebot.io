@@ -1,4 +1,4 @@
-import { LogicBlockType, PublicTypebot, Typebot } from '@typebot.io/schemas'
+import { PublicTypebot, Typebot } from '@typebot.io/schemas'
 import { Router, useRouter } from 'next/router'
 import {
   createContext,
@@ -49,7 +49,6 @@ const typebotContext = createContext<
   {
     typebot?: Typebot
     publishedTypebot?: PublicTypebot
-    linkedTypebots?: Pick<Typebot, 'id' | 'groups' | 'variables' | 'name'>[]
     isReadOnly?: boolean
     isPublished: boolean
     isSavingLoading: boolean
@@ -131,36 +130,6 @@ export const TypebotProvider = ({
     localTypebot,
     { redo, undo, flush, canRedo, canUndo, set: setLocalTypebot },
   ] = useUndo<Typebot>(undefined)
-
-  const linkedTypebotIds = useMemo(
-    () =>
-      typebot?.groups
-        .flatMap((group) => group.blocks)
-        .reduce<string[]>(
-          (typebotIds, block) =>
-            block.type === LogicBlockType.TYPEBOT_LINK &&
-            isDefined(block.options.typebotId) &&
-            !typebotIds.includes(block.options.typebotId)
-              ? [...typebotIds, block.options.typebotId]
-              : typebotIds,
-          []
-        ) ?? [],
-    [typebot?.groups]
-  )
-
-  const { data: linkedTypebotsData } = trpc.getLinkedTypebots.useQuery(
-    {
-      typebotId: typebot?.id as string,
-    },
-    {
-      enabled: isDefined(typebot?.id) && linkedTypebotIds.length > 0,
-      onError: (error) =>
-        showToast({
-          title: 'Error while fetching linkedTypebots',
-          description: error.message,
-        }),
-    }
-  )
 
   useEffect(() => {
     if (!typebot && isDefined(localTypebot)) setLocalTypebot(undefined)
@@ -270,7 +239,6 @@ export const TypebotProvider = ({
       value={{
         typebot: localTypebot,
         publishedTypebot,
-        linkedTypebots: linkedTypebotsData?.typebots ?? [],
         isReadOnly: typebotData?.isReadOnly,
         isSavingLoading: isSaving,
         save: saveTypebot,

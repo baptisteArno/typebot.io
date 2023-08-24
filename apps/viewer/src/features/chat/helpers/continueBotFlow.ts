@@ -1,5 +1,6 @@
 import { TRPCError } from '@trpc/server'
 import {
+  AnswerInSessionState,
   Block,
   BlockType,
   BubbleBlockType,
@@ -8,7 +9,6 @@ import {
   InputBlockType,
   IntegrationBlockType,
   LogicBlockType,
-  ResultInSession,
   SessionState,
   SetVariableBlock,
   WebhookBlock,
@@ -35,7 +35,7 @@ export const continueBotFlow =
     reply?: string
   ): Promise<ChatReply & { newSessionState: SessionState }> => {
     let newSessionState = { ...state }
-    const group = state.typebot.groups.find(
+    const group = state.typebotsQueue[0].typebot.groups.find(
       (group) => group.id === state.currentBlock?.groupId
     )
     const blockIndex =
@@ -52,7 +52,7 @@ export const continueBotFlow =
       })
 
     if (block.type === LogicBlockType.SET_VARIABLE) {
-      const existingVariable = state.typebot.variables.find(
+      const existingVariable = state.typebotsQueue[0].typebot.variables.find(
         byId(block.options.variableId)
       )
       if (existingVariable && reply) {
@@ -103,7 +103,8 @@ export const continueBotFlow =
         formattedReply
       )
       const itemId = nextEdgeId
-        ? state.typebot.edges.find(byId(nextEdgeId))?.from.itemId
+        ? newSessionState.typebotsQueue[0].typebot.edges.find(byId(nextEdgeId))
+            ?.from.itemId
         : undefined
       newSessionState = await processAndSaveAnswer(
         state,
@@ -128,7 +129,7 @@ export const continueBotFlow =
       }
     }
 
-    if (!nextEdgeId && state.linkedTypebots.queue.length === 0)
+    if (!nextEdgeId && state.typebotsQueue.length === 1)
       return {
         messages: [],
         newSessionState,
@@ -138,7 +139,9 @@ export const continueBotFlow =
 
     const nextGroup = getNextGroup(newSessionState)(nextEdgeId)
 
-    if (!nextGroup)
+    newSessionState = nextGroup.newSessionState
+
+    if (!nextGroup.group)
       return {
         messages: [],
         newSessionState,
@@ -168,7 +171,7 @@ const saveVariableValueIfAny =
   (state: SessionState, block: InputBlock) =>
   (reply: string): SessionState => {
     if (!block.options.variableId) return state
-    const foundVariable = state.typebot.variables.find(
+    const foundVariable = state.typebotsQueue[0].typebot.variables.find(
       (variable) => variable.id === block.options.variableId
     )
     if (!foundVariable) return state
@@ -235,34 +238,47 @@ const saveAnswer =
       itemId,
     })
 
+    const key = block.options.variableId
+      ? state.typebotsQueue[0].typebot.variables.find(
+          (variable) => variable.id === block.options.variableId
+        )?.name
+      : state.typebotsQueue[0].typebot.groups.find((group) =>
+          group.blocks.find((blockInGroup) => blockInGroup.id === block.id)
+        )?.title
+
     return setNewAnswerInState(state)({
-      blockId: block.id,
-      variableId: block.options.variableId ?? null,
-      content: reply,
+      key: key ?? block.id,
+      value: reply,
     })
   }
 
 const setNewAnswerInState =
-  (state: SessionState) => (newAnswer: ResultInSession['answers'][number]) => {
-    const newAnswers = state.result.answers
-      .filter((answer) => answer.blockId !== newAnswer.blockId)
+  (state: SessionState) => (newAnswer: AnswerInSessionState) => {
+    const answers = state.typebotsQueue[0].answers
+    const newAnswers = answers
+      .filter((answer) => answer.key !== newAnswer.key)
       .concat(newAnswer)
 
     return {
       ...state,
-      result: {
-        ...state.result,
-        answers: newAnswers,
-      },
+      typebotsQueue: state.typebotsQueue.map((typebot, index) =>
+        index === 0
+          ? {
+              ...typebot,
+              answers: newAnswers,
+            }
+          : typebot
+      ),
     } satisfies SessionState
   }
 
 const getOutgoingEdgeId =
-  ({ typebot: { variables } }: Pick<SessionState, 'typebot'>) =>
+  (state: Pick<SessionState, 'typebotsQueue'>) =>
   (
     block: InputBlock | SetVariableBlock | OpenAIBlock | WebhookBlock,
     reply: string | undefined
   ) => {
+    const variables = state.typebotsQueue[0].typebot.variables
     if (
       block.type === InputBlockType.CHOICE &&
       !block.options.isMultipleChoice &&

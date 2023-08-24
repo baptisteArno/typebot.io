@@ -65,7 +65,8 @@ export const getLinkedTypebots = authenticatedProcedure
           (typebotIds, block) =>
             block.type === LogicBlockType.TYPEBOT_LINK &&
             isDefined(block.options.typebotId) &&
-            !typebotIds.includes(block.options.typebotId)
+            !typebotIds.includes(block.options.typebotId) &&
+            block.options.mergeResults !== false
               ? [...typebotIds, block.options.typebotId]
               : typebotIds,
           []

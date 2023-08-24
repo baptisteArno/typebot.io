@@ -3,9 +3,10 @@ import { parseVariables } from '@/features/variables/parseVariables'
 import { SessionState, WaitBlock } from '@typebot.io/schemas'
 
 export const executeWait = (
-  { typebot: { variables } }: SessionState,
+  state: SessionState,
   block: WaitBlock
 ): ExecuteLogicResponse => {
+  const { variables } = state.typebotsQueue[0].typebot
   if (!block.options.secondsToWaitFor)
     return { outgoingEdgeId: block.outgoingEdgeId }
   const parsedSecondsToWaitFor = safeParseInt(

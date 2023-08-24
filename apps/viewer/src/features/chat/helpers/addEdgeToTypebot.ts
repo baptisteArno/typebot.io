@@ -6,10 +6,17 @@ export const addEdgeToTypebot = (
   edge: Edge
 ): SessionState => ({
   ...state,
-  typebot: {
-    ...state.typebot,
-    edges: [...state.typebot.edges, edge],
-  },
+  typebotsQueue: state.typebotsQueue.map((typebot, index) =>
+    index === 0
+      ? {
+          ...typebot,
+          typebot: {
+            ...typebot.typebot,
+            edges: [...typebot.typebot.edges, edge],
+          },
+        }
+      : typebot
+  ),
 })
 
 export const createPortalEdge = ({ to }: Pick<Edge, 'to'>) => ({

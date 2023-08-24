@@ -10,12 +10,13 @@ import { ExecuteIntegrationResponse } from '@/features/chat/types'
 import { matchFilter } from './helpers/matchFilter'
 
 export const updateRow = async (
-  { typebot: { variables } }: SessionState,
+  state: SessionState,
   {
     outgoingEdgeId,
     options,
   }: { outgoingEdgeId?: string; options: GoogleSheetsUpdateRowOptions }
 ): Promise<ExecuteIntegrationResponse> => {
+  const { variables } = state.typebotsQueue[0].typebot
   const { sheetId, referenceCell, filter } =
     deepParseVariables(variables)(options)
   if (!options.cellsToUpsert || !sheetId || (!referenceCell && !filter))

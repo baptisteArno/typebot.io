@@ -5,7 +5,7 @@ import {
   ChatCompletionOpenAIOptions,
   OpenAICredentials,
 } from '@typebot.io/schemas/features/blocks/integrations/openai'
-import { SessionState } from '@typebot.io/schemas/features/chat'
+import { SessionState } from '@typebot.io/schemas/features/chat/sessionState'
 import { OpenAIStream } from 'ai'
 import {
   ChatCompletionRequestMessage,
@@ -35,7 +35,8 @@ export const getChatCompletionStream =
       credentials.iv
     )) as OpenAICredentials['data']
 
-    const temperature = parseVariableNumber(state.typebot.variables)(
+    const { typebot } = state.typebotsQueue[0]
+    const temperature = parseVariableNumber(typebot.variables)(
       options.advancedSettings?.temperature
     )
 

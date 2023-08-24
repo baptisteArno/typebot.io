@@ -4,9 +4,10 @@ import { sanitizeUrl } from '@typebot.io/lib'
 import { ExecuteLogicResponse } from '@/features/chat/types'
 
 export const executeRedirect = (
-  { typebot: { variables } }: SessionState,
+  state: SessionState,
   block: RedirectBlock
 ): ExecuteLogicResponse => {
+  const { variables } = state.typebotsQueue[0].typebot
   if (!block.options?.url) return { outgoingEdgeId: block.outgoingEdgeId }
   const formattedUrl = sanitizeUrl(parseVariables(variables)(block.options.url))
   return {

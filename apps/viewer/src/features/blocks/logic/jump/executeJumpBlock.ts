@@ -11,9 +11,8 @@ export const executeJumpBlock = (
   state: SessionState,
   { groupId, blockId }: JumpBlock['options']
 ): ExecuteLogicResponse => {
-  const groupToJumpTo = state.typebot.groups.find(
-    (group) => group.id === groupId
-  )
+  const { typebot } = state.typebotsQueue[0]
+  const groupToJumpTo = typebot.groups.find((group) => group.id === groupId)
   const blockToJumpTo =
     groupToJumpTo?.blocks.find((block) => block.id === blockId) ??
     groupToJumpTo?.blocks[0]

@@ -3,32 +3,32 @@ import prisma from '@/lib/prisma'
 import { render } from '@faire/mjml-react/utils/render'
 import { DefaultBotNotificationEmail } from '@typebot.io/emails'
 import {
-  PublicTypebot,
+  AnswerInSessionState,
   ReplyLog,
-  ResultInSession,
   SendEmailBlock,
   SendEmailOptions,
   SessionState,
   SmtpCredentials,
+  TypebotInSession,
   Variable,
 } from '@typebot.io/schemas'
 import { createTransport } from 'nodemailer'
 import Mail from 'nodemailer/lib/mailer'
 import { byId, isDefined, isEmpty, isNotDefined, omit } from '@typebot.io/lib'
-import { parseAnswers } from '@typebot.io/lib/results'
+import { getDefinedVariables, parseAnswers } from '@typebot.io/lib/results'
 import { decrypt } from '@typebot.io/lib/api'
 import { defaultFrom, defaultTransportOptions } from './constants'
 import { ExecuteIntegrationResponse } from '@/features/chat/types'
 import { findUniqueVariableValue } from '../../../variables/findUniqueVariableValue'
 
 export const executeSendEmailBlock = async (
-  { result, typebot }: SessionState,
+  state: SessionState,
   block: SendEmailBlock
 ): Promise<ExecuteIntegrationResponse> => {
   const logs: ReplyLog[] = []
   const { options } = block
-  const { variables } = typebot
-  const isPreview = !result.id
+  const { typebot, resultId, answers } = state.typebotsQueue[0]
+  const isPreview = !resultId
   if (isPreview)
     return {
       outgoingEdgeId: block.outgoingEdgeId,
@@ -41,23 +41,23 @@ export const executeSendEmailBlock = async (
     }
 
   const body =
-    findUniqueVariableValue(variables)(options.body)?.toString() ??
-    parseVariables(variables, { escapeHtml: true })(options.body ?? '')
+    findUniqueVariableValue(typebot.variables)(options.body)?.toString() ??
+    parseVariables(typebot.variables, { escapeHtml: true })(options.body ?? '')
 
   try {
     const sendEmailLogs = await sendEmail({
-      typebotId: typebot.id,
-      result,
+      typebot,
+      answers,
       credentialsId: options.credentialsId,
-      recipients: options.recipients.map(parseVariables(variables)),
-      subject: parseVariables(variables)(options.subject ?? ''),
+      recipients: options.recipients.map(parseVariables(typebot.variables)),
+      subject: parseVariables(typebot.variables)(options.subject ?? ''),
       body,
-      cc: (options.cc ?? []).map(parseVariables(variables)),
-      bcc: (options.bcc ?? []).map(parseVariables(variables)),
+      cc: (options.cc ?? []).map(parseVariables(typebot.variables)),
+      bcc: (options.bcc ?? []).map(parseVariables(typebot.variables)),
       replyTo: options.replyTo
-        ? parseVariables(variables)(options.replyTo)
+        ? parseVariables(typebot.variables)(options.replyTo)
         : undefined,
-      fileUrls: getFileUrls(variables)(options.attachmentsVariableId),
+      fileUrls: getFileUrls(typebot.variables)(options.attachmentsVariableId),
       isCustomBody: options.isCustomBody,
       isBodyCode: options.isBodyCode,
     })
@@ -74,8 +74,8 @@ export const executeSendEmailBlock = async (
 }
 
 const sendEmail = async ({
-  typebotId,
-  result,
+  typebot,
+  answers,
   credentialsId,
   recipients,
   body,
@@ -87,8 +87,8 @@ const sendEmail = async ({
   isCustomBody,
   fileUrls,
 }: SendEmailOptions & {
-  typebotId: string
-  result: ResultInSession
+  typebot: TypebotInSession
+  answers: AnswerInSessionState[]
   fileUrls?: string | string[]
 }): Promise<ReplyLog[] | undefined> => {
   const logs: ReplyLog[] = []
@@ -112,8 +112,8 @@ const sendEmail = async ({
     body,
     isCustomBody,
     isBodyCode,
-    typebotId,
-    result,
+    typebot,
+    answersInSession: answers,
   })
 
   if (!emailBody) {
@@ -206,11 +206,11 @@ const getEmailBody = async ({
   body,
   isCustomBody,
   isBodyCode,
-  typebotId,
-  result,
+  typebot,
+  answersInSession,
 }: {
-  typebotId: string
-  result: ResultInSession
+  typebot: TypebotInSession
+  answersInSession: AnswerInSessionState[]
 } & Pick<SendEmailOptions, 'isCustomBody' | 'isBodyCode' | 'body'>): Promise<
   { html?: string; text?: string } | undefined
 > => {
@@ -219,11 +219,10 @@ const getEmailBody = async ({
       html: isBodyCode ? body : undefined,
       text: !isBodyCode ? body : undefined,
     }
-  const typebot = (await prisma.publicTypebot.findUnique({
-    where: { typebotId },
-  })) as unknown as PublicTypebot
-  if (!typebot) return
-  const answers = parseAnswers(typebot, [])(result)
+  const answers = parseAnswers({
+    variables: getDefinedVariables(typebot.variables),
+    answers: answersInSession,
+  })
   return {
     html: render(
       <DefaultBotNotificationEmail

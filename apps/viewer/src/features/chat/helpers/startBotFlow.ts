@@ -8,7 +8,7 @@ export const startBotFlow = async (
   startGroupId?: string
 ): Promise<ChatReply & { newSessionState: SessionState }> => {
   if (startGroupId) {
-    const group = state.typebot.groups.find(
+    const group = state.typebotsQueue[0].typebot.groups.find(
       (group) => group.id === startGroupId
     )
     if (!group)
@@ -18,9 +18,10 @@ export const startBotFlow = async (
       })
     return executeGroup(state)(group)
   }
-  const firstEdgeId = state.typebot.groups[0].blocks[0].outgoingEdgeId
+  const firstEdgeId =
+    state.typebotsQueue[0].typebot.groups[0].blocks[0].outgoingEdgeId
   if (!firstEdgeId) return { messages: [], newSessionState: state }
   const nextGroup = getNextGroup(state)(firstEdgeId)
-  if (!nextGroup) return { messages: [], newSessionState: state }
+  if (!nextGroup.group) return { messages: [], newSessionState: state }
   return executeGroup(state)(nextGroup.group)
 }

@@ -3,9 +3,10 @@ import { ExecuteLogicResponse } from '@/features/chat/types'
 import { executeCondition } from './executeCondition'
 
 export const executeConditionBlock = (
-  { typebot: { variables } }: SessionState,
+  state: SessionState,
   block: ConditionBlock
 ): ExecuteLogicResponse => {
+  const { variables } = state.typebotsQueue[0].typebot
   const passedCondition = block.items.find((item) =>
     executeCondition(variables)(item.content)
   )

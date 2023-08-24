@@ -8,12 +8,13 @@ import { getAuthenticatedGoogleDoc } from './helpers/getAuthenticatedGoogleDoc'
 import { ExecuteIntegrationResponse } from '@/features/chat/types'
 
 export const insertRow = async (
-  { typebot: { variables } }: SessionState,
+  state: SessionState,
   {
     outgoingEdgeId,
     options,
   }: { outgoingEdgeId?: string; options: GoogleSheetsInsertRowOptions }
 ): Promise<ExecuteIntegrationResponse> => {
+  const { variables } = state.typebotsQueue[0].typebot
   if (!options.cellsToInsert || !options.sheetId) return { outgoingEdgeId }
 
   const logs: ReplyLog[] = []
