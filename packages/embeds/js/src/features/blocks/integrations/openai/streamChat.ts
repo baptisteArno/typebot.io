@@ -3,9 +3,11 @@ import { guessApiHost } from '@/utils/guessApiHost'
 import { isNotEmpty } from '@typebot.io/lib/utils'
 
 let abortController: AbortController | null = null
+const secondsToWaitBeforeRetries = 3
+const maxRetryAttempts = 3
 
 export const streamChat =
-  (context: ClientSideActionContext) =>
+  (context: ClientSideActionContext & { retryAttempt?: number }) =>
   async (
     messages: {
       content?: string | undefined
@@ -36,6 +38,18 @@ export const streamChat =
       )
 
       if (!res.ok) {
+        if (
+          (context.retryAttempt ?? 0) < maxRetryAttempts &&
+          (res.status === 403 || res.status === 500 || res.status === 503)
+        ) {
+          await new Promise((resolve) =>
+            setTimeout(resolve, secondsToWaitBeforeRetries * 1000)
+          )
+          return streamChat({
+            ...context,
+            retryAttempt: (context.retryAttempt ?? 0) + 1,
+          })(messages, { onMessageStream })
+        }
         return {
           error: (await res.json()) || 'Failed to fetch the chat response.',
         }
