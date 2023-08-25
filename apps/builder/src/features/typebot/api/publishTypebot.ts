@@ -1,10 +1,11 @@
 import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { typebotSchema } from '@typebot.io/schemas'
+import { InputBlockType, typebotSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
 import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
+import { Plan } from '@typebot.io/prisma'
 
 export const publishTypebot = authenticatedProcedure
   .meta({
@@ -34,6 +35,11 @@ export const publishTypebot = authenticatedProcedure
       include: {
         collaborators: true,
         publishedTypebot: true,
+        workspace: {
+          select: {
+            plan: true,
+          },
+        },
       },
     })
     if (
@@ -41,6 +47,20 @@ export const publishTypebot = authenticatedProcedure
       (await isWriteTypebotForbidden(existingTypebot, user))
     )
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+
+    if (existingTypebot.workspace.plan === Plan.FREE) {
+      const hasFileUploadBlocks = typebotSchema._def.schema.shape.groups
+        .parse(existingTypebot.groups)
+        .some((group) =>
+          group.blocks.some((block) => block.type === InputBlockType.FILE)
+        )
+
+      if (hasFileUploadBlocks)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: "File upload blocks can't be published on the free plan",
+        })
+    }
 
     if (existingTypebot.publishedTypebot)
       await prisma.publicTypebot.updateMany({
