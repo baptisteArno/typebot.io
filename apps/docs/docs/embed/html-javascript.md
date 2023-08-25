@@ -169,10 +169,7 @@ typebot-bubble::part(button) {
 
 typebot-bubble::part(bot) {
   bottom: 140px;
-}
-
-typebot-bubble::part(bot) {
-  bottom: 140px;  height: calc(100% - 140px)
+  height: calc(100% - 140px)
 }
 ```
 
