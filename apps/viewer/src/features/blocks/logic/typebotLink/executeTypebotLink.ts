@@ -8,15 +8,15 @@ import {
   SessionState,
   Variable,
   ReplyLog,
-  VariableWithValue,
   Edge,
   typebotInSessionStateSchema,
   TypebotInSession,
 } from '@typebot.io/schemas'
 import { ExecuteLogicResponse } from '@/features/chat/types'
 import { createId } from '@paralleldrive/cuid2'
-import { isDefined, isNotDefined } from '@typebot.io/lib/utils'
+import { isNotDefined } from '@typebot.io/lib/utils'
 import { createResultIfNotExist } from '@/features/chat/queries/createResultIfNotExist'
+import { executeJumpBlock } from '../jump/executeJumpBlock'
 
 export const executeTypebotLink = async (
   state: SessionState,
@@ -24,6 +24,14 @@ export const executeTypebotLink = async (
 ): Promise<ExecuteLogicResponse> => {
   const logs: ReplyLog[] = []
   const typebotId = block.options.typebotId
+  if (
+    typebotId === 'current' ||
+    typebotId === state.typebotsQueue[0].typebot.id
+  ) {
+    return executeJumpBlock(state, {
+      groupId: block.options.groupId,
+    })
+  }
   if (!typebotId) {
     logs.push({
       status: 'error',
@@ -91,10 +99,7 @@ const addLinkedTypebotToState = async (
       }
     : currentTypebotInQueue
 
-  const shouldMergeResults =
-    block.options.mergeResults !== false ||
-    currentTypebotInQueue.typebot.id === linkedTypebot.id ||
-    block.options.typebotId === 'current'
+  const shouldMergeResults = block.options.mergeResults !== false
 
   if (
     currentTypebotInQueue.resultId &&
@@ -168,26 +173,23 @@ const createResumeEdgeIfNecessary = (
 }
 
 const fillVariablesWithExistingValues = (
-  variables: Variable[],
-  variablesWithValues: Variable[]
-): VariableWithValue[] =>
-  variables
-    .map((variable) => {
-      const matchedVariable = variablesWithValues.find(
-        (variableWithValue) => variableWithValue.name === variable.name
-      )
+  emptyVariables: Variable[],
+  existingVariables: Variable[]
+): Variable[] =>
+  emptyVariables.map((emptyVariable) => {
+    const matchedVariable = existingVariables.find(
+      (existingVariable) => existingVariable.name === emptyVariable.name
+    )
 
-      return {
-        ...variable,
-        value: matchedVariable?.value,
-      }
-    })
-    .filter((variable) => isDefined(variable.value)) as VariableWithValue[]
+    return {
+      ...emptyVariable,
+      value: matchedVariable?.value,
+    }
+  })
 
 const fetchTypebot = async (state: SessionState, typebotId: string) => {
-  const { typebot: typebotInState, resultId } = state.typebotsQueue[0]
+  const { resultId } = state.typebotsQueue[0]
   const isPreview = !resultId
-  if (typebotId === 'current') return typebotInState
   if (isPreview) {
     const typebot = await prisma.typebot.findUnique({
       where: { id: typebotId },
