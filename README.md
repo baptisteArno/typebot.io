@@ -17,7 +17,7 @@ Typebot is an open-source chatbot builder. It allows you to create advanced chat
 <a href="https://github.com/baptistearno/typebot.io/stargazers"><img src="https://img.shields.io/github/stars/baptistearno/typebot.io" alt="Github Stars"></a>
 </a>
 <a href="https://github.com/baptistearno/typebot.io/pulse"><img src="https://img.shields.io/github/commit-activity/m/baptistearno/typebot.io" alt="Commits per month"></a>
-<a href="https://docs.typebot.io/self-hosting/docker">
+<a href="https://docs.typebot.io/self-hosting/guides/docker">
 <img src="https://img.shields.io/docker/pulls/baptistearno/typebot-builder">
 </a>
 <a href="https://github.com/baptistearno/typebot.io/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPLv3-purple" alt="License">

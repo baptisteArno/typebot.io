@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { VariablesButton } from '@/features/variables/components/VariablesButton'
 import { Variable } from '@typebot.io/schemas'
-import { env } from '@typebot.io/lib'
+import { env } from '@typebot.io/env'
 import CodeMirror, { ReactCodeMirrorRef } from '@uiw/react-codemirror'
 import { tokyoNight } from '@uiw/codemirror-theme-tokyo-night'
 import { githubLight } from '@uiw/codemirror-theme-github'
@@ -53,7 +53,7 @@ export const CodeEditor = ({
       _setValue(value)
       onChange && onChange(value)
     },
-    env('E2E_TEST') === 'true' ? 0 : debounceTimeout
+    env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
   )
 
   const handleVariableSelected = (variable?: Pick<Variable, 'id' | 'name'>) => {

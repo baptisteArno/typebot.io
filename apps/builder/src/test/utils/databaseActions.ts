@@ -7,10 +7,11 @@ import {
 } from '@typebot.io/prisma'
 import Stripe from 'stripe'
 import { proWorkspaceId } from '@typebot.io/lib/playwright/databaseSetup'
+import { env } from '@typebot.io/env'
 
 const prisma = new PrismaClient()
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
+const stripe = new Stripe(env.STRIPE_SECRET_KEY ?? '', {
   apiVersion: '2022-11-15',
 })
 

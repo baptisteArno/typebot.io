@@ -4,6 +4,7 @@ import { TRPCError } from '@trpc/server'
 import Stripe from 'stripe'
 import { z } from 'zod'
 import { isAdminWriteWorkspaceForbidden } from '@/features/workspace/helpers/isAdminWriteWorkspaceForbidden'
+import { env } from '@typebot.io/env'
 
 export const getBillingPortalUrl = authenticatedProcedure
   .meta({
@@ -26,7 +27,7 @@ export const getBillingPortalUrl = authenticatedProcedure
     })
   )
   .query(async ({ input: { workspaceId }, ctx: { user } }) => {
-    if (!process.env.STRIPE_SECRET_KEY)
+    if (!env.STRIPE_SECRET_KEY)
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'STRIPE_SECRET_KEY var is missing',
@@ -50,12 +51,12 @@ export const getBillingPortalUrl = authenticatedProcedure
         code: 'NOT_FOUND',
         message: 'Workspace not found',
       })
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+    const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
       apiVersion: '2022-11-15',
     })
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: workspace.stripeId,
-      return_url: `${process.env.NEXTAUTH_URL}/typebots`,
+      return_url: `${env.NEXTAUTH_URL}/typebots`,
     })
     return {
       billingPortalUrl: portalSession.url,

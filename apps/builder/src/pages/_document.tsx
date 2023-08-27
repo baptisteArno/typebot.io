@@ -12,7 +12,7 @@ const Document = () => (
       />
       <meta name="google" content="notranslate" />
       {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-      <script src="/__env.js" />
+      <script src="/__ENV.js" />
     </Head>
     <body>
       <ColorModeScript initialColorMode={customTheme.config.initialColorMode} />

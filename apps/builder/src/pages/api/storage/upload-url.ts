@@ -6,6 +6,7 @@ import {
   methodNotAllowed,
   notAuthenticated,
 } from '@typebot.io/lib/api'
+import { env } from '@typebot.io/env'
 
 const handler = async (
   req: NextApiRequest,
@@ -16,11 +17,7 @@ const handler = async (
     const user = await getAuthenticatedUser(req, res)
     if (!user) return notAuthenticated(res)
 
-    if (
-      !process.env.S3_ENDPOINT ||
-      !process.env.S3_ACCESS_KEY ||
-      !process.env.S3_SECRET_KEY
-    )
+    if (!env.S3_ENDPOINT || !env.S3_ACCESS_KEY || !env.S3_SECRET_KEY)
       return badRequest(
         res,
         'S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY'

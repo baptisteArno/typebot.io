@@ -2044,6 +2044,9 @@
                                               },
                                               "groupId": {
                                                 "type": "string"
+                                              },
+                                              "mergeResults": {
+                                                "type": "boolean"
                                               }
                                             },
                                             "additionalProperties": false
@@ -6326,6 +6329,9 @@
                                           },
                                           "groupId": {
                                             "type": "string"
+                                          },
+                                          "mergeResults": {
+                                            "type": "boolean"
                                           }
                                         },
                                         "additionalProperties": false
@@ -10182,6 +10188,9 @@
                                             },
                                             "groupId": {
                                               "type": "string"
+                                            },
+                                            "mergeResults": {
+                                              "type": "boolean"
                                             }
                                           },
                                           "additionalProperties": false
@@ -14173,6 +14182,9 @@
                                           },
                                           "groupId": {
                                             "type": "string"
+                                          },
+                                          "mergeResults": {
+                                            "type": "boolean"
                                           }
                                         },
                                         "additionalProperties": false
@@ -18045,6 +18057,9 @@
                                             },
                                             "groupId": {
                                               "type": "string"
+                                            },
+                                            "mergeResults": {
+                                              "type": "boolean"
                                             }
                                           },
                                           "additionalProperties": false
@@ -21971,6 +21986,9 @@
                                             },
                                             "groupId": {
                                               "type": "string"
+                                            },
+                                            "mergeResults": {
+                                              "type": "boolean"
                                             }
                                           },
                                           "additionalProperties": false
@@ -25960,6 +25978,9 @@
                                             },
                                             "groupId": {
                                               "type": "string"
+                                            },
+                                            "mergeResults": {
+                                              "type": "boolean"
                                             }
                                           },
                                           "additionalProperties": false

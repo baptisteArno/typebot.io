@@ -4,7 +4,7 @@ services:
     image: postgres:13
     restart: always
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - ${PWD}/.typebot/database:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=typebot
       - POSTGRES_PASSWORD=typebot
@@ -17,23 +17,10 @@ services:
       - '8080:3000'
     extra_hosts:
       - 'host.docker.internal:host-gateway'
-    # See https://docs.typebot.io/self-hosting/configuration/builder for more configuration options
-    environment:
-      - DATABASE_URL=postgresql://postgres:typebot@typebot-db:5432/typebot
-      - NEXTAUTH_URL=<your-builder-url>
-      - NEXT_PUBLIC_VIEWER_URL=<your-viewer-url>
-      - ENCRYPTION_SECRET=<your-encryption-secret>
-      - ADMIN_EMAIL=<your-admin-email>
+    env_file: .env
   typebot-viewer:
     image: baptistearno/typebot-viewer:latest
     restart: always
     ports:
       - '8081:3000'
-    # See https://docs.typebot.io/self-hosting/configuration/viewer for more configuration options
-    environment:
-      - DATABASE_URL=postgresql://postgres:typebot@typebot-db:5432/typebot
-      - NEXT_PUBLIC_VIEWER_URL=<your-viewer-url>
-      - ENCRYPTION_SECRET=<your-encryption-secret>
-      - NEXTAUTH_URL=<your-builder-url>
-volumes:
-  db_data:
+    env_file: .env

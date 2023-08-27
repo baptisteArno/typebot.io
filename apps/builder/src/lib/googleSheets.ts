@@ -4,11 +4,12 @@ import { GoogleSheetsCredentials } from '@typebot.io/schemas'
 import { isDefined } from '@typebot.io/lib'
 import { decrypt, encrypt } from '@typebot.io/lib/api'
 import prisma from './prisma'
+import { env } from '@typebot.io/env'
 
 export const oauth2Client = new OAuth2Client(
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET,
-  `${process.env.NEXTAUTH_URL}/api/credentials/google-sheets/callback`
+  env.GOOGLE_CLIENT_ID,
+  env.GOOGLE_CLIENT_SECRET,
+  `${env.NEXTAUTH_URL}/api/credentials/google-sheets/callback`
 )
 
 export const getAuthenticatedGoogleClient = async (

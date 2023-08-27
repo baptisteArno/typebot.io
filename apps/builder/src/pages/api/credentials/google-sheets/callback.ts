@@ -6,6 +6,7 @@ import { stringify } from 'querystring'
 import { badRequest, encrypt, notAuthenticated } from '@typebot.io/lib/api'
 import { oauth2Client } from '@/lib/googleSheets'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
+import { env } from '@typebot.io/env'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res)
@@ -49,9 +50,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       data: credentials,
     })
     const queryParams = stringify({ blockId, credentialsId })
-    res.redirect(
-      `${redirectUrl}?${queryParams}` ?? `${process.env.NEXTAUTH_URL}`
-    )
+    res.redirect(`${redirectUrl}?${queryParams}` ?? `${env.NEXTAUTH_URL}`)
   }
 }
 

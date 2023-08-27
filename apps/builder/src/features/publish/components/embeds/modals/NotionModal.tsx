@@ -18,7 +18,7 @@ import {
   Text,
   Stack,
 } from '@chakra-ui/react'
-import { env, getViewerUrl } from '@typebot.io/lib'
+import { getViewerUrl } from '@typebot.io/lib'
 import { ModalProps } from '../EmbedButton'
 
 export const NotionModal = ({
@@ -49,16 +49,12 @@ export const NotionModal = ({
                 <InputGroup size="sm">
                   <Input
                     type={'text'}
-                    defaultValue={`${
-                      env('VIEWER_INTERNAL_URL') ?? getViewerUrl()
-                    }/${publicId}`}
+                    defaultValue={`${getViewerUrl()}/${publicId}`}
                   />
                   <InputRightElement width="60px">
                     <CopyButton
                       size="sm"
-                      textToCopy={`${
-                        env('VIEWER_INTERNAL_URL') ?? getViewerUrl()
-                      }/${publicId}`}
+                      textToCopy={`${getViewerUrl()}/${publicId}`}
                     />
                   </InputRightElement>
                 </InputGroup>

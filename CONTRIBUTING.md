@@ -36,11 +36,7 @@ These apps are built with awesome web technologies including [Typescript](https:
 
 2. Set up environment variables
 
-   Copy [`apps/builder/.env.local.example`](apps/builder/.env.local.example) to `apps/builder/.env.local`
-
-   Copy [`apps/viewer/.env.local.example`](apps/viewer/.env.local.example) to `apps/viewer/.env.local`
-
-   Copy [`packages/prisma/.env.example` ](packages/prisma/.env.example)to `packages/prisma/.env`
+   Copy [`.env.dev.example`](./.env.dev.example) to `.env`
 
    Check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration) if you want to enable more options
 

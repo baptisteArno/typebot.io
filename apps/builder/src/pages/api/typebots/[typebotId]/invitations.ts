@@ -13,8 +13,8 @@ import {
   notAuthenticated,
 } from '@typebot.io/lib/api'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
-import { env } from '@typebot.io/lib'
 import { sendGuestInvitationEmail } from '@typebot.io/emails'
+import { env } from '@typebot.io/env'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res)
@@ -80,11 +80,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await prisma.invitation.create({
         data: { email: email.toLowerCase().trim(), type, typebotId },
       })
-    if (env('E2E_TEST') !== 'true')
+    if (!env.NEXT_PUBLIC_E2E_TEST)
       await sendGuestInvitationEmail({
         to: email,
         hostEmail: user.email ?? '',
-        url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${typebot.workspaceId}`,
+        url: `${env.NEXTAUTH_URL}/typebots?workspaceId=${typebot.workspaceId}`,
         guestEmail: email.toLowerCase(),
         typebotName: typebot.name,
         workspaceName: typebot.workspace?.name ?? '',

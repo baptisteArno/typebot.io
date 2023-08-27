@@ -14,16 +14,17 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { env, isDefined, isEmpty } from '@typebot.io/lib'
+import { isDefined } from '@typebot.io/lib'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createApi } from 'unsplash-js'
 import { Basic as UnsplashImage } from 'unsplash-js/dist/methods/photos/types'
 import { TextInput } from '../inputs'
 import { UnsplashLogo } from '../logos/UnsplashLogo'
 import { TextLink } from '../TextLink'
+import { env } from '@typebot.io/env'
 
 const api = createApi({
-  accessKey: env('UNSPLASH_ACCESS_KEY') ?? '',
+  accessKey: env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY ?? '',
 })
 
 type Props = {
@@ -124,7 +125,7 @@ export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
     searchRandomImages()
   }, [])
 
-  if (isEmpty(env('UNSPLASH_ACCESS_KEY')))
+  if (!env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY)
     return (
       <Text>NEXT_PUBLIC_UNSPLASH_ACCESS_KEY is missing in environment</Text>
     )
@@ -143,9 +144,7 @@ export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
         />
         <Link
           isExternal
-          href={`https://unsplash.com/?utm_source=${env(
-            'UNSPLASH_APP_NAME'
-          )}&utm_medium=referral`}
+          href={`https://unsplash.com/?utm_source=${env.NEXT_PUBLIC_UNSPLASH_APP_NAME}&utm_medium=referral`}
         >
           <UnsplashLogo width="80px" fill={unsplashLogoFillColor} />
         </Link>
@@ -224,9 +223,7 @@ const UnsplashImage = ({ image, onClick }: UnsplashImageProps) => {
         <TextLink
           fontSize="xs"
           isExternal
-          href={`https://unsplash.com/@${user.username}?utm_source=${env(
-            'UNSPLASH_APP_NAME'
-          )}&utm_medium=referral`}
+          href={`https://unsplash.com/@${user.username}?utm_source=${env.NEXT_PUBLIC_UNSPLASH_APP_NAME}&utm_medium=referral`}
           noOfLines={1}
           color="white"
         >

@@ -1,9 +1,10 @@
+import { env } from '@typebot.io/env'
 import { PrismaClient } from '@typebot.io/prisma'
 
 declare const global: { prisma: PrismaClient }
 let prisma: PrismaClient
 
-if (process.env.NODE_ENV === 'production') {
+if (env.NODE_ENV === 'production') {
   prisma = new PrismaClient()
 } else {
   if (!global.prisma) {

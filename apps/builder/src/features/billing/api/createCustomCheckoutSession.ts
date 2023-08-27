@@ -5,6 +5,7 @@ import { Plan } from '@typebot.io/prisma'
 import Stripe from 'stripe'
 import { z } from 'zod'
 import { isAdminWriteWorkspaceForbidden } from '@/features/workspace/helpers/isAdminWriteWorkspaceForbidden'
+import { env } from '@typebot.io/env'
 
 export const createCustomCheckoutSession = authenticatedProcedure
   .meta({
@@ -31,7 +32,7 @@ export const createCustomCheckoutSession = authenticatedProcedure
   )
   .mutation(
     async ({ input: { email, workspaceId, returnUrl }, ctx: { user } }) => {
-      if (!process.env.STRIPE_SECRET_KEY)
+      if (!env.STRIPE_SECRET_KEY)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Stripe environment variables are missing',
@@ -61,7 +62,7 @@ export const createCustomCheckoutSession = authenticatedProcedure
           code: 'NOT_FOUND',
           message: 'Custom plan not found',
         })
-      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
         apiVersion: '2022-11-15',
       })
 

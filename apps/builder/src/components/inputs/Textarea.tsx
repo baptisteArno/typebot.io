@@ -11,7 +11,7 @@ import {
 import { Variable } from '@typebot.io/schemas'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { env } from '@typebot.io/lib'
+import { env } from '@typebot.io/env'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
 type Props = {
@@ -46,7 +46,7 @@ export const Textarea = ({
   )
   const onChange = useDebouncedCallback(
     _onChange,
-    env('E2E_TEST') === 'true' ? 0 : debounceTimeout
+    env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
   )
 
   useEffect(() => {

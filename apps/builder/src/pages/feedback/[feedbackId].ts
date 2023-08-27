@@ -4,6 +4,7 @@ import { isNotDefined } from '@typebot.io/lib'
 import { sign } from 'jsonwebtoken'
 import { authOptions } from '../api/auth/[...nextauth]'
 import { GetServerSidePropsContext } from 'next'
+import { env } from '@typebot.io/env'
 
 export default function Page() {
   return null
@@ -29,7 +30,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 const createSSOToken = (user: User) => {
-  if (!process.env.SLEEKPLAN_SSO_KEY) return
+  if (!env.SLEEKPLAN_SSO_KEY) return
   const userData = {
     mail: user.email,
     id: user.id,
@@ -37,5 +38,5 @@ const createSSOToken = (user: User) => {
     img: user.image,
   }
 
-  return sign(userData, process.env.SLEEKPLAN_SSO_KEY, { algorithm: 'HS256' })
+  return sign(userData, env.SLEEKPLAN_SSO_KEY, { algorithm: 'HS256' })
 }

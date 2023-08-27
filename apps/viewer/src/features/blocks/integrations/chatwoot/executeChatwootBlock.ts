@@ -2,6 +2,7 @@ import { ExecuteIntegrationResponse } from '@/features/chat/types'
 import { extractVariablesFromText } from '@/features/variables/extractVariablesFromText'
 import { parseGuessedValueType } from '@/features/variables/parseGuessedValueType'
 import { parseVariables } from '@/features/variables/parseVariables'
+import { env } from '@typebot.io/env'
 import { isDefined } from '@typebot.io/lib'
 import {
   ChatwootBlock,
@@ -30,7 +31,7 @@ const parseChatwootOpenCode = ({
   const openChatwoot = `${parseSetUserCode(user, resultId)}
   window.$chatwoot.setCustomAttributes({
     typebot_result_url: "${
-      process.env.NEXTAUTH_URL
+      env.NEXTAUTH_URL
     }/typebots/${typebotId}/results?id=${resultId}",
   });
   window.$chatwoot.toggle("open");

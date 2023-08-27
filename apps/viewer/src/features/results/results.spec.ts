@@ -2,6 +2,7 @@ import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
 import { importTypebotInDatabase } from '@typebot.io/lib/playwright/databaseActions'
+import { env } from '@typebot.io/env'
 
 test('Big groups should work as expected', async ({ page }) => {
   const typebotId = createId()
@@ -15,7 +16,7 @@ test('Big groups should work as expected', async ({ page }) => {
   await page.locator('input').fill('26')
   await page.locator('input').press('Enter')
   await page.getByRole('button', { name: 'Yes' }).click()
-  await page.goto(`${process.env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
+  await page.goto(`${env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
   await expect(page.locator('text="Baptiste"')).toBeVisible()
   await expect(page.locator('text="26"')).toBeVisible()
   await expect(page.locator('text="Yes"')).toBeVisible()

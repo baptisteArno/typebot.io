@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react'
 import { useState, useRef, useEffect, ReactNode } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { env, isDefined } from '@typebot.io/lib'
+import { isDefined } from '@typebot.io/lib'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
 import { VariablesButton } from '@/features/variables/components/VariablesButton'
@@ -21,6 +21,7 @@ import { Variable } from '@typebot.io/schemas'
 import { injectVariableInText } from '@/features/variables/helpers/injectVariableInTextInput'
 import { focusInput } from '@/helpers/focusInput'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
+import { env } from '@typebot.io/env'
 
 type Props = {
   items: string[]
@@ -57,7 +58,7 @@ export const AutocompleteInput = ({
 
   const onChange = useDebouncedCallback(
     _onChange,
-    env('E2E_TEST') === 'true' ? 0 : debounceTimeout
+    env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
   )
 
   useEffect(() => {

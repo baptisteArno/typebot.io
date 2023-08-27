@@ -8,10 +8,11 @@ import { Plan, WorkspaceRole } from '@typebot.io/prisma'
 import { RequestHandler } from 'next/dist/server/next'
 import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 import { Settings } from '@typebot.io/schemas'
+import { env } from '@typebot.io/env'
 
-if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET)
+if (!env.STRIPE_SECRET_KEY || !env.STRIPE_WEBHOOK_SECRET)
   throw new Error('STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET missing')
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   apiVersion: '2022-11-15',
 })
 
@@ -19,7 +20,7 @@ const cors = Cors({
   allowMethods: ['POST', 'HEAD'],
 })
 
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET as string
+const webhookSecret = env.STRIPE_WEBHOOK_SECRET as string
 
 export const config = {
   api: {

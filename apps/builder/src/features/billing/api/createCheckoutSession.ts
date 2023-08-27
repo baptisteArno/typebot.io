@@ -6,6 +6,7 @@ import Stripe from 'stripe'
 import { z } from 'zod'
 import { parseSubscriptionItems } from '../helpers/parseSubscriptionItems'
 import { isAdminWriteWorkspaceForbidden } from '@/features/workspace/helpers/isAdminWriteWorkspaceForbidden'
+import { env } from '@typebot.io/env'
 
 export const createCheckoutSession = authenticatedProcedure
   .meta({
@@ -57,7 +58,7 @@ export const createCheckoutSession = authenticatedProcedure
       },
       ctx: { user },
     }) => {
-      if (!process.env.STRIPE_SECRET_KEY)
+      if (!env.STRIPE_SECRET_KEY)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Stripe environment variables are missing',
@@ -82,14 +83,13 @@ export const createCheckoutSession = authenticatedProcedure
           code: 'NOT_FOUND',
           message: 'Workspace not found',
         })
-
       if (workspace.stripeId)
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: 'Customer already exists, use updateSubscription endpoint.',
         })
 
-      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
         apiVersion: '2022-11-15',
       })
 

@@ -1,11 +1,6 @@
 import { exec } from 'child_process'
 import { join, relative } from 'path'
 
-require('dotenv').config({
-  override: true,
-  path: join(__dirname, `../.env`),
-})
-
 const postgesqlSchemaPath = relative(
   process.cwd(),
   join(__dirname, `../postgresql/schema.prisma`)
@@ -34,13 +29,13 @@ export const executePrismaCommand = (command: string, options?: Options) => {
     executeCommand(`${command} --schema ${mysqlSchemaPath}`)
   }
 
-  if (databaseUrl?.startsWith('postgresql://')) {
+  if (databaseUrl?.startsWith('postgres')) {
     console.log('Executing for PostgreSQL schema')
     executeCommand(`${command} --schema ${postgesqlSchemaPath}`)
   }
 
   if (process.env.DATABASE_URL?.startsWith('postgres://')) {
-    console.error('PostgreSQL `DATABASE_URL` should start with postgresql://')
+    console.error('PostgreSQL `DATABASE_URL` should start with postgres')
     process.exit(1)
   }
 }

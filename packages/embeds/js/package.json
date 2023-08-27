@@ -25,6 +25,7 @@
     "@rollup/plugin-terser": "0.4.3",
     "@rollup/plugin-typescript": "11.1.2",
     "@typebot.io/lib": "workspace:*",
+    "@typebot.io/env": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
     "autoprefixer": "10.4.14",

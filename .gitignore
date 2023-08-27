@@ -1,6 +1,5 @@
 node_modules
 .next
-.env
 .env.local
 workspace.code-workspace
 .DS_Store
@@ -35,3 +34,5 @@ typebotsToFix.json
 **/scripts/logs
 
 snapshots
+
+.env

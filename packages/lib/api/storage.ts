@@ -1,3 +1,4 @@
+import { env } from '@typebot.io/env'
 import { config, Endpoint, S3 } from 'aws-sdk'
 
 type GeneratePresignedUrlProps = {
@@ -14,34 +15,26 @@ export const generatePresignedUrl = ({
   fileType,
   sizeLimit = tenMB,
 }: GeneratePresignedUrlProps): S3.PresignedPost => {
-  if (
-    !process.env.S3_ENDPOINT ||
-    !process.env.S3_ACCESS_KEY ||
-    !process.env.S3_SECRET_KEY
-  )
+  if (!env.S3_ENDPOINT || !env.S3_ACCESS_KEY || !env.S3_SECRET_KEY)
     throw new Error(
       'S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY'
     )
 
-  const sslEnabled =
-    process.env.S3_SSL && process.env.S3_SSL === 'false' ? false : true
   config.update({
-    accessKeyId: process.env.S3_ACCESS_KEY,
-    secretAccessKey: process.env.S3_SECRET_KEY,
-    region: process.env.S3_REGION,
-    sslEnabled,
+    accessKeyId: env.S3_ACCESS_KEY,
+    secretAccessKey: env.S3_SECRET_KEY,
+    region: env.S3_REGION,
+    sslEnabled: env.S3_SSL,
   })
-  const protocol = sslEnabled ? 'https' : 'http'
+  const protocol = env.S3_SSL ? 'https' : 'http'
   const s3 = new S3({
     endpoint: new Endpoint(
-      `${protocol}://${process.env.S3_ENDPOINT}${
-        process.env.S3_PORT ? `:${process.env.S3_PORT}` : ''
-      }`
+      `${protocol}://${env.S3_ENDPOINT}${env.S3_PORT ? `:${env.S3_PORT}` : ''}`
     ),
   })
 
   const presignedUrl = s3.createPresignedPost({
-    Bucket: process.env.S3_BUCKET ?? 'typebot',
+    Bucket: env.S3_BUCKET ?? 'typebot',
     Fields: {
       key: filePath,
       'Content-Type': fileType,
