@@ -260,7 +260,7 @@ export const hasValue = (
   value !== 'null'
 
 export const getViewerUrl = () =>
-  env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ?? env.NEXT_PUBLIC_VIEWER_URL?.[0]
+  env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ?? env.NEXT_PUBLIC_VIEWER_URL[0]
 
 export const parseNumberWithCommas = (num: number) =>
   num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')

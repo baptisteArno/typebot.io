@@ -5,7 +5,7 @@ declare const window: {
   __ENV: any
 }
 
-const readVariable = (key: string) => {
+const getRuntimeVariable = (key: string) => {
   if (typeof window === 'undefined') return process.env[key]
   return window.__ENV[key]
 }
@@ -35,18 +35,18 @@ const baseEnv = {
     NEXT_PUBLIC_E2E_TEST: boolean.optional(),
     NEXT_PUBLIC_VIEWER_URL: z
       .string()
-      .optional()
-      .transform((string) => (string ? string.split(',') : undefined)),
+      .min(1)
+      .transform((string) => string.split(',')),
     NEXT_PUBLIC_VIEWER_INTERNAL_URL: z.string().url().optional(),
     NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID: z.string().min(1).optional(),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_E2E_TEST: readVariable('NEXT_PUBLIC_E2E_TEST'),
-    NEXT_PUBLIC_VIEWER_URL: readVariable('NEXT_PUBLIC_VIEWER_URL'),
-    NEXT_PUBLIC_VIEWER_INTERNAL_URL: readVariable(
+    NEXT_PUBLIC_E2E_TEST: getRuntimeVariable('NEXT_PUBLIC_E2E_TEST'),
+    NEXT_PUBLIC_VIEWER_URL: getRuntimeVariable('NEXT_PUBLIC_VIEWER_URL'),
+    NEXT_PUBLIC_VIEWER_INTERNAL_URL: getRuntimeVariable(
       'NEXT_PUBLIC_VIEWER_INTERNAL_URL'
     ),
-    NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID: readVariable(
+    NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID: getRuntimeVariable(
       'NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID'
     ),
   },
@@ -78,7 +78,7 @@ const smtpEnv = {
     NEXT_PUBLIC_SMTP_FROM: z.string().min(1).optional(),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_SMTP_FROM: readVariable('NEXT_PUBLIC_SMTP_FROM'),
+    NEXT_PUBLIC_SMTP_FROM: getRuntimeVariable('NEXT_PUBLIC_SMTP_FROM'),
   },
 }
 
@@ -126,7 +126,9 @@ const googleEnv = {
     NEXT_PUBLIC_GOOGLE_API_KEY: z.string().min(1).optional(),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_GOOGLE_API_KEY: readVariable('NEXT_PUBLIC_GOOGLE_API_KEY'),
+    NEXT_PUBLIC_GOOGLE_API_KEY: getRuntimeVariable(
+      'NEXT_PUBLIC_GOOGLE_API_KEY'
+    ),
   },
 }
 
@@ -153,7 +155,7 @@ const stripeEnv = {
     NEXT_PUBLIC_STRIPE_PUBLIC_KEY: z.string().min(1).optional(),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_STRIPE_PUBLIC_KEY: readVariable(
+    NEXT_PUBLIC_STRIPE_PUBLIC_KEY: getRuntimeVariable(
       'NEXT_PUBLIC_STRIPE_PUBLIC_KEY'
     ),
   },
@@ -176,7 +178,7 @@ const giphyEnv = {
     NEXT_PUBLIC_GIPHY_API_KEY: z.string().min(1).optional(),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_GIPHY_API_KEY: readVariable('NEXT_PUBLIC_GIPHY_API_KEY'),
+    NEXT_PUBLIC_GIPHY_API_KEY: getRuntimeVariable('NEXT_PUBLIC_GIPHY_API_KEY'),
   },
 }
 
@@ -192,13 +194,13 @@ const vercelEnv = {
     NEXT_PUBLIC_VERCEL_ENV: z.string().min(1).optional(),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME: readVariable(
+    NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME: getRuntimeVariable(
       'NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME'
     ),
-    NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA: readVariable(
+    NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA: getRuntimeVariable(
       'NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA'
     ),
-    NEXT_PUBLIC_VERCEL_ENV: readVariable('NEXT_PUBLIC_VERCEL_ENV'),
+    NEXT_PUBLIC_VERCEL_ENV: getRuntimeVariable('NEXT_PUBLIC_VERCEL_ENV'),
   },
 }
 
@@ -214,10 +216,10 @@ const unsplashEnv = {
     NEXT_PUBLIC_UNSPLASH_ACCESS_KEY: z.string().min(1).optional(),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_UNSPLASH_APP_NAME: readVariable(
+    NEXT_PUBLIC_UNSPLASH_APP_NAME: getRuntimeVariable(
       'NEXT_PUBLIC_UNSPLASH_APP_NAME'
     ),
-    NEXT_PUBLIC_UNSPLASH_ACCESS_KEY: readVariable(
+    NEXT_PUBLIC_UNSPLASH_ACCESS_KEY: getRuntimeVariable(
       'NEXT_PUBLIC_UNSPLASH_ACCESS_KEY'
     ),
   },
@@ -247,7 +249,7 @@ const sentryEnv = {
     SENTRY_ORG: z.string().min(1).optional(),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_SENTRY_DSN: readVariable('NEXT_PUBLIC_SENTRY_DSN'),
+    NEXT_PUBLIC_SENTRY_DSN: getRuntimeVariable('NEXT_PUBLIC_SENTRY_DSN'),
   },
 }
 
