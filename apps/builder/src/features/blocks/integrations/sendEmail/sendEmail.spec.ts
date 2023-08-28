@@ -10,7 +10,6 @@ test.describe('Send email block', () => {
   test('its configuration should work', async ({ page }) => {
     if (
       !env.SMTP_USERNAME ||
-      !env.SMTP_PORT ||
       !env.SMTP_HOST ||
       !env.SMTP_PASSWORD ||
       !env.NEXT_PUBLIC_SMTP_FROM

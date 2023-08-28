@@ -21,7 +21,7 @@ const baseEnv = {
       .refine((url) => url.startsWith('postgres') || url.startsWith('mysql')),
     ENCRYPTION_SECRET: z.string().length(32),
     NEXTAUTH_URL: z.string().url(),
-    DISABLE_SIGNUP: boolean.optional(),
+    DISABLE_SIGNUP: boolean.optional().default('false'),
     ADMIN_EMAIL: z.string().email().optional(),
     DEFAULT_WORKSPACE_PLAN: z
       .enum(['FREE', 'STARTER', 'PRO', 'LIFETIME', 'UNLIMITED'])
@@ -29,7 +29,7 @@ const baseEnv = {
         ['FREE', 'STARTER', 'PRO', 'LIFETIME', 'UNLIMITED'].includes(str)
       )
       .default('FREE'),
-    DEBUG: boolean.optional(),
+    DEBUG: boolean.optional().default('false'),
   },
   client: {
     NEXT_PUBLIC_E2E_TEST: boolean.optional(),
@@ -70,9 +70,9 @@ const smtpEnv = {
     SMTP_USERNAME: z.string().min(1).optional(),
     SMTP_PASSWORD: z.string().min(1).optional(),
     SMTP_HOST: z.string().min(1).optional(),
-    SMTP_PORT: z.coerce.number().optional(),
-    SMTP_AUTH_DISABLED: boolean.optional(),
-    SMTP_SECURE: boolean.optional(),
+    SMTP_PORT: z.coerce.number().optional().default(25),
+    SMTP_AUTH_DISABLED: boolean.optional().default('false'),
+    SMTP_SECURE: boolean.optional().default('false'),
   },
   client: {
     NEXT_PUBLIC_SMTP_FROM: z.string().min(1).optional(),
@@ -86,8 +86,8 @@ const gitlabEnv = {
   server: {
     GITLAB_CLIENT_ID: z.string().min(1).optional(),
     GITLAB_CLIENT_SECRET: z.string().min(1).optional(),
-    GITLAB_BASE_URL: z.string().url().optional(),
-    GITLAB_NAME: z.string().min(1).optional(),
+    GITLAB_BASE_URL: z.string().url().optional().default('https://gitlab.com'),
+    GITLAB_NAME: z.string().min(1).optional().default('GitLab'),
     GITLAB_REQUIRED_GROUPS: z
       .string()
       .transform((string) => (string ? string.split(',') : undefined))
@@ -105,15 +105,19 @@ const azureEnv = {
 
 const customOAuthEnv = {
   server: {
-    CUSTOM_OAUTH_NAME: z.string().min(1).optional(),
-    CUSTOM_OAUTH_SCOPE: z.string().min(1).optional(),
+    CUSTOM_OAUTH_NAME: z.string().min(1).optional().default('Custom OAuth'),
+    CUSTOM_OAUTH_SCOPE: z
+      .string()
+      .min(1)
+      .optional()
+      .default('openid profile email'),
     CUSTOM_OAUTH_CLIENT_ID: z.string().min(1).optional(),
     CUSTOM_OAUTH_CLIENT_SECRET: z.string().min(1).optional(),
     CUSTOM_OAUTH_WELL_KNOWN_URL: z.string().url().optional(),
-    CUSTOM_OAUTH_USER_ID_PATH: z.string().min(1).optional(),
-    CUSTOM_OAUTH_USER_EMAIL_PATH: z.string().min(1).optional(),
-    CUSTOM_OAUTH_USER_NAME_PATH: z.string().min(1).optional(),
-    CUSTOM_OAUTH_USER_IMAGE_PATH: z.string().min(1).optional(),
+    CUSTOM_OAUTH_USER_ID_PATH: z.string().min(1).optional().default('id'),
+    CUSTOM_OAUTH_USER_EMAIL_PATH: z.string().min(1).optional().default('email'),
+    CUSTOM_OAUTH_USER_NAME_PATH: z.string().min(1).optional().default('name'),
+    CUSTOM_OAUTH_USER_IMAGE_PATH: z.string().min(1).optional().default('image'),
   },
 }
 
@@ -165,10 +169,10 @@ const s3Env = {
   server: {
     S3_ACCESS_KEY: z.string().min(1).optional(),
     S3_SECRET_KEY: z.string().min(1).optional(),
-    S3_BUCKET: z.string().min(1).optional(),
+    S3_BUCKET: z.string().min(1).optional().default('typebot'),
     S3_PORT: z.coerce.number().optional(),
     S3_ENDPOINT: z.string().min(1).optional(),
-    S3_SSL: boolean.optional(),
+    S3_SSL: boolean.optional().default('true'),
     S3_REGION: z.string().min(1).optional(),
   },
 }

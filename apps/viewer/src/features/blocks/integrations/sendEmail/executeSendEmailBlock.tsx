@@ -187,7 +187,7 @@ const getEmailInfo = async (
   if (credentialsId === 'default')
     return {
       host: defaultTransportOptions.host,
-      port: defaultTransportOptions.port ?? 22,
+      port: defaultTransportOptions.port,
       username: defaultTransportOptions.auth.user,
       password: defaultTransportOptions.auth.pass,
       isTlsEnabled: undefined,

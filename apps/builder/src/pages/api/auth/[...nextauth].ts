@@ -38,13 +38,13 @@ if (env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET)
     })
   )
 
-if (env.NEXT_PUBLIC_SMTP_FROM && env.SMTP_AUTH_DISABLED)
+if (env.NEXT_PUBLIC_SMTP_FROM && !env.SMTP_AUTH_DISABLED)
   providers.push(
     EmailProvider({
       server: {
         host: env.SMTP_HOST,
-        port: env.SMTP_PORT ? Number(env.SMTP_PORT) : 25,
-        secure: env.SMTP_SECURE ? env.SMTP_SECURE : false,
+        port: env.SMTP_PORT,
+        secure: env.SMTP_SECURE,
         auth: {
           user: env.SMTP_USERNAME,
           pass: env.SMTP_PASSWORD,
@@ -72,7 +72,7 @@ if (env.FACEBOOK_CLIENT_ID && env.FACEBOOK_CLIENT_SECRET)
   )
 
 if (env.GITLAB_CLIENT_ID && env.GITLAB_CLIENT_SECRET) {
-  const BASE_URL = env.GITLAB_BASE_URL || 'https://gitlab.com'
+  const BASE_URL = env.GITLAB_BASE_URL
   providers.push(
     GitlabProvider({
       clientId: env.GITLAB_CLIENT_ID,
@@ -80,7 +80,7 @@ if (env.GITLAB_CLIENT_ID && env.GITLAB_CLIENT_SECRET) {
       authorization: `${BASE_URL}/oauth/authorize?scope=read_api`,
       token: `${BASE_URL}/oauth/token`,
       userinfo: `${BASE_URL}/api/v4/user`,
-      name: env.GITLAB_NAME || 'GitLab',
+      name: env.GITLAB_NAME,
     })
   )
 }
@@ -102,11 +102,11 @@ if (
 if (env.CUSTOM_OAUTH_WELL_KNOWN_URL) {
   providers.push({
     id: 'custom-oauth',
-    name: env.CUSTOM_OAUTH_NAME ?? 'Custom OAuth',
+    name: env.CUSTOM_OAUTH_NAME,
     type: 'oauth',
     authorization: {
       params: {
-        scope: env.CUSTOM_OAUTH_SCOPE ?? 'openid profile email',
+        scope: env.CUSTOM_OAUTH_SCOPE,
       },
     },
     clientId: env.CUSTOM_OAUTH_CLIENT_ID,
@@ -114,10 +114,10 @@ if (env.CUSTOM_OAUTH_WELL_KNOWN_URL) {
     wellKnown: env.CUSTOM_OAUTH_WELL_KNOWN_URL,
     profile(profile) {
       return {
-        id: getAtPath(profile, env.CUSTOM_OAUTH_USER_ID_PATH ?? 'id'),
-        name: getAtPath(profile, env.CUSTOM_OAUTH_USER_NAME_PATH ?? 'name'),
-        email: getAtPath(profile, env.CUSTOM_OAUTH_USER_EMAIL_PATH ?? 'email'),
-        image: getAtPath(profile, env.CUSTOM_OAUTH_USER_IMAGE_PATH ?? 'image'),
+        id: getAtPath(profile, env.CUSTOM_OAUTH_USER_ID_PATH),
+        name: getAtPath(profile, env.CUSTOM_OAUTH_USER_NAME_PATH),
+        email: getAtPath(profile, env.CUSTOM_OAUTH_USER_EMAIL_PATH),
+        image: getAtPath(profile, env.CUSTOM_OAUTH_USER_IMAGE_PATH),
       } as User
     },
   })
