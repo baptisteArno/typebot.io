@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-})
+import { configureRuntimeEnv } from 'next-runtime-env/build/configure.js'
 
-module.exports = withBundleAnalyzer({
+configureRuntimeEnv()
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   transpilePackages: ['utils', 'models'],
   async redirects() {
     return [
@@ -20,4 +20,6 @@ module.exports = withBundleAnalyzer({
       },
     ]
   },
-})
+}
+
+export default nextConfig

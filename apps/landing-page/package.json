@@ -27,7 +27,6 @@
   "devDependencies": {
     "@babel/core": "7.22.9",
     "@chakra-ui/styled-system": "2.9.1",
-    "@next/bundle-analyzer": "13.4.9",
     "@typebot.io/tsconfig": "workspace:*",
     "@types/aos": "3.0.4",
     "@types/node": "20.4.2",
@@ -37,6 +36,8 @@
     "dotenv-cli": "^7.2.1",
     "eslint": "8.44.0",
     "eslint-config-custom": "workspace:*",
+    "next-runtime-env": "^1.6.2",
+    "@typebot.io/env": "workspace:*",
     "next-transpile-modules": "10.0.0",
     "postcss": "8.4.26",
     "prettier": "3.0.0",
