@@ -15,6 +15,6 @@
     "esbuild": "^0.19.1"
   },
   "scripts": {
-    "build": "esbuild env.ts --packages=external --outfile=dist/env.mjs"
+    "build": "esbuild env.ts --bundle --packages=external --format=esm --outfile=dist/env.mjs"
   }
 }
