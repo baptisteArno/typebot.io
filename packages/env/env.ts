@@ -1,14 +1,6 @@
 import { createEnv } from '@t3-oss/env-nextjs'
 import { z } from 'zod'
-
-declare const window: {
-  __ENV: any
-}
-
-const getRuntimeVariable = (key: string) => {
-  if (typeof window === 'undefined') return process.env[key]
-  return window.__ENV[key]
-}
+import { getRuntimeVariable } from './getRuntimeVariable'
 
 const boolean = z.enum(['true', 'false']).transform((value) => value === 'true')
 

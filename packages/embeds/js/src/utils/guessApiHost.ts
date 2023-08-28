@@ -1,8 +1,8 @@
-import { env } from '@typebot.io/env'
+import { getRuntimeVariable } from '@typebot.io/env/getRuntimeVariable'
 
 const cloudViewerUrl = 'https://viewer.typebot.io'
 
 export const guessApiHost = () =>
-  env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ??
-  env.NEXT_PUBLIC_VIEWER_URL[0] ??
+  getRuntimeVariable('NEXT_PUBLIC_VIEWER_INTERNAL_URL') ??
+  getRuntimeVariable('NEXT_PUBLIC_VIEWER_URL')?.split(',')[0] ??
   cloudViewerUrl
