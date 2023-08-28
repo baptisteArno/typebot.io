@@ -1,5 +1,14 @@
-const { withSentryConfig } = require('@sentry/nextjs')
-const path = require('path')
+import { withSentryConfig } from '@sentry/nextjs'
+import { join, dirname } from 'path'
+import '@typebot.io/env/dist/env.mjs'
+import { fileURLToPath } from 'url'
+import { configureRuntimeEnv } from 'next-runtime-env/build/configure.js'
+
+const __filename = fileURLToPath(import.meta.url)
+
+const __dirname = dirname(__filename)
+
+configureRuntimeEnv()
 
 const landingPagePaths = [
   '/',
@@ -20,7 +29,7 @@ const nextConfig = {
   ],
   output: 'standalone',
   experimental: {
-    outputFileTracingRoot: path.join(__dirname, '../../'),
+    outputFileTracingRoot: join(__dirname, '../../'),
   },
   async rewrites() {
     return {
@@ -130,7 +139,7 @@ const sentryWebpackPluginOptions = {
   release: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA + '-viewer',
 }
 
-module.exports = process.env.NEXT_PUBLIC_SENTRY_DSN
+export default process.env.NEXT_PUBLIC_SENTRY_DSN
   ? withSentryConfig(
       {
         ...nextConfig,

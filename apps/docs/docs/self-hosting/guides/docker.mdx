@@ -1,8 +1,8 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
-import { SponsorButton } from '../../src/js/SponsorButton.jsx'
+import { SponsorButton } from '../../../src/js/SponsorButton.jsx'
 
 # Docker
 
@@ -20,27 +20,23 @@ You need a server with Docker installed. If your server doesn't come with Docker
 
 ### 1. Download the compose file
 
-On your server, download the latest `docker-compose.yml` file:
+On your server, download the latest `docker-compose.yml` and the starter `.env` file:
 
 ```sh
  wget https://raw.githubusercontent.com/baptisteArno/typebot.io/latest/docker-compose.yml
+ wget https://raw.githubusercontent.com/baptisteArno/typebot.io/latest/.env.example -O .env
 ```
 
 ### 2. Add the required configuration
 
-The compose file has placeholders for the required parameters. To set the parameters you'll first need a random 32-character secret key which will be used to encrypt sensitive data. Here is a simple way to generate one:
+1. You'll first need a random 32-character secret key which will be used to encrypt sensitive data. Here is a simple way to generate one:
 
-```sh
-openssl rand -base64 24 | tr -d '\n' ; echo
-```
+   ```sh
+   openssl rand -base64 24 | tr -d '\n' ; echo
+   ```
 
-Now edit `docker-compose.yml` and:
-
-- Replace `<your-encryption-secret>` with the generated secret.
-- Replace `<your-builder-url>` with the public URL of the builder (i.e. `https://typebot.domain.com:8080`).
-- Replace `<your-viewer-url>` with the public URL of the viewer (i.e. `https://typebot.domain.com:8081`).
-- Replace `<your-admin-email>` with the email address of the administrator.
-- Configure at least one authentication provider (Email, Google, GitHub, Facebook or GitLab). More info here: [Configuration](https://docs.typebot.io/self-hosting/configuration).
+2. Fill the `.env` file with your values.
+3. Configure at least one authentication provider (Email, Google, GitHub, Facebook or GitLab). More info here: [Configuration](https://docs.typebot.io/self-hosting/configuration).
 
 By default the compose file will pull the latest stable Typebot images: `baptistearno/typebot-builder:latest` and `baptistearno/typebot-viewer:latest`. You can decide to replace `latest` with a specific version or with `main` to get the latest modifications. You can find all the existing tags [here](https://hub.docker.com/r/baptistearno/typebot-builder/tags)
 
@@ -52,12 +48,13 @@ Once you've added your configuration to the compose file, you're ready to start 
 docker-compose up -d
 ```
 
-When you run this command it does the following:
+When you run this command, by default, it does the following:
 
 - Create a database
 - Run the migrations
 - Start the builder on port 8080
 - Start the viewer on port 8081
+- All Typebot's data is stored in the `.typebot` folder in the current directory
 
 You can now navigate to `http://typebot.domain.com:8080` and see the login screen. Login with the admin email to have access to a Team plan workspace automatically.
 
@@ -67,14 +64,33 @@ Typebot server itself does not perform SSL termination. It only runs on unencryp
 
 Typebot is updated regularly, but it is up to you to apply these updates on your server. By virtue of using Docker, these updates are safe and easy to apply.
 
-```sh
-docker-compose down --remove-orphans
-docker-compose pull typebot-builder
-docker-compose pull typebot-viewer
-docker-compose up -d
-```
+1. Pull the new images:
 
-The self-hosted version is somewhat of a LTS, only getting the changes after they have been battle tested on the hosted version. If you want features as soon as they are available, consider becoming a hosted customer.
+   ```sh
+   docker-compose pull typebot-builder
+   docker-compose pull typebot-viewer
+   ```
+
+   Alternatively, you can pull specific versions:
+
+   ```sh
+    docker-compose pull typebot-builder:1.0.0
+    docker-compose pull typebot-viewer:1.0.0
+   ```
+
+2. Stop the server:
+
+   ```sh
+   docker-compose down
+   ```
+
+3. Start the server (with the new images):
+
+   ```sh
+    docker-compose up -d
+   ```
+
+The self-hosted version is somewhat of a LTS, only getting the changes (~ once per month) after they have been battle tested on the cloud version. If you want features as soon as they are available, consider becoming a [cloud user](https://app.typebot.io).
 
 ## Optional extras
 
@@ -99,7 +115,7 @@ services:
     restart: always
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - caddy-certificates:/data/caddy
+      - {$PWD}/.typebot/caddy-certificates:/data/caddy
     ports:
       - '80:80'
       - '443:443'
@@ -118,10 +134,6 @@ services:
       virtual.host: 'bot.domain.com' # change to your domain name
       virtual.port: '3000'
       virtual.tls-email: 'admin@example.com' # change to your email
-
-volumes:
-  caddy-certificates:
-    driver: local
 ```
 
 This config requires you to add the following DNS entry:
@@ -147,7 +159,7 @@ If you're already running a reverse proxy, the most important things to note are
 
 ### SMTP
 
-I highly recommend using an external SMTP service. There are tons of options out there, including [SendInBlue](https://www.sendinblue.com/), [Mailgun](https://www.mailgun.com/) and [SendGrid](https://sendgrid.com/). It will avoid severe headaches 😅. Then, you will only need to add the required [SMTP configuration variables](/self-hosting/configuration/builder#email-auth-notifications).
+I highly recommend using an external SMTP service. There are tons of options out there, including [SendInBlue](https://www.sendinblue.com/), [Mailgun](https://www.mailgun.com/) and [SendGrid](https://sendgrid.com/). It will avoid severe headaches 😅. Then, you will only need to add the required [SMTP configuration variables](/self-hosting/configuration#email-auth-notifications).
 
 If, however, you don't want to, you can instantiate an SMTP server in the docker-compose file.
 
@@ -157,13 +169,13 @@ services:
   mail:
     image: bytemark/smtp
     restart: always
-  typebot-builder:
-    environment:
-      - SMTP_HOST=mail
-      - NEXT_PUBLIC_SMTP_FROM=notifications@typebot.domain.com # change to your domain name
-  typebot-viewer:
-    - SMTP_HOST=mail
-    - NEXT_PUBLIC_SMTP_FROM=notifications@typebot.domain.com # change to your domain name
+```
+
+And add the following variables to your `.env` file:
+
+```
+SMTP_HOST=mail
+NEXT_PUBLIC_SMTP_FROM=notifications@typebot.domain.com
 ```
 
 You will probably need to make sure that `typebot.domain.com` has a valid SPF record and that your server IP has a rDNS set up.
@@ -186,7 +198,7 @@ services:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
     volumes:
-      - s3_data:/data
+      - ${PWD}/.typebot/s3:/data
   # This service just makes sure a bucket with the right policies is created
   createbuckets:
     image: minio/mc
@@ -200,21 +212,15 @@ services:
       /usr/bin/mc anonymous set public minio/typebot/public;
       exit 0;
       "
-  typebot-builder:
-    environment:
-      - S3_ACCESS_KEY=minio
-      - S3_SECRET_KEY=minio123
-      - S3_BUCKET=typebot
-      - S3_ENDPOINT=storage.domain.com # change to your domain name
-  typebot-viewer:
-    environment:
-      - S3_ACCESS_KEY=minio
-      - S3_SECRET_KEY=minio123
-      - S3_BUCKET=typebot
-      - S3_ENDPOINT=storage.domain.com # change to your domain name
+```
 
-volumes:
-  s3_data:
+And add the following variables to your `.env` file:
+
+```
+S3_ACCESS_KEY=minio
+S3_SECRET_KEY=minio123
+S3_BUCKET=typebot
+S3_ENDPOINT=storage.domain.com
 ```
 
 This config requires you to add the following DNS entry:
@@ -237,7 +243,7 @@ services:
     restart: always
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - caddy-certificates:/data/caddy
+      - {$PWD}/.typebot/caddy-certificates:/data/caddy
     ports:
       - '80:80'
       - '443:443'
@@ -248,7 +254,7 @@ services:
     image: postgres:13
     restart: always
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - {$PWD}/.typebot/database:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=typebot
       - POSTGRES_PASSWORD=typebot
@@ -264,18 +270,8 @@ services:
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     # See https://docs.typebot.io/self-hosting/configuration for more configuration options
-    environment:
-      - DATABASE_URL=postgresql://postgres:typebot@typebot-db:5432/typebot
-      - NEXTAUTH_URL=https://typebot.domain.com
-      - NEXT_PUBLIC_VIEWER_URL=https://bot.domain.com
-      - ENCRYPTION_SECRET=K+Bar660Ofaec7v1jHC25tAn3l2b7c81
-      - ADMIN_EMAIL=baptiste.arnaud95@gmail.com
-      - SMTP_HOST=mail
-      - NEXT_PUBLIC_SMTP_FROM=notifications@typebot.domain.com
-      - S3_ACCESS_KEY=minio
-      - S3_SECRET_KEY=minio123
-      - S3_BUCKET=typebot
-      - S3_ENDPOINT=storage.domain.com
+    env_file:
+      - .env
   typebot-viewer:
     labels:
       virtual.host: 'bot.domain.com' # change to your domain
@@ -284,16 +280,8 @@ services:
     image: baptistearno/typebot-viewer:latest
     restart: always
     # See https://docs.typebot.io/self-hosting/configuration for more configuration options
-    environment:
-      - DATABASE_URL=postgresql://postgres:typebot@typebot-db:5432/typebot
-      - NEXT_PUBLIC_VIEWER_URL=https://bot.domain.com
-      - ENCRYPTION_SECRET=K+Bar660Ofaec7v1jHC25tAn3l2b7c81
-      - SMTP_HOST=mail
-      - NEXT_PUBLIC_SMTP_FROM=notifications@typebot.domain.com
-      - S3_ACCESS_KEY=minio
-      - S3_SECRET_KEY=minio123
-      - S3_BUCKET=typebot
-      - S3_ENDPOINT=storage.domain.com
+    env_file:
+      - .env
   mail:
     image: bytemark/smtp
     restart: always
@@ -310,7 +298,7 @@ services:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
     volumes:
-      - s3_data:/data
+      - {$PWD}/.typebot/s3:/data
   # This service just make sure a bucket with the right policies is created
   createbuckets:
     image: minio/mc
@@ -324,11 +312,6 @@ services:
       /usr/bin/mc anonymous set public minio/typebot/public;
       exit 0;
       "
-volumes:
-  db_data:
-  s3_data:
-  caddy-certificates:
-    driver: local
 ```
 
 :::note

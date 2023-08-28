@@ -1,8 +1,9 @@
 import { Credentials } from '@typebot.io/schemas/features/credentials'
 import { decryptV1 } from './encryptionV1'
+import { env } from '@typebot.io/env'
 
 const algorithm = 'AES-GCM'
-const secretKey = process.env.ENCRYPTION_SECRET
+const secretKey = env.ENCRYPTION_SECRET
 
 export const encrypt = async (
   data: object

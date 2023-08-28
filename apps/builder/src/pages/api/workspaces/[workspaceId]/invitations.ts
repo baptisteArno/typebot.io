@@ -8,8 +8,8 @@ import {
 } from '@typebot.io/lib/api'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import { sendWorkspaceMemberInvitationEmail } from '@typebot.io/emails'
-import { env } from '@typebot.io/lib'
 import { isSeatsLimitReached } from '@typebot.io/lib/pricing'
+import { env } from '@typebot.io/env'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res)
@@ -52,12 +52,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           userId: existingUser.id,
         },
       })
-      if (env('E2E_TEST') !== 'true')
+      if (!env.NEXT_PUBLIC_E2E_TEST)
         await sendWorkspaceMemberInvitationEmail({
           to: data.email,
           workspaceName: workspace.name,
           guestEmail: data.email,
-          url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
+          url: `${env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
           hostEmail: user.email ?? '',
         })
       return res.send({
@@ -71,12 +71,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
     } else {
       const invitation = await prisma.workspaceInvitation.create({ data })
-      if (env('E2E_TEST') !== 'true')
+      if (!env.NEXT_PUBLIC_E2E_TEST)
         await sendWorkspaceMemberInvitationEmail({
           to: data.email,
           workspaceName: workspace.name,
           guestEmail: data.email,
-          url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
+          url: `${env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
           hostEmail: user.email ?? '',
         })
       return res.send({ invitation })

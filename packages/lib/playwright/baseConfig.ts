@@ -1,24 +1,5 @@
 import { PlaywrightTestConfig } from '@playwright/test'
 import path from 'path'
-import fs from 'fs'
-
-const builderLocalEnvPath = path.join(
-  __dirname,
-  '../../../apps/builder/.env.local'
-)
-const localViewerEnvPath = path.join(
-  __dirname,
-  '../../../apps/viewer/.env.local'
-)
-if (fs.existsSync(builderLocalEnvPath))
-  require('dotenv').config({
-    path: builderLocalEnvPath,
-  })
-
-if (fs.existsSync(localViewerEnvPath))
-  require('dotenv').config({
-    path: localViewerEnvPath,
-  })
 
 export const playwrightBaseConfig: PlaywrightTestConfig = {
   globalSetup: require.resolve(path.join(__dirname, 'globalSetup')),

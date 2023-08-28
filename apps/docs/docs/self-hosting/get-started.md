@@ -73,6 +73,6 @@ Typebot is composed of 2 Next.js applications you need to deploy:
 
 I've written guides on how to deploy Typebot using:
 
-- [Docker](/self-hosting/docker)
-- [Vercel](/self-hosting/vercel)
-- [Manual](/self-hosting/manual)
+- [Docker](/self-hosting/guides/docker)
+- [Vercel](/self-hosting/guides/vercel)
+- [Manual](/self-hosting/guides/manual)

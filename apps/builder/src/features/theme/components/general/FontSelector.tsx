@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Text, HStack } from '@chakra-ui/react'
-import { env, isEmpty } from '@typebot.io/lib'
 import { AutocompleteInput } from '@/components/inputs/AutocompleteInput'
+import { env } from '@typebot.io/env'
 
 type FontSelectorProps = {
   activeFont?: string
@@ -20,11 +20,9 @@ export const FontSelector = ({
   }, [])
 
   const fetchPopularFonts = async () => {
-    if (isEmpty(env('GOOGLE_API_KEY'))) return []
+    if (!env.NEXT_PUBLIC_GOOGLE_API_KEY) return []
     const response = await fetch(
-      `https://www.googleapis.com/webfonts/v1/webfonts?key=${env(
-        'GOOGLE_API_KEY'
-      )}&sort=popularity`
+      `https://www.googleapis.com/webfonts/v1/webfonts?key=${env.NEXT_PUBLIC_GOOGLE_API_KEY}&sort=popularity`
     )
     return (await response.json()).items.map(
       (item: { family: string }) => item.family

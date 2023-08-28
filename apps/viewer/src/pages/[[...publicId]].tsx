@@ -2,10 +2,11 @@ import { IncomingMessage } from 'http'
 import { ErrorPage } from '@/components/ErrorPage'
 import { NotFoundPage } from '@/components/NotFoundPage'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
-import { env, getViewerUrl, isNotDefined } from '@typebot.io/lib'
+import { isNotDefined } from '@typebot.io/lib'
 import prisma from '../lib/prisma'
 import { TypebotPageProps, TypebotPageV2 } from '@/components/TypebotPageV2'
 import { TypebotPageV3, TypebotV3PageProps } from '@/components/TypebotPageV3'
+import { env } from '@typebot.io/env'
 
 // Browsers that doesn't support ES modules and/or web components
 const incompatibleBrowsers = [
@@ -24,7 +25,7 @@ const incompatibleBrowsers = [
 ]
 
 const log = (message: string) => {
-  if (process.env.DEBUG !== 'true') return
+  if (!env.DEBUG) return
   console.log(`[DEBUG] ${message}`)
 }
 
@@ -41,19 +42,18 @@ export const getServerSideProps: GetServerSideProps = async (
   log(`forwardedHost: ${forwardedHost}`)
   try {
     if (!host) return { props: {} }
-    const viewerUrls = (getViewerUrl({ returnAll: true }) ?? '').split(',')
+    const viewerUrls = env.NEXT_PUBLIC_VIEWER_URL
     log(`viewerUrls: ${viewerUrls}`)
-    const isMatchingViewerUrl =
-      env('E2E_TEST') === 'true'
-        ? true
-        : viewerUrls.some(
-            (url) =>
-              host.split(':')[0].includes(url.split('//')[1].split(':')[0]) ||
-              (forwardedHost &&
-                forwardedHost
-                  .split(':')[0]
-                  .includes(url.split('//')[1].split(':')[0]))
-          )
+    const isMatchingViewerUrl = env.NEXT_PUBLIC_E2E_TEST
+      ? true
+      : viewerUrls.some(
+          (url) =>
+            host.split(':')[0].includes(url.split('//')[1].split(':')[0]) ||
+            (forwardedHost &&
+              forwardedHost
+                .split(':')[0]
+                .includes(url.split('//')[1].split(':')[0]))
+        )
     log(`isMatchingViewerUrl: ${isMatchingViewerUrl}`)
     const customDomain = `${forwardedHost ?? host}${
       pathname === '/' ? '' : pathname

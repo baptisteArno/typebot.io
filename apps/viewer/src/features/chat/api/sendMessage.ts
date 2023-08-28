@@ -16,7 +16,7 @@ import {
   Variable,
   VariableWithValue,
 } from '@typebot.io/schemas'
-import { env, isDefined, isNotEmpty, omit } from '@typebot.io/lib'
+import { isDefined, isNotEmpty, omit } from '@typebot.io/lib'
 import { prefillVariables } from '@/features/variables/prefillVariables'
 import { injectVariablesFromExistingResult } from '@/features/variables/injectVariablesFromExistingResult'
 import { deepParseVariables } from '@/features/variables/deepParseVariable'
@@ -30,6 +30,7 @@ import { findTypebot } from '../queries/findTypebot'
 import { findPublicTypebot } from '../queries/findPublicTypebot'
 import { findResult } from '../queries/findResult'
 import { createId } from '@paralleldrive/cuid2'
+import { env } from '@typebot.io/env'
 
 export const sendMessage = publicProcedure
   .meta({
@@ -257,7 +258,7 @@ const getTypebot = async (
   userId?: string
 ): Promise<StartTypebot> => {
   if (typeof typebot !== 'string') return typebot
-  if (isPreview && !userId && env('E2E_TEST') !== 'true')
+  if (isPreview && !userId && !env.NEXT_PUBLIC_E2E_TEST)
     throw new TRPCError({
       code: 'UNAUTHORIZED',
       message:

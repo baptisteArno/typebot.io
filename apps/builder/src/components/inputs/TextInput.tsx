@@ -19,7 +19,7 @@ import React, {
   useState,
 } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { env } from '@typebot.io/lib'
+import { env } from '@typebot.io/env'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
 export type TextInputProps = {
@@ -69,7 +69,7 @@ export const TextInput = forwardRef(function TextInput(
   const onChange = useDebouncedCallback(
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     _onChange ?? (() => {}),
-    env('E2E_TEST') === 'true' ? 0 : debounceTimeout
+    env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
   )
 
   useEffect(() => {

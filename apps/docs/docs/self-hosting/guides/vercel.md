@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 4
 ---
 
 # Vercel
@@ -27,7 +27,7 @@ Fork the repository
 5. Change the build command to:
 
    ```sh
-   cd ../.. && pnpm build:builder && pnpm db:migrate
+   cd ../.. && pnpm turbo build --filter=builder... && pnpm db:migrate
    ```
 
 6. Add the required environment variables ([Check out the configuration guide](/self-hosting/configuration))
@@ -42,7 +42,7 @@ Fork the repository
 5. Change the build command to:
 
    ```sh
-   cd ../.. && pnpm build:viewer && pnpm db:migrate
+   cd ../.. && pnpm pnpm turbo build --filter=viewer... && pnpm db:migrate
    ```
 
 6. Add the required environment variables ([Check out the configuration guide](/self-hosting/configuration))

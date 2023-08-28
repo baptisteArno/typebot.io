@@ -2,10 +2,9 @@ import { createTRPCProxyClient, httpBatchLink, loggerLink } from '@trpc/client'
 import { createTRPCNext } from '@trpc/next'
 import type { AppRouter } from '../helpers/server/routers/v1/trpcRouter'
 import superjson from 'superjson'
-import { env } from '@typebot.io/lib'
+import { env } from '@typebot.io/env'
 
-const getBaseUrl = () =>
-  typeof window !== 'undefined' ? '' : process.env.NEXTAUTH_URL
+const getBaseUrl = () => (typeof window !== 'undefined' ? '' : env.NEXTAUTH_URL)
 
 export const trpc = createTRPCNext<AppRouter>({
   config() {
@@ -36,5 +35,5 @@ export const trpcVanilla = createTRPCProxyClient<AppRouter>({
 })
 
 export const defaultQueryOptions = {
-  refetchOnMount: env('E2E_TEST') === 'true',
+  refetchOnMount: env.NEXT_PUBLIC_E2E_TEST,
 }

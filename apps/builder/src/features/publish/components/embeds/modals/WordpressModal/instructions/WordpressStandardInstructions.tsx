@@ -12,7 +12,7 @@ import {
 import { useState } from 'react'
 import { StandardSettings } from '../../../settings/StandardSettings'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
-import { env, getViewerUrl } from '@typebot.io/lib'
+import { getViewerUrl } from '@typebot.io/lib'
 
 type Props = {
   publicId: string
@@ -76,9 +76,7 @@ const parseWordpressShortcode = ({
   publicId: string
 }) => {
   return `[typebot typebot="${publicId}"${
-    isCloudProdInstance
-      ? ''
-      : ` host="${env('VIEWER_INTERNAL_URL') ?? getViewerUrl()}"`
+    isCloudProdInstance ? '' : ` host="${getViewerUrl()}"`
   }${width ? ` width="${width}"` : ''}${height ? ` height="${height}"` : ''}]
 `
 }

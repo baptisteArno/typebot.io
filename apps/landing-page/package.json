@@ -2,10 +2,9 @@
   "name": "landing-page",
   "version": "1.0.0",
   "scripts": {
-    "dev": "cross-env ENVSH_ENV=.env.local bash ../../scripts/inject-runtime-env.sh next dev -p 3002",
-    "start": "next start",
-    "build": "next build",
-    "build:env": "cd ../.. && cross-env ENVSH_ENV=./apps/landing-page/.env.docker ENVSH_OUTPUT=./apps/landing-page/public/__env.js bash scripts/inject-runtime-env.sh",
+    "dev": "dotenv -e ./.env -e ../../.env -- next dev -p 3002",
+    "start": "dotenv -e ./.env -e ../../.env -- next start",
+    "build": "dotenv -e ./.env -e ../../.env -- next build",
     "lint": "next lint",
     "analyze": "cross-env ANALYZE=true next build"
   },
@@ -14,33 +13,33 @@
     "@chakra-ui/react": "2.7.1",
     "@emotion/react": "11.11.1",
     "@emotion/styled": "11.11.0",
-    "@vercel/analytics": "1.0.1",
+    "@typebot.io/lib": "workspace:*",
     "@typebot.io/nextjs": "workspace:*",
-    "aos": "2.3.4",
     "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/schemas": "workspace:*",
+    "aos": "2.3.4",
     "focus-visible": "5.2.0",
     "framer-motion": "10.12.20",
-    "@typebot.io/schemas": "workspace:*",
     "next": "13.4.3",
     "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "@typebot.io/lib": "workspace:*"
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
     "@babel/core": "7.22.9",
     "@chakra-ui/styled-system": "2.9.1",
     "@next/bundle-analyzer": "13.4.9",
+    "@typebot.io/tsconfig": "workspace:*",
     "@types/aos": "3.0.4",
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
     "autoprefixer": "10.4.14",
     "cross-env": "7.0.3",
+    "dotenv-cli": "^7.2.1",
     "eslint": "8.44.0",
     "eslint-config-custom": "workspace:*",
     "next-transpile-modules": "10.0.0",
     "postcss": "8.4.26",
     "prettier": "3.0.0",
-    "@typebot.io/tsconfig": "workspace:*",
     "typescript": "5.1.6"
   }
 }

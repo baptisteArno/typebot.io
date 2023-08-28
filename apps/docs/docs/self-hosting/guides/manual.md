@@ -18,22 +18,18 @@ The cloud version can save a substantial amount of developer time and resources.
 
 ## Getting Started
 
-1. Fork/clone the repository
+1. Fork/clone the repository and checkout the latest stable version.
 
 ```sh
 git clone git@github.com:<username>/typebot.io.git
+cd typebot.io
+git checkout latest
 ```
 
 2. Setup environment variables by copying the example files and following the [configuration guide](/self-hosting/configuration) to fill in the missing values.
 
 ```sh
-cd typebot.io
-# check out the latest stable version or the one you want to use
-git checkout latest
-# copy the example env file
-cp packages/prisma/.env.example packages/prisma/.env
-cp apps/builder/.env.local.example apps/builder/.env.local
-cp apps/viewer/.env.local.example apps/viewer/.env.local
+cp .env.example .env
 ```
 
 :::note
@@ -50,9 +46,6 @@ pnpm install
 
 ```sh
 pnpm run build:apps
-# or build them separately
-pnpm run build:builder
-pnpm run build:viewer
 ```
 
 :::note

@@ -4,7 +4,7 @@ import {
   User,
   WorkspaceRole,
 } from '@typebot.io/prisma'
-import { env } from '@typebot.io/lib'
+import { env } from '@typebot.io/env'
 
 const parseWhereFilter = (
   typebotIds: string[] | string,
@@ -24,8 +24,8 @@ const parseWhereFilter = (
     {
       id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds },
       workspace:
-        (type === 'read' && user.email === process.env.ADMIN_EMAIL) ||
-        env('E2E_TEST') === 'true'
+        (type === 'read' && user.email === env.ADMIN_EMAIL) ||
+        env.NEXT_PUBLIC_E2E_TEST
           ? undefined
           : {
               members: {

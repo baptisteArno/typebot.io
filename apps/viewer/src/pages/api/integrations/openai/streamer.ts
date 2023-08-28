@@ -1,5 +1,6 @@
 import { getChatCompletionStream } from '@/features/blocks/integrations/openai/getChatCompletionStream'
 import { connect } from '@planetscale/database'
+import { env } from '@typebot.io/env'
 import { IntegrationBlockType, SessionState } from '@typebot.io/schemas'
 import { StreamingTextResponse } from 'ai'
 import { ChatCompletionRequestMessage } from 'openai'
@@ -29,7 +30,7 @@ const handler = async (req: Request) => {
 
   if (!messages) return new Response('No messages provided', { status: 400 })
 
-  const conn = connect({ url: process.env.DATABASE_URL })
+  const conn = connect({ url: env.DATABASE_URL })
 
   const chatSession = await conn.execute(
     'select state from ChatSession where id=?',

@@ -1,5 +1,6 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
+import { env } from '@typebot.io/env'
 import { userId } from '@typebot.io/lib/playwright/databaseSetup'
 
 test.describe.configure({ mode: 'parallel' })
@@ -15,9 +16,9 @@ test('should display user info properly', async ({ page }) => {
   await expect(page.locator('img >> nth=1')).toHaveAttribute(
     'src',
     new RegExp(
-      `${process.env.S3_ENDPOINT}${
-        process.env.S3_PORT ? `:${process.env.S3_PORT}` : ''
-      }/${process.env.S3_BUCKET}/public/users/${userId}/avatar`,
+      `${env.S3_ENDPOINT}${env.S3_PORT ? `:${env.S3_PORT}` : ''}/${
+        env.S3_BUCKET
+      }/public/users/${userId}/avatar`,
       'gm'
     )
   )

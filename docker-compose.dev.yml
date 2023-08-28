@@ -1,6 +1,6 @@
 version: '3.3'
 services:
-  postgres:
+  typebot-db:
     image: postgres:13
     ports:
       - '5432:5432'

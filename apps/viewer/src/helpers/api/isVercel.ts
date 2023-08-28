@@ -1,3 +1,3 @@
-import { isDefined } from '@typebot.io/lib/utils'
+import { env } from '@typebot.io/env'
 
-export const isVercel = () => isDefined(process.env.NEXT_PUBLIC_VERCEL_ENV)
+export const isVercel = () => env.NEXT_PUBLIC_VERCEL_ENV

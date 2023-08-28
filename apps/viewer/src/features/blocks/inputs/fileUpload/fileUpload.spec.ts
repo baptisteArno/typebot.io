@@ -10,6 +10,7 @@ import {
 } from '@typebot.io/lib/playwright/databaseActions'
 import { getTestAsset } from '@/test/utils/playwright'
 import { Plan } from '@typebot.io/prisma'
+import { env } from '@typebot.io/env'
 
 const THREE_GIGABYTES = 3 * 1024 * 1024 * 1024
 
@@ -30,7 +31,7 @@ test('should work as expected', async ({ page, browser }) => {
   await expect(page.locator(`text="3"`)).toBeVisible()
   await page.locator('text="Upload 3 files"').click()
   await expect(page.locator(`text="3 files uploaded"`)).toBeVisible()
-  await page.goto(`${process.env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
+  await page.goto(`${env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
   await expect(page.getByRole('link', { name: 'api.json' })).toHaveAttribute(
     'href',
     /.+\/api\.json/
@@ -52,7 +53,7 @@ test('should work as expected', async ({ page, browser }) => {
   const file = readFileSync(downloadPath as string).toString()
   const { data } = parse(file)
   expect(data).toHaveLength(2)
-  expect((data[1] as unknown[])[1]).toContain(process.env.S3_ENDPOINT)
+  expect((data[1] as unknown[])[1]).toContain(env.S3_ENDPOINT)
 
   const urls = (
     await Promise.all(
@@ -110,7 +111,7 @@ test.describe('Storage limit is reached', () => {
     await page.evaluate(() =>
       window.localStorage.setItem('workspaceId', 'starterWorkspace')
     )
-    await page.goto(`${process.env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
+    await page.goto(`${env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
     await expect(page.locator('text="150%"')).toBeVisible()
   })
 })

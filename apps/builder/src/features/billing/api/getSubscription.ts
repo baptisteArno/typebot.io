@@ -4,8 +4,9 @@ import { TRPCError } from '@trpc/server'
 import Stripe from 'stripe'
 import { z } from 'zod'
 import { subscriptionSchema } from '@typebot.io/schemas/features/billing/subscription'
-import { priceIds } from '@typebot.io/lib/pricing'
 import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
+import { priceIds } from '@typebot.io/lib/api/pricing'
+import { env } from '@typebot.io/env'
 
 export const getSubscription = authenticatedProcedure
   .meta({
@@ -28,7 +29,7 @@ export const getSubscription = authenticatedProcedure
     })
   )
   .query(async ({ input: { workspaceId }, ctx: { user } }) => {
-    if (!process.env.STRIPE_SECRET_KEY)
+    if (!env.STRIPE_SECRET_KEY)
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Stripe environment variables are missing',
@@ -55,7 +56,7 @@ export const getSubscription = authenticatedProcedure
       return {
         subscription: null,
       }
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+    const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
       apiVersion: '2022-11-15',
     })
     const subscriptions = await stripe.subscriptions.list({

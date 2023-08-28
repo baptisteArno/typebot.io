@@ -38,6 +38,15 @@
                           {
                             "type": "object",
                             "properties": {
+                              "version": {
+                                "type": "string",
+                                "enum": [
+                                  "3",
+                                  "4",
+                                  "5"
+                                ],
+                                "nullable": true
+                              },
                               "id": {
                                 "type": "string"
                               },
@@ -1621,6 +1630,9 @@
                                                   },
                                                   "groupId": {
                                                     "type": "string"
+                                                  },
+                                                  "mergeResults": {
+                                                    "type": "boolean"
                                                   }
                                                 },
                                                 "additionalProperties": false
@@ -3817,6 +3829,7 @@
                               }
                             },
                             "required": [
+                              "version",
                               "id",
                               "groups",
                               "edges",

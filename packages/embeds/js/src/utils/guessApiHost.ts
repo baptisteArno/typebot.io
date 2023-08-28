@@ -1,8 +1,8 @@
-import { env } from '@typebot.io/lib'
+import { env } from '@typebot.io/env'
 
 const cloudViewerUrl = 'https://viewer.typebot.io'
 
 export const guessApiHost = () =>
-  env('VIEWER_INTERNAL_URL') ??
-  env('VIEWER_URL')?.split(',')[0] ??
+  env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ??
+  env.NEXT_PUBLIC_VIEWER_URL[0] ??
   cloudViewerUrl

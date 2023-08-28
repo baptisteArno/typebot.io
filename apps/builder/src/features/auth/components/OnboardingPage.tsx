@@ -13,8 +13,8 @@ import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import confetti from 'canvas-confetti'
 import { useUser } from '@/features/account/hooks/useUser'
-import { env, isEmpty } from '@typebot.io/lib'
 import { useI18n } from '@/locales'
+import { env } from '@typebot.io/env'
 
 const totalSteps = 5
 
@@ -37,7 +37,7 @@ export const OnboardingPage = () => {
 
   useEffect(() => {
     if (!user?.createdAt) return
-    if (isNewUser === false || isEmpty(env('ONBOARDING_TYPEBOT_ID')))
+    if (isNewUser === false || !env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID)
       replace('/typebots')
   }, [isNewUser, replace, user?.createdAt])
 
@@ -90,7 +90,7 @@ export const OnboardingPage = () => {
       <Dots currentStep={currentStep} pos="fixed" top="9" />
       <Flex w="full" maxW="800px" h="full" maxH="70vh" rounded="lg">
         <Standard
-          typebot={env('ONBOARDING_TYPEBOT_ID')}
+          typebot={env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID}
           style={{ borderRadius: '1rem' }}
           prefilledVariables={{ Name: user?.name, Email: user?.email }}
           onEnd={() => {

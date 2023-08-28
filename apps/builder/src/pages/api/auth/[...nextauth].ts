@@ -10,139 +10,114 @@ import { Provider } from 'next-auth/providers'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { customAdapter } from '../../../features/auth/api/customAdapter'
 import { User } from '@typebot.io/prisma'
-import { env, getAtPath, isDefined, isNotEmpty } from '@typebot.io/lib'
+import { getAtPath, isDefined } from '@typebot.io/lib'
 import { mockedUser } from '@/features/auth/mockedUser'
 import { getNewUserInvitations } from '@/features/auth/helpers/getNewUserInvitations'
 import { sendVerificationRequest } from '@/features/auth/helpers/sendVerificationRequest'
 import { Ratelimit } from '@upstash/ratelimit'
 import { Redis } from '@upstash/redis/nodejs'
 import got from 'got'
+import { env } from '@typebot.io/env'
 
 const providers: Provider[] = []
 
 let rateLimit: Ratelimit | undefined
 
-if (
-  process.env.UPSTASH_REDIS_REST_URL &&
-  process.env.UPSTASH_REDIS_REST_TOKEN
-) {
+if (env.UPSTASH_REDIS_REST_URL && env.UPSTASH_REDIS_REST_TOKEN) {
   rateLimit = new Ratelimit({
     redis: Redis.fromEnv(),
     limiter: Ratelimit.slidingWindow(1, '60 s'),
   })
 }
 
-if (
-  isNotEmpty(process.env.GITHUB_CLIENT_ID) &&
-  isNotEmpty(process.env.GITHUB_CLIENT_SECRET)
-)
+if (env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET)
   providers.push(
     GitHubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      clientId: env.GITHUB_CLIENT_ID,
+      clientSecret: env.GITHUB_CLIENT_SECRET,
     })
   )
 
-if (isNotEmpty(env('SMTP_FROM')) && process.env.SMTP_AUTH_DISABLED !== 'true')
+if (env.NEXT_PUBLIC_SMTP_FROM && env.SMTP_AUTH_DISABLED)
   providers.push(
     EmailProvider({
       server: {
-        host: process.env.SMTP_HOST,
-        port: process.env.SMTP_PORT ? Number(process.env.SMTP_PORT) : 25,
-        secure: process.env.SMTP_SECURE
-          ? process.env.SMTP_SECURE === 'true'
-          : false,
+        host: env.SMTP_HOST,
+        port: env.SMTP_PORT ? Number(env.SMTP_PORT) : 25,
+        secure: env.SMTP_SECURE ? env.SMTP_SECURE : false,
         auth: {
-          user: process.env.SMTP_USERNAME,
-          pass: process.env.SMTP_PASSWORD,
+          user: env.SMTP_USERNAME,
+          pass: env.SMTP_PASSWORD,
         },
       },
-      from: env('SMTP_FROM'),
+      from: env.NEXT_PUBLIC_SMTP_FROM,
       sendVerificationRequest,
     })
   )
 
-if (
-  isNotEmpty(process.env.GOOGLE_CLIENT_ID) &&
-  isNotEmpty(process.env.GOOGLE_CLIENT_SECRET)
-)
+if (env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET)
   providers.push(
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
     })
   )
 
-if (
-  isNotEmpty(process.env.FACEBOOK_CLIENT_ID) &&
-  isNotEmpty(process.env.FACEBOOK_CLIENT_SECRET)
-)
+if (env.FACEBOOK_CLIENT_ID && env.FACEBOOK_CLIENT_SECRET)
   providers.push(
     FacebookProvider({
-      clientId: process.env.FACEBOOK_CLIENT_ID,
-      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+      clientId: env.FACEBOOK_CLIENT_ID,
+      clientSecret: env.FACEBOOK_CLIENT_SECRET,
     })
   )
 
-if (
-  isNotEmpty(process.env.GITLAB_CLIENT_ID) &&
-  isNotEmpty(process.env.GITLAB_CLIENT_SECRET)
-) {
-  const BASE_URL = process.env.GITLAB_BASE_URL || 'https://gitlab.com'
+if (env.GITLAB_CLIENT_ID && env.GITLAB_CLIENT_SECRET) {
+  const BASE_URL = env.GITLAB_BASE_URL || 'https://gitlab.com'
   providers.push(
     GitlabProvider({
-      clientId: process.env.GITLAB_CLIENT_ID,
-      clientSecret: process.env.GITLAB_CLIENT_SECRET,
+      clientId: env.GITLAB_CLIENT_ID,
+      clientSecret: env.GITLAB_CLIENT_SECRET,
       authorization: `${BASE_URL}/oauth/authorize?scope=read_api`,
       token: `${BASE_URL}/oauth/token`,
       userinfo: `${BASE_URL}/api/v4/user`,
-      name: process.env.GITLAB_NAME || 'GitLab',
+      name: env.GITLAB_NAME || 'GitLab',
     })
   )
 }
 
 if (
-  isNotEmpty(process.env.AZURE_AD_CLIENT_ID) &&
-  isNotEmpty(process.env.AZURE_AD_CLIENT_SECRET) &&
-  isNotEmpty(process.env.AZURE_AD_TENANT_ID)
+  env.AZURE_AD_CLIENT_ID &&
+  env.AZURE_AD_CLIENT_SECRET &&
+  env.AZURE_AD_TENANT_ID
 ) {
   providers.push(
     AzureADProvider({
-      clientId: process.env.AZURE_AD_CLIENT_ID,
-      clientSecret: process.env.AZURE_AD_CLIENT_SECRET,
-      tenantId: process.env.AZURE_AD_TENANT_ID,
+      clientId: env.AZURE_AD_CLIENT_ID,
+      clientSecret: env.AZURE_AD_CLIENT_SECRET,
+      tenantId: env.AZURE_AD_TENANT_ID,
     })
   )
 }
 
-if (isNotEmpty(process.env.CUSTOM_OAUTH_WELL_KNOWN_URL)) {
+if (env.CUSTOM_OAUTH_WELL_KNOWN_URL) {
   providers.push({
     id: 'custom-oauth',
-    name: process.env.CUSTOM_OAUTH_NAME ?? 'Custom OAuth',
+    name: env.CUSTOM_OAUTH_NAME ?? 'Custom OAuth',
     type: 'oauth',
     authorization: {
       params: {
-        scope: process.env.CUSTOM_OAUTH_SCOPE ?? 'openid profile email',
+        scope: env.CUSTOM_OAUTH_SCOPE ?? 'openid profile email',
       },
     },
-    clientId: process.env.CUSTOM_OAUTH_CLIENT_ID,
-    clientSecret: process.env.CUSTOM_OAUTH_CLIENT_SECRET,
-    wellKnown: process.env.CUSTOM_OAUTH_WELL_KNOWN_URL,
+    clientId: env.CUSTOM_OAUTH_CLIENT_ID,
+    clientSecret: env.CUSTOM_OAUTH_CLIENT_SECRET,
+    wellKnown: env.CUSTOM_OAUTH_WELL_KNOWN_URL,
     profile(profile) {
       return {
-        id: getAtPath(profile, process.env.CUSTOM_OAUTH_USER_ID_PATH ?? 'id'),
-        name: getAtPath(
-          profile,
-          process.env.CUSTOM_OAUTH_USER_NAME_PATH ?? 'name'
-        ),
-        email: getAtPath(
-          profile,
-          process.env.CUSTOM_OAUTH_USER_EMAIL_PATH ?? 'email'
-        ),
-        image: getAtPath(
-          profile,
-          process.env.CUSTOM_OAUTH_USER_IMAGE_PATH ?? 'image'
-        ),
+        id: getAtPath(profile, env.CUSTOM_OAUTH_USER_ID_PATH ?? 'id'),
+        name: getAtPath(profile, env.CUSTOM_OAUTH_USER_NAME_PATH ?? 'name'),
+        email: getAtPath(profile, env.CUSTOM_OAUTH_USER_EMAIL_PATH ?? 'email'),
+        image: getAtPath(profile, env.CUSTOM_OAUTH_USER_IMAGE_PATH ?? 'image'),
       } as User
     },
   })
@@ -150,16 +125,14 @@ if (isNotEmpty(process.env.CUSTOM_OAUTH_WELL_KNOWN_URL)) {
 
 export const authOptions: AuthOptions = {
   adapter: customAdapter(prisma),
-  secret: process.env.ENCRYPTION_SECRET,
+  secret: env.ENCRYPTION_SECRET,
   providers,
   session: {
     strategy: 'database',
   },
   pages: {
     signIn: '/signin',
-    newUser: process.env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID
-      ? '/onboarding'
-      : undefined,
+    newUser: env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID ? '/onboarding' : undefined,
   },
   callbacks: {
     session: async ({ session, user }) => {
@@ -181,7 +154,7 @@ export const authOptions: AuthOptions = {
         if (disposableEmailDomains.includes(user.email.split('@')[1]))
           return false
       }
-      if (process.env.DISABLE_SIGNUP === 'true' && isNewUser && user.email) {
+      if (env.DISABLE_SIGNUP && isNewUser && user.email) {
         const { invitations, workspaceInvitations } =
           await getNewUserInvitations(prisma, user.email)
         if (invitations.length === 0 && workspaceInvitations.length === 0)
@@ -201,7 +174,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const isMockingSession =
     req.method === 'GET' &&
     req.url === '/api/auth/session' &&
-    env('E2E_TEST') === 'true'
+    env.NEXT_PUBLIC_E2E_TEST
   if (isMockingSession) return res.send({ user: mockedUser })
   const requestIsFromCompanyFirewall = req.method === 'HEAD'
   if (requestIsFromCompanyFirewall) return res.status(200).end()
@@ -248,7 +221,7 @@ const getUserGroups = async (account: Account): Promise<string[]> => {
       ): Promise<{ full_path: string }[]> => {
         const res = await fetch(
           `${
-            process.env.GITLAB_BASE_URL || 'https://gitlab.com'
+            env.GITLAB_BASE_URL || 'https://gitlab.com'
           }/api/v4/groups?per_page=100&page=${page}`,
           { headers: { Authorization: `Bearer ${accessToken}` } }
         )
@@ -269,7 +242,7 @@ const getUserGroups = async (account: Account): Promise<string[]> => {
 const getRequiredGroups = (provider: string): string[] => {
   switch (provider) {
     case 'gitlab':
-      return process.env.GITLAB_REQUIRED_GROUPS?.split(',') || []
+      return env.GITLAB_REQUIRED_GROUPS ?? []
     default:
       return []
   }

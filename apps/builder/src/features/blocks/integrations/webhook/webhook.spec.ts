@@ -7,6 +7,7 @@ import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/web
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 import { apiToken } from '@typebot.io/lib/playwright/databaseSetup'
+import { env } from '@typebot.io/env'
 
 test.describe('Builder', () => {
   test('easy configuration should work', async ({ page }) => {
@@ -22,7 +23,7 @@ test.describe('Builder', () => {
     await page.click('text=Configure...')
     await page.fill(
       'input[placeholder="Paste webhook URL..."]',
-      `${process.env.NEXTAUTH_URL}/api/mock/webhook-easy-config`
+      `${env.NEXTAUTH_URL}/api/mock/webhook-easy-config`
     )
     await page.click('text=Test the request')
     await expect(page.locator('div[role="textbox"] >> nth=-1')).toContainText(
@@ -45,7 +46,7 @@ test.describe('Builder', () => {
     await page.click('text=Configure...')
     await page.fill(
       'input[placeholder="Paste webhook URL..."]',
-      `${process.env.NEXTAUTH_URL}/api/mock/webhook`
+      `${env.NEXTAUTH_URL}/api/mock/webhook`
     )
     await page.click('text=Advanced configuration')
     await page.getByRole('button', { name: 'GET' }).click()

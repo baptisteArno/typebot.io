@@ -3,14 +3,14 @@ import { GiphyFetch } from '@giphy/js-fetch-api'
 import { Grid } from '@giphy/react-components'
 import { GiphyLogo } from '../logos/GiphyLogo'
 import React, { useState } from 'react'
-import { env, isEmpty } from '@typebot.io/lib'
 import { TextInput } from '../inputs'
+import { env } from '@typebot.io/env'
 
 type GiphySearchFormProps = {
   onSubmit: (url: string) => void
 }
 
-const giphyFetch = new GiphyFetch(env('GIPHY_API_KEY') as string)
+const giphyFetch = new GiphyFetch(env.NEXT_PUBLIC_GIPHY_API_KEY ?? '')
 
 export const GiphyPicker = ({ onSubmit }: GiphySearchFormProps) => {
   const [inputValue, setInputValue] = useState('')
@@ -21,7 +21,7 @@ export const GiphyPicker = ({ onSubmit }: GiphySearchFormProps) => {
   const fetchGifsTrending = (offset: number) =>
     giphyFetch.trending({ offset, limit: 10 })
 
-  return isEmpty(env('GIPHY_API_KEY')) ? (
+  return !env.NEXT_PUBLIC_GIPHY_API_KEY ? (
     <Text>NEXT_PUBLIC_GIPHY_API_KEY is missing in environment</Text>
   ) : (
     <Stack spacing={4} pt="2">

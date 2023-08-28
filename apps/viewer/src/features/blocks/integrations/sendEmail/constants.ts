@@ -1,14 +1,16 @@
+import { env } from '@typebot.io/env'
+
 export const defaultTransportOptions = {
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: process.env.SMTP_SECURE ? process.env.SMTP_SECURE === 'true' : false,
+  host: env.SMTP_HOST,
+  port: env.SMTP_PORT,
+  secure: env.SMTP_SECURE,
   auth: {
-    user: process.env.SMTP_USERNAME,
-    pass: process.env.SMTP_PASSWORD,
+    user: env.SMTP_USERNAME,
+    pass: env.SMTP_PASSWORD,
   },
 }
 
 export const defaultFrom = {
-  name: process.env.SMTP_FROM?.split(' <')[0].replace(/"/g, ''),
-  email: process.env.SMTP_FROM?.match(/<(.*)>/)?.pop(),
+  name: env.NEXT_PUBLIC_SMTP_FROM?.split(' <')[0].replace(/"/g, ''),
+  email: env.NEXT_PUBLIC_SMTP_FROM?.match(/<(.*)>/)?.pop(),
 }

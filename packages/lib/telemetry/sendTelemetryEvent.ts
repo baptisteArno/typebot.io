@@ -1,18 +1,18 @@
 import got from 'got'
 import { TelemetryEvent } from '@typebot.io/schemas/features/telemetry'
-import { isEmpty, isNotEmpty } from '../utils'
+import { isNotEmpty } from '../utils'
+import { env } from '@typebot.io/env'
 
 export const sendTelemetryEvents = async (events: TelemetryEvent[]) => {
   if (events.length === 0) return { message: 'No events to send' }
-  if (isEmpty(process.env.TELEMETRY_WEBHOOK_URL))
-    return { message: 'Telemetry not enabled' }
+  if (!env.TELEMETRY_WEBHOOK_URL) return { message: 'Telemetry not enabled' }
 
   try {
-    await got.post(process.env.TELEMETRY_WEBHOOK_URL, {
+    await got.post(env.TELEMETRY_WEBHOOK_URL, {
       json: { events },
       headers: {
-        authorization: isNotEmpty(process.env.TELEMETRY_WEBHOOK_BEARER_TOKEN)
-          ? `Bearer ${process.env.TELEMETRY_WEBHOOK_BEARER_TOKEN}`
+        authorization: env.TELEMETRY_WEBHOOK_BEARER_TOKEN
+          ? `Bearer ${env.TELEMETRY_WEBHOOK_BEARER_TOKEN}`
           : undefined,
       },
     })

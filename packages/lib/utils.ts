@@ -19,6 +19,7 @@ import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/enu
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/enums'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/enums'
 import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
+import { env } from '@typebot.io/env'
 
 export const sendRequest = async <ResponseData>(
   params:
@@ -249,16 +250,6 @@ export const uploadFiles = async ({
 
 declare const window: any
 
-export const env = (key = ''): string | undefined => {
-  if (typeof window === 'undefined')
-    return isEmpty(process.env['NEXT_PUBLIC_' + key])
-      ? undefined
-      : (process.env['NEXT_PUBLIC_' + key] as string)
-
-  if (typeof window !== 'undefined' && window.__env)
-    return isEmpty(window.__env[key]) ? undefined : window.__env[key]
-}
-
 export const hasValue = (
   value: string | undefined | null
 ): value is NonNullable<string> =>
@@ -268,10 +259,8 @@ export const hasValue = (
   value !== 'undefined' &&
   value !== 'null'
 
-export const getViewerUrl = (props?: {
-  returnAll?: boolean
-}): string | undefined =>
-  props?.returnAll ? env('VIEWER_URL') : env('VIEWER_URL')?.split(',')[0]
+export const getViewerUrl = () =>
+  env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ?? env.NEXT_PUBLIC_VIEWER_URL[0]
 
 export const parseNumberWithCommas = (num: number) =>
   num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')

@@ -4,6 +4,7 @@ import { createId } from '@paralleldrive/cuid2'
 import { importTypebotInDatabase } from '@typebot.io/lib/playwright/databaseActions'
 import { getTestAsset } from '@/test/utils/playwright'
 import { SmtpCredentials } from '@typebot.io/schemas'
+import { env } from '@typebot.io/env'
 
 export const mockSmtpCredentials: SmtpCredentials['data'] = {
   from: {
@@ -34,7 +35,7 @@ test('should send an email', async ({ page }) => {
   await page.goto(`/${typebotId}-public`)
   await page.locator('text=Send email').click()
   await expect(page.getByText('Email sent!')).toBeVisible()
-  await page.goto(`${process.env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
+  await page.goto(`${env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
   await page.click('text="See logs"')
   await expect(page.locator('text="Email successfully sent"')).toBeVisible()
 })

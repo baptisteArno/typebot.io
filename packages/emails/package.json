@@ -27,7 +27,8 @@
     "@typebot.io/lib": "workspace:*",
     "eslint": "8.44.0",
     "eslint-config-custom": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*"
+    "@typebot.io/tsconfig": "workspace:*",
+    "@typebot.io/env": "workspace:*"
   },
   "peerDependencies": {
     "@faire/mjml-react": "2.1.4",

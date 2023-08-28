@@ -1,8 +1,5 @@
-import {
-  getChatsLimit,
-  getStorageLimit,
-  priceIds,
-} from '@typebot.io/lib/pricing'
+import { getChatsLimit, getStorageLimit } from '@typebot.io/lib/pricing'
+import { priceIds } from '@typebot.io/lib/api/pricing'
 
 export const parseSubscriptionItems = (
   plan: 'STARTER' | 'PRO',

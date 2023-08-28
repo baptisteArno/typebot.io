@@ -21,7 +21,8 @@ RUN pnpm install
 COPY --from=pruner /app/out/full/ .
 COPY turbo.json turbo.json
 
-RUN pnpm turbo run build:docker --filter=${SCOPE}...
+ENV ENCRYPTION_SECRET=encryption_secret_placeholder123 DATABASE_URL=postgresql://postgres:typebot@typebot-db:5432/typebot NEXTAUTH_URL=http://localhost:3000 NEXT_PUBLIC_VIEWER_URL=http://localhost:3001
+RUN pnpm turbo run build --filter=${SCOPE}...
 
 FROM base AS runner
 WORKDIR /app
@@ -32,16 +33,15 @@ RUN apt-get -qy update \
     && apt-get autoremove -yq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-COPY ./packages/prisma ./packages/prisma
-COPY ./apps/${SCOPE}/.env.docker ./apps/${SCOPE}/.env.production
-COPY --from=builder /app/node_modules ./node_modules
+COPY ./packages/prisma/postgresql ./packages/prisma/postgresql
 COPY --from=builder /app/apps/${SCOPE}/public ./apps/${SCOPE}/public
 COPY --from=builder --chown=node:node /app/apps/${SCOPE}/.next/standalone ./
 COPY --from=builder --chown=node:node /app/apps/${SCOPE}/.next/static ./apps/${SCOPE}/.next/static
+RUN pnpm install next-runtime-env prisma
+RUN pnpm prisma generate --schema=packages/prisma/postgresql/schema.prisma;
 
-COPY scripts/inject-runtime-env.sh scripts/${SCOPE}-entrypoint.sh ./
-RUN chmod +x ./${SCOPE}-entrypoint.sh \
-    && chmod +x ./inject-runtime-env.sh
+COPY scripts/${SCOPE}-entrypoint.sh ./
+RUN chmod +x ./${SCOPE}-entrypoint.sh
 ENTRYPOINT ./${SCOPE}-entrypoint.sh
 
 EXPOSE 3000

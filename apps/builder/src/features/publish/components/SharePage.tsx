@@ -13,7 +13,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { Plan } from '@typebot.io/prisma'
-import { isDefined, getViewerUrl, isNotDefined, env } from '@typebot.io/lib'
+import { isDefined, isNotDefined } from '@typebot.io/lib'
 import { isPublicDomainAvailableQuery } from '../queries/isPublicDomainAvailableQuery'
 import { EditableUrl } from './EditableUrl'
 import { integrationsList } from './embeds/EmbedButton'
@@ -25,6 +25,7 @@ import { CustomDomainsDropdown } from '@/features/customDomains/components/Custo
 import { TypebotHeader } from '@/features/editor/components/TypebotHeader'
 import { parseDefaultPublicId } from '../helpers/parseDefaultPublicId'
 import { useI18n } from '@/locales'
+import { env } from '@typebot.io/env'
 
 export const SharePage = () => {
   const t = useI18n()
@@ -97,7 +98,7 @@ export const SharePage = () => {
             </Heading>
             {typebot && (
               <EditableUrl
-                hostname={getViewerUrl() ?? 'https://typebot.io'}
+                hostname={env.NEXT_PUBLIC_VIEWER_URL[0]}
                 pathname={publicId}
                 isValid={checkIfPublicIdIsValid}
                 onPathnameChange={handlePublicIdChange}
@@ -120,7 +121,7 @@ export const SharePage = () => {
               </HStack>
             )}
             {isNotDefined(typebot?.customDomain) &&
-            env('VERCEL_VIEWER_PROJECT_NAME') ? (
+            env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME ? (
               <>
                 {isProPlan(workspace) ? (
                   <CustomDomainsDropdown

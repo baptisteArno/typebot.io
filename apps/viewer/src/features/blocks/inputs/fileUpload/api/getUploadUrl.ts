@@ -11,6 +11,7 @@ import {
 import { byId, isDefined } from '@typebot.io/lib'
 import { z } from 'zod'
 import { generatePresignedUrl } from '@typebot.io/lib/api/storage'
+import { env } from '@typebot.io/env'
 
 export const getUploadUrl = publicProcedure
   .meta({
@@ -39,11 +40,7 @@ export const getUploadUrl = publicProcedure
     })
   )
   .query(async ({ input: { typebotId, blockId, filePath, fileType } }) => {
-    if (
-      !process.env.S3_ENDPOINT ||
-      !process.env.S3_ACCESS_KEY ||
-      !process.env.S3_SECRET_KEY
-    )
+    if (!env.S3_ENDPOINT || !env.S3_ACCESS_KEY || !env.S3_SECRET_KEY)
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message:

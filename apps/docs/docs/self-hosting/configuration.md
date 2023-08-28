@@ -1,11 +1,11 @@
 ---
-title: Builder
+sidebar_position: 2
 ---
 
-import { SponsorButton } from '../../../src/js/SponsorButton.jsx'
-import { Asterix } from '../../../src/js/Asterix.jsx'
+import { SponsorButton } from '../../src/js/SponsorButton.jsx'
+import { Asterix } from '../../src/js/Asterix.jsx'
 
-# Builder configuration
+# Configuration
 
 Parameters marked with <Asterix/> are required.
 
@@ -22,6 +22,7 @@ Parameters marked with <Asterix/> are required.
 | DEFAULT_WORKSPACE_PLAN            | FREE    | Default workspace plan on user creation or when a user creates a new workspace. Possible values are `FREE`, `STARTER`, `PRO`, `LIFETIME`, `UNLIMITED`. The default plan for admin user is `UNLIMITED`                                       |
 | DISABLE_SIGNUP                    | false   | Disable new user sign ups. Invited users are still able to sign up.                                                                                                                                                                         |
 | NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID |         | Typebot ID used for the onboarding. Onboarding page is skipped if not provided.                                                                                                                                                             |
+| DEBUG                             | false   | If enabled, the server will print valuable logs to debug config issues.                                                                                                                                                                     |
 
 ## Email (Auth, notifications)
 

@@ -1,5 +1,6 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
+import { env } from '@typebot.io/env'
 import { importTypebotInDatabase } from '@typebot.io/lib/playwright/databaseActions'
 
 const typebotId = 'cl0ibhi7s0018n21aarlmg0cm'
@@ -33,7 +34,7 @@ test('should work as expected', async ({ page }) => {
   await page.locator('input').fill('Hello there!')
   await page.locator('input').press('Enter')
   await expect(page.getByText('Cheers!')).toBeVisible()
-  await page.goto(`${process.env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
+  await page.goto(`${env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
   await expect(page.locator('text=Hello there!')).toBeVisible()
 })
 

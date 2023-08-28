@@ -1,5 +1,5 @@
 import React from 'react'
-import { getViewerUrl, isEmpty } from '@typebot.io/lib'
+import { getViewerUrl } from '@typebot.io/lib'
 
 export const ErrorPage = ({ error }: { error: Error }) => {
   return (
@@ -13,7 +13,7 @@ export const ErrorPage = ({ error }: { error: Error }) => {
         padding: '0 1rem',
       }}
     >
-      {isEmpty(getViewerUrl()) ? (
+      {!getViewerUrl() ? (
         <>
           <h1 style={{ fontWeight: 'bold', fontSize: '30px' }}>
             NEXT_PUBLIC_VIEWER_URL is missing

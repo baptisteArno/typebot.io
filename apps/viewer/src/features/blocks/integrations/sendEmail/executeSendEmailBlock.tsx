@@ -20,6 +20,7 @@ import { decrypt } from '@typebot.io/lib/api'
 import { defaultFrom, defaultTransportOptions } from './constants'
 import { ExecuteIntegrationResponse } from '@/features/chat/types'
 import { findUniqueVariableValue } from '../../../variables/findUniqueVariableValue'
+import { env } from '@typebot.io/env'
 
 export const executeSendEmailBlock = async (
   state: SessionState,
@@ -186,7 +187,7 @@ const getEmailInfo = async (
   if (credentialsId === 'default')
     return {
       host: defaultTransportOptions.host,
-      port: defaultTransportOptions.port,
+      port: defaultTransportOptions.port ?? 22,
       username: defaultTransportOptions.auth.user,
       password: defaultTransportOptions.auth.pass,
       isTlsEnabled: undefined,
@@ -226,7 +227,7 @@ const getEmailBody = async ({
   return {
     html: render(
       <DefaultBotNotificationEmail
-        resultsUrl={`${process.env.NEXTAUTH_URL}/typebots/${typebot.id}/results`}
+        resultsUrl={`${env.NEXTAUTH_URL}/typebots/${typebot.id}/results`}
         answers={omit(answers, 'submittedAt')}
       />
     ).html,

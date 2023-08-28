@@ -12,6 +12,7 @@ import {
   deleteWorkspaces,
   injectFakeResults,
 } from '@typebot.io/lib/playwright/databaseActions'
+import { env } from '@typebot.io/env'
 
 const usageWorkspaceId = createId()
 const usageTypebotId = createId()
@@ -147,7 +148,7 @@ test('plan changes should work', async ({ page }) => {
     planChangeWorkspaceId,
     [
       {
-        price: process.env.STRIPE_STARTER_MONTHLY_PRICE_ID,
+        price: env.STRIPE_STARTER_MONTHLY_PRICE_ID,
         quantity: 1,
       },
     ],

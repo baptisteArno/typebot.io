@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/self-hosting/configuration",
+      "destination": "/self-hosting/configuration"
+    },
+    {
+      "source": "/self-hosting/configuration/:path*",
+      "destination": "/self-hosting/configuration"
+    }
+  ]
+}
