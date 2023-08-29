@@ -9,6 +9,7 @@ import {
   chatReplySchema,
   sendMessageInputSchema,
 } from '@typebot.io/schemas/features/chat/schema'
+import { TRPCError } from '@trpc/server'
 
 export const sendMessage = publicProcedure
   .meta({
@@ -30,6 +31,11 @@ export const sendMessage = publicProcedure
       const session = sessionId ? await getSession(sessionId) : null
 
       if (!session) {
+        if (!startParams)
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Missing startParams',
+          })
         const {
           typebot,
           messages,
@@ -39,7 +45,7 @@ export const sendMessage = publicProcedure
           logs,
           clientSideActions,
           newSessionState,
-        } = await startSession(startParams, user?.id)
+        } = await startSession({ startParams, userId: user?.id })
 
         const allLogs = clientLogs ? [...(logs ?? []), ...clientLogs] : logs
 

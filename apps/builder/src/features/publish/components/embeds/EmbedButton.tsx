@@ -42,7 +42,7 @@ import { NextjsModal } from './modals/Nextjs/NextjsModal'
 import { WhatsAppLogo } from '@/components/logos/WhatsAppLogo'
 import { WhatsAppModal } from './modals/WhatsAppModal/WhatsAppModal'
 import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvider'
-import { getFeatureFlags } from '@/features/telemetry/posthog'
+import { isWhatsAppAvailable } from '@/features/telemetry/posthog'
 
 export type ModalProps = {
   publicId: string
@@ -84,7 +84,7 @@ export const EmbedButton = ({
 
 export const integrationsList = [
   (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => {
-    if (getFeatureFlags().includes('whatsApp'))
+    if (isWhatsAppAvailable())
       return (
         <ParentModalProvider>
           <EmbedButton

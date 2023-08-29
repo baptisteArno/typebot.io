@@ -22,7 +22,10 @@ export const saveStateToDatabase = async ({
   clientSideActions,
 }: Props) => {
   const containsSetVariableClientSideAction = clientSideActions?.some(
-    (action) => 'setVariable' in action
+    (action) =>
+      'setVariable' in action ||
+      'webhookToExecute' in action ||
+      'streamOpenAiChatCompletion' in action
   )
 
   const isCompleted = Boolean(!input && !containsSetVariableClientSideAction)

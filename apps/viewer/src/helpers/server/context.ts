@@ -21,12 +21,18 @@ const getAuthenticatedUser = async (
 }
 
 const authenticateByToken = async (
-  apiToken: string
+  token: string
 ): Promise<User | undefined> => {
   if (typeof window !== 'undefined') return
-  return (await prisma.user.findFirst({
-    where: { apiTokens: { some: { token: apiToken } } },
-  })) as User
+  const apiToken = await prisma.apiToken.findFirst({
+    where: {
+      token,
+    },
+    select: {
+      owner: true,
+    },
+  })
+  return apiToken?.owner
 }
 
 const extractBearerToken = (req: NextApiRequest) =>

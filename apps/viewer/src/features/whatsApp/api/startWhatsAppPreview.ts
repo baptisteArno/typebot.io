@@ -70,10 +70,13 @@ export const startWhatsAppPreview = publicProcedure
 
       const { newSessionState, messages, input, clientSideActions, logs } =
         await startSession({
-          isOnlyRegistering: !canSendDirectMessagesToUser,
-          typebot: typebotId,
-          isPreview: true,
-          startGroupId,
+          startParams: {
+            isOnlyRegistering: !canSendDirectMessagesToUser,
+            typebot: typebotId,
+            isPreview: true,
+            startGroupId,
+          },
+          userId: user.id,
         })
 
       if (canSendDirectMessagesToUser) {

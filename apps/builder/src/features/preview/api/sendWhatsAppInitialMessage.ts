@@ -17,6 +17,9 @@ export const sendWhatsAppInitialMessage = authenticatedProcedure
     async ({ input: { to, typebotId, startGroupId }, ctx: { user } }) => {
       const apiToken = await prisma.apiToken.findFirst({
         where: { ownerId: user.id },
+        select: {
+          token: true,
+        },
       })
       if (!apiToken)
         throw new TRPCError({

@@ -84,7 +84,10 @@ export const startWhatsAppSession = async ({
   if (credentials.phoneNumberId !== phoneNumberId) return
 
   const session = await startSession({
-    typebot: publicTypebot.typebot.publicId as string,
+    startParams: {
+      typebot: publicTypebot.typebot.publicId as string,
+    },
+    userId: undefined,
   })
 
   return {

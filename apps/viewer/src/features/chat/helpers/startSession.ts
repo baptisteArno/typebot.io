@@ -27,10 +27,15 @@ import parse, { NodeType } from 'node-html-parser'
 import { parseDynamicTheme } from './parseDynamicTheme'
 import { env } from '@typebot.io/env'
 
-export const startSession = async (
-  startParams?: StartParams,
-  userId?: string
-): Promise<ChatReply & { newSessionState: SessionState }> => {
+type Props = {
+  startParams: StartParams
+  userId: string | undefined
+}
+
+export const startSession = async ({
+  startParams,
+  userId,
+}: Props): Promise<ChatReply & { newSessionState: SessionState }> => {
   if (!startParams)
     throw new TRPCError({
       code: 'BAD_REQUEST',
