@@ -1,9 +1,9 @@
 import {
   Button,
+  ButtonProps,
   chakra,
   Menu,
   MenuButton,
-  MenuButtonProps,
   MenuItem,
   MenuList,
   Portal,
@@ -27,7 +27,7 @@ export const DropdownList = <T extends readonly any[]>({
   items,
   placeholder = '',
   ...props
-}: Props<T> & MenuButtonProps) => {
+}: Props<T> & ButtonProps) => {
   const handleMenuItemClick = (operator: T[number]) => () => {
     onItemSelect(operator)
   }

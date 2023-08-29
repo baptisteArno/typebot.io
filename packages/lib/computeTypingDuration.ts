@@ -1,9 +1,18 @@
-import type { TypingEmulation } from '@typebot.io/schemas'
+import {
+  TypingEmulation,
+  defaultSettings,
+} from '@typebot.io/schemas/features/typebot/settings'
 
-export const computeTypingDuration = (
-  bubbleContent: string,
-  typingSettings: TypingEmulation
-) => {
+type Props = {
+  bubbleContent: string
+  typingSettings?: TypingEmulation
+}
+
+export const computeTypingDuration = ({
+  bubbleContent,
+  typingSettings = defaultSettings({ isBrandingEnabled: false })
+    .typingEmulation,
+}: Props) => {
   let wordCount = bubbleContent.match(/(\w+)/g)?.length ?? 0
   if (wordCount === 0) wordCount = bubbleContent.length
   const typedWordsPerMinute = typingSettings.speed

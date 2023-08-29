@@ -74,6 +74,7 @@ export const executeChatwootBlock = (
   state: SessionState,
   block: ChatwootBlock
 ): ExecuteIntegrationResponse => {
+  if (state.whatsApp) return { outgoingEdgeId: block.outgoingEdgeId }
   const { typebot, resultId } = state.typebotsQueue[0]
   const chatwootCode =
     block.options.task === 'Close widget'

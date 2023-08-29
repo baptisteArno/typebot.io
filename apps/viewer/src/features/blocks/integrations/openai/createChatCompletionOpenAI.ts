@@ -72,7 +72,8 @@ export const createChatCompletionOpenAI = async (
   if (
     isPlaneteScale() &&
     isCredentialsV2(credentials) &&
-    newSessionState.isStreamEnabled
+    newSessionState.isStreamEnabled &&
+    !newSessionState.whatsApp
   ) {
     const assistantMessageVariableName = typebot.variables.find(
       (variable) =>

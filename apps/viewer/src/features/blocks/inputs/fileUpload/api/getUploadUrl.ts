@@ -10,7 +10,7 @@ import {
 } from '@typebot.io/schemas'
 import { byId, isDefined } from '@typebot.io/lib'
 import { z } from 'zod'
-import { generatePresignedUrl } from '@typebot.io/lib/api/storage'
+import { generatePresignedUrl } from '@typebot.io/lib/api/generatePresignedUrl'
 import { env } from '@typebot.io/env'
 
 export const getUploadUrl = publicProcedure

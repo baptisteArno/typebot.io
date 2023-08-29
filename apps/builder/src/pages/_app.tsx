@@ -20,6 +20,9 @@ import { TypebotProvider } from '@/features/editor/providers/TypebotProvider'
 import { WorkspaceProvider } from '@/features/workspace/WorkspaceProvider'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 
+import { initPostHogIfEnabled } from '@/features/telemetry/posthog'
+initPostHogIfEnabled()
+
 const { ToastContainer, toast } = createStandaloneToast(customTheme)
 
 const App = ({ Component, pageProps }: AppProps) => {
@@ -59,7 +62,7 @@ const App = ({ Component, pageProps }: AppProps) => {
               <TypebotProvider typebotId={typebotId}>
                 <WorkspaceProvider typebotId={typebotId}>
                   <Component {...pageProps} />
-                  {!pathname.endsWith('edit') && isCloudProdInstance && (
+                  {!pathname.endsWith('edit') && isCloudProdInstance() && (
                     <SupportBubble />
                   )}
                   <NewVersionPopup />

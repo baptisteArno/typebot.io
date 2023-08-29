@@ -5,6 +5,7 @@ import { variableSchema } from './variable'
 import { Typebot as TypebotPrisma } from '@typebot.io/prisma'
 import { blockSchema } from '../blocks/schemas'
 import { preprocessTypebot } from './helpers/preprocessTypebot'
+import { edgeSchema } from './edge'
 
 export const groupSchema = z.object({
   id: z.string(),
@@ -14,23 +15,6 @@ export const groupSchema = z.object({
     y: z.number(),
   }),
   blocks: z.array(blockSchema),
-})
-
-const sourceSchema = z.object({
-  groupId: z.string(),
-  blockId: z.string(),
-  itemId: z.string().optional(),
-})
-
-const targetSchema = z.object({
-  groupId: z.string(),
-  blockId: z.string().optional(),
-})
-
-export const edgeSchema = z.object({
-  id: z.string(),
-  from: sourceSchema,
-  to: targetSchema,
 })
 
 const resultsTablePreferencesSchema = z.object({
@@ -72,6 +56,7 @@ export const typebotSchema = z.preprocess(
     resultsTablePreferences: resultsTablePreferencesSchema.nullable(),
     isArchived: z.boolean(),
     isClosed: z.boolean(),
+    whatsAppPhoneNumberId: z.string().nullable(),
   }) satisfies z.ZodType<TypebotPrisma, z.ZodTypeDef, unknown>
 )
 
@@ -93,9 +78,7 @@ export const typebotCreateSchema = typebotSchema._def.schema
   .partial()
 
 export type Typebot = z.infer<typeof typebotSchema>
-export type Target = z.infer<typeof targetSchema>
-export type Source = z.infer<typeof sourceSchema>
-export type Edge = z.infer<typeof edgeSchema>
+
 export type Group = z.infer<typeof groupSchema>
 export type ResultsTablePreferences = z.infer<
   typeof resultsTablePreferencesSchema

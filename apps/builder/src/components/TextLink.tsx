@@ -26,7 +26,7 @@ export const TextLink = ({
   >
     <chakra.span textDecor="underline" display="inline-block" {...textProps}>
       {isExternal ? (
-        <HStack spacing={1}>
+        <HStack as="span" spacing={1}>
           <chakra.span noOfLines={noOfLines} maxW="100%">
             {children}
           </chakra.span>

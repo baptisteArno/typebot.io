@@ -17,8 +17,10 @@
     "@typebot.io/nextjs": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "ai": "2.1.32",
+    "@udecode/plate-common": "^21.1.5",
     "aws-sdk": "2.1415.0",
     "bot-engine": "workspace:*",
+    "chrono-node": "^2.6.4",
     "cors": "2.8.5",
     "eventsource-parser": "^1.0.0",
     "google-spreadsheet": "4.0.2",
@@ -33,6 +35,7 @@
     "qs": "6.11.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "remark-slate": "^1.8.6",
     "stripe": "12.13.0",
     "trpc-openapi": "1.2.0"
   },

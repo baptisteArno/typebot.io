@@ -4,6 +4,7 @@ import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { isWriteWorkspaceForbidden } from '@/features/workspace/helpers/isWriteWorkspaceForbidden copy'
 import got from 'got'
+import { env } from '@typebot.io/env'
 
 export const deleteCustomDomain = authenticatedProcedure
   .meta({
@@ -63,6 +64,6 @@ export const deleteCustomDomain = authenticatedProcedure
 
 const deleteDomainOnVercel = (name: string) =>
   got.delete({
-    url: `https://api.vercel.com/v9/projects/${process.env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME}/domains/${name}?teamId=${process.env.VERCEL_TEAM_ID}`,
-    headers: { Authorization: `Bearer ${process.env.VERCEL_TOKEN}` },
+    url: `https://api.vercel.com/v9/projects/${env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME}/domains/${name}?teamId=${env.VERCEL_TEAM_ID}`,
+    headers: { Authorization: `Bearer ${env.VERCEL_TOKEN}` },
   })

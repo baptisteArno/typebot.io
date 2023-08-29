@@ -21,8 +21,7 @@ test.describe('Payment input block', () => {
 
     await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure...')
-    await page.getByRole('button', { name: 'Select an account' }).click()
-    await page.click('text=Connect new')
+    await page.getByRole('button', { name: 'Add Stripe account' }).click()
     await page.fill('[placeholder="Typebot"]', 'My Stripe Account')
     await page.fill('[placeholder="sk_test_..."]', env.STRIPE_SECRET_KEY ?? '')
     await page.fill('[placeholder="sk_live_..."]', env.STRIPE_SECRET_KEY ?? '')

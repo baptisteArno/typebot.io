@@ -192,6 +192,37 @@ Used to search for images. You can create a Giphy app [here](https://unsplash.co
 | NEXT_PUBLIC_UNSPLASH_APP_NAME   |         | Unsplash App name |
 | NEXT_PUBLIC_UNSPLASH_ACCESS_KEY |         | Unsplash API key  |
 
+## WhatsApp (Preview)
+
+In order to be able to test your bot on WhatsApp from the Preview drawer, you need to set up a WhatsApp business app.
+
+<details><summary><h4>Requirements</h4></summary>
+<p>
+
+1. Make sure you have [created a WhatsApp Business Account](https://developers.facebook.com/docs/whatsapp/cloud-api/get-started#set-up-developer-assets).
+2. Go to your [System users page](https://business.facebook.com/settings/system-users) and create a new system user that has access to the related.
+
+- Token expiration: `Never`
+- Available Permissions: `whatsapp_business_messaging`, `whatsapp_business_management`
+
+3. The generated token will be used as `META_SYSTEM_USER_TOKEN` in your viewer configuration.
+4. Click on `Add assets`. Under `Apps`, look for your app, select it and check `Manage app`
+5. Go to your WhatsApp Dev Console
+
+<img src="/img/whatsapp/dev-console.png" alt="WhatsApp dev console" />
+
+6. Add your phone number by clicking on the `Add phone number` button.
+7. Select the newly created phone number in the `From` dropdown list. This will be used as `WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID` in your viewer configuration.
+8. Head over to `Quickstart > Configuration`. Edit the webhook URL to `$NEXT_PUBLIC_VIEWER_URL/api/v1/whatsapp/preview/webhook`. Set the Verify token to `$ENCRYPTION_SECRET` and click on `Verify and save`.
+9. Add the `messages` webhook field.
+
+</p></details>
+
+| Parameter                             | Default | Description                                             |
+| ------------------------------------- | ------- | ------------------------------------------------------- |
+| META_SYSTEM_USER_TOKEN                |         | The system user token used to send WhatsApp messages    |
+| WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID |         | The phone number ID from which the message will be sent |
+
 ## Others
 
 <details><summary><h3>Show</h3></summary>
@@ -273,10 +304,10 @@ These can also be added to the `viewer` environment
 <details><summary><h4>PostHog</h4></summary>
 <p>
 
-| Parameter        | Default | Description      |
-| ---------------- | ------- | ---------------- |
-| POSTHOG_API_KEY  |         | PostHog API Key  |
-| POSTHOG_API_HOST |         | PostHog API Host |
+| Parameter                    | Default                 | Description      |
+| ---------------------------- | ----------------------- | ---------------- |
+| NEXT_PUBLIC_POSTHOG_API_KEY  |                         | PostHog API Key  |
+| NEXT_PUBLIC_POSTHOG_API_HOST | https://app.posthog.com | PostHog API Host |
 
 </p></details>
 

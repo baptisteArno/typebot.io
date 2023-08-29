@@ -248,8 +248,6 @@ export const uploadFiles = async ({
   return urls
 }
 
-declare const window: any
-
 export const hasValue = (
   value: string | undefined | null
 ): value is NonNullable<string> =>

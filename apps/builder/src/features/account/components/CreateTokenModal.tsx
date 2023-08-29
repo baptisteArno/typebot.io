@@ -15,7 +15,7 @@ import {
   InputGroup,
   InputRightElement,
 } from '@chakra-ui/react'
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, useRef, useState } from 'react'
 import { createApiTokenQuery } from '../queries/createApiTokenQuery'
 import { ApiTokenFromServer } from '../types'
 
@@ -32,6 +32,7 @@ export const CreateTokenModal = ({
   onClose,
   onNewToken,
 }: Props) => {
+  const inputRef = useRef<HTMLInputElement>(null)
   const scopedT = useScopedI18n('account.apiTokens.createModal')
   const [name, setName] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -47,8 +48,9 @@ export const CreateTokenModal = ({
     }
     setIsSubmitting(false)
   }
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={inputRef}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
@@ -58,7 +60,7 @@ export const CreateTokenModal = ({
         {newTokenValue ? (
           <ModalBody as={Stack} spacing="4">
             <Text>
-              {scopedT('copyInstruction')}
+              {scopedT('copyInstruction')}{' '}
               <strong>{scopedT('securityWarning')}</strong>
             </Text>
             <InputGroup size="md">
@@ -72,6 +74,7 @@ export const CreateTokenModal = ({
           <ModalBody as="form" onSubmit={createToken}>
             <Text mb="4">{scopedT('nameInput.label')}</Text>
             <Input
+              ref={inputRef}
               placeholder={scopedT('nameInput.placeholder')}
               onChange={(e) => setName(e.target.value)}
             />

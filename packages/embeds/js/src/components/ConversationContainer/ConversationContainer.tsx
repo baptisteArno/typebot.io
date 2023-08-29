@@ -5,6 +5,7 @@ import {
   createSignal,
   createUniqueId,
   For,
+  onCleanup,
   onMount,
   Show,
 } from 'solid-js'
@@ -267,6 +268,11 @@ export const ConversationContainer = (props: Props) => {
       }
     }
   }
+
+  onCleanup(() => {
+    setStreamingMessage(undefined)
+    setFormattedMessages([])
+  })
 
   const handleSkip = () => sendMessage(undefined)
 

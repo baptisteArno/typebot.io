@@ -38,6 +38,7 @@ type UpdateTypebotPayload = Partial<
     | 'customDomain'
     | 'resultsTablePreferences'
     | 'isClosed'
+    | 'whatsAppPhoneNumberId'
   >
 >
 

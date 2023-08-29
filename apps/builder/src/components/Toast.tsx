@@ -1,4 +1,9 @@
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
   Flex,
   HStack,
   IconButton,
@@ -35,6 +40,7 @@ export const Toast = ({
   onClose,
 }: ToastProps) => {
   const bgColor = useColorModeValue('white', 'gray.800')
+  const detailsLabelColor = useColorModeValue('gray.600', 'gray.400')
 
   return (
     <Flex
@@ -56,14 +62,29 @@ export const Toast = ({
           </Stack>
 
           {details && (
-            <CodeEditor
-              isReadOnly
-              value={details.content}
-              lang={details.lang}
-              minWidth="300px"
-              maxHeight="200px"
-              maxWidth="calc(450px - 100px)"
-            />
+            <Accordion allowToggle>
+              <AccordionItem>
+                <AccordionButton
+                  justifyContent="space-between"
+                  fontSize="sm"
+                  py="1"
+                  color={detailsLabelColor}
+                >
+                  Details
+                  <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel>
+                  <CodeEditor
+                    isReadOnly
+                    value={details.content}
+                    lang={details.lang}
+                    minWidth="300px"
+                    maxHeight="200px"
+                    maxWidth="calc(450px - 100px)"
+                  />
+                </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
           )}
           {(secondaryButton || primaryButton) && (
             <HStack>

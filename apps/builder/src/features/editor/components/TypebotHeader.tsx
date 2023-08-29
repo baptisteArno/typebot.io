@@ -73,7 +73,7 @@ export const TypebotHeader = () => {
   })
 
   const handleHelpClick = () => {
-    isCloudProdInstance
+    isCloudProdInstance()
       ? onOpen()
       : window.open('https://docs.typebot.io', '_blank')
   }

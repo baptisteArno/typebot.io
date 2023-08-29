@@ -121,6 +121,7 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
             defaultCredentialLabel={env.NEXT_PUBLIC_SMTP_FROM?.match(
               /<(.*)>/
             )?.pop()}
+            credentialsName="SMTP account"
           />
         )}
       </Stack>

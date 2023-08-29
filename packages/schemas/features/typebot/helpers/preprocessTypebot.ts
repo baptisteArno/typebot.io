@@ -1,5 +1,6 @@
 import { Block } from '../../blocks'
-import { Group, edgeSchema } from '../typebot'
+import { edgeSchema } from '../edge'
+import type { Group } from '../typebot'
 
 export const preprocessTypebot = (typebot: any) => {
   if (!typebot || typebot.version === '5') return typebot

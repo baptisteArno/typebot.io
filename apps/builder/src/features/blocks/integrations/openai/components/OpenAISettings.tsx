@@ -53,6 +53,7 @@ export const OpenAISettings = ({ options, onOptionsChange }: Props) => {
           currentCredentialsId={options?.credentialsId}
           onCredentialsSelect={updateCredentialsId}
           onCreateNewClick={onOpen}
+          credentialsName="OpenAI account"
         />
       )}
       <OpenAICredentialsModal

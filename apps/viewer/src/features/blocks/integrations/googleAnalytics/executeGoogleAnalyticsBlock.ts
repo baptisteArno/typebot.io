@@ -7,7 +7,8 @@ export const executeGoogleAnalyticsBlock = (
   block: GoogleAnalyticsBlock
 ): ExecuteIntegrationResponse => {
   const { typebot, resultId } = state.typebotsQueue[0]
-  if (!resultId) return { outgoingEdgeId: block.outgoingEdgeId }
+  if (!resultId || state.whatsApp)
+    return { outgoingEdgeId: block.outgoingEdgeId }
   const googleAnalytics = deepParseVariables(typebot.variables, {
     guessCorrectTypes: true,
     removeEmptyStrings: true,

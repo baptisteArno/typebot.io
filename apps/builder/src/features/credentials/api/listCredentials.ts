@@ -7,6 +7,7 @@ import { openAICredentialsSchema } from '@typebot.io/schemas/features/blocks/int
 import { smtpCredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/sendEmail'
 import { z } from 'zod'
 import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
+import { whatsAppCredentialsSchema } from '@typebot.io/schemas/features/whatsapp'
 
 export const listCredentials = authenticatedProcedure
   .meta({
@@ -24,7 +25,8 @@ export const listCredentials = authenticatedProcedure
       type: stripeCredentialsSchema.shape.type
         .or(smtpCredentialsSchema.shape.type)
         .or(googleSheetsCredentialsSchema.shape.type)
-        .or(openAICredentialsSchema.shape.type),
+        .or(openAICredentialsSchema.shape.type)
+        .or(whatsAppCredentialsSchema.shape.type),
     })
   )
   .output(

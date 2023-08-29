@@ -1,4 +1,16 @@
-import { parsePhoneNumber } from 'libphonenumber-js'
+import {
+  CountryCode,
+  findPhoneNumbersInText,
+  isSupportedCountry,
+} from 'libphonenumber-js'
 
-export const formatPhoneNumber = (phoneNumber: string) =>
-  parsePhoneNumber(phoneNumber).formatInternational().replaceAll(' ', '')
+export const formatPhoneNumber = (
+  phoneNumber: string,
+  defaultCountryCode?: string
+) =>
+  findPhoneNumbersInText(
+    phoneNumber,
+    defaultCountryCode && isSupportedCountry(defaultCountryCode)
+      ? (defaultCountryCode as CountryCode)
+      : undefined
+  ).at(0)?.number.number

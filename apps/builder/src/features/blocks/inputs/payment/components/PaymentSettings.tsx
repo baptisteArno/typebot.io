@@ -120,6 +120,7 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
             currentCredentialsId={options.credentialsId}
             onCredentialsSelect={updateCredentials}
             onCreateNewClick={onOpen}
+            credentialsName="Stripe account"
           />
         )}
       </Stack>

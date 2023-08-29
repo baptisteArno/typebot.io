@@ -1,9 +1,15 @@
 import { GlobeIcon, CodeIcon } from '@/components/icons'
+import { WhatsAppLogo } from '@/components/logos/WhatsAppLogo'
 
 export const runtimes = [
   {
     name: 'Web',
     icon: <GlobeIcon />,
   },
-  { name: 'API', icon: <CodeIcon />, status: 'beta' },
+  {
+    name: 'WhatsApp',
+    icon: <WhatsAppLogo />,
+    status: 'beta',
+  },
+  { name: 'API', icon: <CodeIcon /> },
 ] as const

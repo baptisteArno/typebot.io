@@ -41,7 +41,7 @@ export const parseReactBotProps = ({ typebot, apiHost }: BotProps) => {
   return `${typebotLine} ${apiHostLine}`
 }
 
-export const typebotImportCode = isCloudProdInstance
+export const typebotImportCode = isCloudProdInstance()
   ? `import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0.1/dist/web.js'`
   : `import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@${packageJson.version}/dist/web.js'`
 
@@ -64,6 +64,6 @@ export const parseApiHost = (
 export const parseApiHostValue = (
   customDomain: Typebot['customDomain'] | undefined
 ) => {
-  if (isCloudProdInstance) return
+  if (isCloudProdInstance()) return
   return parseApiHost(customDomain)
 }

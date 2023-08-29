@@ -115,6 +115,7 @@ export const GoogleSheetsSettings = ({
           currentCredentialsId={options?.credentialsId}
           onCredentialsSelect={handleCredentialsIdChange}
           onCreateNewClick={handleCreateNewClick}
+          credentialsName="Sheets account"
         />
       )}
       <GoogleSheetConnectModal

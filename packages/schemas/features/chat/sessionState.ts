@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { answerSchema } from '../answer'
 import { resultSchema } from '../result'
 import { typebotInSessionStateSchema, dynamicThemeSchema } from './shared'
+import { settingsSchema } from '../typebot/settings'
 
 const answerInSessionStateSchema = answerSchema.pick({
   content: true,
@@ -64,6 +65,16 @@ const sessionStateSchemaV2 = z.object({
     })
     .optional(),
   isStreamEnabled: z.boolean().optional(),
+  whatsApp: z
+    .object({
+      contact: z.object({
+        name: z.string(),
+        phoneNumber: z.string(),
+      }),
+      credentialsId: z.string().optional(),
+    })
+    .optional(),
+  typingEmulation: settingsSchema.shape.typingEmulation.optional(),
 })
 
 export type SessionState = z.infer<typeof sessionStateSchemaV2>
