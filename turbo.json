@@ -15,7 +15,13 @@
     },
     "build": {
       "dependsOn": ["^build", "@typebot.io/prisma#db:generate"],
-      "outputs": [".next/**", "dist/**", "build/**"],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "dist/**",
+        "build/**",
+        "public/__ENV.js"
+      ],
       "outputMode": "new-only",
       "dotEnv": [".env"]
     },
