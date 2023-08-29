@@ -1,3 +1,3 @@
 export * from './utils'
-export * from './storage'
+export * from './generatePresignedUrl'
 export * from './encryption'

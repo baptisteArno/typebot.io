@@ -1,11 +1,17 @@
 import { env } from '@typebot.io/env'
 import { Client } from 'minio'
 
-export const deleteFilesFromBucket = async ({
-  urls,
-}: {
-  urls: string[]
-}): Promise<void> => {
+type Props = {
+  fileName: string
+  file: Buffer
+  mimeType: string
+}
+
+export const uploadFileToBucket = async ({
+  fileName,
+  file,
+  mimeType,
+}: Props): Promise<string> => {
   if (!env.S3_ENDPOINT || !env.S3_ACCESS_KEY || !env.S3_SECRET_KEY)
     throw new Error(
       'S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY'
@@ -20,12 +26,11 @@ export const deleteFilesFromBucket = async ({
     region: env.S3_REGION,
   })
 
-  const bucket = env.S3_BUCKET ?? 'typebot'
+  await minioClient.putObject(env.S3_BUCKET, fileName, file, {
+    'Content-Type': mimeType,
+  })
 
-  return minioClient.removeObjects(
-    bucket,
-    urls
-      .filter((url) => url.includes(env.S3_ENDPOINT as string))
-      .map((url) => url.split(`/${bucket}/`)[1])
-  )
+  return `http${env.S3_SSL ? 's' : ''}://${env.S3_ENDPOINT}${
+    env.S3_PORT ? `:${env.S3_PORT}` : ''
+  }/${env.S3_BUCKET}/${fileName}`
 }

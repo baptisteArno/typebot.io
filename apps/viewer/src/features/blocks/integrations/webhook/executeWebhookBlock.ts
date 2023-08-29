@@ -58,7 +58,7 @@ export const executeWebhookBlock = async (
     })
     return { outgoingEdgeId: block.outgoingEdgeId, logs }
   }
-  if (block.options.isExecutedOnClient)
+  if (block.options.isExecutedOnClient && !state.whatsApp)
     return {
       outgoingEdgeId: block.outgoingEdgeId,
       clientSideActions: [

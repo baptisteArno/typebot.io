@@ -18,8 +18,18 @@ import { PreviewDrawerBody } from './PreviewDrawerBody'
 import { useDrag } from '@use-gesture/react'
 import { ResizeHandle } from './ResizeHandle'
 
+const preferredRuntimeKey = 'preferredRuntime'
+
+const getDefaultRuntime = (typebotId?: string) => {
+  if (!typebotId) return runtimes[0]
+  const preferredRuntime = localStorage.getItem(preferredRuntimeKey)
+  return (
+    runtimes.find((runtime) => runtime.name === preferredRuntime) ?? runtimes[0]
+  )
+}
+
 export const PreviewDrawer = () => {
-  const { save, isSavingLoading } = useTypebot()
+  const { typebot, save, isSavingLoading } = useTypebot()
   const { setRightPanel } = useEditor()
   const { setPreviewingBlock } = useGraph()
   const [width, setWidth] = useState(500)
@@ -27,7 +37,7 @@ export const PreviewDrawer = () => {
   const [restartKey, setRestartKey] = useState(0)
   const [selectedRuntime, setSelectedRuntime] = useState<
     (typeof runtimes)[number]
-  >(runtimes[0])
+  >(getDefaultRuntime(typebot?.id))
 
   const handleRestartClick = async () => {
     await save()
@@ -47,6 +57,13 @@ export const PreviewDrawer = () => {
       from: () => [-width, 0],
     }
   )
+
+  const setPreviewRuntimeAndSaveIntoLocalStorage = (
+    runtime: (typeof runtimes)[number]
+  ) => {
+    setSelectedRuntime(runtime)
+    localStorage.setItem(preferredRuntimeKey, runtime.name)
+  }
 
   return (
     <Flex
@@ -78,7 +95,7 @@ export const PreviewDrawer = () => {
           <HStack>
             <RuntimeMenu
               selectedRuntime={selectedRuntime}
-              onSelectRuntime={(runtime) => setSelectedRuntime(runtime)}
+              onSelectRuntime={setPreviewRuntimeAndSaveIntoLocalStorage}
             />
             {selectedRuntime.name === 'Web' ? (
               <Button

@@ -8,6 +8,7 @@ import { useToast } from '@/hooks/useToast'
 import { updateUserQuery } from './queries/updateUserQuery'
 import { useDebouncedCallback } from 'use-debounce'
 import { env } from '@typebot.io/env'
+import { identifyUser } from '../telemetry/posthog'
 
 export const userContext = createContext<{
   user?: User
@@ -37,7 +38,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     )
     const parsedUser = session.user as User
     setUser(parsedUser)
-    if (parsedUser?.id) setSentryUser({ id: parsedUser.id })
+
+    if (parsedUser?.id) {
+      setSentryUser({ id: parsedUser.id })
+      identifyUser(parsedUser.id)
+    }
   }, [session, user])
 
   useEffect(() => {

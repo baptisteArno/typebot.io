@@ -99,6 +99,10 @@ Interested in self-hosting Typebot on your server? Take a look at the [self-host
 
 You are awesome, lets build great software together. Head over to the [Contribute guidelines](https://github.com/baptisteArno/typebot.io/blob/main/CONTRIBUTING.md) to get started. 💪
 
+## Run the project locally
+
+Follow the [Get started](https://github.com/baptisteArno/typebot.io/blob/main/CONTRIBUTING.md#get-started) section of the Contributing guide.
+
 ### Top contributors
 
 <a href="https://github.com/baptistearno/typebot.io/graphs/contributors">

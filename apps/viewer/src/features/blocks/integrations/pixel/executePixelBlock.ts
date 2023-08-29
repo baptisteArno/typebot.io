@@ -7,7 +7,12 @@ export const executePixelBlock = (
   block: PixelBlock
 ): ExecuteIntegrationResponse => {
   const { typebot, resultId } = state.typebotsQueue[0]
-  if (!resultId || !block.options.pixelId || !block.options.eventType)
+  if (
+    !resultId ||
+    !block.options.pixelId ||
+    !block.options.eventType ||
+    state.whatsApp
+  )
     return { outgoingEdgeId: block.outgoingEdgeId }
   const pixel = deepParseVariables(typebot.variables, {
     guessCorrectTypes: true,

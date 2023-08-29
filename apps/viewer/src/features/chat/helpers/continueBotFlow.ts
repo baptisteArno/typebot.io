@@ -1,8 +1,6 @@
 import { TRPCError } from '@trpc/server'
 import {
   AnswerInSessionState,
-  Block,
-  BlockType,
   BubbleBlockType,
   ChatReply,
   InputBlock,
@@ -16,11 +14,10 @@ import {
   invalidEmailDefaultRetryMessage,
 } from '@typebot.io/schemas'
 import { isInputBlock, byId } from '@typebot.io/lib'
-import { executeGroup } from './executeGroup'
+import { executeGroup, parseInput } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
 import { validateEmail } from '@/features/blocks/inputs/email/validateEmail'
 import { formatPhoneNumber } from '@/features/blocks/inputs/phone/formatPhoneNumber'
-import { validatePhoneNumber } from '@/features/blocks/inputs/phone/validatePhoneNumber'
 import { validateUrl } from '@/features/blocks/inputs/url/validateUrl'
 import { updateVariables } from '@/features/variables/updateVariables'
 import { parseVariables } from '@/features/variables/parseVariables'
@@ -28,6 +25,13 @@ import { OpenAIBlock } from '@typebot.io/schemas/features/blocks/integrations/op
 import { resumeChatCompletion } from '@/features/blocks/integrations/openai/resumeChatCompletion'
 import { resumeWebhookExecution } from '@/features/blocks/integrations/webhook/resumeWebhookExecution'
 import { upsertAnswer } from '../queries/upsertAnswer'
+import { startBotFlow } from './startBotFlow'
+import { parseButtonsReply } from '@/features/blocks/inputs/buttons/parseButtonsReply'
+import { ParsedReply } from '../types'
+import { validateNumber } from '@/features/blocks/inputs/number/validateNumber'
+import { parseDateReply } from '@/features/blocks/inputs/date/parseDateReply'
+import { validateRatingReply } from '@/features/blocks/inputs/rating/validateRatingReply'
+import { parsePictureChoicesReply } from '@/features/blocks/inputs/pictureChoice/parsePictureChoicesReply'
 
 export const continueBotFlow =
   (state: SessionState) =>
@@ -45,11 +49,7 @@ export const continueBotFlow =
 
     const block = blockIndex >= 0 ? group?.blocks[blockIndex ?? 0] : null
 
-    if (!block || !group)
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'Current block not found',
-      })
+    if (!block || !group) return startBotFlow(state)
 
     if (block.type === LogicBlockType.SET_VARIABLE) {
       const existingVariable = state.typebotsQueue[0].typebot.variables.find(
@@ -89,15 +89,15 @@ export const continueBotFlow =
     let formattedReply: string | undefined
 
     if (isInputBlock(block)) {
-      if (reply && !isReplyValid(reply, block))
-        return { ...parseRetryMessage(block), newSessionState }
+      const parseResult = parseReply(newSessionState)(reply, block)
 
-      formattedReply = formatReply(reply, block.type)
+      if (parseResult.status === 'fail')
+        return {
+          ...(await parseRetryMessage(newSessionState)(block)),
+          newSessionState,
+        }
 
-      if (!formattedReply && !canSkip(block.type)) {
-        return { ...parseRetryMessage(block), newSessionState }
-      }
-
+      formattedReply = 'reply' in parseResult ? parseResult.reply : undefined
       const nextEdgeId = getOutgoingEdgeId(newSessionState)(
         block,
         formattedReply
@@ -188,26 +188,27 @@ const saveVariableValueIfAny =
     return newSessionState
   }
 
-const parseRetryMessage = (
-  block: InputBlock
-): Pick<ChatReply, 'messages' | 'input'> => {
-  const retryMessage =
-    'retryMessageContent' in block.options && block.options.retryMessageContent
-      ? block.options.retryMessageContent
-      : parseDefaultRetryMessage(block)
-  return {
-    messages: [
-      {
-        id: block.id,
-        type: BubbleBlockType.TEXT,
-        content: {
-          richText: [{ type: 'p', children: [{ text: retryMessage }] }],
+const parseRetryMessage =
+  (state: SessionState) =>
+  async (block: InputBlock): Promise<Pick<ChatReply, 'messages' | 'input'>> => {
+    const retryMessage =
+      'retryMessageContent' in block.options &&
+      block.options.retryMessageContent
+        ? block.options.retryMessageContent
+        : parseDefaultRetryMessage(block)
+    return {
+      messages: [
+        {
+          id: block.id,
+          type: BubbleBlockType.TEXT,
+          content: {
+            richText: [{ type: 'p', children: [{ text: retryMessage }] }],
+          },
         },
-      },
-    ],
-    input: block,
+      ],
+      input: await parseInput(state)(block),
+    }
   }
-}
 
 const parseDefaultRetryMessage = (block: InputBlock): string => {
   switch (block.type) {
@@ -306,34 +307,61 @@ const getOutgoingEdgeId =
     return block.outgoingEdgeId
   }
 
-export const formatReply = (
-  inputValue: string | undefined,
-  blockType: BlockType
-): string | undefined => {
-  if (!inputValue) return
-  switch (blockType) {
-    case InputBlockType.PHONE:
-      return formatPhoneNumber(inputValue)
+const parseReply =
+  (state: SessionState) =>
+  (inputValue: string | undefined, block: InputBlock): ParsedReply => {
+    if (!inputValue) return { status: 'fail' }
+    switch (block.type) {
+      case InputBlockType.EMAIL: {
+        const isValid = validateEmail(inputValue)
+        if (!isValid) return { status: 'fail' }
+        return { status: 'success', reply: inputValue }
+      }
+      case InputBlockType.PHONE: {
+        const formattedPhone = formatPhoneNumber(
+          inputValue,
+          block.options.defaultCountryCode
+        )
+        if (!formattedPhone) return { status: 'fail' }
+        return { status: 'success', reply: formattedPhone }
+      }
+      case InputBlockType.URL: {
+        const isValid = validateUrl(inputValue)
+        if (!isValid) return { status: 'fail' }
+        return { status: 'success', reply: inputValue }
+      }
+      case InputBlockType.CHOICE: {
+        return parseButtonsReply(state)(inputValue, block)
+      }
+      case InputBlockType.NUMBER: {
+        const isValid = validateNumber(inputValue)
+        if (!isValid) return { status: 'fail' }
+        return { status: 'success', reply: inputValue }
+      }
+      case InputBlockType.DATE: {
+        return parseDateReply(inputValue, block)
+      }
+      case InputBlockType.FILE: {
+        if (!inputValue) return { status: 'skip' }
+        return { status: 'success', reply: inputValue }
+      }
+      case InputBlockType.PAYMENT: {
+        if (inputValue === 'fail') return { status: 'fail' }
+        return { status: 'success', reply: inputValue }
+      }
+      case InputBlockType.RATING: {
+        const isValid = validateRatingReply(inputValue, block)
+        if (!isValid) return { status: 'fail' }
+        return { status: 'success', reply: inputValue }
+      }
+      case InputBlockType.PICTURE_CHOICE: {
+        return parsePictureChoicesReply(state)(inputValue, block)
+      }
+      case InputBlockType.TEXT: {
+        return { status: 'success', reply: inputValue }
+      }
+    }
   }
-  return inputValue
-}
-
-export const isReplyValid = (inputValue: string, block: Block): boolean => {
-  switch (block.type) {
-    case InputBlockType.EMAIL:
-      return validateEmail(inputValue)
-    case InputBlockType.PHONE:
-      return validatePhoneNumber(inputValue)
-    case InputBlockType.URL:
-      return validateUrl(inputValue)
-    case InputBlockType.PAYMENT:
-      return inputValue !== 'fail'
-  }
-  return true
-}
-
-export const canSkip = (inputType: InputBlockType) =>
-  inputType === InputBlockType.FILE
 
 export const safeJsonParse = (value: string): unknown => {
   try {

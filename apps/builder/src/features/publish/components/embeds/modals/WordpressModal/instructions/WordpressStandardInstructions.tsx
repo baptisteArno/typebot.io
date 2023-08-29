@@ -76,7 +76,7 @@ const parseWordpressShortcode = ({
   publicId: string
 }) => {
   return `[typebot typebot="${publicId}"${
-    isCloudProdInstance ? '' : ` host="${getViewerUrl()}"`
+    isCloudProdInstance() ? '' : ` host="${getViewerUrl()}"`
   }${width ? ` width="${width}"` : ''}${height ? ` height="${height}"` : ''}]
 `
 }

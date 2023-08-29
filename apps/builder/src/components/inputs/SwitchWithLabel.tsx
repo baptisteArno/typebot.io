@@ -1,5 +1,6 @@
 import {
   FormControl,
+  FormControlProps,
   FormLabel,
   HStack,
   Switch,
@@ -13,13 +14,15 @@ export type SwitchWithLabelProps = {
   initialValue: boolean
   moreInfoContent?: string
   onCheckChange: (isChecked: boolean) => void
-} & SwitchProps
+  justifyContent?: FormControlProps['justifyContent']
+} & Omit<SwitchProps, 'value' | 'justifyContent'>
 
 export const SwitchWithLabel = ({
   label,
   initialValue,
   moreInfoContent,
   onCheckChange,
+  justifyContent = 'space-between',
   ...switchProps
 }: SwitchWithLabelProps) => {
   const [isChecked, setIsChecked] = useState(initialValue)
@@ -28,8 +31,9 @@ export const SwitchWithLabel = ({
     setIsChecked(!isChecked)
     onCheckChange(!isChecked)
   }
+
   return (
-    <FormControl as={HStack} justifyContent="space-between">
+    <FormControl as={HStack} justifyContent={justifyContent}>
       <FormLabel mb="0">
         {label}
         {moreInfoContent && (

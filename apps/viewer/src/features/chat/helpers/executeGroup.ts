@@ -193,7 +193,7 @@ const parseBubbleBlock =
     }
   }
 
-const parseInput =
+export const parseInput =
   (state: SessionState) =>
   async (block: InputBlock): Promise<ChatReply['input']> => {
     switch (block.type) {

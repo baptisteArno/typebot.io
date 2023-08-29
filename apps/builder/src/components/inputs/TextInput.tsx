@@ -35,7 +35,13 @@ export type TextInputProps = {
   isDisabled?: boolean
 } & Pick<
   InputProps,
-  'autoComplete' | 'onFocus' | 'onKeyUp' | 'type' | 'autoFocus' | 'size'
+  | 'autoComplete'
+  | 'onFocus'
+  | 'onKeyUp'
+  | 'type'
+  | 'autoFocus'
+  | 'size'
+  | 'maxWidth'
 >
 
 export const TextInput = forwardRef(function TextInput(
@@ -56,6 +62,7 @@ export const TextInput = forwardRef(function TextInput(
     onFocus,
     onKeyUp,
     size,
+    maxWidth,
   }: TextInputProps,
   ref
 ) {
@@ -122,6 +129,7 @@ export const TextInput = forwardRef(function TextInput(
       onBlur={updateCarretPosition}
       onChange={(e) => changeValue(e.target.value)}
       size={size}
+      maxWidth={maxWidth}
     />
   )
 

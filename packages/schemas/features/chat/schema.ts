@@ -130,6 +130,12 @@ const startParamsSchema = z.object({
     .describe(
       'Set this to `true` if you intend to stream OpenAI completions on a client.'
     ),
+  isOnlyRegistering: z
+    .boolean()
+    .optional()
+    .describe(
+      'If set to `true`, it will only register the session and not start the chat. This is used for other chat platform integration as it can require a session to be registered before sending the first message.'
+    ),
 })
 
 const replyLogSchema = logSchema

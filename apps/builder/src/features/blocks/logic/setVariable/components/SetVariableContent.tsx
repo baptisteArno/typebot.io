@@ -69,5 +69,13 @@ const Expression = ({
         </Text>
       )
     }
+    case 'Contact name':
+    case 'Phone number':
+      return (
+        <Text as="span">
+          {variableName} ={' '}
+          <Tag colorScheme="purple">WhatsApp.{options.type}</Tag>
+        </Text>
+      )
   }
 }

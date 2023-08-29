@@ -1,9 +1,9 @@
 import {
   Button,
+  ButtonProps,
   IconButton,
   Menu,
   MenuButton,
-  MenuButtonProps,
   MenuItem,
   MenuList,
   Stack,
@@ -16,13 +16,14 @@ import { useToast } from '../../../hooks/useToast'
 import { Credentials } from '@typebot.io/schemas'
 import { trpc } from '@/lib/trpc'
 
-type Props = Omit<MenuButtonProps, 'type'> & {
+type Props = Omit<ButtonProps, 'type'> & {
   type: Credentials['type']
   workspaceId: string
   currentCredentialsId?: string
   onCredentialsSelect: (credentialId?: string) => void
   onCreateNewClick: () => void
   defaultCredentialLabel?: string
+  credentialsName: string
 }
 
 export const CredentialsDropdown = ({
@@ -32,6 +33,7 @@ export const CredentialsDropdown = ({
   onCredentialsSelect,
   onCreateNewClick,
   defaultCredentialLabel,
+  credentialsName,
   ...props
 }: Props) => {
   const router = useRouter()
@@ -59,7 +61,8 @@ export const CredentialsDropdown = ({
     },
   })
 
-  const defaultCredentialsLabel = defaultCredentialLabel ?? `Select an account`
+  const defaultCredentialsLabel =
+    defaultCredentialLabel ?? `Select ${credentialsName}`
 
   const currentCredential = data?.credentials.find(
     (c) => c.id === currentCredentialsId
@@ -97,6 +100,19 @@ export const CredentialsDropdown = ({
       mutate({ workspaceId, credentialsId })
     }
 
+  if (data?.credentials.length === 0 && !defaultCredentialLabel) {
+    return (
+      <Button
+        colorScheme="gray"
+        textAlign="left"
+        leftIcon={<PlusIcon />}
+        onClick={onCreateNewClick}
+        {...props}
+      >
+        Add {credentialsName}
+      </Button>
+    )
+  }
   return (
     <Menu isLazy>
       <MenuButton
@@ -107,7 +123,11 @@ export const CredentialsDropdown = ({
         textAlign="left"
         {...props}
       >
-        <Text noOfLines={1} overflowY="visible" h="20px">
+        <Text
+          noOfLines={1}
+          overflowY="visible"
+          h={props.size === 'sm' ? '18px' : '20px'}
+        >
           {currentCredential ? currentCredential.name : defaultCredentialsLabel}
         </Text>
       </MenuButton>

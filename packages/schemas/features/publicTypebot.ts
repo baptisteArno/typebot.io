@@ -1,13 +1,13 @@
 import { PublicTypebot as PrismaPublicTypebot } from '@typebot.io/prisma'
 import {
   groupSchema,
-  edgeSchema,
   variableSchema,
   themeSchema,
   settingsSchema,
 } from './typebot'
 import { z } from 'zod'
 import { preprocessTypebot } from './typebot/helpers/preprocessTypebot'
+import { edgeSchema } from './typebot/edge'
 
 export const publicTypebotSchema = z.preprocess(
   preprocessTypebot,

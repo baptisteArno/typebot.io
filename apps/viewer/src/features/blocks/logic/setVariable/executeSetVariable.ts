@@ -15,12 +15,11 @@ export const executeSetVariable = (
     return {
       outgoingEdgeId: block.outgoingEdgeId,
     }
-  const expressionToEvaluate = getExpressionToEvaluate(
-    state.typebotsQueue[0].resultId
-  )(block.options)
+  const expressionToEvaluate = getExpressionToEvaluate(state)(block.options)
   const isCustomValue = !block.options.type || block.options.type === 'Custom'
   if (
     expressionToEvaluate &&
+    !state.whatsApp &&
     ((isCustomValue && block.options.isExecutedOnClient) ||
       block.options.type === 'Moment of the day')
   ) {
@@ -73,9 +72,13 @@ const evaluateSetVariableExpression =
   }
 
 const getExpressionToEvaluate =
-  (resultId: string | undefined) =>
+  (state: SessionState) =>
   (options: SetVariableBlock['options']): string | null => {
     switch (options.type) {
+      case 'Contact name':
+        return state.whatsApp?.contact.name ?? ''
+      case 'Phone number':
+        return state.whatsApp?.contact.phoneNumber ?? ''
       case 'Now':
       case 'Today':
         return 'new Date().toISOString()'
@@ -89,7 +92,10 @@ const getExpressionToEvaluate =
         return 'Math.random().toString(36).substring(2, 15)'
       }
       case 'User ID': {
-        return resultId ?? 'Math.random().toString(36).substring(2, 15)'
+        return (
+          state.typebotsQueue[0].resultId ??
+          'Math.random().toString(36).substring(2, 15)'
+        )
       }
       case 'Map item with same index': {
         return `const itemIndex = ${options.mapListItemParams?.baseListVariableId}.indexOf(${options.mapListItemParams?.baseItemVariableId})

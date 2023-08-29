@@ -30,6 +30,9 @@ export const deleteCredentials = authenticatedProcedure
       const workspace = await prisma.workspace.findFirst({
         where: {
           id: workspaceId,
+          members: {
+            some: { userId: user.id, role: { in: ['ADMIN', 'MEMBER'] } },
+          },
         },
         select: { id: true, members: true },
       })

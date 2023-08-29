@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { whatsAppSettingsSchema } from '../whatsapp'
 
 export const rememberUserStorages = ['session', 'local'] as const
 
@@ -35,6 +36,7 @@ export const settingsSchema = z.object({
   general: generalSettings,
   typingEmulation: typingEmulation,
   metadata: metadataSchema,
+  whatsApp: whatsAppSettingsSchema.optional(),
 })
 
 export const defaultSettings = ({

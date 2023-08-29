@@ -24,9 +24,9 @@ export const generatePresignedUrl = ({
     accessKeyId: env.S3_ACCESS_KEY,
     secretAccessKey: env.S3_SECRET_KEY,
     region: env.S3_REGION,
-    sslEnabled: env.S3_SSL,
+    sslEnabled: env.S3_SSL ?? true,
   })
-  const protocol = env.S3_SSL ? 'https' : 'http'
+  const protocol = env.S3_SSL ?? true ? 'https' : 'http'
   const s3 = new S3({
     endpoint: new Endpoint(
       `${protocol}://${env.S3_ENDPOINT}${env.S3_PORT ? `:${env.S3_PORT}` : ''}`

@@ -258,8 +258,17 @@ const telemetryEnv = {
 }
 
 const posthogEnv = {
-  server: {
-    POSTHOG_API_KEY: z.string().min(1).optional(),
+  client: {
+    NEXT_PUBLIC_POSTHOG_KEY: z.string().min(1).optional(),
+    NEXT_PUBLIC_POSTHOG_HOST: z
+      .string()
+      .min(1)
+      .optional()
+      .default('https://app.posthog.com'),
+  },
+  runtimeEnv: {
+    NEXT_PUBLIC_POSTHOG_KEY: getRuntimeVariable('NEXT_PUBLIC_POSTHOG_KEY'),
+    NEXT_PUBLIC_POSTHOG_HOST: getRuntimeVariable('NEXT_PUBLIC_POSTHOG_HOST'),
   },
 }
 
@@ -281,7 +290,6 @@ export const env = createEnv({
     ...customOAuthEnv.server,
     ...sentryEnv.server,
     ...telemetryEnv.server,
-    ...posthogEnv.server,
   },
   client: {
     ...baseEnv.client,
@@ -292,6 +300,7 @@ export const env = createEnv({
     ...vercelEnv.client,
     ...unsplashEnv.client,
     ...sentryEnv.client,
+    ...posthogEnv.client,
   },
   experimental__runtimeEnv: {
     ...baseEnv.runtimeEnv,
@@ -302,10 +311,11 @@ export const env = createEnv({
     ...vercelEnv.runtimeEnv,
     ...unsplashEnv.runtimeEnv,
     ...sentryEnv.runtimeEnv,
+    ...posthogEnv.runtimeEnv,
   },
-  // onInvalidAccess: (variable: string) => {
-  //   throw new Error(
-  //     `❌ Attempted to access a server-side environment variable on the client: ${variable}`
-  //   )
-  // },
+  onInvalidAccess: (variable: string) => {
+    throw new Error(
+      `❌ Attempted to access a server-side environment variable on the client: ${variable}`
+    )
+  },
 })

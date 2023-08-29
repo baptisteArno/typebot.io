@@ -10,6 +10,7 @@ import React from 'react'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { Select } from '@/components/inputs/Select'
+import { WhatsAppLogo } from '@/components/logos/WhatsAppLogo'
 
 type Props = {
   options: SetVariableOptions
@@ -47,7 +48,14 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
         </Text>
         <Select
           selectedItem={options.type ?? 'Custom'}
-          items={setVarTypes}
+          items={setVarTypes.map((type) => ({
+            label: type,
+            value: type,
+            icon:
+              type === 'Contact name' || type === 'Phone number' ? (
+                <WhatsAppLogo />
+              ) : undefined,
+          }))}
           onSelect={updateValueType}
         />
         <SetVariableValue options={options} onOptionsChange={onOptionsChange} />
@@ -150,6 +158,8 @@ const SetVariableValue = ({
         </Alert>
       )
     }
+    case 'Contact name':
+    case 'Phone number':
     case 'Random ID':
     case 'Now':
     case 'Today':

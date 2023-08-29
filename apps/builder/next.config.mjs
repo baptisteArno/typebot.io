@@ -40,6 +40,18 @@ const nextConfig = {
       },
     ]
   },
+  async rewrites() {
+    return process.env.NEXT_PUBLIC_POSTHOG_KEY
+      ? [
+          {
+            source: '/ingest/:path*',
+            destination:
+              (process.env.NEXT_PUBLIC_POSTHOG_HOST ??
+                'https://app.posthog.com') + '/:path*',
+          },
+        ]
+      : []
+  },
 }
 
 const sentryWebpackPluginOptions = {
