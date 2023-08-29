@@ -1,5 +1,5 @@
 import React from 'react'
-import { getViewerUrl } from '@typebot.io/lib'
+import { getViewerUrl } from '@typebot.io/lib/getViewerUrl'
 
 export const ErrorPage = ({ error }: { error: Error }) => {
   return (

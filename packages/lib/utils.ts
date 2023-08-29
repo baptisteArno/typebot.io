@@ -19,7 +19,6 @@ import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/enu
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/enums'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/enums'
 import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
-import { env } from '@typebot.io/env'
 
 export const sendRequest = async <ResponseData>(
   params:
@@ -256,9 +255,6 @@ export const hasValue = (
   value !== '' &&
   value !== 'undefined' &&
   value !== 'null'
-
-export const getViewerUrl = () =>
-  env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ?? env.NEXT_PUBLIC_VIEWER_URL[0]
 
 export const parseNumberWithCommas = (num: number) =>
   num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')

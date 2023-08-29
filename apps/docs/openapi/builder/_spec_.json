@@ -14,6 +14,9 @@
       "post": {
         "operationId": "processTelemetryEvent",
         "description": "Only used for the cloud version of Typebot. It's the way it processes telemetry events and inject it to thrid-party services.",
+        "tags": [
+          "Telemetry"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -1985,7 +1988,9 @@
                                                   "Tomorrow",
                                                   "Random ID",
                                                   "Moment of the day",
-                                                  "Map item with same index"
+                                                  "Map item with same index",
+                                                  "Phone number",
+                                                  "Contact name"
                                                 ]
                                               },
                                               "mapListItemParams": {
@@ -2562,8 +2567,7 @@
                                                       "required": [
                                                         "id"
                                                       ],
-                                                      "additionalProperties": false,
-                                                      "description": "Deprecated. Use `filter` instead."
+                                                      "additionalProperties": false
                                                     }
                                                   }
                                                 },
@@ -2609,8 +2613,7 @@
                                                       "required": [
                                                         "id"
                                                       ],
-                                                      "additionalProperties": false,
-                                                      "description": "Deprecated. Use `filter` instead."
+                                                      "additionalProperties": false
                                                     }
                                                   },
                                                   "referenceCell": {
@@ -6270,7 +6273,9 @@
                                               "Tomorrow",
                                               "Random ID",
                                               "Moment of the day",
-                                              "Map item with same index"
+                                              "Map item with same index",
+                                              "Phone number",
+                                              "Contact name"
                                             ]
                                           },
                                           "mapListItemParams": {
@@ -6847,8 +6852,7 @@
                                                   "required": [
                                                     "id"
                                                   ],
-                                                  "additionalProperties": false,
-                                                  "description": "Deprecated. Use `filter` instead."
+                                                  "additionalProperties": false
                                                 }
                                               }
                                             },
@@ -6894,8 +6898,7 @@
                                                   "required": [
                                                     "id"
                                                   ],
-                                                  "additionalProperties": false,
-                                                  "description": "Deprecated. Use `filter` instead."
+                                                  "additionalProperties": false
                                                 }
                                               },
                                               "referenceCell": {
@@ -8429,6 +8432,67 @@
                               },
                               "googleTagManagerId": {
                                 "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "whatsApp": {
+                            "type": "object",
+                            "properties": {
+                              "credentialsId": {
+                                "type": "string"
+                              },
+                              "startCondition": {
+                                "type": "object",
+                                "properties": {
+                                  "logicalOperator": {
+                                    "type": "string",
+                                    "enum": [
+                                      "OR",
+                                      "AND"
+                                    ]
+                                  },
+                                  "comparisons": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "id": {
+                                          "type": "string"
+                                        },
+                                        "comparisonOperator": {
+                                          "type": "string",
+                                          "enum": [
+                                            "Equal to",
+                                            "Not equal",
+                                            "Contains",
+                                            "Does not contain",
+                                            "Greater than",
+                                            "Less than",
+                                            "Is set",
+                                            "Is empty",
+                                            "Starts with",
+                                            "Ends with",
+                                            "Matches regex",
+                                            "Does not match regex"
+                                          ]
+                                        },
+                                        "value": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "id"
+                                      ],
+                                      "additionalProperties": false
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "logicalOperator",
+                                  "comparisons"
+                                ],
+                                "additionalProperties": false
                               }
                             },
                             "additionalProperties": false
@@ -10129,7 +10193,9 @@
                                                 "Tomorrow",
                                                 "Random ID",
                                                 "Moment of the day",
-                                                "Map item with same index"
+                                                "Map item with same index",
+                                                "Phone number",
+                                                "Contact name"
                                               ]
                                             },
                                             "mapListItemParams": {
@@ -10706,8 +10772,7 @@
                                                     "required": [
                                                       "id"
                                                     ],
-                                                    "additionalProperties": false,
-                                                    "description": "Deprecated. Use `filter` instead."
+                                                    "additionalProperties": false
                                                   }
                                                 }
                                               },
@@ -10753,8 +10818,7 @@
                                                     "required": [
                                                       "id"
                                                     ],
-                                                    "additionalProperties": false,
-                                                    "description": "Deprecated. Use `filter` instead."
+                                                    "additionalProperties": false
                                                   }
                                                 },
                                                 "referenceCell": {
@@ -12380,6 +12444,67 @@
                                 }
                               },
                               "additionalProperties": false
+                            },
+                            "whatsApp": {
+                              "type": "object",
+                              "properties": {
+                                "credentialsId": {
+                                  "type": "string"
+                                },
+                                "startCondition": {
+                                  "type": "object",
+                                  "properties": {
+                                    "logicalOperator": {
+                                      "type": "string",
+                                      "enum": [
+                                        "OR",
+                                        "AND"
+                                      ]
+                                    },
+                                    "comparisons": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "comparisonOperator": {
+                                            "type": "string",
+                                            "enum": [
+                                              "Equal to",
+                                              "Not equal",
+                                              "Contains",
+                                              "Does not contain",
+                                              "Greater than",
+                                              "Less than",
+                                              "Is set",
+                                              "Is empty",
+                                              "Starts with",
+                                              "Ends with",
+                                              "Matches regex",
+                                              "Does not match regex"
+                                            ]
+                                          },
+                                          "value": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "id"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "logicalOperator",
+                                    "comparisons"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "additionalProperties": false
                             }
                           },
                           "required": [
@@ -12451,6 +12576,10 @@
                         },
                         "isClosed": {
                           "type": "boolean"
+                        },
+                        "whatsAppPhoneNumberId": {
+                          "type": "string",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -12472,7 +12601,8 @@
                         "workspaceId",
                         "resultsTablePreferences",
                         "isArchived",
-                        "isClosed"
+                        "isClosed",
+                        "whatsAppPhoneNumberId"
                       ],
                       "additionalProperties": false
                     }
@@ -14123,7 +14253,9 @@
                                               "Tomorrow",
                                               "Random ID",
                                               "Moment of the day",
-                                              "Map item with same index"
+                                              "Map item with same index",
+                                              "Phone number",
+                                              "Contact name"
                                             ]
                                           },
                                           "mapListItemParams": {
@@ -14700,8 +14832,7 @@
                                                   "required": [
                                                     "id"
                                                   ],
-                                                  "additionalProperties": false,
-                                                  "description": "Deprecated. Use `filter` instead."
+                                                  "additionalProperties": false
                                                 }
                                               }
                                             },
@@ -14747,8 +14878,7 @@
                                                   "required": [
                                                     "id"
                                                   ],
-                                                  "additionalProperties": false,
-                                                  "description": "Deprecated. Use `filter` instead."
+                                                  "additionalProperties": false
                                                 }
                                               },
                                               "referenceCell": {
@@ -16285,6 +16415,67 @@
                               }
                             },
                             "additionalProperties": false
+                          },
+                          "whatsApp": {
+                            "type": "object",
+                            "properties": {
+                              "credentialsId": {
+                                "type": "string"
+                              },
+                              "startCondition": {
+                                "type": "object",
+                                "properties": {
+                                  "logicalOperator": {
+                                    "type": "string",
+                                    "enum": [
+                                      "OR",
+                                      "AND"
+                                    ]
+                                  },
+                                  "comparisons": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "id": {
+                                          "type": "string"
+                                        },
+                                        "comparisonOperator": {
+                                          "type": "string",
+                                          "enum": [
+                                            "Equal to",
+                                            "Not equal",
+                                            "Contains",
+                                            "Does not contain",
+                                            "Greater than",
+                                            "Less than",
+                                            "Is set",
+                                            "Is empty",
+                                            "Starts with",
+                                            "Ends with",
+                                            "Matches regex",
+                                            "Does not match regex"
+                                          ]
+                                        },
+                                        "value": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "id"
+                                      ],
+                                      "additionalProperties": false
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "logicalOperator",
+                                  "comparisons"
+                                ],
+                                "additionalProperties": false
+                              }
+                            },
+                            "additionalProperties": false
                           }
                         },
                         "required": [
@@ -16423,6 +16614,10 @@
                       },
                       "isClosed": {
                         "type": "boolean"
+                      },
+                      "whatsAppPhoneNumberId": {
+                        "type": "string",
+                        "nullable": true
                       }
                     },
                     "additionalProperties": false
@@ -17998,7 +18193,9 @@
                                                 "Tomorrow",
                                                 "Random ID",
                                                 "Moment of the day",
-                                                "Map item with same index"
+                                                "Map item with same index",
+                                                "Phone number",
+                                                "Contact name"
                                               ]
                                             },
                                             "mapListItemParams": {
@@ -18575,8 +18772,7 @@
                                                     "required": [
                                                       "id"
                                                     ],
-                                                    "additionalProperties": false,
-                                                    "description": "Deprecated. Use `filter` instead."
+                                                    "additionalProperties": false
                                                   }
                                                 }
                                               },
@@ -18622,8 +18818,7 @@
                                                     "required": [
                                                       "id"
                                                     ],
-                                                    "additionalProperties": false,
-                                                    "description": "Deprecated. Use `filter` instead."
+                                                    "additionalProperties": false
                                                   }
                                                 },
                                                 "referenceCell": {
@@ -20249,6 +20444,67 @@
                                 }
                               },
                               "additionalProperties": false
+                            },
+                            "whatsApp": {
+                              "type": "object",
+                              "properties": {
+                                "credentialsId": {
+                                  "type": "string"
+                                },
+                                "startCondition": {
+                                  "type": "object",
+                                  "properties": {
+                                    "logicalOperator": {
+                                      "type": "string",
+                                      "enum": [
+                                        "OR",
+                                        "AND"
+                                      ]
+                                    },
+                                    "comparisons": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "comparisonOperator": {
+                                            "type": "string",
+                                            "enum": [
+                                              "Equal to",
+                                              "Not equal",
+                                              "Contains",
+                                              "Does not contain",
+                                              "Greater than",
+                                              "Less than",
+                                              "Is set",
+                                              "Is empty",
+                                              "Starts with",
+                                              "Ends with",
+                                              "Matches regex",
+                                              "Does not match regex"
+                                            ]
+                                          },
+                                          "value": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "id"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "logicalOperator",
+                                    "comparisons"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "additionalProperties": false
                             }
                           },
                           "required": [
@@ -20320,6 +20576,10 @@
                         },
                         "isClosed": {
                           "type": "boolean"
+                        },
+                        "whatsAppPhoneNumberId": {
+                          "type": "string",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -20341,7 +20601,8 @@
                         "workspaceId",
                         "resultsTablePreferences",
                         "isArchived",
-                        "isClosed"
+                        "isClosed",
+                        "whatsAppPhoneNumberId"
                       ],
                       "additionalProperties": false
                     }
@@ -21927,7 +22188,9 @@
                                                 "Tomorrow",
                                                 "Random ID",
                                                 "Moment of the day",
-                                                "Map item with same index"
+                                                "Map item with same index",
+                                                "Phone number",
+                                                "Contact name"
                                               ]
                                             },
                                             "mapListItemParams": {
@@ -22504,8 +22767,7 @@
                                                     "required": [
                                                       "id"
                                                     ],
-                                                    "additionalProperties": false,
-                                                    "description": "Deprecated. Use `filter` instead."
+                                                    "additionalProperties": false
                                                   }
                                                 }
                                               },
@@ -22551,8 +22813,7 @@
                                                     "required": [
                                                       "id"
                                                     ],
-                                                    "additionalProperties": false,
-                                                    "description": "Deprecated. Use `filter` instead."
+                                                    "additionalProperties": false
                                                   }
                                                 },
                                                 "referenceCell": {
@@ -24178,6 +24439,67 @@
                                 }
                               },
                               "additionalProperties": false
+                            },
+                            "whatsApp": {
+                              "type": "object",
+                              "properties": {
+                                "credentialsId": {
+                                  "type": "string"
+                                },
+                                "startCondition": {
+                                  "type": "object",
+                                  "properties": {
+                                    "logicalOperator": {
+                                      "type": "string",
+                                      "enum": [
+                                        "OR",
+                                        "AND"
+                                      ]
+                                    },
+                                    "comparisons": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "comparisonOperator": {
+                                            "type": "string",
+                                            "enum": [
+                                              "Equal to",
+                                              "Not equal",
+                                              "Contains",
+                                              "Does not contain",
+                                              "Greater than",
+                                              "Less than",
+                                              "Is set",
+                                              "Is empty",
+                                              "Starts with",
+                                              "Ends with",
+                                              "Matches regex",
+                                              "Does not match regex"
+                                            ]
+                                          },
+                                          "value": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "id"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "logicalOperator",
+                                    "comparisons"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "additionalProperties": false
                             }
                           },
                           "required": [
@@ -24249,6 +24571,10 @@
                         },
                         "isClosed": {
                           "type": "boolean"
+                        },
+                        "whatsAppPhoneNumberId": {
+                          "type": "string",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -24270,7 +24596,8 @@
                         "workspaceId",
                         "resultsTablePreferences",
                         "isArchived",
-                        "isClosed"
+                        "isClosed",
+                        "whatsAppPhoneNumberId"
                       ],
                       "additionalProperties": false
                     },
@@ -25919,7 +26246,9 @@
                                                 "Tomorrow",
                                                 "Random ID",
                                                 "Moment of the day",
-                                                "Map item with same index"
+                                                "Map item with same index",
+                                                "Phone number",
+                                                "Contact name"
                                               ]
                                             },
                                             "mapListItemParams": {
@@ -26496,8 +26825,7 @@
                                                     "required": [
                                                       "id"
                                                     ],
-                                                    "additionalProperties": false,
-                                                    "description": "Deprecated. Use `filter` instead."
+                                                    "additionalProperties": false
                                                   }
                                                 }
                                               },
@@ -26543,8 +26871,7 @@
                                                     "required": [
                                                       "id"
                                                     ],
-                                                    "additionalProperties": false,
-                                                    "description": "Deprecated. Use `filter` instead."
+                                                    "additionalProperties": false
                                                   }
                                                 },
                                                 "referenceCell": {
@@ -28163,6 +28490,67 @@
                                 },
                                 "googleTagManagerId": {
                                   "type": "string"
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "whatsApp": {
+                              "type": "object",
+                              "properties": {
+                                "credentialsId": {
+                                  "type": "string"
+                                },
+                                "startCondition": {
+                                  "type": "object",
+                                  "properties": {
+                                    "logicalOperator": {
+                                      "type": "string",
+                                      "enum": [
+                                        "OR",
+                                        "AND"
+                                      ]
+                                    },
+                                    "comparisons": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "comparisonOperator": {
+                                            "type": "string",
+                                            "enum": [
+                                              "Equal to",
+                                              "Not equal",
+                                              "Contains",
+                                              "Does not contain",
+                                              "Greater than",
+                                              "Less than",
+                                              "Is set",
+                                              "Is empty",
+                                              "Starts with",
+                                              "Ends with",
+                                              "Matches regex",
+                                              "Does not match regex"
+                                            ]
+                                          },
+                                          "value": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "id"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "logicalOperator",
+                                    "comparisons"
+                                  ],
+                                  "additionalProperties": false
                                 }
                               },
                               "additionalProperties": false
@@ -29968,6 +30356,46 @@
                           "name"
                         ],
                         "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "systemUserAccessToken": {
+                                "type": "string"
+                              },
+                              "phoneNumberId": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "systemUserAccessToken",
+                              "phoneNumberId"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "whatsApp"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "data",
+                          "type",
+                          "workspaceId",
+                          "name"
+                        ],
+                        "additionalProperties": false
                       }
                     ]
                   }
@@ -30037,15 +30465,25 @@
                     {
                       "anyOf": [
                         {
-                          "type": "string",
-                          "enum": [
-                            "stripe"
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "stripe"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "smtp"
+                              ]
+                            }
                           ]
                         },
                         {
                           "type": "string",
                           "enum": [
-                            "smtp"
+                            "google sheets"
                           ]
                         }
                       ]
@@ -30053,7 +30491,7 @@
                     {
                       "type": "string",
                       "enum": [
-                        "google sheets"
+                        "openai"
                       ]
                     }
                   ]
@@ -30061,7 +30499,7 @@
                 {
                   "type": "string",
                   "enum": [
-                    "openai"
+                    "whatsApp"
                   ]
                 }
               ]
@@ -31336,6 +31774,220 @@
                   },
                   "required": [
                     "customDomains"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/whatsapp/phoneNumber": {
+      "get": {
+        "operationId": "whatsApp-getPhoneNumber",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "credentialsId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "systemToken",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "phoneNumberId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/whatsapp/systemToken": {
+      "get": {
+        "operationId": "whatsApp-getSystemTokenInfo",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "credentialsId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "appId": {
+                      "type": "string"
+                    },
+                    "appName": {
+                      "type": "string"
+                    },
+                    "expiresAt": {
+                      "type": "number"
+                    },
+                    "scopes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "appId",
+                    "appName",
+                    "expiresAt",
+                    "scopes"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/whatsapp/phoneNumber/{phoneNumberDisplayName}/available": {
+      "get": {
+        "operationId": "whatsApp-verifyIfPhoneNumberAvailable",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "phoneNumberDisplayName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "enum": [
+                        "available",
+                        "taken"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/verficiationTokens": {
+      "post": {
+        "operationId": "whatsApp-generateVerificationToken",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "verificationToken": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "verificationToken"
                   ],
                   "additionalProperties": false
                 }

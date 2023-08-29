@@ -12,7 +12,7 @@ import {
 import { useState } from 'react'
 import { StandardSettings } from '../../../settings/StandardSettings'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
-import { getViewerUrl } from '@typebot.io/lib'
+import { getViewerUrl } from '@typebot.io/lib/getViewerUrl'
 
 type Props = {
   publicId: string

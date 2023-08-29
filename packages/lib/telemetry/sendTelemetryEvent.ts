@@ -1,6 +1,5 @@
 import got from 'got'
 import { TelemetryEvent } from '@typebot.io/schemas/features/telemetry'
-import { isNotEmpty } from '../utils'
 import { env } from '@typebot.io/env'
 
 export const sendTelemetryEvents = async (events: TelemetryEvent[]) => {

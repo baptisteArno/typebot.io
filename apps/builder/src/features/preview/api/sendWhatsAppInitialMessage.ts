@@ -1,7 +1,7 @@
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { z } from 'zod'
 import got, { HTTPError } from 'got'
-import { getViewerUrl } from '@typebot.io/lib'
+import { getViewerUrl } from '@typebot.io/lib/getViewerUrl'
 import prisma from '@/lib/prisma'
 import { TRPCError } from '@trpc/server'
 

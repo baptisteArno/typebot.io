@@ -14,7 +14,8 @@ import {
 } from '@typebot.io/schemas'
 import { Log } from '@typebot.io/prisma'
 import { LiteBadge } from './LiteBadge'
-import { getViewerUrl, isEmpty, isNotEmpty } from '@typebot.io/lib'
+import { isNotEmpty } from '@typebot.io/lib'
+import { getViewerUrl } from '@typebot.io/lib/getViewerUrl'
 
 export type TypebotViewerProps = {
   typebot: Omit<PublicTypebot, 'updatedAt' | 'createdAt'>

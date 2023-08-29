@@ -1,5 +1,6 @@
 import { Variable, WebhookResponse } from '@typebot.io/schemas'
-import { getViewerUrl, sendRequest } from '@typebot.io/lib'
+import { sendRequest } from '@typebot.io/lib'
+import { getViewerUrl } from '@typebot.io/lib/getViewerUrl'
 
 export const executeWebhook = (
   typebotId: string,

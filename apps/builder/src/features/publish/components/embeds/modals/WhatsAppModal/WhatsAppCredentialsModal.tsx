@@ -40,7 +40,8 @@ import {
   InputRightElement,
 } from '@chakra-ui/react'
 import { env } from '@typebot.io/env'
-import { getViewerUrl, isEmpty, isNotEmpty } from '@typebot.io/lib/utils'
+import { isEmpty, isNotEmpty } from '@typebot.io/lib/utils'
+import { getViewerUrl } from '@typebot.io/lib/getViewerUrl'
 import React, { useState } from 'react'
 
 const steps = [

@@ -18,7 +18,7 @@ import {
   Text,
   Stack,
 } from '@chakra-ui/react'
-import { getViewerUrl } from '@typebot.io/lib'
+import { getViewerUrl } from '@typebot.io/lib/getViewerUrl'
 import { ModalProps } from '../EmbedButton'
 
 export const NotionModal = ({
