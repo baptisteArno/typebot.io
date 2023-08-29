@@ -5,7 +5,7 @@ import prisma from '@/lib/prisma'
 import { decrypt } from '@typebot.io/lib/api'
 import { TRPCError } from '@trpc/server'
 import { WhatsAppCredentials } from '@typebot.io/schemas/features/whatsapp'
-import { parsePhoneNumber } from 'libphonenumber-js'
+import { formatNumber } from 'libphonenumber-js'
 
 const inputSchema = z.object({
   credentialsId: z.string().optional(),
@@ -48,9 +48,10 @@ export const getPhoneNumber = authenticatedProcedure
 
     return {
       id: credentials.phoneNumberId,
-      name: parsePhoneNumber(display_phone_number)
-        .formatInternational()
-        .replace(/\s/g, ''),
+      name: formatNumber(display_phone_number, 'INTERNATIONAL').replace(
+        /\s/g,
+        ''
+      ),
     }
   })
 
