@@ -1,4 +1,4 @@
-import { sendRequest } from './utils'
+import { sendRequest } from '../utils'
 
 type UploadFileProps = {
   basePath?: string

@@ -20,7 +20,7 @@ export const deleteFilesFromBucket = async ({
     region: env.S3_REGION,
   })
 
-  const bucket = env.S3_BUCKET ?? 'typebot'
+  const bucket = env.S3_BUCKET
 
   return minioClient.removeObjects(
     bucket,

@@ -1,6 +1,6 @@
 import got from 'got'
 import { TRPCError } from '@trpc/server'
-import { uploadFileToBucket } from '@typebot.io/lib/api/uploadFileToBucket'
+import { uploadFileToBucket } from '@typebot.io/lib/s3/uploadFileToBucket'
 
 type Props = {
   mediaId: string

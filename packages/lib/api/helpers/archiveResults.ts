@@ -1,7 +1,6 @@
-import { env } from '@typebot.io/env'
 import { Prisma, PrismaClient } from '@typebot.io/prisma'
 import { InputBlockType, Typebot } from '@typebot.io/schemas'
-import { Client } from 'minio'
+import { deleteFilesFromBucket } from '../../s3/deleteFilesFromBucket'
 
 type ArchiveResultsProps = {
   typebot: Pick<Typebot, 'groups'>
@@ -90,32 +89,3 @@ export const archiveResults =
 
     return { success: true }
   }
-
-const deleteFilesFromBucket = async ({
-  urls,
-}: {
-  urls: string[]
-}): Promise<void> => {
-  if (!env.S3_ENDPOINT || !env.S3_ACCESS_KEY || !env.S3_SECRET_KEY)
-    throw new Error(
-      'S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY'
-    )
-
-  const minioClient = new Client({
-    endPoint: env.S3_ENDPOINT,
-    port: env.S3_PORT,
-    useSSL: env.S3_SSL ?? true,
-    accessKey: env.S3_ACCESS_KEY,
-    secretKey: env.S3_SECRET_KEY,
-    region: env.S3_REGION,
-  })
-
-  const bucket = env.S3_BUCKET ?? 'typebot'
-
-  return minioClient.removeObjects(
-    bucket,
-    urls
-      .filter((url) => url.includes(env.S3_ENDPOINT as string))
-      .map((url) => url.split(`/${bucket}/`)[1])
-  )
-}

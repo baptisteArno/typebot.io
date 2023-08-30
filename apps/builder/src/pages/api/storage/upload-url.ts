@@ -2,10 +2,10 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import {
   badRequest,
-  generatePresignedUrl,
   methodNotAllowed,
   notAuthenticated,
 } from '@typebot.io/lib/api'
+import { generatePresignedUrl } from '@typebot.io/lib/s3/generatePresignedUrl'
 import { env } from '@typebot.io/env'
 
 const handler = async (
