@@ -14,7 +14,7 @@ export const deleteFilesFromBucket = async ({
   const minioClient = new Client({
     endPoint: env.S3_ENDPOINT,
     port: env.S3_PORT,
-    useSSL: env.S3_SSL ?? true,
+    useSSL: env.S3_SSL,
     accessKey: env.S3_ACCESS_KEY,
     secretKey: env.S3_SECRET_KEY,
     region: env.S3_REGION,

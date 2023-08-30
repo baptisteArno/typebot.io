@@ -4,7 +4,7 @@ import { useTypebot } from '@/providers/TypebotProvider'
 import { InputSubmitContent } from '@/types'
 import { defaultFileInputOptions, FileInputBlock } from '@typebot.io/schemas'
 import React, { ChangeEvent, FormEvent, useState, DragEvent } from 'react'
-import { uploadFiles } from '@typebot.io/lib'
+import { uploadFiles } from '@typebot.io/lib/uploadFiles'
 
 type Props = {
   block: FileInputBlock

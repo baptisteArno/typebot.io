@@ -90,11 +90,17 @@ export const TypebotProvider = ({
     { typebotId: typebotId as string },
     {
       enabled: isDefined(typebotId),
-      onError: (error) =>
+      onError: (error) => {
+        if (error.data?.httpStatus === 404) {
+          showToast({ status: 'info', description: "Couldn't find typebot" })
+          push('/typebots')
+          return
+        }
         showToast({
           title: 'Error while fetching typebot. Refresh the page.',
           description: error.message,
-        }),
+        })
+      },
     }
   )
 
@@ -103,11 +109,13 @@ export const TypebotProvider = ({
       { typebotId: typebotId as string },
       {
         enabled: isDefined(typebotId),
-        onError: (error) =>
+        onError: (error) => {
+          if (error.data?.httpStatus === 404) return
           showToast({
             title: 'Error while fetching published typebot',
             description: error.message,
-          }),
+          })
+        },
       }
     )
 
@@ -134,12 +142,7 @@ export const TypebotProvider = ({
 
   useEffect(() => {
     if (!typebot && isDefined(localTypebot)) setLocalTypebot(undefined)
-    if (isFetchingTypebot) return
-    if (!typebot) {
-      showToast({ status: 'info', description: "Couldn't find typebot" })
-      push('/typebots')
-      return
-    }
+    if (isFetchingTypebot || !typebot) return
     if (
       typebot.id !== localTypebot?.id ||
       new Date(typebot.updatedAt).getTime() >

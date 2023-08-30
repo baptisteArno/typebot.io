@@ -1,7 +1,7 @@
 import { useToast } from '@/hooks/useToast'
 import { Button, ButtonProps, chakra } from '@chakra-ui/react'
 import { ChangeEvent, useState } from 'react'
-import { uploadFiles } from '@typebot.io/lib'
+import { uploadFiles } from '@typebot.io/lib/uploadFiles'
 import { compressFile } from '@/helpers/compressFile'
 
 type UploadButtonProps = {

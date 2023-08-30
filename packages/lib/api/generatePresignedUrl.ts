@@ -1,46 +1,32 @@
 import { env } from '@typebot.io/env'
-import { config, Endpoint, S3 } from 'aws-sdk'
+import { Client } from 'minio'
 
 type GeneratePresignedUrlProps = {
   filePath: string
   fileType?: string
-  sizeLimit?: number
 }
 
-const tenMB = 10 * 1024 * 1024
 const tenMinutes = 10 * 60
 
-export const generatePresignedUrl = ({
+export const generatePresignedUrl = async ({
   filePath,
   fileType,
-  sizeLimit = tenMB,
-}: GeneratePresignedUrlProps): S3.PresignedPost => {
+}: GeneratePresignedUrlProps): Promise<string> => {
   if (!env.S3_ENDPOINT || !env.S3_ACCESS_KEY || !env.S3_SECRET_KEY)
     throw new Error(
       'S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY'
     )
 
-  config.update({
-    accessKeyId: env.S3_ACCESS_KEY,
-    secretAccessKey: env.S3_SECRET_KEY,
+  const minioClient = new Client({
+    endPoint: env.S3_ENDPOINT,
+    port: env.S3_PORT,
+    useSSL: env.S3_SSL,
+    accessKey: env.S3_ACCESS_KEY,
+    secretKey: env.S3_SECRET_KEY,
     region: env.S3_REGION,
-    sslEnabled: env.S3_SSL ?? true,
-  })
-  const protocol = env.S3_SSL ?? true ? 'https' : 'http'
-  const s3 = new S3({
-    endpoint: new Endpoint(
-      `${protocol}://${env.S3_ENDPOINT}${env.S3_PORT ? `:${env.S3_PORT}` : ''}`
-    ),
   })
 
-  const presignedUrl = s3.createPresignedPost({
-    Bucket: env.S3_BUCKET ?? 'typebot',
-    Fields: {
-      key: filePath,
-      'Content-Type': fileType,
-    },
-    Expires: tenMinutes,
-    Conditions: [['content-length-range', 0, sizeLimit]],
+  return minioClient.presignedUrl('PUT', env.S3_BUCKET, filePath, tenMinutes, {
+    'Content-Type': fileType,
   })
-  return presignedUrl
 }

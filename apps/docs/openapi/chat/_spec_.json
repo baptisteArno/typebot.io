@@ -6232,17 +6232,7 @@
                   "type": "object",
                   "properties": {
                     "presignedUrl": {
-                      "type": "object",
-                      "properties": {
-                        "url": {
-                          "type": "string"
-                        },
-                        "fields": {}
-                      },
-                      "required": [
-                        "url"
-                      ],
-                      "additionalProperties": false
+                      "type": "string"
                     },
                     "hasReachedStorageLimit": {
                       "type": "boolean"

@@ -4,7 +4,7 @@ import { guessApiHost } from '@/utils/guessApiHost'
 import { FileInputBlock } from '@typebot.io/schemas'
 import { defaultFileInputOptions } from '@typebot.io/schemas/features/blocks/inputs/file'
 import { createSignal, Match, Show, Switch } from 'solid-js'
-import { uploadFiles } from '@typebot.io/lib'
+import { uploadFiles } from '@typebot.io/lib/uploadFiles'
 import { Button } from '@/components/Button'
 import { Spinner } from '@/components/Spinner'
 

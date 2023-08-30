@@ -25,7 +25,7 @@ const handler = async (
     const filePath = req.query.filePath as string | undefined
     const fileType = req.query.fileType as string | undefined
     if (!filePath || !fileType) return badRequest(res)
-    const presignedUrl = generatePresignedUrl({ fileType, filePath })
+    const presignedUrl = await generatePresignedUrl({ fileType, filePath })
 
     return res.status(200).send({ presignedUrl })
   }

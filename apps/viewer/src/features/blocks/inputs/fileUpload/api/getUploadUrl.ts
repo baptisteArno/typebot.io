@@ -32,10 +32,7 @@ export const getUploadUrl = publicProcedure
   )
   .output(
     z.object({
-      presignedUrl: z.object({
-        url: z.string(),
-        fields: z.any(),
-      }),
+      presignedUrl: z.string(),
       hasReachedStorageLimit: z.boolean(),
     })
   )
@@ -63,14 +60,9 @@ export const getUploadUrl = publicProcedure
         message: 'File upload block not found',
       })
 
-    const sizeLimit = fileUploadBlock.options.sizeLimit
-      ? Math.min(fileUploadBlock.options.sizeLimit, 500)
-      : 10
-
-    const presignedUrl = generatePresignedUrl({
+    const presignedUrl = await generatePresignedUrl({
       fileType,
       filePath,
-      sizeLimit: sizeLimit * 1024 * 1024,
     })
 
     return {

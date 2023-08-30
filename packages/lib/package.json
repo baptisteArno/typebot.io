@@ -12,14 +12,12 @@
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
     "@types/nodemailer": "6.4.8",
-    "aws-sdk": "2.1415.0",
     "next": "13.4.3",
     "nodemailer": "6.9.3",
     "typescript": "5.1.6",
     "@typebot.io/env": "workspace:*"
   },
   "peerDependencies": {
-    "aws-sdk": "2.1152.0",
     "next": "13.0.0",
     "nodemailer": "6.7.8"
   },

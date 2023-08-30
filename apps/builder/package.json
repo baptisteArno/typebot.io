@@ -52,7 +52,6 @@
     "@upstash/ratelimit": "^0.4.3",
     "@upstash/redis": "^1.22.0",
     "@use-gesture/react": "^10.2.27",
-    "aws-sdk": "2.1415.0",
     "browser-image-compression": "2.0.2",
     "canvas-confetti": "1.6.0",
     "codemirror": "6.0.1",

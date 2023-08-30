@@ -18,7 +18,6 @@
     "@typebot.io/prisma": "workspace:*",
     "ai": "2.1.32",
     "@udecode/plate-common": "^21.1.5",
-    "aws-sdk": "2.1415.0",
     "bot-engine": "workspace:*",
     "chrono-node": "^2.6.4",
     "cors": "2.8.5",
