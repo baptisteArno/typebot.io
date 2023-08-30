@@ -27,7 +27,7 @@ export const getUploadUrl = publicProcedure
       typebotId: z.string(),
       blockId: z.string(),
       filePath: z.string(),
-      fileType: z.string(),
+      fileType: z.string().optional(),
     })
   )
   .output(
