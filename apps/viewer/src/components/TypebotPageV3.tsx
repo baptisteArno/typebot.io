@@ -1,7 +1,8 @@
 import { Standard } from '@typebot.io/nextjs'
-import { BackgroundType, Typebot } from '@typebot.io/schemas'
 import { useRouter } from 'next/router'
 import { SEO } from './Seo'
+import { Typebot } from '@typebot.io/schemas/features/typebot/typebot'
+import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/enums'
 
 export type TypebotV3PageProps = {
   url: string

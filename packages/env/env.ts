@@ -1,6 +1,10 @@
 import { createEnv } from '@t3-oss/env-nextjs'
-import { z } from 'zod'
+import { ZodError, z } from 'zod'
 import { getRuntimeVariable } from './getRuntimeVariable'
+
+declare const window: {
+  __ENV?: any
+}
 
 const boolean = z.enum(['true', 'false']).transform((value) => value === 'true')
 
@@ -312,6 +316,21 @@ export const env = createEnv({
     ...unsplashEnv.runtimeEnv,
     ...sentryEnv.runtimeEnv,
     ...posthogEnv.runtimeEnv,
+  },
+  onValidationError: (error: ZodError) => {
+    console.log(
+      '[DEBUG]',
+      "typeof window !== 'undefined'",
+      typeof window !== 'undefined'
+    )
+    if (typeof window !== 'undefined') {
+      console.log('[DEBUG]', 'window.__ENV', window.__ENV)
+    }
+    console.error(
+      '❌ Invalid environment variables:',
+      error.flatten().fieldErrors
+    )
+    throw new Error('Invalid environment variables')
   },
   onInvalidAccess: (variable: string) => {
     throw new Error(
