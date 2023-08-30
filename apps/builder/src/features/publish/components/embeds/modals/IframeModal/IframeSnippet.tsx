@@ -15,7 +15,7 @@ export const IframeSnippet = ({ widthLabel, heightLabel }: Props) => {
   const { typebot } = useTypebot()
   const src = `${getViewerUrl()}/${typebot?.publicId}`
   const code = prettier.format(
-    `<iframe src="${src}" style="border: none; width='${widthLabel}'; height='${heightLabel}'"></iframe>`,
+    `<iframe src="${src}" style="border: none; width=${widthLabel}; height=${heightLabel}"></iframe>`,
     { parser: 'html', plugins: [parserHtml] }
   )
 
