@@ -3,7 +3,7 @@ import { injectVariablesFromExistingResult } from '@/features/variables/injectVa
 import { prefillVariables } from '@/features/variables/prefillVariables'
 import { createId } from '@paralleldrive/cuid2'
 import { TRPCError } from '@trpc/server'
-import { isDefined, omit, isNotEmpty } from '@typebot.io/lib'
+import { isDefined, omit, isNotEmpty, isInputBlock } from '@typebot.io/lib'
 import {
   Variable,
   VariableWithValue,
@@ -77,7 +77,32 @@ export const startSession = async ({
           edges: typebot.edges,
           variables: startVariables,
         },
-        answers: [],
+        answers: result
+          ? result.answers.map((answer) => {
+              const block = typebot.groups
+                .flatMap((group) => group.blocks)
+                .find((block) => block.id === answer.blockId)
+              if (!block || !isInputBlock(block))
+                return {
+                  key: 'unknown',
+                  value: answer.content,
+                }
+              const key =
+                (block.options.variableId
+                  ? startVariables.find(
+                      (variable) => variable.id === block.options.variableId
+                    )?.name
+                  : typebot.groups.find((group) =>
+                      group.blocks.find(
+                        (blockInGroup) => blockInGroup.id === block.id
+                      )
+                    )?.title) ?? 'unknown'
+              return {
+                key,
+                value: answer.content,
+              }
+            })
+          : [],
       },
     ],
     dynamicTheme: parseDynamicThemeInState(typebot.theme),
