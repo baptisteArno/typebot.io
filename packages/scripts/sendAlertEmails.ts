@@ -133,6 +133,7 @@ const sendAlertIfLimitReached = async (
       !workspace.chatsLimitFirstEmailSentAt
     ) {
       const to = workspace.members
+        .filter((member) => member.role === WorkspaceRole.ADMIN)
         .map((member) => member.user.email)
         .filter(isDefined)
       console.log(
@@ -160,6 +161,7 @@ const sendAlertIfLimitReached = async (
       !workspace.chatsLimitSecondEmailSentAt
     ) {
       const to = workspace.members
+        .filter((member) => member.role === WorkspaceRole.ADMIN)
         .map((member) => member.user.email)
         .filter(isDefined)
       try {
