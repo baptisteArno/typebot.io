@@ -23,7 +23,7 @@ import { areTypebotsEqual } from '@/features/publish/helpers/areTypebotsEqual'
 import { isPublished as isPublishedHelper } from '@/features/publish/helpers/isPublished'
 import { convertPublicTypebotToTypebot } from '@/features/publish/helpers/convertPublicTypebotToTypebot'
 import { trpc } from '@/lib/trpc'
-import { useScopedI18n } from '@/locales'
+import { useScopedI18n, I18nFunction } from '@/locales'
 
 const autoSaveTimeout = 10000
 
@@ -42,8 +42,6 @@ type UpdateTypebotPayload = Partial<
     | 'whatsAppPhoneNumberId'
   >
 >
-
-export type I18nFunction = (key: string) => string;
 
 export type SetTypebot = (
   newPresent: Typebot | ((current: Typebot) => Typebot)
@@ -96,12 +94,12 @@ export const TypebotProvider = ({
       enabled: isDefined(typebotId),
       onError: (error) => {
         if (error.data?.httpStatus === 404) {
-          showToast({ status: 'info', description: "Couldn't find typebot" })
+          showToast({ status: 'info', description: scopedT('messages.getTypebotError.description') })
           push('/typebots')
           return
         }
         showToast({
-          title: 'Error while fetching typebot. Refresh the page.',
+          title: scopedT('messages.getTypebotError.title'),
           description: error.message,
         })
       },
@@ -116,7 +114,7 @@ export const TypebotProvider = ({
         onError: (error) => {
           if (error.data?.httpStatus === 404) return
           showToast({
-            title: 'Error while fetching published typebot',
+            title: scopedT('messages.publishedTypebotError.title'),
             description: error.message,
           })
         },
@@ -127,7 +125,7 @@ export const TypebotProvider = ({
     trpc.typebot.updateTypebot.useMutation({
       onError: (error) =>
         showToast({
-          title: 'Error while updating typebot',
+          title: scopedT('messages.updateTypebotError.title'),
           description: error.message,
         }),
       onSuccess: () => {

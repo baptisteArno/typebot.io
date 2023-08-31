@@ -44,6 +44,7 @@ import { setMultipleRefs } from '@/helpers/setMultipleRefs'
 import { TargetEndpoint } from '../../endpoints/TargetEndpoint'
 import { SettingsModal } from './SettingsModal'
 import { TElement } from '@udecode/plate-common'
+import { useScopedI18n, I18nFunction } from '@/locales'
 
 export const BlockNode = ({
   block,
@@ -56,6 +57,7 @@ export const BlockNode = ({
   indices: { blockIndex: number; groupIndex: number }
   onMouseDown?: (blockNodePosition: NodePosition, block: DraggableBlock) => void
 }) => {
+  const scopedT = useScopedI18n('editor.blocks')
   const bg = useColorModeValue('gray.50', 'gray.850')
   const previewingBorderColor = useColorModeValue('blue.400', 'blue.300')
   const borderColor = useColorModeValue('gray.200', 'gray.800')
@@ -237,7 +239,7 @@ export const BlockNode = ({
                   mt="1"
                   data-testid={`${block.id}-icon`}
                 />
-                <BlockNodeContent block={block} indices={indices} />
+                <BlockNodeContent scopedT={scopedT as I18nFunction} block={block} indices={indices} />
                 {(hasIcomingEdge || isDefined(connectingIds)) && (
                   <TargetEndpoint
                     pos="absolute"
@@ -284,6 +286,7 @@ export const BlockNode = ({
           )}
           {typebot && isMediaBubbleBlock(block) && (
             <MediaBubblePopoverContent
+              scopedT={scopedT as I18nFunction}
               typebotId={typebot.id}
               block={block}
               onContentChange={handleContentChange}

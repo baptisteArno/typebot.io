@@ -42,27 +42,29 @@ import { ChatwootNodeBody } from '@/features/blocks/integrations/chatwoot/compon
 import { AbTestNodeBody } from '@/features/blocks/logic/abTest/components/AbTestNodeBody'
 import { PictureChoiceNode } from '@/features/blocks/inputs/pictureChoice/components/PictureChoiceNode'
 import { PixelNodeBody } from '@/features/blocks/integrations/pixel/components/PixelNodeBody'
+import { I18nFunction } from '@/locales'
 
 type Props = {
+  scopedT: I18nFunction
   block: Block | StartBlock
   indices: BlockIndices
 }
-export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
+export const BlockNodeContent = ({ scopedT, block, indices }: Props): JSX.Element => {
   switch (block.type) {
     case BubbleBlockType.TEXT: {
       return <TextBubbleContent block={block} />
     }
     case BubbleBlockType.IMAGE: {
-      return <ImageBubbleContent block={block} />
+      return <ImageBubbleContent scopedT={scopedT} block={block} />
     }
     case BubbleBlockType.VIDEO: {
-      return <VideoBubbleContent block={block} />
+      return <VideoBubbleContent scopedT={scopedT} block={block} />
     }
     case BubbleBlockType.EMBED: {
-      return <EmbedBubbleContent block={block} />
+      return <EmbedBubbleContent scopedT={scopedT} block={block} />
     }
     case BubbleBlockType.AUDIO: {
-      return <AudioBubbleNode url={block.content.url} />
+      return <AudioBubbleNode scopedT={scopedT} url={block.content.url} />
     }
     case InputBlockType.TEXT: {
       return (
@@ -199,7 +201,7 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
       return <PixelNodeBody options={block.options} />
     }
     case 'start': {
-      return <Text>Start</Text>
+      return <Text>{scopedT('start.text')}</Text>
     }
   }
 }

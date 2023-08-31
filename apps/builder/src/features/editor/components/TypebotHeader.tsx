@@ -228,7 +228,7 @@ export const TypebotHeader = () => {
           <HStack>
             <Spinner speed="0.7s" size="sm" color="gray.400" />
             <Text fontSize="sm" color="gray.400">
-              {scopedT('SavingSpinner.label')}
+              {scopedT('savingSpinner.label')}
             </Text>
           </HStack>
         )}

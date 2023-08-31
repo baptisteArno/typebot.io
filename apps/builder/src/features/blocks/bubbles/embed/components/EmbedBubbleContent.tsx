@@ -1,7 +1,13 @@
 import { Text } from '@chakra-ui/react'
 import { EmbedBubbleBlock } from '@typebot.io/schemas'
+import { I18nFunction } from '@/locales'
 
-export const EmbedBubbleContent = ({ block }: { block: EmbedBubbleBlock }) => {
-  if (!block.content?.url) return <Text color="gray.500">Click to edit...</Text>
-  return <Text>Show embed</Text>
+type Props = {
+  scopedT: I18nFunction
+  block: EmbedBubbleBlock
+}
+
+export const EmbedBubbleContent = ({ scopedT, block }: Props) => {
+  if (!block.content?.url) return <Text color="gray.500">{scopedT('bubbles.embed.node.clickToEdit.text')}</Text>
+  return <Text>{scopedT('node.show.text')}</Text>
 }

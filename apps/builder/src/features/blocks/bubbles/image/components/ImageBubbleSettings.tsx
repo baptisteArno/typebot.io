@@ -5,14 +5,17 @@ import { Stack } from '@chakra-ui/react'
 import { isDefined, isNotEmpty } from '@typebot.io/lib'
 import { ImageBubbleBlock } from '@typebot.io/schemas'
 import React, { useState } from 'react'
+import { I18nFunction } from '@/locales'
 
 type Props = {
+  scopedT: I18nFunction
   typebotId: string
   block: ImageBubbleBlock
   onContentChange: (content: ImageBubbleBlock['content']) => void
 }
 
 export const ImageBubbleSettings = ({
+  scopedT,
   typebotId,
   block,
   onContentChange,
@@ -55,7 +58,7 @@ export const ImageBubbleSettings = ({
       />
       <Stack>
         <SwitchWithLabel
-          label={'On click link'}
+          label={scopedT('bubbles.image.switchWithLabel.onClick.label')}
           initialValue={showClickLinkInput}
           onCheckChange={toggleClickLink}
         />
@@ -68,7 +71,7 @@ export const ImageBubbleSettings = ({
               defaultValue={block.content.clickLink?.url}
             />
             <TextInput
-              placeholder="Link alt text (description)"
+              placeholder={scopedT('bubbles.image.switchWithLabel.onClick.placeholder')}
               onChange={updateClickLinkAltText}
               defaultValue={block.content.clickLink?.alt}
             />
