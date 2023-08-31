@@ -2,13 +2,15 @@ import { TextInput, NumberInput } from '@/components/inputs'
 import { HStack, Stack, Text } from '@chakra-ui/react'
 import { EmbedBubbleContent } from '@typebot.io/schemas'
 import { sanitizeUrl } from '@typebot.io/lib'
+import { I18nFunction } from '@/locales'
 
 type Props = {
+  scopedT: I18nFunction
   content: EmbedBubbleContent
   onSubmit: (content: EmbedBubbleContent) => void
 }
 
-export const EmbedUploadContent = ({ content, onSubmit }: Props) => {
+export const EmbedUploadContent = ({ scopedT, content, onSubmit }: Props) => {
   const handleUrlChange = (url: string) => {
     const iframeUrl = sanitizeUrl(
       url.trim().startsWith('<iframe') ? extractUrlFromIframe(url) : url
@@ -23,12 +25,12 @@ export const EmbedUploadContent = ({ content, onSubmit }: Props) => {
     <Stack p="2" spacing={6}>
       <Stack>
         <TextInput
-          placeholder="Paste the link or code..."
+          placeholder={scopedT('bubbles.embed.worksWith.placeholder')}
           defaultValue={content?.url ?? ''}
           onChange={handleUrlChange}
         />
         <Text fontSize="sm" color="gray.400" textAlign="center">
-          Works with PDFs, iframes, websites...
+          {scopedT('bubbles.embed.worksWith.text')}
         </Text>
       </Stack>
 
@@ -38,7 +40,7 @@ export const EmbedUploadContent = ({ content, onSubmit }: Props) => {
           defaultValue={content?.height}
           onValueChange={handleHeightChange}
         />
-        <Text>px</Text>
+        <Text>{scopedT('bubbles.embed.numberInput.unit')}</Text>
       </HStack>
     </Stack>
   )

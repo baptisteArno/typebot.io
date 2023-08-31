@@ -1,16 +1,18 @@
 import { Stack, Text } from '@chakra-ui/react'
 import { VideoBubbleContent, VideoBubbleContentType } from '@typebot.io/schemas'
 import { TextInput } from '@/components/inputs'
+import { I18nFunction } from '@/locales'
 
 const vimeoRegex = /vimeo\.com\/(\d+)/
 const youtubeRegex = /youtube\.com\/(watch\?v=|shorts\/)(\w+)|youtu\.be\/(\w+)/
 
 type Props = {
+  scopedT: I18nFunction
   content?: VideoBubbleContent
   onSubmit: (content: VideoBubbleContent) => void
 }
 
-export const VideoUploadContent = ({ content, onSubmit }: Props) => {
+export const VideoUploadContent = ({ scopedT, content, onSubmit }: Props) => {
   const handleUrlChange = (url: string) => {
     const info = parseVideoUrl(url)
     return onSubmit({
@@ -22,12 +24,12 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
   return (
     <Stack p="2">
       <TextInput
-        placeholder="Paste the video link..."
+        placeholder={scopedT('bubbles.video.textInput.worksWith.placeholder')}
         defaultValue={content?.url ?? ''}
         onChange={handleUrlChange}
       />
       <Text fontSize="sm" color="gray.400" textAlign="center">
-        Works with Youtube, Vimeo and others
+        {scopedT('bubbles.video.textInput.worksWith.text')}
       </Text>
     </Stack>
   )

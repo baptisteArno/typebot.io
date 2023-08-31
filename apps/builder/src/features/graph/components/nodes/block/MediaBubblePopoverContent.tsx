@@ -2,6 +2,7 @@ import { AudioBubbleForm } from '@/features/blocks/bubbles/audio/components/Audi
 import { EmbedUploadContent } from '@/features/blocks/bubbles/embed/components/EmbedUploadContent'
 import { ImageBubbleSettings } from '@/features/blocks/bubbles/image/components/ImageBubbleSettings'
 import { VideoUploadContent } from '@/features/blocks/bubbles/video/components/VideoUploadContent'
+import { I18nFunction } from '@/locales'
 import {
   Portal,
   PopoverContent,
@@ -17,6 +18,7 @@ import {
 import { useRef } from 'react'
 
 type Props = {
+  scopedT: I18nFunction
   typebotId: string
   block: Exclude<BubbleBlock, TextBubbleBlock>
   onContentChange: (content: BubbleBlockContent) => void
@@ -42,6 +44,7 @@ export const MediaBubblePopoverContent = (props: Props) => {
 }
 
 export const MediaBubbleContent = ({
+  scopedT,
   typebotId,
   block,
   onContentChange,
@@ -50,6 +53,7 @@ export const MediaBubbleContent = ({
     case BubbleBlockType.IMAGE: {
       return (
         <ImageBubbleSettings
+          scopedT={scopedT}
           typebotId={typebotId}
           block={block}
           onContentChange={onContentChange}
@@ -59,6 +63,7 @@ export const MediaBubbleContent = ({
     case BubbleBlockType.VIDEO: {
       return (
         <VideoUploadContent
+          scopedT={scopedT}
           content={block.content}
           onSubmit={onContentChange}
         />
@@ -67,6 +72,7 @@ export const MediaBubbleContent = ({
     case BubbleBlockType.EMBED: {
       return (
         <EmbedUploadContent
+          scopedT={scopedT}
           content={block.content}
           onSubmit={onContentChange}
         />
@@ -75,6 +81,7 @@ export const MediaBubbleContent = ({
     case BubbleBlockType.AUDIO: {
       return (
         <AudioBubbleForm
+          scopedT={scopedT}
           content={block.content}
           fileUploadPath={`typebots/${typebotId}/blocks/${block.id}`}
           onContentChange={onContentChange}

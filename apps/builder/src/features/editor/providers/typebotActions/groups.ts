@@ -6,7 +6,7 @@ import {
   DraggableBlockType,
   BlockIndices,
 } from '@typebot.io/schemas'
-import { SetTypebot, I18nFunction } from '../TypebotProvider'
+import { SetTypebot } from '../TypebotProvider'
 import {
   deleteGroupDraft,
   createBlockDraft,
@@ -14,6 +14,7 @@ import {
 } from './blocks'
 import { isEmpty, parseGroupTitle } from '@typebot.io/lib'
 import { Coordinates } from '@/features/graph/types'
+import { I18nFunction } from '@/locales'
 
 export type GroupsActions = {
   createGroup: (

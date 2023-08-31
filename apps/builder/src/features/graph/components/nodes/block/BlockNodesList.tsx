@@ -12,6 +12,7 @@ import {
 } from '@/features/graph/providers/GraphDndProvider'
 import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { Coordinates } from '@dnd-kit/utilities'
+import { I18nFunction, useScopedI18n } from '@/locales'
 
 type Props = {
   groupId: string
@@ -27,6 +28,7 @@ export const BlockNodesList = ({
   groupRef,
   isStartGroup,
 }: Props) => {
+  const scopedT = useScopedI18n('editor.blocks')
   const {
     draggedBlock,
     setDraggedBlock,
@@ -151,6 +153,7 @@ export const BlockNodesList = ({
       {draggedBlock && draggedBlock.groupId === groupId && (
         <Portal>
           <BlockNodeOverlay
+            scopedT={scopedT as I18nFunction}
             block={draggedBlock}
             indices={{ groupIndex, blockIndex: 0 }}
             pos="fixed"

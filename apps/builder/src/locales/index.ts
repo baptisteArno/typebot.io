@@ -15,3 +15,5 @@ export const {
   pt_BR: () => import('./pt_BR'),
   de:    () => import('./de'),
 })
+
+export type I18nFunction = (key: string) => string;
