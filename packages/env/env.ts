@@ -1,5 +1,5 @@
 import { createEnv } from '@t3-oss/env-nextjs'
-import { ZodError, z } from 'zod'
+import { z } from 'zod'
 import { getRuntimeVariable } from './getRuntimeVariable'
 
 declare const window: {
@@ -317,21 +317,7 @@ export const env = createEnv({
     ...sentryEnv.runtimeEnv,
     ...posthogEnv.runtimeEnv,
   },
-  onValidationError: (error: ZodError) => {
-    console.log(
-      '[DEBUG]',
-      "typeof window !== 'undefined'",
-      typeof window !== 'undefined'
-    )
-    if (typeof window !== 'undefined') {
-      console.log('[DEBUG]', 'window.__ENV', window.__ENV)
-    }
-    console.error(
-      '❌ Invalid environment variables:',
-      error.flatten().fieldErrors
-    )
-    throw new Error('Invalid environment variables')
-  },
+  skipValidation: typeof window !== 'undefined' && window.__ENV === undefined,
   onInvalidAccess: (variable: string) => {
     throw new Error(
       `❌ Attempted to access a server-side environment variable on the client: ${variable}`

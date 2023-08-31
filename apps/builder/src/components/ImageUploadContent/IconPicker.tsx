@@ -108,6 +108,7 @@ export const IconPicker = ({ onIconSelected }: Props) => {
           placeholder="Search..."
           onChange={searchIcon}
           withVariableButton={false}
+          debounceTimeout={300}
         />
         <ColorPicker value={selectedColor} onColorChange={updateColor} />
       </HStack>

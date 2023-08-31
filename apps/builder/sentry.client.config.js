@@ -9,16 +9,4 @@ Sentry.init({
     "Can't find variable: ResizeObserver",
   ],
   release: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA + '-builder',
-  beforeBreadcrumb(breadcrumb, hint) {
-    try {
-      if (breadcrumb.category.startsWith('ui')) {
-        breadcrumb.message = `${hint.event.target.tagName.toLowerCase()}: ${
-          hint.event.target.innerText
-        }`
-      }
-    } catch (e) {
-      /* empty */
-    }
-    return breadcrumb
-  },
 })

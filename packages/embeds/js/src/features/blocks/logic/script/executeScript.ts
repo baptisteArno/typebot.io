@@ -11,7 +11,7 @@ export const executeScript = async ({ content, args }: ScriptToExecute) => {
     )
     await func(...args.map((arg) => arg.value))
   } catch (err) {
-    console.error(err)
+    console.warn('Script threw an error:', err)
   }
 }
 
