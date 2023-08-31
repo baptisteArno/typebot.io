@@ -1,5 +1,7 @@
 import { createI18n } from 'next-international'
 
+export type I18nFunction = (key: string) => string;
+
 export const {
   useI18n,
   useScopedI18n,
@@ -14,5 +16,3 @@ export const {
   pt_BR: () => import('./pt_BR'),
   de:    () => import('./de'),
 })
-
-export type I18nFunction = (key: string) => string;
