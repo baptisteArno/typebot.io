@@ -225,6 +225,10 @@ export const ConversationContainer = (props: Props) => {
   }
 
   const autoScrollToBottom = (offsetTop?: number) => {
+    const chunks = chatChunks()
+    const lastChunkWasStreaming =
+      chunks.length >= 2 && chunks[chunks.length - 2].streamingMessageId
+    if (lastChunkWasStreaming) return
     setTimeout(() => {
       chatContainer?.scrollTo(0, offsetTop ?? chatContainer.scrollHeight)
     }, 50)
