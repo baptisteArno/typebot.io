@@ -5,7 +5,7 @@ import prisma from '@/lib/prisma'
 import { decrypt } from '@typebot.io/lib/api'
 import { TRPCError } from '@trpc/server'
 import { WhatsAppCredentials } from '@typebot.io/schemas/features/whatsapp'
-import { formatNumber } from 'libphonenumber-js'
+import { parsePhoneNumber } from 'libphonenumber-js'
 
 const inputSchema = z.object({
   credentialsId: z.string().optional(),
@@ -46,12 +46,18 @@ export const getPhoneNumber = authenticatedProcedure
       display_phone_number: string
     }
 
+    const parsedPhoneNumber = parsePhoneNumber(display_phone_number)
+
+    if (!parsedPhoneNumber.isValid())
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message:
+          "Phone number is not valid. Make sure you don't provide a WhatsApp test number.",
+      })
+
     return {
       id: credentials.phoneNumberId,
-      name: formatNumber(display_phone_number, 'INTERNATIONAL').replace(
-        /\s/g,
-        ''
-      ),
+      name: parsedPhoneNumber.formatInternational().replace(/\s/g, ''),
     }
   })
 
