@@ -128,7 +128,7 @@ const parseWebhookAttributes =
       bodyContent && webhook.method !== HttpMethod.GET
         ? safeJsonParse(
             parseVariables(typebot.variables, {
-              escapeForJson: !checkIfBodyIsAVariable(bodyContent),
+              isInsideJson: !checkIfBodyIsAVariable(bodyContent),
             })(bodyContent)
           )
         : { data: undefined, isJson: false }

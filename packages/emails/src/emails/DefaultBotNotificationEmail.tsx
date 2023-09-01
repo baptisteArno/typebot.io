@@ -32,6 +32,13 @@ export const DefaultBotNotificationEmail = ({
                 <b>{key}</b>:{' '}
                 {isEmail ? (
                   <a href={`mailto:${answers[key]}`}>{answers[key]}</a>
+                ) : answers[key].includes('\n') ? (
+                  answers[key].split('\n').map((line) => (
+                    <>
+                      {line}
+                      <br />
+                    </>
+                  ))
                 ) : (
                   answers[key]
                 )}

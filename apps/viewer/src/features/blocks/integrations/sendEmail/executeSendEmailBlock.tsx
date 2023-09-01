@@ -41,9 +41,14 @@ export const executeSendEmailBlock = async (
       ],
     }
 
-  const body =
-    findUniqueVariableValue(typebot.variables)(options.body)?.toString() ??
-    parseVariables(typebot.variables, { escapeHtml: true })(options.body ?? '')
+  const bodyUniqueVariable = findUniqueVariableValue(typebot.variables)(
+    options.body
+  )
+  const body = bodyUniqueVariable
+    ? stringifyUniqueVariableValueAsHtml(bodyUniqueVariable)
+    : parseVariables(typebot.variables, { isInsideHtml: true })(
+        options.body ?? ''
+      )
 
   try {
     const sendEmailLogs = await sendEmail({
@@ -258,3 +263,11 @@ const getFileUrls =
     if (typeof fileUrls === 'string') return fileUrls
     return fileUrls.filter(isDefined)
   }
+
+const stringifyUniqueVariableValueAsHtml = (
+  value: Variable['value']
+): string => {
+  if (!value) return ''
+  if (typeof value === 'string') return value.replace(/\n/g, '<br />')
+  return value.map(stringifyUniqueVariableValueAsHtml).join('<br />')
+}

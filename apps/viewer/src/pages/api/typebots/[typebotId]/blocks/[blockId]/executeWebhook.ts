@@ -149,7 +149,7 @@ export const executeWebhook =
       bodyContent && webhook.method !== HttpMethod.GET
         ? safeJsonParse(
             parseVariables(variables, {
-              escapeForJson: !checkIfBodyIsAVariable(bodyContent),
+              isInsideJson: !checkIfBodyIsAVariable(bodyContent),
             })(bodyContent)
           )
         : { data: undefined, isJson: false }
