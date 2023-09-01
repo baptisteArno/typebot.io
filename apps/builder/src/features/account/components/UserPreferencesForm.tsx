@@ -42,10 +42,7 @@ export const UserPreferencesForm = () => {
   }
 
   const changeAppearance = async (value: string) => {
-    if (value === 'system') {
-      setColorMode('system')
-      localStorage.removeItem('chakra-ui-color-mode')
-    } else setColorMode(value)
+    setColorMode(value)
     updateUser({ preferredAppAppearance: value })
   }
 
