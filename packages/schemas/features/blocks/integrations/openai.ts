@@ -5,23 +5,6 @@ import { IntegrationBlockType } from './enums'
 
 export const openAITasks = ['Create chat completion', 'Create image'] as const
 
-export const chatCompletionModels = [
-  'gpt-3.5-turbo',
-  'gpt-3.5-turbo-0613',
-  'gpt-3.5-turbo-16k',
-  'gpt-3.5-turbo-16k-0613',
-  'gpt-3.5-turbo-0301',
-  'gpt-4',
-  'gpt-4-0613',
-  'gpt-4-32k',
-  'gpt-4-32k-0613',
-  'gpt-4-32k-0314',
-  'gpt-4-0314',
-] as const
-
-export const deprecatedCompletionModels: (typeof chatCompletionModels)[number][] =
-  ['gpt-3.5-turbo-0301', 'gpt-4-32k-0314', 'gpt-4-0314']
-
 export const chatCompletionMessageRoles = [
   'system',
   'user',
@@ -37,8 +20,12 @@ export const chatCompletionResponseValues = [
   'Total tokens',
 ] as const
 
+export const defaultBaseUrl = 'https://api.openai.com/v1'
+
 const openAIBaseOptionsSchema = z.object({
   credentialsId: z.string().optional(),
+  baseUrl: z.string().default(defaultBaseUrl),
+  apiVersion: z.string().optional(),
 })
 
 const initialOptionsSchema = z
@@ -68,7 +55,7 @@ const chatCompletionCustomMessageSchema = z.object({
 const chatCompletionOptionsSchema = z
   .object({
     task: z.literal(openAITasks[0]),
-    model: z.enum(chatCompletionModels),
+    model: z.string(),
     messages: z.array(
       z.union([chatCompletionMessageSchema, chatCompletionCustomMessageSchema])
     ),
@@ -130,6 +117,7 @@ export const openAICredentialsSchema = z
 export const defaultChatCompletionOptions = (
   createId: () => string
 ): ChatCompletionOpenAIOptions => ({
+  baseUrl: defaultBaseUrl,
   task: 'Create chat completion',
   messages: [
     {

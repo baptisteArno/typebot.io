@@ -69,8 +69,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
       <PopoverContent onMouseDown={handleMouseDown} pos="relative">
         <PopoverArrow bgColor={arrowColor} />
         <PopoverBody
-          pt="3"
-          pb="6"
+          py="3"
           overflowY="scroll"
           maxH="400px"
           ref={ref}
@@ -305,12 +304,7 @@ export const BlockSettings = ({
       )
     }
     case IntegrationBlockType.OPEN_AI: {
-      return (
-        <OpenAISettings
-          options={block.options}
-          onOptionsChange={updateOptions}
-        />
-      )
+      return <OpenAISettings block={block} onOptionsChange={updateOptions} />
     }
     case IntegrationBlockType.PIXEL: {
       return (

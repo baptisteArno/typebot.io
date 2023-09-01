@@ -3,7 +3,7 @@ import { connect } from '@planetscale/database'
 import { env } from '@typebot.io/env'
 import { IntegrationBlockType, SessionState } from '@typebot.io/schemas'
 import { StreamingTextResponse } from 'ai'
-import { ChatCompletionRequestMessage } from 'openai'
+import { ChatCompletionRequestMessage } from 'openai-edge'
 
 export const config = {
   runtime: 'edge',

@@ -24,7 +24,7 @@ import { MoreInfoTooltip } from '../MoreInfoTooltip'
 import { env } from '@typebot.io/env'
 
 type Props = {
-  items: string[]
+  items: string[] | undefined
   value?: string
   defaultValue?: string
   debounceTimeout?: number
@@ -77,9 +77,9 @@ export const AutocompleteInput = ({
 
   const filteredItems = (
     inputValue === ''
-      ? items
+      ? items ?? []
       : [
-          ...items.filter(
+          ...(items ?? []).filter(
             (item) =>
               item.toLowerCase().startsWith((inputValue ?? '').toLowerCase()) &&
               item.toLowerCase() !== inputValue.toLowerCase()
@@ -186,7 +186,8 @@ export const AutocompleteInput = ({
               onFocus={onOpen}
               onBlur={updateCarretPosition}
               onKeyDown={updateFocusedDropdownItem}
-              placeholder={placeholder}
+              placeholder={!items ? 'Loading...' : placeholder}
+              isDisabled={!items}
             />
           </PopoverAnchor>
           {filteredItems.length > 0 && (

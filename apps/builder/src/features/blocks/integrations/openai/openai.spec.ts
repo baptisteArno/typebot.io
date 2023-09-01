@@ -3,6 +3,7 @@ import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { IntegrationBlockType } from '@typebot.io/schemas'
 import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+import { defaultBaseUrl } from '@typebot.io/schemas/features/blocks/integrations/openai'
 
 const typebotId = createId()
 
@@ -12,7 +13,9 @@ test('should be configurable', async ({ page }) => {
       id: typebotId,
       ...parseDefaultGroupWithBlock({
         type: IntegrationBlockType.OPEN_AI,
-        options: {},
+        options: {
+          baseUrl: defaultBaseUrl,
+        },
       }),
     },
   ])

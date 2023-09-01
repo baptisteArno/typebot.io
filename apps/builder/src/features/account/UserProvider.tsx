@@ -9,6 +9,7 @@ import { updateUserQuery } from './queries/updateUserQuery'
 import { useDebouncedCallback } from 'use-debounce'
 import { env } from '@typebot.io/env'
 import { identifyUser } from '../telemetry/posthog'
+import { useColorMode } from '@chakra-ui/react'
 
 export const userContext = createContext<{
   user?: User
@@ -30,6 +31,22 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | undefined>()
   const { showToast } = useToast()
   const [currentWorkspaceId, setCurrentWorkspaceId] = useState<string>()
+  const { setColorMode } = useColorMode()
+
+  useEffect(() => {
+    if (
+      !user?.preferredAppAppearance ||
+      user.preferredAppAppearance === 'system'
+    )
+      return
+    const currentColorScheme = localStorage.getItem('chakra-ui-color-mode') as
+      | 'light'
+      | 'dark'
+      | null
+    if (currentColorScheme === user.preferredAppAppearance) return
+    console.log('SET')
+    setColorMode(user.preferredAppAppearance)
+  }, [setColorMode, user?.preferredAppAppearance])
 
   useEffect(() => {
     if (isDefined(user) || isNotDefined(session)) return

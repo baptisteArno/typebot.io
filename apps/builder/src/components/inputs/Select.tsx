@@ -35,7 +35,7 @@ type Item =
 type Props<T extends Item> = {
   isPopoverMatchingInputWidth?: boolean
   selectedItem?: string
-  items: readonly T[]
+  items: readonly T[] | undefined
   placeholder?: string
   onSelect?: (value: string | undefined, item?: T) => void
 }
@@ -53,7 +53,7 @@ export const Select = <T extends Item>({
   const { onOpen, onClose, isOpen } = useDisclosure()
   const [inputValue, setInputValue] = useState(
     getItemLabel(
-      items.find((item) =>
+      items?.find((item) =>
         typeof item === 'string'
           ? selectedItem === item
           : selectedItem === item.value
@@ -72,13 +72,13 @@ export const Select = <T extends Item>({
   const filteredItems = (
     isTouched
       ? [
-          ...items.filter((item) =>
+          ...(items ?? []).filter((item) =>
             getItemLabel(item)
               .toLowerCase()
               .includes((inputValue ?? '').toLowerCase())
           ),
         ]
-      : items
+      : items ?? []
   ).slice(0, 50)
 
   const closeDropdown = () => {
@@ -181,12 +181,17 @@ export const Select = <T extends Item>({
               className="select-input"
               value={isTouched ? inputValue : ''}
               placeholder={
-                !isTouched && inputValue !== '' ? undefined : placeholder
+                !items
+                  ? 'Loading...'
+                  : !isTouched && inputValue !== ''
+                  ? undefined
+                  : placeholder
               }
               onChange={updateInputValue}
               onFocus={onOpen}
               onKeyDown={updateFocusedDropdownItem}
               pr={selectedItem ? 16 : undefined}
+              isDisabled={!items}
             />
 
             <InputRightElement

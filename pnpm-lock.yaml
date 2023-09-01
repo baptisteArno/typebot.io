@@ -218,6 +218,9 @@ importers:
       nprogress:
         specifier: 0.2.0
         version: 0.2.0
+      openai-edge:
+        specifier: 1.2.2
+        version: 1.2.2
       papaparse:
         specifier: 5.4.1
         version: 5.4.1
@@ -569,12 +572,9 @@ importers:
       nodemailer:
         specifier: 6.9.3
         version: 6.9.3
-      openai:
-        specifier: 3.3.0
-        version: 3.3.0
       openai-edge:
-        specifier: ^1.2.0
-        version: 1.2.0
+        specifier: 1.2.2
+        version: 1.2.2
       qs:
         specifier: 6.11.2
         version: 6.11.2
@@ -17593,18 +17593,9 @@ packages:
       is-wsl: 2.2.0
     dev: false
 
-  /openai-edge@1.2.0:
-    resolution: {integrity: sha512-eaQs+O/1k6OZMUibNlBzWPXdHFxpUNLMy4BwhtXCFDub5iz7ve/PxOJTL8GBG3/1S1j6LIL93xjdlzCPQpbdgQ==}
+  /openai-edge@1.2.2:
+    resolution: {integrity: sha512-C3/Ao9Hkx5uBPv9YFBpX/x59XMPgPUU4dyGg/0J2sOJ7O9D98kD+lfdOc7v/60oYo5xzMGct80uFkYLH+X2qgw==}
     engines: {node: '>=18'}
-    dev: false
-
-  /openai@3.3.0:
-    resolution: {integrity: sha512-uqxI/Au+aPRnsaQRe8CojU0eCR7I0mBiKjD3sNMzY6DaC1ZVrc85u98mtJW6voDug8fgGN+DIZmTDxTthxb7dQ==}
-    dependencies:
-      axios: 0.26.1
-      form-data: 4.0.0
-    transitivePeerDependencies:
-      - debug
     dev: false
 
   /openapi-to-postmanv2@1.2.7:

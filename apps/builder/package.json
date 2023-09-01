@@ -75,6 +75,7 @@
     "nextjs-cors": "^2.1.2",
     "nodemailer": "6.9.3",
     "nprogress": "0.2.0",
+    "openai-edge": "1.2.2",
     "papaparse": "5.4.1",
     "posthog-js": "^1.77.1",
     "posthog-node": "3.1.1",

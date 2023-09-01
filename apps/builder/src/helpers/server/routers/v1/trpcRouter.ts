@@ -14,6 +14,7 @@ import { analyticsRouter } from '@/features/analytics/api/router'
 import { collaboratorsRouter } from '@/features/collaboration/api/router'
 import { customDomainsRouter } from '@/features/customDomains/api/router'
 import { whatsAppRouter } from '@/features/whatsapp/router'
+import { openAIRouter } from '@/features/blocks/integrations/openai/api/router'
 
 export const trpcRouter = router({
   getAppVersionProcedure,
@@ -31,6 +32,7 @@ export const trpcRouter = router({
   collaborators: collaboratorsRouter,
   customDomains: customDomainsRouter,
   whatsApp: whatsAppRouter,
+  openAI: openAIRouter,
 })
 
 export type AppRouter = typeof trpcRouter

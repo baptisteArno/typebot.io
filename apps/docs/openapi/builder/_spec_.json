@@ -2923,6 +2923,13 @@
                                                   },
                                                   "credentialsId": {
                                                     "type": "string"
+                                                  },
+                                                  "baseUrl": {
+                                                    "type": "string",
+                                                    "default": "https://api.openai.com/v1"
+                                                  },
+                                                  "apiVersion": {
+                                                    "type": "string"
                                                   }
                                                 },
                                                 "additionalProperties": false
@@ -2937,20 +2944,7 @@
                                                     ]
                                                   },
                                                   "model": {
-                                                    "type": "string",
-                                                    "enum": [
-                                                      "gpt-3.5-turbo",
-                                                      "gpt-3.5-turbo-0613",
-                                                      "gpt-3.5-turbo-16k",
-                                                      "gpt-3.5-turbo-16k-0613",
-                                                      "gpt-3.5-turbo-0301",
-                                                      "gpt-4",
-                                                      "gpt-4-0613",
-                                                      "gpt-4-32k",
-                                                      "gpt-4-32k-0613",
-                                                      "gpt-4-32k-0314",
-                                                      "gpt-4-0314"
-                                                    ]
+                                                    "type": "string"
                                                   },
                                                   "messages": {
                                                     "type": "array",
@@ -3057,6 +3051,13 @@
                                                   },
                                                   "credentialsId": {
                                                     "type": "string"
+                                                  },
+                                                  "baseUrl": {
+                                                    "type": "string",
+                                                    "default": "https://api.openai.com/v1"
+                                                  },
+                                                  "apiVersion": {
+                                                    "type": "string"
                                                   }
                                                 },
                                                 "required": [
@@ -3119,6 +3120,13 @@
                                                     }
                                                   },
                                                   "credentialsId": {
+                                                    "type": "string"
+                                                  },
+                                                  "baseUrl": {
+                                                    "type": "string",
+                                                    "default": "https://api.openai.com/v1"
+                                                  },
+                                                  "apiVersion": {
                                                     "type": "string"
                                                   }
                                                 },
@@ -7208,6 +7216,13 @@
                                               },
                                               "credentialsId": {
                                                 "type": "string"
+                                              },
+                                              "baseUrl": {
+                                                "type": "string",
+                                                "default": "https://api.openai.com/v1"
+                                              },
+                                              "apiVersion": {
+                                                "type": "string"
                                               }
                                             },
                                             "additionalProperties": false
@@ -7222,20 +7237,7 @@
                                                 ]
                                               },
                                               "model": {
-                                                "type": "string",
-                                                "enum": [
-                                                  "gpt-3.5-turbo",
-                                                  "gpt-3.5-turbo-0613",
-                                                  "gpt-3.5-turbo-16k",
-                                                  "gpt-3.5-turbo-16k-0613",
-                                                  "gpt-3.5-turbo-0301",
-                                                  "gpt-4",
-                                                  "gpt-4-0613",
-                                                  "gpt-4-32k",
-                                                  "gpt-4-32k-0613",
-                                                  "gpt-4-32k-0314",
-                                                  "gpt-4-0314"
-                                                ]
+                                                "type": "string"
                                               },
                                               "messages": {
                                                 "type": "array",
@@ -7342,6 +7344,13 @@
                                               },
                                               "credentialsId": {
                                                 "type": "string"
+                                              },
+                                              "baseUrl": {
+                                                "type": "string",
+                                                "default": "https://api.openai.com/v1"
+                                              },
+                                              "apiVersion": {
+                                                "type": "string"
                                               }
                                             },
                                             "required": [
@@ -7404,6 +7413,13 @@
                                                 }
                                               },
                                               "credentialsId": {
+                                                "type": "string"
+                                              },
+                                              "baseUrl": {
+                                                "type": "string",
+                                                "default": "https://api.openai.com/v1"
+                                              },
+                                              "apiVersion": {
                                                 "type": "string"
                                               }
                                             },
@@ -11128,6 +11144,13 @@
                                                 },
                                                 "credentialsId": {
                                                   "type": "string"
+                                                },
+                                                "baseUrl": {
+                                                  "type": "string",
+                                                  "default": "https://api.openai.com/v1"
+                                                },
+                                                "apiVersion": {
+                                                  "type": "string"
                                                 }
                                               },
                                               "additionalProperties": false
@@ -11142,20 +11165,7 @@
                                                   ]
                                                 },
                                                 "model": {
-                                                  "type": "string",
-                                                  "enum": [
-                                                    "gpt-3.5-turbo",
-                                                    "gpt-3.5-turbo-0613",
-                                                    "gpt-3.5-turbo-16k",
-                                                    "gpt-3.5-turbo-16k-0613",
-                                                    "gpt-3.5-turbo-0301",
-                                                    "gpt-4",
-                                                    "gpt-4-0613",
-                                                    "gpt-4-32k",
-                                                    "gpt-4-32k-0613",
-                                                    "gpt-4-32k-0314",
-                                                    "gpt-4-0314"
-                                                  ]
+                                                  "type": "string"
                                                 },
                                                 "messages": {
                                                   "type": "array",
@@ -11262,6 +11272,13 @@
                                                 },
                                                 "credentialsId": {
                                                   "type": "string"
+                                                },
+                                                "baseUrl": {
+                                                  "type": "string",
+                                                  "default": "https://api.openai.com/v1"
+                                                },
+                                                "apiVersion": {
+                                                  "type": "string"
                                                 }
                                               },
                                               "required": [
@@ -11324,6 +11341,13 @@
                                                   }
                                                 },
                                                 "credentialsId": {
+                                                  "type": "string"
+                                                },
+                                                "baseUrl": {
+                                                  "type": "string",
+                                                  "default": "https://api.openai.com/v1"
+                                                },
+                                                "apiVersion": {
                                                   "type": "string"
                                                 }
                                               },
@@ -15188,6 +15212,13 @@
                                               },
                                               "credentialsId": {
                                                 "type": "string"
+                                              },
+                                              "baseUrl": {
+                                                "type": "string",
+                                                "default": "https://api.openai.com/v1"
+                                              },
+                                              "apiVersion": {
+                                                "type": "string"
                                               }
                                             },
                                             "additionalProperties": false
@@ -15202,20 +15233,7 @@
                                                 ]
                                               },
                                               "model": {
-                                                "type": "string",
-                                                "enum": [
-                                                  "gpt-3.5-turbo",
-                                                  "gpt-3.5-turbo-0613",
-                                                  "gpt-3.5-turbo-16k",
-                                                  "gpt-3.5-turbo-16k-0613",
-                                                  "gpt-3.5-turbo-0301",
-                                                  "gpt-4",
-                                                  "gpt-4-0613",
-                                                  "gpt-4-32k",
-                                                  "gpt-4-32k-0613",
-                                                  "gpt-4-32k-0314",
-                                                  "gpt-4-0314"
-                                                ]
+                                                "type": "string"
                                               },
                                               "messages": {
                                                 "type": "array",
@@ -15322,6 +15340,13 @@
                                               },
                                               "credentialsId": {
                                                 "type": "string"
+                                              },
+                                              "baseUrl": {
+                                                "type": "string",
+                                                "default": "https://api.openai.com/v1"
+                                              },
+                                              "apiVersion": {
+                                                "type": "string"
                                               }
                                             },
                                             "required": [
@@ -15384,6 +15409,13 @@
                                                 }
                                               },
                                               "credentialsId": {
+                                                "type": "string"
+                                              },
+                                              "baseUrl": {
+                                                "type": "string",
+                                                "default": "https://api.openai.com/v1"
+                                              },
+                                              "apiVersion": {
                                                 "type": "string"
                                               }
                                             },
@@ -19128,6 +19160,13 @@
                                                 },
                                                 "credentialsId": {
                                                   "type": "string"
+                                                },
+                                                "baseUrl": {
+                                                  "type": "string",
+                                                  "default": "https://api.openai.com/v1"
+                                                },
+                                                "apiVersion": {
+                                                  "type": "string"
                                                 }
                                               },
                                               "additionalProperties": false
@@ -19142,20 +19181,7 @@
                                                   ]
                                                 },
                                                 "model": {
-                                                  "type": "string",
-                                                  "enum": [
-                                                    "gpt-3.5-turbo",
-                                                    "gpt-3.5-turbo-0613",
-                                                    "gpt-3.5-turbo-16k",
-                                                    "gpt-3.5-turbo-16k-0613",
-                                                    "gpt-3.5-turbo-0301",
-                                                    "gpt-4",
-                                                    "gpt-4-0613",
-                                                    "gpt-4-32k",
-                                                    "gpt-4-32k-0613",
-                                                    "gpt-4-32k-0314",
-                                                    "gpt-4-0314"
-                                                  ]
+                                                  "type": "string"
                                                 },
                                                 "messages": {
                                                   "type": "array",
@@ -19262,6 +19288,13 @@
                                                 },
                                                 "credentialsId": {
                                                   "type": "string"
+                                                },
+                                                "baseUrl": {
+                                                  "type": "string",
+                                                  "default": "https://api.openai.com/v1"
+                                                },
+                                                "apiVersion": {
+                                                  "type": "string"
                                                 }
                                               },
                                               "required": [
@@ -19324,6 +19357,13 @@
                                                   }
                                                 },
                                                 "credentialsId": {
+                                                  "type": "string"
+                                                },
+                                                "baseUrl": {
+                                                  "type": "string",
+                                                  "default": "https://api.openai.com/v1"
+                                                },
+                                                "apiVersion": {
                                                   "type": "string"
                                                 }
                                               },
@@ -23123,6 +23163,13 @@
                                                 },
                                                 "credentialsId": {
                                                   "type": "string"
+                                                },
+                                                "baseUrl": {
+                                                  "type": "string",
+                                                  "default": "https://api.openai.com/v1"
+                                                },
+                                                "apiVersion": {
+                                                  "type": "string"
                                                 }
                                               },
                                               "additionalProperties": false
@@ -23137,20 +23184,7 @@
                                                   ]
                                                 },
                                                 "model": {
-                                                  "type": "string",
-                                                  "enum": [
-                                                    "gpt-3.5-turbo",
-                                                    "gpt-3.5-turbo-0613",
-                                                    "gpt-3.5-turbo-16k",
-                                                    "gpt-3.5-turbo-16k-0613",
-                                                    "gpt-3.5-turbo-0301",
-                                                    "gpt-4",
-                                                    "gpt-4-0613",
-                                                    "gpt-4-32k",
-                                                    "gpt-4-32k-0613",
-                                                    "gpt-4-32k-0314",
-                                                    "gpt-4-0314"
-                                                  ]
+                                                  "type": "string"
                                                 },
                                                 "messages": {
                                                   "type": "array",
@@ -23257,6 +23291,13 @@
                                                 },
                                                 "credentialsId": {
                                                   "type": "string"
+                                                },
+                                                "baseUrl": {
+                                                  "type": "string",
+                                                  "default": "https://api.openai.com/v1"
+                                                },
+                                                "apiVersion": {
+                                                  "type": "string"
                                                 }
                                               },
                                               "required": [
@@ -23319,6 +23360,13 @@
                                                   }
                                                 },
                                                 "credentialsId": {
+                                                  "type": "string"
+                                                },
+                                                "baseUrl": {
+                                                  "type": "string",
+                                                  "default": "https://api.openai.com/v1"
+                                                },
+                                                "apiVersion": {
                                                   "type": "string"
                                                 }
                                               },
@@ -27181,6 +27229,13 @@
                                                 },
                                                 "credentialsId": {
                                                   "type": "string"
+                                                },
+                                                "baseUrl": {
+                                                  "type": "string",
+                                                  "default": "https://api.openai.com/v1"
+                                                },
+                                                "apiVersion": {
+                                                  "type": "string"
                                                 }
                                               },
                                               "additionalProperties": false
@@ -27195,20 +27250,7 @@
                                                   ]
                                                 },
                                                 "model": {
-                                                  "type": "string",
-                                                  "enum": [
-                                                    "gpt-3.5-turbo",
-                                                    "gpt-3.5-turbo-0613",
-                                                    "gpt-3.5-turbo-16k",
-                                                    "gpt-3.5-turbo-16k-0613",
-                                                    "gpt-3.5-turbo-0301",
-                                                    "gpt-4",
-                                                    "gpt-4-0613",
-                                                    "gpt-4-32k",
-                                                    "gpt-4-32k-0613",
-                                                    "gpt-4-32k-0314",
-                                                    "gpt-4-0314"
-                                                  ]
+                                                  "type": "string"
                                                 },
                                                 "messages": {
                                                   "type": "array",
@@ -27315,6 +27357,13 @@
                                                 },
                                                 "credentialsId": {
                                                   "type": "string"
+                                                },
+                                                "baseUrl": {
+                                                  "type": "string",
+                                                  "default": "https://api.openai.com/v1"
+                                                },
+                                                "apiVersion": {
+                                                  "type": "string"
                                                 }
                                               },
                                               "required": [
@@ -27377,6 +27426,13 @@
                                                   }
                                                 },
                                                 "credentialsId": {
+                                                  "type": "string"
+                                                },
+                                                "baseUrl": {
+                                                  "type": "string",
+                                                  "default": "https://api.openai.com/v1"
+                                                },
+                                                "apiVersion": {
                                                   "type": "string"
                                                 }
                                               },
@@ -31988,6 +32044,81 @@
                   },
                   "required": [
                     "verificationToken"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/typebots/{typebotId}/blocks/{blockId}/openai/models": {
+      "get": {
+        "operationId": "openAI-listModels",
+        "summary": "List OpenAI models",
+        "tags": [
+          "OpenAI"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "typebotId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "blockId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "credentialsId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "models": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "models"
                   ],
                   "additionalProperties": false
                 }
