@@ -9,4 +9,5 @@ export enum IntegrationBlockType {
   PABBLY_CONNECT = 'Pabbly',
   CHATWOOT = 'Chatwoot',
   PIXEL = 'Pixel',
+  ZEMANTIC_AI = 'Zemantic AI',
 }

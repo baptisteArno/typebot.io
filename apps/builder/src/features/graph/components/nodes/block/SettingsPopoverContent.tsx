@@ -47,6 +47,7 @@ import { AbTestSettings } from '@/features/blocks/logic/abTest/components/AbTest
 import { PictureChoiceSettings } from '@/features/blocks/inputs/pictureChoice/components/PictureChoiceSettings'
 import { SettingsHoverBar } from './SettingsHoverBar'
 import { PixelSettings } from '@/features/blocks/integrations/pixel/components/PixelSettings'
+import { ZemanticAISettings } from '@/features/blocks/integrations/zemanticai/ZemanticAISettings'
 
 type Props = {
   block: BlockWithOptions
@@ -309,6 +310,14 @@ export const BlockSettings = ({
     case IntegrationBlockType.PIXEL: {
       return (
         <PixelSettings
+          options={block.options}
+          onOptionsChange={updateOptions}
+        />
+      )
+    }
+    case IntegrationBlockType.ZEMANTIC_AI: {
+      return (
+        <ZemanticAISettings
           options={block.options}
           onOptionsChange={updateOptions}
         />

@@ -84,5 +84,7 @@ export const BlockLabel = ({ type }: Props): JSX.Element => {
       return <Text fontSize="sm">{scopedT('openai.label')}</Text>
     case IntegrationBlockType.PIXEL:
       return <Text fontSize="sm">{scopedT('pixel.label')}</Text>
+    case IntegrationBlockType.ZEMANTIC_AI:
+      return <Text fontSize="sm">{scopedT('zemanticAi.label')}</Text>
   }
 }
