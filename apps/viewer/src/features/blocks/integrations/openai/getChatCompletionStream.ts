@@ -1,6 +1,7 @@
 import { parseVariableNumber } from '@/features/variables/parseVariableNumber'
 import { Connection } from '@planetscale/database'
 import { decrypt } from '@typebot.io/lib/api/encryption'
+import { isNotEmpty } from '@typebot.io/lib/utils'
 import {
   ChatCompletionOpenAIOptions,
   OpenAICredentials,
@@ -42,6 +43,17 @@ export const getChatCompletionStream =
 
     const config = new Configuration({
       apiKey,
+      basePath: options.baseUrl,
+      baseOptions: {
+        headers: {
+          'api-key': apiKey,
+        },
+      },
+      defaultQueryParams: isNotEmpty(options.apiVersion)
+        ? new URLSearchParams({
+            'api-version': options.apiVersion,
+          })
+        : undefined,
     })
 
     const openai = new OpenAIApi(config)

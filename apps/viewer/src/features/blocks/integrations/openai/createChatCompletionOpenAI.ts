@@ -107,6 +107,8 @@ export const createChatCompletionOpenAI = async (
     messages,
     model: options.model,
     temperature,
+    baseUrl: options.baseUrl,
+    apiVersion: options.apiVersion,
   })
   if (!response)
     return {

@@ -3,7 +3,7 @@ import { transformStringVariablesToList } from '@/features/variables/transformVa
 import { byId, isNotEmpty } from '@typebot.io/lib'
 import { Variable, VariableWithValue } from '@typebot.io/schemas'
 import { ChatCompletionOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai'
-import type { ChatCompletionRequestMessage } from 'openai'
+import type { ChatCompletionRequestMessage } from 'openai-edge'
 
 export const parseChatCompletionMessages =
   (variables: Variable[]) =>
