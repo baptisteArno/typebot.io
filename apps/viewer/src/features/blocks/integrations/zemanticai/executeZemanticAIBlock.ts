@@ -1,14 +1,16 @@
-import { ExecuteIntegrationResponse } from 'zR@/features/chat/types'
+import { ExecuteIntegrationResponse } from '@/features/chat/types'
 import prisma from '@/lib/prisma'
 import { SessionState } from '@typebot.io/schemas'
 import {
   ZemanticAIBlock,
   ZemanticAICredentials,
+  ZemanticAIResponse,
 } from '@typebot.io/schemas/features/blocks/integrations/zemanticai'
 import got from 'got'
 import { decrypt } from '@typebot.io/lib/api/encryption'
 import { byId, isDefined, isEmpty } from '@typebot.io/lib'
 import { updateVariables } from '@/features/variables/updateVariables'
+import { getDefinedVariables, parseAnswers } from '@typebot.io/lib/results'
 
 const URL = 'https://api.zemantic.ai/v1/search-documents'
 
@@ -16,10 +18,16 @@ export const executeZemanticAIBlock = async (
   state: SessionState,
   block: ZemanticAIBlock
 ): Promise<ExecuteIntegrationResponse> => {
-  const newSessionState = state
+  let newSessionState = state
+
   const noCredentialsError = {
     status: 'error',
     description: 'Make sure to select a Zemantic AI account',
+  }
+
+  const zemanticRequestError = {
+    status: 'error',
+    description: 'Could not execute Zemantic AI request',
   }
 
   const credentials = await prisma.credentials.findUnique({
@@ -39,43 +47,82 @@ export const executeZemanticAIBlock = async (
     credentials.iv
   )) as ZemanticAICredentials['data']
 
-  const { typebot } = newSessionState.typebotsQueue[0]
-  const variableToSave = typebot.variables.find(
-    byId(block.options.variableToSave)
+  const { typebot, answers } = newSessionState.typebotsQueue[0]
+
+  const resultsVariable = typebot.variables.find(
+    byId(block.options.resultsVariable)
   )
 
+  const summaryVariable = typebot.variables.find(
+    byId(block.options.summaryVariable)
+  )
+
+  const templateVars = parseAnswers({
+    variables: getDefinedVariables(typebot.variables),
+    answers: answers,
+  })
+
+  console.log(block.options.maxResults)
+
   try {
-    const res = await got
+    const res: ZemanticAIResponse = await got
       .post(URL, {
         headers: {
           Authorization: `Bearer ${apiKey}`,
         },
         json: {
           projectId: block.options.projectId,
-          query: block.options.query,
+          query: replaceTemplateVars(
+            block.options.query as string,
+            templateVars
+          ),
+          maxResults: block.options.maxResults,
           summarize: true,
           summaryOptions: {
-            system_prompt: block.options.systemPrompt,
-            prompt: block.options.prompt,
+            system_prompt:
+              replaceTemplateVars(
+                block.options.systemPrompt as string,
+                templateVars
+              ) ?? '',
+            prompt:
+              replaceTemplateVars(
+                block.options.prompt as string,
+                templateVars
+              ) ?? '',
           },
         },
       })
       .json()
 
-    console.log(res)
-
-    if (isDefined(variableToSave) && !isEmpty(res.summary)) {
-      updateVariables(newSessionState)([
-        { ...variableToSave, value: res.summary },
+    if (isDefined(resultsVariable) && res.results.length) {
+      newSessionState = updateVariables(newSessionState)([
+        { ...resultsVariable, value: JSON.stringify(res.results) },
       ])
     }
 
-    console.log(newSessionState)
+    if (isDefined(summaryVariable) && !isEmpty(res.summary)) {
+      newSessionState = updateVariables(newSessionState)([
+        { ...summaryVariable, value: res.summary },
+      ])
+    }
   } catch (e) {
-    console.log('nope')
     console.error(e)
-    return { outgoingEdgeId: block.outgoingEdgeId }
+    return {
+      outgoingEdgeId: block.outgoingEdgeId,
+      logs: [zemanticRequestError],
+    }
   }
 
-  return { outgoingEdgeId: block.outgoingEdgeId, newSessionState, logs: [] }
+  return { outgoingEdgeId: block.outgoingEdgeId, newSessionState }
+}
+
+const replaceTemplateVars = (
+  template: string,
+  vars: Record<string, string>
+) => {
+  let result = template
+  for (const [key, value] of Object.entries(vars)) {
+    result = result.replaceAll(`{{${key}}}`, value)
+  }
+  return result
 }

@@ -9,7 +9,7 @@ type Props = {
 export const ZemanticAINodeBody = ({ projectId }: Props) => (
   <>
     <Text color={projectId ? 'currentcolor' : 'gray.500'} noOfLines={1}>
-      {projectId ? `Query Project: ${projectId}` : 'Configure...'}
+      {projectId ? `Search: ${projectId}` : 'Configure...'}
     </Text>
   </>
 )
