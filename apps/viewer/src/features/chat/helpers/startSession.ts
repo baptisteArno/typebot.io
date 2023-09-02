@@ -127,25 +127,25 @@ export const startSession = async ({
     }
   }
 
-  const { messages, input, clientSideActions, newSessionState, logs } =
-    await startBotFlow(initialState, startParams.startGroupId)
+  const {
+    messages,
+    input,
+    clientSideActions: startFlowClientActions,
+    newSessionState,
+    logs,
+  } = await startBotFlow(initialState, startParams.startGroupId)
 
-  const clientSideActionsNeedSessionId = clientSideActions?.some(
-    (action) =>
-      'setVariable' in action || 'streamOpenAiChatCompletion' in action
-  )
+  const clientSideActions = startFlowClientActions ?? []
 
-  const startClientSideAction = clientSideActions ?? []
-
-  const parsedStartPropsActions = parseStartClientSideAction(typebot)
+  const startClientSideAction = parseStartClientSideAction(typebot)
 
   const startLogs = logs ?? []
 
-  if (isDefined(parsedStartPropsActions)) {
+  if (isDefined(startClientSideAction)) {
     if (!result) {
-      if ('startPropsToInject' in parsedStartPropsActions) {
+      if ('startPropsToInject' in startClientSideAction) {
         const { customHeadCode, googleAnalyticsId, pixelId, gtmId } =
-          parsedStartPropsActions.startPropsToInject
+          startClientSideAction.startPropsToInject
         let toolsList = ''
         if (customHeadCode) toolsList += 'Custom head code, '
         if (googleAnalyticsId) toolsList += 'Google Analytics, '
@@ -160,16 +160,23 @@ export const startSession = async ({
         })
       }
     } else {
-      startClientSideAction.push(parsedStartPropsActions)
+      clientSideActions.unshift(startClientSideAction)
     }
   }
+
+  const clientSideActionsNeedSessionId = clientSideActions?.some(
+    (action) =>
+      'setVariable' in action ||
+      'streamOpenAiChatCompletion' in action ||
+      'webhookToExecute' in action
+  )
 
   if (!input && !clientSideActionsNeedSessionId)
     return {
       newSessionState,
       messages,
       clientSideActions:
-        startClientSideAction.length > 0 ? startClientSideAction : undefined,
+        clientSideActions.length > 0 ? clientSideActions : undefined,
       typebot: {
         id: typebot.id,
         settings: deepParseVariables(
@@ -198,7 +205,7 @@ export const startSession = async ({
     messages,
     input,
     clientSideActions:
-      startClientSideAction.length > 0 ? startClientSideAction : undefined,
+      clientSideActions.length > 0 ? clientSideActions : undefined,
     dynamicTheme: parseDynamicTheme(newSessionState),
     logs: startLogs.length > 0 ? startLogs : undefined,
   }
