@@ -1,1 +1,0 @@
-window.__ENV = {"NEXT_PUBLIC_SMTP_FROM":"ezynda@mark3labs.com","NEXT_PUBLIC_VIEWER_URL":"http://localhost:3001"};
