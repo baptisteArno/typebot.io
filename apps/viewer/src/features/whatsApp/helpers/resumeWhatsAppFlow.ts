@@ -133,7 +133,7 @@ const getIncomingMessageContent = async ({
   message: WhatsAppIncomingMessage
   systemUserToken: string | undefined
   downloadPath?: string
-}): Promise<string> => {
+}): Promise<string | undefined> => {
   switch (message.type) {
     case 'text':
       return message.text.body
@@ -144,7 +144,7 @@ const getIncomingMessageContent = async ({
     }
     case 'document':
     case 'audio':
-      return ''
+      return
     case 'video':
     case 'image':
       if (!systemUserToken || !downloadPath) return ''

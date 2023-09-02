@@ -89,15 +89,16 @@ export const continueBotFlow =
     let formattedReply: string | undefined
 
     if (isInputBlock(block)) {
-      const parseResult = parseReply(newSessionState)(reply, block)
+      const parsedReplyResult = parseReply(newSessionState)(reply, block)
 
-      if (parseResult.status === 'fail')
+      if (parsedReplyResult.status === 'fail')
         return {
           ...(await parseRetryMessage(newSessionState)(block)),
           newSessionState,
         }
 
-      formattedReply = 'reply' in parseResult ? parseResult.reply : undefined
+      formattedReply =
+        'reply' in parsedReplyResult ? parsedReplyResult.reply : undefined
       const nextEdgeId = getOutgoingEdgeId(newSessionState)(
         block,
         formattedReply
@@ -310,14 +311,15 @@ const getOutgoingEdgeId =
 const parseReply =
   (state: SessionState) =>
   (inputValue: string | undefined, block: InputBlock): ParsedReply => {
-    if (!inputValue) return { status: 'fail' }
     switch (block.type) {
       case InputBlockType.EMAIL: {
+        if (!inputValue) return { status: 'fail' }
         const isValid = validateEmail(inputValue)
         if (!isValid) return { status: 'fail' }
         return { status: 'success', reply: inputValue }
       }
       case InputBlockType.PHONE: {
+        if (!inputValue) return { status: 'fail' }
         const formattedPhone = formatPhoneNumber(
           inputValue,
           block.options.defaultCountryCode
@@ -326,38 +328,49 @@ const parseReply =
         return { status: 'success', reply: formattedPhone }
       }
       case InputBlockType.URL: {
+        if (!inputValue) return { status: 'fail' }
         const isValid = validateUrl(inputValue)
         if (!isValid) return { status: 'fail' }
         return { status: 'success', reply: inputValue }
       }
       case InputBlockType.CHOICE: {
+        if (!inputValue) return { status: 'fail' }
         return parseButtonsReply(state)(inputValue, block)
       }
       case InputBlockType.NUMBER: {
+        if (!inputValue) return { status: 'fail' }
         const isValid = validateNumber(inputValue)
         if (!isValid) return { status: 'fail' }
         return { status: 'success', reply: inputValue }
       }
       case InputBlockType.DATE: {
+        if (!inputValue) return { status: 'fail' }
         return parseDateReply(inputValue, block)
       }
       case InputBlockType.FILE: {
-        if (!inputValue) return { status: 'skip' }
+        if (!inputValue)
+          return block.options.isRequired
+            ? { status: 'fail' }
+            : { status: 'skip' }
         return { status: 'success', reply: inputValue }
       }
       case InputBlockType.PAYMENT: {
+        if (!inputValue) return { status: 'fail' }
         if (inputValue === 'fail') return { status: 'fail' }
         return { status: 'success', reply: inputValue }
       }
       case InputBlockType.RATING: {
+        if (!inputValue) return { status: 'fail' }
         const isValid = validateRatingReply(inputValue, block)
         if (!isValid) return { status: 'fail' }
         return { status: 'success', reply: inputValue }
       }
       case InputBlockType.PICTURE_CHOICE: {
+        if (!inputValue) return { status: 'fail' }
         return parsePictureChoicesReply(state)(inputValue, block)
       }
       case InputBlockType.TEXT: {
+        if (!inputValue) return { status: 'fail' }
         return { status: 'success', reply: inputValue }
       }
     }
