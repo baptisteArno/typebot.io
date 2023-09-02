@@ -123,12 +123,24 @@ export const listModels = authenticatedProcedure
 
       const response = await openai.listModels()
 
-      const modelsData = (await response.json()) as ResponseTypes['listModels']
+      const modelsData = (await response.json()) as
+        | ResponseTypes['listModels']
+        | {
+            error: unknown
+          }
+
+      if ('error' in modelsData)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Could not list models',
+          cause: modelsData.error,
+        })
 
       return {
-        models: modelsData.data
-          .sort((a, b) => b.created - a.created)
-          .map((model) => model.id),
+        models:
+          modelsData.data
+            .sort((a, b) => b.created - a.created)
+            .map((model) => model.id) ?? [],
       }
     }
   )

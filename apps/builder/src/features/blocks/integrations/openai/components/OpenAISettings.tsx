@@ -75,14 +75,21 @@ export const OpenAISettings = ({
   return (
     <Stack>
       {workspace && (
-        <CredentialsDropdown
-          type="openai"
-          workspaceId={workspace.id}
-          currentCredentialsId={options?.credentialsId}
-          onCredentialsSelect={updateCredentialsId}
-          onCreateNewClick={onOpen}
-          credentialsName="OpenAI account"
-        />
+        <>
+          <CredentialsDropdown
+            type="openai"
+            workspaceId={workspace.id}
+            currentCredentialsId={options?.credentialsId}
+            onCredentialsSelect={updateCredentialsId}
+            onCreateNewClick={onOpen}
+            credentialsName="OpenAI account"
+          />
+          <OpenAICredentialsModal
+            isOpen={isOpen}
+            onClose={onClose}
+            onNewCredentials={updateCredentialsId}
+          />
+        </>
       )}
       {options.credentialsId && (
         <>
@@ -110,11 +117,7 @@ export const OpenAISettings = ({
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
-          <OpenAICredentialsModal
-            isOpen={isOpen}
-            onClose={onClose}
-            onNewCredentials={updateCredentialsId}
-          />
+
           <DropdownList
             currentItem={options.task}
             items={openAITasks.slice(0, -1)}
