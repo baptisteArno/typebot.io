@@ -2,10 +2,10 @@ import { ExecuteIntegrationResponse } from '@/features/chat/types'
 import prisma from '@/lib/prisma'
 import { SessionState } from '@typebot.io/schemas'
 import {
-  ZemanticAIBlock,
-  ZemanticAICredentials,
-  ZemanticAIResponse,
-} from '@typebot.io/schemas/features/blocks/integrations/zemanticai'
+  ZemanticAiBlock,
+  ZemanticAiCredentials,
+  ZemanticAiResponse,
+} from '@typebot.io/schemas/features/blocks/integrations/zemanticAi'
 import got from 'got'
 import { decrypt } from '@typebot.io/lib/api/encryption'
 import { byId, isDefined, isEmpty } from '@typebot.io/lib'
@@ -14,9 +14,9 @@ import { getDefinedVariables, parseAnswers } from '@typebot.io/lib/results'
 
 const URL = 'https://api.zemantic.ai/v1/search-documents'
 
-export const executeZemanticAIBlock = async (
+export const executeZemanticAiBlock = async (
   state: SessionState,
-  block: ZemanticAIBlock
+  block: ZemanticAiBlock
 ): Promise<ExecuteIntegrationResponse> => {
   let newSessionState = state
 
@@ -45,7 +45,7 @@ export const executeZemanticAIBlock = async (
   const { apiKey } = (await decrypt(
     credentials.data,
     credentials.iv
-  )) as ZemanticAICredentials['data']
+  )) as ZemanticAiCredentials['data']
 
   const { typebot, answers } = newSessionState.typebotsQueue[0]
 
@@ -65,7 +65,7 @@ export const executeZemanticAIBlock = async (
   console.log(block.options.maxResults)
 
   try {
-    const res: ZemanticAIResponse = await got
+    const res: ZemanticAiResponse = await got
       .post(URL, {
         headers: {
           Authorization: `Bearer ${apiKey}`,

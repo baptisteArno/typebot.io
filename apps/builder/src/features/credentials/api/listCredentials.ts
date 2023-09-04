@@ -8,7 +8,7 @@ import { smtpCredentialsSchema } from '@typebot.io/schemas/features/blocks/integ
 import { z } from 'zod'
 import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
 import { whatsAppCredentialsSchema } from '@typebot.io/schemas/features/whatsapp'
-import { zematicAICredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/zemanticai'
+import { zemanticAiCredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/zemanticAi'
 
 export const listCredentials = authenticatedProcedure
   .meta({
@@ -28,7 +28,7 @@ export const listCredentials = authenticatedProcedure
         .or(googleSheetsCredentialsSchema.shape.type)
         .or(openAICredentialsSchema.shape.type)
         .or(whatsAppCredentialsSchema.shape.type)
-        .or(zematicAICredentialsSchema.shape.type),
+        .or(zemanticAiCredentialsSchema.shape.type),
     })
   )
   .output(

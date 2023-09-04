@@ -14,16 +14,16 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { isEmpty } from '@typebot.io/lib'
-import { Variable, ZemanticAIBlock } from '@typebot.io/schemas'
-import { ZemanticAICredentialsModal } from './ZemanticAICredentialsModal'
+import { Variable, ZemanticAiBlock } from '@typebot.io/schemas'
+import { ZemanticAiCredentialsModal } from './ZemanticAiCredentialsModal'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 
 type Props = {
-  options?: ZemanticAIBlock['options']
-  onOptionsChange: (options: ZemanticAIBlock['options']) => void
+  options?: ZemanticAiBlock['options']
+  onOptionsChange: (options: ZemanticAiBlock['options']) => void
 }
 
-export const ZemanticAISettings = ({ options, onOptionsChange }: Props) => {
+export const ZemanticAiSettings = ({ options, onOptionsChange }: Props) => {
   const { workspace } = useWorkspace()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -97,7 +97,7 @@ export const ZemanticAISettings = ({ options, onOptionsChange }: Props) => {
           credentialsName="Zemantic AI account"
         />
       )}
-      <ZemanticAICredentialsModal
+      <ZemanticAiCredentialsModal
         isOpen={isOpen}
         onClose={onClose}
         onNewCredentials={updateCredentialsId}

@@ -40,7 +40,7 @@ import { TypebotLinkIcon } from '@/features/blocks/logic/typebotLink/components/
 import { AbTestIcon } from '@/features/blocks/logic/abTest/components/AbTestIcon'
 import { PictureChoiceIcon } from '@/features/blocks/inputs/pictureChoice/components/PictureChoiceIcon'
 import { PixelLogo } from '@/features/blocks/integrations/pixel/components/PixelLogo'
-import { ZemanticAILogo } from '@/features/blocks/integrations/zemanticai/ZemanticAILogo'
+import { ZemanticAiLogo } from '@/features/blocks/integrations/zemanticAi/ZemanticAiLogo'
 
 type BlockIconProps = { type: BlockType } & IconProps
 
@@ -120,7 +120,7 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps): JSX.Element => {
     case IntegrationBlockType.PIXEL:
       return <PixelLogo {...props} />
     case IntegrationBlockType.ZEMANTIC_AI:
-      return <ZemanticAILogo {...props} />
+      return <ZemanticAiLogo {...props} />
     case 'start':
       return <FlagIcon {...props} />
   }

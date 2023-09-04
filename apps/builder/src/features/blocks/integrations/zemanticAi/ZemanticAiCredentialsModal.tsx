@@ -24,7 +24,7 @@ type Props = {
   onNewCredentials: (id: string) => void
 }
 
-export const ZemanticAICredentialsModal = ({
+export const ZemanticAiCredentialsModal = ({
   isOpen,
   onClose,
   onNewCredentials,
@@ -57,12 +57,12 @@ export const ZemanticAICredentialsModal = ({
     },
   })
 
-  const createZemanticAICredentials = async (e: React.FormEvent) => {
+  const createZemanticAiCredentials = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!workspace) return
     mutate({
       credentials: {
-        type: 'zemanticai',
+        type: 'zemanticAi',
         workspaceId: workspace.id,
         name,
         data: {
@@ -78,7 +78,7 @@ export const ZemanticAICredentialsModal = ({
       <ModalContent>
         <ModalHeader>Add Zemantic AI account</ModalHeader>
         <ModalCloseButton />
-        <form onSubmit={createZemanticAICredentials}>
+        <form onSubmit={createZemanticAiCredentials}>
           <ModalBody as={Stack} spacing="6">
             <TextInput
               isRequired

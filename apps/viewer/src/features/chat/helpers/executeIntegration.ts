@@ -5,7 +5,7 @@ import { executeChatwootBlock } from '@/features/blocks/integrations/chatwoot/ex
 import { executeGoogleAnalyticsBlock } from '@/features/blocks/integrations/googleAnalytics/executeGoogleAnalyticsBlock'
 import { executeGoogleSheetBlock } from '@/features/blocks/integrations/googleSheets/executeGoogleSheetBlock'
 import { executePixelBlock } from '@/features/blocks/integrations/pixel/executePixelBlock'
-import { executeZemanticAIBlock } from '@/features/blocks/integrations/zemanticai/executeZemanticAIBlock'
+import { executeZemanticAiBlock } from '@/features/blocks/integrations/zemanticAi/executeZemanticAiBlock'
 import {
   IntegrationBlock,
   IntegrationBlockType,
@@ -35,6 +35,6 @@ export const executeIntegration =
       case IntegrationBlockType.PIXEL:
         return executePixelBlock(state, block)
       case IntegrationBlockType.ZEMANTIC_AI:
-        return executeZemanticAIBlock(state, block)
+        return executeZemanticAiBlock(state, block)
     }
   }

@@ -48,7 +48,7 @@ import {
 import { jumpBlockSchema } from './logic/jump'
 import { pictureChoiceBlockSchema } from './inputs/pictureChoice'
 import { Item } from '../items'
-import { zemanticAIBlockSchema } from './integrations/zemanticai'
+import { zemanticAiBlockSchema } from './integrations/zemanticAi'
 
 export type DraggableBlock =
   | BubbleBlock
@@ -128,7 +128,7 @@ export const blockSchema = z.discriminatedUnion('type', [
   webhookBlockSchema,
   zapierBlockSchema,
   pixelBlockSchema,
-  zemanticAIBlockSchema,
+  zemanticAiBlockSchema,
 ])
 
 export type Block = z.infer<typeof blockSchema>

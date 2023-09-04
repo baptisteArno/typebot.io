@@ -29,6 +29,7 @@ dump.sql
 dump.tar
 
 __env.js
+__ENV.js
 
 typebotsToFix.json
 **/scripts/logs

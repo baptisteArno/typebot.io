@@ -1,6 +1,6 @@
 import { Icon, IconProps } from '@chakra-ui/react'
 
-export const ZemanticAILogo = (props: IconProps) => (
+export const ZemanticAiLogo = (props: IconProps) => (
   <Icon viewBox="0 0 24 24" {...props}>
     <g transform="matrix(.049281 0 0 .064343 -.27105 -3.4424)">
       <path

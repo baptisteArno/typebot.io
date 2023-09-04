@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { blockBaseSchema, credentialsBaseSchema } from '../baseSchemas'
 import { IntegrationBlockType } from './enums'
 
-export const zemanticAIOptionsSchema = z.object({
+export const zemanticAiOptionsSchema = z.object({
   credentialsId: z.string().optional(),
   resultsVariable: z.string().optional(),
   summaryVariable: z.string().optional(),
@@ -13,16 +13,16 @@ export const zemanticAIOptionsSchema = z.object({
   maxResults: z.number().int().optional(),
 })
 
-export const zemanticAIBlockSchema = blockBaseSchema.merge(
+export const zemanticAiBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([IntegrationBlockType.ZEMANTIC_AI]),
-    options: zemanticAIOptionsSchema,
+    options: zemanticAiOptionsSchema,
   })
 )
 
-export const zematicAICredentialsSchema = z
+export const zemanticAiCredentialsSchema = z
   .object({
-    type: z.literal('zemanticai'),
+    type: z.literal('zemanticAi'),
     data: z.object({
       apiKey: z.string(),
     }),
@@ -40,7 +40,7 @@ export const zemanticSearchResponseSchema = z.object({
   summary: z.string(),
 })
 
-export type ZemanticAIResponse = z.infer<typeof zemanticSearchResponseSchema>
-export type ZemanticAICredentials = z.infer<typeof zematicAICredentialsSchema>
-export type ZemanticAIOptions = z.infer<typeof zemanticAIOptionsSchema>
-export type ZemanticAIBlock = z.infer<typeof zemanticAIBlockSchema>
+export type ZemanticAiResponse = z.infer<typeof zemanticSearchResponseSchema>
+export type ZemanticAiCredentials = z.infer<typeof zemanticAiCredentialsSchema>
+export type ZemanticAiOptions = z.infer<typeof zemanticAiOptionsSchema>
+export type ZemanticAiBlock = z.infer<typeof zemanticAiBlockSchema>
