@@ -85,7 +85,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
               color={item.content !== 'Click to edit' ? 'inherit' : 'gray.500'}
               cursor="pointer"
             />
-            <EditableInput />
+            <EditableInput onMouseDownCapture={(e) => e.stopPropagation()} />
           </Editable>
           <HitboxExtension />
           <SlideFade

@@ -114,7 +114,10 @@ export const ItemNodesList = ({
       detachItemFromBlock({ groupIndex, blockIndex, itemIndex })
       setPosition(absolute)
       setRelativeCoordinates(relative)
-      setDraggedItem(item)
+      setDraggedItem({
+        ...item,
+        blockId: block.id,
+      })
     }
 
   const stopPropagating = (e: React.MouseEvent) => e.stopPropagation()
