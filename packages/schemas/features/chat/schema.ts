@@ -177,6 +177,7 @@ const startPropsToInjectSchema = z.object({
 const clientSideActionSchema = z
   .object({
     lastBubbleBlockId: z.string().optional(),
+    expectsDedicatedReply: z.boolean().optional(),
   })
   .and(
     z

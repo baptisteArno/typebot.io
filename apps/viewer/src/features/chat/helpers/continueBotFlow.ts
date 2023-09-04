@@ -1,6 +1,6 @@
-import { TRPCError } from '@trpc/server'
 import {
   AnswerInSessionState,
+  Block,
   BubbleBlockType,
   ChatReply,
   InputBlock,
@@ -8,8 +8,6 @@ import {
   IntegrationBlockType,
   LogicBlockType,
   SessionState,
-  SetVariableBlock,
-  WebhookBlock,
   defaultPaymentInputOptions,
   invalidEmailDefaultRetryMessage,
 } from '@typebot.io/schemas'
@@ -21,7 +19,6 @@ import { formatPhoneNumber } from '@/features/blocks/inputs/phone/formatPhoneNum
 import { validateUrl } from '@/features/blocks/inputs/url/validateUrl'
 import { updateVariables } from '@/features/variables/updateVariables'
 import { parseVariables } from '@/features/variables/parseVariables'
-import { OpenAIBlock } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { resumeChatCompletion } from '@/features/blocks/integrations/openai/resumeChatCompletion'
 import { resumeWebhookExecution } from '@/features/blocks/integrations/webhook/resumeWebhookExecution'
 import { upsertAnswer } from '../queries/upsertAnswer'
@@ -80,11 +77,7 @@ export const continueBotFlow =
         })(reply)
         newSessionState = result.newSessionState
       }
-    } else if (!isInputBlock(block))
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'Current block is not an input block',
-      })
+    }
 
     let formattedReply: string | undefined
 
@@ -276,10 +269,7 @@ const setNewAnswerInState =
 
 const getOutgoingEdgeId =
   (state: Pick<SessionState, 'typebotsQueue'>) =>
-  (
-    block: InputBlock | SetVariableBlock | OpenAIBlock | WebhookBlock,
-    reply: string | undefined
-  ) => {
+  (block: Block, reply: string | undefined) => {
     const variables = state.typebotsQueue[0].typebot.variables
     if (
       block.type === InputBlockType.CHOICE &&

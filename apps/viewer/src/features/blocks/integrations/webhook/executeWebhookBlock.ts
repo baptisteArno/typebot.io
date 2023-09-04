@@ -64,6 +64,7 @@ export const executeWebhookBlock = async (
       clientSideActions: [
         {
           webhookToExecute: parsedWebhook,
+          expectsDedicatedReply: true,
         },
       ],
     }

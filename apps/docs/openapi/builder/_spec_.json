@@ -2088,6 +2088,9 @@
                                             "properties": {
                                               "secondsToWaitFor": {
                                                 "type": "string"
+                                              },
+                                              "shouldPause": {
+                                                "type": "boolean"
                                               }
                                             },
                                             "additionalProperties": false
@@ -6381,6 +6384,9 @@
                                         "properties": {
                                           "secondsToWaitFor": {
                                             "type": "string"
+                                          },
+                                          "shouldPause": {
+                                            "type": "boolean"
                                           }
                                         },
                                         "additionalProperties": false
@@ -10309,6 +10315,9 @@
                                           "properties": {
                                             "secondsToWaitFor": {
                                               "type": "string"
+                                            },
+                                            "shouldPause": {
+                                              "type": "boolean"
                                             }
                                           },
                                           "additionalProperties": false
@@ -14377,6 +14386,9 @@
                                         "properties": {
                                           "secondsToWaitFor": {
                                             "type": "string"
+                                          },
+                                          "shouldPause": {
+                                            "type": "boolean"
                                           }
                                         },
                                         "additionalProperties": false
@@ -18325,6 +18337,9 @@
                                           "properties": {
                                             "secondsToWaitFor": {
                                               "type": "string"
+                                            },
+                                            "shouldPause": {
+                                              "type": "boolean"
                                             }
                                           },
                                           "additionalProperties": false
@@ -22328,6 +22343,9 @@
                                           "properties": {
                                             "secondsToWaitFor": {
                                               "type": "string"
+                                            },
+                                            "shouldPause": {
+                                              "type": "boolean"
                                             }
                                           },
                                           "additionalProperties": false
@@ -26394,6 +26412,9 @@
                                           "properties": {
                                             "secondsToWaitFor": {
                                               "type": "string"
+                                            },
+                                            "shouldPause": {
+                                              "type": "boolean"
                                             }
                                           },
                                           "additionalProperties": false

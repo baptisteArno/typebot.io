@@ -165,10 +165,7 @@ export const startSession = async ({
   }
 
   const clientSideActionsNeedSessionId = clientSideActions?.some(
-    (action) =>
-      'setVariable' in action ||
-      'streamOpenAiChatCompletion' in action ||
-      'webhookToExecute' in action
+    (action) => action.expectsDedicatedReply
   )
 
   if (!input && !clientSideActionsNeedSessionId)

@@ -19,6 +19,7 @@ export const executeWait = (
       ? [
           {
             wait: { secondsToWaitFor: parsedSecondsToWaitFor },
+            expectsDedicatedReply: block.options.shouldPause,
           },
         ]
       : undefined,

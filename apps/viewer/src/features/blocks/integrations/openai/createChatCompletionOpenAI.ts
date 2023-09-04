@@ -95,6 +95,7 @@ export const createChatCompletionOpenAI = async (
               assistantMessageVariableName
             ),
           },
+          expectsDedicatedReply: true,
         },
       ],
       outgoingEdgeId,

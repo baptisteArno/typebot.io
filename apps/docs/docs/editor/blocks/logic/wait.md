@@ -7,3 +7,9 @@ This can be useful if you want the bot to emphasize on what's been said or to wa
 :::caution
 This should be used wisely. If you want the bot to write slower or faster in a more general sense, you need to check the [Typing emulation settings](/editor/settings#typing-emulation)
 :::
+
+## Pause the flow
+
+You can enable the "Pause the flow" option if you ever need to mark a pause in the flow.
+
+Under the hood, typebot always compute all the blocks between each input blocks. But sometimes you may want to display some messages before a long-running action like a slow webhook request.

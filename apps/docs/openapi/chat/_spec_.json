@@ -1671,6 +1671,9 @@
                                                 "properties": {
                                                   "secondsToWaitFor": {
                                                     "type": "string"
+                                                  },
+                                                  "shouldPause": {
+                                                    "type": "boolean"
                                                   }
                                                 },
                                                 "additionalProperties": false
@@ -5204,6 +5207,9 @@
                             "properties": {
                               "lastBubbleBlockId": {
                                 "type": "string"
+                              },
+                              "expectsDedicatedReply": {
+                                "type": "boolean"
                               }
                             }
                           },

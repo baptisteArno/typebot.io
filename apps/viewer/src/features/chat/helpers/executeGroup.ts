@@ -94,10 +94,7 @@ export const executeGroup =
         ]
         if (
           executionResponse.clientSideActions?.find(
-            (action) =>
-              'setVariable' in action ||
-              'streamOpenAiChatCompletion' in action ||
-              'webhookToExecute' in action
+            (action) => action.expectsDedicatedReply
           )
         ) {
           return {

@@ -34,6 +34,7 @@ export const executeSetVariable = (
           setVariable: {
             scriptToExecute,
           },
+          expectsDedicatedReply: true,
         },
       ],
     }

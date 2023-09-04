@@ -39,7 +39,10 @@ export const executeClientSideAction = async ({
     return executeRedirect(clientSideAction.redirect)
   }
   if ('wait' in clientSideAction) {
-    return executeWait(clientSideAction.wait)
+    await executeWait(clientSideAction.wait)
+    return clientSideAction.expectsDedicatedReply
+      ? { replyToSend: undefined }
+      : undefined
   }
   if ('setVariable' in clientSideAction) {
     return executeSetVariable(clientSideAction.setVariable.scriptToExecute)
