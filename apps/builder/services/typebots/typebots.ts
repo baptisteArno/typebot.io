@@ -53,6 +53,9 @@ import {
   WhatsAppOptionsListStep,
   WhatsAppButtonsListStep,
   defaultPreReserveOptions,
+  WOZStepType,
+  defaultWOZMessageOptions,
+  WOZMessageOptions,
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
@@ -428,7 +431,7 @@ const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType | OctaWab
   }
 }
 
-const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType): OctaStepOptions | OctaWabaStepOptions | null => {
+const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType | WOZStepType): OctaStepOptions | OctaWabaStepOptions | WOZMessageOptions | null => {
   switch (type) {
     case OctaStepType.ASSIGN_TO_TEAM:
       return defaultAssignToTeamOptions
@@ -440,6 +443,8 @@ const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType): OctaStepOp
       return defaultCommerceOptions
     case OctaStepType.PRE_RESERVE:
       return defaultPreReserveOptions
+    case WOZStepType.MESSAGE:
+      return defaultWOZMessageOptions
     case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
       return defaultWhatsAppOptionsListOptions
     case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:

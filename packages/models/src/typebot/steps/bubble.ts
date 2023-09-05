@@ -16,6 +16,10 @@ export enum BubbleStepType {
   EMBED = 'embed',
 }
 
+export enum WOZStepType {
+  MESSAGE = 'woz message',
+}
+
 export type BubbleStepContent =
   | TextBubbleContent
   | ImageBubbleContent

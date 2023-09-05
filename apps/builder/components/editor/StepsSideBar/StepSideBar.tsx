@@ -31,6 +31,7 @@ import {
   OctaStepType,
   OctaBubbleStepType,
   OctaWabaStepType,
+  WOZStepType,
 } from 'models'
 import { useStepDnd } from 'contexts/GraphDndContext'
 import React, { useState } from 'react'
@@ -228,6 +229,24 @@ export const StepsSideBar = () => {
               )))}
           </SimpleGrid>
         </Stack>
+
+        <Stack>
+          <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+            WOZ - IA da Octa
+          </Text>
+          <SimpleGrid columns={1} spacing="3">
+            {Object.values(WOZStepType).map((type) => (
+              shouldHideComponents(type) && (
+                <StepCard
+                  key={type}
+                  type={type}
+                  onMouseDown={handleMouseDown}
+                  isDisabled={shouldDisableComponent(type)}
+                />
+              )))}
+          </SimpleGrid>
+        </Stack>
+
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
