@@ -8,6 +8,7 @@ import {
   LogicStepType,
   StepType,
   OctaWabaStepType,
+  WOZStepType,
 } from 'models'
 import React from 'react'
 
@@ -17,6 +18,8 @@ export const StepTypeLabel = ({ type }: Props) => {
   switch (type) {
     case BubbleStepType.TEXT:
       return <Text>Envie uma mensagem de texto</Text>
+    case WOZStepType.MESSAGE:
+      return <Text>Envie uma sugestão WOZ</Text>
     case InputStepType.TEXT:
       return <Text>Pergunte qualquer coisa</Text>
     case BubbleStepType.MEDIA:

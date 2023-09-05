@@ -23,6 +23,7 @@ import {
   OctaWabaStepType,
   BubbleStepType,
   MediaBubbleContent,
+  WOZStepType,
 } from 'models'
 import { useRef } from 'react'
 import {
@@ -36,7 +37,8 @@ import {
   PreReserveSettingsBody,
   CallOtherBotSettingsBody,
   WhatsAppOptionsListSettingsBody,
-  WhatsAppButtonsListSettingsBody
+  WhatsAppButtonsListSettingsBody,
+  WOZMessageSettingBody
 } from './bodies'
 import { ChoiceInputSettingsBody } from './bodies/ChoiceInputSettingsBody'
 import { CodeSettings } from './bodies/CodeSettings'
@@ -152,6 +154,7 @@ export const StepSettings = ({
     onStepChange({ content } as Partial<Step>)
   }
   const handleOptionsChange = (options: StepOptions) => {
+    console.log('handleOptionsChange', { options })
     onStepChange({ options } as Partial<Step>)
   }
   const handleItemChange = (updates: Partial<any>) => {
@@ -168,7 +171,7 @@ export const StepSettings = ({
         />
       )
     }
-    
+
     case InputStepType.CHOICE: {
       return (
         <ChoiceInputSettingsBody
@@ -234,6 +237,16 @@ export const StepSettings = ({
         />
       )
     }
+    case WOZStepType.MESSAGE: {
+      return (
+        <WOZMessageSettingBody
+          options={
+            step.options
+          }
+          onOptionsChange={handleOptionsChange}
+        />
+      )
+    }
     case OctaStepType.CALL_OTHER_BOT: {
       return (
         <CallOtherBotSettingsBody
@@ -286,7 +299,7 @@ export const StepSettings = ({
     case InputStepType.TEXT:
     case InputStepType.PHONE:
     case InputStepType.DATE:
-    case InputStepType.CPF:  {
+    case InputStepType.CPF: {
       return (
         <InputSettingBody
           step={step}
@@ -302,7 +315,7 @@ export const StepSettings = ({
         />
       )
     }
-    default: 
-    return (<spam></spam>)
+    default:
+      return (<spam></spam>)
   }
 }
