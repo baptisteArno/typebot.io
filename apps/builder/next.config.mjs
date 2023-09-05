@@ -22,7 +22,7 @@ const nextConfig = {
   ],
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'fr', 'pt', 'pt_BR', 'de'],
+    locales: ['en', 'fr', 'pt', 'pt-BR', 'de'],
   },
   experimental: {
     outputFileTracingRoot: join(__dirname, '../../'),
