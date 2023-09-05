@@ -23,6 +23,7 @@ import { areTypebotsEqual } from '@/features/publish/helpers/areTypebotsEqual'
 import { isPublished as isPublishedHelper } from '@/features/publish/helpers/isPublished'
 import { convertPublicTypebotToTypebot } from '@/features/publish/helpers/convertPublicTypebotToTypebot'
 import { trpc } from '@/lib/trpc'
+import { useScopedI18n } from '@/locales'
 
 const autoSaveTimeout = 10000
 
@@ -79,6 +80,7 @@ export const TypebotProvider = ({
   children: ReactNode
   typebotId?: string
 }) => {
+  const scopedT = useScopedI18n('editor.provider')
   const { push } = useRouter()
   const { showToast } = useToast()
 
@@ -92,12 +94,15 @@ export const TypebotProvider = ({
       enabled: isDefined(typebotId),
       onError: (error) => {
         if (error.data?.httpStatus === 404) {
-          showToast({ status: 'info', description: "Couldn't find typebot" })
+          showToast({
+            status: 'info',
+            description: scopedT('messages.getTypebotError.description'),
+          })
           push('/typebots')
           return
         }
         showToast({
-          title: 'Error while fetching typebot. Refresh the page.',
+          title: scopedT('messages.getTypebotError.title'),
           description: error.message,
         })
       },
@@ -112,7 +117,7 @@ export const TypebotProvider = ({
         onError: (error) => {
           if (error.data?.httpStatus === 404) return
           showToast({
-            title: 'Error while fetching published typebot',
+            title: scopedT('messages.publishedTypebotError.title'),
             description: error.message,
           })
         },
@@ -123,7 +128,7 @@ export const TypebotProvider = ({
     trpc.typebot.updateTypebot.useMutation({
       onError: (error) =>
         showToast({
-          title: 'Error while updating typebot',
+          title: scopedT('messages.updateTypebotError.title'),
           description: error.message,
         }),
       onSuccess: () => {
@@ -253,7 +258,10 @@ export const TypebotProvider = ({
         isPublished,
         updateTypebot: updateLocalTypebot,
         restorePublishedTypebot,
-        ...groupsActions(setLocalTypebot as SetTypebot),
+        ...groupsActions(
+          setLocalTypebot as SetTypebot,
+          scopedT('groups.copy.title')
+        ),
         ...blocksAction(setLocalTypebot as SetTypebot),
         ...variablesAction(setLocalTypebot as SetTypebot),
         ...edgesAction(setLocalTypebot as SetTypebot),

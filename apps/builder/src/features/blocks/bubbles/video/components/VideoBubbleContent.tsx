@@ -1,9 +1,15 @@
+import { useScopedI18n } from '@/locales'
 import { Box, Text } from '@chakra-ui/react'
 import { VideoBubbleBlock, VideoBubbleContentType } from '@typebot.io/schemas'
 
-export const VideoBubbleContent = ({ block }: { block: VideoBubbleBlock }) => {
+type Props = {
+  block: VideoBubbleBlock
+}
+
+export const VideoBubbleContent = ({ block }: Props) => {
+  const scopedT = useScopedI18n('editor.blocks.bubbles.video.node')
   if (!block.content?.url || !block.content.type)
-    return <Text color="gray.500">Click to edit...</Text>
+    return <Text color="gray.500">{scopedT('clickToEdit.text')}</Text>
   switch (block.content.type) {
     case VideoBubbleContentType.URL:
       return (

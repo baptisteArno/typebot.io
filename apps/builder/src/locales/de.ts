@@ -122,6 +122,7 @@ export default defineLocale({
     'Um {type} hinzuzufügen, musst du deinen Tarif aktualisieren',
   'billing.currentSubscription.heading': 'Abonnement',
   'billing.currentSubscription.subheading': 'Aktuelles Workspace-Abonnement:',
+  'billing.currentSubscription.cancelDate': 'Wird storniert am',
   'billing.invoices.heading': 'Rechnungen',
   'billing.invoices.empty': 'Keine Rechnungen für diesen Workspace gefunden.',
   'billing.invoices.paidAt': 'Bezahlt am',
@@ -154,6 +155,7 @@ export default defineLocale({
   'billing.pricingCard.pro.customDomains': 'Eigene Domains',
   'billing.pricingCard.pro.analytics': 'Detaillierte Analysen',
   'billing.usage.heading': 'Nutzung',
+  'billing.usage.unlimited': 'Unbegrenzt',
   'billing.usage.chats.heading': 'Chats',
   'billing.usage.chats.alert.soonReach':
     'Deine Typebots sind beliebt! Du wirst bald das Chat-Limit deines Tarifs erreichen. 🚀',
@@ -190,4 +192,135 @@ export default defineLocale({
   'workspace.settings.modal.menu.version.label': 'Version: {version}',
   'workspace.dropdown.newButton.label': 'Neuer Workspace',
   'workspace.dropdown.logoutButton.label': 'Abmelden',
+
+  'templates.buttons.heading': 'Erstelle einen neuen Typebot',
+  'templates.buttons.fromScratchButton.label': 'Von Grund auf starten',
+  'templates.buttons.fromTemplateButton.label': 'Von einer Vorlage starten',
+  'templates.buttons.importFileButton.label': 'Datei importieren',
+  'templates.modal.menuHeading.marketing': 'Marketing',
+  'templates.modal.menuHeading.product': 'Produkt',
+  'templates.modal.menuHeading.other': 'Andere',
+  'templates.modal.menuHeading.new.tag': 'Neu',
+  'templates.modal.useTemplateButton.label': 'Diese Vorlage verwenden',
+  'templates.importFromFileButon.toastError.description':
+    'Konnte die Datei nicht verarbeiten. Bist du sicher, dass es sich um einen Typebot handelt?',
+  'editor.headers.flowButton.label': 'Ablauf',
+  'editor.headers.themeButton.label': 'Design',
+  'editor.headers.settingsButton.label': 'Einstellungen',
+  'editor.headers.shareButton.label': 'Teilen',
+  'editor.headers.resultsButton.label': 'Ergebnisse',
+  'editor.headers.helpButton.label': 'Hilfe',
+  'editor.headers.savingSpinner.label': 'Speichern...',
+  'editor.headers.previewButton.label': 'Vorschau',
+  'editor.sidebarBlocks.sidebar.lock.label': 'Seitenleiste sperren',
+  'editor.sidebarBlocks.sidebar.unlock.label': 'Seitenleiste entsperren',
+  'editor.sidebarBlocks.sidebar.icon.lock.label': 'Sperren',
+  'editor.sidebarBlocks.sidebar.icon.unlock.label': 'Entsperren',
+  'editor.sidebarBlocks.blockType.bubbles.heading': 'Blasen',
+  'editor.sidebarBlocks.blockType.inputs.heading': 'Eingaben',
+  'editor.sidebarBlocks.blockType.logic.heading': 'Logik',
+  'editor.sidebarBlocks.blockType.integrations.heading': 'Integrationen',
+  'editor.sidebarBlock.start.label': 'Start',
+  'editor.sidebarBlock.text.label': 'Text',
+  'editor.sidebarBlock.image.label': 'Bild',
+  'editor.sidebarBlock.video.label': 'Video',
+  'editor.sidebarBlock.embed.label': 'Einbetten',
+  'editor.sidebarBlock.audio.label': 'Audio',
+  'editor.sidebarBlock.number.label': 'Nummer',
+  'editor.sidebarBlock.email.label': 'E-Mail',
+  'editor.sidebarBlock.website.label': 'Website',
+  'editor.sidebarBlock.date.label': 'Datum',
+  'editor.sidebarBlock.phone.label': 'Telefon',
+  'editor.sidebarBlock.button.label': 'Buttons',
+  'editor.sidebarBlock.picChoice.label': 'Bildauswahl',
+  'editor.sidebarBlock.payment.label': 'Zahlung',
+  'editor.sidebarBlock.rating.label': 'Bewertung',
+  'editor.sidebarBlock.file.label': 'Datei',
+  'editor.sidebarBlock.setVariable.label': 'Variable setzen',
+  'editor.sidebarBlock.condition.label': 'Bedingung',
+  'editor.sidebarBlock.redirect.label': 'Weiterleitung',
+  'editor.sidebarBlock.script.label': 'Skript',
+  'editor.sidebarBlock.typebot.label': 'Typebot',
+  'editor.sidebarBlock.wait.label': 'Warten',
+  'editor.sidebarBlock.jump.label': 'Springen',
+  'editor.sidebarBlock.abTest.label': 'AB-Test',
+  'editor.sidebarBlock.sheets.label': 'Tabellen',
+  'editor.sidebarBlock.analytics.label': 'Analytics',
+  'editor.sidebarBlock.webhook.label': 'Webhook',
+  'editor.sidebarBlock.zapier.label': 'Zapier',
+  'editor.sidebarBlock.makecom.label': 'Make.com',
+  'editor.sidebarBlock.pabbly.label': 'Pabbly',
+  'editor.sidebarBlock.chatwoot.label': 'Chatwoot',
+  'editor.sidebarBlock.openai.label': 'OpenAI',
+  'editor.sidebarBlock.pixel.label': 'Pixel',
+  'editor.blockCard.bubbleBlock.tooltip.label':
+    'Ein PDF, ein iframe, eine Website einbetten...',
+  'editor.blockCard.inputBlock.tooltip.files.label': 'Dateien hochladen',
+  'editor.blockCard.logicBlock.tooltip.code.label': 'JavaScript-Code ausführen',
+  'editor.blockCard.logicBlock.tooltip.typebotLink.label':
+    'Verlinkung zu einem anderen Typebot',
+  'editor.blockCard.logicBlock.tooltip.jump.label':
+    'Ablauf zu einer anderen Gruppe beschleunigen',
+  'editor.blockCard.integrationBlock.tooltip.googleSheets.label':
+    'Google Tabellen',
+  'editor.blockCard.integrationBlock.tooltip.googleAnalytics.label':
+    'Google Analytics',
+  'editor.editableTypebotName.tooltip.rename.label': 'Umbenennen',
+  'editor.gettingStartedModal.editorBasics.heading': 'Grundlagen des Editors',
+  'editor.gettingStartedModal.editorBasics.list.one.label':
+    'Die Seitenleiste enthält Blöcke, die du auf das Board ziehen und ablegen kannst.',
+  'editor.gettingStartedModal.editorBasics.list.two.label':
+    'Du kannst Blöcke gruppieren, indem du sie unter oder über einander ablegst.',
+  'editor.gettingStartedModal.editorBasics.list.three.label':
+    'Verbinde die Gruppen miteinander.',
+  'editor.gettingStartedModal.editorBasics.list.four.label':
+    'Klicke auf die Vorschau-Schaltfläche oben rechts, um deinen Bot anzusehen.',
+  'editor.gettingStartedModal.editorBasics.list.label':
+    'Wenn du Fragen hast, verwende gerne die Sprechblase unten rechts, um sie mir zu stellen. Ich beantworte normalerweise innerhalb der nächsten 24 Stunden. 😃',
+  'editor.gettingStartedModal.seeAction.label': 'In Aktion sehen',
+  'editor.gettingStartedModal.seeAction.time': '5 Minuten',
+  'editor.gettingStartedModal.seeAction.item.label': 'Weitere Videos',
+  'editor.provider.messages.getTypebotError.title':
+    'Fehler beim Abrufen des Typebots. Aktualisiere die Seite.',
+  'editor.provider.messages.getTypebotError.description':
+    'Typebot konnte nicht gefunden werden.',
+  'editor.provider.messages.publishedTypebotError.title':
+    'Fehler beim Abrufen des veröffentlichten Typebots',
+  'editor.provider.messages.updateTypebotError.title':
+    'Fehler beim Aktualisieren des Typebots',
+  'editor.provider.groups.copy.title': 'kopieren',
+  'editor.blocks.start.text': 'Start',
+  'editor.blocks.bubbles.audio.settings.upload.label': 'Hochladen',
+  'editor.blocks.bubbles.audio.settings.embedLink.label': 'Link einbetten',
+  'editor.blocks.bubbles.audio.settings.chooseFile.label': 'Datei auswählen',
+  'editor.blocks.bubbles.audio.settings.worksWith.text':
+    'Funktioniert mit .MP3- und .WAV-Dateien',
+  'editor.blocks.bubbles.audio.settings.worksWith.placeholder':
+    'Füge den Audio-Dateilink ein...',
+  'editor.blocks.bubbles.audio.settings.autoplay.label': 'Autoplay aktivieren',
+  'editor.blocks.bubbles.audio.node.clickToEdit.text':
+    'Zum Bearbeiten klicken...',
+  'editor.blocks.bubbles.embed.node.clickToEdit.text':
+    'Zum Bearbeiten klicken...',
+  'editor.blocks.bubbles.embed.node.show.text': 'Einbetten anzeigen',
+  'editor.blocks.bubbles.embed.settings.worksWith.placeholder':
+    'Füge den Link oder Code ein...',
+  'editor.blocks.bubbles.embed.settings.worksWith.text':
+    'Funktioniert mit PDFs, iframes, Websites...',
+  'editor.blocks.bubbles.embed.settings.numberInput.unit': 'px',
+  'editor.blocks.bubbles.image.node.clickToEdit.text':
+    'Zum Bearbeiten klicken...',
+  'editor.blocks.bubbles.image.switchWithLabel.onClick.label':
+    'Beim Klicken Link',
+  'editor.blocks.bubbles.image.switchWithLabel.onClick.placeholder':
+    'Link Alternativtext (Beschreibung)',
+  'editor.blocks.bubbles.video.node.clickToEdit.text':
+    'Zum Bearbeiten klicken...',
+  'editor.blocks.bubbles.video.settings.worksWith.text':
+    'Funktioniert mit YouTube, Vimeo und anderen',
+  'editor.blocks.bubbles.video.settings.worksWith.placeholder':
+    'Füge den Videolink ein...',
+  'editor.blocks.bubbles.textEditor.plate.label': 'Texteditor',
+  'editor.blocks.bubbles.textEditor.searchVariable.placeholder':
+    'Nach einer Variable suchen',
 })

@@ -16,10 +16,10 @@ import { Plan } from '@typebot.io/prisma'
 import { trpc } from '@/lib/trpc'
 import { NewVersionPopup } from '@/components/NewVersionPopup'
 import { I18nProvider } from '@/locales'
+import en from '@/locales/en'
 import { TypebotProvider } from '@/features/editor/providers/TypebotProvider'
 import { WorkspaceProvider } from '@/features/workspace/WorkspaceProvider'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
-import en from '@/locales/en'
 
 import { initPostHogIfEnabled } from '@/features/telemetry/posthog'
 initPostHogIfEnabled()

@@ -28,7 +28,10 @@ export type GroupsActions = {
   deleteGroup: (groupIndex: number) => void
 }
 
-const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
+const groupsActions = (
+  setTypebot: SetTypebot,
+  groupCopyLabel: string
+): GroupsActions => ({
   createGroup: ({
     id,
     block,
@@ -63,11 +66,12 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
       produce(typebot, (typebot) => {
         const group = typebot.groups[groupIndex]
         const id = createId()
+
         const newGroup: Group = {
           ...group,
           title: isEmpty(group.title)
             ? ''
-            : `${parseGroupTitle(group.title)} copy`,
+            : `${parseGroupTitle(group.title)} ${groupCopyLabel}`,
           id,
           blocks: group.blocks.map((block) => duplicateBlockDraft(id)(block)),
           graphCoordinates: {

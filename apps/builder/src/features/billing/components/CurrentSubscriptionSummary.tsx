@@ -30,7 +30,8 @@ export const CurrentSubscriptionSummary = ({ workspace }: Props) => {
         <PlanTag plan={workspace.plan} />
         {data?.subscription?.cancelDate && (
           <Text fontSize="sm">
-            (Will be cancelled on {data.subscription.cancelDate.toDateString()})
+            ({scopedT('cancelDate')}{' '}
+            {data.subscription.cancelDate.toDateString()})
           </Text>
         )}
       </HStack>
