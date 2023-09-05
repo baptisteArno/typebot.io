@@ -1,17 +1,17 @@
+import { useScopedI18n } from '@/locales'
 import { Box, Text, Image } from '@chakra-ui/react'
 import { ImageBubbleBlock } from '@typebot.io/schemas'
-import { I18nFunction } from '@/locales'
 
 type Props = {
-  scopedT: I18nFunction
   block: ImageBubbleBlock
 }
 
-export const ImageBubbleContent = ({ scopedT, block }: Props) => {
+export const ImageBubbleContent = ({ block }: Props) => {
+  const scopedT = useScopedI18n('editor.blocks.bubbles.image.node')
   const containsVariables =
     block.content?.url?.includes('{{') && block.content.url.includes('}}')
   return !block.content?.url ? (
-    <Text color={'gray.500'}>{scopedT('bubbles.image.node.clickToEdit.text')}</Text>
+    <Text color={'gray.500'}>{scopedT('clickToEdit.text')}</Text>
   ) : (
     <Box w="full">
       <Image

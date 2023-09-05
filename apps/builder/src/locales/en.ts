@@ -115,7 +115,6 @@ export default {
     'You need to upgrade your plan in order to {type}',
   'billing.currentSubscription.heading': 'Subscription',
   'billing.currentSubscription.subheading': 'Current workspace subscription:',
-  'billing.currentSubscription.cancelLink': 'Cancel my subscription',
   'billing.currentSubscription.cancelDate': 'Will be cancelled on',
   'billing.invoices.heading': 'Invoices',
   'billing.invoices.empty': 'No invoices found for this workspace.',
@@ -224,7 +223,7 @@ export default {
   'editor.sidebarBlock.website.label': 'Website',
   'editor.sidebarBlock.date.label': 'Date',
   'editor.sidebarBlock.phone.label': 'Phone',
-  'editor.sidebarBlock.button.label': 'Button',
+  'editor.sidebarBlock.button.label': 'Buttons',
   'editor.sidebarBlock.picChoice.label': 'Pic choice',
   'editor.sidebarBlock.payment.label': 'Payment',
   'editor.sidebarBlock.rating.label': 'Rating',
@@ -246,51 +245,69 @@ export default {
   'editor.sidebarBlock.chatwoot.label': 'Chatwoot',
   'editor.sidebarBlock.openai.label': 'OpenAI',
   'editor.sidebarBlock.pixel.label': 'Pixel',
-  'editor.blockCard.bubbleBlock.tooltip.label': 'Embed a pdf, an iframe, a website...',
+  'editor.blockCard.bubbleBlock.tooltip.label':
+    'Embed a pdf, an iframe, a website...',
   'editor.blockCard.inputBlock.tooltip.files.label': 'Upload Files',
   'editor.blockCard.logicBlock.tooltip.code.label': 'Execute Javascript code',
-  'editor.blockCard.logicBlock.tooltip.link.label': 'Link and jump to another typebot',
-  'editor.blockCard.logicBlock.tooltip.fastForward.label': 'Fast forward the flow to another group',
-  'editor.blockCard.integrationBlock.tooltip.googleSheets.label': 'Google Sheets',
-  'editor.blockCard.integrationBlock.tooltip.googleAnalytics.label': 'Google Analytics',
+  'editor.blockCard.logicBlock.tooltip.typebotLink.label':
+    'Link and jump to another typebot',
+  'editor.blockCard.logicBlock.tooltip.jump.label':
+    'Fast forward the flow to another group',
+  'editor.blockCard.integrationBlock.tooltip.googleSheets.label':
+    'Google Sheets',
+  'editor.blockCard.integrationBlock.tooltip.googleAnalytics.label':
+    'Google Analytics',
   'editor.editableTypebotName.tooltip.rename.label': 'Rename',
   'editor.gettingStartedModal.editorBasics.heading': 'Editor Basics',
-  'editor.gettingStartedModal.editorBasics.list.one.number': '1',
-  'editor.gettingStartedModal.editorBasics.list.one.label': 'The left side bar contains blocks that you can drag and drop to the board.',
-  'editor.gettingStartedModal.editorBasics.list.two.number': '2',
-  'editor.gettingStartedModal.editorBasics.list.two.label': 'You can group blocks together by dropping them below or above each other',
-  'editor.gettingStartedModal.editorBasics.list.three.number': '3',
-  'editor.gettingStartedModal.editorBasics.list.three.label': 'Connect the groups together',
-  'editor.gettingStartedModal.editorBasics.list.four.number': '4',
-  'editor.gettingStartedModal.editorBasics.list.four.label': 'Preview your bot by clicking the preview button on the top right',
-  'editor.gettingStartedModal.editorBasics.list.label': 'Feel free to use the bottom-right bubble to reach out if you have any question. I usually answer within the next 24 hours. 😃',
+  'editor.gettingStartedModal.editorBasics.list.one.label':
+    'The left side bar contains blocks that you can drag and drop to the board.',
+  'editor.gettingStartedModal.editorBasics.list.two.label':
+    'You can group blocks together by dropping them below or above each other',
+  'editor.gettingStartedModal.editorBasics.list.three.label':
+    'Connect the groups together',
+  'editor.gettingStartedModal.editorBasics.list.four.label':
+    'Preview your bot by clicking the preview button on the top right',
+  'editor.gettingStartedModal.editorBasics.list.label':
+    'Feel free to use the bottom-right bubble to reach out if you have any question. I usually answer within the next 24 hours. 😃',
   'editor.gettingStartedModal.seeAction.label': 'See it in action',
   'editor.gettingStartedModal.seeAction.time': '5 minutes',
   'editor.gettingStartedModal.seeAction.item.label': 'Other videos',
-  'editor.provider.messages.getTypebotError.title': 'Error while fetching typebot. Refresh the page.',
-  'editor.provider.messages.getTypebotError.description': 'Couldn\'t find typebot',
-  'editor.provider.messages.publishedTypebotError.title': 'Error while fetching published typebot',
-  'editor.provider.messages.updateTypebotError.title': 'Error while updating typebot',
+  'editor.provider.messages.getTypebotError.title':
+    'Error while fetching typebot. Refresh the page.',
+  'editor.provider.messages.getTypebotError.description':
+    "Couldn't find typebot",
+  'editor.provider.messages.publishedTypebotError.title':
+    'Error while fetching published typebot',
+  'editor.provider.messages.updateTypebotError.title':
+    'Error while updating typebot',
   'editor.provider.groups.copy.title': 'copy',
   'editor.blocks.start.text': 'Start',
-  'editor.blocks.bubbles.audio.button.upload.label': 'Upload',
-  'editor.blocks.bubbles.audio.button.embedLink.label': 'Embed link',
-  'editor.blocks.bubbles.audio.button.chooseFile.label': 'Choose a file',
-  'editor.blocks.bubbles.audio.textInput.worksWith.text': 'Works with .MP3s and .WAVs',
-  'editor.blocks.bubbles.audio.textInput.worksWith.placeholder': 'Paste the audio file link...',
-  'editor.blocks.bubbles.audio.switchWithLabel.autoplay.label': 'Enable autoplay',
+  'editor.blocks.bubbles.audio.settings.upload.label': 'Upload',
+  'editor.blocks.bubbles.audio.settings.embedLink.label': 'Embed link',
+  'editor.blocks.bubbles.audio.settings.chooseFile.label': 'Choose a file',
+  'editor.blocks.bubbles.audio.settings.worksWith.text':
+    'Works with .MP3s and .WAVs',
+  'editor.blocks.bubbles.audio.settings.worksWith.placeholder':
+    'Paste the audio file link...',
+  'editor.blocks.bubbles.audio.settings.autoplay.label': 'Enable autoplay',
   'editor.blocks.bubbles.audio.node.clickToEdit.text': 'Click to edit...',
   'editor.blocks.bubbles.embed.node.clickToEdit.text': 'Click to edit...',
   'editor.blocks.bubbles.embed.node.show.text': 'Show embed',
-  'editor.blocks.bubbles.embed.worksWith.placeholder': 'Paste the link or code...',
-  'editor.blocks.bubbles.embed.worksWith.text': 'Works with PDFs, iframes, websites...',
-  'editor.blocks.bubbles.embed.numberInput.unit': 'px',
+  'editor.blocks.bubbles.embed.settings.worksWith.placeholder':
+    'Paste the link or code...',
+  'editor.blocks.bubbles.embed.settings.worksWith.text':
+    'Works with PDFs, iframes, websites...',
+  'editor.blocks.bubbles.embed.settings.numberInput.unit': 'px',
   'editor.blocks.bubbles.image.node.clickToEdit.text': 'Click to edit...',
   'editor.blocks.bubbles.image.switchWithLabel.onClick.label': 'On click link',
-  'editor.blocks.bubbles.image.switchWithLabel.onClick.placeholder': 'Link alt text (description)',
+  'editor.blocks.bubbles.image.switchWithLabel.onClick.placeholder':
+    'Link alt text (description)',
   'editor.blocks.bubbles.video.node.clickToEdit.text': 'Click to edit...',
-  'editor.blocks.bubbles.video.textInput.worksWith.text': 'Works with Youtube, Vimeo and others',
-  'editor.blocks.bubbles.video.textInput.worksWith.placeholder': 'Paste the video link...',
+  'editor.blocks.bubbles.video.settings.worksWith.text':
+    'Works with Youtube, Vimeo and others',
+  'editor.blocks.bubbles.video.settings.worksWith.placeholder':
+    'Paste the video link...',
   'editor.blocks.bubbles.textEditor.plate.label': 'Text editor',
-  'editor.blocks.bubbles.textEditor.searchVariable.placeholder': 'Search for a variable',
+  'editor.blocks.bubbles.textEditor.searchVariable.placeholder':
+    'Search for a variable',
 } as const

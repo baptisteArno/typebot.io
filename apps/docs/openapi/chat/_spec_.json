@@ -855,6 +855,9 @@
                                                   },
                                                   "isRange": {
                                                     "type": "boolean"
+                                                  },
+                                                  "format": {
+                                                    "type": "string"
                                                   }
                                                 },
                                                 "required": [
@@ -4691,6 +4694,9 @@
                                     },
                                     "isRange": {
                                       "type": "boolean"
+                                    },
+                                    "format": {
+                                      "type": "string"
                                     }
                                   },
                                   "required": [

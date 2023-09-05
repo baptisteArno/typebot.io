@@ -71,6 +71,7 @@ export default {
   'analytics.viewsLabel': 'Visualizações',
   'analytics.startsLabel': 'Inícios',
   'analytics.completionRateLabel': 'Taxa de conclusão',
+  'analytics.notAvailableLabel': 'Não disponível',
   'auth.signin.heading': 'Entrar',
   'auth.signin.noAccountLabel.preLink': 'Não tem uma conta?',
   'auth.signin.noAccountLabel.link': 'Registre-se gratuitamente',
@@ -118,7 +119,6 @@ export default {
   'billing.currentSubscription.heading': 'Assinatura',
   'billing.currentSubscription.subheading':
     'Assinatura atual do espaço de trabalho:',
-  'billing.currentSubscription.cancelLink': 'Cancelar minha assinatura',
   'billing.currentSubscription.cancelDate': 'Será cancelado em',
   'billing.invoices.heading': 'Faturas',
   'billing.invoices.empty':
@@ -201,7 +201,8 @@ export default {
   'templates.modal.menuHeading.other': 'Outros',
   'templates.modal.menuHeading.new.tag': 'Novo',
   'templates.modal.useTemplateButton.label': 'Usar esse modelo',
-  'templates.importFromFileButon.toastError.description': 'Falha ao analisar o arquivo. Tem certeza de que é um typebot?',
+  'templates.importFromFileButon.toastError.description':
+    'Falha ao analisar o arquivo. Tem certeza de que é um typebot?',
   'editor.headers.flowButton.label': 'Fluxo',
   'editor.headers.themeButton.label': 'Tema',
   'editor.headers.settingsButton.label': 'Configurações',
@@ -251,51 +252,72 @@ export default {
   'editor.sidebarBlock.chatwoot.label': 'Chatwoot',
   'editor.sidebarBlock.openai.label': 'OpenAI',
   'editor.sidebarBlock.pixel.label': 'Pixel',
-  'editor.blockCard.bubbleBlock.tooltip.label': 'Incorporar pdf, iframe, website...',
+  'editor.blockCard.bubbleBlock.tooltip.label':
+    'Incorporar pdf, iframe, website...',
   'editor.blockCard.inputBlock.tooltip.files.label': 'Carregar Ficheiros',
-  'editor.blockCard.logicBlock.tooltip.code.label': 'Executar código Javascript',
-  'editor.blockCard.logicBlock.tooltip.link.label': 'Link e salte para outro typebot',
-  'editor.blockCard.logicBlock.tooltip.fastForward.label': 'Encaminhar fluxo para outro grupo',
-  'editor.blockCard.integrationBlock.tooltip.googleSheets.label': 'Google Sheets',
-  'editor.blockCard.integrationBlock.tooltip.googleAnalytics.label': 'Google Analytics',
+  'editor.blockCard.logicBlock.tooltip.code.label':
+    'Executar código Javascript',
+  'editor.blockCard.logicBlock.tooltip.typebotLink.label':
+    'Link e salte para outro typebot',
+  'editor.blockCard.logicBlock.tooltip.jump.label':
+    'Encaminhar fluxo para outro grupo',
+  'editor.blockCard.integrationBlock.tooltip.googleSheets.label':
+    'Google Sheets',
+  'editor.blockCard.integrationBlock.tooltip.googleAnalytics.label':
+    'Google Analytics',
   'editor.editableTypebotName.tooltip.rename.label': 'Renomear',
   'editor.gettingStartedModal.editorBasics.heading': 'Fundamentos do Editor',
-  'editor.gettingStartedModal.editorBasics.list.one.number': '1',
-  'editor.gettingStartedModal.editorBasics.list.one.label': 'A barra lateral esquerda contém blocos que podem ser arrastados e soltos no quadro.',
-  'editor.gettingStartedModal.editorBasics.list.two.number': '2',
-  'editor.gettingStartedModal.editorBasics.list.two.label': 'Você pode agrupar blocos juntos, colocando-os abaixo ou acima dos outros',
-  'editor.gettingStartedModal.editorBasics.list.three.number': '3',
-  'editor.gettingStartedModal.editorBasics.list.three.label': 'Conecte os grupos entre eles',
-  'editor.gettingStartedModal.editorBasics.list.four.number': '4',
-  'editor.gettingStartedModal.editorBasics.list.four.label': 'Pré-visualize o seu bot ao clicar no botão de visualizar no canto superior direito',
-  'editor.gettingStartedModal.editorBasics.list.label': 'Sinta-se à vontade para usar o chat no canto inferior direito para entrar em contato se tiver alguma dúvida. Normalmente, respondo nas próximas 24 horas. 😃',
+  'editor.gettingStartedModal.editorBasics.list.one.label':
+    'A barra lateral esquerda contém blocos que podem ser arrastados e soltos no quadro.',
+  'editor.gettingStartedModal.editorBasics.list.two.label':
+    'Você pode agrupar blocos juntos, colocando-os abaixo ou acima dos outros',
+  'editor.gettingStartedModal.editorBasics.list.three.label':
+    'Conecte os grupos entre eles',
+  'editor.gettingStartedModal.editorBasics.list.four.label':
+    'Pré-visualize o seu bot ao clicar no botão de visualizar no canto superior direito',
+  'editor.gettingStartedModal.editorBasics.list.label':
+    'Sinta-se à vontade para usar o chat no canto inferior direito para entrar em contato se tiver alguma dúvida. Normalmente, respondo nas próximas 24 horas. 😃',
   'editor.gettingStartedModal.seeAction.label': 'Veja como funciona em',
   'editor.gettingStartedModal.seeAction.time': '5 minutos',
   'editor.gettingStartedModal.seeAction.item.label': 'Outros vídeos',
-  'editor.provider.messages.getTypebotError.title': 'Erro ao obter o typebot. Atualize a página.',
-  'editor.provider.messages.getTypebotError.description': 'Não foi possível encontrar o typebot',
-  'editor.provider.messages.publishedTypebotError.title': 'Erro ao obter o typebot publicado',
-  'editor.provider.messages.updateTypebotError.title': 'Erro ao atualizar o typebot',
+  'editor.provider.messages.getTypebotError.title':
+    'Erro ao obter o typebot. Atualize a página.',
+  'editor.provider.messages.getTypebotError.description':
+    'Não foi possível encontrar o typebot',
+  'editor.provider.messages.publishedTypebotError.title':
+    'Erro ao obter o typebot publicado',
+  'editor.provider.messages.updateTypebotError.title':
+    'Erro ao atualizar o typebot',
   'editor.provider.groups.copy.title': 'Cópia',
   'editor.blocks.start.text': 'Início',
-  'editor.blocks.bubbles.audio.button.upload.label': 'Carregar',
-  'editor.blocks.bubbles.audio.button.embedLink.label': 'Incorporar link',
-  'editor.blocks.bubbles.audio.button.chooseFile.label': 'Escolher um arquivo',
-  'editor.blocks.bubbles.audio.textInput.worksWith.text': 'Compatível com .MP3s e .WAVs',
-  'editor.blocks.bubbles.audio.textInput.worksWith.placeholder': 'Colar o link do arquivo de áudio...',
-  'editor.blocks.bubbles.audio.switchWithLabel.autoplay.label': 'Ativar reprodução automática',
+  'editor.blocks.bubbles.audio.settings.upload.label': 'Carregar',
+  'editor.blocks.bubbles.audio.settings.embedLink.label': 'Incorporar link',
+  'editor.blocks.bubbles.audio.settings.chooseFile.label':
+    'Escolher um arquivo',
+  'editor.blocks.bubbles.audio.settings.worksWith.text':
+    'Compatível com .MP3s e .WAVs',
+  'editor.blocks.bubbles.audio.settings.worksWith.placeholder':
+    'Colar o link do arquivo de áudio...',
+  'editor.blocks.bubbles.audio.settings.autoplay.label':
+    'Ativar reprodução automática',
   'editor.blocks.bubbles.audio.node.clickToEdit.text': 'Clique para editar...',
   'editor.blocks.bubbles.embed.node.clickToEdit.text': 'Clique para editar...',
   'editor.blocks.bubbles.embed.node.show.text': 'Mostrar incorporação',
-  'editor.blocks.bubbles.embed.worksWith.placeholder': 'Colar o link ou código...',
-  'editor.blocks.bubbles.embed.worksWith.text': 'Compatível com PDFs, iframes, websites...',
-  'editor.blocks.bubbles.embed.numberInput.unit': 'px',
+  'editor.blocks.bubbles.embed.settings.worksWith.placeholder':
+    'Colar o link ou código...',
+  'editor.blocks.bubbles.embed.settings.worksWith.text':
+    'Compatível com PDFs, iframes, websites...',
+  'editor.blocks.bubbles.embed.settings.numberInput.unit': 'px',
   'editor.blocks.bubbles.image.node.clickToEdit.text': 'Clique para editar...',
   'editor.blocks.bubbles.image.switchWithLabel.onClick.label': 'Link ao clicar',
-  'editor.blocks.bubbles.image.switchWithLabel.onClick.placeholder': 'Texto alternativo do link (descrição)',
+  'editor.blocks.bubbles.image.switchWithLabel.onClick.placeholder':
+    'Texto alternativo do link (descrição)',
   'editor.blocks.bubbles.video.node.clickToEdit.text': 'Clique para editar...',
-  'editor.blocks.bubbles.video.textInput.worksWith.text': 'Compatível com Youtube, Vimeo e outros',
-  'editor.blocks.bubbles.video.textInput.worksWith.placeholder': 'Colar o link do vídeo...',
+  'editor.blocks.bubbles.video.settings.worksWith.text':
+    'Compatível com Youtube, Vimeo e outros',
+  'editor.blocks.bubbles.video.settings.worksWith.placeholder':
+    'Colar o link do vídeo...',
   'editor.blocks.bubbles.textEditor.plate.label': 'Editor de texto',
-  'editor.blocks.bubbles.textEditor.searchVariable.placeholder': 'Pesquisar uma variável',
+  'editor.blocks.bubbles.textEditor.searchVariable.placeholder':
+    'Pesquisar uma variável',
 } as const

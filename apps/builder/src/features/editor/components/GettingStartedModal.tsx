@@ -54,11 +54,9 @@ export const GettingStartedModal = () => {
                   flexShrink={0}
                   fontSize="13px"
                 >
-                  {scopedT('editorBasics.list.one.number')}
+                  1
                 </Flex>
-                <Text>
-                  {scopedT('editorBasics.list.one.label')}
-                </Text>
+                <Text>{scopedT('editorBasics.list.one.label')}</Text>
               </HStack>
               <HStack as={ListItem}>
                 <Flex
@@ -72,11 +70,9 @@ export const GettingStartedModal = () => {
                   fontWeight="bold"
                   flexShrink={0}
                 >
-                  {scopedT('editorBasics.list.two.number')}
+                  2
                 </Flex>
-                <Text>
-                  {scopedT('editorBasics.list.two.label')}
-                </Text>
+                <Text>{scopedT('editorBasics.list.two.label')}</Text>
               </HStack>
               <HStack as={ListItem}>
                 <Flex
@@ -90,7 +86,7 @@ export const GettingStartedModal = () => {
                   flexShrink={0}
                   fontSize="13px"
                 >
-                  {scopedT('editorBasics.list.three.number')}
+                  3
                 </Flex>
                 <Text>{scopedT('editorBasics.list.three.label')}</Text>
               </HStack>
@@ -106,20 +102,18 @@ export const GettingStartedModal = () => {
                   flexShrink={0}
                   fontSize="13px"
                 >
-                  {scopedT('editorBasics.list.four.number')}
+                  4
                 </Flex>
-                <Text>
-                  {scopedT('editorBasics.list.four.label')}
-                </Text>
+                <Text>{scopedT('editorBasics.list.four.label')}</Text>
               </HStack>
             </List>
           </Stack>
 
-          <Text>
-            {scopedT('editorBasics.list.label')}
-          </Text>
+          <Text>{scopedT('editorBasics.list.label')}</Text>
           <Stack spacing={4}>
-            <Heading fontSize="xl">{scopedT('seeAction.label')} ({`<`} {scopedT('seeAction.time')})</Heading>
+            <Heading fontSize="xl">
+              {scopedT('seeAction.label')} ({`<`} {scopedT('seeAction.time')})
+            </Heading>
             <iframe
               width="100%"
               height="315"

@@ -1,18 +1,18 @@
 import { Stack, Text } from '@chakra-ui/react'
 import { VideoBubbleContent, VideoBubbleContentType } from '@typebot.io/schemas'
 import { TextInput } from '@/components/inputs'
-import { I18nFunction } from '@/locales'
+import { useScopedI18n } from '@/locales'
 
 const vimeoRegex = /vimeo\.com\/(\d+)/
 const youtubeRegex = /youtube\.com\/(watch\?v=|shorts\/)(\w+)|youtu\.be\/(\w+)/
 
 type Props = {
-  scopedT: I18nFunction
   content?: VideoBubbleContent
   onSubmit: (content: VideoBubbleContent) => void
 }
 
-export const VideoUploadContent = ({ scopedT, content, onSubmit }: Props) => {
+export const VideoUploadContent = ({ content, onSubmit }: Props) => {
+  const scopedT = useScopedI18n('editor.blocks.bubbles.video.settings')
   const handleUrlChange = (url: string) => {
     const info = parseVideoUrl(url)
     return onSubmit({
@@ -24,12 +24,12 @@ export const VideoUploadContent = ({ scopedT, content, onSubmit }: Props) => {
   return (
     <Stack p="2">
       <TextInput
-        placeholder={scopedT('bubbles.video.textInput.worksWith.placeholder')}
+        placeholder={scopedT('worksWith.placeholder')}
         defaultValue={content?.url ?? ''}
         onChange={handleUrlChange}
       />
       <Text fontSize="sm" color="gray.400" textAlign="center">
-        {scopedT('bubbles.video.textInput.worksWith.text')}
+        {scopedT('worksWith.text')}
       </Text>
     </Stack>
   )

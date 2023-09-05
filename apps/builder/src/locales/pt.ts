@@ -122,7 +122,6 @@ export default defineLocale({
   'billing.currentSubscription.heading': 'Subscrição',
   'billing.currentSubscription.subheading':
     'Subscrição actual do espaço de trabalho:',
-  'billing.currentSubscription.cancelLink': 'Cancelar a minha subscrição',
   'billing.currentSubscription.cancelDate': 'Será cancelado em',
   'billing.invoices.heading': 'Facturas',
   'billing.invoices.empty':
@@ -261,9 +260,9 @@ export default defineLocale({
   'editor.blockCard.inputBlock.tooltip.files.label': 'Carregar Ficheiros',
   'editor.blockCard.logicBlock.tooltip.code.label':
     'Executar código Javascript',
-  'editor.blockCard.logicBlock.tooltip.link.label':
+  'editor.blockCard.logicBlock.tooltip.typebotLink.label':
     'Link e salte para outro typebot',
-  'editor.blockCard.logicBlock.tooltip.fastForward.label':
+  'editor.blockCard.logicBlock.tooltip.jump.label':
     'Encaminhar fluxo para outro grupo',
   'editor.blockCard.integrationBlock.tooltip.googleSheets.label':
     'Google Sheets',
@@ -271,16 +270,12 @@ export default defineLocale({
     'Google Analytics',
   'editor.editableTypebotName.tooltip.rename.label': 'Renomear',
   'editor.gettingStartedModal.editorBasics.heading': 'Noções básicas de editor',
-  'editor.gettingStartedModal.editorBasics.list.one.number': '1',
   'editor.gettingStartedModal.editorBasics.list.one.label':
     'A barra lateral esquerda contém blocos que pode arrastar e largar no quadro.',
-  'editor.gettingStartedModal.editorBasics.list.two.number': '2',
   'editor.gettingStartedModal.editorBasics.list.two.label':
     'Pode agrupar blocos juntos, colocando-os uns abaixo ou acima dos outros',
-  'editor.gettingStartedModal.editorBasics.list.three.number': '3',
   'editor.gettingStartedModal.editorBasics.list.three.label':
     'Ligue os grupos entre si',
-  'editor.gettingStartedModal.editorBasics.list.four.number': '4',
   'editor.gettingStartedModal.editorBasics.list.four.label':
     'Pré-visualize o seu bot ao clicar no botão de visualizar no canto superior direito',
   'editor.gettingStartedModal.editorBasics.list.label':
@@ -298,31 +293,32 @@ export default defineLocale({
     'Erro ao atualizar o typebot',
   'editor.provider.groups.copy.title': 'Cópia',
   'editor.blocks.start.text': 'Começar',
-  'editor.blocks.bubbles.audio.button.upload.label': 'Carregar',
-  'editor.blocks.bubbles.audio.button.embedLink.label': 'Incorporar link',
-  'editor.blocks.bubbles.audio.button.chooseFile.label': 'Escolher um ficheiro',
-  'editor.blocks.bubbles.audio.textInput.worksWith.text':
+  'editor.blocks.bubbles.audio.settings.upload.label': 'Carregar',
+  'editor.blocks.bubbles.audio.settings.embedLink.label': 'Incorporar link',
+  'editor.blocks.bubbles.audio.settings.chooseFile.label':
+    'Escolher um ficheiro',
+  'editor.blocks.bubbles.audio.settings.worksWith.text':
     'Compatível com .MP3s e .WAVs',
-  'editor.blocks.bubbles.audio.textInput.worksWith.placeholder':
+  'editor.blocks.bubbles.audio.settings.worksWith.placeholder':
     'Colar o link do ficheiro de áudio...',
-  'editor.blocks.bubbles.audio.switchWithLabel.autoplay.label':
+  'editor.blocks.bubbles.audio.settings.autoplay.label':
     'Ativar reprodução automática',
   'editor.blocks.bubbles.audio.node.clickToEdit.text': 'Clique para editar...',
   'editor.blocks.bubbles.embed.node.clickToEdit.text': 'Clique para editar...',
   'editor.blocks.bubbles.embed.node.show.text': 'Mostrar incorporação',
-  'editor.blocks.bubbles.embed.worksWith.placeholder':
+  'editor.blocks.bubbles.embed.settings.worksWith.placeholder':
     'Colar o link ou código...',
-  'editor.blocks.bubbles.embed.worksWith.text':
+  'editor.blocks.bubbles.embed.settings.worksWith.text':
     'Compatível com PDFs, iframes, websites...',
-  'editor.blocks.bubbles.embed.numberInput.unit': 'px',
+  'editor.blocks.bubbles.embed.settings.numberInput.unit': 'px',
   'editor.blocks.bubbles.image.node.clickToEdit.text': 'Clique para editar...',
   'editor.blocks.bubbles.image.switchWithLabel.onClick.label': 'Link ao clicar',
   'editor.blocks.bubbles.image.switchWithLabel.onClick.placeholder':
     'Texto alternativo do link (descrição)',
   'editor.blocks.bubbles.video.node.clickToEdit.text': 'Clique para editar...',
-  'editor.blocks.bubbles.video.textInput.worksWith.text':
+  'editor.blocks.bubbles.video.settings.worksWith.text':
     'Compatível com Youtube, Vimeo e outros',
-  'editor.blocks.bubbles.video.textInput.worksWith.placeholder':
+  'editor.blocks.bubbles.video.settings.worksWith.placeholder':
     'Colar o link do vídeo...',
   'editor.blocks.bubbles.textEditor.plate.label': 'Editor de texto',
   'editor.blocks.bubbles.textEditor.searchVariable.placeholder':

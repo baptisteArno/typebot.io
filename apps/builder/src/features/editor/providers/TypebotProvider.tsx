@@ -23,7 +23,7 @@ import { areTypebotsEqual } from '@/features/publish/helpers/areTypebotsEqual'
 import { isPublished as isPublishedHelper } from '@/features/publish/helpers/isPublished'
 import { convertPublicTypebotToTypebot } from '@/features/publish/helpers/convertPublicTypebotToTypebot'
 import { trpc } from '@/lib/trpc'
-import { useScopedI18n, I18nFunction } from '@/locales'
+import { useScopedI18n } from '@/locales'
 
 const autoSaveTimeout = 10000
 
@@ -94,7 +94,10 @@ export const TypebotProvider = ({
       enabled: isDefined(typebotId),
       onError: (error) => {
         if (error.data?.httpStatus === 404) {
-          showToast({ status: 'info', description: scopedT('messages.getTypebotError.description') })
+          showToast({
+            status: 'info',
+            description: scopedT('messages.getTypebotError.description'),
+          })
           push('/typebots')
           return
         }
@@ -255,7 +258,10 @@ export const TypebotProvider = ({
         isPublished,
         updateTypebot: updateLocalTypebot,
         restorePublishedTypebot,
-        ...groupsActions(setLocalTypebot as SetTypebot, scopedT as I18nFunction),
+        ...groupsActions(
+          setLocalTypebot as SetTypebot,
+          scopedT('groups.copy.title')
+        ),
         ...blocksAction(setLocalTypebot as SetTypebot),
         ...variablesAction(setLocalTypebot as SetTypebot),
         ...edgesAction(setLocalTypebot as SetTypebot),

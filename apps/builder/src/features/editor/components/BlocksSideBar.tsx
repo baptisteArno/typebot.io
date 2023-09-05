@@ -104,10 +104,20 @@ export const BlocksSideBar = () => {
         className="hide-scrollbar"
       >
         <Flex justifyContent="flex-end">
-          <Tooltip label={isLocked ? scopedT('sidebar.unlock.label') : scopedT('sidebar.lock.label') }>
+          <Tooltip
+            label={
+              isLocked
+                ? scopedT('sidebar.unlock.label')
+                : scopedT('sidebar.lock.label')
+            }
+          >
             <IconButton
               icon={isLocked ? <LockedIcon /> : <UnlockedIcon />}
-              aria-label={isLocked ? scopedT('sidebar.icon.unlock.label') : scopedT('sidebar.icon.lock.label') }
+              aria-label={
+                isLocked
+                  ? scopedT('sidebar.icon.unlock.label')
+                  : scopedT('sidebar.icon.lock.label')
+              }
               size="sm"
               onClick={handleLockClick}
             />
@@ -127,7 +137,7 @@ export const BlocksSideBar = () => {
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold">
-          {scopedT('blockType.inputs.heading')}
+            {scopedT('blockType.inputs.heading')}
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(InputBlockType).map((type) => (
@@ -138,7 +148,7 @@ export const BlocksSideBar = () => {
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold">
-          {scopedT('blockType.logic.heading')}
+            {scopedT('blockType.logic.heading')}
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(LogicBlockType).map((type) => (
@@ -149,7 +159,7 @@ export const BlocksSideBar = () => {
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold">
-          {scopedT('blockType.integrations.heading')}
+            {scopedT('blockType.integrations.heading')}
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(IntegrationBlockType).map((type) => (

@@ -110,7 +110,7 @@ const TextBubbleEditorContent = ({
           backgroundColor: useColorModeValue('white', 'gray.800'),
           borderRadius: 'md',
           transitionProperty: 'background-color',
-          transitionDuration: 'normal'
+          transitionDuration: 'normal',
         },
         '[class^="FloatingVerticalDivider___"]': {
           '--tw-bg-opacity': useColorModeValue('1', '.4') + '!important',

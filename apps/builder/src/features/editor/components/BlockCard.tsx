@@ -43,7 +43,10 @@ export const BlockCard = (
       )
     case InputBlockType.FILE:
       return (
-        <BlockCardLayout {...props} tooltip={scopedT('inputBlock.tooltip.files.label')}>
+        <BlockCardLayout
+          {...props}
+          tooltip={scopedT('inputBlock.tooltip.files.label')}
+        >
           <BlockIcon type={props.type} />
           <HStack>
             <BlockLabel type={props.type} />
@@ -53,14 +56,20 @@ export const BlockCard = (
       )
     case LogicBlockType.SCRIPT:
       return (
-        <BlockCardLayout {...props} tooltip={scopedT('logicBlock.tooltip.code.label')}>
+        <BlockCardLayout
+          {...props}
+          tooltip={scopedT('logicBlock.tooltip.code.label')}
+        >
           <BlockIcon type={props.type} />
           <BlockLabel type={props.type} />
         </BlockCardLayout>
       )
     case LogicBlockType.TYPEBOT_LINK:
       return (
-        <BlockCardLayout {...props} tooltip={scopedT('logicBlock.tooltip.link.label')}>
+        <BlockCardLayout
+          {...props}
+          tooltip={scopedT('logicBlock.tooltip.typebotLink.label')}
+        >
           <BlockIcon type={props.type} />
           <BlockLabel type={props.type} />
         </BlockCardLayout>
@@ -69,7 +78,7 @@ export const BlockCard = (
       return (
         <BlockCardLayout
           {...props}
-          tooltip={scopedT('logicBlock.tooltip.fastForward.label')}
+          tooltip={scopedT('logicBlock.tooltip.jump.label')}
         >
           <BlockIcon type={props.type} />
           <BlockLabel type={props.type} />
@@ -77,14 +86,20 @@ export const BlockCard = (
       )
     case IntegrationBlockType.GOOGLE_SHEETS:
       return (
-        <BlockCardLayout {...props} tooltip={scopedT('integrationBlock.tooltip.googleSheets.label')}>
+        <BlockCardLayout
+          {...props}
+          tooltip={scopedT('integrationBlock.tooltip.googleSheets.label')}
+        >
           <BlockIcon type={props.type} />
           <BlockLabel type={props.type} />
         </BlockCardLayout>
       )
     case IntegrationBlockType.GOOGLE_ANALYTICS:
       return (
-        <BlockCardLayout {...props} tooltip={scopedT('integrationBlock.tooltip.googleAnalytics.label')}>
+        <BlockCardLayout
+          {...props}
+          tooltip={scopedT('integrationBlock.tooltip.googleAnalytics.label')}
+        >
           <BlockIcon type={props.type} />
           <BlockLabel type={props.type} />
         </BlockCardLayout>
