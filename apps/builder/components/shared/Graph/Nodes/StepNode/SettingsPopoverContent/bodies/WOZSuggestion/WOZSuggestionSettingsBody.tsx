@@ -1,11 +1,11 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
-import { WOZMessageOptions } from 'models'
+import { WOZSuggestionOptions } from 'models'
 import React from 'react'
 import OctaSelect from 'components/octaComponents/OctaSelect/OctaSelect'
 
-type WOZMessageSettingBodyProps = {
-  options: WOZMessageOptions
-  onOptionsChange: (options: WOZMessageOptions) => void
+type WOZSuggestionSettingBodyProps = {
+  options: WOZSuggestionOptions
+  onOptionsChange: (options: WOZSuggestionOptions) => void
 }
 
 export enum WOZ_ANSWER_TYPE {
@@ -14,10 +14,10 @@ export enum WOZ_ANSWER_TYPE {
   SMALLEST = 'de Menor tamanho',
 }
 
-export const WOZMessageSettingBody = ({
+export const WOZSuggestionSettingBody = ({
   options,
   onOptionsChange,
-}: WOZMessageSettingBodyProps) => {
+}: WOZSuggestionSettingBodyProps) => {
   const handleDefaultPreferredAnswer = (e: any) => {
     const option = e
 

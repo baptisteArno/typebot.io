@@ -1,13 +1,13 @@
-import { WOZMessageStep } from 'models'
+import { WOZSuggestionStep } from 'models'
 import React from 'react'
 import { chakra, Stack, Text } from '@chakra-ui/react'
 import { WOZ_ANSWER_TYPE } from '../../../SettingsPopoverContent/bodies'
 
 type Props = {
-  step: WOZMessageStep
+  step: WOZSuggestionStep
 }
 
-const WOZMessageContent = ({ step }: Props) => {
+const WOZSuggestionContent = ({ step }: Props) => {
 
   const resolveAnswer = () => {
     const answer = Object.entries(WOZ_ANSWER_TYPE).find(s => s[0] === step.options.preferredAnswer)
@@ -41,4 +41,4 @@ const WOZMessageContent = ({ step }: Props) => {
   )
 }
 
-export default WOZMessageContent
+export default WOZSuggestionContent

@@ -43,7 +43,7 @@ import { InputContent } from '../contents/Input'
 import { useTypebot } from 'contexts/TypebotContext'
 import { MediaInputContent } from '../contents/MediaInput'
 import { InputItemsContent } from '../contents/InputItemsContent'
-import { WOZMessageContent, WozMessageContent } from '../contents/WOZMessage'
+import { WOZSuggestionContent } from '../contents/WOZSuggestion'
 // import { ProviderWebhookContent } from './contents/ZapierContent'
 
 type Props = {
@@ -175,7 +175,7 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     }
     case OctaStepType.CALL_OTHER_BOT: {
       return (
-        <CallOtherBotContent step={step} options={step.options.botToCall} />
+        <CallOtherBotContent step={step} options={step.options} />
       )
     }
     case OctaStepType.OFFICE_HOURS: {
@@ -194,7 +194,7 @@ export const StepNodeContent = ({ step, indices }: Props) => {
       return <PreReserveContent step={step} />
     }
     case WOZStepType.MESSAGE: {
-      return <WOZMessageContent step={step} />
+      return <WOZSuggestionContent step={step} />
     }
     case 'start': {
       return <span></span>

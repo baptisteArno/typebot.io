@@ -38,7 +38,7 @@ import {
   CallOtherBotSettingsBody,
   WhatsAppOptionsListSettingsBody,
   WhatsAppButtonsListSettingsBody,
-  WOZMessageSettingBody
+  WOZSuggestionSettingBody
 } from './bodies'
 import { ChoiceInputSettingsBody } from './bodies/ChoiceInputSettingsBody'
 import { CodeSettings } from './bodies/CodeSettings'
@@ -239,7 +239,7 @@ export const StepSettings = ({
     }
     case WOZStepType.MESSAGE: {
       return (
-        <WOZMessageSettingBody
+        <WOZSuggestionSettingBody
           options={
             step.options
           }
