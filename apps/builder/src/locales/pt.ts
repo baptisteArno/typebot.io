@@ -1,4 +1,6 @@
-export default {
+import { defineLocale } from '.'
+
+export default defineLocale({
   back: 'Voltar',
   'confirmModal.defaultTitle': 'Tem certeza?',
   'dashboard.header.settingsButton.label': 'Configurações & Membros',
@@ -70,6 +72,7 @@ export default {
   'account.myAccount.nameInput.label': 'Nome:',
   'analytics.viewsLabel': 'Visualizações',
   'analytics.startsLabel': 'Inícios',
+  'analytics.notAvailableLabel': 'Não disponível',
   'analytics.completionRateLabel': 'Taxa de conclusão',
   'auth.signin.heading': 'Entrar',
   'auth.signin.noAccountLabel.preLink': 'Não tem uma conta?',
@@ -118,7 +121,6 @@ export default {
   'billing.currentSubscription.heading': 'Assinatura',
   'billing.currentSubscription.subheading':
     'Assinatura atual do espaço de trabalho:',
-  'billing.currentSubscription.cancelLink': 'Cancelar minha assinatura',
   'billing.invoices.heading': 'Faturas',
   'billing.invoices.empty':
     'Nenhuma fatura encontrada para este espaço de trabalho.',
@@ -190,4 +192,4 @@ export default {
   'workspace.settings.modal.menu.version.label': 'Versão: {version}',
   'workspace.dropdown.newButton.label': 'Novo espaço de trabalho',
   'workspace.dropdown.logoutButton.label': 'Sair',
-} as const
+})

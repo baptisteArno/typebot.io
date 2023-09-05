@@ -1,4 +1,6 @@
-export default {
+import { defineLocale } from '.'
+
+export default defineLocale({
   back: 'Zurück',
   'confirmModal.defaultTitle': 'Bist du sicher?',
   'dashboard.header.settingsButton.label': 'Einstellungen & Mitglieder',
@@ -70,6 +72,7 @@ export default {
   'account.myAccount.nameInput.label': 'Name:',
   'analytics.viewsLabel': 'Ansichten',
   'analytics.startsLabel': 'Starts',
+  'analytics.notAvailableLabel': 'Nicht verfügbar',
   'analytics.completionRateLabel': 'Abschlussrate',
   'auth.signin.heading': 'Anmelden',
   'auth.signin.noAccountLabel.preLink': 'Noch kein Konto?',
@@ -119,7 +122,6 @@ export default {
     'Um {type} hinzuzufügen, musst du deinen Tarif aktualisieren',
   'billing.currentSubscription.heading': 'Abonnement',
   'billing.currentSubscription.subheading': 'Aktuelles Workspace-Abonnement:',
-  'billing.currentSubscription.cancelLink': 'Mein Abonnement kündigen',
   'billing.invoices.heading': 'Rechnungen',
   'billing.invoices.empty': 'Keine Rechnungen für diesen Workspace gefunden.',
   'billing.invoices.paidAt': 'Bezahlt am',
@@ -188,4 +190,4 @@ export default {
   'workspace.settings.modal.menu.version.label': 'Version: {version}',
   'workspace.dropdown.newButton.label': 'Neuer Workspace',
   'workspace.dropdown.logoutButton.label': 'Abmelden',
-} as const
+})

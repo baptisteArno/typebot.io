@@ -207,8 +207,8 @@ importers:
         specifier: 4.22.1
         version: 4.22.1(next@13.4.3)(nodemailer@6.9.3)(react-dom@18.2.0)(react@18.2.0)
       next-international:
-        specifier: 0.5.3
-        version: 0.5.3(next@13.4.3)(react@18.2.0)
+        specifier: 0.9.5
+        version: 0.9.5
       nextjs-cors:
         specifier: ^2.1.2
         version: 2.1.2(next@13.4.3)
@@ -15044,8 +15044,8 @@ packages:
       has: 1.0.3
       side-channel: 1.0.4
 
-  /international-types@0.5.3:
-    resolution: {integrity: sha512-itSEB3Ohnxd08OTTp8+y8irFJVOy1cKr1J6tfrhXnpDz9/Oa3dDAUrcbxiWM7jvGmF6+gdTwVCBVUoGG4E9vdg==}
+  /international-types@0.8.0:
+    resolution: {integrity: sha512-cJwagIBzMG0FTK81TABeSBU0eReIXWmvW18m/URn8ZA+GLoWIcdL43kfjArwHVmZJ1n+IFchsBj8tQLYUqmwnA==}
     dev: false
 
   /interpret@1.4.0:
@@ -17232,16 +17232,11 @@ packages:
       uuid: 8.3.2
     dev: false
 
-  /next-international@0.5.3(next@13.4.3)(react@18.2.0):
-    resolution: {integrity: sha512-Nvw0b+ZfXowC6zedqg2UsV0c23gQAmr00v4eSp+XMaT1j9FgH3jSovMk2nyQ51Q23iXVOGMP+Tiftbp4FpXuiw==}
-    peerDependencies:
-      next: ^13.0.0 || ^12.0.0 || ^11.0.0
-      react: ^18.0.0 || ^17.0.0
+  /next-international@0.9.5:
+    resolution: {integrity: sha512-yS6DnuNAK+2EO5KWLgw2FPGwBkQ8gylrG0vNSeJD0/BAHSyIpPCn6E+1KPzawQffB5r6wVP6vHjDoSlUOxWWew==}
     dependencies:
       client-only: 0.0.1
-      international-types: 0.5.3
-      next: 13.4.3(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
-      react: 18.2.0
+      international-types: 0.8.0
       server-only: 0.0.1
     dev: false
 

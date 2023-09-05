@@ -11,13 +11,12 @@ import {
 import { Stats } from '@typebot.io/schemas'
 import React from 'react'
 
-const computeCompletionRate = (
-  totalCompleted: number,
-  totalStarts: number
-): string => {
-  if (totalStarts === 0) return 'Not available'
-  return `${Math.round((totalCompleted / totalStarts) * 100)}%`
-}
+const computeCompletionRate =
+  (notAvailableLabel: string) =>
+  (totalCompleted: number, totalStarts: number): string => {
+    if (totalStarts === 0) return notAvailableLabel
+    return `${Math.round((totalCompleted / totalStarts) * 100)}%`
+  }
 
 export const StatsCards = ({
   stats,
@@ -48,7 +47,10 @@ export const StatsCards = ({
         <StatLabel>{scopedT('completionRateLabel')}</StatLabel>
         {stats ? (
           <StatNumber>
-            {computeCompletionRate(stats.totalCompleted, stats.totalStarts)}
+            {computeCompletionRate(scopedT('notAvailableLabel'))(
+              stats.totalCompleted,
+              stats.totalStarts
+            )}
           </StatNumber>
         ) : (
           <Skeleton w="50%" h="10px" mt="2" />

@@ -149,7 +149,7 @@ export const TypebotButton = ({
           top="27px"
           size="sm"
         >
-          Live
+          {scopedT('live')}
         </Tag>
       )}
       {!isReadOnly && (

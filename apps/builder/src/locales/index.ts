@@ -7,6 +7,7 @@ export const {
   getLocaleProps,
   useCurrentLocale,
   useChangeLocale,
+  defineLocale,
 } = createI18n({
   en: () => import('./en'),
   fr: () => import('./fr'),
