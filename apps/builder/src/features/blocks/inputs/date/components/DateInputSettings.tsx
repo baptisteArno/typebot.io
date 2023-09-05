@@ -1,3 +1,4 @@
+import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
 import { TextInput } from '@/components/inputs'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
@@ -11,49 +12,57 @@ type Props = {
 }
 
 export const DateInputSettings = ({ options, onOptionsChange }: Props) => {
-  const handleFromChange = (from: string) =>
+  const updateFromLabel = (from: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, from } })
-  const handleToChange = (to: string) =>
+  const updateToLabel = (to: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, to } })
-  const handleButtonLabelChange = (button: string) =>
+  const updateButtonLabel = (button: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, button } })
-  const handleIsRangeChange = (isRange: boolean) =>
+  const updateIsRange = (isRange: boolean) =>
     onOptionsChange({ ...options, isRange })
-  const handleHasTimeChange = (hasTime: boolean) =>
+  const updateHasTime = (hasTime: boolean) =>
     onOptionsChange({ ...options, hasTime })
-  const handleVariableChange = (variable?: Variable) =>
+  const updateVariable = (variable?: Variable) =>
     onOptionsChange({ ...options, variableId: variable?.id })
+  const updateFormat = (format: string) => {
+    if (format === '') return onOptionsChange({ ...options, format: undefined })
+    onOptionsChange({ ...options, format })
+  }
 
   return (
     <Stack spacing={4}>
-      <SwitchWithLabel
+      <SwitchWithRelatedSettings
         label="Is range?"
         initialValue={options.isRange}
-        onCheckChange={handleIsRangeChange}
-      />
+        onCheckChange={updateIsRange}
+      >
+        <TextInput
+          label="From label:"
+          defaultValue={options.labels.from}
+          onChange={updateFromLabel}
+        />
+        <TextInput
+          label="To label:"
+          defaultValue={options.labels.to}
+          onChange={updateToLabel}
+        />
+      </SwitchWithRelatedSettings>
       <SwitchWithLabel
         label="With time?"
         initialValue={options.hasTime}
-        onCheckChange={handleHasTimeChange}
+        onCheckChange={updateHasTime}
       />
-      {options.isRange && (
-        <>
-          <TextInput
-            label="From label:"
-            defaultValue={options.labels.from}
-            onChange={handleFromChange}
-          />
-          <TextInput
-            label="To label:"
-            defaultValue={options.labels.to}
-            onChange={handleToChange}
-          />
-        </>
-      )}
       <TextInput
         label="Button label:"
         defaultValue={options.labels.button}
-        onChange={handleButtonLabelChange}
+        onChange={updateButtonLabel}
+      />
+      <TextInput
+        label="Format:"
+        defaultValue={options.format}
+        moreInfoTooltip="Popular formats: dd/MM/yyyy, MM/dd/yy, yyyy-MM-dd"
+        placeholder={options.hasTime ? 'dd/MM/yyyy HH:mm' : 'dd/MM/yyyy'}
+        onChange={updateFormat}
       />
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
@@ -61,7 +70,7 @@ export const DateInputSettings = ({ options, onOptionsChange }: Props) => {
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options.variableId}
-          onSelectVariable={handleVariableChange}
+          onSelectVariable={updateVariable}
         />
       </Stack>
     </Stack>

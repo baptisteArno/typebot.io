@@ -44,7 +44,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       | 'dark'
       | null
     if (currentColorScheme === user.preferredAppAppearance) return
-    console.log('SET')
     setColorMode(user.preferredAppAppearance)
   }, [setColorMode, user?.preferredAppAppearance])
 

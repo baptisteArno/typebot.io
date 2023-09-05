@@ -35,3 +35,17 @@ The input will use the native date picker depending on the device and browser us
   style={{ maxWidth: '500px' }}
   alt="Date native picker"
 />
+
+## Format
+
+The `Format` setting lets you customize the picked date format. Under the hood, it is done using the [date-fns](https://date-fns.org/) library. You can use any of the [formatting tokens](https://date-fns.org/docs/format) supported by the library.
+
+Here are some examples:
+
+```text
+yyyy-MM-dd
+yyyy-MM-dd HH:mm:ss
+dd/MM/yy
+dd/MM/yyyy HH:mm:ss
+d.MM.yy
+```

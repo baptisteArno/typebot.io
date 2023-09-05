@@ -49,7 +49,17 @@ test.describe('Date input block', () => {
     await page.locator('[data-testid="to-date"]').fill('2022-01-01T09:00')
     await page.getByRole('button', { name: 'Go' }).click()
     await expect(
-      page.locator('text="01/01/2021, 11:00 AM to 01/01/2022, 09:00 AM"')
+      page.locator('text="01/01/2021 11:00 to 01/01/2022 09:00"')
+    ).toBeVisible()
+
+    await page.click(`text=Pick a date...`)
+    await page.getByPlaceholder('dd/MM/yyyy HH:mm').fill('dd.MM HH:mm')
+    await page.click('text=Restart')
+    await page.locator('[data-testid="from-date"]').fill('2023-01-01T11:00')
+    await page.locator('[data-testid="to-date"]').fill('2023-02-01T09:00')
+    await page.getByRole('button', { name: 'Go' }).click()
+    await expect(
+      page.locator('text="01.01 11:00 to 01.02 09:00"')
     ).toBeVisible()
   })
 })
