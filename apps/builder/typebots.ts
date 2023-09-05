@@ -49,9 +49,9 @@ import {
   defaultMediaBubbleContent,
   defaultCallOtherBotOptions,
   defaultPreReserveOptions,
-  defaultWOZMessageOptions,
+  defaultWOZSuggestionOptions,
   WOZStepType,
-  WOZMessageOptions
+  WOZSuggestionOptions
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
@@ -353,7 +353,7 @@ const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType): BubbleS
   }
 }
 
-const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType | WOZStepType): OctaStepOptions | OctaWabaStepOptions | WOZMessageOptions | null => {
+const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType | WOZStepType): OctaStepOptions | OctaWabaStepOptions | WOZSuggestionOptions | null => {
   switch (type) {
     case OctaStepType.ASSIGN_TO_TEAM:
       return defaultAssignToTeamOptions
@@ -368,7 +368,7 @@ const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType | WOZStepTyp
     case OctaStepType.PRE_RESERVE:
       return defaultPreReserveOptions
     case WOZStepType.MESSAGE:
-      return defaultWOZMessageOptions
+      return defaultWOZSuggestionOptions
     default:
       return null
   }
