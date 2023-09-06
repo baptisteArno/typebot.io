@@ -1,5 +1,33 @@
 # Changelog
 
+<a name="2.17.1"></a>
+## 2.17.1 (2023-09-06)
+
+### Changed
+
+- ⚡ (dateInput) Add format option and improve parsing [[9e8fa12](https://github.com/baptisteArno/typebot.io/commit/9e8fa124b5851a78ac1f544e940e84a8175e1875)]
+- ⚡ (wait) Add pause option on Wait block [[111fb32](https://github.com/baptisteArno/typebot.io/commit/111fb323b11a2b94abedfd63e6faf29794226710)]
+- 🚸 Make sure to add start client side action first in the list [[1ebacaa](https://github.com/baptisteArno/typebot.io/commit/1ebacaaa5db4d8f03fe28442b9c0e7a075f919ac)]
+- ⚡ (openai) Add custom provider and custom models [[27a5f4e](https://github.com/baptisteArno/typebot.io/commit/27a5f4eb74f6366181c6792e3efbf615b0af79bf)]
+
+### Fixed
+
+- 🚑 Fix pt-BR i18n loading [[be0c619](https://github.com/baptisteArno/typebot.io/commit/be0c619316261b5290463333b9fb29e8063a69b5)]
+- 🐛 Fix select text in buttons node drag [[5092e14](https://github.com/baptisteArno/typebot.io/commit/5092e142ec3f74e9594be967cfa96ebd5162b805)]
+- 🚑 (openai) Fix create credentials modal not displaying [[e8eaac4](https://github.com/baptisteArno/typebot.io/commit/e8eaac45fab2d4974038a97fa46d35c362ecfd9f)]
+- 🚑 (fileUpload) Fix web bot file upload input skip option [[968c5e3](https://github.com/baptisteArno/typebot.io/commit/968c5e3c95c952bbb869d137ce22ca9d94e9cfbb)]
+
+### Miscellaneous
+
+- 🧑‍💻 (editor) Add group info in focus toolbar [[ac899b3](https://github.com/baptisteArno/typebot.io/commit/ac899b3181ddb0bfb755143a821d354ff32049ef)]
+- 📝 Add user preferences doc [[605132e](https://github.com/baptisteArno/typebot.io/commit/605132ec3c817a20a99feb82751347ef50ffa4ef)]
+- 🌐 Add pt_BR and more translations ([#767](https://github.com/baptisteArno/typebot.io/issues/767)) [[aaa208c](https://github.com/baptisteArno/typebot.io/commit/aaa208cef451eb58ef26003e3ed2dda8f6972107)]
+- 🌐 Add i18n-ally config and upgrade next-international [[e4ece31](https://github.com/baptisteArno/typebot.io/commit/e4ece315edaff157fdd3d841f8e88ce589507015)]
+-  Docker improvements ([#760](https://github.com/baptisteArno/typebot.io/issues/760)) [[66dc570](https://github.com/baptisteArno/typebot.io/commit/66dc5705270e81938bddfc2b8df1a340a065376e)]
+- 📝 Add cancel subscription doc [[a79e605](https://github.com/baptisteArno/typebot.io/commit/a79e605285e306e81dfdba03d51d7c986def5862)]
+- 🛂 (whatsapp) Disallow test numbers as they are not unique [[60abddd](https://github.com/baptisteArno/typebot.io/commit/60abddd86e7c32a502d5cc506a5d0fb5e7910c8f)]
+
+
 <a name="2.17.0"></a>
 
 ## 2.17.0 (2023-09-01)
