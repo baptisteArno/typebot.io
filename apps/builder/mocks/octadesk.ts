@@ -1,41 +1,79 @@
-import { subDomain, environment, url } from '@octadesk-tech/services'
+import { subDomain, environment, url, services } from '@octadesk-tech/services'
+
 import Storage from '@octadesk-tech/storage'
+
 import { config } from 'config/octadesk.config'
 
-export const setupEnvironment = () =>
-{
+export const login = async () => {
+  try {
+    const { data } = await services.nucleus
+      .getClient({
+        baseURL: process.env.LOGIN_URL,
+      })
+      .post('/nucleus-auth/auth', {
+        userName: process.env.LOGIN_EMAIL,
+        password: process.env.LOGIN_PASS,
+        tenantId: process.env.LOGIN_TENANT,
+      })
+
+    return data
+  } catch (ex) {
+    throw new Error('Error in login: ' + ex)
+  }
+}
+
+export const setupEnvironment = async () => {
   if (!config.local) return
-  
+
   const env = process.env.NODE_ENV_OCTADESK || 'qa'
+
   if (env === 'production') {
     environment.resolveEnvironment()
   } else {
-    const { apis } = require(`./environments/${env}`)
-    
+    const { apis } = await login()
+
     environment.setEnvironment(env)
+
     url.setAPIURLs(apis)
   }
 }
 
-export const setupMockUser = async () =>
-{
+export const setupMockUser = async () => {
   if (!config.local) return
 
   const env = process.env.NODE_ENV_OCTADESK || 'qa'
-  
+
   if (env !== 'production') {
-    const { mock } = require(`./environments/mocks/${env}`)
-    
-    Storage.setItem('userLogged', mock.user)
+    const { access_token, jwtoken, octaAuthenticated, userlogged } =
+      await login()
 
-    Storage.setItem('company', mock.user.subDomain)
-  
-    subDomain.setSubDomain(mock.user.subDomain)
-  
-    Storage.setItem('status', mock.status)
+    Storage.setItem(
+      'userLogged',
+      (Storage as any)._decrypt(decodeURIComponent(userlogged))
+    )
 
-    Storage.setItem('auth', mock.miniClusterStatus)
+    const currentSubDomain = octaAuthenticated?.subDomain
 
-    Storage.setItem('userToken', mock.userToken)
+    Storage.setItem('company', currentSubDomain)
+
+    Storage.setItem('status', {
+      daysRemaining: 998,
+      subDomain: currentSubDomain,
+      isTrial: true,
+      isAccountActivated: false,
+      isValid: true,
+      paymentInformation: { updatedTime: '0001-01-01T00:00:00', status: 0 },
+      cycleType: 3,
+      totalLicenses: 1,
+    })
+
+    Storage.setItem('auth', {
+      access_token,
+      octaAuthenticated,
+    })
+
+    Storage.setItem('userToken', jwtoken)
+
+    subDomain.setSubDomain(currentSubDomain)
   }
 }
