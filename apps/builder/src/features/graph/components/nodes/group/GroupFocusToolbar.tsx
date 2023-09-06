@@ -1,17 +1,27 @@
-import { CopyIcon, PlayIcon, TrashIcon } from '@/components/icons'
-import { HStack, IconButton, useColorModeValue } from '@chakra-ui/react'
+import { CopyIcon, InfoIcon, PlayIcon, TrashIcon } from '@/components/icons'
+import {
+  HStack,
+  IconButton,
+  Tooltip,
+  useClipboard,
+  useColorModeValue,
+} from '@chakra-ui/react'
 
 type Props = {
+  groupId: string
   onPlayClick: () => void
   onDuplicateClick: () => void
   onDeleteClick: () => void
 }
 
 export const GroupFocusToolbar = ({
+  groupId,
   onPlayClick,
   onDuplicateClick,
   onDeleteClick,
 }: Props) => {
+  const { hasCopied, onCopy } = useClipboard(groupId)
+
   return (
     <HStack
       rounded="md"
@@ -42,6 +52,22 @@ export const GroupFocusToolbar = ({
         }}
         size="sm"
       />
+      <Tooltip
+        label={hasCopied ? 'Copied!' : groupId}
+        closeOnClick={false}
+        placement="top"
+      >
+        <IconButton
+          icon={<InfoIcon />}
+          borderRightWidth="1px"
+          borderRightRadius="none"
+          borderLeftRadius="none"
+          aria-label={'Show group info'}
+          variant="ghost"
+          size="sm"
+          onClick={onCopy}
+        />
+      </Tooltip>
       <IconButton
         aria-label="Delete"
         borderLeftRadius="none"
