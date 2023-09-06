@@ -2,15 +2,25 @@ import { z } from 'zod'
 import { blockBaseSchema, credentialsBaseSchema } from '../baseSchemas'
 import { IntegrationBlockType } from './enums'
 
+export const searchResponseValues = ['Summary', 'Results'] as const
+
 export const zemanticAiOptionsSchema = z.object({
   credentialsId: z.string().optional(),
-  resultsVariable: z.string().optional(),
-  summaryVariable: z.string().optional(),
   projectId: z.string().optional(),
   systemPrompt: z.string().optional(),
   prompt: z.string().optional(),
   query: z.string().optional(),
   maxResults: z.number().int().optional(),
+  responseMapping: z.array(
+    z.object({
+      id: z.string(),
+      valueToExtract: z.preprocess(
+        (val) => (!val ? 'Summary' : val),
+        z.enum(searchResponseValues)
+      ),
+      variableId: z.string().optional(),
+    })
+  ),
 })
 
 export const zemanticAiBlockSchema = blockBaseSchema.merge(

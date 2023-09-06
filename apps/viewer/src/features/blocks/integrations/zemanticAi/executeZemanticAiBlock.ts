@@ -49,20 +49,10 @@ export const executeZemanticAiBlock = async (
 
   const { typebot, answers } = newSessionState.typebotsQueue[0]
 
-  const resultsVariable = typebot.variables.find(
-    byId(block.options.resultsVariable)
-  )
-
-  const summaryVariable = typebot.variables.find(
-    byId(block.options.summaryVariable)
-  )
-
   const templateVars = parseAnswers({
     variables: getDefinedVariables(typebot.variables),
     answers: answers,
   })
-
-  console.log(block.options.maxResults)
 
   try {
     const res: ZemanticAiResponse = await got
@@ -94,16 +84,26 @@ export const executeZemanticAiBlock = async (
       })
       .json()
 
-    if (isDefined(resultsVariable) && res.results.length) {
-      newSessionState = updateVariables(newSessionState)([
-        { ...resultsVariable, value: JSON.stringify(res.results) },
-      ])
-    }
-
-    if (isDefined(summaryVariable) && !isEmpty(res.summary)) {
-      newSessionState = updateVariables(newSessionState)([
-        { ...summaryVariable, value: res.summary },
-      ])
+    for (const r of block.options.responseMapping || []) {
+      const variable = typebot.variables.find(byId(r.variableId))
+      switch (r.valueToExtract) {
+        case 'Summary':
+          if (isDefined(variable) && !isEmpty(res.summary)) {
+            newSessionState = updateVariables(newSessionState)([
+              { ...variable, value: res.summary },
+            ])
+          }
+          break
+        case 'Results':
+          if (isDefined(variable) && res.results.length) {
+            newSessionState = updateVariables(newSessionState)([
+              { ...variable, value: JSON.stringify(res.results) },
+            ])
+          }
+          break
+        default:
+          break
+      }
     }
   } catch (e) {
     console.error(e)
@@ -120,6 +120,7 @@ const replaceTemplateVars = (
   template: string,
   vars: Record<string, string>
 ) => {
+  if (!template) return
   let result = template
   for (const [key, value] of Object.entries(vars)) {
     result = result.replaceAll(`{{${key}}}`, value)

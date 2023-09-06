@@ -7,26 +7,27 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  FormControl,
-  FormLabel,
   Stack,
   Text,
   useDisclosure,
 } from '@chakra-ui/react'
 import { isEmpty } from '@typebot.io/lib'
-import { Variable, ZemanticAiBlock } from '@typebot.io/schemas'
+import { ZemanticAiBlock } from '@typebot.io/schemas'
 import { ZemanticAiCredentialsModal } from './ZemanticAiCredentialsModal'
-import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { ProjectsDropdown } from './ProjectsDropdown'
+import { SearchResponseItem } from './SearchResponseItem'
+import { TableList } from '@/components/TableList'
+import { createId } from '@paralleldrive/cuid2'
 
 type Props = {
-  block?: ZemanticAiBlock
+  block: ZemanticAiBlock
   onOptionsChange: (options: ZemanticAiBlock['options']) => void
 }
 
-export const ZemanticAiSettings = ({ block, onOptionsChange }: Props) => {
-  const options = block?.options
-  const blockId = block?.id
+export const ZemanticAiSettings = ({
+  block: { id: blockId, options },
+  onOptionsChange,
+}: Props) => {
   const { workspace } = useWorkspace()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -34,6 +35,12 @@ export const ZemanticAiSettings = ({ block, onOptionsChange }: Props) => {
     onOptionsChange({
       ...options,
       credentialsId,
+      responseMapping: [
+        {
+          id: createId(),
+          valueToExtract: 'Summary',
+        },
+      ],
     })
   }
 
@@ -74,17 +81,12 @@ export const ZemanticAiSettings = ({ block, onOptionsChange }: Props) => {
     })
   }
 
-  const updateResultsVariableToSave = (variable?: Variable) => {
+  const updateResponseMapping = (
+    responseMapping: typeof options.responseMapping
+  ) => {
     onOptionsChange({
       ...options,
-      resultsVariable: variable?.id,
-    })
-  }
-
-  const updateSummaryVariableToSave = (variable?: Variable) => {
-    onOptionsChange({
-      ...options,
-      summaryVariable: variable?.id,
+      responseMapping,
     })
   }
 
@@ -156,24 +158,23 @@ export const ZemanticAiSettings = ({ block, onOptionsChange }: Props) => {
                 />
               </AccordionPanel>
             </AccordionItem>
+            <AccordionItem>
+              <AccordionButton>
+                <Text w="full" textAlign="left">
+                  Save answer
+                </Text>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel pt="4">
+                <TableList
+                  initialItems={options.responseMapping ?? []}
+                  Item={SearchResponseItem}
+                  onItemsChange={updateResponseMapping}
+                  newItemDefaultProps={{ valueToExtract: 'Summary' }}
+                />
+              </AccordionPanel>
+            </AccordionItem>
           </Accordion>
-          <FormControl>
-            <FormLabel>Save results to variable:</FormLabel>
-            <VariableSearchInput
-              onSelectVariable={updateResultsVariableToSave}
-              placeholder="Search for a variable"
-              initialVariableId={options?.resultsVariable}
-            />
-          </FormControl>
-
-          <FormControl>
-            <FormLabel>Save summary to variable:</FormLabel>
-            <VariableSearchInput
-              onSelectVariable={updateSummaryVariableToSave}
-              placeholder="Search for a variable"
-              initialVariableId={options?.summaryVariable}
-            />
-          </FormControl>
         </>
       )}
     </Stack>
