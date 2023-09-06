@@ -214,7 +214,7 @@ export type PreReserveOptions = BaseOctaOptions & {
 }
 
 export type WOZSuggestionOptions = BaseOctaOptions & {
-  preferredAnswer: string
+  preferredAnswer?: string
 }
 
 export type CallOtherBotOptions = BaseOctaOptions & {
@@ -362,7 +362,7 @@ export const defaultPreReserveOptions: PreReserveOptions = {
 }
 
 export const defaultWOZSuggestionOptions: WOZSuggestionOptions = {
-  preferredAnswer: 'openAI',
+  preferredAnswer: '',
   name: '',
   subject: ''
 }
