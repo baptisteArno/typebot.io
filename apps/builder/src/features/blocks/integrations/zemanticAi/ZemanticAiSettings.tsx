@@ -17,13 +17,16 @@ import { isEmpty } from '@typebot.io/lib'
 import { Variable, ZemanticAiBlock } from '@typebot.io/schemas'
 import { ZemanticAiCredentialsModal } from './ZemanticAiCredentialsModal'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
+import { ProjectsDropdown } from './ProjectsDropdown'
 
 type Props = {
-  options?: ZemanticAiBlock['options']
+  block?: ZemanticAiBlock
   onOptionsChange: (options: ZemanticAiBlock['options']) => void
 }
 
-export const ZemanticAiSettings = ({ options, onOptionsChange }: Props) => {
+export const ZemanticAiSettings = ({ block, onOptionsChange }: Props) => {
+  const options = block?.options
+  const blockId = block?.id
   const { workspace } = useWorkspace()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -34,7 +37,7 @@ export const ZemanticAiSettings = ({ options, onOptionsChange }: Props) => {
     })
   }
 
-  const updateProjectId = (projectId: string) => {
+  const updateProjectId = (projectId: string | undefined) => {
     onOptionsChange({
       ...options,
       projectId: isEmpty(projectId) ? undefined : projectId,
@@ -97,80 +100,82 @@ export const ZemanticAiSettings = ({ options, onOptionsChange }: Props) => {
           credentialsName="Zemantic AI account"
         />
       )}
-      <ZemanticAiCredentialsModal
-        isOpen={isOpen}
-        onClose={onClose}
-        onNewCredentials={updateCredentialsId}
-      />
-      <TextInput
-        label="Project ID:"
-        moreInfoTooltip="The project ID containing the documents you want to search."
-        defaultValue={options?.projectId ?? ''}
-        onChange={updateProjectId}
-        withVariableButton={false}
-        placeholder="Project ID"
-      />
-      <TextInput
-        label="Question or Query:"
-        moreInfoTooltip="The question or query you want to ask or search against the documents in the project."
-        defaultValue={options?.query ?? ''}
-        onChange={updateQuery}
-        withVariableButton={true}
-        placeholder="Question"
-      />
-      <NumberInput
-        label="Max Results:"
-        moreInfoTooltip="The maximum number of document chunk results to return from your search."
-        direction="column"
-        defaultValue={options?.maxResults}
-        onValueChange={updateMaxResults}
-        placeholder="Default: 3"
-      />
-      <Accordion allowMultiple={true}>
-        <AccordionItem>
-          <AccordionButton>
-            <Text w="full" textAlign="left">
-              Prompt Settings (Optional)
-            </Text>
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel pb={4} as={Stack} spacing={6}>
-            <Textarea
-              label="System Prompt:"
-              moreInfoTooltip="System prompt to send to the summarization LLM. This is prepended to the prompt and helps guide system behavior."
-              defaultValue={options?.systemPrompt ?? ''}
-              onChange={updateSystemPrompt}
-              placeholder="System Prompt"
-              withVariableButton={true}
+      {options?.credentialsId && (
+        <>
+          <ZemanticAiCredentialsModal
+            isOpen={isOpen}
+            onClose={onClose}
+            onNewCredentials={updateCredentialsId}
+          />
+          <ProjectsDropdown
+            credentialsId={options?.credentialsId as string}
+            defaultValue={(options?.projectId as string) ?? ''}
+            onChange={updateProjectId}
+            blockId={blockId as string}
+          />
+          <TextInput
+            label="Question or Query:"
+            moreInfoTooltip="The question or query you want to ask or search against the documents in the project."
+            defaultValue={options?.query ?? ''}
+            onChange={updateQuery}
+            withVariableButton={true}
+            placeholder="Question"
+          />
+          <NumberInput
+            label="Max Results:"
+            moreInfoTooltip="The maximum number of document chunk results to return from your search."
+            direction="column"
+            defaultValue={options?.maxResults}
+            onValueChange={updateMaxResults}
+            placeholder="Default: 3"
+          />
+          <Accordion allowMultiple={true}>
+            <AccordionItem>
+              <AccordionButton>
+                <Text w="full" textAlign="left">
+                  Prompt Settings (Optional)
+                </Text>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel pb={4} as={Stack} spacing={6}>
+                <Textarea
+                  label="System Prompt:"
+                  moreInfoTooltip="System prompt to send to the summarization LLM. This is prepended to the prompt and helps guide system behavior."
+                  defaultValue={options?.systemPrompt ?? ''}
+                  onChange={updateSystemPrompt}
+                  placeholder="System Prompt"
+                  withVariableButton={true}
+                />
+                <Textarea
+                  label="Prompt:"
+                  moreInfoTooltip="Prompt to send to the summarization LLM."
+                  defaultValue={options?.prompt ?? ''}
+                  onChange={updatePrompt}
+                  placeholder="Prompt"
+                  withVariableButton={true}
+                />
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+          <FormControl>
+            <FormLabel>Save results to variable:</FormLabel>
+            <VariableSearchInput
+              onSelectVariable={updateResultsVariableToSave}
+              placeholder="Search for a variable"
+              initialVariableId={options?.resultsVariable}
             />
-            <Textarea
-              label="Prompt:"
-              moreInfoTooltip="Prompt to send to the summarization LLM."
-              defaultValue={options?.prompt ?? ''}
-              onChange={updatePrompt}
-              placeholder="Prompt"
-              withVariableButton={true}
-            />
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
-      <FormControl>
-        <FormLabel>Save results to variable:</FormLabel>
-        <VariableSearchInput
-          onSelectVariable={updateResultsVariableToSave}
-          placeholder="Search for a variable"
-          initialVariableId={options?.resultsVariable}
-        />
-      </FormControl>
+          </FormControl>
 
-      <FormControl>
-        <FormLabel>Save summary to variable:</FormLabel>
-        <VariableSearchInput
-          onSelectVariable={updateSummaryVariableToSave}
-          placeholder="Search for a variable"
-          initialVariableId={options?.summaryVariable}
-        />
-      </FormControl>
+          <FormControl>
+            <FormLabel>Save summary to variable:</FormLabel>
+            <VariableSearchInput
+              onSelectVariable={updateSummaryVariableToSave}
+              placeholder="Search for a variable"
+              initialVariableId={options?.summaryVariable}
+            />
+          </FormControl>
+        </>
+      )}
     </Stack>
   )
 }

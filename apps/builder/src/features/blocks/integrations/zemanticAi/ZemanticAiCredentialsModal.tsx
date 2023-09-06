@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react'
 import React, { useState } from 'react'
 
-const zemanticAIDashboardPage = 'https://zemantic.ai/dashboard'
+const zemanticAIDashboardPage = 'https://zemantic.ai/dashboard/settings'
 
 type Props = {
   isOpen: boolean

@@ -317,10 +317,7 @@ export const BlockSettings = ({
     }
     case IntegrationBlockType.ZEMANTIC_AI: {
       return (
-        <ZemanticAiSettings
-          options={block.options}
-          onOptionsChange={updateOptions}
-        />
+        <ZemanticAiSettings block={block} onOptionsChange={updateOptions} />
       )
     }
   }

@@ -16,6 +16,7 @@ export const zemanticAiOptionsSchema = z.object({
 export const zemanticAiBlockSchema = blockBaseSchema.merge(
   z.object({
     type: z.enum([IntegrationBlockType.ZEMANTIC_AI]),
+    blockId: z.string().optional(),
     options: zemanticAiOptionsSchema,
   })
 )
