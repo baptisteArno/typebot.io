@@ -37,21 +37,24 @@ export const WOZSuggestionSettingBody = ({
   })
 
   return (
+    // <Stack spacing={4}>
+    //   <Stack>
+    //     <FormLabel mb="0" htmlFor="placeholder">
+    //       Enviar a sugestão:
+    //     </FormLabel>
+    //     (
+    //     <OctaSelect
+    //       placeholder="Selecione..."
+    //       defaultSelected={options?.preferredAnswer}
+    //       value={options?.preferredAnswer}
+    //       findable
+    //       options={items}
+    //       onChange={handleDefaultPreferredAnswer}
+    //     />
+    //   </Stack>
+    // </Stack>
     <Stack spacing={4}>
-      <Stack>
-        <FormLabel mb="0" htmlFor="placeholder">
-          Enviar a sugestão:
-        </FormLabel>
-        (
-        <OctaSelect
-          placeholder="Selecione..."
-          defaultSelected={options?.preferredAnswer}
-          value={options?.preferredAnswer}
-          findable
-          options={items}
-          onChange={handleDefaultPreferredAnswer}
-        />
-      </Stack>
+      <iframe src="https://campanhas.octadesk.com/woz" style={{ width: '100%', height: '550px' }} />
     </Stack>
   )
 }
