@@ -23,8 +23,8 @@ You need a server with Docker installed. If your server doesn't come with Docker
 On your server, download the latest `docker-compose.yml` and the starter `.env` file:
 
 ```sh
- wget https://raw.githubusercontent.com/baptisteArno/typebot.io/main/docker-compose.yml
- wget https://raw.githubusercontent.com/baptisteArno/typebot.io/main/.env.example -O .env
+ wget https://raw.githubusercontent.com/baptisteArno/typebot.io/latest/docker-compose.yml
+ wget https://raw.githubusercontent.com/baptisteArno/typebot.io/latest/.env.example -O .env
 ```
 
 ### 2. Add the required configuration
@@ -38,7 +38,7 @@ On your server, download the latest `docker-compose.yml` and the starter `.env` 
 2. Fill the `.env` file with your values.
 3. Configure at least one authentication provider (Email, Google, GitHub, Facebook or GitLab). More info here: [Configuration](https://docs.typebot.io/self-hosting/configuration).
 
-By default the compose file will pull the latest stable Typebot images: `baptistearno/typebot-builder:latest` and `baptistearno/typebot-viewer:latest`. You can decide to replace `latest` with a specific version or with `main` to get the latest modifications. You can find all the existing tags [here](https://hub.docker.com/r/baptistearno/typebot-builder/tags)
+By default the compose file will pull the latest stable Typebot images: `baptistearno/typebot-builder:latest` and `baptistearno/typebot-viewer:latest`. You can decide to replace `latest` with a specific version. You can find all the existing tags [here](https://hub.docker.com/r/baptistearno/typebot-builder/tags)
 
 ### 3. Start the server
 
