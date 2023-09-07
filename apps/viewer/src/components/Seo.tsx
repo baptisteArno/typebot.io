@@ -1,8 +1,9 @@
 import { gtmHeadSnippet } from '@/lib/google-tag-manager'
+import { Metadata } from '@typebot.io/schemas'
 import Head from 'next/head'
 import Script from 'next/script'
+import React from 'react'
 import { isNotEmpty } from '@typebot.io/lib'
-import { Metadata } from '@typebot.io/schemas/features/typebot/settings'
 
 type SEOProps = {
   url: string
@@ -22,7 +23,7 @@ export const SEO = ({
       <link
         rel="icon"
         type="image/png"
-        href={favIconUrl ?? 'https://s3.typebot.io/favicon.png'}
+        href={favIconUrl ?? 'https://viewer.typebot.io/favicon.png'}
       />
       <meta name="title" content={title ?? typebotName} />
       <meta

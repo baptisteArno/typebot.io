@@ -1,7 +1,9 @@
-import { Stack, Text, Box, Flex, Heading, Image } from '@chakra-ui/react'
+import { Stack, Text, Box, Flex, Heading } from '@chakra-ui/react'
 import { Header } from 'components/common/Header/Header'
 import { SocialMetaTags } from 'components/common/SocialMetaTags'
 import React from 'react'
+import selfie from '../public/images/selfie.png'
+import Image from 'next/image'
 import { Footer } from 'components/common/Footer'
 import { TextLink } from 'components/common/TextLink'
 
@@ -28,7 +30,7 @@ const AboutPage = () => {
         </Text>
         <Flex w="full" justify="center">
           <Box as="figure" maxW="200px">
-            <Image src="https://s3.typebot.io/selfie.png" alt="selfie" />
+            <Image src={selfie} alt="selfie" />
           </Box>
         </Flex>
 
