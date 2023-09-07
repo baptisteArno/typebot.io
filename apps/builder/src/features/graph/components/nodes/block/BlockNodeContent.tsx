@@ -202,7 +202,7 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
       return <PixelNodeBody options={block.options} />
     }
     case IntegrationBlockType.ZEMANTIC_AI: {
-      return <ZemanticAiNodeBody projectId={block.options?.projectId} />
+      return <ZemanticAiNodeBody options={block.options} />
     }
     case 'start': {
       return <Text>{scopedT('text')}</Text>

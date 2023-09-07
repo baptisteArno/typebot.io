@@ -93,22 +93,24 @@ export const ZemanticAiSettings = ({
   return (
     <Stack spacing={4}>
       {workspace && (
-        <CredentialsDropdown
-          type="zemanticai"
-          workspaceId={workspace.id}
-          currentCredentialsId={options?.credentialsId}
-          onCredentialsSelect={updateCredentialsId}
-          onCreateNewClick={onOpen}
-          credentialsName="Zemantic AI account"
-        />
-      )}
-      {options?.credentialsId && (
         <>
+          <CredentialsDropdown
+            type="zemanticai"
+            workspaceId={workspace.id}
+            currentCredentialsId={options?.credentialsId}
+            onCredentialsSelect={updateCredentialsId}
+            onCreateNewClick={onOpen}
+            credentialsName="Zemantic AI account"
+          />
           <ZemanticAiCredentialsModal
             isOpen={isOpen}
             onClose={onClose}
             onNewCredentials={updateCredentialsId}
           />
+        </>
+      )}
+      {options?.credentialsId && (
+        <>
           <ProjectsDropdown
             credentialsId={options?.credentialsId as string}
             defaultValue={(options?.projectId as string) ?? ''}
@@ -116,12 +118,12 @@ export const ZemanticAiSettings = ({
             blockId={blockId as string}
           />
           <TextInput
-            label="Question or Query:"
-            moreInfoTooltip="The question or query you want to ask or search against the documents in the project."
+            label="Query:"
+            moreInfoTooltip="The question you want to ask or search against the documents in the project."
             defaultValue={options?.query ?? ''}
             onChange={updateQuery}
             withVariableButton={true}
-            placeholder="Question"
+            placeholder="Content"
           />
           <NumberInput
             label="Max Results:"
@@ -129,13 +131,14 @@ export const ZemanticAiSettings = ({
             direction="column"
             defaultValue={options?.maxResults}
             onValueChange={updateMaxResults}
-            placeholder="Default: 3"
+            placeholder="i.e. 3"
+            w="full"
           />
           <Accordion allowMultiple={true}>
             <AccordionItem>
               <AccordionButton>
                 <Text w="full" textAlign="left">
-                  Prompt Settings (Optional)
+                  Advanced settings
                 </Text>
                 <AccordionIcon />
               </AccordionButton>

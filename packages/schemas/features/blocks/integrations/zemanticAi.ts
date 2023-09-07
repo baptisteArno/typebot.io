@@ -51,6 +51,11 @@ export const zemanticSearchResponseSchema = z.object({
   summary: z.string(),
 })
 
+export const zemanticAiDefaultOptions: ZemanticAiOptions = {
+  maxResults: 3,
+  responseMapping: [],
+}
+
 export type ZemanticAiResponse = z.infer<typeof zemanticSearchResponseSchema>
 export type ZemanticAiCredentials = z.infer<typeof zemanticAiCredentialsSchema>
 export type ZemanticAiOptions = z.infer<typeof zemanticAiOptionsSchema>
