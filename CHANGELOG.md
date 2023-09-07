@@ -1,6 +1,20 @@
 # Changelog
 
+<a name="2.17.2"></a>
+
+## 2.17.2 (2023-09-07)
+
+### Added
+
+- 👷‍♂️ Remove docker main tag building [[a0df851](https://github.com/baptisteArno/typebot.io/commit/a0df85108f9216bdb5005b15334d074c30a65f1d)]
+
+### Fixed
+
+- 💚 Fix docker deployment tagging [[f14808d](https://github.com/baptisteArno/typebot.io/commit/f14808dfcb761d2a0b471f94f6dba9aaf27cd577)]
+- 💚 Fix docker multi arch overwrite issue ([#779](https://github.com/baptisteArno/typebot.io/issues/779)) [[b90b6d0](https://github.com/baptisteArno/typebot.io/commit/b90b6d0b255c2ecdab8782151d714d46ae1d961b)]
+
 <a name="2.17.1"></a>
+
 ## 2.17.1 (2023-09-06)
 
 ### Changed
@@ -23,14 +37,19 @@
 - 📝 Add user preferences doc [[605132e](https://github.com/baptisteArno/typebot.io/commit/605132ec3c817a20a99feb82751347ef50ffa4ef)]
 - 🌐 Add pt_BR and more translations ([#767](https://github.com/baptisteArno/typebot.io/issues/767)) [[aaa208c](https://github.com/baptisteArno/typebot.io/commit/aaa208cef451eb58ef26003e3ed2dda8f6972107)]
 - 🌐 Add i18n-ally config and upgrade next-international [[e4ece31](https://github.com/baptisteArno/typebot.io/commit/e4ece315edaff157fdd3d841f8e88ce589507015)]
--  Docker improvements ([#760](https://github.com/baptisteArno/typebot.io/issues/760)) [[66dc570](https://github.com/baptisteArno/typebot.io/commit/66dc5705270e81938bddfc2b8df1a340a065376e)]
+- Docker improvements ([#760](https://github.com/baptisteArno/typebot.io/issues/760)) [[66dc570](https://github.com/baptisteArno/typebot.io/commit/66dc5705270e81938bddfc2b8df1a340a065376e)]
 - 📝 Add cancel subscription doc [[a79e605](https://github.com/baptisteArno/typebot.io/commit/a79e605285e306e81dfdba03d51d7c986def5862)]
 - 🛂 (whatsapp) Disallow test numbers as they are not unique [[60abddd](https://github.com/baptisteArno/typebot.io/commit/60abddd86e7c32a502d5cc506a5d0fb5e7910c8f)]
-
 
 <a name="2.17.0"></a>
 
 ## 2.17.0 (2023-09-01)
+
+### Breaking changes
+
+Environment management has been improved and merged between builder and viewer.
+
+If your viewer app do not have the required `NEXTAUTH_URL` env variable, you need to add it.
 
 ## What's new?
 
