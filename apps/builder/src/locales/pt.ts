@@ -1,6 +1,4 @@
-import { defineLocale } from '.'
-
-export default defineLocale({
+export default {
   back: 'Voltar',
   'confirmModal.defaultTitle': 'Tem a certeza?',
   'dashboard.header.settingsButton.label': 'Configurações & Membros',
@@ -323,4 +321,4 @@ export default defineLocale({
   'editor.blocks.bubbles.textEditor.plate.label': 'Editor de texto',
   'editor.blocks.bubbles.textEditor.searchVariable.placeholder':
     'Pesquisar uma variável',
-})
+} as const
