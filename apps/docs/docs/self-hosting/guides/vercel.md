@@ -18,6 +18,10 @@ You need a PostgresDB database hosted somewhere. [Supabase](https://supabase.com
 
 Fork the repository
 
+## Disable Github workflows
+
+You may want to [disable the Github actions](https://docs.github.com/en/actions/using-workflows/disabling-and-enabling-a-workflow) as they are most likely not relevant to your use of Typebot. This can be done.
+
 ### Deploy the builder
 
 1. Create a new Vercel project and import the forked repo
