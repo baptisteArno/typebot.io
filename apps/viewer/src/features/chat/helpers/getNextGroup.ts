@@ -34,9 +34,10 @@ export const getNextGroup =
                     variables: state.typebotsQueue[1].typebot.variables.map(
                       (variable) => ({
                         ...variable,
-                        value: state.typebotsQueue[0].answers.find(
-                          (answer) => answer.key === variable.name
-                        )?.value,
+                        value:
+                          state.typebotsQueue[0].answers.find(
+                            (answer) => answer.key === variable.name
+                          )?.value ?? variable.value,
                       })
                     ),
                   }
