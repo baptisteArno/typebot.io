@@ -2,5 +2,24 @@
   "i18n-ally.localesPaths": ["apps/builder/src/locales"],
   "i18n-ally.enabledFrameworks": ["next-international"],
   "i18n-ally.enabledParsers": ["ts"],
-  "i18n-ally.keystyle": "flat"
+  "i18n-ally.keystyle": "flat",
+  "i18n-ally.displayLanguage": "en",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "playwright.env": {
+    "DATABASE_URL": "postgresql://postgres:typebot@localhost:5432/typebot",
+    "NEXT_PUBLIC_VIEWER_URL": "http://localhost:3001",
+    "NEXTAUTH_URL": "http://localhost:3000"
+  },
+  "[php]": {
+    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+  },
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  }
 }
