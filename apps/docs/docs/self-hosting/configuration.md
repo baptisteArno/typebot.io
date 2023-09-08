@@ -133,15 +133,16 @@ For `*_PATH` parameters, you can use dot notation to access nested properties (i
 
 Used for uploading images, videos, etc... It can be any S3 compatible object storage service (Minio, Digital Oceans Space, AWS S3...)
 
-| Parameter     | Default | Description                                                    |
-| ------------- | ------- | -------------------------------------------------------------- |
-| S3_ACCESS_KEY |         | S3 access key. Also used to check if upload feature is enabled |
-| S3_SECRET_KEY |         | S3 secret key.                                                 |
-| S3_BUCKET     | typebot | Name of the bucket where assets will be uploaded in.           |
-| S3_PORT       |         | S3 Host port number                                            |
-| S3_ENDPOINT   |         | S3 endpoint (i.e. `s3.domain.com`).                            |
-| S3_SSL        | true    | Use SSL when establishing the connection.                      |
-| S3_REGION     |         | S3 region.                                                     |
+| Parameter               | Default | Description                                                                        |
+| ----------------------- | ------- | ---------------------------------------------------------------------------------- |
+| S3_ACCESS_KEY           |         | S3 access key. Also used to check if upload feature is enabled                     |
+| S3_SECRET_KEY           |         | S3 secret key.                                                                     |
+| S3_BUCKET               | typebot | Name of the bucket where assets will be uploaded in.                               |
+| S3_PORT                 |         | S3 Host port number                                                                |
+| S3_ENDPOINT             |         | S3 endpoint (i.e. `s3.domain.com`).                                                |
+| S3_SSL                  | true    | Use SSL when establishing the connection.                                          |
+| S3_REGION               |         | S3 region.                                                                         |
+| S3_PUBLIC_CUSTOM_DOMAIN |         | If the final URL that is used to read public files is different from `S3_ENDPOINT` |
 
 Note that for AWS S3, your endpoint is usually: `s3.<S3_REGION>.amazonaws.com`
 

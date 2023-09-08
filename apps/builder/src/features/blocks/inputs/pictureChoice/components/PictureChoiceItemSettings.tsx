@@ -16,6 +16,7 @@ import { ConditionForm } from '@/features/blocks/logic/condition/components/Cond
 import { Condition, LogicalOperator } from '@typebot.io/schemas'
 
 type Props = {
+  workspaceId: string
   typebotId: string
   blockId: string
   item: PictureChoiceItem
@@ -23,6 +24,7 @@ type Props = {
 }
 
 export const PictureChoiceItemSettings = ({
+  workspaceId,
   typebotId,
   blockId,
   item,
@@ -69,7 +71,12 @@ export const PictureChoiceItemSettings = ({
               </PopoverTrigger>
               <PopoverContent p="4" w="500px">
                 <ImageUploadContent
-                  filePath={`typebots/${typebotId}/blocks/${blockId}/items/${item.id}`}
+                  uploadFileProps={{
+                    workspaceId,
+                    typebotId,
+                    blockId,
+                    itemId: item.id,
+                  }}
                   defaultUrl={item.pictureSrc}
                   onSubmit={(url) => {
                     updateImage(url)

@@ -4,6 +4,7 @@ import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseH
 import { BubbleBlockType, defaultImageBubbleContent } from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
+import { proWorkspaceId } from '@typebot.io/lib/playwright/databaseSetup'
 
 const unsplashImageSrc =
   'https://images.unsplash.com/photo-1504297050568-910d24c426d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80'
@@ -29,7 +30,10 @@ test.describe.parallel('Image bubble block', () => {
       await page.setInputFiles('input[type="file"]', getTestAsset('avatar.jpg'))
       await expect(page.locator('img')).toHaveAttribute(
         'src',
-        new RegExp(`/public/typebots/${typebotId}/blocks/block2`, 'gm')
+        new RegExp(
+          `/public/workspaces/${proWorkspaceId}/typebots/${typebotId}/blocks/block2`,
+          'gm'
+        )
       )
     })
 

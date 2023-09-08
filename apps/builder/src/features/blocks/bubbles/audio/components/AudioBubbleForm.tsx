@@ -5,15 +5,16 @@ import { useState } from 'react'
 import { UploadButton } from '@/components/ImageUploadContent/UploadButton'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { useScopedI18n } from '@/locales'
+import { FilePathUploadProps } from '@/features/upload/api/generateUploadUrl'
 
 type Props = {
-  fileUploadPath: string
+  uploadFileProps: FilePathUploadProps
   content: AudioBubbleContent
   onContentChange: (content: AudioBubbleContent) => void
 }
 
 export const AudioBubbleForm = ({
-  fileUploadPath,
+  uploadFileProps,
   content,
   onContentChange,
 }: Props) => {
@@ -49,7 +50,7 @@ export const AudioBubbleForm = ({
             <Flex justify="center" py="2">
               <UploadButton
                 fileType="audio"
-                filePath={fileUploadPath}
+                filePathProps={uploadFileProps}
                 onFileUploaded={updateUrl}
                 colorScheme="blue"
               >

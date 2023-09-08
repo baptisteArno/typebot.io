@@ -81,7 +81,7 @@ export const ButtonThemeSettings = ({ buttonTheme, onChange }: Props) => {
                       updateCustomIconSrc(url)
                       onClose()
                     }}
-                    filePath={undefined}
+                    uploadFileProps={undefined}
                   />
                 </PopoverContent>
               </>

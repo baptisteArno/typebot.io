@@ -32214,6 +32214,148 @@
           }
         }
       }
+    },
+    "/generate-upload-url": {
+      "post": {
+        "operationId": "generateUploadUrl",
+        "summary": "Generate upload URL",
+        "description": "Generate the needed URL to upload a file from the client",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "filePathProps": {
+                    "anyOf": [
+                      {
+                        "anyOf": [
+                          {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "workspaceId": {
+                                    "type": "string"
+                                  },
+                                  "typebotId": {
+                                    "type": "string"
+                                  },
+                                  "blockId": {
+                                    "type": "string"
+                                  },
+                                  "itemId": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "workspaceId",
+                                  "typebotId",
+                                  "blockId"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "workspaceId": {
+                                    "type": "string"
+                                  },
+                                  "typebotId": {
+                                    "type": "string"
+                                  },
+                                  "fileName": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "workspaceId",
+                                  "typebotId",
+                                  "fileName"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "userId": {
+                                "type": "string"
+                              },
+                              "fileName": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "userId",
+                              "fileName"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "workspaceId": {
+                            "type": "string"
+                          },
+                          "fileName": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "workspaceId",
+                          "fileName"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "fileType": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "filePathProps"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "presignedUrl": {
+                      "type": "string"
+                    },
+                    "fileUrl": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "presignedUrl",
+                    "fileUrl"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
     }
   },
   "components": {

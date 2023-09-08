@@ -23,6 +23,6 @@
   },
   "dependencies": {
     "got": "12.6.0",
-    "minio": "7.1.1"
+    "minio": "7.1.3"
   }
 }

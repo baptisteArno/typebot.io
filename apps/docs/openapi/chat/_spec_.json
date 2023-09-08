@@ -6282,6 +6282,86 @@
           "default": {
             "$ref": "#/components/responses/error"
           }
+        },
+        "deprecated": true
+      }
+    },
+    "/generate-upload-url": {
+      "post": {
+        "operationId": "generateUploadUrl",
+        "summary": "Generate upload URL",
+        "description": "Used to upload anything from the client to S3 bucket",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "filePathProps": {
+                    "type": "object",
+                    "properties": {
+                      "typebotId": {
+                        "type": "string"
+                      },
+                      "blockId": {
+                        "type": "string"
+                      },
+                      "resultId": {
+                        "type": "string"
+                      },
+                      "fileName": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "typebotId",
+                      "blockId",
+                      "resultId",
+                      "fileName"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "fileType": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "filePathProps"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "presignedUrl": {
+                      "type": "string"
+                    },
+                    "fileUrl": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "presignedUrl",
+                    "fileUrl"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
         }
       }
     },

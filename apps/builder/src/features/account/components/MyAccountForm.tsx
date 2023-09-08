@@ -36,15 +36,20 @@ export const MyAccountForm = () => {
           name={user?.name ?? undefined}
         />
         <Stack>
-          <UploadButton
-            size="sm"
-            fileType="image"
-            filePath={`users/${user?.id}/avatar`}
-            leftIcon={<UploadIcon />}
-            onFileUploaded={handleFileUploaded}
-          >
-            {scopedT('changePhotoButton.label')}
-          </UploadButton>
+          {user?.id && (
+            <UploadButton
+              size="sm"
+              fileType="image"
+              filePathProps={{
+                userId: user.id,
+                fileName: 'avatar',
+              }}
+              leftIcon={<UploadIcon />}
+              onFileUploaded={handleFileUploaded}
+            >
+              {scopedT('changePhotoButton.label')}
+            </UploadButton>
+          )}
           <Text color="gray.500" fontSize="sm">
             {scopedT('changePhotoButton.specification')}
           </Text>

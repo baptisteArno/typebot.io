@@ -134,6 +134,7 @@ export const PictureChoiceItemNode = ({
           >
             {typebot && (
               <PictureChoiceItemSettings
+                workspaceId={typebot.workspaceId}
                 typebotId={typebot.id}
                 item={item}
                 blockId={

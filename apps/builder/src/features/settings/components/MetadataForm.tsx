@@ -16,6 +16,7 @@ import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 import { TextInput, Textarea } from '@/components/inputs'
 
 type Props = {
+  workspaceId: string
   typebotId: string
   typebotName: string
   metadata: Metadata
@@ -23,6 +24,7 @@ type Props = {
 }
 
 export const MetadataForm = ({
+  workspaceId,
   typebotId,
   typebotName,
   metadata,
@@ -61,7 +63,11 @@ export const MetadataForm = ({
           </PopoverTrigger>
           <PopoverContent p="4" w="400px">
             <ImageUploadContent
-              filePath={`typebots/${typebotId}/favIcon`}
+              uploadFileProps={{
+                workspaceId,
+                typebotId,
+                fileName: 'favIcon',
+              }}
               defaultUrl={metadata.favIconUrl ?? ''}
               onSubmit={handleFavIconSubmit}
               excludedTabs={['giphy', 'unsplash', 'emoji']}
@@ -87,7 +93,11 @@ export const MetadataForm = ({
           </PopoverTrigger>
           <PopoverContent p="4" w="500px">
             <ImageUploadContent
-              filePath={`typebots/${typebotId}/ogImage`}
+              uploadFileProps={{
+                workspaceId,
+                typebotId,
+                fileName: 'ogImage',
+              }}
               defaultUrl={metadata.imageUrl}
               onSubmit={handleImageSubmit}
               excludedTabs={['giphy', 'icon', 'emoji']}

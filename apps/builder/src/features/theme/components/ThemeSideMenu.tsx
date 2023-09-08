@@ -125,6 +125,7 @@ export const ThemeSideMenu = () => {
           <AccordionPanel pb={4}>
             {typebot && (
               <ChatThemeSettings
+                workspaceId={typebot.workspaceId}
                 typebotId={typebot.id}
                 chatTheme={typebot.theme.chat}
                 onChatThemeChange={updateChatTheme}

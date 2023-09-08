@@ -1,6 +1,7 @@
 import { ImageUploadContent } from '@/components/ImageUploadContent'
 import { TextInput } from '@/components/inputs'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
+import { FilePathUploadProps } from '@/features/upload/api/generateUploadUrl'
 import { useScopedI18n } from '@/locales'
 import { Stack } from '@chakra-ui/react'
 import { isDefined, isNotEmpty } from '@typebot.io/lib'
@@ -8,13 +9,13 @@ import { ImageBubbleBlock } from '@typebot.io/schemas'
 import React, { useState } from 'react'
 
 type Props = {
-  typebotId: string
+  uploadFileProps: FilePathUploadProps
   block: ImageBubbleBlock
   onContentChange: (content: ImageBubbleBlock['content']) => void
 }
 
 export const ImageBubbleSettings = ({
-  typebotId,
+  uploadFileProps,
   block,
   onContentChange,
 }: Props) => {
@@ -53,7 +54,7 @@ export const ImageBubbleSettings = ({
   return (
     <Stack p="2" spacing={4}>
       <ImageUploadContent
-        filePath={`typebots/${typebotId}/blocks/${block.id}`}
+        uploadFileProps={uploadFileProps}
         defaultUrl={block.content?.url}
         onSubmit={updateImage}
       />

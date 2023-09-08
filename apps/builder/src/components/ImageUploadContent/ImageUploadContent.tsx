@@ -6,12 +6,12 @@ import { TextInput } from '../inputs/TextInput'
 import { EmojiSearchableList } from './emoji/EmojiSearchableList'
 import { UnsplashPicker } from './UnsplashPicker'
 import { IconPicker } from './IconPicker'
+import { FilePathUploadProps } from '@/features/upload/api/generateUploadUrl'
 
 type Tabs = 'link' | 'upload' | 'giphy' | 'emoji' | 'unsplash' | 'icon'
 
 type Props = {
-  filePath: string | undefined
-  includeFileName?: boolean
+  uploadFileProps: FilePathUploadProps | undefined
   defaultUrl?: string
   imageSize?: 'small' | 'regular' | 'thumb'
   initialTab?: Tabs
@@ -36,8 +36,7 @@ const defaultDisplayedTabs: Tabs[] = [
 ]
 
 export const ImageUploadContent = ({
-  filePath,
-  includeFileName,
+  uploadFileProps,
   defaultUrl,
   onSubmit,
   imageSize = 'regular',
@@ -123,8 +122,7 @@ export const ImageUploadContent = ({
       </HStack>
 
       <BodyContent
-        filePath={filePath}
-        includeFileName={includeFileName}
+        uploadFileProps={uploadFileProps}
         tab={currentTab}
         imageSize={imageSize}
         onSubmit={handleSubmit}
@@ -135,15 +133,13 @@ export const ImageUploadContent = ({
 }
 
 const BodyContent = ({
-  includeFileName,
-  filePath,
+  uploadFileProps,
   tab,
   defaultUrl,
   imageSize,
   onSubmit,
 }: {
-  includeFileName?: boolean
-  filePath: string | undefined
+  uploadFileProps?: FilePathUploadProps
   tab: Tabs
   defaultUrl?: string
   imageSize: 'small' | 'regular' | 'thumb'
@@ -151,11 +147,10 @@ const BodyContent = ({
 }) => {
   switch (tab) {
     case 'upload': {
-      if (!filePath) return null
+      if (!uploadFileProps) return null
       return (
         <UploadFileContent
-          filePath={filePath}
-          includeFileName={includeFileName}
+          uploadFileProps={uploadFileProps}
           onNewUrl={onSubmit}
         />
       )
@@ -176,16 +171,14 @@ const BodyContent = ({
 type ContentProps = { onNewUrl: (url: string) => void }
 
 const UploadFileContent = ({
-  filePath,
-  includeFileName,
+  uploadFileProps,
   onNewUrl,
-}: ContentProps & { filePath: string; includeFileName?: boolean }) => (
+}: ContentProps & { uploadFileProps: FilePathUploadProps }) => (
   <Flex justify="center" py="2">
     <UploadButton
       fileType="image"
-      filePath={filePath}
+      filePathProps={uploadFileProps}
       onFileUploaded={onNewUrl}
-      includeFileName={includeFileName}
       colorScheme="blue"
     >
       Choose an image

@@ -24,9 +24,7 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
     updateWorkspace({ name })
   }
 
-  const handleChangeIcon = (icon: string) => {
-    updateWorkspace({ icon })
-  }
+  const handleChangeIcon = (icon: string) => updateWorkspace({ icon })
 
   const handleDeleteClick = async () => {
     await deleteCurrentWorkspace()
@@ -40,7 +38,10 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
         <Flex>
           {workspace && (
             <EditableEmojiOrImageIcon
-              uploadFilePath={`workspaces/${workspace.id}/icon`}
+              uploadFileProps={{
+                workspaceId: workspace.id,
+                fileName: 'icon',
+              }}
               icon={workspace.icon}
               onChangeIcon={handleChangeIcon}
               boxSize="40px"

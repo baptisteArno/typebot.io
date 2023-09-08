@@ -94,6 +94,7 @@ export const SettingsSideMenu = () => {
           <AccordionPanel pb={4} px="6">
             {typebot && (
               <MetadataForm
+                workspaceId={typebot.workspaceId}
                 typebotId={typebot.id}
                 typebotName={typebot.name}
                 metadata={typebot.settings.metadata}

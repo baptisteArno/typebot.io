@@ -1,10 +1,15 @@
-import { sendRequest } from '../utils'
+import { sendRequest } from '@typebot.io/lib/utils'
 
 type UploadFileProps = {
-  basePath?: string
+  apiHost: string
   files: {
     file: File
-    path: string
+    input: {
+      typebotId: string
+      blockId: string
+      resultId: string
+      fileName: string
+    }
   }[]
   onUploadProgress?: (percent: number) => void
 }
@@ -12,37 +17,37 @@ type UploadFileProps = {
 type UrlList = (string | null)[]
 
 export const uploadFiles = async ({
-  basePath = '/api',
+  apiHost,
   files,
   onUploadProgress,
 }: UploadFileProps): Promise<UrlList> => {
   const urls = []
   let i = 0
-  for (const { file, path } of files) {
+  for (const { input, file } of files) {
     onUploadProgress && onUploadProgress((i / files.length) * 100)
     i += 1
     const { data } = await sendRequest<{
       presignedUrl: string
-      hasReachedStorageLimit: boolean
-    }>(
-      `${basePath}/storage/upload-url?filePath=${encodeURIComponent(
-        path
-      )}&fileType=${file.type}`
-    )
+      fileUrl: string
+    }>({
+      method: 'POST',
+      url: `${apiHost}/api/v1/generate-upload-url`,
+      body: {
+        filePathProps: input,
+        fileType: file.type,
+      },
+    })
 
     if (!data?.presignedUrl) continue
-
-    const url = data.presignedUrl
-    if (data.hasReachedStorageLimit) urls.push(null)
     else {
-      const upload = await fetch(url, {
+      const upload = await fetch(data.presignedUrl, {
         method: 'PUT',
         body: file,
       })
 
       if (!upload.ok) continue
 
-      urls.push(url.split('?')[0])
+      urls.push(data.fileUrl)
     }
   }
   return urls

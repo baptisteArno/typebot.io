@@ -19,12 +19,14 @@ import { HostBubbles } from './HostBubbles'
 import { InputsTheme } from './InputsTheme'
 
 type Props = {
+  workspaceId: string
   typebotId: string
   chatTheme: ChatTheme
   onChatThemeChange: (chatTheme: ChatTheme) => void
 }
 
 export const ChatThemeSettings = ({
+  workspaceId,
   typebotId,
   chatTheme,
   onChatThemeChange,
@@ -46,14 +48,22 @@ export const ChatThemeSettings = ({
   return (
     <Stack spacing={6}>
       <AvatarForm
-        uploadFilePath={`typebots/${typebotId}/hostAvatar`}
+        uploadFileProps={{
+          workspaceId,
+          typebotId,
+          fileName: 'hostAvatar',
+        }}
         title="Bot avatar"
         avatarProps={chatTheme.hostAvatar}
         isDefaultCheck
         onAvatarChange={handleHostAvatarChange}
       />
       <AvatarForm
-        uploadFilePath={`typebots/${typebotId}/guestAvatar`}
+        uploadFileProps={{
+          workspaceId,
+          typebotId,
+          fileName: 'guestAvatar',
+        }}
         title="User avatar"
         avatarProps={chatTheme.guestAvatar}
         onAvatarChange={handleGuestAvatarChange}

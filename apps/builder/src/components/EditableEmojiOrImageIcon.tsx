@@ -10,16 +10,17 @@ import {
 import React from 'react'
 import { EmojiOrImageIcon } from './EmojiOrImageIcon'
 import { ImageUploadContent } from './ImageUploadContent'
+import { FilePathUploadProps } from '@/features/upload/api/generateUploadUrl'
 
 type Props = {
-  uploadFilePath: string
+  uploadFileProps: FilePathUploadProps
   icon?: string | null
   onChangeIcon: (icon: string) => void
   boxSize?: string
 }
 
 export const EditableEmojiOrImageIcon = ({
-  uploadFilePath,
+  uploadFileProps,
   icon,
   onChangeIcon,
   boxSize,
@@ -54,7 +55,7 @@ export const EditableEmojiOrImageIcon = ({
           </Tooltip>
           <PopoverContent p="2">
             <ImageUploadContent
-              filePath={uploadFilePath}
+              uploadFileProps={uploadFileProps}
               defaultUrl={icon ?? ''}
               onSubmit={onChangeIcon}
               excludedTabs={['giphy', 'unsplash']}

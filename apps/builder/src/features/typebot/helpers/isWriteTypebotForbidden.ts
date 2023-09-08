@@ -11,7 +11,7 @@ export const isWriteTypebotForbidden = async (
   typebot: Pick<Typebot, 'workspaceId'> & {
     collaborators: Pick<CollaboratorsOnTypebots, 'userId' | 'type'>[]
   },
-  user: Pick<User, 'email' | 'id'>
+  user: Pick<User, 'id'>
 ) => {
   if (
     typebot.collaborators.find(

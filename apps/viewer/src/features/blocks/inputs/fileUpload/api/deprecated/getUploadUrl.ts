@@ -20,6 +20,7 @@ export const getUploadUrl = publicProcedure
       path: '/typebots/{typebotId}/blocks/{blockId}/storage/upload-url',
       summary: 'Get upload URL for a file',
       description: 'Used for the web client to get the bucket upload file.',
+      deprecated: true,
     },
   })
   .input(

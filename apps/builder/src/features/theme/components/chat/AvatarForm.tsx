@@ -17,9 +17,10 @@ import {
 import { ImageUploadContent } from '@/components/ImageUploadContent'
 import { DefaultAvatar } from '../DefaultAvatar'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
+import { FilePathUploadProps } from '@/features/upload/api/generateUploadUrl'
 
 type Props = {
-  uploadFilePath: string
+  uploadFileProps: FilePathUploadProps
   title: string
   avatarProps?: AvatarProps
   isDefaultCheck?: boolean
@@ -27,7 +28,7 @@ type Props = {
 }
 
 export const AvatarForm = ({
-  uploadFilePath,
+  uploadFileProps,
   title,
   avatarProps,
   isDefaultCheck = false,
@@ -90,7 +91,7 @@ export const AvatarForm = ({
                   w="500px"
                 >
                   <ImageUploadContent
-                    filePath={uploadFilePath}
+                    uploadFileProps={uploadFileProps}
                     defaultUrl={avatarProps?.url}
                     imageSize="thumb"
                     onSubmit={handleImageUrl}

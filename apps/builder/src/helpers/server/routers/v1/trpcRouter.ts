@@ -15,6 +15,7 @@ import { collaboratorsRouter } from '@/features/collaboration/api/router'
 import { customDomainsRouter } from '@/features/customDomains/api/router'
 import { whatsAppRouter } from '@/features/whatsapp/router'
 import { openAIRouter } from '@/features/blocks/integrations/openai/api/router'
+import { generateUploadUrl } from '@/features/upload/api/generateUploadUrl'
 
 export const trpcRouter = router({
   getAppVersionProcedure,
@@ -33,6 +34,7 @@ export const trpcRouter = router({
   customDomains: customDomainsRouter,
   whatsApp: whatsAppRouter,
   openAI: openAIRouter,
+  generateUploadUrl,
 })
 
 export type AppRouter = typeof trpcRouter

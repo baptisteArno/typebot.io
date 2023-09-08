@@ -4,7 +4,7 @@ export const isWriteWorkspaceForbidden = (
   workspace: {
     members: Pick<MemberInWorkspace, 'userId' | 'role'>[]
   },
-  user: Pick<User, 'email' | 'id'>
+  user: Pick<User, 'id'>
 ) => {
   const userRole = workspace.members.find(
     (member) => member.userId === user.id

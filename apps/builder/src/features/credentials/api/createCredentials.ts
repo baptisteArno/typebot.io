@@ -7,10 +7,10 @@ import { openAICredentialsSchema } from '@typebot.io/schemas/features/blocks/int
 import { smtpCredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/sendEmail'
 import { encrypt } from '@typebot.io/lib/api/encryption'
 import { z } from 'zod'
-import { isWriteWorkspaceForbidden } from '@/features/workspace/helpers/isWriteWorkspaceForbidden copy'
 import { whatsAppCredentialsSchema } from '@typebot.io/schemas/features/whatsapp'
 import { Credentials } from '@typebot.io/schemas'
 import { isDefined } from '@typebot.io/lib/utils'
+import { isWriteWorkspaceForbidden } from '@/features/workspace/helpers/isWriteWorkspaceForbidden'
 
 const inputShape = {
   data: true,

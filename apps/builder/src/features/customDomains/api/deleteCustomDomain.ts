@@ -2,9 +2,9 @@ import prisma from '@/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
-import { isWriteWorkspaceForbidden } from '@/features/workspace/helpers/isWriteWorkspaceForbidden copy'
 import got from 'got'
 import { env } from '@typebot.io/env'
+import { isWriteWorkspaceForbidden } from '@/features/workspace/helpers/isWriteWorkspaceForbidden'
 
 export const deleteCustomDomain = authenticatedProcedure
   .meta({

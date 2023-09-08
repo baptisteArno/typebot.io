@@ -4,6 +4,7 @@ import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseH
 import { BubbleBlockType, defaultAudioBubbleContent } from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
+import { proWorkspaceId } from '@typebot.io/lib/playwright/databaseSetup'
 
 const audioSampleUrl =
   'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
@@ -30,11 +31,17 @@ test('should work as expected', async ({ page }) => {
   await page.setInputFiles('input[type="file"]', getTestAsset('sample.mp3'))
   await expect(page.locator('audio')).toHaveAttribute(
     'src',
-    RegExp(`/public/typebots/${typebotId}/blocks`, 'gm')
+    RegExp(
+      `/public/workspaces/${proWorkspaceId}/typebots/${typebotId}/blocks`,
+      'gm'
+    )
   )
   await page.getByRole('button', { name: 'Preview', exact: true }).click()
   await expect(page.locator('audio')).toHaveAttribute(
     'src',
-    RegExp(`/public/typebots/${typebotId}/blocks`, 'gm')
+    RegExp(
+      `/public/workspaces/${proWorkspaceId}/typebots/${typebotId}/blocks`,
+      'gm'
+    )
   )
 })

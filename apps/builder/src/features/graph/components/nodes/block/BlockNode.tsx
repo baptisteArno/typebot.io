@@ -284,7 +284,11 @@ export const BlockNode = ({
           )}
           {typebot && isMediaBubbleBlock(block) && (
             <MediaBubblePopoverContent
-              typebotId={typebot.id}
+              uploadFileProps={{
+                workspaceId: typebot.workspaceId,
+                typebotId: typebot.id,
+                blockId: block.id,
+              }}
               block={block}
               onContentChange={handleContentChange}
             />
