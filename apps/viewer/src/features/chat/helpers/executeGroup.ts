@@ -11,7 +11,6 @@ import {
 } from '@typebot.io/schemas'
 import {
   isBubbleBlock,
-  isDefined,
   isInputBlock,
   isIntegrationBlock,
   isLogicBlock,
@@ -24,6 +23,8 @@ import { injectVariableValuesInButtonsInputBlock } from '@/features/blocks/input
 import { deepParseVariables } from '@/features/variables/deepParseVariable'
 import { computePaymentInputRuntimeOptions } from '@/features/blocks/inputs/payment/computePaymentInputRuntimeOptions'
 import { injectVariableValuesInPictureChoiceBlock } from '@/features/blocks/inputs/pictureChoice/injectVariableValuesInPictureChoiceBlock'
+import { parseDateInput } from '@/features/blocks/inputs/date/parseDateInput'
+import { getPrefilledInputValue } from './getPrefilledValue'
 
 export const executeGroup =
   (
@@ -152,16 +153,6 @@ const computeRuntimeOptions =
     }
   }
 
-const getPrefilledInputValue =
-  (variables: Variable[]) => (block: InputBlock) => {
-    const variableValue = variables.find(
-      (variable) =>
-        variable.id === block.options.variableId && isDefined(variable.value)
-    )?.value
-    if (!variableValue || Array.isArray(variableValue)) return
-    return variableValue
-  }
-
 const parseBubbleBlock =
   (variables: Variable[]) =>
   (block: BubbleBlock): ChatReply['messages'][0] => {
@@ -226,6 +217,9 @@ export const parseInput =
               : undefined,
           },
         }
+      }
+      case InputBlockType.DATE: {
+        return parseDateInput(state)(block)
       }
       default: {
         return deepParseVariables(state.typebotsQueue[0].typebot.variables)({

@@ -28,6 +28,14 @@ export const DateInputSettings = ({ options, onOptionsChange }: Props) => {
     if (format === '') return onOptionsChange({ ...options, format: undefined })
     onOptionsChange({ ...options, format })
   }
+  const updateMin = (min: string) => {
+    if (min === '') return onOptionsChange({ ...options, min: undefined })
+    onOptionsChange({ ...options, min })
+  }
+  const updateMax = (max: string) => {
+    if (max === '') return onOptionsChange({ ...options, max: undefined })
+    onOptionsChange({ ...options, max })
+  }
 
   return (
     <Stack spacing={4}>
@@ -56,6 +64,18 @@ export const DateInputSettings = ({ options, onOptionsChange }: Props) => {
         label="Button label:"
         defaultValue={options.labels.button}
         onChange={updateButtonLabel}
+      />
+      <TextInput
+        label="Min:"
+        defaultValue={options.min}
+        placeholder={options.hasTime ? 'YYYY-MM-DDTHH:mm' : 'YYYY-MM-DD'}
+        onChange={updateMin}
+      />
+      <TextInput
+        label="Max:"
+        defaultValue={options.max}
+        placeholder={options.hasTime ? 'YYYY-MM-DDTHH:mm' : 'YYYY-MM-DD'}
+        onChange={updateMax}
       />
       <TextInput
         label="Format:"

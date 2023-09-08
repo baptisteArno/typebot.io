@@ -858,6 +858,12 @@
                                                   },
                                                   "format": {
                                                     "type": "string"
+                                                  },
+                                                  "min": {
+                                                    "type": "string"
+                                                  },
+                                                  "max": {
+                                                    "type": "string"
                                                   }
                                                 },
                                                 "required": [
@@ -4696,6 +4702,12 @@
                                       "type": "boolean"
                                     },
                                     "format": {
+                                      "type": "string"
+                                    },
+                                    "min": {
+                                      "type": "string"
+                                    },
+                                    "max": {
                                       "type": "string"
                                     }
                                   },

@@ -56,6 +56,8 @@ export const DateForm = (props: Props) => {
                     from: e.currentTarget.value,
                   })
                 }
+                min={props.options?.min}
+                max={props.options?.max}
                 data-testid="from-date"
               />
             </div>
@@ -81,6 +83,8 @@ export const DateForm = (props: Props) => {
                       to: e.currentTarget.value,
                     })
                   }
+                  min={props.options?.min}
+                  max={props.options?.max}
                   data-testid="to-date"
                 />
               </div>

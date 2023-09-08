@@ -27,6 +27,20 @@ export const parseDateReply = (
 
   if (block.options.isRange && !endDate) return { status: 'fail' }
 
+  if (
+    block.options.max &&
+    (detectedStartDate > new Date(block.options.max) ||
+      (detectedEndDate && detectedEndDate > new Date(block.options.max)))
+  )
+    return { status: 'fail' }
+
+  if (
+    block.options.min &&
+    (detectedStartDate < new Date(block.options.min) ||
+      (detectedEndDate && detectedEndDate < new Date(block.options.min)))
+  )
+    return { status: 'fail' }
+
   return {
     status: 'success',
     reply: block.options.isRange ? `${startDate} to ${endDate}` : startDate,

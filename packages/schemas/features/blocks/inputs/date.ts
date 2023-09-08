@@ -13,6 +13,8 @@ export const dateInputOptionsSchema = optionBaseSchema.merge(
     hasTime: z.boolean(),
     isRange: z.boolean(),
     format: z.string().optional(),
+    min: z.string().optional(),
+    max: z.string().optional(),
   })
 )
 
