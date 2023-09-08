@@ -43,6 +43,7 @@ import { AbTestNodeBody } from '@/features/blocks/logic/abTest/components/AbTest
 import { PictureChoiceNode } from '@/features/blocks/inputs/pictureChoice/components/PictureChoiceNode'
 import { PixelNodeBody } from '@/features/blocks/integrations/pixel/components/PixelNodeBody'
 import { useScopedI18n } from '@/locales'
+import { ZemanticAiNodeBody } from '@/features/blocks/integrations/zemanticAi/ZemanticAiNodeBody'
 
 type Props = {
   block: Block | StartBlock
@@ -199,6 +200,9 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
     }
     case IntegrationBlockType.PIXEL: {
       return <PixelNodeBody options={block.options} />
+    }
+    case IntegrationBlockType.ZEMANTIC_AI: {
+      return <ZemanticAiNodeBody options={block.options} />
     }
     case 'start': {
       return <Text>{scopedT('text')}</Text>

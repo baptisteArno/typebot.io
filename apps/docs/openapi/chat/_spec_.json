@@ -3489,6 +3489,88 @@
                                               "options"
                                             ],
                                             "additionalProperties": false
+                                          },
+                                          {
+                                            "type": "object",
+                                            "properties": {
+                                              "id": {
+                                                "type": "string"
+                                              },
+                                              "groupId": {
+                                                "type": "string"
+                                              },
+                                              "outgoingEdgeId": {
+                                                "type": "string"
+                                              },
+                                              "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "Zemantic AI"
+                                                ]
+                                              },
+                                              "blockId": {
+                                                "type": "string"
+                                              },
+                                              "options": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "credentialsId": {
+                                                    "type": "string"
+                                                  },
+                                                  "projectId": {
+                                                    "type": "string"
+                                                  },
+                                                  "systemPrompt": {
+                                                    "type": "string"
+                                                  },
+                                                  "prompt": {
+                                                    "type": "string"
+                                                  },
+                                                  "query": {
+                                                    "type": "string"
+                                                  },
+                                                  "maxResults": {
+                                                    "type": "integer"
+                                                  },
+                                                  "responseMapping": {
+                                                    "type": "array",
+                                                    "items": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "id": {
+                                                          "type": "string"
+                                                        },
+                                                        "valueToExtract": {
+                                                          "type": "string",
+                                                          "enum": [
+                                                            "Summary",
+                                                            "Results"
+                                                          ]
+                                                        },
+                                                        "variableId": {
+                                                          "type": "string"
+                                                        }
+                                                      },
+                                                      "required": [
+                                                        "id"
+                                                      ],
+                                                      "additionalProperties": false
+                                                    }
+                                                  }
+                                                },
+                                                "required": [
+                                                  "responseMapping"
+                                                ],
+                                                "additionalProperties": false
+                                              }
+                                            },
+                                            "required": [
+                                              "id",
+                                              "groupId",
+                                              "type",
+                                              "options"
+                                            ],
+                                            "additionalProperties": false
                                           }
                                         ]
                                       }

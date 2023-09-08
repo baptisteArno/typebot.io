@@ -251,6 +251,7 @@ export default {
   'editor.sidebarBlock.chatwoot.label': 'Chatwoot',
   'editor.sidebarBlock.openai.label': 'OpenAI',
   'editor.sidebarBlock.pixel.label': 'Pixel',
+  'editor.sidebarBlock.zemanticAi.label': 'Zemantic AI',
   'editor.blockCard.bubbleBlock.tooltip.label':
     'Intégrer un pdf, un iframe, un site web...',
   'editor.blockCard.inputBlock.tooltip.files.label': 'Télécharger des fichiers',

@@ -16,6 +16,7 @@ import { customDomainsRouter } from '@/features/customDomains/api/router'
 import { whatsAppRouter } from '@/features/whatsapp/router'
 import { openAIRouter } from '@/features/blocks/integrations/openai/api/router'
 import { generateUploadUrl } from '@/features/upload/api/generateUploadUrl'
+import { zemanticAiRouter } from '@/features/blocks/integrations/zemanticAi/api/router'
 
 export const trpcRouter = router({
   getAppVersionProcedure,
@@ -35,6 +36,7 @@ export const trpcRouter = router({
   whatsApp: whatsAppRouter,
   openAI: openAIRouter,
   generateUploadUrl,
+  zemanticAi: zemanticAiRouter,
 })
 
 export type AppRouter = typeof trpcRouter

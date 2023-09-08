@@ -4,6 +4,7 @@ import { googleSheetsCredentialsSchema } from './blocks/integrations/googleSheet
 import { openAICredentialsSchema } from './blocks/integrations/openai'
 import { smtpCredentialsSchema } from './blocks/integrations/sendEmail'
 import { whatsAppCredentialsSchema } from './whatsapp'
+import { zemanticAiCredentialsSchema } from './blocks'
 
 export const credentialsSchema = z.discriminatedUnion('type', [
   smtpCredentialsSchema,
@@ -11,6 +12,7 @@ export const credentialsSchema = z.discriminatedUnion('type', [
   stripeCredentialsSchema,
   openAICredentialsSchema,
   whatsAppCredentialsSchema,
+  zemanticAiCredentialsSchema,
 ])
 
 export type Credentials = z.infer<typeof credentialsSchema>

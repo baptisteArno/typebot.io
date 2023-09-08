@@ -99,9 +99,10 @@ export const NumberInput = <HasVariable extends boolean>({
       isRequired={isRequired}
       justifyContent="space-between"
       width={label ? 'full' : 'auto'}
+      spacing={0}
     >
       {label && (
-        <FormLabel mb="0" flexShrink={0}>
+        <FormLabel mb="2" flexShrink={0}>
           {label}{' '}
           {moreInfoTooltip && (
             <MoreInfoTooltip>{moreInfoTooltip}</MoreInfoTooltip>

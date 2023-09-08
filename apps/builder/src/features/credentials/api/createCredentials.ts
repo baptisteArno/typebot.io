@@ -8,7 +8,7 @@ import { smtpCredentialsSchema } from '@typebot.io/schemas/features/blocks/integ
 import { encrypt } from '@typebot.io/lib/api/encryption'
 import { z } from 'zod'
 import { whatsAppCredentialsSchema } from '@typebot.io/schemas/features/whatsapp'
-import { Credentials } from '@typebot.io/schemas'
+import { Credentials, zemanticAiCredentialsSchema } from '@typebot.io/schemas'
 import { isDefined } from '@typebot.io/lib/utils'
 import { isWriteWorkspaceForbidden } from '@/features/workspace/helpers/isWriteWorkspaceForbidden'
 
@@ -37,6 +37,7 @@ export const createCredentials = authenticatedProcedure
         googleSheetsCredentialsSchema.pick(inputShape),
         openAICredentialsSchema.pick(inputShape),
         whatsAppCredentialsSchema.pick(inputShape),
+        zemanticAiCredentialsSchema.pick(inputShape),
       ]),
     })
   )
