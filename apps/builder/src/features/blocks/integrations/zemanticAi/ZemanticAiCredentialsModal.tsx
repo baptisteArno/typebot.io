@@ -62,7 +62,7 @@ export const ZemanticAiCredentialsModal = ({
     if (!workspace) return
     mutate({
       credentials: {
-        type: 'zemanticai',
+        type: 'zemanticAi',
         workspaceId: workspace.id,
         name,
         data: {

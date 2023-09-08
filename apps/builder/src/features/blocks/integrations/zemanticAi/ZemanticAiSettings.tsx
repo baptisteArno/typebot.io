@@ -95,7 +95,7 @@ export const ZemanticAiSettings = ({
       {workspace && (
         <>
           <CredentialsDropdown
-            type="zemanticai"
+            type="zemanticAi"
             workspaceId={workspace.id}
             currentCredentialsId={options?.credentialsId}
             onCredentialsSelect={updateCredentialsId}

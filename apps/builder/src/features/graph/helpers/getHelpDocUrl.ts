@@ -64,6 +64,6 @@ export const getHelpDocUrl = (blockType: BlockWithOptions['type']): string => {
     case IntegrationBlockType.PIXEL:
       return 'https://docs.typebot.io/editor/blocks/integrations/pixel'
     case IntegrationBlockType.ZEMANTIC_AI:
-      return 'https://docs.typebot.io/editor/blocks/integrations/zemanticai'
+      return 'https://docs.typebot.io/editor/blocks/integrations/zemantic-ai'
   }
 }

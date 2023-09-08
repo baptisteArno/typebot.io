@@ -33,7 +33,7 @@ export const zemanticAiBlockSchema = blockBaseSchema.merge(
 
 export const zemanticAiCredentialsSchema = z
   .object({
-    type: z.literal('zemanticai'),
+    type: z.literal('zemanticAi'),
     data: z.object({
       apiKey: z.string(),
     }),

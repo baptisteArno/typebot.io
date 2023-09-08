@@ -15,7 +15,6 @@ export const ProjectsDropdown = ({
   defaultValue,
   onChange,
   credentialsId,
-  blockId,
 }: Props) => {
   const { typebot } = useTypebot()
   const { workspace } = useWorkspace()
@@ -24,8 +23,6 @@ export const ProjectsDropdown = ({
   const { data } = trpc.zemanticAi.listProjects.useQuery(
     {
       credentialsId,
-      blockId,
-      typebotId: typebot?.id as string,
       workspaceId: workspace?.id as string,
     },
     {
