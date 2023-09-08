@@ -4,6 +4,16 @@ import Storage from '@octadesk-tech/storage'
 
 import { config } from 'config/octadesk.config'
 
+export const setupEnvironment = () => {
+  if (!config.local) return
+
+  const env = process.env.NODE_ENV_OCTADESK || 'qa'
+
+  if (env === 'production') {
+    environment.resolveEnvironment()
+  }
+}
+
 export const login = async () => {
   try {
     const { data } = await services.nucleus
@@ -22,30 +32,18 @@ export const login = async () => {
   }
 }
 
-export const setupEnvironment = async () => {
-  if (!config.local) return
-
-  const env = process.env.NODE_ENV_OCTADESK || 'qa'
-
-  if (env === 'production') {
-    environment.resolveEnvironment()
-  } else {
-    const { apis } = await login()
-
-    environment.setEnvironment(env)
-
-    url.setAPIURLs(apis)
-  }
-}
-
-export const setupMockUser = async () => {
+export const setupMockUser = async (): Promise<void> => {
   if (!config.local) return
 
   const env = process.env.NODE_ENV_OCTADESK || 'qa'
 
   if (env !== 'production') {
-    const { access_token, jwtoken, octaAuthenticated, userlogged } =
+    const { apis, access_token, jwtoken, octaAuthenticated, userlogged } =
       await login()
+
+    environment.setEnvironment(env)
+
+    url.setAPIURLs(apis)
 
     Storage.setItem(
       'userLogged',
@@ -56,16 +54,18 @@ export const setupMockUser = async () => {
 
     Storage.setItem('company', currentSubDomain)
 
-    Storage.setItem('status', {
-      daysRemaining: 998,
-      subDomain: currentSubDomain,
-      isTrial: true,
-      isAccountActivated: false,
-      isValid: true,
-      paymentInformation: { updatedTime: '0001-01-01T00:00:00', status: 0 },
-      cycleType: 3,
-      totalLicenses: 1,
-    })
+    subDomain.setSubDomain(currentSubDomain)
+
+    // Storage.setItem('status', {
+    //   daysRemaining: 998,
+    //   subDomain: currentSubDomain,
+    //   isTrial: true,
+    //   isAccountActivated: false,
+    //   isValid: true,
+    //   paymentInformation: { updatedTime: '0001-01-01T00:00:00', status: 0 },
+    //   cycleType: 3,
+    //   totalLicenses: 1,
+    // })
 
     Storage.setItem('auth', {
       access_token,
@@ -73,7 +73,5 @@ export const setupMockUser = async () => {
     })
 
     Storage.setItem('userToken', jwtoken)
-
-    subDomain.setSubDomain(currentSubDomain)
   }
 }

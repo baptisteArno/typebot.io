@@ -8,13 +8,17 @@ const moduleExports = {
     IS_LOCAL: process.env.IS_LOCAL,
     NEXT_PUBLIC_VIEWER_URL: process.env.NEXT_PUBLIC_VIEWER_URL,
     BASE_PATH: process.env.BASE_PATH,
-    NUCLEUS_API_URL: process.env.NUCLEUS_API_URL
+    NUCLEUS_API_URL: process.env.NUCLEUS_API_URL,
+    LOGIN_URL: process.env.LOGIN_URL,
+    LOGIN_EMAIL: process.env.LOGIN_EMAIL,
+    LOGIN_PASS: process.env.LOGIN_PASS,
+    LOGIN_TENANT: process.env.LOGIN_TENANT,
   },
   experimental: {
     outputStandalone: true,
     images: {
-      allowFutureImage: true
-    }
+      allowFutureImage: true,
+    },
   },
   i18n,
   optimizeFonts: false,
@@ -22,8 +26,14 @@ const moduleExports = {
   rewrites() {
     return {
       beforeFiles: [
-        { source: `${process.env.BASE_PATH || ''}/_next/:path*`, destination: '/_next/:path*' },
-        { source: `${process.env.BASE_PATH || ''}/typebots/:path*`, destination: '/typebots/:path*' },
+        {
+          source: `${process.env.BASE_PATH || ''}/_next/:path*`,
+          destination: '/_next/:path*',
+        },
+        {
+          source: `${process.env.BASE_PATH || ''}/typebots/:path*`,
+          destination: '/typebots/:path*',
+        },
       ],
       fallback: [
         {
@@ -34,11 +44,11 @@ const moduleExports = {
     }
   },
   typescript: {
-    ignoreBuildErrors: true
+    ignoreBuildErrors: true,
   },
   eslint: {
     ignoreDuringBuilds: true,
-  }
+  },
 }
 
 const sentryWebpackPluginOptions = {
