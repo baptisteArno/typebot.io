@@ -19,13 +19,11 @@ const apiReferenceUrl =
   'https://platform.openai.com/docs/api-reference/chat/create'
 
 type Props = {
-  blockId: string
   options: ChatCompletionOpenAIOptions
   onOptionsChange: (options: ChatCompletionOpenAIOptions) => void
 }
 
 export const OpenAIChatCompletionSettings = ({
-  blockId,
   options,
   onOptionsChange,
 }: Props) => {
@@ -79,8 +77,9 @@ export const OpenAIChatCompletionSettings = ({
           <ModelsDropdown
             credentialsId={options.credentialsId}
             defaultValue={options.model}
+            baseUrl={options.baseUrl}
+            apiVersion={options.apiVersion}
             onChange={updateModel}
-            blockId={blockId}
           />
           <Accordion allowMultiple>
             <AccordionItem>

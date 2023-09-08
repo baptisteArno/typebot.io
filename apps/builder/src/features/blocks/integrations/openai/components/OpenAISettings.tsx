@@ -33,7 +33,7 @@ type Props = {
 }
 
 export const OpenAISettings = ({
-  block: { options, id },
+  block: { options },
   onOptionsChange,
 }: Props) => {
   const { workspace } = useWorkspace()
@@ -126,7 +126,6 @@ export const OpenAISettings = ({
           />
           {options.task && (
             <OpenAITaskSettings
-              blockId={id}
               options={options}
               onOptionsChange={onOptionsChange}
             />
@@ -140,24 +139,21 @@ export const OpenAISettings = ({
 const OpenAITaskSettings = ({
   options,
   onOptionsChange,
-  blockId,
 }: {
   options: ChatCompletionOpenAIOptions | CreateImageOpenAIOptions
-  blockId: string
   onOptionsChange: (options: OpenAIBlock['options']) => void
 }) => {
   switch (options.task) {
     case 'Create chat completion': {
       return (
         <OpenAIChatCompletionSettings
-          blockId={blockId}
           options={options}
           onOptionsChange={onOptionsChange}
         />
       )
     }
     case 'Create image': {
-      return <></>
+      return null
     }
   }
 }

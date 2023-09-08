@@ -1,35 +1,35 @@
 import { Select } from '@/components/inputs/Select'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'
 import { trpc } from '@/lib/trpc'
 
 type Props = {
+  baseUrl: string
+  apiVersion?: string
   credentialsId: string
-  blockId: string
   defaultValue: string
   onChange: (model: string | undefined) => void
 }
 
 export const ModelsDropdown = ({
+  baseUrl,
+  apiVersion,
   defaultValue,
   onChange,
   credentialsId,
-  blockId,
 }: Props) => {
-  const { typebot } = useTypebot()
   const { workspace } = useWorkspace()
   const { showToast } = useToast()
 
   const { data } = trpc.openAI.listModels.useQuery(
     {
       credentialsId,
-      blockId,
-      typebotId: typebot?.id as string,
+      baseUrl,
       workspaceId: workspace?.id as string,
+      apiVersion,
     },
     {
-      enabled: !!typebot && !!workspace,
+      enabled: !!workspace,
       onError: (error) => {
         showToast({
           description: error.message,

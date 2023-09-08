@@ -5,15 +5,17 @@ import { z } from 'zod'
 import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
 import { Configuration, OpenAIApi, ResponseTypes } from 'openai-edge'
 import { decrypt } from '@typebot.io/lib/api'
-import { OpenAICredentials } from '@typebot.io/schemas/features/blocks/integrations/openai'
-import { IntegrationBlockType, typebotSchema } from '@typebot.io/schemas'
+import {
+  OpenAICredentials,
+  defaultBaseUrl,
+} from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { isNotEmpty } from '@typebot.io/lib/utils'
 
 export const listModels = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/typebots/{typebotId}/blocks/{blockId}/openai/models',
+      path: '/openai/models',
       protect: true,
       summary: 'List OpenAI models',
       tags: ['OpenAI'],
@@ -21,10 +23,10 @@ export const listModels = authenticatedProcedure
   })
   .input(
     z.object({
-      typebotId: z.string(),
-      blockId: z.string(),
       credentialsId: z.string(),
       workspaceId: z.string(),
+      baseUrl: z.string().default(defaultBaseUrl),
+      apiVersion: z.string().optional(),
     })
   )
   .output(
@@ -34,7 +36,7 @@ export const listModels = authenticatedProcedure
   )
   .query(
     async ({
-      input: { credentialsId, workspaceId, typebotId, blockId },
+      input: { credentialsId, workspaceId, baseUrl, apiVersion },
       ctx: { user },
     }) => {
       const workspace = await prisma.workspace.findFirst({
@@ -43,14 +45,6 @@ export const listModels = authenticatedProcedure
           members: {
             select: {
               userId: true,
-            },
-          },
-          typebots: {
-            where: {
-              id: typebotId,
-            },
-            select: {
-              groups: true,
             },
           },
           credentials: {
@@ -80,25 +74,6 @@ export const listModels = authenticatedProcedure
           message: 'No credentials found',
         })
 
-      const typebot = workspace.typebots.at(0)
-
-      if (!typebot)
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Typebot not found',
-        })
-
-      const block = typebotSchema._def.schema.shape.groups
-        .parse(workspace.typebots.at(0)?.groups)
-        .flatMap((group) => group.blocks)
-        .find((block) => block.id === blockId)
-
-      if (!block || block.type !== IntegrationBlockType.OPEN_AI)
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'OpenAI block not found',
-        })
-
       const data = (await decrypt(
         credentials.data,
         credentials.iv
@@ -106,15 +81,15 @@ export const listModels = authenticatedProcedure
 
       const config = new Configuration({
         apiKey: data.apiKey,
-        basePath: block.options.baseUrl,
+        basePath: baseUrl,
         baseOptions: {
           headers: {
             'api-key': data.apiKey,
           },
         },
-        defaultQueryParams: isNotEmpty(block.options.apiVersion)
+        defaultQueryParams: isNotEmpty(apiVersion)
           ? new URLSearchParams({
-              'api-version': block.options.apiVersion,
+              'api-version': apiVersion,
             })
           : undefined,
       })
