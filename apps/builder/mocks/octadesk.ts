@@ -56,17 +56,6 @@ export const setupMockUser = async (): Promise<void> => {
 
     subDomain.setSubDomain(currentSubDomain)
 
-    // Storage.setItem('status', {
-    //   daysRemaining: 998,
-    //   subDomain: currentSubDomain,
-    //   isTrial: true,
-    //   isAccountActivated: false,
-    //   isValid: true,
-    //   paymentInformation: { updatedTime: '0001-01-01T00:00:00', status: 0 },
-    //   cycleType: 3,
-    //   totalLicenses: 1,
-    // })
-
     Storage.setItem('auth', {
       access_token,
       octaAuthenticated,
