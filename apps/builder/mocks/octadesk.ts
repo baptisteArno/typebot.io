@@ -1,41 +1,66 @@
-import { subDomain, environment, url } from '@octadesk-tech/services'
+import { subDomain, environment, url, services } from '@octadesk-tech/services'
+
 import Storage from '@octadesk-tech/storage'
+
 import { config } from 'config/octadesk.config'
 
-export const setupEnvironment = () =>
-{
+export const setupEnvironment = () => {
   if (!config.local) return
-  
+
   const env = process.env.NODE_ENV_OCTADESK || 'qa'
+
   if (env === 'production') {
     environment.resolveEnvironment()
-  } else {
-    const { apis } = require(`./environments/${env}`)
-    
-    environment.setEnvironment(env)
-    url.setAPIURLs(apis)
   }
 }
 
-export const setupMockUser = async () =>
-{
+export const login = async () => {
+  try {
+    const { data } = await services.nucleus
+      .getClient({
+        baseURL: process.env.LOGIN_URL,
+      })
+      .post('/nucleus-auth/auth', {
+        userName: process.env.LOGIN_EMAIL,
+        password: process.env.LOGIN_PASS,
+        tenantId: process.env.LOGIN_TENANT,
+      })
+
+    return data
+  } catch (ex) {
+    throw new Error('Error in login: ' + ex)
+  }
+}
+
+export const setupMockUser = async (): Promise<void> => {
   if (!config.local) return
 
   const env = process.env.NODE_ENV_OCTADESK || 'qa'
-  
+
   if (env !== 'production') {
-    const { mock } = require(`./environments/mocks/${env}`)
-    
-    Storage.setItem('userLogged', mock.user)
+    const { apis, access_token, jwtoken, octaAuthenticated, userlogged } =
+      await login()
 
-    Storage.setItem('company', mock.user.subDomain)
-  
-    subDomain.setSubDomain(mock.user.subDomain)
-  
-    Storage.setItem('status', mock.status)
+    environment.setEnvironment(env)
 
-    Storage.setItem('auth', mock.miniClusterStatus)
+    url.setAPIURLs(apis)
 
-    Storage.setItem('userToken', mock.userToken)
+    Storage.setItem(
+      'userLogged',
+      (Storage as any)._decrypt(decodeURIComponent(userlogged))
+    )
+
+    const currentSubDomain = octaAuthenticated?.subDomain
+
+    Storage.setItem('company', currentSubDomain)
+
+    subDomain.setSubDomain(currentSubDomain)
+
+    Storage.setItem('auth', {
+      access_token,
+      octaAuthenticated,
+    })
+
+    Storage.setItem('userToken', jwtoken)
   }
 }

@@ -30,7 +30,7 @@ function TypebotEditPage() {
   }, [])
 
   useEffect(() => {
-    if(!dequal(typebot?.blocks, currentTypebot?.blocks)) {
+    if (!dequal(typebot?.blocks, currentTypebot?.blocks)) {
       window.parent.postMessage({ name: 'hasUnsavedChanges' }, '*')
     }
   }, [typebot?.blocks])
@@ -71,7 +71,7 @@ function TypebotEditPage() {
       })
     }
   }
-  
+
   return !typebot ? (
     <></>
   ) : (
@@ -109,6 +109,7 @@ function TypebotEditPage() {
 
 const RightPanel = () => {
   const { rightPanel } = useEditor()
+
   return rightPanel === RightPanelEnum.PREVIEW ? <PreviewDrawer /> : <></>
 }
 
