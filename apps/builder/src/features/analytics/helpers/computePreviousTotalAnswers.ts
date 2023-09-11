@@ -5,7 +5,8 @@ import { TotalAnswersInBlock } from '@typebot.io/schemas/features/analytics'
 export const computePreviousTotalAnswers = (
   publishedTypebot: PublicTypebot,
   currentBlockId: string,
-  totalAnswersInBlocks: TotalAnswersInBlock[]
+  totalAnswersInBlocks: TotalAnswersInBlock[],
+  visitedBlocks: string[] = []
 ): number => {
   let totalAnswers = 0
   const allBlocks = publishedTypebot.groups.flatMap((group) => group.blocks)
@@ -18,10 +19,12 @@ export const computePreviousTotalAnswers = (
   )
   const previousBlocks = currentGroup.blocks.slice(0, currentBlockIndex + 1)
   for (const block of previousBlocks.reverse()) {
+    if (visitedBlocks.includes(block.id)) continue
     if (
       currentBlockId !== block.id &&
       (isInputBlock(block) || block.type === 'start')
-    )
+    ) {
+      visitedBlocks.push(block.id)
       return (
         totalAnswersInBlocks.find(
           (totalAnswersInBlock) =>
@@ -29,6 +32,7 @@ export const computePreviousTotalAnswers = (
             totalAnswersInBlock.itemId === undefined
         )?.total ?? 0
       )
+    }
     const connectedEdges = publishedTypebot.edges.filter(
       (edge) => edge.to.blockId === block.id
     )
@@ -37,8 +41,9 @@ export const computePreviousTotalAnswers = (
         const connectedBlock = allBlocks.find(
           (block) => block.id === connectedEdge.from.blockId
         )
-        if (connectedBlock) {
+        if (connectedBlock && !visitedBlocks.includes(connectedBlock.id)) {
           if (isInputBlock(connectedBlock) || connectedBlock.type === 'start') {
+            visitedBlocks.push(connectedBlock.id)
             totalAnswers +=
               totalAnswersInBlocks.find(
                 (totalAnswersInBlock) =>
@@ -49,7 +54,8 @@ export const computePreviousTotalAnswers = (
             totalAnswers += computePreviousTotalAnswers(
               publishedTypebot,
               connectedBlock.id,
-              totalAnswersInBlocks
+              totalAnswersInBlocks,
+              visitedBlocks
             )
           }
         }
@@ -65,8 +71,9 @@ export const computePreviousTotalAnswers = (
       const connectedBlock = allBlocks.find(
         (block) => block.id === connectedEdge.from.blockId
       )
-      if (connectedBlock) {
+      if (connectedBlock && !visitedBlocks.includes(connectedBlock.id)) {
         if (isInputBlock(connectedBlock) || connectedBlock.type === 'start') {
+          visitedBlocks.push(connectedBlock.id)
           totalAnswers +=
             totalAnswersInBlocks.find(
               (totalAnswersInBlock) =>
@@ -77,7 +84,8 @@ export const computePreviousTotalAnswers = (
           totalAnswers += computePreviousTotalAnswers(
             publishedTypebot,
             connectedBlock.id,
-            totalAnswersInBlocks
+            totalAnswersInBlocks,
+            visitedBlocks
           )
         }
       }
