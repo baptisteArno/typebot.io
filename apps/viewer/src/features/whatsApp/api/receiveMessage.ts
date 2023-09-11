@@ -28,7 +28,7 @@ export const receiveMessage = publicProcedure
     const contactName =
       entry.at(0)?.changes.at(0)?.value?.contacts?.at(0)?.profile?.name ?? ''
     const contactPhoneNumber =
-      entry.at(0)?.changes.at(0)?.value?.metadata.display_phone_number ?? ''
+      entry.at(0)?.changes.at(0)?.value?.metadata.contacts.wa_id ?? ''
     return resumeWhatsAppFlow({
       receivedMessage,
       sessionId: `wa-${phoneNumberId}-${receivedMessage.from}`,
