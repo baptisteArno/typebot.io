@@ -226,6 +226,7 @@ export const StepsSideBar = () => {
                 )
             )}
             {workspace?.channel === 'whatsapp' &&
+              verifyFeatureToggle('commerce-enabled') &&
               wabaMessageComponent().map((type) => (
                 <StepCard
                   key={type}
@@ -243,18 +244,19 @@ export const StepsSideBar = () => {
             WOZ - IA da Octa
           </Text>
           <SimpleGrid columns={1} spacing="3">
-            {Object.values(WOZStepType).map((type) => (
-              shouldHideComponents(type) && (
-                <StepCard
-                  key={type}
-                  type={type}
-                  onMouseDown={handleMouseDown}
-                  isDisabled={shouldDisableComponent(type)}
-                />
-              )))}
+            {Object.values(WOZStepType).map(
+              (type) =>
+                shouldHideComponents(type) && (
+                  <StepCard
+                    key={type}
+                    type={type}
+                    onMouseDown={handleMouseDown}
+                    isDisabled={shouldDisableComponent(type)}
+                  />
+                )
+            )}
           </SimpleGrid>
         </Stack>
-
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">
