@@ -40,8 +40,7 @@ export const TextBubbleEditor = ({
         id: randomEditorId,
         plugins: platePlugins,
       }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [randomEditorId]
   )
 
   const [value, setValue] = useState(initialValue)
