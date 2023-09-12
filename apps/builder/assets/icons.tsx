@@ -1,4 +1,4 @@
-import { IconProps, Icon } from '@chakra-ui/react'
+import { IconProps, Icon, Image } from '@chakra-ui/react'
 import * as MaterialDesign from 'react-icons/md'
 import { IconContext } from 'react-icons'
 
@@ -82,6 +82,20 @@ export const TextIcon = (props: any) => (
   >
     <div>
       <MaterialDesign.MdOutlineChatBubble />
+    </div>
+  </IconContext.Provider>
+)
+
+const getBasePath = () => {
+  return (process.env.BASE_PATH || (window as any).BASE_PATH)
+}
+
+export const WandIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <Image src={getBasePath() + '/images/auto-fix.svg'} color={props.color} />
     </div>
   </IconContext.Provider>
 )

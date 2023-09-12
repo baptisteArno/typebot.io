@@ -31,6 +31,7 @@ import {
   QuestionIcon,
   CallBotIcon,
   CommerceIcon,
+  WandIcon,
 } from 'assets/icons'
 import {
   GoogleAnalyticsLogo,
@@ -47,7 +48,8 @@ import {
   IntegrationStepType,
   LogicStepType,
   StepType,
-  OctaWabaStepType
+  OctaWabaStepType,
+  WOZStepType
 } from 'models'
 import React from 'react'
 
@@ -61,6 +63,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
   switch (type) {
     case BubbleStepType.TEXT:
       return <TextIcon color="#AA561C" {...props} />
+    case WOZStepType.MESSAGE:
+      return <WandIcon color="#AA561C" {...props} />
     case BubbleStepType.MEDIA:
       return <LayoutIcon color="#AA561C" {...props} />
     case BubbleStepType.VIDEO:

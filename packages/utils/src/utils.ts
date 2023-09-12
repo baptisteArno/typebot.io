@@ -25,7 +25,8 @@ import {
   MediaBubbleStep,
   OctaWabaStepType,
   WhatsAppOptionsListStep,
-  WhatsAppButtonsListStep
+  WhatsAppButtonsListStep,
+  WOZStepType
 } from 'models'
 
 export const sendRequest = async <ResponseData>(
@@ -130,6 +131,12 @@ export const isOctaStepType = (type: StepType): type is OctaStepType =>
 {
   const octaType = Object.values(OctaStepType) as string[]
   return [...octaType, OctaWabaStepType.COMMERCE].includes(type)
+}
+
+export const isWOZStepType = (type: StepType): type is WOZStepType =>
+{
+  const octaType = Object.values(WOZStepType) as string[]
+  return [...octaType].includes(type)
 }
   
 
