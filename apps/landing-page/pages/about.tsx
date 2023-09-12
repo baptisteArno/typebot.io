@@ -68,8 +68,8 @@ const AboutPage = () => {
         </Text>
         <Text>
           If you have any questions, feel free to reach out to me at{' '}
-          <TextLink href={'mailto:baptiste@typebot.io'}>
-            baptiste@typebot.io
+          <TextLink href={'mailto:support@typebot.io'}>
+            support@typebot.io
           </TextLink>
         </Text>
       </Stack>

@@ -71,7 +71,7 @@ export const Footer = () => {
           <Stack align={'flex-start'}>
             <ListHeader>Company</ListHeader>
             <TextLink href="/about">About</TextLink>
-            <TextLink href="mailto:baptiste@typebot.io">Contact</TextLink>
+            <TextLink href="mailto:support@typebot.io">Contact</TextLink>
             <TextLink href={'/terms-of-service'}>Terms of Service</TextLink>
             <TextLink href={'/privacy-policies'}>Privacy Policy</TextLink>
           </Stack>

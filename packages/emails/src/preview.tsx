@@ -24,7 +24,7 @@ const createHtmlFile = () => {
         workspaceName={'Typebot'}
         typebotName={'Lead Generation'}
         url={'https://app.typebot.io'}
-        hostEmail={'baptiste@typebot.io'}
+        hostEmail={'host@typebot.io'}
         guestEmail={'guest@typebot.io'}
       />
     ).html
@@ -35,7 +35,7 @@ const createHtmlFile = () => {
       <WorkspaceMemberInvitation
         workspaceName={'Typebot'}
         url={'https://app.typebot.io'}
-        hostEmail={'baptiste@typebot.io'}
+        hostEmail={'host@typebot.io'}
         guestEmail={'guest@typebot.io'}
       />
     ).html

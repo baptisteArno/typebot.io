@@ -2,10 +2,6 @@
 
 This is the source code of Typebot's documentation located at https://docs.typebot.io
 
-# Contribute
-
-If you're not technical or not familiar with how GitHub works, you can send your written documents directly to [baptiste@typebot.io](mailto:baptiste@typebot.io). You will be mentioned as a contributor 🥰
-
 # Website
 
 This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.

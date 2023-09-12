@@ -20,7 +20,7 @@ export default function Page() {
         </Text>
         <Text>
           If you think it&apos;s a mistake, feel free to{' '}
-          <Link href="mailto:baptiste@typebot.io" textDecor="underline">
+          <Link href="mailto:support@typebot.io" textDecor="underline">
             reach out
           </Link>
           .
