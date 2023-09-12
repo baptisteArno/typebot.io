@@ -121,6 +121,8 @@ export default {
   'billing.currentSubscription.subheading':
     'Subscrição actual do espaço de trabalho:',
   'billing.currentSubscription.cancelDate': 'Será cancelado em',
+  'billing.currentSubscription.pastDueAlert':
+    'O último pagamento falhou. Acesse o portal de faturamento para continuar e evitar o cancelamento da sua assinatura.',
   'billing.invoices.heading': 'Facturas',
   'billing.invoices.empty':
     'Nenhuma factura encontrada para este espaço de trabalho.',

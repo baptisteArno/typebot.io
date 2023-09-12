@@ -118,6 +118,8 @@ export default {
   'billing.currentSubscription.heading': 'Abonnement',
   'billing.currentSubscription.subheading': 'Abonnement actuel du workspace :',
   'billing.currentSubscription.cancelDate': 'Sera annulé le',
+  'billing.currentSubscription.pastDueAlert':
+    "Le dernier paiement a échoué. Rendez-vous sur le portail de facturation pour effectuer la procédure et éviter l'annulation de votre abonnement.",
   'billing.invoices.heading': 'Factures',
   'billing.invoices.empty': 'Aucune facture trouvée pour ce workspace.',
   'billing.invoices.paidAt': 'Payé le',

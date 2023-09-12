@@ -121,6 +121,8 @@ export default {
   'billing.currentSubscription.heading': 'Abonnement',
   'billing.currentSubscription.subheading': 'Aktuelles Workspace-Abonnement:',
   'billing.currentSubscription.cancelDate': 'Wird storniert am',
+  'billing.currentSubscription.pastDueAlert':
+    'Die letzte Zahlung ist fehlgeschlagen. Gehen Sie zum Abrechnungsportal, um fortzufahren und eine Kündigung Ihres Abonnements zu vermeiden.',
   'billing.invoices.heading': 'Rechnungen',
   'billing.invoices.empty': 'Keine Rechnungen für diesen Workspace gefunden.',
   'billing.invoices.paidAt': 'Bezahlt am',

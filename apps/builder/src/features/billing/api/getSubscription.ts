@@ -61,20 +61,24 @@ export const getSubscription = authenticatedProcedure
     })
     const subscriptions = await stripe.subscriptions.list({
       customer: workspace.stripeId,
-      limit: 1,
-      status: 'active',
     })
 
-    const subscription = subscriptions?.data.shift()
+    const currentSubscription = subscriptions.data
+      .filter((sub) => ['past_due', 'active'].includes(sub.status))
+      .sort((a, b) => a.created - b.created)
+      .shift()
 
-    if (!subscription)
+    if (!currentSubscription)
       return {
         subscription: null,
       }
 
     return {
       subscription: {
-        isYearly: subscription.items.data.some((item) => {
+        status: subscriptionSchema.shape.status.parse(
+          currentSubscription.status
+        ),
+        isYearly: currentSubscription.items.data.some((item) => {
           return (
             priceIds.STARTER.chats.yearly === item.price.id ||
             priceIds.STARTER.storage.yearly === item.price.id ||
@@ -82,9 +86,9 @@ export const getSubscription = authenticatedProcedure
             priceIds.PRO.storage.yearly === item.price.id
           )
         }),
-        currency: subscription.currency as 'usd' | 'eur',
-        cancelDate: subscription.cancel_at
-          ? new Date(subscription.cancel_at * 1000)
+        currency: currentSubscription.currency as 'usd' | 'eur',
+        cancelDate: currentSubscription.cancel_at
+          ? new Date(currentSubscription.cancel_at * 1000)
           : undefined,
       },
     }

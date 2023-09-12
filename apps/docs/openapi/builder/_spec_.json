@@ -30689,11 +30689,19 @@
                             "cancelDate": {
                               "type": "string",
                               "format": "date-time"
+                            },
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "active",
+                                "past_due"
+                              ]
                             }
                           },
                           "required": [
                             "isYearly",
-                            "currency"
+                            "currency",
+                            "status"
                           ],
                           "additionalProperties": false
                         },
@@ -32760,7 +32768,7 @@
         }
       }
     },
-    "/typebots/{typebotId}/blocks/{blockId}/openai/models": {
+    "/openai/models": {
       "get": {
         "operationId": "openAI-listModels",
         "summary": "List OpenAI models",
@@ -32774,22 +32782,6 @@
         ],
         "parameters": [
           {
-            "name": "typebotId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "blockId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "credentialsId",
             "in": "query",
             "required": true,
@@ -32801,6 +32793,23 @@
             "name": "workspaceId",
             "in": "query",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "baseUrl",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "https://api.openai.com/v1"
+            }
+          },
+          {
+            "name": "apiVersion",
+            "in": "query",
+            "required": false,
             "schema": {
               "type": "string"
             }
