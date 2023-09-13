@@ -1,14 +1,10 @@
+# Octadesk Bot Builder V2
+
 This repository is a fork from typebot (http://www.typebot.io ! https://github.com/baptisteArno/typebot.io)
 
+This fork is being used solely for bot flow construction. We do not use the bot list based on this repo, this is kept on another client.
 
-## Octadesk
-
-This fork is being used solely for bot flow construction, so, for debugging, change the upper url for 
-`http://localhost:8080/typebots/{bot_id}/edit
-
-We do not use the bot list based on this repo, this is kept on another client.
-
-__
+\_\_
 
 <p>
   <a href="https://typebot.io/#gh-light-mode-only" target="_blank">
@@ -23,6 +19,22 @@ __
 
 Typebot is an open-source alternative to Landbot. It allows you to create conversational apps/forms (Lead qualification, Product launch, User onboarding, Customer support), embed them anywhere on your web/mobile apps, and collect results in real-time.
 
+## Local setup
+
+1. Clone the repo
+   `git clone https://github.com/Octadesk-Tech/chat-bot-builder-client.git`
+
+2. Set up environment variables
+   Copy `apps/builder/.env.local.example` to `apps/builder/.env.local`
+
+3. Make sure you have Docker running
+
+4. Start the application
+   `yarn && yarn dev`
+   Builder is available at `http://localhost:8080/typebots/{bot_id}/edit`
+
+   The `bot_id` parameter can be found on the bots API requests of the bot you want to edit.
+   Filter the API requests of one from the V2 bots list by `/chat/bots` and copy the `bot_id` parameter.
 
 ## Features
 
@@ -54,43 +66,6 @@ That's also the best way to support my work, open-source software, and you'll ge
 ## Self-hosting
 
 Interested in self-hosting Typebot on your server? Take a look at the [self-hosting installation instructions](https://docs.typebot.io/self-hosting).
-
-## Local setup
-
-1. Clone the repo
-
-   ```sh
-   git clone https://github.com/baptisteArno/typebot.io.git
-   ```
-
-2. Set up environment variables
-
-   Copy `apps/builder/.env.local.example` to `apps/builder/.env.local`
-
-   Copy `apps/viewer/.env.local.example` to `apps/viewer/.env.local`
-
-   Check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration) if you want to enable more options
-
-3. Make sure you have [Docker](https://docs.docker.com/compose/install/) running
-4. Start the applications.
-
-   ```sh
-   yarn && yarn dev
-   ```
-If you are a windows developer you should try (make sure that you are in the app/builder folder):
-
-  ```
- yarn dev:windows
-   ```
-
-
-   Builder is available at `http://localhost:3000`
-
-   Viewer is available at `http://localhost:3001`
-
-   Database inspector is available at `http://localhost:5555`
-
-   By default, you can easily authenticate in the builder using the "Github Sign In" button. For other options, check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration)
 
 ## Contribute
 
