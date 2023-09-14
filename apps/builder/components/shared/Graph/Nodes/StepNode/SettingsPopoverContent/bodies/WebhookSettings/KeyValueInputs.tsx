@@ -1,8 +1,9 @@
-import { Stack, FormControl, FormLabel } from '@chakra-ui/react'
+import { Stack, FormLabel, IconButton } from '@chakra-ui/react'
 import { Input } from 'components/shared/Textbox'
 import { TableListItemProps } from 'components/shared/TableList'
-import { KeyValue, QueryParameters, Variable } from 'models'
+import { QueryParameters } from 'models'
 import { useTypebot } from 'contexts/TypebotContext'
+import { TrashIcon } from 'assets/icons'
 
 export const QueryParamsInputs = (props: TableListItemProps<QueryParameters>) => (
   <KeyValueInputs
@@ -23,6 +24,7 @@ export const HeadersInputs = (props: TableListItemProps<QueryParameters>) => (
 export const KeyValueInputs = ({
   item,
   onItemChange,
+  onRemoveItem,
   keyPlaceholder,
   valuePlaceholder,
   debounceTimeout,
@@ -45,8 +47,21 @@ export const KeyValueInputs = ({
     onItemChange({ ...item, value, properties: variable[0] })
   }
 
+  const onDeleteClick = () => {
+    if(onRemoveItem) onRemoveItem(item)
+  }
+
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
+      <IconButton
+        aria-label="Delete"
+        borderLeftRadius="none"
+        icon={<TrashIcon />}
+        onClick={onDeleteClick}
+        variant="ghost"
+        size="sm"
+      />
+
       <FormLabel htmlFor={'key' + item.key}>Chave:</FormLabel>
       <Input
         id={'key' + item.key}

@@ -7,30 +7,40 @@ import {
   useMemo,
   useState,
 } from 'react'
+
 import { byId } from 'utils'
+
 import { MemberInWorkspace, Plan, Workspace, WorkspaceRole } from 'model'
+
 import {
   createNewWorkspace,
   useWorkspaces,
   updateWorkspace as patchWorkspace,
   deleteWorkspace,
 } from 'services/workspace/workspace'
+
 import { useUser } from './UserContext'
+
 import { useTypebot } from './TypebotContext'
+
 import { useRouter } from 'next/router'
-import { CustomFieldTitle } from 'enums/customFieldsTitlesEnum'
+
 import CustomFields from 'services/octadesk/customFields/customFields'
+
 import { BotsService } from 'services/octadesk/bots/bots'
+
 import { DomainType } from 'enums/customFieldsEnum'
+
 import {
   fixedChatProperties,
   fixedOrganizationProperties,
   fixedPersonProperties,
 } from 'helpers/presets/variables-presets'
-import { Variable } from 'models/dist/types/typebot/variable'
+
 import { OctaProperty } from 'models'
 
 export type WorkspaceWithMembers = Workspace & { members: MemberInWorkspace[] }
+
 export type ChannelType = {
   name: string
   displayName: string
@@ -140,6 +150,7 @@ export type ChannelType = {
   }
   attachmentMaxSize: number
 }
+
 export type BotSpecification = {
   id: string
   _id: string
@@ -160,7 +171,7 @@ export type BotSpecificationOption = {
   [`facebook-messenger`]: { name: string; value: number }
 }
 
-const workspaceContext = createContext<{
+interface IWorkspaceContextData {
   workspaces?: WorkspaceWithMembers[]
   botSpecificationsChannelsInfo: Array<BotSpecificationOption>
   botChannelsSpecifications: Array<string>
@@ -173,19 +184,26 @@ const workspaceContext = createContext<{
     workspaceId: string,
     updates: Partial<Workspace>
   ) => Promise<void>
-  deleteCurrentWorkspace: () => Promise<void>,
+  deleteCurrentWorkspace: () => Promise<void>
   createCustomField: (name: string, domain: string) => Promise<any>
   createChatField: (property: OctaProperty, variableId?: string) => Promise<any>
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //@ts-ignore
-}>({})
+}
+
+const workspaceContext = createContext<IWorkspaceContextData>(
+  {} as IWorkspaceContextData
+)
 
 export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   const { query } = useRouter()
+
   const { user } = useUser()
+
   const userId = user?.id
+
   const { typebot, setVariables } = useTypebot()
+
   const { workspaces, isLoading, mutate } = useWorkspaces({ userId })
+
   const [currentWorkspace, setCurrentWorkspace] =
     useState<WorkspaceWithMembers>()
 
@@ -196,15 +214,18 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (!workspaces || workspaces.length === 0 || currentWorkspace) return
+
     const lastWorspaceId =
       query.workspaceId?.toString() ?? localStorage.getItem('workspaceId')
+
     const defaultWorkspace = lastWorspaceId
       ? workspaces.find(byId(lastWorspaceId))
       : workspaces.find((w) =>
-        w.members.some(
-          (m) => m.userId === userId && m.role === WorkspaceRole.ADMIN
+          w.members.some(
+            (m) => m.userId === userId && m.role === WorkspaceRole.ADMIN
+          )
         )
-      )
+
     setCurrentWorkspace(defaultWorkspace ?? workspaces[0])
   }, [workspaces])
 
@@ -219,22 +240,37 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
       !typebot?.workspaceId ||
       !currentWorkspace ||
       typebot.workspaceId === currentWorkspace.id
-    )
+    ) {
       return
+    }
+
     switchWorkspace(typebot.workspaceId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typebot?.workspaceId])
 
   const [loaded, setLoaded] = useState(false)
+
   const [octaPersonFields, setOctaPersonFields] = useState<Array<any>>([])
+
   const [octaPersonItems, setOctaPersonItems] = useState<Array<any>>([])
+
   const [octaChatFields, setOctaChatFields] = useState<Array<any>>([])
+
   const [addedChatFields, setAddedChatFields] = useState<Array<any>>([])
+
   const [octaChatItems, setOctaChatItems] = useState<Array<any>>([])
-  const [octaOrganizationFields, setOctaOrganizationFields] = useState<Array<any>>([])
-  const [octaOrganizationItems, setOctaOrganizationItems] = useState<Array<any>>([])
+
+  const [octaOrganizationFields, setOctaOrganizationFields] = useState<
+    Array<any>
+  >([])
+
+  const [octaOrganizationItems, setOctaOrganizationItems] = useState<
+    Array<any>
+  >([])
+
   const [botSpecificationsChannelsInfo, setBotSpecificationsChannelsInfo] =
     useState<Array<BotSpecificationOption>>([])
+
   const [botChannelsSpecifications, setBotChannelsSpecifications] = useState<
     Array<string>
   >([''])
@@ -287,7 +323,8 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
     const getValue = (channelName: any, key: any) => {
       let value = ''
-      channelsSpecifications.map((channel) => {
+
+      channelsSpecifications.forEach((channel) => {
         if (channel.displayName === channelName) {
           value = getMultiLevelProp(channel, key)
         }
@@ -419,6 +456,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
       fixed: true,
     }
   })
+
   const fixedPersonPropertiesWithId = fixedPersonProperties.map(
     (personProperty) => {
       return {
@@ -428,6 +466,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
       }
     }
   )
+
   const fixedOrganizationPropertiesWithId = fixedOrganizationProperties.map(
     (organizationProperty) => {
       return {
@@ -438,75 +477,89 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     }
   )
 
-  const createChatField = (property: OctaProperty, variableId?: string): any => {
-    if (octaChatFields.find(c => c.token === property.token)) return
-    const field = {
-      type: property.type,
-      id: variableId,
-      variableId,
-      token: property.token,
-      domain: "CHAT",
-      name: "customField." + property.name,
-      fieldId: property.name
-    }
-    setOctaChatFields([...octaChatFields, field])
-    setAddedChatFields([...addedChatFields, field])
-  }
+  const createChatField = useCallback(
+    (property: OctaProperty, variableId?: string): any => {
+      if (octaChatFields.find((c) => c.token === property.token)) return
 
-  const createCustomField = async (name: string, domain: string): Promise<any> => {
-    const key = `${name}:${domain}`
-    if (fieldsCreated.includes(key)) return
+      const field = {
+        type: property.type,
+        id: variableId,
+        variableId,
+        token: property.token,
+        domain: 'CHAT',
+        name: 'customField.' + property.name,
+        fieldId: property.name,
+      }
 
-    const payload = {
-      domainType: 2,
-      fieldId: name,
-      isEnabled: true,
-      order: typebot?.variables?.filter(v => v.domain === domain)?.length || 0,
-      systemType: 2,
-      title: name,
-      type: 1
-    }
-    await CustomFields().createCustomField(payload)
+      setOctaChatFields([...octaChatFields, field])
 
-    //createCustomField({ ...property, id: variableId, variableId } as Variable)
+      setAddedChatFields([...addedChatFields, field])
+    },
+    [addedChatFields, octaChatFields]
+  )
 
-    setFieldsCreated([...fieldsCreated, key])
+  const fetchOctaCustomFields = useCallback(
+    async (domain?: string): Promise<void> => {
+      setLoaded(false)
 
-    setLoaded(false)
+      const fields = await CustomFields().getCustomFields()
+      if (!domain || domain === 'PERSON') {
+        const personFields = fields.filter(
+          (f: { domainType: number }) => f.domainType === DomainType.Person
+        )
 
-    return fetchOctaCustomFields(domain)
-  }
+        setOctaPersonFields(personFields)
+      }
 
-  const fetchOctaCustomFields = useCallback(async (domain?: string): Promise<void> => {
-    setLoaded(false)
-    
-    const fields = await CustomFields().getCustomFields()
-    if (!domain || domain === 'PERSON') {
-      const personFields = fields.filter(
-        (f: { domainType: number }) => f.domainType === DomainType.Person
-      )
+      if (!domain || domain === 'CHAT') {
+        const chatFields = fields.filter(
+          (f: { domainType: number }) => f.domainType === DomainType.Chat
+        )
 
-      setOctaPersonFields(personFields)
-    }
+        setOctaChatFields([...chatFields, ...addedChatFields])
+      }
 
-    if (!domain || domain === 'CHAT') {
-      const chatFields = fields.filter(
-        (f: { domainType: number }) => f.domainType === DomainType.Chat
-      )
+      if (!domain || domain === 'ORGANIZATION') {
+        const organizationFields = fields.filter(
+          (f: { domainType: number }) =>
+            f.domainType === DomainType.Organization
+        )
 
-      setOctaChatFields([...chatFields, ...addedChatFields])
-    }
+        setOctaOrganizationFields(organizationFields)
+      }
 
-    if (!domain || domain === 'ORGANIZATION') {
-      const organizationFields = fields.filter(
-        (f: { domainType: number }) => f.domainType === DomainType.Organization
-      )
+      setLoaded(true)
+    },
+    [addedChatFields]
+  )
 
-      setOctaOrganizationFields(organizationFields)
-    }
+  const createCustomField = useCallback(
+    async (name: string, domain: string): Promise<any> => {
+      const key = `${name}:${domain}`
+      if (fieldsCreated.includes(key)) return
 
-    setLoaded(true)
-  }, [])
+      const payload = {
+        domainType: 2,
+        fieldId: name,
+        isEnabled: true,
+        order:
+          typebot?.variables?.filter((v) => v.domain === domain)?.length || 0,
+        systemType: 2,
+        title: name,
+        type: 1,
+      }
+      await CustomFields().createCustomField(payload)
+
+      //createCustomField({ ...property, id: variableId, variableId } as Variable)
+
+      setFieldsCreated([...fieldsCreated, key])
+
+      setLoaded(false)
+
+      return fetchOctaCustomFields(domain)
+    },
+    [fetchOctaCustomFields, fieldsCreated, typebot?.variables]
+  )
 
   useEffect(() => {
     fetchOctaCustomFields()
@@ -575,58 +628,78 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const fluxChannel = document.referrer.split('/')
-    setCurrentWorkspace(
-      (current): any =>
-        ({ ...current, channel: fluxChannel[5] || 'web' } as any)
-    )
+
+    const channel = query?.channel ?? (fluxChannel[5] || 'web')
+
+    setCurrentWorkspace((current): any => ({ ...current, channel } as any))
   }, [])
 
-  const switchWorkspace = (workspaceId: string) =>
-    setCurrentWorkspace(workspaces?.find(byId(workspaceId)))
+  const switchWorkspace = useCallback(
+    (workspaceId: string) => {
+      setCurrentWorkspace(workspaces?.find(byId(workspaceId)))
+    },
+    [workspaces]
+  )
 
-  const createWorkspace = async (name?: string) => {
-    if (!workspaces) return
-    const { data, error } = await createNewWorkspace({
-      name: name ? `${name}'s workspace` : 'My workspace',
-      plan: Plan.FREE,
-    })
-    if (error || !data) return
-    const { workspace } = data
-    const newWorkspace = {
-      ...workspace,
-      members: [
-        {
-          role: WorkspaceRole.ADMIN,
-          userId: userId as string,
-          workspaceId: workspace.id as string,
-        },
-      ],
-    }
-    mutate({
-      workspaces: [...workspaces, newWorkspace],
-    })
-    setCurrentWorkspace(newWorkspace)
-  }
+  const createWorkspace = useCallback(
+    async (name?: string) => {
+      if (!workspaces) return
 
-  const updateWorkspace = async (
-    workspaceId: string,
-    updates: Partial<Workspace>
-  ) => {
-    const { data } = await patchWorkspace({ id: workspaceId, ...updates })
-    if (!data || !currentWorkspace) return
-    setCurrentWorkspace({ ...currentWorkspace, ...updates })
-    mutate({
-      workspaces: (workspaces ?? []).map((w) =>
-        w.id === workspaceId ? { ...data.workspace, members: w.members } : w
-      ),
-    })
-  }
+      const { data, error } = await createNewWorkspace({
+        name: name ? `${name}'s workspace` : 'My workspace',
+        plan: Plan.FREE,
+      })
 
-  const deleteCurrentWorkspace = async () => {
+      if (error || !data) return
+
+      const { workspace } = data
+
+      const newWorkspace = {
+        ...workspace,
+        members: [
+          {
+            role: WorkspaceRole.ADMIN,
+            userId: userId as string,
+            workspaceId: workspace.id as string,
+          },
+        ],
+      }
+
+      mutate({
+        workspaces: [...workspaces, newWorkspace],
+      })
+
+      setCurrentWorkspace(newWorkspace)
+    },
+    [mutate, userId, workspaces]
+  )
+
+  const updateWorkspace = useCallback(
+    async (workspaceId: string, updates: Partial<Workspace>) => {
+      const { data } = await patchWorkspace({ id: workspaceId, ...updates })
+
+      if (!data || !currentWorkspace) return
+
+      setCurrentWorkspace({ ...currentWorkspace, ...updates })
+
+      mutate({
+        workspaces: (workspaces ?? []).map((w) =>
+          w.id === workspaceId ? { ...data.workspace, members: w.members } : w
+        ),
+      })
+    },
+    [currentWorkspace, mutate, workspaces]
+  )
+
+  const deleteCurrentWorkspace = useCallback(async () => {
     if (!currentWorkspace || !workspaces || workspaces.length < 2) return
+
     const { data } = await deleteWorkspace(currentWorkspace.id)
+
     if (!data || !currentWorkspace) return
+
     setCurrentWorkspace(workspaces[0])
+
     mutate({
       workspaces: (workspaces ?? []).filter((w) =>
         w.id === currentWorkspace.id
@@ -634,28 +707,52 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
           : w
       ),
     })
-  }
+  }, [currentWorkspace, mutate, workspaces])
+
+  const value = useMemo(
+    () => ({
+      workspaces,
+      botSpecificationsChannelsInfo,
+      botChannelsSpecifications,
+      workspace: currentWorkspace,
+      isLoading,
+      canEdit,
+      switchWorkspace,
+      createWorkspace,
+      deleteCurrentWorkspace,
+      createCustomField,
+      updateWorkspace,
+      createChatField,
+    }),
+    [
+      workspaces,
+      botSpecificationsChannelsInfo,
+      botChannelsSpecifications,
+      currentWorkspace,
+      isLoading,
+      canEdit,
+      switchWorkspace,
+      createWorkspace,
+      deleteCurrentWorkspace,
+      createCustomField,
+      updateWorkspace,
+      createChatField,
+    ]
+  )
 
   return (
-    <workspaceContext.Provider
-      value={{
-        workspaces,
-        botSpecificationsChannelsInfo,
-        botChannelsSpecifications,
-        workspace: currentWorkspace,
-        isLoading,
-        canEdit,
-        switchWorkspace,
-        createWorkspace,
-        deleteCurrentWorkspace,
-        createCustomField,
-        updateWorkspace,
-        createChatField
-      }}
-    >
+    <workspaceContext.Provider value={value}>
       {children}
     </workspaceContext.Provider>
   )
 }
 
-export const useWorkspace = () => useContext(workspaceContext)
+export const useWorkspace = (): IWorkspaceContextData => {
+  const context = useContext(workspaceContext)
+
+  if (!context) {
+    throw new Error('useWorkspace must be used within an useWorkspaceProvider')
+  }
+
+  return context
+}

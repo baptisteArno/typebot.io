@@ -1,5 +1,5 @@
-import { Box, Button, Center, Fade, Flex, IconButton, Stack } from '@chakra-ui/react'
-import { TrashIcon, PlusIcon } from 'assets/icons'
+import { Box, Center, Fade, IconButton, Stack } from '@chakra-ui/react'
+import { TrashIcon } from 'assets/icons'
 import OctaButton from 'components/octaComponents/OctaButton/OctaButton'
 import cuid from 'cuid'
 import React, { useEffect, useState } from 'react'
@@ -10,6 +10,7 @@ export type TableListItemProps<T> = {
   item: T
   debounceTimeout?: number
   onItemChange: (item: T) => void
+  onRemoveItem: (item: T) => void
 }
 
 type Props<T> = {
@@ -76,6 +77,8 @@ export const TableList = <T,>({
   const handleCellChange = (itemIndex: number) => (item: T) =>
     updateItem(itemIndex, item)
 
+  const handleCellDelete = (itemIndex: number) => deleteItem(itemIndex)
+
   const handleMouseLeave = () => setShowDeleteIndex(null)
 
   return (
@@ -88,6 +91,7 @@ export const TableList = <T,>({
           <Item
             item={item}
             onItemChange={handleCellChange(itemIndex)}
+            onRemoveItem={handleCellDelete(itemIndex)}
             debounceTimeout={debounceTimeout}
           />
           {items.length > (minItems || 0) && <Fade in={showDeleteIndex === itemIndex}>

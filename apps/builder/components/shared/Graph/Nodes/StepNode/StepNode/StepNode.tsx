@@ -240,7 +240,7 @@ export const StepNode = ({
               >
                 <Stack spacing={2}>
                   <BlockStack isOpened={isOpened} isPreviewing={isPreviewing} style={{ borderColor: unreachableNode ? "#e3a820" : ""}}>
-                    <Stack spacing={2}>
+                    <Stack spacing={2} w="full">
                       <HStack fontSize={"14px"}>
                         <StepIcon
                           type={step.type}
