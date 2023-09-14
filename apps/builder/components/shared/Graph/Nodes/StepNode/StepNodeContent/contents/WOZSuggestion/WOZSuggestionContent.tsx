@@ -1,7 +1,6 @@
 import { WOZSuggestionStep } from 'models'
 import React from 'react'
 import { chakra, Stack, Text } from '@chakra-ui/react'
-import { WOZ_ANSWER_TYPE } from '../../../SettingsPopoverContent/bodies'
 
 type Props = {
   step: WOZSuggestionStep
