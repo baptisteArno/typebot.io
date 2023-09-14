@@ -154,7 +154,6 @@ export const StepSettings = ({
     onStepChange({ content } as Partial<Step>)
   }
   const handleOptionsChange = (options: StepOptions) => {
-    console.log('handleOptionsChange', { options })
     onStepChange({ options } as Partial<Step>)
   }
   const handleItemChange = (updates: Partial<any>) => {

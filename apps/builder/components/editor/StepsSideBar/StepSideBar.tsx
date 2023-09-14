@@ -238,14 +238,13 @@ export const StepsSideBar = () => {
               ))}
           </SimpleGrid>
         </Stack>
-
-        <Stack>
-          <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-            WOZ - IA da Octa
-          </Text>
-          <SimpleGrid columns={1} spacing="3">
-            {Object.values(WOZStepType).map(
-              (type) =>
+        {verifyFeatureToggle('chat-ai') &&
+          <Stack>
+            <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+              WOZ - IA da Octa
+            </Text>
+            <SimpleGrid columns={1} spacing="3">
+              {Object.values(WOZStepType).map((type) => (
                 shouldHideComponents(type) && (
                   <StepCard
                     key={type}
@@ -253,10 +252,10 @@ export const StepsSideBar = () => {
                     onMouseDown={handleMouseDown}
                     isDisabled={shouldDisableComponent(type)}
                   />
-                )
-            )}
-          </SimpleGrid>
-        </Stack>
+                )))}
+            </SimpleGrid>
+          </Stack>
+        }
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold" color="gray.600">

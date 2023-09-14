@@ -302,8 +302,6 @@ export const parseNewStep = (
     ? parseDefaultStepOptions(type)
     : undefined
 
-  console.log('a', { options, type })
-
   return {
     id,
     blockId,
