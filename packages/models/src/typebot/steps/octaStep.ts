@@ -1,5 +1,5 @@
 import { StepBase, StepWithItems, ItemBase, Step, ItemType, OctaProperty } from '.'
-import { TextBubbleContent } from './bubble'
+import { TextBubbleContent, WOZStepType } from './bubble'
 
 // Regular steps
 export type OctaStep = AssignToTeamStep | OfficeHourStep | CallOtherBotStep | PreReserveStep | CommerceStep
@@ -7,6 +7,8 @@ export type OctaStep = AssignToTeamStep | OfficeHourStep | CallOtherBotStep | Pr
 // Waba steps
 
 export type OctaWabaStep = WhatsAppOptionsListStep | WhatsAppButtonsListStep
+
+export type WOZStep = WOZSuggestionStep
 
 // Bubble steps (editado na árvore)
 export type OctaBubbleStep = EndConversationStep
@@ -67,6 +69,11 @@ export type EndConversationStep = StepBase & {
 export type AssignToTeamStep = StepBase & {
   type: OctaStepType.ASSIGN_TO_TEAM
   options: AssignToTeamOptions
+}
+
+export type WOZSuggestionStep = StepBase & {
+  type: WOZStepType.MESSAGE
+  options: WOZSuggestionOptions
 }
 
 export type PreReserveStep = StepBase & {
@@ -204,6 +211,10 @@ export type AssignToTeamOptions = BaseOctaOptions & {
 export type PreReserveOptions = BaseOctaOptions & {
   assignTo: string
   assignType: string
+}
+
+export type WOZSuggestionOptions = BaseOctaOptions & {
+  preferredAnswer?: string
 }
 
 export type CallOtherBotOptions = BaseOctaOptions & {
@@ -346,6 +357,12 @@ export const defaultAssignToTeamOptions: AssignToTeamOptions = {
 export const defaultPreReserveOptions: PreReserveOptions = {
   assignTo: '',
   assignType: '',
+  name: '',
+  subject: ''
+}
+
+export const defaultWOZSuggestionOptions: WOZSuggestionOptions = {
+  preferredAnswer: '',
   name: '',
   subject: ''
 }

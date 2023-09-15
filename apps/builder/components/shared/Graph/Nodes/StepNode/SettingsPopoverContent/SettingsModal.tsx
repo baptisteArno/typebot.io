@@ -13,7 +13,7 @@ import {
 import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
 import { StepTypeHelper } from 'components/editor/StepsSideBar/StepTypeHelper'
 import { StepTypeLabel } from 'components/editor/StepsSideBar/StepTypeLabel'
-import { StepType } from 'models'
+import { StepType, WOZStepType } from 'models'
 import React from 'react'
 
 type Props = {
@@ -32,7 +32,7 @@ export const SettingsModal = ({
     e.stopPropagation()
   }
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size={"xl"}>
+    <Modal isOpen={isOpen} onClose={onClose} size={stepType === WOZStepType.MESSAGE ? "full" : "xl"}>
       <ModalOverlay />
       <ModalContent onMouseDown={handleMouseDown}>
         <ModalHeader>

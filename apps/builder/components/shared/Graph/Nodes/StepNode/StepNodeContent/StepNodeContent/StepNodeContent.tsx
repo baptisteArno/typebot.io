@@ -12,6 +12,7 @@ import {
   OctaWabaStepType,
   StepWithOptions,
   InputOptions,
+  WOZStepType,
 } from 'models'
 import { isChoiceInput, isInputStep } from 'utils'
 import { ItemNodesList } from '../../../ItemNode'
@@ -42,6 +43,7 @@ import { InputContent } from '../contents/Input'
 import { useTypebot } from 'contexts/TypebotContext'
 import { MediaInputContent } from '../contents/MediaInput'
 import { InputItemsContent } from '../contents/InputItemsContent'
+import { WOZSuggestionContent } from '../contents/WOZSuggestion'
 // import { ProviderWebhookContent } from './contents/ZapierContent'
 
 type Props = {
@@ -173,7 +175,7 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     }
     case OctaStepType.CALL_OTHER_BOT: {
       return (
-        <CallOtherBotContent step={step} options={step.options.botToCall} />
+        <CallOtherBotContent step={step} options={step.options} />
       )
     }
     case OctaStepType.OFFICE_HOURS: {
@@ -190,6 +192,9 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     }
     case OctaStepType.PRE_RESERVE: {
       return <PreReserveContent step={step} />
+    }
+    case WOZStepType.MESSAGE: {
+      return <WOZSuggestionContent step={step} />
     }
     case 'start': {
       return <span></span>
