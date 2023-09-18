@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react'
 import { ChevronLeftIcon, PlusIcon, TrashIcon } from '@/components/icons'
 import React, { useState } from 'react'
-import { CustomDomainModal } from './CustomDomainModal'
+import { CreateCustomDomainModal } from './CreateCustomDomainModal'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'
 import { trpc } from '@/lib/trpc'
@@ -83,7 +83,7 @@ export const CustomDomainsDropdown = ({
   return (
     <Menu isLazy placement="bottom-start" matchWidth>
       {workspace?.id && (
-        <CustomDomainModal
+        <CreateCustomDomainModal
           workspaceId={workspace.id}
           isOpen={isOpen}
           onClose={onClose}

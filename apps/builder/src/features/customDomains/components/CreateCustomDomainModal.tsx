@@ -22,7 +22,7 @@ import { trpc } from '@/lib/trpc'
 const hostnameRegex =
   /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/
 
-type CustomDomainModalProps = {
+type Props = {
   workspaceId: string
   isOpen: boolean
   onClose: () => void
@@ -30,13 +30,13 @@ type CustomDomainModalProps = {
   onNewDomain: (customDomain: string) => void
 }
 
-export const CustomDomainModal = ({
+export const CreateCustomDomainModal = ({
   workspaceId,
   isOpen,
   onClose,
   onNewDomain,
   domain = '',
-}: CustomDomainModalProps) => {
+}: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [inputValue, setInputValue] = useState(domain)

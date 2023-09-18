@@ -1,4 +1,4 @@
-import { CloseIcon } from '@/components/icons'
+import { TrashIcon } from '@/components/icons'
 import { Seo } from '@/components/Seo'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'
@@ -26,6 +26,7 @@ import { TypebotHeader } from '@/features/editor/components/TypebotHeader'
 import { parseDefaultPublicId } from '../helpers/parseDefaultPublicId'
 import { useI18n } from '@/locales'
 import { env } from '@typebot.io/env'
+import DomainStatusIcon from '@/features/customDomains/components/DomainStatusIcon'
 
 export const SharePage = () => {
   const t = useI18n()
@@ -113,11 +114,17 @@ export const SharePage = () => {
                   onPathnameChange={handlePathnameChange}
                 />
                 <IconButton
-                  icon={<CloseIcon />}
+                  icon={<TrashIcon />}
                   aria-label="Remove custom URL"
                   size="xs"
                   onClick={() => handleCustomDomainChange(null)}
                 />
+                {workspace?.id && (
+                  <DomainStatusIcon
+                    domain={typebot.customDomain.split('/')[0]}
+                    workspaceId={workspace.id}
+                  />
+                )}
               </HStack>
             )}
             {isNotDefined(typebot?.customDomain) &&

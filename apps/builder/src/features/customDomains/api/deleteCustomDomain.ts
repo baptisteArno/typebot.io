@@ -10,7 +10,7 @@ export const deleteCustomDomain = authenticatedProcedure
   .meta({
     openapi: {
       method: 'DELETE',
-      path: '/custom-domains',
+      path: '/custom-domains/{name}',
       protect: true,
       summary: 'Delete custom domain',
       tags: ['Custom domains'],
