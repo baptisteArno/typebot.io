@@ -59,6 +59,8 @@ export const StripePaymentForm = (props: Props) => {
       sessionId: props.context.sessionId,
       typebot: props.context.typebot,
     })
+    const { postalCode, ...address } =
+      props.options.additionalInformation?.address ?? {}
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
       confirmParams: {
@@ -69,9 +71,8 @@ export const StripePaymentForm = (props: Props) => {
             email: props.options.additionalInformation?.email,
             phone: props.options.additionalInformation?.phoneNumber,
             address: {
-              ...props.options.additionalInformation?.address,
-              postal_code:
-                props.options.additionalInformation?.address?.postalCode,
+              ...address,
+              postal_code: postalCode,
             },
           },
         },
