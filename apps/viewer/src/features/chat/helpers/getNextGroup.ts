@@ -1,6 +1,7 @@
-import { byId } from '@typebot.io/lib'
-import { Group, SessionState } from '@typebot.io/schemas'
+import { byId, isNotDefined } from '@typebot.io/lib'
+import { Group, SessionState, VariableWithValue } from '@typebot.io/schemas'
 import { upsertResult } from '../queries/upsertResult'
+import { isDefined } from '@udecode/plate-common'
 
 export type NextGroup = {
   group?: Group
@@ -31,15 +32,25 @@ export const getNextGroup =
               typebot: isMergingWithParent
                 ? {
                     ...state.typebotsQueue[1].typebot,
-                    variables: state.typebotsQueue[1].typebot.variables.map(
-                      (variable) => ({
+                    variables: state.typebotsQueue[1].typebot.variables
+                      .map((variable) => ({
                         ...variable,
                         value:
                           state.typebotsQueue[0].answers.find(
                             (answer) => answer.key === variable.name
                           )?.value ?? variable.value,
-                      })
-                    ),
+                      }))
+                      .concat(
+                        state.typebotsQueue[0].typebot.variables.filter(
+                          (variable) =>
+                            isDefined(variable.value) &&
+                            isNotDefined(
+                              state.typebotsQueue[1].typebot.variables.find(
+                                (v) => v.name === variable.name
+                              )
+                            )
+                        ) as VariableWithValue[]
+                      ),
                   }
                 : state.typebotsQueue[1].typebot,
               answers: isMergingWithParent
