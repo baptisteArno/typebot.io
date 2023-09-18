@@ -1,6 +1,8 @@
 import { ColorPicker } from '@/components/ColorPicker'
 import { ImageUploadContent } from '@/components/ImageUploadContent'
 import { ChevronDownIcon } from '@/components/icons'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import {
   Button,
   Heading,
@@ -24,6 +26,8 @@ type Props = {
 }
 
 export const ButtonThemeSettings = ({ buttonTheme, onChange }: Props) => {
+  const { workspace } = useWorkspace()
+  const { typebot } = useTypebot()
   const updateBackgroundColor = (backgroundColor: string) => {
     onChange({
       ...buttonTheme,
@@ -76,13 +80,19 @@ export const ButtonThemeSettings = ({ buttonTheme, onChange }: Props) => {
                   <Button size="sm">Pick an image</Button>
                 </PopoverTrigger>
                 <PopoverContent p="4" w="500px">
-                  <ImageUploadContent
-                    onSubmit={(url) => {
-                      updateCustomIconSrc(url)
-                      onClose()
-                    }}
-                    uploadFileProps={undefined}
-                  />
+                  {workspace?.id && typebot?.id && (
+                    <ImageUploadContent
+                      onSubmit={(url) => {
+                        updateCustomIconSrc(url)
+                        onClose()
+                      }}
+                      uploadFileProps={{
+                        workspaceId: workspace.id,
+                        typebotId: typebot.id,
+                        fileName: 'bubble-icon',
+                      }}
+                    />
+                  )}
                 </PopoverContent>
               </>
             )}
