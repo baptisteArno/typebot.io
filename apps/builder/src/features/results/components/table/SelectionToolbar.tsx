@@ -15,7 +15,8 @@ import { useToast } from '@/hooks/useToast'
 import { useResults } from '../../ResultsProvider'
 import { trpc } from '@/lib/trpc'
 import { parseColumnOrder } from '../../helpers/parseColumnsOrder'
-import { parseAccessor } from '../../helpers/parseAccessor'
+import { byId } from '@typebot.io/lib/utils'
+import { parseUniqueKey } from './ExportAllResultsModal'
 
 type Props = {
   selectedResultsId: string[]
@@ -69,21 +70,21 @@ export const SelectionToolbar = ({
       selectedResultsId.includes(data.id.plainText)
     )
 
-    const fields = parseColumnOrder(
+    const headerIds = parseColumnOrder(
       typebot?.resultsTablePreferences?.columnsOrder,
       resultHeader
     )
-      .reduce<string[]>((currentHeaderLabels, columnId) => {
+      .reduce<string[]>((currentHeaderIds, columnId) => {
         if (
           typebot?.resultsTablePreferences?.columnsVisibility[columnId] ===
           false
         )
-          return currentHeaderLabels
+          return currentHeaderIds
         const columnLabel = resultHeader.find(
           (headerCell) => headerCell.id === columnId
-        )?.label
-        if (!columnLabel) return currentHeaderLabels
-        return [...currentHeaderLabels, columnLabel]
+        )?.id
+        if (!columnLabel) return currentHeaderIds
+        return [...currentHeaderIds, columnLabel]
       }, [])
       .concat(
         typebot?.resultsTablePreferences?.columnsOrder
@@ -94,29 +95,24 @@ export const SelectionToolbar = ({
                     headerCell.id
                   )
               )
-              .map((headerCell) => headerCell.label)
+              .map((headerCell) => headerCell.id)
           : []
       )
 
     const data = dataToUnparse.map<{ [key: string]: string }>((data) => {
       const newObject: { [key: string]: string } = {}
-      fields?.forEach((field) => {
-        newObject[field] = data[parseAccessor(field)]?.plainText
+      headerIds?.forEach((headerId) => {
+        const headerLabel = resultHeader.find(byId(headerId))?.label
+        if (!headerLabel) return
+        const newKey = parseUniqueKey(headerLabel, Object.keys(newObject))
+        newObject[newKey] = data[headerId]?.plainText
       })
       return newObject
     })
 
-    const csvData = new Blob(
-      [
-        unparse({
-          data,
-          fields,
-        }),
-      ],
-      {
-        type: 'text/csv;charset=utf-8;',
-      }
-    )
+    const csvData = new Blob([unparse(data)], {
+      type: 'text/csv;charset=utf-8;',
+    })
     const fileName = `typebot-export_${new Date()
       .toLocaleDateString()
       .replaceAll('/', '-')}`

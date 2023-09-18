@@ -10,7 +10,6 @@ import {
 import { FileLinks } from '../components/FileLinks'
 import { TableData } from '../types'
 import { convertDateToReadable } from './convertDateToReadable'
-import { parseAccessor } from './parseAccessor'
 
 export const convertResultsToTableData = (
   results: ResultWithAnswers[] | undefined,
@@ -18,7 +17,7 @@ export const convertResultsToTableData = (
 ): TableData[] =>
   (results ?? []).map((result) => ({
     id: { plainText: result.id },
-    'Submitted at': {
+    date: {
       plainText: convertDateToReadable(result.createdAt),
     },
     ...[...result.answers, ...result.variables].reduce<{
@@ -40,22 +39,19 @@ export const convertResultsToTableData = (
         const content = variableValue ?? answer.content
         return {
           ...tableData,
-          [parseAccessor(header.label)]: parseCellContent(
-            content,
-            header.blockType
-          ),
+          [header.id]: parseCellContent(content, header.blockType),
         }
       }
       const variable = answerOrVariable satisfies VariableWithValue
       if (variable.value === null) return tableData
-      const key = headerCells.find((headerCell) =>
+      const headerId = headerCells.find((headerCell) =>
         headerCell.variableIds?.includes(variable.id)
-      )?.label
-      if (!key) return tableData
-      if (isDefined(tableData[key])) return tableData
+      )?.id
+      if (!headerId) return tableData
+      if (isDefined(tableData[headerId])) return tableData
       return {
         ...tableData,
-        [parseAccessor(key)]: parseCellContent(variable.value),
+        [headerId]: parseCellContent(variable.value),
       }
     }, {}),
   }))

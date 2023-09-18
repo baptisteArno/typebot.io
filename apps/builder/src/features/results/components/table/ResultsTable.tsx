@@ -26,7 +26,6 @@ import { CellValueType, TableData } from '../../types'
 import { IndeterminateCheckbox } from './IndeterminateCheckbox'
 import { colors } from '@/lib/theme'
 import { parseColumnOrder } from '../../helpers/parseColumnsOrder'
-import { parseAccessor } from '../../helpers/parseAccessor'
 import { HeaderIcon } from '../HeaderIcon'
 
 type ResultsTableProps = {
@@ -136,7 +135,7 @@ export const ResultsTable = ({
       },
       ...resultHeader.map<ColumnDef<TableData>>((header) => ({
         id: header.id,
-        accessorKey: parseAccessor(header.label),
+        accessorKey: header.id,
         size: 200,
         header: () => (
           <HStack overflow="hidden" data-testid={`${header.label} header`}>

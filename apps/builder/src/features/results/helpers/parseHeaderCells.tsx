@@ -2,7 +2,6 @@ import { HStack, Text } from '@chakra-ui/react'
 import { ResultHeaderCell } from '@typebot.io/schemas'
 import { HeaderIcon } from '../components/HeaderIcon'
 import { HeaderCell } from '../types'
-import { parseAccessor } from './parseAccessor'
 
 export const parseHeaderCells = (
   resultHeader: ResultHeaderCell[]
@@ -14,5 +13,5 @@ export const parseHeaderCells = (
         <Text>{header.label}</Text>
       </HStack>
     ),
-    accessor: parseAccessor(header.label),
+    accessor: header.id,
   }))
