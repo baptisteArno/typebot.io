@@ -1,4 +1,3 @@
-import { isDefined, isEmpty } from '@typebot.io/lib'
 import {
   BubbleBlockType,
   ButtonItem,
@@ -7,6 +6,7 @@ import {
 } from '@typebot.io/schemas'
 import { WhatsAppSendingMessage } from '@typebot.io/schemas/features/whatsapp'
 import { convertRichTextToWhatsAppText } from './convertRichTextToWhatsAppText'
+import { isDefined, isEmpty } from '../utils'
 
 export const convertInputToWhatsAppMessages = (
   input: NonNullable<ChatReply['input']>,

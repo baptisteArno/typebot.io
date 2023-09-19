@@ -32433,63 +32433,6 @@
           }
         }
       },
-      "delete": {
-        "operationId": "customDomains-deleteCustomDomain",
-        "summary": "Delete custom domain",
-        "tags": [
-          "Custom domains"
-        ],
-        "security": [
-          {
-            "Authorization": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "workspaceId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "name",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "enum": [
-                        "success"
-                      ]
-                    }
-                  },
-                  "required": [
-                    "message"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/components/responses/error"
-          }
-        }
-      },
       "get": {
         "operationId": "customDomains-listCustomDomains",
         "summary": "List custom domains",
@@ -32542,6 +32485,205 @@
                   },
                   "required": [
                     "customDomains"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/custom-domains/{name}": {
+      "delete": {
+        "operationId": "customDomains-deleteCustomDomain",
+        "summary": "Delete custom domain",
+        "tags": [
+          "Custom domains"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "enum": [
+                        "success"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/custom-domains/{name}/verify": {
+      "get": {
+        "operationId": "customDomains-verifyCustomDomain",
+        "summary": "Verify domain config",
+        "tags": [
+          "Custom domains"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "Valid Configuration",
+                        "Invalid Configuration",
+                        "Domain Not Found",
+                        "Pending Verification",
+                        "Unknown Error"
+                      ]
+                    },
+                    "domainJson": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "apexName": {
+                          "type": "string"
+                        },
+                        "projectId": {
+                          "type": "string"
+                        },
+                        "redirect": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "redirectStatusCode": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "gitBranch": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "updatedAt": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "createdAt": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "verified": {
+                          "type": "boolean"
+                        },
+                        "verification": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string"
+                              },
+                              "domain": {
+                                "type": "string"
+                              },
+                              "value": {
+                                "type": "string"
+                              },
+                              "reason": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "domain",
+                              "value",
+                              "reason"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "apexName",
+                        "projectId",
+                        "redirect",
+                        "redirectStatusCode",
+                        "gitBranch",
+                        "updatedAt",
+                        "createdAt",
+                        "verified"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "domainJson"
                   ],
                   "additionalProperties": false
                 }
@@ -32756,6 +32898,497 @@
                   },
                   "required": [
                     "verificationToken"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/typebots/{typebotId}/whatsapp/start-preview": {
+      "post": {
+        "operationId": "whatsApp-startWhatsAppPreview",
+        "summary": "Start preview",
+        "tags": [
+          "WhatsApp"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "to": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "startGroupId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "to"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "typebotId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/whatsapp/preview/webhook": {
+      "get": {
+        "operationId": "whatsApp-subscribePreviewWebhook",
+        "summary": "Subscribe webhook",
+        "tags": [
+          "WhatsApp"
+        ],
+        "parameters": [
+          {
+            "name": "hub.challenge",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hub.verify_token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "post": {
+        "operationId": "whatsApp-receiveMessagePreview",
+        "summary": "Message webhook",
+        "tags": [
+          "WhatsApp"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "entry": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "changes": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "value": {
+                                "type": "object",
+                                "properties": {
+                                  "contacts": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "profile": {
+                                          "type": "object",
+                                          "properties": {
+                                            "name": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": [
+                                            "name"
+                                          ],
+                                          "additionalProperties": false
+                                        }
+                                      },
+                                      "required": [
+                                        "profile"
+                                      ],
+                                      "additionalProperties": false
+                                    }
+                                  },
+                                  "messages": {
+                                    "type": "array",
+                                    "items": {
+                                      "anyOf": [
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string"
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
+                                                "text"
+                                              ]
+                                            },
+                                            "text": {
+                                              "type": "object",
+                                              "properties": {
+                                                "body": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "body"
+                                              ],
+                                              "additionalProperties": false
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": [
+                                            "from",
+                                            "type",
+                                            "text",
+                                            "timestamp"
+                                          ],
+                                          "additionalProperties": false
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string"
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
+                                                "button"
+                                              ]
+                                            },
+                                            "button": {
+                                              "type": "object",
+                                              "properties": {
+                                                "text": {
+                                                  "type": "string"
+                                                },
+                                                "payload": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "text",
+                                                "payload"
+                                              ],
+                                              "additionalProperties": false
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": [
+                                            "from",
+                                            "type",
+                                            "button",
+                                            "timestamp"
+                                          ],
+                                          "additionalProperties": false
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string"
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
+                                                "interactive"
+                                              ]
+                                            },
+                                            "interactive": {
+                                              "type": "object",
+                                              "properties": {
+                                                "button_reply": {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "id": {
+                                                      "type": "string"
+                                                    },
+                                                    "title": {
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "id",
+                                                    "title"
+                                                  ],
+                                                  "additionalProperties": false
+                                                }
+                                              },
+                                              "required": [
+                                                "button_reply"
+                                              ],
+                                              "additionalProperties": false
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": [
+                                            "from",
+                                            "type",
+                                            "interactive",
+                                            "timestamp"
+                                          ],
+                                          "additionalProperties": false
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string"
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
+                                                "image"
+                                              ]
+                                            },
+                                            "image": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "id"
+                                              ],
+                                              "additionalProperties": false
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": [
+                                            "from",
+                                            "type",
+                                            "image",
+                                            "timestamp"
+                                          ],
+                                          "additionalProperties": false
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string"
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
+                                                "video"
+                                              ]
+                                            },
+                                            "video": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "id"
+                                              ],
+                                              "additionalProperties": false
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": [
+                                            "from",
+                                            "type",
+                                            "video",
+                                            "timestamp"
+                                          ],
+                                          "additionalProperties": false
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string"
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
+                                                "audio"
+                                              ]
+                                            },
+                                            "audio": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "id"
+                                              ],
+                                              "additionalProperties": false
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": [
+                                            "from",
+                                            "type",
+                                            "audio",
+                                            "timestamp"
+                                          ],
+                                          "additionalProperties": false
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string"
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
+                                                "document"
+                                              ]
+                                            },
+                                            "document": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "id"
+                                              ],
+                                              "additionalProperties": false
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": [
+                                            "from",
+                                            "type",
+                                            "document",
+                                            "timestamp"
+                                          ],
+                                          "additionalProperties": false
+                                        }
+                                      ]
+                                    }
+                                  }
+                                },
+                                "additionalProperties": false
+                              }
+                            },
+                            "required": [
+                              "value"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "changes"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "entry"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
                   ],
                   "additionalProperties": false
                 }

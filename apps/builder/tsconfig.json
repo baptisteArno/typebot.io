@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*", "../viewer/src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]

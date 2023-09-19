@@ -8,7 +8,8 @@ export const subscribePreviewWebhook = publicProcedure
     openapi: {
       method: 'GET',
       path: '/whatsapp/preview/webhook',
-      summary: 'WhatsApp',
+      summary: 'Subscribe webhook',
+      tags: ['WhatsApp'],
     },
   })
   .input(

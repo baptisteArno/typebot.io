@@ -1,21 +1,24 @@
-import { publicProcedure } from '@/helpers/server/trpc'
+import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { z } from 'zod'
 import { TRPCError } from '@trpc/server'
-import { sendWhatsAppMessage } from '../helpers/sendWhatsAppMessage'
-import { startSession } from '@/features/chat/helpers/startSession'
-import { restartSession } from '@/features/chat/queries/restartSession'
+import { sendWhatsAppMessage } from '@typebot.io/lib/whatsApp/sendWhatsAppMessage'
+import { startSession } from '@typebot.io/viewer/src/features/chat/helpers/startSession'
 import { env } from '@typebot.io/env'
 import { HTTPError } from 'got'
 import prisma from '@/lib/prisma'
-import { sendChatReplyToWhatsApp } from '../helpers/sendChatReplyToWhatsApp'
-import { saveStateToDatabase } from '@/features/chat/helpers/saveStateToDatabase'
+import { sendChatReplyToWhatsApp } from '@typebot.io/lib/whatsApp/sendChatReplyToWhatsApp'
+import { saveStateToDatabase } from '@typebot.io/viewer/src/features/chat/helpers/saveStateToDatabase'
+import { restartSession } from '@typebot.io/viewer/src/features/chat/queries/restartSession'
+import { isReadTypebotForbidden } from '../typebot/helpers/isReadTypebotForbidden'
+import { SessionState } from '@typebot.io/schemas'
 
-export const startWhatsAppPreview = publicProcedure
+export const startWhatsAppPreview = authenticatedProcedure
   .meta({
     openapi: {
       method: 'POST',
       path: '/typebots/{typebotId}/whatsapp/start-preview',
-      summary: 'Start WhatsApp Preview',
+      summary: 'Start preview',
+      tags: ['WhatsApp'],
       protect: true,
     },
   })
@@ -38,19 +41,34 @@ export const startWhatsAppPreview = publicProcedure
     async ({ input: { to, typebotId, startGroupId }, ctx: { user } }) => {
       if (
         !env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID ||
-        !env.META_SYSTEM_USER_TOKEN
+        !env.META_SYSTEM_USER_TOKEN ||
+        !env.WHATSAPP_PREVIEW_TEMPLATE_NAME
       )
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message:
-            'Missing WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID and/or META_SYSTEM_USER_TOKEN env variables',
+            'Missing WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID or META_SYSTEM_USER_TOKEN or WHATSAPP_PREVIEW_TEMPLATE_NAME env variables',
         })
-      if (!user)
-        throw new TRPCError({
-          code: 'UNAUTHORIZED',
-          message:
-            'You need to authenticate your request in order to start a preview',
-        })
+
+      const existingTypebot = await prisma.typebot.findFirst({
+        where: {
+          id: typebotId,
+        },
+        select: {
+          id: true,
+          workspaceId: true,
+          collaborators: {
+            select: {
+              userId: true,
+            },
+          },
+        },
+      })
+      if (
+        !existingTypebot?.id ||
+        (await isReadTypebotForbidden(existingTypebot, user))
+      )
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
 
       const sessionId = `wa-${to}-preview`
 
@@ -60,6 +78,7 @@ export const startWhatsAppPreview = publicProcedure
         },
         select: {
           updatedAt: true,
+          state: true,
         },
       })
 
@@ -105,7 +124,11 @@ export const startWhatsAppPreview = publicProcedure
         })
       } else {
         await restartSession({
-          state: newSessionState,
+          state: {
+            ...newSessionState,
+            whatsApp: (existingSession?.state as SessionState | undefined)
+              ?.whatsApp,
+          },
           id: `wa-${to}-preview`,
         })
         try {
@@ -115,9 +138,9 @@ export const startWhatsAppPreview = publicProcedure
               type: 'template',
               template: {
                 language: {
-                  code: 'en',
+                  code: env.WHATSAPP_PREVIEW_TEMPLATE_LANG,
                 },
-                name: 'preview_initial_message',
+                name: env.WHATSAPP_PREVIEW_TEMPLATE_NAME,
               },
             },
             credentials: {

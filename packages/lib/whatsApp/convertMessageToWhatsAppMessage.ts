@@ -5,7 +5,7 @@ import {
 } from '@typebot.io/schemas'
 import { WhatsAppSendingMessage } from '@typebot.io/schemas/features/whatsapp'
 import { convertRichTextToWhatsAppText } from './convertRichTextToWhatsAppText'
-import { isSvgSrc } from '@typebot.io/lib'
+import { isSvgSrc } from '../utils'
 
 const mp4HttpsUrlRegex = /^https:\/\/.*\.mp4$/
 

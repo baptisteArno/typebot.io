@@ -11,10 +11,10 @@ import {
 import { convertMessageToWhatsAppMessage } from './convertMessageToWhatsAppMessage'
 import { sendWhatsAppMessage } from './sendWhatsAppMessage'
 import { captureException } from '@sentry/nextjs'
-import { isNotDefined } from '@typebot.io/lib/utils'
 import { HTTPError } from 'got'
-import { computeTypingDuration } from '@typebot.io/lib/computeTypingDuration'
 import { convertInputToWhatsAppMessages } from './convertInputToWhatsAppMessage'
+import { isNotDefined } from '../utils'
+import { computeTypingDuration } from '../computeTypingDuration'
 
 // Media can take some time to be delivered. This make sure we don't send a message before the media is delivered.
 const messageAfterMediaTimeout = 5000

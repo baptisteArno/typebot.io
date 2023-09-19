@@ -9,7 +9,8 @@ export const receiveMessage = publicProcedure
     openapi: {
       method: 'POST',
       path: '/workspaces/{workspaceId}/whatsapp/phoneNumbers/{phoneNumberId}/webhook',
-      summary: 'Receive WhatsApp Message',
+      summary: 'Message webhook',
+      tags: ['WhatsApp'],
     },
   })
   .input(
@@ -28,7 +29,7 @@ export const receiveMessage = publicProcedure
     const contactName =
       entry.at(0)?.changes.at(0)?.value?.contacts?.at(0)?.profile?.name ?? ''
     const contactPhoneNumber =
-      entry.at(0)?.changes.at(0)?.value?.metadata.display_phone_number ?? ''
+      entry.at(0)?.changes.at(0)?.value?.messages?.at(0)?.from ?? ''
     return resumeWhatsAppFlow({
       receivedMessage,
       sessionId: `wa-${phoneNumberId}-${receivedMessage.from}`,

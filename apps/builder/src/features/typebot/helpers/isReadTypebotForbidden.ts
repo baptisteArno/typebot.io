@@ -5,7 +5,7 @@ import { Typebot } from '@typebot.io/schemas'
 
 export const isReadTypebotForbidden = async (
   typebot: Pick<Typebot, 'workspaceId'> & {
-    collaborators: Pick<CollaboratorsOnTypebots, 'userId' | 'type'>[]
+    collaborators: Pick<CollaboratorsOnTypebots, 'userId'>[]
   },
   user: Pick<User, 'email' | 'id'>
 ) => {

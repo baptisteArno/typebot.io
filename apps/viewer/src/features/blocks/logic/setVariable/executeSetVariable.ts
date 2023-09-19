@@ -79,7 +79,7 @@ const getExpressionToEvaluate =
       case 'Contact name':
         return state.whatsApp?.contact.name ?? ''
       case 'Phone number':
-        return state.whatsApp?.contact.phoneNumber ?? ''
+        return `"${state.whatsApp?.contact.phoneNumber}"` ?? ''
       case 'Now':
       case 'Today':
         return 'new Date().toISOString()'

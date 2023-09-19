@@ -11,7 +11,7 @@ import prisma from '@/lib/prisma'
 import { decrypt } from '@typebot.io/lib/api'
 import { downloadMedia } from './downloadMedia'
 import { env } from '@typebot.io/env'
-import { sendChatReplyToWhatsApp } from './sendChatReplyToWhatsApp'
+import { sendChatReplyToWhatsApp } from '@typebot.io/lib/whatsApp/sendChatReplyToWhatsApp'
 
 export const resumeWhatsAppFlow = async ({
   receivedMessage,

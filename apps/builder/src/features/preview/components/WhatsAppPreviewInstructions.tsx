@@ -32,7 +32,7 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
   const [hasMessageBeenSent, setHasMessageBeenSent] = useState(false)
 
   const { showToast } = useToast()
-  const { mutate } = trpc.sendWhatsAppInitialMessage.useMutation({
+  const { mutate } = trpc.whatsApp.startWhatsAppPreview.useMutation({
     onMutate: () => setIsSendingMessage(true),
     onSettled: () => setIsSendingMessage(false),
     onError: (error) => showToast({ description: error.message }),

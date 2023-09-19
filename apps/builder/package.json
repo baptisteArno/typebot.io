@@ -93,7 +93,8 @@
     "tinycolor2": "1.6.0",
     "trpc-openapi": "1.2.0",
     "unsplash-js": "^7.0.18",
-    "use-debounce": "9.0.4"
+    "use-debounce": "9.0.4",
+    "@typebot.io/viewer": "workspace:*"
   },
   "devDependencies": {
     "@chakra-ui/styled-system": "2.9.1",

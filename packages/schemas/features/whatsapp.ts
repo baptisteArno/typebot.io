@@ -36,9 +36,9 @@ const actionSchema = z.object({
 })
 
 const templateSchema = z.object({
-  name: z.literal('preview_initial_message'),
+  name: z.string(),
   language: z.object({
-    code: z.literal('en'),
+    code: z.string(),
   }),
 })
 
@@ -151,9 +151,6 @@ export const whatsAppWebhookRequestBodySchema = z.object({
                 })
               )
               .optional(),
-            metadata: z.object({
-              display_phone_number: z.string(),
-            }),
             messages: z.array(incomingMessageSchema).optional(),
           }),
         })
