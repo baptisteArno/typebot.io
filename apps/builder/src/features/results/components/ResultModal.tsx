@@ -36,14 +36,14 @@ export const ResultModal = ({ resultId, onClose }: Props) => {
         <ModalCloseButton />
         <ModalBody as={Stack} p="10" spacing="10">
           {resultHeader.map((header) =>
-            result && result[header.label] ? (
+            result && result[header.id] ? (
               <Stack key={header.id} spacing="4">
                 <HStack>
                   <HeaderIcon header={header} />
                   <Heading fontSize="md">{header.label}</Heading>
                 </HStack>
                 <Text whiteSpace="pre-wrap" textAlign="justify">
-                  {getHeaderValue(result[header.label])}
+                  {getHeaderValue(result[header.id])}
                 </Text>
               </Stack>
             ) : null
