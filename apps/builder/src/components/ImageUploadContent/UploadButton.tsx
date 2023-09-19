@@ -26,9 +26,15 @@ export const UploadButton = ({
       setIsUploading(false)
     },
     onSuccess: async (data) => {
+      if (!file) return
+      const formData = new FormData()
+      Object.entries(data.formData).forEach(([key, value]) => {
+        formData.append(key, value)
+      })
+      formData.append('file', file)
       const upload = await fetch(data.presignedUrl, {
-        method: 'PUT',
-        body: file,
+        method: 'POST',
+        body: formData,
       })
 
       if (!upload.ok) {

@@ -2,8 +2,9 @@ import { publicProcedure } from '@/helpers/server/trpc'
 import prisma from '@/lib/prisma'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
-import { generatePresignedUrl } from '@typebot.io/lib/s3/generatePresignedUrl'
+import { generatePresignedPostPolicy } from '@typebot.io/lib/s3/generatePresignedPostPolicy'
 import { env } from '@typebot.io/env'
+import { InputBlockType, publicTypebotSchema } from '@typebot.io/schemas'
 
 export const generateUploadUrl = publicProcedure
   .meta({
@@ -28,6 +29,7 @@ export const generateUploadUrl = publicProcedure
   .output(
     z.object({
       presignedUrl: z.string(),
+      formData: z.record(z.string(), z.any()),
       fileUrl: z.string(),
     })
   )
@@ -44,6 +46,7 @@ export const generateUploadUrl = publicProcedure
         typebotId: filePathProps.typebotId,
       },
       select: {
+        groups: true,
         typebot: {
           select: {
             workspaceId: true,
@@ -62,15 +65,30 @@ export const generateUploadUrl = publicProcedure
 
     const filePath = `public/workspaces/${workspaceId}/typebots/${filePathProps.typebotId}/results/${filePathProps.resultId}/${filePathProps.fileName}`
 
-    const presignedUrl = await generatePresignedUrl({
+    const fileUploadBlock = publicTypebotSchema._def.schema.shape.groups
+      .parse(publicTypebot.groups)
+      .flatMap((group) => group.blocks)
+      .find((block) => block.id === filePathProps.blockId)
+
+    if (fileUploadBlock?.type !== InputBlockType.FILE)
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: "Can't find file upload block",
+      })
+
+    const presignedPostPolicy = await generatePresignedPostPolicy({
       fileType,
       filePath,
+      maxFileSize:
+        fileUploadBlock.options.sizeLimit ??
+        env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE,
     })
 
     return {
-      presignedUrl,
+      presignedUrl: presignedPostPolicy.postURL,
+      formData: presignedPostPolicy.formData,
       fileUrl: env.S3_PUBLIC_CUSTOM_DOMAIN
         ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
-        : presignedUrl.split('?')[0],
+        : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,
     }
   })

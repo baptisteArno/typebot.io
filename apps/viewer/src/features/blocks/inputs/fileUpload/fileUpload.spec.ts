@@ -93,25 +93,4 @@ test.describe('Storage limit is reached', () => {
       fakeStorage: THREE_GIGABYTES,
     })
   })
-
-  test("shouldn't upload anything if limit has been reached", async ({
-    page,
-  }) => {
-    await page.goto(`/${typebotId}-public`)
-    await page
-      .locator(`input[type="file"]`)
-      .setInputFiles([
-        getTestAsset('typebots/api.json'),
-        getTestAsset('typebots/fileUpload.json'),
-        getTestAsset('typebots/hugeGroup.json'),
-      ])
-    await expect(page.locator(`text="3"`)).toBeVisible()
-    await page.locator('text="Upload 3 files"').click()
-    await expect(page.locator(`text="3 files uploaded"`)).toBeVisible()
-    await page.evaluate(() =>
-      window.localStorage.setItem('workspaceId', 'starterWorkspace')
-    )
-    await page.goto(`${env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
-    await expect(page.locator('text="150%"')).toBeVisible()
-  })
 })

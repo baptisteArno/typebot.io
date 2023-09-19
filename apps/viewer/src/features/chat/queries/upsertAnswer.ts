@@ -1,8 +1,6 @@
 import prisma from '@/lib/prisma'
-import { isNotDefined } from '@typebot.io/lib'
 import { Prisma } from '@typebot.io/prisma'
-import { InputBlock, InputBlockType, SessionState } from '@typebot.io/schemas'
-import got from 'got'
+import { InputBlock, SessionState } from '@typebot.io/schemas'
 
 type Props = {
   answer: Omit<Prisma.AnswerUncheckedCreateInput, 'resultId'>
@@ -11,12 +9,9 @@ type Props = {
   itemId?: string
   state: SessionState
 }
-export const upsertAnswer = async ({ answer, reply, block, state }: Props) => {
+export const upsertAnswer = async ({ answer, block, state }: Props) => {
   const resultId = state.typebotsQueue[0].resultId
   if (!resultId) return
-  if (reply.includes('http') && block.type === InputBlockType.FILE) {
-    answer.storageUsed = await computeStorageUsed(reply)
-  }
   const where = {
     resultId,
     blockId: block.id,
@@ -33,26 +28,10 @@ export const upsertAnswer = async ({ answer, reply, block, state }: Props) => {
       where,
       data: {
         content: answer.content,
-        storageUsed: answer.storageUsed,
         itemId: answer.itemId,
       },
     })
   return prisma.answer.createMany({
     data: [{ ...answer, resultId }],
   })
-}
-
-const computeStorageUsed = async (reply: string) => {
-  let storageUsed = 0
-  const fileUrls = reply.split(', ')
-  const hasReachedStorageLimit = fileUrls[0] === null
-  if (!hasReachedStorageLimit) {
-    for (const url of fileUrls) {
-      const { headers } = await got(url)
-      const size = headers['content-length']
-      if (isNotDefined(size)) continue
-      storageUsed += parseInt(size, 10)
-    }
-  }
-  return storageUsed
 }

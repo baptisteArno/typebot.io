@@ -12,7 +12,7 @@ export const fileInputOptionsSchema = optionBaseSchema.merge(
       clear: z.string().optional(),
       skip: z.string().optional(),
     }),
-    sizeLimit: z.number().optional(),
+    sizeLimit: z.number().optional().describe('Deprecated'),
   })
 )
 

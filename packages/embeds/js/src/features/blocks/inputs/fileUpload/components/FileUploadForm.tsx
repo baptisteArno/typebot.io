@@ -7,6 +7,7 @@ import { Button } from '@/components/Button'
 import { Spinner } from '@/components/Spinner'
 import { uploadFiles } from '../helpers/uploadFiles'
 import { guessApiHost } from '@/utils/guessApiHost'
+import { getRuntimeVariable } from '@typebot.io/env/getRuntimeVariable'
 
 type Props = {
   context: BotContext
@@ -25,15 +26,14 @@ export const FileUploadForm = (props: Props) => {
   const onNewFiles = (files: FileList) => {
     setErrorMessage(undefined)
     const newFiles = Array.from(files)
+    const sizeLimit =
+      props.block.options.sizeLimit ??
+      getRuntimeVariable('NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE')
     if (
-      newFiles.some(
-        (file) =>
-          file.size > (props.block.options.sizeLimit ?? 10) * 1024 * 1024
-      )
+      sizeLimit &&
+      newFiles.some((file) => file.size > sizeLimit * 1024 * 1024)
     )
-      return setErrorMessage(
-        `A file is larger than ${props.block.options.sizeLimit ?? 10}MB`
-      )
+      return setErrorMessage(`A file is larger than ${sizeLimit}MB`)
     if (!props.block.options.isMultipleAllowed && files)
       return startSingleFileUpload(newFiles[0])
     setSelectedFiles([...selectedFiles(), ...newFiles])

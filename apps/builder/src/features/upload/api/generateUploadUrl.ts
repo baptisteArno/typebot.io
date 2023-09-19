@@ -2,7 +2,7 @@ import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { z } from 'zod'
 import { env } from '@typebot.io/env'
 import { TRPCError } from '@trpc/server'
-import { generatePresignedUrl } from '@typebot.io/lib/s3/generatePresignedUrl'
+import { generatePresignedPostPolicy } from '@typebot.io/lib/s3/generatePresignedPostPolicy'
 import prisma from '@/lib/prisma'
 import { isWriteWorkspaceForbidden } from '@/features/workspace/helpers/isWriteWorkspaceForbidden'
 import { isWriteTypebotForbidden } from '@/features/typebot/helpers/isWriteTypebotForbidden'
@@ -54,6 +54,7 @@ export const generateUploadUrl = authenticatedProcedure
   .output(
     z.object({
       presignedUrl: z.string(),
+      formData: z.record(z.string(), z.any()),
       fileUrl: z.string(),
     })
   )
@@ -76,16 +77,17 @@ export const generateUploadUrl = authenticatedProcedure
       uploadProps: filePathProps,
     })
 
-    const presignedUrl = await generatePresignedUrl({
+    const presignedPostPolicy = await generatePresignedPostPolicy({
       fileType,
       filePath,
     })
 
     return {
-      presignedUrl,
+      presignedUrl: presignedPostPolicy.postURL,
+      formData: presignedPostPolicy.formData,
       fileUrl: env.S3_PUBLIC_CUSTOM_DOMAIN
         ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
-        : presignedUrl.split('?')[0],
+        : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,
     }
   })
 

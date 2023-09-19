@@ -5,7 +5,7 @@ import {
   methodNotAllowed,
   notAuthenticated,
 } from '@typebot.io/lib/api'
-import { generatePresignedUrl } from '@typebot.io/lib/s3/generatePresignedUrl'
+import { generatePresignedPostPolicy } from '@typebot.io/lib/s3/generatePresignedPostPolicy'
 import { env } from '@typebot.io/env'
 
 const handler = async (
@@ -25,9 +25,15 @@ const handler = async (
     const filePath = req.query.filePath as string | undefined
     const fileType = req.query.fileType as string | undefined
     if (!filePath || !fileType) return badRequest(res)
-    const presignedUrl = await generatePresignedUrl({ fileType, filePath })
+    const presignedPostPolicy = await generatePresignedPostPolicy({
+      fileType,
+      filePath,
+    })
 
-    return res.status(200).send({ presignedUrl })
+    return res.status(200).send({
+      presignedUrl: `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,
+      formData: presignedPostPolicy.formData,
+    })
   }
   return methodNotAllowed(res)
 }

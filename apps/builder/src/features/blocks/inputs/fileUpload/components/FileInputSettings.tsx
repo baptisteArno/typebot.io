@@ -1,8 +1,8 @@
-import { FormLabel, HStack, Stack, Text } from '@chakra-ui/react'
+import { FormLabel, Stack } from '@chakra-ui/react'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { FileInputOptions, Variable } from '@typebot.io/schemas'
 import React from 'react'
-import { TextInput, NumberInput } from '@/components/inputs'
+import { TextInput } from '@/components/inputs'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 
@@ -23,9 +23,6 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
 
   const handleVariableChange = (variable?: Variable) =>
     onOptionsChange({ ...options, variableId: variable?.id })
-
-  const handleSizeLimitChange = (sizeLimit?: number) =>
-    onOptionsChange({ ...options, sizeLimit })
 
   const handleRequiredChange = (isRequired: boolean) =>
     onOptionsChange({ ...options, isRequired })
@@ -48,16 +45,6 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
         initialValue={options.isMultipleAllowed}
         onCheckChange={handleMultipleFilesChange}
       />
-      <HStack>
-        <NumberInput
-          label={'Size limit:'}
-          defaultValue={options.sizeLimit ?? 10}
-          onValueChange={handleSizeLimitChange}
-          withVariableButton={false}
-        />
-        <Text>MB</Text>
-      </HStack>
-
       <Stack>
         <FormLabel mb="0">Placeholder:</FormLabel>
         <CodeEditor
