@@ -1,5 +1,5 @@
 import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
-import prisma from '@/lib/prisma'
+import prisma from '@typebot.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { Plan } from '@typebot.io/prisma'

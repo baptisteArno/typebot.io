@@ -1,9 +1,9 @@
-import { getChatCompletionStream } from '@/features/blocks/integrations/openai/getChatCompletionStream'
 import { connect } from '@planetscale/database'
 import { env } from '@typebot.io/env'
 import { IntegrationBlockType, SessionState } from '@typebot.io/schemas'
 import { StreamingTextResponse } from 'ai'
 import { ChatCompletionRequestMessage } from 'openai-edge'
+import { getChatCompletionStream } from '@typebot.io/bot-engine/blocks/integrations/openai/getChatCompletionStream'
 
 export const config = {
   runtime: 'edge',

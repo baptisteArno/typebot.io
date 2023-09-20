@@ -1,5 +1,5 @@
 import { Invitation } from '@typebot.io/prisma'
-import prisma from '@/lib/prisma'
+import prisma from '@typebot.io/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canEditGuests } from '@/helpers/databaseRules'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'

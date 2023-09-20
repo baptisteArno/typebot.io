@@ -1,4 +1,4 @@
-import prisma from '@/lib/prisma'
+import prisma from '@typebot.io/lib/prisma'
 import { Credentials } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'

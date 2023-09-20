@@ -27,8 +27,6 @@
     "@googleapis/drive": "8.0.0",
     "@paralleldrive/cuid2": "2.2.1",
     "@sentry/nextjs": "7.66.0",
-    "@stripe/stripe-js": "1.54.1",
-    "@t3-oss/env-nextjs": "^0.6.0",
     "@tanstack/react-query": "^4.29.19",
     "@tanstack/react-table": "8.9.3",
     "@trpc/client": "10.34.0",
@@ -42,7 +40,6 @@
     "@udecode/plate-common": "^21.1.5",
     "@udecode/plate-core": "21.1.5",
     "@udecode/plate-link": "21.2.0",
-    "@udecode/plate-serializer-html": "21.1.5",
     "@udecode/plate-ui-link": "21.2.0",
     "@udecode/plate-ui-toolbar": "21.1.5",
     "@uiw/codemirror-extensions-langs": "^4.21.7",
@@ -85,7 +82,6 @@
     "sharp": "^0.32.4",
     "slate": "0.94.1",
     "slate-history": "0.93.0",
-    "slate-hyperscript": "0.77.0",
     "slate-react": "0.94.2",
     "stripe": "12.13.0",
     "svg-round-corners": "0.4.1",
@@ -94,7 +90,7 @@
     "trpc-openapi": "1.2.0",
     "unsplash-js": "^7.0.18",
     "use-debounce": "9.0.4",
-    "@typebot.io/viewer": "workspace:*"
+    "@typebot.io/bot-engine": "workspace:*"
   },
   "devDependencies": {
     "@chakra-ui/styled-system": "2.9.1",

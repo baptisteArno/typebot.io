@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Prisma } from '@typebot.io/prisma'
-import prisma from '@/lib/prisma'
+import prisma from '@typebot.io/lib/prisma'
 import { googleSheetsScopes } from './consent-url'
 import { stringify } from 'querystring'
 import { badRequest, encrypt, notAuthenticated } from '@typebot.io/lib/api'

@@ -1,4 +1,4 @@
-import prisma from '@/lib/prisma'
+import prisma from '@typebot.io/lib/prisma'
 import { canWriteTypebots } from '@/helpers/databaseRules'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'

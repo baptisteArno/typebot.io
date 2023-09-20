@@ -3,7 +3,7 @@ import { TRPCError } from '@trpc/server'
 import { Group } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { archiveResults } from '@typebot.io/lib/api/helpers/archiveResults'
-import prisma from '@/lib/prisma'
+import prisma from '@typebot.io/lib/prisma'
 import { isWriteTypebotForbidden } from '@/features/typebot/helpers/isWriteTypebotForbidden'
 
 export const deleteResults = authenticatedProcedure

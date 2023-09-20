@@ -3,10 +3,10 @@ import { ErrorPage } from '@/components/ErrorPage'
 import { NotFoundPage } from '@/components/NotFoundPage'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { isNotDefined } from '@typebot.io/lib'
-import prisma from '../lib/prisma'
 import { TypebotPageProps, TypebotPageV2 } from '@/components/TypebotPageV2'
 import { TypebotPageV3, TypebotV3PageProps } from '@/components/TypebotPageV3'
 import { env } from '@typebot.io/env'
+import prisma from '@typebot.io/lib/prisma'
 
 // Browsers that doesn't support ES modules and/or web components
 const incompatibleBrowsers = [

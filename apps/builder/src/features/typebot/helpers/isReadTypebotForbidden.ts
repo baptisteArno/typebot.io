@@ -1,4 +1,4 @@
-import prisma from '@/lib/prisma'
+import prisma from '@typebot.io/lib/prisma'
 import { env } from '@typebot.io/env'
 import { CollaboratorsOnTypebots, User } from '@typebot.io/prisma'
 import { Typebot } from '@typebot.io/schemas'

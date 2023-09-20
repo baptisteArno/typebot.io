@@ -1,4 +1,4 @@
-import prisma from '@/lib/prisma'
+import prisma from '@typebot.io/lib/prisma'
 import { inferAsyncReturnType } from '@trpc/server'
 import * as trpcNext from '@trpc/server/adapters/next'
 import { User } from '@typebot.io/prisma'

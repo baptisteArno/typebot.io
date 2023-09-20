@@ -1,5 +1,5 @@
 import { WorkspaceInvitation, WorkspaceRole } from '@typebot.io/prisma'
-import prisma from '@/lib/prisma'
+import prisma from '@typebot.io/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import {
   forbidden,

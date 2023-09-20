@@ -1,7 +1,7 @@
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
 import { CollaborationType, Plan, WorkspaceRole } from '@typebot.io/prisma'
-import prisma from '@/lib/prisma'
+import prisma from '@typebot.io/lib/prisma'
 import { InputBlockType, defaultTextInputOptions } from '@typebot.io/schemas'
 import {
   createTypebots,

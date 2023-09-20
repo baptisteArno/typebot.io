@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@sentry/nextjs": "7.66.0",
+    "@trpc/server": "10.34.0",
     "@udecode/plate-common": "^21.1.5",
     "got": "12.6.0",
     "minio": "7.1.3",

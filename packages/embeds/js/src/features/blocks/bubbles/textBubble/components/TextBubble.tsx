@@ -5,7 +5,7 @@ import { PlateBlock } from './plate/PlateBlock'
 import { computePlainText } from '../helpers/convertRichTextToPlainText'
 import { clsx } from 'clsx'
 import { isMobile } from '@/utils/isMobileSignal'
-import { computeTypingDuration } from '@typebot.io/lib/computeTypingDuration'
+import { computeTypingDuration } from '@typebot.io/bot-engine/computeTypingDuration'
 
 type Props = {
   content: TextBubbleContent

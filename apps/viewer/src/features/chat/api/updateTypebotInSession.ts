@@ -1,14 +1,14 @@
 import { publicProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
-import { getSession } from '../queries/getSession'
-import prisma from '@/lib/prisma'
+import { getSession } from '@typebot.io/bot-engine/queries/getSession'
 import {
   PublicTypebot,
   SessionState,
   Typebot,
   Variable,
 } from '@typebot.io/schemas'
+import prisma from '@typebot.io/lib/prisma'
 
 export const updateTypebotInSession = publicProcedure
   .meta({

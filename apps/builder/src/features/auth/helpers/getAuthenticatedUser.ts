@@ -1,4 +1,4 @@
-import prisma from '@/lib/prisma'
+import prisma from '@typebot.io/lib/prisma'
 import { authOptions } from '@/pages/api/auth/[...nextauth]'
 import { setUser } from '@sentry/nextjs'
 import { User } from '@typebot.io/prisma'

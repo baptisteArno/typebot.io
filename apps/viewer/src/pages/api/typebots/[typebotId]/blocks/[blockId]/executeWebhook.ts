@@ -17,14 +17,14 @@ import { parseAnswers } from '@typebot.io/lib/results'
 import { initMiddleware, methodNotAllowed, notFound } from '@typebot.io/lib/api'
 import { stringify } from 'qs'
 import Cors from 'cors'
-import prisma from '@/lib/prisma'
-import { parseVariables } from '@/features/variables/parseVariables'
-import { parseSampleResult } from '@/features/blocks/integrations/webhook/parseSampleResult'
-import { fetchLinkedTypebots } from '@/features/blocks/logic/typebotLink/fetchLinkedTypebots'
-import { getPreviouslyLinkedTypebots } from '@/features/blocks/logic/typebotLink/getPreviouslyLinkedTypebots'
-import { saveErrorLog } from '@/features/logs/saveErrorLog'
-import { saveSuccessLog } from '@/features/logs/saveSuccessLog'
+import prisma from '@typebot.io/lib/prisma'
 import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/enums'
+import { fetchLinkedTypebots } from '@typebot.io/bot-engine/blocks/logic/typebotLink/fetchLinkedTypebots'
+import { getPreviouslyLinkedTypebots } from '@typebot.io/bot-engine/blocks/logic/typebotLink/getPreviouslyLinkedTypebots'
+import { parseVariables } from '@typebot.io/bot-engine/variables/parseVariables'
+import { saveErrorLog } from '@typebot.io/bot-engine/logs/saveErrorLog'
+import { saveSuccessLog } from '@typebot.io/bot-engine/logs/saveSuccessLog'
+import { parseSampleResult } from '@typebot.io/bot-engine/blocks/integrations/webhook/parseSampleResult'
 
 const cors = initMiddleware(Cors())
 
@@ -128,10 +128,10 @@ export const executeWebhook =
       convertKeyValueTableToObject(webhook.queryParams, variables)
     )
     const contentType = headers ? headers['Content-Type'] : undefined
-    const linkedTypebotsParents = await fetchLinkedTypebots({
+    const linkedTypebotsParents = (await fetchLinkedTypebots({
       isPreview: !('typebotId' in typebot),
       typebotIds: parentTypebotIds,
-    })
+    })) as (Typebot | PublicTypebot)[]
     const linkedTypebotsChildren = await getPreviouslyLinkedTypebots({
       isPreview: !('typebotId' in typebot),
       typebots: [typebot],

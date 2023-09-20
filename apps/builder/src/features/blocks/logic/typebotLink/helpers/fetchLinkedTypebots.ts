@@ -1,4 +1,4 @@
-import prisma from '@/lib/prisma'
+import prisma from '@typebot.io/lib/prisma'
 import { canReadTypebots } from '@/helpers/databaseRules'
 import { User } from '@typebot.io/prisma'
 import { LogicBlockType, PublicTypebot, Typebot } from '@typebot.io/schemas'

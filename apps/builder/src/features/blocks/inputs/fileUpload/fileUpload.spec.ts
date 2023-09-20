@@ -36,7 +36,6 @@ test('options should work', async ({ page }) => {
   await page.fill('[value="Upload"]', 'Go')
   await page.fill('[value="Clear"]', 'Reset')
   await page.fill('[value="Skip"]', 'Pass')
-  await page.fill('input[value="10"]', '20')
   await page.click('text="Restart"')
   await expect(page.locator(`text="Pass"`)).toBeVisible()
   await expect(page.locator(`text="Upload now!!"`)).toBeVisible()

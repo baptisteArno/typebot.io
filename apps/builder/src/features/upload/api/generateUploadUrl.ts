@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { env } from '@typebot.io/env'
 import { TRPCError } from '@trpc/server'
 import { generatePresignedPostPolicy } from '@typebot.io/lib/s3/generatePresignedPostPolicy'
-import prisma from '@/lib/prisma'
+import prisma from '@typebot.io/lib/prisma'
 import { isWriteWorkspaceForbidden } from '@/features/workspace/helpers/isWriteWorkspaceForbidden'
 import { isWriteTypebotForbidden } from '@/features/typebot/helpers/isWriteTypebotForbidden'
 

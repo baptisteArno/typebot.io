@@ -74,12 +74,6 @@ importers:
       '@sentry/nextjs':
         specifier: 7.66.0
         version: 7.66.0(next@13.4.3)(react@18.2.0)
-      '@stripe/stripe-js':
-        specifier: 1.54.1
-        version: 1.54.1
-      '@t3-oss/env-nextjs':
-        specifier: ^0.6.0
-        version: 0.6.0(typescript@5.1.6)(zod@3.21.4)
       '@tanstack/react-query':
         specifier: ^4.29.19
         version: 4.29.19(react-dom@18.2.0)(react@18.2.0)
@@ -98,6 +92,9 @@ importers:
       '@trpc/server':
         specifier: 10.34.0
         version: 10.34.0
+      '@typebot.io/bot-engine':
+        specifier: workspace:*
+        version: link:../../packages/bot-engine
       '@typebot.io/emails':
         specifier: workspace:*
         version: link:../../packages/emails
@@ -107,9 +104,6 @@ importers:
       '@typebot.io/nextjs':
         specifier: workspace:*
         version: link:../../packages/embeds/nextjs
-      '@typebot.io/viewer':
-        specifier: workspace:*
-        version: link:../viewer
       '@udecode/plate-basic-marks':
         specifier: 21.1.5
         version: 21.1.5(@babel/core@7.22.9)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-react@0.94.2)(slate@0.94.1)
@@ -122,9 +116,6 @@ importers:
       '@udecode/plate-link':
         specifier: 21.2.0
         version: 21.2.0(@babel/core@7.22.9)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-react@0.94.2)(slate@0.94.1)
-      '@udecode/plate-serializer-html':
-        specifier: 21.1.5
-        version: 21.1.5(@babel/core@7.22.9)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-hyperscript@0.77.0)(slate-react@0.94.2)(slate@0.94.1)
       '@udecode/plate-ui-link':
         specifier: 21.2.0
         version: 21.2.0(@babel/core@7.22.9)(@types/react@18.2.15)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-react@0.94.2)(slate@0.94.1)(styled-components@6.0.7)
@@ -251,9 +242,6 @@ importers:
       slate-history:
         specifier: 0.93.0
         version: 0.93.0(slate@0.94.1)
-      slate-hyperscript:
-        specifier: 0.77.0
-        version: 0.77.0(slate@0.94.1)
       slate-react:
         specifier: 0.94.2
         version: 0.94.2(react-dom@18.2.0)(react@18.2.0)(slate@0.94.1)
@@ -524,51 +512,36 @@ importers:
       '@trpc/server':
         specifier: 10.34.0
         version: 10.34.0
+      '@typebot.io/bot-engine':
+        specifier: workspace:*
+        version: link:../../packages/bot-engine
       '@typebot.io/nextjs':
         specifier: workspace:*
         version: link:../../packages/embeds/nextjs
       '@typebot.io/prisma':
         specifier: workspace:*
         version: link:../../packages/prisma
-      '@udecode/plate-common':
-        specifier: ^21.1.5
-        version: 21.1.5(@babel/core@7.22.9)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-react@0.94.2)(slate@0.94.1)
       ai:
         specifier: 2.1.32
         version: 2.1.32(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.0)(vue@3.3.4)
       bot-engine:
         specifier: workspace:*
         version: link:../../packages/deprecated/bot-engine
-      chrono-node:
-        specifier: 2.6.6
-        version: 2.6.6
       cors:
         specifier: 2.8.5
         version: 2.8.5
-      date-fns:
-        specifier: ^2.30.0
-        version: 2.30.0
-      eventsource-parser:
-        specifier: ^1.0.0
-        version: 1.0.0
       google-spreadsheet:
         specifier: 4.0.2
         version: 4.0.2(google-auth-library@8.9.0)
       got:
         specifier: 12.6.0
         version: 12.6.0
-      libphonenumber-js:
-        specifier: 1.10.37
-        version: 1.10.37
       next:
         specifier: 13.4.3
         version: 13.4.3(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
       nextjs-cors:
         specifier: 2.1.2
         version: 2.1.2(next@13.4.3)
-      node-html-parser:
-        specifier: ^6.1.5
-        version: 6.1.5
       nodemailer:
         specifier: 6.9.3
         version: 6.9.3
@@ -584,9 +557,6 @@ importers:
       react-dom:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
-      remark-slate:
-        specifier: ^1.8.6
-        version: 1.8.6
       stripe:
         specifier: 12.13.0
         version: 12.13.0
@@ -636,9 +606,6 @@ importers:
       '@types/react':
         specifier: 18.2.15
         version: 18.2.15
-      '@types/sanitize-html':
-        specifier: 2.9.0
-        version: 2.9.0
       dotenv-cli:
         specifier: ^7.2.1
         version: 7.2.1
@@ -654,9 +621,6 @@ importers:
       next-runtime-env:
         specifier: ^1.6.2
         version: 1.6.2
-      node-fetch:
-        specifier: 3.3.1
-        version: 3.3.1
       papaparse:
         specifier: 5.4.1
         version: 5.4.1
@@ -669,6 +633,88 @@ importers:
       zod:
         specifier: 3.21.4
         version: 3.21.4
+
+  packages/bot-engine:
+    dependencies:
+      '@paralleldrive/cuid2':
+        specifier: 2.2.1
+        version: 2.2.1
+      '@planetscale/database':
+        specifier: ^1.8.0
+        version: 1.8.0
+      '@sentry/nextjs':
+        specifier: 7.66.0
+        version: 7.66.0(next@13.4.3)(react@18.2.0)
+      '@trpc/server':
+        specifier: 10.34.0
+        version: 10.34.0
+      '@typebot.io/emails':
+        specifier: workspace:*
+        version: link:../emails
+      '@typebot.io/env':
+        specifier: workspace:*
+        version: link:../env
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../lib
+      '@typebot.io/prisma':
+        specifier: workspace:*
+        version: link:../prisma
+      '@typebot.io/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@udecode/plate-common':
+        specifier: ^21.1.5
+        version: 21.1.5(@babel/core@7.22.9)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-react@0.94.2)(slate@0.94.1)
+      ai:
+        specifier: 2.1.32
+        version: 2.1.32(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.0)(vue@3.3.4)
+      chrono-node:
+        specifier: 2.6.6
+        version: 2.6.6
+      date-fns:
+        specifier: ^2.30.0
+        version: 2.30.0
+      google-auth-library:
+        specifier: 8.9.0
+        version: 8.9.0
+      google-spreadsheet:
+        specifier: 4.0.2
+        version: 4.0.2(google-auth-library@8.9.0)
+      got:
+        specifier: 12.6.0
+        version: 12.6.0
+      libphonenumber-js:
+        specifier: 1.10.37
+        version: 1.10.37
+      node-html-parser:
+        specifier: ^6.1.5
+        version: 6.1.5
+      nodemailer:
+        specifier: 6.9.3
+        version: 6.9.3
+      openai-edge:
+        specifier: 1.2.2
+        version: 1.2.2
+      qs:
+        specifier: ^6.11.2
+        version: 6.11.2
+      remark-slate:
+        specifier: ^1.8.6
+        version: 1.8.6
+      stripe:
+        specifier: 12.13.0
+        version: 12.13.0
+    devDependencies:
+      '@types/nodemailer':
+        specifier: 6.4.8
+        version: 6.4.8
+      '@types/qs':
+        specifier: 6.9.7
+        version: 6.9.7
 
   packages/deprecated/bot-engine:
     dependencies:
@@ -847,6 +893,9 @@ importers:
       '@stripe/stripe-js':
         specifier: 1.54.1
         version: 1.54.1
+      '@typebot.io/bot-engine':
+        specifier: workspace:*
+        version: link:../../bot-engine
       '@udecode/plate-common':
         specifier: ^21.1.5
         version: 21.1.5(@babel/core@7.22.9)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-react@0.94.2)(slate@0.94.1)
@@ -1124,6 +1173,9 @@ importers:
       '@sentry/nextjs':
         specifier: 7.66.0
         version: 7.66.0(next@13.4.3)(react@18.2.0)
+      '@trpc/server':
+        specifier: 10.34.0
+        version: 10.34.0
       '@udecode/plate-common':
         specifier: ^21.1.5
         version: 21.1.5(@babel/core@7.22.9)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-react@0.94.2)(slate@0.94.1)
@@ -8845,12 +8897,6 @@ packages:
     resolution: {integrity: sha512-wWKOClTTiizcZhXnPY4wikVAwmdYHp8q6DmC+EJUzAMsycb7HB32Kh9RN4+0gExjmPmZSAQjgURXIGATPegAvA==}
     dev: false
 
-  /@types/sanitize-html@2.9.0:
-    resolution: {integrity: sha512-4fP/kEcKNj2u39IzrxWYuf/FnCCwwQCpif6wwY6ROUS1EPRIfWJjGkY3HIowY1EX/VbX5e86yq8AAE7UPMgATg==}
-    dependencies:
-      htmlparser2: 8.0.2
-    dev: true
-
   /@types/sax@1.2.4:
     resolution: {integrity: sha512-pSAff4IAxJjfAXUG6tFkO7dsSbTmf8CtUpfhhZ5VhkRpC4628tJhh3+V6H1E+/Gs9piSzYKT5yzHO5M4GG9jkw==}
     dependencies:
@@ -9357,41 +9403,6 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
       slate: 0.94.1
       slate-history: 0.93.0(slate@0.94.1)
-      slate-react: 0.94.2(react-dom@18.2.0)(react@18.2.0)(slate@0.94.1)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@babel/template'
-      - '@types/react'
-      - jotai-devtools
-      - jotai-immer
-      - jotai-optics
-      - jotai-redux
-      - jotai-tanstack-query
-      - jotai-urql
-      - jotai-valtio
-      - jotai-xstate
-      - jotai-zustand
-      - react-native
-      - scheduler
-    dev: false
-
-  /@udecode/plate-serializer-html@21.1.5(@babel/core@7.22.9)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-hyperscript@0.77.0)(slate-react@0.94.2)(slate@0.94.1):
-    resolution: {integrity: sha512-V4P2o78Mpj7VvpvfgXMGG23XQZ30Kq/JXQTQxYxJufHF5hwy0MCYxxMK/oF8ED8zWM4G9hIKMHOqA4ZoFACjIA==}
-    peerDependencies:
-      react: '>=16.8.0'
-      react-dom: '>=16.8.0'
-      slate: '>=0.94.0'
-      slate-history: '>=0.93.0'
-      slate-hyperscript: '>=0.66.0'
-      slate-react: '>=0.94.0'
-    dependencies:
-      '@udecode/plate-common': 21.1.5(@babel/core@7.22.9)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-react@0.94.2)(slate@0.94.1)
-      html-entities: 2.4.0
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      slate: 0.94.1
-      slate-history: 0.93.0(slate@0.94.1)
-      slate-hyperscript: 0.77.0(slate@0.94.1)
       slate-react: 0.94.2(react-dom@18.2.0)(react@18.2.0)(slate@0.94.1)
     transitivePeerDependencies:
       - '@babel/core'
@@ -12051,11 +12062,6 @@ packages:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
     dev: false
 
-  /data-uri-to-buffer@4.0.1:
-    resolution: {integrity: sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==}
-    engines: {node: '>= 12'}
-    dev: true
-
   /data-urls@3.0.2:
     resolution: {integrity: sha512-Jy/tj3ldjZJo63sVAvg6LHt2mHvl4V6AgRAmNDtLdm7faqtsx+aJG42rsyCo9JCoRVKwPFzKlIPx3DIibwSIaQ==}
     engines: {node: '>=12'}
@@ -13690,14 +13696,6 @@ packages:
       xml-js: 1.6.11
     dev: false
 
-  /fetch-blob@3.2.0:
-    resolution: {integrity: sha512-7yAQpD2UMJzLi1Dqv7qFYnPbaPx7ZfFK6PiIxQ4PfkGPyNyl2Ugx+a/umUonmKqjhM4DnfbMvdX6otXq83soQQ==}
-    engines: {node: ^12.20 || >= 14.13}
-    dependencies:
-      node-domexception: 1.0.0
-      web-streams-polyfill: 3.2.1
-    dev: true
-
   /fflate@0.4.8:
     resolution: {integrity: sha512-FJqqoDBR00Mdj9ppamLa/Y7vxm+PRmNWA67N846RvsoYVMKB4q3y/de5PA7gUmRMYK/8CMz2GDZQmCRN1wBcWA==}
     dev: false
@@ -13891,13 +13889,6 @@ packages:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.35
-
-  /formdata-polyfill@4.0.10:
-    resolution: {integrity: sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==}
-    engines: {node: '>=12.20.0'}
-    dependencies:
-      fetch-blob: 3.2.0
-    dev: true
 
   /formidable@2.1.2:
     resolution: {integrity: sha512-CM3GuJ57US06mlpQ47YcunuUZ9jpm8Vx+P2CGt2j7HpgkKZO/DJYQ0Bobim8G6PFQmK5lOqOOdUXboU+h73A4g==}
@@ -17340,11 +17331,6 @@ packages:
     resolution: {integrity: sha512-+eawOlIgy680F0kBzPUNFhMZGtJ1YmqM6l4+Crf4IkImjYrO/mqPwRMh352g23uIaQKFItcQ64I7KMaJxHgAVA==}
     dev: false
 
-  /node-domexception@1.0.0:
-    resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
-    engines: {node: '>=10.5.0'}
-    dev: true
-
   /node-emoji@1.11.0:
     resolution: {integrity: sha512-wo2DpQkQp7Sjm2A0cq+sN7EHKO6Sl0ctXeBdFZrL9T9+UywORbufTcTZxom8YqpLQt/FqNMUkOpkZrJVYSKD3A==}
     dependencies:
@@ -17372,15 +17358,6 @@ packages:
         optional: true
     dependencies:
       whatwg-url: 5.0.0
-
-  /node-fetch@3.3.1:
-    resolution: {integrity: sha512-cRVc/kyto/7E5shrWca1Wsea4y6tL9iYJE5FBCius3JQfb/4P4I295PfhgbJQBLTx6lATE4z+wK0rPM4VS2uow==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-    dependencies:
-      data-uri-to-buffer: 4.0.1
-      fetch-blob: 3.2.0
-      formdata-polyfill: 4.0.10
-    dev: true
 
   /node-forge@1.3.1:
     resolution: {integrity: sha512-dPEtOeMvF9VMcYV/1Wb8CPoVAXtp6MKMlcbAt4ddqmGqUJ6fQZFXkNZNkNlfevtNkGtaSoXf/vNNNSvgrdXwtA==}
@@ -20336,15 +20313,6 @@ packages:
       slate: 0.94.1
     dev: false
 
-  /slate-hyperscript@0.77.0(slate@0.94.1):
-    resolution: {integrity: sha512-M6uRpttwKnosniQORNPYQABHQ9XWC7qaSr/127LWWPjTOR5MSSwrHGrghN81BhZVqpICHrI7jkPA2813cWdHNA==}
-    peerDependencies:
-      slate: '>=0.65.3'
-    dependencies:
-      is-plain-object: 5.0.0
-      slate: 0.94.1
-    dev: false
-
   /slate-react@0.94.2(react-dom@18.2.0)(react@18.2.0)(slate@0.94.1):
     resolution: {integrity: sha512-4wDSuTuGBkdQ609CS55uc2Yhfa5but21usBgAtCVhPJQazL85kzN2vUUYTmGb7d/mpP9tdnJiVPopIyhqlRJ8Q==}
     peerDependencies:
@@ -22337,11 +22305,6 @@ packages:
       valid-data-url: 3.0.1
     transitivePeerDependencies:
       - encoding
-
-  /web-streams-polyfill@3.2.1:
-    resolution: {integrity: sha512-e0MO3wdXWKrLbL0DgGnUV7WHVuw9OUvL4hjgnPkIeEvESk74gAITi5G606JtZPp39cd8HA9VQzCIvA49LpPN5Q==}
-    engines: {node: '>= 8'}
-    dev: true
 
   /webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}

@@ -1565,7 +1565,8 @@
                                                 "additionalProperties": false
                                               },
                                               "sizeLimit": {
-                                                "type": "number"
+                                                "type": "number",
+                                                "description": "Deprecated"
                                               }
                                             },
                                             "required": [
@@ -5952,7 +5953,8 @@
                                             "additionalProperties": false
                                           },
                                           "sizeLimit": {
-                                            "type": "number"
+                                            "type": "number",
+                                            "description": "Deprecated"
                                           }
                                         },
                                         "required": [
@@ -9974,7 +9976,8 @@
                                               "additionalProperties": false
                                             },
                                             "sizeLimit": {
-                                              "type": "number"
+                                              "type": "number",
+                                              "description": "Deprecated"
                                             }
                                           },
                                           "required": [
@@ -14136,7 +14139,8 @@
                                             "additionalProperties": false
                                           },
                                           "sizeLimit": {
-                                            "type": "number"
+                                            "type": "number",
+                                            "description": "Deprecated"
                                           }
                                         },
                                         "required": [
@@ -18178,7 +18182,8 @@
                                               "additionalProperties": false
                                             },
                                             "sizeLimit": {
-                                              "type": "number"
+                                              "type": "number",
+                                              "description": "Deprecated"
                                             }
                                           },
                                           "required": [
@@ -22275,7 +22280,8 @@
                                               "additionalProperties": false
                                             },
                                             "sizeLimit": {
-                                              "type": "number"
+                                              "type": "number",
+                                              "description": "Deprecated"
                                             }
                                           },
                                           "required": [
@@ -26435,7 +26441,8 @@
                                               "additionalProperties": false
                                             },
                                             "sizeLimit": {
-                                              "type": "number"
+                                              "type": "number",
+                                              "description": "Deprecated"
                                             }
                                           },
                                           "required": [
@@ -33600,12 +33607,17 @@
                     "presignedUrl": {
                       "type": "string"
                     },
+                    "formData": {
+                      "type": "object",
+                      "additionalProperties": {}
+                    },
                     "fileUrl": {
                       "type": "string"
                     }
                   },
                   "required": [
                     "presignedUrl",
+                    "formData",
                     "fileUrl"
                   ],
                   "additionalProperties": false

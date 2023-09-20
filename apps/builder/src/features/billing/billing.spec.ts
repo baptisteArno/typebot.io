@@ -51,7 +51,6 @@ test('should display valid usage', async ({ page }) => {
   await page.click('text=Settings & Members')
   await page.click('text=Billing & Usage')
   await expect(page.locator('text="/ 10,000"')).toBeVisible()
-  await expect(page.locator('text="/ 10 GB"')).toBeVisible()
   await page.getByText('Members', { exact: true }).click()
   await expect(
     page.getByRole('heading', { name: 'Members (1/5)' })
@@ -63,7 +62,6 @@ test('should display valid usage', async ({ page }) => {
   await page.click('text=Settings & Members')
   await page.click('text=Billing & Usage')
   await expect(page.locator('text="/ 100,000"')).toBeVisible()
-  await expect(page.locator('text="/ 50 GB"')).toBeVisible()
   await expect(page.getByText('Upgrade to Starter')).toBeHidden()
   await expect(page.getByText('Upgrade to Pro')).toBeHidden()
   await expect(page.getByText('Need custom limits?')).toBeHidden()
@@ -78,7 +76,6 @@ test('should display valid usage', async ({ page }) => {
   await page.click('text=Settings & Members')
   await page.click('text=Billing & Usage')
   await expect(page.locator('text="/ 200"')).toBeVisible()
-  await expect(page.locator('text="Storage"')).toBeHidden()
   await page.getByText('Members', { exact: true }).click()
   await expect(
     page.getByRole('heading', { name: 'Members (1/1)' })
@@ -95,16 +92,10 @@ test('should display valid usage', async ({ page }) => {
   await page.click('text=Settings & Members')
   await page.click('text=Billing & Usage')
   await expect(page.locator('text="/ 2,000"')).toBeVisible()
-  await expect(page.locator('text="/ 2 GB"')).toBeVisible()
   await expect(page.locator('text="10" >> nth=0')).toBeVisible()
   await expect(page.locator('[role="progressbar"] >> nth=0')).toHaveAttribute(
     'aria-valuenow',
     '1'
-  )
-  await expect(page.locator('text="1.07 GB"')).toBeVisible()
-  await expect(page.locator('[role="progressbar"] >> nth=1')).toHaveAttribute(
-    'aria-valuenow',
-    '54'
   )
 
   await injectFakeResults({
@@ -116,10 +107,7 @@ test('should display valid usage', async ({ page }) => {
   await page.click('text="Billing & Usage"')
   await expect(page.locator('text="/ 2,000"')).toBeVisible()
   await expect(page.locator('text="1,100"')).toBeVisible()
-  await expect(page.locator('text="/ 2 GB"')).toBeVisible()
-  await expect(page.locator('text="2.25 GB"')).toBeVisible()
   await expect(page.locator('[aria-valuenow="55"]')).toBeVisible()
-  await expect(page.locator('[aria-valuenow="112"]')).toBeVisible()
 })
 
 test('plan changes should work', async ({ page }) => {
@@ -160,9 +148,7 @@ test('plan changes should work', async ({ page }) => {
   await page.click('text=Settings & Members')
   await page.click('text=Billing & Usage')
   await expect(page.locator('text="/ 2,000"')).toBeVisible()
-  await expect(page.locator('text="/ 2 GB"')).toBeVisible()
   await expect(page.getByText('/ 2,000')).toBeVisible()
-  await expect(page.getByText('/ 2 GB')).toBeVisible()
   await page.click('button >> text="2,000"')
   await page.click('button >> text="3,500"')
   await page.click('button >> text="2"')
@@ -178,7 +164,6 @@ test('plan changes should work', async ({ page }) => {
   await page.click('text="Billing & Usage"')
   await expect(page.locator('text="$73"')).toBeVisible()
   await expect(page.locator('text="/ 3,500"')).toBeVisible()
-  await expect(page.locator('text="/ 4 GB"')).toBeVisible()
   await expect(page.getByRole('button', { name: '3,500' })).toBeVisible()
   await expect(page.getByRole('button', { name: '4' })).toBeVisible()
 

@@ -5,7 +5,7 @@ import {
   User,
   WorkspaceRole,
 } from '@typebot.io/prisma'
-import prisma from '@/lib/prisma'
+import prisma from '@typebot.io/lib/prisma'
 import { NextApiResponse } from 'next'
 import { forbidden } from '@typebot.io/lib/api'
 import { env } from '@typebot.io/env'

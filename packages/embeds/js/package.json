@@ -16,7 +16,8 @@
     "@udecode/plate-common": "^21.1.5",
     "eventsource-parser": "^1.0.0",
     "solid-element": "1.7.1",
-    "solid-js": "1.7.8"
+    "solid-js": "1.7.8",
+    "@typebot.io/bot-engine": "workspace:*"
   },
   "devDependencies": {
     "@babel/preset-typescript": "7.22.5",

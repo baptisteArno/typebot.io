@@ -1,5 +1,5 @@
 import { DashboardFolder } from '@typebot.io/prisma'
-import prisma from '@/lib/prisma'
+import prisma from '@typebot.io/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { methodNotAllowed, notAuthenticated } from '@typebot.io/lib/api'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'

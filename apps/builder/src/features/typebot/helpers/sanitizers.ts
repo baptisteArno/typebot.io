@@ -1,4 +1,4 @@
-import prisma from '@/lib/prisma'
+import prisma from '@typebot.io/lib/prisma'
 import { Plan } from '@typebot.io/prisma'
 import {
   Block,

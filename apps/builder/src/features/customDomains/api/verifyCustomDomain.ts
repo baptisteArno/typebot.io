@@ -7,7 +7,7 @@ import {
   domainResponseSchema,
   domainVerificationStatusSchema,
 } from '@typebot.io/schemas/features/customDomains'
-import prisma from '@/lib/prisma'
+import prisma from '@typebot.io/lib/prisma'
 import { isWriteWorkspaceForbidden } from '@/features/workspace/helpers/isWriteWorkspaceForbidden'
 import { TRPCError } from '@trpc/server'
 import { env } from '@typebot.io/env'

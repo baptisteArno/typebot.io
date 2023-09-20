@@ -1,5 +1,5 @@
 import { authenticateUser } from '@/helpers/authenticateUser'
-import prisma from '@/lib/prisma'
+import prisma from '@typebot.io/lib/prisma'
 import { Group, WebhookBlock } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
 import {
