@@ -47,54 +47,6 @@ export const chatsLimit = {
   [Plan.UNLIMITED]: { totalIncluded: infinity },
 } as const
 
-export const storageLimit = {
-  [Plan.FREE]: { totalIncluded: 0 },
-  [Plan.STARTER]: {
-    graduatedPrice: [
-      { totalIncluded: 2, price: 0 },
-      {
-        totalIncluded: 3,
-        price: 2,
-      },
-      {
-        totalIncluded: 4,
-        price: 4,
-      },
-      {
-        totalIncluded: 5,
-        price: 6,
-      },
-    ],
-  },
-  [Plan.PRO]: {
-    graduatedPrice: [
-      { totalIncluded: 10, price: 0 },
-      {
-        totalIncluded: 15,
-        price: 8,
-      },
-      {
-        totalIncluded: 25,
-        price: 24,
-      },
-      {
-        totalIncluded: 40,
-        price: 49,
-      },
-    ],
-  },
-  [Plan.CUSTOM]: {
-    totalIncluded: 2,
-    increaseStep: {
-      amount: 1,
-      price: 2,
-    },
-  },
-  [Plan.OFFERED]: { totalIncluded: 2 },
-  [Plan.LIFETIME]: { totalIncluded: 10 },
-  [Plan.UNLIMITED]: { totalIncluded: infinity },
-} as const
-
 export const seatsLimit = {
   [Plan.FREE]: { totalIncluded: 1 },
   [Plan.STARTER]: {
@@ -124,22 +76,6 @@ export const getChatsLimit = ({
   return totalIncluded
 }
 
-export const getStorageLimit = ({
-  plan,
-  additionalStorageIndex,
-  customStorageLimit,
-}: Pick<
-  Workspace,
-  'additionalStorageIndex' | 'plan' | 'customStorageLimit'
->) => {
-  if (customStorageLimit) return customStorageLimit
-  const totalIncluded =
-    plan === Plan.STARTER || plan === Plan.PRO
-      ? storageLimit[plan].graduatedPrice[additionalStorageIndex].totalIncluded
-      : storageLimit[plan].totalIncluded
-  return totalIncluded
-}
-
 export const getSeatsLimit = ({
   plan,
   customSeatsLimit,
@@ -164,14 +100,12 @@ export const isSeatsLimitReached = ({
 export const computePrice = (
   plan: Plan,
   selectedTotalChatsIndex: number,
-  selectedTotalStorageIndex: number,
   frequency: 'monthly' | 'yearly'
 ) => {
   if (plan !== Plan.STARTER && plan !== Plan.PRO) return
   const price =
     prices[plan] +
-    chatsLimit[plan].graduatedPrice[selectedTotalChatsIndex].price +
-    storageLimit[plan].graduatedPrice[selectedTotalStorageIndex].price
+    chatsLimit[plan].graduatedPrice[selectedTotalChatsIndex].price
   return frequency === 'monthly' ? price : price - price * 0.16
 }
 

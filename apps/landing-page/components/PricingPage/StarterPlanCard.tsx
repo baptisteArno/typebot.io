@@ -15,12 +15,7 @@ import { Plan } from '@typebot.io/prisma'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { parseNumberWithCommas } from '@typebot.io/lib'
-import {
-  chatsLimit,
-  computePrice,
-  seatsLimit,
-  storageLimit,
-} from '@typebot.io/lib/pricing'
+import { chatsLimit, computePrice, seatsLimit } from '@typebot.io/lib/pricing'
 import { PricingCard } from './PricingCard'
 
 type Props = {
@@ -29,14 +24,11 @@ type Props = {
 export const StarterPlanCard = ({ isYearly }: Props) => {
   const [selectedChatsLimitIndex, setSelectedChatsLimitIndex] =
     useState<number>(0)
-  const [selectedStorageLimitIndex, setSelectedStorageLimitIndex] =
-    useState<number>(0)
 
   const price =
     computePrice(
       Plan.STARTER,
       selectedChatsLimitIndex ?? 0,
-      selectedStorageLimitIndex ?? 0,
       isYearly ? 'yearly' : 'monthly'
     ) ?? NaN
 
@@ -90,48 +82,6 @@ export const StarterPlanCard = ({ isYearly }: Props) => {
               </chakra.span>
             </Tooltip>
           </HStack>,
-          <HStack key="storage" spacing={1.5}>
-            <Menu>
-              <MenuButton
-                as={Button}
-                rightIcon={<ChevronDownIcon />}
-                size="sm"
-                variant="outline"
-                isLoading={selectedStorageLimitIndex === undefined}
-                colorScheme="orange"
-              >
-                {selectedStorageLimitIndex !== undefined
-                  ? parseNumberWithCommas(
-                      storageLimit.STARTER.graduatedPrice[
-                        selectedStorageLimitIndex
-                      ].totalIncluded
-                    )
-                  : undefined}
-              </MenuButton>
-              <MenuList>
-                {storageLimit.STARTER.graduatedPrice.map((price, index) => (
-                  <MenuItem
-                    key={index}
-                    onClick={() => setSelectedStorageLimitIndex(index)}
-                  >
-                    {parseNumberWithCommas(price.totalIncluded)}
-                  </MenuItem>
-                ))}
-              </MenuList>
-            </Menu>{' '}
-            <Text>GB of storage</Text>
-            <Tooltip
-              hasArrow
-              placement="top"
-              label="You accumulate storage for every file that your user upload
-        into your bot. If you delete the result, it will free up the
-        space."
-            >
-              <chakra.span cursor="pointer" h="7">
-                <HelpCircleIcon />
-              </chakra.span>
-            </Tooltip>
-          </HStack>,
           'Branding removed',
           'Collect files from users',
           'Create folders',
@@ -142,7 +92,7 @@ export const StarterPlanCard = ({ isYearly }: Props) => {
       button={
         <Button
           as={Link}
-          href={`https://app.typebot.io/register?subscribePlan=${Plan.STARTER}&chats=${selectedChatsLimitIndex}&storage=${selectedStorageLimitIndex}&isYearly=${isYearly}`}
+          href={`https://app.typebot.io/register?subscribePlan=${Plan.STARTER}&chats=${selectedChatsLimitIndex}&isYearly=${isYearly}`}
           colorScheme="orange"
           size="lg"
           w="full"

@@ -22,7 +22,6 @@ type CreateFakeResultsProps = {
   count: number
   customResultIdPrefix?: string
   isChronological?: boolean
-  fakeStorage?: number
 }
 
 export const injectFakeResults = async ({
@@ -30,7 +29,6 @@ export const injectFakeResults = async ({
   customResultIdPrefix,
   typebotId,
   isChronological,
-  fakeStorage,
 }: CreateFakeResultsProps) => {
   const resultIdPrefix = customResultIdPrefix ?? createId()
   await prisma.result.createMany({
@@ -53,17 +51,13 @@ export const injectFakeResults = async ({
       }),
     ],
   })
-  return createAnswers({ fakeStorage, resultIdPrefix, count })
+  return createAnswers({ resultIdPrefix, count })
 }
 
 const createAnswers = ({
   count,
   resultIdPrefix,
-  fakeStorage,
-}: { resultIdPrefix: string } & Pick<
-  CreateFakeResultsProps,
-  'fakeStorage' | 'count'
->) => {
+}: { resultIdPrefix: string } & Pick<CreateFakeResultsProps, 'count'>) => {
   return prisma.answer.createMany({
     data: [
       ...Array.from(Array(count)).map((_, idx) => ({
@@ -71,7 +65,6 @@ const createAnswers = ({
         content: `content${idx}`,
         blockId: 'block1',
         groupId: 'group1',
-        storageUsed: fakeStorage ? Math.round(fakeStorage / count) : null,
       })),
     ],
   })

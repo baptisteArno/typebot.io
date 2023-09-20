@@ -19,9 +19,7 @@ export const getUsage = authenticatedProcedure
       workspaceId: z.string(),
     })
   )
-  .output(
-    z.object({ totalChatsUsed: z.number(), totalStorageUsed: z.number() })
-  )
+  .output(z.object({ totalChatsUsed: z.number() }))
   .query(async ({ input: { workspaceId }, ctx: { user } }) => {
     const workspace = await prisma.workspace.findFirst({
       where: {
@@ -55,20 +53,8 @@ export const getUsage = authenticatedProcedure
         },
       },
     })
-    const {
-      _sum: { storageUsed: totalStorageUsed },
-    } = await prisma.answer.aggregate({
-      where: {
-        storageUsed: { gt: 0 },
-        result: {
-          typebotId: { in: workspace.typebots.map((typebot) => typebot.id) },
-        },
-      },
-      _sum: { storageUsed: true },
-    })
 
     return {
       totalChatsUsed,
-      totalStorageUsed: totalStorageUsed ?? 0,
     }
   })

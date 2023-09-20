@@ -7,8 +7,8 @@ import { workspaceSchema } from '@typebot.io/schemas'
 import Stripe from 'stripe'
 import { isDefined } from '@typebot.io/lib'
 import { z } from 'zod'
-import { getChatsLimit, getStorageLimit } from '@typebot.io/lib/pricing'
-import { chatPriceIds, storagePriceIds } from './getSubscription'
+import { getChatsLimit } from '@typebot.io/lib/pricing'
+import { chatPriceIds } from './getSubscription'
 import { createCheckoutSessionUrl } from './createCheckoutSession'
 import { isAdminWriteWorkspaceForbidden } from '@/features/workspace/helpers/isAdminWriteWorkspaceForbidden'
 import { getUsage } from '@typebot.io/lib/api/getUsage'
@@ -31,7 +31,6 @@ export const updateSubscription = authenticatedProcedure
       workspaceId: z.string(),
       plan: z.enum([Plan.STARTER, Plan.PRO]),
       additionalChats: z.number(),
-      additionalStorage: z.number(),
       currency: z.enum(['usd', 'eur']),
       isYearly: z.boolean(),
     })
@@ -48,7 +47,6 @@ export const updateSubscription = authenticatedProcedure
         workspaceId,
         plan,
         additionalChats,
-        additionalStorage,
         currency,
         isYearly,
         returnUrl,
@@ -100,9 +98,6 @@ export const updateSubscription = authenticatedProcedure
       const currentAdditionalChatsItemId = subscription?.items.data.find(
         (item) => chatPriceIds.includes(item.price.id)
       )?.id
-      const currentAdditionalStorageItemId = subscription?.items.data.find(
-        (item) => storagePriceIds.includes(item.price.id)
-      )?.id
       const frequency = isYearly ? 'yearly' : 'monthly'
 
       const items = [
@@ -123,18 +118,6 @@ export const updateSubscription = authenticatedProcedure
               }),
               deleted: subscription ? additionalChats === 0 : undefined,
             },
-        additionalStorage === 0 && !currentAdditionalStorageItemId
-          ? undefined
-          : {
-              id: currentAdditionalStorageItemId,
-              price: priceIds[plan].storage[frequency],
-              quantity: getStorageLimit({
-                plan,
-                additionalStorageIndex: additionalStorage,
-                customStorageLimit: null,
-              }),
-              deleted: subscription ? additionalStorage === 0 : undefined,
-            },
       ].filter(isDefined)
 
       if (subscription) {
@@ -151,7 +134,6 @@ export const updateSubscription = authenticatedProcedure
           plan,
           returnUrl,
           additionalChats,
-          additionalStorage,
           isYearly,
         })
 
@@ -175,7 +157,6 @@ export const updateSubscription = authenticatedProcedure
         data: {
           plan,
           additionalChatsIndex: additionalChats,
-          additionalStorageIndex: additionalStorage,
           isQuarantined,
         },
       })
@@ -188,7 +169,6 @@ export const updateSubscription = authenticatedProcedure
           data: {
             plan,
             additionalChatsIndex: additionalChats,
-            additionalStorageIndex: additionalStorage,
           },
         },
       ])

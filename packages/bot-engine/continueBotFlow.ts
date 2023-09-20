@@ -226,7 +226,6 @@ const saveAnswer =
         groupId: block.groupId,
         content: reply,
         variableId: block.options.variableId,
-        storageUsed: 0,
       },
       reply,
       state,

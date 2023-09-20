@@ -232,15 +232,11 @@
                                 },
                                 "additionalChatsIndex": {
                                   "type": "number"
-                                },
-                                "additionalStorageIndex": {
-                                  "type": "number"
                                 }
                               },
                               "required": [
                                 "plan",
-                                "additionalChatsIndex",
-                                "additionalStorageIndex"
+                                "additionalChatsIndex"
                               ],
                               "additionalProperties": false
                             }
@@ -320,21 +316,13 @@
                                 "chatsLimit": {
                                   "type": "number"
                                 },
-                                "storageLimit": {
-                                  "type": "number"
-                                },
                                 "totalChatsUsed": {
-                                  "type": "number"
-                                },
-                                "totalStorageUsed": {
                                   "type": "number"
                                 }
                               },
                               "required": [
                                 "chatsLimit",
-                                "storageLimit",
-                                "totalChatsUsed",
-                                "totalStorageUsed"
+                                "totalChatsUsed"
                               ],
                               "additionalProperties": false
                             }
@@ -30391,9 +30379,6 @@
                   "additionalChats": {
                     "type": "number"
                   },
-                  "additionalStorage": {
-                    "type": "number"
-                  },
                   "vat": {
                     "type": "object",
                     "properties": {
@@ -30422,7 +30407,6 @@
                   "plan",
                   "returnUrl",
                   "additionalChats",
-                  "additionalStorage",
                   "isYearly"
                 ],
                 "additionalProperties": false
@@ -30492,9 +30476,6 @@
                   "additionalChats": {
                     "type": "number"
                   },
-                  "additionalStorage": {
-                    "type": "number"
-                  },
                   "currency": {
                     "type": "string",
                     "enum": [
@@ -30511,7 +30492,6 @@
                   "workspaceId",
                   "plan",
                   "additionalChats",
-                  "additionalStorage",
                   "currency",
                   "isYearly"
                 ],
@@ -30767,14 +30747,10 @@
                   "properties": {
                     "totalChatsUsed": {
                       "type": "number"
-                    },
-                    "totalStorageUsed": {
-                      "type": "number"
                     }
                   },
                   "required": [
-                    "totalChatsUsed",
-                    "totalStorageUsed"
+                    "totalChatsUsed"
                   ],
                   "additionalProperties": false
                 }

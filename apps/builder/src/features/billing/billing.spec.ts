@@ -85,7 +85,6 @@ test('should display valid usage', async ({ page }) => {
   await injectFakeResults({
     count: 10,
     typebotId: usageTypebotId,
-    fakeStorage: 1100 * 1024 * 1024,
   })
   await page.click('text=Free workspace')
   await page.click('text="Usage Workspace"')
@@ -101,7 +100,6 @@ test('should display valid usage', async ({ page }) => {
   await injectFakeResults({
     typebotId: usageTypebotId,
     count: 1090,
-    fakeStorage: 1200 * 1024 * 1024,
   })
   await page.click('text="Settings"')
   await page.click('text="Billing & Usage"')
@@ -140,7 +138,7 @@ test('plan changes should work', async ({ page }) => {
         quantity: 1,
       },
     ],
-    { plan: Plan.STARTER, additionalChatsIndex: 0, additionalStorageIndex: 0 }
+    { plan: Plan.STARTER, additionalChatsIndex: 0 }
   )
 
   // Update plan with additional quotas

@@ -47,15 +47,13 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             | {
                 plan: 'STARTER' | 'PRO'
                 additionalChats: string
-                additionalStorage: string
                 workspaceId: string
                 userId: string
               }
             | { claimableCustomPlanId: string; userId: string }
           if ('plan' in metadata) {
-            const { workspaceId, plan, additionalChats, additionalStorage } =
-              metadata
-            if (!workspaceId || !plan || !additionalChats || !additionalStorage)
+            const { workspaceId, plan, additionalChats } = metadata
+            if (!workspaceId || !plan || !additionalChats)
               return res
                 .status(500)
                 .send({ message: `Couldn't retrieve valid metadata` })
@@ -65,7 +63,6 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
                 plan,
                 stripeId: session.customer as string,
                 additionalChatsIndex: parseInt(additionalChats),
-                additionalStorageIndex: parseInt(additionalStorage),
                 isQuarantined: false,
               },
               include: {
@@ -88,7 +85,6 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
                   data: {
                     plan,
                     additionalChatsIndex: parseInt(additionalChats),
-                    additionalStorageIndex: parseInt(additionalStorage),
                   },
                 },
               ])
@@ -124,7 +120,6 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
                 data: {
                   plan: Plan.CUSTOM,
                   additionalChatsIndex: 0,
-                  additionalStorageIndex: 0,
                 },
               },
             ])
@@ -154,7 +149,6 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             data: {
               plan: Plan.FREE,
               additionalChatsIndex: 0,
-              additionalStorageIndex: 0,
               customChatsLimit: null,
               customStorageLimit: null,
               customSeatsLimit: null,
@@ -179,7 +173,6 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
                 data: {
                   plan: Plan.FREE,
                   additionalChatsIndex: 0,
-                  additionalStorageIndex: 0,
                 },
               },
             ])

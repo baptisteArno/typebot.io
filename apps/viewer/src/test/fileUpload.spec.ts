@@ -3,16 +3,9 @@ import { createId } from '@paralleldrive/cuid2'
 import { parse } from 'papaparse'
 import { readFileSync } from 'fs'
 import { isDefined } from '@typebot.io/lib'
-import {
-  createWorkspaces,
-  importTypebotInDatabase,
-  injectFakeResults,
-} from '@typebot.io/lib/playwright/databaseActions'
+import { importTypebotInDatabase } from '@typebot.io/lib/playwright/databaseActions'
 import { getTestAsset } from '@/test/utils/playwright'
-import { Plan } from '@typebot.io/prisma'
 import { env } from '@typebot.io/env'
-
-const THREE_GIGABYTES = 3 * 1024 * 1024 * 1024
 
 test('should work as expected', async ({ page, browser }) => {
   const typebotId = createId()
@@ -74,23 +67,4 @@ test('should work as expected', async ({ page, browser }) => {
   await expect(page.locator('text="api.json"')).toBeHidden()
   await page2.goto(urls[0])
   await expect(page2.locator('pre')).toBeHidden()
-})
-
-test.describe('Storage limit is reached', () => {
-  const typebotId = createId()
-  const workspaceId = createId()
-
-  test.beforeAll(async () => {
-    await createWorkspaces([{ id: workspaceId, plan: Plan.STARTER }])
-    await importTypebotInDatabase(getTestAsset('typebots/fileUpload.json'), {
-      id: typebotId,
-      publicId: `${typebotId}-public`,
-      workspaceId,
-    })
-    await injectFakeResults({
-      typebotId,
-      count: 20,
-      fakeStorage: THREE_GIGABYTES,
-    })
-  })
 })

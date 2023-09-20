@@ -19,8 +19,6 @@ import {
   computePrice,
   formatPrice,
   getChatsLimit,
-  getStorageLimit,
-  storageLimit,
 } from '@typebot.io/lib/pricing'
 import { FeaturesList } from './FeaturesList'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
@@ -31,7 +29,6 @@ type Props = {
   workspace: Pick<
     Workspace,
     | 'additionalChatsIndex'
-    | 'additionalStorageIndex'
     | 'plan'
     | 'customChatsLimit'
     | 'customStorageLimit'
@@ -76,25 +73,18 @@ export const StarterPlanPricingCard = ({
       return
     }
     setSelectedChatsLimitIndex(workspace.additionalChatsIndex ?? 0)
-    setSelectedStorageLimitIndex(workspace.additionalStorageIndex ?? 0)
   }, [
     selectedChatsLimitIndex,
     selectedStorageLimitIndex,
     workspace.additionalChatsIndex,
-    workspace.additionalStorageIndex,
     workspace?.plan,
   ])
 
   const workspaceChatsLimit = workspace ? getChatsLimit(workspace) : undefined
-  const workspaceStorageLimit = workspace
-    ? getStorageLimit(workspace)
-    : undefined
 
   const isCurrentPlan =
     chatsLimit[Plan.STARTER].graduatedPrice[selectedChatsLimitIndex ?? 0]
       .totalIncluded === workspaceChatsLimit &&
-    storageLimit[Plan.STARTER].graduatedPrice[selectedStorageLimitIndex ?? 0]
-      .totalIncluded === workspaceStorageLimit &&
     isYearly === currentSubscription?.isYearly
 
   const getButtonLabel = () => {
@@ -109,7 +99,6 @@ export const StarterPlanPricingCard = ({
 
       if (
         selectedChatsLimitIndex !== workspace.additionalChatsIndex ||
-        selectedStorageLimitIndex !== workspace.additionalStorageIndex ||
         isYearly !== currentSubscription?.isYearly
       )
         return t('update')
@@ -133,7 +122,6 @@ export const StarterPlanPricingCard = ({
     computePrice(
       Plan.STARTER,
       selectedChatsLimitIndex ?? 0,
-      selectedStorageLimitIndex ?? 0,
       isYearly ? 'yearly' : 'monthly'
     ) ?? NaN
 
@@ -184,40 +172,6 @@ export const StarterPlanPricingCard = ({
                 {scopedT('chatsPerMonth')}
               </Text>
               <MoreInfoTooltip>{scopedT('chatsTooltip')}</MoreInfoTooltip>
-            </HStack>,
-            <HStack key="test">
-              <Text>
-                <Menu>
-                  <MenuButton
-                    as={Button}
-                    rightIcon={<ChevronLeftIcon transform="rotate(-90deg)" />}
-                    size="sm"
-                    isLoading={selectedStorageLimitIndex === undefined}
-                  >
-                    {selectedStorageLimitIndex !== undefined
-                      ? parseNumberWithCommas(
-                          storageLimit.STARTER.graduatedPrice[
-                            selectedStorageLimitIndex
-                          ].totalIncluded
-                        )
-                      : undefined}
-                  </MenuButton>
-                  <MenuList>
-                    {storageLimit.STARTER.graduatedPrice.map((price, index) => (
-                      <MenuItem
-                        key={index}
-                        onClick={() => setSelectedStorageLimitIndex(index)}
-                      >
-                        {parseNumberWithCommas(price.totalIncluded)}
-                      </MenuItem>
-                    ))}
-                  </MenuList>
-                </Menu>{' '}
-                {scopedT('storageLimit')}
-              </Text>
-              <MoreInfoTooltip>
-                {scopedT('storageLimitTooltip')}
-              </MoreInfoTooltip>
             </HStack>,
             scopedT('starter.brandingRemoved'),
             scopedT('starter.fileUploadBlock'),

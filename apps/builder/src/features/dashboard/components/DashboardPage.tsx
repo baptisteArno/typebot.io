@@ -33,11 +33,10 @@ export const DashboardPage = () => {
     })
 
   useEffect(() => {
-    const { subscribePlan, chats, storage, isYearly, claimCustomPlan } =
+    const { subscribePlan, chats, isYearly, claimCustomPlan } =
       router.query as {
         subscribePlan: Plan | undefined
         chats: string | undefined
-        storage: string | undefined
         isYearly: string | undefined
         claimCustomPlan: string | undefined
       }
@@ -55,7 +54,6 @@ export const DashboardPage = () => {
         plan: subscribePlan as 'PRO' | 'STARTER',
         workspaceId: workspace.id,
         additionalChats: chats ? parseInt(chats) : 0,
-        additionalStorage: storage ? parseInt(storage) : 0,
         currency: guessIfUserIsEuropean() ? 'eur' : 'usd',
         isYearly: isYearly === 'false' ? false : true,
       })

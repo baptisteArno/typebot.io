@@ -18,10 +18,7 @@ const stripe = new Stripe(env.STRIPE_SECRET_KEY ?? '', {
 export const addSubscriptionToWorkspace = async (
   workspaceId: string,
   items: Stripe.SubscriptionCreateParams.Item[],
-  metadata: Pick<
-    Workspace,
-    'additionalChatsIndex' | 'additionalStorageIndex' | 'plan'
-  >
+  metadata: Pick<Workspace, 'additionalChatsIndex' | 'plan'>
 ) => {
   const { id: stripeId } = await stripe.customers.create({
     email: 'test-user@gmail.com',

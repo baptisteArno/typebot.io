@@ -84,7 +84,6 @@ export const ChangePlanForm = ({ workspace }: Props) => {
       plan,
       workspaceId: workspace.id,
       additionalChats: selectedChatsLimitIndex,
-      additionalStorage: selectedStorageLimitIndex,
       currency:
         data?.subscription?.currency ??
         (guessIfUserIsEuropean() ? 'eur' : 'usd'),

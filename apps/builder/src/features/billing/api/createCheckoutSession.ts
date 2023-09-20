@@ -27,7 +27,6 @@ export const createCheckoutSession = authenticatedProcedure
       plan: z.enum([Plan.STARTER, Plan.PRO]),
       returnUrl: z.string(),
       additionalChats: z.number(),
-      additionalStorage: z.number(),
       vat: z
         .object({
           type: z.string(),
@@ -53,7 +52,6 @@ export const createCheckoutSession = authenticatedProcedure
         plan,
         returnUrl,
         additionalChats,
-        additionalStorage,
         isYearly,
       },
       ctx: { user },
@@ -119,7 +117,6 @@ export const createCheckoutSession = authenticatedProcedure
         plan,
         returnUrl,
         additionalChats,
-        additionalStorage,
         isYearly,
       })
 
@@ -142,7 +139,6 @@ type Props = {
   plan: 'STARTER' | 'PRO'
   returnUrl: string
   additionalChats: number
-  additionalStorage: number
   isYearly: boolean
   userId: string
 }
@@ -156,7 +152,6 @@ export const createCheckoutSessionUrl =
     plan,
     returnUrl,
     additionalChats,
-    additionalStorage,
     isYearly,
   }: Props) => {
     const session = await stripe.checkout.sessions.create({
@@ -173,17 +168,11 @@ export const createCheckoutSessionUrl =
         workspaceId,
         plan,
         additionalChats,
-        additionalStorage,
       },
       currency,
       billing_address_collection: 'required',
       automatic_tax: { enabled: true },
-      line_items: parseSubscriptionItems(
-        plan,
-        additionalChats,
-        additionalStorage,
-        isYearly
-      ),
+      line_items: parseSubscriptionItems(plan, additionalChats, isYearly),
     })
 
     return session.url

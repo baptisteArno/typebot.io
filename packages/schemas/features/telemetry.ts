@@ -63,7 +63,6 @@ const subscriptionUpdatedEventSchema = workspaceEvent.merge(
     data: z.object({
       plan: z.nativeEnum(Plan),
       additionalChatsIndex: z.number(),
-      additionalStorageIndex: z.number(),
     }),
   })
 )
@@ -83,9 +82,7 @@ const workspaceLimitReachedEventSchema = workspaceEvent.merge(
     name: z.literal('Workspace limit reached'),
     data: z.object({
       chatsLimit: z.number(),
-      storageLimit: z.number(),
       totalChatsUsed: z.number(),
-      totalStorageUsed: z.number(),
     }),
   })
 )

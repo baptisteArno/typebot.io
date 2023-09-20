@@ -4,7 +4,7 @@ import {
   WorkspaceRole,
 } from '@typebot.io/prisma'
 import { isDefined } from '@typebot.io/lib'
-import { getChatsLimit, getStorageLimit } from '@typebot.io/lib/pricing'
+import { getChatsLimit } from '@typebot.io/lib/pricing'
 import { promptAndSetEnvironment } from './utils'
 import { TelemetryEvent } from '@typebot.io/schemas/features/telemetry'
 import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
@@ -141,14 +141,9 @@ const sendAlertIfLimitReached = async (
     if (taggedWorkspaces.includes(workspace.id) || workspace.isQuarantined)
       continue
     taggedWorkspaces.push(workspace.id)
-    const { totalChatsUsed, totalStorageUsed } = await getUsage(workspace.id)
-    const totalStorageUsedInGb = totalStorageUsed / 1024 / 1024 / 1024
+    const { totalChatsUsed } = await getUsage(workspace.id)
     const chatsLimit = getChatsLimit(workspace)
-    const storageLimit = getStorageLimit(workspace)
-    if (
-      (chatsLimit > 0 && totalChatsUsed >= chatsLimit) ||
-      (storageLimit > 0 && totalStorageUsedInGb >= storageLimit)
-    ) {
+    if (chatsLimit > 0 && totalChatsUsed >= chatsLimit) {
       events.push(
         ...workspace.members
           .filter((member) => member.role === WorkspaceRole.ADMIN)
@@ -160,9 +155,7 @@ const sendAlertIfLimitReached = async (
                 workspaceId: workspace.id,
                 data: {
                   totalChatsUsed,
-                  totalStorageUsed: totalStorageUsedInGb,
                   chatsLimit,
-                  storageLimit,
                 },
               } satisfies TelemetryEvent)
           )
@@ -186,12 +179,7 @@ const getUsage = async (workspaceId: string) => {
     select: { id: true },
   })
 
-  const [
-    totalChatsUsed,
-    {
-      _sum: { storageUsed: totalStorageUsed },
-    },
-  ] = await Promise.all([
+  const [totalChatsUsed] = await Promise.all([
     prisma.result.count({
       where: {
         typebotId: { in: typebots.map((typebot) => typebot.id) },
@@ -202,20 +190,10 @@ const getUsage = async (workspaceId: string) => {
         },
       },
     }),
-    prisma.answer.aggregate({
-      where: {
-        storageUsed: { gt: 0 },
-        result: {
-          typebotId: { in: typebots.map((typebot) => typebot.id) },
-        },
-      },
-      _sum: { storageUsed: true },
-    }),
   ])
 
   return {
     totalChatsUsed,
-    totalStorageUsed: totalStorageUsed ?? 0,
   }
 }
 

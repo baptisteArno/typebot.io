@@ -18,12 +18,7 @@ export const getUsage =
       select: { id: true },
     })
 
-    const [
-      totalChatsUsed,
-      {
-        _sum: { storageUsed: totalStorageUsed },
-      },
-    ] = await Promise.all([
+    const [totalChatsUsed] = await Promise.all([
       prisma.result.count({
         where: {
           typebotId: { in: typebots.map((typebot) => typebot.id) },
@@ -34,19 +29,9 @@ export const getUsage =
           },
         },
       }),
-      prisma.answer.aggregate({
-        where: {
-          storageUsed: { gt: 0 },
-          result: {
-            typebotId: { in: typebots.map((typebot) => typebot.id) },
-          },
-        },
-        _sum: { storageUsed: true },
-      }),
     ])
 
     return {
       totalChatsUsed,
-      totalStorageUsed: totalStorageUsed ?? 0,
     }
   }

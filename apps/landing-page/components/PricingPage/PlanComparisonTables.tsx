@@ -24,7 +24,6 @@ import {
   formatPrice,
   prices,
   seatsLimit,
-  storageLimit,
 } from '@typebot.io/lib/pricing'
 import { parseNumberWithCommas } from '@typebot.io/lib'
 
@@ -84,22 +83,6 @@ export const PlanComparisonTables = () => (
             <Td />
             <Td>2 GB</Td>
             <Td>10 GB</Td>
-          </Tr>
-          <Tr>
-            <Td>Additional Storage</Td>
-            <Td />
-            <Td>
-              {formatPrice(storageLimit.STARTER.graduatedPrice[1].price)} per{' '}
-              {storageLimit.STARTER.graduatedPrice[1].totalIncluded -
-                storageLimit.STARTER.graduatedPrice[0].totalIncluded}{' '}
-              GB
-            </Td>
-            <Td>
-              {formatPrice(storageLimit.PRO.graduatedPrice[1].price)} per{' '}
-              {storageLimit.PRO.graduatedPrice[1].totalIncluded -
-                storageLimit.PRO.graduatedPrice[0].totalIncluded}{' '}
-              GB
-            </Td>
           </Tr>
           <Tr>
             <Td>Members</Td>
