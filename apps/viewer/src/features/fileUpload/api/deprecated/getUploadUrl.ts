@@ -9,7 +9,7 @@ import {
 } from '@typebot.io/schemas'
 import { byId, isDefined } from '@typebot.io/lib'
 import { z } from 'zod'
-import { generatePresignedPostPolicy } from '@typebot.io/lib/s3/generatePresignedPostPolicy'
+import { generatePresignedUrl } from '@typebot.io/lib/s3/deprecated/generatePresignedUrl'
 import { env } from '@typebot.io/env'
 import prisma from '@typebot.io/lib/prisma'
 
@@ -34,7 +34,6 @@ export const getUploadUrl = publicProcedure
   .output(
     z.object({
       presignedUrl: z.string(),
-      formData: z.record(z.string(), z.any()),
       hasReachedStorageLimit: z.boolean(),
     })
   )
@@ -62,15 +61,13 @@ export const getUploadUrl = publicProcedure
         message: 'File upload block not found',
       })
 
-    const presignedPostPolicy = await generatePresignedPostPolicy({
+    const presignedUrl = await generatePresignedUrl({
       fileType,
       filePath,
-      maxFileSize: env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE,
     })
 
     return {
-      presignedUrl: `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,
-      formData: presignedPostPolicy.formData,
+      presignedUrl,
       hasReachedStorageLimit: false,
     }
   })
