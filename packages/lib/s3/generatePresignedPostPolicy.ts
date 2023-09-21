@@ -33,7 +33,7 @@ export const generatePresignedPostPolicy = async ({
     postPolicy.setContentLengthRange(0, maxFileSize * 1024 * 1024)
   postPolicy.setKey(filePath)
   postPolicy.setBucket(env.S3_BUCKET)
-  postPolicy.setExpires(new Date(Date.now() + tenMinutes))
+  postPolicy.setExpires(new Date(Date.now() + tenMinutes * 1000))
   if (fileType) postPolicy.setContentType(fileType)
 
   return minioClient.presignedPostPolicy(postPolicy)
