@@ -10,6 +10,7 @@ import {
   FormControl,
   FormLabel,
   Stack,
+  Text,
 } from '@chakra-ui/react'
 import { Variable, VariableString } from '@typebot.io/schemas'
 import { useEffect, useState } from 'react'
@@ -29,6 +30,7 @@ type Props<HasVariable extends boolean> = {
   moreInfoTooltip?: string
   isRequired?: boolean
   direction?: 'row' | 'column'
+  suffix?: string
   onValueChange: (value?: Value<HasVariable>) => void
 } & Omit<NumberInputProps, 'defaultValue' | 'value' | 'onChange' | 'isRequired'>
 
@@ -41,6 +43,7 @@ export const NumberInput = <HasVariable extends boolean>({
   moreInfoTooltip,
   isRequired,
   direction,
+  suffix,
   ...props
 }: Props<HasVariable>) => {
   const [value, setValue] = useState(defaultValue?.toString() ?? '')
@@ -99,24 +102,27 @@ export const NumberInput = <HasVariable extends boolean>({
       isRequired={isRequired}
       justifyContent="space-between"
       width={label ? 'full' : 'auto'}
-      spacing={0}
+      spacing={direction === 'column' ? 2 : 3}
     >
       {label && (
-        <FormLabel mb="2" flexShrink={0}>
+        <FormLabel mb="0" mr="0" flexShrink={0}>
           {label}{' '}
           {moreInfoTooltip && (
             <MoreInfoTooltip>{moreInfoTooltip}</MoreInfoTooltip>
           )}
         </FormLabel>
       )}
-      {withVariableButton ?? true ? (
-        <HStack spacing={0}>
-          {Input}
-          <VariablesButton onSelectVariable={handleVariableSelected} />
-        </HStack>
-      ) : (
-        Input
-      )}
+      <HStack>
+        {withVariableButton ?? true ? (
+          <HStack spacing="0">
+            {Input}
+            <VariablesButton onSelectVariable={handleVariableSelected} />
+          </HStack>
+        ) : (
+          Input
+        )}
+        {suffix ? <Text>{suffix}</Text> : null}
+      </HStack>
     </FormControl>
   )
 }

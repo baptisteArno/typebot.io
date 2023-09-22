@@ -11,6 +11,7 @@ import { continueBotFlow } from '../continueBotFlow'
 import { decrypt } from '@typebot.io/lib/api'
 import { saveStateToDatabase } from '../saveStateToDatabase'
 import prisma from '@typebot.io/lib/prisma'
+import { isDefined } from '@typebot.io/lib/utils'
 
 export const resumeWhatsAppFlow = async ({
   receivedMessage,
@@ -64,17 +65,23 @@ export const resumeWhatsAppFlow = async ({
     }
   }
 
-  const resumeResponse = sessionState
-    ? await continueBotFlow(sessionState)(messageContent)
-    : workspaceId
-    ? await startWhatsAppSession({
-        message: receivedMessage,
-        sessionId,
-        workspaceId,
-        credentials: { ...credentials, id: credentialsId as string },
-        contact,
-      })
-    : undefined
+  const isSessionExpired =
+    session &&
+    isDefined(session.state.expiryTimeout) &&
+    session?.updatedAt.getTime() + session.state.expiryTimeout < Date.now()
+
+  const resumeResponse =
+    sessionState && !isSessionExpired
+      ? await continueBotFlow(sessionState)(messageContent)
+      : workspaceId
+      ? await startWhatsAppSession({
+          message: receivedMessage,
+          sessionId,
+          workspaceId,
+          credentials: { ...credentials, id: credentialsId as string },
+          contact,
+        })
+      : undefined
 
   if (!resumeResponse) {
     console.error('Could not find or create session', sessionId)

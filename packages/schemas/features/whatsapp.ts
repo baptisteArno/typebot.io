@@ -190,7 +190,15 @@ const startConditionSchema = z.object({
 export const whatsAppSettingsSchema = z.object({
   isEnabled: z.boolean().optional(),
   startCondition: startConditionSchema.optional(),
+  sessionExpiryTimeout: z
+    .number()
+    .max(48)
+    .min(0.01)
+    .optional()
+    .describe('Expiration delay in hours after latest interaction'),
 })
+
+export const defaultSessionExpiryTimeout = 12
 
 export type WhatsAppIncomingMessage = z.infer<typeof incomingMessageSchema>
 export type WhatsAppSendingMessage = z.infer<typeof sendingMessageSchema>

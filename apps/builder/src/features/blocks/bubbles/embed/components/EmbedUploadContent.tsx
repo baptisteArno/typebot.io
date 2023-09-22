@@ -1,5 +1,5 @@
 import { TextInput, NumberInput } from '@/components/inputs'
-import { HStack, Stack, Text } from '@chakra-ui/react'
+import { Stack, Text } from '@chakra-ui/react'
 import { EmbedBubbleContent } from '@typebot.io/schemas'
 import { sanitizeUrl } from '@typebot.io/lib'
 import { useScopedI18n } from '@/locales'
@@ -34,14 +34,13 @@ export const EmbedUploadContent = ({ content, onSubmit }: Props) => {
         </Text>
       </Stack>
 
-      <HStack>
-        <NumberInput
-          label="Height:"
-          defaultValue={content?.height}
-          onValueChange={handleHeightChange}
-        />
-        <Text>{scopedT('numberInput.unit')}</Text>
-      </HStack>
+      <NumberInput
+        label="Height:"
+        defaultValue={content?.height}
+        onValueChange={handleHeightChange}
+        suffix={scopedT('numberInput.unit')}
+        width="150px"
+      />
     </Stack>
   )
 }

@@ -10,6 +10,7 @@ import { saveStateToDatabase } from '@typebot.io/bot-engine/saveStateToDatabase'
 import { restartSession } from '@typebot.io/bot-engine/queries/restartSession'
 import { continueBotFlow } from '@typebot.io/bot-engine/continueBotFlow'
 import { parseDynamicTheme } from '@typebot.io/bot-engine/parseDynamicTheme'
+import { isDefined } from '@typebot.io/lib/utils'
 
 export const sendMessage = publicProcedure
   .meta({
@@ -29,6 +30,17 @@ export const sendMessage = publicProcedure
       ctx: { user },
     }) => {
       const session = sessionId ? await getSession(sessionId) : null
+
+      const isSessionExpired =
+        session &&
+        isDefined(session.state.expiryTimeout) &&
+        session.updatedAt.getTime() + session.state.expiryTimeout < Date.now()
+
+      if (isSessionExpired)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Session expired. You need to start a new session.',
+        })
 
       if (!session) {
         if (!startParams)

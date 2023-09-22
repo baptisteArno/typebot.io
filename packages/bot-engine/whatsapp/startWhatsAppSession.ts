@@ -11,6 +11,7 @@ import {
 import {
   WhatsAppCredentials,
   WhatsAppIncomingMessage,
+  defaultSessionExpiryTimeout,
 } from '@typebot.io/schemas/features/whatsapp'
 import { isNotDefined } from '@typebot.io/lib/utils'
 import { startSession } from '../startSession'
@@ -76,14 +77,18 @@ export const startWhatsAppSession = async ({
     userId: undefined,
   })
 
+  const sessionExpiryTimeoutHours =
+    publicTypebot.settings.whatsApp?.sessionExpiryTimeout ??
+    defaultSessionExpiryTimeout
+
   return {
     ...session,
     newSessionState: {
       ...session.newSessionState,
       whatsApp: {
         contact,
-        credentialsId: credentials.id,
       },
+      expiryTimeout: sessionExpiryTimeoutHours * 60 * 60 * 1000,
     },
   }
 }

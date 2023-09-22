@@ -71,9 +71,13 @@ const sessionStateSchemaV2 = z.object({
         name: z.string(),
         phoneNumber: z.string(),
       }),
-      credentialsId: z.string().optional(),
     })
     .optional(),
+  expiryTimeout: z
+    .number()
+    .min(1)
+    .optional()
+    .describe('Expiry timeout in milliseconds'),
   typingEmulation: settingsSchema.shape.typingEmulation.optional(),
 })
 

@@ -29,6 +29,7 @@ import { validateRatingReply } from './blocks/inputs/rating/validateRatingReply'
 import { parsePictureChoicesReply } from './blocks/inputs/pictureChoice/parsePictureChoicesReply'
 import { parseVariables } from './variables/parseVariables'
 import { updateVariablesInSession } from './variables/updateVariablesInSession'
+import { TRPCError } from '@trpc/server'
 
 export const continueBotFlow =
   (state: SessionState) =>
@@ -46,7 +47,11 @@ export const continueBotFlow =
 
     const block = blockIndex >= 0 ? group?.blocks[blockIndex ?? 0] : null
 
-    if (!block || !group) return startBotFlow(state)
+    if (!block || !group)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Group / block not found',
+      })
 
     if (block.type === LogicBlockType.SET_VARIABLE) {
       const existingVariable = state.typebotsQueue[0].typebot.variables.find(
