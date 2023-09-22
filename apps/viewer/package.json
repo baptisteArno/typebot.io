@@ -1,5 +1,5 @@
 {
-  "name": "@typebot.io/viewer",
+  "name": "viewer",
   "license": "AGPL-3.0-or-later",
   "version": "0.1.0",
   "scripts": {
