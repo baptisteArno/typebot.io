@@ -147,7 +147,12 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
   }
 
   const updateSessionExpiryTimeout = (sessionExpiryTimeout?: number) => {
-    if (!typebot) return
+    if (
+      !typebot ||
+      (sessionExpiryTimeout &&
+        (sessionExpiryTimeout <= 0 || sessionExpiryTimeout > 48))
+    )
+      return
     updateTypebot({
       updates: {
         settings: {

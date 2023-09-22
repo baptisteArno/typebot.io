@@ -88,9 +88,7 @@ export const startWhatsAppSession = async ({
       whatsApp: {
         contact,
       },
-      expiryTimeout: sessionExpiryTimeoutHours
-        ? sessionExpiryTimeoutHours * 60 * 60 * 1000
-        : undefined,
+      expiryTimeout: sessionExpiryTimeoutHours * 60 * 60 * 1000,
     },
   }
 }

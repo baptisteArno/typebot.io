@@ -75,6 +75,7 @@ const sessionStateSchemaV2 = z.object({
     .optional(),
   expiryTimeout: z
     .number()
+    .min(1)
     .optional()
     .describe('Expiry timeout in milliseconds'),
   typingEmulation: settingsSchema.shape.typingEmulation.optional(),

@@ -193,7 +193,7 @@ export const whatsAppSettingsSchema = z.object({
   sessionExpiryTimeout: z
     .number()
     .max(48)
-    .min(0)
+    .min(0.01)
     .optional()
     .describe('Expiration delay in hours after latest interaction'),
 })
