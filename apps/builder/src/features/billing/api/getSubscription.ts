@@ -81,9 +81,7 @@ export const getSubscription = authenticatedProcedure
         isYearly: currentSubscription.items.data.some((item) => {
           return (
             priceIds.STARTER.chats.yearly === item.price.id ||
-            priceIds.STARTER.storage.yearly === item.price.id ||
-            priceIds.PRO.chats.yearly === item.price.id ||
-            priceIds.PRO.storage.yearly === item.price.id
+            priceIds.PRO.chats.yearly === item.price.id
           )
         }),
         currency: currentSubscription.currency as 'usd' | 'eur',
@@ -98,8 +96,3 @@ export const chatPriceIds = [priceIds.STARTER.chats.monthly]
   .concat(priceIds.STARTER.chats.yearly)
   .concat(priceIds.PRO.chats.monthly)
   .concat(priceIds.PRO.chats.yearly)
-
-export const storagePriceIds = [priceIds.STARTER.storage.monthly]
-  .concat(priceIds.STARTER.storage.yearly)
-  .concat(priceIds.PRO.storage.monthly)
-  .concat(priceIds.PRO.storage.yearly)

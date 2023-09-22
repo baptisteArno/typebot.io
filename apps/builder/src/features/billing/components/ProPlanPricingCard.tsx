@@ -44,10 +44,7 @@ type Props = {
   currency?: 'usd' | 'eur'
   isLoading: boolean
   isYearly: boolean
-  onPayClick: (props: {
-    selectedChatsLimitIndex: number
-    selectedStorageLimitIndex: number
-  }) => void
+  onPayClick: (props: { selectedChatsLimitIndex: number }) => void
 }
 
 export const ProPlanPricingCard = ({
@@ -62,27 +59,15 @@ export const ProPlanPricingCard = ({
   const scopedT = useScopedI18n('billing.pricingCard')
   const [selectedChatsLimitIndex, setSelectedChatsLimitIndex] =
     useState<number>()
-  const [selectedStorageLimitIndex, setSelectedStorageLimitIndex] =
-    useState<number>()
 
   useEffect(() => {
-    if (
-      isDefined(selectedChatsLimitIndex) ||
-      isDefined(selectedStorageLimitIndex)
-    )
-      return
+    if (isDefined(selectedChatsLimitIndex)) return
     if (workspace.plan !== Plan.PRO) {
       setSelectedChatsLimitIndex(0)
-      setSelectedStorageLimitIndex(0)
       return
     }
     setSelectedChatsLimitIndex(workspace.additionalChatsIndex ?? 0)
-  }, [
-    selectedChatsLimitIndex,
-    selectedStorageLimitIndex,
-    workspace.additionalChatsIndex,
-    workspace?.plan,
-  ])
+  }, [selectedChatsLimitIndex, workspace.additionalChatsIndex, workspace.plan])
 
   const workspaceChatsLimit = workspace ? getChatsLimit(workspace) : undefined
 
@@ -92,11 +77,7 @@ export const ProPlanPricingCard = ({
     isYearly === currentSubscription?.isYearly
 
   const getButtonLabel = () => {
-    if (
-      selectedChatsLimitIndex === undefined ||
-      selectedStorageLimitIndex === undefined
-    )
-      return ''
+    if (selectedChatsLimitIndex === undefined) return ''
     if (workspace?.plan === Plan.PRO) {
       if (isCurrentPlan) return scopedT('upgradeButton.current')
 
@@ -107,14 +88,9 @@ export const ProPlanPricingCard = ({
   }
 
   const handlePayClick = async () => {
-    if (
-      selectedChatsLimitIndex === undefined ||
-      selectedStorageLimitIndex === undefined
-    )
-      return
+    if (selectedChatsLimitIndex === undefined) return
     onPayClick({
       selectedChatsLimitIndex,
-      selectedStorageLimitIndex,
     })
   }
 

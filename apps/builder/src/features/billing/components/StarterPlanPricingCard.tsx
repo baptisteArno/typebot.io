@@ -40,10 +40,7 @@ type Props = {
   currency?: 'eur' | 'usd'
   isLoading?: boolean
   isYearly: boolean
-  onPayClick: (props: {
-    selectedChatsLimitIndex: number
-    selectedStorageLimitIndex: number
-  }) => void
+  onPayClick: (props: { selectedChatsLimitIndex: number }) => void
 }
 
 export const StarterPlanPricingCard = ({
@@ -58,27 +55,15 @@ export const StarterPlanPricingCard = ({
   const scopedT = useScopedI18n('billing.pricingCard')
   const [selectedChatsLimitIndex, setSelectedChatsLimitIndex] =
     useState<number>()
-  const [selectedStorageLimitIndex, setSelectedStorageLimitIndex] =
-    useState<number>()
 
   useEffect(() => {
-    if (
-      isDefined(selectedChatsLimitIndex) ||
-      isDefined(selectedStorageLimitIndex)
-    )
-      return
+    if (isDefined(selectedChatsLimitIndex)) return
     if (workspace.plan !== Plan.STARTER) {
       setSelectedChatsLimitIndex(0)
-      setSelectedStorageLimitIndex(0)
       return
     }
     setSelectedChatsLimitIndex(workspace.additionalChatsIndex ?? 0)
-  }, [
-    selectedChatsLimitIndex,
-    selectedStorageLimitIndex,
-    workspace.additionalChatsIndex,
-    workspace?.plan,
-  ])
+  }, [selectedChatsLimitIndex, workspace.additionalChatsIndex, workspace.plan])
 
   const workspaceChatsLimit = workspace ? getChatsLimit(workspace) : undefined
 
@@ -88,11 +73,7 @@ export const StarterPlanPricingCard = ({
     isYearly === currentSubscription?.isYearly
 
   const getButtonLabel = () => {
-    if (
-      selectedChatsLimitIndex === undefined ||
-      selectedStorageLimitIndex === undefined
-    )
-      return ''
+    if (selectedChatsLimitIndex === undefined) return ''
     if (workspace?.plan === Plan.PRO) return t('downgrade')
     if (workspace?.plan === Plan.STARTER) {
       if (isCurrentPlan) return scopedT('upgradeButton.current')
@@ -107,14 +88,9 @@ export const StarterPlanPricingCard = ({
   }
 
   const handlePayClick = async () => {
-    if (
-      selectedChatsLimitIndex === undefined ||
-      selectedStorageLimitIndex === undefined
-    )
-      return
+    if (selectedChatsLimitIndex === undefined) return
     onPayClick({
       selectedChatsLimitIndex,
-      selectedStorageLimitIndex,
     })
   }
 
