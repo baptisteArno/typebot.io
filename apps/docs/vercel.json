@@ -1,11 +1,11 @@
 {
   "rewrites": [
     {
-      "source": "/self-hosting/configuration",
+      "source": "/self-hosting/configuration/builder",
       "destination": "/self-hosting/configuration"
     },
     {
-      "source": "/self-hosting/configuration/:path*",
+      "source": "/self-hosting/configuration/viewer",
       "destination": "/self-hosting/configuration"
     }
   ]
