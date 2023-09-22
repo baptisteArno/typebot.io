@@ -31,6 +31,7 @@ export const updateTypebot = authenticatedProcedure
           .pick({
             isClosed: true,
             whatsAppPhoneNumberId: true,
+            whatsAppCredentialsId: true,
           })
           .partial()
       ),
@@ -151,6 +152,7 @@ export const updateTypebot = authenticatedProcedure
             typebot.customDomain === null ? null : typebot.customDomain,
           isClosed: typebot.isClosed,
           whatsAppPhoneNumberId: typebot.whatsAppPhoneNumberId ?? undefined,
+          whatsAppCredentialsId: typebot.whatsAppCredentialsId ?? undefined,
         },
       })
 

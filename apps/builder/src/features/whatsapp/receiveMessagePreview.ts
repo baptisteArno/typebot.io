@@ -35,7 +35,6 @@ export const receiveMessagePreview = publicProcedure
     return resumeWhatsAppFlow({
       receivedMessage,
       sessionId: `wa-${receivedMessage.from}-preview`,
-      phoneNumberId: env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID,
       contact: {
         name: contactName,
         phoneNumber: contactPhoneNumber,

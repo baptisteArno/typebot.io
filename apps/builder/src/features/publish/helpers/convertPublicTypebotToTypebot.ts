@@ -24,4 +24,5 @@ export const convertPublicTypebotToTypebot = (
   resultsTablePreferences: existingTypebot.resultsTablePreferences,
   selectedThemeTemplateId: existingTypebot.selectedThemeTemplateId,
   whatsAppPhoneNumberId: existingTypebot.whatsAppPhoneNumberId,
+  whatsAppCredentialsId: existingTypebot.whatsAppCredentialsId,
 })

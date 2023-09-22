@@ -7,7 +7,7 @@ export const subscribeWebhook = publicProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/workspaces/{workspaceId}/whatsapp/phoneNumbers/{phoneNumberId}/webhook',
+      path: '/workspaces/{workspaceId}/whatsapp/{credentialsId}/webhook',
       summary: 'Subscribe webhook',
       tags: ['WhatsApp'],
       protect: true,
@@ -16,7 +16,7 @@ export const subscribeWebhook = publicProcedure
   .input(
     z.object({
       workspaceId: z.string(),
-      phoneNumberId: z.string(),
+      credentialsId: z.string(),
       'hub.challenge': z.string(),
       'hub.verify_token': z.string(),
     })

@@ -43,6 +43,7 @@ import { env } from '@typebot.io/env'
 import { isEmpty, isNotEmpty } from '@typebot.io/lib/utils'
 import { getViewerUrl } from '@typebot.io/lib/getViewerUrl'
 import React, { useState } from 'react'
+import { createId } from '@paralleldrive/cuid2'
 
 const steps = [
   { title: 'Requirements' },
@@ -56,6 +57,8 @@ type Props = {
   onClose: () => void
   onNewCredentials: (id: string) => void
 }
+
+const credentialsId = createId()
 
 export const WhatsAppCredentialsModal = ({
   isOpen,
@@ -115,6 +118,7 @@ export const WhatsAppCredentialsModal = ({
     if (!workspace) return
     mutate({
       credentials: {
+        id: credentialsId,
         type: 'whatsApp',
         workspaceId: workspace.id,
         name: phoneNumberName,
@@ -269,7 +273,7 @@ export const WhatsAppCredentialsModal = ({
             <Webhook
               appId={tokenInfoData?.appId}
               verificationToken={verificationToken}
-              phoneNumberId={phoneNumberId}
+              credentialsId={credentialsId}
             />
           )}
         </ModalBody>
@@ -442,18 +446,16 @@ const PhoneNumber = ({
 const Webhook = ({
   appId,
   verificationToken,
-  phoneNumberId,
+  credentialsId,
 }: {
   appId?: string
   verificationToken: string
-  phoneNumberId: string
+  credentialsId: string
 }) => {
   const { workspace } = useWorkspace()
   const webhookUrl = `${
     env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ?? getViewerUrl()
-  }/api/v1/workspaces/${
-    workspace?.id
-  }/whatsapp/phoneNumbers/${phoneNumberId}/webhook`
+  }/api/v1/workspaces/${workspace?.id}/whatsapp/${credentialsId}/webhook`
 
   return (
     <Stack spacing={6}>

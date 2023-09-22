@@ -3761,8 +3761,8 @@
                                   "whatsApp": {
                                     "type": "object",
                                     "properties": {
-                                      "credentialsId": {
-                                        "type": "string"
+                                      "isEnabled": {
+                                        "type": "boolean"
                                       },
                                       "startCondition": {
                                         "type": "object",
@@ -6172,8 +6172,8 @@
                             "whatsApp": {
                               "type": "object",
                               "properties": {
-                                "credentialsId": {
-                                  "type": "string"
+                                "isEnabled": {
+                                  "type": "boolean"
                                 },
                                 "startCondition": {
                                   "type": "object",
@@ -6350,17 +6350,12 @@
                     "presignedUrl": {
                       "type": "string"
                     },
-                    "formData": {
-                      "type": "object",
-                      "additionalProperties": {}
-                    },
                     "hasReachedStorageLimit": {
                       "type": "boolean"
                     }
                   },
                   "required": [
                     "presignedUrl",
-                    "formData",
                     "hasReachedStorageLimit"
                   ],
                   "additionalProperties": false
@@ -6508,7 +6503,7 @@
         }
       }
     },
-    "/workspaces/{workspaceId}/whatsapp/phoneNumbers/{phoneNumberId}/webhook": {
+    "/workspaces/{workspaceId}/whatsapp/{credentialsId}/webhook": {
       "get": {
         "operationId": "whatsAppRouter-subscribeWebhook",
         "summary": "Subscribe webhook",
@@ -6530,7 +6525,7 @@
             }
           },
           {
-            "name": "phoneNumberId",
+            "name": "credentialsId",
             "in": "path",
             "required": true,
             "schema": {
@@ -6932,7 +6927,7 @@
             }
           },
           {
-            "name": "phoneNumberId",
+            "name": "credentialsId",
             "in": "path",
             "required": true,
             "schema": {

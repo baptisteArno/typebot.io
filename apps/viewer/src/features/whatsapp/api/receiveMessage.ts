@@ -8,14 +8,14 @@ export const receiveMessage = publicProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/workspaces/{workspaceId}/whatsapp/phoneNumbers/{phoneNumberId}/webhook',
+      path: '/workspaces/{workspaceId}/whatsapp/{credentialsId}/webhook',
       summary: 'Message webhook',
       tags: ['WhatsApp'],
     },
   })
   .input(
     z
-      .object({ workspaceId: z.string(), phoneNumberId: z.string() })
+      .object({ workspaceId: z.string(), credentialsId: z.string() })
       .merge(whatsAppWebhookRequestBodySchema)
   )
   .output(
@@ -23,7 +23,7 @@ export const receiveMessage = publicProcedure
       message: z.string(),
     })
   )
-  .mutation(async ({ input: { entry, workspaceId, phoneNumberId } }) => {
+  .mutation(async ({ input: { entry, workspaceId, credentialsId } }) => {
     const receivedMessage = entry.at(0)?.changes.at(0)?.value.messages?.at(0)
     if (isNotDefined(receivedMessage)) return { message: 'No message found' }
     const contactName =
@@ -32,8 +32,8 @@ export const receiveMessage = publicProcedure
       entry.at(0)?.changes.at(0)?.value?.messages?.at(0)?.from ?? ''
     return resumeWhatsAppFlow({
       receivedMessage,
-      sessionId: `wa-${phoneNumberId}-${receivedMessage.from}`,
-      phoneNumberId,
+      sessionId: `wa-${credentialsId}-${receivedMessage.from}`,
+      credentialsId,
       workspaceId,
       contact: {
         name: contactName,

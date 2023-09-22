@@ -188,7 +188,7 @@ const startConditionSchema = z.object({
 })
 
 export const whatsAppSettingsSchema = z.object({
-  credentialsId: z.string().optional(),
+  isEnabled: z.boolean().optional(),
   startCondition: startConditionSchema.optional(),
 })
 

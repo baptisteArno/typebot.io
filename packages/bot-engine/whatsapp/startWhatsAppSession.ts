@@ -13,21 +13,20 @@ import {
   WhatsAppIncomingMessage,
 } from '@typebot.io/schemas/features/whatsapp'
 import { isNotDefined } from '@typebot.io/lib/utils'
-import { decrypt } from '@typebot.io/lib/api/encryption'
 import { startSession } from '../startSession'
 
 type Props = {
   message: WhatsAppIncomingMessage
   sessionId: string
   workspaceId?: string
-  phoneNumberId: string
+  credentials: WhatsAppCredentials['data'] & Pick<WhatsAppCredentials, 'id'>
   contact: NonNullable<SessionState['whatsApp']>['contact']
 }
 
 export const startWhatsAppSession = async ({
   message,
   workspaceId,
-  phoneNumberId,
+  credentials,
   contact,
 }: Props): Promise<
   | (ChatReply & {
@@ -38,7 +37,7 @@ export const startWhatsAppSession = async ({
   const publicTypebotsWithWhatsAppEnabled =
     (await prisma.publicTypebot.findMany({
       where: {
-        typebot: { workspaceId, whatsAppPhoneNumberId: phoneNumberId },
+        typebot: { workspaceId, whatsAppCredentialsId: credentials.id },
       },
       select: {
         settings: true,
@@ -55,7 +54,7 @@ export const startWhatsAppSession = async ({
   const botsWithWhatsAppEnabled = publicTypebotsWithWhatsAppEnabled.filter(
     (publicTypebot) =>
       publicTypebot.typebot.publicId &&
-      publicTypebot.settings.whatsApp?.credentialsId
+      publicTypebot.settings.whatsApp?.isEnabled
   )
 
   const publicTypebot =
@@ -70,19 +69,6 @@ export const startWhatsAppSession = async ({
 
   if (isNotDefined(publicTypebot)) return
 
-  const encryptedCredentials = await prisma.credentials.findUnique({
-    where: {
-      id: publicTypebot.settings.whatsApp?.credentialsId,
-    },
-  })
-  if (!encryptedCredentials) return
-  const credentials = (await decrypt(
-    encryptedCredentials?.data,
-    encryptedCredentials?.iv
-  )) as WhatsAppCredentials['data']
-
-  if (credentials.phoneNumberId !== phoneNumberId) return
-
   const session = await startSession({
     startParams: {
       typebot: publicTypebot.typebot.publicId as string,
@@ -96,8 +82,7 @@ export const startWhatsAppSession = async ({
       ...session.newSessionState,
       whatsApp: {
         contact,
-        credentialsId: publicTypebot?.settings.whatsApp
-          ?.credentialsId as string,
+        credentialsId: credentials.id,
       },
     },
   }

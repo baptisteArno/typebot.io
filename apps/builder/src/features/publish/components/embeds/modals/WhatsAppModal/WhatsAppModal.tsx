@@ -30,7 +30,6 @@ import { PublishButton } from '../../../PublishButton'
 import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
 import { trpc } from '@/lib/trpc'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
-import { isDefined } from '@typebot.io/lib/utils'
 import { TableList } from '@/components/TableList'
 import { Comparison, LogicalOperator } from '@typebot.io/schemas'
 import { DropdownList } from '@/components/DropdownList'
@@ -51,18 +50,25 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
 
   const { data: phoneNumberData } = trpc.whatsApp.getPhoneNumber.useQuery(
     {
-      credentialsId: whatsAppSettings?.credentialsId as string,
+      credentialsId: typebot?.whatsAppCredentialsId as string,
     },
     {
-      enabled: !!whatsAppSettings?.credentialsId,
+      enabled: !!typebot?.whatsAppCredentialsId,
     }
   )
 
   const toggleEnableWhatsApp = (isChecked: boolean) => {
-    if (!phoneNumberData?.id) return
+    if (!phoneNumberData?.id || !typebot) return
     updateTypebot({
-      updates: { whatsAppPhoneNumberId: isChecked ? phoneNumberData.id : null },
-      save: true,
+      updates: {
+        settings: {
+          ...typebot.settings,
+          whatsApp: {
+            ...typebot.settings.whatsApp,
+            isEnabled: isChecked,
+          },
+        },
+      },
     })
   }
 
@@ -70,13 +76,7 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
     if (!typebot) return
     updateTypebot({
       updates: {
-        settings: {
-          ...typebot.settings,
-          whatsApp: {
-            ...typebot.settings.whatsApp,
-            credentialsId,
-          },
-        },
+        whatsAppCredentialsId: credentialsId,
       },
     })
   }
@@ -148,7 +148,9 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
                     <CredentialsDropdown
                       type="whatsApp"
                       workspaceId={workspace.id}
-                      currentCredentialsId={whatsAppSettings?.credentialsId}
+                      currentCredentialsId={
+                        typebot?.whatsAppCredentialsId ?? undefined
+                      }
                       onCredentialsSelect={updateCredentialsId}
                       onCreateNewClick={onOpen}
                       credentialsName="WA phone number"
@@ -158,7 +160,7 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
                 )}
               </HStack>
             </ListItem>
-            {typebot?.settings.whatsApp?.credentialsId && (
+            {typebot?.whatsAppCredentialsId && (
               <>
                 <ListItem>
                   <Accordion allowToggle>
@@ -197,20 +199,20 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
                 </ListItem>
 
                 <ListItem>
-                  <HStack>
-                    <Text>Publish your bot:</Text>
-                    <PublishButton size="sm" isMoreMenuDisabled />
-                  </HStack>
-                </ListItem>
-                <ListItem>
                   <SwitchWithLabel
                     label="Enable WhatsApp integration"
                     initialValue={
-                      isDefined(typebot?.whatsAppPhoneNumberId) ? true : false
+                      typebot?.settings.whatsApp?.isEnabled ?? false
                     }
                     onCheckChange={toggleEnableWhatsApp}
                     justifyContent="flex-start"
                   />
+                </ListItem>
+                <ListItem>
+                  <HStack>
+                    <Text>Publish your bot:</Text>
+                    <PublishButton size="sm" isMoreMenuDisabled />
+                  </HStack>
                 </ListItem>
                 {phoneNumberData?.id && (
                   <ListItem>

@@ -183,6 +183,7 @@ model Typebot {
   isArchived              Boolean                   @default(false)
   isClosed                Boolean                   @default(false)
   whatsAppPhoneNumberId   String?
+  whatsAppCredentialsId   String?
 
   @@index([workspaceId])
   @@index([isArchived, createdAt(sort: Desc)])
