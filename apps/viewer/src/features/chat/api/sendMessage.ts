@@ -36,7 +36,7 @@ export const sendMessage = publicProcedure
         isDefined(session.state.expiryTimeout) &&
         session.updatedAt.getTime() + session.state.expiryTimeout < Date.now()
 
-      if (isSessionExpired && !session)
+      if (isSessionExpired)
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: 'Session expired. You need to start a new session.',

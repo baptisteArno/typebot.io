@@ -219,7 +219,7 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
                               whatsAppSettings?.sessionExpiryTimeout
                             }
                             placeholder={defaultSessionExpiryTimeout.toString()}
-                            moreInfoTooltip="The time in hours after which the session will expire if the user does not interact with the bot. The conversation restarts if the user sends a message after that expiration time."
+                            moreInfoTooltip="A number between 0 and 48 that represents the time in hours after which the session will expire if the user does not interact with the bot. The conversation restarts if the user sends a message after that expiration time."
                             onValueChange={updateSessionExpiryTimeout}
                             withVariableButton={false}
                             suffix="hours"
