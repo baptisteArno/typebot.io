@@ -13,7 +13,7 @@ export type SwitchWithLabelProps = {
   label: string
   initialValue: boolean
   moreInfoContent?: string
-  onCheckChange: (isChecked: boolean) => void
+  onCheckChange?: (isChecked: boolean) => void
   justifyContent?: FormControlProps['justifyContent']
 } & Omit<SwitchProps, 'value' | 'justifyContent'>
 
@@ -29,7 +29,7 @@ export const SwitchWithLabel = ({
 
   const handleChange = () => {
     setIsChecked(!isChecked)
-    onCheckChange(!isChecked)
+    if (onCheckChange) onCheckChange(!isChecked)
   }
 
   return (
