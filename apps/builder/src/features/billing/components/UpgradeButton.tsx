@@ -5,9 +5,16 @@ import { isNotDefined } from '@typebot.io/lib'
 import { ChangePlanModal } from './ChangePlanModal'
 import { useI18n } from '@/locales'
 
-type Props = { limitReachedType?: string } & ButtonProps
+type Props = {
+  limitReachedType?: string
+  excludedPlans?: ('STARTER' | 'PRO')[]
+} & ButtonProps
 
-export const UpgradeButton = ({ limitReachedType, ...props }: Props) => {
+export const UpgradeButton = ({
+  limitReachedType,
+  excludedPlans,
+  ...props
+}: Props) => {
   const t = useI18n()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { workspace } = useWorkspace()
@@ -23,6 +30,7 @@ export const UpgradeButton = ({ limitReachedType, ...props }: Props) => {
         isOpen={isOpen}
         onClose={onClose}
         type={limitReachedType}
+        excludedPlans={excludedPlans}
       />
     </Button>
   )

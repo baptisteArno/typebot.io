@@ -13,11 +13,14 @@ import {
   WhatsAppIncomingMessage,
   defaultSessionExpiryTimeout,
 } from '@typebot.io/schemas/features/whatsapp'
-import { isNotDefined } from '@typebot.io/lib/utils'
+import { isInputBlock, isNotDefined } from '@typebot.io/lib/utils'
 import { startSession } from '../startSession'
+import { getNextGroup } from '../getNextGroup'
+import { continueBotFlow } from '../continueBotFlow'
+import { upsertResult } from '../queries/upsertResult'
 
 type Props = {
-  message: WhatsAppIncomingMessage
+  incomingMessage?: string
   sessionId: string
   workspaceId?: string
   credentials: WhatsAppCredentials['data'] & Pick<WhatsAppCredentials, 'id'>
@@ -25,7 +28,7 @@ type Props = {
 }
 
 export const startWhatsAppSession = async ({
-  message,
+  incomingMessage,
   workspaceId,
   credentials,
   contact,
@@ -63,19 +66,40 @@ export const startWhatsAppSession = async ({
       (publicTypebot) =>
         publicTypebot.settings.whatsApp?.startCondition &&
         messageMatchStartCondition(
-          getIncomingMessageText(message),
+          incomingMessage ?? '',
           publicTypebot.settings.whatsApp?.startCondition
         )
     ) ?? botsWithWhatsAppEnabled[0]
 
   if (isNotDefined(publicTypebot)) return
 
-  const session = await startSession({
+  let session = await startSession({
     startParams: {
       typebot: publicTypebot.typebot.publicId as string,
     },
     userId: undefined,
   })
+
+  // If first block is an input block, we can directly continue the bot flow
+  const firstEdgeId =
+    session.newSessionState.typebotsQueue[0].typebot.groups[0].blocks[0]
+      .outgoingEdgeId
+  const nextGroup = await getNextGroup(session.newSessionState)(firstEdgeId)
+  const firstBlock = nextGroup.group?.blocks.at(0)
+  if (firstBlock && isInputBlock(firstBlock)) {
+    const resultId = session.newSessionState.typebotsQueue[0].resultId
+    if (resultId)
+      await upsertResult({
+        hasStarted: true,
+        isCompleted: false,
+        resultId,
+        typebot: session.newSessionState.typebotsQueue[0].typebot,
+      })
+    session = await continueBotFlow({
+      ...session.newSessionState,
+      currentBlock: { groupId: firstBlock.groupId, blockId: firstBlock.id },
+    })(incomingMessage)
+  }
 
   const sessionExpiryTimeoutHours =
     publicTypebot.settings.whatsApp?.sessionExpiryTimeout ??
@@ -163,24 +187,6 @@ const matchComparison = (
         .trim()
         .toLowerCase()
         .includes(value.trim().toLowerCase())
-    }
-  }
-}
-
-const getIncomingMessageText = (message: WhatsAppIncomingMessage): string => {
-  switch (message.type) {
-    case 'text':
-      return message.text.body
-    case 'button':
-      return message.button.text
-    case 'interactive': {
-      return message.interactive.button_reply.title
-    }
-    case 'video':
-    case 'document':
-    case 'audio':
-    case 'image': {
-      return ''
     }
   }
 }

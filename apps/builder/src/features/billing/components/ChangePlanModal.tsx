@@ -13,9 +13,10 @@ import {
 } from '@chakra-ui/react'
 import { ChangePlanForm } from './ChangePlanForm'
 
-type ChangePlanModalProps = {
+export type ChangePlanModalProps = {
   type?: string
   isOpen: boolean
+  excludedPlans?: ('STARTER' | 'PRO')[]
   onClose: () => void
 }
 
@@ -23,11 +24,16 @@ export const ChangePlanModal = ({
   onClose,
   isOpen,
   type,
+  excludedPlans,
 }: ChangePlanModalProps) => {
   const t = useI18n()
   const { workspace } = useWorkspace()
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="2xl">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      size={excludedPlans ? 'lg' : '2xl'}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalBody as={Stack} spacing="6" pt="10">
@@ -36,7 +42,12 @@ export const ChangePlanModal = ({
               {t('billing.upgradeLimitLabel', { type: type })}
             </AlertInfo>
           )}
-          {workspace && <ChangePlanForm workspace={workspace} />}
+          {workspace && (
+            <ChangePlanForm
+              workspace={workspace}
+              excludedPlans={excludedPlans}
+            />
+          )}
         </ModalBody>
 
         <ModalFooter>

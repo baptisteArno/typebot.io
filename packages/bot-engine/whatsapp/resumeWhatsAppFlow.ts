@@ -75,7 +75,7 @@ export const resumeWhatsAppFlow = async ({
       ? await continueBotFlow(sessionState)(messageContent)
       : workspaceId
       ? await startWhatsAppSession({
-          message: receivedMessage,
+          incomingMessage: messageContent,
           sessionId,
           workspaceId,
           credentials: { ...credentials, id: credentialsId as string },

@@ -12,6 +12,7 @@ import {
 import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { Prisma } from '@typebot.io/prisma'
+import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
 
 export const updateTypebot = authenticatedProcedure
   .meta({
@@ -30,7 +31,6 @@ export const updateTypebot = authenticatedProcedure
         typebotSchema._def.schema
           .pick({
             isClosed: true,
-            whatsAppPhoneNumberId: true,
             whatsAppCredentialsId: true,
           })
           .partial()
@@ -70,7 +70,6 @@ export const updateTypebot = authenticatedProcedure
               plan: true,
             },
           },
-          whatsAppPhoneNumberId: true,
           updatedAt: true,
         },
       })
@@ -119,6 +118,16 @@ export const updateTypebot = authenticatedProcedure
           })
       }
 
+      if (
+        typebot.whatsAppCredentialsId &&
+        !hasProPerks(existingTypebot.workspace)
+      ) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'WhatsApp is only available for Pro workspaces',
+        })
+      }
+
       const newTypebot = await prisma.typebot.update({
         where: {
           id: existingTypebot.id,
@@ -151,7 +160,6 @@ export const updateTypebot = authenticatedProcedure
           customDomain:
             typebot.customDomain === null ? null : typebot.customDomain,
           isClosed: typebot.isClosed,
-          whatsAppPhoneNumberId: typebot.whatsAppPhoneNumberId ?? undefined,
           whatsAppCredentialsId: typebot.whatsAppCredentialsId ?? undefined,
         },
       })
