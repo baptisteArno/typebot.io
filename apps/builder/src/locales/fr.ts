@@ -151,6 +151,7 @@ export default {
   'billing.pricingCard.pro.everythingFromStarter':
     "Tout ce qu'il y a dans Starter",
   'billing.pricingCard.pro.includedSeats': '5 collègues inclus',
+  'billing.pricingCard.pro.whatsAppIntegration': 'Intégration WhatsApp',
   'billing.pricingCard.pro.customDomains': 'Domaines personnalisés',
   'billing.pricingCard.pro.analytics': 'Analyses approfondies',
   'billing.usage.heading': 'Utilisation',

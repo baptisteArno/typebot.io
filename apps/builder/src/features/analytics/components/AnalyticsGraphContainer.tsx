@@ -82,6 +82,7 @@ export const AnalyticsGraphContainer = ({ stats }: { stats?: Stats }) => {
         onClose={onClose}
         isOpen={isOpen}
         type={t('billing.limitMessage.analytics')}
+        excludedPlans={['STARTER']}
       />
       <StatsCards stats={stats} pos="absolute" />
     </Flex>

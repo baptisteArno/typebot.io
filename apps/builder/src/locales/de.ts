@@ -152,6 +152,7 @@ export default {
   'billing.pricingCard.pro.description': 'Für Agenturen & wachsende Start-ups.',
   'billing.pricingCard.pro.everythingFromStarter': 'Alles in Starter',
   'billing.pricingCard.pro.includedSeats': '5 Plätze inklusive',
+  'billing.pricingCard.pro.whatsAppIntegration': 'WhatsApp-Integration',
   'billing.pricingCard.pro.customDomains': 'Eigene Domains',
   'billing.pricingCard.pro.analytics': 'Detaillierte Analysen',
   'billing.usage.heading': 'Nutzung',

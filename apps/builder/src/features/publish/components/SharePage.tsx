@@ -20,7 +20,7 @@ import { integrationsList } from './embeds/EmbedButton'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { LockTag } from '@/features/billing/components/LockTag'
 import { UpgradeButton } from '@/features/billing/components/UpgradeButton'
-import { isProPlan } from '@/features/billing/helpers/isProPlan'
+import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
 import { CustomDomainsDropdown } from '@/features/customDomains/components/CustomDomainsDropdown'
 import { TypebotHeader } from '@/features/editor/components/TypebotHeader'
 import { parseDefaultPublicId } from '../helpers/parseDefaultPublicId'
@@ -130,7 +130,7 @@ export const SharePage = () => {
             {isNotDefined(typebot?.customDomain) &&
             env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME ? (
               <>
-                {isProPlan(workspace) ? (
+                {hasProPerks(workspace) ? (
                   <CustomDomainsDropdown
                     onCustomDomainSelect={handleCustomDomainChange}
                   />
@@ -138,6 +138,7 @@ export const SharePage = () => {
                   <UpgradeButton
                     colorScheme="gray"
                     limitReachedType={t('billing.limitMessage.customDomain')}
+                    excludedPlans={[Plan.STARTER]}
                   >
                     <Text mr="2">Add my domain</Text>{' '}
                     <LockTag plan={Plan.PRO} />

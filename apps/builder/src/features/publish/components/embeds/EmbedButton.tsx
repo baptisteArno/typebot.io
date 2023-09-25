@@ -16,7 +16,6 @@ import {
   NotionLogo,
   WebflowLogo,
   IframeLogo,
-  OtherLogo,
 } from './logos'
 import React from 'react'
 import {
@@ -30,7 +29,6 @@ import {
   IframeModal,
   WixModal,
 } from './modals'
-import { OtherModal } from './modals/OtherModal'
 import { ScriptModal } from './modals/Script/ScriptModal'
 import { CodeIcon } from '@/components/icons'
 import { ApiModal } from './modals/ApiModal'
@@ -43,6 +41,11 @@ import { WhatsAppLogo } from '@/components/logos/WhatsAppLogo'
 import { WhatsAppModal } from './modals/WhatsAppModal/WhatsAppModal'
 import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvider'
 import { isWhatsAppAvailable } from '@/features/telemetry/posthog'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
+import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
+import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
+import { LockTag } from '@/features/billing/components/LockTag'
+import { Plan } from '@typebot.io/prisma'
 
 export type ModalProps = {
   publicId: string
@@ -54,13 +57,15 @@ export type ModalProps = {
 type EmbedButtonProps = Pick<ModalProps, 'publicId' | 'isPublished'> & {
   logo: JSX.Element
   label: string
-  Modal: (props: ModalProps) => JSX.Element
+  lockTagPlan?: Plan
+  modal: (modalProps: { onClose: () => void; isOpen: boolean }) => JSX.Element
 }
 
 export const EmbedButton = ({
   logo,
   label,
-  Modal,
+  modal,
+  lockTagPlan,
   ...modalProps
 }: EmbedButtonProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -75,22 +80,44 @@ export const EmbedButton = ({
     >
       <VStack>
         {logo}
-        <Text>{label}</Text>
+        <Text>
+          {label}
+          {lockTagPlan && (
+            <>
+              {' '}
+              <LockTag plan={lockTagPlan} />
+            </>
+          )}
+        </Text>
       </VStack>
-      <Modal isOpen={isOpen} onClose={onClose} {...modalProps} />
+      {modal({ isOpen, onClose, ...modalProps })}
     </WrapItem>
   )
 }
 
 export const integrationsList = [
   (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => {
+    const { workspace } = useWorkspace()
+
     if (isWhatsAppAvailable())
       return (
         <ParentModalProvider>
           <EmbedButton
             logo={<WhatsAppLogo height={100} width="70px" />}
             label="WhatsApp"
-            Modal={WhatsAppModal}
+            lockTagPlan={hasProPerks(workspace) ? undefined : 'PRO'}
+            modal={({ onClose, isOpen }) =>
+              hasProPerks(workspace) ? (
+                <WhatsAppModal isOpen={isOpen} onClose={onClose} {...props} />
+              ) : (
+                <ChangePlanModal
+                  isOpen={isOpen}
+                  onClose={onClose}
+                  excludedPlans={['STARTER']}
+                  type="deploy on WhatsApp"
+                />
+              )
+            }
             {...props}
           />
         </ParentModalProvider>
@@ -100,7 +127,9 @@ export const integrationsList = [
     <EmbedButton
       logo={<WordpressLogo height={100} width="70px" />}
       label="Wordpress"
-      Modal={WordpressModal}
+      modal={({ onClose, isOpen }) => (
+        <WordpressModal isOpen={isOpen} onClose={onClose} {...props} />
+      )}
       {...props}
     />
   ),
@@ -108,7 +137,7 @@ export const integrationsList = [
     <EmbedButton
       logo={<ShopifyLogo height={100} width="65px" />}
       label="Shopify"
-      Modal={ShopifyModal}
+      modal={(modalProps) => <ShopifyModal {...modalProps} {...props} />}
       {...props}
     />
   ),
@@ -116,7 +145,7 @@ export const integrationsList = [
     <EmbedButton
       logo={<WixLogo height={100} width="90px" />}
       label="Wix"
-      Modal={WixModal}
+      modal={(modalProps) => <WixModal {...modalProps} {...props} />}
       {...props}
     />
   ),
@@ -124,7 +153,7 @@ export const integrationsList = [
     <EmbedButton
       logo={<GtmLogo height={100} width="70px" />}
       label="Google Tag Manager"
-      Modal={GtmModal}
+      modal={(modalProps) => <GtmModal {...modalProps} {...props} />}
       {...props}
     />
   ),
@@ -132,7 +161,7 @@ export const integrationsList = [
     <EmbedButton
       logo={<JavascriptLogo height={100} width="70px" />}
       label="HTML & Javascript"
-      Modal={JavascriptModal}
+      modal={(modalProps) => <JavascriptModal {...modalProps} {...props} />}
       {...props}
     />
   ),
@@ -140,7 +169,7 @@ export const integrationsList = [
     <EmbedButton
       logo={<ReactLogo height={100} width="70px" />}
       label="React"
-      Modal={ReactModal}
+      modal={(modalProps) => <ReactModal {...modalProps} {...props} />}
       {...props}
     />
   ),
@@ -148,7 +177,7 @@ export const integrationsList = [
     <EmbedButton
       logo={<NextjsLogo height={100} width="70px" />}
       label="Nextjs"
-      Modal={NextjsModal}
+      modal={(modalProps) => <NextjsModal {...modalProps} {...props} />}
       {...props}
     />
   ),
@@ -156,7 +185,7 @@ export const integrationsList = [
     <EmbedButton
       logo={<CodeIcon height={100} width="60px" />}
       label="API"
-      Modal={ApiModal}
+      modal={(modalProps) => <ApiModal {...modalProps} {...props} />}
       {...props}
     />
   ),
@@ -164,7 +193,7 @@ export const integrationsList = [
     <EmbedButton
       logo={<NotionLogo height={100} width="60px" />}
       label="Notion"
-      Modal={NotionModal}
+      modal={(modalProps) => <NotionModal {...modalProps} {...props} />}
       {...props}
     />
   ),
@@ -172,7 +201,7 @@ export const integrationsList = [
     <EmbedButton
       logo={<WebflowLogo height={100} width="70px" />}
       label="Webflow"
-      Modal={WebflowModal}
+      modal={(modalProps) => <WebflowModal {...modalProps} {...props} />}
       {...props}
     />
   ),
@@ -180,7 +209,7 @@ export const integrationsList = [
     <EmbedButton
       logo={<FlutterFlowLogo height={100} width="60px" />}
       label="FlutterFlow"
-      Modal={FlutterFlowModal}
+      modal={(modalProps) => <FlutterFlowModal {...modalProps} {...props} />}
       {...props}
     />
   ),
@@ -194,7 +223,7 @@ export const integrationsList = [
         />
       }
       label="Script"
-      Modal={ScriptModal}
+      modal={(modalProps) => <ScriptModal {...modalProps} {...props} />}
       {...props}
     />
   ),
@@ -202,15 +231,7 @@ export const integrationsList = [
     <EmbedButton
       logo={<IframeLogo height={100} width="70px" />}
       label="Iframe"
-      Modal={IframeModal}
-      {...props}
-    />
-  ),
-  (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
-    <EmbedButton
-      logo={<OtherLogo height={100} width="70px" />}
-      label="Other"
-      Modal={OtherModal}
+      modal={(modalProps) => <IframeModal {...modalProps} {...props} />}
       {...props}
     />
   ),

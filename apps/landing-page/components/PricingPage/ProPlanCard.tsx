@@ -85,6 +85,7 @@ export const ProPlanCard = ({ isYearly }: Props) => {
               </chakra.span>
             </Tooltip>
           </HStack>,
+          'WhatsApp integration',
           'Custom domains',
           'In-depth analytics',
         ],

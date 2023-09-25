@@ -147,6 +147,7 @@ export default {
   'billing.pricingCard.pro.description': 'For agencies & growing startups.',
   'billing.pricingCard.pro.everythingFromStarter': 'Everything in Starter',
   'billing.pricingCard.pro.includedSeats': '5 seats included',
+  'billing.pricingCard.pro.whatsAppIntegration': 'WhatsApp integration',
   'billing.pricingCard.pro.customDomains': 'Custom domains',
   'billing.pricingCard.pro.analytics': 'In-depth analytics',
   'billing.usage.heading': 'Usage',

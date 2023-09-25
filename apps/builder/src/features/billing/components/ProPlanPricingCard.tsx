@@ -200,6 +200,7 @@ export const ProPlanPricingCard = ({
                 </Text>
                 <MoreInfoTooltip>{scopedT('chatsTooltip')}</MoreInfoTooltip>
               </HStack>,
+              scopedT('pro.whatsAppIntegration'),
               scopedT('pro.customDomains'),
               scopedT('pro.analytics'),
             ]}

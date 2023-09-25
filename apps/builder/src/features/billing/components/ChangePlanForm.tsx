@@ -16,9 +16,10 @@ import { StripeClimateLogo } from './StripeClimateLogo'
 
 type Props = {
   workspace: Workspace
+  excludedPlans?: ('STARTER' | 'PRO')[]
 }
 
-export const ChangePlanForm = ({ workspace }: Props) => {
+export const ChangePlanForm = ({ workspace, excludedPlans }: Props) => {
   const scopedT = useScopedI18n('billing')
 
   const { user } = useUser()
@@ -133,27 +134,31 @@ export const ChangePlanForm = ({ workspace }: Props) => {
             </HStack>
           </HStack>
           <HStack alignItems="stretch" spacing="4" w="full">
-            <StarterPlanPricingCard
-              workspace={workspace}
-              currentSubscription={{ isYearly: data.subscription?.isYearly }}
-              onPayClick={(props) =>
-                handlePayClick({ ...props, plan: Plan.STARTER })
-              }
-              isYearly={isYearly}
-              isLoading={isUpdatingSubscription}
-              currency={data.subscription?.currency}
-            />
+            {excludedPlans?.includes('STARTER') ? null : (
+              <StarterPlanPricingCard
+                workspace={workspace}
+                currentSubscription={{ isYearly: data.subscription?.isYearly }}
+                onPayClick={(props) =>
+                  handlePayClick({ ...props, plan: Plan.STARTER })
+                }
+                isYearly={isYearly}
+                isLoading={isUpdatingSubscription}
+                currency={data.subscription?.currency}
+              />
+            )}
 
-            <ProPlanPricingCard
-              workspace={workspace}
-              currentSubscription={{ isYearly: data.subscription?.isYearly }}
-              onPayClick={(props) =>
-                handlePayClick({ ...props, plan: Plan.PRO })
-              }
-              isYearly={isYearly}
-              isLoading={isUpdatingSubscription}
-              currency={data.subscription?.currency}
-            />
+            {excludedPlans?.includes('PRO') ? null : (
+              <ProPlanPricingCard
+                workspace={workspace}
+                currentSubscription={{ isYearly: data.subscription?.isYearly }}
+                onPayClick={(props) =>
+                  handlePayClick({ ...props, plan: Plan.PRO })
+                }
+                isYearly={isYearly}
+                isLoading={isUpdatingSubscription}
+                currency={data.subscription?.currency}
+              />
+            )}
           </HStack>
         </Stack>
       )}

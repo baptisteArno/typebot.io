@@ -11,7 +11,7 @@ import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import React, { useMemo } from 'react'
 import { useEndpoints } from '../../providers/EndpointsProvider'
 import { useGroupsCoordinates } from '../../providers/GroupsCoordinateProvider'
-import { isProPlan } from '@/features/billing/helpers/isProPlan'
+import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
 import { computeDropOffPath } from '../../helpers/computeDropOffPath'
 import { computeSourceCoordinates } from '../../helpers/computeSourceCoordinates'
 import { TotalAnswersInBlock } from '@typebot.io/schemas/features/analytics'
@@ -64,7 +64,7 @@ export const DropOffEdge = ({
     [blockId, totalAnswersInBlocks]
   )
 
-  const isWorkspaceProPlan = isProPlan(workspace)
+  const isWorkspaceProPlan = hasProPerks(workspace)
 
   const { totalDroppedUser, dropOffRate } = useMemo(() => {
     if (!publishedTypebot || currentBlock?.total === undefined)

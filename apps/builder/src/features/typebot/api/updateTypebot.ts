@@ -12,6 +12,7 @@ import {
 import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { Prisma } from '@typebot.io/prisma'
+import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
 
 export const updateTypebot = authenticatedProcedure
   .meta({
@@ -117,6 +118,16 @@ export const updateTypebot = authenticatedProcedure
             code: 'BAD_REQUEST',
             message: 'Public id not available',
           })
+      }
+
+      if (
+        typebot.whatsAppCredentialsId &&
+        !hasProPerks(existingTypebot.workspace)
+      ) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'WhatsApp is only available for Pro workspaces',
+        })
       }
 
       const newTypebot = await prisma.typebot.update({

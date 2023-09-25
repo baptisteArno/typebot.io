@@ -191,6 +191,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             await prisma.typebot.updateMany({
               where: { id: typebot.id },
               data: {
+                whatsAppCredentialsId: null,
                 settings: {
                   ...settings,
                   general: {
