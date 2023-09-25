@@ -198,7 +198,6 @@ model Typebot {
   webhooks                Webhook[]
   isArchived              Boolean                   @default(false)
   isClosed                Boolean                   @default(false)
-  whatsAppPhoneNumberId   String?
   whatsAppCredentialsId   String?
 
   @@index([workspaceId])

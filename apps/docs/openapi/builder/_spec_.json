@@ -12886,10 +12886,6 @@
                         "isClosed": {
                           "type": "boolean"
                         },
-                        "whatsAppPhoneNumberId": {
-                          "type": "string",
-                          "nullable": true
-                        },
                         "whatsAppCredentialsId": {
                           "type": "string",
                           "nullable": true
@@ -12915,7 +12911,6 @@
                         "resultsTablePreferences",
                         "isArchived",
                         "isClosed",
-                        "whatsAppPhoneNumberId",
                         "whatsAppCredentialsId"
                       ],
                       "additionalProperties": false
@@ -17038,10 +17033,6 @@
                       "isClosed": {
                         "type": "boolean"
                       },
-                      "whatsAppPhoneNumberId": {
-                        "type": "string",
-                        "nullable": true
-                      },
                       "whatsAppCredentialsId": {
                         "type": "string",
                         "nullable": true
@@ -21113,10 +21104,6 @@
                         "isClosed": {
                           "type": "boolean"
                         },
-                        "whatsAppPhoneNumberId": {
-                          "type": "string",
-                          "nullable": true
-                        },
                         "whatsAppCredentialsId": {
                           "type": "string",
                           "nullable": true
@@ -21142,7 +21129,6 @@
                         "resultsTablePreferences",
                         "isArchived",
                         "isClosed",
-                        "whatsAppPhoneNumberId",
                         "whatsAppCredentialsId"
                       ],
                       "additionalProperties": false
@@ -25222,10 +25208,6 @@
                         "isClosed": {
                           "type": "boolean"
                         },
-                        "whatsAppPhoneNumberId": {
-                          "type": "string",
-                          "nullable": true
-                        },
                         "whatsAppCredentialsId": {
                           "type": "string",
                           "nullable": true
@@ -25251,7 +25233,6 @@
                         "resultsTablePreferences",
                         "isArchived",
                         "isClosed",
-                        "whatsAppPhoneNumberId",
                         "whatsAppCredentialsId"
                       ],
                       "additionalProperties": false

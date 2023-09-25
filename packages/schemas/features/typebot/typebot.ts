@@ -56,7 +56,6 @@ export const typebotSchema = z.preprocess(
     resultsTablePreferences: resultsTablePreferencesSchema.nullable(),
     isArchived: z.boolean(),
     isClosed: z.boolean(),
-    whatsAppPhoneNumberId: z.string().nullable(),
     whatsAppCredentialsId: z.string().nullable(),
   }) satisfies z.ZodType<TypebotPrisma, z.ZodTypeDef, unknown>
 )
