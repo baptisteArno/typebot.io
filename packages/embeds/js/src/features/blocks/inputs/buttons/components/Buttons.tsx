@@ -21,8 +21,7 @@ export const Buttons = (props: Props) => {
     if (!isMobile() && inputRef) inputRef.focus()
   })
 
-  // eslint-disable-next-line solid/reactivity
-  const handleClick = (itemIndex: number) => () =>
+  const handleClick = (itemIndex: number) =>
     props.onSubmit({ value: filteredItems()[itemIndex].content ?? '' })
 
   const filterItems = (inputValue: string) => {
@@ -61,7 +60,7 @@ export const Buttons = (props: Props) => {
           {(item, index) => (
             <span class={'relative' + (isMobile() ? ' w-full' : '')}>
               <Button
-                on:click={handleClick(index())}
+                on:click={() => handleClick(index())}
                 data-itemid={item.id}
                 class="w-full"
               >
