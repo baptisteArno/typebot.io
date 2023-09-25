@@ -30,6 +30,7 @@ export const BubbleButton = (props: Props) => (
       'background-color': props.backgroundColor ?? defaultButtonColor,
       'z-index': 42424242,
     }}
+    aria-label="Open chatbot"
   >
     <Show when={isNotDefined(props.customIconSrc)} keyed>
       <svg
