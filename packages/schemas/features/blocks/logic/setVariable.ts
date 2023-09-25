@@ -5,6 +5,7 @@ import { LogicBlockType } from './enums'
 export const valueTypes = [
   'Custom',
   'Empty',
+  'Environment name',
   'User ID',
   'Now',
   'Today',

@@ -30,11 +30,13 @@ import { injectVariablesFromExistingResult } from './variables/injectVariablesFr
 type Props = {
   startParams: StartParams
   userId: string | undefined
+  initialSessionState?: Pick<SessionState, 'whatsApp' | 'expiryTimeout'>
 }
 
 export const startSession = async ({
   startParams,
   userId,
+  initialSessionState,
 }: Props): Promise<ChatReply & { newSessionState: SessionState }> => {
   if (!startParams)
     throw new TRPCError({
@@ -108,6 +110,7 @@ export const startSession = async ({
     dynamicTheme: parseDynamicThemeInState(typebot.theme),
     isStreamEnabled: startParams.isStreamEnabled,
     typingEmulation: typebot.settings.typingEmulation,
+    ...initialSessionState,
   }
 
   if (startParams.isOnlyRegistering) {

@@ -1979,6 +1979,7 @@
                                                 "enum": [
                                                   "Custom",
                                                   "Empty",
+                                                  "Environment name",
                                                   "User ID",
                                                   "Now",
                                                   "Today",
@@ -6367,6 +6368,7 @@
                                             "enum": [
                                               "Custom",
                                               "Empty",
+                                              "Environment name",
                                               "User ID",
                                               "Now",
                                               "Today",
@@ -10396,6 +10398,7 @@
                                               "enum": [
                                                 "Custom",
                                                 "Empty",
+                                                "Environment name",
                                                 "User ID",
                                                 "Now",
                                                 "Today",
@@ -14565,6 +14568,7 @@
                                             "enum": [
                                               "Custom",
                                               "Empty",
+                                              "Environment name",
                                               "User ID",
                                               "Now",
                                               "Today",
@@ -18614,6 +18618,7 @@
                                               "enum": [
                                                 "Custom",
                                                 "Empty",
+                                                "Environment name",
                                                 "User ID",
                                                 "Now",
                                                 "Today",
@@ -22718,6 +22723,7 @@
                                               "enum": [
                                                 "Custom",
                                                 "Empty",
+                                                "Environment name",
                                                 "User ID",
                                                 "Now",
                                                 "Today",
@@ -26885,6 +26891,7 @@
                                               "enum": [
                                                 "Custom",
                                                 "Empty",
+                                                "Environment name",
                                                 "User ID",
                                                 "Now",
                                                 "Today",

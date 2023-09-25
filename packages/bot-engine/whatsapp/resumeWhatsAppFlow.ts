@@ -46,16 +46,6 @@ export const resumeWhatsAppFlow = async ({
     typebotId: typebot?.id,
   })
 
-  const sessionState =
-    isPreview && session?.state
-      ? ({
-          ...session?.state,
-          whatsApp: {
-            contact,
-          },
-        } satisfies SessionState)
-      : session?.state
-
   const credentials = await getCredentials({ credentialsId, isPreview })
 
   if (!credentials) {
@@ -71,8 +61,8 @@ export const resumeWhatsAppFlow = async ({
     session?.updatedAt.getTime() + session.state.expiryTimeout < Date.now()
 
   const resumeResponse =
-    sessionState && !isSessionExpired
-      ? await continueBotFlow(sessionState)(messageContent)
+    session && !isSessionExpired
+      ? await continueBotFlow(session.state)(messageContent)
       : workspaceId
       ? await startWhatsAppSession({
           incomingMessage: messageContent,
