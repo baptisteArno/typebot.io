@@ -1,78 +1,92 @@
 <?php
-
 class Typebot_Public
 {
-  public function add_head_code()
+  public function __construct()
   {
-    function parse_wp_user()
-    {
-      $wp_user = wp_get_current_user();
-      echo '<script>
+    add_action('wp_head', array($this, 'parse_wp_user'));
+    add_action('wp_footer', array($this, 'typebot_script'));
+  }
+
+  public function parse_wp_user()
+  {
+    $wp_user = wp_get_current_user();
+    echo '<script>
       if(typeof window.typebotWpUser === "undefined"){
       window.typebotWpUser = {
           "WP ID":"' .
-        $wp_user->ID .
-        '",
+      $wp_user->ID .
+      '",
           "WP Username":"' .
-        $wp_user->user_login .
-        '",
+      $wp_user->user_login .
+      '",
           "WP Email":"' .
-        $wp_user->user_email .
-        '",
+      $wp_user->user_email .
+      '",
           "WP First name":"' .
-        $wp_user->user_firstname .
-        '",
+      $wp_user->user_firstname .
+      '",
           "WP Last name":"' .
-        $wp_user->user_lastname .
-        '",
+      $wp_user->user_lastname .
+      '"
         }
       }
       </script>';
+  }
+
+  public function add_head_code()
+  {
+    $this->parse_wp_user();
+  }
+
+  function typebot_script()
+  {
+    echo '<script type="module">import Typebot from "https://cdn.jsdelivr.net/npm/@typebot.io/js@0.1/dist/web.js";';
+    if (
+      get_option('excluded_pages') !== null &&
+      get_option('excluded_pages') !== ''
+    ) {
+      $paths = explode(',', get_option('excluded_pages'));
+      $arr_js = 'const typebotExcludePaths = [';
+      foreach ($paths as $path) {
+        $arr_js = $arr_js . '"' . $path . '",';
+      }
+      $arr_js = substr($arr_js, 0, -1) . '];';
+      echo $arr_js;
+    } else {
+      echo 'const typebotExcludePaths = null;';
     }
 
-    function typebot_script()
-    {
-      echo '<script type="module">
-      import Typebot from "https://cdn.jsdelivr.net/npm/@typebot.io/js@0.1/dist/web.js";';
-      if (
-        get_option('excluded_pages') !== null &&
-        get_option('excluded_pages') !== ''
-      ) {
-        $paths = explode(',', get_option('excluded_pages'));
-        $arr_js = 'const typebotExcludePaths = [';
-        foreach ($paths as $path) {
-          $arr_js = $arr_js . '"' . $path . '",';
-        }
-        $arr_js = substr($arr_js, 0, -1) . '];';
-        echo $arr_js;
-      } else {
-        echo 'const typebotExcludePaths = null;';
-      }
-      if (get_option('init_snippet') && get_option('init_snippet') !== '') {
-
-        echo 'if(!typebotExcludePaths || typebotExcludePaths.every((path) => {
-          let excludePath = path.trim();
+    if (get_option('init_snippet') && get_option('init_snippet') !== '') {
+      echo 'if(!typebotExcludePaths || typebotExcludePaths.every((path) => {
+          let [excludePath, excludeSearch] = path.trim().split("?");
+          const excludeSearchParams = excludeSearch ? new URLSearchParams(excludeSearch) : null; 
 					let windowPath = window.location.pathname;
+          let windowSearchParams = window.location.search.length > 0 ? new URLSearchParams(window.location.search) : null;
 					if (excludePath.endsWith("*")) {
+            if(excludeSearchParams){
+              if(!windowSearchParams) return true
+              return !windowPath.startsWith(excludePath.slice(0, -1)) || !Array.from(excludeSearchParams.keys()).every((key) => excludeSearchParams.get(key) === "*" || (excludeSearchParams.get(key) === windowSearchParams.get(key)));
+            }
 						return !windowPath.startsWith(excludePath.slice(0, -1));
 					}
 					if (excludePath.endsWith("/")) {
-						excludePath = path.slice(0, -1);
+						excludePath = excludePath.slice(0, -1);
 					}
 					if (windowPath.endsWith("/")) {
 						windowPath = windowPath.slice(0, -1);
-					}
-					return windowPath !== excludePath;
+					}    
+          if(excludeSearchParams){
+            if(!windowSearchParams) return true
+            return windowPath !== excludePath || !Array.from(excludeSearchParams.keys()).every((key) => excludeSearchParams.get(key) === "*" || (excludeSearchParams.get(key) === windowSearchParams.get(key)));
+          } else {
+            return windowPath !== excludePath;
+          }
 				})) {
           ' . get_option('init_snippet') . '
           Typebot.setPrefilledVariables({ ...typebotWpUser });
-          
         }';
-      }
-      echo '</script>';
     }
-    add_action('wp_head', 'parse_wp_user');
-    add_action('wp_footer', 'typebot_script');
+    echo '</script>';
   }
 
   public function add_typebot_container($attributes = [])

@@ -16,7 +16,7 @@
 
         <div style="display: flex; flex-direction: column; margin-top: 1rem">
           <label>Excluded pages (optionnal):</label>
-          <p style="color: gray">Example: /app/*, /user/*, /admin/settings</p>
+          <p style="color: gray">Example: /app/*, /user/*, /admin/settings, /app?param=*</p>
           <input name="excluded_pages" value="<?php echo esc_attr(get_option('excluded_pages')); ?>" style="padding: .5rem" />
         </div>
 

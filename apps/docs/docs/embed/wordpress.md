@@ -12,6 +12,18 @@ Of course, before using it, you need to create and publish your first typebot.
 
 The code snippet to paste is easily configurable in the Share tab of your bot after clicking on the "Wordpress" button.
 
+## Excluded pages
+
+The excluded pages input is a comma-separated list of pages where you don't want your typebot to appear.
+
+Examples:
+
+- `/app/*` will exclude all pages starting with `/app/`
+- `/app` will only exclude the `/app` page
+- `/app?param=1` will only exclude the `/app` page **and** with the `param` query parameter set to `1`
+- `/app?param=*` will exclude the page at `/app` **and** with the `param` query parameter set to anything
+- `/app/*?param=*` will exclude all pages starting with `/app/` **and** with the `param` query parameter set to anything
+
 ## Personalize user experience
 
 You can leverage the [prefilled variables](/editor/variables#prefilled-variables) and inject your user information directly into your typebot so that the experience is entirely customized to your user.
