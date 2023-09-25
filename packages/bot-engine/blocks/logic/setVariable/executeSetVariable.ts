@@ -115,7 +115,7 @@ const getExpressionToEvaluate =
         if(now.getHours() >= 22 || now.getHours() < 6) return 'night'`
       }
       case 'Environment name': {
-        return state.whatsApp?.contact.name ? 'whatsapp' : 'web'
+        return state.whatsApp ? 'whatsapp' : 'web'
       }
       case 'Custom':
       case undefined: {
