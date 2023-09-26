@@ -5,6 +5,7 @@ import { parseScriptToExecuteClientSideAction } from '../script/executeScript'
 import { parseGuessedValueType } from '../../../variables/parseGuessedValueType'
 import { parseVariables } from '../../../variables/parseVariables'
 import { updateVariablesInSession } from '../../../variables/updateVariablesInSession'
+import { createId } from '@paralleldrive/cuid2'
 
 export const executeSetVariable = (
   state: SessionState,
@@ -92,13 +93,10 @@ const getExpressionToEvaluate =
         return 'new Date(Date.now() - 86400000).toISOString()'
       }
       case 'Random ID': {
-        return 'Math.random().toString(36).substring(2, 15)'
+        return `"${createId()}"`
       }
       case 'User ID': {
-        return (
-          state.typebotsQueue[0].resultId ??
-          'Math.random().toString(36).substring(2, 15)'
-        )
+        return state.typebotsQueue[0].resultId ?? `"${createId()}"`
       }
       case 'Map item with same index': {
         return `const itemIndex = ${options.mapListItemParams?.baseListVariableId}.indexOf(${options.mapListItemParams?.baseItemVariableId})
