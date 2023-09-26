@@ -333,21 +333,21 @@ const parseStartClientSideAction = (
           block.options.trackingId
       ) as GoogleAnalyticsBlock | undefined
     )?.options.trackingId,
-    pixelId: (
-      blocks.find(
+    pixelIds: (
+      blocks.filter(
         (block) =>
           block.type === IntegrationBlockType.PIXEL &&
-          block.options.pixelId &&
+          isNotEmpty(block.options.pixelId) &&
           block.options.isInitSkip !== true
-      ) as PixelBlock | undefined
-    )?.options.pixelId,
+      ) as PixelBlock[]
+    ).map((pixelBlock) => pixelBlock.options.pixelId as string),
   }
 
   if (
     !startPropsToInject.customHeadCode &&
     !startPropsToInject.gtmId &&
     !startPropsToInject.googleAnalyticsId &&
-    !startPropsToInject.pixelId
+    !startPropsToInject.pixelIds
   )
     return
 
