@@ -2,7 +2,11 @@
 import { initGoogleAnalytics } from '@/lib/gtag'
 import { gtmBodyElement } from '@/lib/gtm'
 import { initPixel } from '@/lib/pixel'
-import { injectCustomHeadCode, isNotEmpty } from '@typebot.io/lib/utils'
+import {
+  injectCustomHeadCode,
+  isDefined,
+  isNotEmpty,
+} from '@typebot.io/lib/utils'
 import { StartPropsToInject } from '@typebot.io/schemas'
 
 export const injectStartProps = async (
@@ -15,6 +19,8 @@ export const injectStartProps = async (
   const googleAnalyticsId = startPropsToInject.googleAnalyticsId
   if (isNotEmpty(googleAnalyticsId))
     await initGoogleAnalytics(googleAnalyticsId)
-  const pixelId = startPropsToInject.pixelId
-  if (isNotEmpty(pixelId)) initPixel(pixelId)
+  const pixelIds = startPropsToInject.pixelId
+    ? [startPropsToInject.pixelId]
+    : startPropsToInject.pixelIds
+  if (isDefined(pixelIds)) initPixel(pixelIds)
 }

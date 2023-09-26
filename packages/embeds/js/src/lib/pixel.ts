@@ -3,12 +3,13 @@ import { PixelBlock } from '@typebot.io/schemas'
 declare const window: {
   fbq?: (
     arg1: string,
+    arg4: string,
     arg2: string,
     arg3: Record<string, string> | undefined
   ) => void
 }
 
-export const initPixel = (pixelId: string) => {
+export const initPixel = (pixelIds: string[]) => {
   const script = document.createElement('script')
   script.innerHTML = `!function(f,b,e,v,n,t,s)
   {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -18,13 +19,9 @@ export const initPixel = (pixelId: string) => {
   t.src=v;s=b.getElementsByTagName(e)[0];
   s.parentNode.insertBefore(t,s)}(window, document,'script',
   'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '${pixelId}');
+  ${pixelIds.map((pixelId) => `fbq('init', '${pixelId}');`).join('\n')}
   fbq('track', 'PageView');`
   document.head.appendChild(script)
-
-  const noscript = document.createElement('noscript')
-  noscript.innerHTML = `<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1"/>`
-  document.head.appendChild(noscript)
 }
 
 export const trackPixelEvent = (options: PixelBlock['options']) => {
@@ -41,7 +38,7 @@ export const trackPixelEvent = (options: PixelBlock['options']) => {
     : undefined
   if (options.eventType === 'Custom') {
     if (!options.name) return
-    window.fbq('trackCustom', options.name, params)
+    window.fbq('trackSingleCustom', options.pixelId, options.name, params)
   }
-  window.fbq('track', options.eventType, params)
+  window.fbq('trackSingle', options.pixelId, options.eventType, params)
 }

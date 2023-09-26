@@ -169,7 +169,8 @@ const runtimeOptionsSchema = paymentInputRuntimeOptionsSchema.optional()
 
 const startPropsToInjectSchema = z.object({
   googleAnalyticsId: z.string().optional(),
-  pixelId: z.string().optional(),
+  pixelId: z.string().optional().describe('Deprecated'),
+  pixelIds: z.array(z.string()).optional(),
   gtmId: z.string().optional(),
   customHeadCode: z.string().optional(),
 })
