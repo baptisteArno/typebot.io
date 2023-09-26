@@ -168,7 +168,7 @@ export const TypebotProvider = ({
 
   const saveTypebot = useCallback(
     async (updates?: Partial<Typebot>) => {
-      if (!localTypebot || !typebot) return
+      if (!localTypebot || !typebot || typebotData?.isReadOnly) return
       const typebotToSave = { ...localTypebot, ...updates }
       if (dequal(omit(typebot, 'updatedAt'), omit(typebotToSave, 'updatedAt')))
         return
@@ -180,7 +180,13 @@ export const TypebotProvider = ({
       setLocalTypebot({ ...newTypebot })
       return newTypebot
     },
-    [localTypebot, setLocalTypebot, typebot, updateTypebot]
+    [
+      localTypebot,
+      setLocalTypebot,
+      typebot,
+      typebotData?.isReadOnly,
+      updateTypebot,
+    ]
   )
 
   useAutoSave(
@@ -212,7 +218,7 @@ export const TypebotProvider = ({
   )
 
   useEffect(() => {
-    if (!localTypebot || !typebot) return
+    if (!localTypebot || !typebot || typebotData?.isReadOnly) return
     if (!areTypebotsEqual(localTypebot, typebot)) {
       window.addEventListener('beforeunload', preventUserFromRefreshing)
     }
@@ -220,7 +226,7 @@ export const TypebotProvider = ({
     return () => {
       window.removeEventListener('beforeunload', preventUserFromRefreshing)
     }
-  }, [localTypebot, typebot])
+  }, [localTypebot, typebot, typebotData?.isReadOnly])
 
   const updateLocalTypebot = async ({
     updates,

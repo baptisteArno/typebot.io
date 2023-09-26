@@ -38,7 +38,7 @@ export const WorkspaceProvider = ({
   typebotId,
   children,
 }: WorkspaceContextProps) => {
-  const { pathname, query, push } = useRouter()
+  const { pathname, query, push, isReady: isRouterReady } = useRouter()
   const { user } = useUser()
   const userId = user?.id
   const [workspaceId, setWorkspaceId] = useState<string | undefined>()
@@ -102,6 +102,8 @@ export const WorkspaceProvider = ({
 
   useEffect(() => {
     if (
+      pathname === '/signin' ||
+      !isRouterReady ||
       !workspaces ||
       workspaces.length === 0 ||
       workspaceId ||
@@ -122,7 +124,9 @@ export const WorkspaceProvider = ({
     setWorkspaceIdInLocalStorage(newWorkspaceId)
     setWorkspaceId(newWorkspaceId)
   }, [
+    isRouterReady,
     members,
+    pathname,
     query.workspaceId,
     typebot?.workspaceId,
     typebotId,
