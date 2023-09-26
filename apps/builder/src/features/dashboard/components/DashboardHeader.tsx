@@ -1,7 +1,6 @@
 import React from 'react'
 import { HStack, Flex, Button, useDisclosure } from '@chakra-ui/react'
 import { HardDriveIcon, SettingsIcon } from '@/components/icons'
-import { signOut } from 'next-auth/react'
 import { useUser } from '@/features/account/hooks/useUser'
 import { isNotDefined } from '@typebot.io/lib'
 import Link from 'next/link'
@@ -13,14 +12,10 @@ import { WorkspaceSettingsModal } from '@/features/workspace/components/Workspac
 
 export const DashboardHeader = () => {
   const scopedT = useScopedI18n('dashboard.header')
-  const { user } = useUser()
+  const { user, logOut } = useUser()
   const { workspace, switchWorkspace, createWorkspace } = useWorkspace()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
-
-  const handleLogOut = () => {
-    signOut()
-  }
 
   const handleCreateNewWorkspace = () =>
     createWorkspace(user?.name ?? undefined)
@@ -59,7 +54,7 @@ export const DashboardHeader = () => {
           </Button>
           <WorkspaceDropdown
             currentWorkspace={workspace}
-            onLogoutClick={handleLogOut}
+            onLogoutClick={logOut}
             onCreateNewWorkspaceClick={handleCreateNewWorkspace}
             onWorkspaceSelected={switchWorkspace}
           />

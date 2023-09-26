@@ -15,6 +15,7 @@ import { useRouter } from 'next/router'
 import { useToast } from '../../../hooks/useToast'
 import { Credentials } from '@typebot.io/schemas'
 import { trpc } from '@/lib/trpc'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 
 type Props = Omit<ButtonProps, 'type'> & {
   type: Credentials['type']
@@ -38,6 +39,7 @@ export const CredentialsDropdown = ({
 }: Props) => {
   const router = useRouter()
   const { showToast } = useToast()
+  const { currentRole } = useWorkspace()
   const { data, refetch } = trpc.credentials.listCredentials.useQuery({
     workspaceId,
     type,
@@ -107,6 +109,7 @@ export const CredentialsDropdown = ({
         textAlign="left"
         leftIcon={<PlusIcon />}
         onClick={onCreateNewClick}
+        isDisabled={currentRole === 'GUEST'}
         {...props}
       >
         Add {credentialsName}
@@ -165,16 +168,18 @@ export const CredentialsDropdown = ({
               />
             </MenuItem>
           ))}
-          <MenuItem
-            maxW="500px"
-            overflow="hidden"
-            whiteSpace="nowrap"
-            textOverflow="ellipsis"
-            icon={<PlusIcon />}
-            onClick={onCreateNewClick}
-          >
-            Connect new
-          </MenuItem>
+          {currentRole === 'GUEST' ? null : (
+            <MenuItem
+              maxW="500px"
+              overflow="hidden"
+              whiteSpace="nowrap"
+              textOverflow="ellipsis"
+              icon={<PlusIcon />}
+              onClick={onCreateNewClick}
+            >
+              Connect new
+            </MenuItem>
+          )}
         </Stack>
       </MenuList>
     </Menu>

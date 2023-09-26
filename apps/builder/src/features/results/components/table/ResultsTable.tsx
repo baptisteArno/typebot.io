@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { AlignLeftTextIcon } from '@/components/icons'
 import { ResultHeaderCell, ResultsTablePreferences } from '@typebot.io/schemas'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { LoadingRows } from './LoadingRows'
 import {
   useReactTable,
@@ -48,7 +48,7 @@ export const ResultsTable = ({
   onResultExpandIndex,
 }: ResultsTableProps) => {
   const background = useColorModeValue('white', colors.gray[900])
-  const { updateTypebot } = useTypebot()
+  const { updateTypebot, isReadOnly } = useTypebot()
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({})
   const [isTableScrolled, setIsTableScrolled] = useState(false)
   const bottomElement = useRef<HTMLDivElement | null>(null)
@@ -185,6 +185,14 @@ export const ResultsTable = ({
     getCoreRowModel: getCoreRowModel(),
   })
 
+  const handleObserver = useCallback(
+    (entities: IntersectionObserverEntry[]) => {
+      const target = entities[0]
+      if (target.isIntersecting) onScrollToBottom()
+    },
+    [onScrollToBottom]
+  )
+
   useEffect(() => {
     if (!bottomElement.current) return
     const options: IntersectionObserverInit = {
@@ -197,21 +205,17 @@ export const ResultsTable = ({
     return () => {
       observer.disconnect()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bottomElement.current])
-
-  const handleObserver = (entities: IntersectionObserverEntry[]) => {
-    const target = entities[0]
-    if (target.isIntersecting) onScrollToBottom()
-  }
+  }, [handleObserver])
 
   return (
     <Stack maxW="1600px" px="4" overflowY="hidden" spacing={6}>
       <HStack w="full" justifyContent="flex-end">
-        <SelectionToolbar
-          selectedResultsId={Object.keys(rowSelection)}
-          onClearSelection={() => setRowSelection({})}
-        />
+        {isReadOnly ? null : (
+          <SelectionToolbar
+            selectedResultsId={Object.keys(rowSelection)}
+            onClearSelection={() => setRowSelection({})}
+          />
+        )}
         <TableSettingsButton
           resultHeader={resultHeader}
           columnVisibility={columnsVisibility}

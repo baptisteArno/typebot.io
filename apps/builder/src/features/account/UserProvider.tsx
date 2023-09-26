@@ -1,4 +1,4 @@
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import { isDefined, isNotDefined } from '@typebot.io/lib'
@@ -15,9 +15,13 @@ export const userContext = createContext<{
   user?: User
   isLoading: boolean
   currentWorkspaceId?: string
+  logOut: () => void
   updateUser: (newUser: Partial<User>) => void
 }>({
   isLoading: false,
+  logOut: () => {
+    console.log('logOut not implemented')
+  },
   updateUser: () => {
     console.log('updateUser not implemented')
   },
@@ -91,6 +95,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
   )
 
+  const logOut = () => {
+    signOut()
+    setUser(undefined)
+  }
+
   useEffect(() => {
     return () => {
       saveUser.flush()
@@ -103,6 +112,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         user,
         isLoading: status === 'loading',
         currentWorkspaceId,
+        logOut,
         updateUser,
       }}
     >
