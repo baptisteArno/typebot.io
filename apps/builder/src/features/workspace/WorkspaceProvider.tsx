@@ -127,7 +127,6 @@ export const WorkspaceProvider = ({
     isRouterReady,
     members,
     pathname,
-    query,
     query.workspaceId,
     typebot?.workspaceId,
     typebotId,
