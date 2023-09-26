@@ -10,7 +10,6 @@ import {
 } from '@typebot.io/schemas'
 import {
   WhatsAppCredentials,
-  WhatsAppIncomingMessage,
   defaultSessionExpiryTimeout,
 } from '@typebot.io/schemas/features/whatsapp'
 import { isInputBlock, isNotDefined } from '@typebot.io/lib/utils'
@@ -73,47 +72,50 @@ export const startWhatsAppSession = async ({
 
   if (isNotDefined(publicTypebot)) return
 
-  let session = await startSession({
-    startParams: {
-      typebot: publicTypebot.typebot.publicId as string,
-    },
-    userId: undefined,
-  })
-
-  // If first block is an input block, we can directly continue the bot flow
-  const firstEdgeId =
-    session.newSessionState.typebotsQueue[0].typebot.groups[0].blocks[0]
-      .outgoingEdgeId
-  const nextGroup = await getNextGroup(session.newSessionState)(firstEdgeId)
-  const firstBlock = nextGroup.group?.blocks.at(0)
-  if (firstBlock && isInputBlock(firstBlock)) {
-    const resultId = session.newSessionState.typebotsQueue[0].resultId
-    if (resultId)
-      await upsertResult({
-        hasStarted: true,
-        isCompleted: false,
-        resultId,
-        typebot: session.newSessionState.typebotsQueue[0].typebot,
-      })
-    session = await continueBotFlow({
-      ...session.newSessionState,
-      currentBlock: { groupId: firstBlock.groupId, blockId: firstBlock.id },
-    })(incomingMessage)
-  }
-
   const sessionExpiryTimeoutHours =
     publicTypebot.settings.whatsApp?.sessionExpiryTimeout ??
     defaultSessionExpiryTimeout
 
-  return {
-    ...session,
-    newSessionState: {
-      ...session.newSessionState,
+  const session = await startSession({
+    startParams: {
+      typebot: publicTypebot.typebot.publicId as string,
+    },
+    userId: undefined,
+    initialSessionState: {
       whatsApp: {
         contact,
       },
       expiryTimeout: sessionExpiryTimeoutHours * 60 * 60 * 1000,
     },
+  })
+
+  let newSessionState: SessionState = session.newSessionState
+
+  // If first block is an input block, we can directly continue the bot flow
+  const firstEdgeId =
+    newSessionState.typebotsQueue[0].typebot.groups[0].blocks[0].outgoingEdgeId
+  const nextGroup = await getNextGroup(newSessionState)(firstEdgeId)
+  const firstBlock = nextGroup.group?.blocks.at(0)
+  if (firstBlock && isInputBlock(firstBlock)) {
+    const resultId = newSessionState.typebotsQueue[0].resultId
+    if (resultId)
+      await upsertResult({
+        hasStarted: true,
+        isCompleted: false,
+        resultId,
+        typebot: newSessionState.typebotsQueue[0].typebot,
+      })
+    newSessionState = (
+      await continueBotFlow({
+        ...newSessionState,
+        currentBlock: { groupId: firstBlock.groupId, blockId: firstBlock.id },
+      })(incomingMessage)
+    ).newSessionState
+  }
+
+  return {
+    ...session,
+    newSessionState,
   }
 }
 

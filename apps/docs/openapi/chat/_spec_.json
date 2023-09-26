@@ -1574,6 +1574,7 @@
                                                     "enum": [
                                                       "Custom",
                                                       "Empty",
+                                                      "Environment name",
                                                       "User ID",
                                                       "Now",
                                                       "Today",

@@ -158,6 +158,17 @@ const SetVariableValue = ({
         </Alert>
       )
     }
+    case 'Environment name': {
+      return (
+        <Alert fontSize="sm">
+          <AlertIcon />
+          <Text>
+            Will return either <Tag size="sm">web</Tag> or{' '}
+            <Tag size="sm">whatsapp</Tag>.
+          </Text>
+        </Alert>
+      )
+    }
     case 'Contact name':
     case 'Phone number':
     case 'Random ID':
