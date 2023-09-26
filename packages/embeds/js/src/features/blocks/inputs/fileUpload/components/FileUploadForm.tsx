@@ -58,9 +58,7 @@ export const FileUploadForm = (props: Props) => {
         {
           file,
           input: {
-            resultId: props.context.resultId,
-            typebotId: props.context.typebot.id,
-            blockId: props.block.id,
+            sessionId: props.context.sessionId,
             fileName: file.name,
           },
         },
@@ -86,9 +84,7 @@ export const FileUploadForm = (props: Props) => {
       files: files.map((file) => ({
         file: file,
         input: {
-          resultId,
-          typebotId: props.context.typebot.id,
-          blockId: props.block.id,
+          sessionId: props.context.sessionId,
           fileName: file.name,
         },
       })),

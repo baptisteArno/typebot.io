@@ -5,9 +5,7 @@ type UploadFileProps = {
   files: {
     file: File
     input: {
-      typebotId: string
-      blockId: string
-      resultId: string
+      sessionId: string
       fileName: string
     }
   }[]
