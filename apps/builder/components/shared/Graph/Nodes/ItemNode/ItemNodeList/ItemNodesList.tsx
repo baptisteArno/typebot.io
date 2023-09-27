@@ -1,17 +1,17 @@
-import { Flex, Portal, Stack, Text, useEventListener } from '@chakra-ui/react'
+import { Flex, Portal, Stack, Text, useEventListener, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel } from '@chakra-ui/react'
 import {
   computeNearestPlaceholderIndex,
   useStepDnd,
 } from 'contexts/GraphDndContext'
 import { Coordinates, useGraph } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext'
-import { ButtonItem, IntegrationStepType, OctaStepType, OctaWabaStepType, StepIndices, StepWithItems, WebhookStep } from 'models'
+import { ButtonItem, IntegrationStepType, OctaStepType, OctaWabaStepType, StepIndices, StepWithItems } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { ItemNode } from '../ItemNode'
 import { SourceEndpoint } from '../../../Endpoints'
 import { ItemNodeOverlay } from '../ItemNodeOverlay'
 import { Container, HandleSelectCalendar, SelectedCalendar } from './ItemNodeList.style'
-import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
+import { CodeEditor } from 'components/shared/CodeEditor'
 
 type Props = {
   step: StepWithItems
@@ -121,6 +121,26 @@ export const ItemNodesList = ({
     path: typebot?.blocks[blockIndex]?.steps[stepIndex]?.options?.path 
   }
 
+  const getWebhookDetails = () => {
+    try {
+        const headers = {};
+
+        typebot?.blocks[blockIndex]?.steps[stepIndex]?.options?.headers.map(header => {
+          headers[header.key] = header.value
+        })
+
+        const jsonPreview = {
+              headers,
+              body: JSON.parse(typebot?.blocks[blockIndex]?.steps[stepIndex]?.options?.body)
+            }
+
+        return JSON.stringify(jsonPreview ?? '{}', undefined, 2);
+
+      } catch {
+        return 'Is not valid JSON';
+      }
+  }
+
   return (
     <Stack
       flex={1}
@@ -129,16 +149,8 @@ export const ItemNodesList = ({
       onClick={stopPropagating}
       pointerEvents={isReadOnly ? 'none' : 'all'}
     >
-      {/* <Flex
-        ref={handlePushElementRef(0)}
-        h={showPlaceholders && expandedPlaceholderIndex === 0 ? '50px' : '2px'}
-        bgColor={'gray.300'}
-        visibility={showPlaceholders ? 'visible' : 'hidden'}
-        rounded="lg"
-        transition={showPlaceholders ? 'height 200ms' : 'none'}
-      /> */}
       {step.type === OctaStepType.OFFICE_HOURS && (
-        <Stack paddingBottom={"10px"}>
+        <Stack paddingBottom={"10px"} >
           {!typebot?.blocks[blockIndex].steps[stepIndex]?.options?.name && <HandleSelectCalendar>
             Selecione o expediente:
           </HandleSelectCalendar>}
@@ -164,6 +176,25 @@ export const ItemNodesList = ({
               {webhook.method} <br/>
               {webhook.url + webhook.path}
             </Text>
+          }
+          {webhook?.url &&
+            <Accordion allowMultiple onClick={stopPropagating} pointerEvents='all' >
+              <AccordionItem>
+                  <AccordionButton justifyContent="space-between">
+                    <b>Detalhes</b>
+                    <AccordionIcon />
+                  </AccordionButton>
+                  <AccordionPanel>
+                      <CodeEditor
+                        value={getWebhookDetails() ?? '{}'}
+                        defaultValue={'{}'}
+                        lang="json"
+                        withVariableButton={false}
+                        isReadOnly
+                      />
+                  </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
           }
         </Container>
       )}

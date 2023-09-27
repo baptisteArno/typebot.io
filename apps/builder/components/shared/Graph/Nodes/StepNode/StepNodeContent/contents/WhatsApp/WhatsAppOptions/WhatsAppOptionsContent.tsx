@@ -15,23 +15,23 @@ type Props = {
 const WhatsAppOptionsContent = ({ step, indices }: Props) => {
   return (
     <Stack>
-      {!step.options?.body?.content?.plainText && !step.options?.header?.content?.plainText &&
+      {!step?.options?.body?.content?.plainText && !step?.options?.header?.content?.plainText &&
         <Text noOfLines={0}>
           Clique para editar...
         </Text>
       }
-      {step.options?.header?.content?.plainText && (
-        <TextHtmlContent html={step.options.header.content.html} fontSize='xl' />
+      {step?.options?.header?.content?.plainText && (
+        <TextHtmlContent html={step?.options?.header?.content?.html} fontSize='xl' />
       )}
       
-      <TextHtmlContent html={step.options.body.content?.html} renderIfEmpty={false} />
+      <TextHtmlContent html={step?.options?.body?.content?.html} renderIfEmpty={false} />
       
-      <TextHtmlContent html={step.options.listTitle.content?.html} renderIfEmpty={false} />
+      <TextHtmlContent html={step?.options?.listTitle?.content?.html} renderIfEmpty={false} />
       <ItemNodesList step={step} indices={indices} />
 
-      <TextHtmlContent html={step.options.footer.content?.html} renderIfEmpty={false} fontSize={"xs"} />
+      <TextHtmlContent html={step?.options?.footer?.content?.html} renderIfEmpty={false} fontSize={"xs"} />
       <OctaDivider />
-      <WithVariableContent variableId={step.options?.variableId} property={step?.options?.property} />
+      <WithVariableContent variableId={step?.options?.variableId} property={step?.options?.property} />
     </Stack >
   )
 }

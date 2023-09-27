@@ -163,7 +163,7 @@ export const CodeEditor = ({
             />
           )}
           {addVariable && (
-            <Stack rounded="md" flex="1">
+            <Stack rounded="md" flex="1" minHeight="18vh">
               <FormControl>
                 <VariableSearchInput
                   onSelectVariable={handleVariableSelected}
