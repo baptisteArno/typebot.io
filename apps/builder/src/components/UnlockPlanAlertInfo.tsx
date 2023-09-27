@@ -15,13 +15,11 @@ import {
 import { useI18n } from '@/locales'
 
 type Props = {
-  contentLabel: React.ReactNode
   buttonLabel?: string
 } & AlertProps &
   Pick<ChangePlanModalProps, 'type' | 'excludedPlans'>
 
 export const UnlockPlanAlertInfo = ({
-  contentLabel,
   buttonLabel,
   type,
   excludedPlans,
@@ -39,7 +37,7 @@ export const UnlockPlanAlertInfo = ({
     >
       <HStack>
         <AlertIcon />
-        <Text>{contentLabel}</Text>
+        <Text>{props.children}</Text>
       </HStack>
       <Button
         colorScheme={props.status === 'warning' ? 'orange' : 'blue'}

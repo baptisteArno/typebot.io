@@ -43,7 +43,6 @@ import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvi
 import { isWhatsAppAvailable } from '@/features/telemetry/posthog'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
-import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
 import { LockTag } from '@/features/billing/components/LockTag'
 import { Plan } from '@typebot.io/prisma'
 
@@ -106,18 +105,9 @@ export const integrationsList = [
             logo={<WhatsAppLogo height={100} width="70px" />}
             label="WhatsApp"
             lockTagPlan={hasProPerks(workspace) ? undefined : 'PRO'}
-            modal={({ onClose, isOpen }) =>
-              hasProPerks(workspace) ? (
-                <WhatsAppModal isOpen={isOpen} onClose={onClose} {...props} />
-              ) : (
-                <ChangePlanModal
-                  isOpen={isOpen}
-                  onClose={onClose}
-                  excludedPlans={['STARTER']}
-                  type="deploy on WhatsApp"
-                />
-              )
-            }
+            modal={({ onClose, isOpen }) => (
+              <WhatsAppModal isOpen={isOpen} onClose={onClose} {...props} />
+            )}
             {...props}
           />
         </ParentModalProvider>

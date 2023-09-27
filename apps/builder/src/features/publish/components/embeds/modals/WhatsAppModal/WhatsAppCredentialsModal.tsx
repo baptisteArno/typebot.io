@@ -397,12 +397,15 @@ const PhoneNumber = ({
       <HStack>
         <Text>
           Go to your{' '}
-          <TextLink
+          <Button
+            as={Link}
             href={`https://developers.facebook.com/apps/${appId}/whatsapp-business/wa-dev-console`}
             isExternal
+            rightIcon={<ExternalLinkIcon />}
+            size="sm"
           >
-            WhatsApp Dev Console
-          </TextLink>
+            WhatsApp Dev Console{' '}
+          </Button>
         </Text>
       </HStack>
     </ListItem>

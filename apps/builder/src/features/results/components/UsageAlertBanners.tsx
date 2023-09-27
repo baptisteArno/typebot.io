@@ -38,18 +38,11 @@ export const UsageAlertBanners = ({ workspace }: Props) => {
     <>
       {chatsLimitPercentage > ALERT_CHATS_PERCENT_THRESHOLD && (
         <Flex p="4">
-          <UnlockPlanAlertInfo
-            status="warning"
-            contentLabel={
-              <>
-                Your workspace collected{' '}
-                <strong>{chatsLimitPercentage}%</strong> of your total chats
-                limit this month. Upgrade your plan to continue chatting with
-                your customers beyond this limit.
-              </>
-            }
-            buttonLabel="Upgrade"
-          />
+          <UnlockPlanAlertInfo status="warning" buttonLabel="Upgrade">
+            Your workspace collected <strong>{chatsLimitPercentage}%</strong> of
+            your total chats limit this month. Upgrade your plan to continue
+            chatting with your customers beyond this limit.
+          </UnlockPlanAlertInfo>
         </Flex>
       )}
     </>

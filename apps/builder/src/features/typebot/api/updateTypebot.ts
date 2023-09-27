@@ -119,12 +119,12 @@ export const updateTypebot = authenticatedProcedure
       }
 
       if (
-        typebot.whatsAppCredentialsId &&
+        typebot.settings?.whatsApp?.isEnabled &&
         !hasProPerks(existingTypebot.workspace)
       ) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message: 'WhatsApp is only available for Pro workspaces',
+          message: 'WhatsApp can be enabled only on a Pro workspaces',
         })
       }
 
