@@ -18,6 +18,7 @@ export type TableListItemProps<T> = {
   item: T
   debounceTimeout?: number
   onItemChange: (item: T) => void
+  onRemoveItem: () => void
 }
 
 type Props<T> = {
@@ -91,9 +92,6 @@ export const TableListOcta = <T,>({
                 icon={<TrashIcon />}
                 aria-label="Remove cell"
                 onClick={deleteItem(itemIndex)}
-                pos="absolute"
-                left="-15px"
-                top="-15px"
                 size="sm"
                 shadow="md"
               />

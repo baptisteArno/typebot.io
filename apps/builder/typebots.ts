@@ -71,7 +71,12 @@ import {
 } from 'utils'
 import { dequal } from 'dequal'
 import { stringify } from 'qs'
-import { isChoiceInput, isConditionStep, sendRequest, isOctaBubbleStep } from 'utils'
+import {
+  isChoiceInput,
+  isConditionStep,
+  sendRequest,
+  isOctaBubbleStep,
+} from 'utils'
 import cuid from 'cuid'
 import { diff } from 'deep-object-diff'
 import { duplicateWebhook } from 'services/webhook'
@@ -122,7 +127,7 @@ export const createTypebot = async ({
     folderId,
     name: 'My typebot',
     workspaceId,
-    version: 2
+    version: 2,
   }
 
   const response = await sendOctaRequest({
@@ -142,7 +147,7 @@ export const importTypebot = async (typebot: Typebot, userPlan: Plan) => {
   const { data, error } = await sendOctaRequest({
     url: ``,
     method: 'POST',
-    body: { ...newTypebot, version: 2 }
+    body: { ...newTypebot, version: 2 },
   })
 
   if (!data) return { data, error }
@@ -238,11 +243,11 @@ const duplicateTypebot = (
       })),
       settings:
         typebot.settings.general.isBrandingEnabled === false &&
-          userPlan === Plan.FREE
+        userPlan === Plan.FREE
           ? {
-            ...typebot.settings,
-            general: { ...typebot.settings.general, isBrandingEnabled: true },
-          }
+              ...typebot.settings,
+              general: { ...typebot.settings.general, isBrandingEnabled: true },
+            }
           : typebot.settings,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -258,14 +263,15 @@ const generateOldNewIdsMapping = (itemWithId: { id: string }[]) => {
 }
 
 export const getTypebot = async (typebotId: string) => {
-  const { data } = useSWR<
-    { typebot: Typebot },
-    Error
-  >(`/api/typebots/${typebotId}`, fetcher, {
-    dedupingInterval: isNotEmpty(process.env.NEXT_PUBLIC_E2E_TEST)
-      ? 0
-      : undefined,
-  })
+  const { data } = useSWR<{ typebot: Typebot }, Error>(
+    `/api/typebots/${typebotId}`,
+    fetcher,
+    {
+      dedupingInterval: isNotEmpty(process.env.NEXT_PUBLIC_E2E_TEST)
+        ? 0
+        : undefined,
+    }
+  )
 
   return data
 }
@@ -273,7 +279,7 @@ export const getTypebot = async (typebotId: string) => {
 export const deleteTypebot = async (id: string) =>
   sendOctaRequest({
     url: `${config.basePath || ''}/api/typebots/${id}`,
-    method: 'DELETE'
+    method: 'DELETE',
   })
 
 export const updateTypebot = async (id: string, typebot: Typebot) =>
@@ -310,6 +316,7 @@ export const parseNewStep = (
       ? parseDefaultContent(type)
       : undefined,
     options,
+
     webhookId: stepTypeHasWebhook(type) ? cuid() : undefined,
     items: stepTypeHasItems(type) ? parseDefaultItems(type, id) : undefined,
   } as DraggableStep
@@ -334,7 +341,9 @@ const parseDefaultItems = (
   }
 }
 
-const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType): BubbleStepContent | null => {
+const parseDefaultContent = (
+  type: BubbleStepType | OctaBubbleStepType
+): BubbleStepContent | null => {
   switch (type) {
     case BubbleStepType.TEXT:
       return defaultTextBubbleContent
@@ -352,6 +361,7 @@ const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType): BubbleS
 }
 
 const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType | WOZStepType): OctaStepOptions | OctaWabaStepOptions | WOZSuggestionOptions | null => {
+
   switch (type) {
     case OctaStepType.ASSIGN_TO_TEAM:
       return defaultAssignToTeamOptions
@@ -372,7 +382,9 @@ const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType | WOZStepTyp
   }
 }
 
-const parseDefaultStepOptions = (type: StepWithOptionsType): StepOptions | null => {
+const parseDefaultStepOptions = (
+  type: StepWithOptionsType
+): StepOptions | null => {
   switch (type) {
     case InputStepType.TEXT:
       return defaultGenericInputOptions

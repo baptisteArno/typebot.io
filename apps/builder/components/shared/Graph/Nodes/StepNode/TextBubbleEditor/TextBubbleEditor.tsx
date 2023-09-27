@@ -24,19 +24,26 @@ type Props = {
   increment?: number
 }
 
-export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: Props) => {
-  const randomEditorId = useMemo(() => Math.random().toString(), [])
+export const TextBubbleEditor = ({
+  initialValue,
+  onClose,
+  onKeyUp,
+  increment,
+}: Props) => {
+  const randomEditorId = useMemo(
+    () => `${Math.random().toString()}${increment ? `-${increment}` : ''}`,
+    [increment]
+  )
   const editor = useMemo(
     () =>
       withPlate(createEditor() as TEditor<Value>, {
-        id: `${randomEditorId}${increment ? `-${increment}` : ''}`,
+        id: randomEditorId,
         plugins: platePlugins,
       }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [randomEditorId]
   )
 
-  let [value, setValue] = useState(initialValue)
+  const [value, setValue] = useState(initialValue)
   const varDropdownRef = useRef<HTMLDivElement | null>(null)
   const rememberedSelection = useRef<BaseSelection | null>(null)
   const [isVariableDropdownOpen, setIsVariableDropdownOpen] = useState(false)
@@ -113,7 +120,9 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
     >
       <ToolBar
         editor={editor}
-        onVariablesButtonClick={(showDialog) => { setIsVariableDropdownOpen(showDialog); }}
+        onVariablesButtonClick={(showDialog) => {
+          setIsVariableDropdownOpen(showDialog)
+        }}
         onEmojiSelected={handleEmoji}
       />
       <Plate
@@ -132,7 +141,7 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
             rememberedSelection.current = editor.selection
           },
           onKeyDown: handleKeyDown,
-          onKeyUp: () => keyUpEditor()
+          onKeyUp: () => keyUpEditor(),
         }}
         initialValue={
           initialValue.length === 0
@@ -157,7 +166,7 @@ export const TextBubbleEditor = ({ initialValue, onClose, onKeyUp, increment }: 
             placeholder="Pesquise sua variável"
             handleOutsideClick={() => setIsVariableDropdownOpen(false)}
             isSaveContext={false}
-            labelDefault={"Selecione uma variável:"}
+            labelDefault={'Selecione uma variável:'}
           />
         </Flex>
       )}

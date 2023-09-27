@@ -1,9 +1,11 @@
-import { StepIndices, WhatsAppButtonsListStep } from 'models'
 import React from 'react'
+import { Stack } from '@chakra-ui/react'
+
+import { StepIndices, WhatsAppButtonsListStep } from 'models'
 import { ItemNodesList } from 'components/shared/Graph/Nodes/ItemNode'
-import { Stack, Text } from '@chakra-ui/react'
-import { WithVariableContent } from '../../WithVariableContent'
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
+
+import { WithVariableContent } from '../../WithVariableContent'
 import { TextHtmlContent } from '../../TextHtmlContent'
 
 type Props = {
@@ -14,24 +16,24 @@ type Props = {
 const WhatsApButtonsContent = ({ step, indices }: Props) => {
   return (
     <Stack>
-      {!step.options?.body?.content?.plainText && !step.options?.header?.content?.plainText &&
-        <Text noOfLines={0}>
-          Clique para editar...
-        </Text>
-      }
-      {step.options?.body?.content?.plainText &&
-        <>
-          {step.options?.header?.content?.plainText && (
-            <TextHtmlContent html={step.options.header.content.html} fontSize='xl' />
-          )}
+      <TextHtmlContent
+        html={step.options?.header?.content?.html}
+        fontSize="xl"
+        renderIfEmpty={false}
+      />
+      <TextHtmlContent html={step.options?.body?.content?.html} />
+      <ItemNodesList step={step} indices={indices} />
+      <TextHtmlContent
+        html={step.options?.footer?.content?.html}
+        renderIfEmpty={false}
+        fontSize="xs"
+      />
 
-          <TextHtmlContent html={step.options.body.content.html} />
-          <ItemNodesList step={step} indices={indices} />
-          <TextHtmlContent html={step.options.footer.content?.html} renderIfEmpty={false} fontSize='xs' />
-          <OctaDivider />
-          <WithVariableContent variableId={step?.options?.variableId} property={step?.options?.property} />
-        </>
-      }
+      <OctaDivider />
+      <WithVariableContent
+        variableId={step?.options?.variableId}
+        property={step?.options?.property}
+      />
     </Stack>
   )
 }

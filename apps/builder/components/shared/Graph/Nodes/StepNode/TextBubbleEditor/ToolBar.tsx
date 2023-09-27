@@ -1,26 +1,31 @@
-import React, { useState } from 'react';
-import { StackProps, HStack, Button } from '@chakra-ui/react';
+import React, { useState } from 'react'
+import { StackProps, HStack, Button } from '@chakra-ui/react'
 import {
   MARK_BOLD,
   MARK_ITALIC,
   MARK_UNDERLINE,
-  MARK_STRIKETHROUGH
-} from '@udecode/plate-basic-marks';
-import { getPluginType, PlateEditor, Value } from '@udecode/plate-core';
-import { LinkToolbarButton } from '@udecode/plate-ui-link';
-import { MarkToolbarButton } from '@udecode/plate-ui-toolbar';
-import { BoldIcon, ItalicIcon, UnderlineIcon, LinkIcon, StrikethroughIcon, EmojiIcon } from 'assets/icons';
-import 'emoji-mart/css/emoji-mart.css';
-import { Picker } from 'emoji-mart';
-import { VscSmiley } from 'react-icons/vsc';
-import { useWorkspace } from 'contexts/WorkspaceContext';
-
+  MARK_STRIKETHROUGH,
+} from '@udecode/plate-basic-marks'
+import { getPluginType, PlateEditor, Value } from '@udecode/plate-core'
+import { LinkToolbarButton } from '@udecode/plate-ui-link'
+import { MarkToolbarButton } from '@udecode/plate-ui-toolbar'
+import {
+  BoldIcon,
+  ItalicIcon,
+  UnderlineIcon,
+  LinkIcon,
+  StrikethroughIcon,
+  EmojiIcon,
+} from 'assets/icons'
+import 'emoji-mart/css/emoji-mart.css'
+import { Picker } from 'emoji-mart'
+import { useWorkspace } from 'contexts/WorkspaceContext'
 
 type Props = {
-  editor: PlateEditor<Value>;
-  onVariablesButtonClick: (showDialog: boolean) => void;
-  onEmojiSelected: (emojiText: string) => void;
-} & StackProps;
+  editor: PlateEditor<Value>
+  onVariablesButtonClick: (showDialog: boolean) => void
+  onEmojiSelected: (emojiText: string) => void
+} & StackProps
 
 export const ToolBar = ({
   editor,
@@ -28,22 +33,22 @@ export const ToolBar = ({
   onEmojiSelected,
   ...props
 }: Props) => {
-  const [showPicker, setShowPicker] = useState(false);
+  const [showPicker, setShowPicker] = useState(false)
   const { workspace } = useWorkspace()
 
   const handleVariablesButtonMouseDown = (e: React.MouseEvent) => {
-    e.preventDefault();
-    onVariablesButtonClick(true);
-  };
+    e.preventDefault()
+    onVariablesButtonClick(true)
+  }
 
   const handleEmojiIconClick = () => {
-    setShowPicker((prevState) => !prevState);
-  };
+    setShowPicker((prevState) => !prevState)
+  }
 
   const handleEmojiSelect = (emoji: any) => {
-    setShowPicker(false);
+    setShowPicker(false)
     onEmojiSelected(emoji.native)
-  };
+  }
 
   const customI18n = {
     search: 'Pesquisar',
@@ -63,7 +68,7 @@ export const ToolBar = ({
       flags: 'Bandeiras',
       custom: 'Customizado',
     },
-  };
+  }
 
   return (
     <HStack
@@ -90,25 +95,25 @@ export const ToolBar = ({
           icon={<ItalicIcon fontSize="20px" />}
         />
       </span>
-      {workspace?.channel === 'web' &&
-        <span data-testid="underline-button">
-          <MarkToolbarButton
-            type={getPluginType(editor, MARK_UNDERLINE)}
-            icon={<UnderlineIcon fontSize="20px" />}
-          />
-        </span>
-      }
       <span data-testid="strikethrough-button">
         <MarkToolbarButton
           type={getPluginType(editor, MARK_STRIKETHROUGH)}
           icon={<StrikethroughIcon fontSize="20px" />}
         />
       </span>
-
-      <span data-testid="link-button">
-        <LinkToolbarButton icon={<LinkIcon fontSize="20px" />} />
-      </span>
-
+      {workspace?.channel === 'web' && (
+        <>
+          <span data-testid="underline-button">
+            <MarkToolbarButton
+              type={getPluginType(editor, MARK_UNDERLINE)}
+              icon={<UnderlineIcon fontSize="20px" />}
+            />
+          </span>
+          <span data-testid="link-button">
+            <LinkToolbarButton icon={<LinkIcon fontSize="20px" />} />
+          </span>
+        </>
+      )}
       <span style={{ position: 'relative' }}>
         <span
           onClick={handleEmojiIconClick}
@@ -117,9 +122,10 @@ export const ToolBar = ({
             cursor: 'pointer',
             display: 'inline-block',
             fontSize: '1.4em',
-            marginTop: '5px'
+            marginTop: '5px',
           }}
-        ><EmojiIcon fontSize="20px" />
+        >
+          <EmojiIcon fontSize="20px" />
         </span>
         {showPicker && (
           <div style={{ position: 'absolute', top: '100%', zIndex: 9999 }}>
@@ -133,5 +139,5 @@ export const ToolBar = ({
         )}
       </span>
     </HStack>
-  );
-};
+  )
+}

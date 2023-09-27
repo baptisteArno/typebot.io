@@ -8,11 +8,7 @@ import {
 } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext'
 import { PlusIcon } from 'assets/icons'
-import {
-  Item,
-  ItemIndices,
-  ItemType
-} from 'models'
+import { Item, ItemIndices, ItemType } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { isNotDefined } from 'utils'
 

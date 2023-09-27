@@ -226,6 +226,7 @@ export const StepsSideBar = () => {
                 )
             )}
             {workspace?.channel === 'whatsapp' &&
+              verifyFeatureToggle('commerce-enabled') &&
               wabaMessageComponent().map((type) => (
                 <StepCard
                   key={type}
