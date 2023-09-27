@@ -147,12 +147,12 @@ export const startSession = async ({
   if (isDefined(startClientSideAction)) {
     if (!result) {
       if ('startPropsToInject' in startClientSideAction) {
-        const { customHeadCode, googleAnalyticsId, pixelId, gtmId } =
+        const { customHeadCode, googleAnalyticsId, pixelId, pixelIds, gtmId } =
           startClientSideAction.startPropsToInject
         let toolsList = ''
         if (customHeadCode) toolsList += 'Custom head code, '
         if (googleAnalyticsId) toolsList += 'Google Analytics, '
-        if (pixelId) toolsList += 'Pixel, '
+        if (pixelId || pixelIds) toolsList += 'Pixel, '
         if (gtmId) toolsList += 'Google Tag Manager, '
         toolsList = toolsList.slice(0, -2)
         startLogs.push({
@@ -321,6 +321,15 @@ const parseStartClientSideAction = (
   typebot: StartTypebot
 ): NonNullable<ChatReply['clientSideActions']>[number] | undefined => {
   const blocks = typebot.groups.flatMap((group) => group.blocks)
+  const pixelBlocks = (
+    blocks.filter(
+      (block) =>
+        block.type === IntegrationBlockType.PIXEL &&
+        isNotEmpty(block.options.pixelId) &&
+        block.options.isInitSkip !== true
+    ) as PixelBlock[]
+  ).map((pixelBlock) => pixelBlock.options.pixelId as string)
+
   const startPropsToInject = {
     customHeadCode: isNotEmpty(typebot.settings.metadata.customHeadCode)
       ? parseHeadCode(typebot.settings.metadata.customHeadCode)
@@ -333,14 +342,7 @@ const parseStartClientSideAction = (
           block.options.trackingId
       ) as GoogleAnalyticsBlock | undefined
     )?.options.trackingId,
-    pixelIds: (
-      blocks.filter(
-        (block) =>
-          block.type === IntegrationBlockType.PIXEL &&
-          isNotEmpty(block.options.pixelId) &&
-          block.options.isInitSkip !== true
-      ) as PixelBlock[]
-    ).map((pixelBlock) => pixelBlock.options.pixelId as string),
+    pixelIds: pixelBlocks.length > 0 ? pixelBlocks : undefined,
   }
 
   if (
