@@ -1,3 +1,9 @@
+---
+sidebar_position: 1
+slug: /embed/whatsapp
+title: Overview
+---
+
 # WhatsApp
 
 WhatsApp is currently available as a private beta test. If you'd like to try it out, reach out to support@typebot.io.

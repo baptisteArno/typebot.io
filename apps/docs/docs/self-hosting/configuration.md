@@ -201,24 +201,9 @@ In order to be able to test your bot on WhatsApp from the Preview drawer, you ne
 <details><summary><h4>Requirements</h4></summary>
 <p>
 
-### Create a Facebook Business account
+## 1. [Create a WhatsApp Meta app](../embed/whatsapp/create-meta-app)
 
-1. Head over to https://business.facebook.com and log in
-2. Create a new business account on the left side bar
-
-:::note
-It is possible that Meta directly restricts your newly created Business account. In that case, make sure to verify your identity to proceed.
-:::
-
-### Create a Meta app
-
-1. Head over to https://developers.facebook.com/apps
-2. Click on Create App
-3. Give it any name and select `Business` type
-4. Select your newly created Business Account
-5. On the app page, set up the `WhatsApp` product
-
-### Get the System User token
+## 2. Get the System User token
 
 1. Go to your [System users page](https://business.facebook.com/settings/system-users) and create a new system user that has access to the related.
 
@@ -228,7 +213,7 @@ It is possible that Meta directly restricts your newly created Business account.
 2. The generated token will be used as `META_SYSTEM_USER_TOKEN` in your viewer configuration.
 3. Click on `Add assets`. Under `Apps`, look for your app, select it and check `Manage app`
 
-### Get the phone number ID
+## 3. Get the phone number ID
 
 1. Go to your WhatsApp Dev Console
 
@@ -237,12 +222,12 @@ It is possible that Meta directly restricts your newly created Business account.
 2. Add your phone number by clicking on the `Add phone number` button.
 3. Select the newly created phone number in the `From` dropdown list and you will see right below the associated `Phone number ID` This will be used as `WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID` in your viewer configuration.
 
-### Set up the webhook
+## 4. Set up the webhook
 
 1. Head over to `Quickstart > Configuration`. Edit the webhook URL to `$NEXTAUTH_URL/api/v1/whatsapp/preview/webhook`. Set the Verify token to `$ENCRYPTION_SECRET` and click on `Verify and save`.
 2. Add the `messages` webhook field.
 
-### Set up the message template
+## 5. Set up the message template
 
 1. Head over to `Messaging > Message Templates` and click on `Create Template`
 2. Select the `Utility` category

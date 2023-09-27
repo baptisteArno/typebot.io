@@ -300,10 +300,10 @@ const Requirements = () => (
     <Text>
       Make sure you have{' '}
       <TextLink
-        href="https://developers.facebook.com/docs/whatsapp/cloud-api/get-started#set-up-developer-assets"
+        href="https://docs.typebot.io/embed/whatsapp/create-meta-app"
         isExternal
       >
-        created a WhatsApp Business Account
+        created a WhatsApp Meta app
       </TextLink>
       . You should be able to get to this page:
     </Text>
@@ -312,13 +312,6 @@ const Requirements = () => (
       alt="WhatsApp quickstart page"
       rounded="md"
     />
-    <Text>
-      You can find your Meta apps here:{' '}
-      <TextLink href="https://developers.facebook.com/apps" isExternal>
-        https://developers.facebook.com/apps
-      </TextLink>
-      .
-    </Text>
   </Stack>
 )
 
