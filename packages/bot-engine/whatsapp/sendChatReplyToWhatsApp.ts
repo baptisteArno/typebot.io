@@ -15,6 +15,7 @@ import { HTTPError } from 'got'
 import { convertInputToWhatsAppMessages } from './convertInputToWhatsAppMessage'
 import { isNotDefined } from '@typebot.io/lib/utils'
 import { computeTypingDuration } from '../computeTypingDuration'
+import { continueBotFlow } from '../continueBotFlow'
 
 // Media can take some time to be delivered. This make sure we don't send a message before the media is delivered.
 const messageAfterMediaTimeout = 5000
@@ -23,6 +24,7 @@ type Props = {
   to: string
   typingEmulation: SessionState['typingEmulation']
   credentials: WhatsAppCredentials['data']
+  state: SessionState
 } & Pick<ChatReply, 'messages' | 'input' | 'clientSideActions'>
 
 export const sendChatReplyToWhatsApp = async ({
@@ -32,12 +34,35 @@ export const sendChatReplyToWhatsApp = async ({
   input,
   clientSideActions,
   credentials,
-}: Props) => {
+  state,
+}: Props): Promise<void> => {
   const messagesBeforeInput = isLastMessageIncludedInInput(input)
     ? messages.slice(0, -1)
     : messages
 
   const sentMessages: WhatsAppSendingMessage[] = []
+
+  const clientSideActionsBeforeMessages =
+    clientSideActions?.filter((action) =>
+      isNotDefined(action.lastBubbleBlockId)
+    ) ?? []
+
+  for (const action of clientSideActionsBeforeMessages) {
+    const result = await executeClientSideAction({ to, credentials })(action)
+    if (!result) continue
+    const { input, newSessionState, messages, clientSideActions } =
+      await continueBotFlow(state)(result.replyToSend)
+
+    return sendChatReplyToWhatsApp({
+      to,
+      messages,
+      input,
+      typingEmulation: newSessionState.typingEmulation,
+      clientSideActions,
+      credentials,
+      state: newSessionState,
+    })
+  }
 
   for (const message of messagesBeforeInput) {
     const whatsAppMessage = convertMessageToWhatsAppMessage(message)
@@ -60,6 +85,28 @@ export const sendChatReplyToWhatsApp = async ({
         credentials,
       })
       sentMessages.push(whatsAppMessage)
+      const clientSideActionsAfterMessage =
+        clientSideActions?.filter(
+          (action) => action.lastBubbleBlockId === message.id
+        ) ?? []
+      for (const action of clientSideActionsAfterMessage) {
+        const result = await executeClientSideAction({ to, credentials })(
+          action
+        )
+        if (!result) continue
+        const { input, newSessionState, messages, clientSideActions } =
+          await continueBotFlow(state)(result.replyToSend)
+
+        return sendChatReplyToWhatsApp({
+          to,
+          messages,
+          input,
+          typingEmulation: newSessionState.typingEmulation,
+          clientSideActions,
+          credentials,
+          state: newSessionState,
+        })
+      }
     } catch (err) {
       captureException(err, { extra: { message } })
       console.log('Failed to send message:', JSON.stringify(message, null, 2))
@@ -67,34 +114,6 @@ export const sendChatReplyToWhatsApp = async ({
         console.log('HTTPError', err.response.statusCode, err.response.body)
     }
   }
-
-  if (clientSideActions)
-    for (const clientSideAction of clientSideActions) {
-      if ('redirect' in clientSideAction && clientSideAction.redirect.url) {
-        const message = {
-          type: 'text',
-          text: {
-            body: clientSideAction.redirect.url,
-            preview_url: true,
-          },
-        } satisfies WhatsAppSendingMessage
-        try {
-          await sendWhatsAppMessage({
-            to,
-            message,
-            credentials,
-          })
-        } catch (err) {
-          captureException(err, { extra: { message } })
-          console.log(
-            'Failed to send message:',
-            JSON.stringify(message, null, 2)
-          )
-          if (err instanceof HTTPError)
-            console.log('HTTPError', err.response.statusCode, err.response.body)
-        }
-      }
-    }
 
   if (input) {
     const inputWhatsAppMessages = convertInputToWhatsAppMessages(
@@ -160,3 +179,40 @@ const isLastMessageIncludedInInput = (input: ChatReply['input']): boolean => {
   if (isNotDefined(input)) return false
   return input.type === InputBlockType.CHOICE
 }
+
+const executeClientSideAction =
+  (context: { to: string; credentials: WhatsAppCredentials['data'] }) =>
+  async (
+    clientSideAction: NonNullable<ChatReply['clientSideActions']>[number]
+  ): Promise<{ replyToSend: string | undefined } | void> => {
+    if ('wait' in clientSideAction) {
+      await new Promise((resolve) =>
+        setTimeout(resolve, clientSideAction.wait.secondsToWaitFor * 1000)
+      )
+      if (!clientSideAction.expectsDedicatedReply) return
+      return {
+        replyToSend: undefined,
+      }
+    }
+    if ('redirect' in clientSideAction && clientSideAction.redirect.url) {
+      const message = {
+        type: 'text',
+        text: {
+          body: clientSideAction.redirect.url,
+          preview_url: true,
+        },
+      } satisfies WhatsAppSendingMessage
+      try {
+        await sendWhatsAppMessage({
+          to: context.to,
+          message,
+          credentials: context.credentials,
+        })
+      } catch (err) {
+        captureException(err, { extra: { message } })
+        console.log('Failed to send message:', JSON.stringify(message, null, 2))
+        if (err instanceof HTTPError)
+          console.log('HTTPError', err.response.statusCode, err.response.body)
+      }
+    }
+  }

@@ -7,22 +7,21 @@ export const executeWait = (
   block: WaitBlock
 ): ExecuteLogicResponse => {
   const { variables } = state.typebotsQueue[0].typebot
-  if (!block.options.secondsToWaitFor)
-    return { outgoingEdgeId: block.outgoingEdgeId }
   const parsedSecondsToWaitFor = safeParseInt(
     parseVariables(variables)(block.options.secondsToWaitFor)
   )
 
   return {
     outgoingEdgeId: block.outgoingEdgeId,
-    clientSideActions: parsedSecondsToWaitFor
-      ? [
-          {
-            wait: { secondsToWaitFor: parsedSecondsToWaitFor },
-            expectsDedicatedReply: block.options.shouldPause,
-          },
-        ]
-      : undefined,
+    clientSideActions:
+      parsedSecondsToWaitFor || block.options.shouldPause
+        ? [
+            {
+              wait: { secondsToWaitFor: parsedSecondsToWaitFor ?? 0 },
+              expectsDedicatedReply: block.options.shouldPause,
+            },
+          ]
+        : undefined,
   }
 }
 

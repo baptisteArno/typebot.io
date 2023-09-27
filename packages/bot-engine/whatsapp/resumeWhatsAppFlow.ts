@@ -12,6 +12,15 @@ import { decrypt } from '@typebot.io/lib/api'
 import { saveStateToDatabase } from '../saveStateToDatabase'
 import prisma from '@typebot.io/lib/prisma'
 import { isDefined } from '@typebot.io/lib/utils'
+import { startBotFlow } from '../startBotFlow'
+
+type Props = {
+  receivedMessage: WhatsAppIncomingMessage
+  sessionId: string
+  credentialsId?: string
+  workspaceId?: string
+  contact: NonNullable<SessionState['whatsApp']>['contact']
+}
 
 export const resumeWhatsAppFlow = async ({
   receivedMessage,
@@ -19,13 +28,7 @@ export const resumeWhatsAppFlow = async ({
   workspaceId,
   credentialsId,
   contact,
-}: {
-  receivedMessage: WhatsAppIncomingMessage
-  sessionId: string
-  credentialsId?: string
-  workspaceId?: string
-  contact: NonNullable<SessionState['whatsApp']>['contact']
-}) => {
+}: Props): Promise<{ message: string }> => {
   const messageSendDate = new Date(Number(receivedMessage.timestamp) * 1000)
   const messageSentBefore3MinutesAgo =
     messageSendDate.getTime() < Date.now() - 180000
@@ -62,7 +65,9 @@ export const resumeWhatsAppFlow = async ({
 
   const resumeResponse =
     session && !isSessionExpired
-      ? await continueBotFlow(session.state)(messageContent)
+      ? session.state.currentBlock
+        ? await continueBotFlow(session.state)(messageContent)
+        : await startBotFlow(session.state)
       : workspaceId
       ? await startWhatsAppSession({
           incomingMessage: messageContent,
@@ -90,6 +95,7 @@ export const resumeWhatsAppFlow = async ({
     typingEmulation: newSessionState.typingEmulation,
     clientSideActions,
     credentials,
+    state: newSessionState,
   })
 
   await saveStateToDatabase({

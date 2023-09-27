@@ -21,14 +21,13 @@ Head over to the Share tab of your bot and click on the WhatsApp button to get t
 WhatsApp environment have some limitations that you need to keep in mind when building the bot:
 
 - GIF and SVG image files are not supported. They won't be displayed.
-- Buttons content can't be longer than 20 characters
+- Buttons content can't be longer than 20 characters. If the content is longer, it will be truncated.
 - Incompatible blocks, if present, they will be skipped:
   - Payment input block
   - Chatwoot block
   - Script block
   - Google Analytics block
   - Meta Pixel blocks
-  - Execute on client options
 
 ## Contact information
 

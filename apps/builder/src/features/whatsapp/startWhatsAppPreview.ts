@@ -109,6 +109,7 @@ export const startWhatsAppPreview = authenticatedProcedure
             phoneNumberId: env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID,
             systemUserAccessToken: env.META_SYSTEM_USER_TOKEN,
           },
+          state: newSessionState,
         })
         await saveStateToDatabase({
           clientSideActions: [],
