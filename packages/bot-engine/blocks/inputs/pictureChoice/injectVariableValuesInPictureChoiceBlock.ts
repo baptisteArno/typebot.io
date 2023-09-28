@@ -20,8 +20,7 @@ export const injectVariableValuesInPictureChoiceBlock =
           variable.id === block.options.dynamicItems?.pictureSrcsVariableId &&
           isDefined(variable.value)
       ) as VariableWithValue | undefined
-      if (!pictureSrcsVariable || typeof pictureSrcsVariable.value === 'string')
-        return block
+      if (!pictureSrcsVariable) return block
       const titlesVariable = block.options.dynamicItems.titlesVariableId
         ? (variables.find(
             (variable) =>
@@ -29,6 +28,10 @@ export const injectVariableValuesInPictureChoiceBlock =
               isDefined(variable.value)
           ) as VariableWithValue | undefined)
         : undefined
+      const titlesVariableValues =
+        typeof titlesVariable?.value === 'string'
+          ? [titlesVariable.value]
+          : titlesVariable?.value
       const descriptionsVariable = block.options.dynamicItems
         .descriptionsVariableId
         ? (variables.find(
@@ -38,18 +41,26 @@ export const injectVariableValuesInPictureChoiceBlock =
               isDefined(variable.value)
           ) as VariableWithValue | undefined)
         : undefined
+      const descriptionsVariableValues =
+        typeof descriptionsVariable?.value === 'string'
+          ? [descriptionsVariable.value]
+          : descriptionsVariable?.value
+
+      const variableValues =
+        typeof pictureSrcsVariable.value === 'string'
+          ? [pictureSrcsVariable.value]
+          : pictureSrcsVariable.value
+
       return {
         ...block,
-        items: pictureSrcsVariable.value
-          .filter(isDefined)
-          .map((pictureSrc, idx) => ({
-            id: idx.toString(),
-            type: ItemType.PICTURE_CHOICE,
-            blockId: block.id,
-            pictureSrc,
-            title: titlesVariable?.value?.[idx] ?? '',
-            description: descriptionsVariable?.value?.[idx] ?? '',
-          })),
+        items: variableValues.filter(isDefined).map((pictureSrc, idx) => ({
+          id: idx.toString(),
+          type: ItemType.PICTURE_CHOICE,
+          blockId: block.id,
+          pictureSrc,
+          title: titlesVariableValues?.[idx] ?? '',
+          description: descriptionsVariableValues?.[idx] ?? '',
+        })),
       }
     }
     return deepParseVariables(variables)(

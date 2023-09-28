@@ -159,11 +159,7 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
     case LogicBlockType.CONDITION:
       return <ItemNodesList block={block} indices={indices} />
     case IntegrationBlockType.GOOGLE_SHEETS: {
-      return (
-        <GoogleSheetsNodeContent
-          action={'action' in block.options ? block.options.action : undefined}
-        />
-      )
+      return <GoogleSheetsNodeContent options={block.options} />
     }
     case IntegrationBlockType.GOOGLE_ANALYTICS: {
       return <GoogleAnalyticsNodeBody action={block.options?.action} />

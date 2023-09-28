@@ -304,12 +304,17 @@ const ActionOptions = ({
                 <AccordionItem>
                   <AccordionButton>
                     <Text w="full" textAlign="left">
-                      Rows to filter
+                      Select row(s)
                     </Text>
                     <AccordionIcon />
                   </AccordionButton>
 
-                  <AccordionPanel pt="4">
+                  <AccordionPanel pt="4" as={Stack}>
+                    <DropdownList
+                      items={totalRowsToExtractOptions}
+                      currentItem={options.totalRowsToExtract ?? 'All'}
+                      onItemSelect={updateTotalRowsToExtract}
+                    />
                     <RowsFilterTableList
                       columns={sheet?.columns ?? []}
                       filter={options.filter}
@@ -317,11 +322,6 @@ const ActionOptions = ({
                     />
                   </AccordionPanel>
                 </AccordionItem>
-                <DropdownList
-                  items={totalRowsToExtractOptions}
-                  currentItem={options.totalRowsToExtract ?? 'All'}
-                  onItemSelect={updateTotalRowsToExtract}
-                />
               </>
             )}
 
