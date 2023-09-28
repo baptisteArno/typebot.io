@@ -20,10 +20,10 @@ export const SinglePictureChoice = (props: Props) => {
   })
 
   const handleClick = (itemIndex: number) => {
-    const pictureSrc = filteredItems()[itemIndex].pictureSrc
-    if (!pictureSrc) return
+    const item = filteredItems()[itemIndex]
     return props.onSubmit({
-      value: filteredItems()[itemIndex].title ?? pictureSrc,
+      label: item.title ?? item.pictureSrc ?? item.id,
+      value: item.id,
     })
   }
 

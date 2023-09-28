@@ -68,22 +68,18 @@ export const parsePictureChoicesReply =
           .join(', '),
       }
     }
-    if (state.whatsApp) {
-      const matchedItem = displayedItems.find((item) => item.id === inputValue)
-      if (!matchedItem) return { status: 'fail' }
-      return {
-        status: 'success',
-        reply: matchedItem.title ?? matchedItem.pictureSrc ?? '',
-      }
-    }
     const longestItemsFirst = [...displayedItems].sort(
       (a, b) => (b.title?.length ?? 0) - (a.title?.length ?? 0)
     )
     const matchedItem = longestItemsFirst.find(
       (item) =>
-        item.title &&
+        item.id === inputValue ||
         item.title
-          .toLowerCase()
+          ?.toLowerCase()
+          .trim()
+          .includes(inputValue.toLowerCase().trim()) ||
+        item.pictureSrc
+          ?.toLowerCase()
           .trim()
           .includes(inputValue.toLowerCase().trim())
     )
