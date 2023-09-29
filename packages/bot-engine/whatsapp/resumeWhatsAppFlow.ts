@@ -71,7 +71,6 @@ export const resumeWhatsAppFlow = async ({
       : workspaceId
       ? await startWhatsAppSession({
           incomingMessage: messageContent,
-          sessionId,
           workspaceId,
           credentials: { ...credentials, id: credentialsId as string },
           contact,

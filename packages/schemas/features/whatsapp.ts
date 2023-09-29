@@ -142,6 +142,9 @@ export const whatsAppWebhookRequestBodySchema = z.object({
       changes: z.array(
         z.object({
           value: z.object({
+            metadata: z.object({
+              phone_number_id: z.string(),
+            }),
             contacts: z
               .array(
                 z.object({

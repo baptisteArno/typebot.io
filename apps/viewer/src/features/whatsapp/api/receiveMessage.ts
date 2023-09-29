@@ -23,16 +23,19 @@ export const receiveMessage = publicProcedure
       message: z.string(),
     })
   )
-  .mutation(async ({ input: { entry, workspaceId, credentialsId } }) => {
+  .mutation(async ({ input: { entry, credentialsId, workspaceId } }) => {
     const receivedMessage = entry.at(0)?.changes.at(0)?.value.messages?.at(0)
     if (isNotDefined(receivedMessage)) return { message: 'No message found' }
     const contactName =
       entry.at(0)?.changes.at(0)?.value?.contacts?.at(0)?.profile?.name ?? ''
     const contactPhoneNumber =
       entry.at(0)?.changes.at(0)?.value?.messages?.at(0)?.from ?? ''
+    const phoneNumberId = entry.at(0)?.changes.at(0)?.value
+      .metadata.phone_number_id
+    if (!phoneNumberId) return { message: 'No phone number id found' }
     return resumeWhatsAppFlow({
       receivedMessage,
-      sessionId: `wa-${credentialsId}-${receivedMessage.from}`,
+      sessionId: `wa-${phoneNumberId}-${receivedMessage.from}`,
       credentialsId,
       workspaceId,
       contact: {

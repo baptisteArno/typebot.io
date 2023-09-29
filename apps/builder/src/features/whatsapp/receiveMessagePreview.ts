@@ -34,7 +34,7 @@ export const receiveMessagePreview = publicProcedure
     const contactPhoneNumber = '+' + receivedMessage.from
     return resumeWhatsAppFlow({
       receivedMessage,
-      sessionId: `wa-${receivedMessage.from}-preview`,
+      sessionId: `wa-preview-${receivedMessage.from}`,
       contact: {
         name: contactName,
         phoneNumber: contactPhoneNumber,

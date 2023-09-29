@@ -1,5 +1,5 @@
 import prisma from '@typebot.io/lib/prisma'
-import { ChatSession, sessionStateSchema } from '@typebot.io/schemas'
+import { sessionStateSchema } from '@typebot.io/schemas'
 
 export const getSession = async (sessionId: string) => {
   const session = await prisma.chatSession.findUnique({

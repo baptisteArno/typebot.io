@@ -27,7 +27,9 @@ export const startWhatsAppPreview = authenticatedProcedure
       to: z
         .string()
         .min(1)
-        .transform((value) => value.replace(/\s/g, '').replace(/\+/g, '')),
+        .transform((value) =>
+          value.replace(/\s/g, '').replace(/\+/g, '').replace(/-/g, '')
+        ),
       typebotId: z.string(),
       startGroupId: z.string().optional(),
     })
@@ -70,7 +72,7 @@ export const startWhatsAppPreview = authenticatedProcedure
       )
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
 
-      const sessionId = `wa-${to}-preview`
+      const sessionId = `wa-preview-${to}`
 
       const existingSession = await prisma.chatSession.findFirst({
         where: {
@@ -130,7 +132,7 @@ export const startWhatsAppPreview = authenticatedProcedure
             whatsApp: (existingSession?.state as SessionState | undefined)
               ?.whatsApp,
           },
-          id: `wa-${to}-preview`,
+          id: sessionId,
         })
         try {
           await sendWhatsAppMessage({

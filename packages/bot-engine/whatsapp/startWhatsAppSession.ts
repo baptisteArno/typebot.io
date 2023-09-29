@@ -20,7 +20,6 @@ import { upsertResult } from '../queries/upsertResult'
 
 type Props = {
   incomingMessage?: string
-  sessionId: string
   workspaceId?: string
   credentials: WhatsAppCredentials['data'] & Pick<WhatsAppCredentials, 'id'>
   contact: NonNullable<SessionState['whatsApp']>['contact']
@@ -76,7 +75,7 @@ export const startWhatsAppSession = async ({
     publicTypebot.settings.whatsApp?.sessionExpiryTimeout ??
     defaultSessionExpiryTimeout
 
-  const session = await startSession({
+  let chatReply = await startSession({
     startParams: {
       typebot: publicTypebot.typebot.publicId as string,
     },
@@ -89,34 +88,29 @@ export const startWhatsAppSession = async ({
     },
   })
 
-  let newSessionState: SessionState = session.newSessionState
+  const sessionState: SessionState = chatReply.newSessionState
 
   // If first block is an input block, we can directly continue the bot flow
   const firstEdgeId =
-    newSessionState.typebotsQueue[0].typebot.groups[0].blocks[0].outgoingEdgeId
-  const nextGroup = await getNextGroup(newSessionState)(firstEdgeId)
+    sessionState.typebotsQueue[0].typebot.groups[0].blocks[0].outgoingEdgeId
+  const nextGroup = await getNextGroup(sessionState)(firstEdgeId)
   const firstBlock = nextGroup.group?.blocks.at(0)
   if (firstBlock && isInputBlock(firstBlock)) {
-    const resultId = newSessionState.typebotsQueue[0].resultId
+    const resultId = sessionState.typebotsQueue[0].resultId
     if (resultId)
       await upsertResult({
         hasStarted: true,
         isCompleted: false,
         resultId,
-        typebot: newSessionState.typebotsQueue[0].typebot,
+        typebot: sessionState.typebotsQueue[0].typebot,
       })
-    newSessionState = (
-      await continueBotFlow({
-        ...newSessionState,
-        currentBlock: { groupId: firstBlock.groupId, blockId: firstBlock.id },
-      })(incomingMessage)
-    ).newSessionState
+    chatReply = await continueBotFlow({
+      ...sessionState,
+      currentBlock: { groupId: firstBlock.groupId, blockId: firstBlock.id },
+    })(incomingMessage)
   }
 
-  return {
-    ...session,
-    newSessionState,
-  }
+  return chatReply
 }
 
 export const messageMatchStartCondition = (
