@@ -29,8 +29,32 @@ WhatsApp environment have some limitations that you need to keep in mind when bu
   - Google Analytics block
   - Meta Pixel blocks
 
+## Configuration
+
+You can customize how your bot behaves on WhatsApp in the `Configure integration` section
+
+<img src="/img/whatsapp/configure-integration.png" alt="WhatsApp configure integration" />
+
+**Session expiration timeout**: A number from 0 to 48 which is the number of hours after which the session will expire. If the user doesn't interact with the bot for more than the timeout, the session will expire and if user sends a new message, it will start a new chat.
+
+**Start bot condition**: A condition that will be evaluated when a user starts a conversation with your bot. If the condition is not met, the bot will not be triggered.
+
 ## Contact information
 
 You can automatically assign contact name and phone number to a variable in your bot using a Set variable block with the dedicated system values:
 
 <img src="/img/whatsapp/contact-var.png" alt="WhatsApp contact system variables" />
+
+## FAQ
+
+### How many WhatsApp numbers can I use?
+
+You can integrate as many numbers as you'd like. Keep in mind that Typebot does not provide those numbers. We work as a "Bring your own Meta application" and we give you clear instructions on [how to set up your Meta app](./whatsapp/create-meta-app).
+
+### Can I link multiple bots to the same WhatsApp number?
+
+Yes, you can. You will have to add a "Start bot condition" to each of your bots to make sure that the right bot is triggered when a user starts a conversation.
+
+### Does the integration with WhatsApp requires any paid API?
+
+You integrate your typebots with your own WhatsApp Business Platform which is the official service from Meta. At the moment, the first 1,000 Service conversations each month are free. For more information, refer to [their documentation](https://developers.facebook.com/docs/whatsapp/cloud-api/get-started#pricing---payment-methods)

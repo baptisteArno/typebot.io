@@ -5746,7 +5746,14 @@
                                             "type": "string"
                                           },
                                           "pixelId": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "description": "Deprecated"
+                                          },
+                                          "pixelIds": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "string"
+                                            }
                                           },
                                           "gtmId": {
                                             "type": "string"
@@ -6396,28 +6403,48 @@
                 "type": "object",
                 "properties": {
                   "filePathProps": {
-                    "type": "object",
-                    "properties": {
-                      "typebotId": {
-                        "type": "string"
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "typebotId": {
+                            "type": "string"
+                          },
+                          "blockId": {
+                            "type": "string"
+                          },
+                          "resultId": {
+                            "type": "string"
+                          },
+                          "fileName": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "typebotId",
+                          "blockId",
+                          "resultId",
+                          "fileName"
+                        ],
+                        "additionalProperties": false
                       },
-                      "blockId": {
-                        "type": "string"
-                      },
-                      "resultId": {
-                        "type": "string"
-                      },
-                      "fileName": {
-                        "type": "string"
+                      {
+                        "type": "object",
+                        "properties": {
+                          "sessionId": {
+                            "type": "string"
+                          },
+                          "fileName": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "sessionId",
+                          "fileName"
+                        ],
+                        "additionalProperties": false
                       }
-                    },
-                    "required": [
-                      "typebotId",
-                      "blockId",
-                      "resultId",
-                      "fileName"
-                    ],
-                    "additionalProperties": false
+                    ]
                   },
                   "fileType": {
                     "type": "string"
@@ -6604,6 +6631,18 @@
                               "value": {
                                 "type": "object",
                                 "properties": {
+                                  "metadata": {
+                                    "type": "object",
+                                    "properties": {
+                                      "phone_number_id": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "phone_number_id"
+                                    ],
+                                    "additionalProperties": false
+                                  },
                                   "contacts": {
                                     "type": "array",
                                     "items": {
@@ -6905,6 +6944,9 @@
                                     }
                                   }
                                 },
+                                "required": [
+                                  "metadata"
+                                ],
                                 "additionalProperties": false
                               }
                             },

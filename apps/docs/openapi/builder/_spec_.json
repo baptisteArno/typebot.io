@@ -33087,6 +33087,18 @@
                               "value": {
                                 "type": "object",
                                 "properties": {
+                                  "metadata": {
+                                    "type": "object",
+                                    "properties": {
+                                      "phone_number_id": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "phone_number_id"
+                                    ],
+                                    "additionalProperties": false
+                                  },
                                   "contacts": {
                                     "type": "array",
                                     "items": {
@@ -33388,6 +33400,9 @@
                                     }
                                   }
                                 },
+                                "required": [
+                                  "metadata"
+                                ],
                                 "additionalProperties": false
                               }
                             },

@@ -6,8 +6,8 @@ import {
   Alert,
   AlertIcon,
   Button,
-  Flex,
   HStack,
+  Link,
   SlideFade,
   Stack,
   StackProps,
@@ -84,28 +84,38 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
         defaultValue={phoneNumber}
         onChange={setPhoneNumber}
       />
-      <Button
-        isDisabled={isEmpty(phoneNumber) || isMessageSent}
-        isLoading={isSendingMessage}
-        type="submit"
-      >
-        {hasMessageBeenSent ? 'Restart' : 'Start'} the chat
-      </Button>
+      {!isMessageSent && (
+        <Button
+          isDisabled={isEmpty(phoneNumber) || isMessageSent}
+          isLoading={isSendingMessage}
+          type="submit"
+        >
+          {hasMessageBeenSent ? 'Restart' : 'Start'} the chat
+        </Button>
+      )}
       <SlideFade offsetY="20px" in={isMessageSent} unmountOnExit>
-        <Flex>
+        <Stack>
           <Alert status="success" w="100%">
             <HStack>
               <AlertIcon />
               <Stack spacing={1}>
                 <Text fontWeight="semibold">Chat started!</Text>
                 <Text fontSize="sm">
-                  Open WhatsApp to test your bot. The first message can take up
-                  to 2 min to be delivered.
+                  The first message can take up to 2 min to be delivered.
                 </Text>
               </Stack>
             </HStack>
           </Alert>
-        </Flex>
+          <Button
+            as={Link}
+            href={`https://web.whatsapp.com/`}
+            isExternal
+            size="sm"
+            colorScheme="blue"
+          >
+            Open WhatsApp Web
+          </Button>
+        </Stack>
       </SlideFade>
     </Stack>
   )

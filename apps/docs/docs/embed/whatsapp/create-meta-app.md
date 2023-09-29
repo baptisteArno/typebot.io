@@ -17,3 +17,5 @@ It is possible that Meta automatically restricts your newly created Business acc
 4. Select `Business` type
 5. Give it any name and select your newly created Business Account
 6. On the app page, look for `WhatsApp` product and enable it
+
+You can then follow the instructions in the Share tab of your bot to connect your Meta app to Typebot.

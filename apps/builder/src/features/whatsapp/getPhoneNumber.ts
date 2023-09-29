@@ -47,7 +47,7 @@ export const getPhoneNumber = authenticatedProcedure
 
     const formattedPhoneNumber = `${
       display_phone_number.startsWith('+') ? '' : '+'
-    }${display_phone_number.replace(/\s-/g, '')}`
+    }${display_phone_number.replace(/[\s-]/g, '')}`
 
     return {
       id: credentials.phoneNumberId,
