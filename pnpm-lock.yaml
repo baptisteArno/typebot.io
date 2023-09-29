@@ -893,9 +893,6 @@ importers:
       '@stripe/stripe-js':
         specifier: 1.54.1
         version: 1.54.1
-      '@typebot.io/bot-engine':
-        specifier: workspace:*
-        version: link:../../bot-engine
       '@udecode/plate-common':
         specifier: ^21.1.5
         version: 21.1.5(@babel/core@7.22.9)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-react@0.94.2)(slate@0.94.1)
@@ -924,6 +921,9 @@ importers:
       '@rollup/plugin-typescript':
         specifier: 11.1.2
         version: 11.1.2(rollup@3.26.2)(tslib@2.6.0)(typescript@5.1.6)
+      '@typebot.io/bot-engine':
+        specifier: workspace:*
+        version: link:../../bot-engine
       '@typebot.io/env':
         specifier: workspace:*
         version: link:../../env
