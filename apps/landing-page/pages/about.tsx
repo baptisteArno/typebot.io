@@ -1,11 +1,9 @@
-import { Stack, Text, Box, Flex, Heading } from '@chakra-ui/react'
+import { Stack, Text, Flex, Heading, List, ListItem } from '@chakra-ui/react'
 import { Header } from 'components/common/Header/Header'
 import { SocialMetaTags } from 'components/common/SocialMetaTags'
 import React from 'react'
-import selfie from '../public/images/selfie.png'
-import Image from 'next/image'
 import { Footer } from 'components/common/Footer'
-import { TextLink } from 'components/common/TextLink'
+import { EndCta } from 'components/Homepage/EndCta'
 
 const AboutPage = () => {
   return (
@@ -21,58 +19,85 @@ const AboutPage = () => {
         textAlign="justify"
       >
         <Flex w="full">
-          <Heading as="h1">Typebot&apos;s story</Heading>
+          <Heading as="h1">Why Typebot?</Heading>
         </Flex>
-
         <Text>
-          Typebot&apos;s team is composed of only me, Baptiste Arnaud, a
-          Software Engineer based in France.
-        </Text>
-        <Flex w="full" justify="center">
-          <Box as="figure" maxW="200px">
-            <Image src={selfie} alt="selfie" />
-          </Box>
-        </Flex>
-
-        <Text>
-          I&apos;m passionate about great product UX and, during the first COVID
-          lockdown, I decided to create my own Typeform alternative.
-        </Text>
-
-        <Text>
-          Typebot was launched in July 2020. It is completely independent,
-          self-funded, and bootstrapped. At the current stage, I&apos;m not
-          interested in raising funds or taking investments.
+          I&apos;m Baptiste, 28 years old. I&apos;m a software product engineer.
+          I am passionated about great user experiences and beautiful
+          interfaces.
         </Text>
         <Text>
-          Because I love open-source SaaS, I decided in early 2022, alongside
-          the launch of a major 2.0 release, to open-source the project
-          entirely. Anyone can now read the source code and contribute to the
-          project. You can also self-host your own version of Typebot on your
-          server.
+          This is why I&apos;ve started working on Typebot, 3 years ago. It is
+          my attempt on a great chatbot builder.
         </Text>
         <Text>
-          With Typebot, I want to create the best bot-building experience. My
-          goal is to empower you as a user and help you build great user
-          experiences. Also, privacy comes first. While using Typebot, you
-          aren&apos;t tracked by some third-party analytics tool.
+          In France, people don&apos;t like chatbots. They always think about it
+          as the guard before getting the chance to talk to a human. You ask a
+          question to a robot and it tries to understand what you&apos;re saying
+          and help, but it does not a great job at this. (now, it is maybe not
+          that accurate since the rise of LLMs)
+        </Text>
+        <Text>But I think we undervalue the potential of chatbots.</Text>
+        <Text>
+          You chat with friends, colleagues and family on messaging platform
+          daily. You are used and you like this chat experience. That&apos;s why
+          businesses need to leverage this, it&apos;s a place where conversion
+          is high.
         </Text>
         <Text>
-          I&apos;m working hard on making a living from Typebot with a simple
-          business model: <br />
-          <br /> You can use the tool for free but your forms will contain a
-          &quot;Made with Typebot&quot; small badge that potentially gets people
-          to know about the product. If you want to remove it and also have
-          access to other advanced features, you have to subscribe for $39 per
-          month.
+          In an ideal world, a user should be able to chat with a human from a
+          company and have an instant answer. The problem is that it is
+          synchronous, time-consuming and it requires a huge customer support
+          team working 24/7. It doesn&apos;t scale at all. Waiting for an answer
+          from a human impacts the customer experience.
         </Text>
         <Text>
-          If you have any questions, feel free to reach out to me at{' '}
-          <TextLink href={'mailto:support@typebot.io'}>
-            support@typebot.io
-          </TextLink>
+          Chatbots are a solution. You can chat with your customers, at scale.
+        </Text>
+        <Text>
+          But, when built incorrectly, chatbots can be detrimental to your user
+          experience. Most solutions out there focus on customer support. It can
+          be so much more.
+        </Text>
+        <Text>A great chatbot should:</Text>
+        <List listStyleType="initial">
+          <ListItem>Provide a customised experience to the user</ListItem>
+          <ListItem>
+            Have a great user interface and beautiful animations
+          </ListItem>
+          <ListItem>Feel native to the business brand</ListItem>
+          <ListItem>Provide what the user is looking for</ListItem>
+        </List>
+        <Text>
+          A chatbot is not necessarily tied to customer support. It can also do:
+        </Text>
+        <List listStyleType="initial">
+          <ListItem>Lead generation and qualification</ListItem>
+          <ListItem>Quizzes</ListItem>
+          <ListItem>Surveys</ListItem>
+          <ListItem>User onboarding</ListItem>
+          <ListItem>Product presentation</ListItem>
+          <ListItem>Registrations (newsletter, waiting list)</ListItem>
+        </List>
+        <Text>
+          To build that kind of chatbots, you need a tool that gives you enough
+          freedom to closely tie it to your business logic. The build experience
+          should be a reliable and fun experience. You also need a space where
+          you can analyse your results so that you can incrementally improve
+          your bots.
+        </Text>
+        <Text>This is what Typebot provides.</Text>
+        <Text>
+          I&apos;ve built this tool by focusing on user empowering. Typebot is
+          extremely flexible and provides the building blocks to create great
+          chat experiences. Often times, the more freedom you give to the user,
+          the less intuitive the tool become. I try not to fall into that trap
+          with Typebot by providing the best defaults for each option. I also
+          try to help you learn master the tool with good templates and video
+          tutorials.
         </Text>
       </Stack>
+      <EndCta />
       <Footer />
     </div>
   )
