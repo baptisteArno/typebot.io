@@ -23,7 +23,7 @@ export const getNextGroup =
             isCompleted: true,
             hasStarted: state.typebotsQueue[0].answers.length > 0,
           })
-        const newSessionState = {
+        let newSessionState = {
           ...state,
           typebotsQueue: [
             {
@@ -69,6 +69,7 @@ export const getNextGroup =
           ],
         } satisfies SessionState
         const nextGroup = await getNextGroup(newSessionState)(nextEdgeId)
+        newSessionState = nextGroup.newSessionState
         if (!nextGroup)
           return {
             newSessionState,

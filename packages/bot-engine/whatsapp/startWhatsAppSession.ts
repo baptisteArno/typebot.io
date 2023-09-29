@@ -88,12 +88,13 @@ export const startWhatsAppSession = async ({
     },
   })
 
-  const sessionState: SessionState = chatReply.newSessionState
+  let sessionState: SessionState = chatReply.newSessionState
 
   // If first block is an input block, we can directly continue the bot flow
   const firstEdgeId =
     sessionState.typebotsQueue[0].typebot.groups[0].blocks[0].outgoingEdgeId
   const nextGroup = await getNextGroup(sessionState)(firstEdgeId)
+  sessionState = nextGroup.newSessionState
   const firstBlock = nextGroup.group?.blocks.at(0)
   if (firstBlock && isInputBlock(firstBlock)) {
     const resultId = sessionState.typebotsQueue[0].resultId
