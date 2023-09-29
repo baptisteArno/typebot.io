@@ -38,17 +38,22 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const { setColorMode } = useColorMode()
 
   useEffect(() => {
-    if (
-      !user?.preferredAppAppearance ||
-      user.preferredAppAppearance === 'system'
-    )
-      return
     const currentColorScheme = localStorage.getItem('chakra-ui-color-mode') as
       | 'light'
       | 'dark'
       | null
-    if (currentColorScheme === user.preferredAppAppearance) return
-    setColorMode(user.preferredAppAppearance)
+    if (!currentColorScheme) return
+    const systemColorScheme = window.matchMedia('(prefers-color-scheme: dark)')
+      .matches
+      ? 'dark'
+      : 'light'
+    const userPrefersSystemMode =
+      !user?.preferredAppAppearance || user.preferredAppAppearance === 'system'
+    const computedColorMode = userPrefersSystemMode
+      ? systemColorScheme
+      : user?.preferredAppAppearance
+    if (computedColorMode === currentColorScheme) return
+    setColorMode(computedColorMode)
   }, [setColorMode, user?.preferredAppAppearance])
 
   useEffect(() => {
