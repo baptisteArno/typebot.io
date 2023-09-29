@@ -10,7 +10,6 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { runtimes } from '../data'
-import { isWhatsAppAvailable } from '@/features/telemetry/posthog'
 
 type Runtime = (typeof runtimes)[number]
 
@@ -37,9 +36,6 @@ export const RuntimeMenu = ({ selectedRuntime, onSelectRuntime }: Props) => {
       <MenuList w="100px">
         {runtimes
           .filter((runtime) => runtime.name !== selectedRuntime.name)
-          .filter((runtime) =>
-            runtime.name === 'WhatsApp' ? isWhatsAppAvailable() : true
-          )
           .map((runtime) => (
             <MenuItem
               key={runtime.name}

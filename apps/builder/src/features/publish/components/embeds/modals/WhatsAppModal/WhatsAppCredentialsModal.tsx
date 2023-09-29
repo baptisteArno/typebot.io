@@ -457,12 +457,15 @@ const Webhook = ({
     <Stack spacing={6}>
       <Text>
         In your{' '}
-        <TextLink
+        <Button
+          as={Link}
           href={`https://developers.facebook.com/apps/${appId}/whatsapp-business/wa-settings`}
+          rightIcon={<ExternalLinkIcon />}
           isExternal
+          size="sm"
         >
           WhatsApp Settings page
-        </TextLink>
+        </Button>
         , click on the Edit button and insert the following values:
       </Text>
       <UnorderedList spacing={6}>

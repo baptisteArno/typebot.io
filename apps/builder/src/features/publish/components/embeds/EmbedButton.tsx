@@ -40,7 +40,6 @@ import { NextjsModal } from './modals/Nextjs/NextjsModal'
 import { WhatsAppLogo } from '@/components/logos/WhatsAppLogo'
 import { WhatsAppModal } from './modals/WhatsAppModal/WhatsAppModal'
 import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvider'
-import { isWhatsAppAvailable } from '@/features/telemetry/posthog'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
 import { LockTag } from '@/features/billing/components/LockTag'
@@ -98,20 +97,19 @@ export const integrationsList = [
   (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => {
     const { workspace } = useWorkspace()
 
-    if (isWhatsAppAvailable())
-      return (
-        <ParentModalProvider>
-          <EmbedButton
-            logo={<WhatsAppLogo height={100} width="70px" />}
-            label="WhatsApp"
-            lockTagPlan={hasProPerks(workspace) ? undefined : 'PRO'}
-            modal={({ onClose, isOpen }) => (
-              <WhatsAppModal isOpen={isOpen} onClose={onClose} {...props} />
-            )}
-            {...props}
-          />
-        </ParentModalProvider>
-      )
+    return (
+      <ParentModalProvider>
+        <EmbedButton
+          logo={<WhatsAppLogo height={100} width="70px" />}
+          label="WhatsApp"
+          lockTagPlan={hasProPerks(workspace) ? undefined : 'PRO'}
+          modal={({ onClose, isOpen }) => (
+            <WhatsAppModal isOpen={isOpen} onClose={onClose} {...props} />
+          )}
+          {...props}
+        />
+      </ParentModalProvider>
+    )
   },
   (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
     <EmbedButton
