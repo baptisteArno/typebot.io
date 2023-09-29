@@ -20,6 +20,7 @@ export type OctaStepOptions =
   | CallOtherBotOptions
   | PreReserveOptions
   | CommerceOptions
+  | ConversationTagOptions
 
 export type OctaWabaStepOptions = WhatsAppOptionsListOptions | WhatsAppButtonsListOptions | CommerceOptions
 
@@ -29,6 +30,7 @@ export type OctaStepWithOptions =
   | OfficeHourStep
   | CallOtherBotStep
   | PreReserveStep
+  | ConversationTagStep
 
 // Steps that has variables on its body
 export type OctaBubbleStepContent = EndConversationBubbleContent
@@ -46,7 +48,8 @@ export enum OctaStepType {
   OFFICE_HOURS = 'office hours',
   ASSIGN_TO_TEAM = 'assign to team',
   CALL_OTHER_BOT = 'call other bot',
-  PRE_RESERVE = 'pre reserve'
+  PRE_RESERVE = 'pre reserve',
+  CONVERSATION_TAG = 'conversation tag'
 }
 
 // Waba step types
@@ -74,6 +77,11 @@ export type AssignToTeamStep = StepBase & {
 export type WOZSuggestionStep = StepBase & {
   type: WOZStepType.MESSAGE
   options: WOZSuggestionOptions
+}
+
+export type ConversationTagStep = StepBase & {
+  type: OctaStepType.CONVERSATION_TAG
+  options: ConversationTagOptions
 }
 
 export type PreReserveStep = StepBase & {
@@ -211,6 +219,10 @@ export type AssignToTeamOptions = BaseOctaOptions & {
 export type PreReserveOptions = BaseOctaOptions & {
   assignTo: string
   assignType: string
+}
+
+export type ConversationTagOptions = BaseOctaOptions & {
+  tag: string
 }
 
 export type WOZSuggestionOptions = BaseOctaOptions & {
@@ -359,6 +371,12 @@ export const defaultPreReserveOptions: PreReserveOptions = {
   assignType: '',
   name: '',
   subject: ''
+}
+
+export const defaultConversationTagOptions: ConversationTagOptions = {
+  tag: '',
+  name: '',
+  subject: ''  
 }
 
 export const defaultWOZSuggestionOptions: WOZSuggestionOptions = {

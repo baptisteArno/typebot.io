@@ -1,7 +1,6 @@
 import { Text } from '@chakra-ui/react'
 import {
   Step,
-  StartStep,
   BubbleStepType,
   InputStepType,
   LogicStepType,
@@ -14,36 +13,29 @@ import {
   InputOptions,
   WOZStepType,
 } from 'models'
-import { isChoiceInput, isInputStep } from 'utils'
 import { ItemNodesList } from '../../../ItemNode'
 
 import {
-  EmbedBubbleContent,
   // SetVariableContent,
   TextBubbleContent,
-  VideoBubbleContent,
-  WebhookContent,
-  WithVariableContent,
 } from '../contents'
 import { AssignToTeamContent } from '../contents/AssignToTeam/AssignToTeamContent'
 import { CallOtherBotContent } from '../contents/CallOtherBot/CallOtherBotContent'
 // import { WhatsAppOptionsContent } from '../contents/WhatsAppOptions/'
 // import { ConfigureContent } from './contents/ConfigureContent'
-import { ImageBubbleContent } from '../contents/ImageBubbleContent'
 import { OctaCommerceContent } from '../contents/OctaCommerceContent'
 import { WhatsAppOptionsContent } from '../contents/WhatsApp/WhatsAppOptions'
 import { WhatsAppButtonsContent } from '../contents/WhatsApp/WhatsAppButtons'
 import { } from '../contents/WhatsApp/WhatsAppOptions'
 // import { PaymentInputContent } from './contents/PaymentInputContent'
-import { PlaceholderContent } from '../contents/PlaceholderContent'
 // import { SendEmailContent } from './contents/SendEmailContent'
-import { TypebotLinkContent } from '../contents/TypebotLinkContent'
 import { PreReserveContent } from '../contents/PreReserve'
 import { InputContent } from '../contents/Input'
 import { useTypebot } from 'contexts/TypebotContext'
 import { MediaInputContent } from '../contents/MediaInput'
 import { InputItemsContent } from '../contents/InputItemsContent'
 import { WOZSuggestionContent } from '../contents/WOZSuggestion'
+import { ConversationTagContent } from '../contents/ConversationTag'
 // import { ProviderWebhookContent } from './contents/ZapierContent'
 
 type Props = {
@@ -195,6 +187,9 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     }
     case WOZStepType.MESSAGE: {
       return <WOZSuggestionContent step={step} />
+    }
+    case OctaStepType.CONVERSATION_TAG: {
+      return <ConversationTagContent step={step} />
     }
     case 'start': {
       return <span></span>

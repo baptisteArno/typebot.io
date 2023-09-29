@@ -15,19 +15,14 @@ import {
   BubbleStepContent,
   IntegrationStepType,
   defaultTextBubbleContent,
-  defaultImageBubbleContent,
   defaultVideoBubbleContent,
   defaultGenericInputOptions,
   defaultEmailInputOptions,
   defaultCpfInputOptions,
   defaultDateInputOptions,
   defaultPhoneInputOptions,
-  defaultUrlInputOptions,
   defaultChoiceInputOptions,
   defaultAskNameOptions,
-  defaultSetVariablesOptions,
-  defaultRedirectOptions,
-  defaultCodeOptions,
   defaultWebhookOptions,
   StepWithOptionsType,
   Item,
@@ -56,6 +51,8 @@ import {
   WOZStepType,
   defaultWOZSuggestionOptions,
   WOZSuggestionOptions,
+  defaultConversationTagOptions,
+  ConversationTagOptions
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
@@ -70,18 +67,16 @@ import {
   stepHasItems,
   stepTypeHasItems,
   stepTypeHasOption,
-  stepTypeHasWebhook,
 } from 'utils'
 import { dequal } from 'dequal'
 import { stringify } from 'qs'
-import { isChoiceInput, isConditionStep, sendRequest, isOctaBubbleStep } from 'utils'
+import { isChoiceInput, isConditionStep, sendRequest } from 'utils'
 import cuid from 'cuid'
 import { diff } from 'deep-object-diff'
 import { duplicateWebhook } from 'services/webhook'
 import { Plan } from 'model'
 import { isDefined } from '@chakra-ui/utils'
-import { headers, services, subDomain } from '@octadesk-tech/services'
-import { config } from 'config/octadesk.config'
+import { subDomain } from '@octadesk-tech/services'
 import { sendOctaRequest } from 'util/octaRequest'
 
 export type TypebotInDashboard = Pick<
@@ -431,7 +426,7 @@ const parseDefaultContent = (type: BubbleStepType | OctaBubbleStepType | OctaWab
   }
 }
 
-const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType | WOZStepType): OctaStepOptions | OctaWabaStepOptions | WOZSuggestionOptions | null => {
+const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType | WOZStepType): OctaStepOptions | OctaWabaStepOptions | WOZSuggestionOptions | ConversationTagOptions | null => {
   switch (type) {
     case OctaStepType.ASSIGN_TO_TEAM:
       return defaultAssignToTeamOptions
@@ -443,6 +438,8 @@ const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType | WOZStepTyp
       return defaultCommerceOptions
     case OctaStepType.PRE_RESERVE:
       return defaultPreReserveOptions
+    case OctaStepType.CONVERSATION_TAG:
+      return defaultConversationTagOptions      
     case WOZStepType.MESSAGE:
       return defaultWOZSuggestionOptions
     case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
