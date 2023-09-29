@@ -37,7 +37,10 @@ import { FlutterFlowLogo } from './logos/FlutterFlowLogo'
 import { FlutterFlowModal } from './modals/FlutterFlowModal'
 import { NextjsLogo } from './logos/NextjsLogo'
 import { NextjsModal } from './modals/Nextjs/NextjsModal'
-import { WhatsAppLogo } from '@/components/logos/WhatsAppLogo'
+import {
+  WhatsAppLogo,
+  whatsAppBrandColor,
+} from '@/components/logos/WhatsAppLogo'
 import { WhatsAppModal } from './modals/WhatsAppModal/WhatsAppModal'
 import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvider'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
@@ -100,7 +103,13 @@ export const integrationsList = [
     return (
       <ParentModalProvider>
         <EmbedButton
-          logo={<WhatsAppLogo height={100} width="70px" />}
+          logo={
+            <WhatsAppLogo
+              height={100}
+              width="60px"
+              color={whatsAppBrandColor}
+            />
+          }
           label="WhatsApp"
           lockTagPlan={hasProPerks(workspace) ? undefined : 'PRO'}
           modal={({ onClose, isOpen }) => (

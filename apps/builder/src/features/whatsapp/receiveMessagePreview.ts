@@ -31,7 +31,8 @@ export const receiveMessagePreview = publicProcedure
     if (isNotDefined(receivedMessage)) return { message: 'No message found' }
     const contactName =
       entry.at(0)?.changes.at(0)?.value?.contacts?.at(0)?.profile?.name ?? ''
-    const contactPhoneNumber = '+' + receivedMessage.from
+    const contactPhoneNumber =
+      entry.at(0)?.changes.at(0)?.value?.messages?.at(0)?.from ?? ''
     return resumeWhatsAppFlow({
       receivedMessage,
       sessionId: `wa-preview-${receivedMessage.from}`,

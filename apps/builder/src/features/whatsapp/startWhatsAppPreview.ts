@@ -98,6 +98,10 @@ export const startWhatsAppPreview = authenticatedProcedure
             startGroupId,
           },
           userId: user.id,
+          initialSessionState: {
+            whatsApp: (existingSession?.state as SessionState | undefined)
+              ?.whatsApp,
+          },
         })
 
       if (canSendDirectMessagesToUser) {
@@ -119,19 +123,12 @@ export const startWhatsAppPreview = authenticatedProcedure
           logs,
           session: {
             id: sessionId,
-            state: {
-              ...newSessionState,
-              currentBlock: !input ? undefined : newSessionState.currentBlock,
-            },
+            state: newSessionState,
           },
         })
       } else {
         await restartSession({
-          state: {
-            ...newSessionState,
-            whatsApp: (existingSession?.state as SessionState | undefined)
-              ?.whatsApp,
-          },
+          state: newSessionState,
           id: sessionId,
         })
         try {
