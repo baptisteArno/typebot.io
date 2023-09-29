@@ -20,6 +20,7 @@ import {
   setPhoneNumberInLocalStorage,
 } from '../helpers/phoneNumberFromLocalStorage'
 import { useEditor } from '@/features/editor/providers/EditorProvider'
+import { BuoyIcon, ExternalLinkIcon } from '@/components/icons'
 
 export const WhatsAppPreviewInstructions = (props: StackProps) => {
   const { typebot, save } = useTypebot()
@@ -70,10 +71,22 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
       onSubmit={sendWhatsAppPreviewStartMessage}
       {...props}
     >
+      <HStack justifyContent="flex-end">
+        <Text fontSize="sm">Need help?</Text>
+        <Button
+          as={Link}
+          href="https://docs.typebot.io/embed/whatsapp"
+          leftIcon={<BuoyIcon />}
+          size="sm"
+        >
+          Check the docs
+        </Button>
+      </HStack>
       <Alert status="warning">
         <AlertIcon />
-        The WhatsApp integration is still experimental.
-        <br />I appreciate your bug reports 🧡
+        The WhatsApp integration is still in beta test.
+        <br />
+        Your bug reports are greatly appreciate 🧡
       </Alert>
       <TextInput
         label="Your phone number"
@@ -89,12 +102,22 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
           isDisabled={isEmpty(phoneNumber) || isMessageSent}
           isLoading={isSendingMessage}
           type="submit"
+          colorScheme="blue"
         >
           {hasMessageBeenSent ? 'Restart' : 'Start'} the chat
         </Button>
       )}
       <SlideFade offsetY="20px" in={isMessageSent} unmountOnExit>
         <Stack>
+          <Button
+            as={Link}
+            href={`https://web.whatsapp.com/`}
+            isExternal
+            colorScheme="blue"
+            rightIcon={<ExternalLinkIcon />}
+          >
+            Open WhatsApp Web
+          </Button>
           <Alert status="success" w="100%">
             <HStack>
               <AlertIcon />
@@ -106,15 +129,6 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
               </Stack>
             </HStack>
           </Alert>
-          <Button
-            as={Link}
-            href={`https://web.whatsapp.com/`}
-            isExternal
-            size="sm"
-            colorScheme="blue"
-          >
-            Open WhatsApp Web
-          </Button>
         </Stack>
       </SlideFade>
     </Stack>

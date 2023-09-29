@@ -67,7 +67,7 @@ export const resumeWhatsAppFlow = async ({
     session && !isSessionExpired
       ? session.state.currentBlock
         ? await continueBotFlow(session.state)(messageContent)
-        : await startBotFlow(session.state)
+        : await startBotFlow({ ...session.state, whatsApp: { contact } })
       : workspaceId
       ? await startWhatsAppSession({
           incomingMessage: messageContent,

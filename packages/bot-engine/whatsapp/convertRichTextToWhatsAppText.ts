@@ -6,4 +6,4 @@ export const convertRichTextToWhatsAppText = (richText: TElement[]): string =>
     .map((chunk) =>
       serialize(chunk)?.replaceAll('**', '*').replaceAll('&amp;#39;', "'")
     )
-    .join('')
+    .join('\n')

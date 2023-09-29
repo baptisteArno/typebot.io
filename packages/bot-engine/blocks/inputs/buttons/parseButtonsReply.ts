@@ -63,21 +63,14 @@ export const parseButtonsReply =
         reply: matchedItems.map((item) => item.content).join(', '),
       }
     }
-    if (state.whatsApp) {
-      const matchedItem = displayedItems.find((item) => item.id === inputValue)
-      if (!matchedItem) return { status: 'fail' }
-      return {
-        status: 'success',
-        reply: matchedItem.content ?? '',
-      }
-    }
     const longestItemsFirst = [...displayedItems].sort(
       (a, b) => (b.content?.length ?? 0) - (a.content?.length ?? 0)
     )
     const matchedItem = longestItemsFirst.find(
       (item) =>
-        item.content &&
-        inputValue.toLowerCase().trim() === item.content.toLowerCase().trim()
+        item.id === inputValue ||
+        (item.content &&
+          inputValue.toLowerCase().trim() === item.content.toLowerCase().trim())
     )
     if (!matchedItem) return { status: 'fail' }
     return {
