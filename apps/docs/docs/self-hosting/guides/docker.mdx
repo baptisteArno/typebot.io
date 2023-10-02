@@ -188,6 +188,10 @@ If you don't already have an S3 storage available, you could include it in your 
 
 ```yml
 version: '3.3'
+
+volumes:
+  s3-data:
+
 services:
   minio:
     image: minio/minio
@@ -198,7 +202,7 @@ services:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
     volumes:
-      - ${PWD}/.typebot/s3:/data
+      - s3-data:/data
   # This service just makes sure a bucket with the right policies is created
   createbuckets:
     image: minio/mc
@@ -237,6 +241,11 @@ Here is a config example that spins up Typebot with HTTPS, SMTP and S3 storage.
 
 ```yml
 version: '3.3'
+
+volumes:
+  db-data:
+  s3-data:
+
 services:
   caddy-gen:
     image: 'wemakeservices/caddy-gen:latest'
@@ -254,7 +263,7 @@ services:
     image: postgres:13
     restart: always
     volumes:
-      - {$PWD}/.typebot/database:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=typebot
       - POSTGRES_PASSWORD=typebot
@@ -298,7 +307,7 @@ services:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
     volumes:
-      - {$PWD}/.typebot/s3:/data
+      - s3_data:/data
   # This service just make sure a bucket with the right policies is created
   createbuckets:
     image: minio/mc
