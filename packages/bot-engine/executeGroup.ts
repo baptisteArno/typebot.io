@@ -25,6 +25,7 @@ import { injectVariableValuesInPictureChoiceBlock } from './blocks/inputs/pictur
 import { getPrefilledInputValue } from './getPrefilledValue'
 import { parseDateInput } from './blocks/inputs/date/parseDateInput'
 import { deepParseVariables } from './variables/deepParseVariables'
+import { parseVideoUrl } from '@typebot.io/lib/parseVideoUrl'
 
 export const executeGroup =
   (
@@ -174,6 +175,13 @@ const parseBubbleBlock =
                 ? parseFloat(message.content.height)
                 : message.content.height,
           },
+        }
+      }
+      case BubbleBlockType.VIDEO: {
+        const parsedContent = deepParseVariables(variables)(block.content)
+        return {
+          ...block,
+          content: parsedContent.url ? parseVideoUrl(parsedContent.url) : {},
         }
       }
       default:
