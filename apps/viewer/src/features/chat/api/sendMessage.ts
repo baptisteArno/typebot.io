@@ -66,7 +66,6 @@ export const sendMessage = publicProcedure
               state: newSessionState,
             })
           : await saveStateToDatabase({
-              isFirstSave: true,
               session: {
                 state: newSessionState,
               },

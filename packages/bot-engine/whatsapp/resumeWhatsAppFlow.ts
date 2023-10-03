@@ -98,7 +98,7 @@ export const resumeWhatsAppFlow = async ({
   })
 
   await saveStateToDatabase({
-    isFirstSave: !session,
+    forceCreateSession: !session && isDefined(input),
     clientSideActions: [],
     input,
     logs,
