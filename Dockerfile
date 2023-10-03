@@ -53,9 +53,7 @@ COPY --from=builder /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
 RUN ./node_modules/.bin/prisma generate --schema=packages/prisma/postgresql/schema.prisma;
 
 COPY scripts/${SCOPE}-entrypoint.sh ./
-COPY scripts/wait-for-it.sh ./
 RUN chmod +x ./${SCOPE}-entrypoint.sh
-RUN chmod +x ./wait-for-it.sh
 ENTRYPOINT ./${SCOPE}-entrypoint.sh
 
 EXPOSE 3000
