@@ -1,29 +1,26 @@
 import { useTypebot } from 'contexts/TypebotContext'
-import { Options } from 'got'
 import { ConversationTagStep } from 'models'
 import React, { useEffect, useState } from 'react'
-import { Container, Space } from './ConversationTagContent.style'
 import { chakra, Stack, Text } from '@chakra-ui/react'
-import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
 
 type Props = {
   step: ConversationTagStep
 }
 
 const ConversationTagContent = ({ step }: Props) => {
-  //const { octaGroups } = useTypebot();
+  const { tagsList } = useTypebot();
 
-  //const [selectedGroup, setSelectedGroup] = useState<any>();
+  const [selectedTag, setSelectedTag] = useState<any>();
 
-  /*useEffect(() => {
-    if (octaGroups) {
-      const item = octaGroups.find(g => g.id === step?.options?.assignTo)
-      setSelectedGroup(item);
+  useEffect(() => {
+    if (tagsList) {
+      const item = tagsList.find(g => g.id === step?.options?.tagId)
+      setSelectedTag(item);
     }
     return () => {
-      setSelectedGroup(undefined)
+      setSelectedTag(undefined)
     };
-  }, [octaGroups, step]);*/
+  }, [tagsList, step]);
 
   return (
     <Stack>
@@ -37,7 +34,7 @@ const ConversationTagContent = ({ step }: Props) => {
         py="0.5"
         px="1"
       >
-        {/*selectedGroup?.name || '...'*/}
+        {selectedTag?.name || '...'}
       </chakra.span>
     </Stack>
   )

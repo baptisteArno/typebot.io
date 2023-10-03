@@ -256,7 +256,7 @@ export const StepSettings = ({
       return (
         <ConversationTagBody
           options={
-            step.options || { labels: { placeholder: 'sou um placeholder' } }
+            step.options
           }
           onOptionsChange={handleOptionsChange}
         />

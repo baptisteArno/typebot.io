@@ -222,7 +222,8 @@ export type PreReserveOptions = BaseOctaOptions & {
 }
 
 export type ConversationTagOptions = BaseOctaOptions & {
-  tag: string
+  tagId: string
+  name: string
 }
 
 export type WOZSuggestionOptions = BaseOctaOptions & {
@@ -374,7 +375,7 @@ export const defaultPreReserveOptions: PreReserveOptions = {
 }
 
 export const defaultConversationTagOptions: ConversationTagOptions = {
-  tag: '',
+  tagId: '',
   name: '',
   subject: ''  
 }

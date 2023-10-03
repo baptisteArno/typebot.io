@@ -12,25 +12,21 @@ export const ConversationTagBody = ({
   options,
   onOptionsChange,
 }: ConversationTagBodyProps) => {
-  const handleDefaultConversationTagChange = (e: any) => {
-    const option = e
 
+  const handleTagChange = (e: any) => {
     onOptionsChange({
       ...options,
-      ...option,
+      tagId: e.tag
     })
   }
-  
+
   return (
     <Stack spacing={4}>
       <Stack>
-        <FormLabel mb="0" htmlFor="placeholder">
+        <FormLabel mb="0" htmlFor="button">
           Tagear conversa:
         </FormLabel>
-        <ConversationTagSelect
-          //selectedUserGroup={options.tags}
-          onSelect={handleDefaultConversationTagChange}
-        />
+        <ConversationTagSelect selectedTag={options.tagId} onSelect={handleTagChange} />
       </Stack>
     </Stack>
   )
