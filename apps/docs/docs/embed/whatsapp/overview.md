@@ -12,9 +12,7 @@ WhatsApp is currently available as a private beta test. If you'd like to try it 
 
 You can preview and test your bot by clicking on the Preview button in the editor and change the runtime to "WhatsApp".
 
-## Publish
-
-Head over to the Share tab of your bot and click on the WhatsApp button to get the integration instructions of your bot.
+<img src="/img/whatsapp/preview-dropdown.png" alt="WhatsApp preview dropdown" width="600px" />
 
 ## Limitations
 
@@ -23,27 +21,32 @@ WhatsApp environment have some limitations that you need to keep in mind when bu
 - GIF and SVG image files are not supported. They won't be displayed.
 - Buttons content can't be longer than 20 characters. If the content is longer, it will be truncated.
 - Incompatible blocks, if present, they will be skipped:
+
   - Payment input block
   - Chatwoot block
   - Script block
   - Google Analytics block
   - Meta Pixel blocks
 
-## Configuration
-
-You can customize how your bot behaves on WhatsApp in the `Configure integration` section
-
-<img src="/img/whatsapp/configure-integration.png" alt="WhatsApp configure integration" />
-
-**Session expiration timeout**: A number from 0 to 48 which is the number of hours after which the session will expire. If the user doesn't interact with the bot for more than the timeout, the session will expire and if user sends a new message, it will start a new chat.
-
-**Start bot condition**: A condition that will be evaluated when a user starts a conversation with your bot. If the condition is not met, the bot will not be triggered.
-
 ## Contact information
 
 You can automatically assign contact name and phone number to a variable in your bot using a Set variable block with the dedicated system values:
 
-<img src="/img/whatsapp/contact-var.png" alt="WhatsApp contact system variables" />
+<img src="/img/whatsapp/contact-var.png" alt="WhatsApp contact system variables" width="600px" />
+
+## Deploy on your phone number
+
+Head over to the Share tab of your bot and click on the WhatsApp button to get the integration instructions of your bot.
+
+### Configuration
+
+You can customize how your bot behaves on WhatsApp in the `Configure integration` section
+
+<img src="/img/whatsapp/configure-integration.png" alt="WhatsApp configure integration" width="600px" />
+
+**Session expiration timeout**: A number from 0 to 48 which is the number of hours after which the session will expire. If the user doesn't interact with the bot for more than the timeout, the session will expire and if user sends a new message, it will start a new chat.
+
+**Start bot condition**: A condition that will be evaluated when a user starts a conversation with your bot. If the condition is not met, the bot will not be triggered.
 
 ## FAQ
 
