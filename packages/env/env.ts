@@ -325,6 +325,17 @@ export const env = createEnv({
     ...posthogEnv.runtimeEnv,
   },
   skipValidation: typeof window !== 'undefined' && window.__ENV === undefined,
+  onValidationError(error) {
+    console.error(
+      '❌ Invalid environment variables:',
+      error.flatten().fieldErrors
+    )
+    throw new Error(
+      `Invalid environment variables: ${JSON.stringify(
+        error.flatten().fieldErrors
+      )}`
+    )
+  },
   onInvalidAccess: (variable: string) => {
     throw new Error(
       `❌ Attempted to access a server-side environment variable on the client: ${variable}`
