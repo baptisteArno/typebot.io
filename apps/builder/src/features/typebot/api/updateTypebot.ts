@@ -142,7 +142,11 @@ export const updateTypebot = authenticatedProcedure
             : undefined,
           theme: typebot.theme ? typebot.theme : undefined,
           settings: typebot.settings
-            ? sanitizeSettings(typebot.settings, existingTypebot.workspace.plan)
+            ? sanitizeSettings(
+                typebot.settings,
+                existingTypebot.workspace.plan,
+                'update'
+              )
             : undefined,
           folderId: typebot.folderId,
           variables: typebot.variables,

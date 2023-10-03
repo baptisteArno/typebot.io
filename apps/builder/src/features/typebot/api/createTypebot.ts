@@ -80,7 +80,7 @@ export const createTypebot = authenticatedProcedure
           : defaultGroups(),
         theme: typebot.theme ? typebot.theme : defaultTheme,
         settings: typebot.settings
-          ? sanitizeSettings(typebot.settings, workspace.plan)
+          ? sanitizeSettings(typebot.settings, workspace.plan, 'create')
           : defaultSettings({
               isBrandingEnabled: workspace.plan === Plan.FREE,
             }),
