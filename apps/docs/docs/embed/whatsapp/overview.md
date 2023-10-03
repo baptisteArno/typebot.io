@@ -44,7 +44,7 @@ You can customize how your bot behaves on WhatsApp in the `Configure integration
 
 <img src="/img/whatsapp/configure-integration.png" alt="WhatsApp configure integration" width="600px" />
 
-**Session expiration timeout**: A number from 0 to 48 which is the number of hours after which the session will expire. If the user doesn't interact with the bot for more than the timeout, the session will expire and if user sends a new message, it will start a new chat.
+**Session expiration timeout**: A number from 0 to 48 which is the number of hours after which the session will expire. If the user doesn't interact with the bot for more than the timeout, the session will expire and if user sends a new message, it will start a new chat. The default is 4 hours.
 
 **Start bot condition**: A condition that will be evaluated when a user starts a conversation with your bot. If the condition is not met, the bot will not be triggered.
 

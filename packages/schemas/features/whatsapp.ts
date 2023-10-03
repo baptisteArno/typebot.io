@@ -201,7 +201,7 @@ export const whatsAppSettingsSchema = z.object({
     .describe('Expiration delay in hours after latest interaction'),
 })
 
-export const defaultSessionExpiryTimeout = 12
+export const defaultSessionExpiryTimeout = 4
 
 export type WhatsAppIncomingMessage = z.infer<typeof incomingMessageSchema>
 export type WhatsAppSendingMessage = z.infer<typeof sendingMessageSchema>
