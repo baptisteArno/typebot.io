@@ -22,6 +22,10 @@ Fork the repository
 
 You may want to [disable the Github actions](https://docs.github.com/en/actions/using-workflows/disabling-and-enabling-a-workflow) as they are most likely not relevant to your use of Typebot. This can be done.
 
+## Reduce function maxDuration (Hobby plan only)
+
+If you deploy on a Vercel Hobby plan, you will need to reduce the `maxDuration` timeout options in `apps/viewer/vercel.json` and set it to `10`
+
 ### Deploy the builder
 
 1. Create a new Vercel project and import the forked repo
