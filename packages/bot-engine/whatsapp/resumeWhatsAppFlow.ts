@@ -12,7 +12,6 @@ import { decrypt } from '@typebot.io/lib/api'
 import { saveStateToDatabase } from '../saveStateToDatabase'
 import prisma from '@typebot.io/lib/prisma'
 import { isDefined } from '@typebot.io/lib/utils'
-import { startBotFlow } from '../startBotFlow'
 
 type Props = {
   receivedMessage: WhatsAppIncomingMessage
@@ -65,9 +64,9 @@ export const resumeWhatsAppFlow = async ({
 
   const resumeResponse =
     session && !isSessionExpired
-      ? session.state.currentBlock
-        ? await continueBotFlow(session.state)(messageContent)
-        : await startBotFlow({ ...session.state, whatsApp: { contact } })
+      ? await continueBotFlow({ ...session.state, whatsApp: { contact } })(
+          messageContent
+        )
       : workspaceId
       ? await startWhatsAppSession({
           incomingMessage: messageContent,

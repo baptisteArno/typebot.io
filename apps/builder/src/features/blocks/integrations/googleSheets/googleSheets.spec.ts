@@ -103,7 +103,7 @@ test.describe.parallel('Google sheets integration', () => {
     await page.click('text=Select an operation')
     await page.click('text=Get data from sheet')
 
-    await page.getByRole('button', { name: 'Rows to filter' }).click()
+    await page.getByRole('button', { name: 'Select row(s)' }).click()
     await page.getByRole('button', { name: 'Add filter rule' }).click()
     await page.click('text=Select a column')
     await page.click('button >> text="Email"')

@@ -91,6 +91,7 @@ export const startWhatsAppPreview = authenticatedProcedure
 
       const { newSessionState, messages, input, clientSideActions, logs } =
         await startSession({
+          message: undefined,
           startParams: {
             isOnlyRegistering: !canSendDirectMessagesToUser,
             typebot: typebotId,

@@ -28,6 +28,7 @@ import { validateRatingReply } from './blocks/inputs/rating/validateRatingReply'
 import { parsePictureChoicesReply } from './blocks/inputs/pictureChoice/parsePictureChoicesReply'
 import { parseVariables } from './variables/parseVariables'
 import { updateVariablesInSession } from './variables/updateVariablesInSession'
+import { startBotFlow } from './startBotFlow'
 import { TRPCError } from '@trpc/server'
 
 export const continueBotFlow =
@@ -36,6 +37,9 @@ export const continueBotFlow =
     reply?: string
   ): Promise<ChatReply & { newSessionState: SessionState }> => {
     let newSessionState = { ...state }
+
+    if (!newSessionState.currentBlock) return startBotFlow(state)
+
     const group = state.typebotsQueue[0].typebot.groups.find(
       (group) => group.id === state.currentBlock?.groupId
     )

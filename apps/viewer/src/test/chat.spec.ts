@@ -27,6 +27,13 @@ test('API chat execution should work on preview bot', async ({ request }) => {
     id: 'chat-sub-bot',
     publicId: 'chat-sub-bot-public',
   })
+  await importTypebotInDatabase(
+    getTestAsset('typebots/chat/startingWithInput.json'),
+    {
+      id: 'starting-with-input',
+      publicId: 'starting-with-input-public',
+    }
+  )
   await createWebhook(typebotId, {
     id: 'chat-webhook-id',
     method: HttpMethod.GET,
@@ -217,5 +224,27 @@ test('API chat execution should work on published bot', async ({ request }) => {
       },
     ])
     expect(messages[2].content.richText.length).toBeGreaterThan(0)
+  })
+  await test.step('Starting with a message when typebot starts with input should proceed', async () => {
+    const { messages } = await (
+      await request.post(`/api/v1/sendMessage`, {
+        data: {
+          message: 'Hey',
+          startParams: {
+            typebot: 'starting-with-input-public',
+          },
+        } satisfies SendMessageInput,
+      })
+    ).json()
+    expect(messages[0].content.richText).toStrictEqual([
+      {
+        children: [
+          {
+            text: "That's nice!",
+          },
+        ],
+        type: 'p',
+      },
+    ])
   })
 })

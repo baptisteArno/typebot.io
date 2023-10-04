@@ -12,11 +12,8 @@ import {
   WhatsAppCredentials,
   defaultSessionExpiryTimeout,
 } from '@typebot.io/schemas/features/whatsapp'
-import { isInputBlock, isNotDefined } from '@typebot.io/lib/utils'
+import { isNotDefined } from '@typebot.io/lib/utils'
 import { startSession } from '../startSession'
-import { getNextGroup } from '../getNextGroup'
-import { continueBotFlow } from '../continueBotFlow'
-import { upsertResult } from '../queries/upsertResult'
 
 type Props = {
   incomingMessage?: string
@@ -80,7 +77,8 @@ export const startWhatsAppSession = async ({
     publicTypebot.settings.whatsApp?.sessionExpiryTimeout ??
     defaultSessionExpiryTimeout
 
-  let chatReply = await startSession({
+  return startSession({
+    message: incomingMessage,
     startParams: {
       typebot: publicTypebot.typebot.publicId as string,
     },
@@ -92,31 +90,6 @@ export const startWhatsAppSession = async ({
       expiryTimeout: sessionExpiryTimeoutHours * 60 * 60 * 1000,
     },
   })
-
-  let sessionState: SessionState = chatReply.newSessionState
-
-  // If first block is an input block, we can directly continue the bot flow
-  const firstEdgeId =
-    sessionState.typebotsQueue[0].typebot.groups[0].blocks[0].outgoingEdgeId
-  const nextGroup = await getNextGroup(sessionState)(firstEdgeId)
-  sessionState = nextGroup.newSessionState
-  const firstBlock = nextGroup.group?.blocks.at(0)
-  if (firstBlock && isInputBlock(firstBlock)) {
-    const resultId = sessionState.typebotsQueue[0].resultId
-    if (resultId)
-      await upsertResult({
-        hasStarted: true,
-        isCompleted: false,
-        resultId,
-        typebot: sessionState.typebotsQueue[0].typebot,
-      })
-    chatReply = await continueBotFlow({
-      ...sessionState,
-      currentBlock: { groupId: firstBlock.groupId, blockId: firstBlock.id },
-    })(incomingMessage)
-  }
-
-  return chatReply
 }
 
 export const messageMatchStartCondition = (

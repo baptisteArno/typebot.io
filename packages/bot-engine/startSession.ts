@@ -26,14 +26,19 @@ import { startBotFlow } from './startBotFlow'
 import { prefillVariables } from './variables/prefillVariables'
 import { deepParseVariables } from './variables/deepParseVariables'
 import { injectVariablesFromExistingResult } from './variables/injectVariablesFromExistingResult'
+import { getNextGroup } from './getNextGroup'
+import { upsertResult } from './queries/upsertResult'
+import { continueBotFlow } from './continueBotFlow'
 
 type Props = {
+  message: string | undefined
   startParams: StartParams
   userId: string | undefined
   initialSessionState?: Pick<SessionState, 'whatsApp' | 'expiryTimeout'>
 }
 
 export const startSession = async ({
+  message,
   startParams,
   userId,
   initialSessionState,
@@ -130,13 +135,39 @@ export const startSession = async ({
     }
   }
 
+  let chatReply = await startBotFlow(initialState, startParams.startGroupId)
+
+  // If params has message and first block is an input block, we can directly continue the bot flow
+  if (message) {
+    const firstEdgeId =
+      chatReply.newSessionState.typebotsQueue[0].typebot.groups[0].blocks[0]
+        .outgoingEdgeId
+    const nextGroup = await getNextGroup(chatReply.newSessionState)(firstEdgeId)
+    const newSessionState = nextGroup.newSessionState
+    const firstBlock = nextGroup.group?.blocks.at(0)
+    if (firstBlock && isInputBlock(firstBlock)) {
+      const resultId = newSessionState.typebotsQueue[0].resultId
+      if (resultId)
+        await upsertResult({
+          hasStarted: true,
+          isCompleted: false,
+          resultId,
+          typebot: newSessionState.typebotsQueue[0].typebot,
+        })
+      chatReply = await continueBotFlow({
+        ...newSessionState,
+        currentBlock: { groupId: firstBlock.groupId, blockId: firstBlock.id },
+      })(message)
+    }
+  }
+
   const {
     messages,
     input,
     clientSideActions: startFlowClientActions,
     newSessionState,
     logs,
-  } = await startBotFlow(initialState, startParams.startGroupId)
+  } = chatReply
 
   const clientSideActions = startFlowClientActions ?? []
 

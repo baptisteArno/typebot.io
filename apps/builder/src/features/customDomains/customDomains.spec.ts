@@ -57,7 +57,9 @@ test.describe('Starter workspace', () => {
       },
     ])
     await page.goto(`/typebots/${typebotId}/share`)
-    await expect(page.locator('[data-testid="pro-lock-tag"]')).toBeVisible()
+    await expect(
+      page.locator('[data-testid="pro-lock-tag"]').nth(0)
+    ).toBeVisible()
     await page.click('text=Add my domain')
     await expect(
       page.locator(

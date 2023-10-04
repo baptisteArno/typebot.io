@@ -34,7 +34,7 @@ test.describe('Send email block', () => {
     )
     await page.fill('[placeholder="John Smith"]', 'John Smith')
     await page.fill('[placeholder="mail.provider.com"]', env.SMTP_HOST)
-    await page.fill('[placeholder="user@provider.com"]', env.SMTP_USERNAME)
+    await page.getByLabel('Username').fill(env.SMTP_USERNAME)
     await page.fill('[type="password"]', env.SMTP_PASSWORD)
     await page.fill('input[role="spinbutton"]', env.SMTP_PORT.toString())
     await expect(createButton).toBeEnabled()

@@ -57,7 +57,7 @@ export const sendMessage = publicProcedure
           logs,
           clientSideActions,
           newSessionState,
-        } = await startSession({ startParams, userId: user?.id })
+        } = await startSession({ startParams, userId: user?.id, message })
 
         const allLogs = clientLogs ? [...(logs ?? []), ...clientLogs] : logs
 
