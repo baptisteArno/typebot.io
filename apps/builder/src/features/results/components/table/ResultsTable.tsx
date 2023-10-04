@@ -205,7 +205,9 @@ export const ResultsTable = ({
     return () => {
       observer.disconnect()
     }
-  }, [handleObserver])
+    // We need to rerun this effect when the bottomElement changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [handleObserver, bottomElement.current])
 
   return (
     <Stack maxW="1600px" px="4" overflowY="hidden" spacing={6}>
