@@ -2,7 +2,7 @@ import { StepBase, StepWithItems, ItemBase, Step, ItemType, OctaProperty } from 
 import { TextBubbleContent, WOZStepType } from './bubble'
 
 // Regular steps
-export type OctaStep = AssignToTeamStep | OfficeHourStep | CallOtherBotStep | PreReserveStep | CommerceStep
+export type OctaStep = AssignToTeamStep | OfficeHourStep | CallOtherBotStep | PreReserveStep | CommerceStep | ConversationTagStep
 
 // Waba steps
 
@@ -223,7 +223,6 @@ export type PreReserveOptions = BaseOctaOptions & {
 
 export type ConversationTagOptions = BaseOctaOptions & {
   tagId: string
-  name: string
 }
 
 export type WOZSuggestionOptions = BaseOctaOptions & {
