@@ -6,7 +6,7 @@ title: Overview
 
 # WhatsApp
 
-WhatsApp is currently available as a private beta test. If you'd like to try it out, reach out to support@typebot.io.
+WhatsApp integration is currently in beta. If you encounter any issue, please contact me directly using the Bubble in app.typebot.io.
 
 ## Preview
 
