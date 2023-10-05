@@ -230,18 +230,30 @@ const parseVariablesInRichText = (
             ? variableInText.value
             : variableInText.value.replace(/[\n]+/g, ' ')
         )
+        const variableElementsWithStyling = variableElements.map(
+          (variableElement) => ({
+            ...variableElement,
+            children: [
+              ...(variableElement.children as TDescendant[]).map((child) => ({
+                ...element,
+                ...child,
+              })),
+            ],
+          })
+        )
         if (isStandaloneElement) {
-          parsedElements.push(...variableElements)
+          parsedElements.push(...variableElementsWithStyling)
           continue
         }
         const children: TDescendant[] = []
         if (isNotEmpty(textBeforeVariable))
           children.push({
+            ...element,
             text: textBeforeVariable,
           })
         children.push({
           type: 'inline-variable',
-          children: variableElements,
+          children: variableElementsWithStyling,
         })
         if (isNotEmpty(textAfterVariable))
           children.push({
