@@ -55,6 +55,35 @@ export const parseVariables =
     )
   }
 
+type VariableToParseInformation = {
+  startIndex: number
+  endIndex: number
+  textToReplace: string
+  value: string
+}
+
+export const getVariablesToParseInfoInText = (
+  text: string,
+  variables: Variable[]
+): VariableToParseInformation[] => {
+  const pattern = /\{\{([^{}]+)\}\}|(\$)\{\{([^{}]+)\}\}/g
+  const variablesToParseInfo: VariableToParseInformation[] = []
+  let match
+  while ((match = pattern.exec(text)) !== null) {
+    const matchedVarName = match[1] ?? match[3]
+    const variable = variables.find((variable) => {
+      return matchedVarName === variable.name && isDefined(variable.value)
+    }) as VariableWithValue | undefined
+    variablesToParseInfo.push({
+      startIndex: match.index,
+      endIndex: match.index + match[0].length,
+      textToReplace: match[0],
+      value: safeStringify(variable?.value) ?? '',
+    })
+  }
+  return variablesToParseInfo
+}
+
 const parseVariableValueInJson = (value: VariableWithValue['value']) => {
   const stringifiedValue = JSON.stringify(value)
   if (typeof value === 'string') return stringifiedValue.slice(1, -1)

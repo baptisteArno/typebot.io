@@ -11,6 +11,7 @@ import {
 } from '@typebot.io/schemas'
 import {
   isBubbleBlock,
+  isEmpty,
   isInputBlock,
   isIntegrationBlock,
   isLogicBlock,
@@ -26,6 +27,12 @@ import { getPrefilledInputValue } from './getPrefilledValue'
 import { parseDateInput } from './blocks/inputs/date/parseDateInput'
 import { deepParseVariables } from './variables/deepParseVariables'
 import { parseVideoUrl } from '@typebot.io/lib/parseVideoUrl'
+import { TDescendant, createPlateEditor } from '@udecode/plate-common'
+import {
+  createDeserializeMdPlugin,
+  deserializeMd,
+} from '@udecode/plate-serializer-md'
+import { getVariablesToParseInfoInText } from './variables/parseVariables'
 
 export const executeGroup =
   (
@@ -158,12 +165,19 @@ const parseBubbleBlock =
   (variables: Variable[]) =>
   (block: BubbleBlock): ChatReply['messages'][0] => {
     switch (block.type) {
-      case BubbleBlockType.TEXT:
-        return deepParseVariables(
-          variables,
-          {},
-          { takeLatestIfList: true }
-        )(block)
+      case BubbleBlockType.TEXT: {
+        return {
+          ...block,
+          content: {
+            ...block.content,
+            richText: parseVariablesInRichText(
+              block.content.richText,
+              variables
+            ),
+          },
+        }
+      }
+
       case BubbleBlockType.EMBED: {
         const message = deepParseVariables(variables)(block)
         return {
@@ -188,6 +202,82 @@ const parseBubbleBlock =
         return deepParseVariables(variables)(block)
     }
   }
+
+const parseVariablesInRichText = (
+  elements: TDescendant[],
+  variables: Variable[]
+): TDescendant[] => {
+  const parsedElements: TDescendant[] = []
+  for (const element of elements) {
+    if ('text' in element) {
+      const text = element.text as string
+      if (isEmpty(text)) {
+        parsedElements.push(element)
+        continue
+      }
+      const variablesInText = getVariablesToParseInfoInText(text, variables)
+      if (variablesInText.length === 0) {
+        parsedElements.push(element)
+        continue
+      }
+      for (const variableInText of variablesInText) {
+        const textBeforeVariable = text.substring(0, variableInText.startIndex)
+        const textAfterVariable = text.substring(variableInText.endIndex)
+        const isStandaloneElement =
+          isEmpty(textBeforeVariable) && isEmpty(textAfterVariable)
+        const variableElements = convertMarkdownToRichText(
+          isStandaloneElement
+            ? variableInText.value
+            : variableInText.value.replace(/[\n]+/g, ' ')
+        )
+        if (isStandaloneElement) {
+          parsedElements.push(...variableElements)
+          continue
+        }
+        const children: TDescendant[] = []
+        if (isNotEmpty(textBeforeVariable))
+          children.push({
+            text: textBeforeVariable,
+          })
+        children.push({
+          type: 'inline-variable',
+          children: variableElements,
+        })
+        if (isNotEmpty(textAfterVariable))
+          children.push({
+            ...element,
+            text: textAfterVariable,
+          })
+        parsedElements.push(...children)
+      }
+      continue
+    }
+
+    const type =
+      element.children.length === 1 &&
+      'text' in element.children[0] &&
+      (element.children[0].text as string).startsWith('{{') &&
+      (element.children[0].text as string).endsWith('}}')
+        ? 'variable'
+        : element.type
+
+    parsedElements.push({
+      ...element,
+      type,
+      children: parseVariablesInRichText(
+        element.children as TDescendant[],
+        variables
+      ),
+    })
+  }
+  return parsedElements
+}
+
+const convertMarkdownToRichText = (text: string): TDescendant[] => {
+  const plugins = [createDeserializeMdPlugin()]
+  //@ts-ignore
+  return deserializeMd(createPlateEditor({ plugins }), text)
+}
 
 export const parseInput =
   (state: SessionState) =>

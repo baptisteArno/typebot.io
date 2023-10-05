@@ -1,7 +1,9 @@
+import { isEmpty } from '@typebot.io/lib'
 import { Show } from 'solid-js'
 
 export type PlateTextProps = {
   text: string
+  isUniqueChild: boolean
   bold?: boolean
   italic?: boolean
   underline?: boolean
@@ -20,11 +22,10 @@ const computeClassNames = (
 }
 
 export const PlateText = (props: PlateTextProps) => (
-  <Show
-    when={computeClassNames(props.bold, props.italic, props.underline)}
-    keyed
-    fallback={<>{props.text}</>}
-  >
-    {(className) => <span class={className}>{props.text}</span>}
-  </Show>
+  <span class={computeClassNames(props.bold, props.italic, props.underline)}>
+    {props.text}
+    <Show when={props.isUniqueChild && isEmpty(props.text)}>
+      <br />
+    </Show>
+  </span>
 )

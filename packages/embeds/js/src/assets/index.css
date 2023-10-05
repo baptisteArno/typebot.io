@@ -94,12 +94,8 @@ textarea {
   font-weight: 300;
 }
 
-.slate-a {
+a {
   text-decoration: underline;
-}
-
-.slate-html-container > div {
-  min-height: 24px;
 }
 
 .slate-bold {

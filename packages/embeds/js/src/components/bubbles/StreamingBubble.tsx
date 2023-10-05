@@ -1,21 +1,32 @@
 import { streamingMessage } from '@/utils/streamingMessageSignal'
 import { createEffect, createSignal } from 'solid-js'
+import { marked } from 'marked'
+import domPurify from 'dompurify'
 
 type Props = {
   streamingMessageId: string
 }
 
+marked.use({
+  renderer: {
+    link: (href, _title, text) => {
+      return `<a href="${href}" target="_blank" rel="noopener noreferrer">${text}</a>`
+    },
+  },
+})
+
 export const StreamingBubble = (props: Props) => {
-  let ref: HTMLDivElement | undefined
   const [content, setContent] = createSignal<string>('')
 
   createEffect(() => {
     if (streamingMessage()?.id === props.streamingMessageId)
-      setContent(streamingMessage()?.content ?? '')
+      setContent(
+        domPurify.sanitize(marked.parse(streamingMessage()?.content ?? ''))
+      )
   })
 
   return (
-    <div class="flex flex-col animate-fade-in" ref={ref}>
+    <div class="flex flex-col animate-fade-in">
       <div class="flex w-full items-center">
         <div class="flex relative items-start typebot-host-bubble">
           <div
@@ -28,11 +39,10 @@ export const StreamingBubble = (props: Props) => {
           />
           <div
             class={
-              'overflow-hidden text-fade-in mx-4 my-2 whitespace-pre-wrap slate-html-container relative text-ellipsis opacity-100 h-full'
+              'flex flex-col overflow-hidden text-fade-in mx-4 my-2 relative text-ellipsis h-full gap-6'
             }
-          >
-            {content()}
-          </div>
+            innerHTML={content()}
+          />
         </div>
       </div>
     </div>

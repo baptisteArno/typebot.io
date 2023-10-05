@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/js",
-  "version": "0.1.33",
+  "version": "0.1.34",
   "description": "Javascript library to display typebots on your website",
   "type": "module",
   "main": "dist/index.js",
@@ -14,7 +14,9 @@
   "dependencies": {
     "@stripe/stripe-js": "1.54.1",
     "@udecode/plate-common": "^21.1.5",
+    "dompurify": "^3.0.6",
     "eventsource-parser": "^1.0.0",
+    "marked": "^9.0.3",
     "solid-element": "1.7.1",
     "solid-js": "1.7.8"
   },
@@ -24,11 +26,12 @@
     "@rollup/plugin-node-resolve": "15.1.0",
     "@rollup/plugin-terser": "0.4.3",
     "@rollup/plugin-typescript": "11.1.2",
-    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/bot-engine": "workspace:*",
     "@typebot.io/env": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
-    "@typebot.io/bot-engine": "workspace:*",
+    "@types/dompurify": "^3.0.3",
     "autoprefixer": "10.4.14",
     "babel-preset-solid": "1.7.7",
     "clsx": "2.0.0",
