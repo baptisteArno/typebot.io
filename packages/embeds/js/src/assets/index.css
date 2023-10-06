@@ -98,6 +98,22 @@ a {
   text-decoration: underline;
 }
 
+ul,
+ol {
+  list-style-position: inside;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+ol {
+  list-style-type: decimal;
+}
+
+ul {
+  list-style-type: disc;
+}
+
 .slate-bold {
   font-weight: bold;
 }

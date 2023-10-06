@@ -7,16 +7,16 @@ type Props = {
   streamingMessageId: string
 }
 
-marked.use({
-  renderer: {
-    link: (href, _title, text) => {
-      return `<a href="${href}" target="_blank" rel="noopener noreferrer">${text}</a>`
-    },
-  },
-})
-
 export const StreamingBubble = (props: Props) => {
   const [content, setContent] = createSignal<string>('')
+
+  marked.use({
+    renderer: {
+      link: (href, _title, text) => {
+        return `<a href="${href}" target="_blank" rel="noopener noreferrer">${text}</a>`
+      },
+    },
+  })
 
   createEffect(() => {
     if (streamingMessage()?.id === props.streamingMessageId)
