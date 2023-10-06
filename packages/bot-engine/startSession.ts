@@ -31,6 +31,7 @@ import { upsertResult } from './queries/upsertResult'
 import { continueBotFlow } from './continueBotFlow'
 
 type Props = {
+  version: 1 | 2
   message: string | undefined
   startParams: StartParams
   userId: string | undefined
@@ -38,6 +39,7 @@ type Props = {
 }
 
 export const startSession = async ({
+  version,
   message,
   startParams,
   userId,
@@ -135,7 +137,11 @@ export const startSession = async ({
     }
   }
 
-  let chatReply = await startBotFlow(initialState, startParams.startGroupId)
+  let chatReply = await startBotFlow({
+    version,
+    state: initialState,
+    startGroupId: startParams.startGroupId,
+  })
 
   // If params has message and first block is an input block, we can directly continue the bot flow
   if (message) {
@@ -154,10 +160,13 @@ export const startSession = async ({
           resultId,
           typebot: newSessionState.typebotsQueue[0].typebot,
         })
-      chatReply = await continueBotFlow({
-        ...newSessionState,
-        currentBlock: { groupId: firstBlock.groupId, blockId: firstBlock.id },
-      })(message)
+      chatReply = await continueBotFlow(message, {
+        version,
+        state: {
+          ...newSessionState,
+          currentBlock: { groupId: firstBlock.groupId, blockId: firstBlock.id },
+        },
+      })
     }
   }
 

@@ -12,7 +12,7 @@ test('should correctly be injected', async ({ page }) => {
   await page.goto(`/${typebotId}-public`)
   await expect(page.locator('text="Your name is"')).toBeVisible()
   await page.goto(`/${typebotId}-public?Name=Baptiste&Email=email@test.com`)
-  await expect(page.locator('text="Your name is Baptiste"')).toBeVisible()
+  await expect(page.locator('text="Baptiste"')).toBeVisible()
   await expect(page.getByPlaceholder('Type your email...')).toHaveValue(
     'email@test.com'
   )

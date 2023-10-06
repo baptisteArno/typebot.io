@@ -51,7 +51,7 @@ export const sendChatReplyToWhatsApp = async ({
     const result = await executeClientSideAction({ to, credentials })(action)
     if (!result) continue
     const { input, newSessionState, messages, clientSideActions } =
-      await continueBotFlow(state)(result.replyToSend)
+      await continueBotFlow(result.replyToSend, { version: 2, state })
 
     return sendChatReplyToWhatsApp({
       to,
@@ -95,7 +95,7 @@ export const sendChatReplyToWhatsApp = async ({
         )
         if (!result) continue
         const { input, newSessionState, messages, clientSideActions } =
-          await continueBotFlow(state)(result.replyToSend)
+          await continueBotFlow(result.replyToSend, { version: 2, state })
 
         return sendChatReplyToWhatsApp({
           to,

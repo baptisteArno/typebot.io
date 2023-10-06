@@ -91,6 +91,7 @@ export const startWhatsAppPreview = authenticatedProcedure
 
       const { newSessionState, messages, input, clientSideActions, logs } =
         await startSession({
+          version: 2,
           message: undefined,
           startParams: {
             isOnlyRegistering: !canSendDirectMessagesToUser,

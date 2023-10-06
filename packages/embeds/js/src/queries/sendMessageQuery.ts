@@ -8,6 +8,6 @@ export const sendMessageQuery = ({
 }: SendMessageInput & { apiHost?: string }) =>
   sendRequest<ChatReply>({
     method: 'POST',
-    url: `${isNotEmpty(apiHost) ? apiHost : guessApiHost()}/api/v1/sendMessage`,
+    url: `${isNotEmpty(apiHost) ? apiHost : guessApiHost()}/api/v2/sendMessage`,
     body,
   })

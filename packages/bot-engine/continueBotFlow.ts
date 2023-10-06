@@ -31,134 +31,139 @@ import { updateVariablesInSession } from './variables/updateVariablesInSession'
 import { startBotFlow } from './startBotFlow'
 import { TRPCError } from '@trpc/server'
 
-export const continueBotFlow =
-  (state: SessionState) =>
-  async (
-    reply?: string
-  ): Promise<ChatReply & { newSessionState: SessionState }> => {
-    let newSessionState = { ...state }
+type Params = {
+  version: 1 | 2
+  state: SessionState
+}
+export const continueBotFlow = async (
+  reply: string | undefined,
+  { state, version }: Params
+): Promise<ChatReply & { newSessionState: SessionState }> => {
+  let newSessionState = { ...state }
 
-    if (!newSessionState.currentBlock) return startBotFlow(state)
+  if (!newSessionState.currentBlock) return startBotFlow({ state, version })
 
-    const group = state.typebotsQueue[0].typebot.groups.find(
-      (group) => group.id === state.currentBlock?.groupId
+  const group = state.typebotsQueue[0].typebot.groups.find(
+    (group) => group.id === state.currentBlock?.groupId
+  )
+  const blockIndex =
+    group?.blocks.findIndex(
+      (block) => block.id === state.currentBlock?.blockId
+    ) ?? -1
+
+  const block = blockIndex >= 0 ? group?.blocks[blockIndex ?? 0] : null
+
+  if (!block || !group)
+    throw new TRPCError({
+      code: 'INTERNAL_SERVER_ERROR',
+      message: 'Group / block not found',
+    })
+
+  if (block.type === LogicBlockType.SET_VARIABLE) {
+    const existingVariable = state.typebotsQueue[0].typebot.variables.find(
+      byId(block.options.variableId)
     )
-    const blockIndex =
-      group?.blocks.findIndex(
-        (block) => block.id === state.currentBlock?.blockId
-      ) ?? -1
-
-    const block = blockIndex >= 0 ? group?.blocks[blockIndex ?? 0] : null
-
-    if (!block || !group)
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'Group / block not found',
-      })
-
-    if (block.type === LogicBlockType.SET_VARIABLE) {
-      const existingVariable = state.typebotsQueue[0].typebot.variables.find(
-        byId(block.options.variableId)
-      )
-      if (existingVariable && reply) {
-        const newVariable = {
-          ...existingVariable,
-          value: safeJsonParse(reply),
-        }
-        newSessionState = updateVariablesInSession(state)([newVariable])
+    if (existingVariable && reply) {
+      const newVariable = {
+        ...existingVariable,
+        value: safeJsonParse(reply),
       }
-    } else if (reply && block.type === IntegrationBlockType.WEBHOOK) {
-      const result = resumeWebhookExecution({
-        state,
-        block,
-        response: JSON.parse(reply),
-      })
-      if (result.newSessionState) newSessionState = result.newSessionState
-    } else if (
-      block.type === IntegrationBlockType.OPEN_AI &&
-      block.options.task === 'Create chat completion'
-    ) {
-      if (reply) {
-        const result = await resumeChatCompletion(state, {
-          options: block.options,
-          outgoingEdgeId: block.outgoingEdgeId,
-        })(reply)
-        newSessionState = result.newSessionState
+      newSessionState = updateVariablesInSession(state)([newVariable])
+    }
+  } else if (reply && block.type === IntegrationBlockType.WEBHOOK) {
+    const result = resumeWebhookExecution({
+      state,
+      block,
+      response: JSON.parse(reply),
+    })
+    if (result.newSessionState) newSessionState = result.newSessionState
+  } else if (
+    block.type === IntegrationBlockType.OPEN_AI &&
+    block.options.task === 'Create chat completion'
+  ) {
+    if (reply) {
+      const result = await resumeChatCompletion(state, {
+        options: block.options,
+        outgoingEdgeId: block.outgoingEdgeId,
+      })(reply)
+      newSessionState = result.newSessionState
+    }
+  }
+
+  let formattedReply: string | undefined
+
+  if (isInputBlock(block)) {
+    const parsedReplyResult = parseReply(newSessionState)(reply, block)
+
+    if (parsedReplyResult.status === 'fail')
+      return {
+        ...(await parseRetryMessage(newSessionState)(block)),
+        newSessionState,
       }
-    }
 
-    let formattedReply: string | undefined
-
-    if (isInputBlock(block)) {
-      const parsedReplyResult = parseReply(newSessionState)(reply, block)
-
-      if (parsedReplyResult.status === 'fail')
-        return {
-          ...(await parseRetryMessage(newSessionState)(block)),
-          newSessionState,
-        }
-
-      formattedReply =
-        'reply' in parsedReplyResult ? parsedReplyResult.reply : undefined
-      const nextEdgeId = getOutgoingEdgeId(newSessionState)(
-        block,
-        formattedReply
-      )
-      const itemId = nextEdgeId
-        ? newSessionState.typebotsQueue[0].typebot.edges.find(byId(nextEdgeId))
-            ?.from.itemId
-        : undefined
-      newSessionState = await processAndSaveAnswer(
-        state,
-        block,
-        itemId
-      )(formattedReply)
-    }
-
-    const groupHasMoreBlocks = blockIndex < group.blocks.length - 1
-
+    formattedReply =
+      'reply' in parsedReplyResult ? parsedReplyResult.reply : undefined
     const nextEdgeId = getOutgoingEdgeId(newSessionState)(block, formattedReply)
+    const itemId = nextEdgeId
+      ? newSessionState.typebotsQueue[0].typebot.edges.find(byId(nextEdgeId))
+          ?.from.itemId
+      : undefined
+    newSessionState = await processAndSaveAnswer(
+      state,
+      block,
+      itemId
+    )(formattedReply)
+  }
 
-    if (groupHasMoreBlocks && !nextEdgeId) {
-      const chatReply = await executeGroup(newSessionState)({
+  const groupHasMoreBlocks = blockIndex < group.blocks.length - 1
+
+  const nextEdgeId = getOutgoingEdgeId(newSessionState)(block, formattedReply)
+
+  if (groupHasMoreBlocks && !nextEdgeId) {
+    const chatReply = await executeGroup(
+      {
         ...group,
         blocks: group.blocks.slice(blockIndex + 1),
-      })
-      return {
-        ...chatReply,
-        lastMessageNewFormat:
-          formattedReply !== reply ? formattedReply : undefined,
-      }
-    }
-
-    if (!nextEdgeId && state.typebotsQueue.length === 1)
-      return {
-        messages: [],
-        newSessionState,
-        lastMessageNewFormat:
-          formattedReply !== reply ? formattedReply : undefined,
-      }
-
-    const nextGroup = await getNextGroup(newSessionState)(nextEdgeId)
-
-    newSessionState = nextGroup.newSessionState
-
-    if (!nextGroup.group)
-      return {
-        messages: [],
-        newSessionState,
-        lastMessageNewFormat:
-          formattedReply !== reply ? formattedReply : undefined,
-      }
-
-    const chatReply = await executeGroup(newSessionState)(nextGroup.group)
-
+      },
+      { version, state: newSessionState }
+    )
     return {
       ...chatReply,
       lastMessageNewFormat:
         formattedReply !== reply ? formattedReply : undefined,
     }
   }
+
+  if (!nextEdgeId && state.typebotsQueue.length === 1)
+    return {
+      messages: [],
+      newSessionState,
+      lastMessageNewFormat:
+        formattedReply !== reply ? formattedReply : undefined,
+    }
+
+  const nextGroup = await getNextGroup(newSessionState)(nextEdgeId)
+
+  newSessionState = nextGroup.newSessionState
+
+  if (!nextGroup.group)
+    return {
+      messages: [],
+      newSessionState,
+      lastMessageNewFormat:
+        formattedReply !== reply ? formattedReply : undefined,
+    }
+
+  const chatReply = await executeGroup(nextGroup.group, {
+    version,
+    state: newSessionState,
+  })
+
+  return {
+    ...chatReply,
+    lastMessageNewFormat: formattedReply !== reply ? formattedReply : undefined,
+  }
+}
 
 const processAndSaveAnswer =
   (state: SessionState, block: InputBlock, itemId?: string) =>

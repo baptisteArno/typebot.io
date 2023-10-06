@@ -64,7 +64,10 @@ type VariableToParseInformation = {
 
 export const getVariablesToParseInfoInText = (
   text: string,
-  variables: Variable[]
+  {
+    variables,
+    takeLatestIfList,
+  }: { variables: Variable[]; takeLatestIfList?: boolean }
 ): VariableToParseInformation[] => {
   const pattern = /\{\{([^{}]+)\}\}|(\$)\{\{([^{}]+)\}\}/g
   const variablesToParseInfo: VariableToParseInformation[] = []
@@ -78,7 +81,12 @@ export const getVariablesToParseInfoInText = (
       startIndex: match.index,
       endIndex: match.index + match[0].length,
       textToReplace: match[0],
-      value: safeStringify(variable?.value) ?? '',
+      value:
+        safeStringify(
+          takeLatestIfList && Array.isArray(variable?.value)
+            ? variable?.value[variable?.value.length - 1]
+            : variable?.value
+        ) ?? '',
     })
   }
   return variablesToParseInfo

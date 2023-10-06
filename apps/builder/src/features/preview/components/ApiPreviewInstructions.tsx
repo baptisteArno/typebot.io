@@ -62,7 +62,7 @@ export const ApiPreviewInstructions = (props: StackProps) => {
               lang={'shell'}
               value={`${parseApiHost(
                 typebot?.customDomain
-              )}/api/v1/sendMessage`}
+              )}/api/v2/sendMessage`}
             />
             <Text>with the following JSON body:</Text>
             <CodeEditor isReadOnly lang={'json'} value={startParamsBody} />
@@ -82,7 +82,7 @@ export const ApiPreviewInstructions = (props: StackProps) => {
               lang={'shell'}
               value={`${parseApiHost(
                 typebot?.customDomain
-              )}/api/v1/sendMessage`}
+              )}/api/v2/sendMessage`}
             />
             <Text>With the following JSON body:</Text>
             <CodeEditor isReadOnly lang={'json'} value={replyBody} />

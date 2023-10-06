@@ -1,5 +1,8 @@
 {
   "functions": {
+    "src/pages/api/v2/[...trpc].ts": {
+      "maxDuration": 150
+    },
     "src/pages/api/v1/[...trpc].ts": {
       "maxDuration": 150
     },

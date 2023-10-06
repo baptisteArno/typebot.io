@@ -1,12 +1,12 @@
-import { sendMessage } from '@/features/chat/api/sendMessage'
+import { sendMessageV2 } from '@/features/chat/api/sendMessageV2'
 import { whatsAppRouter } from '@/features/whatsapp/api/router'
-import { router } from '../../trpc'
+import { router } from '../trpc'
 import { updateTypebotInSession } from '@/features/chat/api/updateTypebotInSession'
 import { getUploadUrl } from '@/features/fileUpload/api/deprecated/getUploadUrl'
 import { generateUploadUrl } from '@/features/fileUpload/api/generateUploadUrl'
 
 export const appRouter = router({
-  sendMessage,
+  sendMessageV2,
   getUploadUrl,
   generateUploadUrl,
   updateTypebotInSession,

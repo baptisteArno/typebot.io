@@ -2,17 +2,17 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Chat API",
-    "version": "1.0.0"
+    "version": "2.0.0"
   },
   "servers": [
     {
-      "url": "https://typebot.io/api/v1"
+      "url": "https://typebot.io/api/v2"
     }
   ],
   "paths": {
     "/sendMessage": {
       "post": {
-        "operationId": "sendMessage",
+        "operationId": "sendMessageV2",
         "summary": "Send a message",
         "description": "To initiate a chat, do not provide a `sessionId` nor a `message`.\n\nContinue the conversation by providing the `sessionId` and the `message` that should answer the previous question.\n\nSet the `isPreview` option to `true` to chat with the non-published version of the typebot.",
         "requestBody": {

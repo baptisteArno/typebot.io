@@ -78,6 +78,7 @@ export const startWhatsAppSession = async ({
     defaultSessionExpiryTimeout
 
   return startSession({
+    version: 2,
     message: incomingMessage,
     startParams: {
       typebot: publicTypebot.typebot.publicId as string,

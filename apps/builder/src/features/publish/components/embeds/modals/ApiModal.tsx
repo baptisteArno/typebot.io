@@ -61,7 +61,7 @@ export const ApiModal = ({
                   lang={'shell'}
                   value={`${parseApiHost(
                     typebot?.customDomain
-                  )}/api/v1/sendMessage`}
+                  )}/api/v2/sendMessage`}
                 />
                 <Text>with the following JSON body:</Text>
                 <CodeEditor isReadOnly lang={'json'} value={startParamsBody} />
@@ -81,7 +81,7 @@ export const ApiModal = ({
                   lang={'shell'}
                   value={`${parseApiHost(
                     typebot?.customDomain
-                  )}/api/v1/sendMessage`}
+                  )}/api/v2/sendMessage`}
                 />
                 <Text>With the following JSON body:</Text>
                 <CodeEditor isReadOnly lang={'json'} value={replyBody} />

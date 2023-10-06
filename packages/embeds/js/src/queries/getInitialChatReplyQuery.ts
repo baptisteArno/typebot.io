@@ -32,7 +32,7 @@ export async function getInitialChatReplyQuery({
   if (paymentInProgressState) removePaymentInProgressFromStorage()
   const { data, error } = await sendRequest<InitialChatReply>({
     method: 'POST',
-    url: `${isNotEmpty(apiHost) ? apiHost : guessApiHost()}/api/v1/sendMessage`,
+    url: `${isNotEmpty(apiHost) ? apiHost : guessApiHost()}/api/v2/sendMessage`,
     body: {
       startParams: paymentInProgressState
         ? undefined
