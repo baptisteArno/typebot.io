@@ -100,10 +100,9 @@ a {
 
 ul,
 ol {
-  list-style-position: inside;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
 }
 
 ol {
@@ -112,6 +111,19 @@ ol {
 
 ul {
   list-style-type: disc;
+}
+
+li:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-height: 100%;
+  max-width: 100%;
+  overflow: auto;
 }
 
 .slate-bold {
