@@ -1,5 +1,5 @@
 import { Connection } from '@planetscale/database'
-import { decrypt } from '@typebot.io/lib/api/encryption'
+import { decryptV2 } from '@typebot.io/lib/api/encryption/decryptV2'
 import { isNotEmpty } from '@typebot.io/lib/utils'
 import {
   ChatCompletionOpenAIOptions,
@@ -27,7 +27,7 @@ export const getChatCompletionStream =
       console.error('Could not find credentials in database')
       return
     }
-    const { apiKey } = (await decrypt(
+    const { apiKey } = (await decryptV2(
       credentials.data,
       credentials.iv
     )) as OpenAICredentials['data']

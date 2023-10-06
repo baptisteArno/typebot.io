@@ -6,7 +6,7 @@ import {
   StripeCredentials,
 } from '@typebot.io/schemas'
 import Stripe from 'stripe'
-import { decrypt } from '@typebot.io/lib/api/encryption'
+import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { parseVariables } from '../../../variables/parseVariables'
 import prisma from '@typebot.io/lib/prisma'
 

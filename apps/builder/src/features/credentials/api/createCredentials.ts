@@ -5,7 +5,7 @@ import { stripeCredentialsSchema } from '@typebot.io/schemas/features/blocks/inp
 import { googleSheetsCredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/googleSheets/schemas'
 import { openAICredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { smtpCredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/sendEmail'
-import { encrypt } from '@typebot.io/lib/api/encryption'
+import { encrypt } from '@typebot.io/lib/api/encryption/encrypt'
 import { z } from 'zod'
 import { whatsAppCredentialsSchema } from '@typebot.io/schemas/features/whatsapp'
 import { Credentials, zemanticAiCredentialsSchema } from '@typebot.io/schemas'

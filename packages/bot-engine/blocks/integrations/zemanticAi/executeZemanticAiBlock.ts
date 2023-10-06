@@ -5,7 +5,7 @@ import {
   ZemanticAiResponse,
 } from '@typebot.io/schemas/features/blocks/integrations/zemanticAi'
 import got from 'got'
-import { decrypt } from '@typebot.io/lib/api/encryption'
+import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { byId, isDefined, isEmpty } from '@typebot.io/lib'
 import { getDefinedVariables, parseAnswers } from '@typebot.io/lib/results'
 import prisma from '@typebot.io/lib/prisma'

@@ -4,7 +4,7 @@ import {
   PrismaClient,
   WorkspaceRole,
 } from '@typebot.io/prisma'
-import { encrypt } from '../api'
+import { encrypt } from '../api/encryption/encrypt'
 
 const prisma = new PrismaClient()
 

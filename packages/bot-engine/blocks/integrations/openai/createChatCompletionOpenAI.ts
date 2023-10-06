@@ -1,6 +1,7 @@
 import {
   Block,
   BubbleBlockType,
+  Credentials,
   SessionState,
   TypebotInSession,
 } from '@typebot.io/schemas'
@@ -10,7 +11,7 @@ import {
   chatCompletionMessageRoles,
 } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { byId, isEmpty } from '@typebot.io/lib'
-import { decrypt, isCredentialsV2 } from '@typebot.io/lib/api/encryption'
+import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { resumeChatCompletion } from './resumeChatCompletion'
 import { parseChatCompletionMessages } from './parseChatCompletionMessages'
 import { executeChatCompletionOpenAIRequest } from './executeChatCompletionOpenAIRequest'
@@ -167,3 +168,6 @@ const getNextBlock =
         )
       : connectedGroup?.blocks.at(0)
   }
+
+const isCredentialsV2 = (credentials: Pick<Credentials, 'iv'>) =>
+  credentials.iv.length === 24

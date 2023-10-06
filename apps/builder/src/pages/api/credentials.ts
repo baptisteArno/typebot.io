@@ -7,8 +7,8 @@ import {
   forbidden,
   methodNotAllowed,
   notAuthenticated,
-  encrypt,
 } from '@typebot.io/lib/api'
+import { encrypt } from '@typebot.io/lib/api/encryption/encrypt'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res)

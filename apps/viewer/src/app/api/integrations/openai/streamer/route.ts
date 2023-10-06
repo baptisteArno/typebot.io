@@ -6,26 +6,26 @@ import { getChatCompletionStream } from '@typebot.io/bot-engine/blocks/integrati
 import OpenAI from 'openai'
 import { NextResponse } from 'next/dist/server/web/spec-extension/response'
 
-export const config = {
-  runtime: 'edge',
-  regions: ['lhr1'],
-}
+export const runtime = 'edge'
+export const preferredRegion = 'lhr1'
+export const dynamic = 'force-dynamic'
 
 const responseHeaders = {
   'Access-Control-Allow-Origin': '*',
 }
 
-const handler = async (req: Request) => {
-  if (req.method === 'OPTIONS') {
-    return new Response('ok', {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST',
-        'Access-Control-Expose-Headers': 'Content-Length, X-JSON',
-        'Access-Control-Allow-Headers': '*',
-      },
-    })
-  }
+export async function OPTIONS() {
+  return new Response('ok', {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST',
+      'Access-Control-Expose-Headers': 'Content-Length, X-JSON',
+      'Access-Control-Allow-Headers': '*',
+    },
+  })
+}
+
+export async function POST(req: Request) {
   const { sessionId, messages } = (await req.json()) as {
     sessionId: string
     messages: OpenAI.Chat.ChatCompletionMessage[]
@@ -111,5 +111,3 @@ const handler = async (req: Request) => {
     }
   }
 }
-
-export default handler

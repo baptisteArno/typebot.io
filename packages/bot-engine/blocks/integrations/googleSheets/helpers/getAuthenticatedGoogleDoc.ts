@@ -1,6 +1,7 @@
 import { TRPCError } from '@trpc/server'
 import { env } from '@typebot.io/env'
-import { decrypt, encrypt } from '@typebot.io/lib/api/encryption'
+import { encrypt } from '@typebot.io/lib/api/encryption/encrypt'
+import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { isDefined } from '@typebot.io/lib/utils'
 import { GoogleSheetsCredentials } from '@typebot.io/schemas/features/blocks/integrations/googleSheets/schemas'
 import { Credentials as CredentialsFromDb } from '@typebot.io/prisma'

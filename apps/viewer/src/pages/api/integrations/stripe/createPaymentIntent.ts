@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import {
   badRequest,
-  decrypt,
   forbidden,
   initMiddleware,
   methodNotAllowed,
 } from '@typebot.io/lib/api'
+import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import Stripe from 'stripe'
 
 import Cors from 'cors'
