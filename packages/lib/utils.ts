@@ -62,7 +62,9 @@ export const isNotDefined = <T>(
   value: T | undefined | null
 ): value is undefined | null => value === undefined || value === null
 
-export const isEmpty = (value: string | undefined | null): value is undefined =>
+export const isEmpty = (
+  value: string | undefined | null
+): value is undefined | null =>
   value === undefined || value === null || value === ''
 
 export const isNotEmpty = (value: string | undefined | null): value is string =>

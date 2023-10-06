@@ -2,15 +2,12 @@ import { isNotEmpty } from '@typebot.io/lib/utils'
 import { ChatReply } from '@typebot.io/schemas'
 import { OpenAIBlock } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { HTTPError } from 'got'
-import {
-  Configuration,
-  OpenAIApi,
-  type CreateChatCompletionRequest,
-  type CreateChatCompletionResponse,
-  ResponseTypes,
-} from 'openai-edge'
+import { ClientOptions, OpenAI } from 'openai'
 
-type Props = Pick<CreateChatCompletionRequest, 'messages' | 'model'> & {
+type Props = Pick<
+  OpenAI.Chat.ChatCompletionCreateParams,
+  'messages' | 'model'
+> & {
   apiKey: string
   temperature: number | undefined
   currentLogs?: ChatReply['logs']
@@ -27,38 +24,34 @@ export const executeChatCompletionOpenAIRequest = async ({
   isRetrying,
   currentLogs = [],
 }: Props): Promise<{
-  response?: CreateChatCompletionResponse
+  chatCompletion?: OpenAI.Chat.Completions.ChatCompletion
   logs?: ChatReply['logs']
 }> => {
   const logs: ChatReply['logs'] = currentLogs
   if (messages.length === 0) return { logs }
   try {
-    const config = new Configuration({
+    const config = {
       apiKey,
-      basePath: baseUrl,
-      baseOptions: {
-        headers: {
-          'api-key': apiKey,
-        },
+      baseURL: baseUrl,
+      defaultHeaders: {
+        'api-key': apiKey,
       },
-      defaultQueryParams: isNotEmpty(apiVersion)
-        ? new URLSearchParams({
+      defaultQuery: isNotEmpty(apiVersion)
+        ? {
             'api-version': apiVersion,
-          })
+          }
         : undefined,
-    })
+    } satisfies ClientOptions
 
-    const openai = new OpenAIApi(config)
+    const openai = new OpenAI(config)
 
-    const response = await openai.createChatCompletion({
+    const chatCompletion = await openai.chat.completions.create({
       model,
       messages,
       temperature,
     })
 
-    const completion =
-      (await response.json()) as ResponseTypes['createChatCompletion']
-    return { response: completion, logs }
+    return { chatCompletion, logs }
   } catch (error) {
     if (error instanceof HTTPError) {
       if (

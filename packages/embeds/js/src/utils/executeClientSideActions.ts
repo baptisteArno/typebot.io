@@ -63,7 +63,7 @@ export const executeClientSideAction = async ({
         logs: [
           {
             status: 'error',
-            description: 'Failed to stream OpenAI completion',
+            description: 'OpenAI returned an error',
             details: JSON.stringify(error, null, 2),
           },
         ],

@@ -1,7 +1,7 @@
 import { byId, isNotEmpty } from '@typebot.io/lib'
 import { Variable, VariableWithValue } from '@typebot.io/schemas'
 import { ChatCompletionOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai'
-import type { ChatCompletionRequestMessage } from 'openai-edge'
+import type { OpenAI } from 'openai'
 import { parseVariables } from '../../../variables/parseVariables'
 import { transformStringVariablesToList } from '../../../variables/transformVariablesToList'
 
@@ -11,7 +11,7 @@ export const parseChatCompletionMessages =
     messages: ChatCompletionOpenAIOptions['messages']
   ): {
     variablesTransformedToList: VariableWithValue[]
-    messages: ChatCompletionRequestMessage[]
+    messages: OpenAI.Chat.ChatCompletionMessageParam[]
   } => {
     const variablesTransformedToList: VariableWithValue[] = []
     const parsedMessages = messages
@@ -47,7 +47,7 @@ export const parseChatCompletionMessages =
               variable.id === message.content?.assistantMessagesVariableId
           )?.value ?? []) as string[]
 
-          let allMessages: ChatCompletionRequestMessage[] = []
+          let allMessages: OpenAI.Chat.ChatCompletionMessageParam[] = []
 
           if (userMessages.length > assistantMessages.length)
             allMessages = userMessages.flatMap((userMessage, index) => [
@@ -56,7 +56,7 @@ export const parseChatCompletionMessages =
                 content: userMessage,
               },
               { role: 'assistant', content: assistantMessages.at(index) ?? '' },
-            ]) satisfies ChatCompletionRequestMessage[]
+            ]) satisfies OpenAI.Chat.ChatCompletionMessageParam[]
           else {
             allMessages = assistantMessages.flatMap(
               (assistantMessage, index) => [
@@ -66,7 +66,7 @@ export const parseChatCompletionMessages =
                   content: userMessages.at(index) ?? '',
                 },
               ]
-            ) satisfies ChatCompletionRequestMessage[]
+            ) satisfies OpenAI.Chat.ChatCompletionMessageParam[]
           }
 
           return allMessages
@@ -77,11 +77,11 @@ export const parseChatCompletionMessages =
           name: message.name
             ? parseVariables(variables)(message.name)
             : undefined,
-        } satisfies ChatCompletionRequestMessage
+        } satisfies OpenAI.Chat.ChatCompletionMessageParam
       })
       .filter(
         (message) => isNotEmpty(message?.role) && isNotEmpty(message?.content)
-      ) as ChatCompletionRequestMessage[]
+      ) as OpenAI.Chat.ChatCompletionMessageParam[]
 
     return {
       variablesTransformedToList,

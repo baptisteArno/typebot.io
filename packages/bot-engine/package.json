@@ -18,7 +18,7 @@
     "@typebot.io/tsconfig": "workspace:*",
     "@udecode/plate-common": "^21.1.5",
     "@udecode/plate-serializer-md": "^24.4.0",
-    "ai": "2.1.32",
+    "ai": "2.2.14",
     "chrono-node": "2.6.6",
     "date-fns": "^2.30.0",
     "google-auth-library": "8.9.0",
@@ -27,7 +27,7 @@
     "libphonenumber-js": "1.10.37",
     "node-html-parser": "^6.1.5",
     "nodemailer": "6.9.3",
-    "openai-edge": "1.2.2",
+    "openai": "^4.11.1",
     "qs": "^6.11.2",
     "remark-slate": "^1.8.6",
     "stripe": "12.13.0"

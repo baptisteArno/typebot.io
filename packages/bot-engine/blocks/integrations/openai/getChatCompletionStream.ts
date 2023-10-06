@@ -7,19 +7,15 @@ import {
 } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { SessionState } from '@typebot.io/schemas/features/chat/sessionState'
 import { OpenAIStream } from 'ai'
-import {
-  ChatCompletionRequestMessage,
-  Configuration,
-  OpenAIApi,
-} from 'openai-edge'
 import { parseVariableNumber } from '../../../variables/parseVariableNumber'
+import { ClientOptions, OpenAI } from 'openai'
 
 export const getChatCompletionStream =
   (conn: Connection) =>
   async (
     state: SessionState,
     options: ChatCompletionOpenAIOptions,
-    messages: ChatCompletionRequestMessage[]
+    messages: OpenAI.Chat.ChatCompletionMessageParam[]
   ) => {
     if (!options.credentialsId) return
     const credentials = (
@@ -41,31 +37,27 @@ export const getChatCompletionStream =
       options.advancedSettings?.temperature
     )
 
-    const config = new Configuration({
+    const config = {
       apiKey,
-      basePath: options.baseUrl,
-      baseOptions: {
-        headers: {
-          'api-key': apiKey,
-        },
+      baseURL: options.baseUrl,
+      defaultHeaders: {
+        'api-key': apiKey,
       },
-      defaultQueryParams: isNotEmpty(options.apiVersion)
-        ? new URLSearchParams({
+      defaultQuery: isNotEmpty(options.apiVersion)
+        ? {
             'api-version': options.apiVersion,
-          })
+          }
         : undefined,
-    })
+    } satisfies ClientOptions
 
-    const openai = new OpenAIApi(config)
+    const openai = new OpenAI(config)
 
-    const response = await openai.createChatCompletion({
+    const response = await openai.chat.completions.create({
       model: options.model,
       temperature,
       stream: true,
       messages,
     })
-
-    if (!response.ok) return response
 
     return OpenAIStream(response)
   }

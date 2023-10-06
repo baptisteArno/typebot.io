@@ -13,7 +13,7 @@
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
     "@types/nodemailer": "6.4.8",
-    "next": "13.4.3",
+    "next": "13.5.4",
     "nodemailer": "6.9.3",
     "typescript": "5.1.6"
   },

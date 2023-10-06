@@ -2,12 +2,17 @@ import { connect } from '@planetscale/database'
 import { env } from '@typebot.io/env'
 import { IntegrationBlockType, SessionState } from '@typebot.io/schemas'
 import { StreamingTextResponse } from 'ai'
-import { ChatCompletionRequestMessage } from 'openai-edge'
 import { getChatCompletionStream } from '@typebot.io/bot-engine/blocks/integrations/openai/getChatCompletionStream'
+import OpenAI from 'openai'
+import { NextResponse } from 'next/dist/server/web/spec-extension/response'
 
 export const config = {
   runtime: 'edge',
   regions: ['lhr1'],
+}
+
+const responseHeaders = {
+  'Access-Control-Allow-Origin': '*',
 }
 
 const handler = async (req: Request) => {
@@ -23,12 +28,20 @@ const handler = async (req: Request) => {
   }
   const { sessionId, messages } = (await req.json()) as {
     sessionId: string
-    messages: ChatCompletionRequestMessage[]
+    messages: OpenAI.Chat.ChatCompletionMessage[]
   }
 
-  if (!sessionId) return new Response('No session ID provided', { status: 400 })
+  if (!sessionId)
+    return NextResponse.json(
+      { message: 'No session ID provided' },
+      { status: 400, headers: responseHeaders }
+    )
 
-  if (!messages) return new Response('No messages provided', { status: 400 })
+  if (!messages)
+    return NextResponse.json(
+      { message: 'No messages provided' },
+      { status: 400, headers: responseHeaders }
+    )
 
   const conn = connect({ url: env.DATABASE_URL })
 
@@ -40,7 +53,11 @@ const handler = async (req: Request) => {
   const state = (chatSession.rows.at(0) as { state: SessionState } | undefined)
     ?.state
 
-  if (!state) return new Response('No state found', { status: 400 })
+  if (!state)
+    return NextResponse.json(
+      { message: 'No state found' },
+      { status: 400, headers: responseHeaders }
+    )
 
   const group = state.typebotsQueue[0].typebot.groups.find(
     (group) => group.id === state.currentBlock?.groupId
@@ -53,36 +70,46 @@ const handler = async (req: Request) => {
   const block = blockIndex >= 0 ? group?.blocks[blockIndex ?? 0] : null
 
   if (!block || !group)
-    return new Response('Current block not found', { status: 400 })
+    return NextResponse.json(
+      { message: 'Current block not found' },
+      { status: 400, headers: responseHeaders }
+    )
 
   if (
     block.type !== IntegrationBlockType.OPEN_AI ||
     block.options.task !== 'Create chat completion'
   )
-    return new Response('Current block is not an OpenAI block', { status: 400 })
+    return NextResponse.json(
+      { message: 'Current block is not an OpenAI block' },
+      { status: 400, headers: responseHeaders }
+    )
 
-  const streamOrResponse = await getChatCompletionStream(conn)(
-    state,
-    block.options,
-    messages
-  )
+  try {
+    const stream = await getChatCompletionStream(conn)(
+      state,
+      block.options,
+      messages
+    )
+    if (!stream)
+      return NextResponse.json(
+        { message: 'Could not create stream' },
+        { status: 400, headers: responseHeaders }
+      )
 
-  if (!streamOrResponse)
-    return new Response('Could not create stream', { status: 400 })
-
-  if ('ok' in streamOrResponse)
-    return new Response(streamOrResponse.body, {
-      status: streamOrResponse.status,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
+    return new StreamingTextResponse(stream, {
+      headers: responseHeaders,
     })
-
-  return new StreamingTextResponse(streamOrResponse, {
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
-  })
+  } catch (error) {
+    if (error instanceof OpenAI.APIError) {
+      const { name, status, message } = error
+      return NextResponse.json(
+        { name, status, message },
+        { status, headers: responseHeaders }
+      )
+    } else {
+      throw error
+    }
+  }
 }
 
 export default handler

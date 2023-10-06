@@ -6,7 +6,7 @@
   "main": "./env.ts",
   "types": "./env.ts",
   "dependencies": {
-    "@t3-oss/env-nextjs": "^0.6.0",
+    "@t3-oss/env-nextjs": "^0.7.0",
     "zod": "3.21.4"
   },
   "devDependencies": {

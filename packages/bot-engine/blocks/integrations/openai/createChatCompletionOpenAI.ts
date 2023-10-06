@@ -105,7 +105,7 @@ export const createChatCompletionOpenAI = async (
     }
   }
 
-  const { response, logs } = await executeChatCompletionOpenAIRequest({
+  const { chatCompletion, logs } = await executeChatCompletionOpenAIRequest({
     apiKey,
     messages,
     model: options.model,
@@ -113,15 +113,15 @@ export const createChatCompletionOpenAI = async (
     baseUrl: options.baseUrl,
     apiVersion: options.apiVersion,
   })
-  if (!response)
+  if (!chatCompletion)
     return {
       outgoingEdgeId,
       logs,
     }
-  const messageContent = response.choices.at(0)?.message?.content
-  const totalTokens = response.usage?.total_tokens
+  const messageContent = chatCompletion.choices.at(0)?.message?.content
+  const totalTokens = chatCompletion.usage?.total_tokens
   if (isEmpty(messageContent)) {
-    console.error('OpenAI block returned empty message', response)
+    console.error('OpenAI block returned empty message', chatCompletion.choices)
     return { outgoingEdgeId, newSessionState }
   }
   return resumeChatCompletion(newSessionState, {
