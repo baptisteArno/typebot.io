@@ -12,6 +12,8 @@ export const dynamic = 'force-dynamic'
 
 const responseHeaders = {
   'Access-Control-Allow-Origin': '*',
+  'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+  Pragma: 'no-cache',
 }
 
 export async function OPTIONS() {
