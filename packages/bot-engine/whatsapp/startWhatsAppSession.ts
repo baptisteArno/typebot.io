@@ -58,7 +58,8 @@ export const startWhatsAppSession = async ({
 
   const publicTypebotWithMatchedCondition = botsWithWhatsAppEnabled.find(
     (publicTypebot) =>
-      publicTypebot.settings.whatsApp?.startCondition &&
+      (publicTypebot.settings.whatsApp?.startCondition?.comparisons.length ??
+        0) > 0 &&
       messageMatchStartCondition(
         incomingMessage ?? '',
         publicTypebot.settings.whatsApp?.startCondition

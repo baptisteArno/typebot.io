@@ -1,6 +1,6 @@
 import { createContext } from '@/helpers/server/context'
 import { trpcRouter } from '@/helpers/server/routers/v1/trpcRouter'
-import { captureException } from '@sentry/nextjs'
+import * as Sentry from '@sentry/nextjs'
 import { createNextApiHandler } from '@trpc/server/adapters/next'
 
 export default createNextApiHandler({
@@ -8,7 +8,7 @@ export default createNextApiHandler({
   createContext,
   onError({ error }) {
     if (error.code === 'INTERNAL_SERVER_ERROR') {
-      captureException(error)
+      Sentry.captureException(error)
       console.error('Something went wrong', error)
     }
     return error

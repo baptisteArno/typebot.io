@@ -1,5 +1,5 @@
 import { appRouter } from '@/helpers/server/routers/appRouterV2'
-import { captureException } from '@sentry/nextjs'
+import * as Sentry from '@sentry/nextjs'
 import { createOpenApiNextHandler } from 'trpc-openapi'
 import cors from 'nextjs-cors'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -13,7 +13,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     createContext,
     onError({ error }) {
       if (error.code === 'INTERNAL_SERVER_ERROR') {
-        captureException(error)
+        Sentry.captureException(error)
         console.error('Something went wrong', error)
       }
     },

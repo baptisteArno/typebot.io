@@ -1,6 +1,6 @@
 import { createContext } from '@/helpers/server/context'
 import { trpcRouter } from '@/helpers/server/routers/v1/trpcRouter'
-import { captureException } from '@sentry/nextjs'
+import * as Sentry from '@sentry/nextjs'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createOpenApiNextHandler } from 'trpc-openapi'
 import cors from 'nextjs-cors'
@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     createContext,
     onError({ error }) {
       if (error.code === 'INTERNAL_SERVER_ERROR') {
-        captureException(error)
+        Sentry.captureException(error)
         console.error('Something went wrong', error)
       }
     },

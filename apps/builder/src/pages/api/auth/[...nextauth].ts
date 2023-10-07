@@ -18,6 +18,7 @@ import { Ratelimit } from '@upstash/ratelimit'
 import { Redis } from '@upstash/redis/nodejs'
 import got from 'got'
 import { env } from '@typebot.io/env'
+import * as Sentry from '@sentry/nextjs'
 
 const providers: Provider[] = []
 
@@ -133,6 +134,14 @@ export const authOptions: AuthOptions = {
   pages: {
     signIn: '/signin',
     newUser: env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID ? '/onboarding' : undefined,
+  },
+  events: {
+    signIn({ user }) {
+      Sentry.setUser({ id: user.id })
+    },
+    signOut() {
+      Sentry.setUser(null)
+    },
   },
   callbacks: {
     session: async ({ session, user }) => {

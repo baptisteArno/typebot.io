@@ -10,7 +10,7 @@ import {
 } from '@typebot.io/schemas/features/whatsapp'
 import { convertMessageToWhatsAppMessage } from './convertMessageToWhatsAppMessage'
 import { sendWhatsAppMessage } from './sendWhatsAppMessage'
-import { captureException } from '@sentry/nextjs'
+import * as Sentry from '@sentry/nextjs'
 import { HTTPError } from 'got'
 import { convertInputToWhatsAppMessages } from './convertInputToWhatsAppMessage'
 import { isNotDefined } from '@typebot.io/lib/utils'
@@ -108,7 +108,7 @@ export const sendChatReplyToWhatsApp = async ({
         })
       }
     } catch (err) {
-      captureException(err, { extra: { message } })
+      Sentry.captureException(err, { extra: { message } })
       console.log('Failed to send message:', JSON.stringify(message, null, 2))
       if (err instanceof HTTPError)
         console.log('HTTPError', err.response.statusCode, err.response.body)
@@ -139,7 +139,7 @@ export const sendChatReplyToWhatsApp = async ({
           credentials,
         })
       } catch (err) {
-        captureException(err, { extra: { message } })
+        Sentry.captureException(err, { extra: { message } })
         console.log('Failed to send message:', JSON.stringify(message, null, 2))
         if (err instanceof HTTPError)
           console.log('HTTPError', err.response.statusCode, err.response.body)
@@ -209,7 +209,7 @@ const executeClientSideAction =
           credentials: context.credentials,
         })
       } catch (err) {
-        captureException(err, { extra: { message } })
+        Sentry.captureException(err, { extra: { message } })
         console.log('Failed to send message:', JSON.stringify(message, null, 2))
         if (err instanceof HTTPError)
           console.log('HTTPError', err.response.statusCode, err.response.body)
