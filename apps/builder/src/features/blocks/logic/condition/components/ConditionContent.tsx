@@ -35,11 +35,14 @@ export const ConditionContent = ({
                 {parseComparisonOperatorSymbol(comparison.comparisonOperator)}
               </Text>
             )}
-            {comparison?.value && (
-              <Tag bgColor={comparisonValueBg} size="sm">
-                {comparison.value}
-              </Tag>
-            )}
+            {comparison?.value &&
+              comparison.comparisonOperator !== ComparisonOperators.IS_SET &&
+              comparison.comparisonOperator !==
+                ComparisonOperators.IS_EMPTY && (
+                <Tag bgColor={comparisonValueBg} size="sm">
+                  {comparison.value}
+                </Tag>
+              )}
             {idx === condition.comparisons.length - 1 && displaySemicolon && (
               <Text fontSize={size}>:</Text>
             )}
