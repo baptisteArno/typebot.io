@@ -16,7 +16,7 @@ export const sanitizeSettings = (
   general: {
     ...settings.general,
     isBrandingEnabled:
-      workspacePlan === Plan.FREE ? false : settings.general.isBrandingEnabled,
+      workspacePlan === Plan.FREE ? true : settings.general.isBrandingEnabled,
   },
   whatsApp: settings.whatsApp
     ? {
