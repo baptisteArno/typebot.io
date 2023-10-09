@@ -147,35 +147,7 @@ Used for uploading images, videos, etc... It can be any S3 compatible object sto
 
 Note that for AWS S3, your endpoint is usually: `s3.<S3_REGION>.amazonaws.com`
 
-Your bucket must have the following policy that tells S3 to allow public read when an object is located under the public folder:
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "PublicRead",
-      "Effect": "Allow",
-      "Principal": "*",
-      "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::<BUCKET_NAME>/public/*"
-    }
-  ]
-}
-```
-
-You also need to configure CORS so that an object can be uploaded from the browser:
-
-```json
-[
-  {
-    "AllowedHeaders": ["*"],
-    "AllowedMethods": ["PUT", "POST"],
-    "AllowedOrigins": ["*"],
-    "ExposeHeaders": ["ETag"]
-  }
-]
-```
+In order to function properly, your S3 bucket must be configured. Make sure to read through the [S3 configuration](./guides/s3) doc.
 
 ## Giphy (GIF picker)
 
