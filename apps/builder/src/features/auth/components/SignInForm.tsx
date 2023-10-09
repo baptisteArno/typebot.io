@@ -74,7 +74,7 @@ export const SignInForm = ({
     setAuthLoading(true)
     try {
       const response = await signIn('email', {
-        email: emailValue,
+        email: emailValue.toLowerCase(),
         redirect: false,
       })
       if (response?.error) {
