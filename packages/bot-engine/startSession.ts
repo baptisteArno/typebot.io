@@ -406,9 +406,7 @@ const sanitizeAndParseTheme = (
   general: deepParseVariables(variables)(theme.general),
   chat: deepParseVariables(variables)(theme.chat),
   customCss: theme.customCss
-    ? sanitizeAndParseHeadCode(
-        parseVariables(variables)(removeLiteBadgeCss(theme.customCss))
-      )
+    ? removeLiteBadgeCss(parseVariables(variables)(theme.customCss))
     : undefined,
 })
 
@@ -420,6 +418,6 @@ const sanitizeAndParseHeadCode = (code: string) => {
 }
 
 const removeLiteBadgeCss = (code: string) => {
-  const liteBadgeCssRegex = /.*#lite-badge[\s]*{[\s\S]*}/gm
+  const liteBadgeCssRegex = /.*#lite-badge.*{[\s\S][^{]*}/gm
   return code.replace(liteBadgeCssRegex, '')
 }
