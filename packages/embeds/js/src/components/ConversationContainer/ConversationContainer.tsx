@@ -297,8 +297,9 @@ export const ConversationContainer = (props: Props) => {
             context={props.context}
             hideAvatar={
               !chatChunk.input &&
-              !chatChunk.streamingMessageId &&
-              index() < chatChunks().length - 1
+              ((chatChunks()[index() + 1]?.messages ?? 0).length > 0 ||
+                chatChunks()[index() + 1]?.streamingMessageId !== undefined ||
+                isSending())
             }
             hasError={hasError() && index() === chatChunks().length - 1}
             onNewBubbleDisplayed={handleNewBubbleDisplayed}

@@ -117,7 +117,9 @@ export const ChatChunk = (props: Props) => {
             <div
               class="flex flex-col flex-1 gap-2"
               style={{
-                width: isMobile() ? 'calc(100% - 32px)' : 'calc(100% - 48px)',
+                'max-width': isMobile()
+                  ? 'calc(100% - 32px)'
+                  : 'calc(100% - 48px)',
                 'margin-right': props.theme.chat.guestAvatar?.isEnabled
                   ? isMobile()
                     ? '32px'

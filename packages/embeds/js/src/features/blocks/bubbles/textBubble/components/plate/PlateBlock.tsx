@@ -39,7 +39,52 @@ export const PlateElement = (props: Props) => (
             </For>
           </a>
         </Match>
-        <Match when={props.element.type !== 'a'}>
+        <Match when={props.element.type === 'ol'}>
+          <ol>
+            <For each={props.element.children as TDescendant[]}>
+              {(child) => (
+                <PlateElement
+                  element={child}
+                  isUniqueChild={
+                    (props.element.children as TDescendant[])?.length === 1
+                  }
+                  inElement={true}
+                />
+              )}
+            </For>
+          </ol>
+        </Match>
+        <Match when={props.element.type === 'ul'}>
+          <ul>
+            <For each={props.element.children as TDescendant[]}>
+              {(child) => (
+                <PlateElement
+                  element={child}
+                  isUniqueChild={
+                    (props.element.children as TDescendant[])?.length === 1
+                  }
+                  inElement={true}
+                />
+              )}
+            </For>
+          </ul>
+        </Match>
+        <Match when={props.element.type === 'li'}>
+          <li>
+            <For each={props.element.children as TDescendant[]}>
+              {(child) => (
+                <PlateElement
+                  element={child}
+                  isUniqueChild={
+                    (props.element.children as TDescendant[])?.length === 1
+                  }
+                  inElement={true}
+                />
+              )}
+            </For>
+          </li>
+        </Match>
+        <Match when={true}>
           <ElementRoot
             element={props.element as TElement}
             inElement={props.inElement ?? false}

@@ -72,19 +72,23 @@ export const createChatCompletionOpenAI = async (
     options.advancedSettings?.temperature
   )
 
+  const assistantMessageVariableName = typebot.variables.find(
+    (variable) =>
+      options.responseMapping.find(
+        (m) => m.valueToExtract === 'Message content'
+      )?.variableId === variable.id
+  )?.name
+
   if (
     isPlaneteScale() &&
     isCredentialsV2(credentials) &&
     newSessionState.isStreamEnabled &&
-    !newSessionState.whatsApp
+    !newSessionState.whatsApp &&
+    isNextBubbleMessageWithAssistantMessage(typebot)(
+      blockId,
+      assistantMessageVariableName
+    )
   ) {
-    const assistantMessageVariableName = typebot.variables.find(
-      (variable) =>
-        options.responseMapping.find(
-          (m) => m.valueToExtract === 'Message content'
-        )?.variableId === variable.id
-    )?.name
-
     return {
       clientSideActions: [
         {
@@ -93,10 +97,6 @@ export const createChatCompletionOpenAI = async (
               content?: string
               role: (typeof chatCompletionMessageRoles)[number]
             }[],
-            displayStream: isNextBubbleMessageWithAssistantMessage(typebot)(
-              blockId,
-              assistantMessageVariableName
-            ),
           },
           expectsDedicatedReply: true,
         },
