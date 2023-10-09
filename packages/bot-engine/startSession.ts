@@ -29,6 +29,7 @@ import { injectVariablesFromExistingResult } from './variables/injectVariablesFr
 import { getNextGroup } from './getNextGroup'
 import { upsertResult } from './queries/upsertResult'
 import { continueBotFlow } from './continueBotFlow'
+import { parseVariables } from './variables/parseVariables'
 
 type Props = {
   version: 1 | 2
@@ -128,9 +129,9 @@ export const startSession = async ({
         settings: deepParseVariables(
           initialState.typebotsQueue[0].typebot.variables
         )(typebot.settings),
-        theme: deepParseVariables(
-          initialState.typebotsQueue[0].typebot.variables
-        )(typebot.theme),
+        theme: sanitizeAndParseTheme(typebot.theme, {
+          variables: initialState.typebotsQueue[0].typebot.variables,
+        }),
       },
       dynamicTheme: parseDynamicTheme(initialState),
       messages: [],
@@ -222,9 +223,9 @@ export const startSession = async ({
         settings: deepParseVariables(
           newSessionState.typebotsQueue[0].typebot.variables
         )(typebot.settings),
-        theme: deepParseVariables(
-          newSessionState.typebotsQueue[0].typebot.variables
-        )(typebot.theme),
+        theme: sanitizeAndParseTheme(typebot.theme, {
+          variables: initialState.typebotsQueue[0].typebot.variables,
+        }),
       },
       dynamicTheme: parseDynamicTheme(newSessionState),
       logs: startLogs.length > 0 ? startLogs : undefined,
@@ -238,9 +239,9 @@ export const startSession = async ({
       settings: deepParseVariables(
         newSessionState.typebotsQueue[0].typebot.variables
       )(typebot.settings),
-      theme: deepParseVariables(
-        newSessionState.typebotsQueue[0].typebot.variables
-      )(typebot.theme),
+      theme: sanitizeAndParseTheme(typebot.theme, {
+        variables: initialState.typebotsQueue[0].typebot.variables,
+      }),
     },
     messages,
     input,
@@ -372,7 +373,7 @@ const parseStartClientSideAction = (
 
   const startPropsToInject = {
     customHeadCode: isNotEmpty(typebot.settings.metadata.customHeadCode)
-      ? parseHeadCode(typebot.settings.metadata.customHeadCode)
+      ? sanitizeAndParseHeadCode(typebot.settings.metadata.customHeadCode)
       : undefined,
     gtmId: typebot.settings.metadata.googleTagManagerId,
     googleAnalyticsId: (
@@ -398,42 +399,27 @@ const parseStartClientSideAction = (
   }
 }
 
-const parseHeadCode = (code: string) => {
-  code = injectTryCatch(code)
+const sanitizeAndParseTheme = (
+  theme: Theme,
+  { variables }: { variables: Variable[] }
+): Theme => ({
+  general: deepParseVariables(variables)(theme.general),
+  chat: deepParseVariables(variables)(theme.chat),
+  customCss: theme.customCss
+    ? sanitizeAndParseHeadCode(
+        parseVariables(variables)(removeLiteBadgeCss(theme.customCss))
+      )
+    : undefined,
+})
+
+const sanitizeAndParseHeadCode = (code: string) => {
+  code = removeLiteBadgeCss(code)
   return parse(code)
     .childNodes.filter((child) => child.nodeType !== NodeType.TEXT_NODE)
     .join('\n')
 }
 
-const injectTryCatch = (headCode: string) => {
-  const scriptTagRegex = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi
-  const scriptTags = headCode.match(scriptTagRegex)
-  if (scriptTags) {
-    scriptTags.forEach(function (tag) {
-      const wrappedTag = tag.replace(
-        /(<script\b[^>]*>)([\s\S]*?)(<\/script>)/gi,
-        function (_, openingTag, content, closingTag) {
-          if (!isValidJsSyntax(content)) return ''
-          return `${openingTag}
-try {
-  ${content}
-} catch (e) {
-  console.warn(e); 
-}
-${closingTag}`
-        }
-      )
-      headCode = headCode.replace(tag, wrappedTag)
-    })
-  }
-  return headCode
-}
-
-const isValidJsSyntax = (snippet: string): boolean => {
-  try {
-    new Function(snippet)
-    return true
-  } catch (err) {
-    return false
-  }
+const removeLiteBadgeCss = (code: string) => {
+  const liteBadgeCssRegex = /.*#lite-badge[\s]*{[\s\S]*}/gm
+  return code.replace(liteBadgeCssRegex, '')
 }
