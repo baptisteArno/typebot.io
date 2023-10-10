@@ -324,7 +324,9 @@ export const env = createEnv({
     ...sentryEnv.runtimeEnv,
     ...posthogEnv.runtimeEnv,
   },
-  skipValidation: typeof window !== 'undefined' && window.__ENV === undefined,
+  skipValidation:
+    process.env.SKIP_ENV_CHECK === 'true' ||
+    (typeof window !== 'undefined' && window.__ENV === undefined),
   onValidationError(error) {
     console.error(
       '❌ Invalid environment variables:',
