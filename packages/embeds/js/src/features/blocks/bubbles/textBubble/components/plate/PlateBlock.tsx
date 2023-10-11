@@ -18,7 +18,7 @@ export const PlateElement = (props: Props) => (
         isUniqueChild={props.isUniqueChild ?? false}
       />
     </Match>
-    <Match when={props.element.type}>
+    <Match when={true}>
       <Switch>
         <Match when={props.element.type === 'a'}>
           <a
