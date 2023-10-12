@@ -7,7 +7,10 @@ import {
 } from '@typebot.io/schemas'
 import { deepParseVariables } from './variables/deepParseVariables'
 import { isEmpty, isNotEmpty } from '@typebot.io/lib/utils'
-import { getVariablesToParseInfoInText } from './variables/parseVariables'
+import {
+  getVariablesToParseInfoInText,
+  parseVariables,
+} from './variables/parseVariables'
 import { TDescendant, createPlateEditor } from '@udecode/plate-common'
 import {
   createDeserializeMdPlugin,
@@ -155,12 +158,16 @@ const parseVariablesInRichText = (
       element.children.length === 1 &&
       'text' in element.children[0] &&
       (element.children[0].text as string).startsWith('{{') &&
-      (element.children[0].text as string).endsWith('}}')
+      (element.children[0].text as string).endsWith('}}') &&
+      element.type !== 'a'
         ? 'variable'
         : element.type
 
     parsedElements.push({
       ...element,
+      url: element.url
+        ? parseVariables(variables)(element.url as string)
+        : undefined,
       type,
       children: parseVariablesInRichText(element.children as TDescendant[], {
         variables,
