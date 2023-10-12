@@ -29,11 +29,18 @@ type ContextProps = {
   state: SessionState
   currentReply?: ChatReply
   currentLastBubbleId?: string
+  firstBubbleWasStreamed?: boolean
 }
 
 export const executeGroup = async (
   group: Group,
-  { version, state, currentReply, currentLastBubbleId }: ContextProps
+  {
+    version,
+    state,
+    currentReply,
+    currentLastBubbleId,
+    firstBubbleWasStreamed,
+  }: ContextProps
 ): Promise<ChatReply & { newSessionState: SessionState }> => {
   const messages: ChatReply['messages'] = currentReply?.messages ?? []
   let clientSideActions: ChatReply['clientSideActions'] =
@@ -44,10 +51,13 @@ export const executeGroup = async (
 
   let newSessionState = state
 
+  let index = -1
   for (const block of group.blocks) {
+    index++
     nextEdgeId = block.outgoingEdgeId
 
     if (isBubbleBlock(block)) {
+      if (firstBubbleWasStreamed && index === 0) continue
       messages.push(
         parseBubbleBlock(block, {
           version,

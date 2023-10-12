@@ -14,7 +14,7 @@ import { injectStartProps } from './injectStartProps'
 type Props = {
   clientSideAction: NonNullable<ChatReply['clientSideActions']>[0]
   context: ClientSideActionContext
-  onMessageStream?: (message: string) => void
+  onMessageStream?: (props: { id: string; message: string }) => void
 }
 
 export const executeClientSideAction = async ({

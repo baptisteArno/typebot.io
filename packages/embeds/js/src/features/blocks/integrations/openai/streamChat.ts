@@ -1,6 +1,7 @@
 import { ClientSideActionContext } from '@/types'
 import { guessApiHost } from '@/utils/guessApiHost'
 import { isNotEmpty } from '@typebot.io/lib/utils'
+import { createUniqueId } from 'solid-js'
 
 let abortController: AbortController | null = null
 const secondsToWaitBeforeRetries = 3
@@ -13,7 +14,9 @@ export const streamChat =
       content?: string | undefined
       role?: 'system' | 'user' | 'assistant' | undefined
     }[],
-    { onMessageStream }: { onMessageStream?: (message: string) => void }
+    {
+      onMessageStream,
+    }: { onMessageStream?: (props: { id: string; message: string }) => void }
   ): Promise<{ message?: string; error?: object }> => {
     try {
       abortController = new AbortController()
@@ -64,6 +67,8 @@ export const streamChat =
       const reader = res.body.getReader()
       const decoder = new TextDecoder()
 
+      const id = createUniqueId()
+
       // eslint-disable-next-line no-constant-condition
       while (true) {
         const { done, value } = await reader.read()
@@ -72,7 +77,7 @@ export const streamChat =
         }
         const chunk = decoder.decode(value)
         message += chunk
-        if (onMessageStream) onMessageStream(message)
+        if (onMessageStream) onMessageStream({ id, message })
         if (abortController === null) {
           reader.cancel()
           break
