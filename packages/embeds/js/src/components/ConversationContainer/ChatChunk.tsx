@@ -69,11 +69,13 @@ export const ChatChunk = (props: Props) => {
           <div
             class="flex flex-col flex-1 gap-2"
             style={{
-              'margin-right': props.theme.chat.guestAvatar?.isEnabled
+              'max-width': props.theme.chat.guestAvatar?.isEnabled
                 ? isMobile()
-                  ? '32px'
-                  : '48px'
-                : undefined,
+                  ? 'calc(100% - 32px - 32px)'
+                  : 'calc(100% - 48px - 48px)'
+                : isMobile()
+                ? 'calc(100% - 32px)'
+                : 'calc(100% - 48px)',
             }}
           >
             <For each={props.messages.slice(0, displayedMessageIndex() + 1)}>
@@ -117,14 +119,13 @@ export const ChatChunk = (props: Props) => {
             <div
               class="flex flex-col flex-1 gap-2"
               style={{
-                'max-width': isMobile()
+                'max-width': props.theme.chat.guestAvatar?.isEnabled
+                  ? isMobile()
+                    ? 'calc(100% - 32px - 32px)'
+                    : 'calc(100% - 48px - 48px)'
+                  : isMobile()
                   ? 'calc(100% - 32px)'
                   : 'calc(100% - 48px)',
-                'margin-right': props.theme.chat.guestAvatar?.isEnabled
-                  ? isMobile()
-                    ? '32px'
-                    : '48px'
-                  : undefined,
               }}
             >
               <StreamingBubble streamingMessageId={streamingMessageId} />

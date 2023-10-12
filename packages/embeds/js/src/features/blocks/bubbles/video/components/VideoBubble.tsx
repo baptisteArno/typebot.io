@@ -41,7 +41,7 @@ export const VideoBubble = (props: Props) => {
   return (
     <div class="flex flex-col w-full animate-fade-in" ref={ref}>
       <div class="flex w-full items-center">
-        <div class="flex relative z-10 items-start typebot-host-bubble overflow-hidden w-full">
+        <div class="flex relative z-10 items-start typebot-host-bubble overflow-hidden w-full max-w-full">
           <div
             class="flex items-center absolute px-4 py-2 bubble-typing z-10 "
             style={{
