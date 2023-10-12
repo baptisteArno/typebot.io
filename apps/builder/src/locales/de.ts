@@ -322,6 +322,7 @@ export default {
     'Funktioniert mit YouTube, Vimeo und anderen',
   'editor.blocks.bubbles.video.settings.worksWith.placeholder':
     'Füge den Videolink ein...',
+  'editor.blocks.bubbles.video.settings.numberInput.unit': 'px',
   'editor.blocks.bubbles.textEditor.plate.label': 'Texteditor',
   'editor.blocks.bubbles.textEditor.searchVariable.placeholder':
     'Nach einer Variable suchen',

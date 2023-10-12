@@ -2,11 +2,13 @@ import { z } from 'zod'
 import { blockBaseSchema } from '../../baseSchemas'
 import { BubbleBlockType } from '../enums'
 import { VideoBubbleContentType } from './enums'
+import { variableStringSchema } from '../../../utils'
 
 export const videoBubbleContentSchema = z.object({
   url: z.string().optional(),
   id: z.string().optional(),
   type: z.nativeEnum(VideoBubbleContentType).optional(),
+  height: z.number().or(variableStringSchema).optional(),
 })
 
 export const videoBubbleBlockSchema = blockBaseSchema.merge(

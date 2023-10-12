@@ -311,6 +311,7 @@ export default {
     'Works with Youtube, Vimeo and others',
   'editor.blocks.bubbles.video.settings.worksWith.placeholder':
     'Paste the video link...',
+  'editor.blocks.bubbles.video.settings.numberInput.unit': 'px',
   'editor.blocks.bubbles.textEditor.plate.label': 'Text editor',
   'editor.blocks.bubbles.textEditor.searchVariable.placeholder':
     'Search for a variable',

@@ -60,7 +60,13 @@ export const parseBubbleBlock = (
       const parsedContent = deepParseVariables(variables)(block.content)
       return {
         ...block,
-        content: parsedContent.url ? parseVideoUrl(parsedContent.url) : {},
+        content: {
+          ...(parsedContent.url ? parseVideoUrl(parsedContent.url) : {}),
+          height:
+            typeof parsedContent.height === 'string'
+              ? parseFloat(parsedContent.height)
+              : parsedContent.height,
+        },
       }
     }
     default:
