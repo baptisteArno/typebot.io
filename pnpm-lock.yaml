@@ -1200,6 +1200,9 @@ importers:
       remark-slate:
         specifier: ^1.8.6
         version: 1.8.6
+      stripe:
+        specifier: 12.13.0
+        version: 12.13.0
     devDependencies:
       '@paralleldrive/cuid2':
         specifier: 2.2.1
@@ -1277,6 +1280,10 @@ importers:
         version: 5.1.6
 
   packages/scripts:
+    dependencies:
+      '@paralleldrive/cuid2':
+        specifier: 2.2.1
+        version: 2.2.1
     devDependencies:
       '@typebot.io/emails':
         specifier: workspace:*

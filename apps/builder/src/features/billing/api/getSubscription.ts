@@ -5,7 +5,6 @@ import Stripe from 'stripe'
 import { z } from 'zod'
 import { subscriptionSchema } from '@typebot.io/schemas/features/billing/subscription'
 import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
-import { priceIds } from '@typebot.io/lib/api/pricing'
 import { env } from '@typebot.io/env'
 
 export const getSubscription = authenticatedProcedure
@@ -75,15 +74,14 @@ export const getSubscription = authenticatedProcedure
 
     return {
       subscription: {
+        currentBillingPeriod:
+          subscriptionSchema.shape.currentBillingPeriod.parse({
+            start: new Date(currentSubscription.current_period_start),
+            end: new Date(currentSubscription.current_period_end),
+          }),
         status: subscriptionSchema.shape.status.parse(
           currentSubscription.status
         ),
-        isYearly: currentSubscription.items.data.some((item) => {
-          return (
-            priceIds.STARTER.chats.yearly === item.price.id ||
-            priceIds.PRO.chats.yearly === item.price.id
-          )
-        }),
         currency: currentSubscription.currency as 'usd' | 'eur',
         cancelDate: currentSubscription.cancel_at
           ? new Date(currentSubscription.cancel_at * 1000)
@@ -91,8 +89,3 @@ export const getSubscription = authenticatedProcedure
       },
     }
   })
-
-export const chatPriceIds = [priceIds.STARTER.chats.monthly]
-  .concat(priceIds.STARTER.chats.yearly)
-  .concat(priceIds.PRO.chats.monthly)
-  .concat(priceIds.PRO.chats.yearly)

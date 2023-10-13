@@ -18,7 +18,6 @@ import { useMemo } from 'react'
 import { useStats } from '../hooks/useStats'
 import { ResultsProvider } from '../ResultsProvider'
 import { ResultsTableContainer } from './ResultsTableContainer'
-import { UsageAlertBanners } from './UsageAlertBanners'
 
 export const ResultsPage = () => {
   const router = useRouter()
@@ -56,7 +55,6 @@ export const ResultsPage = () => {
         }
       />
       <TypebotHeader />
-      {workspace && <UsageAlertBanners workspace={workspace} />}
       <Flex
         h="full"
         w="full"

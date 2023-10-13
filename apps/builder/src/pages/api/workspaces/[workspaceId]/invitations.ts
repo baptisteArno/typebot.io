@@ -8,7 +8,7 @@ import {
 } from '@typebot.io/lib/api'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import { sendWorkspaceMemberInvitationEmail } from '@typebot.io/emails'
-import { isSeatsLimitReached } from '@typebot.io/lib/pricing'
+import { getSeatsLimit } from '@typebot.io/lib/billing/getSeatsLimit'
 import { env } from '@typebot.io/env'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -37,11 +37,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }),
       ])
     if (
-      isSeatsLimitReached({
-        existingMembersAndInvitationsCount:
-          existingMembersCount + existingInvitationsCount,
-        ...workspace,
-      })
+      getSeatsLimit(workspace) <=
+      existingMembersCount + existingInvitationsCount
     )
       return res.status(400).send('Seats limit reached')
     if (existingUser) {

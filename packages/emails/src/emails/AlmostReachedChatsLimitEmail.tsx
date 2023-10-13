@@ -1,21 +1,15 @@
-import React, { ComponentProps } from 'react'
-import {
-  Mjml,
-  MjmlBody,
-  MjmlSection,
-  MjmlColumn,
-  MjmlSpacer,
-} from '@faire/mjml-react'
+import { ComponentProps } from 'react'
+import { Mjml, MjmlBody, MjmlSection, MjmlColumn } from '@faire/mjml-react'
 import { render } from '@faire/mjml-react/utils/render'
-import { Button, Head, HeroImage, Text } from '../components'
+import { Head, HeroImage, Text } from '../components'
 import { parseNumberWithCommas } from '@typebot.io/lib'
 import { SendMailOptions } from 'nodemailer'
 import { sendEmail } from '../sendEmail'
 
 type AlmostReachedChatsLimitEmailProps = {
+  workspaceName: string
   usagePercent: number
   chatsLimit: number
-  url: string
 }
 
 const now = new Date()
@@ -27,9 +21,9 @@ const readableResetDate = firstDayOfNextMonth
   .join(' ')
 
 export const AlmostReachedChatsLimitEmail = ({
+  workspaceName,
   usagePercent,
   chatsLimit,
-  url,
 }: AlmostReachedChatsLimitEmailProps) => {
   const readableChatsLimit = parseNumberWithCommas(chatsLimit)
 
@@ -46,18 +40,22 @@ export const AlmostReachedChatsLimitEmail = ({
           <MjmlColumn>
             <Text>Your bots are chatting a lot. That&apos;s amazing. 💙</Text>
             <Text>
-              This means you&apos;ve almost reached your monthly chats limit.
-              You currently reached {usagePercent}% of {readableChatsLimit}{' '}
+              Your workspace <strong>{workspaceName}</strong> has used{' '}
+              {usagePercent}% of the included chats this month. Once you hit{' '}
+              {readableChatsLimit} chats, you will pay as you go for additional
               chats.
             </Text>
-            <Text>This limit will be reset on {readableResetDate}.</Text>
-            <Text fontWeight="800">
-              Upon this limit your bots will still continue to chat, but we ask
-              you kindly to upgrade your monthly chats limit.
+            <Text>
+              Your progress can be monitored on your workspace dashboard
+              settings. Check out the{' '}
+              <a href="https://typebot.io/pricing">pricing page</a> for
+              information about the pay as you go tiers.
             </Text>
-
-            <MjmlSpacer height="24px" />
-            <Button link={url}>Upgrade workspace</Button>
+            <Text>
+              As a reminder, your billing cycle ends on {readableResetDate}. If
+              you&apos;d like to learn more about the Enterprise plan for an
+              annual commitment, reach out to .
+            </Text>
           </MjmlColumn>
         </MjmlSection>
       </MjmlBody>

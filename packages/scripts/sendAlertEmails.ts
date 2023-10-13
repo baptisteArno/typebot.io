@@ -5,24 +5,23 @@ import {
   WorkspaceRole,
 } from '@typebot.io/prisma'
 import { isDefined } from '@typebot.io/lib'
-import { getChatsLimit } from '@typebot.io/lib/pricing'
+import { getChatsLimit } from '@typebot.io/lib/billing/getChatsLimit'
 import { getUsage } from '@typebot.io/lib/api/getUsage'
 import { promptAndSetEnvironment } from './utils'
 import { Workspace } from '@typebot.io/schemas'
 import { sendAlmostReachedChatsLimitEmail } from '@typebot.io/emails/src/emails/AlmostReachedChatsLimitEmail'
-import { sendReachedChatsLimitEmail } from '@typebot.io/emails/src/emails/ReachedChatsLimitEmail'
 import { TelemetryEvent } from '@typebot.io/schemas/features/telemetry'
 import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 
 const prisma = new PrismaClient()
-const LIMIT_EMAIL_TRIGGER_PERCENT = 0.8
+const LIMIT_EMAIL_TRIGGER_PERCENT = 0.75
 
 type WorkspaceForDigest = Pick<
   Workspace,
   | 'id'
   | 'plan'
+  | 'name'
   | 'customChatsLimit'
-  | 'additionalChatsIndex'
   | 'isQuarantined'
   | 'chatsLimitFirstEmailSentAt'
   | 'chatsLimitSecondEmailSentAt'
@@ -69,11 +68,11 @@ export const sendTotalResultsDigest = async () => {
     },
     select: {
       id: true,
+      name: true,
       typebots: { select: { id: true } },
       members: {
         select: { user: { select: { id: true, email: true } }, role: true },
       },
-      additionalChatsIndex: true,
       additionalStorageIndex: true,
       customChatsLimit: true,
       customStorageLimit: true,
@@ -144,7 +143,7 @@ const sendAlertIfLimitReached = async (
           to,
           usagePercent: Math.round((totalChatsUsed / chatsLimit) * 100),
           chatsLimit,
-          url: `https://app.typebot.io/typebots?workspaceId=${workspace.id}`,
+          workspaceName: workspace.name,
         })
         await prisma.workspace.updateMany({
           where: { id: workspace.id },
@@ -155,32 +154,7 @@ const sendAlertIfLimitReached = async (
       }
     }
 
-    if (
-      chatsLimit > 0 &&
-      totalChatsUsed >= chatsLimit &&
-      !workspace.chatsLimitSecondEmailSentAt
-    ) {
-      const to = workspace.members
-        .filter((member) => member.role === WorkspaceRole.ADMIN)
-        .map((member) => member.user.email)
-        .filter(isDefined)
-      try {
-        console.log(`Send reached chats limit email to ${to.join(', ')}...`)
-        await sendReachedChatsLimitEmail({
-          to,
-          chatsLimit,
-          url: `https://app.typebot.io/typebots?workspaceId=${workspace.id}`,
-        })
-        await prisma.workspace.updateMany({
-          where: { id: workspace.id },
-          data: { chatsLimitSecondEmailSentAt: new Date() },
-        })
-      } catch (err) {
-        console.error(err)
-      }
-    }
-
-    if (totalChatsUsed > chatsLimit * 3 && workspace.plan === Plan.FREE) {
+    if (totalChatsUsed > chatsLimit * 1.5 && workspace.plan === Plan.FREE) {
       console.log(`Automatically quarantine workspace ${workspace.id}...`)
       await prisma.workspace.updateMany({
         where: { id: workspace.id },

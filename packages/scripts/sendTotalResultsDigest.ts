@@ -1,14 +1,17 @@
 import {
   MemberInWorkspace,
+  Plan,
   PrismaClient,
   WorkspaceRole,
 } from '@typebot.io/prisma'
-import { isDefined } from '@typebot.io/lib'
-import { getChatsLimit } from '@typebot.io/lib/pricing'
+import { isDefined, isEmpty } from '@typebot.io/lib'
+import { getChatsLimit } from '@typebot.io/lib/billing/getChatsLimit'
 import { promptAndSetEnvironment } from './utils'
 import { TelemetryEvent } from '@typebot.io/schemas/features/telemetry'
 import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 import { Workspace } from '@typebot.io/schemas'
+import { Stripe } from 'stripe'
+import { createId } from '@paralleldrive/cuid2'
 
 const prisma = new PrismaClient()
 
@@ -18,13 +21,38 @@ type WorkspaceForDigest = Pick<
   | 'plan'
   | 'customChatsLimit'
   | 'customStorageLimit'
-  | 'additionalChatsIndex'
   | 'additionalStorageIndex'
   | 'isQuarantined'
 > & {
   members: (Pick<MemberInWorkspace, 'role'> & {
     user: { id: string; email: string | null }
   })[]
+}
+
+type ResultWithWorkspace = {
+  userId: string
+  workspace: {
+    id: string
+    typebots: {
+      id: string
+    }[]
+    members: {
+      user: {
+        id: string
+        email: string | null
+      }
+      role: WorkspaceRole
+    }[]
+    additionalStorageIndex: number
+    customChatsLimit: number | null
+    customStorageLimit: number | null
+    plan: Plan
+    isQuarantined: boolean
+    stripeId: string | null
+  }
+  typebotId: string
+  totalResultsYesterday: number
+  isFirstOfKind: true | undefined
 }
 
 export const sendTotalResultsDigest = async () => {
@@ -71,12 +99,12 @@ export const sendTotalResultsDigest = async () => {
       members: {
         select: { user: { select: { id: true, email: true } }, role: true },
       },
-      additionalChatsIndex: true,
       additionalStorageIndex: true,
       customChatsLimit: true,
       customStorageLimit: true,
       plan: true,
       isQuarantined: true,
+      stripeId: true,
     },
   })
 
@@ -96,7 +124,11 @@ export const sendTotalResultsDigest = async () => {
           isFirstOfKind: memberIndex === 0 ? (true as const) : undefined,
         }))
     })
-    .filter(isDefined)
+    .filter(isDefined) satisfies ResultWithWorkspace[]
+
+  console.log('Reporting usage to Stripe...')
+
+  await reportUsageToStripe(resultsWithWorkspaces)
 
   console.log('Computing workspaces limits...')
 
@@ -164,6 +196,69 @@ const sendAlertIfLimitReached = async (
     }
   }
   return events
+}
+
+const reportUsageToStripe = async (
+  resultsWithWorkspaces: (Pick<ResultWithWorkspace, 'totalResultsYesterday'> & {
+    workspace: Pick<
+      ResultWithWorkspace['workspace'],
+      'id' | 'plan' | 'stripeId'
+    >
+  })[]
+) => {
+  if (isEmpty(process.env.STRIPE_SECRET_KEY))
+    throw new Error('Missing STRIPE_SECRET_KEY env variable')
+
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2022-11-15',
+  })
+
+  for (const result of resultsWithWorkspaces.filter(
+    (result) =>
+      result.workspace.plan === 'STARTER' || result.workspace.plan === 'PRO'
+  )) {
+    if (!result.workspace.stripeId)
+      throw new Error(
+        `Found paid workspace without a stripeId: ${result.workspace.stripeId}`
+      )
+    const subscriptions = await stripe.subscriptions.list({
+      customer: result.workspace.stripeId,
+    })
+
+    const currentSubscription = subscriptions.data
+      .filter((sub) => ['past_due', 'active'].includes(sub.status))
+      .sort((a, b) => a.created - b.created)
+      .shift()
+
+    if (!currentSubscription)
+      throw new Error(
+        `Found paid workspace without a subscription: ${result.workspace.stripeId}`
+      )
+
+    const subscriptionItem = currentSubscription.items.data.find(
+      (item) =>
+        item.price.id === process.env.STRIPE_STARTER_CHATS_PRICE_ID ||
+        item.price.id === process.env.STRIPE_PRO_CHATS_PRICE_ID
+    )
+
+    if (!subscriptionItem)
+      throw new Error(
+        `Could not find subscription item for workspace ${result.workspace.id}`
+      )
+
+    const idempotencyKey = createId()
+
+    await stripe.subscriptionItems.createUsageRecord(
+      subscriptionItem.id,
+      {
+        quantity: result.totalResultsYesterday,
+        timestamp: 'now',
+      },
+      {
+        idempotencyKey,
+      }
+    )
+  }
 }
 
 const getUsage = async (workspaceId: string) => {
