@@ -9,4 +9,4 @@ sleep 15;
 
 ./node_modules/.bin/prisma migrate deploy --schema=packages/prisma/postgresql/schema.prisma;
 
-node apps/builder/server.js;
+HOSTNAME=0.0.0.0 PORT=3000 node apps/builder/server.js;
