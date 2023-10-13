@@ -17,6 +17,7 @@ import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 import { useI18n, useScopedI18n } from '@/locales'
 import { formatPrice } from '@typebot.io/lib/billing/formatPrice'
 import { ChatsProTiersModal } from './ChatsProTiersModal'
+import { prices } from '@typebot.io/lib/billing/constants'
 
 type Props = {
   currentPlan: Plan
@@ -85,7 +86,7 @@ export const ProPlanPricingCard = ({
           <Stack spacing="8">
             <Stack spacing="4">
               <Heading>
-                {formatPrice(89, { currency })}
+                {formatPrice(prices.PRO, { currency })}
                 <chakra.span fontSize="md">{scopedT('perMonth')}</chakra.span>
               </Heading>
               <Text fontWeight="bold">

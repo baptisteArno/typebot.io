@@ -1,8 +1,8 @@
-name: Send total results daily digest
+name: Check and report chats usage
 
 on:
   schedule:
-    - cron: '0 5 * * *'
+    - cron: '0 * * * *'
 
 jobs:
   send:
@@ -17,8 +17,14 @@ jobs:
       NEXT_PUBLIC_VIEWER_URL: 'http://localhost:3001'
       TELEMETRY_WEBHOOK_URL: '${{ secrets.TELEMETRY_WEBHOOK_URL }}'
       TELEMETRY_WEBHOOK_BEARER_TOKEN: '${{ secrets.TELEMETRY_WEBHOOK_BEARER_TOKEN }}'
+      SMTP_USERNAME: '${{ secrets.SMTP_USERNAME }}'
+      SMTP_PASSWORD: '${{ secrets.SMTP_PASSWORD }}'
+      SMTP_HOST: '${{ secrets.SMTP_HOST }}'
+      SMTP_PORT: '${{ secrets.SMTP_PORT }}'
+      NEXT_PUBLIC_SMTP_FROM: '${{ secrets.NEXT_PUBLIC_SMTP_FROM }}'
+      STRIPE_SECRET_KEY: '${{ secrets.STRIPE_SECRET_KEY }}'
     steps:
       - uses: actions/checkout@v2
       - uses: pnpm/action-setup@v2.2.2
       - run: pnpm i --frozen-lockfile
-      - run: pnpm turbo run telemetry:sendTotalResultsDigest
+      - run: pnpm turbo run checkAndReportChatsUsage

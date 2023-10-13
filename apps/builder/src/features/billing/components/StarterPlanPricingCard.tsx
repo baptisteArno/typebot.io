@@ -12,6 +12,7 @@ import { FeaturesList } from './FeaturesList'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 import { useI18n, useScopedI18n } from '@/locales'
 import { formatPrice } from '@typebot.io/lib/billing/formatPrice'
+import { prices } from '@typebot.io/lib/billing/constants'
 
 type Props = {
   currentPlan: Plan
@@ -57,7 +58,7 @@ export const StarterPlanPricingCard = ({
             <Text>{scopedT('starter.description')}</Text>
           </Stack>
           <Heading>
-            {formatPrice(39, { currency })}
+            {formatPrice(prices.STARTER, { currency })}
             <chakra.span fontSize="md">{scopedT('perMonth')}</chakra.span>
           </Heading>
         </Stack>

@@ -2,6 +2,7 @@ import { PrismaClient } from '@typebot.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 import { Stripe } from 'stripe'
 import { createId } from '@paralleldrive/cuid2'
+import { writeFileSync } from 'fs'
 
 const migrateSubscriptionsToUsageBased = async () => {
   await promptAndSetEnvironment()
@@ -9,11 +10,30 @@ const migrateSubscriptionsToUsageBased = async () => {
 
   if (
     !process.env.STRIPE_STARTER_CHATS_PRICE_ID ||
-    !process.env.STRIPE_PRO_CHATS_PRICE_ID
+    !process.env.STRIPE_PRO_CHATS_PRICE_ID ||
+    !process.env.STRIPE_SECRET_KEY ||
+    !process.env.STRIPE_STARTER_PRICE_ID ||
+    !process.env.STRIPE_PRO_PRICE_ID
   )
-    throw new Error(
-      'Missing STRIPE_STARTER_CHATS_PRICE_ID or STRIPE_PRO_CHATS_PRICE_ID'
-    )
+    throw new Error('Missing some env variables')
+
+  const {
+    starterChatsPriceId,
+    proChatsPriceId,
+    secretKey,
+    starterPriceId,
+    proPriceId,
+    starterYearlyPriceId,
+    proYearlyPriceId,
+  } = {
+    starterChatsPriceId: process.env.STRIPE_STARTER_CHATS_PRICE_ID,
+    proChatsPriceId: process.env.STRIPE_PRO_CHATS_PRICE_ID,
+    secretKey: process.env.STRIPE_SECRET_KEY,
+    starterPriceId: process.env.STRIPE_STARTER_PRICE_ID,
+    proPriceId: process.env.STRIPE_PRO_PRICE_ID,
+    starterYearlyPriceId: process.env.STRIPE_STARTER_YEARLY_PRICE_ID,
+    proYearlyPriceId: process.env.STRIPE_PRO_YEARLY_PRICE_ID,
+  }
 
   const workspacesWithPaidPlan = await prisma.workspace.findMany({
     where: {
@@ -38,12 +58,20 @@ const migrateSubscriptionsToUsageBased = async () => {
     },
   })
 
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  writeFileSync(
+    './workspacesWithPaidPlan.json',
+    JSON.stringify(workspacesWithPaidPlan, null, 2)
+  )
+
+  const stripe = new Stripe(secretKey, {
     apiVersion: '2022-11-15',
   })
 
   const todayMidnight = new Date()
   todayMidnight.setUTCHours(0, 0, 0, 0)
+
+  const failedWorkspaces = []
+  const workspacesWithoutSubscription = []
 
   for (const workspace of workspacesWithPaidPlan) {
     console.log(
@@ -68,32 +96,48 @@ const migrateSubscriptionsToUsageBased = async () => {
 
     if (!currentSubscription) {
       console.log('No current subscription in workspace:', workspace.id)
+      workspacesWithoutSubscription.push(workspace)
       continue
     }
 
     if (
+      currentSubscription.items.data.find(
+        (item) =>
+          item.price.id === starterChatsPriceId ||
+          item.price.id === proChatsPriceId
+      )
+    ) {
+      console.log(
+        'Already migrated to usage based billing for workspace. Skipping...'
+      )
+      continue
+    }
+    if (
       !currentSubscription.items.data.find(
         (item) =>
-          item.price.id === process.env.STRIPE_STARTER_PRICE_ID ||
-          item.price.id === process.env.STRIPE_PRO_PRICE_ID
+          item.price.id === starterPriceId ||
+          item.price.id === proPriceId ||
+          item.price.id === starterYearlyPriceId ||
+          item.price.id === proYearlyPriceId
       )
     ) {
       console.log(
         'Could not find STARTER or PRO plan in items for workspace:',
         workspace.id
       )
+      failedWorkspaces.push(workspace)
       continue
     }
 
-    const subscription = await stripe.subscriptions.update(
+    const newSubscription = await stripe.subscriptions.update(
       currentSubscription.id,
       {
         items: [
           ...currentSubscription.items.data.flatMap<Stripe.SubscriptionUpdateParams.Item>(
             (item) => {
               if (
-                item.price.id === process.env.STRIPE_STARTER_PRICE_ID ||
-                item.price.id === process.env.STRIPE_PRO_PRICE_ID
+                item.price.id === starterPriceId ||
+                item.price.id === proPriceId
               )
                 return {
                   id: item.id,
@@ -101,8 +145,8 @@ const migrateSubscriptionsToUsageBased = async () => {
                   quantity: item.quantity,
                 }
               if (
-                item.price.id === process.env.STRIPE_STARTER_YEARLY_PRICE_ID ||
-                item.price.id === process.env.STRIPE_PRO_YEARLY_PRICE_ID
+                item.price.id === starterYearlyPriceId ||
+                item.price.id === proYearlyPriceId
               )
                 return [
                   {
@@ -114,8 +158,8 @@ const migrateSubscriptionsToUsageBased = async () => {
                   {
                     price:
                       workspace.plan === 'STARTER'
-                        ? process.env.STRIPE_STARTER_PRICE_ID
-                        : process.env.STRIPE_PRO_PRICE_ID,
+                        ? starterPriceId
+                        : proPriceId,
                     quantity: 1,
                   },
                 ]
@@ -130,8 +174,8 @@ const migrateSubscriptionsToUsageBased = async () => {
           {
             price:
               workspace.plan === 'STARTER'
-                ? process.env.STRIPE_STARTER_CHATS_PRICE_ID
-                : process.env.STRIPE_PRO_CHATS_PRICE_ID,
+                ? starterChatsPriceId
+                : proChatsPriceId,
           },
         ],
       }
@@ -142,7 +186,7 @@ const migrateSubscriptionsToUsageBased = async () => {
         typebot: { workspaceId: workspace.id },
         hasStarted: true,
         createdAt: {
-          gte: new Date(subscription.current_period_start * 1000),
+          gte: new Date(newSubscription.current_period_start * 1000),
           lt: todayMidnight,
         },
       },
@@ -150,21 +194,20 @@ const migrateSubscriptionsToUsageBased = async () => {
 
     if (workspace.plan === 'STARTER' && totalResults >= 4000) {
       console.log(
-        'Workspace has more than 4000 chats, automatically upgrading to PRO plan',
-        workspace.id
+        'Workspace has more than 4000 chats, automatically upgrading to PRO plan'
       )
-      const currentPlanItemId = subscription?.items.data.find((item) =>
-        [
-          process.env.STRIPE_STARTER_PRICE_ID,
-          process.env.STRIPE_PRO_PRICE_ID,
-        ].includes(item.price.id)
+      const currentPlanItemId = newSubscription?.items.data.find((item) =>
+        [starterPriceId, proPriceId].includes(item.price.id)
       )?.id
 
-      await stripe.subscriptions.update(subscription.id, {
+      if (!currentPlanItemId)
+        throw new Error(`Could not find current plan item ID for workspace`)
+
+      await stripe.subscriptions.update(newSubscription.id, {
         items: [
           {
             id: currentPlanItemId,
-            price: process.env.STRIPE_PRO_PRICE_ID,
+            price: proPriceId,
             quantity: 1,
           },
         ],
@@ -178,10 +221,10 @@ const migrateSubscriptionsToUsageBased = async () => {
       })
     }
 
-    const subscriptionItem = currentSubscription.items.data.find(
+    const subscriptionItem = newSubscription.items.data.find(
       (item) =>
-        item.price.id === process.env.STRIPE_STARTER_CHATS_PRICE_ID ||
-        item.price.id === process.env.STRIPE_PRO_CHATS_PRICE_ID
+        item.price.id === starterChatsPriceId ||
+        item.price.id === proChatsPriceId
     )
 
     if (!subscriptionItem)
@@ -212,6 +255,16 @@ const migrateSubscriptionsToUsageBased = async () => {
       })
     }
   }
+
+  writeFileSync(
+    './failedWorkspaces.json',
+    JSON.stringify(failedWorkspaces, null, 2)
+  )
+
+  writeFileSync(
+    './workspacesWithoutSubscription.json',
+    JSON.stringify(workspacesWithoutSubscription, null, 2)
+  )
 }
 
 migrateSubscriptionsToUsageBased()
