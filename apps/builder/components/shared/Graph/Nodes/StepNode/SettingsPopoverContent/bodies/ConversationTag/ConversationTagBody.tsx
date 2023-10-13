@@ -16,7 +16,7 @@ export const ConversationTagBody = ({
   const handleTagChange = (e: any) => {
     onOptionsChange({
       ...options,
-      tagId: e.tag
+      tags: e.tags
     })
   }
 
@@ -26,7 +26,7 @@ export const ConversationTagBody = ({
         <FormLabel mb="0" htmlFor="button">
           Tagear conversa:
         </FormLabel>
-        <ConversationTagSelect selectedTag={options.tagId} onSelect={handleTagChange} />
+        <ConversationTagSelect selectedTags={options.tags} onSelect={handleTagChange} />
       </Stack>
     </Stack>
   )

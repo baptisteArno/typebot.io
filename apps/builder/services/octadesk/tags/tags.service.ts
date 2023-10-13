@@ -13,7 +13,7 @@ export const TagsService = (): ITagsServices => {
   
   const getAll = async () => {
     const { data } = await getChatClient().then(client =>
-      client.get(`public-tags?active=true`, headers.getAuthorizedHeaders())
+      client.get(`public-tags`, headers.getAuthorizedHeaders())
     )
   
     return data

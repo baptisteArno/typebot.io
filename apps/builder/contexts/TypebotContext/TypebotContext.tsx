@@ -564,8 +564,12 @@ export const TypebotContext = ({
           .getAll()
           .then((res) => {
             const itemList = res
+              .filter(function(tag: any) {
+                  return tag?.status == 'active';
+                })            
               .sort((a: any, b: any) => a.name.localeCompare(b.name))
-              .map((tag: any, idx: number) => ({
+              .map((tag: any, idx: number) => (
+              {
                 ...tag,
                 label: tag.name,
                 value: { tag: tag.id },
