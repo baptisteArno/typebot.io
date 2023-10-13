@@ -1,5 +1,26 @@
 # Changelog
 
+<a name="2.18.2"></a>
+## 2.18.2 (2023-10-13)
+
+### Changed
+
+- ⚡ (video) Allow changing video height when resolved to an iframe [[ee685f1](https://github.com/baptisteArno/typebot.io/commit/ee685f14f3325a557dd3ef5277219fa3d6f5b4d5)]
+
+### Fixed
+
+- 🐛 (videoBubble) Fix youtube parsing for IDs containing a &quot;-&quot; [[ee7dfbf](https://github.com/baptisteArno/typebot.io/commit/ee7dfbf848be1b39a8e6bf5201e201015dea3c20)]
+- 🐛 (textBubble) Fix overflow with long links [[9bbb30f](https://github.com/baptisteArno/typebot.io/commit/9bbb30f30d784d9d73bd04c578eef37651033cf0)]
+- 🐛 Fix link parsing when using variables [[ad79178](https://github.com/baptisteArno/typebot.io/commit/ad791789ba30f57b8f26c24c8adfda76da57206c)]
+- 🐛 (openai) Fix 2 openai streaming back to back [[42fd603](https://github.com/baptisteArno/typebot.io/commit/42fd6037f76c96ed0dfc0d5e66f818432e84b4f2)]
+- 🚑 Fix empty bubble issue when plate element does not have a type attribute [[a48026c](https://github.com/baptisteArno/typebot.io/commit/a48026c707eb11e6e8e289075cdc0f88f6dd2f6f)]
+
+### Miscellaneous
+
+- 🐳 Force Next.js apps local hostname [[3ca5384](https://github.com/baptisteArno/typebot.io/commit/3ca5384e7f1e4818051978f77029c6ca29818bc6)]
+- 📝 (openai) Add &quot;Multiple OpenAI blocks&quot; video section [[e071c81](https://github.com/baptisteArno/typebot.io/commit/e071c810aeb790d111636d513788324d0aec065b)]
+
+
 <a name="2.18.1"></a>
 ## 2.18.1 (2023-10-10)
 
