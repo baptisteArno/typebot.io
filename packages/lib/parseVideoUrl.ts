@@ -1,7 +1,8 @@
 import { VideoBubbleContentType } from '@typebot.io/schemas/features/blocks/bubbles/video/enums'
 
 const vimeoRegex = /vimeo\.com\/(\d+)/
-const youtubeRegex = /youtube\.com\/(watch\?v=|shorts\/)(\w+)|youtu\.be\/(\w+)/
+const youtubeRegex =
+  /youtube\.com\/(watch\?v=|shorts\/)([\w-]+)|youtu\.be\/([\w-]+)/
 
 export const parseVideoUrl = (
   url: string
