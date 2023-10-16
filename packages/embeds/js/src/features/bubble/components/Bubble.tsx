@@ -20,6 +20,8 @@ export type BubbleProps = BotProps &
     onOpen?: () => void
     onClose?: () => void
     onPreviewMessageClick?: () => void
+    height?: string; 
+    width?: string;
   }
 
 export const Bubble = (props: BubbleProps) => {
@@ -148,7 +150,8 @@ export const Bubble = (props: BubbleProps) => {
       <div
         part="bot"
         style={{
-          height: 'calc(100% - 80px)',
+          height: props.height ?? 'calc(100% - 80px)',
+          width: props.width ?? '100%',
           transition:
             'transform 200ms cubic-bezier(0, 1.2, 1, 1), opacity 150ms ease-out',
           'transform-origin':
