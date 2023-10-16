@@ -41,6 +41,8 @@ export const Popup = (props: PopupProps) => {
     popupProps.isOpen ?? false
   )
 
+  const setOverflow = value => document.body.style.setProperty('overflow', value, 'important');
+
   onMount(() => {
     const paymentInProgress = getPaymentInProgressInStorage()
     if (popupProps.defaultOpen || paymentInProgress) openBot()
@@ -90,14 +92,14 @@ export const Popup = (props: PopupProps) => {
   const openBot = () => {
     setIsBotOpened(true)
     popupProps.onOpen?.()
-    document.body.style.overflow = 'hidden'
+    setOverflow('hidden');
     document.addEventListener('pointerdown', closeBot)
   }
 
   const closeBot = () => {
     setIsBotOpened(false)
     popupProps.onClose?.()
-    document.body.style.overflow = 'auto'
+    setOverflow('auto');
     document.removeEventListener('pointerdown', closeBot)
   }
 
