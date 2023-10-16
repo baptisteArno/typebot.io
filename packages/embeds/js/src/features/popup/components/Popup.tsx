@@ -102,12 +102,7 @@ export const Popup = (props: PopupProps) => {
   }
 
   const toggleBot = () => {
-    if (isBotOpened()) {
-      closeBot()
-    }
-    else {
-      openBot()
-    }
+    isBotOpened() ? closeBot() : openBot()
   }
 
   return (
