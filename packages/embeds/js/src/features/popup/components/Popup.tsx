@@ -90,7 +90,7 @@ export const Popup = (props: PopupProps) => {
   const openBot = () => {
     setIsBotOpened(true)
     popupProps.onOpen?.()
-    document.body.style.overflow = 'hidden'
+    document.body.style.setProperty('overflow', 'hidden', 'important')
     document.addEventListener('pointerdown', closeBot)
   }
 

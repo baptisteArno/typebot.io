@@ -45,8 +45,8 @@ const createHtmlFile = () => {
     render(
       <AlmostReachedChatsLimitEmail
         usagePercent={86}
-        url={'https://app.typebot.io'}
         chatsLimit={2000}
+        workspaceName="My Workspace"
       />
     ).html
   )

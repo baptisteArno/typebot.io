@@ -64,12 +64,12 @@ export const listInvoices = authenticatedProcedure
         .filter(
           (invoice) => isDefined(invoice.invoice_pdf) && isDefined(invoice.id)
         )
-        .map((i) => ({
-          id: i.number as string,
-          url: i.invoice_pdf as string,
-          amount: i.subtotal,
-          currency: i.currency,
-          date: i.status_transitions.paid_at,
+        .map((invoice) => ({
+          id: invoice.number as string,
+          url: invoice.invoice_pdf as string,
+          amount: invoice.subtotal,
+          currency: invoice.currency,
+          date: invoice.status_transitions.paid_at,
         })),
     }
   })

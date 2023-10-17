@@ -62,7 +62,6 @@ const subscriptionUpdatedEventSchema = workspaceEvent.merge(
     name: z.literal('Subscription updated'),
     data: z.object({
       plan: z.nativeEnum(Plan),
-      additionalChatsIndex: z.number(),
     }),
   })
 )

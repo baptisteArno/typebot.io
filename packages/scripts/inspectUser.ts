@@ -39,7 +39,6 @@ const inspectUser = async () => {
                   user: { email: { not: response.email } },
                 },
               },
-              additionalChatsIndex: true,
               additionalStorageIndex: true,
               typebots: {
                 orderBy: {
@@ -82,10 +81,6 @@ const inspectUser = async () => {
     console.log('  - Name:', workspace.workspace.name)
     console.log('    Plan:', workspace.workspace.plan)
     console.log('    Members:', workspace.workspace.members.length + 1)
-    console.log(
-      '    Additional chats:',
-      workspace.workspace.additionalChatsIndex
-    )
     console.log(
       '    Additional storage:',
       workspace.workspace.additionalStorageIndex

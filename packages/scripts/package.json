@@ -5,17 +5,18 @@
   "license": "AGPL-3.0-or-later",
   "private": true,
   "scripts": {
-    "playground": "tsx playground.ts",
+    "playground": "SKIP_ENV_CHECK=true dotenv -e ./.env.local -- tsx playground.ts",
     "db:cleanDatabase": "tsx cleanDatabase.ts",
     "db:backup": "tsx backupDatabase.ts",
     "db:restore": "tsx restoreDatabase.ts",
     "db:setCustomPlan": "tsx setCustomPlan.ts",
     "db:bulkUpdate": "tsx bulkUpdate.ts",
     "db:fixTypebots": "tsx fixTypebots.ts",
-    "telemetry:sendTotalResultsDigest": "tsx sendTotalResultsDigest.ts",
-    "sendAlertEmails": "tsx sendAlertEmails.ts",
+    "checkAndReportChatsUsage": "tsx checkAndReportChatsUsage.ts",
     "inspectUser": "tsx inspectUser.ts",
-    "checkSubscriptionsStatus": "tsx checkSubscriptionsStatus.ts"
+    "checkSubscriptionsStatus": "tsx checkSubscriptionsStatus.ts",
+    "createChatsPrices": "tsx createChatsPrices.ts",
+    "migrateSubscriptionsToUsageBased": "tsx migrateSubscriptionsToUsageBased.ts"
   },
   "devDependencies": {
     "@typebot.io/emails": "workspace:*",
@@ -31,5 +32,8 @@
     "tsx": "3.12.7",
     "typescript": "5.1.6",
     "zod": "3.21.4"
+  },
+  "dependencies": {
+    "@paralleldrive/cuid2": "2.2.1"
   }
 }

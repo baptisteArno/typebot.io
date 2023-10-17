@@ -1,87 +1,43 @@
-import {
-  chakra,
-  Tooltip,
-  Text,
-  HStack,
-  Menu,
-  MenuButton,
-  Button,
-  MenuItem,
-  MenuList,
-} from '@chakra-ui/react'
-import { ChevronDownIcon } from 'assets/icons/ChevronDownIcon'
+import { chakra, Tooltip, Text, HStack, Button, Stack } from '@chakra-ui/react'
 import { HelpCircleIcon } from 'assets/icons/HelpCircleIcon'
 import { Plan } from '@typebot.io/prisma'
 import Link from 'next/link'
-import React, { useState } from 'react'
-import { parseNumberWithCommas } from '@typebot.io/lib'
-import { chatsLimit, computePrice, seatsLimit } from '@typebot.io/lib/pricing'
+import React from 'react'
 import { PricingCard } from './PricingCard'
+import { prices, seatsLimits } from '@typebot.io/lib/billing/constants'
 
-type Props = {
-  isYearly: boolean
-}
-export const StarterPlanCard = ({ isYearly }: Props) => {
-  const [selectedChatsLimitIndex, setSelectedChatsLimitIndex] =
-    useState<number>(0)
-
-  const price =
-    computePrice(
-      Plan.STARTER,
-      selectedChatsLimitIndex ?? 0,
-      isYearly ? 'yearly' : 'monthly'
-    ) ?? NaN
-
+export const StarterPlanCard = () => {
   return (
     <PricingCard
       data={{
-        price,
+        price: prices.STARTER,
         name: 'Starter',
         featureLabel: 'Everything in Personal, plus:',
         features: [
           <Text key="seats">
             <chakra.span fontWeight="bold">
-              {seatsLimit.STARTER.totalIncluded} seats
+              {seatsLimits.STARTER} seats
             </chakra.span>{' '}
             included
           </Text>,
-          <HStack key="chats" spacing={1.5}>
-            <Menu>
-              <MenuButton
-                as={Button}
-                rightIcon={<ChevronDownIcon />}
-                size="sm"
-                variant="outline"
-                colorScheme="orange"
-              >
-                {parseNumberWithCommas(
-                  chatsLimit.STARTER.graduatedPrice[selectedChatsLimitIndex]
-                    .totalIncluded
-                )}
-              </MenuButton>
-              <MenuList>
-                {chatsLimit.STARTER.graduatedPrice.map((price, index) => (
-                  <MenuItem
-                    key={index}
-                    onClick={() => setSelectedChatsLimitIndex(index)}
-                  >
-                    {parseNumberWithCommas(price.totalIncluded)}
-                  </MenuItem>
-                ))}
-              </MenuList>
-            </Menu>{' '}
-            <Text>chats/mo</Text>
-            <Tooltip
-              hasArrow
-              placement="top"
-              label="A chat is counted whenever a user starts a discussion. It is
+          <Stack key="chats" spacing={0}>
+            <HStack spacing={1.5}>
+              <Text>2,000 chats/mo</Text>
+              <Tooltip
+                hasArrow
+                placement="top"
+                label="A chat is counted whenever a user starts a discussion. It is
     independant of the number of messages he sends and receives."
-            >
-              <chakra.span cursor="pointer" h="7">
-                <HelpCircleIcon />
-              </chakra.span>
-            </Tooltip>
-          </HStack>,
+              >
+                <chakra.span cursor="pointer" h="7">
+                  <HelpCircleIcon />
+                </chakra.span>
+              </Tooltip>
+            </HStack>
+            <Text fontSize="sm" color="gray.400">
+              Extra chats: $10 per 500
+            </Text>
+          </Stack>,
           'Branding removed',
           'Collect files from users',
           'Create folders',
@@ -92,7 +48,7 @@ export const StarterPlanCard = ({ isYearly }: Props) => {
       button={
         <Button
           as={Link}
-          href={`https://app.typebot.io/register?subscribePlan=${Plan.STARTER}&chats=${selectedChatsLimitIndex}&isYearly=${isYearly}`}
+          href={`https://app.typebot.io/register?subscribePlan=${Plan.STARTER}`}
           colorScheme="orange"
           size="lg"
           w="full"

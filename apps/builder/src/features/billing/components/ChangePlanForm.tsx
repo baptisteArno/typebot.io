@@ -1,9 +1,8 @@
-import { Stack, HStack, Text, Switch, Tag } from '@chakra-ui/react'
+import { Stack, HStack, Text } from '@chakra-ui/react'
 import { Plan } from '@typebot.io/prisma'
 import { TextLink } from '@/components/TextLink'
 import { useToast } from '@/hooks/useToast'
 import { trpc } from '@/lib/trpc'
-import { guessIfUserIsEuropean } from '@typebot.io/lib/pricing'
 import { Workspace } from '@typebot.io/schemas'
 import { PreCheckoutModal, PreCheckoutModalProps } from './PreCheckoutModal'
 import { useState } from 'react'
@@ -13,6 +12,7 @@ import { StarterPlanPricingCard } from './StarterPlanPricingCard'
 import { ProPlanPricingCard } from './ProPlanPricingCard'
 import { useScopedI18n } from '@/locales'
 import { StripeClimateLogo } from './StripeClimateLogo'
+import { guessIfUserIsEuropean } from '@typebot.io/lib/billing/guessIfUserIsEuropean'
 
 type Props = {
   workspace: Workspace
@@ -26,21 +26,12 @@ export const ChangePlanForm = ({ workspace, excludedPlans }: Props) => {
   const { showToast } = useToast()
   const [preCheckoutPlan, setPreCheckoutPlan] =
     useState<PreCheckoutModalProps['selectedSubscription']>()
-  const [isYearly, setIsYearly] = useState(true)
 
   const trpcContext = trpc.useContext()
 
-  const { data, refetch } = trpc.billing.getSubscription.useQuery(
-    {
-      workspaceId: workspace.id,
-    },
-    {
-      onSuccess: ({ subscription }) => {
-        if (isYearly === false) return
-        setIsYearly(subscription?.isYearly ?? true)
-      },
-    }
-  )
+  const { data, refetch } = trpc.billing.getSubscription.useQuery({
+    workspaceId: workspace.id,
+  })
 
   const { mutate: updateSubscription, isLoading: isUpdatingSubscription } =
     trpc.billing.updateSubscription.useMutation({
@@ -65,23 +56,15 @@ export const ChangePlanForm = ({ workspace, excludedPlans }: Props) => {
       },
     })
 
-  const handlePayClick = async ({
-    plan,
-    selectedChatsLimitIndex,
-  }: {
-    plan: 'STARTER' | 'PRO'
-    selectedChatsLimitIndex: number
-  }) => {
-    if (!user || selectedChatsLimitIndex === undefined) return
+  const handlePayClick = async (plan: 'STARTER' | 'PRO') => {
+    if (!user) return
 
     const newSubscription = {
       plan,
       workspaceId: workspace.id,
-      additionalChats: selectedChatsLimitIndex,
       currency:
         data?.subscription?.currency ??
         (guessIfUserIsEuropean() ? 'eur' : 'usd'),
-      isYearly,
     } as const
     if (workspace.stripeId) {
       updateSubscription({
@@ -122,26 +105,11 @@ export const ChangePlanForm = ({ workspace, excludedPlans }: Props) => {
       )}
       {data && (
         <Stack align="flex-end" spacing={6}>
-          <HStack>
-            <Text>Monthly</Text>
-            <Switch
-              isChecked={isYearly}
-              onChange={() => setIsYearly(!isYearly)}
-            />
-            <HStack>
-              <Text>Yearly</Text>
-              <Tag colorScheme="blue">16% off</Tag>
-            </HStack>
-          </HStack>
           <HStack alignItems="stretch" spacing="4" w="full">
             {excludedPlans?.includes('STARTER') ? null : (
               <StarterPlanPricingCard
-                workspace={workspace}
-                currentSubscription={{ isYearly: data.subscription?.isYearly }}
-                onPayClick={(props) =>
-                  handlePayClick({ ...props, plan: Plan.STARTER })
-                }
-                isYearly={isYearly}
+                currentPlan={workspace.plan}
+                onPayClick={() => handlePayClick(Plan.STARTER)}
                 isLoading={isUpdatingSubscription}
                 currency={data.subscription?.currency}
               />
@@ -149,12 +117,8 @@ export const ChangePlanForm = ({ workspace, excludedPlans }: Props) => {
 
             {excludedPlans?.includes('PRO') ? null : (
               <ProPlanPricingCard
-                workspace={workspace}
-                currentSubscription={{ isYearly: data.subscription?.isYearly }}
-                onPayClick={(props) =>
-                  handlePayClick({ ...props, plan: Plan.PRO })
-                }
-                isYearly={isYearly}
+                currentPlan={workspace.plan}
+                onPayClick={() => handlePayClick(Plan.PRO)}
                 isLoading={isUpdatingSubscription}
                 currency={data.subscription?.currency}
               />

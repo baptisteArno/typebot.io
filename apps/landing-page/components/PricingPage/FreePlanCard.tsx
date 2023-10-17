@@ -3,7 +3,7 @@ import { HelpCircleIcon } from 'assets/icons/HelpCircleIcon'
 import Link from 'next/link'
 import React from 'react'
 import { PricingCard } from './PricingCard'
-import { chatsLimit } from '@typebot.io/lib/pricing'
+import { chatsLimits } from '@typebot.io/lib/billing/constants'
 
 export const FreePlanCard = () => (
   <PricingCard
@@ -14,9 +14,7 @@ export const FreePlanCard = () => (
         'Unlimited typebots',
         <>
           <Text>
-            <chakra.span fontWeight="bold">
-              {chatsLimit.FREE.totalIncluded}
-            </chakra.span>{' '}
+            <chakra.span fontWeight="bold">{chatsLimits.FREE}</chakra.span>{' '}
             chats/month
           </Text>
           &nbsp;
