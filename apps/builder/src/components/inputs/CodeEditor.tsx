@@ -16,6 +16,36 @@ import { githubLight } from '@uiw/codemirror-theme-github'
 import { LanguageName, loadLanguage } from '@uiw/codemirror-extensions-langs'
 import { isDefined } from '@udecode/plate-common'
 import { CopyButton } from '../CopyButton'
+import { linter, Diagnostic, lintGutter } from '@codemirror/lint'
+import { syntaxTree } from '@codemirror/language'
+import { tooltips } from '@codemirror/view'
+
+const jsLinter = () => {
+  return linter((view) => {
+    const { state } = view
+    const tree = syntaxTree(state)
+
+    if (tree.length === state.doc.length) {
+      const errors: Diagnostic[] = []
+      tree.iterate({
+        enter: (node) => {
+          if (node.type.isError) {
+            errors.push({
+              from: node.from,
+              to: node.to,
+              severity: 'error',
+              message: `${node.name} contains invalid syntax`,
+            })
+            return false
+          }
+        },
+      })
+
+      return errors
+    }
+    return []
+  })
+}
 
 type Props = {
   value?: string
@@ -100,10 +130,12 @@ export const CodeEditor = ({
       onMouseLeave={onClose}
       maxWidth={props.maxWidth}
       sx={{
+        position: 'sticky',
         '& .cm-editor': {
           maxH: maxHeight,
           outline: '0px solid transparent !important',
           rounded: 'md',
+          position: 'relative',
         },
         '& .cm-scroller': {
           rounded: 'md',
@@ -126,7 +158,14 @@ export const CodeEditor = ({
         onChange={handleChange}
         onBlur={rememberCarretPosition}
         theme={theme}
-        extensions={[loadLanguage(lang)].filter(isDefined)}
+        extensions={[
+          loadLanguage(lang),
+          ...(lang === 'javascript' ? [jsLinter(), lintGutter()] : []),
+          tooltips({
+            position: 'absolute',
+            parent: (codeEditor.current?.editor as HTMLDivElement) ?? null,
+          }),
+        ].filter(isDefined)}
         editable={!isReadOnly}
         style={{
           width: isVariableButtonDisplayed ? 'calc(100% - 32px)' : '100%',

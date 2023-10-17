@@ -35,6 +35,15 @@ importers:
       '@chakra-ui/theme-tools':
         specifier: ^2.0.18
         version: 2.0.18(@chakra-ui/styled-system@2.9.1)
+      '@codemirror/language':
+        specifier: ^6.9.1
+        version: 6.9.1
+      '@codemirror/lint':
+        specifier: ^6.4.2
+        version: 6.4.2
+      '@codemirror/view':
+        specifier: ^6.21.3
+        version: 6.21.3
       '@dnd-kit/core':
         specifier: 6.0.8
         version: 6.0.8(react-dom@18.2.0)(react@18.2.0)
