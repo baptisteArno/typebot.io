@@ -54,7 +54,7 @@ export const AlmostReachedChatsLimitEmail = ({
             <Text>
               As a reminder, your billing cycle ends on {readableResetDate}. If
               you&apos;d like to learn more about the Enterprise plan for an
-              annual commitment, reach out to .
+              annual commitment, reach out to support@typebot.io.
             </Text>
           </MjmlColumn>
         </MjmlSection>

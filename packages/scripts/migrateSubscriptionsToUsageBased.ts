@@ -228,6 +228,14 @@ const migrateSubscriptionsToUsageBased = async () => {
             price: proPriceId,
             quantity: 1,
           },
+          {
+            id: newSubscription.items.data.find(
+              (item) =>
+                item.price.id === starterChatsPriceId ||
+                item.price.id === proChatsPriceId
+            )?.id,
+            price: proChatsPriceId,
+          },
         ],
       })
 

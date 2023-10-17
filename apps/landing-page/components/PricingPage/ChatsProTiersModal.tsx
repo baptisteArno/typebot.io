@@ -46,13 +46,9 @@ export const ChatsProTiersModal = ({ isOpen, onClose }: Props) => {
               <Tbody>
                 {proChatTiers.map((tier, index) => {
                   const pricePerMonth =
-                    proChatTiers
-                      .slice(0, index + 1)
-                      .reduce(
-                        (acc, slicedTier) =>
-                          acc + (slicedTier.flat_amount ?? 0),
-                        0
-                      ) / 100
+                    (tier.flat_amount ??
+                      proChatTiers.at(-2)?.flat_amount ??
+                      0) / 100
                   return (
                     <Tr key={tier.up_to}>
                       <Td isNumeric>
