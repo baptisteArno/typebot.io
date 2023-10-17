@@ -59,7 +59,7 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
         const { results, nextCursor } =
           await trpcContext.results.getResults.fetch({
             typebotId,
-            limit: '200',
+            limit: 100,
             cursor,
           })
         allResults.push(...results)

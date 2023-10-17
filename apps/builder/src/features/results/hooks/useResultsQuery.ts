@@ -11,7 +11,6 @@ export const useResultsQuery = ({
     trpc.results.getResults.useInfiniteQuery(
       {
         typebotId,
-        limit: '50',
       },
       {
         getNextPageParam: (lastPage) => lastPage.nextCursor,

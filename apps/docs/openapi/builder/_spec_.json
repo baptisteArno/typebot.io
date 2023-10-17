@@ -29833,10 +29833,12 @@
           {
             "name": "limit",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
-              "type": "string",
-              "pattern": "^[0-9]{1,3}$"
+              "type": "number",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
             }
           },
           {

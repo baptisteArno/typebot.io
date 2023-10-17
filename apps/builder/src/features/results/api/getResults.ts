@@ -5,7 +5,7 @@ import { ResultWithAnswers, resultWithAnswersSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { isReadTypebotForbidden } from '@/features/typebot/helpers/isReadTypebotForbidden'
 
-const maxLimit = 200
+const maxLimit = 100
 
 export const getResults = authenticatedProcedure
   .meta({
@@ -20,7 +20,7 @@ export const getResults = authenticatedProcedure
   .input(
     z.object({
       typebotId: z.string(),
-      limit: z.string().regex(/^[0-9]{1,3}$/),
+      limit: z.coerce.number().min(1).max(maxLimit).default(50),
       cursor: z.string().optional(),
     })
   )
@@ -35,7 +35,7 @@ export const getResults = authenticatedProcedure
     if (limit < 1 || limit > maxLimit)
       throw new TRPCError({
         code: 'BAD_REQUEST',
-        message: 'limit must be between 1 and 200',
+        message: `limit must be between 1 and ${maxLimit}`,
       })
     const { cursor } = input
     const typebot = await prisma.typebot.findUnique({
