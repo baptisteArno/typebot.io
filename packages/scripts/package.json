@@ -5,7 +5,7 @@
   "license": "AGPL-3.0-or-later",
   "private": true,
   "scripts": {
-    "playground": "tsx playground.ts",
+    "playground": "SKIP_ENV_CHECK=true dotenv -e ./.env.local -- tsx playground.ts",
     "db:cleanDatabase": "tsx cleanDatabase.ts",
     "db:backup": "tsx backupDatabase.ts",
     "db:restore": "tsx restoreDatabase.ts",

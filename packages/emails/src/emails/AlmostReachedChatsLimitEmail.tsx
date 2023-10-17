@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import React, { ComponentProps } from 'react'
 import { Mjml, MjmlBody, MjmlSection, MjmlColumn } from '@faire/mjml-react'
 import { render } from '@faire/mjml-react/utils/render'
 import { Head, HeroImage, Text } from '../components'
@@ -47,14 +47,15 @@ export const AlmostReachedChatsLimitEmail = ({
             </Text>
             <Text>
               Your progress can be monitored on your workspace dashboard
-              settings. Check out the{' '}
+              settings.
+            </Text>
+            <Text>
+              Check out the{' '}
               <a href="https://typebot.io/pricing">pricing page</a> for
               information about the pay as you go tiers.
             </Text>
             <Text>
-              As a reminder, your billing cycle ends on {readableResetDate}. If
-              you&apos;d like to learn more about the Enterprise plan for an
-              annual commitment, reach out to support@typebot.io.
+              As a reminder, your billing cycle ends on {readableResetDate}.
             </Text>
           </MjmlColumn>
         </MjmlSection>
