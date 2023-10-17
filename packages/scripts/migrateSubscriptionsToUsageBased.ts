@@ -72,16 +72,26 @@ const migrateSubscriptionsToUsageBased = async () => {
 
   const failedWorkspaces = []
   const workspacesWithoutSubscription = []
+  const workspacesWithoutStripeId = []
 
+  let i = 0
   for (const workspace of workspacesWithPaidPlan) {
+    i += 1
     console.log(
+      `(${i} / ${workspacesWithPaidPlan.length})`,
       'Migrating workspace:',
       workspace.id,
       workspace.name,
+      workspace.stripeId,
       JSON.stringify(workspace.members.map((member) => member.user.email))
     )
     if (!workspace.stripeId) {
       console.log('No stripe ID, skipping...')
+      workspacesWithoutStripeId.push(workspace)
+      writeFileSync(
+        './workspacesWithoutStripeId.json',
+        JSON.stringify(workspacesWithoutStripeId, null, 2)
+      )
       continue
     }
 
@@ -97,6 +107,10 @@ const migrateSubscriptionsToUsageBased = async () => {
     if (!currentSubscription) {
       console.log('No current subscription in workspace:', workspace.id)
       workspacesWithoutSubscription.push(workspace)
+      writeFileSync(
+        './workspacesWithoutSubscription.json',
+        JSON.stringify(workspacesWithoutSubscription)
+      )
       continue
     }
 
@@ -126,6 +140,10 @@ const migrateSubscriptionsToUsageBased = async () => {
         workspace.id
       )
       failedWorkspaces.push(workspace)
+      writeFileSync(
+        './failedWorkspaces.json',
+        JSON.stringify(failedWorkspaces, null, 2)
+      )
       continue
     }
 
@@ -255,16 +273,6 @@ const migrateSubscriptionsToUsageBased = async () => {
       })
     }
   }
-
-  writeFileSync(
-    './failedWorkspaces.json',
-    JSON.stringify(failedWorkspaces, null, 2)
-  )
-
-  writeFileSync(
-    './workspacesWithoutSubscription.json',
-    JSON.stringify(workspacesWithoutSubscription, null, 2)
-  )
 }
 
 migrateSubscriptionsToUsageBased()
