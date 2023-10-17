@@ -9,9 +9,9 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import * as React from 'react'
-import { formatPrice } from '@typebot.io/lib/pricing'
 import { CheckCircleIcon } from '../../../assets/icons/CheckCircleIcon'
 import { Card, CardProps } from './Card'
+import { formatPrice } from '@typebot.io/lib/billing/formatPrice'
 
 export interface PricingCardData {
   features: React.ReactNode[]

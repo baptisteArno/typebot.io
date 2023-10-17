@@ -180,17 +180,12 @@ const resetBillingProps = async () => {
         {
           chatsLimitFirstEmailSentAt: { not: null },
         },
-        {
-          storageLimitFirstEmailSentAt: { not: null },
-        },
       ],
     },
     data: {
       isQuarantined: false,
       chatsLimitFirstEmailSentAt: null,
-      storageLimitFirstEmailSentAt: null,
       chatsLimitSecondEmailSentAt: null,
-      storageLimitSecondEmailSentAt: null,
     },
   })
   console.log(`Resetted ${count} workspaces.`)

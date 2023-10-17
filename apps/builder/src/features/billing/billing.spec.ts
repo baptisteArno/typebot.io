@@ -116,29 +116,25 @@ test('plan changes should work', async ({ page }) => {
   await page.click('text=Plan Change Workspace')
   await page.click('text=Settings & Members')
   await page.click('text=Billing & Usage')
-  await page.click('button >> text="2,000"')
-  await page.click('button >> text="3,500"')
-  await page.click('button >> text="2"')
-  await page.click('button >> text="4"')
-  await page.locator('label span').first().click()
-  await expect(page.locator('text="$73"')).toBeVisible()
+  await expect(page.locator('text="$39"')).toBeVisible()
   await page.click('button >> text=Upgrade >> nth=0')
   await page.getByLabel('Company name').fill('Company LLC')
   await page.getByRole('button', { name: 'Go to checkout' }).click()
   await page.waitForNavigation()
   expect(page.url()).toContain('https://checkout.stripe.com')
-  await expect(page.locator('text=$73.00 >> nth=0')).toBeVisible()
-  await expect(page.locator('text=$30.00 >> nth=0')).toBeVisible()
-  await expect(page.locator('text=$4.00 >> nth=0')).toBeVisible()
+  await expect(page.locator('text=$39 >> nth=0')).toBeVisible()
   const stripeId = await addSubscriptionToWorkspace(
     planChangeWorkspaceId,
     [
       {
-        price: env.STRIPE_STARTER_MONTHLY_PRICE_ID,
+        price: env.STRIPE_STARTER_PRICE_ID,
         quantity: 1,
       },
+      {
+        price: env.STRIPE_STARTER_CHATS_PRICE_ID,
+      },
     ],
-    { plan: Plan.STARTER, additionalChatsIndex: 0 }
+    { plan: Plan.STARTER }
   )
 
   // Update plan with additional quotas
@@ -147,30 +143,9 @@ test('plan changes should work', async ({ page }) => {
   await page.click('text=Billing & Usage')
   await expect(page.locator('text="/ 2,000"')).toBeVisible()
   await expect(page.getByText('/ 2,000')).toBeVisible()
-  await page.click('button >> text="2,000"')
-  await page.click('button >> text="3,500"')
-  await page.click('button >> text="2"')
-  await page.click('button >> text="4"')
-  await expect(page.locator('text="$73"')).toBeVisible()
-  await page.click('button >> text=Update')
-  await expect(
-    page.locator(
-      'text="Workspace STARTER plan successfully updated 🎉" >> nth=0'
-    )
-  ).toBeVisible()
-  await page.click('text="Members"')
-  await page.click('text="Billing & Usage"')
-  await expect(page.locator('text="$73"')).toBeVisible()
-  await expect(page.locator('text="/ 3,500"')).toBeVisible()
-  await expect(page.getByRole('button', { name: '3,500' })).toBeVisible()
-  await expect(page.getByRole('button', { name: '4' })).toBeVisible()
 
   // Upgrade to PRO
-  await page.click('button >> text="10,000"')
-  await page.click('button >> text="25,000"')
-  await page.click('button >> text="10"')
-  await page.click('button >> text="15"')
-  await expect(page.locator('text="$247"')).toBeVisible()
+  await expect(page.locator('text="$89"')).toBeVisible()
   await page.click('button >> text=Upgrade')
   await expect(
     page.locator('text="Workspace PRO plan successfully updated 🎉" >> nth=0')
@@ -181,11 +156,12 @@ test('plan changes should work', async ({ page }) => {
     page.waitForNavigation(),
     page.click('text="Billing portal"'),
   ])
-  await expect(page.getByText('$247.00 per month')).toBeVisible({
+  await expect(page.getByText('$39.00')).toBeVisible({
     timeout: 10000,
   })
-  await expect(page.getByText('(×25000)')).toBeVisible()
-  await expect(page.getByText('(×15)')).toBeVisible()
+  await expect(page.getByText('$50.00')).toBeVisible({
+    timeout: 10000,
+  })
   await expect(page.locator('text="Add payment method"')).toBeVisible()
   await cancelSubscription(stripeId)
 
@@ -212,9 +188,8 @@ test('should display invoices', async ({ page }) => {
   await page.click('text=Billing & Usage')
   await expect(page.locator('text="Invoices"')).toBeVisible()
   await expect(page.locator('tr')).toHaveCount(4)
-  await expect(page.locator('text="$39.00"')).toBeVisible()
-  await expect(page.locator('text="$34.00"')).toBeVisible()
-  await expect(page.locator('text="$174.00"')).toBeVisible()
+  await expect(page.getByText('$39.00')).toBeVisible()
+  await expect(page.getByText('$50.00')).toBeVisible()
 })
 
 test('custom plans should work', async ({ page }) => {

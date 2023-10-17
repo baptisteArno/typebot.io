@@ -13,9 +13,11 @@
     "db:bulkUpdate": "tsx bulkUpdate.ts",
     "db:fixTypebots": "tsx fixTypebots.ts",
     "telemetry:sendTotalResultsDigest": "tsx sendTotalResultsDigest.ts",
-    "sendAlertEmails": "tsx sendAlertEmails.ts",
+    "checkAndReportChatsUsage": "tsx checkAndReportChatsUsage.ts",
     "inspectUser": "tsx inspectUser.ts",
-    "checkSubscriptionsStatus": "tsx checkSubscriptionsStatus.ts"
+    "checkSubscriptionsStatus": "tsx checkSubscriptionsStatus.ts",
+    "createChatsPrices": "tsx createChatsPrices.ts",
+    "migrateSubscriptionsToUsageBased": "tsx migrateSubscriptionsToUsageBased.ts"
   },
   "devDependencies": {
     "@typebot.io/emails": "workspace:*",
@@ -31,5 +33,8 @@
     "tsx": "3.12.7",
     "typescript": "5.1.6",
     "zod": "3.21.4"
+  },
+  "dependencies": {
+    "@paralleldrive/cuid2": "2.2.1"
   }
 }

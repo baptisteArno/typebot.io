@@ -46,23 +46,22 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           const metadata = session.metadata as unknown as
             | {
                 plan: 'STARTER' | 'PRO'
-                additionalChats: string
                 workspaceId: string
                 userId: string
               }
             | { claimableCustomPlanId: string; userId: string }
           if ('plan' in metadata) {
-            const { workspaceId, plan, additionalChats } = metadata
-            if (!workspaceId || !plan || !additionalChats)
+            const { workspaceId, plan } = metadata
+            if (!workspaceId || !plan)
               return res
                 .status(500)
                 .send({ message: `Couldn't retrieve valid metadata` })
+
             const workspace = await prisma.workspace.update({
               where: { id: workspaceId },
               data: {
                 plan,
                 stripeId: session.customer as string,
-                additionalChatsIndex: parseInt(additionalChats),
                 isQuarantined: false,
               },
               include: {
@@ -84,7 +83,6 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
                   userId: user.id,
                   data: {
                     plan,
-                    additionalChatsIndex: parseInt(additionalChats),
                   },
                 },
               ])
@@ -119,7 +117,6 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
                 userId,
                 data: {
                   plan: Plan.CUSTOM,
-                  additionalChatsIndex: 0,
                 },
               },
             ])
@@ -148,7 +145,6 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             },
             data: {
               plan: Plan.FREE,
-              additionalChatsIndex: 0,
               customChatsLimit: null,
               customStorageLimit: null,
               customSeatsLimit: null,
@@ -172,7 +168,6 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
                 userId: user.id,
                 data: {
                   plan: Plan.FREE,
-                  additionalChatsIndex: 0,
                 },
               },
             ])
