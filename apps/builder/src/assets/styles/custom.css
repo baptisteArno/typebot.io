@@ -22,3 +22,11 @@
   opacity: 1 !important;
   visibility: visible !important;
 } */
+
+/*Hide track timeline in audio tag in Windows*/
+audio::-webkit-media-controls-timeline{
+  display:none;
+}
+audio::-webkit-media-controls-panel{
+  justify-content:space-between;
+}
