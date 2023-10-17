@@ -8,7 +8,9 @@ export type BubbleTheme = {
   chatWindow?: ChatWindowTheme
   button?: ButtonTheme
   previewMessage?: PreviewMessageTheme
-  placement?: 'left' | 'right'
+  placement?: 'left' | 'right',
+  height?: string
+  width?: string
 }
 
 export type ChatWindowTheme = {

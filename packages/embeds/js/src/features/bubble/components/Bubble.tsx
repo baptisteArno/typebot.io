@@ -20,6 +20,8 @@ export type BubbleProps = BotProps &
     onOpen?: () => void
     onClose?: () => void
     onPreviewMessageClick?: () => void
+    height?: string
+    width?: string
   }
 
 export const Bubble = (props: BubbleProps) => {
@@ -148,7 +150,9 @@ export const Bubble = (props: BubbleProps) => {
       <div
         part="bot"
         style={{
-          height: 'calc(100% - 80px)',
+          height: props.height ?? 'calc(100% - 80px)',
+          width: props.width ?? '100%!important',
+          'max-height': 'calc(100% - 80px)',
           transition:
             'transform 200ms cubic-bezier(0, 1.2, 1, 1), opacity 150ms ease-out',
           'transform-origin':
@@ -159,7 +163,7 @@ export const Bubble = (props: BubbleProps) => {
           'z-index': 42424242,
         }}
         class={
-          'fixed rounded-lg w-full sm:w-[400px] max-h-[704px]' +
+          'fixed rounded-lg sm:w-[400px] max-h-[704px]' +
           (isBotOpened() ? ' opacity-1' : ' opacity-0 pointer-events-none') +
           (props.theme?.button?.size === 'large'
             ? ' bottom-24'
