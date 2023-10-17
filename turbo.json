@@ -44,11 +44,7 @@
       "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     },
-    "telemetry:sendTotalResultsDigest": {
-      "dependsOn": ["@typebot.io/prisma#db:generate"],
-      "cache": false
-    },
-    "sendAlertEmails": {
+    "checkAndReportChatsUsage": {
       "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     }

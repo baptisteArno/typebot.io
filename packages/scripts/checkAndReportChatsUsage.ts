@@ -6,7 +6,6 @@ import {
 } from '@typebot.io/prisma'
 import { isDefined, isEmpty } from '@typebot.io/lib'
 import { getChatsLimit } from '@typebot.io/lib/billing/getChatsLimit'
-import { getUsage } from '@typebot.io/lib/api/getUsage'
 import { promptAndSetEnvironment } from './utils'
 import { Workspace } from '@typebot.io/schemas'
 import { sendAlmostReachedChatsLimitEmail } from '@typebot.io/emails/src/emails/AlmostReachedChatsLimitEmail'
@@ -17,47 +16,6 @@ import { createId } from '@paralleldrive/cuid2'
 
 const prisma = new PrismaClient()
 const LIMIT_EMAIL_TRIGGER_PERCENT = 0.75
-
-type WorkspaceForDigest = Pick<
-  Workspace,
-  | 'id'
-  | 'plan'
-  | 'name'
-  | 'customChatsLimit'
-  | 'isQuarantined'
-  | 'chatsLimitFirstEmailSentAt'
-  | 'chatsLimitSecondEmailSentAt'
-> & {
-  members: (Pick<MemberInWorkspace, 'role'> & {
-    user: { id: string; email: string | null }
-  })[]
-}
-
-type ResultWithWorkspace = {
-  userId: string
-  workspace: {
-    id: string
-    typebots: {
-      id: string
-    }[]
-    members: {
-      user: {
-        id: string
-        email: string | null
-      }
-      role: WorkspaceRole
-    }[]
-    additionalStorageIndex: number
-    customChatsLimit: number | null
-    customStorageLimit: number | null
-    plan: Plan
-    isQuarantined: boolean
-    stripeId: string | null
-  }
-  typebotId: string
-  totalResultsYesterday: number
-  isFirstOfKind: true | undefined
-}
 
 export const checkAndReportChatsUsage = async () => {
   await promptAndSetEnvironment('production')
@@ -127,61 +85,38 @@ export const checkAndReportChatsUsage = async () => {
           userId: member.user.id,
           workspace: workspace,
           typebotId: result.typebotId,
-          totalResultsYesterday: result._count._all,
+          totalResultsLastHour: result._count._all,
           isFirstOfKind: memberIndex === 0 ? (true as const) : undefined,
         }))
     })
     .filter(isDefined)
 
-  console.log('Check limits...')
+  if (isEmpty(process.env.STRIPE_SECRET_KEY))
+    throw new Error('Missing STRIPE_SECRET_KEY env variable')
 
-  const events = await sendAlertIfLimitReached(
-    resultsWithWorkspaces
-      .filter((result) => result.isFirstOfKind)
-      .map((result) => result.workspace)
-  )
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2022-11-15',
+  })
 
-  await reportUsageToStripe(resultsWithWorkspaces)
+  const quarantineEvents: TelemetryEvent[] = []
 
-  const newResultsCollectedEvents = resultsWithWorkspaces.map(
-    (result) =>
-      ({
-        name: 'New results collected',
-        userId: result.userId,
-        workspaceId: result.workspace.id,
-        typebotId: result.typebotId,
-        data: {
-          total: result.totalResultsYesterday,
-          isFirstOfKind: result.isFirstOfKind,
-        },
-      } satisfies TelemetryEvent)
-  )
-
-  console.log(
-    `Send ${newResultsCollectedEvents.length} new results events and ${events.length} auto quarantine events...`
-  )
-
-  await sendTelemetryEvents(events.concat(newResultsCollectedEvents))
-}
-
-const sendAlertIfLimitReached = async (
-  workspaces: WorkspaceForDigest[]
-): Promise<TelemetryEvent[]> => {
-  const events: TelemetryEvent[] = []
-  const taggedWorkspaces: string[] = []
-  for (const workspace of workspaces) {
-    if (taggedWorkspaces.includes(workspace.id) || workspace.isQuarantined)
-      continue
-    taggedWorkspaces.push(workspace.id)
-    const { totalChatsUsed } = await getUsage(prisma)(workspace.id)
-    const chatsLimit = getChatsLimit(workspace)
+  for (const result of resultsWithWorkspaces.filter(
+    (result) => result.isFirstOfKind
+  )) {
+    if (result.workspace.isQuarantined) continue
+    const chatsLimit = getChatsLimit(result.workspace)
+    const subscription = await getSubscription(result.workspace, { stripe })
+    const { totalChatsUsed } = await getUsage(prisma)({
+      workspaceId: result.workspace.id,
+      subscription,
+    })
     if (
       chatsLimit > 0 &&
       totalChatsUsed >= chatsLimit * LIMIT_EMAIL_TRIGGER_PERCENT &&
       totalChatsUsed < chatsLimit &&
-      !workspace.chatsLimitFirstEmailSentAt
+      !result.workspace.chatsLimitFirstEmailSentAt
     ) {
-      const to = workspace.members
+      const to = result.workspace.members
         .filter((member) => member.role === WorkspaceRole.ADMIN)
         .map((member) => member.user.email)
         .filter(isDefined)
@@ -193,10 +128,10 @@ const sendAlertIfLimitReached = async (
           to,
           usagePercent: Math.round((totalChatsUsed / chatsLimit) * 100),
           chatsLimit,
-          workspaceName: workspace.name,
+          workspaceName: result.workspace.name,
         })
         await prisma.workspace.updateMany({
-          where: { id: workspace.id },
+          where: { id: result.workspace.id },
           data: { chatsLimitFirstEmailSentAt: new Date() },
         })
       } catch (err) {
@@ -204,21 +139,56 @@ const sendAlertIfLimitReached = async (
       }
     }
 
-    if (totalChatsUsed > chatsLimit * 1.5 && workspace.plan === Plan.FREE) {
-      console.log(`Automatically quarantine workspace ${workspace.id}...`)
+    const isUsageBasedSubscription = isDefined(
+      subscription?.items.data.find(
+        (item) =>
+          item.price.id === process.env.STRIPE_STARTER_PRICE_ID ||
+          item.price.id === process.env.STRIPE_PRO_PRICE_ID
+      )
+    )
+
+    if (
+      isUsageBasedSubscription &&
+      subscription &&
+      (result.workspace.plan === 'STARTER' || result.workspace.plan === 'PRO')
+    ) {
+      if (result.workspace.plan === 'STARTER' && totalChatsUsed >= 4000) {
+        console.log(
+          'Workspace has more than 4000 chats, automatically upgrading to PRO plan'
+        )
+        const newSubscription = await autoUpgradeToPro(subscription, {
+          stripe,
+          workspaceId: result.workspace.id,
+        })
+        await reportUsageToStripe(totalChatsUsed, {
+          stripe,
+          subscription: newSubscription,
+        })
+      } else {
+        await reportUsageToStripe(totalChatsUsed, { stripe, subscription })
+      }
+    }
+
+    if (
+      totalChatsUsed > chatsLimit * 1.5 &&
+      result.workspace.plan === Plan.FREE
+    ) {
+      console.log(
+        `Automatically quarantine workspace ${result.workspace.id}...`
+      )
       await prisma.workspace.updateMany({
-        where: { id: workspace.id },
+        where: { id: result.workspace.id },
         data: { isQuarantined: true },
       })
-      events.push(
-        ...workspace.members
+      quarantineEvents.push(
+        ...result.workspace.members
           .filter((member) => member.role === WorkspaceRole.ADMIN)
           .map(
             (member) =>
               ({
                 name: 'Workspace automatically quarantined',
                 userId: member.user.id,
-                workspaceId: workspace.id,
+                workspaceId: result.workspace.id,
                 data: {
                   totalChatsUsed,
                   chatsLimit,
@@ -228,70 +198,174 @@ const sendAlertIfLimitReached = async (
       )
     }
   }
-  return events
+
+  const newResultsCollectedEvents = resultsWithWorkspaces.map(
+    (result) =>
+      ({
+        name: 'New results collected',
+        userId: result.userId,
+        workspaceId: result.workspace.id,
+        typebotId: result.typebotId,
+        data: {
+          total: result.totalResultsLastHour,
+          isFirstOfKind: result.isFirstOfKind,
+        },
+      } satisfies TelemetryEvent)
+  )
+
+  console.log(
+    `Send ${newResultsCollectedEvents.length} new results events and ${quarantineEvents.length} auto quarantine events...`
+  )
+
+  await sendTelemetryEvents(quarantineEvents.concat(newResultsCollectedEvents))
+}
+
+const getSubscription = async (
+  workspace: Pick<Workspace, 'stripeId' | 'plan'>,
+  { stripe }: { stripe: Stripe }
+) => {
+  if (
+    !workspace.stripeId ||
+    (workspace.plan !== 'STARTER' && workspace.plan !== 'PRO')
+  )
+    return
+  const subscriptions = await stripe.subscriptions.list({
+    customer: workspace.stripeId,
+  })
+
+  const currentSubscription = subscriptions.data
+    .filter((sub) => ['past_due', 'active'].includes(sub.status))
+    .sort((a, b) => a.created - b.created)
+    .shift()
+
+  return currentSubscription
 }
 
 const reportUsageToStripe = async (
-  resultsWithWorkspaces: (Pick<ResultWithWorkspace, 'totalResultsYesterday'> & {
-    workspace: Pick<
-      ResultWithWorkspace['workspace'],
-      'id' | 'plan' | 'stripeId'
-    >
-  })[]
+  totalResultsLastHour: number,
+  {
+    stripe,
+    subscription,
+  }: { stripe: Stripe; subscription: Stripe.Subscription }
 ) => {
-  if (isEmpty(process.env.STRIPE_SECRET_KEY))
-    throw new Error('Missing STRIPE_SECRET_KEY env variable')
+  if (
+    !process.env.STRIPE_STARTER_CHATS_PRICE_ID ||
+    !process.env.STRIPE_PRO_CHATS_PRICE_ID
+  )
+    throw new Error(
+      'Missing STRIPE_STARTER_CHATS_PRICE_ID or STRIPE_PRO_CHATS_PRICE_ID env variable'
+    )
+  const subscriptionItem = subscription.items.data.find(
+    (item) =>
+      item.price.id === process.env.STRIPE_STARTER_CHATS_PRICE_ID ||
+      item.price.id === process.env.STRIPE_PRO_CHATS_PRICE_ID
+  )
 
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: '2022-11-15',
-  })
+  if (!subscriptionItem)
+    throw new Error(`Could not find subscription item for workspace`)
 
-  for (const result of resultsWithWorkspaces.filter(
-    (result) =>
-      result.workspace.plan === 'STARTER' || result.workspace.plan === 'PRO'
-  )) {
-    if (!result.workspace.stripeId)
-      throw new Error(
-        `Found paid workspace without a stripeId: ${result.workspace.stripeId}`
-      )
-    const subscriptions = await stripe.subscriptions.list({
-      customer: result.workspace.stripeId,
+  const idempotencyKey = createId()
+
+  return stripe.subscriptionItems.createUsageRecord(
+    subscriptionItem.id,
+    {
+      quantity: totalResultsLastHour,
+      timestamp: 'now',
+    },
+    {
+      idempotencyKey,
+    }
+  )
+}
+
+const getUsage =
+  (prisma: PrismaClient) =>
+  async ({
+    workspaceId,
+    subscription,
+  }: {
+    workspaceId: string
+    subscription: Stripe.Subscription | undefined
+  }) => {
+    const typebots = await prisma.typebot.findMany({
+      where: {
+        workspaceId,
+      },
+      select: {
+        id: true,
+      },
     })
 
-    const currentSubscription = subscriptions.data
-      .filter((sub) => ['past_due', 'active'].includes(sub.status))
-      .sort((a, b) => a.created - b.created)
-      .shift()
+    const now = new Date()
+    const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
 
-    if (!currentSubscription)
-      throw new Error(
-        `Found paid workspace without a subscription: ${result.workspace.stripeId}`
-      )
+    const totalChatsUsed = await prisma.result.count({
+      where: {
+        typebotId: { in: typebots.map((typebot) => typebot.id) },
+        hasStarted: true,
+        createdAt: {
+          gte: subscription
+            ? new Date(subscription.current_period_start * 1000)
+            : firstDayOfMonth,
+        },
+      },
+    })
 
-    const subscriptionItem = currentSubscription.items.data.find(
-      (item) =>
-        item.price.id === process.env.STRIPE_STARTER_CHATS_PRICE_ID ||
-        item.price.id === process.env.STRIPE_PRO_CHATS_PRICE_ID
+    return {
+      totalChatsUsed,
+    }
+  }
+
+const autoUpgradeToPro = async (
+  subscription: Stripe.Subscription,
+  { stripe, workspaceId }: { stripe: Stripe; workspaceId: string }
+) => {
+  if (
+    !process.env.STRIPE_STARTER_CHATS_PRICE_ID ||
+    !process.env.STRIPE_PRO_CHATS_PRICE_ID ||
+    !process.env.STRIPE_PRO_PRICE_ID ||
+    !process.env.STRIPE_STARTER_PRICE_ID
+  )
+    throw new Error(
+      'Missing STRIPE_STARTER_CHATS_PRICE_ID or STRIPE_PRO_CHATS_PRICE_ID env variable'
     )
+  const currentPlanItemId = subscription?.items.data.find((item) =>
+    [
+      process.env.STRIPE_PRO_PRICE_ID,
+      process.env.STRIPE_STARTER_PRICE_ID,
+    ].includes(item.price.id)
+  )?.id
 
-    if (!subscriptionItem)
-      throw new Error(
-        `Could not find subscription item for workspace ${result.workspace.id}`
-      )
+  if (!currentPlanItemId)
+    throw new Error(`Could not find current plan item ID for workspace`)
 
-    const idempotencyKey = createId()
-
-    await stripe.subscriptionItems.createUsageRecord(
-      subscriptionItem.id,
+  const newSubscription = stripe.subscriptions.update(subscription.id, {
+    items: [
       {
-        quantity: result.totalResultsYesterday,
-        timestamp: 'now',
+        id: currentPlanItemId,
+        price: process.env.STRIPE_PRO_PRICE_ID,
+        quantity: 1,
       },
       {
-        idempotencyKey,
-      }
-    )
-  }
+        id: subscription.items.data.find(
+          (item) =>
+            item.price.id === process.env.STRIPE_STARTER_CHATS_PRICE_ID ||
+            item.price.id === process.env.STRIPE_PRO_CHATS_PRICE_ID
+        )?.id,
+        price: process.env.STRIPE_PRO_CHATS_PRICE_ID,
+      },
+    ],
+    proration_behavior: 'always_invoice',
+  })
+
+  await prisma.workspace.update({
+    where: { id: workspaceId },
+    data: {
+      plan: 'PRO',
+    },
+  })
+
+  return newSubscription
 }
 
 checkAndReportChatsUsage().then()

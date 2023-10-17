@@ -12,7 +12,6 @@
     "db:setCustomPlan": "tsx setCustomPlan.ts",
     "db:bulkUpdate": "tsx bulkUpdate.ts",
     "db:fixTypebots": "tsx fixTypebots.ts",
-    "telemetry:sendTotalResultsDigest": "tsx sendTotalResultsDigest.ts",
     "checkAndReportChatsUsage": "tsx checkAndReportChatsUsage.ts",
     "inspectUser": "tsx inspectUser.ts",
     "checkSubscriptionsStatus": "tsx checkSubscriptionsStatus.ts",
