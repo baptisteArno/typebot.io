@@ -1,7 +1,6 @@
 import { PrismaClient } from '@typebot.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 import got, { HTTPError } from 'got'
-import { readFileSync } from 'fs'
 
 const importContactToBrevo = async () => {
   await promptAndSetEnvironment()
@@ -14,25 +13,44 @@ const importContactToBrevo = async () => {
     console.log(e.params)
     console.log(e.duration, 'ms')
   })
-  const users = JSON.parse(readFileSync('users.json').toString()) as {
-    email: string
-    name: string
-  }[]
-  console.log('Inserting users', users.length)
+
+  const workspaces = await prisma.workspace.findMany({
+    where: {
+      plan: { in: ['STARTER', 'PRO'] },
+      stripeId: { not: null },
+    },
+    select: {
+      id: true,
+      members: {
+        where: {
+          role: 'ADMIN',
+        },
+        select: {
+          user: {
+            select: {
+              email: true,
+            },
+          },
+        },
+      },
+    },
+  })
+
+  console.log('Inserting users', workspaces.flatMap((w) => w.members).length)
+
   try {
     await got.post('https://api.brevo.com/v3/contacts/import', {
       headers: {
         'api-key': process.env.BREVO_API_KEY,
       },
       json: {
-        listIds: [16],
+        listIds: [17],
         updateExistingContacts: true,
-        jsonBody: users.map((user) => ({
-          email: user.email,
-          attributes: {
-            FIRSTNAME: user.name ? user.name.split(' ')[0] : undefined,
-          },
-        })),
+        jsonBody: workspaces
+          .flatMap((workspace) => workspace.members.map((m) => m.user.email))
+          .map((email) => ({
+            email,
+          })),
       },
     })
   } catch (err) {
