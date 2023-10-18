@@ -171,7 +171,12 @@ export const Graph = ({
   }) => {
     const { x: mouseX, y } = mousePosition ?? getCenterOfGraph()
     const mouseY = y - headerHeight
-    let newScale = scale ?? graphPosition.scale + (delta ?? 0)
+    let newScale = graphPosition.scale + (delta ?? 0)
+    if (scale) {
+      const scaleDiff = scale - graphPosition.scale
+      newScale += Math.min(zoomButtonsScaleBlock, Math.abs(scaleDiff)) * Math.sign(scaleDiff)
+    }
+
     if (
       (newScale >= maxScale && graphPosition.scale === maxScale) ||
       (newScale <= minScale && graphPosition.scale === minScale)
