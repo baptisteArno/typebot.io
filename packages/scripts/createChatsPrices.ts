@@ -17,7 +17,11 @@ const createChatsPrices = async () => {
   await stripe.prices.create({
     currency: 'usd',
     billing_scheme: 'tiered',
-    recurring: { interval: 'month', usage_type: 'metered' },
+    recurring: {
+      interval: 'month',
+      usage_type: 'metered',
+      aggregate_usage: 'last_during_period',
+    },
     tiers: starterChatTiers,
     tiers_mode: 'volume',
     tax_behavior: 'exclusive',
@@ -33,7 +37,11 @@ const createChatsPrices = async () => {
   await stripe.prices.create({
     currency: 'usd',
     billing_scheme: 'tiered',
-    recurring: { interval: 'month', usage_type: 'metered' },
+    recurring: {
+      interval: 'month',
+      usage_type: 'metered',
+      aggregate_usage: 'last_during_period',
+    },
     tiers: proChatTiers,
     tiers_mode: 'volume',
     tax_behavior: 'exclusive',

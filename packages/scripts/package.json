@@ -17,7 +17,8 @@
     "checkSubscriptionsStatus": "tsx checkSubscriptionsStatus.ts",
     "createChatsPrices": "tsx createChatsPrices.ts",
     "migrateSubscriptionsToUsageBased": "tsx migrateSubscriptionsToUsageBased.ts",
-    "importContactToBrevo": "tsx importContactToBrevo.ts"
+    "importContactToBrevo": "tsx importContactToBrevo.ts",
+    "getUsage": "tsx getUsage.ts"
   },
   "devDependencies": {
     "@typebot.io/emails": "workspace:*",
