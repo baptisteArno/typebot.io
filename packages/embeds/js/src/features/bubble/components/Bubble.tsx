@@ -152,7 +152,6 @@ export const Bubble = (props: BubbleProps) => {
         style={{
           height: props.height ?? 'calc(100% - 80px)',
           width: props.width ?? '100%!important',
-          'max-height': 'calc(100% - 80px)',
           transition:
             'transform 200ms cubic-bezier(0, 1.2, 1, 1), opacity 150ms ease-out',
           'transform-origin':
