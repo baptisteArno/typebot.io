@@ -67,7 +67,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
   useEventListener('wheel', handleMouseWheel, ref.current)
   return (
     <Portal>
-      <PopoverContent onMouseDown={handleMouseDown} pos="relative">
+      <PopoverContent onMouseDown={handleMouseDown} pos="relative" p={props.block.type===LogicBlockType.SCRIPT ? 3 : 0}>
         <PopoverArrow bgColor={arrowColor} />
         <PopoverBody
           py="3"
@@ -75,6 +75,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
           maxH="400px"
           ref={ref}
           shadow="lg"
+          display={props.block.type===LogicBlockType.SCRIPT ? 'contents':'unset'}
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
         >

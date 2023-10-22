@@ -35,6 +35,15 @@ importers:
       '@chakra-ui/theme-tools':
         specifier: ^2.0.18
         version: 2.0.18(@chakra-ui/styled-system@2.9.1)
+      '@codemirror/lang-javascript':
+        specifier: ^6.2.1
+        version: 6.2.1
+      '@codemirror/lint':
+        specifier: ^6.4.2
+        version: 6.4.2
+      '@codemirror/view':
+        specifier: ^6.21.3
+        version: 6.21.3
       '@dnd-kit/core':
         specifier: 6.0.8
         version: 6.0.8(react-dom@18.2.0)(react@18.2.0)
@@ -161,6 +170,9 @@ importers:
       emojilib:
         specifier: 3.0.10
         version: 3.0.10
+      eslint-linter-browserify:
+        specifier: 8.52.0
+        version: 8.52.0
       focus-visible:
         specifier: 5.2.0
         version: 5.2.0
@@ -14209,6 +14221,10 @@ packages:
       - eslint-import-resolver-node
       - eslint-import-resolver-webpack
       - supports-color
+    dev: false
+
+  /eslint-linter-browserify@8.52.0:
+    resolution: {integrity: sha512-/nV6aK77pG9iIKPt0uG5RC9YUzbOkf2Q6g4Et0szos8vL7Q/4j9AgpW3Z7527AxGF3CiN9IBomALgbPhIWSWjw==}
     dev: false
 
   /eslint-module-utils@2.8.0(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1)(eslint@8.44.0):
