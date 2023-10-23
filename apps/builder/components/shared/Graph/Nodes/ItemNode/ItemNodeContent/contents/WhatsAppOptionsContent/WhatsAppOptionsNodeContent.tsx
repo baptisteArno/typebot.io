@@ -61,24 +61,34 @@ export const WhatsAppOptionsNodeContent = ({
     )
   }
 
+  const handleEdit = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (e.button === 0) {
+      const target = e.target as HTMLInputElement
+      target.focus()
+    }
+  }
+
   return (
-    <Flex px={4} py={2} justify="center" w="90%" pos="relative">
+    <Flex justify="center" w="100%" pos="relative">
       <Editable
         ref={editableRef}
-        flex="1"
         startWithEditView={isNotDefined(item.content)}
         value={itemValue}
         onChange={setItemValue}
         onSubmit={handleInputSubmit}
         onKeyDownCapture={handleKeyPress}
-        maxW="180px"
+        flex="2"
+        w="full"
+        onClick={(e) => handleEdit(e)}
       >
         <EditablePreview
           w="full"
           color={item.content !== 'Clique para editar' ? 'inherit' : 'gray.500'}
           cursor="pointer"
+          px={4}
+          py={2}
         />
-        <EditableInput />
+        <EditableInput px={4} py={2} />
       </Editable>
       <Fade
         in={isMouseOver}
