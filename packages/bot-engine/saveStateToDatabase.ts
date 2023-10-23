@@ -5,6 +5,7 @@ import { updateSession } from './queries/updateSession'
 import { formatLogDetails } from './logs/helpers/formatLogDetails'
 import { createSession } from './queries/createSession'
 import { deleteSession } from './queries/deleteSession'
+import * as Sentry from '@sentry/nextjs'
 
 type Props = {
   session: Pick<ChatSession, 'state'> & { id?: string }
@@ -53,13 +54,18 @@ export const saveStateToDatabase = async ({
   })
 
   if (logs && logs.length > 0)
-    await saveLogs(
-      logs.map((log) => ({
-        ...log,
-        resultId,
-        details: formatLogDetails(log.details),
-      }))
-    )
+    try {
+      await saveLogs(
+        logs.map((log) => ({
+          ...log,
+          resultId,
+          details: formatLogDetails(log.details),
+        }))
+      )
+    } catch (e) {
+      console.error('Failed to save logs', e)
+      Sentry.captureException(e)
+    }
 
   return session
 }
