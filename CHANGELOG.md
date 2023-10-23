@@ -1,6 +1,41 @@
 # Changelog
 
+<a name="2.18.3"></a>
+
+## 2.18.3 (2023-10-23)
+
+## Breaking change
+
+Billing has been upgraded to be usage-based. Stripe ENV variables have been simplified. Check the configuration for more information
+
+### Added
+
+- 👷‍♂️ Add convenient script for migrating Stripe prices [[11186d8](https://github.com/baptisteArno/typebot.io/commit/11186d8d297570270c4c0be17e2315041f8f3836)]
+- 👷‍♂️ Improve getUsage accuracy in check cron job [[1cc4ccf](https://github.com/baptisteArno/typebot.io/commit/1cc4ccfcfa2b9876b02ca554f0d8aa1f61296596)]
+
+### Changed
+
+- 🚸 (buttons) Trim items content when parsing reply for better consistency [[621fcd5](https://github.com/baptisteArno/typebot.io/commit/621fcd59f10e56e21aa01b84f03da395f711e535)]
+- ♻️ Update import contact to brevo script [[be9daee](https://github.com/baptisteArno/typebot.io/commit/be9daee63ea38533667680fe52d70abefc345f2c)]
+- ⚡ (billing) Automatic usage-based billing ([#924](https://github.com/baptisteArno/typebot.io/issues/924)) [[797751b](https://github.com/baptisteArno/typebot.io/commit/797751b4185c871b79afef9827f4f9b9aae83366)]
+
+### Fixed
+
+- 🐛 Fixed pinch zooming mouse issue (with ctrl key) ([#940](https://github.com/baptisteArno/typebot.io/issues/940)) [[2c15662](https://github.com/baptisteArno/typebot.io/commit/2c15662ef2a21fdc40a4eaff4acb79394f1db166)]
+- 🐛 Freeze body overflow when opening a Popup embed ([#937](https://github.com/baptisteArno/typebot.io/issues/937)) [[df3a17e](https://github.com/baptisteArno/typebot.io/commit/df3a17efa08696595bf0e16e4aa2b2187115638c)]
+- 💚 Fix send email in CI &quot;React is not defined&quot; [[3e06d89](https://github.com/baptisteArno/typebot.io/commit/3e06d89873cd8177a54ffe2bcf75d7d3705ab854)]
+- 🐛 (results) Lower the max limit in getResults endpoint to avoid payload size error [[885dcec](https://github.com/baptisteArno/typebot.io/commit/885dcecd8db922ff98c0676c44d9a25e7f7cd8d5)]
+- 🚑 (billing) Fix chats pricing tiers incremental flat amou… [[6b0c263](https://github.com/baptisteArno/typebot.io/commit/6b0c263f885c091e81731230e012d33e223f0cfa)]
+- 🐛 (webhook) Fix webhook response data key number parsing [[1d0aab7](https://github.com/baptisteArno/typebot.io/commit/1d0aab71f91e82bba77f73669828aae403f66d00)]
+
+### Miscellaneous
+
+- 🩹 Surround logs saving in a try catch block [[b301174](https://github.com/baptisteArno/typebot.io/commit/b3011741066e283013ffba3cb6eded6a46943d5e)]
+- Fix audio content overflow in windows. ([#944](https://github.com/baptisteArno/typebot.io/issues/944)) [[eba52a5](https://github.com/baptisteArno/typebot.io/commit/eba52a5397cd2712fff71b20212283d60466943e)]
+- 📝 Add bounties info in README [[a8c2deb](https://github.com/baptisteArno/typebot.io/commit/a8c2deb258589d458ed9d16cffb3e413612ba89d)]
+
 <a name="2.18.2"></a>
+
 ## 2.18.2 (2023-10-13)
 
 ### Changed
@@ -20,8 +55,8 @@
 - 🐳 Force Next.js apps local hostname [[3ca5384](https://github.com/baptisteArno/typebot.io/commit/3ca5384e7f1e4818051978f77029c6ca29818bc6)]
 - 📝 (openai) Add &quot;Multiple OpenAI blocks&quot; video section [[e071c81](https://github.com/baptisteArno/typebot.io/commit/e071c810aeb790d111636d513788324d0aec065b)]
 
-
 <a name="2.18.1"></a>
+
 ## 2.18.1 (2023-10-10)
 
 ### Added
@@ -72,7 +107,6 @@
 - 📝 (vercel) Add a note on function maxDuration for Hobby plans [[4d475ff](https://github.com/baptisteArno/typebot.io/commit/4d475ff009a62202e18f4db2de21d9b5ef54d6ac)]
 - 📝 (whatsapp) Re-organize whatsapp overview doc [[a102d45](https://github.com/baptisteArno/typebot.io/commit/a102d45da1f195b658519fc5bb89d219caf5fd94)]
 - 🐳 Bump Postgres version in official docker compose file [[876625d](https://github.com/baptisteArno/typebot.io/commit/876625deb83c3061896dcac03cdbb82854c8db5c)]
-
 
 <a name="2.18.0"></a>
 
