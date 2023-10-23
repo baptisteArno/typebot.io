@@ -18,7 +18,9 @@ export const parseButtonsReply =
         (acc, item) => {
           if (
             item.content &&
-            acc.strippedInput.toLowerCase().includes(item.content.toLowerCase())
+            acc.strippedInput
+              .toLowerCase()
+              .includes(item.content.trim().toLowerCase())
           )
             return {
               strippedInput: acc.strippedInput.replace(item.content ?? '', ''),
