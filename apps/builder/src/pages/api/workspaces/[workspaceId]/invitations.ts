@@ -36,9 +36,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           where: { workspaceId: workspace.id },
         }),
       ])
+    const seatsLimit = getSeatsLimit(workspace)
     if (
-      getSeatsLimit(workspace) <=
-      existingMembersCount + existingInvitationsCount
+      seatsLimit !== 'inf' &&
+      seatsLimit <= existingMembersCount + existingInvitationsCount
     )
       return res.status(400).send('Seats limit reached')
     if (existingUser) {

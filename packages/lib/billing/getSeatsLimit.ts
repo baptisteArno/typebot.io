@@ -6,7 +6,7 @@ export const getSeatsLimit = ({
   plan,
   customSeatsLimit,
 }: Pick<Workspace, 'plan' | 'customSeatsLimit'>) => {
-  if (plan === Plan.UNLIMITED) return -1
-  if (plan === Plan.CUSTOM) return customSeatsLimit ? customSeatsLimit : -1
+  if (plan === Plan.UNLIMITED) return 'inf'
+  if (plan === Plan.CUSTOM) return customSeatsLimit ? customSeatsLimit : 'inf'
   return seatsLimits[plan]
 }

@@ -92,9 +92,12 @@ export const MembersList = () => {
 
   const seatsLimit = workspace ? getSeatsLimit(workspace) : undefined
 
-  const canInviteNewMember = workspace
-    ? currentMembersCount < (seatsLimit as number)
-    : false
+  const canInviteNewMember =
+    seatsLimit === 'inf'
+      ? true
+      : seatsLimit
+      ? currentMembersCount < seatsLimit
+      : false
 
   return (
     <Stack w="full" spacing={3}>

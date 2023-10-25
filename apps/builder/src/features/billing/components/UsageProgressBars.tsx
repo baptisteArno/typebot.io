@@ -32,9 +32,10 @@ export const UsageProgressBars = ({ workspace }: Props) => {
 
   const workspaceChatsLimit = getChatsLimit(workspace)
 
-  const chatsPercentage = Math.round(
-    (totalChatsUsed / workspaceChatsLimit) * 100
-  )
+  const chatsPercentage =
+    workspaceChatsLimit === 'inf'
+      ? 0
+      : Math.round((totalChatsUsed / workspaceChatsLimit) * 100)
 
   return (
     <Stack spacing={6}>
@@ -79,7 +80,7 @@ export const UsageProgressBars = ({ workspace }: Props) => {
             </Skeleton>
             <Text>
               /{' '}
-              {workspaceChatsLimit === -1
+              {workspaceChatsLimit === 'inf'
                 ? scopedT('unlimited')
                 : parseNumberWithCommas(workspaceChatsLimit)}
             </Text>

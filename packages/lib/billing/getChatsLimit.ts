@@ -13,7 +13,7 @@ export const getChatsLimit = ({
     plan === Plan.LIFETIME ||
     plan === Plan.OFFERED
   )
-    return -1
-  if (plan === Plan.CUSTOM) return customChatsLimit ?? -1
+    return 'inf'
+  if (plan === Plan.CUSTOM) return customChatsLimit ?? 'inf'
   return chatsLimits[plan]
 }

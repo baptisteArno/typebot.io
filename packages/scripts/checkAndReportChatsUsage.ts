@@ -110,6 +110,7 @@ export const checkAndReportChatsUsage = async () => {
       workspaceId: result.workspace.id,
       subscription,
     })
+    if (chatsLimit === 'inf') continue
     if (
       chatsLimit > 0 &&
       totalChatsUsed >= chatsLimit * LIMIT_EMAIL_TRIGGER_PERCENT &&
