@@ -1,5 +1,19 @@
 # Changelog
 
+<a name="2.18.4"></a>
+## 2.18.4 (2023-10-25)
+
+### Fixed
+
+- 🚑 Fix can invite new members in workspace bool [[53558dc](https://github.com/baptisteArno/typebot.io/commit/53558dc3036d9839c07f99ab511c707f8a6fb24a)]
+- 🐛 (numberInput) Fix input clearing out on dot or comma press [[4b248d5](https://github.com/baptisteArno/typebot.io/commit/4b248d554f54aafef105c1dcb842e3c5e1b28d5f)]
+- ✏️ Fix popup blocked toast typo [[1ff5881](https://github.com/baptisteArno/typebot.io/commit/1ff58818a9b7f90eac70680b3af07990c42363e5)]
+
+### Miscellaneous
+
+- 🧑‍💻 (whatsapp) Improve whatsapp start log [[c2a08c4](https://github.com/baptisteArno/typebot.io/commit/c2a08c482efc30322b308880bb377e276f9cedfb)]
+
+
 <a name="2.18.3"></a>
 
 ## 2.18.3 (2023-10-23)
