@@ -62,7 +62,7 @@ If you face the issue `Node ran out of memory`, then you should increase the mem
 cd apps/builder
 pnpm start
 # You may have to set the port if it's already in use
-pnpm next start -p 3001
+pnpm start -p 3001
 ```
 
 2. Deploy the builder with PM2
@@ -70,7 +70,7 @@ pnpm next start -p 3001
 ```sh
 pm2 start --name=typebot pnpm -- start
 # or select a different port
-pm2 start --name=typebot pnpm -- next start -p 3001
+pm2 start --name=typebot pnpm -- start -p 3001
 ```
 
 ### Deploy the viewer
@@ -81,7 +81,7 @@ pm2 start --name=typebot pnpm -- next start -p 3001
 cd apps/viewer
 pnpm start
 # You may have to set the port if it's already in use
-pnpm next start -p 3002
+pnpm start -p 3002
 ```
 
 2. Deploy the viewer with PM2
@@ -89,7 +89,7 @@ pnpm next start -p 3002
 ```sh
 pm2 start --name=typebot pnpm -- start
 # or select a different port
-pm2 start --name=typebot pnpm -- next start -p 3002
+pm2 start --name=typebot pnpm -- start -p 3002
 ```
 
 ## Nginx configuration
