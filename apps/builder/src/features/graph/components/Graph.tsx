@@ -244,11 +244,9 @@ export const Graph = ({
         data-testid="graph"
         style={{
           transform,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          '-webkit-perspective': 1000,
-          '-webkit-backface-visibility': 'hidden',
-          '-webkit-transform-style': 'preserve-3d',
+          perspective: 1000,
+          backfaceVisibility: 'hidden',
+          transformStyle: 'preserve-3d',
         }}
         willChange="transform"
         transformOrigin="0px 0px 0px"
