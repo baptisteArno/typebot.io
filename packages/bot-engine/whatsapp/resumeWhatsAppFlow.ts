@@ -75,10 +75,10 @@ export const resumeWhatsAppFlow = async ({
           credentials: { ...credentials, id: credentialsId as string },
           contact,
         })
-      : undefined
+      : { error: 'workspaceId not found' }
 
-  if (!resumeResponse) {
-    console.error('Could not find or create session', sessionId)
+  if ('error' in resumeResponse) {
+    console.log('Chat not starting:', resumeResponse.error)
     return {
       message: 'Message received',
     }

@@ -31,7 +31,7 @@ export const startWhatsAppSession = async ({
   | (ChatReply & {
       newSessionState: SessionState
     })
-  | undefined
+  | { error: string }
 > => {
   const publicTypebotsWithWhatsAppEnabled =
     (await prisma.publicTypebot.findMany({
@@ -72,7 +72,10 @@ export const startWhatsAppSession = async ({
       (publicTypebot) => !publicTypebot.settings.whatsApp?.startCondition
     )
 
-  if (isNotDefined(publicTypebot)) return
+  if (isNotDefined(publicTypebot))
+    return botsWithWhatsAppEnabled.length > 0
+      ? { error: 'Message did not matched any condition' }
+      : { error: 'No public typebot with WhatsApp integration found' }
 
   const sessionExpiryTimeoutHours =
     publicTypebot.settings.whatsApp?.sessionExpiryTimeout ??
