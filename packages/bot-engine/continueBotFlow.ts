@@ -30,6 +30,7 @@ import { parseVariables } from './variables/parseVariables'
 import { updateVariablesInSession } from './variables/updateVariablesInSession'
 import { startBotFlow } from './startBotFlow'
 import { TRPCError } from '@trpc/server'
+import { parseNumber } from './blocks/inputs/number/parseNumber'
 
 type Params = {
   version: 1 | 2
@@ -344,9 +345,9 @@ const parseReply =
       }
       case InputBlockType.NUMBER: {
         if (!inputValue) return { status: 'fail' }
-        const isValid = validateNumber(inputValue)
+        const isValid = validateNumber(inputValue, block.options)
         if (!isValid) return { status: 'fail' }
-        return { status: 'success', reply: inputValue }
+        return { status: 'success', reply: parseNumber(inputValue) }
       }
       case InputBlockType.DATE: {
         if (!inputValue) return { status: 'fail' }
