@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/react",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "Convenient library to display typebots on your React app",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -37,6 +37,7 @@
     "eslint-config-custom": "workspace:*",
     "react": "18.2.0",
     "rollup": "3.26.2",
+    "rollup-plugin-dts": "^6.1.0",
     "rollup-plugin-typescript-paths": "1.4.0",
     "tslib": "2.6.0",
     "tsx": "3.12.7",

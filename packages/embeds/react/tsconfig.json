@@ -6,9 +6,6 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "declaration": true,
-    "declarationMap": true,
-    "outDir": "dist",
-    "emitDeclarationOnly": true
+    "outDir": "dist"
   }
 }

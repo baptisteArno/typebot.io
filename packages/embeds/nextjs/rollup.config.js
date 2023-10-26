@@ -4,6 +4,7 @@ import { babel } from '@rollup/plugin-babel'
 import typescript from '@rollup/plugin-typescript'
 import { typescriptPaths } from 'rollup-plugin-typescript-paths'
 import alias from '@rollup/plugin-alias'
+import { dts } from 'rollup-plugin-dts'
 
 const extensions = ['.ts', '.tsx']
 
@@ -33,6 +34,23 @@ const indexConfig = {
   ],
 }
 
-const configs = [indexConfig]
+const typesConfig = {
+  input: './src/index.ts',
+  output: [{ file: './dist/index.d.ts', format: 'es' }],
+  plugins: [
+    alias({
+      entries: [
+        { find: '@typebot.io/js', replacement: '../../js' },
+        {
+          find: '@/types',
+          replacement: '../types',
+        },
+      ],
+    }),
+    dts(),
+  ],
+}
+
+const configs = [indexConfig, typesConfig]
 
 export default configs
