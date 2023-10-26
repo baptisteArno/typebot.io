@@ -174,7 +174,9 @@ export const Graph = ({
     let newScale = graphPosition.scale + (delta ?? 0)
     if (scale) {
       const scaleDiff = scale - graphPosition.scale
-      newScale += Math.min(zoomButtonsScaleBlock, Math.abs(scaleDiff)) * Math.sign(scaleDiff)
+      newScale +=
+        Math.min(zoomButtonsScaleBlock, Math.abs(scaleDiff)) *
+        Math.sign(scaleDiff)
     }
 
     if (
@@ -242,6 +244,9 @@ export const Graph = ({
         data-testid="graph"
         style={{
           transform,
+          perspective: 1000,
+          backfaceVisibility: 'hidden',
+          transformStyle: 'preserve-3d',
         }}
         willChange="transform"
         transformOrigin="0px 0px 0px"
