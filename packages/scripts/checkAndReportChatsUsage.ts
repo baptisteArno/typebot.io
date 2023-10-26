@@ -1,9 +1,4 @@
-import {
-  MemberInWorkspace,
-  Plan,
-  PrismaClient,
-  WorkspaceRole,
-} from '@typebot.io/prisma'
+import { Plan, PrismaClient, WorkspaceRole } from '@typebot.io/prisma'
 import { isDefined, isEmpty } from '@typebot.io/lib'
 import { getChatsLimit } from '@typebot.io/lib/billing/getChatsLimit'
 import { promptAndSetEnvironment } from './utils'
@@ -73,24 +68,6 @@ export const checkAndReportChatsUsage = async () => {
     },
   })
 
-  const resultsWithWorkspaces = results
-    .flatMap((result) => {
-      const workspace = workspaces.find((workspace) =>
-        workspace.typebots.some((typebot) => typebot.id === result.typebotId)
-      )
-      if (!workspace) return
-      return workspace.members
-        .filter((member) => member.role !== WorkspaceRole.GUEST)
-        .map((member, memberIndex) => ({
-          userId: member.user.id,
-          workspace: workspace,
-          typebotId: result.typebotId,
-          totalResultsLastHour: result._count._all,
-          isFirstOfKind: memberIndex === 0 ? (true as const) : undefined,
-        }))
-    })
-    .filter(isDefined)
-
   if (isEmpty(process.env.STRIPE_SECRET_KEY))
     throw new Error('Missing STRIPE_SECRET_KEY env variable')
 
@@ -100,14 +77,12 @@ export const checkAndReportChatsUsage = async () => {
 
   const quarantineEvents: TelemetryEvent[] = []
 
-  for (const result of resultsWithWorkspaces.filter(
-    (result) => result.isFirstOfKind
-  )) {
-    if (result.workspace.isQuarantined) continue
-    const chatsLimit = getChatsLimit(result.workspace)
-    const subscription = await getSubscription(result.workspace, { stripe })
+  for (const workspace of workspaces) {
+    if (workspace.isQuarantined) continue
+    const chatsLimit = getChatsLimit(workspace)
+    const subscription = await getSubscription(workspace, { stripe })
     const { totalChatsUsed } = await getUsage(prisma)({
-      workspaceId: result.workspace.id,
+      workspaceId: workspace.id,
       subscription,
     })
     if (chatsLimit === 'inf') continue
@@ -115,9 +90,9 @@ export const checkAndReportChatsUsage = async () => {
       chatsLimit > 0 &&
       totalChatsUsed >= chatsLimit * LIMIT_EMAIL_TRIGGER_PERCENT &&
       totalChatsUsed < chatsLimit &&
-      !result.workspace.chatsLimitFirstEmailSentAt
+      !workspace.chatsLimitFirstEmailSentAt
     ) {
-      const to = result.workspace.members
+      const to = workspace.members
         .filter((member) => member.role === WorkspaceRole.ADMIN)
         .map((member) => member.user.email)
         .filter(isDefined)
@@ -129,10 +104,10 @@ export const checkAndReportChatsUsage = async () => {
           to,
           usagePercent: Math.round((totalChatsUsed / chatsLimit) * 100),
           chatsLimit,
-          workspaceName: result.workspace.name,
+          workspaceName: workspace.name,
         })
         await prisma.workspace.updateMany({
-          where: { id: result.workspace.id },
+          where: { id: workspace.id },
           data: { chatsLimitFirstEmailSentAt: new Date() },
         })
       } catch (err) {
@@ -151,15 +126,15 @@ export const checkAndReportChatsUsage = async () => {
     if (
       isUsageBasedSubscription &&
       subscription &&
-      (result.workspace.plan === 'STARTER' || result.workspace.plan === 'PRO')
+      (workspace.plan === 'STARTER' || workspace.plan === 'PRO')
     ) {
-      if (result.workspace.plan === 'STARTER' && totalChatsUsed >= 4000) {
+      if (workspace.plan === 'STARTER' && totalChatsUsed >= 4000) {
         console.log(
           'Workspace has more than 4000 chats, automatically upgrading to PRO plan'
         )
         const newSubscription = await autoUpgradeToPro(subscription, {
           stripe,
-          workspaceId: result.workspace.id,
+          workspaceId: workspace.id,
         })
         await reportUsageToStripe(totalChatsUsed, {
           stripe,
@@ -170,26 +145,21 @@ export const checkAndReportChatsUsage = async () => {
       }
     }
 
-    if (
-      totalChatsUsed > chatsLimit * 1.5 &&
-      result.workspace.plan === Plan.FREE
-    ) {
-      console.log(
-        `Automatically quarantine workspace ${result.workspace.id}...`
-      )
+    if (totalChatsUsed > chatsLimit * 1.5 && workspace.plan === Plan.FREE) {
+      console.log(`Automatically quarantine workspace ${workspace.id}...`)
       await prisma.workspace.updateMany({
-        where: { id: result.workspace.id },
+        where: { id: workspace.id },
         data: { isQuarantined: true },
       })
       quarantineEvents.push(
-        ...result.workspace.members
+        ...workspace.members
           .filter((member) => member.role === WorkspaceRole.ADMIN)
           .map(
             (member) =>
               ({
                 name: 'Workspace automatically quarantined',
                 userId: member.user.id,
-                workspaceId: result.workspace.id,
+                workspaceId: workspace.id,
                 data: {
                   totalChatsUsed,
                   chatsLimit,
@@ -199,6 +169,24 @@ export const checkAndReportChatsUsage = async () => {
       )
     }
   }
+
+  const resultsWithWorkspaces = results
+    .flatMap((result) => {
+      const workspace = workspaces.find((workspace) =>
+        workspace.typebots.some((typebot) => typebot.id === result.typebotId)
+      )
+      if (!workspace) return
+      return workspace.members
+        .filter((member) => member.role !== WorkspaceRole.GUEST)
+        .map((member, memberIndex) => ({
+          userId: member.user.id,
+          workspace: workspace,
+          typebotId: result.typebotId,
+          totalResultsLastHour: result._count._all,
+          isFirstOfKind: memberIndex === 0 ? (true as const) : undefined,
+        }))
+    })
+    .filter(isDefined)
 
   const newResultsCollectedEvents = resultsWithWorkspaces.map(
     (result) =>
