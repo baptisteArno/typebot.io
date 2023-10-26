@@ -53,7 +53,7 @@ export const SpecialDateComponent = (
     const dateAsString =
       date.getFullYear() +
       '-' +
-      getNumberWithTwoDigits(date.getMonth()) +
+      getNumberWithTwoDigits(date.getMonth() + 1) +
       '-' +
       getNumberWithTwoDigits(date.getDate()) +
       'T00:00:00'

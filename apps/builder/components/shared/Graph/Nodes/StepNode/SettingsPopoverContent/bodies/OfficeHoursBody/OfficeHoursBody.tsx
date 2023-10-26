@@ -91,7 +91,6 @@ export const OfficeHoursBody = ({ options, onOptionsChange }: Props) => {
   const [screen, setScreen] = useState<'SETTINGS' | 'CREATE-OFFICE-HOURS'>(
     'SETTINGS'
   )
-
   const [is24hours, setIs24Hours] = useState<boolean>(true)
   const [hasSpecialDates, setHasSpecialDates] = useState<boolean>(false)
   const [hasSameHour, setHasSameHour] = useState<boolean>(true)
@@ -305,14 +304,16 @@ export const OfficeHoursBody = ({ options, onOptionsChange }: Props) => {
       })
     }
 
-    const saved = (await toSave.id)
+    const saved = await (toSave.id
       ? service.updateOfficeHour(toSave as OfficeHoursFormType)
-      : service.createOfficeHour(toSave as OfficeHoursFormType)
+      : service.createOfficeHour(toSave as OfficeHoursFormType))
 
     await getOfficeHours()
     handleOfficeHourSelect(saved)
     setScreen('SETTINGS')
     setisEdited(true)
+
+    debugger
 
     return saved
   }
