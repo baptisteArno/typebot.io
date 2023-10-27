@@ -276,7 +276,11 @@ const posthogEnv = {
 const tolgeeEnv = {
   client: {
     NEXT_PUBLIC_TOLGEE_API_KEY: z.string().min(1).optional(),
-    NEXT_PUBLIC_TOLGEE_API_URL: z.string().url().optional(),
+    NEXT_PUBLIC_TOLGEE_API_URL: z
+      .string()
+      .url()
+      .optional()
+      .default('https://tolgee.server.baptistearno.com"'),
   },
   runtimeEnv: {
     NEXT_PUBLIC_TOLGEE_API_KEY: getRuntimeVariable(
