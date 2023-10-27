@@ -18,7 +18,7 @@ import { useRouter } from 'next/router'
 import React, { FormEvent, useState } from 'react'
 import { isDefined } from '@typebot.io/lib'
 import { taxIdTypes } from '../taxIdTypes'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 
 export type PreCheckoutModalProps = {
   selectedSubscription:
@@ -47,7 +47,7 @@ export const PreCheckoutModal = ({
   existingEmail,
   onClose,
 }: PreCheckoutModalProps) => {
-  const scopedT = useScopedI18n('billing.preCheckoutModal')
+  const { t } = useTranslate()
   const { ref } = useParentModal()
   const vatValueInputRef = React.useRef<HTMLInputElement>(null)
   const router = useRouter()
@@ -131,7 +131,7 @@ export const PreCheckoutModal = ({
           <Stack as="form" spacing="4" onSubmit={goToCheckout}>
             <TextInput
               isRequired
-              label={scopedT('companyInput.label')}
+              label={t('billing.preCheckoutModal.companyInput.label')}
               defaultValue={customer.company}
               onChange={updateCustomerCompany}
               withVariableButton={false}
@@ -140,17 +140,17 @@ export const PreCheckoutModal = ({
             <TextInput
               isRequired
               type="email"
-              label={scopedT('emailInput.label')}
+              label={t('billing.preCheckoutModal.emailInput.label')}
               defaultValue={customer.email}
               onChange={updateCustomerEmail}
               withVariableButton={false}
               debounceTimeout={0}
             />
             <FormControl>
-              <FormLabel>{scopedT('taxId.label')}</FormLabel>
+              <FormLabel>{t('billing.preCheckoutModal.taxId.label')}</FormLabel>
               <HStack>
                 <Select
-                  placeholder={scopedT('taxId.placeholder')}
+                  placeholder={t('billing.preCheckoutModal.taxId.placeholder')}
                   items={vatCodeLabels}
                   isPopoverMatchingInputWidth={false}
                   onSelect={updateVatType}
@@ -171,7 +171,7 @@ export const PreCheckoutModal = ({
               colorScheme="blue"
               isDisabled={customer.company === '' || customer.email === ''}
             >
-              {scopedT('submitButton.label')}
+              {t('billing.preCheckoutModal.submitButton.label')}
             </Button>
           </Stack>
         </ModalBody>

@@ -273,6 +273,25 @@ const posthogEnv = {
   },
 }
 
+const tolgeeEnv = {
+  client: {
+    NEXT_PUBLIC_TOLGEE_API_KEY: z.string().min(1).optional(),
+    NEXT_PUBLIC_TOLGEE_API_URL: z
+      .string()
+      .url()
+      .optional()
+      .default('https://tolgee.server.baptistearno.com"'),
+  },
+  runtimeEnv: {
+    NEXT_PUBLIC_TOLGEE_API_KEY: getRuntimeVariable(
+      'NEXT_PUBLIC_TOLGEE_API_KEY'
+    ),
+    NEXT_PUBLIC_TOLGEE_API_URL: getRuntimeVariable(
+      'NEXT_PUBLIC_TOLGEE_API_URL'
+    ),
+  },
+}
+
 export const env = createEnv({
   server: {
     ...baseEnv.server,
@@ -302,6 +321,7 @@ export const env = createEnv({
     ...unsplashEnv.client,
     ...sentryEnv.client,
     ...posthogEnv.client,
+    ...tolgeeEnv.client,
   },
   experimental__runtimeEnv: {
     ...baseEnv.runtimeEnv,
@@ -313,6 +333,7 @@ export const env = createEnv({
     ...unsplashEnv.runtimeEnv,
     ...sentryEnv.runtimeEnv,
     ...posthogEnv.runtimeEnv,
+    ...tolgeeEnv.runtimeEnv,
   },
   skipValidation:
     process.env.SKIP_ENV_CHECK === 'true' ||

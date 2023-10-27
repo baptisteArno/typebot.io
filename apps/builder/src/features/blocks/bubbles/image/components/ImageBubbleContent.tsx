@@ -1,4 +1,4 @@
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 import { Box, Text, Image } from '@chakra-ui/react'
 import { ImageBubbleBlock } from '@typebot.io/schemas'
 
@@ -7,11 +7,13 @@ type Props = {
 }
 
 export const ImageBubbleContent = ({ block }: Props) => {
-  const scopedT = useScopedI18n('editor.blocks.bubbles.image.node')
+  const { t } = useTranslate()
   const containsVariables =
     block.content?.url?.includes('{{') && block.content.url.includes('}}')
   return !block.content?.url ? (
-    <Text color={'gray.500'}>{scopedT('clickToEdit.text')}</Text>
+    <Text color={'gray.500'}>
+      {t('editor.blocks.bubbles.image.node.clickToEdit.text')}
+    </Text>
   ) : (
     <Box w="full">
       <Image

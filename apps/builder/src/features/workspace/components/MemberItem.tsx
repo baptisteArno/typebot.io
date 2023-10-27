@@ -13,7 +13,7 @@ import {
 import { WorkspaceRole } from '@typebot.io/prisma'
 import React from 'react'
 import { convertWorkspaceRoleToReadable } from './AddMemberForm'
-import { useI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   image?: string
@@ -38,7 +38,7 @@ export const MemberItem = ({
   onDeleteClick,
   onSelectNewRole,
 }: Props) => {
-  const t = useI18n()
+  const { t } = useTranslate()
   const handleAdminClick = () => onSelectNewRole(WorkspaceRole.ADMIN)
   const handleMemberClick = () => onSelectNewRole(WorkspaceRole.MEMBER)
 
@@ -88,7 +88,7 @@ export const MemberIdentityContent = ({
   isGuest?: boolean
   email: string
 }) => {
-  const t = useI18n()
+  const { t } = useTranslate()
 
   return (
     <HStack justifyContent="space-between" maxW="full" p="2">

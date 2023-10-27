@@ -13,15 +13,15 @@ import { Workspace } from '@typebot.io/prisma'
 import React from 'react'
 import { parseNumberWithCommas } from '@typebot.io/lib'
 import { defaultQueryOptions, trpc } from '@/lib/trpc'
-import { useScopedI18n } from '@/locales'
 import { getChatsLimit } from '@typebot.io/lib/billing/getChatsLimit'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   workspace: Workspace
 }
 
 export const UsageProgressBars = ({ workspace }: Props) => {
-  const scopedT = useScopedI18n('billing.usage')
+  const { t } = useTranslate()
   const { data, isLoading } = trpc.billing.getUsage.useQuery(
     {
       workspaceId: workspace.id,
@@ -39,12 +39,12 @@ export const UsageProgressBars = ({ workspace }: Props) => {
 
   return (
     <Stack spacing={6}>
-      <Heading fontSize="3xl">{scopedT('heading')}</Heading>
+      <Heading fontSize="3xl">{t('billing.usage.heading')}</Heading>
       <Stack spacing={3}>
         <Flex justifyContent="space-between">
           <HStack>
             <Heading fontSize="xl" as="h3">
-              {scopedT('chats.heading')}
+              {t('billing.usage.chats.heading')}
             </Heading>
             {chatsPercentage >= 80 && (
               <Tooltip
@@ -53,10 +53,10 @@ export const UsageProgressBars = ({ workspace }: Props) => {
                 p="3"
                 label={
                   <Text>
-                    {scopedT('chats.alert.soonReach')}
+                    {t('billing.usage.chats.alert.soonReach')}
                     <br />
                     <br />
-                    {scopedT('chats.alert.updatePlan')}
+                    {t('billing.usage.chats.alert.updatePlan')}
                   </Text>
                 }
               >
@@ -81,7 +81,7 @@ export const UsageProgressBars = ({ workspace }: Props) => {
             <Text>
               /{' '}
               {workspaceChatsLimit === 'inf'
-                ? scopedT('unlimited')
+                ? t('billing.usage.unlimited')
                 : parseNumberWithCommas(workspaceChatsLimit)}
             </Text>
           </HStack>

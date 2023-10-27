@@ -1,6 +1,6 @@
 import { useToast } from '@/hooks/useToast'
 import { trpc } from '@/lib/trpc'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 import { Button, ButtonProps, Link } from '@chakra-ui/react'
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 } & Pick<ButtonProps, 'colorScheme'>
 
 export const BillingPortalButton = ({ workspaceId, colorScheme }: Props) => {
-  const scopedT = useScopedI18n('billing')
+  const { t } = useTranslate()
   const { showToast } = useToast()
   const { data } = trpc.billing.getBillingPortalUrl.useQuery(
     {
@@ -29,7 +29,7 @@ export const BillingPortalButton = ({ workspaceId, colorScheme }: Props) => {
       isLoading={!data}
       colorScheme={colorScheme}
     >
-      {scopedT('billingPortalButton.label')}
+      {t('billing.billingPortalButton.label')}
     </Button>
   )
 }

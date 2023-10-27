@@ -27,7 +27,7 @@ import { isNotDefined } from '@typebot.io/lib'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
 import { isFreePlan } from '@/features/billing/helpers/isFreePlan'
 import { parseTimeSince } from '@/helpers/parseTimeSince'
-import { useI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 import { trpc } from '@/lib/trpc'
 import { useToast } from '@/hooks/useToast'
 import { parseDefaultPublicId } from '../helpers/parseDefaultPublicId'
@@ -39,7 +39,7 @@ export const PublishButton = ({
   isMoreMenuDisabled = false,
   ...props
 }: Props) => {
-  const t = useI18n()
+  const { t } = useTranslate()
   const warningTextColor = useColorModeValue('red.300', 'red.600')
   const { workspace } = useWorkspace()
   const { push, query, pathname } = useRouter()

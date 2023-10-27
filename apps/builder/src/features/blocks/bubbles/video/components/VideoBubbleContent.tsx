@@ -1,4 +1,4 @@
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 import { Box, Text, Image } from '@chakra-ui/react'
 import { VideoBubbleBlock, VideoBubbleContentType } from '@typebot.io/schemas'
 
@@ -7,9 +7,13 @@ type Props = {
 }
 
 export const VideoBubbleContent = ({ block }: Props) => {
-  const scopedT = useScopedI18n('editor.blocks.bubbles.video.node')
+  const { t } = useTranslate()
   if (!block.content?.url || !block.content.type)
-    return <Text color="gray.500">{scopedT('clickToEdit.text')}</Text>
+    return (
+      <Text color="gray.500">
+        {t('editor.blocks.bubbles.video.node.clickToEdit.text')}
+      </Text>
+    )
   const containsVariables =
     block.content?.url?.includes('{{') && block.content.url.includes('}}')
   switch (block.content.type) {

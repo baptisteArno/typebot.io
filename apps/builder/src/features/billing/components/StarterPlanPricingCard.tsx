@@ -10,9 +10,9 @@ import {
 import { Plan } from '@typebot.io/prisma'
 import { FeaturesList } from './FeaturesList'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
-import { useI18n, useScopedI18n } from '@/locales'
 import { formatPrice } from '@typebot.io/lib/billing/formatPrice'
 import { prices } from '@typebot.io/lib/billing/constants'
+import { T, useTranslate } from '@tolgee/react'
 
 type Props = {
   currentPlan: Plan
@@ -27,12 +27,12 @@ export const StarterPlanPricingCard = ({
   currency,
   onPayClick,
 }: Props) => {
-  const t = useI18n()
-  const scopedT = useScopedI18n('billing.pricingCard')
+  const { t } = useTranslate()
 
   const getButtonLabel = () => {
     if (currentPlan === Plan.PRO) return t('downgrade')
-    if (currentPlan === Plan.STARTER) return scopedT('upgradeButton.current')
+    if (currentPlan === Plan.STARTER)
+      return t('billing.pricingCard.upgradeButton.current')
     return t('upgrade')
   }
 
@@ -51,25 +51,30 @@ export const StarterPlanPricingCard = ({
         <Stack>
           <Stack spacing="4">
             <Heading fontSize="2xl">
-              {scopedT('heading', {
-                plan: <chakra.span color="orange.400">Starter</chakra.span>,
-              })}
+              <T
+                keyName="billing.pricingCard.heading"
+                params={{ strong: <chakra.span color="orange.400" /> }}
+              />
             </Heading>
-            <Text>{scopedT('starter.description')}</Text>
+            <Text>{t('billing.pricingCard.starter.description')}</Text>
           </Stack>
           <Heading>
             {formatPrice(prices.STARTER, { currency })}
-            <chakra.span fontSize="md">{scopedT('perMonth')}</chakra.span>
+            <chakra.span fontSize="md">
+              {t('billing.pricingCard.perMonth')}
+            </chakra.span>
           </Heading>
         </Stack>
 
         <FeaturesList
           features={[
-            scopedT('starter.includedSeats'),
+            t('billing.pricingCard.starter.includedSeats'),
             <Stack key="starter-chats" spacing={0}>
               <HStack>
-                <Text>2,000 {scopedT('chatsPerMonth')}</Text>
-                <MoreInfoTooltip>{scopedT('chatsTooltip')}</MoreInfoTooltip>
+                <Text>2,000 {t('billing.pricingCard.chatsPerMonth')}</Text>
+                <MoreInfoTooltip>
+                  {t('billing.pricingCard.chatsTooltip')}
+                </MoreInfoTooltip>
               </HStack>
               <Text
                 fontSize="sm"
@@ -78,9 +83,9 @@ export const StarterPlanPricingCard = ({
                 Extra chats: $10 per 500
               </Text>
             </Stack>,
-            scopedT('starter.brandingRemoved'),
-            scopedT('starter.fileUploadBlock'),
-            scopedT('starter.createFolders'),
+            t('billing.pricingCard.starter.brandingRemoved'),
+            t('billing.pricingCard.starter.fileUploadBlock'),
+            t('billing.pricingCard.starter.createFolders'),
           ]}
         />
       </Stack>

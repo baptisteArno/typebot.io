@@ -1,9 +1,9 @@
 {
-  "i18n-ally.localesPaths": ["apps/builder/src/locales"],
-  "i18n-ally.enabledFrameworks": ["next-international"],
-  "i18n-ally.enabledParsers": ["ts"],
+  "i18n-ally.localesPaths": ["apps/builder/public/locales"],
   "i18n-ally.keystyle": "flat",
   "i18n-ally.displayLanguage": "en",
+  "i18n-ally.enabledFrameworks": ["custom"],
+  "i18n-ally.sortKeys": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },

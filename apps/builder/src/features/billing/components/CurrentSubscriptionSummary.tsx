@@ -12,14 +12,14 @@ import { PlanTag } from './PlanTag'
 import { BillingPortalButton } from './BillingPortalButton'
 import { trpc } from '@/lib/trpc'
 import { Workspace } from '@typebot.io/schemas'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   workspace: Pick<Workspace, 'id' | 'plan' | 'stripeId'>
 }
 
 export const CurrentSubscriptionSummary = ({ workspace }: Props) => {
-  const scopedT = useScopedI18n('billing.currentSubscription')
+  const { t } = useTranslate()
 
   const { data } = trpc.billing.getSubscription.useQuery({
     workspaceId: workspace.id,
@@ -31,13 +31,15 @@ export const CurrentSubscriptionSummary = ({ workspace }: Props) => {
 
   return (
     <Stack spacing="4">
-      <Heading fontSize="3xl">{scopedT('heading')}</Heading>
+      <Heading fontSize="3xl">
+        {t('billing.currentSubscription.heading')}
+      </Heading>
       <HStack data-testid="current-subscription">
-        <Text>{scopedT('subheading')} </Text>
+        <Text>{t('billing.currentSubscription.subheading')} </Text>
         <PlanTag plan={workspace.plan} />
         {data?.subscription?.cancelDate && (
           <Text fontSize="sm">
-            ({scopedT('cancelDate')}{' '}
+            ({t('billing.currentSubscription.cancelDate')}{' '}
             {data.subscription.cancelDate.toDateString()})
           </Text>
         )}
@@ -45,7 +47,7 @@ export const CurrentSubscriptionSummary = ({ workspace }: Props) => {
       {data?.subscription?.status === 'past_due' && (
         <Alert fontSize="sm" status="error">
           <AlertIcon />
-          {scopedT('pastDueAlert')}
+          {t('billing.currentSubscription.pastDueAlert')}
         </Alert>
       )}
 

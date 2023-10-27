@@ -23,7 +23,6 @@ import { areTypebotsEqual } from '@/features/publish/helpers/areTypebotsEqual'
 import { isPublished as isPublishedHelper } from '@/features/publish/helpers/isPublished'
 import { convertPublicTypebotToTypebot } from '@/features/publish/helpers/convertPublicTypebotToTypebot'
 import { trpc } from '@/lib/trpc'
-import { useScopedI18n } from '@/locales'
 
 const autoSaveTimeout = 10000
 
@@ -80,7 +79,6 @@ export const TypebotProvider = ({
   children: ReactNode
   typebotId?: string
 }) => {
-  const scopedT = useScopedI18n('editor.provider')
   const { push } = useRouter()
   const { showToast } = useToast()
 
@@ -96,15 +94,11 @@ export const TypebotProvider = ({
         if (error.data?.httpStatus === 404) {
           showToast({
             status: 'info',
-            description: scopedT('messages.getTypebotError.description'),
+            description: "Couldn't find typebot.",
           })
           push('/typebots')
           return
         }
-        showToast({
-          title: scopedT('messages.getTypebotError.title'),
-          description: error.message,
-        })
       },
     }
   )
@@ -114,13 +108,6 @@ export const TypebotProvider = ({
       { typebotId: typebotId as string },
       {
         enabled: isDefined(typebotId),
-        onError: (error) => {
-          if (error.data?.httpStatus === 404) return
-          showToast({
-            title: scopedT('messages.publishedTypebotError.title'),
-            description: error.message,
-          })
-        },
       }
     )
 
@@ -128,7 +115,7 @@ export const TypebotProvider = ({
     trpc.typebot.updateTypebot.useMutation({
       onError: (error) =>
         showToast({
-          title: scopedT('messages.updateTypebotError.title'),
+          title: 'Error while updating typebot',
           description: error.message,
         }),
       onSuccess: () => {
@@ -264,10 +251,7 @@ export const TypebotProvider = ({
         isPublished,
         updateTypebot: updateLocalTypebot,
         restorePublishedTypebot,
-        ...groupsActions(
-          setLocalTypebot as SetTypebot,
-          scopedT('groups.copy.title')
-        ),
+        ...groupsActions(setLocalTypebot as SetTypebot),
         ...blocksAction(setLocalTypebot as SetTypebot),
         ...variablesAction(setLocalTypebot as SetTypebot),
         ...edgesAction(setLocalTypebot as SetTypebot),

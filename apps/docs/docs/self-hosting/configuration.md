@@ -166,6 +166,19 @@ Used to search for images. You can create a Giphy app [here](https://unsplash.co
 | NEXT_PUBLIC_UNSPLASH_APP_NAME   |         | Unsplash App name |
 | NEXT_PUBLIC_UNSPLASH_ACCESS_KEY |         | Unsplash API key  |
 
+## Tolgee (i18n contribution dev tool)
+
+:::note
+If you'd like to join contribute to Typebot's translation join the [Discord server](https://discord.gg/FYjghmSKRS) and ask for an access to Tolgee in the [#contributors channel](https://discord.com/channels/1155799591220953138/1155883114455900190).
+:::
+
+Set up these environment variables to enable [Tolgee dev tool](https://tolgee.io/features/dev-tools).
+
+| Parameter                  | Default                                | Description             |
+| -------------------------- | -------------------------------------- | ----------------------- |
+| NEXT_PUBLIC_TOLGEE_API_KEY |                                        | Your Tolgee API key     |
+| NEXT_PUBLIC_TOLGEE_API_URL | https://tolgee.server.baptistearno.com | The Tolgee API base URL |
+
 ## WhatsApp (Preview)
 
 In order to be able to test your bot on WhatsApp from the Preview drawer, you need to set up a WhatsApp business app.

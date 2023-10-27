@@ -15,7 +15,7 @@ import { omit } from '@typebot.io/lib'
 import { AzureAdLogo } from '@/components/logos/AzureAdLogo'
 import { FacebookLogo } from '@/components/logos/FacebookLogo'
 import { GitlabLogo } from '@/components/logos/GitlabLogo'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   providers:
@@ -24,7 +24,7 @@ type Props = {
 }
 
 export const SocialLoginButtons = ({ providers }: Props) => {
-  const scopedT = useScopedI18n('auth.socialLogin')
+  const { t } = useTranslate()
   const { query } = useRouter()
   const { status } = useSession()
   const [authLoading, setAuthLoading] =
@@ -65,7 +65,7 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           }
           variant="outline"
         >
-          {scopedT('githubButton.label')}
+          {t('auth.socialLogin.githubButton.label')}
         </Button>
       )}
       {providers?.google && (
@@ -79,7 +79,7 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           }
           variant="outline"
         >
-          {scopedT('googleButton.label')}
+          {t('auth.socialLogin.googleButton.label')}
         </Button>
       )}
       {providers?.facebook && (
@@ -93,7 +93,7 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           }
           variant="outline"
         >
-          {scopedT('facebookButton.label')}
+          {t('auth.socialLogin.facebookButton.label')}
         </Button>
       )}
       {providers?.gitlab && (
@@ -107,7 +107,7 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           }
           variant="outline"
         >
-          {scopedT('gitlabButton.label', {
+          {t('auth.socialLogin.gitlabButton.label', {
             gitlabProviderName: providers.gitlab.name,
           })}
         </Button>
@@ -123,7 +123,7 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           }
           variant="outline"
         >
-          {scopedT('azureButton.label', {
+          {t('auth.socialLogin.azureButton.label', {
             azureProviderName: providers['azure-ad'].name,
           })}
         </Button>
@@ -137,7 +137,7 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           }
           variant="outline"
         >
-          {scopedT('customButton.label', {
+          {t('auth.socialLogin.customButton.label', {
             customProviderName: providers['custom-oauth'].name,
           })}
         </Button>

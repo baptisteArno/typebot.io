@@ -9,14 +9,7 @@ import {
   InputBlockType,
   AnswerInSessionState,
 } from '@typebot.io/schemas'
-import {
-  isInputBlock,
-  isDefined,
-  byId,
-  isNotEmpty,
-  parseGroupTitle,
-  isEmpty,
-} from './utils'
+import { isInputBlock, isDefined, byId, isNotEmpty, isEmpty } from './utils'
 
 export const parseResultHeader = (
   typebot: Pick<Typebot, 'groups' | 'variables'>,
@@ -61,7 +54,7 @@ const parseInputsResultHeader = ({
       .flatMap((group) =>
         group.blocks.map((block) => ({
           ...block,
-          groupTitle: parseGroupTitle(group.title),
+          groupTitle: group.title,
         }))
       )
       .filter((block) => isInputBlock(block)) as (InputBlock & {

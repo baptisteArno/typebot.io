@@ -12,12 +12,12 @@ import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
 import { Graph } from '@/features/graph/components/Graph'
 import { GraphProvider } from '@/features/graph/providers/GraphProvider'
 import { GroupsCoordinatesProvider } from '@/features/graph/providers/GroupsCoordinateProvider'
-import { useI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 import { trpc } from '@/lib/trpc'
 import { isDefined } from '@typebot.io/lib'
 
 export const AnalyticsGraphContainer = ({ stats }: { stats?: Stats }) => {
-  const t = useI18n()
+  const { t } = useTranslate()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { typebot, publishedTypebot } = useTypebot()
   const { data } = trpc.analytics.getTotalAnswersInBlocks.useQuery(

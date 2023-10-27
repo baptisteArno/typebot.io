@@ -3,7 +3,7 @@ import { canReadTypebots } from '@/helpers/databaseRules'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { Group, IntegrationBlockType, Typebot } from '@typebot.io/schemas'
-import { byId, isWebhookBlock, parseGroupTitle } from '@typebot.io/lib'
+import { byId, isWebhookBlock } from '@typebot.io/lib'
 import { z } from 'zod'
 import { Webhook } from '@typebot.io/prisma'
 
@@ -70,7 +70,7 @@ export const listWebhookBlocks = authenticatedProcedure
         ...blocks.map((block) => ({
           id: block.id,
           type: block.type,
-          label: `${parseGroupTitle(group.title)} > ${block.id}`,
+          label: `${group.title} > ${block.id}`,
           url: block.options.webhook
             ? block.options.webhook.url
             : typebot?.webhooks.find(byId(block.webhookId))?.url ?? undefined,

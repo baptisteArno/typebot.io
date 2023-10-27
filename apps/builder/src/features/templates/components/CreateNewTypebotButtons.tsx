@@ -16,10 +16,10 @@ import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useUser } from '@/features/account/hooks/useUser'
 import { useToast } from '@/hooks/useToast'
 import { trpc } from '@/lib/trpc'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 
 export const CreateNewTypebotButtons = () => {
-  const scopedT = useScopedI18n('templates.buttons')
+  const { t } = useTranslate()
   const { workspace } = useWorkspace()
   const { user } = useUser()
   const router = useRouter()
@@ -72,7 +72,7 @@ export const CreateNewTypebotButtons = () => {
 
   return (
     <VStack maxW="600px" w="full" flex="1" pt="20" spacing={10}>
-      <Heading>{scopedT('heading')}</Heading>
+      <Heading>{t('templates.buttons.heading')}</Heading>
       <Stack w="full" spacing={6}>
         <Button
           variant="outline"
@@ -89,7 +89,7 @@ export const CreateNewTypebotButtons = () => {
           onClick={() => handleCreateSubmit()}
           isLoading={isLoading}
         >
-          {scopedT('fromScratchButton.label')}
+          {t('templates.buttons.fromScratchButton.label')}
         </Button>
         <Button
           variant="outline"
@@ -106,7 +106,7 @@ export const CreateNewTypebotButtons = () => {
           onClick={onOpen}
           isLoading={isLoading}
         >
-          {scopedT('fromTemplateButton.label')}
+          {t('templates.buttons.fromTemplateButton.label')}
         </Button>
         <ImportTypebotFromFileButton
           variant="outline"
@@ -123,7 +123,7 @@ export const CreateNewTypebotButtons = () => {
           isLoading={isLoading}
           onNewTypebot={handleCreateSubmit}
         >
-          {scopedT('importFileButton.label')}
+          {t('templates.buttons.importFileButton.label')}
         </ImportTypebotFromFileButton>
       </Stack>
       <TemplatesModal

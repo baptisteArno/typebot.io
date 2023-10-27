@@ -2,7 +2,7 @@ import { ImageUploadContent } from '@/components/ImageUploadContent'
 import { TextInput } from '@/components/inputs'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { FilePathUploadProps } from '@/features/upload/api/generateUploadUrl'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 import { Stack } from '@chakra-ui/react'
 import { isDefined, isNotEmpty } from '@typebot.io/lib'
 import { ImageBubbleBlock } from '@typebot.io/schemas'
@@ -19,9 +19,7 @@ export const ImageBubbleSettings = ({
   block,
   onContentChange,
 }: Props) => {
-  const scopedT = useScopedI18n(
-    'editor.blocks.bubbles.image.switchWithLabel.onClick'
-  )
+  const { t } = useTranslate()
   const [showClickLinkInput, setShowClickLinkInput] = useState(
     isNotEmpty(block.content.clickLink?.url)
   )
@@ -60,7 +58,7 @@ export const ImageBubbleSettings = ({
       />
       <Stack>
         <SwitchWithLabel
-          label={scopedT('label')}
+          label={t('editor.blocks.bubbles.image.switchWithLabel.onClick.label')}
           initialValue={showClickLinkInput}
           onCheckChange={toggleClickLink}
         />
@@ -73,7 +71,9 @@ export const ImageBubbleSettings = ({
               defaultValue={block.content.clickLink?.url}
             />
             <TextInput
-              placeholder={scopedT('placeholder')}
+              placeholder={t(
+                'editor.blocks.bubbles.image.switchWithLabel.onClick.placeholder'
+              )}
               onChange={updateClickLinkAltText}
               defaultValue={block.content.clickLink?.alt}
             />

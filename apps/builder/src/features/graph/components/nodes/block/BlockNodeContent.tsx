@@ -42,7 +42,7 @@ import { ChatwootNodeBody } from '@/features/blocks/integrations/chatwoot/compon
 import { AbTestNodeBody } from '@/features/blocks/logic/abTest/components/AbTestNodeBody'
 import { PictureChoiceNode } from '@/features/blocks/inputs/pictureChoice/components/PictureChoiceNode'
 import { PixelNodeBody } from '@/features/blocks/integrations/pixel/components/PixelNodeBody'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 import { ZemanticAiNodeBody } from '@/features/blocks/integrations/zemanticAi/ZemanticAiNodeBody'
 
 type Props = {
@@ -50,7 +50,7 @@ type Props = {
   indices: BlockIndices
 }
 export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
-  const scopedT = useScopedI18n('editor.blocks.start')
+  const { t } = useTranslate()
   switch (block.type) {
     case BubbleBlockType.TEXT: {
       return <TextBubbleContent block={block} />
@@ -201,7 +201,7 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
       return <ZemanticAiNodeBody options={block.options} />
     }
     case 'start': {
-      return <Text>{scopedT('text')}</Text>
+      return <Text>{t('editor.blocks.start.text')}</Text>
     }
   }
 }
