@@ -28,7 +28,11 @@ export const CollaborationMenuButton = ({
           </Tooltip>
         </span>
       </PopoverTrigger>
-      <PopoverContent shadow="lg" width="430px">
+      <PopoverContent
+        shadow="lg"
+        width="430px"
+        rootProps={{ style: { transform: 'scale(0)' } }}
+      >
         <CollaborationList />
       </PopoverContent>
     </Popover>

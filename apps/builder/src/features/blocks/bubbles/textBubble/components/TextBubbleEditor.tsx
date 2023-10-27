@@ -18,7 +18,7 @@ import { colors } from '@/lib/theme'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { selectEditor, TElement } from '@udecode/plate-common'
 import { TextEditorToolBar } from './TextEditorToolBar'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 
 type TextBubbleEditorContentProps = {
   id: string
@@ -31,7 +31,7 @@ const TextBubbleEditorContent = ({
   textEditorValue,
   onClose,
 }: TextBubbleEditorContentProps) => {
-  const scopedT = useScopedI18n('editor.blocks.bubbles')
+  const { t } = useTranslate()
   const editor = usePlateEditorRef()
   const varDropdownRef = useRef<HTMLDivElement | null>(null)
   const rememberedSelection = useRef<BaseSelection | null>(null)
@@ -137,7 +137,7 @@ const TextBubbleEditorContent = ({
             })
             setIsFirstFocus(false)
           },
-          'aria-label': `${scopedT('textEditor.plate.label')}`,
+          'aria-label': `${t('editor.blocks.bubbles.textEditor.plate.label')}`,
           onBlur: () => {
             rememberedSelection.current = editor?.selection
           },
@@ -156,7 +156,9 @@ const TextBubbleEditorContent = ({
             <VariableSearchInput
               initialVariableId={undefined}
               onSelectVariable={handleVariableSelected}
-              placeholder={scopedT('textEditor.searchVariable.placeholder')}
+              placeholder={t(
+                'editor.blocks.bubbles.textEditor.searchVariable.placeholder'
+              )}
               autoFocus
             />
           </PopoverContent>

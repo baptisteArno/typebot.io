@@ -5,7 +5,7 @@ import {
   VideoBubbleContentType,
 } from '@typebot.io/schemas'
 import { NumberInput, TextInput } from '@/components/inputs'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 import { parseVideoUrl } from '@typebot.io/lib/parseVideoUrl'
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
 }
 
 export const VideoUploadContent = ({ content, onSubmit }: Props) => {
-  const scopedT = useScopedI18n('editor.blocks.bubbles.video.settings')
+  const { t } = useTranslate()
   const updateUrl = (url: string) => {
     const info = parseVideoUrl(url)
     return onSubmit({
@@ -33,12 +33,14 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
     <Stack p="2" spacing={4}>
       <Stack>
         <TextInput
-          placeholder={scopedT('worksWith.placeholder')}
+          placeholder={t(
+            'editor.blocks.bubbles.video.settings.worksWith.placeholder'
+          )}
           defaultValue={content?.url ?? ''}
           onChange={updateUrl}
         />
         <Text fontSize="sm" color="gray.400" textAlign="center">
-          {scopedT('worksWith.text')}
+          {t('editor.blocks.bubbles.video.settings.worksWith.text')}
         </Text>
       </Stack>
 
@@ -47,7 +49,7 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
           label="Height:"
           defaultValue={content?.height ?? 400}
           onValueChange={updateHeight}
-          suffix={scopedT('numberInput.unit')}
+          suffix={t('editor.blocks.bubbles.video.settings.numberInput.unit')}
           width="150px"
         />
       )}

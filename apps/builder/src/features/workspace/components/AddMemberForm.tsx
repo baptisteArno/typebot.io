@@ -13,7 +13,7 @@ import { WorkspaceInvitation, WorkspaceRole } from '@typebot.io/prisma'
 import { FormEvent, useState } from 'react'
 import { Member } from '../types'
 import { sendInvitationQuery } from '../queries/sendInvitationQuery'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   workspaceId: string
@@ -29,7 +29,7 @@ export const AddMemberForm = ({
   isLoading,
   isLocked,
 }: Props) => {
-  const scopedT = useScopedI18n('workspace.membersList')
+  const { t } = useTranslate()
   const [invitationEmail, setInvitationEmail] = useState('')
   const [invitationRole, setInvitationRole] = useState<WorkspaceRole>(
     WorkspaceRole.MEMBER
@@ -54,7 +54,7 @@ export const AddMemberForm = ({
   return (
     <HStack as="form" onSubmit={handleInvitationSubmit}>
       <Input
-        placeholder={scopedT('inviteInput.placeholder')}
+        placeholder={t('workspace.membersList.inviteInput.placeholder')}
         name="inviteEmail"
         value={invitationEmail}
         onChange={(e) => setInvitationEmail(e.target.value)}
@@ -75,7 +75,7 @@ export const AddMemberForm = ({
         type="submit"
         isDisabled={isLoading || isLocked || invitationEmail === ''}
       >
-        {scopedT('inviteButton.label')}
+        {t('workspace.membersList.inviteButton.label')}
       </Button>
     </HStack>
   )

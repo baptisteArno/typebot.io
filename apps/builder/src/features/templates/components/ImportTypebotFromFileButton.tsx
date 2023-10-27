@@ -4,7 +4,7 @@ import { Typebot, typebotCreateSchema } from '@typebot.io/schemas'
 import { preprocessTypebot } from '@typebot.io/schemas/features/typebot/helpers/preprocessTypebot'
 import React, { ChangeEvent } from 'react'
 import { z } from 'zod'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   onNewTypebot: (typebot: Typebot) => void
@@ -14,7 +14,7 @@ export const ImportTypebotFromFileButton = ({
   onNewTypebot,
   ...props
 }: Props) => {
-  const scopedT = useScopedI18n('templates.importFromFileButon')
+  const { t } = useTranslate()
   const { showToast } = useToast()
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +29,7 @@ export const ImportTypebotFromFileButton = ({
     } catch (err) {
       console.error(err)
       showToast({
-        description: scopedT('toastError.description'),
+        description: t('templates.importFromFileButon.toastError.description'),
         details: {
           content: JSON.stringify(err, null, 2),
           lang: 'json',

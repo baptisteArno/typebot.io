@@ -1,5 +1,5 @@
 import { CopyButton } from '@/components/CopyButton'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 import {
   Modal,
   ModalOverlay,
@@ -33,7 +33,7 @@ export const CreateTokenModal = ({
   onNewToken,
 }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
-  const scopedT = useScopedI18n('account.apiTokens.createModal')
+  const { t } = useTranslate()
   const [name, setName] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [newTokenValue, setNewTokenValue] = useState<string>()
@@ -54,14 +54,18 @@ export const CreateTokenModal = ({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          {newTokenValue ? scopedT('createdHeading') : scopedT('createHeading')}
+          {newTokenValue
+            ? t('account.apiTokens.createModal.createdHeading')
+            : t('account.apiTokens.createModal.createHeading')}
         </ModalHeader>
         <ModalCloseButton />
         {newTokenValue ? (
           <ModalBody as={Stack} spacing="4">
             <Text>
-              {scopedT('copyInstruction')}{' '}
-              <strong>{scopedT('securityWarning')}</strong>
+              {t('account.apiTokens.createModal.copyInstruction')}{' '}
+              <strong>
+                {t('account.apiTokens.createModal.securityWarning')}
+              </strong>
             </Text>
             <InputGroup size="md">
               <Input readOnly pr="4.5rem" value={newTokenValue} />
@@ -72,10 +76,14 @@ export const CreateTokenModal = ({
           </ModalBody>
         ) : (
           <ModalBody as="form" onSubmit={createToken}>
-            <Text mb="4">{scopedT('nameInput.label')}</Text>
+            <Text mb="4">
+              {t('account.apiTokens.createModal.nameInput.label')}
+            </Text>
             <Input
               ref={inputRef}
-              placeholder={scopedT('nameInput.placeholder')}
+              placeholder={t(
+                'account.apiTokens.createModal.nameInput.placeholder'
+              )}
               onChange={(e) => setName(e.target.value)}
             />
           </ModalBody>
@@ -84,7 +92,7 @@ export const CreateTokenModal = ({
         <ModalFooter>
           {newTokenValue ? (
             <Button onClick={onClose} colorScheme="blue">
-              {scopedT('doneButton.label')}
+              {t('account.apiTokens.createModal.doneButton.label')}
             </Button>
           ) : (
             <Button
@@ -93,7 +101,7 @@ export const CreateTokenModal = ({
               isLoading={isSubmitting}
               onClick={createToken}
             >
-              {scopedT('createButton.label')}
+              {t('account.apiTokens.createModal.createButton.label')}
             </Button>
           )}
         </ModalFooter>

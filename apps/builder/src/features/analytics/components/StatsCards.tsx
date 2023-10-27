@@ -1,4 +1,4 @@
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 import {
   GridProps,
   SimpleGrid,
@@ -22,13 +22,13 @@ export const StatsCards = ({
   stats,
   ...props
 }: { stats?: Stats } & GridProps) => {
-  const scopedT = useScopedI18n('analytics')
+  const { t } = useTranslate()
   const bg = useColorModeValue('white', 'gray.900')
 
   return (
     <SimpleGrid columns={{ base: 1, md: 3 }} spacing="6" {...props}>
       <Stat bgColor={bg} p="4" rounded="md" boxShadow="md">
-        <StatLabel>{scopedT('viewsLabel')}</StatLabel>
+        <StatLabel>{t('analytics.viewsLabel')}</StatLabel>
         {stats ? (
           <StatNumber>{stats.totalViews}</StatNumber>
         ) : (
@@ -36,7 +36,7 @@ export const StatsCards = ({
         )}
       </Stat>
       <Stat bgColor={bg} p="4" rounded="md" boxShadow="md">
-        <StatLabel>{scopedT('startsLabel')}</StatLabel>
+        <StatLabel>{t('analytics.startsLabel')}</StatLabel>
         {stats ? (
           <StatNumber>{stats.totalStarts}</StatNumber>
         ) : (
@@ -44,10 +44,10 @@ export const StatsCards = ({
         )}
       </Stat>
       <Stat bgColor={bg} p="4" rounded="md" boxShadow="md">
-        <StatLabel>{scopedT('completionRateLabel')}</StatLabel>
+        <StatLabel>{t('analytics.completionRateLabel')}</StatLabel>
         {stats ? (
           <StatNumber>
-            {computeCompletionRate(scopedT('notAvailableLabel'))(
+            {computeCompletionRate(t('analytics.notAvailableLabel'))(
               stats.totalCompleted,
               stats.totalStarts
             )}

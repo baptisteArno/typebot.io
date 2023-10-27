@@ -8,7 +8,7 @@ import { Plan } from '@typebot.io/prisma'
 import { isFreePlan } from '@/features/billing/helpers/isFreePlan'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
-import { useI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   isBrandingEnabled: boolean
@@ -23,7 +23,7 @@ export const GeneralSettings = ({
   onGeneralThemeChange,
   onBrandingChange,
 }: Props) => {
-  const t = useI18n()
+  const { t } = useTranslate()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { workspace } = useWorkspace()
   const isWorkspaceFreePlan = isFreePlan(workspace)

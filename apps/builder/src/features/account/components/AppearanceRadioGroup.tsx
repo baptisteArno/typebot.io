@@ -10,7 +10,7 @@ import Image from 'next/image'
 import lightModeIllustration from 'public/images/light-mode.png'
 import darkModeIllustration from 'public/images/dark-mode.png'
 import systemModeIllustration from 'public/images/system-mode.png'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   defaultValue: string
@@ -18,22 +18,22 @@ type Props = {
 }
 
 export const AppearanceRadioGroup = ({ defaultValue, onChange }: Props) => {
-  const scopedT = useScopedI18n('account.preferences.appearance')
+  const { t } = useTranslate()
 
   const appearanceData = [
     {
       value: 'light',
-      label: scopedT('lightLabel'),
+      label: t('account.preferences.appearance.lightLabel'),
       image: lightModeIllustration,
     },
     {
       value: 'dark',
-      label: scopedT('darkLabel'),
+      label: t('account.preferences.appearance.darkLabel'),
       image: darkModeIllustration,
     },
     {
       value: 'system',
-      label: scopedT('systemLabel'),
+      label: t('account.preferences.appearance.systemLabel'),
       image: systemModeIllustration,
     },
   ]

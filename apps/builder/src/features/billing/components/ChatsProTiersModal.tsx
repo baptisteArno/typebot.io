@@ -16,6 +16,7 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
+import { useTranslate } from '@tolgee/react'
 import { proChatTiers } from '@typebot.io/lib/billing/constants'
 import { formatPrice } from '@typebot.io/lib/billing/formatPrice'
 
@@ -25,12 +26,14 @@ type Props = {
 }
 
 export const ChatsProTiersModal = ({ isOpen, onClose }: Props) => {
+  const { t } = useTranslate()
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          <Heading size="lg">Chats pricing table</Heading>
+          <Heading size="lg">{t('billing.tiersModal.heading')}</Heading>
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody as={Stack} spacing="6">

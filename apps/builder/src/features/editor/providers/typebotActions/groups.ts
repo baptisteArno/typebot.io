@@ -12,7 +12,7 @@ import {
   createBlockDraft,
   duplicateBlockDraft,
 } from './blocks'
-import { isEmpty, parseGroupTitle } from '@typebot.io/lib'
+import { isEmpty } from '@typebot.io/lib'
 import { Coordinates } from '@/features/graph/types'
 
 export type GroupsActions = {
@@ -28,10 +28,7 @@ export type GroupsActions = {
   deleteGroup: (groupIndex: number) => void
 }
 
-const groupsActions = (
-  setTypebot: SetTypebot,
-  groupCopyLabel: string
-): GroupsActions => ({
+const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
   createGroup: ({
     id,
     block,
@@ -67,11 +64,19 @@ const groupsActions = (
         const group = typebot.groups[groupIndex]
         const id = createId()
 
+        const totalGroupsWithSameTitle = typebot.groups.filter(
+          (group) => group.title === group.title
+        ).length
+
         const newGroup: Group = {
           ...group,
           title: isEmpty(group.title)
             ? ''
-            : `${parseGroupTitle(group.title)} ${groupCopyLabel}`,
+            : `${group.title}${
+                totalGroupsWithSameTitle > 0
+                  ? ` (${totalGroupsWithSameTitle})`
+                  : ''
+              }}`,
           id,
           blocks: group.blocks.map((block) => duplicateBlockDraft(id)(block)),
           graphCoordinates: {

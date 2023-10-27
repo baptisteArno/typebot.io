@@ -5,10 +5,10 @@ import { ApiTokensList } from './ApiTokensList'
 import { UploadButton } from '@/components/ImageUploadContent/UploadButton'
 import { useUser } from '../hooks/useUser'
 import { TextInput } from '@/components/inputs/TextInput'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 
 export const MyAccountForm = () => {
-  const scopedT = useScopedI18n('account.myAccount')
+  const { t } = useTranslate()
   const { user, updateUser } = useUser()
   const [name, setName] = useState(user?.name ?? '')
   const [email, setEmail] = useState(user?.email ?? '')
@@ -47,11 +47,11 @@ export const MyAccountForm = () => {
               leftIcon={<UploadIcon />}
               onFileUploaded={handleFileUploaded}
             >
-              {scopedT('changePhotoButton.label')}
+              {t('account.myAccount.changePhotoButton.label')}
             </UploadButton>
           )}
           <Text color="gray.500" fontSize="sm">
-            {scopedT('changePhotoButton.specification')}
+            {t('account.myAccount.changePhotoButton.specification')}
           </Text>
         </Stack>
       </HStack>
@@ -59,17 +59,17 @@ export const MyAccountForm = () => {
       <TextInput
         defaultValue={name}
         onChange={handleNameChange}
-        label={scopedT('nameInput.label')}
+        label={t('account.myAccount.nameInput.label')}
         withVariableButton={false}
         debounceTimeout={0}
       />
-      <Tooltip label={scopedT('emailInput.disabledTooltip')}>
+      <Tooltip label={t('account.myAccount.emailInput.disabledTooltip')}>
         <span>
           <TextInput
             type="email"
             defaultValue={email}
             onChange={handleEmailChange}
-            label={scopedT('emailInput.label')}
+            label={t('account.myAccount.emailInput.label')}
             withVariableButton={false}
             debounceTimeout={0}
             isDisabled

@@ -23,10 +23,10 @@ import { BlockCard } from './BlockCard'
 import { LockedIcon, UnlockedIcon } from '@/components/icons'
 import { BlockCardOverlay } from './BlockCardOverlay'
 import { headerHeight } from '../constants'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 
 export const BlocksSideBar = () => {
-  const scopedT = useScopedI18n('editor.sidebarBlocks')
+  const { t } = useTranslate()
   const { setDraggedBlockType, draggedBlockType } = useBlockDnd()
   const [position, setPosition] = useState({
     x: 0,
@@ -107,16 +107,16 @@ export const BlocksSideBar = () => {
           <Tooltip
             label={
               isLocked
-                ? scopedT('sidebar.unlock.label')
-                : scopedT('sidebar.lock.label')
+                ? t('editor.sidebarBlocks.sidebar.unlock.label')
+                : t('editor.sidebarBlocks.sidebar.lock.label')
             }
           >
             <IconButton
               icon={isLocked ? <LockedIcon /> : <UnlockedIcon />}
               aria-label={
                 isLocked
-                  ? scopedT('sidebar.icon.unlock.label')
-                  : scopedT('sidebar.icon.lock.label')
+                  ? t('editor.sidebarBlocks.sidebar.icon.unlock.label')
+                  : t('editor.sidebarBlocks.sidebar.icon.lock.label')
               }
               size="sm"
               onClick={handleLockClick}
@@ -126,7 +126,7 @@ export const BlocksSideBar = () => {
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold">
-            {scopedT('blockType.bubbles.heading')}
+            {t('editor.sidebarBlocks.blockType.bubbles.heading')}
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(BubbleBlockType).map((type) => (
@@ -137,7 +137,7 @@ export const BlocksSideBar = () => {
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold">
-            {scopedT('blockType.inputs.heading')}
+            {t('editor.sidebarBlocks.blockType.inputs.heading')}
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(InputBlockType).map((type) => (
@@ -148,7 +148,7 @@ export const BlocksSideBar = () => {
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold">
-            {scopedT('blockType.logic.heading')}
+            {t('editor.sidebarBlocks.blockType.logic.heading')}
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(LogicBlockType).map((type) => (
@@ -159,7 +159,7 @@ export const BlocksSideBar = () => {
 
         <Stack>
           <Text fontSize="sm" fontWeight="semibold">
-            {scopedT('blockType.integrations.heading')}
+            {t('editor.sidebarBlocks.blockType.integrations.heading')}
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(IntegrationBlockType).map((type) => (

@@ -13,13 +13,13 @@ import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import confetti from 'canvas-confetti'
 import { useUser } from '@/features/account/hooks/useUser'
-import { useI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 import { env } from '@typebot.io/env'
 
 const totalSteps = 5
 
 export const OnboardingPage = () => {
-  const t = useI18n()
+  const { t } = useTranslate()
   const { push, replace } = useRouter()
   const confettiCanvaContainer = useRef<HTMLCanvasElement | null>(null)
   const confettiCanon = useRef<confetti.CreateTypes>()

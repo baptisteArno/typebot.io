@@ -24,8 +24,8 @@ import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
 import { deleteFolderQuery } from '../queries/deleteFolderQuery'
 import { useToast } from '@/hooks/useToast'
-import { useI18n, useScopedI18n } from '@/locales'
 import { updateFolderQuery } from '../queries/updateFolderQuery'
+import { T, useTranslate } from '@tolgee/react'
 
 export const FolderButton = ({
   folder,
@@ -36,8 +36,7 @@ export const FolderButton = ({
   onFolderDeleted: () => void
   onFolderRenamed: (newName: string) => void
 }) => {
-  const t = useI18n()
-  const scopedT = useScopedI18n('folders.folderButton')
+  const { t } = useTranslate()
   const router = useRouter()
   const { draggedTypebot, setMouseOverFolderId, mouseOverFolderId } =
     useTypebotDnd()
@@ -140,9 +139,12 @@ export const FolderButton = ({
         confirmButtonLabel={'Delete'}
         message={
           <Text>
-            {scopedT('deleteConfirmationMessage', {
-              folderName: <strong>{folder.name}</strong>,
-            })}
+            <T
+              keyName="folders.folderButton.deleteConfirmationMessage"
+              params={{
+                strong: <strong>{folder.name}</strong>,
+              }}
+            />
           </Text>
         }
         title={`Delete ${folder.name}?`}

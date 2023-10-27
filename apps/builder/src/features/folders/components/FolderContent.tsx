@@ -21,7 +21,7 @@ import { CreateFolderButton } from './CreateFolderButton'
 import { ButtonSkeleton, FolderButton } from './FolderButton'
 import { TypebotButton } from './TypebotButton'
 import { TypebotCardOverlay } from './TypebotButtonOverlay'
-import { useI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 import { useTypebots } from '@/features/dashboard/hooks/useTypebots'
 import { TypebotInDashboard } from '@/features/dashboard/types'
 import { trpc } from '@/lib/trpc'
@@ -31,7 +31,7 @@ type Props = { folder: DashboardFolder | null }
 const dragDistanceTolerance = 20
 
 export const FolderContent = ({ folder }: Props) => {
-  const t = useI18n()
+  const { t } = useTranslate()
   const { workspace, currentRole } = useWorkspace()
   const [isCreatingFolder, setIsCreatingFolder] = useState(false)
   const {

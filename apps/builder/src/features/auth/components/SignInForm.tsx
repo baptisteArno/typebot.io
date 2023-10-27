@@ -27,7 +27,7 @@ import { BuiltInProviderType } from 'next-auth/providers'
 import { useToast } from '@/hooks/useToast'
 import { TextLink } from '@/components/TextLink'
 import { SignInError } from './SignInError'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   defaultEmail?: string
@@ -35,7 +35,7 @@ type Props = {
 export const SignInForm = ({
   defaultEmail,
 }: Props & HTMLChakraProps<'form'>) => {
-  const scopedT = useScopedI18n('auth')
+  const { t } = useTranslate()
   const router = useRouter()
   const { status } = useSession()
   const [authLoading, setAuthLoading] = useState(false)
@@ -79,8 +79,8 @@ export const SignInForm = ({
       })
       if (response?.error) {
         showToast({
-          title: scopedT('signinErrorToast.title'),
-          description: scopedT('signinErrorToast.description'),
+          title: t('auth.signinErrorToast.title'),
+          description: t('auth.signinErrorToast.description'),
         })
       } else {
         setIsMagicLinkSent(true)
@@ -88,7 +88,7 @@ export const SignInForm = ({
     } catch {
       showToast({
         status: 'info',
-        description: scopedT('signinErrorToast.tooManyRequests'),
+        description: t('auth.signinErrorToast.tooManyRequests'),
       })
     }
     setAuthLoading(false)
@@ -98,12 +98,12 @@ export const SignInForm = ({
   if (hasNoAuthProvider)
     return (
       <Text>
-        {scopedT('noProvider.preLink')}{' '}
+        {t('auth.noProvider.preLink')}{' '}
         <TextLink
           href="https://docs.typebot.io/self-hosting/configuration"
           isExternal
         >
-          {scopedT('noProvider.link')}
+          {t('auth.noProvider.link')}
         </TextLink>
       </Text>
     )
@@ -114,9 +114,7 @@ export const SignInForm = ({
           <SocialLoginButtons providers={providers} />
           {providers?.email && (
             <>
-              <DividerWithText mt="6">
-                {scopedT('orEmailLabel')}
-              </DividerWithText>
+              <DividerWithText mt="6">{t('auth.orEmailLabel')}</DividerWithText>
               <HStack as="form" onSubmit={handleEmailSubmit}>
                 <Input
                   name="email"
@@ -134,7 +132,7 @@ export const SignInForm = ({
                   }
                   isDisabled={isMagicLinkSent}
                 >
-                  {scopedT('emailSubmitButton.label')}
+                  {t('auth.emailSubmitButton.label')}
                 </Button>
               </HStack>
             </>
@@ -150,8 +148,8 @@ export const SignInForm = ({
             <HStack>
               <AlertIcon />
               <Stack spacing={1}>
-                <Text fontWeight="semibold">{scopedT('magicLink.title')}</Text>
-                <Text fontSize="sm">{scopedT('magicLink.description')}</Text>
+                <Text fontWeight="semibold">{t('auth.magicLink.title')}</Text>
+                <Text fontSize="sm">{t('auth.magicLink.description')}</Text>
               </Stack>
             </HStack>
           </Alert>

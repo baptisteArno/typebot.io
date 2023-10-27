@@ -12,10 +12,10 @@ import React from 'react'
 import { EditableEmojiOrImageIcon } from '@/components/EditableEmojiOrImageIcon'
 import { useWorkspace } from '../WorkspaceProvider'
 import { TextInput } from '@/components/inputs'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 
 export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
-  const scopedT = useScopedI18n('workspace.settings')
+  const { t } = useTranslate()
   const { workspace, workspaces, updateWorkspace, deleteCurrentWorkspace } =
     useWorkspace()
 
@@ -34,7 +34,7 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
   return (
     <Stack spacing="6" w="full">
       <FormControl>
-        <FormLabel>{scopedT('icon.title')}</FormLabel>
+        <FormLabel>{t('workspace.settings.icon.title')}</FormLabel>
         <Flex>
           {workspace && (
             <EditableEmojiOrImageIcon
@@ -51,7 +51,7 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
       </FormControl>
       {workspace && (
         <TextInput
-          label={scopedT('name.label')}
+          label={t('workspace.settings.name.label')}
           withVariableButton={false}
           defaultValue={workspace?.name}
           onChange={handleNameChange}
@@ -74,12 +74,12 @@ const DeleteWorkspaceButton = ({
   workspaceName: string
   onConfirm: () => Promise<void>
 }) => {
-  const scopedT = useScopedI18n('workspace.settings')
+  const { t } = useTranslate()
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <>
       <Button colorScheme="red" variant="outline" onClick={onOpen}>
-        {scopedT('deleteButton.label')}
+        {t('workspace.settings.deleteButton.label')}
       </Button>
       <ConfirmModal
         isOpen={isOpen}
@@ -87,7 +87,7 @@ const DeleteWorkspaceButton = ({
         onClose={onClose}
         message={
           <Text>
-            {scopedT('deleteButton.confirmMessage', {
+            {t('workspace.settings.deleteButton.confirmMessage', {
               workspaceName,
             })}
           </Text>

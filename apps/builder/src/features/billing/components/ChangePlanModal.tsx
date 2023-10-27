@@ -1,6 +1,6 @@
 import { AlertInfo } from '@/components/AlertInfo'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { useI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 import {
   Modal,
   ModalBody,
@@ -26,7 +26,7 @@ export const ChangePlanModal = ({
   type,
   excludedPlans,
 }: ChangePlanModalProps) => {
-  const t = useI18n()
+  const { t } = useTranslate()
   const { workspace } = useWorkspace()
   return (
     <Modal

@@ -14,10 +14,10 @@ import {
 import { Plan } from '@typebot.io/prisma'
 import { FeaturesList } from './FeaturesList'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
-import { useI18n, useScopedI18n } from '@/locales'
 import { formatPrice } from '@typebot.io/lib/billing/formatPrice'
 import { ChatsProTiersModal } from './ChatsProTiersModal'
 import { prices } from '@typebot.io/lib/billing/constants'
+import { T, useTranslate } from '@tolgee/react'
 
 type Props = {
   currentPlan: Plan
@@ -32,12 +32,12 @@ export const ProPlanPricingCard = ({
   isLoading,
   onPayClick,
 }: Props) => {
-  const t = useI18n()
-  const scopedT = useScopedI18n('billing.pricingCard')
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { t } = useTranslate()
 
   const getButtonLabel = () => {
-    if (currentPlan === Plan.PRO) return scopedT('upgradeButton.current')
+    if (currentPlan === Plan.PRO)
+      return t('billing.pricingCard.upgradeButton.current')
     return t('upgrade')
   }
 
@@ -65,38 +65,41 @@ export const ProPlanPricingCard = ({
             fontWeight="semibold"
             style={{ marginTop: 0 }}
           >
-            {scopedT('pro.mostPopularLabel')}
+            {t('billing.pricingCard.pro.mostPopularLabel')}
           </Tag>
         </Flex>
         <Stack justifyContent="space-between" h="full">
           <Stack spacing="4" mt={2}>
             <Heading fontSize="2xl">
-              {scopedT('heading', {
-                plan: (
-                  <chakra.span
-                    color={useColorModeValue('blue.400', 'blue.300')}
-                  >
-                    Pro
-                  </chakra.span>
-                ),
-              })}
+              <T
+                keyName="billing.pricingCard.heading"
+                params={{
+                  strong: (
+                    <chakra.span
+                      color={useColorModeValue('blue.400', 'blue.300')}
+                    />
+                  ),
+                }}
+              />
             </Heading>
-            <Text>{scopedT('pro.description')}</Text>
+            <Text>{t('billing.pricingCard.pro.description')}</Text>
           </Stack>
           <Stack spacing="8">
             <Stack spacing="4">
               <Heading>
                 {formatPrice(prices.PRO, { currency })}
-                <chakra.span fontSize="md">{scopedT('perMonth')}</chakra.span>
+                <chakra.span fontSize="md">
+                  {t('billing.pricingCard.perMonth')}
+                </chakra.span>
               </Heading>
               <Text fontWeight="bold">
                 <Tooltip
                   label={
                     <FeaturesList
                       features={[
-                        scopedT('starter.brandingRemoved'),
-                        scopedT('starter.fileUploadBlock'),
-                        scopedT('starter.createFolders'),
+                        t('billing.pricingCard.starter.brandingRemoved'),
+                        t('billing.pricingCard.starter.fileUploadBlock'),
+                        t('billing.pricingCard.starter.createFolders'),
                       ]}
                       spacing="0"
                     />
@@ -105,19 +108,21 @@ export const ProPlanPricingCard = ({
                   placement="top"
                 >
                   <chakra.span textDecoration="underline" cursor="pointer">
-                    {scopedT('pro.everythingFromStarter')}
+                    {t('billing.pricingCard.pro.everythingFromStarter')}
                   </chakra.span>
                 </Tooltip>
-                {scopedT('plus')}
+                {t('billing.pricingCard.plus')}
               </Text>
               <FeaturesList
                 features={[
-                  scopedT('pro.includedSeats'),
+                  t('billing.pricingCard.pro.includedSeats'),
                   <Stack key="starter-chats" spacing={1}>
                     <HStack key="test">
-                      <Text>10,000 {scopedT('chatsPerMonth')}</Text>
+                      <Text>
+                        10,000 {t('billing.pricingCard.chatsPerMonth')}
+                      </Text>
                       <MoreInfoTooltip>
-                        {scopedT('chatsTooltip')}
+                        {t('billing.pricingCard.chatsTooltip')}
                       </MoreInfoTooltip>
                     </HStack>
                     <Text
@@ -130,9 +135,9 @@ export const ProPlanPricingCard = ({
                       </Button>
                     </Text>
                   </Stack>,
-                  scopedT('pro.whatsAppIntegration'),
-                  scopedT('pro.customDomains'),
-                  scopedT('pro.analytics'),
+                  t('billing.pricingCard.pro.whatsAppIntegration'),
+                  t('billing.pricingCard.pro.customDomains'),
+                  t('billing.pricingCard.pro.analytics'),
                 ]}
               />
             </Stack>

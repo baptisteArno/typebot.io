@@ -1,6 +1,6 @@
 import { Seo } from '@/components/Seo'
 import { TextLink } from '@/components/TextLink'
-import { useScopedI18n } from '@/locales'
+import { T, useTranslate } from '@tolgee/react'
 import { VStack, Heading, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { SignInForm } from './SignInForm'
@@ -11,7 +11,7 @@ type Props = {
 }
 
 export const SignInPage = ({ type }: Props) => {
-  const scopedT = useScopedI18n('auth')
+  const { t } = useTranslate()
   const { query } = useRouter()
 
   return (
@@ -19,8 +19,8 @@ export const SignInPage = ({ type }: Props) => {
       <Seo
         title={
           type === 'signin'
-            ? scopedT('signin.heading')
-            : scopedT('register.heading')
+            ? t('auth.signin.heading')
+            : t('auth.register.heading')
         }
       />
       <Heading
@@ -29,39 +29,36 @@ export const SignInPage = ({ type }: Props) => {
         }}
       >
         {type === 'signin'
-          ? scopedT('signin.heading')
-          : scopedT('register.heading')}
+          ? t('auth.signin.heading')
+          : t('auth.register.heading')}
       </Heading>
       {type === 'signin' ? (
         <Text>
-          {scopedT('signin.noAccountLabel.preLink')}{' '}
+          {t('auth.signin.noAccountLabel.preLink')}{' '}
           <TextLink href="/register">
-            {scopedT('signin.noAccountLabel.link')}
+            {t('auth.signin.noAccountLabel.link')}
           </TextLink>
         </Text>
       ) : (
         <Text>
-          {scopedT('register.alreadyHaveAccountLabel.preLink')}{' '}
+          {t('auth.register.alreadyHaveAccountLabel.preLink')}{' '}
           <TextLink href="/signin">
-            {scopedT('register.alreadyHaveAccountLabel.link')}
+            {t('auth.register.alreadyHaveAccountLabel.link')}
           </TextLink>
         </Text>
       )}
       <SignInForm defaultEmail={query.g?.toString()} />
       {type === 'signup' ? (
         <Text fontSize="sm" maxW="400px" textAlign="center">
-          {scopedT('register.aggreeToTerms', {
-            termsOfService: (
-              <TextLink href={'https://typebot.io/terms-of-service'}>
-                {scopedT('register.termsOfService')}
-              </TextLink>
-            ),
-            privacyPolicy: (
-              <TextLink href={'https://typebot.io/privacy-policies'}>
-                {scopedT('register.privacyPolicy')}
-              </TextLink>
-            ),
-          })}
+          <T
+            keyName="auth.register.aggreeToTerms"
+            params={{
+              terms: <TextLink href={'https://typebot.io/terms-of-service'} />,
+              privacy: (
+                <TextLink href={'https://typebot.io/privacy-policies'} />
+              ),
+            }}
+          />
         </Text>
       ) : null}
     </VStack>

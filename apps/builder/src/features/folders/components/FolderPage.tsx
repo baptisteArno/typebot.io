@@ -1,7 +1,7 @@
 import { Seo } from '@/components/Seo'
 import { DashboardHeader } from '@/features/dashboard/components/DashboardHeader'
 import { useToast } from '@/hooks/useToast'
-import { useI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 import { Stack, Flex, Spinner } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useFolder } from '../hooks/useFolder'
@@ -9,7 +9,7 @@ import { TypebotDndProvider } from '../TypebotDndProvider'
 import { FolderContent } from './FolderContent'
 
 export const FolderPage = () => {
-  const t = useI18n()
+  const { t } = useTranslate()
   const router = useRouter()
 
   const { showToast } = useToast()

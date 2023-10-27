@@ -10,7 +10,7 @@ import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvi
 import { useUser } from '@/features/account/hooks/useUser'
 import { StarterPlanPricingCard } from './StarterPlanPricingCard'
 import { ProPlanPricingCard } from './ProPlanPricingCard'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 import { StripeClimateLogo } from './StripeClimateLogo'
 import { guessIfUserIsEuropean } from '@typebot.io/lib/billing/guessIfUserIsEuropean'
 
@@ -20,7 +20,7 @@ type Props = {
 }
 
 export const ChangePlanForm = ({ workspace, excludedPlans }: Props) => {
-  const scopedT = useScopedI18n('billing')
+  const { t } = useTranslate()
 
   const { user } = useUser()
   const { showToast } = useToast()
@@ -49,7 +49,7 @@ export const ChangePlanForm = ({ workspace, excludedPlans }: Props) => {
         trpcContext.workspace.getWorkspace.invalidate()
         showToast({
           status: 'success',
-          description: scopedT('updateSuccessToast.description', {
+          description: t('billing.updateSuccessToast.description', {
             plan: workspace?.plan,
           }),
         })
@@ -87,9 +87,9 @@ export const ChangePlanForm = ({ workspace, excludedPlans }: Props) => {
       <HStack maxW="500px">
         <StripeClimateLogo />
         <Text fontSize="xs" color="gray.500">
-          {scopedT('contribution.preLink')}{' '}
+          {t('billing.contribution.preLink')}{' '}
           <TextLink href="https://climate.stripe.com/5VCRAq" isExternal>
-            {scopedT('contribution.link')}
+            {t('billing.contribution.link')}
           </TextLink>
         </Text>
       </HStack>
@@ -128,9 +128,9 @@ export const ChangePlanForm = ({ workspace, excludedPlans }: Props) => {
       )}
 
       <Text color="gray.500">
-        {scopedT('customLimit.preLink')}{' '}
+        {t('billing.customLimit.preLink')}{' '}
         <TextLink href={'https://typebot.io/enterprise-lead-form'} isExternal>
-          {scopedT('customLimit.link')}
+          {t('billing.customLimit.link')}
         </TextLink>
       </Text>
     </Stack>

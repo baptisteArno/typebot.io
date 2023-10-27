@@ -24,12 +24,12 @@ import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
 import { CustomDomainsDropdown } from '@/features/customDomains/components/CustomDomainsDropdown'
 import { TypebotHeader } from '@/features/editor/components/TypebotHeader'
 import { parseDefaultPublicId } from '../helpers/parseDefaultPublicId'
-import { useI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 import { env } from '@typebot.io/env'
 import DomainStatusIcon from '@/features/customDomains/components/DomainStatusIcon'
 
 export const SharePage = () => {
-  const t = useI18n()
+  const { t } = useTranslate()
   const { workspace } = useWorkspace()
   const { typebot, updateTypebot, publishedTypebot } = useTypebot()
   const { showToast } = useToast()

@@ -5,13 +5,13 @@ import { useUser } from '@/features/account/hooks/useUser'
 import { isNotDefined } from '@typebot.io/lib'
 import Link from 'next/link'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { WorkspaceDropdown } from '@/features/workspace/components/WorkspaceDropdown'
 import { WorkspaceSettingsModal } from '@/features/workspace/components/WorkspaceSettingsModal'
 
 export const DashboardHeader = () => {
-  const scopedT = useScopedI18n('dashboard.header')
+  const { t } = useTranslate()
   const { user, logOut } = useUser()
   const { workspace, switchWorkspace, createWorkspace } = useWorkspace()
 
@@ -50,7 +50,7 @@ export const DashboardHeader = () => {
             onClick={onOpen}
             isLoading={isNotDefined(workspace)}
           >
-            {scopedT('settingsButton.label')}
+            {t('dashboard.header.settingsButton.label')}
           </Button>
           <WorkspaceDropdown
             currentWorkspace={workspace}

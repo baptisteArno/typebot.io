@@ -12,7 +12,7 @@ import {
   ChangePlanModal,
   ChangePlanModalProps,
 } from '@/features/billing/components/ChangePlanModal'
-import { useI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   buttonLabel?: string
@@ -25,7 +25,7 @@ export const UnlockPlanAlertInfo = ({
   excludedPlans,
   ...props
 }: Props) => {
-  const t = useI18n()
+  const { t } = useTranslate()
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <Alert

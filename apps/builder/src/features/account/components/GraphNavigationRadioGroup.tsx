@@ -1,5 +1,5 @@
 import { MouseIcon, LaptopIcon } from '@/components/icons'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 import {
   HStack,
   Radio,
@@ -18,18 +18,20 @@ export const GraphNavigationRadioGroup = ({
   defaultValue,
   onChange,
 }: Props) => {
-  const scopedT = useScopedI18n('account.preferences.graphNavigation')
+  const { t } = useTranslate()
   const graphNavigationData = [
     {
       value: GraphNavigation.MOUSE,
-      label: scopedT('mouse.label'),
-      description: scopedT('mouse.description'),
+      label: t('account.preferences.graphNavigation.mouse.label'),
+      description: t('account.preferences.graphNavigation.mouse.description'),
       icon: <MouseIcon boxSize="35px" />,
     },
     {
       value: GraphNavigation.TRACKPAD,
-      label: scopedT('trackpad.label'),
-      description: scopedT('trackpad.description'),
+      label: t('account.preferences.graphNavigation.trackpad.label'),
+      description: t(
+        'account.preferences.graphNavigation.trackpad.description'
+      ),
       icon: <LaptopIcon boxSize="35px" />,
     },
   ]

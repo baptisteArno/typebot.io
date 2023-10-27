@@ -21,7 +21,7 @@ import { useDebounce } from 'use-debounce'
 import { useToast } from '@/hooks/useToast'
 import { MoreButton } from './MoreButton'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
-import { useScopedI18n } from '@/locales'
+import { T, useTranslate } from '@tolgee/react'
 import { TypebotInDashboard } from '@/features/dashboard/types'
 import { isMobile } from '@/helpers/isMobile'
 import { trpc, trpcVanilla } from '@/lib/trpc'
@@ -40,7 +40,7 @@ export const TypebotButton = ({
   onTypebotUpdated,
   onMouseDown,
 }: Props) => {
-  const scopedT = useScopedI18n('folders.typebotButton')
+  const { t } = useTranslate()
   const router = useRouter()
   const { draggedTypebot } = useTypebotDnd()
   const [draggedTypebotDebounced] = useDebounce(draggedTypebot, 200)
@@ -149,7 +149,7 @@ export const TypebotButton = ({
           top="27px"
           size="sm"
         >
-          {scopedT('live')}
+          {t('folders.typebotButton.live')}
         </Tag>
       )}
       {!isReadOnly && (
@@ -169,18 +169,18 @@ export const TypebotButton = ({
             pos="absolute"
             top="20px"
             right="20px"
-            aria-label={scopedT('showMoreOptions')}
+            aria-label={t('folders.typebotButton.showMoreOptions')}
           >
             {typebot.publishedTypebotId && (
               <MenuItem onClick={handleUnpublishClick}>
-                {scopedT('unpublish')}
+                {t('folders.typebotButton.unpublish')}
               </MenuItem>
             )}
             <MenuItem onClick={handleDuplicateClick}>
-              {scopedT('duplicate')}
+              {t('folders.typebotButton.duplicate')}
             </MenuItem>
             <MenuItem color="red.400" onClick={handleDeleteClick}>
-              {scopedT('delete')}
+              {t('folders.typebotButton.delete')}
             </MenuItem>
           </MoreButton>
         </>
@@ -203,13 +203,16 @@ export const TypebotButton = ({
           message={
             <Stack spacing="4">
               <Text>
-                {scopedT('deleteConfirmationMessage', {
-                  typebotName: <strong>{typebot.name}</strong>,
-                })}
+                <T
+                  keyName="folders.typebotButton.deleteConfirmationMessage"
+                  params={{
+                    strong: <strong>{typebot.name}</strong>,
+                  }}
+                />
               </Text>
               <Alert status="warning">
                 <AlertIcon />
-                {scopedT('deleteConfirmationMessageWarning')}
+                {t('folders.typebotButton.deleteConfirmationMessageWarning')}
               </Alert>
             </Stack>
           }

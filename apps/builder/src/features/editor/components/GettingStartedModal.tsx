@@ -21,10 +21,10 @@ import {
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { useScopedI18n } from '@/locales'
+import { useTranslate } from '@tolgee/react'
 
 export const GettingStartedModal = () => {
-  const scopedT = useScopedI18n('editor.gettingStartedModal')
+  const { t } = useTranslate()
   const { query } = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -40,7 +40,9 @@ export const GettingStartedModal = () => {
         <ModalCloseButton />
         <ModalBody as={Stack} spacing="8" py="10">
           <Stack spacing={4}>
-            <Heading fontSize="xl">{scopedT('editorBasics.heading')}</Heading>
+            <Heading fontSize="xl">
+              {t('editor.gettingStartedModal.editorBasics.heading')}
+            </Heading>
             <List spacing={4}>
               <HStack as={ListItem}>
                 <Flex
@@ -56,7 +58,9 @@ export const GettingStartedModal = () => {
                 >
                   1
                 </Flex>
-                <Text>{scopedT('editorBasics.list.one.label')}</Text>
+                <Text>
+                  {t('editor.gettingStartedModal.editorBasics.list.one.label')}
+                </Text>
               </HStack>
               <HStack as={ListItem}>
                 <Flex
@@ -72,7 +76,9 @@ export const GettingStartedModal = () => {
                 >
                   2
                 </Flex>
-                <Text>{scopedT('editorBasics.list.two.label')}</Text>
+                <Text>
+                  {t('editor.gettingStartedModal.editorBasics.list.two.label')}
+                </Text>
               </HStack>
               <HStack as={ListItem}>
                 <Flex
@@ -88,7 +94,11 @@ export const GettingStartedModal = () => {
                 >
                   3
                 </Flex>
-                <Text>{scopedT('editorBasics.list.three.label')}</Text>
+                <Text>
+                  {t(
+                    'editor.gettingStartedModal.editorBasics.list.three.label'
+                  )}
+                </Text>
               </HStack>
               <HStack as={ListItem}>
                 <Flex
@@ -104,15 +114,18 @@ export const GettingStartedModal = () => {
                 >
                   4
                 </Flex>
-                <Text>{scopedT('editorBasics.list.four.label')}</Text>
+                <Text>
+                  {t('editor.gettingStartedModal.editorBasics.list.four.label')}
+                </Text>
               </HStack>
             </List>
           </Stack>
 
-          <Text>{scopedT('editorBasics.list.label')}</Text>
+          <Text>{t('editor.gettingStartedModal.editorBasics.list.label')}</Text>
           <Stack spacing={4}>
             <Heading fontSize="xl">
-              {scopedT('seeAction.label')} ({`<`} {scopedT('seeAction.time')})
+              {t('editor.gettingStartedModal.seeAction.label')} ({`<`}{' '}
+              {t('editor.gettingStartedModal.seeAction.time')})
             </Heading>
             <iframe
               width="100%"
@@ -127,7 +140,7 @@ export const GettingStartedModal = () => {
               <AccordionItem>
                 <AccordionButton>
                   <Box flex="1" textAlign="left">
-                    {scopedT('seeAction.item.label')}
+                    {t('editor.gettingStartedModal.seeAction.item.label')}
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>
