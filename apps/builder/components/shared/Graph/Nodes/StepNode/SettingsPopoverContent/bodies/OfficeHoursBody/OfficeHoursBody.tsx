@@ -313,8 +313,6 @@ export const OfficeHoursBody = ({ options, onOptionsChange }: Props) => {
     setScreen('SETTINGS')
     setisEdited(true)
 
-    debugger
-
     return saved
   }
 
