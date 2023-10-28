@@ -65,7 +65,7 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
         const id = createId()
 
         const totalGroupsWithSameTitle = typebot.groups.filter(
-          (group) => group.title === group.title
+          (g) => g.title === group.title
         ).length
 
         const newGroup: Group = {
@@ -76,7 +76,7 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
                 totalGroupsWithSameTitle > 0
                   ? ` (${totalGroupsWithSameTitle})`
                   : ''
-              }}`,
+              }`,
           id,
           blocks: group.blocks.map((block) => duplicateBlockDraft(id)(block)),
           graphCoordinates: {
