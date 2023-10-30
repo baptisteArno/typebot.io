@@ -11,7 +11,11 @@ Your 3rd party service (Make.com, Zapier, etc) is giving you a Webhook URL.
 
 You only have to paste this URL in the Webhook block and click on "Test the request". By default the 3rd party service will receive a snapshot of what the bot could send.
 
-<img src="/img/blocks/integrations/webhook/simple-post.png" width="600" alt="Simple Webhook POST" />
+<img
+  src="/img/blocks/integrations/webhook/simple-post.png"
+  width="600"
+  alt="Simple Webhook POST"
+/>
 
 You can also decide to customize the request sent to the 3rd party service.
 
@@ -32,6 +36,35 @@ You can set a custom body with your collected variables. Here is a working examp
 }
 ```
 
+### Example with a dummy API: CREATE and GET
+
+This video provides a step-by-step guide to successfully configure webhook blocks in Typebot.
+
+I demonstrate how to configure the webhook block, including the URL, method, and custom body. I also show you how to test the webhook call and save the newly created employee ID. Finally, I explain how to implement the find employee by ID endpoint and map the employee name to a variable.
+
+<div
+  style={{
+    position: 'relative',
+    paddingBottom: '64.5933014354067%',
+    height: 0,
+  }}
+>
+  <iframe
+    src="https://www.loom.com/embed/d9aef6a37e0c43759b31be7d69c4dd6d?sid=2a24096c-9e2a-48da-aa2a-61a89877afe7"
+    frameBorder={0}
+    webkitallowfullscreen
+    mozallowfullscreen
+    allowFullScreen
+    style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+    }}
+  />
+</div>
+
 ### Example: fetch movie information
 
 Let's create a bot that ask for a movie and retrieve its informations (By sending an HTTP request to the [OMDB API](http://www.omdbapi.com/)).
@@ -40,19 +73,35 @@ From the documentation, I know that by calling this specific URL: http://www.omd
 
 What I need in my case is instead of inserting "Star Wars", I'd like to insert a Typebot variable:
 
-<img src="/img/blocks/integrations/webhook/variable-url.png" width="600" alt="Variable in URL" />
+<img
+  src="/img/blocks/integrations/webhook/variable-url.png"
+  width="600"
+  alt="Variable in URL"
+/>
 
 Then, we can set a test value for our variable (it will replace the variable with this value only for the "Test the request" button):
 
-<img src="/img/blocks/integrations/webhook/variable-test-value.png" width="300" alt="Variable in URL" />
+<img
+  src="/img/blocks/integrations/webhook/variable-test-value.png"
+  width="300"
+  alt="Variable in URL"
+/>
 
 Hit the "Test the request" button and then we can save the result in multiple variables:
 
-<img src="/img/blocks/integrations/webhook/save-in-variable.png" width="400" alt="Variable in URL" />
+<img
+  src="/img/blocks/integrations/webhook/save-in-variable.png"
+  width="400"
+  alt="Variable in URL"
+/>
 
 Then we can use these variables to display dynamic content in the next bubbles:
 
-<img src="/img/blocks/integrations/webhook/preview.png" width="600" alt="Variable in URL" />
+<img
+  src="/img/blocks/integrations/webhook/preview.png"
+  width="600"
+  alt="Variable in URL"
+/>
 
 Possibilities are endless when it comes to API calls, you can litteraly call any API and fetch any data you want.
 
