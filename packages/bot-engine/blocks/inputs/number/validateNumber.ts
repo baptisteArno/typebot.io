@@ -1,10 +1,29 @@
 import { isNotDefined } from '@typebot.io/lib'
-import { NumberInputBlock } from '@typebot.io/schemas'
+import { NumberInputBlock, Variable } from '@typebot.io/schemas'
+import { parseVariables } from '../../../variables/parseVariables'
 
 export const validateNumber = (
   inputValue: string,
-  options: NumberInputBlock['options']
-) =>
-  inputValue !== '' &&
-  (isNotDefined(options?.min) || Number(inputValue) >= Number(options.min)) &&
-  (isNotDefined(options?.max) || Number(inputValue) <= Number(options.max))
+  {
+    options,
+    variables,
+  }: {
+    options: NumberInputBlock['options']
+    variables: Variable[]
+  }
+) => {
+  const min =
+    options?.min && typeof options.min === 'string'
+      ? Number(parseVariables(variables)(options.min))
+      : undefined
+  const max =
+    options?.min && typeof options.min === 'string'
+      ? Number(parseVariables(variables)(options.min))
+      : undefined
+
+  return (
+    inputValue !== '' &&
+    (isNotDefined(min) || Number(inputValue) >= min) &&
+    (isNotDefined(max) || Number(inputValue) <= max)
+  )
+}

@@ -345,7 +345,10 @@ const parseReply =
       }
       case InputBlockType.NUMBER: {
         if (!inputValue) return { status: 'fail' }
-        const isValid = validateNumber(inputValue, block.options)
+        const isValid = validateNumber(inputValue, {
+          options: block.options,
+          variables: state.typebotsQueue[0].typebot.variables,
+        })
         if (!isValid) return { status: 'fail' }
         return { status: 'success', reply: parseNumber(inputValue) }
       }
