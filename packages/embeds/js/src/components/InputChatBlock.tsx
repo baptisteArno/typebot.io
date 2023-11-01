@@ -63,8 +63,8 @@ export const InputChatBlock = (props: Props) => {
   }
 
   createEffect(() => {
-    const formattedMessage = formattedMessages().find(
-      (message) => message.inputId === props.block.id
+    const formattedMessage = formattedMessages().findLast(
+      (message) => props.inputIndex === message.inputIndex
     )?.formattedMessage
     if (formattedMessage) setFormattedMessage(formattedMessage)
   })

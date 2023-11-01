@@ -171,7 +171,7 @@ export const ConversationContainer = (props: Props) => {
       setFormattedMessages([
         ...formattedMessages(),
         {
-          inputId: [...chatChunks()].pop()?.input?.id ?? '',
+          inputIndex: [...chatChunks()].length - 1,
           formattedMessage: data.lastMessageNewFormat as string,
         },
       ])
