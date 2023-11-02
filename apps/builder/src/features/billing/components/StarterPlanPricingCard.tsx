@@ -53,7 +53,9 @@ export const StarterPlanPricingCard = ({
             <Heading fontSize="2xl">
               <T
                 keyName="billing.pricingCard.heading"
-                params={{ strong: <chakra.span color="orange.400" /> }}
+                params={{
+                  strong: <chakra.span color="orange.400">Starter</chakra.span>,
+                }}
               />
             </Heading>
             <Text>{t('billing.pricingCard.starter.description')}</Text>

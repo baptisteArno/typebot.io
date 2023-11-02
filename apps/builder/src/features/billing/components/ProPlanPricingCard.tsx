@@ -77,7 +77,9 @@ export const ProPlanPricingCard = ({
                   strong: (
                     <chakra.span
                       color={useColorModeValue('blue.400', 'blue.300')}
-                    />
+                    >
+                      Pro
+                    </chakra.span>
                   ),
                 }}
               />
