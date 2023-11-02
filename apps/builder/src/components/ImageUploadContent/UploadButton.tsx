@@ -31,7 +31,6 @@ export const UploadButton = ({
       Object.entries(data.formData).forEach(([key, value]) => {
         formData.append(key, value)
       })
-      formData.append('Cache-Control', 'max-age=86400')
       formData.append('file', file)
       const upload = await fetch(data.presignedUrl, {
         method: 'POST',

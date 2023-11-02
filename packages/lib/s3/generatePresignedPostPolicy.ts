@@ -34,6 +34,8 @@ export const generatePresignedPostPolicy = async ({
   postPolicy.setKey(filePath)
   postPolicy.setBucket(env.S3_BUCKET)
   postPolicy.setExpires(new Date(Date.now() + tenMinutes * 1000))
+  postPolicy.formData['Cache-Control'] = 'max-age=86400'
+  postPolicy.policy.conditions.push(['eq', '$Cache-Control', 'max-age=86400'])
   if (fileType) postPolicy.setContentType(fileType)
 
   return minioClient.presignedPostPolicy(postPolicy)
