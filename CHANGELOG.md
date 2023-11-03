@@ -1,5 +1,32 @@
 # Changelog
 
+<a name="2.19.0"></a>
+## 2.19.0 (2023-11-02)
+
+### Changed
+
+- ⚡ Add cache-control header on newly uploaded files [[d1502f8](https://github.com/baptisteArno/typebot.io/commit/d1502f8300e85529f9a16e8376f83eb7ef8da556)]
+
+### Fixed
+
+- 🚑 Move cache control header into the post policy [[a855d85](https://github.com/baptisteArno/typebot.io/commit/a855d85d048bf7519699628d0bdf834752a54dbc)]
+- ✏️ (billing) Fix plan name typo [[bdf9fae](https://github.com/baptisteArno/typebot.io/commit/bdf9faea78b61817ffbb185b4dcaa11d3b537e62)]
+- 🐛 Fix formatted message in input block when input is retried [[a564181](https://github.com/baptisteArno/typebot.io/commit/a5641811a320d99867fef246786fae9980bce1d7)]
+- ✏️ Fix CORSRules content typo for S3 config [[585e1d4](https://github.com/baptisteArno/typebot.io/commit/585e1d40749528bc69ffea385d2b6b21bac50ae4)]
+- 🐛 (number) Fix number input validation with variables [[7586eca](https://github.com/baptisteArno/typebot.io/commit/7586ecaf139efcd3ab86a277cadd61c1a9d9c72f)]
+- 🐛 Fix group duplicate new title bug [[2d1ce73](https://github.com/baptisteArno/typebot.io/commit/2d1ce73931221195c6838a384f64821fc837ccb3)]
+- 💚 Fix checkAndReportChatsUsage script sending multiple emails at once [[3f7f094](https://github.com/baptisteArno/typebot.io/commit/3f7f0944e15e09c80e2b0aac9bb5100ab55a3526)]
+- ✏️ Fix manual deployment doc start script typo [[a347a27](https://github.com/baptisteArno/typebot.io/commit/a347a2741d1c6671610f1f6431e8be1ab7fb3376)]
+- 🐛 Fix graph flickering on high res displays ([#959](https://github.com/baptisteArno/typebot.io/issues/959)) [[f1e3836](https://github.com/baptisteArno/typebot.io/commit/f1e38361842432d0224da13379ea5b985cde555a)]
+
+### Miscellaneous
+
+- 📝 Add text link section in text bubble doc [[b80bea1](https://github.com/baptisteArno/typebot.io/commit/b80bea11b485707e3a0bbe51549e585f957ac8bf)]
+- 📝 Add webhook configuration tuto video [[3e02436](https://github.com/baptisteArno/typebot.io/commit/3e02436d30946ac8732ffbb25acf7a109f9ccff6)]
+- 🧑‍💻 Migrate to Tolgee ([#976](https://github.com/baptisteArno/typebot.io/issues/976)) [[bed8b42](https://github.com/baptisteArno/typebot.io/commit/bed8b42a2eb10bd81909ac38a6b3b51a423789c2)]
+- 🧑‍💻 Fix type resolution for @typebot.io/react and nextjs [[31b3fc3](https://github.com/baptisteArno/typebot.io/commit/31b3fc311ede7885ff89ee41467308e718c92d4d)]
+
+
 <a name="2.18.4"></a>
 ## 2.18.4 (2023-10-25)
 
