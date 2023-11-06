@@ -18,7 +18,7 @@ importers:
         specifier: 1.3.2-canary.2
         version: 1.3.2-canary.2
       husky:
-        specifier: ^8.0.3
+        specifier: 8.0.3
         version: 8.0.3
       prettier:
         specifier: 2.8.8
@@ -30,13 +30,13 @@ importers:
   apps/builder:
     dependencies:
       '@chakra-ui/anatomy':
-        specifier: ^2.1.1
+        specifier: 2.1.1
         version: 2.1.1
       '@chakra-ui/react':
         specifier: 2.7.1
         version: 2.7.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.15)(framer-motion@10.3.0)(react-dom@18.2.0)(react@18.2.0)
       '@chakra-ui/theme-tools':
-        specifier: ^2.0.18
+        specifier: 2.0.18
         version: 2.0.18(@chakra-ui/styled-system@2.9.1)
       '@dnd-kit/core':
         specifier: 6.0.8
@@ -63,7 +63,7 @@ importers:
         specifier: 4.4.0
         version: 4.4.0
       '@giphy/js-util':
-        specifier: ^5.0.0
+        specifier: 5.0.0
         version: 5.0.0
       '@giphy/react-components':
         specifier: 7.1.0
@@ -78,16 +78,16 @@ importers:
         specifier: 7.73.0
         version: 7.73.0(next@13.5.4)(react@18.2.0)
       '@tanstack/react-query':
-        specifier: ^4.29.19
+        specifier: 4.29.19
         version: 4.29.19(react-dom@18.2.0)(react@18.2.0)
       '@tanstack/react-table':
         specifier: 8.9.3
         version: 8.9.3(react-dom@18.2.0)(react@18.2.0)
       '@tolgee/format-icu':
-        specifier: ^5.13.3
+        specifier: 5.13.3
         version: 5.13.3
       '@tolgee/react':
-        specifier: ^5.13.3
+        specifier: 5.13.3
         version: 5.13.3(react@18.2.0)
       '@trpc/client':
         specifier: 10.40.0
@@ -117,7 +117,7 @@ importers:
         specifier: 21.1.5
         version: 21.1.5(@babel/core@7.22.9)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-react@0.94.2)(slate@0.94.1)
       '@udecode/plate-common':
-        specifier: ^21.1.5
+        specifier: 21.1.5
         version: 21.1.5(@babel/core@7.22.9)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-react@0.94.2)(slate@0.94.1)
       '@udecode/plate-core':
         specifier: 21.1.5
@@ -132,25 +132,25 @@ importers:
         specifier: 21.1.5
         version: 21.1.5(@babel/core@7.22.9)(@types/react@18.2.15)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-react@0.94.2)(slate@0.94.1)(styled-components@6.0.8)
       '@uiw/codemirror-extensions-langs':
-        specifier: ^4.21.7
+        specifier: 4.21.7
         version: 4.21.7(@codemirror/autocomplete@6.9.2)(@codemirror/language-data@6.3.1)(@codemirror/language@6.9.1)(@codemirror/legacy-modes@6.3.3)(@codemirror/state@6.2.1)(@codemirror/view@6.21.3)(@lezer/common@1.1.0)(@lezer/highlight@1.1.6)(@lezer/javascript@1.4.8)(@lezer/lr@1.3.13)
       '@uiw/codemirror-theme-github':
-        specifier: ^4.21.7
+        specifier: 4.21.7
         version: 4.21.7(@codemirror/language@6.9.1)(@codemirror/state@6.2.1)(@codemirror/view@6.21.3)
       '@uiw/codemirror-theme-tokyo-night':
-        specifier: ^4.21.7
+        specifier: 4.21.7
         version: 4.21.7(@codemirror/language@6.9.1)(@codemirror/state@6.2.1)(@codemirror/view@6.21.3)
       '@uiw/react-codemirror':
-        specifier: ^4.21.7
+        specifier: 4.21.7
         version: 4.21.7(@babel/runtime@7.23.1)(@codemirror/autocomplete@6.9.2)(@codemirror/language@6.9.1)(@codemirror/lint@6.4.2)(@codemirror/search@6.5.4)(@codemirror/state@6.2.1)(@codemirror/theme-one-dark@6.1.2)(@codemirror/view@6.21.3)(codemirror@6.0.1)(react-dom@18.2.0)(react@18.2.0)
       '@upstash/ratelimit':
-        specifier: ^0.4.3
+        specifier: 0.4.3
         version: 0.4.3
       '@upstash/redis':
-        specifier: ^1.22.0
+        specifier: 1.22.0
         version: 1.22.0
       '@use-gesture/react':
-        specifier: ^10.2.27
+        specifier: 10.2.27
         version: 10.2.27(react@18.2.0)
       browser-image-compression:
         specifier: 2.0.2
@@ -207,7 +207,7 @@ importers:
         specifier: 4.22.1
         version: 4.22.1(next@13.5.4)(nodemailer@6.9.3)(react-dom@18.2.0)(react@18.2.0)
       nextjs-cors:
-        specifier: ^2.1.2
+        specifier: 2.1.2
         version: 2.1.2(next@13.5.4)
       nodemailer:
         specifier: 6.9.3
@@ -216,13 +216,13 @@ importers:
         specifier: 0.2.0
         version: 0.2.0
       openai:
-        specifier: ^4.11.1
+        specifier: 4.11.1
         version: 4.11.1
       papaparse:
         specifier: 5.4.1
         version: 5.4.1
       posthog-js:
-        specifier: ^1.77.1
+        specifier: 1.77.1
         version: 1.77.1
       posthog-node:
         specifier: 3.1.1
@@ -240,7 +240,7 @@ importers:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
       sharp:
-        specifier: ^0.32.4
+        specifier: 0.32.4
         version: 0.32.4
       slate:
         specifier: 0.94.1
@@ -267,7 +267,7 @@ importers:
         specifier: 1.2.0
         version: 1.2.0(@trpc/server@10.40.0)(zod@3.21.4)
       unsplash-js:
-        specifier: ^7.0.18
+        specifier: 7.0.18
         version: 7.0.18
       use-debounce:
         specifier: 9.0.4
@@ -325,7 +325,7 @@ importers:
         specifier: 1.4.3
         version: 1.4.3
       dotenv-cli:
-        specifier: ^7.2.1
+        specifier: 7.2.1
         version: 7.2.1
       eslint:
         specifier: 8.44.0
@@ -334,10 +334,10 @@ importers:
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
       next-runtime-env:
-        specifier: ^1.6.2
+        specifier: 1.6.2
         version: 1.6.2
       superjson:
-        specifier: ^1.12.4
+        specifier: 1.12.4
         version: 1.12.4
       typescript:
         specifier: 5.1.6
@@ -392,13 +392,13 @@ importers:
         specifier: 4.15.0
         version: 4.15.0
       '@docusaurus/types':
-        specifier: ^2.3.1
+        specifier: 2.3.1
         version: 2.3.1(react-dom@17.0.2)(react@17.0.2)
       '@types/react':
         specifier: 18.0.28
         version: 18.0.28
       dotenv-cli:
-        specifier: ^7.2.1
+        specifier: 7.2.1
         version: 7.2.1
       tsx:
         specifier: 3.12.5
@@ -407,7 +407,7 @@ importers:
         specifier: 4.9.5
         version: 4.9.5
       url:
-        specifier: ^0.11.1
+        specifier: 0.11.1
         version: 0.11.1
 
   apps/landing-page:
@@ -483,7 +483,7 @@ importers:
         specifier: 7.0.3
         version: 7.0.3
       dotenv-cli:
-        specifier: ^7.2.1
+        specifier: 7.2.1
         version: 7.2.1
       eslint:
         specifier: 8.44.0
@@ -492,7 +492,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
       next-runtime-env:
-        specifier: ^1.6.2
+        specifier: 1.6.2
         version: 1.6.2
       next-transpile-modules:
         specifier: 10.0.0
@@ -510,7 +510,7 @@ importers:
   apps/viewer:
     dependencies:
       '@planetscale/database':
-        specifier: ^1.8.0
+        specifier: 1.8.0
         version: 1.8.0
       '@sentry/nextjs':
         specifier: 7.73.0
@@ -552,7 +552,7 @@ importers:
         specifier: 6.9.3
         version: 6.9.3
       openai:
-        specifier: ^4.11.1
+        specifier: 4.11.1
         version: 4.11.1
       qs:
         specifier: 6.11.2
@@ -613,7 +613,7 @@ importers:
         specifier: 18.2.15
         version: 18.2.15
       dotenv-cli:
-        specifier: ^7.2.1
+        specifier: 7.2.1
         version: 7.2.1
       eslint:
         specifier: 8.44.0
@@ -625,7 +625,7 @@ importers:
         specifier: 8.9.0
         version: 8.9.0
       next-runtime-env:
-        specifier: ^1.6.2
+        specifier: 1.6.2
         version: 1.6.2
       papaparse:
         specifier: 5.4.1
@@ -646,7 +646,7 @@ importers:
         specifier: 2.2.1
         version: 2.2.1
       '@planetscale/database':
-        specifier: ^1.8.0
+        specifier: 1.8.0
         version: 1.8.0
       '@sentry/nextjs':
         specifier: 7.73.0
@@ -673,10 +673,10 @@ importers:
         specifier: workspace:*
         version: link:../tsconfig
       '@udecode/plate-common':
-        specifier: ^21.1.5
+        specifier: 21.1.5
         version: 21.1.5(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-react@0.99.0)(slate@0.94.1)
       '@udecode/plate-serializer-md':
-        specifier: ^24.4.0
+        specifier: 24.4.0
         version: 24.4.0(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-hyperscript@0.77.0)(slate-react@0.99.0)(slate@0.94.1)
       ai:
         specifier: 2.2.14
@@ -685,7 +685,7 @@ importers:
         specifier: 2.6.6
         version: 2.6.6
       date-fns:
-        specifier: ^2.30.0
+        specifier: 2.30.0
         version: 2.30.0
       google-auth-library:
         specifier: 8.9.0
@@ -700,19 +700,19 @@ importers:
         specifier: 1.10.37
         version: 1.10.37
       node-html-parser:
-        specifier: ^6.1.5
+        specifier: 6.1.5
         version: 6.1.5
       nodemailer:
         specifier: 6.9.3
         version: 6.9.3
       openai:
-        specifier: ^4.11.1
+        specifier: 4.11.1
         version: 4.11.1
       qs:
-        specifier: ^6.11.2
+        specifier: 6.11.2
         version: 6.11.2
       remark-slate:
-        specifier: ^1.8.6
+        specifier: 1.8.6
         version: 1.8.6
       stripe:
         specifier: 12.13.0
@@ -786,7 +786,7 @@ importers:
         specifier: 10.4.13
         version: 10.4.13(postcss@8.4.21)
       esbuild:
-        specifier: ^0.17.5
+        specifier: 0.17.5
         version: 0.17.5
       eslint:
         specifier: 8.32.0
@@ -903,16 +903,13 @@ importers:
         specifier: 1.54.1
         version: 1.54.1
       '@udecode/plate-common':
-        specifier: ^21.1.5
+        specifier: 21.1.5
         version: 21.1.5(@babel/core@7.22.9)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-react@0.94.2)(slate@0.94.1)
       dompurify:
-        specifier: ^3.0.6
+        specifier: 3.0.6
         version: 3.0.6
-      eventsource-parser:
-        specifier: ^1.0.0
-        version: 1.0.0
       marked:
-        specifier: ^9.0.3
+        specifier: 9.0.3
         version: 9.0.3
       solid-element:
         specifier: 1.7.1
@@ -952,7 +949,7 @@ importers:
         specifier: workspace:*
         version: link:../../tsconfig
       '@types/dompurify':
-        specifier: ^3.0.3
+        specifier: 3.0.3
         version: 3.0.3
       autoprefixer:
         specifier: 10.4.14
@@ -1007,7 +1004,7 @@ importers:
         specifier: 7.22.5
         version: 7.22.5(@babel/core@7.22.9)
       '@rollup/plugin-alias':
-        specifier: ^5.0.0
+        specifier: 5.0.0
         version: 5.0.0(rollup@3.26.2)
       '@rollup/plugin-babel':
         specifier: 6.0.3
@@ -1058,7 +1055,7 @@ importers:
         specifier: 3.26.2
         version: 3.26.2
       rollup-plugin-dts:
-        specifier: ^6.1.0
+        specifier: 6.1.0
         version: 6.1.0(rollup@3.26.2)(typescript@5.1.6)
       rollup-plugin-typescript-paths:
         specifier: 1.4.0
@@ -1086,7 +1083,7 @@ importers:
         specifier: 7.22.5
         version: 7.22.5(@babel/core@7.22.9)
       '@rollup/plugin-alias':
-        specifier: ^5.0.0
+        specifier: 5.0.0
         version: 5.0.0(rollup@3.26.2)
       '@rollup/plugin-babel':
         specifier: 6.0.3
@@ -1134,7 +1131,7 @@ importers:
         specifier: 3.26.2
         version: 3.26.2
       rollup-plugin-dts:
-        specifier: ^6.1.0
+        specifier: 6.1.0
         version: 6.1.0(rollup@3.26.2)(typescript@5.1.6)
       rollup-plugin-typescript-paths:
         specifier: 1.4.0
@@ -1154,7 +1151,7 @@ importers:
   packages/env:
     dependencies:
       '@t3-oss/env-nextjs':
-        specifier: ^0.7.0
+        specifier: 0.7.0
         version: 0.7.0(zod@3.21.4)
       zod:
         specifier: 3.21.4
@@ -1164,10 +1161,10 @@ importers:
         specifier: workspace:*
         version: link:../tsconfig
       '@types/node':
-        specifier: ^20.4.9
+        specifier: 20.4.9
         version: 20.4.9
       esbuild:
-        specifier: ^0.19.1
+        specifier: 0.19.1
         version: 0.19.1
 
   packages/eslint-config-custom:
@@ -1186,10 +1183,10 @@ importers:
         version: 7.32.2(eslint@8.44.0)
     devDependencies:
       '@typescript-eslint/eslint-plugin':
-        specifier: ^6.0.0
+        specifier: 6.0.0
         version: 6.0.0(@typescript-eslint/parser@6.0.0)(eslint@8.44.0)(typescript@5.1.6)
       '@typescript-eslint/parser':
-        specifier: ^6.0.0
+        specifier: 6.0.0
         version: 6.0.0(eslint@8.44.0)(typescript@5.1.6)
 
   packages/lib:
@@ -1201,7 +1198,7 @@ importers:
         specifier: 10.40.0
         version: 10.40.0
       '@udecode/plate-common':
-        specifier: ^21.1.5
+        specifier: 21.1.5
         version: 21.1.5(@babel/core@7.22.9)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-react@0.94.2)(slate@0.94.1)
       got:
         specifier: 12.6.0
@@ -1210,7 +1207,7 @@ importers:
         specifier: 7.1.3
         version: 7.1.3
       remark-slate:
-        specifier: ^1.8.6
+        specifier: 1.8.6
         version: 1.8.6
       stripe:
         specifier: 12.13.0
@@ -1260,7 +1257,7 @@ importers:
         specifier: 20.4.2
         version: 20.4.2
       dotenv-cli:
-        specifier: ^7.2.1
+        specifier: 7.2.1
         version: 7.2.1
       prisma:
         specifier: 5.0.0
@@ -1275,7 +1272,7 @@ importers:
   packages/schemas:
     dependencies:
       '@udecode/plate-common':
-        specifier: ^21.1.5
+        specifier: 21.1.5
         version: 21.1.5(@babel/core@7.22.9)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-react@0.94.2)(slate@0.94.1)
       zod:
         specifier: 3.21.4
@@ -6846,7 +6843,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       chalk: 4.1.2
       jest-message-util: 29.7.0
       jest-util: 29.7.0
@@ -6867,14 +6864,14 @@ packages:
       '@jest/test-result': 29.7.0
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       ci-info: 3.9.0
       exit: 0.1.2
       graceful-fs: 4.2.11
       jest-changed-files: 29.7.0
-      jest-config: 29.7.0(@types/node@20.8.3)
+      jest-config: 29.7.0(@types/node@20.4.9)
       jest-haste-map: 29.7.0
       jest-message-util: 29.7.0
       jest-regex-util: 29.6.3
@@ -6902,7 +6899,7 @@ packages:
     dependencies:
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       jest-mock: 29.7.0
     dev: true
 
@@ -6929,7 +6926,7 @@ packages:
     dependencies:
       '@jest/types': 29.6.3
       '@sinonjs/fake-timers': 10.3.0
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       jest-message-util: 29.7.0
       jest-mock: 29.7.0
       jest-util: 29.7.0
@@ -6962,7 +6959,7 @@ packages:
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
       '@jridgewell/trace-mapping': 0.3.19
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       chalk: 4.1.2
       collect-v8-coverage: 1.0.2
       exit: 0.1.2
@@ -7049,7 +7046,7 @@ packages:
       '@jest/schemas': 29.6.3
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.2
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       '@types/yargs': 17.0.28
       chalk: 4.1.2
 
@@ -8918,13 +8915,13 @@ packages:
     resolution: {integrity: sha512-oyl4jvAfTGX9Bt6Or4H9ni1Z447/tQuxnZsytsCaExKlmJiU8sFgnIBRzJUpKwB5eWn9HuBYlUlVA74q/yN0eQ==}
     dependencies:
       '@types/connect': 3.4.36
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
     dev: false
 
   /@types/bonjour@3.5.11:
     resolution: {integrity: sha512-isGhjmBtLIxdHBDl2xGwUzEM8AOyOvWsADWq7rqirdi/ZQoHnLWErHvsThcEzTX8juDRiZtzp2Qkv5bgNh6mAg==}
     dependencies:
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
     dev: false
 
   /@types/canvas-confetti@1.6.0:
@@ -8935,13 +8932,13 @@ packages:
     resolution: {integrity: sha512-iaQslNbARe8fctL5Lk+DsmgWOM83lM+7FzP0eQUJs1jd3kBE8NWqBTIT2S8SqQOJjxvt2eyIjpOuYeRXq2AdMw==}
     dependencies:
       '@types/express-serve-static-core': 4.17.37
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
     dev: false
 
   /@types/connect@3.4.36:
     resolution: {integrity: sha512-P63Zd/JUGq+PdrM1lv0Wv5SBYeA2+CORvbrXbngriYY0jzLUWfQMQQxOhjONEz/wlHOAxOdY7CY65rgQdTjq2w==}
     dependencies:
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
     dev: false
 
   /@types/content-type@1.1.6:
@@ -8982,7 +8979,7 @@ packages:
   /@types/express-serve-static-core@4.17.37:
     resolution: {integrity: sha512-ZohaCYTgGFcOP7u6aJOhY9uIZQgZ2vxC2yWoArY+FeDXlqeH66ZVBjgvg+RLVAS/DWNq4Ap9ZXu1+SUQiiWYMg==}
     dependencies:
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       '@types/qs': 6.9.7
       '@types/range-parser': 1.2.5
       '@types/send': 0.17.2
@@ -9000,7 +8997,7 @@ packages:
   /@types/graceful-fs@4.1.7:
     resolution: {integrity: sha512-MhzcwU8aUygZroVwL2jeYk6JisJrPl/oov/gsgGCue9mkgl9wjGbzReYQClxiUgFDnib9FuHqTndccKeZKxTRw==}
     dependencies:
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
     dev: true
 
   /@types/hast@2.3.6:
@@ -9033,7 +9030,7 @@ packages:
   /@types/http-proxy@1.17.12:
     resolution: {integrity: sha512-kQtujO08dVtQ2wXAuSFfk9ASy3sug4+ogFR8Kd8UgP8PEuc1/G/8yjYRmp//PcDNJEUKOza/MrQu15bouEUCiw==}
     dependencies:
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
     dev: false
 
   /@types/is-hotkey@0.1.7:
@@ -9067,7 +9064,7 @@ packages:
   /@types/jsdom@20.0.1:
     resolution: {integrity: sha512-d0r18sZPmMQr1eG35u12FZfhIXNrnsPU/g5wvRKCUf/tOGilKKwYMYGqh33BNR6ba+2gkHw1EUiHoN3mn7E5IQ==}
     dependencies:
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       '@types/tough-cookie': 4.0.3
       parse5: 7.1.2
     dev: true
@@ -9088,7 +9085,7 @@ packages:
   /@types/keyv@3.1.4:
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
     dependencies:
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
     dev: false
 
   /@types/lodash.mergewith@4.6.7:
@@ -9116,7 +9113,7 @@ packages:
   /@types/micro@7.3.7:
     resolution: {integrity: sha512-MFsX7eCj0Tg3TtphOQvANNvNtFpya+s/rYOCdV6o+DFjOQPFi2EVRbBALjbbgZTXUaJP1Q281MJiJOD40d0UxQ==}
     dependencies:
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
     dev: true
 
   /@types/mime@1.3.3:
@@ -9130,7 +9127,7 @@ packages:
   /@types/node-fetch@2.6.6:
     resolution: {integrity: sha512-95X8guJYhfqiuVVhRFxVQcf4hW/2bCuoPwDasMf/531STFoNoWTT7YDnWdXHEZKqAGUigmpG31r2FE70LwnzJw==}
     dependencies:
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       form-data: 4.0.0
     dev: false
 
@@ -9146,7 +9143,6 @@ packages:
 
   /@types/node@20.4.9:
     resolution: {integrity: sha512-8e2HYcg7ohnTUbHk8focoklEQYvemQmu9M/f43DZVx43kHn0tE3BY/6gSDxS7k0SprtS0NHvj+L80cGLnoOUcQ==}
-    dev: true
 
   /@types/node@20.8.3:
     resolution: {integrity: sha512-jxiZQFpb+NlH5kjW49vXxvxTjeeqlbsnTAdBTKpzEdPs9itay7MscYXz3Fo9VYFEsfQ6LJFitHad3faerLAjCw==}
@@ -9186,7 +9182,7 @@ packages:
   /@types/prompts@2.4.4:
     resolution: {integrity: sha512-p5N9uoTH76lLvSAaYSZtBCdEXzpOOufsRjnhjVSrZGXikVGHX9+cc9ERtHRV4hvBKHyZb1bg4K+56Bd2TqUn4A==}
     dependencies:
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       kleur: 3.0.3
     dev: true
 
@@ -9279,7 +9275,7 @@ packages:
   /@types/responselike@1.0.1:
     resolution: {integrity: sha512-TiGnitEDxj2X0j+98Eqk5lv/Cij8oHd32bU4D/Yw6AOq7vvTk0gSD2GPj0G/HkvhMoVsdlhYF4yqqlyPBTM6Sg==}
     dependencies:
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
     dev: false
 
   /@types/retry@0.12.0:
@@ -9289,7 +9285,7 @@ packages:
   /@types/sax@1.2.5:
     resolution: {integrity: sha512-9jWta97bBVC027/MShr3gLab8gPhKy4l6qpb+UJLF5pDm3501NvA7uvqVCW+REFtx00oTi6Cq9JzLwgq6evVgw==}
     dependencies:
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
     dev: false
 
   /@types/scheduler@0.16.4:
@@ -9303,7 +9299,7 @@ packages:
     resolution: {integrity: sha512-aAG6yRf6r0wQ29bkS+x97BIs64ZLxeE/ARwyS6wrldMm3C1MdKwCcnnEwMC1slI8wuxJOpiUH9MioC0A0i+GJw==}
     dependencies:
       '@types/mime': 1.3.3
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
     dev: false
 
   /@types/serve-index@1.9.2:
@@ -9317,13 +9313,13 @@ packages:
     dependencies:
       '@types/http-errors': 2.0.2
       '@types/mime': 3.0.2
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
     dev: false
 
   /@types/sockjs@0.3.34:
     resolution: {integrity: sha512-R+n7qBFnm/6jinlteC9DBL5dGiDGjWAvjo4viUanpnc/dG1y7uDoacXPIQ/PQEg1fI912SMHIa014ZjRpvDw4g==}
     dependencies:
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
     dev: false
 
   /@types/stack-utils@2.0.1:
@@ -9353,7 +9349,7 @@ packages:
   /@types/ws@8.5.6:
     resolution: {integrity: sha512-8B5EO9jLVCy+B58PLHvLDuOD8DRVMgQzq8d55SjLCOn9kqGyqOvy27exVaTio1q1nX5zLu8/6N0n2ThSxOM6tg==}
     dependencies:
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
     dev: false
 
   /@types/yargs-parser@21.0.1:
@@ -12936,7 +12932,7 @@ packages:
       chalk: 4.1.2
       exit: 0.1.2
       graceful-fs: 4.2.11
-      jest-config: 29.7.0(@types/node@20.8.3)
+      jest-config: 29.7.0(@types/node@20.4.9)
       jest-util: 29.7.0
       prompts: 2.4.2
     transitivePeerDependencies:
@@ -14659,7 +14655,7 @@ packages:
     resolution: {integrity: sha512-EzV94NYKoO09GLXGjXj9JIlXijVck4ONSr5wiCWDvhsvj5jxSrzTmRU/9C1DyB6uToszLs8aifA6NQ7lEQdvFw==}
     engines: {node: '>= 0.8'}
     dependencies:
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       require-like: 0.1.2
     dev: false
 
@@ -16745,7 +16741,7 @@ packages:
       '@jest/expect': 29.7.0
       '@jest/test-result': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       chalk: 4.1.2
       co: 4.6.0
       dedent: 1.5.1
@@ -16783,7 +16779,7 @@ packages:
       create-jest: 29.7.0
       exit: 0.1.2
       import-local: 3.1.0
-      jest-config: 29.7.0(@types/node@20.8.3)
+      jest-config: 29.7.0(@types/node@20.4.9)
       jest-util: 29.7.0
       jest-validate: 29.7.0
       yargs: 17.7.2
@@ -16794,7 +16790,7 @@ packages:
       - ts-node
     dev: true
 
-  /jest-config@29.7.0(@types/node@20.8.3):
+  /jest-config@29.7.0(@types/node@20.4.9):
     resolution: {integrity: sha512-uXbpfeQ7R6TZBqI3/TxCU4q4ttk3u0PJeC+E0zbfSoSjq6bJ7buBPxzQPL0ifrkY4DNu4JUdk0ImlBUYi840eQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     peerDependencies:
@@ -16809,7 +16805,7 @@ packages:
       '@babel/core': 7.22.9
       '@jest/test-sequencer': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       babel-jest: 29.7.0(@babel/core@7.22.9)
       chalk: 4.1.2
       ci-info: 3.9.0
@@ -16892,7 +16888,7 @@ packages:
       '@jest/environment': 29.7.0
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       jest-mock: 29.7.0
       jest-util: 29.7.0
     dev: true
@@ -16908,7 +16904,7 @@ packages:
     dependencies:
       '@jest/types': 29.6.3
       '@types/graceful-fs': 4.1.7
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.11
@@ -16959,7 +16955,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       jest-util: 29.7.0
     dev: true
 
@@ -17014,7 +17010,7 @@ packages:
       '@jest/test-result': 29.7.0
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       chalk: 4.1.2
       emittery: 0.13.1
       graceful-fs: 4.2.11
@@ -17045,7 +17041,7 @@ packages:
       '@jest/test-result': 29.7.0
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       chalk: 4.1.2
       cjs-module-lexer: 1.2.3
       collect-v8-coverage: 1.0.2
@@ -17097,7 +17093,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       chalk: 4.1.2
       ci-info: 3.9.0
       graceful-fs: 4.2.11
@@ -17121,7 +17117,7 @@ packages:
     dependencies:
       '@jest/test-result': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       emittery: 0.13.1
@@ -17133,7 +17129,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -17141,7 +17137,7 @@ packages:
     resolution: {integrity: sha512-eIz2msL/EzL9UFTFFx7jBTkeZfku0yUAyZZZmJ93H2TYEiroIx2PQjEXcwYtYl8zXCxb+PAmA2hLIt/6ZEkPHw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@types/node': 20.8.3
+      '@types/node': 20.4.9
       jest-util: 29.7.0
       merge-stream: 2.0.0
       supports-color: 8.1.1

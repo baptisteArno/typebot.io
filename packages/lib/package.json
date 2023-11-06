@@ -24,10 +24,10 @@
   "dependencies": {
     "@sentry/nextjs": "7.73.0",
     "@trpc/server": "10.40.0",
-    "@udecode/plate-common": "^21.1.5",
+    "@udecode/plate-common": "21.1.5",
     "got": "12.6.0",
     "minio": "7.1.3",
-    "remark-slate": "^1.8.6",
+    "remark-slate": "1.8.6",
     "stripe": "12.13.0"
   }
 }

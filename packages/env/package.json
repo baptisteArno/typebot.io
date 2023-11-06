@@ -6,13 +6,13 @@
   "main": "./env.ts",
   "types": "./env.ts",
   "dependencies": {
-    "@t3-oss/env-nextjs": "^0.7.0",
+    "@t3-oss/env-nextjs": "0.7.0",
     "zod": "3.21.4"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/node": "^20.4.9",
-    "esbuild": "^0.19.1"
+    "@types/node": "20.4.9",
+    "esbuild": "0.19.1"
   },
   "scripts": {
     "build": "esbuild env.ts --bundle --packages=external --format=esm --outfile=dist/env.mjs"

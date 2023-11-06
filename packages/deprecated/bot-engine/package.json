@@ -29,7 +29,7 @@
     "@types/react-transition-group": "4.4.5",
     "autoprefixer": "10.4.13",
     "@typebot.io/prisma": "workspace:*",
-    "esbuild": "^0.17.5",
+    "esbuild": "0.17.5",
     "eslint": "8.32.0",
     "eslint-config-custom": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
