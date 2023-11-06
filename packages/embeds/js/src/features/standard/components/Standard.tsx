@@ -1,5 +1,6 @@
 import styles from '../../../assets/index.css'
 import { Bot, BotProps } from '@/components/Bot'
+import { CommandData } from '@/features/commands/types'
 import { createSignal, onCleanup, onMount, Show } from 'solid-js'
 
 const hostElementCss = `
@@ -27,8 +28,15 @@ export const Standard = (
   })
 
   onMount(() => {
+    window.addEventListener('message', processIncomingEvent)
     botLauncherObserver.observe(element)
   })
+
+  const processIncomingEvent = (event: MessageEvent<CommandData>) => {
+    const { data } = event
+    if (!data.isFromTypebot) return
+    if (data.command === 'unmount') setIsBotDisplayed(false)
+  }
 
   onCleanup(() => {
     botLauncherObserver.disconnect()

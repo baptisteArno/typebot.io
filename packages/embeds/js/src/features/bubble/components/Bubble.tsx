@@ -31,6 +31,7 @@ export const Bubble = (props: BubbleProps) => {
     'theme',
     'autoShowDelay',
   ])
+  const [isMounted, setIsMounted] = createSignal(true)
   const [prefilledVariables, setPrefilledVariables] = createSignal(
     // eslint-disable-next-line solid/reactivity
     botProps.prefilledVariables
@@ -91,6 +92,7 @@ export const Bubble = (props: BubbleProps) => {
         ...existingPrefilledVariables,
         ...data.variables,
       }))
+    if (data.command === 'unmount') unmount()
   }
 
   const openBot = () => {
@@ -126,8 +128,17 @@ export const Bubble = (props: BubbleProps) => {
     setIsPreviewMessageDisplayed(false)
   }
 
+  const unmount = () => {
+    if (isBotOpened()) {
+      closeBot()
+      setTimeout(() => {
+        setIsMounted(false)
+      }, 200)
+    } else setIsMounted(false)
+  }
+
   return (
-    <>
+    <Show when={isMounted()}>
       <style>{styles}</style>
       <Show when={isPreviewMessageDisplayed()}>
         <PreviewMessage
@@ -175,6 +186,6 @@ export const Bubble = (props: BubbleProps) => {
           />
         </Show>
       </div>
-    </>
+    </Show>
   )
 }

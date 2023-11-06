@@ -4,7 +4,7 @@ export type CommandData = {
   isFromTypebot: boolean
 } & (
   | {
-      command: 'open' | 'toggle' | 'close' | 'hidePreviewMessage'
+      command: 'open' | 'toggle' | 'close' | 'hidePreviewMessage' | 'unmount'
     }
   | ShowMessageCommandData
   | SetPrefilledVariablesCommandData

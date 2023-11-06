@@ -29,6 +29,7 @@ const parseChatwootOpenCode = ({
   typebotId,
 }: ChatwootOptions & { typebotId: string; resultId: string }) => {
   const openChatwoot = `${parseSetUserCode(user, resultId)}
+  if(window.Typebot?.unmount) window.Typebot.unmount();
   window.$chatwoot.setCustomAttributes({
     typebot_result_url: "${
       env.NEXTAUTH_URL
