@@ -85,6 +85,7 @@ export const RealTimeResults = () => {
           w="full"
           direction={['column', 'row']}
           spacing="4"
+          pos="relative"
           data-aos="fade"
         >
           {typebot && (
