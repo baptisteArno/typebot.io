@@ -44,7 +44,7 @@ export const TableList = <T,>({
   onItemsChange,
 }: Props<T>) => {
   const [items, setItems] = useState(
-    initialItems ?? hasDefaultItem ? ([defaultItem] as ItemWithId<T>[]) : []
+    initialItems ?? (hasDefaultItem ? ([defaultItem] as ItemWithId<T>[]) : [])
   )
   const [showDeleteIndex, setShowDeleteIndex] = useState<number | null>(null)
 
