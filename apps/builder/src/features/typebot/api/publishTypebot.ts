@@ -81,7 +81,11 @@ export const publishTypebot = authenticatedProcedure
           groups: parseGroups(existingTypebot.groups, {
             typebotVersion: existingTypebot.version,
           }),
-          events: z.tuple([startEventSchema]).parse(existingTypebot.events),
+          events:
+            (existingTypebot.version === '6'
+              ? z.tuple([startEventSchema])
+              : z.null()
+            ).parse(existingTypebot.events) ?? undefined,
           settings: settingsSchema.parse(existingTypebot.settings),
           variables: z.array(variableSchema).parse(existingTypebot.variables),
           theme: themeSchema.parse(existingTypebot.theme),
@@ -96,7 +100,11 @@ export const publishTypebot = authenticatedProcedure
           groups: parseGroups(existingTypebot.groups, {
             typebotVersion: existingTypebot.version,
           }),
-          events: z.tuple([startEventSchema]).parse(existingTypebot.events),
+          events:
+            (existingTypebot.version === '6'
+              ? z.tuple([startEventSchema])
+              : z.null()
+            ).parse(existingTypebot.events) ?? undefined,
           settings: settingsSchema.parse(existingTypebot.settings),
           variables: z.array(variableSchema).parse(existingTypebot.variables),
           theme: themeSchema.parse(existingTypebot.theme),
