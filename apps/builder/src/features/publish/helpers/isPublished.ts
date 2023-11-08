@@ -9,6 +9,7 @@ export const isPublished = (
 ) => {
   if (debug)
     console.log(
+      'diff:',
       diff(
         JSON.parse(JSON.stringify(typebot.groups)),
         JSON.parse(JSON.stringify(publicTypebot.groups))
@@ -30,6 +31,10 @@ export const isPublished = (
     dequal(
       JSON.parse(JSON.stringify(typebot.variables)),
       JSON.parse(JSON.stringify(publicTypebot.variables))
+    ) &&
+    dequal(
+      JSON.parse(JSON.stringify(typebot.events)),
+      JSON.parse(JSON.stringify(publicTypebot.events))
     )
   )
 }

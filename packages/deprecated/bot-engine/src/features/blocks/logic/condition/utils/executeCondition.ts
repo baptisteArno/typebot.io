@@ -1,13 +1,11 @@
 import { parseVariables } from '@/features/variables'
 import { EdgeId, LogicState } from '@/types'
-import {
-  Comparison,
-  ComparisonOperators,
-  ConditionBlock,
-  LogicalOperator,
-  Variable,
-} from '@typebot.io/schemas'
+import { Comparison, ConditionBlock, Variable } from '@typebot.io/schemas'
 import { isNotDefined, isDefined } from '@typebot.io/lib'
+import {
+  LogicalOperator,
+  ComparisonOperators,
+} from '@typebot.io/schemas/features/blocks/logic/condition/constants'
 
 export const executeCondition = (
   block: ConditionBlock,
@@ -16,9 +14,9 @@ export const executeCondition = (
   const passedCondition = block.items.find((item) => {
     const { content } = item
     const isConditionPassed =
-      content.logicalOperator === LogicalOperator.AND
-        ? content.comparisons.every(executeComparison(variables))
-        : content.comparisons.some(executeComparison(variables))
+      content?.logicalOperator === LogicalOperator.AND
+        ? content.comparisons?.every(executeComparison(variables))
+        : content?.comparisons?.some(executeComparison(variables))
     return isConditionPassed
   })
   return passedCondition ? passedCondition.outgoingEdgeId : block.outgoingEdgeId

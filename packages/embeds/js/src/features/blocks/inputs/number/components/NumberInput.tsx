@@ -5,6 +5,7 @@ import { isMobile } from '@/utils/isMobileSignal'
 import type { NumberInputBlock } from '@typebot.io/schemas'
 import { createSignal, onCleanup, onMount } from 'solid-js'
 import { numberInputHelper } from '../numberInputHelper'
+import { defaultNumberInputOptions } from '@typebot.io/schemas/features/blocks/inputs/number/constants'
 
 type NumberInputProps = {
   block: NumberInputBlock
@@ -67,7 +68,8 @@ export const NumberInput = (props: NumberInputProps) => {
         // eslint-disable-next-line solid/jsx-no-undef
         use:bindValue
         placeholder={
-          props.block.options?.labels?.placeholder ?? 'Type your answer...'
+          props.block.options?.labels?.placeholder ??
+          defaultNumberInputOptions.labels.placeholder
         }
         onInput={(e) => {
           setInputValue(targetValue(e.currentTarget))
@@ -83,7 +85,8 @@ export const NumberInput = (props: NumberInputProps) => {
         class="my-2 ml-2"
         on:click={submit}
       >
-        {props.block.options?.labels?.button ?? 'Send'}
+        {props.block.options?.labels?.button ??
+          defaultNumberInputOptions.labels.button}
       </SendButton>
     </div>
   )

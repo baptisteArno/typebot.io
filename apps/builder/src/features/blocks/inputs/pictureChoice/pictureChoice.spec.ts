@@ -1,9 +1,8 @@
 import test, { expect } from '@playwright/test'
 import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
-import { InputBlockType, ItemType } from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
-import { defaultPictureChoiceOptions } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 
 const firstImageSrc =
   'https://images.unsplash.com/flagged/photo-1575517111839-3a3843ee7f5d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80'
@@ -25,10 +24,8 @@ test.describe.parallel('Picture choice input block', () => {
           items: [
             {
               id: 'choice1',
-              type: ItemType.PICTURE_CHOICE,
             },
           ],
-          options: { ...defaultPictureChoiceOptions },
         }),
       },
     ])

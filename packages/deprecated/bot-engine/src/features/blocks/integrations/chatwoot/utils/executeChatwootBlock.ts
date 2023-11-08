@@ -2,9 +2,11 @@ import { parseVariables } from '@/features/variables'
 import { IntegrationState } from '@/types'
 import { sendEventToParent } from '@/utils/chat'
 import { isEmbedded } from '@/utils/helpers'
-import { ChatwootBlock, ChatwootOptions } from '@typebot.io/schemas'
+import { ChatwootBlock } from '@typebot.io/schemas'
 
-const parseSetUserCode = (user: ChatwootOptions['user']) => `
+const parseSetUserCode = (
+  user: NonNullable<ChatwootBlock['options']>['user']
+) => `
 window.$chatwoot.setUser("${user?.id ?? ''}", {
   email: ${user?.email ? `"${user.email}"` : 'undefined'},
   name: ${user?.name ? `"${user.name}"` : 'undefined'},
@@ -17,7 +19,7 @@ const parseChatwootOpenCode = ({
   baseUrl,
   websiteToken,
   user,
-}: ChatwootOptions) => `
+}: ChatwootBlock['options'] = {}) => `
 if (window.$chatwoot) {
   if(${Boolean(user)}) {
     ${parseSetUserCode(user)}

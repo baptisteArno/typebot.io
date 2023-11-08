@@ -1,31 +1,41 @@
 import { ButtonsItemNode } from '@/features/blocks/inputs/buttons/components/ButtonsItemNode'
 import { PictureChoiceItemNode } from '@/features/blocks/inputs/pictureChoice/components/PictureChoiceItemNode'
 import { ConditionItemNode } from '@/features/blocks/logic/condition/components/ConditionItemNode'
-import { Item, ItemIndices, ItemType } from '@typebot.io/schemas'
+import {
+  BlockWithItems,
+  ButtonItem,
+  ConditionItem,
+  Item,
+  ItemIndices,
+} from '@typebot.io/schemas'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import React from 'react'
 
 type Props = {
   item: Item
+  blockType: BlockWithItems['type']
   indices: ItemIndices
   isMouseOver: boolean
 }
 
 export const ItemNodeContent = ({
   item,
+  blockType,
   indices,
   isMouseOver,
 }: Props): JSX.Element => {
-  switch (item.type) {
-    case ItemType.BUTTON:
+  switch (blockType) {
+    case InputBlockType.CHOICE:
       return (
         <ButtonsItemNode
-          key={`${item.id}-${item.content}`}
-          item={item}
+          item={item as ButtonItem}
+          key={`${item.id}-${(item as ButtonItem).content}`}
           isMouseOver={isMouseOver}
           indices={indices}
         />
       )
-    case ItemType.PICTURE_CHOICE:
+    case InputBlockType.PICTURE_CHOICE:
       return (
         <PictureChoiceItemNode
           item={item}
@@ -33,15 +43,15 @@ export const ItemNodeContent = ({
           indices={indices}
         />
       )
-    case ItemType.CONDITION:
+    case LogicBlockType.CONDITION:
       return (
         <ConditionItemNode
-          item={item}
+          item={item as ConditionItem}
           isMouseOver={isMouseOver}
           indices={indices}
         />
       )
-    case ItemType.AB_TEST:
+    case LogicBlockType.AB_TEST:
       return <></>
   }
 }

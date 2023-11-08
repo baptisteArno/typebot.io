@@ -2,11 +2,12 @@ import { Stack, Text } from '@chakra-ui/react'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import React from 'react'
 import { TextInput } from '@/components/inputs'
-import { ScriptOptions } from '@typebot.io/schemas'
+import { ScriptBlock } from '@typebot.io/schemas'
+import { defaultScriptOptions } from '@typebot.io/schemas/features/blocks/logic/script/constants'
 
 type Props = {
-  options: ScriptOptions
-  onOptionsChange: (options: ScriptOptions) => void
+  options: ScriptBlock['options']
+  onOptionsChange: (options: ScriptBlock['options']) => void
 }
 
 export const ScriptSettings = ({ options, onOptionsChange }: Props) => {
@@ -19,14 +20,14 @@ export const ScriptSettings = ({ options, onOptionsChange }: Props) => {
     <Stack spacing={4}>
       <TextInput
         label="Name:"
-        defaultValue={options.name}
+        defaultValue={options?.name ?? defaultScriptOptions.name}
         onChange={handleNameChange}
         withVariableButton={false}
       />
       <Stack>
         <Text>Code:</Text>
         <CodeEditor
-          defaultValue={options.content ?? ''}
+          defaultValue={options?.content}
           lang="javascript"
           onChange={handleCodeChange}
         />

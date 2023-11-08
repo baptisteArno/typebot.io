@@ -15,7 +15,7 @@
     "@types/nodemailer": "6.4.8",
     "next": "13.5.4",
     "nodemailer": "6.9.3",
-    "typescript": "5.1.6"
+    "typescript": "5.2.2"
   },
   "peerDependencies": {
     "next": "13.0.0",

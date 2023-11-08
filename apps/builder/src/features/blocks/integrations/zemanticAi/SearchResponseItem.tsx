@@ -2,13 +2,17 @@ import { DropdownList } from '@/components/DropdownList'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { TableListItemProps } from '@/components/TableList'
 import { Stack } from '@chakra-ui/react'
-import { Variable } from '@typebot.io/schemas'
+import { Variable, ZemanticAiBlock } from '@typebot.io/schemas'
 import {
-  ZemanticAiOptions,
+  defaultZemanticAiResponseMappingItem,
   searchResponseValues,
-} from '@typebot.io/schemas/features/blocks/integrations/zemanticAi'
+} from '@typebot.io/schemas/features/blocks/integrations/zemanticAi/constants'
 
-type Props = TableListItemProps<ZemanticAiOptions['responseMapping'][number]>
+type Props = TableListItemProps<
+  NonNullable<
+    NonNullable<ZemanticAiBlock['options']>['responseMapping']
+  >[number]
+>
 
 export const SearchResponseItem = ({ item, onItemChange }: Props) => {
   const changeValueToExtract = (
@@ -24,7 +28,10 @@ export const SearchResponseItem = ({ item, onItemChange }: Props) => {
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
       <DropdownList
-        currentItem={item.valueToExtract ?? 'Summary'}
+        currentItem={
+          item.valueToExtract ??
+          defaultZemanticAiResponseMappingItem.valueToExtract
+        }
         items={searchResponseValues}
         onItemSelect={changeValueToExtract}
       />

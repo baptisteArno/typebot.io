@@ -3,6 +3,7 @@ import React from 'react'
 import { isDefined } from '@typebot.io/lib'
 import { AbTestBlock } from '@typebot.io/schemas'
 import { NumberInput } from '@/components/inputs'
+import { defaultAbTestOptions } from '@typebot.io/schemas/features/blocks/logic/abTest/constants'
 
 type Props = {
   options: AbTestBlock['options']
@@ -16,7 +17,7 @@ export const AbTestSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <NumberInput
-        defaultValue={options.aPercent}
+        defaultValue={options?.aPercent ?? defaultAbTestOptions.aPercent}
         onValueChange={updateAPercent}
         withVariableButton={false}
         label="Percent of users to follow A:"

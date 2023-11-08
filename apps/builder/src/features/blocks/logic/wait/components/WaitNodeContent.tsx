@@ -1,12 +1,14 @@
 import { Text } from '@chakra-ui/react'
-import { WaitOptions } from '@typebot.io/schemas'
+import { WaitBlock } from '@typebot.io/schemas'
 import React from 'react'
 
 type Props = {
-  options: WaitOptions
+  options: WaitBlock['options']
 }
 
-export const WaitNodeContent = ({ options: { secondsToWaitFor } }: Props) => (
+export const WaitNodeContent = ({
+  options: { secondsToWaitFor } = {},
+}: Props) => (
   <Text color={secondsToWaitFor ? 'currentcolor' : 'gray.500'} noOfLines={1}>
     {secondsToWaitFor ? `Wait for ${secondsToWaitFor}s` : 'Configure...'}
   </Text>

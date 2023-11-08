@@ -2,7 +2,6 @@ import {
   SessionState,
   VariableWithValue,
   ChoiceInputBlock,
-  ItemType,
 } from '@typebot.io/schemas'
 import { isDefined } from '@typebot.io/lib'
 import { filterChoiceItems } from './filterChoiceItems'
@@ -14,10 +13,10 @@ export const injectVariableValuesInButtonsInputBlock =
   (state: SessionState) =>
   (block: ChoiceInputBlock): ChoiceInputBlock => {
     const { variables } = state.typebotsQueue[0].typebot
-    if (block.options.dynamicVariableId) {
+    if (block.options?.dynamicVariableId) {
       const variable = variables.find(
         (variable) =>
-          variable.id === block.options.dynamicVariableId &&
+          variable.id === block.options?.dynamicVariableId &&
           isDefined(variable.value)
       ) as VariableWithValue | undefined
       if (!variable) return block
@@ -26,7 +25,6 @@ export const injectVariableValuesInButtonsInputBlock =
         ...block,
         items: value.filter(isDefined).map((item, idx) => ({
           id: idx.toString(),
-          type: ItemType.BUTTON,
           blockId: block.id,
           content: item,
         })),

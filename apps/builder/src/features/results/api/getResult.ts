@@ -1,7 +1,7 @@
 import prisma from '@typebot.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { ResultWithAnswers, resultWithAnswersSchema } from '@typebot.io/schemas'
+import { resultWithAnswersSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { isReadTypebotForbidden } from '@/features/typebot/helpers/isReadTypebotForbidden'
 
@@ -45,7 +45,7 @@ export const getResult = authenticatedProcedure
     })
     if (!typebot || (await isReadTypebotForbidden(typebot, user)))
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
-    const results = (await prisma.result.findMany({
+    const results = await prisma.result.findMany({
       where: {
         id: input.resultId,
         typebotId: typebot.id,
@@ -54,10 +54,10 @@ export const getResult = authenticatedProcedure
         createdAt: 'desc',
       },
       include: { answers: true },
-    })) as ResultWithAnswers[]
+    })
 
     if (results.length === 0)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Result not found' })
 
-    return { result: results[0] }
+    return { result: resultWithAnswersSchema.parse(results[0]) }
   })

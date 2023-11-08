@@ -13,7 +13,8 @@ import {
 import { ImageUploadContent } from '@/components/ImageUploadContent'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
 import { ConditionForm } from '@/features/blocks/logic/condition/components/ConditionForm'
-import { Condition, LogicalOperator } from '@typebot.io/schemas'
+import { Condition } from '@typebot.io/schemas'
+import { LogicalOperator } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
 
 type Props = {
   workspaceId: string

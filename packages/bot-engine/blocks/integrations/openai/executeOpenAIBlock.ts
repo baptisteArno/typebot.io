@@ -7,7 +7,7 @@ export const executeOpenAIBlock = async (
   state: SessionState,
   block: OpenAIBlock
 ): Promise<ExecuteIntegrationResponse> => {
-  switch (block.options.task) {
+  switch (block.options?.task) {
     case 'Create chat completion':
       return createChatCompletionOpenAI(state, {
         options: block.options,

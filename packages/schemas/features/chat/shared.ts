@@ -1,16 +1,21 @@
 import { z } from 'zod'
-import { publicTypebotSchema } from '../publicTypebot'
+import { publicTypebotSchemaV5, publicTypebotSchemaV6 } from '../publicTypebot'
 import { preprocessTypebot } from '../typebot/helpers/preprocessTypebot'
 
+const typebotInSessionStatePick = {
+  version: true,
+  id: true,
+  groups: true,
+  events: true,
+  edges: true,
+  variables: true,
+} as const
 export const typebotInSessionStateSchema = z.preprocess(
   preprocessTypebot,
-  publicTypebotSchema._def.schema.pick({
-    version: true,
-    id: true,
-    groups: true,
-    edges: true,
-    variables: true,
-  })
+  z.discriminatedUnion('version', [
+    publicTypebotSchemaV5._def.schema.pick(typebotInSessionStatePick),
+    publicTypebotSchemaV6.pick(typebotInSessionStatePick),
+  ])
 )
 export type TypebotInSession = z.infer<typeof typebotInSessionStateSchema>
 

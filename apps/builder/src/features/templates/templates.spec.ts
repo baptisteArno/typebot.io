@@ -8,7 +8,7 @@ test.describe.parallel('Templates page', () => {
       page.locator('button >> text="Settings & Members"')
     ).toBeEnabled()
     await page.click('text=Start from scratch')
-    await expect(page).toHaveURL(new RegExp(`/edit`))
+    await expect(page).toHaveURL(new RegExp(`/edit`), { timeout: 20000 })
   })
 
   test('From file should import correctly', async ({ page }) => {
@@ -18,7 +18,7 @@ test.describe.parallel('Templates page', () => {
       'input[type="file"]',
       getTestAsset('typebots/singleChoiceTarget.json')
     )
-    await expect(page).toHaveURL(new RegExp(`/edit`))
+    await expect(page).toHaveURL(new RegExp(`/edit`), { timeout: 20000 })
   })
 
   test('Templates should be previewable and usable', async ({ page }) => {

@@ -1,29 +1,20 @@
 {
-  "id": "clg69gafk00011ar14aryt8ej",
-  "version": "4",
-  "createdAt": "2023-04-07T08:03:57.008Z",
-  "updatedAt": "2023-04-07T08:22:10.285Z",
-  "icon": "🧲",
+  "version": "6",
+  "id": "clon5n2yo00091avnmbju5698",
   "name": "Lead magnet",
-  "folderId": null,
-  "groups": [
+  "events": [
     {
       "id": "emejg92oa3743x6z556xi1ig",
-      "title": "Start",
-      "blocks": [
-        {
-          "id": "fp82tc3nolkjpw38j60xxemb",
-          "type": "start",
-          "label": "Start",
-          "groupId": "emejg92oa3743x6z556xi1ig",
-          "outgoingEdgeId": "hfugjlwxkt5eqvxe5poimt6w"
-        }
-      ],
-      "graphCoordinates": { "x": 0, "y": 0 }
-    },
+      "outgoingEdgeId": "hfugjlwxkt5eqvxe5poimt6w",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
     {
       "id": "gr9wedxcqxie11ki9yss1h5o",
       "title": "Intro",
+      "graphCoordinates": { "x": 209.12109375, "y": 176.5703125 },
       "blocks": [
         {
           "id": "uaks8b01ec3fln8g5iq9gnv7",
@@ -32,8 +23,7 @@
             "richText": [
               { "type": "p", "children": [{ "text": "Hi there! 👋" }] }
             ]
-          },
-          "groupId": "gr9wedxcqxie11ki9yss1h5o"
+          }
         },
         {
           "id": "iy9brewiabfhv7ctsvdd5fg6",
@@ -51,8 +41,7 @@
                 ]
               }
             ]
-          },
-          "groupId": "gr9wedxcqxie11ki9yss1h5o"
+          }
         },
         {
           "id": "immlrmjc0tnvc0rd1552c0ey",
@@ -68,8 +57,7 @@
                 ]
               }
             ]
-          },
-          "groupId": "gr9wedxcqxie11ki9yss1h5o"
+          }
         },
         {
           "id": "i1pv6t8sj9wdzoheplwj1cnr",
@@ -78,26 +66,23 @@
             "richText": [
               { "type": "p", "children": [{ "text": "What's your name?" }] }
             ]
-          },
-          "groupId": "gr9wedxcqxie11ki9yss1h5o"
+          }
         },
         {
           "id": "uocaxxtg26btl2zytwy09jh9",
+          "outgoingEdgeId": "rczh7k3r065okzax6za00lvh",
           "type": "text input",
-          "groupId": "gr9wedxcqxie11ki9yss1h5o",
           "options": {
-            "isLong": false,
-            "labels": { "button": "Send", "placeholder": "Your first name" },
+            "labels": { "placeholder": "Your first name" },
             "variableId": "vyu4paeim4jcjgmxr26bdk286"
-          },
-          "outgoingEdgeId": "rczh7k3r065okzax6za00lvh"
+          }
         }
-      ],
-      "graphCoordinates": { "x": 209.12109375, "y": 176.5703125 }
+      ]
     },
     {
       "id": "xaloto3qrrbtcdcrob013xcx",
       "title": "Email",
+      "graphCoordinates": { "x": 563.2421875, "y": 177.484375 },
       "blocks": [
         {
           "id": "pcx0bo7egsq3il16707mkuzc",
@@ -113,26 +98,21 @@
                 ]
               }
             ]
-          },
-          "groupId": "xaloto3qrrbtcdcrob013xcx"
+          }
         },
         {
-          "id": "fu17h0e24vpplfnrhla0t5id",
-          "type": "text input",
+          "id": "nu9ibw4r4q9piwl3b308bezp",
           "groupId": "xaloto3qrrbtcdcrob013xcx",
-          "options": {
-            "isLong": false,
-            "labels": { "button": "Send", "placeholder": "Your email address" },
-            "variableId": "vrhd0bug6b6dzgijevfoonvo2"
-          },
-          "outgoingEdgeId": "x9hmtjizy3cl3kzyagf0ucnp"
+          "type": "email input",
+          "options": { "variableId": "vrhd0bug6b6dzgijevfoonvo2" },
+          "outgoingEdgeId": "dxj0x2miwwkxsesp4chyjqek"
         }
-      ],
-      "graphCoordinates": { "x": 563.2421875, "y": 177.484375 }
+      ]
     },
     {
       "id": "tp9r95ay5vm9zlgzw8twtxn3",
       "title": "Goal",
+      "graphCoordinates": { "x": 1243.07421875, "y": 172.2421875 },
       "blocks": [
         {
           "id": "o6helbp9c682dur5e8bt9yov",
@@ -144,52 +124,31 @@
                 "children": [{ "text": "What's your goal with the community?" }]
               }
             ]
-          },
-          "groupId": "tp9r95ay5vm9zlgzw8twtxn3"
+          }
         },
         {
           "id": "wq7yofni4bqr9rt5qrzk6928",
+          "outgoingEdgeId": "on3al6xuczmckpu3roboo9te",
           "type": "choice input",
           "items": [
-            {
-              "id": "ux0ly8ocxfm8i8ivdbwjnmnt",
-              "type": 0,
-              "blockId": "wq7yofni4bqr9rt5qrzk6928",
-              "content": "Win loyal fans"
-            },
+            { "id": "ux0ly8ocxfm8i8ivdbwjnmnt", "content": "Win loyal fans" },
             {
               "id": "izz0nwo2iy2kmlif5fav2oc5",
-              "type": 0,
-              "blockId": "wq7yofni4bqr9rt5qrzk6928",
               "content": "Competitive advantage"
             },
-            {
-              "id": "jtkx9v5uqjw84hapq3umqlb5",
-              "type": 0,
-              "blockId": "wq7yofni4bqr9rt5qrzk6928",
-              "content": "Better product"
-            },
-            {
-              "id": "k7a7rkpoigrtrulilap7q6fw",
-              "type": 0,
-              "blockId": "wq7yofni4bqr9rt5qrzk6928",
-              "content": "Support"
-            }
+            { "id": "jtkx9v5uqjw84hapq3umqlb5", "content": "Better product" },
+            { "id": "k7a7rkpoigrtrulilap7q6fw", "content": "Support" }
           ],
-          "groupId": "tp9r95ay5vm9zlgzw8twtxn3",
           "options": {
-            "variableId": "vf49immob0ih3kxn5b0nraqkq",
-            "buttonLabel": "Send",
-            "isMultipleChoice": false
-          },
-          "outgoingEdgeId": "on3al6xuczmckpu3roboo9te"
+            "variableId": "vf49immob0ih3kxn5b0nraqkq"
+          }
         }
-      ],
-      "graphCoordinates": { "x": 1243.07421875, "y": 172.2421875 }
+      ]
     },
     {
       "id": "cszciavjonb2qp0ga0pladoj",
       "title": "Goal",
+      "graphCoordinates": { "x": 1590.85546875, "y": 164.02734375 },
       "blocks": [
         {
           "id": "tfqqveo72xt7i7ii9imztcd4",
@@ -205,8 +164,7 @@
                 ]
               }
             ]
-          },
-          "groupId": "cszciavjonb2qp0ga0pladoj"
+          }
         },
         {
           "id": "yxuk1bhfas07i4bxq64hi0vj",
@@ -214,102 +172,86 @@
           "items": [
             {
               "id": "qn6w72jgckfz777e9ehb421v",
-              "type": 1,
-              "blockId": "yxuk1bhfas07i4bxq64hi0vj",
+              "outgoingEdgeId": "yml7f2btr9q4hptk06cqn2xv",
               "content": {
                 "comparisons": [
                   {
                     "id": "nt0c7o7w0elbbrfde8nned76",
-                    "value": "Win loyal fans",
                     "variableId": "vf49immob0ih3kxn5b0nraqkq",
-                    "comparisonOperator": "Equal to"
+                    "comparisonOperator": "Equal to",
+                    "value": "Win loyal fans"
                   }
-                ],
-                "logicalOperator": "AND"
-              },
-              "outgoingEdgeId": "yml7f2btr9q4hptk06cqn2xv"
+                ]
+              }
             },
             {
               "id": "vuun8mijpfzcu0o9qk0vtift",
-              "type": 1,
-              "blockId": "yxuk1bhfas07i4bxq64hi0vj",
+              "outgoingEdgeId": "qhpximatxzjmmm1njwoqzplw",
               "content": {
                 "comparisons": [
                   {
                     "id": "yf6asq9i97ap9y2jxibmjylv",
-                    "value": "Competitive advantage",
                     "variableId": "vf49immob0ih3kxn5b0nraqkq",
-                    "comparisonOperator": "Equal to"
+                    "comparisonOperator": "Equal to",
+                    "value": "Competitive advantage"
                   }
-                ],
-                "logicalOperator": "AND"
-              },
-              "outgoingEdgeId": "qhpximatxzjmmm1njwoqzplw"
+                ]
+              }
             },
             {
               "id": "dg28mo88efs00p8ech81qxmu",
-              "type": 1,
-              "blockId": "yxuk1bhfas07i4bxq64hi0vj",
+              "outgoingEdgeId": "xa5z7a7en5vfevqk5e5q05go",
               "content": {
                 "comparisons": [
                   {
                     "id": "x7tbo8q47r1wdlg6w3c48mru",
-                    "value": "Better product",
                     "variableId": "vf49immob0ih3kxn5b0nraqkq",
-                    "comparisonOperator": "Equal to"
+                    "comparisonOperator": "Equal to",
+                    "value": "Better product"
                   }
-                ],
-                "logicalOperator": "AND"
-              },
-              "outgoingEdgeId": "xa5z7a7en5vfevqk5e5q05go"
+                ]
+              }
             },
             {
               "id": "lrj50vf8c0cj46jrtxid5a60",
-              "type": 1,
-              "blockId": "yxuk1bhfas07i4bxq64hi0vj",
+              "outgoingEdgeId": "ogpmoxw3lrt12rgxnq0wajrj",
               "content": {
                 "comparisons": [
                   {
                     "id": "hkb9qy6un3yrhhxtm0s6c8rg",
-                    "value": "Support",
                     "variableId": "vf49immob0ih3kxn5b0nraqkq",
-                    "comparisonOperator": "Equal to"
+                    "comparisonOperator": "Equal to",
+                    "value": "Support"
                   }
-                ],
-                "logicalOperator": "AND"
-              },
-              "outgoingEdgeId": "ogpmoxw3lrt12rgxnq0wajrj"
+                ]
+              }
             }
-          ],
-          "groupId": "cszciavjonb2qp0ga0pladoj"
+          ]
         }
-      ],
-      "graphCoordinates": { "x": 1590.85546875, "y": 164.02734375 }
+      ]
     },
     {
       "id": "vvlecgglxadq0x2eg7ozr535",
       "title": "Send bundle",
+      "graphCoordinates": { "x": 901.6953125, "y": 180.0546875 },
       "blocks": [
         {
           "id": "w53cmmn4iowq753r8jmvk7o7",
+          "outgoingEdgeId": "qkrpdn1z0bv1xvsa3wrdyyn3",
           "type": "Email",
-          "groupId": "vvlecgglxadq0x2eg7ozr535",
           "options": {
-            "body": "Hey {{Name}},\n\nHere is a link to download the community bundle:\n\nhttps://typebot.io\n\nI hope it will help you create the right community for your project 🚀\n\nBest,\nTypebot team.",
-            "replyTo": "",
-            "subject": "Here is your community bundle ✨",
-            "recipients": ["{{Email}}"],
             "isCustomBody": true,
-            "credentialsId": "default"
-          },
-          "outgoingEdgeId": "qkrpdn1z0bv1xvsa3wrdyyn3"
+            "recipients": ["{{Email}}"],
+            "subject": "Here is your community bundle ✨",
+            "body": "Hey {{Name}},\n\nHere is a link to download the community bundle:\n\nhttps://typebot.io\n\nI hope it will help you create the right community for your project 🚀\n\nBest,\nTypebot team."
+          }
         }
-      ],
-      "graphCoordinates": { "x": 901.6953125, "y": 180.0546875 }
+      ]
     },
     {
       "id": "k2sbuizycrpuyf44v9eebebr",
       "title": "Win loyal fans video",
+      "graphCoordinates": { "x": 1969.18359375, "y": -205.76171875 },
       "blocks": [
         {
           "id": "dzcw0vwo23vhp2nwyxl99va8",
@@ -321,8 +263,7 @@
                 "children": [{ "text": "Want to know how to win loyal fans?" }]
               }
             ]
-          },
-          "groupId": "k2sbuizycrpuyf44v9eebebr"
+          }
         },
         {
           "id": "yh8ueuio717ceybrcsqa1ekq",
@@ -331,25 +272,23 @@
             "richText": [
               { "type": "p", "children": [{ "text": "Check out this video:" }] }
             ]
-          },
-          "groupId": "k2sbuizycrpuyf44v9eebebr"
+          }
         },
         {
           "id": "z3ffqugex7gipsb4ke6ov874",
           "type": "video",
           "content": {
-            "id": "jp3ggg_42-M",
             "url": "https://www.youtube.com/watch?v=jp3ggg_42-M&t=22s",
+            "id": "jp3ggg_42-M",
             "type": "youtube"
-          },
-          "groupId": "k2sbuizycrpuyf44v9eebebr"
+          }
         }
-      ],
-      "graphCoordinates": { "x": 1969.18359375, "y": -205.76171875 }
+      ]
     },
     {
       "id": "v6s5yza7kgretdmbke7lg5u7",
       "title": "Competitive advantage video",
+      "graphCoordinates": { "x": 1968.1484375, "y": 181.5703125 },
       "blocks": [
         {
           "id": "anu87wo53n3ihq4xl8smprwg",
@@ -365,8 +304,7 @@
                 ]
               }
             ]
-          },
-          "groupId": "v6s5yza7kgretdmbke7lg5u7"
+          }
         },
         {
           "id": "ku2scubf21eqnip3ig3rc7n9",
@@ -375,25 +313,23 @@
             "richText": [
               { "type": "p", "children": [{ "text": "Check out this video:" }] }
             ]
-          },
-          "groupId": "v6s5yza7kgretdmbke7lg5u7"
+          }
         },
         {
           "id": "rvdh4tk0ebg7t9tdga9aw8ao",
           "type": "video",
           "content": {
-            "id": "jp3ggg_42-M",
             "url": "https://www.youtube.com/watch?v=jp3ggg_42-M&t=22s",
+            "id": "jp3ggg_42-M",
             "type": "youtube"
-          },
-          "groupId": "v6s5yza7kgretdmbke7lg5u7"
+          }
         }
-      ],
-      "graphCoordinates": { "x": 1968.1484375, "y": 181.5703125 }
+      ]
     },
     {
       "id": "l3pc0992zp0hw8ea83b7aky3",
       "title": "Better product",
+      "graphCoordinates": { "x": 1968.703125, "y": 600.07421875 },
       "blocks": [
         {
           "id": "ysedrtj5q17usk5ezpa5g88e",
@@ -409,8 +345,7 @@
                 ]
               }
             ]
-          },
-          "groupId": "l3pc0992zp0hw8ea83b7aky3"
+          }
         },
         {
           "id": "xy08sticb76u82sgcfaeqpe2",
@@ -419,25 +354,23 @@
             "richText": [
               { "type": "p", "children": [{ "text": "Check out this video:" }] }
             ]
-          },
-          "groupId": "l3pc0992zp0hw8ea83b7aky3"
+          }
         },
         {
           "id": "jiz2uvo89456jpy081hazkd4",
           "type": "video",
           "content": {
-            "id": "jp3ggg_42-M",
             "url": "https://www.youtube.com/watch?v=jp3ggg_42-M&t=22s",
+            "id": "jp3ggg_42-M",
             "type": "youtube"
-          },
-          "groupId": "l3pc0992zp0hw8ea83b7aky3"
+          }
         }
-      ],
-      "graphCoordinates": { "x": 1968.703125, "y": 600.07421875 }
+      ]
     },
     {
       "id": "f4hlh2oq8viwxrpl9ppq5d42",
       "title": "Support",
+      "graphCoordinates": { "x": 1970.0234375, "y": 1025.99609375 },
       "blocks": [
         {
           "id": "lu0bevnjfkor1ugbnbkev7t3",
@@ -451,8 +384,7 @@
                 ]
               }
             ]
-          },
-          "groupId": "f4hlh2oq8viwxrpl9ppq5d42"
+          }
         },
         {
           "id": "jrhdfrdn4gdstpktq1q0gk1q",
@@ -461,21 +393,80 @@
             "richText": [
               { "type": "p", "children": [{ "text": "Check out this video:" }] }
             ]
-          },
-          "groupId": "f4hlh2oq8viwxrpl9ppq5d42"
+          }
         },
         {
           "id": "e3tlj1y4vyhtwcabzifv63q2",
           "type": "video",
           "content": {
-            "id": "jp3ggg_42-M",
             "url": "https://www.youtube.com/watch?v=jp3ggg_42-M&t=22s",
+            "id": "jp3ggg_42-M",
             "type": "youtube"
-          },
-          "groupId": "f4hlh2oq8viwxrpl9ppq5d42"
+          }
         }
-      ],
-      "graphCoordinates": { "x": 1970.0234375, "y": 1025.99609375 }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "hfugjlwxkt5eqvxe5poimt6w",
+      "from": { "eventId": "emejg92oa3743x6z556xi1ig" },
+      "to": { "groupId": "gr9wedxcqxie11ki9yss1h5o" }
+    },
+    {
+      "id": "rczh7k3r065okzax6za00lvh",
+      "from": { "blockId": "uocaxxtg26btl2zytwy09jh9" },
+      "to": { "groupId": "xaloto3qrrbtcdcrob013xcx" }
+    },
+    {
+      "id": "on3al6xuczmckpu3roboo9te",
+      "from": { "blockId": "wq7yofni4bqr9rt5qrzk6928" },
+      "to": { "groupId": "cszciavjonb2qp0ga0pladoj" }
+    },
+    {
+      "id": "qkrpdn1z0bv1xvsa3wrdyyn3",
+      "from": { "blockId": "w53cmmn4iowq753r8jmvk7o7" },
+      "to": { "groupId": "tp9r95ay5vm9zlgzw8twtxn3" }
+    },
+    {
+      "id": "yml7f2btr9q4hptk06cqn2xv",
+      "from": {
+        "blockId": "yxuk1bhfas07i4bxq64hi0vj",
+        "itemId": "qn6w72jgckfz777e9ehb421v"
+      },
+      "to": { "groupId": "k2sbuizycrpuyf44v9eebebr" }
+    },
+    {
+      "id": "qhpximatxzjmmm1njwoqzplw",
+      "from": {
+        "blockId": "yxuk1bhfas07i4bxq64hi0vj",
+        "itemId": "vuun8mijpfzcu0o9qk0vtift"
+      },
+      "to": { "groupId": "v6s5yza7kgretdmbke7lg5u7" }
+    },
+    {
+      "id": "xa5z7a7en5vfevqk5e5q05go",
+      "from": {
+        "blockId": "yxuk1bhfas07i4bxq64hi0vj",
+        "itemId": "dg28mo88efs00p8ech81qxmu"
+      },
+      "to": { "groupId": "l3pc0992zp0hw8ea83b7aky3" }
+    },
+    {
+      "id": "ogpmoxw3lrt12rgxnq0wajrj",
+      "from": {
+        "blockId": "yxuk1bhfas07i4bxq64hi0vj",
+        "itemId": "lrj50vf8c0cj46jrtxid5a60"
+      },
+      "to": { "groupId": "f4hlh2oq8viwxrpl9ppq5d42" }
+    },
+    {
+      "from": {
+        "blockId": "nu9ibw4r4q9piwl3b308bezp",
+        "groupId": "xaloto3qrrbtcdcrob013xcx"
+      },
+      "to": { "groupId": "vvlecgglxadq0x2eg7ozr535" },
+      "id": "dxj0x2miwwkxsesp4chyjqek"
     }
   ],
   "variables": [
@@ -483,120 +474,18 @@
     { "id": "vf49immob0ih3kxn5b0nraqkq", "name": "Goal" },
     { "id": "vrhd0bug6b6dzgijevfoonvo2", "name": "Email" }
   ],
-  "edges": [
-    {
-      "id": "hfugjlwxkt5eqvxe5poimt6w",
-      "to": { "groupId": "gr9wedxcqxie11ki9yss1h5o" },
-      "from": {
-        "blockId": "fp82tc3nolkjpw38j60xxemb",
-        "groupId": "emejg92oa3743x6z556xi1ig"
-      }
-    },
-    {
-      "id": "rczh7k3r065okzax6za00lvh",
-      "to": { "groupId": "xaloto3qrrbtcdcrob013xcx" },
-      "from": {
-        "blockId": "uocaxxtg26btl2zytwy09jh9",
-        "groupId": "gr9wedxcqxie11ki9yss1h5o"
-      }
-    },
-    {
-      "id": "on3al6xuczmckpu3roboo9te",
-      "to": { "groupId": "cszciavjonb2qp0ga0pladoj" },
-      "from": {
-        "blockId": "wq7yofni4bqr9rt5qrzk6928",
-        "groupId": "tp9r95ay5vm9zlgzw8twtxn3"
-      }
-    },
-    {
-      "id": "x9hmtjizy3cl3kzyagf0ucnp",
-      "to": { "groupId": "vvlecgglxadq0x2eg7ozr535" },
-      "from": {
-        "blockId": "fu17h0e24vpplfnrhla0t5id",
-        "groupId": "xaloto3qrrbtcdcrob013xcx"
-      }
-    },
-    {
-      "id": "qkrpdn1z0bv1xvsa3wrdyyn3",
-      "to": { "groupId": "tp9r95ay5vm9zlgzw8twtxn3" },
-      "from": {
-        "blockId": "w53cmmn4iowq753r8jmvk7o7",
-        "groupId": "vvlecgglxadq0x2eg7ozr535"
-      }
-    },
-    {
-      "id": "yml7f2btr9q4hptk06cqn2xv",
-      "to": { "groupId": "k2sbuizycrpuyf44v9eebebr" },
-      "from": {
-        "itemId": "qn6w72jgckfz777e9ehb421v",
-        "blockId": "yxuk1bhfas07i4bxq64hi0vj",
-        "groupId": "cszciavjonb2qp0ga0pladoj"
-      }
-    },
-    {
-      "id": "qhpximatxzjmmm1njwoqzplw",
-      "to": { "groupId": "v6s5yza7kgretdmbke7lg5u7" },
-      "from": {
-        "itemId": "vuun8mijpfzcu0o9qk0vtift",
-        "blockId": "yxuk1bhfas07i4bxq64hi0vj",
-        "groupId": "cszciavjonb2qp0ga0pladoj"
-      }
-    },
-    {
-      "id": "xa5z7a7en5vfevqk5e5q05go",
-      "to": { "groupId": "l3pc0992zp0hw8ea83b7aky3" },
-      "from": {
-        "itemId": "dg28mo88efs00p8ech81qxmu",
-        "blockId": "yxuk1bhfas07i4bxq64hi0vj",
-        "groupId": "cszciavjonb2qp0ga0pladoj"
-      }
-    },
-    {
-      "id": "ogpmoxw3lrt12rgxnq0wajrj",
-      "to": { "groupId": "f4hlh2oq8viwxrpl9ppq5d42" },
-      "from": {
-        "itemId": "lrj50vf8c0cj46jrtxid5a60",
-        "blockId": "yxuk1bhfas07i4bxq64hi0vj",
-        "groupId": "cszciavjonb2qp0ga0pladoj"
-      }
-    }
-  ],
-  "theme": {
-    "chat": {
-      "inputs": {
-        "color": "#303235",
-        "backgroundColor": "#FFFFFF",
-        "placeholderColor": "#9095A0"
-      },
-      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
-      "hostAvatar": {
-        "isEnabled": true
-      },
-      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
-      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
-    },
-    "general": {
-      "font": "Open Sans",
-      "background": { "type": "Color", "content": "#ffffff" }
-    }
-  },
+  "theme": {},
   "selectedThemeTemplateId": null,
-  "settings": {
-    "general": {
-      "isBrandingEnabled": false,
-      "isInputPrefillEnabled": true,
-      "isHideQueryParamsEnabled": true,
-      "isNewResultOnRefreshEnabled": true
-    },
-    "metadata": {
-      "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
-    },
-    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
-  },
+  "settings": {},
+  "createdAt": "2023-11-06T17:06:59.136Z",
+  "updatedAt": "2023-11-06T17:06:59.136Z",
+  "icon": "🧲",
+  "folderId": null,
   "publicId": null,
   "customDomain": null,
-  "workspaceId": "freeWorkspace",
+  "workspaceId": "proWorkspace",
   "resultsTablePreferences": null,
   "isArchived": false,
-  "isClosed": false
+  "isClosed": false,
+  "whatsAppCredentialsId": null
 }

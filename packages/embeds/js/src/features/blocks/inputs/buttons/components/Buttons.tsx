@@ -3,8 +3,8 @@ import { SearchInput } from '@/components/inputs/SearchInput'
 import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
 import type { ChoiceInputBlock } from '@typebot.io/schemas'
-import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice'
 import { For, Show, createSignal, onMount } from 'solid-js'
+import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
 
 type Props = {
   inputIndex: number
@@ -34,13 +34,13 @@ export const Buttons = (props: Props) => {
 
   return (
     <div class="flex flex-col gap-2 w-full">
-      <Show when={props.options.isSearchable}>
+      <Show when={props.options?.isSearchable}>
         <div class="flex items-end typebot-input w-full">
           <SearchInput
             ref={inputRef}
             onInput={filterItems}
             placeholder={
-              props.options.searchInputPlaceholder ??
+              props.options?.searchInputPlaceholder ??
               defaultChoiceInputOptions.searchInputPlaceholder
             }
             onClear={() => setFilteredItems(props.defaultItems)}
@@ -51,7 +51,7 @@ export const Buttons = (props: Props) => {
       <div
         class={
           'flex flex-wrap justify-end gap-2' +
-          (props.options.isSearchable
+          (props.options?.isSearchable
             ? ' overflow-y-scroll max-h-80 rounded-md hide-scrollbar'
             : '')
         }

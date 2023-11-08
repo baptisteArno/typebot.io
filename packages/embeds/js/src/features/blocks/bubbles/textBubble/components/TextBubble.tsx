@@ -1,5 +1,5 @@
 import { TypingBubble } from '@/components'
-import type { TextBubbleContent, TypingEmulation } from '@typebot.io/schemas'
+import type { Settings, TextBubbleBlock } from '@typebot.io/schemas'
 import { For, createSignal, onCleanup, onMount } from 'solid-js'
 import { PlateElement } from './plate/PlateBlock'
 import { computePlainText } from '../helpers/convertRichTextToPlainText'
@@ -8,8 +8,8 @@ import { isMobile } from '@/utils/isMobileSignal'
 import { computeTypingDuration } from '@typebot.io/bot-engine/computeTypingDuration'
 
 type Props = {
-  content: TextBubbleContent
-  typingEmulation: TypingEmulation
+  content: TextBubbleBlock['content']
+  typingEmulation: Settings['typingEmulation']
   onTransitionEnd: (offsetTop?: number) => void
 }
 
@@ -31,7 +31,9 @@ export const TextBubble = (props: Props) => {
 
   onMount(() => {
     if (!isTyping) return
-    const plainText = computePlainText(props.content.richText)
+    const plainText = props.content?.richText
+      ? computePlainText(props.content.richText)
+      : ''
     const typingDuration =
       props.typingEmulation?.enabled === false
         ? 0
@@ -69,7 +71,7 @@ export const TextBubble = (props: Props) => {
               height: isTyping() ? (isMobile() ? '16px' : '20px') : '100%',
             }}
           >
-            <For each={props.content.richText}>
+            <For each={props.content?.richText}>
               {(element) => <PlateElement element={element} />}
             </For>
           </div>

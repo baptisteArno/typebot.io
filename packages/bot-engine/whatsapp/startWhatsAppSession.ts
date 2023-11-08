@@ -1,8 +1,6 @@
 import prisma from '@typebot.io/lib/prisma'
 import {
   ChatReply,
-  ComparisonOperators,
-  LogicalOperator,
   PublicTypebot,
   SessionState,
   Settings,
@@ -14,6 +12,11 @@ import {
 } from '@typebot.io/schemas/features/whatsapp'
 import { isNotDefined } from '@typebot.io/lib/utils'
 import { startSession } from '../startSession'
+import {
+  LogicalOperator,
+  ComparisonOperators,
+} from '@typebot.io/schemas/features/blocks/logic/condition/constants'
+import { VisitedEdge } from '@typebot.io/prisma'
 
 type Props = {
   incomingMessage?: string
@@ -30,6 +33,7 @@ export const startWhatsAppSession = async ({
 }: Props): Promise<
   | (ChatReply & {
       newSessionState: SessionState
+      visitedEdges: VisitedEdge[]
     })
   | { error: string }
 > => {

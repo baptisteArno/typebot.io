@@ -15,7 +15,6 @@ import {
 import {
   BubbleBlock,
   InputBlock,
-  LogicBlockType,
   PublicTypebot,
   Block,
 } from '@typebot.io/schemas'
@@ -30,6 +29,8 @@ import { executeIntegration } from '@/utils/executeIntegration'
 import { executeLogic } from '@/utils/executeLogic'
 import { blockCanBeRetried, parseRetryBlock } from '@/utils/inputs'
 import { PopupBlockedToast } from '../PopupBlockedToast'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { getBlockById } from '@typebot.io/lib/getBlockById'
 
 type ChatGroupProps = {
   blocks: Block[]
@@ -143,19 +144,20 @@ export const ChatGroup = ({
       if (blockedPopupUrl) setBlockedPopupUrl(blockedPopupUrl)
       const isRedirecting =
         currentBlock.type === LogicBlockType.REDIRECT &&
-        currentBlock.options.isNewTab === false
+        currentBlock.options?.isNewTab === false
       if (isRedirecting) return
       nextEdgeId
         ? onGroupEnd({ edgeId: nextEdgeId, updatedTypebot: linkedTypebot })
         : displayNextBlock()
     }
     if (isIntegrationBlock(currentBlock)) {
+      const { group } = getBlockById(currentBlock.id, typebot.groups)
       const nextEdgeId = await executeIntegration({
         block: currentBlock,
         context: {
           apiHost,
           typebotId: currentTypebotId,
-          groupId: currentBlock.groupId,
+          groupId: group.id,
           blockId: currentBlock.id,
           variables: typebot.variables,
           isPreview,
@@ -181,10 +183,12 @@ export const ChatGroup = ({
     scroll()
     const currentBlock = [...processedBlocks].pop()
     if (currentBlock) {
-      if (isRetry && blockCanBeRetried(currentBlock))
+      if (isRetry && blockCanBeRetried(currentBlock)) {
+        const { group } = getBlockById(currentBlock.id, typebot.groups)
         return insertBlockInStack(
-          parseRetryBlock(currentBlock, typebot.variables, createEdge)
+          parseRetryBlock(currentBlock, group.id, typebot.variables, createEdge)
         )
+      }
       if (
         isInputBlock(currentBlock) &&
         currentBlock.options?.variableId &&
@@ -196,7 +200,7 @@ export const ChatGroup = ({
         )
       }
       const isSingleChoiceBlock =
-        isChoiceInput(currentBlock) && !currentBlock.options.isMultipleChoice
+        isChoiceInput(currentBlock) && !currentBlock.options?.isMultipleChoice
       if (isSingleChoiceBlock) {
         const nextEdgeId = currentBlock.items.find(
           byId(answerContent?.itemId)
@@ -214,7 +218,7 @@ export const ChatGroup = ({
     nextBlock ? insertBlockInStack(nextBlock) : onGroupEnd({})
   }
 
-  const avatarSrc = typebot.theme.chat.hostAvatar?.url
+  const avatarSrc = typebot.theme.chat?.hostAvatar?.url
 
   return (
     <div className="flex w-full" data-group-name={groupTitle}>
@@ -224,10 +228,10 @@ export const ChatGroup = ({
             key={idx}
             displayChunk={chunk}
             hostAvatar={{
-              isEnabled: typebot.theme.chat.hostAvatar?.isEnabled ?? true,
+              isEnabled: typebot.theme.chat?.hostAvatar?.isEnabled ?? true,
               src: avatarSrc && parseVariables(typebot.variables)(avatarSrc),
             }}
-            hasGuestAvatar={typebot.theme.chat.guestAvatar?.isEnabled ?? false}
+            hasGuestAvatar={typebot.theme.chat?.guestAvatar?.isEnabled ?? false}
             onDisplayNextBlock={displayNextBlock}
             keepShowingHostAvatar={keepShowingHostAvatar}
             blockedPopupUrl={blockedPopupUrl}

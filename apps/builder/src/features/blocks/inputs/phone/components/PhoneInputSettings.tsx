@@ -1,20 +1,21 @@
 import { TextInput } from '@/components/inputs'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormLabel, Stack } from '@chakra-ui/react'
-import { PhoneNumberInputOptions, Variable } from '@typebot.io/schemas'
+import { PhoneNumberInputBlock, Variable } from '@typebot.io/schemas'
 import React from 'react'
 import { CountryCodeSelect } from './CountryCodeSelect'
+import { defaultPhoneInputOptions } from '@typebot.io/schemas/features/blocks/inputs/phone/constants'
 
 type Props = {
-  options: PhoneNumberInputOptions
-  onOptionsChange: (options: PhoneNumberInputOptions) => void
+  options: PhoneNumberInputBlock['options']
+  onOptionsChange: (options: PhoneNumberInputBlock['options']) => void
 }
 
 export const PhoneInputSettings = ({ options, onOptionsChange }: Props) => {
   const handlePlaceholderChange = (placeholder: string) =>
-    onOptionsChange({ ...options, labels: { ...options.labels, placeholder } })
+    onOptionsChange({ ...options, labels: { ...options?.labels, placeholder } })
   const handleButtonLabelChange = (button: string) =>
-    onOptionsChange({ ...options, labels: { ...options.labels, button } })
+    onOptionsChange({ ...options, labels: { ...options?.labels, button } })
   const handleVariableChange = (variable?: Variable) =>
     onOptionsChange({ ...options, variableId: variable?.id })
   const handleRetryMessageChange = (retryMessageContent: string) =>
@@ -26,12 +27,17 @@ export const PhoneInputSettings = ({ options, onOptionsChange }: Props) => {
     <Stack spacing={4}>
       <TextInput
         label="Placeholder:"
-        defaultValue={options.labels.placeholder}
+        defaultValue={
+          options?.labels?.placeholder ??
+          defaultPhoneInputOptions.labels.placeholder
+        }
         onChange={handlePlaceholderChange}
       />
       <TextInput
         label="Button label:"
-        defaultValue={options.labels.button}
+        defaultValue={
+          options?.labels?.button ?? defaultPhoneInputOptions.labels.button
+        }
         onChange={handleButtonLabelChange}
       />
       <Stack>
@@ -40,12 +46,15 @@ export const PhoneInputSettings = ({ options, onOptionsChange }: Props) => {
         </FormLabel>
         <CountryCodeSelect
           onSelect={handleDefaultCountryChange}
-          countryCode={options.defaultCountryCode}
+          countryCode={options?.defaultCountryCode}
         />
       </Stack>
       <TextInput
         label="Retry message:"
-        defaultValue={options.retryMessageContent}
+        defaultValue={
+          options?.retryMessageContent ??
+          defaultPhoneInputOptions.retryMessageContent
+        }
         onChange={handleRetryMessageChange}
       />
       <Stack>
@@ -53,7 +62,7 @@ export const PhoneInputSettings = ({ options, onOptionsChange }: Props) => {
           Save answer in a variable:
         </FormLabel>
         <VariableSearchInput
-          initialVariableId={options.variableId}
+          initialVariableId={options?.variableId}
           onSelectVariable={handleVariableChange}
         />
       </Stack>

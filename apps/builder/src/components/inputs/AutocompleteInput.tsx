@@ -9,9 +9,8 @@ import {
   Input,
   HStack,
   FormControl,
-  FormLabel,
 } from '@chakra-ui/react'
-import { useState, useRef, useEffect, ReactNode } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { isDefined } from '@typebot.io/lib'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
@@ -20,7 +19,6 @@ import { VariablesButton } from '@/features/variables/components/VariablesButton
 import { Variable } from '@typebot.io/schemas'
 import { injectVariableInText } from '@/features/variables/helpers/injectVariableInTextInput'
 import { focusInput } from '@/helpers/focusInput'
-import { MoreInfoTooltip } from '../MoreInfoTooltip'
 import { env } from '@typebot.io/env'
 
 type Props = {
@@ -30,7 +28,6 @@ type Props = {
   debounceTimeout?: number
   placeholder?: string
   withVariableButton?: boolean
-  label?: ReactNode
   moreInfoTooltip?: string
   isRequired?: boolean
   onChange: (value: string) => void
@@ -44,8 +41,6 @@ export const AutocompleteInput = ({
   withVariableButton = true,
   value,
   defaultValue,
-  label,
-  moreInfoTooltip,
   isRequired,
 }: Props) => {
   const bg = useColorModeValue('gray.200', 'gray.700')
@@ -161,14 +156,6 @@ export const AutocompleteInput = ({
 
   return (
     <FormControl isRequired={isRequired}>
-      {label && (
-        <FormLabel>
-          {label}{' '}
-          {moreInfoTooltip && (
-            <MoreInfoTooltip>{moreInfoTooltip}</MoreInfoTooltip>
-          )}
-        </FormLabel>
-      )}
       <HStack ref={dropdownRef} spacing={0} w="full">
         <Popover
           isOpen={isOpen}

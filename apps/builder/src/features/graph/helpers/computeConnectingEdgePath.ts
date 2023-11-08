@@ -7,6 +7,7 @@ import {
 export const computeConnectingEdgePath = ({
   sourceGroupCoordinates,
   targetGroupCoordinates,
+  elementWidth,
   sourceTop,
   targetTop,
   graphScale,
@@ -14,6 +15,7 @@ export const computeConnectingEdgePath = ({
   const anchorsPosition = getAnchorsPosition({
     sourceGroupCoordinates,
     targetGroupCoordinates,
+    elementWidth,
     sourceTop,
     targetTop,
     graphScale,

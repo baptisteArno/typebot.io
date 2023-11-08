@@ -3,11 +3,9 @@ import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { Variable } from '@typebot.io/schemas'
 import React from 'react'
-import {
-  PictureChoiceBlock,
-  defaultPictureChoiceOptions,
-} from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
+import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
+import { defaultPictureChoiceOptions } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice/constants'
 
 type Props = {
   options?: PictureChoiceBlock['options']
@@ -16,52 +14,48 @@ type Props = {
 
 export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
   const updateIsMultiple = (isMultipleChoice: boolean) =>
-    options && onOptionsChange({ ...options, isMultipleChoice })
+    onOptionsChange({ ...options, isMultipleChoice })
   const updateButtonLabel = (buttonLabel: string) =>
-    options && onOptionsChange({ ...options, buttonLabel })
+    onOptionsChange({ ...options, buttonLabel })
   const updateSaveVariable = (variable?: Variable) =>
-    options && onOptionsChange({ ...options, variableId: variable?.id })
+    onOptionsChange({ ...options, variableId: variable?.id })
   const updateSearchInputPlaceholder = (searchInputPlaceholder: string) =>
-    options && onOptionsChange({ ...options, searchInputPlaceholder })
+    onOptionsChange({ ...options, searchInputPlaceholder })
   const updateIsSearchable = (isSearchable: boolean) =>
-    options && onOptionsChange({ ...options, isSearchable })
+    onOptionsChange({ ...options, isSearchable })
 
   const updateIsDynamicItemsEnabled = (isEnabled: boolean) =>
-    options &&
     onOptionsChange({
       ...options,
       dynamicItems: {
-        ...options.dynamicItems,
+        ...options?.dynamicItems,
         isEnabled,
       },
     })
 
   const updateDynamicItemsPictureSrcsVariable = (variable?: Variable) =>
-    options &&
     onOptionsChange({
       ...options,
       dynamicItems: {
-        ...options.dynamicItems,
+        ...options?.dynamicItems,
         pictureSrcsVariableId: variable?.id,
       },
     })
 
   const updateDynamicItemsTitlesVariable = (variable?: Variable) =>
-    options &&
     onOptionsChange({
       ...options,
       dynamicItems: {
-        ...options.dynamicItems,
+        ...options?.dynamicItems,
         titlesVariableId: variable?.id,
       },
     })
 
   const updateDynamicItemsDescriptionsVariable = (variable?: Variable) =>
-    options &&
     onOptionsChange({
       ...options,
       dynamicItems: {
-        ...options.dynamicItems,
+        ...options?.dynamicItems,
         descriptionsVariableId: variable?.id,
       },
     })
@@ -70,7 +64,9 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
     <Stack spacing={4}>
       <SwitchWithRelatedSettings
         label="Is searchable?"
-        initialValue={options?.isSearchable ?? false}
+        initialValue={
+          options?.isSearchable ?? defaultPictureChoiceOptions.isSearchable
+        }
         onCheckChange={updateIsSearchable}
       >
         <TextInput
@@ -84,19 +80,27 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
       </SwitchWithRelatedSettings>
       <SwitchWithRelatedSettings
         label="Multiple choice?"
-        initialValue={options?.isMultipleChoice ?? false}
+        initialValue={
+          options?.isMultipleChoice ??
+          defaultPictureChoiceOptions.isMultipleChoice
+        }
         onCheckChange={updateIsMultiple}
       >
         <TextInput
           label="Submit button label:"
-          defaultValue={options?.buttonLabel ?? 'Send'}
+          defaultValue={
+            options?.buttonLabel ?? defaultPictureChoiceOptions.buttonLabel
+          }
           onChange={updateButtonLabel}
         />
       </SwitchWithRelatedSettings>
 
       <SwitchWithRelatedSettings
         label="Dynamic items?"
-        initialValue={options?.dynamicItems?.isEnabled ?? false}
+        initialValue={
+          options?.dynamicItems?.isEnabled ??
+          defaultPictureChoiceOptions.dynamicItems.isEnabled
+        }
         onCheckChange={updateIsDynamicItemsEnabled}
       >
         <Stack>

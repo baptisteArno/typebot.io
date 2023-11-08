@@ -1,9 +1,9 @@
-import type { RedirectOptions } from '@typebot.io/schemas'
+import { RedirectBlock } from '@typebot.io/schemas'
 
 export const executeRedirect = ({
   url,
   isNewTab,
-}: RedirectOptions): { blockedPopupUrl: string } | undefined => {
+}: RedirectBlock['options'] = {}): { blockedPopupUrl: string } | undefined => {
   if (!url) return
   const updatedWindow = window.open(url, isNewTab ? '_blank' : '_self')
   if (!updatedWindow)

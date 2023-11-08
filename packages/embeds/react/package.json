@@ -21,7 +21,6 @@
   "devDependencies": {
     "@babel/preset-react": "7.22.5",
     "@babel/preset-typescript": "7.22.5",
-    "@rollup/plugin-alias": "5.0.0",
     "@rollup/plugin-babel": "6.0.3",
     "@rollup/plugin-node-resolve": "15.1.0",
     "@rollup/plugin-terser": "0.4.3",
@@ -37,11 +36,10 @@
     "eslint-config-custom": "workspace:*",
     "react": "18.2.0",
     "rollup": "3.26.2",
-    "rollup-plugin-dts": "6.1.0",
     "rollup-plugin-typescript-paths": "1.4.0",
     "tslib": "2.6.0",
     "tsx": "3.12.7",
-    "typescript": "5.1.6"
+    "typescript": "5.2.2"
   },
   "peerDependencies": {
     "react": "18.x"

@@ -20,26 +20,26 @@ export const executeZemanticAiBlock = async (
 ): Promise<ExecuteIntegrationResponse> => {
   let newSessionState = state
 
-  const noCredentialsError = {
-    status: 'error',
-    description: 'Make sure to select a Zemantic AI account',
-  }
-
-  const zemanticRequestError = {
-    status: 'error',
-    description: 'Could not execute Zemantic AI request',
-  }
+  if (!block.options?.credentialsId)
+    return {
+      outgoingEdgeId: block.outgoingEdgeId,
+    }
 
   const credentials = await prisma.credentials.findUnique({
     where: {
-      id: block.options.credentialsId,
+      id: block.options?.credentialsId,
     },
   })
+
   if (!credentials) {
-    console.error('Could not find credentials in database')
     return {
       outgoingEdgeId: block.outgoingEdgeId,
-      logs: [noCredentialsError],
+      logs: [
+        {
+          status: 'error',
+          description: 'Make sure to select a Zemantic AI account',
+        },
+      ],
     }
   }
   const { apiKey } = (await decrypt(
@@ -109,7 +109,12 @@ export const executeZemanticAiBlock = async (
     console.error(e)
     return {
       outgoingEdgeId: block.outgoingEdgeId,
-      logs: [zemanticRequestError],
+      logs: [
+        {
+          status: 'error',
+          description: 'Could not execute Zemantic AI request',
+        },
+      ],
     }
   }
 

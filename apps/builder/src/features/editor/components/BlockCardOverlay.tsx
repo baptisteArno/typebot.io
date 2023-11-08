@@ -1,12 +1,12 @@
 import { StackProps, HStack, useColorModeValue } from '@chakra-ui/react'
-import { BlockType } from '@typebot.io/schemas'
 import { BlockIcon } from './BlockIcon'
 import { BlockLabel } from './BlockLabel'
+import { BlockV6 } from '@typebot.io/schemas'
 
 export const BlockCardOverlay = ({
   type,
   ...props
-}: StackProps & { type: BlockType }) => {
+}: StackProps & { type: BlockV6['type'] }) => {
   return (
     <HStack
       borderWidth="1px"

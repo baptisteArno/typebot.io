@@ -1,20 +1,28 @@
 import { gtmHeadSnippet } from '@/lib/google-tag-manager'
-import { Metadata } from '@typebot.io/schemas'
 import Head from 'next/head'
 import Script from 'next/script'
 import React from 'react'
 import { isNotEmpty } from '@typebot.io/lib'
+import { getViewerUrl } from '@typebot.io/lib/getViewerUrl'
+import { Settings } from '@typebot.io/schemas'
+import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
 
 type SEOProps = {
   url: string
   typebotName: string
-  metadata: Metadata
+  metadata?: Settings['metadata']
 }
 
 export const SEO = ({
   url,
   typebotName,
-  metadata: { title, description, favIconUrl, imageUrl, googleTagManagerId },
+  metadata: {
+    title,
+    description,
+    favIconUrl,
+    imageUrl,
+    googleTagManagerId,
+  } = {},
 }: SEOProps) => (
   <>
     <Head key="seo">
@@ -23,7 +31,7 @@ export const SEO = ({
       <link
         rel="icon"
         type="image/png"
-        href={favIconUrl ?? 'https://viewer.typebot.io/favicon.png'}
+        href={favIconUrl ?? defaultSettings.metadata.favIconUrl(getViewerUrl())}
       />
       <meta name="title" content={title ?? typebotName} />
       <meta
@@ -48,7 +56,7 @@ export const SEO = ({
       <meta
         property="og:image"
         itemProp="image"
-        content={imageUrl ?? 'https://bot.typebot.io/site-preview.png'}
+        content={imageUrl ?? defaultSettings.metadata.imageUrl(getViewerUrl())}
       />
 
       <meta property="twitter:card" content="summary_large_image" />
@@ -63,7 +71,7 @@ export const SEO = ({
       />
       <meta
         property="twitter:image"
-        content={imageUrl ?? 'https://bot.typebot.io/site-preview.png'}
+        content={imageUrl ?? defaultSettings.metadata.imageUrl(getViewerUrl())}
       />
     </Head>
     {isNotEmpty(googleTagManagerId) && (

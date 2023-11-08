@@ -8,12 +8,12 @@ import {
   Box,
   Stack,
 } from '@chakra-ui/react'
-import { GoogleAnalyticsOptions } from '@typebot.io/schemas'
+import { GoogleAnalyticsBlock } from '@typebot.io/schemas'
 import React from 'react'
 
 type Props = {
-  options?: GoogleAnalyticsOptions
-  onOptionsChange: (options: GoogleAnalyticsOptions) => void
+  options?: GoogleAnalyticsBlock['options']
+  onOptionsChange: (options: GoogleAnalyticsBlock['options']) => void
 }
 
 export const GoogleAnalyticsSettings = ({
@@ -48,13 +48,13 @@ export const GoogleAnalyticsSettings = ({
       <TextInput
         label="Measurement ID:"
         moreInfoTooltip="Can be found by clicking on your data stream in Google Analytics dashboard"
-        defaultValue={options?.trackingId ?? ''}
+        defaultValue={options?.trackingId}
         placeholder="G-123456..."
         onChange={updateTrackingId}
       />
       <TextInput
         label="Event action:"
-        defaultValue={options?.action ?? ''}
+        defaultValue={options?.action}
         placeholder="Example: conversion"
         onChange={updateAction}
       />
@@ -71,13 +71,13 @@ export const GoogleAnalyticsSettings = ({
           <AccordionPanel pb={4} as={Stack} spacing="6">
             <TextInput
               label="Event category:"
-              defaultValue={options?.category ?? ''}
+              defaultValue={options?.category}
               placeholder="Example: Typebot"
               onChange={updateCategory}
             />
             <TextInput
               label="Event label:"
-              defaultValue={options?.label ?? ''}
+              defaultValue={options?.label}
               placeholder="Example: Campaign Z"
               onChange={updateLabel}
             />
@@ -91,7 +91,7 @@ export const GoogleAnalyticsSettings = ({
             <TextInput
               label="Send to:"
               moreInfoTooltip="Useful to send a conversion event to Google Ads"
-              defaultValue={options?.sendTo?.toString() ?? ''}
+              defaultValue={options?.sendTo?.toString()}
               placeholder="Example: AW-123456789"
               onChange={updateSendTo}
             />

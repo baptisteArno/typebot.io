@@ -1,10 +1,10 @@
 import { Stack, Flex, Text } from '@chakra-ui/react'
-import { InputColors } from '@typebot.io/schemas'
+import { InputColors, Theme } from '@typebot.io/schemas'
 import React from 'react'
 import { ColorPicker } from '../../../../components/ColorPicker'
 
 type Props = {
-  inputs: InputColors
+  inputs: NonNullable<Theme['chat']>['inputs']
   onInputsChange: (buttons: InputColors) => void
 }
 
@@ -21,18 +21,18 @@ export const InputsTheme = ({ inputs, onInputsChange }: Props) => {
       <Flex justify="space-between" align="center">
         <Text>Background:</Text>
         <ColorPicker
-          value={inputs.backgroundColor}
+          value={inputs?.backgroundColor}
           onColorChange={handleBackgroundChange}
         />
       </Flex>
       <Flex justify="space-between" align="center">
         <Text>Text:</Text>
-        <ColorPicker value={inputs.color} onColorChange={handleTextChange} />
+        <ColorPicker value={inputs?.color} onColorChange={handleTextChange} />
       </Flex>
       <Flex justify="space-between" align="center">
         <Text>Placeholder text:</Text>
         <ColorPicker
-          value={inputs.placeholderColor}
+          value={inputs?.placeholderColor}
           onColorChange={handlePlaceholderChange}
         />
       </Flex>

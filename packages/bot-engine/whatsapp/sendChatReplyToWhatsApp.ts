@@ -1,9 +1,4 @@
-import {
-  ChatReply,
-  InputBlockType,
-  SessionState,
-  Settings,
-} from '@typebot.io/schemas'
+import { ChatReply, SessionState, Settings } from '@typebot.io/schemas'
 import {
   WhatsAppCredentials,
   WhatsAppSendingMessage,
@@ -16,6 +11,7 @@ import { convertInputToWhatsAppMessages } from './convertInputToWhatsAppMessage'
 import { isNotDefined } from '@typebot.io/lib/utils'
 import { computeTypingDuration } from '../computeTypingDuration'
 import { continueBotFlow } from '../continueBotFlow'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 
 // Media can take some time to be delivered. This make sure we don't send a message before the media is delivered.
 const messageAfterMediaTimeout = 5000

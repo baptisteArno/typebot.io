@@ -1,17 +1,17 @@
+import { StartTypebot } from '@typebot.io/schemas'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import {
-  BackgroundType,
-  BubbleBlockType,
   ComparisonOperators,
-  InputBlockType,
-  ItemType,
   LogicalOperator,
-  LogicBlockType,
-  StartTypebot,
-} from '@typebot.io/schemas'
+} from '@typebot.io/schemas/features/blocks/logic/condition/constants'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/constants'
 
 export const leadGenerationTypebot: StartTypebot = {
-  version: null,
+  version: '3',
   id: 'clckrl4q5000t3b6sabwokaar',
+  events: null,
   groups: [
     {
       id: 'clckrl4q5000g3b6skizhd262',
@@ -21,7 +21,6 @@ export const leadGenerationTypebot: StartTypebot = {
           id: '22HP69iipkLjJDTUcc1AWW',
           type: 'start',
           label: 'Start',
-          groupId: 'clckrl4q5000g3b6skizhd262',
           outgoingEdgeId: 'clckrlxp400173b6sktq7gqm2',
         },
       ],
@@ -48,7 +47,6 @@ export const leadGenerationTypebot: StartTypebot = {
             ],
             plainText: 'Welcome to AA (Awesome Agency)',
           },
-          groupId: 'clckrl4q5000h3b6sjipn4qga',
         },
         {
           id: 's7YqZTBeyCa4Hp3wN2j922c',
@@ -56,7 +54,6 @@ export const leadGenerationTypebot: StartTypebot = {
           content: {
             url: 'https://media2.giphy.com/media/XD9o33QG9BoMis7iM4/giphy.gif?cid=fe3852a3ihg8rvipzzky5lybmdyq38fhke2tkrnshwk52c7d&rid=giphy.gif&ct=g',
           },
-          groupId: 'clckrl4q5000h3b6sjipn4qga',
         },
         {
           id: 'sbjZWLJGVkHAkDqS4JQeGow',
@@ -64,12 +61,10 @@ export const leadGenerationTypebot: StartTypebot = {
           items: [
             {
               id: 'hQw2zbp7FDX7XYK9cFpbgC',
-              type: 0,
               blockId: 'sbjZWLJGVkHAkDqS4JQeGow',
               content: 'Hi!',
             },
           ],
-          groupId: 'clckrl4q5000h3b6sjipn4qga',
           options: { buttonLabel: 'Send', isMultipleChoice: false },
           outgoingEdgeId: 'clckrm7td001b3b6s2769fh7k',
         },
@@ -93,7 +88,6 @@ export const leadGenerationTypebot: StartTypebot = {
             ],
             plainText: 'Great! Nice to meet you {{Name}}',
           },
-          groupId: 'clckrl4q5000i3b6stgxyvscq',
         },
         {
           id: 'scQ5kduafAtfP9T8SHUJnGi',
@@ -110,12 +104,10 @@ export const leadGenerationTypebot: StartTypebot = {
             ],
             plainText: "What's the best email we can reach you at?",
           },
-          groupId: 'clckrl4q5000i3b6stgxyvscq',
         },
         {
           id: 'snbsad18Bgry8yZ8DZCfdFD',
           type: InputBlockType.EMAIL,
-          groupId: 'clckrl4q5000i3b6stgxyvscq',
           options: {
             labels: { button: 'Send', placeholder: 'Type your email...' },
             variableId: 'v3VFChNVSCXQ2rXv4DrJ8Ah',
@@ -141,12 +133,10 @@ export const leadGenerationTypebot: StartTypebot = {
             ],
             plainText: "What's your name?",
           },
-          groupId: 'clckrl4q5000j3b6sloirnxza',
         },
         {
           id: 'sqEsMo747LTDnY9FjQcEwUv',
           type: InputBlockType.TEXT,
-          groupId: 'clckrl4q5000j3b6sloirnxza',
           options: {
             isLong: false,
             labels: {
@@ -177,7 +167,6 @@ export const leadGenerationTypebot: StartTypebot = {
             ],
             plainText: 'What services are you interested in?',
           },
-          groupId: 'clckrl4q5000k3b6s0anufmgy',
         },
         {
           id: 's5VQGsVF4hQgziQsXVdwPDW',
@@ -185,30 +174,25 @@ export const leadGenerationTypebot: StartTypebot = {
           items: [
             {
               id: 'fnLCBF4NdraSwcubnBhk8H',
-              type: 0,
               blockId: 's5VQGsVF4hQgziQsXVdwPDW',
               content: 'Website dev',
             },
             {
               id: 'a782h8ynMouY84QjH7XSnR',
-              type: 0,
               blockId: 's5VQGsVF4hQgziQsXVdwPDW',
               content: 'Content Marketing',
             },
             {
               id: 'jGvh94zBByvVFpSS3w97zY',
-              type: 0,
               blockId: 's5VQGsVF4hQgziQsXVdwPDW',
               content: 'Social Media',
             },
             {
               id: '6PRLbKUezuFmwWtLVbvAQ7',
-              type: 0,
               blockId: 's5VQGsVF4hQgziQsXVdwPDW',
               content: 'UI / UX Design',
             },
           ],
-          groupId: 'clckrl4q5000k3b6s0anufmgy',
           options: { buttonLabel: 'Send', isMultipleChoice: true },
           outgoingEdgeId: 'clckrl4q5000r3b6s9yxsuxu7',
         },
@@ -234,12 +218,10 @@ export const leadGenerationTypebot: StartTypebot = {
             ],
             plainText: 'Can you tell me a bit more about your needs?',
           },
-          groupId: 'clckrl4q5000l3b6scn1r1nns',
         },
         {
           id: 'sqFy2G3C1mh9p6s3QBdSS5x',
           type: InputBlockType.TEXT,
-          groupId: 'clckrl4q5000l3b6scn1r1nns',
           options: {
             isLong: true,
             labels: { button: 'Send', placeholder: 'Type your answer...' },
@@ -261,7 +243,6 @@ export const leadGenerationTypebot: StartTypebot = {
             richText: [{ type: 'p', children: [{ text: 'Perfect!' }] }],
             plainText: 'Perfect!',
           },
-          groupId: 'clckrl4q5000m3b6srabr5a2s',
         },
         {
           id: 's779Q1y51aVaDUJVrFb16vv',
@@ -276,7 +257,6 @@ export const leadGenerationTypebot: StartTypebot = {
             ],
             plainText: "We'll get back to you at {{Email}}",
           },
-          groupId: 'clckrl4q5000m3b6srabr5a2s',
         },
       ],
       graphCoordinates: { x: 1668, y: 143 },
@@ -288,13 +268,11 @@ export const leadGenerationTypebot: StartTypebot = {
       blocks: [
         {
           id: 'clckrlksq00103b6s3exi90al',
-          groupId: 'clckrlksq000z3b6sequnj9m3',
           type: LogicBlockType.CONDITION,
           items: [
             {
               id: 'clckrlksq00113b6sz8naxdwx',
               blockId: 'clckrlksq00103b6s3exi90al',
-              type: ItemType.CONDITION,
               content: {
                 comparisons: [
                   {
@@ -319,13 +297,11 @@ export const leadGenerationTypebot: StartTypebot = {
       blocks: [
         {
           id: 'clckrm1zr00193b6szpz37plc',
-          groupId: 'clckrm1zq00183b6sz8ydapth',
           type: LogicBlockType.CONDITION,
           items: [
             {
               id: 'clckrm1zr001a3b6s1hlfm2jh',
               blockId: 'clckrm1zr00193b6szpz37plc',
-              type: ItemType.CONDITION,
               content: {
                 comparisons: [
                   {
@@ -350,7 +326,6 @@ export const leadGenerationTypebot: StartTypebot = {
       blocks: [
         {
           id: 'clckrl870000y3b6sxyd24qwc',
-          groupId: 'clckrlqil00133b6sk6msgqt1',
           type: BubbleBlockType.TEXT,
           content: {
             html: '<div>Hi {{Name}}!</div>',
@@ -372,7 +347,6 @@ export const leadGenerationTypebot: StartTypebot = {
       to: { groupId: 'clckrl4q5000i3b6stgxyvscq' },
       from: {
         blockId: 'sqEsMo747LTDnY9FjQcEwUv',
-        groupId: 'clckrl4q5000j3b6sloirnxza',
       },
     },
     {
@@ -380,7 +354,6 @@ export const leadGenerationTypebot: StartTypebot = {
       to: { groupId: 'clckrl4q5000k3b6s0anufmgy' },
       from: {
         blockId: 'snbsad18Bgry8yZ8DZCfdFD',
-        groupId: 'clckrl4q5000i3b6stgxyvscq',
       },
     },
     {
@@ -388,7 +361,6 @@ export const leadGenerationTypebot: StartTypebot = {
       to: { groupId: 'clckrl4q5000l3b6scn1r1nns' },
       from: {
         blockId: 's5VQGsVF4hQgziQsXVdwPDW',
-        groupId: 'clckrl4q5000k3b6s0anufmgy',
       },
     },
     {
@@ -396,12 +368,10 @@ export const leadGenerationTypebot: StartTypebot = {
       to: { groupId: 'clckrl4q5000m3b6srabr5a2s' },
       from: {
         blockId: 'sqFy2G3C1mh9p6s3QBdSS5x',
-        groupId: 'clckrl4q5000l3b6scn1r1nns',
       },
     },
     {
       from: {
-        groupId: 'clckrlksq000z3b6sequnj9m3',
         blockId: 'clckrlksq00103b6s3exi90al',
         itemId: 'clckrlksq00113b6sz8naxdwx',
       },
@@ -410,7 +380,6 @@ export const leadGenerationTypebot: StartTypebot = {
     },
     {
       from: {
-        groupId: 'clckrlksq000z3b6sequnj9m3',
         blockId: 'clckrlksq00103b6s3exi90al',
       },
       to: { groupId: 'clckrl4q5000h3b6sjipn4qga' },
@@ -418,7 +387,6 @@ export const leadGenerationTypebot: StartTypebot = {
     },
     {
       from: {
-        groupId: 'clckrlqil00133b6sk6msgqt1',
         blockId: 'clckrl870000y3b6sxyd24qwc',
       },
       to: { groupId: 'clckrl4q5000h3b6sjipn4qga' },
@@ -426,7 +394,6 @@ export const leadGenerationTypebot: StartTypebot = {
     },
     {
       from: {
-        groupId: 'clckrl4q5000g3b6skizhd262',
         blockId: '22HP69iipkLjJDTUcc1AWW',
       },
       to: { groupId: 'clckrlksq000z3b6sequnj9m3' },
@@ -434,7 +401,6 @@ export const leadGenerationTypebot: StartTypebot = {
     },
     {
       from: {
-        groupId: 'clckrl4q5000h3b6sjipn4qga',
         blockId: 'sbjZWLJGVkHAkDqS4JQeGow',
       },
       to: { groupId: 'clckrm1zq00183b6sz8ydapth' },
@@ -442,7 +408,6 @@ export const leadGenerationTypebot: StartTypebot = {
     },
     {
       from: {
-        groupId: 'clckrm1zq00183b6sz8ydapth',
         blockId: 'clckrm1zr00193b6szpz37plc',
         itemId: 'clckrm1zr001a3b6s1hlfm2jh',
       },
@@ -451,7 +416,6 @@ export const leadGenerationTypebot: StartTypebot = {
     },
     {
       from: {
-        groupId: 'clckrm1zq00183b6sz8ydapth',
         blockId: 'clckrm1zr00193b6szpz37plc',
       },
       to: { groupId: 'clckrl4q5000j3b6sloirnxza' },

@@ -15,9 +15,13 @@ import {
   Image,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { BackgroundType, ThemeTemplate } from '@typebot.io/schemas'
+import { Theme, ThemeTemplate } from '@typebot.io/schemas'
 import { useState } from 'react'
 import { DefaultAvatar } from './DefaultAvatar'
+import {
+  BackgroundType,
+  defaultTheme,
+} from '@typebot.io/schemas/features/typebot/theme/constants'
 
 export const ThemeTemplateCard = ({
   workspaceId,
@@ -56,11 +60,35 @@ export const ThemeTemplateCard = ({
   }
 
   const rounded =
-    themeTemplate.theme.chat.roundness === 'large'
+    themeTemplate.theme.chat?.roundness === 'large'
       ? 'md'
-      : themeTemplate.theme.chat.roundness === 'none'
+      : themeTemplate.theme.chat?.roundness === 'none'
       ? 'none'
       : 'sm'
+
+  const hostAvatar = {
+    isEnabled:
+      themeTemplate.theme.chat?.hostAvatar?.isEnabled ??
+      defaultTheme.chat.hostAvatar.isEnabled,
+    url: themeTemplate.theme.chat?.hostAvatar?.url,
+  }
+
+  const hostBubbleBgColor =
+    themeTemplate.theme.chat?.hostBubbles ?? defaultTheme.chat.hostBubbles
+
+  const guestAvatar = {
+    isEnabled:
+      themeTemplate.theme.chat?.guestAvatar?.isEnabled ??
+      defaultTheme.chat.guestAvatar.isEnabled,
+    url: themeTemplate.theme.chat?.guestAvatar?.url,
+  }
+
+  const guestBubbleBgColor =
+    themeTemplate.theme.chat?.guestBubbles ?? defaultTheme.chat.guestBubbles
+
+  const buttonBgColor =
+    themeTemplate.theme.chat?.buttons?.backgroundColor ??
+    defaultTheme.chat.buttons.backgroundColor
 
   return (
     <Stack
@@ -84,17 +112,12 @@ export const ThemeTemplateCard = ({
       <Box
         borderTopRadius="md"
         backgroundSize="cover"
-        {...parseBackground(themeTemplate.theme.general.background)}
+        {...parseBackground(themeTemplate.theme.general?.background)}
         borderColor={isSelected ? 'blue.400' : undefined}
       >
         <HStack mt="4" ml="4" spacing={0.5} alignItems="flex-end">
-          <AvatarPreview avatar={themeTemplate.theme.chat.hostAvatar} />
-          <Box
-            rounded="sm"
-            w="80px"
-            h="16px"
-            background={themeTemplate.theme.chat.hostBubbles.backgroundColor}
-          />
+          <AvatarPreview avatar={hostAvatar} />
+          <Box rounded="sm" w="80px" h="16px" background={hostBubbleBgColor} />
         </HStack>
 
         <HStack
@@ -104,23 +127,13 @@ export const ThemeTemplateCard = ({
           justifyContent="flex-end"
           alignItems="flex-end"
         >
-          <Box
-            rounded="sm"
-            w="80px"
-            h="16px"
-            background={themeTemplate.theme.chat.guestBubbles.backgroundColor}
-          />
-          <AvatarPreview avatar={themeTemplate.theme.chat.guestAvatar} />
+          <Box rounded="sm" w="80px" h="16px" background={guestBubbleBgColor} />
+          <AvatarPreview avatar={guestAvatar} />
         </HStack>
 
         <HStack mt="1" ml="4" spacing={0.5} alignItems="flex-end">
-          <AvatarPreview avatar={themeTemplate.theme.chat.hostAvatar} />
-          <Box
-            rounded="sm"
-            w="80px"
-            h="16px"
-            background={themeTemplate.theme.chat.hostBubbles.backgroundColor}
-          />
+          <AvatarPreview avatar={hostAvatar} />
+          <Box rounded="sm" w="80px" h="16px" background={hostBubbleBgColor} />
         </HStack>
         <Flex
           mt="1"
@@ -131,24 +144,9 @@ export const ThemeTemplateCard = ({
           justifyContent="flex-end"
           gap="1"
         >
-          <Box
-            rounded={rounded}
-            w="20px"
-            h="10px"
-            background={themeTemplate.theme.chat.buttons.backgroundColor}
-          />
-          <Box
-            rounded={rounded}
-            w="20px"
-            h="10px"
-            background={themeTemplate.theme.chat.buttons.backgroundColor}
-          />
-          <Box
-            rounded={rounded}
-            w="20px"
-            h="10px"
-            background={themeTemplate.theme.chat.buttons.backgroundColor}
-          />
+          <Box rounded={rounded} w="20px" h="10px" background={buttonBgColor} />
+          <Box rounded={rounded} w="20px" h="10px" background={buttonBgColor} />
+          <Box rounded={rounded} w="20px" h="10px" background={buttonBgColor} />
         </Flex>
       </Box>
       <HStack p="2" justifyContent="space-between">
@@ -186,14 +184,15 @@ export const ThemeTemplateCard = ({
   )
 }
 
-const parseBackground = (background: {
-  type: BackgroundType
-  content?: string
-}) => {
-  switch (background.type) {
+const parseBackground = (
+  background: NonNullable<Theme['general']>['background']
+) => {
+  switch (background?.type) {
+    case undefined:
     case BackgroundType.COLOR:
       return {
-        backgroundColor: background.content,
+        backgroundColor:
+          background?.content ?? defaultTheme.general.background.content,
       }
     case BackgroundType.IMAGE:
       return { backgroundImage: `url(${background.content})` }
@@ -205,15 +204,10 @@ const parseBackground = (background: {
 const AvatarPreview = ({
   avatar,
 }: {
-  avatar:
-    | {
-        isEnabled: boolean
-        url?: string | undefined
-      }
-    | undefined
+  avatar: NonNullable<Theme['chat']>['hostAvatar']
 }) => {
-  if (!avatar?.isEnabled) return null
-  return avatar.url ? (
+  if (avatar?.isEnabled) return null
+  return avatar?.url ? (
     <Image
       src={avatar.url}
       alt="Avatar preview in theme template card"

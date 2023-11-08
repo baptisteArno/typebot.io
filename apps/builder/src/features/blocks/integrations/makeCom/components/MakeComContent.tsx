@@ -7,7 +7,7 @@ type Props = {
 }
 
 export const MakeComContent = ({ block }: Props) => {
-  const webhook = block.options.webhook
+  const webhook = block.options?.webhook
 
   if (isNotDefined(webhook?.body))
     return <Text color="gray.500">Configure...</Text>

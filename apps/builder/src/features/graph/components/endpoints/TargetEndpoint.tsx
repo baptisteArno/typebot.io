@@ -16,7 +16,7 @@ export const TargetEndpoint = ({
   blockId,
   ...props
 }: BoxProps & {
-  groupId: string
+  groupId?: string
   blockId: string
 }) => {
   const { setTargetEnpointYOffset: addTargetEndpoint } = useEndpoints()

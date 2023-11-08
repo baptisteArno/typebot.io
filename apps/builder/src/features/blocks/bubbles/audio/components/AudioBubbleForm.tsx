@@ -1,16 +1,17 @@
 import { Button, Flex, HStack, Stack, Text } from '@chakra-ui/react'
-import { AudioBubbleContent } from '@typebot.io/schemas'
 import { TextInput } from '@/components/inputs'
 import { useState } from 'react'
 import { UploadButton } from '@/components/ImageUploadContent/UploadButton'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { useTranslate } from '@tolgee/react'
 import { FilePathUploadProps } from '@/features/upload/api/generateUploadUrl'
+import { AudioBubbleBlock } from '@typebot.io/schemas'
+import { defaultAudioBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/audio/constants'
 
 type Props = {
   uploadFileProps: FilePathUploadProps
-  content: AudioBubbleContent
-  onContentChange: (content: AudioBubbleContent) => void
+  content: AudioBubbleBlock['content']
+  onContentChange: (content: AudioBubbleBlock['content']) => void
 }
 
 export const AudioBubbleForm = ({
@@ -64,7 +65,7 @@ export const AudioBubbleForm = ({
                 placeholder={t(
                   'editor.blocks.bubbles.audio.settings.worksWith.placeholder'
                 )}
-                defaultValue={content.url ?? ''}
+                defaultValue={content?.url ?? ''}
                 onChange={updateUrl}
               />
               <Text fontSize="sm" color="gray.400" textAlign="center">
@@ -75,7 +76,10 @@ export const AudioBubbleForm = ({
         </Stack>
         <SwitchWithLabel
           label={t('editor.blocks.bubbles.audio.settings.autoplay.label')}
-          initialValue={content.isAutoplayEnabled ?? true}
+          initialValue={
+            content?.isAutoplayEnabled ??
+            defaultAudioBubbleContent.isAutoplayEnabled
+          }
           onCheckChange={updateAutoPlay}
         />
       </Stack>

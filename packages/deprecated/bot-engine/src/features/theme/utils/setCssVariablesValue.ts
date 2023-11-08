@@ -1,12 +1,12 @@
 import {
   Background,
-  BackgroundType,
   ChatTheme,
   ContainerColors,
   GeneralTheme,
   InputColors,
   Theme,
 } from '@typebot.io/schemas'
+import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/constants'
 
 const cssVariableNames = {
   general: {

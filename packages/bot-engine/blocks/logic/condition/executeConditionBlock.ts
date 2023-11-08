@@ -7,8 +7,8 @@ export const executeConditionBlock = (
   block: ConditionBlock
 ): ExecuteLogicResponse => {
   const { variables } = state.typebotsQueue[0].typebot
-  const passedCondition = block.items.find((item) =>
-    executeCondition(variables)(item.content)
+  const passedCondition = block.items.find(
+    (item) => item.content && executeCondition(variables)(item.content)
   )
   return {
     outgoingEdgeId: passedCondition

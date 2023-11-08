@@ -89,22 +89,28 @@ export const startWhatsAppPreview = authenticatedProcedure
         (existingSession?.updatedAt.getTime() ?? 0) >
         Date.now() - 24 * 60 * 60 * 1000
 
-      const { newSessionState, messages, input, clientSideActions, logs } =
-        await startSession({
-          version: 2,
-          message: undefined,
-          startParams: {
-            isOnlyRegistering: !canSendDirectMessagesToUser,
-            typebot: typebotId,
-            isPreview: true,
-            startGroupId,
-          },
-          userId: user.id,
-          initialSessionState: {
-            whatsApp: (existingSession?.state as SessionState | undefined)
-              ?.whatsApp,
-          },
-        })
+      const {
+        newSessionState,
+        messages,
+        input,
+        clientSideActions,
+        logs,
+        visitedEdges,
+      } = await startSession({
+        version: 2,
+        message: undefined,
+        startParams: {
+          isOnlyRegistering: !canSendDirectMessagesToUser,
+          typebot: typebotId,
+          isPreview: true,
+          startGroupId,
+        },
+        userId: user.id,
+        initialSessionState: {
+          whatsApp: (existingSession?.state as SessionState | undefined)
+            ?.whatsApp,
+        },
+      })
 
       if (canSendDirectMessagesToUser) {
         await sendChatReplyToWhatsApp({
@@ -127,6 +133,7 @@ export const startWhatsAppPreview = authenticatedProcedure
             id: sessionId,
             state: newSessionState,
           },
+          visitedEdges,
         })
       } else {
         await restartSession({

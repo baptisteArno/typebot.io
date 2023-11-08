@@ -4,16 +4,16 @@ import { validateUrl } from '@/features/blocks/inputs/url'
 import { parseVariables } from '@/features/variables'
 import {
   BubbleBlock,
-  BubbleBlockType,
   Edge,
   EmailInputBlock,
-  InputBlockType,
   PhoneNumberInputBlock,
   Block,
   UrlInputBlock,
   Variable,
 } from '@typebot.io/schemas'
-import { isInputBlock } from '@typebot.io/lib'
+import { isDefined, isInputBlock } from '@typebot.io/lib'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 
 export const isInputValid = (
   inputValue: string,
@@ -33,23 +33,25 @@ export const isInputValid = (
 export const blockCanBeRetried = (
   block: Block
 ): block is EmailInputBlock | UrlInputBlock | PhoneNumberInputBlock =>
-  isInputBlock(block) && 'retryMessageContent' in block.options
+  isInputBlock(block) &&
+  isDefined(block.options) &&
+  'retryMessageContent' in block.options
 
 export const parseRetryBlock = (
   block: EmailInputBlock | UrlInputBlock | PhoneNumberInputBlock,
+  groupId: string,
   variables: Variable[],
   createEdge: (edge: Edge) => void
 ): BubbleBlock => {
-  const content = parseVariables(variables)(block.options.retryMessageContent)
+  const content = parseVariables(variables)(block.options?.retryMessageContent)
   const newBlockId = block.id + Math.random() * 1000
   const newEdge: Edge = {
     id: (Math.random() * 1000).toString(),
-    from: { blockId: newBlockId, groupId: block.groupId },
-    to: { groupId: block.groupId, blockId: block.id },
+    from: { blockId: newBlockId },
+    to: { groupId, blockId: block.id },
   }
   createEdge(newEdge)
   return {
-    groupId: block.groupId,
     id: newBlockId,
     type: BubbleBlockType.TEXT,
     content: {

@@ -4,7 +4,7 @@ import {
   VariableWithValue,
   ReplyLog,
 } from '@typebot.io/schemas'
-import { isNotEmpty, byId } from '@typebot.io/lib'
+import { isNotEmpty, byId, isDefined } from '@typebot.io/lib'
 import { getAuthenticatedGoogleDoc } from './helpers/getAuthenticatedGoogleDoc'
 import { ExecuteIntegrationResponse } from '../../../types'
 import { matchFilter } from './helpers/matchFilter'
@@ -20,7 +20,7 @@ export const getRow = async (
 ): Promise<ExecuteIntegrationResponse> => {
   const logs: ReplyLog[] = []
   const { variables } = state.typebotsQueue[0].typebot
-  const { sheetId, cellsToExtract, referenceCell, filter } =
+  const { sheetId, cellsToExtract, filter, ...parsedOptions } =
     deepParseVariables(variables)(options)
   if (!sheetId) return { outgoingEdgeId }
 
@@ -36,8 +36,9 @@ export const getRow = async (
     const filteredRows = getTotalRows(
       options.totalRowsToExtract,
       rows.filter((row) =>
-        referenceCell
-          ? row.get(referenceCell.column as string) === referenceCell.value
+        'referenceCell' in parsedOptions && parsedOptions.referenceCell
+          ? row.get(parsedOptions.referenceCell?.column as string) ===
+            parsedOptions.referenceCell?.value
           : matchFilter(row, filter)
       )
     )
@@ -50,17 +51,19 @@ export const getRow = async (
       return { outgoingEdgeId, logs }
     }
     const extractingColumns = cellsToExtract
-      .map((cell) => cell.column)
+      ?.map((cell) => cell.column)
       .filter(isNotEmpty)
-    const selectedRows = filteredRows.map((row) =>
-      extractingColumns.reduce<{ [key: string]: string }>(
-        (obj, column) => ({ ...obj, [column]: row.get(column) }),
-        {}
+    const selectedRows = filteredRows
+      .map((row) =>
+        extractingColumns?.reduce<{ [key: string]: string }>(
+          (obj, column) => ({ ...obj, [column]: row.get(column) }),
+          {}
+        )
       )
-    )
+      .filter(isDefined)
     if (!selectedRows) return { outgoingEdgeId }
 
-    const newVariables = options.cellsToExtract.reduce<VariableWithValue[]>(
+    const newVariables = options.cellsToExtract?.reduce<VariableWithValue[]>(
       (newVariables, cell) => {
         const existingVariable = variables.find(byId(cell.variableId))
         const value = selectedRows.map((row) => row[cell.column ?? ''])
@@ -75,6 +78,7 @@ export const getRow = async (
       },
       []
     )
+    if (!newVariables) return { outgoingEdgeId }
     const newSessionState = updateVariablesInSession(state)(newVariables)
     return {
       outgoingEdgeId,

@@ -1,7 +1,5 @@
 import {
   InputBlock,
-  InputBlockType,
-  LogicBlockType,
   PublicTypebot,
   ResultHeaderCell,
   Block,
@@ -11,6 +9,8 @@ import {
 } from '@typebot.io/schemas'
 import { isInputBlock, byId, isNotDefined } from '@typebot.io/lib'
 import { parseResultHeader } from '@typebot.io/lib/results'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 
 export const parseSampleResult =
   (
@@ -58,11 +58,11 @@ const extractLinkedInputBlocks =
               extractLinkedInputBlocks(
                 linkedTypebots.find((t) =>
                   'typebotId' in t
-                    ? t.typebotId === linkedBot.options.typebotId
-                    : t.id === linkedBot.options.typebotId
+                    ? t.typebotId === linkedBot.options?.typebotId
+                    : t.id === linkedBot.options?.typebotId
                 ) as Typebot | PublicTypebot,
                 linkedTypebots
-              )(linkedBot.options.groupId, 'forward')
+              )(linkedBot.options?.groupId, 'forward')
             )
           )
         : []
@@ -117,7 +117,7 @@ const parseResultSample = (
 const getSampleValue = (block: InputBlock): string => {
   switch (block.type) {
     case InputBlockType.CHOICE:
-      return block.options.isMultipleChoice
+      return block.options?.isMultipleChoice
         ? block.items.map((item) => item.content).join(', ')
         : block.items[0]?.content ?? 'Item'
     case InputBlockType.DATE:
@@ -139,7 +139,7 @@ const getSampleValue = (block: InputBlock): string => {
     case InputBlockType.PAYMENT:
       return 'Success'
     case InputBlockType.PICTURE_CHOICE:
-      return block.options.isMultipleChoice
+      return block.options?.isMultipleChoice
         ? block.items.map((item) => item.title ?? item.pictureSrc).join(', ')
         : block.items[0]?.title ?? block.items[0]?.pictureSrc ?? 'Item'
   }
@@ -178,16 +178,21 @@ const getGroupIds =
   ) =>
   (groupId: string): string[] => {
     const groups = typebot.edges.reduce<string[]>((groupIds, edge) => {
+      const fromGroupId = typebot.groups.find((g) =>
+        g.blocks.some(
+          (b) => 'blockId' in edge.from && b.id === edge.from.blockId
+        )
+      )?.id
+      if (!fromGroupId) return groupIds
       if (direction === 'forward')
         return (!existingGroupIds ||
           !existingGroupIds?.includes(edge.to.groupId)) &&
-          edge.from.groupId === groupId
+          fromGroupId === groupId
           ? [...groupIds, edge.to.groupId]
           : groupIds
-      return (!existingGroupIds ||
-        !existingGroupIds.includes(edge.from.groupId)) &&
+      return (!existingGroupIds || !existingGroupIds.includes(fromGroupId)) &&
         edge.to.groupId === groupId
-        ? [...groupIds, edge.from.groupId]
+        ? [...groupIds, fromGroupId]
         : groupIds
     }, [])
     const newGroups = [...(existingGroupIds ?? []), ...groups]

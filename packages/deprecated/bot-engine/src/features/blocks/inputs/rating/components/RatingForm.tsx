@@ -1,8 +1,9 @@
 import { InputSubmitContent } from '@/types'
-import { RatingInputOptions, RatingInputBlock } from '@typebot.io/schemas'
+import { RatingInputBlock } from '@typebot.io/schemas'
 import React, { FormEvent, useState } from 'react'
 import { isDefined, isEmpty, isNotDefined } from '@typebot.io/lib'
 import { SendButton } from '../../../../../components/SendButton'
+import { defaultRatingInputOptions } from '@typebot.io/schemas/features/blocks/inputs/rating/constants'
 
 type Props = {
   block: RatingInputBlock
@@ -19,14 +20,14 @@ export const RatingForm = ({ block, onSubmit }: Props) => {
   }
 
   const handleClick = (rating: number) => {
-    if (block.options.isOneClickSubmitEnabled)
+    if (block.options?.isOneClickSubmitEnabled)
       onSubmit({ value: rating.toString() })
     setRating(rating)
   }
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit}>
-      {block.options.labels.left && (
+      {block.options?.labels?.left && (
         <span className="text-sm w-full mb-2 rating-label">
           {block.options.labels.left}
         </span>
@@ -34,20 +35,20 @@ export const RatingForm = ({ block, onSubmit }: Props) => {
       <div className="flex flex-wrap justify-center">
         {Array.from(
           Array(
-            block.options.length +
-              (block.options.buttonType === 'Numbers' ? 1 : 0)
+            (block.options?.length ?? defaultRatingInputOptions.length) +
+              (block.options?.buttonType === 'Numbers' ? 1 : 0)
           )
         ).map((_, idx) => (
           <RatingButton
             {...block.options}
             key={idx}
             rating={rating}
-            idx={idx + (block.options.buttonType === 'Numbers' ? 0 : 1)}
+            idx={idx + (block.options?.buttonType === 'Numbers' ? 0 : 1)}
             onClick={handleClick}
           />
         ))}
       </div>
-      {block.options.labels.right && (
+      {block.options?.labels?.right && (
         <span className="text-sm w-full text-right mb-2 pr-2 rating-label">
           {block.options.labels.right}
         </span>
@@ -56,7 +57,7 @@ export const RatingForm = ({ block, onSubmit }: Props) => {
       <div className="flex justify-end mr-2">
         {isDefined(rating) && (
           <SendButton
-            label={block.options?.labels.button ?? 'Send'}
+            label={block.options?.labels?.button ?? 'Send'}
             disableIcon
           />
         )}
@@ -71,7 +72,10 @@ const RatingButton = ({
   buttonType,
   customIcon,
   onClick,
-}: Pick<RatingInputOptions, 'buttonType' | 'customIcon'> & {
+}: Pick<
+  NonNullable<RatingInputBlock['options']>,
+  'buttonType' | 'customIcon'
+> & {
   rating: number | undefined
   idx: number
   onClick: (idx: number) => void
@@ -100,7 +104,7 @@ const RatingButton = ({
       onClick={() => onClick(idx)}
       dangerouslySetInnerHTML={{
         __html:
-          customIcon.isEnabled && !isEmpty(customIcon.svg)
+          customIcon?.isEnabled && !isEmpty(customIcon.svg)
             ? customIcon.svg
             : defaultIcon,
       }}

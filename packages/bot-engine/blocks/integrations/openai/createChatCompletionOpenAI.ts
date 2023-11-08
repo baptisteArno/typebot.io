@@ -1,6 +1,5 @@
 import {
   Block,
-  BubbleBlockType,
   Credentials,
   SessionState,
   TypebotInSession,
@@ -8,7 +7,6 @@ import {
 import {
   ChatCompletionOpenAIOptions,
   OpenAICredentials,
-  chatCompletionMessageRoles,
 } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { byId, isEmpty } from '@typebot.io/lib'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
@@ -20,6 +18,11 @@ import prisma from '@typebot.io/lib/prisma'
 import { ExecuteIntegrationResponse } from '../../../types'
 import { parseVariableNumber } from '../../../variables/parseVariableNumber'
 import { updateVariablesInSession } from '../../../variables/updateVariablesInSession'
+import {
+  chatCompletionMessageRoles,
+  defaultOpenAIOptions,
+} from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 
 export const createChatCompletionOpenAI = async (
   state: SessionState,
@@ -38,6 +41,7 @@ export const createChatCompletionOpenAI = async (
     status: 'error',
     description: 'Make sure to select an OpenAI account',
   }
+
   if (!options.credentialsId) {
     return {
       outgoingEdgeId,
@@ -74,7 +78,7 @@ export const createChatCompletionOpenAI = async (
 
   const assistantMessageVariableName = typebot.variables.find(
     (variable) =>
-      options.responseMapping.find(
+      options.responseMapping?.find(
         (m) => m.valueToExtract === 'Message content'
       )?.variableId === variable.id
   )?.name
@@ -109,7 +113,7 @@ export const createChatCompletionOpenAI = async (
   const { chatCompletion, logs } = await executeChatCompletionOpenAIRequest({
     apiKey,
     messages,
-    model: options.model,
+    model: options.model ?? defaultOpenAIOptions.model,
     temperature,
     baseUrl: options.baseUrl,
     apiVersion: options.apiVersion,
@@ -140,8 +144,8 @@ const isNextBubbleMessageWithAssistantMessage =
     if (!nextBlock) return false
     return (
       nextBlock.type === BubbleBlockType.TEXT &&
-      nextBlock.content.richText?.length > 0 &&
-      nextBlock.content.richText?.at(0)?.children.at(0).text ===
+      (nextBlock.content?.richText?.length ?? 0) > 0 &&
+      nextBlock.content?.richText?.at(0)?.children.at(0).text ===
         `{{${assistantVariableName}}}`
     )
   }

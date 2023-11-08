@@ -1,16 +1,20 @@
 import React from 'react'
 import { Text } from '@chakra-ui/react'
-import { PhoneNumberInputOptions } from '@typebot.io/schemas'
 import { WithVariableContent } from '@/features/graph/components/nodes/block/WithVariableContent'
+import { PhoneNumberInputBlock } from '@typebot.io/schemas'
+import { defaultPhoneInputOptions } from '@typebot.io/schemas/features/blocks/inputs/phone/constants'
 
 type Props = {
-  variableId?: string
-  placeholder: PhoneNumberInputOptions['labels']['placeholder']
+  options: PhoneNumberInputBlock['options']
 }
 
-export const PhoneNodeContent = ({ variableId, placeholder }: Props) =>
+export const PhoneNodeContent = ({
+  options: { variableId, labels } = {},
+}: Props) =>
   variableId ? (
     <WithVariableContent variableId={variableId} />
   ) : (
-    <Text color={'gray.500'}>{placeholder}</Text>
+    <Text color={'gray.500'}>
+      {labels?.placeholder ?? defaultPhoneInputOptions.labels.placeholder}
+    </Text>
   )

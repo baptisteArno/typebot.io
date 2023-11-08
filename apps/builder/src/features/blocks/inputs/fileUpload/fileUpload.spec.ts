@@ -1,10 +1,10 @@
 import test, { expect } from '@playwright/test'
 import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
-import { defaultFileInputOptions, InputBlockType } from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
 import { freeWorkspaceId } from '@typebot.io/lib/playwright/databaseSetup'
 import { getTestAsset } from '@/test/utils/playwright'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 
 test.describe.configure({ mode: 'parallel' })
 
@@ -15,7 +15,6 @@ test('options should work', async ({ page }) => {
       id: typebotId,
       ...parseDefaultGroupWithBlock({
         type: InputBlockType.FILE,
-        options: defaultFileInputOptions,
       }),
     },
   ])
@@ -59,8 +58,8 @@ test.describe('Free workspace', () => {
         id: typebotId,
         ...parseDefaultGroupWithBlock({
           type: InputBlockType.FILE,
-          options: defaultFileInputOptions,
         }),
+        version: '6',
         workspaceId: freeWorkspaceId,
       },
     ])

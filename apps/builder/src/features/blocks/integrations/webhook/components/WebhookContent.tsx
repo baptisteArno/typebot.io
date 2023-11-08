@@ -9,7 +9,7 @@ type Props = {
 
 export const WebhookContent = ({ block: { options } }: Props) => {
   const { typebot } = useTypebot()
-  const webhook = options.webhook
+  const webhook = options?.webhook
 
   if (!webhook?.url) return <Text color="gray.500">Configure...</Text>
   return (
@@ -17,8 +17,8 @@ export const WebhookContent = ({ block: { options } }: Props) => {
       <Text noOfLines={2} pr="6">
         {webhook.method} {webhook.url}
       </Text>
-      {options.responseVariableMapping
-        .filter((mapping) => mapping.variableId)
+      {options?.responseVariableMapping
+        ?.filter((mapping) => mapping.variableId)
         .map((mapping) => (
           <SetVariableLabel
             key={mapping.variableId}

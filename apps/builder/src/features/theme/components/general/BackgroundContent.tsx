@@ -11,16 +11,18 @@ import {
   Portal,
 } from '@chakra-ui/react'
 import { isNotEmpty } from '@typebot.io/lib'
-import { Background, BackgroundType } from '@typebot.io/schemas'
+import { Background } from '@typebot.io/schemas'
 import React from 'react'
 import { ColorPicker } from '../../../../components/ColorPicker'
+import {
+  BackgroundType,
+  defaultTheme,
+} from '@typebot.io/schemas/features/typebot/theme/constants'
 
 type BackgroundContentProps = {
   background?: Background
   onBackgroundContentChange: (content: string) => void
 }
-
-const defaultBackgroundColor = '#ffffff'
 
 export const BackgroundContent = ({
   background,
@@ -36,7 +38,9 @@ export const BackgroundContent = ({
         <Flex justify="space-between" align="center">
           <Text>Background color:</Text>
           <ColorPicker
-            value={background.content ?? defaultBackgroundColor}
+            value={
+              background.content ?? defaultTheme.general.background.content
+            }
             onColorChange={handleContentChange}
           />
         </Flex>

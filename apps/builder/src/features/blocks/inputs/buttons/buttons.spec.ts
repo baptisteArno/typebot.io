@@ -4,13 +4,9 @@ import {
   importTypebotInDatabase,
 } from '@typebot.io/lib/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
-import {
-  defaultChoiceInputOptions,
-  InputBlockType,
-  ItemType,
-} from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 
 test.describe.parallel('Buttons input block', () => {
   test('can edit button items', async ({ page }) => {
@@ -23,11 +19,8 @@ test.describe.parallel('Buttons input block', () => {
           items: [
             {
               id: 'choice1',
-              blockId: 'block1',
-              type: ItemType.BUTTON,
             },
           ],
-          options: { ...defaultChoiceInputOptions },
         }),
       },
     ])

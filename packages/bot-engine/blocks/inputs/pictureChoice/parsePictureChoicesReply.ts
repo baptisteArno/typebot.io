@@ -8,7 +8,7 @@ export const parsePictureChoicesReply =
     const displayedItems = injectVariableValuesInPictureChoiceBlock(
       state.typebotsQueue[0].typebot.variables
     )(block).items
-    if (block.options.isMultipleChoice) {
+    if (block.options?.isMultipleChoice) {
       const longestItemsFirst = [...displayedItems].sort(
         (a, b) => (b.title?.length ?? 0) - (a.title?.length ?? 0)
       )

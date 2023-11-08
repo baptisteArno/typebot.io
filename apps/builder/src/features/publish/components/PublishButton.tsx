@@ -11,7 +11,6 @@ import {
   MenuItem,
   useDisclosure,
   ButtonProps,
-  useColorModeValue,
 } from '@chakra-ui/react'
 import {
   ChevronLeftIcon,
@@ -21,7 +20,6 @@ import {
 } from '@/components/icons'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { InputBlockType } from '@typebot.io/schemas'
 import { useRouter } from 'next/router'
 import { isNotDefined } from '@typebot.io/lib'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
@@ -31,6 +29,8 @@ import { useTranslate } from '@tolgee/react'
 import { trpc } from '@/lib/trpc'
 import { useToast } from '@/hooks/useToast'
 import { parseDefaultPublicId } from '../helpers/parseDefaultPublicId'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { ConfirmModal } from '@/components/ConfirmModal'
 
 type Props = ButtonProps & {
   isMoreMenuDisabled?: boolean
@@ -40,10 +40,14 @@ export const PublishButton = ({
   ...props
 }: Props) => {
   const { t } = useTranslate()
-  const warningTextColor = useColorModeValue('red.300', 'red.600')
   const { workspace } = useWorkspace()
   const { push, query, pathname } = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const {
+    isOpen: isNewEngineWarningOpen,
+    onOpen: onNewEngineWarningOpen,
+    onClose: onNewEngineWarningClose,
+  } = useDisclosure()
   const {
     isPublished,
     publishedTypebot,
@@ -52,6 +56,7 @@ export const PublishButton = ({
     isSavingLoading,
     updateTypebot,
     save,
+    publishedTypebotVersion,
   } = useTypebot()
   const { showToast } = useToast()
 
@@ -133,18 +138,33 @@ export const PublishButton = ({
         onClose={onClose}
         type={t('billing.limitMessage.fileInput')}
       />
+      {publishedTypebotVersion !== typebot?.version && (
+        <ConfirmModal
+          isOpen={isNewEngineWarningOpen}
+          onConfirm={handlePublishClick}
+          onClose={onNewEngineWarningClose}
+          confirmButtonColor="blue"
+          title="⚠️ New engine version"
+          message={
+            <Stack>
+              <Text>
+                You are about to a deploy a version of your bot with an updated
+                engine.
+              </Text>
+              <Text fontWeight="bold">
+                Make sure to test it thoroughly in preview mode before
+                publishing.
+              </Text>
+            </Stack>
+          }
+          confirmButtonLabel={'Publish'}
+        />
+      )}
       <Tooltip
         placement="bottom-end"
         label={
           <Stack>
-            {!publishedTypebot?.version ? (
-              <Text color={warningTextColor} fontWeight="semibold">
-                This will deploy your bot with an updated engine. Make sure to
-                test it properly in preview mode before publishing.
-              </Text>
-            ) : (
-              <Text>There are non published changes.</Text>
-            )}
+            <Text>There are non published changes.</Text>
             <Text fontStyle="italic">
               Published version from{' '}
               {publishedTypebot &&
@@ -159,7 +179,11 @@ export const PublishButton = ({
           colorScheme="blue"
           isLoading={isPublishing || isUnpublishing}
           isDisabled={isPublished || isSavingLoading}
-          onClick={handlePublishClick}
+          onClick={() => {
+            publishedTypebot && publishedTypebotVersion !== typebot?.version
+              ? onNewEngineWarningOpen()
+              : handlePublishClick()
+          }}
           borderRightRadius={
             publishedTypebot && !isMoreMenuDisabled ? 0 : undefined
           }

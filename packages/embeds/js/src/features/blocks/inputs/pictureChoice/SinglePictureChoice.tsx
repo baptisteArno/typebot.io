@@ -43,12 +43,12 @@ export const SinglePictureChoice = (props: Props) => {
 
   return (
     <div class="flex flex-col gap-2 w-full">
-      <Show when={props.options.isSearchable}>
+      <Show when={props.options?.isSearchable}>
         <div class="flex items-end typebot-input w-full">
           <SearchInput
             ref={inputRef}
             onInput={filterItems}
-            placeholder={props.options.searchInputPlaceholder ?? ''}
+            placeholder={props.options?.searchInputPlaceholder ?? ''}
             onClear={() => setFilteredItems(props.defaultItems)}
           />
         </div>
@@ -56,7 +56,7 @@ export const SinglePictureChoice = (props: Props) => {
       <div
         class={
           'gap-2 flex flex-wrap justify-end' +
-          (props.options.isSearchable
+          (props.options?.isSearchable
             ? ' overflow-y-scroll max-h-[464px] rounded-md hide-scrollbar'
             : '')
         }

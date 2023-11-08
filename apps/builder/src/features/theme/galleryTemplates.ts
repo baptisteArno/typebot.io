@@ -1,4 +1,5 @@
-import { BackgroundType, ThemeTemplate } from '@typebot.io/schemas'
+import { ThemeTemplate } from '@typebot.io/schemas'
+import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/constants'
 
 export const galleryTemplates: Pick<ThemeTemplate, 'id' | 'name' | 'theme'>[] =
   [

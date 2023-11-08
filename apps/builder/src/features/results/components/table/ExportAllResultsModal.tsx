@@ -23,6 +23,7 @@ import { useResults } from '../../ResultsProvider'
 import { parseColumnOrder } from '../../helpers/parseColumnsOrder'
 import { convertResultsToTableData } from '../../helpers/convertResultsToTableData'
 import { byId, isDefined } from '@typebot.io/lib'
+import { Typebot } from '@typebot.io/schemas'
 
 type Props = {
   isOpen: boolean
@@ -82,7 +83,10 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
     const resultHeader = areDeletedBlocksIncluded
       ? parseResultHeader(
           publishedTypebot,
-          linkedTypebotsData?.typebots,
+          linkedTypebotsData?.typebots as Pick<
+            Typebot,
+            'groups' | 'variables'
+          >[],
           results
         )
       : existingResultHeader

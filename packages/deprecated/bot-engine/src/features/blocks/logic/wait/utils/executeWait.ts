@@ -6,7 +6,7 @@ export const executeWait = async (
   block: WaitBlock,
   { typebot: { variables } }: LogicState
 ) => {
-  if (!block.options.secondsToWaitFor) return block.outgoingEdgeId
+  if (!block.options?.secondsToWaitFor) return block.outgoingEdgeId
   const parsedSecondsToWaitFor = parseVariables(variables)(
     block.options.secondsToWaitFor
   )

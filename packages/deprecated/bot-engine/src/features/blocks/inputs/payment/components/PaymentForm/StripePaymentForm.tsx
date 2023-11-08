@@ -1,7 +1,7 @@
 import React, { FormEvent, useEffect, useState } from 'react'
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
-import { PaymentInputOptions, Variable } from '@typebot.io/schemas'
+import { PaymentInputBlock, Variable } from '@typebot.io/schemas'
 import { SendButton, Spinner } from '@/components/SendButton'
 import { initStripe } from '@/lib/stripe'
 import { parseVariables } from '@/features/variables'
@@ -11,7 +11,7 @@ import { createPaymentIntentQuery } from '../../queries/createPaymentIntentQuery
 import { Stripe } from '@stripe/stripe-js'
 
 type Props = {
-  options: PaymentInputOptions
+  options: PaymentInputBlock['options']
   onSuccess: () => void
 }
 
@@ -76,7 +76,7 @@ const CheckoutForm = ({
   onSuccess: () => void
   clientSecret: string
   amountLabel: string
-  options: PaymentInputOptions
+  options: PaymentInputBlock['options']
   variables: Variable[]
   viewerHost: string
 }) => {
@@ -131,13 +131,13 @@ const CheckoutForm = ({
         return_url: viewerHost,
         payment_method_data: {
           billing_details: {
-            name: options.additionalInformation?.name
-              ? parseVariables(variables)(options.additionalInformation?.name)
+            name: options?.additionalInformation?.name
+              ? parseVariables(variables)(options.additionalInformation.name)
               : undefined,
-            email: options.additionalInformation?.email
+            email: options?.additionalInformation?.email
               ? parseVariables(variables)(options.additionalInformation?.email)
               : undefined,
-            phone: options.additionalInformation?.phoneNumber
+            phone: options?.additionalInformation?.phoneNumber
               ? parseVariables(variables)(
                   options.additionalInformation?.phoneNumber
                 )
@@ -172,7 +172,7 @@ const CheckoutForm = ({
       />
       {isPayButtonVisible && (
         <SendButton
-          label={`${options.labels.button} ${amountLabel}`}
+          label={`${options?.labels?.button} ${amountLabel}`}
           isDisabled={isLoading || !stripe || !elements}
           isLoading={isLoading}
           className="mt-4 w-full max-w-lg"

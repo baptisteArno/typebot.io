@@ -25,17 +25,21 @@ type Props = {
   isOpen: boolean
   onClose: () => void
   onTypebotChoose: (typebot: Typebot) => void
+  isLoading: boolean
 }
 
-export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
+export const TemplatesModal = ({
+  isOpen,
+  onClose,
+  onTypebotChoose,
+  isLoading,
+}: Props) => {
   const { t } = useTranslate()
   const templateCardBackgroundColor = useColorModeValue('white', 'gray.800')
   const [typebot, setTypebot] = useState<Typebot>()
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateProps>(
     templates[0]
   )
-  const [isLoading, setIsLoading] = useState(false)
-
   const { showToast } = useToast()
 
   const fetchTemplate = useCallback(
@@ -55,10 +59,9 @@ export const TemplatesModal = ({ isOpen, onClose, onTypebotChoose }: Props) => {
     fetchTemplate(templates[0])
   }, [fetchTemplate])
 
-  const onUseThisTemplateClick = () => {
+  const onUseThisTemplateClick = async () => {
     if (!typebot) return
     onTypebotChoose(typebot)
-    setIsLoading(true)
   }
 
   return (

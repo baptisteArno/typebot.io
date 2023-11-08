@@ -57,7 +57,7 @@ export const ConversationContainer = ({
       if (!nextGroup) return
       onNewGroupVisible({
         id: 'edgeId',
-        from: { groupId: 'block', blockId: 'block' },
+        from: { blockId: 'block' },
         to: { groupId },
       })
       return setDisplayedGroups([

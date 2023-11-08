@@ -31,7 +31,7 @@ export const GtmBubbleInstructions = () => {
             theme={theme}
             previewMessage={previewMessage}
             defaultPreviewMessageAvatar={
-              typebot?.theme.chat.hostAvatar?.url ?? ''
+              typebot?.theme.chat?.hostAvatar?.url ?? ''
             }
             onThemeChange={setTheme}
             onPreviewMessageChange={setPreviewMessage}

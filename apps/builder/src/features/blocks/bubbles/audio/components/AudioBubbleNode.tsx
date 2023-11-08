@@ -1,10 +1,10 @@
 import { Text } from '@chakra-ui/react'
-import { AudioBubbleContent } from '@typebot.io/schemas'
 import { isDefined } from '@typebot.io/lib'
 import { useTranslate } from '@tolgee/react'
+import { AudioBubbleBlock } from '@typebot.io/schemas'
 
 type Props = {
-  url: AudioBubbleContent['url']
+  url: NonNullable<AudioBubbleBlock['content']>['url']
 }
 
 export const AudioBubbleNode = ({ url }: Props) => {

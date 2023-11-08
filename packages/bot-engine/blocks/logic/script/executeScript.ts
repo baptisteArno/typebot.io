@@ -9,7 +9,7 @@ export const executeScript = (
   block: ScriptBlock
 ): ExecuteLogicResponse => {
   const { variables } = state.typebotsQueue[0].typebot
-  if (!block.options.content || state.whatsApp)
+  if (!block.options?.content || state.whatsApp)
     return { outgoingEdgeId: block.outgoingEdgeId }
 
   const scriptToExecute = parseScriptToExecuteClientSideAction(

@@ -3,11 +3,11 @@ import { TableList, TableListItemProps } from '@/components/TableList'
 import { Flex } from '@chakra-ui/react'
 import {
   GoogleSheetsGetOptions,
-  LogicalOperator,
   RowsFilterComparison,
 } from '@typebot.io/schemas'
 import React, { useCallback } from 'react'
 import { RowsFilterComparisonItem } from './RowsFilterComparisonItem'
+import { LogicalOperator } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
 
 type Props = {
   filter: GoogleSheetsGetOptions['filter']

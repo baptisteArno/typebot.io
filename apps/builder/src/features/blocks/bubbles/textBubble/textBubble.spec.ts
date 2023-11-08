@@ -1,8 +1,8 @@
 import test, { expect } from '@playwright/test'
 import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
-import { BubbleBlockType, defaultTextBubbleContent } from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 
 test.describe('Text bubble block', () => {
   test('rich text features should work', async ({ page }) => {
@@ -12,7 +12,6 @@ test.describe('Text bubble block', () => {
         id: typebotId,
         ...parseDefaultGroupWithBlock({
           type: BubbleBlockType.TEXT,
-          content: defaultTextBubbleContent,
         }),
       },
     ])

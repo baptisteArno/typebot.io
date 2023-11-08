@@ -6,8 +6,9 @@ import { executeTypebotLink } from '@/features/blocks/logic/typebotLink'
 import { executeWait } from '@/features/blocks/logic/wait'
 import { LinkedTypebot } from '@/providers/TypebotProvider'
 import { EdgeId, LogicState } from '@/types'
-import { LogicBlock, LogicBlockType } from '@typebot.io/schemas'
+import { LogicBlock } from '@typebot.io/schemas'
 import { executeScript } from '@/features/blocks/logic/script/executeScript'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 
 export const executeLogic = async (
   block: LogicBlock,

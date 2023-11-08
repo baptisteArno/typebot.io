@@ -1,12 +1,12 @@
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
-import { DateInputOptions } from '@typebot.io/schemas'
 import { useState } from 'react'
 import { parseReadableDate } from '../utils/parseReadableDate'
+import { DateInputBlock } from '@typebot.io/schemas'
 
 type DateInputProps = {
   onSubmit: (inputValue: InputSubmitContent) => void
-  options?: DateInputOptions
+  options: DateInputBlock['options']
 }
 
 export const DateForm = ({

@@ -1,5 +1,4 @@
 import test, { expect } from '@playwright/test'
-import { defaultTextInputOptions, InputBlockType } from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
 import {
   createTypebots,
@@ -7,6 +6,7 @@ import {
 } from '@typebot.io/lib/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
 import { getTestAsset } from '@/test/utils/playwright'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 
 test.describe.configure({ mode: 'parallel' })
 
@@ -24,20 +24,20 @@ test('Edges connection should work', async ({ page }) => {
   })
   await page.dragAndDrop(
     'text=Text >> nth=0',
-    '[data-testid="group"] >> nth=1',
+    '[data-testid="group"] >> nth=0',
     {
       targetPosition: { x: 100, y: 50 },
     }
   )
   await page.dragAndDrop(
     '[data-testid="endpoint"]',
-    '[data-testid="group"] >> nth=1',
+    '[data-testid="group"] >> nth=0',
     { targetPosition: { x: 100, y: 10 } }
   )
   await expect(page.locator('[data-testid="edge"]')).toBeVisible()
   await page.dragAndDrop(
     '[data-testid="endpoint"]',
-    '[data-testid="group"] >> nth=1'
+    '[data-testid="group"] >> nth=0'
   )
   await expect(page.locator('[data-testid="edge"]')).toBeVisible()
   await page.dragAndDrop('text=Date', '#editor-container', {
@@ -45,7 +45,7 @@ test('Edges connection should work', async ({ page }) => {
   })
   await page.dragAndDrop(
     '[data-testid="endpoint"] >> nth=2',
-    '[data-testid="group"] >> nth=2',
+    '[data-testid="group"] >> nth=1',
     {
       targetPosition: { x: 100, y: 10 },
     }
@@ -72,17 +72,17 @@ test('Drag and drop blocks and items should work', async ({ page }) => {
 
   // Blocks dnd
   await page.goto(`/typebots/${typebotId}/edit`)
+  await expect(page.locator('[data-testid="block"] >> nth=0')).toHaveText(
+    'Hello!'
+  )
+  await page.dragAndDrop('text=Hello', '[data-testid="block"] >> nth=2', {
+    targetPosition: { x: 100, y: 0 },
+  })
   await expect(page.locator('[data-testid="block"] >> nth=1')).toHaveText(
     'Hello!'
   )
-  await page.dragAndDrop('text=Hello', '[data-testid="block"] >> nth=3', {
-    targetPosition: { x: 100, y: 0 },
-  })
-  await expect(page.locator('[data-testid="block"] >> nth=2')).toHaveText(
-    'Hello!'
-  )
   await page.dragAndDrop('text=Hello', 'text=Group #2')
-  await expect(page.locator('[data-testid="block"] >> nth=3')).toHaveText(
+  await expect(page.locator('[data-testid="block"] >> nth=2')).toHaveText(
     'Hello!'
   )
 
@@ -120,7 +120,6 @@ test('Undo / Redo and Zoom buttons should work', async ({ page }) => {
       id: typebotId,
       ...parseDefaultGroupWithBlock({
         type: InputBlockType.TEXT,
-        options: defaultTextInputOptions,
       }),
     },
   ])
@@ -129,7 +128,7 @@ test('Undo / Redo and Zoom buttons should work', async ({ page }) => {
   await page.click('text=Group #1', { button: 'right' })
   await page.click('text=Duplicate')
   await expect(page.locator('text="Group #1"')).toBeVisible()
-  await expect(page.locator('text="Group #1 copy"')).toBeVisible()
+  await expect(page.locator('text="Group #1 (1)"')).toBeVisible()
   await page.click('text="Group #1"', { button: 'right' })
   await page.click('text=Delete')
   await expect(page.locator('text="Group #1"')).toBeHidden()
@@ -140,18 +139,18 @@ test('Undo / Redo and Zoom buttons should work', async ({ page }) => {
   await page.getByRole('button', { name: 'Zoom in' }).click()
   await expect(page.getByTestId('graph')).toHaveAttribute(
     'style',
-    /scale\(1\.2\);$/
+    /scale\(1\.2\)/
   )
   await page.getByRole('button', { name: 'Zoom in' }).click()
   await expect(page.getByTestId('graph')).toHaveAttribute(
     'style',
-    /scale\(1\.4\);$/
+    /scale\(1\.4\)/
   )
   await page.getByRole('button', { name: 'Zoom out' }).dblclick()
   await page.getByRole('button', { name: 'Zoom out' }).dblclick()
   await expect(page.getByTestId('graph')).toHaveAttribute(
     'style',
-    /scale\(0\.6\);$/
+    /scale\(0\.6\)/
   )
 })
 
@@ -163,7 +162,6 @@ test('Rename and icon change should work', async ({ page }) => {
       name: 'My awesome typebot',
       ...parseDefaultGroupWithBlock({
         type: InputBlockType.TEXT,
-        options: defaultTextInputOptions,
       }),
     },
   ])
@@ -194,7 +192,7 @@ test('Preview from group should work', async ({ page }) => {
   await page.goto(`/typebots/${typebotId}/edit`)
   await page
     .getByTestId('group')
-    .nth(1)
+    .nth(0)
     .click({ position: { x: 100, y: 10 } })
   await page.click('[aria-label="Preview bot from this group"]')
   await expect(
@@ -202,7 +200,7 @@ test('Preview from group should work', async ({ page }) => {
   ).toBeVisible()
   await page
     .getByTestId('group')
-    .nth(2)
+    .nth(1)
     .click({ position: { x: 100, y: 10 } })
   await page.click('[aria-label="Preview bot from this group"]')
   await expect(
@@ -223,8 +221,8 @@ test('Published typebot menu should work', async ({ page }) => {
       name: 'My awesome typebot',
       ...parseDefaultGroupWithBlock({
         type: InputBlockType.TEXT,
-        options: defaultTextInputOptions,
       }),
+      version: '6',
     },
   ])
   await page.goto(`/typebots/${typebotId}/edit`)

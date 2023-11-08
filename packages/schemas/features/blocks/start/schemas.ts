@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { blockBaseSchema } from '../baseSchemas'
+import { blockBaseSchema } from '../shared'
 
 export const startBlockSchema = blockBaseSchema.merge(
   z.object({

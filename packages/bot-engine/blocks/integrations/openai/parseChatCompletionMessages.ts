@@ -15,7 +15,7 @@ export const parseChatCompletionMessages =
   } => {
     const variablesTransformedToList: VariableWithValue[] = []
     const parsedMessages = messages
-      .flatMap((message) => {
+      ?.flatMap((message) => {
         if (!message.role) return
         if (message.role === 'Messages sequence ✨') {
           if (
@@ -71,6 +71,29 @@ export const parseChatCompletionMessages =
 
           return allMessages
         }
+        if (message.role === 'Dialogue') {
+          if (!message.dialogueVariableId) return
+          const dialogue = (variables.find(
+            (variable) => variable.id === message.dialogueVariableId
+          )?.value ?? []) as string[]
+
+          return dialogue.map<OpenAI.Chat.ChatCompletionMessageParam>(
+            (dialogueItem, index) => {
+              if (index === 0 && message.startsBy === 'assistant')
+                return {
+                  role: 'assistant',
+                  content: dialogueItem,
+                }
+              return {
+                role:
+                  index % (message.startsBy === 'assistant' ? 1 : 2) === 0
+                    ? 'user'
+                    : 'assistant',
+                content: dialogueItem,
+              }
+            }
+          )
+        }
         return {
           role: message.role,
           content: parseVariables(variables)(message.content),
@@ -82,6 +105,8 @@ export const parseChatCompletionMessages =
       .filter(
         (message) => isNotEmpty(message?.role) && isNotEmpty(message?.content)
       ) as OpenAI.Chat.ChatCompletionMessageParam[]
+
+    console.log('parsedMessages', parsedMessages)
 
     return {
       variablesTransformedToList,

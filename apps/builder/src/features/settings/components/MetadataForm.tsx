@@ -1,5 +1,5 @@
 import React from 'react'
-import { Metadata } from '@typebot.io/schemas'
+import { Settings } from '@typebot.io/schemas'
 import {
   FormLabel,
   Popover,
@@ -14,13 +14,15 @@ import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { ImageUploadContent } from '@/components/ImageUploadContent'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 import { TextInput, Textarea } from '@/components/inputs'
+import { env } from '@typebot.io/env'
+import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
 
 type Props = {
   workspaceId: string
   typebotId: string
   typebotName: string
-  metadata: Metadata
-  onMetadataChange: (metadata: Metadata) => void
+  metadata: Settings['metadata']
+  onMetadataChange: (metadata: Settings['metadata']) => void
 }
 
 export const MetadataForm = ({
@@ -43,6 +45,14 @@ export const MetadataForm = ({
   const handleHeadCodeChange = (customHeadCode: string) =>
     onMetadataChange({ ...metadata, customHeadCode })
 
+  const favIconUrl =
+    metadata?.favIconUrl ??
+    defaultSettings.metadata.favIconUrl(env.NEXT_PUBLIC_VIEWER_URL[0])
+
+  const imageUrl =
+    metadata?.imageUrl ??
+    defaultSettings.metadata.imageUrl(env.NEXT_PUBLIC_VIEWER_URL[0])
+
   return (
     <Stack spacing="6">
       <Stack>
@@ -52,7 +62,7 @@ export const MetadataForm = ({
         <Popover isLazy placement="top">
           <PopoverTrigger>
             <Image
-              src={metadata.favIconUrl ?? '/favicon.png'}
+              src={favIconUrl}
               w="20px"
               alt="Fav icon"
               cursor="pointer"
@@ -68,7 +78,7 @@ export const MetadataForm = ({
                 typebotId,
                 fileName: 'favIcon',
               }}
-              defaultUrl={metadata.favIconUrl ?? ''}
+              defaultUrl={favIconUrl}
               onSubmit={handleFavIconSubmit}
               excludedTabs={['giphy', 'unsplash', 'emoji']}
               imageSize="thumb"
@@ -83,7 +93,7 @@ export const MetadataForm = ({
         <Popover isLazy placement="top">
           <PopoverTrigger>
             <Image
-              src={metadata.imageUrl ?? '/viewer-preview.png'}
+              src={imageUrl}
               alt="Website image"
               cursor="pointer"
               _hover={{ filter: 'brightness(.9)' }}
@@ -98,7 +108,7 @@ export const MetadataForm = ({
                 typebotId,
                 fileName: 'ogImage',
               }}
-              defaultUrl={metadata.imageUrl}
+              defaultUrl={imageUrl}
               onSubmit={handleImageSubmit}
               excludedTabs={['giphy', 'icon', 'emoji']}
             />
@@ -107,16 +117,18 @@ export const MetadataForm = ({
       </Stack>
       <TextInput
         label="Title:"
-        defaultValue={metadata.title ?? typebotName}
+        defaultValue={metadata?.title ?? typebotName}
         onChange={handleTitleChange}
       />
       <Textarea
-        defaultValue={metadata.description}
+        defaultValue={
+          metadata?.description ?? defaultSettings.metadata.description
+        }
         onChange={handleDescriptionChange}
         label="Description:"
       />
       <TextInput
-        defaultValue={metadata.googleTagManagerId}
+        defaultValue={metadata?.googleTagManagerId}
         placeholder="GTM-XXXXXX"
         onChange={handleGoogleTagManagerIdChange}
         label="Google Tag Manager ID:"
@@ -132,7 +144,7 @@ export const MetadataForm = ({
         </HStack>
         <CodeEditor
           id="head"
-          defaultValue={metadata.customHeadCode ?? ''}
+          defaultValue={metadata?.customHeadCode}
           onChange={handleHeadCodeChange}
           lang="html"
           withVariableButton={false}

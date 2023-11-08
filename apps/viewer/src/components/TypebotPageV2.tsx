@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
 import { TypebotViewer } from 'bot-engine'
 import {
   AnswerInput,
@@ -23,6 +25,7 @@ import {
 import { upsertAnswerQuery } from '@/features/answers/queries/upsertAnswerQuery'
 import { createResultQuery } from '@/features/results/queries/createResultQuery'
 import { updateResultQuery } from '@/features/results/queries/updateResultQuery'
+import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
 
 export type TypebotPageProps = {
   publishedTypebot: Omit<PublicTypebot, 'createdAt' | 'updatedAt'> & {
@@ -64,7 +67,7 @@ export const TypebotPageV2 = ({
     setPredefinedVariables(predefinedVariables)
     initializeResult().then()
     if (isDefined(customHeadCode)) injectCustomHeadCode(customHeadCode)
-    const gtmId = publishedTypebot.settings.metadata.googleTagManagerId
+    const gtmId = publishedTypebot.settings.metadata?.googleTagManagerId
     if (isNotEmpty(gtmId)) document.body.prepend(gtmBodyElement(gtmId))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -73,7 +76,8 @@ export const TypebotPageV2 = ({
     const hasQueryParams = asPath.includes('?')
     if (
       hasQueryParams &&
-      publishedTypebot.settings.general.isHideQueryParamsEnabled !== false
+      (publishedTypebot.settings.general?.isHideQueryParamsEnabled ??
+        defaultSettings.general.isHideQueryParamsEnabled) !== false
     )
       push(asPath.split('?')[0], undefined, { shallow: true })
   }
@@ -91,7 +95,8 @@ export const TypebotPageV2 = ({
       if (data?.result) {
         setResultId(data.result.id)
         if (
-          publishedTypebot.settings.general.isNewResultOnRefreshEnabled !== true
+          publishedTypebot.settings.general?.isNewResultOnRefreshEnabled !==
+          true
         )
           setResultInSession(data.result.id)
       }

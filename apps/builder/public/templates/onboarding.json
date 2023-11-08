@@ -1,29 +1,20 @@
 {
-  "id": "qkvenb8ur2y0ahlbckmx7law",
-  "version": "4",
-  "createdAt": "2023-02-22T14:26:28.592Z",
-  "updatedAt": "2023-02-22T14:28:05.063Z",
-  "icon": null,
+  "version": "6",
+  "id": "cloo0gjvx00091aoryw72ns37",
   "name": "Onboarding copy",
-  "folderId": null,
-  "groups": [
+  "events": [
     {
       "id": "yp9qsayuwzhihxc7gzt68osm",
-      "title": "Start",
-      "blocks": [
-        {
-          "id": "cl1265zct0001mb1afel460do",
-          "type": "start",
-          "label": "Start",
-          "groupId": "yp9qsayuwzhihxc7gzt68osm",
-          "outgoingEdgeId": "qehono05saho85xk59apfvtr"
-        }
-      ],
-      "graphCoordinates": { "x": 0, "y": 0 }
-    },
+      "outgoingEdgeId": "qehono05saho85xk59apfvtr",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
     {
       "id": "az9nafw4tu9b6dyh3cvutlek",
       "title": "Name",
+      "graphCoordinates": { "x": 247.01, "y": 1.45 },
       "blocks": [
         {
           "id": "cl1267q2c000e2e6dynjeg83n",
@@ -32,8 +23,7 @@
             "richText": [
               { "type": "p", "children": [{ "text": "Welcome 👋" }] }
             ]
-          },
-          "groupId": "az9nafw4tu9b6dyh3cvutlek"
+          }
         },
         {
           "id": "cl1267y1u000f2e6d4rlglv6g",
@@ -42,29 +32,22 @@
             "richText": [
               { "type": "p", "children": [{ "text": "What's your name?" }] }
             ]
-          },
-          "groupId": "az9nafw4tu9b6dyh3cvutlek"
+          }
         },
         {
           "id": "cl126820m000g2e6dfleq78bt",
+          "outgoingEdgeId": "j6x356fbxo32zd9ezje77t4j",
           "type": "text input",
-          "groupId": "az9nafw4tu9b6dyh3cvutlek",
           "options": {
-            "isLong": false,
-            "labels": {
-              "button": "Send",
-              "placeholder": "Type your answer..."
-            },
             "variableId": "cl126f4hf000i2e6d8zvzc3t1"
-          },
-          "outgoingEdgeId": "j6x356fbxo32zd9ezje77t4j"
+          }
         }
-      ],
-      "graphCoordinates": { "x": 329.13877189828236, "y": 5.648473810990222 }
+      ]
     },
     {
       "id": "s3hgjtmb1bzq6ip2bm9w1r53",
       "title": "Company",
+      "graphCoordinates": { "x": 603.62, "y": 1.09 },
       "blocks": [
         {
           "id": "cl1266v6f000a2e6db7wj3ux7",
@@ -73,8 +56,7 @@
             "richText": [
               { "type": "p", "children": [{ "text": "Welcome {{Name}} 👋" }] }
             ]
-          },
-          "groupId": "s3hgjtmb1bzq6ip2bm9w1r53"
+          }
         },
         {
           "id": "cl126hb9m000l2e6d5qk3mohn",
@@ -90,8 +72,7 @@
                 ]
               }
             ]
-          },
-          "groupId": "s3hgjtmb1bzq6ip2bm9w1r53"
+          }
         },
         {
           "id": "cl126hpw1000m2e6dneousygl",
@@ -107,8 +88,7 @@
                 ]
               }
             ]
-          },
-          "groupId": "s3hgjtmb1bzq6ip2bm9w1r53"
+          }
         },
         {
           "id": "cl126guhd000k2e6d6ypkex9z",
@@ -122,8 +102,7 @@
                 ]
               }
             ]
-          },
-          "groupId": "s3hgjtmb1bzq6ip2bm9w1r53"
+          }
         },
         {
           "id": "cl126ixp9000q2e6dslh0zypi",
@@ -135,50 +114,37 @@
                 "children": [{ "text": "Do you work for a specific company?" }]
               }
             ]
-          },
-          "groupId": "s3hgjtmb1bzq6ip2bm9w1r53"
+          }
         },
         {
           "id": "cl126jb2q000r2e6dgqlnxnt8",
           "type": "choice input",
           "items": [
-            {
-              "id": "cl126jb2q000s2e6dm60yq5p2",
-              "type": 0,
-              "blockId": "cl126jb2q000r2e6dgqlnxnt8",
-              "content": "Yes"
-            },
+            { "id": "cl126jb2q000s2e6dm60yq5p2", "content": "Yes" },
             {
               "id": "cl126jc5a000t2e6dqv91w7j6",
-              "type": 0,
-              "blockId": "cl126jb2q000r2e6dgqlnxnt8",
-              "content": "No",
-              "outgoingEdgeId": "dhva247te6v1cwfbte78bx4v"
+              "outgoingEdgeId": "dhva247te6v1cwfbte78bx4v",
+              "content": "No"
             }
-          ],
-          "groupId": "s3hgjtmb1bzq6ip2bm9w1r53",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false }
+          ]
         },
         {
           "id": "cl126jioz000v2e6dwrk1f2cb",
+          "outgoingEdgeId": "c5qdoivxsbhu1mkxkmw9yxft",
           "type": "text input",
-          "groupId": "s3hgjtmb1bzq6ip2bm9w1r53",
           "options": {
-            "isLong": false,
             "labels": {
-              "button": "Send",
               "placeholder": "Type the company name..."
             },
             "variableId": "cl126jqww000w2e6dq9yv4ifq"
-          },
-          "outgoingEdgeId": "c5qdoivxsbhu1mkxkmw9yxft"
+          }
         }
-      ],
-      "graphCoordinates": { "x": 679.828061917379, "y": 3.351428911218571 }
+      ]
     },
     {
       "id": "m8k3pv1rjckh3arxgitwo43i",
       "title": "Bot category",
+      "graphCoordinates": { "x": 972.94, "y": -0.07 },
       "blocks": [
         {
           "id": "cl126krck00112e6d1m6ctxpn",
@@ -194,8 +160,7 @@
                 ]
               }
             ]
-          },
-          "groupId": "m8k3pv1rjckh3arxgitwo43i"
+          }
         },
         {
           "id": "cl126lb8v00142e6duv5qe08l",
@@ -203,91 +168,57 @@
           "items": [
             {
               "id": "cl126onz9001g2e6dk0nbjeu6",
-              "type": 0,
-              "blockId": "cl126lb8v00142e6duv5qe08l",
               "content": "Lead qualification"
             },
             {
               "id": "cl126lm6c00172e6d1pfvdiju",
-              "type": 0,
-              "blockId": "cl126lb8v00142e6duv5qe08l",
               "content": "Customer support"
             },
             {
               "id": "cl126orr2001h2e6d0fqs7737",
-              "type": 0,
-              "blockId": "cl126lb8v00142e6duv5qe08l",
               "content": "Customer research"
             },
-            {
-              "id": "cl126oudu001i2e6dktwi7qwv",
-              "type": 0,
-              "blockId": "cl126lb8v00142e6duv5qe08l",
-              "content": "User onboarding"
-            },
-            {
-              "id": "cl126luv500192e6dl317ssyr",
-              "type": 0,
-              "blockId": "cl126lb8v00142e6duv5qe08l",
-              "content": "Quizzes"
-            },
+            { "id": "cl126oudu001i2e6dktwi7qwv", "content": "User onboarding" },
+            { "id": "cl126luv500192e6dl317ssyr", "content": "Quizzes" },
             {
               "id": "cl126lz8q001a2e6d8b9lb3b5",
-              "type": 0,
-              "blockId": "cl126lb8v00142e6duv5qe08l",
               "content": "Content distribution"
             },
-            {
-              "id": "cl126nf7k001d2e6dg2zczjgz",
-              "type": 0,
-              "blockId": "cl126lb8v00142e6duv5qe08l",
-              "content": "FAQ"
-            },
-            {
-              "id": "cl126ngy8001e2e6ddfo5s9fm",
-              "type": 0,
-              "blockId": "cl126lb8v00142e6duv5qe08l",
-              "content": "Other"
-            }
+            { "id": "cl126nf7k001d2e6dg2zczjgz", "content": "FAQ" },
+            { "id": "cl126ngy8001e2e6ddfo5s9fm", "content": "Other" }
           ],
-          "groupId": "m8k3pv1rjckh3arxgitwo43i",
           "options": {
             "variableId": "cl126mo3t001b2e6dvyi16bkd",
-            "buttonLabel": "Send",
             "isMultipleChoice": true
           }
         },
         {
           "id": "cl1278gyk002w2e6d744eb87n",
+          "outgoingEdgeId": "zvr4qou4drmkvyyikya9y6ku",
           "type": "Condition",
           "items": [
             {
               "id": "cl1278gyk002x2e6dwmpzs3nf",
-              "type": 1,
-              "blockId": "cl1278gyk002w2e6d744eb87n",
+              "outgoingEdgeId": "mgsnzw7w104odi0mz9qjg8hf",
               "content": {
                 "comparisons": [
                   {
                     "id": "cl1278irq002y2e6dv4965diw",
-                    "value": "Other",
                     "variableId": "cl126mo3t001b2e6dvyi16bkd",
-                    "comparisonOperator": "Contains"
+                    "comparisonOperator": "Contains",
+                    "value": "Other"
                   }
-                ],
-                "logicalOperator": "AND"
-              },
-              "outgoingEdgeId": "mgsnzw7w104odi0mz9qjg8hf"
+                ]
+              }
             }
-          ],
-          "groupId": "m8k3pv1rjckh3arxgitwo43i",
-          "outgoingEdgeId": "zvr4qou4drmkvyyikya9y6ku"
+          ]
         }
-      ],
-      "graphCoordinates": { "x": 1030.2081982319628, "y": -0.2818258211374715 }
+      ]
     },
     {
       "id": "cnf2ljrlt875d005783ju7hc",
       "title": "Bye",
+      "graphCoordinates": { "x": 1522.31, "y": 220.27 },
       "blocks": [
         {
           "id": "cl126p76d001k2e6dbhnf2ysq",
@@ -301,20 +232,17 @@
                 ]
               }
             ]
-          },
-          "groupId": "cnf2ljrlt875d005783ju7hc"
+          }
         },
         {
           "id": "cl126rfy6001t2e6d21gcb6b0",
           "type": "image",
           "content": {
             "url": "https://media4.giphy.com/media/l0amJzVHIAfl7jMDos/giphy.gif?cid=fe3852a3i4c33635xdtj3nesr9uq4zteujaab6b0jr42gpxx&rid=giphy.gif&ct=g"
-          },
-          "groupId": "cnf2ljrlt875d005783ju7hc"
+          }
         },
         {
           "id": "agi2i9xxed4jvv40rnrkf23r",
-          "groupId": "cnf2ljrlt875d005783ju7hc",
           "type": "text",
           "content": {
             "richText": [
@@ -322,12 +250,12 @@
             ]
           }
         }
-      ],
-      "graphCoordinates": { "x": 1585.6402200792238, "y": 219.28927860860924 }
+      ]
     },
     {
       "id": "hduy797g246pj8qnhsxy5kt5",
       "title": "Other category",
+      "graphCoordinates": { "x": 1310.68, "y": -6.8 },
       "blocks": [
         {
           "id": "cl127yxym000b2e6d9hksxo6h",
@@ -336,22 +264,60 @@
             "richText": [
               { "type": "p", "children": [{ "text": "What else?" }] }
             ]
-          },
-          "groupId": "hduy797g246pj8qnhsxy5kt5"
+          }
         },
         {
           "id": "cl126pv7n001o2e6dajltc4qz",
+          "outgoingEdgeId": "vk0mgizwhw761s9eo9lx88yv",
           "type": "text input",
-          "groupId": "hduy797g246pj8qnhsxy5kt5",
           "options": {
-            "isLong": false,
-            "labels": { "button": "Send", "placeholder": "Type your answer" },
             "variableId": "cl126q38p001q2e6d0hj23f6b"
-          },
-          "outgoingEdgeId": "vk0mgizwhw761s9eo9lx88yv"
+          }
         }
-      ],
-      "graphCoordinates": { "x": 1369.6844213687823, "y": -7.90789096298402 }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "qehono05saho85xk59apfvtr",
+      "from": { "eventId": "yp9qsayuwzhihxc7gzt68osm" },
+      "to": { "groupId": "az9nafw4tu9b6dyh3cvutlek" }
+    },
+    {
+      "id": "dhva247te6v1cwfbte78bx4v",
+      "from": {
+        "blockId": "cl126jb2q000r2e6dgqlnxnt8",
+        "itemId": "cl126jc5a000t2e6dqv91w7j6"
+      },
+      "to": { "groupId": "m8k3pv1rjckh3arxgitwo43i" }
+    },
+    {
+      "id": "mgsnzw7w104odi0mz9qjg8hf",
+      "from": {
+        "blockId": "cl1278gyk002w2e6d744eb87n",
+        "itemId": "cl1278gyk002x2e6dwmpzs3nf"
+      },
+      "to": { "groupId": "hduy797g246pj8qnhsxy5kt5" }
+    },
+    {
+      "id": "zvr4qou4drmkvyyikya9y6ku",
+      "from": { "blockId": "cl1278gyk002w2e6d744eb87n" },
+      "to": { "groupId": "cnf2ljrlt875d005783ju7hc" }
+    },
+    {
+      "id": "c5qdoivxsbhu1mkxkmw9yxft",
+      "from": { "blockId": "cl126jioz000v2e6dwrk1f2cb" },
+      "to": { "groupId": "m8k3pv1rjckh3arxgitwo43i" }
+    },
+    {
+      "id": "j6x356fbxo32zd9ezje77t4j",
+      "from": { "blockId": "cl126820m000g2e6dfleq78bt" },
+      "to": { "groupId": "s3hgjtmb1bzq6ip2bm9w1r53" }
+    },
+    {
+      "id": "vk0mgizwhw761s9eo9lx88yv",
+      "from": { "blockId": "cl126pv7n001o2e6dajltc4qz" },
+      "to": { "groupId": "cnf2ljrlt875d005783ju7hc" }
     }
   ],
   "variables": [
@@ -360,102 +326,18 @@
     { "id": "cl126mo3t001b2e6dvyi16bkd", "name": "Categories" },
     { "id": "cl126q38p001q2e6d0hj23f6b", "name": "Other categories" }
   ],
-  "edges": [
-    {
-      "id": "dhva247te6v1cwfbte78bx4v",
-      "to": { "groupId": "m8k3pv1rjckh3arxgitwo43i" },
-      "from": {
-        "itemId": "cl126jc5a000t2e6dqv91w7j6",
-        "blockId": "cl126jb2q000r2e6dgqlnxnt8",
-        "groupId": "s3hgjtmb1bzq6ip2bm9w1r53"
-      }
-    },
-    {
-      "id": "mgsnzw7w104odi0mz9qjg8hf",
-      "to": { "groupId": "hduy797g246pj8qnhsxy5kt5" },
-      "from": {
-        "itemId": "cl1278gyk002x2e6dwmpzs3nf",
-        "blockId": "cl1278gyk002w2e6d744eb87n",
-        "groupId": "m8k3pv1rjckh3arxgitwo43i"
-      }
-    },
-    {
-      "id": "zvr4qou4drmkvyyikya9y6ku",
-      "to": { "groupId": "cnf2ljrlt875d005783ju7hc" },
-      "from": {
-        "blockId": "cl1278gyk002w2e6d744eb87n",
-        "groupId": "m8k3pv1rjckh3arxgitwo43i"
-      }
-    },
-    {
-      "id": "c5qdoivxsbhu1mkxkmw9yxft",
-      "to": { "groupId": "m8k3pv1rjckh3arxgitwo43i" },
-      "from": {
-        "blockId": "cl126jioz000v2e6dwrk1f2cb",
-        "groupId": "s3hgjtmb1bzq6ip2bm9w1r53"
-      }
-    },
-    {
-      "id": "j6x356fbxo32zd9ezje77t4j",
-      "to": { "groupId": "s3hgjtmb1bzq6ip2bm9w1r53" },
-      "from": {
-        "blockId": "cl126820m000g2e6dfleq78bt",
-        "groupId": "az9nafw4tu9b6dyh3cvutlek"
-      }
-    },
-    {
-      "id": "qehono05saho85xk59apfvtr",
-      "to": { "groupId": "az9nafw4tu9b6dyh3cvutlek" },
-      "from": {
-        "blockId": "cl1265zct0001mb1afel460do",
-        "groupId": "yp9qsayuwzhihxc7gzt68osm"
-      }
-    },
-    {
-      "id": "vk0mgizwhw761s9eo9lx88yv",
-      "to": { "groupId": "cnf2ljrlt875d005783ju7hc" },
-      "from": {
-        "blockId": "cl126pv7n001o2e6dajltc4qz",
-        "groupId": "hduy797g246pj8qnhsxy5kt5"
-      }
-    }
-  ],
-  "theme": {
-    "chat": {
-      "inputs": {
-        "color": "#303235",
-        "backgroundColor": "#FFFFFF",
-        "placeholderColor": "#9095A0"
-      },
-      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
-      "hostAvatar": {
-        "isEnabled": true
-      },
-      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
-      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
-    },
-    "general": {
-      "font": "Open Sans",
-      "background": { "type": "Color", "content": "#ffffff" }
-    }
-  },
-  "settings": {
-    "general": {
-      "isBrandingEnabled": false,
-      "isInputPrefillEnabled": true,
-      "isResultSavingEnabled": true,
-      "isHideQueryParamsEnabled": true,
-      "isNewResultOnRefreshEnabled": true
-    },
-    "metadata": {
-      "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
-    },
-    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
-  },
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2023-11-07T07:29:42.573Z",
+  "updatedAt": "2023-11-07T07:30:16.347Z",
+  "icon": null,
+  "folderId": null,
   "publicId": null,
   "customDomain": null,
-  "workspaceId": "freeWorkspace",
+  "workspaceId": "proWorkspace",
   "resultsTablePreferences": null,
   "isArchived": false,
-  "isClosed": false
+  "isClosed": false,
+  "whatsAppCredentialsId": null
 }

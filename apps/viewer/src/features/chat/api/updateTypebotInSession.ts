@@ -94,7 +94,7 @@ const updateSessionState = (
           },
         }
       : typebotInQueue
-  ),
+  ) as SessionState['typebotsQueue'],
 })
 
 const updateVariablesInSession = (

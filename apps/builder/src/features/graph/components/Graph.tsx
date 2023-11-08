@@ -1,7 +1,7 @@
 import { Flex, FlexProps, useEventListener } from '@chakra-ui/react'
 import React, { useRef, useMemo, useEffect, useState } from 'react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { DraggableBlockType, PublicTypebot, Typebot } from '@typebot.io/schemas'
+import { BlockV6, PublicTypebotV6, TypebotV6 } from '@typebot.io/schemas'
 import { useDebounce } from 'use-debounce'
 import GraphElements from './GraphElements'
 import { createId } from '@paralleldrive/cuid2'
@@ -10,12 +10,15 @@ import { ZoomButtons } from './ZoomButtons'
 import { useGesture } from '@use-gesture/react'
 import { GraphNavigation } from '@typebot.io/prisma'
 import { headerHeight } from '@/features/editor/constants'
-import { graphPositionDefaultValue, blockWidth } from '../constants'
+import { graphPositionDefaultValue, groupWidth } from '../constants'
 import { useBlockDnd } from '../providers/GraphDndProvider'
 import { useGraph } from '../providers/GraphProvider'
 import { useGroupsCoordinates } from '../providers/GroupsCoordinateProvider'
 import { Coordinates } from '../types'
-import { TotalAnswersInBlock } from '@typebot.io/schemas/features/analytics'
+import {
+  TotalAnswers,
+  TotalVisitedEdges,
+} from '@typebot.io/schemas/features/analytics'
 
 const maxScale = 2
 const minScale = 0.3
@@ -23,12 +26,14 @@ const zoomButtonsScaleBlock = 0.2
 
 export const Graph = ({
   typebot,
-  totalAnswersInBlocks,
+  totalAnswers,
+  totalVisitedEdges,
   onUnlockProPlanClick,
   ...props
 }: {
-  typebot: Typebot | PublicTypebot
-  totalAnswersInBlocks?: TotalAnswersInBlock[]
+  typebot: TypebotV6 | PublicTypebotV6
+  totalVisitedEdges?: TotalVisitedEdges[]
+  totalAnswers?: TotalAnswers[]
   onUnlockProPlanClick?: () => void
 } & FlexProps) => {
   const {
@@ -52,7 +57,7 @@ export const Graph = ({
   const { updateGroupCoordinates } = useGroupsCoordinates()
   const [graphPosition, setGraphPosition] = useState(
     graphPositionDefaultValue(
-      typebot.groups.at(0)?.graphCoordinates ?? { x: 0, y: 0 }
+      typebot.events[0].graphCoordinates ?? { x: 0, y: 0 }
     )
   )
   const [debouncedGraphPosition] = useDebounce(graphPosition, 200)
@@ -100,7 +105,7 @@ export const Graph = ({
     createGroup({
       id,
       ...coordinates,
-      block: draggedBlock ?? (draggedBlockType as DraggableBlockType),
+      block: draggedBlock ?? (draggedBlockType as BlockV6['type']),
       indices: { groupIndex: typebot.groups.length, blockIndex: 0 },
     })
     setDraggedBlock(undefined)
@@ -254,7 +259,9 @@ export const Graph = ({
         <GraphElements
           edges={typebot.edges}
           groups={typebot.groups}
-          totalAnswersInBlocks={totalAnswersInBlocks}
+          events={typebot.events}
+          totalAnswers={totalAnswers}
+          totalVisitedEdges={totalVisitedEdges}
           onUnlockProPlanClick={onUnlockProPlanClick}
         />
       </Flex>
@@ -270,7 +277,7 @@ const projectMouse = (
     x:
       (mouseCoordinates.x -
         graphPosition.x -
-        blockWidth / (3 / graphPosition.scale)) /
+        groupWidth / (3 / graphPosition.scale)) /
       graphPosition.scale,
     y:
       (mouseCoordinates.y -

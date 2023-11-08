@@ -8,7 +8,7 @@ import { ChatReply } from '@typebot.io/schemas'
 
 export const WebPreview = () => {
   const { typebot } = useTypebot()
-  const { startPreviewAtGroup } = useEditor()
+  const { startPreviewAtGroup, startPreviewAtEvent } = useEditor()
   const { setPreviewingBlock } = useGraph()
 
   const { showToast } = useToast()
@@ -41,7 +41,15 @@ export const WebPreview = () => {
       key={`web-preview${startPreviewAtGroup ?? ''}`}
       typebot={typebot}
       startGroupId={startPreviewAtGroup}
-      onNewInputBlock={setPreviewingBlock}
+      startEventId={startPreviewAtEvent}
+      onNewInputBlock={(block) =>
+        setPreviewingBlock({
+          id: block.id,
+          groupId:
+            typebot.groups.find((g) => g.blocks.some((b) => b.id === block.id))
+              ?.id ?? '',
+        })
+      }
       onNewLogs={handleNewLogs}
       style={{
         borderWidth: '1px',

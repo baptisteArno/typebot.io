@@ -5,12 +5,12 @@ export const answerSchema = z.object({
   createdAt: z.date(),
   resultId: z.string(),
   blockId: z.string(),
-  itemId: z.string().nullable(),
   groupId: z.string(),
   variableId: z.string().nullable(),
   content: z.string(),
   storageUsed: z.number().nullable(),
-}) satisfies z.ZodType<AnswerPrisma>
+  // TO-DO: remove once itemId is removed from database schema
+}) satisfies z.ZodType<Omit<AnswerPrisma, 'itemId'>>
 
 export const answerInputSchema = answerSchema
   .omit({
@@ -19,13 +19,10 @@ export const answerInputSchema = answerSchema
     variableId: true,
     storageUsed: true,
   })
-  .merge(
-    z.object({
-      variableId: z.string().nullish(),
-      storageUsed: z.number().nullish(),
-      itemId: z.string().nullish(),
-    })
-  ) satisfies z.ZodType<Prisma.AnswerUncheckedUpdateInput>
+  .extend({
+    variableId: z.string().nullish(),
+    storageUsed: z.number().nullish(),
+  }) satisfies z.ZodType<Prisma.AnswerUncheckedUpdateInput>
 
 export type Stats = {
   totalViews: number

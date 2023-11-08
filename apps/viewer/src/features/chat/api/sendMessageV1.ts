@@ -57,6 +57,7 @@ export const sendMessageV1 = publicProcedure
           logs,
           clientSideActions,
           newSessionState,
+          visitedEdges,
         } = await startSession({
           version: 1,
           startParams,
@@ -77,6 +78,7 @@ export const sendMessageV1 = publicProcedure
               input,
               logs: allLogs,
               clientSideActions,
+              visitedEdges,
             })
 
         return {
@@ -103,6 +105,7 @@ export const sendMessageV1 = publicProcedure
           newSessionState,
           logs,
           lastMessageNewFormat,
+          visitedEdges,
         } = await continueBotFlow(message, { version: 1, state: session.state })
 
         const allLogs = clientLogs ? [...(logs ?? []), ...clientLogs] : logs
@@ -116,6 +119,7 @@ export const sendMessageV1 = publicProcedure
             input,
             logs: allLogs,
             clientSideActions,
+            visitedEdges,
           })
 
         return {

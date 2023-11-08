@@ -1,7 +1,9 @@
+import { isDefined } from '@typebot.io/lib'
 import { ParsedReply } from '../../../types'
 import { DateInputBlock } from '@typebot.io/schemas'
 import { parse as chronoParse } from 'chrono-node'
 import { format } from 'date-fns'
+import { defaultDateInputOptions } from '@typebot.io/schemas/features/blocks/inputs/date/constants'
 
 export const parseDateReply = (
   reply: string,
@@ -10,8 +12,10 @@ export const parseDateReply = (
   const parsedDate = chronoParse(reply)
   if (parsedDate.length === 0) return { status: 'fail' }
   const formatString =
-    block.options.format ??
-    (block.options.hasTime ? 'dd/MM/yyyy HH:mm' : 'dd/MM/yyyy')
+    block.options?.format ??
+    (block.options?.hasTime
+      ? defaultDateInputOptions.formatWithTime
+      : defaultDateInputOptions.format)
 
   const detectedStartDate = parseDateWithNeutralTimezone(
     parsedDate[0].start.date()
@@ -25,25 +29,27 @@ export const parseDateReply = (
     ? format(detectedEndDate, formatString)
     : undefined
 
-  if (block.options.isRange && !endDate) return { status: 'fail' }
+  if (block.options?.isRange && !endDate) return { status: 'fail' }
 
+  const max = block.options?.max
   if (
-    block.options.max &&
-    (detectedStartDate > new Date(block.options.max) ||
-      (detectedEndDate && detectedEndDate > new Date(block.options.max)))
+    isDefined(max) &&
+    (detectedStartDate > new Date(max) ||
+      (detectedEndDate && detectedEndDate > new Date(max)))
   )
     return { status: 'fail' }
 
+  const min = block.options?.min
   if (
-    block.options.min &&
-    (detectedStartDate < new Date(block.options.min) ||
-      (detectedEndDate && detectedEndDate < new Date(block.options.min)))
+    isDefined(min) &&
+    (detectedStartDate < new Date(min) ||
+      (detectedEndDate && detectedEndDate < new Date(min)))
   )
     return { status: 'fail' }
 
   return {
     status: 'success',
-    reply: block.options.isRange ? `${startDate} to ${endDate}` : startDate,
+    reply: block.options?.isRange ? `${startDate} to ${endDate}` : startDate,
   }
 }
 

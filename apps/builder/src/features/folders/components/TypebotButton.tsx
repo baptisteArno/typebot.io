@@ -52,7 +52,7 @@ export const TypebotButton = ({
 
   const { showToast } = useToast()
 
-  const { mutate: createTypebot } = trpc.typebot.createTypebot.useMutation({
+  const { mutate: importTypebot } = trpc.typebot.importTypebot.useMutation({
     onError: (error) => {
       showToast({ description: error.message })
     },
@@ -103,12 +103,10 @@ export const TypebotButton = ({
         typebotId: typebot.id,
       })
     if (!typebotToDuplicate) return
-    createTypebot({
+    importTypebot({
       workspaceId: typebotToDuplicate.workspaceId,
       typebot: {
         ...typebotToDuplicate,
-        customDomain: undefined,
-        publicId: undefined,
         name: duplicateName(typebotToDuplicate.name),
       },
     })

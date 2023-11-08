@@ -22,6 +22,6 @@
     "prisma": "5.0.0",
     "@typebot.io/tsconfig": "workspace:*",
     "tsx": "3.12.7",
-    "typescript": "5.1.6"
+    "typescript": "5.2.2"
   }
 }

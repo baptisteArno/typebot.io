@@ -1,18 +1,13 @@
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
 import {
-  defaultSettings,
-  defaultTextInputOptions,
-  InputBlockType,
-  Metadata,
-} from '@typebot.io/schemas'
-import {
   createTypebots,
   updateTypebot,
 } from '@typebot.io/lib/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
-
-const settings = defaultSettings({ isBrandingEnabled: true })
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { Settings } from '@typebot.io/schemas'
+import { defaultTextInputOptions } from '@typebot.io/schemas/features/blocks/inputs/text/constants'
 
 test('Result should be overwritten on page refresh', async ({ page }) => {
   const typebotId = createId()
@@ -20,9 +15,7 @@ test('Result should be overwritten on page refresh', async ({ page }) => {
     {
       id: typebotId,
       settings: {
-        ...settings,
         general: {
-          ...settings.general,
           rememberUser: {
             isEnabled: true,
             storage: 'session',
@@ -31,7 +24,6 @@ test('Result should be overwritten on page refresh', async ({ page }) => {
       },
       ...parseDefaultGroupWithBlock({
         type: InputBlockType.TEXT,
-        options: defaultTextInputOptions,
       }),
     },
   ])
@@ -60,7 +52,6 @@ test.describe('Create result on page refresh enabled', () => {
         id: typebotId,
         ...parseDefaultGroupWithBlock({
           type: InputBlockType.TEXT,
-          options: defaultTextInputOptions,
         }),
       },
     ])
@@ -88,7 +79,6 @@ test('Hide query params', async ({ page }) => {
       id: typebotId,
       ...parseDefaultGroupWithBlock({
         type: InputBlockType.TEXT,
-        options: defaultTextInputOptions,
       }),
     },
   ])
@@ -98,8 +88,7 @@ test('Hide query params', async ({ page }) => {
   await updateTypebot({
     id: typebotId,
     settings: {
-      ...settings,
-      general: { ...settings.general, isHideQueryParamsEnabled: false },
+      general: { isHideQueryParamsEnabled: false },
     },
   })
   await page.goto(`/${typebotId}-public?Name=John`)
@@ -116,7 +105,6 @@ test('Show close message', async ({ page }) => {
       id: typebotId,
       ...parseDefaultGroupWithBlock({
         type: InputBlockType.TEXT,
-        options: defaultTextInputOptions,
       }),
       isClosed: true,
     },
@@ -127,7 +115,7 @@ test('Show close message', async ({ page }) => {
 
 test('Should correctly parse metadata', async ({ page }) => {
   const typebotId = createId()
-  const customMetadata: Metadata = {
+  const customMetadata: Settings['metadata'] = {
     description: 'My custom description',
     title: 'Custom title',
     favIconUrl: 'https://www.baptistearno.com/favicon.png',
@@ -138,12 +126,10 @@ test('Should correctly parse metadata', async ({ page }) => {
     {
       id: typebotId,
       settings: {
-        ...settings,
         metadata: customMetadata,
       },
       ...parseDefaultGroupWithBlock({
         type: InputBlockType.TEXT,
-        options: defaultTextInputOptions,
       }),
     },
   ])

@@ -1,13 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTypebot } from '@/providers/TypebotProvider'
-import {
-  Variable,
-  VideoBubbleContent,
-  VideoBubbleContentType,
-  VideoBubbleBlock,
-} from '@typebot.io/schemas'
+import { Variable, VideoBubbleBlock } from '@typebot.io/schemas'
 import { TypingBubble } from '@/components/TypingBubble'
 import { parseVariables } from '@/features/variables'
+import { VideoBubbleContentType } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
 
 type Props = {
   block: VideoBubbleBlock
@@ -71,7 +67,7 @@ const VideoContent = ({
   isTyping,
   variables,
 }: {
-  content?: VideoBubbleContent
+  content?: VideoBubbleBlock['content']
   isTyping: boolean
   variables: Variable[]
 }) => {

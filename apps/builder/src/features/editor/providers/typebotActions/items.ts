@@ -2,10 +2,6 @@ import {
   ItemIndices,
   Item,
   BlockWithItems,
-  defaultConditionContent,
-  Block,
-  LogicBlockType,
-  InputBlockType,
   ConditionItem,
   ButtonItem,
   PictureChoiceItem,
@@ -15,12 +11,14 @@ import { Draft, produce } from 'immer'
 import { cleanUpEdgeDraft } from './edges'
 import { byId, blockHasItems } from '@typebot.io/lib'
 import { createId } from '@paralleldrive/cuid2'
-import { DraggabbleItem } from '@/features/graph/providers/GraphDndProvider'
+import {
+  BlockWithCreatableItems,
+  DraggableItem,
+} from '@/features/graph/providers/GraphDndProvider'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 
-type NewItem = Pick<DraggabbleItem, 'blockId' | 'outgoingEdgeId' | 'type'> &
-  Partial<DraggabbleItem>
-
-type BlockWithCreatableItems = Extract<Block, { items: DraggabbleItem[] }>
+type NewItem = Pick<DraggableItem, 'outgoingEdgeId'> & Partial<DraggableItem>
 
 export type ItemsActions = {
   createItem: (item: NewItem, indices: ItemIndices) => void
@@ -41,7 +39,7 @@ const createItem = (
       const newItem = {
         ...baseItem,
         id: 'id' in item && item.id ? item.id : createId(),
-        content: baseItem.content ?? defaultConditionContent,
+        content: baseItem.content,
       }
       block.items.splice(itemIndex, 0, newItem)
       return newItem
@@ -79,7 +77,7 @@ const duplicateItem = (
       const newItem = {
         ...baseItem,
         id: createId(),
-        content: baseItem.content ?? defaultConditionContent,
+        content: baseItem.content,
       }
       block.items.splice(itemIndex + 1, 0, newItem)
       return newItem
@@ -125,7 +123,6 @@ const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
           const edgeIndex = typebot.edges.findIndex(byId(item.outgoingEdgeId))
           edgeIndex !== -1
             ? (typebot.edges[edgeIndex].from = {
-                groupId: block.groupId,
                 blockId: block.id,
                 itemId: newItem.id,
               })

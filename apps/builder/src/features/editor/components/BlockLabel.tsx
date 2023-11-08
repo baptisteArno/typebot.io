@@ -1,15 +1,13 @@
 import { Text } from '@chakra-ui/react'
-import {
-  BubbleBlockType,
-  InputBlockType,
-  IntegrationBlockType,
-  LogicBlockType,
-  BlockType,
-} from '@typebot.io/schemas'
 import React from 'react'
 import { useTranslate } from '@tolgee/react'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { Block } from '@typebot.io/schemas'
 
-type Props = { type: BlockType }
+type Props = { type: Block['type'] }
 
 export const BlockLabel = ({ type }: Props): JSX.Element => {
   const { t } = useTranslate()

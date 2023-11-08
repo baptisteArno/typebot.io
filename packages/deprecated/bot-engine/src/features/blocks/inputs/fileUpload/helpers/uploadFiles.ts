@@ -23,7 +23,6 @@ export const uploadFiles = async ({
     i += 1
     const { data } = await sendRequest<{
       presignedUrl: string
-      formData: Record<string, string>
       hasReachedStorageLimit: boolean
     }>(
       `${basePath}/storage/upload-url?filePath=${encodeURIComponent(
@@ -36,14 +35,9 @@ export const uploadFiles = async ({
     const url = data.presignedUrl
     if (data.hasReachedStorageLimit) urls.push(null)
     else {
-      const formData = new FormData()
-      Object.entries(data.formData).forEach(([key, value]) => {
-        formData.append(key, value)
-      })
-      formData.append('file', file)
-      const upload = await fetch(data.presignedUrl, {
-        method: 'POST',
-        body: formData,
+      const upload = await fetch(url, {
+        method: 'PUT',
+        body: file,
       })
 
       if (!upload.ok) continue

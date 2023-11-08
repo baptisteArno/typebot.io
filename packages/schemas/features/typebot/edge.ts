@@ -1,10 +1,15 @@
 import { z } from 'zod'
 
-const sourceSchema = z.object({
-  groupId: z.string(),
+const blockSourceSchema = z.object({
   blockId: z.string(),
   itemId: z.string().optional(),
 })
+export type BlockSource = z.infer<typeof blockSourceSchema>
+const eventSourceSchema = z.object({
+  eventId: z.string(),
+})
+export type TEventSource = z.infer<typeof eventSourceSchema>
+const sourceSchema = blockSourceSchema.or(eventSourceSchema)
 export type Source = z.infer<typeof sourceSchema>
 
 const targetSchema = z.object({

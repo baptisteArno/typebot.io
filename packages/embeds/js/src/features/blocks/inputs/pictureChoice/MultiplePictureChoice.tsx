@@ -1,14 +1,12 @@
 import { InputSubmitContent } from '@/types'
-import {
-  PictureChoiceBlock,
-  defaultPictureChoiceOptions,
-} from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
+import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
 import { For, Show, createSignal, onMount } from 'solid-js'
 import { Checkbox } from '../buttons/components/Checkbox'
 import { SendButton } from '@/components'
 import { isDefined, isEmpty, isSvgSrc } from '@typebot.io/lib'
 import { SearchInput } from '@/components/inputs/SearchInput'
 import { isMobile } from '@/utils/isMobileSignal'
+import { defaultPictureChoiceOptions } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice/constants'
 
 type Props = {
   defaultItems: PictureChoiceBlock['items']
@@ -68,13 +66,13 @@ export const MultiplePictureChoice = (props: Props) => {
 
   return (
     <form class="flex flex-col gap-2 w-full items-end" onSubmit={handleSubmit}>
-      <Show when={props.options.isSearchable}>
+      <Show when={props.options?.isSearchable}>
         <div class="flex items-end typebot-input w-full">
           <SearchInput
             ref={inputRef}
             onInput={filterItems}
             placeholder={
-              props.options.searchInputPlaceholder ??
+              props.options?.searchInputPlaceholder ??
               defaultPictureChoiceOptions.searchInputPlaceholder
             }
             onClear={() => setFilteredItems(props.defaultItems)}
@@ -84,7 +82,7 @@ export const MultiplePictureChoice = (props: Props) => {
       <div
         class={
           'flex flex-wrap justify-end gap-2' +
-          (props.options.isSearchable
+          (props.options?.isSearchable
             ? ' overflow-y-scroll max-h-[464px] rounded-md hide-scrollbar'
             : '')
         }

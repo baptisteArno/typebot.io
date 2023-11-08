@@ -4,20 +4,20 @@ import { ImageBubble } from '@/features/blocks/bubbles/image'
 import { TextBubble } from '@/features/blocks/bubbles/textBubble'
 import { VideoBubble } from '@/features/blocks/bubbles/video'
 import type {
-  AudioBubbleContent,
+  AudioBubbleBlock,
   ChatMessage,
-  EmbedBubbleContent,
-  ImageBubbleContent,
-  TextBubbleContent,
-  TypingEmulation,
-  VideoBubbleContent,
+  EmbedBubbleBlock,
+  ImageBubbleBlock,
+  Settings,
+  TextBubbleBlock,
+  VideoBubbleBlock,
 } from '@typebot.io/schemas'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/enums'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 import { Match, Switch } from 'solid-js'
 
 type Props = {
   message: ChatMessage
-  typingEmulation: TypingEmulation
+  typingEmulation: Settings['typingEmulation']
   onTransitionEnd: (offsetTop?: number) => void
 }
 
@@ -30,32 +30,32 @@ export const HostBubble = (props: Props) => {
     <Switch>
       <Match when={props.message.type === BubbleBlockType.TEXT}>
         <TextBubble
-          content={props.message.content as TextBubbleContent}
+          content={props.message.content as TextBubbleBlock['content']}
           typingEmulation={props.typingEmulation}
           onTransitionEnd={onTransitionEnd}
         />
       </Match>
       <Match when={props.message.type === BubbleBlockType.IMAGE}>
         <ImageBubble
-          content={props.message.content as ImageBubbleContent}
+          content={props.message.content as ImageBubbleBlock['content']}
           onTransitionEnd={onTransitionEnd}
         />
       </Match>
       <Match when={props.message.type === BubbleBlockType.VIDEO}>
         <VideoBubble
-          content={props.message.content as VideoBubbleContent}
+          content={props.message.content as VideoBubbleBlock['content']}
           onTransitionEnd={onTransitionEnd}
         />
       </Match>
       <Match when={props.message.type === BubbleBlockType.EMBED}>
         <EmbedBubble
-          content={props.message.content as EmbedBubbleContent}
+          content={props.message.content as EmbedBubbleBlock['content']}
           onTransitionEnd={onTransitionEnd}
         />
       </Match>
       <Match when={props.message.type === BubbleBlockType.AUDIO}>
         <AudioBubble
-          content={props.message.content as AudioBubbleContent}
+          content={props.message.content as AudioBubbleBlock['content']}
           onTransitionEnd={onTransitionEnd}
         />
       </Match>

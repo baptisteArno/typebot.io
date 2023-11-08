@@ -1,29 +1,20 @@
 {
-  "id": "qcueq3ttys1ddagic7jsimp4",
-  "version": "4",
-  "createdAt": "2023-03-30T15:45:12.464Z",
-  "updatedAt": "2023-03-30T15:45:12.464Z",
-  "icon": "🎭",
+  "version": "6",
+  "id": "cloi9k6tf00051aqji6vk88pq",
   "name": "ChatGPT personas",
-  "folderId": null,
-  "groups": [
+  "events": [
     {
       "id": "w99qhdr20tw02sfrfwkfc1tg",
-      "title": "Start",
-      "blocks": [
-        {
-          "id": "igbipfi63m6p9sl2f77uicuv",
-          "type": "start",
-          "label": "Start",
-          "groupId": "w99qhdr20tw02sfrfwkfc1tg",
-          "outgoingEdgeId": "x91dpk80zw2b4co4xra33cwg"
-        }
-      ],
-      "graphCoordinates": { "x": -61.95703125, "y": -242.94140625 }
-    },
+      "outgoingEdgeId": "c3733n7ia1hxcwld9lm3p351",
+      "graphCoordinates": { "x": -95.29, "y": -267.02 },
+      "type": "start"
+    }
+  ],
+  "groups": [
     {
       "id": "bofjp88arodr4k0btv2esyqy",
       "title": "",
+      "graphCoordinates": { "x": 188.44, "y": -308.74 },
       "blocks": [
         {
           "id": "s6eky7dd3md9hto9y4wsuj7h",
@@ -39,8 +30,7 @@
                 ]
               }
             ]
-          },
-          "groupId": "bofjp88arodr4k0btv2esyqy"
+          }
         },
         {
           "id": "nqsu9f13q5j8tt56bcbuto62",
@@ -60,20 +50,18 @@
                 ]
               }
             ]
-          },
-          "groupId": "bofjp88arodr4k0btv2esyqy"
+          }
         }
-      ],
-      "graphCoordinates": { "x": 303.5859375, "y": -278.4921875 }
+      ]
     },
     {
       "id": "dmg57mgick51p8l5pnyqtyf9",
       "title": "Explainer AI reply",
+      "graphCoordinates": { "x": 1053.297810684862, "y": 919.9658659364646 },
       "blocks": [
         {
           "id": "xikptnw1lp1qxdqo10qhmwy1",
           "type": "OpenAI",
-          "groupId": "dmg57mgick51p8l5pnyqtyf9",
           "options": {
             "task": "Create chat completion",
             "model": "gpt-3.5-turbo",
@@ -85,20 +73,26 @@
               },
               {
                 "id": "i8i226uylkh84ovtpguaqc83",
-                "role": "Messages sequence ✨",
-                "content": {
-                  "userMessagesVariableId": "vevnx5f5bojz0sv648x6ppcmv",
-                  "assistantMessagesVariableId": "vni6kwbch8zlq92dclgcivzyr"
-                }
+                "role": "Dialogue",
+                "dialogueVariableId": "vu9adij5penetej2xz89htfe6"
               }
             ],
             "responseMapping": [
               {
                 "id": "brb5ccisi1tjiqf3ng0asaiq",
-                "variableId": "vni6kwbch8zlq92dclgcivzyr",
-                "valueToExtract": "Message content"
+                "valueToExtract": "Message content",
+                "variableId": "vni6kwbch8zlq92dclgcivzyr"
               }
             ]
+          }
+        },
+        {
+          "id": "kftq9x1wnrcefzc268ydmqkn",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vu9adij5penetej2xz89htfe6",
+            "type": "Append value(s)",
+            "item": "{{Assistant Message}}"
           }
         },
         {
@@ -106,13 +100,9 @@
           "type": "text",
           "content": {
             "richText": [
-              {
-                "type": "p",
-                "children": [{ "text": "{{Assistant Messages}}" }]
-              }
+              { "type": "p", "children": [{ "text": "{{Assistant Message}}" }] }
             ]
-          },
-          "groupId": "dmg57mgick51p8l5pnyqtyf9"
+          }
         },
         {
           "id": "jz9mklagfikyukzs7n3kmlcf",
@@ -120,33 +110,28 @@
           "items": [
             {
               "id": "x18iwzwmbzi9jjpnwij1861i",
-              "type": 0,
-              "blockId": "jz9mklagfikyukzs7n3kmlcf",
-              "content": "Continue",
-              "outgoingEdgeId": "mxl8lftsj3pbmj4g24ymxajo"
+              "outgoingEdgeId": "mxl8lftsj3pbmj4g24ymxajo",
+              "type": "button",
+              "content": "Continue"
             },
             {
               "id": "imx7otsonvm0takr02b4ulyo",
-              "type": 0,
-              "blockId": "jz9mklagfikyukzs7n3kmlcf",
-              "content": "Menu",
-              "outgoingEdgeId": "ny44r5sp69gne7obgshidhph"
+              "outgoingEdgeId": "ny44r5sp69gne7obgshidhph",
+              "type": "button",
+              "content": "Menu"
             }
-          ],
-          "groupId": "dmg57mgick51p8l5pnyqtyf9",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false }
+          ]
         }
-      ],
-      "graphCoordinates": { "x": 1053.2978106848623, "y": 919.9658659364646 }
+      ]
     },
     {
       "id": "fj5z2nx488htv0843kq6qeyk",
       "title": "Professor AI reply",
+      "graphCoordinates": { "x": 1040.86, "y": -128.46 },
       "blocks": [
         {
           "id": "f2r11ibqq2ufrahfcl3gf6qi",
           "type": "OpenAI",
-          "groupId": "fj5z2nx488htv0843kq6qeyk",
           "options": {
             "task": "Create chat completion",
             "model": "gpt-3.5-turbo",
@@ -158,20 +143,26 @@
               },
               {
                 "id": "biqljpsbqfkgno4m80s4j5p0",
-                "role": "Messages sequence ✨",
-                "content": {
-                  "userMessagesVariableId": "vevnx5f5bojz0sv648x6ppcmv",
-                  "assistantMessagesVariableId": "vni6kwbch8zlq92dclgcivzyr"
-                }
+                "role": "Dialogue",
+                "dialogueVariableId": "vu9adij5penetej2xz89htfe6"
               }
             ],
             "responseMapping": [
               {
                 "id": "brb5ccisi1tjiqf3ng0asaiq",
-                "variableId": "vni6kwbch8zlq92dclgcivzyr",
-                "valueToExtract": "Message content"
+                "valueToExtract": "Message content",
+                "variableId": "vni6kwbch8zlq92dclgcivzyr"
               }
             ]
+          }
+        },
+        {
+          "id": "dyfigmu4095x8p99qe461zbh",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vu9adij5penetej2xz89htfe6",
+            "type": "Append value(s)",
+            "item": "{{Assistant Message}}"
           }
         },
         {
@@ -179,13 +170,9 @@
           "type": "text",
           "content": {
             "richText": [
-              {
-                "type": "p",
-                "children": [{ "text": "{{Assistant Messages}}" }]
-              }
+              { "type": "p", "children": [{ "text": "{{Assistant Message}}" }] }
             ]
-          },
-          "groupId": "fj5z2nx488htv0843kq6qeyk"
+          }
         },
         {
           "id": "h3qetbhcpxhawnqoymo0v3hw",
@@ -193,33 +180,28 @@
           "items": [
             {
               "id": "zaylo8bstqx0wp6bpdbd1rak",
-              "type": 0,
-              "blockId": "h3qetbhcpxhawnqoymo0v3hw",
-              "content": "Continue",
-              "outgoingEdgeId": "q6o0cbyzxtvgls3jtz7rpdgw"
+              "outgoingEdgeId": "q6o0cbyzxtvgls3jtz7rpdgw",
+              "type": "button",
+              "content": "Continue"
             },
             {
               "id": "d5jv3sjpzobsrnhcp055mxkv",
-              "type": 0,
-              "blockId": "h3qetbhcpxhawnqoymo0v3hw",
-              "content": "Back to menu",
-              "outgoingEdgeId": "xjv7pkpgpwh169448t8pepg4"
+              "outgoingEdgeId": "xjv7pkpgpwh169448t8pepg4",
+              "type": "button",
+              "content": "Back to menu"
             }
-          ],
-          "groupId": "fj5z2nx488htv0843kq6qeyk",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false }
+          ]
         }
-      ],
-      "graphCoordinates": { "x": 1047.7979125005486, "y": 4.6530793670072885 }
+      ]
     },
     {
       "id": "csbysu8dr08zxr4i6hzvzjdf",
       "title": "Copywriter AI reply",
+      "graphCoordinates": { "x": 1044.25, "y": 372.87 },
       "blocks": [
         {
           "id": "h2t5vbir3zh8eku55ozwb1du",
           "type": "OpenAI",
-          "groupId": "csbysu8dr08zxr4i6hzvzjdf",
           "options": {
             "task": "Create chat completion",
             "model": "gpt-3.5-turbo",
@@ -231,20 +213,26 @@
               },
               {
                 "id": "ynbhlcbsmy24pobiay9zezli",
-                "role": "Messages sequence ✨",
-                "content": {
-                  "userMessagesVariableId": "vevnx5f5bojz0sv648x6ppcmv",
-                  "assistantMessagesVariableId": "vni6kwbch8zlq92dclgcivzyr"
-                }
+                "role": "Dialogue",
+                "dialogueVariableId": "vu9adij5penetej2xz89htfe6"
               }
             ],
             "responseMapping": [
               {
                 "id": "brb5ccisi1tjiqf3ng0asaiq",
-                "variableId": "vni6kwbch8zlq92dclgcivzyr",
-                "valueToExtract": "Message content"
+                "valueToExtract": "Message content",
+                "variableId": "vni6kwbch8zlq92dclgcivzyr"
               }
             ]
+          }
+        },
+        {
+          "id": "usolgxcte60rin18ccygzbdu",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vu9adij5penetej2xz89htfe6",
+            "type": "Append value(s)",
+            "item": "{{Assistant Message}}"
           }
         },
         {
@@ -252,13 +240,9 @@
           "type": "text",
           "content": {
             "richText": [
-              {
-                "type": "p",
-                "children": [{ "text": "{{Assistant Messages}}" }]
-              }
+              { "type": "p", "children": [{ "text": "{{Assistant Message}}" }] }
             ]
-          },
-          "groupId": "csbysu8dr08zxr4i6hzvzjdf"
+          }
         },
         {
           "id": "u4jdl0gwv8965o2etxjk12w0",
@@ -266,29 +250,33 @@
           "items": [
             {
               "id": "b6zif4xxe2cuiddc2oqayaxi",
-              "type": 0,
-              "blockId": "u4jdl0gwv8965o2etxjk12w0",
-              "content": "Continue",
-              "outgoingEdgeId": "jwydpoxngp2gvwanaruphe6s"
+              "outgoingEdgeId": "jwydpoxngp2gvwanaruphe6s",
+              "type": "button",
+              "content": "Continue"
             },
             {
               "id": "ooib3mqlfkazta6iol1ocloe",
-              "type": 0,
-              "blockId": "u4jdl0gwv8965o2etxjk12w0",
-              "content": "Back to menu",
-              "outgoingEdgeId": "gfrpgowch879p1qaj9jzsh01"
+              "outgoingEdgeId": "gfrpgowch879p1qaj9jzsh01",
+              "type": "button",
+              "content": "Back to menu"
             }
-          ],
-          "groupId": "csbysu8dr08zxr4i6hzvzjdf",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false }
+          ]
         }
-      ],
-      "graphCoordinates": { "x": 1049.2780591838002, "y": 458.6633630669161 }
+      ]
     },
     {
       "id": "u6nm47oyneidmsebszp60t0m",
       "title": "Menu",
+      "graphCoordinates": { "x": -6.082566623728974, "y": 37.78518756228981 },
       "blocks": [
+        {
+          "id": "rzlhl61q6dmh8n93usvqgyij",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vu9adij5penetej2xz89htfe6",
+            "type": "Empty"
+          }
+        },
         {
           "id": "gphm5wy1md9cunwkdtbzg6nq",
           "type": "text",
@@ -299,20 +287,7 @@
                 "children": [{ "text": "Who would you want to talk to?" }]
               }
             ]
-          },
-          "groupId": "u6nm47oyneidmsebszp60t0m"
-        },
-        {
-          "id": "yodc4upemgfx55m919mdz694",
-          "type": "Set variable",
-          "groupId": "u6nm47oyneidmsebszp60t0m",
-          "options": { "variableId": "vevnx5f5bojz0sv648x6ppcmv" }
-        },
-        {
-          "id": "rzlhl61q6dmh8n93usvqgyij",
-          "type": "Set variable",
-          "groupId": "u6nm47oyneidmsebszp60t0m",
-          "options": { "variableId": "vni6kwbch8zlq92dclgcivzyr" }
+          }
         },
         {
           "id": "ohh19koa7up0nbke3146hnjp",
@@ -320,104 +295,91 @@
           "items": [
             {
               "id": "rn0lqz1wvsg9lmc0jcl6ps8j",
-              "type": 0,
-              "blockId": "ohh19koa7up0nbke3146hnjp",
-              "content": "English professor",
-              "outgoingEdgeId": "ry7l8wcaidxw5izm7zoy83kj"
+              "outgoingEdgeId": "ry7l8wcaidxw5izm7zoy83kj",
+              "type": "button",
+              "content": "English professor"
             },
             {
               "id": "le84cls9vkmrxquvqw8bhp7h",
-              "type": 0,
-              "blockId": "ohh19koa7up0nbke3146hnjp",
-              "content": "Copywriter",
-              "outgoingEdgeId": "iy2htkuup0l908fsosg6d2qz"
+              "outgoingEdgeId": "iy2htkuup0l908fsosg6d2qz",
+              "type": "button",
+              "content": "Copywriter"
             },
             {
               "id": "mx4kgfgena53mxf87piwu1j2",
-              "type": 0,
-              "blockId": "ohh19koa7up0nbke3146hnjp",
-              "content": "Concept explainer",
-              "outgoingEdgeId": "kmex71jzzzekni4louuy3xbf"
+              "outgoingEdgeId": "kmex71jzzzekni4louuy3xbf",
+              "type": "button",
+              "content": "Concept explainer"
             }
           ],
-          "groupId": "u6nm47oyneidmsebszp60t0m",
           "options": {
-            "variableId": "vs7wwz29yyd21pfl4syeptdgi",
-            "buttonLabel": "Send",
-            "isMultipleChoice": false
+            "variableId": "vs7wwz29yyd21pfl4syeptdgi"
           }
         }
-      ],
-      "graphCoordinates": { "x": -6.082566623728974, "y": 37.78518756228981 }
+      ]
     },
     {
       "id": "oemwa82xy3yt74gzilrojogl",
       "title": "Jumps",
+      "graphCoordinates": { "x": 1431.381871940994, "y": 1083.626261828848 },
       "blocks": [
         {
           "id": "nnzp5mle206cl3nnqlkqjau1",
           "type": "Jump",
-          "groupId": "py4fhjf59krp2ahz7fpdtj6h",
           "options": { "groupId": "irnu2zu8m2i4fu6485hxtra5" }
         },
         {
           "id": "nm6vp6ifbjq7mttohwhibjvj",
           "type": "Jump",
-          "groupId": "py4fhjf59krp2ahz7fpdtj6h",
           "options": { "groupId": "u6nm47oyneidmsebszp60t0m" }
         }
-      ],
-      "graphCoordinates": { "x": 1431.381871940994, "y": 1083.6262618288476 }
+      ]
     },
     {
       "id": "p1fh0e2y8sq4lhrskc4rb5z2",
       "title": "Jumps",
+      "graphCoordinates": { "x": 1436.545931193238, "y": 679.7247165284323 },
       "blocks": [
         {
           "id": "kyuvkruakbxjvxwgtjqti3gc",
           "type": "Jump",
-          "groupId": "wjgoxgdh5dxvulkn013oad81",
           "options": { "groupId": "h4mcrr5x6lvy1mz96k0ey3do" }
         },
         {
           "id": "vywm4h8yz87ew4gjy4l6nmm3",
           "type": "Jump",
-          "groupId": "wjgoxgdh5dxvulkn013oad81",
           "options": { "groupId": "u6nm47oyneidmsebszp60t0m" }
         }
-      ],
-      "graphCoordinates": { "x": 1436.5459311932382, "y": 679.7247165284323 }
+      ]
     },
     {
       "id": "ow2g8fv93xxrgpcabnx8uod8",
       "title": "Jumps",
+      "graphCoordinates": { "x": 1419.568721793131, "y": 169.5335644029076 },
       "blocks": [
         {
           "id": "qxgl1cscs38pfwzaj4pqsd46",
           "type": "Jump",
-          "groupId": "uz4isdxf2lha8y98f5umzeb7",
           "options": { "groupId": "m84gejzvl08ky6ynruiuszpc" }
         },
         {
           "id": "m94q879l9yr1vx5xrbxlsj6q",
           "type": "Jump",
-          "groupId": "uz4isdxf2lha8y98f5umzeb7",
           "options": { "groupId": "u6nm47oyneidmsebszp60t0m" }
         }
-      ],
-      "graphCoordinates": { "x": 1419.5687217931309, "y": 169.5335644029076 }
+      ]
     },
     {
       "id": "py719ungczkgz5f40zkw3tr2",
       "title": "EN professor intro",
+      "graphCoordinates": { "x": 339.814926172369, "y": 9.945652574763692 },
       "blocks": [
         {
           "id": "qm3v36qb93ijnghdjgy9mcwf",
           "type": "text",
           "content": {
             "richText": [{ "type": "p", "children": [{ "text": "Hi 👋" }] }]
-          },
-          "groupId": "py719ungczkgz5f40zkw3tr2"
+          }
         },
         {
           "id": "ln8d3vdq4shclzrxcy9rmxfg",
@@ -433,34 +395,31 @@
                 ]
               }
             ]
-          },
-          "groupId": "py719ungczkgz5f40zkw3tr2"
+          }
         },
         {
           "id": "r7yu488ugfif8hxy3e4sospb",
+          "outgoingEdgeId": "ripf74t9yicdze8xr2yrklyx",
           "type": "text",
           "content": {
             "richText": [
               { "type": "p", "children": [{ "text": "How can I help?" }] }
             ]
-          },
-          "groupId": "py719ungczkgz5f40zkw3tr2",
-          "outgoingEdgeId": "ripf74t9yicdze8xr2yrklyx"
+          }
         }
-      ],
-      "graphCoordinates": { "x": 339.81492617236904, "y": 9.945652574763692 }
+      ]
     },
     {
       "id": "uyry49c9bm1pvk6t8i471l2d",
       "title": "Copywriter intro",
+      "graphCoordinates": { "x": 335.3081238025464, "y": 468.3681191076254 },
       "blocks": [
         {
           "id": "bbeedootn9m8eass0mqu3w4t",
           "type": "text",
           "content": {
             "richText": [{ "type": "p", "children": [{ "text": "Hi 👋" }] }]
-          },
-          "groupId": "uyry49c9bm1pvk6t8i471l2d"
+          }
         },
         {
           "id": "chdghb0k27c4okwu9yky4ox4",
@@ -472,34 +431,31 @@
                 "children": [{ "text": "I'm an expert in copywriting." }]
               }
             ]
-          },
-          "groupId": "uyry49c9bm1pvk6t8i471l2d"
+          }
         },
         {
           "id": "idp7w8c8zbkvl95oa1vquiml",
+          "outgoingEdgeId": "v0tfmbt8tpwwrieftvzg8lti",
           "type": "text",
           "content": {
             "richText": [
               { "type": "p", "children": [{ "text": "How can I help?" }] }
             ]
-          },
-          "groupId": "uyry49c9bm1pvk6t8i471l2d",
-          "outgoingEdgeId": "v0tfmbt8tpwwrieftvzg8lti"
+          }
         }
-      ],
-      "graphCoordinates": { "x": 335.3081238025464, "y": 468.3681191076254 }
+      ]
     },
     {
       "id": "zfa8oj0a0tnlho9a67llulst",
       "title": "Explainer intro",
+      "graphCoordinates": { "x": 326.9849960884654, "y": 928.6632806049557 },
       "blocks": [
         {
           "id": "n96j3pf3m87aufcapx2ulr2n",
           "type": "text",
           "content": {
             "richText": [{ "type": "p", "children": [{ "text": "Hi 👋" }] }]
-          },
-          "groupId": "zfa8oj0a0tnlho9a67llulst"
+          }
         },
         {
           "id": "wxk5z9yyiojkk9u3b5m6shax",
@@ -513,11 +469,11 @@
                 ]
               }
             ]
-          },
-          "groupId": "zfa8oj0a0tnlho9a67llulst"
+          }
         },
         {
           "id": "ileqgg2r2kyh2zovpivr775s",
+          "outgoingEdgeId": "v5bki4h7m1lnryhgzudnvvpx",
           "type": "text",
           "content": {
             "richText": [
@@ -528,279 +484,242 @@
                 ]
               }
             ]
-          },
-          "groupId": "zfa8oj0a0tnlho9a67llulst",
-          "outgoingEdgeId": "v5bki4h7m1lnryhgzudnvvpx"
+          }
         }
-      ],
-      "graphCoordinates": { "x": 326.98499608846544, "y": 928.6632806049557 }
+      ]
     },
     {
       "id": "m84gejzvl08ky6ynruiuszpc",
       "title": "EN professor question",
+      "graphCoordinates": { "x": 692.86, "y": -14.84 },
       "blocks": [
         {
           "id": "ovgk70u0kfxrbtz9dy4e040o",
           "type": "text input",
-          "groupId": "m84gejzvl08ky6ynruiuszpc",
           "options": {
-            "isLong": true,
             "labels": {
-              "button": "Send",
-              "placeholder": "Type your answer..."
+              "placeholder": "Type your answer...",
+              "button": "Send"
             },
             "variableId": "vevnx5f5bojz0sv648x6ppcmv",
-            "isPrefillDisabled": true
-          },
-          "outgoingEdgeId": "vapajzlffxq1lgudxgm14g05"
+            "isLong": true
+          }
+        },
+        {
+          "id": "nx6v1ogcp9x9o6regjopvff8",
+          "outgoingEdgeId": "cplyootzgqo5jpmhntgz4shm",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vu9adij5penetej2xz89htfe6",
+            "type": "Append value(s)",
+            "item": "{{User Message}}"
+          }
         }
-      ],
-      "graphCoordinates": { "x": 692.8604882239152, "y": 11.63391545939837 }
+      ]
     },
     {
       "id": "h4mcrr5x6lvy1mz96k0ey3do",
       "title": "Copywriter question",
+      "graphCoordinates": { "x": 692.3449852228088, "y": 462.3858990822391 },
       "blocks": [
         {
           "id": "emii43mtihiuy35gpp6b91d8",
           "type": "text input",
-          "groupId": "h4mcrr5x6lvy1mz96k0ey3do",
           "options": {
-            "isLong": true,
             "labels": {
-              "button": "Send",
-              "placeholder": "Type your answer..."
+              "placeholder": "Type your answer...",
+              "button": "Send"
             },
             "variableId": "vevnx5f5bojz0sv648x6ppcmv",
-            "isPrefillDisabled": true
-          },
-          "outgoingEdgeId": "vtffpz6eh4n95kwlb8zpu7cz"
+            "isLong": true
+          }
+        },
+        {
+          "id": "h0cgmv6q61s3yhuq6u2pb5p0",
+          "outgoingEdgeId": "za1pwdunrlwgfu1kz7dnsb3m",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vu9adij5penetej2xz89htfe6",
+            "type": "Append value(s)",
+            "item": "{{User Message}}"
+          }
         }
-      ],
-      "graphCoordinates": { "x": 692.3449852228088, "y": 462.38589908223906 }
+      ]
     },
     {
       "id": "irnu2zu8m2i4fu6485hxtra5",
       "title": "Explainer question",
+      "graphCoordinates": { "x": 686.3012488543691, "y": 924.2085365228105 },
       "blocks": [
         {
           "id": "e6rovxwxlizr54iy8nyi84pi",
           "type": "text input",
-          "groupId": "irnu2zu8m2i4fu6485hxtra5",
           "options": {
-            "isLong": false,
             "labels": {
-              "button": "Send",
-              "placeholder": "Type your answer..."
+              "placeholder": "Type your answer...",
+              "button": "Send"
             },
             "variableId": "vevnx5f5bojz0sv648x6ppcmv",
-            "isPrefillDisabled": true
-          },
-          "outgoingEdgeId": "wv3t43ccf35mewn52liqtjg1"
+            "isLong": false
+          }
+        },
+        {
+          "id": "b937909x86r3wzbn4mzxmw25",
+          "outgoingEdgeId": "fz77htstfb4jig82k66pl0vt",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vu9adij5penetej2xz89htfe6",
+            "type": "Append value(s)",
+            "item": "{{User Message}}"
+          }
         }
-      ],
-      "graphCoordinates": { "x": 686.3012488543691, "y": 924.2085365228105 }
+      ]
     }
-  ],
-  "variables": [
-    { "id": "vni6kwbch8zlq92dclgcivzyr", "name": "Assistant Messages" },
-    { "id": "vevnx5f5bojz0sv648x6ppcmv", "name": "User Messages" },
-    { "id": "vldefdrythqxfh9p9p38jvmb2", "name": "Prompt" },
-    { "id": "vs7wwz29yyd21pfl4syeptdgi", "name": "Persona" }
   ],
   "edges": [
     {
       "id": "ny44r5sp69gne7obgshidhph",
-      "to": {
-        "blockId": "nm6vp6ifbjq7mttohwhibjvj",
-        "groupId": "oemwa82xy3yt74gzilrojogl"
-      },
       "from": {
-        "itemId": "imx7otsonvm0takr02b4ulyo",
         "blockId": "jz9mklagfikyukzs7n3kmlcf",
-        "groupId": "dmg57mgick51p8l5pnyqtyf9"
+        "itemId": "imx7otsonvm0takr02b4ulyo"
+      },
+      "to": {
+        "groupId": "oemwa82xy3yt74gzilrojogl",
+        "blockId": "nm6vp6ifbjq7mttohwhibjvj"
       }
     },
     {
       "id": "mxl8lftsj3pbmj4g24ymxajo",
-      "to": {
-        "blockId": "nnzp5mle206cl3nnqlkqjau1",
-        "groupId": "oemwa82xy3yt74gzilrojogl"
-      },
       "from": {
-        "itemId": "x18iwzwmbzi9jjpnwij1861i",
         "blockId": "jz9mklagfikyukzs7n3kmlcf",
-        "groupId": "dmg57mgick51p8l5pnyqtyf9"
+        "itemId": "x18iwzwmbzi9jjpnwij1861i"
+      },
+      "to": {
+        "groupId": "oemwa82xy3yt74gzilrojogl",
+        "blockId": "nnzp5mle206cl3nnqlkqjau1"
       }
     },
     {
       "id": "ry7l8wcaidxw5izm7zoy83kj",
-      "to": { "groupId": "py719ungczkgz5f40zkw3tr2" },
       "from": {
-        "itemId": "rn0lqz1wvsg9lmc0jcl6ps8j",
         "blockId": "ohh19koa7up0nbke3146hnjp",
-        "groupId": "u6nm47oyneidmsebszp60t0m"
-      }
+        "itemId": "rn0lqz1wvsg9lmc0jcl6ps8j"
+      },
+      "to": { "groupId": "py719ungczkgz5f40zkw3tr2" }
     },
     {
       "id": "ripf74t9yicdze8xr2yrklyx",
-      "to": { "groupId": "m84gejzvl08ky6ynruiuszpc" },
-      "from": {
-        "blockId": "r7yu488ugfif8hxy3e4sospb",
-        "groupId": "py719ungczkgz5f40zkw3tr2"
-      }
-    },
-    {
-      "id": "vapajzlffxq1lgudxgm14g05",
-      "to": { "groupId": "fj5z2nx488htv0843kq6qeyk" },
-      "from": {
-        "blockId": "ovgk70u0kfxrbtz9dy4e040o",
-        "groupId": "m84gejzvl08ky6ynruiuszpc"
-      }
+      "from": { "blockId": "r7yu488ugfif8hxy3e4sospb" },
+      "to": { "groupId": "m84gejzvl08ky6ynruiuszpc" }
     },
     {
       "id": "q6o0cbyzxtvgls3jtz7rpdgw",
-      "to": {
-        "blockId": "qxgl1cscs38pfwzaj4pqsd46",
-        "groupId": "ow2g8fv93xxrgpcabnx8uod8"
-      },
       "from": {
-        "itemId": "zaylo8bstqx0wp6bpdbd1rak",
         "blockId": "h3qetbhcpxhawnqoymo0v3hw",
-        "groupId": "fj5z2nx488htv0843kq6qeyk"
+        "itemId": "zaylo8bstqx0wp6bpdbd1rak"
+      },
+      "to": {
+        "groupId": "ow2g8fv93xxrgpcabnx8uod8",
+        "blockId": "qxgl1cscs38pfwzaj4pqsd46"
       }
     },
     {
       "id": "xjv7pkpgpwh169448t8pepg4",
-      "to": {
-        "blockId": "m94q879l9yr1vx5xrbxlsj6q",
-        "groupId": "ow2g8fv93xxrgpcabnx8uod8"
-      },
       "from": {
-        "itemId": "d5jv3sjpzobsrnhcp055mxkv",
         "blockId": "h3qetbhcpxhawnqoymo0v3hw",
-        "groupId": "fj5z2nx488htv0843kq6qeyk"
+        "itemId": "d5jv3sjpzobsrnhcp055mxkv"
+      },
+      "to": {
+        "groupId": "ow2g8fv93xxrgpcabnx8uod8",
+        "blockId": "m94q879l9yr1vx5xrbxlsj6q"
       }
     },
     {
       "id": "v0tfmbt8tpwwrieftvzg8lti",
-      "to": { "groupId": "h4mcrr5x6lvy1mz96k0ey3do" },
-      "from": {
-        "blockId": "idp7w8c8zbkvl95oa1vquiml",
-        "groupId": "uyry49c9bm1pvk6t8i471l2d"
-      }
-    },
-    {
-      "id": "vtffpz6eh4n95kwlb8zpu7cz",
-      "to": { "groupId": "csbysu8dr08zxr4i6hzvzjdf" },
-      "from": {
-        "blockId": "emii43mtihiuy35gpp6b91d8",
-        "groupId": "h4mcrr5x6lvy1mz96k0ey3do"
-      }
+      "from": { "blockId": "idp7w8c8zbkvl95oa1vquiml" },
+      "to": { "groupId": "h4mcrr5x6lvy1mz96k0ey3do" }
     },
     {
       "id": "iy2htkuup0l908fsosg6d2qz",
-      "to": { "groupId": "uyry49c9bm1pvk6t8i471l2d" },
       "from": {
-        "itemId": "le84cls9vkmrxquvqw8bhp7h",
         "blockId": "ohh19koa7up0nbke3146hnjp",
-        "groupId": "u6nm47oyneidmsebszp60t0m"
-      }
+        "itemId": "le84cls9vkmrxquvqw8bhp7h"
+      },
+      "to": { "groupId": "uyry49c9bm1pvk6t8i471l2d" }
     },
     {
       "id": "kmex71jzzzekni4louuy3xbf",
-      "to": { "groupId": "zfa8oj0a0tnlho9a67llulst" },
       "from": {
-        "itemId": "mx4kgfgena53mxf87piwu1j2",
         "blockId": "ohh19koa7up0nbke3146hnjp",
-        "groupId": "u6nm47oyneidmsebszp60t0m"
-      }
+        "itemId": "mx4kgfgena53mxf87piwu1j2"
+      },
+      "to": { "groupId": "zfa8oj0a0tnlho9a67llulst" }
     },
     {
       "id": "v5bki4h7m1lnryhgzudnvvpx",
-      "to": { "groupId": "irnu2zu8m2i4fu6485hxtra5" },
-      "from": {
-        "blockId": "ileqgg2r2kyh2zovpivr775s",
-        "groupId": "zfa8oj0a0tnlho9a67llulst"
-      }
-    },
-    {
-      "id": "wv3t43ccf35mewn52liqtjg1",
-      "to": { "groupId": "dmg57mgick51p8l5pnyqtyf9" },
-      "from": {
-        "blockId": "e6rovxwxlizr54iy8nyi84pi",
-        "groupId": "irnu2zu8m2i4fu6485hxtra5"
-      }
+      "from": { "blockId": "ileqgg2r2kyh2zovpivr775s" },
+      "to": { "groupId": "irnu2zu8m2i4fu6485hxtra5" }
     },
     {
       "id": "gfrpgowch879p1qaj9jzsh01",
-      "to": {
-        "blockId": "vywm4h8yz87ew4gjy4l6nmm3",
-        "groupId": "p1fh0e2y8sq4lhrskc4rb5z2"
-      },
       "from": {
-        "itemId": "ooib3mqlfkazta6iol1ocloe",
         "blockId": "u4jdl0gwv8965o2etxjk12w0",
-        "groupId": "csbysu8dr08zxr4i6hzvzjdf"
+        "itemId": "ooib3mqlfkazta6iol1ocloe"
+      },
+      "to": {
+        "groupId": "p1fh0e2y8sq4lhrskc4rb5z2",
+        "blockId": "vywm4h8yz87ew4gjy4l6nmm3"
       }
     },
     {
       "id": "jwydpoxngp2gvwanaruphe6s",
-      "to": {
-        "blockId": "kyuvkruakbxjvxwgtjqti3gc",
-        "groupId": "p1fh0e2y8sq4lhrskc4rb5z2"
-      },
       "from": {
-        "itemId": "b6zif4xxe2cuiddc2oqayaxi",
         "blockId": "u4jdl0gwv8965o2etxjk12w0",
-        "groupId": "csbysu8dr08zxr4i6hzvzjdf"
+        "itemId": "b6zif4xxe2cuiddc2oqayaxi"
+      },
+      "to": {
+        "groupId": "p1fh0e2y8sq4lhrskc4rb5z2",
+        "blockId": "kyuvkruakbxjvxwgtjqti3gc"
       }
     },
     {
-      "from": {
-        "groupId": "w99qhdr20tw02sfrfwkfc1tg",
-        "blockId": "igbipfi63m6p9sl2f77uicuv"
-      },
+      "id": "cplyootzgqo5jpmhntgz4shm",
+      "from": { "blockId": "nx6v1ogcp9x9o6regjopvff8" },
+      "to": { "groupId": "fj5z2nx488htv0843kq6qeyk" }
+    },
+    {
+      "id": "za1pwdunrlwgfu1kz7dnsb3m",
+      "from": { "blockId": "h0cgmv6q61s3yhuq6u2pb5p0" },
+      "to": { "groupId": "csbysu8dr08zxr4i6hzvzjdf" }
+    },
+    {
+      "id": "fz77htstfb4jig82k66pl0vt",
+      "from": { "blockId": "b937909x86r3wzbn4mzxmw25" },
+      "to": { "groupId": "dmg57mgick51p8l5pnyqtyf9" }
+    },
+    {
+      "from": { "eventId": "w99qhdr20tw02sfrfwkfc1tg" },
       "to": { "groupId": "bofjp88arodr4k0btv2esyqy" },
-      "id": "x91dpk80zw2b4co4xra33cwg"
+      "id": "c3733n7ia1hxcwld9lm3p351"
     }
   ],
-  "theme": {
-    "chat": {
-      "inputs": {
-        "color": "#303235",
-        "backgroundColor": "#FFFFFF",
-        "placeholderColor": "#9095A0"
-      },
-      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
-      "hostAvatar": {
-        "isEnabled": true
-      },
-      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
-      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
-    },
-    "general": {
-      "font": "Open Sans",
-      "background": { "type": "Color", "content": "#ffffff" }
-    }
-  },
+  "variables": [
+    { "id": "vni6kwbch8zlq92dclgcivzyr", "name": "Assistant Message" },
+    { "id": "vevnx5f5bojz0sv648x6ppcmv", "name": "User Message" },
+    { "id": "vu9adij5penetej2xz89htfe6", "name": "Chat history" }
+  ],
+  "theme": {},
   "selectedThemeTemplateId": null,
-  "settings": {
-    "general": {
-      "isBrandingEnabled": false,
-      "isInputPrefillEnabled": true,
-      "isHideQueryParamsEnabled": true,
-      "isNewResultOnRefreshEnabled": true
-    },
-    "metadata": {
-      "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
-    },
-    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
-  },
+  "settings": {},
+  "createdAt": "2023-11-03T06:57:51.747Z",
+  "updatedAt": "2023-11-03T07:03:19.089Z",
+  "icon": "🎭",
+  "folderId": null,
   "publicId": null,
   "customDomain": null,
   "workspaceId": "proWorkspace",
   "resultsTablePreferences": null,
   "isArchived": false,
-  "isClosed": false
+  "isClosed": false,
+  "whatsAppCredentialsId": null
 }

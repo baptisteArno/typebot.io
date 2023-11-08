@@ -1,7 +1,7 @@
 import prisma from '@typebot.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Group } from '@typebot.io/schemas'
+import { Typebot } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
 import { archiveResults } from '@typebot.io/lib/api/helpers/archiveResults'
@@ -51,8 +51,8 @@ export const deleteTypebot = authenticatedProcedure
 
     const { success } = await archiveResults(prisma)({
       typebot: {
-        groups: existingTypebot.groups as Group[],
-      },
+        groups: existingTypebot.groups,
+      } as Pick<Typebot, 'groups'>,
       resultsFilter: { typebotId },
     })
     if (!success)

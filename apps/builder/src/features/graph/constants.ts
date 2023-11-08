@@ -1,21 +1,22 @@
 import { Coordinates } from './types'
 
 export const stubLength = 20
-export const blockWidth = 300
-export const blockAnchorsOffset = {
+export const groupWidth = 300
+export const groupAnchorsOffset = {
   left: {
     x: 0,
-    y: 20,
+    y: stubLength,
   },
   top: {
-    x: blockWidth / 2,
+    x: groupWidth / 2,
     y: 0,
   },
   right: {
-    x: blockWidth,
-    y: 20,
+    x: groupWidth,
+    y: stubLength,
   },
 }
+export const eventWidth = 200
 
 export const graphPositionDefaultValue = (
   firstGroupCoordinates: Coordinates

@@ -1,15 +1,15 @@
 import React from 'react'
 import { Stack, Text } from '@chakra-ui/react'
-import { ZemanticAiOptions } from '@typebot.io/schemas'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { SetVariableLabel } from '@/components/SetVariableLabel'
+import { ZemanticAiBlock } from '@typebot.io/schemas'
 
 type Props = {
-  options: ZemanticAiOptions
+  options: ZemanticAiBlock['options']
 }
 
 export const ZemanticAiNodeBody = ({
-  options: { query, projectId, responseMapping },
+  options: { query, projectId, responseMapping } = {},
 }: Props) => {
   const { typebot } = useTypebot()
   return (
@@ -22,7 +22,7 @@ export const ZemanticAiNodeBody = ({
       </Text>
       {typebot &&
         responseMapping
-          .map((mapping) => mapping.variableId)
+          ?.map((mapping) => mapping.variableId)
           .map((variableId, idx) =>
             variableId ? (
               <SetVariableLabel

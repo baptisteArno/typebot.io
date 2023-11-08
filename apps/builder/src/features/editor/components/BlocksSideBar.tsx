@@ -10,13 +10,6 @@ import {
   Fade,
   useColorModeValue,
 } from '@chakra-ui/react'
-import {
-  BubbleBlockType,
-  DraggableBlockType,
-  InputBlockType,
-  IntegrationBlockType,
-  LogicBlockType,
-} from '@typebot.io/schemas'
 import { useBlockDnd } from '@/features/graph/providers/GraphDndProvider'
 import React, { useState } from 'react'
 import { BlockCard } from './BlockCard'
@@ -24,6 +17,11 @@ import { LockedIcon, UnlockedIcon } from '@/components/icons'
 import { BlockCardOverlay } from './BlockCardOverlay'
 import { headerHeight } from '../constants'
 import { useTranslate } from '@tolgee/react'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { BlockV6 } from '@typebot.io/schemas'
 
 export const BlocksSideBar = () => {
   const { t } = useTranslate()
@@ -47,7 +45,7 @@ export const BlocksSideBar = () => {
   }
   useEventListener('mousemove', handleMouseMove)
 
-  const handleMouseDown = (e: React.MouseEvent, type: DraggableBlockType) => {
+  const handleMouseDown = (e: React.MouseEvent, type: BlockV6['type']) => {
     const element = e.currentTarget as HTMLDivElement
     const rect = element.getBoundingClientRect()
     setPosition({ x: rect.left, y: rect.top })

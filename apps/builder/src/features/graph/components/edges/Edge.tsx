@@ -9,34 +9,42 @@ import { getAnchorsPosition } from '../../helpers/getAnchorsPosition'
 import { useGraph } from '../../providers/GraphProvider'
 import { useGroupsCoordinates } from '../../providers/GroupsCoordinateProvider'
 import { EdgeMenu } from './EdgeMenu'
+import { useEventsCoordinates } from '../../providers/EventsCoordinateProvider'
+import { eventWidth, groupWidth } from '../../constants'
 
 type Props = {
   edge: EdgeProps
+  fromGroupId: string | undefined
 }
 
-export const Edge = ({ edge }: Props) => {
+export const Edge = ({ edge, fromGroupId }: Props) => {
   const isDark = useColorMode().colorMode === 'dark'
   const { deleteEdge } = useTypebot()
   const { previewingEdge, graphPosition, isReadOnly, setPreviewingEdge } =
     useGraph()
   const { sourceEndpointYOffsets, targetEndpointYOffsets } = useEndpoints()
   const { groupsCoordinates } = useGroupsCoordinates()
+  const { eventsCoordinates } = useEventsCoordinates()
   const [isMouseOver, setIsMouseOver] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [edgeMenuPosition, setEdgeMenuPosition] = useState({ x: 0, y: 0 })
 
   const isPreviewing = isMouseOver || previewingEdge?.id === edge.id
 
-  const sourceGroupCoordinates =
-    groupsCoordinates && groupsCoordinates[edge.from.groupId]
-  const targetGroupCoordinates =
-    groupsCoordinates && groupsCoordinates[edge.to.groupId]
+  const sourceElementCoordinates =
+    'eventId' in edge.from
+      ? eventsCoordinates[edge.from.eventId]
+      : groupsCoordinates[fromGroupId as string]
+  const targetGroupCoordinates = groupsCoordinates[edge.to.groupId]
 
   const sourceTop = useMemo(() => {
-    const endpointId = edge?.from.itemId ?? edge?.from.blockId
+    const endpointId =
+      'eventId' in edge.from
+        ? edge.from.eventId
+        : edge?.from.itemId ?? edge?.from.blockId
     if (!endpointId) return
     return sourceEndpointYOffsets.get(endpointId)?.y
-  }, [edge?.from.itemId, edge?.from.blockId, sourceEndpointYOffsets])
+  }, [edge.from, sourceEndpointYOffsets])
 
   const targetTop = useMemo(
     () =>
@@ -47,20 +55,22 @@ export const Edge = ({ edge }: Props) => {
   )
 
   const path = useMemo(() => {
-    if (!sourceGroupCoordinates || !targetGroupCoordinates || !sourceTop)
+    if (!sourceElementCoordinates || !targetGroupCoordinates || !sourceTop)
       return ``
     const anchorsPosition = getAnchorsPosition({
-      sourceGroupCoordinates,
+      sourceGroupCoordinates: sourceElementCoordinates,
       targetGroupCoordinates,
+      elementWidth: 'eventId' in edge.from ? eventWidth : groupWidth,
       sourceTop,
       targetTop,
       graphScale: graphPosition.scale,
     })
     return computeEdgePath(anchorsPosition)
   }, [
-    sourceGroupCoordinates,
+    sourceElementCoordinates,
     targetGroupCoordinates,
     sourceTop,
+    edge.from,
     targetTop,
     graphPosition.scale,
   ])

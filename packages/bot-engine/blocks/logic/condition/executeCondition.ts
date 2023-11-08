@@ -1,20 +1,22 @@
 import { isNotDefined, isDefined } from '@typebot.io/lib'
-import {
-  Comparison,
-  ComparisonOperators,
-  Condition,
-  LogicalOperator,
-  Variable,
-} from '@typebot.io/schemas'
+import { Comparison, Condition, Variable } from '@typebot.io/schemas'
 import { findUniqueVariableValue } from '../../../variables/findUniqueVariableValue'
 import { parseVariables } from '../../../variables/parseVariables'
+import {
+  LogicalOperator,
+  ComparisonOperators,
+  defaultConditionItemContent,
+} from '@typebot.io/schemas/features/blocks/logic/condition/constants'
 
 export const executeCondition =
   (variables: Variable[]) =>
-  (condition: Condition): boolean =>
-    condition.logicalOperator === LogicalOperator.AND
+  (condition: Condition): boolean => {
+    if (!condition.comparisons) return false
+    return (condition.logicalOperator ??
+      defaultConditionItemContent.logicalOperator) === LogicalOperator.AND
       ? condition.comparisons.every(executeComparison(variables))
       : condition.comparisons.some(executeComparison(variables))
+  }
 
 const executeComparison =
   (variables: Variable[]) =>

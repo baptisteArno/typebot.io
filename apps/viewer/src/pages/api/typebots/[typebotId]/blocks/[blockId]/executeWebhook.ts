@@ -1,30 +1,33 @@
 import {
-  defaultWebhookAttributes,
   KeyValue,
   PublicTypebot,
   ResultValues,
   Typebot,
   Variable,
   Webhook,
-  WebhookOptions,
   WebhookResponse,
-  WebhookBlock,
+  Block,
 } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
 import got, { Method, Headers, HTTPError } from 'got'
-import { byId, omit } from '@typebot.io/lib'
+import { byId, isEmpty, omit } from '@typebot.io/lib'
 import { parseAnswers } from '@typebot.io/lib/results'
 import { initMiddleware, methodNotAllowed, notFound } from '@typebot.io/lib/api'
 import { stringify } from 'qs'
 import Cors from 'cors'
 import prisma from '@typebot.io/lib/prisma'
-import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/enums'
 import { fetchLinkedTypebots } from '@typebot.io/bot-engine/blocks/logic/typebotLink/fetchLinkedTypebots'
 import { getPreviouslyLinkedTypebots } from '@typebot.io/bot-engine/blocks/logic/typebotLink/getPreviouslyLinkedTypebots'
 import { parseVariables } from '@typebot.io/bot-engine/variables/parseVariables'
 import { saveErrorLog } from '@typebot.io/bot-engine/logs/saveErrorLog'
 import { saveSuccessLog } from '@typebot.io/bot-engine/logs/saveSuccessLog'
 import { parseSampleResult } from '@typebot.io/bot-engine/blocks/integrations/webhook/parseSampleResult'
+import {
+  HttpMethod,
+  defaultWebhookAttributes,
+} from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
+import { getBlockById } from '@typebot.io/lib/getBlockById'
+import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 
 const cors = initMiddleware(Cors())
 
@@ -47,38 +50,34 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })) as unknown as (Typebot & { webhooks: Webhook[] }) | null
     if (!typebot) return notFound(res)
     const block = typebot.groups
-      .flatMap((g) => g.blocks)
-      .find(byId(blockId)) as WebhookBlock
+      .flatMap<Block>((g) => g.blocks)
+      .find(byId(blockId))
+    if (block?.type !== IntegrationBlockType.WEBHOOK)
+      return notFound(res, 'Webhook block not found')
+    const webhookId = 'webhookId' in block ? block.webhookId : undefined
     const webhook =
-      block.options.webhook ?? typebot.webhooks.find(byId(block.webhookId))
+      block.options?.webhook ??
+      typebot.webhooks.find((w) => {
+        if ('id' in w) return w.id === webhookId
+        return false
+      })
     if (!webhook)
       return res
         .status(404)
         .send({ statusCode: 404, data: { message: `Couldn't find webhook` } })
-    const preparedWebhook = prepareWebhookAttributes(webhook, block.options)
+    const { group } = getBlockById(blockId, typebot.groups)
     const result = await executeWebhook(typebot)({
-      webhook: preparedWebhook,
+      webhook,
       variables,
-      groupId: block.groupId,
+      groupId: group.id,
       resultValues,
       resultId,
       parentTypebotIds,
+      isCustomBody: block.options?.isCustomBody,
     })
     return res.status(200).send(result)
   }
   return methodNotAllowed(res)
-}
-
-const prepareWebhookAttributes = (
-  webhook: Webhook,
-  options: WebhookOptions
-): Webhook => {
-  if (options.isAdvancedConfig === false) {
-    return { ...webhook, body: '{{state}}', ...defaultWebhookAttributes }
-  } else if (options.isCustomBody === false) {
-    return { ...webhook, body: '{{state}}' }
-  }
-  return webhook
 }
 
 const checkIfBodyIsAVariable = (body: string) => /^{{.+}}$/.test(body)
@@ -92,6 +91,7 @@ export const executeWebhook =
     resultValues,
     resultId,
     parentTypebotIds = [],
+    isCustomBody,
   }: {
     webhook: Webhook
     variables: Variable[]
@@ -99,27 +99,29 @@ export const executeWebhook =
     resultValues?: ResultValues
     resultId?: string
     parentTypebotIds: string[]
+    isCustomBody?: boolean
   }): Promise<WebhookResponse> => {
-    if (!webhook.url || !webhook.method)
+    if (!webhook.url)
       return {
         statusCode: 400,
         data: { message: `Webhook doesn't have url or method` },
       }
     const basicAuth: { username?: string; password?: string } = {}
-    const basicAuthHeaderIdx = webhook.headers.findIndex(
-      (h) =>
-        h.key?.toLowerCase() === 'authorization' &&
-        h.value?.toLowerCase()?.includes('basic')
-    )
+    const basicAuthHeaderIdx =
+      webhook.headers?.findIndex(
+        (h) =>
+          h.key?.toLowerCase() === 'authorization' &&
+          h.value?.toLowerCase()?.includes('basic')
+      ) ?? -1
     const isUsernamePasswordBasicAuth =
       basicAuthHeaderIdx !== -1 &&
-      webhook.headers[basicAuthHeaderIdx].value?.includes(':')
+      webhook.headers?.[basicAuthHeaderIdx].value?.includes(':')
     if (isUsernamePasswordBasicAuth) {
       const [username, password] =
-        webhook.headers[basicAuthHeaderIdx].value?.slice(6).split(':') ?? []
+        webhook.headers?.[basicAuthHeaderIdx].value?.slice(6).split(':') ?? []
       basicAuth.username = username
       basicAuth.password = password
-      webhook.headers.splice(basicAuthHeaderIdx, 1)
+      webhook.headers?.splice(basicAuthHeaderIdx, 1)
     }
     const headers = convertKeyValueTableToObject(webhook.headers, variables) as
       | Headers
@@ -141,6 +143,7 @@ export const executeWebhook =
       ...linkedTypebotsChildren,
     ])({
       body: webhook.body,
+      isCustomBody,
       resultValues,
       groupId,
       variables,
@@ -158,8 +161,8 @@ export const executeWebhook =
       url: parseVariables(variables)(
         webhook.url + (queryParams !== '' ? `?${queryParams}` : '')
       ),
-      method: webhook.method as Method,
-      headers,
+      method: (webhook.method ?? defaultWebhookAttributes.method) as Method,
+      headers: headers ?? {},
       ...basicAuth,
       json:
         !contentType?.includes('x-www-form-urlencoded') && body && isJson
@@ -229,14 +232,15 @@ const getBodyContent =
     resultValues,
     groupId,
     variables,
+    isCustomBody,
   }: {
     body?: string | null
     resultValues?: ResultValues
     groupId: string
     variables: Variable[]
+    isCustomBody?: boolean
   }): Promise<string | undefined> => {
-    if (!body) return
-    return body === '{{state}}'
+    return isEmpty(body) && isCustomBody !== true
       ? JSON.stringify(
           resultValues
             ? parseAnswers({
@@ -260,7 +264,7 @@ const getBodyContent =
                 variables
               )
         )
-      : body
+      : body ?? undefined
   }
 
 const convertKeyValueTableToObject = (

@@ -4,12 +4,10 @@ import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
-import {
-  OpenAICredentials,
-  defaultBaseUrl,
-} from '@typebot.io/schemas/features/blocks/integrations/openai'
+import { OpenAICredentials } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { isNotEmpty } from '@typebot.io/lib/utils'
 import { OpenAI, ClientOptions } from 'openai'
+import { defaultOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
 
 export const listModels = authenticatedProcedure
   .meta({
@@ -25,7 +23,7 @@ export const listModels = authenticatedProcedure
     z.object({
       credentialsId: z.string(),
       workspaceId: z.string(),
-      baseUrl: z.string().default(defaultBaseUrl),
+      baseUrl: z.string(),
       apiVersion: z.string().optional(),
     })
   )
@@ -81,7 +79,7 @@ export const listModels = authenticatedProcedure
 
       const config = {
         apiKey: data.apiKey,
-        baseURL: baseUrl,
+        baseURL: baseUrl ?? defaultOpenAIOptions.baseUrl,
         defaultHeaders: {
           'api-key': data.apiKey,
         },

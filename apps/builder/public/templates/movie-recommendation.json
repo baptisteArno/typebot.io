@@ -1,34 +1,24 @@
 {
-  "id": "d8z3y5ats5r0lyptw938re79",
-  "version": "4",
-  "createdAt": "2023-08-06T05:56:35.727Z",
-  "updatedAt": "2023-08-06T06:39:16.019Z",
-  "icon": "🍿",
+  "version": "6",
+  "id": "cloo0wet7000h1aor38uwjxjw",
   "name": "Movie recommendation",
-  "folderId": null,
-  "groups": [
+  "events": [
     {
       "id": "u6lpjibfjhyoqij5wjf9kvnl",
-      "title": "Start",
-      "blocks": [
-        {
-          "id": "rha69fygov33vym1hf6z837p",
-          "type": "start",
-          "label": "Start",
-          "groupId": "u6lpjibfjhyoqij5wjf9kvnl",
-          "outgoingEdgeId": "wfec8f4e1jtden2wqna6nrso"
-        }
-      ],
-      "graphCoordinates": { "x": 0, "y": 0 }
-    },
+      "outgoingEdgeId": "wfec8f4e1jtden2wqna6nrso",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
     {
       "id": "mjnkukpkpvf4ha2g4n5m804v",
       "title": "Menu",
+      "graphCoordinates": { "x": 243.1, "y": 12.32 },
       "blocks": [
         {
           "id": "kjlf184vxf0uorniwje28iqb",
           "type": "Set variable",
-          "groupId": "mjnkukpkpvf4ha2g4n5m804v",
           "options": {
             "variableId": "vh5bxx07kl3016wr1undh2yb3",
             "expressionToEvaluate": "2f584d1ffe2b7fb082dd4e05038e9bd7"
@@ -46,16 +36,14 @@
                 ]
               }
             ]
-          },
-          "groupId": "mjnkukpkpvf4ha2g4n5m804v"
+          }
         },
         {
           "id": "c7swi84rmdvrul0wz5kxtplm",
           "type": "image",
           "content": {
             "url": "https://media3.giphy.com/media/BElb9DVpHezcZufOhl/giphy-downsized.gif?cid=fe3852a3uwhsp1sc3j6avr625v5e94h1v8o3wfb1ii3xwswk&rid=giphy-downsized.gif&ct=g"
-          },
-          "groupId": "mjnkukpkpvf4ha2g4n5m804v"
+          }
         },
         {
           "id": "nlihfc4ptxnxoktqblh6mcql",
@@ -67,16 +55,14 @@
                 "children": [{ "text": "It is powered by The Movie DB API 🚀" }]
               }
             ]
-          },
-          "groupId": "mjnkukpkpvf4ha2g4n5m804v"
+          }
         },
         {
           "id": "vr73urm54d9mq2oqg7ey1xh8",
           "type": "image",
           "content": {
             "url": "https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1-5bdc75aaebeb75dc7ae79426ddd9be3b2be1e342510f8202baf6bffa71d7f5c4.svg"
-          },
-          "groupId": "mjnkukpkpvf4ha2g4n5m804v"
+          }
         },
         {
           "id": "g5yyuh9g75x7xa7fgqhhi1zz",
@@ -85,8 +71,7 @@
             "richText": [
               { "type": "p", "children": [{ "text": "How can I we help?" }] }
             ]
-          },
-          "groupId": "mjnkukpkpvf4ha2g4n5m804v"
+          }
         },
         {
           "id": "tzf45bvd8iquoxz7qgta8v94",
@@ -94,76 +79,65 @@
           "items": [
             {
               "id": "kaimvzg9igdtktgou5m3s1bw",
-              "type": 0,
-              "blockId": "sodsq9mcigwvogmwx0t4jvil",
-              "content": "Select a genre 💅",
-              "outgoingEdgeId": "t8qyjpigrz7cdl8gxl1wxlwj"
+              "outgoingEdgeId": "t8qyjpigrz7cdl8gxl1wxlwj",
+              "content": "Select a genre 💅"
             },
             {
               "id": "i8ls2f8inq2ovuijj6l7rbcq",
-              "type": 0,
-              "blockId": "sodsq9mcigwvogmwx0t4jvil",
-              "content": "See what's trending 🔝",
-              "outgoingEdgeId": "tjn2ljosqyd4aj9dk8mnifsu"
+              "outgoingEdgeId": "tjn2ljosqyd4aj9dk8mnifsu",
+              "content": "See what's trending 🔝"
             }
-          ],
-          "groupId": "mjnkukpkpvf4ha2g4n5m804v",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false }
+          ]
         }
-      ],
-      "graphCoordinates": { "x": 255.25, "y": 172.89 }
+      ]
     },
     {
       "id": "kq1g5z6pz4buot7sawqdrr3s",
       "title": "Genre",
+      "graphCoordinates": { "x": 607.85, "y": 295.32 },
       "blocks": [
         {
           "id": "ecwz96cghzp4ji3lyx7taxt1",
           "type": "text",
           "content": {
             "richText": [{ "type": "p", "children": [{ "text": "Sure!" }] }]
-          },
-          "groupId": "kq1g5z6pz4buot7sawqdrr3s"
+          }
         },
         {
           "id": "gd4lt2pcljer6zaf7v9hkr1k",
           "type": "Webhook",
-          "groupId": "kq1g5z6pz4buot7sawqdrr3s",
           "options": {
+            "variablesForTest": [
+              {
+                "id": "oqbhwya4cewto5pfjmftjmpn",
+                "variableId": "vh5bxx07kl3016wr1undh2yb3",
+                "value": "2f584d1ffe2b7fb082dd4e05038e9bd7"
+              }
+            ],
+            "responseVariableMapping": [
+              {
+                "id": "bm186wvb4e2aqj1myx5gc251",
+                "variableId": "vx0bbqzug4vk3zpc31ly8k7al",
+                "bodyPath": "data.genres.flatMap(item => item.name)"
+              },
+              {
+                "id": "xsrhvxf3hv74e2hkokmdflbc",
+                "variableId": "vwc00rydyp035vtb0nlaqyzwr",
+                "bodyPath": "data.genres.flatMap(item => item.id)"
+              }
+            ],
+            "isAdvancedConfig": true,
             "webhook": {
-              "id": "t4pht3ndfc8tu9geovi7czqm",
-              "url": "https://api.themoviedb.org/3/genre/movie/list",
-              "method": "GET",
-              "headers": [],
               "queryParams": [
                 {
                   "id": "gq6m7x2k20qzrj752qi2zpmu",
                   "key": "api_key",
                   "value": "{{API Key}}"
                 }
-              ]
-            },
-            "isCustomBody": false,
-            "isAdvancedConfig": true,
-            "variablesForTest": [
-              {
-                "id": "oqbhwya4cewto5pfjmftjmpn",
-                "value": "2f584d1ffe2b7fb082dd4e05038e9bd7",
-                "variableId": "vh5bxx07kl3016wr1undh2yb3"
-              }
-            ],
-            "responseVariableMapping": [
-              {
-                "id": "bm186wvb4e2aqj1myx5gc251",
-                "bodyPath": "data.genres.flatMap(item => item.name)",
-                "variableId": "vx0bbqzug4vk3zpc31ly8k7al"
-              },
-              {
-                "id": "xsrhvxf3hv74e2hkokmdflbc",
-                "bodyPath": "data.genres.flatMap(item => item.id)",
-                "variableId": "vwc00rydyp035vtb0nlaqyzwr"
-              }
-            ]
+              ],
+              "method": "GET",
+              "url": "https://api.themoviedb.org/3/genre/movie/list"
+            }
           }
         },
         {
@@ -176,99 +150,82 @@
                 "children": [{ "text": "Select your desired genre 👇" }]
               }
             ]
-          },
-          "groupId": "kq1g5z6pz4buot7sawqdrr3s"
+          }
         },
         {
           "id": "nwuk2clo78hmnh4d0g31u9xg",
           "type": "choice input",
           "items": [
-            {
-              "id": "ri3avm9p0i96p8gx4028b6ye",
-              "type": 0,
-              "blockId": "eqm19tzeh7kullwld8auoqy4",
-              "content": "Click to edit"
-            }
+            { "id": "ri3avm9p0i96p8gx4028b6ye", "content": "Click to edit" }
           ],
-          "groupId": "kq1g5z6pz4buot7sawqdrr3s",
           "options": {
             "variableId": "vkmbb3rb2hcfd2io1fhf7rz5x",
-            "buttonLabel": "Send",
-            "isMultipleChoice": false,
             "dynamicVariableId": "vx0bbqzug4vk3zpc31ly8k7al"
           }
         },
         {
           "id": "j7pm34um4piuyabwlobjc356",
+          "outgoingEdgeId": "tfuuwjnpn7mftd5s65mbhytd",
           "type": "Set variable",
-          "groupId": "kq1g5z6pz4buot7sawqdrr3s",
           "options": {
-            "type": "Map item with same index",
-            "isCode": true,
             "variableId": "vwewa4yugqch2sswdpneszk3i",
+            "type": "Map item with same index",
             "mapListItemParams": {
               "baseItemVariableId": "vkmbb3rb2hcfd2io1fhf7rz5x",
               "baseListVariableId": "vx0bbqzug4vk3zpc31ly8k7al",
               "targetListVariableId": "vwc00rydyp035vtb0nlaqyzwr"
-            },
-            "expressionToEvaluate": "{{Genre IDs}}.at({{Genres}}.indexOf({{Selected genre}}))"
-          },
-          "outgoingEdgeId": "tfuuwjnpn7mftd5s65mbhytd"
+            }
+          }
         }
-      ],
-      "graphCoordinates": { "x": 630.85, "y": 333.68 }
+      ]
     },
     {
       "id": "d6v9lh83c7zuwrhf2mmo6nxo",
       "title": "Trending",
+      "graphCoordinates": { "x": 599.83, "y": 880.98 },
       "blocks": [
         {
           "id": "edokvbp15ubqeuydw9n7wf4w",
           "type": "text",
           "content": {
             "richText": [{ "type": "p", "children": [{ "text": "Sure!" }] }]
-          },
-          "groupId": "d6v9lh83c7zuwrhf2mmo6nxo"
+          }
         },
         {
           "id": "pwxb57b8nc2bp764vcdstois",
           "type": "Webhook",
-          "groupId": "d6v9lh83c7zuwrhf2mmo6nxo",
           "options": {
+            "variablesForTest": [
+              {
+                "id": "oqbhwya4cewto5pfjmftjmpn",
+                "variableId": "vh5bxx07kl3016wr1undh2yb3",
+                "value": "2f584d1ffe2b7fb082dd4e05038e9bd7"
+              }
+            ],
+            "responseVariableMapping": [
+              {
+                "id": "g5ga79m1dzgp28chaxlj2i72",
+                "variableId": "vkzk96oh1pmdjv2bt5ps60qc0",
+                "bodyPath": "data.results.flatMap(item => item.title)"
+              },
+              {
+                "id": "albmykstahw37np5gjuafxie",
+                "variableId": "vcmybxcoaytd2geo5sqx7v8hw",
+                "bodyPath": "data.results.flatMap(item => item.id)"
+              }
+            ],
+            "isAdvancedConfig": true,
             "webhook": {
-              "id": "a5oaijpqxo5a0mqrnjqg3tyt",
-              "url": "https://api.themoviedb.org/3/trending/movie/week",
-              "method": "GET",
-              "headers": [],
               "queryParams": [
                 {
                   "id": "x9nxr63itm2lvbe8dmi53mi7",
                   "key": "api_key",
                   "value": "{{API Key}}"
                 }
-              ]
-            },
-            "isCustomBody": false,
-            "isAdvancedConfig": true,
-            "variablesForTest": [
-              {
-                "id": "oqbhwya4cewto5pfjmftjmpn",
-                "value": "2f584d1ffe2b7fb082dd4e05038e9bd7",
-                "variableId": "vh5bxx07kl3016wr1undh2yb3"
-              }
-            ],
-            "responseVariableMapping": [
-              {
-                "id": "g5ga79m1dzgp28chaxlj2i72",
-                "bodyPath": "data.results.flatMap(item => item.title)",
-                "variableId": "vkzk96oh1pmdjv2bt5ps60qc0"
-              },
-              {
-                "id": "albmykstahw37np5gjuafxie",
-                "bodyPath": "data.results.flatMap(item => item.id)",
-                "variableId": "vcmybxcoaytd2geo5sqx7v8hw"
-              }
-            ]
+              ],
+              "method": "GET",
+              "url": "https://api.themoviedb.org/3/trending/movie/week"
+            }
           }
         },
         {
@@ -281,51 +238,39 @@
                 "children": [{ "text": "Here are popular movies this week 👇" }]
               }
             ]
-          },
-          "groupId": "d6v9lh83c7zuwrhf2mmo6nxo"
+          }
         },
         {
           "id": "krcvvncnqtn99v0qe1dzudrk",
           "type": "choice input",
           "items": [
-            {
-              "id": "dicb6lnv5kapkq0tygnx1abh",
-              "type": 0,
-              "blockId": "stlcncbupmsjxjipi86s45hy",
-              "content": "Click to edit"
-            }
+            { "id": "dicb6lnv5kapkq0tygnx1abh", "content": "Click to edit" }
           ],
-          "groupId": "d6v9lh83c7zuwrhf2mmo6nxo",
           "options": {
             "variableId": "vulnb1om2fk8mvkcesl8s15cr",
-            "buttonLabel": "Send",
-            "isMultipleChoice": false,
             "dynamicVariableId": "vkzk96oh1pmdjv2bt5ps60qc0"
           }
         },
         {
           "id": "mgn6uuw2yebmengsukjramjx",
+          "outgoingEdgeId": "ual6xszx6tfcxqrnihc6zrvx",
           "type": "Set variable",
-          "groupId": "d6v9lh83c7zuwrhf2mmo6nxo",
           "options": {
-            "type": "Map item with same index",
-            "isCode": true,
             "variableId": "vzslfw8oyo1f08uo5rpkegn0x",
+            "type": "Map item with same index",
             "mapListItemParams": {
               "baseItemVariableId": "vulnb1om2fk8mvkcesl8s15cr",
               "baseListVariableId": "vkzk96oh1pmdjv2bt5ps60qc0",
               "targetListVariableId": "vcmybxcoaytd2geo5sqx7v8hw"
-            },
-            "expressionToEvaluate": "{{Trending IDs}}.at({{Trending Movies}}.indexOf({{Selected Trending Movie}}))"
-          },
-          "outgoingEdgeId": "ual6xszx6tfcxqrnihc6zrvx"
+            }
+          }
         }
-      ],
-      "graphCoordinates": { "x": 628.03, "y": 965.53 }
+      ]
     },
     {
       "id": "v35sky44jzz9fkwwul2qxufl",
       "title": "Movies by genre",
+      "graphCoordinates": { "x": 952.84, "y": 294.85 },
       "blocks": [
         {
           "id": "g2pgwx5yr1ou9vkoy6gdwuor",
@@ -341,19 +286,38 @@
                 ]
               }
             ]
-          },
-          "groupId": "v35sky44jzz9fkwwul2qxufl"
+          }
         },
         {
           "id": "a2datk3pv8o6xgitwjsq61m2",
           "type": "Webhook",
-          "groupId": "v35sky44jzz9fkwwul2qxufl",
           "options": {
+            "variablesForTest": [
+              {
+                "id": "oqbhwya4cewto5pfjmftjmpn",
+                "variableId": "vh5bxx07kl3016wr1undh2yb3",
+                "value": "2f584d1ffe2b7fb082dd4e05038e9bd7"
+              },
+              {
+                "id": "rofxlzwrcv1ksy8aub8cfi6p",
+                "variableId": "vwewa4yugqch2sswdpneszk3i",
+                "value": "16"
+              }
+            ],
+            "responseVariableMapping": [
+              {
+                "id": "w8k1bxjsfkjxt64eev1ib96w",
+                "variableId": "vad8vq3jfyybxo4la57hfd529",
+                "bodyPath": "data.results.flatMap(item => item.title)"
+              },
+              {
+                "id": "zysikjyevakboax3czzec7nt",
+                "variableId": "vhc2pc1sv4xc778r9od2ctooz",
+                "bodyPath": "data.results.flatMap(item => item.id)"
+              }
+            ],
+            "isAdvancedConfig": true,
             "webhook": {
-              "id": "em7huyvp98pd6hr25md0l6hb",
-              "url": "https://api.themoviedb.org/3/discover/movie",
-              "method": "GET",
-              "headers": [],
               "queryParams": [
                 {
                   "id": "mgwlp399a056o9jo93tjqp02",
@@ -365,78 +329,43 @@
                   "key": "with_genres",
                   "value": "{{Selected genre ID}}"
                 }
-              ]
-            },
-            "isCustomBody": false,
-            "isAdvancedConfig": true,
-            "variablesForTest": [
-              {
-                "id": "oqbhwya4cewto5pfjmftjmpn",
-                "value": "2f584d1ffe2b7fb082dd4e05038e9bd7",
-                "variableId": "vh5bxx07kl3016wr1undh2yb3"
-              },
-              {
-                "id": "rofxlzwrcv1ksy8aub8cfi6p",
-                "value": "16",
-                "variableId": "vwewa4yugqch2sswdpneszk3i"
-              }
-            ],
-            "responseVariableMapping": [
-              {
-                "id": "w8k1bxjsfkjxt64eev1ib96w",
-                "bodyPath": "data.results.flatMap(item => item.title)",
-                "variableId": "vad8vq3jfyybxo4la57hfd529"
-              },
-              {
-                "id": "zysikjyevakboax3czzec7nt",
-                "bodyPath": "data.results.flatMap(item => item.id)",
-                "variableId": "vhc2pc1sv4xc778r9od2ctooz"
-              }
-            ]
+              ],
+              "method": "GET",
+              "url": "https://api.themoviedb.org/3/discover/movie"
+            }
           }
         },
         {
           "id": "tr5y76tx9ca336f8ob9odfa6",
           "type": "choice input",
           "items": [
-            {
-              "id": "uy2xwxoqhqol852cqsq17r9l",
-              "type": 0,
-              "blockId": "dxp0gakw90f3ckahjuphx5ir",
-              "content": "Click to edit"
-            }
+            { "id": "uy2xwxoqhqol852cqsq17r9l", "content": "Click to edit" }
           ],
-          "groupId": "v35sky44jzz9fkwwul2qxufl",
           "options": {
             "variableId": "vyyr3j2pu76uzvf88laai8snl",
-            "buttonLabel": "Send",
-            "isMultipleChoice": false,
             "dynamicVariableId": "vad8vq3jfyybxo4la57hfd529"
           }
         },
         {
           "id": "vudr8jrv2k3x0ubemt39tv7a",
+          "outgoingEdgeId": "r4wyd2185zhen98r5pmx53g9",
           "type": "Set variable",
-          "groupId": "v35sky44jzz9fkwwul2qxufl",
           "options": {
-            "type": "Map item with same index",
-            "isCode": true,
             "variableId": "vzslfw8oyo1f08uo5rpkegn0x",
+            "type": "Map item with same index",
             "mapListItemParams": {
               "baseItemVariableId": "vyyr3j2pu76uzvf88laai8snl",
               "baseListVariableId": "vad8vq3jfyybxo4la57hfd529",
               "targetListVariableId": "vhc2pc1sv4xc778r9od2ctooz"
-            },
-            "expressionToEvaluate": "const movieIndex = {{Movies}}.indexOf({{Selected Movie}})\n\nreturn {{Movie IDs}}.at(movieIndex)"
-          },
-          "outgoingEdgeId": "r4wyd2185zhen98r5pmx53g9"
+            }
+          }
         }
-      ],
-      "graphCoordinates": { "x": 977.48, "y": 330.85 }
+      ]
     },
     {
       "id": "uozlg88loeb8xegu6y4le6k8",
       "title": "Movie details",
+      "graphCoordinates": { "x": 1151.05, "y": 913.34 },
       "blocks": [
         {
           "id": "ve9m7fromxw4tbm8558n8520",
@@ -445,66 +374,59 @@
             "richText": [
               { "type": "p", "children": [{ "text": "Excellent choice 🔥" }] }
             ]
-          },
-          "groupId": "uozlg88loeb8xegu6y4le6k8"
+          }
         },
         {
           "id": "xag9d5i5td40kdt3poyq5g4b",
           "type": "Webhook",
-          "groupId": "uozlg88loeb8xegu6y4le6k8",
           "options": {
+            "variablesForTest": [
+              {
+                "id": "oqbhwya4cewto5pfjmftjmpn",
+                "variableId": "vh5bxx07kl3016wr1undh2yb3",
+                "value": "2f584d1ffe2b7fb082dd4e05038e9bd7"
+              },
+              {
+                "id": "ja5qwkznouhm00x8zvlghuk4",
+                "variableId": "vzslfw8oyo1f08uo5rpkegn0x",
+                "value": "965839"
+              }
+            ],
+            "responseVariableMapping": [
+              {
+                "id": "dsfek7nejs1a7qqs4v61z709",
+                "variableId": "vdvjx1w1sorma4zq0qtsdqrdi",
+                "bodyPath": "data.imdb_id"
+              },
+              {
+                "id": "dtd0rrmz04m5gsi1gq855v1d",
+                "variableId": "vzns0wpumgo8vxjdty2w5t54a",
+                "bodyPath": "data.overview"
+              },
+              {
+                "id": "y53g06r3xml0f3jmpctlsgm1",
+                "variableId": "vzf5ryexokpr4dihiur2spm8z",
+                "bodyPath": "data.poster_path"
+              }
+            ],
+            "isAdvancedConfig": true,
             "webhook": {
-              "id": "ewrjdmbrm2yksvjrbp0z9duy",
-              "url": "https://api.themoviedb.org/3/movie/{{Selected Movie ID}}",
-              "method": "GET",
-              "headers": [],
               "queryParams": [
                 {
                   "id": "f33u3unbezibfdv54kbkien3",
                   "key": "api_key",
                   "value": "{{API Key}}"
                 }
-              ]
-            },
-            "isCustomBody": false,
-            "isAdvancedConfig": true,
-            "variablesForTest": [
-              {
-                "id": "oqbhwya4cewto5pfjmftjmpn",
-                "value": "2f584d1ffe2b7fb082dd4e05038e9bd7",
-                "variableId": "vh5bxx07kl3016wr1undh2yb3"
-              },
-              {
-                "id": "ja5qwkznouhm00x8zvlghuk4",
-                "value": "965839",
-                "variableId": "vzslfw8oyo1f08uo5rpkegn0x"
-              }
-            ],
-            "responseVariableMapping": [
-              {
-                "id": "dsfek7nejs1a7qqs4v61z709",
-                "bodyPath": "data.imdb_id",
-                "variableId": "vdvjx1w1sorma4zq0qtsdqrdi"
-              },
-              {
-                "id": "dtd0rrmz04m5gsi1gq855v1d",
-                "bodyPath": "data.overview",
-                "variableId": "vzns0wpumgo8vxjdty2w5t54a"
-              },
-              {
-                "id": "y53g06r3xml0f3jmpctlsgm1",
-                "bodyPath": "data.poster_path",
-                "variableId": "vzf5ryexokpr4dihiur2spm8z"
-              }
-            ]
+              ],
+              "method": "GET",
+              "url": "https://api.themoviedb.org/3/movie/{{Selected Movie ID}}"
+            }
           }
         },
         {
           "id": "d0rsus9shxj8iowczbcaw53i",
           "type": "Set variable",
-          "groupId": "uozlg88loeb8xegu6y4le6k8",
           "options": {
-            "isCode": false,
             "variableId": "vwitf3um5uweynypc0hxxwm14",
             "expressionToEvaluate": "https://image.tmdb.org/t/p/w185{{Poster path}}"
           }
@@ -512,8 +434,7 @@
         {
           "id": "nqnry4c1z3wwcni8rwpduuhe",
           "type": "image",
-          "content": { "url": "{{Poster URL}}" },
-          "groupId": "uozlg88loeb8xegu6y4le6k8"
+          "content": { "url": "{{Poster URL}}" }
         },
         {
           "id": "lhljw54rdykyqtjiuh6jsl5c",
@@ -522,8 +443,7 @@
             "richText": [
               { "type": "p", "children": [{ "text": "{{Movie Overview}}" }] }
             ]
-          },
-          "groupId": "uozlg88loeb8xegu6y4le6k8"
+          }
         },
         {
           "id": "yifjhiamifo1y4ay7vols0mm",
@@ -531,56 +451,100 @@
           "items": [
             {
               "id": "n4818dnrb4arw1xh5v0ot8vz",
-              "type": 0,
-              "blockId": "nahhsfc6hsok5sufxcknopxr",
-              "content": "Watch the movie",
-              "outgoingEdgeId": "fteu5frsbj8wejfhhwzuv8t1"
+              "outgoingEdgeId": "fteu5frsbj8wejfhhwzuv8t1",
+              "content": "Watch the movie"
             },
             {
               "id": "j9d1pf2tndax0itezys7t73c",
-              "type": 0,
-              "blockId": "nahhsfc6hsok5sufxcknopxr",
+              "outgoingEdgeId": "zb79atxs2itliks4d00e35uy",
               "content": "Find something else"
             }
-          ],
-          "groupId": "uozlg88loeb8xegu6y4le6k8",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
-          "outgoingEdgeId": "ntef5v9bt7vn4wg8s3dfm8yl"
+          ]
         }
-      ],
-      "graphCoordinates": { "x": 1151.05, "y": 913.34 }
+      ]
     },
     {
       "id": "x4d8cdsyzoqz6vzsurnb8twc",
       "title": "Redirect to IMDB",
+      "graphCoordinates": { "x": 1523.21, "y": 1433.33 },
       "blocks": [
         {
           "id": "mw0e0bzwiokhndkkncp9niu2",
           "type": "Redirect",
-          "groupId": "x4d8cdsyzoqz6vzsurnb8twc",
           "options": {
-            "url": "https://m.imdb.com/title/{{IMDB ID}}",
-            "isNewTab": false
+            "url": "https://m.imdb.com/title/{{IMDB ID}}"
           }
         }
-      ],
-      "graphCoordinates": { "x": 1616.55, "y": 1411.44 }
+      ]
     },
     {
       "id": "x9610wtdv125hg56wicm2qmv",
-      "title": "Return to menu",
+      "title": "",
+      "graphCoordinates": { "x": 1523.2, "y": 1620.1 },
       "blocks": [
         {
           "id": "efto9jivvcvomj3kltf57hbb",
           "type": "Jump",
-          "groupId": "x9610wtdv125hg56wicm2qmv",
           "options": {
-            "blockId": "sodsq9mcigwvogmwx0t4jvil",
-            "groupId": "mjnkukpkpvf4ha2g4n5m804v"
+            "groupId": "mjnkukpkpvf4ha2g4n5m804v",
+            "blockId": "tzf45bvd8iquoxz7qgta8v94"
           }
         }
-      ],
-      "graphCoordinates": { "x": 1619.34, "y": 1586.5 }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "wfec8f4e1jtden2wqna6nrso",
+      "from": { "eventId": "u6lpjibfjhyoqij5wjf9kvnl" },
+      "to": { "groupId": "mjnkukpkpvf4ha2g4n5m804v" }
+    },
+    {
+      "id": "t8qyjpigrz7cdl8gxl1wxlwj",
+      "from": {
+        "blockId": "tzf45bvd8iquoxz7qgta8v94",
+        "itemId": "kaimvzg9igdtktgou5m3s1bw"
+      },
+      "to": { "groupId": "kq1g5z6pz4buot7sawqdrr3s" }
+    },
+    {
+      "id": "tfuuwjnpn7mftd5s65mbhytd",
+      "from": { "blockId": "j7pm34um4piuyabwlobjc356" },
+      "to": { "groupId": "v35sky44jzz9fkwwul2qxufl" }
+    },
+    {
+      "id": "r4wyd2185zhen98r5pmx53g9",
+      "from": { "blockId": "vudr8jrv2k3x0ubemt39tv7a" },
+      "to": { "groupId": "uozlg88loeb8xegu6y4le6k8" }
+    },
+    {
+      "id": "fteu5frsbj8wejfhhwzuv8t1",
+      "from": {
+        "blockId": "yifjhiamifo1y4ay7vols0mm",
+        "itemId": "n4818dnrb4arw1xh5v0ot8vz"
+      },
+      "to": { "groupId": "x4d8cdsyzoqz6vzsurnb8twc" }
+    },
+    {
+      "id": "tjn2ljosqyd4aj9dk8mnifsu",
+      "from": {
+        "blockId": "tzf45bvd8iquoxz7qgta8v94",
+        "itemId": "i8ls2f8inq2ovuijj6l7rbcq"
+      },
+      "to": { "groupId": "d6v9lh83c7zuwrhf2mmo6nxo" }
+    },
+    {
+      "id": "ual6xszx6tfcxqrnihc6zrvx",
+      "from": { "blockId": "mgn6uuw2yebmengsukjramjx" },
+      "to": { "groupId": "uozlg88loeb8xegu6y4le6k8" }
+    },
+    {
+      "id": "zb79atxs2itliks4d00e35uy",
+      "from": {
+        "blockId": "yifjhiamifo1y4ay7vols0mm",
+        "itemId": "j9d1pf2tndax0itezys7t73c"
+      },
+      "to": { "groupId": "x9610wtdv125hg56wicm2qmv" }
     }
   ],
   "variables": [
@@ -601,109 +565,18 @@
     { "id": "vcmybxcoaytd2geo5sqx7v8hw", "name": "Trending IDs" },
     { "id": "vulnb1om2fk8mvkcesl8s15cr", "name": "Selected Trending Movie" }
   ],
-  "edges": [
-    {
-      "id": "wfec8f4e1jtden2wqna6nrso",
-      "to": { "groupId": "mjnkukpkpvf4ha2g4n5m804v" },
-      "from": {
-        "blockId": "rha69fygov33vym1hf6z837p",
-        "groupId": "u6lpjibfjhyoqij5wjf9kvnl"
-      }
-    },
-    {
-      "id": "t8qyjpigrz7cdl8gxl1wxlwj",
-      "to": { "groupId": "kq1g5z6pz4buot7sawqdrr3s" },
-      "from": {
-        "itemId": "kaimvzg9igdtktgou5m3s1bw",
-        "blockId": "tzf45bvd8iquoxz7qgta8v94",
-        "groupId": "mjnkukpkpvf4ha2g4n5m804v"
-      }
-    },
-    {
-      "id": "tfuuwjnpn7mftd5s65mbhytd",
-      "to": { "groupId": "v35sky44jzz9fkwwul2qxufl" },
-      "from": {
-        "blockId": "j7pm34um4piuyabwlobjc356",
-        "groupId": "kq1g5z6pz4buot7sawqdrr3s"
-      }
-    },
-    {
-      "id": "r4wyd2185zhen98r5pmx53g9",
-      "to": { "groupId": "uozlg88loeb8xegu6y4le6k8" },
-      "from": {
-        "blockId": "vudr8jrv2k3x0ubemt39tv7a",
-        "groupId": "v35sky44jzz9fkwwul2qxufl"
-      }
-    },
-    {
-      "id": "fteu5frsbj8wejfhhwzuv8t1",
-      "to": { "groupId": "x4d8cdsyzoqz6vzsurnb8twc" },
-      "from": {
-        "itemId": "n4818dnrb4arw1xh5v0ot8vz",
-        "blockId": "yifjhiamifo1y4ay7vols0mm",
-        "groupId": "uozlg88loeb8xegu6y4le6k8"
-      }
-    },
-    {
-      "id": "tjn2ljosqyd4aj9dk8mnifsu",
-      "to": { "groupId": "d6v9lh83c7zuwrhf2mmo6nxo" },
-      "from": {
-        "itemId": "i8ls2f8inq2ovuijj6l7rbcq",
-        "blockId": "tzf45bvd8iquoxz7qgta8v94",
-        "groupId": "mjnkukpkpvf4ha2g4n5m804v"
-      }
-    },
-    {
-      "id": "ntef5v9bt7vn4wg8s3dfm8yl",
-      "to": { "groupId": "x9610wtdv125hg56wicm2qmv" },
-      "from": {
-        "blockId": "yifjhiamifo1y4ay7vols0mm",
-        "groupId": "uozlg88loeb8xegu6y4le6k8"
-      }
-    },
-    {
-      "id": "ual6xszx6tfcxqrnihc6zrvx",
-      "to": { "groupId": "uozlg88loeb8xegu6y4le6k8" },
-      "from": {
-        "blockId": "mgn6uuw2yebmengsukjramjx",
-        "groupId": "d6v9lh83c7zuwrhf2mmo6nxo"
-      }
-    }
-  ],
-  "theme": {
-    "chat": {
-      "inputs": {
-        "color": "#303235",
-        "backgroundColor": "#FFFFFF",
-        "placeholderColor": "#9095A0"
-      },
-      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0d253f" },
-      "hostAvatar": {
-        "isEnabled": true
-      },
-      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
-      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#01b4e4" }
-    },
-    "general": {
-      "font": "Open Sans",
-      "background": { "type": "Color", "content": "#ffffff" }
-    }
-  },
-  "settings": {
-    "general": {
-      "isBrandingEnabled": false,
-      "isInputPrefillEnabled": true,
-      "isHideQueryParamsEnabled": true,
-      "isNewResultOnRefreshEnabled": true
-    },
-    "metadata": {
-      "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
-    },
-    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
-  },
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2023-11-07T07:42:02.490Z",
+  "updatedAt": "2023-11-07T07:55:03.222Z",
+  "icon": "🍿",
+  "folderId": null,
   "publicId": null,
   "customDomain": null,
+  "workspaceId": "proWorkspace",
   "resultsTablePreferences": null,
   "isArchived": false,
-  "isClosed": false
+  "isClosed": false,
+  "whatsAppCredentialsId": null
 }

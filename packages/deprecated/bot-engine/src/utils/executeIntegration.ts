@@ -4,7 +4,8 @@ import { executeGoogleSheetBlock } from '@/features/blocks/integrations/googleSh
 import { executeSendEmailBlock } from '@/features/blocks/integrations/sendEmail'
 import { executeWebhook } from '@/features/blocks/integrations/webhook'
 import { IntegrationState } from '@/types'
-import { IntegrationBlock, IntegrationBlockType } from '@typebot.io/schemas'
+import { IntegrationBlock } from '@typebot.io/schemas'
+import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 
 export const executeIntegration = ({
   block,

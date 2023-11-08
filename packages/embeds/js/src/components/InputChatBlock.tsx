@@ -1,11 +1,9 @@
 import type {
   ChatReply,
   ChoiceInputBlock,
-  DateInputOptions,
   EmailInputBlock,
   FileInputBlock,
   NumberInputBlock,
-  PaymentInputOptions,
   PhoneNumberInputBlock,
   RatingInputBlock,
   RuntimeOptions,
@@ -13,8 +11,9 @@ import type {
   Theme,
   UrlInputBlock,
   PictureChoiceBlock,
+  PaymentInputBlock,
+  DateInputBlock,
 } from '@typebot.io/schemas'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/enums'
 import { GuestBubble } from './bubbles/GuestBubble'
 import { BotContext, InputSubmitContent } from '@/types'
 import { TextInput } from '@/features/blocks/inputs/textInput'
@@ -34,12 +33,15 @@ import { Buttons } from '@/features/blocks/inputs/buttons/components/Buttons'
 import { SinglePictureChoice } from '@/features/blocks/inputs/pictureChoice/SinglePictureChoice'
 import { MultiplePictureChoice } from '@/features/blocks/inputs/pictureChoice/MultiplePictureChoice'
 import { formattedMessages } from '@/utils/formattedMessagesSignal'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { defaultPaymentInputOptions } from '@typebot.io/schemas/features/blocks/inputs/payment/constants'
+import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
 
 type Props = {
   ref: HTMLDivElement | undefined
   block: NonNullable<ChatReply['input']>
   hasHostAvatar: boolean
-  guestAvatar?: Theme['chat']['guestAvatar']
+  guestAvatar?: NonNullable<Theme['chat']>['guestAvatar']
   inputIndex: number
   context: BotContext
   isInputPrefillEnabled: boolean
@@ -74,7 +76,10 @@ export const InputChatBlock = (props: Props) => {
       <Match when={answer() && !props.hasError}>
         <GuestBubble
           message={formattedMessage() ?? (answer() as string)}
-          showAvatar={props.guestAvatar?.isEnabled ?? false}
+          showAvatar={
+            props.guestAvatar?.isEnabled ??
+            defaultTheme.chat.guestAvatar.isEnabled
+          }
           avatarSrc={props.guestAvatar?.url && props.guestAvatar.url}
         />
       </Match>
@@ -122,8 +127,8 @@ const Input = (props: {
   const submitPaymentSuccess = () =>
     props.onSubmit({
       value:
-        (props.block.options as PaymentInputOptions).labels.success ??
-        'Success',
+        (props.block.options as PaymentInputBlock['options'])?.labels
+          ?.success ?? defaultPaymentInputOptions.labels.success,
     })
 
   return (
@@ -158,9 +163,9 @@ const Input = (props: {
       </Match>
       <Match when={props.block.type === InputBlockType.PHONE}>
         <PhoneInput
-          labels={(props.block as PhoneNumberInputBlock).options.labels}
+          labels={(props.block as PhoneNumberInputBlock).options?.labels}
           defaultCountryCode={
-            (props.block as PhoneNumberInputBlock).options.defaultCountryCode
+            (props.block as PhoneNumberInputBlock).options?.defaultCountryCode
           }
           defaultValue={getPrefilledValue()}
           onSubmit={onSubmit}
@@ -168,7 +173,7 @@ const Input = (props: {
       </Match>
       <Match when={props.block.type === InputBlockType.DATE}>
         <DateForm
-          options={props.block.options as DateInputOptions}
+          options={props.block.options as DateInputBlock['options']}
           defaultValue={getPrefilledValue()}
           onSubmit={onSubmit}
         />
@@ -176,7 +181,7 @@ const Input = (props: {
       <Match when={isButtonsBlock(props.block)} keyed>
         {(block) => (
           <Switch>
-            <Match when={!block.options.isMultipleChoice}>
+            <Match when={!block.options?.isMultipleChoice}>
               <Buttons
                 inputIndex={props.inputIndex}
                 defaultItems={block.items}
@@ -184,7 +189,7 @@ const Input = (props: {
                 onSubmit={onSubmit}
               />
             </Match>
-            <Match when={block.options.isMultipleChoice}>
+            <Match when={block.options?.isMultipleChoice}>
               <MultipleChoicesForm
                 inputIndex={props.inputIndex}
                 defaultItems={block.items}
@@ -198,14 +203,14 @@ const Input = (props: {
       <Match when={isPictureChoiceBlock(props.block)} keyed>
         {(block) => (
           <Switch>
-            <Match when={!block.options.isMultipleChoice}>
+            <Match when={!block.options?.isMultipleChoice}>
               <SinglePictureChoice
                 defaultItems={block.items}
                 options={block.options}
                 onSubmit={onSubmit}
               />
             </Match>
-            <Match when={block.options.isMultipleChoice}>
+            <Match when={block.options?.isMultipleChoice}>
               <MultiplePictureChoice
                 defaultItems={block.items}
                 options={block.options}
@@ -237,7 +242,7 @@ const Input = (props: {
             {
               ...props.block.options,
               ...props.block.runtimeOptions,
-            } as PaymentInputOptions & RuntimeOptions
+            } as PaymentInputBlock['options'] & RuntimeOptions
           }
           onSuccess={submitPaymentSuccess}
         />

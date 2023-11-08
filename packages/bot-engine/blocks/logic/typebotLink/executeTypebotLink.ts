@@ -14,19 +14,21 @@ import { isNotDefined } from '@typebot.io/lib/utils'
 import { createResultIfNotExist } from '../../../queries/createResultIfNotExist'
 import { executeJumpBlock } from '../jump/executeJumpBlock'
 import prisma from '@typebot.io/lib/prisma'
+import { defaultTypebotLinkOptions } from '@typebot.io/schemas/features/blocks/logic/typebotLink/constants'
+import { saveVisitedEdges } from '../../../queries/saveVisitedEdges'
 
 export const executeTypebotLink = async (
   state: SessionState,
   block: TypebotLinkBlock
 ): Promise<ExecuteLogicResponse> => {
   const logs: ReplyLog[] = []
-  const typebotId = block.options.typebotId
+  const typebotId = block.options?.typebotId
   if (
     typebotId === 'current' ||
     typebotId === state.typebotsQueue[0].typebot.id
   ) {
     return executeJumpBlock(state, {
-      groupId: block.options.groupId,
+      groupId: block.options?.groupId,
     })
   }
   if (!typebotId) {
@@ -42,7 +44,7 @@ export const executeTypebotLink = async (
     logs.push({
       status: 'error',
       description: `Failed to link typebot`,
-      details: `Typebot with ID ${block.options.typebotId} not found`,
+      details: `Typebot with ID ${block.options?.typebotId} not found`,
     })
     return { outgoingEdgeId: block.outgoingEdgeId, logs }
   }
@@ -53,7 +55,7 @@ export const executeTypebotLink = async (
   )
 
   const nextGroupId =
-    block.options.groupId ??
+    block.options?.groupId ??
     linkedTypebot.groups.find((group) =>
       group.blocks.some((block) => block.type === 'start')
     )?.id
@@ -61,7 +63,7 @@ export const executeTypebotLink = async (
     logs.push({
       status: 'error',
       description: `Failed to link typebot`,
-      details: `Group with ID "${block.options.groupId}" not found`,
+      details: `Group with ID "${block.options?.groupId}" not found`,
     })
     return { outgoingEdgeId: block.outgoingEdgeId, logs }
   }
@@ -96,12 +98,14 @@ const addLinkedTypebotToState = async (
       }
     : currentTypebotInQueue
 
-  const shouldMergeResults = block.options.mergeResults !== false
+  const shouldMergeResults =
+    currentTypebotInQueue.typebot.version === '6'
+      ? block.options?.mergeResults ?? defaultTypebotLinkOptions.mergeResults
+      : block.options?.mergeResults !== false
 
   if (
     currentTypebotInQueue.resultId &&
-    currentTypebotInQueue.answers.length === 0 &&
-    shouldMergeResults
+    currentTypebotInQueue.answers.length === 0
   ) {
     await createResultIfNotExist({
       resultId: currentTypebotInQueue.resultId,
@@ -159,11 +163,10 @@ const createResumeEdgeIfNecessary = (
   return {
     id: createId(),
     from: {
-      groupId: '',
       blockId: '',
     },
     to: {
-      groupId: nextBlockInGroup.groupId,
+      groupId: currentGroup.id,
       blockId: nextBlockInGroup.id,
     },
   }
@@ -196,6 +199,7 @@ const fetchTypebot = async (state: SessionState, typebotId: string) => {
         edges: true,
         groups: true,
         variables: true,
+        events: true,
       },
     })
     return typebotInSessionStateSchema.parse(typebot)
@@ -208,6 +212,7 @@ const fetchTypebot = async (state: SessionState, typebotId: string) => {
       edges: true,
       groups: true,
       variables: true,
+      events: true,
     },
   })
   if (!typebot) return null

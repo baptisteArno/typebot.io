@@ -4,12 +4,12 @@ import {
   ResultWithAnswers,
   ResultHeaderCell,
   VariableWithValue,
-  InputBlockType,
   Answer,
 } from '@typebot.io/schemas'
 import { FileLinks } from '../components/FileLinks'
 import { TableData } from '../types'
 import { convertDateToReadable } from './convertDateToReadable'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 
 export const convertResultsToTableData = (
   results: ResultWithAnswers[] | undefined,

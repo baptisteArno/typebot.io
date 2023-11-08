@@ -133,7 +133,7 @@ export const TypebotProvider = ({
       groups: [...localTypebot.groups, ...typebotToInject.groups],
       variables: [...localTypebot.variables, ...typebotToInject.variables],
       edges: [...localTypebot.edges, ...typebotToInject.edges],
-    }
+    } as TypebotViewerProps['typebot']
     setLocalTypebot(updatedTypebot)
     return typebotToInject
   }

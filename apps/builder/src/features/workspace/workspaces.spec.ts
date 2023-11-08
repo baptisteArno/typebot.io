@@ -1,6 +1,5 @@
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { defaultTextInputOptions, InputBlockType } from '@typebot.io/schemas'
 import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
 import {
   proWorkspaceId,
@@ -8,6 +7,7 @@ import {
 } from '@typebot.io/lib/playwright/databaseSetup'
 import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
 import { mockSessionResponsesToOtherUser } from '@typebot.io/lib/playwright/testHelpers'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 
 const proTypebotId = createId()
 const starterTypebotId = createId()
@@ -28,9 +28,7 @@ test.beforeAll(async () => {
       ...parseDefaultGroupWithBlock({
         type: InputBlockType.TEXT,
         options: {
-          ...defaultTextInputOptions,
           labels: {
-            ...defaultTextInputOptions.labels,
             placeholder: 'Hey there',
           },
         },

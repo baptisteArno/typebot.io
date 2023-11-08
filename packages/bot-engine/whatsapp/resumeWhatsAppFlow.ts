@@ -84,8 +84,14 @@ export const resumeWhatsAppFlow = async ({
     }
   }
 
-  const { input, logs, newSessionState, messages, clientSideActions } =
-    resumeResponse
+  const {
+    input,
+    logs,
+    newSessionState,
+    messages,
+    clientSideActions,
+    visitedEdges,
+  } = resumeResponse
 
   await sendChatReplyToWhatsApp({
     to: receivedMessage.from,
@@ -106,9 +112,10 @@ export const resumeWhatsAppFlow = async ({
       id: sessionId,
       state: {
         ...newSessionState,
-        currentBlock: !input ? undefined : newSessionState.currentBlock,
+        currentBlockId: !input ? undefined : newSessionState.currentBlockId,
       },
     },
+    visitedEdges,
   })
 
   return {

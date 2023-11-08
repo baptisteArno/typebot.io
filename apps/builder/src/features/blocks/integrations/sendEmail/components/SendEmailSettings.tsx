@@ -6,9 +6,14 @@ import {
   HStack,
   Switch,
   FormLabel,
+  Accordion,
+  AccordionButton,
+  AccordionItem,
+  AccordionPanel,
+  AccordionIcon,
 } from '@chakra-ui/react'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { SendEmailOptions, Variable } from '@typebot.io/schemas'
+import { SendEmailBlock, Variable } from '@typebot.io/schemas'
 import React from 'react'
 import { isNotEmpty } from '@typebot.io/lib'
 import { SmtpConfigModal } from './SmtpConfigModal'
@@ -19,10 +24,11 @@ import { TextInput, Textarea } from '@/components/inputs'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 import { env } from '@typebot.io/env'
+import { defaultSendEmailOptions } from '@typebot.io/schemas/features/blocks/integrations/sendEmail/constants'
 
 type Props = {
-  options: SendEmailOptions
-  onOptionsChange: (options: SendEmailOptions) => void
+  options: SendEmailBlock['options']
+  onOptionsChange: (options: SendEmailBlock['options']) => void
 }
 
 export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
@@ -96,7 +102,7 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
   const handleIsBodyCodeChange = () =>
     onOptionsChange({
       ...options,
-      isBodyCode: options.isBodyCode ? !options.isBodyCode : true,
+      isBodyCode: options?.isBodyCode ? !options.isBodyCode : true,
     })
 
   const handleChangeAttachmentVariable = (
@@ -115,7 +121,9 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
           <CredentialsDropdown
             type="smtp"
             workspaceId={workspace.id}
-            currentCredentialsId={options.credentialsId}
+            currentCredentialsId={
+              options?.credentialsId ?? defaultSendEmailOptions.credentialsId
+            }
             onCredentialsSelect={handleCredentialsSelect}
             onCreateNewClick={onOpen}
             defaultCredentialLabel={env.NEXT_PUBLIC_SMTP_FROM?.match(
@@ -126,41 +134,56 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
         )}
       </Stack>
       <TextInput
-        label="Reply to:"
-        onChange={handleReplyToChange}
-        defaultValue={options.replyTo}
-        placeholder={'email@gmail.com'}
-      />
-      <TextInput
         label="To:"
         onChange={handleToChange}
-        defaultValue={options.recipients.join(', ')}
+        defaultValue={options?.recipients?.join(', ')}
         placeholder="email1@gmail.com, email2@gmail.com"
       />
-      <TextInput
-        label="Cc:"
-        onChange={handleCcChange}
-        defaultValue={options.cc?.join(', ') ?? ''}
-        placeholder="email1@gmail.com, email2@gmail.com"
-      />
-      <TextInput
-        label="Bcc:"
-        onChange={handleBccChange}
-        defaultValue={options.bcc?.join(', ') ?? ''}
-        placeholder="email1@gmail.com, email2@gmail.com"
-      />
+      <Accordion allowToggle>
+        <AccordionItem>
+          <AccordionButton>
+            <HStack justifyContent="space-between" w="full">
+              <Text>Advanced</Text>
+              <AccordionIcon />
+            </HStack>
+          </AccordionButton>
+          <AccordionPanel as={Stack}>
+            <TextInput
+              label="Reply to:"
+              onChange={handleReplyToChange}
+              defaultValue={options?.replyTo}
+              placeholder={'email@gmail.com'}
+            />
+            <TextInput
+              label="Cc:"
+              onChange={handleCcChange}
+              defaultValue={options?.cc?.join(', ') ?? ''}
+              placeholder="email1@gmail.com, email2@gmail.com"
+            />
+            <TextInput
+              label="Bcc:"
+              onChange={handleBccChange}
+              defaultValue={options?.bcc?.join(', ') ?? ''}
+              placeholder="email1@gmail.com, email2@gmail.com"
+            />
+          </AccordionPanel>
+        </AccordionItem>
+      </Accordion>
+
       <TextInput
         label="Subject:"
         onChange={handleSubjectChange}
-        defaultValue={options.subject ?? ''}
+        defaultValue={options?.subject ?? ''}
       />
       <SwitchWithLabel
         label={'Custom content?'}
         moreInfoContent="By default, the email body will be a recap of what has been collected so far. You can override it with this option."
-        initialValue={options.isCustomBody ?? false}
+        initialValue={
+          options?.isCustomBody ?? defaultSendEmailOptions.isCustomBody
+        }
         onCheckChange={handleIsCustomBodyChange}
       />
-      {options.isCustomBody && (
+      {options?.isCustomBody && (
         <Stack>
           <Flex justifyContent="space-between">
             <Text>Content: </Text>
@@ -168,7 +191,9 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
               <Text fontSize="sm">Text</Text>
               <Switch
                 size="sm"
-                isChecked={options.isBodyCode ?? false}
+                isChecked={
+                  options.isBodyCode ?? defaultSendEmailOptions.isBodyCode
+                }
                 onChange={handleIsBodyCodeChange}
               />
               <Text fontSize="sm">Code</Text>
@@ -188,24 +213,25 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
               defaultValue={options.body ?? ''}
             />
           )}
+          <Stack pb="4">
+            <HStack>
+              <FormLabel m="0" htmlFor="variable">
+                Attach files:
+              </FormLabel>
+              <MoreInfoTooltip>
+                The selected variable should have previously collected files
+                from the File upload input block.
+              </MoreInfoTooltip>
+            </HStack>
+
+            <VariableSearchInput
+              initialVariableId={options?.attachmentsVariableId}
+              onSelectVariable={handleChangeAttachmentVariable}
+            />
+          </Stack>
         </Stack>
       )}
-      <Stack>
-        <HStack>
-          <FormLabel m="0" htmlFor="variable">
-            Attach files:
-          </FormLabel>
-          <MoreInfoTooltip>
-            The selected variable should have previously collected files from
-            the File upload input block.
-          </MoreInfoTooltip>
-        </HStack>
 
-        <VariableSearchInput
-          initialVariableId={options.attachmentsVariableId}
-          onSelectVariable={handleChangeAttachmentVariable}
-        />
-      </Stack>
       <SmtpConfigModal
         isOpen={isOpen}
         onClose={onClose}

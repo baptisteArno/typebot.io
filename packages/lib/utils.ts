@@ -9,16 +9,16 @@ import type {
   TextInputBlock,
   TextBubbleBlock,
   WebhookBlock,
-  BlockType,
   ImageBubbleBlock,
   VideoBubbleBlock,
   BlockWithOptionsType,
 } from '@typebot.io/schemas'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/enums'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/enums'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/enums'
-import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/enums'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
+import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
 
 export const sendRequest = async <ResponseData>(
   params:
@@ -100,7 +100,10 @@ export const isPictureChoiceInput = (
 export const isSingleChoiceInput = (block: Block): block is ChoiceInputBlock =>
   block.type === InputBlockType.CHOICE &&
   'options' in block &&
-  !block.options.isMultipleChoice
+  !(
+    block.options?.isMultipleChoice ??
+    defaultChoiceInputOptions.isMultipleChoice
+  )
 
 export const isConditionBlock = (block: Block): block is ConditionBlock =>
   block.type === LogicBlockType.CONDITION
@@ -116,11 +119,13 @@ export const isWebhookBlock = (block: Block): block is WebhookBlock =>
     IntegrationBlockType.MAKE_COM,
   ].includes(block.type as IntegrationBlockType)
 
-export const isBubbleBlockType = (type: BlockType): type is BubbleBlockType =>
+export const isBubbleBlockType = (
+  type: Block['type']
+): type is BubbleBlockType =>
   (Object.values(BubbleBlockType) as string[]).includes(type)
 
 export const blockTypeHasOption = (
-  type: BlockType
+  type: Block['type']
 ): type is BlockWithOptionsType =>
   (Object.values(InputBlockType) as string[])
     .concat(Object.values(LogicBlockType))
@@ -128,7 +133,7 @@ export const blockTypeHasOption = (
     .includes(type)
 
 export const blockTypeHasItems = (
-  type: BlockType
+  type: Block['type']
 ): type is
   | LogicBlockType.CONDITION
   | InputBlockType.CHOICE

@@ -3,11 +3,11 @@ import {
   createWebhook,
   importTypebotInDatabase,
 } from '@typebot.io/lib/playwright/databaseActions'
-import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/enums'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 import { apiToken } from '@typebot.io/lib/playwright/databaseSetup'
 import { env } from '@typebot.io/env'
+import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
 
 test.describe('Builder', () => {
   test('easy configuration should work', async ({ page }) => {

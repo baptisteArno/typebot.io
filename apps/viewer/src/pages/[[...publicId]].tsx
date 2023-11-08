@@ -7,6 +7,8 @@ import { TypebotPageProps, TypebotPageV2 } from '@/components/TypebotPageV2'
 import { TypebotPageV3, TypebotV3PageProps } from '@/components/TypebotPageV3'
 import { env } from '@typebot.io/env'
 import prisma from '@typebot.io/lib/prisma'
+import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
+import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
 
 // Browsers that doesn't support ES modules and/or web components
 const incompatibleBrowsers = [
@@ -61,6 +63,7 @@ export const getServerSideProps: GetServerSideProps = async (
     const publishedTypebot = isMatchingViewerUrl
       ? await getTypebotFromPublicId(context.query.publicId?.toString())
       : await getTypebotFromCustomDomain(customDomain)
+
     return {
       props: {
         publishedTypebot,
@@ -106,11 +109,14 @@ const getTypebotFromPublicId = async (publicId?: string) => {
     ? ({
         name: publishedTypebot.typebot.name,
         publicId: publishedTypebot.typebot.publicId ?? null,
-        background: publishedTypebot.theme.general.background,
+        background:
+          publishedTypebot.theme.general?.background ??
+          defaultTheme.general.background,
         isHideQueryParamsEnabled:
-          publishedTypebot.settings.general.isHideQueryParamsEnabled ?? null,
-        metadata: publishedTypebot.settings.metadata,
-      } as Pick<
+          publishedTypebot.settings.general?.isHideQueryParamsEnabled ??
+          defaultSettings.general.isHideQueryParamsEnabled,
+        metadata: publishedTypebot.settings.metadata ?? {},
+      } satisfies Pick<
         TypebotV3PageProps,
         | 'name'
         | 'publicId'
@@ -148,11 +154,14 @@ const getTypebotFromCustomDomain = async (customDomain: string) => {
     ? ({
         name: publishedTypebot.typebot.name,
         publicId: publishedTypebot.typebot.publicId ?? null,
-        background: publishedTypebot.theme.general.background,
+        background:
+          publishedTypebot.theme.general?.background ??
+          defaultTheme.general.background,
         isHideQueryParamsEnabled:
-          publishedTypebot.settings.general.isHideQueryParamsEnabled ?? null,
-        metadata: publishedTypebot.settings.metadata,
-      } as Pick<
+          publishedTypebot.settings.general?.isHideQueryParamsEnabled ??
+          defaultSettings.general.isHideQueryParamsEnabled,
+        metadata: publishedTypebot.settings.metadata ?? {},
+      } satisfies Pick<
         TypebotV3PageProps,
         | 'name'
         | 'publicId'
@@ -214,9 +223,14 @@ const App = ({
       url={props.url}
       name={publishedTypebot.name}
       publicId={publishedTypebot.publicId}
-      isHideQueryParamsEnabled={publishedTypebot.isHideQueryParamsEnabled}
-      background={publishedTypebot.background}
-      metadata={publishedTypebot.metadata}
+      isHideQueryParamsEnabled={
+        publishedTypebot.isHideQueryParamsEnabled ??
+        defaultSettings.general.isHideQueryParamsEnabled
+      }
+      background={
+        publishedTypebot.background ?? defaultTheme.general.background
+      }
+      metadata={publishedTypebot.metadata ?? {}}
     />
   )
 }

@@ -82,7 +82,7 @@ export const ZemanticAiSettings = ({
   }
 
   const updateResponseMapping = (
-    responseMapping: typeof options.responseMapping
+    responseMapping: NonNullable<ZemanticAiBlock['options']>['responseMapping']
   ) => {
     onOptionsChange({
       ...options,

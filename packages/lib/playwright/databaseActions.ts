@@ -7,7 +7,7 @@ import {
   WorkspaceRole,
 } from '@typebot.io/prisma'
 import { createId } from '@paralleldrive/cuid2'
-import { Typebot, Webhook } from '@typebot.io/schemas'
+import { Typebot, TypebotV6, Webhook } from '@typebot.io/schemas'
 import { readFileSync } from 'fs'
 import { proWorkspaceId, userId } from './databaseSetup'
 import {
@@ -74,20 +74,24 @@ export const importTypebotInDatabase = async (
   path: string,
   updates?: Partial<Typebot>
 ) => {
-  const typebot: Typebot = {
-    ...JSON.parse(readFileSync(path).toString()),
+  const typebotFile = JSON.parse(readFileSync(path).toString())
+  const typebot = {
+    events: null,
+    ...typebotFile,
     workspaceId: proWorkspaceId,
     ...updates,
-    version: '3',
   }
   await prisma.typebot.create({
     data: parseCreateTypebot(typebot),
   })
   return prisma.publicTypebot.create({
-    data: parseTypebotToPublicTypebot(
-      updates?.id ? `${updates?.id}-public` : 'publicBot',
-      typebot
-    ),
+    data: {
+      ...parseTypebotToPublicTypebot(
+        updates?.id ? `${updates?.id}-public` : 'publicBot',
+        typebot
+      ),
+      events: typebot.events === null ? Prisma.DbNull : typebot.events,
+    },
   })
 }
 
@@ -165,7 +169,7 @@ export const createWebhook = async (
   })
 }
 
-export const createTypebots = async (partialTypebots: Partial<Typebot>[]) => {
+export const createTypebots = async (partialTypebots: Partial<TypebotV6>[]) => {
   const typebotsWithId = partialTypebots.map((typebot) => {
     const typebotId = typebot.id ?? createId()
     return {
@@ -178,9 +182,9 @@ export const createTypebots = async (partialTypebots: Partial<Typebot>[]) => {
     data: typebotsWithId.map(parseTestTypebot).map(parseCreateTypebot),
   })
   return prisma.publicTypebot.createMany({
-    data: typebotsWithId.map((t) =>
-      parseTypebotToPublicTypebot(t.publicId, parseTestTypebot(t))
-    ),
+    data: typebotsWithId.map((t) => ({
+      ...parseTypebotToPublicTypebot(t.publicId, parseTestTypebot(t)),
+    })) as any,
   })
 }
 
@@ -193,7 +197,11 @@ export const updateTypebot = async (
   })
   return prisma.publicTypebot.updateMany({
     where: { typebotId: partialTypebot.id },
-    data: partialTypebot,
+    data: {
+      ...partialTypebot,
+      events:
+        partialTypebot.events === null ? Prisma.DbNull : partialTypebot.events,
+    },
   })
 }
 
@@ -213,6 +221,7 @@ export const parseCreateTypebot = (typebot: Typebot) => ({
     typebot.resultsTablePreferences === null
       ? Prisma.DbNull
       : typebot.resultsTablePreferences,
+  events: typebot.events === null ? Prisma.DbNull : typebot.events,
 })
 
 const parseUpdateTypebot = (typebot: Partial<Typebot>) => ({
@@ -221,4 +230,5 @@ const parseUpdateTypebot = (typebot: Partial<Typebot>) => ({
     typebot.resultsTablePreferences === null
       ? Prisma.DbNull
       : typebot.resultsTablePreferences,
+  events: typebot.events === null ? Prisma.DbNull : typebot.events,
 })

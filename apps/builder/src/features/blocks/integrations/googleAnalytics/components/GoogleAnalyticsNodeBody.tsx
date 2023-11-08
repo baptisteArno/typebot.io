@@ -1,9 +1,9 @@
 import React from 'react'
 import { Text } from '@chakra-ui/react'
-import { GoogleAnalyticsOptions } from '@typebot.io/schemas'
+import { GoogleAnalyticsBlock } from '@typebot.io/schemas'
 
 type Props = {
-  action: GoogleAnalyticsOptions['action']
+  action: NonNullable<GoogleAnalyticsBlock['options']>['action']
 }
 
 export const GoogleAnalyticsNodeBody = ({ action }: Props) => (

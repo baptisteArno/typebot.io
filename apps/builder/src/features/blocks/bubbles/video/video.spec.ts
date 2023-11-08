@@ -1,12 +1,9 @@
 import test, { expect } from '@playwright/test'
 import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
-import {
-  BubbleBlockType,
-  defaultVideoBubbleContent,
-  VideoBubbleContentType,
-} from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import { VideoBubbleContentType } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
 
 const videoSrc =
   'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'
@@ -22,7 +19,6 @@ test.describe.parallel('Video bubble block', () => {
           id: typebotId,
           ...parseDefaultGroupWithBlock({
             type: BubbleBlockType.VIDEO,
-            content: defaultVideoBubbleContent,
           }),
         },
       ])

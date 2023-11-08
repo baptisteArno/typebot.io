@@ -1,3 +1,10 @@
+.slate-inline-code {
+  background-color: #805ad5;
+  color: white;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.35rem;
+}
+
 .slate-variable {
   background-color: #ff8b1a;
   color: #ffffff;

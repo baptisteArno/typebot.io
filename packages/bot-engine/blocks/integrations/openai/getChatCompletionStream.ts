@@ -9,6 +9,7 @@ import { SessionState } from '@typebot.io/schemas/features/chat/sessionState'
 import { OpenAIStream } from 'ai'
 import { parseVariableNumber } from '../../../variables/parseVariableNumber'
 import { ClientOptions, OpenAI } from 'openai'
+import { defaultOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
 
 export const getChatCompletionStream =
   (conn: Connection) =>
@@ -53,7 +54,7 @@ export const getChatCompletionStream =
     const openai = new OpenAI(config)
 
     const response = await openai.chat.completions.create({
-      model: options.model,
+      model: options.model ?? defaultOpenAIOptions.model,
       temperature,
       stream: true,
       messages,

@@ -1,5 +1,5 @@
 import { executeWait } from './blocks/logic/wait/executeWait'
-import { LogicBlock, LogicBlockType, SessionState } from '@typebot.io/schemas'
+import { LogicBlock, SessionState } from '@typebot.io/schemas'
 import { ExecuteLogicResponse } from './types'
 import { executeScript } from './blocks/logic/script/executeScript'
 import { executeJumpBlock } from './blocks/logic/jump/executeJumpBlock'
@@ -8,6 +8,7 @@ import { executeConditionBlock } from './blocks/logic/condition/executeCondition
 import { executeSetVariable } from './blocks/logic/setVariable/executeSetVariable'
 import { executeTypebotLink } from './blocks/logic/typebotLink/executeTypebotLink'
 import { executeAbTest } from './blocks/logic/abTest/executeAbTest'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 
 export const executeLogic =
   (state: SessionState) =>

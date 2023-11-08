@@ -1,5 +1,5 @@
 import { isDefined, isEmpty } from '@typebot.io/lib/utils'
-import type { GoogleAnalyticsOptions } from '@typebot.io/schemas'
+import { GoogleAnalyticsBlock } from '@typebot.io/schemas'
 
 declare const window: {
   gtag?: (
@@ -39,7 +39,7 @@ export const initGoogleAnalytics = (id: string): Promise<void> => {
   })
 }
 
-export const sendGaEvent = (options: GoogleAnalyticsOptions) => {
+export const sendGaEvent = (options: GoogleAnalyticsBlock['options']) => {
   if (!options) return
   if (!window.gtag) {
     console.error('Google Analytics was not properly initialized')

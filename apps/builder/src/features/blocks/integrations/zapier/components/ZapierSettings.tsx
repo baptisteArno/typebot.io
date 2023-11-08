@@ -1,12 +1,12 @@
 import { Alert, AlertIcon, Button, Link, Stack, Text } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@/components/icons'
-import { Webhook, WebhookOptions, ZapierBlock } from '@typebot.io/schemas'
+import { Webhook, WebhookBlock, ZapierBlock } from '@typebot.io/schemas'
 import React from 'react'
 import { WebhookAdvancedConfigForm } from '../../webhook/components/WebhookAdvancedConfigForm'
 
 type Props = {
   block: ZapierBlock
-  onOptionsChange: (options: WebhookOptions) => void
+  onOptionsChange: (options: WebhookBlock['options']) => void
 }
 
 export const ZapierSettings = ({
@@ -14,7 +14,6 @@ export const ZapierSettings = ({
   onOptionsChange,
 }: Props) => {
   const setLocalWebhook = async (newLocalWebhook: Webhook) => {
-    if (!options.webhook) return
     onOptionsChange({
       ...options,
       webhook: newLocalWebhook,
@@ -22,7 +21,7 @@ export const ZapierSettings = ({
     return
   }
 
-  const url = options.webhook?.url
+  const url = options?.webhook?.url
 
   return (
     <Stack spacing={4}>
@@ -44,15 +43,13 @@ export const ZapierSettings = ({
           </Stack>
         )}
       </Alert>
-      {options.webhook && (
-        <WebhookAdvancedConfigForm
-          blockId={blockId}
-          webhook={options.webhook as Webhook}
-          options={options}
-          onWebhookChange={setLocalWebhook}
-          onOptionsChange={onOptionsChange}
-        />
-      )}
+      <WebhookAdvancedConfigForm
+        blockId={blockId}
+        webhook={options?.webhook}
+        options={options}
+        onWebhookChange={setLocalWebhook}
+        onOptionsChange={onOptionsChange}
+      />
     </Stack>
   )
 }

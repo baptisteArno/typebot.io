@@ -12,7 +12,7 @@ type Props = Pick<
   temperature: number | undefined
   currentLogs?: ChatReply['logs']
   isRetrying?: boolean
-} & Pick<OpenAIBlock['options'], 'apiVersion' | 'baseUrl'>
+} & Pick<NonNullable<OpenAIBlock['options']>, 'apiVersion' | 'baseUrl'>
 
 export const executeChatCompletionOpenAIRequest = async ({
   apiKey,

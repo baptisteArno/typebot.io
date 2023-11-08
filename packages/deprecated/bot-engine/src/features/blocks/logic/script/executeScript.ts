@@ -8,7 +8,7 @@ export const executeScript = async (
   block: ScriptBlock,
   { typebot: { variables } }: LogicState
 ) => {
-  if (!block.options.content) return
+  if (!block.options?.content) return
   if (block.options.shouldExecuteInParentContext && isEmbedded) {
     sendEventToParent({
       codeToExecute: parseVariables(variables)(block.options.content),

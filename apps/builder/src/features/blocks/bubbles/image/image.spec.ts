@@ -1,10 +1,10 @@
 import test, { expect } from '@playwright/test'
 import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
-import { BubbleBlockType, defaultImageBubbleContent } from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 import { proWorkspaceId } from '@typebot.io/lib/playwright/databaseSetup'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 
 const unsplashImageSrc =
   'https://images.unsplash.com/photo-1504297050568-910d24c426d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80'
@@ -18,7 +18,6 @@ test.describe.parallel('Image bubble block', () => {
           id: typebotId,
           ...parseDefaultGroupWithBlock({
             type: BubbleBlockType.IMAGE,
-            content: defaultImageBubbleContent,
           }),
         },
       ])
@@ -44,7 +43,6 @@ test.describe.parallel('Image bubble block', () => {
           id: typebotId,
           ...parseDefaultGroupWithBlock({
             type: BubbleBlockType.IMAGE,
-            content: defaultImageBubbleContent,
           }),
         },
       ])
@@ -66,7 +64,6 @@ test.describe.parallel('Image bubble block', () => {
           id: typebotId,
           ...parseDefaultGroupWithBlock({
             type: BubbleBlockType.IMAGE,
-            content: defaultImageBubbleContent,
           }),
         },
       ])

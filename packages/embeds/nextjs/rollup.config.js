@@ -3,8 +3,6 @@ import terser from '@rollup/plugin-terser'
 import { babel } from '@rollup/plugin-babel'
 import typescript from '@rollup/plugin-typescript'
 import { typescriptPaths } from 'rollup-plugin-typescript-paths'
-import alias from '@rollup/plugin-alias'
-import { dts } from 'rollup-plugin-dts'
 
 const extensions = ['.ts', '.tsx']
 
@@ -16,11 +14,6 @@ const indexConfig = {
   },
   external: ['next/dynamic', 'react', 'react/jsx-runtime'],
   plugins: [
-    alias({
-      entries: [
-        { find: '@typebot.io/js/dist/web', replacement: '../../js/dist/web' },
-      ],
-    }),
     resolve({ extensions }),
     babel({
       babelHelpers: 'bundled',
@@ -34,23 +27,6 @@ const indexConfig = {
   ],
 }
 
-const typesConfig = {
-  input: './src/index.ts',
-  output: [{ file: './dist/index.d.ts', format: 'es' }],
-  plugins: [
-    alias({
-      entries: [
-        { find: '@typebot.io/js', replacement: '../../js' },
-        {
-          find: '@/types',
-          replacement: '../types',
-        },
-      ],
-    }),
-    dts(),
-  ],
-}
-
-const configs = [indexConfig, typesConfig]
+const configs = [indexConfig]
 
 export default configs

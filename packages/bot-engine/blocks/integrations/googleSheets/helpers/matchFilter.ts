@@ -1,9 +1,9 @@
 import { isDefined } from '@typebot.io/lib'
+import { GoogleSheetsGetOptions } from '@typebot.io/schemas'
 import {
-  GoogleSheetsGetOptions,
   LogicalOperator,
   ComparisonOperators,
-} from '@typebot.io/schemas'
+} from '@typebot.io/schemas/features/blocks/logic/condition/constants'
 import { GoogleSpreadsheetRow } from 'google-spreadsheet'
 
 export const matchFilter = (
@@ -12,7 +12,7 @@ export const matchFilter = (
 ) => {
   if (!filter) return true
   return filter.logicalOperator === LogicalOperator.AND
-    ? filter.comparisons.every(
+    ? filter.comparisons?.every(
         (comparison) =>
           comparison.column &&
           matchComparison(
@@ -21,7 +21,7 @@ export const matchFilter = (
             comparison.value
           )
       )
-    : filter.comparisons.some(
+    : filter.comparisons?.some(
         (comparison) =>
           comparison.column &&
           matchComparison(

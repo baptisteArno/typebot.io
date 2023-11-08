@@ -33,7 +33,7 @@ export const WordpressBubbleInstructions = ({ publicId }: Props) => {
     theme: {
       ...theme,
       chatWindow: {
-        backgroundColor: typebot?.theme.general.background.content ?? '#fff',
+        backgroundColor: typebot?.theme.general?.background?.content ?? '#fff',
       },
     },
     previewMessage,
@@ -57,7 +57,7 @@ export const WordpressBubbleInstructions = ({ publicId }: Props) => {
           <BubbleSettings
             previewMessage={previewMessage}
             defaultPreviewMessageAvatar={
-              typebot?.theme.chat.hostAvatar?.url ?? ''
+              typebot?.theme.chat?.hostAvatar?.url ?? ''
             }
             theme={theme}
             onPreviewMessageChange={setPreviewMessage}

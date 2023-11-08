@@ -8,6 +8,7 @@ type Props = {
   hasStarted: boolean
   isCompleted: boolean
 }
+
 export const createResultIfNotExist = async ({
   resultId,
   typebot,

@@ -7,22 +7,23 @@ import {
   Webhook,
   Variable,
   WebhookResponse,
-  WebhookOptions,
-  defaultWebhookAttributes,
   KeyValue,
   ReplyLog,
   ExecutableWebhook,
   AnswerInSessionState,
 } from '@typebot.io/schemas'
 import { stringify } from 'qs'
-import { omit } from '@typebot.io/lib'
+import { isDefined, isEmpty, omit } from '@typebot.io/lib'
 import { getDefinedVariables, parseAnswers } from '@typebot.io/lib/results'
 import got, { Method, HTTPError, OptionsInit } from 'got'
 import { resumeWebhookExecution } from './resumeWebhookExecution'
-import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/enums'
 import { ExecuteIntegrationResponse } from '../../../types'
 import { parseVariables } from '../../../variables/parseVariables'
 import prisma from '@typebot.io/lib/prisma'
+import {
+  HttpMethod,
+  defaultWebhookAttributes,
+} from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
 
 type ParsedWebhook = ExecutableWebhook & {
   basicAuth: { username?: string; password?: string }
@@ -35,22 +36,17 @@ export const executeWebhookBlock = async (
 ): Promise<ExecuteIntegrationResponse> => {
   const logs: ReplyLog[] = []
   const webhook =
-    block.options.webhook ??
-    ((await prisma.webhook.findUnique({
-      where: { id: block.webhookId },
-    })) as Webhook | null)
-  if (!webhook) {
-    logs.push({
-      status: 'error',
-      description: `Couldn't find webhook with id ${block.webhookId}`,
-    })
-    return { outgoingEdgeId: block.outgoingEdgeId, logs }
-  }
-  const preparedWebhook = prepareWebhookAttributes(webhook, block.options)
+    block.options?.webhook ??
+    ('webhookId' in block
+      ? ((await prisma.webhook.findUnique({
+          where: { id: block.webhookId },
+        })) as Webhook | null)
+      : null)
+  if (!webhook) return { outgoingEdgeId: block.outgoingEdgeId }
   const parsedWebhook = await parseWebhookAttributes(
     state,
     state.typebotsQueue[0].answers
-  )(preparedWebhook)
+  )({ webhook, isCustomBody: block.options?.isCustomBody })
   if (!parsedWebhook) {
     logs.push({
       status: 'error',
@@ -58,7 +54,7 @@ export const executeWebhookBlock = async (
     })
     return { outgoingEdgeId: block.outgoingEdgeId, logs }
   }
-  if (block.options.isExecutedOnClient && !state.whatsApp)
+  if (block.options?.isExecutedOnClient && !state.whatsApp)
     return {
       outgoingEdgeId: block.outgoingEdgeId,
       clientSideActions: [
@@ -78,40 +74,36 @@ export const executeWebhookBlock = async (
   })
 }
 
-const prepareWebhookAttributes = (
-  webhook: Webhook,
-  options: WebhookOptions
-): Webhook => {
-  if (options.isAdvancedConfig === false) {
-    return { ...webhook, body: '{{state}}', ...defaultWebhookAttributes }
-  } else if (options.isCustomBody === false) {
-    return { ...webhook, body: '{{state}}' }
-  }
-  return webhook
-}
-
 const checkIfBodyIsAVariable = (body: string) => /^{{.+}}$/.test(body)
 
 const parseWebhookAttributes =
   (state: SessionState, answers: AnswerInSessionState[]) =>
-  async (webhook: Webhook): Promise<ParsedWebhook | undefined> => {
+  async ({
+    webhook,
+    isCustomBody,
+  }: {
+    webhook: Webhook
+    isCustomBody?: boolean
+  }): Promise<ParsedWebhook | undefined> => {
     if (!webhook.url || !webhook.method) return
     const { typebot } = state.typebotsQueue[0]
     const basicAuth: { username?: string; password?: string } = {}
-    const basicAuthHeaderIdx = webhook.headers.findIndex(
+    const basicAuthHeaderIdx = webhook.headers?.findIndex(
       (h) =>
         h.key?.toLowerCase() === 'authorization' &&
         h.value?.toLowerCase()?.includes('basic')
     )
     const isUsernamePasswordBasicAuth =
       basicAuthHeaderIdx !== -1 &&
-      webhook.headers[basicAuthHeaderIdx].value?.includes(':')
+      isDefined(basicAuthHeaderIdx) &&
+      webhook.headers?.at(basicAuthHeaderIdx)?.value?.includes(':')
     if (isUsernamePasswordBasicAuth) {
       const [username, password] =
-        webhook.headers[basicAuthHeaderIdx].value?.slice(6).split(':') ?? []
+        webhook.headers?.at(basicAuthHeaderIdx)?.value?.slice(6).split(':') ??
+        []
       basicAuth.username = username
       basicAuth.password = password
-      webhook.headers.splice(basicAuthHeaderIdx, 1)
+      webhook.headers?.splice(basicAuthHeaderIdx, 1)
     }
     const headers = convertKeyValueTableToObject(
       webhook.headers,
@@ -124,9 +116,11 @@ const parseWebhookAttributes =
       body: webhook.body,
       answers,
       variables: typebot.variables,
+      isCustomBody,
     })
+    const method = webhook.method ?? defaultWebhookAttributes.method
     const { data: body, isJson } =
-      bodyContent && webhook.method !== HttpMethod.GET
+      bodyContent && method !== HttpMethod.GET
         ? safeJsonParse(
             parseVariables(typebot.variables, {
               isInsideJson: !checkIfBodyIsAVariable(bodyContent),
@@ -139,7 +133,7 @@ const parseWebhookAttributes =
         webhook.url + (queryParams !== '' ? `?${queryParams}` : '')
       ),
       basicAuth,
-      method: webhook.method,
+      method,
       headers,
       body,
       isJson,
@@ -156,7 +150,7 @@ export const executeWebhook = async (
   const request = {
     url,
     method: method as Method,
-    headers,
+    headers: headers ?? {},
     ...(basicAuth ?? {}),
     json:
       !contentType?.includes('x-www-form-urlencoded') && body && isJson
@@ -222,20 +216,21 @@ const getBodyContent = async ({
   body,
   answers,
   variables,
+  isCustomBody,
 }: {
   body?: string | null
   answers: AnswerInSessionState[]
   variables: Variable[]
+  isCustomBody?: boolean
 }): Promise<string | undefined> => {
-  if (!body) return
-  return body === '{{state}}'
+  return isEmpty(body) && isCustomBody !== true
     ? JSON.stringify(
         parseAnswers({
           answers,
           variables: getDefinedVariables(variables),
         })
       )
-    : body
+    : body ?? undefined
 }
 
 const convertKeyValueTableToObject = (

@@ -5,23 +5,19 @@ import {
 } from '@/components/icons'
 import { RadioButtons } from '@/components/inputs/RadioButtons'
 import { Heading, Stack } from '@chakra-ui/react'
-import {
-  AvatarProps,
-  ChatTheme,
-  ContainerColors,
-  InputColors,
-} from '@typebot.io/schemas'
+import { AvatarProps, ChatTheme, Theme } from '@typebot.io/schemas'
 import React from 'react'
 import { AvatarForm } from './AvatarForm'
 import { ButtonsTheme } from './ButtonsTheme'
 import { GuestBubbles } from './GuestBubbles'
 import { HostBubbles } from './HostBubbles'
 import { InputsTheme } from './InputsTheme'
+import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
 
 type Props = {
   workspaceId: string
   typebotId: string
-  chatTheme: ChatTheme
+  chatTheme: Theme['chat']
   onChatThemeChange: (chatTheme: ChatTheme) => void
 }
 
@@ -31,18 +27,24 @@ export const ChatThemeSettings = ({
   chatTheme,
   onChatThemeChange,
 }: Props) => {
-  const handleHostBubblesChange = (hostBubbles: ContainerColors) =>
-    onChatThemeChange({ ...chatTheme, hostBubbles })
-  const handleGuestBubblesChange = (guestBubbles: ContainerColors) =>
-    onChatThemeChange({ ...chatTheme, guestBubbles })
-  const handleButtonsChange = (buttons: ContainerColors) =>
+  const updateHostBubbles = (
+    hostBubbles: NonNullable<Theme['chat']>['hostBubbles']
+  ) => onChatThemeChange({ ...chatTheme, hostBubbles })
+
+  const updateGuestBubbles = (
+    guestBubbles: NonNullable<Theme['chat']>['guestBubbles']
+  ) => onChatThemeChange({ ...chatTheme, guestBubbles })
+
+  const updateButtons = (buttons: NonNullable<Theme['chat']>['buttons']) =>
     onChatThemeChange({ ...chatTheme, buttons })
-  const handleInputsChange = (inputs: InputColors) =>
+
+  const updateInputs = (inputs: NonNullable<Theme['chat']>['inputs']) =>
     onChatThemeChange({ ...chatTheme, inputs })
 
-  const handleHostAvatarChange = (hostAvatar: AvatarProps) =>
+  const updateHostAvatar = (hostAvatar: AvatarProps) =>
     onChatThemeChange({ ...chatTheme, hostAvatar })
-  const handleGuestAvatarChange = (guestAvatar: AvatarProps) =>
+
+  const updateGuestAvatar = (guestAvatar: AvatarProps) =>
     onChatThemeChange({ ...chatTheme, guestAvatar })
 
   return (
@@ -54,9 +56,9 @@ export const ChatThemeSettings = ({
           fileName: 'hostAvatar',
         }}
         title="Bot avatar"
-        avatarProps={chatTheme.hostAvatar}
+        avatarProps={chatTheme?.hostAvatar}
         isDefaultCheck
-        onAvatarChange={handleHostAvatarChange}
+        onAvatarChange={updateHostAvatar}
       />
       <AvatarForm
         uploadFileProps={{
@@ -65,37 +67,34 @@ export const ChatThemeSettings = ({
           fileName: 'guestAvatar',
         }}
         title="User avatar"
-        avatarProps={chatTheme.guestAvatar}
-        onAvatarChange={handleGuestAvatarChange}
+        avatarProps={chatTheme?.guestAvatar}
+        onAvatarChange={updateGuestAvatar}
       />
       <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
         <Heading fontSize="lg">Bot bubbles</Heading>
         <HostBubbles
-          hostBubbles={chatTheme.hostBubbles}
-          onHostBubblesChange={handleHostBubblesChange}
+          hostBubbles={chatTheme?.hostBubbles}
+          onHostBubblesChange={updateHostBubbles}
         />
       </Stack>
 
       <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
         <Heading fontSize="lg">User bubbles</Heading>
         <GuestBubbles
-          guestBubbles={chatTheme.guestBubbles}
-          onGuestBubblesChange={handleGuestBubblesChange}
+          guestBubbles={chatTheme?.guestBubbles}
+          onGuestBubblesChange={updateGuestBubbles}
         />
       </Stack>
       <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
         <Heading fontSize="lg">Buttons</Heading>
         <ButtonsTheme
-          buttons={chatTheme.buttons}
-          onButtonsChange={handleButtonsChange}
+          buttons={chatTheme?.buttons}
+          onButtonsChange={updateButtons}
         />
       </Stack>
       <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
         <Heading fontSize="lg">Inputs</Heading>
-        <InputsTheme
-          inputs={chatTheme.inputs}
-          onInputsChange={handleInputsChange}
-        />
+        <InputsTheme inputs={chatTheme?.inputs} onInputsChange={updateInputs} />
       </Stack>
       <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
         <Heading fontSize="lg">Corners roundness</Heading>
@@ -114,7 +113,7 @@ export const ChatThemeSettings = ({
               value: 'large',
             },
           ]}
-          value={chatTheme.roundness ?? 'medium'}
+          value={chatTheme?.roundness ?? defaultTheme.chat.roundness}
           onSelect={(roundness) =>
             onChatThemeChange({ ...chatTheme, roundness })
           }

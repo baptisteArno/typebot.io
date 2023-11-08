@@ -3,11 +3,11 @@ import { env } from '@typebot.io/env'
 import { encrypt } from '@typebot.io/lib/api/encryption/encrypt'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { isDefined } from '@typebot.io/lib/utils'
-import { GoogleSheetsCredentials } from '@typebot.io/schemas/features/blocks/integrations/googleSheets/schemas'
 import { Credentials as CredentialsFromDb } from '@typebot.io/prisma'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 import { OAuth2Client, Credentials } from 'google-auth-library'
 import prisma from '@typebot.io/lib/prisma'
+import { GoogleSheetsCredentials } from '@typebot.io/schemas'
 
 export const getAuthenticatedGoogleDoc = async ({
   credentialsId,

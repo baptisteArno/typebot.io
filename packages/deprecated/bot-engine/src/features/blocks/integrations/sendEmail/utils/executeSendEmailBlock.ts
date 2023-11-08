@@ -29,18 +29,18 @@ export const executeSendEmailBlock = (
     url: `${apiHost}/api/typebots/${typebotId}/integrations/email?resultId=${resultId}`,
     method: 'POST',
     body: {
-      credentialsId: options.credentialsId,
-      recipients: options.recipients.map(parseVariables(variables)),
-      subject: parseVariables(variables)(options.subject ?? ''),
-      body: parseVariables(variables)(options.body ?? ''),
-      cc: (options.cc ?? []).map(parseVariables(variables)),
-      bcc: (options.bcc ?? []).map(parseVariables(variables)),
-      replyTo: options.replyTo
+      credentialsId: options?.credentialsId,
+      recipients: options?.recipients?.map(parseVariables(variables)),
+      subject: parseVariables(variables)(options?.subject ?? ''),
+      body: parseVariables(variables)(options?.body ?? ''),
+      cc: (options?.cc ?? []).map(parseVariables(variables)),
+      bcc: (options?.bcc ?? []).map(parseVariables(variables)),
+      replyTo: options?.replyTo
         ? parseVariables(variables)(options.replyTo)
         : undefined,
-      fileUrls: variables.find(byId(options.attachmentsVariableId))?.value,
-      isCustomBody: options.isCustomBody,
-      isBodyCode: options.isBodyCode,
+      fileUrls: variables.find(byId(options?.attachmentsVariableId))?.value,
+      isCustomBody: options?.isCustomBody,
+      isBodyCode: options?.isBodyCode,
       resultValues,
     },
   }).then(({ error }) => {

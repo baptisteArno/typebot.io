@@ -26,22 +26,32 @@ export const PlateText = ({
 
 const PlateTextContent = ({ text }: { text: string }) => {
   const { typebot } = useTypebot()
+
   return (
     <>
-      {text.split(/\{\{(.*?\}\})/g).map((str, idx) => {
-        if (str.endsWith('}}')) {
-          const variableName = str.trim().slice(0, -2)
-          const matchingVariable = typebot?.variables.find(
-            (variable) => variable.name === variableName
-          )
-          if (!matchingVariable) return '{{' + str
+      {text.split(/\{\{=(.*?=\}\})/g).map((str, idx) => {
+        if (str.endsWith('=}}')) {
           return (
-            <span className="slate-variable" key={idx}>
-              {str.trim().slice(0, -2)}
+            <span className="slate-inline-code" key={idx}>
+              {str.trim().slice(0, -3)}
             </span>
           )
         }
-        return str
+        return str.split(/\{\{(.*?\}\})/g).map((str, idx) => {
+          if (str.endsWith('}}')) {
+            const variableName = str.trim().slice(0, -2)
+            const matchingVariable = typebot?.variables.find(
+              (variable) => variable.name === variableName
+            )
+            if (!matchingVariable) return '{{' + str
+            return (
+              <span className="slate-variable" key={idx}>
+                {str.trim().slice(0, -2)}
+              </span>
+            )
+          }
+          return str
+        })
       })}
     </>
   )

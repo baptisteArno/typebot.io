@@ -1,6 +1,7 @@
 import { Prisma, PrismaClient } from '@typebot.io/prisma'
-import { InputBlockType, Typebot } from '@typebot.io/schemas'
+import { Block, Typebot } from '@typebot.io/schemas'
 import { deleteFilesFromBucket } from '../../s3/deleteFilesFromBucket'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 
 type ArchiveResultsProps = {
   typebot: Pick<Typebot, 'groups'>
@@ -14,7 +15,7 @@ export const archiveResults =
   async ({ typebot, resultsFilter }: ArchiveResultsProps) => {
     const batchSize = 100
     const fileUploadBlockIds = typebot.groups
-      .flatMap((group) => group.blocks)
+      .flatMap<Block>((group) => group.blocks)
       .filter((block) => block.type === InputBlockType.FILE)
       .map((block) => block.id)
 

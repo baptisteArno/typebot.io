@@ -1,4 +1,11 @@
-import { Group, Block, Source, IdMap, Target } from '@typebot.io/schemas'
+import {
+  Group,
+  Block,
+  IdMap,
+  Target,
+  BlockSource,
+  TEventSource,
+} from '@typebot.io/schemas'
 
 export type Coordinates = { x: number; y: number }
 
@@ -13,11 +20,11 @@ export type Node = Omit<Group, 'blocks'> & {
 }
 
 export type ConnectingIds = {
-  source: Source
+  source: TEventSource | (BlockSource & { groupId: string })
   target?: Target
 }
 
-export type GroupsCoordinates = IdMap<Coordinates>
+export type CoordinatesMap = IdMap<Coordinates>
 
 export type AnchorsPositionProps = {
   sourcePosition: Coordinates

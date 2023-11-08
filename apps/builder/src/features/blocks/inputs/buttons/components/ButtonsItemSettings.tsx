@@ -2,7 +2,8 @@ import React from 'react'
 import { Stack } from '@chakra-ui/react'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
 import { ConditionForm } from '@/features/blocks/logic/condition/components/ConditionForm'
-import { ButtonItem, Condition, LogicalOperator } from '@typebot.io/schemas'
+import { ButtonItem, Condition } from '@typebot.io/schemas'
+import { LogicalOperator } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
 
 type Props = {
   item: ButtonItem

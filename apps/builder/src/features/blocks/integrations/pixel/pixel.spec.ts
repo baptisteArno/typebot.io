@@ -1,8 +1,8 @@
 import test, { expect } from '@playwright/test'
 import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
-import { IntegrationBlockType } from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
+import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 
 test.describe('Pixel block', () => {
   test('its configuration should work', async ({ page }) => {
@@ -12,7 +12,6 @@ test.describe('Pixel block', () => {
         id: typebotId,
         ...parseDefaultGroupWithBlock({
           type: IntegrationBlockType.PIXEL,
-          options: {},
         }),
       },
     ])
