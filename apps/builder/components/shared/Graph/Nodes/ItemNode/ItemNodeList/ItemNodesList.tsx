@@ -1,16 +1,38 @@
-import { Flex, Portal, Stack, Text, useEventListener, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel } from '@chakra-ui/react'
+import {
+  Flex,
+  Portal,
+  Stack,
+  Text,
+  useEventListener,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionIcon,
+  AccordionPanel,
+} from '@chakra-ui/react'
 import {
   computeNearestPlaceholderIndex,
   useStepDnd,
 } from 'contexts/GraphDndContext'
 import { Coordinates, useGraph } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext'
-import { ButtonItem, IntegrationStepType, OctaStepType, OctaWabaStepType, StepIndices, StepWithItems } from 'models'
+import {
+  ButtonItem,
+  IntegrationStepType,
+  OctaStepType,
+  OctaWabaStepType,
+  StepIndices,
+  StepWithItems,
+} from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { ItemNode } from '../ItemNode'
 import { SourceEndpoint } from '../../../Endpoints'
 import { ItemNodeOverlay } from '../ItemNodeOverlay'
-import { Container, HandleSelectCalendar, SelectedCalendar } from './ItemNodeList.style'
+import {
+  Container,
+  HandleSelectCalendar,
+  SelectedCalendar,
+} from './ItemNodeList.style'
 import { CodeEditor } from 'components/shared/CodeEditor'
 
 type Props = {
@@ -22,7 +44,7 @@ type Props = {
 export const ItemNodesList = ({
   step,
   indices: { blockIndex, stepIndex },
-  isReadOnly = false
+  isReadOnly = false,
 }: Props) => {
   const { typebot, createItem, detachItemFromStep } = useTypebot()
   const { draggedItem, setDraggedItem, mouseOverBlock } = useStepDnd()
@@ -43,7 +65,7 @@ export const ItemNodesList = ({
   const [relativeCoordinates, setRelativeCoordinates] = useState({ x: 0, y: 0 })
   const [expandedPlaceholderIndex, setExpandedPlaceholderIndex] = useState<
     number | undefined
-  >() 
+  >()
 
   const handleGlobalMouseMove = (event: MouseEvent) => {
     if (!draggedItem || draggedItem.stepId !== step.id) return
@@ -96,17 +118,17 @@ export const ItemNodesList = ({
 
   const handleStepMouseDown =
     (itemIndex: number) =>
-      (
-        { absolute, relative }: { absolute: Coordinates; relative: Coordinates },
-        item: ButtonItem
-      ) => {
-        if (!typebot || isReadOnly) return
-        placeholderRefs.current.splice(itemIndex + 1, 1)
-        detachItemFromStep({ blockIndex, stepIndex, itemIndex })
-        setPosition(absolute)
-        setRelativeCoordinates(relative)
-        setDraggedItem(item)
-      }
+    (
+      { absolute, relative }: { absolute: Coordinates; relative: Coordinates },
+      item: ButtonItem
+    ) => {
+      if (!typebot || isReadOnly) return
+      placeholderRefs.current.splice(itemIndex + 1, 1)
+      detachItemFromStep({ blockIndex, stepIndex, itemIndex })
+      setPosition(absolute)
+      setRelativeCoordinates(relative)
+      setDraggedItem(item)
+    }
 
   const stopPropagating = (e: React.MouseEvent) => e.stopPropagation()
 
@@ -115,30 +137,33 @@ export const ItemNodesList = ({
       elem && (placeholderRefs.current[idx] = elem)
     }
 
-  const webhook = { 
+  const webhook = {
     method: typebot?.blocks[blockIndex]?.steps[stepIndex]?.options?.method,
-    url: typebot?.blocks[blockIndex]?.steps[stepIndex]?.options?.url, 
-    path: typebot?.blocks[blockIndex]?.steps[stepIndex]?.options?.path 
+    url: typebot?.blocks[blockIndex]?.steps[stepIndex]?.options?.url,
+    path: typebot?.blocks[blockIndex]?.steps[stepIndex]?.options?.path,
   }
 
   const getWebhookDetails = () => {
     try {
-        const headers = {};
+      const headers = {}
 
-        typebot?.blocks[blockIndex]?.steps[stepIndex]?.options?.headers.map(header => {
+      typebot?.blocks[blockIndex]?.steps[stepIndex]?.options?.headers.map(
+        (header) => {
           headers[header.key] = header.value
-        })
+        }
+      )
 
-        const jsonPreview = {
-              headers,
-              body: JSON.parse(typebot?.blocks[blockIndex]?.steps[stepIndex]?.options?.body)
-            }
-
-        return JSON.stringify(jsonPreview ?? '{}', undefined, 2);
-
-      } catch {
-        return 'Is not valid JSON';
+      const jsonPreview = {
+        headers,
+        body: JSON.parse(
+          typebot?.blocks[blockIndex]?.steps[stepIndex]?.options?.body
+        ),
       }
+
+      return JSON.stringify(jsonPreview ?? '{}', undefined, 2)
+    } catch {
+      return 'Is not valid JSON'
+    }
   }
 
   return (
@@ -150,102 +175,112 @@ export const ItemNodesList = ({
       pointerEvents={isReadOnly ? 'none' : 'all'}
     >
       {step.type === OctaStepType.OFFICE_HOURS && (
-        <Stack paddingBottom={"10px"} >
-          {!typebot?.blocks[blockIndex].steps[stepIndex]?.options?.name && <HandleSelectCalendar>
-            Selecione o expediente:
-          </HandleSelectCalendar>}
-          {typebot?.blocks[blockIndex].steps[stepIndex]?.options?.name &&
+        <Stack paddingBottom={'10px'}>
+          {!typebot?.blocks[blockIndex].steps[stepIndex]?.options?.name && (
+            <HandleSelectCalendar>Selecione o expediente:</HandleSelectCalendar>
+          )}
+          {typebot?.blocks[blockIndex].steps[stepIndex]?.options?.name && (
             <div>
               Horário: &nbsp;&nbsp;
               <SelectedCalendar>
                 {typebot?.blocks[blockIndex].steps[stepIndex].options?.name}
               </SelectedCalendar>
             </div>
-          }
+          )}
         </Stack>
       )}
       {step.type === IntegrationStepType.WEBHOOK && (
         <Container>
-          {!webhook?.url &&
-          <Text noOfLines={0}>
-            {'Clique para editar...'}
-          </Text>
-          }
-          {webhook?.url &&
+          {!webhook?.url && (
+            <Text noOfLines={0}>{'Clique para editar...'}</Text>
+          )}
+          {webhook?.url && (
             <Text noOfLines={0}>
-              {webhook.method} <br/>
+              {webhook.method} <br />
               {webhook.url + webhook.path}
             </Text>
-          }
-          {webhook?.url &&
-            <Accordion allowMultiple onClick={stopPropagating} pointerEvents='all' >
+          )}
+          {webhook?.url && (
+            <Accordion
+              allowMultiple
+              onClick={stopPropagating}
+              pointerEvents="all"
+            >
               <AccordionItem>
-                  <AccordionButton justifyContent="space-between">
-                    <b>Detalhes</b>
-                    <AccordionIcon />
-                  </AccordionButton>
-                  <AccordionPanel>
-                      <CodeEditor
-                        value={getWebhookDetails() ?? '{}'}
-                        defaultValue={'{}'}
-                        lang="json"
-                        withVariableButton={false}
-                        isReadOnly
-                      />
-                  </AccordionPanel>
+                <AccordionButton justifyContent="space-between">
+                  <b>Detalhes</b>
+                  <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel>
+                  <CodeEditor
+                    value={getWebhookDetails() ?? '{}'}
+                    defaultValue={'{}'}
+                    lang="json"
+                    withVariableButton={false}
+                    isReadOnly
+                  />
+                </AccordionPanel>
               </AccordionItem>
             </Accordion>
-          }
+          )}
         </Container>
       )}
-      {step && step.items && step.items.map((item, idx) => {
-        return (
-          <Stack key={item.id} spacing={1}> 
-            <ItemNode
-              item={item}
-              step={step}
-              indices={{ blockIndex, stepIndex, itemIndex: idx }}
-              onMouseDown={handleStepMouseDown(idx)}
-              isReadOnly={isReadOnly}
+      {step &&
+        step.items &&
+        step.items.map((item, idx) => {
+          return (
+            <Stack key={item.id} spacing={1}>
+              <ItemNode
+                item={item}
+                step={step}
+                indices={{ blockIndex, stepIndex, itemIndex: idx }}
+                onMouseDown={handleStepMouseDown(idx)}
+                isReadOnly={isReadOnly}
+              />
+              <Flex
+                ref={handlePushElementRef(idx + 1)}
+                h={
+                  showPlaceholders && expandedPlaceholderIndex === idx + 1
+                    ? '50px'
+                    : '2px'
+                }
+                bgColor={'gray.300'}
+                visibility={showPlaceholders ? 'visible' : 'hidden'}
+                rounded="lg"
+                transition={showPlaceholders ? 'height 200ms' : 'none'}
+              />
+            </Stack>
+          )
+        })}
+      {isLastStep &&
+        step.type !== OctaStepType.OFFICE_HOURS &&
+        step.type !== IntegrationStepType.WEBHOOK &&
+        step.type !== OctaWabaStepType.WHATSAPP_OPTIONS_LIST &&
+        step.type !== OctaWabaStepType.WHATSAPP_BUTTONS_LIST && (
+          <Flex
+            px="4"
+            py="2"
+            borderWidth="1px"
+            borderColor="gray.300"
+            bgColor={isReadOnly ? '' : 'gray.50'}
+            rounded="md"
+            pos="relative"
+            align="center"
+            cursor={isReadOnly ? 'pointer' : 'not-allowed'}
+          >
+            <Text color={isReadOnly ? 'inherit' : 'gray.500'}>
+              Se a regra não for válida, ir para:
+            </Text>
+            <SourceEndpoint
+              source={{
+                blockId: step.blockId,
+                stepId: step.id,
+              }}
+              pos="absolute"
+              right="-44px"
             />
-            <Flex
-              ref={handlePushElementRef(idx + 1)}
-              h={
-                showPlaceholders && expandedPlaceholderIndex === idx + 1
-                  ? '50px'
-                  : '2px'
-              }
-              bgColor={'gray.300'}
-              visibility={showPlaceholders ? 'visible' : 'hidden'}
-              rounded="lg"
-              transition={showPlaceholders ? 'height 200ms' : 'none'}
-            />
-          </Stack>
-        )
-      })}
-      {isLastStep && step.type !== OctaStepType.OFFICE_HOURS && step.type !== IntegrationStepType.WEBHOOK && step.type !== OctaWabaStepType.WHATSAPP_OPTIONS_LIST && step.type !== OctaWabaStepType.WHATSAPP_BUTTONS_LIST && (
-        <Flex
-          px="4"
-          py="2"
-          borderWidth="1px"
-          borderColor="gray.300"
-          bgColor={isReadOnly ? '' : 'gray.50'}
-          rounded="md"
-          pos="relative"
-          align="center"
-          cursor={isReadOnly ? 'pointer' : 'not-allowed'}
-        >
-          <Text color={isReadOnly ? 'inherit' : 'gray.500'}>Padrão</Text>
-          <SourceEndpoint
-            source={{
-              blockId: step.blockId,
-              stepId: step.id,
-            }}
-            pos="absolute"
-            right="-44px"
-          />
-        </Flex>
-      )}
+          </Flex>
+        )}
 
       {draggedItem && draggedItem.stepId === step.id && (
         <Portal>
