@@ -9,7 +9,7 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { ChatIcon, CodeIcon, MoreVerticalIcon } from '@/components/icons'
-import { GeneralSettings, Metadata, TypingEmulation } from '@typebot.io/schemas'
+import { Settings } from '@typebot.io/schemas'
 import React from 'react'
 import { GeneralSettingsForm } from './GeneralSettingsForm'
 import { MetadataForm } from './MetadataForm'
@@ -20,17 +20,19 @@ import { headerHeight } from '@/features/editor/constants'
 export const SettingsSideMenu = () => {
   const { typebot, updateTypebot } = useTypebot()
 
-  const handleTypingEmulationChange = (typingEmulation: TypingEmulation) =>
+  const updateTypingEmulation = (
+    typingEmulation: Settings['typingEmulation']
+  ) =>
     typebot &&
     updateTypebot({
       updates: { settings: { ...typebot.settings, typingEmulation } },
     })
 
-  const handleGeneralSettingsChange = (general: GeneralSettings) =>
+  const handleGeneralSettingsChange = (general: Settings['general']) =>
     typebot &&
     updateTypebot({ updates: { settings: { ...typebot.settings, general } } })
 
-  const handleMetadataChange = (metadata: Metadata) =>
+  const handleMetadataChange = (metadata: Settings['metadata']) =>
     typebot &&
     updateTypebot({ updates: { settings: { ...typebot.settings, metadata } } })
 
@@ -78,7 +80,7 @@ export const SettingsSideMenu = () => {
             {typebot && (
               <TypingEmulationForm
                 typingEmulation={typebot.settings.typingEmulation}
-                onUpdate={handleTypingEmulationChange}
+                onUpdate={updateTypingEmulation}
               />
             )}
           </AccordionPanel>

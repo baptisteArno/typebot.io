@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTypebot } from '@/providers/TypebotProvider'
-import { BubbleBlockType, TextBubbleBlock } from '@typebot.io/schemas'
+import { TextBubbleBlock } from '@typebot.io/schemas'
 import { computeTypingDuration } from '../utils/computeTypingDuration'
 import { parseVariables } from '@/features/variables'
 import { TypingBubble } from '@/components/TypingBubble'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 
 type Props = {
   block: TextBubbleBlock
@@ -12,19 +13,13 @@ type Props = {
 
 export const showAnimationDuration = 400
 
-const defaultTypingEmulation = {
-  enabled: true,
-  speed: 300,
-  maxDelay: 1.5,
-}
-
 export const TextBubble = ({ block, onTransitionEnd }: Props) => {
   const { typebot, isLoading } = useTypebot()
   const messageContainer = useRef<HTMLDivElement | null>(null)
   const [isTyping, setIsTyping] = useState(true)
 
   const [content] = useState(
-    parseVariables(typebot.variables)(block.content.html)
+    parseVariables(typebot.variables)(block.content?.html)
   )
 
   const onTypingEnd = useCallback(() => {
@@ -37,10 +32,10 @@ export const TextBubble = ({ block, onTransitionEnd }: Props) => {
   useEffect(() => {
     if (!isTyping || isLoading) return
 
-    const typingTimeout = computeTypingDuration(
-      block.content.plainText ?? '',
-      typebot.settings?.typingEmulation ?? defaultTypingEmulation
-    )
+    const typingTimeout = computeTypingDuration({
+      bubbleContent: block.content?.plainText ?? '',
+      typingSettings: typebot.settings?.typingEmulation,
+    })
     const timeout = setTimeout(() => {
       onTypingEnd()
     }, typingTimeout)
@@ -49,7 +44,7 @@ export const TextBubble = ({ block, onTransitionEnd }: Props) => {
       clearTimeout(timeout)
     }
   }, [
-    block.content.plainText,
+    block.content?.plainText,
     isLoading,
     isTyping,
     onTypingEnd,

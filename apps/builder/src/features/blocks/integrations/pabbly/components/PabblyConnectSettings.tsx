@@ -1,17 +1,13 @@
 import { Alert, AlertIcon, Button, Link, Stack, Text } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@/components/icons'
-import {
-  PabblyConnectBlock,
-  Webhook,
-  WebhookOptions,
-} from '@typebot.io/schemas'
+import { PabblyConnectBlock, Webhook } from '@typebot.io/schemas'
 import React from 'react'
 import { WebhookAdvancedConfigForm } from '../../webhook/components/WebhookAdvancedConfigForm'
 import { TextInput } from '@/components/inputs'
 
 type Props = {
   block: PabblyConnectBlock
-  onOptionsChange: (options: WebhookOptions) => void
+  onOptionsChange: (options: PabblyConnectBlock['options']) => void
 }
 
 export const PabblyConnectSettings = ({
@@ -19,7 +15,6 @@ export const PabblyConnectSettings = ({
   onOptionsChange,
 }: Props) => {
   const setLocalWebhook = async (newLocalWebhook: Webhook) => {
-    if (!options.webhook) return
     onOptionsChange({
       ...options,
       webhook: newLocalWebhook,
@@ -27,11 +22,10 @@ export const PabblyConnectSettings = ({
   }
 
   const updateUrl = (url: string) => {
-    if (!options.webhook) return
-    onOptionsChange({ ...options, webhook: { ...options.webhook, url } })
+    onOptionsChange({ ...options, webhook: { ...options?.webhook, url } })
   }
 
-  const url = options.webhook?.url
+  const url = options?.webhook?.url
 
   return (
     <Stack spacing={4}>
@@ -60,15 +54,13 @@ export const PabblyConnectSettings = ({
         withVariableButton={false}
         debounceTimeout={0}
       />
-      {options.webhook && (
-        <WebhookAdvancedConfigForm
-          blockId={blockId}
-          webhook={options.webhook as Webhook}
-          options={options}
-          onWebhookChange={setLocalWebhook}
-          onOptionsChange={onOptionsChange}
-        />
-      )}
+      <WebhookAdvancedConfigForm
+        blockId={blockId}
+        webhook={options?.webhook}
+        options={options}
+        onWebhookChange={setLocalWebhook}
+        onOptionsChange={onOptionsChange}
+      />
     </Stack>
   )
 }

@@ -2,10 +2,8 @@ import test, { expect } from '@playwright/test'
 import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
 import { createId } from '@paralleldrive/cuid2'
-import {
-  defaultChatwootOptions,
-  IntegrationBlockType,
-} from '@typebot.io/schemas'
+import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
+import { defaultChatwootOptions } from '@typebot.io/schemas/features/blocks/integrations/chatwoot/constants'
 
 const typebotId = createId()
 
@@ -18,7 +16,6 @@ test.describe('Chatwoot block', () => {
         id: typebotId,
         ...parseDefaultGroupWithBlock({
           type: IntegrationBlockType.CHATWOOT,
-          options: defaultChatwootOptions,
         }),
       },
     ])

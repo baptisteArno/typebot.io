@@ -1,7 +1,7 @@
 ## Install
 
 ```bash
-npm install @typebot.io/react
+npm install @typebot.io/js @typebot.io/react
 ```
 
 ## Standard

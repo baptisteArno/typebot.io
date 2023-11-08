@@ -168,7 +168,7 @@ export const Select = <T extends Item>({
               pr={selectedItem ? 16 : 8}
               w="full"
             >
-              {!isTouched && (
+              {!isTouched && items && (
                 <Text noOfLines={1} data-testid="selected-item-label">
                   {inputValue}
                 </Text>

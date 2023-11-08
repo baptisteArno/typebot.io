@@ -2,49 +2,53 @@ import { TextInput } from '@/components/inputs'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormControl, FormLabel, Stack } from '@chakra-ui/react'
-import {
-  ChoiceInputOptions,
-  Variable,
-  defaultChoiceInputOptions,
-} from '@typebot.io/schemas'
+import { ChoiceInputBlock, Variable } from '@typebot.io/schemas'
 import React from 'react'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
+import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
 
 type Props = {
-  options?: ChoiceInputOptions
-  onOptionsChange: (options: ChoiceInputOptions) => void
+  options?: ChoiceInputBlock['options']
+  onOptionsChange: (options: ChoiceInputBlock['options']) => void
 }
 
 export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
   const updateIsMultiple = (isMultipleChoice: boolean) =>
-    options && onOptionsChange({ ...options, isMultipleChoice })
+    onOptionsChange({ ...options, isMultipleChoice })
   const updateIsSearchable = (isSearchable: boolean) =>
-    options && onOptionsChange({ ...options, isSearchable })
+    onOptionsChange({ ...options, isSearchable })
   const updateButtonLabel = (buttonLabel: string) =>
-    options && onOptionsChange({ ...options, buttonLabel })
+    onOptionsChange({ ...options, buttonLabel })
   const updateSearchInputPlaceholder = (searchInputPlaceholder: string) =>
-    options && onOptionsChange({ ...options, searchInputPlaceholder })
+    onOptionsChange({ ...options, searchInputPlaceholder })
   const updateSaveVariable = (variable?: Variable) =>
-    options && onOptionsChange({ ...options, variableId: variable?.id })
+    onOptionsChange({ ...options, variableId: variable?.id })
   const updateDynamicDataVariable = (variable?: Variable) =>
-    options && onOptionsChange({ ...options, dynamicVariableId: variable?.id })
+    onOptionsChange({ ...options, dynamicVariableId: variable?.id })
 
   return (
     <Stack spacing={4}>
       <SwitchWithRelatedSettings
         label="Multiple choice?"
-        initialValue={options?.isMultipleChoice ?? false}
+        initialValue={
+          options?.isMultipleChoice ??
+          defaultChoiceInputOptions.isMultipleChoice
+        }
         onCheckChange={updateIsMultiple}
       >
         <TextInput
           label="Submit button label:"
-          defaultValue={options?.buttonLabel ?? 'Send'}
+          defaultValue={
+            options?.buttonLabel ?? defaultChoiceInputOptions.buttonLabel
+          }
           onChange={updateButtonLabel}
         />
       </SwitchWithRelatedSettings>
       <SwitchWithRelatedSettings
         label="Is searchable?"
-        initialValue={options?.isSearchable ?? false}
+        initialValue={
+          options?.isSearchable ?? defaultChoiceInputOptions.isSearchable
+        }
         onCheckChange={updateIsSearchable}
       >
         <TextInput

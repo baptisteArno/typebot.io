@@ -13,17 +13,17 @@ import { CredentialsDropdown } from '@/features/credentials/components/Credentia
 import {
   ChatCompletionOpenAIOptions,
   CreateImageOpenAIOptions,
-  defaultBaseUrl,
-  defaultChatCompletionOptions,
   OpenAIBlock,
-  openAITasks,
 } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { OpenAICredentialsModal } from './OpenAICredentialsModal'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { DropdownList } from '@/components/DropdownList'
 import { OpenAIChatCompletionSettings } from './createChatCompletion/OpenAIChatCompletionSettings'
-import { createId } from '@paralleldrive/cuid2'
 import { TextInput } from '@/components/inputs'
+import {
+  defaultOpenAIOptions,
+  openAITasks,
+} from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
 
 type OpenAITask = (typeof openAITasks)[number]
 
@@ -51,7 +51,7 @@ export const OpenAISettings = ({
       case 'Create chat completion': {
         onOptionsChange({
           credentialsId: options?.credentialsId,
-          ...defaultChatCompletionOptions(createId),
+          task,
         })
         break
       }
@@ -72,6 +72,8 @@ export const OpenAISettings = ({
     })
   }
 
+  const baseUrl = options?.baseUrl ?? defaultOpenAIOptions.baseUrl
+
   return (
     <Stack>
       {workspace && (
@@ -91,7 +93,7 @@ export const OpenAISettings = ({
           />
         </>
       )}
-      {options.credentialsId && (
+      {options?.credentialsId && (
         <>
           <Accordion allowToggle>
             <AccordionItem>
@@ -104,10 +106,10 @@ export const OpenAISettings = ({
               <AccordionPanel as={Stack} spacing={4}>
                 <TextInput
                   label="Base URL"
-                  defaultValue={options.baseUrl}
+                  defaultValue={baseUrl}
                   onChange={updateBaseUrl}
                 />
-                {options.baseUrl !== defaultBaseUrl && (
+                {baseUrl !== defaultOpenAIOptions.baseUrl && (
                   <TextInput
                     label="API version"
                     defaultValue={options.apiVersion}

@@ -1,8 +1,9 @@
 import test, { expect } from '@playwright/test'
 import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
-import { defaultTextInputOptions, InputBlockType } from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { defaultTextInputOptions } from '@typebot.io/schemas/features/blocks/inputs/text/constants'
 
 test.describe.parallel('Text input block', () => {
   test('options should work', async ({ page }) => {
@@ -12,7 +13,6 @@ test.describe.parallel('Text input block', () => {
         id: typebotId,
         ...parseDefaultGroupWithBlock({
           type: InputBlockType.TEXT,
-          options: defaultTextInputOptions,
         }),
       },
     ])

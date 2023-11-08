@@ -52,8 +52,10 @@ export const PhoneInput = ({
         ref={inputRef}
         value={inputValue}
         onChange={handleChange}
-        placeholder={block.options.labels.placeholder ?? 'Your phone number...'}
-        defaultCountry={block.options.defaultCountryCode as Country}
+        placeholder={
+          block.options?.labels?.placeholder ?? 'Your phone number...'
+        }
+        defaultCountry={block.options?.defaultCountryCode as Country}
         autoFocus={!isMobile}
       />
       <SendButton

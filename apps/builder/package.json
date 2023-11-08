@@ -39,6 +39,7 @@
     "@typebot.io/emails": "workspace:*",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/nextjs": "workspace:*",
+    "@typebot.io/js": "workspace:*",
     "@udecode/plate-basic-marks": "21.1.5",
     "@udecode/plate-common": "21.1.5",
     "@udecode/plate-core": "21.1.5",
@@ -116,7 +117,7 @@
     "eslint-config-custom": "workspace:*",
     "next-runtime-env": "1.6.2",
     "superjson": "1.12.4",
-    "typescript": "5.1.6",
-    "zod": "3.21.4"
+    "typescript": "5.2.2",
+    "zod": "3.22.4"
   }
 }

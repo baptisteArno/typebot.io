@@ -2,9 +2,10 @@ import { Spinner, SendButton } from '@/components/SendButton'
 import { useAnswers } from '@/providers/AnswersProvider'
 import { useTypebot } from '@/providers/TypebotProvider'
 import { InputSubmitContent } from '@/types'
-import { defaultFileInputOptions, FileInputBlock } from '@typebot.io/schemas'
+import { FileInputBlock } from '@typebot.io/schemas'
 import React, { ChangeEvent, FormEvent, useState, DragEvent } from 'react'
 import { uploadFiles } from '../helpers/uploadFiles'
+import { defaultFileInputOptions } from '@typebot.io/schemas/features/blocks/inputs/file/constants'
 
 type Props = {
   block: FileInputBlock
@@ -13,13 +14,13 @@ type Props = {
 }
 
 export const FileUploadForm = ({
-  block: {
-    id,
-    options: { isMultipleAllowed, labels, sizeLimit, isRequired },
-  },
+  block: { id, options },
   onSubmit,
   onSkip,
 }: Props) => {
+  const { isMultipleAllowed, labels, isRequired } = options ?? {}
+  const sizeLimit =
+    options && 'sizeLimit' in options ? options?.sizeLimit : undefined
   const { isPreview, currentTypebotId } = useTypebot()
   const { resultId } = useAnswers()
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
@@ -160,7 +161,7 @@ export const FileUploadForm = ({
               )}
               <p
                 className="text-sm text-gray-500 text-center"
-                dangerouslySetInnerHTML={{ __html: labels.placeholder }}
+                dangerouslySetInnerHTML={{ __html: labels?.placeholder ?? '' }}
               />
             </div>
             <input
@@ -181,7 +182,7 @@ export const FileUploadForm = ({
             }
             onClick={onSkip}
           >
-            {labels.skip ?? defaultFileInputOptions.labels.skip}
+            {labels?.skip ?? defaultFileInputOptions.labels.skip}
           </button>
         </div>
       )}
@@ -195,17 +196,17 @@ export const FileUploadForm = ({
                 }
                 onClick={clearFiles}
               >
-                {labels.clear ?? defaultFileInputOptions.labels.clear}
+                {labels?.clear ?? defaultFileInputOptions.labels.clear}
               </button>
             )}
             <SendButton
               type="submit"
               label={
-                labels.button === defaultFileInputOptions.labels.button
+                labels?.button === defaultFileInputOptions.labels.button
                   ? `${labels.button} ${selectedFiles.length} file${
                       selectedFiles.length > 1 ? 's' : ''
                     }`
-                  : labels.button
+                  : labels?.button ?? ''
               }
               disableIcon
             />

@@ -1,16 +1,16 @@
 import { Stack, Text } from '@chakra-ui/react'
-import {
-  VariableString,
-  VideoBubbleContent,
-  VideoBubbleContentType,
-} from '@typebot.io/schemas'
+import { VariableString, VideoBubbleBlock } from '@typebot.io/schemas'
 import { NumberInput, TextInput } from '@/components/inputs'
 import { useTranslate } from '@tolgee/react'
 import { parseVideoUrl } from '@typebot.io/lib/parseVideoUrl'
+import {
+  VideoBubbleContentType,
+  defaultVideoBubbleContent,
+} from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
 
 type Props = {
-  content?: VideoBubbleContent
-  onSubmit: (content: VideoBubbleContent) => void
+  content?: VideoBubbleBlock['content']
+  onSubmit: (content: VideoBubbleBlock['content']) => void
 }
 
 export const VideoUploadContent = ({ content, onSubmit }: Props) => {
@@ -47,7 +47,7 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
       {content?.type !== VideoBubbleContentType.URL && (
         <NumberInput
           label="Height:"
-          defaultValue={content?.height ?? 400}
+          defaultValue={content?.height ?? defaultVideoBubbleContent.height}
           onValueChange={updateHeight}
           suffix={t('editor.blocks.bubbles.video.settings.numberInput.unit')}
           width="150px"

@@ -3,9 +3,11 @@ import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { generatePresignedPostPolicy } from '@typebot.io/lib/s3/generatePresignedPostPolicy'
 import { env } from '@typebot.io/env'
-import { InputBlockType, publicTypebotSchema } from '@typebot.io/schemas'
 import prisma from '@typebot.io/lib/prisma'
 import { getSession } from '@typebot.io/bot-engine/queries/getSession'
+import { parseGroups } from '@typebot.io/schemas'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { getBlockById } from '@typebot.io/lib/getBlockById'
 
 export const generateUploadUrl = publicProcedure
   .meta({
@@ -56,6 +58,7 @@ export const generateUploadUrl = publicProcedure
           typebotId: filePathProps.typebotId,
         },
         select: {
+          version: true,
           groups: true,
           typebot: {
             select: {
@@ -75,8 +78,9 @@ export const generateUploadUrl = publicProcedure
 
       const filePath = `public/workspaces/${workspaceId}/typebots/${filePathProps.typebotId}/results/${filePathProps.resultId}/${filePathProps.fileName}`
 
-      const fileUploadBlock = publicTypebotSchema._def.schema.shape.groups
-        .parse(publicTypebot.groups)
+      const fileUploadBlock = parseGroups(publicTypebot.groups, {
+        typebotVersion: publicTypebot.version,
+      })
         .flatMap((group) => group.blocks)
         .find((block) => block.id === filePathProps.blockId)
 
@@ -90,7 +94,7 @@ export const generateUploadUrl = publicProcedure
         fileType,
         filePath,
         maxFileSize:
-          fileUploadBlock.options.sizeLimit ??
+          fileUploadBlock.options?.sizeLimit ??
           env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE,
       })
 
@@ -118,6 +122,7 @@ export const generateUploadUrl = publicProcedure
         typebotId,
       },
       select: {
+        version: true,
         groups: true,
         typebot: {
           select: {
@@ -139,10 +144,18 @@ export const generateUploadUrl = publicProcedure
 
     const filePath = `public/workspaces/${workspaceId}/typebots/${typebotId}/results/${resultId}/${filePathProps.fileName}`
 
-    const fileUploadBlock = publicTypebotSchema._def.schema.shape.groups
-      .parse(publicTypebot.groups)
-      .flatMap((group) => group.blocks)
-      .find((block) => block.id === session.state.currentBlock?.blockId)
+    if (session.state.currentBlockId === undefined)
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: "Can't find currentBlockId in session state",
+      })
+
+    const { block: fileUploadBlock } = getBlockById(
+      session.state.currentBlockId,
+      parseGroups(publicTypebot.groups, {
+        typebotVersion: publicTypebot.version,
+      })
+    )
 
     if (fileUploadBlock?.type !== InputBlockType.FILE)
       throw new TRPCError({
@@ -154,8 +167,9 @@ export const generateUploadUrl = publicProcedure
       fileType,
       filePath,
       maxFileSize:
-        fileUploadBlock.options.sizeLimit ??
-        env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE,
+        fileUploadBlock.options && 'sizeLimit' in fileUploadBlock.options
+          ? fileUploadBlock.options.sizeLimit
+          : env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE,
     })
 
     return {

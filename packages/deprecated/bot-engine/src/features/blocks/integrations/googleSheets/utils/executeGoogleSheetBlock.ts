@@ -3,7 +3,6 @@ import { IntegrationState } from '@/types'
 import { parseLog } from '@/utils/helpers'
 import {
   GoogleSheetsBlock,
-  GoogleSheetsAction,
   GoogleSheetsInsertRowOptions,
   GoogleSheetsUpdateRowOptions,
   GoogleSheetsGetOptions,
@@ -12,12 +11,14 @@ import {
   Variable,
 } from '@typebot.io/schemas'
 import { sendRequest, byId } from '@typebot.io/lib'
+import { GoogleSheetsAction } from '@typebot.io/schemas/features/blocks/integrations/googleSheets/constants'
 
 export const executeGoogleSheetBlock = async (
   block: GoogleSheetsBlock,
   context: IntegrationState
 ) => {
-  if (!('action' in block.options)) return block.outgoingEdgeId
+  if (!block.options || !('action' in block.options))
+    return block.outgoingEdgeId
   switch (block.options.action) {
     case GoogleSheetsAction.INSERT_ROW:
       insertRowInGoogleSheets(block.options, context)
@@ -68,7 +69,7 @@ const updateRowInGoogleSheets = (
   options: GoogleSheetsUpdateRowOptions,
   { variables, apiHost, onNewLog, resultId }: IntegrationState
 ) => {
-  if (!options.cellsToUpsert || !options.referenceCell) return
+  if (!options.cellsToUpsert || !('referenceCell' in options)) return
   sendRequest({
     url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}`,
     method: 'POST',
@@ -78,8 +79,8 @@ const updateRowInGoogleSheets = (
       values: parseCellValues(options.cellsToUpsert, variables),
       resultId,
       referenceCell: {
-        column: options.referenceCell.column,
-        value: parseVariables(variables)(options.referenceCell.value ?? ''),
+        column: options.referenceCell?.column,
+        value: parseVariables(variables)(options.referenceCell?.value ?? ''),
       },
     },
   }).then(({ error }) => {
@@ -113,15 +114,18 @@ const getRowFromGoogleSheets = async (
     body: {
       action: GoogleSheetsAction.GET,
       credentialsId: options.credentialsId,
-      referenceCell: options.referenceCell
-        ? {
-            column: options.referenceCell.column,
-            value: parseVariables(variables)(options.referenceCell.value ?? ''),
-          }
-        : undefined,
+      referenceCell:
+        'referenceCell' in options
+          ? {
+              column: options.referenceCell?.column,
+              value: parseVariables(variables)(
+                options.referenceCell?.value ?? ''
+              ),
+            }
+          : undefined,
       filter: options.filter
         ? {
-            comparisons: options.filter.comparisons.map((comparison) => ({
+            comparisons: options.filter.comparisons?.map((comparison) => ({
               ...comparison,
               value: parseVariables(variables)(comparison.value),
             })),

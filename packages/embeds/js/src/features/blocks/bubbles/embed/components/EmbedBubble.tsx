@@ -1,11 +1,12 @@
 import { TypingBubble } from '@/components'
 import { isMobile } from '@/utils/isMobileSignal'
-import type { EmbedBubbleContent } from '@typebot.io/schemas'
 import { createSignal, onCleanup, onMount } from 'solid-js'
 import { clsx } from 'clsx'
+import { EmbedBubbleBlock } from '@typebot.io/schemas'
+import { defaultEmbedBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/embed/constants'
 
 type Props = {
-  content: EmbedBubbleContent
+  content: EmbedBubbleBlock['content']
   onTransitionEnd: (offsetTop?: number) => void
 }
 
@@ -53,12 +54,14 @@ export const EmbedBubble = (props: Props) => {
                 ? isMobile()
                   ? '32px'
                   : '36px'
-                : `${props.content.height}px`,
+                : `${
+                    props.content?.height ?? defaultEmbedBubbleContent.height
+                  }px`,
             }}
           >
             <iframe
               id="embed-bubble-content"
-              src={props.content.url}
+              src={props.content?.url}
               class={'w-full h-full '}
             />
           </div>

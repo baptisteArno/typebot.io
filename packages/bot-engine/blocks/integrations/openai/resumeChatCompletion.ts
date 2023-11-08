@@ -19,7 +19,7 @@ export const resumeChatCompletion =
   ) =>
   async (message: string, totalTokens?: number) => {
     let newSessionState = state
-    const newVariables = options.responseMapping.reduce<
+    const newVariables = options.responseMapping?.reduce<
       VariableWithUnknowValue[]
     >((newVariables, mapping) => {
       const { typebot } = newSessionState.typebotsQueue[0]
@@ -41,7 +41,7 @@ export const resumeChatCompletion =
       }
       return newVariables
     }, [])
-    if (newVariables.length > 0)
+    if (newVariables && newVariables.length > 0)
       newSessionState = updateVariablesInSession(newSessionState)(newVariables)
     return {
       outgoingEdgeId,

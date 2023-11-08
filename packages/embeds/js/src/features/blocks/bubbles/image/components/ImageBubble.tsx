@@ -1,11 +1,12 @@
 import { TypingBubble } from '@/components'
-import type { ImageBubbleContent } from '@typebot.io/schemas'
 import { createSignal, onCleanup, onMount } from 'solid-js'
 import { clsx } from 'clsx'
 import { isMobile } from '@/utils/isMobileSignal'
+import { ImageBubbleBlock } from '@typebot.io/schemas'
+import { defaultImageBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/image/constants'
 
 type Props = {
-  content: ImageBubbleContent
+  content: ImageBubbleBlock['content']
   onTransitionEnd: (offsetTop?: number) => void
 }
 
@@ -44,8 +45,10 @@ export const ImageBubble = (props: Props) => {
   const Image = (
     <img
       ref={image}
-      src={props.content.url}
-      alt={props.content.clickLink?.alt ?? 'Bubble image'}
+      src={props.content?.url}
+      alt={
+        props.content?.clickLink?.alt ?? defaultImageBubbleContent.clickLink.alt
+      }
       class={
         'text-fade-in w-full ' + (isTyping() ? 'opacity-0' : 'opacity-100')
       }
@@ -71,7 +74,7 @@ export const ImageBubble = (props: Props) => {
           >
             {isTyping() ? <TypingBubble /> : null}
           </div>
-          {props.content.clickLink ? (
+          {props.content?.clickLink ? (
             <a
               href={props.content.clickLink.url}
               target="_blank"

@@ -10,7 +10,7 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { ChevronLeftIcon } from '@/components/icons'
-import React, { ReactNode } from 'react'
+import React from 'react'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Props<T extends readonly any[]> = {
@@ -42,7 +42,7 @@ export const DropdownList = <T extends readonly any[]>({
         {...props}
       >
         <chakra.span noOfLines={1} display="block">
-          {(currentItem ?? placeholder) as unknown as ReactNode}
+          {currentItem ?? placeholder}
         </chakra.span>
       </MenuButton>
       <Portal>
@@ -57,7 +57,7 @@ export const DropdownList = <T extends readonly any[]>({
                 textOverflow="ellipsis"
                 onClick={handleMenuItemClick(item)}
               >
-                {item as unknown as ReactNode}
+                {item}
               </MenuItem>
             ))}
           </Stack>

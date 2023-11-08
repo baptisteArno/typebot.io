@@ -5,7 +5,7 @@ import { ChoiceInputBlock } from '@typebot.io/schemas'
 import { createSignal, For, onMount, Show } from 'solid-js'
 import { Checkbox } from './Checkbox'
 import { SearchInput } from '@/components/inputs/SearchInput'
-import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice'
+import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
 
 type Props = {
   inputIndex: number
@@ -59,13 +59,13 @@ export const MultipleChoicesForm = (props: Props) => {
 
   return (
     <form class="flex flex-col items-end gap-2 w-full" onSubmit={handleSubmit}>
-      <Show when={props.options.isSearchable}>
+      <Show when={props.options?.isSearchable}>
         <div class="flex items-end typebot-input w-full">
           <SearchInput
             ref={inputRef}
             onInput={filterItems}
             placeholder={
-              props.options.searchInputPlaceholder ??
+              props.options?.searchInputPlaceholder ??
               defaultChoiceInputOptions.searchInputPlaceholder
             }
             onClear={() => setFilteredItems(props.defaultItems)}
@@ -75,7 +75,7 @@ export const MultipleChoicesForm = (props: Props) => {
       <div
         class={
           'flex flex-wrap justify-end gap-2' +
-          (props.options.isSearchable
+          (props.options?.isSearchable
             ? ' overflow-y-scroll max-h-80 rounded-md hide-scrollbar'
             : '')
         }
@@ -144,7 +144,7 @@ export const MultipleChoicesForm = (props: Props) => {
       </div>
       {selectedItemIds().length > 0 && (
         <SendButton disableIcon>
-          {props.options?.buttonLabel ?? 'Send'}
+          {props.options?.buttonLabel ?? defaultChoiceInputOptions.buttonLabel}
         </SendButton>
       )}
     </form>

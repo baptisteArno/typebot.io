@@ -46,7 +46,12 @@ export const TypebotHeader = () => {
     canRedo,
     isSavingLoading,
   } = useTypebot()
-  const { setRightPanel, rightPanel, setStartPreviewAtGroup } = useEditor()
+  const {
+    setRightPanel,
+    rightPanel,
+    setStartPreviewAtGroup,
+    setStartPreviewAtEvent,
+  } = useEditor()
   const [isUndoShortcutTooltipOpen, setUndoShortcutTooltipOpen] =
     useState(false)
   const hideUndoShortcutTooltipLater = useDebouncedCallback(() => {
@@ -62,6 +67,7 @@ export const TypebotHeader = () => {
 
   const handlePreviewClick = async () => {
     setStartPreviewAtGroup(undefined)
+    setStartPreviewAtEvent(undefined)
     save().then()
     setRightPanel(RightPanel.PREVIEW)
   }

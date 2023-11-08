@@ -23,7 +23,7 @@ ${parseInitBubbleCode({
   theme: {
     ...theme,
     chatWindow: {
-      backgroundColor: typebot?.theme.general.background.content ?? '#fff',
+      backgroundColor: typebot?.theme.general?.background?.content ?? '#fff',
     },
   },
   previewMessage,

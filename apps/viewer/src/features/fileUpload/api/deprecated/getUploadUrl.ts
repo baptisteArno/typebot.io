@@ -1,17 +1,19 @@
 import { publicProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import {
+  Block,
   FileInputBlock,
-  InputBlockType,
-  LogicBlockType,
-  PublicTypebot,
   TypebotLinkBlock,
+  parseGroups,
 } from '@typebot.io/schemas'
 import { byId, isDefined } from '@typebot.io/lib'
 import { z } from 'zod'
 import { generatePresignedUrl } from '@typebot.io/lib/s3/deprecated/generatePresignedUrl'
 import { env } from '@typebot.io/env'
 import prisma from '@typebot.io/lib/prisma'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { PublicTypebot } from '@typebot.io/prisma'
 
 export const getUploadUrl = publicProcedure
   .meta({
@@ -45,13 +47,20 @@ export const getUploadUrl = publicProcedure
           'S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY',
       })
 
-    const publicTypebot = (await prisma.publicTypebot.findFirst({
+    const publicTypebot = await prisma.publicTypebot.findFirst({
       where: { typebotId },
       select: {
+        version: true,
         groups: true,
         typebotId: true,
       },
-    })) as Pick<PublicTypebot, 'groups' | 'typebotId'>
+    })
+
+    if (!publicTypebot)
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Typebot not found',
+      })
 
     const fileUploadBlock = await getFileUploadBlock(publicTypebot, blockId)
 
@@ -73,27 +82,32 @@ export const getUploadUrl = publicProcedure
   })
 
 const getFileUploadBlock = async (
-  publicTypebot: Pick<PublicTypebot, 'groups' | 'typebotId'>,
+  publicTypebot: Pick<PublicTypebot, 'groups' | 'typebotId' | 'version'>,
   blockId: string
 ): Promise<FileInputBlock | null> => {
-  const fileUploadBlock = publicTypebot.groups
-    .flatMap((group) => group.blocks)
+  const groups = parseGroups(publicTypebot.groups, {
+    typebotVersion: publicTypebot.version,
+  })
+  const fileUploadBlock = groups
+    .flatMap<Block>((group) => group.blocks)
     .find(byId(blockId))
   if (fileUploadBlock?.type === InputBlockType.FILE) return fileUploadBlock
-  const linkedTypebotIds = publicTypebot.groups
-    .flatMap((group) => group.blocks)
+  const linkedTypebotIds = groups
+    .flatMap<Block>((group) => group.blocks)
     .filter((block) => block.type === LogicBlockType.TYPEBOT_LINK)
-    .flatMap((block) => (block as TypebotLinkBlock).options.typebotId)
+    .flatMap((block) => (block as TypebotLinkBlock).options?.typebotId)
     .filter(isDefined)
-  const linkedTypebots = (await prisma.publicTypebot.findMany({
+  const linkedTypebots = await prisma.publicTypebot.findMany({
     where: { typebotId: { in: linkedTypebotIds } },
     select: {
       groups: true,
     },
-  })) as Pick<PublicTypebot, 'groups'>[]
-  const fileUploadBlockFromLinkedTypebots = linkedTypebots
-    .flatMap((typebot) => typebot.groups)
-    .flatMap((group) => group.blocks)
+  })
+  const fileUploadBlockFromLinkedTypebots = parseGroups(
+    linkedTypebots.flatMap((typebot) => typebot.groups),
+    { typebotVersion: publicTypebot.version }
+  )
+    .flatMap<Block>((group) => group.blocks)
     .find(byId(blockId))
   if (fileUploadBlockFromLinkedTypebots?.type === InputBlockType.FILE)
     return fileUploadBlockFromLinkedTypebots

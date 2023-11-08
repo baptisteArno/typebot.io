@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react'
 import { PlusIcon, SettingsIcon } from '@/components/icons'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { ButtonItem, Item, ItemIndices, ItemType } from '@typebot.io/schemas'
+import { ButtonItem, Item, ItemIndices } from '@typebot.io/schemas'
 import React, { useRef, useState } from 'react'
 import { isNotDefined } from '@typebot.io/lib'
 import { useGraph } from '@/features/graph/providers/GraphProvider'
@@ -54,7 +54,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
 
   const handlePlusClick = () => {
     const itemIndex = indices.itemIndex + 1
-    createItem({ type: ItemType.BUTTON }, { ...indices, itemIndex })
+    createItem({}, { ...indices, itemIndex })
   }
 
   const updateItemSettings = (settings: Omit<ButtonItem, 'content'>) => {

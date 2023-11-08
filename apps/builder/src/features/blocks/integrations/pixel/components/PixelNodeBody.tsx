@@ -8,12 +8,12 @@ type Props = {
 
 export const PixelNodeBody = ({ options }: Props) => (
   <Text
-    color={options.eventType || options.pixelId ? 'currentcolor' : 'gray.500'}
+    color={options?.eventType || options?.pixelId ? 'currentcolor' : 'gray.500'}
     noOfLines={1}
   >
-    {options.eventType
+    {options?.eventType
       ? `Track "${options.eventType}"`
-      : options.pixelId
+      : options?.pixelId
       ? 'Init Pixel'
       : 'Configure...'}
   </Text>

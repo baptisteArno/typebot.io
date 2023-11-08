@@ -7,10 +7,10 @@ import {
   createContext,
   useCallback,
 } from 'react'
-import { Coordinates, GroupsCoordinates } from '../types'
+import { Coordinates, CoordinatesMap } from '../types'
 
 const groupsCoordinatesContext = createContext<{
-  groupsCoordinates: GroupsCoordinates
+  groupsCoordinates: CoordinatesMap
   updateGroupCoordinates: (groupId: string, newCoord: Coordinates) => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
@@ -24,9 +24,7 @@ export const GroupsCoordinatesProvider = ({
   groups: Group[]
   isReadOnly?: boolean
 }) => {
-  const [groupsCoordinates, setGroupsCoordinates] = useState<GroupsCoordinates>(
-    {}
-  )
+  const [groupsCoordinates, setGroupsCoordinates] = useState<CoordinatesMap>({})
 
   useEffect(() => {
     setGroupsCoordinates(

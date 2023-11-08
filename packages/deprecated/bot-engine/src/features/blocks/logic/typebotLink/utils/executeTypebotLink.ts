@@ -21,12 +21,12 @@ export const executeTypebotLink = async (
     currentTypebotId,
   } = context
   const linkedTypebot = (
-    block.options.typebotId === 'current'
+    block.options?.typebotId === 'current'
       ? typebot
       : [typebot, ...linkedTypebots].find((typebot) =>
           'typebotId' in typebot
-            ? typebot.typebotId === block.options.typebotId
-            : typebot.id === block.options.typebotId
+            ? typebot.typebotId === block.options?.typebotId
+            : typebot.id === block.options?.typebotId
         ) ?? (await fetchAndInjectTypebot(block, context))
   ) as PublicTypebot | LinkedTypebot | undefined
   if (!linkedTypebot) {
@@ -47,13 +47,13 @@ export const executeTypebotLink = async (
     'typebotId' in linkedTypebot ? linkedTypebot.typebotId : linkedTypebot.id
   )
   const nextGroupId =
-    block.options.groupId ??
+    block.options?.groupId ??
     linkedTypebot.groups.find((b) => b.blocks.some((s) => s.type === 'start'))
       ?.id
   if (!nextGroupId) return { nextEdgeId: block.outgoingEdgeId }
   const newEdge: Edge = {
     id: (Math.random() * 1000).toString(),
-    from: { blockId: '', groupId: '' },
+    from: { blockId: '' },
     to: {
       groupId: nextGroupId,
     },

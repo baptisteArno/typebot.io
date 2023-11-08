@@ -1,34 +1,23 @@
 {
-  "id": "cl3u43chu40824z1acel3iw1c",
-  "version": "4",
-  "createdAt": "2022-05-31T12:04:12.930Z",
-  "updatedAt": "2022-05-31T12:31:12.867Z",
-  "icon": "🖼️",
+  "version": "6",
+  "id": "cloo0oket000d1aortnxzuslp",
   "name": "Digital Product Payment",
-  "folderId": null,
-  "groups": [
+  "events": [
     {
       "id": "cl3u43cht00044z1adg20ffni",
-      "blocks": [
-        {
-          "id": "cl3u43chu00054z1abb5x7fzk",
-          "type": "start",
-          "label": "Start",
-          "groupId": "cl3u43cht00044z1adg20ffni",
-          "outgoingEdgeId": "cl3u448z200062e6gr653itny"
-        }
-      ],
-      "title": "Start",
-      "graphCoordinates": { "x": 0, "y": 0 }
-    },
+      "outgoingEdgeId": "cl3u448z200062e6gr653itny",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
     {
       "id": "cl3u4431400042e6go5nd0euq",
-      "graphCoordinates": { "x": 365, "y": 126 },
       "title": "Name",
+      "graphCoordinates": { "x": 257.86, "y": 0.85 },
       "blocks": [
         {
           "id": "cl3u4431500052e6gruhlxklx",
-          "groupId": "cl3u4431400042e6go5nd0euq",
           "type": "text",
           "content": {
             "richText": [
@@ -38,7 +27,6 @@
         },
         {
           "id": "cl3u4592z00082e6go92cuu43",
-          "groupId": "cl3u4431400042e6go5nd0euq",
           "type": "text",
           "content": {
             "richText": [
@@ -48,28 +36,22 @@
         },
         {
           "id": "cl3u45f0n000a2e6gci2xgmph",
-          "groupId": "cl3u4431400042e6go5nd0euq",
+          "outgoingEdgeId": "cl3u45j0n000c2e6go4nnaavg",
           "type": "text input",
           "options": {
-            "isLong": false,
-            "labels": {
-              "button": "Send",
-              "placeholder": "John"
-            },
+            "labels": { "placeholder": "Type your name..." },
             "variableId": "vcl3u45hek000b2e6gkl05z1da"
-          },
-          "outgoingEdgeId": "cl3u45j0n000c2e6go4nnaavg"
+          }
         }
       ]
     },
     {
       "id": "cl3u45dib00092e6g4q2tdkpu",
-      "graphCoordinates": { "x": 705, "y": 121 },
       "title": "Product demo",
+      "graphCoordinates": { "x": 613.7, "y": 1.82 },
       "blocks": [
         {
           "id": "cl3u45lqz000d2e6gxo4n5ets",
-          "groupId": "cl3u45dib00092e6g4q2tdkpu",
           "type": "text",
           "content": {
             "richText": [
@@ -82,7 +64,6 @@
         },
         {
           "id": "cl3u44adg00072e6gc13e1n12",
-          "groupId": "cl3u45dib00092e6g4q2tdkpu",
           "type": "text",
           "content": {
             "richText": [
@@ -99,7 +80,6 @@
         },
         {
           "id": "cl3u46b0i000e2e6gkpf4qiry",
-          "groupId": "cl3u45dib00092e6g4q2tdkpu",
           "type": "text",
           "content": {
             "richText": [
@@ -114,33 +94,23 @@
         },
         {
           "id": "cl3u49lmg000f2e6guhhgf825",
-          "groupId": "cl3u45dib00092e6g4q2tdkpu",
           "type": "video",
           "content": {
-            "type": "url",
-            "url": "https://typebot.s3.eu-west-3.amazonaws.com/assets/bullseye+template+preview.mp4"
+            "url": "https://typebot.s3.eu-west-3.amazonaws.com/assets/bullseye+template+preview.mp4",
+            "type": "url"
           }
         },
         {
           "id": "cl3u4hyl9000i2e6gtdz8m04b",
-          "groupId": "cl3u45dib00092e6g4q2tdkpu",
           "type": "text",
           "content": {
             "richText": [
-              {
-                "type": "p",
-                "children": [
-                  {
-                    "text": "It's yours for $9"
-                  }
-                ]
-              }
+              { "type": "p", "children": [{ "text": "It's yours for $9" }] }
             ]
           }
         },
         {
           "id": "cl3u4hyl9000i2e6gtdz8m04a",
-          "groupId": "cl3u45dib00092e6g4q2tdkpu",
           "type": "text",
           "content": {
             "richText": [
@@ -157,23 +127,17 @@
         },
         {
           "id": "cl3u4id67000l2e6gahw4v1ny",
-          "groupId": "cl3u45dib00092e6g4q2tdkpu",
           "type": "choice input",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "items": [
             {
               "id": "cl3u4id67000m2e6g3x3do8kd",
-              "blockId": "cl3u4id67000l2e6gahw4v1ny",
-              "type": 0,
-              "content": "Hell yes!",
-              "outgoingEdgeId": "cl3u4l4do00102e6ghd9s5p3f"
+              "outgoingEdgeId": "cl3u4l4do00102e6ghd9s5p3f",
+              "content": "Hell yes!"
             },
             {
-              "blockId": "cl3u4id67000l2e6gahw4v1ny",
-              "type": 0,
               "id": "cl3u4iexy000o2e6gbagmrxcc",
-              "content": "I'm ok, thanks.",
-              "outgoingEdgeId": "cl3u4jxq2000v2e6gkpwko0uo"
+              "outgoingEdgeId": "cl3u4jxq2000v2e6gkpwko0uo",
+              "content": "I'm ok, thanks."
             }
           ]
         }
@@ -181,12 +145,11 @@
     },
     {
       "id": "cl3u4iw28000s2e6gdmukl6qb",
-      "graphCoordinates": { "x": 897, "y": 960 },
       "title": "Bye",
+      "graphCoordinates": { "x": 795.34, "y": 877.43 },
       "blocks": [
         {
           "id": "cl3u4iw29000t2e6gakbxvz4u",
-          "groupId": "cl3u4iw28000s2e6gdmukl6qb",
           "type": "text",
           "content": {
             "richText": [
@@ -203,7 +166,6 @@
         },
         {
           "id": "cl3u4jcyt000u2e6gzyj2p5ss",
-          "groupId": "cl3u4iw28000s2e6gdmukl6qb",
           "type": "image",
           "content": {
             "url": "https://media3.giphy.com/media/48FhEMYGWji8/giphy.gif?cid=fe3852a32dqdmhdazal2zzctxpxukjx171k0e4eflp0w36jf&rid=giphy.gif&ct=g"
@@ -213,12 +175,11 @@
     },
     {
       "id": "cl3u4kblb000w2e6gfflsq56p",
-      "graphCoordinates": { "x": 1072, "y": 588 },
       "title": "Email",
+      "graphCoordinates": { "x": 992.42, "y": 342.36 },
       "blocks": [
         {
           "id": "cl3u4kblb000x2e6g49rot8h0",
-          "groupId": "cl3u4kblb000w2e6gfflsq56p",
           "type": "text",
           "content": {
             "richText": [
@@ -228,7 +189,6 @@
         },
         {
           "id": "cl3u4khsx000y2e6gx9iysgt4",
-          "groupId": "cl3u4kblb000w2e6gfflsq56p",
           "type": "text",
           "content": {
             "richText": [
@@ -245,25 +205,21 @@
         },
         {
           "id": "cl3u4l2et000z2e6gjlmh45jp",
-          "groupId": "cl3u4kblb000w2e6gfflsq56p",
+          "outgoingEdgeId": "dstr8midu9f0x6ylyet7dljw",
           "type": "email input",
           "options": {
-            "labels": { "button": "Send", "placeholder": "Type your email..." },
-            "retryMessageContent": "This email doesn't seem to be valid. Can you type it again?",
             "variableId": "vcl3u4n1vk00162e6gs6x59o2k"
-          },
-          "outgoingEdgeId": "cl3u4mbrj00142e6gxif5x53i"
+          }
         }
       ]
     },
     {
       "id": "cl3u4leig00112e6gxbk65r7y",
-      "graphCoordinates": { "x": 1400, "y": 589 },
       "title": "Payment",
+      "graphCoordinates": { "x": 1338.38, "y": 343.48 },
       "blocks": [
         {
           "id": "cl3u4leig00122e6gqx7skfhb",
-          "groupId": "cl3u4leig00112e6gxbk65r7y",
           "type": "text",
           "content": {
             "richText": [
@@ -273,7 +229,6 @@
         },
         {
           "id": "cl3u4llj300132e6gciw2ivyv",
-          "groupId": "cl3u4leig00112e6gxbk65r7y",
           "type": "text",
           "content": {
             "richText": [
@@ -290,30 +245,25 @@
         },
         {
           "id": "cl3u4mjq900152e6grwyg90zt",
-          "groupId": "cl3u4leig00112e6gxbk65r7y",
+          "outgoingEdgeId": "cl3u4wynv001b2e6g6pxc7int",
           "type": "payment input",
           "options": {
-            "provider": "Stripe",
-            "labels": { "button": "Pay" },
-            "currency": "USD",
-            "amount": "9",
             "additionalInformation": {
               "name": "{{Name}}",
               "email": "{{Email}}"
-            }
-          },
-          "outgoingEdgeId": "cl3u4wynv001b2e6g6pxc7int"
+            },
+            "amount": "9"
+          }
         }
       ]
     },
     {
       "id": "cl3u4vnth00182e6g2hh0gewl",
-      "graphCoordinates": { "x": 1731.4449652273986, "y": 586.6975439409757 },
       "title": "Send email",
+      "graphCoordinates": { "x": 1683.86, "y": 346.93 },
       "blocks": [
         {
           "id": "cl3u4wi2d001a2e6gznp1r9d4",
-          "groupId": "cl3u4vnth00182e6g2hh0gewl",
           "type": "image",
           "content": {
             "url": "https://media1.giphy.com/media/s2qXK8wAvkHTO/giphy.gif?cid=fe3852a3edx7hsbquhw3lu17c422yzc6wsiplnpn02rzm2kf&rid=giphy.gif&ct=g"
@@ -321,10 +271,9 @@
         },
         {
           "id": "cl3u4xcqc001c2e6g355vnigh",
-          "groupId": "cl3u4vnth00182e6g2hh0gewl",
           "type": "Email",
           "options": {
-            "credentialsId": "default",
+            "isCustomBody": true,
             "recipients": ["{{Email}}"],
             "subject": "Here is your Bullseye Framework template 🎉",
             "body": "Hey {{Name}},\n\nThank you again for buying the template.\n\nHere is the link where you can duplicate it:\n\nhttps://baptistearno.notion.site/Growth-Framework-Bullseye-c2166e03d99340daa1aa87e4356bdc83\n\nFeel free to tell me what I can improve.\n\nBaptiste."
@@ -332,7 +281,6 @@
         },
         {
           "id": "cl3u5189q001d2e6gd1q7qshq",
-          "groupId": "cl3u4vnth00182e6g2hh0gewl",
           "type": "text",
           "content": {
             "richText": [
@@ -349,7 +297,6 @@
         },
         {
           "id": "cl3u51mpe001e2e6ggrjjzxek",
-          "groupId": "cl3u4vnth00182e6g2hh0gewl",
           "type": "text",
           "content": {
             "richText": [
@@ -362,104 +309,110 @@
         },
         {
           "id": "cl3u51z0o001f2e6gbl96p7bi",
-          "groupId": "cl3u4vnth00182e6g2hh0gewl",
           "type": "text",
           "content": {
             "richText": [{ "type": "p", "children": [{ "text": "Bye 👋" }] }]
           }
         }
       ]
+    },
+    {
+      "id": "i47yu1c1pjhsqoe68kktbxgl",
+      "title": "",
+      "graphCoordinates": { "x": 1336.77, "y": 43.66 },
+      "blocks": [
+        {
+          "id": "unw1076x8ematnu6jrbop8sv",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "You need to add your Stripe credentials in the next Payment block."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "ck19ttflkp6mbxnxpnyxp7vh",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Once it's done, you can remove this group and connect the email input to the \"Payment\" group 🪄"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "cl3u448z200062e6gr653itny",
+      "from": { "eventId": "cl3u43cht00044z1adg20ffni" },
+      "to": { "groupId": "cl3u4431400042e6go5nd0euq" }
+    },
+    {
+      "id": "cl3u45j0n000c2e6go4nnaavg",
+      "from": { "blockId": "cl3u45f0n000a2e6gci2xgmph" },
+      "to": { "groupId": "cl3u45dib00092e6g4q2tdkpu" }
+    },
+    {
+      "id": "cl3u4jxq2000v2e6gkpwko0uo",
+      "from": {
+        "blockId": "cl3u4id67000l2e6gahw4v1ny",
+        "itemId": "cl3u4iexy000o2e6gbagmrxcc"
+      },
+      "to": { "groupId": "cl3u4iw28000s2e6gdmukl6qb" }
+    },
+    {
+      "id": "cl3u4l4do00102e6ghd9s5p3f",
+      "from": {
+        "blockId": "cl3u4id67000l2e6gahw4v1ny",
+        "itemId": "cl3u4id67000m2e6g3x3do8kd"
+      },
+      "to": { "groupId": "cl3u4kblb000w2e6gfflsq56p" }
+    },
+    {
+      "id": "cl3u4wynv001b2e6g6pxc7int",
+      "from": { "blockId": "cl3u4mjq900152e6grwyg90zt" },
+      "to": { "groupId": "cl3u4vnth00182e6g2hh0gewl" }
+    },
+    {
+      "from": {
+        "blockId": "cl3u4l2et000z2e6gjlmh45jp",
+        "groupId": "cl3u4kblb000w2e6gfflsq56p"
+      },
+      "to": { "groupId": "i47yu1c1pjhsqoe68kktbxgl" },
+      "id": "dstr8midu9f0x6ylyet7dljw"
     }
   ],
   "variables": [
     { "id": "vcl3u45hek000b2e6gkl05z1da", "name": "Name" },
     { "id": "vcl3u4n1vk00162e6gs6x59o2k", "name": "Email" }
   ],
-  "edges": [
-    {
-      "from": {
-        "groupId": "cl3u43cht00044z1adg20ffni",
-        "blockId": "cl3u43chu00054z1abb5x7fzk"
-      },
-      "to": { "groupId": "cl3u4431400042e6go5nd0euq" },
-      "id": "cl3u448z200062e6gr653itny"
-    },
-    {
-      "from": {
-        "groupId": "cl3u4431400042e6go5nd0euq",
-        "blockId": "cl3u45f0n000a2e6gci2xgmph"
-      },
-      "to": { "groupId": "cl3u45dib00092e6g4q2tdkpu" },
-      "id": "cl3u45j0n000c2e6go4nnaavg"
-    },
-    {
-      "from": {
-        "groupId": "cl3u45dib00092e6g4q2tdkpu",
-        "blockId": "cl3u4id67000l2e6gahw4v1ny",
-        "itemId": "cl3u4iexy000o2e6gbagmrxcc"
-      },
-      "to": { "groupId": "cl3u4iw28000s2e6gdmukl6qb" },
-      "id": "cl3u4jxq2000v2e6gkpwko0uo"
-    },
-    {
-      "from": {
-        "groupId": "cl3u45dib00092e6g4q2tdkpu",
-        "blockId": "cl3u4id67000l2e6gahw4v1ny",
-        "itemId": "cl3u4id67000m2e6g3x3do8kd"
-      },
-      "to": { "groupId": "cl3u4kblb000w2e6gfflsq56p" },
-      "id": "cl3u4l4do00102e6ghd9s5p3f"
-    },
-    {
-      "from": {
-        "groupId": "cl3u4kblb000w2e6gfflsq56p",
-        "blockId": "cl3u4l2et000z2e6gjlmh45jp"
-      },
-      "to": { "groupId": "cl3u4leig00112e6gxbk65r7y" },
-      "id": "cl3u4mbrj00142e6gxif5x53i"
-    },
-    {
-      "from": {
-        "groupId": "cl3u4leig00112e6gxbk65r7y",
-        "blockId": "cl3u4mjq900152e6grwyg90zt"
-      },
-      "to": { "groupId": "cl3u4vnth00182e6g2hh0gewl" },
-      "id": "cl3u4wynv001b2e6g6pxc7int"
-    }
-  ],
-  "theme": {
-    "chat": {
-      "inputs": {
-        "color": "#303235",
-        "backgroundColor": "#FFFFFF",
-        "placeholderColor": "#9095A0"
-      },
-      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
-      "hostAvatar": {
-        "isEnabled": true
-      },
-      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
-      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
-    },
-    "general": {
-      "font": "Open Sans",
-      "background": { "type": "Color", "content": "#ffffff" }
-    }
-  },
-  "settings": {
-    "general": {
-      "isBrandingEnabled": false,
-      "isInputPrefillEnabled": true,
-      "isResultSavingEnabled": true,
-      "isHideQueryParamsEnabled": true,
-      "isNewResultOnRefreshEnabled": true
-    },
-    "metadata": {
-      "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
-    },
-    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
-  },
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2023-11-07T07:35:56.501Z",
+  "updatedAt": "2023-11-07T07:40:03.471Z",
+  "icon": "🖼️",
+  "folderId": null,
   "publicId": null,
   "customDomain": null,
-  "workspaceId": "cl3ncues300081a1as58wmkxz"
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null
 }

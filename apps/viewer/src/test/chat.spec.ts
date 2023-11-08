@@ -9,7 +9,7 @@ import {
   deleteWebhooks,
   importTypebotInDatabase,
 } from '@typebot.io/lib/playwright/databaseActions'
-import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/enums'
+import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
 
 test.afterEach(async () => {
   await deleteWebhooks(['chat-webhook-id'])

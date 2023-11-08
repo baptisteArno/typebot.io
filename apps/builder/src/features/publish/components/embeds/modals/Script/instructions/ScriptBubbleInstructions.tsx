@@ -14,12 +14,11 @@ import {
 
 export const parseDefaultBubbleTheme = (typebot?: Typebot) => ({
   button: {
-    backgroundColor: typebot?.theme.chat.buttons.backgroundColor,
-    iconColor: typebot?.theme.chat.buttons.color,
+    backgroundColor: typebot?.theme.chat?.buttons?.backgroundColor,
+    iconColor: typebot?.theme.chat?.buttons?.color,
   },
   previewMessage: {
-    backgroundColor: typebot?.theme.general.background.content ?? 'white',
-    textColor: 'black',
+    backgroundColor: typebot?.theme.general?.background?.content,
   },
 })
 
@@ -47,7 +46,7 @@ ${parseInitBubbleCode({
       <BubbleSettings
         theme={theme}
         previewMessage={previewMessage}
-        defaultPreviewMessageAvatar={typebot?.theme.chat.hostAvatar?.url ?? ''}
+        defaultPreviewMessageAvatar={typebot?.theme.chat?.hostAvatar?.url ?? ''}
         onThemeChange={setTheme}
         onPreviewMessageChange={setPreviewMessage}
       />

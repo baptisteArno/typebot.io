@@ -1,32 +1,39 @@
 import { Alert, AlertIcon, FormLabel, Stack, Tag, Text } from '@chakra-ui/react'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
-import {
-  SetVariableOptions,
-  Variable,
-  hiddenTypes,
-  valueTypes,
-} from '@typebot.io/schemas'
+import { SetVariableBlock, Variable } from '@typebot.io/schemas'
 import React from 'react'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { Select } from '@/components/inputs/Select'
 import { WhatsAppLogo } from '@/components/logos/WhatsAppLogo'
+import {
+  defaultSetVariableOptions,
+  hiddenTypes,
+  valueTypes,
+} from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
+import { TextInput } from '@/components/inputs'
+import { isDefined } from '@typebot.io/lib'
 
 type Props = {
-  options: SetVariableOptions
-  onOptionsChange: (options: SetVariableOptions) => void
+  options: SetVariableBlock['options']
+  onOptionsChange: (options: SetVariableBlock['options']) => void
 }
 
-const setVarTypes = valueTypes.filter((type) => !hiddenTypes.includes(type))
+const setVarTypes = valueTypes.filter(
+  (type) => !hiddenTypes.includes(type as (typeof hiddenTypes)[number])
+)
 
 export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
   const updateVariableId = (variable?: Variable) =>
-    onOptionsChange({ ...options, variableId: variable?.id })
+    onOptionsChange({
+      ...options,
+      variableId: variable?.id,
+    })
 
   const updateValueType = (type?: string) =>
     onOptionsChange({
       ...options,
-      type: type as SetVariableOptions['type'],
+      type: type as NonNullable<SetVariableBlock['options']>['type'],
     })
 
   return (
@@ -37,7 +44,7 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
         </FormLabel>
         <VariableSearchInput
           onSelectVariable={updateVariableId}
-          initialVariableId={options.variableId}
+          initialVariableId={options?.variableId}
           id="variable-search"
         />
       </Stack>
@@ -47,7 +54,7 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
           Value:
         </Text>
         <Select
-          selectedItem={options.type ?? 'Custom'}
+          selectedItem={options?.type ?? defaultSetVariableOptions.type}
           items={setVarTypes.map((type) => ({
             label: type,
             value: type,
@@ -68,11 +75,15 @@ const SetVariableValue = ({
   options,
   onOptionsChange,
 }: {
-  options: SetVariableOptions
-  onOptionsChange: (options: SetVariableOptions) => void
+  options: SetVariableBlock['options']
+  onOptionsChange: (options: SetVariableBlock['options']) => void
 }): JSX.Element | null => {
   const updateExpression = (expressionToEvaluate: string) =>
-    onOptionsChange({ ...options, expressionToEvaluate })
+    onOptionsChange({
+      ...options,
+      type: isDefined(options?.type) ? 'Custom' : undefined,
+      expressionToEvaluate,
+    })
 
   const updateClientExecution = (isExecutedOnClient: boolean) =>
     onOptionsChange({
@@ -80,7 +91,8 @@ const SetVariableValue = ({
       isExecutedOnClient,
     })
 
-  const updateItemVariableId = (variable?: Variable) =>
+  const updateItemVariableId = (variable?: Variable) => {
+    if (!options || options.type !== 'Map item with same index') return
     onOptionsChange({
       ...options,
       mapListItemParams: {
@@ -88,8 +100,10 @@ const SetVariableValue = ({
         baseItemVariableId: variable?.id,
       },
     })
+  }
 
-  const updateBaseListVariableId = (variable?: Variable) =>
+  const updateBaseListVariableId = (variable?: Variable) => {
+    if (!options || options.type !== 'Map item with same index') return
     onOptionsChange({
       ...options,
       mapListItemParams: {
@@ -97,8 +111,10 @@ const SetVariableValue = ({
         baseListVariableId: variable?.id,
       },
     })
+  }
 
-  const updateTargetListVariableId = (variable?: Variable) =>
+  const updateTargetListVariableId = (variable?: Variable) => {
+    if (!options || options.type !== 'Map item with same index') return
     onOptionsChange({
       ...options,
       mapListItemParams: {
@@ -106,21 +122,33 @@ const SetVariableValue = ({
         targetListVariableId: variable?.id,
       },
     })
+  }
 
-  switch (options.type) {
+  const updateItem = (item: string) => {
+    if (!options || options.type !== 'Append value(s)') return
+    onOptionsChange({
+      ...options,
+      item,
+    })
+  }
+
+  switch (options?.type) {
     case 'Custom':
     case undefined:
       return (
         <>
           <CodeEditor
-            defaultValue={options.expressionToEvaluate ?? ''}
+            defaultValue={options?.expressionToEvaluate ?? ''}
             onChange={updateExpression}
             lang="javascript"
           />
           <SwitchWithLabel
             label="Execute on client?"
             moreInfoContent="Check this if you need access to client-only variables like `window` or `document`."
-            initialValue={options.isExecutedOnClient ?? false}
+            initialValue={
+              options?.isExecutedOnClient ??
+              defaultSetVariableOptions.isExecutedOnClient
+            }
             onCheckChange={updateClientExecution}
           />
         </>
@@ -145,6 +173,9 @@ const SetVariableValue = ({
           />
         </Stack>
       )
+    }
+    case 'Append value(s)': {
+      return <TextInput defaultValue={options.item} onChange={updateItem} />
     }
     case 'Moment of the day': {
       return (

@@ -7,9 +7,9 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
-import { Group } from '@typebot.io/schemas'
+import { GroupV6 } from '@typebot.io/schemas'
 import { BlockNodesList } from '../block/BlockNodesList'
-import { isDefined, isEmpty, isNotDefined } from '@typebot.io/lib'
+import { isEmpty, isNotDefined } from '@typebot.io/lib'
 import { GroupNodeContextMenu } from './GroupNodeContextMenu'
 import { useDebounce } from 'use-debounce'
 import { ContextMenu } from '@/components/ContextMenu'
@@ -26,9 +26,10 @@ import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { useGroupsCoordinates } from '@/features/graph/providers/GroupsCoordinateProvider'
 import { setMultipleRefs } from '@/helpers/setMultipleRefs'
 import { Coordinates } from '@/features/graph/types'
+import { groupWidth } from '@/features/graph/constants'
 
 type Props = {
-  group: Group
+  group: GroupV6
   groupIndex: number
 }
 
@@ -81,12 +82,11 @@ const NonMemoizedDraggableGroupNode = ({
 
   const isPreviewing =
     previewingBlock?.groupId === group.id ||
-    previewingEdge?.from.groupId === group.id ||
-    (previewingEdge?.to.groupId === group.id &&
-      isNotDefined(previewingEdge.to.blockId))
-
-  const isStartGroup =
-    isDefined(group.blocks[0]) && group.blocks[0].type === 'start'
+    (previewingEdge &&
+      (('groupId' in previewingEdge.from &&
+        previewingEdge.from.groupId === group.id) ||
+        (previewingEdge.to.groupId === group.id &&
+          isNotDefined(previewingEdge.to.blockId))))
 
   const groupRef = useRef<HTMLDivElement | null>(null)
   const [debouncedGroupPosition] = useDebounce(currentCoordinates, 100)
@@ -135,7 +135,7 @@ const NonMemoizedDraggableGroupNode = ({
 
   const handleMouseEnter = () => {
     if (isReadOnly) return
-    if (mouseOverGroup?.id !== group.id && !isStartGroup && groupRef.current)
+    if (mouseOverGroup?.id !== group.id && groupRef.current)
       setMouseOverGroup({ id: group.id, element: groupRef.current })
     if (connectingIds)
       setConnectingIds({ ...connectingIds, target: { groupId: group.id } })
@@ -189,7 +189,7 @@ const NonMemoizedDraggableGroupNode = ({
   return (
     <ContextMenu<HTMLDivElement>
       renderMenu={() => <GroupNodeContextMenu groupIndex={groupIndex} />}
-      isDisabled={isReadOnly || isStartGroup}
+      isDisabled={isReadOnly}
     >
       {(ref, isContextMenuOpened) => (
         <Stack
@@ -205,7 +205,7 @@ const NonMemoizedDraggableGroupNode = ({
               ? previewingBorderColor
               : borderColor
           }
-          w="300px"
+          w={groupWidth}
           transition="border 300ms, box-shadow 200ms"
           pos="absolute"
           style={{
@@ -227,7 +227,7 @@ const NonMemoizedDraggableGroupNode = ({
             onChange={setGroupTitle}
             onSubmit={handleTitleSubmit}
             fontWeight="semibold"
-            pointerEvents={isReadOnly || isStartGroup ? 'none' : 'auto'}
+            pointerEvents={isReadOnly ? 'none' : 'auto'}
             pr="8"
           >
             <EditablePreview
@@ -251,14 +251,12 @@ const NonMemoizedDraggableGroupNode = ({
           </Editable>
           {typebot && (
             <BlockNodesList
-              groupId={group.id}
               blocks={group.blocks}
               groupIndex={groupIndex}
               groupRef={ref}
-              isStartGroup={isStartGroup}
             />
           )}
-          {!isReadOnly && !isStartGroup && (
+          {!isReadOnly && (
             <SlideFade
               in={isFocused}
               style={{

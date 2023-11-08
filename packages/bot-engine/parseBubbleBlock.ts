@@ -1,10 +1,5 @@
 import { parseVideoUrl } from '@typebot.io/lib/parseVideoUrl'
-import {
-  BubbleBlock,
-  Variable,
-  ChatReply,
-  BubbleBlockType,
-} from '@typebot.io/schemas'
+import { BubbleBlock, Variable, ChatReply, Typebot } from '@typebot.io/schemas'
 import { deepParseVariables } from './variables/deepParseVariables'
 import { isEmpty, isNotEmpty } from '@typebot.io/lib/utils'
 import {
@@ -16,31 +11,42 @@ import {
   createDeserializeMdPlugin,
   deserializeMd,
 } from '@udecode/plate-serializer-md'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import { defaultVideoBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
 
 type Params = {
   version: 1 | 2
+  typebotVersion: Typebot['version']
   variables: Variable[]
 }
 
+export type BubbleBlockWithDefinedContent = BubbleBlock & {
+  content: NonNullable<BubbleBlock['content']>
+}
+
 export const parseBubbleBlock = (
-  block: BubbleBlock,
-  { version, variables }: Params
+  block: BubbleBlockWithDefinedContent,
+  { version, variables, typebotVersion }: Params
 ): ChatReply['messages'][0] => {
   switch (block.type) {
     case BubbleBlockType.TEXT: {
       if (version === 1)
-        return deepParseVariables(
-          variables,
-          {},
-          { takeLatestIfList: true }
-        )(block)
+        return {
+          ...block,
+          content: {
+            ...block.content,
+            richText: (block.content?.richText ?? []).map(
+              deepParseVariables(variables)
+            ),
+          },
+        }
       return {
         ...block,
         content: {
           ...block.content,
-          richText: parseVariablesInRichText(block.content.richText, {
+          richText: parseVariablesInRichText(block.content?.richText ?? [], {
             variables,
-            takeLatestIfList: true,
+            takeLatestIfList: typebotVersion !== '6',
           }),
         },
       }
@@ -53,22 +59,24 @@ export const parseBubbleBlock = (
         content: {
           ...message.content,
           height:
-            typeof message.content.height === 'string'
+            typeof message.content?.height === 'string'
               ? parseFloat(message.content.height)
-              : message.content.height,
+              : message.content?.height,
         },
       }
     }
     case BubbleBlockType.VIDEO: {
-      const parsedContent = deepParseVariables(variables)(block.content)
+      const parsedContent = block.content
+        ? deepParseVariables(variables)(block.content)
+        : undefined
       return {
         ...block,
         content: {
-          ...(parsedContent.url ? parseVideoUrl(parsedContent.url) : {}),
+          ...(parsedContent?.url ? parseVideoUrl(parsedContent.url) : {}),
           height:
-            typeof parsedContent.height === 'string'
+            typeof parsedContent?.height === 'string'
               ? parseFloat(parsedContent.height)
-              : parsedContent.height,
+              : defaultVideoBubbleContent.height,
         },
       }
     }

@@ -1,15 +1,11 @@
 import { getPrefilledInputValue } from '../../../getPrefilledValue'
-import {
-  DateInputBlock,
-  DateInputOptions,
-  SessionState,
-  Variable,
-} from '@typebot.io/schemas'
+import { DateInputBlock, SessionState, Variable } from '@typebot.io/schemas'
 import { deepParseVariables } from '../../../variables/deepParseVariables'
 import { parseVariables } from '../../../variables/parseVariables'
 
 export const parseDateInput =
   (state: SessionState) => (block: DateInputBlock) => {
+    if (!block.options) return block
     return {
       ...block,
       options: {
@@ -34,8 +30,10 @@ export const parseDateInput =
   }
 
 const parseDateLimit = (
-  limit: DateInputOptions['min'] | DateInputOptions['max'],
-  hasTime: DateInputOptions['hasTime'],
+  limit:
+    | NonNullable<DateInputBlock['options']>['min']
+    | NonNullable<DateInputBlock['options']>['max'],
+  hasTime: NonNullable<DateInputBlock['options']>['hasTime'],
   variables: Variable[]
 ) => {
   if (!limit) return

@@ -1,5 +1,7 @@
 // Reference: https://developers.facebook.com/docs/meta-pixel/reference#standard-events
 
+import { PixelBlock } from './schema'
+
 export const pixelEventTypes = [
   'Lead',
   'Contact',
@@ -132,3 +134,7 @@ export const pixelObjectProperties: {
     ],
   },
 ]
+
+export const defaultPixelOptions = {
+  isInitSkip: false,
+} as const satisfies PixelBlock['options']

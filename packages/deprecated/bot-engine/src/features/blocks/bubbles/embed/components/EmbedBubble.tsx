@@ -36,7 +36,7 @@ export const EmbedBubble = ({ block, onTransitionEnd }: Props) => {
     }
   }, [isLoading, isTyping, onTypingEnd])
 
-  const height = block.content.height
+  const height = block.content?.height
     ? typeof block.content.height === 'string'
       ? parseVariables(typebot.variables)(block.content.height) + 'px'
       : block.content.height

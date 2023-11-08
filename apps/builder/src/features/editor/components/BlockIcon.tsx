@@ -1,11 +1,4 @@
 import { IconProps, useColorModeValue } from '@chakra-ui/react'
-import {
-  BubbleBlockType,
-  InputBlockType,
-  IntegrationBlockType,
-  LogicBlockType,
-  BlockType,
-} from '@typebot.io/schemas'
 import React from 'react'
 import { FlagIcon, SendEmailIcon, WebhookIcon } from '@/components/icons'
 import { WaitIcon } from '@/features/blocks/logic/wait/components/WaitIcon'
@@ -41,8 +34,13 @@ import { AbTestIcon } from '@/features/blocks/logic/abTest/components/AbTestIcon
 import { PictureChoiceIcon } from '@/features/blocks/inputs/pictureChoice/components/PictureChoiceIcon'
 import { PixelLogo } from '@/features/blocks/integrations/pixel/components/PixelLogo'
 import { ZemanticAiLogo } from '@/features/blocks/integrations/zemanticAi/ZemanticAiLogo'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { Block } from '@typebot.io/schemas'
 
-type BlockIconProps = { type: BlockType } & IconProps
+type BlockIconProps = { type: Block['type'] } & IconProps
 
 export const BlockIcon = ({ type, ...props }: BlockIconProps): JSX.Element => {
   const blue = useColorModeValue('blue.500', 'blue.300')

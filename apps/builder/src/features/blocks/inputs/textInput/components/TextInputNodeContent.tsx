@@ -1,29 +1,25 @@
 import React from 'react'
 import { Text } from '@chakra-ui/react'
-import { TextInputOptions } from '@typebot.io/schemas'
 import { WithVariableContent } from '@/features/graph/components/nodes/block/WithVariableContent'
+import { TextInputBlock } from '@typebot.io/schemas'
+import { defaultTextInputOptions } from '@typebot.io/schemas/features/blocks/inputs/text/constants'
 
 type Props = {
-  placeholder: TextInputOptions['labels']['placeholder']
-  isLong: TextInputOptions['isLong']
-  variableId?: string
+  options: TextInputBlock['options']
 }
 
-export const TextInputNodeContent = ({
-  placeholder,
-  isLong,
-  variableId,
-}: Props) => {
-  if (variableId)
+export const TextInputNodeContent = ({ options }: Props) => {
+  if (options?.variableId)
     return (
       <WithVariableContent
-        variableId={variableId}
-        h={isLong ? '100px' : 'auto'}
+        variableId={options?.variableId}
+        h={options.isLong ? '100px' : 'auto'}
       />
     )
   return (
-    <Text color={'gray.500'} h={isLong ? '100px' : 'auto'}>
-      {placeholder}
+    <Text color={'gray.500'} h={options?.isLong ? '100px' : 'auto'}>
+      {options?.labels?.placeholder ??
+        defaultTextInputOptions.labels.placeholder}
     </Text>
   )
 }

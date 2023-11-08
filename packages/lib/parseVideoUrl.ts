@@ -1,4 +1,4 @@
-import { VideoBubbleContentType } from '@typebot.io/schemas/features/blocks/bubbles/video/enums'
+import { VideoBubbleContentType } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
 
 const vimeoRegex = /vimeo\.com\/(\d+)/
 const youtubeRegex =

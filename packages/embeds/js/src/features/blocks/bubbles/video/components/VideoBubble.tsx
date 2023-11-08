@@ -1,12 +1,15 @@
 import { TypingBubble } from '@/components'
 import { isMobile } from '@/utils/isMobileSignal'
-import type { VideoBubbleContent } from '@typebot.io/schemas'
-import { VideoBubbleContentType } from '@typebot.io/schemas/features/blocks/bubbles/video/enums'
 import { createSignal, Match, onCleanup, onMount, Switch } from 'solid-js'
 import { clsx } from 'clsx'
+import {
+  defaultVideoBubbleContent,
+  VideoBubbleContentType,
+} from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
+import { VideoBubbleBlock } from '@typebot.io/schemas'
 
 type Props = {
-  content: VideoBubbleContent
+  content: VideoBubbleBlock['content']
   onTransitionEnd: (offsetTop?: number) => void
 }
 
@@ -60,7 +63,7 @@ export const VideoBubble = (props: Props) => {
             >
               <video
                 autoplay
-                src={props.content.url}
+                src={props.content?.url}
                 controls
                 class={
                   'p-4 focus:outline-none w-full z-10 text-fade-in rounded-md ' +
@@ -90,15 +93,18 @@ export const VideoBubble = (props: Props) => {
                     ? isMobile()
                       ? '32px'
                       : '36px'
-                    : `${props.content.height ?? '400'}px`,
+                    : `${
+                        props.content?.height ??
+                        defaultVideoBubbleContent.height
+                      }px`,
                 }}
               >
                 <iframe
                   src={`${
-                    props.content.type === VideoBubbleContentType.VIMEO
+                    props.content?.type === VideoBubbleContentType.VIMEO
                       ? 'https://player.vimeo.com/video'
                       : 'https://www.youtube.com/embed'
-                  }/${props.content.id}`}
+                  }/${props.content?.id}`}
                   class={'w-full h-full'}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowfullscreen

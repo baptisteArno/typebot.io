@@ -1,8 +1,8 @@
 import test, { expect } from '@playwright/test'
-import { BubbleBlockType, defaultEmbedBubbleContent } from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
 import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 
 const pdfSrc = 'https://www.orimi.com/pdf-test.pdf'
 const siteSrc = 'https://app.cal.com/baptistearno/15min'
@@ -16,7 +16,6 @@ test.describe.parallel('Embed bubble block', () => {
           id: typebotId,
           ...parseDefaultGroupWithBlock({
             type: BubbleBlockType.EMBED,
-            content: defaultEmbedBubbleContent,
           }),
         },
       ])

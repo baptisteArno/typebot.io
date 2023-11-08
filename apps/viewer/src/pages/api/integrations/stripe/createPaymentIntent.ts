@@ -10,12 +10,13 @@ import Stripe from 'stripe'
 
 import Cors from 'cors'
 import {
-  PaymentInputOptions,
+  PaymentInputBlock,
   StripeCredentials,
   Variable,
 } from '@typebot.io/schemas'
 import prisma from '@typebot.io/lib/prisma'
 import { parseVariables } from '@typebot.io/bot-engine/variables/parseVariables'
+import { defaultPaymentInputOptions } from '@typebot.io/schemas/features/blocks/inputs/payment/constants'
 
 const cors = initMiddleware(Cors())
 
@@ -43,11 +44,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { inputOptions, isPreview, variables } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as {
-      inputOptions: PaymentInputOptions
+      inputOptions: PaymentInputBlock['options']
       isPreview: boolean
       variables: Variable[]
     }
-    if (!inputOptions.credentialsId) return forbidden(res)
+    if (!inputOptions?.credentialsId) return forbidden(res)
     const stripeKeys = await getStripeInfo(inputOptions.credentialsId)
     if (!stripeKeys) return forbidden(res)
     const stripe = new Stripe(
@@ -56,9 +57,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         : stripeKeys.live.secretKey,
       { apiVersion: '2022-11-15' }
     )
+
+    const currency =
+      inputOptions.currency ?? defaultPaymentInputOptions.currency
+
     const amount = Math.round(
       Number(parseVariables(variables)(inputOptions.amount)) *
-        (isZeroDecimalCurrency(inputOptions.currency) ? 1 : 100)
+        (isZeroDecimalCurrency(currency) ? 1 : 100)
     )
     if (isNaN(amount)) return badRequest(res)
     // Create a PaymentIntent with the order amount and currency
@@ -68,7 +73,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       const paymentIntent = await stripe.paymentIntents.create({
         amount,
-        currency: inputOptions.currency,
+        currency,
         receipt_email: receiptEmail === '' ? undefined : receiptEmail,
         automatic_payment_methods: {
           enabled: true,
@@ -81,10 +86,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           isPreview && stripeKeys.test?.publicKey
             ? stripeKeys.test.publicKey
             : stripeKeys.live.publicKey,
-        amountLabel: `${
-          amount / (isZeroDecimalCurrency(inputOptions.currency) ? 1 : 100)
-        }${
-          currencySymbols[inputOptions.currency] ?? ` ${inputOptions.currency}`
+        amountLabel: `${amount / (isZeroDecimalCurrency(currency) ? 1 : 100)}${
+          currencySymbols[currency] ?? ` ${currency}`
         }`,
       })
     } catch (err) {

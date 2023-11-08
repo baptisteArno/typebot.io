@@ -8,11 +8,12 @@ import { Select } from '@/components/inputs/Select'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { Stack, Text } from '@chakra-ui/react'
 import { isDefined, isEmpty } from '@typebot.io/lib'
+import { PixelBlock } from '@typebot.io/schemas'
 import {
-  PixelBlock,
+  defaultPixelOptions,
   pixelEventTypes,
   pixelObjectProperties,
-} from '@typebot.io/schemas'
+} from '@typebot.io/schemas/features/blocks/integrations/pixel/constants'
 import React, { useMemo } from 'react'
 
 const pixelReferenceUrl =
@@ -23,7 +24,7 @@ type Props = {
   onOptionsChange: (options: PixelBlock['options']) => void
 }
 
-type Item = NonNullable<PixelBlock['options']['params']>[number]
+type Item = NonNullable<NonNullable<PixelBlock['options']>['params']>[number]
 
 export const PixelSettings = ({ options, onOptionsChange }: Props) => {
   const updateIsInitSkipped = (isChecked: boolean) =>
@@ -54,7 +55,7 @@ export const PixelSettings = ({ options, onOptionsChange }: Props) => {
       eventType,
     })
 
-  const updateParams = (params: PixelBlock['options']['params']) =>
+  const updateParams = (params: NonNullable<PixelBlock['options']>['params']) =>
     onOptionsChange({
       ...options,
       params,
@@ -87,7 +88,7 @@ export const PixelSettings = ({ options, onOptionsChange }: Props) => {
       <SwitchWithLabel
         label={'Skip initialization'}
         moreInfoContent="Check this if the bot is embedded in your website and the pixel is already initialized."
-        initialValue={options?.isInitSkip ?? false}
+        initialValue={options?.isInitSkip ?? defaultPixelOptions.isInitSkip}
         onCheckChange={updateIsInitSkipped}
       />
       <SwitchWithRelatedSettings

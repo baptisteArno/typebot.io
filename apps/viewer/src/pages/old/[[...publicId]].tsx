@@ -16,7 +16,7 @@ export const getServerSideProps: GetServerSideProps = async (
     const publishedTypebot = await getTypebotFromPublicId(
       context.query.publicId?.toString()
     )
-    const headCode = publishedTypebot?.settings.metadata.customHeadCode
+    const headCode = publishedTypebot?.settings.metadata?.customHeadCode
     return {
       props: {
         publishedTypebot,

@@ -6,10 +6,10 @@ import {
   VariableWithValue,
   Typebot,
   ResultWithAnswers,
-  InputBlockType,
   AnswerInSessionState,
 } from '@typebot.io/schemas'
 import { isInputBlock, isDefined, byId, isNotEmpty, isEmpty } from './utils'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 
 export const parseResultHeader = (
   typebot: Pick<Typebot, 'groups' | 'variables'>,
@@ -18,7 +18,9 @@ export const parseResultHeader = (
 ): ResultHeaderCell[] => {
   const parsedGroups = [
     ...typebot.groups,
-    ...(linkedTypebots ?? []).flatMap((linkedTypebot) => linkedTypebot.groups),
+    ...(linkedTypebots ?? []).flatMap(
+      (linkedTypebot) => linkedTypebot.groups as Group[]
+    ),
   ]
   const parsedVariables = [
     ...typebot.variables,
@@ -55,69 +57,71 @@ const parseInputsResultHeader = ({
         group.blocks.map((block) => ({
           ...block,
           groupTitle: group.title,
+          groupId: group.id,
         }))
       )
       .filter((block) => isInputBlock(block)) as (InputBlock & {
+      groupId: string
       groupTitle: string
     })[]
   ).reduce<ResultHeaderCellWithBlock[]>((existingHeaders, inputBlock) => {
     if (
       existingHeaders.some(
         (existingHeader) =>
-          inputBlock.options.variableId &&
+          inputBlock.options?.variableId &&
           existingHeader.variableIds?.includes(inputBlock.options.variableId)
       )
     )
       return existingHeaders
     const matchedVariableName =
-      inputBlock.options.variableId &&
+      inputBlock.options?.variableId &&
       variables.find(byId(inputBlock.options.variableId))?.name
 
     let label = matchedVariableName ?? inputBlock.groupTitle
-    const existingHeader = existingHeaders.find((h) => h.label === label)
-    if (existingHeader) {
-      if (
-        existingHeader.blocks?.some(
-          (block) => block.groupId === inputBlock.groupId
-        ) ||
-        existingHeader.label.includes('Untitled')
-      ) {
-        const totalPrevious = existingHeaders.filter((h) =>
-          h.label.includes(label)
-        ).length
-        const newHeaderCell: ResultHeaderCellWithBlock = {
-          id: inputBlock.id,
-          label: label + ` (${totalPrevious})`,
-          blocks: [
-            {
-              id: inputBlock.id,
-              groupId: inputBlock.groupId,
-            },
-          ],
-          blockType: inputBlock.type,
-          variableIds: inputBlock.options.variableId
-            ? [inputBlock.options.variableId]
-            : undefined,
+    const headerWithSameLabel = existingHeaders.find((h) => h.label === label)
+    if (headerWithSameLabel) {
+      const shouldMerge = headerWithSameLabel.blocks?.some(
+        (block) => block.id === inputBlock.id
+      )
+      if (shouldMerge) {
+        const updatedHeaderCell: ResultHeaderCellWithBlock = {
+          ...headerWithSameLabel,
+          variableIds:
+            headerWithSameLabel.variableIds && inputBlock.options?.variableId
+              ? headerWithSameLabel.variableIds.concat([
+                  inputBlock.options.variableId,
+                ])
+              : undefined,
+          blocks: headerWithSameLabel.blocks.concat({
+            id: inputBlock.id,
+            groupId: inputBlock.groupId,
+          }),
         }
-        return [...existingHeaders, newHeaderCell]
+        return [
+          ...existingHeaders.filter(
+            (existingHeader) => existingHeader.label !== label
+          ),
+          updatedHeaderCell,
+        ]
       }
-      const updatedHeaderCell: ResultHeaderCellWithBlock = {
-        ...existingHeader,
-        variableIds:
-          existingHeader.variableIds && inputBlock.options.variableId
-            ? existingHeader.variableIds.concat([inputBlock.options.variableId])
-            : undefined,
-        blocks: existingHeader.blocks.concat({
-          id: inputBlock.id,
-          groupId: inputBlock.groupId,
-        }),
+      const totalPrevious = existingHeaders.filter((h) =>
+        h.label.includes(label)
+      ).length
+      const newHeaderCell: ResultHeaderCellWithBlock = {
+        id: inputBlock.id,
+        label: label + ` (${totalPrevious})`,
+        blocks: [
+          {
+            id: inputBlock.id,
+            groupId: inputBlock.groupId,
+          },
+        ],
+        blockType: inputBlock.type,
+        variableIds: inputBlock.options?.variableId
+          ? [inputBlock.options.variableId]
+          : undefined,
       }
-      return [
-        ...existingHeaders.filter(
-          (existingHeader) => existingHeader.label !== label
-        ),
-        updatedHeaderCell,
-      ]
+      return [...existingHeaders, newHeaderCell]
     }
 
     const newHeaderCell: ResultHeaderCellWithBlock = {
@@ -130,7 +134,7 @@ const parseInputsResultHeader = ({
         },
       ],
       blockType: inputBlock.type,
-      variableIds: inputBlock.options.variableId
+      variableIds: inputBlock.options?.variableId
         ? [inputBlock.options.variableId]
         : undefined,
     }

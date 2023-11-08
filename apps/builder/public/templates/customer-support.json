@@ -1,33 +1,24 @@
 {
-  "id": "cl16la7p900990b1a72qjqbb3",
-  "version": "4",
-  "createdAt": "2022-03-25T15:39:33.885Z",
-  "updatedAt": "2022-03-25T15:42:12.544Z",
+  "version": "6",
+  "id": "cloo046v300051aorhtv76f0i",
   "name": "Customer Support",
-  "icon": "😍",
-  "folderId": null,
-  "groups": [
+  "events": [
     {
       "id": "uG1tt8JdDyu2nju3oJ4wc1",
-      "blocks": [
-        {
-          "id": "bFHwV7tnY5dke8pQeFY8v6",
-          "type": "start",
-          "label": "Start",
-          "groupId": "uG1tt8JdDyu2nju3oJ4wc1",
-          "outgoingEdgeId": "2dzxChB1qm9WGfzNF91tfg"
-        }
-      ],
-      "title": "Start",
-      "graphCoordinates": { "x": -281, "y": -89 }
-    },
+      "outgoingEdgeId": "2dzxChB1qm9WGfzNF91tfg",
+      "graphCoordinates": { "x": -281, "y": -89 },
+      "type": "start"
+    }
+  ],
+  "groups": [
     {
       "id": "vLUAPaxKwPF49iZhg4XZYa",
+      "title": "Menu",
+      "graphCoordinates": { "x": -28.4, "y": -88.19 },
       "blocks": [
         {
           "id": "spud6U3K1omh2dZG8yN2CW4",
           "type": "text",
-          "groupId": "vLUAPaxKwPF49iZhg4XZYa",
           "content": {
             "richText": [
               { "type": "p", "children": [{ "text": "Hey friend 👋" }] },
@@ -41,40 +32,31 @@
           "items": [
             {
               "id": "fQ8oLDnKmDBuPDK7riJ2kt",
-              "type": 0,
-              "blockId": "s6kp2Z4igeY3kL7B64qBdUg",
-              "content": "I have a feature request ✨",
-              "outgoingEdgeId": "dhniFxrsH5r54aEE5JXwK2"
+              "outgoingEdgeId": "dhniFxrsH5r54aEE5JXwK2",
+              "content": "I have a feature request ✨"
             },
             {
               "id": "h2rFDX2UnKS4Kdu3Eyuqq3",
-              "type": 0,
-              "blockId": "s6kp2Z4igeY3kL7B64qBdUg",
-              "content": "There is a bug 🐛",
-              "outgoingEdgeId": "2C4mhU5o2Hdm7dztR9xNE9"
+              "outgoingEdgeId": "2C4mhU5o2Hdm7dztR9xNE9",
+              "content": "There is a bug 🐛"
             },
             {
               "id": "hcUFBPeQA3gSyXRprRk2v9",
-              "type": 0,
-              "blockId": "s6kp2Z4igeY3kL7B64qBdUg",
-              "content": "I have a question 💭",
-              "outgoingEdgeId": "bTo6CZD1YapDDyVdvJgFDV"
+              "outgoingEdgeId": "bTo6CZD1YapDDyVdvJgFDV",
+              "content": "I have a question 💭"
             }
-          ],
-          "groupId": "vLUAPaxKwPF49iZhg4XZYa",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false }
+          ]
         }
-      ],
-      "title": "Menu",
-      "graphCoordinates": { "x": -7, "y": 90 }
+      ]
     },
     {
       "id": "7MuqF6nen1ZTwGB53Mz8VY",
+      "title": "Bug",
+      "graphCoordinates": { "x": 364.46, "y": 92.39 },
       "blocks": [
         {
           "id": "sjsECyfSBMkUnoWaEnBTmJX",
           "type": "text",
-          "groupId": "7MuqF6nen1ZTwGB53Mz8VY",
           "content": {
             "richText": [{ "type": "p", "children": [{ "text": "Shoot! 🤪" }] }]
           }
@@ -82,7 +64,6 @@
         {
           "id": "seomQsnPWgiMzQVeZ3us7x2",
           "type": "text",
-          "groupId": "7MuqF6nen1ZTwGB53Mz8VY",
           "content": {
             "richText": [
               {
@@ -98,29 +79,26 @@
         },
         {
           "id": "s3LYyyYtjdQ88jkMMV5DSW7",
+          "outgoingEdgeId": "cl1571jhh00022e6dk77f52wg",
           "type": "text input",
-          "groupId": "7MuqF6nen1ZTwGB53Mz8VY",
           "options": {
-            "isLong": true,
             "labels": {
-              "button": "Send",
               "placeholder": "Describe the bug..."
             },
-            "variableId": "v51BcuecnB6kRU1tsttaGyR"
-          },
-          "outgoingEdgeId": "cl1571jhh00022e6dk77f52wg"
+            "variableId": "v51BcuecnB6kRU1tsttaGyR",
+            "isLong": true
+          }
         }
-      ],
-      "title": "Bug",
-      "graphCoordinates": { "x": 476, "y": 76 }
+      ]
     },
     {
       "id": "kyK8JQ77NodUYaz3JLS88A",
+      "title": "Feature request",
+      "graphCoordinates": { "x": 364.36, "y": -517.93 },
       "blocks": [
         {
           "id": "s9bgHcWdobb8Z5cTbrnTz6R",
           "type": "text",
-          "groupId": "kyK8JQ77NodUYaz3JLS88A",
           "content": {
             "richText": [{ "type": "p", "children": [{ "text": "Awesome!" }] }]
           }
@@ -128,7 +106,6 @@
         {
           "id": "s2NbNaBGKhMvdEUdVPXKZjy",
           "type": "text",
-          "groupId": "kyK8JQ77NodUYaz3JLS88A",
           "content": {
             "richText": [
               {
@@ -162,39 +139,24 @@
         },
         {
           "id": "cl16lb3b300092e6dh4h01vxw",
-          "groupId": "kyK8JQ77NodUYaz3JLS88A",
           "type": "choice input",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
-          "items": [
-            {
-              "id": "cl16lb3b3000a2e6dy8zdhzpz",
-              "blockId": "cl16lb3b300092e6dh4h01vxw",
-              "type": 0,
-              "content": "Restart"
-            }
-          ]
+          "items": [{ "id": "cl16lb3b3000a2e6dy8zdhzpz", "content": "Restart" }]
         },
         {
-          "id": "cl16lablb00082e6dadk55sxv",
-          "groupId": "kyK8JQ77NodUYaz3JLS88A",
-          "type": "Typebot link",
-          "options": {
-            "typebotId": "current",
-            "groupId": "vLUAPaxKwPF49iZhg4XZYa",
-            "mergeResults": false
-          }
+          "id": "j08qxg0h804rngfroedblt5f",
+          "type": "Jump",
+          "options": { "groupId": "vLUAPaxKwPF49iZhg4XZYa" }
         }
-      ],
-      "title": "Feature request",
-      "graphCoordinates": { "x": 477, "y": -563 }
+      ]
     },
     {
       "id": "puWCBhGWSQRbqTkVH89RCf",
+      "title": "Question",
+      "graphCoordinates": { "x": 365.4, "y": 491.3 },
       "blocks": [
         {
           "id": "sm4iHhLQs9yNdRG3b7xqV8Y",
           "type": "text",
-          "groupId": "puWCBhGWSQRbqTkVH89RCf",
           "content": {
             "richText": [
               {
@@ -205,8 +167,7 @@
                     "url": "https://docs.typebot.io/",
                     "type": "a",
                     "children": [{ "text": "Documentation 🙏" }]
-                  },
-                  { "text": "" }
+                  }
                 ]
               }
             ]
@@ -215,7 +176,6 @@
         {
           "id": "sreX6rwMevEmbTpnkGCtp3k",
           "type": "text",
-          "groupId": "puWCBhGWSQRbqTkVH89RCf",
           "content": {
             "richText": [
               {
@@ -228,36 +188,29 @@
         {
           "id": "so4GiKFWWjKCjXgmMJYCGbe",
           "type": "image",
-          "groupId": "puWCBhGWSQRbqTkVH89RCf",
           "content": {
             "url": "https://media0.giphy.com/media/rhgwg4qBu97ISgbfni/giphy-downsized.gif?cid=fe3852a3wimy48e55djt23j44uto7gdlu8ksytylafisvr0q&rid=giphy-downsized.gif&ct=g"
           }
         },
         {
           "id": "sjd4qACugMarB7gJC8nMhb3",
+          "outgoingEdgeId": "cl1571ktd00032e6dyti22850",
           "type": "text input",
-          "groupId": "puWCBhGWSQRbqTkVH89RCf",
           "options": {
-            "isLong": true,
-            "labels": {
-              "button": "Send",
-              "placeholder": "Type your answer..."
-            },
-            "variableId": "v51BcuecnB6kRU1tsttaGyR"
-          },
-          "outgoingEdgeId": "cl1571ktd00032e6dyti22850"
+            "variableId": "v51BcuecnB6kRU1tsttaGyR",
+            "isLong": true
+          }
         }
-      ],
-      "title": "Question",
-      "graphCoordinates": { "x": 476, "y": 399 }
+      ]
     },
     {
       "id": "1GvxCAAEysxJMxrVngud3X",
+      "title": "Bye",
+      "graphCoordinates": { "x": 1115.81, "y": 728.71 },
       "blocks": [
         {
           "id": "s6uLw72EAKbACrpYHr7DSyY",
           "type": "text",
-          "groupId": "1GvxCAAEysxJMxrVngud3X",
           "content": {
             "richText": [
               {
@@ -272,7 +225,6 @@
         {
           "id": "stM7cTBFCLhpQagRHT64K6u",
           "type": "text",
-          "groupId": "1GvxCAAEysxJMxrVngud3X",
           "content": {
             "richText": [
               {
@@ -289,38 +241,23 @@
         {
           "id": "s4JATFkBxzmcqqEKQB2xFfa",
           "type": "choice input",
-          "items": [
-            {
-              "id": "jqm8wZa5yYb73493n5s3Uc",
-              "type": 0,
-              "blockId": "s4JATFkBxzmcqqEKQB2xFfa",
-              "content": "Restart"
-            }
-          ],
-          "groupId": "1GvxCAAEysxJMxrVngud3X",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false }
+          "items": [{ "id": "jqm8wZa5yYb73493n5s3Uc", "content": "Restart" }]
         },
         {
-          "id": "cl14qlt8600072e69rez236gx",
-          "type": "Typebot link",
-          "groupId": "1GvxCAAEysxJMxrVngud3X",
-          "options": {
-            "groupId": "vLUAPaxKwPF49iZhg4XZYa",
-            "typebotId": "current",
-            "mergeResults": false
-          }
+          "id": "igdnc34rcmiyamazghr8s708",
+          "type": "Jump",
+          "options": { "groupId": "vLUAPaxKwPF49iZhg4XZYa" }
         }
-      ],
-      "title": "Bye",
-      "graphCoordinates": { "x": 1177, "y": 113 }
+      ]
     },
     {
       "id": "wncvzVDFJDvhh1M3CXJ6aL",
+      "title": "Email",
+      "graphCoordinates": { "x": 746.29, "y": 577.22 },
       "blocks": [
         {
           "id": "soiDpBL5r1dbvHxuT2Sd3mH",
           "type": "text",
-          "groupId": "wncvzVDFJDvhh1M3CXJ6aL",
           "content": {
             "richText": [
               {
@@ -332,117 +269,77 @@
         },
         {
           "id": "s5Fh7zHUw3j4zDM5xjzwsXB",
+          "outgoingEdgeId": "cl1571xtc00042e6dcptam5jw",
           "type": "email input",
-          "groupId": "wncvzVDFJDvhh1M3CXJ6aL",
           "options": {
-            "labels": { "button": "Send", "placeholder": "Type your email..." },
-            "variableId": "t2k6cj3uYfNdJX13APA4b9",
-            "retryMessageContent": "This email doesn't seem to be valid. Can you type it again?"
-          },
-          "outgoingEdgeId": "cl1571xtc00042e6dcptam5jw"
+            "variableId": "t2k6cj3uYfNdJX13APA4b9"
+          }
         }
-      ],
-      "title": "Email",
-      "graphCoordinates": { "x": 830, "y": 115 }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "2dzxChB1qm9WGfzNF91tfg",
+      "from": { "eventId": "uG1tt8JdDyu2nju3oJ4wc1" },
+      "to": { "groupId": "vLUAPaxKwPF49iZhg4XZYa" }
+    },
+    {
+      "id": "dhniFxrsH5r54aEE5JXwK2",
+      "from": {
+        "blockId": "s6kp2Z4igeY3kL7B64qBdUg",
+        "itemId": "fQ8oLDnKmDBuPDK7riJ2kt"
+      },
+      "to": { "groupId": "kyK8JQ77NodUYaz3JLS88A" }
+    },
+    {
+      "id": "2C4mhU5o2Hdm7dztR9xNE9",
+      "from": {
+        "blockId": "s6kp2Z4igeY3kL7B64qBdUg",
+        "itemId": "h2rFDX2UnKS4Kdu3Eyuqq3"
+      },
+      "to": { "groupId": "7MuqF6nen1ZTwGB53Mz8VY" }
+    },
+    {
+      "id": "bTo6CZD1YapDDyVdvJgFDV",
+      "from": {
+        "blockId": "s6kp2Z4igeY3kL7B64qBdUg",
+        "itemId": "hcUFBPeQA3gSyXRprRk2v9"
+      },
+      "to": { "groupId": "puWCBhGWSQRbqTkVH89RCf" }
+    },
+    {
+      "id": "cl1571jhh00022e6dk77f52wg",
+      "from": { "blockId": "s3LYyyYtjdQ88jkMMV5DSW7" },
+      "to": { "groupId": "wncvzVDFJDvhh1M3CXJ6aL" }
+    },
+    {
+      "id": "cl1571ktd00032e6dyti22850",
+      "from": { "blockId": "sjd4qACugMarB7gJC8nMhb3" },
+      "to": { "groupId": "wncvzVDFJDvhh1M3CXJ6aL" }
+    },
+    {
+      "id": "cl1571xtc00042e6dcptam5jw",
+      "from": { "blockId": "s5Fh7zHUw3j4zDM5xjzwsXB" },
+      "to": { "groupId": "1GvxCAAEysxJMxrVngud3X" }
     }
   ],
   "variables": [
     { "id": "t2k6cj3uYfNdJX13APA4b9", "name": "Email" },
     { "id": "v51BcuecnB6kRU1tsttaGyR", "name": "Content" }
   ],
-  "edges": [
-    {
-      "id": "2dzxChB1qm9WGfzNF91tfg",
-      "to": { "groupId": "vLUAPaxKwPF49iZhg4XZYa" },
-      "from": {
-        "blockId": "bFHwV7tnY5dke8pQeFY8v6",
-        "groupId": "uG1tt8JdDyu2nju3oJ4wc1"
-      }
-    },
-    {
-      "id": "dhniFxrsH5r54aEE5JXwK2",
-      "to": { "groupId": "kyK8JQ77NodUYaz3JLS88A" },
-      "from": {
-        "itemId": "fQ8oLDnKmDBuPDK7riJ2kt",
-        "blockId": "s6kp2Z4igeY3kL7B64qBdUg",
-        "groupId": "vLUAPaxKwPF49iZhg4XZYa"
-      }
-    },
-    {
-      "id": "2C4mhU5o2Hdm7dztR9xNE9",
-      "to": { "groupId": "7MuqF6nen1ZTwGB53Mz8VY" },
-      "from": {
-        "itemId": "h2rFDX2UnKS4Kdu3Eyuqq3",
-        "blockId": "s6kp2Z4igeY3kL7B64qBdUg",
-        "groupId": "vLUAPaxKwPF49iZhg4XZYa"
-      }
-    },
-    {
-      "id": "bTo6CZD1YapDDyVdvJgFDV",
-      "to": { "groupId": "puWCBhGWSQRbqTkVH89RCf" },
-      "from": {
-        "itemId": "hcUFBPeQA3gSyXRprRk2v9",
-        "blockId": "s6kp2Z4igeY3kL7B64qBdUg",
-        "groupId": "vLUAPaxKwPF49iZhg4XZYa"
-      }
-    },
-    {
-      "id": "cl1571jhh00022e6dk77f52wg",
-      "to": { "groupId": "wncvzVDFJDvhh1M3CXJ6aL" },
-      "from": {
-        "blockId": "s3LYyyYtjdQ88jkMMV5DSW7",
-        "groupId": "7MuqF6nen1ZTwGB53Mz8VY"
-      }
-    },
-    {
-      "id": "cl1571ktd00032e6dyti22850",
-      "to": { "groupId": "wncvzVDFJDvhh1M3CXJ6aL" },
-      "from": {
-        "blockId": "sjd4qACugMarB7gJC8nMhb3",
-        "groupId": "puWCBhGWSQRbqTkVH89RCf"
-      }
-    },
-    {
-      "id": "cl1571xtc00042e6dcptam5jw",
-      "to": { "groupId": "1GvxCAAEysxJMxrVngud3X" },
-      "from": {
-        "blockId": "s5Fh7zHUw3j4zDM5xjzwsXB",
-        "groupId": "wncvzVDFJDvhh1M3CXJ6aL"
-      }
-    }
-  ],
-  "theme": {
-    "chat": {
-      "inputs": {
-        "color": "#303235",
-        "backgroundColor": "#FFFFFF",
-        "placeholderColor": "#9095A0"
-      },
-      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
-      "hostAvatar": {
-        "isEnabled": true
-      },
-      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
-      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
-    },
-    "general": {
-      "font": "Open Sans",
-      "background": { "type": "Color", "content": "#ffffff" }
-    }
-  },
-  "settings": {
-    "general": {
-      "isBrandingEnabled": false,
-      "isInputPrefillEnabled": true,
-      "isResultSavingEnabled": true,
-      "isHideQueryParamsEnabled": true,
-      "isNewResultOnRefreshEnabled": true
-    },
-    "metadata": {
-      "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
-    },
-    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
-  },
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2023-11-07T07:20:05.823Z",
+  "updatedAt": "2023-11-07T07:24:28.824Z",
+  "icon": "😍",
+  "folderId": null,
   "publicId": null,
-  "customDomain": null
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null
 }

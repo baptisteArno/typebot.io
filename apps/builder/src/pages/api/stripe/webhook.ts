@@ -182,7 +182,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           })
           for (const typebot of typebots) {
             const settings = typebot.settings as Settings
-            if (settings.general.isBrandingEnabled) continue
+            if (settings.general?.isBrandingEnabled) continue
             await prisma.typebot.updateMany({
               where: { id: typebot.id },
               data: {
@@ -205,7 +205,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               ?.settings as Settings | null
             if (
               !publishedTypebotSettings ||
-              publishedTypebotSettings?.general.isBrandingEnabled
+              publishedTypebotSettings?.general?.isBrandingEnabled
             )
               continue
             await prisma.publicTypebot.updateMany({

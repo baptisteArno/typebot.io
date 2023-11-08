@@ -96,6 +96,7 @@ export const OpenAIChatCompletionSettings = ({
                   Item={ChatCompletionMessageItem}
                   onItemsChange={updateMessages}
                   isOrdered
+                  hasDefaultItem
                   addLabel="Add message"
                 />
               </AccordionPanel>
@@ -132,6 +133,7 @@ export const OpenAIChatCompletionSettings = ({
                   Item={ChatCompletionResponseItem}
                   onItemsChange={updateResponseMapping}
                   newItemDefaultProps={{ valueToExtract: 'Message content' }}
+                  hasDefaultItem
                 />
               </AccordionPanel>
             </AccordionItem>

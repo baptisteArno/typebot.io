@@ -1,8 +1,8 @@
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { defaultTextInputOptions, InputBlockType } from '@typebot.io/schemas'
 import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 
 test('should not be able to submit taken url ID', async ({ page }) => {
   const takenTypebotId = createId()
@@ -12,7 +12,6 @@ test('should not be able to submit taken url ID', async ({ page }) => {
       id: takenTypebotId,
       ...parseDefaultGroupWithBlock({
         type: InputBlockType.TEXT,
-        options: defaultTextInputOptions,
       }),
       publicId: 'taken-url-id',
     },
@@ -22,7 +21,6 @@ test('should not be able to submit taken url ID', async ({ page }) => {
       id: typebotId,
       ...parseDefaultGroupWithBlock({
         type: InputBlockType.TEXT,
-        options: defaultTextInputOptions,
       }),
       publicId: typebotId + '-public',
     },

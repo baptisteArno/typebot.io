@@ -9,7 +9,7 @@ export const executePixelBlock = (
   const { typebot, resultId } = state.typebotsQueue[0]
   if (
     !resultId ||
-    !block.options.pixelId ||
+    !block.options?.pixelId ||
     !block.options.eventType ||
     state.whatsApp
   )

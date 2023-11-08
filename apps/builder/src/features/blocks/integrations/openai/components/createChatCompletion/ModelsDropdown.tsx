@@ -2,12 +2,13 @@ import { Select } from '@/components/inputs/Select'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'
 import { trpc } from '@/lib/trpc'
+import { defaultOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
 
 type Props = {
-  baseUrl: string
+  baseUrl?: string
   apiVersion?: string
   credentialsId: string
-  defaultValue: string
+  defaultValue?: string
   onChange: (model: string | undefined) => void
 }
 
@@ -24,7 +25,7 @@ export const ModelsDropdown = ({
   const { data } = trpc.openAI.listModels.useQuery(
     {
       credentialsId,
-      baseUrl,
+      baseUrl: baseUrl ?? defaultOpenAIOptions.baseUrl,
       workspaceId: workspace?.id as string,
       apiVersion,
     },

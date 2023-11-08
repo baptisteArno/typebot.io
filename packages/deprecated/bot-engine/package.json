@@ -5,7 +5,6 @@
   "version": "0.1.0",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
   "scripts": {
     "build": "pnpm tsc --noEmit && tsup",
     "dev": "tsup --watch"
@@ -41,7 +40,7 @@
     "@typebot.io/tsconfig": "workspace:*",
     "tsup": "6.5.0",
     "typebot-js": "workspace:*",
-    "typescript": "4.9.4",
+    "typescript": "5.2.2",
     "@typebot.io/lib": "workspace:*"
   },
   "peerDependencies": {

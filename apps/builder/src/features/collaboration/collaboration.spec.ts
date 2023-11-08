@@ -2,7 +2,6 @@ import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
 import { CollaborationType, Plan, WorkspaceRole } from '@typebot.io/prisma'
 import prisma from '@typebot.io/lib/prisma'
-import { InputBlockType, defaultTextInputOptions } from '@typebot.io/schemas'
 import {
   createTypebots,
   injectFakeResults,
@@ -10,6 +9,7 @@ import {
 import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
 import { userId } from '@typebot.io/lib/playwright/databaseSetup'
 import { createFolder } from '@/test/utils/databaseActions'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 
 test.describe('Typebot owner', () => {
   test('Can invite collaborators', async ({ page }) => {
@@ -34,7 +34,6 @@ test.describe('Typebot owner', () => {
         workspaceId: guestWorkspaceId,
         ...parseDefaultGroupWithBlock({
           type: InputBlockType.TEXT,
-          options: defaultTextInputOptions,
         }),
       },
     ])
@@ -87,7 +86,6 @@ test.describe('Guest with read access', () => {
         workspaceId: guestWorkspaceId,
         ...parseDefaultGroupWithBlock({
           type: InputBlockType.TEXT,
-          options: defaultTextInputOptions,
         }),
       },
       {
@@ -145,7 +143,6 @@ test.describe('Guest with write access', () => {
         workspaceId: guestWorkspaceId,
         ...parseDefaultGroupWithBlock({
           type: InputBlockType.TEXT,
-          options: defaultTextInputOptions,
         }),
       },
       {

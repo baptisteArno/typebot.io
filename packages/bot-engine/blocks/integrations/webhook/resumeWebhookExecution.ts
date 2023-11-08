@@ -49,7 +49,7 @@ export const resumeWebhookExecution = ({
           }
     )
 
-  const newVariables = block.options.responseVariableMapping.reduce<
+  const newVariables = block.options?.responseVariableMapping?.reduce<
     VariableWithUnknowValue[]
   >((newVariables, varMapping) => {
     if (!varMapping?.bodyPath || !varMapping.variableId) return newVariables
@@ -66,7 +66,7 @@ export const resumeWebhookExecution = ({
       return newVariables
     }
   }, [])
-  if (newVariables.length > 0) {
+  if (newVariables && newVariables.length > 0) {
     const newSessionState = updateVariablesInSession(state)(newVariables)
     return {
       outgoingEdgeId: block.outgoingEdgeId,

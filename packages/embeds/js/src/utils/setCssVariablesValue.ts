@@ -6,9 +6,12 @@ import {
   InputColors,
   Theme,
 } from '@typebot.io/schemas'
-import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/enums'
 import { isLight, hexToRgb } from '@typebot.io/lib/hexToRgb'
 import { isNotEmpty } from '@typebot.io/lib'
+import {
+  BackgroundType,
+  defaultTheme,
+} from '@typebot.io/schemas/features/typebot/theme/constants'
 
 const cssVariableNames = {
   general: {
@@ -183,7 +186,7 @@ const setTypebotBackground = (
   }
 }
 
-const parseBackgroundValue = ({ type, content }: Background) => {
+const parseBackgroundValue = ({ type, content }: Background = {}) => {
   switch (type) {
     case BackgroundType.NONE:
       return 'transparent'
@@ -191,6 +194,8 @@ const parseBackgroundValue = ({ type, content }: Background) => {
       return content ?? '#ffffff'
     case BackgroundType.IMAGE:
       return `url(${content})`
+    case undefined:
+      return defaultTheme.general.background.content
   }
 }
 

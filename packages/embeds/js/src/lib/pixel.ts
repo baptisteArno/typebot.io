@@ -25,7 +25,7 @@ export const initPixel = (pixelIds: string[]) => {
 }
 
 export const trackPixelEvent = (options: PixelBlock['options']) => {
-  if (!options.eventType || !options.pixelId) return
+  if (!options?.eventType || !options.pixelId) return
   if (!window.fbq) {
     console.error('Facebook Pixel was not properly initialized')
     return

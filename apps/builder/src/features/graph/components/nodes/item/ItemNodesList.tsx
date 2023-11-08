@@ -7,11 +7,7 @@ import {
   useEventListener,
 } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import {
-  BlockIndices,
-  BlockWithItems,
-  LogicBlockType,
-} from '@typebot.io/schemas'
+import { BlockIndices, BlockWithItems } from '@typebot.io/schemas'
 import React, { useEffect, useRef, useState } from 'react'
 import { ItemNode } from './ItemNode'
 import { PlaceholderNode } from '../PlaceholderNode'
@@ -19,11 +15,13 @@ import { isDefined } from '@typebot.io/lib'
 import {
   useBlockDnd,
   computeNearestPlaceholderIndex,
-  DraggabbleItem,
+  DraggableItem,
 } from '@/features/graph/providers/GraphDndProvider'
 import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { Coordinates } from '@dnd-kit/utilities'
-import { SourceEndpoint } from '../../endpoints/SourceEndpoint'
+import { BlockSourceEndpoint } from '../../endpoints/BlockSourceEndpoint'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 
 type Props = {
   block: BlockWithItems
@@ -41,11 +39,17 @@ export const ItemNodesList = ({
   const isDraggingOnCurrentBlock =
     (draggedItem && mouseOverBlock?.id === block.id) ?? false
   const showPlaceholders =
-    draggedItem !== undefined && block.items.at(0)?.type === draggedItem.type
+    draggedItem !== undefined && block.type === draggedItem.type
 
   const isLastBlock =
     isDefined(typebot) &&
     typebot.groups[groupIndex]?.blocks?.[blockIndex + 1] === undefined
+
+  const someChoiceItemsAreNotConnected =
+    block.type === InputBlockType.CHOICE ||
+    block.type === InputBlockType.PICTURE_CHOICE
+      ? block.items.some((item) => item.outgoingEdgeId === undefined)
+      : true
 
   const [position, setPosition] = useState({
     x: 0,
@@ -57,7 +61,7 @@ export const ItemNodesList = ({
   >()
 
   const handleGlobalMouseMove = (event: MouseEvent) => {
-    if (!draggedItem || draggedItem.blockId !== block.id) return
+    if (!draggedItem) return
     const { clientX, clientY } = event
     setPosition({
       ...position,
@@ -107,7 +111,7 @@ export const ItemNodesList = ({
     (itemIndex: number) =>
     (
       { absolute, relative }: { absolute: Coordinates; relative: Coordinates },
-      item: DraggabbleItem
+      item: DraggableItem
     ) => {
       if (!typebot || block.items.length <= 1) return
       placeholderRefs.current.splice(itemIndex + 1, 1)
@@ -116,7 +120,6 @@ export const ItemNodesList = ({
       setRelativeCoordinates(relative)
       setDraggedItem({
         ...item,
-        blockId: block.id,
       })
     }
 
@@ -138,6 +141,7 @@ export const ItemNodesList = ({
         <Stack key={item.id} spacing={1}>
           <ItemNode
             item={item}
+            block={block}
             indices={{ groupIndex, blockIndex, itemIndex: idx }}
             onMouseDown={handleBlockMouseDown(idx)}
           />
@@ -148,9 +152,14 @@ export const ItemNodesList = ({
           />
         </Stack>
       ))}
-      {isLastBlock && <DefaultItemNode block={block} />}
+      {isLastBlock && someChoiceItemsAreNotConnected && (
+        <DefaultItemNode
+          block={block}
+          groupId={typebot.groups[groupIndex].id}
+        />
+      )}
 
-      {draggedItem && draggedItem.blockId === block.id && (
+      {draggedItem && (
         <Portal>
           <Flex
             pointerEvents="none"
@@ -165,6 +174,7 @@ export const ItemNodesList = ({
           >
             <ItemNode
               item={draggedItem}
+              block={block}
               indices={{ groupIndex, blockIndex, itemIndex: 0 }}
               connectionDisabled
             />
@@ -175,7 +185,13 @@ export const ItemNodesList = ({
   )
 }
 
-const DefaultItemNode = ({ block }: { block: BlockWithItems }) => {
+const DefaultItemNode = ({
+  block,
+  groupId,
+}: {
+  block: BlockWithItems
+  groupId: string
+}) => {
   return (
     <Flex
       px="4"
@@ -191,11 +207,11 @@ const DefaultItemNode = ({ block }: { block: BlockWithItems }) => {
       <Text color="gray.500">
         {block.type === LogicBlockType.CONDITION ? 'Else' : 'Default'}
       </Text>
-      <SourceEndpoint
+      <BlockSourceEndpoint
         source={{
-          groupId: block.groupId,
           blockId: block.id,
         }}
+        groupId={groupId}
         pos="absolute"
         right="-49px"
       />

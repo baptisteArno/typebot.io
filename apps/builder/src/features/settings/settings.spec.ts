@@ -1,8 +1,8 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { defaultTextInputOptions } from '@typebot.io/schemas'
 import { importTypebotInDatabase } from '@typebot.io/lib/playwright/databaseActions'
+import { defaultTextInputOptions } from '@typebot.io/schemas/features/blocks/inputs/text/constants'
 
 test.describe.parallel('Settings page', () => {
   test.describe('General', () => {
@@ -65,7 +65,10 @@ test.describe.parallel('Settings page', () => {
 
       // Fav icon
       const favIconImg = page.locator('img >> nth=0')
-      await expect(favIconImg).toHaveAttribute('src', '/favicon.png')
+      await expect(favIconImg).toHaveAttribute(
+        'src',
+        'http://localhost:3001/favicon.png'
+      )
       await favIconImg.click()
       await expect(page.locator('text=Giphy')).toBeHidden()
       await page.click('button:has-text("Link")')
@@ -80,7 +83,10 @@ test.describe.parallel('Settings page', () => {
 
       // Website image
       const websiteImg = page.locator('img >> nth=1')
-      await expect(websiteImg).toHaveAttribute('src', '/viewer-preview.png')
+      await expect(websiteImg).toHaveAttribute(
+        'src',
+        'http://localhost:3001/site-preview.png'
+      )
       await websiteImg.click()
       await expect(page.locator('text=Giphy')).toBeHidden()
       await page.click('button >> text="Link"')

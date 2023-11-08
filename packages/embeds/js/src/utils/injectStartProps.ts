@@ -19,8 +19,6 @@ export const injectStartProps = async (
   const googleAnalyticsId = startPropsToInject.googleAnalyticsId
   if (isNotEmpty(googleAnalyticsId))
     await initGoogleAnalytics(googleAnalyticsId)
-  const pixelIds = startPropsToInject.pixelId
-    ? [startPropsToInject.pixelId]
-    : startPropsToInject.pixelIds
+  const pixelIds = startPropsToInject.pixelIds
   if (isDefined(pixelIds)) initPixel(pixelIds)
 }

@@ -1,20 +1,27 @@
 import { ExecuteLogicResponse } from '../../../types'
 import { SessionState, WaitBlock } from '@typebot.io/schemas'
 import { parseVariables } from '../../../variables/parseVariables'
+import { isNotDefined } from '@typebot.io/lib'
 
 export const executeWait = (
   state: SessionState,
   block: WaitBlock
 ): ExecuteLogicResponse => {
   const { variables } = state.typebotsQueue[0].typebot
+  if (!block.options?.secondsToWaitFor)
+    return { outgoingEdgeId: block.outgoingEdgeId }
+
   const parsedSecondsToWaitFor = safeParseInt(
     parseVariables(variables)(block.options.secondsToWaitFor)
   )
 
+  if (isNotDefined(parsedSecondsToWaitFor))
+    return { outgoingEdgeId: block.outgoingEdgeId }
+
   return {
     outgoingEdgeId: block.outgoingEdgeId,
     clientSideActions:
-      parsedSecondsToWaitFor || block.options.shouldPause
+      parsedSecondsToWaitFor || block.options?.shouldPause
         ? [
             {
               wait: { secondsToWaitFor: parsedSecondsToWaitFor ?? 0 },

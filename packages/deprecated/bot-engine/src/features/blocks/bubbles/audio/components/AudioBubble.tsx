@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTypebot } from '@/providers/TypebotProvider'
-import { AudioBubbleContent } from '@typebot.io/schemas'
 import { TypingBubble } from '@/components/TypingBubble'
 import { parseVariables } from '@/features/variables'
+import { AudioBubbleBlock } from '@typebot.io/schemas'
 
 type Props = {
-  url: AudioBubbleContent['url']
+  url: NonNullable<AudioBubbleBlock['content']>['url']
   onTransitionEnd: () => void
 }
 

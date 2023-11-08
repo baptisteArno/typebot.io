@@ -3,7 +3,8 @@ import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { Stack } from '@chakra-ui/react'
 import { JumpBlock } from '@typebot.io/schemas/features/blocks/logic/jump'
 import React from 'react'
-import { byId } from '@typebot.io/lib'
+import { byId, isNotEmpty } from '@typebot.io/lib'
+import { BlockIcon } from '@/features/editor/components/BlockIcon'
 
 type Props = {
   groupId: string
@@ -22,7 +23,7 @@ export const JumpSettings = ({ groupId, options, onOptionsChange }: Props) => {
 
   const currentGroupId = typebot?.groups.find(byId(groupId))?.id
 
-  const selectedGroup = typebot?.groups.find(byId(options.groupId))
+  const selectedGroup = typebot?.groups.find(byId(options?.groupId))
 
   if (!typebot) return null
 
@@ -30,7 +31,9 @@ export const JumpSettings = ({ groupId, options, onOptionsChange }: Props) => {
     <Stack spacing={4}>
       <Select
         items={typebot.groups
-          .filter((group) => group.id !== currentGroupId)
+          .filter(
+            (group) => group.id !== currentGroupId && isNotEmpty(group.title)
+          )
           .map((group) => ({
             label: group.title,
             value: group.id,
@@ -41,10 +44,11 @@ export const JumpSettings = ({ groupId, options, onOptionsChange }: Props) => {
       />
       {selectedGroup && selectedGroup.blocks.length > 1 && (
         <Select
-          selectedItem={options.blockId}
+          selectedItem={options?.blockId}
           items={selectedGroup.blocks.map((block, index) => ({
             label: `Block #${(index + 1).toString()}`,
             value: block.id,
+            icon: <BlockIcon type={block.type} />,
           }))}
           onSelect={handleBlockIdChange}
           placeholder="Select a block"

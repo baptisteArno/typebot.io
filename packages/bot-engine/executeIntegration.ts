@@ -6,12 +6,9 @@ import { executeGoogleAnalyticsBlock } from './blocks/integrations/googleAnalyti
 import { executeGoogleSheetBlock } from './blocks/integrations/googleSheets/executeGoogleSheetBlock'
 import { executePixelBlock } from './blocks/integrations/pixel/executePixelBlock'
 import { executeZemanticAiBlock } from './blocks/integrations/zemanticAi/executeZemanticAiBlock'
-import {
-  IntegrationBlock,
-  IntegrationBlockType,
-  SessionState,
-} from '@typebot.io/schemas'
+import { IntegrationBlock, SessionState } from '@typebot.io/schemas'
 import { ExecuteIntegrationResponse } from './types'
+import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 
 export const executeIntegration =
   (state: SessionState) =>

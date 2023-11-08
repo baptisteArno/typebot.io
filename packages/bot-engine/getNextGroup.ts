@@ -1,10 +1,12 @@
 import { byId, isDefined, isNotDefined } from '@typebot.io/lib'
 import { Group, SessionState, VariableWithValue } from '@typebot.io/schemas'
 import { upsertResult } from './queries/upsertResult'
+import { VisitedEdge } from '@typebot.io/prisma'
 
 export type NextGroup = {
   group?: Group
   newSessionState: SessionState
+  visitedEdge?: VisitedEdge
 }
 
 export const getNextGroup =
@@ -93,11 +95,23 @@ export const getNextGroup =
     const startBlockIndex = nextEdge.to.blockId
       ? nextGroup.blocks.findIndex(byId(nextEdge.to.blockId))
       : 0
+    const currentVisitedEdgeIndex = (state.currentVisitedEdgeIndex ?? -1) + 1
+    const resultId = state.typebotsQueue[0].resultId
     return {
       group: {
         ...nextGroup,
         blocks: nextGroup.blocks.slice(startBlockIndex),
+      } as Group,
+      newSessionState: {
+        ...state,
+        currentVisitedEdgeIndex,
       },
-      newSessionState: state,
+      visitedEdge: resultId
+        ? {
+            index: currentVisitedEdgeIndex,
+            edgeId: nextEdge.id,
+            resultId,
+          }
+        : undefined,
     }
   }

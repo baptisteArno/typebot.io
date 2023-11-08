@@ -10,6 +10,8 @@ import { computeEdgePathToMouse } from '../../helpers/computeEdgePathToMouth'
 import { useGraph } from '../../providers/GraphProvider'
 import { useGroupsCoordinates } from '../../providers/GroupsCoordinateProvider'
 import { ConnectingIds } from '../../types'
+import { useEventsCoordinates } from '../../providers/EventsCoordinateProvider'
+import { eventWidth, groupWidth } from '../../constants'
 
 export const DrawingEdge = () => {
   const { graphPosition, setConnectingIds, connectingIds } = useGraph()
@@ -18,18 +20,25 @@ export const DrawingEdge = () => {
     targetEndpointYOffsets: targetEndpoints,
   } = useEndpoints()
   const { groupsCoordinates } = useGroupsCoordinates()
+  const { eventsCoordinates } = useEventsCoordinates()
   const { createEdge } = useTypebot()
   const [mousePosition, setMousePosition] = useState<Coordinates | null>(null)
 
-  const sourceGroupCoordinates =
-    groupsCoordinates && groupsCoordinates[connectingIds?.source.groupId ?? '']
+  const sourceElementCoordinates = connectingIds
+    ? 'eventId' in connectingIds.source
+      ? eventsCoordinates[connectingIds?.source.eventId]
+      : groupsCoordinates[connectingIds?.source.groupId ?? '']
+    : undefined
+
   const targetGroupCoordinates =
     groupsCoordinates && groupsCoordinates[connectingIds?.target?.groupId ?? '']
 
   const sourceTop = useMemo(() => {
     if (!connectingIds) return 0
     const endpointId =
-      connectingIds.source.itemId ?? connectingIds.source.blockId
+      'eventId' in connectingIds.source
+        ? connectingIds.source.eventId
+        : connectingIds.source.itemId ?? connectingIds.source.blockId
     return sourceEndpoints.get(endpointId)?.y
   }, [connectingIds, sourceEndpoints])
 
@@ -40,27 +49,38 @@ export const DrawingEdge = () => {
   }, [connectingIds, targetEndpoints])
 
   const path = useMemo(() => {
-    if (!sourceTop || !sourceGroupCoordinates || !mousePosition) return ``
+    if (
+      !sourceTop ||
+      !sourceElementCoordinates ||
+      !mousePosition ||
+      !connectingIds?.source
+    )
+      return ``
 
     return targetGroupCoordinates
       ? computeConnectingEdgePath({
-          sourceGroupCoordinates,
+          sourceGroupCoordinates: sourceElementCoordinates,
           targetGroupCoordinates,
+          elementWidth:
+            'eventId' in connectingIds.source ? eventWidth : groupWidth,
           sourceTop,
           targetTop,
           graphScale: graphPosition.scale,
         })
       : computeEdgePathToMouse({
-          sourceGroupCoordinates,
+          sourceGroupCoordinates: sourceElementCoordinates,
           mousePosition,
           sourceTop,
+          elementWidth:
+            'eventId' in connectingIds.source ? eventWidth : groupWidth,
         })
   }, [
     sourceTop,
-    sourceGroupCoordinates,
-    targetGroupCoordinates,
-    targetTop,
+    sourceElementCoordinates,
     mousePosition,
+    targetGroupCoordinates,
+    connectingIds?.source,
+    targetTop,
     graphPosition.scale,
   ])
 

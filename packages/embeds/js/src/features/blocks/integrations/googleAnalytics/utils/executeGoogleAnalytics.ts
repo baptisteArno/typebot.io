@@ -1,8 +1,8 @@
 import { sendGaEvent } from '@/lib/gtag'
-import type { GoogleAnalyticsOptions } from '@typebot.io/schemas'
+import { GoogleAnalyticsBlock } from '@typebot.io/schemas'
 
 export const executeGoogleAnalyticsBlock = async (
-  options: GoogleAnalyticsOptions
+  options: GoogleAnalyticsBlock['options']
 ) => {
   if (!options?.trackingId) return
   sendGaEvent(options)

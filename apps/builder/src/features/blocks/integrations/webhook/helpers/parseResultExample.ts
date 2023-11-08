@@ -1,7 +1,5 @@
 import {
   InputBlock,
-  InputBlockType,
-  LogicBlockType,
   PublicTypebot,
   ResultHeaderCell,
   Block,
@@ -10,6 +8,9 @@ import {
 } from '@typebot.io/schemas'
 import { isInputBlock, byId, isNotDefined } from '@typebot.io/lib'
 import { parseResultHeader } from '@typebot.io/lib/results'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { EventType } from '@typebot.io/schemas/features/events/constants'
 
 export const parseResultExample =
   ({
@@ -17,12 +18,15 @@ export const parseResultExample =
     linkedTypebots,
     userEmail,
   }: {
-    typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>
+    typebot: Pick<
+      Typebot | PublicTypebot,
+      'groups' | 'variables' | 'edges' | 'events'
+    >
     linkedTypebots: (Typebot | PublicTypebot)[]
     userEmail: string
   }) =>
   async (
-    currentGroupId: string
+    currentBlockId: string
   ): Promise<
     {
       message: 'This is a sample result, it has been generated ⬇️'
@@ -33,7 +37,7 @@ export const parseResultExample =
     const linkedInputBlocks = await extractLinkedInputBlocks(
       typebot,
       linkedTypebots
-    )(currentGroupId)
+    )(currentBlockId)
 
     return {
       message: 'This is a sample result, it has been generated ⬇️',
@@ -49,12 +53,15 @@ export const parseResultExample =
 const extractLinkedInputBlocks =
   (
     typebot:
-      | Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>
+      | Pick<
+          Typebot | PublicTypebot,
+          'groups' | 'variables' | 'edges' | 'events'
+        >
       | undefined,
     linkedTypebots: (Typebot | PublicTypebot)[]
   ) =>
   async (
-    currentGroupId?: string,
+    blockId?: string,
     direction: 'backward' | 'forward' = 'backward'
   ): Promise<InputBlock[]> => {
     if (!typebot) return []
@@ -63,22 +70,28 @@ const extractLinkedInputBlocks =
       direction,
       typebot
     )({
-      groupId: currentGroupId,
+      blockId,
     }) as TypebotLinkBlock[]
 
     const linkedBotInputs =
       previousLinkedTypebotBlocks.length > 0
         ? await Promise.all(
-            previousLinkedTypebotBlocks.map((linkedBot) =>
-              extractLinkedInputBlocks(
-                linkedTypebots.find((t) =>
-                  'typebotId' in t
-                    ? t.typebotId === linkedBot.options.typebotId
-                    : t.id === linkedBot.options.typebotId
-                ),
-                linkedTypebots
-              )(linkedBot.options.groupId, 'forward')
-            )
+            previousLinkedTypebotBlocks.map((linkedBot) => {
+              const typebot = linkedTypebots.find((t) =>
+                'typebotId' in t
+                  ? t.typebotId === linkedBot.options?.typebotId
+                  : t.id === linkedBot.options?.typebotId
+              )
+              const blockId = linkedBot.options?.groupId
+                ? typebot?.groups
+                    .find(byId(linkedBot.options?.groupId))
+                    ?.blocks.at(0)?.id
+                : undefined
+              return extractLinkedInputBlocks(typebot, linkedTypebots)(
+                blockId,
+                'forward'
+              )
+            })
           )
         : []
 
@@ -88,7 +101,7 @@ const extractLinkedInputBlocks =
         direction,
         typebot
       )({
-        groupId: currentGroupId,
+        blockId,
       }) as InputBlock[]
     ).concat(linkedBotInputs.flatMap((l) => l))
   }
@@ -133,9 +146,9 @@ const getSampleValue = ({
 }) => {
   switch (block.type) {
     case InputBlockType.CHOICE:
-      return block.options.isMultipleChoice
-        ? block.items.map((i) => i.content).join(', ')
-        : block.items[0]?.content ?? 'Item'
+      return block.options?.isMultipleChoice
+        ? block.items?.map((i) => i.content).join(', ')
+        : block.items?.at(0)?.content ?? 'Item'
     case InputBlockType.DATE:
       return new Date().toUTCString()
     case InputBlockType.EMAIL:
@@ -155,28 +168,42 @@ const walkEdgesAndExtract =
   (
     type: 'input' | 'linkedBot',
     direction: 'backward' | 'forward',
-    typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>
+    typebot: Pick<
+      Typebot | PublicTypebot,
+      'groups' | 'variables' | 'edges' | 'events'
+    >
   ) =>
-  ({ groupId }: { groupId?: string }): Block[] => {
+  ({ blockId }: { blockId?: string }): Block[] => {
+    const groupId = typebot.groups.find((g) =>
+      g.blocks.some((b) => b.id === blockId)
+    )?.id
+    const startEventEdgeId = groupId
+      ? undefined
+      : typebot.events?.find((e) => e.type === EventType.START)?.outgoingEdgeId
     const currentGroupId =
       groupId ??
-      (typebot.groups.find((b) => b.blocks[0].type === 'start')?.id as string)
+      (startEventEdgeId
+        ? typebot.edges.find(byId(startEventEdgeId))?.to.groupId
+        : typebot.groups.find((g) => g.blocks[0].type === 'start')?.id)
+    if (!currentGroupId)
+      throw new Error("walkEdgesAndExtract - Can't find currentGroupId")
     const blocksInGroup = extractBlocksInGroup(
       type,
       typebot
     )({
       groupId: currentGroupId,
+      blockId,
     })
-    const otherGroupIds = getGroupIds(typebot, direction)(currentGroupId)
+    const otherGroupIds = getConnectedGroups(typebot, direction)(currentGroupId)
     return [
       ...blocksInGroup,
       ...otherGroupIds.flatMap((groupId) =>
-        extractBlocksInGroup(type, typebot)({ groupId })
+        extractBlocksInGroup(type, typebot)({ groupId, blockId })
       ),
     ]
   }
 
-const getGroupIds =
+const getConnectedGroups =
   (
     typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>,
     direction: 'backward' | 'forward',
@@ -184,21 +211,26 @@ const getGroupIds =
   ) =>
   (groupId: string): string[] => {
     const groups = typebot.edges.reduce<string[]>((groupIds, edge) => {
+      const fromGroupId = typebot.groups.find((g) =>
+        g.blocks.some(
+          (b) => 'blockId' in edge.from && b.id === edge.from.blockId
+        )
+      )?.id
+      if (!fromGroupId) return groupIds
       if (direction === 'forward')
         return (!existingGroupIds ||
           !existingGroupIds?.includes(edge.to.groupId)) &&
-          edge.from.groupId === groupId
+          fromGroupId === groupId
           ? [...groupIds, edge.to.groupId]
           : groupIds
-      return (!existingGroupIds ||
-        !existingGroupIds.includes(edge.from.groupId)) &&
+      return (!existingGroupIds || !existingGroupIds.includes(fromGroupId)) &&
         edge.to.groupId === groupId
-        ? [...groupIds, edge.from.groupId]
+        ? [...groupIds, fromGroupId]
         : groupIds
     }, [])
     const newGroups = [...(existingGroupIds ?? []), ...groups]
     return groups.concat(
-      groups.flatMap(getGroupIds(typebot, direction, newGroups))
+      groups.flatMap(getConnectedGroups(typebot, direction, newGroups))
     )
   }
 
@@ -207,7 +239,7 @@ const extractBlocksInGroup =
     type: 'input' | 'linkedBot',
     typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>
   ) =>
-  ({ groupId, blockId }: { groupId: string; blockId?: string }) => {
+  ({ groupId, blockId }: { groupId: string; blockId: string | undefined }) => {
     const currentGroup = typebot.groups.find(byId(groupId))
     if (!currentGroup) return []
     const blocks: Block[] = []

@@ -4,18 +4,16 @@ import { InputBlock, SessionState } from '@typebot.io/schemas'
 
 type Props = {
   answer: Omit<Prisma.AnswerUncheckedCreateInput, 'resultId'>
-  block: InputBlock
   reply: string
-  itemId?: string
   state: SessionState
 }
-export const upsertAnswer = async ({ answer, block, state }: Props) => {
+export const upsertAnswer = async ({ answer, state }: Props) => {
   const resultId = state.typebotsQueue[0].resultId
   if (!resultId) return
   const where = {
     resultId,
-    blockId: block.id,
-    groupId: block.groupId,
+    blockId: answer.blockId,
+    groupId: answer.groupId,
   }
   const existingAnswer = await prisma.answer.findUnique({
     where: {
@@ -28,7 +26,6 @@ export const upsertAnswer = async ({ answer, block, state }: Props) => {
       where,
       data: {
         content: answer.content,
-        itemId: answer.itemId,
       },
     })
   return prisma.answer.createMany({

@@ -1,6 +1,9 @@
 import { z } from 'zod'
-import { credentialsBaseSchema } from './blocks/baseSchemas'
-import { ComparisonOperators, LogicalOperator } from './blocks/logic/condition'
+import { credentialsBaseSchema } from './blocks/shared'
+import {
+  ComparisonOperators,
+  LogicalOperator,
+} from './blocks/logic/condition/constants'
 
 const mediaSchema = z.object({ link: z.string() })
 

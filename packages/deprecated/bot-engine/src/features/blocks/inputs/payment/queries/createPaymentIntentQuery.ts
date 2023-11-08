@@ -1,4 +1,4 @@
-import { PaymentInputOptions, Variable } from '@typebot.io/schemas'
+import { PaymentInputBlock, Variable } from '@typebot.io/schemas'
 import { sendRequest } from '@typebot.io/lib'
 
 export const createPaymentIntentQuery = ({
@@ -7,7 +7,7 @@ export const createPaymentIntentQuery = ({
   inputOptions,
   variables,
 }: {
-  inputOptions: PaymentInputOptions
+  inputOptions: PaymentInputBlock['options']
   apiHost: string
   variables: Variable[]
   isPreview: boolean

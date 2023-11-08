@@ -16,9 +16,6 @@
     "NEXT_PUBLIC_VIEWER_URL": "http://localhost:3001",
     "NEXTAUTH_URL": "http://localhost:3000"
   },
-  "[php]": {
-    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
-  },
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
   }

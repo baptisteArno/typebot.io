@@ -8,17 +8,19 @@ import {
 import { hasValue, isDefined } from '@typebot.io/lib'
 import { GoogleSpreadsheet, GoogleSpreadsheetRow } from 'google-spreadsheet'
 import {
-  ComparisonOperators,
-  GoogleSheetsAction,
   GoogleSheetsGetOptions,
   GoogleSheetsInsertRowOptions,
   GoogleSheetsUpdateRowOptions,
-  LogicalOperator,
 } from '@typebot.io/schemas'
 import Cors from 'cors'
 import { getAuthenticatedGoogleClient } from '@/lib/google-sheets'
 import { saveErrorLog } from '@typebot.io/bot-engine/logs/saveErrorLog'
 import { saveSuccessLog } from '@typebot.io/bot-engine/logs/saveSuccessLog'
+import { GoogleSheetsAction } from '@typebot.io/schemas/features/blocks/integrations/googleSheets/constants'
+import {
+  ComparisonOperators,
+  LogicalOperator,
+} from '@typebot.io/schemas/features/blocks/logic/condition/constants'
 
 const cors = initMiddleware(Cors())
 
@@ -43,11 +45,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 const getRows = async (req: NextApiRequest, res: NextApiResponse) => {
   const sheetId = req.query.sheetId as string
   const spreadsheetId = req.query.spreadsheetId as string
-  const { resultId, credentialsId, referenceCell, filter, columns } =
-    req.body as GoogleSheetsGetOptions & {
-      resultId?: string
-      columns: string[] | string
-    }
+  const body = req.body as GoogleSheetsGetOptions & {
+    resultId?: string
+    columns: string[] | string
+  }
+  const referenceCell = 'referenceCell' in body ? body.referenceCell : undefined
+  const { resultId, credentialsId, filter, columns } = body
 
   if (!hasValue(credentialsId)) {
     badRequest(res)
@@ -141,11 +144,13 @@ const insertRow = async (req: NextApiRequest, res: NextApiResponse) => {
 const updateRow = async (req: NextApiRequest, res: NextApiResponse) => {
   const sheetId = req.query.sheetId as string
   const spreadsheetId = req.query.spreadsheetId as string
-  const { resultId, credentialsId, values, referenceCell } =
-    req.body as GoogleSheetsUpdateRowOptions & {
-      resultId?: string
-      values: { [key: string]: string }
-    }
+  const body = req.body as GoogleSheetsUpdateRowOptions & {
+    resultId?: string
+    values: { [key: string]: string }
+  }
+  const referenceCell = 'referenceCell' in body ? body.referenceCell : undefined
+  const { resultId, credentialsId, values } = body
+
   if (!hasValue(credentialsId) || !referenceCell) return badRequest(res)
   const auth = await getAuthenticatedGoogleClient(credentialsId)
   if (!auth)
@@ -181,7 +186,7 @@ const matchFilter = (
   filter: NonNullable<GoogleSheetsGetOptions['filter']>
 ) => {
   return filter.logicalOperator === LogicalOperator.AND
-    ? filter.comparisons.every(
+    ? filter.comparisons?.every(
         (comparison) =>
           comparison.column &&
           matchComparison(
@@ -190,7 +195,7 @@ const matchFilter = (
             comparison.value
           )
       )
-    : filter.comparisons.some(
+    : filter.comparisons?.some(
         (comparison) =>
           comparison.column &&
           matchComparison(

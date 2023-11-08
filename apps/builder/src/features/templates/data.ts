@@ -106,7 +106,6 @@ export const templates: TemplateProps[] = [
     emoji: '🦾',
     fileName: 'lead-gen-ai.json',
     category: 'marketing',
-    isNew: true,
     description:
       'You are a marketing agency and this bot allows you generate new leads interested in your services. An AI block is used to dig deeper into the user needs.',
   },
@@ -115,7 +114,6 @@ export const templates: TemplateProps[] = [
     emoji: '🐶',
     fileName: 'dog-insurance-offer.json',
     category: 'marketing',
-    isNew: true,
     description:
       'You are a dog insurance company. This bot allows you to collect information about the dog and provide a quote.',
   },

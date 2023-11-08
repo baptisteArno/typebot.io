@@ -1,11 +1,12 @@
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
-import type { DateInputOptions } from '@typebot.io/schemas'
+import { DateInputBlock } from '@typebot.io/schemas'
 import { createSignal } from 'solid-js'
+import { defaultDateInputOptions } from '@typebot.io/schemas/features/blocks/inputs/date/constants'
 
 type Props = {
   onSubmit: (inputValue: InputSubmitContent) => void
-  options?: DateInputOptions
+  options?: DateInputBlock['options']
   defaultValue?: string
 }
 
@@ -38,7 +39,8 @@ export const DateForm = (props: Props) => {
             >
               {props.options?.isRange && (
                 <p class="font-semibold">
-                  {props.options.labels?.from ?? 'From:'}
+                  {props.options.labels?.from ??
+                    defaultDateInputOptions.labels.from}
                 </p>
               )}
               <input
@@ -65,7 +67,8 @@ export const DateForm = (props: Props) => {
               <div class="flex items-center p-4">
                 {props.options.isRange && (
                   <p class="font-semibold">
-                    {props.options.labels?.to ?? 'To:'}
+                    {props.options.labels?.to ??
+                      defaultDateInputOptions.labels.to}
                   </p>
                 )}
                 <input
@@ -95,7 +98,8 @@ export const DateForm = (props: Props) => {
             isDisabled={inputValues().to === '' && inputValues().from === ''}
             class="my-2 ml-2"
           >
-            {props.options?.labels?.button ?? 'Send'}
+            {props.options?.labels?.button ??
+              defaultDateInputOptions.labels.button}
           </SendButton>
         </form>
       </div>

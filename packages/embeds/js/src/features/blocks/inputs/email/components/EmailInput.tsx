@@ -5,6 +5,7 @@ import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
 import type { EmailInputBlock } from '@typebot.io/schemas'
 import { createSignal, onCleanup, onMount } from 'solid-js'
+import { defaultEmailInputOptions } from '@typebot.io/schemas/features/blocks/inputs/email/constants'
 
 type Props = {
   block: EmailInputBlock
@@ -57,7 +58,8 @@ export const EmailInput = (props: Props) => {
         ref={inputRef}
         value={inputValue()}
         placeholder={
-          props.block.options?.labels?.placeholder ?? 'Type your email...'
+          props.block.options?.labels?.placeholder ??
+          defaultEmailInputOptions.labels.placeholder
         }
         onInput={handleInput}
         type="email"
@@ -69,7 +71,8 @@ export const EmailInput = (props: Props) => {
         class="my-2 ml-2"
         on:click={submit}
       >
-        {props.block.options?.labels?.button ?? 'Send'}
+        {props.block.options?.labels?.button ??
+          defaultEmailInputOptions.labels.button}
       </SendButton>
     </div>
   )

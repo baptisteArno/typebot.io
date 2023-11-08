@@ -1,5 +1,9 @@
-import { ChatReply, SendMessageInput, Theme } from '@typebot.io/schemas'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/enums'
+import {
+  ChatReply,
+  InputBlock,
+  SendMessageInput,
+  Theme,
+} from '@typebot.io/schemas'
 import {
   createEffect,
   createSignal,
@@ -25,6 +29,7 @@ import {
   formattedMessages,
   setFormattedMessages,
 } from '@/utils/formattedMessagesSignal'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 
 const parseDynamicTheme = (
   initialTheme: Theme,
@@ -34,26 +39,26 @@ const parseDynamicTheme = (
   chat: {
     ...initialTheme.chat,
     hostAvatar:
-      initialTheme.chat.hostAvatar && dynamicTheme?.hostAvatarUrl
+      initialTheme.chat?.hostAvatar && dynamicTheme?.hostAvatarUrl
         ? {
             ...initialTheme.chat.hostAvatar,
             url: dynamicTheme.hostAvatarUrl,
           }
-        : initialTheme.chat.hostAvatar,
+        : initialTheme.chat?.hostAvatar,
     guestAvatar:
-      initialTheme.chat.guestAvatar && dynamicTheme?.guestAvatarUrl
+      initialTheme.chat?.guestAvatar && dynamicTheme?.guestAvatarUrl
         ? {
             ...initialTheme.chat.guestAvatar,
             url: dynamicTheme?.guestAvatarUrl,
           }
-        : initialTheme.chat.guestAvatar,
+        : initialTheme.chat?.guestAvatar,
   },
 })
 
 type Props = {
   initialChatReply: InitialChatReply
   context: BotContext
-  onNewInputBlock?: (ids: { id: string; groupId: string }) => void
+  onNewInputBlock?: (inputBlock: InputBlock) => void
   onAnswer?: (answer: { message: string; blockId: string }) => void
   onEnd?: () => void
   onNewLogs?: (logs: OutgoingLog[]) => void
@@ -178,11 +183,8 @@ export const ConversationContainer = (props: Props) => {
     }
     if (data.logs) props.onNewLogs?.(data.logs)
     if (data.dynamicTheme) setDynamicTheme(data.dynamicTheme)
-    if (data.input?.id && props.onNewInputBlock) {
-      props.onNewInputBlock({
-        id: data.input.id,
-        groupId: data.input.groupId,
-      })
+    if (data.input && props.onNewInputBlock) {
+      props.onNewInputBlock(data.input)
     }
     if (data.clientSideActions) {
       const actionsBeforeFirstBubble = data.clientSideActions.filter((action) =>

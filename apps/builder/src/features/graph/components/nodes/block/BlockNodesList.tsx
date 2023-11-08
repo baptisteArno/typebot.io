@@ -1,5 +1,5 @@
 import { useEventListener, Stack, Portal } from '@chakra-ui/react'
-import { DraggableBlock, DraggableBlockType, Block } from '@typebot.io/schemas'
+import { BlockV6 } from '@typebot.io/schemas'
 import { useEffect, useRef, useState } from 'react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { BlockNode } from './BlockNode'
@@ -14,19 +14,11 @@ import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { Coordinates } from '@dnd-kit/utilities'
 
 type Props = {
-  groupId: string
-  blocks: Block[]
+  blocks: BlockV6[]
   groupIndex: number
   groupRef: React.MutableRefObject<HTMLDivElement | null>
-  isStartGroup: boolean
 }
-export const BlockNodesList = ({
-  groupId,
-  blocks,
-  groupIndex,
-  groupRef,
-  isStartGroup,
-}: Props) => {
+export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
   const {
     draggedBlock,
     setDraggedBlock,
@@ -48,10 +40,10 @@ export const BlockNodesList = ({
     x: 0,
     y: 0,
   })
+  const groupId = typebot?.groups[groupIndex].id
   const isDraggingOnCurrentGroup =
     (draggedBlock || draggedBlockType) && mouseOverGroup?.id === groupId
-  const showSortPlaceholders =
-    !isStartGroup && isDefined(draggedBlock || draggedBlockType)
+  const showSortPlaceholders = isDefined(draggedBlock || draggedBlockType)
 
   useEffect(() => {
     if (mouseOverGroup?.id !== groupId) setExpandedPlaceholderIndex(undefined)
@@ -75,14 +67,13 @@ export const BlockNodesList = ({
 
   const handleMouseUpOnGroup = (e: MouseEvent) => {
     setExpandedPlaceholderIndex(undefined)
-    if (!isDraggingOnCurrentGroup) return
+    if (!isDraggingOnCurrentGroup || !groupId) return
     const blockIndex = computeNearestPlaceholderIndex(
       e.clientY,
       placeholderRefs
     )
     createBlock(
-      groupId,
-      (draggedBlock || draggedBlockType) as DraggableBlock | DraggableBlockType,
+      (draggedBlock || draggedBlockType) as BlockV6 | BlockV6['type'],
       {
         groupIndex,
         blockIndex,
@@ -96,16 +87,16 @@ export const BlockNodesList = ({
     (blockIndex: number) =>
     (
       { relative, absolute }: { absolute: Coordinates; relative: Coordinates },
-      block: DraggableBlock
+      block: BlockV6
     ) => {
-      if (isReadOnly) return
+      if (isReadOnly || !groupId) return
       placeholderRefs.current.splice(blockIndex + 1, 1)
       setMousePositionInElement(relative)
       setPosition({
         x: absolute.x - relative.x,
         y: absolute.y - relative.y,
       })
-      setDraggedBlock(block)
+      setDraggedBlock({ ...block, groupId })
       detachBlockFromGroup({ groupIndex, blockIndex })
     }
 
@@ -124,7 +115,7 @@ export const BlockNodesList = ({
     <Stack
       spacing={1}
       transition="none"
-      pointerEvents={isReadOnly || isStartGroup ? 'none' : 'auto'}
+      pointerEvents={isReadOnly ? 'none' : 'auto'}
     >
       <PlaceholderNode
         isVisible={showSortPlaceholders}

@@ -15,7 +15,6 @@ import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import {
   Comparison,
   ConditionItem,
-  ItemType,
   ItemIndices,
   Condition,
 } from '@typebot.io/schemas'
@@ -54,7 +53,6 @@ export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
     const newItemId = createId()
     createItem(
       {
-        type: ItemType.CONDITION,
         id: newItemId,
       },
       { ...indices, itemIndex }
@@ -76,8 +74,8 @@ export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
     >
       <PopoverAnchor>
         <Flex p={3} pos="relative" w="full" onClick={openPopover}>
-          {item.content.comparisons.length === 0 ||
-          comparisonIsEmpty(item.content.comparisons[0]) ? (
+          {item.content?.comparisons?.length === 0 ||
+          comparisonIsEmpty(item.content?.comparisons?.at(0)) ? (
             <Text color={'gray.500'}>Configure...</Text>
           ) : (
             <ConditionContent
@@ -127,7 +125,7 @@ export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
   )
 }
 
-const comparisonIsEmpty = (comparison: Comparison) =>
-  isNotDefined(comparison.comparisonOperator) &&
-  isNotDefined(comparison.value) &&
-  isNotDefined(comparison.variableId)
+const comparisonIsEmpty = (comparison?: Comparison) =>
+  isNotDefined(comparison?.comparisonOperator) &&
+  isNotDefined(comparison?.value) &&
+  isNotDefined(comparison?.variableId)

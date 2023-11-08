@@ -1,11 +1,8 @@
 import test from '@playwright/test'
 import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
 import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
-import {
-  defaultGoogleAnalyticsOptions,
-  IntegrationBlockType,
-} from '@typebot.io/schemas'
 import { createId } from '@paralleldrive/cuid2'
+import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 
 test.describe('Google Analytics block', () => {
   test('its configuration should work', async ({ page }) => {
@@ -15,7 +12,6 @@ test.describe('Google Analytics block', () => {
         id: typebotId,
         ...parseDefaultGroupWithBlock({
           type: IntegrationBlockType.GOOGLE_ANALYTICS,
-          options: defaultGoogleAnalyticsOptions,
         }),
       },
     ])

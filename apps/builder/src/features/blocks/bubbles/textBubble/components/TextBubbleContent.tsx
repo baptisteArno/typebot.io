@@ -8,7 +8,7 @@ type Props = {
 }
 
 export const TextBubbleContent = ({ block }: Props) => {
-  const isEmpty = block.content.richText.length === 0
+  const isEmpty = (block.content?.richText?.length ?? 0) === 0
   return (
     <Flex
       w="90%"
@@ -17,7 +17,7 @@ export const TextBubbleContent = ({ block }: Props) => {
       className="slate-html-container"
       color={isEmpty ? 'gray.500' : 'inherit'}
     >
-      {block.content.richText.map((element, idx) => (
+      {block.content?.richText?.map((element, idx) => (
         <PlateBlock key={idx} element={element} />
       ))}
     </Flex>

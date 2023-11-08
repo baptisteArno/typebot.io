@@ -1,64 +1,78 @@
 import { createId } from '@paralleldrive/cuid2'
 import {
-  Block,
-  defaultChoiceInputOptions,
-  defaultSettings,
-  defaultTheme,
-  InputBlockType,
-  ItemType,
+  BlockV5,
+  BlockV6,
+  Group,
   PublicTypebot,
   Typebot,
+  TypebotV6,
 } from '@typebot.io/schemas'
 import { isDefined } from '../utils'
 import { proWorkspaceId } from './databaseSetup'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { EventType } from '@typebot.io/schemas/features/events/constants'
 
-export const parseTestTypebot = (
-  partialTypebot: Partial<Typebot>
-): Typebot => ({
-  id: createId(),
-  version: '3',
-  workspaceId: proWorkspaceId,
-  folderId: null,
-  name: 'My typebot',
-  theme: defaultTheme,
-  settings: defaultSettings({ isBrandingEnabled: true }),
-  publicId: null,
-  updatedAt: new Date(),
-  createdAt: new Date(),
-  customDomain: null,
-  icon: null,
-  selectedThemeTemplateId: null,
-  isArchived: false,
-  isClosed: false,
-  resultsTablePreferences: null,
-  whatsAppCredentialsId: null,
-  variables: [{ id: 'var1', name: 'var1' }],
-  ...partialTypebot,
-  edges: [
-    {
-      id: 'edge1',
-      from: { groupId: 'group0', blockId: 'block0' },
-      to: { groupId: 'group1' },
-    },
-  ],
-  groups: [
-    {
-      id: 'group0',
-      title: 'Group #0',
-      blocks: [
-        {
-          id: 'block0',
-          type: 'start',
-          groupId: 'group0',
-          label: 'Start',
-          outgoingEdgeId: 'edge1',
-        },
-      ],
-      graphCoordinates: { x: 0, y: 0 },
-    },
-    ...(partialTypebot.groups ?? []),
-  ],
-})
+export const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => {
+  const version = partialTypebot.version ?? ('3' as any)
+
+  return {
+    id: createId(),
+    version,
+    workspaceId: proWorkspaceId,
+    folderId: null,
+    name: 'My typebot',
+    theme: {},
+    settings: {},
+    publicId: null,
+    updatedAt: new Date(),
+    createdAt: new Date(),
+    customDomain: null,
+    icon: null,
+    selectedThemeTemplateId: null,
+    isArchived: false,
+    isClosed: false,
+    resultsTablePreferences: null,
+    whatsAppCredentialsId: null,
+    events:
+      version === '6'
+        ? [
+            {
+              id: 'group1',
+              type: EventType.START,
+              graphCoordinates: { x: 0, y: 0 },
+              outgoingEdgeId: 'edge1',
+            },
+          ]
+        : null,
+    variables: [{ id: 'var1', name: 'var1' }],
+    ...partialTypebot,
+    edges: [
+      {
+        id: 'edge1',
+        from: { blockId: 'block0' },
+        to: { groupId: 'group1' },
+      },
+    ],
+    groups: (version === '6'
+      ? partialTypebot.groups ?? []
+      : [
+          {
+            id: 'group0',
+            title: 'Group #0',
+            blocks: [
+              {
+                id: 'block0',
+                type: 'start',
+                label: 'Start',
+                outgoingEdgeId: 'edge1',
+              },
+            ],
+            graphCoordinates: { x: 0, y: 0 },
+          },
+          ...(partialTypebot.groups ?? []),
+        ]) as any[],
+  }
+}
 
 export const parseTypebotToPublicTypebot = (
   id: string,
@@ -72,6 +86,7 @@ export const parseTypebotToPublicTypebot = (
   settings: typebot.settings,
   variables: typebot.variables,
   edges: typebot.edges,
+  events: typebot.events,
 })
 
 type Options = {
@@ -79,9 +94,9 @@ type Options = {
 }
 
 export const parseDefaultGroupWithBlock = (
-  block: Partial<Block>,
+  block: Partial<BlockV6>,
   options?: Options
-): Pick<Typebot, 'groups'> => ({
+): Pick<TypebotV6, 'groups'> => ({
   groups: [
     {
       graphCoordinates: { x: 200, y: 200 },
@@ -96,19 +111,17 @@ export const parseDefaultGroupWithBlock = (
                 {
                   id: 'item1',
                   blockId: 'block1',
-                  type: ItemType.BUTTON,
                   content: 'Go',
                 },
               ],
-              options: defaultChoiceInputOptions,
+              options: {},
             }
           : undefined,
         {
           id: 'block2',
-          groupId: 'group1',
           ...block,
-        } as Block,
-      ].filter(isDefined) as Block[],
+        } as BlockV5,
+      ].filter(isDefined) as BlockV6[],
       title: 'Group #1',
     },
   ],

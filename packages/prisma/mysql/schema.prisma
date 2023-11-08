@@ -180,6 +180,7 @@ model Typebot {
   name                    String                    @db.VarChar(255)
   folderId                String?
   groups                  Json
+  events                  Json?
   variables               Json
   edges                   Json
   theme                   Json
@@ -237,6 +238,7 @@ model PublicTypebot {
   updatedAt DateTime @default(now()) @updatedAt
   typebotId String   @unique
   groups    Json
+  events    Json?
   variables Json
   edges     Json
   theme     Json
@@ -245,19 +247,29 @@ model PublicTypebot {
 }
 
 model Result {
-  id          String   @id @default(cuid())
-  createdAt   DateTime @default(now())
+  id          String        @id @default(cuid())
+  createdAt   DateTime      @default(now())
   typebotId   String
   variables   Json
   isCompleted Boolean
   hasStarted  Boolean?
-  isArchived  Boolean? @default(false)
-  typebot     Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  isArchived  Boolean?      @default(false)
+  typebot     Typebot       @relation(fields: [typebotId], references: [id], onDelete: Cascade)
   answers     Answer[]
   logs        Log[]
+  edges       VisitedEdge[]
 
   @@index([typebotId, isArchived, hasStarted, createdAt(sort: Desc)])
   @@index([typebotId, isArchived, isCompleted])
+}
+
+model VisitedEdge {
+  result   Result @relation(fields: [resultId], references: [id], onDelete: Cascade)
+  resultId String
+  edgeId   String
+  index    Int
+
+  @@unique([resultId, index])
 }
 
 model Log {

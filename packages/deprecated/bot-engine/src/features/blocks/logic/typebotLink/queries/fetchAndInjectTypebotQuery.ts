@@ -9,10 +9,10 @@ export const fetchAndInjectTypebot = async (
 ): Promise<LinkedTypebot | undefined> => {
   const { data, error } = isPreview
     ? await sendRequest<{ typebot: Typebot }>(
-        `/api/typebots/${block.options.typebotId}`
+        `/api/typebots/${block.options?.typebotId}`
       )
     : await sendRequest<{ typebot: PublicTypebot }>(
-        `${apiHost}/api/publicTypebots/${block.options.typebotId}`
+        `${apiHost}/api/publicTypebots/${block.options?.typebotId}`
       )
   if (!data || error) return
   return injectLinkedTypebot(data.typebot)

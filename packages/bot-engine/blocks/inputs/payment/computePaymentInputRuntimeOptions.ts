@@ -1,6 +1,6 @@
 import { TRPCError } from '@trpc/server'
 import {
-  PaymentInputOptions,
+  PaymentInputBlock,
   PaymentInputRuntimeOptions,
   SessionState,
   StripeCredentials,
@@ -9,20 +9,23 @@ import Stripe from 'stripe'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { parseVariables } from '../../../variables/parseVariables'
 import prisma from '@typebot.io/lib/prisma'
+import { defaultPaymentInputOptions } from '@typebot.io/schemas/features/blocks/inputs/payment/constants'
 
 export const computePaymentInputRuntimeOptions =
-  (state: SessionState) => (options: PaymentInputOptions) =>
+  (state: SessionState) => (options: PaymentInputBlock['options']) =>
     createStripePaymentIntent(state)(options)
 
 const createStripePaymentIntent =
   (state: SessionState) =>
-  async (options: PaymentInputOptions): Promise<PaymentInputRuntimeOptions> => {
+  async (
+    options: PaymentInputBlock['options']
+  ): Promise<PaymentInputRuntimeOptions> => {
     const {
       resultId,
       typebot: { variables },
     } = state.typebotsQueue[0]
     const isPreview = !resultId
-    if (!options.credentialsId)
+    if (!options?.credentialsId)
       throw new TRPCError({
         code: 'BAD_REQUEST',
         message: 'Missing credentialsId',
@@ -39,9 +42,10 @@ const createStripePaymentIntent =
         : stripeKeys.live.secretKey,
       { apiVersion: '2022-11-15' }
     )
+    const currency = options?.currency ?? defaultPaymentInputOptions.currency
     const amount = Math.round(
       Number(parseVariables(variables)(options.amount)) *
-        (isZeroDecimalCurrency(options.currency) ? 1 : 100)
+        (isZeroDecimalCurrency(currency) ? 1 : 100)
     )
     if (isNaN(amount))
       throw new TRPCError({
@@ -55,7 +59,7 @@ const createStripePaymentIntent =
     )
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
-      currency: options.currency,
+      currency,
       receipt_email: receiptEmail === '' ? undefined : receiptEmail,
       description: options.additionalInformation?.description,
       automatic_payment_methods: {
@@ -84,7 +88,7 @@ const createStripePaymentIntent =
           ? stripeKeys.test.publicKey
           : stripeKeys.live.publicKey,
       amountLabel: priceFormatter.format(
-        amount / (isZeroDecimalCurrency(options.currency) ? 1 : 100)
+        amount / (isZeroDecimalCurrency(currency) ? 1 : 100)
       ),
     }
   }

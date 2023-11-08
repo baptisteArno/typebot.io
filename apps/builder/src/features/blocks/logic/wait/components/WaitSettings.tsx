@@ -6,14 +6,15 @@ import {
   AccordionPanel,
   Stack,
 } from '@chakra-ui/react'
-import { WaitOptions } from '@typebot.io/schemas'
 import React from 'react'
 import { TextInput } from '@/components/inputs'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
+import { WaitBlock } from '@typebot.io/schemas'
+import { defaultWaitOptions } from '@typebot.io/schemas/features/blocks/logic/wait/constants'
 
 type Props = {
-  options: WaitOptions
-  onOptionsChange: (options: WaitOptions) => void
+  options: WaitBlock['options']
+  onOptionsChange: (options: WaitBlock['options']) => void
 }
 
 export const WaitSettings = ({ options, onOptionsChange }: Props) => {
@@ -29,9 +30,8 @@ export const WaitSettings = ({ options, onOptionsChange }: Props) => {
     <Stack spacing={4}>
       <TextInput
         label="Seconds to wait for:"
-        defaultValue={options.secondsToWaitFor}
+        defaultValue={options?.secondsToWaitFor}
         onChange={handleSecondsChange}
-        placeholder="0"
       />
       <Accordion allowToggle>
         <AccordionItem>
@@ -43,7 +43,9 @@ export const WaitSettings = ({ options, onOptionsChange }: Props) => {
             <SwitchWithLabel
               label="Pause the flow"
               moreInfoContent="When enabled, the flow is paused until the client sends another message. This is automatic on the web bot."
-              initialValue={options.shouldPause ?? false}
+              initialValue={
+                options?.shouldPause ?? defaultWaitOptions.shouldPause
+              }
               onCheckChange={updateShouldPause}
             />
           </AccordionPanel>

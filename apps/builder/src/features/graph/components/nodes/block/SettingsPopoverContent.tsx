@@ -9,14 +9,7 @@ import {
   SlideFade,
   Flex,
 } from '@chakra-ui/react'
-import {
-  InputBlockType,
-  IntegrationBlockType,
-  LogicBlockType,
-  Block,
-  BlockOptions,
-  BlockWithOptions,
-} from '@typebot.io/schemas'
+import { Block, BlockOptions, BlockWithOptions } from '@typebot.io/schemas'
 import { useRef, useState } from 'react'
 import { WaitSettings } from '@/features/blocks/logic/wait/components/WaitSettings'
 import { ScriptSettings } from '@/features/blocks/logic/script/components/ScriptSettings'
@@ -48,9 +41,13 @@ import { PictureChoiceSettings } from '@/features/blocks/inputs/pictureChoice/co
 import { SettingsHoverBar } from './SettingsHoverBar'
 import { PixelSettings } from '@/features/blocks/integrations/pixel/components/PixelSettings'
 import { ZemanticAiSettings } from '@/features/blocks/integrations/zemanticAi/ZemanticAiSettings'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 
 type Props = {
   block: BlockWithOptions
+  groupId: string | undefined
   onExpandClick: () => void
   onBlockChange: (updates: Partial<Block>) => void
 }
@@ -105,11 +102,13 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
 
 export const BlockSettings = ({
   block,
+  groupId,
   onBlockChange,
 }: {
   block: BlockWithOptions
+  groupId: string | undefined
   onBlockChange: (block: Partial<Block>) => void
-}): JSX.Element => {
+}): JSX.Element | null => {
   const updateOptions = (options: BlockOptions) => {
     onBlockChange({ options } as Partial<Block>)
   }
@@ -241,12 +240,14 @@ export const BlockSettings = ({
       )
     }
     case LogicBlockType.JUMP: {
-      return (
+      return groupId ? (
         <JumpSettings
-          groupId={block.groupId}
+          groupId={groupId}
           options={block.options}
           onOptionsChange={updateOptions}
         />
+      ) : (
+        <></>
       )
     }
     case LogicBlockType.AB_TEST: {
@@ -320,5 +321,7 @@ export const BlockSettings = ({
         <ZemanticAiSettings block={block} onOptionsChange={updateOptions} />
       )
     }
+    case LogicBlockType.CONDITION:
+      return null
   }
 }

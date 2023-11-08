@@ -1,10 +1,12 @@
 import { connect } from '@planetscale/database'
 import { env } from '@typebot.io/env'
-import { IntegrationBlockType, SessionState } from '@typebot.io/schemas'
+import { SessionState } from '@typebot.io/schemas'
 import { StreamingTextResponse } from 'ai'
 import { getChatCompletionStream } from '@typebot.io/bot-engine/blocks/integrations/openai/getChatCompletionStream'
 import OpenAI from 'openai'
 import { NextResponse } from 'next/dist/server/web/spec-extension/response'
+import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
+import { getBlockById } from '@typebot.io/lib/getBlockById'
 
 export const runtime = 'edge'
 export const preferredRegion = 'lhr1'
@@ -55,22 +57,16 @@ export async function POST(req: Request) {
   const state = (chatSession.rows.at(0) as { state: SessionState } | undefined)
     ?.state
 
-  if (!state)
+  if (!state || !state.currentBlockId)
     return NextResponse.json(
       { message: 'No state found' },
       { status: 400, headers: responseHeaders }
     )
 
-  const group = state.typebotsQueue[0].typebot.groups.find(
-    (group) => group.id === state.currentBlock?.groupId
+  const { group, block } = getBlockById(
+    state.currentBlockId,
+    state.typebotsQueue[0].typebot.groups
   )
-  const blockIndex =
-    group?.blocks.findIndex(
-      (block) => block.id === state.currentBlock?.blockId
-    ) ?? -1
-
-  const block = blockIndex >= 0 ? group?.blocks[blockIndex ?? 0] : null
-
   if (!block || !group)
     return NextResponse.json(
       { message: 'Current block not found' },
@@ -79,7 +75,7 @@ export async function POST(req: Request) {
 
   if (
     block.type !== IntegrationBlockType.OPEN_AI ||
-    block.options.task !== 'Create chat completion'
+    block.options?.task !== 'Create chat completion'
   )
     return NextResponse.json(
       { message: 'Current block is not an OpenAI block' },

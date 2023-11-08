@@ -1,15 +1,15 @@
 import { Tag, Text } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { SetVariableBlock, Variable } from '@typebot.io/schemas'
-import { byId, isEmpty } from '@typebot.io/lib'
+import { byId } from '@typebot.io/lib'
 
 export const SetVariableContent = ({ block }: { block: SetVariableBlock }) => {
   const { typebot } = useTypebot()
   const variableName =
-    typebot?.variables.find(byId(block.options.variableId))?.name ?? ''
+    typebot?.variables.find(byId(block.options?.variableId))?.name ?? ''
   return (
     <Text color={'gray.500'} noOfLines={4}>
-      {variableName === '' && isEmpty(block.options.expressionToEvaluate) ? (
+      {variableName === '' ? (
         'Click to edit...'
       ) : (
         <Expression
@@ -28,13 +28,13 @@ const Expression = ({
   options: SetVariableBlock['options']
   variables: Variable[]
 }): JSX.Element | null => {
-  const variableName = variables.find(byId(options.variableId))?.name ?? ''
-  switch (options.type) {
+  const variableName = variables.find(byId(options?.variableId))?.name ?? ''
+  switch (options?.type) {
     case 'Custom':
     case undefined:
       return (
         <Text as="span">
-          {variableName} = {options.expressionToEvaluate}
+          {variableName} = {options?.expressionToEvaluate}
         </Text>
       )
     case 'Map item with same index': {
@@ -51,6 +51,13 @@ const Expression = ({
         <Text as="span">
           {variableName} = item in ${targetListVariable?.name} with same index
           as ${baseItemVariable?.name} in ${baseListVariable?.name}
+        </Text>
+      )
+    }
+    case 'Append value(s)': {
+      return (
+        <Text as="span">
+          Append {options.item} in {variableName}
         </Text>
       )
     }

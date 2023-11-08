@@ -76,7 +76,7 @@ const evaluateSetVariableExpression =
 const getExpressionToEvaluate =
   (state: SessionState) =>
   (options: SetVariableBlock['options']): string | null => {
-    switch (options.type) {
+    switch (options?.type) {
       case 'Contact name':
         return state.whatsApp?.contact.name ?? null
       case 'Phone number': {
@@ -102,6 +102,12 @@ const getExpressionToEvaluate =
         return `const itemIndex = ${options.mapListItemParams?.baseListVariableId}.indexOf(${options.mapListItemParams?.baseItemVariableId})
       return ${options.mapListItemParams?.targetListVariableId}.at(itemIndex)`
       }
+      case 'Append value(s)': {
+        return `if(!${options.item}) return ${options.variableId};
+        if(!${options.variableId}) return [${options.item}];
+        if(!Array.isArray(${options.variableId})) return [${options.variableId}, ${options.item}];
+        return (${options.variableId}).concat(${options.item});`
+      }
       case 'Empty': {
         return null
       }
@@ -117,7 +123,7 @@ const getExpressionToEvaluate =
       }
       case 'Custom':
       case undefined: {
-        return options.expressionToEvaluate ?? null
+        return options?.expressionToEvaluate ?? null
       }
     }
   }

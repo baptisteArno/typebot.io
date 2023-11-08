@@ -3,10 +3,24 @@ import { Context } from './context'
 import { OpenApiMeta } from 'trpc-openapi'
 import superjson from 'superjson'
 import * as Sentry from '@sentry/nextjs'
+import { ZodError } from 'zod'
 
-const t = initTRPC.context<Context>().meta<OpenApiMeta>().create({
-  transformer: superjson,
-})
+const t = initTRPC
+  .context<Context>()
+  .meta<OpenApiMeta>()
+  .create({
+    transformer: superjson,
+    errorFormatter({ shape, error }) {
+      return {
+        ...shape,
+        data: {
+          ...shape.data,
+          zodError:
+            error.cause instanceof ZodError ? error.cause.flatten() : null,
+        },
+      }
+    },
+  })
 
 const sentryMiddleware = t.middleware(
   Sentry.Handlers.trpcMiddleware({

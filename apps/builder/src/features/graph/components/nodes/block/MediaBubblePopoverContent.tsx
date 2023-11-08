@@ -12,9 +12,9 @@ import {
 import {
   BubbleBlock,
   BubbleBlockContent,
-  BubbleBlockType,
   TextBubbleBlock,
 } from '@typebot.io/schemas'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 import { useRef } from 'react'
 
 type Props = {

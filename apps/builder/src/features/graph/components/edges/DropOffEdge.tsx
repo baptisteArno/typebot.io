@@ -14,9 +14,14 @@ import { useGroupsCoordinates } from '../../providers/GroupsCoordinateProvider'
 import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
 import { computeDropOffPath } from '../../helpers/computeDropOffPath'
 import { computeSourceCoordinates } from '../../helpers/computeSourceCoordinates'
-import { TotalAnswersInBlock } from '@typebot.io/schemas/features/analytics'
-import { computePreviousTotalAnswers } from '@/features/analytics/helpers/computePreviousTotalAnswers'
-import { blockHasItems } from '@typebot.io/lib'
+import {
+  TotalAnswers,
+  TotalVisitedEdges,
+} from '@typebot.io/schemas/features/analytics'
+import { computeTotalUsersAtBlock } from '@/features/analytics/helpers/computeTotalUsersAtBlock'
+import { blockHasItems, byId } from '@typebot.io/lib'
+import { groupWidth } from '../../constants'
+import { getTotalAnswersAtBlock } from '@/features/analytics/helpers/getTotalAnswersAtBlock'
 
 export const dropOffBoxDimensions = {
   width: 100,
@@ -30,13 +35,15 @@ const dropOffSegmentMaxWidth = 20
 export const dropOffStubLength = 30
 
 type Props = {
-  totalAnswersInBlocks: TotalAnswersInBlock[]
   blockId: string
+  totalVisitedEdges: TotalVisitedEdges[]
+  totalAnswers: TotalAnswers[]
   onUnlockProPlanClick?: () => void
 }
 
 export const DropOffEdge = ({
-  totalAnswersInBlocks,
+  totalVisitedEdges,
+  totalAnswers,
   blockId,
   onUnlockProPlanClick,
 }: Props) => {
@@ -48,86 +55,72 @@ export const DropOffEdge = ({
   const { groupsCoordinates } = useGroupsCoordinates()
   const { sourceEndpointYOffsets: sourceEndpoints } = useEndpoints()
   const { publishedTypebot } = useTypebot()
-  const currentBlock = useMemo(
+  const currentBlockId = useMemo(
     () =>
-      totalAnswersInBlocks.reduce<TotalAnswersInBlock | undefined>(
-        (block, totalAnswersInBlock) => {
-          if (totalAnswersInBlock.blockId === blockId) {
-            return block
-              ? { ...block, total: block.total + totalAnswersInBlock.total }
-              : totalAnswersInBlock
-          }
-          return block
-        },
-        undefined
-      ),
-    [blockId, totalAnswersInBlocks]
+      publishedTypebot?.groups.flatMap((g) => g.blocks)?.find(byId(blockId))
+        ?.id,
+    [blockId, publishedTypebot?.groups]
   )
 
   const isWorkspaceProPlan = hasProPerks(workspace)
 
   const { totalDroppedUser, dropOffRate } = useMemo(() => {
-    if (!publishedTypebot || currentBlock?.total === undefined)
-      return { previousTotal: undefined, dropOffRate: undefined }
-    const totalAnswers = currentBlock.total
-    const previousTotal = computePreviousTotalAnswers(
+    if (!publishedTypebot || !currentBlockId) return {}
+    const totalUsersAtBlock = computeTotalUsersAtBlock(currentBlockId, {
       publishedTypebot,
-      currentBlock.blockId,
-      totalAnswersInBlocks
-    )
-    if (previousTotal === 0)
-      return { previousTotal: undefined, dropOffRate: undefined }
-    const totalDroppedUser = previousTotal - totalAnswers
+      totalVisitedEdges,
+      totalAnswers,
+    })
+    const totalBlockReplies = getTotalAnswersAtBlock(currentBlockId, {
+      publishedTypebot,
+      totalAnswers,
+    })
+    if (totalUsersAtBlock === 0) return {}
+    const totalDroppedUser = totalUsersAtBlock - totalBlockReplies
 
     return {
       totalDroppedUser,
-      dropOffRate: Math.round((totalDroppedUser / previousTotal) * 100),
+      dropOffRate: Math.round((totalDroppedUser / totalUsersAtBlock) * 100),
     }
-  }, [
-    currentBlock?.blockId,
-    currentBlock?.total,
-    publishedTypebot,
-    totalAnswersInBlocks,
-  ])
+  }, [currentBlockId, publishedTypebot, totalAnswers, totalVisitedEdges])
 
   const sourceTop = useMemo(() => {
-    const blockTop = currentBlock?.blockId
-      ? sourceEndpoints.get(currentBlock.blockId)?.y
+    const blockTop = currentBlockId
+      ? sourceEndpoints.get(currentBlockId)?.y
       : undefined
     if (blockTop) return blockTop
     const block = publishedTypebot?.groups
       .flatMap((group) => group.blocks)
-      .find((block) => block.id === currentBlock?.blockId)
+      .find((block) => block.id === currentBlockId)
     if (!block || !blockHasItems(block)) return 0
     const itemId = block.items.at(-1)?.id
     if (!itemId) return 0
     return sourceEndpoints.get(itemId)?.y
-  }, [currentBlock?.blockId, publishedTypebot?.groups, sourceEndpoints])
+  }, [currentBlockId, publishedTypebot?.groups, sourceEndpoints])
 
   const endpointCoordinates = useMemo(() => {
     const groupId = publishedTypebot?.groups.find((group) =>
-      group.blocks.some((block) => block.id === currentBlock?.blockId)
+      group.blocks.some((block) => block.id === currentBlockId)
     )?.id
     if (!groupId) return undefined
     const coordinates = groupsCoordinates[groupId]
     if (!coordinates) return undefined
-    return computeSourceCoordinates(coordinates, sourceTop ?? 0)
-  }, [
-    publishedTypebot?.groups,
-    groupsCoordinates,
-    sourceTop,
-    currentBlock?.blockId,
-  ])
+    return computeSourceCoordinates({
+      sourcePosition: coordinates,
+      sourceTop: sourceTop ?? 0,
+      elementWidth: groupWidth,
+    })
+  }, [publishedTypebot?.groups, groupsCoordinates, sourceTop, currentBlockId])
 
   const isLastBlock = useMemo(() => {
     if (!publishedTypebot) return false
     const lastBlock = publishedTypebot.groups
       .find((group) =>
-        group.blocks.some((block) => block.id === currentBlock?.blockId)
+        group.blocks.some((block) => block.id === currentBlockId)
       )
       ?.blocks.at(-1)
-    return lastBlock?.id === currentBlock?.blockId
-  }, [publishedTypebot, currentBlock?.blockId])
+    return lastBlock?.id === currentBlockId
+  }, [publishedTypebot, currentBlockId])
 
   if (!endpointCoordinates) return null
 

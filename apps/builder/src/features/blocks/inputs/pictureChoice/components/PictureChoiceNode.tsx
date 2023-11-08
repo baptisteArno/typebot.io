@@ -15,12 +15,12 @@ export const PictureChoiceNode = ({ block, indices }: Props) => {
   const { typebot } = useTypebot()
   const dynamicVariableName = typebot?.variables.find(
     (variable) =>
-      variable.id === block.options.dynamicItems?.pictureSrcsVariableId
+      variable.id === block.options?.dynamicItems?.pictureSrcsVariableId
   )?.name
 
   return (
     <Stack w="full">
-      {block.options.dynamicItems?.isEnabled && dynamicVariableName ? (
+      {block.options?.dynamicItems?.isEnabled && dynamicVariableName ? (
         <Wrap spacing={1}>
           <Text>Display</Text>
           <Tag bg="orange.400" color="white">
@@ -31,7 +31,7 @@ export const PictureChoiceNode = ({ block, indices }: Props) => {
       ) : (
         <ItemNodesList block={block} indices={indices} />
       )}
-      {block.options.variableId ? (
+      {block.options?.variableId ? (
         <SetVariableLabel
           variableId={block.options.variableId}
           variables={typebot?.variables}

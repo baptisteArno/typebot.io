@@ -1,12 +1,13 @@
 import { User } from '@typebot.io/prisma'
 import {
-  LogicBlockType,
+  Block,
   PublicTypebot,
   Typebot,
   TypebotLinkBlock,
 } from '@typebot.io/schemas'
 import { isDefined } from '@typebot.io/lib'
 import { fetchLinkedTypebots } from './fetchLinkedTypebots'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 
 type Props = {
   typebots: Pick<PublicTypebot, 'groups'>[]
@@ -23,18 +24,18 @@ export const getPreviouslyLinkedTypebots =
       .flatMap((typebot) =>
         (
           typebot.groups
-            .flatMap((group) => group.blocks)
+            .flatMap<Block>((group) => group.blocks)
             .filter(
               (block) =>
                 block.type === LogicBlockType.TYPEBOT_LINK &&
-                isDefined(block.options.typebotId) &&
+                isDefined(block.options?.typebotId) &&
                 !capturedLinkedBots.some(
                   (bot) =>
                     ('typebotId' in bot ? bot.typebotId : bot.id) ===
-                    block.options.typebotId
+                    block.options?.typebotId
                 )
             ) as TypebotLinkBlock[]
-        ).map((s) => s.options.typebotId)
+        ).map((b) => b.options?.typebotId)
       )
       .filter(isDefined)
     if (linkedTypebotIds.length === 0) return capturedLinkedBots

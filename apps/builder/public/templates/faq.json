@@ -1,34 +1,23 @@
 {
-  "id": "cl96ns7zc000dky099ku4bmav",
-  "version": "4",
-  "createdAt": "2022-10-13T06:07:11.976Z",
-  "updatedAt": "2022-10-13T06:27:31.951Z",
-  "icon": "💬",
+  "version": "6",
+  "id": "cloo0iymj000b1aoraoto4iom",
   "name": "FAQ",
-  "folderId": null,
-  "groups": [
+  "events": [
     {
       "id": "cl96ns7za000309kyewk56s22",
-      "title": "Start",
-      "blocks": [
-        {
-          "id": "cl96ns7za000409kydoui7mpu",
-          "type": "start",
-          "label": "Start",
-          "groupId": "cl96ns7za000309kyewk56s22",
-          "outgoingEdgeId": "cl96nv0ij00093b6id4t83dvu"
-        }
-      ],
-      "graphCoordinates": { "x": 0, "y": 0 }
-    },
+      "outgoingEdgeId": "cl96nv0ij00093b6id4t83dvu",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
     {
       "id": "cl96ns9qr00043b6ii07bo25o",
-      "graphCoordinates": { "x": 392, "y": 181 },
       "title": "Menu",
+      "graphCoordinates": { "x": 385.68, "y": 86.92 },
       "blocks": [
         {
           "id": "cl96ns9qr00053b6igebgtl5q",
-          "groupId": "cl96ns9qr00043b6ii07bo25o",
           "type": "text",
           "content": {
             "richText": [
@@ -45,37 +34,27 @@
         },
         {
           "id": "cl96nv877000b3b6i7p69ss2o",
-          "groupId": "cl96ns9qr00043b6ii07bo25o",
           "type": "choice input",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "items": [
             {
               "id": "cl96nv877000c3b6idyepv694",
-              "blockId": "cl96nv877000b3b6i7p69ss2o",
-              "type": 0,
-              "content": "What's Analyzr?",
-              "outgoingEdgeId": "cl96o2u6h000t3b6izmh4pguj"
+              "outgoingEdgeId": "cl96o2u6h000t3b6izmh4pguj",
+              "content": "What's Analyzr?"
             },
             {
-              "blockId": "cl96nv877000b3b6i7p69ss2o",
-              "type": 0,
               "id": "cl96nvcwi000d3b6ipyfzcyaw",
-              "content": "Can I use your tool for free?",
-              "outgoingEdgeId": "cl96o6hxh00173b6ix83nn581"
+              "outgoingEdgeId": "cl96o6hxh00173b6ix83nn581",
+              "content": "Can I use your tool for free?"
             },
             {
-              "blockId": "cl96nv877000b3b6i7p69ss2o",
-              "type": 0,
               "id": "cl96obwgy001k3b6ir1a8qk5w",
-              "content": "Tell me about the company",
-              "outgoingEdgeId": "cl96ofn4s001q3b6i482xx6jp"
+              "outgoingEdgeId": "cl96ofn4s001q3b6i482xx6jp",
+              "content": "Tell me about the company"
             },
             {
-              "blockId": "cl96nv877000b3b6i7p69ss2o",
-              "type": 0,
               "id": "cl96nvstv000e3b6itm8cj1s5",
-              "content": "I have another question",
-              "outgoingEdgeId": "cl96ogaa0001x3b6izae2alxq"
+              "outgoingEdgeId": "cl96ogaa0001x3b6izae2alxq",
+              "content": "I have another question"
             }
           ]
         }
@@ -83,12 +62,11 @@
     },
     {
       "id": "cl96nt9ob00063b6ii2pktlxq",
-      "graphCoordinates": { "x": 26.51592874499341, "y": 202.71976248331134 },
       "title": "Welcom",
+      "graphCoordinates": { "x": 43.5, "y": 89.92 },
       "blocks": [
         {
           "id": "cl96nt9ob00073b6ionlvakha",
-          "groupId": "cl96nt9ob00063b6ii2pktlxq",
           "type": "text",
           "content": {
             "richText": [
@@ -98,7 +76,7 @@
         },
         {
           "id": "cl96ntraa00083b6ij922v2qh",
-          "groupId": "cl96nt9ob00063b6ii2pktlxq",
+          "outgoingEdgeId": "cl96nv51s000a3b6i3wmlcmdt",
           "type": "text",
           "content": {
             "richText": [
@@ -111,19 +89,17 @@
                 ]
               }
             ]
-          },
-          "outgoingEdgeId": "cl96nv51s000a3b6i3wmlcmdt"
+          }
         }
       ]
     },
     {
       "id": "cl96o2cgi000r3b6iljr1iwdl",
-      "graphCoordinates": { "x": 787, "y": -534 },
       "title": "What's Analyzr",
+      "graphCoordinates": { "x": 774.53, "y": -513.14 },
       "blocks": [
         {
           "id": "cl96o2cgi000s3b6ikdv6iogz",
-          "groupId": "cl96o2cgi000r3b6iljr1iwdl",
           "type": "text",
           "content": {
             "richText": [
@@ -140,7 +116,6 @@
         },
         {
           "id": "cl96o3260000u3b6i9czqm52g",
-          "groupId": "cl96o2cgi000r3b6iljr1iwdl",
           "type": "text",
           "content": {
             "richText": [
@@ -156,29 +131,28 @@
         },
         {
           "id": "cl96o55z3000x3b6ikq14g2tu",
-          "groupId": "cl96o2cgi000r3b6iljr1iwdl",
           "type": "choice input",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "items": [
-            {
-              "id": "cl96o55z3000y3b6idpn54byw",
-              "blockId": "cl96o55z3000x3b6ikq14g2tu",
-              "type": 0,
-              "content": "Sounds good!",
-              "outgoingEdgeId": "cl96o5k4n00103b6irh2dfp2r"
-            }
+            { "id": "cl96o55z3000y3b6idpn54byw", "content": "Sounds good!" }
           ]
+        },
+        {
+          "id": "qrg1xtxxbmyo8a6mztma3dvr",
+          "type": "Jump",
+          "options": {
+            "groupId": "cl96ns9qr00043b6ii07bo25o",
+            "blockId": "cl96nv877000b3b6i7p69ss2o"
+          }
         }
       ]
     },
     {
       "id": "cl96o6a2700123b6ie4efb6bb",
-      "graphCoordinates": { "x": 803.5720553542924, "y": 7.420010744791735 },
       "title": "Use for free",
+      "graphCoordinates": { "x": 775.05, "y": 7.42 },
       "blocks": [
         {
           "id": "cl96o6a2700133b6ii5n027h2",
-          "groupId": "cl96o6a2700123b6ie4efb6bb",
           "type": "text",
           "content": {
             "richText": [{ "type": "p", "children": [{ "text": "You can!" }] }]
@@ -186,7 +160,6 @@
         },
         {
           "id": "cl96o6a2700143b6ija9jqhky",
-          "groupId": "cl96o6a2700123b6ie4efb6bb",
           "type": "text",
           "content": {
             "richText": [
@@ -203,23 +176,17 @@
         },
         {
           "id": "cl96o6a2700153b6il1wj2aev",
-          "groupId": "cl96o6a2700123b6ie4efb6bb",
           "type": "choice input",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "items": [
             {
               "id": "cl96o6a2700163b6i818ywnqv",
-              "blockId": "cl96o6a2700153b6il1wj2aev",
-              "type": 0,
-              "content": "Awesome!",
-              "outgoingEdgeId": "cl96oa6kn001g3b6iaormwu2j"
+              "outgoingEdgeId": "n4rgj2fmqrmnkvo9m9ebzak7",
+              "content": "Awesome!"
             },
             {
-              "blockId": "cl96o6a2700153b6il1wj2aev",
-              "type": 0,
               "id": "cl96o83lo00183b6igen42ivq",
-              "content": "What's an event?",
-              "outgoingEdgeId": "cl96oa83f001h3b6i81wodnjx"
+              "outgoingEdgeId": "cl96oa83f001h3b6i81wodnjx",
+              "content": "What's an event?"
             }
           ]
         }
@@ -227,12 +194,11 @@
     },
     {
       "id": "cl96o8eym001a3b6i3lxh7kw0",
-      "graphCoordinates": { "x": 1179.4933795363515, "y": 7.7432256889634 },
       "title": "User event",
+      "graphCoordinates": { "x": 1158.01, "y": 322.44 },
       "blocks": [
         {
           "id": "cl96o8eyn001b3b6icmbgg7lw",
-          "groupId": "cl96o8eym001a3b6i3lxh7kw0",
           "type": "text",
           "content": {
             "richText": [
@@ -247,7 +213,6 @@
         },
         {
           "id": "cl96o990s001c3b6ie2jjefhf",
-          "groupId": "cl96o8eym001a3b6i3lxh7kw0",
           "type": "text",
           "content": {
             "richText": [
@@ -264,38 +229,28 @@
         },
         {
           "id": "cl96o9xba001d3b6i9004l33e",
-          "groupId": "cl96o8eym001a3b6i3lxh7kw0",
           "type": "choice input",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "items": [
-            {
-              "id": "cl96o9xbd001e3b6i6ag5ooo7",
-              "blockId": "cl96o9xba001d3b6i9004l33e",
-              "type": 0,
-              "content": "Ok, got it!"
-            }
+            { "id": "cl96o9xbd001e3b6i6ag5ooo7", "content": "Ok, got it!" }
           ]
         },
         {
-          "id": "cl96oaa8n001j3b6ieqe5r775",
-          "groupId": "cl96o8eym001a3b6i3lxh7kw0",
-          "type": "Typebot link",
+          "id": "bkmgmgxa96k5261su12hv58k",
+          "type": "Jump",
           "options": {
-            "typebotId": "current",
             "groupId": "cl96ns9qr00043b6ii07bo25o",
-            "mergeResults": false
+            "blockId": "cl96nv877000b3b6i7p69ss2o"
           }
         }
       ]
     },
     {
       "id": "cl96oc274001m3b6ig3beli9v",
-      "graphCoordinates": { "x": 802.8616130197884, "y": 477.1611550243932 },
       "title": "Company",
+      "graphCoordinates": { "x": 772.59, "y": 432 },
       "blocks": [
         {
           "id": "cl96ods3i001o3b6iiyboljuf",
-          "groupId": "cl96oc274001m3b6ig3beli9v",
           "type": "text",
           "content": {
             "richText": [
@@ -310,7 +265,6 @@
         },
         {
           "id": "cl96oc277001n3b6if8wv6hzl",
-          "groupId": "cl96oc274001m3b6ig3beli9v",
           "type": "text",
           "content": {
             "richText": [
@@ -323,7 +277,6 @@
         },
         {
           "id": "cl96oenlh001p3b6iutaiw9wl",
-          "groupId": "cl96oc274001m3b6ig3beli9v",
           "type": "text",
           "content": {
             "richText": [
@@ -340,29 +293,26 @@
         },
         {
           "id": "cl96oftnv001r3b6ixen8g0bv",
-          "groupId": "cl96oc274001m3b6ig3beli9v",
           "type": "choice input",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
-          "items": [
-            {
-              "id": "cl96oftnv001s3b6i7kjyq7me",
-              "blockId": "cl96oftnv001r3b6ixen8g0bv",
-              "type": 0,
-              "content": "Cool!",
-              "outgoingEdgeId": "cl96ofyy3001u3b6iro2dkp0w"
-            }
-          ]
+          "items": [{ "id": "cl96oftnv001s3b6i7kjyq7me", "content": "Cool!" }]
+        },
+        {
+          "id": "js5pbqj76g67yvs6wz99rcbm",
+          "type": "Jump",
+          "options": {
+            "groupId": "cl96ns9qr00043b6ii07bo25o",
+            "blockId": "cl96nv877000b3b6i7p69ss2o"
+          }
         }
       ]
     },
     {
       "id": "cl96og2yr001v3b6ivhzb1x34",
-      "graphCoordinates": { "x": 798.1737080264639, "y": 1045.5696354649942 },
       "title": "Question",
+      "graphCoordinates": { "x": 773.69, "y": 1020.26 },
       "blocks": [
         {
           "id": "cl96og2yu001w3b6ijqgstubu",
-          "groupId": "cl96og2yr001v3b6ivhzb1x34",
           "type": "text",
           "content": {
             "richText": [
@@ -372,27 +322,24 @@
         },
         {
           "id": "cl96ogmjx001y3b6iwfosloet",
-          "groupId": "cl96og2yr001v3b6ivhzb1x34",
+          "outgoingEdgeId": "cl96ohn9900213b6ibex8g6my",
           "type": "text input",
           "options": {
-            "isLong": true,
             "labels": {
-              "button": "Send",
               "placeholder": "Type your question..."
-            }
-          },
-          "outgoingEdgeId": "cl96ohn9900213b6ibex8g6my"
+            },
+            "isLong": true
+          }
         }
       ]
     },
     {
       "id": "cl96oh3mn001z3b6i2b0no81w",
-      "graphCoordinates": { "x": 1174.378083740756, "y": 1049.0855642099898 },
       "title": "Bye",
+      "graphCoordinates": { "x": 1174.378083740756, "y": 1049.08556420999 },
       "blocks": [
         {
           "id": "cl96oh3mn00203b6iahw2x1ns",
-          "groupId": "cl96oh3mn001z3b6i2b0no81w",
           "type": "text",
           "content": {
             "richText": [
@@ -408,143 +355,101 @@
           }
         }
       ]
+    },
+    {
+      "id": "pqldfrkh43ncm39lzyeartv3",
+      "title": "",
+      "graphCoordinates": { "x": 1151.09, "y": 194.39 },
+      "blocks": [
+        {
+          "id": "ifaxemnkm6ikjfv2ozzeg1o3",
+          "type": "Jump",
+          "options": {
+            "groupId": "cl96ns9qr00043b6ii07bo25o",
+            "blockId": "cl96nv877000b3b6i7p69ss2o"
+          }
+        }
+      ]
     }
   ],
-  "variables": [],
   "edges": [
     {
-      "from": {
-        "groupId": "cl96ns7za000309kyewk56s22",
-        "blockId": "cl96ns7za000409kydoui7mpu"
-      },
-      "to": { "groupId": "cl96nt9ob00063b6ii2pktlxq" },
-      "id": "cl96nv0ij00093b6id4t83dvu"
+      "id": "cl96nv0ij00093b6id4t83dvu",
+      "from": { "eventId": "cl96ns7za000309kyewk56s22" },
+      "to": { "groupId": "cl96nt9ob00063b6ii2pktlxq" }
     },
     {
-      "from": {
-        "groupId": "cl96nt9ob00063b6ii2pktlxq",
-        "blockId": "cl96ntraa00083b6ij922v2qh"
-      },
-      "to": { "groupId": "cl96ns9qr00043b6ii07bo25o" },
-      "id": "cl96nv51s000a3b6i3wmlcmdt"
+      "id": "cl96nv51s000a3b6i3wmlcmdt",
+      "from": { "blockId": "cl96ntraa00083b6ij922v2qh" },
+      "to": { "groupId": "cl96ns9qr00043b6ii07bo25o" }
     },
     {
+      "id": "cl96o2u6h000t3b6izmh4pguj",
       "from": {
-        "groupId": "cl96ns9qr00043b6ii07bo25o",
         "blockId": "cl96nv877000b3b6i7p69ss2o",
         "itemId": "cl96nv877000c3b6idyepv694"
       },
-      "to": { "groupId": "cl96o2cgi000r3b6iljr1iwdl" },
-      "id": "cl96o2u6h000t3b6izmh4pguj"
+      "to": { "groupId": "cl96o2cgi000r3b6iljr1iwdl" }
     },
     {
+      "id": "cl96o6hxh00173b6ix83nn581",
       "from": {
-        "groupId": "cl96o2cgi000r3b6iljr1iwdl",
-        "blockId": "cl96o55z3000x3b6ikq14g2tu",
-        "itemId": "cl96o55z3000y3b6idpn54byw"
-      },
-      "to": { "groupId": "cl96ns9qr00043b6ii07bo25o" },
-      "id": "cl96o5k4n00103b6irh2dfp2r"
-    },
-    {
-      "from": {
-        "groupId": "cl96ns9qr00043b6ii07bo25o",
         "blockId": "cl96nv877000b3b6i7p69ss2o",
         "itemId": "cl96nvcwi000d3b6ipyfzcyaw"
       },
-      "to": { "groupId": "cl96o6a2700123b6ie4efb6bb" },
-      "id": "cl96o6hxh00173b6ix83nn581"
+      "to": { "groupId": "cl96o6a2700123b6ie4efb6bb" }
     },
     {
+      "id": "cl96oa83f001h3b6i81wodnjx",
       "from": {
-        "groupId": "cl96o6a2700123b6ie4efb6bb",
-        "blockId": "cl96o6a2700153b6il1wj2aev",
-        "itemId": "cl96o6a2700163b6i818ywnqv"
-      },
-      "to": { "groupId": "cl96ns9qr00043b6ii07bo25o" },
-      "id": "cl96oa6kn001g3b6iaormwu2j"
-    },
-    {
-      "from": {
-        "groupId": "cl96o6a2700123b6ie4efb6bb",
         "blockId": "cl96o6a2700153b6il1wj2aev",
         "itemId": "cl96o83lo00183b6igen42ivq"
       },
-      "to": { "groupId": "cl96o8eym001a3b6i3lxh7kw0" },
-      "id": "cl96oa83f001h3b6i81wodnjx"
+      "to": { "groupId": "cl96o8eym001a3b6i3lxh7kw0" }
     },
     {
+      "id": "cl96ofn4s001q3b6i482xx6jp",
       "from": {
-        "groupId": "cl96ns9qr00043b6ii07bo25o",
         "blockId": "cl96nv877000b3b6i7p69ss2o",
         "itemId": "cl96obwgy001k3b6ir1a8qk5w"
       },
-      "to": { "groupId": "cl96oc274001m3b6ig3beli9v" },
-      "id": "cl96ofn4s001q3b6i482xx6jp"
+      "to": { "groupId": "cl96oc274001m3b6ig3beli9v" }
     },
     {
+      "id": "cl96ogaa0001x3b6izae2alxq",
       "from": {
-        "groupId": "cl96oc274001m3b6ig3beli9v",
-        "blockId": "cl96oftnv001r3b6ixen8g0bv",
-        "itemId": "cl96oftnv001s3b6i7kjyq7me"
-      },
-      "to": { "groupId": "cl96ns9qr00043b6ii07bo25o" },
-      "id": "cl96ofyy3001u3b6iro2dkp0w"
-    },
-    {
-      "from": {
-        "groupId": "cl96ns9qr00043b6ii07bo25o",
         "blockId": "cl96nv877000b3b6i7p69ss2o",
         "itemId": "cl96nvstv000e3b6itm8cj1s5"
       },
-      "to": { "groupId": "cl96og2yr001v3b6ivhzb1x34" },
-      "id": "cl96ogaa0001x3b6izae2alxq"
+      "to": { "groupId": "cl96og2yr001v3b6ivhzb1x34" }
     },
     {
+      "id": "cl96ohn9900213b6ibex8g6my",
+      "from": { "blockId": "cl96ogmjx001y3b6iwfosloet" },
+      "to": { "groupId": "cl96oh3mn001z3b6i2b0no81w" }
+    },
+    {
+      "id": "n4rgj2fmqrmnkvo9m9ebzak7",
       "from": {
-        "groupId": "cl96og2yr001v3b6ivhzb1x34",
-        "blockId": "cl96ogmjx001y3b6iwfosloet"
+        "blockId": "cl96o6a2700153b6il1wj2aev",
+        "itemId": "cl96o6a2700163b6i818ywnqv"
       },
-      "to": { "groupId": "cl96oh3mn001z3b6i2b0no81w" },
-      "id": "cl96ohn9900213b6ibex8g6my"
+      "to": { "groupId": "pqldfrkh43ncm39lzyeartv3" }
     }
   ],
-  "theme": {
-    "chat": {
-      "inputs": {
-        "color": "#303235",
-        "backgroundColor": "#FFFFFF",
-        "placeholderColor": "#9095A0"
-      },
-      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
-      "hostAvatar": {
-        "isEnabled": true
-      },
-      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
-      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
-    },
-    "general": {
-      "font": "Open Sans",
-      "background": { "type": "Color", "content": "#ffffff" }
-    }
-  },
-  "settings": {
-    "general": {
-      "isBrandingEnabled": false,
-      "isInputPrefillEnabled": true,
-      "isResultSavingEnabled": true,
-      "isHideQueryParamsEnabled": true,
-      "isNewResultOnRefreshEnabled": true
-    },
-    "metadata": {
-      "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
-    },
-    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
-  },
+  "variables": [],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2023-11-07T07:31:34.987Z",
+  "updatedAt": "2023-11-07T07:34:11.360Z",
+  "icon": "💬",
+  "folderId": null,
   "publicId": null,
   "customDomain": null,
-  "workspaceId": "cl35yesle00188gcpgqu70ia1",
+  "workspaceId": "proWorkspace",
   "resultsTablePreferences": null,
   "isArchived": false,
-  "isClosed": false
+  "isClosed": false,
+  "whatsAppCredentialsId": null
 }

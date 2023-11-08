@@ -1,14 +1,17 @@
 import prisma from '@typebot.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { stripeCredentialsSchema } from '@typebot.io/schemas/features/blocks/inputs/payment/schemas'
-import { googleSheetsCredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/googleSheets/schemas'
 import { openAICredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { smtpCredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/sendEmail'
 import { encrypt } from '@typebot.io/lib/api/encryption/encrypt'
 import { z } from 'zod'
 import { whatsAppCredentialsSchema } from '@typebot.io/schemas/features/whatsapp'
-import { Credentials, zemanticAiCredentialsSchema } from '@typebot.io/schemas'
+import {
+  Credentials,
+  googleSheetsCredentialsSchema,
+  stripeCredentialsSchema,
+  zemanticAiCredentialsSchema,
+} from '@typebot.io/schemas'
 import { isDefined } from '@typebot.io/lib/utils'
 import { isWriteWorkspaceForbidden } from '@/features/workspace/helpers/isWriteWorkspaceForbidden'
 

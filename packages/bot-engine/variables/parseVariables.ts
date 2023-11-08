@@ -1,6 +1,7 @@
 import { safeStringify } from '@typebot.io/lib/safeStringify'
-import { isDefined } from '@typebot.io/lib/utils'
+import { isDefined, isNotDefined } from '@typebot.io/lib/utils'
 import { Variable, VariableWithValue } from '@typebot.io/schemas'
+import { parseGuessedValueType } from './parseGuessedValueType'
 
 export type ParseVariablesOptions = {
   fieldToParse?: 'value' | 'id'
@@ -16,6 +17,12 @@ export const defaultParseVariablesOptions: ParseVariablesOptions = {
   isInsideHtml: false,
 }
 
+// {{= inline code =}}
+const inlineCodeRegex = /\{\{=(.+?)=\}\}/g
+
+// {{variable}} and ${{{variable}}}
+const variableRegex = /\{\{([^{}]+)\}\}|(\$)\{\{([^{}]+)\}\}/g
+
 export const parseVariables =
   (
     variables: Variable[],
@@ -23,10 +30,14 @@ export const parseVariables =
   ) =>
   (text: string | undefined): string => {
     if (!text || text === '') return ''
-    // Capture {{variable}} and ${{{variable}}} (variables in template litterals)
-    const pattern = /\{\{([^{}]+)\}\}|(\$)\{\{([^{}]+)\}\}/g
-    return text.replace(
-      pattern,
+    const textWithInlineCodeParsed = text.replace(
+      inlineCodeRegex,
+      (_full, inlineCodeToEvaluate) =>
+        evaluateInlineCode(inlineCodeToEvaluate, { variables })
+    )
+
+    return textWithInlineCodeParsed.replace(
+      variableRegex,
       (_full, nameInCurlyBraces, _dollarSign, nameInTemplateLitteral) => {
         const dollarSign = (_dollarSign ?? '') as string
         const matchedVarName = nameInCurlyBraces ?? nameInTemplateLitteral
@@ -55,6 +66,22 @@ export const parseVariables =
     )
   }
 
+const evaluateInlineCode = (
+  code: string,
+  { variables }: { variables: Variable[] }
+) => {
+  const evaluating = parseVariables(variables, { fieldToParse: 'id' })(
+    code.includes('return ') ? code : `return ${code}`
+  )
+  try {
+    const func = Function(...variables.map((v) => v.id), evaluating)
+    return func(...variables.map((v) => parseGuessedValueType(v.value)))
+  } catch (err) {
+    console.log(err)
+    return parseVariables(variables)(code)
+  }
+}
+
 type VariableToParseInformation = {
   startIndex: number
   endIndex: number
@@ -69,10 +96,34 @@ export const getVariablesToParseInfoInText = (
     takeLatestIfList,
   }: { variables: Variable[]; takeLatestIfList?: boolean }
 ): VariableToParseInformation[] => {
-  const pattern = /\{\{([^{}]+)\}\}|(\$)\{\{([^{}]+)\}\}/g
   const variablesToParseInfo: VariableToParseInformation[] = []
-  let match
-  while ((match = pattern.exec(text)) !== null) {
+  const inlineCodeMatches = [...text.matchAll(inlineCodeRegex)]
+  inlineCodeMatches.forEach((match) => {
+    if (isNotDefined(match.index) || !match[0].length) return
+    const inlineCodeToEvaluate = match[1]
+    const evaluatedValue = evaluateInlineCode(inlineCodeToEvaluate, {
+      variables,
+    })
+    variablesToParseInfo.push({
+      startIndex: match.index,
+      endIndex: match.index + match[0].length,
+      textToReplace: match[0],
+      value:
+        safeStringify(
+          takeLatestIfList && Array.isArray(evaluatedValue)
+            ? evaluatedValue[evaluatedValue.length - 1]
+            : evaluatedValue
+        ) ?? '',
+    })
+  })
+  const textWithInlineCodeParsed = text.replace(
+    inlineCodeRegex,
+    (_full, inlineCodeToEvaluate) =>
+      evaluateInlineCode(inlineCodeToEvaluate, { variables })
+  )
+  const variableMatches = [...textWithInlineCodeParsed.matchAll(variableRegex)]
+  variableMatches.forEach((match) => {
+    if (isNotDefined(match.index) || !match[0].length) return
     const matchedVarName = match[1] ?? match[3]
     const variable = variables.find((variable) => {
       return matchedVarName === variable.name && isDefined(variable.value)
@@ -88,7 +139,7 @@ export const getVariablesToParseInfoInText = (
             : variable?.value
         ) ?? '',
     })
-  }
+  })
   return variablesToParseInfo
 }
 

@@ -1,4 +1,4 @@
-import { GoogleAnalyticsOptions } from '@typebot.io/schemas'
+import { GoogleAnalyticsBlock } from '@typebot.io/schemas'
 
 declare const gtag: (
   type: string,
@@ -33,7 +33,7 @@ const initGoogleAnalytics = (id: string): Promise<void> =>
     if (existingScript) resolve()
   })
 
-export const sendGaEvent = (options: GoogleAnalyticsOptions) => {
+export const sendGaEvent = (options: GoogleAnalyticsBlock['options']) => {
   if (!options) return
   gtag('event', options.action, {
     event_category: options.category,

@@ -6,17 +6,21 @@ import {
   Tag,
   Text,
 } from '@chakra-ui/react'
-import { GeneralSettings, rememberUserStorages } from '@typebot.io/schemas'
+import { Settings } from '@typebot.io/schemas'
 import React from 'react'
 import { isDefined } from '@typebot.io/lib'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
 import { DropdownList } from '@/components/DropdownList'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
+import {
+  defaultSettings,
+  rememberUserStorages,
+} from '@typebot.io/schemas/features/typebot/settings/constants'
 
 type Props = {
-  generalSettings: GeneralSettings
-  onGeneralSettingsChange: (generalSettings: GeneralSettings) => void
+  generalSettings: Settings['general'] | undefined
+  onGeneralSettingsChange: (generalSettings: Settings['general']) => void
 }
 
 export const GeneralSettingsForm = ({
@@ -27,7 +31,7 @@ export const GeneralSettingsForm = ({
     onGeneralSettingsChange({
       ...generalSettings,
       rememberUser: {
-        ...generalSettings.rememberUser,
+        ...generalSettings?.rememberUser,
         isEnabled,
       },
     })
@@ -45,12 +49,14 @@ export const GeneralSettingsForm = ({
     })
 
   const updateRememberUserStorage = (
-    storage: NonNullable<GeneralSettings['rememberUser']>['storage']
+    storage: NonNullable<
+      NonNullable<Settings['general']>['rememberUser']
+    >['storage']
   ) =>
     onGeneralSettingsChange({
       ...generalSettings,
       rememberUser: {
-        ...generalSettings.rememberUser,
+        ...generalSettings?.rememberUser,
         storage,
       },
     })
@@ -59,13 +65,19 @@ export const GeneralSettingsForm = ({
     <Stack spacing={6}>
       <SwitchWithLabel
         label="Prefill input"
-        initialValue={generalSettings.isInputPrefillEnabled ?? true}
+        initialValue={
+          generalSettings?.isInputPrefillEnabled ??
+          defaultSettings.general.isInputPrefillEnabled
+        }
         onCheckChange={handleInputPrefillChange}
         moreInfoContent="Inputs are automatically pre-filled whenever their associated variable has a value"
       />
       <SwitchWithLabel
         label="Hide query params on bot start"
-        initialValue={generalSettings.isHideQueryParamsEnabled ?? true}
+        initialValue={
+          generalSettings?.isHideQueryParamsEnabled ??
+          defaultSettings.general.isHideQueryParamsEnabled
+        }
         onCheckChange={handleHideQueryParamsChange}
         moreInfoContent="If your URL contains query params, they will be automatically hidden when the bot starts."
       />
@@ -73,9 +85,9 @@ export const GeneralSettingsForm = ({
         label={'Remember user'}
         moreInfoContent="If enabled, user previous variables will be prefilled and his new answers will override the previous ones."
         initialValue={
-          generalSettings.rememberUser?.isEnabled ??
-          (isDefined(generalSettings.isNewResultOnRefreshEnabled)
-            ? !generalSettings.isNewResultOnRefreshEnabled
+          generalSettings?.rememberUser?.isEnabled ??
+          (isDefined(generalSettings?.isNewResultOnRefreshEnabled)
+            ? !generalSettings?.isNewResultOnRefreshEnabled
             : false)
         }
         onCheckChange={toggleRememberUser}
@@ -97,7 +109,7 @@ export const GeneralSettingsForm = ({
             </MoreInfoTooltip>
           </FormLabel>
           <DropdownList
-            currentItem={generalSettings.rememberUser?.storage ?? 'session'}
+            currentItem={generalSettings?.rememberUser?.storage ?? 'session'}
             onItemSelect={updateRememberUserStorage}
             items={rememberUserStorages}
           ></DropdownList>

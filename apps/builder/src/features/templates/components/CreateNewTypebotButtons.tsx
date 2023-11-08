@@ -7,16 +7,16 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { ToolIcon, TemplateIcon, DownloadIcon } from '@/components/icons'
-import { Typebot } from '@typebot.io/schemas'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { ImportTypebotFromFileButton } from './ImportTypebotFromFileButton'
-import { TemplatesModal } from './TemplatesModal'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useUser } from '@/features/account/hooks/useUser'
 import { useToast } from '@/hooks/useToast'
 import { trpc } from '@/lib/trpc'
 import { useTranslate } from '@tolgee/react'
+import { Typebot } from '@typebot.io/schemas'
+import { TemplatesModal } from './TemplatesModal'
 
 export const CreateNewTypebotButtons = () => {
   const { t } = useTranslate()
@@ -29,12 +29,41 @@ export const CreateNewTypebotButtons = () => {
 
   const { showToast } = useToast()
 
-  const { mutate } = trpc.typebot.createTypebot.useMutation({
+  const { mutate: createTypebot } = trpc.typebot.createTypebot.useMutation({
     onMutate: () => {
       setIsLoading(true)
     },
     onError: (error) => {
-      showToast({ description: error.message })
+      showToast({
+        title: 'Failed to create bot',
+        description: error.message,
+      })
+    },
+    onSuccess: (data) => {
+      router.push({
+        pathname: `/typebots/${data.typebot.id}/edit`,
+        query:
+          router.query.isFirstBot === 'true'
+            ? {
+                isFirstBot: 'true',
+              }
+            : {},
+      })
+    },
+    onSettled: () => {
+      setIsLoading(false)
+    },
+  })
+
+  const { mutate: importTypebot } = trpc.typebot.importTypebot.useMutation({
+    onMutate: () => {
+      setIsLoading(true)
+    },
+    onError: (error) => {
+      showToast({
+        title: 'Failed to import bot',
+        description: error.message,
+      })
     },
     onSuccess: (data) => {
       router.push({
@@ -55,19 +84,21 @@ export const CreateNewTypebotButtons = () => {
   const handleCreateSubmit = async (typebot?: Typebot) => {
     if (!user || !workspace) return
     const folderId = router.query.folderId?.toString() ?? null
-    mutate({
-      workspaceId: workspace.id,
-      typebot: {
-        ...(typebot
-          ? {
-              ...typebot,
-              publicId: undefined,
-              customDomain: undefined,
-            }
-          : {}),
-        folderId,
-      },
-    })
+    if (typebot)
+      importTypebot({
+        workspaceId: workspace.id,
+        typebot: {
+          ...typebot,
+          folderId,
+        },
+      })
+    else
+      createTypebot({
+        workspaceId: workspace.id,
+        typebot: {
+          folderId,
+        },
+      })
   }
 
   return (
@@ -130,6 +161,7 @@ export const CreateNewTypebotButtons = () => {
         isOpen={isOpen}
         onClose={onClose}
         onTypebotChoose={handleCreateSubmit}
+        isLoading={isLoading}
       />
     </VStack>
   )

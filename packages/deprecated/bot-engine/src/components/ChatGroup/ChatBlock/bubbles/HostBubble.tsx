@@ -3,7 +3,8 @@ import { EmbedBubble } from '@/features/blocks/bubbles/embed'
 import { ImageBubble } from '@/features/blocks/bubbles/image'
 import { TextBubble } from '@/features/blocks/bubbles/textBubble'
 import { VideoBubble } from '@/features/blocks/bubbles/video'
-import { BubbleBlock, BubbleBlockType } from '@typebot.io/schemas'
+import { BubbleBlock } from '@typebot.io/schemas'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 
 type Props = {
   block: BubbleBlock
@@ -23,7 +24,7 @@ export const HostBubble = ({ block, onTransitionEnd }: Props) => {
     case BubbleBlockType.AUDIO:
       return (
         <AudioBubble
-          url={block.content.url}
+          url={block.content?.url}
           onTransitionEnd={onTransitionEnd}
         />
       )

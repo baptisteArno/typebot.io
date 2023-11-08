@@ -8,7 +8,7 @@ import {
 } from '@typebot.io/schemas/features/blocks/integrations/openai'
 
 type Props = {
-  task: OpenAIBlock['options']['task']
+  task: NonNullable<OpenAIBlock['options']>['task']
   responseMapping:
     | ChatCompletionOpenAIOptions['responseMapping']
     | CreateImageOpenAIOptions['responseMapping']
@@ -24,7 +24,7 @@ export const OpenAINodeBody = ({ task, responseMapping }: Props) => {
       </Text>
       {typebot &&
         responseMapping
-          .map((mapping) => mapping.variableId)
+          ?.map((mapping) => mapping.variableId)
           .map((variableId, idx) =>
             variableId ? (
               <SetVariableLabel

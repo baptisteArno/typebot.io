@@ -1,12 +1,13 @@
 import { TextInput, NumberInput } from '@/components/inputs'
 import { Stack, Text } from '@chakra-ui/react'
-import { EmbedBubbleContent } from '@typebot.io/schemas'
+import { EmbedBubbleBlock } from '@typebot.io/schemas'
 import { sanitizeUrl } from '@typebot.io/lib'
 import { useTranslate } from '@tolgee/react'
+import { defaultEmbedBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/embed/constants'
 
 type Props = {
-  content: EmbedBubbleContent
-  onSubmit: (content: EmbedBubbleContent) => void
+  content: EmbedBubbleBlock['content']
+  onSubmit: (content: EmbedBubbleBlock['content']) => void
 }
 
 export const EmbedUploadContent = ({ content, onSubmit }: Props) => {
@@ -18,8 +19,9 @@ export const EmbedUploadContent = ({ content, onSubmit }: Props) => {
     onSubmit({ ...content, url: iframeUrl })
   }
 
-  const handleHeightChange = (height?: EmbedBubbleContent['height']) =>
-    height && onSubmit({ ...content, height })
+  const handleHeightChange = (
+    height?: NonNullable<EmbedBubbleBlock['content']>['height']
+  ) => height && onSubmit({ ...content, height })
 
   return (
     <Stack p="2" spacing={6}>
@@ -38,7 +40,7 @@ export const EmbedUploadContent = ({ content, onSubmit }: Props) => {
 
       <NumberInput
         label="Height:"
-        defaultValue={content?.height}
+        defaultValue={content?.height ?? defaultEmbedBubbleContent.height}
         onValueChange={handleHeightChange}
         suffix={t('editor.blocks.bubbles.embed.settings.numberInput.unit')}
         width="150px"

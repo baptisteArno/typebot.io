@@ -1,11 +1,19 @@
 import prisma from '@typebot.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { InputBlockType, typebotSchema } from '@typebot.io/schemas'
+import {
+  edgeSchema,
+  settingsSchema,
+  themeSchema,
+  variableSchema,
+  parseGroups,
+  startEventSchema,
+} from '@typebot.io/schemas'
 import { z } from 'zod'
 import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
 import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 import { Plan } from '@typebot.io/prisma'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 
 export const publishTypebot = authenticatedProcedure
   .meta({
@@ -49,11 +57,11 @@ export const publishTypebot = authenticatedProcedure
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
 
     if (existingTypebot.workspace.plan === Plan.FREE) {
-      const hasFileUploadBlocks = typebotSchema._def.schema.shape.groups
-        .parse(existingTypebot.groups)
-        .some((group) =>
-          group.blocks.some((block) => block.type === InputBlockType.FILE)
-        )
+      const hasFileUploadBlocks = parseGroups(existingTypebot.groups, {
+        typebotVersion: existingTypebot.version,
+      }).some((group) =>
+        group.blocks.some((block) => block.type === InputBlockType.FILE)
+      )
 
       if (hasFileUploadBlocks)
         throw new TRPCError({
@@ -69,21 +77,14 @@ export const publishTypebot = authenticatedProcedure
         },
         data: {
           version: existingTypebot.version,
-          edges: typebotSchema._def.schema.shape.edges.parse(
-            existingTypebot.edges
-          ),
-          groups: typebotSchema._def.schema.shape.groups.parse(
-            existingTypebot.groups
-          ),
-          settings: typebotSchema._def.schema.shape.settings.parse(
-            existingTypebot.settings
-          ),
-          variables: typebotSchema._def.schema.shape.variables.parse(
-            existingTypebot.variables
-          ),
-          theme: typebotSchema._def.schema.shape.theme.parse(
-            existingTypebot.theme
-          ),
+          edges: z.array(edgeSchema).parse(existingTypebot.edges),
+          groups: parseGroups(existingTypebot.groups, {
+            typebotVersion: existingTypebot.version,
+          }),
+          events: z.tuple([startEventSchema]).parse(existingTypebot.events),
+          settings: settingsSchema.parse(existingTypebot.settings),
+          variables: z.array(variableSchema).parse(existingTypebot.variables),
+          theme: themeSchema.parse(existingTypebot.theme),
         },
       })
     else
@@ -91,21 +92,14 @@ export const publishTypebot = authenticatedProcedure
         data: {
           version: existingTypebot.version,
           typebotId: existingTypebot.id,
-          edges: typebotSchema._def.schema.shape.edges.parse(
-            existingTypebot.edges
-          ),
-          groups: typebotSchema._def.schema.shape.groups.parse(
-            existingTypebot.groups
-          ),
-          settings: typebotSchema._def.schema.shape.settings.parse(
-            existingTypebot.settings
-          ),
-          variables: typebotSchema._def.schema.shape.variables.parse(
-            existingTypebot.variables
-          ),
-          theme: typebotSchema._def.schema.shape.theme.parse(
-            existingTypebot.theme
-          ),
+          edges: z.array(edgeSchema).parse(existingTypebot.edges),
+          groups: parseGroups(existingTypebot.groups, {
+            typebotVersion: existingTypebot.version,
+          }),
+          events: z.tuple([startEventSchema]).parse(existingTypebot.events),
+          settings: settingsSchema.parse(existingTypebot.settings),
+          variables: z.array(variableSchema).parse(existingTypebot.variables),
+          theme: themeSchema.parse(existingTypebot.theme),
         },
       })
 

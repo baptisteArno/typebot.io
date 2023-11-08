@@ -14,25 +14,25 @@ export const TypebotLinkNode = ({ block }: Props) => {
 
   const { data: linkedTypebotData } = trpc.typebot.getTypebot.useQuery(
     {
-      typebotId: block.options.typebotId as string,
+      typebotId: block.options?.typebotId as string,
     },
     {
       enabled:
-        isNotEmpty(block.options.typebotId) &&
-        block.options.typebotId !== 'current',
+        isNotEmpty(block.options?.typebotId) &&
+        block.options?.typebotId !== 'current',
     }
   )
 
   const isCurrentTypebot =
     typebot &&
-    (block.options.typebotId === typebot.id ||
-      block.options.typebotId === 'current')
+    (block.options?.typebotId === typebot.id ||
+      block.options?.typebotId === 'current')
   const linkedTypebot = isCurrentTypebot ? typebot : linkedTypebotData?.typebot
   const blockTitle = linkedTypebot?.groups.find(
-    byId(block.options.groupId)
+    byId(block.options?.groupId)
   )?.title
 
-  if (!block.options.typebotId)
+  if (!block.options?.typebotId)
     return <Text color="gray.500">Configure...</Text>
   return (
     <Text>

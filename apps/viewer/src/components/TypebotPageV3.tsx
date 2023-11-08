@@ -2,14 +2,15 @@ import { Standard } from '@typebot.io/nextjs'
 import { useRouter } from 'next/router'
 import { SEO } from './Seo'
 import { Typebot } from '@typebot.io/schemas/features/typebot/typebot'
-import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/enums'
+import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/constants'
+import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
 
 export type TypebotV3PageProps = {
   url: string
   name: string
   publicId: string | null
   isHideQueryParamsEnabled: boolean | null
-  background: Typebot['theme']['general']['background']
+  background: NonNullable<Typebot['theme']['general']>['background']
   metadata: Typebot['settings']['metadata']
 }
 
@@ -25,7 +26,14 @@ export const TypebotPageV3 = ({
 
   const clearQueryParamsIfNecessary = () => {
     const hasQueryParams = asPath.includes('?')
-    if (!hasQueryParams || !(isHideQueryParamsEnabled ?? true)) return
+    if (
+      !hasQueryParams ||
+      !(
+        isHideQueryParamsEnabled ??
+        defaultSettings.general.isHideQueryParamsEnabled
+      )
+    )
+      return
     push(asPath.split('?')[0], undefined, { shallow: true })
   }
 

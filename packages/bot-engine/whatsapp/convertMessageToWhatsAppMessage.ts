@@ -1,11 +1,9 @@
-import {
-  BubbleBlockType,
-  ChatReply,
-  VideoBubbleContentType,
-} from '@typebot.io/schemas'
+import { ChatReply } from '@typebot.io/schemas'
 import { WhatsAppSendingMessage } from '@typebot.io/schemas/features/whatsapp'
 import { convertRichTextToWhatsAppText } from './convertRichTextToWhatsAppText'
 import { isSvgSrc } from '@typebot.io/lib/utils'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import { VideoBubbleContentType } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
 
 const mp4HttpsUrlRegex = /^https:\/\/.*\.mp4$/
 

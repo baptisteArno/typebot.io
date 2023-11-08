@@ -1,6 +1,10 @@
 import { BotContext, InitialChatReply } from '@/types'
 import { guessApiHost } from '@/utils/guessApiHost'
-import type { SendMessageInput, StartParams } from '@typebot.io/schemas'
+import type {
+  SendMessageInput,
+  StartElementId,
+  StartParams,
+} from '@typebot.io/schemas'
 import { isNotDefined, isNotEmpty, sendRequest } from '@typebot.io/lib'
 import {
   getPaymentInProgressInStorage,
@@ -12,13 +16,13 @@ export async function getInitialChatReplyQuery({
   isPreview,
   apiHost,
   prefilledVariables,
-  startGroupId,
   resultId,
   stripeRedirectStatus,
+  ...props
 }: StartParams & {
   stripeRedirectStatus?: string
   apiHost?: string
-}) {
+} & StartElementId) {
   if (isNotDefined(typebot))
     throw new Error('Typebot ID is required to get initial messages')
 
@@ -40,9 +44,12 @@ export async function getInitialChatReplyQuery({
             isPreview,
             typebot,
             prefilledVariables,
-            startGroupId,
             resultId,
             isStreamEnabled: true,
+            startGroupId:
+              'startGroupId' in props ? props.startGroupId : undefined,
+            startEventId:
+              'startEventId' in props ? props.startEventId : undefined,
           },
       sessionId: paymentInProgressState?.sessionId,
       message: paymentInProgressState

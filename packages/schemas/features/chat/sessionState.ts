@@ -29,6 +29,7 @@ const resultInSessionStateSchema = resultSchema
   )
 
 const sessionStateSchemaV1 = z.object({
+  version: z.undefined(),
   typebot: typebotInSessionStateSchema,
   dynamicTheme: dynamicThemeSchema.optional(),
   linkedTypebots: z.object({
@@ -40,7 +41,6 @@ const sessionStateSchemaV1 = z.object({
   currentBlock: z
     .object({
       blockId: z.string(),
-      groupId: z.string(),
     })
     .optional(),
   isStreamEnabled: z.boolean().optional(),
@@ -61,7 +61,6 @@ const sessionStateSchemaV2 = z.object({
   currentBlock: z
     .object({
       blockId: z.string(),
-      groupId: z.string(),
     })
     .optional(),
   isStreamEnabled: z.boolean().optional(),
@@ -79,19 +78,60 @@ const sessionStateSchemaV2 = z.object({
     .optional()
     .describe('Expiry timeout in milliseconds'),
   typingEmulation: settingsSchema.shape.typingEmulation.optional(),
+  currentVisitedEdgeIndex: z.number().optional(),
 })
 
-export type SessionState = z.infer<typeof sessionStateSchemaV2>
+const sessionStateSchemaV3 = sessionStateSchemaV2
+  .omit({ currentBlock: true })
+  .extend({
+    version: z.literal('3'),
+    currentBlockId: z.string().optional(),
+  })
 
-export const sessionStateSchema = sessionStateSchemaV1
-  .or(sessionStateSchemaV2)
+export type SessionState = z.infer<typeof sessionStateSchemaV3>
+
+export const sessionStateSchema = z
+  .discriminatedUnion('version', [
+    sessionStateSchemaV1,
+    sessionStateSchemaV2,
+    sessionStateSchemaV3,
+  ])
   .transform((state): SessionState => {
-    if ('version' in state) return state
-    return {
-      version: '2',
-      typebotsQueue: [
-        {
-          typebot: state.typebot,
+    if (state.version === '3') return state
+    let migratedState: any = state
+    if (!state.version) migratedState = migrateFromV1ToV2(state)
+    return migrateFromV2ToV3(migratedState)
+  })
+
+const migrateFromV1ToV2 = (
+  state: z.infer<typeof sessionStateSchemaV1>
+): z.infer<typeof sessionStateSchemaV2> => ({
+  version: '2',
+  typebotsQueue: [
+    {
+      typebot: state.typebot,
+      resultId: state.result.id,
+      answers: state.result.answers.map((answer) => ({
+        key:
+          (answer.variableId
+            ? state.typebot.variables.find(
+                (variable) => variable.id === answer.variableId
+              )?.name
+            : state.typebot.groups.find((group) =>
+                group.blocks.find((block) => block.id === answer.blockId)
+              )?.title) ?? '',
+        value: answer.content,
+      })),
+      isMergingWithParent: true,
+      edgeIdToTriggerWhenDone:
+        state.linkedTypebots.queue.length > 0
+          ? state.linkedTypebots.queue[0].edgeId
+          : undefined,
+    },
+    ...state.linkedTypebots.typebots.map(
+      (typebot, index) =>
+        ({
+          typebot,
           resultId: state.result.id,
           answers: state.result.answers.map((answer) => ({
             key:
@@ -104,37 +144,20 @@ export const sessionStateSchema = sessionStateSchemaV1
                   )?.title) ?? '',
             value: answer.content,
           })),
-          isMergingWithParent: true,
-          edgeIdToTriggerWhenDone:
-            state.linkedTypebots.queue.length > 0
-              ? state.linkedTypebots.queue[0].edgeId
-              : undefined,
-        },
-        ...state.linkedTypebots.typebots.map(
-          (typebot, index) =>
-            ({
-              typebot,
-              resultId: state.result.id,
-              answers: state.result.answers.map((answer) => ({
-                key:
-                  (answer.variableId
-                    ? state.typebot.variables.find(
-                        (variable) => variable.id === answer.variableId
-                      )?.name
-                    : state.typebot.groups.find((group) =>
-                        group.blocks.find(
-                          (block) => block.id === answer.blockId
-                        )
-                      )?.title) ?? '',
-                value: answer.content,
-              })),
-              edgeIdToTriggerWhenDone: state.linkedTypebots.queue.at(index + 1)
-                ?.edgeId,
-            } satisfies SessionState['typebotsQueue'][number])
-        ),
-      ],
-      dynamicTheme: state.dynamicTheme,
-      currentBlock: state.currentBlock,
-      isStreamEnabled: state.isStreamEnabled,
-    }
-  })
+          edgeIdToTriggerWhenDone: state.linkedTypebots.queue.at(index + 1)
+            ?.edgeId,
+        } satisfies SessionState['typebotsQueue'][number])
+    ),
+  ],
+  dynamicTheme: state.dynamicTheme,
+  currentBlock: state.currentBlock,
+  isStreamEnabled: state.isStreamEnabled,
+})
+
+const migrateFromV2ToV3 = (
+  state: z.infer<typeof sessionStateSchemaV2>
+): z.infer<typeof sessionStateSchemaV3> => ({
+  ...state,
+  version: '3',
+  currentBlockId: state.currentBlock?.blockId,
+})

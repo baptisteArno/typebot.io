@@ -7,7 +7,7 @@ export const parseButtonsReply =
   (inputValue: string, block: ChoiceInputBlock): ParsedReply => {
     const displayedItems =
       injectVariableValuesInButtonsInputBlock(state)(block).items
-    if (block.options.isMultipleChoice) {
+    if (block.options?.isMultipleChoice) {
       const longestItemsFirst = [...displayedItems].sort(
         (a, b) => (b.content?.length ?? 0) - (a.content?.length ?? 0)
       )

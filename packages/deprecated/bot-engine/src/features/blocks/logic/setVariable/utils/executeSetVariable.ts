@@ -8,6 +8,8 @@ export const executeSetVariable = (
   { typebot: { variables }, updateVariableValue, updateVariables }: LogicState
 ): EdgeId | undefined => {
   if (!block.options?.variableId) return block.outgoingEdgeId
+  if (block.options.type !== undefined && block.options.type !== 'Custom')
+    return block.outgoingEdgeId
   const evaluatedExpression = block.options.expressionToEvaluate
     ? evaluateSetVariableExpression(variables)(
         block.options.expressionToEvaluate

@@ -7,7 +7,6 @@ import { ConversationContainer } from './ConversationContainer'
 import { AnswersProvider } from '../providers/AnswersProvider'
 import {
   AnswerInput,
-  BackgroundType,
   Edge,
   PublicTypebot,
   VariableWithValue,
@@ -16,6 +15,7 @@ import { Log } from '@typebot.io/prisma'
 import { LiteBadge } from './LiteBadge'
 import { isNotEmpty } from '@typebot.io/lib'
 import { getViewerUrl } from '@typebot.io/lib/getViewerUrl'
+import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/constants'
 
 export type TypebotViewerProps = {
   typebot: Omit<PublicTypebot, 'updatedAt' | 'createdAt'>
@@ -78,7 +78,7 @@ export const TypebotViewer = ({
         <style
           dangerouslySetInnerHTML={{
             __html: `@import url('https://fonts.googleapis.com/css2?family=${
-              typebot.theme.general.font ?? 'Open Sans'
+              typebot.theme.general?.font ?? 'Open Sans'
             }:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');`,
           }}
         />
@@ -112,7 +112,7 @@ export const TypebotViewer = ({
                 startGroupId={startGroupId}
               />
             </div>
-            {typebot.settings.general.isBrandingEnabled && <LiteBadge />}
+            {typebot.settings.general?.isBrandingEnabled && <LiteBadge />}
           </div>
         </AnswersProvider>
       </TypebotProvider>

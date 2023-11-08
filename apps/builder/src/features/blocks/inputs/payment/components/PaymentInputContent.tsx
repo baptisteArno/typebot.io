@@ -7,7 +7,7 @@ type Props = {
 
 export const PaymentInputContent = ({ block }: Props) => {
   if (
-    !block.options.amount ||
+    !block.options?.amount ||
     !block.options.credentialsId ||
     !block.options.currency
   )

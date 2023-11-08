@@ -25,7 +25,7 @@ export const WebflowBubbleInstructions = () => {
           <BubbleSettings
             previewMessage={previewMessage}
             defaultPreviewMessageAvatar={
-              typebot?.theme.chat.hostAvatar?.url ?? ''
+              typebot?.theme.chat?.hostAvatar?.url ?? ''
             }
             theme={theme}
             onPreviewMessageChange={setPreviewMessage}

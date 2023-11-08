@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useAnswers } from '../../../providers/AnswersProvider'
-import { InputBlock, InputBlockType } from '@typebot.io/schemas'
+import { InputBlock } from '@typebot.io/schemas'
 import { GuestBubble } from './bubbles/GuestBubble'
 import { byId } from '@typebot.io/lib'
 import { InputSubmitContent } from '@/types'
@@ -17,6 +17,9 @@ import { ChoiceForm } from '@/features/blocks/inputs/buttons'
 import { PaymentForm } from '@/features/blocks/inputs/payment'
 import { RatingForm } from '@/features/blocks/inputs/rating'
 import { FileUploadForm } from '@/features/blocks/inputs/fileUpload'
+import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { getBlockById } from '@typebot.io/lib/getBlockById'
 
 export const InputChatBlock = ({
   block,
@@ -39,9 +42,11 @@ export const InputChatBlock = ({
   const [answer, setAnswer] = useState<string>()
   const [isEditting, setIsEditting] = useState(false)
 
-  const { variableId } = block.options
+  const { variableId } = block.options ?? {}
   const defaultValue =
-    (typebot.settings.general.isInputPrefillEnabled ?? true) && variableId
+    (typebot.settings.general?.isInputPrefillEnabled ??
+      defaultSettings.general.isInputPrefillEnabled) &&
+    variableId
       ? typebot.variables.find(
           (variable) =>
             variable.name === typebot.variables.find(byId(variableId))?.name
@@ -51,14 +56,17 @@ export const InputChatBlock = ({
   const handleSubmit = async ({ label, value, itemId }: InputSubmitContent) => {
     setAnswer(label ?? value)
     const isRetry = !isInputValid(value, block.type)
-    if (!isRetry && addAnswer)
+    if (!isRetry && addAnswer) {
+      const { group } = getBlockById(block.id, typebot.groups)
       await addAnswer(typebot.variables)({
         blockId: block.id,
-        groupId: block.groupId,
+        groupId: group.id,
         content: value,
         variableId,
         uploadedFiles: block.type === InputBlockType.FILE,
       })
+    }
+
     if (!isEditting) onTransitionEnd({ label, value, itemId }, isRetry)
     setIsEditting(false)
   }
@@ -66,11 +74,11 @@ export const InputChatBlock = ({
   if (isLoading) return null
 
   if (answer) {
-    const avatarUrl = typebot.theme.chat.guestAvatar?.url
+    const avatarUrl = typebot.theme.chat?.guestAvatar?.url
     return (
       <GuestBubble
         message={answer}
-        showAvatar={typebot.theme.chat.guestAvatar?.isEnabled ?? false}
+        showAvatar={typebot.theme.chat?.guestAvatar?.isEnabled ?? false}
         avatarSrc={avatarUrl && parseVariables(typebot.variables)(avatarUrl)}
       />
     )
@@ -160,7 +168,7 @@ const Input = ({
         <PaymentForm
           options={block.options}
           onSuccess={() =>
-            onSubmit({ value: block.options.labels.success ?? 'Success' })
+            onSubmit({ value: block.options?.labels?.success ?? 'Success' })
           }
         />
       )

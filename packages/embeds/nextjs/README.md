@@ -1,7 +1,7 @@
 ## Install
 
 ```bash
-npm install @typebot.io/nextjs
+npm install @typebot.io/js @typebot.io/nextjs
 ```
 
 ## Standard
