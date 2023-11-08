@@ -25,7 +25,7 @@ export const typebotV5Schema = z.preprocess(
     version: z.enum(['3', '4', '5']),
     id: z.string(),
     name: z.string(),
-    events: z.null(),
+    events: z.preprocess((val) => (val === undefined ? null : val), z.null()),
     groups: z.array(groupV5Schema),
     edges: z.array(edgeSchema),
     variables: z.array(variableSchema),

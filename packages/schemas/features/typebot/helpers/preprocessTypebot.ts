@@ -1,7 +1,8 @@
 import { edgeSchema } from '../edge'
 
 export const preprocessTypebot = (typebot: any) => {
-  if (!typebot || typebot.version === '5') return typebot
+  if (!typebot || typebot.version === '5' || typebot.version === '6')
+    return typebot
   return {
     ...typebot,
     version:
@@ -9,6 +10,7 @@ export const preprocessTypebot = (typebot: any) => {
         ? '3'
         : typebot.version,
     groups: typebot.groups ? typebot.groups.map(preprocessGroup) : [],
+    events: null,
     edges: typebot.edges
       ? typebot.edges?.filter((edge: any) => edgeSchema.safeParse(edge).success)
       : [],
