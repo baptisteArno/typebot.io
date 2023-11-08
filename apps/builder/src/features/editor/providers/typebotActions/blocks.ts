@@ -119,7 +119,7 @@ const moveBlockToGroup = (
   const newBlock = { ...block }
   if (block.outgoingEdgeId) {
     if (typebot.groups[groupIndex].blocks.length > blockIndex ?? 0) {
-      deleteEdgeDraft({ typebot, edgeId: block.outgoingEdgeId })
+      deleteEdgeDraft({ typebot, edgeId: block.outgoingEdgeId, groupIndex })
       newBlock.outgoingEdgeId = undefined
     } else {
       const edgeIndex = typebot.edges.findIndex(byId(block.outgoingEdgeId))
