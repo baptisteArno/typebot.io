@@ -26,7 +26,7 @@ export const GroupsDropdown = ({
         value: group.id,
       }))}
       onSelect={onGroupIdSelected}
-      placeholder={'Select a block'}
+      placeholder={'Select a group'}
     />
   )
 }
