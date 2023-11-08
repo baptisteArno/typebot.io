@@ -27,6 +27,7 @@ const omittedProps = {
   workspaceId: true,
   resultsTablePreferencesSchema: true,
   selectedThemeTemplateId: true,
+  publicId: true,
 } as const
 
 const importingTypebotSchema = z.preprocess(
@@ -60,6 +61,7 @@ const migrateImportingTypebot = (
     isClosed: false,
     isArchived: false,
     whatsAppCredentialsId: null,
+    publicId: null,
   } satisfies Typebot
   return migrateTypebot(fullTypebot)
 }
