@@ -9,6 +9,7 @@ import { isFreePlan } from '@/features/billing/helpers/isFreePlan'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
 import { useTranslate } from '@tolgee/react'
+import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
 
 type Props = {
   isBrandingEnabled: boolean
@@ -62,11 +63,11 @@ export const GeneralSettings = ({
         />
       </Flex>
       <FontSelector
-        activeFont={generalTheme?.font}
+        activeFont={generalTheme?.font ?? defaultTheme.general.font}
         onSelectFont={handleSelectFont}
       />
       <BackgroundSelector
-        background={generalTheme?.background}
+        background={generalTheme?.background ?? defaultTheme.general.background}
         onBackgroundChange={handleBackgroundChange}
       />
     </Stack>

@@ -74,7 +74,8 @@ export const ThemeTemplateCard = ({
   }
 
   const hostBubbleBgColor =
-    themeTemplate.theme.chat?.hostBubbles ?? defaultTheme.chat.hostBubbles
+    themeTemplate.theme.chat?.hostBubbles?.backgroundColor ??
+    defaultTheme.chat.hostBubbles.backgroundColor
 
   const guestAvatar = {
     isEnabled:
@@ -84,7 +85,8 @@ export const ThemeTemplateCard = ({
   }
 
   const guestBubbleBgColor =
-    themeTemplate.theme.chat?.guestBubbles ?? defaultTheme.chat.guestBubbles
+    themeTemplate.theme.chat?.guestBubbles?.backgroundColor ??
+    defaultTheme.chat.guestBubbles.backgroundColor
 
   const buttonBgColor =
     themeTemplate.theme.chat?.buttons?.backgroundColor ??
