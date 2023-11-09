@@ -10,7 +10,7 @@ import {
 } from '@typebot.io/schemas'
 import { ExecuteLogicResponse } from '../../../types'
 import { createId } from '@paralleldrive/cuid2'
-import { isNotDefined } from '@typebot.io/lib/utils'
+import { isNotDefined, byId } from '@typebot.io/lib/utils'
 import { createResultIfNotExist } from '../../../queries/createResultIfNotExist'
 import prisma from '@typebot.io/lib/prisma'
 import { defaultTypebotLinkOptions } from '@typebot.io/schemas/features/blocks/logic/typebotLink/constants'
@@ -47,11 +47,7 @@ export const executeTypebotLink = async (
       return { outgoingEdgeId: block.outgoingEdgeId, logs }
     }
     newSessionState = await addLinkedTypebotToState(state, block, linkedTypebot)
-    nextGroupId =
-      block.options?.groupId ??
-      linkedTypebot.groups.find((group) =>
-        group.blocks.some((block) => block.type === 'start')
-      )?.id
+    nextGroupId = getNextGroupId(block.options?.groupId, linkedTypebot)
   }
 
   if (!nextGroupId) {
@@ -254,4 +250,18 @@ const fetchTypebot = async (state: SessionState, typebotId: string) => {
     ...typebot,
     id: typebotId,
   })
+}
+
+const getNextGroupId = (
+  groupId: string | undefined,
+  typebot: TypebotInSession
+) => {
+  if (groupId) return groupId
+  if (typebot.version === '6') {
+    const startEdge = typebot.edges.find(byId(typebot.events[0].outgoingEdgeId))
+    return startEdge?.to.groupId
+  }
+  return typebot.groups.find((group) =>
+    group.blocks.some((block) => block.type === 'start')
+  )?.id
 }
