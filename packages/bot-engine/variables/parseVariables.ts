@@ -140,7 +140,7 @@ export const getVariablesToParseInfoInText = (
         ) ?? '',
     })
   })
-  return variablesToParseInfo
+  return variablesToParseInfo.sort((a, b) => a.startIndex - b.startIndex)
 }
 
 const parseVariableValueInJson = (value: VariableWithValue['value']) => {
