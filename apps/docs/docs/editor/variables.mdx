@@ -10,6 +10,28 @@ You can tell your input step to save the answer into a variable and reuse then i
 
 <img src="/img/variables/question.png" width="800" alt="Iframe preview" />
 
+## Use variables
+
+Once your variables are declared you can use theme **anywhere** in your bot. For example you can display it in a text bubble with the following syntax:
+
+`{{My variable}}` where "My variable" is the name of your variable.
+
+## Inline variable formatting
+
+You can also decide to format your variable directly in the text bubble. For example if you want to display the variable "First name" in uppercase you can use the following syntax:
+
+`{{={{My variable}}.toUpperCase()=}}`
+
+When you insert `{{= ... =}}`, it means what's inside will be evaluated as JavaScript. So you can use any JavaScript inline function inside. The behavior is similar to the custom value in the Set variable block.
+
+If you would like to get the first item of a list:
+
+`{{={{My variable}}[0]=}}` or `{{={{My variable}}.at(0)=}}`
+
+Likewise for last item:
+
+`{{={{My variable}}.at(-1)=}}`
+
 ## Advanced concepts
 
 Here is a quick video that showcases advanced concepts about variables:

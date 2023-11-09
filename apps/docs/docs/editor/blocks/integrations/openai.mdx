@@ -10,19 +10,20 @@ With the OpenAI block, you can create a chat completion based on your user queri
   alt="OpenAI block"
 />
 
-This integration comes with a convenient message type called **Messages sequence ✨**. It allows you to directly pass a sequence of saved assistant / user messages:
+This integration comes with a convenient message type called **Dialogue**. It allows you to easily pass a sequence of saved assistant / user messages history to OpenAI:
 
 <img
-  src="/img/blocks/integrations/openai/messages-sequence.png"
-  width="600"
+  src="/img/blocks/integrations/openai/append-to-history.png"
   alt="OpenAI messages sequence"
 />
 
-:::note
-Under the hood, **Messages sequence ✨** will convert the provided variables into lists if it's not already the case.
-:::
+Then you can give the OpenAI block access to this sequence of messages:
 
-<YoutubeEmbed videoId="v167drfHFzk" />
+<img
+  src="/img/blocks/integrations/openai/dialogue-usage.png"
+  width="600"
+  alt="OpenAI messages sequence"
+/>
 
 ## Using Multiple Open AI Blocks: Tips and Tricks
 
@@ -62,8 +63,7 @@ I also demonstrate how formatting can be affected by the presence of text before
 It means your OpenAI block is not configured properly. Please check the following:
 
 - You have selected an OpenAI account
-- You have at least 1 **user** message or a **Message sequence ✨**.
-- If you have a **Message sequence ✨**, make sure your user messages variable contains at least 1 message.
+- You have at least 1 **user** message or a **Dialogue** message set up.
 
 ### It returns an empty message
 

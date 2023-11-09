@@ -31,6 +31,7 @@ import { useToast } from '@/hooks/useToast'
 import { parseDefaultPublicId } from '../helpers/parseDefaultPublicId'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { ConfirmModal } from '@/components/ConfirmModal'
+import { TextLink } from '@/components/TextLink'
 
 type Props = ButtonProps & {
   isMoreMenuDisabled?: boolean
@@ -138,7 +139,7 @@ export const PublishButton = ({
         onClose={onClose}
         type={t('billing.limitMessage.fileInput')}
       />
-      {publishedTypebotVersion !== typebot?.version && (
+      {publishedTypebot && publishedTypebotVersion !== typebot?.version && (
         <ConfirmModal
           isOpen={isNewEngineWarningOpen}
           onConfirm={handlePublishClick}
@@ -146,14 +147,23 @@ export const PublishButton = ({
           confirmButtonColor="blue"
           title="⚠️ New engine version"
           message={
-            <Stack>
+            <Stack spacing="3">
               <Text>
                 You are about to a deploy a version of your bot with an updated
-                engine.
+                engine. (Typebot V6).
               </Text>
               <Text fontWeight="bold">
-                Make sure to test it thoroughly in preview mode before
-                publishing.
+                Make sure to check out all the{' '}
+                <TextLink
+                  href="https://docs.typebot.io/breaking-changes#typebot-v6"
+                  isExternal
+                >
+                  associated breaking changes
+                </TextLink>
+              </Text>
+              <Text>
+                {' '}
+                Then test, the bot thoroughly in preview mode before publishing.
               </Text>
             </Stack>
           }
