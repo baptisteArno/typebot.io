@@ -43,10 +43,10 @@ export const executeWebhookBlock = async (
         })) as Webhook | null)
       : null)
   if (!webhook) return { outgoingEdgeId: block.outgoingEdgeId }
-  const parsedWebhook = await parseWebhookAttributes(
-    state,
-    state.typebotsQueue[0].answers
-  )({ webhook, isCustomBody: block.options?.isCustomBody })
+  const parsedWebhook = await parseWebhookAttributes(state)({
+    webhook,
+    isCustomBody: block.options?.isCustomBody,
+  })
   if (!parsedWebhook) {
     logs.push({
       status: 'error',
@@ -77,7 +77,7 @@ export const executeWebhookBlock = async (
 const checkIfBodyIsAVariable = (body: string) => /^{{.+}}$/.test(body)
 
 const parseWebhookAttributes =
-  (state: SessionState, answers: AnswerInSessionState[]) =>
+  (state: SessionState) =>
   async ({
     webhook,
     isCustomBody,
@@ -85,7 +85,7 @@ const parseWebhookAttributes =
     webhook: Webhook
     isCustomBody?: boolean
   }): Promise<ParsedWebhook | undefined> => {
-    if (!webhook.url || !webhook.method) return
+    if (!webhook.url) return
     const { typebot } = state.typebotsQueue[0]
     const basicAuth: { username?: string; password?: string } = {}
     const basicAuthHeaderIdx = webhook.headers?.findIndex(
@@ -114,7 +114,7 @@ const parseWebhookAttributes =
     )
     const bodyContent = await getBodyContent({
       body: webhook.body,
-      answers,
+      answers: state.typebotsQueue[0].answers,
       variables: typebot.variables,
       isCustomBody,
     })
