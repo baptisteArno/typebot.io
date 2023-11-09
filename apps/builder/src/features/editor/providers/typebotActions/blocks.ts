@@ -8,7 +8,7 @@ import {
 } from '@typebot.io/schemas'
 import { SetTypebot } from '../TypebotProvider'
 import { produce, Draft } from 'immer'
-import { cleanUpEdgeDraft, deleteEdgeDraft } from './edges'
+import { deleteConnectedEdgesDraft, deleteEdgeDraft } from './edges'
 import { createId } from '@paralleldrive/cuid2'
 import { byId, blockHasItems } from '@typebot.io/lib'
 import { duplicateItemDraft } from './items'
@@ -67,8 +67,8 @@ export const blocksAction = (setTypebot: SetTypebot): BlocksActions => ({
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const removingBlock = typebot.groups[groupIndex].blocks[blockIndex]
+        deleteConnectedEdgesDraft(typebot, removingBlock.id)
         removeBlockFromGroup({ groupIndex, blockIndex })(typebot)
-        cleanUpEdgeDraft(typebot, removingBlock.id)
         removeEmptyGroups(typebot)
       })
     ),
@@ -153,7 +153,7 @@ export const duplicateBlockDraft = (block: BlockV6): BlockV6 => {
 
 export const deleteGroupDraft =
   (typebot: Draft<TypebotV6>) => (groupIndex: number) => {
-    cleanUpEdgeDraft(typebot, typebot.groups[groupIndex].id)
+    deleteConnectedEdgesDraft(typebot, typebot.groups[groupIndex].id)
     typebot.groups.splice(groupIndex, 1)
   }
 

@@ -8,7 +8,7 @@ import {
 } from '@typebot.io/schemas'
 import { SetTypebot } from '../TypebotProvider'
 import { Draft, produce } from 'immer'
-import { cleanUpEdgeDraft } from './edges'
+import { deleteConnectedEdgesDraft } from './edges'
 import { byId, blockHasItems } from '@typebot.io/lib'
 import { createId } from '@paralleldrive/cuid2'
 import {
@@ -172,7 +172,7 @@ const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
         ] as BlockWithItems
         const removingItem = block.items[itemIndex]
         block.items.splice(itemIndex, 1)
-        cleanUpEdgeDraft(typebot, removingItem.id)
+        deleteConnectedEdgesDraft(typebot, removingItem.id)
       })
     ),
 })
