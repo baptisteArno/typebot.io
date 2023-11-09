@@ -69,6 +69,7 @@ export const parseBubbleBlock = (
       const parsedContent = block.content
         ? deepParseVariables(variables)(block.content)
         : undefined
+
       return {
         ...block,
         content: {

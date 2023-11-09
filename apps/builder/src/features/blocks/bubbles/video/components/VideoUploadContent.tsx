@@ -19,7 +19,7 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
     const info = parseVideoUrl(url)
     return onSubmit({
       type: info.type,
-      url,
+      url: info.url,
       id: info.id,
     })
   }

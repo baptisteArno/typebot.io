@@ -1,21 +1,36 @@
-import { VideoBubbleContentType } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
-
-const vimeoRegex = /vimeo\.com\/(\d+)/
-const youtubeRegex =
-  /youtube\.com\/(watch\?v=|shorts\/)([\w-]+)|youtu\.be\/([\w-]+)/
+import {
+  VideoBubbleContentType,
+  tiktokBaseUrl,
+  tiktokRegex,
+  vimeoBaseUrl,
+  vimeoRegex,
+  youtubeBaseUrl,
+  youtubeRegex,
+} from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
 
 export const parseVideoUrl = (
   url: string
 ): { type: VideoBubbleContentType; url: string; id?: string } => {
-  if (vimeoRegex.test(url)) {
-    const id = url.match(vimeoRegex)?.at(1)
-    if (!id) return { type: VideoBubbleContentType.URL, url }
-    return { type: VideoBubbleContentType.VIMEO, url, id }
-  }
   if (youtubeRegex.test(url)) {
-    const id = url.match(youtubeRegex)?.at(2) ?? url.match(youtubeRegex)?.at(3)
-    if (!id) return { type: VideoBubbleContentType.URL, url }
-    return { type: VideoBubbleContentType.YOUTUBE, url, id }
+    const match = url.match(youtubeRegex)
+    const id = match?.at(2) ?? match?.at(3)
+    const parsedUrl = match?.at(0) ?? url
+    if (!id) return { type: VideoBubbleContentType.URL, url: parsedUrl }
+    return { type: VideoBubbleContentType.YOUTUBE, url: parsedUrl, id }
+  }
+  if (vimeoRegex.test(url)) {
+    const match = url.match(vimeoRegex)
+    const id = match?.at(1)
+    const parsedUrl = match?.at(0) ?? url
+    if (!id) return { type: VideoBubbleContentType.URL, url: parsedUrl }
+    return { type: VideoBubbleContentType.VIMEO, url: parsedUrl, id }
+  }
+  if (tiktokRegex.test(url)) {
+    const match = url.match(tiktokRegex)
+    const id = url.match(tiktokRegex)?.at(1)
+    const parsedUrl = match?.at(0) ?? url
+    if (!id) return { type: VideoBubbleContentType.URL, url: parsedUrl }
+    return { type: VideoBubbleContentType.TIKTOK, url: parsedUrl, id }
   }
   return { type: VideoBubbleContentType.URL, url }
 }

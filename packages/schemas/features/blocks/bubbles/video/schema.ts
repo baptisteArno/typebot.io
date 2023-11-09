@@ -19,3 +19,7 @@ export const videoBubbleBlockSchema = blockBaseSchema.merge(
 )
 
 export type VideoBubbleBlock = z.infer<typeof videoBubbleBlockSchema>
+export type EmbeddableVideoBubbleContentType = Exclude<
+  VideoBubbleContentType,
+  VideoBubbleContentType.URL
+>
