@@ -10,7 +10,7 @@ import {
 } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
 import got, { Method, Headers, HTTPError } from 'got'
-import { byId, isEmpty, omit } from '@typebot.io/lib'
+import { byId, isEmpty, isWebhookBlock, omit } from '@typebot.io/lib'
 import { parseAnswers } from '@typebot.io/lib/results'
 import { initMiddleware, methodNotAllowed, notFound } from '@typebot.io/lib/api'
 import { stringify } from 'qs'
@@ -27,7 +27,6 @@ import {
   defaultWebhookAttributes,
 } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
 import { getBlockById } from '@typebot.io/lib/getBlockById'
-import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 
 const cors = initMiddleware(Cors())
 
@@ -52,7 +51,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const block = typebot.groups
       .flatMap<Block>((g) => g.blocks)
       .find(byId(blockId))
-    if (block?.type !== IntegrationBlockType.WEBHOOK)
+    if (!block || !isWebhookBlock(block))
       return notFound(res, 'Webhook block not found')
     const webhookId = 'webhookId' in block ? block.webhookId : undefined
     const webhook =
