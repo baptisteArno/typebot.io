@@ -104,6 +104,7 @@ export const MultipleChoicesForm = (props: Props) => {
                     isChecked={selectedItemIds().some(
                       (selectedItemId) => selectedItemId === item.id
                     )}
+                    class="flex-shrink-0"
                   />
                   <span>{item.content}</span>
                 </div>
