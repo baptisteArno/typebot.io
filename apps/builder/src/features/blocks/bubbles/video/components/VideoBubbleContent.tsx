@@ -3,8 +3,7 @@ import { Box, Text, Image } from '@chakra-ui/react'
 import { VideoBubbleBlock } from '@typebot.io/schemas'
 import {
   VideoBubbleContentType,
-  vimeoBaseUrl,
-  youtubeBaseUrl,
+  embedBaseUrls,
 } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
 
 type Props = {
@@ -49,12 +48,10 @@ export const VideoBubbleContent = ({ block }: Props) => {
           )}
         </Box>
       )
+    case VideoBubbleContentType.GUMLET:
     case VideoBubbleContentType.VIMEO:
     case VideoBubbleContentType.YOUTUBE: {
-      const baseUrl =
-        block.content.type === VideoBubbleContentType.VIMEO
-          ? vimeoBaseUrl
-          : youtubeBaseUrl
+      const baseUrl = embedBaseUrls[block.content.type]
       return (
         <Box w="full" h="120px" pos="relative">
           <iframe

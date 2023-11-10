@@ -1,6 +1,7 @@
 import { VideoBubbleBlock } from '@typebot.io/schemas'
 import {
   VideoBubbleContentType,
+  gumletRegex,
   horizontalVideoSuggestionSize,
   tiktokRegex,
   verticalVideoSuggestionSize,
@@ -55,6 +56,18 @@ export const parseVideoUrl = (
       url: parsedUrl,
       id,
       videoSizeSuggestion: verticalVideoSuggestionSize,
+    }
+  }
+  if (gumletRegex.test(url)) {
+    const match = url.match(gumletRegex)
+    const id = match?.at(1)
+    const parsedUrl = match?.at(0) ?? url
+    if (!id) return { type: VideoBubbleContentType.URL, url: parsedUrl }
+    return {
+      type: VideoBubbleContentType.GUMLET,
+      url: parsedUrl,
+      id,
+      videoSizeSuggestion: horizontalVideoSuggestionSize,
     }
   }
   return { type: VideoBubbleContentType.URL, url }

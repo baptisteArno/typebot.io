@@ -3,12 +3,14 @@ export enum VideoBubbleContentType {
   YOUTUBE = 'youtube',
   VIMEO = 'vimeo',
   TIKTOK = 'tiktok',
+  GUMLET = 'gumlet',
 }
 
 export const embeddableVideoTypes = [
   VideoBubbleContentType.YOUTUBE,
   VideoBubbleContentType.VIMEO,
   VideoBubbleContentType.TIKTOK,
+  VideoBubbleContentType.GUMLET,
 ] as const
 
 export const defaultVideoBubbleContent = {
@@ -18,21 +20,31 @@ export const defaultVideoBubbleContent = {
 } as const
 
 export const horizontalVideoSuggestionSize = {
-  aspectRation: '16/9',
+  aspectRatio: '16/9',
   maxWidth: '100%',
 }
 
 export const verticalVideoSuggestionSize = {
-  aspectRation: '9/16',
+  aspectRatio: '9/16',
   maxWidth: '400px',
 }
 
-export const youtubeBaseUrl = 'https://www.youtube.com/embed'
+const youtubeBaseUrl = 'https://www.youtube.com/embed'
 export const youtubeRegex =
   /youtube\.com\/(watch\?v=|shorts\/)([\w-]+)|youtu\.be\/([\w-]+)/
 
-export const vimeoBaseUrl = 'https://player.vimeo.com/video'
+const vimeoBaseUrl = 'https://player.vimeo.com/video'
 export const vimeoRegex = /vimeo\.com\/(\d+)/
 
-export const tiktokBaseUrl = 'https://www.tiktok.com/embed/v2'
+const tiktokBaseUrl = 'https://www.tiktok.com/embed/v2'
 export const tiktokRegex = /tiktok\.com\/@[\w-]+\/video\/(\d+)/
+
+const gumletBaseUrl = 'https://play.gumlet.io/embed'
+export const gumletRegex = /gumlet\.com\/watch\/(\w+)/
+
+export const embedBaseUrls = {
+  [VideoBubbleContentType.VIMEO]: vimeoBaseUrl,
+  [VideoBubbleContentType.YOUTUBE]: youtubeBaseUrl,
+  [VideoBubbleContentType.TIKTOK]: tiktokBaseUrl,
+  [VideoBubbleContentType.GUMLET]: gumletBaseUrl,
+} as const

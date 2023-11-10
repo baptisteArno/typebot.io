@@ -4,11 +4,9 @@ import { createSignal, Match, onCleanup, onMount, Switch } from 'solid-js'
 import { clsx } from 'clsx'
 import {
   defaultVideoBubbleContent,
+  embedBaseUrls,
   embeddableVideoTypes,
-  tiktokBaseUrl,
   VideoBubbleContentType,
-  vimeoBaseUrl,
-  youtubeBaseUrl,
 } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
 import {
   EmbeddableVideoBubbleContentType,
@@ -118,9 +116,11 @@ export const VideoBubble = (props: Props) => {
                 }}
               >
                 <iframe
-                  src={`${getBaseUrl(
-                    props.content?.type as EmbeddableVideoBubbleContentType
-                  )}/${props.content?.id}`}
+                  src={`${
+                    embedBaseUrls[
+                      props.content?.type as EmbeddableVideoBubbleContentType
+                    ]
+                  }/${props.content?.id}`}
                   class={'w-full h-full'}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowfullscreen
@@ -132,15 +132,4 @@ export const VideoBubble = (props: Props) => {
       </div>
     </div>
   )
-}
-
-const getBaseUrl = (type: EmbeddableVideoBubbleContentType): string => {
-  switch (type) {
-    case VideoBubbleContentType.VIMEO:
-      return vimeoBaseUrl
-    case VideoBubbleContentType.YOUTUBE:
-      return youtubeBaseUrl
-    case VideoBubbleContentType.TIKTOK:
-      return tiktokBaseUrl
-  }
 }
