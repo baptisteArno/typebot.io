@@ -57,6 +57,8 @@ export const VideoBubble = (props: Props) => {
             style={{
               width: isTyping() ? '64px' : '100%',
               height: isTyping() ? '32px' : '100%',
+              'max-width':
+                props.content?.maxWidth ?? defaultVideoBubbleContent.maxWidth,
             }}
           >
             {isTyping() && <TypingBubble />}
@@ -78,6 +80,10 @@ export const VideoBubble = (props: Props) => {
                 }
                 style={{
                   height: isTyping() ? (isMobile() ? '32px' : '36px') : 'auto',
+                  'aspect-ratio': props.content?.aspectRatio,
+                  'max-width':
+                    props.content?.maxWidth ??
+                    defaultVideoBubbleContent.maxWidth,
                 }}
               />
             </Match>
@@ -99,10 +105,16 @@ export const VideoBubble = (props: Props) => {
                     ? isMobile()
                       ? '32px'
                       : '36px'
-                    : `${
+                    : !props.content?.aspectRatio
+                    ? `${
                         props.content?.height ??
                         defaultVideoBubbleContent.height
-                      }px`,
+                      }px`
+                    : undefined,
+                  'aspect-ratio': props.content?.aspectRatio,
+                  'max-width':
+                    props.content?.maxWidth ??
+                    defaultVideoBubbleContent.maxWidth,
                 }}
               >
                 <iframe

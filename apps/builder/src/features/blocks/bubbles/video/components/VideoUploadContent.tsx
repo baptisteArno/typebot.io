@@ -1,12 +1,9 @@
 import { Stack, Text } from '@chakra-ui/react'
-import { VariableString, VideoBubbleBlock } from '@typebot.io/schemas'
-import { NumberInput, TextInput } from '@/components/inputs'
+import { VideoBubbleBlock } from '@typebot.io/schemas'
+import { TextInput } from '@/components/inputs'
 import { useTranslate } from '@tolgee/react'
 import { parseVideoUrl } from '@typebot.io/lib/parseVideoUrl'
-import {
-  VideoBubbleContentType,
-  defaultVideoBubbleContent,
-} from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
+import { defaultVideoBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
 
 type Props = {
   content?: VideoBubbleBlock['content']
@@ -16,19 +13,36 @@ type Props = {
 export const VideoUploadContent = ({ content, onSubmit }: Props) => {
   const { t } = useTranslate()
   const updateUrl = (url: string) => {
-    const info = parseVideoUrl(url)
-    return onSubmit({
-      type: info.type,
-      url: info.url,
-      id: info.id,
-    })
-  }
-  const updateHeight = (height?: number | VariableString) => {
+    const {
+      type,
+      url: matchedUrl,
+      id,
+      videoSizeSuggestion,
+    } = parseVideoUrl(url)
     return onSubmit({
       ...content,
-      height,
+      type,
+      url: matchedUrl,
+      id,
+      ...(!content?.aspectRatio && !content?.maxWidth
+        ? videoSizeSuggestion
+        : {}),
     })
   }
+  const updateAspectRatio = (aspectRatio?: string) => {
+    return onSubmit({
+      ...content,
+      aspectRatio,
+    })
+  }
+
+  const updateMaxWidth = (maxWidth?: string) => {
+    return onSubmit({
+      ...content,
+      maxWidth,
+    })
+  }
+
   return (
     <Stack p="2" spacing={4}>
       <Stack>
@@ -43,15 +57,27 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
           {t('editor.blocks.bubbles.video.settings.worksWith.text')}
         </Text>
       </Stack>
-
-      {content?.type !== VideoBubbleContentType.URL && (
-        <NumberInput
-          label="Height:"
-          defaultValue={content?.height ?? defaultVideoBubbleContent.height}
-          onValueChange={updateHeight}
-          suffix={t('editor.blocks.bubbles.video.settings.numberInput.unit')}
-          width="150px"
-        />
+      {content?.url && (
+        <Stack>
+          <TextInput
+            label="Aspect ratio"
+            moreInfoTooltip='Example: "16/9" or "9/16"'
+            defaultValue={
+              content?.aspectRatio ?? defaultVideoBubbleContent.aspectRatio
+            }
+            onChange={updateAspectRatio}
+            direction="row"
+          />
+          <TextInput
+            label="Max width"
+            moreInfoTooltip='Example: "300px" or "100%"'
+            defaultValue={
+              content?.maxWidth ?? defaultVideoBubbleContent.maxWidth
+            }
+            onChange={updateMaxWidth}
+            direction="row"
+          />
+        </Stack>
       )}
     </Stack>
   )

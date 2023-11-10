@@ -9,6 +9,8 @@ export const videoBubbleContentSchema = z.object({
   id: z.string().optional(),
   type: z.nativeEnum(VideoBubbleContentType).optional(),
   height: z.number().or(variableStringSchema).optional(),
+  aspectRatio: z.string().optional(),
+  maxWidth: z.string().optional(),
 })
 
 export const videoBubbleBlockSchema = blockBaseSchema.merge(

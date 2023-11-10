@@ -13,7 +13,19 @@ export const embeddableVideoTypes = [
 
 export const defaultVideoBubbleContent = {
   height: 400,
+  aspectRatio: '16/9',
+  maxWidth: '100%',
 } as const
+
+export const horizontalVideoSuggestionSize = {
+  aspectRation: '16/9',
+  maxWidth: '100%',
+}
+
+export const verticalVideoSuggestionSize = {
+  aspectRation: '9/16',
+  maxWidth: '400px',
+}
 
 export const youtubeBaseUrl = 'https://www.youtube.com/embed'
 export const youtubeRegex =

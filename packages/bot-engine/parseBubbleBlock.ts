@@ -73,6 +73,7 @@ export const parseBubbleBlock = (
       return {
         ...block,
         content: {
+          ...parsedContent,
           ...(parsedContent?.url ? parseVideoUrl(parsedContent.url) : {}),
           height:
             typeof parsedContent?.height === 'string'
