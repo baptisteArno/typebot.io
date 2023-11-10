@@ -20,8 +20,8 @@ usageMatchRegex:
 # The "$1" will be replaced by the keypath specified.
 # Optional: uncomment the following two lines to use
 
-# refactorTemplates:
-#  - i18n.get("$1")
+refactorTemplates:
+  - t("$1")
 
 # If set to true, only enables this custom framework (will disable all built-in frameworks)
 monopoly: true

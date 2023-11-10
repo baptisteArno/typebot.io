@@ -47,21 +47,19 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
     <Stack p="2" spacing={4}>
       <Stack>
         <TextInput
-          placeholder={t(
-            'editor.blocks.bubbles.video.settings.worksWith.placeholder'
-          )}
+          placeholder={t('video.urlInput.placeholder')}
           defaultValue={content?.url ?? ''}
           onChange={updateUrl}
         />
-        <Text fontSize="sm" color="gray.400" textAlign="center">
-          {t('editor.blocks.bubbles.video.settings.worksWith.text')}
+        <Text fontSize="xs" color="gray.400" textAlign="center">
+          {t('video.urlInput.helperText')}
         </Text>
       </Stack>
       {content?.url && (
         <Stack>
           <TextInput
-            label="Aspect ratio"
-            moreInfoTooltip='Example: "16/9" or "9/16"'
+            label={t('video.aspectRatioInput.label')}
+            moreInfoTooltip={t('video.aspectRatioInput.moreInfoTooltip')}
             defaultValue={
               content?.aspectRatio ?? defaultVideoBubbleContent.aspectRatio
             }
@@ -69,8 +67,8 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
             direction="row"
           />
           <TextInput
-            label="Max width"
-            moreInfoTooltip='Example: "300px" or "100%"'
+            label={t('video.maxWidthInput.label')}
+            moreInfoTooltip={t('video.maxWidthInput.moreInfoTooltip')}
             defaultValue={
               content?.maxWidth ?? defaultVideoBubbleContent.maxWidth
             }

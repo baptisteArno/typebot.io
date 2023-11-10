@@ -13,7 +13,9 @@
     "build:apps": "turbo run build --filter=builder... --filter=viewer...",
     "db:migrate": "cd packages/prisma && pnpm run db:migrate",
     "generate-change-log": "git fetch --all && pnpx gitmoji-changelog",
-    "locales:sync": "tolgee sync './apps/builder/src/**/*.ts?(x)' --continue-on-warning --remove-unused"
+    "locales:sync": "tolgee sync './apps/builder/src/**/*.ts?(x)' --continue-on-warning --remove-unused",
+    "locales:push": "tolgee push ./apps/builder/public/locales",
+    "locales:pull": "tolgee pull ./apps/builder/public/locales"
   },
   "devDependencies": {
     "cross-env": "7.0.3",
@@ -21,7 +23,7 @@
     "husky": "8.0.3",
     "prettier": "2.8.8",
     "turbo": "1.10.12",
-    "@tolgee/cli": "1.2.0"
+    "@tolgee/cli": "1.3.2"
   },
   "config": {
     "commitizen": {
