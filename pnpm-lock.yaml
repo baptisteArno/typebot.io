@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@tolgee/cli':
-        specifier: 1.2.0
-        version: 1.2.0
+        specifier: 1.3.2
+        version: 1.3.2
       cross-env:
         specifier: 7.0.3
         version: 7.0.3
@@ -8645,8 +8645,8 @@ packages:
       tippy.js: 6.3.7
     dev: false
 
-  /@tolgee/cli@1.2.0:
-    resolution: {integrity: sha512-1DBHdidNR0efuUAMjAtf9MDLC/nIwwYArCHjuscHvd/a3hgsdZYwrj926Ass1npj7RbtBYYTlBNju7qdLKD3Wg==}
+  /@tolgee/cli@1.3.2:
+    resolution: {integrity: sha512-7Vf+BFGmQ9jLfDiRrhsgg+h494k0V8BacSdKVZV83PqhibI6/+H9boJvB1oSA+IEwAO9BoBFxy87Y1LN0NI1Cg==}
     engines: {node: '>= 18'}
     hasBin: true
     dependencies:

@@ -4,9 +4,14 @@ import { createSignal, Match, onCleanup, onMount, Switch } from 'solid-js'
 import { clsx } from 'clsx'
 import {
   defaultVideoBubbleContent,
+  embedBaseUrls,
+  embeddableVideoTypes,
   VideoBubbleContentType,
 } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
-import { VideoBubbleBlock } from '@typebot.io/schemas'
+import {
+  EmbeddableVideoBubbleContentType,
+  VideoBubbleBlock,
+} from '@typebot.io/schemas'
 
 type Props = {
   content: VideoBubbleBlock['content']
@@ -23,8 +28,8 @@ export const VideoBubble = (props: Props) => {
   onMount(() => {
     const typingDuration =
       props.content?.type &&
-      [VideoBubbleContentType.VIMEO, VideoBubbleContentType.YOUTUBE].includes(
-        props.content?.type
+      embeddableVideoTypes.includes(
+        props.content?.type as EmbeddableVideoBubbleContentType
       )
         ? 2000
         : 100
@@ -50,6 +55,8 @@ export const VideoBubble = (props: Props) => {
             style={{
               width: isTyping() ? '64px' : '100%',
               height: isTyping() ? '32px' : '100%',
+              'max-width':
+                props.content?.maxWidth ?? defaultVideoBubbleContent.maxWidth,
             }}
           >
             {isTyping() && <TypingBubble />}
@@ -71,16 +78,19 @@ export const VideoBubble = (props: Props) => {
                 }
                 style={{
                   height: isTyping() ? (isMobile() ? '32px' : '36px') : 'auto',
+                  'aspect-ratio': props.content?.aspectRatio,
+                  'max-width':
+                    props.content?.maxWidth ??
+                    defaultVideoBubbleContent.maxWidth,
                 }}
               />
             </Match>
             <Match
               when={
                 props.content?.type &&
-                [
-                  VideoBubbleContentType.VIMEO,
-                  VideoBubbleContentType.YOUTUBE,
-                ].includes(props.content.type)
+                embeddableVideoTypes.includes(
+                  props.content.type as EmbeddableVideoBubbleContentType
+                )
               }
             >
               <div
@@ -93,17 +103,23 @@ export const VideoBubble = (props: Props) => {
                     ? isMobile()
                       ? '32px'
                       : '36px'
-                    : `${
+                    : !props.content?.aspectRatio
+                    ? `${
                         props.content?.height ??
                         defaultVideoBubbleContent.height
-                      }px`,
+                      }px`
+                    : undefined,
+                  'aspect-ratio': props.content?.aspectRatio,
+                  'max-width':
+                    props.content?.maxWidth ??
+                    defaultVideoBubbleContent.maxWidth,
                 }}
               >
                 <iframe
                   src={`${
-                    props.content?.type === VideoBubbleContentType.VIMEO
-                      ? 'https://player.vimeo.com/video'
-                      : 'https://www.youtube.com/embed'
+                    embedBaseUrls[
+                      props.content?.type as EmbeddableVideoBubbleContentType
+                    ]
                   }/${props.content?.id}`}
                   class={'w-full h-full'}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

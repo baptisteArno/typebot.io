@@ -1,21 +1,74 @@
-import { VideoBubbleContentType } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
-
-const vimeoRegex = /vimeo\.com\/(\d+)/
-const youtubeRegex =
-  /youtube\.com\/(watch\?v=|shorts\/)([\w-]+)|youtu\.be\/([\w-]+)/
+import { VideoBubbleBlock } from '@typebot.io/schemas'
+import {
+  VideoBubbleContentType,
+  gumletRegex,
+  horizontalVideoSuggestionSize,
+  tiktokRegex,
+  verticalVideoSuggestionSize,
+  vimeoRegex,
+  youtubeRegex,
+} from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
 
 export const parseVideoUrl = (
   url: string
-): { type: VideoBubbleContentType; url: string; id?: string } => {
-  if (vimeoRegex.test(url)) {
-    const id = url.match(vimeoRegex)?.at(1)
-    if (!id) return { type: VideoBubbleContentType.URL, url }
-    return { type: VideoBubbleContentType.VIMEO, url, id }
-  }
+): {
+  type: VideoBubbleContentType
+  url: string
+  id?: string
+  videoSizeSuggestion?: Pick<
+    NonNullable<VideoBubbleBlock['content']>,
+    'aspectRatio' | 'maxWidth'
+  >
+} => {
   if (youtubeRegex.test(url)) {
-    const id = url.match(youtubeRegex)?.at(2) ?? url.match(youtubeRegex)?.at(3)
-    if (!id) return { type: VideoBubbleContentType.URL, url }
-    return { type: VideoBubbleContentType.YOUTUBE, url, id }
+    const match = url.match(youtubeRegex)
+    const id = match?.at(2) ?? match?.at(3)
+    const parsedUrl = match?.at(0) ?? url
+    if (!id) return { type: VideoBubbleContentType.URL, url: parsedUrl }
+    return {
+      type: VideoBubbleContentType.YOUTUBE,
+      url: parsedUrl,
+      id,
+      videoSizeSuggestion: url.includes('shorts')
+        ? verticalVideoSuggestionSize
+        : horizontalVideoSuggestionSize,
+    }
+  }
+  if (vimeoRegex.test(url)) {
+    const match = url.match(vimeoRegex)
+    const id = match?.at(1)
+    const parsedUrl = match?.at(0) ?? url
+    if (!id) return { type: VideoBubbleContentType.URL, url: parsedUrl }
+    return {
+      type: VideoBubbleContentType.VIMEO,
+      url: parsedUrl,
+      id,
+      videoSizeSuggestion: horizontalVideoSuggestionSize,
+    }
+  }
+  if (tiktokRegex.test(url)) {
+    const match = url.match(tiktokRegex)
+    const id = url.match(tiktokRegex)?.at(1)
+    const parsedUrl = match?.at(0) ?? url
+    if (!id) return { type: VideoBubbleContentType.URL, url: parsedUrl }
+    return {
+      type: VideoBubbleContentType.TIKTOK,
+      url: parsedUrl,
+      id,
+      videoSizeSuggestion: verticalVideoSuggestionSize,
+    }
+  }
+  if (gumletRegex.test(url)) {
+    const match = url.match(gumletRegex)
+    const id = match?.at(1)
+    const parsedUrl = match?.at(0) ?? url
+    if (!id) return { type: VideoBubbleContentType.URL, url: parsedUrl }
+    return {
+      type: VideoBubbleContentType.GUMLET,
+      url: parsedUrl,
+      id,
+      videoSizeSuggestion: horizontalVideoSuggestionSize,
+    }
   }
   return { type: VideoBubbleContentType.URL, url }
 }
