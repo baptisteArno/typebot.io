@@ -223,7 +223,7 @@ const getBodyContent = async ({
   variables: Variable[]
   isCustomBody?: boolean
 }): Promise<string | undefined> => {
-  return isEmpty(body) && isCustomBody !== true
+  return body === '{{state}}' || isEmpty(body) || isCustomBody !== true
     ? JSON.stringify(
         parseAnswers({
           answers,
