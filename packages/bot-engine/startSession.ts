@@ -35,6 +35,7 @@ import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/c
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
 import { VisitedEdge } from '@typebot.io/prisma'
+import { env } from '@typebot.io/env'
 
 type StartParams =
   | ({
@@ -273,7 +274,11 @@ const getTypebot = async (startParams: StartParams): Promise<StartTypebot> => {
   if (startParams.type === 'preview' && startParams.typebot)
     return startParams.typebot
 
-  if (startParams.type === 'preview' && !startParams.userId)
+  if (
+    startParams.type === 'preview' &&
+    !startParams.userId &&
+    !env.NEXT_PUBLIC_E2E_TEST
+  )
     throw new TRPCError({
       code: 'UNAUTHORIZED',
       message: 'You need to be authenticated to perform this action',
