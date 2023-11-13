@@ -1,7 +1,7 @@
 import {
   SessionState,
   GoogleSheetsInsertRowOptions,
-  ReplyLog,
+  ChatLog,
 } from '@typebot.io/schemas'
 import { parseCellValues } from './helpers/parseCellValues'
 import { getAuthenticatedGoogleDoc } from './helpers/getAuthenticatedGoogleDoc'
@@ -17,7 +17,7 @@ export const insertRow = async (
   const { variables } = state.typebotsQueue[0].typebot
   if (!options.cellsToInsert || !options.sheetId) return { outgoingEdgeId }
 
-  const logs: ReplyLog[] = []
+  const logs: ChatLog[] = []
 
   const doc = await getAuthenticatedGoogleDoc({
     credentialsId: options.credentialsId,

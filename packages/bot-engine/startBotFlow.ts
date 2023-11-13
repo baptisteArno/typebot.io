@@ -1,5 +1,9 @@
 import { TRPCError } from '@trpc/server'
-import { ChatReply, SessionState, StartElementId } from '@typebot.io/schemas'
+import {
+  ContinueChatResponse,
+  SessionState,
+  StartFrom,
+} from '@typebot.io/schemas'
 import { executeGroup } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
 import { VisitedEdge } from '@typebot.io/prisma'
@@ -7,20 +11,24 @@ import { VisitedEdge } from '@typebot.io/prisma'
 type Props = {
   version: 1 | 2
   state: SessionState
-} & StartElementId
+  startFrom?: StartFrom
+}
 
 export const startBotFlow = async ({
   version,
   state,
-  ...props
+  startFrom,
 }: Props): Promise<
-  ChatReply & { newSessionState: SessionState; visitedEdges: VisitedEdge[] }
+  ContinueChatResponse & {
+    newSessionState: SessionState
+    visitedEdges: VisitedEdge[]
+  }
 > => {
   let newSessionState = state
   const visitedEdges: VisitedEdge[] = []
-  if ('startGroupId' in props) {
+  if (startFrom?.type === 'group') {
     const group = state.typebotsQueue[0].typebot.groups.find(
-      (group) => group.id === props.startGroupId
+      (group) => group.id === startFrom.groupId
     )
     if (!group)
       throw new TRPCError({
@@ -35,7 +43,7 @@ export const startBotFlow = async ({
   }
   const firstEdgeId = getFirstEdgeId({
     state: newSessionState,
-    startEventId: 'startEventId' in props ? props.startEventId : undefined,
+    startEventId: startFrom?.type === 'event' ? startFrom.eventId : undefined,
   })
   if (!firstEdgeId) return { messages: [], newSessionState, visitedEdges: [] }
   const nextGroup = await getNextGroup(newSessionState)(firstEdgeId)

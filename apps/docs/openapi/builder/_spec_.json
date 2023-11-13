@@ -624,7 +624,9 @@
                                                     "enum": [
                                                       "url",
                                                       "youtube",
-                                                      "vimeo"
+                                                      "vimeo",
+                                                      "tiktok",
+                                                      "gumlet"
                                                     ]
                                                   },
                                                   "height": {
@@ -634,6 +636,12 @@
                                                       },
                                                       {}
                                                     ]
+                                                  },
+                                                  "aspectRatio": {
+                                                    "type": "string"
+                                                  },
+                                                  "maxWidth": {
+                                                    "type": "string"
                                                   }
                                                 },
                                                 "additionalProperties": false
@@ -3929,7 +3937,9 @@
                                                     "enum": [
                                                       "url",
                                                       "youtube",
-                                                      "vimeo"
+                                                      "vimeo",
+                                                      "tiktok",
+                                                      "gumlet"
                                                     ]
                                                   },
                                                   "height": {
@@ -3939,6 +3949,12 @@
                                                       },
                                                       {}
                                                     ]
+                                                  },
+                                                  "aspectRatio": {
+                                                    "type": "string"
+                                                  },
+                                                  "maxWidth": {
+                                                    "type": "string"
                                                   }
                                                 },
                                                 "additionalProperties": false
@@ -8007,7 +8023,9 @@
                                             "enum": [
                                               "url",
                                               "youtube",
-                                              "vimeo"
+                                              "vimeo",
+                                              "tiktok",
+                                              "gumlet"
                                             ]
                                           },
                                           "height": {
@@ -8017,6 +8035,12 @@
                                               },
                                               {}
                                             ]
+                                          },
+                                          "aspectRatio": {
+                                            "type": "string"
+                                          },
+                                          "maxWidth": {
+                                            "type": "string"
                                           }
                                         },
                                         "additionalProperties": false
@@ -11708,7 +11732,9 @@
                                               "enum": [
                                                 "url",
                                                 "youtube",
-                                                "vimeo"
+                                                "vimeo",
+                                                "tiktok",
+                                                "gumlet"
                                               ]
                                             },
                                             "height": {
@@ -11718,6 +11744,12 @@
                                                 },
                                                 {}
                                               ]
+                                            },
+                                            "aspectRatio": {
+                                              "type": "string"
+                                            },
+                                            "maxWidth": {
+                                              "type": "string"
                                             }
                                           },
                                           "additionalProperties": false
@@ -15497,7 +15529,9 @@
                                                 "enum": [
                                                   "url",
                                                   "youtube",
-                                                  "vimeo"
+                                                  "vimeo",
+                                                  "tiktok",
+                                                  "gumlet"
                                                 ]
                                               },
                                               "height": {
@@ -15507,6 +15541,12 @@
                                                   },
                                                   {}
                                                 ]
+                                              },
+                                              "aspectRatio": {
+                                                "type": "string"
+                                              },
+                                              "maxWidth": {
+                                                "type": "string"
                                               }
                                             },
                                             "additionalProperties": false
@@ -19195,7 +19235,9 @@
                                                 "enum": [
                                                   "url",
                                                   "youtube",
-                                                  "vimeo"
+                                                  "vimeo",
+                                                  "tiktok",
+                                                  "gumlet"
                                                 ]
                                               },
                                               "height": {
@@ -19205,6 +19247,12 @@
                                                   },
                                                   {}
                                                 ]
+                                              },
+                                              "aspectRatio": {
+                                                "type": "string"
+                                              },
+                                              "maxWidth": {
+                                                "type": "string"
                                               }
                                             },
                                             "additionalProperties": false
@@ -22918,7 +22966,9 @@
                                               "enum": [
                                                 "url",
                                                 "youtube",
-                                                "vimeo"
+                                                "vimeo",
+                                                "tiktok",
+                                                "gumlet"
                                               ]
                                             },
                                             "height": {
@@ -22928,6 +22978,12 @@
                                                 },
                                                 {}
                                               ]
+                                            },
+                                            "aspectRatio": {
+                                              "type": "string"
+                                            },
+                                            "maxWidth": {
+                                              "type": "string"
                                             }
                                           },
                                           "additionalProperties": false
@@ -26647,7 +26703,9 @@
                                                   "enum": [
                                                     "url",
                                                     "youtube",
-                                                    "vimeo"
+                                                    "vimeo",
+                                                    "tiktok",
+                                                    "gumlet"
                                                   ]
                                                 },
                                                 "height": {
@@ -26657,6 +26715,12 @@
                                                     },
                                                     {}
                                                   ]
+                                                },
+                                                "aspectRatio": {
+                                                  "type": "string"
+                                                },
+                                                "maxWidth": {
+                                                  "type": "string"
                                                 }
                                               },
                                               "additionalProperties": false
@@ -30203,7 +30267,6 @@
                             "version",
                             "id",
                             "name",
-                            "events",
                             "groups",
                             "edges",
                             "variables",
@@ -30425,7 +30488,9 @@
                                                   "enum": [
                                                     "url",
                                                     "youtube",
-                                                    "vimeo"
+                                                    "vimeo",
+                                                    "tiktok",
+                                                    "gumlet"
                                                   ]
                                                 },
                                                 "height": {
@@ -30435,6 +30500,12 @@
                                                     },
                                                     {}
                                                   ]
+                                                },
+                                                "aspectRatio": {
+                                                  "type": "string"
+                                                },
+                                                "maxWidth": {
+                                                  "type": "string"
                                                 }
                                               },
                                               "additionalProperties": false
@@ -34213,7 +34284,9 @@
                                                   "enum": [
                                                     "url",
                                                     "youtube",
-                                                    "vimeo"
+                                                    "vimeo",
+                                                    "tiktok",
+                                                    "gumlet"
                                                   ]
                                                 },
                                                 "height": {
@@ -34223,6 +34296,12 @@
                                                     },
                                                     {}
                                                   ]
+                                                },
+                                                "aspectRatio": {
+                                                  "type": "string"
+                                                },
+                                                "maxWidth": {
+                                                  "type": "string"
                                                 }
                                               },
                                               "additionalProperties": false
@@ -37878,7 +37957,9 @@
                                                   "enum": [
                                                     "url",
                                                     "youtube",
-                                                    "vimeo"
+                                                    "vimeo",
+                                                    "tiktok",
+                                                    "gumlet"
                                                   ]
                                                 },
                                                 "height": {
@@ -37888,6 +37969,12 @@
                                                     },
                                                     {}
                                                   ]
+                                                },
+                                                "aspectRatio": {
+                                                  "type": "string"
+                                                },
+                                                "maxWidth": {
+                                                  "type": "string"
                                                 }
                                               },
                                               "additionalProperties": false
@@ -41678,7 +41765,9 @@
                                                 "enum": [
                                                   "url",
                                                   "youtube",
-                                                  "vimeo"
+                                                  "vimeo",
+                                                  "tiktok",
+                                                  "gumlet"
                                                 ]
                                               },
                                               "height": {
@@ -41688,6 +41777,12 @@
                                                   },
                                                   {}
                                                 ]
+                                              },
+                                              "aspectRatio": {
+                                                "type": "string"
+                                              },
+                                              "maxWidth": {
+                                                "type": "string"
                                               }
                                             },
                                             "additionalProperties": false
@@ -45166,10 +45261,6 @@
                             "type": "string",
                             "nullable": true
                           },
-                          "publicId": {
-                            "type": "string",
-                            "nullable": true
-                          },
                           "resultsTablePreferences": {
                             "type": "object",
                             "properties": {
@@ -45208,15 +45299,13 @@
                         "required": [
                           "version",
                           "name",
-                          "events",
                           "groups",
                           "edges",
                           "variables",
                           "theme",
                           "settings",
                           "icon",
-                          "folderId",
-                          "publicId"
+                          "folderId"
                         ],
                         "additionalProperties": false
                       },
@@ -45418,7 +45507,9 @@
                                                 "enum": [
                                                   "url",
                                                   "youtube",
-                                                  "vimeo"
+                                                  "vimeo",
+                                                  "tiktok",
+                                                  "gumlet"
                                                 ]
                                               },
                                               "height": {
@@ -45428,6 +45519,12 @@
                                                   },
                                                   {}
                                                 ]
+                                              },
+                                              "aspectRatio": {
+                                                "type": "string"
+                                              },
+                                              "maxWidth": {
+                                                "type": "string"
                                               }
                                             },
                                             "additionalProperties": false
@@ -48816,10 +48913,6 @@
                             "type": "string",
                             "nullable": true
                           },
-                          "publicId": {
-                            "type": "string",
-                            "nullable": true
-                          },
                           "resultsTablePreferences": {
                             "type": "object",
                             "properties": {
@@ -48865,8 +48958,7 @@
                           "theme",
                           "settings",
                           "icon",
-                          "folderId",
-                          "publicId"
+                          "folderId"
                         ],
                         "additionalProperties": false
                       }
@@ -49092,7 +49184,9 @@
                                               "enum": [
                                                 "url",
                                                 "youtube",
-                                                "vimeo"
+                                                "vimeo",
+                                                "tiktok",
+                                                "gumlet"
                                               ]
                                             },
                                             "height": {
@@ -49102,6 +49196,12 @@
                                                 },
                                                 {}
                                               ]
+                                            },
+                                            "aspectRatio": {
+                                              "type": "string"
+                                            },
+                                            "maxWidth": {
+                                              "type": "string"
                                             }
                                           },
                                           "additionalProperties": false
@@ -55954,8 +56054,47 @@
                     "type": "string",
                     "minLength": 1
                   },
-                  "startGroupId": {
-                    "type": "string"
+                  "startFrom": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "group"
+                            ]
+                          },
+                          "groupId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "groupId"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "event"
+                            ]
+                          },
+                          "eventId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "eventId"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
                   }
                 },
                 "required": [

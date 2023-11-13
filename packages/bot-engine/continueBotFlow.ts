@@ -1,7 +1,7 @@
 import {
   AnswerInSessionState,
   Block,
-  ChatReply,
+  ContinueChatResponse,
   Group,
   InputBlock,
   SessionState,
@@ -46,7 +46,10 @@ export const continueBotFlow = async (
   reply: string | undefined,
   { state, version }: Params
 ): Promise<
-  ChatReply & { newSessionState: SessionState; visitedEdges: VisitedEdge[] }
+  ContinueChatResponse & {
+    newSessionState: SessionState
+    visitedEdges: VisitedEdge[]
+  }
 > => {
   let firstBubbleWasStreamed = false
   let newSessionState = { ...state }
@@ -202,7 +205,9 @@ const saveVariableValueIfAny =
 
 const parseRetryMessage =
   (state: SessionState) =>
-  async (block: InputBlock): Promise<Pick<ChatReply, 'messages' | 'input'>> => {
+  async (
+    block: InputBlock
+  ): Promise<Pick<ContinueChatResponse, 'messages' | 'input'>> => {
     const retryMessage =
       block.options &&
       'retryMessageContent' in block.options &&

@@ -13,11 +13,7 @@ type Props = {
 export const VideoBubbleContent = ({ block }: Props) => {
   const { t } = useTranslate()
   if (!block.content?.url || !block.content.type)
-    return (
-      <Text color="gray.500">
-        {t('editor.blocks.bubbles.video.node.clickToEdit.text')}
-      </Text>
-    )
+    return <Text color="gray.500">{t('clickToEdit')}</Text>
   const containsVariables =
     block.content?.url?.includes('{{') && block.content.url.includes('}}')
   switch (block.content.type) {

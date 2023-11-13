@@ -1,5 +1,5 @@
 import type {
-  ChatReply,
+  ContinueChatResponse,
   ChoiceInputBlock,
   EmailInputBlock,
   FileInputBlock,
@@ -39,7 +39,7 @@ import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constan
 
 type Props = {
   ref: HTMLDivElement | undefined
-  block: NonNullable<ChatReply['input']>
+  block: NonNullable<ContinueChatResponse['input']>
   hasHostAvatar: boolean
   guestAvatar?: NonNullable<Theme['chat']>['guestAvatar']
   inputIndex: number
@@ -113,7 +113,7 @@ export const InputChatBlock = (props: Props) => {
 
 const Input = (props: {
   context: BotContext
-  block: NonNullable<ChatReply['input']>
+  block: NonNullable<ContinueChatResponse['input']>
   inputIndex: number
   isInputPrefillEnabled: boolean
   onSubmit: (answer: InputSubmitContent) => void
@@ -252,11 +252,11 @@ const Input = (props: {
 }
 
 const isButtonsBlock = (
-  block: ChatReply['input']
+  block: ContinueChatResponse['input']
 ): ChoiceInputBlock | undefined =>
   block?.type === InputBlockType.CHOICE ? block : undefined
 
 const isPictureChoiceBlock = (
-  block: ChatReply['input']
+  block: ContinueChatResponse['input']
 ): PictureChoiceBlock | undefined =>
   block?.type === InputBlockType.PICTURE_CHOICE ? block : undefined

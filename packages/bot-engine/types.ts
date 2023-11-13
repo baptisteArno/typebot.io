@@ -1,16 +1,16 @@
-import { ChatReply, SessionState } from '@typebot.io/schemas'
+import { ContinueChatResponse, SessionState } from '@typebot.io/schemas'
 
 export type EdgeId = string
 
 export type ExecuteLogicResponse = {
   outgoingEdgeId: EdgeId | undefined
   newSessionState?: SessionState
-} & Pick<ChatReply, 'clientSideActions' | 'logs'>
+} & Pick<ContinueChatResponse, 'clientSideActions' | 'logs'>
 
 export type ExecuteIntegrationResponse = {
   outgoingEdgeId: EdgeId | undefined
   newSessionState?: SessionState
-} & Pick<ChatReply, 'clientSideActions' | 'logs'>
+} & Pick<ContinueChatResponse, 'clientSideActions' | 'logs'>
 
 export type ParsedReply =
   | { status: 'success'; reply: string }

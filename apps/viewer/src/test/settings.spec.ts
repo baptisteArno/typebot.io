@@ -30,7 +30,7 @@ test('Result should be overwritten on page refresh', async ({ page }) => {
 
   const [, response] = await Promise.all([
     page.goto(`/${typebotId}-public`),
-    page.waitForResponse(/sendMessage/),
+    page.waitForResponse(/startChat/),
   ])
   const { resultId } = await response.json()
   expect(resultId).toBeDefined()
@@ -38,7 +38,7 @@ test('Result should be overwritten on page refresh', async ({ page }) => {
 
   const [, secondResponse] = await Promise.all([
     page.reload(),
-    page.waitForResponse(/sendMessage/),
+    page.waitForResponse(/startChat/),
   ])
   const { resultId: secondResultId } = await secondResponse.json()
   expect(secondResultId).toBe(resultId)
@@ -57,7 +57,7 @@ test.describe('Create result on page refresh enabled', () => {
     ])
     const [, response] = await Promise.all([
       page.goto(`/${typebotId}-public`),
-      page.waitForResponse(/sendMessage/),
+      page.waitForResponse(/startChat/),
     ])
     const { resultId } = await response.json()
     expect(resultId).toBeDefined()
@@ -65,7 +65,7 @@ test.describe('Create result on page refresh enabled', () => {
     await expect(page.getByRole('textbox')).toBeVisible()
     const [, secondResponse] = await Promise.all([
       page.reload(),
-      page.waitForResponse(/sendMessage/),
+      page.waitForResponse(/startChat/),
     ])
     const { resultId: secondResultId } = await secondResponse.json()
     expect(secondResultId).not.toBe(resultId)

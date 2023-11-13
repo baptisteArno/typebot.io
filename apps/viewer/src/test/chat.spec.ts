@@ -2,7 +2,6 @@ import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
 import prisma from '@typebot.io/lib/prisma'
-import { SendMessageInput } from '@typebot.io/schemas'
 import {
   createWebhook,
   deleteTypebots,
@@ -10,6 +9,7 @@ import {
   importTypebotInDatabase,
 } from '@typebot.io/lib/playwright/databaseActions'
 import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
+import { StartChatInput, StartPreviewChatInput } from '@typebot.io/schemas'
 
 test.afterEach(async () => {
   await deleteWebhooks(['chat-webhook-id'])
@@ -40,17 +40,18 @@ test('API chat execution should work on preview bot', async ({ request }) => {
     url: 'https://api.chucknorris.io/jokes/random',
   })
 
-  await test.step('Start the chat', async () => {
+  let chatSessionId: string
+
+  await test.step('Can start and continue chat', async () => {
     const { sessionId, messages, input, resultId } = await (
-      await request.post(`/api/v2/sendMessage`, {
+      await request.post(`/api/v1/typebots/${typebotId}/preview/startChat`, {
         data: {
-          startParams: {
-            typebot: typebotId,
-            isPreview: true,
-          },
-        } satisfies SendMessageInput,
+          isOnlyRegistering: false,
+          isStreamEnabled: false,
+        } satisfies Omit<StartPreviewChatInput, 'typebotId'>,
       })
     ).json()
+    chatSessionId = sessionId
     expect(resultId).toBeUndefined()
     expect(sessionId).toBeDefined()
     expect(messages[0].content.richText).toStrictEqual([
@@ -60,6 +61,38 @@ test('API chat execution should work on preview bot', async ({ request }) => {
       { children: [{ text: "Welcome. What's your name?" }], type: 'p' },
     ])
     expect(input.type).toBe('text input')
+  })
+
+  await test.step('Can answer Name question', async () => {
+    const { messages, input } = await (
+      await request.post(`/api/v1/sessions/${chatSessionId}/continueChat`, {
+        data: {
+          message: 'John',
+        },
+      })
+    ).json()
+    expect(messages[0].content.richText).toStrictEqual([
+      {
+        children: [
+          { text: 'Nice to meet you ' },
+          {
+            type: 'inline-variable',
+            children: [
+              {
+                type: 'p',
+                children: [
+                  {
+                    text: 'John',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+        type: 'p',
+      },
+    ])
+    expect(input.type).toBe('number input')
   })
 })
 
@@ -83,12 +116,11 @@ test('API chat execution should work on published bot', async ({ request }) => {
 
   await test.step('Start the chat', async () => {
     const { sessionId, messages, input, resultId } = await (
-      await request.post(`/api/v2/sendMessage`, {
+      await request.post(`/api/v1/typebots/${publicId}/startChat`, {
         data: {
-          startParams: {
-            typebot: publicId,
-          },
-        } satisfies SendMessageInput,
+          isOnlyRegistering: false,
+          isStreamEnabled: false,
+        } satisfies Omit<StartChatInput, 'publicId'>,
       })
     ).json()
     chatSessionId = sessionId
@@ -111,8 +143,8 @@ test('API chat execution should work on published bot', async ({ request }) => {
 
   await test.step('Answer Name question', async () => {
     const { messages, input } = await (
-      await request.post(`/api/v2/sendMessage`, {
-        data: { message: 'John', sessionId: chatSessionId },
+      await request.post(`/api/v1/sessions/${chatSessionId}/continueChat`, {
+        data: { message: 'John' },
       })
     ).json()
     expect(messages[0].content.richText).toStrictEqual([
@@ -142,8 +174,8 @@ test('API chat execution should work on published bot', async ({ request }) => {
 
   await test.step('Answer Age question', async () => {
     const { messages, input } = await (
-      await request.post(`/api/v2/sendMessage`, {
-        data: { message: '24', sessionId: chatSessionId },
+      await request.post(`/api/v1/sessions/${chatSessionId}/continueChat`, {
+        data: { message: '24' },
       })
     ).json()
     expect(messages[0].content.richText).toStrictEqual([
@@ -181,8 +213,8 @@ test('API chat execution should work on published bot', async ({ request }) => {
 
   await test.step('Answer Rating question', async () => {
     const { messages, input } = await (
-      await request.post(`/api/v2/sendMessage`, {
-        data: { message: '8', sessionId: chatSessionId },
+      await request.post(`/api/v1/sessions/${chatSessionId}/continueChat`, {
+        data: { message: '8' },
       })
     ).json()
     expect(messages[0].content.richText).toStrictEqual([
@@ -196,8 +228,8 @@ test('API chat execution should work on published bot', async ({ request }) => {
 
   await test.step('Answer Email question with wrong input', async () => {
     const { messages, input } = await (
-      await request.post(`/api/v2/sendMessage`, {
-        data: { message: 'invalid email', sessionId: chatSessionId },
+      await request.post(`/api/v1/sessions/${chatSessionId}/continueChat`, {
+        data: { message: 'invalid email' },
       })
     ).json()
     expect(messages[0].content.richText).toStrictEqual([
@@ -215,8 +247,8 @@ test('API chat execution should work on published bot', async ({ request }) => {
 
   await test.step('Answer Email question with valid input', async () => {
     const { messages, input } = await (
-      await request.post(`/api/v2/sendMessage`, {
-        data: { message: 'typebot@email.com', sessionId: chatSessionId },
+      await request.post(`/api/v1/sessions/${chatSessionId}/continueChat`, {
+        data: { message: 'typebot@email.com' },
       })
     ).json()
     expect(messages.length).toBe(0)
@@ -225,8 +257,8 @@ test('API chat execution should work on published bot', async ({ request }) => {
 
   await test.step('Answer URL question', async () => {
     const { messages, input } = await (
-      await request.post(`/api/v2/sendMessage`, {
-        data: { message: 'https://typebot.io', sessionId: chatSessionId },
+      await request.post(`/api/v1/sessions/${chatSessionId}/continueChat`, {
+        data: { message: 'https://typebot.io' },
       })
     ).json()
     expect(messages.length).toBe(0)
@@ -235,8 +267,8 @@ test('API chat execution should work on published bot', async ({ request }) => {
 
   await test.step('Answer Buttons question with invalid choice', async () => {
     const { messages } = await (
-      await request.post(`/api/v2/sendMessage`, {
-        data: { message: 'Yes', sessionId: chatSessionId },
+      await request.post(`/api/v1/sessions/${chatSessionId}/continueChat`, {
+        data: { message: 'Yes' },
       })
     ).json()
     expect(messages[0].content.richText).toStrictEqual([
@@ -263,14 +295,14 @@ test('API chat execution should work on published bot', async ({ request }) => {
   })
   await test.step('Starting with a message when typebot starts with input should proceed', async () => {
     const { messages } = await (
-      await request.post(`/api/v2/sendMessage`, {
-        data: {
-          message: 'Hey',
-          startParams: {
-            typebot: 'starting-with-input-public',
-          },
-        } satisfies SendMessageInput,
-      })
+      await request.post(
+        `/api/v1/typebots/starting-with-input-public/startChat`,
+        {
+          data: {
+            message: 'Hey',
+          } satisfies Omit<StartChatInput, 'publicId'>,
+        }
+      )
     ).json()
     expect(messages[0].content.richText).toStrictEqual([
       {

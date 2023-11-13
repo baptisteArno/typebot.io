@@ -32,7 +32,7 @@ test('should be configurable', async ({ page }) => {
   await expect(page.getByTestId('selected-item-label').first()).toHaveText(
     'My link typebot 2'
   )
-  await page.click('input[placeholder="Select a block"]')
+  await page.click('input[placeholder="Select a group"]')
   await page.click('text=Group #2')
 
   await page.click('text=Preview')

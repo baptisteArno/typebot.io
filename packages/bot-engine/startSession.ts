@@ -12,13 +12,13 @@ import {
   Block,
 } from '@typebot.io/schemas'
 import {
-  ChatReply,
-  StartParams,
+  StartChatInput,
+  StartChatResponse,
+  StartPreviewChatInput,
   StartTypebot,
   startTypebotSchema,
 } from '@typebot.io/schemas/features/chat/schema'
 import parse, { NodeType } from 'node-html-parser'
-import { env } from '@typebot.io/env'
 import { parseDynamicTheme } from './parseDynamicTheme'
 import { findTypebot } from './queries/findTypebot'
 import { findPublicTypebot } from './queries/findPublicTypebot'
@@ -36,11 +36,19 @@ import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integr
 import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
 import { VisitedEdge } from '@typebot.io/prisma'
 
+type StartParams =
+  | ({
+      type: 'preview'
+      userId: string
+    } & StartPreviewChatInput)
+  | ({
+      type: 'live'
+    } & StartChatInput)
+
 type Props = {
   version: 1 | 2
   message: string | undefined
   startParams: StartParams
-  userId: string | undefined
   initialSessionState?: Pick<SessionState, 'whatsApp' | 'expiryTimeout'>
 }
 
@@ -48,26 +56,24 @@ export const startSession = async ({
   version,
   message,
   startParams,
-  userId,
   initialSessionState,
 }: Props): Promise<
-  ChatReply & { newSessionState: SessionState; visitedEdges: VisitedEdge[] }
+  Omit<StartChatResponse, 'resultId'> & {
+    newSessionState: SessionState
+    visitedEdges: VisitedEdge[]
+    resultId?: string
+  }
 > => {
-  if (!startParams)
-    throw new TRPCError({
-      code: 'BAD_REQUEST',
-      message: 'StartParams are missing',
-    })
+  const typebot = await getTypebot(startParams)
 
-  const typebot = await getTypebot(startParams, userId)
-
-  const prefilledVariables = startParams.prefilledVariables
-    ? prefillVariables(typebot.variables, startParams.prefilledVariables)
-    : typebot.variables
+  const prefilledVariables =
+    startParams.type === 'live' && startParams.prefilledVariables
+      ? prefillVariables(typebot.variables, startParams.prefilledVariables)
+      : typebot.variables
 
   const result = await getResult({
-    ...startParams,
-    isPreview: startParams.isPreview || typeof startParams.typebot !== 'string',
+    resultId: startParams.type === 'live' ? startParams.resultId : undefined,
+    isPreview: startParams.type === 'preview',
     typebotId: typebot.id,
     prefilledVariables,
     isRememberUserEnabled:
@@ -148,11 +154,8 @@ export const startSession = async ({
   let chatReply = await startBotFlow({
     version,
     state: initialState,
-    ...('startGroupId' in startParams
-      ? { startGroupId: startParams.startGroupId }
-      : 'startEventId' in startParams
-      ? { startEventId: startParams.startEventId }
-      : {}),
+    startFrom:
+      startParams.type === 'preview' ? startParams.startFrom : undefined,
   })
 
   // If params has message and first block is an input block, we can directly continue the bot flow
@@ -266,20 +269,16 @@ export const startSession = async ({
   }
 }
 
-const getTypebot = async (
-  { typebot, isPreview }: Pick<StartParams, 'typebot' | 'isPreview'>,
-  userId?: string
-): Promise<StartTypebot> => {
-  if (typeof typebot !== 'string') return typebot
-  if (isPreview && !userId && !env.NEXT_PUBLIC_E2E_TEST)
-    throw new TRPCError({
-      code: 'UNAUTHORIZED',
-      message:
-        'You need to authenticate the request to start a bot in preview mode.',
-    })
-  const typebotQuery = isPreview
-    ? await findTypebot({ id: typebot, userId })
-    : await findPublicTypebot({ publicId: typebot })
+const getTypebot = async (startParams: StartParams): Promise<StartTypebot> => {
+  if (startParams.type === 'preview' && startParams.typebot)
+    return startParams.typebot
+  const typebotQuery =
+    startParams.type === 'preview'
+      ? await findTypebot({
+          id: startParams.typebotId,
+          userId: startParams.userId,
+        })
+      : await findPublicTypebot({ publicId: startParams.publicId })
 
   const parsedTypebot =
     typebotQuery && 'typebot' in typebotQuery
@@ -319,7 +318,9 @@ const getResult = async ({
   resultId,
   prefilledVariables,
   isRememberUserEnabled,
-}: Pick<StartParams, 'isPreview' | 'resultId'> & {
+}: {
+  resultId: string | undefined
+  isPreview: boolean
   typebotId: string
   prefilledVariables: Variable[]
   isRememberUserEnabled: boolean
@@ -375,7 +376,7 @@ const parseDynamicThemeInState = (theme: Theme) => {
 
 const parseStartClientSideAction = (
   typebot: StartTypebot
-): NonNullable<ChatReply['clientSideActions']>[number] | undefined => {
+): NonNullable<StartChatResponse['clientSideActions']>[number] | undefined => {
   const blocks = typebot.groups.flatMap<Block>((group) => group.blocks)
   const pixelBlocks = (
     blocks.filter(

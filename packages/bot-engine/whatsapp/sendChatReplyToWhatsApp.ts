@@ -1,4 +1,8 @@
-import { ChatReply, SessionState, Settings } from '@typebot.io/schemas'
+import {
+  ContinueChatResponse,
+  SessionState,
+  Settings,
+} from '@typebot.io/schemas'
 import {
   WhatsAppCredentials,
   WhatsAppSendingMessage,
@@ -21,7 +25,7 @@ type Props = {
   typingEmulation: SessionState['typingEmulation']
   credentials: WhatsAppCredentials['data']
   state: SessionState
-} & Pick<ChatReply, 'messages' | 'input' | 'clientSideActions'>
+} & Pick<ContinueChatResponse, 'messages' | 'input' | 'clientSideActions'>
 
 export const sendChatReplyToWhatsApp = async ({
   to,
@@ -171,7 +175,9 @@ const getTypingDuration = ({
   }
 }
 
-const isLastMessageIncludedInInput = (input: ChatReply['input']): boolean => {
+const isLastMessageIncludedInInput = (
+  input: ContinueChatResponse['input']
+): boolean => {
   if (isNotDefined(input)) return false
   return input.type === InputBlockType.CHOICE
 }
@@ -179,7 +185,9 @@ const isLastMessageIncludedInInput = (input: ChatReply['input']): boolean => {
 const executeClientSideAction =
   (context: { to: string; credentials: WhatsAppCredentials['data'] }) =>
   async (
-    clientSideAction: NonNullable<ChatReply['clientSideActions']>[number]
+    clientSideAction: NonNullable<
+      ContinueChatResponse['clientSideActions']
+    >[number]
   ): Promise<{ replyToSend: string | undefined } | void> => {
     if ('wait' in clientSideAction) {
       await new Promise((resolve) =>

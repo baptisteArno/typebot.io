@@ -8,7 +8,7 @@ import {
   Variable,
   WebhookResponse,
   KeyValue,
-  ReplyLog,
+  ChatLog,
   ExecutableWebhook,
   AnswerInSessionState,
 } from '@typebot.io/schemas'
@@ -34,7 +34,7 @@ export const executeWebhookBlock = async (
   state: SessionState,
   block: WebhookBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock
 ): Promise<ExecuteIntegrationResponse> => {
-  const logs: ReplyLog[] = []
+  const logs: ChatLog[] = []
   const webhook =
     block.options?.webhook ??
     ('webhookId' in block
@@ -142,8 +142,8 @@ const parseWebhookAttributes =
 
 export const executeWebhook = async (
   webhook: ParsedWebhook
-): Promise<{ response: WebhookResponse; logs?: ReplyLog[] }> => {
-  const logs: ReplyLog[] = []
+): Promise<{ response: WebhookResponse; logs?: ChatLog[] }> => {
+  const logs: ChatLog[] = []
   const { headers, url, method, basicAuth, body, isJson } = webhook
   const contentType = headers ? headers['Content-Type'] : undefined
 

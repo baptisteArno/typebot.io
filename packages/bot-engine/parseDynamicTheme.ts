@@ -1,9 +1,9 @@
-import { SessionState, ChatReply } from '@typebot.io/schemas'
+import { SessionState, ContinueChatResponse } from '@typebot.io/schemas'
 import { parseVariables } from './variables/parseVariables'
 
 export const parseDynamicTheme = (
   state: SessionState | undefined
-): ChatReply['dynamicTheme'] => {
+): ContinueChatResponse['dynamicTheme'] => {
   if (!state?.dynamicTheme) return
   return {
     hostAvatarUrl: parseVariables(state?.typebotsQueue[0].typebot.variables)(

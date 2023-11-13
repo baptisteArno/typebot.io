@@ -1,4 +1,4 @@
-import { ButtonItem, ChatReply } from '@typebot.io/schemas'
+import { ButtonItem, ContinueChatResponse } from '@typebot.io/schemas'
 import { WhatsAppSendingMessage } from '@typebot.io/schemas/features/whatsapp'
 import { convertRichTextToWhatsAppText } from './convertRichTextToWhatsAppText'
 import { isDefined, isEmpty } from '@typebot.io/lib/utils'
@@ -8,8 +8,8 @@ import { defaultPictureChoiceOptions } from '@typebot.io/schemas/features/blocks
 import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
 
 export const convertInputToWhatsAppMessages = (
-  input: NonNullable<ChatReply['input']>,
-  lastMessage: ChatReply['messages'][number] | undefined
+  input: NonNullable<ContinueChatResponse['input']>,
+  lastMessage: ContinueChatResponse['messages'][number] | undefined
 ): WhatsAppSendingMessage[] => {
   const lastMessageText =
     lastMessage?.type === BubbleBlockType.TEXT

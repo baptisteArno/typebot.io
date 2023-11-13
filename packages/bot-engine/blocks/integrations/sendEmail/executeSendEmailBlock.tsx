@@ -1,7 +1,7 @@
 import { DefaultBotNotificationEmail, render } from '@typebot.io/emails'
 import {
   AnswerInSessionState,
-  ReplyLog,
+  ChatLog,
   SendEmailBlock,
   SessionState,
   SmtpCredentials,
@@ -25,7 +25,7 @@ export const executeSendEmailBlock = async (
   state: SessionState,
   block: SendEmailBlock
 ): Promise<ExecuteIntegrationResponse> => {
-  const logs: ReplyLog[] = []
+  const logs: ChatLog[] = []
   const { options } = block
   const { typebot, resultId, answers } = state.typebotsQueue[0]
   const isPreview = !resultId
@@ -114,8 +114,8 @@ const sendEmail = async ({
   typebot: TypebotInSession
   answers: AnswerInSessionState[]
   fileUrls?: string | string[]
-}): Promise<ReplyLog[] | undefined> => {
-  const logs: ReplyLog[] = []
+}): Promise<ChatLog[] | undefined> => {
+  const logs: ChatLog[] = []
   const { name: replyToName } = parseEmailRecipient(replyTo)
 
   const { host, port, isTlsEnabled, username, password, from } =

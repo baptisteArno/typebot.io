@@ -12,8 +12,6 @@ export const AudioBubbleNode = ({ url }: Props) => {
   return isDefined(url) ? (
     <audio src={url} controls />
   ) : (
-    <Text color={'gray.500'}>
-      {t('editor.blocks.bubbles.audio.node.clickToEdit.text')}
-    </Text>
+    <Text color={'gray.500'}>{t('clickToEdit')}</Text>
   )
 }

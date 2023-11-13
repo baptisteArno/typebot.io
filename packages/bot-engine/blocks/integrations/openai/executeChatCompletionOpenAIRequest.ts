@@ -1,5 +1,5 @@
 import { isNotEmpty } from '@typebot.io/lib/utils'
-import { ChatReply } from '@typebot.io/schemas'
+import { ContinueChatResponse } from '@typebot.io/schemas'
 import { OpenAIBlock } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { HTTPError } from 'got'
 import { ClientOptions, OpenAI } from 'openai'
@@ -10,7 +10,7 @@ type Props = Pick<
 > & {
   apiKey: string
   temperature: number | undefined
-  currentLogs?: ChatReply['logs']
+  currentLogs?: ContinueChatResponse['logs']
   isRetrying?: boolean
 } & Pick<NonNullable<OpenAIBlock['options']>, 'apiVersion' | 'baseUrl'>
 
@@ -25,9 +25,9 @@ export const executeChatCompletionOpenAIRequest = async ({
   currentLogs = [],
 }: Props): Promise<{
   chatCompletion?: OpenAI.Chat.Completions.ChatCompletion
-  logs?: ChatReply['logs']
+  logs?: ContinueChatResponse['logs']
 }> => {
-  const logs: ChatReply['logs'] = currentLogs
+  const logs: ContinueChatResponse['logs'] = currentLogs
   if (messages.length === 0) return { logs }
   try {
     const config = {

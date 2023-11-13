@@ -1,7 +1,7 @@
 import { LiteBadge } from './LiteBadge'
 import { createEffect, createSignal, onCleanup, onMount, Show } from 'solid-js'
 import { isNotDefined, isNotEmpty } from '@typebot.io/lib'
-import { getInitialChatReplyQuery } from '@/queries/getInitialChatReplyQuery'
+import { startChatQuery } from '@/queries/startChatQuery'
 import { ConversationContainer } from './ConversationContainer'
 import { setIsMobile } from '@/utils/isMobileSignal'
 import { BotContext, InitialChatReply, OutgoingLog } from '@/types'
@@ -12,7 +12,8 @@ import {
 } from '@/utils/storage'
 import { setCssVariablesValue } from '@/utils/setCssVariablesValue'
 import immutableCss from '../assets/immutable.css'
-import { InputBlock, StartElementId } from '@typebot.io/schemas'
+import { InputBlock } from '@typebot.io/schemas'
+import { StartFrom } from '@typebot.io/schemas'
 import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
 
 export type BotProps = {
@@ -27,7 +28,8 @@ export type BotProps = {
   onInit?: () => void
   onEnd?: () => void
   onNewLogs?: (logs: OutgoingLog[]) => void
-} & StartElementId
+  startFrom?: StartFrom
+}
 
 export const Bot = (props: BotProps & { class?: string }) => {
   const [initialChatReply, setInitialChatReply] = createSignal<
@@ -47,11 +49,13 @@ export const Bot = (props: BotProps & { class?: string }) => {
     })
     const typebotIdFromProps =
       typeof props.typebot === 'string' ? props.typebot : undefined
-    const { data, error } = await getInitialChatReplyQuery({
+    const isPreview =
+      typeof props.typebot !== 'string' || (props.isPreview ?? false)
+    const { data, error } = await startChatQuery({
       stripeRedirectStatus: urlParams.get('redirect_status') ?? undefined,
       typebot: props.typebot,
       apiHost: props.apiHost,
-      isPreview: props.isPreview ?? false,
+      isPreview,
       resultId: isNotEmpty(props.resultId)
         ? props.resultId
         : getExistingResultIdFromStorage(typebotIdFromProps),
@@ -59,14 +63,10 @@ export const Bot = (props: BotProps & { class?: string }) => {
         ...prefilledVariables,
         ...props.prefilledVariables,
       },
-      ...('startGroupId' in props
-        ? { startGroupId: props.startGroupId }
-        : 'startEventId' in props
-        ? { startEventId: props.startEventId }
-        : {}),
+      startFrom: props.startFrom,
     })
     if (error && 'code' in error && typeof error.code === 'string') {
-      if (typeof props.typebot !== 'string' || (props.isPreview ?? false)) {
+      if (isPreview) {
         return setError(
           new Error('An error occurred while loading the bot.', {
             cause: error.message,

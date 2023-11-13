@@ -24,7 +24,7 @@ import { BuoyIcon, ExternalLinkIcon } from '@/components/icons'
 
 export const WhatsAppPreviewInstructions = (props: StackProps) => {
   const { typebot, save } = useTypebot()
-  const { startPreviewAtGroup } = useEditor()
+  const { startPreviewAtGroup, startPreviewAtEvent } = useEditor()
   const [phoneNumber, setPhoneNumber] = useState(
     getPhoneNumberFromLocalStorage() ?? ''
   )
@@ -56,7 +56,11 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
     mutate({
       to: phoneNumber,
       typebotId: typebot.id,
-      startGroupId: startPreviewAtGroup,
+      startFrom: startPreviewAtGroup
+        ? { type: 'group', groupId: startPreviewAtGroup }
+        : startPreviewAtEvent
+        ? { type: 'event', eventId: startPreviewAtEvent }
+        : undefined,
     })
   }
 

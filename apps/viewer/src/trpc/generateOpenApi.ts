@@ -1,11 +1,11 @@
 import { generateOpenApiDocument } from 'trpc-openapi'
 import { writeFileSync } from 'fs'
-import { appRouter } from '@/helpers/server/routers/appRouterV2'
+import { appRouter } from '@/helpers/server/appRouter'
 
 const openApiDocument = generateOpenApiDocument(appRouter, {
   title: 'Chat API',
-  version: '2.0.0',
-  baseUrl: 'https://typebot.io/api/v2',
+  version: '3.0.0',
+  baseUrl: 'https://typebot.io/api',
   docsUrl: 'https://docs.typebot.io/api',
 })
 

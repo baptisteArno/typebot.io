@@ -1,6 +1,6 @@
 import { BotContext, ChatChunk as ChatChunkType } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
-import { ChatReply, Settings, Theme } from '@typebot.io/schemas'
+import { ContinueChatResponse, Settings, Theme } from '@typebot.io/schemas'
 import { createSignal, For, onMount, Show } from 'solid-js'
 import { HostBubble } from '../bubbles/HostBubble'
 import { InputChatBlock } from '../InputChatBlock'
@@ -9,7 +9,7 @@ import { StreamingBubble } from '../bubbles/StreamingBubble'
 import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
 import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
 
-type Props = Pick<ChatReply, 'messages' | 'input'> & {
+type Props = Pick<ContinueChatResponse, 'messages' | 'input'> & {
   theme: Theme
   settings: Settings
   inputIndex: number

@@ -2,7 +2,7 @@ import {
   SessionState,
   GoogleSheetsGetOptions,
   VariableWithValue,
-  ReplyLog,
+  ChatLog,
 } from '@typebot.io/schemas'
 import { isNotEmpty, byId, isDefined } from '@typebot.io/lib'
 import { getAuthenticatedGoogleDoc } from './helpers/getAuthenticatedGoogleDoc'
@@ -18,7 +18,7 @@ export const getRow = async (
     options,
   }: { outgoingEdgeId?: string; options: GoogleSheetsGetOptions }
 ): Promise<ExecuteIntegrationResponse> => {
-  const logs: ReplyLog[] = []
+  const logs: ChatLog[] = []
   const { variables } = state.typebotsQueue[0].typebot
   const { sheetId, cellsToExtract, filter, ...parsedOptions } =
     deepParseVariables(variables)(options)

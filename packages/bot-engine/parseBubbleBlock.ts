@@ -1,5 +1,10 @@
 import { parseVideoUrl } from '@typebot.io/lib/parseVideoUrl'
-import { BubbleBlock, Variable, ChatReply, Typebot } from '@typebot.io/schemas'
+import {
+  BubbleBlock,
+  Variable,
+  ContinueChatResponse,
+  Typebot,
+} from '@typebot.io/schemas'
 import { deepParseVariables } from './variables/deepParseVariables'
 import { isEmpty, isNotEmpty } from '@typebot.io/lib/utils'
 import {
@@ -27,7 +32,7 @@ export type BubbleBlockWithDefinedContent = BubbleBlock & {
 export const parseBubbleBlock = (
   block: BubbleBlockWithDefinedContent,
   { version, variables, typebotVersion }: Params
-): ChatReply['messages'][0] => {
+): ContinueChatResponse['messages'][0] => {
   switch (block.type) {
     case BubbleBlockType.TEXT: {
       if (version === 1)

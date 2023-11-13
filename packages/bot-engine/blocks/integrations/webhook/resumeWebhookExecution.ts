@@ -2,7 +2,7 @@ import { byId } from '@typebot.io/lib'
 import {
   MakeComBlock,
   PabblyConnectBlock,
-  ReplyLog,
+  ChatLog,
   VariableWithUnknowValue,
   WebhookBlock,
   ZapierBlock,
@@ -15,7 +15,7 @@ import { updateVariablesInSession } from '../../../variables/updateVariablesInSe
 type Props = {
   state: SessionState
   block: WebhookBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock
-  logs?: ReplyLog[]
+  logs?: ChatLog[]
   response: {
     statusCode: number
     data?: unknown

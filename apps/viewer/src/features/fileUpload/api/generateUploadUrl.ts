@@ -13,7 +13,7 @@ export const generateUploadUrl = publicProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/generate-upload-url',
+      path: '/v1/generate-upload-url',
       summary: 'Generate upload URL',
       description: 'Used to upload anything from the client to S3 bucket',
     },

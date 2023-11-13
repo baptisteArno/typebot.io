@@ -1,4 +1,4 @@
-import { appRouter } from '@/helpers/server/routers/appRouterV1'
+import { appRouter } from '@/helpers/server/appRouter'
 import * as Sentry from '@sentry/nextjs'
 import { createOpenApiNextHandler } from 'trpc-openapi'
 import cors from 'nextjs-cors'

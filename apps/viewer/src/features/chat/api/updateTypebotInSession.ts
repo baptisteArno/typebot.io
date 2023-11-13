@@ -1,4 +1,3 @@
-import { publicProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { getSession } from '@typebot.io/bot-engine/queries/getSession'
@@ -9,12 +8,13 @@ import {
   Variable,
 } from '@typebot.io/schemas'
 import prisma from '@typebot.io/lib/prisma'
+import { authenticatedProcedure } from '@/helpers/server/trpc'
 
-export const updateTypebotInSession = publicProcedure
+export const updateTypebotInSession = authenticatedProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/sessions/{sessionId}/updateTypebot',
+      path: '/v1/sessions/{sessionId}/updateTypebot',
       summary: 'Update typebot in session',
       description:
         'Update chat session with latest typebot modifications. This is useful when you want to update the typebot in an ongoing session after making changes to it.',
@@ -28,8 +28,6 @@ export const updateTypebotInSession = publicProcedure
   )
   .output(z.object({ message: z.literal('success') }))
   .mutation(async ({ input: { sessionId }, ctx: { user } }) => {
-    if (!user)
-      throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Unauthorized' })
     const session = await getSession(sessionId)
     if (!session)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' })

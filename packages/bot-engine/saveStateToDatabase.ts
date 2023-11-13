@@ -1,4 +1,4 @@
-import { ChatReply, ChatSession } from '@typebot.io/schemas'
+import { ContinueChatResponse, ChatSession } from '@typebot.io/schemas'
 import { upsertResult } from './queries/upsertResult'
 import { saveLogs } from './queries/saveLogs'
 import { updateSession } from './queries/updateSession'
@@ -11,9 +11,9 @@ import { VisitedEdge } from '@typebot.io/prisma'
 
 type Props = {
   session: Pick<ChatSession, 'state'> & { id?: string }
-  input: ChatReply['input']
-  logs: ChatReply['logs']
-  clientSideActions: ChatReply['clientSideActions']
+  input: ContinueChatResponse['input']
+  logs: ContinueChatResponse['logs']
+  clientSideActions: ContinueChatResponse['clientSideActions']
   visitedEdges: VisitedEdge[]
   forceCreateSession?: boolean
 }

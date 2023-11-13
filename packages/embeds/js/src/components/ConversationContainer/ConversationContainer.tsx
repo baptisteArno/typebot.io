@@ -1,8 +1,8 @@
 import {
-  ChatReply,
+  ContinueChatResponse,
   InputBlock,
-  SendMessageInput,
   Theme,
+  ChatLog,
 } from '@typebot.io/schemas'
 import {
   createEffect,
@@ -12,7 +12,7 @@ import {
   onMount,
   Show,
 } from 'solid-js'
-import { sendMessageQuery } from '@/queries/sendMessageQuery'
+import { continueChatQuery } from '@/queries/continueChatQuery'
 import { ChatChunk } from './ChatChunk'
 import {
   BotContext,
@@ -30,10 +30,11 @@ import {
   setFormattedMessages,
 } from '@/utils/formattedMessagesSignal'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { saveClientLogsQuery } from '@/queries/saveClientLogsQuery'
 
 const parseDynamicTheme = (
   initialTheme: Theme,
-  dynamicTheme: ChatReply['dynamicTheme']
+  dynamicTheme: ContinueChatResponse['dynamicTheme']
 ): Theme => ({
   ...initialTheme,
   chat: {
@@ -74,7 +75,7 @@ export const ConversationContainer = (props: Props) => {
     },
   ])
   const [dynamicTheme, setDynamicTheme] = createSignal<
-    ChatReply['dynamicTheme']
+    ContinueChatResponse['dynamicTheme']
   >(props.initialChatReply.dynamicTheme)
   const [theme, setTheme] = createSignal(props.initialChatReply.typebot.theme)
   const [isSending, setIsSending] = createSignal(false)
@@ -136,9 +137,16 @@ export const ConversationContainer = (props: Props) => {
 
   const sendMessage = async (
     message: string | undefined,
-    clientLogs?: SendMessageInput['clientLogs']
+    clientLogs?: ChatLog[]
   ) => {
-    if (clientLogs) props.onNewLogs?.(clientLogs)
+    if (clientLogs) {
+      props.onNewLogs?.(clientLogs)
+      await saveClientLogsQuery({
+        apiHost: props.context.apiHost,
+        sessionId: props.initialChatReply.sessionId,
+        clientLogs,
+      })
+    }
     setHasError(false)
     const currentInputBlock = [...chatChunks()].pop()?.input
     if (currentInputBlock?.id && props.onAnswer && message)
@@ -153,11 +161,10 @@ export const ConversationContainer = (props: Props) => {
     const longRequest = setTimeout(() => {
       setIsSending(true)
     }, 1000)
-    const { data, error } = await sendMessageQuery({
+    const { data, error } = await continueChatQuery({
       apiHost: props.context.apiHost,
       sessionId: props.initialChatReply.sessionId,
       message,
-      clientLogs,
     })
     clearTimeout(longRequest)
     setIsSending(false)

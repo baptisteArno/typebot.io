@@ -1,5 +1,5 @@
 import {
-  ChatReply,
+  ContinueChatResponse,
   Group,
   InputBlock,
   RuntimeOptions,
@@ -31,7 +31,7 @@ import { VisitedEdge } from '@typebot.io/prisma'
 type ContextProps = {
   version: 1 | 2
   state: SessionState
-  currentReply?: ChatReply
+  currentReply?: ContinueChatResponse
   currentLastBubbleId?: string
   firstBubbleWasStreamed?: boolean
   visitedEdges: VisitedEdge[]
@@ -48,12 +48,16 @@ export const executeGroup = async (
     firstBubbleWasStreamed,
   }: ContextProps
 ): Promise<
-  ChatReply & { newSessionState: SessionState; visitedEdges: VisitedEdge[] }
+  ContinueChatResponse & {
+    newSessionState: SessionState
+    visitedEdges: VisitedEdge[]
+  }
 > => {
-  const messages: ChatReply['messages'] = currentReply?.messages ?? []
-  let clientSideActions: ChatReply['clientSideActions'] =
+  const messages: ContinueChatResponse['messages'] =
+    currentReply?.messages ?? []
+  let clientSideActions: ContinueChatResponse['clientSideActions'] =
     currentReply?.clientSideActions
-  let logs: ChatReply['logs'] = currentReply?.logs
+  let logs: ContinueChatResponse['logs'] = currentReply?.logs
   let nextEdgeId = null
   let lastBubbleBlockId: string | undefined = currentLastBubbleId
 
@@ -173,7 +177,7 @@ const computeRuntimeOptions =
 
 export const parseInput =
   (state: SessionState) =>
-  async (block: InputBlock): Promise<ChatReply['input']> => {
+  async (block: InputBlock): Promise<ContinueChatResponse['input']> => {
     switch (block.type) {
       case InputBlockType.CHOICE: {
         return injectVariableValuesInButtonsInputBlock(state)(block)

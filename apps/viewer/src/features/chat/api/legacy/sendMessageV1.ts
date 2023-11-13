@@ -1,8 +1,8 @@
 import { publicProcedure } from '@/helpers/server/trpc'
 import {
-  chatReplySchema,
   sendMessageInputSchema,
-} from '@typebot.io/schemas/features/chat/schema'
+  chatReplySchema,
+} from '@typebot.io/schemas/features/chat/legacy/schema'
 import { TRPCError } from '@trpc/server'
 import { getSession } from '@typebot.io/bot-engine/queries/getSession'
 import { startSession } from '@typebot.io/bot-engine/startSession'
@@ -12,14 +12,16 @@ import { continueBotFlow } from '@typebot.io/bot-engine/continueBotFlow'
 import { parseDynamicTheme } from '@typebot.io/bot-engine/parseDynamicTheme'
 import { isDefined } from '@typebot.io/lib/utils'
 
-export const sendMessageV2 = publicProcedure
+export const sendMessageV1 = publicProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/sendMessage',
+      path: '/v1/sendMessage',
       summary: 'Send a message',
       description:
         'To initiate a chat, do not provide a `sessionId` nor a `message`.\n\nContinue the conversation by providing the `sessionId` and the `message` that should answer the previous question.\n\nSet the `isPreview` option to `true` to chat with the non-published version of the typebot.',
+      tags: ['Deprecated'],
+      deprecated: true,
     },
   })
   .input(sendMessageInputSchema)
@@ -59,9 +61,46 @@ export const sendMessageV2 = publicProcedure
           newSessionState,
           visitedEdges,
         } = await startSession({
-          version: 2,
-          startParams,
-          userId: user?.id,
+          version: 1,
+          startParams:
+            startParams.isPreview || typeof startParams.typebot !== 'string'
+              ? {
+                  type: 'preview',
+                  isOnlyRegistering: startParams.isOnlyRegistering ?? false,
+                  isStreamEnabled: startParams.isStreamEnabled,
+                  startFrom:
+                    'startGroupId' in startParams && startParams.startGroupId
+                      ? {
+                          type: 'group',
+                          groupId: startParams.startGroupId,
+                        }
+                      : 'startEventId' in startParams &&
+                        startParams.startEventId
+                      ? {
+                          type: 'event',
+                          eventId: startParams.startEventId,
+                        }
+                      : undefined,
+                  typebotId:
+                    typeof startParams.typebot === 'string'
+                      ? startParams.typebot
+                      : startParams.typebot.id,
+                  typebot:
+                    typeof startParams.typebot === 'string'
+                      ? undefined
+                      : startParams.typebot,
+                  message,
+                  userId: parseUserId(user?.id),
+                }
+              : {
+                  type: 'live',
+                  isOnlyRegistering: startParams.isOnlyRegistering ?? false,
+                  isStreamEnabled: startParams.isStreamEnabled,
+                  publicId: startParams.typebot,
+                  prefilledVariables: startParams.prefilledVariables,
+                  resultId: startParams.resultId,
+                  message,
+                },
           message,
         })
 
@@ -106,7 +145,7 @@ export const sendMessageV2 = publicProcedure
           logs,
           lastMessageNewFormat,
           visitedEdges,
-        } = await continueBotFlow(message, { version: 2, state: session.state })
+        } = await continueBotFlow(message, { version: 1, state: session.state })
 
         const allLogs = clientLogs ? [...(logs ?? []), ...clientLogs] : logs
 
@@ -133,3 +172,13 @@ export const sendMessageV2 = publicProcedure
       }
     }
   )
+
+const parseUserId = (userId?: string): string => {
+  if (!userId)
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'You need to be authenticated to perform this action',
+    })
+
+  return userId
+}
