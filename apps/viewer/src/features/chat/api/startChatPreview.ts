@@ -1,4 +1,3 @@
-import { authenticatedProcedure } from '@/helpers/server/trpc'
 import {
   startPreviewChatInputSchema,
   startPreviewChatResponseSchema,
@@ -6,8 +5,9 @@ import {
 import { startSession } from '@typebot.io/bot-engine/startSession'
 import { saveStateToDatabase } from '@typebot.io/bot-engine/saveStateToDatabase'
 import { restartSession } from '@typebot.io/bot-engine/queries/restartSession'
+import { publicProcedure } from '@/helpers/server/trpc'
 
-export const startChatPreview = authenticatedProcedure
+export const startChatPreview = publicProcedure
   .meta({
     openapi: {
       method: 'POST',
@@ -47,7 +47,7 @@ export const startChatPreview = authenticatedProcedure
           startFrom,
           typebotId,
           typebot: startTypebot,
-          userId: user.id,
+          userId: user?.id,
         },
         message,
       })

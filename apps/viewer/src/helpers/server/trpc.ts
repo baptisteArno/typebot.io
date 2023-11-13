@@ -1,4 +1,4 @@
-import { TRPCError, initTRPC } from '@trpc/server'
+import { initTRPC } from '@trpc/server'
 import { OpenApiMeta } from 'trpc-openapi'
 import superjson from 'superjson'
 import { Context } from './context'
@@ -8,23 +8,13 @@ const t = initTRPC.context<Context>().meta<OpenApiMeta>().create({
   transformer: superjson,
 })
 
-export const router = t.router
-
 const sentryMiddleware = t.middleware(
   Sentry.Handlers.trpcMiddleware({
     attachRpcInput: true,
   })
 )
 
-export const publicProcedure = t.procedure.use(sentryMiddleware)
-
-const isAuthed = t.middleware(({ next, ctx }) => {
-  if (!ctx.user?.id) {
-    throw new TRPCError({
-      code: 'UNAUTHORIZED',
-      message: 'You need to be authenticated to perform this action',
-    })
-  }
+const injectUser = t.middleware(({ next, ctx }) => {
   return next({
     ctx: {
       user: ctx.user,
@@ -32,6 +22,10 @@ const isAuthed = t.middleware(({ next, ctx }) => {
   })
 })
 
-export const authenticatedProcedure = t.procedure.use(
-  sentryMiddleware.unstable_pipe(isAuthed)
-)
+const finalMiddleware = sentryMiddleware.unstable_pipe(injectUser)
+
+export const middleware = t.middleware
+
+export const router = t.router
+
+export const publicProcedure = t.procedure.use(finalMiddleware)

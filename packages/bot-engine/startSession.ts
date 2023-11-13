@@ -39,7 +39,7 @@ import { VisitedEdge } from '@typebot.io/prisma'
 type StartParams =
   | ({
       type: 'preview'
-      userId: string
+      userId?: string
     } & StartPreviewChatInput)
   | ({
       type: 'live'
@@ -272,6 +272,13 @@ export const startSession = async ({
 const getTypebot = async (startParams: StartParams): Promise<StartTypebot> => {
   if (startParams.type === 'preview' && startParams.typebot)
     return startParams.typebot
+
+  if (startParams.type === 'preview' && !startParams.userId)
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'You need to be authenticated to perform this action',
+    })
+
   const typebotQuery =
     startParams.type === 'preview'
       ? await findTypebot({

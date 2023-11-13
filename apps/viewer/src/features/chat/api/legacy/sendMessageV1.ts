@@ -90,7 +90,7 @@ export const sendMessageV1 = publicProcedure
                       ? undefined
                       : startParams.typebot,
                   message,
-                  userId: parseUserId(user?.id),
+                  userId: user?.id,
                 }
               : {
                   type: 'live',
@@ -172,13 +172,3 @@ export const sendMessageV1 = publicProcedure
       }
     }
   )
-
-const parseUserId = (userId?: string): string => {
-  if (!userId)
-    throw new TRPCError({
-      code: 'UNAUTHORIZED',
-      message: 'You need to be authenticated to perform this action',
-    })
-
-  return userId
-}
