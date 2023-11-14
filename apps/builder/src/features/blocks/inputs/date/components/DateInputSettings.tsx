@@ -47,7 +47,9 @@ export const DateInputSettings = ({ options, onOptionsChange }: Props) => {
       >
         <TextInput
           label="From label:"
-          defaultValue={options?.labels?.from}
+          defaultValue={
+            options?.labels?.from ?? defaultDateInputOptions.labels.from
+          }
           onChange={updateFromLabel}
         />
         <TextInput
