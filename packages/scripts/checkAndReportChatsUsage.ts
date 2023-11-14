@@ -76,6 +76,7 @@ export const checkAndReportChatsUsage = async () => {
   })
 
   const quarantineEvents: TelemetryEvent[] = []
+  const autoUpgradeEvents: TelemetryEvent[] = []
 
   for (const workspace of workspaces) {
     if (workspace.isQuarantined) continue
@@ -136,6 +137,21 @@ export const checkAndReportChatsUsage = async () => {
           stripe,
           workspaceId: workspace.id,
         })
+        autoUpgradeEvents.push(
+          ...workspace.members
+            .filter((member) => member.role === WorkspaceRole.ADMIN)
+            .map(
+              (member) =>
+                ({
+                  name: 'Subscription automatically updated',
+                  userId: member.user.id,
+                  workspaceId: workspace.id,
+                  data: {
+                    plan: 'PRO',
+                  },
+                } satisfies TelemetryEvent)
+            )
+        )
         await reportUsageToStripe(totalChatsUsed, {
           stripe,
           subscription: newSubscription,

@@ -66,6 +66,15 @@ const subscriptionUpdatedEventSchema = workspaceEvent.merge(
   })
 )
 
+const subscriptionAutoUpdatedEventSchema = workspaceEvent.merge(
+  z.object({
+    name: z.literal('Subscription automatically updated'),
+    data: z.object({
+      plan: z.nativeEnum(Plan),
+    }),
+  })
+)
+
 const newResultsCollectedEventSchema = typebotEvent.merge(
   z.object({
     name: z.literal('New results collected'),
@@ -105,6 +114,7 @@ export const eventSchema = z.discriminatedUnion('name', [
   newResultsCollectedEventSchema,
   workspaceLimitReachedEventSchema,
   workspaceAutoQuarantinedEventSchema,
+  subscriptionAutoUpdatedEventSchema,
 ])
 
 export type TelemetryEvent = z.infer<typeof eventSchema>

@@ -370,6 +370,51 @@
                             "data"
                           ],
                           "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "userId": {
+                              "type": "string"
+                            },
+                            "workspaceId": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string",
+                              "enum": [
+                                "Subscription automatically updated"
+                              ]
+                            },
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "plan": {
+                                  "type": "string",
+                                  "enum": [
+                                    "FREE",
+                                    "STARTER",
+                                    "PRO",
+                                    "LIFETIME",
+                                    "OFFERED",
+                                    "CUSTOM",
+                                    "UNLIMITED"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "plan"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "userId",
+                            "workspaceId",
+                            "name",
+                            "data"
+                          ],
+                          "additionalProperties": false
                         }
                       ]
                     }

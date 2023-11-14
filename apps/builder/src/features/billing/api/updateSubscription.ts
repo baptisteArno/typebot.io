@@ -125,10 +125,10 @@ export const updateSubscription = authenticatedProcedure
             })
           }
         }
+
         await stripe.subscriptions.update(subscription.id, {
           items,
-          proration_behavior:
-            plan === 'PRO' ? 'always_invoice' : 'create_prorations',
+          proration_behavior: 'always_invoice',
         })
       } else {
         const checkoutUrl = await createCheckoutSessionUrl(stripe)({
