@@ -7,7 +7,7 @@
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "deploy": "pnpm copy && pnpm commit",
-    "copy": "svn copy ./trunk ./tags/3.4.0",
-    "commit": "svn ci -m 'Import lib v0.2'"
+    "copy": "svn copy ./trunk ./tags/3.4.1",
+    "commit": "svn ci -m 'Import lib specific version'"
   }
 }
