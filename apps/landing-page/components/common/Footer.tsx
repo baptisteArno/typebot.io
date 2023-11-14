@@ -12,7 +12,7 @@ import {
 import { Logo } from 'assets/icons/Logo'
 import { TextLink } from './TextLink'
 
-const facebookGroupUrl = 'https://www.facebook.com/groups/typebot'
+const discordServerUrl = 'https://typebot.io/discord'
 const typebotLinkedInUrl = 'https://www.linkedin.com/company/typebot'
 const typebotTwitterUrl = 'https://twitter.com/Typebot_io'
 const baptisteTwitterUrl = 'https://twitter.com/baptisteArno'
@@ -54,11 +54,11 @@ export const Footer = () => {
           </Stack>
           <Stack align={'flex-start'}>
             <ListHeader>Community</ListHeader>
+            <TextLink href={discordServerUrl} isExternal>
+              Discord
+            </TextLink>
             <TextLink href={githubRepoLink} isExternal>
               GitHub repository
-            </TextLink>
-            <TextLink href={facebookGroupUrl} isExternal>
-              Facebook Group
             </TextLink>
             <TextLink href={typebotTwitterUrl} isExternal>
               Twitter

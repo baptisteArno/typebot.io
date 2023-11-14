@@ -18,6 +18,11 @@ const nextConfig = {
         destination: 'https://unpkg.com/typebot-js@2.1.3/dist/index.umd.min.js',
         permanent: true,
       },
+      {
+        source: '/discord',
+        destination: 'https://discord.com/invite/ymK8Q33d5Z',
+        permanent: true,
+      },
     ]
   },
 }

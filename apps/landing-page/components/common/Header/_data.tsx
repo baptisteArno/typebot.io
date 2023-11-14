@@ -31,8 +31,8 @@ export const links = [
       {
         label: 'Community',
         description:
-          'Join our facebook community and get insights on how to create high performing surveys',
-        href: 'https://www.facebook.com/groups/262165102257585',
+          'Join the Discord server and learn about chatbots best practices and get help from the community',
+        href: '/discord',
         icon: <PeopleCircleIcon />,
       },
     ],

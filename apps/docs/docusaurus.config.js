@@ -59,8 +59,8 @@ module.exports = {
           title: 'Community',
           items: [
             {
-              label: 'Facebook Group',
-              href: 'https://www.facebook.com/groups/typebot',
+              label: 'Discord',
+              href: 'https://typebot.io/discord',
             },
             {
               label: 'Twitter',
