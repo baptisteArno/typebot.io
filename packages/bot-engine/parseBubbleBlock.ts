@@ -209,6 +209,26 @@ const applyElementStyleToDescendants = (
   })
 
 const convertMarkdownToRichText = (text: string): TDescendant[] => {
+  const spacesBefore = text.match(/^[\s]+/)
+  const spacesAfter = text.match(/[\s]+$/)
   const plugins = [createDeserializeMdPlugin()]
-  return deserializeMd(createPlateEditor({ plugins }) as unknown as any, text)
+  return [
+    ...(spacesBefore?.at(0)
+      ? [
+          {
+            type: 'p',
+            text: spacesBefore.at(0),
+          },
+        ]
+      : []),
+    ...deserializeMd(createPlateEditor({ plugins }) as unknown as any, text),
+    ...(spacesAfter?.at(0)
+      ? [
+          {
+            type: 'p',
+            text: spacesAfter.at(0),
+          },
+        ]
+      : []),
+  ]
 }

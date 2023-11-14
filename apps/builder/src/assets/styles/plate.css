@@ -1,8 +1,9 @@
 .slate-inline-code {
-  background-color: #805ad5;
+  background-color: #a1a1aa;
   color: white;
   padding: 0.125rem 0.25rem;
   border-radius: 0.35rem;
+  font-size: small;
 }
 
 .slate-variable {
