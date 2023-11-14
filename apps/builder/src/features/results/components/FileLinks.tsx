@@ -10,7 +10,7 @@ export const FileLinks = ({ fileNamesStr }: { fileNamesStr: string }) => {
         <HStack as={WrapItem} key={name}>
           <FileIcon />
           <TextLink href={name} isExternal>
-            {name.split('/').pop()}
+            {decodeURIComponent(name.split('/').pop() ?? '')}
           </TextLink>
         </HStack>
       ))}

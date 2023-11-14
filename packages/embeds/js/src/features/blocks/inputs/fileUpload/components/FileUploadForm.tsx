@@ -8,6 +8,7 @@ import { uploadFiles } from '../helpers/uploadFiles'
 import { guessApiHost } from '@/utils/guessApiHost'
 import { getRuntimeVariable } from '@typebot.io/env/getRuntimeVariable'
 import { defaultFileInputOptions } from '@typebot.io/schemas/features/blocks/inputs/file/constants'
+import { isDefined } from '@typebot.io/lib'
 
 type Props = {
   context: BotContext
@@ -68,7 +69,10 @@ export const FileUploadForm = (props: Props) => {
     })
     setIsUploading(false)
     if (urls.length)
-      return props.onSubmit({ label: `File uploaded`, value: urls[0] ?? '' })
+      return props.onSubmit({
+        label: `File uploaded`,
+        value: urls[0] ? encodeURI(urls[0]) : '',
+      })
     setErrorMessage('An error occured while uploading the file')
   }
   const startFilesUpload = async (files: File[]) => {
@@ -98,7 +102,7 @@ export const FileUploadForm = (props: Props) => {
       return setErrorMessage('An error occured while uploading the files')
     props.onSubmit({
       label: `${urls.length} file${urls.length > 1 ? 's' : ''} uploaded`,
-      value: urls.join(', '),
+      value: urls.filter(isDefined).map(encodeURI).join(', '),
     })
   }
 
@@ -219,7 +223,8 @@ export const FileUploadForm = (props: Props) => {
               </Button>
             </Show>
             <SendButton type="submit" disableIcon>
-              {props.block.options?.labels?.button ===
+              {(props.block.options?.labels?.button ??
+                defaultFileInputOptions.labels.button) ===
               defaultFileInputOptions.labels.button
                 ? `Upload ${selectedFiles().length} file${
                     selectedFiles().length > 1 ? 's' : ''
