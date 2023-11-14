@@ -116,7 +116,7 @@ Here is an example:
     theme: {
       button: { backgroundColor: '#0042DA', iconColor: '#FFFFFF' },
       previewMessage: { backgroundColor: '#ffffff', textColor: 'black' },
-      chatWindow: { backgroundColor: '#ffffff' },
+      chatWindow: { backgroundColor: '#ffffff', maxWidth: '100%' },
     },
   })
 </script>

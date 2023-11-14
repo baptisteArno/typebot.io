@@ -13,6 +13,8 @@ export type BubbleTheme = {
 
 export type ChatWindowTheme = {
   backgroundColor?: string
+  maxWidth?: string
+  maxHeight?: string
 }
 
 export type ButtonTheme = {
