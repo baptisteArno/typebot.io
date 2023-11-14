@@ -169,7 +169,7 @@ Used to search for images. You can create a Giphy app [here](https://unsplash.co
 ## Tolgee (i18n contribution dev tool)
 
 :::note
-If you'd like to join contribute to Typebot's translation join the [Discord server](https://discord.gg/FYjghmSKRS) and ask for an access to Tolgee in the [#contributors channel](https://discord.com/channels/1155799591220953138/1155883114455900190).
+If you'd like to join contribute to Typebot's translation join the [Discord server](https://discord.gg/xjyQczWAXV) and ask for an access to Tolgee in the [#contributors channel](https://discord.com/channels/1155799591220953138/1155883114455900190).
 :::
 
 Set up these environment variables to enable [Tolgee dev tool](https://tolgee.io/features/dev-tools).
