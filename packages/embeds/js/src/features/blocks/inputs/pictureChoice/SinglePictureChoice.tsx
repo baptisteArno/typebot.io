@@ -71,7 +71,7 @@ export const SinglePictureChoice = (props: Props) => {
         class={
           'gap-2 flex flex-wrap justify-end' +
           (props.options?.isSearchable
-            ? ' overflow-y-scroll max-h-[464px] rounded-md hide-scrollbar'
+            ? ' overflow-y-scroll max-h-[464px] rounded-md'
             : '')
         }
       >
