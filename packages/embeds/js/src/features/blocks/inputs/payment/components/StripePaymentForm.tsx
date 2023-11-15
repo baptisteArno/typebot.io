@@ -14,6 +14,7 @@ type Props = {
   context: BotContext
   options: PaymentInputBlock['options'] & RuntimeOptions
   onSuccess: () => void
+  onTransitionEnd: () => void
 }
 
 const slotName = 'stripe-payment-form'
@@ -48,7 +49,10 @@ export const StripePaymentForm = (props: Props) => {
       layout: 'tabs',
     })
     paymentElement.mount('#payment-element')
-    setTimeout(() => setIsMounted(true), 1000)
+    setTimeout(() => {
+      setIsMounted(true)
+      props.onTransitionEnd()
+    }, 1000)
   })
 
   const handleSubmit = async (event: Event & { submitter: HTMLElement }) => {

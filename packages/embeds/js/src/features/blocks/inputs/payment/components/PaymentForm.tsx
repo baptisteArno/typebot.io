@@ -6,6 +6,7 @@ type Props = {
   context: BotContext
   options: PaymentInputBlock['options'] & RuntimeOptions
   onSuccess: () => void
+  onTransitionEnd: () => void
 }
 
 export const PaymentForm = (props: Props) => (
@@ -13,5 +14,6 @@ export const PaymentForm = (props: Props) => (
     onSuccess={props.onSuccess}
     options={props.options}
     context={props.context}
+    onTransitionEnd={props.onTransitionEnd}
   />
 )

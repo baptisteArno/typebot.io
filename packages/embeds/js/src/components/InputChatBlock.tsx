@@ -46,6 +46,7 @@ type Props = {
   context: BotContext
   isInputPrefillEnabled: boolean
   hasError: boolean
+  onTransitionEnd: () => void
   onSubmit: (answer: string) => void
   onSkip: () => void
 }
@@ -102,6 +103,7 @@ export const InputChatBlock = (props: Props) => {
             block={props.block}
             inputIndex={props.inputIndex}
             isInputPrefillEnabled={props.isInputPrefillEnabled}
+            onTransitionEnd={props.onTransitionEnd}
             onSubmit={handleSubmit}
             onSkip={handleSkip}
           />
@@ -116,6 +118,7 @@ const Input = (props: {
   block: NonNullable<ContinueChatResponse['input']>
   inputIndex: number
   isInputPrefillEnabled: boolean
+  onTransitionEnd: () => void
   onSubmit: (answer: InputSubmitContent) => void
   onSkip: (label: string) => void
 }) => {
@@ -208,6 +211,7 @@ const Input = (props: {
                 defaultItems={block.items}
                 options={block.options}
                 onSubmit={onSubmit}
+                onTransitionEnd={props.onTransitionEnd}
               />
             </Match>
             <Match when={block.options?.isMultipleChoice}>
@@ -215,6 +219,7 @@ const Input = (props: {
                 defaultItems={block.items}
                 options={block.options}
                 onSubmit={onSubmit}
+                onTransitionEnd={props.onTransitionEnd}
               />
             </Match>
           </Switch>
@@ -245,6 +250,7 @@ const Input = (props: {
             } as PaymentInputBlock['options'] & RuntimeOptions
           }
           onSuccess={submitPaymentSuccess}
+          onTransitionEnd={props.onTransitionEnd}
         />
       </Match>
     </Switch>

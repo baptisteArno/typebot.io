@@ -1,19 +1,21 @@
 import { SearchInput } from '@/components/inputs/SearchInput'
 import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
-import { isSvgSrc } from '@typebot.io/lib/utils'
+import { isDefined, isSvgSrc } from '@typebot.io/lib/utils'
 import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
-import { For, Show, createSignal, onMount } from 'solid-js'
+import { For, Show, createEffect, createSignal, onMount } from 'solid-js'
 
 type Props = {
   defaultItems: PictureChoiceBlock['items']
   options: PictureChoiceBlock['options']
   onSubmit: (value: InputSubmitContent) => void
+  onTransitionEnd: () => void
 }
 
 export const SinglePictureChoice = (props: Props) => {
   let inputRef: HTMLInputElement | undefined
   const [filteredItems, setFilteredItems] = createSignal(props.defaultItems)
+  const [totalLoadedImages, setTotalLoadedImages] = createSignal(0)
 
   onMount(() => {
     if (!isMobile() && inputRef) inputRef.focus()
@@ -39,6 +41,18 @@ export const SinglePictureChoice = (props: Props) => {
             .includes((inputValue ?? '').toLowerCase())
       )
     )
+  }
+
+  createEffect(() => {
+    if (
+      totalLoadedImages() ===
+      props.defaultItems.filter((item) => isDefined(item.pictureSrc)).length
+    )
+      props.onTransitionEnd()
+  })
+
+  const onImageLoad = () => {
+    setTotalLoadedImages((acc) => acc + 1)
   }
 
   return (
@@ -77,6 +91,7 @@ export const SinglePictureChoice = (props: Props) => {
                 elementtiming={`Picture choice ${index() + 1}`}
                 fetchpriority={'high'}
                 class="m-auto"
+                onLoad={onImageLoad}
               />
               <div
                 class={

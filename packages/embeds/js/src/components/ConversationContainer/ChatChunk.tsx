@@ -27,6 +27,7 @@ type Props = Pick<ContinueChatResponse, 'messages' | 'input'> & {
 export const ChatChunk = (props: Props) => {
   let inputRef: HTMLDivElement | undefined
   const [displayedMessageIndex, setDisplayedMessageIndex] = createSignal(0)
+  const [lastBubbleOffsetTop, setLastBubbleOffsetTop] = createSignal<number>()
 
   onMount(() => {
     if (props.streamingMessageId) return
@@ -48,6 +49,7 @@ export const ChatChunk = (props: Props) => {
     )
     props.onScrollToBottom(bubbleOffsetTop)
     if (displayedMessageIndex() === props.messages.length) {
+      setLastBubbleOffsetTop(bubbleOffsetTop)
       props.onAllBubblesDisplayed()
     }
   }
@@ -111,6 +113,7 @@ export const ChatChunk = (props: Props) => {
             defaultSettings.general.isInputPrefillEnabled
           }
           hasError={props.hasError}
+          onTransitionEnd={() => props.onScrollToBottom(lastBubbleOffsetTop())}
           onSubmit={props.onSubmit}
           onSkip={props.onSkip}
         />
