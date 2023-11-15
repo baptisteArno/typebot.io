@@ -21,3 +21,6 @@ export const preprocessGroup = (group: any) => ({
   ...group,
   blocks: group.blocks ?? [],
 })
+
+export const preprocessColumnsWidthResults = (arg: unknown) =>
+  Array.isArray(arg) && arg.length === 0 ? {} : arg

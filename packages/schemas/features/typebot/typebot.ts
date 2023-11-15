@@ -3,7 +3,10 @@ import { settingsSchema } from './settings'
 import { themeSchema } from './theme'
 import { variableSchema } from './variable'
 import { Typebot as TypebotPrisma } from '@typebot.io/prisma'
-import { preprocessTypebot } from './helpers/preprocessTypebot'
+import {
+  preprocessColumnsWidthResults,
+  preprocessTypebot,
+} from './helpers/preprocessTypebot'
 import { edgeSchema } from './edge'
 import { groupV5Schema, groupV6Schema } from './group'
 import { startEventSchema } from '../events/start/schema'
@@ -11,7 +14,10 @@ import { startEventSchema } from '../events/start/schema'
 export const resultsTablePreferencesSchema = z.object({
   columnsOrder: z.array(z.string()),
   columnsVisibility: z.record(z.string(), z.boolean()),
-  columnsWidth: z.record(z.string(), z.number()),
+  columnsWidth: z.preprocess(
+    preprocessColumnsWidthResults,
+    z.record(z.string(), z.number())
+  ),
 })
 
 const isDomainNameWithPathNameCompatible = (str: string) =>
