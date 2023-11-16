@@ -6,9 +6,10 @@ import { defaultAbTestOptions } from '@typebot.io/schemas/features/blocks/logic/
 
 type Props = {
   block: AbTestBlock
+  groupId: string
 }
 
-export const AbTestNodeBody = ({ block }: Props) => {
+export const AbTestNodeBody = ({ block, groupId }: Props) => {
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const bg = useColorModeValue('white', undefined)
 
@@ -33,6 +34,7 @@ export const AbTestNodeBody = ({ block }: Props) => {
             blockId: block.id,
             itemId: block.items[0].id,
           }}
+          groupId={groupId}
           pos="absolute"
           right="-49px"
           pointerEvents="all"
@@ -59,6 +61,7 @@ export const AbTestNodeBody = ({ block }: Props) => {
             blockId: block.id,
             itemId: block.items[1].id,
           }}
+          groupId={groupId}
           pos="absolute"
           right="-49px"
           pointerEvents="all"

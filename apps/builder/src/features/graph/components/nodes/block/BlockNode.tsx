@@ -239,7 +239,13 @@ export const BlockNode = ({
                   mt="1"
                   data-testid={`${block.id}-icon`}
                 />
-                <BlockNodeContent block={block} indices={indices} />
+                {typebot?.groups[indices.groupIndex].id && (
+                  <BlockNodeContent
+                    block={block}
+                    indices={indices}
+                    groupId={typebot.groups[indices.groupIndex].id}
+                  />
+                )}
                 {(hasIcomingEdge || isDefined(connectingIds)) && (
                   <TargetEndpoint
                     pos="absolute"
@@ -252,6 +258,7 @@ export const BlockNode = ({
                 {(isConnectable ||
                   (pathname.endsWith('analytics') && isInputBlock(block))) &&
                   hasDefaultConnector(block) &&
+                  groupId &&
                   block.type !== LogicBlockType.JUMP && (
                     <BlockSourceEndpoint
                       source={{

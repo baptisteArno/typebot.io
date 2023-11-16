@@ -41,9 +41,14 @@ import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integr
 
 type Props = {
   block: BlockV6
+  groupId: string
   indices: BlockIndices
 }
-export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
+export const BlockNodeContent = ({
+  block,
+  indices,
+  groupId,
+}: Props): JSX.Element => {
   switch (block.type) {
     case BubbleBlockType.TEXT: {
       return <TextBubbleContent block={block} />
@@ -109,7 +114,7 @@ export const BlockNodeContent = ({ block, indices }: Props): JSX.Element => {
       return <JumpNodeBody options={block.options} />
     }
     case LogicBlockType.AB_TEST: {
-      return <AbTestNodeBody block={block} />
+      return <AbTestNodeBody block={block} groupId={groupId} />
     }
     case LogicBlockType.TYPEBOT_LINK:
       return <TypebotLinkNode block={block} />

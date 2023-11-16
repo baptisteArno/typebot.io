@@ -22,7 +22,7 @@ export const BlockNodeOverlay = ({
       {...props}
     >
       <BlockIcon type={block.type} />
-      <BlockNodeContent block={block} indices={indices} />
+      <BlockNodeContent block={block} indices={indices} groupId="" />
     </HStack>
   )
 }

@@ -25,7 +25,7 @@ export const BlockSourceEndpoint = ({
   ...props
 }: BoxProps & {
   source: BlockSource
-  groupId?: string
+  groupId: string
   isHidden?: boolean
 }) => {
   const id = source.itemId ?? source.blockId
