@@ -22,13 +22,13 @@ export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
   const { deleteItem, updateItem, createItem } = useTypebot()
   const [initialContent] = useState(item.content ?? '')
   const [itemValue, setItemValue] = useState(
-    item.content ?? 'Clique para editar 1'
+    item.content ?? 'Editar opção de resposta'
   )
   const editableRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     if (itemValue !== item.content)
-      setItemValue(item.content ?? 'Clique para editar')
+      setItemValue(item.content ?? 'Editar opção de resposta')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item])
 
@@ -39,7 +39,7 @@ export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
   }
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Escape' && itemValue === 'Clique para editar 4')
+    if (e.key === 'Escape' && itemValue === 'Editar opção de resposta')
       deleteItem(indices)
     if (e.key === 'Enter' && itemValue !== '' && initialContent === '')
       handlePlusClick()
@@ -54,24 +54,27 @@ export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
   }
 
   return (
-    <Flex px={4} py={2} justify="center" w="90%" pos="relative">
+    <Flex justify="center" w="100%" pos="relative">
       <Editable
         ref={editableRef}
-        flex="1"
         startWithEditView={isNotDefined(item.content)}
         value={itemValue}
         onChange={setItemValue}
         onSubmit={handleInputSubmit}
         onKeyDownCapture={handleKeyPress}
-        maxW="180px"
-        marginLeft={'8px'}
+        flex={2}
+        w="full"
       >
         <EditablePreview
           w="full"
-          color={item.content !== 'Clique para editar' ? 'inherit' : 'gray.500'}
+          color={
+            item.content !== 'Editar opção de resposta' ? 'inherit' : 'gray.500'
+          }
           cursor="pointer"
+          px={4}
+          py={2}
         />
-        <EditableInput />
+        <EditableInput px={4} py={2} />
       </Editable>
       <Fade
         in={isMouseOver}
