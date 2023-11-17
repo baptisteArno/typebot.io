@@ -28,10 +28,11 @@ export const sendRequest = async <ResponseData>(
         body?: Record<string, unknown> | FormData
       }
     | string
-): Promise<{ data?: ResponseData; error?: Error }> => {
+): Promise<{ data?: ResponseData; error?: Error; response?: Response }> => {
+  let response
   try {
     const url = typeof params === 'string' ? params : params.url
-    const response = await fetch(url, {
+    response = await fetch(url, {
       method: typeof params === 'string' ? 'GET' : params.method,
       mode: 'cors',
       headers:
@@ -47,10 +48,10 @@ export const sendRequest = async <ResponseData>(
     })
     const data = await response.json()
     if (!response.ok) throw 'error' in data ? data.error : data
-    return { data }
+    return { data, response }
   } catch (e) {
     console.error(e)
-    return { error: e as Error }
+    return { error: e as Error, response }
   }
 }
 

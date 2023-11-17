@@ -51,7 +51,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
       typeof props.typebot === 'string' ? props.typebot : undefined
     const isPreview =
       typeof props.typebot !== 'string' || (props.isPreview ?? false)
-    const { data, error } = await startChatQuery({
+    const { data, error, response } = await startChatQuery({
       stripeRedirectStatus: urlParams.get('redirect_status') ?? undefined,
       typebot: props.typebot,
       apiHost: props.apiHost,
@@ -81,6 +81,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
 
     if (!data) {
       if (error) console.error(error)
+      console.error({ data, error, response })
       return setError(new Error("Error! Couldn't initiate the chat."))
     }
 

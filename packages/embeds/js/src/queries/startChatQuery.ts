@@ -41,7 +41,7 @@ export async function startChatQuery({
     : undefined
   if (paymentInProgressState) {
     removePaymentInProgressFromStorage()
-    const { data, error } = await sendRequest<InitialChatReply>({
+    const { data, error, response } = await sendRequest<InitialChatReply>({
       method: 'POST',
       url: `${isNotEmpty(apiHost) ? apiHost : guessApiHost()}/api/v1/sessions/${
         paymentInProgressState.sessionId
@@ -64,11 +64,12 @@ export async function startChatQuery({
           }
         : undefined,
       error,
+      response,
     }
   }
   const typebotId = typeof typebot === 'string' ? typebot : typebot.id
   if (isPreview) {
-    const { data, error } = await sendRequest<InitialChatReply>({
+    const { data, error, response } = await sendRequest<InitialChatReply>({
       method: 'POST',
       url: `${
         isNotEmpty(apiHost) ? apiHost : guessApiHost()
@@ -82,10 +83,11 @@ export async function startChatQuery({
     return {
       data,
       error,
+      response,
     }
   }
 
-  const { data, error } = await sendRequest<InitialChatReply>({
+  const { data, error, response } = await sendRequest<InitialChatReply>({
     method: 'POST',
     url: `${
       isNotEmpty(apiHost) ? apiHost : guessApiHost()
@@ -100,5 +102,6 @@ export async function startChatQuery({
   return {
     data,
     error,
+    response,
   }
 }
