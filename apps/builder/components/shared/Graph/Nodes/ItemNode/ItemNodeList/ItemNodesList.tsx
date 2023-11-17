@@ -18,6 +18,7 @@ import { Coordinates, useGraph } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext'
 import {
   ButtonItem,
+  InputStepType,
   IntegrationStepType,
   OctaStepType,
   OctaWabaStepType,
@@ -254,6 +255,7 @@ export const ItemNodesList = ({
         })}
       {isLastStep &&
         step.type !== OctaStepType.OFFICE_HOURS &&
+        step.type !== InputStepType.CHOICE &&
         step.type !== IntegrationStepType.WEBHOOK &&
         step.type !== OctaWabaStepType.WHATSAPP_OPTIONS_LIST &&
         step.type !== OctaWabaStepType.WHATSAPP_BUTTONS_LIST && (
