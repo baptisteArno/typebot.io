@@ -44,7 +44,7 @@
   "auth.noProvider.link": "mindestens einen Authentifizierungsanbieter konfigurieren (E-Mail, Google, GitHub, Facebook oder Azure AD).",
   "auth.noProvider.preLink": "Du musst",
   "auth.orEmailLabel": "Oder mit deiner E-Mail",
-  "auth.register.aggreeToTerms": "Durch die Registrierung stimmst du unseren <terms>termsOfService</terms> und <privacy>privacyPolicy</privacy> zu.",
+  "auth.register.aggreeToTerms": "Durch die Registrierung stimmst du unseren <terms>nutzungsbedingungen</terms> und <privacy>datenschutzrichtlinie</privacy> zu.",
   "auth.register.alreadyHaveAccountLabel.link": "Anmelden",
   "auth.register.alreadyHaveAccountLabel.preLink": "Bereits ein Konto vorhanden?",
   "auth.register.heading": "Konto erstellen",

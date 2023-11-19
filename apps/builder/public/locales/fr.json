@@ -44,7 +44,7 @@
   "auth.noProvider.link": "configurer au moins un fournisseur d'authentification (E-mail, Google, GitHub, Facebook ou Azure AD).",
   "auth.noProvider.preLink": "Tu as besoin de",
   "auth.orEmailLabel": "Ou avec votre email",
-  "auth.register.aggreeToTerms": "En vous inscrivant, vous acceptez nos <terms>termsOfService</terms> et <privacy>privacyPolicy</privacy>.",
+  "auth.register.aggreeToTerms": "En vous inscrivant, vous acceptez nos <terms>conditions de service</terms> et <privacy>politique de protection de la vie privée</privacy>.",
   "auth.register.alreadyHaveAccountLabel.link": "Se connecter",
   "auth.register.alreadyHaveAccountLabel.preLink": "Tu as déjà un compte?",
   "auth.register.heading": "Créer un compte",
