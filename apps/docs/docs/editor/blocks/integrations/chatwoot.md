@@ -44,3 +44,9 @@ You can link the current result URL to the Chatwoot conversation by creating thi
     src="/img/blocks/integrations/chatwoot/custom-attribute.png"
     alt="Chatwoot custom attribute"
   />
+
+### Set user behavior
+
+If you are prefilling user information, by default, if you leave the ID input empty, it will set the Chatwoot user ID as either the `Email` or the Result ID.
+
+Setting the `Email` as the ID allows us to avoid having contact not properly merged together (https://github.com/chatwoot/chatwoot/issues/2811)
