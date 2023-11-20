@@ -103,10 +103,9 @@ export const parseChatCompletionMessages =
         } satisfies OpenAI.Chat.ChatCompletionMessageParam
       })
       .filter(
-        (message) => isNotEmpty(message?.role) && isNotEmpty(message?.content)
+        (message) =>
+          isNotEmpty(message?.role) && isNotEmpty(message?.content?.toString())
       ) as OpenAI.Chat.ChatCompletionMessageParam[]
-
-    console.log('parsedMessages', parsedMessages)
 
     return {
       variablesTransformedToList,

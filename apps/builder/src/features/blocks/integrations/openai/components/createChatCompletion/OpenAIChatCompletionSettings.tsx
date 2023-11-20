@@ -13,7 +13,7 @@ import {
 import { TextLink } from '@/components/TextLink'
 import { ChatCompletionResponseItem } from './ChatCompletionResponseItem'
 import { NumberInput } from '@/components/inputs'
-import { ModelsDropdown } from './ModelsDropdown'
+import { ModelsDropdown } from '../ModelsDropdown'
 
 const apiReferenceUrl =
   'https://platform.openai.com/docs/api-reference/chat/create'
@@ -79,6 +79,7 @@ export const OpenAIChatCompletionSettings = ({
             defaultValue={options.model}
             baseUrl={options.baseUrl}
             apiVersion={options.apiVersion}
+            type="gpt"
             onChange={updateModel}
           />
           <Accordion allowMultiple>

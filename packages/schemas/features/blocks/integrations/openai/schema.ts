@@ -4,6 +4,7 @@ import {
   chatCompletionMessageRoles,
   chatCompletionResponseValues,
   openAITasks,
+  openAIVoices,
 } from './constants'
 import { variableStringSchema } from '../../../utils'
 import { blockBaseSchema, credentialsBaseSchema } from '../../shared'
@@ -78,10 +79,13 @@ const chatCompletionOptionsSchema = z
       .optional(),
   })
   .merge(openAIBaseOptionsSchema)
+export type ChatCompletionOpenAIOptions = z.infer<
+  typeof chatCompletionOptionsSchema
+>
 
 const createImageOptionsSchema = z
   .object({
-    task: z.literal(openAITasks[1]),
+    task: z.literal(openAITasks[2]),
     prompt: z.string().optional(),
     advancedOptions: z.object({
       size: z.enum(['256x256', '512x512', '1024x1024']).optional(),
@@ -95,6 +99,18 @@ const createImageOptionsSchema = z
     ),
   })
   .merge(openAIBaseOptionsSchema)
+export type CreateImageOpenAIOptions = z.infer<typeof createImageOptionsSchema>
+
+const createSpeechOptionsSchema = openAIBaseOptionsSchema.extend({
+  task: z.literal(openAITasks[1]),
+  model: z.string().optional(),
+  input: z.string().optional(),
+  voice: z.enum(openAIVoices).optional(),
+  saveUrlInVariableId: z.string().optional(),
+})
+export type CreateSpeechOpenAIOptions = z.infer<
+  typeof createSpeechOptionsSchema
+>
 
 export const openAIBlockSchema = blockBaseSchema.merge(
   z.object({
@@ -104,10 +120,12 @@ export const openAIBlockSchema = blockBaseSchema.merge(
         initialOptionsSchema,
         chatCompletionOptionsSchema,
         createImageOptionsSchema,
+        createSpeechOptionsSchema,
       ])
       .optional(),
   })
 )
+export type OpenAIBlock = z.infer<typeof openAIBlockSchema>
 
 export const openAICredentialsSchema = z
   .object({
@@ -117,10 +135,4 @@ export const openAICredentialsSchema = z
     }),
   })
   .merge(credentialsBaseSchema)
-
 export type OpenAICredentials = z.infer<typeof openAICredentialsSchema>
-export type OpenAIBlock = z.infer<typeof openAIBlockSchema>
-export type ChatCompletionOpenAIOptions = z.infer<
-  typeof chatCompletionOptionsSchema
->
-export type CreateImageOpenAIOptions = z.infer<typeof createImageOptionsSchema>

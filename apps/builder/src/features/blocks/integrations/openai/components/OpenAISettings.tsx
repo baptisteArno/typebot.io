@@ -13,6 +13,7 @@ import { CredentialsDropdown } from '@/features/credentials/components/Credentia
 import {
   ChatCompletionOpenAIOptions,
   CreateImageOpenAIOptions,
+  CreateSpeechOpenAIOptions,
   OpenAIBlock,
 } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { OpenAICredentialsModal } from './OpenAICredentialsModal'
@@ -24,6 +25,7 @@ import {
   defaultOpenAIOptions,
   openAITasks,
 } from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
+import { OpenAICreateSpeechSettings } from './audio/OpenAICreateSpeechSettings'
 
 type OpenAITask = (typeof openAITasks)[number]
 
@@ -47,15 +49,10 @@ export const OpenAISettings = ({
   }
 
   const updateTask = (task: OpenAITask) => {
-    switch (task) {
-      case 'Create chat completion': {
-        onOptionsChange({
-          credentialsId: options?.credentialsId,
-          task,
-        })
-        break
-      }
-    }
+    onOptionsChange({
+      credentialsId: options?.credentialsId,
+      task,
+    } as OpenAIBlock['options'])
   }
 
   const updateBaseUrl = (baseUrl: string) => {
@@ -142,13 +139,24 @@ const OpenAITaskSettings = ({
   options,
   onOptionsChange,
 }: {
-  options: ChatCompletionOpenAIOptions | CreateImageOpenAIOptions
+  options:
+    | ChatCompletionOpenAIOptions
+    | CreateImageOpenAIOptions
+    | CreateSpeechOpenAIOptions
   onOptionsChange: (options: OpenAIBlock['options']) => void
-}) => {
+}): JSX.Element | null => {
   switch (options.task) {
     case 'Create chat completion': {
       return (
         <OpenAIChatCompletionSettings
+          options={options}
+          onOptionsChange={onOptionsChange}
+        />
+      )
+    }
+    case 'Create speech': {
+      return (
+        <OpenAICreateSpeechSettings
           options={options}
           onOptionsChange={onOptionsChange}
         />

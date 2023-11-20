@@ -1,29 +1,24 @@
 import { SetVariableLabel } from '@/components/SetVariableLabel'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { Stack, Text } from '@chakra-ui/react'
-import {
-  ChatCompletionOpenAIOptions,
-  CreateImageOpenAIOptions,
-  OpenAIBlock,
-} from '@typebot.io/schemas/features/blocks/integrations/openai'
+import { OpenAIBlock } from '@typebot.io/schemas/features/blocks/integrations/openai'
 
 type Props = {
-  task: NonNullable<OpenAIBlock['options']>['task']
-  responseMapping:
-    | ChatCompletionOpenAIOptions['responseMapping']
-    | CreateImageOpenAIOptions['responseMapping']
+  options: OpenAIBlock['options']
 }
 
-export const OpenAINodeBody = ({ task, responseMapping }: Props) => {
+export const OpenAINodeBody = ({ options }: Props) => {
   const { typebot } = useTypebot()
 
   return (
     <Stack>
-      <Text color={task ? 'currentcolor' : 'gray.500'} noOfLines={1}>
-        {task ?? 'Configure...'}
+      <Text color={options?.task ? 'currentcolor' : 'gray.500'} noOfLines={1}>
+        {options?.task ?? 'Configure...'}
       </Text>
       {typebot &&
-        responseMapping
+        options &&
+        'responseMapping' in options &&
+        options.responseMapping
           ?.map((mapping) => mapping.variableId)
           .map((variableId, idx) =>
             variableId ? (
@@ -34,6 +29,15 @@ export const OpenAINodeBody = ({ task, responseMapping }: Props) => {
               />
             ) : null
           )}
+      {typebot &&
+        options &&
+        'saveUrlInVariableId' in options &&
+        options.saveUrlInVariableId && (
+          <SetVariableLabel
+            variables={typebot.variables}
+            variableId={options.saveUrlInVariableId}
+          />
+        )}
     </Stack>
   )
 }

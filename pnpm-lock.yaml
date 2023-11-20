@@ -219,8 +219,8 @@ importers:
         specifier: 0.2.0
         version: 0.2.0
       openai:
-        specifier: 4.11.1
-        version: 4.11.1
+        specifier: 4.19.0
+        version: 4.19.0
       papaparse:
         specifier: 5.4.1
         version: 5.4.1
@@ -534,8 +534,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/prisma
       ai:
-        specifier: 2.2.14
-        version: 2.2.14(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.1)(vue@3.3.4)
+        specifier: 2.2.24
+        version: 2.2.24(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.1)(vue@3.3.4)
       bot-engine:
         specifier: workspace:*
         version: link:../../packages/deprecated/bot-engine
@@ -558,8 +558,8 @@ importers:
         specifier: 6.9.3
         version: 6.9.3
       openai:
-        specifier: 4.11.1
-        version: 4.11.1
+        specifier: 4.19.0
+        version: 4.19.0
       qs:
         specifier: 6.11.2
         version: 6.11.2
@@ -685,8 +685,8 @@ importers:
         specifier: 24.4.0
         version: 24.4.0(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-hyperscript@0.77.0)(slate-react@0.99.0)(slate@0.94.1)
       ai:
-        specifier: 2.2.14
-        version: 2.2.14(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.1)(vue@3.3.4)
+        specifier: 2.2.24
+        version: 2.2.24(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.1)(vue@3.3.4)
       chrono-node:
         specifier: 2.7.0
         version: 2.7.0
@@ -712,8 +712,8 @@ importers:
         specifier: 6.9.3
         version: 6.9.3
       openai:
-        specifier: 4.11.1
-        version: 4.11.1
+        specifier: 4.19.0
+        version: 4.19.0
       qs:
         specifier: 6.11.2
         version: 6.11.2
@@ -11247,8 +11247,8 @@ packages:
       indent-string: 4.0.0
     dev: false
 
-  /ai@2.2.14(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.1)(vue@3.3.4):
-    resolution: {integrity: sha512-4kL2iYPVhH1pl6jJFIJCYcgx5mHzGOmdwiSYWVadmSkNOxKqokgevHyJKiyL9B9DjlreM9cDqkQop56Hdfkb0w==}
+  /ai@2.2.24(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.1)(vue@3.3.4):
+    resolution: {integrity: sha512-j9f89SC08SxN50wKp4ccIGniUMtCsslvOBbYGBCSIvDbMBQaNTZuKW4Id8tmfEeNMV9mwZZ5wRNj6/1Z/pFwYA==}
     engines: {node: '>=14.6'}
     peerDependencies:
       react: ^18.2.0
@@ -18905,8 +18905,8 @@ packages:
       is-wsl: 2.2.0
     dev: false
 
-  /openai@4.11.1:
-    resolution: {integrity: sha512-GU0HQWbejXuVAQlDjxIE8pohqnjptFDIm32aPlNT1H9ucMz1VJJD0DaTJRQsagNaJ97awWjjVLEG7zCM6sm4SA==}
+  /openai@4.19.0:
+    resolution: {integrity: sha512-cJbl0noZyAaXVKBTMMq6X5BAvP1pm2rWYDBnZes99NL+Zh5/4NmlAwyuhTZEru5SqGGZIoiYKeMPXy4bm9DI0w==}
     hasBin: true
     dependencies:
       '@types/node': 18.11.18
@@ -18917,6 +18917,7 @@ packages:
       form-data-encoder: 1.7.2
       formdata-node: 4.4.1
       node-fetch: 2.7.0
+      web-streams-polyfill: 3.2.1
     transitivePeerDependencies:
       - encoding
     dev: false
@@ -23677,6 +23678,11 @@ packages:
       valid-data-url: 3.0.1
     transitivePeerDependencies:
       - encoding
+
+  /web-streams-polyfill@3.2.1:
+    resolution: {integrity: sha512-e0MO3wdXWKrLbL0DgGnUV7WHVuw9OUvL4hjgnPkIeEvESk74gAITi5G606JtZPp39cd8HA9VQzCIvA49LpPN5Q==}
+    engines: {node: '>= 8'}
+    dev: false
 
   /web-streams-polyfill@4.0.0-beta.3:
     resolution: {integrity: sha512-QW95TCTaHmsYfHDybGMwO5IJIM93I/6vTRk+daHTWFPhwh+C8Cg7j7XyKrwrj8Ib6vYXe0ocYNrmzY4xAAN6ug==}

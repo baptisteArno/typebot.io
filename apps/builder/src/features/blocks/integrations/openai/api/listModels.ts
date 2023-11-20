@@ -25,6 +25,7 @@ export const listModels = authenticatedProcedure
       workspaceId: z.string(),
       baseUrl: z.string(),
       apiVersion: z.string().optional(),
+      type: z.enum(['gpt', 'tts']),
     })
   )
   .output(
@@ -34,7 +35,7 @@ export const listModels = authenticatedProcedure
   )
   .query(
     async ({
-      input: { credentialsId, workspaceId, baseUrl, apiVersion },
+      input: { credentialsId, workspaceId, baseUrl, apiVersion, type },
       ctx: { user },
     }) => {
       const workspace = await prisma.workspace.findFirst({
@@ -97,6 +98,7 @@ export const listModels = authenticatedProcedure
       return {
         models:
           models.data
+            .filter((model) => model.id.includes(type))
             .sort((a, b) => b.created - a.created)
             .map((model) => model.id) ?? [],
       }

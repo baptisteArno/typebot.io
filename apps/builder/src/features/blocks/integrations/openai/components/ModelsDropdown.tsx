@@ -9,6 +9,7 @@ type Props = {
   apiVersion?: string
   credentialsId: string
   defaultValue?: string
+  type: 'gpt' | 'tts'
   onChange: (model: string | undefined) => void
 }
 
@@ -18,6 +19,7 @@ export const ModelsDropdown = ({
   defaultValue,
   onChange,
   credentialsId,
+  type,
 }: Props) => {
   const { workspace } = useWorkspace()
   const { showToast } = useToast()
@@ -28,6 +30,7 @@ export const ModelsDropdown = ({
       baseUrl: baseUrl ?? defaultOpenAIOptions.baseUrl,
       workspaceId: workspace?.id as string,
       apiVersion,
+      type,
     },
     {
       enabled: !!workspace,

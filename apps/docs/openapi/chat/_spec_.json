@@ -2549,6 +2549,50 @@
                                                               "responseMapping"
                                                             ],
                                                             "additionalProperties": false
+                                                          },
+                                                          {
+                                                            "type": "object",
+                                                            "properties": {
+                                                              "credentialsId": {
+                                                                "type": "string"
+                                                              },
+                                                              "baseUrl": {
+                                                                "type": "string"
+                                                              },
+                                                              "apiVersion": {
+                                                                "type": "string"
+                                                              },
+                                                              "task": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                  "Create speech"
+                                                                ]
+                                                              },
+                                                              "model": {
+                                                                "type": "string"
+                                                              },
+                                                              "input": {
+                                                                "type": "string"
+                                                              },
+                                                              "voice": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                  "alloy",
+                                                                  "echo",
+                                                                  "fable",
+                                                                  "onyx",
+                                                                  "nova",
+                                                                  "shimmer"
+                                                                ]
+                                                              },
+                                                              "saveUrlInVariableId": {
+                                                                "type": "string"
+                                                              }
+                                                            },
+                                                            "required": [
+                                                              "task"
+                                                            ],
+                                                            "additionalProperties": false
                                                           }
                                                         ]
                                                       }
@@ -6142,6 +6186,50 @@
                                                               "task",
                                                               "advancedOptions",
                                                               "responseMapping"
+                                                            ],
+                                                            "additionalProperties": false
+                                                          },
+                                                          {
+                                                            "type": "object",
+                                                            "properties": {
+                                                              "credentialsId": {
+                                                                "type": "string"
+                                                              },
+                                                              "baseUrl": {
+                                                                "type": "string"
+                                                              },
+                                                              "apiVersion": {
+                                                                "type": "string"
+                                                              },
+                                                              "task": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                  "Create speech"
+                                                                ]
+                                                              },
+                                                              "model": {
+                                                                "type": "string"
+                                                              },
+                                                              "input": {
+                                                                "type": "string"
+                                                              },
+                                                              "voice": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                  "alloy",
+                                                                  "echo",
+                                                                  "fable",
+                                                                  "onyx",
+                                                                  "nova",
+                                                                  "shimmer"
+                                                                ]
+                                                              },
+                                                              "saveUrlInVariableId": {
+                                                                "type": "string"
+                                                              }
+                                                            },
+                                                            "required": [
+                                                              "task"
                                                             ],
                                                             "additionalProperties": false
                                                           }
@@ -13132,6 +13220,50 @@
                                                               "responseMapping"
                                                             ],
                                                             "additionalProperties": false
+                                                          },
+                                                          {
+                                                            "type": "object",
+                                                            "properties": {
+                                                              "credentialsId": {
+                                                                "type": "string"
+                                                              },
+                                                              "baseUrl": {
+                                                                "type": "string"
+                                                              },
+                                                              "apiVersion": {
+                                                                "type": "string"
+                                                              },
+                                                              "task": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                  "Create speech"
+                                                                ]
+                                                              },
+                                                              "model": {
+                                                                "type": "string"
+                                                              },
+                                                              "input": {
+                                                                "type": "string"
+                                                              },
+                                                              "voice": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                  "alloy",
+                                                                  "echo",
+                                                                  "fable",
+                                                                  "onyx",
+                                                                  "nova",
+                                                                  "shimmer"
+                                                                ]
+                                                              },
+                                                              "saveUrlInVariableId": {
+                                                                "type": "string"
+                                                              }
+                                                            },
+                                                            "required": [
+                                                              "task"
+                                                            ],
+                                                            "additionalProperties": false
                                                           }
                                                         ]
                                                       }
@@ -16725,6 +16857,50 @@
                                                               "task",
                                                               "advancedOptions",
                                                               "responseMapping"
+                                                            ],
+                                                            "additionalProperties": false
+                                                          },
+                                                          {
+                                                            "type": "object",
+                                                            "properties": {
+                                                              "credentialsId": {
+                                                                "type": "string"
+                                                              },
+                                                              "baseUrl": {
+                                                                "type": "string"
+                                                              },
+                                                              "apiVersion": {
+                                                                "type": "string"
+                                                              },
+                                                              "task": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                  "Create speech"
+                                                                ]
+                                                              },
+                                                              "model": {
+                                                                "type": "string"
+                                                              },
+                                                              "input": {
+                                                                "type": "string"
+                                                              },
+                                                              "voice": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                  "alloy",
+                                                                  "echo",
+                                                                  "fable",
+                                                                  "onyx",
+                                                                  "nova",
+                                                                  "shimmer"
+                                                                ]
+                                                              },
+                                                              "saveUrlInVariableId": {
+                                                                "type": "string"
+                                                              }
+                                                            },
+                                                            "required": [
+                                                              "task"
                                                             ],
                                                             "additionalProperties": false
                                                           }
@@ -29510,6 +29686,50 @@
                                                   "responseMapping"
                                                 ],
                                                 "additionalProperties": false
+                                              },
+                                              {
+                                                "type": "object",
+                                                "properties": {
+                                                  "credentialsId": {
+                                                    "type": "string"
+                                                  },
+                                                  "baseUrl": {
+                                                    "type": "string"
+                                                  },
+                                                  "apiVersion": {
+                                                    "type": "string"
+                                                  },
+                                                  "task": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "Create speech"
+                                                    ]
+                                                  },
+                                                  "model": {
+                                                    "type": "string"
+                                                  },
+                                                  "input": {
+                                                    "type": "string"
+                                                  },
+                                                  "voice": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "alloy",
+                                                      "echo",
+                                                      "fable",
+                                                      "onyx",
+                                                      "nova",
+                                                      "shimmer"
+                                                    ]
+                                                  },
+                                                  "saveUrlInVariableId": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "task"
+                                                ],
+                                                "additionalProperties": false
                                               }
                                             ]
                                           }
@@ -33103,6 +33323,50 @@
                                                   "task",
                                                   "advancedOptions",
                                                   "responseMapping"
+                                                ],
+                                                "additionalProperties": false
+                                              },
+                                              {
+                                                "type": "object",
+                                                "properties": {
+                                                  "credentialsId": {
+                                                    "type": "string"
+                                                  },
+                                                  "baseUrl": {
+                                                    "type": "string"
+                                                  },
+                                                  "apiVersion": {
+                                                    "type": "string"
+                                                  },
+                                                  "task": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "Create speech"
+                                                    ]
+                                                  },
+                                                  "model": {
+                                                    "type": "string"
+                                                  },
+                                                  "input": {
+                                                    "type": "string"
+                                                  },
+                                                  "voice": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "alloy",
+                                                      "echo",
+                                                      "fable",
+                                                      "onyx",
+                                                      "nova",
+                                                      "shimmer"
+                                                    ]
+                                                  },
+                                                  "saveUrlInVariableId": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "task"
                                                 ],
                                                 "additionalProperties": false
                                               }

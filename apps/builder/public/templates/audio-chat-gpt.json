@@ -1,0 +1,206 @@
+{
+  "version": "6",
+  "id": "clp6onbn200011ab379x5gnea",
+  "name": "Audio ChatGPT",
+  "icon": "🔈",
+  "events": [
+    {
+      "id": "ewnfbo0exlu7ihfu2lu2lusm",
+      "outgoingEdgeId": "knz1ln1so0dfyth76qjkjn1p",
+      "graphCoordinates": { "x": -228.25, "y": -123.31 },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "qfrz5nwm63g12dajsjxothb5",
+      "title": "User input",
+      "graphCoordinates": { "x": 105.17, "y": -56.29 },
+      "blocks": [
+        {
+          "id": "ovgk70u0kfxrbtz9dy4e040o",
+          "type": "text input",
+          "options": { "variableId": "vudksu3zyrat6s1bq6qne0rx3" }
+        },
+        {
+          "id": "m4jadtknjb3za3gvxj1xdn1k",
+          "outgoingEdgeId": "fpj0xacppqd1s5slyljzhzc9",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vabkycu0qqff5d6ar2ama16pf",
+            "type": "Append value(s)",
+            "item": "{{User Message}}"
+          }
+        }
+      ]
+    },
+    {
+      "id": "a6ymhjwtkqwp8t127plz8qmk",
+      "title": "ChatGPT reply",
+      "graphCoordinates": { "x": 445.12, "y": -56.2 },
+      "blocks": [
+        {
+          "id": "xikptnw1lp1qxdqo10qhmwy1",
+          "type": "OpenAI",
+          "options": {
+            "task": "Create chat completion",
+            "model": "gpt-3.5-turbo",
+            "messages": [
+              {
+                "id": "wsdxha9db58gk2v9n1j10m7c",
+                "role": "Dialogue",
+                "dialogueVariableId": "vabkycu0qqff5d6ar2ama16pf",
+                "startsBy": "user"
+              }
+            ],
+            "responseMapping": [
+              {
+                "id": "p8ksqi2jhyzid2od3dikv299",
+                "valueToExtract": "Message content",
+                "variableId": "vni6kwbch8zlq92dclgcivzyr"
+              }
+            ],
+            "credentialsId": "clp6ooc3700031ab30yof27jm"
+          }
+        },
+        {
+          "id": "yblc864bzipaqfja7b2o3oo0",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vabkycu0qqff5d6ar2ama16pf",
+            "type": "Append value(s)",
+            "item": "{{Assistant Message}}"
+          }
+        },
+        {
+          "id": "prsimdxdol42ty2parzgx8am",
+          "type": "OpenAI",
+          "options": {
+            "credentialsId": "clp6ooc3700031ab30yof27jm",
+            "task": "Create speech",
+            "model": "tts-1",
+            "input": "{{Assistant Message}}",
+            "voice": "alloy",
+            "saveUrlInVariableId": "vgr0iwg95npp7pztkmdyn89m1"
+          }
+        },
+        {
+          "id": "f6onszqys2tx7pw3tshb2vcy",
+          "outgoingEdgeId": "dw9jclv60i040saiikj3a386",
+          "type": "audio",
+          "content": { "url": "{{Assistant audio message}}" }
+        }
+      ]
+    },
+    {
+      "id": "c5f00f3oclwi1srcz10jjt9u",
+      "title": "Intro",
+      "graphCoordinates": { "x": -222.61, "y": -54.39 },
+      "blocks": [
+        {
+          "id": "dp5gx25j73fgmcj9582ydik9",
+          "type": "OpenAI",
+          "options": {
+            "credentialsId": "clp6ooc3700031ab30yof27jm",
+            "task": "Create speech",
+            "model": "tts-1",
+            "input": "Hi there! How can I help?",
+            "voice": "alloy",
+            "saveUrlInVariableId": "vxw4quja426402hvhtm33tsp3"
+          }
+        },
+        {
+          "id": "dmab8kc35uh84vvw1a53xbjn",
+          "outgoingEdgeId": "xnao10ucc1hbynv3pmk1t4by",
+          "type": "audio",
+          "content": { "url": "{{Welcome audio}}" }
+        }
+      ]
+    },
+    {
+      "id": "yswu9fml4zflxaqlujb94ir8",
+      "title": "",
+      "graphCoordinates": { "x": 19.51, "y": -338.93 },
+      "blocks": [
+        {
+          "id": "okm2zz32zn8b60u1vkfrv9ca",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "You need to add your OpenAI credentials to make this bot work. 🪄"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "m5a1d0vhsrpyvvvyj89awxzc",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Once it's done, delete this group and connect the "
+                  },
+                  { "text": "Start", "bold": true },
+                  { "text": " event with " },
+                  { "text": "Intro", "bold": true },
+                  { "text": " 🚀\n" }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "fpj0xacppqd1s5slyljzhzc9",
+      "from": { "blockId": "m4jadtknjb3za3gvxj1xdn1k" },
+      "to": { "groupId": "a6ymhjwtkqwp8t127plz8qmk" }
+    },
+    {
+      "id": "xnao10ucc1hbynv3pmk1t4by",
+      "from": { "blockId": "dmab8kc35uh84vvw1a53xbjn" },
+      "to": { "groupId": "qfrz5nwm63g12dajsjxothb5" }
+    },
+    {
+      "id": "dw9jclv60i040saiikj3a386",
+      "from": { "blockId": "f6onszqys2tx7pw3tshb2vcy" },
+      "to": { "groupId": "qfrz5nwm63g12dajsjxothb5" }
+    },
+    {
+      "from": { "eventId": "ewnfbo0exlu7ihfu2lu2lusm" },
+      "to": { "groupId": "yswu9fml4zflxaqlujb94ir8" },
+      "id": "knz1ln1so0dfyth76qjkjn1p"
+    }
+  ],
+  "variables": [
+    { "id": "vni6kwbch8zlq92dclgcivzyr", "name": "Assistant Message" },
+    { "id": "vudksu3zyrat6s1bq6qne0rx3", "name": "User Message" },
+    { "id": "vabkycu0qqff5d6ar2ama16pf", "name": "Chat history" },
+    { "id": "vxw4quja426402hvhtm33tsp3", "name": "Welcome audio" },
+    { "id": "vgr0iwg95npp7pztkmdyn89m1", "name": "Assistant audio message" }
+  ],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2023-11-20T09:06:40.430Z",
+  "updatedAt": "2023-11-20T09:20:01.662Z",
+  "folderId": null,
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "freeWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null
+}

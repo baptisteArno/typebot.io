@@ -145,16 +145,7 @@ export const BlockNodeContent = ({
       return <ChatwootNodeBody block={block} />
     }
     case IntegrationBlockType.OPEN_AI: {
-      return (
-        <OpenAINodeBody
-          task={block.options?.task}
-          responseMapping={
-            block.options && 'responseMapping' in block.options
-              ? block.options.responseMapping
-              : []
-          }
-        />
-      )
+      return <OpenAINodeBody options={block.options} />
     }
     case IntegrationBlockType.PIXEL: {
       return <PixelNodeBody options={block.options} />
