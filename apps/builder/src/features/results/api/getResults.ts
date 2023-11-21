@@ -44,12 +44,22 @@ export const getResults = authenticatedProcedure
       },
       select: {
         id: true,
-        workspaceId: true,
         groups: true,
         collaborators: {
           select: {
             userId: true,
             type: true,
+          },
+        },
+        workspace: {
+          select: {
+            isQuarantined: true,
+            isPastDue: true,
+            members: {
+              select: {
+                userId: true,
+              },
+            },
           },
         },
       },

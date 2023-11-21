@@ -57,7 +57,17 @@ export const startWhatsAppPreview = authenticatedProcedure
       },
       select: {
         id: true,
-        workspaceId: true,
+        workspace: {
+          select: {
+            isQuarantined: true,
+            isPastDue: true,
+            members: {
+              select: {
+                userId: true,
+              },
+            },
+          },
+        },
         collaborators: {
           select: {
             userId: true,

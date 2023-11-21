@@ -66,7 +66,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               },
               include: {
                 members: {
-                  select: { user: { select: { id: true } } },
+                  select: { userId: true },
                   where: {
                     role: WorkspaceRole.ADMIN,
                   },
@@ -74,19 +74,16 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               },
             })
 
-            for (const user of workspace.members.map((member) => member.user)) {
-              if (!user?.id) continue
-              await sendTelemetryEvents([
-                {
-                  name: 'Subscription updated',
-                  workspaceId,
-                  userId: user.id,
-                  data: {
-                    plan,
-                  },
+            await sendTelemetryEvents(
+              workspace.members.map((m) => ({
+                name: 'Subscription updated',
+                workspaceId,
+                userId: m.userId,
+                data: {
+                  plan,
                 },
-              ])
-            }
+              }))
+            )
           } else {
             const { claimableCustomPlanId, userId } = metadata
             if (!claimableCustomPlanId)
@@ -124,6 +121,80 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
           return res.status(200).send({ message: 'workspace upgraded in DB' })
         }
+        case 'customer.subscription.updated': {
+          const subscription = event.data.object as Stripe.Subscription
+          if (subscription.status !== 'past_due')
+            return res.send({ message: 'Not past_due, skipping.' })
+          const workspace = await prisma.workspace.update({
+            where: {
+              stripeId: subscription.customer as string,
+            },
+            data: {
+              isPastDue: true,
+            },
+            select: {
+              id: true,
+              members: {
+                select: { userId: true, role: true },
+                where: { role: WorkspaceRole.ADMIN },
+              },
+            },
+          })
+          await sendTelemetryEvents(
+            workspace.members.map((m) => ({
+              name: 'Workspace past due',
+              workspaceId: workspace.id,
+              userId: m.userId,
+            }))
+          )
+          return res.send({ message: 'Workspace set to past due.' })
+        }
+        case 'invoices.paid': {
+          const invoice = event.data.object as Stripe.Invoice
+          const workspace = await prisma.workspace.findFirst({
+            where: {
+              stripeId: invoice.customer as string,
+            },
+            select: {
+              isPastDue: true,
+            },
+          })
+          if (!workspace?.isPastDue)
+            return res.send({ message: 'Workspace not past_due, skipping.' })
+          const outstandingInvoices = await stripe.invoices.list({
+            customer: invoice.customer as string,
+            status: 'open',
+          })
+          if (outstandingInvoices.data.length > 0)
+            return res.send({
+              message: 'Workspace has outstanding invoices, skipping.',
+            })
+          const updatedWorkspace = await prisma.workspace.update({
+            where: {
+              stripeId: invoice.customer as string,
+            },
+            data: {
+              isPastDue: false,
+            },
+            select: {
+              id: true,
+              members: {
+                select: { userId: true },
+                where: {
+                  role: WorkspaceRole.ADMIN,
+                },
+              },
+            },
+          })
+          await sendTelemetryEvents(
+            updatedWorkspace.members.map((m) => ({
+              name: 'Workspace past due status removed',
+              workspaceId: updatedWorkspace.id,
+              userId: m.userId,
+            }))
+          )
+          return res.send({ message: 'Workspace was regulated' })
+        }
         case 'customer.subscription.deleted': {
           const subscription = event.data.object as Stripe.Subscription
           const { data } = await stripe.subscriptions.list({
@@ -151,7 +222,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             },
             include: {
               members: {
-                select: { user: { select: { id: true } } },
+                select: { userId: true },
                 where: {
                   role: WorkspaceRole.ADMIN,
                 },
@@ -159,19 +230,16 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             },
           })
 
-          for (const user of workspace.members.map((member) => member.user)) {
-            if (!user?.id) continue
-            await sendTelemetryEvents([
-              {
-                name: 'Subscription updated',
-                workspaceId: workspace.id,
-                userId: user.id,
-                data: {
-                  plan: Plan.FREE,
-                },
+          await sendTelemetryEvents(
+            workspace.members.map((m) => ({
+              name: 'Subscription updated',
+              workspaceId: workspace.id,
+              userId: m.userId,
+              data: {
+                plan: Plan.FREE,
               },
-            ])
-          }
+            }))
+          )
 
           const typebots = await prisma.typebot.findMany({
             where: {

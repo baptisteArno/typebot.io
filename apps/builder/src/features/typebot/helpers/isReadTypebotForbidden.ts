@@ -1,26 +1,25 @@
-import prisma from '@typebot.io/lib/prisma'
 import { env } from '@typebot.io/env'
-import { CollaboratorsOnTypebots, User } from '@typebot.io/prisma'
-import { Typebot } from '@typebot.io/schemas'
+import {
+  CollaboratorsOnTypebots,
+  User,
+  Workspace,
+  MemberInWorkspace,
+} from '@typebot.io/prisma'
 
 export const isReadTypebotForbidden = async (
-  typebot: Pick<Typebot, 'workspaceId'> & {
+  typebot: {
     collaborators: Pick<CollaboratorsOnTypebots, 'userId'>[]
+  } & {
+    workspace: Pick<Workspace, 'isQuarantined' | 'isPastDue'> & {
+      members: Pick<MemberInWorkspace, 'userId'>[]
+    }
   },
   user: Pick<User, 'email' | 'id'>
-) => {
-  if (
-    env.ADMIN_EMAIL === user.email ||
-    typebot.collaborators.find(
+) =>
+  typebot.workspace.isQuarantined ||
+  typebot.workspace.isPastDue ||
+  (env.ADMIN_EMAIL !== user.email &&
+    !typebot.collaborators.some(
       (collaborator) => collaborator.userId === user.id
-    )
-  )
-    return false
-  const memberInWorkspace = await prisma.memberInWorkspace.findFirst({
-    where: {
-      workspaceId: typebot.workspaceId,
-      userId: user.id,
-    },
-  })
-  return memberInWorkspace === null
-}
+    ) &&
+    !typebot.workspace.members.some((member) => member.userId === user.id))

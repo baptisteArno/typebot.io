@@ -52,6 +52,17 @@ export const getPublishedTypebot = authenticatedProcedure
         include: {
           collaborators: true,
           publishedTypebot: true,
+          workspace: {
+            select: {
+              isQuarantined: true,
+              isPastDue: true,
+              members: {
+                select: {
+                  userId: true,
+                },
+              },
+            },
+          },
         },
       })
       if (

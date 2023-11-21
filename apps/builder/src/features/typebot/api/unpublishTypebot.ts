@@ -32,6 +32,18 @@ export const unpublishTypebot = authenticatedProcedure
       include: {
         collaborators: true,
         publishedTypebot: true,
+        workspace: {
+          select: {
+            isQuarantined: true,
+            isPastDue: true,
+            members: {
+              select: {
+                userId: true,
+                role: true,
+              },
+            },
+          },
+        },
       },
     })
     if (!existingTypebot?.publishedTypebot)

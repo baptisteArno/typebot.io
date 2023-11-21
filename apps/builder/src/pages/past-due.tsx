@@ -1,7 +1,8 @@
-import { TextLink } from '@/components/TextLink'
+import { AlertIcon } from '@/components/icons'
+import { BillingPortalButton } from '@/features/billing/components/BillingPortalButton'
 import { DashboardHeader } from '@/features/dashboard/components/DashboardHeader'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { Heading, Text, VStack } from '@chakra-ui/react'
+import { Heading, VStack, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
@@ -10,7 +11,7 @@ export default function Page() {
   const { workspace } = useWorkspace()
 
   useEffect(() => {
-    if (!workspace || workspace.isSuspended) return
+    if (!workspace || workspace.isPastDue) return
     replace('/typebots')
   }, [replace, workspace])
 
@@ -23,16 +24,12 @@ export default function Page() {
         justifyContent="center"
         spacing={4}
       >
-        <Heading>Your workspace has been suspended.</Heading>
-        <Text>
-          We detected that one of your typebots does not comply with our{' '}
-          <TextLink
-            href="https://typebot.io/terms-of-service#scam-typebots"
-            isExternal
-          >
-            terms of service
-          </TextLink>
-        </Text>
+        <AlertIcon fontSize="4xl" />
+        <Heading fontSize="2xl">Your workspace has unpaid invoice(s).</Heading>
+        <Text>Head over to the billing portal to pay it.</Text>
+        {workspace?.id && (
+          <BillingPortalButton workspaceId={workspace?.id} colorScheme="blue" />
+        )}
       </VStack>
     </>
   )

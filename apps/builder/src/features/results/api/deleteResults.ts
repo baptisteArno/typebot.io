@@ -36,8 +36,19 @@ export const deleteResults = authenticatedProcedure
         id: typebotId,
       },
       select: {
-        workspaceId: true,
         groups: true,
+        workspace: {
+          select: {
+            isQuarantined: true,
+            isPastDue: true,
+            members: {
+              select: {
+                userId: true,
+                role: true,
+              },
+            },
+          },
+        },
         collaborators: {
           select: {
             userId: true,
