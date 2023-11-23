@@ -415,6 +415,52 @@
                             "data"
                           ],
                           "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "userId": {
+                              "type": "string"
+                            },
+                            "workspaceId": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string",
+                              "enum": [
+                                "Workspace past due"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "userId",
+                            "workspaceId",
+                            "name"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "userId": {
+                              "type": "string"
+                            },
+                            "workspaceId": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string",
+                              "enum": [
+                                "Workspace past due status removed"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "userId",
+                            "workspaceId",
+                            "name"
+                          ],
+                          "additionalProperties": false
                         }
                       ]
                     }
@@ -7487,6 +7533,9 @@
                         },
                         "isSuspended": {
                           "type": "boolean"
+                        },
+                        "isPastDue": {
+                          "type": "boolean"
                         }
                       },
                       "required": [
@@ -7507,7 +7556,8 @@
                         "customStorageLimit",
                         "customSeatsLimit",
                         "isQuarantined",
-                        "isSuspended"
+                        "isSuspended",
+                        "isPastDue"
                       ],
                       "additionalProperties": false
                     }
@@ -7636,6 +7686,9 @@
                         },
                         "isSuspended": {
                           "type": "boolean"
+                        },
+                        "isPastDue": {
+                          "type": "boolean"
                         }
                       },
                       "required": [
@@ -7656,7 +7709,8 @@
                         "customStorageLimit",
                         "customSeatsLimit",
                         "isQuarantined",
-                        "isSuspended"
+                        "isSuspended",
+                        "isPastDue"
                       ],
                       "additionalProperties": false
                     }
@@ -7802,6 +7856,9 @@
                         },
                         "isSuspended": {
                           "type": "boolean"
+                        },
+                        "isPastDue": {
+                          "type": "boolean"
                         }
                       },
                       "required": [
@@ -7822,7 +7879,8 @@
                         "customStorageLimit",
                         "customSeatsLimit",
                         "isQuarantined",
-                        "isSuspended"
+                        "isSuspended",
+                        "isPastDue"
                       ],
                       "additionalProperties": false
                     }
@@ -54515,6 +54573,9 @@
                         },
                         "isSuspended": {
                           "type": "boolean"
+                        },
+                        "isPastDue": {
+                          "type": "boolean"
                         }
                       },
                       "required": [
@@ -54535,7 +54596,8 @@
                         "customStorageLimit",
                         "customSeatsLimit",
                         "isQuarantined",
-                        "isSuspended"
+                        "isSuspended",
+                        "isPastDue"
                       ],
                       "additionalProperties": false,
                       "nullable": true

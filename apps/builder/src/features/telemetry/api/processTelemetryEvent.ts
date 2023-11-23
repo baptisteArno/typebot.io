@@ -81,7 +81,7 @@ export const processTelemetryEvent = authenticatedProcedure
       client.capture({
         distinctId: event.userId,
         event: event.name,
-        properties: event.data,
+        properties: 'data' in event ? event.data : undefined,
         groups,
       })
     })

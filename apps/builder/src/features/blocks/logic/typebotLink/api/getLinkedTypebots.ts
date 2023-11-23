@@ -56,7 +56,17 @@ export const getLinkedTypebots = authenticatedProcedure
         variables: true,
         name: true,
         createdAt: true,
-        workspaceId: true,
+        workspace: {
+          select: {
+            isQuarantined: true,
+            isPastDue: true,
+            members: {
+              select: {
+                userId: true,
+              },
+            },
+          },
+        },
         collaborators: {
           select: {
             type: true,
@@ -97,7 +107,17 @@ export const getLinkedTypebots = authenticatedProcedure
           variables: true,
           name: true,
           createdAt: true,
-          workspaceId: true,
+          workspace: {
+            select: {
+              isQuarantined: true,
+              isPastDue: true,
+              members: {
+                select: {
+                  userId: true,
+                },
+              },
+            },
+          },
           collaborators: {
             select: {
               type: true,

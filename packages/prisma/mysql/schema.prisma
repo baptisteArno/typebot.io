@@ -97,6 +97,7 @@ model Workspace {
   customSeatsLimit              Int?
   isQuarantined                 Boolean               @default(false)
   isSuspended                   Boolean               @default(false)
+  isPastDue                     Boolean               @default(false)
   themeTemplates                ThemeTemplate[]
 }
 

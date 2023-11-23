@@ -6,7 +6,7 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { byId, isNotDefined } from '@typebot.io/lib'
+import { byId } from '@typebot.io/lib'
 import { WorkspaceRole } from '@typebot.io/prisma'
 import { useRouter } from 'next/router'
 import { trpc } from '@/lib/trpc'
@@ -136,16 +136,20 @@ export const WorkspaceProvider = ({
   ])
 
   useEffect(() => {
-    if (isNotDefined(workspace?.isSuspended)) return
-    if (workspace?.isSuspended && pathname !== '/suspended') push('/suspended')
-  }, [pathname, push, workspace?.isSuspended])
+    if (workspace?.isSuspended) {
+      if (pathname === '/suspended') return
+      push('/suspended')
+      return
+    }
+    if (workspace?.isPastDue) {
+      if (pathname === '/past-due') return
+      push('/past-due')
+      return
+    }
+  }, [pathname, push, workspace?.isPastDue, workspace?.isSuspended])
 
   const switchWorkspace = (workspaceId: string) => {
     setWorkspaceIdInLocalStorage(workspaceId)
-    if (pathname === '/suspended') {
-      window.location.href = '/typebots'
-      return
-    }
     setWorkspaceId(workspaceId)
   }
 

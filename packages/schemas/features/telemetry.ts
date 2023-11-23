@@ -105,6 +105,18 @@ const workspaceAutoQuarantinedEventSchema = workspaceEvent.merge(
   })
 )
 
+export const workspacePastDueEventSchema = workspaceEvent.merge(
+  z.object({
+    name: z.literal('Workspace past due'),
+  })
+)
+
+export const workspaceNotPastDueEventSchema = workspaceEvent.merge(
+  z.object({
+    name: z.literal('Workspace past due status removed'),
+  })
+)
+
 export const eventSchema = z.discriminatedUnion('name', [
   workspaceCreatedEventSchema,
   userCreatedEventSchema,
@@ -115,6 +127,8 @@ export const eventSchema = z.discriminatedUnion('name', [
   workspaceLimitReachedEventSchema,
   workspaceAutoQuarantinedEventSchema,
   subscriptionAutoUpdatedEventSchema,
+  workspacePastDueEventSchema,
+  workspaceNotPastDueEventSchema,
 ])
 
 export type TelemetryEvent = z.infer<typeof eventSchema>

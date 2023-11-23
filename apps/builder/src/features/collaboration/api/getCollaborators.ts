@@ -32,6 +32,17 @@ export const getCollaborators = authenticatedProcedure
       },
       include: {
         collaborators: true,
+        workspace: {
+          select: {
+            isQuarantined: true,
+            isPastDue: true,
+            members: {
+              select: {
+                userId: true,
+              },
+            },
+          },
+        },
       },
     })
     if (

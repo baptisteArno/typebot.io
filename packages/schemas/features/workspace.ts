@@ -50,6 +50,7 @@ export const workspaceSchema = z.object({
   customSeatsLimit: z.number().nullable(),
   isQuarantined: z.boolean(),
   isSuspended: z.boolean(),
+  isPastDue: z.boolean(),
 }) satisfies z.ZodType<WorkspacePrisma>
 
 export type Workspace = z.infer<typeof workspaceSchema>
