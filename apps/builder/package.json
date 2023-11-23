@@ -117,7 +117,7 @@
     "eslint-config-custom": "workspace:*",
     "next-runtime-env": "1.6.2",
     "superjson": "1.12.4",
-    "typescript": "5.2.2",
+    "typescript": "5.3.2",
     "zod": "3.22.4"
   }
 }

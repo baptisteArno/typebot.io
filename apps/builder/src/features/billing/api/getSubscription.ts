@@ -11,7 +11,7 @@ export const getSubscription = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/billing/subscription',
+      path: '/v1/billing/subscription',
       protect: true,
       summary: 'List invoices',
       tags: ['Billing'],

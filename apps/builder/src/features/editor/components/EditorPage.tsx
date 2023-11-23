@@ -16,10 +16,17 @@ import { GraphDndProvider } from '@/features/graph/providers/GraphDndProvider'
 import { GraphProvider } from '@/features/graph/providers/GraphProvider'
 import { GroupsCoordinatesProvider } from '@/features/graph/providers/GroupsCoordinateProvider'
 import { EventsCoordinatesProvider } from '@/features/graph/providers/EventsCoordinateProvider'
+import { TypebotNotFoundPage } from './TypebotNotFoundPage'
 
 export const EditorPage = () => {
-  const { typebot, isReadOnly } = useTypebot()
+  const { typebot, currentUserMode, is404 } = useTypebot()
+  const backgroundImage = useColorModeValue(
+    'radial-gradient(#c6d0e1 1px, transparent 0)',
+    'radial-gradient(#2f2f39 1px, transparent 0)'
+  )
+  const bgColor = useColorModeValue('#f4f5f8', 'gray.850')
 
+  if (is404) return <TypebotNotFoundPage />
   return (
     <EditorProvider>
       <Seo title={typebot?.name ? `${typebot.name} | Editor` : 'Editor'} />
@@ -30,18 +37,19 @@ export const EditorPage = () => {
           flex="1"
           pos="relative"
           h="full"
-          bgColor={useColorModeValue('#f4f5f8', 'gray.850')}
-          backgroundImage={useColorModeValue(
-            'radial-gradient(#c6d0e1 1px, transparent 0)',
-            'radial-gradient(#2f2f39 1px, transparent 0)'
-          )}
+          bgColor={bgColor}
+          backgroundImage={backgroundImage}
           backgroundSize="40px 40px"
           backgroundPosition="-19px -19px"
         >
           {typebot ? (
             <GraphDndProvider>
-              {!isReadOnly && <BlocksSideBar />}
-              <GraphProvider isReadOnly={isReadOnly}>
+              {currentUserMode === 'write' && <BlocksSideBar />}
+              <GraphProvider
+                isReadOnly={
+                  currentUserMode === 'read' || currentUserMode === 'guest'
+                }
+              >
                 <GroupsCoordinatesProvider groups={typebot.groups}>
                   <EventsCoordinatesProvider events={typebot.events}>
                     <Graph flex="1" typebot={typebot} key={typebot.id} />

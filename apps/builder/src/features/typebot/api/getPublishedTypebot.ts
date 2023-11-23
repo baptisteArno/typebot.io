@@ -15,7 +15,7 @@ export const getPublishedTypebot = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/typebots/{typebotId}/publishedTypebot',
+      path: '/v1/typebots/{typebotId}/publishedTypebot',
       protect: true,
       summary: 'Get published typebot',
       tags: ['Typebot'],

@@ -48,7 +48,7 @@ export const ResultsTable = ({
   onResultExpandIndex,
 }: ResultsTableProps) => {
   const background = useColorModeValue('white', colors.gray[900])
-  const { updateTypebot, isReadOnly } = useTypebot()
+  const { updateTypebot, currentUserMode } = useTypebot()
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({})
   const [isTableScrolled, setIsTableScrolled] = useState(false)
   const bottomElement = useRef<HTMLDivElement | null>(null)
@@ -212,7 +212,7 @@ export const ResultsTable = ({
   return (
     <Stack maxW="1600px" px="4" overflowY="hidden" spacing={6}>
       <HStack w="full" justifyContent="flex-end">
-        {isReadOnly ? null : (
+        {currentUserMode === 'write' && (
           <SelectionToolbar
             selectedResultsId={Object.keys(rowSelection)}
             onClearSelection={() => setRowSelection({})}

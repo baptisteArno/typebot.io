@@ -12,7 +12,7 @@ export const listInvoices = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/billing/invoices',
+      path: '/v1/billing/invoices',
       protect: true,
       summary: 'List invoices',
       tags: ['Billing'],

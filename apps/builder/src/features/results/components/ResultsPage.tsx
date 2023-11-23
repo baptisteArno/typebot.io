@@ -18,14 +18,19 @@ import { useMemo } from 'react'
 import { useStats } from '../hooks/useStats'
 import { ResultsProvider } from '../ResultsProvider'
 import { ResultsTableContainer } from './ResultsTableContainer'
+import { TypebotNotFoundPage } from '@/features/editor/components/TypebotNotFoundPage'
 
 export const ResultsPage = () => {
   const router = useRouter()
   const { workspace } = useWorkspace()
-  const { typebot, publishedTypebot } = useTypebot()
+  const { typebot, publishedTypebot, is404 } = useTypebot()
   const isAnalytics = useMemo(
     () => router.pathname.endsWith('analytics'),
     [router.pathname]
+  )
+  const bgColor = useColorModeValue(
+    router.pathname.endsWith('analytics') ? '#f4f5f8' : 'white',
+    router.pathname.endsWith('analytics') ? 'gray.850' : 'gray.900'
   )
   const { showToast } = useToast()
 
@@ -41,6 +46,7 @@ export const ResultsPage = () => {
     })
   }
 
+  if (is404) return <TypebotNotFoundPage />
   return (
     <Flex overflow="hidden" h="100vh" flexDir="column">
       <Seo
@@ -55,14 +61,7 @@ export const ResultsPage = () => {
         }
       />
       <TypebotHeader />
-      <Flex
-        h="full"
-        w="full"
-        bgColor={useColorModeValue(
-          router.pathname.endsWith('analytics') ? '#f4f5f8' : 'white',
-          router.pathname.endsWith('analytics') ? 'gray.850' : 'gray.900'
-        )}
-      >
+      <Flex h="full" w="full" bgColor={bgColor}>
         <Flex
           pos="absolute"
           zIndex={2}

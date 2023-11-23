@@ -3632,6 +3632,15 @@
                                               }
                                             },
                                             "additionalProperties": false
+                                          },
+                                          "publicShare": {
+                                            "type": "object",
+                                            "properties": {
+                                              "isEnabled": {
+                                                "type": "boolean"
+                                              }
+                                            },
+                                            "additionalProperties": false
                                           }
                                         },
                                         "additionalProperties": false
@@ -7284,6 +7293,15 @@
                                               }
                                             },
                                             "additionalProperties": false
+                                          },
+                                          "publicShare": {
+                                            "type": "object",
+                                            "properties": {
+                                              "isEnabled": {
+                                                "type": "boolean"
+                                              }
+                                            },
+                                            "additionalProperties": false
                                           }
                                         },
                                         "additionalProperties": false
@@ -10463,6 +10481,15 @@
                                     }
                                   },
                                   "additionalProperties": false
+                                },
+                                "publicShare": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
+                                    }
+                                  },
+                                  "additionalProperties": false
                                 }
                               },
                               "additionalProperties": false
@@ -10609,6 +10636,15 @@
                                       "maximum": 48,
                                       "minimum": 0.01,
                                       "description": "Expiration delay in hours after latest interaction"
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                },
+                                "publicShare": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
                                     }
                                   },
                                   "additionalProperties": false
@@ -14303,6 +14339,15 @@
                                               }
                                             },
                                             "additionalProperties": false
+                                          },
+                                          "publicShare": {
+                                            "type": "object",
+                                            "properties": {
+                                              "isEnabled": {
+                                                "type": "boolean"
+                                              }
+                                            },
+                                            "additionalProperties": false
                                           }
                                         },
                                         "additionalProperties": false
@@ -17955,6 +18000,15 @@
                                               }
                                             },
                                             "additionalProperties": false
+                                          },
+                                          "publicShare": {
+                                            "type": "object",
+                                            "properties": {
+                                              "isEnabled": {
+                                                "type": "boolean"
+                                              }
+                                            },
+                                            "additionalProperties": false
                                           }
                                         },
                                         "additionalProperties": false
@@ -21134,6 +21188,15 @@
                                     }
                                   },
                                   "additionalProperties": false
+                                },
+                                "publicShare": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
+                                    }
+                                  },
+                                  "additionalProperties": false
                                 }
                               },
                               "additionalProperties": false
@@ -21280,6 +21343,15 @@
                                       "maximum": 48,
                                       "minimum": 0.01,
                                       "description": "Expiration delay in hours after latest interaction"
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                },
+                                "publicShare": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
                                     }
                                   },
                                   "additionalProperties": false
@@ -24367,6 +24439,15 @@
                                     }
                                   },
                                   "additionalProperties": false
+                                },
+                                "publicShare": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
+                                    }
+                                  },
+                                  "additionalProperties": false
                                 }
                               },
                               "additionalProperties": false
@@ -24513,6 +24594,15 @@
                                       "maximum": 48,
                                       "minimum": 0.01,
                                       "description": "Expiration delay in hours after latest interaction"
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                },
+                                "publicShare": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
                                     }
                                   },
                                   "additionalProperties": false
@@ -30769,6 +30859,15 @@
                                   }
                                 },
                                 "additionalProperties": false
+                              },
+                              "publicShare": {
+                                "type": "object",
+                                "properties": {
+                                  "isEnabled": {
+                                    "type": "boolean"
+                                  }
+                                },
+                                "additionalProperties": false
                               }
                             },
                             "additionalProperties": false
@@ -34421,6 +34520,15 @@
                                   }
                                 },
                                 "additionalProperties": false
+                              },
+                              "publicShare": {
+                                "type": "object",
+                                "properties": {
+                                  "isEnabled": {
+                                    "type": "boolean"
+                                  }
+                                },
+                                "additionalProperties": false
                               }
                             },
                             "additionalProperties": false
@@ -37592,6 +37700,15 @@
                                     }
                                   },
                                   "additionalProperties": false
+                                },
+                                "publicShare": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
+                                    }
+                                  },
+                                  "additionalProperties": false
                                 }
                               },
                               "additionalProperties": false
@@ -37738,6 +37855,15 @@
                                       "maximum": 48,
                                       "minimum": 0.01,
                                       "description": "Expiration delay in hours after latest interaction"
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                },
+                                "publicShare": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
                                     }
                                   },
                                   "additionalProperties": false

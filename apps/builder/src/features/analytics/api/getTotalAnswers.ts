@@ -11,7 +11,7 @@ export const getTotalAnswers = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/typebots/{typebotId}/analytics/totalAnswersInBlocks',
+      path: '/v1/typebots/{typebotId}/analytics/totalAnswersInBlocks',
       protect: true,
       summary: 'List total answers in blocks',
       tags: ['Analytics'],

@@ -151,7 +151,7 @@ export const BlockNode = ({
   const handleClick = (e: React.MouseEvent) => {
     setFocusedGroupId(groupId)
     e.stopPropagation()
-    if (isTextBubbleBlock(block)) setIsEditing(true)
+    if (isTextBubbleBlock(block) && !isReadOnly) setIsEditing(true)
     setOpenedBlockId(block.id)
   }
 

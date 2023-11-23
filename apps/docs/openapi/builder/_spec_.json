@@ -6,505 +6,11 @@
   },
   "servers": [
     {
-      "url": "https://app.typebot.io/api/v1"
+      "url": "https://app.typebot.io/api"
     }
   ],
   "paths": {
-    "/t/process": {
-      "post": {
-        "operationId": "processTelemetryEvent",
-        "description": "Only used for the cloud version of Typebot. It's the way it processes telemetry events and inject it to thrid-party services.",
-        "tags": [
-          "Telemetry"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "events": {
-                    "type": "array",
-                    "items": {
-                      "anyOf": [
-                        {
-                          "type": "object",
-                          "properties": {
-                            "userId": {
-                              "type": "string"
-                            },
-                            "workspaceId": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string",
-                              "enum": [
-                                "Workspace created"
-                              ]
-                            },
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "name": {
-                                  "type": "string"
-                                },
-                                "plan": {
-                                  "type": "string",
-                                  "enum": [
-                                    "FREE",
-                                    "STARTER",
-                                    "PRO",
-                                    "LIFETIME",
-                                    "OFFERED",
-                                    "CUSTOM",
-                                    "UNLIMITED"
-                                  ]
-                                }
-                              },
-                              "required": [
-                                "plan"
-                              ],
-                              "additionalProperties": false
-                            }
-                          },
-                          "required": [
-                            "userId",
-                            "workspaceId",
-                            "name",
-                            "data"
-                          ],
-                          "additionalProperties": false
-                        },
-                        {
-                          "type": "object",
-                          "properties": {
-                            "userId": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string",
-                              "enum": [
-                                "User created"
-                              ]
-                            },
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "email": {
-                                  "type": "string"
-                                },
-                                "name": {
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "email"
-                              ],
-                              "additionalProperties": false
-                            }
-                          },
-                          "required": [
-                            "userId",
-                            "name",
-                            "data"
-                          ],
-                          "additionalProperties": false
-                        },
-                        {
-                          "type": "object",
-                          "properties": {
-                            "userId": {
-                              "type": "string"
-                            },
-                            "workspaceId": {
-                              "type": "string"
-                            },
-                            "typebotId": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string",
-                              "enum": [
-                                "Typebot created"
-                              ]
-                            },
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "name": {
-                                  "type": "string"
-                                },
-                                "template": {
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "name"
-                              ],
-                              "additionalProperties": false
-                            }
-                          },
-                          "required": [
-                            "userId",
-                            "workspaceId",
-                            "typebotId",
-                            "name",
-                            "data"
-                          ],
-                          "additionalProperties": false
-                        },
-                        {
-                          "type": "object",
-                          "properties": {
-                            "userId": {
-                              "type": "string"
-                            },
-                            "workspaceId": {
-                              "type": "string"
-                            },
-                            "typebotId": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string",
-                              "enum": [
-                                "Typebot published"
-                              ]
-                            },
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "name": {
-                                  "type": "string"
-                                },
-                                "isFirstPublish": {
-                                  "type": "boolean",
-                                  "enum": [
-                                    true
-                                  ]
-                                }
-                              },
-                              "required": [
-                                "name"
-                              ],
-                              "additionalProperties": false
-                            }
-                          },
-                          "required": [
-                            "userId",
-                            "workspaceId",
-                            "typebotId",
-                            "name",
-                            "data"
-                          ],
-                          "additionalProperties": false
-                        },
-                        {
-                          "type": "object",
-                          "properties": {
-                            "userId": {
-                              "type": "string"
-                            },
-                            "workspaceId": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string",
-                              "enum": [
-                                "Subscription updated"
-                              ]
-                            },
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "plan": {
-                                  "type": "string",
-                                  "enum": [
-                                    "FREE",
-                                    "STARTER",
-                                    "PRO",
-                                    "LIFETIME",
-                                    "OFFERED",
-                                    "CUSTOM",
-                                    "UNLIMITED"
-                                  ]
-                                }
-                              },
-                              "required": [
-                                "plan"
-                              ],
-                              "additionalProperties": false
-                            }
-                          },
-                          "required": [
-                            "userId",
-                            "workspaceId",
-                            "name",
-                            "data"
-                          ],
-                          "additionalProperties": false
-                        },
-                        {
-                          "type": "object",
-                          "properties": {
-                            "userId": {
-                              "type": "string"
-                            },
-                            "workspaceId": {
-                              "type": "string"
-                            },
-                            "typebotId": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string",
-                              "enum": [
-                                "New results collected"
-                              ]
-                            },
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "total": {
-                                  "type": "number"
-                                },
-                                "isFirstOfKind": {
-                                  "type": "boolean",
-                                  "enum": [
-                                    true
-                                  ]
-                                }
-                              },
-                              "required": [
-                                "total"
-                              ],
-                              "additionalProperties": false
-                            }
-                          },
-                          "required": [
-                            "userId",
-                            "workspaceId",
-                            "typebotId",
-                            "name",
-                            "data"
-                          ],
-                          "additionalProperties": false
-                        },
-                        {
-                          "type": "object",
-                          "properties": {
-                            "userId": {
-                              "type": "string"
-                            },
-                            "workspaceId": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string",
-                              "enum": [
-                                "Workspace limit reached"
-                              ]
-                            },
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "chatsLimit": {
-                                  "type": "number"
-                                },
-                                "totalChatsUsed": {
-                                  "type": "number"
-                                }
-                              },
-                              "required": [
-                                "chatsLimit",
-                                "totalChatsUsed"
-                              ],
-                              "additionalProperties": false
-                            }
-                          },
-                          "required": [
-                            "userId",
-                            "workspaceId",
-                            "name",
-                            "data"
-                          ],
-                          "additionalProperties": false
-                        },
-                        {
-                          "type": "object",
-                          "properties": {
-                            "userId": {
-                              "type": "string"
-                            },
-                            "workspaceId": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string",
-                              "enum": [
-                                "Workspace automatically quarantined"
-                              ]
-                            },
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "chatsLimit": {
-                                  "type": "number"
-                                },
-                                "totalChatsUsed": {
-                                  "type": "number"
-                                }
-                              },
-                              "required": [
-                                "chatsLimit",
-                                "totalChatsUsed"
-                              ],
-                              "additionalProperties": false
-                            }
-                          },
-                          "required": [
-                            "userId",
-                            "workspaceId",
-                            "name",
-                            "data"
-                          ],
-                          "additionalProperties": false
-                        },
-                        {
-                          "type": "object",
-                          "properties": {
-                            "userId": {
-                              "type": "string"
-                            },
-                            "workspaceId": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string",
-                              "enum": [
-                                "Subscription automatically updated"
-                              ]
-                            },
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "plan": {
-                                  "type": "string",
-                                  "enum": [
-                                    "FREE",
-                                    "STARTER",
-                                    "PRO",
-                                    "LIFETIME",
-                                    "OFFERED",
-                                    "CUSTOM",
-                                    "UNLIMITED"
-                                  ]
-                                }
-                              },
-                              "required": [
-                                "plan"
-                              ],
-                              "additionalProperties": false
-                            }
-                          },
-                          "required": [
-                            "userId",
-                            "workspaceId",
-                            "name",
-                            "data"
-                          ],
-                          "additionalProperties": false
-                        },
-                        {
-                          "type": "object",
-                          "properties": {
-                            "userId": {
-                              "type": "string"
-                            },
-                            "workspaceId": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string",
-                              "enum": [
-                                "Workspace past due"
-                              ]
-                            }
-                          },
-                          "required": [
-                            "userId",
-                            "workspaceId",
-                            "name"
-                          ],
-                          "additionalProperties": false
-                        },
-                        {
-                          "type": "object",
-                          "properties": {
-                            "userId": {
-                              "type": "string"
-                            },
-                            "workspaceId": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string",
-                              "enum": [
-                                "Workspace past due status removed"
-                              ]
-                            }
-                          },
-                          "required": [
-                            "userId",
-                            "workspaceId",
-                            "name"
-                          ],
-                          "additionalProperties": false
-                        }
-                      ]
-                    }
-                  }
-                },
-                "required": [
-                  "events"
-                ],
-                "additionalProperties": false
-              }
-            }
-          }
-        },
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "enum": [
-                        "Events injected"
-                      ]
-                    }
-                  },
-                  "required": [
-                    "message"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/components/responses/error"
-          }
-        }
-      }
-    },
-    "/typebots/{typebotId}/linkedTypebots": {
+    "/v1/typebots/{typebotId}/linkedTypebots": {
       "get": {
         "operationId": "getLinkedTypebots",
         "summary": "Get linked typebots",
@@ -7208,7 +6714,7 @@
         }
       }
     },
-    "/typebots/{typebotId}/analytics/totalAnswersInBlocks": {
+    "/v1/typebots/{typebotId}/analytics/totalAnswersInBlocks": {
       "get": {
         "operationId": "analytics-getTotalAnswers",
         "summary": "List total answers in blocks",
@@ -7275,7 +6781,7 @@
         }
       }
     },
-    "/typebots/{typebotId}/analytics/totalVisitedEdges": {
+    "/v1/typebots/{typebotId}/analytics/totalVisitedEdges": {
       "get": {
         "operationId": "analytics-getTotalVisitedEdges",
         "summary": "List total edges used in results",
@@ -7339,7 +6845,7 @@
         }
       }
     },
-    "/workspaces": {
+    "/v1/workspaces": {
       "get": {
         "operationId": "workspace-listWorkspaces",
         "summary": "List workspaces",
@@ -7576,7 +7082,7 @@
         }
       }
     },
-    "/workspaces/{workspaceId}": {
+    "/v1/workspaces/{workspaceId}": {
       "get": {
         "operationId": "workspace-getWorkspace",
         "summary": "Get workspace",
@@ -7945,7 +7451,7 @@
         }
       }
     },
-    "/workspaces/{workspaceId}/members": {
+    "/v1/workspaces/{workspaceId}/members": {
       "get": {
         "operationId": "workspace-listMembersInWorkspace",
         "summary": "List members in workspace",
@@ -8038,7 +7544,7 @@
         }
       }
     },
-    "/typebots": {
+    "/v1/typebots": {
       "post": {
         "operationId": "typebot-createTypebot",
         "summary": "Create a typebot",
@@ -11598,6 +11104,15 @@
                                 "maximum": 48,
                                 "minimum": 0.01,
                                 "description": "Expiration delay in hours after latest interaction"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "publicShare": {
+                            "type": "object",
+                            "properties": {
+                              "isEnabled": {
+                                "type": "boolean"
                               }
                             },
                             "additionalProperties": false
@@ -15409,6 +14924,15 @@
                                 }
                               },
                               "additionalProperties": false
+                            },
+                            "publicShare": {
+                              "type": "object",
+                              "properties": {
+                                "isEnabled": {
+                                  "type": "boolean"
+                                }
+                              },
+                              "additionalProperties": false
                             }
                           },
                           "additionalProperties": false
@@ -15599,7 +15123,7 @@
         }
       }
     },
-    "/typebots/{typebotId}": {
+    "/v1/typebots/{typebotId}": {
       "patch": {
         "operationId": "typebot-updateTypebot",
         "summary": "Update a typebot",
@@ -19236,6 +18760,15 @@
                                     "maximum": 48,
                                     "minimum": 0.01,
                                     "description": "Expiration delay in hours after latest interaction"
+                                  }
+                                },
+                                "additionalProperties": false
+                              },
+                              "publicShare": {
+                                "type": "object",
+                                "properties": {
+                                  "isEnabled": {
+                                    "type": "boolean"
                                   }
                                 },
                                 "additionalProperties": false
@@ -22896,6 +22429,15 @@
                                     "maximum": 48,
                                     "minimum": 0.01,
                                     "description": "Expiration delay in hours after latest interaction"
+                                  }
+                                },
+                                "additionalProperties": false
+                              },
+                              "publicShare": {
+                                "type": "object",
+                                "properties": {
+                                  "isEnabled": {
+                                    "type": "boolean"
                                   }
                                 },
                                 "additionalProperties": false
@@ -26775,6 +26317,15 @@
                                 }
                               },
                               "additionalProperties": false
+                            },
+                            "publicShare": {
+                              "type": "object",
+                              "properties": {
+                                "isEnabled": {
+                                  "type": "boolean"
+                                }
+                              },
+                              "additionalProperties": false
                             }
                           },
                           "additionalProperties": false
@@ -30646,6 +30197,15 @@
                                     }
                                   },
                                   "additionalProperties": false
+                                },
+                                "publicShare": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
+                                    }
+                                  },
+                                  "additionalProperties": false
                                 }
                               },
                               "additionalProperties": false
@@ -34385,6 +33945,15 @@
                                     }
                                   },
                                   "additionalProperties": false
+                                },
+                                "publicShare": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
+                                    }
+                                  },
+                                  "additionalProperties": false
                                 }
                               },
                               "additionalProperties": false
@@ -34484,13 +34053,18 @@
                         }
                       ]
                     },
-                    "isReadOnly": {
-                      "type": "boolean"
+                    "currentUserMode": {
+                      "type": "string",
+                      "enum": [
+                        "guest",
+                        "read",
+                        "write"
+                      ]
                     }
                   },
                   "required": [
                     "typebot",
-                    "isReadOnly"
+                    "currentUserMode"
                   ],
                   "additionalProperties": false
                 }
@@ -34552,7 +34126,7 @@
         }
       }
     },
-    "/typebots/{typebotId}/publishedTypebot": {
+    "/v1/typebots/{typebotId}/publishedTypebot": {
       "get": {
         "operationId": "typebot-getPublishedTypebot",
         "summary": "Get published typebot",
@@ -38317,6 +37891,15 @@
                                     }
                                   },
                                   "additionalProperties": false
+                                },
+                                "publicShare": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
+                                    }
+                                  },
+                                  "additionalProperties": false
                                 }
                               },
                               "additionalProperties": false
@@ -41984,6 +41567,15 @@
                                     }
                                   },
                                   "additionalProperties": false
+                                },
+                                "publicShare": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
+                                    }
+                                  },
+                                  "additionalProperties": false
                                 }
                               },
                               "additionalProperties": false
@@ -42040,7 +41632,7 @@
         }
       }
     },
-    "/typebots/{typebotId}/publish": {
+    "/v1/typebots/{typebotId}/publish": {
       "post": {
         "operationId": "typebot-publishTypebot",
         "summary": "Publish a typebot",
@@ -42091,7 +41683,7 @@
         }
       }
     },
-    "/typebots/{typebotId}/unpublish": {
+    "/v1/typebots/{typebotId}/unpublish": {
       "post": {
         "operationId": "typebot-unpublishTypebot",
         "summary": "Unpublish a typebot",
@@ -42142,7 +41734,7 @@
         }
       }
     },
-    "/typebots/import": {
+    "/v1/typebots/import": {
       "post": {
         "operationId": "typebot-importTypebot",
         "summary": "Import a typebot",
@@ -45880,6 +45472,15 @@
                                   }
                                 },
                                 "additionalProperties": false
+                              },
+                              "publicShare": {
+                                "type": "object",
+                                "properties": {
+                                  "isEnabled": {
+                                    "type": "boolean"
+                                  }
+                                },
+                                "additionalProperties": false
                               }
                             },
                             "additionalProperties": false
@@ -49573,6 +49174,15 @@
                                     "maximum": 48,
                                     "minimum": 0.01,
                                     "description": "Expiration delay in hours after latest interaction"
+                                  }
+                                },
+                                "additionalProperties": false
+                              },
+                              "publicShare": {
+                                "type": "object",
+                                "properties": {
+                                  "isEnabled": {
+                                    "type": "boolean"
                                   }
                                 },
                                 "additionalProperties": false
@@ -53301,6 +52911,15 @@
                                 }
                               },
                               "additionalProperties": false
+                            },
+                            "publicShare": {
+                              "type": "object",
+                              "properties": {
+                                "isEnabled": {
+                                  "type": "boolean"
+                                }
+                              },
+                              "additionalProperties": false
                             }
                           },
                           "additionalProperties": false
@@ -53413,7 +53032,7 @@
         }
       }
     },
-    "/typebots/{typebotId}/webhookBlocks": {
+    "/v1/typebots/{typebotId}/webhookBlocks": {
       "get": {
         "operationId": "webhook-listWebhookBlocks",
         "summary": "List webhook blocks",
@@ -53491,7 +53110,7 @@
         }
       }
     },
-    "/typebots/{typebotId}/webhookBlocks/{blockId}/getResultExample": {
+    "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/getResultExample": {
       "get": {
         "operationId": "webhook-getResultExample",
         "summary": "Get result example",
@@ -53581,7 +53200,7 @@
         }
       }
     },
-    "/typebots/{typebotId}/webhookBlocks/{blockId}/subscribe": {
+    "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/subscribe": {
       "post": {
         "operationId": "webhook-subscribeWebhook",
         "summary": "Subscribe to webhook block",
@@ -53661,7 +53280,7 @@
         }
       }
     },
-    "/typebots/{typebotId}/webhookBlocks/{blockId}/unsubscribe": {
+    "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/unsubscribe": {
       "post": {
         "operationId": "webhook-unsubscribeWebhook",
         "summary": "Unsubscribe from webhook block",
@@ -53722,7 +53341,7 @@
         }
       }
     },
-    "/typebots/{typebotId}/results": {
+    "/v1/typebots/{typebotId}/results": {
       "get": {
         "operationId": "results-getResults",
         "summary": "List results ordered by descending creation date",
@@ -53950,7 +53569,7 @@
         }
       }
     },
-    "/typebots/{typebotId}/results/{resultId}": {
+    "/v1/typebots/{typebotId}/results/{resultId}": {
       "get": {
         "operationId": "results-getResult",
         "summary": "Get result by id",
@@ -54116,7 +53735,7 @@
         }
       }
     },
-    "/typebots/{typebotId}/results/{resultId}/logs": {
+    "/v1/typebots/{typebotId}/results/{resultId}/logs": {
       "get": {
         "operationId": "results-getResultLogs",
         "summary": "List result logs",
@@ -54206,7 +53825,7 @@
         }
       }
     },
-    "/billing/subscription/portal": {
+    "/v1/billing/subscription/portal": {
       "get": {
         "operationId": "billing-getBillingPortalUrl",
         "summary": "Get Stripe billing portal URL",
@@ -54254,7 +53873,7 @@
         }
       }
     },
-    "/billing/invoices": {
+    "/v1/billing/invoices": {
       "get": {
         "operationId": "billing-listInvoices",
         "summary": "List invoices",
@@ -54331,7 +53950,7 @@
         }
       }
     },
-    "/billing/subscription/checkout": {
+    "/v1/billing/subscription/checkout": {
       "post": {
         "operationId": "billing-createCheckoutSession",
         "summary": "Create checkout session to create a new subscription",
@@ -54433,7 +54052,7 @@
         }
       }
     },
-    "/billing/subscription": {
+    "/v1/billing/subscription": {
       "patch": {
         "operationId": "billing-updateSubscription",
         "summary": "Update subscription",
@@ -54718,7 +54337,7 @@
         }
       }
     },
-    "/billing/usage": {
+    "/v1/billing/usage": {
       "get": {
         "operationId": "billing-getUsage",
         "summary": "Get current plan usage",
@@ -54771,7 +54390,7 @@
         }
       }
     },
-    "/billing/subscription/custom-checkout": {
+    "/v1/billing/subscription/custom-checkout": {
       "post": {
         "operationId": "billing-createCustomCheckoutSession",
         "summary": "Create custom checkout session to make a workspace pay for a custom plan",
@@ -54837,7 +54456,7 @@
         }
       }
     },
-    "/credentials": {
+    "/v1/credentials": {
       "post": {
         "operationId": "credentials-createCredentials",
         "summary": "Create credentials",
@@ -55320,7 +54939,7 @@
         }
       }
     },
-    "/credentials/:credentialsId": {
+    "/v1/credentials/:credentialsId": {
       "delete": {
         "operationId": "credentials-deleteCredentials",
         "summary": "Delete credentials",
@@ -55376,7 +54995,7 @@
         }
       }
     },
-    "/themeTemplates": {
+    "/v1/themeTemplates": {
       "get": {
         "operationId": "theme-listThemeTemplates",
         "summary": "List theme templates",
@@ -55565,7 +55184,7 @@
         }
       }
     },
-    "/themeTemplates/{themeTemplateId}": {
+    "/v1/themeTemplates/{themeTemplateId}": {
       "put": {
         "operationId": "theme-saveThemeTemplate",
         "summary": "Save theme template",
@@ -56119,7 +55738,7 @@
         }
       }
     },
-    "/typebots/{typebotId}/collaborators": {
+    "/v1/typebots/{typebotId}/collaborators": {
       "get": {
         "operationId": "collaborators-getCollaborators",
         "summary": "Get collaborators",
@@ -56202,7 +55821,7 @@
         }
       }
     },
-    "/custom-domains": {
+    "/v1/custom-domains": {
       "post": {
         "operationId": "customDomains-createCustomDomain",
         "summary": "Create custom domain",
@@ -56341,7 +55960,7 @@
         }
       }
     },
-    "/custom-domains/{name}": {
+    "/v1/custom-domains/{name}": {
       "delete": {
         "operationId": "customDomains-deleteCustomDomain",
         "summary": "Delete custom domain",
@@ -56400,7 +56019,7 @@
         }
       }
     },
-    "/custom-domains/{name}/verify": {
+    "/v1/custom-domains/{name}/verify": {
       "get": {
         "operationId": "customDomains-verifyCustomDomain",
         "summary": "Verify domain config",
@@ -56528,1071 +56147,6 @@
                   "required": [
                     "status",
                     "domainJson"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/components/responses/error"
-          }
-        }
-      }
-    },
-    "/whatsapp/phoneNumber": {
-      "get": {
-        "operationId": "whatsApp-getPhoneNumber",
-        "security": [
-          {
-            "Authorization": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "credentialsId",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "systemToken",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "phoneNumberId",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "id",
-                    "name"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/components/responses/error"
-          }
-        }
-      }
-    },
-    "/whatsapp/systemToken": {
-      "get": {
-        "operationId": "whatsApp-getSystemTokenInfo",
-        "security": [
-          {
-            "Authorization": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "token",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "credentialsId",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "appId": {
-                      "type": "string"
-                    },
-                    "appName": {
-                      "type": "string"
-                    },
-                    "expiresAt": {
-                      "type": "number"
-                    },
-                    "scopes": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "required": [
-                    "appId",
-                    "appName",
-                    "expiresAt",
-                    "scopes"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/components/responses/error"
-          }
-        }
-      }
-    },
-    "/whatsapp/phoneNumber/{phoneNumberDisplayName}/available": {
-      "get": {
-        "operationId": "whatsApp-verifyIfPhoneNumberAvailable",
-        "security": [
-          {
-            "Authorization": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "phoneNumberDisplayName",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "enum": [
-                        "available",
-                        "taken"
-                      ]
-                    }
-                  },
-                  "required": [
-                    "message"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/components/responses/error"
-          }
-        }
-      }
-    },
-    "/verficiationTokens": {
-      "post": {
-        "operationId": "whatsApp-generateVerificationToken",
-        "security": [
-          {
-            "Authorization": []
-          }
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "verificationToken": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "verificationToken"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/components/responses/error"
-          }
-        }
-      }
-    },
-    "/typebots/{typebotId}/whatsapp/start-preview": {
-      "post": {
-        "operationId": "whatsApp-startWhatsAppPreview",
-        "summary": "Start preview",
-        "tags": [
-          "WhatsApp"
-        ],
-        "security": [
-          {
-            "Authorization": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "to": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "startFrom": {
-                    "anyOf": [
-                      {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "group"
-                            ]
-                          },
-                          "groupId": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "type",
-                          "groupId"
-                        ],
-                        "additionalProperties": false
-                      },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "event"
-                            ]
-                          },
-                          "eventId": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "type",
-                          "eventId"
-                        ],
-                        "additionalProperties": false
-                      }
-                    ]
-                  }
-                },
-                "required": [
-                  "to"
-                ],
-                "additionalProperties": false
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "typebotId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "message"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/components/responses/error"
-          }
-        }
-      }
-    },
-    "/whatsapp/preview/webhook": {
-      "get": {
-        "operationId": "whatsApp-subscribePreviewWebhook",
-        "summary": "Subscribe webhook",
-        "tags": [
-          "WhatsApp"
-        ],
-        "parameters": [
-          {
-            "name": "hub.challenge",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "hub.verify_token",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "number"
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/components/responses/error"
-          }
-        }
-      },
-      "post": {
-        "operationId": "whatsApp-receiveMessagePreview",
-        "summary": "Message webhook",
-        "tags": [
-          "WhatsApp"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "entry": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "changes": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "value": {
-                                "type": "object",
-                                "properties": {
-                                  "metadata": {
-                                    "type": "object",
-                                    "properties": {
-                                      "phone_number_id": {
-                                        "type": "string"
-                                      }
-                                    },
-                                    "required": [
-                                      "phone_number_id"
-                                    ],
-                                    "additionalProperties": false
-                                  },
-                                  "contacts": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "object",
-                                      "properties": {
-                                        "profile": {
-                                          "type": "object",
-                                          "properties": {
-                                            "name": {
-                                              "type": "string"
-                                            }
-                                          },
-                                          "required": [
-                                            "name"
-                                          ],
-                                          "additionalProperties": false
-                                        }
-                                      },
-                                      "required": [
-                                        "profile"
-                                      ],
-                                      "additionalProperties": false
-                                    }
-                                  },
-                                  "messages": {
-                                    "type": "array",
-                                    "items": {
-                                      "anyOf": [
-                                        {
-                                          "type": "object",
-                                          "properties": {
-                                            "from": {
-                                              "type": "string"
-                                            },
-                                            "type": {
-                                              "type": "string",
-                                              "enum": [
-                                                "text"
-                                              ]
-                                            },
-                                            "text": {
-                                              "type": "object",
-                                              "properties": {
-                                                "body": {
-                                                  "type": "string"
-                                                }
-                                              },
-                                              "required": [
-                                                "body"
-                                              ],
-                                              "additionalProperties": false
-                                            },
-                                            "timestamp": {
-                                              "type": "string"
-                                            }
-                                          },
-                                          "required": [
-                                            "from",
-                                            "type",
-                                            "text",
-                                            "timestamp"
-                                          ],
-                                          "additionalProperties": false
-                                        },
-                                        {
-                                          "type": "object",
-                                          "properties": {
-                                            "from": {
-                                              "type": "string"
-                                            },
-                                            "type": {
-                                              "type": "string",
-                                              "enum": [
-                                                "button"
-                                              ]
-                                            },
-                                            "button": {
-                                              "type": "object",
-                                              "properties": {
-                                                "text": {
-                                                  "type": "string"
-                                                },
-                                                "payload": {
-                                                  "type": "string"
-                                                }
-                                              },
-                                              "required": [
-                                                "text",
-                                                "payload"
-                                              ],
-                                              "additionalProperties": false
-                                            },
-                                            "timestamp": {
-                                              "type": "string"
-                                            }
-                                          },
-                                          "required": [
-                                            "from",
-                                            "type",
-                                            "button",
-                                            "timestamp"
-                                          ],
-                                          "additionalProperties": false
-                                        },
-                                        {
-                                          "type": "object",
-                                          "properties": {
-                                            "from": {
-                                              "type": "string"
-                                            },
-                                            "type": {
-                                              "type": "string",
-                                              "enum": [
-                                                "interactive"
-                                              ]
-                                            },
-                                            "interactive": {
-                                              "type": "object",
-                                              "properties": {
-                                                "button_reply": {
-                                                  "type": "object",
-                                                  "properties": {
-                                                    "id": {
-                                                      "type": "string"
-                                                    },
-                                                    "title": {
-                                                      "type": "string"
-                                                    }
-                                                  },
-                                                  "required": [
-                                                    "id",
-                                                    "title"
-                                                  ],
-                                                  "additionalProperties": false
-                                                }
-                                              },
-                                              "required": [
-                                                "button_reply"
-                                              ],
-                                              "additionalProperties": false
-                                            },
-                                            "timestamp": {
-                                              "type": "string"
-                                            }
-                                          },
-                                          "required": [
-                                            "from",
-                                            "type",
-                                            "interactive",
-                                            "timestamp"
-                                          ],
-                                          "additionalProperties": false
-                                        },
-                                        {
-                                          "type": "object",
-                                          "properties": {
-                                            "from": {
-                                              "type": "string"
-                                            },
-                                            "type": {
-                                              "type": "string",
-                                              "enum": [
-                                                "image"
-                                              ]
-                                            },
-                                            "image": {
-                                              "type": "object",
-                                              "properties": {
-                                                "id": {
-                                                  "type": "string"
-                                                }
-                                              },
-                                              "required": [
-                                                "id"
-                                              ],
-                                              "additionalProperties": false
-                                            },
-                                            "timestamp": {
-                                              "type": "string"
-                                            }
-                                          },
-                                          "required": [
-                                            "from",
-                                            "type",
-                                            "image",
-                                            "timestamp"
-                                          ],
-                                          "additionalProperties": false
-                                        },
-                                        {
-                                          "type": "object",
-                                          "properties": {
-                                            "from": {
-                                              "type": "string"
-                                            },
-                                            "type": {
-                                              "type": "string",
-                                              "enum": [
-                                                "video"
-                                              ]
-                                            },
-                                            "video": {
-                                              "type": "object",
-                                              "properties": {
-                                                "id": {
-                                                  "type": "string"
-                                                }
-                                              },
-                                              "required": [
-                                                "id"
-                                              ],
-                                              "additionalProperties": false
-                                            },
-                                            "timestamp": {
-                                              "type": "string"
-                                            }
-                                          },
-                                          "required": [
-                                            "from",
-                                            "type",
-                                            "video",
-                                            "timestamp"
-                                          ],
-                                          "additionalProperties": false
-                                        },
-                                        {
-                                          "type": "object",
-                                          "properties": {
-                                            "from": {
-                                              "type": "string"
-                                            },
-                                            "type": {
-                                              "type": "string",
-                                              "enum": [
-                                                "audio"
-                                              ]
-                                            },
-                                            "audio": {
-                                              "type": "object",
-                                              "properties": {
-                                                "id": {
-                                                  "type": "string"
-                                                }
-                                              },
-                                              "required": [
-                                                "id"
-                                              ],
-                                              "additionalProperties": false
-                                            },
-                                            "timestamp": {
-                                              "type": "string"
-                                            }
-                                          },
-                                          "required": [
-                                            "from",
-                                            "type",
-                                            "audio",
-                                            "timestamp"
-                                          ],
-                                          "additionalProperties": false
-                                        },
-                                        {
-                                          "type": "object",
-                                          "properties": {
-                                            "from": {
-                                              "type": "string"
-                                            },
-                                            "type": {
-                                              "type": "string",
-                                              "enum": [
-                                                "document"
-                                              ]
-                                            },
-                                            "document": {
-                                              "type": "object",
-                                              "properties": {
-                                                "id": {
-                                                  "type": "string"
-                                                }
-                                              },
-                                              "required": [
-                                                "id"
-                                              ],
-                                              "additionalProperties": false
-                                            },
-                                            "timestamp": {
-                                              "type": "string"
-                                            }
-                                          },
-                                          "required": [
-                                            "from",
-                                            "type",
-                                            "document",
-                                            "timestamp"
-                                          ],
-                                          "additionalProperties": false
-                                        }
-                                      ]
-                                    }
-                                  }
-                                },
-                                "required": [
-                                  "metadata"
-                                ],
-                                "additionalProperties": false
-                              }
-                            },
-                            "required": [
-                              "value"
-                            ],
-                            "additionalProperties": false
-                          }
-                        }
-                      },
-                      "required": [
-                        "changes"
-                      ],
-                      "additionalProperties": false
-                    }
-                  }
-                },
-                "required": [
-                  "entry"
-                ],
-                "additionalProperties": false
-              }
-            }
-          }
-        },
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "message"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/components/responses/error"
-          }
-        }
-      }
-    },
-    "/openai/models": {
-      "get": {
-        "operationId": "openAI-listModels",
-        "summary": "List OpenAI models",
-        "tags": [
-          "OpenAI"
-        ],
-        "security": [
-          {
-            "Authorization": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "credentialsId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "workspaceId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "baseUrl",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "apiVersion",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "gpt",
-                "tts"
-              ]
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "models": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "required": [
-                    "models"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/components/responses/error"
-          }
-        }
-      }
-    },
-    "/generate-upload-url": {
-      "post": {
-        "operationId": "generateUploadUrl",
-        "summary": "Generate upload URL",
-        "description": "Generate the needed URL to upload a file from the client",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "filePathProps": {
-                    "anyOf": [
-                      {
-                        "anyOf": [
-                          {
-                            "anyOf": [
-                              {
-                                "type": "object",
-                                "properties": {
-                                  "workspaceId": {
-                                    "type": "string"
-                                  },
-                                  "typebotId": {
-                                    "type": "string"
-                                  },
-                                  "blockId": {
-                                    "type": "string"
-                                  },
-                                  "itemId": {
-                                    "type": "string"
-                                  }
-                                },
-                                "required": [
-                                  "workspaceId",
-                                  "typebotId",
-                                  "blockId"
-                                ],
-                                "additionalProperties": false
-                              },
-                              {
-                                "type": "object",
-                                "properties": {
-                                  "workspaceId": {
-                                    "type": "string"
-                                  },
-                                  "typebotId": {
-                                    "type": "string"
-                                  },
-                                  "fileName": {
-                                    "type": "string"
-                                  }
-                                },
-                                "required": [
-                                  "workspaceId",
-                                  "typebotId",
-                                  "fileName"
-                                ],
-                                "additionalProperties": false
-                              }
-                            ]
-                          },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "userId": {
-                                "type": "string"
-                              },
-                              "fileName": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "userId",
-                              "fileName"
-                            ],
-                            "additionalProperties": false
-                          }
-                        ]
-                      },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "workspaceId": {
-                            "type": "string"
-                          },
-                          "fileName": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "workspaceId",
-                          "fileName"
-                        ],
-                        "additionalProperties": false
-                      }
-                    ]
-                  },
-                  "fileType": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "filePathProps"
-                ],
-                "additionalProperties": false
-              }
-            }
-          }
-        },
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "presignedUrl": {
-                      "type": "string"
-                    },
-                    "formData": {
-                      "type": "object",
-                      "additionalProperties": {}
-                    },
-                    "fileUrl": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "presignedUrl",
-                    "formData",
-                    "fileUrl"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/components/responses/error"
-          }
-        }
-      }
-    },
-    "/zemantic-ai/projects": {
-      "get": {
-        "operationId": "zemanticAi-listProjects",
-        "summary": "List Zemantic AI projects",
-        "tags": [
-          "ZemanticAi"
-        ],
-        "security": [
-          {
-            "Authorization": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "credentialsId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "workspaceId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "projects": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "label": {
-                            "type": "string"
-                          },
-                          "value": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "label",
-                          "value"
-                        ],
-                        "additionalProperties": false
-                      }
-                    }
-                  },
-                  "required": [
-                    "projects"
                   ],
                   "additionalProperties": false
                 }

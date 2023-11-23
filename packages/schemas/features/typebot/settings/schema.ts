@@ -36,6 +36,11 @@ export const settingsSchema = z.object({
   typingEmulation: typingEmulation.optional(),
   metadata: metadataSchema.optional(),
   whatsApp: whatsAppSettingsSchema.optional(),
+  publicShare: z
+    .object({
+      isEnabled: z.boolean().optional(),
+    })
+    .optional(),
 })
 
 export type Settings = z.infer<typeof settingsSchema>

@@ -40,7 +40,7 @@
     "@typebot.io/tsconfig": "workspace:*",
     "tsup": "6.5.0",
     "typebot-js": "workspace:*",
-    "typescript": "5.2.2",
+    "typescript": "5.3.2",
     "@typebot.io/lib": "workspace:*"
   },
   "peerDependencies": {

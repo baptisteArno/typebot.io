@@ -70,7 +70,7 @@ export const importTypebot = authenticatedProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/typebots/import',
+      path: '/v1/typebots/import',
       protect: true,
       summary: 'Import a typebot',
       tags: ['Typebot'],

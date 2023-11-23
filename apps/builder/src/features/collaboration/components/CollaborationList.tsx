@@ -137,7 +137,7 @@ export const CollaborationList = () => {
   }
 
   return (
-    <Stack spacing={1} pt="4" pb="2">
+    <Stack spacing={1} pt="4">
       <HStack as="form" onSubmit={handleInvitationSubmit} px="4" pb="2">
         <Input
           size="sm"

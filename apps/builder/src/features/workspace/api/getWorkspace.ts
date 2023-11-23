@@ -9,7 +9,7 @@ export const getWorkspace = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/workspaces/{workspaceId}',
+      path: '/v1/workspaces/{workspaceId}',
       protect: true,
       summary: 'Get workspace',
       tags: ['Workspace'],

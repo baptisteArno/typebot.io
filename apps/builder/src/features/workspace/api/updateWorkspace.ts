@@ -9,7 +9,7 @@ export const updateWorkspace = authenticatedProcedure
   .meta({
     openapi: {
       method: 'PATCH',
-      path: '/workspaces/{workspaceId}',
+      path: '/v1/workspaces/{workspaceId}',
       protect: true,
       summary: 'Update workspace',
       tags: ['Workspace'],

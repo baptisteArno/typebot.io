@@ -18,7 +18,7 @@ test.describe('Script block', () => {
       'window.location.href = "https://www.google.com"'
     )
 
-    await page.click('text=Preview')
+    await page.click('text=Test')
     await page.getByRole('button', { name: 'Trigger code' }).click()
     await expect(page).toHaveURL('https://www.google.com')
   })

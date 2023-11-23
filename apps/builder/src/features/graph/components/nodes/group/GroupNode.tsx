@@ -227,7 +227,6 @@ const NonMemoizedDraggableGroupNode = ({
             onChange={setGroupTitle}
             onSubmit={handleTitleSubmit}
             fontWeight="semibold"
-            pointerEvents={isReadOnly ? 'none' : 'auto'}
             pr="8"
           >
             <EditablePreview

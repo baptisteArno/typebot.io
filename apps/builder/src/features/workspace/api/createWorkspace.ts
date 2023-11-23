@@ -10,7 +10,7 @@ export const createWorkspace = authenticatedProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/workspaces',
+      path: '/v1/workspaces',
       protect: true,
       summary: 'Create workspace',
       tags: ['Workspace'],

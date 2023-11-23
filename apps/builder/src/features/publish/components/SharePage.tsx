@@ -27,11 +27,12 @@ import { parseDefaultPublicId } from '../helpers/parseDefaultPublicId'
 import { useTranslate } from '@tolgee/react'
 import { env } from '@typebot.io/env'
 import DomainStatusIcon from '@/features/customDomains/components/DomainStatusIcon'
+import { TypebotNotFoundPage } from '@/features/editor/components/TypebotNotFoundPage'
 
 export const SharePage = () => {
   const { t } = useTranslate()
   const { workspace } = useWorkspace()
-  const { typebot, updateTypebot, publishedTypebot } = useTypebot()
+  const { typebot, updateTypebot, publishedTypebot, is404 } = useTypebot()
   const { showToast } = useToast()
 
   const handlePublicIdChange = async (publicId: string) => {
@@ -87,6 +88,7 @@ export const SharePage = () => {
     return true
   }
 
+  if (is404) return <TypebotNotFoundPage />
   return (
     <Flex flexDir="column" pb="40">
       <Seo title={typebot?.name ? `${typebot.name} | Share` : 'Share'} />

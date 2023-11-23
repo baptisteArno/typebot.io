@@ -37,7 +37,7 @@ test.describe.parallel('Buttons input block', () => {
     await page.click('text=Delete')
     await expect(page.locator('text=Item 2')).toBeHidden()
 
-    await page.click('text=Preview')
+    await page.click('text=Test')
     await page.getByRole('button', { name: 'Item 3' }).click()
     await expect(page.getByRole('button', { name: 'Item 3' })).toBeHidden()
     await expect(page.getByTestId('guest-bubble')).toHaveText('Item 3')
@@ -57,7 +57,7 @@ test.describe.parallel('Buttons input block', () => {
     await page.fill('input[value="Click to edit"]', 'Item 2')
     await page.press('input[value="Item 2"]', 'Enter')
 
-    await page.click('text=Preview')
+    await page.click('text=Test')
 
     await page.getByRole('checkbox', { name: 'Item 3' }).click()
     await page.getByRole('checkbox', { name: 'Item 1' }).click()
@@ -77,7 +77,7 @@ test('Variable buttons should work', async ({ page }) => {
   )
 
   await page.goto(`/typebots/${typebotId}/edit`)
-  await page.click('text=Preview')
+  await page.click('text=Test')
   await page.getByRole('button', { name: 'Variable item' }).click()
   await expect(page.getByTestId('guest-bubble')).toHaveText('Variable item')
   await expect(page.locator('text=Ok great!')).toBeVisible()

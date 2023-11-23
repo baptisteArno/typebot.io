@@ -8,7 +8,7 @@ export const deleteWorkspace = authenticatedProcedure
   .meta({
     openapi: {
       method: 'DELETE',
-      path: '/workspaces/{workspaceId}',
+      path: '/v1/workspaces/{workspaceId}',
       protect: true,
       summary: 'Delete workspace',
       tags: ['Workspace'],

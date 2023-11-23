@@ -31,7 +31,7 @@ test.describe.parallel('Google sheets integration', () => {
       'Georges'
     )
 
-    await page.click('text=Preview')
+    await page.click('text=Test')
     await page
       .locator('typebot-standard')
       .locator('input[placeholder="Type your email..."]')
@@ -76,7 +76,7 @@ test.describe.parallel('Google sheets integration', () => {
       'Last name'
     )
 
-    await page.click('text=Preview')
+    await page.click('text=Test')
     await page
       .locator('typebot-standard')
       .locator('input[placeholder="Type your email..."]')
@@ -132,7 +132,7 @@ test.describe.parallel('Google sheets integration', () => {
     await page.getByRole('menuitem', { name: 'Last name' }).click()
     await createNewVar(page, 'Last name')
 
-    await page.click('text=Preview')
+    await page.click('text=Test')
     await page
       .locator('typebot-standard')
       .locator('input[placeholder="Type your email..."]')

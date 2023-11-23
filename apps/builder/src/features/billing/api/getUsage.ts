@@ -10,7 +10,7 @@ export const getUsage = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/billing/usage',
+      path: '/v1/billing/usage',
       protect: true,
       summary: 'Get current plan usage',
       tags: ['Billing'],

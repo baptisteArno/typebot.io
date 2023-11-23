@@ -49,7 +49,7 @@ test.describe('Set variable block', () => {
       .getByRole('textbox')
       .fill('1000 + {{Total}}')
 
-    await page.click('text=Preview')
+    await page.click('text=Test')
     await page
       .locator('typebot-standard')
       .locator('input[placeholder="Type a number..."]')

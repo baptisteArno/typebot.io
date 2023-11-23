@@ -1,10 +1,10 @@
 import { createContext } from '@/helpers/server/context'
-import { trpcRouter } from '@/helpers/server/routers/v1/trpcRouter'
+import { appRouter } from '@/helpers/server/routers/appRouter'
 import * as Sentry from '@sentry/nextjs'
 import { createNextApiHandler } from '@trpc/server/adapters/next'
 
 export default createNextApiHandler({
-  router: trpcRouter,
+  router: appRouter,
   createContext,
   onError({ error }) {
     if (error.code === 'INTERNAL_SERVER_ERROR') {

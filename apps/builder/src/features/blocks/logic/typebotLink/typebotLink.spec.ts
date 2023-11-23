@@ -35,7 +35,7 @@ test('should be configurable', async ({ page }) => {
   await page.click('input[placeholder="Select a group"]')
   await page.click('text=Group #2')
 
-  await page.click('text=Preview')
+  await page.click('text=Test')
   await expect(
     page.locator('typebot-standard').locator('text=Second block')
   ).toBeVisible()
@@ -45,7 +45,7 @@ test('should be configurable', async ({ page }) => {
   await page.getByTestId('selected-item-label').nth(1).click({ force: true })
   await page.click('button >> text=Start')
 
-  await page.click('text=Preview')
+  await page.click('text=Test')
   await page.locator('typebot-standard').locator('input').fill('Hello there!')
   await page.locator('typebot-standard').locator('input').press('Enter')
   await expect(
@@ -60,7 +60,7 @@ test('should be configurable', async ({ page }) => {
   await page.getByRole('textbox').nth(1).click()
   await page.click('button >> text=Hello')
 
-  await page.click('text=Preview')
+  await page.click('text=Test')
   await expect(
     page.locator('typebot-standard').locator('text=Hello world')
   ).toBeVisible()

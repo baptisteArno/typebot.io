@@ -19,7 +19,7 @@ test.describe('Email input block', () => {
 
     await page.goto(`/typebots/${typebotId}/edit`)
 
-    await page.click('text=Preview')
+    await page.click('text=Test')
     await expect(
       page.locator(
         `input[placeholder="${defaultEmailInputOptions.labels.placeholder}"]`

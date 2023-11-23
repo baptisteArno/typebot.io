@@ -1,9 +1,9 @@
 import { createContext } from '@/helpers/server/context'
-import { trpcRouter } from '@/helpers/server/routers/v1/trpcRouter'
 import * as Sentry from '@sentry/nextjs'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createOpenApiNextHandler } from 'trpc-openapi'
 import cors from 'nextjs-cors'
+import { publicRouter } from '@/helpers/server/routers/publicRouter'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res, {
@@ -11,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   })
 
   return createOpenApiNextHandler({
-    router: trpcRouter,
+    router: publicRouter,
     createContext,
     onError({ error }) {
       if (error.code === 'INTERNAL_SERVER_ERROR') {

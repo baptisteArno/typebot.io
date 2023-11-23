@@ -14,7 +14,7 @@ export const updateSubscription = authenticatedProcedure
   .meta({
     openapi: {
       method: 'PATCH',
-      path: '/billing/subscription',
+      path: '/v1/billing/subscription',
       protect: true,
       summary: 'Update subscription',
       tags: ['Billing'],

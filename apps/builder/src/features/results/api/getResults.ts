@@ -11,7 +11,7 @@ export const getResults = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/typebots/{typebotId}/results',
+      path: '/v1/typebots/{typebotId}/results',
       protect: true,
       summary: 'List results ordered by descending creation date',
       tags: ['Results'],

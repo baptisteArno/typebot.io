@@ -5,10 +5,12 @@ import { getViewerUrl } from '@typebot.io/lib/getViewerUrl'
 import { SettingsSideMenu } from './SettingsSideMenu'
 import { TypebotHeader } from '@/features/editor/components/TypebotHeader'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { TypebotNotFoundPage } from '@/features/editor/components/TypebotNotFoundPage'
 
 export const SettingsPage = () => {
-  const { typebot } = useTypebot()
+  const { typebot, is404 } = useTypebot()
 
+  if (is404) return <TypebotNotFoundPage />
   return (
     <Flex overflow="hidden" h="100vh" flexDir="column">
       <Seo title={typebot?.name ? `${typebot.name} | Settings` : 'Settings'} />

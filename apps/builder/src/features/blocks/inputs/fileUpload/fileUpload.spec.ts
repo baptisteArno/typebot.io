@@ -21,7 +21,7 @@ test('options should work', async ({ page }) => {
 
   await page.goto(`/typebots/${typebotId}/edit`)
 
-  await page.click('text=Preview')
+  await page.click('text=Test')
   await expect(page.locator(`text=Click to upload`)).toBeVisible()
   await expect(page.locator(`text="Skip"`)).toBeHidden()
   await page

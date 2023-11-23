@@ -9,7 +9,7 @@ export const getTotalVisitedEdges = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/typebots/{typebotId}/analytics/totalVisitedEdges',
+      path: '/v1/typebots/{typebotId}/analytics/totalVisitedEdges',
       protect: true,
       summary: 'List total edges used in results',
       tags: ['Analytics'],

@@ -34,7 +34,7 @@ test.describe('Chatwoot block', () => {
     await page.getByLabel('Email').fill('john@email.com')
     await page.getByLabel('Avatar URL').fill('https://domain.com/avatar.png')
     await page.getByLabel('Phone number').fill('+33654347543')
-    await page.getByRole('button', { name: 'Preview', exact: true }).click()
+    await page.getByRole('button', { name: 'Test', exact: true }).click()
     await expect(
       page.getByText('Chatwoot block is not supported in preview').nth(0)
     ).toBeVisible()

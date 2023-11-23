@@ -10,7 +10,7 @@ export const subscribeWebhook = authenticatedProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/typebots/{typebotId}/webhookBlocks/{blockId}/subscribe',
+      path: '/v1/typebots/{typebotId}/webhookBlocks/{blockId}/subscribe',
       protect: true,
       summary: 'Subscribe to webhook block',
       tags: ['Webhook'],

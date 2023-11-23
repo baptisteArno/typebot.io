@@ -8,7 +8,12 @@ export default function Page() {
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  const redirectPath = context.query.redirectPath?.toString()
+  const callbackUrl = context.query.callbackUrl?.toString()
+  const redirectPath =
+    context.query.redirectPath?.toString() ??
+    (callbackUrl
+      ? new URL(callbackUrl).searchParams.get('redirectPath')
+      : undefined)
   return redirectPath
     ? {
         redirect: {

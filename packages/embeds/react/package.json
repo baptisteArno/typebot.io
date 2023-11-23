@@ -39,7 +39,7 @@
     "rollup-plugin-typescript-paths": "1.4.0",
     "tslib": "2.6.0",
     "tsx": "3.12.7",
-    "typescript": "5.2.2"
+    "typescript": "5.3.2"
   },
   "peerDependencies": {
     "react": "18.x"

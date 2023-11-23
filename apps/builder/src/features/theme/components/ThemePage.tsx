@@ -4,10 +4,12 @@ import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { Flex } from '@chakra-ui/react'
 import { Standard } from '@typebot.io/nextjs'
 import { ThemeSideMenu } from './ThemeSideMenu'
+import { TypebotNotFoundPage } from '@/features/editor/components/TypebotNotFoundPage'
 
 export const ThemePage = () => {
-  const { typebot } = useTypebot()
+  const { typebot, is404 } = useTypebot()
 
+  if (is404) return <TypebotNotFoundPage />
   return (
     <Flex overflow="hidden" h="100vh" flexDir="column">
       <Seo title={typebot?.name ? `${typebot.name} | Theme` : 'Theme'} />

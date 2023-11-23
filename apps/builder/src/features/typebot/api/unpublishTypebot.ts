@@ -8,7 +8,7 @@ export const unpublishTypebot = authenticatedProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/typebots/{typebotId}/unpublish',
+      path: '/v1/typebots/{typebotId}/unpublish',
       protect: true,
       summary: 'Unpublish a typebot',
       tags: ['Typebot'],

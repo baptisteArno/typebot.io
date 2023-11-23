@@ -69,8 +69,12 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (!router.isReady) return
     if (status === 'loading') return
-    const isSigningIn = () => ['/signin', '/register'].includes(router.pathname)
-    if (!user && status === 'unauthenticated' && !isSigningIn())
+    const isSignInPath = ['/signin', '/register'].includes(router.pathname)
+    const isPathPublicFriendly = /\/typebots\/.+\/(edit|theme|settings)/.test(
+      router.pathname
+    )
+    if (isSignInPath || isPathPublicFriendly) return
+    if (!user && status === 'unauthenticated')
       router.replace({
         pathname: '/signin',
         query: {

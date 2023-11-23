@@ -49,7 +49,7 @@ test.describe('Condition block', () => {
     await page.click('button:has-text("Greater than")', { force: true })
     await page.fill('input[placeholder="Type a number..."]', '20')
 
-    await page.click('text=Preview')
+    await page.click('text=Test')
     await page
       .locator('typebot-standard')
       .locator('input[placeholder="Type a number..."]')

@@ -35,7 +35,7 @@ export const createTypebot = authenticatedProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/typebots',
+      path: '/v1/typebots',
       protect: true,
       summary: 'Create a typebot',
       tags: ['Typebot'],

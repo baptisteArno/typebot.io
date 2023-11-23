@@ -10,7 +10,7 @@ export const deleteTypebot = authenticatedProcedure
   .meta({
     openapi: {
       method: 'DELETE',
-      path: '/typebots/{typebotId}',
+      path: '/v1/typebots/{typebotId}',
       protect: true,
       summary: 'Delete a typebot',
       tags: ['Typebot'],

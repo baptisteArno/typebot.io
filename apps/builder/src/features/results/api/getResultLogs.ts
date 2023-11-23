@@ -8,7 +8,7 @@ export const getResultLogs = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/typebots/{typebotId}/results/{resultId}/logs',
+      path: '/v1/typebots/{typebotId}/results/{resultId}/logs',
       protect: true,
       summary: 'List result logs',
       tags: ['Results'],

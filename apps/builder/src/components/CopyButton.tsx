@@ -4,6 +4,10 @@ import { ButtonProps, Button, useClipboard } from '@chakra-ui/react'
 interface CopyButtonProps extends ButtonProps {
   textToCopy: string
   onCopied?: () => void
+  text?: {
+    copy: string
+    copied: string
+  }
 }
 
 export const CopyButton = (props: CopyButtonProps) => {
@@ -23,7 +27,7 @@ export const CopyButton = (props: CopyButtonProps) => {
       }}
       {...buttonProps}
     >
-      {!hasCopied ? 'Copy' : 'Copied'}
+      {!hasCopied ? props.text?.copy ?? 'Copy' : props.text?.copied ?? 'Copied'}
     </Button>
   )
 }

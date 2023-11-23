@@ -9,7 +9,7 @@ export const listInvitationsInWorkspace = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/workspaces/{workspaceId}/invitations',
+      path: '/v1/workspaces/{workspaceId}/invitations',
       protect: true,
       summary: 'List invitations in workspace',
       tags: ['Workspace'],

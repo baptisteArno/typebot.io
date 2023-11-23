@@ -16,7 +16,7 @@ export const listCredentials = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/credentials',
+      path: '/v1/credentials',
       protect: true,
       summary: 'List workspace credentials',
       tags: ['Credentials'],

@@ -10,7 +10,7 @@ export const listThemeTemplates = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/themeTemplates',
+      path: '/v1/themeTemplates',
       protect: true,
       summary: 'List theme templates',
       tags: ['Theme template'],

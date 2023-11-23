@@ -11,7 +11,7 @@ export const createCustomDomain = authenticatedProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/custom-domains',
+      path: '/v1/custom-domains',
       protect: true,
       summary: 'Create custom domain',
       tags: ['Custom domains'],

@@ -11,6 +11,7 @@ export const sanitizeSettings = (
   mode: 'create' | 'update'
 ): Typebot['settings'] => ({
   ...settings,
+  publicShare: mode === 'create' ? undefined : settings.publicShare,
   general:
     workspacePlan === Plan.FREE || settings.general
       ? {

@@ -23,8 +23,11 @@ const initialState = {
   future: [],
 }
 
+type Params = { isReadOnly?: boolean }
+
 export const useUndo = <T extends { updatedAt: Date }>(
-  initialPresent?: T
+  initialPresent?: T,
+  params?: Params
 ): [T | undefined, Actions<T>] => {
   const [history, setHistory] = useState<History<T>>(initialState)
   const presentRef = useRef<T | null>(initialPresent ?? null)
@@ -33,6 +36,7 @@ export const useUndo = <T extends { updatedAt: Date }>(
   const canRedo = history.future.length !== 0
 
   const undo = useCallback(() => {
+    if (params?.isReadOnly) return
     const { past, present, future } = history
     if (past.length === 0 || !present) return
 
@@ -47,9 +51,10 @@ export const useUndo = <T extends { updatedAt: Date }>(
       future: [present, ...future],
     })
     presentRef.current = newPresent
-  }, [history])
+  }, [history, params?.isReadOnly])
 
   const redo = useCallback(() => {
+    if (params?.isReadOnly) return
     const { past, present, future } = history
     if (future.length === 0) return
     const next = future[0]
@@ -61,11 +66,12 @@ export const useUndo = <T extends { updatedAt: Date }>(
       future: newFuture,
     })
     presentRef.current = next
-  }, [history])
+  }, [history, params?.isReadOnly])
 
   const set = useCallback(
     (newPresentArg: T | ((current: T) => T) | undefined) => {
       const { past, present } = history
+      if (isDefined(present) && params?.isReadOnly) return
       const newPresent =
         typeof newPresentArg === 'function'
           ? newPresentArg(presentRef.current as T)
@@ -92,16 +98,17 @@ export const useUndo = <T extends { updatedAt: Date }>(
       })
       presentRef.current = newPresent
     },
-    [history]
+    [history, params?.isReadOnly]
   )
 
   const flush = useCallback(() => {
+    if (params?.isReadOnly) return
     setHistory({
       present: presentRef.current ?? undefined,
       past: [],
       future: [],
     })
-  }, [])
+  }, [params?.isReadOnly])
 
   return [history.present, { set, undo, redo, flush, canUndo, canRedo }]
 }

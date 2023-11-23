@@ -32,7 +32,7 @@ export const getLinkedTypebots = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/typebots/{typebotId}/linkedTypebots',
+      path: '/v1/typebots/{typebotId}/linkedTypebots',
       protect: true,
       summary: 'Get linked typebots',
       tags: ['Typebot'],

@@ -42,7 +42,7 @@ export const updateTypebot = authenticatedProcedure
   .meta({
     openapi: {
       method: 'PATCH',
-      path: '/typebots/{typebotId}',
+      path: '/v1/typebots/{typebotId}',
       protect: true,
       summary: 'Update a typebot',
       tags: ['Typebot'],

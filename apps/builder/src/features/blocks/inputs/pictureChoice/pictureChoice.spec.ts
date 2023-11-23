@@ -54,7 +54,7 @@ test.describe.parallel('Picture choice input block', () => {
     await page.getByPlaceholder('Paste the image link...').fill(thirdImageSrc)
     await page.getByLabel('Title:').fill('Third image')
     await page.getByLabel('Description:').fill('Third description')
-    await page.getByRole('button', { name: 'Preview' }).click()
+    await page.getByRole('button', { name: 'Test' }).click()
     await expect(
       page.getByRole('button', {
         name: 'First image First image First description',
