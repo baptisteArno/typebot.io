@@ -149,7 +149,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           )
           return res.send({ message: 'Workspace set to past due.' })
         }
-        case 'invoices.paid': {
+        case 'invoice.paid': {
           const invoice = event.data.object as Stripe.Invoice
           const workspace = await prisma.workspace.findFirst({
             where: {
