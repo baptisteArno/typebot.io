@@ -1,4 +1,4 @@
-import { CSSProperties, useMemo } from 'react'
+import { useMemo } from 'react'
 import { TypebotProvider } from '../providers/TypebotProvider'
 import styles from '../assets/style.css'
 import importantStyles from '../assets/importantStyles.css'
@@ -14,8 +14,8 @@ import {
 import { Log } from '@typebot.io/prisma'
 import { LiteBadge } from './LiteBadge'
 import { isNotEmpty } from '@typebot.io/lib'
-import { getViewerUrl } from '@typebot.io/lib/getViewerUrl'
 import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/constants'
+import { env } from '@typebot.io/env'
 
 export type TypebotViewerProps = {
   typebot: Omit<PublicTypebot, 'updatedAt' | 'createdAt'>
@@ -36,7 +36,7 @@ export type TypebotViewerProps = {
 
 export const TypebotViewer = ({
   typebot,
-  apiHost = getViewerUrl(),
+  apiHost = env.NEXT_PUBLIC_VIEWER_URL[0],
   isPreview = false,
   isLoading = false,
   resultId,

@@ -41,7 +41,8 @@
     "tsup": "6.5.0",
     "typebot-js": "workspace:*",
     "typescript": "5.3.2",
-    "@typebot.io/lib": "workspace:*"
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/env": "workspace:*"
   },
   "peerDependencies": {
     "@typebot.io/prisma": "workspace:*",

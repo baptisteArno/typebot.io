@@ -94,7 +94,7 @@ class Typebot_Public
     $lib_url = "https://cdn.jsdelivr.net/npm/@typebot.io/js@0.2.15/dist/web.js";
     $width = '100%';
     $height = '500px';
-    $api_host = 'https://viewer.typebot.io';
+    $api_host = 'https://typebot.io';
     if (array_key_exists('width', $attributes)) {
       $width = sanitize_text_field($attributes['width']);
     }

@@ -41,7 +41,6 @@ import {
 } from '@chakra-ui/react'
 import { env } from '@typebot.io/env'
 import { isEmpty, isNotEmpty } from '@typebot.io/lib/utils'
-import { getViewerUrl } from '@typebot.io/lib/getViewerUrl'
 import React, { useState } from 'react'
 import { createId } from '@paralleldrive/cuid2'
 
@@ -449,9 +448,7 @@ const Webhook = ({
   credentialsId: string
 }) => {
   const { workspace } = useWorkspace()
-  const webhookUrl = `${
-    env.NEXT_PUBLIC_VIEWER_INTERNAL_URL ?? getViewerUrl()
-  }/api/v1/workspaces/${workspace?.id}/whatsapp/${credentialsId}/webhook`
+  const webhookUrl = `${env.NEXT_PUBLIC_VIEWER_URL[0]}/api/v1/workspaces/${workspace?.id}/whatsapp/${credentialsId}/webhook`
 
   return (
     <Stack spacing={6}>

@@ -2,10 +2,10 @@ import { BotProps } from '@typebot.io/nextjs'
 import parserBabel from 'prettier/parser-babel'
 import prettier from 'prettier/standalone'
 import { isDefined } from '@typebot.io/lib'
-import { getViewerUrl } from '@typebot.io/lib/getViewerUrl'
 import { Typebot } from '@typebot.io/schemas'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import packageJson from '../../../../../../../../packages/embeds/js/package.json'
+import { env } from '@typebot.io/env'
 
 export const parseStringParam = (
   fieldName: string,
@@ -59,7 +59,7 @@ export const parseApiHost = (
   customDomain: Typebot['customDomain'] | undefined
 ) => {
   if (customDomain) return new URL(`https://${customDomain}`).origin
-  return getViewerUrl()
+  return env.NEXT_PUBLIC_VIEWER_URL[0]
 }
 
 export const parseApiHostValue = (

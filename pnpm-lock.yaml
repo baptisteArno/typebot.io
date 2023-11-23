@@ -758,6 +758,9 @@ importers:
         specifier: 1.0.4
         version: 1.0.4
     devDependencies:
+      '@typebot.io/env':
+        specifier: workspace:*
+        version: link:../../env
       '@typebot.io/lib':
         specifier: workspace:*
         version: link:../../lib
