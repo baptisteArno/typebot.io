@@ -150,7 +150,7 @@ const parseFilePath = async ({
       workspace: {
         select: {
           plan: true,
-          isQuarantined: true,
+          isSuspended: true,
           isPastDue: true,
           members: {
             select: {

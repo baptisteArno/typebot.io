@@ -10,13 +10,13 @@ export const isReadTypebotForbidden = async (
   typebot: {
     collaborators: Pick<CollaboratorsOnTypebots, 'userId'>[]
   } & {
-    workspace: Pick<Workspace, 'isQuarantined' | 'isPastDue'> & {
+    workspace: Pick<Workspace, 'isSuspended' | 'isPastDue'> & {
       members: Pick<MemberInWorkspace, 'userId'>[]
     }
   },
   user: Pick<User, 'email' | 'id'>
 ) =>
-  typebot.workspace.isQuarantined ||
+  typebot.workspace.isSuspended ||
   typebot.workspace.isPastDue ||
   (env.ADMIN_EMAIL !== user.email &&
     !typebot.collaborators.some(

@@ -53,7 +53,7 @@ export const getResults = authenticatedProcedure
         },
         workspace: {
           select: {
-            isQuarantined: true,
+            isSuspended: true,
             isPastDue: true,
             members: {
               select: {

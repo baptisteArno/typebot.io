@@ -46,7 +46,7 @@ export const publishTypebot = authenticatedProcedure
         workspace: {
           select: {
             plan: true,
-            isQuarantined: true,
+            isSuspended: true,
             isPastDue: true,
             members: {
               select: {

@@ -39,7 +39,7 @@ export const deleteResults = authenticatedProcedure
         groups: true,
         workspace: {
           select: {
-            isQuarantined: true,
+            isSuspended: true,
             isPastDue: true,
             members: {
               select: {

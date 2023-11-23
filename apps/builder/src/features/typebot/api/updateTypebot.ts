@@ -89,7 +89,7 @@ export const updateTypebot = authenticatedProcedure
             select: {
               id: true,
               plan: true,
-              isQuarantined: true,
+              isSuspended: true,
               isPastDue: true,
               members: {
                 select: {
