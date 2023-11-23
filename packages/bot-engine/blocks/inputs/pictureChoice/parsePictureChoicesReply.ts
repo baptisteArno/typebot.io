@@ -19,7 +19,7 @@ export const parsePictureChoicesReply =
         (acc, item) => {
           if (
             item.title &&
-            acc.strippedInput.toLowerCase().includes(item.title.toLowerCase())
+            acc.strippedInput.toLowerCase() === item.title.toLowerCase()
           )
             return {
               strippedInput: acc.strippedInput.replace(item.title ?? '', ''),
@@ -74,14 +74,9 @@ export const parsePictureChoicesReply =
     const matchedItem = longestItemsFirst.find(
       (item) =>
         item.id === inputValue ||
-        item.title
-          ?.toLowerCase()
-          .trim()
-          .includes(inputValue.toLowerCase().trim()) ||
-        item.pictureSrc
-          ?.toLowerCase()
-          .trim()
-          .includes(inputValue.toLowerCase().trim())
+        item.title?.toLowerCase().trim() === inputValue.toLowerCase().trim() ||
+        item.pictureSrc?.toLowerCase().trim() ===
+          inputValue.toLowerCase().trim()
     )
     if (!matchedItem) return { status: 'fail' }
     return {
