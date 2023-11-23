@@ -10,7 +10,7 @@ export const processTelemetryEvent = authenticatedProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/t/process',
+      path: '/v1/t/process',
       description:
         "Only used for the cloud version of Typebot. It's the way it processes telemetry events and inject it to thrid-party services.",
       tags: ['Telemetry'],

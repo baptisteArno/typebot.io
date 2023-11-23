@@ -10,6 +10,7 @@ import { router } from '../trpc'
 import { analyticsRouter } from '@/features/analytics/api/router'
 import { collaboratorsRouter } from '@/features/collaboration/api/router'
 import { customDomainsRouter } from '@/features/customDomains/api/router'
+import { processTelemetryEvent } from '@/features/telemetry/api/processTelemetryEvent'
 
 export const publicRouter = router({
   getLinkedTypebots,
@@ -23,6 +24,7 @@ export const publicRouter = router({
   theme: themeRouter,
   collaborators: collaboratorsRouter,
   customDomains: customDomainsRouter,
+  processTelemetryEvent,
 })
 
 export type PublicRouter = typeof publicRouter
