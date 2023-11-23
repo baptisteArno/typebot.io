@@ -125,14 +125,12 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           const subscription = event.data.object as Stripe.Subscription
           if (subscription.status !== 'past_due')
             return res.send({ message: 'Not past_due, skipping.' })
-          const workspace = await prisma.workspace.update({
+          const existingWorkspace = await prisma.workspace.findFirst({
             where: {
               stripeId: subscription.customer as string,
             },
-            data: {
-              isPastDue: true,
-            },
             select: {
+              isPastDue: true,
               id: true,
               members: {
                 select: { userId: true, role: true },
@@ -140,10 +138,23 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               },
             },
           })
+          if (!existingWorkspace) throw new Error('Workspace not found')
+          if (existingWorkspace?.isPastDue)
+            return res.send({
+              message: 'Workspace already past due, skipping.',
+            })
+          await prisma.workspace.updateMany({
+            where: {
+              id: existingWorkspace.id,
+            },
+            data: {
+              isPastDue: true,
+            },
+          })
           await sendTelemetryEvents(
-            workspace.members.map((m) => ({
+            existingWorkspace.members.map((m) => ({
               name: 'Workspace past due',
-              workspaceId: workspace.id,
+              workspaceId: existingWorkspace.id,
               userId: m.userId,
             }))
           )
