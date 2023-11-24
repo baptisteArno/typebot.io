@@ -18,22 +18,12 @@ export const ApiPreviewInstructions = (props: StackProps) => {
 
   const startParamsBody = startPreviewAtGroup
     ? `{
-  "startParams": {
-    "typebot": "${typebot?.id}",
-    "isPreview": true,
     "startGroupId": "${startPreviewAtGroup}"
-  }
 }`
-    : `{
-  "startParams": {
-    "typebot": "${typebot?.id}",
-    "isPreview": true
-  }
-}`
+    : undefined
 
   const replyBody = `{
   "message": "This is my reply",
-  "sessionId": "<ID_FROM_FIRST_RESPONSE>"
 }`
 
   return (
@@ -60,12 +50,16 @@ export const ApiPreviewInstructions = (props: StackProps) => {
             <CodeEditor
               isReadOnly
               lang={'shell'}
-              value={`${parseApiHost(
-                typebot?.customDomain
-              )}/api/v2/sendMessage`}
+              value={`${parseApiHost(typebot?.customDomain)}/api/v1/typebots/${
+                typebot?.id
+              }/preview/startChat`}
             />
-            <Text>with the following JSON body:</Text>
-            <CodeEditor isReadOnly lang={'json'} value={startParamsBody} />
+            {startPreviewAtGroup && (
+              <>
+                <Text>with the following JSON body:</Text>
+                <CodeEditor isReadOnly lang={'json'} value={startParamsBody} />
+              </>
+            )}
           </Stack>
         </ListItem>
         <ListItem>
@@ -82,7 +76,7 @@ export const ApiPreviewInstructions = (props: StackProps) => {
               lang={'shell'}
               value={`${parseApiHost(
                 typebot?.customDomain
-              )}/api/v2/sendMessage`}
+              )}/api/v1/sessions/<ID_FROM_FIRST_RESPONSE>/continueChat`}
             />
             <Text>With the following JSON body:</Text>
             <CodeEditor isReadOnly lang={'json'} value={replyBody} />
@@ -95,7 +89,10 @@ export const ApiPreviewInstructions = (props: StackProps) => {
       </OrderedList>
       <Text fontSize="sm" pl="1">
         Check out the{' '}
-        <TextLink href="https://docs.typebot.io/api/send-a-message" isExternal>
+        <TextLink
+          href="https://docs.typebot.io/api/start-preview-chat"
+          isExternal
+        >
           API reference
         </TextLink>{' '}
         for more information

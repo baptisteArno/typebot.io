@@ -27,15 +27,9 @@ export const ApiModal = ({
   onClose,
 }: ModalProps): JSX.Element => {
   const { typebot } = useTypebot()
-  const startParamsBody = `{
-  "startParams": {
-    "typebot": "${publicId}",
-  }
-}`
 
   const replyBody = `{
   "message": "This is my reply",
-  "sessionId": "<ID_FROM_FIRST_RESPONSE>"
 }`
 
   return (
@@ -61,10 +55,8 @@ export const ApiModal = ({
                   lang={'shell'}
                   value={`${parseApiHost(
                     typebot?.customDomain
-                  )}/api/v2/sendMessage`}
+                  )}/api/v1/typebots/${publicId}/startChat`}
                 />
-                <Text>with the following JSON body:</Text>
-                <CodeEditor isReadOnly lang={'json'} value={startParamsBody} />
               </Stack>
             </ListItem>
             <ListItem>
@@ -81,7 +73,7 @@ export const ApiModal = ({
                   lang={'shell'}
                   value={`${parseApiHost(
                     typebot?.customDomain
-                  )}/api/v2/sendMessage`}
+                  )}/api/v1/sessions/<ID_FROM_FIRST_RESPONSE>/continueChat`}
                 />
                 <Text>With the following JSON body:</Text>
                 <CodeEditor isReadOnly lang={'json'} value={replyBody} />
@@ -94,10 +86,7 @@ export const ApiModal = ({
           </OrderedList>
           <Text fontSize="sm" colorScheme="gray">
             Check out the{' '}
-            <TextLink
-              href="https://docs.typebot.io/api/send-a-message"
-              isExternal
-            >
+            <TextLink href="https://docs.typebot.io/api/start-chat" isExternal>
               API reference
             </TextLink>{' '}
             for more information
