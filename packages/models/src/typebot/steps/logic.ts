@@ -59,7 +59,7 @@ export enum LogicalOperator {
 
 export enum ComparisonOperators {
   EQUAL = 'Igual a',
-  NOT_EQUAL = 'Diferente',
+  NOT_EQUAL = 'Diferente de',
   CONTAINS = 'Contém',
   GREATER = 'Maior que',
   LESS = 'Menor que',
