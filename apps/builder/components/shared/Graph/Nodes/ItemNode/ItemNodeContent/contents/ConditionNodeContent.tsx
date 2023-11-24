@@ -63,8 +63,8 @@ const parseComparisonOperatorSymbol = (operator: ComparisonOperators) => {
       return '='
     case ComparisonOperators.GREATER:
       return '>'
-    case ComparisonOperators.IS_SET:
-      return 'is set'
+    // case ComparisonOperators.IS_SET:
+    //   return 'is set'
     case ComparisonOperators.LESS:
       return '<'
     case ComparisonOperators.NOT_EQUAL:

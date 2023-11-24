@@ -115,9 +115,9 @@ const executeComparison =
       case ComparisonOperators.LESS: {
         return parseFloat(inputValue) <= parseFloat(value)
       }
-      case ComparisonOperators.IS_SET: {
-        return isDefined(inputValue) && inputValue.length > 0
-      }
+      // case ComparisonOperators.IS_SET: {
+      //   return isDefined(inputValue) && inputValue.length > 0
+      // }
     }
   }
 

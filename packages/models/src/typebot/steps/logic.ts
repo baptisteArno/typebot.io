@@ -63,7 +63,7 @@ export enum ComparisonOperators {
   CONTAINS = 'Contém',
   GREATER = 'Maior que',
   LESS = 'Menor que',
-  IS_SET = 'Está configurado',
+  //IS_SET = 'Está configurado',
 }
 
 export type ConditionContent = {
