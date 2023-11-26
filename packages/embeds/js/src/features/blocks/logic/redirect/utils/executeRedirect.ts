@@ -5,7 +5,7 @@ export const executeRedirect = ({
   isNewTab,
 }: RedirectBlock['options'] = {}): { blockedPopupUrl: string } | undefined => {
   if (!url) return
-  const updatedWindow = window.open(url, isNewTab ? '_blank' : '_self')
+  const updatedWindow = window.open(url, isNewTab ? '_blank' : '_top')
   if (!updatedWindow)
     return {
       blockedPopupUrl: url,
