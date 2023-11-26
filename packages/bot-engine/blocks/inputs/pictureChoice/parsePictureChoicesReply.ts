@@ -19,7 +19,7 @@ export const parsePictureChoicesReply =
         (acc, item) => {
           if (
             item.title &&
-            acc.strippedInput.toLowerCase() === item.title.toLowerCase()
+            acc.strippedInput.toLowerCase().includes(item.title.toLowerCase())
           )
             return {
               strippedInput: acc.strippedInput.replace(item.title ?? '', ''),
