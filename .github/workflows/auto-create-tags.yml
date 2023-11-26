@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: 'Create main tag'
         id: 'main'
-        uses: butlerlogic/action-autotag@stable
+        uses: butlerlogic/action-autotag@1.1.2
         with:
           tag_prefix: 'v'
 
@@ -23,19 +23,19 @@ jobs:
         uses: EndBug/latest-tag@latest
 
       - name: 'Create js tag'
-        uses: butlerlogic/action-autotag@stable
+        uses: butlerlogic/action-autotag@1.1.2
         with:
           root: '/packages/embeds/js'
           tag_prefix: 'js-v'
 
       - name: 'Create react tag'
-        uses: butlerlogic/action-autotag@stable
+        uses: butlerlogic/action-autotag@1.1.2
         with:
           root: '/packages/embeds/react'
           tag_prefix: 'react-v'
 
       - name: 'Create nextjs tag'
-        uses: butlerlogic/action-autotag@stable
+        uses: butlerlogic/action-autotag@1.1.2
         with:
           root: '/packages/embeds/nextjs'
           tag_prefix: 'nextjs-v'
