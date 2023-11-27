@@ -32,7 +32,10 @@ Here are the available variables from WordPress, make sure to create them in you
 
 <img src="/img/embeddings/wp-variables.png" alt="WP predefined variables" width="400px"/>
 
-You can use these variables anywhere on your typebot. For more informations, check out the [Prefilled variables doc](https://docs.typebot.io/editor/variables#prefilled-variables)
+The only thing you need to do to enable this is:
+
+- Use the [Wordpress Typebot plugin](https://wordpress.com/plugins/typebot)
+- Have the variables declared in your Typebot with the exact syntaxes. For the email for example, make sure your variable is spelled `WP Email`. These won't work: `wp Email`, `WP email`.
 
 ## Your typebot isn't showing?
 
