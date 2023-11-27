@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { isReadTypebotForbidden } from '../helpers/isReadTypebotForbidden'
 import { migrateTypebot } from '@typebot.io/lib/migrations/migrateTypebot'
 import { CollaborationType } from '@typebot.io/prisma'
+import { env } from '@typebot.io/env'
 
 export const getTypebot = publicProcedure
   .meta({
@@ -81,11 +82,12 @@ export const getTypebot = publicProcedure
   )
 
 const getCurrentUserMode = (
-  user: { id: string } | undefined,
+  user: { email: string | null; id: string } | undefined,
   typebot: { collaborators: { userId: string; type: CollaborationType }[] } & {
     workspace: { members: { userId: string }[] }
   }
 ) => {
+  if (user?.email === env.ADMIN_EMAIL) return 'read'
   const collaborator = typebot.collaborators.find((c) => c.userId === user?.id)
   const isMemberOfWorkspace = typebot.workspace.members.some(
     (m) => m.userId === user?.id
