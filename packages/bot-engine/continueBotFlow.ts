@@ -261,15 +261,28 @@ const saveAnswer =
       ? state.typebotsQueue[0].typebot.variables.find(
           (variable) => variable.id === block.options?.variableId
         )?.name
-      : state.typebotsQueue[0].typebot.groups.find((group) =>
-          group.blocks.find((blockInGroup) => blockInGroup.id === block.id)
-        )?.title
+      : parseGroupKey(block.id, { state })
 
     return setNewAnswerInState(state)({
       key: key ?? block.id,
       value: reply,
     })
   }
+
+const parseGroupKey = (blockId: string, { state }: { state: SessionState }) => {
+  const group = state.typebotsQueue[0].typebot.groups.find((group) =>
+    group.blocks.find((b) => b.id === blockId)
+  )
+  if (!group) return
+
+  const inputBlockNumber = group.blocks
+    .filter(isInputBlock)
+    .findIndex((b) => b.id === blockId)
+
+  return inputBlockNumber > 0
+    ? `${group.title} (${inputBlockNumber})`
+    : group?.title
+}
 
 const setNewAnswerInState =
   (state: SessionState) => (newAnswer: AnswerInSessionState) => {
