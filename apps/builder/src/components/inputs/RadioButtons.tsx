@@ -1,7 +1,7 @@
 import {
   Box,
   Flex,
-  HStack,
+  Stack,
   useColorModeValue,
   useRadio,
   useRadioGroup,
@@ -13,12 +13,14 @@ type Props<T extends string> = {
   options: (T | { value: T; label: ReactNode })[]
   value?: T
   defaultValue?: T
+  direction?: 'row' | 'column'
   onSelect: (newValue: T) => void
 }
 export const RadioButtons = <T extends string>({
   options,
   value,
   defaultValue,
+  direction = 'row',
   onSelect,
 }: Props<T>) => {
   const { getRootProps, getRadioProps } = useRadioGroup({
@@ -30,7 +32,7 @@ export const RadioButtons = <T extends string>({
   const group = getRootProps()
 
   return (
-    <HStack {...group}>
+    <Stack {...group} direction={direction}>
       {options.map((item) => {
         const radio = getRadioProps({ value: parseValue(item) })
         return (
@@ -39,7 +41,7 @@ export const RadioButtons = <T extends string>({
           </RadioCard>
         )
       })}
-    </HStack>
+    </Stack>
   )
 }
 

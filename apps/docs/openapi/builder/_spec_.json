@@ -45489,10 +45489,6 @@
                             "type": "string",
                             "nullable": true
                           },
-                          "folderId": {
-                            "type": "string",
-                            "nullable": true
-                          },
                           "resultsTablePreferences": {
                             "type": "object",
                             "properties": {
@@ -45536,8 +45532,7 @@
                           "variables",
                           "theme",
                           "settings",
-                          "icon",
-                          "folderId"
+                          "icon"
                         ],
                         "additionalProperties": false
                       },
@@ -49194,10 +49189,6 @@
                             "type": "string",
                             "nullable": true
                           },
-                          "folderId": {
-                            "type": "string",
-                            "nullable": true
-                          },
                           "resultsTablePreferences": {
                             "type": "object",
                             "properties": {
@@ -49242,8 +49233,7 @@
                           "variables",
                           "theme",
                           "settings",
-                          "icon",
-                          "folderId"
+                          "icon"
                         ],
                         "additionalProperties": false
                       }

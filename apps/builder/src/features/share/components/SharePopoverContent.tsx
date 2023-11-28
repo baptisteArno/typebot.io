@@ -1,5 +1,5 @@
 import { Stack, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
-import React, { useMemo } from 'react'
+import React from 'react'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
 import { CopyButton } from '@/components/CopyButton'
 import { CollaborationList } from '@/features/collaboration/components/CollaborationList'
@@ -8,7 +8,7 @@ import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 export const SharePopoverContent = () => {
   const { typebot, updateTypebot } = useTypebot()
 
-  const currentUrl = useMemo(() => window.location.href.split('?')[0], [])
+  const currentUrl = `${window.location.origin}/typebots/${typebot?.id}/edit`
 
   const updateIsPublicShareEnabled = async (isEnabled: boolean) => {
     await updateTypebot({

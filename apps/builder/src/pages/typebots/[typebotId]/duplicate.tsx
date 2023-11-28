@@ -42,6 +42,7 @@ const Page = () => {
         Choose a workspace to duplicate <strong>{typebot?.name}</strong> in:
       </Text>
       <RadioButtons
+        direction="column"
         options={workspaces?.map((workspace) => ({
           value: workspace.id,
           label: (
