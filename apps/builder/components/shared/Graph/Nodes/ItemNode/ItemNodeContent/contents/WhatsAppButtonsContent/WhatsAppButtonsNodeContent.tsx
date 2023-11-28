@@ -26,14 +26,11 @@ export const WhatsAppButtonsNodeContent = ({
 }: Props) => {
   const { deleteItem, updateItem, createItem } = useTypebot()
   const [initialContent] = useState(item.content ?? '')
-  const [itemValue, setItemValue] = useState(
-    item.content ?? 'Clique para editar'
-  )
+  const [itemValue, setItemValue] = useState(item.content ?? 'Editar botão')
   const editableRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    if (itemValue !== item.content)
-      setItemValue(item.content ?? 'Clique para editar')
+    if (itemValue !== item.content) setItemValue(item.content ?? 'Editar botão')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item])
 
@@ -45,8 +42,7 @@ export const WhatsAppButtonsNodeContent = ({
   }
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Escape' && itemValue === 'Clique para editar')
-      deleteItem(indices)
+    if (e.key === 'Escape' && itemValue === 'Editar botão') deleteItem(indices)
     if (e.key === 'Enter' && itemValue !== '' && initialContent === '')
       handlePlusClick()
   }
@@ -86,7 +82,7 @@ export const WhatsAppButtonsNodeContent = ({
         <EditablePreview
           w="full"
           cursor="pointer"
-          color={item.content !== 'Clique para editar' ? 'inherit' : 'gray.500'}
+          color={item.content !== 'Editar botão' ? 'inherit' : 'gray.500'}
           px={4}
           py={2}
         />

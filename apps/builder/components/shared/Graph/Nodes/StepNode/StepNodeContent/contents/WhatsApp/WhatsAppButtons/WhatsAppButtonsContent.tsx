@@ -21,7 +21,10 @@ const WhatsApButtonsContent = ({ step, indices }: Props) => {
         fontSize="xl"
         renderIfEmpty={false}
       />
-      <TextHtmlContent html={step.options?.body?.content?.html} />
+      <TextHtmlContent
+        html={step.options?.body?.content?.html}
+        defaultPlaceholder="Configurar..."
+      />
       <ItemNodesList step={step} indices={indices} />
       <TextHtmlContent
         html={step.options?.footer?.content?.html}
