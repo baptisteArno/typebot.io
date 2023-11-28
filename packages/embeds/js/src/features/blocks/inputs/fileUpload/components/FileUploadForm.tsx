@@ -71,7 +71,7 @@ export const FileUploadForm = (props: Props) => {
     if (urls.length)
       return props.onSubmit({
         label: `File uploaded`,
-        value: urls[0] ? encodeURI(urls[0]) : '',
+        value: urls[0] ? encodeUrl(urls[0]) : '',
       })
     setErrorMessage('An error occured while uploading the file')
   }
@@ -102,7 +102,7 @@ export const FileUploadForm = (props: Props) => {
       return setErrorMessage('An error occured while uploading the files')
     props.onSubmit({
       label: `${urls.length} file${urls.length > 1 ? 's' : ''} uploaded`,
-      value: urls.filter(isDefined).map(encodeURI).join(', '),
+      value: urls.filter(isDefined).map(encodeUrl).join(', '),
     })
   }
 
@@ -278,3 +278,10 @@ const FileIcon = () => (
     <polyline points="13 2 13 9 20 9" />
   </svg>
 )
+
+const encodeUrl = (url: string): string => {
+  const fileName = url.split('/').pop()
+  if (!fileName) return url
+  const encodedFileName = encodeURIComponent(fileName)
+  return url.replace(fileName, encodedFileName)
+}
