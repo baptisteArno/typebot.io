@@ -91,7 +91,11 @@ class Typebot_Public
 
   public function add_typebot_container($attributes = [])
   {
-    $lib_url = "https://cdn.jsdelivr.net/npm/@typebot.io/js@0.2.15/dist/web.js";
+    $lib_version = '0.2';
+    if(array_key_exists('lib_version', $attributes)) {
+      $lib_version = sanitize_text_field($attributes['lib_version']);
+    }
+    $lib_url = "https://cdn.jsdelivr.net/npm/@typebot.io/js@". $lib_version ."/dist/web.js";
     $width = '100%';
     $height = '500px';
     $api_host = 'https://typebot.io';

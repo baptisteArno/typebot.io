@@ -87,7 +87,6 @@ const getCurrentUserMode = (
     workspace: { members: { userId: string }[] }
   }
 ) => {
-  if (user?.email === env.ADMIN_EMAIL) return 'read'
   const collaborator = typebot.collaborators.find((c) => c.userId === user?.id)
   const isMemberOfWorkspace = typebot.workspace.members.some(
     (m) => m.userId === user?.id
@@ -100,5 +99,6 @@ const getCurrentUserMode = (
     return 'write'
 
   if (collaborator) return 'read'
+  if (user?.email === env.ADMIN_EMAIL) return 'read'
   return 'guest'
 }
