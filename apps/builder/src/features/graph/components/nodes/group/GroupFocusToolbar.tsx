@@ -1,4 +1,4 @@
-import { CopyIcon, InfoIcon, PlayIcon, TrashIcon } from '@/components/icons'
+import { ChatIcon, CopyIcon, InfoIcon, PlayIcon, TrashIcon } from '@/components/icons'
 import {
   HStack,
   IconButton,
@@ -68,6 +68,15 @@ export const GroupFocusToolbar = ({
           onClick={onCopy}
         />
       </Tooltip>
+			<IconButton
+				icon={<ChatIcon/>}
+				aria-label="Insert a comment"
+				size="sm"
+				variant="ghost"
+				borderLeftRadius="none"
+				borderRightRadius="none"
+				borderRightWidth="1px"
+			/>
       <IconButton
         aria-label="Delete"
         borderLeftRadius="none"
