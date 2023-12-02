@@ -27,6 +27,7 @@ import { useGroupsCoordinates } from '@/features/graph/providers/GroupsCoordinat
 import { setMultipleRefs } from '@/helpers/setMultipleRefs'
 import { Coordinates } from '@/features/graph/types'
 import { groupWidth } from '@/features/graph/constants'
+import { GroupComment } from './GroupComment'
 
 type Props = {
   group: GroupV6
@@ -79,6 +80,7 @@ const NonMemoizedDraggableGroupNode = ({
     group.graphCoordinates
   )
   const [groupTitle, setGroupTitle] = useState(group.title)
+	const [isCommentActive, setIsCommentActive] = useState(false)
 
   const isPreviewing =
     previewingBlock?.groupId === group.id ||
@@ -192,91 +194,102 @@ const NonMemoizedDraggableGroupNode = ({
       isDisabled={isReadOnly}
     >
       {(ref, isContextMenuOpened) => (
-        <Stack
-          ref={setMultipleRefs([ref, groupRef])}
-          id={`group-${group.id}`}
-          data-testid="group"
-          p="4"
-          rounded="xl"
-          bg={bg}
-          borderWidth="1px"
-          borderColor={
-            isConnecting || isContextMenuOpened || isPreviewing || isFocused
-              ? previewingBorderColor
-              : borderColor
-          }
-          w={groupWidth}
-          transition="border 300ms, box-shadow 200ms"
-          pos="absolute"
-          style={{
-            transform: `translate(${currentCoordinates?.x ?? 0}px, ${
-              currentCoordinates?.y ?? 0
-            }px)`,
-            touchAction: 'none',
-          }}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          cursor={isMouseDown ? 'grabbing' : 'pointer'}
-          shadow="md"
-          _hover={{ shadow: 'lg' }}
-          zIndex={isFocused ? 10 : 1}
-          spacing={isEmpty(group.title) ? '0' : '2'}
-        >
-          <Editable
-            value={groupTitle}
-            onChange={setGroupTitle}
-            onSubmit={handleTitleSubmit}
-            fontWeight="semibold"
-            pr="8"
+        <>
+          <Stack
+            ref={setMultipleRefs([ref, groupRef])}
+            id={`group-${group.id}`}
+            data-testid="group"
+            p="4"
+            rounded="xl"
+            bg={bg}
+            borderWidth="1px"
+            borderColor={
+              isConnecting || isContextMenuOpened || isPreviewing || isFocused
+                ? previewingBorderColor
+                : borderColor
+            }
+            w={groupWidth}
+            transition="border 300ms, box-shadow 200ms"
+            pos="absolute"
+            style={{
+              transform: `translate(${currentCoordinates?.x ?? 0}px, ${
+                currentCoordinates?.y ?? 0
+              }px)`,
+              touchAction: 'none',
+            }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            cursor={isMouseDown ? 'grabbing' : 'pointer'}
+            shadow="md"
+            _hover={{ shadow: 'lg' }}
+            zIndex={isFocused ? 10 : 1}
+            spacing={isEmpty(group.title) ? '0' : '2'}
           >
-            <EditablePreview
-              _hover={{
-                bg: editableHoverBg,
-              }}
-              px="1"
-              userSelect={'none'}
-              style={
-                isEmpty(groupTitle)
-                  ? {
-                      display: 'block',
-                      position: 'absolute',
-                      top: '10px',
-                      width: '50px',
-                    }
-                  : undefined
-              }
-            />
-            <EditableInput minW="0" px="1" className="prevent-group-drag" />
-          </Editable>
-          {typebot && (
-            <BlockNodesList
-              blocks={group.blocks}
-              groupIndex={groupIndex}
-              groupRef={ref}
-            />
-          )}
-          {!isReadOnly && (
-            <SlideFade
-              in={isFocused}
-              style={{
-                position: 'absolute',
-                top: '-50px',
-                right: 0,
-              }}
-              unmountOnExit
+            <Editable
+              value={groupTitle}
+              onChange={setGroupTitle}
+              onSubmit={handleTitleSubmit}
+              fontWeight="semibold"
+              pr="8"
             >
-              <GroupFocusToolbar
-                groupId={group.id}
-                onPlayClick={startPreviewAtThisGroup}
-                onDuplicateClick={() => {
-                  setIsFocused(false)
-                  duplicateGroup(groupIndex)
+              <EditablePreview
+                _hover={{
+                  bg: editableHoverBg,
                 }}
-                onDeleteClick={() => deleteGroup(groupIndex)}
+                px="1"
+                userSelect={'none'}
+                style={
+                  isEmpty(groupTitle)
+                    ? {
+                        display: 'block',
+                        position: 'absolute',
+                        top: '10px',
+                        width: '50px',
+                      }
+                    : undefined
+                }
               />
-            </SlideFade>
-          )}
-        </Stack>
+              <EditableInput minW="0" px="1" className="prevent-group-drag" />
+            </Editable>
+            {typebot && (
+              <BlockNodesList
+                blocks={group.blocks}
+                groupIndex={groupIndex}
+                groupRef={ref}
+              />
+            )}
+            {!isReadOnly && (
+              <SlideFade
+                in={isFocused}
+                style={{
+                  position: 'absolute',
+                  top: '-50px',
+                  right: 0,
+                }}
+                unmountOnExit
+              >
+                <GroupFocusToolbar
+                  groupId={group.id}
+                  onPlayClick={startPreviewAtThisGroup}
+                  onDuplicateClick={() => {
+                    setIsFocused(false)
+                    duplicateGroup(groupIndex)
+                  }}
+                  onCommentClick={() => { setIsCommentActive((prev) => !prev) }}
+                  onDeleteClick={() => deleteGroup(groupIndex)}
+                />
+              </SlideFade>
+            )}
+          </Stack>
+
+					{isCommentActive && (
+						<GroupComment
+							groupId={group.id}
+							currentCoordinates={currentCoordinates}
+							setIsCommentActive={setIsCommentActive}
+						/>
+					)}
+        </>
       )}
     </ContextMenu>
   )

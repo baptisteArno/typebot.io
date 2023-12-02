@@ -11,6 +11,7 @@ type Props = {
   groupId: string
   onPlayClick: () => void
   onDuplicateClick: () => void
+  onCommentClick: () => void
   onDeleteClick: () => void
 }
 
@@ -18,6 +19,7 @@ export const GroupFocusToolbar = ({
   groupId,
   onPlayClick,
   onDuplicateClick,
+	onCommentClick,
   onDeleteClick,
 }: Props) => {
   const { hasCopied, onCopy } = useClipboard(groupId)
@@ -70,6 +72,7 @@ export const GroupFocusToolbar = ({
       </Tooltip>
 			<IconButton
 				icon={<NoteIcon fill="#000000"/>}
+        onClick={onCommentClick}
 				aria-label="Insert a comment"
 				size="sm"
 				variant="ghost"
