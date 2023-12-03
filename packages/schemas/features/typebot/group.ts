@@ -14,6 +14,7 @@ type GroupV5 = z.infer<typeof groupV5Schema>
 
 export const groupV6Schema = groupV5Schema.extend({
   blocks: z.array(blockSchemaV6),
+	comment: z.string().nullish(),
 })
 export type GroupV6 = z.infer<typeof groupV6Schema>
 

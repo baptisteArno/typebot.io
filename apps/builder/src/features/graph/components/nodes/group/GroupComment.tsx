@@ -1,34 +1,42 @@
-import { TextBubbleEditor } from "@/features/blocks/bubbles/textBubble/components/TextBubbleEditor"
-import { useTypebot } from "@/features/editor/providers/TypebotProvider"
-import { groupWidth } from "@/features/graph/constants"
+import { TextBubbleEditor } from '@/features/blocks/bubbles/textBubble/components/TextBubbleEditor'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { groupWidth } from '@/features/graph/constants'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
-import { chakra, Stack, useColorModeValue } from "@chakra-ui/react"
+import { chakra, Stack, useColorModeValue } from '@chakra-ui/react'
 import { Dispatch, SetStateAction, useRef } from 'react'
 
 type Props = {
   groupId: string
-  currentCoordinates: Record<"x" | "y", number>
-	setIsCommentActive: Dispatch<SetStateAction<boolean>>
+  groupIndex: number
+  comment: string | null | undefined
+  currentCoordinates: Record<'x' | 'y', number>
+  setIsCommentActive: Dispatch<SetStateAction<boolean>>
 }
 
-export const GroupComment = ({ groupId, currentCoordinates, setIsCommentActive }: Props) => {
-	const stackRef = useRef(null)
-  const { typebot } = useTypebot()
-  const bg = useColorModeValue("white", "gray.900")
-	
-	function handleCommentClose() {
-		setIsCommentActive(false)
-	}
+export const GroupComment = ({
+  groupId,
+  groupIndex,
+  comment = "",
+  currentCoordinates,
+  setIsCommentActive,
+}: Props) => {
+  const stackRef = useRef(null)
+  const { typebot, updateGroup } = useTypebot()
+  const bg = useColorModeValue('white', 'gray.900')
 
-	useOutsideClick({
-		ref: stackRef,
-		handler: handleCommentClose
-	})
+  const handleCommentClose = () => {
+    setIsCommentActive(false)
+  }
+
+  useOutsideClick({
+    ref: stackRef,
+    handler: handleCommentClose,
+  })
 	
   return (
     <Stack
       id={`comment-${groupId}`}
-			ref={stackRef}
+      ref={stackRef}
       p="4"
       pb="5"
       rounded="xl"
@@ -41,19 +49,22 @@ export const GroupComment = ({ groupId, currentCoordinates, setIsCommentActive }
         transform: `translate(${
           currentCoordinates?.x + groupWidth + 12 ?? 0
         }px, ${currentCoordinates?.y ?? 0}px)`,
-        touchAction: "none",
+        touchAction: 'none',
       }}
-      cursor={"auto"}
+      cursor={'auto'}
       shadow="md"
     >
       <chakra.h3 fontWeight="semibold" pl="1" py="2">
-        Note
+        Observation Note
       </chakra.h3>
       {typebot && (
         <TextBubbleEditor
           id={`text-comment-${groupId}`}
-          initialValue={[{ type: "p", children: [{ text: "" }] }]}
-          onClose={() => {}}
+          initialValue={[{ type: "p", children: [{ text: comment ?? "" }] }]}
+          onClose={(newContent) => {
+						const newComment = newContent.map(({ children: [comment] }) => comment.text).join("\n")
+            updateGroup(groupIndex, { comment: newComment })
+          }}
         />
       )}
     </Stack>
