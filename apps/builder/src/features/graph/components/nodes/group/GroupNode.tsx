@@ -286,7 +286,7 @@ const NonMemoizedDraggableGroupNode = ({
 						<GroupComment
 							groupId={group.id}
 							groupIndex={groupIndex}
-							comment={group.comment}
+							initialValue={group.comment}
 							currentCoordinates={currentCoordinates}
 							setIsCommentActive={setIsCommentActive}
 						/>

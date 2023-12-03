@@ -3,12 +3,13 @@ import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { groupWidth } from '@/features/graph/constants'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { chakra, Stack, useColorModeValue } from '@chakra-ui/react'
+import { TElement } from '@udecode/plate-common'
 import { Dispatch, SetStateAction, useRef } from 'react'
 
 type Props = {
   groupId: string
   groupIndex: number
-  comment: string | null | undefined
+  initialValue?: TElement[]
   currentCoordinates: Record<'x' | 'y', number>
   setIsCommentActive: Dispatch<SetStateAction<boolean>>
 }
@@ -16,7 +17,7 @@ type Props = {
 export const GroupComment = ({
   groupId,
   groupIndex,
-  comment = "",
+  initialValue,
   currentCoordinates,
   setIsCommentActive,
 }: Props) => {
@@ -60,10 +61,13 @@ export const GroupComment = ({
       {typebot && (
         <TextBubbleEditor
           id={`text-comment-${groupId}`}
-          initialValue={[{ type: "p", children: [{ text: comment ?? "" }] }]}
+          initialValue={
+						initialValue?.length
+							? initialValue
+							: [{ type: "p", children: [{ text: "" }] }]
+					}
           onClose={(newContent) => {
-						const newComment = newContent.map(({ children: [comment] }) => comment.text).join("\n")
-            updateGroup(groupIndex, { comment: newComment })
+            updateGroup(groupIndex, { comment: newContent })
           }}
         />
       )}
