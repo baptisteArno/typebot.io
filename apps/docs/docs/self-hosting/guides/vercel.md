@@ -26,6 +26,14 @@ You may want to [disable the Github actions](https://docs.github.com/en/actions/
 
 If you deploy on a Vercel Hobby plan, you will need to reduce the `maxDuration` timeout options in `apps/viewer/vercel.json` and set it to `10`
 
+:::note
+To ensure the full functioning of Typebot, it is essential to deploy both the Builder and the Viewer.
+
+Builder: Builder is the environment for creating service flows, providing the ability to shape and personalize interactions in an intuitive and efficient way. Here, you have the freedom to develop service flows in an intuitive way, creating a unique experience for users.
+
+Viewer: The Viewer represents the external interface of your customer service system, allowing customers to interact intuitively. This interface is designed to provide customers with an efficient experience where they can get the information they want quickly and intuitively. By implementing Viewer, you provide your audience with an accessible and user-friendly platform for their customer service needs.
+:::
+
 ### Deploy the builder
 
 1. Create a new Vercel project and import the forked repo
