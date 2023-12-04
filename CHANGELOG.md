@@ -1,5 +1,48 @@
 # Changelog
 
+<a name="2.20.0"></a>
+## 2.20.0 (2023-12-04)
+
+### Added
+
+- ✨ Allow user to share a flow publicly and make it duplicatable [[bb41226](https://github.com/baptisteArno/typebot.io/commit/bb41226a046fe9dccd0ee04d2761c5b96d6001f4)]
+- ✨ (openai) Add create speech OpenAI action [[1a44bf4](https://github.com/baptisteArno/typebot.io/commit/1a44bf4935a131010e912e9c7d0ba9127b55be83)]
+
+### Changed
+
+- ⚡ (wordpress) Add lib_version prop in shortcode [[eeac493](https://github.com/baptisteArno/typebot.io/commit/eeac4933870216017806586b9032e8af86ce75dc)]
+- 🚸 (fileUpload) Properly encode commas from uploaded file urls [[8d413f0](https://github.com/baptisteArno/typebot.io/commit/8d413f0865c8688ec6999937557db1ce9dfc4f26)]
+- 🔧 Increase builder request max size to 4MB [[4666fd8](https://github.com/baptisteArno/typebot.io/commit/4666fd8fa09052e315d54b9333557daf66e7a5c2)]
+- 🚸 (redirect) Make sure the redirection is always done on top frame [[6ce43ed](https://github.com/baptisteArno/typebot.io/commit/6ce43ed26fafe85200414b83a2f192ed3977ebc6)]
+- ⚡ (billing) Improve past_due workspace checking webhook [[0856c59](https://github.com/baptisteArno/typebot.io/commit/0856c59b500b62cdaa26b25f7d9a5be4a2ac8a9c)]
+
+### Removed
+
+- 🔥 Remove VIEWER_URL_INTERNAL variable [[73d2e16](https://github.com/baptisteArno/typebot.io/commit/73d2e165bfa38c014d1b8ae3c5c4701b0d3e7149)]
+
+### Fixed
+
+- 🐛 (share) Fix duplicate folderId issue [[8ce4e48](https://github.com/baptisteArno/typebot.io/commit/8ce4e4808d36133a49a7af8ad61665e9dbbfbc72)]
+- 🐛 Fix default webhook body with multi inputs groups [[880ded9](https://github.com/baptisteArno/typebot.io/commit/880ded97d113dd70cea8a97020a30daef573567a)]
+- 🚑 (pictureChoice) Fix pic choice multi select parsing [[b7ee800](https://github.com/baptisteArno/typebot.io/commit/b7ee8006494d4a681b813a4bf9ce4e9762b21fcd)]
+- 💚 Update broken action-autotag package [[7f914e9](https://github.com/baptisteArno/typebot.io/commit/7f914e9b8c9afd280bd6d5f091b090fc610bce81)]
+- 🐛 Fix processTelemetry endpoint not reachable [[30b09e5](https://github.com/baptisteArno/typebot.io/commit/30b09e56a405d1178018ab52bd69f5d2b7415bd2)]
+- 🚑 (billing) Fix stripe webhook &quot;invoice.paid&quot; typo [[5b0073b](https://github.com/baptisteArno/typebot.io/commit/5b0073bb61301ea1370b3bf662652648b30a4225)]
+- 🐛 (pictureChoice) Fix choice parsing too unrestrictive [[542e632](https://github.com/baptisteArno/typebot.io/commit/542e632472324a4c88cabee2be4f49921e5b28bb)]
+- 🚑 (editor) Fix typebot update permission [[8a07392](https://github.com/baptisteArno/typebot.io/commit/8a073928211cda434246f17ba4b18fdbeec0b4ef)]
+- 🐛 (chatwoot) Fix email prefill when Chatwoot contact already exist [[94886ca](https://github.com/baptisteArno/typebot.io/commit/94886ca58e684c6229f2438e66a90ff91dd79b1f)]
+- ✏️ Fix typebot v7 breaking changes doc typo [[1e64a73](https://github.com/baptisteArno/typebot.io/commit/1e64a73e54c6c841ff292eecf6f2011a2be86eda)]
+
+### Miscellaneous
+
+- 📝 Add flow share docs [[e228f68](https://github.com/baptisteArno/typebot.io/commit/e228f682f5b92b3e168a5b8fc11d7fdd1edb2af2)]
+- 🛂 Allow app admin to read a typebot [[cf8df68](https://github.com/baptisteArno/typebot.io/commit/cf8df681868974db099ee9c5d0b0105c68d46e07)]
+- 📝 Improve WP prefilled var explanation [[2c203f3](https://github.com/baptisteArno/typebot.io/commit/2c203f3b6d2a59ec7c71a9858678c2daab73e8bd)]
+- 📝 Add new start and continue endpoints in the API runtime instructions [[993bc79](https://github.com/baptisteArno/typebot.io/commit/993bc7900ede9fa44189f88724e35852bf5fe032)]
+- 🛂 (billing) Add isPastDue field in workspace ([#1046](https://github.com/baptisteArno/typebot.io/issues/1046)) [[ca79934](https://github.com/baptisteArno/typebot.io/commit/ca79934ef5c86feaa60cde4d4bc42171149a1f15)]
+- 🌐 Add es and ro support [[f6ac389](https://github.com/baptisteArno/typebot.io/commit/f6ac3891f8d11089d81a3cb7be6c715460570f28)]
+
+
 <a name="2.19.1"></a>
 ## 2.19.1 (2023-11-17)
 
