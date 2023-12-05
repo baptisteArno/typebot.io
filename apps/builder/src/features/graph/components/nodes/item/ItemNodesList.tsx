@@ -159,7 +159,7 @@ export const ItemNodesList = ({
         />
       )}
 
-      {draggedItem && (
+      {draggedItem && draggedItem.blockId === block.id && (
         <Portal>
           <Flex
             pointerEvents="none"

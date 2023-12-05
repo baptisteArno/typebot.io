@@ -31,6 +31,7 @@ export type BlockWithCreatableItems = Exclude<
 
 export type DraggableItem = Exclude<ItemV6, AbTestBlock['items'][number]> & {
   type: BlockWithCreatableItems['type']
+  blockId: string
 }
 
 const graphDndContext = createContext<{
