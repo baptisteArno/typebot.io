@@ -8,6 +8,23 @@ const __filename = fileURLToPath(import.meta.url)
 
 const __dirname = dirname(__filename)
 
+const injectViewerUrlIfVercelPreview = (val) => {
+  if (
+    (val && typeof val === 'string' && val.length > 0) ||
+    process.env.VERCEL_ENV !== 'preview' ||
+    !process.env.VERCEL_BUILDER_PROJECT_NAME ||
+    !process.env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME
+  )
+    return
+  process.env.NEXT_PUBLIC_VIEWER_URL =
+    `https://${process.env.VERCEL_BRANCH_URL}`.replace(
+      process.env.VERCEL_BUILDER_PROJECT_NAME,
+      process.env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME
+    )
+}
+
+injectViewerUrlIfVercelPreview(process.env.NEXT_PUBLIC_VIEWER_URL)
+
 configureRuntimeEnv()
 
 /** @type {import('next').NextConfig} */
