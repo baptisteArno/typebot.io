@@ -159,9 +159,9 @@ export const TypebotProvider = ({
   const typebot = typebotData?.typebot as TypebotV6
   const publishedTypebot = (publishedTypebotData?.publishedTypebot ??
     undefined) as PublicTypebotV6 | undefined
-  const isReadOnly = ['read', 'guest'].includes(
-    typebotData?.currentUserMode ?? 'guest'
-  )
+  const isReadOnly =
+    typebotData &&
+    ['read', 'guest'].includes(typebotData?.currentUserMode ?? 'guest')
 
   const [
     localTypebot,
