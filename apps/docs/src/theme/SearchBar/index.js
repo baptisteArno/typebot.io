@@ -31,7 +31,10 @@ function DocSearch() {
         <script type="text/javascript">
           {`window.Widget = window.Widget || {};
         window.Widget = Object.assign({}, window.Widget, {
-        baseUrl: "https://widget.orbit.love/widget/24a80353-75fd-49bd-a928-53dff3f4c097"
+        baseUrl: "https://widget.orbit.love/widget/24a80353-75fd-49bd-a928-53dff3f4c097",
+        options: {
+          docResultsLinkTarget: "_top",
+        }
         });`}
         </script>
       </Head>
