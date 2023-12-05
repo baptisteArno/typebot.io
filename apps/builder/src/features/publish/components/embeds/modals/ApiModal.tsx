@@ -29,7 +29,7 @@ export const ApiModal = ({
   const { typebot } = useTypebot()
 
   const replyBody = `{
-  "message": "This is my reply",
+  "message": "This is my reply"
 }`
 
   return (

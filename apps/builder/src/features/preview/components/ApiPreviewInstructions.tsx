@@ -23,7 +23,7 @@ export const ApiPreviewInstructions = (props: StackProps) => {
     : undefined
 
   const replyBody = `{
-  "message": "This is my reply",
+  "message": "This is my reply"
 }`
 
   return (
