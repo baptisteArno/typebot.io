@@ -16,6 +16,7 @@
     "api:generate": "dotenv -e ./.env -e ../../.env -- tsx --tsconfig ../builder/tsconfig.json ../builder/src/helpers/server/generateOpenApi.ts && dotenv -e ./.env -e ../../.env -- tsx --tsconfig ../viewer/openapi.tsconfig.json ../viewer/src/helpers/server/generateOpenApi.ts"
   },
   "dependencies": {
+    "@docsearch/react": "^3.5.2",
     "@docusaurus/core": "2.4.1",
     "@docusaurus/preset-classic": "2.4.1",
     "@docusaurus/theme-common": "2.4.1",

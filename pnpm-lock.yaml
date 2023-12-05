@@ -351,6 +351,9 @@ importers:
 
   apps/docs:
     dependencies:
+      '@docsearch/react':
+        specifier: ^3.5.2
+        version: 3.5.2(@algolia/client-search@4.15.0)(@types/react@18.0.28)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.8.3)
       '@docusaurus/core':
         specifier: 2.4.1
         version: 2.4.1(@docusaurus/types@2.3.1)(react-dom@17.0.2)(react@17.0.2)(typescript@5.3.2)
