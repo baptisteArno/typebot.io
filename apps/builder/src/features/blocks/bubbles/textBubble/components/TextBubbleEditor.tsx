@@ -101,6 +101,7 @@ const TextBubbleEditorContent = ({
       spacing={0}
       cursor="text"
       className="prevent-group-drag"
+      onContextMenuCapture={(e) => e.stopPropagation()}
       sx={{
         '.slate-ToolbarButton-active': {
           color: useColorModeValue('blue.500', 'blue.300') + ' !important',
