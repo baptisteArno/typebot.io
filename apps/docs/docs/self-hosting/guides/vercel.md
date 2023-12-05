@@ -26,6 +26,11 @@ You may want to [disable the Github actions](https://docs.github.com/en/actions/
 
 If you deploy on a Vercel Hobby plan, you will need to reduce the `maxDuration` timeout options in `apps/viewer/vercel.json` and set it to `10`
 
+:::note
+- Builder is the application where you'll create your flows.
+- Viewer is the bot interface your users will interact with.
+:::
+
 ### Deploy the builder
 
 1. Create a new Vercel project and import the forked repo
