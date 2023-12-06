@@ -16,7 +16,7 @@ export const GroupNotesPoppover = ({
   groupId,
 }: GroupNotesPoppoverProps) => {
   return (
-    <Popover>
+    <Popover placement="top-start">
       <PopoverTrigger>{children}</PopoverTrigger>
       <PopoverContent>
         <PopoverArrow />
