@@ -1,4 +1,11 @@
-import { CopyIcon, InfoIcon, PlayIcon, TrashIcon } from '@/components/icons'
+import {
+  CopyIcon,
+  InfoIcon,
+  PlayIcon,
+  TrashIcon,
+  FileTextIcon,
+} from '@/components/icons'
+import { GroupNotesPoppover } from '@/features/notes/components/GroupNotesPoppover'
 import {
   HStack,
   IconButton,
@@ -68,6 +75,18 @@ export const GroupFocusToolbar = ({
           onClick={onCopy}
         />
       </Tooltip>
+      <GroupNotesPoppover groupId={groupId}>
+        <IconButton
+          icon={<FileTextIcon />}
+          borderRightWidth="1px"
+          borderRightRadius="none"
+          borderLeftRadius="none"
+          aria-label={'Show group info'}
+          variant="ghost"
+          size="sm"
+          onClick={onCopy}
+        />
+      </GroupNotesPoppover>
       <IconButton
         aria-label="Delete"
         borderLeftRadius="none"
