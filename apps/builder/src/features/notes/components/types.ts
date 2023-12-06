@@ -1,21 +1,13 @@
 import { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Note } from '../models/Note'
+import { CreateNotesInput } from '../hooks/types'
+import { User } from '../models/User'
 
 export type CommentNoteProps = {
   note: Note
-  user: {
-    id: string
-    name: string
-    image?: string
-  }
-  editComment: string
-  commentSelectedId: string | null
-  isEditing: boolean
-  handleUpdateComment: (input: { id: string; comment: string }) => void
-  handleIsEditingNote: (input: { id: string }) => void
-  setEditComment: Dispatch<SetStateAction<string>>
+  user: User
   deleteNote: (input: { id: string }) => void
-  handleUndoEditing: () => void
+  updateNote: ({ id, comment }: { id: string; comment: string }) => void
 }
 
 export type GroupCommentsNoteProps = {
@@ -25,4 +17,17 @@ export type GroupCommentsNoteProps = {
 export type GroupNotesPoppoverProps = {
   children: ReactNode
   groupId: string
+}
+
+export type CreateNoteFormProps = {
+  createNote: ({ groupId, comment }: CreateNotesInput) => void
+  groupId: string
+}
+
+export type CommentProps = {
+  note: Note
+  user: User
+  editComment: string
+  isEditing: boolean
+  setEditComment: Dispatch<SetStateAction<string>>
 }

@@ -1,31 +1,43 @@
 import { CheckIcon, EditIcon, UndoIcon, TrashIcon } from '@/components/icons'
-import {
-  Flex,
-  IconButton,
-  Stack,
-  Avatar,
-  Text,
-  Textarea,
-} from '@chakra-ui/react'
+import { Flex, IconButton, Stack } from '@chakra-ui/react'
 import { CommentNoteProps } from './types'
+import { useState } from 'react'
+import { Comment } from './Comment'
 
 export const CommentNote = ({
   note,
   user,
-  commentSelectedId,
-  handleUpdateComment,
-  isEditing,
-  handleIsEditingNote,
-  editComment,
-  setEditComment,
+  updateNote,
   deleteNote,
-  handleUndoEditing,
 }: CommentNoteProps) => {
+  const [isEditing, setIsEditing] = useState(false)
+  const [editComment, setEditComment] = useState('')
+
+  function handleIsEditingNote() {
+    setIsEditing(true)
+  }
+
+  function handleUndoEditing() {
+    setIsEditing(false)
+  }
+
+  const handleUpdateComment = ({
+    comment,
+    id,
+  }: {
+    id: string
+    comment: string
+  }) => {
+    updateNote({ id, comment })
+    setEditComment('')
+    setIsEditing(false)
+  }
+
   return (
     <Stack direction="row" align="center" width="100%" position="relative">
       {note.userId === user.id && (
         <Flex position="absolute" top="-3" right="0" zIndex={1}>
-          {commentSelectedId === note.id && isEditing ? (
+          {isEditing ? (
             <>
               <IconButton
                 icon={<CheckIcon />}
@@ -51,7 +63,7 @@ export const CommentNote = ({
                 icon={<EditIcon />}
                 aria-label="Edit note"
                 variant="ghost"
-                onClick={() => handleIsEditingNote({ id: note.id })}
+                onClick={() => handleIsEditingNote()}
               />
               <IconButton
                 icon={<TrashIcon />}
@@ -63,20 +75,13 @@ export const CommentNote = ({
           )}
         </Flex>
       )}
-      <Avatar src={note.avatarUrl} />
-      <Flex width="100%" direction="column">
-        <Text fontSize="md">{note.name}</Text>
-        {commentSelectedId === note.id &&
-        note.userId === user?.id &&
-        isEditing ? (
-          <Textarea
-            value={editComment}
-            onChange={(e) => setEditComment(e.target.value)}
-          />
-        ) : (
-          <Text fontSize="sm" width="82%">{`${note.comment}`}</Text>
-        )}
-      </Flex>
+      <Comment
+        editComment={editComment}
+        isEditing={isEditing}
+        note={note}
+        setEditComment={setEditComment}
+        user={user}
+      />
     </Stack>
   )
 }
