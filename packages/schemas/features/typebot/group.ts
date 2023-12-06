@@ -1,5 +1,5 @@
-import { blockSchemaV5, blockSchemaV6 } from '../blocks'
 import { z } from 'zod'
+import { blockSchemaV5, blockSchemaV6 } from '../blocks'
 
 export const groupV5Schema = z.object({
   id: z.string(),
@@ -14,6 +14,7 @@ type GroupV5 = z.infer<typeof groupV5Schema>
 
 export const groupV6Schema = groupV5Schema.extend({
   blocks: z.array(blockSchemaV6),
+  notes: z.array(z.any()).optional(),
 })
 export type GroupV6 = z.infer<typeof groupV6Schema>
 
