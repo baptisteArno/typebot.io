@@ -1,4 +1,10 @@
-import { CopyIcon, InfoIcon, PlayIcon, TrashIcon } from '@/components/icons'
+import {
+  CopyIcon,
+  InfoIcon,
+  NoteIcon,
+  PlayIcon,
+  TrashIcon,
+} from '@/components/icons'
 import {
   HStack,
   IconButton,
@@ -12,6 +18,7 @@ type Props = {
   onPlayClick: () => void
   onDuplicateClick: () => void
   onDeleteClick: () => void
+  onNoteClick: () => void
 }
 
 export const GroupFocusToolbar = ({
@@ -19,6 +26,7 @@ export const GroupFocusToolbar = ({
   onPlayClick,
   onDuplicateClick,
   onDeleteClick,
+  onNoteClick,
 }: Props) => {
   const { hasCopied, onCopy } = useClipboard(groupId)
 
@@ -70,9 +78,17 @@ export const GroupFocusToolbar = ({
       </Tooltip>
       <IconButton
         aria-label="Delete"
-        borderLeftRadius="none"
+        borderRightWidth="1px"
         icon={<TrashIcon />}
         onClick={onDeleteClick}
+        variant="ghost"
+        size="sm"
+      />
+      <IconButton
+        aria-label="Add a note"
+        borderLeftRadius="none"
+        icon={<NoteIcon />}
+        onClick={onNoteClick}
         variant="ghost"
         size="sm"
       />

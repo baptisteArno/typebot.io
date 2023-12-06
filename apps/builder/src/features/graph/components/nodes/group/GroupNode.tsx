@@ -1,3 +1,16 @@
+import { ContextMenu } from '@/components/ContextMenu'
+import {
+  RightPanel,
+  useEditor,
+} from '@/features/editor/providers/EditorProvider'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { groupWidth } from '@/features/graph/constants'
+import { useBlockDnd } from '@/features/graph/providers/GraphDndProvider'
+import { useGraph } from '@/features/graph/providers/GraphProvider'
+import { useGroupsCoordinates } from '@/features/graph/providers/GroupsCoordinateProvider'
+import { Coordinates } from '@/features/graph/types'
+import { setMultipleRefs } from '@/helpers/setMultipleRefs'
+import { useOutsideClick } from '@/hooks/useOutsideClick'
 import {
   Editable,
   EditableInput,
@@ -6,27 +19,15 @@ import {
   Stack,
   useColorModeValue,
 } from '@chakra-ui/react'
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
-import { GroupV6 } from '@typebot.io/schemas'
-import { BlockNodesList } from '../block/BlockNodesList'
 import { isEmpty, isNotDefined } from '@typebot.io/lib'
-import { GroupNodeContextMenu } from './GroupNodeContextMenu'
-import { useDebounce } from 'use-debounce'
-import { ContextMenu } from '@/components/ContextMenu'
+import { GroupV6 } from '@typebot.io/schemas'
 import { useDrag } from '@use-gesture/react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import { useDebounce } from 'use-debounce'
+import { BlockNodesList } from '../block/BlockNodesList'
 import { GroupFocusToolbar } from './GroupFocusToolbar'
-import { useOutsideClick } from '@/hooks/useOutsideClick'
-import {
-  RightPanel,
-  useEditor,
-} from '@/features/editor/providers/EditorProvider'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { useBlockDnd } from '@/features/graph/providers/GraphDndProvider'
-import { useGraph } from '@/features/graph/providers/GraphProvider'
-import { useGroupsCoordinates } from '@/features/graph/providers/GroupsCoordinateProvider'
-import { setMultipleRefs } from '@/helpers/setMultipleRefs'
-import { Coordinates } from '@/features/graph/types'
-import { groupWidth } from '@/features/graph/constants'
+import { GroupNodeContextMenu } from './GroupNodeContextMenu'
+import { GroupNotes } from './GroupNotes'
 
 type Props = {
   group: GroupV6
@@ -79,6 +80,7 @@ const NonMemoizedDraggableGroupNode = ({
     group.graphCoordinates
   )
   const [groupTitle, setGroupTitle] = useState(group.title)
+  const [isNoteVisible, setIsNoteVisible] = useState(true)
 
   const isPreviewing =
     previewingBlock?.groupId === group.id ||
@@ -273,8 +275,20 @@ const NonMemoizedDraggableGroupNode = ({
                   duplicateGroup(groupIndex)
                 }}
                 onDeleteClick={() => deleteGroup(groupIndex)}
+                onNoteClick={() => setIsNoteVisible((prevState) => !prevState)}
               />
             </SlideFade>
+          )}
+
+          {isNoteVisible && (
+            <GroupNotes
+              groupId={group.id}
+              groupIndex={groupIndex}
+              groupTitle={groupTitle}
+              initialValue={group.notes}
+              currentCoordinates={currentCoordinates}
+              setIsNoteVisible={setIsNoteVisible}
+            />
           )}
         </Stack>
       )}
