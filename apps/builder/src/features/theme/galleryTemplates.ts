@@ -1,5 +1,14 @@
+import { env } from '@typebot.io/env'
 import { ThemeTemplate } from '@typebot.io/schemas'
 import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/constants'
+
+const getOrigin = () => {
+  if (typeof window !== 'undefined') {
+    return window.location.origin
+  }
+
+  return env.NEXTAUTH_URL
+}
 
 export const galleryTemplates: Pick<ThemeTemplate, 'id' | 'name' | 'theme'>[] =
   [
@@ -111,8 +120,7 @@ export const galleryTemplates: Pick<ThemeTemplate, 'id' | 'name' | 'theme'>[] =
           font: 'Montserrat',
           background: {
             type: BackgroundType.IMAGE,
-            content:
-              'https://s3.fr-par.scw.cloud/typebot/public/typebots/hlmywyje0sbz1lfogu86pyks/blocks/ssmyt084oosa17cggqd8kfg9',
+            content: getOrigin() + '/images/backgrounds/brightRain.jpeg',
           },
         },
       },
@@ -136,8 +144,7 @@ export const galleryTemplates: Pick<ThemeTemplate, 'id' | 'name' | 'theme'>[] =
           font: 'Raleway',
           background: {
             type: BackgroundType.IMAGE,
-            content:
-              'https://s3.fr-par.scw.cloud/typebot/public/typebots/hlmywyje0sbz1lfogu86pyks/blocks/uc2dyf63eeogaivqzm4z2hdb',
+            content: getOrigin() + '/images/backgrounds/rayOfLights.jpeg',
           },
         },
       },

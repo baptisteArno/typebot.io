@@ -5,6 +5,7 @@ import { Head, HeroImage, Text } from '../components'
 import { parseNumberWithCommas } from '@typebot.io/lib'
 import { SendMailOptions } from 'nodemailer'
 import { sendEmail } from '../sendEmail'
+import { env } from '@typebot.io/env'
 
 type AlmostReachedChatsLimitEmailProps = {
   workspaceName: string
@@ -33,7 +34,9 @@ export const AlmostReachedChatsLimitEmail = ({
       <MjmlBody width={600}>
         <MjmlSection padding="0">
           <MjmlColumn>
-            <HeroImage src="https://typebot.s3.fr-par.scw.cloud/public/assets/yourBotIsFlyingEmailBanner.png" />
+            <HeroImage
+              src={`${env.NEXTAUTH_URL}/images/yourBotIsFlyingBanner.png`}
+            />
           </MjmlColumn>
         </MjmlSection>
         <MjmlSection padding="0 24px" cssClass="smooth">
