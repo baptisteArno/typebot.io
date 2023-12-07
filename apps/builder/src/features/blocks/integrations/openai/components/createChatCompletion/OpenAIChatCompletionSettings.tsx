@@ -94,12 +94,13 @@ export const OpenAIChatCompletionSettings = ({
               <AccordionPanel pt="4">
                 <TableList
                   initialItems={options.messages}
-                  Item={ChatCompletionMessageItem}
                   onItemsChange={updateMessages}
                   isOrdered
                   hasDefaultItem
                   addLabel="Add message"
-                />
+                >
+                  {(props) => <ChatCompletionMessageItem {...props} />}
+                </TableList>
               </AccordionPanel>
             </AccordionItem>
             <AccordionItem>
@@ -131,11 +132,12 @@ export const OpenAIChatCompletionSettings = ({
               <AccordionPanel pt="4">
                 <TableList
                   initialItems={options.responseMapping}
-                  Item={ChatCompletionResponseItem}
                   onItemsChange={updateResponseMapping}
                   newItemDefaultProps={{ valueToExtract: 'Message content' }}
                   hasDefaultItem
-                />
+                >
+                  {(props) => <ChatCompletionResponseItem {...props} />}
+                </TableList>
               </AccordionPanel>
             </AccordionItem>
           </Accordion>

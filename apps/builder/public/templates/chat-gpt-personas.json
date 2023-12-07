@@ -1,11 +1,11 @@
 {
   "version": "6",
-  "id": "cloi9k6tf00051aqji6vk88pq",
+  "id": "clpnu8xj800071abop3o19y02",
   "name": "ChatGPT personas",
   "events": [
     {
       "id": "w99qhdr20tw02sfrfwkfc1tg",
-      "outgoingEdgeId": "c3733n7ia1hxcwld9lm3p351",
+      "outgoingEdgeId": "k5bj58emklqfqv3hemko4u23",
       "graphCoordinates": { "x": -95.29, "y": -267.02 },
       "type": "start"
     }
@@ -60,27 +60,24 @@
       "graphCoordinates": { "x": 1053.297810684862, "y": 919.9658659364646 },
       "blocks": [
         {
-          "id": "xikptnw1lp1qxdqo10qhmwy1",
-          "type": "OpenAI",
+          "id": "qqlv6ikxqh2l7wjibjqk3j93",
+          "type": "openai",
           "options": {
-            "task": "Create chat completion",
-            "model": "gpt-3.5-turbo",
+            "action": "Create chat completion",
             "messages": [
               {
-                "id": "mcc3hr1us468btys3moj20m9",
                 "role": "user",
                 "content": "Starting from now, I want you to explain things with simple words, as if I'm 11 years old."
               },
               {
-                "id": "i8i226uylkh84ovtpguaqc83",
                 "role": "Dialogue",
                 "dialogueVariableId": "vu9adij5penetej2xz89htfe6"
               }
             ],
+            "credentialsId": "clpjnjrbt00051aliw6610w1z",
             "responseMapping": [
               {
-                "id": "brb5ccisi1tjiqf3ng0asaiq",
-                "valueToExtract": "Message content",
+                "item": "Message content",
                 "variableId": "vni6kwbch8zlq92dclgcivzyr"
               }
             ]
@@ -111,13 +108,11 @@
             {
               "id": "x18iwzwmbzi9jjpnwij1861i",
               "outgoingEdgeId": "mxl8lftsj3pbmj4g24ymxajo",
-              "type": "button",
               "content": "Continue"
             },
             {
               "id": "imx7otsonvm0takr02b4ulyo",
               "outgoingEdgeId": "ny44r5sp69gne7obgshidhph",
-              "type": "button",
               "content": "Menu"
             }
           ]
@@ -127,30 +122,27 @@
     {
       "id": "fj5z2nx488htv0843kq6qeyk",
       "title": "Professor AI reply",
-      "graphCoordinates": { "x": 1040.86, "y": -128.46 },
+      "graphCoordinates": { "x": 1052.26, "y": -56.02 },
       "blocks": [
         {
-          "id": "f2r11ibqq2ufrahfcl3gf6qi",
-          "type": "OpenAI",
+          "id": "itiwmw62ml38rmeawxxawkub",
+          "type": "openai",
           "options": {
-            "task": "Create chat completion",
-            "model": "gpt-3.5-turbo",
+            "action": "Create chat completion",
             "messages": [
               {
-                "id": "fxg16pnlnwuhfpz1r51xslbd",
                 "role": "user",
                 "content": "I want you to act as an English translator, spelling corrector and improver. I will speak to you in any language and you will detect the language, translate it and answer in the corrected and improved version of my text, in English. I want you to replace my simplified A0-level words and sentences with more beautiful and elegant, upper level English words and sentences. Keep the meaning same, but make them more literary. I want you to only reply the correction, the improvements and nothing else, do not write explanations."
               },
               {
-                "id": "biqljpsbqfkgno4m80s4j5p0",
                 "role": "Dialogue",
                 "dialogueVariableId": "vu9adij5penetej2xz89htfe6"
               }
             ],
+            "credentialsId": "clpjnjrbt00051aliw6610w1z",
             "responseMapping": [
               {
-                "id": "brb5ccisi1tjiqf3ng0asaiq",
-                "valueToExtract": "Message content",
+                "item": "Message content",
                 "variableId": "vni6kwbch8zlq92dclgcivzyr"
               }
             ]
@@ -181,13 +173,11 @@
             {
               "id": "zaylo8bstqx0wp6bpdbd1rak",
               "outgoingEdgeId": "q6o0cbyzxtvgls3jtz7rpdgw",
-              "type": "button",
               "content": "Continue"
             },
             {
               "id": "d5jv3sjpzobsrnhcp055mxkv",
               "outgoingEdgeId": "xjv7pkpgpwh169448t8pepg4",
-              "type": "button",
               "content": "Back to menu"
             }
           ]
@@ -197,30 +187,27 @@
     {
       "id": "csbysu8dr08zxr4i6hzvzjdf",
       "title": "Copywriter AI reply",
-      "graphCoordinates": { "x": 1044.25, "y": 372.87 },
+      "graphCoordinates": { "x": 1055.63, "y": 436.9 },
       "blocks": [
         {
-          "id": "h2t5vbir3zh8eku55ozwb1du",
-          "type": "OpenAI",
+          "id": "w2y6tl8mggplu8vsc9hu2080",
+          "type": "openai",
           "options": {
-            "task": "Create chat completion",
-            "model": "gpt-3.5-turbo",
+            "action": "Create chat completion",
             "messages": [
               {
-                "id": "fxg16pnlnwuhfpz1r51xslbd",
                 "role": "user",
                 "content": "I want you to act as a copywriter. You will come up with copywriting advices that are engaging, imaginative, and captivating for the audience."
               },
               {
-                "id": "ynbhlcbsmy24pobiay9zezli",
                 "role": "Dialogue",
                 "dialogueVariableId": "vu9adij5penetej2xz89htfe6"
               }
             ],
+            "credentialsId": "clpjnjrbt00051aliw6610w1z",
             "responseMapping": [
               {
-                "id": "brb5ccisi1tjiqf3ng0asaiq",
-                "valueToExtract": "Message content",
+                "item": "Message content",
                 "variableId": "vni6kwbch8zlq92dclgcivzyr"
               }
             ]
@@ -251,13 +238,11 @@
             {
               "id": "b6zif4xxe2cuiddc2oqayaxi",
               "outgoingEdgeId": "jwydpoxngp2gvwanaruphe6s",
-              "type": "button",
               "content": "Continue"
             },
             {
               "id": "ooib3mqlfkazta6iol1ocloe",
               "outgoingEdgeId": "gfrpgowch879p1qaj9jzsh01",
-              "type": "button",
               "content": "Back to menu"
             }
           ]
@@ -296,25 +281,20 @@
             {
               "id": "rn0lqz1wvsg9lmc0jcl6ps8j",
               "outgoingEdgeId": "ry7l8wcaidxw5izm7zoy83kj",
-              "type": "button",
               "content": "English professor"
             },
             {
               "id": "le84cls9vkmrxquvqw8bhp7h",
               "outgoingEdgeId": "iy2htkuup0l908fsosg6d2qz",
-              "type": "button",
               "content": "Copywriter"
             },
             {
               "id": "mx4kgfgena53mxf87piwu1j2",
               "outgoingEdgeId": "kmex71jzzzekni4louuy3xbf",
-              "type": "button",
               "content": "Concept explainer"
             }
           ],
-          "options": {
-            "variableId": "vs7wwz29yyd21pfl4syeptdgi"
-          }
+          "options": { "variableId": "vs7wwz29yyd21pfl4syeptdgi" }
         }
       ]
     },
@@ -700,7 +680,7 @@
     {
       "from": { "eventId": "w99qhdr20tw02sfrfwkfc1tg" },
       "to": { "groupId": "bofjp88arodr4k0btv2esyqy" },
-      "id": "c3733n7ia1hxcwld9lm3p351"
+      "id": "k5bj58emklqfqv3hemko4u23"
     }
   ],
   "variables": [
@@ -711,8 +691,8 @@
   "theme": {},
   "selectedThemeTemplateId": null,
   "settings": {},
-  "createdAt": "2023-11-03T06:57:51.747Z",
-  "updatedAt": "2023-11-03T07:03:19.089Z",
+  "createdAt": "2023-12-02T09:15:31.652Z",
+  "updatedAt": "2023-12-02T09:18:34.891Z",
   "icon": "🎭",
   "folderId": null,
   "publicId": null,

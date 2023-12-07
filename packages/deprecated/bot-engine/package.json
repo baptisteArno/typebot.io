@@ -22,7 +22,7 @@
   "devDependencies": {
     "@types/node": "18.11.18",
     "@types/qs": "6.9.7",
-    "@types/react": "18.0.27",
+    "@types/react": "18.2.15",
     "@types/react-phone-number-input": "3.0.14",
     "@types/react-scroll": "1.8.6",
     "@types/react-transition-group": "4.4.5",

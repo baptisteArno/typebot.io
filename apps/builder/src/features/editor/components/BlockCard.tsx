@@ -1,6 +1,5 @@
-import { Flex, HStack, Tooltip, useColorModeValue } from '@chakra-ui/react'
-import { useBlockDnd } from '@/features/graph/providers/GraphDndProvider'
-import React, { useEffect, useState } from 'react'
+import { HStack } from '@chakra-ui/react'
+import React from 'react'
 import { BlockIcon } from './BlockIcon'
 import { isFreePlan } from '@/features/billing/helpers/isFreePlan'
 import { Plan } from '@typebot.io/prisma'
@@ -13,6 +12,9 @@ import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/const
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { BlockV6 } from '@typebot.io/schemas'
+import { enabledBlocks } from '@typebot.io/forge-repository'
+import { BlockCardLayout } from './BlockCardLayout'
+import { ForgedBlockCard } from '@/features/forge/ForgedBlockCard'
 
 type Props = {
   type: BlockV6['type']
@@ -28,6 +30,14 @@ export const BlockCard = (
   const { t } = useTranslate()
   const { workspace } = useWorkspace()
 
+  if (enabledBlocks.includes(props.type as (typeof enabledBlocks)[number])) {
+    return (
+      <ForgedBlockCard
+        type={props.type as (typeof enabledBlocks)[number]}
+        onMouseDown={props.onMouseDown}
+      />
+    )
+  }
   switch (props.type) {
     case BubbleBlockType.EMBED:
       return (
@@ -110,38 +120,4 @@ export const BlockCard = (
         </BlockCardLayout>
       )
   }
-}
-
-const BlockCardLayout = ({ type, onMouseDown, tooltip, children }: Props) => {
-  const { draggedBlockType } = useBlockDnd()
-  const [isMouseDown, setIsMouseDown] = useState(false)
-
-  useEffect(() => {
-    setIsMouseDown(draggedBlockType === type)
-  }, [draggedBlockType, type])
-
-  const handleMouseDown = (e: React.MouseEvent) => onMouseDown(e, type)
-
-  return (
-    <Tooltip label={tooltip}>
-      <Flex pos="relative">
-        <HStack
-          borderWidth="1px"
-          borderColor={useColorModeValue('gray.200', 'gray.800')}
-          rounded="lg"
-          flex="1"
-          cursor={'grab'}
-          opacity={isMouseDown ? '0.4' : '1'}
-          onMouseDown={handleMouseDown}
-          bgColor={useColorModeValue('gray.50', 'gray.850')}
-          px="4"
-          py="2"
-          _hover={useColorModeValue({ shadow: 'md' }, { bgColor: 'gray.800' })}
-          transition="box-shadow 200ms, background-color 200ms"
-        >
-          {!isMouseDown ? children : null}
-        </HStack>
-      </Flex>
-    </Tooltip>
-  )
 }

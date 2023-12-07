@@ -19,6 +19,7 @@ import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/p
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
+import { enabledBlocks } from '@typebot.io/forge-repository'
 
 export const sendRequest = async <ResponseData>(
   params:
@@ -110,7 +111,11 @@ export const isConditionBlock = (block: Block): block is ConditionBlock =>
   block.type === LogicBlockType.CONDITION
 
 export const isIntegrationBlock = (block: Block): block is IntegrationBlock =>
-  (Object.values(IntegrationBlockType) as string[]).includes(block.type)
+  (
+    Object.values(IntegrationBlockType).concat(
+      enabledBlocks as readonly any[]
+    ) as any[]
+  ).includes(block.type)
 
 export const isWebhookBlock = (block: Block): block is WebhookBlock =>
   [
@@ -252,3 +257,5 @@ export const getAtPath = <T>(obj: T, path: string): unknown => {
 
 export const isSvgSrc = (src: string | undefined) =>
   src?.startsWith('data:image/svg') || src?.endsWith('.svg')
+
+export { createId } from '@paralleldrive/cuid2'

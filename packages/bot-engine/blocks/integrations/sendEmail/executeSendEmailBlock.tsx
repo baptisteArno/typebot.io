@@ -14,11 +14,11 @@ import { byId, isDefined, isEmpty, isNotDefined, omit } from '@typebot.io/lib'
 import { getDefinedVariables, parseAnswers } from '@typebot.io/lib/results'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { defaultFrom, defaultTransportOptions } from './constants'
-import { findUniqueVariableValue } from '../../../variables/findUniqueVariableValue'
+import { findUniqueVariableValue } from '@typebot.io/variables/findUniqueVariableValue'
 import { env } from '@typebot.io/env'
 import { ExecuteIntegrationResponse } from '../../../types'
 import prisma from '@typebot.io/lib/prisma'
-import { parseVariables } from '../../../variables/parseVariables'
+import { parseVariables } from '@typebot.io/variables/parseVariables'
 import { defaultSendEmailOptions } from '@typebot.io/schemas/features/blocks/integrations/sendEmail/constants'
 
 export const executeSendEmailBlock = async (

@@ -18,7 +18,7 @@ import { getDefinedVariables, parseAnswers } from '@typebot.io/lib/results'
 import got, { Method, HTTPError, OptionsInit } from 'got'
 import { resumeWebhookExecution } from './resumeWebhookExecution'
 import { ExecuteIntegrationResponse } from '../../../types'
-import { parseVariables } from '../../../variables/parseVariables'
+import { parseVariables } from '@typebot.io/variables/parseVariables'
 import prisma from '@typebot.io/lib/prisma'
 import {
   HttpMethod,

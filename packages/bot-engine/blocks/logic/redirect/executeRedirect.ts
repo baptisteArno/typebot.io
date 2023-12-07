@@ -1,7 +1,7 @@
 import { RedirectBlock, SessionState } from '@typebot.io/schemas'
 import { sanitizeUrl } from '@typebot.io/lib'
 import { ExecuteLogicResponse } from '../../../types'
-import { parseVariables } from '../../../variables/parseVariables'
+import { parseVariables } from '@typebot.io/variables/parseVariables'
 
 export const executeRedirect = (
   state: SessionState,

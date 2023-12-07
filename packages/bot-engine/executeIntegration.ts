@@ -1,14 +1,15 @@
-import { executeOpenAIBlock } from './blocks/integrations/openai/executeOpenAIBlock'
 import { executeSendEmailBlock } from './blocks/integrations/sendEmail/executeSendEmailBlock'
 import { executeWebhookBlock } from './blocks/integrations/webhook/executeWebhookBlock'
 import { executeChatwootBlock } from './blocks/integrations/chatwoot/executeChatwootBlock'
-import { executeGoogleAnalyticsBlock } from './blocks/integrations/googleAnalytics/executeGoogleAnalyticsBlock'
+import { executeGoogleAnalyticsBlock } from './blocks/integrations/legacy/googleAnalytics/executeGoogleAnalyticsBlock'
 import { executeGoogleSheetBlock } from './blocks/integrations/googleSheets/executeGoogleSheetBlock'
 import { executePixelBlock } from './blocks/integrations/pixel/executePixelBlock'
 import { executeZemanticAiBlock } from './blocks/integrations/zemanticAi/executeZemanticAiBlock'
 import { IntegrationBlock, SessionState } from '@typebot.io/schemas'
 import { ExecuteIntegrationResponse } from './types'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
+import { executeOpenAIBlock } from './blocks/integrations/legacy/openai/executeOpenAIBlock'
+import { executeForgedBlock } from './forge/executeForgedBlock'
 
 export const executeIntegration =
   (state: SessionState) =>
@@ -33,5 +34,7 @@ export const executeIntegration =
         return executePixelBlock(state, block)
       case IntegrationBlockType.ZEMANTIC_AI:
         return executeZemanticAiBlock(state, block)
+      default:
+        return executeForgedBlock(state, block)
     }
   }

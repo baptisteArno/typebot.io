@@ -154,9 +154,10 @@ export const WebhookAdvancedConfigForm = ({
               <TableList<KeyValue>
                 initialItems={webhook?.queryParams}
                 onItemsChange={updateQueryParams}
-                Item={QueryParamsInputs}
                 addLabel="Add a param"
-              />
+              >
+                {(props) => <QueryParamsInputs {...props} />}
+              </TableList>
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem>
@@ -168,9 +169,10 @@ export const WebhookAdvancedConfigForm = ({
               <TableList<KeyValue>
                 initialItems={webhook?.headers}
                 onItemsChange={updateHeaders}
-                Item={HeadersInputs}
                 addLabel="Add a value"
-              />
+              >
+                {(props) => <HeadersInputs {...props} />}
+              </TableList>
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem>
@@ -203,9 +205,10 @@ export const WebhookAdvancedConfigForm = ({
               <TableList<VariableForTest>
                 initialItems={options?.variablesForTest}
                 onItemsChange={updateVariablesForTest}
-                Item={VariableForTestInputs}
                 addLabel="Add an entry"
-              />
+              >
+                {(props) => <VariableForTestInputs {...props} />}
+              </TableList>
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
@@ -235,9 +238,10 @@ export const WebhookAdvancedConfigForm = ({
               <TableList<ResponseVariableMapping>
                 initialItems={options?.responseVariableMapping}
                 onItemsChange={updateResponseVariableMapping}
-                Item={ResponseMappingInputs}
                 addLabel="Add an entry"
-              />
+              >
+                {(props) => <ResponseMappingInputs {...props} />}
+              </TableList>
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
