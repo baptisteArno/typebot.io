@@ -27,6 +27,7 @@ export const getNotes = authenticatedProcedure
           avatarUrl: z.string().optional(),
           name: z.string(),
           comment: z.string(),
+          createdAt: z.date(),
         })
       ),
     })
@@ -41,14 +42,17 @@ export const getNotes = authenticatedProcedure
       },
     })
 
-    const notes = notesDb.map((data) => ({
-      id: data.id,
-      groupId: data.groupId,
-      userId: data.userId,
-      avatarUrl: data.user.image!,
-      name: data.user.name!,
-      comment: data.comment,
-    }))
+    const notes = notesDb
+      .map((data) => ({
+        id: data.id,
+        groupId: data.groupId,
+        userId: data.userId,
+        avatarUrl: data.user.image!,
+        name: data.user.name!,
+        comment: data.comment,
+        createdAt: data.createdAt,
+      }))
+      .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
 
     return { notes }
   })

@@ -10,7 +10,11 @@ export const useNotes = (groupId: string) => {
   const [notes, setNotes] = useState<Note[]>([])
   const { showToast } = useToast()
 
-  const { data, refetch: refetchNotes } = trpc.notes.getNotes.useQuery({
+  const {
+    data,
+    refetch: refetchNotes,
+    isLoading: isLoadingFetchNotes,
+  } = trpc.notes.getNotes.useQuery({
     groupId,
   })
 
@@ -25,13 +29,13 @@ export const useNotes = (groupId: string) => {
     },
   }
 
-  const { mutate: createNoteTRPC } =
+  const { mutate: createNoteTRPC, isLoading: isLoadingCreateNote } =
     trpc.notes.createNotes.useMutation(defaultMutationInput)
 
-  const { mutate: deleteNoteTRPC } =
+  const { mutate: deleteNoteTRPC, isLoading: isLoadingDeleteNote } =
     trpc.notes.deleteNote.useMutation(defaultMutationInput)
 
-  const { mutate: updateNoteTRPC } =
+  const { mutate: updateNoteTRPC, isLoading: isLoadingUpdateNote } =
     trpc.notes.updateNote.useMutation(defaultMutationInput)
 
   useEffect(() => {
@@ -59,5 +63,9 @@ export const useNotes = (groupId: string) => {
     createNote,
     deleteNote,
     updateNote,
+    isLoadingCreateNote,
+    isLoadingDeleteNote,
+    isLoadingUpdateNote,
+    isLoadingFetchNotes,
   }
 }

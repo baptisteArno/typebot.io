@@ -22,6 +22,7 @@ export type GroupNotesPoppoverProps = {
 export type CreateNoteFormProps = {
   createNote: ({ groupId, comment }: CreateNotesInput) => void
   groupId: string
+  isLoadingCreateNote: boolean
 }
 
 export type CommentProps = {

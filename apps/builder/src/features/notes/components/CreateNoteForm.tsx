@@ -5,6 +5,7 @@ import { useState } from 'react'
 export const CreateNoteForm = ({
   createNote,
   groupId,
+  isLoadingCreateNote,
 }: CreateNoteFormProps) => {
   const [comment, setComment] = useState<string>('')
 
@@ -27,6 +28,7 @@ export const CreateNoteForm = ({
         bgColor="blue"
         width="28"
         height="10"
+        isLoading={isLoadingCreateNote}
       >
         Comment
       </Button>
