@@ -1,4 +1,8 @@
-import { ContinueChatResponse, SessionState } from '@typebot.io/schemas'
+import {
+  ContinueChatResponse,
+  CustomEmbedBubble,
+  SessionState,
+} from '@typebot.io/schemas'
 
 export type EdgeId = string
 
@@ -10,6 +14,7 @@ export type ExecuteLogicResponse = {
 export type ExecuteIntegrationResponse = {
   outgoingEdgeId: EdgeId | undefined
   newSessionState?: SessionState
+  customEmbedBubble?: CustomEmbedBubble
 } & Pick<ContinueChatResponse, 'clientSideActions' | 'logs'>
 
 export type ParsedReply =

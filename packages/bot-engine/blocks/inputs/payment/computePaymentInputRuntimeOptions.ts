@@ -7,7 +7,7 @@ import {
 } from '@typebot.io/schemas'
 import Stripe from 'stripe'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
-import { parseVariables } from '../../../variables/parseVariables'
+import { parseVariables } from '@typebot.io/variables/parseVariables'
 import prisma from '@typebot.io/lib/prisma'
 import { defaultPaymentInputOptions } from '@typebot.io/schemas/features/blocks/inputs/payment/constants'
 

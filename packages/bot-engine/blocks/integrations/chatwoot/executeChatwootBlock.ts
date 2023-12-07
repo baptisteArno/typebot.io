@@ -2,9 +2,9 @@ import { ExecuteIntegrationResponse } from '../../../types'
 import { env } from '@typebot.io/env'
 import { isDefined } from '@typebot.io/lib'
 import { ChatwootBlock, SessionState } from '@typebot.io/schemas'
-import { extractVariablesFromText } from '../../../variables/extractVariablesFromText'
-import { parseGuessedValueType } from '../../../variables/parseGuessedValueType'
-import { parseVariables } from '../../../variables/parseVariables'
+import { extractVariablesFromText } from '@typebot.io/variables/extractVariablesFromText'
+import { parseGuessedValueType } from '@typebot.io/variables/parseGuessedValueType'
+import { parseVariables } from '@typebot.io/variables/parseVariables'
 import { defaultChatwootOptions } from '@typebot.io/schemas/features/blocks/integrations/chatwoot/constants'
 
 const parseSetUserCode = (

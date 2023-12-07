@@ -24,7 +24,6 @@ export const ConditionForm = ({ condition, onConditionChange }: Props) => {
     <TableList<Comparison>
       initialItems={condition?.comparisons}
       onItemsChange={handleComparisonsChange}
-      Item={ComparisonItem}
       ComponentBetweenItems={() => (
         <Flex justify="center">
           <DropdownList
@@ -38,6 +37,8 @@ export const ConditionForm = ({ condition, onConditionChange }: Props) => {
         </Flex>
       )}
       addLabel="Add a comparison"
-    />
+    >
+      {(props) => <ComparisonItem {...props} />}
+    </TableList>
   )
 }

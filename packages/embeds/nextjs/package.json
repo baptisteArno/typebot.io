@@ -38,7 +38,7 @@
     "typescript": "5.3.2"
   },
   "peerDependencies": {
-    "next": "12.x || 13.x",
+    "next": "12.x || 13.x || 14.x",
     "react": "18.x"
   }
 }

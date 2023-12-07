@@ -16,6 +16,7 @@
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
+    "@typebot.io/variables": "workspace:*",
     "@udecode/plate-common": "21.1.5",
     "@udecode/plate-serializer-md": "24.4.0",
     "ai": "2.2.24",
@@ -34,6 +35,9 @@
   },
   "devDependencies": {
     "@types/nodemailer": "6.4.8",
-    "@types/qs": "6.9.7"
+    "@types/qs": "6.9.7",
+    "@typebot.io/forge-schemas": "workspace:*",
+    "@typebot.io/forge": "workspace:*",
+    "@typebot.io/forge-repository": "workspace:*"
   }
 }

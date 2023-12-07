@@ -1,8 +1,8 @@
 import { ExecuteLogicResponse } from '../../../types'
 import { ScriptBlock, SessionState, Variable } from '@typebot.io/schemas'
-import { extractVariablesFromText } from '../../../variables/extractVariablesFromText'
-import { parseGuessedValueType } from '../../../variables/parseGuessedValueType'
-import { parseVariables } from '../../../variables/parseVariables'
+import { extractVariablesFromText } from '@typebot.io/variables/extractVariablesFromText'
+import { parseGuessedValueType } from '@typebot.io/variables/parseGuessedValueType'
+import { parseVariables } from '@typebot.io/variables/parseVariables'
 
 export const executeScript = (
   state: SessionState,

@@ -21,3 +21,18 @@ const parseContent = (content: string) => {
     .replace(/<\/script>/g, '')
   return contentWithoutScriptTags
 }
+
+export const executeCode = async ({
+  args,
+  content,
+}: {
+  content: string
+  args: Record<string, unknown>
+}) => {
+  try {
+    const func = AsyncFunction(...Object.keys(args), content)
+    await func(...Object.keys(args).map((key) => args[key]))
+  } catch (err) {
+    console.warn('Script threw an error:', err)
+  }
+}

@@ -6,6 +6,7 @@ import {
   SessionState,
 } from '@typebot.io/schemas'
 import {
+  createId,
   isBubbleBlock,
   isInputBlock,
   isIntegrationBlock,
@@ -20,13 +21,14 @@ import { injectVariableValuesInButtonsInputBlock } from './blocks/inputs/buttons
 import { injectVariableValuesInPictureChoiceBlock } from './blocks/inputs/pictureChoice/injectVariableValuesInPictureChoiceBlock'
 import { getPrefilledInputValue } from './getPrefilledValue'
 import { parseDateInput } from './blocks/inputs/date/parseDateInput'
-import { deepParseVariables } from './variables/deepParseVariables'
+import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
 import {
   BubbleBlockWithDefinedContent,
   parseBubbleBlock,
 } from './parseBubbleBlock'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { VisitedEdge } from '@typebot.io/prisma'
+import { ExecuteIntegrationResponse, ExecuteLogicResponse } from './types'
 
 type ContextProps = {
   version: 1 | 2
@@ -93,7 +95,10 @@ export const executeGroup = async (
         logs,
         visitedEdges,
       }
-    const executionResponse = isLogicBlock(block)
+    const executionResponse:
+      | ExecuteLogicResponse
+      | ExecuteIntegrationResponse
+      | null = isLogicBlock(block)
       ? await executeLogic(newSessionState)(block)
       : isIntegrationBlock(block)
       ? await executeIntegration(newSessionState)(block)
@@ -116,9 +121,20 @@ export const executeGroup = async (
         })),
       ]
       if (
+        'customEmbedBubble' in executionResponse &&
+        executionResponse.customEmbedBubble
+      ) {
+        messages.push({
+          id: createId(),
+          ...executionResponse.customEmbedBubble,
+        })
+      }
+      if (
         executionResponse.clientSideActions?.find(
           (action) => action.expectsDedicatedReply
-        )
+        ) ||
+        ('customEmbedBubble' in executionResponse &&
+          executionResponse.customEmbedBubble)
       ) {
         return {
           messages,
