@@ -38,13 +38,19 @@ export const createNotes = authenticatedProcedure
       })
     }
 
-    const note = await prisma.notes.create({
-      data: {
-        groupId,
-        userId,
-        comment,
-      },
-    })
-
-    return { note }
+    try {
+      const note = await prisma.notes.create({
+        data: {
+          groupId,
+          userId,
+          comment,
+        },
+      })
+      return { note }
+    } catch (err) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'An error occurred while creating the note.',
+      })
+    }
   })

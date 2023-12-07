@@ -43,10 +43,16 @@ export const useNotes = (groupId: string) => {
   }, [data])
 
   function createNote({ groupId, comment }: CreateNotesInput) {
+    if (!user) {
+      showToast({
+        description: 'User must be logged in to create notes.',
+      })
+      return
+    }
     createNoteTRPC({
       comment,
       groupId,
-      userId: user!.id,
+      userId: user.id,
     })
   }
 

@@ -81,10 +81,9 @@ export const GroupFocusToolbar = ({
           borderRightWidth="1px"
           borderRightRadius="none"
           borderLeftRadius="none"
-          aria-label={'Show group info'}
+          aria-label={'Show group notes'}
           variant="ghost"
           size="sm"
-          onClick={onCopy}
         />
       </GroupNotesPoppover>
       <IconButton

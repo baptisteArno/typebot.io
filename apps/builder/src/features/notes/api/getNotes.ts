@@ -48,7 +48,7 @@ export const getNotes = authenticatedProcedure
         groupId: data.groupId,
         userId: data.userId,
         avatarUrl: data.user.image!,
-        name: data.user.name!,
+        name: data.user?.name ?? 'Anonymous',
         comment: data.comment,
         createdAt: data.createdAt,
       }))
