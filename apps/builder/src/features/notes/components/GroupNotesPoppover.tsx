@@ -8,7 +8,7 @@ import {
   PopoverTrigger,
 } from '@chakra-ui/react'
 
-import { GroupCommentsNote } from './GroupCommentsNote'
+import { GroupNoteComments } from './GroupNoteComments'
 import { GroupNotesPoppoverProps } from './types'
 
 export const GroupNotesPoppover = ({
@@ -23,7 +23,7 @@ export const GroupNotesPoppover = ({
         <PopoverCloseButton />
         <PopoverHeader>Notes</PopoverHeader>
         <PopoverBody>
-          <GroupCommentsNote groupId={groupId} />
+          <GroupNoteComments groupId={groupId} />
         </PopoverBody>
       </PopoverContent>
     </Popover>

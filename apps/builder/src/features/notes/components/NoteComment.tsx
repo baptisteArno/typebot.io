@@ -4,7 +4,7 @@ import { CommentNoteProps } from './types'
 import { useState } from 'react'
 import { Comment } from './Comment'
 
-export const CommentNote = ({
+export const NoteComment = ({
   note,
   user,
   updateNote,

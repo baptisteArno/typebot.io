@@ -1,51 +1,57 @@
-import { useEffect, useState } from 'react'
 import { useUser } from '@/features/account/hooks/useUser'
 import { CreateNotesInput } from './types'
-import { Note } from '../models/Note.js'
+import { useToast } from '@/hooks/useToast'
+import { trpc } from '@/lib/trpc'
+import { Note } from '../models/Note'
+import { useEffect, useState } from 'react'
 
-export const useNotes = () => {
+export const useNotes = (groupId: string) => {
   const { user } = useUser()
-  const [id, setId] = useState(1)
   const [notes, setNotes] = useState<Note[]>([])
+  const { showToast } = useToast()
+
+  const { data, refetch: refetchNotes } = trpc.notes.getNotes.useQuery({
+    groupId,
+  })
+
+  const defaultMutationInput = {
+    onError: (error: { message: string }) => {
+      showToast({
+        description: error.message,
+      })
+    },
+    onSuccess: () => {
+      refetchNotes()
+    },
+  }
+
+  const { mutate: createNoteTRPC } =
+    trpc.notes.createNotes.useMutation(defaultMutationInput)
+
+  const { mutate: deleteNoteTRPC } =
+    trpc.notes.deleteNote.useMutation(defaultMutationInput)
+
+  const { mutate: updateNoteTRPC } =
+    trpc.notes.updateNote.useMutation(defaultMutationInput)
 
   useEffect(() => {
-    const dataFetchedNote = [
-      {
-        id: 'id',
-        groupId: 'id',
-        userId: 'id',
-        avatarUrl:
-          'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        name: 'Manson McLary',
-        comment: 'Good idea Henrique!',
-      } as Note,
-    ]
-
-    setNotes(dataFetchedNote)
-  }, [])
+    setNotes(data?.notes ?? [])
+  }, [data])
 
   function createNote({ groupId, comment }: CreateNotesInput) {
-    const newNote = {
-      id: String(id),
-      groupId,
-      userId: user!.id!,
-      avatarUrl: user!.image,
-      name: user!.name,
+    createNoteTRPC({
       comment,
-    }
-
-    setId(id + 1)
-    setNotes([...notes, newNote as Note])
+      groupId,
+      userId: user!.id,
+    })
   }
 
   function deleteNote({ id }: { id: string }) {
-    const filterNotes = notes.filter((nt) => nt.id !== id)
-    setNotes(filterNotes)
+    deleteNoteTRPC({ id })
   }
 
   function updateNote({ id, comment }: { id: string; comment: string }) {
-    const noteFound = notes.find((nt) => nt.id === id)
-    noteFound && (noteFound.comment = comment)
+    updateNoteTRPC({ id, comment })
   }
 
   return {
