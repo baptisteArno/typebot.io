@@ -94,7 +94,7 @@ export const publishTypebot = authenticatedProcedure
       }),
     })
 
-    if (riskLevel > 0) {
+    if (riskLevel > 0 && riskLevel !== existingTypebot.riskLevel) {
       if (env.MESSAGE_WEBHOOK_URL)
         await fetch(env.MESSAGE_WEBHOOK_URL, {
           method: 'POST',
