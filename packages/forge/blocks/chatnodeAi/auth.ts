@@ -2,7 +2,7 @@ import { option, AuthDefinition } from '@typebot.io/forge'
 
 export const auth = {
   type: 'encryptedCredentials',
-  name: 'ChatNode.AI',
+  name: 'ChatNode Account',
   schema: option.object({
     apiKey: option.string.layout({
       label: 'API key',

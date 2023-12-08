@@ -12,20 +12,20 @@ export const sendMessage = createAction({
   name: 'Send Message',
   options: option.object({
     botId: option.string.layout({
-      label: 'BotId',
-      placeholder: 'Content',
+      label: 'Bot ID',
+      placeholder: '68c052c5c3680f63',
       moreInfoTooltip:
-        'The bot_id you want to ask question to',
+        'The bot_id you want to ask question to. You can find it at the end of your ChatBot URl in your dashboard',
     }),
     query: option.string.layout({
-      label: 'query',
-      placeholder: 'Content',
+      label: 'Prompt',
+      placeholder: 'Hi, what can I do with ChatNode',
       moreInfoTooltip:
-        'The query you want to ask your chatbot',
+        'The prompt you want to ask your chatbot',
     }),
     responseMapping: option
       .saveResponseArray([
-        'message', 'chat_session_id'
+        'Message', 'Thread ID'
       ])
       .layout({
         accordion: 'Save response',
