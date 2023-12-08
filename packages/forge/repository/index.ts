@@ -4,4 +4,5 @@ export const enabledBlocks = [
   'google-analytics',
   'zemantic-ai',
   'cal-com',
+  'chat-node',
 ] as const
