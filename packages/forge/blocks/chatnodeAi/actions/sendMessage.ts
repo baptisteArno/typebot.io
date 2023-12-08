@@ -58,14 +58,14 @@ export const sendMessage = createAction({
 
         if (!mapping.variableId || !mapping.item) return
 
-        if (mapping.item === 'message')
+        if (mapping.item === 'Message')
           variables.set(
             mapping.variableId,
               res.message
           )
         console.log(variables.get(mapping.variableId))
 
-         if (mapping.item === 'chat_session_id')
+         if (mapping.item === 'Thread ID')
           variables.set(
             mapping.variableId,
             res.chat_session_id
