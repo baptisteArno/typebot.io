@@ -5,7 +5,7 @@ import {sendMessage} from "./actions/sendMessage";
 
 export const chatnodeAi = createBlock({
   id: 'chatnode-ai',
-  name: 'ChatNode.AI',
+  name: 'ChatNode',
   tags: ['ai', "openai", "document", "url"],
   LightLogo: ChatnodeAiLogo,
   auth,
