@@ -201,6 +201,7 @@ model Typebot {
   isArchived              Boolean                   @default(false)
   isClosed                Boolean                   @default(false)
   whatsAppCredentialsId   String?
+  riskLevel               Int?
 
   @@index([workspaceId])
   @@index([folderId])

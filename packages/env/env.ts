@@ -66,6 +66,16 @@ const baseEnv = {
       .default('FREE'),
     DEBUG: boolean.optional().default('false'),
     CHAT_API_TIMEOUT: z.coerce.number().optional(),
+    RADAR_HIGH_RISK_KEYWORDS: z
+      .string()
+      .min(1)
+      .transform((val) => val.split(','))
+      .optional(),
+    RADAR_INTERMEDIATE_RISK_KEYWORDS: z
+      .string()
+      .min(1)
+      .transform((val) => val.split(','))
+      .optional(),
   },
   client: {
     NEXT_PUBLIC_E2E_TEST: boolean.optional(),
@@ -294,6 +304,7 @@ const telemetryEnv = {
   server: {
     TELEMETRY_WEBHOOK_URL: z.string().url().optional(),
     TELEMETRY_WEBHOOK_BEARER_TOKEN: z.string().min(1).optional(),
+    MESSAGE_WEBHOOK_URL: z.string().url().optional(),
     USER_CREATED_WEBHOOK_URL: z.string().url().optional(),
   },
 }

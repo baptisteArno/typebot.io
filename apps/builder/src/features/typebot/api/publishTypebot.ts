@@ -14,6 +14,8 @@ import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
 import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 import { Plan } from '@typebot.io/prisma'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { computeRiskLevel } from '@typebot.io/radar'
+import { env } from '@typebot.io/env'
 
 export const publishTypebot = authenticatedProcedure
   .meta({
@@ -76,6 +78,52 @@ export const publishTypebot = authenticatedProcedure
           code: 'BAD_REQUEST',
           message: "File upload blocks can't be published on the free plan",
         })
+    }
+
+    if (existingTypebot.riskLevel && existingTypebot.riskLevel > 80)
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message:
+          'Radar detected a potential malicious typebot. This bot is being manually reviewed by Fraud Prevention team.',
+      })
+
+    const riskLevel = computeRiskLevel({
+      name: existingTypebot.name,
+      groups: parseGroups(existingTypebot.groups, {
+        typebotVersion: existingTypebot.version,
+      }),
+    })
+
+    if (riskLevel > 0) {
+      if (env.MESSAGE_WEBHOOK_URL)
+        await fetch(env.MESSAGE_WEBHOOK_URL, {
+          method: 'POST',
+          body: `🚨 *Radar detected a potential malicious typebot* 🚨\n\n*Typebot:* ${existingTypebot.name}\n*Risk level:* ${riskLevel}/100\n*Typebot ID:* ${existingTypebot.id}\n*Workspace ID:* ${existingTypebot.workspaceId}\n*User ID:* ${user.id}`,
+        }).catch((err) => {
+          console.error('Failed to send message', err)
+        })
+
+      await prisma.typebot.updateMany({
+        where: {
+          id: existingTypebot.id,
+        },
+        data: {
+          riskLevel,
+        },
+      })
+      if (riskLevel > 80) {
+        if (existingTypebot.publishedTypebot)
+          await prisma.publicTypebot.deleteMany({
+            where: {
+              id: existingTypebot.publishedTypebot.id,
+            },
+          })
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message:
+            'Radar detected a potential malicious typebot. This bot is being manually reviewed by Fraud Prevention team.',
+        })
+      }
     }
 
     if (existingTypebot.publishedTypebot)

@@ -288,6 +288,9 @@ importers:
       '@typebot.io/prisma':
         specifier: workspace:*
         version: link:../../packages/prisma
+      '@typebot.io/radar':
+        specifier: workspace:*
+        version: link:../../packages/radar
       '@typebot.io/schemas':
         specifier: workspace:*
         version: link:../../packages/schemas
@@ -1265,6 +1268,28 @@ importers:
       tsx:
         specifier: 3.12.7
         version: 3.12.7
+      typescript:
+        specifier: 5.3.2
+        version: 5.3.2
+
+  packages/radar:
+    dependencies:
+      '@udecode/plate-common':
+        specifier: 21.1.5
+        version: 21.1.5(@babel/core@7.22.9)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-react@0.94.2)(slate@0.94.1)
+    devDependencies:
+      '@typebot.io/env':
+        specifier: workspace:*
+        version: link:../env
+      '@typebot.io/prisma':
+        specifier: workspace:*
+        version: link:../prisma
+      '@typebot.io/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       typescript:
         specifier: 5.3.2
         version: 5.3.2

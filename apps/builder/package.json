@@ -101,6 +101,7 @@
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
+    "@typebot.io/radar": "workspace:*",
     "@types/canvas-confetti": "1.6.0",
     "@types/jsonwebtoken": "9.0.2",
     "@types/micro-cors": "0.1.3",
