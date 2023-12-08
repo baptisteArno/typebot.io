@@ -65,6 +65,7 @@ const baseEnv = {
       )
       .default('FREE'),
     DEBUG: boolean.optional().default('false'),
+    CHAT_API_TIMEOUT: z.coerce.number().optional(),
   },
   client: {
     NEXT_PUBLIC_E2E_TEST: boolean.optional(),

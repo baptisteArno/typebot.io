@@ -10,6 +10,7 @@ export type ExecuteLogicResponse = {
 export type ExecuteIntegrationResponse = {
   outgoingEdgeId: EdgeId | undefined
   newSessionState?: SessionState
+  startTimeShouldBeUpdated?: boolean
 } & Pick<ContinueChatResponse, 'clientSideActions' | 'logs'>
 
 export type ParsedReply =

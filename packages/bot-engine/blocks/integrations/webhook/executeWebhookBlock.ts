@@ -30,6 +30,15 @@ type ParsedWebhook = ExecutableWebhook & {
   isJson: boolean
 }
 
+export const responseDefaultTimeout = 10000
+export const longRequestTimeout = 120000
+
+const longReqTimeoutWhitelist = [
+  'https://api.openai.com',
+  'https://retune.so',
+  'https://www.chatbase.co',
+]
+
 export const executeWebhookBlock = async (
   state: SessionState,
   block: WebhookBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock
@@ -64,14 +73,21 @@ export const executeWebhookBlock = async (
         },
       ],
     }
-  const { response: webhookResponse, logs: executeWebhookLogs } =
-    await executeWebhook(parsedWebhook)
-  return resumeWebhookExecution({
-    state,
-    block,
-    logs: executeWebhookLogs,
+  const {
     response: webhookResponse,
-  })
+    logs: executeWebhookLogs,
+    startTimeShouldBeUpdated,
+  } = await executeWebhook(parsedWebhook)
+
+  return {
+    ...resumeWebhookExecution({
+      state,
+      block,
+      logs: executeWebhookLogs,
+      response: webhookResponse,
+    }),
+    startTimeShouldBeUpdated,
+  }
 }
 
 const checkIfBodyIsAVariable = (body: string) => /^{{.+}}$/.test(body)
@@ -142,10 +158,18 @@ const parseWebhookAttributes =
 
 export const executeWebhook = async (
   webhook: ParsedWebhook
-): Promise<{ response: WebhookResponse; logs?: ChatLog[] }> => {
+): Promise<{
+  response: WebhookResponse
+  logs?: ChatLog[]
+  startTimeShouldBeUpdated?: boolean
+}> => {
   const logs: ChatLog[] = []
   const { headers, url, method, basicAuth, body, isJson } = webhook
   const contentType = headers ? headers['Content-Type'] : undefined
+
+  const isLongRequest = longReqTimeoutWhitelist.some((whiteListedUrl) =>
+    url?.includes(whiteListedUrl)
+  )
 
   const request = {
     url,
@@ -159,7 +183,11 @@ export const executeWebhook = async (
     form:
       contentType?.includes('x-www-form-urlencoded') && body ? body : undefined,
     body: body && !isJson ? (body as string) : undefined,
+    timeout: {
+      response: isLongRequest ? longRequestTimeout : responseDefaultTimeout,
+    },
   } satisfies OptionsInit
+
   try {
     const response = await got(request.url, omit(request, 'url'))
     logs.push({
@@ -177,6 +205,7 @@ export const executeWebhook = async (
         data: safeJsonParse(response.body).data,
       },
       logs,
+      startTimeShouldBeUpdated: isLongRequest,
     }
   } catch (error) {
     if (error instanceof HTTPError) {
@@ -193,7 +222,7 @@ export const executeWebhook = async (
           response,
         },
       })
-      return { response, logs }
+      return { response, logs, startTimeShouldBeUpdated: isLongRequest }
     }
     const response = {
       statusCode: 500,
@@ -208,7 +237,7 @@ export const executeWebhook = async (
         response,
       },
     })
-    return { response, logs }
+    return { response, logs, startTimeShouldBeUpdated: isLongRequest }
   }
 }
 

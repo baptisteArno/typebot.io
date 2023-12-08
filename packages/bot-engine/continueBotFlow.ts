@@ -41,10 +41,11 @@ import { getBlockById } from '@typebot.io/lib/getBlockById'
 type Params = {
   version: 1 | 2
   state: SessionState
+  startTime?: number
 }
 export const continueBotFlow = async (
   reply: string | undefined,
-  { state, version }: Params
+  { state, version, startTime }: Params
 ): Promise<
   ContinueChatResponse & {
     newSessionState: SessionState
@@ -127,7 +128,13 @@ export const continueBotFlow = async (
         ...group,
         blocks: group.blocks.slice(blockIndex + 1),
       } as Group,
-      { version, state: newSessionState, visitedEdges, firstBubbleWasStreamed }
+      {
+        version,
+        state: newSessionState,
+        visitedEdges,
+        firstBubbleWasStreamed,
+        startTime,
+      }
     )
     return {
       ...chatReply,
@@ -165,6 +172,7 @@ export const continueBotFlow = async (
     state: newSessionState,
     firstBubbleWasStreamed,
     visitedEdges,
+    startTime,
   })
 
   return {

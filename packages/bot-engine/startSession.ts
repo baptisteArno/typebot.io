@@ -157,6 +157,7 @@ export const startSession = async ({
     state: initialState,
     startFrom:
       startParams.type === 'preview' ? startParams.startFrom : undefined,
+    startTime: Date.now(),
   })
 
   // If params has message and first block is an input block, we can directly continue the bot flow

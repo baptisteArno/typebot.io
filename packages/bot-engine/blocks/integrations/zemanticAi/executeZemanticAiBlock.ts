@@ -108,6 +108,7 @@ export const executeZemanticAiBlock = async (
   } catch (e) {
     console.error(e)
     return {
+      startTimeShouldBeUpdated: true,
       outgoingEdgeId: block.outgoingEdgeId,
       logs: [
         {
@@ -118,7 +119,11 @@ export const executeZemanticAiBlock = async (
     }
   }
 
-  return { outgoingEdgeId: block.outgoingEdgeId, newSessionState }
+  return {
+    outgoingEdgeId: block.outgoingEdgeId,
+    newSessionState,
+    startTimeShouldBeUpdated: true,
+  }
 }
 
 const replaceTemplateVars = (

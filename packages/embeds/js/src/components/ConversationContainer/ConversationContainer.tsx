@@ -170,13 +170,20 @@ export const ConversationContainer = (props: Props) => {
     setIsSending(false)
     if (error) {
       setHasError(true)
-      props.onNewLogs?.([
+      const errorLogs = [
         {
           description: 'Failed to send the reply',
           details: error,
           status: 'error',
         },
-      ])
+      ]
+      await saveClientLogsQuery({
+        apiHost: props.context.apiHost,
+        sessionId: props.initialChatReply.sessionId,
+        clientLogs: errorLogs,
+      })
+      props.onNewLogs?.(errorLogs)
+      return
     }
     if (!data) return
     if (data.lastMessageNewFormat) {
