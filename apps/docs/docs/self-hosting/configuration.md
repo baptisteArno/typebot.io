@@ -159,7 +159,7 @@ Used to search for GIF. You can create a Giphy app [here](https://developers.gip
 
 ## Unsplash (image picker)
 
-Used to search for images. You can create a Giphy app [here](https://unsplash.com/developers)
+Used to search for images. You can create an Unsplash app [here](https://unsplash.com/developers)
 
 | Parameter                       | Default | Description       |
 | ------------------------------- | ------- | ----------------- |
