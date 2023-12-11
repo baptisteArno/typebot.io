@@ -78,17 +78,29 @@ export const SignInForm = ({
         redirect: false,
       })
       if (response?.error) {
-        showToast({
-          title: t('auth.signinErrorToast.title'),
-          description: t('auth.signinErrorToast.description'),
-        })
+        if (response.error.includes('ip-banned'))
+          showToast({
+            status: 'info',
+            description:
+              'Your account has suspicious activity and is being reviewed by our team. Feel free to contact us.',
+          })
+        else if (response.error.includes('rate-limited'))
+          showToast({
+            status: 'info',
+            description: t('auth.signinErrorToast.tooManyRequests'),
+          })
+        else
+          showToast({
+            title: t('auth.signinErrorToast.title'),
+            description: t('auth.signinErrorToast.description'),
+          })
       } else {
         setIsMagicLinkSent(true)
       }
-    } catch {
+    } catch (e) {
       showToast({
         status: 'info',
-        description: t('auth.signinErrorToast.tooManyRequests'),
+        description: 'An error occured while signing in',
       })
     }
     setAuthLoading(false)

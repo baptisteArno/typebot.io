@@ -32,6 +32,7 @@ import { parseDefaultPublicId } from '../helpers/parseDefaultPublicId'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { ConfirmModal } from '@/components/ConfirmModal'
 import { TextLink } from '@/components/TextLink'
+import { useUser } from '@/features/account/hooks/useUser'
 
 type Props = ButtonProps & {
   isMoreMenuDisabled?: boolean
@@ -44,6 +45,7 @@ export const PublishButton = ({
   const { workspace } = useWorkspace()
   const { push, query, pathname } = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { logOut } = useUser()
   const {
     isOpen: isNewEngineWarningOpen,
     onOpen: onNewEngineWarningOpen,
@@ -69,11 +71,13 @@ export const PublishButton = ({
 
   const { mutate: publishTypebotMutate, isLoading: isPublishing } =
     trpc.typebot.publishTypebot.useMutation({
-      onError: (error) =>
+      onError: (error) => {
         showToast({
           title: 'Error while publishing typebot',
           description: error.message,
-        }),
+        })
+        if (error.data?.httpStatus === 403) logOut()
+      },
       onSuccess: () => {
         refetchPublishedTypebot({
           typebotId: typebot?.id as string,

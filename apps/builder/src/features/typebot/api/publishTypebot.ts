@@ -37,7 +37,7 @@ export const publishTypebot = authenticatedProcedure
       message: z.literal('success'),
     })
   )
-  .mutation(async ({ input: { typebotId }, ctx: { user } }) => {
+  .mutation(async ({ input: { typebotId }, ctx: { user, ip } }) => {
     const existingTypebot = await prisma.typebot.findFirst({
       where: {
         id: typebotId,
@@ -87,12 +87,16 @@ export const publishTypebot = authenticatedProcedure
           'Radar detected a potential malicious typebot. This bot is being manually reviewed by Fraud Prevention team.',
       })
 
-    const riskLevel = computeRiskLevel({
-      name: existingTypebot.name,
-      groups: parseGroups(existingTypebot.groups, {
-        typebotVersion: existingTypebot.version,
-      }),
-    })
+    const typebotWasVerified = existingTypebot.riskLevel === -1
+
+    const riskLevel = typebotWasVerified
+      ? 0
+      : computeRiskLevel({
+          name: existingTypebot.name,
+          groups: parseGroups(existingTypebot.groups, {
+            typebotVersion: existingTypebot.version,
+          }),
+        })
 
     if (riskLevel > 0 && riskLevel !== existingTypebot.riskLevel) {
       if (env.MESSAGE_WEBHOOK_URL && riskLevel !== 100)
@@ -118,6 +122,21 @@ export const publishTypebot = authenticatedProcedure
               id: existingTypebot.publishedTypebot.id,
             },
           })
+        if (ip) {
+          const isIpAlreadyBanned = await prisma.bannedIp.findFirst({
+            where: {
+              ip,
+            },
+          })
+          if (!isIpAlreadyBanned)
+            await prisma.bannedIp.create({
+              data: {
+                ip,
+                responsibleTypebotId: existingTypebot.id,
+                userId: user.id,
+              },
+            })
+        }
         throw new TRPCError({
           code: 'FORBIDDEN',
           message:
