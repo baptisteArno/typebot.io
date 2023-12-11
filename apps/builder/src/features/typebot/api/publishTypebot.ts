@@ -95,10 +95,10 @@ export const publishTypebot = authenticatedProcedure
     })
 
     if (riskLevel > 0 && riskLevel !== existingTypebot.riskLevel) {
-      if (env.MESSAGE_WEBHOOK_URL)
+      if (env.MESSAGE_WEBHOOK_URL && riskLevel !== 100)
         await fetch(env.MESSAGE_WEBHOOK_URL, {
           method: 'POST',
-          body: `🚨 *Radar detected a potential malicious typebot* 🚨\n\n*Typebot:* ${existingTypebot.name}\n*Risk level:* ${riskLevel}/100\n*Typebot ID:* ${existingTypebot.id}\n*Workspace ID:* ${existingTypebot.workspaceId}\n*User ID:* ${user.id}`,
+          body: `⚠️ Suspicious typebot to be reviewed: ${existingTypebot.name} (${env.NEXTAUTH_URL}/typebots/${existingTypebot.id}/edit) (workspace: ${existingTypebot.workspaceId})`,
         }).catch((err) => {
           console.error('Failed to send message', err)
         })
