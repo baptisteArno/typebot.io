@@ -1,6 +1,6 @@
 import { Stack, Tag, Text, Flex, Wrap } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext'
-import { Comparison, ConditionItem, ComparisonOperators } from 'models'
+import { Comparison, ConditionItem, ComparisonOperators, LogicalOperator } from 'models'
 import React from 'react'
 import { byId, isNotDefined } from 'utils'
 
@@ -23,7 +23,7 @@ export const ConditionNodeContent = ({ item }: Props) => {
             )
             return (
               <Wrap key={comparison.id} spacing={1} noOfLines={0}>
-                {idx > 0 && <Text>{item.content.logicalOperator ?? ''}</Text>}
+                {idx > 0 && <Text>{parseLogicalOperatorSymbol(item.content.logicalOperator) ?? ''}</Text>}
                 {variable?.token && (
                   <Tag bgColor="orange.400" color="white">
                     {variable.token}
@@ -55,16 +55,22 @@ const comparisonIsEmpty = (comparison: Comparison) =>
   isNotDefined(comparison.value) &&
   isNotDefined(comparison.variableId)
 
+const parseLogicalOperatorSymbol = (operator: LogicalOperator) => {
+  const toCompare = Object.keys(LogicalOperator).indexOf(operator)
+  return Object.values(LogicalOperator)[toCompare]
+}
+
+
 const parseComparisonOperatorSymbol = (operator: ComparisonOperators) => {
-  switch (operator) {
+  const toCompare = Object.keys(ComparisonOperators).indexOf(operator)
+  console.log('parseComparisonOperatorSymbol', { toCompare, operator })
+  switch (Object.values(ComparisonOperators)[toCompare]) {
     case ComparisonOperators.CONTAINS:
-      return 'contains'
+      return 'contém'
     case ComparisonOperators.EQUAL:
       return '='
     case ComparisonOperators.GREATER:
       return '>'
-    case ComparisonOperators.IS_SET:
-      return 'is set'
     case ComparisonOperators.LESS:
       return '<'
     case ComparisonOperators.NOT_EQUAL:

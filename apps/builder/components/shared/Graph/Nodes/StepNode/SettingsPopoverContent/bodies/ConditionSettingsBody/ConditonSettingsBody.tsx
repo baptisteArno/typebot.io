@@ -24,7 +24,19 @@ export const ConditionSettingsBody = ({
   const handleComparisonsChange = (comparisons: Comparison[]) =>
     onItemChange({ content: { ...itemContent, comparisons } })
   const handleLogicalOperatorChange = (logicalOperator: LogicalOperator) =>
-    onItemChange({ content: { ...itemContent, logicalOperator } })
+  {
+    const indexOf = Object.values(LogicalOperator).indexOf(logicalOperator)
+    const val = Object.keys(LogicalOperator)[indexOf]
+    onItemChange({ content: { ...itemContent, logicalOperator: val as LogicalOperator } })
+  }
+
+  const showCorrectInput = (value: LogicalOperator | undefined) => {
+    if (!value) return
+
+    const indexOf = Object.keys(LogicalOperator).indexOf(value)
+    return Object.values(LogicalOperator)[indexOf]
+  }
+    
 
   return (
     <TableList<Comparison>
@@ -34,7 +46,7 @@ export const ConditionSettingsBody = ({
       ComponentBetweenItems={() => (
         <Flex justify="center">
           <DropdownList<LogicalOperator>
-            currentItem={itemContent.logicalOperator}
+            currentItem={showCorrectInput(itemContent.logicalOperator)}
             onItemSelect={handleLogicalOperatorChange}
             items={Object.values(LogicalOperator)}
             mb="4"
