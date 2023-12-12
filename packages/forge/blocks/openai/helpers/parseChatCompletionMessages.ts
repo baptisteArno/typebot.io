@@ -1,7 +1,6 @@
 import type { OpenAI } from 'openai'
 import { options as createChatCompletionOption } from '../actions/createChatCompletion'
 import { ReadOnlyVariableStore } from '@typebot.io/forge'
-import { parseMessagesSequence } from '../legacy'
 import { isNotEmpty } from '@typebot.io/lib'
 import { z } from '@typebot.io/forge/zod'
 
@@ -15,9 +14,6 @@ export const parseChatCompletionMessages = ({
   const parsedMessages = messages
     ?.flatMap((message) => {
       if (!message.role) return
-
-      if (message.role === 'Messages sequence ✨')
-        return parseMessagesSequence(message, variables)
 
       if (message.role === 'Dialogue') {
         if (!message.dialogueVariableId) return

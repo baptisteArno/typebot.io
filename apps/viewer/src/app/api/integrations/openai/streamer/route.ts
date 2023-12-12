@@ -12,6 +12,9 @@ import {
   ParseVariablesOptions,
   parseVariables,
 } from '@typebot.io/variables/parseVariables'
+import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
+import { getChatCompletionStream } from '@typebot.io/bot-engine/blocks/integrations/legacy/openai/getChatCompletionStream'
+import { ChatCompletionOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai/schema'
 
 export const runtime = 'edge'
 export const preferredRegion = 'lhr1'
@@ -35,7 +38,8 @@ export async function OPTIONS() {
 }
 
 export async function POST(req: Request) {
-  const { sessionId } = (await req.json()) as {
+  const { sessionId, messages } = (await req.json()) as {
+    messages: OpenAI.Chat.ChatCompletionMessage[] | undefined
     sessionId: string
   }
 
@@ -76,6 +80,35 @@ export async function POST(req: Request) {
       { message: 'Current block does not have options' },
       { status: 400, headers: responseHeaders }
     )
+
+  if (block.type === IntegrationBlockType.OPEN_AI && messages) {
+    try {
+      const stream = await getChatCompletionStream(conn)(
+        state,
+        block.options as ChatCompletionOpenAIOptions,
+        messages
+      )
+      if (!stream)
+        return NextResponse.json(
+          { message: 'Could not create stream' },
+          { status: 400, headers: responseHeaders }
+        )
+
+      return new StreamingTextResponse(stream, {
+        headers: responseHeaders,
+      })
+    } catch (error) {
+      if (error instanceof OpenAI.APIError) {
+        const { name, status, message } = error
+        return NextResponse.json(
+          { name, status, message },
+          { status, headers: responseHeaders }
+        )
+      } else {
+        throw error
+      }
+    }
+  }
   const blockDef = forgedBlocks.find((b) => b.id === block.type)
   const action = blockDef?.actions.find((a) => a.name === block.options?.action)
 

@@ -1,5 +1,4 @@
 import { option, createAction } from '@typebot.io/forge'
-import { messageSequenceItemSchema } from '../legacy'
 import OpenAI, { ClientOptions } from 'openai'
 import { defaultOpenAIOptions } from '../constants'
 import { OpenAIStream } from 'ai'
@@ -56,7 +55,6 @@ export const options = option.object({
         userMessageItemSchema,
         assistantMessageItemSchema,
         dialogueMessageItemSchema,
-        messageSequenceItemSchema,
       ])
     )
     .layout({ accordion: 'Messages', itemLabel: 'message', isOrdered: true }),

@@ -55,6 +55,10 @@ export const executeClientSideAction = async ({
     'stream' in clientSideAction
   ) {
     const { error, message } = await streamChat(context)({
+      messages:
+        'streamOpenAiChatCompletion' in clientSideAction
+          ? clientSideAction.streamOpenAiChatCompletion?.messages
+          : undefined,
       onMessageStream,
     })
     if (error)

@@ -217,6 +217,7 @@ export const ZodFieldLayout = ({
               <Markdown components={mdComponents}>{layout.helperText}</Markdown>
             ) : undefined
           }
+          type={layout?.input === 'password' ? 'password' : undefined}
           isRequired={layout?.isRequired}
           withVariableButton={layout?.withVariableButton}
           moreInfoTooltip={layout?.moreInfoTooltip}

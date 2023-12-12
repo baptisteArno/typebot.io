@@ -46,7 +46,7 @@
   "devDependencies": {
     "@algolia/client-search": "4.15.0",
     "@docusaurus/types": "2.3.1",
-    "@types/react": "18.0.28",
+    "@types/react": "18.2.15",
     "dotenv-cli": "7.2.1",
     "tsx": "3.14.0",
     "typescript": "5.3.2",

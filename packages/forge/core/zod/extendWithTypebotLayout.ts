@@ -8,7 +8,7 @@ export interface ZodLayoutMetadata<
 > {
   accordion?: string
   label?: string
-  input?: 'variableDropdown' | 'textarea'
+  input?: 'variableDropdown' | 'textarea' | 'password'
   defaultValue?: T extends ZodDate ? string : TInferred
   placeholder?: string
   helperText?: string

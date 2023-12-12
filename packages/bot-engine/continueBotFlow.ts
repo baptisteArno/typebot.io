@@ -38,6 +38,7 @@ import { VisitedEdge } from '@typebot.io/prisma'
 import { getBlockById } from '@typebot.io/lib/getBlockById'
 import { ForgedBlock, forgedBlocks } from '@typebot.io/forge-schemas'
 import { enabledBlocks } from '@typebot.io/forge-repository'
+import { resumeChatCompletion } from './blocks/integrations/legacy/openai/resumeChatCompletion'
 
 type Params = {
   version: 1 | 2
@@ -80,6 +81,20 @@ export const continueBotFlow = async (
         value: safeJsonParse(reply),
       }
       newSessionState = updateVariablesInSession(state)([newVariable])
+    }
+  }
+  // Legacy
+  else if (
+    block.type === IntegrationBlockType.OPEN_AI &&
+    block.options?.task === 'Create chat completion'
+  ) {
+    firstBubbleWasStreamed = true
+    if (reply) {
+      const result = await resumeChatCompletion(state, {
+        options: block.options,
+        outgoingEdgeId: block.outgoingEdgeId,
+      })(reply)
+      newSessionState = result.newSessionState
     }
   } else if (reply && block.type === IntegrationBlockType.WEBHOOK) {
     const result = resumeWebhookExecution({
