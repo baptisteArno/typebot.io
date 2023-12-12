@@ -103,6 +103,7 @@ export const InputChatBlock = (props: Props) => {
             block={props.block}
             inputIndex={props.inputIndex}
             isInputPrefillEnabled={props.isInputPrefillEnabled}
+            existingAnswer={props.hasError ? answer() : undefined}
             onTransitionEnd={props.onTransitionEnd}
             onSubmit={handleSubmit}
             onSkip={handleSkip}
@@ -118,6 +119,7 @@ const Input = (props: {
   block: NonNullable<ContinueChatResponse['input']>
   inputIndex: number
   isInputPrefillEnabled: boolean
+  existingAnswer?: string
   onTransitionEnd: () => void
   onSubmit: (answer: InputSubmitContent) => void
   onSkip: (label: string) => void
@@ -125,7 +127,8 @@ const Input = (props: {
   const onSubmit = (answer: InputSubmitContent) => props.onSubmit(answer)
 
   const getPrefilledValue = () =>
-    props.isInputPrefillEnabled ? props.block.prefilledValue : undefined
+    props.existingAnswer ??
+    (props.isInputPrefillEnabled ? props.block.prefilledValue : undefined)
 
   const submitPaymentSuccess = () =>
     props.onSubmit({

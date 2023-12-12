@@ -4,10 +4,10 @@ import prisma from '@typebot.io/lib/prisma'
 import { googleSheetsScopes } from './consent-url'
 import { stringify } from 'querystring'
 import { badRequest, notAuthenticated } from '@typebot.io/lib/api'
-import { oauth2Client } from '@/lib/googleSheets'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import { env } from '@typebot.io/env'
 import { encrypt } from '@typebot.io/lib/api/encryption/encrypt'
+import { OAuth2Client } from 'google-auth-library'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res)
@@ -22,6 +22,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!workspaceId) return badRequest(res)
     if (!code)
       return res.status(400).send({ message: "Bad request, couldn't get code" })
+    const oauth2Client = new OAuth2Client(
+      env.GOOGLE_CLIENT_ID,
+      env.GOOGLE_CLIENT_SECRET,
+      `${env.NEXTAUTH_URL}/api/credentials/google-sheets/callback`
+    )
     const { tokens } = await oauth2Client.getToken(code)
     if (!tokens?.access_token) {
       console.error('Error getting oAuth tokens:')

@@ -6,6 +6,10 @@ export const baseOptions = option.object({
     label: 'Base origin',
     placeholder: 'https://cal.com',
     defaultValue: defaultBaseUrl,
+<<<<<<< HEAD
     accordion: 'Custom provider',
+=======
+    accordion: 'Customize host',
+>>>>>>> feat/the-forge
   }),
 })

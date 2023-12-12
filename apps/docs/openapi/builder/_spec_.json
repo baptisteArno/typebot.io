@@ -15093,6 +15093,10 @@
                         "whatsAppCredentialsId": {
                           "type": "string",
                           "nullable": true
+                        },
+                        "riskLevel": {
+                          "type": "number",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -15116,7 +15120,8 @@
                         "resultsTablePreferences",
                         "isArchived",
                         "isClosed",
-                        "whatsAppCredentialsId"
+                        "whatsAppCredentialsId",
+                        "riskLevel"
                       ],
                       "additionalProperties": false
                     }
@@ -19012,6 +19017,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "riskLevel": {
+                            "type": "number",
+                            "nullable": true
+                          },
                           "events": {
                             "enum": [
                               "null"
@@ -22709,6 +22718,10 @@
                           },
                           "whatsAppCredentialsId": {
                             "type": "string",
+                            "nullable": true
+                          },
+                          "riskLevel": {
+                            "type": "number",
                             "nullable": true
                           },
                           "events": {
@@ -26546,6 +26559,10 @@
                         "whatsAppCredentialsId": {
                           "type": "string",
                           "nullable": true
+                        },
+                        "riskLevel": {
+                          "type": "number",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -26569,7 +26586,8 @@
                         "resultsTablePreferences",
                         "isArchived",
                         "isClosed",
-                        "whatsAppCredentialsId"
+                        "whatsAppCredentialsId",
+                        "riskLevel"
                       ],
                       "additionalProperties": false
                     }
@@ -30426,6 +30444,10 @@
                             "whatsAppCredentialsId": {
                               "type": "string",
                               "nullable": true
+                            },
+                            "riskLevel": {
+                              "type": "number",
+                              "nullable": true
                             }
                           },
                           "required": [
@@ -30448,7 +30470,8 @@
                             "resultsTablePreferences",
                             "isArchived",
                             "isClosed",
-                            "whatsAppCredentialsId"
+                            "whatsAppCredentialsId",
+                            "riskLevel"
                           ],
                           "additionalProperties": false
                         },
@@ -34204,6 +34227,10 @@
                             "whatsAppCredentialsId": {
                               "type": "string",
                               "nullable": true
+                            },
+                            "riskLevel": {
+                              "type": "number",
+                              "nullable": true
                             }
                           },
                           "required": [
@@ -34227,7 +34254,8 @@
                             "resultsTablePreferences",
                             "isArchived",
                             "isClosed",
-                            "whatsAppCredentialsId"
+                            "whatsAppCredentialsId",
+                            "riskLevel"
                           ],
                           "additionalProperties": false
                         }
@@ -53250,6 +53278,10 @@
                         "whatsAppCredentialsId": {
                           "type": "string",
                           "nullable": true
+                        },
+                        "riskLevel": {
+                          "type": "number",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -53273,7 +53305,8 @@
                         "resultsTablePreferences",
                         "isArchived",
                         "isClosed",
-                        "whatsAppCredentialsId"
+                        "whatsAppCredentialsId",
+                        "riskLevel"
                       ],
                       "additionalProperties": false
                     }

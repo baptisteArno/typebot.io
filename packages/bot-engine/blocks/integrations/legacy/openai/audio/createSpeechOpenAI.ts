@@ -115,6 +115,7 @@ export const createSpeechOpenAI = async (
   ])
 
   return {
+    startTimeShouldBeUpdated: true,
     outgoingEdgeId,
     newSessionState,
   }

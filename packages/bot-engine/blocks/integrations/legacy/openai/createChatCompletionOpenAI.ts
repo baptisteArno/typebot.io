@@ -120,6 +120,7 @@ export const createChatCompletionOpenAI = async (
   })
   if (!chatCompletion)
     return {
+      startTimeShouldBeUpdated: true,
       outgoingEdgeId,
       logs,
     }
@@ -127,13 +128,16 @@ export const createChatCompletionOpenAI = async (
   const totalTokens = chatCompletion.usage?.total_tokens
   if (isEmpty(messageContent)) {
     console.error('OpenAI block returned empty message', chatCompletion.choices)
-    return { outgoingEdgeId, newSessionState }
+    return { outgoingEdgeId, newSessionState, startTimeShouldBeUpdated: true }
   }
-  return resumeChatCompletion(newSessionState, {
-    options,
-    outgoingEdgeId,
-    logs,
-  })(messageContent, totalTokens)
+  return {
+    ...(await resumeChatCompletion(newSessionState, {
+      options,
+      outgoingEdgeId,
+      logs,
+    })(messageContent, totalTokens)),
+    startTimeShouldBeUpdated: true,
+  }
 }
 
 const isNextBubbleMessageWithAssistantMessage =

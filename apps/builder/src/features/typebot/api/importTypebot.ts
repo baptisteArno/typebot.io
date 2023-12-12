@@ -19,6 +19,7 @@ import { migrateTypebot } from '@typebot.io/lib/migrations/migrateTypebot'
 const omittedProps = {
   id: true,
   whatsAppCredentialsId: true,
+  riskLevel: true,
   isClosed: true,
   isArchived: true,
   createdAt: true,
@@ -64,6 +65,7 @@ const migrateImportingTypebot = (
     whatsAppCredentialsId: null,
     publicId: null,
     folderId: null,
+    riskLevel: null,
   } satisfies Typebot
   return migrateTypebot(fullTypebot)
 }
