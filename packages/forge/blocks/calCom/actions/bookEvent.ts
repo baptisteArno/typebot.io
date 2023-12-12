@@ -10,6 +10,9 @@ export const bookEvent = createAction({
       label: 'Event link',
       placeholder: 'https://cal.com/...',
     }),
+    layout: option
+      .enum(['Month', 'Weekly', 'Columns'])
+      .layout({ label: 'Layout:', defaultValue: 'Month', direction: 'row' }),
     name: option.string.layout({
       accordion: 'Prefill information',
       label: 'Name',
@@ -46,6 +49,7 @@ export const bookEvent = createAction({
           },
         },
         parseInitFunction: ({ options }) => {
+          if (!options.link) throw new Error('Missing link')
           const baseUrl = options.baseUrl ?? defaultBaseUrl
           const link = options.link?.startsWith('http')
             ? options.link.replace(/http.+:\/\/[^\/]+\//, '')
@@ -54,8 +58,9 @@ export const bookEvent = createAction({
             args: {
               baseUrl,
               link: link ?? '',
-              name: options.name ?? '',
-              email: options.email ?? '',
+              name: options.name ?? null,
+              email: options.email ?? null,
+              layout: parseLayoutAttr(options.layout),
             },
             content: `(function (C, A, L) {
                 let p = function (a, ar) {
@@ -87,21 +92,35 @@ export const bookEvent = createAction({
                     p(cal, ar);
                   };
               })(window, baseUrl + "/embed/embed.js", "init");
-              console.log(Cal, window)
               Cal("init", { origin: baseUrl });
-        
+
               Cal("inline", {
                 elementOrSelector: typebotElement,
                 calLink: link,
-                layout: "month_view",
+                layout,
                 config: {
-                  name,
-                  email
+                  name: name ?? undefined,
+                  email: email ?? undefined,
                 }
-              });`,
+              });
+
+              Cal("ui", {"hideEventTypeDetails":false,layout});`,
           }
         },
       },
     },
   },
 })
+
+const parseLayoutAttr = (
+  layout?: 'Month' | 'Weekly' | 'Columns'
+): 'month_view' | 'week_view' | 'column_view' => {
+  switch (layout) {
+    case 'Weekly':
+      return 'week_view'
+    case 'Columns':
+      return 'column_view'
+    default:
+      return 'month_view'
+  }
+}
