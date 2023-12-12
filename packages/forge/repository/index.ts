@@ -4,8 +4,5 @@ export const enabledBlocks = [
   'google-analytics',
   'zemantic-ai',
   'cal-com',
-<<<<<<< HEAD
   'chat-node',
-=======
->>>>>>> feat/the-forge
 ] as const
