@@ -117,15 +117,11 @@ export const continueBotFlow = async (
         ) {
           const variableToUpdate =
             state.typebotsQueue[0].typebot.variables.find(
-<<<<<<< HEAD
-              (v) => v.id === action?.run?.stream?.getStreamVariableId(options)
-=======
               (v) =>
                 v.id ===
                 action?.run?.web?.displayEmbedBubble?.waitForEvent?.getSaveVariableId?.(
                   options
                 )
->>>>>>> feat/the-forge
             )
           if (variableToUpdate)
             newSessionState = updateVariablesInSession(state)([
