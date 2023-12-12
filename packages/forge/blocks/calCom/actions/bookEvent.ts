@@ -112,8 +112,6 @@ export const bookEvent = createAction({
     },
   },
 })
-<<<<<<< HEAD
-=======
 
 const parseLayoutAttr = (
   layout?: 'Month' | 'Weekly' | 'Columns'
@@ -127,4 +125,3 @@ const parseLayoutAttr = (
       return 'month_view'
   }
 }
->>>>>>> feat/the-forge
