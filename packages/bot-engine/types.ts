@@ -14,10 +14,7 @@ export type ExecuteLogicResponse = {
 export type ExecuteIntegrationResponse = {
   outgoingEdgeId: EdgeId | undefined
   newSessionState?: SessionState
-<<<<<<< HEAD
-=======
   startTimeShouldBeUpdated?: boolean
->>>>>>> feat/the-forge
   customEmbedBubble?: CustomEmbedBubble
 } & Pick<ContinueChatResponse, 'clientSideActions' | 'logs'>
 

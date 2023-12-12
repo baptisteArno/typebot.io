@@ -92,7 +92,6 @@ export const bookEvent = createAction({
                     p(cal, ar);
                   };
               })(window, baseUrl + "/embed/embed.js", "init");
-
               Cal("init", { origin: baseUrl });
 
               Cal("inline", {
