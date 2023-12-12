@@ -7011,7 +7011,8 @@
                                                           "openai",
                                                           "google-analytics",
                                                           "zemantic-ai",
-                                                          "cal-com"
+                                                          "cal-com",
+                                                          "chat-node"
                                                         ]
                                                       },
                                                       "options": {}
@@ -17856,7 +17857,8 @@
                                                           "openai",
                                                           "google-analytics",
                                                           "zemantic-ai",
-                                                          "cal-com"
+                                                          "cal-com",
+                                                          "chat-node"
                                                         ]
                                                       },
                                                       "options": {}
@@ -34730,7 +34732,8 @@
                                               "openai",
                                               "google-analytics",
                                               "zemantic-ai",
-                                              "cal-com"
+                                              "cal-com",
+                                              "chat-node"
                                             ]
                                           },
                                           "options": {}
