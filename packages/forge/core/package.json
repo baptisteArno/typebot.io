@@ -1,0 +1,16 @@
+{
+  "name": "@typebot.io/forge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "keywords": [],
+  "author": "Baptiste Arnaud",
+  "license": "ISC",
+  "dependencies": {
+    "zod": "3.22.4"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*",
+    "@types/react": "18.2.15"
+  }
+}

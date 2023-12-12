@@ -15,7 +15,8 @@
     "generate-change-log": "git fetch --all && pnpx gitmoji-changelog",
     "locales:sync": "tolgee sync './apps/builder/src/**/*.ts?(x)' --continue-on-warning --remove-unused",
     "locales:push": "tolgee push ./apps/builder/public/locales",
-    "locales:pull": "tolgee pull ./apps/builder/public/locales"
+    "locales:pull": "tolgee pull ./apps/builder/public/locales",
+    "create-new-block": "cd packages/forge/cli && pnpm start"
   },
   "devDependencies": {
     "cross-env": "7.0.3",

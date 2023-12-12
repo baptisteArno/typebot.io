@@ -5,9 +5,6 @@
   "types": "./index.ts",
   "license": "AGPL-3.0-or-later",
   "private": true,
-  "scripts": {
-    "build": "tsc"
-  },
   "dependencies": {
     "@udecode/plate-common": "21.1.5",
     "zod": "3.22.4"
@@ -15,6 +12,7 @@
   "devDependencies": {
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
+    "@typebot.io/forge-repository": "workspace:*",
     "typescript": "5.3.2"
   }
 }

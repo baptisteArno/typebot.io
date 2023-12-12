@@ -1,11 +1,11 @@
 {
   "version": "6",
-  "id": "clp6pe8dy00051ab3n6coxt62",
+  "id": "clpnu4plq00051abo2487q86h",
   "name": "ChatGPT condition",
   "events": [
     {
       "id": "ewnfbo0exlu7ihfu2lu2lusm",
-      "outgoingEdgeId": "gj1gs8hdembrsw84aafd1hbj",
+      "outgoingEdgeId": "q2fpvz66ei3gd6k3wwq6w8f2",
       "graphCoordinates": { "x": -228.25, "y": -123.31 },
       "type": "start"
     }
@@ -39,47 +39,25 @@
       "graphCoordinates": { "x": 228.67, "y": -50.67 },
       "blocks": [
         {
-          "id": "wdg7upk4oqp602jqjn06gjf6",
-          "type": "OpenAI",
+          "id": "ufwpq6z392ebsu5tda0md77a",
+          "type": "openai",
           "options": {
-            "task": "Create chat completion",
-            "model": "gpt-4-1106-preview",
+            "action": "Create chat completion",
             "messages": [
               {
-                "id": "s7s7uaurqlmsn3r89c10mk98",
                 "role": "system",
                 "content": "You are helpful assistant doing customer support for a software called Typebot.\n\nIf the user is asking a question about his account, please say \"ACCOUNT\".\n\nIf the user wants to talk to a human, please say \"HUMAN\".\n\nOtherwise, say \"OK\""
               },
-              {
-                "id": "zrgypmt1wlogakfl06gfxpgk",
-                "role": "user",
-                "content": "Can  I talk to a human?"
-              },
-              {
-                "id": "i6ldg74yr9n185oumozb3r6b",
-                "role": "assistant",
-                "content": "HUMAN"
-              },
-              {
-                "id": "eoxa3dxtw8wjdyv9efnxryxk",
-                "role": "user",
-                "content": "I need to check my account"
-              },
-              {
-                "id": "nb7sy9x7g07w5s1sxb83v295",
-                "role": "assistant",
-                "content": "ACCOUNT"
-              },
-              {
-                "id": "zazen7p0cyawtix7der2e923",
-                "role": "user",
-                "content": "{{User Message}}"
-              }
+              { "role": "user", "content": "Can I talk to a human?" },
+              { "role": "assistant", "content": "HUMAN" },
+              { "role": "user", "content": "I need to check my account" },
+              { "role": "assistant", "content": "ACCOUNT" },
+              { "role": "user", "content": "{{User Message}}" }
             ],
+            "credentialsId": "clpjnjrbt00051aliw6610w1z",
             "responseMapping": [
               {
-                "id": "s7s7uaurqlmsn3r89c10mk98",
-                "valueToExtract": "Message content",
+                "item": "Message content",
                 "variableId": "vni6kwbch8zlq92dclgcivzyr"
               }
             ]
@@ -215,9 +193,9 @@
                   {
                     "text": "Once it's done, delete this group and connect the "
                   },
-                  { "text": "Start", "bold": true },
+                  { "bold": true, "text": "Start" },
                   { "text": " event with " },
-                  { "text": "Intro", "bold": true },
+                  { "bold": true, "text": "Intro" },
                   { "text": " 🚀\n" }
                 ]
               }
@@ -267,7 +245,7 @@
     {
       "from": { "eventId": "ewnfbo0exlu7ihfu2lu2lusm" },
       "to": { "groupId": "vafybpsjqcbrbbhi8pwl0gic" },
-      "id": "gj1gs8hdembrsw84aafd1hbj"
+      "id": "q2fpvz66ei3gd6k3wwq6w8f2"
     }
   ],
   "variables": [
@@ -277,12 +255,13 @@
   "theme": {},
   "selectedThemeTemplateId": null,
   "settings": {},
-  "createdAt": "2023-11-20T09:27:35.926Z",
-  "updatedAt": "2023-11-20T09:27:59.586Z",
+  "createdAt": "2023-12-02T09:12:14.750Z",
+  "updatedAt": "2023-12-02T09:14:20.047Z",
   "icon": "🧠",
   "folderId": null,
   "publicId": null,
   "customDomain": null,
+  "workspaceId": "proWorkspace",
   "resultsTablePreferences": null,
   "isArchived": false,
   "isClosed": false,

@@ -1,12 +1,11 @@
 {
   "version": "6",
-  "id": "clp6onbn200011ab379x5gnea",
+  "id": "clpntvmje00031aboan4plzzx",
   "name": "Audio ChatGPT",
-  "icon": "🔈",
   "events": [
     {
       "id": "ewnfbo0exlu7ihfu2lu2lusm",
-      "outgoingEdgeId": "knz1ln1so0dfyth76qjkjn1p",
+      "outgoingEdgeId": "f2hmh9jelbqb889l6lx5e1u5",
       "graphCoordinates": { "x": -228.25, "y": -123.31 },
       "type": "start"
     }
@@ -40,27 +39,23 @@
       "graphCoordinates": { "x": 445.12, "y": -56.2 },
       "blocks": [
         {
-          "id": "xikptnw1lp1qxdqo10qhmwy1",
-          "type": "OpenAI",
+          "id": "e57nnbkl97h49jaaslxkg3u0",
+          "type": "openai",
           "options": {
-            "task": "Create chat completion",
-            "model": "gpt-3.5-turbo",
+            "action": "Create chat completion",
             "messages": [
               {
-                "id": "wsdxha9db58gk2v9n1j10m7c",
                 "role": "Dialogue",
-                "dialogueVariableId": "vabkycu0qqff5d6ar2ama16pf",
-                "startsBy": "user"
+                "dialogueVariableId": "vabkycu0qqff5d6ar2ama16pf"
               }
             ],
+            "credentialsId": "clpjnjrbt00051aliw6610w1z",
             "responseMapping": [
               {
-                "id": "p8ksqi2jhyzid2od3dikv299",
-                "valueToExtract": "Message content",
+                "item": "Message content",
                 "variableId": "vni6kwbch8zlq92dclgcivzyr"
               }
-            ],
-            "credentialsId": "clp6ooc3700031ab30yof27jm"
+            ]
           }
         },
         {
@@ -73,14 +68,13 @@
           }
         },
         {
-          "id": "prsimdxdol42ty2parzgx8am",
-          "type": "OpenAI",
+          "id": "av59rg9zeqtl73o8icnrr2xd",
+          "type": "openai",
           "options": {
-            "credentialsId": "clp6ooc3700031ab30yof27jm",
-            "task": "Create speech",
-            "model": "tts-1",
             "input": "{{Assistant Message}}",
             "voice": "alloy",
+            "action": "Create speech",
+            "credentialsId": "clpjnjrbt00051aliw6610w1z",
             "saveUrlInVariableId": "vgr0iwg95npp7pztkmdyn89m1"
           }
         },
@@ -98,14 +92,13 @@
       "graphCoordinates": { "x": -222.61, "y": -54.39 },
       "blocks": [
         {
-          "id": "dp5gx25j73fgmcj9582ydik9",
-          "type": "OpenAI",
+          "id": "yuiyeh0czhpymzwuzrm3af5r",
+          "type": "openai",
           "options": {
-            "credentialsId": "clp6ooc3700031ab30yof27jm",
-            "task": "Create speech",
-            "model": "tts-1",
             "input": "Hi there! How can I help?",
             "voice": "alloy",
+            "action": "Create speech",
+            "credentialsId": "clpjnjrbt00051aliw6610w1z",
             "saveUrlInVariableId": "vxw4quja426402hvhtm33tsp3"
           }
         },
@@ -149,9 +142,9 @@
                   {
                     "text": "Once it's done, delete this group and connect the "
                   },
-                  { "text": "Start", "bold": true },
+                  { "bold": true, "text": "Start" },
                   { "text": " event with " },
-                  { "text": "Intro", "bold": true },
+                  { "bold": true, "text": "Intro" },
                   { "text": " 🚀\n" }
                 ]
               }
@@ -180,7 +173,7 @@
     {
       "from": { "eventId": "ewnfbo0exlu7ihfu2lu2lusm" },
       "to": { "groupId": "yswu9fml4zflxaqlujb94ir8" },
-      "id": "knz1ln1so0dfyth76qjkjn1p"
+      "id": "f2hmh9jelbqb889l6lx5e1u5"
     }
   ],
   "variables": [
@@ -193,12 +186,13 @@
   "theme": {},
   "selectedThemeTemplateId": null,
   "settings": {},
-  "createdAt": "2023-11-20T09:06:40.430Z",
-  "updatedAt": "2023-11-20T09:20:01.662Z",
+  "createdAt": "2023-12-02T09:05:10.874Z",
+  "updatedAt": "2023-12-02T09:08:20.451Z",
+  "icon": "🔈",
   "folderId": null,
   "publicId": null,
   "customDomain": null,
-  "workspaceId": "freeWorkspace",
+  "workspaceId": "proWorkspace",
   "resultsTablePreferences": null,
   "isArchived": false,
   "isClosed": false,

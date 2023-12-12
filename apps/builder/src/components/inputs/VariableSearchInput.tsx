@@ -13,15 +13,26 @@ import {
   Portal,
   Tag,
   Text,
+  FormControl,
+  FormLabel,
+  FormHelperText,
+  Stack,
 } from '@chakra-ui/react'
 import { EditIcon, PlusIcon, TrashIcon } from '@/components/icons'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { createId } from '@paralleldrive/cuid2'
 import { Variable } from '@typebot.io/schemas'
-import React, { useState, useRef, ChangeEvent, useEffect } from 'react'
+import React, {
+  useState,
+  useRef,
+  ChangeEvent,
+  useEffect,
+  ReactNode,
+} from 'react'
 import { byId, isDefined, isNotDefined } from '@typebot.io/lib'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
+import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
 type Props = {
   initialVariableId: string | undefined
@@ -29,12 +40,23 @@ type Props = {
   onSelectVariable: (
     variable: Pick<Variable, 'id' | 'name'> | undefined
   ) => void
-} & InputProps
+  label?: string
+  placeholder?: string
+  helperText?: ReactNode
+  moreInfoTooltip?: string
+  direction?: 'row' | 'column'
+} & Omit<InputProps, 'placeholder'>
 
 export const VariableSearchInput = ({
   initialVariableId,
   onSelectVariable,
   autoFocus,
+  placeholder,
+  label,
+  helperText,
+  moreInfoTooltip,
+  direction = 'column',
+  isRequired,
   ...inputProps
 }: Props) => {
   const focusedItemBgColor = useColorModeValue('gray.200', 'gray.700')
@@ -168,114 +190,133 @@ export const VariableSearchInput = ({
   }
 
   return (
-    <Flex ref={dropdownRef} w="full">
-      <Popover
-        isOpen={isOpen}
-        initialFocusRef={inputRef}
-        matchWidth
-        isLazy
-        offset={[0, 2]}
-      >
-        <PopoverAnchor>
-          <Input
-            data-testid="variables-input"
-            ref={inputRef}
-            value={inputValue}
-            onChange={onInputChange}
-            onFocus={openDropdown}
-            onKeyDown={handleKeyUp}
-            placeholder={inputProps.placeholder ?? 'Select a variable'}
-            autoComplete="off"
-            {...inputProps}
-          />
-        </PopoverAnchor>
-        <Portal containerRef={parentModalRef}>
-          <PopoverContent
-            maxH="35vh"
-            overflowY="scroll"
-            role="menu"
-            w="inherit"
-            shadow="lg"
-            onMouseDown={(e) => e.stopPropagation()}
-            onPointerDown={(e) => e.stopPropagation()}
-          >
-            {isCreateVariableButtonDisplayed && (
-              <Button
-                ref={createVariableItemRef}
-                role="menuitem"
-                minH="40px"
-                onClick={handleCreateNewVariableClick}
-                fontSize="16px"
-                fontWeight="normal"
-                rounded="none"
-                colorScheme="gray"
-                variant="ghost"
-                justifyContent="flex-start"
-                leftIcon={<PlusIcon />}
-                bgColor={
-                  keyboardFocusIndex === 0 ? focusedItemBgColor : 'transparent'
-                }
-              >
-                Create
-                <Tag colorScheme="orange" ml="1">
-                  <Text noOfLines={0} display="block">
-                    {inputValue}
-                  </Text>
-                </Tag>
-              </Button>
-            )}
-            {filteredItems.length > 0 && (
-              <>
-                {filteredItems.map((item, idx) => {
-                  const indexInList = isCreateVariableButtonDisplayed
-                    ? idx + 1
-                    : idx
-                  return (
-                    <Button
-                      ref={(el) => (itemsRef.current[idx] = el)}
-                      role="menuitem"
-                      minH="40px"
-                      key={idx}
-                      onClick={handleVariableNameClick(item)}
-                      fontSize="16px"
-                      fontWeight="normal"
-                      rounded="none"
-                      colorScheme="gray"
-                      variant="ghost"
-                      justifyContent="space-between"
-                      bgColor={
-                        keyboardFocusIndex === indexInList
-                          ? focusedItemBgColor
-                          : 'transparent'
-                      }
-                      transition="none"
-                    >
-                      <Text noOfLines={0} display="block" pr="2">
-                        {item.name}
-                      </Text>
+    <FormControl
+      isRequired={isRequired}
+      as={direction === 'column' ? Stack : HStack}
+      justifyContent="space-between"
+      width={label ? 'full' : 'auto'}
+      spacing={direction === 'column' ? 2 : 3}
+    >
+      {label && (
+        <FormLabel display="flex" flexShrink={0} gap="1" mb="0" mr="0">
+          {label}{' '}
+          {moreInfoTooltip && (
+            <MoreInfoTooltip>{moreInfoTooltip}</MoreInfoTooltip>
+          )}
+        </FormLabel>
+      )}
+      <Flex ref={dropdownRef} w="full">
+        <Popover
+          isOpen={isOpen}
+          initialFocusRef={inputRef}
+          matchWidth
+          isLazy
+          offset={[0, 2]}
+        >
+          <PopoverAnchor>
+            <Input
+              data-testid="variables-input"
+              ref={inputRef}
+              value={inputValue}
+              onChange={onInputChange}
+              onFocus={openDropdown}
+              onKeyDown={handleKeyUp}
+              placeholder={placeholder ?? 'Select a variable'}
+              autoComplete="off"
+              {...inputProps}
+            />
+          </PopoverAnchor>
+          <Portal containerRef={parentModalRef}>
+            <PopoverContent
+              maxH="35vh"
+              overflowY="scroll"
+              role="menu"
+              w="inherit"
+              shadow="lg"
+              onMouseDown={(e) => e.stopPropagation()}
+              onPointerDown={(e) => e.stopPropagation()}
+            >
+              {isCreateVariableButtonDisplayed && (
+                <Button
+                  ref={createVariableItemRef}
+                  role="menuitem"
+                  minH="40px"
+                  onClick={handleCreateNewVariableClick}
+                  fontSize="16px"
+                  fontWeight="normal"
+                  rounded="none"
+                  colorScheme="gray"
+                  variant="ghost"
+                  justifyContent="flex-start"
+                  leftIcon={<PlusIcon />}
+                  bgColor={
+                    keyboardFocusIndex === 0
+                      ? focusedItemBgColor
+                      : 'transparent'
+                  }
+                >
+                  Create
+                  <Tag colorScheme="orange" ml="1">
+                    <Text noOfLines={0} display="block">
+                      {inputValue}
+                    </Text>
+                  </Tag>
+                </Button>
+              )}
+              {filteredItems.length > 0 && (
+                <>
+                  {filteredItems.map((item, idx) => {
+                    const indexInList = isCreateVariableButtonDisplayed
+                      ? idx + 1
+                      : idx
+                    return (
+                      <Button
+                        ref={(el) => (itemsRef.current[idx] = el)}
+                        role="menuitem"
+                        minH="40px"
+                        key={idx}
+                        onClick={handleVariableNameClick(item)}
+                        fontSize="16px"
+                        fontWeight="normal"
+                        rounded="none"
+                        colorScheme="gray"
+                        variant="ghost"
+                        justifyContent="space-between"
+                        bgColor={
+                          keyboardFocusIndex === indexInList
+                            ? focusedItemBgColor
+                            : 'transparent'
+                        }
+                        transition="none"
+                      >
+                        <Text noOfLines={0} display="block" pr="2">
+                          {item.name}
+                        </Text>
 
-                      <HStack>
-                        <IconButton
-                          icon={<EditIcon />}
-                          aria-label="Rename variable"
-                          size="xs"
-                          onClick={handleRenameVariableClick(item)}
-                        />
-                        <IconButton
-                          icon={<TrashIcon />}
-                          aria-label="Remove variable"
-                          size="xs"
-                          onClick={handleDeleteVariableClick(item)}
-                        />
-                      </HStack>
-                    </Button>
-                  )
-                })}
-              </>
-            )}
-          </PopoverContent>
-        </Portal>
-      </Popover>
-    </Flex>
+                        <HStack>
+                          <IconButton
+                            icon={<EditIcon />}
+                            aria-label="Rename variable"
+                            size="xs"
+                            onClick={handleRenameVariableClick(item)}
+                          />
+                          <IconButton
+                            icon={<TrashIcon />}
+                            aria-label="Remove variable"
+                            size="xs"
+                            onClick={handleDeleteVariableClick(item)}
+                          />
+                        </HStack>
+                      </Button>
+                    )
+                  })}
+                </>
+              )}
+            </PopoverContent>
+          </Portal>
+        </Popover>
+      </Flex>
+      {helperText && <FormHelperText mt="0">{helperText}</FormHelperText>}
+    </FormControl>
   )
 }

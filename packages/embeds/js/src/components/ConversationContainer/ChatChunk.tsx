@@ -19,7 +19,7 @@ type Props = Pick<ContinueChatResponse, 'messages' | 'input'> & {
   streamingMessageId: ChatChunkType['streamingMessageId']
   onNewBubbleDisplayed: (blockId: string) => Promise<void>
   onScrollToBottom: (top?: number) => void
-  onSubmit: (input: string) => void
+  onSubmit: (input?: string) => void
   onSkip: () => void
   onAllBubblesDisplayed: () => void
 }
@@ -91,6 +91,7 @@ export const ChatChunk = (props: Props) => {
                   message={message}
                   typingEmulation={props.settings.typingEmulation}
                   onTransitionEnd={displayNextMessage}
+                  onCompleted={props.onSubmit}
                 />
               )}
             </For>

@@ -1,11 +1,12 @@
 import { z } from 'zod'
 import { blockBaseSchema } from './shared'
 import { startBlockSchema } from './start/schemas'
-import { Item, ItemV6 } from '../items/schema'
+import { ItemV6 } from '../items/schema'
 import { bubbleBlockSchemas } from './bubbles/schema'
 import { LogicBlock, logicBlockSchemas } from './logic/schema'
 import { InputBlock, inputBlockSchemas } from './inputs/schema'
 import { IntegrationBlock, integrationBlockSchemas } from './integrations'
+import { enabledBlocks } from '@typebot.io/forge-repository'
 
 export type BlockWithOptions = Extract<Block, { options?: any }>
 
@@ -27,12 +28,21 @@ export const blockSchemaV5 = z.discriminatedUnion('type', [
 ])
 export type BlockV5 = z.infer<typeof blockSchemaV5>
 
-export const blockSchemaV6 = z.discriminatedUnion('type', [
-  ...bubbleBlockSchemas,
-  ...inputBlockSchemas.v6,
-  ...logicBlockSchemas.v6,
-  ...integrationBlockSchemas.v6,
-])
+export const blockSchemaV6 = z
+  .discriminatedUnion('type', [
+    ...bubbleBlockSchemas,
+    ...inputBlockSchemas.v6,
+    ...logicBlockSchemas.v6,
+    ...integrationBlockSchemas.v6,
+  ])
+  .or(
+    blockBaseSchema.merge(
+      z.object({
+        type: z.enum(enabledBlocks),
+        options: z.any().optional(),
+      })
+    )
+  )
 export type BlockV6 = z.infer<typeof blockSchemaV6>
 
 const blockSchema = blockSchemaV5.or(blockSchemaV6)

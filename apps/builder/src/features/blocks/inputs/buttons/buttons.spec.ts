@@ -43,13 +43,13 @@ test.describe.parallel('Buttons input block', () => {
     await expect(page.getByTestId('guest-bubble')).toHaveText('Item 3')
     await page.click('button[aria-label="Close"]')
 
-    await page.click('[data-testid="block2-icon"]')
+    await page.getByTestId('block block2').click({ position: { x: 0, y: 0 } })
     await page.click('text=Multiple choice?')
     await page.getByLabel('Button label:').fill('Go')
     await page.getByPlaceholder('Select a variable').nth(1).click()
     await page.getByText('var1').click()
     await expect(page.getByText('Setvar1')).toBeVisible()
-    await page.click('[data-testid="block2-icon"]')
+    await page.getByTestId('block block2').click({ position: { x: 0, y: 0 } })
 
     await page.locator('text=Item 1').hover()
     await page.waitForTimeout(1000)
@@ -83,7 +83,7 @@ test('Variable buttons should work', async ({ page }) => {
   await expect(page.locator('text=Ok great!')).toBeVisible()
   await page.click('text="Item 1"')
   await page.fill('input[value="Item 1"]', '{{Item 2}}')
-  await page.click('[data-testid="block1-icon"]')
+  await page.getByTestId('block block1').click({ position: { x: 0, y: 0 } })
   await page.click('text=Multiple choice?')
   await page.click('text="Restart"')
   await page

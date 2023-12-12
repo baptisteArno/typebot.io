@@ -11,9 +11,10 @@ import {
   FormLabel,
   Stack,
   Text,
+  FormHelperText,
 } from '@chakra-ui/react'
 import { Variable, VariableString } from '@typebot.io/schemas'
-import { useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { env } from '@typebot.io/env'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
@@ -31,6 +32,7 @@ type Props<HasVariable extends boolean> = {
   isRequired?: boolean
   direction?: 'row' | 'column'
   suffix?: string
+  helperText?: ReactNode
   onValueChange: (value?: Value<HasVariable>) => void
 } & Omit<NumberInputProps, 'defaultValue' | 'value' | 'onChange' | 'isRequired'>
 
@@ -42,8 +44,9 @@ export const NumberInput = <HasVariable extends boolean>({
   label,
   moreInfoTooltip,
   isRequired,
-  direction,
+  direction = 'column',
   suffix,
+  helperText,
   ...props
 }: Props<HasVariable>) => {
   const [value, setValue] = useState(defaultValue?.toString() ?? '')
@@ -87,7 +90,12 @@ export const NumberInput = <HasVariable extends boolean>({
   }
 
   const Input = (
-    <ChakraNumberInput onChange={handleValueChange} value={value} {...props}>
+    <ChakraNumberInput
+      onChange={handleValueChange}
+      value={value}
+      w="full"
+      {...props}
+    >
       <NumberInputField placeholder={props.placeholder} />
       <NumberInputStepper>
         <NumberIncrementStepper />
@@ -105,16 +113,16 @@ export const NumberInput = <HasVariable extends boolean>({
       spacing={direction === 'column' ? 2 : 3}
     >
       {label && (
-        <FormLabel mb="0" mr="0" flexShrink={0}>
+        <FormLabel display="flex" flexShrink={0} gap="1" mb="0" mr="0">
           {label}{' '}
           {moreInfoTooltip && (
             <MoreInfoTooltip>{moreInfoTooltip}</MoreInfoTooltip>
           )}
         </FormLabel>
       )}
-      <HStack>
+      <HStack w={direction === 'row' ? undefined : 'full'}>
         {withVariableButton ?? true ? (
-          <HStack spacing="0">
+          <HStack spacing="0" w="full">
             {Input}
             <VariablesButton onSelectVariable={handleVariableSelected} />
           </HStack>
@@ -123,6 +131,7 @@ export const NumberInput = <HasVariable extends boolean>({
         )}
         {suffix ? <Text>{suffix}</Text> : null}
       </HStack>
+      {helperText ? <FormHelperText mt="0">{helperText}</FormHelperText> : null}
     </FormControl>
   )
 }

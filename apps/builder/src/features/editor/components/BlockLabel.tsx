@@ -6,6 +6,7 @@ import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/const
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { Block } from '@typebot.io/schemas'
+import { ForgedBlockLabel } from '@/features/forge/ForgedBlockLabel'
 
 type Props = { type: Block['type'] }
 
@@ -98,5 +99,7 @@ export const BlockLabel = ({ type }: Props): JSX.Element => {
       return (
         <Text fontSize="sm">{t('editor.sidebarBlock.zemanticAi.label')}</Text>
       )
+    default:
+      return <ForgedBlockLabel type={type} />
   }
 }

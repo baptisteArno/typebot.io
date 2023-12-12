@@ -5,7 +5,7 @@ import {
 } from '@typebot.io/schemas'
 import { isDefined } from '@typebot.io/lib'
 import { filterPictureChoiceItems } from './filterPictureChoiceItems'
-import { deepParseVariables } from '../../../variables/deepParseVariables'
+import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
 
 export const injectVariableValuesInPictureChoiceBlock =
   (variables: Variable[]) =>
