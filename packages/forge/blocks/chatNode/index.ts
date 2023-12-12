@@ -1,6 +1,7 @@
 import { createBlock } from '@typebot.io/forge'
 import { ChatNodeLogo } from './logo'
 import { auth } from './auth'
+import {sendMessage} from "./actions/sendMessage";
 
 export const chatNode = createBlock({
   id: 'chat-node',
@@ -8,5 +9,5 @@ export const chatNode = createBlock({
   tags: ['ai', "openai", "document", "url"],
   LightLogo: ChatNodeLogo,
   auth,
-  actions: [],
+  actions: [sendMessage],
 })

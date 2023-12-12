@@ -63,7 +63,6 @@ export const sendMessage = createAction({
             mapping.variableId,
               res.message
           )
-        console.log(variables.get(mapping.variableId))
 
          if (mapping.item === 'Thread ID')
           variables.set(
