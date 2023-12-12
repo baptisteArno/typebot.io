@@ -21,6 +21,10 @@ export const CustomEmbedBubble = (props: Props) => {
   let containerRef: HTMLDivElement | undefined
 
   onMount(() => {
+    console.log(
+      props.content.initFunction.content,
+      props.content.initFunction.args
+    )
     executeCode({
       args: {
         ...props.content.initFunction.args,
@@ -66,11 +70,11 @@ export const CustomEmbedBubble = (props: Props) => {
           </div>
           <div
             class={clsx(
-              'p-4 z-20 text-fade-in w-full',
-              isTyping() ? 'opacity-0' : 'opacity-100 p-4'
+              'p-2 z-20 text-fade-in w-full',
+              isTyping() ? 'opacity-0' : 'opacity-100'
             )}
             style={{
-              height: isTyping() ? (isMobile() ? '32px' : '36px') : `70vh`,
+              height: isTyping() ? (isMobile() ? '32px' : '36px') : undefined,
             }}
           >
             <div class="w-full h-full overflow-scroll" ref={containerRef} />

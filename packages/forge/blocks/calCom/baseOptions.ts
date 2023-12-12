@@ -6,6 +6,6 @@ export const baseOptions = option.object({
     label: 'Base origin',
     placeholder: 'https://cal.com',
     defaultValue: defaultBaseUrl,
-    accordion: 'Custom provider',
+    accordion: 'Customize host',
   }),
 })
