@@ -28,11 +28,8 @@ import {
 } from './parseBubbleBlock'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { VisitedEdge } from '@typebot.io/prisma'
-<<<<<<< HEAD
-=======
 import { env } from '@typebot.io/env'
 import { TRPCError } from '@trpc/server'
->>>>>>> feat/the-forge
 import { ExecuteIntegrationResponse, ExecuteLogicResponse } from './types'
 
 type ContextProps = {
@@ -114,16 +111,6 @@ export const executeGroup = async (
         logs,
         visitedEdges,
       }
-<<<<<<< HEAD
-    const executionResponse:
-      | ExecuteLogicResponse
-      | ExecuteIntegrationResponse
-      | null = isLogicBlock(block)
-      ? await executeLogic(newSessionState)(block)
-      : isIntegrationBlock(block)
-      ? await executeIntegration(newSessionState)(block)
-      : null
-=======
     const executionResponse = (
       isLogicBlock(block)
         ? await executeLogic(newSessionState)(block)
@@ -131,7 +118,6 @@ export const executeGroup = async (
         ? await executeIntegration(newSessionState)(block)
         : null
     ) as ExecuteLogicResponse | ExecuteIntegrationResponse | null
->>>>>>> feat/the-forge
 
     if (!executionResponse) continue
     if (
