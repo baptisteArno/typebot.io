@@ -6,7 +6,6 @@ import {
   SessionState,
 } from '@typebot.io/schemas'
 import {
-  createId,
   isBubbleBlock,
   isInputBlock,
   isIntegrationBlock,
@@ -31,6 +30,7 @@ import { VisitedEdge } from '@typebot.io/prisma'
 import { env } from '@typebot.io/env'
 import { TRPCError } from '@trpc/server'
 import { ExecuteIntegrationResponse, ExecuteLogicResponse } from './types'
+import { createId } from '@paralleldrive/cuid2'
 
 type ContextProps = {
   version: 1 | 2
