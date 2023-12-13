@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { isDefined } from '@typebot.io/lib'
 import { DefaultAvatar } from './DefaultAvatar'
 
-export const Avatar = ({ avatarSrc }: { avatarSrc?: string }): JSX.Element => {
+export const Avatar = ({ avatarSrc }: { avatarSrc?: string }) => {
   const [currentAvatarSrc] = useState(avatarSrc)
 
   if (currentAvatarSrc === '') return <></>

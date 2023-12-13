@@ -15,6 +15,7 @@ import immutableCss from '../assets/immutable.css'
 import { InputBlock } from '@typebot.io/schemas'
 import { StartFrom } from '@typebot.io/schemas'
 import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
+import { clsx } from 'clsx'
 
 export type BotProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -213,10 +214,10 @@ const BotContent = (props: BotContentProps) => {
   return (
     <div
       ref={botContainer}
-      class={
-        'relative flex w-full h-full text-base overflow-hidden bg-cover bg-center flex-col items-center typebot-container ' +
+      class={clsx(
+        'relative flex w-full h-full text-base overflow-hidden bg-cover bg-center flex-col items-center typebot-container @container',
         props.class
-      }
+      )}
     >
       <div class="flex w-full h-full justify-center">
         <ConversationContainer

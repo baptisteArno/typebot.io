@@ -16,7 +16,6 @@ import { ScriptSettings } from '@/features/blocks/logic/script/components/Script
 import { JumpSettings } from '@/features/blocks/logic/jump/components/JumpSettings'
 import { MakeComSettings } from '@/features/blocks/integrations/makeCom/components/MakeComSettings'
 import { PabblyConnectSettings } from '@/features/blocks/integrations/pabbly/components/PabblyConnectSettings'
-import { OpenAISettings } from '@/features/blocks/integrations/openai/components/OpenAISettings'
 import { ButtonsBlockSettings } from '@/features/blocks/inputs/buttons/components/ButtonsBlockSettings'
 import { FileInputSettings } from '@/features/blocks/inputs/fileUpload/components/FileInputSettings'
 import { PaymentSettings } from '@/features/blocks/inputs/payment/components/PaymentSettings'
@@ -44,6 +43,8 @@ import { ZemanticAiSettings } from '@/features/blocks/integrations/zemanticAi/Ze
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { ForgedBlockSettings } from '../../../../forge/components/ForgedBlockSettings'
+import { OpenAISettings } from '@/features/blocks/integrations/openai/components/OpenAISettings'
 
 type Props = {
   block: BlockWithOptions
@@ -323,5 +324,10 @@ export const BlockSettings = ({
     }
     case LogicBlockType.CONDITION:
       return null
+    default: {
+      return (
+        <ForgedBlockSettings block={block} onOptionsChange={updateOptions} />
+      )
+    }
   }
 }

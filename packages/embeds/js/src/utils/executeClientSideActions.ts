@@ -2,7 +2,10 @@ import { executeChatwoot } from '@/features/blocks/integrations/chatwoot'
 import { executeGoogleAnalyticsBlock } from '@/features/blocks/integrations/googleAnalytics/utils/executeGoogleAnalytics'
 import { streamChat } from '@/features/blocks/integrations/openai/streamChat'
 import { executeRedirect } from '@/features/blocks/logic/redirect'
-import { executeScript } from '@/features/blocks/logic/script/executeScript'
+import {
+  executeScript,
+  executeCode,
+} from '@/features/blocks/logic/script/executeScript'
 import { executeSetVariable } from '@/features/blocks/logic/setVariable/executeSetVariable'
 import { executeWait } from '@/features/blocks/logic/wait/utils/executeWait'
 import { executeWebhook } from '@/features/blocks/integrations/webhook/executeWebhook'
@@ -47,20 +50,24 @@ export const executeClientSideAction = async ({
   if ('setVariable' in clientSideAction) {
     return executeSetVariable(clientSideAction.setVariable.scriptToExecute)
   }
-  if ('streamOpenAiChatCompletion' in clientSideAction) {
-    const { error, message } = await streamChat(context)(
-      clientSideAction.streamOpenAiChatCompletion.messages,
-      {
-        onMessageStream,
-      }
-    )
+  if (
+    'streamOpenAiChatCompletion' in clientSideAction ||
+    'stream' in clientSideAction
+  ) {
+    const { error, message } = await streamChat(context)({
+      messages:
+        'streamOpenAiChatCompletion' in clientSideAction
+          ? clientSideAction.streamOpenAiChatCompletion?.messages
+          : undefined,
+      onMessageStream,
+    })
     if (error)
       return {
         replyToSend: undefined,
         logs: [
           {
             status: 'error',
-            description: 'OpenAI returned an error',
+            description: 'Message streaming returned an error',
             details: JSON.stringify(error, null, 2),
           },
         ],
@@ -76,5 +83,8 @@ export const executeClientSideAction = async ({
   }
   if ('pixel' in clientSideAction) {
     return executePixel(clientSideAction.pixel)
+  }
+  if ('codeToExecute' in clientSideAction) {
+    return executeCode(clientSideAction.codeToExecute)
   }
 }

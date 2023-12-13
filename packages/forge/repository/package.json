@@ -1,0 +1,9 @@
+{
+  "name": "@typebot.io/forge-repository",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "keywords": [],
+  "author": "Baptiste Arnaud",
+  "license": "ISC"
+}

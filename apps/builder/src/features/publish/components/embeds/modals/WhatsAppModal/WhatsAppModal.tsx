@@ -253,7 +253,6 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
                               []
                             }
                             onItemsChange={updateStartConditionComparisons}
-                            Item={WhatsAppComparisonItem}
                             ComponentBetweenItems={() => (
                               <Flex justify="center">
                                 <DropdownList
@@ -270,7 +269,9 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
                               </Flex>
                             )}
                             addLabel="Add a comparison"
-                          />
+                          >
+                            {(props) => <WhatsAppComparisonItem {...props} />}
+                          </TableList>
                         </SwitchWithRelatedSettings>
                       </AccordionPanel>
                     </AccordionItem>

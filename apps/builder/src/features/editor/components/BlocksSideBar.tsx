@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Stack,
   Text,
@@ -22,6 +23,13 @@ import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/const
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { BlockV6 } from '@typebot.io/schemas'
+import { enabledBlocks } from '@typebot.io/forge-repository'
+
+// Integration blocks migrated to forged blocks
+const legacyIntegrationBlocks = [
+  IntegrationBlockType.OPEN_AI,
+  IntegrationBlockType.ZEMANTIC_AI,
+]
 
 export const BlocksSideBar = () => {
   const { t } = useTranslate()
@@ -160,9 +168,16 @@ export const BlocksSideBar = () => {
             {t('editor.sidebarBlocks.blockType.integrations.heading')}
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(IntegrationBlockType).map((type) => (
-              <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
-            ))}
+            {Object.values(IntegrationBlockType)
+              .concat(enabledBlocks as any)
+              .filter((type) => !legacyIntegrationBlocks.includes(type))
+              .map((type) => (
+                <BlockCard
+                  key={type}
+                  type={type}
+                  onMouseDown={handleMouseDown}
+                />
+              ))}
           </SimpleGrid>
         </Stack>
 

@@ -75,7 +75,7 @@ test.describe.parallel('Picture choice input block', () => {
       page.locator('typebot-standard').getByText('Third image')
     ).toBeVisible()
 
-    await page.getByTestId('block2-icon').click()
+    await page.getByTestId('block block2').click({ position: { x: 0, y: 0 } })
     await page.getByText('Multiple choice?').click()
     await page.getByLabel('Submit button label:').fill('Go')
     await page.getByRole('button', { name: 'Restart' }).click()
@@ -94,7 +94,7 @@ test.describe.parallel('Picture choice input block', () => {
       page.locator('typebot-standard').getByText('First image, Second image')
     ).toBeVisible()
 
-    await page.getByTestId('block2-icon').click()
+    await page.getByTestId('block block2').click({ position: { x: 0, y: 0 } })
     await page.getByText('Is searchable?').click()
     await page.getByLabel('Input placeholder:').fill('Search...')
     await page.getByRole('button', { name: 'Restart' }).click()

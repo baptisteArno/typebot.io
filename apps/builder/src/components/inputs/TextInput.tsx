@@ -160,7 +160,7 @@ export const TextInput = forwardRef(function TextInput(
       ) : (
         Input
       )}
-      {helperText && <FormHelperText>{helperText}</FormHelperText>}
+      {helperText && <FormHelperText mt="0">{helperText}</FormHelperText>}
     </FormControl>
   )
 })
