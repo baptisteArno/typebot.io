@@ -144,6 +144,7 @@ Used for uploading images, videos, etc... It can be any S3 compatible object sto
 | S3_SSL                  | true    | Use SSL when establishing the connection.                                          |
 | S3_REGION               |         | S3 region.                                                                         |
 | S3_PUBLIC_CUSTOM_DOMAIN |         | If the final URL that is used to read public files is different from `S3_ENDPOINT` |
+| S3_FILENAME_IN_URL      | false   | If true, it will generate the media url with the file name                         |
 
 Note that for AWS S3, your endpoint is usually: `s3.<S3_REGION>.amazonaws.com`
 

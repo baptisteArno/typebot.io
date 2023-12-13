@@ -27,6 +27,7 @@ export const UploadButton = ({
     },
     onSuccess: async (data) => {
       if (!file) return
+
       const formData = new FormData()
       Object.entries(data.formData).forEach(([key, value]) => {
         formData.append(key, value)
@@ -54,7 +55,10 @@ export const UploadButton = ({
       return showToast({ description: 'Could not read file.', status: 'error' })
     setFile(await compressFile(file))
     mutate({
-      filePathProps,
+      filePathProps: {
+        ...filePathProps,
+        fileName: file.name,
+      },
       fileType: file.type,
     })
   }

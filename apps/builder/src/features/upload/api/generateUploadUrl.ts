@@ -14,6 +14,7 @@ const inputSchema = z.object({
       typebotId: z.string(),
       blockId: z.string(),
       itemId: z.string().optional(),
+      fileName: z.string().optional(),
     })
     .or(
       z.object({
@@ -180,6 +181,14 @@ const parseFilePath = async ({
     })
   if (!('blockId' in input)) {
     return `public/workspaces/${input.workspaceId}/typebots/${input.typebotId}/${input.fileName}`
+  }
+
+  if (env.S3_FILENAME_IN_URL && env.S3_FILENAME_IN_URL === 'true') {
+    return `public/workspaces/${input.workspaceId}/typebots/${
+      input.typebotId
+    }/blocks/${input.blockId}${
+      input.itemId ? `/items/${input.itemId}` : ''
+    }${`/${input.fileName}`}`
   }
   return `public/workspaces/${input.workspaceId}/typebots/${
     input.typebotId
