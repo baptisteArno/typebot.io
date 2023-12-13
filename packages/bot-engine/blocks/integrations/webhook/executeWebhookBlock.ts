@@ -33,10 +33,11 @@ type ParsedWebhook = ExecutableWebhook & {
 export const responseDefaultTimeout = 10000
 export const longRequestTimeout = 120000
 
-const longReqTimeoutWhitelist = [
+export const longReqTimeoutWhitelist = [
   'https://api.openai.com',
   'https://retune.so',
   'https://www.chatbase.co',
+  'https://channel-connector.orimon.ai',
 ]
 
 export const executeWebhookBlock = async (

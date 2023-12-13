@@ -27,6 +27,11 @@ import {
   defaultWebhookAttributes,
 } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
 import { getBlockById } from '@typebot.io/lib/getBlockById'
+import {
+  longReqTimeoutWhitelist,
+  longRequestTimeout,
+  responseDefaultTimeout,
+} from '@typebot.io/bot-engine/blocks/integrations/webhook/executeWebhookBlock'
 
 const cors = initMiddleware(Cors())
 
@@ -156,10 +161,16 @@ export const executeWebhook =
           )
         : { data: undefined, isJson: false }
 
+    const url = parseVariables(variables)(
+      webhook.url + (queryParams !== '' ? `?${queryParams}` : '')
+    )
+
+    const isLongRequest = longReqTimeoutWhitelist.some((whiteListedUrl) =>
+      url?.includes(whiteListedUrl)
+    )
+
     const request = {
-      url: parseVariables(variables)(
-        webhook.url + (queryParams !== '' ? `?${queryParams}` : '')
-      ),
+      url,
       method: (webhook.method ?? defaultWebhookAttributes.method) as Method,
       headers: headers ?? {},
       ...basicAuth,
@@ -172,6 +183,9 @@ export const executeWebhook =
           ? body
           : undefined,
       body: body && !isJson ? body : undefined,
+      timeout: {
+        response: isLongRequest ? longRequestTimeout : responseDefaultTimeout,
+      },
     }
     try {
       const response = await got(request.url, omit(request, 'url'))
