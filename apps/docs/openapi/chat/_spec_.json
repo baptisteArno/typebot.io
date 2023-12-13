@@ -7009,7 +7009,6 @@
                                                         "type": "string",
                                                         "enum": [
                                                           "openai",
-                                                          "google-analytics",
                                                           "zemantic-ai",
                                                           "cal-com",
                                                           "chat-node"
@@ -17855,7 +17854,6 @@
                                                         "type": "string",
                                                         "enum": [
                                                           "openai",
-                                                          "google-analytics",
                                                           "zemantic-ai",
                                                           "cal-com",
                                                           "chat-node"
@@ -34730,7 +34728,6 @@
                                             "type": "string",
                                             "enum": [
                                               "openai",
-                                              "google-analytics",
                                               "zemantic-ai",
                                               "cal-com",
                                               "chat-node"

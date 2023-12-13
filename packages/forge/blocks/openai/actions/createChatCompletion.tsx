@@ -176,6 +176,5 @@ export const createChatCompletion = createAction({
       },
     },
   },
-
   options,
 })

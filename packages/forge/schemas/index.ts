@@ -2,7 +2,6 @@
 import { chatNode } from '@typebot.io/chat-node-block'
 import { calCom } from '@typebot.io/cal-com-block'
 import { zemanticAi } from '@typebot.io/zemantic-ai-block'
-import { googleAnalytics } from '@typebot.io/google-analytics-block'
 import { openAIBlock } from '@typebot.io/openai-block'
 import {
   BlockDefinition,
@@ -14,7 +13,6 @@ import { z } from '@typebot.io/forge/zod'
 
 export const forgedBlocks = [
   openAIBlock,
-  googleAnalytics,
   zemanticAi,
   calCom,
   chatNode,

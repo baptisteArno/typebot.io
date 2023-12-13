@@ -1264,24 +1264,6 @@ importers:
         specifier: 5.3.2
         version: 5.3.2
 
-  packages/forge/blocks/googleAnalytics:
-    devDependencies:
-      '@typebot.io/forge':
-        specifier: workspace:*
-        version: link:../../core
-      '@typebot.io/lib':
-        specifier: workspace:*
-        version: link:../../../lib
-      '@typebot.io/tsconfig':
-        specifier: workspace:*
-        version: link:../../../tsconfig
-      '@types/react':
-        specifier: 18.2.15
-        version: 18.2.15
-      typescript:
-        specifier: 5.3.2
-        version: 5.3.2
-
   packages/forge/blocks/openai:
     dependencies:
       ai:
@@ -1375,9 +1357,6 @@ importers:
       '@typebot.io/forge-repository':
         specifier: workspace:*
         version: link:../repository
-      '@typebot.io/google-analytics-block':
-        specifier: workspace:*
-        version: link:../blocks/googleAnalytics
       '@typebot.io/openai-block':
         specifier: workspace:*
         version: link:../blocks/openai

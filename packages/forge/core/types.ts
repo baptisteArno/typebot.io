@@ -118,16 +118,6 @@ export type BlockDefinition<
   options?: Options | undefined
   fetchers?: FetcherDefinition<Auth, Options>[]
   isDisabledInPreview?: boolean
-  run?: {
-    web?: {
-      /**
-       * Executed when the bot starts.
-       */
-      parseInitFunction: (params: {
-        options: z.infer<Options>
-      }) => FunctionToExecute | undefined
-    }
-  }
   actions: ActionDefinition<Auth, Options>[]
 }
 

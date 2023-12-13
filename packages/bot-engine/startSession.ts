@@ -200,32 +200,30 @@ export const startSession = async ({
 
   const clientSideActions = startFlowClientActions ?? []
 
-  const startClientSideActions = parseStartClientSideActions(typebot)
+  const startClientSideAction = parseStartClientSideAction(typebot)
 
   const startLogs = logs ?? []
 
-  if (isDefined(startClientSideActions) && startClientSideActions.length > 0) {
+  if (isDefined(startClientSideAction)) {
     if (!result) {
-      startClientSideActions.forEach((action) => {
-        if ('startPropsToInject' in action) {
-          const { customHeadCode, googleAnalyticsId, pixelIds, gtmId } =
-            action.startPropsToInject
-          let toolsList = ''
-          if (customHeadCode) toolsList += 'Custom head code, '
-          if (googleAnalyticsId) toolsList += 'Google Analytics, '
-          if (pixelIds) toolsList += 'Pixel, '
-          if (gtmId) toolsList += 'Google Tag Manager, '
-          toolsList = toolsList.slice(0, -2)
-          startLogs.push({
-            description: `${toolsList} ${
-              toolsList.includes(',') ? 'are not' : 'is not'
-            } enabled in Preview mode`,
-            status: 'info',
-          })
-        }
-      })
+      if ('startPropsToInject' in startClientSideAction) {
+        const { customHeadCode, googleAnalyticsId, pixelIds, gtmId } =
+          startClientSideAction.startPropsToInject
+        let toolsList = ''
+        if (customHeadCode) toolsList += 'Custom head code, '
+        if (googleAnalyticsId) toolsList += 'Google Analytics, '
+        if (pixelIds) toolsList += 'Pixel, '
+        if (gtmId) toolsList += 'Google Tag Manager, '
+        toolsList = toolsList.slice(0, -2)
+        startLogs.push({
+          description: `${toolsList} ${
+            toolsList.includes(',') ? 'are not' : 'is not'
+          } enabled in Preview mode`,
+          status: 'info',
+        })
+      }
     } else {
-      clientSideActions.unshift(...startClientSideActions)
+      clientSideActions.unshift(startClientSideAction)
     }
   }
 
@@ -391,9 +389,9 @@ const parseDynamicThemeInState = (theme: Theme) => {
   }
 }
 
-const parseStartClientSideActions = (
+const parseStartClientSideAction = (
   typebot: StartTypebot
-): NonNullable<StartChatResponse['clientSideActions']> | undefined => {
+): NonNullable<StartChatResponse['clientSideActions']>[number] | undefined => {
   const blocks = typebot.groups.flatMap<Block>((group) => group.blocks)
   const pixelBlocks = (
     blocks.filter(
@@ -421,34 +419,15 @@ const parseStartClientSideActions = (
     pixelIds: pixelBlocks.length > 0 ? pixelBlocks : undefined,
   }
 
-  const codesToExecute = forgedBlocks.reduce<
-    { codeToExecute: FunctionToExecute }[]
-  >((acc, b) => {
-    if (!b.run?.web?.parseInitFunction) return acc
-    const block = blocks.find((block) => block.type === b.id)
-    if (!block || !('options' in block)) return acc
-    const codeToExecute = b.run.web.parseInitFunction({
-      options: deepParseVariables(typebot.variables)(block.options),
-    })
-    if (!codeToExecute) return acc
-    return [...acc, { codeToExecute }]
-  }, [])
-
-  const clientSideActions = []
-
-  if (codesToExecute.length > 0) clientSideActions.push(...codesToExecute)
-
   if (
     !startPropsToInject.customHeadCode &&
     !startPropsToInject.gtmId &&
     !startPropsToInject.googleAnalyticsId &&
     !startPropsToInject.pixelIds
   )
-    return clientSideActions
+    return
 
-  clientSideActions.push({ startPropsToInject })
-
-  return clientSideActions
+  return { startPropsToInject }
 }
 
 const sanitizeAndParseTheme = (

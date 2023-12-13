@@ -28,7 +28,6 @@ import { enabledBlocks } from '@typebot.io/forge-repository'
 // Integration blocks migrated to forged blocks
 const legacyIntegrationBlocks = [
   IntegrationBlockType.OPEN_AI,
-  IntegrationBlockType.GOOGLE_ANALYTICS,
   IntegrationBlockType.ZEMANTIC_AI,
 ]
 
