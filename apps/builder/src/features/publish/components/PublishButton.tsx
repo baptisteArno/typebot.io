@@ -71,7 +71,7 @@ export const PublishButton = ({
     trpc.typebot.publishTypebot.useMutation({
       onError: (error) =>
         showToast({
-          title: 'Error while publishing typebot',
+          title: t("editor.headers.publishTypebot.error.label"),
           description: error.message,
         }),
       onSuccess: () => {
@@ -87,7 +87,7 @@ export const PublishButton = ({
     trpc.typebot.unpublishTypebot.useMutation({
       onError: (error) =>
         showToast({
-          title: 'Error while unpublishing typebot',
+          title: t("editor.headers.unpublishTypebot.error.label"),
           description: error.message,
         }),
       onSuccess: () => {
@@ -145,41 +145,40 @@ export const PublishButton = ({
           onConfirm={handlePublishClick}
           onClose={onNewEngineWarningClose}
           confirmButtonColor="blue"
-          title="⚠️ New engine version"
+          title={t("editor.headers.publishTypebot.versionWarning.title.label")}
           message={
             <Stack spacing="3">
               <Text>
-                You are about to a deploy a version of your bot with an updated
-                engine. (Typebot V6).
+                {t("editor.headers.publishTypebot.versionWarning.message.aboutToDeploy.label")}
               </Text>
               <Text fontWeight="bold">
-                Make sure to check out all the{' '}
+                {t("editor.headers.publishTypebot.versionWarning.message.check.label")}{' '}
                 <TextLink
                   href="https://docs.typebot.io/breaking-changes#typebot-v6"
                   isExternal
                 >
-                  associated breaking changes
+                  {t("editor.headers.publishTypebot.versionWarning.breakingChanges.check.label")}
                 </TextLink>
               </Text>
               <Text>
                 {' '}
-                Then test, the bot thoroughly in preview mode before publishing.
+                {t("editor.headers.publishTypebot.versionWarning.testInPreviewMode.check.label")}
               </Text>
             </Stack>
           }
-          confirmButtonLabel={'Publish'}
+          confirmButtonLabel={t("editor.headers.publishButton.label")}
         />
       )}
       <Tooltip
         placement="bottom-end"
         label={
           <Stack>
-            <Text>There are non published changes.</Text>
+            <Text>{t("editor.headers.publishButton.tooltip.nonPublishedChanges.label")}</Text>
             <Text fontStyle="italic">
-              Published version from{' '}
+              {t("editor.headers.publishButton.tooltip.publishedVersion.from.label")}{' '}
               {publishedTypebot &&
                 parseTimeSince(publishedTypebot.updatedAt.toString())}{' '}
-              ago
+              {t("editor.headers.publishButton.tooltip.publishedVersion.ago.label")}
             </Text>
           </Stack>
         }
@@ -201,9 +200,9 @@ export const PublishButton = ({
         >
           {isPublished
             ? typebot?.isClosed
-              ? 'Closed'
-              : 'Published'
-            : 'Publish'}
+              ? t("editor.headers.publishButton.closed.label")
+              : t("editor.headers.publishedButton.label")
+            : t("editor.headers.publishButton.label")}
         </Button>
       </Tooltip>
 
@@ -214,27 +213,27 @@ export const PublishButton = ({
             colorScheme={'blue'}
             borderLeftRadius={0}
             icon={<ChevronLeftIcon transform="rotate(-90deg)" />}
-            aria-label="Show published typebot menu"
+            aria-label={t("editor.headers.publishedButtonDropdown.showMenu.ariaLabel")}
             size="sm"
             isDisabled={isPublishing || isSavingLoading}
           />
           <MenuList>
             {!isPublished && (
               <MenuItem onClick={restorePublishedTypebot}>
-                Restore published version
+                {t("editor.headers.publishedTypebot.restoreVersion.label")}
               </MenuItem>
             )}
             {!typebot?.isClosed ? (
               <MenuItem onClick={closeTypebot} icon={<LockedIcon />}>
-                Close typebot to new responses
+                {t("editor.headers.publishedButtonDropdown.close.label")}
               </MenuItem>
             ) : (
               <MenuItem onClick={openTypebot} icon={<UnlockedIcon />}>
-                Reopen typebot to new responses
+                {t("editor.headers.publishedButtonDropdown.reopen.label")}
               </MenuItem>
             )}
             <MenuItem onClick={unpublishTypebot} icon={<CloudOffIcon />}>
-              Unpublish typebot
+							{t("editor.headers.publishedButtonDropdown.unpublish.label")}
             </MenuItem>
           </MenuList>
         </Menu>
