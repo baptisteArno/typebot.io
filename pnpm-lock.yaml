@@ -1375,6 +1375,9 @@ importers:
       '@udecode/plate-common':
         specifier: 21.1.5
         version: 21.1.5(@babel/core@7.22.9)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-react@0.94.2)(slate@0.94.1)
+      google-auth-library:
+        specifier: 8.9.0
+        version: 8.9.0
       got:
         specifier: 12.6.0
         version: 12.6.0

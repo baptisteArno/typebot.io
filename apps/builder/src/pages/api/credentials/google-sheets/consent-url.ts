@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 export const googleSheetsScopes = [
   'https://www.googleapis.com/auth/userinfo.email',
   'https://www.googleapis.com/auth/spreadsheets',
-  'https://www.googleapis.com/auth/drive.readonly',
+  'https://www.googleapis.com/auth/drive.file',
 ]
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {

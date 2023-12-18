@@ -22,7 +22,6 @@ import {
 import React, { useMemo } from 'react'
 import { isDefined } from '@typebot.io/lib'
 import { SheetsDropdown } from './SheetsDropdown'
-import { SpreadsheetsDropdown } from './SpreadsheetDropdown'
 import { CellWithValueStack } from './CellWithValueStack'
 import { CellWithVariableIdStack } from './CellWithVariableIdStack'
 import { GoogleSheetConnectModal } from './GoogleSheetsConnectModal'
@@ -37,6 +36,7 @@ import {
   defaultGoogleSheetsOptions,
   totalRowsToExtractOptions,
 } from '@typebot.io/schemas/features/blocks/integrations/googleSheets/constants'
+import { GoogleSpreadsheetPicker } from './GoogleSpreadsheetPicker'
 
 type Props = {
   options: GoogleSheetsBlock['options']
@@ -50,6 +50,7 @@ export const GoogleSheetsSettings = ({
   blockId,
 }: Props) => {
   const { workspace } = useWorkspace()
+  const { typebot } = useTypebot()
   const { save } = useTypebot()
   const { sheets, isLoading } = useSheets({
     credentialsId: options?.credentialsId,
@@ -95,16 +96,20 @@ export const GoogleSheetsSettings = ({
           credentialsName="Sheets account"
         />
       )}
-      <GoogleSheetConnectModal
-        blockId={blockId}
-        isOpen={isOpen}
-        onClose={onClose}
-      />
-      {options?.credentialsId && (
-        <SpreadsheetsDropdown
-          credentialsId={options.credentialsId}
+      {typebot && (
+        <GoogleSheetConnectModal
+          typebotId={typebot.id}
+          blockId={blockId}
+          isOpen={isOpen}
+          onClose={onClose}
+        />
+      )}
+      {options?.credentialsId && workspace && (
+        <GoogleSpreadsheetPicker
           spreadsheetId={options.spreadsheetId}
-          onSelectSpreadsheetId={handleSpreadsheetIdChange}
+          workspaceId={workspace.id}
+          credentialsId={options.credentialsId}
+          onSpreadsheetIdSelect={handleSpreadsheetIdChange}
         />
       )}
       {options?.spreadsheetId && options.credentialsId && (

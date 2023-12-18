@@ -59,8 +59,7 @@ export const BlockNode = ({
   const bg = useColorModeValue('gray.50', 'gray.850')
   const previewingBorderColor = useColorModeValue('blue.400', 'blue.300')
   const borderColor = useColorModeValue('gray.200', 'gray.800')
-  const { pathname } = useRouter()
-  const { query } = useRouter()
+  const { pathname, query } = useRouter()
   const {
     setConnectingIds,
     connectingIds,

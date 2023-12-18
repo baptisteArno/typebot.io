@@ -2,19 +2,19 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { Prisma } from '@typebot.io/prisma'
 import prisma from '@typebot.io/lib/prisma'
 import { googleSheetsScopes } from './consent-url'
-import { stringify } from 'querystring'
 import { badRequest, notAuthenticated } from '@typebot.io/lib/api'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import { env } from '@typebot.io/env'
 import { encrypt } from '@typebot.io/lib/api/encryption/encrypt'
 import { OAuth2Client } from 'google-auth-library'
+import { parseGroups } from '@typebot.io/schemas'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res)
   if (!user) return notAuthenticated(res)
   const state = req.query.state as string | undefined
   if (!state) return badRequest(res)
-  const { redirectUrl, blockId, workspaceId } = JSON.parse(
+  const { typebotId, redirectUrl, blockId, workspaceId } = JSON.parse(
     Buffer.from(state, 'base64').toString()
   )
   if (req.method === 'GET') {
@@ -55,8 +55,46 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { id: credentialsId } = await prisma.credentials.create({
       data: credentials,
     })
-    const queryParams = stringify({ blockId, credentialsId })
-    res.redirect(`${redirectUrl}?${queryParams}` ?? `${env.NEXTAUTH_URL}`)
+    const typebot = await prisma.typebot.findFirst({
+      where: {
+        id: typebotId,
+      },
+      select: {
+        version: true,
+        groups: true,
+      },
+    })
+    if (!typebot) return res.status(404).send({ message: 'Typebot not found' })
+    const groups = parseGroups(typebot.groups, {
+      typebotVersion: typebot.version,
+    }).map((group) => {
+      const block = group.blocks.find((block) => block.id === blockId)
+      if (!block) return group
+      return {
+        ...group,
+        blocks: group.blocks.map((block) => {
+          if (block.id !== blockId || !('options' in block)) return block
+          return {
+            ...block,
+            options: {
+              ...block.options,
+              credentialsId,
+            },
+          }
+        }),
+      }
+    })
+    await prisma.typebot.updateMany({
+      where: {
+        id: typebotId,
+      },
+      data: {
+        groups,
+      },
+    })
+    res.redirect(
+      `${redirectUrl.split('?')[0]}?blockId=${blockId}` ?? `${env.NEXTAUTH_URL}`
+    )
   }
 }
 

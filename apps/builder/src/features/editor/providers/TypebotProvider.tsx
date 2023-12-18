@@ -1,5 +1,5 @@
 import { PublicTypebot, PublicTypebotV6, TypebotV6 } from '@typebot.io/schemas'
-import { Router, useRouter } from 'next/router'
+import { Router } from 'next/router'
 import {
   createContext,
   ReactNode,
@@ -85,7 +85,6 @@ export const TypebotProvider = ({
   children: ReactNode
   typebotId?: string
 }) => {
-  const { push } = useRouter()
   const { showToast } = useToast()
   const [is404, setIs404] = useState(false)
 
@@ -186,7 +185,6 @@ export const TypebotProvider = ({
     flush,
     isFetchingTypebot,
     localTypebot,
-    push,
     setLocalTypebot,
     showToast,
     typebot,

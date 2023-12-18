@@ -41,8 +41,7 @@ Used for sending email notifications and authentication
 
 ## Google (Auth, Sheets, Fonts)
 
-Used authentication in the builder and for the Google Sheets integration step. Make sure to set the required scopes (`userinfo.email`, `spreadsheets`, `drive.readonly`) in your console
-The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/google`
+Used authentication in the builder and for the Google Sheets integration step.
 
 | Parameter            | Default | Description                                   |
 | -------------------- | ------- | --------------------------------------------- |
@@ -57,16 +56,26 @@ Used for Google Fonts (Optional):
 
 ### Configuration
 
-https://console.developers.google.com/apis/credentials
+1. Enable the APIs you want: Google Sheets API, Google Picker API (Used for the Google Sheets integration to pick a spreadsheet), Web Fonts Developer API
 
-The "Authorized redirect URIs" used when creating the credentials must include your full domain and end in the callback path:
+2. Head over the Credentials tab: https://console.developers.google.com/apis/credentials
 
-- For production:
-  - https://{YOUR_DOMAIN}/api/auth/callback/google
-  - https://{YOUR_DOMAIN}/api/credentials/google-sheets/callback
-- For development:
-  - http://localhost:3000/api/auth/callback/google
-  - http://localhost:3000/api/credentials/google-sheets/callback
+3. Create an API key with access to the Google Picker API and Web Fonts Developer API (optionnal). This will be your `NEXT_PUBLIC_GOOGLE_API_KEY`
+
+4. Create a OAuth client ID. This will be your `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`
+
+   Make sure to set the required scopes (`userinfo.email`, `spreadsheets`, `drive.file`) in your console
+
+   The "Authorized redirect URIs" used when creating the credentials must include your full domain and end in the callback path:
+
+   - For production:
+     - https://{YOUR_DOMAIN}/api/auth/callback/google
+     - https://{YOUR_DOMAIN}/api/credentials/google-sheets/callback
+   - For development:
+     - http://localhost:3000/api/auth/callback/google
+     - http://localhost:3000/api/credentials/google-sheets/callback
+
+5. To avoid having to always reconnect a Google Sheets credentials every 7 days, you need to promote your OAuth client to production (https://developers.google.com/nest/device-access/reference/errors/authorization#refresh_token_keeps_expiring)
 
 ## GitHub (Auth)
 
