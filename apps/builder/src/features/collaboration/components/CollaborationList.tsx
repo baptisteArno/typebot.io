@@ -28,9 +28,11 @@ import { deleteInvitationQuery } from '../queries/deleteInvitationQuery'
 import { updateCollaboratorQuery } from '../queries/updateCollaboratorQuery'
 import { deleteCollaboratorQuery } from '../queries/deleteCollaboratorQuery'
 import { sendInvitationQuery } from '../queries/sendInvitationQuery'
+import { useTranslate } from '@tolgee/react'
 
 export const CollaborationList = () => {
   const { currentRole, workspace } = useWorkspace()
+	const { t } = useTranslate()
   const { typebot } = useTypebot()
   const [invitationType, setInvitationType] = useState<CollaborationType>(
     CollaborationType.READ
@@ -50,7 +52,7 @@ export const CollaborationList = () => {
     typebotId: typebot?.id,
     onError: (e) =>
       showToast({
-        title: "Couldn't fetch collaborators",
+        title: t("editor.headers.shareButton.popover.collaboratorsFetch.error.label"),
         description: e.message,
       }),
   })
@@ -62,7 +64,7 @@ export const CollaborationList = () => {
     typebotId: typebot?.id,
     onError: (e) =>
       showToast({
-        title: "Couldn't fetch invitations",
+        title: t("editor.headers.shareButton.popover.invitationsFetch.error.label"),
         description: e.message,
       }),
   })
@@ -132,7 +134,10 @@ export const CollaborationList = () => {
     mutateCollaborators({ collaborators: collaborators ?? [] })
     if (error)
       return showToast({ title: error.name, description: error.message })
-    showToast({ status: 'success', title: 'Invitation sent! 📧' })
+    showToast({
+			status: 'success',
+			title: t("editor.headers.shareButton.popover.invitationSent.successToast.label")
+		})
     setInvitationEmail('')
   }
 
@@ -141,7 +146,7 @@ export const CollaborationList = () => {
       <HStack as="form" onSubmit={handleInvitationSubmit} px="4" pb="2">
         <Input
           size="sm"
-          placeholder="colleague@company.com"
+          placeholder={t("editor.headers.shareButton.popover.inviteInput.placeholder")}
           name="inviteEmail"
           value={invitationEmail}
           onChange={(e) => setInvitationEmail(e.target.value)}
@@ -163,7 +168,7 @@ export const CollaborationList = () => {
           type="submit"
           isDisabled={!hasFullAccess}
         >
-          Invite
+          {t("editor.headers.shareButton.popover.inviteButton.label")}
         </Button>
       </HStack>
       {workspace && (
