@@ -256,6 +256,7 @@
   "folders.typebotButton.showMoreOptions": "Show more options",
   "folders.typebotButton.unpublish": "Unpublish",
   "pending": "Pending",
+	"preview.restartButton.label": "Restart",
   "remove": "Remove",
   "skip": "Skip",
   "templates.buttons.fromScratchButton.label": "Start from scratch",
