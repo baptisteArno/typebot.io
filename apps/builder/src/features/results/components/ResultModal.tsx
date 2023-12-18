@@ -11,8 +11,10 @@ import {
 } from '@chakra-ui/react'
 import { useResults } from '../ResultsProvider'
 import React from 'react'
-import { isDefined } from '@typebot.io/lib'
+import { byId, isDefined } from '@typebot.io/lib'
 import { HeaderIcon } from './HeaderIcon'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { parseColumnOrder } from '../helpers/parseColumnsOrder'
 
 type Props = {
   resultId: string | null
@@ -21,9 +23,15 @@ type Props = {
 
 export const ResultModal = ({ resultId, onClose }: Props) => {
   const { tableData, resultHeader } = useResults()
+  const { typebot } = useTypebot()
   const result = isDefined(resultId)
     ? tableData.find((data) => data.id.plainText === resultId)
     : undefined
+
+  const columnsOrder = parseColumnOrder(
+    typebot?.resultsTablePreferences?.columnsOrder,
+    resultHeader
+  )
 
   const getHeaderValue = (
     val: string | { plainText: string; element?: JSX.Element | undefined }
@@ -35,8 +43,11 @@ export const ResultModal = ({ resultId, onClose }: Props) => {
       <ModalContent>
         <ModalCloseButton />
         <ModalBody as={Stack} p="10" spacing="10">
-          {resultHeader.map((header) =>
-            result && result[header.id] ? (
+          {columnsOrder.map((headerId) => {
+            if (!result || !result[headerId]) return null
+            const header = resultHeader.find(byId(headerId))
+            if (!header) return null
+            return (
               <Stack key={header.id} spacing="4">
                 <HStack>
                   <HeaderIcon header={header} />
@@ -46,8 +57,8 @@ export const ResultModal = ({ resultId, onClose }: Props) => {
                   {getHeaderValue(result[header.id])}
                 </Text>
               </Stack>
-            ) : null
-          )}
+            )
+          })}
         </ModalBody>
       </ModalContent>
     </Modal>
