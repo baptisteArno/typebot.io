@@ -89,14 +89,7 @@ export const publishTypebot = authenticatedProcedure
 
     const typebotWasVerified = existingTypebot.riskLevel === -1
 
-    const riskLevel = typebotWasVerified
-      ? 0
-      : computeRiskLevel({
-          name: existingTypebot.name,
-          groups: parseGroups(existingTypebot.groups, {
-            typebotVersion: existingTypebot.version,
-          }),
-        })
+    const riskLevel = typebotWasVerified ? 0 : computeRiskLevel(existingTypebot)
 
     if (riskLevel > 0 && riskLevel !== existingTypebot.riskLevel) {
       if (env.MESSAGE_WEBHOOK_URL && riskLevel !== 100)
