@@ -1,8 +1,8 @@
 import { TextInput, NumberInput } from '@/components/inputs'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormLabel, Stack } from '@chakra-ui/react'
+import { useTranslate } from '@tolgee/react'
 import { NumberInputBlock, Variable } from '@typebot.io/schemas'
-import { defaultNumberInputOptions } from '@typebot.io/schemas/features/blocks/inputs/number/constants'
 import React from 'react'
 
 type Props = {
@@ -11,6 +11,7 @@ type Props = {
 }
 
 export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
+	const { t } = useTranslate()
   const handlePlaceholderChange = (placeholder: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, placeholder } })
   const handleButtonLabelChange = (button: string) =>
@@ -31,27 +32,27 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <TextInput
-        label="Placeholder:"
+        label={t("editor.blocks.inputs.settings.placeholder.label")}
         defaultValue={
           options?.labels?.placeholder ??
-          defaultNumberInputOptions.labels.placeholder
+	          t("editor.blocks.inputs.number.placeholder.label")
         }
         onChange={handlePlaceholderChange}
       />
       <TextInput
-        label="Button label:"
+        label={t("editor.blocks.inputs.settings.button.label")}
         defaultValue={
-          options?.labels?.button ?? defaultNumberInputOptions.labels.button
+          options?.labels?.button ?? t("editor.blocks.inputs.settings.buttonText.label")
         }
         onChange={handleButtonLabelChange}
       />
       <NumberInput
-        label="Min:"
+        label={t("editor.blocks.inputs.number.settings.min.label")}
         defaultValue={options?.min}
         onValueChange={handleMinChange}
       />
       <NumberInput
-        label="Max:"
+        label={t("editor.blocks.inputs.number.settings.max.label")}
         defaultValue={options?.max}
         onValueChange={handleMaxChange}
       />
@@ -62,7 +63,7 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
       />
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          Save answer in a variable:
+          {t("editor.blocks.inputs.settings.saveAnswer.label")}
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}

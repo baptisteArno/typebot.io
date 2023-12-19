@@ -2,7 +2,7 @@ import React from 'react'
 import { Text } from '@chakra-ui/react'
 import { NumberInputBlock } from '@typebot.io/schemas'
 import { WithVariableContent } from '@/features/graph/components/nodes/block/WithVariableContent'
-import { defaultNumberInputOptions } from '@typebot.io/schemas/features/blocks/inputs/number/constants'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   options: NumberInputBlock['options']
@@ -10,11 +10,14 @@ type Props = {
 
 export const NumberNodeContent = ({
   options: { variableId, labels } = {},
-}: Props) =>
-  variableId ? (
+}: Props) => {
+	const { t } = useTranslate()
+	
+  return variableId ? (
     <WithVariableContent variableId={variableId} />
   ) : (
     <Text color={'gray.500'}>
-      {labels?.placeholder ?? defaultNumberInputOptions.labels.placeholder}
+      {labels?.placeholder ?? t("editor.blocks.inputs.number.placeholder.label")}
     </Text>
   )
+}

@@ -257,7 +257,7 @@ export const VariableSearchInput = ({
                       : 'transparent'
                   }
                 >
-                  Create
+                  {t("create")}
                   <Tag colorScheme="orange" ml="1">
                     <Text noOfLines={0} display="block">
                       {inputValue}
