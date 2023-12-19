@@ -23,18 +23,31 @@ export const executeIntegration =
         return executeGoogleAnalyticsBlock(state, block)
       case IntegrationBlockType.EMAIL:
         return executeSendEmailBlock(state, block)
-      case IntegrationBlockType.WEBHOOK:
       case IntegrationBlockType.ZAPIER:
       case IntegrationBlockType.MAKE_COM:
       case IntegrationBlockType.PABBLY_CONNECT:
+        return {
+          ...(await executeWebhookBlock(state, block)),
+          startTimeShouldBeUpdated: true,
+        }
+      case IntegrationBlockType.WEBHOOK:
         return executeWebhookBlock(state, block)
       case IntegrationBlockType.OPEN_AI:
-        return executeOpenAIBlock(state, block)
+        return {
+          ...(await executeOpenAIBlock(state, block)),
+          startTimeShouldBeUpdated: true,
+        }
       case IntegrationBlockType.PIXEL:
         return executePixelBlock(state, block)
       case IntegrationBlockType.ZEMANTIC_AI:
-        return executeZemanticAiBlock(state, block)
+        return {
+          ...(await executeZemanticAiBlock(state, block)),
+          startTimeShouldBeUpdated: true,
+        }
       default:
-        return executeForgedBlock(state, block)
+        return {
+          ...(await executeForgedBlock(state, block)),
+          startTimeShouldBeUpdated: true,
+        }
     }
   }

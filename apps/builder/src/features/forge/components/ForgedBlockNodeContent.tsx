@@ -16,18 +16,15 @@ export const ForgedBlockNodeContent = ({ block }: Props) => {
 
   const setVariableIds = actionDef?.getSetVariableIds?.(block.options) ?? []
 
+  const isConfigured =
+    block.options?.action && (!blockDef?.auth || block.options.credentialsId)
   return (
     <Stack>
-      <Text
-        color={block.options?.action ? 'currentcolor' : 'gray.500'}
-        noOfLines={1}
-      >
-        {block.options?.action &&
-        (!blockDef?.auth || block.options.credentialsId)
-          ? block.options.action
-          : 'Configure...'}
+      <Text color={isConfigured ? 'currentcolor' : 'gray.500'} noOfLines={1}>
+        {isConfigured ? block.options.action : 'Configure...'}
       </Text>
       {typebot &&
+        isConfigured &&
         setVariableIds.map((variableId, idx) => (
           <SetVariableLabel
             key={variableId + idx}

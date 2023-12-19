@@ -145,8 +145,9 @@ export const createChatCompletion = createAction({
     },
     stream: {
       getStreamVariableId: (options) =>
-        options.responseMapping?.find((res) => res.item === 'Message content')
-          ?.variableId,
+        options.responseMapping?.find(
+          (res) => res.item === 'Message content' || !res.item
+        )?.variableId,
       run: async ({ credentials: { apiKey }, options, variables }) => {
         const config = {
           apiKey,
