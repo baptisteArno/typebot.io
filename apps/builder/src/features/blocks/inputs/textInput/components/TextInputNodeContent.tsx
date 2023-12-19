@@ -20,7 +20,7 @@ export const TextInputNodeContent = ({ options }: Props) => {
     )
   return (
     <Text color={'gray.500'} h={options?.isLong ? '100px' : 'auto'}>
-      {options?.labels?.placeholder ?? t("blocks.inputs.text.placeholder.label")}
+      {options?.labels?.placeholder ?? t("editor.blocks.inputs.text.placeholder.label")}
     </Text>
   )
 }
