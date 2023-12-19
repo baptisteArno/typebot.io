@@ -4,7 +4,7 @@ import { FormLabel, Stack } from '@chakra-ui/react'
 import { PhoneNumberInputBlock, Variable } from '@typebot.io/schemas'
 import React from 'react'
 import { CountryCodeSelect } from './CountryCodeSelect'
-import { defaultPhoneInputOptions } from '@typebot.io/schemas/features/blocks/inputs/phone/constants'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   options: PhoneNumberInputBlock['options']
@@ -12,6 +12,7 @@ type Props = {
 }
 
 export const PhoneInputSettings = ({ options, onOptionsChange }: Props) => {
+	const { t } = useTranslate()
   const handlePlaceholderChange = (placeholder: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, placeholder } })
   const handleButtonLabelChange = (button: string) =>
@@ -26,23 +27,23 @@ export const PhoneInputSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <TextInput
-        label="Placeholder:"
+        label={t("editor.blocks.inputs.settings.placeholder.label")}
         defaultValue={
           options?.labels?.placeholder ??
-          defaultPhoneInputOptions.labels.placeholder
+						t("editor.blocks.inputs.phone.placeholder.label")
         }
         onChange={handlePlaceholderChange}
       />
       <TextInput
-        label="Button label:"
+        label={t("editor.blocks.inputs.settings.button.label")}
         defaultValue={
-          options?.labels?.button ?? defaultPhoneInputOptions.labels.button
+          options?.labels?.button ?? t("editor.blocks.inputs.settings.buttonText.label")
         }
         onChange={handleButtonLabelChange}
       />
       <Stack>
         <FormLabel mb="0" htmlFor="button">
-          Default country:
+          {t("editor.blocks.inputs.phone.settings.defaultCountry.label")}
         </FormLabel>
         <CountryCodeSelect
           onSelect={handleDefaultCountryChange}
@@ -50,16 +51,16 @@ export const PhoneInputSettings = ({ options, onOptionsChange }: Props) => {
         />
       </Stack>
       <TextInput
-        label="Retry message:"
+        label={t("editor.blocks.inputs.settings.retryMessage.label")}
         defaultValue={
           options?.retryMessageContent ??
-          defaultPhoneInputOptions.retryMessageContent
+						t("editor.blocks.inputs.phone.settings.retryMessageText.label")
         }
         onChange={handleRetryMessageChange}
       />
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          Save answer in a variable:
+					{t("editor.blocks.inputs.settings.saveAnswer.label")}
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}
