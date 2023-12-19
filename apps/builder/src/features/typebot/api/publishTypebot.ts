@@ -48,6 +48,7 @@ export const publishTypebot = authenticatedProcedure
         workspace: {
           select: {
             plan: true,
+            isVerified: true,
             isSuspended: true,
             isPastDue: true,
             members: {
@@ -87,7 +88,8 @@ export const publishTypebot = authenticatedProcedure
           'Radar detected a potential malicious typebot. This bot is being manually reviewed by Fraud Prevention team.',
       })
 
-    const typebotWasVerified = existingTypebot.riskLevel === -1
+    const typebotWasVerified =
+      existingTypebot.riskLevel === -1 || existingTypebot.workspace.isVerified
 
     const riskLevel = typebotWasVerified ? 0 : computeRiskLevel(existingTypebot)
 

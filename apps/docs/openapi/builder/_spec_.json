@@ -7072,6 +7072,10 @@
                         },
                         "isPastDue": {
                           "type": "boolean"
+                        },
+                        "isVerified": {
+                          "type": "boolean",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -7093,7 +7097,8 @@
                         "customSeatsLimit",
                         "isQuarantined",
                         "isSuspended",
-                        "isPastDue"
+                        "isPastDue",
+                        "isVerified"
                       ],
                       "additionalProperties": false
                     }
@@ -7225,6 +7230,10 @@
                         },
                         "isPastDue": {
                           "type": "boolean"
+                        },
+                        "isVerified": {
+                          "type": "boolean",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -7246,7 +7255,8 @@
                         "customSeatsLimit",
                         "isQuarantined",
                         "isSuspended",
-                        "isPastDue"
+                        "isPastDue",
+                        "isVerified"
                       ],
                       "additionalProperties": false
                     }
@@ -7395,6 +7405,10 @@
                         },
                         "isPastDue": {
                           "type": "boolean"
+                        },
+                        "isVerified": {
+                          "type": "boolean",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -7416,7 +7430,8 @@
                         "customSeatsLimit",
                         "isQuarantined",
                         "isSuspended",
-                        "isPastDue"
+                        "isPastDue",
+                        "isVerified"
                       ],
                       "additionalProperties": false
                     }
@@ -54488,6 +54503,10 @@
                         },
                         "isPastDue": {
                           "type": "boolean"
+                        },
+                        "isVerified": {
+                          "type": "boolean",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -54509,7 +54528,8 @@
                         "customSeatsLimit",
                         "isQuarantined",
                         "isSuspended",
-                        "isPastDue"
+                        "isPastDue",
+                        "isVerified"
                       ],
                       "additionalProperties": false,
                       "nullable": true
