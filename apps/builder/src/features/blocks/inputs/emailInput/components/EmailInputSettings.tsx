@@ -1,8 +1,8 @@
 import { TextInput } from '@/components/inputs'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormLabel, Stack } from '@chakra-ui/react'
+import { useTranslate } from '@tolgee/react'
 import { EmailInputBlock, Variable } from '@typebot.io/schemas'
-import { defaultEmailInputOptions } from '@typebot.io/schemas/features/blocks/inputs/email/constants'
 import React from 'react'
 
 type Props = {
@@ -11,6 +11,7 @@ type Props = {
 }
 
 export const EmailInputSettings = ({ options, onOptionsChange }: Props) => {
+	const { t } = useTranslate()
   const handlePlaceholderChange = (placeholder: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, placeholder } })
   const handleButtonLabelChange = (button: string) =>
@@ -23,31 +24,31 @@ export const EmailInputSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <TextInput
-        label="Placeholder:"
+        label={t("editor.blocks.inputs.settings.placeholder.label")}
         defaultValue={
           options?.labels?.placeholder ??
-          defaultEmailInputOptions.labels.placeholder
+	          t("editor.blocks.inputs.email.placeholder.label")
         }
         onChange={handlePlaceholderChange}
       />
       <TextInput
-        label="Button label:"
+        label={t("editor.blocks.inputs.settings.button.label")}
         defaultValue={
-          options?.labels?.button ?? defaultEmailInputOptions.labels.button
+          options?.labels?.button ?? t("editor.blocks.inputs.settings.buttonText.label")
         }
         onChange={handleButtonLabelChange}
       />
       <TextInput
-        label="Retry message:"
+        label={t("editor.blocks.inputs.email.settings.retryMessage.label")}
         defaultValue={
           options?.retryMessageContent ??
-          defaultEmailInputOptions.retryMessageContent
+	          t("editor.blocks.inputs.email.settings.retryMessageText.label")
         }
         onChange={handleRetryMessageChange}
       />
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          Save answer in a variable:
+					{t("editor.blocks.inputs.settings.saveAnswer.label")}
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}
