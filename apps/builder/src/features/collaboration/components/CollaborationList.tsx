@@ -180,9 +180,11 @@ export const CollaborationList = () => {
             </Text>
           </HStack>
           <Tag flexShrink={0}>
-            {convertCollaborationTypeEnumToReadable(
-              CollaborationType.FULL_ACCESS
-            )}
+            {t(
+							convertCollaborationTypeEnumToTranslationKey(
+              	CollaborationType.FULL_ACCESS
+            	)
+						)}
           </Tag>
         </Flex>
       )}
@@ -232,6 +234,8 @@ const CollaborationTypeMenuButton = ({
   type: CollaborationType
   onChange: (type: CollaborationType) => void
 }) => {
+	const { t } = useTranslate()
+	
   return (
     <Menu placement="bottom-end">
       <MenuButton
@@ -240,15 +244,15 @@ const CollaborationTypeMenuButton = ({
         as={Button}
         rightIcon={<ChevronLeftIcon transform={'rotate(-90deg)'} />}
       >
-        {convertCollaborationTypeEnumToReadable(type)}
+        {t(convertCollaborationTypeEnumToTranslationKey(type))}
       </MenuButton>
       <MenuList minW={0}>
         <Stack maxH={'35vh'} overflowY="scroll" spacing="0">
           <MenuItem onClick={() => onChange(CollaborationType.READ)}>
-            {convertCollaborationTypeEnumToReadable(CollaborationType.READ)}
+            {t(convertCollaborationTypeEnumToTranslationKey(CollaborationType.READ))}
           </MenuItem>
           <MenuItem onClick={() => onChange(CollaborationType.WRITE)}>
-            {convertCollaborationTypeEnumToReadable(CollaborationType.WRITE)}
+            {t(convertCollaborationTypeEnumToTranslationKey(CollaborationType.WRITE))}
           </MenuItem>
         </Stack>
       </MenuList>
@@ -256,15 +260,15 @@ const CollaborationTypeMenuButton = ({
   )
 }
 
-export const convertCollaborationTypeEnumToReadable = (
+export const convertCollaborationTypeEnumToTranslationKey = (
   type: CollaborationType
 ) => {
   switch (type) {
     case CollaborationType.READ:
-      return 'Can view'
+      return 'collaboratorAccessType.view'
     case CollaborationType.WRITE:
-      return 'Can edit'
+      return 'collaboratorAccessType.edit'
     case CollaborationType.FULL_ACCESS:
-      return 'Full access'
+      return 'collaboratorAccessType.full'
   }
 }
