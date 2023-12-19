@@ -9,8 +9,15 @@ export const computeRiskLevel = (typebot: any) => {
     )
   )
     return 100
-  if (!env.RADAR_INTERMEDIATE_RISK_KEYWORDS) return 0
   if (
+    env.RADAR_CUMULATIVE_KEYWORDS &&
+    env.RADAR_CUMULATIVE_KEYWORDS.every((keyword) =>
+      stringifiedTypebot.toLowerCase().includes(keyword)
+    )
+  )
+    return 100
+  if (
+    env.RADAR_INTERMEDIATE_RISK_KEYWORDS &&
     env.RADAR_INTERMEDIATE_RISK_KEYWORDS.some((keyword) =>
       stringifiedTypebot.toLowerCase().includes(keyword)
     )

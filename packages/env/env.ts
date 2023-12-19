@@ -76,6 +76,11 @@ const baseEnv = {
       .min(1)
       .transform((val) => val.split(','))
       .optional(),
+    RADAR_CUMULATIVE_KEYWORDS: z
+      .string()
+      .min(1)
+      .transform((val) => val.split(','))
+      .optional(),
   },
   client: {
     NEXT_PUBLIC_E2E_TEST: boolean.optional(),
