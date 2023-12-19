@@ -39,7 +39,7 @@ export const EmailInputSettings = ({ options, onOptionsChange }: Props) => {
         onChange={handleButtonLabelChange}
       />
       <TextInput
-        label={t("editor.blocks.inputs.email.settings.retryMessage.label")}
+        label={t("editor.blocks.inputs.settings.retryMessage.label")}
         defaultValue={
           options?.retryMessageContent ??
 	          t("editor.blocks.inputs.email.settings.retryMessageText.label")
