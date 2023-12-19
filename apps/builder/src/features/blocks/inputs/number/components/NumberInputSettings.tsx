@@ -47,17 +47,17 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
         onChange={handleButtonLabelChange}
       />
       <NumberInput
-        label={t("editor.blocks.inputs.number.settings.min.label")}
+        label={t("editor.blocks.inputs.settings.min.label")}
         defaultValue={options?.min}
         onValueChange={handleMinChange}
       />
       <NumberInput
-        label={t("editor.blocks.inputs.number.settings.max.label")}
+        label={t("editor.blocks.inputs.settings.max.label")}
         defaultValue={options?.max}
         onValueChange={handleMaxChange}
       />
       <NumberInput
-        label="Step:"
+        label={t("editor.blocks.inputs.number.settings.step.label")}
         defaultValue={options?.step}
         onValueChange={handleStepChange}
       />
