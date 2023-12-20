@@ -159,7 +159,7 @@ export const StripeConfigModal = ({
               </HStack>
             </Stack>
             <Stack>
-              <FormLabel>Live keys:</FormLabel>
+              <FormLabel>{t("editor.blocks.inputs.payment.settings.stripeConfig.liveKeys.label")}</FormLabel>
               <HStack>
                 <FormControl>
                   <TextInput

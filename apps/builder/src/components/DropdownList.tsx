@@ -90,7 +90,9 @@ export const DropdownList = <T extends readonly any[]>({
                   textOverflow="ellipsis"
                   onClick={handleMenuItemClick(item)}
                 >
-                  {t(`components.dropdownList.item.${item}`, item)}
+                  {
+										t(`components.dropdownList.item.${item.replace(/\s/g, "")}`, item)
+									}
                 </MenuItem>
               ))}
             </Stack>

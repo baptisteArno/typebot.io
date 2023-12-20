@@ -1,4 +1,5 @@
 import { Stack, Wrap, Tag, Text, useColorModeValue } from '@chakra-ui/react'
+import { useTranslate } from '@tolgee/react'
 import { byId } from '@typebot.io/lib'
 import { Condition, Variable } from '@typebot.io/schemas'
 import { ComparisonOperators } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
@@ -15,6 +16,7 @@ export const ConditionContent = ({
   size = 'sm',
   displaySemicolon,
 }: Props) => {
+	const { t } = useTranslate()
   const comparisonValueBg = useColorModeValue('gray.200', 'gray.700')
   return (
     <Stack>
@@ -22,9 +24,19 @@ export const ConditionContent = ({
         const variable = variables.find(byId(comparison.variableId))
         return (
           <Wrap key={comparison.id} spacing={1} noOfLines={1}>
-            {idx === 0 && <Text fontSize={size}>IF</Text>}
+            {idx === 0 && (
+							<Text fontSize={size}>
+								{t("editor.blocks.inputs.button.conditionContent.if.label")}
+							</Text>
+						)}
             {idx > 0 && (
-              <Text fontSize={size}>{condition.logicalOperator ?? ''}</Text>
+              <Text fontSize={size}>
+								{
+									t(
+										`components.dropdownList.item.${condition.logicalOperator?.replace(/\s/g, "")}`, ""
+									)
+								}
+							</Text>
             )}
             {variable?.name && (
               <Tag bgColor="orange.400" color="white" size="sm">
@@ -33,7 +45,9 @@ export const ConditionContent = ({
             )}
             {comparison.comparisonOperator && (
               <Text fontSize={size}>
-                {parseComparisonOperatorSymbol(comparison.comparisonOperator)}
+                {
+									t(parseComparisonOperatorSymbol(comparison.comparisonOperator))
+								}
               </Text>
             )}
             {comparison?.value &&
@@ -58,28 +72,28 @@ const parseComparisonOperatorSymbol = (
 ): string => {
   switch (operator) {
     case ComparisonOperators.CONTAINS:
-      return 'contains'
+      return 'components.dropdownList.item.contains'
     case ComparisonOperators.EQUAL:
       return '='
     case ComparisonOperators.GREATER:
       return '>'
     case ComparisonOperators.IS_SET:
-      return 'is set'
+      return 'components.dropdownList.item.isset'
     case ComparisonOperators.LESS:
       return '<'
     case ComparisonOperators.NOT_EQUAL:
       return '!='
     case ComparisonOperators.ENDS_WITH:
-      return 'ends with'
+      return 'components.dropdownList.item.endswith'
     case ComparisonOperators.STARTS_WITH:
-      return 'starts with'
+      return 'components.dropdownList.item.startswith'
     case ComparisonOperators.IS_EMPTY:
-      return 'is empty'
+      return 'components.dropdownList.item.isempty'
     case ComparisonOperators.NOT_CONTAINS:
-      return 'not contains'
+      return 'components.dropdownList.item.notcontains'
     case ComparisonOperators.MATCHES_REGEX:
-      return 'matches'
+      return 'components.dropdownList.item.matches'
     case ComparisonOperators.NOT_MATCH_REGEX:
-      return 'not matches'
+      return 'components.dropdownList.item.notmatches'
   }
 }
