@@ -26,7 +26,7 @@ export type GroupsActions = {
   deleteGroup: (groupIndex: number) => void
 }
 
-const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
+const groupsActions = (groupDefaultName: string, setTypebot: SetTypebot): GroupsActions => ({
   createGroup: ({
     id,
     block,
@@ -42,7 +42,7 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
         const newGroup: GroupV6 = {
           id,
           graphCoordinates,
-          title: `Group #${typebot.groups.length + 1}`,
+          title: `${groupDefaultName} #${typebot.groups.length + 1}`,
           blocks: [],
         }
         typebot.groups.push(newGroup)

@@ -70,9 +70,16 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
         </FormLabel>
         <DropdownList
           onItemSelect={handleTypeChange}
-          items={['Icons', 'Numbers'] as const}
+          items={[
+						'Icons',
+						'Numbers'
+					] as const}
           currentItem={
-            options?.buttonType ?? t("editor.blocks.inputs.rating.settings.type.number.label") as 'Numbers'
+            options?.buttonType
+							?? t(
+										"components.dropdownList.item.Numbers",
+										defaultRatingInputOptions.buttonType
+									) as 'Numbers'
           }
         />
       </Stack>
