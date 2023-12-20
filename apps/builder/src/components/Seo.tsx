@@ -1,9 +1,18 @@
+import { env } from '@typebot.io/env'
 import Head from 'next/head'
+
+const getOrigin = () => {
+  if (typeof window !== 'undefined') {
+    return window.location.origin
+  }
+
+  return env.NEXTAUTH_URL
+}
 
 export const Seo = ({
   title,
   description = 'Create and publish conversational forms that collect 4 times more answers and feel native to your product',
-  imagePreviewUrl = 'https://app.typebot.io/site-preview.png',
+  imagePreviewUrl = `${getOrigin()}/images/og.png`,
 }: {
   title: string
   description?: string

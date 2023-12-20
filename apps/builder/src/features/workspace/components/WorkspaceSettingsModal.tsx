@@ -119,16 +119,18 @@ export const WorkspaceSettingsModal = ({
                   {t('workspace.settings.modal.menu.settings.label')}
                 </Button>
               )}
-              <Button
-                variant={selectedTab === 'members' ? 'solid' : 'ghost'}
-                onClick={() => setSelectedTab('members')}
-                leftIcon={<UsersIcon />}
-                size="sm"
-                justifyContent="flex-start"
-                pl="4"
-              >
-                {t('workspace.settings.modal.menu.members.label')}
-              </Button>
+              {currentRole !== WorkspaceRole.GUEST && (
+                <Button
+                  variant={selectedTab === 'members' ? 'solid' : 'ghost'}
+                  onClick={() => setSelectedTab('members')}
+                  leftIcon={<UsersIcon />}
+                  size="sm"
+                  justifyContent="flex-start"
+                  pl="4"
+                >
+                  {t('workspace.settings.modal.menu.members.label')}
+                </Button>
+              )}
               {canEditWorkspace && (
                 <Button
                   variant={selectedTab === 'billing' ? 'solid' : 'ghost'}

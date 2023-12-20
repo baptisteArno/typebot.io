@@ -29,6 +29,10 @@ Then you can give the OpenAI block access to this sequence of messages:
 
 This action allows you to transform a text input into an audio URL that you can reuse in your bot.
 
+:::note
+The generated audio URLs are temporary and expire after 7 days. If you need to store them, make sure to download them before they expire.
+:::
+
 <div
   style={{
     position: 'relative',
@@ -48,6 +52,7 @@ This action allows you to transform a text input into an audio URL that you can 
       left: 0,
       width: '100%',
       height: '100%',
+      marginBottom: '1rem',
     }}
   />
 </div>

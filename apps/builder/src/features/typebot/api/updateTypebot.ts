@@ -35,6 +35,7 @@ const typebotUpdateSchemaPick = {
   customDomain: true,
   isClosed: true,
   whatsAppCredentialsId: true,
+  riskLevel: true,
   events: true,
 } as const
 

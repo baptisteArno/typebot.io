@@ -1,9 +1,13 @@
+import { ForgedBlockDefinition } from '@typebot.io/forge-schemas'
 import { BlockWithOptions } from '@typebot.io/schemas'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 
-export const getHelpDocUrl = (blockType: BlockWithOptions['type']): string => {
+export const getHelpDocUrl = (
+  blockType: BlockWithOptions['type'],
+  blockDef?: ForgedBlockDefinition
+): string | undefined => {
   switch (blockType) {
     case LogicBlockType.TYPEBOT_LINK:
       return 'https://docs.typebot.io/editor/blocks/logic/typebot-link'
@@ -65,5 +69,7 @@ export const getHelpDocUrl = (blockType: BlockWithOptions['type']): string => {
       return 'https://docs.typebot.io/editor/blocks/integrations/zemantic-ai'
     case LogicBlockType.CONDITION:
       return 'https://docs.typebot.io/editor/blocks/logic/condition'
+    default:
+      return blockDef?.docsUrl
   }
 }

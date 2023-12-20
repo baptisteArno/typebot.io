@@ -5,9 +5,9 @@ import {
 } from '@typebot.io/schemas'
 import { isDefined } from '@typebot.io/lib'
 import { filterChoiceItems } from './filterChoiceItems'
-import { deepParseVariables } from '../../../variables/deepParseVariables'
-import { transformStringVariablesToList } from '../../../variables/transformVariablesToList'
-import { updateVariablesInSession } from '../../../variables/updateVariablesInSession'
+import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
+import { transformVariablesToList } from '@typebot.io/variables/transformVariablesToList'
+import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
 
 export const injectVariableValuesInButtonsInputBlock =
   (state: SessionState) =>
@@ -38,7 +38,7 @@ const getVariableValue =
   (variable: VariableWithValue): (string | null)[] => {
     if (!Array.isArray(variable.value)) {
       const { variables } = state.typebotsQueue[0].typebot
-      const [transformedVariable] = transformStringVariablesToList(variables)([
+      const [transformedVariable] = transformVariablesToList(variables)([
         variable.id,
       ])
       updateVariablesInSession(state)([transformedVariable])

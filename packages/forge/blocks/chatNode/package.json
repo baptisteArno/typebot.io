@@ -1,0 +1,16 @@
+{
+  "name": "@typebot.io/chat-node-block",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "keywords": [],
+  "license": "ISC",
+  "devDependencies": {
+    "@typebot.io/forge": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/tsconfig": "workspace:*",
+    "@types/react": "18.2.15",
+    "typescript": "5.3.2",
+    "got": "12.6.0"
+  }
+}

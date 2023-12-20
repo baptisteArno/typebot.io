@@ -10,6 +10,7 @@ import { render } from '@faire/mjml-react/utils/render'
 import { HeroImage, Text, Button, Head } from '../components'
 import { SendMailOptions } from 'nodemailer'
 import { sendEmail } from '../sendEmail'
+import { env } from '@typebot.io/env'
 
 type WorkspaceMemberInvitationProps = {
   workspaceName: string
@@ -29,7 +30,7 @@ export const WorkspaceMemberInvitation = ({
     <MjmlBody width={600}>
       <MjmlSection padding="0">
         <MjmlColumn>
-          <HeroImage src="https://typebot.s3.eu-west-3.amazonaws.com/assets/invitation-banner.png" />
+          <HeroImage src={`${env.NEXTAUTH_URL}/images/invitationBanner.png`} />
         </MjmlColumn>
       </MjmlSection>
       <MjmlSection padding="0 24px" cssClass="smooth">

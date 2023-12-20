@@ -9,6 +9,7 @@ import { RequestHandler } from 'next/dist/server/next'
 import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 import { Settings } from '@typebot.io/schemas'
 import { env } from '@typebot.io/env'
+import { prices } from '@typebot.io/lib/billing/constants'
 
 if (!env.STRIPE_SECRET_KEY || !env.STRIPE_WEBHOOK_SECRET)
   throw new Error('STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET missing')
@@ -176,7 +177,11 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             customer: invoice.customer as string,
             status: 'open',
           })
-          if (outstandingInvoices.data.length > 0)
+          const outstandingInvoicesWithAdditionalUsageCosts =
+            outstandingInvoices.data.filter(
+              (invoice) => invoice.amount_due > prices['PRO'] * 100
+            )
+          if (outstandingInvoicesWithAdditionalUsageCosts.length > 0)
             return res.send({
               message: 'Workspace has outstanding invoices, skipping.',
             })
@@ -221,6 +226,14 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               message:
                 'An active subscription still exists. Skipping downgrade.',
             })
+          const outstandingInvoices = await stripe.invoices.list({
+            customer: subscription.customer as string,
+            status: 'open',
+          })
+          const outstandingInvoicesWithAdditionalUsageCosts =
+            outstandingInvoices.data.filter(
+              (invoice) => invoice.amount_due > prices['PRO'] * 100
+            )
           const workspace = await prisma.workspace.update({
             where: {
               stripeId: subscription.customer as string,
@@ -230,6 +243,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               customChatsLimit: null,
               customStorageLimit: null,
               customSeatsLimit: null,
+              isPastDue: outstandingInvoicesWithAdditionalUsageCosts.length > 0,
             },
             include: {
               members: {

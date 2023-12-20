@@ -1,11 +1,11 @@
 {
   "version": "6",
-  "id": "clofz4jhf00071a5pjlh8ruwr",
+  "id": "clpntkei400011aboogh27ead",
   "name": "Basic ChatGPT",
   "events": [
     {
       "id": "ewnfbo0exlu7ihfu2lu2lusm",
-      "outgoingEdgeId": "q25yjqccpjv3i1tclgv1x941",
+      "outgoingEdgeId": "pn7omb9mx5xxc4mzq028fcmq",
       "graphCoordinates": { "x": -228.25, "y": -123.31 },
       "type": "start"
     }
@@ -18,7 +18,6 @@
       "blocks": [
         {
           "id": "s6eky7dd3md9hto9y4wsuj7h",
-          "groupId": "t3tv4dm3khwmiotjle5jb65g",
           "type": "text",
           "content": {
             "richText": [
@@ -35,7 +34,6 @@
         },
         {
           "id": "nqsu9f13q5j8tt56bcbuto62",
-          "groupId": "t3tv4dm3khwmiotjle5jb65g",
           "type": "text",
           "content": {
             "richText": [
@@ -63,13 +61,11 @@
       "blocks": [
         {
           "id": "ovgk70u0kfxrbtz9dy4e040o",
-          "groupId": "qfrz5nwm63g12dajsjxothb5",
           "type": "text input",
           "options": { "variableId": "vudksu3zyrat6s1bq6qne0rx3" }
         },
         {
           "id": "m4jadtknjb3za3gvxj1xdn1k",
-          "groupId": "qfrz5nwm63g12dajsjxothb5",
           "outgoingEdgeId": "fpj0xacppqd1s5slyljzhzc9",
           "type": "Set variable",
           "options": {
@@ -86,33 +82,27 @@
       "graphCoordinates": { "x": 624.57, "y": 200.09 },
       "blocks": [
         {
-          "id": "xikptnw1lp1qxdqo10qhmwy1",
-          "groupId": "a6ymhjwtkqwp8t127plz8qmk",
-          "type": "OpenAI",
+          "id": "p4q3wbk4wcw818qocrvu7dxs",
+          "type": "openai",
           "options": {
-            "task": "Create chat completion",
-            "model": "gpt-3.5-turbo",
+            "action": "Create chat completion",
             "messages": [
               {
-                "id": "wsdxha9db58gk2v9n1j10m7c",
                 "role": "Dialogue",
-                "dialogueVariableId": "vabkycu0qqff5d6ar2ama16pf",
-                "startsBy": "user"
+                "dialogueVariableId": "vabkycu0qqff5d6ar2ama16pf"
               }
             ],
+            "credentialsId": "clpjnjrbt00051aliw6610w1z",
             "responseMapping": [
               {
-                "id": "p8ksqi2jhyzid2od3dikv299",
-                "valueToExtract": "Message content",
+                "item": "Message content",
                 "variableId": "vni6kwbch8zlq92dclgcivzyr"
               }
-            ],
-            "credentialsId": "clocxtxlc00031an2uc59hdpb"
+            ]
           }
         },
         {
           "id": "yblc864bzipaqfja7b2o3oo0",
-          "groupId": "a6ymhjwtkqwp8t127plz8qmk",
           "type": "Set variable",
           "options": {
             "variableId": "vabkycu0qqff5d6ar2ama16pf",
@@ -122,7 +112,6 @@
         },
         {
           "id": "myldn1l1nfdwwm8qvza71rwv",
-          "groupId": "a6ymhjwtkqwp8t127plz8qmk",
           "outgoingEdgeId": "y8ml9ljnsydol9b42fd9zdve",
           "type": "text",
           "content": {
@@ -140,7 +129,6 @@
       "blocks": [
         {
           "id": "vzcrfk4vl9gy8igu0ysja5nc",
-          "groupId": "c5f00f3oclwi1srcz10jjt9u",
           "type": "text",
           "content": {
             "richText": [
@@ -150,7 +138,6 @@
         },
         {
           "id": "gphm5wy1md9cunwkdtbzg6nq",
-          "groupId": "c5f00f3oclwi1srcz10jjt9u",
           "outgoingEdgeId": "h5sk58j0ryrxmfv4gmw7r4dw",
           "type": "text",
           "content": {
@@ -165,32 +152,23 @@
   "edges": [
     {
       "id": "h5sk58j0ryrxmfv4gmw7r4dw",
-      "from": {
-        "groupId": "c5f00f3oclwi1srcz10jjt9u",
-        "blockId": "gphm5wy1md9cunwkdtbzg6nq"
-      },
+      "from": { "blockId": "gphm5wy1md9cunwkdtbzg6nq" },
       "to": { "groupId": "qfrz5nwm63g12dajsjxothb5" }
     },
     {
       "id": "y8ml9ljnsydol9b42fd9zdve",
-      "from": {
-        "groupId": "a6ymhjwtkqwp8t127plz8qmk",
-        "blockId": "myldn1l1nfdwwm8qvza71rwv"
-      },
+      "from": { "blockId": "myldn1l1nfdwwm8qvza71rwv" },
       "to": { "groupId": "qfrz5nwm63g12dajsjxothb5" }
     },
     {
       "id": "fpj0xacppqd1s5slyljzhzc9",
-      "from": {
-        "groupId": "qfrz5nwm63g12dajsjxothb5",
-        "blockId": "m4jadtknjb3za3gvxj1xdn1k"
-      },
+      "from": { "blockId": "m4jadtknjb3za3gvxj1xdn1k" },
       "to": { "groupId": "a6ymhjwtkqwp8t127plz8qmk" }
     },
     {
       "from": { "eventId": "ewnfbo0exlu7ihfu2lu2lusm" },
       "to": { "groupId": "t3tv4dm3khwmiotjle5jb65g" },
-      "id": "q25yjqccpjv3i1tclgv1x941"
+      "id": "pn7omb9mx5xxc4mzq028fcmq"
     }
   ],
   "variables": [
@@ -201,8 +179,8 @@
   "theme": {},
   "selectedThemeTemplateId": null,
   "settings": { "general": {} },
-  "createdAt": "2023-11-01T16:30:13.155Z",
-  "updatedAt": "2023-11-01T16:30:13.155Z",
+  "createdAt": "2023-12-02T08:56:27.244Z",
+  "updatedAt": "2023-12-02T09:00:25.221Z",
   "icon": "🤖",
   "folderId": null,
   "publicId": null,

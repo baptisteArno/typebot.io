@@ -31,6 +31,7 @@ import {
 } from '@/utils/formattedMessagesSignal'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { saveClientLogsQuery } from '@/queries/saveClientLogsQuery'
+import { HTTPError } from 'ky'
 
 const parseDynamicTheme = (
   initialTheme: Theme,
@@ -170,13 +171,26 @@ export const ConversationContainer = (props: Props) => {
     setIsSending(false)
     if (error) {
       setHasError(true)
-      props.onNewLogs?.([
+      const errorLogs = [
         {
           description: 'Failed to send the reply',
-          details: error,
+          details:
+            error instanceof HTTPError
+              ? {
+                  status: error.response.status,
+                  body: await error.response.json(),
+                }
+              : error,
           status: 'error',
         },
-      ])
+      ]
+      await saveClientLogsQuery({
+        apiHost: props.context.apiHost,
+        sessionId: props.initialChatReply.sessionId,
+        clientLogs: errorLogs,
+      })
+      props.onNewLogs?.(errorLogs)
+      return
     }
     if (!data) return
     if (data.lastMessageNewFormat) {

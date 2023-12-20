@@ -18,7 +18,7 @@ import { getDefinedVariables, parseAnswers } from '@typebot.io/lib/results'
 import got, { Method, HTTPError, OptionsInit } from 'got'
 import { resumeWebhookExecution } from './resumeWebhookExecution'
 import { ExecuteIntegrationResponse } from '../../../types'
-import { parseVariables } from '../../../variables/parseVariables'
+import { parseVariables } from '@typebot.io/variables/parseVariables'
 import prisma from '@typebot.io/lib/prisma'
 import {
   HttpMethod,
@@ -29,6 +29,16 @@ type ParsedWebhook = ExecutableWebhook & {
   basicAuth: { username?: string; password?: string }
   isJson: boolean
 }
+
+export const responseDefaultTimeout = 10000
+export const longRequestTimeout = 120000
+
+export const longReqTimeoutWhitelist = [
+  'https://api.openai.com',
+  'https://retune.so',
+  'https://www.chatbase.co',
+  'https://channel-connector.orimon.ai',
+]
 
 export const executeWebhookBlock = async (
   state: SessionState,
@@ -64,14 +74,21 @@ export const executeWebhookBlock = async (
         },
       ],
     }
-  const { response: webhookResponse, logs: executeWebhookLogs } =
-    await executeWebhook(parsedWebhook)
-  return resumeWebhookExecution({
-    state,
-    block,
-    logs: executeWebhookLogs,
+  const {
     response: webhookResponse,
-  })
+    logs: executeWebhookLogs,
+    startTimeShouldBeUpdated,
+  } = await executeWebhook(parsedWebhook)
+
+  return {
+    ...resumeWebhookExecution({
+      state,
+      block,
+      logs: executeWebhookLogs,
+      response: webhookResponse,
+    }),
+    startTimeShouldBeUpdated,
+  }
 }
 
 const checkIfBodyIsAVariable = (body: string) => /^{{.+}}$/.test(body)
@@ -142,10 +159,18 @@ const parseWebhookAttributes =
 
 export const executeWebhook = async (
   webhook: ParsedWebhook
-): Promise<{ response: WebhookResponse; logs?: ChatLog[] }> => {
+): Promise<{
+  response: WebhookResponse
+  logs?: ChatLog[]
+  startTimeShouldBeUpdated?: boolean
+}> => {
   const logs: ChatLog[] = []
   const { headers, url, method, basicAuth, body, isJson } = webhook
   const contentType = headers ? headers['Content-Type'] : undefined
+
+  const isLongRequest = longReqTimeoutWhitelist.some((whiteListedUrl) =>
+    url?.includes(whiteListedUrl)
+  )
 
   const request = {
     url,
@@ -159,7 +184,11 @@ export const executeWebhook = async (
     form:
       contentType?.includes('x-www-form-urlencoded') && body ? body : undefined,
     body: body && !isJson ? (body as string) : undefined,
+    timeout: {
+      response: isLongRequest ? longRequestTimeout : responseDefaultTimeout,
+    },
   } satisfies OptionsInit
+
   try {
     const response = await got(request.url, omit(request, 'url'))
     logs.push({
@@ -177,6 +206,7 @@ export const executeWebhook = async (
         data: safeJsonParse(response.body).data,
       },
       logs,
+      startTimeShouldBeUpdated: isLongRequest,
     }
   } catch (error) {
     if (error instanceof HTTPError) {
@@ -193,7 +223,7 @@ export const executeWebhook = async (
           response,
         },
       })
-      return { response, logs }
+      return { response, logs, startTimeShouldBeUpdated: isLongRequest }
     }
     const response = {
       statusCode: 500,
@@ -208,7 +238,7 @@ export const executeWebhook = async (
         response,
       },
     })
-    return { response, logs }
+    return { response, logs, startTimeShouldBeUpdated: isLongRequest }
   }
 }
 

@@ -1,8 +1,9 @@
 import { guessApiHost } from '@/utils/guessApiHost'
-import { isNotEmpty, sendRequest } from '@typebot.io/lib'
+import { isNotEmpty } from '@typebot.io/lib'
 import { ContinueChatResponse } from '@typebot.io/schemas'
+import ky from 'ky'
 
-export const continueChatQuery = ({
+export const continueChatQuery = async ({
   apiHost,
   message,
   sessionId,
@@ -10,13 +11,24 @@ export const continueChatQuery = ({
   apiHost?: string
   message: string | undefined
   sessionId: string
-}) =>
-  sendRequest<ContinueChatResponse>({
-    method: 'POST',
-    url: `${
-      isNotEmpty(apiHost) ? apiHost : guessApiHost()
-    }/api/v1/sessions/${sessionId}/continueChat`,
-    body: {
-      message,
-    },
-  })
+}) => {
+  try {
+    const data = await ky
+      .post(
+        `${
+          isNotEmpty(apiHost) ? apiHost : guessApiHost()
+        }/api/v1/sessions/${sessionId}/continueChat`,
+        {
+          json: {
+            message,
+          },
+          timeout: false,
+        }
+      )
+      .json<ContinueChatResponse>()
+
+    return { data }
+  } catch (error) {
+    return { error }
+  }
+}

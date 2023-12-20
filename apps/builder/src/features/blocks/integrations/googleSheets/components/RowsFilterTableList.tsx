@@ -1,11 +1,11 @@
 import { DropdownList } from '@/components/DropdownList'
-import { TableList, TableListItemProps } from '@/components/TableList'
+import { TableList } from '@/components/TableList'
 import { Flex } from '@chakra-ui/react'
 import {
   GoogleSheetsGetOptions,
   RowsFilterComparison,
 } from '@typebot.io/schemas'
-import React, { useCallback } from 'react'
+import React from 'react'
 import { RowsFilterComparisonItem } from './RowsFilterComparisonItem'
 import { LogicalOperator } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
 
@@ -30,18 +30,10 @@ export const RowsFilterTableList = ({
   const updateLogicalOperator = (logicalOperator: LogicalOperator) =>
     filter && onFilterChange({ ...filter, logicalOperator })
 
-  const createRowsFilterComparisonItem = useCallback(
-    (props: TableListItemProps<RowsFilterComparison>) => (
-      <RowsFilterComparisonItem {...props} columns={columns} />
-    ),
-    [columns]
-  )
-
   return (
     <TableList<RowsFilterComparison>
       initialItems={filter?.comparisons ?? []}
       onItemsChange={updateComparisons}
-      Item={createRowsFilterComparisonItem}
       ComponentBetweenItems={() => (
         <Flex justify="center">
           <DropdownList
@@ -52,6 +44,8 @@ export const RowsFilterTableList = ({
         </Flex>
       )}
       addLabel="Add filter rule"
-    />
+    >
+      {(props) => <RowsFilterComparisonItem {...props} columns={columns} />}
+    </TableList>
   )
 }

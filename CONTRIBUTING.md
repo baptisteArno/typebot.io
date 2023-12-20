@@ -41,7 +41,10 @@ These apps are built with awesome web technologies including [Typescript](https:
    Check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration) if you want to enable more options
 
 3. Make sure you have [Docker](https://docs.docker.com/compose/install/) running
-4. Start the builder and viewer
+
+4. Make sure you have Node.js installed. I suggest you use [`nvm`](https://github.com/nvm-sh/nvm) allowing you to manage different versions. Once you installed nvm, you can install and use the latest version of Node.js: `nvm install && nvm use`
+
+5. Start the builder and viewer
 
    ```sh
    pnpm dev
@@ -55,7 +58,7 @@ These apps are built with awesome web technologies including [Typescript](https:
 
    By default, you can easily authenticate in the builder using the "Github Sign In" button. For other options, check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration)
 
-5. (Optionnal) Start the landing page
+6. (Optionnal) Start the landing page
 
    Copy [`apps/landing-page/.env.local.example`](apps/landing-page/.env.local.example) to `apps/landing-page/.env.local`
 
@@ -64,7 +67,7 @@ These apps are built with awesome web technologies including [Typescript](https:
    pnpm dev
    ```
 
-6. (Optionnal) Start the docs
+7. (Optionnal) Start the docs
 
    ```sh
    cd apps/docs

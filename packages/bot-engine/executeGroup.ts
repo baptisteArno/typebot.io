@@ -20,13 +20,17 @@ import { injectVariableValuesInButtonsInputBlock } from './blocks/inputs/buttons
 import { injectVariableValuesInPictureChoiceBlock } from './blocks/inputs/pictureChoice/injectVariableValuesInPictureChoiceBlock'
 import { getPrefilledInputValue } from './getPrefilledValue'
 import { parseDateInput } from './blocks/inputs/date/parseDateInput'
-import { deepParseVariables } from './variables/deepParseVariables'
+import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
 import {
   BubbleBlockWithDefinedContent,
   parseBubbleBlock,
 } from './parseBubbleBlock'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { VisitedEdge } from '@typebot.io/prisma'
+import { env } from '@typebot.io/env'
+import { TRPCError } from '@trpc/server'
+import { ExecuteIntegrationResponse, ExecuteLogicResponse } from './types'
+import { createId } from '@paralleldrive/cuid2'
 
 type ContextProps = {
   version: 1 | 2
@@ -35,6 +39,7 @@ type ContextProps = {
   currentLastBubbleId?: string
   firstBubbleWasStreamed?: boolean
   visitedEdges: VisitedEdge[]
+  startTime?: number
 }
 
 export const executeGroup = async (
@@ -46,6 +51,7 @@ export const executeGroup = async (
     currentReply,
     currentLastBubbleId,
     firstBubbleWasStreamed,
+    startTime,
   }: ContextProps
 ): Promise<
   ContinueChatResponse & {
@@ -53,6 +59,7 @@ export const executeGroup = async (
     visitedEdges: VisitedEdge[]
   }
 > => {
+  let newStartTime = startTime
   const messages: ContinueChatResponse['messages'] =
     currentReply?.messages ?? []
   let clientSideActions: ContinueChatResponse['clientSideActions'] =
@@ -65,6 +72,17 @@ export const executeGroup = async (
 
   let index = -1
   for (const block of group.blocks) {
+    if (
+      newStartTime &&
+      env.CHAT_API_TIMEOUT &&
+      Date.now() - newStartTime > env.CHAT_API_TIMEOUT
+    ) {
+      throw new TRPCError({
+        code: 'TIMEOUT',
+        message: `${env.CHAT_API_TIMEOUT / 1000} seconds timeout reached`,
+      })
+    }
+
     index++
     nextEdgeId = block.outgoingEdgeId
 
@@ -93,13 +111,20 @@ export const executeGroup = async (
         logs,
         visitedEdges,
       }
-    const executionResponse = isLogicBlock(block)
-      ? await executeLogic(newSessionState)(block)
-      : isIntegrationBlock(block)
-      ? await executeIntegration(newSessionState)(block)
-      : null
+    const executionResponse = (
+      isLogicBlock(block)
+        ? await executeLogic(newSessionState)(block)
+        : isIntegrationBlock(block)
+        ? await executeIntegration(newSessionState)(block)
+        : null
+    ) as ExecuteLogicResponse | ExecuteIntegrationResponse | null
 
     if (!executionResponse) continue
+    if (
+      'startTimeShouldBeUpdated' in executionResponse &&
+      executionResponse.startTimeShouldBeUpdated
+    )
+      newStartTime = Date.now()
     if (executionResponse.logs)
       logs = [...(logs ?? []), ...executionResponse.logs]
     if (executionResponse.newSessionState)
@@ -116,9 +141,20 @@ export const executeGroup = async (
         })),
       ]
       if (
+        'customEmbedBubble' in executionResponse &&
+        executionResponse.customEmbedBubble
+      ) {
+        messages.push({
+          id: createId(),
+          ...executionResponse.customEmbedBubble,
+        })
+      }
+      if (
         executionResponse.clientSideActions?.find(
           (action) => action.expectsDedicatedReply
-        )
+        ) ||
+        ('customEmbedBubble' in executionResponse &&
+          executionResponse.customEmbedBubble)
       ) {
         return {
           messages,
@@ -162,6 +198,7 @@ export const executeGroup = async (
       logs,
     },
     currentLastBubbleId: lastBubbleBlockId,
+    startTime: newStartTime,
   })
 }
 

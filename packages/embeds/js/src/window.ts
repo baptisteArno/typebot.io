@@ -24,13 +24,13 @@ export const initStandard = (props: BotProps & { id?: string }) => {
 export const initPopup = (props: PopupProps) => {
   const popupElement = document.createElement('typebot-popup')
   Object.assign(popupElement, props)
-  document.body.appendChild(popupElement)
+  document.body.prepend(popupElement)
 }
 
 export const initBubble = (props: BubbleProps) => {
   const bubbleElement = document.createElement('typebot-bubble')
   Object.assign(bubbleElement, props)
-  document.body.appendChild(bubbleElement)
+  document.body.prepend(bubbleElement)
 }
 
 type Typebot = {

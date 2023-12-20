@@ -8,8 +8,8 @@ import { isNotEmpty, byId, isDefined } from '@typebot.io/lib'
 import { getAuthenticatedGoogleDoc } from './helpers/getAuthenticatedGoogleDoc'
 import { ExecuteIntegrationResponse } from '../../../types'
 import { matchFilter } from './helpers/matchFilter'
-import { deepParseVariables } from '../../../variables/deepParseVariables'
-import { updateVariablesInSession } from '../../../variables/updateVariablesInSession'
+import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
+import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
 
 export const getRow = async (
   state: SessionState,

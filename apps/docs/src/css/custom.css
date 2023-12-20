@@ -137,3 +137,7 @@ video {
 .asterix {
   color: rgb(239, 81, 81);
 }
+
+[aria-describedby='community-widget-description'] {
+  display: none !important;
+}

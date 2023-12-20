@@ -59,7 +59,7 @@ export const ItemNode = ({
     )
   const onDrag = (position: NodePosition) => {
     if (!onMouseDown || block.type === LogicBlockType.AB_TEST) return
-    onMouseDown(position, { ...item, type: block.type })
+    onMouseDown(position, { ...item, type: block.type, blockId: block.id })
   }
   useDragDistance({
     ref: itemRef,

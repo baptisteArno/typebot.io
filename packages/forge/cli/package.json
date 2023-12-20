@@ -1,0 +1,19 @@
+{
+  "name": "forge-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsx ./index.ts"
+  },
+  "keywords": [],
+  "author": "Baptiste Arnaud",
+  "license": "ISC",
+  "devDependencies": {
+    "@clack/prompts": "^0.7.0",
+    "@typebot.io/tsconfig": "workspace:*",
+    "@types/node": "^20.10.1",
+    "tsx": "^4.6.1",
+    "prettier": "3.0.0"
+  }
+}

@@ -1,5 +1,5 @@
 import { PublicTypebot, PublicTypebotV6, TypebotV6 } from '@typebot.io/schemas'
-import { Router, useRouter } from 'next/router'
+import { Router } from 'next/router'
 import {
   createContext,
   ReactNode,
@@ -41,6 +41,7 @@ type UpdateTypebotPayload = Partial<
     | 'resultsTablePreferences'
     | 'isClosed'
     | 'whatsAppCredentialsId'
+    | 'riskLevel'
   >
 >
 
@@ -84,7 +85,6 @@ export const TypebotProvider = ({
   children: ReactNode
   typebotId?: string
 }) => {
-  const { push } = useRouter()
   const { showToast } = useToast()
   const [is404, setIs404] = useState(false)
 
@@ -159,9 +159,9 @@ export const TypebotProvider = ({
   const typebot = typebotData?.typebot as TypebotV6
   const publishedTypebot = (publishedTypebotData?.publishedTypebot ??
     undefined) as PublicTypebotV6 | undefined
-  const isReadOnly = ['read', 'guest'].includes(
-    typebotData?.currentUserMode ?? 'guest'
-  )
+  const isReadOnly =
+    typebotData &&
+    ['read', 'guest'].includes(typebotData?.currentUserMode ?? 'guest')
 
   const [
     localTypebot,
@@ -185,7 +185,6 @@ export const TypebotProvider = ({
     flush,
     isFetchingTypebot,
     localTypebot,
-    push,
     setLocalTypebot,
     showToast,
     typebot,

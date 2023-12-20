@@ -10,8 +10,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { ChevronLeftIcon, PlusIcon, TrashIcon } from '@/components/icons'
-import React, { useCallback, useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
+import React, { useCallback, useState } from 'react'
 import { useToast } from '../../../hooks/useToast'
 import { Credentials } from '@typebot.io/schemas'
 import { trpc } from '@/lib/trpc'
@@ -37,7 +36,6 @@ export const CredentialsDropdown = ({
   credentialsName,
   ...props
 }: Props) => {
-  const router = useRouter()
   const { showToast } = useToast()
   const { currentRole } = useWorkspace()
   const { data, refetch } = trpc.credentials.listCredentials.useQuery({
@@ -76,25 +74,6 @@ export const CredentialsDropdown = ({
     },
     [onCredentialsSelect]
   )
-
-  const clearQueryParams = useCallback(() => {
-    const hasQueryParams = router.asPath.includes('?')
-    if (hasQueryParams)
-      router.push(router.asPath.split('?')[0], undefined, { shallow: true })
-  }, [router])
-
-  useEffect(() => {
-    if (!router.isReady) return
-    if (router.query.credentialsId) {
-      handleMenuItemClick(router.query.credentialsId.toString())()
-      clearQueryParams()
-    }
-  }, [
-    clearQueryParams,
-    handleMenuItemClick,
-    router.isReady,
-    router.query.credentialsId,
-  ])
 
   const deleteCredentials =
     (credentialsId: string) => async (e: React.MouseEvent) => {

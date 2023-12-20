@@ -8,6 +8,23 @@ const __filename = fileURLToPath(import.meta.url)
 
 const __dirname = dirname(__filename)
 
+const injectViewerUrlIfVercelPreview = (val) => {
+  if (
+    (val && typeof val === 'string' && val.length > 0) ||
+    process.env.VERCEL_ENV !== 'preview' ||
+    !process.env.VERCEL_BUILDER_PROJECT_NAME ||
+    !process.env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME
+  )
+    return
+  process.env.NEXT_PUBLIC_VIEWER_URL =
+    `https://${process.env.VERCEL_BRANCH_URL}`.replace(
+      process.env.VERCEL_BUILDER_PROJECT_NAME,
+      process.env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME
+    )
+}
+
+injectViewerUrlIfVercelPreview(process.env.NEXT_PUBLIC_VIEWER_URL)
+
 configureRuntimeEnv()
 
 /** @type {import('next').NextConfig} */
@@ -26,6 +43,20 @@ const nextConfig = {
   },
   experimental: {
     outputFileTracingRoot: join(__dirname, '../../'),
+  },
+  webpack: (config, { nextRuntime }) => {
+    if (nextRuntime === 'nodejs') return config
+
+    if (nextRuntime === 'edge') {
+      config.resolve.alias['minio'] = false
+      config.resolve.alias['got'] = false
+      return config
+    }
+    // These packages are imports from the integrations definition files that can be ignored for the client.
+    config.resolve.alias['minio'] = false
+    config.resolve.alias['got'] = false
+    config.resolve.alias['openai'] = false
+    return config
   },
   headers: async () => {
     return [

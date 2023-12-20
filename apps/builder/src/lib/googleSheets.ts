@@ -7,18 +7,17 @@ import prisma from '@typebot.io/lib/prisma'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { encrypt } from '@typebot.io/lib/api/encryption/encrypt'
 
-export const oauth2Client = new OAuth2Client(
-  env.GOOGLE_CLIENT_ID,
-  env.GOOGLE_CLIENT_SECRET,
-  `${env.NEXTAUTH_URL}/api/credentials/google-sheets/callback`
-)
-
 export const getAuthenticatedGoogleClient = async (
   userId: string,
   credentialsId: string
 ): Promise<
   { client: OAuth2Client; credentials: CredentialsFromDb } | undefined
 > => {
+  const oauth2Client = new OAuth2Client(
+    env.GOOGLE_CLIENT_ID,
+    env.GOOGLE_CLIENT_SECRET,
+    `${env.NEXTAUTH_URL}/api/credentials/google-sheets/callback`
+  )
   const credentials = (await prisma.credentials.findFirst({
     where: { id: credentialsId, workspace: { members: { some: { userId } } } },
   })) as CredentialsFromDb | undefined

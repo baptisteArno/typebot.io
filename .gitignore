@@ -4,6 +4,7 @@ node_modules
 workspace.code-workspace
 .DS_Store
 .turbo
+.idea
 authenticatedState.json
 playwright-report
 dist

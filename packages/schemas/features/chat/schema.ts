@@ -60,6 +60,24 @@ const embedMessageSchema = z.object({
     .merge(z.object({ height: z.number().optional() })),
 })
 
+const displayEmbedBubbleSchema = z.object({
+  waitForEventFunction: z
+    .object({
+      args: z.record(z.string(), z.unknown()),
+      content: z.string(),
+    })
+    .optional(),
+  initFunction: z.object({
+    args: z.record(z.string(), z.unknown()),
+    content: z.string(),
+  }),
+})
+const customEmbedSchema = z.object({
+  type: z.literal('custom-embed'),
+  content: displayEmbedBubbleSchema,
+})
+export type CustomEmbedBubble = z.infer<typeof customEmbedSchema>
+
 export const chatMessageSchema = z
   .object({ id: z.string() })
   .and(
@@ -69,6 +87,7 @@ export const chatMessageSchema = z
       videoMessageSchema,
       audioMessageSchema,
       embedMessageSchema,
+      customEmbedSchema,
     ])
   )
 export type ChatMessage = z.infer<typeof chatMessageSchema>
@@ -240,6 +259,19 @@ export const clientSideActionSchema = z
       .or(
         z.object({
           pixel: pixelOptionsSchema,
+        })
+      )
+      .or(
+        z.object({
+          stream: z.literal(true),
+        })
+      )
+      .or(
+        z.object({
+          codeToExecute: z.object({
+            args: z.record(z.string(), z.unknown()),
+            content: z.string(),
+          }),
         })
       )
   )

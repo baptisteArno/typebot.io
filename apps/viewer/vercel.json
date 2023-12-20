@@ -1,10 +1,6 @@
 {
   "functions": {
-    "src/pages/api/v2/[...trpc].ts": {
-      "maxDuration": 150,
-      "memory": 500
-    },
-    "src/pages/api/v1/[...trpc].ts": {
+    "src/pages/api/[...trpc].ts": {
       "maxDuration": 150,
       "memory": 500
     },

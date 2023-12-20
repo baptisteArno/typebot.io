@@ -1,15 +1,15 @@
 # Share
 
-Once you publish your bot, its public URL will work and you can send it to anyone and start collecting results.
-
-You can always modify your bot and the new changes won't be published as long as you don't hit the Publish button again.
+Your typebot flow can be publicly shared. For this, open the Share menu and enable the `Make the flow publicly available` option:
 
 <img
   src="/img/share.png"
-  width="400"
-  alt="Publish menu"
+  alt="Share menu"
 />
 
-- "Restore published version": drop your current changes and revert the bot to its published version.
-- "Close typebot to new responses": close your typebot and your users will see the following message: "This bot is now closed."
-- "Unpublish typebot": mark the typebot as unpublished and your users will see the following message: "The bot you're looking for doesn't exist"
+The flow can then be tested by non-authenticated guests. They are able to check all the options and can play the bot in preview mode.
+
+<img
+  src="/img/guest-editor.png"
+  alt="Guest editor"
+/>

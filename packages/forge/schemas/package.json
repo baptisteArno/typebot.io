@@ -1,0 +1,17 @@
+{
+  "name": "@typebot.io/forge-schemas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "keywords": [],
+  "author": "Baptiste Arnaud",
+  "license": "ISC",
+  "devDependencies": {
+    "@typebot.io/forge": "workspace:*",
+    "@typebot.io/forge-repository": "workspace:*",
+    "@typebot.io/openai-block": "workspace:*",
+    "@typebot.io/zemantic-ai-block": "workspace:*",
+    "@typebot.io/cal-com-block": "workspace:*",
+    "@typebot.io/chat-node-block": "workspace:*"
+  }
+}
