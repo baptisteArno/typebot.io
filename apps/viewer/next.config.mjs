@@ -1,5 +1,6 @@
 import { withSentryConfig } from '@sentry/nextjs'
 import { join, dirname } from 'path'
+import '@typebot.io/env/dist/env.mjs'
 import { fileURLToPath } from 'url'
 import { configureRuntimeEnv } from 'next-runtime-env/build/configure.js'
 
@@ -19,24 +20,6 @@ const injectViewerUrlIfVercelPreview = (val) => {
 }
 
 injectViewerUrlIfVercelPreview(process.env.NEXT_PUBLIC_VIEWER_URL)
-
-const injectNextAuthUrlIfVercelPreview = (val) => {
-  if (
-    (val && typeof val === 'string' && val.length > 0) ||
-    process.env.VERCEL_ENV !== 'preview' ||
-    !process.env.VERCEL_BUILDER_PROJECT_NAME ||
-    !process.env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME
-  )
-    return
-  process.env.NEXTAUTH_URL = `https://${process.env.VERCEL_BRANCH_URL}`.replace(
-    process.env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME,
-    process.env.VERCEL_BUILDER_PROJECT_NAME
-  )
-}
-
-injectNextAuthUrlIfVercelPreview(process.env.NEXTAUTH_URL)
-
-import '@typebot.io/env/dist/env.mjs'
 
 configureRuntimeEnv()
 
