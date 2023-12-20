@@ -14,13 +14,6 @@ const inputShape = {
 } as const
 
 export const createCredentials = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: 'POST',
-      path: '/credentials',
-      protect: true,
-    },
-  })
   .input(
     z.object({
       credentials: z.discriminatedUnion(
@@ -29,11 +22,6 @@ export const createCredentials = authenticatedProcedure
         // @ts-ignore
         forgedCredentialsSchemas.map((i) => i.pick(inputShape))
       ),
-    })
-  )
-  .output(
-    z.object({
-      credentialsId: z.string(),
     })
   )
   .mutation(async ({ input: { credentials }, ctx: { user } }) => {

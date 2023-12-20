@@ -3,19 +3,7 @@ import { z } from 'zod'
 import prisma from '@typebot.io/lib/prisma'
 
 export const verifyIfPhoneNumberAvailable = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: 'GET',
-      path: '/whatsapp/phoneNumber/{phoneNumberDisplayName}/available',
-      protect: true,
-    },
-  })
   .input(z.object({ phoneNumberDisplayName: z.string() }))
-  .output(
-    z.object({
-      message: z.enum(['available', 'taken']),
-    })
-  )
   .query(async ({ input: { phoneNumberDisplayName } }) => {
     const existingWhatsAppCredentials = await prisma.credentials.findFirst({
       where: {

@@ -34,14 +34,13 @@ export const ForgedCredentialsDropdown = ({
   const router = useRouter()
   const { showToast } = useToast()
   const { workspace, currentRole } = useWorkspace()
-  const { data, refetch, isLoading } =
-    trpc.integrationCredentials.listCredentials.useQuery(
-      {
-        workspaceId: workspace?.id as string,
-        type: blockDef.id,
-      },
-      { enabled: !!workspace?.id }
-    )
+  const { data, refetch, isLoading } = trpc.forge.listCredentials.useQuery(
+    {
+      workspaceId: workspace?.id as string,
+      type: blockDef.id,
+    },
+    { enabled: !!workspace?.id }
+  )
   const [isDeleting, setIsDeleting] = useState<string>()
 
   const { mutate } = trpc.credentials.deleteCredentials.useMutation({

@@ -12,22 +12,7 @@ const inputSchema = z.object({
 })
 
 export const getSystemTokenInfo = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: 'GET',
-      path: '/whatsapp/systemToken',
-      protect: true,
-    },
-  })
   .input(inputSchema)
-  .output(
-    z.object({
-      appId: z.string(),
-      appName: z.string(),
-      expiresAt: z.number(),
-      scopes: z.array(z.string()),
-    })
-  )
   .query(async ({ input, ctx: { user } }) => {
     if (!input.token && !input.credentialsId)
       throw new TRPCError({

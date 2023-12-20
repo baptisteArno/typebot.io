@@ -54,7 +54,7 @@ export const ForgeSelectInput = ({
     return fetchers.find((fetcher) => fetcher.id === fetcherId)
   }, [baseFetcher, blockDef.actions, fetcherId])
 
-  const { data } = trpc.integrations.fetchSelectItems.useQuery(
+  const { data } = trpc.forge.fetchSelectItems.useQuery(
     {
       integrationId: blockDef.id,
       options: pick(options, [
