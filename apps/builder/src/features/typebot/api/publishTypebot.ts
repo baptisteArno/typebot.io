@@ -81,15 +81,19 @@ export const publishTypebot = authenticatedProcedure
         })
     }
 
-    if (existingTypebot.riskLevel && existingTypebot.riskLevel > 80)
+    const typebotWasVerified =
+      existingTypebot.riskLevel === -1 || existingTypebot.workspace.isVerified
+
+    if (
+      !typebotWasVerified &&
+      existingTypebot.riskLevel &&
+      existingTypebot.riskLevel > 80
+    )
       throw new TRPCError({
         code: 'FORBIDDEN',
         message:
           'Radar detected a potential malicious typebot. This bot is being manually reviewed by Fraud Prevention team.',
       })
-
-    const typebotWasVerified =
-      existingTypebot.riskLevel === -1 || existingTypebot.workspace.isVerified
 
     const riskLevel = typebotWasVerified ? 0 : computeRiskLevel(existingTypebot)
 
