@@ -24,6 +24,8 @@ const injectViewerUrlIfVercelPreview = (val) => {
 
 injectViewerUrlIfVercelPreview(process.env.NEXT_PUBLIC_VIEWER_URL)
 
+console.log('DEBUG', process.env.NEXTAUTH_URL)
+
 const injectNextAuthUrlIfVercelPreview = (val) => {
   if (
     (val && typeof val === 'string' && val.length > 0) ||
@@ -35,6 +37,14 @@ const injectNextAuthUrlIfVercelPreview = (val) => {
 }
 
 injectNextAuthUrlIfVercelPreview(process.env.NEXTAUTH_URL)
+
+console.log(
+  'DEBUG',
+  process.env.NEXTAUTH_URL,
+  process.env.VERCEL_ENV,
+  process.env.VERCEL_BUILDER_PROJECT_NAME,
+  process.env.VERCEL_BRANCH_URL
+)
 
 import '@typebot.io/env/dist/env.mjs'
 
