@@ -17,7 +17,7 @@ export const groupV6Schema = groupV5Schema
     blocks: z.array(blockSchemaV6),
   })
   .openapi({
-    description: 'Group V6',
+    title: 'Group V6',
     ref: 'groupV6',
   })
 export type GroupV6 = z.infer<typeof groupV6Schema>

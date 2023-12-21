@@ -58,13 +58,13 @@ export const updateTypebot = authenticatedProcedure
         ),
       typebot: z.union([
         typebotV6Schema.pick(typebotUpdateSchemaPick).partial().openapi({
-          description: 'Typebot V6',
+          title: 'Typebot V6',
         }),
         typebotV5Schema._def.schema
           .pick(typebotUpdateSchemaPick)
           .partial()
           .openapi({
-            description: 'Typebot V5',
+            title: 'Typebot V5',
           }),
       ]),
       updatedAt: z

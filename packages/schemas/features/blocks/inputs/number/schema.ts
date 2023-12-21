@@ -22,7 +22,7 @@ export const numberInputSchema = blockBaseSchema
     })
   )
   .openapi({
-    description: 'Number',
+    title: 'Number',
     ref: 'numberInput',
   })
 

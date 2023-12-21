@@ -27,7 +27,7 @@ export const dateInputSchema = blockBaseSchema
     })
   )
   .openapi({
-    description: 'Date',
+    title: 'Date',
     ref: 'dateInput',
   })
 

@@ -10,7 +10,7 @@
     }
   ],
   "externalDocs": {
-    "url": "https://docs.typebot.io/api"
+    "url": "https://docs.typebot.io/api-reference"
   },
   "paths": {
     "/v1/sendMessage": {
@@ -67,7 +67,7 @@
                                 "type": "string"
                               }
                             ],
-                            "description": "Either a Typebot ID or a Typebot object. If you provide a Typebot object, it will be executed in preview mode. ([How can I find my typebot ID?](https://docs.typebot.io/api#how-to-find-my-typebotid))."
+                            "description": "Either a Typebot ID or a Typebot object. If you provide a Typebot object, it will be executed in preview mode. ([How can I find my typebot ID?](https://docs.typebot.io/api-reference#how-to-find-my-typebotid))."
                           },
                           "isPreview": {
                             "type": "boolean",
@@ -656,7 +656,7 @@
                                 "type": "string"
                               }
                             ],
-                            "description": "Either a Typebot ID or a Typebot object. If you provide a Typebot object, it will be executed in preview mode. ([How can I find my typebot ID?](https://docs.typebot.io/api#how-to-find-my-typebotid))."
+                            "description": "Either a Typebot ID or a Typebot object. If you provide a Typebot object, it will be executed in preview mode. ([How can I find my typebot ID?](https://docs.typebot.io/api-reference#how-to-find-my-typebotid))."
                           },
                           "isPreview": {
                             "type": "boolean",
@@ -6612,7 +6612,7 @@
           "settings",
           "theme"
         ],
-        "description": "Typebot V5"
+        "title": "Typebot V5"
       },
       "textInput": {
         "type": "object",
@@ -6656,7 +6656,7 @@
           "id",
           "type"
         ],
-        "description": "Text"
+        "title": "Text"
       },
       "buttonsInputV5": {
         "type": "object",
@@ -6782,7 +6782,7 @@
           "type",
           "items"
         ],
-        "description": "Buttons v5"
+        "title": "Buttons v5"
       },
       "email": {
         "type": "object",
@@ -6826,7 +6826,7 @@
           "id",
           "type"
         ],
-        "description": "Email"
+        "title": "Email"
       },
       "numberInput": {
         "type": "object",
@@ -6891,7 +6891,7 @@
           "id",
           "type"
         ],
-        "description": "Number"
+        "title": "Number"
       },
       "url": {
         "type": "object",
@@ -6935,7 +6935,7 @@
           "id",
           "type"
         ],
-        "description": "URL"
+        "title": "URL"
       },
       "phoneNumberInput": {
         "type": "object",
@@ -6982,7 +6982,7 @@
           "id",
           "type"
         ],
-        "description": "Phone number"
+        "title": "Phone number"
       },
       "dateInput": {
         "type": "object",
@@ -7041,7 +7041,7 @@
           "id",
           "type"
         ],
-        "description": "Date"
+        "title": "Date"
       },
       "paymentInput": {
         "type": "object",
@@ -7140,7 +7140,7 @@
           "id",
           "type"
         ],
-        "description": "Payment"
+        "title": "Payment"
       },
       "rating": {
         "type": "object",
@@ -7217,7 +7217,7 @@
           "id",
           "type"
         ],
-        "description": "Rating"
+        "title": "Rating"
       },
       "fileInputV5": {
         "type": "object",
@@ -7273,7 +7273,7 @@
           "id",
           "type"
         ],
-        "description": "File input v5"
+        "title": "File input v5"
       },
       "pictureChoiceV5": {
         "type": "object",
@@ -7419,7 +7419,7 @@
           "type",
           "items"
         ],
-        "description": "Picture choice v5"
+        "title": "Picture choice v5"
       },
       "settings": {
         "type": "object",
@@ -7569,7 +7569,7 @@
             }
           }
         },
-        "description": "Settings"
+        "title": "Settings"
       },
       "theme": {
         "type": "object",
@@ -7684,7 +7684,7 @@
             "type": "string"
           }
         },
-        "description": "Theme"
+        "title": "Theme"
       },
       "typebotV6": {
         "type": "object",
@@ -7825,7 +7825,7 @@
           "settings",
           "theme"
         ],
-        "description": "Typebot V6"
+        "title": "Typebot V6"
       },
       "groupV6": {
         "type": "object",
@@ -7864,7 +7864,7 @@
           "graphCoordinates",
           "blocks"
         ],
-        "description": "Group V6"
+        "title": "Group V6"
       },
       "block": {
         "anyOf": [
@@ -10168,7 +10168,7 @@
             ]
           }
         ],
-        "description": "Block"
+        "title": "Block"
       },
       "buttonsInput": {
         "type": "object",
@@ -10291,7 +10291,7 @@
           "type",
           "items"
         ],
-        "description": "Buttons"
+        "title": "Buttons"
       },
       "fileInput": {
         "type": "object",
@@ -10344,7 +10344,7 @@
           "id",
           "type"
         ],
-        "description": "File"
+        "title": "File"
       },
       "pictureChoice": {
         "type": "object",
@@ -10487,7 +10487,7 @@
           "type",
           "items"
         ],
-        "description": "Picture choice"
+        "title": "Picture choice"
       },
       "event": {
         "type": "object",
@@ -10829,7 +10829,7 @@
           "type",
           "scriptToExecute"
         ],
-        "description": "Script to execute"
+        "title": "Script to execute"
       },
       "csaRedirect": {
         "type": "object",
@@ -10862,7 +10862,7 @@
           "type",
           "redirect"
         ],
-        "description": "Redirect"
+        "title": "Redirect"
       },
       "csaChatwoot": {
         "type": "object",
@@ -10947,7 +10947,7 @@
           "type",
           "chatwoot"
         ],
-        "description": "Chatwoot"
+        "title": "Chatwoot"
       },
       "csaGa": {
         "type": "object",
@@ -10997,7 +10997,7 @@
           "type",
           "googleAnalytics"
         ],
-        "description": "Google Analytics"
+        "title": "Google Analytics"
       },
       "csaWait": {
         "type": "object",
@@ -11030,7 +11030,7 @@
           "type",
           "wait"
         ],
-        "description": "Wait"
+        "title": "Wait"
       },
       "csaSetVariable": {
         "type": "object",
@@ -11115,7 +11115,7 @@
           "type",
           "setVariable"
         ],
-        "description": "Set variable"
+        "title": "Set variable"
       },
       "csaStreamOpenAiChatCompletion": {
         "type": "object",
@@ -11164,7 +11164,7 @@
           "type",
           "streamOpenAiChatCompletion"
         ],
-        "description": "Stream OpenAI"
+        "title": "Stream OpenAI"
       },
       "csaExecWebhook": {
         "type": "object",
@@ -11218,7 +11218,7 @@
           "type",
           "webhookToExecute"
         ],
-        "description": "Execute webhook"
+        "title": "Execute webhook"
       },
       "csaInjectStartProps": {
         "type": "object",
@@ -11260,7 +11260,7 @@
           "type",
           "startPropsToInject"
         ],
-        "description": "Inject start props"
+        "title": "Inject start props"
       },
       "csaPixel": {
         "type": "object",
@@ -11413,7 +11413,7 @@
           "type",
           "pixel"
         ],
-        "description": "Init Pixel"
+        "title": "Init Pixel"
       },
       "csaStream": {
         "type": "object",
@@ -11441,7 +11441,7 @@
           "type",
           "stream"
         ],
-        "description": "Exec stream"
+        "title": "Exec stream"
       },
       "csaCodeToExecute": {
         "type": "object",
@@ -11479,7 +11479,7 @@
           "type",
           "codeToExecute"
         ],
-        "description": "Execute code"
+        "title": "Execute code"
       }
     }
   }

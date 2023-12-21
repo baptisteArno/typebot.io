@@ -70,7 +70,7 @@ export const typebotV6Schema = typebotV5Schema._def.schema
     events: z.tuple([startEventSchema]),
   })
   .openapi({
-    description: 'Typebot V6',
+    title: 'Typebot V6',
     ref: 'typebotV6',
   })
 export type TypebotV6 = z.infer<typeof typebotV6Schema>
@@ -80,7 +80,7 @@ export const typebotSchema = z.preprocess(
   z.discriminatedUnion('version', [
     typebotV6Schema,
     typebotV5Schema._def.schema.openapi({
-      description: 'Typebot V5',
+      title: 'Typebot V5',
       ref: 'typebotV5',
     }),
   ])

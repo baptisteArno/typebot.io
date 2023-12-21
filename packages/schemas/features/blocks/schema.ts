@@ -44,7 +44,7 @@ export const blockSchemaV6 = z
     )
   )
   .openapi({
-    description: 'Block',
+    title: 'Block',
     ref: 'block',
   })
 export type BlockV6 = z.infer<typeof blockSchemaV6>

@@ -45,7 +45,7 @@ export const themeSchema = z
     customCss: z.string().optional(),
   })
   .openapi({
-    description: 'Theme',
+    title: 'Theme',
     ref: 'theme',
   })
 

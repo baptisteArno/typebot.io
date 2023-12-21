@@ -1,7 +1,10 @@
 {
   "$schema": "https://mintlify.com/schema.json",
   "name": "Starter Kit",
-  "openapi": ["/openapi/builder.json", "/openapi/viewer.json"],
+  "openapi": [
+    "/openapi-reference/builder.json",
+    "/openapi-reference/viewer.json"
+  ],
   "logo": {
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
@@ -39,7 +42,7 @@
     },
     {
       "name": "API Reference",
-      "url": "api"
+      "url": "api-reference"
     }
   ],
   "anchors": [
@@ -215,55 +218,58 @@
     },
     {
       "group": "Get started",
-      "pages": ["api/authentication", "api/how-to"]
+      "pages": ["api-reference/authentication", "api-reference/how-to"]
     },
     {
       "group": "Chat",
       "pages": [
-        "api/chat/start-chat",
-        "api/chat/start-preview-chat",
-        "api/chat/continue-chat",
-        "api/chat/save-logs",
-        "api/chat/update-typebot-in-session"
+        "api-reference/chat/start-chat",
+        "api-reference/chat/start-preview-chat",
+        "api-reference/chat/continue-chat",
+        "api-reference/chat/save-logs",
+        "api-reference/chat/update-typebot-in-session"
       ]
     },
     {
       "group": "Typebot",
       "pages": [
-        "api/typebot/list",
-        "api/typebot/get",
-        "api/typebot/create",
-        "api/typebot/import",
-        "api/typebot/update",
-        "api/typebot/delete",
-        "api/typebot/get-published-bot",
-        "api/typebot/publish",
-        "api/typebot/unpublish"
+        "api-reference/typebot/list",
+        "api-reference/typebot/get",
+        "api-reference/typebot/create",
+        "api-reference/typebot/import",
+        "api-reference/typebot/update",
+        "api-reference/typebot/delete",
+        "api-reference/typebot/get-published-bot",
+        "api-reference/typebot/publish",
+        "api-reference/typebot/unpublish"
       ]
     },
     {
       "group": "Results",
       "pages": [
-        "api/results/list",
-        "api/results/get",
-        "api/results/delete",
-        "api/results/list-logs"
+        "api-reference/results/list",
+        "api-reference/results/get",
+        "api-reference/results/delete",
+        "api-reference/results/list-logs"
       ]
     },
     {
       "group": "Workspace",
       "pages": [
-        "api/workspace/list",
-        "api/workspace/get",
-        "api/workspace/create",
-        "api/workspace/update",
-        "api/workspace/delete",
-        "api/workspace/list-members"
+        "api-reference/workspace/list",
+        "api-reference/workspace/get",
+        "api-reference/workspace/create",
+        "api-reference/workspace/update",
+        "api-reference/workspace/delete",
+        "api-reference/workspace/list-members"
       ]
     },
     {
       "group": "Billing",
-      "pages": ["api/billing/get-usage", "api/billing/list-invoices"]
+      "pages": [
+        "api-reference/billing/get-usage",
+        "api-reference/billing/list-invoices"
+      ]
     }
   ],
   "footerSocials": {

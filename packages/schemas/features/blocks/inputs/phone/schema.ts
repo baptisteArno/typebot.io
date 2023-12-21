@@ -20,7 +20,7 @@ export const phoneNumberInputBlockSchema = blockBaseSchema
     })
   )
   .openapi({
-    description: 'Phone number',
+    title: 'Phone number',
     ref: 'phoneNumberInput',
   })
 

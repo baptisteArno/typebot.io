@@ -43,11 +43,11 @@ export const publicTypebotSchema = z.preprocess(
   z.discriminatedUnion('version', [
     publicTypebotSchemaV6.openapi({
       ref: 'publicTypebotV6',
-      description: 'Public Typebot V6',
+      title: 'Public Typebot V6',
     }),
     publicTypebotSchemaV5._def.schema.openapi({
       ref: 'publicTypebotV5',
-      description: 'Public Typebot V5',
+      title: 'Public Typebot V5',
     }),
   ])
 )

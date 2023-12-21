@@ -61,7 +61,7 @@ export const pictureChoiceBlockV5Schema = blockBaseSchema.merge(
 
 export const pictureChoiceBlockSchemas = {
   v5: pictureChoiceBlockV5Schema.openapi({
-    description: 'Picture choice v5',
+    title: 'Picture choice v5',
     ref: 'pictureChoiceV5',
   }),
   v6: pictureChoiceBlockV5Schema
@@ -69,7 +69,7 @@ export const pictureChoiceBlockSchemas = {
       items: z.array(pictureChoiceItemSchemas.v6),
     })
     .openapi({
-      description: 'Picture choice',
+      title: 'Picture choice',
       ref: 'pictureChoice',
     }),
 } as const

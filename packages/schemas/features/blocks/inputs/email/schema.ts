@@ -19,7 +19,7 @@ export const emailInputSchema = blockBaseSchema
     })
   )
   .openapi({
-    description: 'Email',
+    title: 'Email',
     ref: 'email',
   })
 

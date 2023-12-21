@@ -27,7 +27,7 @@ export const textInputSchema = blockBaseSchema
     })
   )
   .openapi({
-    description: 'Text',
+    title: 'Text',
     ref: 'textInput',
   })
 

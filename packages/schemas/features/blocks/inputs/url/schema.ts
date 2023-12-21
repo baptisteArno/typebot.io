@@ -19,7 +19,7 @@ export const urlInputSchema = blockBaseSchema
     })
   )
   .openapi({
-    description: 'URL',
+    title: 'URL',
     ref: 'url',
   })
 

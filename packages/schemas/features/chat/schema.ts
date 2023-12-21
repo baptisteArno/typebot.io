@@ -142,11 +142,11 @@ export const startTypebotSchema = z.preprocess(
   preprocessTypebot,
   z.discriminatedUnion('version', [
     typebotV5Schema._def.schema.pick(startTypebotPick).openapi({
-      description: 'Typebot V5',
+      title: 'Typebot V5',
       ref: 'typebotV5',
     }),
     typebotV6Schema.pick(startTypebotPick).openapi({
-      description: 'Typebot V6',
+      title: 'Typebot V6',
       ref: 'typebotV6',
     }),
   ])

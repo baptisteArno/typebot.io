@@ -42,7 +42,7 @@ const importingTypebotSchema = z.preprocess(
         selectedThemeTemplateId: z.string().nullish(),
       })
       .openapi({
-        description: 'Typebot V6',
+        title: 'Typebot V6',
       }),
     typebotV5Schema._def.schema
       .omit(omittedProps)
@@ -51,7 +51,7 @@ const importingTypebotSchema = z.preprocess(
         selectedThemeTemplateId: z.string().nullish(),
       })
       .openapi({
-        description: 'Typebot V5',
+        title: 'Typebot V5',
       }),
   ])
 )

@@ -44,7 +44,7 @@ export const settingsSchema = z
       .optional(),
   })
   .openapi({
-    description: 'Settings',
+    title: 'Settings',
     ref: 'settings',
   })
 
