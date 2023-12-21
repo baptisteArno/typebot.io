@@ -200,6 +200,7 @@
   "editor.blocks.inputs.file.settings.allowMultiple.label": "Permitir múltiplos arquivos?",
   "editor.blocks.inputs.file.settings.clear.label": "Legenda do botão de limpar:",
   "editor.blocks.inputs.file.settings.clearButton.label": "Limpar",
+  "editor.blocks.inputs.file.settings.placeholder.label": "<strong>\n      Clique para carregar\n    </strong> ou arraste e solte<br>\n    (limite de tamanho: 10MB)",
   "editor.blocks.inputs.file.settings.required.label": "Obrigatório?",
   "editor.blocks.inputs.file.settings.saveSingleUpload.label": "Salve a URL carregada numa variável:",
   "editor.blocks.inputs.file.settings.saveMultipleUpload.label": "Salve as URLs carregadas numa variável:",

@@ -59,7 +59,7 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
           onChange={handlePlaceholderLabelChange}
           defaultValue={
             options?.labels?.placeholder ??
-            defaultFileInputOptions.labels.placeholder
+            	t("editor.blocks.inputs.file.settings.placeholder.label")
           }
           height={'100px'}
           withVariableButton={false}

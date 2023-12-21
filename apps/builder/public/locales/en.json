@@ -200,6 +200,7 @@
   "editor.blocks.inputs.file.settings.allowMultiple.label": "Allow multiple files?",
   "editor.blocks.inputs.file.settings.clear.label": "Clear button label:",
   "editor.blocks.inputs.file.settings.clearButton.label": "Clear",
+  "editor.blocks.inputs.file.settings.placeholder.label": "<strong>\n      Click to upload\n    </strong> or drag and drop<br>\n    (size limit: 10MB)",
   "editor.blocks.inputs.file.settings.required.label": "Required?",
   "editor.blocks.inputs.file.settings.saveSingleUpload.label": "Save upload URL in a variable:",
   "editor.blocks.inputs.file.settings.saveMultipleUpload.label": "Save upload URLs in a variable:",
