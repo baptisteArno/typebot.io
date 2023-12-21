@@ -85,7 +85,6 @@ export const Popup = (props: PopupProps) => {
         ...existingPrefilledVariables,
         ...data.variables,
       }))
-    if (data.command === 'unmount') closeBot()
   }
 
   const openBot = () => {
