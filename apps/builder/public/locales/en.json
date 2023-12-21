@@ -225,6 +225,7 @@
   "templates.modal.menuHeading.other": "Other",
   "templates.modal.menuHeading.product": "Product",
   "templates.modal.useTemplateButton.label": "Use this template",
+	"typebots.defaultName": "My typebot",
   "upgrade": "Upgrade",
   "video.aspectRatioInput.label": "Aspect ratio",
   "video.aspectRatioInput.moreInfoTooltip": "Example: \"16/9\" or \"9/16\"",
