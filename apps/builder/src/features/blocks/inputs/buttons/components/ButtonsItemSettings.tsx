@@ -35,7 +35,7 @@ export const ButtonsItemSettings = ({ item, onSettingsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <SwitchWithRelatedSettings
-        label={t("editor.blocks.inputs.button.buttonSettings.displayCondition.label")}
+        label={t("editor.blocks.inputs.settings.displayCondition.label")}
         moreInfoContent={
 					t("editor.blocks.inputs.button.buttonSettings.displayCondition.infoText.label")
 				}

@@ -31,7 +31,7 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <SwitchWithRelatedSettings
-        label={t("editor.blocks.inputs.button.settings.multipleChoice.label")}
+        label={t("editor.blocks.inputs.settings.multipleChoice.label")}
         initialValue={
           options?.isMultipleChoice ??
           defaultChoiceInputOptions.isMultipleChoice
@@ -39,7 +39,7 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
         onCheckChange={updateIsMultiple}
       >
         <TextInput
-          label={t("editor.blocks.inputs.button.settings.submitButton.label")}
+          label={t("editor.blocks.inputs.settings.submitButton.label")}
           defaultValue={
             options?.buttonLabel ?? t("editor.blocks.inputs.settings.buttonText.label")
           }
@@ -47,17 +47,17 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
         />
       </SwitchWithRelatedSettings>
       <SwitchWithRelatedSettings
-        label={t("editor.blocks.inputs.button.settings.isSearchable.label")}
+        label={t("editor.blocks.inputs.settings.isSearchable.label")}
         initialValue={
           options?.isSearchable ?? defaultChoiceInputOptions.isSearchable
         }
         onCheckChange={updateIsSearchable}
       >
         <TextInput
-          label={t("editor.blocks.inputs.button.settings.input.placeholder.label")}
+          label={t("editor.blocks.inputs.settings.input.placeholder.label")}
           defaultValue={
             options?.searchInputPlaceholder ??
-	            t("editor.blocks.inputs.button.settings.input.filterOptions.label")
+	            t("editor.blocks.inputs.settings.input.filterOptions.label")
           }
           onChange={updateSearchInputPlaceholder}
         />

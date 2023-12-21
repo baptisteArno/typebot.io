@@ -6,6 +6,7 @@ import React from 'react'
 import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
 import { defaultPictureChoiceOptions } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice/constants'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   options?: PictureChoiceBlock['options']
@@ -13,6 +14,8 @@ type Props = {
 }
 
 export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
+	const { t } = useTranslate()
+
   const updateIsMultiple = (isMultipleChoice: boolean) =>
     onOptionsChange({ ...options, isMultipleChoice })
   const updateButtonLabel = (buttonLabel: string) =>
@@ -63,23 +66,23 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <SwitchWithRelatedSettings
-        label="Is searchable?"
+        label={t("editor.blocks.inputs.settings.isSearchable.label")}
         initialValue={
           options?.isSearchable ?? defaultPictureChoiceOptions.isSearchable
         }
         onCheckChange={updateIsSearchable}
       >
         <TextInput
-          label="Input placeholder:"
+          label={t("editor.blocks.inputs.settings.input.placeholder.label")}
           defaultValue={
             options?.searchInputPlaceholder ??
-            defaultPictureChoiceOptions.searchInputPlaceholder
+							t("editor.blocks.inputs.settings.input.filterOptions.label")
           }
           onChange={updateSearchInputPlaceholder}
         />
       </SwitchWithRelatedSettings>
       <SwitchWithRelatedSettings
-        label="Multiple choice?"
+        label={t("editor.blocks.inputs.settings.multipleChoice.label")}
         initialValue={
           options?.isMultipleChoice ??
           defaultPictureChoiceOptions.isMultipleChoice
@@ -87,16 +90,16 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
         onCheckChange={updateIsMultiple}
       >
         <TextInput
-          label="Submit button label:"
+          label={t("editor.blocks.inputs.settings.submitButton.label")}
           defaultValue={
-            options?.buttonLabel ?? defaultPictureChoiceOptions.buttonLabel
+            options?.buttonLabel ?? t("editor.blocks.inputs.settings.buttonText.label")
           }
           onChange={updateButtonLabel}
         />
       </SwitchWithRelatedSettings>
 
       <SwitchWithRelatedSettings
-        label="Dynamic items?"
+        label={t("editor.blocks.inputs.picture.settings.dynamicItems.label")}
         initialValue={
           options?.dynamicItems?.isEnabled ??
           defaultPictureChoiceOptions.dynamicItems.isEnabled
@@ -105,7 +108,7 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
       >
         <Stack>
           <FormLabel mb="0" htmlFor="variable">
-            Images:
+            {t("editor.blocks.inputs.picture.settings.dynamicItems.images.label")}
           </FormLabel>
           <VariableSearchInput
             initialVariableId={options?.dynamicItems?.pictureSrcsVariableId}
@@ -114,7 +117,7 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
         </Stack>
         <Stack>
           <FormLabel mb="0" htmlFor="variable">
-            Titles:
+            {t("editor.blocks.inputs.picture.settings.dynamicItems.titles.label")}
           </FormLabel>
           <VariableSearchInput
             initialVariableId={options?.dynamicItems?.titlesVariableId}
@@ -123,7 +126,7 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
         </Stack>
         <Stack>
           <FormLabel mb="0" htmlFor="variable">
-            Descriptions:
+            {t("editor.blocks.inputs.picture.settings.dynamicItems.descriptions.label")}
           </FormLabel>
           <VariableSearchInput
             initialVariableId={options?.dynamicItems?.descriptionsVariableId}
@@ -134,7 +137,7 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
 
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          Save answer in a variable:
+					{t("editor.blocks.inputs.settings.saveAnswer.label")}
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}

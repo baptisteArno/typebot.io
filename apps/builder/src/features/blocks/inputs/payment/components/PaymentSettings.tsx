@@ -174,7 +174,7 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
           </AccordionButton>
           <AccordionPanel py={4} as={Stack} spacing="6">
             <TextInput
-              label={t("editor.blocks.inputs.payment.settings.additionalInformation.description.label")}
+              label={t("editor.blocks.inputs.settings.description.label")}
               defaultValue={options?.additionalInformation?.description}
               onChange={updateDescription}
               placeholder={
