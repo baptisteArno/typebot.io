@@ -38,6 +38,7 @@ export const longReqTimeoutWhitelist = [
   'https://retune.so',
   'https://www.chatbase.co',
   'https://channel-connector.orimon.ai',
+  'https://api.anthropic.com',
 ]
 
 export const executeWebhookBlock = async (
