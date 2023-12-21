@@ -25,7 +25,6 @@ import { isPublished as isPublishedHelper } from '@/features/publish/helpers/isP
 import { convertPublicTypebotToTypebot } from '@/features/publish/helpers/convertPublicTypebotToTypebot'
 import { trpc } from '@/lib/trpc'
 import { EventsActions, eventsActions } from './typebotActions/events'
-import { useTranslate } from '@tolgee/react'
 
 const autoSaveTimeout = 10000
 
@@ -86,7 +85,6 @@ export const TypebotProvider = ({
   children: ReactNode
   typebotId?: string
 }) => {
-	const { t } = useTranslate()
   const { showToast } = useToast()
   const [is404, setIs404] = useState(false)
 
@@ -286,7 +284,7 @@ export const TypebotProvider = ({
         isPublished,
         updateTypebot: updateLocalTypebot,
         restorePublishedTypebot,
-        ...groupsActions(t("groups.defaultName"), setLocalTypebot as SetTypebot),
+        ...groupsActions(setLocalTypebot as SetTypebot),
         ...blocksAction(setLocalTypebot as SetTypebot),
         ...variablesAction(setLocalTypebot as SetTypebot),
         ...edgesAction(setLocalTypebot as SetTypebot),

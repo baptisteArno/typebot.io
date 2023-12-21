@@ -82,19 +82,19 @@ export const DropdownList = <T extends readonly any[]>({
           <MenuList maxW="500px" zIndex={1500}>
             <Stack maxH={'35vh'} overflowY="scroll" spacing="0">
               {items.map((item) => (
-                <MenuItem
-                  key={item as unknown as string}
-                  maxW="500px"
-                  overflow="hidden"
-                  whiteSpace="nowrap"
-                  textOverflow="ellipsis"
-                  onClick={handleMenuItemClick(item)}
-                >
-                  {
-										t(`components.dropdownList.item.${item.replace(/\s/g, "")}`, item)
+								<MenuItem
+									key={item as unknown as string}
+									maxW="500px"
+									overflow="hidden"
+									whiteSpace="nowrap"
+									textOverflow="ellipsis"
+									onClick={handleMenuItemClick(item)}
+								>
+									{
+										t(`components.dropdownList.item.${item.replace?.(/\s/g, "")}`, item.toString())
 									}
-                </MenuItem>
-              ))}
+								</MenuItem>
+							))}
             </Stack>
           </MenuList>
         </Portal>

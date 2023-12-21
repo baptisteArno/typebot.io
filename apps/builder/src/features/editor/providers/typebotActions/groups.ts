@@ -9,6 +9,7 @@ import {
 } from './blocks'
 import { isEmpty } from '@typebot.io/lib'
 import { Coordinates } from '@/features/graph/types'
+import { tolgee } from '@/lib/tolgee'
 
 export type GroupsActions = {
   createGroup: (
@@ -26,7 +27,7 @@ export type GroupsActions = {
   deleteGroup: (groupIndex: number) => void
 }
 
-const groupsActions = (groupDefaultName: string, setTypebot: SetTypebot): GroupsActions => ({
+const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
   createGroup: ({
     id,
     block,
@@ -42,7 +43,7 @@ const groupsActions = (groupDefaultName: string, setTypebot: SetTypebot): Groups
         const newGroup: GroupV6 = {
           id,
           graphCoordinates,
-          title: `${groupDefaultName} #${typebot.groups.length + 1}`,
+          title: `${tolgee.t("groups.defaultName")} #${typebot.groups.length + 1}`,
           blocks: [],
         }
         typebot.groups.push(newGroup)
