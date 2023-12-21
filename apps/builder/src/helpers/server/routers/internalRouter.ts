@@ -2,20 +2,18 @@ import { getAppVersionProcedure } from '@/features/dashboard/api/getAppVersionPr
 import { router } from '../trpc'
 import { generateUploadUrl } from '@/features/upload/api/generateUploadUrl'
 import { openAIRouter } from '@/features/blocks/integrations/openai/api/router'
-import { whatsAppRouter } from '@/features/whatsapp/router'
+import { internalWhatsAppRouter } from '@/features/whatsapp/router'
 import { zemanticAiRouter } from '@/features/blocks/integrations/zemanticAi/api/router'
-import { forgedCredentialsRouter } from '@/features/forge/api/credentials/router'
-import { integrationsRouter } from '@/features/forge/api/router'
+import { forgeRouter } from '@/features/forge/api/router'
 import { googleSheetsRouter } from '@/features/blocks/integrations/googleSheets/api/router'
 
 export const internalRouter = router({
   getAppVersionProcedure,
   generateUploadUrl,
-  whatsApp: whatsAppRouter,
+  whatsAppInternal: internalWhatsAppRouter,
   openAI: openAIRouter,
   zemanticAI: zemanticAiRouter,
-  integrationCredentials: forgedCredentialsRouter,
-  integrations: integrationsRouter,
+  forge: forgeRouter,
   sheets: googleSheetsRouter,
 })
 

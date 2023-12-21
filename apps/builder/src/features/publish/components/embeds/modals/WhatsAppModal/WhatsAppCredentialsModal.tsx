@@ -100,12 +100,13 @@ export const WhatsAppCredentialsModal = ({
     },
   })
 
-  const { data: tokenInfoData } = trpc.whatsApp.getSystemTokenInfo.useQuery(
-    {
-      token: systemUserAccessToken,
-    },
-    { enabled: isNotEmpty(systemUserAccessToken) }
-  )
+  const { data: tokenInfoData } =
+    trpc.whatsAppInternal.getSystemTokenInfo.useQuery(
+      {
+        token: systemUserAccessToken,
+      },
+      { enabled: isNotEmpty(systemUserAccessToken) }
+    )
 
   const resetForm = () => {
     setActiveStep(0)
@@ -133,7 +134,7 @@ export const WhatsAppCredentialsModal = ({
     setIsVerifying(true)
     try {
       const { expiresAt, scopes } =
-        await trpcVanilla.whatsApp.getSystemTokenInfo.query({
+        await trpcVanilla.whatsAppInternal.getSystemTokenInfo.query({
           token: systemUserAccessToken,
         })
       if (expiresAt !== 0) {
@@ -167,16 +168,18 @@ export const WhatsAppCredentialsModal = ({
   const isPhoneNumberAvailable = async () => {
     setIsVerifying(true)
     try {
-      const { name } = await trpcVanilla.whatsApp.getPhoneNumber.query({
+      const { name } = await trpcVanilla.whatsAppInternal.getPhoneNumber.query({
         systemToken: systemUserAccessToken,
         phoneNumberId,
       })
       setPhoneNumberName(name)
       try {
         const { message } =
-          await trpcVanilla.whatsApp.verifyIfPhoneNumberAvailable.query({
-            phoneNumberDisplayName: name,
-          })
+          await trpcVanilla.whatsAppInternal.verifyIfPhoneNumberAvailable.query(
+            {
+              phoneNumberDisplayName: name,
+            }
+          )
 
         if (message === 'taken') {
           setIsVerifying(false)
@@ -186,7 +189,7 @@ export const WhatsAppCredentialsModal = ({
           return false
         }
         const { verificationToken } =
-          await trpcVanilla.whatsApp.generateVerificationToken.mutate()
+          await trpcVanilla.whatsAppInternal.generateVerificationToken.mutate()
         setVerificationToken(verificationToken)
       } catch (err) {
         console.error(err)

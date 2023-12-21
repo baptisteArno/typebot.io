@@ -42,7 +42,7 @@ export const ForgedCredentialsModal = ({
       listCredentials: { refetch: refetchCredentials },
     },
   } = trpc.useContext()
-  const { mutate } = trpc.integrationCredentials.createCredentials.useMutation({
+  const { mutate } = trpc.forge.createCredentials.useMutation({
     onMutate: () => setIsCreating(true),
     onSettled: () => setIsCreating(false),
     onError: (err) => {

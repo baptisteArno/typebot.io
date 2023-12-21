@@ -13,20 +13,7 @@ const inputSchema = z.object({
 })
 
 export const getPhoneNumber = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: 'GET',
-      path: '/whatsapp/phoneNumber',
-      protect: true,
-    },
-  })
   .input(inputSchema)
-  .output(
-    z.object({
-      id: z.string(),
-      name: z.string(),
-    })
-  )
   .query(async ({ input, ctx: { user } }) => {
     const credentials = await getCredentials(user.id, input)
     if (!credentials)

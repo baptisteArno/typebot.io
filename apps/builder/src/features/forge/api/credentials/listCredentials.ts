@@ -12,11 +12,6 @@ export const listCredentials = authenticatedProcedure
       type: z.enum(enabledBlocks),
     })
   )
-  .output(
-    z.object({
-      credentials: z.array(z.object({ id: z.string(), name: z.string() })),
-    })
-  )
   .query(async ({ input: { workspaceId, type }, ctx: { user } }) => {
     const workspace = await prisma.workspace.findFirst({
       where: {

@@ -15,13 +15,6 @@ export const fetchSelectItems = authenticatedProcedure
       workspaceId: z.string(),
     })
   )
-  .output(
-    z.object({
-      items: z.array(
-        z.string().or(z.object({ label: z.string(), value: z.string() }))
-      ),
-    })
-  )
   .query(
     async ({
       input: { workspaceId, integrationId, fetcherId, options },
