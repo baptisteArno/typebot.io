@@ -304,7 +304,7 @@ export const VariableSearchInput = ({
                           />
                           <IconButton
                             icon={<TrashIcon />}
-                            aria-label={t("variables.rename")}
+                            aria-label={t("variables.remove")}
                             size="xs"
                             onClick={handleDeleteVariableClick(item)}
                           />
