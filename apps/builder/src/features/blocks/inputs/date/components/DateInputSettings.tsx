@@ -94,7 +94,9 @@ export const DateInputSettings = ({ options, onOptionsChange }: Props) => {
             ? defaultDateInputOptions.formatWithTime
             : defaultDateInputOptions.format)
         }
-        moreInfoTooltip="i.e dd/MM/yyyy, MM/dd/yy, yyyy-MM-dd"
+        moreInfoTooltip={`
+					${t("editor.blocks.inputs.date.settings.format.example.label")} dd/MM/yyyy, MM/dd/yy, yyyy-MM-dd
+				`}
         placeholder={options?.hasTime ? 'dd/MM/yyyy HH:mm' : 'dd/MM/yyyy'}
         onChange={updateFormat}
       />

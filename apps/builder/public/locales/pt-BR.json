@@ -186,6 +186,7 @@
   "editor.blocks.inputs.button.variables.display.label": "Exibir",
   "editor.blocks.inputs.date.placeholder.label": "Escolha uma data...",
   "editor.blocks.inputs.date.settings.format.label": "Formatar:",
+  "editor.blocks.inputs.date.settings.format.example.label": "Ex:",
   "editor.blocks.inputs.date.settings.from.label": "Legenda de:",
   "editor.blocks.inputs.date.settings.fromInputValue.label": "De:",
   "editor.blocks.inputs.date.settings.isRange.label": "Intervalo?",
