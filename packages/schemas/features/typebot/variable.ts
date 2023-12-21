@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from '../../zod'
 
 export const listVariableValue = z.array(z.string().nullable())
 

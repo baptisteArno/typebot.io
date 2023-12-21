@@ -1,0 +1,31 @@
+---
+title: Website
+icon: link
+---
+
+The Website input block allows you to ask your user for a URL. It will check if it is properly formatted.
+
+<Tabs>
+  <Tab title="Flow">
+    <Frame>
+      <img
+        src="/images/blocks/inputs/website-flow.png"
+        alt="Website input in flow"
+        className="rounded-lg"
+      />
+    </Frame>
+  </Tab>
+  <Tab title="Bot">
+    <Frame>
+      <img
+        src="/images/blocks/inputs/website-bot.png"
+        alt="Website input in bot"
+        className="rounded-lg"
+      />
+    </Frame>
+  </Tab>
+</Tabs>
+
+The retry message will be displayed whenever Typebot detected that the email is not properly formatted.
+
+It won't check if the email address is **valid**. To do that, you will have to trigger a [Webhook block](/editor/blocks/integrations/webhook) and call an email validation service API.

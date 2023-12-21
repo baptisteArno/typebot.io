@@ -1,6 +1,6 @@
 import { TRPCError, initTRPC } from '@trpc/server'
 import { Context } from './context'
-import { OpenApiMeta } from 'trpc-openapi'
+import { OpenApiMeta } from '@lilyrose2798/trpc-openapi'
 import superjson from 'superjson'
 import * as Sentry from '@sentry/nextjs'
 import { ZodError } from 'zod'

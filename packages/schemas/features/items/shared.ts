@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from '../../zod'
 
 const itemBaseV5Schema = z.object({
   id: z.string(),

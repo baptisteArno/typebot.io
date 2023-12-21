@@ -1,4 +1,4 @@
-import { generateOpenApiDocument } from 'trpc-openapi'
+import { generateOpenApiDocument } from '@lilyrose2798/trpc-openapi'
 import { writeFileSync } from 'fs'
 import { appRouter } from './appRouter'
 
@@ -9,7 +9,4 @@ const openApiDocument = generateOpenApiDocument(appRouter, {
   docsUrl: 'https://docs.typebot.io/api',
 })
 
-writeFileSync(
-  './openapi/chat/_spec_.json',
-  JSON.stringify(openApiDocument, null, 2)
-)
+writeFileSync('./openapi/viewer.json', JSON.stringify(openApiDocument, null, 2))

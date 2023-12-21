@@ -22,6 +22,7 @@ export const executePixelBlock = (
     outgoingEdgeId: block.outgoingEdgeId,
     clientSideActions: [
       {
+        type: 'pixel',
         pixel: {
           ...pixel,
           pixelId: block.options.pixelId,

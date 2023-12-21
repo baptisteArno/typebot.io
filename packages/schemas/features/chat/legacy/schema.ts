@@ -1,23 +1,30 @@
-import { z } from 'zod'
+import { z } from '../../../zod'
 import {
   chatLogSchema,
   chatMessageSchema,
-  clientSideActionSchema,
   runtimeOptionsSchema,
   startTypebotSchema,
 } from '../schema'
 import { typebotV5Schema, typebotV6Schema } from '../../typebot'
 import { dynamicThemeSchema } from '../shared'
 import { inputBlockSchemas } from '../../blocks'
+import { extendZodWithOpenApi } from 'zod-openapi'
+import { clientSideActionSchema } from '../clientSideAction'
+
+extendZodWithOpenApi(z)
 
 export const startElementIdSchema = z.union([
   z.object({
     startGroupId: z.string().describe('Start chat from a specific group.'),
-    startEventId: z.never().optional(),
+    startEventId: z.never().optional().openapi({
+      type: 'string',
+    }),
   }),
   z.object({
     startEventId: z.string().describe('Start chat from a specific event.'),
-    startGroupId: z.never().optional(),
+    startGroupId: z.never().optional().openapi({
+      type: 'string',
+    }),
   }),
   z.object({}),
 ])

@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from '../../../zod'
 import { blockBaseSchema } from '../shared'
 
 export const startBlockSchema = blockBaseSchema.merge(

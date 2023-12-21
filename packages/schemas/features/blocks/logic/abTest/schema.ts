@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from '../../../../zod'
 import { blockBaseSchema } from '../../shared'
 import { LogicBlockType } from '../constants'
 import { itemBaseSchemas } from '../../../items/shared'
