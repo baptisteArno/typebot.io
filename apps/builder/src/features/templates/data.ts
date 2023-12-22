@@ -34,7 +34,7 @@ export const templates: TemplateProps[] = [
       'Compute a score alongside lead qualification questions to rank your new prospects',
   },
   {
-    name: 'Lead magnet',
+    name: 'Lead Magnet',
     emoji: '🧲',
     fileName: 'lead-magnet.json',
     category: 'marketing',
@@ -42,7 +42,7 @@ export const templates: TemplateProps[] = [
       'Provide a free content to your prospects in exchange for their contact information.',
   },
   {
-    name: 'Product recommendation',
+    name: 'Product Recommendation',
     emoji: '🍫',
     fileName: 'product-recommendation.json',
     category: 'marketing',
@@ -103,7 +103,7 @@ export const templates: TemplateProps[] = [
     isNew: true,
   },
   {
-    name: 'ChatGPT personas',
+    name: 'ChatGPT Personas',
     emoji: '🎭',
     fileName: 'chat-gpt-personas.json',
     description:
@@ -118,7 +118,7 @@ export const templates: TemplateProps[] = [
       'You are a marketing agency and this bot allows you generate new leads interested in your services. An AI block is used to dig deeper into the user needs.',
   },
   {
-    name: 'Insurance offer',
+    name: 'Insurance Offer',
     emoji: '🐶',
     fileName: 'dog-insurance-offer.json',
     category: 'marketing',
@@ -126,7 +126,7 @@ export const templates: TemplateProps[] = [
       'You are a dog insurance company. This bot allows you to collect information about the dog and provide a quote.',
   },
   {
-    name: 'OpenAI conditions',
+    name: 'OpenAI Conditions',
     emoji: '🧠',
     fileName: 'openai-conditions.json',
     isNew: true,

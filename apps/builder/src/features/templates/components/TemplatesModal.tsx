@@ -112,7 +112,15 @@ export const TemplatesModal = ({
                     >
                       <HStack overflow="hidden" fontSize="sm" w="full">
                         <Text>{template.emoji}</Text>
-                        <Text>{template.name}</Text>
+                        <Text>
+                          {t(
+                            createTranslationKey(
+                              template.name,
+                              template.category
+                            ),
+                            template.name
+                          )}
+                        </Text>
                         {template.isNew && (
                           <Tag colorScheme="orange" size="sm" flexShrink={0}>
                             {t('templates.modal.menuHeading.new.tag')}
@@ -148,7 +156,15 @@ export const TemplatesModal = ({
                     >
                       <HStack overflow="hidden" fontSize="sm" w="full">
                         <Text>{template.emoji}</Text>
-                        <Text>{template.name}</Text>
+                        <Text>
+                          {t(
+                            createTranslationKey(
+                              template.name,
+                              template.category
+                            ),
+                            template.name
+                          )}
+                        </Text>
                         {template.isNew && (
                           <Tag colorScheme="orange" size="sm" flexShrink={0}>
                             {t('templates.modal.menuHeading.new.tag')}
@@ -184,7 +200,15 @@ export const TemplatesModal = ({
                     >
                       <HStack overflow="hidden" fontSize="sm" w="full">
                         <Text>{template.emoji}</Text>
-                        <Text>{template.name}</Text>
+                        <Text>
+                          {t(
+                            createTranslationKey(
+                              template.name,
+                              template.category
+                            ),
+                            template.name
+                          )}
+                        </Text>
                         {template.isNew && (
                           <Tag colorScheme="orange" size="sm" flexShrink={0}>
                             {t('templates.modal.menuHeading.new.tag')}
@@ -225,9 +249,26 @@ export const TemplatesModal = ({
               <Stack flex="1" spacing={4}>
                 <Heading fontSize="2xl">
                   {selectedTemplate.emoji}{' '}
-                  <chakra.span ml="2">{selectedTemplate.name}</chakra.span>
+                  <chakra.span ml="2">
+                    {t(
+                      createTranslationKey(
+                        selectedTemplate.name,
+                        selectedTemplate.category
+                      ),
+                      selectedTemplate.name
+                    )}
+                  </chakra.span>
                 </Heading>
-                <Text>{selectedTemplate.description}</Text>
+                <Text>
+                  {t(
+                    createTranslationKey(
+                      selectedTemplate.name,
+                      selectedTemplate.category,
+                      'description'
+                    ),
+                    selectedTemplate.description
+                  )}
+                </Text>
               </Stack>
               <Button
                 colorScheme="blue"
@@ -243,3 +284,14 @@ export const TemplatesModal = ({
     </Modal>
   )
 }
+
+const createTranslationKey = (
+  label: string,
+  category: 'marketing' | 'product' | undefined,
+  type?: 'name' | 'description'
+) =>
+  'templates.modal.' +
+  (category ?? 'other') +
+  '.' +
+  label.replace(/\s/g, '') +
+  `.${type ?? 'name'}`
