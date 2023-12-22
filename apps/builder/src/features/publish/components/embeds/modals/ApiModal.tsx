@@ -86,7 +86,10 @@ export const ApiModal = ({
           </OrderedList>
           <Text fontSize="sm" colorScheme="gray">
             Check out the{' '}
-            <TextLink href="https://docs.typebot.io/api/start-chat" isExternal>
+            <TextLink
+              href="https://docs.typebot.io/api-reference/chat/start-chat"
+              isExternal
+            >
               API reference
             </TextLink>{' '}
             for more information

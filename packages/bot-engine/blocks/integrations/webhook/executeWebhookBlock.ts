@@ -70,6 +70,7 @@ export const executeWebhookBlock = async (
       outgoingEdgeId: block.outgoingEdgeId,
       clientSideActions: [
         {
+          type: 'webhookToExecute',
           webhookToExecute: parsedWebhook,
           expectsDedicatedReply: true,
         },

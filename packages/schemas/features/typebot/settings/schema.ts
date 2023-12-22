@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from '../../../zod'
 import { rememberUserStorages } from './constants'
 import { whatsAppSettingsSchema } from '../../whatsapp'
 
@@ -31,16 +31,21 @@ const metadataSchema = z.object({
   googleTagManagerId: z.string().optional(),
 })
 
-export const settingsSchema = z.object({
-  general: generalSettings.optional(),
-  typingEmulation: typingEmulation.optional(),
-  metadata: metadataSchema.optional(),
-  whatsApp: whatsAppSettingsSchema.optional(),
-  publicShare: z
-    .object({
-      isEnabled: z.boolean().optional(),
-    })
-    .optional(),
-})
+export const settingsSchema = z
+  .object({
+    general: generalSettings.optional(),
+    typingEmulation: typingEmulation.optional(),
+    metadata: metadataSchema.optional(),
+    whatsApp: whatsAppSettingsSchema.optional(),
+    publicShare: z
+      .object({
+        isEnabled: z.boolean().optional(),
+      })
+      .optional(),
+  })
+  .openapi({
+    title: 'Settings',
+    ref: 'settings',
+  })
 
 export type Settings = z.infer<typeof settingsSchema>

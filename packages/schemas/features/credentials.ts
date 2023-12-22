@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from '../zod'
 import { stripeCredentialsSchema } from './blocks/inputs/payment/schema'
 import { googleSheetsCredentialsSchema } from './blocks/integrations/googleSheets/schema'
 import { smtpCredentialsSchema } from './blocks/integrations/sendEmail'

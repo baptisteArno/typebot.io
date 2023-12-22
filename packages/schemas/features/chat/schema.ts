@@ -1,13 +1,20 @@
-import { z } from 'zod'
+import { z } from '../../zod'
 import {
-  executableWebhookSchema,
-  googleAnalyticsOptionsSchema,
+  buttonsInputSchemas,
+  dateInputSchema,
+  emailInputSchema,
+  fileInputBlockSchemas,
+  numberInputSchema,
   paymentInputRuntimeOptionsSchema,
-  pixelOptionsSchema,
-  redirectOptionsSchema,
+  paymentInputSchema,
+  phoneNumberInputBlockSchema,
+  pictureChoiceBlockSchemas,
+  ratingInputBlockSchema,
+  textInputSchema,
+  urlInputSchema,
 } from '../blocks'
 import { logSchema } from '../result'
-import { listVariableValue } from '../typebot'
+import { settingsSchema, themeSchema } from '../typebot'
 import {
   textBubbleContentSchema,
   imageBubbleContentSchema,
@@ -15,13 +22,12 @@ import {
   audioBubbleContentSchema,
   embedBubbleContentSchema,
 } from '../blocks/bubbles'
-import { nativeMessageSchema } from '../blocks/integrations/openai'
 import { sessionStateSchema } from './sessionState'
 import { dynamicThemeSchema } from './shared'
 import { preprocessTypebot } from '../typebot/helpers/preprocessTypebot'
 import { typebotV5Schema, typebotV6Schema } from '../typebot/typebot'
-import { inputBlockSchemas } from '../blocks/inputs/schema'
 import { BubbleBlockType } from '../blocks/bubbles/constants'
+import { clientSideActionSchema } from './clientSideAction'
 
 const chatSessionSchema = z.object({
   id: z.string(),
@@ -31,34 +37,59 @@ const chatSessionSchema = z.object({
 })
 export type ChatSession = z.infer<typeof chatSessionSchema>
 
-const textMessageSchema = z.object({
-  type: z.literal(BubbleBlockType.TEXT),
-  content: textBubbleContentSchema,
-})
+const textMessageSchema = z
+  .object({
+    type: z.literal(BubbleBlockType.TEXT),
+    content: textBubbleContentSchema,
+  })
+  .openapi({
+    title: 'Text',
+    ref: 'textMessage',
+  })
 
-const imageMessageSchema = z.object({
-  type: z.enum([BubbleBlockType.IMAGE]),
-  content: imageBubbleContentSchema,
-})
+const imageMessageSchema = z
+  .object({
+    type: z.enum([BubbleBlockType.IMAGE]),
+    content: imageBubbleContentSchema,
+  })
+  .openapi({
+    title: 'Image',
+    ref: 'imageMessage',
+  })
 
-const videoMessageSchema = z.object({
-  type: z.enum([BubbleBlockType.VIDEO]),
-  content: videoBubbleContentSchema,
-})
+const videoMessageSchema = z
+  .object({
+    type: z.enum([BubbleBlockType.VIDEO]),
+    content: videoBubbleContentSchema,
+  })
+  .openapi({
+    title: 'Video',
+    ref: 'videoMessage',
+  })
 
-const audioMessageSchema = z.object({
-  type: z.enum([BubbleBlockType.AUDIO]),
-  content: audioBubbleContentSchema,
-})
+const audioMessageSchema = z
+  .object({
+    type: z.enum([BubbleBlockType.AUDIO]),
+    content: audioBubbleContentSchema,
+  })
+  .openapi({
+    title: 'Audio',
+    ref: 'audioMessage',
+  })
 
-const embedMessageSchema = z.object({
-  type: z.enum([BubbleBlockType.EMBED]),
-  content: embedBubbleContentSchema
-    .omit({
-      height: true,
-    })
-    .merge(z.object({ height: z.number().optional() })),
-})
+const embedMessageSchema = z
+  .object({
+    type: z.enum([BubbleBlockType.EMBED]),
+    content: embedBubbleContentSchema
+      .omit({
+        height: true,
+      })
+      .merge(z.object({ height: z.number().optional() })),
+  })
+  .openapi({
+    title: 'Embed',
+    ref: 'embedMessage',
+  })
 
 const displayEmbedBubbleSchema = z.object({
   waitForEventFunction: z
@@ -72,10 +103,15 @@ const displayEmbedBubbleSchema = z.object({
     content: z.string(),
   }),
 })
-const customEmbedSchema = z.object({
-  type: z.literal('custom-embed'),
-  content: displayEmbedBubbleSchema,
-})
+const customEmbedSchema = z
+  .object({
+    type: z.literal('custom-embed'),
+    content: displayEmbedBubbleSchema,
+  })
+  .openapi({
+    title: 'Custom embed',
+    ref: 'customEmbedMessage',
+  })
 export type CustomEmbedBubble = z.infer<typeof customEmbedSchema>
 
 export const chatMessageSchema = z
@@ -92,22 +128,6 @@ export const chatMessageSchema = z
   )
 export type ChatMessage = z.infer<typeof chatMessageSchema>
 
-const scriptToExecuteSchema = z.object({
-  content: z.string(),
-  args: z.array(
-    z.object({
-      id: z.string(),
-      value: z
-        .string()
-        .or(z.number())
-        .or(z.boolean())
-        .or(listVariableValue)
-        .nullish(),
-    })
-  ),
-})
-export type ScriptToExecute = z.infer<typeof scriptToExecuteSchema>
-
 const startTypebotPick = {
   version: true,
   id: true,
@@ -121,8 +141,14 @@ const startTypebotPick = {
 export const startTypebotSchema = z.preprocess(
   preprocessTypebot,
   z.discriminatedUnion('version', [
-    typebotV5Schema._def.schema.pick(startTypebotPick),
-    typebotV6Schema.pick(startTypebotPick),
+    typebotV5Schema._def.schema.pick(startTypebotPick).openapi({
+      title: 'Typebot V5',
+      ref: 'typebotV5',
+    }),
+    typebotV6Schema.pick(startTypebotPick).openapi({
+      title: 'Typebot V6',
+      ref: 'typebotV6',
+    }),
   ])
 )
 export type StartTypebot = z.infer<typeof startTypebotSchema>
@@ -136,9 +162,24 @@ export const chatLogSchema = logSchema
 export type ChatLog = z.infer<typeof chatLogSchema>
 
 export const startChatInputSchema = z.object({
-  publicId: z.string(),
-  isStreamEnabled: z.boolean().optional(),
-  message: z.string().optional(),
+  publicId: z
+    .string()
+    .describe(
+      "[Where to find my bot's public ID?](../how-to#how-to-find-my-publicid)"
+    ),
+  message: z
+    .string()
+    .optional()
+    .describe(
+      "Only provide it if your flow starts with an input block and you'd like to directly provide an answer to it."
+    ),
+  isStreamEnabled: z
+    .boolean()
+    .optional()
+    .default(false)
+    .describe(
+      'If enabled, you will be required to stream OpenAI completions on a client and send the generated response back to the API.'
+    ),
   resultId: z
     .string()
     .optional()
@@ -146,6 +187,7 @@ export const startChatInputSchema = z.object({
   isOnlyRegistering: z
     .boolean()
     .optional()
+    .default(false)
     .describe(
       'If set to `true`, it will only register the session and not start the bot. This is used for 3rd party chat platforms as it can require a session to be registered before sending the first message.'
     ),
@@ -153,8 +195,14 @@ export const startChatInputSchema = z.object({
     .record(z.unknown())
     .optional()
     .describe(
-      '[More info about prefilled variables.](https://docs.typebot.io/editor/variables#prefilled-variables)'
-    ),
+      '[More info about prefilled variables.](../../editor/variables#prefilled-variables)'
+    )
+    .openapi({
+      example: {
+        'First name': 'John',
+        Email: 'john@gmail.com',
+      },
+    }),
 })
 export type StartChatInput = z.infer<typeof startChatInputSchema>
 
@@ -171,7 +219,11 @@ export const startFromSchema = z.discriminatedUnion('type', [
 export type StartFrom = z.infer<typeof startFromSchema>
 
 export const startPreviewChatInputSchema = z.object({
-  typebotId: z.string(),
+  typebotId: z
+    .string()
+    .describe(
+      "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+    ),
   isStreamEnabled: z.boolean().optional(),
   message: z.string().optional(),
   isOnlyRegistering: z
@@ -191,90 +243,6 @@ export type StartPreviewChatInput = z.infer<typeof startPreviewChatInputSchema>
 
 export const runtimeOptionsSchema = paymentInputRuntimeOptionsSchema.optional()
 export type RuntimeOptions = z.infer<typeof runtimeOptionsSchema>
-
-const startPropsToInjectSchema = z.object({
-  googleAnalyticsId: z.string().optional(),
-  pixelIds: z.array(z.string()).optional(),
-  gtmId: z.string().optional(),
-  customHeadCode: z.string().optional(),
-})
-export type StartPropsToInject = z.infer<typeof startPropsToInjectSchema>
-
-export const clientSideActionSchema = z
-  .object({
-    lastBubbleBlockId: z.string().optional(),
-    expectsDedicatedReply: z.boolean().optional(),
-  })
-  .and(
-    z
-      .object({
-        scriptToExecute: scriptToExecuteSchema,
-      })
-      .or(
-        z.object({
-          redirect: redirectOptionsSchema,
-        })
-      )
-      .or(
-        z.object({
-          chatwoot: z.object({ scriptToExecute: scriptToExecuteSchema }),
-        })
-      )
-      .or(
-        z.object({
-          googleAnalytics: googleAnalyticsOptionsSchema,
-        })
-      )
-      .or(
-        z.object({
-          wait: z.object({
-            secondsToWaitFor: z.number(),
-          }),
-        })
-      )
-      .or(
-        z.object({
-          setVariable: z.object({ scriptToExecute: scriptToExecuteSchema }),
-        })
-      )
-      .or(
-        z.object({
-          streamOpenAiChatCompletion: z.object({
-            messages: z.array(
-              nativeMessageSchema.pick({ content: true, role: true })
-            ),
-          }),
-        })
-      )
-      .or(
-        z.object({
-          webhookToExecute: executableWebhookSchema,
-        })
-      )
-      .or(
-        z.object({
-          startPropsToInject: startPropsToInjectSchema,
-        })
-      )
-      .or(
-        z.object({
-          pixel: pixelOptionsSchema,
-        })
-      )
-      .or(
-        z.object({
-          stream: z.literal(true),
-        })
-      )
-      .or(
-        z.object({
-          codeToExecute: z.object({
-            args: z.record(z.string(), z.unknown()),
-            content: z.string(),
-          }),
-        })
-      )
-  )
 
 const typebotInChatReplyPick = {
   version: true,
@@ -298,41 +266,59 @@ const chatResponseBaseSchema = z.object({
     .string()
     .optional()
     .describe(
-      'The sent message is validated and formatted on the backend. This is set only if the message differs from the formatted version.'
+      'The sent message is validated and formatted on the backend. For example, if for a date input you replied something like `tomorrow`, the backend will convert it to a date string. This field returns the formatted message.'
     ),
   messages: z.array(chatMessageSchema),
   input: z
     .union([
-      z.discriminatedUnion('type', [...inputBlockSchemas.v5]),
-      z.discriminatedUnion('type', [...inputBlockSchemas.v6]),
+      z.discriminatedUnion('type', [
+        textInputSchema,
+        buttonsInputSchemas.v6,
+        emailInputSchema,
+        numberInputSchema,
+        urlInputSchema,
+        phoneNumberInputBlockSchema,
+        dateInputSchema,
+        paymentInputSchema,
+        ratingInputBlockSchema,
+        fileInputBlockSchemas.v6,
+        pictureChoiceBlockSchemas.v6,
+      ]),
+      z.discriminatedUnion('type', [
+        buttonsInputSchemas.v5,
+        fileInputBlockSchemas.v5,
+        pictureChoiceBlockSchemas.v5,
+      ]),
     ])
-    .and(
-      z.object({
-        prefilledValue: z.string().optional(),
-        runtimeOptions: runtimeOptionsSchema.optional(),
-      })
-    )
     .optional(),
-  clientSideActions: z.array(clientSideActionSchema).optional(),
-  logs: z.array(chatLogSchema).optional(),
-  dynamicTheme: dynamicThemeSchema.optional(),
+  clientSideActions: z
+    .array(clientSideActionSchema)
+    .optional()
+    .describe('Actions to execute on the client side'),
+  logs: z
+    .array(chatLogSchema)
+    .optional()
+    .describe('Logs that were saved during the last execution'),
+  dynamicTheme: dynamicThemeSchema
+    .optional()
+    .describe(
+      'If the typebot contains dynamic avatars, dynamicTheme returns the new avatar URLs whenever their variables are updated.'
+    ),
 })
 
-export const startChatResponseSchema = chatResponseBaseSchema.extend({
-  sessionId: z.string().optional(),
-  typebot: z.object({
-    id: z.string(),
-    theme: z.union([
-      typebotV5Schema._def.schema.shape.theme,
-      typebotV6Schema.shape.theme,
-    ]),
-    settings: z.union([
-      typebotV5Schema._def.schema.shape.settings,
-      typebotV6Schema.shape.settings,
-    ]),
-  }),
-  resultId: z.string().optional(),
-})
+export const startChatResponseSchema = z
+  .object({
+    sessionId: z
+      .string()
+      .describe('To save and use for /continueChat requests.'),
+    resultId: z.string(),
+    typebot: z.object({
+      id: z.string(),
+      theme: themeSchema,
+      settings: settingsSchema,
+    }),
+  })
+  .merge(chatResponseBaseSchema)
 export type StartChatResponse = z.infer<typeof startChatResponseSchema>
 
 export const startPreviewChatResponseSchema = startChatResponseSchema.omit({

@@ -72,7 +72,7 @@ Collect your **Results** and get insights:
 Built for **developers**:
 
 - 🔓 No vendor-locking. Features built with flexibility in mind.
-- 💻 Easy-to-use [APIs](https://docs.typebot.io/api).
+- 💻 Easy-to-use [APIs](https://docs.typebot.io/api-reference).
 
 ## Getting started with Typebot
 
