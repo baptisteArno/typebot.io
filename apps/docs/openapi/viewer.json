@@ -1335,78 +1335,109 @@
                       }
                     },
                     "input": {
-                      "anyOf": [
+                      "allOf": [
                         {
-                          "oneOf": [
+                          "anyOf": [
                             {
-                              "$ref": "#/components/schemas/textInput"
+                              "oneOf": [
+                                {
+                                  "$ref": "#/components/schemas/textInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/buttonsInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/email"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/numberInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/url"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/phoneNumberInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/dateInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/paymentInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/rating"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/fileInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/pictureChoice"
+                                }
+                              ],
+                              "discriminator": {
+                                "propertyName": "type",
+                                "mapping": {
+                                  "text input": "#/components/schemas/textInput",
+                                  "choice input": "#/components/schemas/buttonsInput",
+                                  "email input": "#/components/schemas/email",
+                                  "number input": "#/components/schemas/numberInput",
+                                  "url input": "#/components/schemas/url",
+                                  "phone number input": "#/components/schemas/phoneNumberInput",
+                                  "date input": "#/components/schemas/dateInput",
+                                  "payment input": "#/components/schemas/paymentInput",
+                                  "rating input": "#/components/schemas/rating",
+                                  "file input": "#/components/schemas/fileInput",
+                                  "picture choice input": "#/components/schemas/pictureChoice"
+                                }
+                              }
                             },
                             {
-                              "$ref": "#/components/schemas/buttonsInput"
-                            },
-                            {
-                              "$ref": "#/components/schemas/email"
-                            },
-                            {
-                              "$ref": "#/components/schemas/numberInput"
-                            },
-                            {
-                              "$ref": "#/components/schemas/url"
-                            },
-                            {
-                              "$ref": "#/components/schemas/phoneNumberInput"
-                            },
-                            {
-                              "$ref": "#/components/schemas/dateInput"
-                            },
-                            {
-                              "$ref": "#/components/schemas/paymentInput"
-                            },
-                            {
-                              "$ref": "#/components/schemas/rating"
-                            },
-                            {
-                              "$ref": "#/components/schemas/fileInput"
-                            },
-                            {
-                              "$ref": "#/components/schemas/pictureChoice"
+                              "oneOf": [
+                                {
+                                  "$ref": "#/components/schemas/buttonsInputV5"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/fileInputV5"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/pictureChoiceV5"
+                                }
+                              ],
+                              "discriminator": {
+                                "propertyName": "type",
+                                "mapping": {
+                                  "choice input": "#/components/schemas/buttonsInputV5",
+                                  "file input": "#/components/schemas/fileInputV5",
+                                  "picture choice input": "#/components/schemas/pictureChoiceV5"
+                                }
+                              }
                             }
-                          ],
-                          "discriminator": {
-                            "propertyName": "type",
-                            "mapping": {
-                              "text input": "#/components/schemas/textInput",
-                              "choice input": "#/components/schemas/buttonsInput",
-                              "email input": "#/components/schemas/email",
-                              "number input": "#/components/schemas/numberInput",
-                              "url input": "#/components/schemas/url",
-                              "phone number input": "#/components/schemas/phoneNumberInput",
-                              "date input": "#/components/schemas/dateInput",
-                              "payment input": "#/components/schemas/paymentInput",
-                              "rating input": "#/components/schemas/rating",
-                              "file input": "#/components/schemas/fileInput",
-                              "picture choice input": "#/components/schemas/pictureChoice"
-                            }
-                          }
+                          ]
                         },
                         {
-                          "oneOf": [
-                            {
-                              "$ref": "#/components/schemas/buttonsInputV5"
+                          "type": "object",
+                          "properties": {
+                            "prefilledValue": {
+                              "type": "string"
                             },
-                            {
-                              "$ref": "#/components/schemas/fileInputV5"
-                            },
-                            {
-                              "$ref": "#/components/schemas/pictureChoiceV5"
-                            }
-                          ],
-                          "discriminator": {
-                            "propertyName": "type",
-                            "mapping": {
-                              "choice input": "#/components/schemas/buttonsInputV5",
-                              "file input": "#/components/schemas/fileInputV5",
-                              "picture choice input": "#/components/schemas/pictureChoiceV5"
+                            "runtimeOptions": {
+                              "type": "object",
+                              "properties": {
+                                "paymentIntentSecret": {
+                                  "type": "string"
+                                },
+                                "amountLabel": {
+                                  "type": "string"
+                                },
+                                "publicKey": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "paymentIntentSecret",
+                                "amountLabel",
+                                "publicKey"
+                              ]
                             }
                           }
                         }
@@ -1711,78 +1742,109 @@
                       }
                     },
                     "input": {
-                      "anyOf": [
+                      "allOf": [
                         {
-                          "oneOf": [
+                          "anyOf": [
                             {
-                              "$ref": "#/components/schemas/textInput"
+                              "oneOf": [
+                                {
+                                  "$ref": "#/components/schemas/textInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/buttonsInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/email"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/numberInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/url"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/phoneNumberInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/dateInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/paymentInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/rating"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/fileInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/pictureChoice"
+                                }
+                              ],
+                              "discriminator": {
+                                "propertyName": "type",
+                                "mapping": {
+                                  "text input": "#/components/schemas/textInput",
+                                  "choice input": "#/components/schemas/buttonsInput",
+                                  "email input": "#/components/schemas/email",
+                                  "number input": "#/components/schemas/numberInput",
+                                  "url input": "#/components/schemas/url",
+                                  "phone number input": "#/components/schemas/phoneNumberInput",
+                                  "date input": "#/components/schemas/dateInput",
+                                  "payment input": "#/components/schemas/paymentInput",
+                                  "rating input": "#/components/schemas/rating",
+                                  "file input": "#/components/schemas/fileInput",
+                                  "picture choice input": "#/components/schemas/pictureChoice"
+                                }
+                              }
                             },
                             {
-                              "$ref": "#/components/schemas/buttonsInput"
-                            },
-                            {
-                              "$ref": "#/components/schemas/email"
-                            },
-                            {
-                              "$ref": "#/components/schemas/numberInput"
-                            },
-                            {
-                              "$ref": "#/components/schemas/url"
-                            },
-                            {
-                              "$ref": "#/components/schemas/phoneNumberInput"
-                            },
-                            {
-                              "$ref": "#/components/schemas/dateInput"
-                            },
-                            {
-                              "$ref": "#/components/schemas/paymentInput"
-                            },
-                            {
-                              "$ref": "#/components/schemas/rating"
-                            },
-                            {
-                              "$ref": "#/components/schemas/fileInput"
-                            },
-                            {
-                              "$ref": "#/components/schemas/pictureChoice"
+                              "oneOf": [
+                                {
+                                  "$ref": "#/components/schemas/buttonsInputV5"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/fileInputV5"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/pictureChoiceV5"
+                                }
+                              ],
+                              "discriminator": {
+                                "propertyName": "type",
+                                "mapping": {
+                                  "choice input": "#/components/schemas/buttonsInputV5",
+                                  "file input": "#/components/schemas/fileInputV5",
+                                  "picture choice input": "#/components/schemas/pictureChoiceV5"
+                                }
+                              }
                             }
-                          ],
-                          "discriminator": {
-                            "propertyName": "type",
-                            "mapping": {
-                              "text input": "#/components/schemas/textInput",
-                              "choice input": "#/components/schemas/buttonsInput",
-                              "email input": "#/components/schemas/email",
-                              "number input": "#/components/schemas/numberInput",
-                              "url input": "#/components/schemas/url",
-                              "phone number input": "#/components/schemas/phoneNumberInput",
-                              "date input": "#/components/schemas/dateInput",
-                              "payment input": "#/components/schemas/paymentInput",
-                              "rating input": "#/components/schemas/rating",
-                              "file input": "#/components/schemas/fileInput",
-                              "picture choice input": "#/components/schemas/pictureChoice"
-                            }
-                          }
+                          ]
                         },
                         {
-                          "oneOf": [
-                            {
-                              "$ref": "#/components/schemas/buttonsInputV5"
+                          "type": "object",
+                          "properties": {
+                            "prefilledValue": {
+                              "type": "string"
                             },
-                            {
-                              "$ref": "#/components/schemas/fileInputV5"
-                            },
-                            {
-                              "$ref": "#/components/schemas/pictureChoiceV5"
-                            }
-                          ],
-                          "discriminator": {
-                            "propertyName": "type",
-                            "mapping": {
-                              "choice input": "#/components/schemas/buttonsInputV5",
-                              "file input": "#/components/schemas/fileInputV5",
-                              "picture choice input": "#/components/schemas/pictureChoiceV5"
+                            "runtimeOptions": {
+                              "type": "object",
+                              "properties": {
+                                "paymentIntentSecret": {
+                                  "type": "string"
+                                },
+                                "amountLabel": {
+                                  "type": "string"
+                                },
+                                "publicKey": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "paymentIntentSecret",
+                                "amountLabel",
+                                "publicKey"
+                              ]
                             }
                           }
                         }
@@ -2175,78 +2237,109 @@
                       }
                     },
                     "input": {
-                      "anyOf": [
+                      "allOf": [
                         {
-                          "oneOf": [
+                          "anyOf": [
                             {
-                              "$ref": "#/components/schemas/textInput"
+                              "oneOf": [
+                                {
+                                  "$ref": "#/components/schemas/textInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/buttonsInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/email"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/numberInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/url"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/phoneNumberInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/dateInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/paymentInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/rating"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/fileInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/pictureChoice"
+                                }
+                              ],
+                              "discriminator": {
+                                "propertyName": "type",
+                                "mapping": {
+                                  "text input": "#/components/schemas/textInput",
+                                  "choice input": "#/components/schemas/buttonsInput",
+                                  "email input": "#/components/schemas/email",
+                                  "number input": "#/components/schemas/numberInput",
+                                  "url input": "#/components/schemas/url",
+                                  "phone number input": "#/components/schemas/phoneNumberInput",
+                                  "date input": "#/components/schemas/dateInput",
+                                  "payment input": "#/components/schemas/paymentInput",
+                                  "rating input": "#/components/schemas/rating",
+                                  "file input": "#/components/schemas/fileInput",
+                                  "picture choice input": "#/components/schemas/pictureChoice"
+                                }
+                              }
                             },
                             {
-                              "$ref": "#/components/schemas/buttonsInput"
-                            },
-                            {
-                              "$ref": "#/components/schemas/email"
-                            },
-                            {
-                              "$ref": "#/components/schemas/numberInput"
-                            },
-                            {
-                              "$ref": "#/components/schemas/url"
-                            },
-                            {
-                              "$ref": "#/components/schemas/phoneNumberInput"
-                            },
-                            {
-                              "$ref": "#/components/schemas/dateInput"
-                            },
-                            {
-                              "$ref": "#/components/schemas/paymentInput"
-                            },
-                            {
-                              "$ref": "#/components/schemas/rating"
-                            },
-                            {
-                              "$ref": "#/components/schemas/fileInput"
-                            },
-                            {
-                              "$ref": "#/components/schemas/pictureChoice"
+                              "oneOf": [
+                                {
+                                  "$ref": "#/components/schemas/buttonsInputV5"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/fileInputV5"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/pictureChoiceV5"
+                                }
+                              ],
+                              "discriminator": {
+                                "propertyName": "type",
+                                "mapping": {
+                                  "choice input": "#/components/schemas/buttonsInputV5",
+                                  "file input": "#/components/schemas/fileInputV5",
+                                  "picture choice input": "#/components/schemas/pictureChoiceV5"
+                                }
+                              }
                             }
-                          ],
-                          "discriminator": {
-                            "propertyName": "type",
-                            "mapping": {
-                              "text input": "#/components/schemas/textInput",
-                              "choice input": "#/components/schemas/buttonsInput",
-                              "email input": "#/components/schemas/email",
-                              "number input": "#/components/schemas/numberInput",
-                              "url input": "#/components/schemas/url",
-                              "phone number input": "#/components/schemas/phoneNumberInput",
-                              "date input": "#/components/schemas/dateInput",
-                              "payment input": "#/components/schemas/paymentInput",
-                              "rating input": "#/components/schemas/rating",
-                              "file input": "#/components/schemas/fileInput",
-                              "picture choice input": "#/components/schemas/pictureChoice"
-                            }
-                          }
+                          ]
                         },
                         {
-                          "oneOf": [
-                            {
-                              "$ref": "#/components/schemas/buttonsInputV5"
+                          "type": "object",
+                          "properties": {
+                            "prefilledValue": {
+                              "type": "string"
                             },
-                            {
-                              "$ref": "#/components/schemas/fileInputV5"
-                            },
-                            {
-                              "$ref": "#/components/schemas/pictureChoiceV5"
-                            }
-                          ],
-                          "discriminator": {
-                            "propertyName": "type",
-                            "mapping": {
-                              "choice input": "#/components/schemas/buttonsInputV5",
-                              "file input": "#/components/schemas/fileInputV5",
-                              "picture choice input": "#/components/schemas/pictureChoiceV5"
+                            "runtimeOptions": {
+                              "type": "object",
+                              "properties": {
+                                "paymentIntentSecret": {
+                                  "type": "string"
+                                },
+                                "amountLabel": {
+                                  "type": "string"
+                                },
+                                "publicKey": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "paymentIntentSecret",
+                                "amountLabel",
+                                "publicKey"
+                              ]
                             }
                           }
                         }

@@ -11,6 +11,9 @@ export const Default = () => {
         typebot={leadGenerationTypebot}
         apiHost="http://localhost:3001"
         autoShowDelay={3000}
+        theme={{
+          width: '800px',
+        }}
         isPreview
       />
     </>

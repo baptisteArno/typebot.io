@@ -290,6 +290,12 @@ const chatResponseBaseSchema = z.object({
         pictureChoiceBlockSchemas.v5,
       ]),
     ])
+    .and(
+      z.object({
+        prefilledValue: z.string().optional(),
+        runtimeOptions: runtimeOptionsSchema.optional(),
+      })
+    )
     .optional(),
   clientSideActions: z
     .array(clientSideActionSchema)

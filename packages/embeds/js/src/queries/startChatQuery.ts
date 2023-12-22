@@ -105,6 +105,7 @@ export async function startChatQuery({
             isStreamEnabled: true,
             prefilledVariables,
             resultId,
+            isOnlyRegistering: false,
           } satisfies Omit<StartChatInput, 'publicId'>,
           timeout: false,
         }
