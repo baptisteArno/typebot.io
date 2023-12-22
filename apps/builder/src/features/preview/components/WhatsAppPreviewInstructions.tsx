@@ -79,7 +79,7 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
         <Text fontSize="sm">Need help?</Text>
         <Button
           as={Link}
-          href="https://docs.typebot.io/embed/whatsapp"
+          href="https://docs.typebot.io/deploy/whatsapp/overview"
           leftIcon={<BuoyIcon />}
           size="sm"
         >

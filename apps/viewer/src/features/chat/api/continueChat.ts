@@ -14,14 +14,16 @@ export const continueChat = publicProcedure
       method: 'POST',
       path: '/v1/sessions/{sessionId}/continueChat',
       summary: 'Continue chat',
-      description:
-        'To initiate a chat, do not provide a `sessionId` nor a `message`.\n\nContinue the conversation by providing the `sessionId` and the `message` that should answer the previous question.\n\nSet the `isPreview` option to `true` to chat with the non-published version of the typebot.',
     },
   })
   .input(
     z.object({
       message: z.string().optional(),
-      sessionId: z.string(),
+      sessionId: z
+        .string()
+        .describe(
+          'The session ID you got from the [startChat](./start-chat) response.'
+        ),
     })
   )
   .output(continueChatResponseSchema)

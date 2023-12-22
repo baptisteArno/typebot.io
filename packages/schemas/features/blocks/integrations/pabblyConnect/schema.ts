@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from '../../../../zod'
 import { IntegrationBlockType } from '../constants'
 import { webhookBlockSchemas } from '../webhook'
 

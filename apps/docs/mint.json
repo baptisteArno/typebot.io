@@ -1,0 +1,279 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Starter Kit",
+  "openapi": [
+    "/openapi-reference/builder.json",
+    "/openapi-reference/viewer.json"
+  ],
+  "logo": {
+    "dark": "/logo/dark.svg",
+    "light": "/logo/light.svg"
+  },
+  "favicon": "/favicon.png",
+  "colors": {
+    "primary": "#0042DA",
+    "light": "#5885FE",
+    "dark": "#0042DA",
+    "background": {
+      "dark": "#18181B"
+    },
+    "anchors": {
+      "from": "#FF7F57",
+      "to": "#9563FF"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "Github",
+      "url": "https://github.com/baptisteArno/typebot.io"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Dashboard",
+    "url": "https://app.typebot.io"
+  },
+  "primaryTab": {
+    "name": "Learn"
+  },
+  "tabs": [
+    {
+      "name": "Self-Hosting",
+      "url": "self-hosting"
+    },
+    {
+      "name": "API Reference",
+      "url": "api-reference"
+    }
+  ],
+  "anchors": [
+    {
+      "name": "Community",
+      "icon": "discord",
+      "url": "https://typebot.io/discord"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Get Started",
+      "pages": ["get-started/introduction", "get-started/overview"]
+    },
+    {
+      "group": "Workspace",
+      "pages": [
+        "workspace",
+        "workspace/add-members-and-guests",
+        "workspace/subscription",
+        "workspace/preferences"
+      ]
+    },
+    {
+      "group": "Flow",
+      "pages": [
+        {
+          "group": "Blocks",
+          "icon": "block",
+          "pages": [
+            "editor/blocks/overview",
+            {
+              "group": "Bubbles",
+              "pages": [
+                "editor/blocks/bubbles/text",
+                "editor/blocks/bubbles/image",
+                "editor/blocks/bubbles/video",
+                "editor/blocks/bubbles/embed",
+                "editor/blocks/bubbles/audio"
+              ]
+            },
+            {
+              "group": "Inputs",
+              "pages": [
+                "editor/blocks/inputs/text",
+                "editor/blocks/inputs/number",
+                "editor/blocks/inputs/email",
+                "editor/blocks/inputs/website",
+                "editor/blocks/inputs/date",
+                "editor/blocks/inputs/phone-number",
+                "editor/blocks/inputs/buttons",
+                "editor/blocks/inputs/picture-choice",
+                "editor/blocks/inputs/payment",
+                "editor/blocks/inputs/rating",
+                "editor/blocks/inputs/file-upload"
+              ]
+            },
+            {
+              "group": "Logic",
+              "pages": [
+                "editor/blocks/logic/set-variable",
+                "editor/blocks/logic/condition",
+                "editor/blocks/logic/redirect",
+                "editor/blocks/logic/script",
+                "editor/blocks/logic/typebot-link",
+                "editor/blocks/logic/wait",
+                "editor/blocks/logic/jump",
+                "editor/blocks/logic/ab-test"
+              ]
+            },
+            {
+              "group": "Integrations",
+              "pages": [
+                "editor/blocks/integrations/google-sheets",
+                "editor/blocks/integrations/google-analytics",
+                "editor/blocks/integrations/webhook",
+                "editor/blocks/integrations/send-email",
+                "editor/blocks/integrations/zapier",
+                "editor/blocks/integrations/make-com",
+                "editor/blocks/integrations/pabbly-connect",
+                "editor/blocks/integrations/chatwoot",
+                "editor/blocks/integrations/meta-pixel",
+                "editor/blocks/integrations/openai",
+                "editor/blocks/integrations/zemantic-ai"
+              ]
+            }
+          ]
+        },
+        "editor/variables",
+        "editor/publish",
+        "editor/share",
+        "editor/context-menu",
+        "editor/export-import"
+      ]
+    },
+    {
+      "group": "Theme",
+      "pages": ["theme/overview"]
+    },
+    {
+      "group": "Settings",
+      "pages": ["settings/overview"]
+    },
+    {
+      "group": "Deploy",
+      "pages": [
+        {
+          "group": "Web",
+          "icon": "globe",
+          "pages": [
+            "deploy/web/overview",
+            {
+              "group": "Libraries",
+              "pages": [
+                "deploy/web/libraries/html-javascript",
+                "deploy/web/libraries/react",
+                "deploy/web/libraries/next-js"
+              ]
+            },
+            "deploy/web/wordpress",
+            "deploy/web/iframe",
+            "deploy/web/script",
+            "deploy/web/webflow",
+            "deploy/web/custom-domain"
+          ]
+        },
+        {
+          "group": "WhatsApp",
+          "icon": "whatsapp",
+          "pages": [
+            "deploy/whatsapp/overview",
+            "deploy/whatsapp/create-meta-app"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Results",
+      "pages": ["results/overview"]
+    },
+    {
+      "group": "Guides",
+      "pages": [
+        "guides/mailer-lite",
+        "guides/multi-avatars",
+        "guides/rtl",
+        "guides/utm-in-results"
+      ]
+    },
+    {
+      "group": "Misc",
+      "pages": ["faq", "privacy-policies", "breaking-changes"]
+    },
+    {
+      "group": "Get started",
+      "pages": [
+        "self-hosting/get-started",
+        "self-hosting/configuration",
+        "self-hosting/troubleshoot"
+      ]
+    },
+    {
+      "group": "Deploy",
+      "pages": [
+        "self-hosting/deploy/docker",
+        "self-hosting/deploy/vercel",
+        "self-hosting/deploy/manual"
+      ]
+    },
+    {
+      "group": "Guides",
+      "pages": ["self-hosting/guides/s3", "self-hosting/guides/planetscale"]
+    },
+    {
+      "group": "Get started",
+      "pages": ["api-reference/authentication", "api-reference/how-to"]
+    },
+    {
+      "group": "Chat",
+      "pages": [
+        "api-reference/chat/start-chat",
+        "api-reference/chat/start-preview-chat",
+        "api-reference/chat/continue-chat",
+        "api-reference/chat/save-logs",
+        "api-reference/chat/update-typebot-in-session"
+      ]
+    },
+    {
+      "group": "Typebot",
+      "pages": [
+        "api-reference/typebot/list",
+        "api-reference/typebot/get",
+        "api-reference/typebot/create",
+        "api-reference/typebot/import",
+        "api-reference/typebot/update",
+        "api-reference/typebot/delete",
+        "api-reference/typebot/get-published-bot",
+        "api-reference/typebot/publish",
+        "api-reference/typebot/unpublish"
+      ]
+    },
+    {
+      "group": "Results",
+      "pages": [
+        "api-reference/results/list",
+        "api-reference/results/get",
+        "api-reference/results/delete",
+        "api-reference/results/list-logs"
+      ]
+    },
+    {
+      "group": "Workspace",
+      "pages": [
+        "api-reference/workspace/list",
+        "api-reference/workspace/get",
+        "api-reference/workspace/create",
+        "api-reference/workspace/update",
+        "api-reference/workspace/delete",
+        "api-reference/workspace/list-members"
+      ]
+    },
+    {
+      "group": "Billing",
+      "pages": [
+        "api-reference/billing/get-usage",
+        "api-reference/billing/list-invoices"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "twitter": "https://twitter.com/Typebot_io",
+    "github": "https://github.com/baptisteArno/typebot.io"
+  }
+}

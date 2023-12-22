@@ -21,6 +21,7 @@ export const executeScript = (
     outgoingEdgeId: block.outgoingEdgeId,
     clientSideActions: [
       {
+        type: 'scriptToExecute',
         scriptToExecute: scriptToExecute,
       },
     ],
