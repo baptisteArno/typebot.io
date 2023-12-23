@@ -74,7 +74,7 @@ export const startChat = publicProcedure
         },
         messages,
         input,
-        resultId: resultId as string,
+        resultId,
         dynamicTheme,
         logs,
         clientSideActions,
