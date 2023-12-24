@@ -265,16 +265,18 @@ const getBodyContent = async ({
     : body ?? undefined
 }
 
-const convertKeyValueTableToObject = (
+export const convertKeyValueTableToObject = (
   keyValues: KeyValue[] | undefined,
   variables: Variable[]
 ) => {
   if (!keyValues) return
   return keyValues.reduce((object, item) => {
-    if (!item.key) return {}
+    const key = parseVariables(variables)(item.key)
+    const value = parseVariables(variables)(item.value)
+    if (isEmpty(key) || isEmpty(value)) return object
     return {
       ...object,
-      [item.key]: parseVariables(variables)(item.value ?? ''),
+      [key]: value,
     }
   }, {})
 }

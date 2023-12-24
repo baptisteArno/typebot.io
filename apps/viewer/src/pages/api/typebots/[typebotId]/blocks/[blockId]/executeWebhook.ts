@@ -1,5 +1,4 @@
 import {
-  KeyValue,
   PublicTypebot,
   ResultValues,
   Typebot,
@@ -28,6 +27,7 @@ import {
 } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
 import { getBlockById } from '@typebot.io/lib/getBlockById'
 import {
+  convertKeyValueTableToObject,
   longReqTimeoutWhitelist,
   longRequestTimeout,
   responseDefaultTimeout,
@@ -279,20 +279,6 @@ const getBodyContent =
         )
       : body ?? undefined
   }
-
-const convertKeyValueTableToObject = (
-  keyValues: KeyValue[] | undefined,
-  variables: Variable[]
-) => {
-  if (!keyValues) return
-  return keyValues.reduce((object, item) => {
-    if (!item.key) return {}
-    return {
-      ...object,
-      [item.key]: parseVariables(variables)(item.value ?? ''),
-    }
-  }, {})
-}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const safeJsonParse = (json: string): { data: any; isJson: boolean } => {
