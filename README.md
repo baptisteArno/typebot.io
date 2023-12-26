@@ -34,13 +34,13 @@ Typebot is an open-source alternative to Landbot. It allows you to create conver
 4. Start the application
 
    `yarn && yarn dev`
-   Builder is available at `http://localhost:8080/typebots/{bot_id}/edit`
+   Builder is available at `http://localhost:8081/typebots/{bot_id}/edit`
 
    The `bot_id` parameter can be found on the bots API requests of the bot you want to edit.
    Filter the API requests of one from the V2 bots list by `/chat/bots` and copy the `bot_id` parameter.
 
    You can add the `channel` parameter as a query string option to check other fluxes.
-   For example: `http://localhost:8080/typebots/{bot_id}/edit?channel=whatsapp`
+   For example: `http://localhost:8081/typebots/{bot_id}/edit?channel=whatsapp`
 
 ## Features
 

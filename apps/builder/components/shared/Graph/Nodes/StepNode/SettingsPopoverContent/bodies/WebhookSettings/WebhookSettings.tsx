@@ -42,11 +42,19 @@ type Props = {
 
 export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
   const { typebot } = useTypebot()
+
   const [isTestResponseLoading, setIsTestResponseLoading] = useState(false)
+
   const [testResponse, setTestResponse] = useState<string>()
+
   const [responseKeys, setResponseKeys] = useState<string[]>([])
+
   const [successTest, setSuccessTest] = useState<string>()
+
   const [responseData, setResponseData] = useState({ status: '' })
+
+  const [prevSelectedVariablesForTest, setPrevSelectedVariablesForTest] =
+    useState<any>(undefined)
 
   const errorToast = useToast({
     position: 'top-right',
@@ -66,17 +74,17 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
   const getHttpMethodDescription = (method: HttpMethodsWebhook) => {
     switch (method) {
       case HttpMethodsWebhook.GET:
-        return 'Buscar ou consultar uma informação';
+        return 'Buscar ou consultar uma informação'
       case HttpMethodsWebhook.POST:
-        return 'Enviar uma nova informação';
+        return 'Enviar uma nova informação'
       case HttpMethodsWebhook.PUT:
-        return 'Atualizar uma informação existente';
+        return 'Atualizar uma informação existente'
       case HttpMethodsWebhook.DELETE:
-        return 'Apagar uma informação existente';
+        return 'Apagar uma informação existente'
       case HttpMethodsWebhook.PATCH:
-        return 'Atualizar uma informação existente, enviando somente o necessário';
+        return 'Atualizar uma informação existente, enviando somente o necessário'
       case HttpMethodsWebhook.OPTIONS:
-        return 'Descobrir quais tipos de requisições são permitidas';    
+        return 'Descobrir quais tipos de requisições são permitidas'
     }
   }
 
@@ -94,12 +102,15 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
 
   const clearOptions = () => {
     setResponseData({ status: '' })
+
     setTestResponse(undefined)
+
     setSuccessTest('')
   }
 
   const handleUrlChange = (url: string) => {
     clearOptions()
+
     setWebhookUrl(url)
   }
 
@@ -114,6 +125,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
       if (newUrl.search) handleParams(newUrl.search.replace(/_hash_/g, '#'))
 
       setWebhookUrl(newUrl.origin)
+
       setPath(newUrl.pathname?.replace(/_hash_/g, '#') || '')
 
       onOptionsChange({
@@ -127,6 +139,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === '#') {
       e.preventDefault()
+
       setVariablesKeyDown(e)
     }
   }
@@ -139,14 +152,19 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
 
   const handleParams = (url: string) => {
     const params = url.substring(1).split('&')
+
     params.forEach((p) => {
       const keyValue = p.split('=')
+
       if (keyValue.length === 2) {
         const paramAlreadyExists = step.options.parameters.find(
           (param) => param.key === keyValue[0]
         )
+
         if (paramAlreadyExists) return
+
         const paramValueTrimmed = keyValue[1].replace('/', '')
+
         addParams('query', keyValue[0], paramValueTrimmed, paramValueTrimmed)
       }
     })
@@ -178,6 +196,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
 
   const handleMethodChange = (method: HttpMethodsWebhook) => {
     if (step.options.method != method) clearOptions()
+
     onOptionsChange({
       ...step.options,
       method: method,
@@ -186,6 +205,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
 
   const handleQueryParamsChange = (parameters: QueryParameters[]) => {
     const properties = parameters.flatMap((p) => p.properties).filter((s) => s)
+
     if (properties?.length) {
       handleAddedVariables(properties.map((s) => s?.token))
     }
@@ -198,6 +218,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
 
   const handleHeadersChange = (headers: QueryParameters[]) => {
     const properties = headers.flatMap((p) => p.properties).filter((s) => s)
+
     if (properties?.length) {
       handleAddedVariables(properties.map((s) => s?.token))
     }
@@ -213,14 +234,44 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
   const codeVariableSelected = (
     variable: Pick<Variable, 'id' | 'name' | 'token'>
   ) => {
+    setPrevSelectedVariablesForTest(step.options.variablesForTest)
+
     handleAddedVariables([variable?.token])
   }
 
+  const getUnusedParams = (body: string) => {
+    const selectedVariables =
+      prevSelectedVariablesForTest ?? step.options.variablesForTest
+
+    if (!selectedVariables) {
+      return []
+    }
+
+    const unusedParams: VariableForTest[] = []
+
+    selectedVariables.forEach((p: VariableForTest) => {
+      const found = body.indexOf(p.token) > -1
+
+      if (found === false) {
+        unusedParams.push(p)
+      }
+    })
+
+    return unusedParams
+  }
+
   const handleBodyChange = (body: string) => {
+    const unusedParams = getUnusedParams(body)
+
     onOptionsChange({
       ...step.options,
       body,
+      variablesForTest: step.options.variablesForTest.filter(
+        (p) => unusedParams.includes(p) === false
+      ),
     })
+
+    setPrevSelectedVariablesForTest(undefined)
   }
 
   const handleAddedVariables = (addedVariables: Array<string | undefined>) => {
@@ -374,7 +425,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
         </HStack>
         <HStack justify="space-between">
           <Text color="gray.400" fontSize="sm">
-              {getHttpMethodDescription(step.options.method)}
+            {getHttpMethodDescription(step.options.method)}
           </Text>
         </HStack>
         <Accordion allowToggle allowMultiple defaultIndex={[0, 1, 2, 3, 4]}>
@@ -476,19 +527,16 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
                 />
                 {(step.options.isCustomBody ?? true) && (
                   <Stack>
-                    <Text color="gray.500" fontSize="sm">
-                      Envie sua informação na corpo da integração <i>Request Body</i> (apenas JSON)
-                    </Text>
-                    <Text color="gray.500" fontSize="xs">
-                      <strong>Digite # para inserir campos personalizados</strong>
-                    </Text>
+                    <text color="gray.500" fontSize="sm">
+                      Envie sua informação na corpo da integração{' '}
+                      <i>Request Body</i> (apenas JSON)
+                    </text>
                     <OpenEditorBody
                       value={step.options.body ?? '{}'}
                       lang="json"
                       onChange={handleBodyChange}
                       postVariableSelected={codeVariableSelected}
                       debounceTimeout={0}
-                      withVariableButton={false}
                     />
                     <CodeEditor
                       value={step.options.body ?? '{}'}
@@ -497,7 +545,6 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
                       onChange={handleBodyChange}
                       postVariableSelected={codeVariableSelected}
                       debounceTimeout={0}
-                      withVariableButton={false}
                     />
                   </Stack>
                 )}

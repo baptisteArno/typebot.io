@@ -4,8 +4,8 @@
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "dx": "yarn dev",
-    "dev": "ENVIRONMENT=local next dev -p 8080",
-    "dev:windows": "set ENVIRONMENT=local&&next dev -p 8080",
+    "dev": "ENVIRONMENT=local next dev -p 8081",
+    "dev:windows": "set ENVIRONMENT=local&&next dev -p 8081",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

@@ -1,5 +1,5 @@
+import React, { useMemo, useRef, useState } from 'react'
 import { Flex, Stack, useOutsideClick } from '@chakra-ui/react'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
   Plate,
   selectEditor,
@@ -11,13 +11,13 @@ import {
 } from '@udecode/plate-core'
 import { editorStyle, platePlugins } from 'libs/plate'
 import { BaseEditor, BaseSelection, createEditor, Transforms } from 'slate'
-import { ToolBar } from './ToolBar'
-import { parseHtmlStringToPlainText } from 'services/utils'
-import { defaultTextBubbleContent, TextBubbleContent, Variable } from 'models'
-import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
 import { ReactEditor } from 'slate-react'
+import { defaultTextBubbleContent, TextBubbleContent, Variable } from 'models'
+import { parseHtmlStringToPlainText } from 'services/utils'
+import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
+import { ToolBar } from './ToolBar'
 
-type Props = {
+type TextBubbleEditorProps = {
   initialValue: TElement[]
   onClose: (newContent: TextBubbleContent) => void
   onKeyUp?: (newContent: TextBubbleContent) => void
@@ -29,11 +29,18 @@ export const TextBubbleEditor = ({
   onClose,
   onKeyUp,
   increment,
-}: Props) => {
+}: TextBubbleEditorProps) => {
+  const [value, setValue] = useState(initialValue)
+  const [isVariableDropdownOpen, setIsVariableDropdownOpen] = useState(false)
+  const varDropdownRef = useRef<HTMLDivElement | null>(null)
+  const rememberedSelection = useRef<BaseSelection | null>(null)
+  const textEditorRef = useRef<HTMLDivElement>(null)
+
   const randomEditorId = useMemo(
     () => `${Math.random().toString()}${increment ? `-${increment}` : ''}`,
     [increment]
   )
+
   const editor = useMemo(
     () =>
       withPlate(createEditor() as TEditor<Value>, {
@@ -43,12 +50,6 @@ export const TextBubbleEditor = ({
     [randomEditorId]
   )
 
-  const [value, setValue] = useState(initialValue)
-  const varDropdownRef = useRef<HTMLDivElement | null>(null)
-  const rememberedSelection = useRef<BaseSelection | null>(null)
-  const [isVariableDropdownOpen, setIsVariableDropdownOpen] = useState(false)
-
-  const textEditorRef = useRef<HTMLDivElement>(null)
   const closeEditor = () => {
     if (onClose) onClose(convertValueToStepContent(value))
   }
@@ -99,8 +100,10 @@ export const TextBubbleEditor = ({
       setValue(val)
       keyUpEditor(val)
     }, 250)
+
     setIsVariableDropdownOpen(false)
   }
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.shiftKey) return
     if (e.key === 'Enter') closeEditor()
