@@ -41,9 +41,12 @@ export const longReqTimeoutWhitelist = [
   'https://api.anthropic.com',
 ]
 
+type Params = { disableRequestTimeout?: boolean }
+
 export const executeWebhookBlock = async (
   state: SessionState,
-  block: WebhookBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock
+  block: WebhookBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock,
+  params: Params = {}
 ): Promise<ExecuteIntegrationResponse> => {
   const logs: ChatLog[] = []
   const webhook =
@@ -80,7 +83,7 @@ export const executeWebhookBlock = async (
     response: webhookResponse,
     logs: executeWebhookLogs,
     startTimeShouldBeUpdated,
-  } = await executeWebhook(parsedWebhook)
+  } = await executeWebhook(parsedWebhook, params)
 
   return {
     ...resumeWebhookExecution({
@@ -160,7 +163,8 @@ const parseWebhookAttributes =
   }
 
 export const executeWebhook = async (
-  webhook: ParsedWebhook
+  webhook: ParsedWebhook,
+  params: Params = {}
 ): Promise<{
   response: WebhookResponse
   logs?: ChatLog[]
@@ -170,9 +174,11 @@ export const executeWebhook = async (
   const { headers, url, method, basicAuth, body, isJson } = webhook
   const contentType = headers ? headers['Content-Type'] : undefined
 
-  const isLongRequest = longReqTimeoutWhitelist.some((whiteListedUrl) =>
-    url?.includes(whiteListedUrl)
-  )
+  const isLongRequest = params.disableRequestTimeout
+    ? true
+    : longReqTimeoutWhitelist.some((whiteListedUrl) =>
+        url?.includes(whiteListedUrl)
+      )
 
   const request = {
     url,

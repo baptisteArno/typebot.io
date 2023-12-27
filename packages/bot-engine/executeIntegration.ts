@@ -27,7 +27,9 @@ export const executeIntegration =
       case IntegrationBlockType.MAKE_COM:
       case IntegrationBlockType.PABBLY_CONNECT:
         return {
-          ...(await executeWebhookBlock(state, block)),
+          ...(await executeWebhookBlock(state, block, {
+            disableRequestTimeout: true,
+          })),
           startTimeShouldBeUpdated: true,
         }
       case IntegrationBlockType.WEBHOOK:
