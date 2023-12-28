@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from '../../../../zod'
 import { chatwootTasks } from './constants'
 import { blockBaseSchema } from '../../shared'
 import { IntegrationBlockType } from '../constants'

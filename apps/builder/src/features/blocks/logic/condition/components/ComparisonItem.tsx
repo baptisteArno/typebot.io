@@ -11,8 +11,8 @@ export const ComparisonItem = ({
   item,
   onItemChange,
 }: TableListItemProps<Comparison>) => {
-	const { t } = useTranslate()
-	
+  const { t } = useTranslate()
+
   const handleSelectVariable = (variable?: Variable) => {
     if (variable?.id === item.variableId) return
     onItemChange({ ...item, variableId: variable?.id })
@@ -34,32 +34,33 @@ export const ComparisonItem = ({
       <VariableSearchInput
         initialVariableId={item.variableId}
         onSelectVariable={handleSelectVariable}
-        placeholder={t("variables.search")}
+        placeholder={t('variables.search')}
       />
       <DropdownList
         currentItem={
-					item.comparisonOperator
-					? t(
-							`components.dropdownList.item.${item.comparisonOperator?.replace(/\s/g, '')}`
-						) as ComparisonOperators
-					: t(
-							"editor.blocks.inputs.button.buttonSettings.displayCondition.selectOperator.label"
-						) as ComparisonOperators
-				}
+          item.comparisonOperator
+            ? (t(
+                `components.dropdownList.item.${item.comparisonOperator?.replace(
+                  /\s/g,
+                  ''
+                )}`
+              ) as ComparisonOperators)
+            : (t(
+                'editor.blocks.inputs.button.buttonSettings.displayCondition.selectOperator.label'
+              ) as ComparisonOperators)
+        }
         onItemSelect={handleSelectComparisonOperator}
         items={Object.values(ComparisonOperators)}
-        placeholder={
-					t("editor.blocks.inputs.button.buttonSettings.displayCondition.selectOperator.label")
-				}
+        placeholder={t(
+          'editor.blocks.inputs.button.buttonSettings.displayCondition.selectOperator.label'
+        )}
       />
       {item.comparisonOperator !== ComparisonOperators.IS_SET &&
         item.comparisonOperator !== ComparisonOperators.IS_EMPTY && (
           <TextInput
             defaultValue={item.value ?? ''}
             onChange={handleChangeValue}
-            placeholder={
-							t(parseValuePlaceholder(item.comparisonOperator), "")
-						}
+            placeholder={t(parseValuePlaceholder(item.comparisonOperator), '')}
           />
         )}
     </Stack>

@@ -28,9 +28,11 @@ import { deleteInvitationQuery } from '../queries/deleteInvitationQuery'
 import { updateCollaboratorQuery } from '../queries/updateCollaboratorQuery'
 import { deleteCollaboratorQuery } from '../queries/deleteCollaboratorQuery'
 import { sendInvitationQuery } from '../queries/sendInvitationQuery'
+import { TFnType, useTranslate } from '@tolgee/react'
 
 export const CollaborationList = () => {
   const { currentRole, workspace } = useWorkspace()
+  const { t } = useTranslate()
   const { typebot } = useTypebot()
   const [invitationType, setInvitationType] = useState<CollaborationType>(
     CollaborationType.READ
@@ -50,7 +52,7 @@ export const CollaborationList = () => {
     typebotId: typebot?.id,
     onError: (e) =>
       showToast({
-        title: "Couldn't fetch collaborators",
+        title: t('share.button.popover.collaboratorsFetch.error.label'),
         description: e.message,
       }),
   })
@@ -62,7 +64,7 @@ export const CollaborationList = () => {
     typebotId: typebot?.id,
     onError: (e) =>
       showToast({
-        title: "Couldn't fetch invitations",
+        title: t('share.button.popover.invitationsFetch.error.label'),
         description: e.message,
       }),
   })
@@ -132,7 +134,10 @@ export const CollaborationList = () => {
     mutateCollaborators({ collaborators: collaborators ?? [] })
     if (error)
       return showToast({ title: error.name, description: error.message })
-    showToast({ status: 'success', title: 'Invitation sent! 📧' })
+    showToast({
+      status: 'success',
+      title: t('share.button.popover.invitationSent.successToast.label'),
+    })
     setInvitationEmail('')
   }
 
@@ -141,7 +146,7 @@ export const CollaborationList = () => {
       <HStack as="form" onSubmit={handleInvitationSubmit} px="4" pb="2">
         <Input
           size="sm"
-          placeholder="colleague@company.com"
+          placeholder={t('share.button.popover.inviteInput.placeholder')}
           name="inviteEmail"
           value={invitationEmail}
           onChange={(e) => setInvitationEmail(e.target.value)}
@@ -163,7 +168,7 @@ export const CollaborationList = () => {
           type="submit"
           isDisabled={!hasFullAccess}
         >
-          Invite
+          {t('share.button.popover.inviteButton.label')}
         </Button>
       </HStack>
       {workspace && (
@@ -176,6 +181,7 @@ export const CollaborationList = () => {
           </HStack>
           <Tag flexShrink={0}>
             {convertCollaborationTypeEnumToReadable(
+              t,
               CollaborationType.FULL_ACCESS
             )}
           </Tag>
@@ -227,6 +233,8 @@ const CollaborationTypeMenuButton = ({
   type: CollaborationType
   onChange: (type: CollaborationType) => void
 }) => {
+  const { t } = useTranslate()
+
   return (
     <Menu placement="bottom-end">
       <MenuButton
@@ -235,15 +243,15 @@ const CollaborationTypeMenuButton = ({
         as={Button}
         rightIcon={<ChevronLeftIcon transform={'rotate(-90deg)'} />}
       >
-        {convertCollaborationTypeEnumToReadable(type)}
+        {convertCollaborationTypeEnumToReadable(t, type)}
       </MenuButton>
       <MenuList minW={0}>
         <Stack maxH={'35vh'} overflowY="scroll" spacing="0">
           <MenuItem onClick={() => onChange(CollaborationType.READ)}>
-            {convertCollaborationTypeEnumToReadable(CollaborationType.READ)}
+            {convertCollaborationTypeEnumToReadable(t, CollaborationType.READ)}
           </MenuItem>
           <MenuItem onClick={() => onChange(CollaborationType.WRITE)}>
-            {convertCollaborationTypeEnumToReadable(CollaborationType.WRITE)}
+            {convertCollaborationTypeEnumToReadable(t, CollaborationType.WRITE)}
           </MenuItem>
         </Stack>
       </MenuList>
@@ -252,14 +260,15 @@ const CollaborationTypeMenuButton = ({
 }
 
 export const convertCollaborationTypeEnumToReadable = (
+  t: TFnType,
   type: CollaborationType
 ) => {
   switch (type) {
     case CollaborationType.READ:
-      return 'Can view'
+      return t('collaboration.roles.view.label')
     case CollaborationType.WRITE:
-      return 'Can edit'
+      return t('collaboration.roles.edit.label')
     case CollaborationType.FULL_ACCESS:
-      return 'Full access'
+      return t('collaboration.roles.full.label')
   }
 }

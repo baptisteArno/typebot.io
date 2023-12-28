@@ -33,7 +33,7 @@ type Props = {
 export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
   const { workspace } = useWorkspace()
   const { isOpen, onOpen, onClose } = useDisclosure()
-	const { t } = useTranslate()
+  const { t } = useTranslate()
 
   const updateProvider = (provider: PaymentProvider) => {
     onOptionsChange({
@@ -106,7 +106,7 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <Stack>
-        <Text>{t("editor.blocks.inputs.payment.settings.provider.label")}</Text>
+        <Text>{t('editor.blocks.inputs.payment.settings.provider.label')}</Text>
         <DropdownList
           onItemSelect={updateProvider}
           items={Object.values(PaymentProvider)}
@@ -114,7 +114,7 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
         />
       </Stack>
       <Stack>
-        <Text>{t("editor.blocks.inputs.payment.settings.account.label")}</Text>
+        <Text>{t('editor.blocks.inputs.payment.settings.account.label')}</Text>
         {workspace && (
           <CredentialsDropdown
             type="stripe"
@@ -122,23 +122,26 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
             currentCredentialsId={options?.credentialsId}
             onCredentialsSelect={updateCredentials}
             onCreateNewClick={onOpen}
-            credentialsName={
-							t("editor.blocks.inputs.payment.settings.accountText.label", {
-								provider: 'Stripe'
-							})
-						}
+            credentialsName={t(
+              'editor.blocks.inputs.payment.settings.accountText.label',
+              {
+                provider: 'Stripe',
+              }
+            )}
           />
         )}
       </Stack>
       <HStack>
         <TextInput
-          label={t("editor.blocks.inputs.payment.settings.priceAmount.label")}
+          label={t('editor.blocks.inputs.payment.settings.priceAmount.label')}
           onChange={updateAmount}
           defaultValue={options?.amount}
           placeholder="30.00"
         />
         <Stack>
-          <Text>{t("editor.blocks.inputs.payment.settings.currency.label")}</Text>
+          <Text>
+            {t('editor.blocks.inputs.payment.settings.currency.label')}
+          </Text>
           <Select
             placeholder="Select option"
             value={options?.currency ?? defaultPaymentInputOptions.currency}
@@ -153,48 +156,55 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
         </Stack>
       </HStack>
       <TextInput
-        label={t("editor.blocks.inputs.settings.button.label")}
+        label={t('editor.blocks.inputs.settings.button.label')}
         onChange={updateButtonLabel}
         defaultValue={
-          options?.labels?.button ?? t("editor.blocks.inputs.payment.settings.buttonText.label")
+          options?.labels?.button ??
+          t('editor.blocks.inputs.payment.settings.buttonText.label')
         }
       />
       <TextInput
-        label={t("editor.blocks.inputs.payment.settings.successMessage.label")}
+        label={t('editor.blocks.inputs.payment.settings.successMessage.label')}
         onChange={updateSuccessLabel}
-        defaultValue={
-          options?.labels?.success ?? t("success")
-        }
+        defaultValue={options?.labels?.success ?? t('success')}
       />
       <Accordion allowToggle>
         <AccordionItem>
           <AccordionButton justifyContent="space-between">
-            {t("editor.blocks.inputs.payment.settings.additionalInformation.label")}
-						<AccordionIcon />
+            {t(
+              'editor.blocks.inputs.payment.settings.additionalInformation.label'
+            )}
+            <AccordionIcon />
           </AccordionButton>
           <AccordionPanel py={4} as={Stack} spacing="6">
             <TextInput
-              label={t("editor.blocks.inputs.settings.description.label")}
+              label={t('editor.blocks.inputs.settings.description.label')}
               defaultValue={options?.additionalInformation?.description}
               onChange={updateDescription}
-              placeholder={
-								t("editor.blocks.inputs.payment.settings.additionalInformation.description.placeholder.label")
-							}
+              placeholder={t(
+                'editor.blocks.inputs.payment.settings.additionalInformation.description.placeholder.label'
+              )}
             />
             <TextInput
-              label={t("editor.blocks.inputs.payment.settings.additionalInformation.name.label")}
+              label={t(
+                'editor.blocks.inputs.payment.settings.additionalInformation.name.label'
+              )}
               defaultValue={options?.additionalInformation?.name}
               onChange={updateName}
               placeholder="John Smith"
             />
             <TextInput
-              label={t("editor.blocks.inputs.payment.settings.additionalInformation.email.label")}
+              label={t(
+                'editor.blocks.inputs.payment.settings.additionalInformation.email.label'
+              )}
               defaultValue={options?.additionalInformation?.email}
               onChange={updateEmail}
               placeholder="john@gmail.com"
             />
             <TextInput
-              label={t("editor.blocks.inputs.payment.settings.additionalInformation.phone.label")}
+              label={t(
+                'editor.blocks.inputs.payment.settings.additionalInformation.phone.label'
+              )}
               defaultValue={options?.additionalInformation?.phoneNumber}
               onChange={updatePhoneNumber}
               placeholder="+33XXXXXXXXX"

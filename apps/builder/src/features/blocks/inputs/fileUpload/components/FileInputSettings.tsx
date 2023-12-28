@@ -14,7 +14,7 @@ type Props = {
 }
 
 export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
 
   const handleButtonLabelChange = (button: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, button } })
@@ -40,12 +40,12 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <SwitchWithLabel
-        label={t("editor.blocks.inputs.file.settings.required.label")}
+        label={t('editor.blocks.inputs.file.settings.required.label')}
         initialValue={options?.isRequired ?? defaultFileInputOptions.isRequired}
         onCheckChange={handleRequiredChange}
       />
       <SwitchWithLabel
-        label={t("editor.blocks.inputs.file.settings.allowMultiple.label")}
+        label={t('editor.blocks.inputs.file.settings.allowMultiple.label')}
         initialValue={
           options?.isMultipleAllowed ??
           defaultFileInputOptions.isMultipleAllowed
@@ -53,49 +53,52 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
         onCheckChange={handleMultipleFilesChange}
       />
       <Stack>
-        <FormLabel mb="0">{t("editor.blocks.inputs.settings.placeholder.label")}</FormLabel>
+        <FormLabel mb="0">
+          {t('editor.blocks.inputs.settings.placeholder.label')}
+        </FormLabel>
         <CodeEditor
           lang="html"
           onChange={handlePlaceholderLabelChange}
           defaultValue={
             options?.labels?.placeholder ??
-            	t("editor.blocks.inputs.file.settings.placeholder.label")
+            t('editor.blocks.inputs.file.settings.placeholder.label')
           }
           height={'100px'}
           withVariableButton={false}
         />
       </Stack>
       <TextInput
-        label={t("editor.blocks.inputs.settings.button.label")}
+        label={t('editor.blocks.inputs.settings.button.label')}
         defaultValue={
-          options?.labels?.button ?? t("editor.blocks.inputs.file.settings.upload.label")
+          options?.labels?.button ??
+          t('editor.blocks.inputs.file.settings.upload.label')
         }
         onChange={handleButtonLabelChange}
         withVariableButton={false}
       />
       <TextInput
-        label={t("editor.blocks.inputs.file.settings.clear.label")}
+        label={t('editor.blocks.inputs.file.settings.clear.label')}
         defaultValue={
-          options?.labels?.clear ?? t("editor.blocks.inputs.file.settings.clearButton.label")
+          options?.labels?.clear ??
+          t('editor.blocks.inputs.file.settings.clearButton.label')
         }
         onChange={updateClearButtonLabel}
         withVariableButton={false}
       />
       <TextInput
-        label={t("editor.blocks.inputs.file.settings.skip.label")}
+        label={t('editor.blocks.inputs.file.settings.skip.label')}
         defaultValue={
-          options?.labels?.skip ?? t("editor.blocks.inputs.file.settings.skipButton.label")
+          options?.labels?.skip ??
+          t('editor.blocks.inputs.file.settings.skipButton.label')
         }
         onChange={updateSkipButtonLabel}
         withVariableButton={false}
       />
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          {
-						options?.isMultipleAllowed
-							? t("editor.blocks.inputs.file.settings.saveMultipleUpload.label")
-							: t("editor.blocks.inputs.file.settings.saveSingleUpload.label")
-					}
+          {options?.isMultipleAllowed
+            ? t('editor.blocks.inputs.file.settings.saveMultipleUpload.label')
+            : t('editor.blocks.inputs.file.settings.saveSingleUpload.label')}
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}

@@ -7,11 +7,13 @@ type Props = {
   variableId?: string
 }
 export const DateNodeContent = ({ variableId }: Props) => {
-	const { t } = useTranslate()
-	
+  const { t } = useTranslate()
+
   return variableId ? (
     <WithVariableContent variableId={variableId} />
   ) : (
-    <Text color={'gray.500'}>{t("editor.blocks.inputs.date.placeholder.label")}</Text>
+    <Text color={'gray.500'}>
+      {t('editor.blocks.inputs.date.placeholder.label')}
+    </Text>
   )
 }

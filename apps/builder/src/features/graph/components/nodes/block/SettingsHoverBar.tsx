@@ -17,7 +17,7 @@ type Props = {
 }
 
 export const SettingsHoverBar = ({ blockType, onExpandClick }: Props) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
   const { blockDef } = useForgedBlock(blockType)
   const helpDocUrl = getHelpDocUrl(blockType, blockDef)
   return (
@@ -48,7 +48,7 @@ export const SettingsHoverBar = ({ blockType, onExpandClick }: Props) => {
           href={helpDocUrl}
           isExternal
         >
-          {t("help")}
+          {t('help')}
         </Button>
       )}
     </HStack>

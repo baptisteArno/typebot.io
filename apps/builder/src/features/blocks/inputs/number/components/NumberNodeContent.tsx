@@ -11,13 +11,14 @@ type Props = {
 export const NumberNodeContent = ({
   options: { variableId, labels } = {},
 }: Props) => {
-	const { t } = useTranslate()
-	
+  const { t } = useTranslate()
+
   return variableId ? (
     <WithVariableContent variableId={variableId} />
   ) : (
     <Text color={'gray.500'}>
-      {labels?.placeholder ?? t("editor.blocks.inputs.number.placeholder.label")}
+      {labels?.placeholder ??
+        t('editor.blocks.inputs.number.placeholder.label')}
     </Text>
   )
 }

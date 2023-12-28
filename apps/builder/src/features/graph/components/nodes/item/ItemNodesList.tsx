@@ -193,8 +193,8 @@ const DefaultItemNode = ({
   block: BlockWithItems
   groupId: string
 }) => {
-	const { t } = useTranslate()
-	
+  const { t } = useTranslate()
+
   return (
     <Flex
       px="4"
@@ -208,11 +208,9 @@ const DefaultItemNode = ({
       cursor="not-allowed"
     >
       <Text color="gray.500">
-        {
-					block.type === LogicBlockType.CONDITION
-						? t("editor.blocks.inputs.button.else.label")
-						: t("editor.blocks.inputs.button.default.label")
-				}
+        {block.type === LogicBlockType.CONDITION
+          ? t('editor.blocks.inputs.button.else.label')
+          : t('editor.blocks.inputs.button.default.label')}
       </Text>
       <BlockSourceEndpoint
         source={{

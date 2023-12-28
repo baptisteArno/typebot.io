@@ -9,8 +9,8 @@ type Props = {
 }
 
 export const TextInputNodeContent = ({ options }: Props) => {
-	const { t } = useTranslate()
-	
+  const { t } = useTranslate()
+
   if (options?.variableId)
     return (
       <WithVariableContent
@@ -20,7 +20,8 @@ export const TextInputNodeContent = ({ options }: Props) => {
     )
   return (
     <Text color={'gray.500'} h={options?.isLong ? '100px' : 'auto'}>
-      {options?.labels?.placeholder ?? t("editor.blocks.inputs.text.placeholder.label")}
+      {options?.labels?.placeholder ??
+        t('editor.blocks.inputs.text.placeholder.label')}
     </Text>
   )
 }

@@ -20,10 +20,15 @@ export const getTypebot = publicProcedure
   })
   .input(
     z.object({
-      typebotId: z.string(),
+      typebotId: z
+        .string()
+        .describe(
+          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+        ),
       migrateToLatestVersion: z
         .boolean()
         .optional()
+        .default(false)
         .describe(
           'If enabled, the typebot will be converted to the latest schema version'
         ),

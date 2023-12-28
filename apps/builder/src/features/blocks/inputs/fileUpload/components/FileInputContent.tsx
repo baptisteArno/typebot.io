@@ -8,17 +8,15 @@ type Props = {
 }
 
 export const FileInputContent = ({ options }: Props) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
 
   return options?.variableId ? (
     <WithVariableContent variableId={options.variableId} />
   ) : (
     <Text noOfLines={1} pr="6">
-      {
-				options?.isMultipleAllowed
-					? t("editor.blocks.inputs.file.collectMultiple.label")
-					: t("editor.blocks.inputs.file.collectSingle.label")
-			}
+      {options?.isMultipleAllowed
+        ? t('editor.blocks.inputs.file.collectMultiple.label')
+        : t('editor.blocks.inputs.file.collectSingle.label')}
     </Text>
   )
 }

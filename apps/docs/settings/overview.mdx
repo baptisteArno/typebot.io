@@ -1,0 +1,49 @@
+---
+sidebarTitle: Overview
+title: Settings
+icon: wrench
+---
+
+## General
+
+The general settings represent the general behaviors of your typebot.
+
+<Frame style={{ maxWidth: '400px' }}>
+  <img src="/images/settings/general.png" alt="General" />
+</Frame>
+
+- **Prefill input**: If enabled, the inputs will be automatically pre-filled whenever their associated variable has a value.
+- **Hide query params on bot start**: If enabled, the query params will be hidden when the bot starts.
+- **Remember user**: If enabled, user previous variables will be prefilled and his new answers will override the previous ones.
+
+## Typing emulation
+
+By default, your typebot will emulate a certain typing speed. It is considered a good default as slow as a human typing speed and it's not too fast so that multiple bubbles can be read sequentially.
+
+You can customize this typing speed in the settings:
+
+<Frame style={{ maxWidth: '400px' }}>
+  <img src="/images/settings/typing-emulation.png" alt="Typing emulation" />
+</Frame>
+
+The goal of a typebot is not to pretend that the bot is a real human. So we suggest not setting the typing speed too low.
+
+Sometimes you want to pause the bot for a few seconds between one message and another, regardless of the typing speed. You can achieve this by adding a Code block with the following content:
+
+```js
+return new Promise((res) => setTimeout(res, 3000))
+```
+
+You can tweak `3000` (3s) to your liking.
+
+## Metadata
+
+In the Metadata section, you can customize how the preview card will look if you share your bot URL on social media for example.
+
+You can also add some custom head code to add third-party scripts.
+
+### Google Tag Manager
+
+Allows you to easily add a GTM container to your bot. To find your GTM container ID, go to your GTM dashboard and click on the container you want to use. The ID is displayed in the top right corner.
+
+Note that you should not include it if you are embedding your typebot in an existing website. GTM should be installed in the parent website instead.

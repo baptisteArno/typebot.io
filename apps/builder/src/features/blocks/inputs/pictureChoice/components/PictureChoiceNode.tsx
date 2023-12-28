@@ -13,7 +13,7 @@ type Props = {
 }
 
 export const PictureChoiceNode = ({ block, indices }: Props) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
   const { typebot } = useTypebot()
   const dynamicVariableName = typebot?.variables.find(
     (variable) =>
@@ -24,11 +24,19 @@ export const PictureChoiceNode = ({ block, indices }: Props) => {
     <Stack w="full">
       {block.options?.dynamicItems?.isEnabled && dynamicVariableName ? (
         <Wrap spacing={1}>
-          <Text>{t("editor.blocks.inputs.picture.settings.dynamicVariables.display.label")}</Text>
+          <Text>
+            {t(
+              'editor.blocks.inputs.picture.settings.dynamicVariables.display.label'
+            )}
+          </Text>
           <Tag bg="orange.400" color="white">
             {dynamicVariableName}
           </Tag>
-          <Text>{t("editor.blocks.inputs.picture.settings.dynamicVariables.pictures.label")}</Text>
+          <Text>
+            {t(
+              'editor.blocks.inputs.picture.settings.dynamicVariables.pictures.label'
+            )}
+          </Text>
         </Wrap>
       ) : (
         <ItemNodesList block={block} indices={indices} />

@@ -12,7 +12,7 @@ type Props = {
 }
 
 export const PhoneInputSettings = ({ options, onOptionsChange }: Props) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
   const handlePlaceholderChange = (placeholder: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, placeholder } })
   const handleButtonLabelChange = (button: string) =>
@@ -27,23 +27,24 @@ export const PhoneInputSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <TextInput
-        label={t("editor.blocks.inputs.settings.placeholder.label")}
+        label={t('editor.blocks.inputs.settings.placeholder.label')}
         defaultValue={
           options?.labels?.placeholder ??
-						t("editor.blocks.inputs.phone.placeholder.label")
+          t('editor.blocks.inputs.phone.placeholder.label')
         }
         onChange={handlePlaceholderChange}
       />
       <TextInput
-        label={t("editor.blocks.inputs.settings.button.label")}
+        label={t('editor.blocks.inputs.settings.button.label')}
         defaultValue={
-          options?.labels?.button ?? t("editor.blocks.inputs.settings.buttonText.label")
+          options?.labels?.button ??
+          t('editor.blocks.inputs.settings.buttonText.label')
         }
         onChange={handleButtonLabelChange}
       />
       <Stack>
         <FormLabel mb="0" htmlFor="button">
-          {t("editor.blocks.inputs.phone.settings.defaultCountry.label")}
+          {t('editor.blocks.inputs.phone.settings.defaultCountry.label')}
         </FormLabel>
         <CountryCodeSelect
           onSelect={handleDefaultCountryChange}
@@ -51,16 +52,16 @@ export const PhoneInputSettings = ({ options, onOptionsChange }: Props) => {
         />
       </Stack>
       <TextInput
-        label={t("editor.blocks.inputs.settings.retryMessage.label")}
+        label={t('editor.blocks.inputs.settings.retryMessage.label')}
         defaultValue={
           options?.retryMessageContent ??
-						t("editor.blocks.inputs.phone.settings.retryMessageText.label")
+          t('editor.blocks.inputs.phone.settings.retryMessageText.label')
         }
         onChange={handleRetryMessageChange}
       />
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-					{t("editor.blocks.inputs.settings.saveAnswer.label")}
+          {t('editor.blocks.inputs.settings.saveAnswer.label')}
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}

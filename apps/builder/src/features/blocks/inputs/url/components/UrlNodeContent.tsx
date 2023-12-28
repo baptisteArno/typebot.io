@@ -9,14 +9,14 @@ type Props = {
 }
 
 export const UrlNodeContent = ({ options }: Props) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
 
   return options?.variableId ? (
     <WithVariableContent variableId={options.variableId} />
   ) : (
     <Text color={'gray.500'} w="90%">
       {options?.labels?.placeholder ??
-        t("editor.blocks.inputs.url.placeholder.label")}
+        t('editor.blocks.inputs.url.placeholder.label')}
     </Text>
   )
 }

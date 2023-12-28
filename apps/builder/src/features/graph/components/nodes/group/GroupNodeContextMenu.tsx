@@ -8,7 +8,7 @@ export const GroupNodeContextMenu = ({
 }: {
   groupIndex: number
 }) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
   const { deleteGroup, duplicateGroup } = useTypebot()
 
   const handleDeleteClick = () => deleteGroup(groupIndex)
@@ -18,10 +18,10 @@ export const GroupNodeContextMenu = ({
   return (
     <MenuList>
       <MenuItem icon={<CopyIcon />} onClick={handleDuplicateClick}>
-        {t("duplicate")}
+        {t('duplicate')}
       </MenuItem>
       <MenuItem icon={<TrashIcon />} onClick={handleDeleteClick}>
-        {t("delete")}
+        {t('delete')}
       </MenuItem>
     </MenuList>
   )

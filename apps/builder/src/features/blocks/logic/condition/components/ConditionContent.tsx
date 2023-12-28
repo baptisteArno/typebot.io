@@ -16,7 +16,7 @@ export const ConditionContent = ({
   size = 'sm',
   displaySemicolon,
 }: Props) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
   const comparisonValueBg = useColorModeValue('gray.200', 'gray.700')
   return (
     <Stack>
@@ -25,18 +25,20 @@ export const ConditionContent = ({
         return (
           <Wrap key={comparison.id} spacing={1} noOfLines={1}>
             {idx === 0 && (
-							<Text fontSize={size}>
-								{t("editor.blocks.inputs.button.conditionContent.if.label")}
-							</Text>
-						)}
+              <Text fontSize={size}>
+                {t('editor.blocks.inputs.button.conditionContent.if.label')}
+              </Text>
+            )}
             {idx > 0 && (
               <Text fontSize={size}>
-								{
-									t(
-										`components.dropdownList.item.${condition.logicalOperator?.replace(/\s/g, "")}`, ""
-									)
-								}
-							</Text>
+                {t(
+                  `components.dropdownList.item.${condition.logicalOperator?.replace(
+                    /\s/g,
+                    ''
+                  )}`,
+                  ''
+                )}
+              </Text>
             )}
             {variable?.name && (
               <Tag bgColor="orange.400" color="white" size="sm">
@@ -45,9 +47,9 @@ export const ConditionContent = ({
             )}
             {comparison.comparisonOperator && (
               <Text fontSize={size}>
-                {
-									t(parseComparisonOperatorSymbol(comparison.comparisonOperator))
-								}
+                {t(
+                  parseComparisonOperatorSymbol(comparison.comparisonOperator)
+                )}
               </Text>
             )}
             {comparison?.value &&

@@ -12,8 +12,8 @@ type Props = {
 }
 
 export const ButtonsItemSettings = ({ item, onSettingsChange }: Props) => {
-	const { t } = useTranslate()
-	
+  const { t } = useTranslate()
+
   const updateIsDisplayConditionEnabled = (isEnabled: boolean) =>
     onSettingsChange({
       ...item,
@@ -35,10 +35,10 @@ export const ButtonsItemSettings = ({ item, onSettingsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <SwitchWithRelatedSettings
-        label={t("editor.blocks.inputs.settings.displayCondition.label")}
-        moreInfoContent={
-					t("editor.blocks.inputs.button.buttonSettings.displayCondition.infoText.label")
-				}
+        label={t('editor.blocks.inputs.settings.displayCondition.label')}
+        moreInfoContent={t(
+          'editor.blocks.inputs.button.buttonSettings.displayCondition.infoText.label'
+        )}
         initialValue={item.displayCondition?.isEnabled ?? false}
         onCheckChange={updateIsDisplayConditionEnabled}
       >

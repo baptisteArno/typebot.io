@@ -22,10 +22,10 @@ type Props = {
 } & Omit<IconButtonProps, 'aria-label'>
 
 export const VariablesButton = ({ onSelectVariable, ...props }: Props) => {
+  const { t } = useTranslate()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const popoverRef = useRef<HTMLDivElement>(null)
   const { ref: parentModalRef } = useParentModal()
-	const { t } = useTranslate()
 
   useOutsideClick({
     ref: popoverRef,
@@ -37,9 +37,9 @@ export const VariablesButton = ({ onSelectVariable, ...props }: Props) => {
     <Popover isLazy isOpen={isOpen}>
       <PopoverAnchor>
         <Flex>
-          <Tooltip label={t("variables.insert")}>
+          <Tooltip label={t('variables.button.tooltip')}>
             <IconButton
-              aria-label={t("variables.insert")}
+              aria-label={t('variables.button.tooltip')}
               icon={<UserIcon />}
               pos="relative"
               onClick={onOpen}
@@ -56,7 +56,7 @@ export const VariablesButton = ({ onSelectVariable, ...props }: Props) => {
               onClose()
               if (variable) onSelectVariable(variable)
             }}
-            placeholder={t("variables.search")}
+            placeholder={t('variables.button.searchInput.placeholder')}
             shadow="lg"
             autoFocus
           />

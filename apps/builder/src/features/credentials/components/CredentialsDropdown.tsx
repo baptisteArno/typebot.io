@@ -37,7 +37,7 @@ export const CredentialsDropdown = ({
   credentialsName,
   ...props
 }: Props) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
   const { showToast } = useToast()
   const { currentRole } = useWorkspace()
   const { data, refetch } = trpc.credentials.listCredentials.useQuery({
@@ -64,7 +64,7 @@ export const CredentialsDropdown = ({
   })
 
   const defaultCredentialsLabel =
-    defaultCredentialLabel ?? `${t("select")} ${credentialsName}`
+    defaultCredentialLabel ?? `${t('select')} ${credentialsName}`
 
   const currentCredential = data?.credentials.find(
     (c) => c.id === currentCredentialsId
@@ -93,7 +93,7 @@ export const CredentialsDropdown = ({
         isDisabled={currentRole === 'GUEST'}
         {...props}
       >
-        {t("add")} {credentialsName}
+        {t('add')} {credentialsName}
       </Button>
     )
   }
@@ -142,7 +142,9 @@ export const CredentialsDropdown = ({
               {credentials.name}
               <IconButton
                 icon={<TrashIcon />}
-                aria-label={t("editor.blocks.inputs.payment.settings.credentials.removeCredentials.label")}
+                aria-label={t(
+                  'editor.blocks.inputs.payment.settings.credentials.removeCredentials.label'
+                )}
                 size="xs"
                 onClick={deleteCredentials(credentials.id)}
                 isLoading={isDeleting === credentials.id}
@@ -158,7 +160,9 @@ export const CredentialsDropdown = ({
               icon={<PlusIcon />}
               onClick={onCreateNewClick}
             >
-              {t("editor.blocks.inputs.payment.settings.credentials.connectNew.label")}
+              {t(
+                'editor.blocks.inputs.payment.settings.credentials.connectNew.label'
+              )}
             </MenuItem>
           )}
         </Stack>

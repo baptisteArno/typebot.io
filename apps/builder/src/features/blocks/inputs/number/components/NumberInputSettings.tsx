@@ -11,7 +11,7 @@ type Props = {
 }
 
 export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
   const handlePlaceholderChange = (placeholder: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, placeholder } })
   const handleButtonLabelChange = (button: string) =>
@@ -32,38 +32,39 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <TextInput
-        label={t("editor.blocks.inputs.settings.placeholder.label")}
+        label={t('editor.blocks.inputs.settings.placeholder.label')}
         defaultValue={
           options?.labels?.placeholder ??
-	          t("editor.blocks.inputs.number.placeholder.label")
+          t('editor.blocks.inputs.number.placeholder.label')
         }
         onChange={handlePlaceholderChange}
       />
       <TextInput
-        label={t("editor.blocks.inputs.settings.button.label")}
+        label={t('editor.blocks.inputs.settings.button.label')}
         defaultValue={
-          options?.labels?.button ?? t("editor.blocks.inputs.settings.buttonText.label")
+          options?.labels?.button ??
+          t('editor.blocks.inputs.settings.buttonText.label')
         }
         onChange={handleButtonLabelChange}
       />
       <NumberInput
-        label={t("editor.blocks.inputs.settings.min.label")}
+        label={t('editor.blocks.inputs.settings.min.label')}
         defaultValue={options?.min}
         onValueChange={handleMinChange}
       />
       <NumberInput
-        label={t("editor.blocks.inputs.settings.max.label")}
+        label={t('editor.blocks.inputs.settings.max.label')}
         defaultValue={options?.max}
         onValueChange={handleMaxChange}
       />
       <NumberInput
-        label={t("editor.blocks.inputs.number.settings.step.label")}
+        label={t('editor.blocks.inputs.number.settings.step.label')}
         defaultValue={options?.step}
         onValueChange={handleStepChange}
       />
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          {t("editor.blocks.inputs.settings.saveAnswer.label")}
+          {t('editor.blocks.inputs.settings.saveAnswer.label')}
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}

@@ -6,7 +6,7 @@ import { useTranslate } from '@tolgee/react'
 
 type Props = { indices: BlockIndices }
 export const BlockNodeContextMenu = ({ indices }: Props) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
   const { deleteBlock, duplicateBlock } = useTypebot()
 
   const handleDuplicateClick = () => duplicateBlock(indices)
@@ -16,10 +16,10 @@ export const BlockNodeContextMenu = ({ indices }: Props) => {
   return (
     <MenuList>
       <MenuItem icon={<CopyIcon />} onClick={handleDuplicateClick}>
-        {t("duplicate")}
+        {t('duplicate')}
       </MenuItem>
       <MenuItem icon={<TrashIcon />} onClick={handleDeleteClick}>
-        {t("delete")}
+        {t('delete')}
       </MenuItem>
     </MenuList>
   )

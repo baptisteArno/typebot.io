@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from '../../../zod'
 import { chatwootBlockSchema } from './chatwoot'
 import { googleAnalyticsBlockSchema } from './googleAnalytics'
 import { googleSheetsBlockSchemas } from './googleSheets'

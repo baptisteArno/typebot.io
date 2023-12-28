@@ -11,13 +11,13 @@ type Props = {
 export const PhoneNodeContent = ({
   options: { variableId, labels } = {},
 }: Props) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
 
   return variableId ? (
     <WithVariableContent variableId={variableId} />
   ) : (
     <Text color={'gray.500'}>
-      {labels?.placeholder ?? t("editor.blocks.inputs.phone.placeholder.label")}
+      {labels?.placeholder ?? t('editor.blocks.inputs.phone.placeholder.label')}
     </Text>
   )
 }

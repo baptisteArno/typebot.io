@@ -13,7 +13,7 @@ type Props = {
 }
 
 export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
   const handlePlaceholderChange = (placeholder: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, placeholder } })
   const handleButtonLabelChange = (button: string) =>
@@ -26,28 +26,29 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <SwitchWithLabel
-        label={t("editor.blocks.inputs.text.settings.longText.label")}
+        label={t('editor.blocks.inputs.text.settings.longText.label')}
         initialValue={options?.isLong ?? defaultTextInputOptions.isLong}
         onCheckChange={handleLongChange}
       />
       <TextInput
-        label={t("editor.blocks.inputs.settings.placeholder.label")}
+        label={t('editor.blocks.inputs.settings.placeholder.label')}
         defaultValue={
           options?.labels?.placeholder ??
-	          t("editor.blocks.inputs.text.placeholder.label")
+          t('editor.blocks.inputs.text.placeholder.label')
         }
         onChange={handlePlaceholderChange}
       />
       <TextInput
-        label={t("editor.blocks.inputs.settings.button.label")}
+        label={t('editor.blocks.inputs.settings.button.label')}
         defaultValue={
-          options?.labels?.button ?? t("editor.blocks.inputs.settings.buttonText.label")
+          options?.labels?.button ??
+          t('editor.blocks.inputs.settings.buttonText.label')
         }
         onChange={handleButtonLabelChange}
       />
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-					{t("editor.blocks.inputs.settings.saveAnswer.label")}
+          {t('editor.blocks.inputs.settings.saveAnswer.label')}
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}

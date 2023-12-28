@@ -8,15 +8,15 @@ type Props = {
 }
 
 export const CountryCodeSelect = ({ countryCode, onSelect }: Props) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
   const handleOnChange = (e: ChangeEvent<HTMLSelectElement>) => {
     onSelect(e.target.value)
   }
   return (
     <Select
-      placeholder={
-				t("editor.blocks.inputs.phone.settings.international.placeholder.label")
-			}
+      placeholder={t(
+        'editor.blocks.inputs.phone.settings.international.placeholder.label'
+      )}
       value={countryCode}
       onChange={handleOnChange}
     >

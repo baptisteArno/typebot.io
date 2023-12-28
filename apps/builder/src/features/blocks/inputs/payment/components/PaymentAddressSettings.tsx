@@ -17,8 +17,8 @@ type Props = {
 }
 
 export const PaymentAddressSettings = ({ address, onAddressChange }: Props) => {
-	const { t } = useTranslate()
-	
+  const { t } = useTranslate()
+
   const updateCountry = (country: string) =>
     onAddressChange({
       ...address,
@@ -59,41 +59,55 @@ export const PaymentAddressSettings = ({ address, onAddressChange }: Props) => {
     <Accordion allowToggle>
       <AccordionItem>
         <AccordionButton justifyContent="space-between">
-          {t("editor.blocks.inputs.payment.settings.address.label")}
+          {t('editor.blocks.inputs.payment.settings.address.label')}
           <AccordionIcon />
         </AccordionButton>
         <AccordionPanel py={4} as={Stack} spacing="4">
           <TextInput
-            label={t("editor.blocks.inputs.payment.settings.address.country.label")}
+            label={t(
+              'editor.blocks.inputs.payment.settings.address.country.label'
+            )}
             defaultValue={address?.country ?? ''}
             onChange={updateCountry}
           />
           <TextInput
-            label={t("editor.blocks.inputs.payment.settings.address.line.label", {
-							line: '1'
-						})}
+            label={t(
+              'editor.blocks.inputs.payment.settings.address.line.label',
+              {
+                line: '1',
+              }
+            )}
             defaultValue={address?.line1 ?? ''}
             onChange={updateLine1}
           />
           <TextInput
-            label={t("editor.blocks.inputs.payment.settings.address.line.label", {
-							line: '2'
-						})}
+            label={t(
+              'editor.blocks.inputs.payment.settings.address.line.label',
+              {
+                line: '2',
+              }
+            )}
             defaultValue={address?.line2 ?? ''}
             onChange={updateLine2}
           />
           <TextInput
-            label={t("editor.blocks.inputs.payment.settings.address.city.label")}
+            label={t(
+              'editor.blocks.inputs.payment.settings.address.city.label'
+            )}
             defaultValue={address?.city ?? ''}
             onChange={updateCity}
           />
           <TextInput
-            label={t("editor.blocks.inputs.payment.settings.address.state.label")}
+            label={t(
+              'editor.blocks.inputs.payment.settings.address.state.label'
+            )}
             defaultValue={address?.state ?? ''}
             onChange={updateState}
           />
           <TextInput
-            label={t("editor.blocks.inputs.payment.settings.address.postalCode.label")}
+            label={t(
+              'editor.blocks.inputs.payment.settings.address.postalCode.label'
+            )}
             defaultValue={address?.postalCode ?? ''}
             onChange={updatePostalCode}
           />

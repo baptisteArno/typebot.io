@@ -10,15 +10,15 @@ type Props = {
 }
 
 export const RatingInputContent = ({ variableId, block }: Props) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
 
   return variableId ? (
     <WithVariableContent variableId={variableId} />
   ) : (
     <Text noOfLines={1} pr="6">
-      {t("editor.blocks.inputs.rating.from.label")}{' '}
-			{block.options?.buttonType === 'Icons' ? 1 : 0}{' '}
-			{t("editor.blocks.inputs.rating.to.label")}{' '}
+      {t('editor.blocks.inputs.rating.from.label')}{' '}
+      {block.options?.buttonType === 'Icons' ? 1 : 0}{' '}
+      {t('editor.blocks.inputs.rating.to.label')}{' '}
       {block.options?.length ?? defaultRatingInputOptions.length}
     </Text>
   )

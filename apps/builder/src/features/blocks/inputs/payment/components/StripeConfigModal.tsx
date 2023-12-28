@@ -36,7 +36,7 @@ export const StripeConfigModal = ({
   onNewCredentials,
   onClose,
 }: Props) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
   const { user } = useUser()
   const { workspace } = useWorkspace()
   const [isCreating, setIsCreating] = useState(false)
@@ -124,13 +124,17 @@ export const StripeConfigModal = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{t("editor.blocks.inputs.payment.settings.stripeConfig.title.label")}</ModalHeader>
+        <ModalHeader>
+          {t('editor.blocks.inputs.payment.settings.stripeConfig.title.label')}
+        </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Stack as="form" spacing={4}>
             <TextInput
               isRequired
-              label={t("editor.blocks.inputs.payment.settings.stripeConfig.accountName.label")}
+              label={t(
+                'editor.blocks.inputs.payment.settings.stripeConfig.accountName.label'
+              )}
               onChange={handleNameChange}
               placeholder="Typebot"
               withVariableButton={false}
@@ -138,9 +142,13 @@ export const StripeConfigModal = ({
             />
             <Stack>
               <FormLabel>
-                {t("editor.blocks.inputs.payment.settings.stripeConfig.testKeys.label")}{' '}
+                {t(
+                  'editor.blocks.inputs.payment.settings.stripeConfig.testKeys.label'
+                )}{' '}
                 <MoreInfoTooltip>
-                  {t("editor.blocks.inputs.payment.settings.stripeConfig.testKeys.infoText.label")}
+                  {t(
+                    'editor.blocks.inputs.payment.settings.stripeConfig.testKeys.infoText.label'
+                  )}
                 </MoreInfoTooltip>
               </FormLabel>
               <HStack>
@@ -159,7 +167,11 @@ export const StripeConfigModal = ({
               </HStack>
             </Stack>
             <Stack>
-              <FormLabel>{t("editor.blocks.inputs.payment.settings.stripeConfig.liveKeys.label")}</FormLabel>
+              <FormLabel>
+                {t(
+                  'editor.blocks.inputs.payment.settings.stripeConfig.liveKeys.label'
+                )}
+              </FormLabel>
               <HStack>
                 <FormControl>
                   <TextInput
@@ -181,9 +193,14 @@ export const StripeConfigModal = ({
             </Stack>
 
             <Text>
-              ({t("editor.blocks.inputs.payment.settings.stripeConfig.findKeys.label")}{' '}
+              (
+              {t(
+                'editor.blocks.inputs.payment.settings.stripeConfig.findKeys.label'
+              )}{' '}
               <TextLink href="https://dashboard.stripe.com/apikeys" isExternal>
-								{t("editor.blocks.inputs.payment.settings.stripeConfig.findKeys.here.label")}
+                {t(
+                  'editor.blocks.inputs.payment.settings.stripeConfig.findKeys.here.label'
+                )}
               </TextLink>
               )
             </Text>
@@ -201,7 +218,7 @@ export const StripeConfigModal = ({
             }
             isLoading={isCreating}
           >
-            {t("connect")}
+            {t('connect')}
           </Button>
         </ModalFooter>
       </ModalContent>

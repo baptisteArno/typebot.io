@@ -43,7 +43,9 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
         const newGroup: GroupV6 = {
           id,
           graphCoordinates,
-          title: `${tolgee.t("groups.defaultName")} #${typebot.groups.length + 1}`,
+          title: `${tolgee.t('groups.defaultName')} #${
+            typebot.groups.length + 1
+          }`,
           blocks: [],
         }
         typebot.groups.push(newGroup)
