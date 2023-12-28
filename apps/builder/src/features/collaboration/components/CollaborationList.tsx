@@ -52,9 +52,7 @@ export const CollaborationList = () => {
     typebotId: typebot?.id,
     onError: (e) =>
       showToast({
-        title: t(
-          'editor.headers.shareButton.popover.collaboratorsFetch.error.label'
-        ),
+        title: t('share.button.popover.collaboratorsFetch.error.label'),
         description: e.message,
       }),
   })
@@ -66,9 +64,7 @@ export const CollaborationList = () => {
     typebotId: typebot?.id,
     onError: (e) =>
       showToast({
-        title: t(
-          'editor.headers.shareButton.popover.invitationsFetch.error.label'
-        ),
+        title: t('share.button.popover.invitationsFetch.error.label'),
         description: e.message,
       }),
   })
@@ -140,9 +136,7 @@ export const CollaborationList = () => {
       return showToast({ title: error.name, description: error.message })
     showToast({
       status: 'success',
-      title: t(
-        'editor.headers.shareButton.popover.invitationSent.successToast.label'
-      ),
+      title: t('share.button.popover.invitationSent.successToast.label'),
     })
     setInvitationEmail('')
   }
@@ -152,9 +146,7 @@ export const CollaborationList = () => {
       <HStack as="form" onSubmit={handleInvitationSubmit} px="4" pb="2">
         <Input
           size="sm"
-          placeholder={t(
-            'editor.headers.shareButton.popover.inviteInput.placeholder'
-          )}
+          placeholder={t('share.button.popover.inviteInput.placeholder')}
           name="inviteEmail"
           value={invitationEmail}
           onChange={(e) => setInvitationEmail(e.target.value)}
@@ -176,7 +168,7 @@ export const CollaborationList = () => {
           type="submit"
           isDisabled={!hasFullAccess}
         >
-          {t('editor.headers.shareButton.popover.inviteButton.label')}
+          {t('share.button.popover.inviteButton.label')}
         </Button>
       </HStack>
       {workspace && (
@@ -273,10 +265,10 @@ export const convertCollaborationTypeEnumToReadable = (
 ) => {
   switch (type) {
     case CollaborationType.READ:
-      return t('collaboratorAccessType.view')
+      return t('collaboration.roles.view.label')
     case CollaborationType.WRITE:
-      return t('collaboratorAccessType.edit')
+      return t('collaboration.roles.edit.label')
     case CollaborationType.FULL_ACCESS:
-      return t('collaboratorAccessType.full')
+      return t('collaboration.roles.full.label')
   }
 }

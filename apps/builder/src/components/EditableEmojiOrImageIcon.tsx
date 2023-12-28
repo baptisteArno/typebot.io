@@ -33,9 +33,7 @@ export const EditableEmojiOrImageIcon = ({
     <Popover isLazy>
       {({ onClose }: { onClose: () => void }) => (
         <>
-          <Tooltip
-            label={t('editor.editableTypebotIcon.tooltip.changeIcon.label')}
-          >
+          <Tooltip label={t('editor.header.tooltip.changeIcon.label')}>
             <Flex
               cursor="pointer"
               p="2"

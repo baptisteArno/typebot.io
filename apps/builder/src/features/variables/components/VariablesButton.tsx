@@ -37,13 +37,9 @@ export const VariablesButton = ({ onSelectVariable, ...props }: Props) => {
     <Popover isLazy isOpen={isOpen}>
       <PopoverAnchor>
         <Flex>
-          <Tooltip
-            label={t('components.textInput.variablesButton.tooltip.label')}
-          >
+          <Tooltip label={t('variables.button.tooltip')}>
             <IconButton
-              aria-label={t(
-                'components.textInput.variablesButton.tooltip.label'
-              )}
+              aria-label={t('variables.button.tooltip')}
               icon={<UserIcon />}
               pos="relative"
               onClick={onOpen}
@@ -60,9 +56,7 @@ export const VariablesButton = ({ onSelectVariable, ...props }: Props) => {
               onClose()
               if (variable) onSelectVariable(variable)
             }}
-            placeholder={t(
-              'components.textInput.variablesButton.variablesSearchInput.placeholder.label'
-            )}
+            placeholder={t('variables.button.searchInput.placeholder')}
             shadow="lg"
             autoFocus
           />

@@ -32,7 +32,7 @@ export const SharePopoverContent = () => {
       <CollaborationList />
       <Stack p="4" borderTopWidth={1}>
         <SwitchWithRelatedSettings
-          label={t('editor.headers.shareButton.popover.publicFlow.label')}
+          label={t('share.button.popover.publicFlow.label')}
           initialValue={typebot?.settings.publicShare?.isEnabled ?? false}
           onCheckChange={updateIsPublicShareEnabled}
         >

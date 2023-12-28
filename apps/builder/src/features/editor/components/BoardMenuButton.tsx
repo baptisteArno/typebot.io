@@ -73,13 +73,13 @@ export const BoardMenuButton = (props: FlexProps) => {
         />
         <MenuList>
           <MenuItem icon={<BookIcon />} onClick={redirectToDocumentation}>
-            {t('editor.board.menuButton.documentationItem.label')}
+            {t('editor.graph.menu.documentationItem.label')}
           </MenuItem>
           <MenuItem icon={<SettingsIcon />} onClick={onOpen}>
-            {t('editor.board.menuButton.editorSettingsItem.label')}
+            {t('editor.graph.menu.editorSettingsItem.label')}
           </MenuItem>
           <MenuItem icon={<DownloadIcon />} onClick={downloadFlow}>
-            {t('editor.board.menuButton.exportFlowItem.label')}
+            {t('editor.graph.menu.exportFlowItem.label')}
           </MenuItem>
         </MenuList>
         <EditorSettingsModal isOpen={isOpen} onClose={onClose} />

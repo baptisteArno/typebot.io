@@ -107,7 +107,7 @@ export const IconPicker = ({ onIconSelected }: Props) => {
     <Stack>
       <HStack>
         <TextInput
-          placeholder={t('components.textInput.placeholder.search.label')}
+          placeholder={t('emojiList.searchInput.placeholder')}
           onChange={searchIcon}
           withVariableButton={false}
           debounceTimeout={300}

@@ -185,7 +185,7 @@ const UploadFileContent = ({
         onFileUploaded={onNewUrl}
         colorScheme="blue"
       >
-        {t('editor.editableTypebotIcon.uploadTab.uploadButton.label')}
+        {t('editor.header.uploadTab.uploadButton.label')}
       </UploadButton>
     </Flex>
   )
@@ -200,9 +200,7 @@ const EmbedLinkContent = ({
   return (
     <Stack py="2">
       <TextInput
-        placeholder={t(
-          'editor.editableTypebotIcon.linkTab.searchInputPlaceholder.label'
-        )}
+        placeholder={t('editor.header.linkTab.searchInputPlaceholder.label')}
         onChange={onNewUrl}
         defaultValue={defaultUrl ?? ''}
       />

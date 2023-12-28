@@ -18,10 +18,10 @@ export const ShareTypebotButton = ({ isLoading }: { isLoading: boolean }) => {
         <Button
           isLoading={isLoading}
           leftIcon={<UsersIcon />}
-          aria-label={t('editor.headers.shareButton.popover.ariaLabel')}
+          aria-label={t('share.button.popover.ariaLabel')}
           size="sm"
         >
-          {t('editor.headers.shareButton.label')}
+          {t('share.button.label')}
         </Button>
       </PopoverTrigger>
       <PopoverContent
