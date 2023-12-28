@@ -10,7 +10,8 @@
     "stories:build": "ladle build",
     "dev": "rollup --watch --config rollup.config.js",
     "build": "rollup --config rollup.config.js",
-    "lint": "eslint --fix \"src/**/*.ts*\""
+    "lint": "eslint --fix \"src/**/*.ts*\"",
+    "format:fix": "prettier --write ./src"
   },
   "keywords": [],
   "author": "Baptiste Arnaud",

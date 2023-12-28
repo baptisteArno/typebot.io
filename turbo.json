@@ -5,6 +5,9 @@
     "lint": {
       "outputs": []
     },
+    "format:fix": {
+      "outputs": []
+    },
     "dev": {
       "dependsOn": [
         "^dev",

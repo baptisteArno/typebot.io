@@ -8,7 +8,8 @@
     "start": "dotenv -e ./.env -e ../../.env -- next start",
     "lint": "dotenv -e ./.env -e ../../.env -- next lint",
     "test": "dotenv -e ./.env -e ../../.env -- pnpm playwright test",
-    "test:show-report": "pnpm playwright show-report src/test/reporters"
+    "test:show-report": "pnpm playwright show-report src/test/reporters",
+    "format:fix": "prettier --write ./src"
   },
   "dependencies": {
     "@chakra-ui/anatomy": "2.1.1",
