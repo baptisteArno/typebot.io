@@ -25,7 +25,7 @@ import { isNotDefined } from '@typebot.io/lib'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
 import { isFreePlan } from '@/features/billing/helpers/isFreePlan'
 import { parseTimeSince } from '@/helpers/parseTimeSince'
-import { useTranslate } from '@tolgee/react'
+import { T, useTranslate } from '@tolgee/react'
 import { trpc } from '@/lib/trpc'
 import { useToast } from '@/hooks/useToast'
 import { parseDefaultPublicId } from '../helpers/parseDefaultPublicId'
@@ -156,16 +156,19 @@ export const PublishButton = ({
                 {t('publish.versionWarning.message.aboutToDeploy.label')}
               </Text>
               <Text fontWeight="bold">
-                {t('publish.versionWarning.message.check.label')}{' '}
-                <TextLink
-                  href="https://docs.typebot.io/breaking-changes#typebot-v6"
-                  isExternal
-                >
-                  {t('publish.versionWarning.message.breakingChanges.label')}
-                </TextLink>
+                <T
+                  keyName="publish.versionWarning.checkBreakingChanges"
+                  params={{
+                    link: (
+                      <TextLink
+                        href="https://docs.typebot.io/breaking-changes#typebot-v6"
+                        isExternal
+                      />
+                    ),
+                  }}
+                />
               </Text>
               <Text>
-                {' '}
                 {t('publish.versionWarning.message.testInPreviewMode.label')}
               </Text>
             </Stack>
@@ -178,12 +181,16 @@ export const PublishButton = ({
         label={
           <Stack>
             <Text>{t('publishButton.tooltip.nonPublishedChanges.label')}</Text>
-            <Text fontStyle="italic">
-              {t('publishButton.tooltip.publishedVersion.from.label')}{' '}
-              {publishedTypebot &&
-                parseTimeSince(publishedTypebot.updatedAt.toString())}{' '}
-              {t('publishButton.tooltip.publishedVersion.ago.label')}
-            </Text>
+            {publishedTypebot ? (
+              <Text fontStyle="italic">
+                {t('publishButton.tooltip.publishedVersion.from.label', {
+                  timeSince: parseTimeSince(
+                    t,
+                    publishedTypebot.updatedAt.toString()
+                  ),
+                })}
+              </Text>
+            ) : null}
           </Stack>
         }
         isDisabled={isNotDefined(publishedTypebot) || isPublished}
