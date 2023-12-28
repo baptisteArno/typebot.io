@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react'
 import { CollaborationType } from '@typebot.io/prisma'
 import React from 'react'
-import { convertCollaborationTypeEnumToTranslationKey } from './CollaborationList'
+import { convertCollaborationTypeEnumToReadable } from './CollaborationList'
 import { useTranslate } from '@tolgee/react'
 
 type Props = {
@@ -50,24 +50,16 @@ export const CollaboratorItem = ({
           name={name}
           image={image}
           isGuest={isGuest}
-          tag={t(convertCollaborationTypeEnumToTranslationKey(type))}
+          tag={convertCollaborationTypeEnumToReadable(t, type)}
         />
       </MenuButton>
       {isOwner && (
         <MenuList shadow="lg">
           <MenuItem onClick={handleEditClick}>
-            {t(
-              convertCollaborationTypeEnumToTranslationKey(
-                CollaborationType.WRITE
-              )
-            )}
+            {convertCollaborationTypeEnumToReadable(t, CollaborationType.WRITE)}
           </MenuItem>
           <MenuItem onClick={handleViewClick}>
-            {t(
-              convertCollaborationTypeEnumToTranslationKey(
-                CollaborationType.READ
-              )
-            )}
+            {convertCollaborationTypeEnumToReadable(t, CollaborationType.READ)}
           </MenuItem>
           <MenuItem color="red.500" onClick={onDeleteClick}>
             {t('remove')}

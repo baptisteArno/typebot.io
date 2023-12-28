@@ -166,14 +166,14 @@ export const PublishButton = ({
                   isExternal
                 >
                   {t(
-                    'editor.headers.publishTypebot.versionWarning.breakingChanges.check.label'
+                    'editor.headers.publishTypebot.versionWarning.message.breakingChanges.label'
                   )}
                 </TextLink>
               </Text>
               <Text>
                 {' '}
                 {t(
-                  'editor.headers.publishTypebot.versionWarning.testInPreviewMode.check.label'
+                  'editor.headers.publishTypebot.versionWarning.message.testInPreviewMode.label'
                 )}
               </Text>
             </Stack>

@@ -28,7 +28,7 @@ import { deleteInvitationQuery } from '../queries/deleteInvitationQuery'
 import { updateCollaboratorQuery } from '../queries/updateCollaboratorQuery'
 import { deleteCollaboratorQuery } from '../queries/deleteCollaboratorQuery'
 import { sendInvitationQuery } from '../queries/sendInvitationQuery'
-import { useTranslate } from '@tolgee/react'
+import { TFnType, useTranslate } from '@tolgee/react'
 
 export const CollaborationList = () => {
   const { currentRole, workspace } = useWorkspace()
@@ -188,10 +188,9 @@ export const CollaborationList = () => {
             </Text>
           </HStack>
           <Tag flexShrink={0}>
-            {t(
-              convertCollaborationTypeEnumToTranslationKey(
-                CollaborationType.FULL_ACCESS
-              )
+            {convertCollaborationTypeEnumToReadable(
+              t,
+              CollaborationType.FULL_ACCESS
             )}
           </Tag>
         </Flex>
@@ -252,23 +251,15 @@ const CollaborationTypeMenuButton = ({
         as={Button}
         rightIcon={<ChevronLeftIcon transform={'rotate(-90deg)'} />}
       >
-        {t(convertCollaborationTypeEnumToTranslationKey(type))}
+        {convertCollaborationTypeEnumToReadable(t, type)}
       </MenuButton>
       <MenuList minW={0}>
         <Stack maxH={'35vh'} overflowY="scroll" spacing="0">
           <MenuItem onClick={() => onChange(CollaborationType.READ)}>
-            {t(
-              convertCollaborationTypeEnumToTranslationKey(
-                CollaborationType.READ
-              )
-            )}
+            {convertCollaborationTypeEnumToReadable(t, CollaborationType.READ)}
           </MenuItem>
           <MenuItem onClick={() => onChange(CollaborationType.WRITE)}>
-            {t(
-              convertCollaborationTypeEnumToTranslationKey(
-                CollaborationType.WRITE
-              )
-            )}
+            {convertCollaborationTypeEnumToReadable(t, CollaborationType.WRITE)}
           </MenuItem>
         </Stack>
       </MenuList>
@@ -276,15 +267,16 @@ const CollaborationTypeMenuButton = ({
   )
 }
 
-export const convertCollaborationTypeEnumToTranslationKey = (
+export const convertCollaborationTypeEnumToReadable = (
+  t: TFnType,
   type: CollaborationType
 ) => {
   switch (type) {
     case CollaborationType.READ:
-      return 'collaboratorAccessType.view'
+      return t('collaboratorAccessType.view')
     case CollaborationType.WRITE:
-      return 'collaboratorAccessType.edit'
+      return t('collaboratorAccessType.edit')
     case CollaborationType.FULL_ACCESS:
-      return 'collaboratorAccessType.full'
+      return t('collaboratorAccessType.full')
   }
 }
