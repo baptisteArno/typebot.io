@@ -40,7 +40,7 @@ export const IconPicker = ({ onIconSelected }: Props) => {
     [initialIconColor, selectedColor]
   )
   const [recentIconNames, setRecentIconNames] = useState([])
-	const { t } = useTranslate()
+  const { t } = useTranslate()
 
   useEffect(() => {
     const recentIconNames = localStorage.getItem(localStorageRecentIconNamesKey)
@@ -107,7 +107,7 @@ export const IconPicker = ({ onIconSelected }: Props) => {
     <Stack>
       <HStack>
         <TextInput
-          placeholder={t("components.textInput.placeholder.search.label")}
+          placeholder={t('components.textInput.placeholder.search.label')}
           onChange={searchIcon}
           withVariableButton={false}
           debounceTimeout={300}

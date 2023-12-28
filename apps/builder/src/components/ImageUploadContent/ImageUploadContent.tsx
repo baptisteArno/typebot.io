@@ -175,39 +175,39 @@ const UploadFileContent = ({
   uploadFileProps,
   onNewUrl,
 }: ContentProps & { uploadFileProps: FilePathUploadProps }) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
 
-	return (
-		<Flex justify="center" py="2">
-			<UploadButton
-				fileType="image"
-				filePathProps={uploadFileProps}
-				onFileUploaded={onNewUrl}
-				colorScheme="blue"
-			>
-				{t("editor.editableTypebotIcon.uploadTab.uploadButton.label")}
-			</UploadButton>
-		</Flex>
-	)
+  return (
+    <Flex justify="center" py="2">
+      <UploadButton
+        fileType="image"
+        filePathProps={uploadFileProps}
+        onFileUploaded={onNewUrl}
+        colorScheme="blue"
+      >
+        {t('editor.editableTypebotIcon.uploadTab.uploadButton.label')}
+      </UploadButton>
+    </Flex>
+  )
 }
 
 const EmbedLinkContent = ({
   defaultUrl,
   onNewUrl,
 }: ContentProps & { defaultUrl?: string }) => {
-	const { t } = useTranslate()
-	
-	return (
-		<Stack py="2">
-			<TextInput
-				placeholder={
-					t("editor.editableTypebotIcon.linkTab.searchInputPlaceholder.label")
-				}
-				onChange={onNewUrl}
-				defaultValue={defaultUrl ?? ''}
-			/>
-		</Stack>
-	)
+  const { t } = useTranslate()
+
+  return (
+    <Stack py="2">
+      <TextInput
+        placeholder={t(
+          'editor.editableTypebotIcon.linkTab.searchInputPlaceholder.label'
+        )}
+        onChange={onNewUrl}
+        defaultValue={defaultUrl ?? ''}
+      />
+    </Stack>
+  )
 }
 
 const GiphyContent = ({ onNewUrl }: ContentProps) => (

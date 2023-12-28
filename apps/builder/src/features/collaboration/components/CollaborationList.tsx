@@ -32,7 +32,7 @@ import { useTranslate } from '@tolgee/react'
 
 export const CollaborationList = () => {
   const { currentRole, workspace } = useWorkspace()
-	const { t } = useTranslate()
+  const { t } = useTranslate()
   const { typebot } = useTypebot()
   const [invitationType, setInvitationType] = useState<CollaborationType>(
     CollaborationType.READ
@@ -52,7 +52,9 @@ export const CollaborationList = () => {
     typebotId: typebot?.id,
     onError: (e) =>
       showToast({
-        title: t("editor.headers.shareButton.popover.collaboratorsFetch.error.label"),
+        title: t(
+          'editor.headers.shareButton.popover.collaboratorsFetch.error.label'
+        ),
         description: e.message,
       }),
   })
@@ -64,7 +66,9 @@ export const CollaborationList = () => {
     typebotId: typebot?.id,
     onError: (e) =>
       showToast({
-        title: t("editor.headers.shareButton.popover.invitationsFetch.error.label"),
+        title: t(
+          'editor.headers.shareButton.popover.invitationsFetch.error.label'
+        ),
         description: e.message,
       }),
   })
@@ -135,9 +139,11 @@ export const CollaborationList = () => {
     if (error)
       return showToast({ title: error.name, description: error.message })
     showToast({
-			status: 'success',
-			title: t("editor.headers.shareButton.popover.invitationSent.successToast.label")
-		})
+      status: 'success',
+      title: t(
+        'editor.headers.shareButton.popover.invitationSent.successToast.label'
+      ),
+    })
     setInvitationEmail('')
   }
 
@@ -146,7 +152,9 @@ export const CollaborationList = () => {
       <HStack as="form" onSubmit={handleInvitationSubmit} px="4" pb="2">
         <Input
           size="sm"
-          placeholder={t("editor.headers.shareButton.popover.inviteInput.placeholder")}
+          placeholder={t(
+            'editor.headers.shareButton.popover.inviteInput.placeholder'
+          )}
           name="inviteEmail"
           value={invitationEmail}
           onChange={(e) => setInvitationEmail(e.target.value)}
@@ -168,7 +176,7 @@ export const CollaborationList = () => {
           type="submit"
           isDisabled={!hasFullAccess}
         >
-          {t("editor.headers.shareButton.popover.inviteButton.label")}
+          {t('editor.headers.shareButton.popover.inviteButton.label')}
         </Button>
       </HStack>
       {workspace && (
@@ -181,10 +189,10 @@ export const CollaborationList = () => {
           </HStack>
           <Tag flexShrink={0}>
             {t(
-							convertCollaborationTypeEnumToTranslationKey(
-              	CollaborationType.FULL_ACCESS
-            	)
-						)}
+              convertCollaborationTypeEnumToTranslationKey(
+                CollaborationType.FULL_ACCESS
+              )
+            )}
           </Tag>
         </Flex>
       )}
@@ -234,8 +242,8 @@ const CollaborationTypeMenuButton = ({
   type: CollaborationType
   onChange: (type: CollaborationType) => void
 }) => {
-	const { t } = useTranslate()
-	
+  const { t } = useTranslate()
+
   return (
     <Menu placement="bottom-end">
       <MenuButton
@@ -249,10 +257,18 @@ const CollaborationTypeMenuButton = ({
       <MenuList minW={0}>
         <Stack maxH={'35vh'} overflowY="scroll" spacing="0">
           <MenuItem onClick={() => onChange(CollaborationType.READ)}>
-            {t(convertCollaborationTypeEnumToTranslationKey(CollaborationType.READ))}
+            {t(
+              convertCollaborationTypeEnumToTranslationKey(
+                CollaborationType.READ
+              )
+            )}
           </MenuItem>
           <MenuItem onClick={() => onChange(CollaborationType.WRITE)}>
-            {t(convertCollaborationTypeEnumToTranslationKey(CollaborationType.WRITE))}
+            {t(
+              convertCollaborationTypeEnumToTranslationKey(
+                CollaborationType.WRITE
+              )
+            )}
           </MenuItem>
         </Stack>
       </MenuList>

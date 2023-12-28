@@ -36,7 +36,7 @@ export const CollaboratorItem = ({
   onDeleteClick,
   onChangeCollaborationType,
 }: Props) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
   const hoverBgColor = useColorModeValue('gray.100', 'gray.700')
   const handleEditClick = () =>
     onChangeCollaborationType(CollaborationType.WRITE)
@@ -56,13 +56,21 @@ export const CollaboratorItem = ({
       {isOwner && (
         <MenuList shadow="lg">
           <MenuItem onClick={handleEditClick}>
-            {t(convertCollaborationTypeEnumToTranslationKey(CollaborationType.WRITE))}
+            {t(
+              convertCollaborationTypeEnumToTranslationKey(
+                CollaborationType.WRITE
+              )
+            )}
           </MenuItem>
           <MenuItem onClick={handleViewClick}>
-            {t(convertCollaborationTypeEnumToTranslationKey(CollaborationType.READ))}
+            {t(
+              convertCollaborationTypeEnumToTranslationKey(
+                CollaborationType.READ
+              )
+            )}
           </MenuItem>
           <MenuItem color="red.500" onClick={onDeleteClick}>
-            {t("remove")}
+            {t('remove')}
           </MenuItem>
         </MenuList>
       )}
@@ -83,31 +91,31 @@ export const CollaboratorIdentityContent = ({
   isGuest?: boolean
   email: string
 }) => {
-	const { t } = useTranslate()
-	
-	return (
-		<HStack justifyContent="space-between" maxW="full" py="2" px="4">
-			<HStack minW={0} spacing={3}>
-				<Avatar name={name} src={image} size="sm" />
-				<Stack spacing={0} minW="0">
-					{name && (
-						<Text textAlign="left" fontSize="15px">
-							{name}
-						</Text>
-					)}
-					<Text
-						color="gray.500"
-						fontSize={name ? '14px' : 'inherit'}
-						noOfLines={1}
-					>
-						{email}
-					</Text>
-				</Stack>
-			</HStack>
-			<HStack flexShrink={0}>
-				{isGuest && <Tag color="gray.400">{t("pending")}</Tag>}
-				<Tag>{tag}</Tag>
-			</HStack>
-		</HStack>
-	)
+  const { t } = useTranslate()
+
+  return (
+    <HStack justifyContent="space-between" maxW="full" py="2" px="4">
+      <HStack minW={0} spacing={3}>
+        <Avatar name={name} src={image} size="sm" />
+        <Stack spacing={0} minW="0">
+          {name && (
+            <Text textAlign="left" fontSize="15px">
+              {name}
+            </Text>
+          )}
+          <Text
+            color="gray.500"
+            fontSize={name ? '14px' : 'inherit'}
+            noOfLines={1}
+          >
+            {email}
+          </Text>
+        </Stack>
+      </HStack>
+      <HStack flexShrink={0}>
+        {isGuest && <Tag color="gray.400">{t('pending')}</Tag>}
+        <Tag>{tag}</Tag>
+      </HStack>
+    </HStack>
+  )
 }

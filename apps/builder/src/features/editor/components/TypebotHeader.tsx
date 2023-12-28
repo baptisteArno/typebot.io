@@ -212,10 +212,10 @@ export const TypebotHeader = () => {
             <HStack>
               <Tooltip
                 label={
-									isUndoShortcutTooltipOpen
-										? t("editor.headers.undo.tooltip.label")
-										: t("editor.headers.undoButton.label")
-								}
+                  isUndoShortcutTooltipOpen
+                    ? t('editor.headers.undo.tooltip.label')
+                    : t('editor.headers.undoButton.label')
+                }
                 isOpen={isUndoShortcutTooltipOpen ? true : undefined}
                 hasArrow={isUndoShortcutTooltipOpen}
               >
@@ -223,18 +223,18 @@ export const TypebotHeader = () => {
                   display={['none', 'flex']}
                   icon={<UndoIcon />}
                   size="sm"
-                  aria-label={t("editor.headers.undoButton.label")}
+                  aria-label={t('editor.headers.undoButton.label')}
                   onClick={undo}
                   isDisabled={!canUndo}
                 />
               </Tooltip>
 
-              <Tooltip label={t("editor.headers.redoButton.label")}>
+              <Tooltip label={t('editor.headers.redoButton.label')}>
                 <IconButton
                   display={['none', 'flex']}
                   icon={<RedoIcon />}
                   size="sm"
-                  aria-label={t("editor.headers.redoButton.label")}
+                  aria-label={t('editor.headers.redoButton.label')}
                   onClick={redo}
                   isDisabled={!canRedo}
                 />

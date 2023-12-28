@@ -30,7 +30,7 @@ export const BoardMenuButton = (props: FlexProps) => {
   const { user } = useUser()
   const [isDownloading, setIsDownloading] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
-	const { t } = useTranslate()
+  const { t } = useTranslate()
 
   useEffect(() => {
     if (user && !user.graphNavigation && !query.isFirstBot) onOpen()
@@ -73,13 +73,13 @@ export const BoardMenuButton = (props: FlexProps) => {
         />
         <MenuList>
           <MenuItem icon={<BookIcon />} onClick={redirectToDocumentation}>
-            {t("editor.board.menuButton.documentationItem.label")}
+            {t('editor.board.menuButton.documentationItem.label')}
           </MenuItem>
           <MenuItem icon={<SettingsIcon />} onClick={onOpen}>
-            {t("editor.board.menuButton.editorSettingsItem.label")}
+            {t('editor.board.menuButton.editorSettingsItem.label')}
           </MenuItem>
           <MenuItem icon={<DownloadIcon />} onClick={downloadFlow}>
-						{t("editor.board.menuButton.exportFlowItem.label")}
+            {t('editor.board.menuButton.exportFlowItem.label')}
           </MenuItem>
         </MenuList>
         <EditorSettingsModal isOpen={isOpen} onClose={onClose} />

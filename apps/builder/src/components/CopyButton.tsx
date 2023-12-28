@@ -14,7 +14,7 @@ interface CopyButtonProps extends ButtonProps {
 export const CopyButton = (props: CopyButtonProps) => {
   const { textToCopy, onCopied, ...buttonProps } = props
   const { hasCopied, onCopy, setValue } = useClipboard(textToCopy)
-	const { t } = useTranslate()
+  const { t } = useTranslate()
 
   useEffect(() => {
     setValue(textToCopy)
@@ -29,7 +29,9 @@ export const CopyButton = (props: CopyButtonProps) => {
       }}
       {...buttonProps}
     >
-      {!hasCopied ? props.text?.copy ?? t("copy") : props.text?.copied ?? t("copied")}
+      {!hasCopied
+        ? props.text?.copy ?? t('copy')
+        : props.text?.copied ?? t('copied')}
     </Button>
   )
 }

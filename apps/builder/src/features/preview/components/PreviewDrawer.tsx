@@ -31,7 +31,7 @@ const getDefaultRuntime = (typebotId?: string) => {
 
 export const PreviewDrawer = () => {
   const { typebot, save, isSavingLoading } = useTypebot()
-	const { t } = useTranslate()
+  const { t } = useTranslate()
   const { setRightPanel } = useEditor()
   const { setPreviewingBlock } = useGraph()
   const [width, setWidth] = useState(500)
@@ -105,7 +105,7 @@ export const PreviewDrawer = () => {
                 isLoading={isSavingLoading}
                 variant="ghost"
               >
-                {t("preview.restartButton.label")}
+                {t('preview.restartButton.label')}
               </Button>
             ) : null}
           </HStack>

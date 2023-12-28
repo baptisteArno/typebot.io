@@ -26,14 +26,16 @@ export const EditableEmojiOrImageIcon = ({
   onChangeIcon,
   boxSize,
 }: Props) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
   const bg = useColorModeValue('gray.100', 'gray.700')
 
   return (
     <Popover isLazy>
       {({ onClose }: { onClose: () => void }) => (
         <>
-          <Tooltip label={t("editor.editableTypebotIcon.tooltip.changeIcon.label")}>
+          <Tooltip
+            label={t('editor.editableTypebotIcon.tooltip.changeIcon.label')}
+          >
             <Flex
               cursor="pointer"
               p="2"

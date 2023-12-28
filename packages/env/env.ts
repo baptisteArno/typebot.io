@@ -7,13 +7,6 @@ declare const window: {
 }
 
 const guessNextAuthUrlForVercelPreview = (val: unknown) => {
-  console.log(
-    'guessNextAuthUrlForVercelPreview',
-    val,
-    process.env.VERCEL_ENV,
-    process.env.VERCEL_BUILDER_PROJECT_NAME,
-    process.env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME
-  )
   if (
     (val && typeof val === 'string' && val.length > 0) ||
     process.env.VERCEL_ENV !== 'preview' ||

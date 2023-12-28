@@ -73,7 +73,7 @@ export const PublishButton = ({
     trpc.typebot.publishTypebot.useMutation({
       onError: (error) => {
         showToast({
-          title: t("editor.headers.publishTypebot.error.label"),
+          title: t('editor.headers.publishTypebot.error.label'),
           description: error.message,
         })
         if (error.data?.httpStatus === 403) logOut()
@@ -91,7 +91,7 @@ export const PublishButton = ({
     trpc.typebot.unpublishTypebot.useMutation({
       onError: (error) =>
         showToast({
-          title: t("editor.headers.unpublishTypebot.error.label"),
+          title: t('editor.headers.unpublishTypebot.error.label'),
           description: error.message,
         }),
       onSuccess: () => {
@@ -149,40 +149,56 @@ export const PublishButton = ({
           onConfirm={handlePublishClick}
           onClose={onNewEngineWarningClose}
           confirmButtonColor="blue"
-          title={t("editor.headers.publishTypebot.versionWarning.title.label")}
+          title={t('editor.headers.publishTypebot.versionWarning.title.label')}
           message={
             <Stack spacing="3">
               <Text>
-                {t("editor.headers.publishTypebot.versionWarning.message.aboutToDeploy.label")}
+                {t(
+                  'editor.headers.publishTypebot.versionWarning.message.aboutToDeploy.label'
+                )}
               </Text>
               <Text fontWeight="bold">
-                {t("editor.headers.publishTypebot.versionWarning.message.check.label")}{' '}
+                {t(
+                  'editor.headers.publishTypebot.versionWarning.message.check.label'
+                )}{' '}
                 <TextLink
                   href="https://docs.typebot.io/breaking-changes#typebot-v6"
                   isExternal
                 >
-                  {t("editor.headers.publishTypebot.versionWarning.breakingChanges.check.label")}
+                  {t(
+                    'editor.headers.publishTypebot.versionWarning.breakingChanges.check.label'
+                  )}
                 </TextLink>
               </Text>
               <Text>
                 {' '}
-                {t("editor.headers.publishTypebot.versionWarning.testInPreviewMode.check.label")}
+                {t(
+                  'editor.headers.publishTypebot.versionWarning.testInPreviewMode.check.label'
+                )}
               </Text>
             </Stack>
           }
-          confirmButtonLabel={t("editor.headers.publishButton.label")}
+          confirmButtonLabel={t('editor.headers.publishButton.label')}
         />
       )}
       <Tooltip
         placement="bottom-end"
         label={
           <Stack>
-            <Text>{t("editor.headers.publishButton.tooltip.nonPublishedChanges.label")}</Text>
+            <Text>
+              {t(
+                'editor.headers.publishButton.tooltip.nonPublishedChanges.label'
+              )}
+            </Text>
             <Text fontStyle="italic">
-              {t("editor.headers.publishButton.tooltip.publishedVersion.from.label")}{' '}
+              {t(
+                'editor.headers.publishButton.tooltip.publishedVersion.from.label'
+              )}{' '}
               {publishedTypebot &&
                 parseTimeSince(publishedTypebot.updatedAt.toString())}{' '}
-              {t("editor.headers.publishButton.tooltip.publishedVersion.ago.label")}
+              {t(
+                'editor.headers.publishButton.tooltip.publishedVersion.ago.label'
+              )}
             </Text>
           </Stack>
         }
@@ -204,9 +220,9 @@ export const PublishButton = ({
         >
           {isPublished
             ? typebot?.isClosed
-              ? t("editor.headers.publishButton.closed.label")
-              : t("editor.headers.publishedButton.label")
-            : t("editor.headers.publishButton.label")}
+              ? t('editor.headers.publishButton.closed.label')
+              : t('editor.headers.publishedButton.label')
+            : t('editor.headers.publishButton.label')}
         </Button>
       </Tooltip>
 
@@ -217,27 +233,29 @@ export const PublishButton = ({
             colorScheme={'blue'}
             borderLeftRadius={0}
             icon={<ChevronLeftIcon transform="rotate(-90deg)" />}
-            aria-label={t("editor.headers.publishedButtonDropdown.showMenu.ariaLabel")}
+            aria-label={t(
+              'editor.headers.publishedButtonDropdown.showMenu.ariaLabel'
+            )}
             size="sm"
             isDisabled={isPublishing || isSavingLoading}
           />
           <MenuList>
             {!isPublished && (
               <MenuItem onClick={restorePublishedTypebot}>
-                {t("editor.headers.publishedTypebot.restoreVersion.label")}
+                {t('editor.headers.publishedTypebot.restoreVersion.label')}
               </MenuItem>
             )}
             {!typebot?.isClosed ? (
               <MenuItem onClick={closeTypebot} icon={<LockedIcon />}>
-                {t("editor.headers.publishedButtonDropdown.close.label")}
+                {t('editor.headers.publishedButtonDropdown.close.label')}
               </MenuItem>
             ) : (
               <MenuItem onClick={openTypebot} icon={<UnlockedIcon />}>
-                {t("editor.headers.publishedButtonDropdown.reopen.label")}
+                {t('editor.headers.publishedButtonDropdown.reopen.label')}
               </MenuItem>
             )}
             <MenuItem onClick={unpublishTypebot} icon={<CloudOffIcon />}>
-							{t("editor.headers.publishedButtonDropdown.unpublish.label")}
+              {t('editor.headers.publishedButtonDropdown.unpublish.label')}
             </MenuItem>
           </MenuList>
         </Menu>
