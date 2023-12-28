@@ -44,7 +44,7 @@ export const getHelpDocUrl = (
     case IntegrationBlockType.CHATWOOT:
       return 'https://docs.typebot.io/editor/blocks/integrations/chatwoot'
     case IntegrationBlockType.GOOGLE_ANALYTICS:
-      return 'https://docs.typebot.io/editor/blocks/integrations/ga'
+      return 'https://docs.typebot.io/editor/blocks/integrations/google-analytics'
     case IntegrationBlockType.GOOGLE_SHEETS:
       return 'https://docs.typebot.io/editor/blocks/integrations/google-sheets'
     case IntegrationBlockType.ZAPIER:

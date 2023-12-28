@@ -1,4 +1,6 @@
-export const parseTimeSince = (date: string) => {
+import { TFnType } from '@tolgee/react'
+
+export const parseTimeSince = (t: TFnType, date: string) => {
   const seconds = Math.floor(
     (new Date().getTime() - new Date(date).getTime()) / 1000
   )
@@ -6,23 +8,23 @@ export const parseTimeSince = (date: string) => {
   let interval = seconds / 31536000
 
   if (interval > 1) {
-    return Math.floor(interval) + ' years'
+    return t('timeSince.years', { count: Math.floor(interval) })
   }
   interval = seconds / 2592000
   if (interval > 1) {
-    return Math.floor(interval) + ' months'
+    return t('timeSince.months', { count: Math.floor(interval) })
   }
   interval = seconds / 86400
   if (interval > 1) {
-    return Math.floor(interval) + 'd'
+    return t('timeSince.days', { count: Math.floor(interval) })
   }
   interval = seconds / 3600
   if (interval > 1) {
-    return Math.floor(interval) + 'h'
+    return t('timeSince.hours', { count: Math.floor(interval) })
   }
   interval = seconds / 60
   if (interval > 1) {
-    return Math.floor(interval) + 'm'
+    return t('timeSince.minutes', { count: Math.floor(interval) })
   }
-  return Math.floor(seconds) + 's'
+  return t('timeSince.seconds', { count: Math.floor(interval) })
 }

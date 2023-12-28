@@ -4,8 +4,10 @@ import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSetting
 import { CopyButton } from '@/components/CopyButton'
 import { CollaborationList } from '@/features/collaboration/components/CollaborationList'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useTranslate } from '@tolgee/react'
 
 export const SharePopoverContent = () => {
+  const { t } = useTranslate()
   const { typebot, updateTypebot } = useTypebot()
 
   const currentUrl = `${window.location.origin}/typebots/${typebot?.id}/edit`
@@ -30,7 +32,7 @@ export const SharePopoverContent = () => {
       <CollaborationList />
       <Stack p="4" borderTopWidth={1}>
         <SwitchWithRelatedSettings
-          label={'Make the flow publicly available'}
+          label={t('share.button.popover.publicFlow.label')}
           initialValue={typebot?.settings.publicShare?.isEnabled ?? false}
           onCheckChange={updateIsPublicShareEnabled}
         >

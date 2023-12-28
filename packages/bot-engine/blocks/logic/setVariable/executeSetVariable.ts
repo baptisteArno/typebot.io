@@ -32,6 +32,7 @@ export const executeSetVariable = (
       outgoingEdgeId: block.outgoingEdgeId,
       clientSideActions: [
         {
+          type: 'setVariable',
           setVariable: {
             scriptToExecute,
           },

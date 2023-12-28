@@ -70,6 +70,7 @@ export const executeForgedBlock = async (
       outgoingEdgeId: block.outgoingEdgeId,
       clientSideActions: [
         {
+          type: 'stream',
           expectsDedicatedReply: true,
           stream: true,
         },
@@ -135,6 +136,7 @@ export const executeForgedBlock = async (
     (state.typebotsQueue[0].resultId || !blockDef.isDisabledInPreview)
   ) {
     clientSideActions.push({
+      type: 'codeToExecute',
       codeToExecute: action?.run?.web?.parseFunction({
         options: parsedOptions,
       }),

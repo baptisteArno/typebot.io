@@ -9,15 +9,14 @@ import {
   Tooltip,
 } from '@chakra-ui/react'
 import { AlertIcon } from '@/components/icons'
-import { Workspace } from '@typebot.io/prisma'
-import React from 'react'
+import { WorkspaceInApp } from '@/features/workspace/WorkspaceProvider'
 import { parseNumberWithCommas } from '@typebot.io/lib'
 import { defaultQueryOptions, trpc } from '@/lib/trpc'
 import { getChatsLimit } from '@typebot.io/lib/billing/getChatsLimit'
 import { useTranslate } from '@tolgee/react'
 
 type Props = {
-  workspace: Workspace
+  workspace: WorkspaceInApp
 }
 
 export const UsageProgressBars = ({ workspace }: Props) => {

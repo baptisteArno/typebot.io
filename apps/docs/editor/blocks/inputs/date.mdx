@@ -1,0 +1,50 @@
+---
+title: Date
+icon: calendar
+---
+
+The Date input block allows you to ask your user for a date. You can ask for a specific date or range and include time:
+
+<Tabs>
+  <Tab title="Flow">
+    <Frame>
+      <img
+        src="/images/blocks/inputs/date-flow.png"
+        alt="Date input in flow"
+        className="rounded-lg"
+      />
+    </Frame>
+  </Tab>
+  <Tab title="Bot">
+    <Frame>
+      <img
+        src="/images/blocks/inputs/date-bot.png"
+        alt="Date input in bot"
+        className="rounded-lg"
+      />
+    </Frame>
+  </Tab>
+</Tabs>
+
+The input will use the native date picker depending on the device and browser used to answer the bot. For example on Firefox it looks like this:
+
+<Frame style={{ maxWidth: '400px' }}>
+  <img
+    src="/images/blocks/inputs/date-native-picker.png"
+    alt="Date native picker"
+  />
+</Frame>
+
+## Format
+
+The `Format` setting lets you customize the picked date format. Under the hood, it is done using the [date-fns](https://date-fns.org/) library. You can use any of the [formatting tokens](https://date-fns.org/docs/format) supported by the library.
+
+Here are some examples:
+
+```text
+yyyy-MM-dd
+yyyy-MM-dd HH:mm:ss
+dd/MM/yy
+dd/MM/yyyy HH:mm:ss
+d.MM.yy
+```

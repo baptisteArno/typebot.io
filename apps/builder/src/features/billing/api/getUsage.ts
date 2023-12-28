@@ -18,7 +18,11 @@ export const getUsage = authenticatedProcedure
   })
   .input(
     z.object({
-      workspaceId: z.string(),
+      workspaceId: z
+        .string()
+        .describe(
+          '[Where to find my workspace ID?](../how-to#how-to-find-my-workspaceid)'
+        ),
     })
   )
   .output(z.object({ totalChatsUsed: z.number(), resetsAt: z.date() }))

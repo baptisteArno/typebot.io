@@ -22,6 +22,7 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { EditorSettingsModal } from './EditorSettingsModal'
 import { parseDefaultPublicId } from '@/features/publish/helpers/parseDefaultPublicId'
+import { useTranslate } from '@tolgee/react'
 
 export const BoardMenuButton = (props: FlexProps) => {
   const { query } = useRouter()
@@ -29,6 +30,7 @@ export const BoardMenuButton = (props: FlexProps) => {
   const { user } = useUser()
   const [isDownloading, setIsDownloading] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { t } = useTranslate()
 
   useEffect(() => {
     if (user && !user.graphNavigation && !query.isFirstBot) onOpen()
@@ -71,13 +73,13 @@ export const BoardMenuButton = (props: FlexProps) => {
         />
         <MenuList>
           <MenuItem icon={<BookIcon />} onClick={redirectToDocumentation}>
-            Documentation
+            {t('editor.graph.menu.documentationItem.label')}
           </MenuItem>
           <MenuItem icon={<SettingsIcon />} onClick={onOpen}>
-            Editor settings
+            {t('editor.graph.menu.editorSettingsItem.label')}
           </MenuItem>
           <MenuItem icon={<DownloadIcon />} onClick={downloadFlow}>
-            Export flow
+            {t('editor.graph.menu.exportFlowItem.label')}
           </MenuItem>
         </MenuList>
         <EditorSettingsModal isOpen={isOpen} onClose={onClose} />

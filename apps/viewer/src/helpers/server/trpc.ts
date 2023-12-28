@@ -1,5 +1,5 @@
 import { initTRPC } from '@trpc/server'
-import { OpenApiMeta } from 'trpc-openapi'
+import { OpenApiMeta } from '@lilyrose2798/trpc-openapi'
 import superjson from 'superjson'
 import { Context } from './context'
 import * as Sentry from '@sentry/nextjs'

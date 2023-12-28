@@ -36,8 +36,6 @@ import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integr
 import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
 import { VisitedEdge } from '@typebot.io/prisma'
 import { env } from '@typebot.io/env'
-import { forgedBlocks } from '@typebot.io/forge-schemas'
-import { FunctionToExecute } from '@typebot.io/forge'
 
 type StartParams =
   | ({
@@ -61,7 +59,7 @@ export const startSession = async ({
   startParams,
   initialSessionState,
 }: Props): Promise<
-  Omit<StartChatResponse, 'resultId'> & {
+  Omit<StartChatResponse, 'resultId' | 'isStreamEnabled' | 'sessionId'> & {
     newSessionState: SessionState
     visitedEdges: VisitedEdge[]
     resultId?: string
@@ -427,7 +425,7 @@ const parseStartClientSideAction = (
   )
     return
 
-  return { startPropsToInject }
+  return { type: 'startPropsToInject', startPropsToInject }
 }
 
 const sanitizeAndParseTheme = (
