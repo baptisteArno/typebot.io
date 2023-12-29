@@ -87,11 +87,11 @@ importers:
         specifier: 8.9.3
         version: 8.9.3(react-dom@18.2.0)(react@18.2.0)
       '@tolgee/format-icu':
-        specifier: 5.13.3
-        version: 5.13.3
+        specifier: 5.19.0
+        version: 5.19.0
       '@tolgee/react':
-        specifier: 5.13.3
-        version: 5.13.3(react@18.2.0)
+        specifier: 5.19.0
+        version: 5.19.0(react@18.2.0)
       '@trpc/client':
         specifier: 10.40.0
         version: 10.40.0(@trpc/server@10.40.0)
@@ -7563,27 +7563,27 @@ packages:
       - typescript
     dev: true
 
-  /@tolgee/core@5.13.3:
-    resolution: {integrity: sha512-w6O+HVMOci6zqUPjuvY+o1aNfKxEMaHvKn6Px5aELAhhM0McNxVfHdfGMaTsfYvcQT/1UfjIqctLtTOqKaylsw==}
+  /@tolgee/core@5.19.0:
+    resolution: {integrity: sha512-5zOkxjtxUBEC8xTWtYU5r6bvwHK80s95zH4Y4uLkTcIYTRvn4kY7Z5/Hg5/hyIApA6P8taOrNy/m5favxCmREQ==}
     dev: false
 
-  /@tolgee/format-icu@5.13.3:
-    resolution: {integrity: sha512-TyyeHRskPhVCcaZ1Ns/JKR7scy2AIOYVt+uOZ3wHn9FXN67F1+9Xgf/WnYB6+F47l7Cp719kWnB+uovIoIZNeg==}
+  /@tolgee/format-icu@5.19.0:
+    resolution: {integrity: sha512-hV8MJEFrN90nAWNWHsz7RZy7S/23cIuETZ3exKGlu7m397BTtqT/52eE3bh4lcAeKwvhfF+v/hWT+vZrkNxmwA==}
     dev: false
 
-  /@tolgee/react@5.13.3(react@18.2.0):
-    resolution: {integrity: sha512-zWbQZDsdU0GYqCDVq7YASLiMQkMpMvumjOIcucCHk8VS6EIBxAJq/cSelT+3iUXVNtgGHEe+GGZp1MGune67gA==}
+  /@tolgee/react@5.19.0(react@18.2.0):
+    resolution: {integrity: sha512-FYQyymza7NQ/aqPZqpm/7ErHI7T8QeptbjKDSekomaN6nxifumSzYpuvjhBX+y2o/z1HGdqWZR9sc1IJU0VAwQ==}
     peerDependencies:
       react: ^16.14.0 || ^17.0.1 || ^18.1.0
     dependencies:
-      '@tolgee/web': 5.13.3
+      '@tolgee/web': 5.19.0
       react: 18.2.0
     dev: false
 
-  /@tolgee/web@5.13.3:
-    resolution: {integrity: sha512-CwOyRQl+V21QhGFNWPmSV8L7cIhxsOeU5ivLyO6YXV9LWnTXNxHlS5apDzfXR2RCGbwHHYAsii7bghXn77pNhA==}
+  /@tolgee/web@5.19.0:
+    resolution: {integrity: sha512-a57howuvHz6KGDg8wu6K1KxuBlTUD/AV0+1UKj+2xiFECNQSqwP8/bGO+9Hb9xkNqVxx+l1R13xK9XSZMGXNhw==}
     dependencies:
-      '@tolgee/core': 5.13.3
+      '@tolgee/core': 5.19.0
     dev: false
 
   /@tootallnate/once@2.0.0:
