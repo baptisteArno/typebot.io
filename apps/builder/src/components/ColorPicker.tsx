@@ -14,6 +14,7 @@ import {
   ButtonProps,
   Box,
 } from '@chakra-ui/react'
+import { useTranslate } from '@tolgee/react'
 import React, { ChangeEvent, useState } from 'react'
 import tinyColor from 'tinycolor2'
 
@@ -37,6 +38,7 @@ type Props = {
 }
 
 export const ColorPicker = ({ value, defaultValue, onColorChange }: Props) => {
+  const { t } = useTranslate()
   const [color, setColor] = useState(defaultValue ?? '')
   const displayedValue = value ?? color
 
@@ -54,7 +56,7 @@ export const ColorPicker = ({ value, defaultValue, onColorChange }: Props) => {
     <Popover variant="picker" placement="right" isLazy>
       <PopoverTrigger>
         <Button
-          aria-label={'Pick a color'}
+          aria-label={t('colorPicker.pickColor.ariaLabel')}
           height="22px"
           width="22px"
           padding={0}
@@ -98,7 +100,7 @@ export const ColorPicker = ({ value, defaultValue, onColorChange }: Props) => {
             borderRadius={3}
             marginTop={3}
             placeholder="#2a9d8f"
-            aria-label="Color value"
+            aria-label={t('colorPicker.colorValue.ariaLabel')}
             size="sm"
             value={displayedValue}
             onChange={handleColorChange}
@@ -108,7 +110,7 @@ export const ColorPicker = ({ value, defaultValue, onColorChange }: Props) => {
             color={displayedValue}
             onColorChange={handleColorChange}
           >
-            Advanced picker
+            {t('colorPicker.advancedColors')}
           </NativeColorPicker>
         </PopoverBody>
       </PopoverContent>

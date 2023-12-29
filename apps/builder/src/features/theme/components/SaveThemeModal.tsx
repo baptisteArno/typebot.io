@@ -13,6 +13,7 @@ import {
   ModalOverlay,
 } from '@chakra-ui/react'
 import { createId } from '@paralleldrive/cuid2'
+import { useTranslate } from '@tolgee/react'
 import { ThemeTemplate } from '@typebot.io/schemas'
 import { FormEvent, useRef, useState } from 'react'
 
@@ -31,6 +32,7 @@ export const SaveThemeModal = ({
   selectedTemplate,
   theme,
 }: Props) => {
+  const { t } = useTranslate()
   const { showToast } = useToast()
   const [isSaving, setIsSaving] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -80,15 +82,19 @@ export const SaveThemeModal = ({
     <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={inputRef}>
       <ModalOverlay />
       <ModalContent as="form" onSubmit={updateExistingTemplate}>
-        <ModalHeader>Save theme</ModalHeader>
+        <ModalHeader>
+          {t('theme.sideMenu.template.myTemplates.saveTheme.title')}
+        </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <TextInput
             ref={inputRef}
-            label="Name:"
+            label={t('theme.sideMenu.template.myTemplates.saveTheme.name')}
             defaultValue={selectedTemplate?.name}
             withVariableButton={false}
-            placeholder="My template"
+            placeholder={t(
+              'theme.sideMenu.template.myTemplates.saveTheme.myTemplate'
+            )}
             isRequired
           />
         </ModalBody>
@@ -96,11 +102,11 @@ export const SaveThemeModal = ({
         <ModalFooter as={HStack}>
           {selectedTemplate?.id && (
             <Button isLoading={isSaving} onClick={saveNewTemplate}>
-              Save as new template
+              {t('theme.sideMenu.template.myTemplates.saveTheme.saveAsNew')}
             </Button>
           )}
           <Button type="submit" colorScheme="blue" isLoading={isSaving}>
-            {selectedTemplate?.id ? 'Update' : 'Save'}
+            {selectedTemplate?.id ? t('update') : t('save')}
           </Button>
         </ModalFooter>
       </ModalContent>

@@ -5,6 +5,7 @@ import { ThemeTemplate } from '@typebot.io/schemas'
 import { areThemesEqual } from '../helpers/areThemesEqual'
 import { SaveThemeModal } from './SaveThemeModal'
 import { ThemeTemplateCard } from './ThemeTemplateCard'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   selectedTemplateId: string | undefined
@@ -21,6 +22,7 @@ export const MyTemplates = ({
   workspaceId,
   onTemplateSelect,
 }: Props) => {
+  const { t } = useTranslate()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { data } = trpc.theme.listThemeTemplates.useQuery({
     workspaceId,
@@ -41,7 +43,7 @@ export const MyTemplates = ({
       {(!selectedTemplate ||
         !areThemesEqual(selectedTemplate?.theme, currentTheme)) && (
         <Button leftIcon={<SaveIcon />} onClick={onOpen} colorScheme="blue">
-          Save current theme
+          {t('theme.sideMenu.template.myTemplates.saveTheme')}
         </Button>
       )}
       <SaveThemeModal
