@@ -31,9 +31,18 @@ export const BackgroundSelector = ({
       <Text>{t('theme.sideMenu.global.background')}</Text>
       <RadioButtons
         options={[
-          BackgroundType.COLOR,
-          BackgroundType.IMAGE,
-          BackgroundType.NONE,
+          {
+            label: t('theme.sideMenu.global.background.color.select'),
+            value: BackgroundType.COLOR,
+          },
+          {
+            label: t('theme.sideMenu.global.background.image.select'),
+            value: BackgroundType.IMAGE,
+          },
+          {
+            label: t('theme.sideMenu.global.background.none.select'),
+            value: BackgroundType.NONE,
+          },
         ]}
         value={background?.type ?? defaultBackgroundType}
         onSelect={handleBackgroundTypeChange}

@@ -106,9 +106,7 @@ export const SaveThemeModal = ({
             </Button>
           )}
           <Button type="submit" colorScheme="blue" isLoading={isSaving}>
-            {selectedTemplate?.id
-              ? t('theme.sideMenu.template.myTemplates.saveTheme.updateButton')
-              : t('theme.sideMenu.template.myTemplates.saveTheme.saveButton')}
+            {selectedTemplate?.id ? t('update') : t('save')}
           </Button>
         </ModalFooter>
       </ModalContent>

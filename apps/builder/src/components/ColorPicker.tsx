@@ -56,7 +56,7 @@ export const ColorPicker = ({ value, defaultValue, onColorChange }: Props) => {
     <Popover variant="picker" placement="right" isLazy>
       <PopoverTrigger>
         <Button
-          aria-label={t('components.colorPicker.pickColor.ariaLabel')}
+          aria-label={t('colorPicker.pickColor.ariaLabel')}
           height="22px"
           width="22px"
           padding={0}
@@ -100,7 +100,7 @@ export const ColorPicker = ({ value, defaultValue, onColorChange }: Props) => {
             borderRadius={3}
             marginTop={3}
             placeholder="#2a9d8f"
-            aria-label={t('components.colorPicker.colorValue.ariaLabel')}
+            aria-label={t('colorPicker.colorValue.ariaLabel')}
             size="sm"
             value={displayedValue}
             onChange={handleColorChange}
@@ -110,7 +110,7 @@ export const ColorPicker = ({ value, defaultValue, onColorChange }: Props) => {
             color={displayedValue}
             onColorChange={handleColorChange}
           >
-            {t('components.colorPicker.advancedColors')}
+            {t('colorPicker.advancedColors')}
           </NativeColorPicker>
         </PopoverBody>
       </PopoverContent>
