@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Typebot Docs",
   "openapi": [
     "/openapi-reference/builder.json",
     "/openapi-reference/viewer.json"
