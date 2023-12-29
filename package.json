@@ -13,8 +13,8 @@
     "build:apps": "turbo run build --filter=builder... --filter=viewer...",
     "db:migrate": "cd packages/prisma && pnpm run db:migrate",
     "generate-change-log": "git fetch --all && pnpx gitmoji-changelog",
-    "locales:pull": "tolgee pull ./apps/builder/public/locales",
-    "locales:push": "tolgee push ./apps/builder/public/locales",
+    "locales:pull": "tolgee pull ./apps/builder/src/i18n",
+    "locales:push": "tolgee push ./apps/builder/src/i18n",
     "locales:sync": "tolgee sync './apps/builder/src/**/*.ts?(x)' --continue-on-warning --remove-unused",
     "create-new-block": "cd packages/forge/cli && pnpm start",
     "format:fix": "turbo run format:fix"
