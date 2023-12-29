@@ -32,8 +32,10 @@ export const parseVariables =
     if (!text || text === '') return ''
     const textWithInlineCodeParsed = text.replace(
       inlineCodeRegex,
-      (_full, inlineCodeToEvaluate) =>
-        evaluateInlineCode(inlineCodeToEvaluate, { variables })
+      (_full, inlineCodeToEvaluate) => {
+        const value = evaluateInlineCode(inlineCodeToEvaluate, { variables })
+        return safeStringify(value) ?? value
+      }
     )
 
     return textWithInlineCodeParsed.replace(
