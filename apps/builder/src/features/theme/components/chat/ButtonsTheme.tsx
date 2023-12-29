@@ -10,8 +10,8 @@ type Props = {
 }
 
 export const ButtonsTheme = ({ buttons, onButtonsChange }: Props) => {
-	const { t } = useTranslate()
-	
+  const { t } = useTranslate()
+
   const handleBackgroundChange = (backgroundColor: string) =>
     onButtonsChange({ ...buttons, backgroundColor })
   const handleTextChange = (color: string) =>
@@ -20,14 +20,14 @@ export const ButtonsTheme = ({ buttons, onButtonsChange }: Props) => {
   return (
     <Stack data-testid="buttons-theme">
       <Flex justify="space-between" align="center">
-        <Text>{t("theme.sideMenu.chat.theme.background")}</Text>
+        <Text>{t('theme.sideMenu.chat.theme.background')}</Text>
         <ColorPicker
           value={buttons?.backgroundColor}
           onColorChange={handleBackgroundChange}
         />
       </Flex>
       <Flex justify="space-between" align="center">
-        <Text>{t("theme.sideMenu.chat.theme.text")}</Text>
+        <Text>{t('theme.sideMenu.chat.theme.text')}</Text>
         <ColorPicker value={buttons?.color} onColorChange={handleTextChange} />
       </Flex>
     </Stack>

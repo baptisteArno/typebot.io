@@ -53,7 +53,7 @@ export const GeneralSettings = ({
         onClick={isWorkspaceFreePlan ? onOpen : undefined}
       >
         <FormLabel htmlFor="branding" mb="0" cursor="pointer">
-          {t("theme.sideMenu.global.typebotBrand")}{' '}
+          {t('theme.sideMenu.global.typebotBrand')}{' '}
           {isWorkspaceFreePlan && <LockTag plan={Plan.STARTER} />}
         </FormLabel>
         <Switch

@@ -19,12 +19,16 @@ export const updateWorkspace = authenticatedProcedure
     z.object({
       name: z.string().optional(),
       icon: z.string().optional(),
-      workspaceId: z.string(),
+      workspaceId: z
+        .string()
+        .describe(
+          '[Where to find my workspace ID?](../how-to#how-to-find-my-workspaceid)'
+        ),
     })
   )
   .output(
     z.object({
-      workspace: workspaceSchema,
+      workspace: workspaceSchema.pick({ name: true, icon: true }),
     })
   )
   .mutation(async ({ input: { workspaceId, ...updates }, ctx: { user } }) => {

@@ -13,6 +13,7 @@ export const executeRedirect = (
   return {
     clientSideActions: [
       {
+        type: 'redirect',
         redirect: { url: formattedUrl, isNewTab: block.options.isNewTab },
       },
     ],

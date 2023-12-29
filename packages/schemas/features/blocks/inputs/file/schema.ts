@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from '../../../../zod'
 import { optionBaseSchema, blockBaseSchema } from '../../shared'
 import { InputBlockType } from '../constants'
 
@@ -33,12 +33,20 @@ const fileInputBlockV5Schema = blockBaseSchema.merge(
 )
 
 export const fileInputBlockSchemas = {
-  v5: fileInputBlockV5Schema,
-  v6: fileInputBlockV5Schema.merge(
-    z.object({
-      options: fileInputOptionsSchemas.v6.optional(),
-    })
-  ),
+  v5: fileInputBlockV5Schema.openapi({
+    title: 'File input v5',
+    ref: 'fileInputV5',
+  }),
+  v6: fileInputBlockV5Schema
+    .merge(
+      z.object({
+        options: fileInputOptionsSchemas.v6.optional(),
+      })
+    )
+    .openapi({
+      title: 'File',
+      ref: 'fileInput',
+    }),
 }
 
 const fileInputBlockSchema = z.union([

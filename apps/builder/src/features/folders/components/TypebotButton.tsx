@@ -214,7 +214,7 @@ export const TypebotButton = ({
               </Alert>
             </Stack>
           }
-          confirmButtonLabel="Delete"
+          confirmButtonLabel={t('delete')}
           onConfirm={handleDeleteTypebotClick}
           isOpen={isDeleteOpen}
           onClose={onDeleteClose}

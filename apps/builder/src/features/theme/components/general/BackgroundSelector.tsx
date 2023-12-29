@@ -17,8 +17,8 @@ export const BackgroundSelector = ({
   background,
   onBackgroundChange,
 }: Props) => {
-	const { t } = useTranslate()
-	
+  const { t } = useTranslate()
+
   const handleBackgroundTypeChange = (type: BackgroundType) =>
     background &&
     onBackgroundChange({ ...background, type, content: undefined })
@@ -28,7 +28,7 @@ export const BackgroundSelector = ({
 
   return (
     <Stack spacing={4}>
-      <Text>{t("theme.sideMenu.global.background")}</Text>
+      <Text>{t('theme.sideMenu.global.background')}</Text>
       <RadioButtons
         options={[
           BackgroundType.COLOR,

@@ -10,8 +10,8 @@ type Props = {
 }
 
 export const InputsTheme = ({ inputs, onInputsChange }: Props) => {
-	const { t } = useTranslate()
-	
+  const { t } = useTranslate()
+
   const handleBackgroundChange = (backgroundColor: string) =>
     onInputsChange({ ...inputs, backgroundColor })
   const handleTextChange = (color: string) =>
@@ -22,18 +22,18 @@ export const InputsTheme = ({ inputs, onInputsChange }: Props) => {
   return (
     <Stack data-testid="inputs-theme">
       <Flex justify="space-between" align="center">
-        <Text>{t("theme.sideMenu.chat.theme.background")}</Text>
+        <Text>{t('theme.sideMenu.chat.theme.background')}</Text>
         <ColorPicker
           value={inputs?.backgroundColor}
           onColorChange={handleBackgroundChange}
         />
       </Flex>
       <Flex justify="space-between" align="center">
-        <Text>{t("theme.sideMenu.chat.theme.text")}</Text>
+        <Text>{t('theme.sideMenu.chat.theme.text')}</Text>
         <ColorPicker value={inputs?.color} onColorChange={handleTextChange} />
       </Flex>
       <Flex justify="space-between" align="center">
-        <Text>{t("theme.sideMenu.chat.theme.placeholder")}</Text>
+        <Text>{t('theme.sideMenu.chat.theme.placeholder')}</Text>
         <ColorPicker
           value={inputs?.placeholderColor}
           onColorChange={handlePlaceholderChange}

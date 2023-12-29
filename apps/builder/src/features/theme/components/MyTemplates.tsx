@@ -22,7 +22,7 @@ export const MyTemplates = ({
   workspaceId,
   onTemplateSelect,
 }: Props) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { data } = trpc.theme.listThemeTemplates.useQuery({
     workspaceId,
@@ -43,7 +43,7 @@ export const MyTemplates = ({
       {(!selectedTemplate ||
         !areThemesEqual(selectedTemplate?.theme, currentTheme)) && (
         <Button leftIcon={<SaveIcon />} onClick={onOpen} colorScheme="blue">
-          {t("theme.sideMenu.template.myTemplates.saveTheme")}
+          {t('theme.sideMenu.template.myTemplates.saveTheme')}
         </Button>
       )}
       <SaveThemeModal

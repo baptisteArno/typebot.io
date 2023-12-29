@@ -67,7 +67,7 @@ export const sendMessageV1 = publicProcedure
               ? {
                   type: 'preview',
                   isOnlyRegistering: startParams.isOnlyRegistering ?? false,
-                  isStreamEnabled: startParams.isStreamEnabled,
+                  isStreamEnabled: startParams.isStreamEnabled ?? false,
                   startFrom:
                     'startGroupId' in startParams && startParams.startGroupId
                       ? {
@@ -95,7 +95,7 @@ export const sendMessageV1 = publicProcedure
               : {
                   type: 'live',
                   isOnlyRegistering: startParams.isOnlyRegistering ?? false,
-                  isStreamEnabled: startParams.isStreamEnabled,
+                  isStreamEnabled: startParams.isStreamEnabled ?? false,
                   publicId: startParams.typebot,
                   prefilledVariables: startParams.prefilledVariables,
                   resultId: startParams.resultId,

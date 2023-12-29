@@ -28,22 +28,26 @@ initPostHogIfEnabled()
 const { ToastContainer, toast } = createStandaloneToast(customTheme)
 
 const App = ({ Component, pageProps }: AppProps) => {
+  const router = useRouter()
+  const ssrTolgee = useTolgeeSSR(tolgee, router.locale)
+
   useRouterProgressBar()
-  const { query, pathname, locale } = useRouter()
-  const ssrTolgee = useTolgeeSSR(tolgee, locale)
 
   useEffect(() => {
-    if (pathname.endsWith('/edit') || pathname.endsWith('/analytics')) {
+    if (
+      router.pathname.endsWith('/edit') ||
+      router.pathname.endsWith('/analytics')
+    ) {
       document.body.style.overflow = 'hidden'
       document.body.classList.add('disable-scroll-x-behavior')
     } else {
       document.body.style.overflow = 'auto'
       document.body.classList.remove('disable-scroll-x-behavior')
     }
-  }, [pathname])
+  }, [router.pathname])
 
   useEffect(() => {
-    const newPlan = query.stripe?.toString()
+    const newPlan = router.query.stripe?.toString()
     if (newPlan === Plan.STARTER || newPlan === Plan.PRO)
       toast({
         position: 'top-right',
@@ -51,9 +55,9 @@ const App = ({ Component, pageProps }: AppProps) => {
         title: 'Upgrade success!',
         description: `Workspace upgraded to ${toTitleCase(newPlan)} 🎉`,
       })
-  }, [query.stripe])
+  }, [router.query.stripe])
 
-  const typebotId = query.typebotId?.toString()
+  const typebotId = router.query.typebotId?.toString()
 
   return (
     <>
@@ -65,9 +69,8 @@ const App = ({ Component, pageProps }: AppProps) => {
               <TypebotProvider typebotId={typebotId}>
                 <WorkspaceProvider typebotId={typebotId}>
                   <Component {...pageProps} />
-                  {!pathname.endsWith('edit') && isCloudProdInstance() && (
-                    <SupportBubble />
-                  )}
+                  {!router.pathname.endsWith('edit') &&
+                    isCloudProdInstance() && <SupportBubble />}
                   <NewVersionPopup />
                 </WorkspaceProvider>
               </TypebotProvider>

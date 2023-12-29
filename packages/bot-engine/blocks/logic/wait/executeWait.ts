@@ -24,6 +24,7 @@ export const executeWait = (
       parsedSecondsToWaitFor || block.options?.shouldPause
         ? [
             {
+              type: 'wait',
               wait: { secondsToWaitFor: parsedSecondsToWaitFor ?? 0 },
               expectsDedicatedReply: block.options.shouldPause,
             },

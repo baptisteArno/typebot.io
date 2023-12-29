@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from '../../zod'
 import { blockBaseSchema } from './shared'
 import { startBlockSchema } from './start/schemas'
 import { ItemV6 } from '../items/schema'
@@ -43,6 +43,10 @@ export const blockSchemaV6 = z
       })
     )
   )
+  .openapi({
+    title: 'Block',
+    ref: 'block',
+  })
 export type BlockV6 = z.infer<typeof blockSchemaV6>
 
 const blockSchema = blockSchemaV5.or(blockSchemaV6)

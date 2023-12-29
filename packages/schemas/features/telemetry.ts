@@ -1,5 +1,5 @@
 import { Plan } from '@typebot.io/prisma'
-import { z } from 'zod'
+import { z } from '../zod'
 
 const userEvent = z.object({
   userId: z.string(),

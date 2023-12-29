@@ -22,8 +22,8 @@ export const ThemeTemplates = ({
   currentTheme,
   onTemplateSelect,
 }: Props) => {
-	const { t } = useTranslate()
-	
+  const { t } = useTranslate()
+
   const [selectedTab, setSelectedTab] = useState<Tab>('my-templates')
 
   return (
@@ -35,7 +35,7 @@ export const ThemeTemplates = ({
           colorScheme={selectedTab === 'my-templates' ? 'blue' : 'gray'}
           onClick={() => setSelectedTab('my-templates')}
         >
-          {t("theme.sideMenu.template.myTemplates")}
+          {t('theme.sideMenu.template.myTemplates')}
         </Button>
         <Button
           flex="1"
@@ -43,7 +43,7 @@ export const ThemeTemplates = ({
           colorScheme={selectedTab === 'gallery' ? 'blue' : 'gray'}
           onClick={() => setSelectedTab('gallery')}
         >
-          {t("theme.sideMenu.template.gallery")}
+          {t('theme.sideMenu.template.gallery')}
         </Button>
       </HStack>
       <ThemeTemplatesBody

@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from '../../zod'
 import { Credentials as CredentialsFromPrisma } from '@typebot.io/prisma'
 
 export const blockBaseSchema = z.object({

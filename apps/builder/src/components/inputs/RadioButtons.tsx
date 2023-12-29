@@ -24,8 +24,8 @@ export const RadioButtons = <T extends string>({
   direction = 'row',
   onSelect,
 }: Props<T>) => {
-	const { t } = useTranslate()
-	
+  const { t } = useTranslate()
+
   const { getRootProps, getRadioProps } = useRadioGroup({
     value,
     defaultValue,
@@ -38,14 +38,18 @@ export const RadioButtons = <T extends string>({
     <Stack {...group} direction={direction}>
       {options.map((item) => {
         const radio = getRadioProps({ value: parseValue(item) })
-				const parsedLabel = parseLabel(item)
+        const parsedLabel = parseLabel(item)
         return (
           <RadioCard key={parseValue(item)} {...radio}>
-						{
-							isString(parsedLabel)
-								? t(`components.radioButtons.item.${parsedLabel.replace(/\s/g, "")}`, parsedLabel)
-								: parsedLabel
-						}
+            {isString(parsedLabel)
+              ? t(
+                  `components.radioButtons.item.${parsedLabel.replace(
+                    /\s/g,
+                    ''
+                  )}`,
+                  parsedLabel
+                )
+              : parsedLabel}
           </RadioCard>
         )
       })}
@@ -93,4 +97,5 @@ const parseValue = (item: string | { value: string; label: ReactNode }) =>
 const parseLabel = (item: string | { value: string; label: ReactNode }) =>
   typeof item === 'string' ? item : item.label
 
-const isString = (value: string | ReactNode): value is string => typeof value === 'string'
+const isString = (value: string | ReactNode): value is string =>
+  typeof value === 'string'

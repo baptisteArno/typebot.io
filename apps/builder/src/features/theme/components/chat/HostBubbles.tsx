@@ -11,8 +11,8 @@ type Props = {
 }
 
 export const HostBubbles = ({ hostBubbles, onHostBubblesChange }: Props) => {
-	const { t } = useTranslate()
-	
+  const { t } = useTranslate()
+
   const handleBackgroundChange = (backgroundColor: string) =>
     onHostBubblesChange({ ...hostBubbles, backgroundColor })
   const handleTextChange = (color: string) =>
@@ -21,7 +21,7 @@ export const HostBubbles = ({ hostBubbles, onHostBubblesChange }: Props) => {
   return (
     <Stack data-testid="host-bubbles-theme">
       <Flex justify="space-between" align="center">
-        <Text>{t("theme.sideMenu.chat.theme.background")}</Text>
+        <Text>{t('theme.sideMenu.chat.theme.background')}</Text>
         <ColorPicker
           value={
             hostBubbles?.backgroundColor ??
@@ -31,7 +31,7 @@ export const HostBubbles = ({ hostBubbles, onHostBubblesChange }: Props) => {
         />
       </Flex>
       <Flex justify="space-between" align="center">
-        <Text>{t("theme.sideMenu.chat.theme.text")}</Text>
+        <Text>{t('theme.sideMenu.chat.theme.text')}</Text>
         <ColorPicker
           value={hostBubbles?.color ?? defaultTheme.chat.hostBubbles.color}
           onColorChange={handleTextChange}

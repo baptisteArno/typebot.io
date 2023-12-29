@@ -17,9 +17,22 @@ import { useTypebot } from '../editor/providers/TypebotProvider'
 import { setWorkspaceIdInLocalStorage } from './helpers/setWorkspaceIdInLocalStorage'
 import { parseNewName } from './helpers/parseNewName'
 
+export type WorkspaceInApp = Omit<
+  Workspace,
+  | 'chatsLimitFirstEmailSentAt'
+  | 'chatsLimitSecondEmailSentAt'
+  | 'storageLimitFirstEmailSentAt'
+  | 'storageLimitSecondEmailSentAt'
+  | 'customChatsLimit'
+  | 'customStorageLimit'
+  | 'additionalChatsIndex'
+  | 'additionalStorageIndex'
+  | 'isQuarantined'
+>
+
 const workspaceContext = createContext<{
   workspaces: Pick<Workspace, 'id' | 'name' | 'icon' | 'plan'>[]
-  workspace?: Workspace
+  workspace?: WorkspaceInApp
   currentRole?: WorkspaceRole
   switchWorkspace: (workspaceId: string) => void
   createWorkspace: (name?: string) => Promise<void>

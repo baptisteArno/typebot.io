@@ -29,7 +29,7 @@ export const BackgroundContent = ({
   background,
   onBackgroundContentChange,
 }: BackgroundContentProps) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
   const { typebot } = useTypebot()
   const handleContentChange = (content: string) =>
     onBackgroundContentChange(content)
@@ -38,7 +38,7 @@ export const BackgroundContent = ({
     case BackgroundType.COLOR:
       return (
         <Flex justify="space-between" align="center">
-          <Text>{t("theme.sideMenu.global.background.color")}</Text>
+          <Text>{t('theme.sideMenu.global.background.color')}</Text>
           <ColorPicker
             value={
               background.content ?? defaultTheme.general.background.content
@@ -55,7 +55,7 @@ export const BackgroundContent = ({
             {isNotEmpty(background.content) ? (
               <Image
                 src={background.content}
-                alt={t("theme.sideMenu.global.background.image.alt")}
+                alt={t('theme.sideMenu.global.background.image.alt')}
                 cursor="pointer"
                 _hover={{ filter: 'brightness(.9)' }}
                 transition="filter 200ms"
@@ -64,7 +64,9 @@ export const BackgroundContent = ({
                 objectFit="cover"
               />
             ) : (
-              <Button>{t("theme.sideMenu.global.background.image.button")}</Button>
+              <Button>
+                {t('theme.sideMenu.global.background.image.button')}
+              </Button>
             )}
           </PopoverTrigger>
           <Portal>

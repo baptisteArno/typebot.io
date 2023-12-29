@@ -13,7 +13,7 @@ export const FontSelector = ({
   activeFont,
   onSelectFont,
 }: FontSelectorProps) => {
-	const { t } = useTranslate()
+  const { t } = useTranslate()
   const [currentFont, setCurrentFont] = useState(activeFont)
   const [googleFonts, setGoogleFonts] = useState<string[]>([])
 
@@ -39,7 +39,7 @@ export const FontSelector = ({
 
   return (
     <HStack justify="space-between" align="center">
-      <Text>{t("theme.sideMenu.global.font")}</Text>
+      <Text>{t('theme.sideMenu.global.font')}</Text>
       <AutocompleteInput
         value={activeFont}
         items={googleFonts}

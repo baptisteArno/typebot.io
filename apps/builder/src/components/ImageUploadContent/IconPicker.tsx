@@ -11,6 +11,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { iconNames } from './iconNames'
 import { TextInput } from '../inputs'
 import { ColorPicker } from '../ColorPicker'
+import { useTranslate } from '@tolgee/react'
 
 const batchSize = 200
 
@@ -39,6 +40,7 @@ export const IconPicker = ({ onIconSelected }: Props) => {
     [initialIconColor, selectedColor]
   )
   const [recentIconNames, setRecentIconNames] = useState([])
+  const { t } = useTranslate()
 
   useEffect(() => {
     const recentIconNames = localStorage.getItem(localStorageRecentIconNamesKey)
@@ -105,7 +107,7 @@ export const IconPicker = ({ onIconSelected }: Props) => {
     <Stack>
       <HStack>
         <TextInput
-          placeholder="Search..."
+          placeholder={t('emojiList.searchInput.placeholder')}
           onChange={searchIcon}
           withVariableButton={false}
           debounceTimeout={300}

@@ -7,6 +7,7 @@ import { EmojiSearchableList } from './emoji/EmojiSearchableList'
 import { UnsplashPicker } from './UnsplashPicker'
 import { IconPicker } from './IconPicker'
 import { FilePathUploadProps } from '@/features/upload/api/generateUploadUrl'
+import { useTranslate } from '@tolgee/react'
 
 type Tabs = 'link' | 'upload' | 'giphy' | 'emoji' | 'unsplash' | 'icon'
 
@@ -173,31 +174,39 @@ type ContentProps = { onNewUrl: (url: string) => void }
 const UploadFileContent = ({
   uploadFileProps,
   onNewUrl,
-}: ContentProps & { uploadFileProps: FilePathUploadProps }) => (
-  <Flex justify="center" py="2">
-    <UploadButton
-      fileType="image"
-      filePathProps={uploadFileProps}
-      onFileUploaded={onNewUrl}
-      colorScheme="blue"
-    >
-      Choose an image
-    </UploadButton>
-  </Flex>
-)
+}: ContentProps & { uploadFileProps: FilePathUploadProps }) => {
+  const { t } = useTranslate()
+
+  return (
+    <Flex justify="center" py="2">
+      <UploadButton
+        fileType="image"
+        filePathProps={uploadFileProps}
+        onFileUploaded={onNewUrl}
+        colorScheme="blue"
+      >
+        {t('editor.header.uploadTab.uploadButton.label')}
+      </UploadButton>
+    </Flex>
+  )
+}
 
 const EmbedLinkContent = ({
   defaultUrl,
   onNewUrl,
-}: ContentProps & { defaultUrl?: string }) => (
-  <Stack py="2">
-    <TextInput
-      placeholder={'Paste the image link...'}
-      onChange={onNewUrl}
-      defaultValue={defaultUrl ?? ''}
-    />
-  </Stack>
-)
+}: ContentProps & { defaultUrl?: string }) => {
+  const { t } = useTranslate()
+
+  return (
+    <Stack py="2">
+      <TextInput
+        placeholder={t('editor.header.linkTab.searchInputPlaceholder.label')}
+        onChange={onNewUrl}
+        defaultValue={defaultUrl ?? ''}
+      />
+    </Stack>
+  )
+}
 
 const GiphyContent = ({ onNewUrl }: ContentProps) => (
   <GiphyPicker onSubmit={onNewUrl} />

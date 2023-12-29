@@ -11,6 +11,7 @@ import React from 'react'
 import { EmojiOrImageIcon } from './EmojiOrImageIcon'
 import { ImageUploadContent } from './ImageUploadContent'
 import { FilePathUploadProps } from '@/features/upload/api/generateUploadUrl'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   uploadFileProps: FilePathUploadProps
@@ -25,13 +26,14 @@ export const EditableEmojiOrImageIcon = ({
   onChangeIcon,
   boxSize,
 }: Props) => {
+  const { t } = useTranslate()
   const bg = useColorModeValue('gray.100', 'gray.700')
 
   return (
     <Popover isLazy>
       {({ onClose }: { onClose: () => void }) => (
         <>
-          <Tooltip label="Change icon">
+          <Tooltip label={t('editor.header.tooltip.changeIcon.label')}>
             <Flex
               cursor="pointer"
               p="2"

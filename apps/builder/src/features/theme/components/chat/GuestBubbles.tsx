@@ -11,8 +11,8 @@ type Props = {
 }
 
 export const GuestBubbles = ({ guestBubbles, onGuestBubblesChange }: Props) => {
-	const { t } = useTranslate()
-	
+  const { t } = useTranslate()
+
   const updateBackground = (backgroundColor: string) =>
     onGuestBubblesChange({ ...guestBubbles, backgroundColor })
 
@@ -22,7 +22,7 @@ export const GuestBubbles = ({ guestBubbles, onGuestBubblesChange }: Props) => {
   return (
     <Stack data-testid="guest-bubbles-theme">
       <Flex justify="space-between" align="center">
-        <Text>{t("theme.sideMenu.chat.theme.background")}</Text>
+        <Text>{t('theme.sideMenu.chat.theme.background')}</Text>
         <ColorPicker
           value={
             guestBubbles?.backgroundColor ??
@@ -32,7 +32,7 @@ export const GuestBubbles = ({ guestBubbles, onGuestBubblesChange }: Props) => {
         />
       </Flex>
       <Flex justify="space-between" align="center">
-        <Text>{t("theme.sideMenu.chat.theme.text")}</Text>
+        <Text>{t('theme.sideMenu.chat.theme.text')}</Text>
         <ColorPicker
           value={guestBubbles?.color ?? defaultTheme.chat.guestBubbles.color}
           onColorChange={updateText}
