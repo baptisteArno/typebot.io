@@ -14,7 +14,6 @@ import {
 import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 import { createId } from '@paralleldrive/cuid2'
 import { EventType } from '@typebot.io/schemas/features/events/constants'
-import { tolgee } from '@/lib/tolgee'
 
 const typebotCreateSchemaPick = {
   name: true,
@@ -85,7 +84,7 @@ export const createTypebot = authenticatedProcedure
       data: {
         version: '6',
         workspaceId,
-        name: typebot.name ?? tolgee.t("typebots.defaultName", "My typebot"),
+        name: typebot.name ?? 'My typebot',
         icon: typebot.icon,
         selectedThemeTemplateId: typebot.selectedThemeTemplateId,
         groups: (typebot.groups
