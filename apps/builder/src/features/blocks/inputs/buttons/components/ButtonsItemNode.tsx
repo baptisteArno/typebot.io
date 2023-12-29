@@ -34,7 +34,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
   const { deleteItem, updateItem, createItem } = useTypebot()
   const { openedItemId, setOpenedItemId } = useGraph()
   const [itemValue, setItemValue] = useState(
-    item.content ?? t('editor.blocks.inputs.button.clickToEdit.label')
+    item.content ?? t('blocks.inputs.button.clickToEdit.label')
   )
   const editableRef = useRef<HTMLDivElement | null>(null)
   const ref = useRef<HTMLDivElement | null>(null)
@@ -53,13 +53,13 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (
       e.key === 'Escape' &&
-      itemValue === t('editor.blocks.inputs.button.clickToEdit.label')
+      itemValue === t('blocks.inputs.button.clickToEdit.label')
     )
       deleteItem(indices)
     if (
       e.key === 'Enter' &&
       itemValue !== '' &&
-      itemValue !== t('editor.blocks.inputs.button.clickToEdit.label')
+      itemValue !== t('blocks.inputs.button.clickToEdit.label')
     )
       handlePlusClick()
   }
@@ -95,8 +95,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
             <EditablePreview
               w="full"
               color={
-                item.content !==
-                t('editor.blocks.inputs.button.clickToEdit.label')
+                item.content !== t('blocks.inputs.button.clickToEdit.label')
                   ? 'inherit'
                   : 'gray.500'
               }
@@ -118,9 +117,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
           >
             <Flex bgColor={useColorModeValue('white', 'gray.800')} rounded="md">
               <IconButton
-                aria-label={t(
-                  'editor.blocks.inputs.button.openSettings.ariaLabel'
-                )}
+                aria-label={t('blocks.inputs.button.openSettings.ariaLabel')}
                 icon={<SettingsIcon />}
                 variant="ghost"
                 size="sm"
@@ -140,7 +137,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
             unmountOnExit
           >
             <IconButton
-              aria-label={t('editor.blocks.inputs.button.addItem.ariaLabel')}
+              aria-label={t('blocks.inputs.button.addItem.ariaLabel')}
               icon={<PlusIcon />}
               size="xs"
               shadow="md"

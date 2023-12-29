@@ -209,8 +209,8 @@ const DefaultItemNode = ({
     >
       <Text color="gray.500">
         {block.type === LogicBlockType.CONDITION
-          ? t('editor.blocks.inputs.button.else.label')
-          : t('editor.blocks.inputs.button.default.label')}
+          ? t('blocks.inputs.button.else.label')
+          : t('blocks.inputs.button.default.label')}
       </Text>
       <BlockSourceEndpoint
         source={{

@@ -35,9 +35,9 @@ export const ButtonsItemSettings = ({ item, onSettingsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <SwitchWithRelatedSettings
-        label={t('editor.blocks.inputs.settings.displayCondition.label')}
+        label={t('blocks.inputs.settings.displayCondition.label')}
         moreInfoContent={t(
-          'editor.blocks.inputs.button.buttonSettings.displayCondition.infoText.label'
+          'blocks.inputs.button.buttonSettings.displayCondition.infoText.label'
         )}
         initialValue={item.displayCondition?.isEnabled ?? false}
         onCheckChange={updateIsDisplayConditionEnabled}

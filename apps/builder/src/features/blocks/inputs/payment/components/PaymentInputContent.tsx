@@ -16,12 +16,12 @@ export const PaymentInputContent = ({ block }: Props) => {
   )
     return (
       <Text color="gray.500">
-        {t('editor.blocks.inputs.payment.placeholder.label')}
+        {t('blocks.inputs.payment.placeholder.label')}
       </Text>
     )
   return (
     <Text noOfLines={1} pr="6">
-      {t('editor.blocks.inputs.payment.collect.label')} {block.options.amount}{' '}
+      {t('blocks.inputs.payment.collect.label')} {block.options.amount}{' '}
       {block.options.currency}
     </Text>
   )

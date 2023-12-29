@@ -31,7 +31,7 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <SwitchWithRelatedSettings
-        label={t('editor.blocks.inputs.settings.multipleChoice.label')}
+        label={t('blocks.inputs.settings.multipleChoice.label')}
         initialValue={
           options?.isMultipleChoice ??
           defaultChoiceInputOptions.isMultipleChoice
@@ -39,37 +39,34 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
         onCheckChange={updateIsMultiple}
       >
         <TextInput
-          label={t('editor.blocks.inputs.settings.submitButton.label')}
+          label={t('blocks.inputs.settings.submitButton.label')}
           defaultValue={
-            options?.buttonLabel ??
-            t('editor.blocks.inputs.settings.buttonText.label')
+            options?.buttonLabel ?? t('blocks.inputs.settings.buttonText.label')
           }
           onChange={updateButtonLabel}
         />
       </SwitchWithRelatedSettings>
       <SwitchWithRelatedSettings
-        label={t('editor.blocks.inputs.settings.isSearchable.label')}
+        label={t('blocks.inputs.settings.isSearchable.label')}
         initialValue={
           options?.isSearchable ?? defaultChoiceInputOptions.isSearchable
         }
         onCheckChange={updateIsSearchable}
       >
         <TextInput
-          label={t('editor.blocks.inputs.settings.input.placeholder.label')}
+          label={t('blocks.inputs.settings.input.placeholder.label')}
           defaultValue={
             options?.searchInputPlaceholder ??
-            t('editor.blocks.inputs.settings.input.filterOptions.label')
+            t('blocks.inputs.settings.input.filterOptions.label')
           }
           onChange={updateSearchInputPlaceholder}
         />
       </SwitchWithRelatedSettings>
       <FormControl>
         <FormLabel>
-          {t('editor.blocks.inputs.button.settings.dynamicData.label')}{' '}
+          {t('blocks.inputs.button.settings.dynamicData.label')}{' '}
           <MoreInfoTooltip>
-            {t(
-              'editor.blocks.inputs.button.settings.dynamicData.infoText.label'
-            )}
+            {t('blocks.inputs.button.settings.dynamicData.infoText.label')}
           </MoreInfoTooltip>
         </FormLabel>
         <VariableSearchInput
@@ -79,7 +76,7 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
       </FormControl>
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          {t('editor.blocks.inputs.settings.saveAnswer.label')}
+          {t('blocks.inputs.settings.saveAnswer.label')}
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}

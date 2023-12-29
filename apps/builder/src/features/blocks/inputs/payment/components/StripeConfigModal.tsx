@@ -125,7 +125,7 @@ export const StripeConfigModal = ({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          {t('editor.blocks.inputs.payment.settings.stripeConfig.title.label')}
+          {t('blocks.inputs.payment.settings.stripeConfig.title.label')}
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -133,7 +133,7 @@ export const StripeConfigModal = ({
             <TextInput
               isRequired
               label={t(
-                'editor.blocks.inputs.payment.settings.stripeConfig.accountName.label'
+                'blocks.inputs.payment.settings.stripeConfig.accountName.label'
               )}
               onChange={handleNameChange}
               placeholder="Typebot"
@@ -143,11 +143,11 @@ export const StripeConfigModal = ({
             <Stack>
               <FormLabel>
                 {t(
-                  'editor.blocks.inputs.payment.settings.stripeConfig.testKeys.label'
+                  'blocks.inputs.payment.settings.stripeConfig.testKeys.label'
                 )}{' '}
                 <MoreInfoTooltip>
                   {t(
-                    'editor.blocks.inputs.payment.settings.stripeConfig.testKeys.infoText.label'
+                    'blocks.inputs.payment.settings.stripeConfig.testKeys.infoText.label'
                   )}
                 </MoreInfoTooltip>
               </FormLabel>
@@ -169,7 +169,7 @@ export const StripeConfigModal = ({
             <Stack>
               <FormLabel>
                 {t(
-                  'editor.blocks.inputs.payment.settings.stripeConfig.liveKeys.label'
+                  'blocks.inputs.payment.settings.stripeConfig.liveKeys.label'
                 )}
               </FormLabel>
               <HStack>
@@ -193,13 +193,10 @@ export const StripeConfigModal = ({
             </Stack>
 
             <Text>
-              (
-              {t(
-                'editor.blocks.inputs.payment.settings.stripeConfig.findKeys.label'
-              )}{' '}
+              ({t('blocks.inputs.payment.settings.stripeConfig.findKeys.label')}{' '}
               <TextLink href="https://dashboard.stripe.com/apikeys" isExternal>
                 {t(
-                  'editor.blocks.inputs.payment.settings.stripeConfig.findKeys.here.label'
+                  'blocks.inputs.payment.settings.stripeConfig.findKeys.here.label'
                 )}
               </TextLink>
               )

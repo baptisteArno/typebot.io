@@ -16,7 +16,6 @@ import {
 import { ChevronLeftIcon } from '@/components/icons'
 import React, { ReactNode } from 'react'
 import { MoreInfoTooltip } from './MoreInfoTooltip'
-import { useTranslate } from '@tolgee/react'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Props<T extends readonly any[]> = {
@@ -44,7 +43,6 @@ export const DropdownList = <T extends readonly any[]>({
   moreInfoTooltip,
   ...props
 }: Props<T> & ButtonProps) => {
-  const { t } = useTranslate()
   const handleMenuItemClick = (operator: T[number]) => () => {
     onItemSelect(operator)
   }
@@ -90,10 +88,7 @@ export const DropdownList = <T extends readonly any[]>({
                   textOverflow="ellipsis"
                   onClick={handleMenuItemClick(item)}
                 >
-                  {t(
-                    `components.dropdownList.item.${item.replace?.(/\s/g, '')}`,
-                    item.toString()
-                  )}
+                  {item}
                 </MenuItem>
               ))}
             </Stack>

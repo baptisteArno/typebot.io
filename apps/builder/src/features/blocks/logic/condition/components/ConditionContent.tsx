@@ -26,19 +26,11 @@ export const ConditionContent = ({
           <Wrap key={comparison.id} spacing={1} noOfLines={1}>
             {idx === 0 && (
               <Text fontSize={size}>
-                {t('editor.blocks.inputs.button.conditionContent.if.label')}
+                {t('blocks.inputs.button.conditionContent.if.label')}
               </Text>
             )}
             {idx > 0 && (
-              <Text fontSize={size}>
-                {t(
-                  `components.dropdownList.item.${condition.logicalOperator?.replace(
-                    /\s/g,
-                    ''
-                  )}`,
-                  ''
-                )}
-              </Text>
+              <Text fontSize={size}>{condition.logicalOperator ?? ''}</Text>
             )}
             {variable?.name && (
               <Tag bgColor="orange.400" color="white" size="sm">
@@ -47,9 +39,7 @@ export const ConditionContent = ({
             )}
             {comparison.comparisonOperator && (
               <Text fontSize={size}>
-                {t(
-                  parseComparisonOperatorSymbol(comparison.comparisonOperator)
-                )}
+                {parseComparisonOperatorSymbol(comparison.comparisonOperator)}
               </Text>
             )}
             {comparison?.value &&
@@ -74,28 +64,28 @@ const parseComparisonOperatorSymbol = (
 ): string => {
   switch (operator) {
     case ComparisonOperators.CONTAINS:
-      return 'components.dropdownList.item.contains'
+      return 'contains'
     case ComparisonOperators.EQUAL:
       return '='
     case ComparisonOperators.GREATER:
       return '>'
     case ComparisonOperators.IS_SET:
-      return 'components.dropdownList.item.isset'
+      return 'is set'
     case ComparisonOperators.LESS:
       return '<'
     case ComparisonOperators.NOT_EQUAL:
       return '!='
     case ComparisonOperators.ENDS_WITH:
-      return 'components.dropdownList.item.endswith'
+      return 'ends with'
     case ComparisonOperators.STARTS_WITH:
-      return 'components.dropdownList.item.startswith'
+      return 'starts with'
     case ComparisonOperators.IS_EMPTY:
-      return 'components.dropdownList.item.isempty'
+      return 'is empty'
     case ComparisonOperators.NOT_CONTAINS:
-      return 'components.dropdownList.item.notcontains'
+      return 'not contains'
     case ComparisonOperators.MATCHES_REGEX:
-      return 'components.dropdownList.item.matches'
+      return 'matches'
     case ComparisonOperators.NOT_MATCH_REGEX:
-      return 'components.dropdownList.item.notmatches'
+      return 'not matches'
   }
 }

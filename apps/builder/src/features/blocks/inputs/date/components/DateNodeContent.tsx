@@ -12,8 +12,6 @@ export const DateNodeContent = ({ variableId }: Props) => {
   return variableId ? (
     <WithVariableContent variableId={variableId} />
   ) : (
-    <Text color={'gray.500'}>
-      {t('editor.blocks.inputs.date.placeholder.label')}
-    </Text>
+    <Text color={'gray.500'}>{t('blocks.inputs.date.placeholder.label')}</Text>
   )
 }

@@ -25,16 +25,14 @@ export const PictureChoiceNode = ({ block, indices }: Props) => {
       {block.options?.dynamicItems?.isEnabled && dynamicVariableName ? (
         <Wrap spacing={1}>
           <Text>
-            {t(
-              'editor.blocks.inputs.picture.settings.dynamicVariables.display.label'
-            )}
+            {t('blocks.inputs.picture.settings.dynamicVariables.display.label')}
           </Text>
           <Tag bg="orange.400" color="white">
             {dynamicVariableName}
           </Tag>
           <Text>
             {t(
-              'editor.blocks.inputs.picture.settings.dynamicVariables.pictures.label'
+              'blocks.inputs.picture.settings.dynamicVariables.pictures.label'
             )}
           </Text>
         </Wrap>

@@ -22,15 +22,11 @@ export const ButtonsBlockNode = ({ block, indices }: Props) => {
     <Stack w="full">
       {block.options?.dynamicVariableId ? (
         <Wrap spacing={1}>
-          <Text>
-            {t('editor.blocks.inputs.button.variables.display.label')}
-          </Text>
+          <Text>{t('blocks.inputs.button.variables.display.label')}</Text>
           <Tag bg="orange.400" color="white">
             {dynamicVariableName}
           </Tag>
-          <Text>
-            {t('editor.blocks.inputs.button.variables.buttons.label')}
-          </Text>
+          <Text>{t('blocks.inputs.button.variables.buttons.label')}</Text>
         </Wrap>
       ) : (
         <ItemNodesList block={block} indices={indices} />

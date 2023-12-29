@@ -65,7 +65,7 @@ export const PictureChoiceItemSettings = ({
     <Stack spacing={4}>
       <HStack>
         <Text fontWeight="medium">
-          {t('editor.blocks.inputs.picture.itemSettings.image.label')}
+          {t('blocks.inputs.picture.itemSettings.image.label')}
         </Text>
         <Popover isLazy>
           {({ onClose }) => (
@@ -73,12 +73,8 @@ export const PictureChoiceItemSettings = ({
               <PopoverTrigger>
                 <Button size="sm">
                   {item.pictureSrc
-                    ? t(
-                        'editor.blocks.inputs.picture.itemSettings.image.change.label'
-                      )
-                    : t(
-                        'editor.blocks.inputs.picture.itemSettings.image.pick.label'
-                      )}
+                    ? t('blocks.inputs.picture.itemSettings.image.change.label')
+                    : t('blocks.inputs.picture.itemSettings.image.pick.label')}
                 </Button>
               </PopoverTrigger>
               <PopoverContent p="4" w="500px">
@@ -102,17 +98,17 @@ export const PictureChoiceItemSettings = ({
         </Popover>
       </HStack>
       <TextInput
-        label={t('editor.blocks.inputs.picture.itemSettings.title.label')}
+        label={t('blocks.inputs.picture.itemSettings.title.label')}
         defaultValue={item.title}
         onChange={updateTitle}
       />
       <Textarea
-        label={t('editor.blocks.inputs.settings.description.label')}
+        label={t('blocks.inputs.settings.description.label')}
         defaultValue={item.description}
         onChange={updateDescription}
       />
       <SwitchWithRelatedSettings
-        label={t('editor.blocks.inputs.settings.displayCondition.label')}
+        label={t('blocks.inputs.settings.displayCondition.label')}
         initialValue={item.displayCondition?.isEnabled ?? false}
         onCheckChange={updateIsDisplayConditionEnabled}
       >

@@ -143,7 +143,7 @@ export const CredentialsDropdown = ({
               <IconButton
                 icon={<TrashIcon />}
                 aria-label={t(
-                  'editor.blocks.inputs.payment.settings.credentials.removeCredentials.label'
+                  'blocks.inputs.payment.settings.credentials.removeCredentials.label'
                 )}
                 size="xs"
                 onClick={deleteCredentials(credentials.id)}
@@ -160,9 +160,7 @@ export const CredentialsDropdown = ({
               icon={<PlusIcon />}
               onClick={onCreateNewClick}
             >
-              {t(
-                'editor.blocks.inputs.payment.settings.credentials.connectNew.label'
-              )}
+              {t('blocks.inputs.payment.settings.credentials.connectNew.label')}
             </MenuItem>
           )}
         </Stack>

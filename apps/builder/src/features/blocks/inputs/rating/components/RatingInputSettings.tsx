@@ -55,7 +55,7 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
     <Stack spacing={4}>
       <Stack>
         <FormLabel mb="0" htmlFor="button">
-          {t('editor.blocks.inputs.rating.settings.maximum.label')}
+          {t('blocks.inputs.rating.settings.maximum.label')}
         </FormLabel>
         <DropdownList
           onItemSelect={handleLengthChange}
@@ -66,24 +66,20 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
 
       <Stack>
         <FormLabel mb="0" htmlFor="button">
-          {t('editor.blocks.inputs.rating.settings.type.label')}
+          {t('blocks.inputs.rating.settings.type.label')}
         </FormLabel>
         <DropdownList
           onItemSelect={handleTypeChange}
           items={['Icons', 'Numbers'] as const}
           currentItem={
-            options?.buttonType ??
-            (t(
-              'components.dropdownList.item.Numbers',
-              defaultRatingInputOptions.buttonType
-            ) as 'Numbers')
+            options?.buttonType ?? defaultRatingInputOptions.buttonType
           }
         />
       </Stack>
 
       {options?.buttonType === 'Icons' && (
         <SwitchWithLabel
-          label={t('editor.blocks.inputs.rating.settings.customIcon.label')}
+          label={t('blocks.inputs.rating.settings.customIcon.label')}
           initialValue={
             options?.customIcon?.isEnabled ??
             defaultRatingInputOptions.customIcon.isEnabled
@@ -93,53 +89,52 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
       )}
       {options?.buttonType === 'Icons' && options.customIcon?.isEnabled && (
         <TextInput
-          label={t('editor.blocks.inputs.rating.settings.iconSVG.label')}
+          label={t('blocks.inputs.rating.settings.iconSVG.label')}
           defaultValue={options.customIcon.svg}
           onChange={handleIconSvgChange}
           placeholder="<svg>...</svg>"
         />
       )}
       <TextInput
-        label={t('editor.blocks.inputs.rating.settings.rateLabel.label', {
+        label={t('blocks.inputs.rating.settings.rateLabel.label', {
           rate: options?.buttonType === 'Icons' ? '1' : '0',
         })}
         defaultValue={options?.labels?.left}
         onChange={handleLeftLabelChange}
         placeholder={t(
-          'editor.blocks.inputs.rating.settings.notLikely.placeholder.label'
+          'blocks.inputs.rating.settings.notLikely.placeholder.label'
         )}
       />
       <TextInput
-        label={t('editor.blocks.inputs.rating.settings.rateLabel.label', {
+        label={t('blocks.inputs.rating.settings.rateLabel.label', {
           rate: length,
         })}
         defaultValue={options?.labels?.right}
         onChange={handleRightLabelChange}
         placeholder={t(
-          'editor.blocks.inputs.rating.settings.extremelyLikely.placeholder.label'
+          'blocks.inputs.rating.settings.extremelyLikely.placeholder.label'
         )}
       />
       <SwitchWithLabel
-        label={t('editor.blocks.inputs.rating.settings.oneClickSubmit.label')}
+        label={t('blocks.inputs.rating.settings.oneClickSubmit.label')}
         moreInfoContent={t(
-          'editor.blocks.inputs.rating.settings.oneClickSubmit.infoText.label'
+          'blocks.inputs.rating.settings.oneClickSubmit.infoText.label'
         )}
         initialValue={isOneClickSubmitEnabled}
         onCheckChange={handleOneClickSubmitChange}
       />
       {!isOneClickSubmitEnabled && (
         <TextInput
-          label={t('editor.blocks.inputs.settings.button.label')}
+          label={t('blocks.inputs.settings.button.label')}
           defaultValue={
-            options?.labels?.button ??
-            t('editor.blocks.inputs.settings.buttonText.label')
+            options?.labels?.button ?? defaultRatingInputOptions.labels.button
           }
           onChange={handleButtonLabelChange}
         />
       )}
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          {t('editor.blocks.inputs.settings.saveAnswer.label')}
+          {t('blocks.inputs.settings.saveAnswer.label')}
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}

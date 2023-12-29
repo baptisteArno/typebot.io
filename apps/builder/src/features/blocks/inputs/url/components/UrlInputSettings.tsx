@@ -3,6 +3,7 @@ import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { useTranslate } from '@tolgee/react'
 import { UrlInputBlock, Variable } from '@typebot.io/schemas'
+import { defaultUrlInputOptions } from '@typebot.io/schemas/features/blocks/inputs/url/constants'
 import React from 'react'
 
 type Props = {
@@ -24,32 +25,31 @@ export const UrlInputSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <TextInput
-        label={t('editor.blocks.inputs.settings.placeholder.label')}
+        label={t('blocks.inputs.settings.placeholder.label')}
         defaultValue={
           options?.labels?.placeholder ??
-          t('editor.blocks.inputs.url.placeholder.label')
+          defaultUrlInputOptions.labels.placeholder
         }
         onChange={handlePlaceholderChange}
       />
       <TextInput
-        label={t('editor.blocks.inputs.settings.button.label')}
+        label={t('blocks.inputs.settings.button.label')}
         defaultValue={
-          options?.labels?.button ??
-          t('editor.blocks.inputs.settings.buttonText.label')
+          options?.labels?.button ?? defaultUrlInputOptions.labels.button
         }
         onChange={handleButtonLabelChange}
       />
       <TextInput
-        label={t('editor.blocks.inputs.settings.retryMessage.label')}
+        label={t('blocks.inputs.settings.retryMessage.label')}
         defaultValue={
           options?.retryMessageContent ??
-          t('editor.blocks.inputs.url.settings.retryMessageText.label')
+          defaultUrlInputOptions.retryMessageContent
         }
         onChange={handleRetryMessageChange}
       />
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          {t('editor.blocks.inputs.settings.saveAnswer.label')}
+          {t('blocks.inputs.settings.saveAnswer.label')}
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}

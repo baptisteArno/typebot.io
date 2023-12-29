@@ -15,8 +15,8 @@ export const FileInputContent = ({ options }: Props) => {
   ) : (
     <Text noOfLines={1} pr="6">
       {options?.isMultipleAllowed
-        ? t('editor.blocks.inputs.file.collectMultiple.label')
-        : t('editor.blocks.inputs.file.collectSingle.label')}
+        ? t('blocks.inputs.file.collectMultiple.label')
+        : t('blocks.inputs.file.collectSingle.label')}
     </Text>
   )
 }

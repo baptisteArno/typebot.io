@@ -43,54 +43,52 @@ export const DateInputSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <SwitchWithRelatedSettings
-        label={t('editor.blocks.inputs.date.settings.isRange.label')}
+        label={t('blocks.inputs.date.settings.isRange.label')}
         initialValue={options?.isRange ?? defaultDateInputOptions.isRange}
         onCheckChange={updateIsRange}
       >
         <TextInput
-          label={t('editor.blocks.inputs.date.settings.from.label')}
+          label={t('blocks.inputs.date.settings.from.label')}
           defaultValue={
-            options?.labels?.from ??
-            t('editor.blocks.inputs.date.settings.fromInputValue.label')
+            options?.labels?.from ?? defaultDateInputOptions.labels.from
           }
           onChange={updateFromLabel}
         />
         <TextInput
-          label={t('editor.blocks.inputs.date.settings.to.label')}
+          label={t('blocks.inputs.date.settings.to.label')}
           defaultValue={
             options?.labels?.to ??
-            t('editor.blocks.inputs.date.settings.toInputValue.label')
+            t('blocks.inputs.date.settings.toInputValue.label')
           }
           onChange={updateToLabel}
         />
       </SwitchWithRelatedSettings>
       <SwitchWithLabel
-        label={t('editor.blocks.inputs.date.settings.withTime.label')}
+        label={t('blocks.inputs.date.settings.withTime.label')}
         initialValue={options?.hasTime ?? defaultDateInputOptions.hasTime}
         onCheckChange={updateHasTime}
       />
       <TextInput
-        label={t('editor.blocks.inputs.settings.button.label')}
+        label={t('blocks.inputs.settings.button.label')}
         defaultValue={
-          options?.labels?.button ??
-          t('editor.blocks.inputs.settings.buttonText.label')
+          options?.labels?.button ?? defaultDateInputOptions.labels.button
         }
         onChange={updateButtonLabel}
       />
       <TextInput
-        label={t('editor.blocks.inputs.settings.min.label')}
+        label={t('blocks.inputs.settings.min.label')}
         defaultValue={options?.min}
         placeholder={options?.hasTime ? 'YYYY-MM-DDTHH:mm' : 'YYYY-MM-DD'}
         onChange={updateMin}
       />
       <TextInput
-        label={t('editor.blocks.inputs.settings.max.label')}
+        label={t('blocks.inputs.settings.max.label')}
         defaultValue={options?.max}
         placeholder={options?.hasTime ? 'YYYY-MM-DDTHH:mm' : 'YYYY-MM-DD'}
         onChange={updateMax}
       />
       <TextInput
-        label={t('editor.blocks.inputs.date.settings.format.label')}
+        label={t('blocks.inputs.date.settings.format.label')}
         defaultValue={
           options?.format ??
           (options?.hasTime
@@ -99,7 +97,7 @@ export const DateInputSettings = ({ options, onOptionsChange }: Props) => {
         }
         moreInfoTooltip={`
 					${t(
-            'editor.blocks.inputs.date.settings.format.example.label'
+            'blocks.inputs.date.settings.format.example.label'
           )} dd/MM/yyyy, MM/dd/yy, yyyy-MM-dd
 				`}
         placeholder={options?.hasTime ? 'dd/MM/yyyy HH:mm' : 'dd/MM/yyyy'}
@@ -107,7 +105,7 @@ export const DateInputSettings = ({ options, onOptionsChange }: Props) => {
       />
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          {t('editor.blocks.inputs.settings.saveAnswer.label')}
+          {t('blocks.inputs.settings.saveAnswer.label')}
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}

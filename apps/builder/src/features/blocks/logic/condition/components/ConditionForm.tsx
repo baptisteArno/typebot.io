@@ -4,7 +4,10 @@ import { Comparison, Condition } from '@typebot.io/schemas'
 import React from 'react'
 import { ComparisonItem } from './ComparisonItem'
 import { TableList } from '@/components/TableList'
-import { LogicalOperator } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
+import {
+  LogicalOperator,
+  defaultConditionItemContent,
+} from '@typebot.io/schemas/features/blocks/logic/condition/constants'
 import { useTranslate } from '@tolgee/react'
 
 type Props = {
@@ -27,14 +30,8 @@ export const ConditionForm = ({ condition, onConditionChange }: Props) => {
         <Flex justify="center">
           <DropdownList
             currentItem={
-              (t(
-                `components.dropdownList.item.${condition?.logicalOperator?.replace(
-                  /\s/g,
-                  ''
-                )}`,
-                condition?.logicalOperator
-              ) as LogicalOperator) ??
-              (t('components.dropdownList.item.AND') as LogicalOperator)
+              condition?.logicalOperator ??
+              defaultConditionItemContent.logicalOperator
             }
             onItemSelect={handleLogicalOperatorChange}
             items={Object.values(LogicalOperator)}
@@ -42,7 +39,7 @@ export const ConditionForm = ({ condition, onConditionChange }: Props) => {
         </Flex>
       )}
       addLabel={t(
-        'editor.blocks.inputs.button.buttonSettings.addComparisonButton.label'
+        'blocks.inputs.button.buttonSettings.addComparisonButton.label'
       )}
     >
       {(props) => <ComparisonItem {...props} />}

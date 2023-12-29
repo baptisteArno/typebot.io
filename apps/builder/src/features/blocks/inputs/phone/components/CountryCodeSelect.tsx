@@ -15,7 +15,7 @@ export const CountryCodeSelect = ({ countryCode, onSelect }: Props) => {
   return (
     <Select
       placeholder={t(
-        'editor.blocks.inputs.phone.settings.international.placeholder.label'
+        'blocks.inputs.phone.settings.international.placeholder.label'
       )}
       value={countryCode}
       onChange={handleOnChange}

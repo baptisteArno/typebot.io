@@ -37,22 +37,11 @@ export const ComparisonItem = ({
         placeholder={t('variables.search')}
       />
       <DropdownList
-        currentItem={
-          item.comparisonOperator
-            ? (t(
-                `components.dropdownList.item.${item.comparisonOperator?.replace(
-                  /\s/g,
-                  ''
-                )}`
-              ) as ComparisonOperators)
-            : (t(
-                'editor.blocks.inputs.button.buttonSettings.displayCondition.selectOperator.label'
-              ) as ComparisonOperators)
-        }
+        currentItem={item.comparisonOperator}
         onItemSelect={handleSelectComparisonOperator}
         items={Object.values(ComparisonOperators)}
         placeholder={t(
-          'editor.blocks.inputs.button.buttonSettings.displayCondition.selectOperator.label'
+          'blocks.inputs.button.buttonSettings.displayCondition.selectOperator.label'
         )}
       />
       {item.comparisonOperator !== ComparisonOperators.IS_SET &&
@@ -60,7 +49,7 @@ export const ComparisonItem = ({
           <TextInput
             defaultValue={item.value ?? ''}
             onChange={handleChangeValue}
-            placeholder={t(parseValuePlaceholder(item.comparisonOperator), '')}
+            placeholder={parseValuePlaceholder(item.comparisonOperator)}
           />
         )}
     </Stack>
@@ -78,15 +67,15 @@ const parseValuePlaceholder = (
     case ComparisonOperators.ENDS_WITH:
     case ComparisonOperators.NOT_CONTAINS:
     case undefined:
-      return 'editor.blocks.inputs.button.buttonSettings.displayCondition.valuePlaceholder.label'
+      return 'Type a value...'
     case ComparisonOperators.LESS:
     case ComparisonOperators.GREATER:
-      return 'editor.blocks.inputs.button.buttonSettings.displayCondition.numberPlaceholder.label'
+      return 'Type a number...'
     case ComparisonOperators.IS_SET:
     case ComparisonOperators.IS_EMPTY:
       return ''
     case ComparisonOperators.MATCHES_REGEX:
     case ComparisonOperators.NOT_MATCH_REGEX:
-      return 'editor.blocks.inputs.button.buttonSettings.displayCondition.regexPlaceholder.label'
+      return '^[0-9]+$'
   }
 }

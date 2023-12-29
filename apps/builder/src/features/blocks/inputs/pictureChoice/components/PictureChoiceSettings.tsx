@@ -66,23 +66,23 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <SwitchWithRelatedSettings
-        label={t('editor.blocks.inputs.settings.isSearchable.label')}
+        label={t('blocks.inputs.settings.isSearchable.label')}
         initialValue={
           options?.isSearchable ?? defaultPictureChoiceOptions.isSearchable
         }
         onCheckChange={updateIsSearchable}
       >
         <TextInput
-          label={t('editor.blocks.inputs.settings.input.placeholder.label')}
+          label={t('blocks.inputs.settings.input.placeholder.label')}
           defaultValue={
             options?.searchInputPlaceholder ??
-            t('editor.blocks.inputs.settings.input.filterOptions.label')
+            defaultPictureChoiceOptions.searchInputPlaceholder
           }
           onChange={updateSearchInputPlaceholder}
         />
       </SwitchWithRelatedSettings>
       <SwitchWithRelatedSettings
-        label={t('editor.blocks.inputs.settings.multipleChoice.label')}
+        label={t('blocks.inputs.settings.multipleChoice.label')}
         initialValue={
           options?.isMultipleChoice ??
           defaultPictureChoiceOptions.isMultipleChoice
@@ -90,17 +90,16 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
         onCheckChange={updateIsMultiple}
       >
         <TextInput
-          label={t('editor.blocks.inputs.settings.submitButton.label')}
+          label={t('blocks.inputs.settings.submitButton.label')}
           defaultValue={
-            options?.buttonLabel ??
-            t('editor.blocks.inputs.settings.buttonText.label')
+            options?.buttonLabel ?? defaultPictureChoiceOptions.buttonLabel
           }
           onChange={updateButtonLabel}
         />
       </SwitchWithRelatedSettings>
 
       <SwitchWithRelatedSettings
-        label={t('editor.blocks.inputs.picture.settings.dynamicItems.label')}
+        label={t('blocks.inputs.picture.settings.dynamicItems.label')}
         initialValue={
           options?.dynamicItems?.isEnabled ??
           defaultPictureChoiceOptions.dynamicItems.isEnabled
@@ -109,9 +108,7 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
       >
         <Stack>
           <FormLabel mb="0" htmlFor="variable">
-            {t(
-              'editor.blocks.inputs.picture.settings.dynamicItems.images.label'
-            )}
+            {t('blocks.inputs.picture.settings.dynamicItems.images.label')}
           </FormLabel>
           <VariableSearchInput
             initialVariableId={options?.dynamicItems?.pictureSrcsVariableId}
@@ -120,9 +117,7 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
         </Stack>
         <Stack>
           <FormLabel mb="0" htmlFor="variable">
-            {t(
-              'editor.blocks.inputs.picture.settings.dynamicItems.titles.label'
-            )}
+            {t('blocks.inputs.picture.settings.dynamicItems.titles.label')}
           </FormLabel>
           <VariableSearchInput
             initialVariableId={options?.dynamicItems?.titlesVariableId}
@@ -132,7 +127,7 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
         <Stack>
           <FormLabel mb="0" htmlFor="variable">
             {t(
-              'editor.blocks.inputs.picture.settings.dynamicItems.descriptions.label'
+              'blocks.inputs.picture.settings.dynamicItems.descriptions.label'
             )}
           </FormLabel>
           <VariableSearchInput
@@ -144,7 +139,7 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
 
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          {t('editor.blocks.inputs.settings.saveAnswer.label')}
+          {t('blocks.inputs.settings.saveAnswer.label')}
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}
