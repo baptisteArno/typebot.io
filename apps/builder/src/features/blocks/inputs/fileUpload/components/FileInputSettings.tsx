@@ -6,6 +6,7 @@ import { TextInput } from '@/components/inputs'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { defaultFileInputOptions } from '@typebot.io/schemas/features/blocks/inputs/file/constants'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   options: FileInputBlock['options']
@@ -13,6 +14,8 @@ type Props = {
 }
 
 export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
+  const { t } = useTranslate()
+
   const handleButtonLabelChange = (button: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, button } })
 
@@ -37,12 +40,12 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <SwitchWithLabel
-        label="Required?"
+        label={t('blocks.inputs.file.settings.required.label')}
         initialValue={options?.isRequired ?? defaultFileInputOptions.isRequired}
         onCheckChange={handleRequiredChange}
       />
       <SwitchWithLabel
-        label="Allow multiple files?"
+        label={t('blocks.inputs.file.settings.allowMultiple.label')}
         initialValue={
           options?.isMultipleAllowed ??
           defaultFileInputOptions.isMultipleAllowed
@@ -50,7 +53,9 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
         onCheckChange={handleMultipleFilesChange}
       />
       <Stack>
-        <FormLabel mb="0">Placeholder:</FormLabel>
+        <FormLabel mb="0">
+          {t('blocks.inputs.settings.placeholder.label')}
+        </FormLabel>
         <CodeEditor
           lang="html"
           onChange={handlePlaceholderLabelChange}
@@ -63,7 +68,7 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
         />
       </Stack>
       <TextInput
-        label="Button label:"
+        label={t('blocks.inputs.settings.button.label')}
         defaultValue={
           options?.labels?.button ?? defaultFileInputOptions.labels.button
         }
@@ -71,7 +76,7 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
         withVariableButton={false}
       />
       <TextInput
-        label="Clear button label:"
+        label={t('blocks.inputs.file.settings.clear.label')}
         defaultValue={
           options?.labels?.clear ?? defaultFileInputOptions.labels.clear
         }
@@ -79,7 +84,7 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
         withVariableButton={false}
       />
       <TextInput
-        label="Skip button label:"
+        label={t('blocks.inputs.file.settings.skip.label')}
         defaultValue={
           options?.labels?.skip ?? defaultFileInputOptions.labels.skip
         }
@@ -88,7 +93,9 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
       />
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          Save upload URL{options?.isMultipleAllowed ? 's' : ''} in a variable:
+          {options?.isMultipleAllowed
+            ? t('blocks.inputs.file.settings.saveMultipleUpload.label')
+            : t('blocks.inputs.file.settings.saveSingleUpload.label')}
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}

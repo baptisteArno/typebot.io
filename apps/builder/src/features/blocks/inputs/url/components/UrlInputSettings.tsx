@@ -1,6 +1,7 @@
 import { TextInput } from '@/components/inputs'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormLabel, Stack } from '@chakra-ui/react'
+import { useTranslate } from '@tolgee/react'
 import { UrlInputBlock, Variable } from '@typebot.io/schemas'
 import { defaultUrlInputOptions } from '@typebot.io/schemas/features/blocks/inputs/url/constants'
 import React from 'react'
@@ -11,6 +12,7 @@ type Props = {
 }
 
 export const UrlInputSettings = ({ options, onOptionsChange }: Props) => {
+  const { t } = useTranslate()
   const handlePlaceholderChange = (placeholder: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, placeholder } })
   const handleButtonLabelChange = (button: string) =>
@@ -23,7 +25,7 @@ export const UrlInputSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <TextInput
-        label="Placeholder:"
+        label={t('blocks.inputs.settings.placeholder.label')}
         defaultValue={
           options?.labels?.placeholder ??
           defaultUrlInputOptions.labels.placeholder
@@ -31,14 +33,14 @@ export const UrlInputSettings = ({ options, onOptionsChange }: Props) => {
         onChange={handlePlaceholderChange}
       />
       <TextInput
-        label="Button label:"
+        label={t('blocks.inputs.settings.button.label')}
         defaultValue={
           options?.labels?.button ?? defaultUrlInputOptions.labels.button
         }
         onChange={handleButtonLabelChange}
       />
       <TextInput
-        label="Retry message:"
+        label={t('blocks.inputs.settings.retryMessage.label')}
         defaultValue={
           options?.retryMessageContent ??
           defaultUrlInputOptions.retryMessageContent
@@ -47,7 +49,7 @@ export const UrlInputSettings = ({ options, onOptionsChange }: Props) => {
       />
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          Save answer in a variable:
+          {t('blocks.inputs.settings.saveAnswer.label')}
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}

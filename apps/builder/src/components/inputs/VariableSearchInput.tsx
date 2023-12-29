@@ -33,6 +33,7 @@ import { byId, isDefined, isNotDefined } from '@typebot.io/lib'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   initialVariableId: string | undefined
@@ -78,6 +79,7 @@ export const VariableSearchInput = ({
   const createVariableItemRef = useRef<HTMLButtonElement | null>(null)
   const itemsRef = useRef<(HTMLButtonElement | null)[]>([])
   const { ref: parentModalRef } = useParentModal()
+  const { t } = useTranslate()
 
   useOutsideClick({
     ref: dropdownRef,
@@ -137,7 +139,7 @@ export const VariableSearchInput = ({
   const handleRenameVariableClick =
     (variable: Variable) => (e: React.MouseEvent) => {
       e.stopPropagation()
-      const name = prompt('Rename variable', variable.name)
+      const name = prompt(t('variables.rename'), variable.name)
       if (!name) return
       updateVariable(variable.id, { name })
       setFilteredItems(
@@ -221,7 +223,7 @@ export const VariableSearchInput = ({
               onChange={onInputChange}
               onFocus={openDropdown}
               onKeyDown={handleKeyUp}
-              placeholder={placeholder ?? 'Select a variable'}
+              placeholder={placeholder ?? t('variables.select')}
               autoComplete="off"
               {...inputProps}
             />
@@ -255,7 +257,7 @@ export const VariableSearchInput = ({
                       : 'transparent'
                   }
                 >
-                  Create
+                  {t('create')}
                   <Tag colorScheme="orange" ml="1">
                     <Text noOfLines={0} display="block">
                       {inputValue}
@@ -296,13 +298,13 @@ export const VariableSearchInput = ({
                         <HStack>
                           <IconButton
                             icon={<EditIcon />}
-                            aria-label="Rename variable"
+                            aria-label={t('variables.rename')}
                             size="xs"
                             onClick={handleRenameVariableClick(item)}
                           />
                           <IconButton
                             icon={<TrashIcon />}
-                            aria-label="Remove variable"
+                            aria-label={t('variables.remove')}
                             size="xs"
                             onClick={handleDeleteVariableClick(item)}
                           />

@@ -21,6 +21,7 @@ import React, { useRef, useState } from 'react'
 import { isNotDefined } from '@typebot.io/lib'
 import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { ButtonsItemSettings } from './ButtonsItemSettings'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   item: ButtonItem
@@ -29,9 +30,12 @@ type Props = {
 }
 
 export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
+  const { t } = useTranslate()
   const { deleteItem, updateItem, createItem } = useTypebot()
   const { openedItemId, setOpenedItemId } = useGraph()
-  const [itemValue, setItemValue] = useState(item.content ?? 'Click to edit')
+  const [itemValue, setItemValue] = useState(
+    item.content ?? t('blocks.inputs.button.clickToEdit.label')
+  )
   const editableRef = useRef<HTMLDivElement | null>(null)
   const ref = useRef<HTMLDivElement | null>(null)
   const arrowColor = useColorModeValue('white', 'gray.800')
@@ -47,8 +51,16 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
   }
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Escape' && itemValue === 'Click to edit') deleteItem(indices)
-    if (e.key === 'Enter' && itemValue !== '' && itemValue !== 'Click to edit')
+    if (
+      e.key === 'Escape' &&
+      itemValue === t('blocks.inputs.button.clickToEdit.label')
+    )
+      deleteItem(indices)
+    if (
+      e.key === 'Enter' &&
+      itemValue !== '' &&
+      itemValue !== t('blocks.inputs.button.clickToEdit.label')
+    )
       handlePlusClick()
   }
 
@@ -82,7 +94,11 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
           >
             <EditablePreview
               w="full"
-              color={item.content !== 'Click to edit' ? 'inherit' : 'gray.500'}
+              color={
+                item.content !== t('blocks.inputs.button.clickToEdit.label')
+                  ? 'inherit'
+                  : 'gray.500'
+              }
               cursor="pointer"
             />
             <EditableInput onMouseDownCapture={(e) => e.stopPropagation()} />
@@ -101,7 +117,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
           >
             <Flex bgColor={useColorModeValue('white', 'gray.800')} rounded="md">
               <IconButton
-                aria-label="Open settings"
+                aria-label={t('blocks.inputs.button.openSettings.ariaLabel')}
                 icon={<SettingsIcon />}
                 variant="ghost"
                 size="sm"
@@ -121,7 +137,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
             unmountOnExit
           >
             <IconButton
-              aria-label="Add item"
+              aria-label={t('blocks.inputs.button.addItem.ariaLabel')}
               icon={<PlusIcon />}
               size="xs"
               shadow="md"

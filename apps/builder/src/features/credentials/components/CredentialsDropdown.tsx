@@ -15,6 +15,7 @@ import { useToast } from '../../../hooks/useToast'
 import { Credentials } from '@typebot.io/schemas'
 import { trpc } from '@/lib/trpc'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
+import { useTranslate } from '@tolgee/react'
 
 type Props = Omit<ButtonProps, 'type'> & {
   type: Credentials['type']
@@ -36,6 +37,7 @@ export const CredentialsDropdown = ({
   credentialsName,
   ...props
 }: Props) => {
+  const { t } = useTranslate()
   const { showToast } = useToast()
   const { currentRole } = useWorkspace()
   const { data, refetch } = trpc.credentials.listCredentials.useQuery({
@@ -62,7 +64,7 @@ export const CredentialsDropdown = ({
   })
 
   const defaultCredentialsLabel =
-    defaultCredentialLabel ?? `Select ${credentialsName}`
+    defaultCredentialLabel ?? `${t('select')} ${credentialsName}`
 
   const currentCredential = data?.credentials.find(
     (c) => c.id === currentCredentialsId
@@ -91,7 +93,7 @@ export const CredentialsDropdown = ({
         isDisabled={currentRole === 'GUEST'}
         {...props}
       >
-        Add {credentialsName}
+        {t('add')} {credentialsName}
       </Button>
     )
   }
@@ -140,7 +142,9 @@ export const CredentialsDropdown = ({
               {credentials.name}
               <IconButton
                 icon={<TrashIcon />}
-                aria-label="Remove credentials"
+                aria-label={t(
+                  'blocks.inputs.payment.settings.credentials.removeCredentials.label'
+                )}
                 size="xs"
                 onClick={deleteCredentials(credentials.id)}
                 isLoading={isDeleting === credentials.id}
@@ -156,7 +160,7 @@ export const CredentialsDropdown = ({
               icon={<PlusIcon />}
               onClick={onCreateNewClick}
             >
-              Connect new
+              {t('blocks.inputs.payment.settings.credentials.connectNew.label')}
             </MenuItem>
           )}
         </Stack>

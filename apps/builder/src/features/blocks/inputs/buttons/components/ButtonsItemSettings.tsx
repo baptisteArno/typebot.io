@@ -4,6 +4,7 @@ import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSetting
 import { ConditionForm } from '@/features/blocks/logic/condition/components/ConditionForm'
 import { ButtonItem, Condition } from '@typebot.io/schemas'
 import { LogicalOperator } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   item: ButtonItem
@@ -11,6 +12,8 @@ type Props = {
 }
 
 export const ButtonsItemSettings = ({ item, onSettingsChange }: Props) => {
+  const { t } = useTranslate()
+
   const updateIsDisplayConditionEnabled = (isEnabled: boolean) =>
     onSettingsChange({
       ...item,
@@ -32,8 +35,10 @@ export const ButtonsItemSettings = ({ item, onSettingsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <SwitchWithRelatedSettings
-        label="Display condition"
-        moreInfoContent="Only display this item if a condition is met."
+        label={t('blocks.inputs.settings.displayCondition.label')}
+        moreInfoContent={t(
+          'blocks.inputs.button.buttonSettings.displayCondition.infoText.label'
+        )}
         initialValue={item.displayCondition?.isEnabled ?? false}
         onCheckChange={updateIsDisplayConditionEnabled}
       >
