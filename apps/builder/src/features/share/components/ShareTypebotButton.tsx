@@ -7,18 +7,21 @@ import {
 import { UsersIcon } from '@/components/icons'
 import React from 'react'
 import { SharePopoverContent } from './SharePopoverContent'
+import { useTranslate } from '@tolgee/react'
 
 export const ShareTypebotButton = ({ isLoading }: { isLoading: boolean }) => {
+  const { t } = useTranslate()
+
   return (
     <Popover isLazy placement="bottom-end">
       <PopoverTrigger>
         <Button
           isLoading={isLoading}
           leftIcon={<UsersIcon />}
-          aria-label="Open share popover"
+          aria-label={t('share.button.popover.ariaLabel')}
           size="sm"
         >
-          Share
+          {t('share.button.label')}
         </Button>
       </PopoverTrigger>
       <PopoverContent

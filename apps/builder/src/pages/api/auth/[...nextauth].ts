@@ -139,6 +139,7 @@ export const getAuthOptions = ({
   pages: {
     signIn: '/signin',
     newUser: env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID ? '/onboarding' : undefined,
+    error: '/signin',
   },
   events: {
     signIn({ user }) {
@@ -199,12 +200,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (
     env.RADAR_HIGH_RISK_KEYWORDS &&
-    req.url?.startsWith('/api/auth/signin') &&
-    req.method === 'POST'
+    ((req.method === 'POST' && req.url?.startsWith('/api/auth/signin')) ||
+      (req.method === 'GET' && req.url?.startsWith('/api/auth/callback')))
   ) {
     const ip = getIp(req)
     if (ip) {
-      const isIpBanned = await prisma.bannedIp.findFirst({
+      const isIpBanned = await prisma.bannedIp.count({
         where: {
           ip,
         },

@@ -17,12 +17,26 @@ export const getWorkspace = authenticatedProcedure
   })
   .input(
     z.object({
-      workspaceId: z.string(),
+      workspaceId: z
+        .string()
+        .describe(
+          '[Where to find my workspace ID?](../how-to#how-to-find-my-workspaceid)'
+        ),
     })
   )
   .output(
     z.object({
-      workspace: workspaceSchema,
+      workspace: workspaceSchema.omit({
+        chatsLimitFirstEmailSentAt: true,
+        chatsLimitSecondEmailSentAt: true,
+        storageLimitFirstEmailSentAt: true,
+        storageLimitSecondEmailSentAt: true,
+        customChatsLimit: true,
+        customStorageLimit: true,
+        additionalChatsIndex: true,
+        additionalStorageIndex: true,
+        isQuarantined: true,
+      }),
     })
   )
   .query(async ({ input: { workspaceId }, ctx: { user } }) => {

@@ -84,7 +84,7 @@ export const ApiTokensList = ({ user }: Props) => {
             {apiTokens?.map((token) => (
               <Tr key={token.id}>
                 <Td>{token.name}</Td>
-                <Td>{parseTimeSince(token.createdAt)} ago</Td>
+                <Td>{parseTimeSince(t, token.createdAt)}</Td>
                 <Td>
                   <Button
                     size="xs"

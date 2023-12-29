@@ -1,5 +1,8 @@
 import { CustomDomain as CustomDomainInDb } from '@typebot.io/prisma'
-import { z } from 'zod'
+import { z } from '../zod'
+import { extendZodWithOpenApi } from 'zod-openapi'
+
+extendZodWithOpenApi(z)
 
 export const domainVerificationStatusSchema = z.enum([
   'Valid Configuration',
@@ -41,6 +44,9 @@ export const customDomainSchema = z.object({
   name: z
     .string()
     .transform((name) => name.toLowerCase())
+    .openapi({
+      effectType: 'input',
+    })
     .refine((name) => domainNameRegex.test(name)),
   workspaceId: z.string(),
   createdAt: z.date(),

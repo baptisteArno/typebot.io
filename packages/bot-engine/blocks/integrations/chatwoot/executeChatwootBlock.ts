@@ -92,6 +92,7 @@ export const executeChatwootBlock = (
     outgoingEdgeId: block.outgoingEdgeId,
     clientSideActions: [
       {
+        type: 'chatwoot',
         chatwoot: {
           scriptToExecute: {
             content: parseVariables(typebot.variables, { fieldToParse: 'id' })(

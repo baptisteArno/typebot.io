@@ -19,9 +19,9 @@ export const ErrorPage = ({ error }: { error: Error }) => {
             NEXT_PUBLIC_VIEWER_URL is missing
           </h1>
           <h2>
-            Make sure to configure the viewer properly (
-            <a href="https://docs.typebot.io/self-hosting/configuration#viewer">
-              https://docs.typebot.io/self-hosting/configuration#viewer
+            Make sure to configure the app properly (
+            <a href="https://docs.typebot.io/self-hosting/configuration">
+              https://docs.typebot.io/self-hosting/configuration
             </a>
             )
           </h2>

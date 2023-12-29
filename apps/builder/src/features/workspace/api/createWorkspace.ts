@@ -19,7 +19,18 @@ export const createWorkspace = authenticatedProcedure
   .input(z.object({ icon: z.string().optional(), name: z.string() }))
   .output(
     z.object({
-      workspace: workspaceSchema,
+      workspace: workspaceSchema.omit({
+        chatsLimitFirstEmailSentAt: true,
+        chatsLimitSecondEmailSentAt: true,
+        storageLimitFirstEmailSentAt: true,
+        storageLimitSecondEmailSentAt: true,
+        customChatsLimit: true,
+        customSeatsLimit: true,
+        customStorageLimit: true,
+        additionalChatsIndex: true,
+        additionalStorageIndex: true,
+        isQuarantined: true,
+      }),
     })
   )
   .mutation(async ({ input: { name, icon }, ctx: { user } }) => {

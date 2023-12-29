@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from '../zod'
 import { answerInputSchema, answerSchema } from './answer'
 import { variableWithValueSchema } from './typebot/variable'
 import {
