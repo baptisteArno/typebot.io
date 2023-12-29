@@ -23,9 +23,9 @@ import { byId, isDefined } from '@typebot.io/lib'
 import { CreateTokenModal } from './CreateTokenModal'
 import { useApiTokens } from '../hooks/useApiTokens'
 import { ApiTokenFromServer } from '../types'
-import { parseTimeSince } from '@/helpers/parseTimeSince'
 import { deleteApiTokenQuery } from '../queries/deleteApiTokenQuery'
 import { T, useTranslate } from '@tolgee/react'
+import { TimeSince } from '@/components/TimeSince'
 
 type Props = { user: User }
 
@@ -84,7 +84,9 @@ export const ApiTokensList = ({ user }: Props) => {
             {apiTokens?.map((token) => (
               <Tr key={token.id}>
                 <Td>{token.name}</Td>
-                <Td>{parseTimeSince(t, token.createdAt)}</Td>
+                <Td>
+                  <TimeSince date={token.createdAt} />
+                </Td>
                 <Td>
                   <Button
                     size="xs"

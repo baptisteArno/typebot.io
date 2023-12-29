@@ -12,8 +12,8 @@ import {
 } from '@chakra-ui/react'
 import { CollaborationType } from '@typebot.io/prisma'
 import React from 'react'
-import { convertCollaborationTypeEnumToReadable } from './CollaborationList'
 import { useTranslate } from '@tolgee/react'
+import { ReadableCollaborationType } from './ReadableCollaborationType'
 
 type Props = {
   image?: string
@@ -50,16 +50,16 @@ export const CollaboratorItem = ({
           name={name}
           image={image}
           isGuest={isGuest}
-          tag={convertCollaborationTypeEnumToReadable(t, type)}
+          type={type}
         />
       </MenuButton>
       {isOwner && (
         <MenuList shadow="lg">
           <MenuItem onClick={handleEditClick}>
-            {convertCollaborationTypeEnumToReadable(t, CollaborationType.WRITE)}
+            <ReadableCollaborationType type={CollaborationType.WRITE} />
           </MenuItem>
           <MenuItem onClick={handleViewClick}>
-            {convertCollaborationTypeEnumToReadable(t, CollaborationType.READ)}
+            <ReadableCollaborationType type={CollaborationType.READ} />
           </MenuItem>
           <MenuItem color="red.500" onClick={onDeleteClick}>
             {t('remove')}
@@ -72,13 +72,13 @@ export const CollaboratorItem = ({
 
 export const CollaboratorIdentityContent = ({
   name,
-  tag,
+  type,
   isGuest = false,
   image,
   email,
 }: {
   name?: string
-  tag?: string
+  type: CollaborationType
   image?: string
   isGuest?: boolean
   email: string
@@ -106,7 +106,9 @@ export const CollaboratorIdentityContent = ({
       </HStack>
       <HStack flexShrink={0}>
         {isGuest && <Tag color="gray.400">{t('pending')}</Tag>}
-        <Tag>{tag}</Tag>
+        <Tag>
+          <ReadableCollaborationType type={type} />
+        </Tag>
       </HStack>
     </HStack>
   )

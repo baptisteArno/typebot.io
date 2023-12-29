@@ -1,6 +1,10 @@
-import { TFnType } from '@tolgee/react'
+import { useTranslate } from '@tolgee/react'
 
-export const parseTimeSince = (t: TFnType, date: string) => {
+export const useTimeSince = (date?: string) => {
+  const { t } = useTranslate()
+
+  if (!date) return
+
   const seconds = Math.floor(
     (new Date().getTime() - new Date(date).getTime()) / 1000
   )

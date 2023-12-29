@@ -28,7 +28,8 @@ import { deleteInvitationQuery } from '../queries/deleteInvitationQuery'
 import { updateCollaboratorQuery } from '../queries/updateCollaboratorQuery'
 import { deleteCollaboratorQuery } from '../queries/deleteCollaboratorQuery'
 import { sendInvitationQuery } from '../queries/sendInvitationQuery'
-import { TFnType, useTranslate } from '@tolgee/react'
+import { useTranslate } from '@tolgee/react'
+import { ReadableCollaborationType } from './ReadableCollaborationType'
 
 export const CollaborationList = () => {
   const { currentRole, workspace } = useWorkspace()
@@ -180,10 +181,7 @@ export const CollaborationList = () => {
             </Text>
           </HStack>
           <Tag flexShrink={0}>
-            {convertCollaborationTypeEnumToReadable(
-              t,
-              CollaborationType.FULL_ACCESS
-            )}
+            <ReadableCollaborationType type={CollaborationType.FULL_ACCESS} />
           </Tag>
         </Flex>
       )}
@@ -232,43 +230,25 @@ const CollaborationTypeMenuButton = ({
 }: {
   type: CollaborationType
   onChange: (type: CollaborationType) => void
-}) => {
-  const { t } = useTranslate()
-
-  return (
-    <Menu placement="bottom-end">
-      <MenuButton
-        flexShrink={0}
-        size="sm"
-        as={Button}
-        rightIcon={<ChevronLeftIcon transform={'rotate(-90deg)'} />}
-      >
-        {convertCollaborationTypeEnumToReadable(t, type)}
-      </MenuButton>
-      <MenuList minW={0}>
-        <Stack maxH={'35vh'} overflowY="scroll" spacing="0">
-          <MenuItem onClick={() => onChange(CollaborationType.READ)}>
-            {convertCollaborationTypeEnumToReadable(t, CollaborationType.READ)}
-          </MenuItem>
-          <MenuItem onClick={() => onChange(CollaborationType.WRITE)}>
-            {convertCollaborationTypeEnumToReadable(t, CollaborationType.WRITE)}
-          </MenuItem>
-        </Stack>
-      </MenuList>
-    </Menu>
-  )
-}
-
-export const convertCollaborationTypeEnumToReadable = (
-  t: TFnType,
-  type: CollaborationType
-) => {
-  switch (type) {
-    case CollaborationType.READ:
-      return t('collaboration.roles.view.label')
-    case CollaborationType.WRITE:
-      return t('collaboration.roles.edit.label')
-    case CollaborationType.FULL_ACCESS:
-      return t('collaboration.roles.full.label')
-  }
-}
+}) => (
+  <Menu placement="bottom-end">
+    <MenuButton
+      flexShrink={0}
+      size="sm"
+      as={Button}
+      rightIcon={<ChevronLeftIcon transform={'rotate(-90deg)'} />}
+    >
+      <ReadableCollaborationType type={type} />
+    </MenuButton>
+    <MenuList minW={0}>
+      <Stack maxH={'35vh'} overflowY="scroll" spacing="0">
+        <MenuItem onClick={() => onChange(CollaborationType.READ)}>
+          <ReadableCollaborationType type={CollaborationType.READ} />
+        </MenuItem>
+        <MenuItem onClick={() => onChange(CollaborationType.WRITE)}>
+          <ReadableCollaborationType type={CollaborationType.WRITE} />
+        </MenuItem>
+      </Stack>
+    </MenuList>
+  </Menu>
+)
