@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Text, HStack } from '@chakra-ui/react'
 import { AutocompleteInput } from '@/components/inputs/AutocompleteInput'
 import { env } from '@typebot.io/env'
+import { useTranslate } from '@tolgee/react'
 
 type FontSelectorProps = {
   activeFont?: string
@@ -12,6 +13,7 @@ export const FontSelector = ({
   activeFont,
   onSelectFont,
 }: FontSelectorProps) => {
+  const { t } = useTranslate()
   const [currentFont, setCurrentFont] = useState(activeFont)
   const [googleFonts, setGoogleFonts] = useState<string[]>([])
 
@@ -37,7 +39,7 @@ export const FontSelector = ({
 
   return (
     <HStack justify="space-between" align="center">
-      <Text>Font</Text>
+      <Text>{t('theme.sideMenu.global.font')}</Text>
       <AutocompleteInput
         value={activeFont}
         items={googleFonts}

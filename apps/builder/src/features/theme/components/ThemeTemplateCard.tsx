@@ -22,6 +22,7 @@ import {
   BackgroundType,
   defaultTheme,
 } from '@typebot.io/schemas/features/typebot/theme/constants'
+import { useTranslate } from '@tolgee/react'
 
 export const ThemeTemplateCard = ({
   workspaceId,
@@ -38,6 +39,7 @@ export const ThemeTemplateCard = ({
   onClick: () => void
   onDeleteSuccess?: () => void
 }) => {
+  const { t } = useTranslate()
   const borderWidth = useColorModeValue(undefined, '1px')
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -160,7 +162,9 @@ export const ThemeTemplateCard = ({
             <MenuButton
               as={IconButton}
               icon={<MoreHorizontalIcon />}
-              aria-label="Open template menu"
+              aria-label={t(
+                'theme.sideMenu.template.myTemplates.menu.ariaLabel'
+              )}
               variant="ghost"
               size="xs"
               onClick={(e) => e.stopPropagation()}
@@ -168,7 +172,7 @@ export const ThemeTemplateCard = ({
             <MenuList onClick={(e) => e.stopPropagation()}>
               {isSelected && (
                 <MenuItem icon={<EditIcon />} onClick={onRenameClick}>
-                  Rename
+                  {t('rename')}
                 </MenuItem>
               )}
               <MenuItem
@@ -176,7 +180,7 @@ export const ThemeTemplateCard = ({
                 color="red.500"
                 onClick={deleteThemeTemplate}
               >
-                Delete
+                {t('delete')}
               </MenuItem>
             </MenuList>
           </Menu>
@@ -208,11 +212,12 @@ const AvatarPreview = ({
 }: {
   avatar: NonNullable<Theme['chat']>['hostAvatar']
 }) => {
+  const { t } = useTranslate()
   if (avatar?.isEnabled) return null
   return avatar?.url ? (
     <Image
       src={avatar.url}
-      alt="Avatar preview in theme template card"
+      alt={t('theme.sideMenu.template.gallery.avatarPreview.alt')}
       boxSize="12px"
       rounded="full"
     />
