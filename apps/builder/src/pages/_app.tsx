@@ -60,25 +60,24 @@ const App = ({ Component, pageProps }: AppProps) => {
   const typebotId = router.query.typebotId?.toString()
 
   return (
-    <>
+    <TolgeeProvider tolgee={ssrTolgee}>
       <ToastContainer />
-      <TolgeeProvider tolgee={ssrTolgee}>
-        <ChakraProvider theme={customTheme}>
-          <SessionProvider session={pageProps.session}>
-            <UserProvider>
-              <TypebotProvider typebotId={typebotId}>
-                <WorkspaceProvider typebotId={typebotId}>
-                  <Component {...pageProps} />
-                  {!router.pathname.endsWith('edit') &&
-                    isCloudProdInstance() && <SupportBubble />}
-                  <NewVersionPopup />
-                </WorkspaceProvider>
-              </TypebotProvider>
-            </UserProvider>
-          </SessionProvider>
-        </ChakraProvider>
-      </TolgeeProvider>
-    </>
+      <ChakraProvider theme={customTheme}>
+        <SessionProvider session={pageProps.session}>
+          <UserProvider>
+            <TypebotProvider typebotId={typebotId}>
+              <WorkspaceProvider typebotId={typebotId}>
+                <Component {...pageProps} />
+                {!router.pathname.endsWith('edit') && isCloudProdInstance() && (
+                  <SupportBubble />
+                )}
+                <NewVersionPopup />
+              </WorkspaceProvider>
+            </TypebotProvider>
+          </UserProvider>
+        </SessionProvider>
+      </ChakraProvider>
+    </TolgeeProvider>
   )
 }
 
