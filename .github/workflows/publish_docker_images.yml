@@ -64,7 +64,7 @@ jobs:
     strategy:
       matrix:
         app: ['builder', 'viewer']
-    runs-on: buildjet-2vcpu-ubuntu-2204-arm
+    runs-on: buildjet-4vcpu-ubuntu-2204-arm
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
