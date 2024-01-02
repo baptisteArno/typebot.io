@@ -18,7 +18,8 @@
     "createChatsPrices": "tsx createChatsPrices.ts",
     "migrateSubscriptionsToUsageBased": "tsx migrateSubscriptionsToUsageBased.ts",
     "importContactToBrevo": "tsx importContactToBrevo.ts",
-    "getUsage": "tsx getUsage.ts"
+    "getUsage": "tsx getUsage.ts",
+    "suspendWorkspace": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx suspendWorkspace.ts"
   },
   "devDependencies": {
     "@typebot.io/emails": "workspace:*",
