@@ -41,7 +41,7 @@ export const publishTypebot = authenticatedProcedure
       message: z.literal('success'),
     })
   )
-  .mutation(async ({ input: { typebotId }, ctx: { user, ip } }) => {
+  .mutation(async ({ input: { typebotId }, ctx: { user } }) => {
     const existingTypebot = await prisma.typebot.findFirst({
       where: {
         id: typebotId,
@@ -102,7 +102,7 @@ export const publishTypebot = authenticatedProcedure
     const riskLevel = typebotWasVerified ? 0 : computeRiskLevel(existingTypebot)
 
     if (riskLevel > 0 && riskLevel !== existingTypebot.riskLevel) {
-      if (env.MESSAGE_WEBHOOK_URL && riskLevel !== 100)
+      if (env.MESSAGE_WEBHOOK_URL && riskLevel !== 100 && riskLevel > 60)
         await fetch(env.MESSAGE_WEBHOOK_URL, {
           method: 'POST',
           body: `⚠️ Suspicious typebot to be reviewed: ${existingTypebot.name} (${env.NEXTAUTH_URL}/typebots/${existingTypebot.id}/edit) (workspace: ${existingTypebot.workspaceId})`,
@@ -125,21 +125,6 @@ export const publishTypebot = authenticatedProcedure
               id: existingTypebot.publishedTypebot.id,
             },
           })
-        if (ip) {
-          const isIpAlreadyBanned = await prisma.bannedIp.findFirst({
-            where: {
-              ip,
-            },
-          })
-          if (!isIpAlreadyBanned)
-            await prisma.bannedIp.create({
-              data: {
-                ip,
-                responsibleTypebotId: existingTypebot.id,
-                userId: user.id,
-              },
-            })
-        }
         throw new TRPCError({
           code: 'FORBIDDEN',
           message:

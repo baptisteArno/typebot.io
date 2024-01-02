@@ -128,7 +128,7 @@ if (env.CUSTOM_OAUTH_WELL_KNOWN_URL) {
 export const getAuthOptions = ({
   restricted,
 }: {
-  restricted?: 'ip-banned' | 'rate-limited'
+  restricted?: 'rate-limited'
 }): AuthOptions => ({
   adapter: customAdapter(prisma),
   secret: env.ENCRYPTION_SECRET,
@@ -159,7 +159,6 @@ export const getAuthOptions = ({
       }
     },
     signIn: async ({ account, user }) => {
-      if (restricted === 'ip-banned') throw new Error('ip-banned')
       if (restricted === 'rate-limited') throw new Error('rate-limited')
       if (!account) return false
       const isNewUser = !('createdAt' in user && isDefined(user.createdAt))
@@ -196,23 +195,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const requestIsFromCompanyFirewall = req.method === 'HEAD'
   if (requestIsFromCompanyFirewall) return res.status(200).end()
 
-  let restricted: 'ip-banned' | 'rate-limited' | undefined
-
-  if (
-    env.RADAR_HIGH_RISK_KEYWORDS &&
-    ((req.method === 'POST' && req.url?.startsWith('/api/auth/signin')) ||
-      (req.method === 'GET' && req.url?.startsWith('/api/auth/callback')))
-  ) {
-    const ip = getIp(req)
-    if (ip) {
-      const isIpBanned = await prisma.bannedIp.count({
-        where: {
-          ip,
-        },
-      })
-      if (isIpBanned) restricted = 'ip-banned'
-    }
-  }
+  let restricted: 'rate-limited' | undefined
 
   if (
     rateLimit &&
