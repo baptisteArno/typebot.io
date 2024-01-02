@@ -5,6 +5,9 @@
     "/openapi-reference/builder.json",
     "/openapi-reference/viewer.json"
   ],
+  "feedback": {
+    "suggestEdit": true
+  },
   "logo": {
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
@@ -39,6 +42,10 @@
     {
       "name": "Self-Hosting",
       "url": "self-hosting"
+    },
+    {
+      "name": "Contribute",
+      "url": "contribute"
     },
     {
       "name": "API Reference",
@@ -221,6 +228,10 @@
       "pages": ["api-reference/authentication", "api-reference/how-to"]
     },
     {
+      "group": "Get started",
+      "pages": ["contributing/overview"]
+    },
+    {
       "group": "Chat",
       "pages": [
         "api-reference/chat/start-chat",
@@ -273,6 +284,8 @@
     }
   ],
   "footerSocials": {
+    "website": "https://typebot.io",
+    "discord": "https://typebot.io/discord",
     "twitter": "https://twitter.com/Typebot_io",
     "github": "https://github.com/baptisteArno/typebot.io"
   }
