@@ -5,8 +5,9 @@ import { getSession } from '@typebot.io/bot-engine/queries/getSession'
 import { saveStateToDatabase } from '@typebot.io/bot-engine/saveStateToDatabase'
 import { continueBotFlow } from '@typebot.io/bot-engine/continueBotFlow'
 import { parseDynamicTheme } from '@typebot.io/bot-engine/parseDynamicTheme'
-import { isDefined } from '@typebot.io/lib/utils'
+import { isDefined, isNotDefined } from '@typebot.io/lib/utils'
 import { z } from 'zod'
+import { filterPotentiallySensitiveLogs } from '@typebot.io/bot-engine/logs/filterPotentiallySensitiveLogs'
 
 export const continueChat = publicProcedure
   .meta({
@@ -74,12 +75,14 @@ export const continueChat = publicProcedure
         visitedEdges,
       })
 
+    const isPreview = isNotDefined(session.state.typebotsQueue[0].resultId)
+
     return {
       messages,
       input,
       clientSideActions,
       dynamicTheme: parseDynamicTheme(newSessionState),
-      logs,
+      logs: isPreview ? logs : logs?.filter(filterPotentiallySensitiveLogs),
       lastMessageNewFormat,
     }
   })

@@ -21,6 +21,9 @@ import prisma from '@typebot.io/lib/prisma'
 import { parseVariables } from '@typebot.io/variables/parseVariables'
 import { defaultSendEmailOptions } from '@typebot.io/schemas/features/blocks/integrations/sendEmail/constants'
 
+export const sendEmailSuccessDescription = 'Email successfully sent'
+export const sendEmailErrorDescription = 'Email not sent'
+
 export const executeSendEmailBlock = async (
   state: SessionState,
   block: SendEmailBlock
@@ -143,7 +146,7 @@ const sendEmail = async ({
   if (!emailBody) {
     logs.push({
       status: 'error',
-      description: 'Email not sent',
+      description: sendEmailErrorDescription,
       details: {
         error: 'No email body found',
         transportConfig,
@@ -177,7 +180,7 @@ const sendEmail = async ({
     await transporter.sendMail(email)
     logs.push({
       status: 'success',
-      description: 'Email successfully sent',
+      description: sendEmailSuccessDescription,
       details: {
         transportConfig: {
           ...transportConfig,
@@ -189,7 +192,7 @@ const sendEmail = async ({
   } catch (err) {
     logs.push({
       status: 'error',
-      description: 'Email not sent',
+      description: sendEmailErrorDescription,
       details: {
         error: err instanceof Error ? err.toString() : err,
         transportConfig: {

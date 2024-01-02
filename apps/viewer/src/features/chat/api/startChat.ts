@@ -6,6 +6,7 @@ import {
 import { startSession } from '@typebot.io/bot-engine/startSession'
 import { saveStateToDatabase } from '@typebot.io/bot-engine/saveStateToDatabase'
 import { restartSession } from '@typebot.io/bot-engine/queries/restartSession'
+import { filterPotentiallySensitiveLogs } from '@typebot.io/bot-engine/logs/filterPotentiallySensitiveLogs'
 
 export const startChat = publicProcedure
   .meta({
@@ -76,7 +77,7 @@ export const startChat = publicProcedure
         input,
         resultId,
         dynamicTheme,
-        logs,
+        logs: logs?.filter(filterPotentiallySensitiveLogs),
         clientSideActions,
       }
     }

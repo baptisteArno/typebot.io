@@ -41,6 +41,9 @@ export const longReqTimeoutWhitelist = [
   'https://api.anthropic.com',
 ]
 
+export const webhookSuccessDescription = `Webhook successfuly executed.`
+export const webhookErrorDescription = `Webhook returned an error.`
+
 type Params = { disableRequestTimeout?: boolean }
 
 export const executeWebhookBlock = async (
@@ -201,7 +204,7 @@ export const executeWebhook = async (
     const response = await got(request.url, omit(request, 'url'))
     logs.push({
       status: 'success',
-      description: `Webhook successfuly executed.`,
+      description: webhookSuccessDescription,
       details: {
         statusCode: response.statusCode,
         request,
@@ -224,7 +227,7 @@ export const executeWebhook = async (
       }
       logs.push({
         status: 'error',
-        description: `Webhook returned an error.`,
+        description: webhookErrorDescription,
         details: {
           statusCode: error.response.statusCode,
           request,
