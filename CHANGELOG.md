@@ -1,5 +1,13 @@
 # Changelog
 
+<a name="2.21.2"></a>
+## 2.21.2 (2024-01-02)
+
+### Miscellaneous
+
+- 🧑‍💻 (webhook) Disable webhook timeout if CHAT_API_TIM… [[e8b9ef4](https://github.com/baptisteArno/typebot.io/commit/e8b9ef4d6cdb770ba580539452780e0fd1cc57cf)]
+
+
 <a name="2.21.1"></a>
 ## 2.21.1 (2024-01-02)
 
