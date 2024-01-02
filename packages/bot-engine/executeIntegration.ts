@@ -10,6 +10,8 @@ import { ExecuteIntegrationResponse } from './types'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { executeOpenAIBlock } from './blocks/integrations/legacy/openai/executeOpenAIBlock'
 import { executeForgedBlock } from './forge/executeForgedBlock'
+import { isNotDefined } from '@typebot.io/lib'
+import { env } from '@typebot.io/env'
 
 export const executeIntegration =
   (state: SessionState) =>
@@ -33,7 +35,11 @@ export const executeIntegration =
           startTimeShouldBeUpdated: true,
         }
       case IntegrationBlockType.WEBHOOK:
-        return executeWebhookBlock(state, block)
+        return {
+          ...(await executeWebhookBlock(state, block, {
+            disableRequestTimeout: isNotDefined(env.CHAT_API_TIMEOUT),
+          })),
+        }
       case IntegrationBlockType.OPEN_AI:
         return {
           ...(await executeOpenAIBlock(state, block)),
