@@ -1,5 +1,13 @@
 # Changelog
 
+<a name="2.21.1"></a>
+## 2.21.1 (2024-01-02)
+
+### Security
+
+- 🔒 (logs) Remove some logs from API response to avoid sensit… [[b5fbba7](https://github.com/baptisteArno/typebot.io/commit/b5fbba70720261da0f8ecc00beb9b93efe1369d8)]
+
+
 <a name="2.21.0"></a>
 
 ## 2.21.0 (2024-01-02)
