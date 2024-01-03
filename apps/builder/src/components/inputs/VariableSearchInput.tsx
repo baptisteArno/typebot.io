@@ -46,6 +46,7 @@ type Props = {
   helperText?: ReactNode
   moreInfoTooltip?: string
   direction?: 'row' | 'column'
+  width?: 'full'
 } & Omit<InputProps, 'placeholder'>
 
 export const VariableSearchInput = ({
@@ -58,6 +59,7 @@ export const VariableSearchInput = ({
   moreInfoTooltip,
   direction = 'column',
   isRequired,
+  width,
   ...inputProps
 }: Props) => {
   const focusedItemBgColor = useColorModeValue('gray.200', 'gray.700')
@@ -196,7 +198,7 @@ export const VariableSearchInput = ({
       isRequired={isRequired}
       as={direction === 'column' ? Stack : HStack}
       justifyContent="space-between"
-      width={label ? 'full' : 'auto'}
+      width={label || width === 'full' ? 'full' : 'auto'}
       spacing={direction === 'column' ? 2 : 3}
     >
       {label && (

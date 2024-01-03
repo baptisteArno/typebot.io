@@ -19,14 +19,14 @@ export const createSpeech = createAction({
     }),
     input: option.string.layout({
       label: 'Input',
-      input: 'textarea',
+      inputType: 'textarea',
     }),
     voice: option.enum(openAIVoices).layout({
       label: 'Voice',
       placeholder: 'Select a voice',
     }),
     saveUrlInVariableId: option.string.layout({
-      input: 'variableDropdown',
+      inputType: 'variableDropdown',
       label: 'Save URL in variable',
     }),
   }),

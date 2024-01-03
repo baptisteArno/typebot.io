@@ -90,24 +90,15 @@ You'll find a lot of resources to help you get started with Typebot in the [docu
 
 ## Self-hosting
 
-Interested in self-hosting Typebot on your server? Take a look at the [self-hosting installation instructions](https://docs.typebot.io/self-hosting).
+Interested in self-hosting Typebot on your server? Take a look at the [self-hosting installation instructions](https://docs.typebot.io/self-hosting/get-started).
 
 ## How to Contribute
 
-You are awesome, lets build great software together. Head over to the [Contribute guidelines](https://github.com/baptisteArno/typebot.io/blob/main/CONTRIBUTING.md) to get started. 💪
-
-### Claim these open bounties 👇
-
-<a href="https://console.algora.io/org/typebot/bounties?status=open">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://console.algora.io/api/og/typebot/bounties.png?p=0&status=open&theme=dark">
-    <img alt="Bounties of typebot" src="https://console.algora.io/api/og/typebot/bounties.png?p=0&status=open&theme=light">
-  </picture>
-</a>
+You are awesome, lets build great software together. Head over to the [Contribute docs](https://docs.typebot.io/contribute/overview) to get started. 💪
 
 ## Run the project locally
 
-Follow the [Get started](https://github.com/baptisteArno/typebot.io/blob/main/CONTRIBUTING.md#get-started) section of the Contributing guide.
+Follow the [Local installation](https://docs.typebot.io/contribute/guides/local-installation) section of in the Contributing docs.
 
 ### Top contributors
 

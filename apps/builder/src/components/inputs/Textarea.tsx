@@ -28,7 +28,7 @@ type Props = {
   helperText?: ReactNode
   onChange: (value: string) => void
   direction?: 'row' | 'column'
-} & Pick<TextareaProps, 'minH'>
+} & Pick<TextareaProps, 'minH' | 'width'>
 
 export const Textarea = ({
   id,
@@ -43,6 +43,7 @@ export const Textarea = ({
   minH,
   helperText,
   direction = 'column',
+  width,
 }: Props) => {
   const inputRef = useRef<HTMLTextAreaElement | null>(null)
   const [isTouched, setIsTouched] = useState(false)
@@ -108,7 +109,7 @@ export const Textarea = ({
       isRequired={isRequired}
       as={direction === 'column' ? Stack : HStack}
       justifyContent="space-between"
-      width={label ? 'full' : 'auto'}
+      width={label || width === 'full' ? 'full' : 'auto'}
       spacing={direction === 'column' ? 2 : 3}
     >
       {label && (

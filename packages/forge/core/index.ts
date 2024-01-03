@@ -95,6 +95,7 @@ export const option = {
   object: <T extends z.ZodRawShape>(schema: T) => z.object(schema),
   literal: <T extends string>(value: T) => z.literal(value),
   string: z.string().optional(),
+  boolean: z.boolean().optional(),
   enum: <T extends string>(values: readonly [T, ...T[]]) =>
     z.enum(values).optional(),
   number: z.number().or(variableStringSchema).optional(),
@@ -123,7 +124,7 @@ export const option = {
             defaultValue: items[0],
           }),
           variableId: z.string().optional().layout({
-            input: 'variableDropdown',
+            inputType: 'variableDropdown',
           }),
         })
       )

@@ -117,7 +117,6 @@ export type BlockDefinition<
   auth?: Auth
   options?: Options | undefined
   fetchers?: FetcherDefinition<Auth, Options>[]
-  isDisabledInPreview?: boolean
   actions: ActionDefinition<Auth, Options>[]
 }
 

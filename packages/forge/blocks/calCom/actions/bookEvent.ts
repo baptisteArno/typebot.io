@@ -25,7 +25,7 @@ export const bookEvent = createAction({
     }),
     saveBookedDateInVariableId: option.string.layout({
       label: 'Save booked date',
-      input: 'variableDropdown',
+      inputType: 'variableDropdown',
     }),
   }),
   getSetVariableIds: ({ saveBookedDateInVariableId }) =>

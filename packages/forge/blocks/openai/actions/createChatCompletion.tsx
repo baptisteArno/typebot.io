@@ -8,7 +8,10 @@ import { auth } from '../auth'
 import { baseOptions } from '../baseOptions'
 
 const nativeMessageContentSchema = {
-  content: option.string.layout({ input: 'textarea', placeholder: 'Content' }),
+  content: option.string.layout({
+    inputType: 'textarea',
+    placeholder: 'Content',
+  }),
 }
 
 const systemMessageItemSchema = option
@@ -32,7 +35,7 @@ const assistantMessageItemSchema = option
 const dialogueMessageItemSchema = option.object({
   role: option.literal('Dialogue'),
   dialogueVariableId: option.string.layout({
-    input: 'variableDropdown',
+    inputType: 'variableDropdown',
     placeholder: 'Dialogue variable',
   }),
   startsBy: option.enum(['user', 'assistant']).layout({
@@ -75,6 +78,7 @@ export const createChatCompletion = createAction({
   name: 'Create chat completion',
   auth,
   baseOptions,
+  options,
   getSetVariableIds: (options) =>
     options.responseMapping?.map((res) => res.variableId).filter(isDefined) ??
     [],
@@ -177,5 +181,4 @@ export const createChatCompletion = createAction({
       },
     },
   },
-  options,
 })

@@ -1,0 +1,53 @@
+---
+title: 'Contribute to the documentation'
+sidebarTitle: 'Documentation'
+image: '/images/contribute/writing-robot.png'
+icon: 'book'
+---
+
+<Frame style={{ maxWidth: '400px' }}>
+  <img
+    src="/images/contribute/writing-robot.png"
+    alt="A blue robot writing on a paper"
+  />
+</Frame>
+
+## For a quick fix
+
+If the documentation is missing something, or you found a typo you can quickly edit the documentation:
+
+1. Go to the documentation page you want to edit.
+2. Click on the "Suggest edits" button at the bottom of the page.
+3. You are redirected to a Github page where you can edit the content of the doc.
+4. If you did not already have a fork of the repository, you will be prompted to create one.
+5. Edit the content of the doc.
+6. Hit "Commit changes...".
+7. Click on "Create pull request".
+8. Add a title and a description to describe your changes.
+9. Click on "Create pull request".
+
+It will be reviewed and merged if approved!
+
+## For a bigger modification
+
+If you'd like to add a new page or add a new section to the documentation:
+
+1. [Install the project locally](./local-installation)
+2. Create a new branch:
+
+   ```sh
+   git checkout -b MY_BRANCH_NAME
+   ```
+
+3. Run the docs in dev mode
+
+   ```sh
+   cd apps/docs
+   pnpm dev
+   ```
+
+4. All your docs modification will be displayed in real time.
+5. Once you are done, commit your changes and push your branch.
+6. Create a pull request on the [Github repository](https://github.com/baptisteArno/typebot.io).
+
+It will be reviewed and merged if approved!

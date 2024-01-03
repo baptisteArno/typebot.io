@@ -1,0 +1,77 @@
+---
+title: Block
+---
+
+After using the [CLI](./cli) to create your new block. The `index.ts` file contains the block definition. It should look like:
+
+<Frame>
+  <img
+    src="/images/contribute/block-name-logo-match.png"
+    alt="Block name and logo match"
+  />
+</Frame>
+
+## Props
+
+<ResponseField name="id" type="string" required>
+  The block ID. It should be unique all the other blocks.
+</ResponseField>
+
+<ResponseField name="name" type="string" required>
+  A concise name for the block. Should be short enough to fit into a small block
+  card.
+</ResponseField>
+
+<ResponseField
+  name="LightLogo"
+  type="(props: React.SVGProps<SVGSVGElement>) => React.JSX.Element"
+  required
+></ResponseField>
+
+<ResponseField
+  name="DarkLogo"
+  type="(props: React.SVGProps<SVGSVGElement>) => React.JSX.Element"
+>
+  Logo used on the dark mode.
+</ResponseField>
+
+<ResponseField name="fullName" type="string">
+  The full name that will be displayed as a tooltip when the mouse hovers the
+  block card.
+</ResponseField>
+
+<ResponseField name="tags" type="string[]">
+  List of strings describing the block. Used for block searching.
+</ResponseField>
+
+<ResponseField name="auth" type="Auth">
+  See <a href="./auth">Auth</a> for more information.
+</ResponseField>
+
+<ResponseField name="actions" type="Action[]">
+  A list of all the possible actions that this block provides. See{' '}
+  <a href="./action">Action</a> for more information
+</ResponseField>
+
+<ResponseField name="docsUrl" type="string">
+  The dedicated documentation URL. (i.e.
+  `https://docs.typebot.io/editor/blocks/integrations/openai`)
+</ResponseField>
+
+<ResponseField name="options" type="z.ZodObject<any>">
+  Provide it if all the block actions share the same properties. See{' '}
+  <a href="./options">Options</a> for more information. In the block settings it
+  will then be displayed between the auth and the actions:
+
+{' '}
+
+<Frame style={{ maxWidth: '600px' }}>
+  <img src="/images/contribute/base-options.png" alt="Block options" />
+</Frame>
+
+</ResponseField>
+
+<ResponseField name="fetchers" type="Fetcher[]">
+  A list of fetchers used in the provided <code>options</code>. See{' '}
+  <a href="./fetcher">Fetcher</a> for more information.
+</ResponseField>

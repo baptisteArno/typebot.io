@@ -13,12 +13,15 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  FormLabel,
   Stack,
   Text,
 } from '@chakra-ui/react'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { DropdownList } from '@/components/DropdownList'
 import { ForgedBlockDefinition, ForgedBlock } from '@typebot.io/forge-schemas'
+import { PrimitiveList } from '@/components/PrimitiveList'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 
 const mdComponents = {
   a: ({ href, children }) => (
@@ -40,6 +43,8 @@ export const ZodFieldLayout = ({
   isInAccordion,
   blockDef,
   blockOptions,
+  width,
+  propName,
   onDataChange,
 }: {
   data: any
@@ -47,6 +52,8 @@ export const ZodFieldLayout = ({
   isInAccordion?: boolean
   blockDef?: ForgedBlockDefinition
   blockOptions?: ForgedBlock['options']
+  width?: 'full'
+  propName?: string
   onDataChange: (val: any) => void
 }) => {
   const layout = schema._def.layout as ZodLayoutMetadata<ZodTypeAny> | undefined
@@ -54,7 +61,6 @@ export const ZodFieldLayout = ({
     ? schema._def.innerType._def.typeName
     : schema._def.typeName
 
-  if (layout?.isHidden) return null
   switch (type) {
     case 'ZodObject':
       return (
@@ -125,6 +131,7 @@ export const ZodFieldLayout = ({
           moreInfoTooltip={layout?.moreInfoTooltip}
           placeholder={layout?.placeholder}
           direction={layout?.direction}
+          width={width}
         />
       )
     }
@@ -143,6 +150,18 @@ export const ZodFieldLayout = ({
           isRequired={layout?.isRequired}
           moreInfoTooltip={layout?.moreInfoTooltip}
           onValueChange={onDataChange}
+          direction={layout?.direction}
+          width={width}
+        />
+      )
+    }
+    case 'ZodBoolean': {
+      return (
+        <SwitchWithLabel
+          label={layout?.label ?? propName ?? ''}
+          initialValue={data ?? layout?.defaultValue}
+          onCheckChange={onDataChange}
+          moreInfoContent={layout?.moreInfoTooltip}
         />
       )
     }
@@ -166,10 +185,11 @@ export const ZodFieldLayout = ({
             }
             moreInfoTooltip={layout?.moreInfoTooltip}
             onChange={onDataChange}
+            width={width}
           />
         )
       }
-      if (layout?.input === 'variableDropdown') {
+      if (layout?.inputType === 'variableDropdown') {
         return (
           <VariableSearchInput
             initialVariableId={data}
@@ -184,10 +204,11 @@ export const ZodFieldLayout = ({
                 </Markdown>
               ) : undefined
             }
+            width={width}
           />
         )
       }
-      if (layout?.input === 'textarea') {
+      if (layout?.inputType === 'textarea') {
         return (
           <Textarea
             defaultValue={data ?? layout?.defaultValue}
@@ -204,6 +225,7 @@ export const ZodFieldLayout = ({
             withVariableButton={layout?.withVariableButton}
             moreInfoTooltip={layout.moreInfoTooltip}
             onChange={onDataChange}
+            width={width}
           />
         )
       }
@@ -217,11 +239,12 @@ export const ZodFieldLayout = ({
               <Markdown components={mdComponents}>{layout.helperText}</Markdown>
             ) : undefined
           }
-          type={layout?.input === 'password' ? 'password' : undefined}
+          type={layout?.inputType === 'password' ? 'password' : undefined}
           isRequired={layout?.isRequired}
           withVariableButton={layout?.withVariableButton}
           moreInfoTooltip={layout?.moreInfoTooltip}
           onChange={onDataChange}
+          width={width}
         />
       )
     }
@@ -240,24 +263,54 @@ const ZodArrayContent = ({
   layout: ZodLayoutMetadata<ZodTypeAny> | undefined
   isInAccordion?: boolean
   onDataChange: (val: any) => void
-}) => (
-  <TableList
-    onItemsChange={(items) => {
-      onDataChange(items)
-    }}
-    initialItems={data}
-    addLabel={`Add ${layout?.itemLabel ?? ''}`}
-    isOrdered={layout?.isOrdered}
-  >
-    {({ item, onItemChange }) => (
-      <Stack p="4" rounded="md" flex="1" borderWidth="1px">
-        <ZodFieldLayout
-          schema={schema._def.innerType._def.type}
-          data={item}
-          isInAccordion={isInAccordion}
-          onDataChange={onItemChange}
-        />
+}) => {
+  const type = schema._def.innerType
+    ? schema._def.innerType._def.typeName
+    : schema._def.typeName
+  if (type === 'ZodString' || type === 'ZodNumber' || type === 'ZodEnum')
+    return (
+      <Stack spacing={0}>
+        {layout?.label && <FormLabel>{layout.label}</FormLabel>}
+        <Stack p="4" rounded="md" flex="1" borderWidth="1px">
+          <PrimitiveList
+            onItemsChange={(items) => {
+              onDataChange(items)
+            }}
+            initialItems={data}
+            addLabel={`Add ${layout?.itemLabel ?? ''}`}
+          >
+            {({ item, onItemChange }) => (
+              <ZodFieldLayout
+                schema={schema._def.innerType._def.type}
+                data={item}
+                isInAccordion={isInAccordion}
+                onDataChange={onItemChange}
+                width="full"
+              />
+            )}
+          </PrimitiveList>
+        </Stack>
       </Stack>
-    )}
-  </TableList>
-)
+    )
+  return (
+    <TableList
+      onItemsChange={(items) => {
+        onDataChange(items)
+      }}
+      initialItems={data}
+      addLabel={`Add ${layout?.itemLabel ?? ''}`}
+      isOrdered={layout?.isOrdered}
+    >
+      {({ item, onItemChange }) => (
+        <Stack p="4" rounded="md" flex="1" borderWidth="1px">
+          <ZodFieldLayout
+            schema={schema._def.innerType._def.type}
+            data={item}
+            isInAccordion={isInAccordion}
+            onDataChange={onItemChange}
+          />
+        </Stack>
+      )}
+    </TableList>
+  )
+}

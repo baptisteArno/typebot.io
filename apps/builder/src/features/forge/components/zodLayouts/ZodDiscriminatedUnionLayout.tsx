@@ -31,10 +31,8 @@ export const ZodDiscriminatedUnionLayout = ({
         currentItem={data?.[discriminant]}
         onItemSelect={(item) => onDataChange({ ...data, [discriminant]: item })}
         items={
-          [...schema._def.optionsMap.keys()].filter(
-            (key) =>
-              isDefined(key) &&
-              !schema._def.optionsMap.get(key)?._def.layout?.isHidden
+          [...schema._def.optionsMap.keys()].filter((key) =>
+            isDefined(key)
           ) as string[]
         }
         placeholder={dropdownPlaceholder}

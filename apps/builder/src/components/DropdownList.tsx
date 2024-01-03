@@ -51,7 +51,7 @@ export const DropdownList = <T extends readonly any[]>({
       isRequired={isRequired}
       as={direction === 'column' ? Stack : HStack}
       justifyContent="space-between"
-      width={label ? 'full' : 'auto'}
+      width={props.width === 'full' || label ? 'full' : 'auto'}
       spacing={direction === 'column' ? 2 : 3}
     >
       {label && (
