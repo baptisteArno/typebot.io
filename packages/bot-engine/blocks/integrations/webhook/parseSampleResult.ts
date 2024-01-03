@@ -60,7 +60,7 @@ const extractLinkedInputBlocks =
                   'typebotId' in t
                     ? t.typebotId === linkedBot.options?.typebotId
                     : t.id === linkedBot.options?.typebotId
-                ) as Typebot | PublicTypebot,
+                ) ?? typebot,
                 linkedTypebots
               )(linkedBot.options?.groupId, 'forward')
             )
