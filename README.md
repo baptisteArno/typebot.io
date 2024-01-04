@@ -27,7 +27,6 @@ Typebot is an open-source chatbot builder. It allows you to create advanced chat
 <a href="https://console.algora.io/org/typebot/bounties?status=open"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fconsole.algora.io%2Fapi%2Fshields%2Ftypebot%2Fbounties%3Fstatus%3Dopen" alt="Ask a question"></a>
 <a href="https://typebot.io/discord"><img src="https://img.shields.io/badge/Join community-Discord-%23404EED" alt="Ask a question"></a>
 
-
 </p>
 
 <h3 align="center">
