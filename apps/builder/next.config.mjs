@@ -58,16 +58,6 @@ const nextConfig = {
     config.resolve.alias['openai'] = false
     return config
   },
-  headers: async () => {
-    return [
-      {
-        source: '/(.*)?',
-        headers: [
-          
-        ],
-      },
-    ]
-  },
   async rewrites() {
     return process.env.NEXT_PUBLIC_POSTHOG_KEY
       ? [
