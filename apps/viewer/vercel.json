@@ -8,5 +8,8 @@
       "maxDuration": 150,
       "memory": 500
     }
+  },
+  "github": {
+    "silent": true
   }
 }
