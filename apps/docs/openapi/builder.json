@@ -15494,7 +15494,8 @@
             "in": "path",
             "name": "resultId",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "The `resultId` is returned by the /startChat endpoint or you can find it by listing results with `/results` endpoint"
             },
             "required": true
           }
