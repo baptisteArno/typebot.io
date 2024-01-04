@@ -54,16 +54,18 @@ const extractLinkedInputBlocks =
     const linkedBotInputs =
       previousLinkedTypebotBlocks.length > 0
         ? await Promise.all(
-            previousLinkedTypebotBlocks.map((linkedBot) =>
-              extractLinkedInputBlocks(
-                linkedTypebots.find((t) =>
-                  'typebotId' in t
-                    ? t.typebotId === linkedBot.options?.typebotId
-                    : t.id === linkedBot.options?.typebotId
-                ) ?? typebot,
-                linkedTypebots
-              )(linkedBot.options?.groupId, 'forward')
-            )
+            previousLinkedTypebotBlocks.map((linkedBot) => {
+              const linkedTypebot = linkedTypebots.find((t) =>
+                'typebotId' in t
+                  ? t.typebotId === linkedBot.options?.typebotId
+                  : t.id === linkedBot.options?.typebotId
+              )
+              if (!linkedTypebot) return []
+              return extractLinkedInputBlocks(linkedTypebot, linkedTypebots)(
+                linkedBot.options?.groupId,
+                'forward'
+              )
+            })
           )
         : []
 

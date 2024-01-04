@@ -13,7 +13,7 @@ import {
   AnswerInSessionState,
 } from '@typebot.io/schemas'
 import { stringify } from 'qs'
-import { isDefined, isEmpty, omit } from '@typebot.io/lib'
+import { isDefined, isEmpty, isNotDefined, omit } from '@typebot.io/lib'
 import { getDefinedVariables, parseAnswers } from '@typebot.io/lib/results'
 import got, { Method, HTTPError, OptionsInit } from 'got'
 import { resumeWebhookExecution } from './resumeWebhookExecution'
@@ -26,6 +26,7 @@ import {
   defaultWebhookAttributes,
   maxTimeout,
 } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
+import { env } from '@typebot.io/env'
 
 type ParsedWebhook = ExecutableWebhook & {
   basicAuth: { username?: string; password?: string }
@@ -198,12 +199,13 @@ export const executeWebhook = async (
       contentType?.includes('x-www-form-urlencoded') && body ? body : undefined,
     body: body && !isJson ? (body as string) : undefined,
     timeout: {
-      response:
-        params.timeout && params.timeout !== defaultTimeout
-          ? Math.min(params.timeout, maxTimeout) * 1000
-          : isLongRequest
-          ? maxTimeout * 1000
-          : defaultTimeout * 1000,
+      response: isNotDefined(env.CHAT_API_TIMEOUT)
+        ? undefined
+        : params.timeout && params.timeout !== defaultTimeout
+        ? Math.min(params.timeout, maxTimeout) * 1000
+        : isLongRequest
+        ? maxTimeout * 1000
+        : defaultTimeout * 1000,
     },
   } satisfies OptionsInit
 
