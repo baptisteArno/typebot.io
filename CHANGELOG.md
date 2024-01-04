@@ -1,5 +1,23 @@
 # Changelog
 
+<a name="2.21.3"></a>
+## 2.21.3 (2024-01-04)
+
+### Changed
+
+- 🔧 Muting Vercel bot notifications for viewer [[5266be1](https://github.com/baptisteArno/typebot.io/commit/5266be1a51de49cc0c9878c302ce235d1d20fd85)]
+- ⚡ (webhook) Add custom timeout option [[34917b0](https://github.com/baptisteArno/typebot.io/commit/34917b00efdc2c06362516ac2c28773afef1f019)]
+
+### Fixed
+
+- 🐛 (webhook) Fix test request execution invalid timeout [[f73bc46](https://github.com/baptisteArno/typebot.io/commit/f73bc46208367e2a0db33dbd89f50108d33401e9)]
+- 🐛 (webhook) Fix result parsing with same linked typebot [[d247e02](https://github.com/baptisteArno/typebot.io/commit/d247e02cad075fafa30c6eaddd70fb470c451d95)]
+
+### Miscellaneous
+
+- 📝 Add Contribute docs [[65f4fb0](https://github.com/baptisteArno/typebot.io/commit/65f4fb0d7a869bb61593317cdea38994c6f2bd29)]
+
+
 <a name="2.21.2"></a>
 ## 2.21.2 (2024-01-02)
 
