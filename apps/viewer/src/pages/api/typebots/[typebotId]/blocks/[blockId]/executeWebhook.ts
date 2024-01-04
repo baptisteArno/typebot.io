@@ -23,14 +23,14 @@ import { saveSuccessLog } from '@typebot.io/bot-engine/logs/saveSuccessLog'
 import { parseSampleResult } from '@typebot.io/bot-engine/blocks/integrations/webhook/parseSampleResult'
 import {
   HttpMethod,
+  defaultTimeout,
   defaultWebhookAttributes,
+  maxTimeout,
 } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
 import { getBlockById } from '@typebot.io/lib/getBlockById'
 import {
   convertKeyValueTableToObject,
   longReqTimeoutWhitelist,
-  longRequestTimeout,
-  responseDefaultTimeout,
 } from '@typebot.io/bot-engine/blocks/integrations/webhook/executeWebhookBlock'
 
 const cors = initMiddleware(Cors())
@@ -184,7 +184,7 @@ export const executeWebhook =
           : undefined,
       body: body && !isJson ? body : undefined,
       timeout: {
-        response: isLongRequest ? longRequestTimeout : responseDefaultTimeout,
+        response: isLongRequest ? maxTimeout : defaultTimeout,
       },
     }
     try {

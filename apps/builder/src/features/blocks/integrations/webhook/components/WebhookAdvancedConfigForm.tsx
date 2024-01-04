@@ -32,9 +32,12 @@ import { VariableForTestInputs } from './VariableForTestInputs'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
 import {
   HttpMethod,
+  defaultTimeout,
   defaultWebhookAttributes,
   defaultWebhookBlockOptions,
+  maxTimeout,
 } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
+import { NumberInput } from '@/components/inputs'
 
 type Props = {
   blockId: string
@@ -80,6 +83,9 @@ export const WebhookAdvancedConfigForm = ({
 
   const updateIsCustomBody = (isCustomBody: boolean) =>
     onOptionsChange({ ...options, isCustomBody })
+
+  const updateTimeout = (timeout: number | undefined) =>
+    onOptionsChange({ ...options, timeout })
 
   const executeTestRequest = async () => {
     if (!typebot) return
@@ -194,6 +200,22 @@ export const WebhookAdvancedConfigForm = ({
                   debounceTimeout={0}
                 />
               )}
+            </AccordionPanel>
+          </AccordionItem>
+          <AccordionItem>
+            <AccordionButton justifyContent="space-between">
+              Advanced parameters
+              <AccordionIcon />
+            </AccordionButton>
+            <AccordionPanel pt="4">
+              <NumberInput
+                label="Timeout (s)"
+                defaultValue={options?.timeout ?? defaultTimeout}
+                min={1}
+                max={maxTimeout}
+                onValueChange={updateTimeout}
+                withVariableButton={false}
+              />
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem>

@@ -22,16 +22,15 @@ import { parseVariables } from '@typebot.io/variables/parseVariables'
 import prisma from '@typebot.io/lib/prisma'
 import {
   HttpMethod,
+  defaultTimeout,
   defaultWebhookAttributes,
+  maxTimeout,
 } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
 
 type ParsedWebhook = ExecutableWebhook & {
   basicAuth: { username?: string; password?: string }
   isJson: boolean
 }
-
-export const responseDefaultTimeout = 10000
-export const longRequestTimeout = 120000
 
 export const longReqTimeoutWhitelist = [
   'https://api.openai.com',
@@ -44,7 +43,7 @@ export const longReqTimeoutWhitelist = [
 export const webhookSuccessDescription = `Webhook successfuly executed.`
 export const webhookErrorDescription = `Webhook returned an error.`
 
-type Params = { disableRequestTimeout?: boolean }
+type Params = { disableRequestTimeout?: boolean; timeout?: number }
 
 export const executeWebhookBlock = async (
   state: SessionState,
@@ -86,7 +85,10 @@ export const executeWebhookBlock = async (
     response: webhookResponse,
     logs: executeWebhookLogs,
     startTimeShouldBeUpdated,
-  } = await executeWebhook(parsedWebhook, params)
+  } = await executeWebhook(parsedWebhook, {
+    ...params,
+    timeout: block.options?.timeout,
+  })
 
   return {
     ...resumeWebhookExecution({
@@ -196,7 +198,12 @@ export const executeWebhook = async (
       contentType?.includes('x-www-form-urlencoded') && body ? body : undefined,
     body: body && !isJson ? (body as string) : undefined,
     timeout: {
-      response: isLongRequest ? longRequestTimeout : responseDefaultTimeout,
+      response:
+        params.timeout && params.timeout !== defaultTimeout
+          ? Math.min(params.timeout, maxTimeout) * 1000
+          : isLongRequest
+          ? maxTimeout * 1000
+          : defaultTimeout * 1000,
     },
   } satisfies OptionsInit
 
@@ -207,8 +214,8 @@ export const executeWebhook = async (
       description: webhookSuccessDescription,
       details: {
         statusCode: response.statusCode,
-        request,
         response: safeJsonParse(response.body).data,
+        request,
       },
     })
     return {
@@ -217,7 +224,7 @@ export const executeWebhook = async (
         data: safeJsonParse(response.body).data,
       },
       logs,
-      startTimeShouldBeUpdated: isLongRequest,
+      startTimeShouldBeUpdated: true,
     }
   } catch (error) {
     if (error instanceof HTTPError) {
@@ -234,7 +241,27 @@ export const executeWebhook = async (
           response,
         },
       })
-      return { response, logs, startTimeShouldBeUpdated: isLongRequest }
+      return { response, logs, startTimeShouldBeUpdated: true }
+    }
+    if (
+      typeof error === 'object' &&
+      error &&
+      'code' in error &&
+      error.code === 'ETIMEDOUT'
+    ) {
+      const response = {
+        statusCode: 408,
+        data: { message: `Request timed out.` },
+      }
+      logs.push({
+        status: 'error',
+        description: `Webhook request timed out. (${request.timeout.response}ms)`,
+        details: {
+          response,
+          request,
+        },
+      })
+      return { response, logs, startTimeShouldBeUpdated: true }
     }
     const response = {
       statusCode: 500,
@@ -245,11 +272,11 @@ export const executeWebhook = async (
       status: 'error',
       description: `Webhook failed to execute.`,
       details: {
-        request,
         response,
+        request,
       },
     })
-    return { response, logs, startTimeShouldBeUpdated: isLongRequest }
+    return { response, logs, startTimeShouldBeUpdated: true }
   }
 }
 
