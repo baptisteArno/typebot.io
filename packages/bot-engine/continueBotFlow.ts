@@ -292,7 +292,7 @@ const parseDefaultRetryMessage = (block: InputBlock): string => {
     case InputBlockType.PAYMENT:
       return defaultPaymentInputOptions.retryMessageContent
     default:
-      return 'Invalid message. Please, try again.'
+      return 'Mensagem inválida. Por favor, tente novamente.'
   }
 }
 
