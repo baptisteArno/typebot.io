@@ -22,7 +22,9 @@
     "suspendWorkspace": "tsx suspendWorkspace.ts",
     "destroyUser": "tsx destroyUser.ts",
     "updateTypebot": "tsx updateTypebot.ts",
-    "updateWorkspace": "tsx updateWorkspace.ts"
+    "updateWorkspace": "tsx updateWorkspace.ts",
+    "inspectTypebot": "tsx inspectTypebot.ts",
+    "getCoupon": "tsx getCoupon.ts"
   },
   "devDependencies": {
     "@typebot.io/emails": "workspace:*",
