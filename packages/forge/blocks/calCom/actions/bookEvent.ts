@@ -23,6 +23,11 @@ export const bookEvent = createAction({
       label: 'Email',
       placeholder: 'johndoe@gmail.com',
     }),
+    phone: option.string.layout({
+      accordion: 'Prefill information',
+      label: 'Phone number',
+      placeholder: '+919999999999',
+    }),
     saveBookedDateInVariableId: option.string.layout({
       label: 'Save booked date',
       inputType: 'variableDropdown',
@@ -61,6 +66,7 @@ export const bookEvent = createAction({
               name: options.name ?? null,
               email: options.email ?? null,
               layout: parseLayoutAttr(options.layout),
+              phone: options.phone ?? null,
             },
             content: `(function (C, A, L) {
                 let p = function (a, ar) {
@@ -94,6 +100,11 @@ export const bookEvent = createAction({
               })(window, baseUrl + "/embed/embed.js", "init");
               Cal("init", { origin: baseUrl });
 
+              const location = phone ? JSON.stringify({
+                value: "phone",
+                optionValue: phone
+              }) : undefined
+
               Cal("inline", {
                 elementOrSelector: typebotElement,
                 calLink: link,
@@ -101,6 +112,7 @@ export const bookEvent = createAction({
                 config: {
                   name: name ?? undefined,
                   email: email ?? undefined,
+                  location
                 }
               });
 
