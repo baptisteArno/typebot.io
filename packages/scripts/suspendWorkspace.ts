@@ -15,24 +15,29 @@ const suspendWorkspace = async () => {
     console.log(e.duration, 'ms')
   })
 
-  const type = (await p.select({
+  const type = await p.select({
     message: 'Select way',
     options: [
-      { label: 'Typebot public ID', value: 'typebotId' },
+      { label: 'Typebot ID', value: 'id' },
+      { label: 'Typebot public ID', value: 'publicId' },
       { label: 'Workspace ID', value: 'workspaceId' },
     ],
-  })) as 'typebotId' | 'workspaceId'
+  })
 
-  const val = (await p.text({
+  if (!type || typeof type !== 'string') return
+
+  const val = await p.text({
     message: 'Enter value',
-  })) as string
+  })
+
+  if (!val || typeof val !== 'string') return
 
   let workspaceId = type === 'workspaceId' ? val : undefined
 
   if (!workspaceId) {
-    const typebot = await prisma.typebot.findUnique({
+    const typebot = await prisma.typebot.findFirst({
       where: {
-        publicId: val,
+        [type]: val,
       },
       select: {
         workspaceId: true,
