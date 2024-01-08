@@ -92,7 +92,6 @@
                 "dialogueVariableId": "vabkycu0qqff5d6ar2ama16pf"
               }
             ],
-            "credentialsId": "clpjnjrbt00051aliw6610w1z",
             "responseMapping": [
               {
                 "item": "Message content",
@@ -102,23 +101,24 @@
           }
         },
         {
+          "id": "myldn1l1nfdwwm8qvza71rwv",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "{{Assistant Message}}" }] }
+            ]
+          },
+          "groupId": "a6ymhjwtkqwp8t127plz8qmk"
+        },
+        {
           "id": "yblc864bzipaqfja7b2o3oo0",
           "type": "Set variable",
           "options": {
             "variableId": "vabkycu0qqff5d6ar2ama16pf",
             "type": "Append value(s)",
             "item": "{{Assistant Message}}"
-          }
-        },
-        {
-          "id": "myldn1l1nfdwwm8qvza71rwv",
-          "outgoingEdgeId": "y8ml9ljnsydol9b42fd9zdve",
-          "type": "text",
-          "content": {
-            "richText": [
-              { "type": "p", "children": [{ "text": "{{Assistant Message}}" }] }
-            ]
-          }
+          },
+          "outgoingEdgeId": "at8takz56suqmaul5teazymb"
         }
       ]
     },
@@ -156,19 +156,22 @@
       "to": { "groupId": "qfrz5nwm63g12dajsjxothb5" }
     },
     {
-      "id": "y8ml9ljnsydol9b42fd9zdve",
-      "from": { "blockId": "myldn1l1nfdwwm8qvza71rwv" },
-      "to": { "groupId": "qfrz5nwm63g12dajsjxothb5" }
-    },
-    {
       "id": "fpj0xacppqd1s5slyljzhzc9",
       "from": { "blockId": "m4jadtknjb3za3gvxj1xdn1k" },
       "to": { "groupId": "a6ymhjwtkqwp8t127plz8qmk" }
     },
     {
+      "id": "pn7omb9mx5xxc4mzq028fcmq",
       "from": { "eventId": "ewnfbo0exlu7ihfu2lu2lusm" },
-      "to": { "groupId": "t3tv4dm3khwmiotjle5jb65g" },
-      "id": "pn7omb9mx5xxc4mzq028fcmq"
+      "to": { "groupId": "t3tv4dm3khwmiotjle5jb65g" }
+    },
+    {
+      "from": {
+        "blockId": "yblc864bzipaqfja7b2o3oo0",
+        "groupId": "a6ymhjwtkqwp8t127plz8qmk"
+      },
+      "to": { "groupId": "qfrz5nwm63g12dajsjxothb5" },
+      "id": "at8takz56suqmaul5teazymb"
     }
   ],
   "variables": [

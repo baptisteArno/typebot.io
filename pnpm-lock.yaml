@@ -689,9 +689,6 @@ importers:
       qs:
         specifier: 6.11.2
         version: 6.11.2
-      remark-slate:
-        specifier: 1.8.6
-        version: 1.8.6
       stripe:
         specifier: 12.13.0
         version: 12.13.0
@@ -1320,6 +1317,9 @@ importers:
       '@udecode/plate-common':
         specifier: 21.1.5
         version: 21.1.5(@babel/core@7.22.9)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-react@0.94.2)(slate@0.94.1)
+      escape-html:
+        specifier: ^1.0.3
+        version: 1.0.3
       google-auth-library:
         specifier: 8.9.0
         version: 8.9.0
@@ -1329,9 +1329,6 @@ importers:
       minio:
         specifier: 7.1.3
         version: 7.1.3
-      remark-slate:
-        specifier: 1.8.6
-        version: 1.8.6
       stripe:
         specifier: 12.13.0
         version: 12.13.0
@@ -1360,6 +1357,9 @@ importers:
       '@typebot.io/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@types/escape-html':
+        specifier: ^1.0.4
+        version: 1.0.4
       '@types/nodemailer':
         specifier: 6.4.8
         version: 6.4.8
@@ -7714,9 +7714,9 @@ packages:
       '@types/trusted-types': 2.0.4
     dev: true
 
-  /@types/escape-html@1.0.2:
-    resolution: {integrity: sha512-gaBLT8pdcexFztLSPRtriHeXY/Kn4907uOCZ4Q3lncFBkheAWOuNt53ypsF8szgxbEJ513UeBzcf4utN0EzEwA==}
-    dev: false
+  /@types/escape-html@1.0.4:
+    resolution: {integrity: sha512-qZ72SFTgUAZ5a7Tj6kf2SHLetiH5S6f8G5frB2SPQ3EyF02kxdyBFf4Tz4banE3xCgGnKgWLt//a6VuYHKYJTg==}
+    dev: true
 
   /@types/estree-jsx@1.0.3:
     resolution: {integrity: sha512-pvQ+TKeRHeiUGRhvYwRrQ/ISnohKkSJR14fT2yqyZ4e9K5vqc7hrtY2Y1Dw0ZwAzQ6DQsxsaCUuSIIi8v0Cq6w==}
@@ -18591,13 +18591,6 @@ packages:
       mdast-util-to-hast: 13.0.2
       unified: 11.0.4
       vfile: 6.0.1
-    dev: false
-
-  /remark-slate@1.8.6:
-    resolution: {integrity: sha512-1Gmt5MGw25MRVP+0xTXqw9JQDWfRNWujD4YFCPg036a9DZYhn7mLFjM6jreHB+9hKa6RCMOm5thiXznAmdn8Ug==}
-    dependencies:
-      '@types/escape-html': 1.0.2
-      escape-html: 1.0.3
     dev: false
 
   /remark-stringify@10.0.3:
