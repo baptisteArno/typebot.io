@@ -22,7 +22,11 @@ export const getResult = authenticatedProcedure
         .describe(
           "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
         ),
-      resultId: z.string(),
+      resultId: z
+        .string()
+        .describe(
+          'The `resultId` is returned by the /startChat endpoint or you can find it by listing results with `/results` endpoint'
+        ),
     })
   )
   .output(
