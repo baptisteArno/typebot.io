@@ -19,7 +19,10 @@
     "migrateSubscriptionsToUsageBased": "tsx migrateSubscriptionsToUsageBased.ts",
     "importContactToBrevo": "tsx importContactToBrevo.ts",
     "getUsage": "tsx getUsage.ts",
-    "suspendWorkspace": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx suspendWorkspace.ts"
+    "suspendWorkspace": "tsx suspendWorkspace.ts",
+    "destroyUser": "tsx destroyUser.ts",
+    "updateTypebot": "tsx updateTypebot.ts",
+    "updateWorkspace": "tsx updateWorkspace.ts"
   },
   "devDependencies": {
     "@typebot.io/emails": "workspace:*",
@@ -37,6 +40,7 @@
     "zod": "3.22.4"
   },
   "dependencies": {
+    "@clack/prompts": "^0.7.0",
     "@paralleldrive/cuid2": "2.2.1"
   }
 }

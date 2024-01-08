@@ -32,6 +32,7 @@ const inspectUser = async () => {
         select: {
           workspace: {
             select: {
+              id: true,
               name: true,
               plan: true,
               members: {
@@ -49,6 +50,7 @@ const inspectUser = async () => {
                   name: true,
                   createdAt: true,
                   updatedAt: true,
+                  riskLevel: true,
                   publishedTypebot: {
                     select: {
                       typebot: {
@@ -78,7 +80,8 @@ const inspectUser = async () => {
   console.log('Workspaces:')
 
   for (const workspace of user.workspaces) {
-    console.log('  - Name:', workspace.workspace.name)
+    console.log('  - ID:', workspace.workspace.id)
+    console.log('    Name:', workspace.workspace.name)
     console.log('    Plan:', workspace.workspace.plan)
     console.log('    Members:', workspace.workspace.members.length + 1)
     console.log(
@@ -94,6 +97,7 @@ const inspectUser = async () => {
         '        Last updated:',
         typebot.updatedAt.toLocaleDateString()
       )
+      console.log('        Risk level:', typebot.riskLevel)
       console.log(
         '        Public ID:',
         typebot.publishedTypebot?.typebot.publicId
