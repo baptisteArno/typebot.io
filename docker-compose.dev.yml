@@ -1,15 +1,18 @@
 version: '3.3'
 services:
   typebot-db:
-    image: postgres:13
-    ports:
-      - '5432:5432'
+    image: mariadb:latest
     restart: always
-    volumes:
-      - db_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: 'typebot'
-      POSTGRES_PASSWORD: 'typebot'
+      MARIADB_USER: user
+      MARIADB_PASSWORD: instant
+      MARIADB_ROOT_PASSWORD: instant
+      MARIADB_DATABASE: typebot
+    volumes:
+      - "./mariadb-data/data:/var/lib/mysql/data/"
+      - "./mariadb-data/logs:/var/lib/mysql/logs/"
+    ports:
+      - '13809:3306'
   minio:
     image: minio/minio
     command: server /data --console-address ":9001"
