@@ -29,6 +29,8 @@ const inspectTypebot = async () => {
       id: true,
       name: true,
       riskLevel: true,
+      publicId: true,
+      customDomain: true,
       workspace: {
         select: {
           id: true,
