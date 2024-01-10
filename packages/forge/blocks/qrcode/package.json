@@ -10,9 +10,10 @@
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
     "@types/react": "18.2.15",
+    "@types/qrcode": "^1.5.3",
     "typescript": "5.3.2"
   },
   "dependencies": {
-    "qrcode-generator": "^1.4.4"
+    "qrcode": "^1.5.3"
   }
 }

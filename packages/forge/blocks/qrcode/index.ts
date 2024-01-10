@@ -1,11 +1,11 @@
 import { createBlock } from '@typebot.io/forge'
 import { QrcodeLogo } from './logo'
-import { displayQr } from './actions/displayQr'
+import { convertQr } from './actions/convertQr'
 
 export const qrcode = createBlock({
   id: 'qrcode',
   name: 'QRcode',
-  tags: ['QR Code', 'Scan'],
+  tags: ['QR Code'],
   LightLogo: QrcodeLogo,
-  actions: [displayQr]
+  actions: [convertQr]
 })
