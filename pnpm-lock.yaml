@@ -1231,6 +1231,28 @@ importers:
         specifier: 5.3.2
         version: 5.3.2
 
+  packages/forge/blocks/qrcode:
+    dependencies:
+      qrcode-generator:
+        specifier: ^1.4.4
+        version: 1.4.4
+    devDependencies:
+      '@typebot.io/forge':
+        specifier: workspace:*
+        version: link:../../core
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../../../lib
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../../../tsconfig
+      '@types/react':
+        specifier: 18.2.15
+        version: 18.2.15
+      typescript:
+        specifier: 5.3.2
+        version: 5.3.2
+
   packages/forge/blocks/zemanticAi:
     devDependencies:
       '@typebot.io/forge':
@@ -1302,6 +1324,9 @@ importers:
       '@typebot.io/openai-block':
         specifier: workspace:*
         version: link:../blocks/openai
+      '@typebot.io/qrcode-block':
+        specifier: workspace:*
+        version: link:../blocks/qrcode
       '@typebot.io/zemantic-ai-block':
         specifier: workspace:*
         version: link:../blocks/zemanticAi
@@ -18032,6 +18057,10 @@ packages:
   /pure-rand@6.0.4:
     resolution: {integrity: sha512-LA0Y9kxMYv47GIPJy6MI84fqTd2HmYZI83W/kM/SkKfDlajnZYfmXFTxkbY+xSBPkLJxltMa9hIkmdc29eguMA==}
     dev: true
+
+  /qrcode-generator@1.4.4:
+    resolution: {integrity: sha512-HM7yY8O2ilqhmULxGMpcHSF1EhJJ9yBj8gvDEuZ6M+KGJ0YY2hKpnXvRD+hZPLrDVck3ExIGhmPtSdcjC+guuw==}
+    dev: false
 
   /qs@6.11.0:
     resolution: {integrity: sha512-MvjoMCJwEarSbUYk5O+nmoSzSutSsTwF85zcHPQ9OrlFoZOYIjaqBAJIqIXjptyD5vThxGq52Xu/MaJzRkIk4Q==}
