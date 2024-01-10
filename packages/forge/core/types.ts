@@ -1,5 +1,6 @@
 import { SVGProps } from 'react'
 import { z } from './zod'
+import { ZodRawShape } from 'zod'
 
 export type VariableStore = {
   get: (variableId: string) => string | (string | null)[] | null | undefined
@@ -28,8 +29,8 @@ export type ReadOnlyVariableStore = Omit<VariableStore, 'set'>
 
 export type ActionDefinition<
   A extends AuthDefinition,
-  BaseOptions extends z.ZodObject<any>,
-  Options extends z.ZodObject<any> = z.ZodObject<{}>
+  BaseOptions extends z.ZodObject<ZodRawShape> = z.ZodObject<{}>,
+  Options extends z.ZodObject<ZodRawShape> = z.ZodObject<{}>
 > = {
   name: string
   fetchers?: FetcherDefinition<A, z.infer<BaseOptions> & z.infer<Options>>[]
