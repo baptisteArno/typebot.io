@@ -21,7 +21,7 @@ export default function serialize(
   opts: Options = {
     nodeTypes: defaultNodeTypes,
   }
-) {
+): string | undefined {
   const {
     nodeTypes: userNodeTypes = defaultNodeTypes,
     ignoreParagraphNewline = false,
@@ -39,6 +39,19 @@ export default function serialize(
       ...userNodeTypes.heading,
     },
   }
+
+  if ('type' in chunk && chunk.type === nodeTypes['inline-variable'])
+    return chunk.children
+      .map((child) =>
+        serialize(
+          {
+            ...child,
+            parentType: nodeTypes['inline-variable'],
+          },
+          opts
+        )
+      )
+      .join('')
 
   const LIST_TYPES = [nodeTypes.ul_list, nodeTypes.ol_list]
 
@@ -167,6 +180,13 @@ export default function serialize(
         }
       }
     }
+  }
+
+  if (chunk.parentType === nodeTypes['inline-variable']) {
+    if (opts.flavour === 'whatsapp') {
+      return children
+    }
+    return escapeHtml(children)
   }
 
   switch (type) {

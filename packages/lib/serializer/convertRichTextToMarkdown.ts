@@ -9,7 +9,7 @@ export const convertRichTextToMarkdown = (
   let extraNewLinesCount = 0
   const test = richText
     .reduce<string[]>((acc, node) => {
-      if (node.type === 'variable' || node.type === 'inline-variable') {
+      if (node.type === 'variable') {
         return [
           ...acc,
           ...node.children.map(
