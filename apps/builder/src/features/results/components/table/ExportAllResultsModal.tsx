@@ -14,6 +14,8 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
+  Progress,
+  Text,
 } from '@chakra-ui/react'
 import { TRPCError } from '@trpc/server'
 import { unparse } from 'papaparse'
@@ -35,9 +37,10 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
   const workspaceId = typebot?.workspaceId
   const typebotId = typebot?.id
   const { showToast } = useToast()
-  const { resultHeader: existingResultHeader } = useResults()
+  const { resultHeader: existingResultHeader, totalResults } = useResults()
   const trpcContext = trpc.useContext()
   const [isExportLoading, setIsExportLoading] = useState(false)
+  const [exportProgressValue, setExportProgressValue] = useState(0)
 
   const [areDeletedBlocksIncluded, setAreDeletedBlocksIncluded] =
     useState(false)
@@ -55,6 +58,7 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
     if (!workspaceId || !typebotId) return []
     const allResults = []
     let cursor: string | undefined
+    setExportProgressValue(0)
     do {
       try {
         const { results, nextCursor } =
@@ -64,9 +68,11 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
             cursor,
           })
         allResults.push(...results)
+        setExportProgressValue((allResults.length / totalResults) * 100)
         cursor = nextCursor ?? undefined
       } catch (error) {
         showToast({ description: (error as TRPCError).message })
+        return []
       }
     } while (cursor)
 
@@ -79,6 +85,8 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
     setIsExportLoading(true)
 
     const results = await getAllResults()
+
+    if (!results.length) return setIsExportLoading(false)
 
     const resultHeader = areDeletedBlocksIncluded
       ? parseResultHeader(
@@ -144,7 +152,17 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
             initialValue={false}
             onCheckChange={setAreDeletedBlocksIncluded}
           />
-          <AlertInfo>The export may take up to 1 minute.</AlertInfo>
+          {totalResults > 2000 ? (
+            <AlertInfo>The export may take a while.</AlertInfo>
+          ) : (
+            <AlertInfo>The export may take up to 1 minute.</AlertInfo>
+          )}
+          {isExportLoading && (
+            <Stack>
+              <Text>Fetching all results...</Text>
+              <Progress value={exportProgressValue} borderRadius="md" />
+            </Stack>
+          )}
         </ModalBody>
         <ModalFooter as={HStack}>
           <Button onClick={onClose} variant="ghost" size="sm">

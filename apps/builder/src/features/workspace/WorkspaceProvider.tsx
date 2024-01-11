@@ -23,7 +23,6 @@ export type WorkspaceInApp = Omit<
   | 'chatsLimitSecondEmailSentAt'
   | 'storageLimitFirstEmailSentAt'
   | 'storageLimitSecondEmailSentAt'
-  | 'customChatsLimit'
   | 'customStorageLimit'
   | 'additionalChatsIndex'
   | 'additionalStorageIndex'
