@@ -37,5 +37,5 @@ export const convertRichTextToMarkdown = (
     }, [])
     .join('\n')
 
-  return test.endsWith('\n') ? test.slice(0, -2) : test
+  return test.endsWith('\n') ? test.slice(0, -1) : test
 }
