@@ -11,22 +11,22 @@ export const generateQrCode = createAction({
       helperText:
         'This can be a URL, or any text data you want to encode into a QR code.',
     }),
-    saveQrcodeInVariableId: option.string.layout({
+    saveUrlInVariableId: option.string.layout({
       label: 'Save QR code image URL',
       inputType: 'variableDropdown',
     }),
   }),
   getSetVariableIds: (options) =>
-    options.saveQrcodeInVariableId ? [options.saveQrcodeInVariableId] : [],
+    options.saveUrlInVariableId ? [options.saveUrlInVariableId] : [],
   run: {
     server: async ({ options, variables, logs }) => {
       if (!options.data)
         return logs.add(
-          'QR code value is empty. Please provide the data to be encoded into the QR code.'
+          'QR code data is empty. Please provide the data to be encoded into the QR code.'
         )
-      if (!options.saveQrcodeInVariableId)
+      if (!options.saveUrlInVariableId)
         return logs.add(
-          'QR Code save variable is not specified. Please select a variable to save the generated QR code.'
+          'QR code image URL is not specified. Please select a variable to save the generated QR code image.'
         )
 
       const url = await uploadFileToBucket({
@@ -35,7 +35,7 @@ export const generateQrCode = createAction({
         mimeType: 'image/png',
       })
 
-      variables.set(options.saveQrcodeInVariableId, url)
+      variables.set(options.saveUrlInVariableId, url)
     },
   },
 })
