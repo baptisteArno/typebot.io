@@ -4,6 +4,7 @@ import { createSpeech } from './actions/createSpeech'
 import { createBlock } from '@typebot.io/forge'
 import { auth } from './auth'
 import { baseOptions } from './baseOptions'
+import { askAssistant } from './actions/askAssistant'
 
 export const openAIBlock = createBlock({
   id: 'openai' as const,
@@ -13,5 +14,5 @@ export const openAIBlock = createBlock({
   DarkLogo: OpenAIDarkLogo,
   auth,
   options: baseOptions,
-  actions: [createChatCompletion, createSpeech],
+  actions: [createChatCompletion, askAssistant, createSpeech],
 })

@@ -24,6 +24,7 @@
     "updateTypebot": "tsx updateTypebot.ts",
     "updateWorkspace": "tsx updateWorkspace.ts",
     "inspectTypebot": "tsx inspectTypebot.ts",
+    "inspectWorkspace": "tsx inspectWorkspace.ts",
     "getCoupon": "tsx getCoupon.ts"
   },
   "devDependencies": {

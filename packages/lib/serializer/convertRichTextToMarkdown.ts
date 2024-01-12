@@ -9,7 +9,7 @@ export const convertRichTextToMarkdown = (
   let extraNewLinesCount = 0
   const test = richText
     .reduce<string[]>((acc, node) => {
-      if (node.type === 'variable' || node.type === 'inline-variable') {
+      if (node.type === 'variable') {
         return [
           ...acc,
           ...node.children.map(
@@ -37,5 +37,5 @@ export const convertRichTextToMarkdown = (
     }, [])
     .join('\n')
 
-  return test.endsWith('\n') ? test.slice(0, -2) : test
+  return test.endsWith('\n') ? test.slice(0, -1) : test
 }

@@ -19,7 +19,7 @@
     "@typebot.io/variables": "workspace:*",
     "@udecode/plate-common": "21.1.5",
     "@udecode/plate-serializer-md": "24.4.0",
-    "ai": "2.2.24",
+    "ai": "2.2.31",
     "chrono-node": "2.7.0",
     "date-fns": "2.30.0",
     "google-auth-library": "8.9.0",
@@ -28,7 +28,7 @@
     "libphonenumber-js": "1.10.37",
     "node-html-parser": "6.1.5",
     "nodemailer": "6.9.3",
-    "openai": "4.19.0",
+    "openai": "4.24.1",
     "qs": "6.11.2",
     "stripe": "12.13.0"
   },

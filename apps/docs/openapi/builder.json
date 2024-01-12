@@ -26820,7 +26820,8 @@
                   "openai",
                   "zemantic-ai",
                   "cal-com",
-                  "chat-node"
+                  "chat-node",
+                  "qr-code"
                 ]
               },
               "options": {}

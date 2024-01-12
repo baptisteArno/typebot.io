@@ -1,3 +1,4 @@
+import { ZodRawShape } from 'zod'
 import { AuthDefinition, BlockDefinition, ActionDefinition } from './types'
 import { z } from './zod'
 
@@ -18,8 +19,8 @@ export const createBlock = <
 
 export const createAction = <
   A extends AuthDefinition,
-  BaseOptions extends z.ZodObject<any>,
-  O extends z.ZodObject<any>
+  BaseOptions extends z.ZodObject<ZodRawShape> = z.ZodObject<{}>,
+  O extends z.ZodObject<ZodRawShape> = z.ZodObject<{}>
 >(
   actionDefinition: {
     auth?: A

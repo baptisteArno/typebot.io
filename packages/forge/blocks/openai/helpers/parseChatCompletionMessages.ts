@@ -20,22 +20,20 @@ export const parseChatCompletionMessages = ({
         const dialogue = variables.get(message.dialogueVariableId) ?? []
         const dialogueArr = Array.isArray(dialogue) ? dialogue : [dialogue]
 
-        return dialogueArr.map<OpenAI.Chat.ChatCompletionMessageParam>(
-          (dialogueItem, index) => {
-            if (index === 0 && message.startsBy === 'assistant')
-              return {
-                role: 'assistant',
-                content: dialogueItem,
-              }
+        return dialogueArr.map((dialogueItem, index) => {
+          if (index === 0 && message.startsBy === 'assistant')
             return {
-              role:
-                index % (message.startsBy === 'assistant' ? 1 : 2) === 0
-                  ? 'user'
-                  : 'assistant',
+              role: 'assistant',
               content: dialogueItem,
             }
+          return {
+            role:
+              index % (message.startsBy === 'assistant' ? 1 : 2) === 0
+                ? 'user'
+                : 'assistant',
+            content: dialogueItem,
           }
-        )
+        })
       }
 
       if (!message.content) return

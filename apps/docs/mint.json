@@ -188,7 +188,7 @@
     },
     {
       "group": "Results",
-      "pages": ["results/overview"]
+      "pages": ["results/overview", "results/analytics"]
     },
     {
       "group": "Guides",
