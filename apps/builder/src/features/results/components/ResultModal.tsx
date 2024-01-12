@@ -14,7 +14,7 @@ import React from 'react'
 import { byId, isDefined } from '@typebot.io/lib'
 import { HeaderIcon } from './HeaderIcon'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { parseColumnOrder } from '../helpers/parseColumnsOrder'
+import { parseColumnsOrder } from '@typebot.io/lib/results/parseColumnsOrder'
 
 type Props = {
   resultId: string | null
@@ -28,7 +28,7 @@ export const ResultModal = ({ resultId, onClose }: Props) => {
     ? tableData.find((data) => data.id.plainText === resultId)
     : undefined
 
-  const columnsOrder = parseColumnOrder(
+  const columnsOrder = parseColumnsOrder(
     typebot?.resultsTablePreferences?.columnsOrder,
     resultHeader
   )

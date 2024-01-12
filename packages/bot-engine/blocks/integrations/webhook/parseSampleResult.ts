@@ -8,9 +8,9 @@ import {
   Variable,
 } from '@typebot.io/schemas'
 import { isInputBlock, byId, isNotDefined } from '@typebot.io/lib'
-import { parseResultHeader } from '@typebot.io/lib/results'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { parseResultHeader } from '@typebot.io/lib/results/parseResultHeader'
 
 export const parseSampleResult =
   (

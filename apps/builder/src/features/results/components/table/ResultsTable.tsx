@@ -8,7 +8,12 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { AlignLeftTextIcon } from '@/components/icons'
-import { ResultHeaderCell, ResultsTablePreferences } from '@typebot.io/schemas'
+import {
+  CellValueType,
+  ResultHeaderCell,
+  ResultsTablePreferences,
+  TableData,
+} from '@typebot.io/schemas'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { LoadingRows } from './LoadingRows'
 import {
@@ -22,11 +27,10 @@ import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { SelectionToolbar } from './SelectionToolbar'
 import { Row } from './Row'
 import { HeaderRow } from './HeaderRow'
-import { CellValueType, TableData } from '../../types'
 import { IndeterminateCheckbox } from './IndeterminateCheckbox'
 import { colors } from '@/lib/theme'
-import { parseColumnOrder } from '../../helpers/parseColumnsOrder'
 import { HeaderIcon } from '../HeaderIcon'
+import { parseColumnsOrder } from '@typebot.io/lib/results/parseColumnsOrder'
 
 type ResultsTableProps = {
   resultHeader: ResultHeaderCell[]
@@ -60,7 +64,7 @@ export const ResultsTable = ({
     columnsWidth = {},
   } = {
     ...preferences,
-    columnsOrder: parseColumnOrder(preferences?.columnsOrder, resultHeader),
+    columnsOrder: parseColumnsOrder(preferences?.columnsOrder, resultHeader),
   }
 
   const changeColumnOrder = (newColumnOrder: string[]) => {

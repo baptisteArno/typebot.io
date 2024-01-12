@@ -1,15 +1,13 @@
 import {
+  ResultWithAnswers,
+  ResultHeaderCell,
   Group,
   Variable,
   InputBlock,
-  ResultHeaderCell,
-  VariableWithValue,
   Typebot,
-  ResultWithAnswers,
-  AnswerInSessionState,
 } from '@typebot.io/schemas'
-import { isInputBlock, isDefined, byId, isNotEmpty, isEmpty } from './utils'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { isInputBlock, byId, isNotEmpty } from '../utils'
 
 export const parseResultHeader = (
   typebot: Pick<Typebot, 'groups' | 'variables'>,
@@ -212,37 +210,3 @@ const parseResultsFromPreviousBotVersions = (
         },
       ]
     }, [])
-
-export const parseAnswers = ({
-  answers,
-  variables: resultVariables,
-}: {
-  answers: AnswerInSessionState[]
-  variables: VariableWithValue[]
-}): {
-  [key: string]: string
-} => {
-  return {
-    submittedAt: new Date().toISOString(),
-    ...[...answers, ...resultVariables].reduce<{
-      [key: string]: string
-    }>((o, answerOrVariable) => {
-      if ('id' in answerOrVariable) {
-        const variable = answerOrVariable
-        if (variable.value === null) return o
-        return { ...o, [variable.name]: variable.value.toString() }
-      }
-      const answer = answerOrVariable as AnswerInSessionState
-      if (isEmpty(answer.key)) return o
-      return {
-        ...o,
-        [answer.key]: answer.value,
-      }
-    }, {}),
-  }
-}
-
-export const getDefinedVariables = (variables: Variable[]) =>
-  variables.filter((variable) =>
-    isDefined(variable.value)
-  ) as VariableWithValue[]

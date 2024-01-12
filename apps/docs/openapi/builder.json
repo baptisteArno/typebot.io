@@ -4052,6 +4052,10 @@
                           "type": "string",
                           "nullable": true
                         },
+                        "customChatsLimit": {
+                          "type": "number",
+                          "nullable": true
+                        },
                         "customSeatsLimit": {
                           "type": "number",
                           "nullable": true
@@ -4075,6 +4079,7 @@
                         "icon",
                         "plan",
                         "stripeId",
+                        "customChatsLimit",
                         "customSeatsLimit",
                         "isSuspended",
                         "isPastDue",

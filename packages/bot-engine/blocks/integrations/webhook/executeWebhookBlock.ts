@@ -14,7 +14,6 @@ import {
 } from '@typebot.io/schemas'
 import { stringify } from 'qs'
 import { isDefined, isEmpty, isNotDefined, omit } from '@typebot.io/lib'
-import { getDefinedVariables, parseAnswers } from '@typebot.io/lib/results'
 import got, { Method, HTTPError, OptionsInit } from 'got'
 import { resumeWebhookExecution } from './resumeWebhookExecution'
 import { ExecuteIntegrationResponse } from '../../../types'
@@ -27,6 +26,7 @@ import {
   maxTimeout,
 } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
 import { env } from '@typebot.io/env'
+import { parseAnswers } from '@typebot.io/lib/results/parseAnswers'
 
 type ParsedWebhook = ExecutableWebhook & {
   basicAuth: { username?: string; password?: string }
@@ -297,7 +297,7 @@ const getBodyContent = async ({
     ? JSON.stringify(
         parseAnswers({
           answers,
-          variables: getDefinedVariables(variables),
+          variables,
         })
       )
     : body ?? undefined

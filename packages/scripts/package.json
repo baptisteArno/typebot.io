@@ -25,14 +25,17 @@
     "updateWorkspace": "tsx updateWorkspace.ts",
     "inspectTypebot": "tsx inspectTypebot.ts",
     "inspectWorkspace": "tsx inspectWorkspace.ts",
-    "getCoupon": "tsx getCoupon.ts"
+    "getCoupon": "tsx getCoupon.ts",
+    "exportResults": "tsx exportResults.ts"
   },
   "devDependencies": {
     "@typebot.io/emails": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
+    "@types/cli-progress": "^3.11.5",
     "@types/node": "20.4.2",
+    "@types/papaparse": "5.3.7",
     "@types/prompts": "2.4.4",
     "deep-object-diff": "1.1.9",
     "got": "12.6.0",
@@ -44,6 +47,8 @@
   },
   "dependencies": {
     "@clack/prompts": "^0.7.0",
-    "@paralleldrive/cuid2": "2.2.1"
+    "@paralleldrive/cuid2": "2.2.1",
+    "cli-progress": "^3.12.0",
+    "papaparse": "5.4.1"
   }
 }

@@ -1,6 +1,6 @@
 import { ResultHeaderCell } from '@typebot.io/schemas'
 
-export const parseColumnOrder = (
+export const parseColumnsOrder = (
   existingOrder: string[] | undefined,
   resultHeader: ResultHeaderCell[]
 ) =>
