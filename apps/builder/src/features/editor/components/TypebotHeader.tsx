@@ -107,7 +107,7 @@ export const TypebotHeader = () => {
       <HStack
         display={['none', 'flex']}
         pos={{ base: 'absolute', xl: 'static' }}
-        right={{ base: 280, xl: 0 }}
+        right={{ base: isDefined(publishedTypebot) ? 340 : 295, xl: 0 }}
       >
         <Button
           as={Link}
