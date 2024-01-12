@@ -1,19 +1,33 @@
-import { Stack, Text } from '@chakra-ui/react'
-import { isDefined } from '@typebot.io/lib'
 import {
   ResultWithAnswers,
   ResultHeaderCell,
   VariableWithValue,
   Answer,
+  TableData,
 } from '@typebot.io/schemas'
-import { FileLinks } from '../components/FileLinks'
-import { TableData } from '../types'
-import { convertDateToReadable } from './convertDateToReadable'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { isDefined } from '../utils'
+
+type CellParser = (
+  content: VariableWithValue['value'],
+  blockType?: InputBlockType
+) => { element?: React.JSX.Element; plainText: string }
+
+const defaultCellParser: CellParser = (content, blockType) => {
+  if (!content) return { plainText: '' }
+  if (Array.isArray(content))
+    return {
+      plainText: content.join(', '),
+    }
+  return blockType === InputBlockType.FILE
+    ? { plainText: content }
+    : { plainText: content.toString() }
+}
 
 export const convertResultsToTableData = (
   results: ResultWithAnswers[] | undefined,
-  headerCells: ResultHeaderCell[]
+  headerCells: ResultHeaderCell[],
+  cellParser: CellParser = defaultCellParser
 ): TableData[] =>
   (results ?? []).map((result) => ({
     id: { plainText: result.id },
@@ -39,7 +53,7 @@ export const convertResultsToTableData = (
         const content = variableValue ?? answer.content
         return {
           ...tableData,
-          [header.id]: parseCellContent(content, header.blockType),
+          [header.id]: cellParser(content, header.blockType),
         }
       }
       const variable = answerOrVariable satisfies VariableWithValue
@@ -51,30 +65,15 @@ export const convertResultsToTableData = (
       if (isDefined(tableData[headerId])) return tableData
       return {
         ...tableData,
-        [headerId]: parseCellContent(variable.value),
+        [headerId]: cellParser(variable.value),
       }
     }, {}),
   }))
 
-const parseCellContent = (
-  content: VariableWithValue['value'],
-  blockType?: InputBlockType
-): { element?: JSX.Element; plainText: string } => {
-  if (!content) return { element: undefined, plainText: '' }
-  if (Array.isArray(content))
-    return {
-      element: (
-        <Stack spacing={2}>
-          {content.map((item, idx) => (
-            <Text key={idx}>
-              {idx + 1}. {item}
-            </Text>
-          ))}
-        </Stack>
-      ),
-      plainText: content.join(', '),
-    }
-  return blockType === InputBlockType.FILE
-    ? { element: <FileLinks fileNamesStr={content} />, plainText: content }
-    : { plainText: content.toString() }
-}
+const convertDateToReadable = (date: Date): string =>
+  date.toDateString().split(' ').slice(1, 3).join(' ') +
+  ', ' +
+  date.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  })

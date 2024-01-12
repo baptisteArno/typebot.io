@@ -1,6 +1,6 @@
 import prisma from '@typebot.io/lib/prisma'
-import { getDefinedVariables } from '@typebot.io/lib/results'
 import { TypebotInSession } from '@typebot.io/schemas'
+import { filterVariablesWithValues } from '@typebot.io/variables/filterVariablesWithValues'
 
 type Props = {
   resultId: string
@@ -18,7 +18,7 @@ export const upsertResult = async ({
     where: { id: resultId },
     select: { id: true },
   })
-  const variablesWithValue = getDefinedVariables(typebot.variables)
+  const variablesWithValue = filterVariablesWithValues(typebot.variables)
 
   if (existingResult) {
     return prisma.result.updateMany({

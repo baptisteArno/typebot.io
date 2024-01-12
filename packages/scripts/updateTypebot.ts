@@ -5,19 +5,13 @@ import * as p from '@clack/prompts'
 const updateTypebot = async () => {
   await promptAndSetEnvironment('production')
 
-  const prisma = new PrismaClient({
-    log: [{ emit: 'event', level: 'query' }, 'info', 'warn', 'error'],
-  })
+  const prisma = new PrismaClient()
 
-  prisma.$on('query', (e) => {
-    console.log(e.query)
-    console.log(e.params)
-    console.log(e.duration, 'ms')
-  })
-
-  const typebotId = (await p.text({
+  const typebotId = await p.text({
     message: 'Typebot ID?',
-  })) as string
+  })
+
+  if (!typebotId || p.isCancel(typebotId)) process.exit()
 
   const typebot = await prisma.typebot.update({
     where: {

@@ -20,10 +20,11 @@ import {
 import { TRPCError } from '@trpc/server'
 import { unparse } from 'papaparse'
 import { useState } from 'react'
-import { parseResultHeader } from '@typebot.io/lib/results'
+import { parseResultHeader } from '@typebot.io/lib/results/parseResultHeader'
+import { convertResultsToTableData } from '@typebot.io/lib/results/convertResultsToTableData'
+import { parseColumnsOrder } from '@typebot.io/lib/results/parseColumnsOrder'
+import { parseUniqueKey } from '@typebot.io/lib/parseUniqueKey'
 import { useResults } from '../../ResultsProvider'
-import { parseColumnOrder } from '../../helpers/parseColumnsOrder'
-import { convertResultsToTableData } from '../../helpers/convertResultsToTableData'
 import { byId, isDefined } from '@typebot.io/lib'
 import { Typebot } from '@typebot.io/schemas'
 
@@ -101,7 +102,7 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
 
     const dataToUnparse = convertResultsToTableData(results, resultHeader)
 
-    const headerIds = parseColumnOrder(
+    const headerIds = parseColumnsOrder(
       typebot?.resultsTablePreferences?.columnsOrder,
       resultHeader
     ).reduce<string[]>((currentHeaderIds, columnId) => {
@@ -181,13 +182,4 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
       </ModalContent>
     </Modal>
   )
-}
-
-export const parseUniqueKey = (
-  key: string,
-  existingKeys: string[],
-  count = 0
-): string => {
-  if (!existingKeys.includes(key)) return key
-  return parseUniqueKey(`${key} (${count + 1})`, existingKeys, count + 1)
 }

@@ -16,7 +16,7 @@ import {
   isWebhookBlock,
   omit,
 } from '@typebot.io/lib'
-import { parseAnswers } from '@typebot.io/lib/results'
+import { parseAnswers } from '@typebot.io/lib/results/parseAnswers'
 import { initMiddleware, methodNotAllowed, notFound } from '@typebot.io/lib/api'
 import { stringify } from 'qs'
 import Cors from 'cors'

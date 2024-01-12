@@ -1481,6 +1481,12 @@ importers:
       '@paralleldrive/cuid2':
         specifier: 2.2.1
         version: 2.2.1
+      cli-progress:
+        specifier: ^3.12.0
+        version: 3.12.0
+      papaparse:
+        specifier: 5.4.1
+        version: 5.4.1
     devDependencies:
       '@typebot.io/emails':
         specifier: workspace:*
@@ -1494,9 +1500,15 @@ importers:
       '@typebot.io/schemas':
         specifier: workspace:*
         version: link:../schemas
+      '@types/cli-progress':
+        specifier: ^3.11.5
+        version: 3.11.5
       '@types/node':
         specifier: 20.4.2
         version: 20.4.2
+      '@types/papaparse':
+        specifier: 5.3.7
+        version: 5.3.7
       '@types/prompts':
         specifier: 2.4.4
         version: 2.4.4
@@ -7735,6 +7747,12 @@ packages:
     resolution: {integrity: sha512-Yq6rIccwcco0TLD5SMUrIM7Fk7Fe/C0jmNRxJJCLtAF6gebDkPuUjK5EHedxecm69Pi/aA+It39Ux4OHmFhjRw==}
     dev: true
 
+  /@types/cli-progress@3.11.5:
+    resolution: {integrity: sha512-D4PbNRbviKyppS5ivBGyFO29POlySLmA2HyUFE4p5QGazAMM3CwkKWcvTl8gvElSuxRh6FPKL8XmidX873ou4g==}
+    dependencies:
+      '@types/node': 20.10.1
+    dev: true
+
   /@types/content-type@1.1.6:
     resolution: {integrity: sha512-WFHg/KFLCdUQl3m27WSQu0NEaLzoHGmgZHlsSYr0Y0iIvItMcBq7opZc6AGXPXqf+btIM6vTBJyLvuDAihB+zQ==}
     dev: false
@@ -7925,7 +7943,7 @@ packages:
   /@types/papaparse@5.3.7:
     resolution: {integrity: sha512-f2HKmlnPdCvS0WI33WtCs5GD7X1cxzzS/aduaxSu3I7TbhWlENjSPs6z5TaB9K0J+BH1jbmqTaM+ja5puis4wg==}
     dependencies:
-      '@types/node': 20.4.9
+      '@types/node': 20.10.1
     dev: true
 
   /@types/parse-json@4.0.0:
@@ -10830,6 +10848,13 @@ packages:
     dependencies:
       restore-cursor: 4.0.0
     dev: true
+
+  /cli-progress@3.12.0:
+    resolution: {integrity: sha512-tRkV3HJ1ASwm19THiiLIXLO7Im7wlTuKnvkYaTkyoAPefqjNg7W7DHKUlGRxy9vxDvbyCYQkQozvptuMkGCg8A==}
+    engines: {node: '>=4'}
+    dependencies:
+      string-width: 4.2.3
+    dev: false
 
   /cli-spinners@2.9.2:
     resolution: {integrity: sha512-ywqV+5MmyL4E7ybXgKys4DugZbX0FC6LnwrhjuykIjnK9k8OQacQ7axGKnjDXWNhns0xot3bZI5h55H8yo9cJg==}

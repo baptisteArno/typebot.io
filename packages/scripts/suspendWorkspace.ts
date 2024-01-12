@@ -1,21 +1,13 @@
 import { PrismaClient } from '@typebot.io/prisma'
-import * as p from '@clack/prompts'
+import { select, text, isCancel } from '@clack/prompts'
 import { isEmpty } from '@typebot.io/lib'
 import { promptAndSetEnvironment } from './utils'
 
 const suspendWorkspace = async () => {
   await promptAndSetEnvironment('production')
-  const prisma = new PrismaClient({
-    log: [{ emit: 'event', level: 'query' }, 'info', 'warn', 'error'],
-  })
+  const prisma = new PrismaClient()
 
-  prisma.$on('query', (e) => {
-    console.log(e.query)
-    console.log(e.params)
-    console.log(e.duration, 'ms')
-  })
-
-  const type = await p.select({
+  const type = await select<any, 'id' | 'publicId' | 'workspaceId'>({
     message: 'Select way',
     options: [
       { label: 'Typebot ID', value: 'id' },
@@ -24,13 +16,13 @@ const suspendWorkspace = async () => {
     ],
   })
 
-  if (!type || typeof type !== 'string') return
+  if (!type || isCancel(type)) return
 
-  const val = await p.text({
+  const val = await text({
     message: 'Enter value',
   })
 
-  if (!val || typeof val !== 'string') return
+  if (!val || isCancel(val)) return
 
   let workspaceId = type === 'workspaceId' ? val : undefined
 
@@ -66,7 +58,7 @@ const suspendWorkspace = async () => {
     },
   })
 
-  console.log(JSON.stringify(result))
+  console.log(JSON.stringify(result, null, 2))
 }
 
 suspendWorkspace()
