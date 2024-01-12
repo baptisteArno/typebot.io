@@ -31,6 +31,7 @@ const inspectUser = async () => {
               id: true,
               name: true,
               plan: true,
+              isVerified: true,
               members: {
                 where: {
                   user: { email: { not: email } },
