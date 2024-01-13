@@ -4,13 +4,13 @@ title: Docker
 
 <Info>
   The easiest way to get started with Typebot is with [the official managed
-  service in the Cloud](https://app.typebot.io). You'll have high availability,
-  backups, security, and maintenance all managed for you by me, Baptiste,
-  Typebot's founder. The cloud version can save a substantial amount of
-  developer time and resources. For most sites this ends up being the best value
-  option and the revenue goes to funding the maintenance and further development
-  of Typebot. So you'll be supporting open source software and getting a great
-  service!
+  service in the Cloud](https://app.flowdacity.com). You'll have high
+  availability, backups, security, and maintenance all managed for you by me,
+  Baptiste, Typebot's founder. The cloud version can save a substantial amount
+  of developer time and resources. For most sites this ends up being the best
+  value option and the revenue goes to funding the maintenance and further
+  development of Typebot. So you'll be supporting open source software and
+  getting a great service!
 </Info>
 
 ## Requirements
@@ -91,7 +91,7 @@ Typebot is updated regularly, but it is up to you to apply these updates on your
     docker-compose up -d
    ```
 
-The self-hosted version is somewhat of a LTS, only getting the changes (~ once per month) after they have been battle tested on the cloud version. If you want features as soon as they are available, consider becoming a [cloud user](https://app.typebot.io).
+The self-hosted version is somewhat of a LTS, only getting the changes (~ once per month) after they have been battle tested on the cloud version. If you want features as soon as they are available, consider becoming a [cloud user](https://app.flowdacity.com).
 
 ## Optional extras
 
@@ -279,7 +279,7 @@ services:
       - typebot-db
     extra_hosts:
       - 'host.docker.internal:host-gateway'
-    # See https://docs.typebot.io/self-hosting/configuration for more configuration options
+    # See https://docs.flowdacity.com/self-hosting/configuration for more configuration options
     env_file:
       - .env
   typebot-viewer:
@@ -289,7 +289,7 @@ services:
       virtual.tls-email: 'admin@example.com' # change to your email
     image: baptistearno/typebot-viewer:latest
     restart: always
-    # See https://docs.typebot.io/self-hosting/configuration for more configuration options
+    # See https://docs.flowdacity.com/self-hosting/configuration for more configuration options
     env_file:
       - .env
   mail:

@@ -1,6 +1,6 @@
 # Typebot JS library
 
-Frontend library to embed typebots from [Typebot](https://www.typebot.io/).
+Frontend library to embed typebots from [Typebot](https://www.flowdacity.com/).
 
 ## Installation
 

@@ -48,7 +48,7 @@ export const StarterPlanCard = () => {
       button={
         <Button
           as={Link}
-          href={`https://app.typebot.io/register?subscribePlan=${Plan.STARTER}`}
+          href={`https://app.flowdacity.com/register?subscribePlan=${Plan.STARTER}`}
           colorScheme="orange"
           size="lg"
           w="full"

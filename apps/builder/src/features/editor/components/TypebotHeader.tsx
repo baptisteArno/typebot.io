@@ -87,7 +87,7 @@ export const TypebotHeader = () => {
   const handleHelpClick = () => {
     isCloudProdInstance()
       ? onOpen()
-      : window.open('https://docs.typebot.io', '_blank')
+      : window.open('https://docs.flowdacity.com', '_blank')
   }
 
   if (currentUserMode === 'guest') return <GuestTypebotHeader />

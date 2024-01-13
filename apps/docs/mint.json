@@ -33,7 +33,7 @@
   ],
   "topbarCtaButton": {
     "name": "Dashboard",
-    "url": "https://app.typebot.io"
+    "url": "https://app.flowdacity.com"
   },
   "primaryTab": {
     "name": "Learn"
@@ -62,7 +62,10 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["get-started/introduction", "get-started/overview"]
+      "pages": [
+        "get-started/introduction",
+        "get-started/overview"
+      ]
     },
     {
       "group": "Workspace",
@@ -147,11 +150,15 @@
     },
     {
       "group": "Theme",
-      "pages": ["theme/overview"]
+      "pages": [
+        "theme/overview"
+      ]
     },
     {
       "group": "Settings",
-      "pages": ["settings/overview"]
+      "pages": [
+        "settings/overview"
+      ]
     },
     {
       "group": "Deploy",
@@ -188,7 +195,10 @@
     },
     {
       "group": "Results",
-      "pages": ["results/overview", "results/analytics"]
+      "pages": [
+        "results/overview",
+        "results/analytics"
+      ]
     },
     {
       "group": "Guides",
@@ -201,7 +211,11 @@
     },
     {
       "group": "Misc",
-      "pages": ["faq", "privacy-policies", "breaking-changes"]
+      "pages": [
+        "faq",
+        "privacy-policies",
+        "breaking-changes"
+      ]
     },
     {
       "group": "Get started",
@@ -221,15 +235,23 @@
     },
     {
       "group": "Guides",
-      "pages": ["self-hosting/guides/s3", "self-hosting/guides/planetscale"]
+      "pages": [
+        "self-hosting/guides/s3",
+        "self-hosting/guides/planetscale"
+      ]
     },
     {
       "group": "Get started",
-      "pages": ["api-reference/authentication", "api-reference/how-to"]
+      "pages": [
+        "api-reference/authentication",
+        "api-reference/how-to"
+      ]
     },
     {
       "group": "Get started",
-      "pages": ["contribute/overview"]
+      "pages": [
+        "contribute/overview"
+      ]
     },
     {
       "group": "Guides",

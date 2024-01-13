@@ -1,6 +1,7 @@
 # Changelog
 
 <a name="2.21.3"></a>
+
 ## 2.21.3 (2024-01-04)
 
 ### Changed
@@ -17,22 +18,21 @@
 
 - 📝 Add Contribute docs [[65f4fb0](https://github.com/baptisteArno/typebot.io/commit/65f4fb0d7a869bb61593317cdea38994c6f2bd29)]
 
-
 <a name="2.21.2"></a>
+
 ## 2.21.2 (2024-01-02)
 
 ### Miscellaneous
 
 - 🧑‍💻 (webhook) Disable webhook timeout if CHAT_API_TIM… [[e8b9ef4](https://github.com/baptisteArno/typebot.io/commit/e8b9ef4d6cdb770ba580539452780e0fd1cc57cf)]
 
-
 <a name="2.21.1"></a>
+
 ## 2.21.1 (2024-01-02)
 
 ### Security
 
 - 🔒 (logs) Remove some logs from API response to avoid sensit… [[b5fbba7](https://github.com/baptisteArno/typebot.io/commit/b5fbba70720261da0f8ecc00beb9b93efe1369d8)]
-
 
 <a name="2.21.0"></a>
 
@@ -45,7 +45,7 @@ The Google Sheets block config was updated and its configuration changed.
 1. The Google Picker API needs to be enabled in the Google Cloud console. You also need to enable it in your `NEXT_PUBLIC_GOOGLE_API_KEY`.
 2. Add the `drive.file` OAuth scope.
 
-For more info, see the new requirements: https://docs.typebot.io/self-hosting/configuration#google-auth-sheets-fonts
+For more info, see the new requirements: https://docs.flowdacity.com/self-hosting/configuration#google-auth-sheets-fonts
 
 ### Added
 
@@ -508,7 +508,7 @@ If your viewer app do not have the required `NEXTAUTH_URL` env variable, you nee
 
 ## What's new?
 
-WhatsApp integration is now available 🥳. If you are self-hosting Typebot, refer to the configuration doc (https://docs.typebot.io/self-hosting/configuration#whatsapp-preview)
+WhatsApp integration is now available 🥳. If you are self-hosting Typebot, refer to the configuration doc (https://docs.flowdacity.com/self-hosting/configuration#whatsapp-preview)
 
 Typebot validation has been improved. We make sure that your typebot is valid before storing it in the database, it allows us to avoid unexpected errors.
 

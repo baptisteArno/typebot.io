@@ -8,15 +8,15 @@ const PrivacyPolicies = () => {
     <div className="flex flex-col items-center w-full overflow-x-hidden ">
       <Header />
       <SocialMetaTags
-        currentUrl={`https://www.typebot.io/privacy-policies`}
+        currentUrl={`https://www.flowdacity.com/privacy-policies`}
         title="Typebot - Privacy & Policies"
       />
       <Stack spacing={10} mx="auto" maxW="3xl" my="20">
         <Heading as="h1">Privacy Policy for Typebot</Heading>
 
         <p>
-          At typebot.io, accessible from https://www.typebot.io, one of our main
-          priorities is the privacy of our visitors. This Privacy Policy
+          At typebot.io, accessible from https://www.flowdacity.com, one of our
+          main priorities is the privacy of our visitors. This Privacy Policy
           document contains types of information that is collected and recorded
           by typebot.io and how we use it.
         </p>

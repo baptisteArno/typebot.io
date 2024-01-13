@@ -5,7 +5,7 @@ export const SocialMetaTags = ({
   title = 'Typebot - Open-source conversational apps builder',
   description = 'Powerful blocks to create unique chat experiences. Embed them anywhere on your apps and start collecting results like magic.',
   currentUrl,
-  imagePreviewUrl = 'https://home.typebot.io/images/preview.png',
+  imagePreviewUrl = 'https://home.flowdacity.com/images/preview.png',
 }: {
   title?: string
   description?: string

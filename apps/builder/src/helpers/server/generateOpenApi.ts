@@ -5,8 +5,8 @@ import { publicRouter } from './routers/publicRouter'
 const openApiDocument = generateOpenApiDocument(publicRouter, {
   title: 'Builder API',
   version: '1.0.0',
-  baseUrl: 'https://app.typebot.io/api',
-  docsUrl: 'https://docs.typebot.io/api-reference',
+  baseUrl: 'https://app.flowdacity.com/api',
+  docsUrl: 'https://docs.flowdacity.com/api-reference',
 })
 
 writeFileSync(

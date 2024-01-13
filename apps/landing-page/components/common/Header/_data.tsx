@@ -18,14 +18,14 @@ export const links = [
         label: 'Documentation',
         description:
           "Everything you need to know about how to use Typebot's builder",
-        href: 'https://docs.typebot.io',
+        href: 'https://docs.flowdacity.com',
         icon: <DocIcon />,
       },
       {
         label: 'Roadmap',
         description:
           "Follow the development and make suggestions for which features you'd like to see",
-        href: 'https://feedback.typebot.io/roadmap',
+        href: 'https://feedback.flowdacity.com/roadmap',
         icon: <MapIcon />,
       },
       {

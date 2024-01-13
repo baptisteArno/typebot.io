@@ -44,7 +44,7 @@ export const EasyEmbed = () => {
             <Button
               as={Link}
               rightIcon={<ArrowRight />}
-              href={`https://app.typebot.io/register`}
+              href={`https://app.flowdacity.com/register`}
               variant="ghost"
               colorScheme="orange"
             >

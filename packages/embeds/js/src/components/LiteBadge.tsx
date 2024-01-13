@@ -40,7 +40,7 @@ export const LiteBadge = (props: Props) => {
   return (
     <a
       ref={liteBadge}
-      href={'https://www.typebot.io/?utm_source=litebadge'}
+      href={'https://www.flowdacity.com/?utm_source=litebadge'}
       target="_blank"
       rel="noopener noreferrer"
       class="lite-badge"

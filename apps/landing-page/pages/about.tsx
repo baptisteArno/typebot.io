@@ -9,7 +9,7 @@ const AboutPage = () => {
   return (
     <div className="flex flex-col items-center w-full overflow-x-hidden ">
       <Header />
-      <SocialMetaTags currentUrl={`https://www.typebot.io/about`} />
+      <SocialMetaTags currentUrl={`https://www.flowdacity.com/about`} />
       <Stack
         spacing={10}
         mx="auto"

@@ -6,11 +6,11 @@
   },
   "servers": [
     {
-      "url": "https://app.typebot.io/api"
+      "url": "https://app.flowdacity.com/api"
     }
   ],
   "externalDocs": {
-    "url": "https://docs.typebot.io/api-reference"
+    "url": "https://docs.flowdacity.com/api-reference"
   },
   "paths": {
     "/v1/typebots/{typebotId}/linkedTypebots": {

@@ -10,7 +10,7 @@
     }
   ],
   "externalDocs": {
-    "url": "https://docs.typebot.io/api-reference"
+    "url": "https://docs.flowdacity.com/api-reference"
   },
   "paths": {
     "/v1/sendMessage": {
@@ -67,7 +67,7 @@
                                 "type": "string"
                               }
                             ],
-                            "description": "Either a Typebot ID or a Typebot object. If you provide a Typebot object, it will be executed in preview mode. ([How can I find my typebot ID?](https://docs.typebot.io/api-reference#how-to-find-my-typebotid))."
+                            "description": "Either a Typebot ID or a Typebot object. If you provide a Typebot object, it will be executed in preview mode. ([How can I find my typebot ID?](https://docs.flowdacity.com/api-reference#how-to-find-my-typebotid))."
                           },
                           "isPreview": {
                             "type": "boolean",
@@ -80,7 +80,7 @@
                           "prefilledVariables": {
                             "type": "object",
                             "additionalProperties": {},
-                            "description": "[More info about prefilled variables.](https://docs.typebot.io/editor/variables#prefilled-variables)"
+                            "description": "[More info about prefilled variables.](https://docs.flowdacity.com/editor/variables#prefilled-variables)"
                           },
                           "isStreamEnabled": {
                             "type": "boolean",
@@ -656,7 +656,7 @@
                                 "type": "string"
                               }
                             ],
-                            "description": "Either a Typebot ID or a Typebot object. If you provide a Typebot object, it will be executed in preview mode. ([How can I find my typebot ID?](https://docs.typebot.io/api-reference#how-to-find-my-typebotid))."
+                            "description": "Either a Typebot ID or a Typebot object. If you provide a Typebot object, it will be executed in preview mode. ([How can I find my typebot ID?](https://docs.flowdacity.com/api-reference#how-to-find-my-typebotid))."
                           },
                           "isPreview": {
                             "type": "boolean",
@@ -669,7 +669,7 @@
                           "prefilledVariables": {
                             "type": "object",
                             "additionalProperties": {},
-                            "description": "[More info about prefilled variables.](https://docs.typebot.io/editor/variables#prefilled-variables)"
+                            "description": "[More info about prefilled variables.](https://docs.flowdacity.com/editor/variables#prefilled-variables)"
                           },
                           "isStreamEnabled": {
                             "type": "boolean",

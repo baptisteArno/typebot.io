@@ -117,7 +117,7 @@ export const SignInForm = ({
       <Text>
         {t('auth.noProvider.preLink')}{' '}
         <TextLink
-          href="https://docs.typebot.io/self-hosting/configuration"
+          href="https://docs.flowdacity.com/self-hosting/configuration"
           isExternal
         >
           {t('auth.noProvider.link')}

@@ -64,7 +64,7 @@ independant of the number of messages he sends and receives."
     button={
       <Button
         as={Link}
-        href={`https://app.typebot.io/register?subscribePlan=${Plan.PRO}`}
+        href={`https://app.flowdacity.com/register?subscribePlan=${Plan.PRO}`}
         colorScheme="blue"
         size="lg"
         w="full"

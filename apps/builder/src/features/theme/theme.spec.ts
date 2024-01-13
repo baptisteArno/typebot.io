@@ -25,7 +25,7 @@ test.describe.parallel('Theme page', () => {
       await page.getByRole('button', { name: 'Global' }).click()
       await expect(
         page.locator('a:has-text("Made with Typebot")')
-      ).toHaveAttribute('href', 'https://www.typebot.io/?utm_source=litebadge')
+      ).toHaveAttribute('href', 'https://www.flowdacity.com/?utm_source=litebadge')
       await page.click('text="Show Typebot brand"')
       await expect(page.locator('a:has-text("Made with Typebot")')).toBeHidden()
 

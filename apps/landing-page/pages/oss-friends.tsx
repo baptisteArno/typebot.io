@@ -36,7 +36,7 @@ export default function OSSFriendsPage({ ossFriends }: Props) {
         bgGradient="linear(to-b, gray.900, gray.800)"
         pb={40}
       >
-        <SocialMetaTags currentUrl={`https://www.typebot.io/oss-friends`} />
+        <SocialMetaTags currentUrl={`https://www.flowdacity.com/oss-friends`} />
         <BackgroundPolygons />
         <DarkMode>
           <Header />

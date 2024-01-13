@@ -16,7 +16,7 @@ export const MobileMenu = ({ isOpen }: Props) => (
     >
       <Button
         as={Link}
-        href="https://app.typebot.io/signin"
+        href="https://app.flowdacity.com/signin"
         colorScheme="blue"
         variant="outline"
         fontWeight={700}
@@ -25,7 +25,7 @@ export const MobileMenu = ({ isOpen }: Props) => (
       </Button>
       <Button
         as={Link}
-        href="https://app.typebot.io/register"
+        href="https://app.flowdacity.com/register"
         colorScheme="orange"
         fontWeight={700}
       >

@@ -28,7 +28,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     redirect: {
       permanent: false,
-      destination: `https://feedback.typebot.io/feedback/${feedbackId}/?sso=${sleekplanToken}`,
+      destination: `https://feedback.flowdacity.com/feedback/${feedbackId}/?sso=${sleekplanToken}`,
     },
   }
 }

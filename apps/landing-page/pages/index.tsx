@@ -14,7 +14,7 @@ import { Testimonials } from 'components/Homepage/Testimonials'
 const App = () => {
   return (
     <Stack w="full" overflowX="hidden" bgColor="gray.900">
-      <SocialMetaTags currentUrl={`https://www.typebot.io/`} />
+      <SocialMetaTags currentUrl={`https://www.flowdacity.com/`} />
       <Hero />
       <IntroducingChatApps />
       <EasyBuildingExperience />

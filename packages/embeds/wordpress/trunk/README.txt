@@ -15,8 +15,8 @@ Collect 4x more responses with conversational apps using Typebot.
 👉 With Typebot, you collect the answer as soon as the user answers the first question. You get to know exactly when the user tends to drop your form.
 
 This plugin relies on Typebot which is a tool that allows you to create conversational forms and directly integrate them on your Wordpress site.
-💁‍♂️ More information about Typebot: https://www.typebot.io/
-👨🏼‍💻 How Typebot handles collected data: https://www.typebot.io/privacy-policies
+💁‍♂️ More information about Typebot: https://www.flowdacity.com/
+👨🏼‍💻 How Typebot handles collected data: https://www.flowdacity.com/privacy-policies
 
 == Installation ==
 1. Add the plugin folder to the /wp-content/plugins/ directory
@@ -72,7 +72,7 @@ This plugin relies on Typebot which is a tool that allows you to create conversa
 * Fix flow not proceeding on unknown domains
 
 = 3.0.0 =
-* Complete rework of the plugin. You are now required to generate a code snippet on https://app.typebot.io
+* Complete rework of the plugin. You are now required to generate a code snippet on https://app.flowdacity.com
 
 = 2.1.9 =
 * Fix standard embed when window is already loaded
@@ -126,7 +126,7 @@ This plugin relies on Typebot which is a tool that allows you to create conversa
 * Add `url` option to shortcodes in order to add multiple typebots on the same page.
 
 = 1.3.0 =
-* Adding wordpress user variables support. More info here: http://docs.typebot.io/embed/wordpress#personalize-user-experience-hidden-variables
+* Adding wordpress user variables support. More info here: http://docs.flowdacity.com/embed/wordpress#personalize-user-experience-hidden-variables
 
 = 1.2.3 =
 * Add "Don't show message when opened or closed once" option
