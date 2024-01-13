@@ -43,7 +43,7 @@ export const Header = () => {
           <HStack as={Link} href="/" rel="home" ml="2">
             <Logo boxSize="35px" />
             <Heading as="p" fontSize="lg">
-              Typebot
+              Flowdacity.
             </Heading>
           </HStack>
         </Flex>
@@ -100,7 +100,7 @@ export const Header = () => {
             colorScheme="orange"
             fontWeight={700}
           >
-            Create a typebot
+            Create Chatbot
           </Button>
         </HStack>
       </HStack>

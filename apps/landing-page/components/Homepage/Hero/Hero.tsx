@@ -9,6 +9,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import * as React from 'react'
+import Typed from 'react-typed'
 import { Header } from '../../common/Header/Header'
 import { BackgroundPolygons } from './BackgroundPolygons'
 import * as Logos from './Brands'
@@ -33,7 +34,16 @@ export const Hero = () => {
               bgClip="text"
               data-aos="fade-up"
             >
-              Build advanced chatbots visually
+              Build{' '}
+              <Typed
+                strings={['advanced chatbots', 'conversational forms']}
+                typeSpeed={50}
+                backSpeed={100}
+                backDelay={3000}
+                startDelay={0}
+                loop
+              />
+              visually
             </Heading>
             <Text
               fontSize={['lg', 'xl']}
@@ -42,7 +52,7 @@ export const Hero = () => {
               data-aos="fade-up"
               data-aos-delay="100"
             >
-              Typebot gives you powerful blocks to create unique chat
+              Flowdacity gives you powerful blocks to create unique chat
               experiences. Embed them anywhere on your web/mobile apps and start
               collecting results like magic.
             </Text>
@@ -59,7 +69,7 @@ export const Hero = () => {
                 height="4rem"
                 px="2rem"
               >
-                Create a typebot for free
+                Get started for free
               </Button>
             </Stack>
           </VStack>

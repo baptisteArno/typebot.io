@@ -1,6 +1,9 @@
 import { extendTheme } from '@chakra-ui/react'
+import "@fontsource/league-spartan"; // Defaults to weight 400
+import "@fontsource/league-spartan/400.css"; // Specify weight
+// import "@fontsource/league-spartan/400-italic.css"; // Specify weight and styl
 
-const config = { initialColorMode: 'dark', useSystemColorMode: false }
+const config = { initialColorMode: 'light', useSystemColorMode: false }
 
 const fonts = {
   heading: 'Outfit',

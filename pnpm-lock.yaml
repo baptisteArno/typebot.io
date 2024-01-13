@@ -384,6 +384,9 @@ importers:
       '@emotion/styled':
         specifier: 11.11.0
         version: 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.15)(react@18.2.0)
+      '@fontsource/league-spartan':
+        specifier: ^5.0.18
+        version: 5.0.18
       '@typebot.io/lib':
         specifier: workspace:*
         version: link:../../packages/lib
@@ -414,6 +417,9 @@ importers:
       react-dom:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
+      react-typed:
+        specifier: ^1.2.0
+        version: 1.2.0(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
       '@babel/core':
         specifier: 7.22.9
@@ -5612,6 +5618,10 @@ packages:
 
   /@floating-ui/utils@0.1.6:
     resolution: {integrity: sha512-OfX7E2oUDYxtBvsuS4e/jSn4Q9Qb6DzgeYtsAdkPZ47znpoNsMgZw0+tVijiv3uGNR6dgNlty6r9rzIzHjtd/A==}
+    dev: false
+
+  /@fontsource/league-spartan@5.0.18:
+    resolution: {integrity: sha512-+4OP0NTDDTcicDp0IA+nNd5qtmZXUIuiqeSXqe9CZS5loN7Rcs14neAvL19sZDCa1EALcv+SuQe7i8tA0l+n1Q==}
     dev: false
 
   /@giphy/js-analytics@5.0.0:
@@ -18489,6 +18499,18 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
+  /react-typed@1.2.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-aDsaA6zkjAFJs8285APOqE85l/kwJ0/ZJmBhARwUrza4TTttrMM5FcMCGEDdThdfUdHo/0l9WXmxp1m2ik4qdw==}
+    peerDependencies:
+      react: ^16.3.0
+      react-dom: ^16.3.0
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      typed.js: 2.1.0
+    dev: false
+
   /react-universal-interface@0.6.2(react@18.2.0)(tslib@2.6.0):
     resolution: {integrity: sha512-dg8yXdcQmvgR13RIlZbTRQOoUrDciFVoSBZILwjE2LFISxZZ8loVJKAkuzswl5js8BHda79bIb2b84ehU8IjXw==}
     peerDependencies:
@@ -20483,6 +20505,10 @@ packages:
       call-bind: 1.0.2
       for-each: 0.3.3
       is-typed-array: 1.1.12
+
+  /typed.js@2.1.0:
+    resolution: {integrity: sha512-bDuXEf7YcaKN4g08NMTUM6G90XU25CK3bh6U0THC/Mod/QPKlEt9g/EjvbYB8x2Qwr2p6J6I3NrsoYaVnY6wsQ==}
+    dev: false
 
   /typescript@5.3.2:
     resolution: {integrity: sha512-6l+RyNy7oAHDfxC4FzSJcz9vnjTKxrLpDG5M2Vu4SHRVNg6xzqZp6LYSR9zjqQTu8DU/f5xwxUdADOkbrIX2gQ==}
