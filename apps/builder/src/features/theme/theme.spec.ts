@@ -30,7 +30,9 @@ test.describe.parallel('Theme page', () => {
         'https://www.flowdacity.com/?utm_source=litebadge'
       )
       await page.click('text="Show Typebot brand"')
-      await expect(page.locator('a:has-text("Made with Flowdacity")')).toBeHidden()
+      await expect(
+        page.locator('a:has-text("Made with Flowdacity")')
+      ).toBeHidden()
 
       // Font
       await page.getByRole('textbox').fill('Roboto Slab')
