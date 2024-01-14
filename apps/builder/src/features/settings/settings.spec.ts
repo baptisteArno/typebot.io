@@ -36,7 +36,7 @@ test.describe.parallel('Settings page', () => {
       })
       await page.goto(`/typebots/${typebotId}/settings`)
       await expect(
-        page.locator('a:has-text("Made with Typebot")')
+        page.locator('a:has-text("Made with Flowdacity")')
       ).toHaveAttribute('href', 'https://www.flowdacity.com/?utm_source=litebadge')
       await page.click('button:has-text("Typing emulation")')
       await page.fill('[data-testid="speed"] input', '350')
