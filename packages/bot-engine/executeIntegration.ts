@@ -18,7 +18,10 @@ export const executeIntegration =
   async (block: IntegrationBlock): Promise<ExecuteIntegrationResponse> => {
     switch (block.type) {
       case IntegrationBlockType.GOOGLE_SHEETS:
-        return executeGoogleSheetBlock(state, block)
+        return {
+          ...(await executeGoogleSheetBlock(state, block)),
+          startTimeShouldBeUpdated: true,
+        }
       case IntegrationBlockType.CHATWOOT:
         return executeChatwootBlock(state, block)
       case IntegrationBlockType.GOOGLE_ANALYTICS:

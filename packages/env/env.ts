@@ -79,7 +79,9 @@ const baseEnv = {
     RADAR_CUMULATIVE_KEYWORDS: z
       .string()
       .min(1)
-      .transform((val) => val.split('/').map((s) => s.split(',')))
+      .transform((val) =>
+        val.split('/').map((s) => s.split(',').map((s) => s.split('|')))
+      )
       .optional(),
   },
   client: {
