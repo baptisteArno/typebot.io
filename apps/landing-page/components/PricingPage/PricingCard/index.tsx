@@ -37,7 +37,7 @@ export const PricingCard = ({
   const formattedPrice = typeof price === 'number' ? formatPrice(price) : price
 
   return (
-    <Card rounded="xl" bgColor="gray.800" {...rest}>
+    <Card rounded="xl" {...rest}>
       <Flex justifyContent="space-between" flexDir="column" h="full">
         <Flex flexDir="column">
           <VStack spacing={6}>

@@ -2,7 +2,7 @@ import Head from 'next/head'
 import React from 'react'
 
 export const SocialMetaTags = ({
-  title = 'Typebot - Open-source conversational apps builder',
+  title = 'Flowdacity - AI Chatbot Generator for Conversational Experiences',
   description = 'Powerful blocks to create unique chat experiences. Embed them anywhere on your apps and start collecting results like magic.',
   currentUrl,
   imagePreviewUrl = 'https://home.flowdacity.com/images/preview.png',

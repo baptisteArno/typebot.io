@@ -23,7 +23,7 @@ class MyDocument extends Document {
           {/* eslint-disable-next-line @next/next/no-sync-scripts */}
           <script src="/__ENV.js" />
         </Head>
-        <body style={{ backgroundColor: '#171923' }}>
+        <body>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <Main />
           <NextScript />

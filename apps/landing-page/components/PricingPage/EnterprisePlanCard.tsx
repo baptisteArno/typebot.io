@@ -16,7 +16,7 @@ export const EnterprisePlanCard = () => (
     align="center"
     p="10"
     rounded="lg"
-    bgColor="gray.800"
+    // bgColor="gray.800"
     borderWidth="2px"
     spacing={10}
   >

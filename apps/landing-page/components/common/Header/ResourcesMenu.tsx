@@ -24,7 +24,7 @@ export const ResourcesMenu = ({ isOpen }: Props) => (
       top="16"
       py="12"
       px="4"
-      bgGradient="linear(to-b, gray.900, gray.800)"
+      bgGradient="linear(to-b, white, white)"
     >
       <Box maxW="7xl" mx="auto" px="8">
         <SimpleGrid spacing="10" columns={2}>

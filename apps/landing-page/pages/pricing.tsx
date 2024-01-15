@@ -1,5 +1,4 @@
 import {
-  DarkMode,
   Flex,
   Stack,
   Heading,
@@ -26,21 +25,19 @@ const Pricing = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
-    <Stack overflowX="hidden" bgColor="gray.900">
+    <Stack overflowX="hidden">
       <ChatsProTiersModal isOpen={isOpen} onClose={onClose} />
       <Flex
         pos="relative"
         flexDir="column"
         minHeight="100vh"
         alignItems="center"
-        bgGradient="linear(to-b, gray.900, gray.800)"
+        // bgGradient="linear(to-b, gray.900, gray.800)"
         pb={40}
       >
         <SocialMetaTags currentUrl={`https://www.flowdacity.com/pricing`} />
         <BackgroundPolygons />
-        <DarkMode>
-          <Header />
-        </DarkMode>
+        <Header />
 
         <VStack spacing={'24'} mt={[20, 32]} w="full">
           <Stack align="center" spacing="12" w="full" px={4}>
@@ -74,13 +71,13 @@ const Pricing = () => {
             <HStack
               maxW="500px"
               spacing="4"
-              bgColor="gray.800"
+              // bgColor="gray.800"
               p="4"
               rounded="md"
             >
               <StripeClimateLogo />
               <Text fontSize="sm">
-                Typebot is contributing 1% of your subscription to remove CO₂
+                Flowdacity is contributing 1% of your subscription to remove CO₂
                 from the atmosphere.{' '}
                 <TextLink href="https://climate.stripe.com/5VCRAq" isExternal>
                   More info

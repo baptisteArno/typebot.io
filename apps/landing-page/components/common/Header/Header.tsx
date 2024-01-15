@@ -4,7 +4,6 @@ import {
   Heading,
   HStack,
   IconButton,
-  useColorModeValue as mode,
   useDisclosure,
   Box,
   Link,
@@ -38,7 +37,7 @@ export const Header = () => {
           align="center"
           justify="space-between"
           className="nav-content__mobile"
-          color={mode('white', 'white')}
+          // color={mode('white', 'white')}
         >
           <HStack as={Link} href="/" rel="home" ml="2">
             <Logo boxSize="35px" />
@@ -69,7 +68,7 @@ export const Header = () => {
               rightIcon={<ChevronDownIcon />}
               onClick={onToggle}
               variant="ghost"
-              colorScheme="gray"
+              // colorScheme="gray"
               fontWeight={700}
             >
               Resources
@@ -80,7 +79,7 @@ export const Header = () => {
             as={Link}
             href="/pricing"
             variant="ghost"
-            colorScheme="gray"
+            // colorScheme="gray"
             fontWeight={700}
           >
             Pricing

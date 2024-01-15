@@ -13,7 +13,7 @@ import { Testimonials } from 'components/Homepage/Testimonials'
 
 const App = () => {
   return (
-    <Stack w="full" overflowX="hidden" bgColor="gray.900">
+    <Stack w="full" overflowX="hidden">
       <SocialMetaTags currentUrl={`https://www.typebot.io/`} />
       <Hero />
       <IntroducingChatApps />

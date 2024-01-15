@@ -13,7 +13,7 @@ export const FeatureCard = ({ Icon, title, content }: FeatureCardProps) => {
   return (
     <VStack
       p="6"
-      bgColor="gray.800"
+      bgColor="gray.100"
       pos="relative"
       rounded="lg"
       spacing="4"
@@ -38,7 +38,7 @@ export const FeatureCard = ({ Icon, title, content }: FeatureCardProps) => {
       <Text textAlign="center" fontWeight="semibold" fontSize="lg">
         {title}
       </Text>
-      <Text textAlign="center" color="gray.500">
+      <Text textAlign="center" color="gray.600">
         {content}
       </Text>
     </VStack>
