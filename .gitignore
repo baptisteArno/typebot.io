@@ -1,4 +1,5 @@
-node_modules
+*/node_modules
+*node_modules
 .next
 .env.local
 workspace.code-workspace
@@ -39,3 +40,5 @@ snapshots
 
 .env
 .typebot-build
+
+/.pnpm-store
