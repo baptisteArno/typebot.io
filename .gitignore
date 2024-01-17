@@ -38,3 +38,4 @@ typebotsToFix.json
 snapshots
 
 .env
+.typebot-build
