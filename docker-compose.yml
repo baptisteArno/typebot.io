@@ -1,51 +1,32 @@
 version: '3.3'
-services:
-  typebot-db:
-    image: postgres:13
-    ports:
-      - '5432:5432'
-    restart: always
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: 'typebot'
-      POSTGRES_PASSWORD: 'typebot'
-  minio:
-    image: minio/minio
-    command: server /data --console-address ":9001"
-    ports:
-      - '9000:9000'
-      - '9001:9001'
-    environment:
-      MINIO_ROOT_USER: minio
-      MINIO_ROOT_PASSWORD: minio123
-    volumes:
-      - s3_data:/data
-  # This service just make sure a bucket with the right policies is created
-  createbuckets:
-    image: minio/mc
-    depends_on:
-      - minio
-    entrypoint: >
-      /bin/sh -c "
-      sleep 10;
-      /usr/bin/mc config host add minio http://minio:9000 minio minio123;
-      /usr/bin/mc mb minio/typebot;
-      /usr/bin/mc anonymous set public minio/typebot/public;
-      exit 0;
-      "
-  node:
-    build: 
-      context: ./
-      dockerfile: dev.Dockerfile
-    volumes:
-      - ./:/app
-    entrypoint: ["pnpm", "devlight"]
-    ports:
-      - 3000:3000
-      - 3001:3001
-      - 5555:5555
 
 volumes:
-  db_data:
-  s3_data:
+  db-data:
+
+services:
+  typebot-db:
+    image: postgres:14-alpine
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=typebot
+      - POSTGRES_PASSWORD=typebot
+
+  typebot-builder:
+    image: baptistearno/typebot-builder:latest
+    restart: always
+    depends_on:
+      - typebot-db
+    ports:
+      - '8080:3000'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    env_file: .env
+
+  typebot-viewer:
+    image: baptistearno/typebot-viewer:latest
+    restart: always
+    ports:
+      - '8081:3000'
+    env_file: .env
