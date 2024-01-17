@@ -28,6 +28,7 @@ export const startChat = publicProcedure
         prefilledVariables,
         resultId: startResultId,
       },
+      ctx: { origin, res },
     }) => {
       const {
         typebot,
@@ -51,6 +52,15 @@ export const startChat = publicProcedure
         },
         message,
       })
+
+      if (
+        newSessionState.allowedOrigins &&
+        newSessionState.allowedOrigins.length > 0
+      ) {
+        if (origin && newSessionState.allowedOrigins.includes(origin))
+          res.setHeader('Access-Control-Allow-Origin', origin)
+        else res.removeHeader('Access-Control-Allow-Origin')
+      }
 
       const session = isOnlyRegistering
         ? await restartSession({

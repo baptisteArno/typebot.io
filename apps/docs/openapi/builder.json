@@ -27457,6 +27457,17 @@
                 "type": "boolean"
               }
             }
+          },
+          "security": {
+            "type": "object",
+            "properties": {
+              "allowedOrigins": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
           }
         },
         "title": "Settings"

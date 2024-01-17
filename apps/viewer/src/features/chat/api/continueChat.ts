@@ -28,7 +28,7 @@ export const continueChat = publicProcedure
     })
   )
   .output(continueChatResponseSchema)
-  .mutation(async ({ input: { sessionId, message } }) => {
+  .mutation(async ({ input: { sessionId, message }, ctx: { res, origin } }) => {
     const session = await getSession(sessionId)
 
     if (!session) {
@@ -48,6 +48,15 @@ export const continueChat = publicProcedure
         code: 'NOT_FOUND',
         message: 'Session expired. You need to start a new session.',
       })
+
+    if (
+      session?.state.allowedOrigins &&
+      session.state.allowedOrigins.length > 0
+    ) {
+      if (origin && session.state.allowedOrigins.includes(origin))
+        res.setHeader('Access-Control-Allow-Origin', origin)
+      else res.removeHeader('Access-Control-Allow-Origin')
+    }
 
     const {
       messages,
