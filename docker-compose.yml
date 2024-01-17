@@ -30,3 +30,4 @@ services:
     ports:
       - '8081:3000'
     env_file: .env
+    
