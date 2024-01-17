@@ -35,7 +35,7 @@ export const executePrismaCommand = (command: string, options?: Options) => {
   }
 
   if (process.env.DATABASE_URL?.startsWith('postgres://')) {
-    console.error('PostgreSQL `DATABASE_URL` should start with postgres')
+    console.error('PostgreSQL `DATABASE_URL` should start with postgresql://')
     process.exit(1)
   }
 }
