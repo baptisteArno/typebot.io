@@ -154,7 +154,7 @@ const getIncomingMessageContent = async ({
         `/api/typebots/${typebotId}/whatsapp/media/${mediaId}`
       )
     case 'location':
-      return `Location: ${message.location.latitude},${message.location.longitude}`
+      return `${message.location.latitude}, ${message.location.longitude}`
   }
 }
 
