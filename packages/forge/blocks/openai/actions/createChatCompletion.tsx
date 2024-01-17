@@ -3,9 +3,11 @@ import OpenAI, { ClientOptions } from 'openai'
 import { defaultOpenAIOptions } from '../constants'
 import { OpenAIStream } from 'ai'
 import { parseChatCompletionMessages } from '../helpers/parseChatCompletionMessages'
+import { parseFunctions } from '../helpers/parseFunctions'
 import { isDefined } from '@typebot.io/lib'
 import { auth } from '../auth'
 import { baseOptions } from '../baseOptions'
+import vm from 'vm'
 
 const nativeMessageContentSchema = {
   content: option.string.layout({
@@ -45,6 +47,38 @@ const dialogueMessageItemSchema = option.object({
   }),
 })
 
+const parameterTypeSchema = option.enum(['string', 'number'])
+
+const parameterSchema = option.object({
+  name: option.string.layout({
+    label: 'Name',
+    placeholder: 'parameter name',
+  }),
+  type: parameterTypeSchema.layout({ label: 'Type' }),
+  description: option.string.layout({
+    label: 'Description',
+    placeholder: 'what this parameter represents',
+  }),
+  required: option.boolean.layout({ label: 'Required?' }),
+})
+
+const functionSchema = option.object({
+  name: option.string.layout({
+    label: 'Function name',
+    placeholder: 'doSomething',
+  }),
+  description: option.string.layout({
+    label: 'Description',
+    placeholder: 'What this function does',
+  }),
+  parameters: option.array(parameterSchema).layout({ accordion: 'Parameters' }),
+  code: option.string.layout({
+    label: 'Code',
+    inputType: 'textarea',
+    placeholder: 'code',
+  }),
+})
+
 export const options = option.object({
   model: option.string.layout({
     placeholder: 'Select a model',
@@ -61,6 +95,9 @@ export const options = option.object({
       ])
     )
     .layout({ accordion: 'Messages', itemLabel: 'message', isOrdered: true }),
+  functions: option
+    .array(functionSchema)
+    .layout({ accordion: 'Functions', itemLabel: 'function', isOrdered: true }),
   temperature: option.number.layout({
     accordion: 'Advanced settings',
     label: 'Temperature',
@@ -131,13 +168,68 @@ export const createChatCompletion = createAction({
 
       const openai = new OpenAI(config)
 
-      const response = await openai.chat.completions.create({
-        model: options.model ?? defaultOpenAIOptions.model,
-        temperature: options.temperature
-          ? Number(options.temperature)
-          : undefined,
-        messages: parseChatCompletionMessages({ options, variables }),
-      })
+      const messages = parseChatCompletionMessages({ options, variables })
+
+      const body: OpenAI.Chat.Completions.ChatCompletionCreateParamsNonStreaming =
+        {
+          model: options.model ?? defaultOpenAIOptions.model,
+          temperature: options.temperature
+            ? Number(options.temperature)
+            : undefined,
+          messages,
+          ...(options.functions?.length
+            ? {
+                tools: parseFunctions({ options, variables }),
+                tool_choice: 'auto',
+              }
+            : {}),
+        }
+
+      const response = await (async () => {
+        while (true) {
+          const response = await openai.chat.completions.create(body)
+
+          if (!response.choices[0].message.tool_calls) {
+            return response
+          }
+
+          messages.push(response.choices[0].message)
+
+          for (const tool of response.choices[0].message.tool_calls) {
+            const toolName = tool.function.name
+            const toolArguments = Object.entries(
+              JSON.parse(tool.function.arguments)
+            )
+              .map(([key, value]) => `${key} = ${value}`)
+              .join('\n')
+            const toolCallId = tool.id
+            const toolCode = `${toolArguments}\n${
+              options.functions?.find((func) => func.name === toolName)?.code
+            }`
+
+            const context = {
+              require: () => {
+                // For safety
+                throw new Error('require is not allowed')
+              },
+            }
+
+            let toolResponse = ''
+            try {
+              toolResponse = vm.runInNewContext(toolCode, context)
+            } catch (e) {
+              toolResponse = JSON.stringify(e)
+            }
+
+            messages.push({
+              role: 'tool',
+              tool_call_id: toolCallId,
+              // name: toolName,
+              content: toolResponse.toString(),
+            })
+          }
+        }
+      })()
 
       options.responseMapping?.forEach((mapping) => {
         if (!mapping.variableId) return
@@ -175,6 +267,8 @@ export const createChatCompletion = createAction({
             : undefined,
           stream: true,
           messages: parseChatCompletionMessages({ options, variables }),
+          tools: parseFunctions({ options, variables }),
+          tool_choice: 'auto',
         })
 
         return OpenAIStream(response)
