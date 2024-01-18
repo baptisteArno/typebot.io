@@ -200,7 +200,7 @@ export const createChatCompletion = createAction({
             const toolArguments = Object.entries(
               JSON.parse(tool.function.arguments)
             )
-              .map(([key, value]) => `${key} = ${value}`)
+              .map(([key, value]) => `let ${key} = ${value};`)
               .join('\n')
             const toolCallId = tool.id
             const toolCode = `${toolArguments}\n${
@@ -218,7 +218,7 @@ export const createChatCompletion = createAction({
             try {
               toolResponse = vm.runInNewContext(toolCode, context)
             } catch (e) {
-              toolResponse = JSON.stringify(e)
+              toolResponse = `${e}`
             }
 
             messages.push({
