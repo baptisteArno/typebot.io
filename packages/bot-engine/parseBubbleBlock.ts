@@ -29,6 +29,30 @@ export type BubbleBlockWithDefinedContent = BubbleBlock & {
   content: NonNullable<BubbleBlock['content']>
 }
 
+
+const extractText = (
+  json:any
+)=>{
+
+  var keys = Object.keys(json);
+  var texts:string[] = []
+  keys.forEach((key)=>{
+    if(key == 'text'){
+      texts.push(json[key] as string)
+    }
+    else if(key == 'children') {
+      var _texts: string[] = []
+      json[key].forEach((b:any)=>{
+        var text = extractText(b) as string
+        _texts.push(text)
+      })
+      texts.push(_texts.join(''))
+     
+
+    }
+  })
+  return texts.join(' ')
+}
 export const parseBubbleBlock = (
   block: BubbleBlockWithDefinedContent,
   { version, variables, typebotVersion }: Params
@@ -45,14 +69,18 @@ export const parseBubbleBlock = (
             ),
           },
         }
+
+        var json = parseVariablesInRichText(block.content?.richText ?? [], {
+          variables,
+          takeLatestIfList: typebotVersion !== '6',
+        });
+        var text = extractText(json[0])
       return {
         ...block,
         content: {
           ...block.content,
-          richText: parseVariablesInRichText(block.content?.richText ?? [], {
-            variables,
-            takeLatestIfList: typebotVersion !== '6',
-          }),
+          plainText:text,
+          richText: json
         },
       }
     }
