@@ -131,6 +131,10 @@ export const startSession = async ({
     dynamicTheme: parseDynamicThemeInState(typebot.theme),
     isStreamEnabled: startParams.isStreamEnabled,
     typingEmulation: typebot.settings.typingEmulation,
+    allowedOrigins:
+      startParams.type === 'preview'
+        ? undefined
+        : typebot.settings.security?.allowedOrigins,
     ...initialSessionState,
   }
 

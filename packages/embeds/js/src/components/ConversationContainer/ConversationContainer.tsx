@@ -86,31 +86,30 @@ export const ConversationContainer = (props: Props) => {
   onMount(() => {
     ;(async () => {
       const initialChunk = chatChunks()[0]
-      if (initialChunk.clientSideActions) {
-        const actionsBeforeFirstBubble = initialChunk.clientSideActions.filter(
-          (action) => isNotDefined(action.lastBubbleBlockId)
+      if (!initialChunk.clientSideActions) return
+      const actionsBeforeFirstBubble = initialChunk.clientSideActions.filter(
+        (action) => isNotDefined(action.lastBubbleBlockId)
+      )
+      for (const action of actionsBeforeFirstBubble) {
+        if (
+          'streamOpenAiChatCompletion' in action ||
+          'webhookToExecute' in action
         )
-        for (const action of actionsBeforeFirstBubble) {
-          if (
-            'streamOpenAiChatCompletion' in action ||
-            'webhookToExecute' in action
-          )
-            setIsSending(true)
-          const response = await executeClientSideAction({
-            clientSideAction: action,
-            context: {
-              apiHost: props.context.apiHost,
-              sessionId: props.initialChatReply.sessionId,
-            },
-            onMessageStream: streamMessage,
-          })
-          if (response && 'replyToSend' in response) {
-            sendMessage(response.replyToSend, response.logs)
-            return
-          }
-          if (response && 'blockedPopupUrl' in response)
-            setBlockedPopupUrl(response.blockedPopupUrl)
+          setIsSending(true)
+        const response = await executeClientSideAction({
+          clientSideAction: action,
+          context: {
+            apiHost: props.context.apiHost,
+            sessionId: props.initialChatReply.sessionId,
+          },
+          onMessageStream: streamMessage,
+        })
+        if (response && 'replyToSend' in response) {
+          sendMessage(response.replyToSend, response.logs)
+          return
         }
+        if (response && 'blockedPopupUrl' in response)
+          setBlockedPopupUrl(response.blockedPopupUrl)
       }
     })()
   })
