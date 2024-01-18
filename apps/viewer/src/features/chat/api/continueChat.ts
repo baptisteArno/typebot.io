@@ -55,7 +55,11 @@ export const continueChat = publicProcedure
     ) {
       if (origin && session.state.allowedOrigins.includes(origin))
         res.setHeader('Access-Control-Allow-Origin', origin)
-      else res.removeHeader('Access-Control-Allow-Origin')
+      else
+        res.setHeader(
+          'Access-Control-Allow-Origin',
+          session.state.allowedOrigins[0]
+        )
     }
 
     const {

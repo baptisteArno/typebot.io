@@ -59,7 +59,11 @@ export const startChat = publicProcedure
       ) {
         if (origin && newSessionState.allowedOrigins.includes(origin))
           res.setHeader('Access-Control-Allow-Origin', origin)
-        else res.removeHeader('Access-Control-Allow-Origin')
+        else
+          res.setHeader(
+            'Access-Control-Allow-Origin',
+            newSessionState.allowedOrigins[0]
+          )
       }
 
       const session = isOnlyRegistering
