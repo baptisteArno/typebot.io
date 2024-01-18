@@ -22,6 +22,7 @@ import { DropdownList } from '@/components/DropdownList'
 import { ForgedBlockDefinition, ForgedBlock } from '@typebot.io/forge-schemas'
 import { PrimitiveList } from '@/components/PrimitiveList'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
+import { CodeEditor } from '@/components/inputs/CodeEditor'
 
 const mdComponents = {
   a: ({ href, children }) => (
@@ -99,6 +100,8 @@ export const ZodFieldLayout = ({
                 <ZodArrayContent
                   data={data}
                   schema={schema}
+                  blockDef={blockDef}
+                  blockOptions={blockOptions}
                   layout={layout}
                   onDataChange={onDataChange}
                   isInAccordion
@@ -111,6 +114,8 @@ export const ZodFieldLayout = ({
         <ZodArrayContent
           data={data}
           schema={schema}
+          blockDef={blockDef}
+          blockOptions={blockOptions}
           layout={layout}
           onDataChange={onDataChange}
         />
@@ -229,6 +234,28 @@ export const ZodFieldLayout = ({
           />
         )
       }
+
+      if (layout?.inputType === 'code')
+        return (
+          <CodeEditor
+            defaultValue={data ?? layout?.defaultValue}
+            lang={layout.lang ?? 'javascript'}
+            label={layout?.label}
+            placeholder={layout?.placeholder}
+            helperText={
+              layout?.helperText ? (
+                <Markdown components={mdComponents}>
+                  {layout.helperText}
+                </Markdown>
+              ) : undefined
+            }
+            isRequired={layout?.isRequired}
+            withVariableButton={layout?.withVariableButton}
+            moreInfoTooltip={layout.moreInfoTooltip}
+            onChange={onDataChange}
+            width={width}
+          />
+        )
       return (
         <TextInput
           defaultValue={data ?? layout?.defaultValue}
@@ -254,12 +281,16 @@ export const ZodFieldLayout = ({
 const ZodArrayContent = ({
   schema,
   data,
+  blockDef,
+  blockOptions,
   layout,
   isInAccordion,
   onDataChange,
 }: {
   schema: z.ZodTypeAny
   data: any
+  blockDef?: ForgedBlockDefinition
+  blockOptions?: ForgedBlock['options']
   layout: ZodLayoutMetadata<ZodTypeAny> | undefined
   isInAccordion?: boolean
   onDataChange: (val: any) => void
@@ -283,6 +314,8 @@ const ZodArrayContent = ({
               <ZodFieldLayout
                 schema={schema._def.innerType._def.type}
                 data={item}
+                blockDef={blockDef}
+                blockOptions={blockOptions}
                 isInAccordion={isInAccordion}
                 onDataChange={onItemChange}
                 width="full"
@@ -302,9 +335,11 @@ const ZodArrayContent = ({
       isOrdered={layout?.isOrdered}
     >
       {({ item, onItemChange }) => (
-        <Stack p="4" rounded="md" flex="1" borderWidth="1px">
+        <Stack p="4" rounded="md" flex="1" borderWidth="1px" maxW="100%">
           <ZodFieldLayout
             schema={schema._def.innerType._def.type}
+            blockDef={blockDef}
+            blockOptions={blockOptions}
             data={item}
             isInAccordion={isInAccordion}
             onDataChange={onItemChange}
