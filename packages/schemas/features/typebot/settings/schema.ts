@@ -42,6 +42,11 @@ export const settingsSchema = z
         isEnabled: z.boolean().optional(),
       })
       .optional(),
+    security: z
+      .object({
+        allowedOrigins: z.array(z.string()).optional(),
+      })
+      .optional(),
   })
   .openapi({
     title: 'Settings',

@@ -20,9 +20,11 @@ export const deepParseVariables =
     },
     parseVariablesOptions: ParseVariablesOptions = defaultParseVariablesOptions
   ) =>
-  <T extends Record<string, unknown>>(object: T): T =>
-    Object.keys(object).reduce<T>((newObj, key) => {
-      const currentValue = object[key]
+  <T>(object: T): T => {
+    if (!object) return object as T
+    if (typeof object !== 'object') return object as T
+    return Object.keys(object).reduce<T>((newObj, key) => {
+      const currentValue = (object as Record<string, unknown>)[key]
 
       if (typeof currentValue === 'string') {
         const parsedVariable = parseVariables(
@@ -63,3 +65,4 @@ export const deepParseVariables =
 
       return { ...newObj, [key]: currentValue }
     }, {} as T)
+  }

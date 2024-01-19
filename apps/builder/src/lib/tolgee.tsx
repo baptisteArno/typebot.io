@@ -7,6 +7,7 @@ import pt from '../i18n/pt.json'
 import ptBR from '../i18n/pt-BR.json'
 import es from '../i18n/es.json'
 import ro from '../i18n/ro.json'
+import it from '../i18n/it.json'
 import { env } from '@typebot.io/env'
 
 export const tolgee = Tolgee()
@@ -16,7 +17,7 @@ export const tolgee = Tolgee()
     apiKey: env.NEXT_PUBLIC_TOLGEE_API_KEY,
     apiUrl: env.NEXT_PUBLIC_TOLGEE_API_URL,
     defaultLanguage: 'en',
-    availableLanguages: ['en', 'fr', 'de', 'pt', 'pt-BR', 'es', 'ro'],
+    availableLanguages: ['en', 'fr', 'de', 'pt', 'pt-BR', 'es', 'ro', 'it'],
     fallbackLanguage: 'en',
     staticData: {
       en,
@@ -26,5 +27,6 @@ export const tolgee = Tolgee()
       'pt-BR': ptBR,
       es,
       ro,
+      it,
     },
   })
