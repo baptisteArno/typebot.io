@@ -58,7 +58,8 @@ export const createOrder = createAction({
 
         variables.set(options.saveOrderInVariableId, response.id)
       } catch (error) {
-        return logs.add(error as string)
+        console.log(error)
+        return logs.add('Error creating order')
       }
 
     },
