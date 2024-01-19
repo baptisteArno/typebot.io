@@ -11,7 +11,7 @@ import {
 import * as React from 'react'
 import Typed from 'react-typed'
 import { Header } from '../../common/Header/Header'
-import { BackgroundPolygons } from './BackgroundPolygons'
+// import { BackgroundPolygons } from './BackgroundPolygons'
 import * as Logos from './Brands'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -22,7 +22,7 @@ export const Hero = () => {
     <Box as="section" overflow="hidden">
       <Header />
       <Stack mx="auto" py="10" pos="relative" pb="32" px={[4, 0]}>
-        <BackgroundPolygons />
+        {/* <BackgroundPolygons /> */}
         <VStack mb="20" spacing={20} alignItems="center">
           <VStack pt={['10', '20']} spacing="6" w="full">
             <Heading

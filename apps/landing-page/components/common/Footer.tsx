@@ -12,10 +12,10 @@ import {
 import { Logo } from 'assets/icons/Logo'
 import { TextLink } from './TextLink'
 
-const discordServerUrl = 'https://typebot.io/discord'
+// const discordServerUrl = 'https://typebot.io/discord'
 const typebotUrl = 'https://typebot.io'
-const typebotLinkedInUrl = 'https://www.linkedin.com/company/typebot'
-const typebotTwitterUrl = 'https://twitter.com/Typebot_io'
+// const typebotLinkedInUrl = 'https://www.linkedin.com/company/typebot'
+// const typebotTwitterUrl = 'https://twitter.com/Typebot_io'
 const statusPageUrl = 'https://status.flowdacity.com'
 export const contactUrl = 'https://bot.flowdacity.com/landing-page-bubble-en'
 export const roadmapLink = 'https://app.flowdacity.com/feedback'
@@ -26,11 +26,11 @@ export const Footer = () => {
   return (
     <Box w="full">
       <Container as={Stack} maxW={'1000px'} py={10}>
-        <SimpleGrid columns={[1, 2, 4]} spacing={8} px={2}>
+        <SimpleGrid columns={[2, 3, 3]} spacing={8} px={2}>
           <Stack spacing={6}>
             <HStack>
               <Logo boxSize="30px" />
-              <Heading as="p" fontSize="lg">
+              <Heading as="p" fontSize="lg" color={'blue.500'}>
                 Flowdacity.
               </Heading>
             </HStack>
@@ -48,22 +48,7 @@ export const Footer = () => {
             </TextLink>
             <TextLink href={'/pricing'}>Pricing</TextLink>
           </Stack>
-          <Stack align={'flex-start'}>
-            <ListHeader>Community</ListHeader>
-            <TextLink href={discordServerUrl} isExternal>
-              Discord
-            </TextLink>
-            <TextLink href={githubRepoLink} isExternal>
-              GitHub repository
-            </TextLink>
-            <TextLink href={typebotTwitterUrl} isExternal>
-              Twitter
-            </TextLink>
-            <TextLink href={typebotLinkedInUrl} isExternal>
-              LinkedIn
-            </TextLink>
-            <TextLink href="/oss-friends">OSS Friends</TextLink>
-          </Stack>
+
           <Stack align={'flex-start'}>
             <ListHeader>Company</ListHeader>
             <TextLink href="/about">About</TextLink>

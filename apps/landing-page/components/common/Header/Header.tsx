@@ -4,6 +4,7 @@ import {
   Heading,
   HStack,
   IconButton,
+  // useColorModeValue as mode,
   useDisclosure,
   Box,
   Link,
@@ -41,7 +42,7 @@ export const Header = () => {
         >
           <HStack as={Link} href="/" rel="home" ml="2">
             <Logo boxSize="35px" />
-            <Heading as="p" fontSize="lg">
+            <Heading as="p" fontSize="lg" color={'blue.500'}>
               Flowdacity.
             </Heading>
           </HStack>
