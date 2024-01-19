@@ -1,6 +1,6 @@
 import { createAction, option } from '@typebot.io/forge'
 import { auth } from '../auth'
-import { createHmac } from 'crypto'
+import { createHmac, timingSafeEqual } from 'crypto'
 import { baseOptions } from '../baseOptions'
 
 export const verifyPayment = createAction({
@@ -39,7 +39,7 @@ export const verifyPayment = createAction({
 
         const payload = paymentResponse.razorpay_order_id + '|' + paymentResponse.razorpay_payment_id;
         const expectedSignature = createHmac('sha256', credentials.keySecret).update(payload).digest('hex');
-        variables.set(options.saveStatusInVariableId, expectedSignature == paymentResponse.razorpay_signature)
+        variables.set(options.saveStatusInVariableId, timingSafeEqual(Buffer.from(expectedSignature), Buffer.from(paymentResponse.razorpay_signature)))
       } catch (error) {
         return logs.add(error as string)
       }
