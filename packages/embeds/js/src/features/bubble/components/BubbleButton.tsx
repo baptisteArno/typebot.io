@@ -34,6 +34,8 @@ export const BubbleButton = (props: Props) => (
   >
     <Show when={isNotDefined(props.customIconSrc)} keyed>
       <svg
+        //@ts-expect-error part exists
+        part="button-icon"
         viewBox="0 0 24 24"
         style={{
           stroke:
@@ -70,6 +72,7 @@ export const BubbleButton = (props: Props) => (
     </Show>
     <Show when={props.customIconSrc && !isImageSrc(props.customIconSrc)}>
       <span
+        part="button-icon"
         class={clsx(
           'text-4xl duration-200 transition',
           props.isBotOpened ? 'scale-0 opacity-0' : 'scale-100 opacity-100'
@@ -84,6 +87,8 @@ export const BubbleButton = (props: Props) => (
     </Show>
     <Show when={isNotDefined(props.customCloseIconSrc)}>
       <svg
+        //@ts-expect-error part exists
+        part="button-icon"
         viewBox="0 0 24 24"
         style={{
           fill:
@@ -132,6 +137,7 @@ export const BubbleButton = (props: Props) => (
       when={props.customCloseIconSrc && !isImageSrc(props.customCloseIconSrc)}
     >
       <span
+        part="button-icon"
         class={clsx(
           'absolute text-4xl duration-200 transition',
           props.isBotOpened

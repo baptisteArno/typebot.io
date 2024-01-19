@@ -8,7 +8,8 @@ export interface ZodLayoutMetadata<
 > {
   accordion?: string
   label?: string
-  inputType?: 'variableDropdown' | 'textarea' | 'password'
+  inputType?: 'variableDropdown' | 'textarea' | 'password' | 'code'
+  lang?: 'javascript' | 'html' | 'css' | 'json'
   defaultValue?: T extends ZodDate ? string : TInferred
   placeholder?: string
   helperText?: string
