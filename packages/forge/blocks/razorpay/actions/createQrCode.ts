@@ -62,21 +62,22 @@ export const createQrCode = createAction({
         return logs.add(
           'QR code image URL is not specified. Please select a variable to save the generated QR code image.'
         )
+      if (!options.valid_till) options.valid_till = '900'
 
-      const delta = parseInt(options.valid_till ?? '900')
+      const delta = parseInt(options.valid_till)
       const close_by = delta > 900 ? Math.floor(Date.now() / 1000) + delta : Math.floor(Date.now() / 1000) + 900
       const notes: Record<string, string> = {}
       notes[options.uidLabel ?? 'vdsid'] = options.uid ?? `${close_by}`
       try {
         const qrcode = {
-          "type": "upi_qr",
-          "name": options.name,
-          "usage": options.usage ?? 'single_use',
-          "fixed_amount": options.fixed_amount ?? true,
-          "payment_amount": options.amount,
-          "description": `For ${options.name ?? 'Razorpay'}`,
-          "close_by": close_by,
-          "notes": notes
+          type: "upi_qr",
+          name: options.name,
+          usage: options.usage ?? 'single_use',
+          fixed_amount: options.fixed_amount ?? true,
+          payment_amount: options.amount,
+          description: `For ${options.name ?? 'Razorpay'}`,
+          close_by: close_by,
+          notes: notes
         }
 
         const response: Record<string, string> = await got.post(`${apiBaseUrl}/payments/qr_codes`, {
@@ -86,8 +87,7 @@ export const createQrCode = createAction({
           username: options.keyId,
           password: credentials.keySecret,
           json: qrcode,
-        })
-          .json()
+        }).json()
 
         const url = await uploadFileToBucket({
           file: await generateQrCodeBuffer(response.image_content),
