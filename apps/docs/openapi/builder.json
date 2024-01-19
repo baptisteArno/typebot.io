@@ -23510,6 +23510,44 @@
                                             "document",
                                             "timestamp"
                                           ]
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string"
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
+                                                "location"
+                                              ]
+                                            },
+                                            "location": {
+                                              "type": "object",
+                                              "properties": {
+                                                "latitude": {
+                                                  "type": "number"
+                                                },
+                                                "longitude": {
+                                                  "type": "number"
+                                                }
+                                              },
+                                              "required": [
+                                                "latitude",
+                                                "longitude"
+                                              ]
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": [
+                                            "from",
+                                            "type",
+                                            "location",
+                                            "timestamp"
+                                          ]
                                         }
                                       ]
                                     }
