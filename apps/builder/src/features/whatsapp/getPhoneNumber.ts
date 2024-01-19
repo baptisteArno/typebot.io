@@ -22,7 +22,7 @@ export const getPhoneNumber = authenticatedProcedure
         message: 'Credentials not found',
       })
     const { display_phone_number } = (await got(
-      `https://graph.facebook.com/v17.0/${credentials.phoneNumberId}`,
+      `${process.env.WHATSAPP_CLOUD_API_URL || 'https://graph.facebook.com'}/v17.0/${credentials.phoneNumberId}`,
       {
         headers: {
           Authorization: `Bearer ${credentials.systemUserAccessToken}`,

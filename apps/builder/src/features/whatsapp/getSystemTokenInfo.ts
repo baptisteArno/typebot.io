@@ -28,7 +28,7 @@ export const getSystemTokenInfo = authenticatedProcedure
     const {
       data: { expires_at, scopes, app_id, application },
     } = (await got(
-      `https://graph.facebook.com/v17.0/debug_token?input_token=${credentials.systemUserAccessToken}`,
+      `${process.env.WHATSAPP_CLOUD_API_URL || 'https://graph.facebook.com'}/v17.0/debug_token?input_token=${credentials.systemUserAccessToken}`,
       {
         headers: {
           Authorization: `Bearer ${credentials.systemUserAccessToken}`,

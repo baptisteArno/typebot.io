@@ -61,7 +61,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     )) as WhatsAppCredentials['data']
 
     const { body } = await got.get({
-      url: `https://graph.facebook.com/v17.0/${mediaId}`,
+      url: `${process.env.WHATSAPP_CLOUD_API_URL || 'https://graph.facebook.com'}/v17.0/${mediaId}`,
       headers: {
         Authorization: `Bearer ${credentialsData.systemUserAccessToken}`,
       },
