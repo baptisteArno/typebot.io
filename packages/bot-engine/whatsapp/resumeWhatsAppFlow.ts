@@ -153,6 +153,8 @@ const getIncomingMessageContent = async ({
         env.NEXTAUTH_URL +
         `/api/typebots/${typebotId}/whatsapp/media/${mediaId}`
       )
+    case 'location':
+      return `${message.location.latitude}, ${message.location.longitude}`
   }
 }
 

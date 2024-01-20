@@ -88,6 +88,7 @@ const sessionStateSchemaV3 = sessionStateSchemaV2
   .extend({
     version: z.literal('3'),
     currentBlockId: z.string().optional(),
+    allowedOrigins: z.array(z.string()).optional(),
   })
 
 export type SessionState = z.infer<typeof sessionStateSchemaV3>

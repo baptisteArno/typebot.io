@@ -7,7 +7,7 @@ import {
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport, getTestMessageUrl } from 'nodemailer'
 import { isDefined, isEmpty, isNotDefined, omit } from '@typebot.io/lib'
-import { parseAnswers } from '@typebot.io/lib/results'
+import { parseAnswers } from '@typebot.io/lib/results/parseAnswers'
 import { methodNotAllowed, initMiddleware } from '@typebot.io/lib/api'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 

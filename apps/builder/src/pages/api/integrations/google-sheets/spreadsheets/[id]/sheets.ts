@@ -34,6 +34,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             try {
               await sheet.loadHeaderRow()
             } catch (err) {
+              if (err && typeof err === 'object' && 'message' in err)
+                console.log(err.message)
               return
             }
             return {
