@@ -1,6 +1,5 @@
 import { createAction, option } from '@typebot.io/forge'
 import { auth } from '../auth'
-import { createHmac, timingSafeEqual } from 'crypto'
 import { baseOptions } from '../baseOptions'
 
 export const verifyPayment = createAction({
@@ -38,13 +37,36 @@ export const verifyPayment = createAction({
         const paymentResponse = JSON.parse(options.paymentResponse)
 
         const payload = paymentResponse.razorpay_order_id + '|' + paymentResponse.razorpay_payment_id;
-        const expectedSignature = createHmac('sha256', credentials.keySecret).update(payload).digest('hex');
-        variables.set(options.saveStatusInVariableId, timingSafeEqual(Buffer.from(expectedSignature), Buffer.from(paymentResponse.razorpay_signature)))
+        variables.set(options.saveStatusInVariableId, signatureVerified(credentials.keySecret, payload, paymentResponse.razorpay_signature))
       } catch (error) {
         return logs.add(error as string)
       }
 
-
     },
   },
 })
+
+async function signatureVerified(secret: string, payload: string, signature: string) {
+  const enc = new TextEncoder();
+
+  const key = await crypto.subtle.importKey(
+    "raw",
+    enc.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign", "verify"]
+  );
+
+  return crypto.subtle.verify(
+    "HMAC",
+    key,
+    hexToBuffer(signature),
+    enc.encode(payload)
+  )
+}
+
+function hexToBuffer(hex: string) {
+  const matches = hex.match(/[\da-f]{2}/gi) ?? []; // grab hex pairs
+  const { buffer } = new Uint8Array(matches.map((h: string) => parseInt(h, 16)));
+  return buffer;
+}
