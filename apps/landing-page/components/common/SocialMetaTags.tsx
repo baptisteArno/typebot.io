@@ -31,6 +31,6 @@ export const SocialMetaTags = ({
     <meta property="og:type" content="website" />
     <meta property="twitter:card" content="summary_large_image" />
 
-    <meta property="fb:app_id" content="2919783058077552" />
+    <meta property="fb:app_id" content="395073329554179" />
   </Head>
 )
