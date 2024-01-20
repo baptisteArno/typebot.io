@@ -88,7 +88,7 @@ export const ChangePlanForm = ({ workspace, excludedPlans }: Props) => {
         <StripeClimateLogo />
         <Text fontSize="xs" color="gray.500">
           {t('billing.contribution.preLink')}{' '}
-          <TextLink href="https://climate.stripe.com/5VCRAq" isExternal>
+          <TextLink href="https://climate.stripe.com/xty5RW" isExternal>
             {t('billing.contribution.link')}
           </TextLink>
         </Text>
