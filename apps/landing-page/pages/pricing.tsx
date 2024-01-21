@@ -62,9 +62,9 @@ const Pricing = () => {
                 <Text as="span" fontWeight="bold">
                   large company
                 </Text>
-                , Typebot is here to help you build high-performing chat forms
-                for the right price. Pay for as little or as much usage as you
-                need.
+                , Flowdacity is here to help you build high-performing chat
+                forms for the right price. Pay for as little or as much usage as
+                you need.
               </Text>
             </VStack>
 
