@@ -152,7 +152,7 @@ export const SharePage = () => {
 
           <Stack spacing={4}>
             <Heading fontSize="2xl" as="h1">
-              Embed your typebot
+              Embed your bot
             </Heading>
             <Wrap spacing={7}>
               {integrationsList.map((IntegrationButton, idx) => (

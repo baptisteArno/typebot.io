@@ -1,7 +1,7 @@
 import { Heading, Button, Text, Flex, VStack } from '@chakra-ui/react'
 import Link from 'next/link'
 import React from 'react'
-import { BackgroundPolygons } from './Hero/BackgroundPolygons'
+// import { BackgroundPolygons } from './Hero/BackgroundPolygons'
 
 export const EndCta = () => {
   return (
@@ -9,11 +9,11 @@ export const EndCta = () => {
       as="section"
       py={32}
       pos="relative"
-      bgGradient="linear(to-b, gray.900, gray.800)"
+      bgGradient="linear(to-b, gray.100, gray.200)"
       height="100vh"
       justifyContent="center"
     >
-      <BackgroundPolygons />
+      {/* <BackgroundPolygons /> */}
       <VStack
         spacing="6"
         maxW="2xl"
@@ -39,11 +39,11 @@ export const EndCta = () => {
             data-aos="fade-up"
             data-aos-delay="300"
           >
-            Create a typebot
+            Create a chatbot
           </Button>
         </Flex>
 
-        <Text color="gray.400" data-aos="fade-up" data-aos-delay="400">
+        <Text color="gray.700" data-aos="fade-up" data-aos-delay="400">
           No trial. Generous, unlimited <strong>free</strong> plan.
         </Text>
       </VStack>

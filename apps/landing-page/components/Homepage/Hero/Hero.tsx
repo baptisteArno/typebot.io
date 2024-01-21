@@ -114,14 +114,20 @@ export const Hero = () => {
           </Box>
         </VStack>
       </Stack>
-      <Flex justify="center" bgGradient="linear(to-b, gray.900, gray.800)">
+      <Flex justify="center" bgGradient="linear(to-b, blue.400, blue.400)">
         <VStack spacing="12" pb="32" maxW="7xl" px={4}>
-          <Heading fontSize="25px" fontWeight="semibold" data-aos="fade">
+          <Heading
+            fontSize="25px"
+            paddingTop={10}
+            fontWeight="semibold"
+            data-aos="fade"
+            color={'white'}
+          >
             Loved by teams and creators from all around the world
           </Heading>
           <SimpleGrid
             columns={{ base: 2, md: 4 }}
-            color="gray.400"
+            color="white"
             alignItems="center"
             spacing={12}
             fontSize="4xl"

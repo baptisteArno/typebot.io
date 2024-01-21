@@ -84,7 +84,7 @@ export const createTypebot = authenticatedProcedure
       data: {
         version: '6',
         workspaceId,
-        name: typebot.name ?? 'My typebot',
+        name: typebot.name ?? 'My flowbot',
         icon: typebot.icon,
         selectedThemeTemplateId: typebot.selectedThemeTemplateId,
         groups: (typebot.groups
@@ -101,10 +101,10 @@ export const createTypebot = authenticatedProcedure
         settings: typebot.settings
           ? sanitizeSettings(typebot.settings, workspace.plan, 'create')
           : workspace.plan === Plan.FREE
-          ? {
+            ? {
               general: { isBrandingEnabled: true },
             }
-          : {},
+            : {},
         folderId: typebot.folderId,
         variables: typebot.variables ?? [],
         edges: typebot.edges ?? [],
