@@ -1,4 +1,4 @@
-import { Stack, Text, Flex, Heading, List, ListItem } from '@chakra-ui/react'
+import { Stack, Flex, Heading } from '@chakra-ui/react'
 import { Header } from 'components/common/Header/Header'
 import { SocialMetaTags } from 'components/common/SocialMetaTags'
 import React from 'react'
@@ -19,9 +19,9 @@ const AboutPage = () => {
         textAlign="justify"
       >
         <Flex w="full">
-          <Heading as="h1">Why Typebot?</Heading>
+          <Heading as="h1">Why Flowdacity?</Heading>
         </Flex>
-        <Text>
+        {/* <Text>
           I&apos;m Baptiste, 28 years old. I&apos;m a software product engineer.
           I am passionated about great user experiences and beautiful
           interfaces.
@@ -95,7 +95,7 @@ const AboutPage = () => {
           with Typebot by providing the best defaults for each option. I also
           try to help you learn master the tool with good templates and video
           tutorials.
-        </Text>
+        </Text> */}
       </Stack>
       <EndCta />
       <Footer />

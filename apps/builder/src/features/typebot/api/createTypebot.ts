@@ -101,10 +101,10 @@ export const createTypebot = authenticatedProcedure
         settings: typebot.settings
           ? sanitizeSettings(typebot.settings, workspace.plan, 'create')
           : workspace.plan === Plan.FREE
-            ? {
+          ? {
               general: { isBrandingEnabled: true },
             }
-            : {},
+          : {},
         folderId: typebot.folderId,
         variables: typebot.variables ?? [],
         edges: typebot.edges ?? [],

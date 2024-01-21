@@ -35,7 +35,9 @@ export const Footer = () => {
               </Heading>
             </HStack>
             <Text>
-              Powered by <TextLink href={typebotUrl}>Typebot.io</TextLink>
+              Portions of Flowdacity are based on{' '}
+              <TextLink href={typebotUrl}>Typebot.io</TextLink>, which is
+              licensed under the GNU Affero General Public License, Version 3.
             </Text>
           </Stack>
           <Stack align={'flex-start'}>
