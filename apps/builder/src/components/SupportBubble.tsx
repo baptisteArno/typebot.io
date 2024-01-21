@@ -20,7 +20,7 @@ export const SupportBubble = (props: Omit<BubbleProps, 'typebot'>) => {
 
   return (
     <Bubble
-      typebot="typebot-support"
+      typebot="flowdacity-support"
       prefilledVariables={{
         'User ID': user?.id,
         'First name': user?.name?.split(' ')[0] ?? undefined,
