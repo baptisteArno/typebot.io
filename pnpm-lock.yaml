@@ -1257,6 +1257,13 @@ importers:
         version: 5.3.2
 
   packages/forge/blocks/razorpay:
+    dependencies:
+      got:
+        specifier: 12.6.0
+        version: 12.6.0
+      qrcode:
+        specifier: ^1.5.3
+        version: 1.5.3
     devDependencies:
       '@typebot.io/forge':
         specifier: workspace:*
@@ -1267,6 +1274,9 @@ importers:
       '@typebot.io/tsconfig':
         specifier: workspace:*
         version: link:../../../tsconfig
+      '@types/qrcode':
+        specifier: ^1.5.3
+        version: 1.5.3
       '@types/react':
         specifier: 18.2.15
         version: 18.2.15
