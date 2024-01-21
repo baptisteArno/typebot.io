@@ -27,7 +27,7 @@ export const StarterPlanCard = () => {
                 hasArrow
                 placement="top"
                 label="A chat is counted whenever a user starts a discussion. It is
-    independant of the number of messages he sends and receives."
+    independent of the number of messages he sends and receives."
               >
                 <chakra.span cursor="pointer" h="7">
                   <HelpCircleIcon />
