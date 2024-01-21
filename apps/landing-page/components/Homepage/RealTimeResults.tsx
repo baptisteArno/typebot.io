@@ -101,7 +101,7 @@ export const RealTimeResults = () => {
           )}
           <iframe
             ref={iframeRef}
-            src="https://airtable.com/embed/shr8nkV6DVN88LVIv?backgroundColor=blue"
+            src="https://airtable.com/embed/appIk6d2053BqSMZa/shrZNZQWGReD78aSZ?backgroundColor=blue"
             width="100%"
             height="533"
             style={{

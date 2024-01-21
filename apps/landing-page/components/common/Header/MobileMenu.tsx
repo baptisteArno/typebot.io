@@ -9,7 +9,7 @@ export const MobileMenu = ({ isOpen }: Props) => (
     <Stack
       pos="absolute"
       insetX={0}
-      bgGradient="linear(to-b, gray.900, gray.800)"
+      bgGradient="linear(to-b, white, white)"
       px="6"
       py="10"
       spacing={4}
