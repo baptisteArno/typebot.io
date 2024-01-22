@@ -214,13 +214,16 @@ export const createChatCompletion = createAction({
           if (!name) continue
           const toolDefinition = options.tools?.find((t) => t.name === name)
           if (!toolDefinition?.code || !toolDefinition.parameters) continue
+          const toolParams = Object.fromEntries(
+            toolDefinition.parameters.map(({ name }) => [name, null])
+          )
           const toolArgs = toolCall.function?.arguments
             ? JSON.parse(toolCall.function?.arguments)
             : undefined
           if (!toolArgs) continue
           const { output, newVariables } = await executeFunction({
             variables: variables.list(),
-            args: toolArgs,
+            args: { ...toolParams, ...toolArgs },
             body: toolDefinition.code,
           })
           newVariables?.forEach((v) => variables.set(v.id, v.value))
