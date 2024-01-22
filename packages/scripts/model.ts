@@ -157,6 +157,8 @@
     customDomain: string | null
     subDomain: string
     workspaceId: string | null
+    domain: string | null
+    availableFor: string[]
   }
   
   /**
