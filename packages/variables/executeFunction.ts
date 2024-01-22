@@ -66,7 +66,7 @@ export const executeFunction = async ({
     console.error(e)
 
     return {
-      error:
+      output:
         typeof e === 'string'
           ? e
           : e instanceof Error
