@@ -39,7 +39,7 @@ export const MagicLinkEmail = ({ url }: Props) => (
           </Text>
           <Text>
             Best,
-            <br />- Typebot Team.
+            <br />- Flowdacity Team.
           </Text>
         </MjmlColumn>
       </MjmlSection>
@@ -53,6 +53,6 @@ export const sendMagicLinkEmail = ({
 }: Pick<SendMailOptions, 'to'> & ComponentProps<typeof MagicLinkEmail>) =>
   sendEmail({
     to,
-    subject: 'Sign in to Typebot',
+    subject: 'Sign in to Flowdacity',
     html: render(<MagicLinkEmail {...props} />).html,
   })
