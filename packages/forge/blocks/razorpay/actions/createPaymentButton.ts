@@ -2,6 +2,7 @@ import { createAction, option } from '@typebot.io/forge'
 import { auth } from '../auth'
 import { defaultCurrency, defaultThemeColor, defaultUidLabel, rzpScriptUrl } from '../constants'
 import { baseOptions } from '../baseOptions'
+import { convertToPaise } from '../lib/convertToPaise'
 
 export const createPaymentButton = createAction({
   name: 'Payment Button',
@@ -67,10 +68,9 @@ export const createPaymentButton = createAction({
           if (!options.keyId) throw new Error('Missing Key')
           if (!options.orderId) throw new Error('Missing Order ID')
 
-          const amountInSubUnits = `${100 * parseInt(options.amount)}`
           return {
             args: {
-              amount: amountInSubUnits,
+              amount: convertToPaise(options.amount),
               keyId: options.keyId,
               orderId: options.orderId ?? '',
               uid: options.uid ?? null,

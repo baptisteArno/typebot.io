@@ -3,6 +3,7 @@ import { auth } from '../auth'
 import got from 'got'
 import { apiBaseUrl, defaultCurrency, defaultUidLabel } from '../constants'
 import { baseOptions } from '../baseOptions'
+import { convertToPaise } from '../lib/convertToPaise'
 
 export const createOrder = createAction({
   name: 'Payment Order',
@@ -44,10 +45,9 @@ export const createOrder = createAction({
       try {
         const notes: Record<string, string> = {}
         notes[options.uidLabel ?? defaultUidLabel] = options.uid ?? ''
-        const amountInSubUnits = `${100 * parseInt(options.amount)}`
         const order = {
           currency: options.currency ?? defaultCurrency,
-          amount: amountInSubUnits,
+          amount: convertToPaise(options.amount),
           receipt: options.uid ?? '',
           notes: notes
         }

@@ -6,6 +6,7 @@ import { auth } from '../auth'
 import got from 'got'
 import { apiBaseUrl } from '../constants'
 import { baseOptions } from '../baseOptions'
+import { convertToPaise } from '../lib/convertToPaise'
 
 export const createQrCode = createAction({
   name: 'Generate a QR Code',
@@ -68,7 +69,7 @@ export const createQrCode = createAction({
           name: options.companyName ?? 'QR Code',
           usage: options.usage ?? 'single_use',
           fixed_amount: options.fixed_amount ?? true,
-          payment_amount: options.amount,
+          payment_amount: convertToPaise(options.amount),
           description: `For ${options.companyName ?? 'Payment'}`,
           close_by: close_by,
           notes: notes
