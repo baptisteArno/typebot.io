@@ -43,7 +43,9 @@ A more useful example would be, of course, to call an API to get the weather of 
   <img src="/images/blocks/integrations/openai/tools.png" alt="OpenAI tools" />
 </Frame>
 
-As you can see, the code block expects the body of the Javascript function. You can use the `return` keyword to return values.
+As you can see, the code block expects the body of the Javascript function. You should use the `return` keyword to return value to give back to OpenAI as the result of the function.
+
+If you'd like to set variables directly in this code block, you can use the [`setVariable` function](../logic/script#setvariable-function).
 
 ## Ask assistant
 

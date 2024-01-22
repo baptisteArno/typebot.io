@@ -134,6 +134,7 @@ export async function POST(req: Request) {
       credentials.iv
     )
     const variables: ReadOnlyVariableStore = {
+      list: () => state.typebotsQueue[0].typebot.variables,
       get: (id: string) => {
         const variable = state.typebotsQueue[0].typebot.variables.find(
           (variable) => variable.id === id

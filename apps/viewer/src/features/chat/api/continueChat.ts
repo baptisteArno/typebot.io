@@ -86,6 +86,9 @@ export const continueChat = publicProcedure
         logs,
         clientSideActions,
         visitedEdges,
+        hasCustomEmbedBubble: messages.some(
+          (message) => message.type === 'custom-embed'
+        ),
       })
 
     const isPreview = isNotDefined(session.state.typebotsQueue[0].resultId)

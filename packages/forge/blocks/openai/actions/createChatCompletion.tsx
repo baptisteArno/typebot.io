@@ -8,6 +8,7 @@ import { auth } from '../auth'
 import { baseOptions } from '../baseOptions'
 import { ChatCompletionTool } from 'openai/resources/chat/completions'
 import { parseToolParameters } from '../helpers/parseToolParameters'
+import { executeFunction } from '@typebot.io/variables/executeFunction'
 
 const nativeMessageContentSchema = {
   content: option.string.layout({
@@ -213,17 +214,21 @@ export const createChatCompletion = createAction({
           if (!name) continue
           const toolDefinition = options.tools?.find((t) => t.name === name)
           if (!toolDefinition?.code || !toolDefinition.parameters) continue
-          const func = AsyncFunction(
-            ...toolDefinition.parameters?.map((p) => p.name),
-            toolDefinition.code
-          )
-          const content = await func(
-            ...Object.values(JSON.parse(toolCall.function.arguments))
-          )
+          const toolArgs = toolCall.function?.arguments
+            ? JSON.parse(toolCall.function?.arguments)
+            : undefined
+          if (!toolArgs) continue
+          const { output, newVariables } = await executeFunction({
+            variables: variables.list(),
+            args: toolArgs,
+            body: toolDefinition.code,
+          })
+          newVariables?.forEach((v) => variables.set(v.id, v.value))
+
           messages.push({
             tool_call_id: toolCall.id,
             role: 'tool',
-            content,
+            content: output,
           })
         }
 
@@ -304,18 +309,23 @@ export const createChatCompletion = createAction({
               if (!name) continue
               const toolDefinition = options.tools?.find((t) => t.name === name)
               if (!toolDefinition?.code || !toolDefinition.parameters) continue
-              const func = AsyncFunction(
-                ...toolDefinition.parameters?.map((p) => p.name),
-                toolDefinition.code
-              )
-              const content = await func(
-                ...Object.values(JSON.parse(toolCall.func.arguments as any))
-              )
+
+              const { output } = await executeFunction({
+                variables: variables.list(),
+                args:
+                  typeof toolCall.func.arguments === 'string'
+                    ? JSON.parse(toolCall.func.arguments)
+                    : toolCall.func.arguments,
+                body: toolDefinition.code,
+              })
+
+              // TO-DO: enable once we're out of edge runtime.
+              // newVariables?.forEach((v) => variables.set(v.id, v.value))
 
               const newMessages = appendToolCallMessage({
                 tool_call_id: toolCall.id,
                 function_name: toolCall.func.name,
-                tool_call_result: content,
+                tool_call_result: output,
               })
 
               return openai.chat.completions.create({
@@ -334,5 +344,3 @@ export const createChatCompletion = createAction({
     },
   },
 })
-
-const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor

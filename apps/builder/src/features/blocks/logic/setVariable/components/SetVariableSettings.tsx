@@ -137,11 +137,6 @@ const SetVariableValue = ({
     case undefined:
       return (
         <>
-          <CodeEditor
-            defaultValue={options?.expressionToEvaluate ?? ''}
-            onChange={updateExpression}
-            lang="javascript"
-          />
           <SwitchWithLabel
             label="Execute on client?"
             moreInfoContent="Check this if you need access to client-only variables like `window` or `document`."
@@ -150,6 +145,11 @@ const SetVariableValue = ({
               defaultSetVariableOptions.isExecutedOnClient
             }
             onCheckChange={updateClientExecution}
+          />
+          <CodeEditor
+            defaultValue={options?.expressionToEvaluate ?? ''}
+            onChange={updateExpression}
+            lang="javascript"
           />
         </>
       )

@@ -66,6 +66,9 @@ export const startChatPreview = publicProcedure
             logs,
             clientSideActions,
             visitedEdges,
+            hasCustomEmbedBubble: messages.some(
+              (message) => message.type === 'custom-embed'
+            ),
           })
 
       return {

@@ -5,6 +5,7 @@ import { LogicBlockType } from '../constants'
 export const scriptOptionsSchema = z.object({
   name: z.string().optional(),
   content: z.string().optional(),
+  isExecutedOnClient: z.boolean().optional(),
   shouldExecuteInParentContext: z.boolean().optional(),
 })
 

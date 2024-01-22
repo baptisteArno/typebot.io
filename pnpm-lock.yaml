@@ -1230,6 +1230,9 @@ importers:
       '@typebot.io/tsconfig':
         specifier: workspace:*
         version: link:../../../tsconfig
+      '@typebot.io/variables':
+        specifier: workspace:*
+        version: link:../../../variables
       '@types/react':
         specifier: 18.2.15
         version: 18.2.15

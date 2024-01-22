@@ -7,6 +7,7 @@ import {
 import { executeGroup } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
 import { VisitedEdge } from '@typebot.io/prisma'
+import { getFirstEdgeId } from './getFirstEdgeId'
 
 type Props = {
   version: 1 | 2
@@ -59,25 +60,4 @@ export const startBotFlow = async ({
     visitedEdges,
     startTime,
   })
-}
-
-const getFirstEdgeId = ({
-  state,
-  startEventId,
-}: {
-  state: SessionState
-  startEventId: string | undefined
-}) => {
-  const { typebot } = state.typebotsQueue[0]
-  if (startEventId) {
-    const event = typebot.events?.find((e) => e.id === startEventId)
-    if (!event)
-      throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: "Start event doesn't exist",
-      })
-    return event.outgoingEdgeId
-  }
-  if (typebot.version === '6') return typebot.events[0].outgoingEdgeId
-  return typebot.groups[0].blocks[0].outgoingEdgeId
 }
