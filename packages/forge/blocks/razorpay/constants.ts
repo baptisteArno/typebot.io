@@ -4,7 +4,6 @@ export const rzpScriptUrl = 'https://checkout.razorpay.com/v1/checkout.js'
 export const defaultThemeColor = '#8e0f5b'
 export const defaultUidLabel = 'vdsid'
 
-
 // List of currencies https://razorpay.com/docs/build/browser/assets/images/international-currency-list.xlsx
 export const defaultCurrency = 'INR'
 export const allowedCurrencies: readonly [string, ...string[]] = [

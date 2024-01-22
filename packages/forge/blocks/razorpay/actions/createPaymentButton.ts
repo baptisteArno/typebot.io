@@ -2,20 +2,21 @@ import { createAction, option } from '@typebot.io/forge'
 import { auth } from '../auth'
 import { defaultCurrency, defaultThemeColor, defaultUidLabel, rzpScriptUrl } from '../constants'
 import { baseOptions } from '../baseOptions'
+import { convertToPaise } from '../lib/convertToPaise'
 
 export const createPaymentButton = createAction({
   name: 'Payment Button',
   auth,
   baseOptions,
   options: option.object({
-    amount: option.string.layout({
-      label: 'Amount',
-      moreInfoTooltip: 'Amount to be paid',
-      isRequired: true
-    }),
     orderId: option.string.layout({
       label: 'Order Id',
-      moreInfoTooltip: 'Order ID generated earlier',
+      moreInfoTooltip: 'Order ID generated using the Payment Order action',
+      isRequired: true
+    }),
+    amount: option.string.layout({
+      label: 'Amount',
+      moreInfoTooltip: 'Amount to be paid, should be same as ',
       isRequired: true
     }),
     uid: option.string.layout({
@@ -52,7 +53,6 @@ export const createPaymentButton = createAction({
             return {
               args: {},
               content: `
-                
                 rzp.on({
                   action: 'success',
                   callback: function(resp) {
@@ -68,10 +68,9 @@ export const createPaymentButton = createAction({
           if (!options.keyId) throw new Error('Missing Key')
           if (!options.orderId) throw new Error('Missing Order ID')
 
-
           return {
             args: {
-              amount: options.amount,
+              amount: convertToPaise(options.amount),
               keyId: options.keyId,
               orderId: options.orderId ?? '',
               uid: options.uid ?? null,

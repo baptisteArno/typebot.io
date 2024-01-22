@@ -37,7 +37,8 @@ export const verifyPayment = createAction({
         const paymentResponse = JSON.parse(options.paymentResponse)
 
         const payload = paymentResponse.razorpay_order_id + '|' + paymentResponse.razorpay_payment_id;
-        variables.set(options.saveStatusInVariableId, signatureVerified(credentials.keySecret, payload, paymentResponse.razorpay_signature))
+        const checkPayment = await signatureVerified(credentials.keySecret, payload, paymentResponse.razorpay_signature)
+        variables.set(options.saveStatusInVariableId, checkPayment)
       } catch (error) {
         return logs.add(error as string)
       }
@@ -57,7 +58,7 @@ async function signatureVerified(secret: string, payload: string, signature: str
     ["sign", "verify"]
   );
 
-  return crypto.subtle.verify(
+  return await crypto.subtle.verify(
     "HMAC",
     key,
     hexToBuffer(signature),

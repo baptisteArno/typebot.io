@@ -3,6 +3,7 @@ import { auth } from '../auth'
 import got from 'got'
 import { apiBaseUrl, defaultCurrency, defaultUidLabel } from '../constants'
 import { baseOptions } from '../baseOptions'
+import { convertToPaise } from '../lib/convertToPaise'
 
 export const createOrder = createAction({
   name: 'Payment Order',
@@ -16,7 +17,8 @@ export const createOrder = createAction({
     }),
     uid: option.string.layout({
       label: 'Transaction ID',
-      moreInfoTooltip: 'Any unique id for the transaction'
+      moreInfoTooltip: 'Any unique id for the transaction',
+      isRequired: true
     }),
     saveOrderInVariableId: option.string.layout({
       label: 'Save Order ID',
@@ -29,7 +31,11 @@ export const createOrder = createAction({
     server: async ({ credentials, options, variables, logs }) => {
       if (!options.amount || !parseInt(options.amount))
         return logs.add(
-          'Amount is empty. Please provide the amount to generate the QR code.'
+          'Amount is empty. Please provide the amount to generate the Order.'
+        )
+      if (!options.uid)
+        return logs.add(
+          'Transaction ID is empty. You can use any unique id for the transaction id.'
         )
       if (!options.saveOrderInVariableId)
         return logs.add(
@@ -41,7 +47,7 @@ export const createOrder = createAction({
         notes[options.uidLabel ?? defaultUidLabel] = options.uid ?? ''
         const order = {
           currency: options.currency ?? defaultCurrency,
-          amount: options.amount,
+          amount: convertToPaise(options.amount),
           receipt: options.uid ?? '',
           notes: notes
         }
@@ -53,8 +59,7 @@ export const createOrder = createAction({
           username: options.keyId,
           password: credentials.keySecret,
           json: order,
-        })
-          .json()
+        }).json()
 
         variables.set(options.saveOrderInVariableId, response.id)
       } catch (error) {
