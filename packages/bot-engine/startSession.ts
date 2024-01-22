@@ -36,6 +36,7 @@ import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integr
 import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
 import { VisitedEdge } from '@typebot.io/prisma'
 import { env } from '@typebot.io/env'
+import { getFirstEdgeId } from './getFirstEdgeId'
 
 type StartParams =
   | ({
@@ -166,9 +167,14 @@ export const startSession = async ({
 
   // If params has message and first block is an input block, we can directly continue the bot flow
   if (message) {
-    const firstEdgeId =
-      chatReply.newSessionState.typebotsQueue[0].typebot.groups[0].blocks[0]
-        .outgoingEdgeId
+    const firstEdgeId = getFirstEdgeId({
+      state: chatReply.newSessionState,
+      startEventId:
+        startParams.type === 'preview' &&
+        startParams.startFrom?.type === 'event'
+          ? startParams.startFrom.eventId
+          : undefined,
+    })
     const nextGroup = await getNextGroup(chatReply.newSessionState)(firstEdgeId)
     const newSessionState = nextGroup.newSessionState
     const firstBlock = nextGroup.group?.blocks.at(0)
