@@ -6,7 +6,10 @@ import { parseChatCompletionMessages } from '../helpers/parseChatCompletionMessa
 import { isDefined } from '@typebot.io/lib'
 import { auth } from '../auth'
 import { baseOptions } from '../baseOptions'
-import { ChatCompletionTool } from 'openai/resources/chat/completions'
+import {
+  ChatCompletionMessage,
+  ChatCompletionTool,
+} from 'openai/resources/chat/completions'
 import { parseToolParameters } from '../helpers/parseToolParameters'
 import { executeFunction } from '@typebot.io/variables/executeFunction'
 
@@ -194,19 +197,27 @@ export const createChatCompletion = createAction({
 
       const messages = parseChatCompletionMessages({ options, variables })
 
-      const response = await openai.chat.completions.create({
+      const body = {
         model: options.model ?? defaultOpenAIOptions.model,
         temperature: options.temperature
           ? Number(options.temperature)
           : undefined,
         messages,
         tools,
-      })
+      }
 
-      let message = response.choices[0].message
-      let totalTokens = response.usage?.total_tokens
+      let totalTokens = 0
+      let message: ChatCompletionMessage
+      while (true) {
+        const response = await openai.chat.completions.create(body)
 
-      if (message.tool_calls) {
+        message = response.choices[0].message
+        totalTokens += response.usage?.total_tokens || 0
+
+        if (!message.tool_calls) {
+          break
+        }
+
         messages.push(message)
 
         for (const toolCall of message.tool_calls) {
@@ -234,18 +245,6 @@ export const createChatCompletion = createAction({
             content: output,
           })
         }
-
-        const secondResponse = await openai.chat.completions.create({
-          model: options.model ?? defaultOpenAIOptions.model,
-          temperature: options.temperature
-            ? Number(options.temperature)
-            : undefined,
-          messages,
-          tools,
-        })
-
-        message = secondResponse.choices[0].message
-        totalTokens = secondResponse.usage?.total_tokens
       }
 
       options.responseMapping?.forEach((mapping) => {
