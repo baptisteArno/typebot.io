@@ -2,10 +2,11 @@ import prisma from '@typebot.io/lib/prisma'
 import { canReadTypebots } from '@/helpers/databaseRules'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Block, Typebot } from '@typebot.io/schemas'
+import { Typebot } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { fetchLinkedTypebots } from '@/features/blocks/logic/typebotLink/helpers/fetchLinkedTypebots'
-import { parseResultExample } from '../helpers/parseResultExample'
+import { parseSampleResult } from '@typebot.io/bot-engine/blocks/integrations/webhook/parseSampleResult'
+import { getBlockById } from '@typebot.io/lib/getBlockById'
 
 export const getResultExample = authenticatedProcedure
   .meta({
@@ -27,15 +28,7 @@ export const getResultExample = authenticatedProcedure
   )
   .output(
     z.object({
-      resultExample: z
-        .object({
-          message: z.literal(
-            'This is a sample result, it has been generated ⬇️'
-          ),
-          'Submitted at': z.string(),
-        })
-        .and(z.record(z.string().optional()))
-        .describe('Can contain any fields.'),
+      resultExample: z.record(z.any()).describe('Can contain any fields.'),
     })
   )
   .query(async ({ input: { typebotId, blockId }, ctx: { user } }) => {
@@ -52,20 +45,17 @@ export const getResultExample = authenticatedProcedure
     if (!typebot)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
 
-    const block = typebot.groups
-      .flatMap<Block>((group) => group.blocks)
-      .find((block) => block.id === blockId)
+    const { group } = getBlockById(blockId, typebot.groups)
 
-    if (!block)
+    if (!group)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Block not found' })
 
     const linkedTypebots = await fetchLinkedTypebots(typebot, user)
 
     return {
-      resultExample: await parseResultExample({
-        typebot,
-        linkedTypebots,
-        userEmail: user.email ?? 'test@email.com',
-      })(block.id),
+      resultExample: await parseSampleResult(typebot, linkedTypebots)(
+        group.id,
+        typebot.variables
+      ),
     }
   })
