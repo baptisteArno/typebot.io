@@ -2,6 +2,7 @@ import { createAction, option } from '@typebot.io/forge'
 import { toBuffer as generateQrCodeBuffer } from 'qrcode'
 import { uploadFileToBucket } from '@typebot.io/lib/s3/uploadFileToBucket'
 import { createId } from '@typebot.io/lib/createId'
+import { isDefined } from '@typebot.io/lib'
 import { auth } from '../auth'
 import got from 'got'
 import { apiBaseUrl } from '../constants'
@@ -40,22 +41,17 @@ export const createQrCode = createAction({
       moreInfoTooltip: 'How long is the QR code valid till (in seconds)',
       defaultValue: '900'
     }),
-    saveUrlInVariableId: option.string.layout({
-      label: 'Save QR code image URL',
-      inputType: 'variableDropdown',
+    responseMapping: option.saveResponseArray(['QR Code', 'UPI Link']).layout({
+      accordion: 'Save response',
     }),
   }),
-  getSetVariableIds: (options) =>
-    options.saveUrlInVariableId ? [options.saveUrlInVariableId] : [],
+  getSetVariableIds: ({ responseMapping }) =>
+    responseMapping?.map((r) => r.variableId).filter(isDefined) ?? [],
   run: {
     server: async ({ credentials, options, variables, logs }) => {
       if (!options.amount || !parseInt(options.amount))
         return logs.add(
           'Amount is empty. Please provide the amount to generate the QR code.'
-        )
-      if (!options.saveUrlInVariableId)
-        return logs.add(
-          'QR code image URL is not specified. Please select a variable to save the generated QR code image.'
         )
       if (!options.valid_till) options.valid_till = '900'
 
@@ -90,9 +86,18 @@ export const createQrCode = createAction({
           mimeType: 'image/png',
         })
 
-        variables.set(options.saveUrlInVariableId, url)
+        options.responseMapping?.forEach((mapping) => {
+          if (!mapping.variableId) return
+
+          const item = mapping.item ?? 'QR Code'
+          if (item === 'QR Code') variables.set(mapping.variableId, url)
+
+          if (item === 'UPI Link')
+            variables.set(mapping.variableId, response.image_content)
+        })
       } catch (error) {
-        return logs.add(error as string)
+        console.log('error', error)
+        return logs.add('An unknown error occurred. Please check your server logs')
       }
 
     },
