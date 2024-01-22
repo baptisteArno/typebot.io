@@ -21,10 +21,6 @@ export const CustomEmbedBubble = (props: Props) => {
   let containerRef: HTMLDivElement | undefined
 
   onMount(() => {
-    console.log(
-      props.content.initFunction.content,
-      props.content.initFunction.args
-    )
     executeCode({
       args: {
         ...props.content.initFunction.args,
