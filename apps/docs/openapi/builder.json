@@ -371,6 +371,9 @@
                                                   "content": {
                                                     "type": "string"
                                                   },
+                                                  "isExecutedOnClient": {
+                                                    "type": "boolean"
+                                                  },
                                                   "shouldExecuteInParentContext": {
                                                     "type": "boolean"
                                                   }
@@ -6580,6 +6583,9 @@
                                               "content": {
                                                 "type": "string"
                                               },
+                                              "isExecutedOnClient": {
+                                                "type": "boolean"
+                                              },
                                               "shouldExecuteInParentContext": {
                                                 "type": "boolean"
                                               }
@@ -11100,6 +11106,9 @@
                                               },
                                               "content": {
                                                 "type": "string"
+                                              },
+                                              "isExecutedOnClient": {
+                                                "type": "boolean"
                                               },
                                               "shouldExecuteInParentContext": {
                                                 "type": "boolean"
@@ -24814,6 +24823,9 @@
                       "content": {
                         "type": "string"
                       },
+                      "isExecutedOnClient": {
+                        "type": "boolean"
+                      },
                       "shouldExecuteInParentContext": {
                         "type": "boolean"
                       }
@@ -28073,6 +28085,9 @@
                               "content": {
                                 "type": "string"
                               },
+                              "isExecutedOnClient": {
+                                "type": "boolean"
+                              },
                               "shouldExecuteInParentContext": {
                                 "type": "boolean"
                               }
@@ -30881,6 +30896,9 @@
                               },
                               "content": {
                                 "type": "string"
+                              },
+                              "isExecutedOnClient": {
+                                "type": "boolean"
                               },
                               "shouldExecuteInParentContext": {
                                 "type": "boolean"

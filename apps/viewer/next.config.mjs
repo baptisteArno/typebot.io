@@ -50,6 +50,7 @@ const nextConfig = {
     if (nextRuntime === 'edge') {
       config.resolve.alias['minio'] = false
       config.resolve.alias['got'] = false
+      config.resolve.alias['qrcode'] = false
       return config
     }
     // These packages are imports from the integrations definition files that can be ignored for the client.
