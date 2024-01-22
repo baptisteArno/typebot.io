@@ -48,7 +48,12 @@ export const executeFunction = async ({
     )
     timeout.clear()
     return {
-      output,
+      output:
+        typeof output === 'string'
+          ? output
+          : output instanceof Object
+          ? JSON.stringify(output)
+          : output.toString(),
       newVariables: Object.entries(updatedVariables)
         .map(([name, value]) => {
           const existingVariable = variables.find((v) => v.name === name)
