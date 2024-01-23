@@ -9,6 +9,7 @@ import {
   TotalAnswers,
   TotalVisitedEdges,
 } from '@typebot.io/schemas/features/analytics'
+import { useGraph } from '../../providers/GraphProvider'
 
 type Props = {
   edges: EdgeProps[]
@@ -27,6 +28,7 @@ export const Edges = ({
   totalAnswers,
   onUnlockProPlanClick,
 }: Props) => {
+  const { connectingIds } = useGraph()
   const isDark = useColorMode().colorMode === 'dark'
   return (
     <chakra.svg
@@ -38,7 +40,7 @@ export const Edges = ({
       top="0"
       shapeRendering="geometricPrecision"
     >
-      <DrawingEdge />
+      {connectingIds && <DrawingEdge connectingIds={connectingIds} />}
       {edges.map((edge) => (
         <Edge
           key={edge.id}

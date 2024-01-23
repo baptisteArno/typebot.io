@@ -212,6 +212,7 @@ export const BlockNode = ({
               data-testid={`block ${block.id}`}
               w="full"
               className="prevent-group-drag"
+              pointerEvents={isReadOnly ? 'none' : 'auto'}
             >
               <HStack
                 flex="1"
