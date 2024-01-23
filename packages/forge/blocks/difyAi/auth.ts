@@ -4,11 +4,18 @@ export const auth = {
   type: 'encryptedCredentials',
   name: 'Dify.AI account',
   schema: option.object({
-    apiKey: option.string.layout({
-      label: 'API key',
+    apiEndpoint: option.string.layout({
+      label: 'API Endpoint',
       isRequired: true,
-      input: 'password',
-      helperText: 'You can generate an API key [here](<INSERT_URL>).',
+      helperText: 'URI where the Service API is hosted.',
+      withVariableButton: true,
+    }),
+    apiKey: option.string.layout({
+      label: 'App API key',
+      isRequired: true,
+      helperText: 'API Secret Key for your Dify App.',
+      inputType: 'password',
+      withVariableButton: true,
     }),
   }),
 } satisfies AuthDefinition

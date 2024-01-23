@@ -1,6 +1,7 @@
 import { createBlock } from '@typebot.io/forge'
 import { DifyAiLogo } from './logo'
 import { auth } from './auth'
+import { createChatMessage } from './actions/createChatMessage'
 
 export const difyAi = createBlock({
   id: 'dify-ai',
@@ -8,5 +9,5 @@ export const difyAi = createBlock({
   tags: ['dify', 'ai', 'documents', 'files', 'knowledge base'],
   LightLogo: DifyAiLogo,
   auth,
-  actions: [],
+  actions: [createChatMessage],
 })
