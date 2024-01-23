@@ -11,7 +11,6 @@ import { StatsCards } from './StatsCards'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
 import { Graph } from '@/features/graph/components/Graph'
 import { GraphProvider } from '@/features/graph/providers/GraphProvider'
-import { GroupsCoordinatesProvider } from '@/features/graph/providers/GroupsCoordinateProvider'
 import { useTranslate } from '@tolgee/react'
 import { trpc } from '@/lib/trpc'
 import { isDefined } from '@typebot.io/lib'
@@ -51,17 +50,15 @@ export const AnalyticsGraphContainer = ({ stats }: { stats?: Stats }) => {
     >
       {publishedTypebot && stats ? (
         <GraphProvider isReadOnly>
-          <GroupsCoordinatesProvider groups={publishedTypebot?.groups}>
-            <EventsCoordinatesProvider events={publishedTypebot?.events}>
-              <Graph
-                flex="1"
-                typebot={publishedTypebot}
-                onUnlockProPlanClick={onOpen}
-                totalAnswers={data?.totalAnswers}
-                totalVisitedEdges={edgesData?.totalVisitedEdges}
-              />
-            </EventsCoordinatesProvider>
-          </GroupsCoordinatesProvider>
+          <EventsCoordinatesProvider events={publishedTypebot?.events}>
+            <Graph
+              flex="1"
+              typebot={publishedTypebot}
+              onUnlockProPlanClick={onOpen}
+              totalAnswers={data?.totalAnswers}
+              totalVisitedEdges={edgesData?.totalVisitedEdges}
+            />
+          </EventsCoordinatesProvider>
         </GraphProvider>
       ) : (
         <Flex

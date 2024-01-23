@@ -145,6 +145,7 @@ const NonMemoizedDraggableEventNode = ({
         <Stack
           ref={setMultipleRefs([ref, eventRef])}
           id={`event-${event.id}`}
+          userSelect="none"
           data-testid="event"
           py="2"
           pl="3"

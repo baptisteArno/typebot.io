@@ -23,11 +23,15 @@ const initialState = {
   future: [],
 }
 
-type Params = { isReadOnly?: boolean }
+type Params<T extends { updatedAt: Date }> = {
+  isReadOnly?: boolean
+  onUndo?: (state: T) => void
+  onRedo?: (state: T) => void
+}
 
 export const useUndo = <T extends { updatedAt: Date }>(
   initialPresent?: T,
-  params?: Params
+  params?: Params<T>
 ): [T | undefined, Actions<T>] => {
   const [history, setHistory] = useState<History<T>>(initialState)
   const presentRef = useRef<T | null>(initialPresent ?? null)
@@ -51,7 +55,8 @@ export const useUndo = <T extends { updatedAt: Date }>(
       future: [present, ...future],
     })
     presentRef.current = newPresent
-  }, [history, params?.isReadOnly])
+    if (params?.onUndo) params.onUndo(newPresent)
+  }, [history, params])
 
   const redo = useCallback(() => {
     if (params?.isReadOnly) return
@@ -66,7 +71,8 @@ export const useUndo = <T extends { updatedAt: Date }>(
       future: newFuture,
     })
     presentRef.current = next
-  }, [history, params?.isReadOnly])
+    if (params?.onRedo) params.onRedo(next)
+  }, [history, params])
 
   const set = useCallback(
     (newPresentArg: T | ((current: T) => T) | undefined) => {

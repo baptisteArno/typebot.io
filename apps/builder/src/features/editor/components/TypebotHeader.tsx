@@ -22,7 +22,6 @@ import { isDefined, isNotDefined } from '@typebot.io/lib'
 import { EditableTypebotName } from './EditableTypebotName'
 import Link from 'next/link'
 import { EditableEmojiOrImageIcon } from '@/components/EditableEmojiOrImageIcon'
-import { useUndoShortcut } from '@/hooks/useUndoShortcut'
 import { useDebouncedCallback } from 'use-debounce'
 import { ShareTypebotButton } from '@/features/share/components/ShareTypebotButton'
 import { PublishButton } from '@/features/publish/components/PublishButton'
@@ -33,6 +32,7 @@ import { SupportBubble } from '@/components/SupportBubble'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { useTranslate } from '@tolgee/react'
 import { GuestTypebotHeader } from './UnauthenticatedTypebotHeader'
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 
 export const TypebotHeader = () => {
   const { t } = useTranslate()
@@ -60,6 +60,11 @@ export const TypebotHeader = () => {
   const hideUndoShortcutTooltipLater = useDebouncedCallback(() => {
     setUndoShortcutTooltipOpen(false)
   }, 1000)
+  const [isRedoShortcutTooltipOpen, setRedoShortcutTooltipOpen] =
+    useState(false)
+  const hideRedoShortcutTooltipLater = useDebouncedCallback(() => {
+    setRedoShortcutTooltipOpen(false)
+  }, 1000)
   const { isOpen, onOpen } = useDisclosure()
   const headerBgColor = useColorModeValue('white', 'gray.900')
 
@@ -76,12 +81,21 @@ export const TypebotHeader = () => {
     setRightPanel(RightPanel.PREVIEW)
   }
 
-  useUndoShortcut(() => {
-    if (!canUndo) return
-    hideUndoShortcutTooltipLater.flush()
-    setUndoShortcutTooltipOpen(true)
-    hideUndoShortcutTooltipLater()
-    undo()
+  useKeyboardShortcuts({
+    undo: () => {
+      if (!canUndo) return
+      hideUndoShortcutTooltipLater.flush()
+      setUndoShortcutTooltipOpen(true)
+      hideUndoShortcutTooltipLater()
+      undo()
+    },
+    redo: () => {
+      if (!canRedo) return
+      hideUndoShortcutTooltipLater.flush()
+      setRedoShortcutTooltipOpen(true)
+      hideRedoShortcutTooltipLater()
+      redo()
+    },
   })
 
   const handleHelpClick = () => {
@@ -229,7 +243,15 @@ export const TypebotHeader = () => {
                 />
               </Tooltip>
 
-              <Tooltip label={t('editor.header.redoButton.label')}>
+              <Tooltip
+                label={
+                  isRedoShortcutTooltipOpen
+                    ? t('editor.header.undo.tooltip.label')
+                    : t('editor.header.redoButton.label')
+                }
+                isOpen={isRedoShortcutTooltipOpen ? true : undefined}
+                hasArrow={isRedoShortcutTooltipOpen}
+              >
                 <IconButton
                   display={['none', 'flex']}
                   icon={<RedoIcon />}
