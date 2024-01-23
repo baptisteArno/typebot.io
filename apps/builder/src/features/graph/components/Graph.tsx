@@ -63,6 +63,8 @@ export const Graph = ({
     setPreviewingEdge,
     connectingIds,
   } = useGraph()
+  const isDraggingGraph = useGroupsStore((state) => state.isDraggingGraph)
+  const setIsDraggingGraph = useGroupsStore((state) => state.setIsDraggingGraph)
   const focusedGroups = useGroupsStore(
     useShallow((state) => state.focusedGroups)
   )
@@ -107,7 +109,6 @@ export const Graph = ({
   const [lastMouseClickPosition, setLastMouseClickPosition] = useState<
     Coordinates | undefined
   >()
-  const [isSpacePressed, setIsSpacePressed] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
 
   const graphContainerRef = useRef<HTMLDivElement | null>(null)
@@ -172,6 +173,7 @@ export const Graph = ({
   }
 
   const handlePointerUp = (e: PointerEvent) => {
+    if (isDraggingGraph) return
     if (
       !selectBoxCoordinates ||
       Math.abs(selectBoxCoordinates?.dimension.width) +
@@ -192,7 +194,7 @@ export const Graph = ({
   useGesture(
     {
       onDrag: (props) => {
-        if (isSpacePressed) {
+        if (isDraggingGraph) {
           if (props.first) setIsDragging(true)
           if (props.last) setIsDragging(false)
           setGraphPosition({
@@ -333,11 +335,11 @@ export const Graph = ({
   })
 
   useEventListener('keydown', (e) => {
-    if (e.key === ' ') setIsSpacePressed(true)
+    if (e.key === ' ') setIsDraggingGraph(true)
   })
   useEventListener('keyup', (e) => {
     if (e.key === ' ') {
-      setIsSpacePressed(false)
+      setIsDraggingGraph(false)
       setIsDragging(false)
     }
   })
@@ -357,7 +359,7 @@ export const Graph = ({
   const zoomIn = () => zoom({ delta: zoomButtonsScaleBlock })
   const zoomOut = () => zoom({ delta: -zoomButtonsScaleBlock })
 
-  const cursor = isSpacePressed ? (isDragging ? 'grabbing' : 'grab') : 'auto'
+  const cursor = isDraggingGraph ? (isDragging ? 'grabbing' : 'grab') : 'auto'
 
   return (
     <Flex
