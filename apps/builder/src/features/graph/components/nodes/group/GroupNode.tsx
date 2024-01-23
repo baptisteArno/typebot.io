@@ -67,6 +67,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
           isNotDefined(previewingEdge.to.blockId))))
 
   const groupRef = useRef<HTMLDivElement | null>(null)
+  const isDraggingGraph = useGroupsStore((state) => state.isDraggingGraph)
   const focusedGroups = useGroupsStore(
     useShallow((state) => state.focusedGroups)
   )
@@ -192,6 +193,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
           _hover={{ shadow: 'lg' }}
           zIndex={isFocused ? 10 : 1}
           spacing={isEmpty(group.title) ? '0' : '2'}
+          pointerEvents={isDraggingGraph ? 'none' : 'auto'}
         >
           <Editable
             value={groupTitle}

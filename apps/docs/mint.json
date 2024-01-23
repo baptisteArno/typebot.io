@@ -76,6 +76,7 @@
     {
       "group": "Flow",
       "pages": [
+        "editor/graph",
         {
           "group": "Blocks",
           "icon": "block",
