@@ -8,14 +8,14 @@ export const auth = {
       label: 'API Endpoint',
       isRequired: true,
       helperText: 'URI where the Service API is hosted.',
-      withVariableButton: true,
+      withVariableButton: false,
     }),
     apiKey: option.string.layout({
       label: 'App API key',
       isRequired: true,
       helperText: 'API Secret Key for your Dify App.',
       inputType: 'password',
-      withVariableButton: true,
+      withVariableButton: false,
     }),
   }),
 } satisfies AuthDefinition
