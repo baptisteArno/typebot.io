@@ -9,7 +9,6 @@ export const runtimes = [
   {
     name: 'WhatsApp',
     icon: <WhatsAppLogo />,
-    status: 'beta',
   },
   { name: 'API', icon: <CodeIcon /> },
 ] as const
