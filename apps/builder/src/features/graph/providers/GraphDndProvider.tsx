@@ -1,4 +1,3 @@
-import { useEventListener } from '@chakra-ui/react'
 import {
   AbTestBlock,
   BlockV6,
@@ -18,6 +17,7 @@ import {
 } from 'react'
 import { Coordinates } from '../types'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { useEventListener } from '@/hooks/useEventListener'
 
 type NodeElement = {
   id: string
@@ -133,7 +133,7 @@ export const useDragDistance = ({
       },
     }
   }
-  useEventListener('mousedown', handleMouseDown, ref.current)
+  useEventListener('mousedown', handleMouseDown, ref)
 
   useEffect(() => {
     let triggered = false

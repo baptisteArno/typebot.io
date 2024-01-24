@@ -40,6 +40,20 @@ export const ChatChunk = (props: Props) => {
   })
 
   const displayNextMessage = async (bubbleOffsetTop?: number) => {
+    if (
+      (props.settings.typingEmulation?.delayBetweenBubbles ??
+        defaultSettings.typingEmulation.delayBetweenBubbles) > 0 &&
+      displayedMessageIndex() < props.messages.length - 1
+    ) {
+      // eslint-disable-next-line solid/reactivity
+      await new Promise((resolve) =>
+        setTimeout(
+          resolve,
+          (props.settings.typingEmulation?.delayBetweenBubbles ??
+            defaultSettings.typingEmulation.delayBetweenBubbles) * 1000
+        )
+      )
+    }
     const lastBubbleBlockId = props.messages[displayedMessageIndex()].id
     await props.onNewBubbleDisplayed(lastBubbleBlockId)
     setDisplayedMessageIndex(
@@ -86,10 +100,17 @@ export const ChatChunk = (props: Props) => {
             }}
           >
             <For each={props.messages.slice(0, displayedMessageIndex() + 1)}>
-              {(message) => (
+              {(message, idx) => (
                 <HostBubble
                   message={message}
                   typingEmulation={props.settings.typingEmulation}
+                  isTypingSkipped={
+                    (props.settings.typingEmulation?.isDisabledOnFirstMessage ??
+                      defaultSettings.typingEmulation
+                        .isDisabledOnFirstMessage) &&
+                    props.inputIndex === 0 &&
+                    idx() === 0
+                  }
                   onTransitionEnd={displayNextMessage}
                   onCompleted={props.onSubmit}
                 />

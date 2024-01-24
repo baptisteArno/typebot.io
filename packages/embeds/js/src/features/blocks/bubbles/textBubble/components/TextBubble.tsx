@@ -10,6 +10,7 @@ import { computeTypingDuration } from '@typebot.io/bot-engine/computeTypingDurat
 type Props = {
   content: TextBubbleBlock['content']
   typingEmulation: Settings['typingEmulation']
+  isTypingSkipped: boolean
   onTransitionEnd: (offsetTop?: number) => void
 }
 
@@ -35,7 +36,7 @@ export const TextBubble = (props: Props) => {
       ? computePlainText(props.content.richText)
       : ''
     const typingDuration =
-      props.typingEmulation?.enabled === false
+      props.typingEmulation?.enabled === false || props.isTypingSkipped
         ? 0
         : computeTypingDuration({
             bubbleContent: plainText,

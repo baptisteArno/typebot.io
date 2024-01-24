@@ -11,7 +11,6 @@ import {
 } from '@chakra-ui/react'
 import { GraphNavigation } from '@typebot.io/prisma'
 import React, { useEffect } from 'react'
-import { GraphNavigationRadioGroup } from './GraphNavigationRadioGroup'
 import { AppearanceRadioGroup } from './AppearanceRadioGroup'
 import { useUser } from '../hooks/useUser'
 import { ChevronDownIcon } from '@/components/icons'
@@ -41,10 +40,6 @@ export const UserPreferencesForm = () => {
     if (!user?.graphNavigation)
       updateUser({ graphNavigation: GraphNavigation.TRACKPAD })
   }, [updateUser, user?.graphNavigation])
-
-  const changeGraphNavigation = async (value: string) => {
-    updateUser({ graphNavigation: value as GraphNavigation })
-  }
 
   const changeAppearance = async (value: string) => {
     updateUser({ preferredAppAppearance: value })
@@ -99,15 +94,7 @@ export const UserPreferencesForm = () => {
           </MoreInfoTooltip>
         )}
       </HStack>
-      <Stack spacing={6}>
-        <Heading size="md">
-          {t('account.preferences.graphNavigation.heading')}
-        </Heading>
-        <GraphNavigationRadioGroup
-          defaultValue={user?.graphNavigation ?? GraphNavigation.TRACKPAD}
-          onChange={changeGraphNavigation}
-        />
-      </Stack>
+
       <Stack spacing={6}>
         <Heading size="md">
           {t('account.preferences.appearance.heading')}

@@ -84,7 +84,7 @@ export const SettingsSideMenu = () => {
           <AccordionButton py={6}>
             <HStack flex="1" pl={2}>
               <ChatIcon />
-              <Heading fontSize="lg">Typing emulation</Heading>
+              <Heading fontSize="lg">Typing</Heading>
             </HStack>
             <AccordionIcon />
           </AccordionButton>
