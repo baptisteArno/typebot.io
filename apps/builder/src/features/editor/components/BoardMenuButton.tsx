@@ -17,24 +17,16 @@ import {
   SettingsIcon,
 } from '@/components/icons'
 import { useTypebot } from '../providers/TypebotProvider'
-import { useUser } from '@/features/account/hooks/useUser'
-import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { EditorSettingsModal } from './EditorSettingsModal'
 import { parseDefaultPublicId } from '@/features/publish/helpers/parseDefaultPublicId'
 import { useTranslate } from '@tolgee/react'
 
 export const BoardMenuButton = (props: FlexProps) => {
-  const { query } = useRouter()
   const { typebot } = useTypebot()
-  const { user } = useUser()
   const [isDownloading, setIsDownloading] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { t } = useTranslate()
-
-  useEffect(() => {
-    if (user && !user.graphNavigation && !query.isFirstBot) onOpen()
-  }, [onOpen, query.isFirstBot, user, user?.graphNavigation])
 
   const downloadFlow = () => {
     assert(typebot)
@@ -54,7 +46,7 @@ export const BoardMenuButton = (props: FlexProps) => {
   }
 
   const redirectToDocumentation = () =>
-    window.open('https://docs.typebot.io/get-started/overview', '_blank')
+    window.open('https://docs.typebot.io/editor/graph', '_blank')
 
   return (
     <Flex
