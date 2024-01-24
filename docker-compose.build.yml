@@ -9,6 +9,7 @@ services:
       - POSTGRES_DB=typebot
       - POSTGRES_PASSWORD=typebot
   typebot-builder:
+    # image: r1ckjr/mcz-typeb-builder:v2.21.3
     build:
       context: .
       args:
@@ -21,6 +22,7 @@ services:
       - 'host.docker.internal:host-gateway'
     env_file: .env
   typebot-viewer:
+    # image: r1ckjr/mcz-typeb-viewer:v2.21.3
     build:
       context: .
       args:

@@ -1,0 +1,13 @@
+ docker buildx build \
+ --platform="linux/amd64,linux/arm64,linux/arm/v7" \
+ -f Dockerfile .\
+ -t r1ckjr/mcz-typeb-builder:v2.21.3 \
+ --push \
+ --build-arg="SCOPE=builder"
+
+  docker buildx build \
+ --platform="linux/amd64,linux/arm64,linux/arm/v7" \
+ -f Dockerfile .\
+ -t r1ckjr/mcz-typeb-viewer:v2.21.3 \
+ --push \
+ --build-arg="SCOPE=viewer"
