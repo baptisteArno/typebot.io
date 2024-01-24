@@ -22,6 +22,7 @@ import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { initPostHogIfEnabled } from '@/features/telemetry/posthog'
 import { TolgeeProvider, useTolgeeSSR } from '@tolgee/react'
 import { tolgee } from '@/lib/tolgee'
+import { Toaster } from '@/components/Toaster'
 
 initPostHogIfEnabled()
 
@@ -63,6 +64,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     <TolgeeProvider tolgee={ssrTolgee}>
       <ToastContainer />
       <ChakraProvider theme={customTheme}>
+        <Toaster />
         <SessionProvider session={pageProps.session}>
           <UserProvider>
             <TypebotProvider typebotId={typebotId}>

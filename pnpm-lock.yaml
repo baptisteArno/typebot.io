@@ -257,6 +257,9 @@ importers:
       slate-react:
         specifier: 0.94.2
         version: 0.94.2(react-dom@18.2.0)(react@18.2.0)(slate@0.94.1)
+      sonner:
+        specifier: 1.3.1
+        version: 1.3.1(react-dom@18.2.0)(react@18.2.0)
       stripe:
         specifier: 12.13.0
         version: 12.13.0
@@ -275,6 +278,9 @@ importers:
       use-debounce:
         specifier: 9.0.4
         version: 9.0.4(react@18.2.0)
+      zustand:
+        specifier: 4.5.0
+        version: 4.5.0(@types/react@18.2.15)(immer@10.0.2)(react@18.2.0)
     devDependencies:
       '@chakra-ui/styled-system':
         specifier: 2.9.1
@@ -19329,6 +19335,16 @@ packages:
       swr-store: 0.10.6
     dev: false
 
+  /sonner@1.3.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-+rOAO56b2eI3q5BtgljERSn2umRk63KFIvgb2ohbZ5X+Eb5u+a/7/0ZgswYqgBMg8dyl7n6OXd9KasA8QF9ToA==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /source-map-js@1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}
     engines: {node: '>=0.10.0'}
@@ -21414,6 +21430,27 @@ packages:
         optional: true
     dependencies:
       react: 18.2.0
+    dev: false
+
+  /zustand@4.5.0(@types/react@18.2.15)(immer@10.0.2)(react@18.2.0):
+    resolution: {integrity: sha512-zlVFqS5TQ21nwijjhJlx4f9iGrXSL0o/+Dpy4txAP22miJ8Ti6c1Ol1RLNN98BMib83lmDH/2KmLwaNXpjrO1A==}
+    engines: {node: '>=12.7.0'}
+    peerDependencies:
+      '@types/react': '>=16.8'
+      immer: '>=9.0.6'
+      react: '>=16.8'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      immer:
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      '@types/react': 18.2.15
+      immer: 10.0.2
+      react: 18.2.0
+      use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
   /zwitch@2.0.4:

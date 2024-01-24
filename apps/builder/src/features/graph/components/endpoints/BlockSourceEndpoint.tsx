@@ -14,7 +14,6 @@ import React, {
 } from 'react'
 import { useEndpoints } from '../../providers/EndpointsProvider'
 import { useGraph } from '../../providers/GraphProvider'
-import { useGroupsCoordinates } from '../../providers/GroupsCoordinateProvider'
 
 const endpointHeight = 32
 
@@ -35,7 +34,6 @@ export const BlockSourceEndpoint = ({
   const { setConnectingIds, previewingEdge, graphPosition } = useGraph()
   const { setSourceEndpointYOffset, deleteSourceEndpointYOffset } =
     useEndpoints()
-  const { groupsCoordinates } = useGroupsCoordinates()
   const ref = useRef<HTMLDivElement | null>(null)
   const [groupHeight, setGroupHeight] = useState<number>()
   const [groupTransformProp, setGroupTransformProp] = useState<string>()
@@ -116,7 +114,6 @@ export const BlockSourceEndpoint = ({
     ref.current
   )
 
-  if (!groupsCoordinates) return <></>
   return (
     <Flex
       ref={ref}
