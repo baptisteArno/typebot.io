@@ -70,13 +70,16 @@ export const executeFunction = async ({
     console.log('Error while executing script')
     console.error(e)
 
+    const error =
+      typeof e === 'string'
+        ? e
+        : e instanceof Error
+        ? e.message
+        : JSON.stringify(e)
+
     return {
-      output:
-        typeof e === 'string'
-          ? e
-          : e instanceof Error
-          ? e.message
-          : JSON.stringify(e),
+      error,
+      output: error,
     }
   }
 }
