@@ -18,6 +18,7 @@ const inspectUser = async () => {
     },
     select: {
       name: true,
+      createdAt: true,
       lastActivityAt: true,
       company: true,
       onboardingCategories: true,

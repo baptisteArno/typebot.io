@@ -7,10 +7,11 @@ import { useEndpoints } from '../../providers/EndpointsProvider'
 import { computeEdgePath } from '../../helpers/computeEdgePath'
 import { getAnchorsPosition } from '../../helpers/getAnchorsPosition'
 import { useGraph } from '../../providers/GraphProvider'
-import { useGroupsCoordinates } from '../../providers/GroupsCoordinateProvider'
 import { EdgeMenu } from './EdgeMenu'
 import { useEventsCoordinates } from '../../providers/EventsCoordinateProvider'
 import { eventWidth, groupWidth } from '../../constants'
+import { useGroupsStore } from '../../hooks/useGroupsStore'
+import { useShallow } from 'zustand/react/shallow'
 
 type Props = {
   edge: EdgeProps
@@ -23,7 +24,21 @@ export const Edge = ({ edge, fromGroupId }: Props) => {
   const { previewingEdge, graphPosition, isReadOnly, setPreviewingEdge } =
     useGraph()
   const { sourceEndpointYOffsets, targetEndpointYOffsets } = useEndpoints()
-  const { groupsCoordinates } = useGroupsCoordinates()
+  const fromGroupCoordinates = useGroupsStore(
+    useShallow((state) =>
+      fromGroupId && state.groupsCoordinates
+        ? state.groupsCoordinates[fromGroupId]
+        : undefined
+    )
+  )
+  const toGroupCoordinates = useGroupsStore(
+    useShallow((state) =>
+      state.groupsCoordinates
+        ? state.groupsCoordinates[edge.to.groupId]
+        : undefined
+    )
+  )
+
   const { eventsCoordinates } = useEventsCoordinates()
   const [isMouseOver, setIsMouseOver] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -34,8 +49,7 @@ export const Edge = ({ edge, fromGroupId }: Props) => {
   const sourceElementCoordinates =
     'eventId' in edge.from
       ? eventsCoordinates[edge.from.eventId]
-      : groupsCoordinates[fromGroupId as string]
-  const targetGroupCoordinates = groupsCoordinates[edge.to.groupId]
+      : fromGroupCoordinates
 
   const sourceTop = useMemo(() => {
     const endpointId =
@@ -55,11 +69,11 @@ export const Edge = ({ edge, fromGroupId }: Props) => {
   )
 
   const path = useMemo(() => {
-    if (!sourceElementCoordinates || !targetGroupCoordinates || !sourceTop)
+    if (!sourceElementCoordinates || !toGroupCoordinates || !sourceTop)
       return ``
     const anchorsPosition = getAnchorsPosition({
       sourceGroupCoordinates: sourceElementCoordinates,
-      targetGroupCoordinates,
+      targetGroupCoordinates: toGroupCoordinates,
       elementWidth: 'eventId' in edge.from ? eventWidth : groupWidth,
       sourceTop,
       targetTop,
@@ -68,7 +82,7 @@ export const Edge = ({ edge, fromGroupId }: Props) => {
     return computeEdgePath(anchorsPosition)
   }, [
     sourceElementCoordinates,
-    targetGroupCoordinates,
+    toGroupCoordinates,
     sourceTop,
     edge.from,
     targetTop,

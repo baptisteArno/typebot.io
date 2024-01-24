@@ -25,6 +25,7 @@ import { isPublished as isPublishedHelper } from '@/features/publish/helpers/isP
 import { convertPublicTypebotToTypebot } from '@/features/publish/helpers/convertPublicTypebotToTypebot'
 import { trpc } from '@/lib/trpc'
 import { EventsActions, eventsActions } from './typebotActions/events'
+import { useGroupsStore } from '@/features/graph/hooks/useGroupsStore'
 
 const autoSaveTimeout = 10000
 
@@ -87,6 +88,9 @@ export const TypebotProvider = ({
 }) => {
   const { showToast } = useToast()
   const [is404, setIs404] = useState(false)
+  const setGroupsCoordinates = useGroupsStore(
+    (state) => state.setGroupsCoordinates
+  )
 
   const {
     data: typebotData,
@@ -168,10 +172,19 @@ export const TypebotProvider = ({
     { redo, undo, flush, canRedo, canUndo, set: setLocalTypebot },
   ] = useUndo<TypebotV6>(undefined, {
     isReadOnly,
+    onUndo: (t) => {
+      setGroupsCoordinates(t.groups)
+    },
+    onRedo: (t) => {
+      setGroupsCoordinates(t.groups)
+    },
   })
 
   useEffect(() => {
-    if (!typebot && isDefined(localTypebot)) setLocalTypebot(undefined)
+    if (!typebot && isDefined(localTypebot)) {
+      setLocalTypebot(undefined)
+      setGroupsCoordinates(undefined)
+    }
     if (isFetchingTypebot || !typebot) return
     if (
       typebot.id !== localTypebot?.id ||
@@ -179,12 +192,14 @@ export const TypebotProvider = ({
         new Date(localTypebot.updatedAt).getTime()
     ) {
       setLocalTypebot({ ...typebot })
+      setGroupsCoordinates(typebot.groups)
       flush()
     }
   }, [
     flush,
     isFetchingTypebot,
     localTypebot,
+    setGroupsCoordinates,
     setLocalTypebot,
     showToast,
     typebot,

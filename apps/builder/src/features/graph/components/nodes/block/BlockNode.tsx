@@ -44,6 +44,7 @@ import { TargetEndpoint } from '../../endpoints/TargetEndpoint'
 import { SettingsModal } from './SettingsModal'
 import { TElement } from '@udecode/plate-common'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { useGroupsStore } from '@/features/graph/hooks/useGroupsStore'
 
 export const BlockNode = ({
   block,
@@ -87,6 +88,8 @@ export const BlockNode = ({
     previewingBlock?.id === block.id
 
   const groupId = typebot?.groups[indices.groupIndex].id
+
+  const isDraggingGraph = useGroupsStore((state) => state.isDraggingGraph)
 
   const onDrag = (position: NodePosition) => {
     if (!onMouseDown) return
@@ -212,6 +215,7 @@ export const BlockNode = ({
               data-testid={`block ${block.id}`}
               w="full"
               className="prevent-group-drag"
+              pointerEvents={isReadOnly || isDraggingGraph ? 'none' : 'auto'}
             >
               <HStack
                 flex="1"

@@ -128,6 +128,7 @@ export const startWhatsAppPreview = authenticatedProcedure
         messages,
         input,
         clientSideActions,
+        isFirstChatChunk: true,
         credentials: {
           phoneNumberId: env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID,
           systemUserAccessToken: env.META_SYSTEM_USER_TOKEN,
