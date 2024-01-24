@@ -6,6 +6,7 @@ type Store = {
   focusedGroups: string[]
   groupsCoordinates: CoordinatesMap | undefined
   groupsInClipboard: { groups: GroupV6[]; edges: Edge[] } | undefined
+  isDraggingGraph: boolean
   // TO-DO: remove once Typebot provider is migrated to a Zustand store. We will be able to get it internally in the store (if mutualized).
   getGroupsCoordinates: () => CoordinatesMap | undefined
   focusGroup: (groupId: string, isAppending?: boolean) => void
@@ -15,12 +16,14 @@ type Store = {
   setGroupsCoordinates: (groups: Group[] | undefined) => void
   updateGroupCoordinates: (groupId: string, newCoord: Coordinates) => void
   copyGroups: (groups: GroupV6[], edges: Edge[]) => void
+  setIsDraggingGraph: (isDragging: boolean) => void
 }
 
 export const useGroupsStore = createWithEqualityFn<Store>((set, get) => ({
   focusedGroups: [],
   groupsCoordinates: undefined,
   groupsInClipboard: undefined,
+  isDraggingGraph: false,
   getGroupsCoordinates: () => get().groupsCoordinates,
   focusGroup: (groupId, isShiftKeyPressed) =>
     set((state) => ({
@@ -80,4 +83,5 @@ export const useGroupsStore = createWithEqualityFn<Store>((set, get) => ({
         edges,
       },
     }),
+  setIsDraggingGraph: (isDragging) => set({ isDraggingGraph: isDragging }),
 }))
