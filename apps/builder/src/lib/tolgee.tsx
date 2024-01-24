@@ -1,4 +1,4 @@
-import { DevTools, Tolgee } from '@tolgee/react'
+import { Tolgee } from '@tolgee/react'
 import { FormatIcu } from '@tolgee/format-icu'
 import en from '../i18n/en.json'
 import fr from '../i18n/fr.json'
@@ -11,7 +11,6 @@ import it from '../i18n/it.json'
 import { env } from '@typebot.io/env'
 
 export const tolgee = Tolgee()
-  .use(DevTools())
   .use(FormatIcu())
   .init({
     apiKey: env.NEXT_PUBLIC_TOLGEE_API_KEY,

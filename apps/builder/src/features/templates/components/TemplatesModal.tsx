@@ -41,6 +41,7 @@ export const TemplatesModal = ({
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateProps>(
     templates[0]
   )
+  const [isFirstTemplateLoaded, setIsFirstTemplateLoaded] = useState(false)
   const { showToast } = useToast()
 
   const fetchTemplate = useCallback(
@@ -57,9 +58,10 @@ export const TemplatesModal = ({
   )
 
   useEffect(() => {
-    if (typebot) return
+    if (isFirstTemplateLoaded) return
+    setIsFirstTemplateLoaded(true)
     fetchTemplate(templates[0])
-  }, [fetchTemplate, typebot, templates])
+  }, [fetchTemplate, templates, isFirstTemplateLoaded])
 
   const onUseThisTemplateClick = async () => {
     if (!typebot) return
