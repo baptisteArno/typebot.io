@@ -65,15 +65,6 @@
       "pages": ["get-started/introduction", "get-started/overview"]
     },
     {
-      "group": "Workspace",
-      "pages": [
-        "workspace",
-        "workspace/add-members-and-guests",
-        "workspace/subscription",
-        "workspace/preferences"
-      ]
-    },
-    {
       "group": "Flow",
       "pages": [
         "editor/graph",
@@ -190,6 +181,15 @@
     {
       "group": "Results",
       "pages": ["results/overview", "results/analytics"]
+    },
+    {
+      "group": "Workspace",
+      "pages": [
+        "workspace",
+        "workspace/add-members-and-guests",
+        "workspace/subscription",
+        "workspace/preferences"
+      ]
     },
     {
       "group": "Guides",
