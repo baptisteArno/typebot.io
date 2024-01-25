@@ -2,8 +2,8 @@ import { Plan } from '@typebot.io/prisma'
 import type { Stripe } from 'stripe'
 
 export const prices = {
-  [Plan.STARTER]: 19,
-  [Plan.PRO]: 89,
+  [Plan.STARTER]: 20,
+  [Plan.PRO]: 75,
 } as const
 
 export const chatsLimits = {
