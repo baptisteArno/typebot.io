@@ -202,7 +202,7 @@
     },
     {
       "group": "Misc",
-      "pages": ["faq", "privacy-policies", "breaking-changes"]
+      "pages": ["faq", "privacy-policies", "report-abuse", "breaking-changes"]
     },
     {
       "group": "Get started",
