@@ -49,7 +49,7 @@ export const updateSubscription = authenticatedProcedure
           id: workspaceId,
         },
         select: {
-          isQuarantined: true,
+          isPastDue: true,
           stripeId: true,
           members: {
             select: {
@@ -59,6 +59,12 @@ export const updateSubscription = authenticatedProcedure
           },
         },
       })
+      if (workspace?.isPastDue)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message:
+            'You have unpaid invoices. Please head over your billing portal to pay it.',
+        })
       if (
         !workspace?.stripeId ||
         isAdminWriteWorkspaceForbidden(workspace, user)
