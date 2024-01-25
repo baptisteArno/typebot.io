@@ -56,7 +56,7 @@ export const SettingsSideMenu = () => {
       borderRightWidth={1}
       pt={10}
       spacing={10}
-      overflowY="scroll"
+      overflowY="auto"
       pb="20"
     >
       <Heading fontSize="xl" textAlign="center">
