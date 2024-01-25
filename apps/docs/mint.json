@@ -128,7 +128,8 @@
                 "editor/blocks/integrations/chatwoot",
                 "editor/blocks/integrations/meta-pixel",
                 "editor/blocks/integrations/openai",
-                "editor/blocks/integrations/zemantic-ai"
+                "editor/blocks/integrations/zemantic-ai",
+                "editor/blocks/integrations/mistral"
               ]
             }
           ]
@@ -215,6 +216,7 @@
       "pages": [
         "faq",
         "privacy-policies",
+        "report-abuse",
         "breaking-changes"
       ]
     },

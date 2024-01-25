@@ -10,17 +10,18 @@ import {
 type Props = {
   groupId: string
   onPlayClick: () => void
-  onDuplicateClick: () => void
-  onDeleteClick: () => void
 }
 
-export const GroupFocusToolbar = ({
-  groupId,
-  onPlayClick,
-  onDuplicateClick,
-  onDeleteClick,
-}: Props) => {
+export const GroupFocusToolbar = ({ groupId, onPlayClick }: Props) => {
   const { hasCopied, onCopy } = useClipboard(groupId)
+
+  const dispatchCopyEvent = () => {
+    dispatchEvent(new KeyboardEvent('keydown', { key: 'c', metaKey: true }))
+  }
+
+  const dispatchDeleteEvent = () => {
+    dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace' }))
+  }
 
   return (
     <HStack
@@ -44,11 +45,11 @@ export const GroupFocusToolbar = ({
         borderRightWidth="1px"
         borderRightRadius="none"
         borderLeftRadius="none"
-        aria-label={'Duplicate group'}
+        aria-label={'Copy group'}
         variant="ghost"
         onClick={(e) => {
           e.stopPropagation()
-          onDuplicateClick()
+          dispatchCopyEvent()
         }}
         size="sm"
       />
@@ -72,7 +73,7 @@ export const GroupFocusToolbar = ({
         aria-label="Delete"
         borderLeftRadius="none"
         icon={<TrashIcon />}
-        onClick={onDeleteClick}
+        onClick={dispatchDeleteEvent}
         variant="ghost"
         size="sm"
       />

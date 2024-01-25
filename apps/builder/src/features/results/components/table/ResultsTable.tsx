@@ -232,7 +232,7 @@ export const ResultsTable = ({
       </HStack>
       <Box
         ref={tableWrapper}
-        overflow="scroll"
+        overflow="auto"
         rounded="md"
         data-testid="results-table"
         backgroundImage={`linear-gradient(to right, ${background}, ${background}), linear-gradient(to right, ${background}, ${background}),linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0)),linear-gradient(to left, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0));`}

@@ -86,8 +86,7 @@ export const TemplatesModal = ({
             borderRightWidth={1}
             justify="space-between"
             flexShrink={0}
-            overflowY="scroll"
-            className="hide-scrollbar"
+            overflowY="auto"
           >
             <Stack spacing={5}>
               <Stack spacing={2}>

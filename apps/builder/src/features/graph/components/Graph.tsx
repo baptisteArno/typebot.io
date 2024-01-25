@@ -1,12 +1,7 @@
 import { Fade, Flex, FlexProps, useEventListener } from '@chakra-ui/react'
 import React, { useRef, useMemo, useEffect, useState } from 'react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import {
-  BlockV6,
-  GroupV6,
-  PublicTypebotV6,
-  TypebotV6,
-} from '@typebot.io/schemas'
+import { BlockV6, PublicTypebotV6, TypebotV6 } from '@typebot.io/schemas'
 import { useDebounce } from 'use-debounce'
 import GraphElements from './GraphElements'
 import { createId } from '@paralleldrive/cuid2'
@@ -30,9 +25,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { projectMouse } from '../helpers/projectMouse'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { useUser } from '@/features/account/hooks/useUser'
-import { graphGestureNotficationKey } from '@typebot.io/schemas/features/user/constants'
-import { toast } from 'sonner'
-import { LightBulbIcon } from '@/components/icons'
+import { GraphNavigation } from '@typebot.io/prisma'
 
 const maxScale = 2
 const minScale = 0.3
@@ -58,8 +51,8 @@ export const Graph = ({
     draggedItem,
     setDraggedItem,
   } = useBlockDnd()
-  const { pasteGroups, createGroup } = useTypebot()
-  const { user, updateUser } = useUser()
+  const { createGroup } = useTypebot()
+  const { user } = useUser()
   const {
     isReadOnly,
     setGraphPosition: setGlobalGraphPosition,
@@ -85,9 +78,6 @@ export const Graph = ({
       blurGroups: state.blurGroups,
       setFocusedGroups: state.setFocusedGroups,
     }))
-  )
-  const groupsInClipboard = useGroupsStore(
-    useShallow((state) => state.groupsInClipboard)
   )
 
   const [graphPosition, setGraphPosition] = useState(
@@ -189,26 +179,6 @@ export const Graph = ({
       setLastMouseClickPosition(
         projectMouse({ x: e.clientX, y: e.clientY }, graphPosition)
       )
-    } else if (
-      user &&
-      !user?.displayedInAppNotifications?.[graphGestureNotficationKey]
-    ) {
-      toast.info('To move the graph using your mouse, hold the Space bar', {
-        action: {
-          label: 'More info',
-          onClick: () => {
-            window.open('https://docs.typebot.io/editor/graph', '_blank')
-          },
-        },
-        duration: 30000,
-        icon: <LightBulbIcon w="20px" h="20px" />,
-      })
-      updateUser({
-        displayedInAppNotifications: {
-          ...user.displayedInAppNotifications,
-          [graphGestureNotficationKey]: true,
-        },
-      })
     }
     setSelectBoxCoordinates(undefined)
     setOpenedBlockId(undefined)
@@ -219,7 +189,11 @@ export const Graph = ({
   useGesture(
     {
       onDrag: (props) => {
-        if (isDraggingGraph) {
+        if (
+          isDraggingGraph ||
+          (user?.graphNavigation !== GraphNavigation.TRACKPAD &&
+            !props.shiftKey)
+        ) {
           if (props.first) setIsDragging(true)
           if (props.last) setIsDragging(false)
           setGraphPosition({
@@ -337,27 +311,7 @@ export const Graph = ({
     setAutoMoveDirection(undefined)
   }
 
-  useKeyboardShortcuts({
-    paste: () => {
-      if (!groupsInClipboard || isReadOnly) return
-      const { groups, oldToNewIdsMapping } = parseGroupsToPaste(
-        groupsInClipboard.groups,
-        lastMouseClickPosition ??
-          projectMouse(
-            {
-              x: window.innerWidth / 2,
-              y: window.innerHeight / 2,
-            },
-            graphPosition
-          )
-      )
-      groups.forEach((group) => {
-        updateGroupCoordinates(group.id, group.graphCoordinates)
-      })
-      pasteGroups(groups, groupsInClipboard.edges, oldToNewIdsMapping)
-      setFocusedGroups(groups.map((g) => g.id))
-    },
-  })
+  useKeyboardShortcuts({})
 
   useEventListener('keydown', (e) => {
     if (e.key === ' ') setIsDraggingGraph(true)
@@ -401,8 +355,11 @@ export const Graph = ({
           {selectBoxCoordinates && <SelectBox {...selectBoxCoordinates} />}
           <Fade in={!isReadOnly && focusedGroups.length > 1}>
             <GroupSelectionMenu
+              lastMouseClickPosition={lastMouseClickPosition}
               focusedGroups={focusedGroups}
               blurGroups={blurGroups}
+              graphPosition={graphPosition}
+              isReadOnly={isReadOnly}
             />
           </Fade>
         </>
@@ -471,42 +428,3 @@ const useAutoMoveBoard = (
       clearInterval(interval)
     }
   }, [autoMoveDirection, setGraphPosition])
-
-const parseGroupsToPaste = (
-  groups: GroupV6[],
-  mousePosition: Coordinates
-): { groups: GroupV6[]; oldToNewIdsMapping: Map<string, string> } => {
-  const farLeftGroup = groups.sort(
-    (a, b) => a.graphCoordinates.x - b.graphCoordinates.x
-  )[0]
-  const farLeftGroupCoord = farLeftGroup.graphCoordinates
-
-  const oldToNewIdsMapping = new Map<string, string>()
-  const newGroups = groups.map((group) => {
-    const newId = createId()
-    oldToNewIdsMapping.set(group.id, newId)
-
-    return {
-      ...group,
-      id: newId,
-      graphCoordinates:
-        group.id === farLeftGroup.id
-          ? mousePosition
-          : {
-              x:
-                mousePosition.x +
-                group.graphCoordinates.x -
-                farLeftGroupCoord.x,
-              y:
-                mousePosition.y +
-                group.graphCoordinates.y -
-                farLeftGroupCoord.y,
-            },
-    }
-  })
-
-  return {
-    groups: newGroups,
-    oldToNewIdsMapping,
-  }
-}

@@ -34,7 +34,7 @@ export const GiphyPicker = ({ onSubmit }: GiphySearchFormProps) => {
         />
         <GiphyLogo w="100px" />
       </Flex>
-      <Flex overflowY="scroll" maxH="400px">
+      <Flex overflowY="auto" maxH="400px">
         <Grid
           key={inputValue}
           onGifClick={(gif, e) => {

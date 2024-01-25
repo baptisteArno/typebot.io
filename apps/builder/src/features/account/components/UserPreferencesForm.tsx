@@ -17,6 +17,7 @@ import { ChevronDownIcon } from '@/components/icons'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 import { useTranslate, useTolgee } from '@tolgee/react'
 import { useRouter } from 'next/router'
+import { GraphNavigationRadioGroup } from './GraphNavigationRadioGroup'
 
 const localeHumanReadable = {
   en: 'English',
@@ -38,7 +39,7 @@ export const UserPreferencesForm = () => {
 
   useEffect(() => {
     if (!user?.graphNavigation)
-      updateUser({ graphNavigation: GraphNavigation.TRACKPAD })
+      updateUser({ graphNavigation: GraphNavigation.MOUSE })
   }, [updateUser, user?.graphNavigation])
 
   const changeAppearance = async (value: string) => {
@@ -55,6 +56,10 @@ export const UserPreferencesForm = () => {
       undefined,
       { locale }
     )
+  }
+
+  const changeGraphNavigation = async (value: string) => {
+    updateUser({ graphNavigation: value as GraphNavigation })
   }
 
   const currentLanguage = getLanguage()
@@ -94,6 +99,15 @@ export const UserPreferencesForm = () => {
           </MoreInfoTooltip>
         )}
       </HStack>
+      <Stack spacing={6}>
+        <Heading size="md">
+          {t('account.preferences.graphNavigation.heading')}
+        </Heading>
+        <GraphNavigationRadioGroup
+          defaultValue={user?.graphNavigation ?? GraphNavigation.MOUSE}
+          onChange={changeGraphNavigation}
+        />
+      </Stack>
 
       <Stack spacing={6}>
         <Heading size="md">
