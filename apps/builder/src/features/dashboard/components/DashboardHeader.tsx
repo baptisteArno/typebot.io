@@ -37,7 +37,7 @@ export const DashboardHeader = () => {
           />
         </Link>
         <HStack>
-          {user && workspace && (
+          {user && workspace && !workspace.isPastDue && (
             <WorkspaceSettingsModal
               isOpen={isOpen}
               onClose={onClose}
@@ -45,13 +45,15 @@ export const DashboardHeader = () => {
               workspace={workspace}
             />
           )}
-          <Button
-            leftIcon={<SettingsIcon />}
-            onClick={onOpen}
-            isLoading={isNotDefined(workspace)}
-          >
-            {t('dashboard.header.settingsButton.label')}
-          </Button>
+          {!workspace?.isPastDue && (
+            <Button
+              leftIcon={<SettingsIcon />}
+              onClick={onOpen}
+              isLoading={isNotDefined(workspace)}
+            >
+              {t('dashboard.header.settingsButton.label')}
+            </Button>
+          )}
           <WorkspaceDropdown
             currentWorkspace={workspace}
             onLogoutClick={logOut}

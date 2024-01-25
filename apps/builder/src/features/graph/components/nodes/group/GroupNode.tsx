@@ -44,13 +44,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
     isReadOnly,
     graphPosition,
   } = useGraph()
-  const {
-    typebot,
-    updateGroup,
-    updateGroupsCoordinates,
-    deleteGroup,
-    duplicateGroup,
-  } = useTypebot()
+  const { typebot, updateGroup, updateGroupsCoordinates } = useTypebot()
   const { setMouseOverGroup, mouseOverGroup } = useBlockDnd()
   const { setRightPanel, setStartPreviewAtGroup } = useEditor()
 
@@ -159,7 +153,8 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
 
   return (
     <ContextMenu<HTMLDivElement>
-      renderMenu={() => <GroupNodeContextMenu groupIndex={groupIndex} />}
+      onOpen={() => focusGroup(group.id)}
+      renderMenu={() => <GroupNodeContextMenu />}
       isDisabled={isReadOnly}
     >
       {(ref, isContextMenuOpened) => (
@@ -241,10 +236,6 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
               <GroupFocusToolbar
                 groupId={group.id}
                 onPlayClick={startPreviewAtThisGroup}
-                onDuplicateClick={() => {
-                  duplicateGroup(groupIndex)
-                }}
-                onDeleteClick={() => deleteGroup(groupIndex)}
               />
             </SlideFade>
           )}

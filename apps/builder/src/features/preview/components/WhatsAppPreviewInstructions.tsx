@@ -68,8 +68,7 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
     <Stack
       as="form"
       spacing={4}
-      overflowY="scroll"
-      className="hide-scrollbar"
+      overflowY="auto"
       w="full"
       px="1"
       onSubmit={sendWhatsAppPreviewStartMessage}

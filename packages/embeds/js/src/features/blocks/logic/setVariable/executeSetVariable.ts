@@ -9,6 +9,11 @@ export const executeSetVariable = async ({
   args,
 }: ScriptToExecute): Promise<{ replyToSend: string | undefined }> => {
   try {
+    // To avoid octal number evaluation
+    if (!isNaN(content as unknown as number) && /0[^.].+/.test(content))
+      return {
+        replyToSend: content,
+      }
     const func = AsyncFunction(
       ...args.map((arg) => arg.id),
       content.includes('return ') ? content : `return ${content}`

@@ -13,8 +13,8 @@ jobs:
     env:
       DATABASE_URL: '${{ secrets.DATABASE_URL }}'
       ENCRYPTION_SECRET: '${{ secrets.ENCRYPTION_SECRET }}'
-      NEXTAUTH_URL: 'http://localhost:3000'
-      NEXT_PUBLIC_VIEWER_URL: 'http://localhost:3001'
+      NEXTAUTH_URL: '${{ secrets.NEXTAUTH_URL }}'
+      NEXT_PUBLIC_VIEWER_URL: '${{ secrets.NEXT_PUBLIC_VIEWER_URL }}'
       TELEMETRY_WEBHOOK_URL: '${{ secrets.TELEMETRY_WEBHOOK_URL }}'
       TELEMETRY_WEBHOOK_BEARER_TOKEN: '${{ secrets.TELEMETRY_WEBHOOK_BEARER_TOKEN }}'
       SMTP_USERNAME: '${{ secrets.SMTP_USERNAME }}'

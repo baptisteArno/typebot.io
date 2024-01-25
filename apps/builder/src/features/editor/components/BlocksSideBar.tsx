@@ -112,8 +112,7 @@ export const BlocksSideBar = () => {
         bgColor={useColorModeValue('white', 'gray.900')}
         spacing={6}
         userSelect="none"
-        overflowY="scroll"
-        className="hide-scrollbar"
+        overflowY="auto"
       >
         <Flex justifyContent="flex-end">
           <Tooltip

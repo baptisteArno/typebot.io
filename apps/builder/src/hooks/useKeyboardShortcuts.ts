@@ -6,6 +6,7 @@ type Props = {
   copy?: () => void
   paste?: () => void
   cut?: () => void
+  duplicate?: () => void
   backspace?: () => void
 }
 export const useKeyboardShortcuts = ({
@@ -14,6 +15,7 @@ export const useKeyboardShortcuts = ({
   copy,
   paste,
   cut,
+  duplicate,
   backspace,
 }: Props) => {
   const isUndoShortcut = (event: KeyboardEvent) =>
@@ -31,6 +33,9 @@ export const useKeyboardShortcuts = ({
   const isCutShortcut = (event: KeyboardEvent) =>
     (event.metaKey || event.ctrlKey) && event.key === 'x'
 
+  const isDuplicateShortcut = (event: KeyboardEvent) =>
+    (event.metaKey || event.ctrlKey) && event.key === 'd'
+
   const isBackspaceShortcut = (event: KeyboardEvent) =>
     event.key === 'Backspace'
 
@@ -44,26 +49,37 @@ export const useKeyboardShortcuts = ({
     if (undo && isUndoShortcut(event)) {
       event.preventDefault()
       undo()
+      return
     }
     if (redo && isRedoShortcut(event)) {
       event.preventDefault()
       redo()
+      return
     }
     if (copy && isCopyShortcut(event)) {
       event.preventDefault()
       copy()
+      return
     }
     if (paste && isPasteShortcut(event)) {
       event.preventDefault()
       paste()
+      return
     }
     if (cut && isCutShortcut(event)) {
       event.preventDefault()
       cut()
+      return
+    }
+    if (duplicate && isDuplicateShortcut(event)) {
+      event.preventDefault()
+      duplicate()
+      return
     }
     if (backspace && isBackspaceShortcut(event)) {
       event.preventDefault()
       backspace()
+      return
     }
   })
 }

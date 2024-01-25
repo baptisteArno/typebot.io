@@ -12,29 +12,55 @@ import {
 import { useRef } from 'react'
 import { useGroupsStore } from '../hooks/useGroupsStore'
 import { toast } from 'sonner'
+import { createId } from '@paralleldrive/cuid2'
+import { Edge, GroupV6 } from '@typebot.io/schemas'
+import { projectMouse } from '../helpers/projectMouse'
+import { Coordinates } from '../types'
+import { useShallow } from 'zustand/react/shallow'
 
 type Props = {
+  graphPosition: Coordinates & { scale: number }
+  isReadOnly: boolean
+  lastMouseClickPosition: Coordinates | undefined
   focusedGroups: string[]
   blurGroups: () => void
 }
 
-export const GroupSelectionMenu = ({ focusedGroups, blurGroups }: Props) => {
-  const { typebot, deleteGroups } = useTypebot()
+export const GroupSelectionMenu = ({
+  graphPosition,
+  lastMouseClickPosition,
+  isReadOnly,
+  focusedGroups,
+  blurGroups,
+}: Props) => {
+  const { typebot, deleteGroups, pasteGroups } = useTypebot()
   const ref = useRef<HTMLDivElement>(null)
-  const copyGroups = useGroupsStore((state) => state.copyGroups)
+
+  const groupsInClipboard = useGroupsStore(
+    useShallow((state) => state.groupsInClipboard)
+  )
+  const { copyGroups, setFocusedGroups, updateGroupCoordinates } =
+    useGroupsStore(
+      useShallow((state) => ({
+        copyGroups: state.copyGroups,
+        updateGroupCoordinates: state.updateGroupCoordinates,
+        setFocusedGroups: state.setFocusedGroups,
+      }))
+    )
 
   useEventListener('pointerup', (e) => e.stopPropagation(), ref.current)
 
   const handleCopy = () => {
     if (!typebot) return
     const groups = typebot.groups.filter((g) => focusedGroups.includes(g.id))
-    copyGroups(
-      groups,
-      typebot.edges.filter((edge) =>
-        groups.find((g) => g.id === edge.to.groupId)
-      )
+    const edges = typebot.edges.filter((edge) =>
+      groups.find((g) => g.id === edge.to.groupId)
     )
-    toast('Groups copied to clipboard')
+    copyGroups(groups, edges)
+    return {
+      groups,
+      edges,
+    }
   }
 
   const handleDelete = () => {
@@ -42,13 +68,45 @@ export const GroupSelectionMenu = ({ focusedGroups, blurGroups }: Props) => {
     blurGroups()
   }
 
+  const handlePaste = (overrideClipBoard?: {
+    groups: GroupV6[]
+    edges: Edge[]
+  }) => {
+    if (!groupsInClipboard || isReadOnly) return
+    const clipboard = overrideClipBoard ?? groupsInClipboard
+    const { groups, oldToNewIdsMapping } = parseGroupsToPaste(
+      clipboard.groups,
+      lastMouseClickPosition ??
+        projectMouse(
+          {
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2,
+          },
+          graphPosition
+        )
+    )
+    groups.forEach((group) => {
+      updateGroupCoordinates(group.id, group.graphCoordinates)
+    })
+    pasteGroups(groups, clipboard.edges, oldToNewIdsMapping)
+    setFocusedGroups(groups.map((g) => g.id))
+  }
+
   useKeyboardShortcuts({
-    copy: handleCopy,
+    copy: () => {
+      handleCopy()
+      toast('Groups copied to clipboard')
+    },
     cut: () => {
       handleCopy()
       handleDelete()
     },
+    duplicate: () => {
+      const clipboard = handleCopy()
+      handlePaste(clipboard)
+    },
     backspace: handleDelete,
+    paste: handlePaste,
   })
 
   return (
@@ -94,4 +152,43 @@ export const GroupSelectionMenu = ({ focusedGroups, blurGroups }: Props) => {
       />
     </HStack>
   )
+}
+
+const parseGroupsToPaste = (
+  groups: GroupV6[],
+  mousePosition: Coordinates
+): { groups: GroupV6[]; oldToNewIdsMapping: Map<string, string> } => {
+  const farLeftGroup = groups.sort(
+    (a, b) => a.graphCoordinates.x - b.graphCoordinates.x
+  )[0]
+  const farLeftGroupCoord = farLeftGroup.graphCoordinates
+
+  const oldToNewIdsMapping = new Map<string, string>()
+  const newGroups = groups.map((group) => {
+    const newId = createId()
+    oldToNewIdsMapping.set(group.id, newId)
+
+    return {
+      ...group,
+      id: newId,
+      graphCoordinates:
+        group.id === farLeftGroup.id
+          ? mousePosition
+          : {
+              x:
+                mousePosition.x +
+                group.graphCoordinates.x -
+                farLeftGroupCoord.x,
+              y:
+                mousePosition.y +
+                group.graphCoordinates.y -
+                farLeftGroupCoord.y,
+            },
+    }
+  })
+
+  return {
+    groups: newGroups,
+    oldToNewIdsMapping,
+  }
 }

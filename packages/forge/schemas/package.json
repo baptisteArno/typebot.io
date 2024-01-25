@@ -13,6 +13,7 @@
     "@typebot.io/zemantic-ai-block": "workspace:*",
     "@typebot.io/cal-com-block": "workspace:*",
     "@typebot.io/chat-node-block": "workspace:*",
-    "@typebot.io/qrcode-block": "workspace:*"
+    "@typebot.io/qrcode-block": "workspace:*",
+    "@typebot.io/mistral-block": "workspace:*"
   }
 }

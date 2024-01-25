@@ -26852,7 +26852,8 @@
                   "zemantic-ai",
                   "cal-com",
                   "chat-node",
-                  "qr-code"
+                  "qr-code",
+                  "mistral"
                 ]
               },
               "options": {}
