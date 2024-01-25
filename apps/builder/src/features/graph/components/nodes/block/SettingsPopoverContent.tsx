@@ -69,7 +69,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
         <PopoverArrow bgColor={arrowColor} />
         <PopoverBody
           py="3"
-          overflowY="scroll"
+          overflowY="auto"
           maxH="400px"
           ref={ref}
           shadow="lg"

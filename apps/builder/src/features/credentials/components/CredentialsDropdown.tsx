@@ -116,7 +116,7 @@ export const CredentialsDropdown = ({
         </Text>
       </MenuButton>
       <MenuList>
-        <Stack maxH={'35vh'} overflowY="scroll" spacing="0">
+        <Stack maxH={'35vh'} overflowY="auto" spacing="0">
           {defaultCredentialLabel && (
             <MenuItem
               maxW="500px"
