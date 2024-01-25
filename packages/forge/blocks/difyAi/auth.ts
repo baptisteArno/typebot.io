@@ -1,4 +1,5 @@
 import { option, AuthDefinition } from '@typebot.io/forge'
+import { defaultBaseUrl } from './constants'
 
 export const auth = {
   type: 'encryptedCredentials',
@@ -9,6 +10,7 @@ export const auth = {
       isRequired: true,
       helperText: 'URI where the Service API is hosted.',
       withVariableButton: false,
+      defaultValue: defaultBaseUrl,
     }),
     apiKey: option.string.layout({
       label: 'App API key',
