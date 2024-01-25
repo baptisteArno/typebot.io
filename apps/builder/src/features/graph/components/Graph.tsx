@@ -30,9 +30,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { projectMouse } from '../helpers/projectMouse'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { useUser } from '@/features/account/hooks/useUser'
-import { graphGestureNotficationKey } from '@typebot.io/schemas/features/user/constants'
-import { toast } from 'sonner'
-import { LightBulbIcon } from '@/components/icons'
+import { GraphNavigation } from '@typebot.io/prisma'
 
 const maxScale = 2
 const minScale = 0.3
@@ -59,7 +57,7 @@ export const Graph = ({
     setDraggedItem,
   } = useBlockDnd()
   const { pasteGroups, createGroup } = useTypebot()
-  const { user, updateUser } = useUser()
+  const { user } = useUser()
   const {
     isReadOnly,
     setGraphPosition: setGlobalGraphPosition,
@@ -189,26 +187,6 @@ export const Graph = ({
       setLastMouseClickPosition(
         projectMouse({ x: e.clientX, y: e.clientY }, graphPosition)
       )
-    } else if (
-      user &&
-      !user?.displayedInAppNotifications?.[graphGestureNotficationKey]
-    ) {
-      toast.info('To move the graph using your mouse, hold the Space bar', {
-        action: {
-          label: 'More info',
-          onClick: () => {
-            window.open('https://docs.typebot.io/editor/graph', '_blank')
-          },
-        },
-        duration: 30000,
-        icon: <LightBulbIcon w="20px" h="20px" />,
-      })
-      updateUser({
-        displayedInAppNotifications: {
-          ...user.displayedInAppNotifications,
-          [graphGestureNotficationKey]: true,
-        },
-      })
     }
     setSelectBoxCoordinates(undefined)
     setOpenedBlockId(undefined)
@@ -219,7 +197,11 @@ export const Graph = ({
   useGesture(
     {
       onDrag: (props) => {
-        if (isDraggingGraph) {
+        if (
+          isDraggingGraph ||
+          (user?.graphNavigation !== GraphNavigation.TRACKPAD &&
+            !props.shiftKey)
+        ) {
           if (props.first) setIsDragging(true)
           if (props.last) setIsDragging(false)
           setGraphPosition({
