@@ -10,6 +10,7 @@ import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWork
 import { WhatsAppCredentials } from '@typebot.io/schemas/features/whatsapp'
 import got from 'got'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
+import { env } from '@typebot.io/env'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
@@ -61,7 +62,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     )) as WhatsAppCredentials['data']
 
     const { body } = await got.get({
-      url: `https://graph.facebook.com/v17.0/${mediaId}`,
+      url: `${env.WHATSAPP_CLOUD_API_URL}/v17.0/${mediaId}`,
       headers: {
         Authorization: `Bearer ${credentialsData.systemUserAccessToken}`,
       },
