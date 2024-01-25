@@ -256,7 +256,9 @@ export const askAssistant = createAction({
           for (const content of messageContents) {
             switch (content.type) {
               case 'text':
-                message += (message !== '' ? '\n\n' : '') + content.text.value
+                message +=
+                  (message !== '' ? '\n\n' : '') +
+                  content.text.value.replace(/【.+】/g, '')
                 break
             }
           }
