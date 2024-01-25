@@ -1,0 +1,19 @@
+---
+title: Mistral AI
+---
+
+Similarly to the [OpenAI block](./openai), this block allows you to chat with Mistral's AI models.
+
+Create your Mistral account here: https://console.mistral.ai.
+
+## Create chat completion
+
+With the Mistral AI block, you can create a chat completion based on your user queries and display the answer back to your typebot.
+
+This action comes with a convenient message type called `Dialogue`. It allows you to easily pass a sequence of saved assistant / user messages history to Mistral AI
+
+## Troobleshooting
+
+- If you get HTTP 401 error while loading the Mistral models, it means your API key is still not propagated on Mistral's side. Please wait a few minutes and try again.
+
+- If you get a rate limit error, make sure to add a subscription to your Mistral account. You can do so by going to your [Mistral billing section](https://console.mistral.ai/billing/) and clicking on the `Subscribe` button.
