@@ -1,5 +1,6 @@
 import { Stack, Heading } from '@chakra-ui/react'
 import { Header } from 'components/common/Header/Header'
+import { TextLink } from 'components/common/TextLink'
 import { SocialMetaTags } from 'components/common/SocialMetaTags'
 import React from 'react'
 
@@ -216,6 +217,57 @@ const PrivacyPolicies = () => {
           child provided this kind of information on our website, we strongly
           encourage you to contact us immediately and we will do our best
           efforts to promptly remove such information from our records.
+        </p>
+
+        <Heading>Google API Services User Data Policy Compliance</Heading>
+        <Heading as="h2" size="md">
+          Limited Use Disclosure
+        </Heading>
+        <p>
+          Flowdacity use and transfer to any other app of information received
+          from Google APIs will adhere to{' '}
+          <TextLink
+            href="https://developers.google.com/terms/api-services-user-data-policy"
+            isExternal
+          >
+            Google API Services User Data Policy
+          </TextLink>
+          , including the Limited Use requirements.
+        </p>
+
+        <Heading as="h2" size="md">
+          Data Handling Compliance
+        </Heading>
+        <p>
+          We ensure that the data obtained through Google&apos;s Restricted and
+          Sensitive Scopes is managed in strict compliance with Google&apos;s
+          Limited Use Policy. This data is solely used to enhance the
+          functionality of our application and provide users with the services
+          they expect from Flowdacity.
+        </p>
+
+        <Heading>User Data and Third-Party AI Services</Heading>
+        <p>
+          Flowdacity does not share any user data with third-party AI models or
+          companies. Our platform maintains the confidentiality and integrity of
+          user data at all times.
+        </p>
+
+        <p>
+          Users have the option to connect their own AI accounts (e.g., OpenAI)
+          with Flowdacity. This integration is fully controlled and managed by
+          the user, ensuring they retain complete autonomy over their AI
+          services and data. Flowdacity&apos;s role is to facilitate this
+          connection without accessing or managing these external AI accounts or
+          the data therein.
+        </p>
+
+        <p>
+          While Flowdacity enables integration with third-party AI services, all
+          data processed through these integrations is subject to the
+          user&apos;s direct control and consent. We are committed to
+          transparent practices and uphold user rights under all applicable data
+          protection regulations, including the CCPA and GDPR.
         </p>
       </Stack>
     </div>
