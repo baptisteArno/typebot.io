@@ -53,7 +53,9 @@ export const executeFunction = async ({
           ? output
           : output instanceof Object
           ? JSON.stringify(output)
-          : output.toString(),
+          : output === undefined
+          ? ''
+          : `${output}`,
       newVariables: Object.entries(updatedVariables)
         .map(([name, value]) => {
           const existingVariable = variables.find((v) => v.name === name)
