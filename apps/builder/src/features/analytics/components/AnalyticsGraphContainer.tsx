@@ -49,7 +49,7 @@ export const AnalyticsGraphContainer = ({ stats }: { stats?: Stats }) => {
       justifyContent="center"
     >
       {publishedTypebot && stats ? (
-        <GraphProvider isReadOnly>
+        <GraphProvider isReadOnly isAnalytics>
           <EventsCoordinatesProvider events={publishedTypebot?.events}>
             <Graph
               flex="1"
