@@ -12,7 +12,7 @@ export const ArticleCallToAction = () => (
       as="a"
       href="https://app.flowdacity.com/register"
     >
-      Create a typebot
+      Create a chatbot
     </Button>
     <Text fontSize="sm" fontStyle="italic" color="gray.600">
       It&apos;s free!
