@@ -32,6 +32,7 @@ const graphContext = createContext<{
   openedItemId?: string
   setOpenedItemId: Dispatch<SetStateAction<string | undefined>>
   isReadOnly: boolean
+  isAnalytics: boolean
   focusedGroupId?: string
   setFocusedGroupId: Dispatch<SetStateAction<string | undefined>>
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -44,9 +45,11 @@ const graphContext = createContext<{
 export const GraphProvider = ({
   children,
   isReadOnly = false,
+  isAnalytics = false,
 }: {
   children: ReactNode
   isReadOnly?: boolean
+  isAnalytics?: boolean
 }) => {
   const [graphPosition, setGraphPosition] = useState(
     graphPositionDefaultValue({ x: 0, y: 0 })
@@ -76,6 +79,7 @@ export const GraphProvider = ({
         setFocusedGroupId,
         setPreviewingBlock,
         previewingBlock,
+        isAnalytics,
       }}
     >
       {children}
