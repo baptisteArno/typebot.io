@@ -66,8 +66,8 @@ export const NewVersionPopup = () => {
                 </HStack>
 
                 <Text fontSize="sm" color="gray.100">
-                  An improved version of Typebot is available. Please reload now
-                  to upgrade.
+                  An improved version of Flowdacity is available. Please reload
+                  now to upgrade.
                 </Text>
               </Stack>
               <Flex justifyContent="flex-end">
