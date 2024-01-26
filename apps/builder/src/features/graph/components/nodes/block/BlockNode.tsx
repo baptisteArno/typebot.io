@@ -69,6 +69,7 @@ export const BlockNode = ({
     setFocusedGroupId,
     previewingEdge,
     isReadOnly,
+    isAnalytics,
     previewingBlock,
   } = useGraph()
   const { mouseOverBlock, setMouseOverBlock } = useBlockDnd()
@@ -215,7 +216,7 @@ export const BlockNode = ({
               data-testid={`block ${block.id}`}
               w="full"
               className="prevent-group-drag"
-              pointerEvents={isReadOnly || isDraggingGraph ? 'none' : 'auto'}
+              pointerEvents={isAnalytics || isDraggingGraph ? 'none' : 'auto'}
             >
               <HStack
                 flex="1"
