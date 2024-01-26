@@ -36,6 +36,16 @@ const inspectTypebot = async () => {
           id: true,
           name: true,
           plan: true,
+          members: {
+            select: {
+              role: true,
+              user: {
+                select: {
+                  email: true,
+                },
+              },
+            },
+          },
         },
       },
     },
