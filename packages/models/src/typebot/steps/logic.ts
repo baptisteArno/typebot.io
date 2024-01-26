@@ -58,22 +58,11 @@ export enum LogicalOperator {
 }
 
 export enum ComparisonOperators {
-  EQUAL = 'For igual a',
-  NOT_EQUAL = 'For diferente de',
-  GREATER = 'For maior que',
-  GREATER_OR_EQUAL = 'For maior ou igual a',
-  LESS = 'For menor que',
-  LESS_OR_EQUAL = 'For menor ou igual a',
-  EMPTY = 'Estiver vazio',
-  NOT_EMPTY = 'Não estiver vazio',
-  START_WITH = 'Começar com',
-  NOT_START_WITH = 'Não começar com',
-  END_WITH = 'Terminar com',
-  NOT_END_WITH = 'Não terminar com',
+  EQUAL = 'Igual a',
+  NOT_EQUAL = 'Diferente de',
   CONTAINS = 'Contém',
-  NOT_CONTAINS = 'Não contém',
-  BETWEEN = 'Estiver entre',
-  NOT_BETWEEN = 'Não estiver entre'
+  GREATER = 'Maior que',
+  LESS = 'Menor que'
 }
 
 export type ConditionContent = {
