@@ -241,7 +241,7 @@ const CollaborationTypeMenuButton = ({
       <ReadableCollaborationType type={type} />
     </MenuButton>
     <MenuList minW={0}>
-      <Stack maxH={'35vh'} overflowY="scroll" spacing="0">
+      <Stack maxH={'35vh'} overflowY="auto" spacing="0">
         <MenuItem onClick={() => onChange(CollaborationType.READ)}>
           <ReadableCollaborationType type={CollaborationType.READ} />
         </MenuItem>

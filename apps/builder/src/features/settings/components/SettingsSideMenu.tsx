@@ -56,7 +56,7 @@ export const SettingsSideMenu = () => {
       borderRightWidth={1}
       pt={10}
       spacing={10}
-      overflowY="scroll"
+      overflowY="auto"
       pb="20"
     >
       <Heading fontSize="xl" textAlign="center">
@@ -84,7 +84,7 @@ export const SettingsSideMenu = () => {
           <AccordionButton py={6}>
             <HStack flex="1" pl={2}>
               <ChatIcon />
-              <Heading fontSize="lg">Typing emulation</Heading>
+              <Heading fontSize="lg">Typing</Heading>
             </HStack>
             <AccordionIcon />
           </AccordionButton>

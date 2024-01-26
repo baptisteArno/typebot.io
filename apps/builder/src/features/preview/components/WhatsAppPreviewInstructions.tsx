@@ -68,8 +68,7 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
     <Stack
       as="form"
       spacing={4}
-      overflowY="scroll"
-      className="hide-scrollbar"
+      overflowY="auto"
       w="full"
       px="1"
       onSubmit={sendWhatsAppPreviewStartMessage}
@@ -86,12 +85,6 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
           Check the docs
         </Button>
       </HStack>
-      <Alert status="warning">
-        <AlertIcon />
-        The WhatsApp integration is still in beta test.
-        <br />
-        Your bug reports are greatly appreciate 🧡
-      </Alert>
       <TextInput
         label="Your phone number"
         placeholder="+XXXXXXXXXXXX"

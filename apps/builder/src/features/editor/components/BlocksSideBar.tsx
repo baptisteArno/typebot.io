@@ -24,6 +24,7 @@ import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integr
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { BlockV6 } from '@typebot.io/schemas'
 import { enabledBlocks } from '@typebot.io/forge-repository'
+import { useDebouncedCallback } from 'use-debounce'
 
 // Integration blocks migrated to forged blocks
 const legacyIntegrationBlocks = [
@@ -41,6 +42,8 @@ export const BlocksSideBar = () => {
   const [relativeCoordinates, setRelativeCoordinates] = useState({ x: 0, y: 0 })
   const [isLocked, setIsLocked] = useState(true)
   const [isExtended, setIsExtended] = useState(true)
+
+  const closeSideBar = useDebouncedCallback(() => setIsExtended(false), 200)
 
   const handleMouseMove = (event: MouseEvent) => {
     if (!draggedBlockType) return
@@ -75,11 +78,14 @@ export const BlocksSideBar = () => {
 
   const handleLockClick = () => setIsLocked(!isLocked)
 
-  const handleDockBarEnter = () => setIsExtended(true)
+  const handleDockBarEnter = () => {
+    closeSideBar.flush()
+    setIsExtended(true)
+  }
 
   const handleMouseLeave = () => {
     if (isLocked) return
-    setIsExtended(false)
+    closeSideBar()
   }
 
   return (
@@ -106,8 +112,7 @@ export const BlocksSideBar = () => {
         bgColor={useColorModeValue('white', 'gray.900')}
         spacing={6}
         userSelect="none"
-        overflowY="scroll"
-        className="hide-scrollbar"
+        overflowY="auto"
       >
         <Flex justifyContent="flex-end">
           <Tooltip
@@ -200,12 +205,14 @@ export const BlocksSideBar = () => {
         <Flex
           pos="absolute"
           h="100%"
-          right="-50px"
-          w="50px"
+          right="-70px"
+          w="450px"
           top="0"
-          justify="center"
+          justify="flex-end"
+          pr="10"
           align="center"
           onMouseEnter={handleDockBarEnter}
+          zIndex={-1}
         >
           <Flex w="5px" h="20px" bgColor="gray.400" rounded="md" />
         </Flex>

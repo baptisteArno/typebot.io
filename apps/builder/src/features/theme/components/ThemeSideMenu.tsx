@@ -65,7 +65,7 @@ export const ThemeSideMenu = () => {
       borderRightWidth={1}
       pt={10}
       spacing={10}
-      overflowY="scroll"
+      overflowY="auto"
       pb="20"
       position="relative"
     >

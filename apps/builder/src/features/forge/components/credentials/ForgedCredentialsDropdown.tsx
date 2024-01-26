@@ -134,7 +134,7 @@ export const ForgedCredentialsDropdown = ({
         </Text>
       </MenuButton>
       <MenuList>
-        <Stack maxH={'35vh'} overflowY="scroll" spacing="0">
+        <Stack maxH={'35vh'} overflowY="auto" spacing="0">
           {data?.credentials.map((credentials) => (
             <MenuItem
               role="menuitem"

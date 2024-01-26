@@ -27,7 +27,8 @@
     "inspectWorkspace": "tsx inspectWorkspace.ts",
     "getCoupon": "tsx getCoupon.ts",
     "exportResults": "tsx exportResults.ts",
-    "updateUserEmail": "tsx updateUserEmail.ts"
+    "updateUserEmail": "tsx updateUserEmail.ts",
+    "inspectChatSession": "tsx inspectChatSession.ts"
   },
   "devDependencies": {
     "@typebot.io/emails": "workspace:*",
