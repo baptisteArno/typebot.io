@@ -182,7 +182,7 @@ export const createChatCompletion = createAction({
 
       const openai = new OpenAI(config)
 
-      const tools = options.tools
+      const tools = options.tools?.length
         ? (options.tools
             .filter((t) => t.name && t.parameters)
             .map((t) => ({
@@ -224,7 +224,14 @@ export const createChatCompletion = createAction({
           const name = toolCall.function?.name
           if (!name) continue
           const toolDefinition = options.tools?.find((t) => t.name === name)
-          if (!toolDefinition?.code || !toolDefinition.parameters) continue
+          if (!toolDefinition?.code || !toolDefinition.parameters) {
+            messages.push({
+              tool_call_id: toolCall.id,
+              role: 'tool',
+              content: 'Function not found',
+            })
+            continue
+          }
           const toolParams = Object.fromEntries(
             toolDefinition.parameters.map(({ name }) => [name, null])
           )
@@ -276,7 +283,7 @@ export const createChatCompletion = createAction({
 
         const openai = new OpenAI(config)
 
-        const tools = options.tools
+        const tools = options.tools?.length
           ? (options.tools
               .filter((t) => t.name && t.parameters)
               .map((t) => ({
@@ -310,8 +317,14 @@ export const createChatCompletion = createAction({
               const name = toolCall.func?.name
               if (!name) continue
               const toolDefinition = options.tools?.find((t) => t.name === name)
-              if (!toolDefinition?.code || !toolDefinition.parameters) continue
-
+              if (!toolDefinition?.code || !toolDefinition.parameters) {
+                messages.push({
+                  tool_call_id: toolCall.id,
+                  role: 'tool',
+                  content: 'Function not found',
+                })
+                continue
+              }
               const { output } = await executeFunction({
                 variables: variables.list(),
                 args:
