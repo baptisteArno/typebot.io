@@ -55,6 +55,25 @@ export const createQrCode = createAction({
         )
       if (!options.valid_till) options.valid_till = '900'
 
+      const setMapping = async (upi: string) => {
+
+        const url = await uploadFileToBucket({
+          file: await generateQrCodeBuffer(upi),
+          key: `tmp/qrcodes/${createId() + createId()}.png`,
+          mimeType: 'image/png',
+        })
+
+        options.responseMapping?.forEach((mapping) => {
+          if (!mapping.variableId) return
+
+          const item = mapping.item ?? 'QR Code'
+          if (item === 'QR Code') variables.set(mapping.variableId, url)
+
+          if (item === 'UPI Link')
+            variables.set(mapping.variableId, upi)
+        })
+      }
+
       const delta = parseInt(options.valid_till)
       const close_by = delta > 900 ? Math.floor(Date.now() / 1000) + delta : Math.floor(Date.now() / 1000) + 900
       const notes: Record<string, string> = {}
@@ -80,23 +99,12 @@ export const createQrCode = createAction({
           json: qrcode,
         }).json()
 
-        const url = await uploadFileToBucket({
-          file: await generateQrCodeBuffer(response.image_content),
-          key: `tmp/qrcodes/${createId() + createId()}.png`,
-          mimeType: 'image/png',
-        })
+        const upi = response.image_content ?? 'Invalid Data'
 
-        options.responseMapping?.forEach((mapping) => {
-          if (!mapping.variableId) return
-
-          const item = mapping.item ?? 'QR Code'
-          if (item === 'QR Code') variables.set(mapping.variableId, url)
-
-          if (item === 'UPI Link')
-            variables.set(mapping.variableId, response.image_content)
-        })
+        await setMapping(upi)
       } catch (error) {
         console.log('error', error)
+        await setMapping('Invalid Data')
         return logs.add('An unknown error occurred. Please check your server logs')
       }
 
