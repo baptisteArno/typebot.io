@@ -5,7 +5,7 @@ export const SocialMetaTags = ({
   title = 'Flowdacity - AI Chatbot Generator for Conversational Experiences',
   description = 'Powerful blocks to create unique chat experiences. Embed them anywhere on your apps and start collecting results like magic.',
   currentUrl,
-  imagePreviewUrl = 'https://home.flowdacity.com/images/preview.png',
+  imagePreviewUrl = 'https://flowdacity.sirv.com/web/og.png',
 }: {
   title?: string
   description?: string
