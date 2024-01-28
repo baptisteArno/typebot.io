@@ -208,7 +208,9 @@ export const createChatCompletion = createAction({
 
       let totalTokens = 0
       let message: ChatCompletionMessage
-      while (true) {
+      // while (true) {
+      for (let i = 0; i < 10; i++) {
+        // Avoid infinite loop
         const response = await openai.chat.completions.create(body)
 
         message = response.choices[0].message
@@ -225,6 +227,8 @@ export const createChatCompletion = createAction({
           if (!name) continue
           const toolDefinition = options.tools?.find((t) => t.name === name)
           if (!toolDefinition?.code || !toolDefinition.parameters) {
+            console.error(JSON.stringify(toolCall, null, 2))
+
             messages.push({
               tool_call_id: toolCall.id,
               role: 'tool',
