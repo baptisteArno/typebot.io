@@ -5,7 +5,7 @@
     "lint": {
       "outputs": []
     },
-    "format:fix": {
+    "format:check": {
       "outputs": []
     },
     "dev": {
