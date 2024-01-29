@@ -104,10 +104,10 @@ export const option = {
   keyValueList: z
     .array(
       z.object({
-        key: z.string().layout({
+        key: z.string().optional().layout({
           label: 'Key',
         }),
-        value: z.string().layout({
+        value: z.string().optional().layout({
           label: 'Value',
         }),
       })
