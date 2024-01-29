@@ -71,7 +71,7 @@ const LogCard = ({ log }: { log: Log }) => {
           </AccordionButton>
           <AccordionPanel
             as="pre"
-            overflow="scroll"
+            overflow="auto"
             borderWidth="1px"
             borderRadius="md"
           >

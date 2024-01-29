@@ -44,13 +44,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
     isReadOnly,
     graphPosition,
   } = useGraph()
-  const {
-    typebot,
-    updateGroup,
-    updateGroupsCoordinates,
-    deleteGroup,
-    duplicateGroup,
-  } = useTypebot()
+  const { typebot, updateGroup, updateGroupsCoordinates } = useTypebot()
   const { setMouseOverGroup, mouseOverGroup } = useBlockDnd()
   const { setRightPanel, setStartPreviewAtGroup } = useEditor()
 
@@ -67,6 +61,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
           isNotDefined(previewingEdge.to.blockId))))
 
   const groupRef = useRef<HTMLDivElement | null>(null)
+  const isDraggingGraph = useGroupsStore((state) => state.isDraggingGraph)
   const focusedGroups = useGroupsStore(
     useShallow((state) => state.focusedGroups)
   )
@@ -158,7 +153,8 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
 
   return (
     <ContextMenu<HTMLDivElement>
-      renderMenu={() => <GroupNodeContextMenu groupIndex={groupIndex} />}
+      onOpen={() => focusGroup(group.id)}
+      renderMenu={() => <GroupNodeContextMenu />}
       isDisabled={isReadOnly}
     >
       {(ref, isContextMenuOpened) => (
@@ -192,6 +188,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
           _hover={{ shadow: 'lg' }}
           zIndex={isFocused ? 10 : 1}
           spacing={isEmpty(group.title) ? '0' : '2'}
+          pointerEvents={isDraggingGraph ? 'none' : 'auto'}
         >
           <Editable
             value={groupTitle}
@@ -239,10 +236,6 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
               <GroupFocusToolbar
                 groupId={group.id}
                 onPlayClick={startPreviewAtThisGroup}
-                onDuplicateClick={() => {
-                  duplicateGroup(groupIndex)
-                }}
-                onDeleteClick={() => deleteGroup(groupIndex)}
               />
             </SlideFade>
           )}

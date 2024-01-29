@@ -28,13 +28,9 @@ You can customize this typing speed in the settings:
 
 The goal of a typebot is not to pretend that the bot is a real human. So we suggest not setting the typing speed too low.
 
-Sometimes you want to pause the bot for a few seconds between one message and another, regardless of the typing speed. You can achieve this by adding a Code block with the following content:
+The `Disable on first message` allows you to disable the typing emulation on the first message. This is useful if you want to lower the first message display time since the site can take some time to load first.
 
-```js
-return new Promise((res) => setTimeout(res, 3000))
-```
-
-You can tweak `3000` (3s) to your liking.
+The `Delay between messages` by default is 0 and you can increase it up to 5 seconds if you want to add a delay between **every** messages sent by the typebot. If you ever want to pause the bot just once. You can insert a [Wait block](../editor/blocks/logic/wait) between both messages.
 
 ## Security
 

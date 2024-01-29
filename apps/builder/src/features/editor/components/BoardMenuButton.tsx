@@ -17,12 +17,12 @@ import {
   SettingsIcon,
 } from '@/components/icons'
 import { useTypebot } from '../providers/TypebotProvider'
-import { useUser } from '@/features/account/hooks/useUser'
-import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { EditorSettingsModal } from './EditorSettingsModal'
 import { parseDefaultPublicId } from '@/features/publish/helpers/parseDefaultPublicId'
 import { useTranslate } from '@tolgee/react'
+import { useUser } from '@/features/account/hooks/useUser'
+import { useRouter } from 'next/router'
 
 export const BoardMenuButton = (props: FlexProps) => {
   const { query } = useRouter()
@@ -54,7 +54,7 @@ export const BoardMenuButton = (props: FlexProps) => {
   }
 
   const redirectToDocumentation = () =>
-    window.open('https://docs.typebot.io/get-started/overview', '_blank')
+    window.open('https://docs.typebot.io/editor/graph', '_blank')
 
   return (
     <Flex

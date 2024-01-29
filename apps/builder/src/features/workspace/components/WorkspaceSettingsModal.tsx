@@ -139,8 +139,7 @@ export const WorkspaceSettingsModal = ({
                   size="sm"
                   justifyContent="flex-start"
                   pl="4"
-                  overflow="scroll"
-                  className="hide-scrollbar"
+                  overflow="auto"
                 >
                   {t('workspace.settings.modal.menu.billingAndUsage.label')}
                 </Button>

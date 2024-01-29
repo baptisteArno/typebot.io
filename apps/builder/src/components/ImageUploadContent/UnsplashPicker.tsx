@@ -155,7 +155,7 @@ export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
           {error}
         </Alert>
       )}
-      <Stack overflowY="scroll" maxH="400px" ref={scrollContainer}>
+      <Stack overflowY="auto" maxH="400px" ref={scrollContainer}>
         {images.length > 0 && (
           <Grid templateColumns="repeat(3, 1fr)" columnGap={2} rowGap={3}>
             {images.map((image, index) => (

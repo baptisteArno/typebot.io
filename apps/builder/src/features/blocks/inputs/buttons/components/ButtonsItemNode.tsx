@@ -152,7 +152,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
           <PopoverArrow bgColor={arrowColor} />
           <PopoverBody
             py="6"
-            overflowY="scroll"
+            overflowY="auto"
             maxH="400px"
             shadow="lg"
             ref={ref}

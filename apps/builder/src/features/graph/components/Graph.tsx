@@ -1,12 +1,7 @@
 import { Fade, Flex, FlexProps, useEventListener } from '@chakra-ui/react'
 import React, { useRef, useMemo, useEffect, useState } from 'react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import {
-  BlockV6,
-  GroupV6,
-  PublicTypebotV6,
-  TypebotV6,
-} from '@typebot.io/schemas'
+import { BlockV6, PublicTypebotV6, TypebotV6 } from '@typebot.io/schemas'
 import { useDebounce } from 'use-debounce'
 import GraphElements from './GraphElements'
 import { createId } from '@paralleldrive/cuid2'
@@ -29,6 +24,8 @@ import { useGroupsStore } from '../hooks/useGroupsStore'
 import { useShallow } from 'zustand/react/shallow'
 import { projectMouse } from '../helpers/projectMouse'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
+import { useUser } from '@/features/account/hooks/useUser'
+import { GraphNavigation } from '@typebot.io/prisma'
 
 const maxScale = 2
 const minScale = 0.3
@@ -54,7 +51,8 @@ export const Graph = ({
     draggedItem,
     setDraggedItem,
   } = useBlockDnd()
-  const { pasteGroups, createGroup } = useTypebot()
+  const { createGroup } = useTypebot()
+  const { user } = useUser()
   const {
     isReadOnly,
     setGraphPosition: setGlobalGraphPosition,
@@ -63,6 +61,8 @@ export const Graph = ({
     setPreviewingEdge,
     connectingIds,
   } = useGraph()
+  const isDraggingGraph = useGroupsStore((state) => state.isDraggingGraph)
+  const setIsDraggingGraph = useGroupsStore((state) => state.setIsDraggingGraph)
   const focusedGroups = useGroupsStore(
     useShallow((state) => state.focusedGroups)
   )
@@ -78,9 +78,6 @@ export const Graph = ({
       blurGroups: state.blurGroups,
       setFocusedGroups: state.setFocusedGroups,
     }))
-  )
-  const groupsInClipboard = useGroupsStore(
-    useShallow((state) => state.groupsInClipboard)
   )
 
   const [graphPosition, setGraphPosition] = useState(
@@ -107,7 +104,6 @@ export const Graph = ({
   const [lastMouseClickPosition, setLastMouseClickPosition] = useState<
     Coordinates | undefined
   >()
-  const [isSpacePressed, setIsSpacePressed] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
 
   const graphContainerRef = useRef<HTMLDivElement | null>(null)
@@ -172,6 +168,7 @@ export const Graph = ({
   }
 
   const handlePointerUp = (e: PointerEvent) => {
+    if (isDraggingGraph) return
     if (
       !selectBoxCoordinates ||
       Math.abs(selectBoxCoordinates?.dimension.width) +
@@ -192,7 +189,11 @@ export const Graph = ({
   useGesture(
     {
       onDrag: (props) => {
-        if (isSpacePressed) {
+        if (
+          isDraggingGraph ||
+          (user?.graphNavigation !== GraphNavigation.TRACKPAD &&
+            !props.shiftKey)
+        ) {
           if (props.first) setIsDragging(true)
           if (props.last) setIsDragging(false)
           setGraphPosition({
@@ -310,34 +311,14 @@ export const Graph = ({
     setAutoMoveDirection(undefined)
   }
 
-  useKeyboardShortcuts({
-    paste: () => {
-      if (!groupsInClipboard || isReadOnly) return
-      const { groups, oldToNewIdsMapping } = parseGroupsToPaste(
-        groupsInClipboard.groups,
-        lastMouseClickPosition ??
-          projectMouse(
-            {
-              x: window.innerWidth / 2,
-              y: window.innerHeight / 2,
-            },
-            graphPosition
-          )
-      )
-      groups.forEach((group) => {
-        updateGroupCoordinates(group.id, group.graphCoordinates)
-      })
-      pasteGroups(groups, groupsInClipboard.edges, oldToNewIdsMapping)
-      setFocusedGroups(groups.map((g) => g.id))
-    },
-  })
+  useKeyboardShortcuts({})
 
   useEventListener('keydown', (e) => {
-    if (e.key === ' ') setIsSpacePressed(true)
+    if (e.key === ' ') setIsDraggingGraph(true)
   })
   useEventListener('keyup', (e) => {
     if (e.key === ' ') {
-      setIsSpacePressed(false)
+      setIsDraggingGraph(false)
       setIsDragging(false)
     }
   })
@@ -357,7 +338,7 @@ export const Graph = ({
   const zoomIn = () => zoom({ delta: zoomButtonsScaleBlock })
   const zoomOut = () => zoom({ delta: -zoomButtonsScaleBlock })
 
-  const cursor = isSpacePressed ? (isDragging ? 'grabbing' : 'grab') : 'auto'
+  const cursor = isDraggingGraph ? (isDragging ? 'grabbing' : 'grab') : 'auto'
 
   return (
     <Flex
@@ -374,8 +355,11 @@ export const Graph = ({
           {selectBoxCoordinates && <SelectBox {...selectBoxCoordinates} />}
           <Fade in={!isReadOnly && focusedGroups.length > 1}>
             <GroupSelectionMenu
+              lastMouseClickPosition={lastMouseClickPosition}
               focusedGroups={focusedGroups}
               blurGroups={blurGroups}
+              graphPosition={graphPosition}
+              isReadOnly={isReadOnly}
             />
           </Fade>
         </>
@@ -444,42 +428,3 @@ const useAutoMoveBoard = (
       clearInterval(interval)
     }
   }, [autoMoveDirection, setGraphPosition])
-
-const parseGroupsToPaste = (
-  groups: GroupV6[],
-  mousePosition: Coordinates
-): { groups: GroupV6[]; oldToNewIdsMapping: Map<string, string> } => {
-  const farLeftGroup = groups.sort(
-    (a, b) => a.graphCoordinates.x - b.graphCoordinates.x
-  )[0]
-  const farLeftGroupCoord = farLeftGroup.graphCoordinates
-
-  const oldToNewIdsMapping = new Map<string, string>()
-  const newGroups = groups.map((group) => {
-    const newId = createId()
-    oldToNewIdsMapping.set(group.id, newId)
-
-    return {
-      ...group,
-      id: newId,
-      graphCoordinates:
-        group.id === farLeftGroup.id
-          ? mousePosition
-          : {
-              x:
-                mousePosition.x +
-                group.graphCoordinates.x -
-                farLeftGroupCoord.x,
-              y:
-                mousePosition.y +
-                group.graphCoordinates.y -
-                farLeftGroupCoord.y,
-            },
-    }
-  })
-
-  return {
-    groups: newGroups,
-    oldToNewIdsMapping,
-  }
-}

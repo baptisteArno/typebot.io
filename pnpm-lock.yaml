@@ -1233,6 +1233,31 @@ importers:
         specifier: 5.3.2
         version: 5.3.2
 
+  packages/forge/blocks/mistral:
+    dependencies:
+      '@mistralai/mistralai':
+        specifier: ^0.0.10
+        version: 0.0.10
+      ai:
+        specifier: 2.2.31
+        version: 2.2.31(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.1)(vue@3.3.4)
+    devDependencies:
+      '@typebot.io/forge':
+        specifier: workspace:*
+        version: link:../../core
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../../../lib
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../../../tsconfig
+      '@types/react':
+        specifier: 18.2.15
+        version: 18.2.15
+      typescript:
+        specifier: 5.3.2
+        version: 5.3.2
+
   packages/forge/blocks/openai:
     dependencies:
       ai:
@@ -1357,6 +1382,9 @@ importers:
       '@typebot.io/forge-repository':
         specifier: workspace:*
         version: link:../repository
+      '@typebot.io/mistral-block':
+        specifier: workspace:*
+        version: link:../blocks/mistral
       '@typebot.io/openai-block':
         specifier: workspace:*
         version: link:../blocks/openai
@@ -6367,6 +6395,14 @@ packages:
       zod: 3.22.4
       zod-to-json-schema: 3.21.4(zod@3.22.4)
     dev: true
+
+  /@mistralai/mistralai@0.0.10:
+    resolution: {integrity: sha512-fZOt7A32DcPSff58wTa44pKUBoJBH5toAuzNI9yoM7s5NjTupa1IYcSqqk2LigO8M5EtOEkFsD/XzdyWPnhaRA==}
+    dependencies:
+      node-fetch: 2.7.0
+    transitivePeerDependencies:
+      - encoding
+    dev: false
 
   /@next/env@14.0.3:
     resolution: {integrity: sha512-7xRqh9nMvP5xrW4/+L0jgRRX+HoNRGnfJpD+5Wq6/13j3dsdzxO3BCXn7D3hMqsDb+vjZnJq+vI7+EtgrYZTeA==}

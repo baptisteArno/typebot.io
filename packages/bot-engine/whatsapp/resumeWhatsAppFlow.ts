@@ -93,10 +93,12 @@ export const resumeWhatsAppFlow = async ({
     visitedEdges,
   } = resumeResponse
 
+  const isFirstChatChunk = (!session || isSessionExpired) ?? false
   await sendChatReplyToWhatsApp({
     to: receivedMessage.from,
     messages,
     input,
+    isFirstChatChunk,
     typingEmulation: newSessionState.typingEmulation,
     clientSideActions,
     credentials,
