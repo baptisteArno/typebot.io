@@ -20,6 +20,8 @@ export const StepTypeLabel = ({ type }: Props) => {
       return <Text>Envie uma mensagem de texto</Text>
     case WOZStepType.MESSAGE:
       return <Text>Envie uma sugestão WOZ</Text>
+    case WOZStepType.ASSIGN:
+      return <Text>Direcione a conversa para o WOZ</Text>
     case InputStepType.TEXT:
       return <Text>Pergunte qualquer coisa</Text>
     case BubbleStepType.MEDIA:

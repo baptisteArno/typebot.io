@@ -50,6 +50,7 @@ import {
   defaultCallOtherBotOptions,
   defaultPreReserveOptions,
   defaultWOZSuggestionOptions,
+  defaultWOZAssignOptions,
   WOZStepType,
   WOZSuggestionOptions
 } from 'models'
@@ -300,6 +301,7 @@ export const parseNewStep = (
   type: DraggableStepType,
   blockId: string
 ): DraggableStep => {
+  console.log('parseNewStep', type, blockId)
   const id = cuid()
 
   const options = isOctaStepType(type) || isWOZStepType(type)
@@ -377,6 +379,8 @@ const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType | WOZStepTyp
       return defaultPreReserveOptions
     case WOZStepType.MESSAGE:
       return defaultWOZSuggestionOptions
+    case WOZStepType.ASSIGN:
+      return defaultWOZAssignOptions
     default:
       return null
   }

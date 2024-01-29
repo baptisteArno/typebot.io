@@ -44,6 +44,7 @@ import { useTypebot } from 'contexts/TypebotContext'
 import { MediaInputContent } from '../contents/MediaInput'
 import { InputItemsContent } from '../contents/InputItemsContent'
 import { WOZSuggestionContent } from '../contents/WOZSuggestion'
+import { WOZAssignContent } from '../contents/WOZAssign'
 // import { ProviderWebhookContent } from './contents/ZapierContent'
 
 type Props = {
@@ -195,6 +196,9 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     }
     case WOZStepType.MESSAGE: {
       return <WOZSuggestionContent step={step} />
+    }
+    case WOZStepType.ASSIGN: {
+      return <WOZAssignContent step={step} />
     }
     case 'start': {
       return <span></span>

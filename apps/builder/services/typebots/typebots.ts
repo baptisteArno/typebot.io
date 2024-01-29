@@ -55,6 +55,7 @@ import {
   defaultPreReserveOptions,
   WOZStepType,
   defaultWOZSuggestionOptions,
+  defaultWOZAssignOptions,
   WOZSuggestionOptions,
 } from 'models'
 import { Typebot } from 'models'
@@ -71,6 +72,7 @@ import {
   stepTypeHasItems,
   stepTypeHasOption,
   stepTypeHasWebhook,
+  isWOZStepType
 } from 'utils'
 import { dequal } from 'dequal'
 import { stringify } from 'qs'
@@ -302,27 +304,31 @@ export const patchTypebot = async (id: string, typebot: Partial<Typebot>) =>
     body: { bot: typebot },
   })
 
-export const parseNewStep = (
-  type: DraggableStepType,
-  blockId: string
-): DraggableStep => {
-  const id = cuid()
-  return {
-    id,
-    blockId,
-    type,
-    content:
-      isBubbleStepType(type) || isOctaBubbleStepType(type)
+  export const parseNewStep = (
+    type: DraggableStepType,
+    blockId: string
+  ): DraggableStep => {
+    const id = cuid()
+  
+    const options = isOctaStepType(type) || isWOZStepType(type)
+    ? parseOctaStepOptions(type)
+    : stepTypeHasOption(type)
+      ? parseDefaultStepOptions(type)
+      : undefined
+  
+    return {
+      id,
+      blockId,
+      type,
+      content: isBubbleStepType(type) || isOctaBubbleStepType(type)
         ? parseDefaultContent(type)
         : undefined,
-    options: isOctaStepType(type)
-      ? parseOctaStepOptions(type)
-      : stepTypeHasOption(type)
-      ? parseDefaultStepOptions(type)
-      : undefined,
-    items: stepTypeHasItems(type) ? parseDefaultItems(type, id) : undefined,
-  } as DraggableStep
-}
+      options,
+  
+      webhookId: stepTypeHasWebhook(type) ? cuid() : undefined,
+      items: stepTypeHasItems(type) ? parseDefaultItems(type, id) : undefined,
+    } as DraggableStep
+  }
 
 const parseDefaultItems = (
   type:
@@ -466,6 +472,8 @@ const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType | WOZStepTyp
       return defaultPreReserveOptions
     case WOZStepType.MESSAGE:
       return defaultWOZSuggestionOptions
+    case WOZStepType.ASSIGN:
+      return defaultWOZAssignOptions
     case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
       return defaultWhatsAppOptionsListOptions
     case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
