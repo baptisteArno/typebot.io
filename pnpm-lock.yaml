@@ -1212,6 +1212,27 @@ importers:
         specifier: 5.3.2
         version: 5.3.2
 
+  packages/forge/blocks/difyAi:
+    devDependencies:
+      '@typebot.io/forge':
+        specifier: workspace:*
+        version: link:../../core
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../../../lib
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../../../tsconfig
+      '@types/react':
+        specifier: 18.2.15
+        version: 18.2.15
+      got:
+        specifier: 12.6.0
+        version: 12.6.0
+      typescript:
+        specifier: 5.3.2
+        version: 5.3.2
+
   packages/forge/blocks/mistral:
     dependencies:
       '@mistralai/mistralai':
@@ -1352,6 +1373,9 @@ importers:
       '@typebot.io/chat-node-block':
         specifier: workspace:*
         version: link:../blocks/chatNode
+      '@typebot.io/dify-ai-block':
+        specifier: workspace:*
+        version: link:../blocks/difyAi
       '@typebot.io/forge':
         specifier: workspace:*
         version: link:../core
