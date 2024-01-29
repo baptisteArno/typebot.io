@@ -101,6 +101,7 @@ export const BlockNode = ({
     ref: blockRef,
     onDrag,
     isDisabled: !onMouseDown,
+    deps: [isEditing],
   })
 
   const {
