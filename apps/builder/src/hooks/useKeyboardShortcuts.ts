@@ -1,3 +1,4 @@
+import { isNotEmpty } from '@typebot.io/lib'
 import { useEventListener } from './useEventListener'
 
 type Props = {
@@ -40,6 +41,10 @@ export const useKeyboardShortcuts = ({
     event.key === 'Backspace'
 
   useEventListener('keydown', (event: KeyboardEvent) => {
+    if (!event.metaKey && !event.ctrlKey && event.key !== 'Backspace') return
+    // get text selection
+    const textSelection = window.getSelection()?.toString()
+    if (isNotEmpty(textSelection)) return
     const target = event.target as HTMLElement | null
     const isTyping =
       target?.role === 'textbox' ||

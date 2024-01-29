@@ -17,7 +17,7 @@
     "locales:push": "tolgee push ./apps/builder/src/i18n",
     "locales:sync": "tolgee sync './apps/builder/src/**/*.ts?(x)' --continue-on-warning --remove-unused",
     "create-new-block": "cd packages/forge/cli && pnpm start",
-    "format:fix": "turbo run format:fix"
+    "format:check": "turbo run format:check"
   },
   "devDependencies": {
     "@tolgee/cli": "1.3.2",

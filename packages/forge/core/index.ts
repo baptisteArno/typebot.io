@@ -101,6 +101,18 @@ export const option = {
     z.enum(values).optional(),
   number: z.number().or(variableStringSchema).optional(),
   array: <T extends z.ZodTypeAny>(schema: T) => z.array(schema).optional(),
+  keyValueList: z
+    .array(
+      z.object({
+        key: z.string().optional().layout({
+          label: 'Key',
+        }),
+        value: z.string().optional().layout({
+          label: 'Value',
+        }),
+      })
+    )
+    .optional(),
   discriminatedUnion: <
     T extends string,
     J extends [
