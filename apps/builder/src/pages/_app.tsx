@@ -63,7 +63,6 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <TolgeeProvider tolgee={ssrTolgee}>
       <ToastContainer />
-      <Toaster />
       <ChakraProvider theme={customTheme}>
         <Toaster />
         <SessionProvider session={pageProps.session}>
