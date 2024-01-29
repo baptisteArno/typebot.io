@@ -246,11 +246,13 @@ const PrivacyPolicies = () => {
           they expect from Flowdacity.
         </p>
 
-        <Heading>User Data and Third-Party AI Services</Heading>
+        <Heading>AI Models and User Data Policy</Heading>
         <p>
-          Flowdacity does not share any user data with third-party AI models or
-          companies. Our platform maintains the confidentiality and integrity of
-          user data at all times.
+          Flowdacity does not share any user data with AI models or databases.
+          Our platform maintains the confidentiality and integrity of user data
+          at all times and is designed to utilize data strictly for the purpose
+          of enhancing user experience and delivering the functionalities
+          expected from our platform.
         </p>
 
         <p>
