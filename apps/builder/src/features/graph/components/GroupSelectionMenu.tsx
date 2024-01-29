@@ -9,30 +9,29 @@ import {
   useColorModeValue,
   useEventListener,
 } from '@chakra-ui/react'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useGroupsStore } from '../hooks/useGroupsStore'
 import { toast } from 'sonner'
 import { createId } from '@paralleldrive/cuid2'
 import { Edge, GroupV6 } from '@typebot.io/schemas'
-import { projectMouse } from '../helpers/projectMouse'
 import { Coordinates } from '../types'
 import { useShallow } from 'zustand/react/shallow'
+import { projectMouse } from '../helpers/projectMouse'
 
 type Props = {
   graphPosition: Coordinates & { scale: number }
   isReadOnly: boolean
-  lastMouseClickPosition: Coordinates | undefined
   focusedGroups: string[]
   blurGroups: () => void
 }
 
 export const GroupSelectionMenu = ({
   graphPosition,
-  lastMouseClickPosition,
   isReadOnly,
   focusedGroups,
   blurGroups,
 }: Props) => {
+  const [mousePosition, setMousePosition] = useState<Coordinates>()
   const { typebot, deleteGroups, pasteGroups } = useTypebot()
   const ref = useRef<HTMLDivElement>(null)
 
@@ -49,6 +48,13 @@ export const GroupSelectionMenu = ({
     )
 
   useEventListener('pointerup', (e) => e.stopPropagation(), ref.current)
+
+  useEventListener('mousemove', (e) => {
+    setMousePosition({
+      x: e.clientX,
+      y: e.clientY,
+    })
+  })
 
   const handleCopy = () => {
     if (!typebot) return
@@ -72,18 +78,11 @@ export const GroupSelectionMenu = ({
     groups: GroupV6[]
     edges: Edge[]
   }) => {
-    if (!groupsInClipboard || isReadOnly) return
+    if (!groupsInClipboard || isReadOnly || !mousePosition) return
     const clipboard = overrideClipBoard ?? groupsInClipboard
     const { groups, oldToNewIdsMapping } = parseGroupsToPaste(
       clipboard.groups,
-      lastMouseClickPosition ??
-        projectMouse(
-          {
-            x: window.innerWidth / 2,
-            y: window.innerHeight / 2,
-          },
-          graphPosition
-        )
+      projectMouse(mousePosition, graphPosition)
     )
     groups.forEach((group) => {
       updateGroupCoordinates(group.id, group.graphCoordinates)

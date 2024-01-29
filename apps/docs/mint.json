@@ -203,6 +203,15 @@
       ]
     },
     {
+      "group": "Workspace",
+      "pages": [
+        "workspace",
+        "workspace/add-members-and-guests",
+        "workspace/subscription",
+        "workspace/preferences"
+      ]
+    },
+    {
       "group": "Guides",
       "pages": [
         "guides/mailer-lite",

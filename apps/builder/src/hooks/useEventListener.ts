@@ -9,7 +9,8 @@ function useEventListener<K extends keyof MediaQueryListEventMap>(
   eventName: K,
   handler: (event: MediaQueryListEventMap[K]) => void,
   element: RefObject<MediaQueryList>,
-  options?: Options
+  options?: Options,
+  deps?: unknown[]
 ): void
 
 // Window Event based useEventListener interface
@@ -17,7 +18,8 @@ function useEventListener<K extends keyof WindowEventMap>(
   eventName: K,
   handler: (event: WindowEventMap[K]) => void,
   element?: undefined,
-  options?: Options
+  options?: Options,
+  deps?: unknown[]
 ): void
 
 // Element Event based useEventListener interface
@@ -28,7 +30,8 @@ function useEventListener<
   eventName: K,
   handler: (event: HTMLElementEventMap[K]) => void,
   element: RefObject<T>,
-  options?: Options
+  options?: Options,
+  deps?: unknown[]
 ): void
 
 // Document Event based useEventListener interface
@@ -36,7 +39,8 @@ function useEventListener<K extends keyof DocumentEventMap>(
   eventName: K,
   handler: (event: DocumentEventMap[K]) => void,
   element: RefObject<Document>,
-  options?: Options
+  options?: Options,
+  deps?: unknown[]
 ): void
 
 function useEventListener<
@@ -54,7 +58,8 @@ function useEventListener<
       | Event
   ) => void,
   element?: RefObject<T>,
-  options?: Options
+  options?: Options,
+  deps: unknown[] = []
 ) {
   // Create a ref that stores handler
   const savedHandler = useRef(handler)
@@ -72,7 +77,12 @@ function useEventListener<
     if (!(targetElement && targetElement.addEventListener)) return
 
     if (options && typeof options !== 'boolean')
-      console.log('Add event listener', { eventName, element, options })
+      console.log('Add event listener', {
+        elementText: (targetElement as HTMLElement).textContent,
+        eventName,
+        element: targetElement,
+        options,
+      })
     // Create event listener that calls handler function stored in ref
     const listener: typeof handler = (event) => savedHandler.current(event)
 
@@ -81,10 +91,16 @@ function useEventListener<
     // Remove event listener on cleanup
     return () => {
       if (options && typeof options !== 'boolean')
-        console.log('Remove event listener')
+        console.log('Remove event listener', {
+          elementText: (targetElement as HTMLElement).textContent,
+          eventName,
+          element: targetElement,
+          options,
+        })
       targetElement.removeEventListener(eventName, listener, options)
     }
-  }, [eventName, element, options])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [eventName, ...deps])
 }
 
 export { useEventListener }

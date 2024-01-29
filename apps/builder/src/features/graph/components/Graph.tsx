@@ -101,9 +101,6 @@ export const Graph = ({
   const [groupRects, setGroupRects] = useState<
     { groupId: string; rect: DOMRect }[] | undefined
   >()
-  const [lastMouseClickPosition, setLastMouseClickPosition] = useState<
-    Coordinates | undefined
-  >()
   const [isDragging, setIsDragging] = useState(false)
 
   const graphContainerRef = useRef<HTMLDivElement | null>(null)
@@ -167,7 +164,7 @@ export const Graph = ({
     if (isRightClick) e.stopPropagation()
   }
 
-  const handlePointerUp = (e: PointerEvent) => {
+  const handlePointerUp = () => {
     if (isDraggingGraph) return
     if (
       !selectBoxCoordinates ||
@@ -176,9 +173,6 @@ export const Graph = ({
         5
     ) {
       blurGroups()
-      setLastMouseClickPosition(
-        projectMouse({ x: e.clientX, y: e.clientY }, graphPosition)
-      )
     }
     setSelectBoxCoordinates(undefined)
     setOpenedBlockId(undefined)
@@ -355,10 +349,9 @@ export const Graph = ({
           {selectBoxCoordinates && <SelectBox {...selectBoxCoordinates} />}
           <Fade in={!isReadOnly && focusedGroups.length > 1}>
             <GroupSelectionMenu
-              lastMouseClickPosition={lastMouseClickPosition}
+              graphPosition={graphPosition}
               focusedGroups={focusedGroups}
               blurGroups={blurGroups}
-              graphPosition={graphPosition}
               isReadOnly={isReadOnly}
             />
           </Fade>
