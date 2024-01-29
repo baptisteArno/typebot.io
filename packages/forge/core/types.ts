@@ -6,6 +6,11 @@ export type VariableStore = {
   get: (variableId: string) => string | (string | null)[] | null | undefined
   set: (variableId: string, value: unknown) => void
   parse: (value: string) => string
+  list: () => {
+    id: string
+    name: string
+    value?: string | (string | null)[] | null | undefined
+  }[]
 }
 
 export type LogsStore = {

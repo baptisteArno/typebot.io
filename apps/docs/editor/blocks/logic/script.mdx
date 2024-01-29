@@ -3,9 +3,9 @@ title: Script block
 icon: code
 ---
 
-The "Script" block allows you to execute Javascript code. If you want to set a variable value with Javascript, use the [Set variable block](./set-variable) instead. You can't set a variable with the script block.
+The "Script" block allows you to execute Javascript code.
 
-**It doesn't allow you to create a custom visual block**
+<Info>This block doesn't allow you to create a custom visual block</Info>
 
 <Frame>
   <img src="/images/blocks/logic/code.png" width="600" alt="Code block" />
@@ -17,6 +17,22 @@ Variables in script are not parsed, they are evaluated. So it should be treated 
 You need to write `console.log({{My variable}})` instead of `console.log("{{My variable}}")`
 
 </Info>
+
+## `setVariable` function
+
+If you want to set a variable value with Javascript, the [Set variable block](./set-variable) is more appropriate for most cases.
+
+However, if you'd like to set variables with the script blocks, you can use the `setVariable` function in your script:
+
+```js
+if({{My variable}} === 'foo') {
+  setVariable('My variable', 'bar')
+} else {
+  setVariable('My variable', 'other')
+}
+```
+
+The `setVariable` function is only available in script executed on the server, so it won't work if the `Execute on client?` is checked.
 
 ## Examples
 

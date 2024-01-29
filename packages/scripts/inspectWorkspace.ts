@@ -24,7 +24,11 @@ const inspectWorkspace = async () => {
     },
     include: {
       typebots: {
+        orderBy: {
+          updatedAt: 'desc',
+        },
         select: {
+          updatedAt: true,
           id: true,
           name: true,
         },

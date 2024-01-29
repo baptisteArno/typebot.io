@@ -371,6 +371,9 @@
                                                   "content": {
                                                     "type": "string"
                                                   },
+                                                  "isExecutedOnClient": {
+                                                    "type": "boolean"
+                                                  },
                                                   "shouldExecuteInParentContext": {
                                                     "type": "boolean"
                                                   }
@@ -6580,6 +6583,9 @@
                                               "content": {
                                                 "type": "string"
                                               },
+                                              "isExecutedOnClient": {
+                                                "type": "boolean"
+                                              },
                                               "shouldExecuteInParentContext": {
                                                 "type": "boolean"
                                               }
@@ -11101,6 +11107,9 @@
                                               "content": {
                                                 "type": "string"
                                               },
+                                              "isExecutedOnClient": {
+                                                "type": "boolean"
+                                              },
                                               "shouldExecuteInParentContext": {
                                                 "type": "boolean"
                                               }
@@ -13960,32 +13969,8 @@
                   "type": "object",
                   "properties": {
                     "resultExample": {
-                      "allOf": [
-                        {
-                          "type": "object",
-                          "properties": {
-                            "message": {
-                              "type": "string",
-                              "enum": [
-                                "This is a sample result, it has been generated ⬇️"
-                              ]
-                            },
-                            "Submitted at": {
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "message",
-                            "Submitted at"
-                          ]
-                        },
-                        {
-                          "type": "object",
-                          "additionalProperties": {
-                            "type": "string"
-                          }
-                        }
-                      ],
+                      "type": "object",
+                      "additionalProperties": {},
                       "description": "Can contain any fields."
                     }
                   },
@@ -24814,6 +24799,9 @@
                       "content": {
                         "type": "string"
                       },
+                      "isExecutedOnClient": {
+                        "type": "boolean"
+                      },
                       "shouldExecuteInParentContext": {
                         "type": "boolean"
                       }
@@ -26864,7 +26852,8 @@
                   "zemantic-ai",
                   "cal-com",
                   "chat-node",
-                  "qr-code"
+                  "qr-code",
+                  "mistral"
                 ]
               },
               "options": {}
@@ -27398,6 +27387,14 @@
               },
               "maxDelay": {
                 "type": "number"
+              },
+              "delayBetweenBubbles": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "isDisabledOnFirstMessage": {
+                "type": "boolean"
               }
             }
           },
@@ -28072,6 +28069,9 @@
                               },
                               "content": {
                                 "type": "string"
+                              },
+                              "isExecutedOnClient": {
+                                "type": "boolean"
                               },
                               "shouldExecuteInParentContext": {
                                 "type": "boolean"
@@ -30881,6 +30881,9 @@
                               },
                               "content": {
                                 "type": "string"
+                              },
+                              "isExecutedOnClient": {
+                                "type": "boolean"
                               },
                               "shouldExecuteInParentContext": {
                                 "type": "boolean"

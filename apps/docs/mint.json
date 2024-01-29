@@ -65,17 +65,9 @@
       "pages": ["get-started/introduction", "get-started/overview"]
     },
     {
-      "group": "Workspace",
-      "pages": [
-        "workspace",
-        "workspace/add-members-and-guests",
-        "workspace/subscription",
-        "workspace/preferences"
-      ]
-    },
-    {
       "group": "Flow",
       "pages": [
+        "editor/graph",
         {
           "group": "Blocks",
           "icon": "block",
@@ -133,7 +125,8 @@
                 "editor/blocks/integrations/chatwoot",
                 "editor/blocks/integrations/meta-pixel",
                 "editor/blocks/integrations/openai",
-                "editor/blocks/integrations/zemantic-ai"
+                "editor/blocks/integrations/zemantic-ai",
+                "editor/blocks/integrations/mistral"
               ]
             }
           ]
@@ -191,6 +184,15 @@
       "pages": ["results/overview", "results/analytics"]
     },
     {
+      "group": "Workspace",
+      "pages": [
+        "workspace",
+        "workspace/add-members-and-guests",
+        "workspace/subscription",
+        "workspace/preferences"
+      ]
+    },
+    {
       "group": "Guides",
       "pages": [
         "guides/mailer-lite",
@@ -201,7 +203,7 @@
     },
     {
       "group": "Misc",
-      "pages": ["faq", "privacy-policies", "breaking-changes"]
+      "pages": ["faq", "privacy-policies", "report-abuse", "breaking-changes"]
     },
     {
       "group": "Get started",

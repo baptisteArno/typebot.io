@@ -115,7 +115,7 @@ export const IconPicker = ({ onIconSelected }: Props) => {
         <ColorPicker value={selectedColor} onColorChange={updateColor} />
       </HStack>
 
-      <Stack overflowY="scroll" maxH="350px" ref={scrollContainer} spacing={4}>
+      <Stack overflowY="auto" maxH="350px" ref={scrollContainer} spacing={4}>
         {recentIconNames.length > 0 && (
           <Stack>
             <Text fontSize="xs" color="gray.400" fontWeight="semibold" pl="2">

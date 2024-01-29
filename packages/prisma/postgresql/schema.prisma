@@ -37,24 +37,25 @@ model Session {
 }
 
 model User {
-  id                      String                    @id @default(cuid())
-  createdAt               DateTime                  @default(now())
-  updatedAt               DateTime                  @default(now()) @updatedAt
-  lastActivityAt          DateTime                  @default(now())
-  name                    String?
-  email                   String?                   @unique
-  emailVerified           DateTime?
-  image                   String?
-  company                 String?
-  onboardingCategories    Json
-  graphNavigation         GraphNavigation?
-  preferredAppAppearance  String?
-  accounts                Account[]
-  apiTokens               ApiToken[]
-  CollaboratorsOnTypebots CollaboratorsOnTypebots[]
-  workspaces              MemberInWorkspace[]
-  sessions                Session[]
-  bannedIps               BannedIp[]
+  id                          String                    @id @default(cuid())
+  createdAt                   DateTime                  @default(now())
+  updatedAt                   DateTime                  @default(now()) @updatedAt
+  lastActivityAt              DateTime                  @default(now())
+  name                        String?
+  email                       String?                   @unique
+  emailVerified               DateTime?
+  image                       String?
+  company                     String?
+  onboardingCategories        Json
+  graphNavigation             GraphNavigation?
+  preferredAppAppearance      String?
+  accounts                    Account[]
+  apiTokens                   ApiToken[]
+  CollaboratorsOnTypebots     CollaboratorsOnTypebots[]
+  workspaces                  MemberInWorkspace[]
+  sessions                    Session[]
+  bannedIps                   BannedIp[]
+  displayedInAppNotifications Json?
 }
 
 model ApiToken {

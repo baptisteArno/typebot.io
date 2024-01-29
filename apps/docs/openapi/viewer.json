@@ -4527,6 +4527,9 @@
                               "content": {
                                 "type": "string"
                               },
+                              "isExecutedOnClient": {
+                                "type": "boolean"
+                              },
                               "shouldExecuteInParentContext": {
                                 "type": "boolean"
                               }
@@ -7620,6 +7623,14 @@
               },
               "maxDelay": {
                 "type": "number"
+              },
+              "delayBetweenBubbles": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "isDisabledOnFirstMessage": {
+                "type": "boolean"
               }
             }
           },
@@ -8288,6 +8299,9 @@
                       },
                       "content": {
                         "type": "string"
+                      },
+                      "isExecutedOnClient": {
+                        "type": "boolean"
                       },
                       "shouldExecuteInParentContext": {
                         "type": "boolean"
@@ -10339,7 +10353,8 @@
                   "zemantic-ai",
                   "cal-com",
                   "chat-node",
-                  "qr-code"
+                  "qr-code",
+                  "mistral"
                 ]
               },
               "options": {}

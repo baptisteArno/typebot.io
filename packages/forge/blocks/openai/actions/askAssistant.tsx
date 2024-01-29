@@ -3,6 +3,7 @@ import { isDefined, isEmpty } from '@typebot.io/lib'
 import { auth } from '../auth'
 import { ClientOptions, OpenAI } from 'openai'
 import { baseOptions } from '../baseOptions'
+import { executeFunction } from '@typebot.io/variables/executeFunction'
 
 export const askAssistant = createAction({
   auth,
@@ -206,12 +207,17 @@ export const askAssistant = createAction({
                     if (!functionToExecute) return
 
                     const name = toolCall.function.name
-                    if (!name) return
-                    const func = AsyncFunction(
-                      ...Object.keys(parameters),
-                      functionToExecute.code
-                    )
-                    const output = await func(...Object.values(parameters))
+                    if (!name || !functionToExecute.code) return
+
+                    const { output, newVariables } = await executeFunction({
+                      variables: variables.list(),
+                      body: functionToExecute.code,
+                      args: parameters,
+                    })
+
+                    newVariables?.forEach((variable) => {
+                      variables.set(variable.id, variable.value)
+                    })
 
                     return {
                       tool_call_id: toolCall.id,
@@ -250,7 +256,9 @@ export const askAssistant = createAction({
           for (const content of messageContents) {
             switch (content.type) {
               case 'text':
-                message += (message !== '' ? '\n\n' : '') + content.text.value
+                message +=
+                  (message !== '' ? '\n\n' : '') +
+                  content.text.value.replace(/【.+】/g, '')
                 break
             }
           }
@@ -262,5 +270,3 @@ export const askAssistant = createAction({
     },
   },
 })
-
-const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor

@@ -20,6 +20,8 @@ const typingEmulation = z.object({
   enabled: z.boolean().optional(),
   speed: z.number().optional(),
   maxDelay: z.number().optional(),
+  delayBetweenBubbles: z.number().min(0).max(5).optional(),
+  isDisabledOnFirstMessage: z.boolean().optional(),
 })
 
 const metadataSchema = z.object({

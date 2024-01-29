@@ -27,13 +27,7 @@ export const ApiPreviewInstructions = (props: StackProps) => {
 }`
 
   return (
-    <Stack
-      spacing={10}
-      overflowY="scroll"
-      className="hide-scrollbar"
-      w="full"
-      {...props}
-    >
+    <Stack spacing={10} overflowY="auto" w="full" {...props}>
       <OrderedList spacing={6} px="1">
         <ListItem>
           All your requests need to be authenticated with an API token.{' '}

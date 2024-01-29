@@ -133,6 +133,9 @@ export const sendMessageV2 = publicProcedure
               logs: allLogs,
               clientSideActions,
               visitedEdges,
+              hasCustomEmbedBubble: messages.some(
+                (message) => message.type === 'custom-embed'
+              ),
             })
 
         return {
@@ -186,6 +189,9 @@ export const sendMessageV2 = publicProcedure
             logs: allLogs,
             clientSideActions,
             visitedEdges,
+            hasCustomEmbedBubble: messages.some(
+              (message) => message.type === 'custom-embed'
+            ),
           })
 
         return {

@@ -144,6 +144,8 @@ export const updateUser = (data: Partial<User>) =>
     data: {
       ...data,
       onboardingCategories: data.onboardingCategories ?? [],
+      displayedInAppNotifications:
+        data.displayedInAppNotifications ?? Prisma.DbNull,
     },
     where: {
       id: userId,

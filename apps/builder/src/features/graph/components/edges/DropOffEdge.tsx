@@ -10,7 +10,6 @@ import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import React, { useMemo } from 'react'
 import { useEndpoints } from '../../providers/EndpointsProvider'
-import { useGroupsCoordinates } from '../../providers/GroupsCoordinateProvider'
 import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
 import { computeDropOffPath } from '../../helpers/computeDropOffPath'
 import { computeSourceCoordinates } from '../../helpers/computeSourceCoordinates'
@@ -22,6 +21,8 @@ import { computeTotalUsersAtBlock } from '@/features/analytics/helpers/computeTo
 import { blockHasItems, byId } from '@typebot.io/lib'
 import { groupWidth } from '../../constants'
 import { getTotalAnswersAtBlock } from '@/features/analytics/helpers/getTotalAnswersAtBlock'
+import { useGroupsStore } from '../../hooks/useGroupsStore'
+import { useShallow } from 'zustand/react/shallow'
 
 export const dropOffBoxDimensions = {
   width: 100,
@@ -52,8 +53,6 @@ export const DropOffEdge = ({
     theme.colors.red[400]
   )
   const { workspace } = useWorkspace()
-  const { groupsCoordinates } = useGroupsCoordinates()
-  const { sourceEndpointYOffsets: sourceEndpoints } = useEndpoints()
   const { publishedTypebot } = useTypebot()
   const currentBlockId = useMemo(
     () =>
@@ -61,6 +60,18 @@ export const DropOffEdge = ({
         ?.id,
     [blockId, publishedTypebot?.groups]
   )
+
+  const groupId = publishedTypebot?.groups.find((group) =>
+    group.blocks.some((block) => block.id === currentBlockId)
+  )?.id
+  const groupCoordinates = useGroupsStore(
+    useShallow((state) =>
+      groupId && state.groupsCoordinates
+        ? state.groupsCoordinates[groupId]
+        : undefined
+    )
+  )
+  const { sourceEndpointYOffsets: sourceEndpoints } = useEndpoints()
 
   const isWorkspaceProPlan = hasProPerks(workspace)
 
@@ -99,18 +110,14 @@ export const DropOffEdge = ({
   }, [currentBlockId, publishedTypebot?.groups, sourceEndpoints])
 
   const endpointCoordinates = useMemo(() => {
-    const groupId = publishedTypebot?.groups.find((group) =>
-      group.blocks.some((block) => block.id === currentBlockId)
-    )?.id
     if (!groupId) return undefined
-    const coordinates = groupsCoordinates[groupId]
-    if (!coordinates) return undefined
+    if (!groupCoordinates) return undefined
     return computeSourceCoordinates({
-      sourcePosition: coordinates,
+      sourcePosition: groupCoordinates,
       sourceTop: sourceTop ?? 0,
       elementWidth: groupWidth,
     })
-  }, [publishedTypebot?.groups, groupsCoordinates, sourceTop, currentBlockId])
+  }, [groupId, groupCoordinates, sourceTop])
 
   const isLastBlock = useMemo(() => {
     if (!publishedTypebot) return false
