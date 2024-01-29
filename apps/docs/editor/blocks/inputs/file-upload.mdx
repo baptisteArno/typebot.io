@@ -31,3 +31,11 @@ The placeholder accepts [HTML](https://en.wikipedia.org/wiki/HTML).
 ## Size limit
 
 There is a 10MB fixed limit per uploaded file. If you want your respondents to upload larger files, you should ask them to upload their files to a cloud storage service (e.g. Google Drive, Dropbox, etc.) and share the link with you.
+
+## Visibility
+
+This option allows you to choose between generating public URLs for the uploaded files or keeping them private. If you choose to keep the files private, you will be able to see the file only if you are logged in to your Typebot account.
+
+Note that if you choose to keep the files private, you will not be able to use the file URL with other blocks like Attachment in the Send email block or others. These services won't be able to read the files.
+
+By default, this option is set to `Auto`. This means that the files will be public if uploaded from the web runtime but private if uploaded from the WhatsApp runtime.

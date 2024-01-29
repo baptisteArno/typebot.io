@@ -15,7 +15,7 @@ import { validateUrl } from './blocks/inputs/url/validateUrl'
 import { resumeWebhookExecution } from './blocks/integrations/webhook/resumeWebhookExecution'
 import { upsertAnswer } from './queries/upsertAnswer'
 import { parseButtonsReply } from './blocks/inputs/buttons/parseButtonsReply'
-import { ParsedReply } from './types'
+import { ParsedReply, Reply } from './types'
 import { validateNumber } from './blocks/inputs/number/validateNumber'
 import { parseDateReply } from './blocks/inputs/date/parseDateReply'
 import { validateRatingReply } from './blocks/inputs/rating/validateRatingReply'
@@ -39,6 +39,9 @@ import { getBlockById } from '@typebot.io/lib/getBlockById'
 import { ForgedBlock, forgedBlocks } from '@typebot.io/forge-schemas'
 import { enabledBlocks } from '@typebot.io/forge-repository'
 import { resumeChatCompletion } from './blocks/integrations/legacy/openai/resumeChatCompletion'
+import { env } from '@typebot.io/env'
+import { downloadMedia } from './whatsapp/downloadMedia'
+import { uploadFileToBucket } from '@typebot.io/lib/s3/uploadFileToBucket'
 
 type Params = {
   version: 1 | 2
@@ -46,7 +49,7 @@ type Params = {
   startTime?: number
 }
 export const continueBotFlow = async (
-  reply: string | undefined,
+  reply: Reply,
   { state, version, startTime }: Params
 ): Promise<
   ContinueChatResponse & {
@@ -75,7 +78,7 @@ export const continueBotFlow = async (
     const existingVariable = state.typebotsQueue[0].typebot.variables.find(
       byId(block.options?.variableId)
     )
-    if (existingVariable && reply) {
+    if (existingVariable && reply && typeof reply === 'string') {
       const newVariable = {
         ...existingVariable,
         value: safeJsonParse(reply),
@@ -89,14 +92,18 @@ export const continueBotFlow = async (
     block.options?.task === 'Create chat completion'
   ) {
     firstBubbleWasStreamed = true
-    if (reply) {
+    if (reply && typeof reply === 'string') {
       const result = await resumeChatCompletion(state, {
         options: block.options,
         outgoingEdgeId: block.outgoingEdgeId,
       })(reply)
       newSessionState = result.newSessionState
     }
-  } else if (reply && block.type === IntegrationBlockType.WEBHOOK) {
+  } else if (
+    reply &&
+    block.type === IntegrationBlockType.WEBHOOK &&
+    typeof reply === 'string'
+  ) {
     const result = resumeWebhookExecution({
       state,
       block,
@@ -153,7 +160,7 @@ export const continueBotFlow = async (
   let formattedReply: string | undefined
 
   if (isInputBlock(block)) {
-    const parsedReplyResult = parseReply(newSessionState)(reply, block)
+    const parsedReplyResult = await parseReply(newSessionState)(reply, block)
 
     if (parsedReplyResult.status === 'fail')
       return {
@@ -400,73 +407,98 @@ const getOutgoingEdgeId =
 
 const parseReply =
   (state: SessionState) =>
-  (inputValue: string | undefined, block: InputBlock): ParsedReply => {
+  async (reply: Reply, block: InputBlock): Promise<ParsedReply> => {
+    if (typeof reply !== 'string') {
+      if (block.type !== InputBlockType.FILE || !reply)
+        return { status: 'fail' }
+      if (block.options?.visibility !== 'Public') {
+        return {
+          status: 'success',
+          reply:
+            env.NEXTAUTH_URL +
+            `/api/typebots/${state.typebotsQueue[0].typebot.id}/whatsapp/media/${reply.mediaId}`,
+        }
+      }
+      const { file, mimeType } = await downloadMedia({
+        mediaId: reply.mediaId,
+        systemUserAccessToken: reply.accessToken,
+      })
+      const url = await uploadFileToBucket({
+        file,
+        key: `public/workspaces/${reply.workspaceId}/typebots/${state.typebotsQueue[0].typebot.id}/results/${state.typebotsQueue[0].resultId}/${reply.mediaId}`,
+        mimeType,
+      })
+      return {
+        status: 'success',
+        reply: url,
+      }
+    }
     switch (block.type) {
       case InputBlockType.EMAIL: {
-        if (!inputValue) return { status: 'fail' }
-        const isValid = validateEmail(inputValue)
+        if (!reply) return { status: 'fail' }
+        const isValid = validateEmail(reply)
         if (!isValid) return { status: 'fail' }
-        return { status: 'success', reply: inputValue }
+        return { status: 'success', reply: reply }
       }
       case InputBlockType.PHONE: {
-        if (!inputValue) return { status: 'fail' }
+        if (!reply) return { status: 'fail' }
         const formattedPhone = formatPhoneNumber(
-          inputValue,
+          reply,
           block.options?.defaultCountryCode
         )
         if (!formattedPhone) return { status: 'fail' }
         return { status: 'success', reply: formattedPhone }
       }
       case InputBlockType.URL: {
-        if (!inputValue) return { status: 'fail' }
-        const isValid = validateUrl(inputValue)
+        if (!reply) return { status: 'fail' }
+        const isValid = validateUrl(reply)
         if (!isValid) return { status: 'fail' }
-        return { status: 'success', reply: inputValue }
+        return { status: 'success', reply: reply }
       }
       case InputBlockType.CHOICE: {
-        if (!inputValue) return { status: 'fail' }
-        return parseButtonsReply(state)(inputValue, block)
+        if (!reply) return { status: 'fail' }
+        return parseButtonsReply(state)(reply, block)
       }
       case InputBlockType.NUMBER: {
-        if (!inputValue) return { status: 'fail' }
-        const isValid = validateNumber(inputValue, {
+        if (!reply) return { status: 'fail' }
+        const isValid = validateNumber(reply, {
           options: block.options,
           variables: state.typebotsQueue[0].typebot.variables,
         })
         if (!isValid) return { status: 'fail' }
-        return { status: 'success', reply: parseNumber(inputValue) }
+        return { status: 'success', reply: parseNumber(reply) }
       }
       case InputBlockType.DATE: {
-        if (!inputValue) return { status: 'fail' }
-        return parseDateReply(inputValue, block)
+        if (!reply) return { status: 'fail' }
+        return parseDateReply(reply, block)
       }
       case InputBlockType.FILE: {
-        if (!inputValue)
+        if (!reply)
           return block.options?.isRequired ?? defaultFileInputOptions.isRequired
             ? { status: 'fail' }
             : { status: 'skip' }
-        const urls = inputValue.split(', ')
+        const urls = reply.split(', ')
         const status = urls.some((url) => validateUrl(url)) ? 'success' : 'fail'
-        return { status, reply: inputValue }
+        return { status, reply: reply }
       }
       case InputBlockType.PAYMENT: {
-        if (!inputValue) return { status: 'fail' }
-        if (inputValue === 'fail') return { status: 'fail' }
-        return { status: 'success', reply: inputValue }
+        if (!reply) return { status: 'fail' }
+        if (reply === 'fail') return { status: 'fail' }
+        return { status: 'success', reply: reply }
       }
       case InputBlockType.RATING: {
-        if (!inputValue) return { status: 'fail' }
-        const isValid = validateRatingReply(inputValue, block)
+        if (!reply) return { status: 'fail' }
+        const isValid = validateRatingReply(reply, block)
         if (!isValid) return { status: 'fail' }
-        return { status: 'success', reply: inputValue }
+        return { status: 'success', reply: reply }
       }
       case InputBlockType.PICTURE_CHOICE: {
-        if (!inputValue) return { status: 'fail' }
-        return parsePictureChoicesReply(state)(inputValue, block)
+        if (!reply) return { status: 'fail' }
+        return parsePictureChoicesReply(state)(reply, block)
       }
       case InputBlockType.TEXT: {
-        if (!inputValue) return { status: 'fail' }
-        return { status: 'success', reply: inputValue }
+        if (!reply) return { status: 'fail' }
+        return { status: 'success', reply: reply }
       }
     }
   }
