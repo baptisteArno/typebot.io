@@ -39,3 +39,4 @@ snapshots
 
 .env
 .typebot-build
+.vercel
