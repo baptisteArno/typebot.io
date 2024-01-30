@@ -24342,6 +24342,14 @@
               },
               "sizeLimit": {
                 "type": "number"
+              },
+              "visibility": {
+                "type": "string",
+                "enum": [
+                  "Auto",
+                  "Public",
+                  "Private"
+                ]
               }
             }
           }
@@ -27033,6 +27041,14 @@
                     "type": "string"
                   }
                 }
+              },
+              "visibility": {
+                "type": "string",
+                "enum": [
+                  "Auto",
+                  "Public",
+                  "Private"
+                ]
               }
             }
           }

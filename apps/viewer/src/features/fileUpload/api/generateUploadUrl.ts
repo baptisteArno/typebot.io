@@ -140,10 +140,6 @@ export const generateUploadUrl = publicProcedure
         message: "Can't find workspaceId",
       })
 
-    const resultId = session.state.typebotsQueue[0].resultId
-
-    const filePath = `public/workspaces/${workspaceId}/typebots/${typebotId}/results/${resultId}/${filePathProps.fileName}`
-
     if (session.state.currentBlockId === undefined)
       throw new TRPCError({
         code: 'BAD_REQUEST',
@@ -163,6 +159,14 @@ export const generateUploadUrl = publicProcedure
         message: "Can't find file upload block",
       })
 
+    const resultId = session.state.typebotsQueue[0].resultId
+
+    const filePath = `${
+      fileUploadBlock.options?.visibility === 'Private' ? 'private' : 'public'
+    }/workspaces/${workspaceId}/typebots/${typebotId}/results/${resultId}/${
+      filePathProps.fileName
+    }`
+
     const presignedPostPolicy = await generatePresignedPostPolicy({
       fileType,
       filePath,
@@ -175,8 +179,11 @@ export const generateUploadUrl = publicProcedure
     return {
       presignedUrl: presignedPostPolicy.postURL,
       formData: presignedPostPolicy.formData,
-      fileUrl: env.S3_PUBLIC_CUSTOM_DOMAIN
-        ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
-        : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,
+      fileUrl:
+        fileUploadBlock.options?.visibility === 'Private'
+          ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/${filePathProps.fileName}`
+          : env.S3_PUBLIC_CUSTOM_DOMAIN
+          ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
+          : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,
     }
   })
