@@ -1,12 +1,15 @@
 import { option, createAction } from '@typebot.io/forge'
 import OpenAI, { ClientOptions } from 'openai'
-import { defaultOpenAIOptions } from '../constants'
+import { defaultOpenAIOptions, maxToolCalls } from '../constants'
 import { OpenAIStream, ToolCallPayload } from 'ai'
 import { parseChatCompletionMessages } from '../helpers/parseChatCompletionMessages'
 import { isDefined } from '@typebot.io/lib'
 import { auth } from '../auth'
 import { baseOptions } from '../baseOptions'
-import { ChatCompletionTool } from 'openai/resources/chat/completions'
+import {
+  ChatCompletionMessage,
+  ChatCompletionTool,
+} from 'openai/resources/chat/completions'
 import { parseToolParameters } from '../helpers/parseToolParameters'
 import { executeFunction } from '@typebot.io/variables/executeFunction'
 
@@ -35,15 +38,11 @@ const assistantMessageItemSchema = option
   })
   .extend(nativeMessageContentSchema)
 
-export const parameterSchema = option.object({
+const parameterBase = {
   name: option.string.layout({
     label: 'Name',
     placeholder: 'myVariable',
     withVariableButton: false,
-  }),
-  type: option.enum(['string', 'number', 'boolean']).layout({
-    label: 'Type:',
-    direction: 'row',
   }),
   description: option.string.layout({
     label: 'Description',
@@ -52,7 +51,40 @@ export const parameterSchema = option.object({
   required: option.boolean.layout({
     label: 'Is required?',
   }),
-})
+}
+
+export const toolParametersSchema = option
+  .array(
+    option.discriminatedUnion('type', [
+      option
+        .object({
+          type: option.literal('string'),
+        })
+        .extend(parameterBase),
+      option
+        .object({
+          type: option.literal('number'),
+        })
+        .extend(parameterBase),
+      option
+        .object({
+          type: option.literal('boolean'),
+        })
+        .extend(parameterBase),
+      option
+        .object({
+          type: option.literal('enum'),
+          values: option
+            .array(option.string)
+            .layout({ itemLabel: 'possible value' }),
+        })
+        .extend(parameterBase),
+    ])
+  )
+  .layout({
+    accordion: 'Parameters',
+    itemLabel: 'parameter',
+  })
 
 const functionToolItemSchema = option.object({
   type: option.literal('function'),
@@ -66,7 +98,7 @@ const functionToolItemSchema = option.object({
     placeholder: 'A brief description of what this function does.',
     withVariableButton: false,
   }),
-  parameters: option.array(parameterSchema).layout({ accordion: 'Parameters' }),
+  parameters: toolParametersSchema,
   code: option.string.layout({
     inputType: 'code',
     label: 'Code',
@@ -180,40 +212,52 @@ export const createChatCompletion = createAction({
       const openai = new OpenAI(config)
 
       const tools = options.tools
-        ? (options.tools
-            .filter((t) => t.name && t.parameters)
-            .map((t) => ({
-              type: 'function',
-              function: {
-                name: t.name as string,
-                description: t.description,
-                parameters: parseToolParameters(t.parameters!),
-              },
-            })) satisfies ChatCompletionTool[])
-        : undefined
+        ?.filter((t) => t.name && t.parameters)
+        .map((t) => ({
+          type: 'function',
+          function: {
+            name: t.name as string,
+            description: t.description,
+            parameters: parseToolParameters(t.parameters!),
+          },
+        })) satisfies ChatCompletionTool[] | undefined
 
       const messages = parseChatCompletionMessages({ options, variables })
 
-      const response = await openai.chat.completions.create({
+      const body = {
         model: options.model ?? defaultOpenAIOptions.model,
         temperature: options.temperature
           ? Number(options.temperature)
           : undefined,
         messages,
         tools,
-      })
+      }
 
-      let message = response.choices[0].message
-      let totalTokens = response.usage?.total_tokens
+      let totalTokens = 0
+      let message: ChatCompletionMessage
 
-      if (message.tool_calls) {
+      for (let i = 0; i < maxToolCalls; i++) {
+        const response = await openai.chat.completions.create(body)
+
+        message = response.choices[0].message
+        totalTokens += response.usage?.total_tokens || 0
+
+        if (!message.tool_calls) break
+
         messages.push(message)
 
         for (const toolCall of message.tool_calls) {
           const name = toolCall.function?.name
           if (!name) continue
           const toolDefinition = options.tools?.find((t) => t.name === name)
-          if (!toolDefinition?.code || !toolDefinition.parameters) continue
+          if (!toolDefinition?.code || !toolDefinition.parameters) {
+            messages.push({
+              tool_call_id: toolCall.id,
+              role: 'tool',
+              content: 'Function not found',
+            })
+            continue
+          }
           const toolParams = Object.fromEntries(
             toolDefinition.parameters.map(({ name }) => [name, null])
           )
@@ -234,18 +278,6 @@ export const createChatCompletion = createAction({
             content: output,
           })
         }
-
-        const secondResponse = await openai.chat.completions.create({
-          model: options.model ?? defaultOpenAIOptions.model,
-          temperature: options.temperature
-            ? Number(options.temperature)
-            : undefined,
-          messages,
-          tools,
-        })
-
-        message = secondResponse.choices[0].message
-        totalTokens = secondResponse.usage?.total_tokens
       }
 
       options.responseMapping?.forEach((mapping) => {
@@ -278,17 +310,15 @@ export const createChatCompletion = createAction({
         const openai = new OpenAI(config)
 
         const tools = options.tools
-          ? (options.tools
-              .filter((t) => t.name && t.parameters)
-              .map((t) => ({
-                type: 'function',
-                function: {
-                  name: t.name as string,
-                  description: t.description,
-                  parameters: parseToolParameters(t.parameters!),
-                },
-              })) satisfies ChatCompletionTool[])
-          : undefined
+          ?.filter((t) => t.name && t.parameters)
+          .map((t) => ({
+            type: 'function',
+            function: {
+              name: t.name as string,
+              description: t.description,
+              parameters: parseToolParameters(t.parameters!),
+            },
+          })) satisfies ChatCompletionTool[] | undefined
 
         const messages = parseChatCompletionMessages({ options, variables })
 
@@ -311,7 +341,14 @@ export const createChatCompletion = createAction({
               const name = toolCall.func?.name
               if (!name) continue
               const toolDefinition = options.tools?.find((t) => t.name === name)
-              if (!toolDefinition?.code || !toolDefinition.parameters) continue
+              if (!toolDefinition?.code || !toolDefinition.parameters) {
+                messages.push({
+                  tool_call_id: toolCall.id,
+                  role: 'tool',
+                  content: 'Function not found',
+                })
+                continue
+              }
 
               const { output } = await executeFunction({
                 variables: variables.list(),

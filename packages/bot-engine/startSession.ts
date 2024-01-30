@@ -37,6 +37,7 @@ import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constan
 import { VisitedEdge } from '@typebot.io/prisma'
 import { env } from '@typebot.io/env'
 import { getFirstEdgeId } from './getFirstEdgeId'
+import { Reply } from './types'
 
 type StartParams =
   | ({
@@ -49,7 +50,7 @@ type StartParams =
 
 type Props = {
   version: 1 | 2
-  message: string | undefined
+  message: Reply
   startParams: StartParams
   initialSessionState?: Pick<SessionState, 'whatsApp' | 'expiryTimeout'>
 }
