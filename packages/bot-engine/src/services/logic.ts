@@ -103,6 +103,9 @@ const executeComparison =
       case ComparisonOperators.CONTAINS: {
         return inputValue.toLowerCase().includes(value.toLowerCase())
       }
+      case ComparisonOperators.NOT_CONTAINS: {
+        return !inputValue.toLowerCase().includes(value.toLowerCase())
+      }
       case ComparisonOperators.EQUAL: {
         return inputValue === value
       }
@@ -110,10 +113,34 @@ const executeComparison =
         return inputValue !== value
       }
       case ComparisonOperators.GREATER: {
+        return parseFloat(inputValue) > parseFloat(value)
+      }
+      case ComparisonOperators.GREATER_OR_EQUAL: {
         return parseFloat(inputValue) >= parseFloat(value)
       }
       case ComparisonOperators.LESS: {
+        return parseFloat(inputValue) < parseFloat(value)
+      }
+      case ComparisonOperators.LESS_OR_EQUAL: {
         return parseFloat(inputValue) <= parseFloat(value)
+      }
+      case ComparisonOperators.EMPTY: {
+        return inputValue === ''
+      }
+      case ComparisonOperators.NOT_EMPTY: {
+        return inputValue !== ''
+      }
+      case ComparisonOperators.START_WITH: {
+        return inputValue.toLowerCase().startsWith(value.toLowerCase())
+      }
+      case ComparisonOperators.NOT_START_WITH: {
+        return !inputValue.toLowerCase().startsWith(value.toLowerCase())
+      }
+      case ComparisonOperators.END_WITH: {
+        return inputValue.toLowerCase().endsWith(value.toLowerCase())
+      }
+      case ComparisonOperators.NOT_END_WITH: {
+        return !inputValue.toLowerCase().endsWith(value.toLowerCase())
       }
     }
   }
