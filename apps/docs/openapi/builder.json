@@ -2879,6 +2879,21 @@
               "type": "string"
             },
             "required": true
+          },
+          {
+            "in": "query",
+            "name": "timeFilter",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "today",
+                "last7Days",
+                "last30Days",
+                "yearToDate",
+                "allTime"
+              ],
+              "default": "today"
+            }
           }
         ],
         "responses": {
@@ -3186,6 +3201,21 @@
               "type": "string"
             },
             "required": true
+          },
+          {
+            "in": "query",
+            "name": "timeFilter",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "today",
+                "last7Days",
+                "last30Days",
+                "yearToDate",
+                "allTime"
+              ],
+              "default": "today"
+            }
           }
         ],
         "responses": {
