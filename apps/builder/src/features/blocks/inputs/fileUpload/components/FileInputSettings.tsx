@@ -5,8 +5,12 @@ import React from 'react'
 import { TextInput } from '@/components/inputs'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
-import { defaultFileInputOptions } from '@typebot.io/schemas/features/blocks/inputs/file/constants'
+import {
+  defaultFileInputOptions,
+  fileVisibilityOptions,
+} from '@typebot.io/schemas/features/blocks/inputs/file/constants'
 import { useTranslate } from '@tolgee/react'
+import { DropdownList } from '@/components/DropdownList'
 
 type Props = {
   options: FileInputBlock['options']
@@ -36,6 +40,10 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
 
   const updateSkipButtonLabel = (skip: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, skip } })
+
+  const updateVisibility = (
+    visibility: (typeof fileVisibilityOptions)[number]
+  ) => onOptionsChange({ ...options, visibility })
 
   return (
     <Stack spacing={4}>
@@ -90,6 +98,13 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
         }
         onChange={updateSkipButtonLabel}
         withVariableButton={false}
+      />
+      <DropdownList
+        label="Visibility:"
+        moreInfoTooltip='This setting determines who can see the uploaded files. "Public" means that anyone who has the link can see the files. "Private" means that only a members of this workspace can see the files.'
+        currentItem={options?.visibility}
+        onItemSelect={updateVisibility}
+        items={fileVisibilityOptions}
       />
       <Stack>
         <FormLabel mb="0" htmlFor="variable">

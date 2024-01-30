@@ -295,9 +295,7 @@ const ZodArrayContent = ({
   isInAccordion?: boolean
   onDataChange: (val: any) => void
 }) => {
-  const type = schema._def.innerType
-    ? schema._def.innerType._def.typeName
-    : schema._def.typeName
+  const type = schema._def.innerType._def.type._def.innerType?._def.typeName
   if (type === 'ZodString' || type === 'ZodNumber' || type === 'ZodEnum')
     return (
       <Stack spacing={0}>

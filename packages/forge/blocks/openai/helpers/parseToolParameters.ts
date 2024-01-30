@@ -1,9 +1,9 @@
 import type { OpenAI } from 'openai'
-import { parameterSchema } from '../actions/createChatCompletion'
+import { toolParametersSchema } from '../actions/createChatCompletion'
 import { z } from '@typebot.io/forge/zod'
 
 export const parseToolParameters = (
-  parameters: z.infer<typeof parameterSchema>[]
+  parameters: z.infer<typeof toolParametersSchema>
 ): OpenAI.FunctionParameters => ({
   type: 'object',
   properties: parameters?.reduce<{
@@ -11,7 +11,8 @@ export const parseToolParameters = (
   }>((acc, param) => {
     if (!param.name) return acc
     acc[param.name] = {
-      type: param.type,
+      type: param.type === 'enum' ? 'string' : param.type,
+      enum: param.type === 'enum' ? param.values : undefined,
       description: param.description,
     }
     return acc

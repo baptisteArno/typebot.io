@@ -6,7 +6,7 @@ import {
 } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { Stats } from '@typebot.io/schemas'
-import React from 'react'
+import React, { useState } from 'react'
 import { StatsCards } from './StatsCards'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
 import { Graph } from '@/features/graph/components/Graph'
@@ -15,14 +15,18 @@ import { useTranslate } from '@tolgee/react'
 import { trpc } from '@/lib/trpc'
 import { isDefined } from '@typebot.io/lib'
 import { EventsCoordinatesProvider } from '@/features/graph/providers/EventsCoordinateProvider'
+import { defaultTimeFilter, timeFilterValues } from '../constants'
 
 export const AnalyticsGraphContainer = ({ stats }: { stats?: Stats }) => {
   const { t } = useTranslate()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { typebot, publishedTypebot } = useTypebot()
+  const [timeFilter, setTimeFilter] =
+    useState<(typeof timeFilterValues)[number]>(defaultTimeFilter)
   const { data } = trpc.analytics.getTotalAnswers.useQuery(
     {
       typebotId: typebot?.id as string,
+      timeFilter,
     },
     { enabled: isDefined(publishedTypebot) }
   )
@@ -30,6 +34,7 @@ export const AnalyticsGraphContainer = ({ stats }: { stats?: Stats }) => {
   const { data: edgesData } = trpc.analytics.getTotalVisitedEdges.useQuery(
     {
       typebotId: typebot?.id as string,
+      timeFilter,
     },
     { enabled: isDefined(publishedTypebot) }
   )
@@ -76,7 +81,12 @@ export const AnalyticsGraphContainer = ({ stats }: { stats?: Stats }) => {
         type={t('billing.limitMessage.analytics')}
         excludedPlans={['STARTER']}
       />
-      <StatsCards stats={stats} pos="absolute" />
+      <StatsCards
+        stats={stats}
+        pos="absolute"
+        timeFilter={timeFilter}
+        setTimeFilter={setTimeFilter}
+      />
     </Flex>
   )
 }
