@@ -6,7 +6,7 @@ import {
   IconButton,
   Flex,
 } from '@chakra-ui/react'
-import { PlusIcon } from 'assets/icons'
+import { PlusIcon, TrashIcon } from 'assets/icons'
 import { useTypebot } from 'contexts/TypebotContext'
 import { ButtonItem, ItemIndices, ItemType } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
@@ -38,8 +38,10 @@ export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
       updateItem(indices, { content: itemValue === '' ? undefined : itemValue })
   }
 
+  const hasMoreThanOneItem = () => indices.itemsCount && indices.itemsCount > 1
+
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Escape' && itemValue === 'Editar opção de resposta')
+    if (e.key === 'Escape' && itemValue === 'Editar opção de resposta' && hasMoreThanOneItem())
       deleteItem(indices)
     if (e.key === 'Enter' && itemValue !== '' && initialContent === '')
       handlePlusClick()
@@ -51,6 +53,10 @@ export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
       { stepId: item.stepId, type: ItemType.BUTTON },
       { ...indices, itemIndex }
     )
+  }
+
+  const handleDeleteClick = () => {
+    deleteItem(indices)
   }
 
   return (
@@ -94,6 +100,15 @@ export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
           colorScheme="gray"
           onClick={handlePlusClick}
         />
+        {hasMoreThanOneItem() && (
+        <IconButton
+          aria-label="Delete item"
+          icon={<TrashIcon />}
+          size="xs"
+          shadow="md"
+          colorScheme="gray"
+          onClick={handleDeleteClick}
+        />)}
       </Fade>
     </Flex>
   )

@@ -24,6 +24,7 @@ import {
   OctaWabaStepType,
   StepIndices,
   StepWithItems,
+  WOZStepType,
 } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { ItemNode } from '../ItemNode'
@@ -234,10 +235,11 @@ export const ItemNodesList = ({
               <ItemNode
                 item={item}
                 step={step}
-                indices={{ blockIndex, stepIndex, itemIndex: idx }}
+                indices={{ blockIndex, stepIndex, itemIndex: idx, itemsCount: step.items.length }}
                 onMouseDown={handleStepMouseDown(idx)}
                 isReadOnly={isReadOnly}
               />
+              {step.type !== WOZStepType.ASSIGN && (
               <Flex
                 ref={handlePushElementRef(idx + 1)}
                 h={
@@ -250,6 +252,7 @@ export const ItemNodesList = ({
                 rounded="lg"
                 transition={showPlaceholders ? 'height 200ms' : 'none'}
               />
+              )}
             </Stack>
           )
         })}
@@ -258,7 +261,8 @@ export const ItemNodesList = ({
         step.type !== InputStepType.CHOICE &&
         step.type !== IntegrationStepType.WEBHOOK &&
         step.type !== OctaWabaStepType.WHATSAPP_OPTIONS_LIST &&
-        step.type !== OctaWabaStepType.WHATSAPP_BUTTONS_LIST && (
+        step.type !== OctaWabaStepType.WHATSAPP_BUTTONS_LIST &&
+        step.type !== WOZStepType.ASSIGN && (
           <Flex
             px="4"
             py="2"

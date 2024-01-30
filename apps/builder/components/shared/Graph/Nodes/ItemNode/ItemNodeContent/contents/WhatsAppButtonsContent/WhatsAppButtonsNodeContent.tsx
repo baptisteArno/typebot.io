@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 
 import { useTypebot } from 'contexts/TypebotContext'
-import { PlusIcon } from 'assets/icons'
+import { PlusIcon, TrashIcon } from 'assets/icons'
 import { Item, ItemIndices, ItemType } from 'models'
 import { isNotDefined } from 'utils'
 
@@ -41,8 +41,10 @@ export const WhatsAppButtonsNodeContent = ({
     }
   }
 
+  const hasMoreThanOneItem = () => indices.itemsCount && indices.itemsCount > 1
+
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Escape' && itemValue === 'Editar botão') deleteItem(indices)
+    if (e.key === 'Escape' && itemValue === 'Editar botão' && hasMoreThanOneItem()) deleteItem(indices)
     if (e.key === 'Enter' && itemValue !== '' && initialContent === '')
       handlePlusClick()
   }
@@ -56,6 +58,10 @@ export const WhatsAppButtonsNodeContent = ({
       },
       { ...indices, itemIndex }
     )
+  }
+
+  const handleDeleteClick = () => {
+    deleteItem(indices)
   }
 
   const handleEdit = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -106,6 +112,15 @@ export const WhatsAppButtonsNodeContent = ({
           colorScheme="gray"
           onClick={handlePlusClick}
         />
+        {hasMoreThanOneItem() && (
+        <IconButton
+          aria-label="Delete item"
+          icon={<TrashIcon />}
+          size="xs"
+          shadow="md"
+          colorScheme="gray"
+          onClick={handleDeleteClick}
+        />)}
       </Fade>
     </Flex>
   )

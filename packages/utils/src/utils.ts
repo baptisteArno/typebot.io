@@ -26,7 +26,8 @@ import {
   OctaWabaStepType,
   WhatsAppOptionsListStep,
   WhatsAppButtonsListStep,
-  WOZStepType
+  WOZStepType,
+  WOZAssignStep
 } from 'models'
 
 export const sendRequest = async <ResponseData>(
@@ -163,12 +164,12 @@ export const stepTypeHasWebhook = (
 
 export const stepTypeHasItems = (
   type: StepType
-): type is LogicStepType.CONDITION | InputStepType.CHOICE | OctaStepType.OFFICE_HOURS | IntegrationStepType.WEBHOOK | OctaWabaStepType.WHATSAPP_OPTIONS_LIST | OctaWabaStepType.WHATSAPP_BUTTONS_LIST | OctaWabaStepType.COMMERCE => 
-  [LogicStepType.CONDITION, InputStepType.CHOICE, OctaStepType.OFFICE_HOURS, IntegrationStepType.WEBHOOK, OctaWabaStepType.WHATSAPP_OPTIONS_LIST, OctaWabaStepType.WHATSAPP_BUTTONS_LIST, OctaWabaStepType.COMMERCE].includes(type)
+): type is LogicStepType.CONDITION | InputStepType.CHOICE | OctaStepType.OFFICE_HOURS | IntegrationStepType.WEBHOOK | OctaWabaStepType.WHATSAPP_OPTIONS_LIST | OctaWabaStepType.WHATSAPP_BUTTONS_LIST | OctaWabaStepType.COMMERCE | WOZStepType.ASSIGN => 
+  [LogicStepType.CONDITION, InputStepType.CHOICE, OctaStepType.OFFICE_HOURS, IntegrationStepType.WEBHOOK, OctaWabaStepType.WHATSAPP_OPTIONS_LIST, OctaWabaStepType.WHATSAPP_BUTTONS_LIST, OctaWabaStepType.COMMERCE, WOZStepType.ASSIGN].includes(type)
 
 export const stepHasItems = (
   step: Step
-): step is ConditionStep | ChoiceInputStep | OfficeHourStep | WebhookStep | WhatsAppOptionsListStep | WhatsAppButtonsListStep =>
+): step is ConditionStep | ChoiceInputStep | OfficeHourStep | WebhookStep | WhatsAppOptionsListStep | WhatsAppButtonsListStep | WOZAssignStep =>
   'items' in step && isDefined(step.items)
 
 export const byId = (id?: string) => (obj: { id: string }) => obj.id === id

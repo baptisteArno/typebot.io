@@ -198,7 +198,7 @@ export const StepNodeContent = ({ step, indices }: Props) => {
       return <WOZSuggestionContent step={step} />
     }
     case WOZStepType.ASSIGN: {
-      return <WOZAssignContent step={step} />
+      return <WOZAssignContent step={step} indices={indices} />
     }
     case 'start': {
       return <span></span>
