@@ -2,7 +2,7 @@ FROM node:18-bullseye-slim AS base
 WORKDIR /app
 ARG SCOPE
 ENV SCOPE=${SCOPE}
-ENV NODE_ENV production
+
 RUN apt-get -qy update \
     && apt-get -qy --no-install-recommends install \
     openssl \
