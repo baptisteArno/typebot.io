@@ -13,3 +13,5 @@ export const defaultOpenAIOptions = {
   voiceModel: 'tts-1',
   temperature: 1,
 } as const
+
+export const maxToolCalls = 10

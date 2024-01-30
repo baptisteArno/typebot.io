@@ -1,6 +1,7 @@
 import { z } from '../../../../zod'
 import { optionBaseSchema, blockBaseSchema } from '../../shared'
 import { InputBlockType } from '../constants'
+import { fileVisibilityOptions } from './constants'
 
 const fileInputOptionsV5Schema = optionBaseSchema.merge(
   z.object({
@@ -15,6 +16,7 @@ const fileInputOptionsV5Schema = optionBaseSchema.merge(
       })
       .optional(),
     sizeLimit: z.number().optional(),
+    visibility: z.enum(fileVisibilityOptions).optional(),
   })
 )
 

@@ -87,7 +87,7 @@ const TextBubbleEditorContent = ({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.shiftKey) return
-    if (e.key === 'Enter') closeEditor()
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) closeEditor()
   }
 
   return (
