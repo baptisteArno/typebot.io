@@ -1766,14 +1766,16 @@
                 "type": "object",
                 "properties": {
                   "isStreamEnabled": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "default": false
                   },
                   "message": {
                     "type": "string"
                   },
                   "isOnlyRegistering": {
                     "type": "boolean",
-                    "description": "If set to `true`, it will only register the session and not start the bot. This is used for 3rd party chat platforms as it can require a session to be registered before sending the first message."
+                    "description": "If set to `true`, it will only register the session and not start the bot. This is used for 3rd party chat platforms as it can require a session to be registered before sending the first message.",
+                    "default": false
                   },
                   "typebot": {
                     "oneOf": [

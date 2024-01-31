@@ -24,9 +24,10 @@
     "google-auth-library": "8.9.0",
     "google-spreadsheet": "4.1.1",
     "got": "12.6.0",
+    "ky": "^1.1.3",
     "libphonenumber-js": "1.10.37",
     "node-html-parser": "6.1.5",
-    "nodemailer": "6.9.3",
+    "nodemailer": "6.9.8",
     "openai": "4.24.1",
     "qs": "6.11.2",
     "stripe": "12.13.0"
@@ -35,7 +36,7 @@
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/forge-repository": "workspace:*",
     "@typebot.io/forge-schemas": "workspace:*",
-    "@types/nodemailer": "6.4.8",
+    "@types/nodemailer": "6.4.14",
     "@types/qs": "6.9.7"
   }
 }

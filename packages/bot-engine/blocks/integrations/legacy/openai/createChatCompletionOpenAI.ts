@@ -84,14 +84,13 @@ export const createChatCompletionOpenAI = async (
   )?.name
 
   if (
-    isPlaneteScale() &&
-    isCredentialsV2(credentials) &&
     newSessionState.isStreamEnabled &&
     !newSessionState.whatsApp &&
     isNextBubbleMessageWithAssistantMessage(typebot)(
       blockId,
       assistantMessageVariableName
-    )
+    ) &&
+    !process.env.VERCEL_ENV
   ) {
     return {
       clientSideActions: [

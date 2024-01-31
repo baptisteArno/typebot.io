@@ -95,6 +95,7 @@ const baseEnv = {
     ),
     NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID: z.string().min(1).optional(),
     NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE: z.coerce.number().optional(),
+    NEXT_PUBLIC_CHAT_API_URL: z.string().url().optional(),
   },
   runtimeEnv: {
     NEXT_PUBLIC_E2E_TEST: getRuntimeVariable('NEXT_PUBLIC_E2E_TEST'),
@@ -105,6 +106,7 @@ const baseEnv = {
     NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE: getRuntimeVariable(
       'NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE'
     ),
+    NEXT_PUBLIC_CHAT_API_URL: getRuntimeVariable('NEXT_PUBLIC_CHAT_API_URL'),
   },
 }
 const githubEnv = {

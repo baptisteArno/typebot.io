@@ -18,6 +18,8 @@ import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesI
 import { ExecuteIntegrationResponse } from '../types'
 import { byId } from '@typebot.io/lib'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import { env } from '@typebot.io/env'
+import { getCredentials } from '../queries/getCredentials'
 
 export const executeForgedBlock = async (
   state: SessionState,
@@ -39,11 +41,7 @@ export const executeForgedBlock = async (
         logs: [noCredentialsError],
       }
     }
-    credentials = await prisma.credentials.findUnique({
-      where: {
-        id: block.options.credentialsId,
-      },
-    })
+    credentials = await getCredentials(block.options.credentialsId)
     if (!credentials) {
       console.error('Could not find credentials in database')
       return {
@@ -56,15 +54,13 @@ export const executeForgedBlock = async (
   const typebot = state.typebotsQueue[0].typebot
   if (
     action?.run?.stream &&
-    isPlaneteScale() &&
-    credentials &&
-    isCredentialsV2(credentials) &&
-    state.isStreamEnabled &&
-    !state.whatsApp &&
     isNextBubbleTextWithStreamingVar(typebot)(
       block.id,
       action.run.stream.getStreamVariableId(block.options)
-    )
+    ) &&
+    state.isStreamEnabled &&
+    !state.whatsApp &&
+    !process.env.VERCEL_ENV
   ) {
     return {
       outgoingEdgeId: block.outgoingEdgeId,

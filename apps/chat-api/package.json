@@ -1,0 +1,32 @@
+{
+  "name": "@typebot.io/chat-api",
+  "version": "1.0.0",
+  "license": "AGPL-3.0-or-later",
+  "private": true,
+  "scripts": {
+    "dev": "bun --watch src/index.ts",
+    "build": "bun build --target=bun ./src/index.ts --outdir ./dist",
+    "start": "NODE_ENV=production bun src/index.ts",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@elysiajs/cors": "0.8.0",
+    "@elysiajs/stream": "^0.8.0",
+    "@sinclair/typebox": "^0.32.5",
+    "@trpc/server": "10.40.0",
+    "@typebot.io/bot-engine": "workspace:*",
+    "@typebot.io/env": "workspace:*",
+    "@typebot.io/forge": "workspace:*",
+    "@typebot.io/forge-schemas": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/schemas": "workspace:*",
+    "@typebot.io/variables": "workspace:*",
+    "ai": "2.2.31",
+    "elysia": "0.8.8",
+    "openai": "4.24.1"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
+  }
+}

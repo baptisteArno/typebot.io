@@ -1,4 +1,4 @@
-import got from 'got'
+import ky from 'ky'
 import {
   WhatsAppCredentials,
   WhatsAppSendingMessage,
@@ -16,14 +16,16 @@ export const sendWhatsAppMessage = async ({
   message,
   credentials,
 }: Props) =>
-  got.post({
-    url: `${env.WHATSAPP_CLOUD_API_URL}/v17.0/${credentials.phoneNumberId}/messages`,
-    headers: {
-      Authorization: `Bearer ${credentials.systemUserAccessToken}`,
-    },
-    json: {
-      messaging_product: 'whatsapp',
-      to,
-      ...message,
-    },
-  })
+  ky.post(
+    `${env.WHATSAPP_CLOUD_API_URL}/v17.0/${credentials.phoneNumberId}/messages`,
+    {
+      headers: {
+        Authorization: `Bearer ${credentials.systemUserAccessToken}`,
+      },
+      json: {
+        messaging_product: 'whatsapp',
+        to,
+        ...message,
+      },
+    }
+  )

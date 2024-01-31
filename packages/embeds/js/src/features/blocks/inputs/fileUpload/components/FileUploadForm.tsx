@@ -56,7 +56,8 @@ export const FileUploadForm = (props: Props) => {
       })
     setIsUploading(true)
     const urls = await uploadFiles({
-      apiHost: props.context.apiHost ?? guessApiHost(),
+      apiHost:
+        props.context.apiHost ?? guessApiHost({ ignoreChatApiUrl: true }),
       files: [
         {
           file,
@@ -86,7 +87,8 @@ export const FileUploadForm = (props: Props) => {
       })
     setIsUploading(true)
     const urls = await uploadFiles({
-      apiHost: props.context.apiHost ?? guessApiHost(),
+      apiHost:
+        props.context.apiHost ?? guessApiHost({ ignoreChatApiUrl: true }),
       files: files.map((file) => ({
         file: file,
         input: {

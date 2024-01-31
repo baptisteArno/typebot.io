@@ -1,6 +1,16 @@
 import { getRuntimeVariable } from '@typebot.io/env/getRuntimeVariable'
 
-const cloudViewerUrl = 'https://typebot.io'
+const chatApiCloudFallbackHost = 'https://chat.typebot.io'
 
-export const guessApiHost = () =>
-  getRuntimeVariable('NEXT_PUBLIC_VIEWER_URL')?.split(',')[0] ?? cloudViewerUrl
+type Params = {
+  ignoreChatApiUrl?: boolean
+}
+
+export const guessApiHost = (
+  { ignoreChatApiUrl }: Params = { ignoreChatApiUrl: false }
+) =>
+  (ignoreChatApiUrl
+    ? undefined
+    : getRuntimeVariable('NEXT_PUBLIC_CHAT_API_URL')) ??
+  getRuntimeVariable('NEXT_PUBLIC_VIEWER_URL')?.split(',')[0] ??
+  chatApiCloudFallbackHost
