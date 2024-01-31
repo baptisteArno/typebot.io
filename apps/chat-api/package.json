@@ -27,6 +27,7 @@
     "openai": "4.24.1"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
+    "@typebot.io/tsconfig": "workspace:*",
+    "react": "18.2.0"
   }
 }
