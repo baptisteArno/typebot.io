@@ -1,6 +1,6 @@
 import { WhatsAppWebhookRequestBody } from '@typebot.io/schemas/features/whatsapp'
 import { isNotDefined } from '@typebot.io/lib'
-import { resumeWhatsAppFlow } from '@typebot.io/bot-engine/whatsapp/resumeWhatsAppFlow'
+import { resumeWhatsAppFlow } from '../whatsapp/resumeWhatsAppFlow'
 
 type Props = {
   entry: WhatsAppWebhookRequestBody['entry']

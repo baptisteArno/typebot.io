@@ -1,7 +1,7 @@
-import { restartSession } from '@typebot.io/bot-engine/queries/restartSession'
-import { saveStateToDatabase } from '@typebot.io/bot-engine/saveStateToDatabase'
-import { startSession } from '@typebot.io/bot-engine/startSession'
 import { StartFrom, StartTypebot } from '@typebot.io/schemas'
+import { restartSession } from '../queries/restartSession'
+import { saveStateToDatabase } from '../saveStateToDatabase'
+import { startSession } from '../startSession'
 
 type Props = {
   message?: string

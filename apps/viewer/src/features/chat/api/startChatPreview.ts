@@ -3,7 +3,7 @@ import {
   startPreviewChatResponseSchema,
 } from '@typebot.io/schemas/features/chat/schema'
 import { publicProcedure } from '@/helpers/server/trpc'
-import { startChatPreview as startChatPreviewFn } from '@typebot.io/chat-api/src/runtimes/api/startChatPreview'
+import { startChatPreview as startChatPreviewFn } from '@typebot.io/bot-engine/apiHandlers/startChatPreview'
 
 export const startChatPreview = publicProcedure
   .meta({

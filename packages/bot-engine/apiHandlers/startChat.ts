@@ -1,7 +1,7 @@
-import { startSession } from '@typebot.io/bot-engine/startSession'
-import { saveStateToDatabase } from '@typebot.io/bot-engine/saveStateToDatabase'
-import { restartSession } from '@typebot.io/bot-engine/queries/restartSession'
-import { filterPotentiallySensitiveLogs } from '@typebot.io/bot-engine/logs/filterPotentiallySensitiveLogs'
+import { filterPotentiallySensitiveLogs } from '../logs/filterPotentiallySensitiveLogs'
+import { restartSession } from '../queries/restartSession'
+import { saveStateToDatabase } from '../saveStateToDatabase'
+import { startSession } from '../startSession'
 
 type Props = {
   origin: string | undefined

@@ -1,10 +1,10 @@
 import { TRPCError } from '@trpc/server'
-import { getSession } from '@typebot.io/bot-engine/queries/getSession'
-import { saveStateToDatabase } from '@typebot.io/bot-engine/saveStateToDatabase'
-import { continueBotFlow } from '@typebot.io/bot-engine/continueBotFlow'
-import { parseDynamicTheme } from '@typebot.io/bot-engine/parseDynamicTheme'
 import { isDefined, isNotDefined } from '@typebot.io/lib/utils'
-import { filterPotentiallySensitiveLogs } from '@typebot.io/bot-engine/logs/filterPotentiallySensitiveLogs'
+import { getSession } from '../queries/getSession'
+import { continueBotFlow } from '../continueBotFlow'
+import { filterPotentiallySensitiveLogs } from '../logs/filterPotentiallySensitiveLogs'
+import { parseDynamicTheme } from '../parseDynamicTheme'
+import { saveStateToDatabase } from '../saveStateToDatabase'
 
 type Props = {
   origin: string | undefined

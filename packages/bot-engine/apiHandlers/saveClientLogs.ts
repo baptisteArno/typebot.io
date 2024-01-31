@@ -1,8 +1,8 @@
 import { TRPCError } from '@trpc/server'
-import { formatLogDetails } from '@typebot.io/bot-engine/logs/helpers/formatLogDetails'
-import { getSession } from '@typebot.io/bot-engine/queries/getSession'
-import { saveLogs } from '@typebot.io/bot-engine/queries/saveLogs'
 import { ChatLog } from '@typebot.io/schemas'
+import { formatLogDetails } from '../logs/helpers/formatLogDetails'
+import { getSession } from '../queries/getSession'
+import { saveLogs } from '../queries/saveLogs'
 
 type Props = {
   sessionId: string

@@ -1,5 +1,4 @@
 import { TRPCError } from '@trpc/server'
-import { getSession } from '@typebot.io/bot-engine/queries/getSession'
 import prisma from '@typebot.io/lib/prisma'
 import {
   SessionState,
@@ -7,6 +6,7 @@ import {
   PublicTypebot,
   Typebot,
 } from '@typebot.io/schemas'
+import { getSession } from '../queries/getSession'
 
 type Props = {
   user?: { id: string }

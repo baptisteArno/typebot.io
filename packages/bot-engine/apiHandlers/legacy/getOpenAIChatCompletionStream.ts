@@ -9,7 +9,7 @@ import { OpenAIStream } from 'ai'
 import { parseVariableNumber } from '@typebot.io/variables/parseVariableNumber'
 import { ClientOptions, OpenAI } from 'openai'
 import { defaultOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
-import { getCredentials } from '@typebot.io/bot-engine/queries/getCredentials'
+import { getCredentials } from '../../queries/getCredentials'
 
 export const getOpenAIChatCompletionStream = async (
   state: SessionState,

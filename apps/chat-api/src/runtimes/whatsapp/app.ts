@@ -1,6 +1,6 @@
 import { Elysia, t } from 'elysia'
-import { receiveMessage } from './receiveMessage'
-import { receiveMessagePreview } from './receiveMessagePreview'
+import { receiveMessage } from '@typebot.io/bot-engine/apiHandlers/receiveMessage'
+import { receiveMessagePreview } from '@typebot.io/bot-engine/apiHandlers/receiveMessagePreview'
 
 export const whatsAppRuntime = new Elysia()
   .post(

@@ -548,9 +548,6 @@ importers:
       '@typebot.io/bot-engine':
         specifier: workspace:*
         version: link:../../packages/bot-engine
-      '@typebot.io/chat-api':
-        specifier: workspace:*
-        version: link:../chat-api
       '@typebot.io/js':
         specifier: workspace:*
         version: link:../../packages/embeds/js

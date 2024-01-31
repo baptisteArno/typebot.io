@@ -1,4 +1,4 @@
-import { getMessageStream } from '@typebot.io/chat-api/src/runtimes/api/getMessageStream'
+import { getMessageStream } from '@typebot.io/bot-engine/apiHandlers/getMessageStream'
 import { StreamingTextResponse } from 'ai'
 import { NextResponse } from 'next/server'
 

@@ -1,4 +1,3 @@
-import { getSession } from '@typebot.io/bot-engine/queries/getSession'
 import { getBlockById } from '@typebot.io/lib/getBlockById'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { ChatCompletionOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai'
@@ -11,7 +10,8 @@ import {
   parseVariables,
 } from '@typebot.io/variables/parseVariables'
 import { getOpenAIChatCompletionStream } from './legacy/getOpenAIChatCompletionStream'
-import { getCredentials } from '@typebot.io/bot-engine/queries/getCredentials'
+import { getCredentials } from '../queries/getCredentials'
+import { getSession } from '../queries/getSession'
 
 type Props = {
   sessionId: string

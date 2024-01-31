@@ -1,12 +1,12 @@
 import { Elysia, t } from 'elysia'
-import { startChat } from './startChat'
-import { startChatPreview } from './startChatPreview'
 import { getAuthenticatedUserId } from '../../auth'
 import { cors } from '@elysiajs/cors'
-import { continueChat } from './continueChat'
-import { getMessageStream } from './getMessageStream'
 import { Stream } from '@elysiajs/stream'
 import { StreamingTextResponse } from 'ai'
+import { startChat } from '@typebot.io/bot-engine/apiHandlers/startChat'
+import { continueChat } from '@typebot.io/bot-engine/apiHandlers/continueChat'
+import { startChatPreview } from '@typebot.io/bot-engine/apiHandlers/startChatPreview'
+import { getMessageStream } from '@typebot.io/bot-engine/apiHandlers/getMessageStream'
 
 export const apiRuntime = new Elysia()
   .use(cors())
