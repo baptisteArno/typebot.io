@@ -23,7 +23,7 @@
     "ai": "2.2.31",
     "bot-engine": "workspace:*",
     "cors": "2.8.5",
-    "google-spreadsheet": "4.0.2",
+    "google-spreadsheet": "4.1.1",
     "got": "12.6.0",
     "next": "14.0.3",
     "nextjs-cors": "2.1.2",

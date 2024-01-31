@@ -22,7 +22,7 @@
     "chrono-node": "2.7.0",
     "date-fns": "2.30.0",
     "google-auth-library": "8.9.0",
-    "google-spreadsheet": "4.0.2",
+    "google-spreadsheet": "4.1.1",
     "got": "12.6.0",
     "libphonenumber-js": "1.10.37",
     "node-html-parser": "6.1.5",

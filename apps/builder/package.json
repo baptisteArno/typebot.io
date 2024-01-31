@@ -64,7 +64,7 @@
     "focus-visible": "5.2.0",
     "framer-motion": "10.3.0",
     "google-auth-library": "8.9.0",
-    "google-spreadsheet": "4.0.2",
+    "google-spreadsheet": "4.1.1",
     "got": "12.6.0",
     "immer": "10.0.2",
     "jsonwebtoken": "9.0.1",
