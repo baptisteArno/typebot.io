@@ -18,7 +18,6 @@
     "@typebot.io/tsconfig": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "@udecode/plate-common": "21.1.5",
-    "@udecode/plate-serializer-md": "24.4.0",
     "ai": "2.2.31",
     "chrono-node": "2.7.0",
     "date-fns": "2.30.0",

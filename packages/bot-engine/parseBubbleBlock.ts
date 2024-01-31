@@ -11,13 +11,10 @@ import {
   getVariablesToParseInfoInText,
   parseVariables,
 } from '@typebot.io/variables/parseVariables'
-import { TDescendant, createPlateEditor } from '@udecode/plate-common'
-import {
-  createDeserializeMdPlugin,
-  deserializeMd,
-} from '@udecode/plate-serializer-md'
+import { TDescendant } from '@udecode/plate-common'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 import { defaultVideoBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
+import { convertMarkdownToRichText } from '@typebot.io/lib/markdown/convertMarkdownToRichText'
 
 type Params = {
   version: 1 | 2
@@ -207,28 +204,3 @@ const applyElementStyleToDescendants = (
       ),
     }
   })
-
-const convertMarkdownToRichText = (text: string): TDescendant[] => {
-  const spacesBefore = text.match(/^[\s]+/)
-  const spacesAfter = text.match(/[\s]+$/)
-  const plugins = [createDeserializeMdPlugin()]
-  return [
-    ...(spacesBefore?.at(0)
-      ? [
-          {
-            type: 'p',
-            text: spacesBefore.at(0),
-          },
-        ]
-      : []),
-    ...deserializeMd(createPlateEditor({ plugins }) as unknown as any, text),
-    ...(spacesAfter?.at(0)
-      ? [
-          {
-            type: 'p',
-            text: spacesAfter.at(0),
-          },
-        ]
-      : []),
-  ]
-}
