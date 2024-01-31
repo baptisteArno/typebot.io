@@ -15,7 +15,7 @@
     "@typebot.io/tsconfig": "workspace:*",
     "@types/escape-html": "^1.0.4",
     "@types/nodemailer": "6.4.8",
-    "next": "14.0.3",
+    "next": "14.1.0",
     "nodemailer": "6.9.3",
     "typescript": "5.3.2"
   },
