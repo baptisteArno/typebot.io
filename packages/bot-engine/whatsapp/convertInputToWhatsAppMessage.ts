@@ -5,7 +5,7 @@ import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/con
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { defaultPictureChoiceOptions } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice/constants'
 import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
-import { convertRichTextToMarkdown } from '@typebot.io/lib/serializer/convertRichTextToMarkdown'
+import { convertRichTextToMarkdown } from '@typebot.io/lib/markdown/convertRichTextToMarkdown'
 
 export const convertInputToWhatsAppMessages = (
   input: NonNullable<ContinueChatResponse['input']>,

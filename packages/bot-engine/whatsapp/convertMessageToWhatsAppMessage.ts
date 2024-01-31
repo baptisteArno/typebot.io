@@ -3,7 +3,7 @@ import { WhatsAppSendingMessage } from '@typebot.io/schemas/features/whatsapp'
 import { isSvgSrc } from '@typebot.io/lib/utils'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 import { VideoBubbleContentType } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
-import { convertRichTextToMarkdown } from '@typebot.io/lib/serializer/convertRichTextToMarkdown'
+import { convertRichTextToMarkdown } from '@typebot.io/lib/markdown/convertRichTextToMarkdown'
 
 const mp4HttpsUrlRegex = /^https:\/\/.*\.mp4$/
 
