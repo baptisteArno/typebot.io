@@ -418,6 +418,9 @@ importers:
       '@typebot.io/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
+      '@types/react':
+        specifier: 18.2.15
+        version: 18.2.15
       react:
         specifier: 18.2.0
         version: 18.2.0
