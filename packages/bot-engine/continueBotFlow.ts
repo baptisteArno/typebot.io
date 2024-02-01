@@ -408,9 +408,8 @@ const getOutgoingEdgeId =
 const parseReply =
   (state: SessionState) =>
   async (reply: Reply, block: InputBlock): Promise<ParsedReply> => {
-    if (typeof reply !== 'string') {
-      if (block.type !== InputBlockType.FILE || !reply)
-        return { status: 'fail' }
+    if (reply && typeof reply !== 'string') {
+      if (block.type !== InputBlockType.FILE) return { status: 'fail' }
       if (block.options?.visibility !== 'Public') {
         return {
           status: 'success',

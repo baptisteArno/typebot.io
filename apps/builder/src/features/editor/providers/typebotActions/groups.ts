@@ -153,7 +153,6 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
                   let outgoingEdgeId = item.outgoingEdgeId
                   if (outgoingEdgeId) {
                     const edge = edges.find(byId(outgoingEdgeId))
-                    console.log(edge)
                     if (edge) {
                       outgoingEdgeId = createId()
                       edgesToCreate.push({

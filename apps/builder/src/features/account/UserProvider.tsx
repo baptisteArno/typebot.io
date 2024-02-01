@@ -8,7 +8,6 @@ import { useToast } from '@/hooks/useToast'
 import { updateUserQuery } from './queries/updateUserQuery'
 import { useDebouncedCallback } from 'use-debounce'
 import { env } from '@typebot.io/env'
-import { identifyUser } from '../telemetry/posthog'
 import { useColorMode } from '@chakra-ui/react'
 
 export const userContext = createContext<{
@@ -62,7 +61,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
     if (parsedUser?.id) {
       setSentryUser({ id: parsedUser.id })
-      identifyUser(parsedUser.id)
     }
   }, [session, user])
 

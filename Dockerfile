@@ -11,7 +11,7 @@ RUN apt-get -qy update \
 RUN npm --global install pnpm
 
 FROM base AS pruner
-RUN npm --global install turbo
+RUN npm --global install turbo@1.11.3
 WORKDIR /app
 COPY . .
 RUN turbo prune --scope=${SCOPE} --docker

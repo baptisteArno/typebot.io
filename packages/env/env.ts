@@ -57,7 +57,11 @@ const baseEnv = {
       z.string().url()
     ),
     DISABLE_SIGNUP: boolean.optional().default('false'),
-    ADMIN_EMAIL: z.string().email().optional(),
+    ADMIN_EMAIL: z
+      .string()
+      .min(1)
+      .optional()
+      .transform((val) => val?.split(',')),
     DEFAULT_WORKSPACE_PLAN: z
       .enum(['FREE', 'STARTER', 'PRO', 'LIFETIME', 'UNLIMITED'])
       .refine((str) =>
