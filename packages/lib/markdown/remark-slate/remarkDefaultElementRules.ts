@@ -50,7 +50,7 @@ export const remarkDefaultElementRules: RemarkElementRules<Value> = {
           type: getPluginType(options.editor, headingType),
           children: remarkTransformElementChildren(
             node,
-            lastLineNumber,
+            node.position.end.line,
             options
           ),
         },
@@ -76,7 +76,7 @@ export const remarkDefaultElementRules: RemarkElementRules<Value> = {
               indent,
               children: remarkTransformElementChildren(
                 paragraph || '',
-                lastLineNumber,
+                node.position.end.line,
                 options
               ),
             })
@@ -103,7 +103,7 @@ export const remarkDefaultElementRules: RemarkElementRules<Value> = {
             ),
             children: remarkTransformElementChildren(
               node,
-              lastLineNumber,
+              node.position.end.line,
               options
             ),
           },
@@ -112,29 +112,31 @@ export const remarkDefaultElementRules: RemarkElementRules<Value> = {
     },
   },
   listItem: {
-    transform: (node, lastLineNumber, options) => ({
-      type: getPluginType(options.editor, ELEMENT_LI),
-      children: remarkTransformElementChildren(
-        node,
-        lastLineNumber,
-        options
-      ).map(
-        (child) =>
-          ({
-            ...child,
-            type:
-              child.type === getPluginType(options.editor, ELEMENT_PARAGRAPH)
-                ? getPluginType(options.editor, ELEMENT_LIC)
-                : child.type,
-          } as TDescendant)
-      ),
-    }),
+    transform: (node, _lastLineNumber, options) => {
+      return {
+        type: getPluginType(options.editor, ELEMENT_LI),
+        children: remarkTransformElementChildren(
+          node,
+          node.position.end.line,
+          options
+        ).map(
+          (child) =>
+            ({
+              ...child,
+              type:
+                child.type === getPluginType(options.editor, ELEMENT_PARAGRAPH)
+                  ? getPluginType(options.editor, ELEMENT_LIC)
+                  : child.type,
+            } as TDescendant)
+        ),
+      }
+    },
   },
   paragraph: {
     transform: (node, lastLineNumber, options) => {
       const children = remarkTransformElementChildren(
         node,
-        lastLineNumber,
+        node.position.end.line,
         options
       )
 
@@ -182,7 +184,11 @@ export const remarkDefaultElementRules: RemarkElementRules<Value> = {
       {
         type: getPluginType(options.editor, ELEMENT_LINK),
         url: node.url,
-        children: remarkTransformElementChildren(node, lastLineNumber, options),
+        children: remarkTransformElementChildren(
+          node,
+          node.position.end.line,
+          options
+        ),
       },
     ],
   },
@@ -203,7 +209,11 @@ export const remarkDefaultElementRules: RemarkElementRules<Value> = {
       {
         type: getPluginType(options.editor, ELEMENT_BLOCKQUOTE),
         children: node.children!.flatMap((paragraph) =>
-          remarkTransformElementChildren(paragraph, lastLineNumber, options)
+          remarkTransformElementChildren(
+            paragraph,
+            node.position.end.line,
+            options
+          )
         ),
       },
     ],
