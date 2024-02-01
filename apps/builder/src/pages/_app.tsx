@@ -19,12 +19,9 @@ import { NewVersionPopup } from '@/components/NewVersionPopup'
 import { TypebotProvider } from '@/features/editor/providers/TypebotProvider'
 import { WorkspaceProvider } from '@/features/workspace/WorkspaceProvider'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
-import { initPostHogIfEnabled } from '@/features/telemetry/posthog'
 import { TolgeeProvider, useTolgeeSSR } from '@tolgee/react'
 import { tolgee } from '@/lib/tolgee'
 import { Toaster } from '@/components/Toaster'
-
-initPostHogIfEnabled()
 
 const { ToastContainer, toast } = createStandaloneToast(customTheme)
 

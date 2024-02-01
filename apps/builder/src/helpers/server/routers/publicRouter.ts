@@ -10,7 +10,6 @@ import { router } from '../trpc'
 import { analyticsRouter } from '@/features/analytics/api/router'
 import { collaboratorsRouter } from '@/features/collaboration/api/router'
 import { customDomainsRouter } from '@/features/customDomains/api/router'
-import { processTelemetryEvent } from '@/features/telemetry/api/processTelemetryEvent'
 import { publicWhatsAppRouter } from '@/features/whatsapp/router'
 
 export const publicRouter = router({
@@ -25,7 +24,6 @@ export const publicRouter = router({
   theme: themeRouter,
   collaborators: collaboratorsRouter,
   customDomains: customDomainsRouter,
-  processTelemetryEvent,
   whatsApp: publicWhatsAppRouter,
 })
 

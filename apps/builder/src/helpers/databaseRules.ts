@@ -40,7 +40,8 @@ export const canReadTypebots = (
 ) => ({
   id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds },
   workspace:
-    user.email === env.ADMIN_EMAIL || env.NEXT_PUBLIC_E2E_TEST
+    env.ADMIN_EMAIL?.some((email) => email === user.email) ||
+    env.NEXT_PUBLIC_E2E_TEST
       ? undefined
       : {
           members: {
