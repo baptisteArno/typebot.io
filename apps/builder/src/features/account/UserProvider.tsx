@@ -85,13 +85,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     if (isNotDefined(user)) return
     const newUser = { ...user, ...updates }
     setUser(newUser)
-    saveUser(newUser)
+    saveUser(updates)
   }
 
   const saveUser = useDebouncedCallback(
-    async (newUser?: Partial<User>) => {
+    async (updates: Partial<User>) => {
       if (isNotDefined(user)) return
-      const { error } = await updateUserQuery(user.id, { ...user, ...newUser })
+      const { error } = await updateUserQuery(user.id, updates)
       if (error) showToast({ title: error.name, description: error.message })
       await refreshUser()
     },

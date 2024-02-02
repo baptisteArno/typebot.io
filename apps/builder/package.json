@@ -76,7 +76,7 @@
     "nextjs-cors": "2.1.2",
     "nodemailer": "6.9.3",
     "nprogress": "0.2.0",
-    "openai": "4.24.1",
+    "openai": "4.26.0",
     "papaparse": "5.4.1",
     "prettier": "2.8.8",
     "qs": "6.11.2",

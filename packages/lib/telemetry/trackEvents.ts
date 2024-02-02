@@ -45,7 +45,12 @@ export const trackEvents = async (events: TelemetryEvent[]) => {
     client.capture({
       distinctId: event.userId,
       event: event.name,
-      properties: 'data' in event ? event.data : undefined,
+      properties:
+        event.name === 'User updated'
+          ? { $set: event.data }
+          : 'data' in event
+          ? event.data
+          : undefined,
       groups,
     })
   })

@@ -17,4 +17,5 @@ export const mockedUser: User = {
   displayedInAppNotifications: {
     [graphGestureNotficationKey]: true,
   },
+  referral: null,
 }

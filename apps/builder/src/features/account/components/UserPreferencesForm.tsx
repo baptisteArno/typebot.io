@@ -1,7 +1,6 @@
 import {
   Stack,
   Heading,
-  useColorMode,
   Menu,
   MenuButton,
   MenuList,
@@ -34,7 +33,6 @@ export const UserPreferencesForm = () => {
   const { getLanguage } = useTolgee()
   const router = useRouter()
   const { t } = useTranslate()
-  const { colorMode } = useColorMode()
   const { user, updateUser } = useUser()
 
   useEffect(() => {
@@ -117,7 +115,7 @@ export const UserPreferencesForm = () => {
           defaultValue={
             user?.preferredAppAppearance
               ? user.preferredAppAppearance
-              : colorMode
+              : 'system'
           }
           onChange={changeAppearance}
         />
