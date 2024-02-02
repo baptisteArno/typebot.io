@@ -1,6 +1,6 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { WhatsAppOptionsListOptions, Variable } from 'models'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { TextBubbleEditor } from 'components/shared/Graph/Nodes/StepNode/TextBubbleEditor'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
 
@@ -13,7 +13,6 @@ export const WhatsAppOptionsListSettingsBody = ({
   options,
   onOptionsChange,
 }: WhatsAppOptionsListSettingsBodyProps) => {
-
   const handleVariableChange = (variable: Variable) => {
     onOptionsChange({
       ...options,
@@ -68,7 +67,6 @@ export const WhatsAppOptionsListSettingsBody = ({
         <FormLabel mb="0" htmlFor="button">
           Texto do cabeçalho
         </FormLabel>
-
         <TextBubbleEditor
           onClose={handleHeaderText}
           initialValue={
@@ -81,7 +79,6 @@ export const WhatsAppOptionsListSettingsBody = ({
         <FormLabel mb="0" htmlFor="button">
           Texto do corpo da mensagem
         </FormLabel>
-
         <TextBubbleEditor
           onClose={handleBodyText}
           initialValue={
@@ -94,7 +91,6 @@ export const WhatsAppOptionsListSettingsBody = ({
         <FormLabel mb="0" htmlFor="button">
           Texto do rodapé
         </FormLabel>
-
         <TextBubbleEditor
           onClose={handleFooterText}
           initialValue={
@@ -107,7 +103,6 @@ export const WhatsAppOptionsListSettingsBody = ({
         <FormLabel mb="0" htmlFor="button">
           Título da lista
         </FormLabel>
-
         <TextBubbleEditor
           onClose={handleListTitle}
           initialValue={

@@ -55,11 +55,11 @@ export const colors = {
     900: '#1d1400',
   },
   blueGray: {
-    400: '#7C8498'
+    400: '#7C8498',
   },
   teste: {
-    800: '#303243'
-  }
+    800: '#303243',
+  },
 }
 
 const components = {
@@ -106,4 +106,12 @@ const components = {
   },
 }
 
-export const customTheme = extendTheme({ colors, fonts, components })
+const styles = {
+  global: {
+    '.chakra-collapse[style*="height: auto"]': {
+      overflow: 'initial !important',
+    },
+  },
+}
+
+export const customTheme = extendTheme({ styles, colors, fonts, components })

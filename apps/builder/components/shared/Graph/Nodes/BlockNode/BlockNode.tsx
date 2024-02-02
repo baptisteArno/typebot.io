@@ -132,6 +132,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
               rounded="xl"
               bgColor="#ffffff"
               borderWidth="2px"
+              maxWidth="313px"
               borderColor={
                 isConnecting || isOpened || isPreviewing || isFocused
                   ? 'blue.400'
@@ -180,22 +181,22 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
               )}
               {isFocused && !isStartBlock && (
                 <SlideFade
-                in={isFocused}
-                style={{
-                  position: 'absolute',
-                  top: '-50px',
-                  right: 0,
-                }}
-                unmountOnExit
-              >
-                <BlockFocusToolbar
-                  onDuplicateClick={() => {
-                    setIsFocused(false)
-                    duplicateBlock(blockIndex)
+                  in={isFocused}
+                  style={{
+                    position: 'absolute',
+                    top: '-50px',
+                    right: 0,
                   }}
-                  onDeleteClick={() => deleteBlock(blockIndex)}
-                />
-              </SlideFade>
+                  unmountOnExit
+                >
+                  <BlockFocusToolbar
+                    onDuplicateClick={() => {
+                      setIsFocused(false)
+                      duplicateBlock(blockIndex)
+                    }}
+                    onDeleteClick={() => deleteBlock(blockIndex)}
+                  />
+                </SlideFade>
               )}
             </Stack>
           </DraggableCore>

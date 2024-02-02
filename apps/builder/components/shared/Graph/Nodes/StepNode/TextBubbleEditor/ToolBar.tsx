@@ -4,6 +4,7 @@ import {
   MARK_BOLD,
   MARK_ITALIC,
   MARK_UNDERLINE,
+  MARK_STRIKETHROUGH,
 } from '@udecode/plate-basic-marks'
 import { getPluginType, PlateEditor, Value } from '@udecode/plate-core'
 import { LinkToolbarButton } from '@udecode/plate-ui-link'
@@ -13,6 +14,7 @@ import {
   ItalicIcon,
   UnderlineIcon,
   LinkIcon,
+  StrikethroughIcon,
   EmojiIcon,
 } from 'assets/icons'
 import 'emoji-mart/css/emoji-mart.css'
@@ -91,6 +93,12 @@ export const ToolBar = ({
         <MarkToolbarButton
           type={getPluginType(editor, MARK_ITALIC)}
           icon={<ItalicIcon fontSize="20px" />}
+        />
+      </span>
+      <span data-testid="strikethrough-button">
+        <MarkToolbarButton
+          type={getPluginType(editor, MARK_STRIKETHROUGH)}
+          icon={<StrikethroughIcon fontSize="20px" />}
         />
       </span>
       {workspace?.channel === 'web' && (

@@ -14,7 +14,7 @@ services:
     depends_on:
       - typebot-db
     ports:
-      - '8080:3000'
+      - '8081:3000'
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     # See https://docs.typebot.io/self-hosting/configuration for more configuration options

@@ -1,3 +1,4 @@
+import React, { useEffect, useRef, useState } from 'react'
 import {
   EditablePreview,
   EditableInput,
@@ -6,14 +7,10 @@ import {
   IconButton,
   Flex,
 } from '@chakra-ui/react'
+
 import { useTypebot } from 'contexts/TypebotContext'
 import { PlusIcon } from 'assets/icons'
-import {
-  Item,
-  ItemIndices,
-  ItemType
-} from 'models'
-import React, { useEffect, useRef, useState } from 'react'
+import { Item, ItemIndices, ItemType } from 'models'
 import { isNotDefined } from 'utils'
 
 type Props = {
@@ -27,16 +24,13 @@ export const WhatsAppButtonsNodeContent = ({
   indices,
   isMouseOver,
 }: Props) => {
-  const { deleteItem, updateItem, createItem, updateStep } = useTypebot()
+  const { deleteItem, updateItem, createItem } = useTypebot()
   const [initialContent] = useState(item.content ?? '')
-  const [itemValue, setItemValue] = useState(
-    item.content ?? 'Clique para editar'
-  )
+  const [itemValue, setItemValue] = useState(item.content ?? 'Editar botão')
   const editableRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    if (itemValue !== item.content)
-      setItemValue(item.content ?? 'Clique para editar')
+    if (itemValue !== item.content) setItemValue(item.content ?? 'Editar botão')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item])
 
@@ -48,8 +42,7 @@ export const WhatsAppButtonsNodeContent = ({
   }
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Escape' && itemValue === 'Clique para editar')
-      deleteItem(indices)
+    if (e.key === 'Escape' && itemValue === 'Editar botão') deleteItem(indices)
     if (e.key === 'Enter' && itemValue !== '' && initialContent === '')
       handlePlusClick()
   }
@@ -65,24 +58,35 @@ export const WhatsAppButtonsNodeContent = ({
     )
   }
 
+  const handleEdit = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (e.button === 0) {
+      const target = e.target as HTMLInputElement
+      target.focus()
+    }
+  }
+
   return (
-    <Flex px={4} py={2} justify="center" w="90%" pos="relative">
+    <Flex justify="center" w="100%" pos="relative">
       <Editable
         ref={editableRef}
-        flex="1"
         startWithEditView={isNotDefined(item.content)}
         value={itemValue}
         onChange={setItemValue}
         onSubmit={handleInputSubmit}
         onKeyDownCapture={handleKeyPress}
-        maxW="180px"
+        isPreviewFocusable={true}
+        onClick={(e) => handleEdit(e)}
+        flex="2"
+        w="full"
       >
         <EditablePreview
           w="full"
-          color={item.content !== 'Clique para editar' ? 'inherit' : 'gray.500'}
           cursor="pointer"
+          color={item.content !== 'Editar botão' ? 'inherit' : 'gray.500'}
+          px={4}
+          py={2}
         />
-        <EditableInput />
+        <EditableInput px={4} py={2} />
       </Editable>
       <Fade
         in={isMouseOver}

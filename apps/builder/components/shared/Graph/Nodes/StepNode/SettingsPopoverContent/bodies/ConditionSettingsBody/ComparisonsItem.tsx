@@ -17,12 +17,22 @@ export const ComparisonItem = ({
   const handleSelectComparisonOperator = (
     comparisonOperator: ComparisonOperators
   ) => {
-    if (comparisonOperator === item.comparisonOperator) return
-    onItemChange({ ...item, comparisonOperator })
+    const indexOf = Object.values(ComparisonOperators).indexOf(comparisonOperator)
+    const val = Object.keys(ComparisonOperators)[indexOf]
+
+    if (val === item.comparisonOperator) return
+    onItemChange({ ...item, comparisonOperator: val as ComparisonOperators })
   }
   const handleChangeValue = (value: string) => {
     if (value === item.value) return
     onItemChange({ ...item, value })
+  }
+
+  const showCorrectInput = (value: ComparisonOperators | undefined) => {
+    if (!value) return
+
+    const indexOf = Object.keys(ComparisonOperators).indexOf(value)
+    return Object.values(ComparisonOperators)[indexOf]
   }
 
   return (
@@ -33,18 +43,16 @@ export const ComparisonItem = ({
         placeholder="Pesquise sua variável"
       />
       <DropdownList<ComparisonOperators>
-        currentItem={item.comparisonOperator}
+        currentItem={showCorrectInput(item.comparisonOperator)}
         onItemSelect={handleSelectComparisonOperator}
         items={Object.values(ComparisonOperators)}
         placeholder="Selecione um operador"
       />
-      {item.comparisonOperator !== ComparisonOperators.IS_SET && (
-        <Input
-          defaultValue={item.value ?? ''}
-          onChange={handleChangeValue}
-          placeholder="Digite um valor..."
-        />
-      )}
+      <Input
+        defaultValue={item.value ?? ''}
+        onChange={handleChangeValue}
+        placeholder="Digite um valor..."
+      />
     </Stack>
   )
 }

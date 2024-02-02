@@ -8,11 +8,7 @@ import {
 } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext'
 import { PlusIcon } from 'assets/icons'
-import {
-  Item,
-  ItemIndices,
-  ItemType
-} from 'models'
+import { Item, ItemIndices, ItemType } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { isNotDefined } from 'utils'
 
@@ -29,14 +25,11 @@ export const WhatsAppOptionsNodeContent = ({
 }: Props) => {
   const { deleteItem, updateItem, createItem, updateStep } = useTypebot()
   const [initialContent] = useState(item.content ?? '')
-  const [itemValue, setItemValue] = useState(
-    item.content ?? 'Clique para editar'
-  )
+  const [itemValue, setItemValue] = useState(item.content ?? 'Editar opção')
   const editableRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    if (itemValue !== item.content)
-      setItemValue(item.content ?? 'Clique para editar')
+    if (itemValue !== item.content) setItemValue(item.content ?? 'Editar opção')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item])
 
@@ -48,8 +41,7 @@ export const WhatsAppOptionsNodeContent = ({
   }
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Escape' && itemValue === 'Clique para editar')
-      deleteItem(indices)
+    if (e.key === 'Escape' && itemValue === 'Editar opção') deleteItem(indices)
     if (e.key === 'Enter' && itemValue !== '' && initialContent === '')
       handlePlusClick()
   }
@@ -65,24 +57,34 @@ export const WhatsAppOptionsNodeContent = ({
     )
   }
 
+  const handleEdit = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (e.button === 0) {
+      const target = e.target as HTMLInputElement
+      target.focus()
+    }
+  }
+
   return (
-    <Flex px={4} py={2} justify="center" w="90%" pos="relative">
+    <Flex justify="center" w="100%" pos="relative">
       <Editable
         ref={editableRef}
-        flex="1"
         startWithEditView={isNotDefined(item.content)}
         value={itemValue}
         onChange={setItemValue}
         onSubmit={handleInputSubmit}
         onKeyDownCapture={handleKeyPress}
-        maxW="180px"
+        flex="2"
+        w="full"
+        onClick={(e) => handleEdit(e)}
       >
         <EditablePreview
           w="full"
-          color={item.content !== 'Clique para editar' ? 'inherit' : 'gray.500'}
+          color={item.content !== 'Editar opção' ? 'inherit' : 'gray.500'}
           cursor="pointer"
+          px={4}
+          py={2}
         />
-        <EditableInput />
+        <EditableInput px={4} py={2} />
       </Editable>
       <Fade
         in={isMouseOver}

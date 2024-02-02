@@ -1,4 +1,11 @@
-import { StepBase, StepWithItems, ItemBase, Step, ItemType, OctaProperty } from '.'
+import {
+  StepBase,
+  StepWithItems,
+  ItemBase,
+  Step,
+  ItemType,
+  OctaProperty,
+} from '.'
 import { TextBubbleContent, WOZStepType } from './bubble'
 
 // Regular steps
@@ -22,7 +29,10 @@ export type OctaStepOptions =
   | CommerceOptions
   | ConversationTagOptions
 
-export type OctaWabaStepOptions = WhatsAppOptionsListOptions | WhatsAppButtonsListOptions | CommerceOptions
+export type OctaWabaStepOptions =
+  | WhatsAppOptionsListOptions
+  | WhatsAppButtonsListOptions
+  | CommerceOptions
 
 // Steps that has variables on the popup modal
 export type OctaStepWithOptions =
@@ -184,7 +194,7 @@ export type OfficeHoursOptions = BaseOctaOptions & {
 }
 
 export type CommerceOptions = BaseOctaOptions & {
-  catalogId: string;
+  catalogId: string
   products: Array<string>
   property: OctaProperty
   variableId: string
@@ -378,15 +388,15 @@ export const defaultPreReserveOptions: PreReserveOptions = {
 
 export const defaultConversationTagOptions: ConversationTagOptions = {
   tags: [{
-      _id: '',
-      name: ''
+    _id: '',
+    name: ''
   }]
 }
 
 export const defaultWOZSuggestionOptions: WOZSuggestionOptions = {
   preferredAnswer: '',
   name: '',
-  subject: ''
+  subject: '',
 }
 
 export const defaultCallOtherBotOptions: CallOtherBotOptions = {
@@ -400,13 +410,17 @@ const seeYa = 'Até mais!'
 export const defaultEndConversationBubbleContent: EndConversationBubbleContent =
 {
   html: `<div style="margin-left: 8px;">${seeYa}</div>`,
-    richText: [{
-      children: [{
-        text: seeYa,
-      }],
-      type: "p"
-    }],
-    plainText: seeYa
+  richText: [
+    {
+      children: [
+        {
+          text: seeYa,
+        },
+      ],
+      type: 'p',
+    },
+  ],
+  plainText: seeYa,
 }
 
 export const defaultCommerceOptions: CommerceOptions = {
@@ -423,14 +437,18 @@ export const defaultCommerceOptions: CommerceOptions = {
   subject: '',
   message: {
     html: `<div style="margin-left: 8px;">Este é o catálogo que selecionamos para você:</div>`,
-    richText: [{
-      children: [{
-        text: 'Este é o catálogo que selecionamos para você:',
-      }],
-      type: "p"
-    }],
-    plainText: 'Este é o catálogo que selecionamos para você:'
-  }
+    richText: [
+      {
+        children: [
+          {
+            text: 'Este é o catálogo que selecionamos para você:',
+          },
+        ],
+        type: 'p',
+      },
+    ],
+    plainText: 'Este é o catálogo que selecionamos para você:',
+  },
 }
 
 export const defaultWhatsAppOptionsListOptions: WhatsAppOptionsListOptions = {
@@ -439,7 +457,20 @@ export const defaultWhatsAppOptionsListOptions: WhatsAppOptionsListOptions = {
   subject: '',
   subType: 'interactive-list',
   body: {
-    content: undefined,
+    content: {
+      html: `<div style="margin-left: 8px;">Pergunta com lista de opções</div>`,
+      richText: [
+        {
+          children: [
+            {
+              text: 'Pergunta com lista de opções',
+            },
+          ],
+          type: 'p',
+        },
+      ],
+      plainText: 'Pergunta com lista de opções',
+    },
   },
   buttons: [''],
   header: {
@@ -455,7 +486,20 @@ export const defaultWhatsAppOptionsListOptions: WhatsAppOptionsListOptions = {
   },
   listItems: [],
   listTitle: {
-    content: undefined,
+    content: {
+      html: `<div style="margin-left: 8px;">Lista de opções</div>`,
+      richText: [
+        {
+          children: [
+            {
+              text: 'Lista de opções',
+            },
+          ],
+          type: 'h4',
+        },
+      ],
+      plainText: 'Lista de opções',
+    },
   },
   property: {
     domain: '',
@@ -463,7 +507,7 @@ export const defaultWhatsAppOptionsListOptions: WhatsAppOptionsListOptions = {
     token: '',
     type: '',
   },
-  variableId: ''
+  variableId: '',
 }
 
 export const defaultWhatsAppButtonsListOptions: WhatsAppButtonsListOptions = {
@@ -486,5 +530,5 @@ export const defaultWhatsAppButtonsListOptions: WhatsAppButtonsListOptions = {
     token: '',
     type: '',
   },
-  variableId: ''
+  variableId: '',
 }

@@ -4607,12 +4607,12 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@octadesk-tech/services@^0.3.3":
-  version "0.3.3"
-  resolved "https://npm.pkg.github.com/download/@Octadesk-Tech/services/0.3.3/800f0b8eb42f46ff43a79bc1e50461714907758c"
-  integrity sha512-iNxLokvj5YDKuquJuzEHp3ojDV4GlLkEFWNKD16WrEzwxSe/PkjV64wGWB5iNDfJN3/6jW+UniHZCm2me8y8CA==
+"@octadesk-tech/services@^0.4.2":
+  version "0.4.2"
+  resolved "https://npm.pkg.github.com/download/@Octadesk-Tech/services/0.4.2/0d5e5acc623461b37d6a9d08131492a68819aaf4#0d5e5acc623461b37d6a9d08131492a68819aaf4"
+  integrity sha512-GsGHWjrfyJdfa4fCjJMYXqwn44qAhrlj2oVRp62O75l1FKE7A4x2hPkyvejv+hVAD0CWf6DtZYhhzihsnFpKKg==
   dependencies:
-    "@octadesk-tech/storage" "^1.1.2"
+    "@octadesk-tech/storage" "^1.1.3"
     axios "^0.21.1"
     joi "^17.4.0"
 
@@ -4620,6 +4620,14 @@
   version "1.1.2"
   resolved "https://npm.pkg.github.com/download/@Octadesk-Tech/storage/1.1.2/26fc0d0f150077f265d55ad4855ef8e87586248d#26fc0d0f150077f265d55ad4855ef8e87586248d"
   integrity sha512-m9eOJKym3CNUrYjGxrV7TYMPb44/r6URCEPP3KjgYOrKd+pVRTdfl9b5wgv2Nq+ujlY1vSopxRmhu6lVKtzuNg==
+  dependencies:
+    crypto-js "^4.1.1"
+    local-storage-fallback "^4.1.2"
+
+"@octadesk-tech/storage@^1.1.3":
+  version "1.1.3"
+  resolved "https://npm.pkg.github.com/download/@Octadesk-Tech/storage/1.1.3/61e3b19b3ba3008b891e0deedadd6360f6dc2e36#61e3b19b3ba3008b891e0deedadd6360f6dc2e36"
+  integrity sha512-xO+do3xK2MG+dKlIIalY6x6QhqJ5iVQRKNWZEkf6PYQXZ+yqv6cjJ5fcRQv86aAdGWEtoeQrXW3kLrC/HztZ+g==
   dependencies:
     crypto-js "^4.1.1"
     local-storage-fallback "^4.1.2"

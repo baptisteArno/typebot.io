@@ -1,4 +1,5 @@
 node_modules
+audit-log.json
 .next
 .env
 .env.local

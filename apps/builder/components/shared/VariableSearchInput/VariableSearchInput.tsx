@@ -11,7 +11,6 @@ import {
   useOutsideClick,
   Flex,
   InputProps,
-  Stack,
 } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext'
 import cuid from 'cuid'
@@ -27,14 +26,11 @@ import {
   FormFieldCol,
   FormFieldRowMin,
   LabelField,
-  OrText,
-  CreateButton,
 } from './VariableSearchInput.style'
 import OctaButton from 'components/octaComponents/OctaButton/OctaButton'
 import OctaInput from 'components/octaComponents/OctaInput/OctaInput'
 import { CustomFieldTitle } from 'enums/customFieldsTitlesEnum'
 import { StepNodeContext } from '../Graph/Nodes/StepNode/StepNode/StepNode'
-import { useWorkspace } from 'contexts/WorkspaceContext'
 
 type Props = {
   initialVariableId?: string
@@ -44,6 +40,8 @@ type Props = {
   isCloseModal?: boolean
   labelDefault?: string
   isSaveContext?: boolean
+  isApi?: boolean
+  variablesSelectorIsOpen?: boolean | undefined
   handleOutsideClick?: () => void
   onSelectVariable: (
     variable: Pick<
@@ -71,9 +69,12 @@ export const VariableSearchInput = ({
   debounceTimeout = 1000,
   labelDefault = '',
   isSaveContext = true,
+  isApi = false,
+  variablesSelectorIsOpen = false,
   ...inputProps
 }: Props) => {
   const { onOpen, onClose } = useDisclosure()
+
   const { typebot, createVariable } = useTypebot()
 
   const variables = typebot?.variables ?? []
@@ -91,26 +92,30 @@ export const VariableSearchInput = ({
   }
 
   const dontSave = {
-    "id": '',
-    "key": "no-variable",
-    "token": "não salvar"
+    id: '',
+    key: 'no-variable',
+    token: 'não salvar',
   }
 
   const newVariable = {
-    "id": 'new',
-    "key": "new-variable",
-    "token": "+ criar variável"
+    id: 'new',
+    key: 'new-variable',
+    token: '+ criar variável',
   }
 
-  let myVariable = (typebot?.variables.find(v => v.id === initialVariableId) || isSaveContext && dontSave) as Variable
+  const myVariable = (typebot?.variables.find(
+    (v) => v.id === initialVariableId
+  ) ||
+    (isSaveContext && !isApi && dontSave)) as Variable
 
-  let initial = {
+  const initial = {
     ACTIONS: {
-      label: '', options: []
-    }
+      label: '',
+      options: [],
+    },
   } as any
 
-  if (isSaveContext) initial.ACTIONS.options.push(dontSave) 
+  if (isSaveContext && !isApi) initial.ACTIONS.options.push(dontSave)
 
   if (addVariable) initial.ACTIONS.options.push(newVariable)
 
@@ -212,22 +217,22 @@ export const VariableSearchInput = ({
     const { value } = e.target
     setCustomVariable(
       (state): Variable =>
-      ({
-        ...state,
-        token: value,
-        fieldId: value.replace('#', ''),
-        name: value.replace('#', ''),
-      } as Variable)
+        ({
+          ...state,
+          token: value,
+          fieldId: value.replace('#', ''),
+          name: value.replace('#', ''),
+        } as Variable)
     )
   }
 
   const handleSelectTypeVariable = (type: string) => {
     setCustomVariable(
       (state): Variable =>
-      ({
-        ...state,
-        type,
-      } as Variable)
+        ({
+          ...state,
+          type,
+        } as Variable)
     )
   }
 
@@ -271,18 +276,20 @@ export const VariableSearchInput = ({
     >
       {screen === 'VIEWER' && (
         <Container data-screen={screen}>
-          {labelDefault || "Selecione uma variável para salvar a resposta:" }
+          {labelDefault || 'Selecione uma variável para salvar a resposta:'}
           <div onWheelCapture={handleContentWheel}>
             <Select
+              menuIsOpen={variablesSelectorIsOpen ? true : undefined}
               value={myVariable}
-              //isClearable={true}
               noOptionsMessage={() => 'Variável não encontrada'}
               onChange={onInputChange}
               minMenuHeight={50}
               options={options}
               placeholder={inputProps.placeholder ?? 'Selecione a variável'}
               getOptionLabel={(option: Variable) => option.token}
-              getOptionValue={(option: Variable) => option.variableId || option.id}
+              getOptionValue={(option: Variable) =>
+                option.variableId || option.id
+              }
             />
           </div>
         </Container>
@@ -303,7 +310,11 @@ export const VariableSearchInput = ({
             <LabelField>Selecione o formato deste campo:</LabelField>
             <FormFieldRowMin>
               <ButtonOption
-                className={['', 'string'].includes(customVariable?.type || '') ? 'active' : ''}
+                className={
+                  ['', 'string'].includes(customVariable?.type || '')
+                    ? 'active'
+                    : ''
+                }
                 onClick={() => handleSelectTypeVariable('string')}
               >
                 Texto
