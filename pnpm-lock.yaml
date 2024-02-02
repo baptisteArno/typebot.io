@@ -222,8 +222,8 @@ importers:
         specifier: 0.2.0
         version: 0.2.0
       openai:
-        specifier: 4.24.1
-        version: 4.24.1
+        specifier: 4.26.0
+        version: 4.26.0
       papaparse:
         specifier: 5.4.1
         version: 5.4.1
@@ -497,8 +497,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/prisma
       ai:
-        specifier: 2.2.31
-        version: 2.2.31(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)
+        specifier: 2.2.33
+        version: 2.2.33(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)
       bot-engine:
         specifier: workspace:*
         version: link:../../packages/deprecated/bot-engine
@@ -521,8 +521,8 @@ importers:
         specifier: 6.9.3
         version: 6.9.3
       openai:
-        specifier: 4.24.1
-        version: 4.24.1
+        specifier: 4.26.0
+        version: 4.26.0
       qs:
         specifier: 6.11.2
         version: 6.11.2
@@ -657,8 +657,8 @@ importers:
         specifier: 21.1.5
         version: 21.1.5(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-react@0.94.2)(slate@0.94.1)
       ai:
-        specifier: 2.2.31
-        version: 2.2.31(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)
+        specifier: 2.2.33
+        version: 2.2.33(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)
       chrono-node:
         specifier: 2.7.0
         version: 2.7.0
@@ -684,8 +684,8 @@ importers:
         specifier: 6.9.3
         version: 6.9.3
       openai:
-        specifier: 4.24.1
-        version: 4.24.1
+        specifier: 4.26.0
+        version: 4.26.0
       qs:
         specifier: 6.11.2
         version: 6.11.2
@@ -1230,11 +1230,11 @@ importers:
   packages/forge/blocks/mistral:
     dependencies:
       '@mistralai/mistralai':
-        specifier: ^0.0.10
+        specifier: 0.0.10
         version: 0.0.10
       ai:
-        specifier: 2.2.31
-        version: 2.2.31(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)
+        specifier: 2.2.33
+        version: 2.2.33(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)
     devDependencies:
       '@typebot.io/forge':
         specifier: workspace:*
@@ -1255,11 +1255,11 @@ importers:
   packages/forge/blocks/openai:
     dependencies:
       ai:
-        specifier: 2.2.31
-        version: 2.2.31(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)
+        specifier: 2.2.33
+        version: 2.2.33(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)
       openai:
-        specifier: 4.24.1
-        version: 4.24.1
+        specifier: 4.26.0
+        version: 4.26.0
     devDependencies:
       '@typebot.io/forge':
         specifier: workspace:*
@@ -10548,8 +10548,8 @@ packages:
       indent-string: 5.0.0
     dev: true
 
-  /ai@2.2.31(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15):
-    resolution: {integrity: sha512-WQH13RxP+RYo9IE/FX8foNQh9gcKO/dhl9OGy5JL2bHJVBlnugPmH2CYJWaRt+mvjXHaU8txB+jzGo/fbtH2HA==}
+  /ai@2.2.33(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15):
+    resolution: {integrity: sha512-y9iMgt/RjFZCrjx5NuC+tdZqvunM9Bo1ufuC1BpgyjPmmE2RYduM+3Whjez0fu808KkwTQvvhUhhC5NkAy8/9g==}
     engines: {node: '>=14.6'}
     peerDependencies:
       react: ^18.2.0
@@ -17922,8 +17922,8 @@ packages:
       is-docker: 2.2.1
       is-wsl: 2.2.0
 
-  /openai@4.24.1:
-    resolution: {integrity: sha512-ezm/O3eiZMnyBqirUnWm9N6INJU1WhNtz+nK/Zj/2oyKvRz9pgpViDxa5wYOtyGYXPn1sIKBV0I/S4BDhtydqw==}
+  /openai@4.26.0:
+    resolution: {integrity: sha512-HPC7tgYdeP38F3uHA5WgnoXZyGbAp9jgcIo23p6It+q/07u4C+NZ8xHKlMShsPbDDmFRpPsa3vdbXYpbhJH3eg==}
     hasBin: true
     dependencies:
       '@types/node': 18.11.18

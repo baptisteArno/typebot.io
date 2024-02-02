@@ -230,7 +230,7 @@ export const createChatCompletion = createAction({
           ? Number(options.temperature)
           : undefined,
         messages,
-        tools,
+        tools: (tools?.length ?? 0) > 0 ? tools : undefined,
       }
 
       let totalTokens = 0
@@ -329,7 +329,7 @@ export const createChatCompletion = createAction({
             : undefined,
           stream: true,
           messages,
-          tools,
+          tools: (tools?.length ?? 0) > 0 ? tools : undefined,
         })
 
         return OpenAIStream(response, {
