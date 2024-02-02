@@ -19,7 +19,7 @@ export const injectVariableValuesInPictureChoiceBlock =
           variable.id === block.options?.dynamicItems?.pictureSrcsVariableId &&
           isDefined(variable.value)
       ) as VariableWithValue | undefined
-      if (!pictureSrcsVariable) return block
+      if (!pictureSrcsVariable) return deepParseVariables(variables)(block)
       const titlesVariable = block.options.dynamicItems.titlesVariableId
         ? (variables.find(
             (variable) =>
@@ -51,7 +51,7 @@ export const injectVariableValuesInPictureChoiceBlock =
           : pictureSrcsVariable.value
 
       return {
-        ...block,
+        ...deepParseVariables(variables)(block),
         items: variableValues.filter(isDefined).map((pictureSrc, idx) => ({
           id: idx.toString(),
           blockId: block.id,

@@ -5,27 +5,24 @@ import { parseVariables } from '@typebot.io/variables/parseVariables'
 
 export const parseDateInput =
   (state: SessionState) => (block: DateInputBlock) => {
-    if (!block.options) return block
+    const variables = state.typebotsQueue[0].typebot.variables
+    if (!block.options) return deepParseVariables(variables)(block)
     return {
-      ...block,
+      ...deepParseVariables(variables)(block),
       options: {
-        ...deepParseVariables(state.typebotsQueue[0].typebot.variables)(
-          block.options
-        ),
+        ...deepParseVariables(variables)(block.options),
         min: parseDateLimit(
           block.options.min,
           block.options.hasTime,
-          state.typebotsQueue[0].typebot.variables
+          variables
         ),
         max: parseDateLimit(
           block.options.max,
           block.options.hasTime,
-          state.typebotsQueue[0].typebot.variables
+          variables
         ),
       },
-      prefilledValue: getPrefilledInputValue(
-        state.typebotsQueue[0].typebot.variables
-      )(block),
+      prefilledValue: getPrefilledInputValue(variables)(block),
     }
   }
 
