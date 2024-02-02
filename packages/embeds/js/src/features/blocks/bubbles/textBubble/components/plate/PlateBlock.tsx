@@ -1,11 +1,12 @@
 import type { TElement, TText, TDescendant } from '@udecode/plate-common'
 import { PlateText, PlateTextProps } from './PlateText'
-import { For, Match, Switch } from 'solid-js'
+import { For, JSXElement, Match, Switch } from 'solid-js'
 import { isDefined } from '@typebot.io/lib/utils'
 
 type Props = {
   element: TElement | TText
   isUniqueChild?: boolean
+  insideInlineVariable?: boolean
 }
 
 export const PlateElement = (props: Props) => (
@@ -79,7 +80,10 @@ export const PlateElement = (props: Props) => (
           </li>
         </Match>
         <Match when={true}>
-          <div data-element-type={props.element.type}>
+          <ElementRoot
+            element={props.element as TElement}
+            insideInlineVariable={props.insideInlineVariable ?? false}
+          >
             <For each={props.element.children as TDescendant[]}>
               {(child) => (
                 <PlateElement
@@ -87,12 +91,38 @@ export const PlateElement = (props: Props) => (
                   isUniqueChild={
                     (props.element.children as TDescendant[])?.length === 1
                   }
+                  insideInlineVariable={
+                    props.element.type === 'inline-variable'
+                  }
                 />
               )}
             </For>
-          </div>
+          </ElementRoot>
         </Match>
       </Switch>
     </Match>
   </Switch>
 )
+
+type ElementRootProps = {
+  element: TElement
+  children: JSXElement
+  insideInlineVariable?: boolean
+}
+
+const ElementRoot = (props: ElementRootProps) => {
+  return (
+    <Switch>
+      <Match
+        when={
+          props.element.type === 'inline-variable' || props.insideInlineVariable
+        }
+      >
+        <span data-element-type={props.element.type}>{props.children}</span>
+      </Match>
+      <Match when={true}>
+        <div data-element-type={props.element.type}>{props.children}</div>
+      </Match>
+    </Switch>
+  )
+}
