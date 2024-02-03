@@ -1,7 +1,7 @@
 import { env } from '@typebot.io/env'
 import { TelemetryEvent } from '@typebot.io/schemas/features/telemetry'
 import { PostHog } from 'posthog-node'
-import ky from 'ky'
+import got from 'got'
 
 export const trackEvents = async (events: TelemetryEvent[]) => {
   if (!env.NEXT_PUBLIC_POSTHOG_KEY) return
@@ -16,12 +16,16 @@ export const trackEvents = async (events: TelemetryEvent[]) => {
         properties: event.data,
       })
       if (env.USER_CREATED_WEBHOOK_URL) {
-        await ky.post(env.USER_CREATED_WEBHOOK_URL, {
-          json: {
-            email: event.data.email,
-            name: event.data.name ? event.data.name.split(' ')[0] : undefined,
-          },
-        })
+        try {
+          await got.post(env.USER_CREATED_WEBHOOK_URL, {
+            json: {
+              email: event.data.email,
+              name: event.data.name ? event.data.name.split(' ')[0] : undefined,
+            },
+          })
+        } catch (e) {
+          console.error('Failed to call user created webhook', e)
+        }
       }
     }
     if (

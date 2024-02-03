@@ -14,6 +14,7 @@ import { getNewUserInvitations } from '@/features/auth/helpers/getNewUserInvitat
 import { joinWorkspaces } from '@/features/auth/helpers/joinWorkspaces'
 import { parseWorkspaceDefaultPlan } from '@/features/workspace/helpers/parseWorkspaceDefaultPlan'
 import { env } from '@typebot.io/env'
+import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
 
 export function customAdapter(p: PrismaClient): Adapter {
   return {
@@ -79,7 +80,7 @@ export function customAdapter(p: PrismaClient): Adapter {
           name: data.name ? (data.name as string).split(' ')[0] : undefined,
         },
       })
-      // await trackEvents(events)
+      await trackEvents(events)
       if (invitations.length > 0)
         await convertInvitationsToCollaborations(p, user, invitations)
       if (workspaceInvitations.length > 0)
