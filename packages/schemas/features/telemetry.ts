@@ -69,6 +69,21 @@ const publishedTypebotEventSchema = typebotEvent.merge(
   })
 )
 
+const customDomainAddedEventSchema = workspaceEvent.merge(
+  z.object({
+    name: z.literal('Custom domain added'),
+    data: z.object({
+      domain: z.string(),
+    }),
+  })
+)
+
+const whatsAppCredentialsCreatedEventSchema = workspaceEvent.merge(
+  z.object({
+    name: z.literal('WhatsApp credentials created'),
+  })
+)
+
 const subscriptionUpdatedEventSchema = workspaceEvent.merge(
   z.object({
     name: z.literal('Subscription updated'),
@@ -142,6 +157,8 @@ export const eventSchema = z.discriminatedUnion('name', [
   workspacePastDueEventSchema,
   workspaceNotPastDueEventSchema,
   userUpdatedEventSchema,
+  customDomainAddedEventSchema,
+  whatsAppCredentialsCreatedEventSchema,
 ])
 
 export type TelemetryEvent = z.infer<typeof eventSchema>

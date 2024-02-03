@@ -318,8 +318,6 @@ const sentryEnv = {
 
 const telemetryEnv = {
   server: {
-    TELEMETRY_WEBHOOK_URL: z.string().url().optional(),
-    TELEMETRY_WEBHOOK_BEARER_TOKEN: z.string().min(1).optional(),
     MESSAGE_WEBHOOK_URL: z.string().url().optional(),
     USER_CREATED_WEBHOOK_URL: z.string().url().optional(),
   },
