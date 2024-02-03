@@ -37,6 +37,18 @@ const userCreatedEventSchema = userEvent.merge(
   })
 )
 
+const userUpdatedEventSchema = userEvent.merge(
+  z.object({
+    name: z.literal('User updated'),
+    data: z.object({
+      name: z.string().optional(),
+      onboardingCategories: z.array(z.string()).optional(),
+      referral: z.string().optional(),
+      company: z.string().optional(),
+    }),
+  })
+)
+
 const typebotCreatedEventSchema = typebotEvent.merge(
   z.object({
     name: z.literal('Typebot created'),
@@ -129,6 +141,7 @@ export const eventSchema = z.discriminatedUnion('name', [
   subscriptionAutoUpdatedEventSchema,
   workspacePastDueEventSchema,
   workspaceNotPastDueEventSchema,
+  userUpdatedEventSchema,
 ])
 
 export type TelemetryEvent = z.infer<typeof eventSchema>

@@ -14,6 +14,7 @@ export const userSchema = z.object({
   image: z.string().nullable(),
   company: z.string().nullable(),
   onboardingCategories: z.array(z.string()),
+  referral: z.string().nullable(),
   graphNavigation: z.nativeEnum(GraphNavigation),
   preferredAppAppearance: z.string().nullable(),
   displayedInAppNotifications: displayedInAppNotificationsSchema.nullable(),

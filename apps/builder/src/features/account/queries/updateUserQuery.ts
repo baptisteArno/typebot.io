@@ -1,9 +1,9 @@
-import { User } from '@typebot.io/prisma'
 import { sendRequest } from '@typebot.io/lib'
+import { User } from '@typebot.io/schemas'
 
-export const updateUserQuery = async (id: string, user: User) =>
+export const updateUserQuery = async (id: string, user: Partial<User>) =>
   sendRequest({
     url: `/api/users/${id}`,
-    method: 'PUT',
+    method: 'PATCH',
     body: user,
   })

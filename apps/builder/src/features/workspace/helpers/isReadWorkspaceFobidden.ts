@@ -8,7 +8,7 @@ export const isReadWorkspaceFobidden = (
   user: Pick<User, 'email' | 'id'>
 ) => {
   if (
-    env.ADMIN_EMAIL === user.email ||
+    env.ADMIN_EMAIL?.some((email) => email === user.email) ||
     workspace.members.find((member) => member.userId === user.id)
   )
     return false

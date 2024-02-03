@@ -11,11 +11,11 @@ import {
 } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
-import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 import { Plan } from '@typebot.io/prisma'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { computeRiskLevel } from '@typebot.io/radar'
 import { env } from '@typebot.io/env'
+import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
 
 export const publishTypebot = authenticatedProcedure
   .meta({
@@ -174,7 +174,7 @@ export const publishTypebot = authenticatedProcedure
         },
       })
 
-    await sendTelemetryEvents([
+    await trackEvents([
       {
         name: 'Typebot published',
         workspaceId: existingTypebot.workspaceId,

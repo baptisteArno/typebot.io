@@ -25,6 +25,12 @@ export const OnboardingPage = () => {
   const confettiCanon = useRef<confetti.CreateTypes>()
   const { user, updateUser } = useUser()
   const [currentStep, setCurrentStep] = useState<number>(user?.name ? 2 : 1)
+  const [onboardingReplies, setOnboardingReplies] = useState<{
+    name?: string
+    company?: string
+    onboardingCategories?: string[]
+    referral?: string
+  }>({})
 
   const isNewUser =
     user &&
@@ -49,28 +55,56 @@ export const OnboardingPage = () => {
     })
   }
 
-  const updateUserInfo = async (answer: {
+  const setOnboardingAnswer = async (answer: {
     message: string
     blockId: string
   }) => {
-    const isOtherItem = [
-      'cl126pv7n001o2e6dajltc4qz',
-      'saw904bfzgspmt0l24achtiy',
-    ].includes(answer.blockId)
-    if (isOtherItem) return
     const isName = answer.blockId === 'cl126820m000g2e6dfleq78bt'
     const isCompany = answer.blockId === 'cl126jioz000v2e6dwrk1f2cb'
     const isCategories = answer.blockId === 'cl126lb8v00142e6duv5qe08l'
-    if (isName) updateUser({ name: answer.message })
+    const isOtherCategory = answer.blockId === 'cl126pv7n001o2e6dajltc4qz'
+    const isReferral = answer.blockId === 'phcb0s1e9qgp0f8l2amcu7xr'
+    const isOtherReferral = answer.blockId === 'saw904bfzgspmt0l24achtiy'
+    if (isName)
+      setOnboardingReplies((prev) => ({ ...prev, name: answer.message }))
     if (isCategories) {
       const onboardingCategories = answer.message.split(', ')
-      updateUser({ onboardingCategories })
+      setOnboardingReplies((prev) => ({
+        ...prev,
+        onboardingCategories,
+      }))
     }
+    if (isOtherCategory)
+      setOnboardingReplies((prev) => ({
+        ...prev,
+        categories: prev.onboardingCategories
+          ? [...prev.onboardingCategories, answer.message]
+          : [answer.message],
+      }))
     if (isCompany) {
-      updateUser({ company: answer.message })
+      setOnboardingReplies((prev) => ({ ...prev, company: answer.message }))
       if (confettiCanon.current) shootConfettis(confettiCanon.current)
     }
+    if (isReferral)
+      setOnboardingReplies((prev) => ({ ...prev, referral: answer.message }))
+    if (isOtherReferral)
+      setOnboardingReplies((prev) => ({ ...prev, referral: answer.message }))
     setCurrentStep((prev) => prev + 1)
+  }
+
+  const skipOnboarding = () => {
+    updateUser(onboardingReplies)
+    replace({ pathname: '/typebots', query })
+  }
+
+  const updateUserAndProceedToTypebotCreation = () => {
+    updateUser(onboardingReplies)
+    setTimeout(() => {
+      replace({
+        pathname: '/typebots',
+        query: { ...query, isFirstBot: true },
+      })
+    }, 2000)
   }
 
   if (!isNewUser) return null
@@ -83,7 +117,7 @@ export const OnboardingPage = () => {
         right="5"
         variant="ghost"
         size="sm"
-        onClick={() => replace({ pathname: '/typebots', query })}
+        onClick={skipOnboarding}
       >
         {t('skip')}
       </Button>
@@ -93,15 +127,8 @@ export const OnboardingPage = () => {
           typebot={env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID}
           style={{ borderRadius: '1rem' }}
           prefilledVariables={{ Name: user?.name, Email: user?.email }}
-          onEnd={() => {
-            setTimeout(() => {
-              replace({
-                pathname: '/typebots',
-                query: { ...query, isFirstBot: true },
-              })
-            }, 2000)
-          }}
-          onAnswer={updateUserInfo}
+          onEnd={updateUserAndProceedToTypebotCreation}
+          onAnswer={setOnboardingAnswer}
         />
       </Flex>
       <chakra.canvas
