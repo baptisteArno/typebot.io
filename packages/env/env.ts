@@ -57,7 +57,11 @@ const baseEnv = {
       z.string().url()
     ),
     DISABLE_SIGNUP: boolean.optional().default('false'),
-    ADMIN_EMAIL: z.string().email().optional(),
+    ADMIN_EMAIL: z
+      .string()
+      .min(1)
+      .optional()
+      .transform((val) => val?.split(',')),
     DEFAULT_WORKSPACE_PLAN: z
       .enum(['FREE', 'STARTER', 'PRO', 'LIFETIME', 'UNLIMITED'])
       .refine((str) =>
@@ -316,8 +320,6 @@ const sentryEnv = {
 
 const telemetryEnv = {
   server: {
-    TELEMETRY_WEBHOOK_URL: z.string().url().optional(),
-    TELEMETRY_WEBHOOK_BEARER_TOKEN: z.string().min(1).optional(),
     MESSAGE_WEBHOOK_URL: z.string().url().optional(),
     USER_CREATED_WEBHOOK_URL: z.string().url().optional(),
   },

@@ -11,9 +11,9 @@ import {
   sanitizeGroups,
   sanitizeSettings,
 } from '../helpers/sanitizers'
-import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 import { createId } from '@paralleldrive/cuid2'
 import { EventType } from '@typebot.io/schemas/features/events/constants'
+import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
 
 const typebotCreateSchemaPick = {
   name: true,
@@ -116,7 +116,7 @@ export const createTypebot = authenticatedProcedure
 
     const parsedNewTypebot = typebotV6Schema.parse(newTypebot)
 
-    await sendTelemetryEvents([
+    await trackEvents([
       {
         name: 'Typebot created',
         workspaceId: parsedNewTypebot.workspaceId,

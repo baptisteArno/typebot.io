@@ -142,7 +142,7 @@ export const incomingMessageSchema = z.discriminatedUnion('type', [
     type: z.literal('location'),
     location: z.object({
       latitude: z.number(),
-      longitude: z.number()
+      longitude: z.number(),
     }),
     timestamp: z.string(),
   }),

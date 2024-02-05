@@ -10,7 +10,7 @@ RUN apt-get -qy update \
     && rm -rf /var/lib/apt/lists/*
 
 FROM base AS pruner
-RUN bun --global install turbo
+RUN bun --global install turbo@1.11.3
 WORKDIR /app
 COPY . .
 RUN turbo prune --scope=${SCOPE} --docker
