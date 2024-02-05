@@ -87,7 +87,7 @@ const main = async () => {
   s.stop('Creating files...')
   s.start('Installing dependencies...')
   await new Promise<void>((resolve, reject) => {
-    const ls = spawn('pnpm', ['install'])
+    const ls = spawn('bun', ['install'])
     ls.stderr.on('data', (data) => {
       reject(data)
     })

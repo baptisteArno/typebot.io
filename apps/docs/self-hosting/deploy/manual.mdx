@@ -35,7 +35,9 @@ cd typebot.io
 git checkout latest
 ```
 
-2. Setup environment variables by copying the example files and following the [configuration guide](/self-hosting/configuration) to fill in the missing values.
+2. Make sure you have `Bun` CLI installed: https://bun.sh/docs/installation
+
+3. Setup environment variables by copying the example files and following the [configuration guide](/self-hosting/configuration) to fill in the missing values.
 
 ```sh
 cp .env.example .env
@@ -43,19 +45,19 @@ cp .env.example .env
 
 <Note>
   The database user should have the `SUPERUSER` role. You can setup and migrate
-  the database with the `pnpm prisma generate && pnpm db:migrate` command.
+  the database with the `bun prisma generate && bun db:migrate` command.
 </Note>
 
 3. Install dependencies
 
 ```sh
-pnpm install
+bun install
 ```
 
 4. Build the builder and viewer
 
 ```sh
-pnpm run build:apps
+bun run build:apps
 ```
 
 <Note>
@@ -70,40 +72,40 @@ pnpm run build:apps
 
 ### Deploy the builder
 
-1. Cd into the builder directory and make sure it can be started with `pnpm start`
+1. Cd into the builder directory and make sure it can be started with `bun start`
 
 ```sh
 cd apps/builder
-pnpm start
+bun start
 # You may have to set the port if it's already in use
-pnpm start -p 3001
+bun start -p 3001
 ```
 
 2. Deploy the builder with PM2
 
 ```sh
-pm2 start --name=typebot pnpm -- start
+pm2 start --name=typebot bun -- start
 # or select a different port
-pm2 start --name=typebot pnpm -- start -p 3001
+pm2 start --name=typebot bun -- start -p 3001
 ```
 
 ### Deploy the viewer
 
-1. Cd into the viewer directory and make sure it can be started with `pnpm start`
+1. Cd into the viewer directory and make sure it can be started with `bun start`
 
 ```sh
 cd apps/viewer
-pnpm start
+bun start
 # You may have to set the port if it's already in use
-pnpm start -p 3002
+bun start -p 3002
 ```
 
 2. Deploy the viewer with PM2
 
 ```sh
-pm2 start --name=typebot pnpm -- start
+pm2 start --name=typebot bun -- start
 # or select a different port
-pm2 start --name=typebot pnpm -- start -p 3002
+pm2 start --name=typebot bun -- start -p 3002
 ```
 
 ## Nginx configuration

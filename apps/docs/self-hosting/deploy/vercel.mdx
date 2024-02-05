@@ -45,7 +45,7 @@ If you deploy on a Vercel Hobby plan, you will need to reduce the `maxDuration` 
 5. Change the build command to:
 
    ```sh
-   cd ../.. && pnpm turbo build --filter=builder... && pnpm db:migrate
+   cd ../.. && bun turbo build --filter=builder... && bun db:migrate
    ```
 
 6. Add the required environment variables ([Check out the configuration guide](/self-hosting/configuration))
@@ -60,7 +60,7 @@ If you deploy on a Vercel Hobby plan, you will need to reduce the `maxDuration` 
 5. Change the build command to:
 
    ```sh
-   cd ../.. && pnpm pnpm turbo build --filter=viewer... && pnpm db:migrate
+   cd ../.. && bun turbo build --filter=viewer... && bun db:migrate
    ```
 
 6. Add the required environment variables ([Check out the configuration guide](/self-hosting/configuration))

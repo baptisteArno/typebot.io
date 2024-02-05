@@ -7,8 +7,8 @@
     "build": "dotenv -e ./.env -e ../../.env -- next build",
     "start": "dotenv -e ./.env -e ../../.env -- next start",
     "lint": "dotenv -e ./.env -e ../../.env -- next lint",
-    "test": "dotenv -e ./.env -e ../../.env -- pnpm playwright test",
-    "test:show-report": "pnpm playwright show-report src/test/reporters",
+    "test": "dotenv -e ./.env -e ../../.env -- playwright test",
+    "test:show-report": "playwright show-report src/test/reporters",
     "format:check": "prettier --check ./src"
   },
   "dependencies": {

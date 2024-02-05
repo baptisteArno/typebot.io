@@ -11,7 +11,7 @@
     "db:push": "dotenv -e ./.env -e ../../.env -- tsx scripts/db-push.ts",
     "migrate:deploy": "dotenv -e ./.env -e ../../.env -- tsx scripts/migrate-deploy.ts",
     "migrate:dev": "dotenv -e ./.env -e ../../.env -- prisma migrate dev --create-only --schema postgresql/schema.prisma",
-    "db:migrate": "pnpm migrate:deploy"
+    "db:migrate": "bun migrate:deploy"
   },
   "dependencies": {
     "@prisma/client": "5.8.0"

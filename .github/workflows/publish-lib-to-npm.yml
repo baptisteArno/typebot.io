@@ -12,12 +12,12 @@ jobs:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - uses: actions/checkout@v2
-      - uses: pnpm/action-setup@v2.2.2
-      - run: pnpm i --frozen-lockfile
-      - run: pnpm turbo build --filter=typebot-js...
+      - uses: oven-sh/setup-bun@v1
+      - run: bun i --frozen-lockfile
+      - run: bun turbo build --filter=typebot-js...
       - name: Set NPM_TOKEN in config
-        run: pnpm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+        run: bun config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
         working-directory: ./packages/typebot-js
       - name: Publish
-        run: pnpm publish --no-git-checks --access public
+        run: bun publish --no-git-checks --access public
         working-directory: ./packages/typebot-js
