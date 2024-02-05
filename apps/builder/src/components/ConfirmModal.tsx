@@ -12,7 +12,7 @@ import { useTranslate } from '@tolgee/react'
 
 type ConfirmDeleteModalProps = {
   isOpen: boolean
-  onConfirm: () => Promise<unknown>
+  onConfirm: () => Promise<unknown> | unknown
   onClose: () => void
   message: JSX.Element
   title?: string
