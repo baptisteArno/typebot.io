@@ -108,7 +108,7 @@ export const FolderContent = ({ folder }: Props) => {
     })
   }
 
-  const handleCreateFolder = async () => {
+  const handleCreateFolder = () => {
     if (!folders || !workspace) return
     setIsCreatingFolder(true)
     createFolder({
