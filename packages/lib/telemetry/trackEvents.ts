@@ -6,8 +6,10 @@ import got from 'got'
 export const trackEvents = async (events: TelemetryEvent[]) => {
   if (!env.NEXT_PUBLIC_POSTHOG_KEY) return
   const client = new PostHog(env.NEXT_PUBLIC_POSTHOG_KEY, {
-    host: env.NEXT_PUBLIC_POSTHOG_HOST,
+    host: env.USER_CREATED_WEBHOOK_URL,
   })
+
+  console.log('Tracking events', events)
 
   events.forEach(async (event) => {
     if (event.name === 'User created') {
@@ -53,8 +55,8 @@ export const trackEvents = async (events: TelemetryEvent[]) => {
         event.name === 'User updated'
           ? { $set: event.data }
           : 'data' in event
-          ? event.data
-          : undefined,
+            ? event.data
+            : undefined,
       groups,
     })
   })
