@@ -12,40 +12,29 @@ type Props = {
 
 export const ConversationTagSelect = ({ onSelect, selectedTags }: Props) => {
   const { tagsList } = useTypebot();
-  const [defaultSelected, setDefaultSelected] = useState<Array<OptionType>>()
   const tagOptions: ConversationTagOptions = { tags: new Array<Tag> };
-    
+
   const handleOnChange = (selected: any): void => {
     selected?.forEach((tg: any) => {
       tagOptions.tags.push({
-          _id: tg.id,
-          name: tg.name
-        })
+        _id: tg.id,
+        name: tg.name
+      })
     });
 
     onSelect(tagOptions)
   }
 
-  useLayoutEffect(() => {
-    if (tagsList && selectedTags) {
-      const defaultSelectedTags = tagsList.filter(tag => selectedTags.map(selTag => selTag._id).includes(tag.id));
-      if(defaultSelectedTags){
-        setDefaultSelected(defaultSelectedTags)
-      }
-    }
-    return () => {
-      setDefaultSelected(undefined)
-    };
-  }, [tagsList, selectedTags])
+  const defaultSelectedTags = selectedTags ? selectedTags.map(tag => tagsList.find(s => s._id === tag._id)) : [];
 
   return (
-      <Select
-        isMulti
-        placeholder="Selecione uma tag"
-        defaultValue={defaultSelected}
-        onChange={handleOnChange}
-        options={tagsList}
-        closeMenuOnSelect={false}
-      />
-  );  
+    <Select
+      isMulti
+      placeholder="Selecione uma tag"
+      defaultValue={defaultSelectedTags}
+      onChange={handleOnChange}
+      options={tagsList}
+      closeMenuOnSelect={false}
+    />
+  );
 }

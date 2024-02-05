@@ -9,14 +9,8 @@ type Props = {
 
 const ConversationTagContent = ({ step }: Props) => {
   const { tagsList } = useTypebot();
-  const [selectedTags, setSelectedTags] = useState<any>();
 
-  useEffect(() => {
-    if (step?.options?.tags) {
-      const selectedTags = step.options.tags.map(tag => tagsList.find(t => t._id === tag._id));
-      setSelectedTags(selectedTags);
-    }
-  }, [step]);
+  const selectedTags = step?.options?.tags?.length ? step.options.tags.map(tag => tagsList.find(t => t._id === tag._id)) : [];
 
   return (
     <Stack>
