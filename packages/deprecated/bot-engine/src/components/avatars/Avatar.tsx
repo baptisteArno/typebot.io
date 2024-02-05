@@ -15,7 +15,7 @@ export const Avatar = ({ avatarSrc }: { avatarSrc?: string }) => {
       >
         <img
           src={currentAvatarSrc}
-          alt="Bot avatar"
+          alt="Chatbot avatar"
           className="rounded-full object-cover w-full h-full"
         />
       </figure>

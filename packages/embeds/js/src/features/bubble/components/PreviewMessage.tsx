@@ -49,8 +49,8 @@ export const PreviewMessage = (props: PreviewMessageProps) => {
           <img
             src={avatarUrl}
             class="rounded-full w-8 h-8 object-cover"
-            alt="Bot avatar"
-            elementtiming={'Bot avatar'}
+            alt="Chatbot avatar"
+            elementtiming={'Chatbot avatar'}
             fetchpriority={'high'}
           />
         )}

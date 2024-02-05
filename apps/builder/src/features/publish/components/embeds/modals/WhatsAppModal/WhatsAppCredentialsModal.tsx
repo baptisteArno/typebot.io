@@ -300,14 +300,14 @@ export const WhatsAppCredentialsModal = ({
 const Requirements = () => (
   <Stack spacing={4}>
     <Text>
-      Make sure you have{' '}
+      To integrate with WhatsApp, make sure you have{' '}
       <TextLink
         href="https://docs.typebot.io/deploy/whatsapp/create-meta-app"
         isExternal
       >
         created a WhatsApp Meta app
       </TextLink>
-      . You should be able to get to this page:
+      . Once you've created a created a Meta app, you should be able to get to this page:
     </Text>
     <Image
       src="/images/whatsapp-quickstart-page.png"
