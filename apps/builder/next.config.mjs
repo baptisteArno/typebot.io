@@ -57,6 +57,7 @@ const nextConfig = {
     config.resolve.alias['minio'] = false
     config.resolve.alias['got'] = false
     config.resolve.alias['openai'] = false
+    config.resolve.alias['qrcode'] = false
     return config
   },
   headers: async () => {

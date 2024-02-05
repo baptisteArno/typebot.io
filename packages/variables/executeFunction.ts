@@ -4,6 +4,7 @@ import { extractVariablesFromText } from './extractVariablesFromText'
 import { parseGuessedValueType } from './parseGuessedValueType'
 import { isDefined } from '@typebot.io/lib'
 import { defaultTimeout } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
+import { safeStringify } from '@typebot.io/lib/safeStringify'
 
 type Props = {
   variables: Variable[]
@@ -42,13 +43,13 @@ export const executeFunction = async ({
   const timeout = new Timeout()
 
   try {
-    const output = await timeout.wrap(
+    const output: unknown = await timeout.wrap(
       func(...args.map(({ value }) => value), setVariable),
       defaultTimeout * 1000
     )
     timeout.clear()
     return {
-      output,
+      output: safeStringify(output) ?? '',
       newVariables: Object.entries(updatedVariables)
         .map(([name, value]) => {
           const existingVariable = variables.find((v) => v.name === name)
@@ -65,13 +66,16 @@ export const executeFunction = async ({
     console.log('Error while executing script')
     console.error(e)
 
+    const error =
+      typeof e === 'string'
+        ? e
+        : e instanceof Error
+        ? e.message
+        : JSON.stringify(e)
+
     return {
-      error:
-        typeof e === 'string'
-          ? e
-          : e instanceof Error
-          ? e.message
-          : JSON.stringify(e),
+      error,
+      output: error,
     }
   }
 }

@@ -47,6 +47,7 @@ model User {
   image                       String?
   company                     String?
   onboardingCategories        Json
+  referral                    String?
   graphNavigation             GraphNavigation?
   preferredAppAppearance      String?
   accounts                    Account[]

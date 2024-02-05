@@ -51,6 +51,7 @@ model User {
   image                       String?                   @db.VarChar(1000)
   company                     String?
   onboardingCategories        Json
+  referral                    String?
   graphNavigation             GraphNavigation?
   preferredAppAppearance      String?
   accounts                    Account[]

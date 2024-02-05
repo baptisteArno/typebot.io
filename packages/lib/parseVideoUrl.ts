@@ -3,6 +3,7 @@ import {
   VideoBubbleContentType,
   gumletRegex,
   horizontalVideoSuggestionSize,
+  oneDriveRegex,
   tiktokRegex,
   verticalVideoSuggestionSize,
   vimeoRegex,
@@ -68,6 +69,14 @@ export const parseVideoUrl = (
       url: parsedUrl,
       id,
       videoSizeSuggestion: horizontalVideoSuggestionSize,
+    }
+  }
+  if (oneDriveRegex.test(url)) {
+    const match = url.match(oneDriveRegex)
+    const parsedUrl = match?.at(0) ?? url
+    return {
+      type: VideoBubbleContentType.URL,
+      url: parsedUrl.replace('/embed', '/download'),
     }
   }
   return { type: VideoBubbleContentType.URL, url }

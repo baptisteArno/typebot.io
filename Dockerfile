@@ -2,6 +2,7 @@ FROM node:18-bullseye-slim AS base
 WORKDIR /app
 ARG SCOPE
 ENV SCOPE=${SCOPE}
+
 RUN apt-get -qy update \
     && apt-get -qy --no-install-recommends install \
     openssl \
@@ -11,7 +12,7 @@ RUN apt-get -qy update \
 RUN npm --global install pnpm
 
 FROM base AS pruner
-RUN npm --global install turbo
+RUN npm --global install turbo@1.11.3
 WORKDIR /app
 COPY . .
 RUN turbo prune --scope=${SCOPE} --docker
@@ -31,6 +32,9 @@ RUN SKIP_ENV_CHECK=true pnpm turbo run build --filter=${SCOPE}...
 
 FROM base AS runner
 WORKDIR /app
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder --chown=node:node /app/apps/${SCOPE}/.next/standalone ./
 COPY --from=builder --chown=node:node /app/apps/${SCOPE}/.next/static ./apps/${SCOPE}/.next/static
