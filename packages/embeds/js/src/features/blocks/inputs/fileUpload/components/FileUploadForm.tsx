@@ -51,7 +51,9 @@ export const FileUploadForm = (props: Props) => {
   const startSingleFileUpload = async (file: File) => {
     if (props.context.isPreview || !props.context.resultId)
       return props.onSubmit({
-        label: `File uploaded`,
+        label:
+          props.block.options?.labels?.success?.single ??
+          defaultFileInputOptions.labels.success.single,
         value: 'http://fake-upload-url.com',
       })
     setIsUploading(true)
@@ -70,7 +72,9 @@ export const FileUploadForm = (props: Props) => {
     setIsUploading(false)
     if (urls.length)
       return props.onSubmit({
-        label: `File uploaded`,
+        label:
+          props.block.options?.labels?.success?.single ??
+          defaultFileInputOptions.labels.success.single,
         value: urls[0] ? encodeUrl(urls[0]) : '',
       })
     setErrorMessage('An error occured while uploading the file')
@@ -79,7 +83,14 @@ export const FileUploadForm = (props: Props) => {
     const resultId = props.context.resultId
     if (props.context.isPreview || !resultId)
       return props.onSubmit({
-        label: `${files.length} file${files.length > 1 ? 's' : ''} uploaded`,
+        label:
+          files.length > 1
+            ? (
+                props.block.options?.labels?.success?.multiple ??
+                defaultFileInputOptions.labels.success.multiple
+              ).replaceAll('{total}', files.length.toString())
+            : props.block.options?.labels?.success?.single ??
+              defaultFileInputOptions.labels.success.single,
         value: files
           .map((_, idx) => `http://fake-upload-url.com/${idx}`)
           .join(', '),
@@ -101,7 +112,14 @@ export const FileUploadForm = (props: Props) => {
     if (urls.length !== files.length)
       return setErrorMessage('An error occured while uploading the files')
     props.onSubmit({
-      label: `${urls.length} file${urls.length > 1 ? 's' : ''} uploaded`,
+      label:
+        urls.length > 1
+          ? (
+              props.block.options?.labels?.success?.multiple ??
+              defaultFileInputOptions.labels.success.multiple
+            ).replaceAll('{total}', urls.length.toString())
+          : props.block.options?.labels?.success?.single ??
+            defaultFileInputOptions.labels.success.single,
       value: urls.filter(isDefined).map(encodeUrl).join(', '),
     })
   }

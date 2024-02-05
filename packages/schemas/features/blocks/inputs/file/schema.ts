@@ -13,6 +13,12 @@ const fileInputOptionsV5Schema = optionBaseSchema.merge(
         button: z.string().optional(),
         clear: z.string().optional(),
         skip: z.string().optional(),
+        success: z
+          .object({
+            single: z.string().optional(),
+            multiple: z.string().optional(),
+          })
+          .optional(),
       })
       .optional(),
     sizeLimit: z.number().optional(),
