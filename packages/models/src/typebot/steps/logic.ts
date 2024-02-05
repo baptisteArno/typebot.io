@@ -72,6 +72,7 @@ export enum ComparisonOperators {
   NOT_END_WITH = 'Não terminar com',
   CONTAINS = 'Contém',
   NOT_CONTAINS = 'Não contém',
+  BETWEEN = 'Estiver entre'
 }
 
 export type ConditionContent = {
@@ -84,6 +85,7 @@ export type Comparison = {
   variableId?: string
   comparisonOperator?: ComparisonOperators
   value?: string
+  secondaryValue?: string
 }
 
 export type SetVariableOptions = {
