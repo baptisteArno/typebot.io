@@ -26,7 +26,7 @@ export const SecurityForm = ({ security, onUpdate }: Props) => {
         <FormLabel display="flex" flexShrink={0} gap="1" mr="0" mb="4">
           Allowed domains
           <MoreInfoTooltip>
-            Restrict the execution of your typebot to specific website domains.
+            Restrict the execution of your chatbot to specific website domains.
             By default your chatbot can be executed on any website.
           </MoreInfoTooltip>
         </FormLabel>
