@@ -1,5 +1,39 @@
 # Changelog
 
+<a name="2.22.1"></a>
+## 2.22.1 (2024-02-05)
+
+### Added
+
+- 👷‍♂️ Add posthog keys to github secrets [[9f0c6b3](https://github.com/baptisteArno/typebot.io/commit/9f0c6b3cc480ad9194c51d5bd17e9183a2962176)]
+- 📈 Track custom domain and WA enabled events [[b9183f9](https://github.com/baptisteArno/typebot.io/commit/b9183f9a3614ff17abd52a2d375228a9f492b74f)]
+- 📈 Send onboarding replies to PostHog [[fd4867f](https://github.com/baptisteArno/typebot.io/commit/fd4867f3ae314da60804ab7554fa5d4ebf63513f)]
+
+### Changed
+
+- 🚸 (fileUpload) Add success labels cutomization [[9fc05cb](https://github.com/baptisteArno/typebot.io/commit/9fc05cb150f9d9a8ca21168a79654b437bde3a5e)]
+- ♻️ Re-organize telemetry package [[92a1d67](https://github.com/baptisteArno/typebot.io/commit/92a1d672fd1bd0e101e5ff2d3a99b8f45db189b6)]
+
+### Fixed
+
+- 🐛 Revert to got for user created webhook to fix function crash [[9014c4a](https://github.com/baptisteArno/typebot.io/commit/9014c4ab0905fbd2f7081a6147ee2b7c983d1936)]
+- 🚑 Fix user creation crashing [[9222da6](https://github.com/baptisteArno/typebot.io/commit/9222da668143f75ec26d5f668cb33200970f0111)]
+- 💚 Fix mockedUser default props [[4122d73](https://github.com/baptisteArno/typebot.io/commit/4122d739083fcbbfb670c025201b8c049f9b26d4)]
+- 🐛 Make sure variables are parsed in date and picture choice options [[ce79e89](https://github.com/baptisteArno/typebot.io/commit/ce79e897a79ea2b825f2af9d3a583fd52d924c4c)]
+- 🐛 (openai) Fix 400 error when tools array empty [[c616117](https://github.com/baptisteArno/typebot.io/commit/c6161179d0dbe6b37cf20b444cbb86a8c4338094)]
+- 🚑 Fix inline variable parsing on new line issue [[b660611](https://github.com/baptisteArno/typebot.io/commit/b660611573710c946818a0c89b231f62481b2a21)]
+- 🐛 (buttons) Make sure to parse options if button has dynamic items [[be5482c](https://github.com/baptisteArno/typebot.io/commit/be5482c89a78f41d7191a0db408313a90d2bd85f)]
+- 🐛 Fix broken skippable file upload input [[3128ebd](https://github.com/baptisteArno/typebot.io/commit/3128ebd4316d392cb82a8af05ee77c155f8f55ca)]
+- 🐛 Fix new markdown parser on web runtime [[678e6d5](https://github.com/baptisteArno/typebot.io/commit/678e6d5c49938ef0344c6a795353a57dbdf67bcb)]
+- 💚 Move ky package to typebot.io/lib [[3e8e882](https://github.com/baptisteArno/typebot.io/commit/3e8e8829f1a4da64d6d3fb8d6ba26cda8c1cee2d)]
+
+### Miscellaneous
+
+- 🛂 (radar) Improve radar regex [[27b95c1](https://github.com/baptisteArno/typebot.io/commit/27b95c1f0b78776052a0d4e96c3326c8eaea0b78)]
+- 🧑‍💻 (folders) Add folder trpc endpoints ([#1218](https://github.com/baptisteArno/typebot.io/issues/1218)) [[84b9aca](https://github.com/baptisteArno/typebot.io/commit/84b9aca40b59c39c5c98bc2d189658b7d1686fad)]
+- 📝 Add geo location set variable example [[11678ac](https://github.com/baptisteArno/typebot.io/commit/11678ac2fe50a92824f37decf32637784873f23b)]
+
+
 <a name="2.22.0"></a>
 ## 2.22.0 (2024-01-31)
 

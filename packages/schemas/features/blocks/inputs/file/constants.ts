@@ -12,6 +12,10 @@ export const defaultFileInputOptions = {
     button: 'Upload',
     clear: 'Clear',
     skip: 'Skip',
+    success: {
+      single: 'File uploaded',
+      multiple: '{total} files uploaded',
+    },
   },
 } as const satisfies FileInputBlock['options']
 
