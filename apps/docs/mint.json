@@ -289,6 +289,16 @@
       ]
     },
     {
+      "group": "Folder",
+      "pages": [
+        "api-reference/folder/list",
+        "api-reference/folder/get",
+        "api-reference/folder/create",
+        "api-reference/folder/update",
+        "api-reference/folder/delete"
+      ]
+    },
+    {
       "group": "Workspace",
       "pages": [
         "api-reference/workspace/list",

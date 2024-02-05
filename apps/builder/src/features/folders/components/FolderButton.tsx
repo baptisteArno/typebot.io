@@ -22,10 +22,9 @@ import { ConfirmModal } from '@/components/ConfirmModal'
 import { useTypebotDnd } from '../TypebotDndProvider'
 import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
-import { deleteFolderQuery } from '../queries/deleteFolderQuery'
 import { useToast } from '@/hooks/useToast'
-import { updateFolderQuery } from '../queries/updateFolderQuery'
 import { T, useTranslate } from '@tolgee/react'
+import { trpc } from '@/lib/trpc'
 
 export const FolderButton = ({
   folder,
@@ -34,7 +33,7 @@ export const FolderButton = ({
 }: {
   folder: DashboardFolder
   onFolderDeleted: () => void
-  onFolderRenamed: (newName: string) => void
+  onFolderRenamed: () => void
 }) => {
   const { t } = useTranslate()
   const router = useRouter()
@@ -47,21 +46,29 @@ export const FolderButton = ({
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { showToast } = useToast()
 
-  const onDeleteClick = async () => {
-    const { error } = await deleteFolderQuery(folder.id)
-    return error
-      ? showToast({
-          description: error.message,
-        })
-      : onFolderDeleted()
-  }
+  const { mutate: deleteFolder } = trpc.folders.deleteFolder.useMutation({
+    onError: (error) => {
+      showToast({ description: error.message })
+    },
+    onSuccess: onFolderDeleted,
+  })
+
+  const { mutate: updateFolder } = trpc.folders.updateFolder.useMutation({
+    onError: (error) => {
+      showToast({ description: error.message })
+    },
+    onSuccess: onFolderRenamed,
+  })
 
   const onRenameSubmit = async (newName: string) => {
     if (newName === '' || newName === folder.name) return
-    const { error } = await updateFolderQuery(folder.id, { name: newName })
-    return error
-      ? showToast({ title: t('errorMessage'), description: error.message })
-      : onFolderRenamed(newName)
+    updateFolder({
+      workspaceId: folder.workspaceId,
+      folderId: folder.id,
+      folder: {
+        name: newName,
+      },
+    })
   }
 
   const handleClick = () => {
@@ -148,7 +155,12 @@ export const FolderButton = ({
           </Text>
         }
         title={`Delete ${folder.name}?`}
-        onConfirm={onDeleteClick}
+        onConfirm={() =>
+          deleteFolder({
+            workspaceId: folder.workspaceId,
+            folderId: folder.id,
+          })
+        }
         confirmButtonColor="red"
       />
     </Button>

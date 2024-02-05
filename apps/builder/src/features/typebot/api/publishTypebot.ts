@@ -16,6 +16,7 @@ import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/const
 import { computeRiskLevel } from '@typebot.io/radar'
 import { env } from '@typebot.io/env'
 import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
+import { parseTypebotPublishEvents } from '@/features/telemetry/helpers/parseTypebotPublishEvents'
 
 export const publishTypebot = authenticatedProcedure
   .meta({
@@ -71,19 +72,17 @@ export const publishTypebot = authenticatedProcedure
     )
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
 
-    if (existingTypebot.workspace.plan === Plan.FREE) {
-      const hasFileUploadBlocks = parseGroups(existingTypebot.groups, {
-        typebotVersion: existingTypebot.version,
-      }).some((group) =>
-        group.blocks.some((block) => block.type === InputBlockType.FILE)
-      )
+    const hasFileUploadBlocks = parseGroups(existingTypebot.groups, {
+      typebotVersion: existingTypebot.version,
+    }).some((group) =>
+      group.blocks.some((block) => block.type === InputBlockType.FILE)
+    )
 
-      if (hasFileUploadBlocks)
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: "File upload blocks can't be published on the free plan",
-        })
-    }
+    if (hasFileUploadBlocks && existingTypebot.workspace.plan === Plan.FREE)
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: "File upload blocks can't be published on the free plan",
+      })
 
     const typebotWasVerified =
       existingTypebot.riskLevel === -1 || existingTypebot.workspace.isVerified
@@ -133,6 +132,12 @@ export const publishTypebot = authenticatedProcedure
       }
     }
 
+    const publishEvents = await parseTypebotPublishEvents({
+      existingTypebot,
+      userId: user.id,
+      hasFileUploadBlocks,
+    })
+
     if (existingTypebot.publishedTypebot)
       await prisma.publicTypebot.updateMany({
         where: {
@@ -175,6 +180,7 @@ export const publishTypebot = authenticatedProcedure
       })
 
     await trackEvents([
+      ...publishEvents,
       {
         name: 'Typebot published',
         workspaceId: existingTypebot.workspaceId,
