@@ -1,7 +1,6 @@
-import React, { useState, useLayoutEffect } from 'react'
+import React from 'react'
 import { useTypebot } from 'contexts/TypebotContext'
 import { ConversationTagOptions } from 'models'
-import { OptionType } from 'components/octaComponents/OctaSelect/OctaSelect.type'
 import { Tag } from 'services/octadesk/tags/tags.types'
 import Select from 'react-select';
 
