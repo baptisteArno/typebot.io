@@ -25,13 +25,11 @@ export const ConversationTagSelect = ({ onSelect, selectedTags }: Props) => {
     onSelect(tagOptions)
   }
 
-  const defaultSelectedTags = selectedTags ? selectedTags.map(tag => tagsList.find(s => s._id === tag._id)) : [];
-
   return (
     <Select
       isMulti
       placeholder="Selecione uma tag"
-      defaultValue={defaultSelectedTags}
+      defaultValue={selectedTags}
       onChange={handleOnChange}
       options={tagsList}
       closeMenuOnSelect={false}

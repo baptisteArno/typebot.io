@@ -1,5 +1,5 @@
 import { ConversationTagStep } from 'models'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { HStack, Stack, Tag, Text } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext'
 
@@ -8,9 +8,7 @@ type Props = {
 }
 
 const ConversationTagContent = ({ step }: Props) => {
-  const { tagsList } = useTypebot();
-
-  const selectedTags = step?.options?.tags?.length ? step.options.tags.map(tag => tagsList.find(t => t._id === tag._id)) : [];
+  const selectedTags = step?.options?.tags?.length ? step.options.tags : [{ name: '...' }];
 
   return (
     <Stack>
@@ -21,7 +19,7 @@ const ConversationTagContent = ({ step }: Props) => {
         {
           selectedTags?.map((item: any) => (
             <Tag key={item._id} variant='solid'>
-              {item.name || '...'}
+              {item.name}
             </Tag>
           ))
         }
