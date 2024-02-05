@@ -144,6 +144,32 @@ export const workspaceNotPastDueEventSchema = workspaceEvent.merge(
   })
 )
 
+export const removedBrandingEventSchema = typebotEvent.merge(
+  z.object({
+    name: z.literal('Branding removed'),
+  })
+)
+
+export const createdFolderEventSchema = workspaceEvent.merge(
+  z.object({
+    name: z.literal('Folder created'),
+  })
+)
+
+export const publishedFileUploadBlockEventSchema = typebotEvent.merge(
+  z.object({
+    name: z.literal('File upload block published'),
+  })
+)
+
+export const visitedAnalyticsEventSchema = typebotEvent.merge(
+  z.object({
+    name: z.literal('Analytics visited'),
+  })
+)
+
+export const clientSideEvents = [removedBrandingEventSchema] as const
+
 export const eventSchema = z.discriminatedUnion('name', [
   workspaceCreatedEventSchema,
   userCreatedEventSchema,
@@ -159,6 +185,14 @@ export const eventSchema = z.discriminatedUnion('name', [
   userUpdatedEventSchema,
   customDomainAddedEventSchema,
   whatsAppCredentialsCreatedEventSchema,
+  createdFolderEventSchema,
+  publishedFileUploadBlockEventSchema,
+  visitedAnalyticsEventSchema,
+  ...clientSideEvents,
 ])
+
+export const clientSideCreateEventSchema = removedBrandingEventSchema.omit({
+  userId: true,
+})
 
 export type TelemetryEvent = z.infer<typeof eventSchema>
