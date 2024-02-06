@@ -5,3 +5,4 @@ packages:
   - 'packages/forge/*'
   - 'packages/forge/blocks/*'
   - 'apps/*'
+  - 'packages/transactional/.react-email'
