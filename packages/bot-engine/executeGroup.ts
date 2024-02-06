@@ -252,6 +252,25 @@ export const parseInput =
       case InputBlockType.DATE: {
         return parseDateInput(state)(block)
       }
+      case InputBlockType.RATING: {
+        const parsedBlock = deepParseVariables(
+          state.typebotsQueue[0].typebot.variables
+        )({
+          ...block,
+          prefilledValue: getPrefilledInputValue(
+            state.typebotsQueue[0].typebot.variables
+          )(block),
+        })
+        return {
+          ...parsedBlock,
+          options: {
+            ...parsedBlock.options,
+            startsAt: isNotEmpty(parsedBlock.options?.startsAt as string)
+              ? Number(parsedBlock.options?.startsAt)
+              : undefined,
+          },
+        }
+      }
       default: {
         return deepParseVariables(state.typebotsQueue[0].typebot.variables)({
           ...block,
