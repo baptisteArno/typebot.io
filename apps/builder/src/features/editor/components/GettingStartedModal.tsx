@@ -122,6 +122,7 @@ export const GettingStartedModal = () => {
           </Stack>
 
           <Text>{t('editor.gettingStartedModal.editorBasics.list.label')}</Text>
+          <Text>{t('editor.gettingStartedModal.editorBasics.List.mention.label')}</Text>
           <Stack spacing={4}>
             <Heading fontSize="xl">
               {t('editor.gettingStartedModal.seeAction.label')} ({`<`}{' '}
