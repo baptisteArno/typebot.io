@@ -23,9 +23,11 @@ export const FolderPage = () => {
     },
     {
       enabled: !!workspace && !!router.query.id,
+      retry: 0,
       onError: (error) => {
+        if (error.data?.httpStatus === 404) router.replace('/typebots')
         showToast({
-          description: error.message,
+          title: 'Folder not found',
         })
       },
     }

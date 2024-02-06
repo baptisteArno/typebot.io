@@ -6309,6 +6309,17 @@
                   },
                   "skip": {
                     "type": "string"
+                  },
+                  "success": {
+                    "type": "object",
+                    "properties": {
+                      "single": {
+                        "type": "string"
+                      },
+                      "multiple": {
+                        "type": "string"
+                      }
+                    }
                   }
                 }
               },
@@ -9421,6 +9432,17 @@
                   },
                   "skip": {
                     "type": "string"
+                  },
+                  "success": {
+                    "type": "object",
+                    "properties": {
+                      "single": {
+                        "type": "string"
+                      },
+                      "multiple": {
+                        "type": "string"
+                      }
+                    }
                   }
                 }
               },
