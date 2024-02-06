@@ -1,0 +1,8 @@
+[phases.install]
+cmds = ['bun i --no-save']
+
+[phases.build]
+cmds = ['bun build:chat-api']
+
+[start]
+cmd = 'bun start:chat-api'
