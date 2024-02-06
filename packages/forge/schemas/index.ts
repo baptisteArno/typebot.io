@@ -6,6 +6,7 @@ import { chatNode } from '@typebot.io/chat-node-block'
 import { calCom } from '@typebot.io/cal-com-block'
 import { zemanticAi } from '@typebot.io/zemantic-ai-block'
 import { openAIBlock } from '@typebot.io/openai-block'
+import { razorpay } from '@typebot.io/razorpay-block'
 import {
   BlockDefinition,
   parseBlockCredentials,
@@ -21,7 +22,8 @@ export const forgedBlocks = [
   chatNode,
   qrCode,
   difyAi,
-  mistral
+  mistral,
+  razorpay,
 ] as BlockDefinition<(typeof enabledBlocks)[number], any, any>[]
 
 export type ForgedBlockDefinition = (typeof forgedBlocks)[number]
