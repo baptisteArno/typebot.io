@@ -17,6 +17,7 @@
       "cache": false
     },
     "start": {
+      "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     },
     "build": {
