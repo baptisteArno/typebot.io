@@ -31,12 +31,16 @@ import { IndeterminateCheckbox } from './IndeterminateCheckbox'
 import { colors } from '@/lib/theme'
 import { HeaderIcon } from '../HeaderIcon'
 import { parseColumnsOrder } from '@typebot.io/lib/results/parseColumnsOrder'
+import { TimeFilterDropdown } from '@/features/analytics/components/TimeFilterDropdown'
+import { timeFilterValues } from '@/features/analytics/constants'
 
 type ResultsTableProps = {
   resultHeader: ResultHeaderCell[]
   data: TableData[]
   hasMore?: boolean
   preferences?: ResultsTablePreferences
+  timeFilter: (typeof timeFilterValues)[number]
+  onTimeFilterChange: (timeFilter: (typeof timeFilterValues)[number]) => void
   onScrollToBottom: () => void
   onLogOpenIndex: (index: number) => () => void
   onResultExpandIndex: (index: number) => () => void
@@ -47,6 +51,8 @@ export const ResultsTable = ({
   data,
   hasMore,
   preferences,
+  timeFilter,
+  onTimeFilterChange,
   onScrollToBottom,
   onLogOpenIndex,
   onResultExpandIndex,
@@ -222,6 +228,11 @@ export const ResultsTable = ({
             onClearSelection={() => setRowSelection({})}
           />
         )}
+        <TimeFilterDropdown
+          timeFilter={timeFilter}
+          onTimeFilterChange={onTimeFilterChange}
+          size="sm"
+        />
         <TableSettingsButton
           resultHeader={resultHeader}
           columnVisibility={columnsVisibility}

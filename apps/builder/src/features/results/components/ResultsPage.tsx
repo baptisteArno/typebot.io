@@ -14,11 +14,15 @@ import {
 } from '@chakra-ui/react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
-import { useStats } from '../hooks/useStats'
+import { useMemo, useState } from 'react'
 import { ResultsProvider } from '../ResultsProvider'
 import { ResultsTableContainer } from './ResultsTableContainer'
 import { TypebotNotFoundPage } from '@/features/editor/components/TypebotNotFoundPage'
+import { trpc } from '@/lib/trpc'
+import {
+  defaultTimeFilter,
+  timeFilterValues,
+} from '@/features/analytics/constants'
 
 export const ResultsPage = () => {
   const router = useRouter()
@@ -32,18 +36,25 @@ export const ResultsPage = () => {
     router.pathname.endsWith('analytics') ? '#f4f5f8' : 'white',
     router.pathname.endsWith('analytics') ? 'gray.850' : 'gray.900'
   )
+  const [timeFilter, setTimeFilter] =
+    useState<(typeof timeFilterValues)[number]>(defaultTimeFilter)
+
   const { showToast } = useToast()
 
-  const { stats, mutate } = useStats({
-    typebotId: publishedTypebot?.typebotId,
-    onError: (err) => showToast({ title: err.name, description: err.message }),
-  })
+  const { data: { stats } = {}, refetch } = trpc.analytics.getStats.useQuery(
+    {
+      typebotId: publishedTypebot?.typebotId as string,
+      timeFilter,
+    },
+    {
+      enabled: !!publishedTypebot,
+      onError: (err) => showToast({ description: err.message }),
+    }
+  )
 
-  const handleDeletedResults = (total: number) => {
+  const handleDeletedResults = () => {
     if (!stats) return
-    mutate({
-      stats: { ...stats, totalStarts: stats.totalStarts - total },
-    })
+    refetch()
   }
 
   if (is404) return <TypebotNotFoundPage />
@@ -100,14 +111,22 @@ export const ResultsPage = () => {
           {workspace &&
             publishedTypebot &&
             (isAnalytics ? (
-              <AnalyticsGraphContainer stats={stats} />
+              <AnalyticsGraphContainer
+                stats={stats}
+                timeFilter={timeFilter}
+                onTimeFilterChange={setTimeFilter}
+              />
             ) : (
               <ResultsProvider
+                timeFilter={timeFilter}
                 typebotId={publishedTypebot.typebotId}
                 totalResults={stats?.totalStarts ?? 0}
                 onDeleteResults={handleDeletedResults}
               >
-                <ResultsTableContainer />
+                <ResultsTableContainer
+                  timeFilter={timeFilter}
+                  onTimeFilterChange={setTimeFilter}
+                />
               </ResultsProvider>
             ))}
         </Flex>
