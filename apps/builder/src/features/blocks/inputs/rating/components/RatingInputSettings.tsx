@@ -3,7 +3,7 @@ import { DropdownList } from '@/components/DropdownList'
 import { RatingInputBlock, Variable } from '@typebot.io/schemas'
 import React from 'react'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
-import { TextInput } from '@/components/inputs'
+import { NumberInput, TextInput } from '@/components/inputs'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { defaultRatingInputOptions } from '@typebot.io/schemas/features/blocks/inputs/rating/constants'
 import { useTranslate } from '@tolgee/react'
@@ -46,11 +46,15 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
   const handleOneClickSubmitChange = (isOneClickSubmitEnabled: boolean) =>
     onOptionsChange({ ...options, isOneClickSubmitEnabled })
 
+  const updateStartsAt = (startsAt: number | `{{${string}}}` | undefined) =>
+    onOptionsChange({ ...options, startsAt })
+
   const length = options?.length ?? defaultRatingInputOptions.length
   const isOneClickSubmitEnabled =
     options?.isOneClickSubmitEnabled ??
     defaultRatingInputOptions.isOneClickSubmitEnabled
 
+  const buttonType = options?.buttonType ?? defaultRatingInputOptions.buttonType
   return (
     <Stack spacing={4}>
       <Stack>
@@ -71,13 +75,20 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
         <DropdownList
           onItemSelect={handleTypeChange}
           items={['Icons', 'Numbers'] as const}
-          currentItem={
-            options?.buttonType ?? defaultRatingInputOptions.buttonType
-          }
+          currentItem={buttonType}
         />
       </Stack>
 
-      {options?.buttonType === 'Icons' && (
+      {buttonType === 'Numbers' && (
+        <NumberInput
+          defaultValue={options?.startsAt ?? defaultRatingInputOptions.startsAt}
+          onValueChange={updateStartsAt}
+          label="Starts at"
+          direction="row"
+        />
+      )}
+
+      {buttonType === 'Icons' && (
         <SwitchWithLabel
           label={t('blocks.inputs.rating.settings.customIcon.label')}
           initialValue={
@@ -87,7 +98,7 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
           onCheckChange={handleCustomIconCheck}
         />
       )}
-      {options?.buttonType === 'Icons' && options.customIcon?.isEnabled && (
+      {buttonType === 'Icons' && options?.customIcon?.isEnabled && (
         <TextInput
           label={t('blocks.inputs.rating.settings.iconSVG.label')}
           defaultValue={options.customIcon.svg}
@@ -97,7 +108,10 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
       )}
       <TextInput
         label={t('blocks.inputs.rating.settings.rateLabel.label', {
-          rate: options?.buttonType === 'Icons' ? '1' : '0',
+          rate:
+            buttonType === 'Icons'
+              ? '1'
+              : options?.startsAt ?? defaultRatingInputOptions.startsAt,
         })}
         defaultValue={options?.labels?.left}
         onChange={handleLeftLabelChange}

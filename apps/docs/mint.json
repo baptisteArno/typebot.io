@@ -129,7 +129,8 @@
                 "editor/blocks/integrations/meta-pixel",
                 "editor/blocks/integrations/openai",
                 "editor/blocks/integrations/zemantic-ai",
-                "editor/blocks/integrations/mistral"
+                "editor/blocks/integrations/mistral",
+                "editor/blocks/integrations/elevenlabs"
               ]
             }
           ]
@@ -319,6 +320,10 @@
         "api-reference/results/delete",
         "api-reference/results/list-logs"
       ]
+    },
+    {
+      "group": "Analytics",
+      "pages": ["api-reference/analytics/get-stats"]
     },
     {
       "group": "Folder",

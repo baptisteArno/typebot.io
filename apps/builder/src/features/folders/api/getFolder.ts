@@ -46,6 +46,7 @@ export const getFolder = authenticatedProcedure
     const folder = await prisma.dashboardFolder.findUnique({
       where: {
         id: folderId,
+        workspaceId,
       },
     })
 

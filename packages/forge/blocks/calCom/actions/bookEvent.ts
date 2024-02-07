@@ -47,7 +47,9 @@ export const bookEvent = createAction({
               content: `Cal("on", {
                 action: "bookingSuccessful",
                 callback: (e) => {
+                  if(window.calComBooked) return
                   continueFlow(e.detail.data.date)
+                  window.calComBooked = true
                 }
               })`,
             }
@@ -98,6 +100,9 @@ export const bookEvent = createAction({
                     p(cal, ar);
                   };
               })(window, baseUrl + "/embed/embed.js", "init");
+
+              window.calComBooked = false;
+
               Cal("init", { origin: baseUrl });
 
               const location = phone ? JSON.stringify({

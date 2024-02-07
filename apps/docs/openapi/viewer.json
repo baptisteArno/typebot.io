@@ -6231,6 +6231,14 @@
               "length": {
                 "type": "number"
               },
+              "startsAt": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {}
+                ]
+              },
               "labels": {
                 "type": "object",
                 "properties": {
@@ -6309,6 +6317,17 @@
                   },
                   "skip": {
                     "type": "string"
+                  },
+                  "success": {
+                    "type": "object",
+                    "properties": {
+                      "single": {
+                        "type": "string"
+                      },
+                      "multiple": {
+                        "type": "string"
+                      }
+                    }
                   }
                 }
               },
@@ -9244,7 +9263,8 @@
                   "chat-node",
                   "qr-code",
                   "dify-ai",
-                  "mistral"
+                  "mistral",
+                  "elevenlabs"
                 ]
               },
               "options": {}
@@ -9421,6 +9441,17 @@
                   },
                   "skip": {
                     "type": "string"
+                  },
+                  "success": {
+                    "type": "object",
+                    "properties": {
+                      "single": {
+                        "type": "string"
+                      },
+                      "multiple": {
+                        "type": "string"
+                      }
+                    }
                   }
                 }
               },

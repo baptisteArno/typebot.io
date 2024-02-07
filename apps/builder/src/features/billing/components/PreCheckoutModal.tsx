@@ -161,6 +161,7 @@ export const PreCheckoutModal = ({
                   withVariableButton={false}
                   debounceTimeout={0}
                   placeholder={vatValuePlaceholder}
+                  flexShrink={0}
                 />
               </HStack>
             </FormControl>

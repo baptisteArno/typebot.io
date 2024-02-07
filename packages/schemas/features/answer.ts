@@ -24,11 +24,13 @@ export const answerInputSchema = answerSchema
     storageUsed: z.number().nullish(),
   }) satisfies z.ZodType<Prisma.AnswerUncheckedUpdateInput>
 
-export type Stats = {
-  totalViews: number
-  totalStarts: number
-  totalCompleted: number
-}
+export const statsSchema = z.object({
+  totalViews: z.number(),
+  totalStarts: z.number(),
+  totalCompleted: z.number(),
+})
+
+export type Stats = z.infer<typeof statsSchema>
 
 export type Answer = z.infer<typeof answerSchema>
 

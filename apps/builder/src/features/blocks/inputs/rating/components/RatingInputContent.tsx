@@ -17,7 +17,9 @@ export const RatingInputContent = ({ variableId, block }: Props) => {
   ) : (
     <Text noOfLines={1} pr="6">
       {t('blocks.inputs.rating.from.label')}{' '}
-      {block.options?.buttonType === 'Icons' ? 1 : 0}{' '}
+      {block.options?.buttonType === 'Icons'
+        ? 1
+        : block.options?.startsAt ?? defaultRatingInputOptions.startsAt}{' '}
       {t('blocks.inputs.rating.to.label')}{' '}
       {block.options?.length ?? defaultRatingInputOptions.length}
     </Text>
