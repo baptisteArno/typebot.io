@@ -8,4 +8,5 @@ export const enabledBlocks = [
   'dify-ai',
   'mistral',
   'razorpay',
+  'elevenlabs',
 ] as const
