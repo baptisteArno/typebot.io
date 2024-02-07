@@ -9,7 +9,6 @@ export const trackEvents = async (events: TelemetryEvent[]) => {
     host: env.USER_CREATED_WEBHOOK_URL,
   })
 
-  console.log('Tracking events', events)
 
   events.forEach(async (event) => {
     if (event.name === 'User created') {

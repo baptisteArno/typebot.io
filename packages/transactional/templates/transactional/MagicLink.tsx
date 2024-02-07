@@ -28,7 +28,7 @@ export const MagicLink = ({ magicLinkUrl }: Props) => (
           src={`${imagesBaseUrl}/logo.png`}
           width="32"
           height="32"
-          alt="Typebot's Logo"
+          alt="Flowdacity's Logo"
           style={{
             margin: '24px 0',
           }}
@@ -57,11 +57,11 @@ export const MagicLink = ({ magicLinkUrl }: Props) => (
         </Text>
         <Text style={footer}>
           <Link
-            href="https://notion.so"
+            href="https://flowdacity"
             target="_blank"
             style={{ ...link, color: '#898989' }}
           >
-            Typebot.io
+            Flowdacity
           </Link>
           - Powering Conversations at Scale
         </Text>
