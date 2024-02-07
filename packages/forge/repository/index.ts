@@ -7,4 +7,6 @@ export const enabledBlocks = [
   'qr-code',
   'dify-ai',
   'mistral',
+  'paystack',
+  'razorpay',
 ] as const
