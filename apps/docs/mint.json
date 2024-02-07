@@ -321,6 +321,10 @@
       ]
     },
     {
+      "group": "Analytics",
+      "pages": ["api-reference/analytics/get-stats"]
+    },
+    {
       "group": "Folder",
       "pages": [
         "api-reference/folder/list",

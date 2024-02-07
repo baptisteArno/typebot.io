@@ -1,15 +1,17 @@
+import { timeFilterValues } from '@/features/analytics/constants'
 import { trpc } from '@/lib/trpc'
 
-export const useResultsQuery = ({
-  typebotId,
-  onError,
-}: {
+type Params = {
+  timeFilter: (typeof timeFilterValues)[number]
   typebotId: string
   onError?: (error: string) => void
-}) => {
+}
+
+export const useResultsQuery = ({ timeFilter, typebotId, onError }: Params) => {
   const { data, error, fetchNextPage, hasNextPage, refetch } =
     trpc.results.getResults.useInfiniteQuery(
       {
+        timeFilter,
         typebotId,
       },
       {

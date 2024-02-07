@@ -7,6 +7,7 @@ export const defaultRatingInputOptions = {
   labels: {
     button: defaultButtonLabel,
   },
+  startsAt: 0,
   customIcon: { isEnabled: false },
   isOneClickSubmitEnabled: false,
 } as const satisfies RatingInputBlock['options']
