@@ -48,7 +48,7 @@ const DashboardPage = () => {
 
   useEffect(() => {
     const fetchBots = async (): Promise<void> => {
-      const { fluxes } = (await BotsService().getBots('web', 2)) as {
+      const { fluxes } = (await BotsService().getBots('whatsapp', 2)) as {
         fluxes: IFlux[]
       }
 

@@ -67,7 +67,8 @@ export const TextBubbleEditor = ({
     if (v.length === 0) defaultTextBubbleContent
     const html = serializeHtml(editor, {
       nodes: v,
-    })
+    }).replace(/<[^/>]*>\s*<\/[^>]*>/g, '')
+
     return {
       html,
       richText: v,
