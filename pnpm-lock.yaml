@@ -1227,6 +1227,28 @@ importers:
         specifier: 5.3.2
         version: 5.3.2
 
+  packages/forge/blocks/elevenlabs:
+    dependencies:
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../../../lib
+      got:
+        specifier: 12.6.0
+        version: 12.6.0
+    devDependencies:
+      '@typebot.io/forge':
+        specifier: workspace:*
+        version: link:../../core
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../../../tsconfig
+      '@types/react':
+        specifier: 18.2.15
+        version: 18.2.15
+      typescript:
+        specifier: 5.3.2
+        version: 5.3.2
+
   packages/forge/blocks/mistral:
     dependencies:
       '@mistralai/mistralai':
@@ -1370,6 +1392,9 @@ importers:
       '@typebot.io/dify-ai-block':
         specifier: workspace:*
         version: link:../blocks/difyAi
+      '@typebot.io/elevenlabs-block':
+        specifier: workspace:*
+        version: link:../blocks/elevenlabs
       '@typebot.io/forge':
         specifier: workspace:*
         version: link:../core

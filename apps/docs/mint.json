@@ -126,7 +126,8 @@
                 "editor/blocks/integrations/meta-pixel",
                 "editor/blocks/integrations/openai",
                 "editor/blocks/integrations/zemantic-ai",
-                "editor/blocks/integrations/mistral"
+                "editor/blocks/integrations/mistral",
+                "editor/blocks/integrations/elevenlabs"
               ]
             }
           ]

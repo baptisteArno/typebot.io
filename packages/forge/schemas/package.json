@@ -15,6 +15,7 @@
     "@typebot.io/chat-node-block": "workspace:*",
     "@typebot.io/qrcode-block": "workspace:*",
     "@typebot.io/dify-ai-block": "workspace:*",
-    "@typebot.io/mistral-block": "workspace:*"
+    "@typebot.io/mistral-block": "workspace:*",
+    "@typebot.io/elevenlabs-block": "workspace:*"
   }
 }
