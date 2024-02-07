@@ -3,10 +3,8 @@ import React from 'react'
 
 export const WOZAssignSettingBody = () => {
   return (
-
     <Stack spacing={4}>
       <Text>DIRECIONAR</Text>
-      
     </Stack>
   )
 }
