@@ -10,8 +10,8 @@ import {
 } from '@chakra-ui/react'
 import { Stats } from '@typebot.io/schemas'
 import React from 'react'
-import { DropdownList } from '@/components/DropdownList'
-import { timeFilterLabels, timeFilterValues } from '../constants'
+import { timeFilterValues } from '../constants'
+import { TimeFilterDropdown } from './TimeFilterDropdown'
 
 const computeCompletionRate =
   (notAvailableLabel: string) =>
@@ -23,12 +23,12 @@ const computeCompletionRate =
 export const StatsCards = ({
   stats,
   timeFilter,
-  setTimeFilter,
+  onTimeFilterChange,
   ...props
 }: {
   stats?: Stats
   timeFilter: (typeof timeFilterValues)[number]
-  setTimeFilter: (timeFilter: (typeof timeFilterValues)[number]) => void
+  onTimeFilterChange: (timeFilter: (typeof timeFilterValues)[number]) => void
 } & GridProps) => {
   const { t } = useTranslate()
   const bg = useColorModeValue('white', 'gray.900')
@@ -69,15 +69,9 @@ export const StatsCards = ({
           <Skeleton w="50%" h="10px" mt="2" />
         )}
       </Stat>
-      <DropdownList
-        items={Object.entries(timeFilterLabels).map(([value, label]) => ({
-          label,
-          value,
-        }))}
-        currentItem={timeFilter}
-        onItemSelect={(val) =>
-          setTimeFilter(val as (typeof timeFilterValues)[number])
-        }
+      <TimeFilterDropdown
+        timeFilter={timeFilter}
+        onTimeFilterChange={onTimeFilterChange}
         backgroundColor="white"
         boxShadow="md"
       />

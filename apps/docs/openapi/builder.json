@@ -2900,6 +2900,131 @@
         }
       }
     },
+    "/v1/typebots/{typebotId}/analytics/stats": {
+      "get": {
+        "operationId": "analytics-getStats",
+        "summary": "Get results stats",
+        "tags": [
+          "Analytics"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "typebotId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "timeFilter",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "today",
+                "last7Days",
+                "last30Days",
+                "yearToDate",
+                "allTime"
+              ],
+              "default": "today"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stats": {
+                      "type": "object",
+                      "properties": {
+                        "totalViews": {
+                          "type": "number"
+                        },
+                        "totalStarts": {
+                          "type": "number"
+                        },
+                        "totalCompleted": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "totalViews",
+                        "totalStarts",
+                        "totalCompleted"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "stats"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.BAD_REQUEST"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.NOT_FOUND"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.INTERNAL_SERVER_ERROR"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/workspaces": {
       "get": {
         "operationId": "workspace-listWorkspaces",
@@ -4276,6 +4401,9 @@
                                 }
                               ]
                             }
+                          },
+                          "updatedAt": {
+                            "type": "string"
                           }
                         },
                         "title": "Typebot V6"
@@ -6878,15 +7006,14 @@
                           },
                           "events": {
                             "type": "array"
+                          },
+                          "updatedAt": {
+                            "type": "string"
                           }
                         },
                         "title": "Typebot V5"
                       }
                     ]
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "description": "Used for checking if there is a newer version of the typebot in the database"
                   }
                 },
                 "required": [
@@ -10850,6 +10977,21 @@
             "name": "cursor",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "timeFilter",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "today",
+                "last7Days",
+                "last30Days",
+                "yearToDate",
+                "allTime"
+              ],
+              "default": "today"
             }
           }
         ],
@@ -15946,6 +16088,14 @@
               "length": {
                 "type": "number"
               },
+              "startsAt": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {}
+                ]
+              },
               "labels": {
                 "type": "object",
                 "properties": {
@@ -18545,7 +18695,8 @@
                   "chat-node",
                   "qr-code",
                   "dify-ai",
-                  "mistral"
+                  "mistral",
+                  "elevenlabs"
                 ]
               },
               "options": {}

@@ -6231,6 +6231,14 @@
               "length": {
                 "type": "number"
               },
+              "startsAt": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {}
+                ]
+              },
               "labels": {
                 "type": "object",
                 "properties": {
@@ -9255,7 +9263,8 @@
                   "chat-node",
                   "qr-code",
                   "dify-ai",
-                  "mistral"
+                  "mistral",
+                  "elevenlabs"
                 ]
               },
               "options": {}
