@@ -7,7 +7,8 @@ export const chatNode = createBlock({
   id: 'chat-node',
   name: 'ChatNode',
   tags: ['ai', 'openai', 'document', 'url'],
-  fullName: "Enhance user engagement with Chatnode integration for dynamic conversation experiences",
+  fullName:
+    'Enhance user engagement with Chatnode integration for dynamic conversation experiences',
   LightLogo: ChatNodeLogo,
   auth,
   actions: [sendMessage],

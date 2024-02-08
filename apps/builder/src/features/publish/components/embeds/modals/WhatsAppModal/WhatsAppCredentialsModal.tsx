@@ -307,7 +307,8 @@ const Requirements = () => (
       >
         created a WhatsApp Meta app
       </TextLink>
-      . Once you have created a created a Meta app, you should be able to get to this page:
+      . Once you have created a created a Meta app, you should be able to get to
+      this page:
     </Text>
     <Image
       src="/images/whatsapp-quickstart-page.png"

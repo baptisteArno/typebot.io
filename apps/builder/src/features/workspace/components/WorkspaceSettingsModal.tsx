@@ -68,7 +68,7 @@ export const WorkspaceSettingsModal = ({
           <Stack spacing={8}>
             <Stack>
               <Text pl="4" fontWeight={700} pb="4" color="white.900">
-                {t("workspace.settings.modal.heading.label")}
+                {t('workspace.settings.modal.heading.label')}
               </Text>
               <Button
                 variant={selectedTab === 'my-account' ? 'solid' : 'ghost'}
@@ -155,7 +155,7 @@ export const WorkspaceSettingsModal = ({
               >
                 {t('workspace.settings.modal.menu.api.label')}
               </Button>
-          </Stack>
+            </Stack>
           </Stack>
 
           <Flex justify="center" pt="10">

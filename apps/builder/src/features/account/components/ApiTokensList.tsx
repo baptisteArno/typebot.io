@@ -59,18 +59,18 @@ export const ApiTokensList = ({ user }: Props) => {
   return (
     <Stack spacing={4}>
       <HStack justifyContent="space-between">
-      <Heading fontSize="3xl">{t('account.apiTokens.heading')}</Heading>
-      <Flex justifyContent="space-between">
-        <Button onClick={onCreateOpen}>
-          {t('account.apiTokens.createButton.label')}
-        </Button>
-        <CreateTokenModal
-          userId={user.id}
-          isOpen={isCreateOpen}
-          onNewToken={refreshListWithNewToken}
-          onClose={onCreateClose}
-        />
-      </Flex>
+        <Heading fontSize="3xl">{t('account.apiTokens.heading')}</Heading>
+        <Flex justifyContent="space-between">
+          <Button onClick={onCreateOpen}>
+            {t('account.apiTokens.createButton.label')}
+          </Button>
+          <CreateTokenModal
+            userId={user.id}
+            isOpen={isCreateOpen}
+            onNewToken={refreshListWithNewToken}
+            onClose={onCreateClose}
+          />
+        </Flex>
       </HStack>
       <Text fontSize={14} color="whiteAlpha.600">
         {t('account.apiTokens.description')}

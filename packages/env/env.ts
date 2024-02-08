@@ -41,7 +41,7 @@ const guessViewerUrlForVercelPreview = (val: unknown) => {
     process.env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME
   )
 }
- 
+
 const boolean = z.enum(['true', 'false']).transform((value) => value === 'true')
 
 const baseEnv = {

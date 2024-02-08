@@ -7,7 +7,8 @@ export const elevenlabs = createBlock({
   id: 'elevenlabs',
   name: 'ElevenLabs',
   tags: ['ai', 'voice', 'generation'],
-  fullName: "Create and use natural AI voices instantly in any language of your choice to send to your users",
+  fullName:
+    'Create and use natural AI voices instantly in any language of your choice to send to your users',
   LightLogo: ElevenlabsLogo,
   DarkLogo: ElevenlabsLogoDark,
   auth,

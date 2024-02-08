@@ -1,4 +1,4 @@
-# [Typebot](https://www.typebot.io "Typebot")
+# [Typebot](https://www.typebot.io 'Typebot')
 
 ![WordPress version](https://img.shields.io/wordpress/plugin/v/typebot.svg) ![WordPress Rating](https://img.shields.io/wordpress/plugin/r/typebot.svg) ![WordPress Downloads](https://img.shields.io/wordpress/plugin/dt/typebot.svg)
 

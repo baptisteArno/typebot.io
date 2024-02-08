@@ -9,7 +9,8 @@ export const zemanticAi = createBlock({
   id: 'zemantic-ai',
   name: 'Zemantic AI',
   tags: [],
-  fullName: "Access and summarise document contents with Zemantic AI integration for enhanced data retrieval",
+  fullName:
+    'Access and summarise document contents with Zemantic AI integration for enhanced data retrieval',
   LightLogo: ZemanticAiLogo,
   auth,
   options: baseOptions,

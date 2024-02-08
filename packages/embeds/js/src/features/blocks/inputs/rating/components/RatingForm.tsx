@@ -48,7 +48,7 @@ export const RatingForm = (props: Props) => {
                   ? -(
                       ((props.block.options?.startsAt as number | undefined) ??
                         defaultRatingInputOptions.startsAt) - 1
-)
+                    )
                   : 0)
             )
           )}

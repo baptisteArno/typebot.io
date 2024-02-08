@@ -80,7 +80,7 @@ export const createTypebot = authenticatedProcedure
         message: 'Public id not available',
       })
 
-if (typebot.folderId) {
+    if (typebot.folderId) {
       const existingFolder = await prisma.dashboardFolder.findUnique({
         where: {
           id: typebot.folderId,

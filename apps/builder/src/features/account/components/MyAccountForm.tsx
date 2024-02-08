@@ -1,4 +1,15 @@
-import {Stack, HStack, Avatar, Text, Input, InputGroup, InputRightElement, FormHelperText, FormControl, FormLabel} from '@chakra-ui/react'
+import {
+  Stack,
+  HStack,
+  Avatar,
+  Text,
+  Input,
+  InputGroup,
+  InputRightElement,
+  FormHelperText,
+  FormControl,
+  FormLabel,
+} from '@chakra-ui/react'
 import { UploadIcon } from '@/components/icons'
 import React, { useState } from 'react'
 // import { ApiTokensList } from './ApiTokensList'
@@ -80,16 +91,16 @@ export const MyAccountForm = () => {
       </span> */}
 
       <FormControl>
-      <FormLabel>Email Address</FormLabel>
-      <InputGroup>
-        <Input type={'text'} defaultValue={email} pr="16" readOnly />
-        <InputRightElement width="72px">
-          <CopyButton textToCopy={email} size="xs" />
-        </InputRightElement>
-      </InputGroup>
-      <FormHelperText>
-      {t('account.myAccount.emailInput.disabledTooltip')}
-      </FormHelperText>
+        <FormLabel>Email Address</FormLabel>
+        <InputGroup>
+          <Input type={'text'} defaultValue={email} pr="16" readOnly />
+          <InputRightElement width="72px">
+            <CopyButton textToCopy={email} size="xs" />
+          </InputRightElement>
+        </InputGroup>
+        <FormHelperText>
+          {t('account.myAccount.emailInput.disabledTooltip')}
+        </FormHelperText>
       </FormControl>
 
       {/* {user && <ApiTokensList user={user} />} */}
