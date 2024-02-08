@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "bun --watch src/index.ts",
     "build": "bun build --target=bun ./src/index.ts --outdir ./dist",
-    "start": "PORT=3000 NODE_ENV=production bun src/index.ts",
+    "start": "openssl version -a && NODE_ENV=production bun src/index.ts",
     "test": "bun test"
   },
   "dependencies": {
