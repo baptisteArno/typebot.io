@@ -63,7 +63,7 @@
           "id": "qqlv6ikxqh2l7wjibjqk3j93",
           "type": "openai",
           "options": {
-            "action": "Create chat completion",
+            "action": "Generate AI Response",
             "messages": [
               {
                 "role": "user",
@@ -128,7 +128,7 @@
           "id": "itiwmw62ml38rmeawxxawkub",
           "type": "openai",
           "options": {
-            "action": "Create chat completion",
+            "action": "Generate AI Response",
             "messages": [
               {
                 "role": "user",
@@ -193,7 +193,7 @@
           "id": "w2y6tl8mggplu8vsc9hu2080",
           "type": "openai",
           "options": {
-            "action": "Create chat completion",
+            "action": "Generate AI Response",
             "messages": [
               {
                 "role": "user",

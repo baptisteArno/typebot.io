@@ -42,7 +42,7 @@
           "id": "e57nnbkl97h49jaaslxkg3u0",
           "type": "openai",
           "options": {
-            "action": "Create chat completion",
+            "action": "Generate AI Response",
             "messages": [
               {
                 "role": "Dialogue",
@@ -73,7 +73,7 @@
           "options": {
             "input": "{{Assistant Message}}",
             "voice": "alloy",
-            "action": "Create speech",
+            "action": "Create Speech from Text",
             "credentialsId": "clpjnjrbt00051aliw6610w1z",
             "saveUrlInVariableId": "vgr0iwg95npp7pztkmdyn89m1"
           }
@@ -97,7 +97,7 @@
           "options": {
             "input": "Hi there! How can I help?",
             "voice": "alloy",
-            "action": "Create speech",
+            "action": "Create Speech from Text",
             "credentialsId": "clpjnjrbt00051aliw6610w1z",
             "saveUrlInVariableId": "vxw4quja426402hvhtm33tsp3"
           }

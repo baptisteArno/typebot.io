@@ -23,7 +23,7 @@ test('should be configurable', async ({ page }) => {
   await page.getByPlaceholder('sk-...').fill('sk-test')
   await page.getByRole('button', { name: 'Create' }).click()
   await page.getByRole('button', { name: 'Select task' }).click()
-  await page.getByRole('menuitem', { name: 'Create chat completion' }).click()
+  await page.getByRole('menuitem', { name: 'Generate AI Response' }).click()
   await page.getByRole('button', { name: 'Messages' }).click()
   await page.getByRole('button', { name: 'Select type' }).click()
   await page.getByRole('menuitem', { name: 'system' }).click()

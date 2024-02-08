@@ -37,7 +37,7 @@ export const RatingForm = (props: Props) => {
           {props.block.options.labels.left}
         </span>
       )}
-      <div class="flex flex-wrap justify-center gap-2">
+      <div class="flex flex-wrap justify-center gap-1">
         <For
           each={Array.from(
             Array(
@@ -48,7 +48,7 @@ export const RatingForm = (props: Props) => {
                   ? -(
                       ((props.block.options?.startsAt as number | undefined) ??
                         defaultRatingInputOptions.startsAt) - 1
-                    )
+)
                   : 0)
             )
           )}

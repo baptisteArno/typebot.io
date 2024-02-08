@@ -89,7 +89,7 @@ export const continueBotFlow = async (
   // Legacy
   else if (
     block.type === IntegrationBlockType.OPEN_AI &&
-    block.options?.task === 'Create chat completion'
+    block.options?.task === 'Generate AI Response'
   ) {
     firstBubbleWasStreamed = true
     if (reply && typeof reply === 'string') {

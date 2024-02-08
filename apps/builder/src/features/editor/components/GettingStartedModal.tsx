@@ -22,6 +22,8 @@ import {
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useTranslate } from '@tolgee/react'
+import { TextLink } from '@/components/TextLink'
+import { T } from '@tolgee/react'
 
 export const GettingStartedModal = () => {
   const { t } = useTranslate()
@@ -39,14 +41,14 @@ export const GettingStartedModal = () => {
       <ModalContent>
         <ModalCloseButton />
         <ModalBody as={Stack} spacing="8" py="10">
-          <Stack spacing={4}>
+          <Stack spacing={8}>
             <Heading fontSize="xl">
               {t('editor.gettingStartedModal.editorBasics.heading')}
             </Heading>
             <List spacing={4}>
-              <HStack as={ListItem}>
+              <HStack as={ListItem} alignItems="top" spacing={4}>
                 <Flex
-                  bgColor="blue.500"
+                  bgColor="customPink.600"
                   rounded="full"
                   boxSize="25px"
                   justify="center"
@@ -55,6 +57,7 @@ export const GettingStartedModal = () => {
                   fontWeight="bold"
                   flexShrink={0}
                   fontSize="13px"
+                  marginTop="3px"
                 >
                   1
                 </Flex>
@@ -62,9 +65,9 @@ export const GettingStartedModal = () => {
                   {t('editor.gettingStartedModal.editorBasics.list.one.label')}
                 </Text>
               </HStack>
-              <HStack as={ListItem}>
+              <HStack as={ListItem} alignItems="top" spacing={4}>
                 <Flex
-                  bgColor="blue.500"
+                  bgColor="customPink.600"
                   rounded="full"
                   boxSize="25px"
                   fontSize="13px"
@@ -73,6 +76,7 @@ export const GettingStartedModal = () => {
                   color="white"
                   fontWeight="bold"
                   flexShrink={0}
+                  marginTop="3px"
                 >
                   2
                 </Flex>
@@ -80,9 +84,9 @@ export const GettingStartedModal = () => {
                   {t('editor.gettingStartedModal.editorBasics.list.two.label')}
                 </Text>
               </HStack>
-              <HStack as={ListItem}>
+              <HStack as={ListItem} alignItems="top" spacing={4}>
                 <Flex
-                  bgColor="blue.500"
+                  bgColor="customPink.600"
                   rounded="full"
                   boxSize="25px"
                   justify="center"
@@ -91,6 +95,7 @@ export const GettingStartedModal = () => {
                   fontWeight="bold"
                   flexShrink={0}
                   fontSize="13px"
+                  marginTop="2px"
                 >
                   3
                 </Flex>
@@ -100,9 +105,9 @@ export const GettingStartedModal = () => {
                   )}
                 </Text>
               </HStack>
-              <HStack as={ListItem}>
+              <HStack as={ListItem} alignItems="top" spacing={4}>
                 <Flex
-                  bgColor="blue.500"
+                  bgColor="customPink.600"
                   rounded="full"
                   boxSize="25px"
                   justify="center"
@@ -111,6 +116,7 @@ export const GettingStartedModal = () => {
                   fontWeight="bold"
                   flexShrink={0}
                   fontSize="13px"
+                  marginTop="3px"
                 >
                   4
                 </Flex>
@@ -121,12 +127,25 @@ export const GettingStartedModal = () => {
             </List>
           </Stack>
 
-          <Text>{t('editor.gettingStartedModal.editorBasics.list.label')}</Text>
-          <Text>{t('editor.gettingStartedModal.editorBasics.List.mention.label')}</Text>
+          <Text>
+            <T
+              keyName="editor.gettingStartedModal.editorBasics.list.label"
+              params={{
+                documentation: (
+                  <TextLink
+                    href={'https://docs.typebot.io/get-started/introduction'}
+                    color="customBlue.500"
+                    fontWeight={700}
+                    isExternal={true}
+                  />
+                ),
+              }}
+            />
+          </Text>
+
           <Stack spacing={4}>
-            <Heading fontSize="xl">
-              {t('editor.gettingStartedModal.seeAction.label')} ({`<`}{' '}
-              {t('editor.gettingStartedModal.seeAction.time')})
+            <Heading fontSize="l">
+              {t('editor.gettingStartedModal.seeAction.label')}
             </Heading>
             <iframe
               width="100%"
@@ -164,6 +183,24 @@ export const GettingStartedModal = () => {
                     allowFullScreen
                     style={{ borderRadius: '0.5rem', border: 'none' }}
                   />
+                </AccordionPanel>
+              </AccordionItem>
+              <AccordionItem>
+                <AccordionButton>
+                  <Box flex="1" textAlign="left">
+                    {t('editor.gettingStartedModal.disclaimer.item.label')}
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel py={4} as={Stack} spacing="10">
+                  <Text>
+                    <T
+                      keyName="editor.gettingStartedModal.editorBasics.List.mention.label"
+                      params={{
+                        typebot: <TextLink href={'https://typebot.io'} />,
+                      }}
+                    />
+                  </Text>
                 </AccordionPanel>
               </AccordionItem>
             </Accordion>

@@ -5,10 +5,11 @@ import {
   Stack,
   Text,
   Button,
-  Avatar,
   Flex,
 } from '@chakra-ui/react'
 import {
+  AccountIcon,
+  ApiIcon,
   CreditCardIcon,
   HardDriveIcon,
   SettingsIcon,
@@ -25,6 +26,7 @@ import { UserPreferencesForm } from '@/features/account/components/UserPreferenc
 import { MyAccountForm } from '@/features/account/components/MyAccountForm'
 import { BillingSettingsLayout } from '@/features/billing/components/BillingSettingsLayout'
 import { useTranslate } from '@tolgee/react'
+import { DeveloperAccessForm } from '@/features/account/components/DeveloperAccessForm'
 
 type Props = {
   isOpen: boolean
@@ -39,10 +41,10 @@ type SettingsTab =
   | 'workspace-settings'
   | 'members'
   | 'billing'
+  | 'api-access'
 
 export const WorkspaceSettingsModal = ({
   isOpen,
-  user,
   workspace,
   onClose,
 }: Props) => {
@@ -55,29 +57,23 @@ export const WorkspaceSettingsModal = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">
       <ModalOverlay />
-      <ModalContent minH="600px" flexDir="row">
+      <ModalContent minH="820px" flexDir="row">
         <Stack
           spacing={8}
-          w="180px"
+          w="220px"
           py="6"
           borderRightWidth={1}
           justifyContent="space-between"
         >
           <Stack spacing={8}>
             <Stack>
-              <Text pl="4" color="gray.500">
-                {user.email}
+              <Text pl="4" fontWeight={700} pb="4" color="white.900">
+                {t("workspace.settings.modal.heading.label")}
               </Text>
               <Button
                 variant={selectedTab === 'my-account' ? 'solid' : 'ghost'}
                 onClick={() => setSelectedTab('my-account')}
-                leftIcon={
-                  <Avatar
-                    name={user.name ?? undefined}
-                    src={user.image ?? undefined}
-                    boxSize="15px"
-                  />
-                }
+                leftIcon={<AccountIcon />}
                 size="sm"
                 justifyContent="flex-start"
                 pl="4"
@@ -145,6 +141,21 @@ export const WorkspaceSettingsModal = ({
                 </Button>
               )}
             </Stack>
+            <Stack>
+              <Text pl="4" color="gray.500">
+                {t('workspace.settings.modal.menu.developer.label')}
+              </Text>
+              <Button
+                variant={selectedTab === 'api-access' ? 'solid' : 'ghost'}
+                onClick={() => setSelectedTab('api-access')}
+                leftIcon={<ApiIcon />}
+                size="sm"
+                justifyContent="flex-start"
+                pl="4"
+              >
+                {t('workspace.settings.modal.menu.api.label')}
+              </Button>
+          </Stack>
           </Stack>
 
           <Flex justify="center" pt="10">
@@ -184,6 +195,8 @@ const SettingsContent = ({
       return <MembersList />
     case 'billing':
       return <BillingSettingsLayout />
+    case 'api-access':
+      return <DeveloperAccessForm />
     default:
       return null
   }

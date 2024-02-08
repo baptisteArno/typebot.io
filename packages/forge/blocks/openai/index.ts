@@ -10,10 +10,10 @@ export const openAIBlock = createBlock({
   id: 'openai' as const,
   name: 'OpenAI',
   tags: ['openai'],
+  fullName: 'Integrate ChatGPT for dynamic response generation, assistant connectivity, and text-to-speech capabilities',
   LightLogo: OpenAILightLogo,
   DarkLogo: OpenAIDarkLogo,
   auth,
   options: baseOptions,
-  actions: [createChatCompletion, askAssistant, createSpeech],
-  docsUrl: 'https://docs.typebot.io/forge/blocks/openai',
+  actions: [createChatCompletion, createSpeech, askAssistant],
 })

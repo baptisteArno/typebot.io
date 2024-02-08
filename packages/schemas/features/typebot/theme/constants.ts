@@ -9,16 +9,16 @@ export enum BackgroundType {
 export const defaultTheme = {
   chat: {
     roundness: 'medium',
-    hostBubbles: { backgroundColor: '#F7F8FF', color: '#303235' },
-    guestBubbles: { backgroundColor: '#FF8E21', color: '#FFFFFF' },
-    buttons: { backgroundColor: '#0042DA', color: '#FFFFFF' },
+    hostBubbles: { backgroundColor: '#fafafa', color: '#111827' },
+    guestBubbles: { backgroundColor: '#3171b5', color: '#FFFFFF' },
+    buttons: { backgroundColor: '#eff9ff', color: '#0068b3' },
     inputs: {
       backgroundColor: '#FFFFFF',
-      color: '#303235',
+      color: '#111827',
       placeholderColor: '#9095A0',
     },
     hostAvatar: {
-      isEnabled: true,
+      isEnabled: false,
     },
     guestAvatar: {
       isEnabled: false,

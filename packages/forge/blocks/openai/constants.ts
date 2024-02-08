@@ -9,7 +9,8 @@ export const openAIVoices = [
 
 export const defaultOpenAIOptions = {
   baseUrl: 'https://api.openai.com/v1',
-  model: 'gpt-3.5-turbo',
+  apiVersion: '',
+  model: 'gpt-3.5-turbo-0125',
   voiceModel: 'tts-1',
   temperature: 1,
 } as const

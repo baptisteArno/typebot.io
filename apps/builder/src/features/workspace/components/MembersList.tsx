@@ -107,7 +107,7 @@ export const MembersList = () => {
         </UnlockPlanAlertInfo>
       )}
       {isDefined(seatsLimit) && (
-        <Heading fontSize="2xl">
+        <Heading fontSize="3xl">
           {t('workspace.membersList.title')}{' '}
           {seatsLimit === -1 ? '' : `(${currentMembersCount}/${seatsLimit})`}
         </Heading>

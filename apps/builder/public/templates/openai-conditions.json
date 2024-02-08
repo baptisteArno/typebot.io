@@ -42,7 +42,7 @@
           "id": "ufwpq6z392ebsu5tda0md77a",
           "type": "openai",
           "options": {
-            "action": "Create chat completion",
+            "action": "Generate AI Response",
             "messages": [
               {
                 "role": "system",

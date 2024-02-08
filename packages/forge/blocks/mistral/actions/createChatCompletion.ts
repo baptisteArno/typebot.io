@@ -64,7 +64,7 @@ export const options = option.object({
 })
 
 export const createChatCompletion = createAction({
-  name: 'Create chat completion',
+  name: 'Generate AI Response',
   auth,
   options,
   getSetVariableIds: (options) =>

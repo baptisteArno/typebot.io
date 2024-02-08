@@ -50,7 +50,7 @@ export const Buttons = (props: Props) => {
 
       <div
         class={
-          'flex flex-wrap justify-end gap-2' +
+          'flex flex-wrap justify-start gap-2' +
           (props.options?.isSearchable
             ? ' overflow-y-scroll max-h-80 rounded-md'
             : '')

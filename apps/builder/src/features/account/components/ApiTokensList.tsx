@@ -14,6 +14,7 @@ import {
   Stack,
   Flex,
   useDisclosure,
+  HStack,
 } from '@chakra-ui/react'
 import { ConfirmModal } from '@/components/ConfirmModal'
 import { useToast } from '@/hooks/useToast'
@@ -57,9 +58,9 @@ export const ApiTokensList = ({ user }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <Heading fontSize="2xl">{t('account.apiTokens.heading')}</Heading>
-      <Text>{t('account.apiTokens.description')}</Text>
-      <Flex justifyContent="flex-end">
+      <HStack justifyContent="space-between">
+      <Heading fontSize="3xl">{t('account.apiTokens.heading')}</Heading>
+      <Flex justifyContent="space-between">
         <Button onClick={onCreateOpen}>
           {t('account.apiTokens.createButton.label')}
         </Button>
@@ -70,6 +71,10 @@ export const ApiTokensList = ({ user }: Props) => {
           onClose={onCreateClose}
         />
       </Flex>
+      </HStack>
+      <Text fontSize={14} color="whiteAlpha.600">
+        {t('account.apiTokens.description')}
+      </Text>
 
       <TableContainer>
         <Table>

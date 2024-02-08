@@ -146,7 +146,7 @@ const OpenAITaskSettings = ({
   onOptionsChange: (options: OpenAIBlock['options']) => void
 }): JSX.Element | null => {
   switch (options.task) {
-    case 'Create chat completion': {
+    case 'Generate AI Response': {
       return (
         <OpenAIChatCompletionSettings
           options={options}
@@ -154,7 +154,7 @@ const OpenAITaskSettings = ({
         />
       )
     }
-    case 'Create speech': {
+    case 'Create Speech from Text': {
       return (
         <OpenAICreateSpeechSettings
           options={options}

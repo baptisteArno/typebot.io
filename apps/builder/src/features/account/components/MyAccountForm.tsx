@@ -1,17 +1,19 @@
-import { Stack, HStack, Avatar, Text, Tooltip } from '@chakra-ui/react'
+import {Stack, HStack, Avatar, Text, Input, InputGroup, InputRightElement, FormHelperText, FormControl, FormLabel} from '@chakra-ui/react'
 import { UploadIcon } from '@/components/icons'
 import React, { useState } from 'react'
-import { ApiTokensList } from './ApiTokensList'
+// import { ApiTokensList } from './ApiTokensList'
 import { UploadButton } from '@/components/ImageUploadContent/UploadButton'
 import { useUser } from '../hooks/useUser'
 import { TextInput } from '@/components/inputs/TextInput'
 import { useTranslate } from '@tolgee/react'
+import { CopyButton } from '@/components/CopyButton'
 
 export const MyAccountForm = () => {
   const { t } = useTranslate()
   const { user, updateUser } = useUser()
   const [name, setName] = useState(user?.name ?? '')
-  const [email, setEmail] = useState(user?.email ?? '')
+  // const [email, setEmail] = useState(user?.email ?? '')
+  const [email] = useState(user?.email ?? '')
 
   const handleFileUploaded = async (url: string) => {
     updateUser({ image: url })
@@ -22,10 +24,10 @@ export const MyAccountForm = () => {
     updateUser({ name: newName })
   }
 
-  const handleEmailChange = (newEmail: string) => {
-    setEmail(newEmail)
-    updateUser({ email: newEmail })
-  }
+  // const handleEmailChange = (newEmail: string) => {
+  //   setEmail(newEmail)
+  //   updateUser({ email: newEmail })
+  // }
 
   return (
     <Stack spacing="6" w="full" overflowY="auto">
@@ -63,21 +65,34 @@ export const MyAccountForm = () => {
         withVariableButton={false}
         debounceTimeout={0}
       />
-      <Tooltip label={t('account.myAccount.emailInput.disabledTooltip')}>
-        <span>
-          <TextInput
-            type="email"
-            defaultValue={email}
-            onChange={handleEmailChange}
-            label={t('account.myAccount.emailInput.label')}
-            withVariableButton={false}
-            debounceTimeout={0}
-            isDisabled
-          />
-        </span>
-      </Tooltip>
 
-      {user && <ApiTokensList user={user} />}
+      {/* <span>
+        <TextInput
+          type="email"
+          defaultValue={email}
+          onChange={handleEmailChange}
+          label={t('account.myAccount.emailInput.label')}
+          helperText={t('account.myAccount.emailInput.disabledTooltip')}
+          withVariableButton={false}
+          debounceTimeout={0}
+          isDisabled
+        />
+      </span> */}
+
+      <FormControl>
+      <FormLabel>Email Address</FormLabel>
+      <InputGroup>
+        <Input type={'text'} defaultValue={email} pr="16" readOnly />
+        <InputRightElement width="72px">
+          <CopyButton textToCopy={email} size="xs" />
+        </InputRightElement>
+      </InputGroup>
+      <FormHelperText>
+      {t('account.myAccount.emailInput.disabledTooltip')}
+      </FormHelperText>
+      </FormControl>
+
+      {/* {user && <ApiTokensList user={user} />} */}
     </Stack>
   )
 }

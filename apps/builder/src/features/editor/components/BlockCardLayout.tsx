@@ -27,7 +27,15 @@ export const BlockCardLayout = ({
   const handleMouseDown = (e: React.MouseEvent) => onMouseDown(e, type)
 
   return (
-    <Tooltip label={tooltip}>
+    <Tooltip
+      label={tooltip}
+      bg="blackAlpha.900"
+      color="white"
+      hasArrow
+      placement="right"
+      openDelay={300}
+      p={3}
+    >
       <Flex pos="relative">
         <HStack
           borderWidth="1px"
@@ -39,7 +47,7 @@ export const BlockCardLayout = ({
           onMouseDown={handleMouseDown}
           bgColor={useColorModeValue('gray.50', 'gray.850')}
           px="4"
-          py="2"
+          py="1"
           _hover={useColorModeValue({ shadow: 'md' }, { bgColor: 'gray.800' })}
           transition="box-shadow 200ms, background-color 200ms"
         >

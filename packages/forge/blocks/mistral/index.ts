@@ -7,6 +7,7 @@ export const mistral = createBlock({
   id: 'mistral',
   name: 'Mistral',
   tags: ['ai', 'chat', 'completion'],
+  fullName: "Incorporate Mistral AI's models for sophisticated and responsive chatbot interactions",
   LightLogo: MistralLogo,
   auth,
   actions: [createChatCompletion],

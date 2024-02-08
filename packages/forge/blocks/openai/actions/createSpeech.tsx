@@ -8,7 +8,7 @@ import { auth } from '../auth'
 import { baseOptions } from '../baseOptions'
 
 export const createSpeech = createAction({
-  name: 'Create speech',
+  name: 'Create Speech from Text',
   auth,
   baseOptions,
   options: option.object({
@@ -66,10 +66,12 @@ export const createSpeech = createAction({
   ],
   run: {
     server: async ({ credentials: { apiKey }, options, variables, logs }) => {
-      if (!options.input) return logs.add('Create speech input is empty')
-      if (!options.voice) return logs.add('Create speech voice is empty')
+      if (!options.input)
+        return logs.add('Create Speech from Text input is empty')
+      if (!options.voice)
+        return logs.add('Create Speech from Text voice is empty')
       if (!options.saveUrlInVariableId)
-        return logs.add('Create speech save variable is empty')
+        return logs.add('Create Speech from Text save variable is empty')
 
       const config = {
         apiKey,

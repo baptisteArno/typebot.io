@@ -9,13 +9,13 @@ export const executeOpenAIBlock = async (
   block: OpenAIBlock
 ): Promise<ExecuteIntegrationResponse> => {
   switch (block.options?.task) {
-    case 'Create chat completion':
+    case 'Generate AI Response':
       return createChatCompletionOpenAI(state, {
         options: block.options,
         outgoingEdgeId: block.outgoingEdgeId,
         blockId: block.id,
       })
-    case 'Create speech':
+    case 'Create Speech from Text':
       return createSpeechOpenAI(state, {
         options: block.options,
         outgoingEdgeId: block.outgoingEdgeId,

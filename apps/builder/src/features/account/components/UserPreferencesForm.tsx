@@ -17,6 +17,7 @@ import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 import { useTranslate, useTolgee } from '@tolgee/react'
 import { useRouter } from 'next/router'
 import { GraphNavigationRadioGroup } from './GraphNavigationRadioGroup'
+import { TextLink } from '@/components/TextLink'
 
 const localeHumanReadable = {
   en: 'English',
@@ -63,7 +64,7 @@ export const UserPreferencesForm = () => {
   const currentLanguage = getLanguage()
 
   return (
-    <Stack spacing={12}>
+    <Stack spacing={6}>
       <HStack spacing={4}>
         <Heading size="md">{t('account.preferences.language.heading')}</Heading>
         <Menu>
@@ -106,6 +107,15 @@ export const UserPreferencesForm = () => {
           onChange={changeGraphNavigation}
         />
       </Stack>
+
+      <TextLink
+        href={'https://docs.typebot.io/get-started/introduction'}
+        color="customBlue.600"
+        fontWeight={500}
+        isExternal={true}
+      >
+        {t('account.preferences.graphNavigation.learn.more')}
+      </TextLink>
 
       <Stack spacing={6}>
         <Heading size="md">

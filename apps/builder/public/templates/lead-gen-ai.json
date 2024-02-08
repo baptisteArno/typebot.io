@@ -200,8 +200,8 @@
           "id": "dc58mxvcstc2rdwnlg4yd2aa",
           "type": "OpenAI",
           "options": {
-            "task": "Create chat completion",
-            "model": "gpt-3.5-turbo",
+            "task": "Generate AI Response",
+            "model": "gpt-3.5-turbo-0125",
             "messages": [
               {
                 "id": "i522qy1dzn42qy7rkw79uk9n",

@@ -8,7 +8,7 @@ import { executeFunction } from '@typebot.io/variables/executeFunction'
 export const askAssistant = createAction({
   auth,
   baseOptions,
-  name: 'Ask Assistant',
+  name: 'Connect with an OpenAI Assistant',
   options: option.object({
     assistantId: option.string.layout({
       label: 'Assistant ID',

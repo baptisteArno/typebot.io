@@ -85,7 +85,7 @@
           "id": "p4q3wbk4wcw818qocrvu7dxs",
           "type": "openai",
           "options": {
-            "action": "Create chat completion",
+            "action": "Generate AI Response",
             "messages": [
               {
                 "role": "Dialogue",

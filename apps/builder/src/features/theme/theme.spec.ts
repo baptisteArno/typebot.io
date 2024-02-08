@@ -27,7 +27,9 @@ test.describe.parallel('Theme page', () => {
         page.locator('a:has-text("Made with PocketAI")')
       ).toHaveAttribute('href', 'https://www.typebot.io/?utm_source=litebadge')
       await page.click('text="Show PocketAI badge"')
-      await expect(page.locator('a:has-text("Made with PocketAI")')).toBeHidden()
+      await expect(
+        page.locator('a:has-text("Made with PocketAI")')
+      ).toBeHidden()
 
       // Font
       await page.getByRole('textbox').fill('Roboto Slab')

@@ -63,7 +63,7 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
             onChange={handleNameChange}
           />
           <FormControl>
-            <FormLabel>ID:</FormLabel>
+            <FormLabel>Workspace ID</FormLabel>
             <InputGroup>
               <Input
                 type={'text'}

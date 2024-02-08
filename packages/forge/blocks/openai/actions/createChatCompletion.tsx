@@ -155,7 +155,7 @@ export const options = option.object({
 })
 
 export const createChatCompletion = createAction({
-  name: 'Create chat completion',
+  name: 'Generate AI Response',
   auth,
   baseOptions,
   options,
@@ -185,15 +185,16 @@ export const createChatCompletion = createAction({
 
         const models = await openai.models.list()
 
-        return (
-          models.data
-            .filter((model) => model.id.includes('gpt'))
-            .sort((a, b) => b.created - a.created)
-            .map((model) => model.id) ?? []
+        // Filter to include only specific models
+        const filteredModels = models.data.filter((model) =>
+          ['gpt-3.5-turbo-0125', 'gpt-4-0125-preview'].includes(model.id)
         )
+
+        return filteredModels.map((model) => model.id) ?? []
       },
     },
   ],
+
   run: {
     server: async ({ credentials: { apiKey }, options, variables }) => {
       const config = {

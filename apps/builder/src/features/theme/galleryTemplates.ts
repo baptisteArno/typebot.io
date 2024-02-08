@@ -26,7 +26,7 @@ export const galleryTemplates: Pick<ThemeTemplate, 'id' | 'name' | 'theme'>[] =
           hostAvatar: {
             isEnabled: true,
           },
-          hostBubbles: { color: '#303235', backgroundColor: '#F7F8FF' },
+          hostBubbles: { color: '#303235', backgroundColor: '#f7f8ff' },
           guestBubbles: { color: '#FFFFFF', backgroundColor: '#FF8E21' },
         },
         general: {
@@ -70,8 +70,8 @@ export const galleryTemplates: Pick<ThemeTemplate, 'id' | 'name' | 'theme'>[] =
           },
           buttons: { color: '#FFFFFF', backgroundColor: '#303235' },
           hostAvatar: { isEnabled: false },
-          hostBubbles: { color: '#303235', backgroundColor: '#F7F8FF' },
-          guestBubbles: { color: '#303235', backgroundColor: '#F7F8FF' },
+          hostBubbles: { color: '#303235', backgroundColor: '#f7f8ff' },
+          guestBubbles: { color: '#303235', backgroundColor: '#f7f8ff' },
         },
         general: {
           font: 'Inter',
@@ -91,8 +91,8 @@ export const galleryTemplates: Pick<ThemeTemplate, 'id' | 'name' | 'theme'>[] =
           },
           buttons: { color: '#FFFFFF', backgroundColor: '#0d9488' },
           hostAvatar: { isEnabled: false },
-          hostBubbles: { color: '#303235', backgroundColor: '#F7F8FF' },
-          guestBubbles: { color: '#303235', backgroundColor: '#F7F8FF' },
+          hostBubbles: { color: '#303235', backgroundColor: '#f7f8ff' },
+          guestBubbles: { color: '#303235', backgroundColor: '#f7f8ff' },
         },
         general: {
           font: 'Inter',
@@ -113,7 +113,7 @@ export const galleryTemplates: Pick<ThemeTemplate, 'id' | 'name' | 'theme'>[] =
           },
           buttons: { color: '#fff', backgroundColor: '#D27A7D' },
           hostAvatar: { isEnabled: true },
-          hostBubbles: { color: '#303235', backgroundColor: '#F7F8FF' },
+          hostBubbles: { color: '#303235', backgroundColor: '#f7f8ff' },
           guestBubbles: { color: '#303235', backgroundColor: '#FDDDBF' },
         },
         general: {
@@ -137,7 +137,7 @@ export const galleryTemplates: Pick<ThemeTemplate, 'id' | 'name' | 'theme'>[] =
           },
           buttons: { color: '#fff', backgroundColor: '#1A2249' },
           hostAvatar: { isEnabled: true },
-          hostBubbles: { color: '#303235', backgroundColor: '#F7F8FF' },
+          hostBubbles: { color: '#303235', backgroundColor: '#f7f8ff' },
           guestBubbles: { color: '#fff', backgroundColor: '#1A2249' },
         },
         general: {

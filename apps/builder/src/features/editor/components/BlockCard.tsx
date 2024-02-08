@@ -112,6 +112,86 @@ export const BlockCard = (
           <BlockLabel type={props.type} />
         </BlockCardLayout>
       )
+    case IntegrationBlockType.WEBHOOK:
+      return (
+        <BlockCardLayout
+          {...props}
+          tooltip={t('blocks.integrations.webhook.blockCard.tooltip')}
+        >
+          <BlockIcon type={props.type} />
+          <BlockLabel type={props.type} />
+        </BlockCardLayout>
+      )
+    case IntegrationBlockType.EMAIL:
+      return (
+        <BlockCardLayout
+          {...props}
+          tooltip={t('blocks.integrations.email.blockCard.tooltip')}
+        >
+          <BlockIcon type={props.type} />
+          <BlockLabel type={props.type} />
+        </BlockCardLayout>
+      )
+    case IntegrationBlockType.ZAPIER:
+      return (
+        <BlockCardLayout
+          {...props}
+          tooltip={t('blocks.integrations.zapier.blockCard.tooltip')}
+        >
+          <BlockIcon type={props.type} />
+          <BlockLabel type={props.type} />
+        </BlockCardLayout>
+      )
+    case IntegrationBlockType.MAKE_COM:
+      return (
+        <BlockCardLayout
+          {...props}
+          tooltip={t('blocks.integrations.makeCom.blockCard.tooltip')}
+        >
+          <BlockIcon type={props.type} />
+          <BlockLabel type={props.type} />
+        </BlockCardLayout>
+      )
+    case IntegrationBlockType.PIXEL:
+      return (
+        <BlockCardLayout
+          {...props}
+          tooltip={t('blocks.integrations.metaPixel.blockCard.tooltip')}
+        >
+          <BlockIcon type={props.type} />
+          <BlockLabel type={props.type} />
+        </BlockCardLayout>
+      )
+    case IntegrationBlockType.PABBLY_CONNECT:
+      return (
+        <BlockCardLayout
+          {...props}
+          tooltip={t('blocks.integrations.pabblyConnect.blockCard.tooltip')}
+        >
+          <BlockIcon type={props.type} />
+          <BlockLabel type={props.type} />
+        </BlockCardLayout>
+      )
+    case IntegrationBlockType.CHATWOOT:
+      return (
+        <BlockCardLayout
+          {...props}
+          tooltip={t('blocks.integrations.chatwoot.blockCard.tooltip')}
+        >
+          <BlockIcon type={props.type} />
+          <BlockLabel type={props.type} />
+        </BlockCardLayout>
+      )
+    case IntegrationBlockType.ZEMANTIC_AI:
+      return (
+        <BlockCardLayout
+          {...props}
+          tooltip={t('blocks.integrations.zemanticAI.blockCard.tooltip')}
+        >
+          <BlockIcon type={props.type} />
+          <BlockLabel type={props.type} />
+        </BlockCardLayout>
+      )
     default:
       return (
         <BlockCardLayout {...props}>

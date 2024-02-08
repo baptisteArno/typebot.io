@@ -1,6 +1,6 @@
 export const openAITasks = [
-  'Create chat completion',
-  'Create speech',
+  'Generate AI Response',
+  'Create Speech from Text',
   'Create image',
 ] as const
 
@@ -24,8 +24,8 @@ export const chatCompletionResponseValues = [
 
 export const defaultOpenAIOptions = {
   baseUrl: 'https://api.openai.com/v1',
-  task: 'Create chat completion',
-  model: 'gpt-3.5-turbo',
+  task: 'Generate AI Response',
+  model: 'gpt-3.5-turbo-0125',
 } as const
 
 export const defaultOpenAIResponseMappingItem = {
