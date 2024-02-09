@@ -14,6 +14,8 @@ export const ButtonsTheme = ({ buttons, onButtonsChange }: Props) => {
 
   const handleBackgroundChange = (backgroundColor: string) =>
     onButtonsChange({ ...buttons, backgroundColor })
+  const handleBorderChange = (borderColor: string) =>
+    onButtonsChange({ ...buttons, borderColor })
   const handleTextChange = (color: string) =>
     onButtonsChange({ ...buttons, color })
 
@@ -24,6 +26,13 @@ export const ButtonsTheme = ({ buttons, onButtonsChange }: Props) => {
         <ColorPicker
           value={buttons?.backgroundColor}
           onColorChange={handleBackgroundChange}
+        />
+      </Flex>
+      <Flex justify="space-between" align="center">
+        <Text>{t('theme.sideMenu.chat.theme.border')}</Text>
+        <ColorPicker
+          value={buttons?.borderColor}
+          onColorChange={handleBorderChange}
         />
       </Flex>
       <Flex justify="space-between" align="center">

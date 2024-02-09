@@ -153,9 +153,14 @@ test.describe.parallel('Theme page', () => {
       await page.click(
         '[data-testid="buttons-theme"] >> [aria-label="Pick a color"] >> nth=1'
       )
+      await page.fill('input[value="#0042DA"]', '#7209b7')
+      await page.click(
+        '[data-testid="buttons-theme"] >> [aria-label="Pick a color"] >> nth=2'
+      )
       await page.fill('input[value="#FFFFFF"]', '#e9c46a')
       const button = page.getByRole('button', { name: 'Go' })
       await expect(button).toHaveCSS('background-color', 'rgb(114, 9, 183)')
+      await expect(button).toHaveCSS('border-color', 'rgb(114, 9, 183)')
       await expect(button).toHaveCSS('color', 'rgb(233, 196, 106)')
 
       // Guest bubbles

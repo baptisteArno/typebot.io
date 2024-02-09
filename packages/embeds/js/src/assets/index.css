@@ -10,6 +10,8 @@
 
   --typebot-button-bg-color: #0042da;
   --typebot-button-bg-color-rgb: 0, 66, 218;
+  --typebot-button-border-color: #0042da;
+  --typebot-button-border-color-rgb: 0, 66, 218;
   --typebot-button-color: #ffffff;
 
   --typebot-checkbox-bg-color: #ffffff;
@@ -162,7 +164,7 @@ pre {
 .typebot-button {
   color: var(--typebot-button-color);
   background-color: var(--typebot-button-bg-color);
-  border: 1px solid var(--typebot-button-bg-color);
+  border: 1px solid var(--typebot-button-border-color);
   border-radius: var(--typebot-border-radius);
   transition: all 0.3s ease;
 }
@@ -170,7 +172,7 @@ pre {
 .typebot-button.selectable {
   color: var(--typebot-host-bubble-color);
   background-color: var(--typebot-host-bubble-bg-color);
-  border: 1px solid var(--typebot-button-bg-color);
+  border: 1px solid var(--typebot-button-border-color);
 }
 
 .typebot-selectable {

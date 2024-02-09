@@ -10,6 +10,7 @@ const avatarPropsSchema = z.object({
 const containerColorsSchema = z.object({
   backgroundColor: z.string().optional(),
   color: z.string().optional(),
+  borderColor: z.string().optional(),
 })
 
 const inputColorsSchema = containerColorsSchema.merge(

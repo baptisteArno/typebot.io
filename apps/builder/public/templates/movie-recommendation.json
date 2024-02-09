@@ -156,7 +156,10 @@
           "id": "nwuk2clo78hmnh4d0g31u9xg",
           "type": "choice input",
           "items": [
-            { "id": "ri3avm9p0i96p8gx4028b6ye", "content": "Click to edit" }
+            {
+              "id": "ri3avm9p0i96p8gx4028b6ye",
+              "content": "Click here to edit"
+            }
           ],
           "options": {
             "variableId": "vkmbb3rb2hcfd2io1fhf7rz5x",
@@ -244,7 +247,10 @@
           "id": "krcvvncnqtn99v0qe1dzudrk",
           "type": "choice input",
           "items": [
-            { "id": "dicb6lnv5kapkq0tygnx1abh", "content": "Click to edit" }
+            {
+              "id": "dicb6lnv5kapkq0tygnx1abh",
+              "content": "Click here to edit"
+            }
           ],
           "options": {
             "variableId": "vulnb1om2fk8mvkcesl8s15cr",
@@ -339,7 +345,10 @@
           "id": "tr5y76tx9ca336f8ob9odfa6",
           "type": "choice input",
           "items": [
-            { "id": "uy2xwxoqhqol852cqsq17r9l", "content": "Click to edit" }
+            {
+              "id": "uy2xwxoqhqol852cqsq17r9l",
+              "content": "Click here to edit"
+            }
           ],
           "options": {
             "variableId": "vyyr3j2pu76uzvf88laai8snl",

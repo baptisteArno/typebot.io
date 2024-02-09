@@ -37,6 +37,8 @@ const cssVariableNames = {
     buttons: {
       bgColor: '--typebot-button-bg-color',
       bgColorRgb: '--typebot-button-bg-color-rgb',
+      borderColor: '--typebot-button-border-color',
+      borderColorRgb: '--typebot-button-border-color-rgb',
       color: '--typebot-button-color',
     },
     checkbox: {
@@ -131,6 +133,17 @@ const setButtons = (
   documentStyle.setProperty(
     cssVariableNames.chat.buttons.bgColorRgb,
     hexToRgb(bgColor).join(', ')
+  )
+
+  const borderColor =
+    buttons.borderColor ?? defaultTheme.chat.buttons.borderColor
+  documentStyle.setProperty(
+    cssVariableNames.chat.buttons.borderColor,
+    borderColor
+  )
+  documentStyle.setProperty(
+    cssVariableNames.chat.buttons.borderColorRgb,
+    hexToRgb(borderColor).join(', ')
   )
 
   documentStyle.setProperty(

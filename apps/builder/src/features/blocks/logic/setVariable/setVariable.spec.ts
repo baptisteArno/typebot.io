@@ -19,7 +19,7 @@ test.describe('Set variable block', () => {
     await page.fill('input[placeholder="Select a variable"] >> nth=-1', 'Num')
     await page.getByRole('menuitem', { name: 'Create Num' }).click()
 
-    await page.click('text=Click to edit... >> nth = 0')
+    await page.click('text=Click here to edit... >> nth = 0')
     await page.fill('input[placeholder="Select a variable"] >> nth=-1', 'Total')
     await page.getByRole('menuitem', { name: 'Create Total' }).click()
     await page
@@ -27,7 +27,7 @@ test.describe('Set variable block', () => {
       .getByRole('textbox')
       .fill('1000 * {{Num}}')
 
-    await page.click('text=Click to edit...', { force: true })
+    await page.click('text=Click here to edit...', { force: true })
     await page.fill(
       'input[placeholder="Select a variable"] >> nth=-1',
       'Custom var'
@@ -38,7 +38,7 @@ test.describe('Set variable block', () => {
       .getByRole('textbox')
       .fill('Custom value')
 
-    await page.click('text=Click to edit...', { force: true })
+    await page.click('text=Click here to edit...', { force: true })
     await page.fill(
       'input[placeholder="Select a variable"] >> nth=-1',
       'Addition'

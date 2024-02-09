@@ -21,7 +21,7 @@ test('should work as expected', async ({ page }) => {
   ])
 
   await page.goto(`/typebots/${typebotId}/edit`)
-  await page.getByText('Click to edit...').click()
+  await page.getByText('Click here to edit...').click()
   await page
     .getByPlaceholder('Paste the audio file link...')
     .fill(audioSampleUrl)

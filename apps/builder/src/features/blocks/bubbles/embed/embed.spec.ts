@@ -21,7 +21,7 @@ test.describe.parallel('Embed bubble block', () => {
       ])
 
       await page.goto(`/typebots/${typebotId}/edit`)
-      await page.click('text=Click to edit...')
+      await page.click('text=Click here to edit...')
       await page.fill('input[placeholder="Paste the link or code..."]', pdfSrc)
       await expect(page.locator('text="Show embed"')).toBeVisible()
     })
