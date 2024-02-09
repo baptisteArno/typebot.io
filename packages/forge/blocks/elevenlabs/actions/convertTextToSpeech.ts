@@ -32,6 +32,8 @@ export const convertTextToSpeech = createAction({
       inputType: 'variableDropdown',
     }),
   }),
+  getSetVariableIds: ({ saveUrlInVariableId }) =>
+    saveUrlInVariableId ? [saveUrlInVariableId] : [],
   fetchers: [
     {
       id: 'fetchVoices',

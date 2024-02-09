@@ -135,7 +135,10 @@ export const GroupSelectionMenu = ({
         borderRightRadius="none"
         borderLeftRadius="none"
         aria-label="Copy"
-        onClick={handleCopy}
+        onClick={() => {
+          handleCopy()
+          toast('Groups copied to clipboard')
+        }}
         bgColor={useColorModeValue('white', undefined)}
         icon={<CopyIcon />}
         size="sm"

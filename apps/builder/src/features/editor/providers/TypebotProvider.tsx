@@ -208,7 +208,11 @@ export const TypebotProvider = ({
   const saveTypebot = useCallback(
     async (updates?: Partial<TypebotV6>) => {
       if (!localTypebot || !typebot || isReadOnly) return
-      const typebotToSave = { ...localTypebot, ...updates }
+      const typebotToSave = {
+        ...localTypebot,
+        ...updates,
+        updatedAt: new Date(),
+      }
       if (dequal(omit(typebot, 'updatedAt'), omit(typebotToSave, 'updatedAt')))
         return
       setLocalTypebot({ ...typebotToSave })

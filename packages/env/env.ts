@@ -286,7 +286,11 @@ const whatsAppEnv = {
     META_SYSTEM_USER_TOKEN: z.string().min(1).optional(),
     WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID: z.string().min(1).optional(),
     WHATSAPP_PREVIEW_TEMPLATE_NAME: z.string().min(1).optional(),
-    WHATSAPP_PREVIEW_TEMPLATE_LANG: z.string().min(1).optional().default('en'),
+    WHATSAPP_PREVIEW_TEMPLATE_LANG: z
+      .string()
+      .min(1)
+      .optional()
+      .default('en_US'),
     WHATSAPP_CLOUD_API_URL: z
       .string()
       .url()
