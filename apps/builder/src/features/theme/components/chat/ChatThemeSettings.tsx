@@ -59,7 +59,7 @@ export const ChatThemeSettings = ({
           fileName: 'hostAvatar',
         }}
         title={t('theme.sideMenu.chat.botAvatar')}
-        avatarProps={chatTheme?.hostAvatar}
+        avatarProps={chatTheme?.hostAvatar ?? defaultTheme.chat.hostAvatar}
         isDefaultCheck
         onAvatarChange={updateHostAvatar}
       />
@@ -70,13 +70,13 @@ export const ChatThemeSettings = ({
           fileName: 'guestAvatar',
         }}
         title={t('theme.sideMenu.chat.userAvatar')}
-        avatarProps={chatTheme?.guestAvatar}
+        avatarProps={chatTheme?.guestAvatar ?? defaultTheme.chat.guestAvatar}
         onAvatarChange={updateGuestAvatar}
       />
       <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
         <Heading fontSize="lg">{t('theme.sideMenu.chat.botBubbles')}</Heading>
         <HostBubbles
-          hostBubbles={chatTheme?.hostBubbles}
+          hostBubbles={chatTheme?.hostBubbles ?? defaultTheme.chat.hostBubbles}
           onHostBubblesChange={updateHostBubbles}
         />
       </Stack>
@@ -84,20 +84,25 @@ export const ChatThemeSettings = ({
       <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
         <Heading fontSize="lg">{t('theme.sideMenu.chat.userBubbles')}</Heading>
         <GuestBubbles
-          guestBubbles={chatTheme?.guestBubbles}
+          guestBubbles={
+            chatTheme?.guestBubbles ?? defaultTheme.chat.guestBubbles
+          }
           onGuestBubblesChange={updateGuestBubbles}
         />
       </Stack>
       <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
         <Heading fontSize="lg">{t('theme.sideMenu.chat.buttons')}</Heading>
         <ButtonsTheme
-          buttons={chatTheme?.buttons}
+          buttons={chatTheme?.buttons ?? defaultTheme.chat.buttons}
           onButtonsChange={updateButtons}
         />
       </Stack>
       <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
         <Heading fontSize="lg">{t('theme.sideMenu.chat.inputs')}</Heading>
-        <InputsTheme inputs={chatTheme?.inputs} onInputsChange={updateInputs} />
+        <InputsTheme
+          inputs={chatTheme?.inputs ?? defaultTheme.chat.inputs}
+          onInputsChange={updateInputs}
+        />
       </Stack>
       <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
         <Heading fontSize="lg">
