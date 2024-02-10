@@ -59,7 +59,7 @@ export const createChatMessage = createAction({
             response_mode: 'blocking',
             conversation_id,
             user,
-            files: []
+            files: [],
           },
         })
         .json()

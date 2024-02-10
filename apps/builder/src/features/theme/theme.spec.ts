@@ -24,9 +24,9 @@ test.describe.parallel('Theme page', () => {
       // Branding
       await page.getByRole('button', { name: 'Global' }).click()
       await expect(
-        page.locator('a:has-text("Made with PocketAI")')
+        page.locator('a:has-text("Assistant ⚡️ by PocketAI")')
       ).toHaveAttribute('href', 'https://www.typebot.io/?utm_source=litebadge')
-      await page.click('text="Show PocketAI badge"')
+      await page.click('text="PocketAI branding"')
       await expect(
         page.locator('a:has-text("Made with PocketAI")')
       ).toBeHidden()
@@ -281,7 +281,7 @@ test.describe('Free workspace', () => {
     await expect(page.locator('text="What\'s your name?"')).toBeVisible()
     await page.getByRole('button', { name: 'Global' }).click()
     await expect(page.locator('[data-testid="starter-lock-tag"]')).toBeVisible()
-    await page.click('text=Show PocketAI badge')
+    await page.click('text=PocketAI branding')
     await expect(
       page.locator(
         'text="You need to upgrade your plan in order to remove branding"'

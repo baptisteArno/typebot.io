@@ -41,6 +41,6 @@ snapshots
 .typebot-build
 
 
-/packages/prisma/postgresql/schema.prisma
-/packages/env/env.ts
+# /packages/prisma/postgresql/schema.prisma
+# /packages/env/env.ts
 

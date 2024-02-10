@@ -449,7 +449,7 @@
   "theme.sideMenu.global.background.image.select": "Image",
   "theme.sideMenu.global.background.none.select": "None",
   "theme.sideMenu.global.font": "Font",
-  "theme.sideMenu.global.typebotBrand": "Show PocketAI badge",
+  "theme.sideMenu.global.typebotBrand": "PocketAI branding",
   "theme.sideMenu.template": "Templates",
   "theme.sideMenu.template.gallery": "Gallery",
   "theme.sideMenu.template.gallery.avatarPreview.alt": "Avatar preview in theme template card",

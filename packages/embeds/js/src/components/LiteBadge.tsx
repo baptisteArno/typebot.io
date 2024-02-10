@@ -1,5 +1,5 @@
 import { onCleanup, onMount } from 'solid-js'
-import { TypebotLogo } from './icons/TypebotLogo'
+// import { TypebotLogo } from './icons/TypebotLogo'
 
 type Props = {
   botContainer: HTMLDivElement | undefined
@@ -46,8 +46,9 @@ export const LiteBadge = (props: Props) => {
       class="lite-badge"
       id="lite-badge"
     >
-      <TypebotLogo />
-      <span>Made with PocketAI</span>
+      {/* <TypebotLogo /> */}
+      <span>Assistant ⚡️ by</span>
+      <span style={{ 'font-weight': 600 }}>PocketAI</span>
     </a>
   )
 }
