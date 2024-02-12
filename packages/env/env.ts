@@ -99,6 +99,11 @@ const baseEnv = {
     ),
     NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID: z.string().min(1).optional(),
     NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE: z.coerce.number().optional(),
+    NEXT_PUBLIC_VIEWER_404_TITLE: z.string().optional().default('404'),
+    NEXT_PUBLIC_VIEWER_404_SUBTITLE: z
+      .string()
+      .optional()
+      .default("The bot you're looking for doesn't exist"),
   },
   runtimeEnv: {
     NEXT_PUBLIC_E2E_TEST: getRuntimeVariable('NEXT_PUBLIC_E2E_TEST'),
@@ -108,6 +113,12 @@ const baseEnv = {
     ),
     NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE: getRuntimeVariable(
       'NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE'
+    ),
+    NEXT_PUBLIC_VIEWER_404_TITLE: getRuntimeVariable(
+      'NEXT_PUBLIC_VIEWER_404_TITLE'
+    ),
+    NEXT_PUBLIC_VIEWER_404_SUBTITLE: getRuntimeVariable(
+      'NEXT_PUBLIC_VIEWER_404_SUBTITLE'
     ),
   },
 }
