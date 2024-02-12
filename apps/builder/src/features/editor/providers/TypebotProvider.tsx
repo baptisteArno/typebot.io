@@ -59,7 +59,7 @@ const typebotContext = createContext<
     is404: boolean
     isPublished: boolean
     isSavingLoading: boolean
-    save: () => Promise<TypebotV6 | undefined>
+    save: () => Promise<void>
     undo: () => void
     redo: () => void
     canRedo: boolean
@@ -216,12 +216,16 @@ export const TypebotProvider = ({
       if (dequal(omit(typebot, 'updatedAt'), omit(typebotToSave, 'updatedAt')))
         return
       setLocalTypebot({ ...typebotToSave })
-      const { typebot: newTypebot } = await updateTypebot({
-        typebotId: typebotToSave.id,
-        typebot: typebotToSave,
-      })
-      setLocalTypebot({ ...newTypebot })
-      return newTypebot
+      try {
+        await updateTypebot({
+          typebotId: typebotToSave.id,
+          typebot: typebotToSave,
+        })
+      } catch {
+        setLocalTypebot({
+          ...localTypebot,
+        })
+      }
     },
     [isReadOnly, localTypebot, setLocalTypebot, typebot, updateTypebot]
   )
