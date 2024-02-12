@@ -1,6 +1,6 @@
 import { createAction, option } from '@typebot.io/forge'
 import { isDefined, isEmpty } from '@typebot.io/lib'
-import { got } from 'got'
+import { HTTPError, got } from 'got'
 import { auth } from '../auth'
 import { DifyResponse } from '../types'
 import { defaultBaseUrl } from '../constants'
@@ -41,41 +41,53 @@ export const createChatMessage = createAction({
       credentials: { apiEndpoint, apiKey },
       options: { conversation_id, query, user, inputs, responseMapping },
       variables,
+      logs,
     }) => {
-      const res: DifyResponse = await got
-        .post((apiEndpoint ?? defaultBaseUrl) + '/v1/chat-messages', {
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-          },
-          json: {
-            inputs: inputs?.reduce((acc, { key, value }) => {
-              if (isEmpty(key) || isEmpty(value)) return acc
-              return {
-                ...acc,
-                [key]: value,
-              }
-            }, {}),
-            query,
-            response_mode: 'blocking',
-            conversation_id,
-            user,
-            files: []
-          },
+      try {
+        const res: DifyResponse = await got
+          .post((apiEndpoint ?? defaultBaseUrl) + '/v1/chat-messages', {
+            headers: {
+              Authorization: `Bearer ${apiKey}`,
+            },
+            json: {
+              inputs:
+                inputs?.reduce((acc, { key, value }) => {
+                  if (isEmpty(key) || isEmpty(value)) return acc
+                  return {
+                    ...acc,
+                    [key]: value,
+                  }
+                }, {}) ?? {},
+              query,
+              response_mode: 'blocking',
+              conversation_id,
+              user,
+              files: [],
+            },
+          })
+          .json()
+
+        responseMapping?.forEach((mapping) => {
+          if (!mapping.variableId) return
+
+          const item = mapping.item ?? 'Answer'
+          if (item === 'Answer') variables.set(mapping.variableId, res.answer)
+
+          if (item === 'Conversation ID')
+            variables.set(mapping.variableId, res.conversation_id)
+
+          if (item === 'Total Tokens')
+            variables.set(mapping.variableId, res.metadata.usage.total_tokens)
         })
-        .json()
-
-      responseMapping?.forEach((mapping) => {
-        if (!mapping.variableId) return
-
-        const item = mapping.item ?? 'Answer'
-        if (item === 'Answer') variables.set(mapping.variableId, res.answer)
-
-        if (item === 'Conversation ID')
-          variables.set(mapping.variableId, res.conversation_id)
-
-        if (item === 'Total Tokens')
-          variables.set(mapping.variableId, res.metadata.usage.total_tokens)
-      })
+      } catch (error) {
+        if (error instanceof HTTPError)
+          return logs.add({
+            status: 'error',
+            description: error.message,
+            details: error.response.body,
+          })
+        console.error(error)
+      }
     },
   },
 })
