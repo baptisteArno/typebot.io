@@ -11,8 +11,10 @@ export const NotFoundPage = () => (
       // backgroundColor: '#add8e6',
     }}
   >
-    <h1 style={{ fontWeight: 'bold', fontSize: '30px' }}>404</h1>
-    <h2>The bot you&apos;re looking for doesn&apos;t exist</h2>
+    <h1 style={{ fontWeight: 'bold', fontSize: '30px' }}>
+      {env.NEXT_PUBLIC_VIEWER_404_TITLE}
+    </h1>
+    <h2>{env.NEXT_PUBLIC_VIEWER_404_SUBTITLE}</h2>{' '}
     <a
       href="https://app.flowdacity.com"
       target="_blank"
@@ -27,9 +29,5 @@ export const NotFoundPage = () => (
     >
       Create your chatbot
     </a>
-    <h1 style={{ fontWeight: 'bold', fontSize: '30px' }}>
-      {env.NEXT_PUBLIC_VIEWER_404_TITLE}
-    </h1>
-    <h2>{env.NEXT_PUBLIC_VIEWER_404_SUBTITLE}</h2>
   </div>
 )
