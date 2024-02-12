@@ -11,7 +11,6 @@ import { executeGroup, parseInput } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
 import { validateEmail } from './blocks/inputs/email/validateEmail'
 import { formatPhoneNumber } from './blocks/inputs/phone/formatPhoneNumber'
-import { validateUrl } from './blocks/inputs/url/validateUrl'
 import { resumeWebhookExecution } from './blocks/integrations/webhook/resumeWebhookExecution'
 import { upsertAnswer } from './queries/upsertAnswer'
 import { parseButtonsReply } from './blocks/inputs/buttons/parseButtonsReply'
@@ -42,6 +41,7 @@ import { resumeChatCompletion } from './blocks/integrations/legacy/openai/resume
 import { env } from '@typebot.io/env'
 import { downloadMedia } from './whatsapp/downloadMedia'
 import { uploadFileToBucket } from '@typebot.io/lib/s3/uploadFileToBucket'
+import { isURL } from '@typebot.io/lib/validators/isURL'
 
 type Params = {
   version: 1 | 2
@@ -450,7 +450,7 @@ const parseReply =
       }
       case InputBlockType.URL: {
         if (!reply) return { status: 'fail' }
-        const isValid = validateUrl(reply)
+        const isValid = isURL(reply, { require_protocol: false })
         if (!isValid) return { status: 'fail' }
         return { status: 'success', reply: reply }
       }
@@ -477,7 +477,7 @@ const parseReply =
             ? { status: 'fail' }
             : { status: 'skip' }
         const urls = reply.split(', ')
-        const status = urls.some((url) => validateUrl(url)) ? 'success' : 'fail'
+        const status = urls.some((url) => isURL(url)) ? 'success' : 'fail'
         return { status, reply: reply }
       }
       case InputBlockType.PAYMENT: {
