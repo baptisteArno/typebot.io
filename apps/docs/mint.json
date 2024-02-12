@@ -2,8 +2,8 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Typebot Docs",
   "openapi": [
-    "/openapi-reference/builder.json",
-    "/openapi-reference/viewer.json"
+    "/openapi/builder.json",
+    "/openapi/viewer.json"
   ],
   "feedback": {
     "suggestEdit": true
