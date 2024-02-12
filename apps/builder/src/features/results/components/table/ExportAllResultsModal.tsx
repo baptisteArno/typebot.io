@@ -67,6 +67,7 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
             typebotId,
             limit: 100,
             cursor,
+            timeFilter: 'allTime',
           })
         allResults.push(...results)
         setExportProgressValue((allResults.length / totalResults) * 100)
