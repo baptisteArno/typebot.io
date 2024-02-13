@@ -32,11 +32,14 @@ const inspectTypebot = async () => {
       publicId: true,
       customDomain: true,
       createdAt: true,
+      isArchived: true,
       workspace: {
         select: {
           id: true,
           name: true,
           plan: true,
+          isPastDue: true,
+          isSuspended: true,
           members: {
             select: {
               role: true,
