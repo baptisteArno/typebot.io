@@ -29,6 +29,15 @@ Parameters marked with <span style={{color: '#ef5151'}}>\*</span> are required.
 | DEBUG                                                             | false   | If enabled, the server will print valuable logs to debug config issues.                                                                                                                                                                     |
 | NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE                              |         | Limits the size of each file that can be uploaded in the bots (i.e. Set `10` to limit the file upload to 10MB)                                                                                                                              |
 
+### If you are using Supabase for your database
+| Parameter                                                         | Default | Description                                                                                                                                                                                                                                 |
+| ----------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DATABASE_URL <span style={{color: '#ef5151'}}>\*</span> |      |  Transaction URL 'https://supabase.com/partners/integrations/prisma' |
+| DIRECT_URL <span style={{color: '#ef5151'}}>\*</span> |       | Session URL 'https://supabase.com/partners/integrations/prisma'|
+
+
+
+
 ## Email (Auth, notifications)
 
 Used for sending email notifications and authentication
