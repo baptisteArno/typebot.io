@@ -47,7 +47,7 @@ const boolean = z.enum(['true', 'false']).transform((value) => value === 'true')
 const baseEnv = {
   server: {
     NODE_ENV: z.enum(['development', 'production', 'test']).optional(),
-    DIRECT_URL: z
+    DATABASE_DIRECT_URL: z
       .string()
       .url()
       .refine((url) => url.startsWith('postgres')),
