@@ -77,7 +77,7 @@ export const OnboardingPage = () => {
     if (isOtherCategory)
       setOnboardingReplies((prev) => ({
         ...prev,
-        categories: prev.onboardingCategories
+        onboardingCategories: prev.onboardingCategories
           ? [...prev.onboardingCategories, answer.message]
           : [answer.message],
       }))
