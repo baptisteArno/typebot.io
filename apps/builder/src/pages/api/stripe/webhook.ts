@@ -234,6 +234,17 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             outstandingInvoices.data.filter(
               (invoice) => invoice.amount_due > prices['PRO'] * 100
             )
+
+          const workspaceExist =
+            (await prisma.workspace.count({
+              where: {
+                stripeId: subscription.customer as string,
+              },
+            })) > 0
+
+          if (!workspaceExist)
+            return res.send({ message: 'Workspace not found, skipping...' })
+
           const workspace = await prisma.workspace.update({
             where: {
               stripeId: subscription.customer as string,
