@@ -1,3 +1,5 @@
+import { env } from '@typebot.io/env'
+
 export const NotFoundPage = () => (
   <div
     style={{
@@ -8,7 +10,9 @@ export const NotFoundPage = () => (
       flexDirection: 'column',
     }}
   >
-    <h1 style={{ fontWeight: 'bold', fontSize: '30px' }}>404</h1>
-    <h2>The bot you&apos;re looking for doesn&apos;t exist</h2>
+    <h1 style={{ fontWeight: 'bold', fontSize: '30px' }}>
+      {env.NEXT_PUBLIC_VIEWER_404_TITLE}
+    </h1>
+    <h2>{env.NEXT_PUBLIC_VIEWER_404_SUBTITLE}</h2>
   </div>
 )
