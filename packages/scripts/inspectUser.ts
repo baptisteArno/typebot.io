@@ -1,6 +1,6 @@
 import { PrismaClient } from '@typebot.io/prisma'
 import { promptAndSetEnvironment } from './utils'
-import { isCancel, text } from '@clack/prompts'
+import { isCancel, text, confirm } from '@clack/prompts'
 
 const inspectUser = async () => {
   await promptAndSetEnvironment('production')
@@ -33,7 +33,17 @@ const inspectUser = async () => {
               name: true,
               plan: true,
               isVerified: true,
+              stripeId: true,
+              isSuspended: true,
               members: {
+                select: {
+                  role: true,
+                  user: {
+                    select: {
+                      email: true,
+                    },
+                  },
+                },
                 where: {
                   user: { email: { not: email } },
                 },
@@ -66,6 +76,32 @@ const inspectUser = async () => {
   })
 
   console.log(JSON.stringify(user, null, 2))
+
+  const computeResults = await confirm({
+    message: 'Compute collected results?',
+  })
+
+  if (!computeResults || isCancel(computeResults)) process.exit()
+
+  console.log('Computing collected results...')
+
+  for (const workspace of user?.workspaces ?? []) {
+    for (const typebot of workspace.workspace.typebots) {
+      const resultsCount = await prisma.result.count({
+        where: {
+          typebotId: typebot.id,
+          isArchived: false,
+          hasStarted: true,
+        },
+      })
+
+      if (resultsCount === 0) continue
+
+      console.log(
+        `Typebot "${typebot.name}" (${typebot.id}) has ${resultsCount} collected results`
+      )
+    }
+  }
 }
 
 inspectUser()

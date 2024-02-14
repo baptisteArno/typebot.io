@@ -26,6 +26,7 @@
     "inspectTypebot": "tsx inspectTypebot.ts",
     "inspectWorkspace": "tsx inspectWorkspace.ts",
     "getCoupon": "tsx getCoupon.ts",
+    "redeemCoupon": "tsx redeemCoupon.ts",
     "exportResults": "tsx exportResults.ts",
     "updateUserEmail": "tsx updateUserEmail.ts",
     "inspectChatSession": "tsx inspectChatSession.ts"

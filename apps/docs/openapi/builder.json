@@ -4401,6 +4401,9 @@
                                 }
                               ]
                             }
+                          },
+                          "updatedAt": {
+                            "type": "string"
                           }
                         },
                         "title": "Typebot V6"
@@ -7003,15 +7006,14 @@
                           },
                           "events": {
                             "type": "array"
+                          },
+                          "updatedAt": {
+                            "type": "string"
                           }
                         },
                         "title": "Typebot V5"
                       }
                     ]
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "description": "Used for checking if there is a newer version of the typebot in the database"
                   }
                 },
                 "required": [
@@ -18693,7 +18695,8 @@
                   "chat-node",
                   "qr-code",
                   "dify-ai",
-                  "mistral"
+                  "mistral",
+                  "elevenlabs"
                 ]
               },
               "options": {}
