@@ -128,8 +128,8 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
       }
 
       moveFocusedGroups({
-        x: Number((delta[0] / graphPosition.scale).toFixed(2)),
-        y: Number((delta[1] / graphPosition.scale).toFixed(2)),
+        x: delta[0] / graphPosition.scale,
+        y: delta[1] / graphPosition.scale,
       })
 
       if (last) {
