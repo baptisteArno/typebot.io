@@ -1,10 +1,7 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Typebot Docs",
-  "openapi": [
-    "/openapi/builder.json",
-    "/openapi/viewer.json"
-  ],
+  "name": "Flowdacity Docs",
+  "openapi": ["/openapi/builder.json", "/openapi/viewer.json"],
   "feedback": {
     "suggestEdit": true
   },
@@ -28,7 +25,7 @@
   "topbarLinks": [
     {
       "name": "Github",
-      "url": "https://github.com/baptisteArno/typebot.io"
+      "url": "https://github.com/ochui/flowdacity"
     }
   ],
   "topbarCtaButton": {
@@ -40,14 +37,6 @@
   },
   "tabs": [
     {
-      "name": "Self-Hosting",
-      "url": "self-hosting"
-    },
-    {
-      "name": "Contribute",
-      "url": "contribute"
-    },
-    {
       "name": "API Reference",
       "url": "api-reference"
     }
@@ -56,16 +45,13 @@
     {
       "name": "Community",
       "icon": "discord",
-      "url": "https://typebot.io/discord"
+      "url": "https://flowdacity.com/discord"
     }
   ],
   "navigation": [
     {
       "group": "Get Started",
-      "pages": [
-        "get-started/introduction",
-        "get-started/overview"
-      ]
+      "pages": ["get-started/introduction", "get-started/overview"]
     },
     {
       "group": "Flow",
@@ -144,15 +130,11 @@
     },
     {
       "group": "Theme",
-      "pages": [
-        "theme/overview"
-      ]
+      "pages": ["theme/overview"]
     },
     {
       "group": "Settings",
-      "pages": [
-        "settings/overview"
-      ]
+      "pages": ["settings/overview"]
     },
     {
       "group": "Deploy",
@@ -189,10 +171,7 @@
     },
     {
       "group": "Results",
-      "pages": [
-        "results/overview",
-        "results/analytics"
-      ]
+      "pages": ["results/overview", "results/analytics"]
     },
     {
       "group": "Workspace",
@@ -223,70 +202,11 @@
     },
     {
       "group": "Misc",
-      "pages": [
-        "faq",
-        "privacy-policies",
-        "report-abuse",
-        "breaking-changes"
-      ]
+      "pages": ["faq", "privacy-policies", "report-abuse"]
     },
     {
       "group": "Get started",
-      "pages": [
-        "self-hosting/get-started",
-        "self-hosting/configuration",
-        "self-hosting/troubleshoot"
-      ]
-    },
-    {
-      "group": "Deploy",
-      "pages": [
-        "self-hosting/deploy/docker",
-        "self-hosting/deploy/vercel",
-        "self-hosting/deploy/manual"
-      ]
-    },
-    {
-      "group": "Guides",
-      "pages": [
-        "self-hosting/guides/s3",
-        "self-hosting/guides/planetscale"
-      ]
-    },
-    {
-      "group": "Get started",
-      "pages": [
-        "api-reference/authentication",
-        "api-reference/how-to"
-      ]
-    },
-    {
-      "group": "Get started",
-      "pages": [
-        "contribute/overview"
-      ]
-    },
-    {
-      "group": "Guides",
-      "pages": [
-        "contribute/guides/local-installation",
-        "contribute/guides/create-block",
-        "contribute/guides/documentation",
-        "contribute/guides/translation"
-      ]
-    },
-    {
-      "group": "The Forge",
-      "pages": [
-        "contribute/the-forge/overview",
-        "contribute/the-forge/cli",
-        "contribute/the-forge/block",
-        "contribute/the-forge/auth",
-        "contribute/the-forge/action",
-        "contribute/the-forge/run",
-        "contribute/the-forge/options",
-        "contribute/the-forge/fetcher"
-      ]
+      "pages": ["api-reference/authentication", "api-reference/how-to"]
     },
     {
       "group": "Chat",
@@ -355,9 +275,8 @@
     }
   ],
   "footerSocials": {
-    "website": "https://typebot.io",
-    "discord": "https://typebot.io/discord",
-    "twitter": "https://twitter.com/Typebot_io",
-    "github": "https://github.com/baptisteArno/typebot.io"
+    "website": "https://flowdacity.com",
+    "discord": "https://flowdacity.com/discord",
+    "twitter": "https://twitter.com/flowdacity"
   }
 }

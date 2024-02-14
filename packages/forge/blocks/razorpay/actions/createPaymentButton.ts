@@ -1,6 +1,11 @@
 import { createAction, option } from '@typebot.io/forge'
 import { auth } from '../auth'
-import { defaultCurrency, defaultThemeColor, defaultUidLabel, rzpScriptUrl } from '../constants'
+import {
+  defaultCurrency,
+  defaultThemeColor,
+  defaultUidLabel,
+  rzpScriptUrl,
+} from '../constants'
 import { baseOptions } from '../baseOptions'
 import { convertToPaise } from '../lib/convertToPaise'
 
@@ -12,31 +17,31 @@ export const createPaymentButton = createAction({
     orderId: option.string.layout({
       label: 'Order Id',
       moreInfoTooltip: 'Order ID generated using the Payment Order action',
-      isRequired: true
+      isRequired: true,
     }),
     amount: option.string.layout({
       label: 'Amount',
       moreInfoTooltip: 'Amount to be paid, should be same as ',
-      isRequired: true
+      isRequired: true,
     }),
     uid: option.string.layout({
       label: 'Transaction ID',
-      moreInfoTooltip: 'Any unique id for the transaction'
+      moreInfoTooltip: 'Any unique id for the transaction',
     }),
     name: option.string.layout({
       accordion: 'Prefill Information',
       label: 'Payer Name',
-      moreInfoTooltip: 'Name of the payer'
+      moreInfoTooltip: 'Name of the payer',
     }),
     email: option.string.layout({
       accordion: 'Prefill Information',
       label: 'Payer Email',
-      moreInfoTooltip: 'Email of the payer'
+      moreInfoTooltip: 'Email of the payer',
     }),
     contact: option.string.layout({
       accordion: 'Prefill Information',
       label: 'Mobile Number',
-      moreInfoTooltip: 'Mobile Number of the payer'
+      moreInfoTooltip: 'Mobile Number of the payer',
     }),
     savePaymentResponseInVariableId: option.string.layout({
       label: 'Save payment details',
@@ -64,7 +69,8 @@ export const createPaymentButton = createAction({
           },
         },
         parseInitFunction: ({ options }) => {
-          if (!options.amount || !parseInt(options.amount)) throw new Error('Missing Amount')
+          if (!options.amount || !parseInt(options.amount))
+            throw new Error('Missing Amount')
           if (!options.keyId) throw new Error('Missing Key')
           if (!options.orderId) throw new Error('Missing Order ID')
 
@@ -82,7 +88,7 @@ export const createPaymentButton = createAction({
               companyName: options.companyName ?? null,
               themeColor: options.themeColor ?? defaultThemeColor,
               uidLabel: options.uidLabel ?? defaultUidLabel,
-              rzpScriptUrl: rzpScriptUrl
+              rzpScriptUrl: rzpScriptUrl,
             },
             content: `
             function TR() {
