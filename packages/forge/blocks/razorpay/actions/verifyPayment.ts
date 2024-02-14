@@ -36,30 +36,40 @@ export const verifyPayment = createAction({
       try {
         const paymentResponse = JSON.parse(options.paymentResponse)
 
-        const payload = paymentResponse.razorpay_order_id + '|' + paymentResponse.razorpay_payment_id;
-        const checkPayment = await signatureVerified(credentials.keySecret, payload, paymentResponse.razorpay_signature)
+        const payload =
+          paymentResponse.razorpay_order_id +
+          '|' +
+          paymentResponse.razorpay_payment_id
+        const checkPayment = await signatureVerified(
+          credentials.keySecret,
+          payload,
+          paymentResponse.razorpay_signature
+        )
         variables.set(options.saveStatusInVariableId, checkPayment)
       } catch (error) {
         return logs.add(error as string)
       }
-
     },
   },
 })
 
-async function signatureVerified(secret: string, payload: string, signature: string) {
-  const enc = new TextEncoder();
+async function signatureVerified(
+  secret: string,
+  payload: string,
+  signature: string
+) {
+  const enc = new TextEncoder()
 
   const key = await crypto.subtle.importKey(
-    "raw",
+    'raw',
     enc.encode(secret),
-    { name: "HMAC", hash: "SHA-256" },
+    { name: 'HMAC', hash: 'SHA-256' },
     false,
-    ["sign", "verify"]
-  );
+    ['sign', 'verify']
+  )
 
   return await crypto.subtle.verify(
-    "HMAC",
+    'HMAC',
     key,
     hexToBuffer(signature),
     enc.encode(payload)
@@ -67,7 +77,7 @@ async function signatureVerified(secret: string, payload: string, signature: str
 }
 
 function hexToBuffer(hex: string) {
-  const matches = hex.match(/[\da-f]{2}/gi) ?? []; // grab hex pairs
-  const { buffer } = new Uint8Array(matches.map((h: string) => parseInt(h, 16)));
-  return buffer;
+  const matches = hex.match(/[\da-f]{2}/gi) ?? [] // grab hex pairs
+  const { buffer } = new Uint8Array(matches.map((h: string) => parseInt(h, 16)))
+  return buffer
 }

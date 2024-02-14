@@ -9,7 +9,6 @@ export const trackEvents = async (events: TelemetryEvent[]) => {
     host: env.USER_CREATED_WEBHOOK_URL,
   })
 
-
   events.forEach(async (event) => {
     if (event.name === 'User created') {
       client.identify({
@@ -54,8 +53,8 @@ export const trackEvents = async (events: TelemetryEvent[]) => {
         event.name === 'User updated'
           ? { $set: event.data }
           : 'data' in event
-            ? event.data
-            : undefined,
+          ? event.data
+          : undefined,
       groups,
     })
   })
