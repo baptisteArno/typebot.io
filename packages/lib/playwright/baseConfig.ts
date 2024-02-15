@@ -16,7 +16,7 @@ export const playwrightBaseConfig: PlaywrightTestConfig = {
   maxFailures: process.env.CI ? 10 : undefined,
   webServer: process.env.CI
     ? {
-        command: 'bun start',
+        command: 'pnpm run start',
         timeout: 60_000,
         reuseExistingServer: true,
       }

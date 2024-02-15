@@ -6,7 +6,7 @@
   "author": "baptisteArno",
   "license": "AGPL-3.0-or-later",
   "scripts": {
-    "deploy": "bun copy && bun commit",
+    "deploy": "pnpm copy && pnpm commit",
     "copy": "svn copy ./trunk ./tags/3.5.0",
     "commit": "svn ci -m 'Add lib_version attr in shortcode'"
   }

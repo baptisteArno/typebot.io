@@ -6,7 +6,7 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {
-    "preview": "concurrently \"bun watch\" \"sleep 5 && bun serve\" -n \"watch,serve\" -c \"bgBlue.bold,bgMagenta.bold\"",
+    "preview": "concurrently \"pnpm run watch\" \"sleep 5 && pnpm run serve\" -n \"watch,serve\" -c \"bgBlue.bold,bgMagenta.bold\"",
     "watch": "tsx watch ./src/preview.tsx --clear-screen=false",
     "serve": "http-server dist -a localhost -p 3223 -o -c-1",
     "lint": "eslint \"src/**/*.ts*\""

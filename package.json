@@ -3,28 +3,20 @@
   "name": "typebot-os",
   "private": true,
   "license": "AGPL-3.0-or-later",
-  "workspaces": [
-    "packages/*",
-    "packages/deprecated/*",
-    "packages/embeds/*",
-    "packages/forge/*",
-    "packages/forge/blocks/*",
-    "apps/*"
-  ],
   "scripts": {
     "prepare": "husky install",
     "docker:up": "docker compose -f docker-compose.dev.yml up -d && node -e \"setTimeout(() => {}, 5000)\"",
     "docker:nuke": "docker compose -f docker-compose.dev.yml down --volumes --remove-orphans",
     "lint": "turbo run lint",
-    "dev": "bun docker:up && turbo build --filter=@typebot.io/nextjs... && turbo run dev --filter=builder... --filter=viewer... --parallel --no-cache",
-    "build": "bun docker:up && turbo run build",
+    "dev": "pnpm docker:up && turbo build --filter=@typebot.io/nextjs... && turbo run dev --filter=builder... --filter=viewer... --parallel --no-cache",
+    "build": "pnpm docker:up && turbo run build",
     "build:apps": "turbo run build --filter=builder... --filter=viewer...",
-    "db:migrate": "cd packages/prisma && bun run db:migrate",
+    "db:migrate": "cd packages/prisma && pnpm run db:migrate",
     "generate-change-log": "git fetch --all && pnpx gitmoji-changelog",
     "locales:pull": "tolgee pull ./apps/builder/src/i18n",
     "locales:push": "tolgee push ./apps/builder/src/i18n",
     "locales:sync": "tolgee sync './apps/builder/src/**/*.ts?(x)' --continue-on-warning --remove-unused",
-    "create-new-block": "cd packages/forge/cli && bun start",
+    "create-new-block": "cd packages/forge/cli && pnpm start",
     "format:check": "turbo run format:check",
     "build:chat-api": "turbo run build --filter=@typebot.io/chat-api...",
     "start:chat-api": "turbo run start --filter=@typebot.io/chat-api..."
@@ -42,5 +34,5 @@
       "path": "node_modules/cz-emoji"
     }
   },
-  "packageManager": "bun@1.0.21"
+  "packageManager": "pnpm@8.14.1"
 }

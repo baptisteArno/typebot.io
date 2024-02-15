@@ -7,11 +7,11 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
-    "test": "jest"
+    "test": "pnpm jest"
   },
   "devDependencies": {
     "@types/jest": "29.4.0",
-    "tsup": "8.0.1",
+    "tsup": "6.5.0",
     "eslint": "8.32.0",
     "eslint-config-custom": "workspace:*",
     "jest": "29.4.1",

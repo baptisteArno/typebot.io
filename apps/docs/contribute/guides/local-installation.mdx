@@ -11,15 +11,13 @@ icon: 'laptop'
    own GitHub account and then
    [clone](https://help.github.com/articles/cloning-a-repository/) it to your local device.
 
-2. Make sure you have `Bun` CLI installed: https://bun.sh/docs/installation
-
 ## Running the project locally
 
 1. Install dependencies
 
    ```sh
    cd typebot.io
-   bun i
+   pnpm i
    ```
 
 2. Set up environment variables
@@ -35,7 +33,7 @@ icon: 'laptop'
 5. Start the builder and viewer
 
    ```sh
-   bun dev
+   pnpm dev
    ```
 
    Builder is available at [`http://localhost:3000`](http://localhost:3000)
@@ -52,14 +50,12 @@ icon: 'laptop'
 
    ```sh
    cd apps/landing-page
-   bun dev
+   pnpm dev
    ```
 
 7. (Optionnal) Start the docs
 
    ```sh
    cd apps/docs
-   bun dev
+   pnpm start
    ```
-
-   Doc is available at [`http://localhost:3001`](http://localhost:3004)
