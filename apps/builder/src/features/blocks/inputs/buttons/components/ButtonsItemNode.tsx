@@ -50,7 +50,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
       } as Item)
   }
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyPress = async (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (
       e.key === 'Escape' &&
       itemValue === t('blocks.inputs.button.clickToEdit.label')
@@ -62,6 +62,24 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
       itemValue !== t('blocks.inputs.button.clickToEdit.label')
     )
       handlePlusClick()
+    if (e.key === 'v' && (e.ctrlKey || e.metaKey)) {
+      const clipboardContents = await navigator.clipboard.read()
+      const item = clipboardContents[0]
+      if (!item.types.includes('text/plain')) return
+      const text = await (await item.getType('text/plain')).text()
+      if (!text || !text.includes(',')) return
+      const values = text.split(',')
+      return values.forEach((v, i) => {
+        if (i === 0) {
+          setItemValue(v)
+        } else {
+          createItem(
+            { content: v.trim() },
+            { ...indices, itemIndex: indices.itemIndex + i }
+          )
+        }
+      })
+    }
   }
 
   const handlePlusClick = () => {
