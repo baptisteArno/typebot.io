@@ -1,6 +1,6 @@
 type MessageChunk = {
-  event: 'message'
-  answer: string
+  event: 'message';
+  answer: string;
 }
 
 type AgentMessageChunk = {
