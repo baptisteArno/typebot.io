@@ -46,8 +46,12 @@ export const useGroupsStore = createWithEqualityFn<Store>()(
                   (coords, groupId) => ({
                     ...coords,
                     [groupId]: {
-                      x: groupsCoordinates[groupId].x + delta.x,
-                      y: groupsCoordinates[groupId].y + delta.y,
+                      x: Number(
+                        (groupsCoordinates[groupId].x + delta.x).toFixed(2)
+                      ),
+                      y: Number(
+                        (groupsCoordinates[groupId].y + delta.y).toFixed(2)
+                      ),
                     },
                   }),
                   groupsCoordinates
