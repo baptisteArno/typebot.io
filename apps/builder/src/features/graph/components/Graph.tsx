@@ -225,7 +225,7 @@ export const Graph = ({
 
         setGraphPosition({
           ...graphPosition,
-          x: graphPosition.x - dx,
+          x: shiftKey ? graphPosition.x - dy : graphPosition.x - dx,
           y: shiftKey ? graphPosition.y : graphPosition.y - dy,
         })
       },

@@ -148,7 +148,7 @@ export const options = option.object({
     defaultValue: defaultOpenAIOptions.temperature,
   }),
   responseMapping: option
-    .saveResponseArray(['Message content', 'Total tokens'])
+    .saveResponseArray(['Message content', 'Total tokens'] as const)
     .layout({
       accordion: 'Save response',
     }),
