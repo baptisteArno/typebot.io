@@ -14,9 +14,10 @@ RUN bun build:chat-api
 
 # copy production dependencies and source code into final image
 FROM base AS release
-COPY --from=install . .
-
+COPY --from=install /usr/src/app/apps/chat-api ./apps/chat-api
+COPY --from=install /usr/src/app/node_modules ./node_modules
+COPY --from=install /usr/src/app/packages ./packages
 # run the app
 USER bun
 EXPOSE 3000/tcp
-ENTRYPOINT [ "bun", "start:chat-api" ]
+ENTRYPOINT [ "bun", "apps/chat-api/src/index.ts" ]
