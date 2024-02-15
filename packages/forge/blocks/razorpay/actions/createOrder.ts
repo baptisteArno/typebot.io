@@ -13,12 +13,12 @@ export const createOrder = createAction({
     amount: option.string.layout({
       label: 'Amount',
       moreInfoTooltip: 'Amount to be paid',
-      isRequired: true
+      isRequired: true,
     }),
     uid: option.string.layout({
       label: 'Transaction ID',
       moreInfoTooltip: 'Any unique id for the transaction',
-      isRequired: true
+      isRequired: true,
     }),
     saveOrderInVariableId: option.string.layout({
       label: 'Save Order ID',
@@ -49,24 +49,25 @@ export const createOrder = createAction({
           currency: options.currency ?? defaultCurrency,
           amount: convertToPaise(options.amount),
           receipt: options.uid ?? '',
-          notes: notes
+          notes: notes,
         }
 
-        const response: Record<string, string> = await got.post(`${apiBaseUrl}/orders`, {
-          headers: {
-            "Content-Type": "application/json"
-          },
-          username: options.keyId,
-          password: credentials.keySecret,
-          json: order,
-        }).json()
+        const response: Record<string, string> = await got
+          .post(`${apiBaseUrl}/orders`, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            username: options.keyId,
+            password: credentials.keySecret,
+            json: order,
+          })
+          .json()
 
         variables.set(options.saveOrderInVariableId, response.id)
       } catch (error) {
         console.log(error)
         return logs.add('Error creating order')
       }
-
     },
   },
 })

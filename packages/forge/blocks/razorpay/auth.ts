@@ -7,7 +7,8 @@ export const auth = {
     keySecret: option.string.layout({
       label: 'Key Secret',
       isRequired: true,
-      helperText: 'You can generate an API key and secret [here](https://dashboard.razorpay.com/app/api-keys).',
+      helperText:
+        'You can generate an API key and secret [here](https://dashboard.razorpay.com/app/api-keys).',
     }),
   }),
 } satisfies AuthDefinition

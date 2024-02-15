@@ -100,4 +100,4 @@ export const allowedCurrencies: readonly [string, ...string[]] = [
   'YER',
   'ZAR',
   'TRY',
-];
+]
