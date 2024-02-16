@@ -554,10 +554,32 @@
                                                       "type": {
                                                         "type": "string",
                                                         "enum": [
-                                                          "Today",
                                                           "Now",
                                                           "Yesterday",
-                                                          "Tomorrow",
+                                                          "Tomorrow"
+                                                        ]
+                                                      },
+                                                      "timeZone": {
+                                                        "type": "string"
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "type"
+                                                    ]
+                                                  },
+                                                  {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "variableId": {
+                                                        "type": "string"
+                                                      },
+                                                      "isExecutedOnClient": {
+                                                        "type": "boolean"
+                                                      },
+                                                      "type": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "Today",
                                                           "Moment of the day",
                                                           "Empty",
                                                           "Environment name",
@@ -4926,10 +4948,32 @@
                                                   "type": {
                                                     "type": "string",
                                                     "enum": [
-                                                      "Today",
                                                       "Now",
                                                       "Yesterday",
-                                                      "Tomorrow",
+                                                      "Tomorrow"
+                                                    ]
+                                                  },
+                                                  "timeZone": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "type"
+                                                ]
+                                              },
+                                              {
+                                                "type": "object",
+                                                "properties": {
+                                                  "variableId": {
+                                                    "type": "string"
+                                                  },
+                                                  "isExecutedOnClient": {
+                                                    "type": "boolean"
+                                                  },
+                                                  "type": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "Today",
                                                       "Moment of the day",
                                                       "Empty",
                                                       "Environment name",
@@ -8349,10 +8393,32 @@
                                                   "type": {
                                                     "type": "string",
                                                     "enum": [
-                                                      "Today",
                                                       "Now",
                                                       "Yesterday",
-                                                      "Tomorrow",
+                                                      "Tomorrow"
+                                                    ]
+                                                  },
+                                                  "timeZone": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "type"
+                                                ]
+                                              },
+                                              {
+                                                "type": "object",
+                                                "properties": {
+                                                  "variableId": {
+                                                    "type": "string"
+                                                  },
+                                                  "isExecutedOnClient": {
+                                                    "type": "boolean"
+                                                  },
+                                                  "type": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "Today",
                                                       "Moment of the day",
                                                       "Empty",
                                                       "Environment name",
@@ -16835,10 +16901,32 @@
                           "type": {
                             "type": "string",
                             "enum": [
-                              "Today",
                               "Now",
                               "Yesterday",
-                              "Tomorrow",
+                              "Tomorrow"
+                            ]
+                          },
+                          "timeZone": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "variableId": {
+                            "type": "string"
+                          },
+                          "isExecutedOnClient": {
+                            "type": "boolean"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "Today",
                               "Moment of the day",
                               "Empty",
                               "Environment name",
@@ -20325,10 +20413,32 @@
                                   "type": {
                                     "type": "string",
                                     "enum": [
-                                      "Today",
                                       "Now",
                                       "Yesterday",
-                                      "Tomorrow",
+                                      "Tomorrow"
+                                    ]
+                                  },
+                                  "timeZone": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "type"
+                                ]
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "variableId": {
+                                    "type": "string"
+                                  },
+                                  "isExecutedOnClient": {
+                                    "type": "boolean"
+                                  },
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "Today",
                                       "Moment of the day",
                                       "Empty",
                                       "Environment name",
@@ -23122,10 +23232,32 @@
                                   "type": {
                                     "type": "string",
                                     "enum": [
-                                      "Today",
                                       "Now",
                                       "Yesterday",
-                                      "Tomorrow",
+                                      "Tomorrow"
+                                    ]
+                                  },
+                                  "timeZone": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "type"
+                                ]
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "variableId": {
+                                    "type": "string"
+                                  },
+                                  "isExecutedOnClient": {
+                                    "type": "boolean"
+                                  },
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "Today",
                                       "Moment of the day",
                                       "Empty",
                                       "Environment name",

@@ -660,11 +660,14 @@ importers:
         specifier: 2.2.33
         version: 2.2.33(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)
       chrono-node:
-        specifier: 2.7.0
-        version: 2.7.0
+        specifier: 2.7.5
+        version: 2.7.5
       date-fns:
         specifier: 2.30.0
         version: 2.30.0
+      date-fns-tz:
+        specifier: 2.0.0
+        version: 2.0.0(date-fns@2.30.0)
       google-auth-library:
         specifier: 8.9.0
         version: 8.9.0
@@ -12563,8 +12566,8 @@ packages:
     engines: {node: '>=6.0'}
     dev: false
 
-  /chrono-node@2.7.0:
-    resolution: {integrity: sha512-0s2vv89LmsbgoibV0AIVgNnGqlU8N5yCCVZXvc3mRCjnmlG/gJw1hCYOmNwjB+AIuwZQdKTXfwvsHDRTs6pwcg==}
+  /chrono-node@2.7.5:
+    resolution: {integrity: sha512-VJWqFN5rWmXVvXAxOD4i0jX8Tb4cLswaslyaAFhxM45zNXPsZleygPbgiaYBD7ORb9fj07zBgJb0Q6eKL+0iJg==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
       dayjs: 1.11.10
@@ -13244,6 +13247,14 @@ packages:
       whatwg-mimetype: 3.0.0
       whatwg-url: 11.0.0
     dev: true
+
+  /date-fns-tz@2.0.0(date-fns@2.30.0):
+    resolution: {integrity: sha512-OAtcLdB9vxSXTWHdT8b398ARImVwQMyjfYGkKD2zaGpHseG2UPHbHjXELReErZFxWdSLph3c2zOaaTyHfOhERQ==}
+    peerDependencies:
+      date-fns: '>=2.0.0'
+    dependencies:
+      date-fns: 2.30.0
+    dev: false
 
   /date-fns@2.30.0:
     resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}

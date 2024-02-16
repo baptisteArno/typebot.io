@@ -1,11 +1,12 @@
 import { SessionState, SetVariableBlock, Variable } from '@typebot.io/schemas'
-import { byId } from '@typebot.io/lib'
+import { byId, isEmpty } from '@typebot.io/lib'
 import { ExecuteLogicResponse } from '../../../types'
 import { parseScriptToExecuteClientSideAction } from '../script/executeScript'
 import { parseGuessedValueType } from '@typebot.io/variables/parseGuessedValueType'
 import { parseVariables } from '@typebot.io/variables/parseVariables'
 import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
 import { createId } from '@paralleldrive/cuid2'
+import { utcToZonedTime, format as tzFormat } from 'date-fns-tz'
 
 export const executeSetVariable = (
   state: SessionState,
@@ -87,13 +88,19 @@ const getExpressionToEvaluate =
         return phoneNumber ? `"${state.whatsApp?.contact.phoneNumber}"` : null
       }
       case 'Now':
+        if (isEmpty(options.timeZone)) return 'new Date().toISOString()'
+        return toISOWithTz(new Date(), options.timeZone)
       case 'Today':
         return 'new Date().toISOString()'
       case 'Tomorrow': {
-        return 'new Date(Date.now() + 86400000).toISOString()'
+        if (isEmpty(options.timeZone))
+          return 'new Date(Date.now() + 86400000).toISOString()'
+        return toISOWithTz(new Date(Date.now() + 86400000), options.timeZone)
       }
       case 'Yesterday': {
-        return 'new Date(Date.now() - 86400000).toISOString()'
+        if (isEmpty(options.timeZone))
+          return 'new Date(Date.now() - 86400000).toISOString()'
+        return toISOWithTz(new Date(Date.now() - 86400000), options.timeZone)
       }
       case 'Random ID': {
         return `"${createId()}"`
@@ -130,3 +137,8 @@ const getExpressionToEvaluate =
       }
     }
   }
+
+const toISOWithTz = (date: Date, timeZone: string) => {
+  const zonedDate = utcToZonedTime(date, timeZone)
+  return tzFormat(zonedDate, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone })
+}

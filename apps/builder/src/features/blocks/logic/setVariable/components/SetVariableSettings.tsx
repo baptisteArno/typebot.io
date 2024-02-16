@@ -200,14 +200,24 @@ const SetVariableValue = ({
         </Alert>
       )
     }
+    case 'Now':
+    case 'Yesterday':
+    case 'Tomorrow': {
+      return (
+        <TextInput
+          direction="row"
+          label="Timezone"
+          onChange={(timeZone) => onOptionsChange({ ...options, timeZone })}
+          defaultValue={options.timeZone}
+          placeholder="Europe/Paris"
+        />
+      )
+    }
     case 'Contact name':
     case 'Phone number':
     case 'Random ID':
-    case 'Now':
-    case 'Today':
-    case 'Tomorrow':
     case 'User ID':
-    case 'Yesterday':
+    case 'Today':
     case 'Empty':
       return null
   }

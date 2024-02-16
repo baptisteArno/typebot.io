@@ -13,9 +13,6 @@ const baseOptions = z.object({
 const basicSetVariableOptionsSchema = baseOptions.extend({
   type: z.enum([
     'Today',
-    'Now',
-    'Yesterday',
-    'Tomorrow',
     'Moment of the day',
     'Empty',
     'Environment name',
@@ -24,6 +21,11 @@ const basicSetVariableOptionsSchema = baseOptions.extend({
     'Phone number',
     'Contact name',
   ]),
+})
+
+const dateSetVariableOptionsSchema = baseOptions.extend({
+  type: z.enum(['Now', 'Yesterday', 'Tomorrow']),
+  timeZone: z.string().optional(),
 })
 
 const initialSetVariableOptionsSchema = baseOptions.extend({
@@ -56,6 +58,7 @@ const appendItemToListOptionsSchema = baseOptions.extend({
 
 export const setVariableOptionsSchema = z.discriminatedUnion('type', [
   initialSetVariableOptionsSchema,
+  dateSetVariableOptionsSchema,
   basicSetVariableOptionsSchema,
   customSetVariableOptionsSchema,
   mapListItemsOptionsSchema,
