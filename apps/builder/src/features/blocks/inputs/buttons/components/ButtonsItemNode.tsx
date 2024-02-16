@@ -62,13 +62,13 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
       itemValue !== t('blocks.inputs.button.clickToEdit.label')
     )
       handlePlusClick()
-    if (e.key === 'v' && (e.ctrlKey || e.metaKey)) {
-      const clipboardContents = await navigator.clipboard.read()
-      const item = clipboardContents[0]
-      if (!item.types.includes('text/plain')) return
-      const text = await (await item.getType('text/plain')).text()
-      if (!text || !text.includes(',')) return
-      const values = text.split(',')
+  }
+
+  const handleEditableChange = (val: string) => {
+    const isPastingMultipleItems =
+      val.length - itemValue.length > 1 && val.includes(',')
+    if (isPastingMultipleItems) {
+      const values = val.split(',')
       return values.forEach((v, i) => {
         if (i === 0) {
           setItemValue(v)
@@ -80,6 +80,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
         }
       })
     }
+    setItemValue(val)
   }
 
   const handlePlusClick = () => {
@@ -105,7 +106,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
             flex="1"
             startWithEditView={isNotDefined(item.content)}
             value={itemValue}
-            onChange={setItemValue}
+            onChange={handleEditableChange}
             onSubmit={handleInputSubmit}
             onKeyDownCapture={handleKeyPress}
             maxW="180px"
