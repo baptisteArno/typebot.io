@@ -5044,7 +5044,8 @@
                             "type": "string",
                             "enum": [
                               "Webhook"
-                            ]
+                            ],
+                            "description": "Legacy name for HTTP Request block"
                           },
                           "options": {
                             "type": "object",
@@ -8791,7 +8792,8 @@
                     "type": "string",
                     "enum": [
                       "Webhook"
-                    ]
+                    ],
+                    "description": "Legacy name for HTTP Request block"
                   },
                   "options": {
                     "type": "object",

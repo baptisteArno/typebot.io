@@ -1,10 +1,10 @@
 import { Stack, Text } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { WebhookBlock } from '@typebot.io/schemas'
+import { HttpRequestBlock } from '@typebot.io/schemas'
 import { SetVariableLabel } from '@/components/SetVariableLabel'
 
 type Props = {
-  block: WebhookBlock
+  block: HttpRequestBlock
 }
 
 export const WebhookContent = ({ block: { options } }: Props) => {
