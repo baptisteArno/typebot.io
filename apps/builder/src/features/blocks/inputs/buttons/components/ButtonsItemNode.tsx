@@ -50,7 +50,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
       } as Item)
   }
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyPress = async (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (
       e.key === 'Escape' &&
       itemValue === t('blocks.inputs.button.clickToEdit.label')
@@ -62,6 +62,25 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
       itemValue !== t('blocks.inputs.button.clickToEdit.label')
     )
       handlePlusClick()
+  }
+
+  const handleEditableChange = (val: string) => {
+    const isPastingMultipleItems =
+      val.length - itemValue.length > 1 && val.includes(',')
+    if (isPastingMultipleItems) {
+      const values = val.split(',')
+      return values.forEach((v, i) => {
+        if (i === 0) {
+          setItemValue(v)
+        } else {
+          createItem(
+            { content: v.trim() },
+            { ...indices, itemIndex: indices.itemIndex + i }
+          )
+        }
+      })
+    }
+    setItemValue(val)
   }
 
   const handlePlusClick = () => {
@@ -87,7 +106,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
             flex="1"
             startWithEditView={isNotDefined(item.content)}
             value={itemValue}
-            onChange={setItemValue}
+            onChange={handleEditableChange}
             onSubmit={handleInputSubmit}
             onKeyDownCapture={handleKeyPress}
             maxW="180px"

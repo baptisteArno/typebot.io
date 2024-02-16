@@ -8,7 +8,7 @@ import type {
   Block,
   TextInputBlock,
   TextBubbleBlock,
-  WebhookBlock,
+  HttpRequestBlock,
   ImageBubbleBlock,
   VideoBubbleBlock,
   BlockWithOptionsType,
@@ -117,7 +117,7 @@ export const isIntegrationBlock = (block: Block): block is IntegrationBlock =>
     ) as any[]
   ).includes(block.type)
 
-export const isWebhookBlock = (block: Block): block is WebhookBlock =>
+export const isWebhookBlock = (block: Block): block is HttpRequestBlock =>
   [
     IntegrationBlockType.WEBHOOK,
     IntegrationBlockType.PABBLY_CONNECT,

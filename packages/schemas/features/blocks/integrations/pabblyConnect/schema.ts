@@ -1,14 +1,14 @@
 import { z } from '../../../../zod'
 import { IntegrationBlockType } from '../constants'
-import { webhookBlockSchemas } from '../webhook'
+import { httpBlockSchemas } from '../webhook'
 
 export const pabblyConnectBlockSchemas = {
-  v5: webhookBlockSchemas.v5.merge(
+  v5: httpBlockSchemas.v5.merge(
     z.object({
       type: z.enum([IntegrationBlockType.PABBLY_CONNECT]),
     })
   ),
-  v6: webhookBlockSchemas.v6.merge(
+  v6: httpBlockSchemas.v6.merge(
     z.object({
       type: z.enum([IntegrationBlockType.PABBLY_CONNECT]),
     })

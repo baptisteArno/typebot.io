@@ -21,7 +21,7 @@ import { GoogleSheetsNodeContent } from '@/features/blocks/integrations/googleSh
 import { MakeComContent } from '@/features/blocks/integrations/makeCom/components/MakeComContent'
 import { PabblyConnectContent } from '@/features/blocks/integrations/pabbly/components/PabblyConnectContent'
 import { SendEmailContent } from '@/features/blocks/integrations/sendEmail/components/SendEmailContent'
-import { WebhookContent } from '@/features/blocks/integrations/webhook/components/WebhookContent'
+import { WebhookContent } from '@/features/blocks/integrations/webhook/components/HttpRequestContent'
 import { ZapierContent } from '@/features/blocks/integrations/zapier/components/ZapierContent'
 import { RedirectNodeContent } from '@/features/blocks/logic/redirect/components/RedirectNodeContent'
 import { SetVariableContent } from '@/features/blocks/logic/setVariable/components/SetVariableContent'

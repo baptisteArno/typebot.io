@@ -1,8 +1,8 @@
 import { Alert, AlertIcon, Button, Link, Stack, Text } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@/components/icons'
-import { MakeComBlock, Webhook } from '@typebot.io/schemas'
+import { MakeComBlock, HttpRequest } from '@typebot.io/schemas'
 import React from 'react'
-import { WebhookAdvancedConfigForm } from '../../webhook/components/WebhookAdvancedConfigForm'
+import { HttpRequestAdvancedConfigForm } from '../../webhook/components/HttpRequestAdvancedConfigForm'
 
 type Props = {
   block: MakeComBlock
@@ -13,7 +13,7 @@ export const MakeComSettings = ({
   block: { id: blockId, options },
   onOptionsChange,
 }: Props) => {
-  const setLocalWebhook = async (newLocalWebhook: Webhook) => {
+  const setLocalWebhook = async (newLocalWebhook: HttpRequest) => {
     onOptionsChange({
       ...options,
       webhook: newLocalWebhook,
@@ -42,7 +42,7 @@ export const MakeComSettings = ({
           </Stack>
         )}
       </Alert>
-      <WebhookAdvancedConfigForm
+      <HttpRequestAdvancedConfigForm
         blockId={blockId}
         webhook={options?.webhook}
         options={options}
