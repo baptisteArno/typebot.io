@@ -38,7 +38,7 @@ export const PabblyConnectSettings = ({
             <Text>Head up to Pabbly Connect to get the webhook URL:</Text>
             <Button
               as={Link}
-              href="https://www.pabbly.com/connect/integrations/typebot/"
+              href="https://www.pabbly.com/connect/integrations/flowdacity/"
               isExternal
               colorScheme="blue"
             >

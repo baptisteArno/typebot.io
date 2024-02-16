@@ -33,7 +33,7 @@ export const MakeComSettings = ({
             <Text>Head up to Make.com to configure this block:</Text>
             <Button
               as={Link}
-              href="https://www.make.com/en/integrations/typebot"
+              href="https://www.make.com/en/integrations/flowdacity"
               isExternal
               colorScheme="blue"
             >

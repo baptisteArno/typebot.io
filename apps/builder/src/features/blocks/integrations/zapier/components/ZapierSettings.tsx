@@ -34,7 +34,7 @@ export const ZapierSettings = ({
             <Text>Head up to Zapier to configure this block:</Text>
             <Button
               as={Link}
-              href="https://zapier.com/apps/typebot/integrations"
+              href="https://zapier.com/apps/flowdacity/integrations"
               isExternal
               colorScheme="blue"
             >
