@@ -87,20 +87,31 @@ const getExpressionToEvaluate =
         const phoneNumber = state.whatsApp?.contact.phoneNumber
         return phoneNumber ? `"${state.whatsApp?.contact.phoneNumber}"` : null
       }
-      case 'Now':
-        if (isEmpty(options.timeZone)) return 'new Date().toISOString()'
-        return toISOWithTz(new Date(), options.timeZone)
+      case 'Now': {
+        const timeZone = parseVariables(
+          state.typebotsQueue[0].typebot.variables
+        )(options.timeZone)
+        if (isEmpty(timeZone)) return 'new Date().toISOString()'
+        return toISOWithTz(new Date(), timeZone)
+      }
+
       case 'Today':
         return 'new Date().toISOString()'
       case 'Tomorrow': {
-        if (isEmpty(options.timeZone))
+        const timeZone = parseVariables(
+          state.typebotsQueue[0].typebot.variables
+        )(options.timeZone)
+        if (isEmpty(timeZone))
           return 'new Date(Date.now() + 86400000).toISOString()'
-        return toISOWithTz(new Date(Date.now() + 86400000), options.timeZone)
+        return toISOWithTz(new Date(Date.now() + 86400000), timeZone)
       }
       case 'Yesterday': {
-        if (isEmpty(options.timeZone))
+        const timeZone = parseVariables(
+          state.typebotsQueue[0].typebot.variables
+        )(options.timeZone)
+        if (isEmpty(timeZone))
           return 'new Date(Date.now() - 86400000).toISOString()'
-        return toISOWithTz(new Date(Date.now() - 86400000), options.timeZone)
+        return toISOWithTz(new Date(Date.now() - 86400000), timeZone)
       }
       case 'Random ID': {
         return `"${createId()}"`
