@@ -30,7 +30,6 @@ import { useDebouncedCallback } from 'use-debounce'
 const legacyIntegrationBlocks = [
   IntegrationBlockType.OPEN_AI,
   IntegrationBlockType.ZEMANTIC_AI,
-  IntegrationBlockType.WEBHOOK,
 ]
 
 export const BlocksSideBar = () => {
