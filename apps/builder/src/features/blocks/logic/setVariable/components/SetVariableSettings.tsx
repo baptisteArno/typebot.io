@@ -218,6 +218,7 @@ const SetVariableValue = ({
     case 'Random ID':
     case 'User ID':
     case 'Today':
+    case 'Result ID':
     case 'Empty':
       return null
   }

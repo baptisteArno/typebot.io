@@ -17,6 +17,7 @@ const basicSetVariableOptionsSchema = baseOptions.extend({
     'Empty',
     'Environment name',
     'User ID',
+    'Result ID',
     'Random ID',
     'Phone number',
     'Contact name',

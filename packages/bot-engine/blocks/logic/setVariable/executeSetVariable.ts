@@ -116,6 +116,7 @@ const getExpressionToEvaluate =
       case 'Random ID': {
         return `"${createId()}"`
       }
+      case 'Result ID':
       case 'User ID': {
         return state.typebotsQueue[0].resultId ?? `"${createId()}"`
       }
