@@ -1,8 +1,8 @@
 import { Alert, AlertIcon, Button, Link, Stack, Text } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@/components/icons'
-import { PabblyConnectBlock, Webhook } from '@typebot.io/schemas'
+import { PabblyConnectBlock, HttpRequest } from '@typebot.io/schemas'
 import React from 'react'
-import { WebhookAdvancedConfigForm } from '../../webhook/components/WebhookAdvancedConfigForm'
+import { HttpRequestAdvancedConfigForm } from '../../webhook/components/HttpRequestAdvancedConfigForm'
 import { TextInput } from '@/components/inputs'
 
 type Props = {
@@ -14,7 +14,7 @@ export const PabblyConnectSettings = ({
   block: { id: blockId, options },
   onOptionsChange,
 }: Props) => {
-  const setLocalWebhook = async (newLocalWebhook: Webhook) => {
+  const setLocalWebhook = async (newLocalWebhook: HttpRequest) => {
     onOptionsChange({
       ...options,
       webhook: newLocalWebhook,
@@ -54,7 +54,7 @@ export const PabblyConnectSettings = ({
         withVariableButton={false}
         debounceTimeout={0}
       />
-      <WebhookAdvancedConfigForm
+      <HttpRequestAdvancedConfigForm
         blockId={blockId}
         webhook={options?.webhook}
         options={options}

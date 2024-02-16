@@ -1,19 +1,19 @@
 import React from 'react'
 import { Stack } from '@chakra-ui/react'
-import { Webhook, WebhookBlock } from '@typebot.io/schemas'
+import { HttpRequest, HttpRequestBlock } from '@typebot.io/schemas'
 import { TextInput } from '@/components/inputs'
-import { WebhookAdvancedConfigForm } from './WebhookAdvancedConfigForm'
+import { HttpRequestAdvancedConfigForm } from './HttpRequestAdvancedConfigForm'
 
 type Props = {
-  block: WebhookBlock
-  onOptionsChange: (options: WebhookBlock['options']) => void
+  block: HttpRequestBlock
+  onOptionsChange: (options: HttpRequestBlock['options']) => void
 }
 
-export const WebhookSettings = ({
+export const HttpRequestSettings = ({
   block: { id: blockId, options },
   onOptionsChange,
 }: Props) => {
-  const setLocalWebhook = async (newLocalWebhook: Webhook) => {
+  const setLocalWebhook = async (newLocalWebhook: HttpRequest) => {
     onOptionsChange({ ...options, webhook: newLocalWebhook })
   }
 
@@ -24,11 +24,11 @@ export const WebhookSettings = ({
   return (
     <Stack spacing={4}>
       <TextInput
-        placeholder="Paste webhook URL..."
+        placeholder="Paste URL..."
         defaultValue={options?.webhook?.url}
         onChange={updateUrl}
       />
-      <WebhookAdvancedConfigForm
+      <HttpRequestAdvancedConfigForm
         blockId={blockId}
         webhook={options?.webhook}
         options={options}

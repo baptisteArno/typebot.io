@@ -19,8 +19,8 @@ import {
   KeyValue,
   VariableForTest,
   ResponseVariableMapping,
-  Webhook,
-  WebhookBlock,
+  HttpRequest,
+  HttpRequestBlock,
 } from '@typebot.io/schemas'
 import { useState, useMemo } from 'react'
 import { executeWebhook } from '../queries/executeWebhookQuery'
@@ -41,13 +41,13 @@ import { NumberInput } from '@/components/inputs'
 
 type Props = {
   blockId: string
-  webhook: Webhook | undefined
-  options: WebhookBlock['options']
-  onWebhookChange: (webhook: Webhook) => void
-  onOptionsChange: (options: WebhookBlock['options']) => void
+  webhook: HttpRequest | undefined
+  options: HttpRequestBlock['options']
+  onWebhookChange: (webhook: HttpRequest) => void
+  onOptionsChange: (options: HttpRequestBlock['options']) => void
 }
 
-export const WebhookAdvancedConfigForm = ({
+export const HttpRequestAdvancedConfigForm = ({
   blockId,
   webhook,
   options,

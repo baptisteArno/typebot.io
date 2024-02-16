@@ -78,7 +78,7 @@ export const BlockLabel = ({ type }: Props): JSX.Element => {
         <Text fontSize="sm">{t('editor.sidebarBlock.analytics.label')}</Text>
       )
     case IntegrationBlockType.WEBHOOK:
-      return <Text fontSize="sm">{t('editor.sidebarBlock.webhook.label')}</Text>
+      return <Text fontSize="sm">HTTP request</Text>
     case IntegrationBlockType.ZAPIER:
       return <Text fontSize="sm">{t('editor.sidebarBlock.zapier.label')}</Text>
     case IntegrationBlockType.MAKE_COM:

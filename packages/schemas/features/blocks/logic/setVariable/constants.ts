@@ -6,6 +6,7 @@ export const valueTypes = [
   'Append value(s)',
   'Environment name',
   'User ID',
+  'Result ID',
   'Now',
   'Today',
   'Yesterday',
@@ -17,7 +18,7 @@ export const valueTypes = [
   'Contact name',
 ] as const
 
-export const hiddenTypes = ['Today'] as const
+export const hiddenTypes = ['Today', 'User ID'] as const
 
 export const defaultSetVariableOptions = {
   type: 'Custom',

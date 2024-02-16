@@ -2,7 +2,7 @@ import {
   Block,
   Typebot,
   BlockIndices,
-  Webhook,
+  HttpRequest,
   BlockV6,
   TypebotV6,
 } from '@typebot.io/schemas'
@@ -26,7 +26,7 @@ export type BlocksActions = {
 }
 
 export type WebhookCallBacks = {
-  onWebhookBlockCreated: (data: Partial<Webhook>) => void
+  onWebhookBlockCreated: (data: Partial<HttpRequest>) => void
   onWebhookBlockDuplicated: (
     existingWebhookId: string,
     newWebhookId: string

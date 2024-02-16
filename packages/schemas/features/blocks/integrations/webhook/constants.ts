@@ -1,4 +1,4 @@
-import { WebhookBlockV6 } from './schema'
+import { HttpRequestBlockV6 } from './schema'
 
 export enum HttpMethod {
   POST = 'POST',
@@ -20,7 +20,7 @@ export const defaultWebhookBlockOptions = {
   isAdvancedConfig: false,
   isCustomBody: false,
   isExecutedOnClient: false,
-} as const satisfies WebhookBlockV6['options']
+} as const satisfies HttpRequestBlockV6['options']
 
 export const defaultTimeout = 10
 export const maxTimeout = 120
