@@ -1,5 +1,5 @@
 <?php
-class Typebot_Public
+class Flowdacity_Public
 {
   public function __construct()
   {
@@ -89,13 +89,13 @@ class Typebot_Public
     echo '</script>';
   }
 
-  public function add_typebot_container($attributes = [])
+  public function add_flowdacity_container($attributes = [])
   {
     $lib_version = '0.2';
-    if(array_key_exists('lib_version', $attributes)) {
+    if (array_key_exists('lib_version', $attributes)) {
       $lib_version = sanitize_text_field($attributes['lib_version']);
     }
-    $lib_url = "https://cdn.jsdelivr.net/npm/@typebot.io/js@". $lib_version ."/dist/web.js";
+    $lib_url = "https://cdn.jsdelivr.net/npm/@typebot.io/js@" . $lib_version . "/dist/web.js";
     $width = '100%';
     $height = '500px';
     $api_host = 'https://typebot.io';
