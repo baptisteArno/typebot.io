@@ -420,11 +420,12 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     const customProperties = properties.map(
       (h: {
         id: string
-        fieldType: number
+        fieldType: number,
+        type: number,
         fieldId: string
         fixed: boolean
       }) => {
-        const fieldType: string = fieldTypes(h.fieldType)
+        const fieldType: string = fieldTypes(h.fieldType || h.type)
         let tokenValue = `#${h.fieldId.replace(/_/g, '-')}`
 
         if (domainType === 'PERSON') {
@@ -479,6 +480,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
   const createChatField = useCallback(
     (property: OctaProperty, variableId?: string): any => {
+      debugger
       if (octaChatFields.find((c) => c.token === property.token)) return
 
       const field = {

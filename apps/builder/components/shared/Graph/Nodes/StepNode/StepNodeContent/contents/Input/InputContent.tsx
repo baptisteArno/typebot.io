@@ -20,6 +20,7 @@ const InputContent = ({ step, onUpdateStep }: Props) => {
   const { createCustomField } = useWorkspace()
 
   const handleDefaultTokenNotFound = async () => {
+    debugger
     if (step.options.initialVariableToken) {
       const splitedToken = step.options.initialVariableToken?.split('-')
       if (splitedToken) {

@@ -242,6 +242,7 @@ export const VariableSearchInput = ({
 
   const handleCreateVariable = (): void => {
     const id = 'v' + cuid()
+    debugger
     if (customVariable) {
       const customVariableDraft: Variable = {
         id,
