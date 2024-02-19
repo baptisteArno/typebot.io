@@ -221,10 +221,10 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
     const defaultWorkspace = lastWorspaceId
       ? workspaces.find(byId(lastWorspaceId))
       : workspaces.find((w) =>
-          w.members.some(
-            (m) => m.userId === userId && m.role === WorkspaceRole.ADMIN
-          )
+        w.members.some(
+          (m) => m.userId === userId && m.role === WorkspaceRole.ADMIN
         )
+      )
 
     setCurrentWorkspace(defaultWorkspace ?? workspaces[0])
   }, [workspaces])
@@ -480,9 +480,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
   const createChatField = useCallback(
     (property: OctaProperty, variableId?: string): any => {
-      debugger
       if (octaChatFields.find((c) => c.token === property.token)) return
-
       const field = {
         type: property.type,
         id: variableId,

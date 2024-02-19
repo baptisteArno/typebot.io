@@ -20,7 +20,6 @@ const InputContent = ({ step, onUpdateStep }: Props) => {
   const { createCustomField } = useWorkspace()
 
   const handleDefaultTokenNotFound = async () => {
-    debugger
     if (step.options.initialVariableToken) {
       const splitedToken = step.options.initialVariableToken?.split('-')
       if (splitedToken) {
@@ -81,7 +80,7 @@ const InputContent = ({ step, onUpdateStep }: Props) => {
   return (
     <Stack>
       <TextHtmlContent html={step?.options?.message?.html} />
-      
+
       <OctaDivider />
       <WithVariableContent variableId={step.options?.variableId} property={step.options?.property} />
     </Stack>

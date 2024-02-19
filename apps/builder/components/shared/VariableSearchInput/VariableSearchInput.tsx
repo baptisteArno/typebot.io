@@ -217,22 +217,22 @@ export const VariableSearchInput = ({
     const { value } = e.target
     setCustomVariable(
       (state): Variable =>
-        ({
-          ...state,
-          token: value,
-          fieldId: value.replace('#', ''),
-          name: value.replace('#', ''),
-        } as Variable)
+      ({
+        ...state,
+        token: value,
+        fieldId: value.replace('#', ''),
+        name: value.replace('#', ''),
+      } as Variable)
     )
   }
 
   const handleSelectTypeVariable = (type: string) => {
     setCustomVariable(
       (state): Variable =>
-        ({
-          ...state,
-          type,
-        } as Variable)
+      ({
+        ...state,
+        type,
+      } as Variable)
     )
   }
 
@@ -242,7 +242,6 @@ export const VariableSearchInput = ({
 
   const handleCreateVariable = (): void => {
     const id = 'v' + cuid()
-    debugger
     if (customVariable) {
       const customVariableDraft: Variable = {
         id,
