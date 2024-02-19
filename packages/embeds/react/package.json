@@ -1,5 +1,5 @@
 {
-  "name": "@typebot.io/react",
+  "name": "@flowdacity/react",
   "version": "0.2.41",
   "description": "Convenient library to display typebots on your React app",
   "main": "dist/index.js",
