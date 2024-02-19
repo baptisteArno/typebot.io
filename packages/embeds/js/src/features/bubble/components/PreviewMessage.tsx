@@ -27,7 +27,6 @@ export const PreviewMessage = (props: PreviewMessageProps) => {
       onClick={() => props.onClick()}
       class={
         'fixed max-w-[256px] rounded-md duration-200 flex items-center gap-4 shadow-md animate-fade-in cursor-pointer hover:shadow-lg p-4' +
-        (props.buttonSize === 'large' ? ' bottom-24' : ' bottom-20') +
         (props.placement === 'left' ? ' left-5' : ' right-5')
       }
       style={{
@@ -35,6 +34,7 @@ export const PreviewMessage = (props: PreviewMessageProps) => {
           props.previewMessageTheme?.backgroundColor ?? defaultBackgroundColor,
         color: props.previewMessageTheme?.textColor ?? defaultTextColor,
         'z-index': 42424242,
+        bottom: `calc(${props.buttonSize} + 32px)`,
       }}
       onMouseEnter={() => setIsPreviewMessageHovered(true)}
       onMouseLeave={() => setIsPreviewMessageHovered(false)}
