@@ -29,15 +29,18 @@ export const executePrismaCommand = (command: string, options?: Options) => {
     executeCommand(`${command} --schema ${mysqlSchemaPath}`)
   }
 
-  if (databaseUrl?.startsWith('postgres')) {
+  if (
+    databaseUrl?.startsWith('postgres://') ||
+    databaseUrl?.startsWith('postgresql://')
+  ) {
     console.log('Executing for PostgreSQL schema')
     executeCommand(`${command} --schema ${postgesqlSchemaPath}`)
   }
 
-  if (process.env.DATABASE_URL?.startsWith('postgres://')) {
-    console.error('PostgreSQL `DATABASE_URL` should start with postgresql://')
-    process.exit(1)
-  }
+  console.error(
+    'Invalid `DATABASE_URL` format, it should start with `postgresql://` or `postgres://`'
+  )
+  process.exit(1)
 }
 
 const executeCommand = (command: string) => {
