@@ -326,8 +326,8 @@ export const VariableSearchInput = ({
                 dd/mm/aaaa
               </ButtonOption>
               <ButtonOption
-                className={customVariable?.type === 'number' ? 'active' : ''}
-                onClick={() => handleSelectTypeVariable('number')}
+                className={customVariable?.type === 'float' ? 'active' : ''}
+                onClick={() => handleSelectTypeVariable('float')}
               >
                 123
               </ButtonOption>

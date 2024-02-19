@@ -80,7 +80,7 @@ export const ComparisonItem = ({
     if (!myVariable || (myVariable?.type || '') === '') return allTypesArray
 
     if (['string', 'order'].includes(myVariable.type || '')) return [...allTypesArray, ...stringArray]
-    if (['float', 'decimal', 'number', 'date'].includes(myVariable.type || '')) return [...allTypesArray, ...numberArray]
+    if (['float', 'number', 'date'].includes(myVariable.type || '')) return [...allTypesArray, ...numberArray]
 
     return allTypesArray
   }
