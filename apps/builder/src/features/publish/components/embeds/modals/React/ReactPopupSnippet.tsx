@@ -11,7 +11,7 @@ export const ReactPopupSnippet = ({
   const { typebot } = useTypebot()
 
   const snippet = prettier.format(
-    `import { Popup } from "@typebot.io/react";
+    `import { Popup } from "@flowdacity/react";
 
       const App = () => {
         return <Popup ${parseReactPopupProps({

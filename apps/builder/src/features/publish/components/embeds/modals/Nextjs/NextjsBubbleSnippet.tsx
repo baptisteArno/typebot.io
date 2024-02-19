@@ -12,7 +12,7 @@ export const NextjsBubbleSnippet = ({
   const { typebot } = useTypebot()
 
   const snippet = prettier.format(
-    `import { Bubble } from "@typebot.io/nextjs";
+    `import { Bubble } from "@flowdacity/nextjs";
 
       const App = () => {
         return <Bubble ${parseReactBubbleProps({

@@ -12,7 +12,7 @@ export const ReactBubbleSnippet = ({
   const { typebot } = useTypebot()
 
   const snippet = prettier.format(
-    `import { Bubble } from "@typebot.io/react";
+    `import { Bubble } from "@flowdacity/react";
 
       const App = () => {
         return <Bubble ${parseReactBubbleProps({
