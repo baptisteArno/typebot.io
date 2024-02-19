@@ -174,7 +174,7 @@ export const getAuthOptions = ({
         const { invitations, workspaceInvitations } =
           await getNewUserInvitations(prisma, user.email)
         if (invitations.length === 0 && workspaceInvitations.length === 0)
-          return false
+          throw new Error('sign-up-disabled')
       }
       const requiredGroups = getRequiredGroups(account.provider)
       if (requiredGroups.length > 0) {

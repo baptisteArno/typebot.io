@@ -47,6 +47,13 @@ export const Bubble = (props: BubbleProps) => {
 
   const [isBotOpened, setIsBotOpened] = createSignal(false)
   const [isBotStarted, setIsBotStarted] = createSignal(false)
+  const [buttonSize, setButtonSize] = createSignal(
+    // eslint-disable-next-line solid/reactivity
+    parseButtonSize(bubbleProps.theme?.button?.size ?? 'medium')
+  )
+  createEffect(() => {
+    setButtonSize(parseButtonSize(bubbleProps.theme?.button?.size ?? 'medium'))
+  })
 
   onMount(() => {
     window.addEventListener('message', processIncomingEvent)
@@ -145,7 +152,7 @@ export const Bubble = (props: BubbleProps) => {
           {...previewMessage()}
           placement={bubbleProps.theme?.placement}
           previewMessageTheme={bubbleProps.theme?.previewMessage}
-          buttonSize={bubbleProps.theme?.button?.size}
+          buttonSize={buttonSize()}
           onClick={handlePreviewMessageClick}
           onCloseClick={hideMessage}
         />
@@ -155,6 +162,7 @@ export const Bubble = (props: BubbleProps) => {
         placement={bubbleProps.theme?.placement}
         toggleBot={toggleBot}
         isBotOpened={isBotOpened()}
+        buttonSize={buttonSize()}
       />
       <div
         part="bot"
@@ -173,13 +181,11 @@ export const Bubble = (props: BubbleProps) => {
           'box-shadow': 'rgb(0 0 0 / 16%) 0px 5px 40px',
           'background-color': bubbleProps.theme?.chatWindow?.backgroundColor,
           'z-index': 42424242,
+          bottom: `calc(${buttonSize()} + 32px)`,
         }}
         class={
           'fixed rounded-lg w-full' +
           (isBotOpened() ? ' opacity-1' : ' opacity-0 pointer-events-none') +
-          (props.theme?.button?.size === 'large'
-            ? ' bottom-24'
-            : ' bottom-20') +
           (props.theme?.placement === 'left' ? ' left-5' : ' right-5')
         }
       >
@@ -194,3 +200,8 @@ export const Bubble = (props: BubbleProps) => {
     </Show>
   )
 }
+
+const parseButtonSize = (
+  size: NonNullable<NonNullable<BubbleProps['theme']>['button']>['size']
+): `${number}px` =>
+  size === 'medium' ? '48px' : size === 'large' ? '64px' : size ? size : '48px'
