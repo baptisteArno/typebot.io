@@ -1,4 +1,4 @@
-import { PopupProps } from '@typebot.io/nextjs'
+import { PopupProps } from '@flowdacity/nextjs'
 import parserBabel from 'prettier/parser-babel'
 import prettier from 'prettier/standalone'
 import {

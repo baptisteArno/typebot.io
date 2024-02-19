@@ -40,7 +40,7 @@ class Flowdacity_Public
 
   function typebot_script()
   {
-    echo '<script type="module">import Typebot from "https://cdn.jsdelivr.net/npm/@typebot.io/js@0.2.15/dist/web.js";';
+    echo '<script type="module">import Typebot from "https://cdn.jsdelivr.net/npm/@flowdacity/js@0.2.15/dist/web.js";';
     if (
       get_option('excluded_pages') !== null &&
       get_option('excluded_pages') !== ''
@@ -95,7 +95,7 @@ class Flowdacity_Public
     if (array_key_exists('lib_version', $attributes)) {
       $lib_version = sanitize_text_field($attributes['lib_version']);
     }
-    $lib_url = "https://cdn.jsdelivr.net/npm/@typebot.io/js@" . $lib_version . "/dist/web.js";
+    $lib_url = "https://cdn.jsdelivr.net/npm/@flowdacity/js@" . $lib_version . "/dist/web.js";
     $width = '100%';
     $height = '500px';
     $api_host = 'https://typebot.io';

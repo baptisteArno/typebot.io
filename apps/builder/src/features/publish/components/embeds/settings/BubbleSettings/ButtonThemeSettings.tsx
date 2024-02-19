@@ -17,7 +17,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { ButtonTheme } from '@typebot.io/nextjs'
+import { ButtonTheme } from '@flowdacity/nextjs'
 import React from 'react'
 
 type Props = {

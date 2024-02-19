@@ -1,4 +1,4 @@
-import { BotProps } from '@typebot.io/nextjs'
+import { BotProps } from '@flowdacity/nextjs'
 import parserBabel from 'prettier/parser-babel'
 import prettier from 'prettier/standalone'
 import { isDefined } from '@typebot.io/lib'

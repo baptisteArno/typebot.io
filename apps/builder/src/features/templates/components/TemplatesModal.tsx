@@ -12,7 +12,7 @@ import {
   chakra,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { Standard } from '@typebot.io/nextjs'
+import { Standard } from '@flowdacity/nextjs'
 import { Typebot } from '@typebot.io/schemas'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTemplates } from '../hooks/useTemplates'

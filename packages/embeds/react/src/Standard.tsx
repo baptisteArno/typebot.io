@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
-import type { BotProps } from '@typebot.io/js'
-import '@typebot.io/js/dist/web'
+import type { BotProps } from '@flowdacity/js'
+import '@flowdacity/js/dist/web'
 
 type Props = BotProps & {
   style?: React.CSSProperties

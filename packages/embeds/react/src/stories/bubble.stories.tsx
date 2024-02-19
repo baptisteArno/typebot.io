@@ -7,7 +7,7 @@ import {
   hidePreviewMessage,
   setPrefilledVariables,
   setInputValue,
-} from '@typebot.io/js'
+} from '@flowdacity/js'
 import { useState } from 'react'
 import { leadGenerationTypebot } from './assets/leadGenerationTypebot'
 import './assets/index.css'
