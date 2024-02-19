@@ -15,7 +15,7 @@ export const ComparisonItem = ({
   let myVariable = typebot?.variables?.find((v: Variable) => v.id === item?.variableId)
   let myComparisonOperator = item?.comparisonOperator
   
-  const [needSecondaryValue, setNeedSecondaryValue] = useState<boolean>(false)
+  const [needSecondaryValue, setNeedSecondaryValue] = useState<boolean>(!!item.secondaryValue)
   const [needValue, setNeedValue] = useState<boolean>(true)
 
   const handleSelectVariable = (variable?: Variable) => {
