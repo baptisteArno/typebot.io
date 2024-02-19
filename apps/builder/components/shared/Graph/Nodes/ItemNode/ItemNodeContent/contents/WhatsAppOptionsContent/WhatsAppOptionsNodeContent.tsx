@@ -84,7 +84,7 @@ export const WhatsAppOptionsNodeContent = ({
           px={4}
           py={2}
         />
-        <EditableInput px={4} py={2} />
+        <EditableInput px={4} py={2} maxLength={20} />
       </Editable>
       <Fade
         in={isMouseOver}
