@@ -46,7 +46,7 @@ export const ConditionNodeContent = ({ item }: Props) => {
                   <div>
                     <span> E </span>
                     <Tag bgColor={'gray.200'}>
-                      <Text noOfLines={0}>{comparison.value}</Text>
+                      <Text noOfLines={0}>{comparison.secondaryValue}</Text>
                     </Tag>
                   </div>
                 )}
