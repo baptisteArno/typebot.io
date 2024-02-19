@@ -392,6 +392,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
         return 'sim ou não'
       case 'number':
         return '10203040'
+      case 'decimal':
       case 'float':
         return '1020,40'
       case 'date':
@@ -408,7 +409,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
       case 5:
         return 'number'
       case 6:
-        return 'float'
+        return 'decimal'
       case 7:
         return 'date'
       default:
