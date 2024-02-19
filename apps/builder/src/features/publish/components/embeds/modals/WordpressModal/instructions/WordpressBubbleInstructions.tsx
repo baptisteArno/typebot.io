@@ -9,7 +9,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { BubbleProps } from '@typebot.io/nextjs'
+import { BubbleProps } from '@flowdacity/nextjs'
 import { useState } from 'react'
 import { BubbleSettings } from '../../../settings/BubbleSettings/BubbleSettings'
 import { parseApiHostValue, parseInitBubbleCode } from '../../../snippetParsers'
@@ -44,7 +44,7 @@ export const WordpressBubbleInstructions = ({ publicId }: Props) => {
       <ListItem>
         Install{' '}
         <Link
-          href="https://wordpress.org/plugins/typebot/"
+          href="https://wordpress.org/plugins/flowdacity/"
           isExternal
           color={useColorModeValue('blue.500', 'blue.300')}
         >
@@ -64,8 +64,8 @@ export const WordpressBubbleInstructions = ({ publicId }: Props) => {
             onThemeChange={setTheme}
           />
           <Text>
-            You can now place the following code snippet in the Typebot panel in
-            your WordPress admin:
+            You can now place the following code snippet in the Flowdacity panel
+            in your WordPress admin:
           </Text>
           <CodeEditor value={initCode} lang="javascript" isReadOnly />
         </Stack>

@@ -404,7 +404,7 @@ For more info, see the new requirements: https://docs.flowdacity.com/self-hostin
 - 📝 Add text link section in text bubble doc [[b80bea1](https://github.com/baptisteArno/typebot.io/commit/b80bea11b485707e3a0bbe51549e585f957ac8bf)]
 - 📝 Add webhook configuration tuto video [[3e02436](https://github.com/baptisteArno/typebot.io/commit/3e02436d30946ac8732ffbb25acf7a109f9ccff6)]
 - 🧑‍💻 Migrate to Tolgee ([#976](https://github.com/baptisteArno/typebot.io/issues/976)) [[bed8b42](https://github.com/baptisteArno/typebot.io/commit/bed8b42a2eb10bd81909ac38a6b3b51a423789c2)]
-- 🧑‍💻 Fix type resolution for @typebot.io/react and nextjs [[31b3fc3](https://github.com/baptisteArno/typebot.io/commit/31b3fc311ede7885ff89ee41467308e718c92d4d)]
+- 🧑‍💻 Fix type resolution for @flowdacity/react and nextjs [[31b3fc3](https://github.com/baptisteArno/typebot.io/commit/31b3fc311ede7885ff89ee41467308e718c92d4d)]
 
 <a name="2.18.4"></a>
 
@@ -575,7 +575,7 @@ Billing has been upgraded to be usage-based. Stripe ENV variables have been simp
 ### Fixed
 
 - 🐛 (builder) Fix system color mode not syncing properly [[b31bcdf](https://github.com/baptisteArno/typebot.io/commit/b31bcdfb87d19facfc46f8800f9b562e5b615c1b)]
-- 🚑 (js) Fix dependency issue preventing user to install @typebot.io/js [[59cd79a](https://github.com/baptisteArno/typebot.io/commit/59cd79a4b85195e5d3573891f8a942c639cf2fe6)]
+- 🚑 (js) Fix dependency issue preventing user to install @flowdacity/js [[59cd79a](https://github.com/baptisteArno/typebot.io/commit/59cd79a4b85195e5d3573891f8a942c639cf2fe6)]
 - 🐛 (typebotLink) Fix nested typebot link pop [[cd97da2](https://github.com/baptisteArno/typebot.io/commit/cd97da2d34fcf576100d03fa30608ce26f1784c4)]
 - 🐛 (whatsapp) Fix auto start input where it didn&#x27;t display next bu… ([#869](https://github.com/baptisteArno/typebot.io/issues/869)) [[f9a14c0](https://github.com/baptisteArno/typebot.io/commit/f9a14c0685826a00a1873d17baafbe950fab55e0)]
 - 🐛 (whatsapp) Fix preview failing to start and wait timeo… [[e10a506](https://github.com/baptisteArno/typebot.io/commit/e10a506c9608dafd9462ea6d20d698551eb751c1)]

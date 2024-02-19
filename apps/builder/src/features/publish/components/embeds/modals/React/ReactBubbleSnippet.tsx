@@ -1,6 +1,6 @@
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { BubbleProps } from '@typebot.io/nextjs'
+import { BubbleProps } from '@flowdacity/nextjs'
 import parserBabel from 'prettier/parser-babel'
 import prettier from 'prettier/standalone'
 import { parseReactBubbleProps } from '../../snippetParsers'
@@ -12,7 +12,7 @@ export const ReactBubbleSnippet = ({
   const { typebot } = useTypebot()
 
   const snippet = prettier.format(
-    `import { Bubble } from "@typebot.io/react";
+    `import { Bubble } from "@flowdacity/react";
 
       const App = () => {
         return <Bubble ${parseReactBubbleProps({

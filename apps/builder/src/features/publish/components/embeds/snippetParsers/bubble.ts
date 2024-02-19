@@ -1,4 +1,4 @@
-import { BubbleProps } from '@typebot.io/nextjs'
+import { BubbleProps } from '@flowdacity/nextjs'
 import parserBabel from 'prettier/parser-babel'
 import prettier from 'prettier/standalone'
 import {

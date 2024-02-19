@@ -2,7 +2,7 @@ import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { useUser } from '@/features/account/hooks/useUser'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import React, { useEffect, useState } from 'react'
-import { Bubble, BubbleProps } from '@typebot.io/nextjs'
+import { Bubble, BubbleProps } from '@flowdacity/nextjs'
 import { planToReadable } from '@/features/billing/helpers/planToReadable'
 
 export const SupportBubble = (props: Omit<BubbleProps, 'typebot'>) => {

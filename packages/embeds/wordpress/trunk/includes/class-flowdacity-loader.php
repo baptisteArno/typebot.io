@@ -1,6 +1,6 @@
 <?php
 
-class Typebot_Loader
+class Flowdacity_Loader
 {
 	protected $actions;
 	protected $filters;

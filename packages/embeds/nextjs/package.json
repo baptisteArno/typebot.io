@@ -1,5 +1,5 @@
 {
-  "name": "@typebot.io/nextjs",
+  "name": "@flowdacity/nextjs",
   "version": "0.2.41",
   "description": "Convenient library to display typebots on your Next.js website",
   "main": "dist/index.js",
@@ -12,7 +12,7 @@
     "format:check": "prettier --check ./src"
   },
   "keywords": [],
-  "author": "Baptiste Arnaud",
+  "author": "Ochui Princewill",
   "license": "ISC",
   "devDependencies": {
     "@babel/preset-react": "7.22.5",
@@ -21,10 +21,10 @@
     "@rollup/plugin-node-resolve": "15.1.0",
     "@rollup/plugin-terser": "0.4.3",
     "@rollup/plugin-typescript": "11.1.2",
-    "@typebot.io/js": "workspace:*",
+    "@flowdacity/js": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
-    "@typebot.io/react": "workspace:*",
+    "@flowdacity/react": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
     "@types/node": "20.4.2",

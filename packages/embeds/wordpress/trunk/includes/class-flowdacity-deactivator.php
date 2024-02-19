@@ -1,6 +1,6 @@
 <?php
 
-class Typebot_Deactivator
+class Flowdacity_Deactivator
 {
 	public static function deactivate()
 	{

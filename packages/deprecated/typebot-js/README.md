@@ -1,4 +1,4 @@
-> ⚠️ This library is deprecated in favor of [`@typebot.io/js`](https://www.npmjs.com/package/@typebot.io/js) and [`@typebot.io/react`](https://www.npmjs.com/package/@typebot.io/react)
+> ⚠️ This library is deprecated in favor of [`@flowdacity/js`](https://www.npmjs.com/package/@flowdacity/js) and [`@flowdacity/react`](https://www.npmjs.com/package/@flowdacity/react)
 
 # Typebot JS library
 

@@ -1,13 +1,13 @@
 ## Install
 
 ```bash
-npm install @typebot.io/js @typebot.io/nextjs
+npm install @flowdacity/js @flowdacity/nextjs
 ```
 
 ## Standard
 
 ```tsx
-import { Standard } from '@typebot.io/nextjs'
+import { Standard } from '@flowdacity/nextjs'
 
 const App = () => {
   return (
@@ -24,7 +24,7 @@ This code is creating a container with a 100% width (will match parent width) an
 ## Popup
 
 ```tsx
-import { Popup } from '@typebot.io/nextjs'
+import { Popup } from '@flowdacity/nextjs'
 
 const App = () => {
   return <Popup typebot="lead-generation-copy-3luzm6b" autoShowDelay={3000} />
@@ -38,19 +38,19 @@ This code will automatically trigger the popup window after 3 seconds.
 You can use these commands:
 
 ```js
-import { open } from '@typebot.io/nextjs'
+import { open } from '@flowdacity/nextjs'
 
 open()
 ```
 
 ```js
-import { close } from '@typebot.io/nextjs'
+import { close } from '@flowdacity/nextjs'
 
 close()
 ```
 
 ```js
-import { toggle } from '@typebot.io/nextjs'
+import { toggle } from '@flowdacity/nextjs'
 
 toggle()
 ```
@@ -58,7 +58,7 @@ toggle()
 ## Bubble
 
 ```tsx
-import { Bubble } from '@typebot.io/nextjs'
+import { Bubble } from '@flowdacity/nextjs'
 
 const App = () => {
   return (
@@ -85,13 +85,13 @@ This code will show the bubble and let a preview message appear after 5 seconds.
 You can use these commands:
 
 ```js
-import { showPreviewMessage } from '@typebot.io/nextjs'
+import { showPreviewMessage } from '@flowdacity/nextjs'
 
 Typebot.showPreviewMessage()
 ```
 
 ```js
-import { hidePreviewMessage } from '@typebot.io/nextjs'
+import { hidePreviewMessage } from '@flowdacity/nextjs'
 
 Typebot.hidePreviewMessage()
 ```
@@ -101,19 +101,19 @@ Typebot.hidePreviewMessage()
 You can use these commands:
 
 ```js
-import { open } from '@typebot.io/nextjs'
+import { open } from '@flowdacity/nextjs'
 
 open()
 ```
 
 ```js
-import { close } from '@typebot.io/nextjs'
+import { close } from '@flowdacity/nextjs'
 
 close()
 ```
 
 ```js
-import { toggle } from '@typebot.io/nextjs'
+import { toggle } from '@flowdacity/nextjs'
 
 toggle()
 ```
@@ -123,7 +123,7 @@ toggle()
 You can prefill the bot variable values in your embed code by adding the `prefilledVariables` option. Here is an example:
 
 ```tsx
-import { Standard } from '@typebot.io/nextjs'
+import { Standard } from '@flowdacity/nextjs'
 
 const App = () => {
   return (

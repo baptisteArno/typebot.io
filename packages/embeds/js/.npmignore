@@ -1,6 +1,7 @@
 src
 .eslintignore
 .eslintrc.cjs
+.turbo
 rollup.config.js
 tailwind.config.cjs
 tsconfig.json

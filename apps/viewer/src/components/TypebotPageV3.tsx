@@ -1,4 +1,4 @@
-import { Standard } from '@typebot.io/nextjs'
+import { Standard } from '@flowdacity/nextjs'
 import { useRouter } from 'next/router'
 import { SEO } from './Seo'
 import { Typebot } from '@typebot.io/schemas/features/typebot/typebot'

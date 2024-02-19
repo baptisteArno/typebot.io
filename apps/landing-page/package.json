@@ -15,7 +15,7 @@
     "@emotion/styled": "11.11.0",
     "@fontsource/league-spartan": "^5.0.18",
     "@typebot.io/lib": "workspace:*",
-    "@typebot.io/nextjs": "workspace:*",
+    "@flowdacity/nextjs": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "aos": "2.3.4",

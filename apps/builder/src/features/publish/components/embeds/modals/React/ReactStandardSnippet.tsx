@@ -12,7 +12,7 @@ export const ReactStandardSnippet = ({
 }: ReactStandardSnippetProps) => {
   const { typebot } = useTypebot()
   const snippet = prettier.format(
-    `import { Standard } from "@typebot.io/react";
+    `import { Standard } from "@flowdacity/react";
 
       const App = () => {
         return <Standard ${parseReactBotProps({

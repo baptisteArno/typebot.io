@@ -35,11 +35,11 @@ export const WordpressStandardInstructions = ({ publicId }: Props) => {
       <ListItem>
         Install{' '}
         <Link
-          href="https://wordpress.org/plugins/typebot/"
+          href="https://wordpress.org/plugins/flowdacity/"
           isExternal
           color={useColorModeValue('blue.500', 'blue.300')}
         >
-          the official Typebot WordPress plugin
+          the official Flowdacity WordPress plugin
           <ExternalLinkIcon mx="2px" />
         </Link>
       </ListItem>

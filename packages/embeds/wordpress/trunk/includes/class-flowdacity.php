@@ -1,6 +1,6 @@
 <?php
 
-class Typebot
+class Flowdacity
 {
 
 	protected $loader;
@@ -9,12 +9,12 @@ class Typebot
 
 	public function __construct()
 	{
-		if (defined('TYPEBOT_VERSION')) {
-			$this->version = TYPEBOT_VERSION;
+		if (defined('FLOWDACITY_VERSION')) {
+			$this->version = FLOWDACITY_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->plugin_name = 'typebot';
+		$this->plugin_name = 'flowdacity';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -25,32 +25,32 @@ class Typebot
 	private function load_dependencies()
 	{
 
-		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-typebot-loader.php';
-		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-typebot-i18n.php';
-		require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-typebot-admin.php';
-		require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-typebot-public.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-flowdacity-loader.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-flowdacity-i18n.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-flowdacity-admin.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-flowdacity-public.php';
 
-		$this->loader = new Typebot_Loader();
+		$this->loader = new Flowdacity_Loader();
 	}
 
 	private function set_locale()
 	{
-		$plugin_i18n = new Typebot_i18n();
+		$plugin_i18n = new Flowdacity_i18n();
 		$this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
 	}
 
 	private function define_admin_hooks()
 	{
-		$plugin_admin = new Typebot_Admin($this->get_version());
+		$plugin_admin = new Flowdacity_Admin($this->get_version());
 		$this->loader->add_action('admin_menu', $plugin_admin, 'my_admin_menu');
-		$this->loader->add_action('admin_init', $plugin_admin, 'register_typebot_settings');
+		$this->loader->add_action('admin_init', $plugin_admin, 'register_flowdacity_settings');
 	}
 
 	private function define_public_hooks()
 	{
-		$plugin_public = new Typebot_Public($this->get_plugin_name(), $this->get_version());
+		$plugin_public = new Flowdacity_Public($this->get_plugin_name(), $this->get_version());
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'add_head_code');
-		$this->loader->add_shortcode('typebot', $plugin_public, 'add_typebot_container');
+		$this->loader->add_shortcode('flowdacity', $plugin_public, 'add_flowdacity_container');
 	}
 
 	public function run()

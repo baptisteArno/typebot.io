@@ -1,5 +1,5 @@
 {
-  "name": "@typebot.io/js",
+  "name": "@flowdacity/js",
   "version": "0.2.41",
   "description": "Javascript library to display typebots on your website",
   "type": "module",

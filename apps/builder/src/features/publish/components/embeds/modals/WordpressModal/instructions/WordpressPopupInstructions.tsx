@@ -34,11 +34,11 @@ export const WordpressPopupInstructions = ({
       <ListItem>
         Install{' '}
         <Link
-          href="https://wordpress.org/plugins/typebot/"
+          href="https://wordpress.org/plugins/flowdacity/"
           isExternal
           color={useColorModeValue('blue.500', 'blue.300')}
         >
-          the official Typebot WordPress plugin
+          the official Flowdacity WordPress plugin
           <ExternalLinkIcon mx="2px" />
         </Link>
       </ListItem>
@@ -50,8 +50,8 @@ export const WordpressPopupInstructions = ({
             }
           />
           <Text>
-            You can now place the following code snippet in the Typebot panel in
-            your WordPress admin:
+            You can now place the following code snippet in the Flowdacity panel
+            in your WordPress admin:
           </Text>
           <CodeEditor value={initCode} lang="javascript" isReadOnly />
         </Stack>

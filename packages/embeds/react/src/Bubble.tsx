@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react'
-import type { BubbleProps } from '@typebot.io/js'
-import '@typebot.io/js/dist/web'
+import type { BubbleProps } from '@flowdacity/js'
+import '@flowdacity/js/dist/web'
 
 type Props = BubbleProps
 

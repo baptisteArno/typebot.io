@@ -1,6 +1,6 @@
 import { ColorPicker } from '@/components/ColorPicker'
 import { Heading, HStack, Stack, Text } from '@chakra-ui/react'
-import { PreviewMessageTheme } from '@typebot.io/nextjs'
+import { PreviewMessageTheme } from '@flowdacity/nextjs'
 import React from 'react'
 
 type Props = {
