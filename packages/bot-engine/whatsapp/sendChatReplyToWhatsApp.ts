@@ -17,6 +17,7 @@ import { computeTypingDuration } from '../computeTypingDuration'
 import { continueBotFlow } from '../continueBotFlow'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 
 // Media can take some time to be delivered. This make sure we don't send a message before the media is delivered.
 const messageAfterMediaTimeout = 5000
@@ -39,7 +40,10 @@ export const sendChatReplyToWhatsApp = async ({
   credentials,
   state,
 }: Props): Promise<void> => {
-  const messagesBeforeInput = isLastMessageIncludedInInput(input)
+  const messagesBeforeInput = isLastMessageIncludedInInput(
+    input,
+    messages.at(-1)
+  )
     ? messages.slice(0, -1)
     : messages
 
@@ -202,10 +206,14 @@ const getTypingDuration = ({
 }
 
 const isLastMessageIncludedInInput = (
-  input: ContinueChatResponse['input']
+  input: ContinueChatResponse['input'],
+  lastMessage?: ContinueChatResponse['messages'][number]
 ): boolean => {
   if (isNotDefined(input)) return false
-  return input.type === InputBlockType.CHOICE
+  return (
+    input.type === InputBlockType.CHOICE &&
+    (!lastMessage || lastMessage.type === BubbleBlockType.TEXT)
+  )
 }
 
 const executeClientSideAction =
