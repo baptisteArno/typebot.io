@@ -103,7 +103,7 @@ const parseComparisonOperatorSymbol = (operator: ComparisonOperators) => {
         return 'não contém'
     case ComparisonOperators.BETWEEN:
         return ' estiver entre '
-    case ComparisonOperators.BETWEEN:
+    case ComparisonOperators.NOT_BETWEEN:
         return ' não estiver entre '
   }
 }
