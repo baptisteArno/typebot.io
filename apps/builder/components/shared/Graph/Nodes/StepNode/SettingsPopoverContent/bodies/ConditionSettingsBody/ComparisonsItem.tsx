@@ -73,7 +73,8 @@ export const ComparisonItem = ({
       ComparisonOperators.GREATER_OR_EQUAL,
       ComparisonOperators.LESS,
       ComparisonOperators.LESS_OR_EQUAL,
-      ComparisonOperators.BETWEEN
+      ComparisonOperators.BETWEEN,
+      ComparisonOperators.NOT_BETWEEN
     ]
 
     if (!myVariable || (myVariable?.type || '') === '') return allTypesArray
@@ -87,7 +88,7 @@ export const ComparisonItem = ({
   useEffect(() => {
       const index = Object.keys(ComparisonOperators).indexOf(myComparisonOperator  || ComparisonOperators.EQUAL)
       const myValue = Object.values(ComparisonOperators)[index]
-      setNeedSecondaryValue([ComparisonOperators.BETWEEN].includes(myValue))
+      setNeedSecondaryValue([ComparisonOperators.BETWEEN, ComparisonOperators.NOT_BETWEEN].includes(myValue))
       setNeedValue(![ComparisonOperators.EMPTY, ComparisonOperators.NOT_EMPTY].includes(myValue))
     }, [myComparisonOperator]
   )

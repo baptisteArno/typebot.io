@@ -72,7 +72,8 @@ export enum ComparisonOperators {
   NOT_END_WITH = 'Não terminar com',
   CONTAINS = 'Contém',
   NOT_CONTAINS = 'Não contém',
-  BETWEEN = 'Estiver entre'
+  BETWEEN = 'Estiver entre',
+  NOT_BETWEEN = 'Não estiver entre',
 }
 
 export type ConditionContent = {
