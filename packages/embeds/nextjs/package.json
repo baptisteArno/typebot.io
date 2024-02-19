@@ -12,7 +12,7 @@
     "format:check": "prettier --check ./src"
   },
   "keywords": [],
-  "author": "Baptiste Arnaud",
+  "author": "Ochui Princewill",
   "license": "ISC",
   "devDependencies": {
     "@babel/preset-react": "7.22.5",
