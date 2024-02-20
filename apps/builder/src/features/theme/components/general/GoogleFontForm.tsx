@@ -1,0 +1,44 @@
+import { Select } from '@/components/inputs/Select'
+import { env } from '@typebot.io/env'
+import { GoogleFont } from '@typebot.io/schemas'
+import { useState, useEffect } from 'react'
+
+type Props = {
+  font: GoogleFont | string
+  onFontChange: (font: GoogleFont) => void
+}
+
+export const GoogleFontForm = ({ font, onFontChange }: Props) => {
+  const [currentFont, setCurrentFont] = useState(
+    typeof font === 'string' ? font : font.family
+  )
+  const [googleFonts, setGoogleFonts] = useState<string[]>([])
+
+  useEffect(() => {
+    fetchPopularFonts().then(setGoogleFonts)
+  }, [])
+
+  const fetchPopularFonts = async () => {
+    if (!env.NEXT_PUBLIC_GOOGLE_API_KEY) return []
+    const response = await fetch(
+      `https://www.googleapis.com/webfonts/v1/webfonts?key=${env.NEXT_PUBLIC_GOOGLE_API_KEY}&sort=popularity`
+    )
+    return (await response.json()).items.map(
+      (item: { family: string }) => item.family
+    )
+  }
+
+  const handleFontSelected = (nextFont: string | undefined) => {
+    if (nextFont === currentFont || !nextFont) return
+    setCurrentFont(nextFont)
+    onFontChange({ type: 'Google', family: nextFont })
+  }
+
+  return (
+    <Select
+      selectedItem={currentFont}
+      items={googleFonts}
+      onSelect={handleFontSelected}
+    />
+  )
+}
