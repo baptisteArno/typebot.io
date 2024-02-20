@@ -1,7 +1,7 @@
 import { parseVariables } from '@/features/variables'
 import { IntegrationState } from '@/types'
 import {
-  WebhookBlock,
+  HttpRequestBlock,
   ZapierBlock,
   MakeComBlock,
   PabblyConnectBlock,
@@ -11,7 +11,7 @@ import { stringify } from 'qs'
 import { sendRequest, byId } from '@typebot.io/lib'
 
 export const executeWebhook = async (
-  block: WebhookBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock,
+  block: HttpRequestBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock,
   {
     blockId,
     variables,

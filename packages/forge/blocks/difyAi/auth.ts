@@ -10,7 +10,7 @@ const extractBaseUrl = (val: string | undefined) => {
 
 export const auth = {
   type: 'encryptedCredentials',
-  name: 'Dify.AI account',
+  name: 'Dify.AI assistant',
   schema: option.object({
     apiEndpoint: option.string
       .layout({

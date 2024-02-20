@@ -170,6 +170,7 @@ const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
         const block = typebot.groups[groupIndex].blocks[
           blockIndex
         ] as BlockWithItems
+        if (block.items.length === 1) return
         const removingItem = block.items[itemIndex]
         block.items.splice(itemIndex, 1)
         deleteConnectedEdgesDraft(typebot, removingItem.id)

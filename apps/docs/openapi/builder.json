@@ -554,14 +554,37 @@
                                                       "type": {
                                                         "type": "string",
                                                         "enum": [
-                                                          "Today",
                                                           "Now",
                                                           "Yesterday",
-                                                          "Tomorrow",
+                                                          "Tomorrow"
+                                                        ]
+                                                      },
+                                                      "timeZone": {
+                                                        "type": "string"
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "type"
+                                                    ]
+                                                  },
+                                                  {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "variableId": {
+                                                        "type": "string"
+                                                      },
+                                                      "isExecutedOnClient": {
+                                                        "type": "boolean"
+                                                      },
+                                                      "type": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "Today",
                                                           "Moment of the day",
                                                           "Empty",
                                                           "Environment name",
                                                           "User ID",
+                                                          "Result ID",
                                                           "Random ID",
                                                           "Phone number",
                                                           "Contact name"
@@ -1954,7 +1977,8 @@
                                                 "type": "string",
                                                 "enum": [
                                                   "Webhook"
-                                                ]
+                                                ],
+                                                "description": "Legacy name for HTTP Request block"
                                               },
                                               "options": {
                                                 "type": "object",
@@ -4926,14 +4950,37 @@
                                                   "type": {
                                                     "type": "string",
                                                     "enum": [
-                                                      "Today",
                                                       "Now",
                                                       "Yesterday",
-                                                      "Tomorrow",
+                                                      "Tomorrow"
+                                                    ]
+                                                  },
+                                                  "timeZone": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "type"
+                                                ]
+                                              },
+                                              {
+                                                "type": "object",
+                                                "properties": {
+                                                  "variableId": {
+                                                    "type": "string"
+                                                  },
+                                                  "isExecutedOnClient": {
+                                                    "type": "boolean"
+                                                  },
+                                                  "type": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "Today",
                                                       "Moment of the day",
                                                       "Empty",
                                                       "Environment name",
                                                       "User ID",
+                                                      "Result ID",
                                                       "Random ID",
                                                       "Phone number",
                                                       "Contact name"
@@ -6326,7 +6373,8 @@
                                             "type": "string",
                                             "enum": [
                                               "Webhook"
-                                            ]
+                                            ],
+                                            "description": "Legacy name for HTTP Request block"
                                           },
                                           "options": {
                                             "type": "object",
@@ -8349,14 +8397,37 @@
                                                   "type": {
                                                     "type": "string",
                                                     "enum": [
-                                                      "Today",
                                                       "Now",
                                                       "Yesterday",
-                                                      "Tomorrow",
+                                                      "Tomorrow"
+                                                    ]
+                                                  },
+                                                  "timeZone": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "type"
+                                                ]
+                                              },
+                                              {
+                                                "type": "object",
+                                                "properties": {
+                                                  "variableId": {
+                                                    "type": "string"
+                                                  },
+                                                  "isExecutedOnClient": {
+                                                    "type": "boolean"
+                                                  },
+                                                  "type": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "Today",
                                                       "Moment of the day",
                                                       "Empty",
                                                       "Environment name",
                                                       "User ID",
+                                                      "Result ID",
                                                       "Random ID",
                                                       "Phone number",
                                                       "Contact name"
@@ -9749,7 +9820,8 @@
                                             "type": "string",
                                             "enum": [
                                               "Webhook"
-                                            ]
+                                            ],
+                                            "description": "Legacy name for HTTP Request block"
                                           },
                                           "options": {
                                             "type": "object",
@@ -16835,14 +16907,37 @@
                           "type": {
                             "type": "string",
                             "enum": [
-                              "Today",
                               "Now",
                               "Yesterday",
-                              "Tomorrow",
+                              "Tomorrow"
+                            ]
+                          },
+                          "timeZone": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "variableId": {
+                            "type": "string"
+                          },
+                          "isExecutedOnClient": {
+                            "type": "boolean"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "Today",
                               "Moment of the day",
                               "Empty",
                               "Environment name",
                               "User ID",
+                              "Result ID",
                               "Random ID",
                               "Phone number",
                               "Contact name"
@@ -18177,7 +18272,8 @@
                     "type": "string",
                     "enum": [
                       "Webhook"
-                    ]
+                    ],
+                    "description": "Legacy name for HTTP Request block"
                   },
                   "options": {
                     "type": "object",
@@ -20325,14 +20421,37 @@
                                   "type": {
                                     "type": "string",
                                     "enum": [
-                                      "Today",
                                       "Now",
                                       "Yesterday",
-                                      "Tomorrow",
+                                      "Tomorrow"
+                                    ]
+                                  },
+                                  "timeZone": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "type"
+                                ]
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "variableId": {
+                                    "type": "string"
+                                  },
+                                  "isExecutedOnClient": {
+                                    "type": "boolean"
+                                  },
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "Today",
                                       "Moment of the day",
                                       "Empty",
                                       "Environment name",
                                       "User ID",
+                                      "Result ID",
                                       "Random ID",
                                       "Phone number",
                                       "Contact name"
@@ -21725,7 +21844,8 @@
                             "type": "string",
                             "enum": [
                               "Webhook"
-                            ]
+                            ],
+                            "description": "Legacy name for HTTP Request block"
                           },
                           "options": {
                             "type": "object",
@@ -23122,14 +23242,37 @@
                                   "type": {
                                     "type": "string",
                                     "enum": [
-                                      "Today",
                                       "Now",
                                       "Yesterday",
-                                      "Tomorrow",
+                                      "Tomorrow"
+                                    ]
+                                  },
+                                  "timeZone": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "type"
+                                ]
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "variableId": {
+                                    "type": "string"
+                                  },
+                                  "isExecutedOnClient": {
+                                    "type": "boolean"
+                                  },
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "Today",
                                       "Moment of the day",
                                       "Empty",
                                       "Environment name",
                                       "User ID",
+                                      "Result ID",
                                       "Random ID",
                                       "Phone number",
                                       "Contact name"
@@ -24522,7 +24665,8 @@
                             "type": "string",
                             "enum": [
                               "Webhook"
-                            ]
+                            ],
+                            "description": "Legacy name for HTTP Request block"
                           },
                           "options": {
                             "type": "object",
