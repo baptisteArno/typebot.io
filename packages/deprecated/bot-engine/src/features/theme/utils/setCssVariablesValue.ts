@@ -50,7 +50,8 @@ const setGeneralTheme = (
 ) => {
   const { background, font } = generalTheme
   if (background) setTypebotBackground
-  if (font) documentStyle.setProperty(cssVariableNames.general.fontFamily, font)
+  if (font && typeof font === 'string')
+    documentStyle.setProperty(cssVariableNames.general.fontFamily, font)
 }
 
 const setChatTheme = (
