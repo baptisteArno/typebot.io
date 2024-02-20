@@ -15,19 +15,14 @@ import {
   BubbleStepContent,
   IntegrationStepType,
   defaultTextBubbleContent,
-  defaultImageBubbleContent,
   defaultVideoBubbleContent,
   defaultGenericInputOptions,
   defaultEmailInputOptions,
   defaultCpfInputOptions,
   defaultDateInputOptions,
   defaultPhoneInputOptions,
-  defaultUrlInputOptions,
   defaultChoiceInputOptions,
   defaultAskNameOptions,
-  defaultSetVariablesOptions,
-  defaultRedirectOptions,
-  defaultCodeOptions,
   defaultWebhookOptions,
   StepWithOptionsType,
   Item,
@@ -56,6 +51,8 @@ import {
   WOZStepType,
   defaultWOZSuggestionOptions,
   WOZSuggestionOptions,
+  defaultConversationTagOptions,
+  ConversationTagOptions
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
@@ -70,7 +67,6 @@ import {
   stepHasItems,
   stepTypeHasItems,
   stepTypeHasOption,
-  stepTypeHasWebhook,
 } from 'utils'
 import { dequal } from 'dequal'
 import { stringify } from 'qs'
@@ -85,8 +81,7 @@ import { diff } from 'deep-object-diff'
 import { duplicateWebhook } from 'services/webhook'
 import { Plan } from 'model'
 import { isDefined } from '@chakra-ui/utils'
-import { headers, services, subDomain } from '@octadesk-tech/services'
-import { config } from 'config/octadesk.config'
+import { subDomain } from '@octadesk-tech/services'
 import { sendOctaRequest } from 'util/octaRequest'
 
 export type TypebotInDashboard = Pick<
@@ -249,11 +244,11 @@ const duplicateTypebot = (
       })),
       settings:
         typebot.settings.general.isBrandingEnabled === false &&
-        userPlan === Plan.FREE
+          userPlan === Plan.FREE
           ? {
-              ...typebot.settings,
-              general: { ...typebot.settings.general, isBrandingEnabled: true },
-            }
+            ...typebot.settings,
+            general: { ...typebot.settings.general, isBrandingEnabled: true },
+          }
           : typebot.settings,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -318,8 +313,8 @@ export const parseNewStep = (
     options: isOctaStepType(type)
       ? parseOctaStepOptions(type)
       : stepTypeHasOption(type)
-      ? parseDefaultStepOptions(type)
-      : undefined,
+        ? parseDefaultStepOptions(type)
+        : undefined,
     items: stepTypeHasItems(type) ? parseDefaultItems(type, id) : undefined,
   } as DraggableStep
 }
@@ -331,7 +326,8 @@ const parseDefaultItems = (
     | OctaStepType.OFFICE_HOURS
     | IntegrationStepType.WEBHOOK
     | OctaWabaStepType.WHATSAPP_OPTIONS_LIST
-    | OctaWabaStepType.WHATSAPP_BUTTONS_LIST,
+    | OctaWabaStepType.WHATSAPP_BUTTONS_LIST
+    | OctaWabaStepType.COMMERCE,
   stepId: string
 ): Item[] => {
   switch (type) {
@@ -393,6 +389,8 @@ const parseDefaultItems = (
           },
         },
       ]
+    case OctaWabaStepType.COMMERCE:
+      return []
     case IntegrationStepType.WEBHOOK:
       return [
         {
@@ -451,8 +449,7 @@ const parseDefaultContent = (
   }
 }
 
-const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType | WOZStepType): OctaStepOptions | OctaWabaStepOptions | WOZSuggestionOptions | null => {
-
+const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType | WOZStepType): OctaStepOptions | OctaWabaStepOptions | WOZSuggestionOptions | ConversationTagOptions | null => {
   switch (type) {
     case OctaStepType.ASSIGN_TO_TEAM:
       return defaultAssignToTeamOptions
@@ -464,6 +461,8 @@ const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType | WOZStepTyp
       return defaultCommerceOptions
     case OctaStepType.PRE_RESERVE:
       return defaultPreReserveOptions
+    case OctaStepType.CONVERSATION_TAG:
+      return defaultConversationTagOptions
     case WOZStepType.MESSAGE:
       return defaultWOZSuggestionOptions
     case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:

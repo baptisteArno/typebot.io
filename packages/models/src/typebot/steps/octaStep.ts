@@ -9,12 +9,7 @@ import {
 import { TextBubbleContent, WOZStepType } from './bubble'
 
 // Regular steps
-export type OctaStep =
-  | AssignToTeamStep
-  | OfficeHourStep
-  | CallOtherBotStep
-  | PreReserveStep
-  | CommerceStep
+export type OctaStep = AssignToTeamStep | OfficeHourStep | CallOtherBotStep | PreReserveStep | CommerceStep | ConversationTagStep
 
 // Waba steps
 
@@ -32,6 +27,7 @@ export type OctaStepOptions =
   | CallOtherBotOptions
   | PreReserveOptions
   | CommerceOptions
+  | ConversationTagOptions
 
 export type OctaWabaStepOptions =
   | WhatsAppOptionsListOptions
@@ -44,6 +40,7 @@ export type OctaStepWithOptions =
   | OfficeHourStep
   | CallOtherBotStep
   | PreReserveStep
+  | ConversationTagStep
 
 // Steps that has variables on its body
 export type OctaBubbleStepContent = EndConversationBubbleContent
@@ -62,6 +59,7 @@ export enum OctaStepType {
   ASSIGN_TO_TEAM = 'assign to team',
   CALL_OTHER_BOT = 'call other bot',
   PRE_RESERVE = 'pre reserve',
+  CONVERSATION_TAG = 'conversation tag'
 }
 
 // Waba step types
@@ -89,6 +87,11 @@ export type AssignToTeamStep = StepBase & {
 export type WOZSuggestionStep = StepBase & {
   type: WOZStepType.MESSAGE
   options: WOZSuggestionOptions
+}
+
+export type ConversationTagStep = StepBase & {
+  type: OctaStepType.CONVERSATION_TAG
+  options: ConversationTagOptions
 }
 
 export type PreReserveStep = StepBase & {
@@ -226,6 +229,13 @@ export type AssignToTeamOptions = BaseOctaOptions & {
 export type PreReserveOptions = BaseOctaOptions & {
   assignTo: string
   assignType: string
+}
+
+export type ConversationTagOptions = {
+  tags: Array<{
+    _id: string
+    name: string
+  }>
 }
 
 export type WOZSuggestionOptions = BaseOctaOptions & {
@@ -373,7 +383,14 @@ export const defaultPreReserveOptions: PreReserveOptions = {
   assignTo: '',
   assignType: '',
   name: '',
-  subject: '',
+  subject: ''
+}
+
+export const defaultConversationTagOptions: ConversationTagOptions = {
+  tags: [{
+    _id: '',
+    name: ''
+  }]
 }
 
 export const defaultWOZSuggestionOptions: WOZSuggestionOptions = {
@@ -391,20 +408,20 @@ export const defaultCallOtherBotOptions: CallOtherBotOptions = {
 
 const seeYa = 'Até mais!'
 export const defaultEndConversationBubbleContent: EndConversationBubbleContent =
-  {
-    html: `<div style="margin-left: 8px;">${seeYa}</div>`,
-    richText: [
-      {
-        children: [
-          {
-            text: seeYa,
-          },
-        ],
-        type: 'p',
-      },
-    ],
-    plainText: seeYa,
-  }
+{
+  html: `<div style="margin-left: 8px;">${seeYa}</div>`,
+  richText: [
+    {
+      children: [
+        {
+          text: seeYa,
+        },
+      ],
+      type: 'p',
+    },
+  ],
+  plainText: seeYa,
+}
 
 export const defaultCommerceOptions: CommerceOptions = {
   catalogId: '',
