@@ -116,6 +116,7 @@ const getTypebotFromPublicId = async (publicId?: string) => {
           publishedTypebot.settings.general?.isHideQueryParamsEnabled ??
           defaultSettings.general.isHideQueryParamsEnabled,
         metadata: publishedTypebot.settings.metadata ?? {},
+        font: publishedTypebot.theme.general?.font ?? null,
       } satisfies Pick<
         TypebotV3PageProps,
         | 'name'
@@ -123,6 +124,7 @@ const getTypebotFromPublicId = async (publicId?: string) => {
         | 'background'
         | 'isHideQueryParamsEnabled'
         | 'metadata'
+        | 'font'
       >)
     : publishedTypebot
 }
@@ -161,6 +163,7 @@ const getTypebotFromCustomDomain = async (customDomain: string) => {
           publishedTypebot.settings.general?.isHideQueryParamsEnabled ??
           defaultSettings.general.isHideQueryParamsEnabled,
         metadata: publishedTypebot.settings.metadata ?? {},
+        font: publishedTypebot.theme.general?.font ?? null,
       } satisfies Pick<
         TypebotV3PageProps,
         | 'name'
@@ -168,6 +171,7 @@ const getTypebotFromCustomDomain = async (customDomain: string) => {
         | 'background'
         | 'isHideQueryParamsEnabled'
         | 'metadata'
+        | 'font'
       >)
     : publishedTypebot
 }
@@ -196,6 +200,7 @@ const App = ({
         | 'background'
         | 'isHideQueryParamsEnabled'
         | 'metadata'
+        | 'font'
       >
   incompatibleBrowser: string | null
 }) => {
@@ -231,6 +236,7 @@ const App = ({
         publishedTypebot.background ?? defaultTheme.general.background
       }
       metadata={publishedTypebot.metadata ?? {}}
+      font={publishedTypebot.font}
     />
   )
 }

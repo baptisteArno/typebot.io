@@ -13,7 +13,6 @@ import {
 } from '@typebot.io/schemas'
 import { Log } from '@typebot.io/prisma'
 import { LiteBadge } from './LiteBadge'
-import { isNotEmpty } from '@typebot.io/lib'
 import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/constants'
 import { env } from '@typebot.io/env'
 
@@ -74,7 +73,7 @@ export const TypebotViewer = ({
       </style>
       <style>{typebot.theme?.customCss}</style>
       <style>{importantStyles}</style>
-      {isNotEmpty(typebot?.theme?.general?.font) && (
+      {typebot?.theme?.general?.font && (
         <style
           dangerouslySetInnerHTML={{
             __html: `@import url('https://fonts.googleapis.com/css2?family=${
