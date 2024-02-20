@@ -10,7 +10,7 @@ import {
 import { ReactNode } from 'react'
 
 type Props<T extends string> = {
-  options: (T | { value: T; label: ReactNode })[]
+  options: readonly (T | { value: T; label: ReactNode })[]
   value?: T
   defaultValue?: T
   direction?: 'row' | 'column'
