@@ -13,7 +13,7 @@ export const injectFont = (font: Font) => {
       defaultTheme.general.font.family
     if (existingFont?.getAttribute('href')?.includes(fontFamily)) return
     const fontElement = document.createElement('link')
-    fontElement.href = `${googleFontCdnBaseUrl}?family=${fontFamily}:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');')`
+    fontElement.href = `${googleFontCdnBaseUrl}?family=${fontFamily}:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap`
     fontElement.rel = 'stylesheet'
     fontElement.id = 'bot-font'
     document.head.appendChild(fontElement)

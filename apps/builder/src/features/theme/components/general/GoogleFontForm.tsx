@@ -20,12 +20,17 @@ export const GoogleFontForm = ({ font, onFontChange }: Props) => {
 
   const fetchPopularFonts = async () => {
     if (!env.NEXT_PUBLIC_GOOGLE_API_KEY) return []
-    const response = await fetch(
-      `https://www.googleapis.com/webfonts/v1/webfonts?key=${env.NEXT_PUBLIC_GOOGLE_API_KEY}&sort=popularity`
-    )
-    return (await response.json()).items.map(
-      (item: { family: string }) => item.family
-    )
+    try {
+      const response = await fetch(
+        `https://www.googleapis.com/webfonts/v1/webfonts?key=${env.NEXT_PUBLIC_GOOGLE_API_KEY}&sort=popularity`
+      )
+      return (await response.json()).items.map(
+        (item: { family: string }) => item.family
+      )
+    } catch (error) {
+      console.error('Failed to fetch Google Fonts:', error)
+      return []
+    }
   }
 
   const handleFontSelected = (nextFont: string | undefined) => {
