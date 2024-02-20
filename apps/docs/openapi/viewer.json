@@ -6697,7 +6697,52 @@
             "type": "object",
             "properties": {
               "font": {
-                "type": "string"
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "Google"
+                            ]
+                          },
+                          "family": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "Custom"
+                            ]
+                          },
+                          "family": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ]
+                      }
+                    ]
+                  }
+                ]
               },
               "background": {
                 "type": "object",

@@ -213,7 +213,7 @@ const AvatarPreview = ({
   avatar: NonNullable<Theme['chat']>['hostAvatar']
 }) => {
   const { t } = useTranslate()
-  if (avatar?.isEnabled) return null
+  if (!avatar?.isEnabled) return null
   return avatar?.url ? (
     <Image
       src={avatar.url}
