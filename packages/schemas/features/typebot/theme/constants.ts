@@ -6,6 +6,8 @@ export enum BackgroundType {
   NONE = 'None',
 }
 
+export const fontTypes = ['Google', 'Custom'] as const
+
 export const defaultTheme = {
   chat: {
     roundness: 'medium',
@@ -25,7 +27,10 @@ export const defaultTheme = {
     },
   },
   general: {
-    font: 'Open Sans',
+    font: {
+      type: 'Google',
+      family: 'Open Sans',
+    },
     background: { type: BackgroundType.COLOR, content: '#ffffff' },
   },
 } as const satisfies Theme

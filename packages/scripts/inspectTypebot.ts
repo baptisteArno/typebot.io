@@ -1,21 +1,26 @@
 import { PrismaClient } from '@typebot.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 import * as p from '@clack/prompts'
+import { isCancel } from '@clack/prompts'
 
 const inspectTypebot = async () => {
   await promptAndSetEnvironment('production')
 
-  const type = (await p.select({
+  const type = await p.select<any, 'id' | 'publicId'>({
     message: 'Select way',
     options: [
       { label: 'ID', value: 'id' },
       { label: 'Public ID', value: 'publicId' },
     ],
-  })) as 'id' | 'publicId'
+  })
 
-  const val = (await p.text({
+  if (!type || isCancel(type)) process.exit()
+
+  const val = await p.text({
     message: 'Enter value',
-  })) as string
+  })
+
+  if (!val || isCancel(val)) process.exit()
 
   const prisma = new PrismaClient({
     log: [{ emit: 'event', level: 'query' }, 'info', 'warn', 'error'],

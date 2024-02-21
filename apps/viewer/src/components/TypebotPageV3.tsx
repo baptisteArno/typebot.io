@@ -4,17 +4,20 @@ import { SEO } from './Seo'
 import { Typebot } from '@typebot.io/schemas/features/typebot/typebot'
 import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/constants'
 import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
+import { Font } from '@typebot.io/schemas'
 
 export type TypebotV3PageProps = {
   url: string
   name: string
   publicId: string | null
+  font: Font | null
   isHideQueryParamsEnabled: boolean | null
   background: NonNullable<Typebot['theme']['general']>['background']
   metadata: Typebot['settings']['metadata']
 }
 
 export const TypebotPageV3 = ({
+  font,
   publicId,
   name,
   url,
@@ -51,7 +54,11 @@ export const TypebotPageV3 = ({
       }}
     >
       <SEO url={url} typebotName={name} metadata={metadata} />
-      <Standard typebot={publicId} onInit={clearQueryParamsIfNecessary} />
+      <Standard
+        typebot={publicId}
+        onInit={clearQueryParamsIfNecessary}
+        font={font ?? undefined}
+      />
     </div>
   )
 }

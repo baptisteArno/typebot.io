@@ -68,7 +68,9 @@ const setGeneralTheme = (
   )
   documentStyle.setProperty(
     cssVariableNames.general.fontFamily,
-    generalTheme.font ?? defaultTheme.general.font
+    (typeof generalTheme.font === 'string'
+      ? generalTheme.font
+      : generalTheme.font?.family) ?? defaultTheme.general.font.family
   )
 }
 
