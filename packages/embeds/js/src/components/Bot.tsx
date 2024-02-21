@@ -133,7 +133,8 @@ export const Bot = (props: BotProps & { class?: string }) => {
     if (
       props.typebot.theme.general?.progressBar?.isEnabled &&
       initialChatReply() &&
-      !initialChatReply()?.typebot.theme.general?.progressBar?.isEnabled
+      !initialChatReply()?.typebot.theme.general?.progressBar?.isEnabled &&
+      isInitialized()
     ) {
       setIsInitialized(false)
       initializeBot().then()
