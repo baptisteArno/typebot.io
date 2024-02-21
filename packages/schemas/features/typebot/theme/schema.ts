@@ -1,6 +1,11 @@
 import { ThemeTemplate as ThemeTemplatePrisma } from '@typebot.io/prisma'
 import { z } from '../../../zod'
-import { BackgroundType, fontTypes } from './constants'
+import {
+  BackgroundType,
+  fontTypes,
+  progressBarPlacements,
+  progressBarPositions,
+} from './constants'
 
 const avatarPropsSchema = z.object({
   isEnabled: z.boolean().optional(),
@@ -51,9 +56,20 @@ export const fontSchema = z
   .or(z.discriminatedUnion('type', [googleFontSchema, customFontSchema]))
 export type Font = z.infer<typeof fontSchema>
 
+const progressBarSchema = z.object({
+  isEnabled: z.boolean().optional(),
+  color: z.string().optional(),
+  backgroundColor: z.string().optional(),
+  placement: z.enum(progressBarPlacements).optional(),
+  thickness: z.number().optional(),
+  position: z.enum(progressBarPositions).optional(),
+})
+export type ProgressBar = z.infer<typeof progressBarSchema>
+
 const generalThemeSchema = z.object({
   font: fontSchema.optional(),
   background: backgroundSchema.optional(),
+  progressBar: progressBarSchema.optional(),
 })
 
 export const themeSchema = z

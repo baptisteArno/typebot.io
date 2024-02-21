@@ -357,6 +357,9 @@ const setNewAnswerInState =
 
     return {
       ...state,
+      progressMetadata: state.progressMetadata
+        ? { totalAnswers: state.progressMetadata.totalAnswers + 1 }
+        : undefined,
       typebotsQueue: state.typebotsQueue.map((typebot, index) =>
         index === 0
           ? {

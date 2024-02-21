@@ -6,7 +6,7 @@ import {
   useDisclosure,
   Text,
 } from '@chakra-ui/react'
-import { Background, Font, Theme } from '@typebot.io/schemas'
+import { Background, Font, ProgressBar, Theme } from '@typebot.io/schemas'
 import React from 'react'
 import { BackgroundSelector } from './BackgroundSelector'
 import { LockTag } from '@/features/billing/components/LockTag'
@@ -24,6 +24,7 @@ import { env } from '@typebot.io/env'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { RadioButtons } from '@/components/inputs/RadioButtons'
 import { FontForm } from './FontForm'
+import { ProgressBarForm } from './ProgressBarForm'
 
 type Props = {
   isBrandingEnabled: boolean
@@ -62,6 +63,9 @@ export const GeneralSettings = ({
 
   const handleBackgroundChange = (background: Background) =>
     onGeneralThemeChange({ ...generalTheme, background })
+
+  const updateProgressBar = (progressBar: ProgressBar) =>
+    onGeneralThemeChange({ ...generalTheme, progressBar })
 
   const updateBranding = () => {
     if (isBrandingEnabled && isWorkspaceFreePlan) return
@@ -126,6 +130,12 @@ export const GeneralSettings = ({
       <BackgroundSelector
         background={generalTheme?.background ?? defaultTheme.general.background}
         onBackgroundChange={handleBackgroundChange}
+      />
+      <ProgressBarForm
+        progressBar={
+          generalTheme?.progressBar ?? defaultTheme.general.progressBar
+        }
+        onProgressBarChange={updateProgressBar}
       />
     </Stack>
   )

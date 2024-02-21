@@ -1,6 +1,6 @@
 import { LiteBadge } from './LiteBadge'
 import { createEffect, createSignal, onCleanup, onMount, Show } from 'solid-js'
-import { isNotDefined, isNotEmpty } from '@typebot.io/lib'
+import { isDefined, isNotDefined, isNotEmpty } from '@typebot.io/lib'
 import { startChatQuery } from '@/queries/startChatQuery'
 import { ConversationContainer } from './ConversationContainer'
 import { setIsMobile } from '@/utils/isMobileSignal'
@@ -18,6 +18,7 @@ import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constan
 import { clsx } from 'clsx'
 import { HTTPError } from 'ky'
 import { injectFont } from '@/utils/injectFont'
+import { ProgressBar } from './ProgressBar'
 
 export type BotProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -129,6 +130,14 @@ export const Bot = (props: BotProps & { class?: string }) => {
   createEffect(() => {
     if (isNotDefined(props.typebot) || typeof props.typebot === 'string') return
     setCustomCss(props.typebot.theme.customCss ?? '')
+    if (
+      props.typebot.theme.general?.progressBar?.isEnabled &&
+      initialChatReply() &&
+      !initialChatReply()?.typebot.theme.general?.progressBar?.isEnabled
+    ) {
+      setIsInitialized(false)
+      initializeBot().then()
+    }
   })
 
   onCleanup(() => {
@@ -190,6 +199,9 @@ type BotContentProps = {
 }
 
 const BotContent = (props: BotContentProps) => {
+  const [progressValue, setProgressValue] = createSignal<number | undefined>(
+    props.initialChatReply.progress
+  )
   let botContainer: HTMLDivElement | undefined
 
   const resizeObserver = new ResizeObserver((entries) => {
@@ -207,7 +219,11 @@ const BotContent = (props: BotContentProps) => {
         defaultTheme.general.font
     )
     if (!botContainer) return
-    setCssVariablesValue(props.initialChatReply.typebot.theme, botContainer)
+    setCssVariablesValue(
+      props.initialChatReply.typebot.theme,
+      botContainer,
+      props.context.isPreview
+    )
   })
 
   onCleanup(() => {
@@ -223,6 +239,14 @@ const BotContent = (props: BotContentProps) => {
         props.class
       )}
     >
+      <Show
+        when={
+          isDefined(progressValue()) &&
+          props.initialChatReply.typebot.theme.general?.progressBar?.isEnabled
+        }
+      >
+        <ProgressBar value={progressValue() as number} />
+      </Show>
       <div class="flex w-full h-full justify-center">
         <ConversationContainer
           context={props.context}
@@ -231,6 +255,7 @@ const BotContent = (props: BotContentProps) => {
           onAnswer={props.onAnswer}
           onEnd={props.onEnd}
           onNewLogs={props.onNewLogs}
+          onProgressUpdate={setProgressValue}
         />
       </div>
       <Show

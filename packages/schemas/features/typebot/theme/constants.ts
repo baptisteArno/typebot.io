@@ -8,6 +8,9 @@ export enum BackgroundType {
 
 export const fontTypes = ['Google', 'Custom'] as const
 
+export const progressBarPlacements = ['Top', 'Bottom'] as const
+export const progressBarPositions = ['fixed', 'absolute'] as const
+
 export const defaultTheme = {
   chat: {
     roundness: 'medium',
@@ -32,5 +35,13 @@ export const defaultTheme = {
       family: 'Open Sans',
     },
     background: { type: BackgroundType.COLOR, content: '#ffffff' },
+    progressBar: {
+      isEnabled: false,
+      color: '#0042DA',
+      backgroundColor: '#e0edff',
+      thickness: 4,
+      position: 'fixed',
+      placement: 'Top',
+    },
   },
 } as const satisfies Theme
