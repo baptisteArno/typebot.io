@@ -122,19 +122,14 @@ export const GeneralSettings = ({
           defaultValue={fontType}
           onSelect={updateFontType}
         />
-        <FontForm
-          font={generalTheme?.font ?? defaultTheme.general.font}
-          onFontChange={updateFont}
-        />
+        <FontForm font={generalTheme?.font} onFontChange={updateFont} />
       </Stack>
       <BackgroundSelector
-        background={generalTheme?.background ?? defaultTheme.general.background}
+        background={generalTheme?.background}
         onBackgroundChange={handleBackgroundChange}
       />
       <ProgressBarForm
-        progressBar={
-          generalTheme?.progressBar ?? defaultTheme.general.progressBar
-        }
+        progressBar={generalTheme?.progressBar}
         onProgressBarChange={updateProgressBar}
       />
     </Stack>

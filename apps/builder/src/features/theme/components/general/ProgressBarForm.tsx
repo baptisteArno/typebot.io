@@ -11,7 +11,7 @@ import {
 } from '@typebot.io/schemas/features/typebot/theme/constants'
 
 type Props = {
-  progressBar: ProgressBar
+  progressBar: ProgressBar | undefined
   onProgressBarChange: (progressBar: ProgressBar) => void
 }
 
@@ -41,7 +41,7 @@ export const ProgressBarForm = ({
     <SwitchWithRelatedSettings
       label={'Enable progress bar?'}
       initialValue={
-        progressBar.isEnabled ?? defaultTheme.general.progressBar.isEnabled
+        progressBar?.isEnabled ?? defaultTheme.general.progressBar.isEnabled
       }
       onCheckChange={updateEnabled}
     >
@@ -50,7 +50,7 @@ export const ProgressBarForm = ({
         direction="row"
         label="Placement:"
         currentItem={
-          progressBar.placement ?? defaultTheme.general.progressBar.placement
+          progressBar?.placement ?? defaultTheme.general.progressBar.placement
         }
         onItemSelect={updatePlacement}
         items={progressBarPlacements}
@@ -61,7 +61,7 @@ export const ProgressBarForm = ({
         label="Position when embedded:"
         moreInfoTooltip='Select "fixed" to always position the progress bar at the top of the window even though your bot is embedded. Select "absolute" to position the progress bar at the top of the chat container.'
         currentItem={
-          progressBar.position ?? defaultTheme.general.progressBar.position
+          progressBar?.position ?? defaultTheme.general.progressBar.position
         }
         onItemSelect={updatePosition}
         items={progressBarPositions}
@@ -70,7 +70,7 @@ export const ProgressBarForm = ({
         <Text>Color:</Text>
         <ColorPicker
           defaultValue={
-            progressBar.color ?? defaultTheme.general.progressBar.color
+            progressBar?.color ?? defaultTheme.general.progressBar.color
           }
           onColorChange={updateColor}
         />
@@ -79,7 +79,7 @@ export const ProgressBarForm = ({
         <Text>Background color:</Text>
         <ColorPicker
           defaultValue={
-            progressBar.backgroundColor ??
+            progressBar?.backgroundColor ??
             defaultTheme.general.progressBar.backgroundColor
           }
           onColorChange={updateBackgroundColor}
@@ -90,7 +90,7 @@ export const ProgressBarForm = ({
         <NumberInput
           withVariableButton={false}
           defaultValue={
-            progressBar.thickness ?? defaultTheme.general.progressBar.thickness
+            progressBar?.thickness ?? defaultTheme.general.progressBar.thickness
           }
           onValueChange={updateThickness}
           size="sm"
