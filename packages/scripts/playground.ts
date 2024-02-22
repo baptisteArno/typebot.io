@@ -1,8 +1,5 @@
 import { PrismaClient } from '@typebot.io/prisma'
 import { promptAndSetEnvironment } from './utils'
-import { groupSchema } from '@typebot.io/schemas'
-import { readFileSync, writeFileSync } from 'fs'
-import { exit } from 'process'
 
 const executePlayground = async () => {
   await promptAndSetEnvironment()
@@ -16,26 +13,38 @@ const executePlayground = async () => {
     console.log(e.duration, 'ms')
   })
 
-  const typebots = JSON.parse(readFileSync('typebots.json', 'utf-8')) as any[]
+  const result = await prisma.workspace.findMany({
+    where: {
+      members: {
+        some: {
+          user: {
+            email: '',
+          },
+        },
+      },
+    },
+    include: {
+      members: true,
+      typebots: {
+        select: {
+          name: true,
+          riskLevel: true,
+          id: true,
+        },
+      },
+    },
+  })
+  console.log(JSON.stringify(result))
 
-  for (const typebot of typebots) {
-    for (const group of typebot.groups) {
-      const parser = groupSchema.safeParse(group)
-      if ('error' in parser) {
-        console.log(
-          group.id,
-          parser.error.issues.map((issue) =>
-            JSON.stringify({
-              message: issue.message,
-              path: issue.path,
-            })
-          )
-        )
-        writeFileSync('failedTypebot.json', JSON.stringify(typebot))
-        exit()
-      }
-    }
-  }
+  // await prisma.bannedIp.deleteMany({})
+
+  // const result = await prisma.coupon.findMany({
+  //   where: {
+  //     code: '',
+  //   },
+  // })
+
+  // console.log(result)
 }
 
 executePlayground()

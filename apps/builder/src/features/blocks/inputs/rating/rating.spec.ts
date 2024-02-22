@@ -30,7 +30,7 @@ test('options should work', async ({ page }) => {
 
   await page.goto(`/typebots/${typebotId}/edit`)
 
-  await page.click('text=Preview')
+  await page.click('text=Test')
   await expect(page.locator(`text=Send`)).toBeHidden()
   await page.getByRole('button', { name: '8' }).click()
   await page.locator(`text=Send`).click()

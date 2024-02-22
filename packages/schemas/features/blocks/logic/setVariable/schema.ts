@@ -1,6 +1,9 @@
-import { z } from 'zod'
+import { z } from '../../../../zod'
 import { blockBaseSchema } from '../../shared'
 import { LogicBlockType } from '../constants'
+import { extendZodWithOpenApi } from 'zod-openapi'
+
+extendZodWithOpenApi(z)
 
 const baseOptions = z.object({
   variableId: z.string().optional(),
@@ -10,21 +13,24 @@ const baseOptions = z.object({
 const basicSetVariableOptionsSchema = baseOptions.extend({
   type: z.enum([
     'Today',
-    'Now',
-    'Yesterday',
-    'Tomorrow',
     'Moment of the day',
     'Empty',
     'Environment name',
     'User ID',
+    'Result ID',
     'Random ID',
     'Phone number',
     'Contact name',
   ]),
 })
 
+const dateSetVariableOptionsSchema = baseOptions.extend({
+  type: z.enum(['Now', 'Yesterday', 'Tomorrow']),
+  timeZone: z.string().optional(),
+})
+
 const initialSetVariableOptionsSchema = baseOptions.extend({
-  type: z.undefined(),
+  type: z.undefined().openapi({ type: 'string' }),
   expressionToEvaluate: z.string().optional(),
   isCode: z.boolean().optional(),
 })
@@ -53,6 +59,7 @@ const appendItemToListOptionsSchema = baseOptions.extend({
 
 export const setVariableOptionsSchema = z.discriminatedUnion('type', [
   initialSetVariableOptionsSchema,
+  dateSetVariableOptionsSchema,
   basicSetVariableOptionsSchema,
   customSetVariableOptionsSchema,
   mapListItemsOptionsSchema,

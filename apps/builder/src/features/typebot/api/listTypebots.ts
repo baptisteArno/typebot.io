@@ -11,13 +11,22 @@ export const listTypebots = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/typebots',
+      path: '/v1/typebots',
       protect: true,
       summary: 'List typebots',
       tags: ['Typebot'],
     },
   })
-  .input(z.object({ workspaceId: z.string(), folderId: z.string().optional() }))
+  .input(
+    z.object({
+      workspaceId: z
+        .string()
+        .describe(
+          '[Where to find my workspace ID?](../how-to#how-to-find-my-workspaceid)'
+        ),
+      folderId: z.string().optional(),
+    })
+  )
   .output(
     z.object({
       typebots: z.array(

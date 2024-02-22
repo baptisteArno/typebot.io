@@ -1,16 +1,18 @@
 import prisma from '@typebot.io/lib/prisma'
-import { authenticatedProcedure } from '@/helpers/server/trpc'
+import { publicProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { typebotSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { isReadTypebotForbidden } from '../helpers/isReadTypebotForbidden'
 import { migrateTypebot } from '@typebot.io/lib/migrations/migrateTypebot'
+import { CollaborationType } from '@typebot.io/prisma'
+import { env } from '@typebot.io/env'
 
-export const getTypebot = authenticatedProcedure
+export const getTypebot = publicProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/typebots/{typebotId}',
+      path: '/v1/typebots/{typebotId}',
       protect: true,
       summary: 'Get a typebot',
       tags: ['Typebot'],
@@ -18,10 +20,15 @@ export const getTypebot = authenticatedProcedure
   })
   .input(
     z.object({
-      typebotId: z.string(),
+      typebotId: z
+        .string()
+        .describe(
+          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+        ),
       migrateToLatestVersion: z
         .boolean()
         .optional()
+        .default(false)
         .describe(
           'If enabled, the typebot will be converted to the latest schema version'
         ),
@@ -30,7 +37,7 @@ export const getTypebot = authenticatedProcedure
   .output(
     z.object({
       typebot: typebotSchema,
-      isReadOnly: z.boolean(),
+      currentUserMode: z.enum(['guest', 'read', 'write']),
     })
   )
   .query(
@@ -41,6 +48,17 @@ export const getTypebot = authenticatedProcedure
         },
         include: {
           collaborators: true,
+          workspace: {
+            select: {
+              isSuspended: true,
+              isPastDue: true,
+              members: {
+                select: {
+                  userId: true,
+                },
+              },
+            },
+          },
         },
       })
       if (
@@ -56,10 +74,7 @@ export const getTypebot = authenticatedProcedure
 
         return {
           typebot: parsedTypebot,
-          isReadOnly:
-            existingTypebot.collaborators.find(
-              (collaborator) => collaborator.userId === user.id
-            )?.type === 'READ' ?? false,
+          currentUserMode: getCurrentUserMode(user, existingTypebot),
         }
       } catch (err) {
         throw new TRPCError({
@@ -70,3 +85,25 @@ export const getTypebot = authenticatedProcedure
       }
     }
   )
+
+const getCurrentUserMode = (
+  user: { email: string | null; id: string } | undefined,
+  typebot: { collaborators: { userId: string; type: CollaborationType }[] } & {
+    workspace: { members: { userId: string }[] }
+  }
+) => {
+  const collaborator = typebot.collaborators.find((c) => c.userId === user?.id)
+  const isMemberOfWorkspace = typebot.workspace.members.some(
+    (m) => m.userId === user?.id
+  )
+  if (
+    collaborator?.type === 'WRITE' ||
+    collaborator?.type === 'FULL_ACCESS' ||
+    isMemberOfWorkspace
+  )
+    return 'write'
+
+  if (collaborator) return 'read'
+  if (user?.email && env.ADMIN_EMAIL?.includes(user.email)) return 'read'
+  return 'guest'
+}

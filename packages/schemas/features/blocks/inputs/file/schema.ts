@@ -1,6 +1,7 @@
-import { z } from 'zod'
+import { z } from '../../../../zod'
 import { optionBaseSchema, blockBaseSchema } from '../../shared'
 import { InputBlockType } from '../constants'
+import { fileVisibilityOptions } from './constants'
 
 const fileInputOptionsV5Schema = optionBaseSchema.merge(
   z.object({
@@ -12,9 +13,16 @@ const fileInputOptionsV5Schema = optionBaseSchema.merge(
         button: z.string().optional(),
         clear: z.string().optional(),
         skip: z.string().optional(),
+        success: z
+          .object({
+            single: z.string().optional(),
+            multiple: z.string().optional(),
+          })
+          .optional(),
       })
       .optional(),
     sizeLimit: z.number().optional(),
+    visibility: z.enum(fileVisibilityOptions).optional(),
   })
 )
 
@@ -33,12 +41,20 @@ const fileInputBlockV5Schema = blockBaseSchema.merge(
 )
 
 export const fileInputBlockSchemas = {
-  v5: fileInputBlockV5Schema,
-  v6: fileInputBlockV5Schema.merge(
-    z.object({
-      options: fileInputOptionsSchemas.v6.optional(),
-    })
-  ),
+  v5: fileInputBlockV5Schema.openapi({
+    title: 'File input v5',
+    ref: 'fileInputV5',
+  }),
+  v6: fileInputBlockV5Schema
+    .merge(
+      z.object({
+        options: fileInputOptionsSchemas.v6.optional(),
+      })
+    )
+    .openapi({
+      title: 'File',
+      ref: 'fileInput',
+    }),
 }
 
 const fileInputBlockSchema = z.union([

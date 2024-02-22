@@ -4,12 +4,14 @@ import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { canReadTypebots } from '@/helpers/databaseRules'
 import { totalVisitedEdgesSchema } from '@typebot.io/schemas'
+import { defaultTimeFilter, timeFilterValues } from '../constants'
+import { parseDateFromTimeFilter } from '../helpers/parseDateFromTimeFilter'
 
 export const getTotalVisitedEdges = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/typebots/{typebotId}/analytics/totalVisitedEdges',
+      path: '/v1/typebots/{typebotId}/analytics/totalVisitedEdges',
       protect: true,
       summary: 'List total edges used in results',
       tags: ['Analytics'],
@@ -18,6 +20,7 @@ export const getTotalVisitedEdges = authenticatedProcedure
   .input(
     z.object({
       typebotId: z.string(),
+      timeFilter: z.enum(timeFilterValues).default(defaultTimeFilter),
     })
   )
   .output(
@@ -25,7 +28,7 @@ export const getTotalVisitedEdges = authenticatedProcedure
       totalVisitedEdges: z.array(totalVisitedEdgesSchema),
     })
   )
-  .query(async ({ input: { typebotId }, ctx: { user } }) => {
+  .query(async ({ input: { typebotId, timeFilter }, ctx: { user } }) => {
     const typebot = await prisma.typebot.findFirst({
       where: canReadTypebots(typebotId, user),
       select: { id: true },
@@ -36,11 +39,18 @@ export const getTotalVisitedEdges = authenticatedProcedure
         message: 'Published typebot not found',
       })
 
+    const date = parseDateFromTimeFilter(timeFilter)
+
     const edges = await prisma.visitedEdge.groupBy({
       by: ['edgeId'],
       where: {
         result: {
           typebotId: typebot.id,
+          createdAt: date
+            ? {
+                gte: date,
+              }
+            : undefined,
         },
       },
       _count: { resultId: true },

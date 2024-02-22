@@ -7,7 +7,6 @@ import {
   Heading,
   HStack,
   Stack,
-  Tag,
 } from '@chakra-ui/react'
 import { ChatIcon, CodeIcon, DropletIcon, TableIcon } from '@/components/icons'
 import { ChatTheme, GeneralTheme, ThemeTemplate } from '@typebot.io/schemas'
@@ -19,9 +18,12 @@ import { ChatThemeSettings } from './chat/ChatThemeSettings'
 import { GeneralSettings } from './general/GeneralSettings'
 import { ThemeTemplates } from './ThemeTemplates'
 import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
+import { useTranslate } from '@tolgee/react'
 
 export const ThemeSideMenu = () => {
-  const { typebot, updateTypebot } = useTypebot()
+  const { t } = useTranslate()
+
+  const { typebot, updateTypebot, currentUserMode } = useTypebot()
 
   const updateChatTheme = (chat: ChatTheme) =>
     typebot && updateTypebot({ updates: { theme: { ...typebot.theme, chat } } })
@@ -63,44 +65,42 @@ export const ThemeSideMenu = () => {
       borderRightWidth={1}
       pt={10}
       spacing={10}
-      overflowY="scroll"
+      overflowY="auto"
       pb="20"
       position="relative"
     >
       <Heading fontSize="xl" textAlign="center">
-        Customize the theme
+        {t('theme.sideMenu.title')}
       </Heading>
       <Accordion allowMultiple>
-        <AccordionItem>
-          <AccordionButton py={6}>
-            <HStack flex="1" pl={2}>
-              <TableIcon />
-              <Heading fontSize="lg">
-                <HStack>
-                  <span>Templates</span> <Tag colorScheme="orange">New!</Tag>
-                </HStack>
-              </Heading>
-            </HStack>
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel pb={12}>
-            {typebot && (
-              <ThemeTemplates
-                selectedTemplateId={
-                  typebot.selectedThemeTemplateId ?? undefined
-                }
-                currentTheme={typebot.theme}
-                workspaceId={typebot.workspaceId}
-                onTemplateSelect={selectedTemplate}
-              />
-            )}
-          </AccordionPanel>
-        </AccordionItem>
+        {currentUserMode === 'write' && (
+          <AccordionItem>
+            <AccordionButton py={6}>
+              <HStack flex="1" pl={2}>
+                <TableIcon />
+                <Heading fontSize="lg">{t('theme.sideMenu.template')}</Heading>
+              </HStack>
+              <AccordionIcon />
+            </AccordionButton>
+            <AccordionPanel pb={12}>
+              {typebot && (
+                <ThemeTemplates
+                  selectedTemplateId={
+                    typebot.selectedThemeTemplateId ?? undefined
+                  }
+                  currentTheme={typebot.theme}
+                  workspaceId={typebot.workspaceId}
+                  onTemplateSelect={selectedTemplate}
+                />
+              )}
+            </AccordionPanel>
+          </AccordionItem>
+        )}
         <AccordionItem>
           <AccordionButton py={6}>
             <HStack flex="1" pl={2}>
               <DropletIcon />
-              <Heading fontSize="lg">Global</Heading>
+              <Heading fontSize="lg">{t('theme.sideMenu.global')}</Heading>
             </HStack>
             <AccordionIcon />
           </AccordionButton>
@@ -122,7 +122,7 @@ export const ThemeSideMenu = () => {
           <AccordionButton py={6}>
             <HStack flex="1" pl={2}>
               <ChatIcon />
-              <Heading fontSize="lg">Chat</Heading>
+              <Heading fontSize="lg">{t('theme.sideMenu.chat')}</Heading>
             </HStack>
             <AccordionIcon />
           </AccordionButton>
@@ -141,7 +141,7 @@ export const ThemeSideMenu = () => {
           <AccordionButton py={6}>
             <HStack flex="1" pl={2}>
               <CodeIcon />
-              <Heading fontSize="lg">Custom CSS</Heading>
+              <Heading fontSize="lg">{t('theme.sideMenu.customCSS')}</Heading>
             </HStack>
             <AccordionIcon />
           </AccordionButton>

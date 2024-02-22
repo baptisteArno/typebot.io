@@ -207,7 +207,7 @@ test('Preview from group should work', async ({ page }) => {
     page.locator('typebot-standard').locator('text="Hello this is group 2"')
   ).toBeVisible()
   await page.click('[aria-label="Close"]')
-  await page.click('text="Preview"')
+  await page.click('text="Test"')
   await expect(
     page.locator('typebot-standard').locator('text="Hello this is group 1"')
   ).toBeVisible()

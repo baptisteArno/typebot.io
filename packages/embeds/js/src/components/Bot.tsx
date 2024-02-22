@@ -1,7 +1,7 @@
 import { LiteBadge } from './LiteBadge'
 import { createEffect, createSignal, onCleanup, onMount, Show } from 'solid-js'
 import { isNotDefined, isNotEmpty } from '@typebot.io/lib'
-import { getInitialChatReplyQuery } from '@/queries/getInitialChatReplyQuery'
+import { startChatQuery } from '@/queries/startChatQuery'
 import { ConversationContainer } from './ConversationContainer'
 import { setIsMobile } from '@/utils/isMobileSignal'
 import { BotContext, InitialChatReply, OutgoingLog } from '@/types'
@@ -12,8 +12,12 @@ import {
 } from '@/utils/storage'
 import { setCssVariablesValue } from '@/utils/setCssVariablesValue'
 import immutableCss from '../assets/immutable.css'
-import { InputBlock, StartElementId } from '@typebot.io/schemas'
+import { Font, InputBlock } from '@typebot.io/schemas'
+import { StartFrom } from '@typebot.io/schemas'
 import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
+import { clsx } from 'clsx'
+import { HTTPError } from 'ky'
+import { injectFont } from '@/utils/injectFont'
 
 export type BotProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -22,12 +26,14 @@ export type BotProps = {
   resultId?: string
   prefilledVariables?: Record<string, unknown>
   apiHost?: string
+  font?: Font
   onNewInputBlock?: (inputBlock: InputBlock) => void
   onAnswer?: (answer: { message: string; blockId: string }) => void
   onInit?: () => void
   onEnd?: () => void
   onNewLogs?: (logs: OutgoingLog[]) => void
-} & StartElementId
+  startFrom?: StartFrom
+}
 
 export const Bot = (props: BotProps & { class?: string }) => {
   const [initialChatReply, setInitialChatReply] = createSignal<
@@ -38,6 +44,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
   const [error, setError] = createSignal<Error | undefined>()
 
   const initializeBot = async () => {
+    if (props.font) injectFont(props.font)
     setIsInitialized(true)
     const urlParams = new URLSearchParams(location.search)
     props.onInit?.()
@@ -47,11 +54,13 @@ export const Bot = (props: BotProps & { class?: string }) => {
     })
     const typebotIdFromProps =
       typeof props.typebot === 'string' ? props.typebot : undefined
-    const { data, error } = await getInitialChatReplyQuery({
+    const isPreview =
+      typeof props.typebot !== 'string' || (props.isPreview ?? false)
+    const { data, error } = await startChatQuery({
       stripeRedirectStatus: urlParams.get('redirect_status') ?? undefined,
       typebot: props.typebot,
       apiHost: props.apiHost,
-      isPreview: props.isPreview ?? false,
+      isPreview,
       resultId: isNotEmpty(props.resultId)
         ? props.resultId
         : getExistingResultIdFromStorage(typebotIdFromProps),
@@ -59,29 +68,44 @@ export const Bot = (props: BotProps & { class?: string }) => {
         ...prefilledVariables,
         ...props.prefilledVariables,
       },
-      ...('startGroupId' in props
-        ? { startGroupId: props.startGroupId }
-        : 'startEventId' in props
-        ? { startEventId: props.startEventId }
-        : {}),
+      startFrom: props.startFrom,
     })
-    if (error && 'code' in error && typeof error.code === 'string') {
-      if (typeof props.typebot !== 'string' || (props.isPreview ?? false)) {
+    if (error instanceof HTTPError) {
+      if (isPreview) {
         return setError(
-          new Error('An error occurred while loading the bot.', {
-            cause: error.message,
+          new Error(`An error occurred while loading the bot.`, {
+            cause: {
+              status: error.response.status,
+              body: await error.response.json(),
+            },
           })
         )
       }
-      if (['BAD_REQUEST', 'FORBIDDEN'].includes(error.code))
+      if (error.response.status === 400 || error.response.status === 403)
         return setError(new Error('This bot is now closed.'))
-      if (error.code === 'NOT_FOUND')
+      if (error.response.status === 404)
         return setError(new Error("The bot you're looking for doesn't exist."))
+      return setError(
+        new Error(
+          `Error! Couldn't initiate the chat. (${error.response.statusText})`
+        )
+      )
     }
 
     if (!data) {
-      if (error) console.error(error)
-      return setError(new Error("Error! Couldn't initiate the chat."))
+      if (error) {
+        console.error(error)
+        if (isPreview) {
+          return setError(
+            new Error(`Error! Could not reach server. Check your connection.`, {
+              cause: error,
+            })
+          )
+        }
+      }
+      return setError(
+        new Error('Error! Could not reach server. Check your connection.')
+      )
     }
 
     if (data.resultId && typebotIdFromProps)
@@ -172,34 +196,16 @@ const BotContent = (props: BotContentProps) => {
     return setIsMobile(entries[0].target.clientWidth < 400)
   })
 
-  const injectCustomFont = () => {
-    const existingFont = document.getElementById('bot-font')
-    if (
-      existingFont
-        ?.getAttribute('href')
-        ?.includes(
-          props.initialChatReply.typebot?.theme?.general?.font ??
-            defaultTheme.general.font
-        )
-    )
-      return
-    const font = document.createElement('link')
-    font.href = `https://fonts.bunny.net/css2?family=${
-      props.initialChatReply.typebot?.theme?.general?.font ??
-      defaultTheme.general.font
-    }:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');')`
-    font.rel = 'stylesheet'
-    font.id = 'bot-font'
-    document.head.appendChild(font)
-  }
-
   onMount(() => {
     if (!botContainer) return
     resizeObserver.observe(botContainer)
   })
 
   createEffect(() => {
-    injectCustomFont()
+    injectFont(
+      props.initialChatReply.typebot.theme.general?.font ??
+        defaultTheme.general.font
+    )
     if (!botContainer) return
     setCssVariablesValue(props.initialChatReply.typebot.theme, botContainer)
   })
@@ -212,10 +218,10 @@ const BotContent = (props: BotContentProps) => {
   return (
     <div
       ref={botContainer}
-      class={
-        'relative flex w-full h-full text-base overflow-hidden bg-cover bg-center flex-col items-center typebot-container ' +
+      class={clsx(
+        'relative flex w-full h-full text-base overflow-hidden bg-cover bg-center flex-col items-center typebot-container @container',
         props.class
-      }
+      )}
     >
       <div class="flex w-full h-full justify-center">
         <ConversationContainer

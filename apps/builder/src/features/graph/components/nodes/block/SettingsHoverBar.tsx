@@ -8,6 +8,8 @@ import {
 } from '@chakra-ui/react'
 import { BlockWithOptions } from '@typebot.io/schemas'
 import { getHelpDocUrl } from '@/features/graph/helpers/getHelpDocUrl'
+import { useForgedBlock } from '@/features/forge/hooks/useForgedBlock'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   blockType: BlockWithOptions['type']
@@ -15,7 +17,9 @@ type Props = {
 }
 
 export const SettingsHoverBar = ({ blockType, onExpandClick }: Props) => {
-  const helpDocUrl = getHelpDocUrl(blockType)
+  const { t } = useTranslate()
+  const { blockDef } = useForgedBlock(blockType)
+  const helpDocUrl = getHelpDocUrl(blockType, blockDef)
   return (
     <HStack
       rounded="md"
@@ -34,17 +38,19 @@ export const SettingsHoverBar = ({ blockType, onExpandClick }: Props) => {
         onClick={onExpandClick}
         size="xs"
       />
-      <Button
-        as={Link}
-        leftIcon={<BuoyIcon />}
-        borderLeftRadius="none"
-        size="xs"
-        variant="ghost"
-        href={helpDocUrl}
-        isExternal
-      >
-        Help
-      </Button>
+      {helpDocUrl && (
+        <Button
+          as={Link}
+          leftIcon={<BuoyIcon />}
+          borderLeftRadius="none"
+          size="xs"
+          variant="ghost"
+          href={helpDocUrl}
+          isExternal
+        >
+          {t('help')}
+        </Button>
+      )}
     </HStack>
   )
 }

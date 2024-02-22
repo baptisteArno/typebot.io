@@ -1,0 +1,53 @@
+---
+title: Script block
+icon: code
+---
+
+The "Script" block allows you to execute Javascript code.
+
+<Info>This block doesn't allow you to create a custom visual block</Info>
+
+<Frame>
+  <img src="/images/blocks/logic/code.png" width="600" alt="Code block" />
+</Frame>
+
+<Info>
+Variables in script are not parsed, they are evaluated. So it should be treated as if it were real javascript variables.
+
+You need to write `console.log({{My variable}})` instead of `console.log("{{My variable}}")`
+
+</Info>
+
+## `setVariable` function
+
+If you want to set a variable value with Javascript, the [Set variable block](./set-variable) is more appropriate for most cases.
+
+However, if you'd like to set variables with the script blocks, you can use the `setVariable` function in your script:
+
+```js
+if({{My variable}} === 'foo') {
+  setVariable('My variable', 'bar')
+} else {
+  setVariable('My variable', 'other')
+}
+```
+
+The `setVariable` function is only available in script executed on the server, so it won't work if the `Execute on client?` is checked.
+
+## Examples
+
+### Reload page
+
+```js
+window.location.reload()
+```
+
+### Redirect if a variable has a specific value
+
+```js
+if({{Category}} === 'qualified') {
+  window.location.href = 'https://my-site.com'
+}
+```
+
+Do you need to do something but you're not sure how to? [Join the Discord server](https://typebot.io/discord) and get instant help!

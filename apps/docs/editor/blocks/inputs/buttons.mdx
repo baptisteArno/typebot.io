@@ -1,0 +1,103 @@
+---
+title: Buttons
+icon: arrow-pointer
+---
+
+The Buttons input block allows you to offer your user predefined choices, either single choice options or multiple choices
+
+## Single choice
+
+Single choice input allows you to directly split your flow depending on what the user selects by linking any choice to a specific path in your flow.
+
+Link the "Default" item to determine the default path independent of what the user chooses.
+
+<Tabs>
+  <Tab title="Flow">
+    <Frame>
+      <img
+        src="/images/blocks/inputs/single-choice-flow.png"
+        alt="Buttons input in flow"
+        className="rounded-lg"
+      />
+    </Frame>
+  </Tab>
+  <Tab title="Bot">
+    <Frame>
+      <img
+        src="/images/blocks/inputs/single-choice-bot.png"
+        alt="Buttons input in bot"
+        className="rounded-lg"
+      />
+    </Frame>
+  </Tab>
+</Tabs>
+
+## Multiple choices
+
+<Tabs>
+  <Tab title="Flow">
+    <Frame>
+      <img
+        src="/images/blocks/inputs/multiple-choices-flow.png"
+        alt="Multiple choices in flow"
+        className="rounded-lg"
+      />
+    </Frame>
+  </Tab>
+  <Tab title="Bot">
+    <video
+      controls
+      autoPlay
+      className="rounded-lg"
+      src="/images/blocks/inputs/multiple-choices-bot.mp4"
+    ></video>
+  </Tab>
+</Tabs>
+
+## Dynamic items
+
+Instead of adding items manually, you can also display a dynamic list of items based on a variable.
+
+<Frame>
+  <img
+    src="/images/blocks/inputs/buttons-dynamic.png"
+    alt="Dynamic items list"
+  />
+</Frame>
+
+This is useful when you want to display a list of items from another data source. For this to work, you first need to make sure the variable you are using contains a list of values. This list can be extracted from an integration block like Google Sheets.
+
+## How to
+
+### Add a "Other" button
+
+Sometimes you want to allow your user to enter a value that is not in the predefined choices. You can do this by adding a "Other" button and connect it to a "Text" input block.
+
+<Frame>
+  <img src="/images/blocks/inputs/buttons-other.png" alt="Other button flow" />
+</Frame>
+
+### Different replies based on multiple choices
+
+If you'd like to have different replies based on the multiple choices the user selects. You will need to
+
+1. Save the answer into a variable.
+2. Add a "Condition" block
+3. Add comparisons based on the value of this variable
+
+<Frame>
+  <img
+    src="/images/blocks/inputs/buttons-condition.png"
+    alt="Condition multiple button flow"
+  />
+</Frame>
+
+### Conditionally display a certain button
+
+<div className="relative" style={{ paddingBottom: '64.5933014354067%' }}>
+  <iframe
+    src="https://www.youtube.com/embed/c7LhC5BRSIA"
+    allowFullScreen
+    className="absolute top-0 left-0 w-full h-full"
+  />
+</div>

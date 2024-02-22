@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from '../../../../zod'
 import {
   optionBaseSchema,
   blockBaseSchema,
@@ -54,12 +54,17 @@ export const paymentInputRuntimeOptionsSchema = z.object({
   publicKey: z.string(),
 })
 
-export const paymentInputSchema = blockBaseSchema.merge(
-  z.object({
-    type: z.enum([InputBlockType.PAYMENT]),
-    options: paymentInputOptionsSchema.optional(),
+export const paymentInputSchema = blockBaseSchema
+  .merge(
+    z.object({
+      type: z.enum([InputBlockType.PAYMENT]),
+      options: paymentInputOptionsSchema.optional(),
+    })
+  )
+  .openapi({
+    title: 'Payment',
+    ref: 'paymentInput',
   })
-)
 
 export const stripeCredentialsSchema = z
   .object({

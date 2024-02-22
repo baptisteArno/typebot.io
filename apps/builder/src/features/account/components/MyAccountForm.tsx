@@ -28,7 +28,7 @@ export const MyAccountForm = () => {
   }
 
   return (
-    <Stack spacing="6" w="full" overflowY="scroll">
+    <Stack spacing="6" w="full" overflowY="auto">
       <HStack spacing={6}>
         <Avatar
           size="lg"

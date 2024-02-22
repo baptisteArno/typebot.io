@@ -1,0 +1,252 @@
+---
+title: Run
+---
+
+An action can do one of the following things:
+
+- Execute a function on the server (most common)
+- If block is followed by a streamable variable, stream the variable on the client. Otherwise, execute a function on the server.
+- Execute a function on the client
+- Display a custom embed bubble
+
+## Server function
+
+The most common action is to execute a function on the server. This is done by simply declaring that function in the action block.
+
+Example:
+
+```ts
+export const sendMessage = createAction({
+  // ...
+  run: {
+    server: async ({
+      credentials: { apiKey },
+      options: { botId, message, responseMapping, threadId },
+      variables,
+      logs,
+    }) => {
+      const res: ChatNodeResponse = await got
+        .post(apiBaseUrl + botId, {
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+          },
+          json: {
+            message,
+            chat_session_id: isEmpty(threadId) ? undefined : threadId,
+          },
+        })
+        .json()
+
+      if (res.error)
+        logs.add({
+          status: 'error',
+          description: res.error,
+        })
+
+      if (res.error)
+        logs.responseMapping?.forEach((mapping) => {
+          if (!mapping.variableId) return
+
+          const item = mapping.item ?? 'Message'
+          if (item === 'Message') variables.set(mapping.variableId, res.message)
+
+          if (item === 'Thread ID')
+            variables.set(mapping.variableId, res.chat_session_id)
+        })
+    },
+  },
+})
+```
+
+As you can see the function takes `credentials`, `options`, `variables` and `logs` as arguments.
+
+The `credentials` are the credentials that the user has entered in the credentials block.
+
+The `options` are the options that the user has entered in the options block.
+
+The `variables` object contains helper to save and get variables if necessary.
+
+The `logs` allows you to log anything during the function execution. These logs will be displayed as toast in the preview mode or in the Results tab on production.
+
+## Server function + stream
+
+If your block can stream a message (like OpenAI), you can implement a stream object to handle it.
+
+```ts
+export const createChatCompletion = createAction({
+  // ...
+  run: {
+    server: async (params) => {
+      //...
+    },
+    stream: {
+      getStreamVariableId: (options) =>
+        options.responseMapping?.find(
+          (res) => res.item === 'Message content' || !res.item
+        )?.variableId,
+      run: async ({ credentials: { apiKey }, options, variables }) => {
+        const config = {
+          apiKey,
+          baseURL: options.baseUrl,
+          defaultHeaders: {
+            'api-key': apiKey,
+          },
+          defaultQuery: options.apiVersion
+            ? {
+                'api-version': options.apiVersion,
+              }
+            : undefined,
+        } satisfies ClientOptions
+
+        const openai = new OpenAI(config)
+
+        const response = await openai.chat.completions.create({
+          model: options.model ?? defaultOpenAIOptions.model,
+          temperature: options.temperature
+            ? Number(options.temperature)
+            : undefined,
+          stream: true,
+          messages: parseChatCompletionMessages({ options, variables }),
+        })
+
+        return OpenAIStream(response)
+      },
+    },
+  },
+})
+```
+
+The `getStreamVariableId` function defines which variable should be streamed.
+
+The `run` works the same as the [server function](./run#server-function). It needs to return `Promise<ReadableStream<any> | undefined>`.
+
+## Client function
+
+If you want to execute a function on the client instead of the server, you can use the `client` object.
+
+<Info>
+  This makes your block only compatible with the Web runtime. It won't work on
+  WhatsApp for example, the block will simply be skipped.
+</Info>
+
+Example:
+
+```ts
+export const shoutName = createAction({
+  // ...
+  run: {
+    web: ({ options }) => {
+      return {
+        args: {
+          name: options.name ?? null,
+        },
+        content: `alert('Hello ' + name)`,
+      }
+    },
+  },
+})
+```
+
+The web function needs to return an object with `args` and `content`.
+
+`args` is an object with arguments that are passed to the `content` context. Note that the arguments can't be `undefined`. If you want to pass an not defined argument, you need to pass `null` instead.
+
+`content` is the code that will be executed on the client. It can call the arguments passed in `args`.
+
+## Display embed bubble
+
+If you want to display a custom embed bubble, you can use the `displayEmbedBubble` object. See [Cal.com
+block](https://github.com/baptisteArno/typebot.io/blob/main/packages/forge/blocks/calCom/actions/bookEvent.ts)
+as an example.
+
+Example:
+
+```ts
+export const bookEvent = createAction({
+  // ...
+  run: {
+    web: {
+      displayEmbedBubble: {
+        parseInitFunction: ({ options }) => {
+          if (!options.link) throw new Error('Missing link')
+          const baseUrl = options.baseUrl ?? defaultBaseUrl
+          const link = options.link?.startsWith('http')
+            ? options.link.replace(/http.+:\/\/[^\/]+\//, '')
+            : options.link
+          return {
+            args: {
+              baseUrl,
+              link: link ?? '',
+              name: options.name ?? null,
+              email: options.email ?? null,
+              layout: parseLayoutAttr(options.layout),
+            },
+            content: `(function (C, A, L) {
+                let p = function (a, ar) {
+                  a.q.push(ar);
+                };
+                let d = C.document;
+                C.Cal =
+                  C.Cal ||
+                  function () {
+                    let cal = C.Cal;
+                    let ar = arguments;
+                    if (!cal.loaded) {
+                      cal.ns = {};
+                      cal.q = cal.q || [];
+                      d.head.appendChild(d.createElement("script")).src = A;
+                      cal.loaded = true;
+                    }
+                    if (ar[0] === L) {
+                      const api = function () {
+                        p(api, arguments);
+                      };
+                      const namespace = ar[1];
+                      api.q = api.q || [];
+                      typeof namespace === "string"
+                        ? (cal.ns[namespace] = api) && p(api, ar)
+                        : p(cal, ar);
+                      return;
+                    }
+                    p(cal, ar);
+                  };
+              })(window, baseUrl + "/embed/embed.js", "init");
+              Cal("init", { origin: baseUrl });
+
+              Cal("inline", {
+                elementOrSelector: typebotElement,
+                calLink: link,
+                layout,
+                config: {
+                  name: name ?? undefined,
+                  email: email ?? undefined,
+                }
+              });
+
+              Cal("ui", {"hideEventTypeDetails":false,layout});`,
+          }
+        },
+      },
+      waitForEvent: {
+        getSaveVariableId: ({ saveBookedDateInVariableId }) =>
+          saveBookedDateInVariableId,
+        parseFunction: () => {
+          return {
+            args: {},
+            content: `Cal("on", {
+                action: "bookingSuccessful",
+                callback: (e) => {
+                  continueFlow(e.detail.data.date)
+                }
+              })`,
+          }
+        },
+      },
+    },
+  },
+})
+```
+
+The `displayEmbedBubble` accepts a `parseInitFunction` function. This function needs to return the same object as the [`web` function](./run#client-function). The function content can use the `typebotElement` variable to get the DOM element where the block is rendered.
+
+Optionally you can also define a `waitForEvent` object. This object accepts a `getSaveVariableId` function that returns the variable id where the event data should be saved. It also accepts a `parseFunction` function that returns the same object as the [`web` function](./run#client-function). The function content can use the `continueFlow` function to continue the flow with the event data.

@@ -76,7 +76,7 @@ export const MultipleChoicesForm = (props: Props) => {
         class={
           'flex flex-wrap justify-end gap-2' +
           (props.options?.isSearchable
-            ? ' overflow-y-scroll max-h-80 rounded-md hide-scrollbar'
+            ? ' overflow-y-scroll max-h-80 rounded-md'
             : '')
         }
       >

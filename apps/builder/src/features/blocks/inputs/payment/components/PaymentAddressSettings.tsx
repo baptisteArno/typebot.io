@@ -9,6 +9,7 @@ import {
 import React from 'react'
 import { TextInput } from '@/components/inputs'
 import { PaymentAddress } from '@typebot.io/schemas'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   address: PaymentAddress
@@ -16,6 +17,8 @@ type Props = {
 }
 
 export const PaymentAddressSettings = ({ address, onAddressChange }: Props) => {
+  const { t } = useTranslate()
+
   const updateCountry = (country: string) =>
     onAddressChange({
       ...address,
@@ -56,37 +59,41 @@ export const PaymentAddressSettings = ({ address, onAddressChange }: Props) => {
     <Accordion allowToggle>
       <AccordionItem>
         <AccordionButton justifyContent="space-between">
-          Address
+          {t('blocks.inputs.payment.settings.address.label')}
           <AccordionIcon />
         </AccordionButton>
         <AccordionPanel py={4} as={Stack} spacing="4">
           <TextInput
-            label="Country:"
+            label={t('blocks.inputs.payment.settings.address.country.label')}
             defaultValue={address?.country ?? ''}
             onChange={updateCountry}
           />
           <TextInput
-            label="Line 1:"
+            label={t('blocks.inputs.payment.settings.address.line.label', {
+              line: '1',
+            })}
             defaultValue={address?.line1 ?? ''}
             onChange={updateLine1}
           />
           <TextInput
-            label="Line 2:"
+            label={t('blocks.inputs.payment.settings.address.line.label', {
+              line: '2',
+            })}
             defaultValue={address?.line2 ?? ''}
             onChange={updateLine2}
           />
           <TextInput
-            label="City:"
+            label={t('blocks.inputs.payment.settings.address.city.label')}
             defaultValue={address?.city ?? ''}
             onChange={updateCity}
           />
           <TextInput
-            label="State:"
+            label={t('blocks.inputs.payment.settings.address.state.label')}
             defaultValue={address?.state ?? ''}
             onChange={updateState}
           />
           <TextInput
-            label="Postal code:"
+            label={t('blocks.inputs.payment.settings.address.postalCode.label')}
             defaultValue={address?.postalCode ?? ''}
             onChange={updatePostalCode}
           />

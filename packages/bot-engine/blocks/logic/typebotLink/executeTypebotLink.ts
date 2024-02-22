@@ -3,7 +3,7 @@ import {
   TypebotLinkBlock,
   SessionState,
   Variable,
-  ReplyLog,
+  ChatLog,
   Edge,
   typebotInSessionStateSchema,
   TypebotInSession,
@@ -19,7 +19,7 @@ export const executeTypebotLink = async (
   state: SessionState,
   block: TypebotLinkBlock
 ): Promise<ExecuteLogicResponse> => {
-  const logs: ReplyLog[] = []
+  const logs: ChatLog[] = []
   const typebotId = block.options?.typebotId
   if (!typebotId) {
     logs.push({

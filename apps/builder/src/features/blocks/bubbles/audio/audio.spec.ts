@@ -35,7 +35,7 @@ test('should work as expected', async ({ page }) => {
       'gm'
     )
   )
-  await page.getByRole('button', { name: 'Preview', exact: true }).click()
+  await page.getByRole('button', { name: 'Test', exact: true }).click()
   await expect(page.locator('audio')).toHaveAttribute(
     'src',
     RegExp(

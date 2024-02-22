@@ -11,7 +11,7 @@ export const createCheckoutSession = authenticatedProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/billing/subscription/checkout',
+      path: '/v1/billing/subscription/checkout',
       protect: true,
       summary: 'Create checkout session to create a new subscription',
       tags: ['Billing'],

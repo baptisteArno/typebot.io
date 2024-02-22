@@ -1,5 +1,5 @@
 import {
-  ChatReply,
+  ContinueChatResponse,
   Group,
   InputBlock,
   RuntimeOptions,
@@ -20,21 +20,26 @@ import { injectVariableValuesInButtonsInputBlock } from './blocks/inputs/buttons
 import { injectVariableValuesInPictureChoiceBlock } from './blocks/inputs/pictureChoice/injectVariableValuesInPictureChoiceBlock'
 import { getPrefilledInputValue } from './getPrefilledValue'
 import { parseDateInput } from './blocks/inputs/date/parseDateInput'
-import { deepParseVariables } from './variables/deepParseVariables'
+import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
 import {
   BubbleBlockWithDefinedContent,
   parseBubbleBlock,
 } from './parseBubbleBlock'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { VisitedEdge } from '@typebot.io/prisma'
+import { env } from '@typebot.io/env'
+import { TRPCError } from '@trpc/server'
+import { ExecuteIntegrationResponse, ExecuteLogicResponse } from './types'
+import { createId } from '@paralleldrive/cuid2'
 
 type ContextProps = {
   version: 1 | 2
   state: SessionState
-  currentReply?: ChatReply
+  currentReply?: ContinueChatResponse
   currentLastBubbleId?: string
   firstBubbleWasStreamed?: boolean
   visitedEdges: VisitedEdge[]
+  startTime?: number
 }
 
 export const executeGroup = async (
@@ -46,14 +51,20 @@ export const executeGroup = async (
     currentReply,
     currentLastBubbleId,
     firstBubbleWasStreamed,
+    startTime,
   }: ContextProps
 ): Promise<
-  ChatReply & { newSessionState: SessionState; visitedEdges: VisitedEdge[] }
+  ContinueChatResponse & {
+    newSessionState: SessionState
+    visitedEdges: VisitedEdge[]
+  }
 > => {
-  const messages: ChatReply['messages'] = currentReply?.messages ?? []
-  let clientSideActions: ChatReply['clientSideActions'] =
+  let newStartTime = startTime
+  const messages: ContinueChatResponse['messages'] =
+    currentReply?.messages ?? []
+  let clientSideActions: ContinueChatResponse['clientSideActions'] =
     currentReply?.clientSideActions
-  let logs: ChatReply['logs'] = currentReply?.logs
+  let logs: ContinueChatResponse['logs'] = currentReply?.logs
   let nextEdgeId = null
   let lastBubbleBlockId: string | undefined = currentLastBubbleId
 
@@ -61,6 +72,17 @@ export const executeGroup = async (
 
   let index = -1
   for (const block of group.blocks) {
+    if (
+      newStartTime &&
+      env.CHAT_API_TIMEOUT &&
+      Date.now() - newStartTime > env.CHAT_API_TIMEOUT
+    ) {
+      throw new TRPCError({
+        code: 'TIMEOUT',
+        message: `${env.CHAT_API_TIMEOUT / 1000} seconds timeout reached`,
+      })
+    }
+
     index++
     nextEdgeId = block.outgoingEdgeId
 
@@ -89,13 +111,20 @@ export const executeGroup = async (
         logs,
         visitedEdges,
       }
-    const executionResponse = isLogicBlock(block)
-      ? await executeLogic(newSessionState)(block)
-      : isIntegrationBlock(block)
-      ? await executeIntegration(newSessionState)(block)
-      : null
+    const executionResponse = (
+      isLogicBlock(block)
+        ? await executeLogic(newSessionState)(block)
+        : isIntegrationBlock(block)
+        ? await executeIntegration(newSessionState)(block)
+        : null
+    ) as ExecuteLogicResponse | ExecuteIntegrationResponse | null
 
     if (!executionResponse) continue
+    if (
+      'startTimeShouldBeUpdated' in executionResponse &&
+      executionResponse.startTimeShouldBeUpdated
+    )
+      newStartTime = Date.now()
     if (executionResponse.logs)
       logs = [...(logs ?? []), ...executionResponse.logs]
     if (executionResponse.newSessionState)
@@ -112,9 +141,20 @@ export const executeGroup = async (
         })),
       ]
       if (
+        'customEmbedBubble' in executionResponse &&
+        executionResponse.customEmbedBubble
+      ) {
+        messages.push({
+          id: createId(),
+          ...executionResponse.customEmbedBubble,
+        })
+      }
+      if (
         executionResponse.clientSideActions?.find(
           (action) => action.expectsDedicatedReply
-        )
+        ) ||
+        ('customEmbedBubble' in executionResponse &&
+          executionResponse.customEmbedBubble)
       ) {
         return {
           messages,
@@ -158,6 +198,7 @@ export const executeGroup = async (
       logs,
     },
     currentLastBubbleId: lastBubbleBlockId,
+    startTime: newStartTime,
   })
 }
 
@@ -173,7 +214,7 @@ const computeRuntimeOptions =
 
 export const parseInput =
   (state: SessionState) =>
-  async (block: InputBlock): Promise<ChatReply['input']> => {
+  async (block: InputBlock): Promise<ContinueChatResponse['input']> => {
     switch (block.type) {
       case InputBlockType.CHOICE: {
         return injectVariableValuesInButtonsInputBlock(state)(block)
@@ -210,6 +251,25 @@ export const parseInput =
       }
       case InputBlockType.DATE: {
         return parseDateInput(state)(block)
+      }
+      case InputBlockType.RATING: {
+        const parsedBlock = deepParseVariables(
+          state.typebotsQueue[0].typebot.variables
+        )({
+          ...block,
+          prefilledValue: getPrefilledInputValue(
+            state.typebotsQueue[0].typebot.variables
+          )(block),
+        })
+        return {
+          ...parsedBlock,
+          options: {
+            ...parsedBlock.options,
+            startsAt: isNotEmpty(parsedBlock.options?.startsAt as string)
+              ? Number(parsedBlock.options?.startsAt)
+              : undefined,
+          },
+        }
       }
       default: {
         return deepParseVariables(state.typebotsQueue[0].typebot.variables)({

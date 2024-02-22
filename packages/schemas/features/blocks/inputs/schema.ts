@@ -1,14 +1,11 @@
-import { z } from 'zod'
+import { z } from '../../../zod'
 import { buttonsInputSchemas } from './choice'
 import { dateInputSchema } from './date'
 import { emailInputSchema } from './email'
 import { numberInputSchema } from './number'
 import { paymentInputSchema } from './payment'
 import { phoneNumberInputBlockSchema } from './phone'
-import {
-  pictureChoiceBlockSchema,
-  pictureChoiceBlockSchemas,
-} from './pictureChoice'
+import { pictureChoiceBlockSchemas } from './pictureChoice'
 import { ratingInputBlockSchema } from './rating'
 import { textInputSchema } from './text'
 import { urlInputSchema } from './url'

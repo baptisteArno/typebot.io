@@ -9,7 +9,7 @@ export const getResult = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/typebots/{typebotId}/results/{resultId}',
+      path: '/v1/typebots/{typebotId}/results/{resultId}',
       protect: true,
       summary: 'Get result by id',
       tags: ['Results'],
@@ -17,8 +17,16 @@ export const getResult = authenticatedProcedure
   })
   .input(
     z.object({
-      typebotId: z.string(),
-      resultId: z.string(),
+      typebotId: z
+        .string()
+        .describe(
+          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+        ),
+      resultId: z
+        .string()
+        .describe(
+          'The `resultId` is returned by the /startChat endpoint or you can find it by listing results with `/results` endpoint'
+        ),
     })
   )
   .output(
@@ -33,8 +41,18 @@ export const getResult = authenticatedProcedure
       },
       select: {
         id: true,
-        workspaceId: true,
         groups: true,
+        workspace: {
+          select: {
+            isSuspended: true,
+            isPastDue: true,
+            members: {
+              select: {
+                userId: true,
+              },
+            },
+          },
+        },
         collaborators: {
           select: {
             userId: true,

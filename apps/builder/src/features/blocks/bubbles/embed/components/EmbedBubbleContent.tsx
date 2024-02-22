@@ -9,10 +9,6 @@ type Props = {
 export const EmbedBubbleContent = ({ block }: Props) => {
   const { t } = useTranslate()
   if (!block.content?.url)
-    return (
-      <Text color="gray.500">
-        {t('editor.blocks.bubbles.embed.node.clickToEdit.text')}
-      </Text>
-    )
+    return <Text color="gray.500">{t('clickToEdit')}</Text>
   return <Text>{t('editor.blocks.bubbles.embed.node.show.text')}</Text>
 }

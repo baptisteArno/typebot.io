@@ -9,5 +9,8 @@
     "src/pages/api/typebots/[typebotId]/blocks/[blockId]/executeWebhook.ts": {
       "maxDuration": 10
     }
+  },
+  "github": {
+    "silent": true
   }
 }

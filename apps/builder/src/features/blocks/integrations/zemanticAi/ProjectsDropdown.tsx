@@ -20,7 +20,7 @@ export const ProjectsDropdown = ({
   const { workspace } = useWorkspace()
   const { showToast } = useToast()
 
-  const { data } = trpc.zemanticAi.listProjects.useQuery(
+  const { data } = trpc.zemanticAI.listProjects.useQuery(
     {
       credentialsId,
       workspaceId: workspace?.id as string,

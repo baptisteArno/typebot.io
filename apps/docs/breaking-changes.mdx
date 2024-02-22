@@ -1,0 +1,21 @@
+---
+title: Breaking changes
+---
+
+import { LoomVideo } from '/snippets/loom-video.mdx'
+
+## Typebot v6
+
+- List variables now don't automatically display the last item when inserted into a bubble. It was too "magical". Now you can leverage the inline code feature to easily get the last element of a list:
+
+  ```
+  {{={{List var}}.at(-1)=}}
+  ```
+
+  Check out the new [Inline variable formatting section](./editor/variables) for more information.
+
+- Input prefill is now disabled by default. You can still enable it in the [Settings](./settings/overview) tab of your bot.
+
+- `Message sequence` option in the OpenAI block was removed because it was also too "magical" and it. Now I've introduced the `Dialogue` option. For more information:
+
+  <LoomVideo id="df5d64dd01ca47daa5b7acd18b05a725" />

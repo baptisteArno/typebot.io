@@ -59,7 +59,7 @@ test.describe('Send email block', () => {
     await page.click('text="Custom content?"')
     await page.locator('textarea').fill('Here is my email')
 
-    await page.click('text=Preview')
+    await page.click('text=Test')
     await page.locator('typebot-standard').locator('text=Go').click()
     await expect(
       page.locator('text=Emails are not sent in preview mode >> nth=0')

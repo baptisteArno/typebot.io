@@ -4,6 +4,11 @@ import { TRPCError } from '@trpc/server'
 import { resultWithAnswersSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { isReadTypebotForbidden } from '@/features/typebot/helpers/isReadTypebotForbidden'
+import {
+  timeFilterValues,
+  defaultTimeFilter,
+} from '@/features/analytics/constants'
+import { parseDateFromTimeFilter } from '@/features/analytics/helpers/parseDateFromTimeFilter'
 
 const maxLimit = 100
 
@@ -11,7 +16,7 @@ export const getResults = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/typebots/{typebotId}/results',
+      path: '/v1/typebots/{typebotId}/results',
       protect: true,
       summary: 'List results ordered by descending creation date',
       tags: ['Results'],
@@ -19,9 +24,14 @@ export const getResults = authenticatedProcedure
   })
   .input(
     z.object({
-      typebotId: z.string(),
+      typebotId: z
+        .string()
+        .describe(
+          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+        ),
       limit: z.coerce.number().min(1).max(maxLimit).default(50),
       cursor: z.string().optional(),
+      timeFilter: z.enum(timeFilterValues).default(defaultTimeFilter),
     })
   )
   .output(
@@ -44,7 +54,6 @@ export const getResults = authenticatedProcedure
       },
       select: {
         id: true,
-        workspaceId: true,
         groups: true,
         collaborators: {
           select: {
@@ -52,10 +61,24 @@ export const getResults = authenticatedProcedure
             type: true,
           },
         },
+        workspace: {
+          select: {
+            isSuspended: true,
+            isPastDue: true,
+            members: {
+              select: {
+                userId: true,
+              },
+            },
+          },
+        },
       },
     })
     if (!typebot || (await isReadTypebotForbidden(typebot, user)))
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+
+    const date = parseDateFromTimeFilter(input.timeFilter)
+
     const results = await prisma.result.findMany({
       take: limit + 1,
       cursor: cursor ? { id: cursor } : undefined,
@@ -63,6 +86,11 @@ export const getResults = authenticatedProcedure
         typebotId: typebot.id,
         hasStarted: true,
         isArchived: false,
+        createdAt: date
+          ? {
+              gte: date,
+            }
+          : undefined,
       },
       orderBy: {
         createdAt: 'desc',

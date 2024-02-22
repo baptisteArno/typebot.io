@@ -1,13 +1,13 @@
 import {
   SessionState,
   GoogleSheetsUpdateRowOptions,
-  ReplyLog,
+  ChatLog,
 } from '@typebot.io/schemas'
 import { parseCellValues } from './helpers/parseCellValues'
 import { getAuthenticatedGoogleDoc } from './helpers/getAuthenticatedGoogleDoc'
 import { ExecuteIntegrationResponse } from '../../../types'
 import { matchFilter } from './helpers/matchFilter'
-import { deepParseVariables } from '../../../variables/deepParseVariables'
+import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
 
 export const updateRow = async (
   state: SessionState,
@@ -28,7 +28,7 @@ export const updateRow = async (
   if (!options.cellsToUpsert || !sheetId || (!referenceCell && !filter))
     return { outgoingEdgeId }
 
-  const logs: ReplyLog[] = []
+  const logs: ChatLog[] = []
 
   const doc = await getAuthenticatedGoogleDoc({
     credentialsId: options.credentialsId,

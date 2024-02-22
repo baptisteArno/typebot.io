@@ -1,11 +1,15 @@
 import {
   BoxProps,
   Fade,
+  FormControl,
+  FormHelperText,
+  FormLabel,
   HStack,
+  Stack,
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useEffect, useRef, useState } from 'react'
+import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { VariablesButton } from '@/features/variables/components/VariablesButton'
 import { Variable } from '@typebot.io/schemas'
@@ -16,8 +20,10 @@ import { githubLight } from '@uiw/codemirror-theme-github'
 import { LanguageName, loadLanguage } from '@uiw/codemirror-extensions-langs'
 import { isDefined } from '@udecode/plate-common'
 import { CopyButton } from '../CopyButton'
+import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
 type Props = {
+  label?: string
   value?: string
   defaultValue?: string
   lang: LanguageName
@@ -27,11 +33,18 @@ type Props = {
   height?: string
   maxHeight?: string
   minWidth?: string
+  moreInfoTooltip?: string
+  helperText?: ReactNode
+  isRequired?: boolean
   onChange?: (value: string) => void
 }
 export const CodeEditor = ({
+  label,
   defaultValue,
   lang,
+  moreInfoTooltip,
+  helperText,
+  isRequired,
   onChange,
   height = '250px',
   maxHeight = '70vh',
@@ -86,71 +99,91 @@ export const CodeEditor = ({
   )
 
   return (
-    <HStack
-      align="flex-end"
-      spacing={0}
-      borderWidth={'1px'}
-      rounded="md"
-      bg={useColorModeValue('white', '#1A1B26')}
-      width="full"
-      h="full"
-      pos="relative"
-      minW={minWidth}
-      onMouseEnter={onOpen}
-      onMouseLeave={onClose}
-      maxWidth={props.maxWidth}
-      sx={{
-        '& .cm-editor': {
-          maxH: maxHeight,
-          outline: '0px solid transparent !important',
-          rounded: 'md',
-        },
-        '& .cm-scroller': {
-          rounded: 'md',
-          overflow: 'auto',
-        },
-        '& .cm-gutter,.cm-content': {
-          minH: isReadOnly ? '0' : height,
-        },
-        '& .ͼ1 .cm-scroller': {
-          fontSize: '14px',
-          fontFamily:
-            'JetBrainsMono, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace',
-        },
-      }}
+    <FormControl
+      isRequired={isRequired}
+      as={Stack}
+      justifyContent="space-between"
+      spacing={2}
+      flex="1"
     >
-      <CodeMirror
-        data-testid="code-editor"
-        ref={codeEditor}
-        value={props.value ?? value}
-        onChange={handleChange}
-        onBlur={rememberCarretPosition}
-        theme={theme}
-        extensions={[loadLanguage(lang)].filter(isDefined)}
-        editable={!isReadOnly}
-        style={{
-          width: isVariableButtonDisplayed ? 'calc(100% - 32px)' : '100%',
-        }}
-        spellCheck={false}
-        basicSetup={{
-          highlightActiveLine: false,
-        }}
-      />
-      {isVariableButtonDisplayed && (
-        <VariablesButton onSelectVariable={handleVariableSelected} size="sm" />
+      {label && (
+        <FormLabel display="flex" flexShrink={0} gap="1" mb="0" mr="0">
+          {label}{' '}
+          {moreInfoTooltip && (
+            <MoreInfoTooltip>{moreInfoTooltip}</MoreInfoTooltip>
+          )}
+        </FormLabel>
       )}
-      {isReadOnly && (
-        <Fade in={isOpen}>
-          <CopyButton
-            textToCopy={props.value ?? value}
-            pos="absolute"
-            right={0.5}
-            top={0.5}
-            size="xs"
-            colorScheme="blue"
+      <HStack
+        align="flex-end"
+        spacing={0}
+        borderWidth={'1px'}
+        rounded="md"
+        bg={useColorModeValue('white', '#1A1B26')}
+        width="full"
+        h="full"
+        pos="relative"
+        minW={minWidth}
+        onMouseEnter={onOpen}
+        onMouseLeave={onClose}
+        maxWidth={props.maxWidth}
+        sx={{
+          '& .cm-editor': {
+            maxH: maxHeight,
+            outline: '0px solid transparent !important',
+            rounded: 'md',
+          },
+          '& .cm-scroller': {
+            rounded: 'md',
+            overflow: 'auto',
+          },
+          '& .cm-gutter,.cm-content': {
+            minH: isReadOnly ? '0' : height,
+          },
+          '& .ͼ1 .cm-scroller': {
+            fontSize: '14px',
+            fontFamily:
+              'JetBrainsMono, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace',
+          },
+        }}
+      >
+        <CodeMirror
+          data-testid="code-editor"
+          ref={codeEditor}
+          value={props.value ?? value}
+          onChange={handleChange}
+          onBlur={rememberCarretPosition}
+          theme={theme}
+          extensions={[loadLanguage(lang)].filter(isDefined)}
+          editable={!isReadOnly}
+          style={{
+            width: isVariableButtonDisplayed ? 'calc(100% - 32px)' : '100%',
+          }}
+          spellCheck={false}
+          basicSetup={{
+            highlightActiveLine: false,
+          }}
+        />
+        {isVariableButtonDisplayed && (
+          <VariablesButton
+            onSelectVariable={handleVariableSelected}
+            size="sm"
           />
-        </Fade>
-      )}
-    </HStack>
+        )}
+        {isReadOnly && (
+          <Fade in={isOpen}>
+            <CopyButton
+              textToCopy={props.value ?? value}
+              pos="absolute"
+              right={0.5}
+              top={0.5}
+              size="xs"
+              colorScheme="blue"
+            />
+          </Fade>
+        )}
+      </HStack>
+      {helperText && <FormHelperText mt="0">{helperText}</FormHelperText>}
+    </FormControl>
   )
 }

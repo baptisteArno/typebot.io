@@ -5,6 +5,7 @@ import { TRPCError } from '@trpc/server'
 import { WhatsAppCredentials } from '@typebot.io/schemas/features/whatsapp'
 import prisma from '@typebot.io/lib/prisma'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
+import { env } from '@typebot.io/env'
 
 const inputSchema = z.object({
   token: z.string().optional(),
@@ -12,22 +13,7 @@ const inputSchema = z.object({
 })
 
 export const getSystemTokenInfo = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: 'GET',
-      path: '/whatsapp/systemToken',
-      protect: true,
-    },
-  })
   .input(inputSchema)
-  .output(
-    z.object({
-      appId: z.string(),
-      appName: z.string(),
-      expiresAt: z.number(),
-      scopes: z.array(z.string()),
-    })
-  )
   .query(async ({ input, ctx: { user } }) => {
     if (!input.token && !input.credentialsId)
       throw new TRPCError({
@@ -43,7 +29,7 @@ export const getSystemTokenInfo = authenticatedProcedure
     const {
       data: { expires_at, scopes, app_id, application },
     } = (await got(
-      `https://graph.facebook.com/v17.0/debug_token?input_token=${credentials.systemUserAccessToken}`,
+      `${env.WHATSAPP_CLOUD_API_URL}/v17.0/debug_token?input_token=${credentials.systemUserAccessToken}`,
       {
         headers: {
           Authorization: `Bearer ${credentials.systemUserAccessToken}`,

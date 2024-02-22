@@ -31,7 +31,7 @@ test.describe.parallel('Google sheets integration', () => {
       'Georges'
     )
 
-    await page.click('text=Preview')
+    await page.click('text=Test')
     await page
       .locator('typebot-standard')
       .locator('input[placeholder="Type your email..."]')
@@ -76,7 +76,7 @@ test.describe.parallel('Google sheets integration', () => {
       'Last name'
     )
 
-    await page.click('text=Preview')
+    await page.click('text=Test')
     await page
       .locator('typebot-standard')
       .locator('input[placeholder="Type your email..."]')
@@ -132,7 +132,7 @@ test.describe.parallel('Google sheets integration', () => {
     await page.getByRole('menuitem', { name: 'Last name' }).click()
     await createNewVar(page, 'Last name')
 
-    await page.click('text=Preview')
+    await page.click('text=Test')
     await page
       .locator('typebot-standard')
       .locator('input[placeholder="Type your email..."]')
@@ -152,8 +152,16 @@ const fillInSpreadsheetInfo = async (page: Page) => {
   await page.click('text=Select Sheets account')
   await page.click('text=pro-user@email.com')
 
-  await page.fill('input[placeholder="Search for spreadsheet"]', 'CR')
-  await page.click('text=CRM')
+  await page.waitForTimeout(1000)
+  await page.getByRole('button', { name: 'Pick a spreadsheet' }).click()
+  await page
+    .frameLocator('.picker-frame')
+    .getByLabel('CRM Google Sheets Not selected')
+    .click()
+  await page
+    .frameLocator('.picker-frame')
+    .getByRole('button', { name: 'Select' })
+    .click()
 
   await page.fill('input[placeholder="Select the sheet"]', 'Sh')
   await page.click('text=Sheet1')

@@ -4,6 +4,7 @@ import { Background } from '@typebot.io/schemas'
 import React from 'react'
 import { BackgroundContent } from './BackgroundContent'
 import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/constants'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   background?: Background
@@ -16,6 +17,8 @@ export const BackgroundSelector = ({
   background,
   onBackgroundChange,
 }: Props) => {
+  const { t } = useTranslate()
+
   const handleBackgroundTypeChange = (type: BackgroundType) =>
     background &&
     onBackgroundChange({ ...background, type, content: undefined })
@@ -25,12 +28,21 @@ export const BackgroundSelector = ({
 
   return (
     <Stack spacing={4}>
-      <Text>Background</Text>
+      <Text>{t('theme.sideMenu.global.background')}</Text>
       <RadioButtons
         options={[
-          BackgroundType.COLOR,
-          BackgroundType.IMAGE,
-          BackgroundType.NONE,
+          {
+            label: t('theme.sideMenu.global.background.color.select'),
+            value: BackgroundType.COLOR,
+          },
+          {
+            label: t('theme.sideMenu.global.background.image.select'),
+            value: BackgroundType.IMAGE,
+          },
+          {
+            label: t('theme.sideMenu.global.background.none.select'),
+            value: BackgroundType.NONE,
+          },
         ]}
         value={background?.type ?? defaultBackgroundType}
         onSelect={handleBackgroundTypeChange}

@@ -2,7 +2,7 @@ import prisma from '@typebot.io/lib/prisma'
 import { canWriteTypebots } from '@/helpers/databaseRules'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Block, WebhookBlock, parseGroups } from '@typebot.io/schemas'
+import { Block, HttpRequestBlock, parseGroups } from '@typebot.io/schemas'
 import { byId, isWebhookBlock } from '@typebot.io/lib'
 import { z } from 'zod'
 
@@ -10,7 +10,7 @@ export const unsubscribeWebhook = authenticatedProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/typebots/{typebotId}/webhookBlocks/{blockId}/unsubscribe',
+      path: '/v1/typebots/{typebotId}/webhookBlocks/{blockId}/unsubscribe',
       protect: true,
       summary: 'Unsubscribe from webhook block',
       tags: ['Webhook'],
@@ -46,7 +46,7 @@ export const unsubscribeWebhook = authenticatedProcedure
 
     const webhookBlock = groups
       .flatMap<Block>((g) => g.blocks)
-      .find(byId(blockId)) as WebhookBlock | null
+      .find(byId(blockId)) as HttpRequestBlock | null
 
     if (!webhookBlock || !isWebhookBlock(webhookBlock))
       throw new TRPCError({

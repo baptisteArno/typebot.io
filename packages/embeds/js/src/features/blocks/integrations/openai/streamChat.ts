@@ -9,15 +9,16 @@ const maxRetryAttempts = 3
 
 export const streamChat =
   (context: ClientSideActionContext & { retryAttempt?: number }) =>
-  async (
-    messages: {
+  async ({
+    messages,
+    onMessageStream,
+  }: {
+    messages?: {
       content?: string | undefined
       role?: 'system' | 'user' | 'assistant' | undefined
-    }[],
-    {
-      onMessageStream,
-    }: { onMessageStream?: (props: { id: string; message: string }) => void }
-  ): Promise<{ message?: string; error?: object }> => {
+    }[]
+    onMessageStream?: (props: { id: string; message: string }) => void
+  }): Promise<{ message?: string; error?: object }> => {
     try {
       abortController = new AbortController()
 
@@ -51,7 +52,7 @@ export const streamChat =
           return streamChat({
             ...context,
             retryAttempt: (context.retryAttempt ?? 0) + 1,
-          })(messages, { onMessageStream })
+          })({ messages, onMessageStream })
         }
         return {
           error: (await res.json()) || 'Failed to fetch the chat response.',

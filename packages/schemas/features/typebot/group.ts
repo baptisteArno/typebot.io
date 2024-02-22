@@ -1,5 +1,5 @@
 import { blockSchemaV5, blockSchemaV6 } from '../blocks'
-import { z } from 'zod'
+import { z } from '../../zod'
 
 export const groupV5Schema = z.object({
   id: z.string(),
@@ -12,9 +12,14 @@ export const groupV5Schema = z.object({
 })
 type GroupV5 = z.infer<typeof groupV5Schema>
 
-export const groupV6Schema = groupV5Schema.extend({
-  blocks: z.array(blockSchemaV6),
-})
+export const groupV6Schema = groupV5Schema
+  .extend({
+    blocks: z.array(blockSchemaV6),
+  })
+  .openapi({
+    title: 'Group V6',
+    ref: 'groupV6',
+  })
 export type GroupV6 = z.infer<typeof groupV6Schema>
 
 export const parseGroups = <T extends string | null>(

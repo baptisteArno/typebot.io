@@ -44,6 +44,7 @@ import { TargetEndpoint } from '../../endpoints/TargetEndpoint'
 import { SettingsModal } from './SettingsModal'
 import { TElement } from '@udecode/plate-common'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { useGroupsStore } from '@/features/graph/hooks/useGroupsStore'
 
 export const BlockNode = ({
   block,
@@ -59,8 +60,7 @@ export const BlockNode = ({
   const bg = useColorModeValue('gray.50', 'gray.850')
   const previewingBorderColor = useColorModeValue('blue.400', 'blue.300')
   const borderColor = useColorModeValue('gray.200', 'gray.800')
-  const { pathname } = useRouter()
-  const { query } = useRouter()
+  const { pathname, query } = useRouter()
   const {
     setConnectingIds,
     connectingIds,
@@ -69,6 +69,7 @@ export const BlockNode = ({
     setFocusedGroupId,
     previewingEdge,
     isReadOnly,
+    isAnalytics,
     previewingBlock,
   } = useGraph()
   const { mouseOverBlock, setMouseOverBlock } = useBlockDnd()
@@ -89,6 +90,8 @@ export const BlockNode = ({
 
   const groupId = typebot?.groups[indices.groupIndex].id
 
+  const isDraggingGraph = useGroupsStore((state) => state.isDraggingGraph)
+
   const onDrag = (position: NodePosition) => {
     if (!onMouseDown) return
     onMouseDown(position, block)
@@ -98,6 +101,7 @@ export const BlockNode = ({
     ref: blockRef,
     onDrag,
     isDisabled: !onMouseDown,
+    deps: [isEditing],
   })
 
   const {
@@ -151,7 +155,7 @@ export const BlockNode = ({
   const handleClick = (e: React.MouseEvent) => {
     setFocusedGroupId(groupId)
     e.stopPropagation()
-    if (isTextBubbleBlock(block)) setIsEditing(true)
+    if (isTextBubbleBlock(block) && !isReadOnly) setIsEditing(true)
     setOpenedBlockId(block.id)
   }
 
@@ -210,9 +214,10 @@ export const BlockNode = ({
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               onClick={handleClick}
-              data-testid={`block`}
+              data-testid={`block ${block.id}`}
               w="full"
               className="prevent-group-drag"
+              pointerEvents={isAnalytics || isDraggingGraph ? 'none' : 'auto'}
             >
               <HStack
                 flex="1"
@@ -234,12 +239,14 @@ export const BlockNode = ({
                 w="full"
                 transition="border-color 0.2s"
               >
-                <BlockIcon
-                  type={block.type}
-                  mt="1"
-                  data-testid={`${block.id}-icon`}
-                />
-                <BlockNodeContent block={block} indices={indices} />
+                <BlockIcon type={block.type} mt=".25rem" />
+                {typebot?.groups[indices.groupIndex].id && (
+                  <BlockNodeContent
+                    block={block}
+                    indices={indices}
+                    groupId={typebot.groups[indices.groupIndex].id}
+                  />
+                )}
                 {(hasIcomingEdge || isDefined(connectingIds)) && (
                   <TargetEndpoint
                     pos="absolute"
@@ -252,6 +259,7 @@ export const BlockNode = ({
                 {(isConnectable ||
                   (pathname.endsWith('analytics') && isInputBlock(block))) &&
                   hasDefaultConnector(block) &&
+                  groupId &&
                   block.type !== LogicBlockType.JUMP && (
                     <BlockSourceEndpoint
                       source={{

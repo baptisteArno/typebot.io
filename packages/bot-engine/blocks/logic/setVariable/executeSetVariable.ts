@@ -1,11 +1,12 @@
 import { SessionState, SetVariableBlock, Variable } from '@typebot.io/schemas'
-import { byId } from '@typebot.io/lib'
+import { byId, isEmpty } from '@typebot.io/lib'
 import { ExecuteLogicResponse } from '../../../types'
 import { parseScriptToExecuteClientSideAction } from '../script/executeScript'
-import { parseGuessedValueType } from '../../../variables/parseGuessedValueType'
-import { parseVariables } from '../../../variables/parseVariables'
-import { updateVariablesInSession } from '../../../variables/updateVariablesInSession'
+import { parseGuessedValueType } from '@typebot.io/variables/parseGuessedValueType'
+import { parseVariables } from '@typebot.io/variables/parseVariables'
+import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
 import { createId } from '@paralleldrive/cuid2'
+import { utcToZonedTime, format as tzFormat } from 'date-fns-tz'
 
 export const executeSetVariable = (
   state: SessionState,
@@ -32,6 +33,7 @@ export const executeSetVariable = (
       outgoingEdgeId: block.outgoingEdgeId,
       clientSideActions: [
         {
+          type: 'setVariable',
           setVariable: {
             scriptToExecute,
           },
@@ -62,6 +64,8 @@ const evaluateSetVariableExpression =
     const isSingleVariable =
       str.startsWith('{{') && str.endsWith('}}') && str.split('{{').length === 2
     if (isSingleVariable) return parseVariables(variables)(str)
+    // To avoid octal number evaluation
+    if (!isNaN(str as unknown as number) && /0[^.].+/.test(str)) return str
     const evaluating = parseVariables(variables, { fieldToParse: 'id' })(
       str.includes('return ') ? str : `return ${str}`
     )
@@ -83,18 +87,36 @@ const getExpressionToEvaluate =
         const phoneNumber = state.whatsApp?.contact.phoneNumber
         return phoneNumber ? `"${state.whatsApp?.contact.phoneNumber}"` : null
       }
-      case 'Now':
+      case 'Now': {
+        const timeZone = parseVariables(
+          state.typebotsQueue[0].typebot.variables
+        )(options.timeZone)
+        if (isEmpty(timeZone)) return 'new Date().toISOString()'
+        return toISOWithTz(new Date(), timeZone)
+      }
+
       case 'Today':
         return 'new Date().toISOString()'
       case 'Tomorrow': {
-        return 'new Date(Date.now() + 86400000).toISOString()'
+        const timeZone = parseVariables(
+          state.typebotsQueue[0].typebot.variables
+        )(options.timeZone)
+        if (isEmpty(timeZone))
+          return 'new Date(Date.now() + 86400000).toISOString()'
+        return toISOWithTz(new Date(Date.now() + 86400000), timeZone)
       }
       case 'Yesterday': {
-        return 'new Date(Date.now() - 86400000).toISOString()'
+        const timeZone = parseVariables(
+          state.typebotsQueue[0].typebot.variables
+        )(options.timeZone)
+        if (isEmpty(timeZone))
+          return 'new Date(Date.now() - 86400000).toISOString()'
+        return toISOWithTz(new Date(Date.now() - 86400000), timeZone)
       }
       case 'Random ID': {
         return `"${createId()}"`
       }
+      case 'Result ID':
       case 'User ID': {
         return state.typebotsQueue[0].resultId ?? `"${createId()}"`
       }
@@ -127,3 +149,8 @@ const getExpressionToEvaluate =
       }
     }
   }
+
+const toISOWithTz = (date: Date, timeZone: string) => {
+  const zonedDate = utcToZonedTime(date, timeZone)
+  return tzFormat(zonedDate, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone })
+}

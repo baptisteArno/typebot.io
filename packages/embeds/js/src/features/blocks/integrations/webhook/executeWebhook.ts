@@ -1,7 +1,7 @@
-import { ExecutableWebhook } from '@typebot.io/schemas'
+import { ExecutableHttpRequest } from '@typebot.io/schemas'
 
 export const executeWebhook = async (
-  webhookToExecute: ExecutableWebhook
+  webhookToExecute: ExecutableHttpRequest
 ): Promise<string> => {
   const { url, method, body, headers } = webhookToExecute
   try {

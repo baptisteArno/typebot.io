@@ -43,7 +43,7 @@ test.describe('Payment input block', () => {
     await page.fill('[placeholder="john@gmail.com"]', 'test@typebot.io')
     await expect(page.locator('text="Phone number:"')).toBeVisible()
 
-    await page.click('text=Preview')
+    await page.click('text=Test')
     await stripePaymentForm(page)
       .locator(`[placeholder="1234 1234 1234 1234"]`)
       .fill('4000000000000002')

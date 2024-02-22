@@ -10,12 +10,12 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { ChevronLeftIcon, PlusIcon, TrashIcon } from '@/components/icons'
-import React, { useCallback, useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
+import React, { useCallback, useState } from 'react'
 import { useToast } from '../../../hooks/useToast'
 import { Credentials } from '@typebot.io/schemas'
 import { trpc } from '@/lib/trpc'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
+import { useTranslate } from '@tolgee/react'
 
 type Props = Omit<ButtonProps, 'type'> & {
   type: Credentials['type']
@@ -37,7 +37,7 @@ export const CredentialsDropdown = ({
   credentialsName,
   ...props
 }: Props) => {
-  const router = useRouter()
+  const { t } = useTranslate()
   const { showToast } = useToast()
   const { currentRole } = useWorkspace()
   const { data, refetch } = trpc.credentials.listCredentials.useQuery({
@@ -64,7 +64,7 @@ export const CredentialsDropdown = ({
   })
 
   const defaultCredentialsLabel =
-    defaultCredentialLabel ?? `Select ${credentialsName}`
+    defaultCredentialLabel ?? `${t('select')} ${credentialsName}`
 
   const currentCredential = data?.credentials.find(
     (c) => c.id === currentCredentialsId
@@ -76,25 +76,6 @@ export const CredentialsDropdown = ({
     },
     [onCredentialsSelect]
   )
-
-  const clearQueryParams = useCallback(() => {
-    const hasQueryParams = router.asPath.includes('?')
-    if (hasQueryParams)
-      router.push(router.asPath.split('?')[0], undefined, { shallow: true })
-  }, [router])
-
-  useEffect(() => {
-    if (!router.isReady) return
-    if (router.query.credentialsId) {
-      handleMenuItemClick(router.query.credentialsId.toString())()
-      clearQueryParams()
-    }
-  }, [
-    clearQueryParams,
-    handleMenuItemClick,
-    router.isReady,
-    router.query.credentialsId,
-  ])
 
   const deleteCredentials =
     (credentialsId: string) => async (e: React.MouseEvent) => {
@@ -112,7 +93,7 @@ export const CredentialsDropdown = ({
         isDisabled={currentRole === 'GUEST'}
         {...props}
       >
-        Add {credentialsName}
+        {t('add')} {credentialsName}
       </Button>
     )
   }
@@ -135,7 +116,7 @@ export const CredentialsDropdown = ({
         </Text>
       </MenuButton>
       <MenuList>
-        <Stack maxH={'35vh'} overflowY="scroll" spacing="0">
+        <Stack maxH={'35vh'} overflowY="auto" spacing="0">
           {defaultCredentialLabel && (
             <MenuItem
               maxW="500px"
@@ -161,7 +142,9 @@ export const CredentialsDropdown = ({
               {credentials.name}
               <IconButton
                 icon={<TrashIcon />}
-                aria-label="Remove credentials"
+                aria-label={t(
+                  'blocks.inputs.payment.settings.credentials.removeCredentials.label'
+                )}
                 size="xs"
                 onClick={deleteCredentials(credentials.id)}
                 isLoading={isDeleting === credentials.id}
@@ -177,7 +160,7 @@ export const CredentialsDropdown = ({
               icon={<PlusIcon />}
               onClick={onCreateNewClick}
             >
-              Connect new
+              {t('blocks.inputs.payment.settings.credentials.connectNew.label')}
             </MenuItem>
           )}
         </Stack>

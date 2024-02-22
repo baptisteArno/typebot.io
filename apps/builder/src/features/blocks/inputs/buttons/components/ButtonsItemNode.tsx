@@ -1,6 +1,5 @@
 import {
   EditablePreview,
-  EditableInput,
   Editable,
   Fade,
   IconButton,
@@ -13,14 +12,16 @@ import {
   Portal,
   useColorModeValue,
   SlideFade,
+  EditableTextarea,
 } from '@chakra-ui/react'
 import { PlusIcon, SettingsIcon } from '@/components/icons'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { ButtonItem, Item, ItemIndices } from '@typebot.io/schemas'
 import React, { useRef, useState } from 'react'
-import { isNotDefined } from '@typebot.io/lib'
+import { isEmpty } from '@typebot.io/lib'
 import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { ButtonsItemSettings } from './ButtonsItemSettings'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   item: ButtonItem
@@ -29,9 +30,15 @@ type Props = {
 }
 
 export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
+  const { t } = useTranslate()
   const { deleteItem, updateItem, createItem } = useTypebot()
   const { openedItemId, setOpenedItemId } = useGraph()
-  const [itemValue, setItemValue] = useState(item.content ?? 'Click to edit')
+  const [itemValue, setItemValue] = useState(
+    item.content ??
+      (indices.itemIndex === 0
+        ? t('blocks.inputs.button.clickToEdit.label')
+        : '')
+  )
   const editableRef = useRef<HTMLDivElement | null>(null)
   const ref = useRef<HTMLDivElement | null>(null)
   const arrowColor = useColorModeValue('white', 'gray.800')
@@ -46,10 +53,43 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
       } as Item)
   }
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Escape' && itemValue === 'Click to edit') deleteItem(indices)
-    if (e.key === 'Enter' && itemValue !== '' && itemValue !== 'Click to edit')
+  const handleKeyPress = async (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (
+      e.key === 'Escape' &&
+      (itemValue === t('blocks.inputs.button.clickToEdit.label') ||
+        itemValue === '')
+    )
+      deleteItem(indices)
+    if (
+      e.key === 'Enter' &&
+      itemValue !== '' &&
+      itemValue !== t('blocks.inputs.button.clickToEdit.label')
+    )
       handlePlusClick()
+  }
+
+  const handleEditableChange = (val: string) => {
+    if (val.length - itemValue.length && val.endsWith('\n')) return
+    const splittedBreakLines = val.split('\n')
+    const splittedCommas = val.split(',')
+    const isPastingMultipleItems =
+      val.length - itemValue.length > 1 &&
+      (splittedBreakLines.length > 2 || splittedCommas.length > 2)
+    if (isPastingMultipleItems) {
+      const values =
+        splittedBreakLines.length > 2 ? splittedBreakLines : splittedCommas
+      return values.forEach((v, i) => {
+        if (i === 0) {
+          setItemValue(v)
+        } else {
+          createItem(
+            { content: v.trim() },
+            { ...indices, itemIndex: indices.itemIndex + i }
+          )
+        }
+      })
+    }
+    setItemValue(val)
   }
 
   const handlePlusClick = () => {
@@ -73,19 +113,30 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
           <Editable
             ref={editableRef}
             flex="1"
-            startWithEditView={isNotDefined(item.content)}
+            startWithEditView={
+              isEmpty(item.content) ||
+              item.content === t('blocks.inputs.button.clickToEdit.label')
+            }
             value={itemValue}
-            onChange={setItemValue}
+            onChange={handleEditableChange}
             onSubmit={handleInputSubmit}
             onKeyDownCapture={handleKeyPress}
             maxW="180px"
           >
             <EditablePreview
               w="full"
-              color={item.content !== 'Click to edit' ? 'inherit' : 'gray.500'}
+              color={
+                item.content !== t('blocks.inputs.button.clickToEdit.label')
+                  ? 'inherit'
+                  : 'gray.500'
+              }
               cursor="pointer"
             />
-            <EditableInput onMouseDownCapture={(e) => e.stopPropagation()} />
+            <EditableTextarea
+              onMouseDownCapture={(e) => e.stopPropagation()}
+              resize="none"
+              rows={1}
+            />
           </Editable>
           <HitboxExtension />
           <SlideFade
@@ -101,7 +152,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
           >
             <Flex bgColor={useColorModeValue('white', 'gray.800')} rounded="md">
               <IconButton
-                aria-label="Open settings"
+                aria-label={t('blocks.inputs.button.openSettings.ariaLabel')}
                 icon={<SettingsIcon />}
                 variant="ghost"
                 size="sm"
@@ -121,7 +172,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
             unmountOnExit
           >
             <IconButton
-              aria-label="Add item"
+              aria-label={t('blocks.inputs.button.addItem.ariaLabel')}
               icon={<PlusIcon />}
               size="xs"
               shadow="md"
@@ -136,7 +187,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
           <PopoverArrow bgColor={arrowColor} />
           <PopoverBody
             py="6"
-            overflowY="scroll"
+            overflowY="auto"
             maxH="400px"
             shadow="lg"
             ref={ref}

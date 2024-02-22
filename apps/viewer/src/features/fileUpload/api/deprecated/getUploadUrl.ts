@@ -19,10 +19,11 @@ export const getUploadUrl = publicProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/typebots/{typebotId}/blocks/{blockId}/storage/upload-url',
+      path: '/v1/typebots/{typebotId}/blocks/{blockId}/storage/upload-url',
       summary: 'Get upload URL for a file',
       description: 'Used for the web client to get the bucket upload file.',
       deprecated: true,
+      tags: ['Deprecated'],
     },
   })
   .input(

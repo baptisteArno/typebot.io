@@ -74,14 +74,9 @@ export const parsePictureChoicesReply =
     const matchedItem = longestItemsFirst.find(
       (item) =>
         item.id === inputValue ||
-        item.title
-          ?.toLowerCase()
-          .trim()
-          .includes(inputValue.toLowerCase().trim()) ||
-        item.pictureSrc
-          ?.toLowerCase()
-          .trim()
-          .includes(inputValue.toLowerCase().trim())
+        item.title?.toLowerCase().trim() === inputValue.toLowerCase().trim() ||
+        item.pictureSrc?.toLowerCase().trim() ===
+          inputValue.toLowerCase().trim()
     )
     if (!matchedItem) return { status: 'fail' }
     return {

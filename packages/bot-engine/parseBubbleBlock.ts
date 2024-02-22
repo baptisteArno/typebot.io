@@ -1,18 +1,20 @@
 import { parseVideoUrl } from '@typebot.io/lib/parseVideoUrl'
-import { BubbleBlock, Variable, ChatReply, Typebot } from '@typebot.io/schemas'
-import { deepParseVariables } from './variables/deepParseVariables'
+import {
+  BubbleBlock,
+  Variable,
+  ContinueChatResponse,
+  Typebot,
+} from '@typebot.io/schemas'
+import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
 import { isEmpty, isNotEmpty } from '@typebot.io/lib/utils'
 import {
   getVariablesToParseInfoInText,
   parseVariables,
-} from './variables/parseVariables'
-import { TDescendant, createPlateEditor } from '@udecode/plate-common'
-import {
-  createDeserializeMdPlugin,
-  deserializeMd,
-} from '@udecode/plate-serializer-md'
+} from '@typebot.io/variables/parseVariables'
+import { TDescendant } from '@udecode/plate-common'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 import { defaultVideoBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
+import { convertMarkdownToRichText } from '@typebot.io/lib/markdown/convertMarkdownToRichText'
 
 type Params = {
   version: 1 | 2
@@ -27,7 +29,7 @@ export type BubbleBlockWithDefinedContent = BubbleBlock & {
 export const parseBubbleBlock = (
   block: BubbleBlockWithDefinedContent,
   { version, variables, typebotVersion }: Params
-): ChatReply['messages'][0] => {
+): ContinueChatResponse['messages'][0] => {
   switch (block.type) {
     case BubbleBlockType.TEXT: {
       if (version === 1)
@@ -202,8 +204,3 @@ const applyElementStyleToDescendants = (
       ),
     }
   })
-
-const convertMarkdownToRichText = (text: string): TDescendant[] => {
-  const plugins = [createDeserializeMdPlugin()]
-  return deserializeMd(createPlateEditor({ plugins }) as unknown as any, text)
-}

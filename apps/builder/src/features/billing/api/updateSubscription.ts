@@ -1,4 +1,3 @@
-import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 import prisma from '@typebot.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
@@ -9,12 +8,13 @@ import { z } from 'zod'
 import { createCheckoutSessionUrl } from './createCheckoutSession'
 import { isAdminWriteWorkspaceForbidden } from '@/features/workspace/helpers/isAdminWriteWorkspaceForbidden'
 import { env } from '@typebot.io/env'
+import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
 
 export const updateSubscription = authenticatedProcedure
   .meta({
     openapi: {
       method: 'PATCH',
-      path: '/billing/subscription',
+      path: '/v1/billing/subscription',
       protect: true,
       summary: 'Update subscription',
       tags: ['Billing'],
@@ -49,7 +49,7 @@ export const updateSubscription = authenticatedProcedure
           id: workspaceId,
         },
         select: {
-          isQuarantined: true,
+          isPastDue: true,
           stripeId: true,
           members: {
             select: {
@@ -59,6 +59,12 @@ export const updateSubscription = authenticatedProcedure
           },
         },
       })
+      if (workspace?.isPastDue)
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message:
+            'You have unpaid invoices. Please head over your billing portal to pay it.',
+        })
       if (
         !workspace?.stripeId ||
         isAdminWriteWorkspaceForbidden(workspace, user)
@@ -125,10 +131,10 @@ export const updateSubscription = authenticatedProcedure
             })
           }
         }
+
         await stripe.subscriptions.update(subscription.id, {
           items,
-          proration_behavior:
-            plan === 'PRO' ? 'always_invoice' : 'create_prorations',
+          proration_behavior: 'always_invoice',
         })
       } else {
         const checkoutUrl = await createCheckoutSessionUrl(stripe)({
@@ -151,7 +157,7 @@ export const updateSubscription = authenticatedProcedure
         },
       })
 
-      await sendTelemetryEvents([
+      await trackEvents([
         {
           name: 'Subscription updated',
           workspaceId,

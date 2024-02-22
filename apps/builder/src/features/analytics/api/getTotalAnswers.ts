@@ -6,12 +6,14 @@ import { canReadTypebots } from '@/helpers/databaseRules'
 import { totalAnswersSchema } from '@typebot.io/schemas/features/analytics'
 import { parseGroups } from '@typebot.io/schemas'
 import { isInputBlock } from '@typebot.io/lib'
+import { defaultTimeFilter, timeFilterValues } from '../constants'
+import { parseDateFromTimeFilter } from '../helpers/parseDateFromTimeFilter'
 
 export const getTotalAnswers = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/typebots/{typebotId}/analytics/totalAnswersInBlocks',
+      path: '/v1/typebots/{typebotId}/analytics/totalAnswersInBlocks',
       protect: true,
       summary: 'List total answers in blocks',
       tags: ['Analytics'],
@@ -20,10 +22,11 @@ export const getTotalAnswers = authenticatedProcedure
   .input(
     z.object({
       typebotId: z.string(),
+      timeFilter: z.enum(timeFilterValues).default(defaultTimeFilter),
     })
   )
   .output(z.object({ totalAnswers: z.array(totalAnswersSchema) }))
-  .query(async ({ input: { typebotId }, ctx: { user } }) => {
+  .query(async ({ input: { typebotId, timeFilter }, ctx: { user } }) => {
     const typebot = await prisma.typebot.findFirst({
       where: canReadTypebots(typebotId, user),
       select: { publishedTypebot: true },
@@ -34,11 +37,18 @@ export const getTotalAnswers = authenticatedProcedure
         message: 'Published typebot not found',
       })
 
+    const date = parseDateFromTimeFilter(timeFilter)
+
     const totalAnswersPerBlock = await prisma.answer.groupBy({
       by: ['blockId'],
       where: {
         result: {
           typebotId: typebot.publishedTypebot.typebotId,
+          createdAt: date
+            ? {
+                gte: date,
+              }
+            : undefined,
         },
         blockId: {
           in: parseGroups(typebot.publishedTypebot.groups, {

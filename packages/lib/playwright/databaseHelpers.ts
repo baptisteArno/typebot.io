@@ -33,6 +33,7 @@ export const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => {
     isClosed: false,
     resultsTablePreferences: null,
     whatsAppCredentialsId: null,
+    riskLevel: null,
     events:
       version === '6'
         ? [

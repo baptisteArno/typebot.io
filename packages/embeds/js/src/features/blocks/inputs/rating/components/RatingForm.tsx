@@ -45,7 +45,10 @@ export const RatingForm = (props: Props) => {
                 defaultRatingInputOptions.length) +
                 ((props.block.options?.buttonType ??
                   defaultRatingInputOptions.buttonType) === 'Numbers'
-                  ? 1
+                  ? -(
+                      ((props.block.options?.startsAt as number | undefined) ??
+                        defaultRatingInputOptions.startsAt) - 1
+                    )
                   : 0)
             )
           )}
@@ -58,7 +61,8 @@ export const RatingForm = (props: Props) => {
                 idx() +
                 ((props.block.options?.buttonType ??
                   defaultRatingInputOptions.buttonType) === 'Numbers'
-                  ? 0
+                  ? (props.block.options?.startsAt as number | undefined) ??
+                    defaultRatingInputOptions.startsAt
                   : 1)
               }
               onClick={handleClick}

@@ -22,6 +22,7 @@ import { Coordinates } from '@dnd-kit/utilities'
 import { BlockSourceEndpoint } from '../../endpoints/BlockSourceEndpoint'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   block: BlockWithItems
@@ -159,7 +160,7 @@ export const ItemNodesList = ({
         />
       )}
 
-      {draggedItem && (
+      {draggedItem && draggedItem.blockId === block.id && (
         <Portal>
           <Flex
             pointerEvents="none"
@@ -192,6 +193,8 @@ const DefaultItemNode = ({
   block: BlockWithItems
   groupId: string
 }) => {
+  const { t } = useTranslate()
+
   return (
     <Flex
       px="4"
@@ -205,7 +208,9 @@ const DefaultItemNode = ({
       cursor="not-allowed"
     >
       <Text color="gray.500">
-        {block.type === LogicBlockType.CONDITION ? 'Else' : 'Default'}
+        {block.type === LogicBlockType.CONDITION
+          ? t('blocks.inputs.button.else.label')
+          : t('blocks.inputs.button.default.label')}
       </Text>
       <BlockSourceEndpoint
         source={{

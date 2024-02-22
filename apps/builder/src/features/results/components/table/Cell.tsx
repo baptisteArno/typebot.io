@@ -2,7 +2,7 @@ import { chakra, Fade, Button, useColorModeValue } from '@chakra-ui/react'
 import { Cell as CellProps, flexRender } from '@tanstack/react-table'
 import { ExpandIcon } from '@/components/icons'
 import { memo } from 'react'
-import { TableData } from '../../types'
+import { TableData } from '@typebot.io/schemas'
 
 type Props = {
   cell: CellProps<TableData, unknown>

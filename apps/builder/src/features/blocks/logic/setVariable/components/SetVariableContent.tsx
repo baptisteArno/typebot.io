@@ -68,6 +68,7 @@ const Expression = ({
     case 'Now':
     case 'Tomorrow':
     case 'User ID':
+    case 'Result ID':
     case 'Moment of the day':
     case 'Environment name':
     case 'Yesterday': {

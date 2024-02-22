@@ -3,6 +3,7 @@
   "include": ["**/*.ts"],
   "exclude": ["node_modules"],
   "compilerOptions": {
+    "lib": ["ESNext"],
     "noEmit": true
   }
 }

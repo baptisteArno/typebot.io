@@ -16,7 +16,7 @@ test('should work as expected', async ({ page }) => {
   await page.getByRole('menuitem', { name: 'Group #1' }).click()
   await page.getByPlaceholder('Select a block').click()
   await page.getByRole('menuitem', { name: 'Block #2' }).click()
-  await page.getByRole('button', { name: 'Preview' }).click()
+  await page.getByRole('button', { name: 'Test' }).click()
   await page.getByPlaceholder('Type your answer...').fill('Hi there!')
   await page.getByRole('button', { name: 'Send' }).click()
   await expect(

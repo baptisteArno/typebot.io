@@ -5,7 +5,7 @@ import { promptAndSetEnvironment } from './utils'
 import { Workspace } from '@typebot.io/schemas'
 import { sendAlmostReachedChatsLimitEmail } from '@typebot.io/emails/src/emails/AlmostReachedChatsLimitEmail'
 import { TelemetryEvent } from '@typebot.io/schemas/features/telemetry'
-import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
+import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
 import Stripe from 'stripe'
 import { createId } from '@paralleldrive/cuid2'
 
@@ -76,6 +76,7 @@ export const checkAndReportChatsUsage = async () => {
   })
 
   const quarantineEvents: TelemetryEvent[] = []
+  const autoUpgradeEvents: TelemetryEvent[] = []
 
   for (const workspace of workspaces) {
     if (workspace.isQuarantined) continue
@@ -136,6 +137,21 @@ export const checkAndReportChatsUsage = async () => {
           stripe,
           workspaceId: workspace.id,
         })
+        autoUpgradeEvents.push(
+          ...workspace.members
+            .filter((member) => member.role === WorkspaceRole.ADMIN)
+            .map(
+              (member) =>
+                ({
+                  name: 'Subscription automatically updated',
+                  userId: member.user.id,
+                  workspaceId: workspace.id,
+                  data: {
+                    plan: 'PRO',
+                  },
+                } satisfies TelemetryEvent)
+            )
+        )
         await reportUsageToStripe(totalChatsUsed, {
           stripe,
           subscription: newSubscription,
@@ -206,7 +222,7 @@ export const checkAndReportChatsUsage = async () => {
     `Send ${newResultsCollectedEvents.length} new results events and ${quarantineEvents.length} auto quarantine events...`
   )
 
-  await sendTelemetryEvents(quarantineEvents.concat(newResultsCollectedEvents))
+  await trackEvents(quarantineEvents.concat(newResultsCollectedEvents))
 }
 
 const getSubscription = async (

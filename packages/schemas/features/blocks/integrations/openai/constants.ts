@@ -1,4 +1,8 @@
-export const openAITasks = ['Create chat completion', 'Create image'] as const
+export const openAITasks = [
+  'Create chat completion',
+  'Create speech',
+  'Create image',
+] as const
 
 export const chatCompletionMessageRoles = [
   'system',
@@ -27,3 +31,12 @@ export const defaultOpenAIOptions = {
 export const defaultOpenAIResponseMappingItem = {
   valueToExtract: 'Message content',
 } as const
+
+export const openAIVoices = [
+  'alloy',
+  'echo',
+  'fable',
+  'onyx',
+  'nova',
+  'shimmer',
+] as const

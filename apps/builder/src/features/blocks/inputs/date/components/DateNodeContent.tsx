@@ -5,9 +5,10 @@ import { WithVariableContent } from '@/features/graph/components/nodes/block/Wit
 type Props = {
   variableId?: string
 }
-export const DateNodeContent = ({ variableId }: Props) =>
-  variableId ? (
+export const DateNodeContent = ({ variableId }: Props) => {
+  return variableId ? (
     <WithVariableContent variableId={variableId} />
   ) : (
-    <Text color={'gray.500'}>Pick a date...</Text>
+    <Text color={'gray.500'}>Pick a date</Text>
   )
+}

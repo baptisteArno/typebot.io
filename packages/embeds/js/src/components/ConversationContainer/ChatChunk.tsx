@@ -1,6 +1,6 @@
 import { BotContext, ChatChunk as ChatChunkType } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
-import { ChatReply, Settings, Theme } from '@typebot.io/schemas'
+import { ContinueChatResponse, Settings, Theme } from '@typebot.io/schemas'
 import { createSignal, For, onMount, Show } from 'solid-js'
 import { HostBubble } from '../bubbles/HostBubble'
 import { InputChatBlock } from '../InputChatBlock'
@@ -9,7 +9,7 @@ import { StreamingBubble } from '../bubbles/StreamingBubble'
 import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
 import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
 
-type Props = Pick<ChatReply, 'messages' | 'input'> & {
+type Props = Pick<ContinueChatResponse, 'messages' | 'input'> & {
   theme: Theme
   settings: Settings
   inputIndex: number
@@ -19,7 +19,7 @@ type Props = Pick<ChatReply, 'messages' | 'input'> & {
   streamingMessageId: ChatChunkType['streamingMessageId']
   onNewBubbleDisplayed: (blockId: string) => Promise<void>
   onScrollToBottom: (top?: number) => void
-  onSubmit: (input: string) => void
+  onSubmit: (input?: string) => void
   onSkip: () => void
   onAllBubblesDisplayed: () => void
 }
@@ -27,6 +27,7 @@ type Props = Pick<ChatReply, 'messages' | 'input'> & {
 export const ChatChunk = (props: Props) => {
   let inputRef: HTMLDivElement | undefined
   const [displayedMessageIndex, setDisplayedMessageIndex] = createSignal(0)
+  const [lastBubbleOffsetTop, setLastBubbleOffsetTop] = createSignal<number>()
 
   onMount(() => {
     if (props.streamingMessageId) return
@@ -39,6 +40,20 @@ export const ChatChunk = (props: Props) => {
   })
 
   const displayNextMessage = async (bubbleOffsetTop?: number) => {
+    if (
+      (props.settings.typingEmulation?.delayBetweenBubbles ??
+        defaultSettings.typingEmulation.delayBetweenBubbles) > 0 &&
+      displayedMessageIndex() < props.messages.length - 1
+    ) {
+      // eslint-disable-next-line solid/reactivity
+      await new Promise((resolve) =>
+        setTimeout(
+          resolve,
+          (props.settings.typingEmulation?.delayBetweenBubbles ??
+            defaultSettings.typingEmulation.delayBetweenBubbles) * 1000
+        )
+      )
+    }
     const lastBubbleBlockId = props.messages[displayedMessageIndex()].id
     await props.onNewBubbleDisplayed(lastBubbleBlockId)
     setDisplayedMessageIndex(
@@ -48,6 +63,7 @@ export const ChatChunk = (props: Props) => {
     )
     props.onScrollToBottom(bubbleOffsetTop)
     if (displayedMessageIndex() === props.messages.length) {
+      setLastBubbleOffsetTop(bubbleOffsetTop)
       props.onAllBubblesDisplayed()
     }
   }
@@ -84,11 +100,19 @@ export const ChatChunk = (props: Props) => {
             }}
           >
             <For each={props.messages.slice(0, displayedMessageIndex() + 1)}>
-              {(message) => (
+              {(message, idx) => (
                 <HostBubble
                   message={message}
                   typingEmulation={props.settings.typingEmulation}
+                  isTypingSkipped={
+                    (props.settings.typingEmulation?.isDisabledOnFirstMessage ??
+                      defaultSettings.typingEmulation
+                        .isDisabledOnFirstMessage) &&
+                    props.inputIndex === 0 &&
+                    idx() === 0
+                  }
                   onTransitionEnd={displayNextMessage}
+                  onCompleted={props.onSubmit}
                 />
               )}
             </For>
@@ -111,6 +135,7 @@ export const ChatChunk = (props: Props) => {
             defaultSettings.general.isInputPrefillEnabled
           }
           hasError={props.hasError}
+          onTransitionEnd={() => props.onScrollToBottom(lastBubbleOffsetTop())}
           onSubmit={props.onSubmit}
           onSkip={props.onSkip}
         />

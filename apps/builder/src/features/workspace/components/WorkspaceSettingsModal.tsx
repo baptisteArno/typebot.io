@@ -15,11 +15,11 @@ import {
   UsersIcon,
 } from '@/components/icons'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
-import { User, Workspace, WorkspaceRole } from '@typebot.io/prisma'
+import { User, WorkspaceRole } from '@typebot.io/prisma'
 import { useState } from 'react'
 import { MembersList } from './MembersList'
 import { WorkspaceSettingsForm } from './WorkspaceSettingsForm'
-import { useWorkspace } from '../WorkspaceProvider'
+import { WorkspaceInApp, useWorkspace } from '../WorkspaceProvider'
 import packageJson from '../../../../../../package.json'
 import { UserPreferencesForm } from '@/features/account/components/UserPreferencesForm'
 import { MyAccountForm } from '@/features/account/components/MyAccountForm'
@@ -29,7 +29,7 @@ import { useTranslate } from '@tolgee/react'
 type Props = {
   isOpen: boolean
   user: User
-  workspace: Workspace
+  workspace: WorkspaceInApp
   onClose: () => void
 }
 
@@ -119,16 +119,18 @@ export const WorkspaceSettingsModal = ({
                   {t('workspace.settings.modal.menu.settings.label')}
                 </Button>
               )}
-              <Button
-                variant={selectedTab === 'members' ? 'solid' : 'ghost'}
-                onClick={() => setSelectedTab('members')}
-                leftIcon={<UsersIcon />}
-                size="sm"
-                justifyContent="flex-start"
-                pl="4"
-              >
-                {t('workspace.settings.modal.menu.members.label')}
-              </Button>
+              {currentRole !== WorkspaceRole.GUEST && (
+                <Button
+                  variant={selectedTab === 'members' ? 'solid' : 'ghost'}
+                  onClick={() => setSelectedTab('members')}
+                  leftIcon={<UsersIcon />}
+                  size="sm"
+                  justifyContent="flex-start"
+                  pl="4"
+                >
+                  {t('workspace.settings.modal.menu.members.label')}
+                </Button>
+              )}
               {canEditWorkspace && (
                 <Button
                   variant={selectedTab === 'billing' ? 'solid' : 'ghost'}
@@ -137,8 +139,7 @@ export const WorkspaceSettingsModal = ({
                   size="sm"
                   justifyContent="flex-start"
                   pl="4"
-                  overflow="scroll"
-                  className="hide-scrollbar"
+                  overflow="auto"
                 >
                   {t('workspace.settings.modal.menu.billingAndUsage.label')}
                 </Button>

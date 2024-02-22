@@ -7,9 +7,11 @@ import {
   HStack,
   Textarea as ChakraTextarea,
   TextareaProps,
+  FormHelperText,
+  Stack,
 } from '@chakra-ui/react'
 import { Variable } from '@typebot.io/schemas'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { env } from '@typebot.io/env'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
@@ -23,8 +25,10 @@ type Props = {
   withVariableButton?: boolean
   isRequired?: boolean
   placeholder?: string
+  helperText?: ReactNode
   onChange: (value: string) => void
-} & Pick<TextareaProps, 'minH'>
+  direction?: 'row' | 'column'
+} & Pick<TextareaProps, 'minH' | 'width'>
 
 export const Textarea = ({
   id,
@@ -37,6 +41,9 @@ export const Textarea = ({
   withVariableButton = true,
   isRequired,
   minH,
+  helperText,
+  direction = 'column',
+  width,
 }: Props) => {
   const inputRef = useRef<HTMLTextAreaElement | null>(null)
   const [isTouched, setIsTouched] = useState(false)
@@ -93,14 +100,20 @@ export const Textarea = ({
       onBlur={updateCarretPosition}
       onChange={(e) => changeValue(e.target.value)}
       placeholder={placeholder}
-      minH={minH}
+      minH={minH ?? '150px'}
     />
   )
 
   return (
-    <FormControl isRequired={isRequired}>
+    <FormControl
+      isRequired={isRequired}
+      as={direction === 'column' ? Stack : HStack}
+      justifyContent="space-between"
+      width={label || width === 'full' ? 'full' : 'auto'}
+      spacing={direction === 'column' ? 2 : 3}
+    >
       {label && (
-        <FormLabel>
+        <FormLabel display="flex" flexShrink={0} gap="1" mb="0" mr="0">
           {label}{' '}
           {moreInfoTooltip && (
             <MoreInfoTooltip>{moreInfoTooltip}</MoreInfoTooltip>
@@ -115,6 +128,7 @@ export const Textarea = ({
       ) : (
         Textarea
       )}
+      {helperText && <FormHelperText mt="0">{helperText}</FormHelperText>}
     </FormControl>
   )
 }

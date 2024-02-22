@@ -3,9 +3,9 @@ import Head from 'next/head'
 import Script from 'next/script'
 import React from 'react'
 import { isNotEmpty } from '@typebot.io/lib'
-import { getViewerUrl } from '@typebot.io/lib/getViewerUrl'
 import { Settings } from '@typebot.io/schemas'
 import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
+import { env } from '@typebot.io/env'
 
 type SEOProps = {
   url: string
@@ -31,7 +31,10 @@ export const SEO = ({
       <link
         rel="icon"
         type="image/png"
-        href={favIconUrl ?? defaultSettings.metadata.favIconUrl(getViewerUrl())}
+        href={
+          favIconUrl ??
+          defaultSettings.metadata.favIconUrl(env.NEXT_PUBLIC_VIEWER_URL[0])
+        }
       />
       <meta name="title" content={title ?? typebotName} />
       <meta
@@ -56,7 +59,10 @@ export const SEO = ({
       <meta
         property="og:image"
         itemProp="image"
-        content={imageUrl ?? defaultSettings.metadata.imageUrl(getViewerUrl())}
+        content={
+          imageUrl ??
+          defaultSettings.metadata.imageUrl(env.NEXT_PUBLIC_VIEWER_URL[0])
+        }
       />
 
       <meta property="twitter:card" content="summary_large_image" />
@@ -71,7 +77,10 @@ export const SEO = ({
       />
       <meta
         property="twitter:image"
-        content={imageUrl ?? defaultSettings.metadata.imageUrl(getViewerUrl())}
+        content={
+          imageUrl ??
+          defaultSettings.metadata.imageUrl(env.NEXT_PUBLIC_VIEWER_URL[0])
+        }
       />
     </Head>
     {isNotEmpty(googleTagManagerId) && (

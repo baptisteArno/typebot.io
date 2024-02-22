@@ -10,7 +10,7 @@ export const getBillingPortalUrl = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/billing/subscription/portal',
+      path: '/v1/billing/subscription/portal',
       protect: true,
       summary: 'Get Stripe billing portal URL',
       tags: ['Billing'],

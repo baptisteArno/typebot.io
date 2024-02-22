@@ -16,7 +16,6 @@ import { ScriptSettings } from '@/features/blocks/logic/script/components/Script
 import { JumpSettings } from '@/features/blocks/logic/jump/components/JumpSettings'
 import { MakeComSettings } from '@/features/blocks/integrations/makeCom/components/MakeComSettings'
 import { PabblyConnectSettings } from '@/features/blocks/integrations/pabbly/components/PabblyConnectSettings'
-import { OpenAISettings } from '@/features/blocks/integrations/openai/components/OpenAISettings'
 import { ButtonsBlockSettings } from '@/features/blocks/inputs/buttons/components/ButtonsBlockSettings'
 import { FileInputSettings } from '@/features/blocks/inputs/fileUpload/components/FileInputSettings'
 import { PaymentSettings } from '@/features/blocks/inputs/payment/components/PaymentSettings'
@@ -24,7 +23,7 @@ import { RatingInputSettings } from '@/features/blocks/inputs/rating/components/
 import { TextInputSettings } from '@/features/blocks/inputs/textInput/components/TextInputSettings'
 import { GoogleAnalyticsSettings } from '@/features/blocks/integrations/googleAnalytics/components/GoogleAnalyticsSettings'
 import { SendEmailSettings } from '@/features/blocks/integrations/sendEmail/components/SendEmailSettings'
-import { WebhookSettings } from '@/features/blocks/integrations/webhook/components/WebhookSettings'
+import { HttpRequestSettings } from '@/features/blocks/integrations/webhook/components/HttpRequestSettings'
 import { ZapierSettings } from '@/features/blocks/integrations/zapier/components/ZapierSettings'
 import { RedirectSettings } from '@/features/blocks/logic/redirect/components/RedirectSettings'
 import { SetVariableSettings } from '@/features/blocks/logic/setVariable/components/SetVariableSettings'
@@ -44,6 +43,8 @@ import { ZemanticAiSettings } from '@/features/blocks/integrations/zemanticAi/Ze
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { ForgedBlockSettings } from '../../../../forge/components/ForgedBlockSettings'
+import { OpenAISettings } from '@/features/blocks/integrations/openai/components/OpenAISettings'
 
 type Props = {
   block: BlockWithOptions
@@ -68,7 +69,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
         <PopoverArrow bgColor={arrowColor} />
         <PopoverBody
           py="3"
-          overflowY="scroll"
+          overflowY="auto"
           maxH="400px"
           ref={ref}
           shadow="lg"
@@ -287,7 +288,9 @@ export const BlockSettings = ({
       )
     }
     case IntegrationBlockType.WEBHOOK: {
-      return <WebhookSettings block={block} onOptionsChange={updateOptions} />
+      return (
+        <HttpRequestSettings block={block} onOptionsChange={updateOptions} />
+      )
     }
     case IntegrationBlockType.EMAIL: {
       return (
@@ -323,5 +326,10 @@ export const BlockSettings = ({
     }
     case LogicBlockType.CONDITION:
       return null
+    default: {
+      return (
+        <ForgedBlockSettings block={block} onOptionsChange={updateOptions} />
+      )
+    }
   }
 }

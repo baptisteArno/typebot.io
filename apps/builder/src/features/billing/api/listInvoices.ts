@@ -12,7 +12,7 @@ export const listInvoices = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/billing/invoices',
+      path: '/v1/billing/invoices',
       protect: true,
       summary: 'List invoices',
       tags: ['Billing'],
@@ -20,7 +20,11 @@ export const listInvoices = authenticatedProcedure
   })
   .input(
     z.object({
-      workspaceId: z.string(),
+      workspaceId: z
+        .string()
+        .describe(
+          '[Where to find my workspace ID?](../how-to#how-to-find-my-workspaceid)'
+        ),
     })
   )
   .output(

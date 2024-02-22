@@ -1,6 +1,6 @@
 import { InputSubmitContent } from '@/types'
 import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
-import { For, Show, createSignal, onMount } from 'solid-js'
+import { For, Show, createEffect, createSignal, onMount } from 'solid-js'
 import { Checkbox } from '../buttons/components/Checkbox'
 import { SendButton } from '@/components'
 import { isDefined, isEmpty, isSvgSrc } from '@typebot.io/lib'
@@ -12,12 +12,14 @@ type Props = {
   defaultItems: PictureChoiceBlock['items']
   options: PictureChoiceBlock['options']
   onSubmit: (value: InputSubmitContent) => void
+  onTransitionEnd: () => void
 }
 
 export const MultiplePictureChoice = (props: Props) => {
   let inputRef: HTMLInputElement | undefined
   const [filteredItems, setFilteredItems] = createSignal(props.defaultItems)
   const [selectedItemIds, setSelectedItemIds] = createSignal<string[]>([])
+  const [totalLoadedImages, setTotalLoadedImages] = createSignal(0)
 
   onMount(() => {
     if (!isMobile() && inputRef) inputRef.focus()
@@ -64,6 +66,18 @@ export const MultiplePictureChoice = (props: Props) => {
     )
   }
 
+  createEffect(() => {
+    if (
+      totalLoadedImages() ===
+      props.defaultItems.filter((item) => isDefined(item.pictureSrc)).length
+    )
+      props.onTransitionEnd()
+  })
+
+  const onImageLoad = () => {
+    setTotalLoadedImages((acc) => acc + 1)
+  }
+
   return (
     <form class="flex flex-col gap-2 w-full items-end" onSubmit={handleSubmit}>
       <Show when={props.options?.isSearchable}>
@@ -83,7 +97,7 @@ export const MultiplePictureChoice = (props: Props) => {
         class={
           'flex flex-wrap justify-end gap-2' +
           (props.options?.isSearchable
-            ? ' overflow-y-scroll max-h-[464px] rounded-md hide-scrollbar'
+            ? ' overflow-y-scroll max-h-[464px] rounded-md'
             : '')
         }
       >
@@ -112,6 +126,7 @@ export const MultiplePictureChoice = (props: Props) => {
                 elementtiming={`Picture choice ${index() + 1}`}
                 fetchpriority={'high'}
                 class="m-auto"
+                onLoad={onImageLoad}
               />
               <div
                 class={

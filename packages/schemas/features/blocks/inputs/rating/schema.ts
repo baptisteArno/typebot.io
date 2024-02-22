@@ -1,4 +1,5 @@
-import { z } from 'zod'
+import { z } from '../../../../zod'
+import { variableStringSchema } from '../../../utils'
 import { optionBaseSchema, blockBaseSchema } from '../../shared'
 import { InputBlockType } from '../constants'
 
@@ -6,6 +7,7 @@ export const ratingInputOptionsSchema = optionBaseSchema.merge(
   z.object({
     buttonType: z.literal('Icons').or(z.literal('Numbers')).optional(),
     length: z.number().optional(),
+    startsAt: z.number().or(variableStringSchema).optional(),
     labels: z
       .object({
         left: z.string().optional(),
@@ -23,11 +25,16 @@ export const ratingInputOptionsSchema = optionBaseSchema.merge(
   })
 )
 
-export const ratingInputBlockSchema = blockBaseSchema.merge(
-  z.object({
-    type: z.literal(InputBlockType.RATING),
-    options: ratingInputOptionsSchema.optional(),
+export const ratingInputBlockSchema = blockBaseSchema
+  .merge(
+    z.object({
+      type: z.literal(InputBlockType.RATING),
+      options: ratingInputOptionsSchema.optional(),
+    })
+  )
+  .openapi({
+    title: 'Rating',
+    ref: 'rating',
   })
-)
 
 export type RatingInputBlock = z.infer<typeof ratingInputBlockSchema>

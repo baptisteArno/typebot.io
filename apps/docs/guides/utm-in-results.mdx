@@ -1,0 +1,15 @@
+---
+title: Forward UTM parameters to a typebot
+---
+
+import { LoomVideo } from '/snippets/loom-video.mdx'
+
+The UTM parameter name should be listed in the Variables dropdown of your flow you can create it on any variable dropdown. Then, if your typebot is launched with the declared UTM parameter. It should appear in the Results tab.
+
+Once you have saved the UTM values into variables like `utm_source` and `utm_value`. You can build a redirect URL in a [Redirect block](../editor/blocks/logic/redirect) with the same UTMs like this:
+
+```
+https://redirect-site.com?utm_source={{utm_source}}&utm_value={{utm_value}}
+```
+
+<LoomVideo id="9b6cb65aff0a485e9e021b42310b207c" />

@@ -1,8 +1,8 @@
 import { createTRPCProxyClient, httpBatchLink, loggerLink } from '@trpc/client'
 import { createTRPCNext } from '@trpc/next'
-import type { AppRouter } from '../helpers/server/routers/v1/trpcRouter'
 import superjson from 'superjson'
 import { env } from '@typebot.io/env'
+import type { AppRouter } from '@/helpers/server/routers/appRouter'
 
 const getBaseUrl = () => (typeof window !== 'undefined' ? '' : env.NEXTAUTH_URL)
 

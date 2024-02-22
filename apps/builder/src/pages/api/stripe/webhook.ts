@@ -6,9 +6,10 @@ import { buffer } from 'micro'
 import prisma from '@typebot.io/lib/prisma'
 import { Plan, WorkspaceRole } from '@typebot.io/prisma'
 import { RequestHandler } from 'next/dist/server/next'
-import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 import { Settings } from '@typebot.io/schemas'
 import { env } from '@typebot.io/env'
+import { prices } from '@typebot.io/lib/billing/constants'
+import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
 
 if (!env.STRIPE_SECRET_KEY || !env.STRIPE_WEBHOOK_SECRET)
   throw new Error('STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET missing')
@@ -66,7 +67,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               },
               include: {
                 members: {
-                  select: { user: { select: { id: true } } },
+                  select: { userId: true },
                   where: {
                     role: WorkspaceRole.ADMIN,
                   },
@@ -74,19 +75,16 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               },
             })
 
-            for (const user of workspace.members.map((member) => member.user)) {
-              if (!user?.id) continue
-              await sendTelemetryEvents([
-                {
-                  name: 'Subscription updated',
-                  workspaceId,
-                  userId: user.id,
-                  data: {
-                    plan,
-                  },
+            await trackEvents(
+              workspace.members.map((m) => ({
+                name: 'Subscription updated',
+                workspaceId,
+                userId: m.userId,
+                data: {
+                  plan,
                 },
-              ])
-            }
+              }))
+            )
           } else {
             const { claimableCustomPlanId, userId } = metadata
             if (!claimableCustomPlanId)
@@ -110,7 +108,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               },
             })
 
-            await sendTelemetryEvents([
+            await trackEvents([
               {
                 name: 'Subscription updated',
                 workspaceId,
@@ -123,6 +121,95 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           }
 
           return res.status(200).send({ message: 'workspace upgraded in DB' })
+        }
+        case 'customer.subscription.updated': {
+          const subscription = event.data.object as Stripe.Subscription
+          if (subscription.status !== 'past_due')
+            return res.send({ message: 'Not past_due, skipping.' })
+          const existingWorkspace = await prisma.workspace.findFirst({
+            where: {
+              stripeId: subscription.customer as string,
+            },
+            select: {
+              isPastDue: true,
+              id: true,
+              members: {
+                select: { userId: true, role: true },
+                where: { role: WorkspaceRole.ADMIN },
+              },
+            },
+          })
+          if (!existingWorkspace) throw new Error('Workspace not found')
+          if (existingWorkspace?.isPastDue)
+            return res.send({
+              message: 'Workspace already past due, skipping.',
+            })
+          await prisma.workspace.updateMany({
+            where: {
+              id: existingWorkspace.id,
+            },
+            data: {
+              isPastDue: true,
+            },
+          })
+          await trackEvents(
+            existingWorkspace.members.map((m) => ({
+              name: 'Workspace past due',
+              workspaceId: existingWorkspace.id,
+              userId: m.userId,
+            }))
+          )
+          return res.send({ message: 'Workspace set to past due.' })
+        }
+        case 'invoice.paid': {
+          const invoice = event.data.object as Stripe.Invoice
+          const workspace = await prisma.workspace.findFirst({
+            where: {
+              stripeId: invoice.customer as string,
+            },
+            select: {
+              isPastDue: true,
+            },
+          })
+          if (!workspace?.isPastDue)
+            return res.send({ message: 'Workspace not past_due, skipping.' })
+          const outstandingInvoices = await stripe.invoices.list({
+            customer: invoice.customer as string,
+            status: 'open',
+          })
+          const outstandingInvoicesWithAdditionalUsageCosts =
+            outstandingInvoices.data.filter(
+              (invoice) => invoice.amount_due > prices['PRO'] * 100
+            )
+          if (outstandingInvoicesWithAdditionalUsageCosts.length > 0)
+            return res.send({
+              message: 'Workspace has outstanding invoices, skipping.',
+            })
+          const updatedWorkspace = await prisma.workspace.update({
+            where: {
+              stripeId: invoice.customer as string,
+            },
+            data: {
+              isPastDue: false,
+            },
+            select: {
+              id: true,
+              members: {
+                select: { userId: true },
+                where: {
+                  role: WorkspaceRole.ADMIN,
+                },
+              },
+            },
+          })
+          await trackEvents(
+            updatedWorkspace.members.map((m) => ({
+              name: 'Workspace past due status removed',
+              workspaceId: updatedWorkspace.id,
+              userId: m.userId,
+            }))
+          )
+          return res.send({ message: 'Workspace was regulated' })
         }
         case 'customer.subscription.deleted': {
           const subscription = event.data.object as Stripe.Subscription
@@ -139,6 +226,25 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               message:
                 'An active subscription still exists. Skipping downgrade.',
             })
+          const outstandingInvoices = await stripe.invoices.list({
+            customer: subscription.customer as string,
+            status: 'open',
+          })
+          const outstandingInvoicesWithAdditionalUsageCosts =
+            outstandingInvoices.data.filter(
+              (invoice) => invoice.amount_due > prices['PRO'] * 100
+            )
+
+          const workspaceExist =
+            (await prisma.workspace.count({
+              where: {
+                stripeId: subscription.customer as string,
+              },
+            })) > 0
+
+          if (!workspaceExist)
+            return res.send({ message: 'Workspace not found, skipping...' })
+
           const workspace = await prisma.workspace.update({
             where: {
               stripeId: subscription.customer as string,
@@ -148,10 +254,11 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               customChatsLimit: null,
               customStorageLimit: null,
               customSeatsLimit: null,
+              isPastDue: outstandingInvoicesWithAdditionalUsageCosts.length > 0,
             },
             include: {
               members: {
-                select: { user: { select: { id: true } } },
+                select: { userId: true },
                 where: {
                   role: WorkspaceRole.ADMIN,
                 },
@@ -159,19 +266,16 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             },
           })
 
-          for (const user of workspace.members.map((member) => member.user)) {
-            if (!user?.id) continue
-            await sendTelemetryEvents([
-              {
-                name: 'Subscription updated',
-                workspaceId: workspace.id,
-                userId: user.id,
-                data: {
-                  plan: Plan.FREE,
-                },
+          await trackEvents(
+            workspace.members.map((m) => ({
+              name: 'Subscription updated',
+              workspaceId: workspace.id,
+              userId: m.userId,
+              data: {
+                plan: Plan.FREE,
               },
-            ])
-          }
+            }))
+          )
 
           const typebots = await prisma.typebot.findMany({
             where: {

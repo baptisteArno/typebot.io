@@ -32,7 +32,7 @@ export const getLinkedTypebots = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/typebots/{typebotId}/linkedTypebots',
+      path: '/v1/typebots/{typebotId}/linkedTypebots',
       protect: true,
       summary: 'Get linked typebots',
       tags: ['Typebot'],
@@ -56,7 +56,17 @@ export const getLinkedTypebots = authenticatedProcedure
         variables: true,
         name: true,
         createdAt: true,
-        workspaceId: true,
+        workspace: {
+          select: {
+            isSuspended: true,
+            isPastDue: true,
+            members: {
+              select: {
+                userId: true,
+              },
+            },
+          },
+        },
         collaborators: {
           select: {
             type: true,
@@ -97,7 +107,17 @@ export const getLinkedTypebots = authenticatedProcedure
           variables: true,
           name: true,
           createdAt: true,
-          workspaceId: true,
+          workspace: {
+            select: {
+              isSuspended: true,
+              isPastDue: true,
+              members: {
+                select: {
+                  userId: true,
+                },
+              },
+            },
+          },
           collaborators: {
             select: {
               type: true,

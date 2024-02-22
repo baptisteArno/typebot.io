@@ -10,7 +10,7 @@ export const deleteResults = authenticatedProcedure
   .meta({
     openapi: {
       method: 'DELETE',
-      path: '/typebots/{typebotId}/results',
+      path: '/v1/typebots/{typebotId}/results',
       protect: true,
       summary: 'Delete results',
       tags: ['Results'],
@@ -18,7 +18,11 @@ export const deleteResults = authenticatedProcedure
   })
   .input(
     z.object({
-      typebotId: z.string(),
+      typebotId: z
+        .string()
+        .describe(
+          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+        ),
       resultIds: z
         .string()
         .describe(
@@ -36,8 +40,19 @@ export const deleteResults = authenticatedProcedure
         id: typebotId,
       },
       select: {
-        workspaceId: true,
         groups: true,
+        workspace: {
+          select: {
+            isSuspended: true,
+            isPastDue: true,
+            members: {
+              select: {
+                userId: true,
+                role: true,
+              },
+            },
+          },
+        },
         collaborators: {
           select: {
             userId: true,

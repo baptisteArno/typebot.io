@@ -8,7 +8,7 @@ export const unpublishTypebot = authenticatedProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/typebots/{typebotId}/unpublish',
+      path: '/v1/typebots/{typebotId}/unpublish',
       protect: true,
       summary: 'Unpublish a typebot',
       tags: ['Typebot'],
@@ -16,7 +16,11 @@ export const unpublishTypebot = authenticatedProcedure
   })
   .input(
     z.object({
-      typebotId: z.string(),
+      typebotId: z
+        .string()
+        .describe(
+          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+        ),
     })
   )
   .output(
@@ -32,6 +36,18 @@ export const unpublishTypebot = authenticatedProcedure
       include: {
         collaborators: true,
         publishedTypebot: true,
+        workspace: {
+          select: {
+            isSuspended: true,
+            isPastDue: true,
+            members: {
+              select: {
+                userId: true,
+                role: true,
+              },
+            },
+          },
+        },
       },
     })
     if (!existingTypebot?.publishedTypebot)

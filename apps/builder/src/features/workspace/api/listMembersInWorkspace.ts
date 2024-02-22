@@ -9,7 +9,7 @@ export const listMembersInWorkspace = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/workspaces/{workspaceId}/members',
+      path: '/v1/workspaces/{workspaceId}/members',
       protect: true,
       summary: 'List members in workspace',
       tags: ['Workspace'],
@@ -17,7 +17,11 @@ export const listMembersInWorkspace = authenticatedProcedure
   })
   .input(
     z.object({
-      workspaceId: z.string(),
+      workspaceId: z
+        .string()
+        .describe(
+          '[Where to find my workspace ID?](../how-to#how-to-find-my-workspaceid)'
+        ),
     })
   )
   .output(

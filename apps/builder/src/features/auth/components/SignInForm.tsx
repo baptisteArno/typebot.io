@@ -65,6 +65,17 @@ export const SignInForm = ({
     })()
   }, [status, router])
 
+  useEffect(() => {
+    if (!router.isReady) return
+    if (router.query.error === 'ip-banned') {
+      showToast({
+        status: 'info',
+        description:
+          'Your account has suspicious activity and is being reviewed by our team. Feel free to contact us.',
+      })
+    }
+  }, [router.isReady, router.query.error, showToast])
+
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) =>
     setEmailValue(e.target.value)
 
@@ -78,17 +89,32 @@ export const SignInForm = ({
         redirect: false,
       })
       if (response?.error) {
-        showToast({
-          title: t('auth.signinErrorToast.title'),
-          description: t('auth.signinErrorToast.description'),
-        })
+        if (response.error.includes('rate-limited'))
+          showToast({
+            status: 'info',
+            description: t('auth.signinErrorToast.tooManyRequests'),
+          })
+        else if (response.error.includes('sign-up-disabled'))
+          showToast({
+            title: t('auth.signinErrorToast.title'),
+            description: t('auth.signinErrorToast.description'),
+          })
+        else
+          showToast({
+            status: 'info',
+            description: t('errorMessage'),
+            details: {
+              content: 'Check server logs to see relevent error message.',
+              lang: 'json',
+            },
+          })
       } else {
         setIsMagicLinkSent(true)
       }
-    } catch {
+    } catch (e) {
       showToast({
         status: 'info',
-        description: t('auth.signinErrorToast.tooManyRequests'),
+        description: 'An error occured while signing in',
       })
     }
     setAuthLoading(false)

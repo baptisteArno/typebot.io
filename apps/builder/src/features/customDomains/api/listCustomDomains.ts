@@ -9,7 +9,7 @@ export const listCustomDomains = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/custom-domains',
+      path: '/v1/custom-domains',
       protect: true,
       summary: 'List custom domains',
       tags: ['Custom domains'],

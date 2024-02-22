@@ -87,7 +87,7 @@ const TextBubbleEditorContent = ({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.shiftKey) return
-    if (e.key === 'Enter') closeEditor()
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) closeEditor()
   }
 
   return (
@@ -101,6 +101,7 @@ const TextBubbleEditorContent = ({
       spacing={0}
       cursor="text"
       className="prevent-group-drag"
+      onContextMenuCapture={(e) => e.stopPropagation()}
       sx={{
         '.slate-ToolbarButton-active': {
           color: useColorModeValue('blue.500', 'blue.300') + ' !important',

@@ -1,6 +1,6 @@
 import prisma from '@typebot.io/lib/prisma'
 import {
-  ChatReply,
+  ContinueChatResponse,
   PublicTypebot,
   SessionState,
   Settings,
@@ -17,10 +17,11 @@ import {
   ComparisonOperators,
 } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
 import { VisitedEdge } from '@typebot.io/prisma'
+import { Reply } from '../types'
 
 type Props = {
-  incomingMessage?: string
-  workspaceId?: string
+  incomingMessage?: Reply
+  workspaceId: string
   credentials: WhatsAppCredentials['data'] & Pick<WhatsAppCredentials, 'id'>
   contact: NonNullable<SessionState['whatsApp']>['contact']
 }
@@ -31,7 +32,7 @@ export const startWhatsAppSession = async ({
   credentials,
   contact,
 }: Props): Promise<
-  | (ChatReply & {
+  | (ContinueChatResponse & {
       newSessionState: SessionState
       visitedEdges: VisitedEdge[]
     })
@@ -89,9 +90,11 @@ export const startWhatsAppSession = async ({
     version: 2,
     message: incomingMessage,
     startParams: {
-      typebot: publicTypebot.typebot.publicId as string,
+      type: 'live',
+      publicId: publicTypebot.typebot.publicId as string,
+      isOnlyRegistering: false,
+      isStreamEnabled: false,
     },
-    userId: undefined,
     initialSessionState: {
       whatsApp: {
         contact,
@@ -102,10 +105,11 @@ export const startWhatsAppSession = async ({
 }
 
 export const messageMatchStartCondition = (
-  message: string,
+  message: Reply,
   startCondition: NonNullable<Settings['whatsApp']>['startCondition']
 ) => {
   if (!startCondition) return true
+  if (typeof message !== 'string') return false
   return startCondition.logicalOperator === LogicalOperator.AND
     ? startCondition.comparisons.every((comparison) =>
         matchComparison(

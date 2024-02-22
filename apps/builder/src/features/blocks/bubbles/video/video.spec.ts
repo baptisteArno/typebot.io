@@ -51,7 +51,7 @@ test.describe.parallel('Video bubble block', () => {
       ])
 
       await page.goto(`/typebots/${typebotId}/edit`)
-      await page.click('text=Preview')
+      await page.click('text=Test')
       await expect(page.locator('video').nth(1)).toHaveAttribute(
         'src',
         videoSrc
@@ -75,7 +75,7 @@ test.describe.parallel('Video bubble block', () => {
       ])
 
       await page.goto(`/typebots/${typebotId}/edit`)
-      await page.click('text=Preview')
+      await page.click('text=Test')
       await expect(page.locator('iframe').nth(1)).toHaveAttribute(
         'src',
         'https://www.youtube.com/embed/dQw4w9WgXcQ'
@@ -99,7 +99,7 @@ test.describe.parallel('Video bubble block', () => {
       ])
 
       await page.goto(`/typebots/${typebotId}/edit`)
-      await page.click('text=Preview')
+      await page.click('text=Test')
       await expect(page.locator('iframe').nth(1)).toHaveAttribute(
         'src',
         'https://player.vimeo.com/video/649301125'

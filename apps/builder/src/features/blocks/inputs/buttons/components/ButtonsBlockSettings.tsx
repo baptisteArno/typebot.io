@@ -6,6 +6,7 @@ import { ChoiceInputBlock, Variable } from '@typebot.io/schemas'
 import React from 'react'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
 import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   options?: ChoiceInputBlock['options']
@@ -13,6 +14,7 @@ type Props = {
 }
 
 export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
+  const { t } = useTranslate()
   const updateIsMultiple = (isMultipleChoice: boolean) =>
     onOptionsChange({ ...options, isMultipleChoice })
   const updateIsSearchable = (isSearchable: boolean) =>
@@ -29,7 +31,7 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <SwitchWithRelatedSettings
-        label="Multiple choice?"
+        label={t('blocks.inputs.settings.multipleChoice.label')}
         initialValue={
           options?.isMultipleChoice ??
           defaultChoiceInputOptions.isMultipleChoice
@@ -37,35 +39,34 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
         onCheckChange={updateIsMultiple}
       >
         <TextInput
-          label="Submit button label:"
+          label={t('blocks.inputs.settings.submitButton.label')}
           defaultValue={
-            options?.buttonLabel ?? defaultChoiceInputOptions.buttonLabel
+            options?.buttonLabel ?? t('blocks.inputs.settings.buttonText.label')
           }
           onChange={updateButtonLabel}
         />
       </SwitchWithRelatedSettings>
       <SwitchWithRelatedSettings
-        label="Is searchable?"
+        label={t('blocks.inputs.settings.isSearchable.label')}
         initialValue={
           options?.isSearchable ?? defaultChoiceInputOptions.isSearchable
         }
         onCheckChange={updateIsSearchable}
       >
         <TextInput
-          label="Input placeholder:"
+          label={t('blocks.inputs.settings.input.placeholder.label')}
           defaultValue={
             options?.searchInputPlaceholder ??
-            defaultChoiceInputOptions.searchInputPlaceholder
+            t('blocks.inputs.settings.input.filterOptions.label')
           }
           onChange={updateSearchInputPlaceholder}
         />
       </SwitchWithRelatedSettings>
       <FormControl>
         <FormLabel>
-          Dynamic data:{' '}
+          {t('blocks.inputs.button.settings.dynamicData.label')}{' '}
           <MoreInfoTooltip>
-            If defined, buttons will be dynamically displayed based on what the
-            variable contains.
+            {t('blocks.inputs.button.settings.dynamicData.infoText.label')}
           </MoreInfoTooltip>
         </FormLabel>
         <VariableSearchInput
@@ -75,7 +76,7 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
       </FormControl>
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          Save answer in a variable:
+          {t('blocks.inputs.settings.saveAnswer.label')}
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}

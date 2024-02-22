@@ -1,10 +1,9 @@
 import { Webhook as WebhookFromDb } from '@typebot.io/prisma'
 import {
-  Block,
   BlockV5,
   PublicTypebotV5,
   TypebotV5,
-  Webhook,
+  HttpRequest,
 } from '@typebot.io/schemas'
 import { isWebhookBlock, isDefined } from '../utils'
 import prisma from '../prisma'
@@ -54,9 +53,11 @@ const migrateWebhookBlock =
           ? {
               id: webhook.id,
               url: webhook.url ?? undefined,
-              method: (webhook.method as Webhook['method']) ?? HttpMethod.POST,
-              headers: (webhook.headers as Webhook['headers']) ?? [],
-              queryParams: (webhook.queryParams as Webhook['headers']) ?? [],
+              method:
+                (webhook.method as HttpRequest['method']) ?? HttpMethod.POST,
+              headers: (webhook.headers as HttpRequest['headers']) ?? [],
+              queryParams:
+                (webhook.queryParams as HttpRequest['headers']) ?? [],
               body: webhook.body ?? undefined,
             }
           : {

@@ -13,10 +13,12 @@ export type BubbleTheme = {
 
 export type ChatWindowTheme = {
   backgroundColor?: string
+  maxWidth?: string
+  maxHeight?: string
 }
 
 export type ButtonTheme = {
-  size?: 'medium' | 'large'
+  size?: 'medium' | 'large' | `${number}px`
   backgroundColor?: string
   iconColor?: string
   customIconSrc?: string

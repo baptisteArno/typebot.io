@@ -10,7 +10,7 @@ export const deleteThemeTemplate = authenticatedProcedure
   .meta({
     openapi: {
       method: 'DELETE',
-      path: '/themeTemplates/{themeTemplateId}',
+      path: '/v1/themeTemplates/{themeTemplateId}',
       protect: true,
       summary: 'Delete a theme template',
       tags: ['Theme template'],

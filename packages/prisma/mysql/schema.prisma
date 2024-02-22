@@ -41,23 +41,26 @@ model Session {
 }
 
 model User {
-  id                      String                    @id @default(cuid())
-  createdAt               DateTime                  @default(now())
-  updatedAt               DateTime                  @default(now()) @updatedAt
-  lastActivityAt          DateTime                  @default(now())
-  name                    String?                   @db.VarChar(255)
-  email                   String?                   @unique
-  emailVerified           DateTime?
-  image                   String?                   @db.VarChar(1000)
-  company                 String?
-  onboardingCategories    Json
-  graphNavigation         GraphNavigation?
-  preferredAppAppearance  String?
-  accounts                Account[]
-  apiTokens               ApiToken[]
-  CollaboratorsOnTypebots CollaboratorsOnTypebots[]
-  workspaces              MemberInWorkspace[]
-  sessions                Session[]
+  id                          String                    @id @default(cuid())
+  createdAt                   DateTime                  @default(now())
+  updatedAt                   DateTime                  @default(now()) @updatedAt
+  lastActivityAt              DateTime                  @default(now())
+  name                        String?                   @db.VarChar(255)
+  email                       String?                   @unique
+  emailVerified               DateTime?
+  image                       String?                   @db.VarChar(1000)
+  company                     String?
+  onboardingCategories        Json
+  referral                    String?
+  graphNavigation             GraphNavigation?
+  preferredAppAppearance      String?
+  accounts                    Account[]
+  apiTokens                   ApiToken[]
+  CollaboratorsOnTypebots     CollaboratorsOnTypebots[]
+  workspaces                  MemberInWorkspace[]
+  sessions                    Session[]
+  bannedIps                   BannedIp[]
+  displayedInAppNotifications Json?
 }
 
 model ApiToken {
@@ -97,6 +100,8 @@ model Workspace {
   customSeatsLimit              Int?
   isQuarantined                 Boolean               @default(false)
   isSuspended                   Boolean               @default(false)
+  isPastDue                     Boolean               @default(false)
+  isVerified                    Boolean?
   themeTemplates                ThemeTemplate[]
 }
 
@@ -200,6 +205,8 @@ model Typebot {
   isArchived              Boolean                   @default(false)
   isClosed                Boolean                   @default(false)
   whatsAppCredentialsId   String?
+  riskLevel               Int?
+  bannedIps               BannedIp[]
 
   @@index([workspaceId])
   @@index([folderId])
@@ -357,6 +364,19 @@ model ThemeTemplate {
   workspaceId String
 
   @@index([workspaceId])
+}
+
+model BannedIp {
+  id                   String   @id @default(cuid())
+  createdAt            DateTime @default(now())
+  ip                   String   @unique
+  responsibleTypebot   Typebot  @relation(fields: [responsibleTypebotId], references: [id], onDelete: Restrict)
+  responsibleTypebotId String
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+  userId               String
+
+  @@index([responsibleTypebotId])
+  @@index([userId])
 }
 
 enum WorkspaceRole {

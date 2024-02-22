@@ -6,10 +6,7 @@ import { parseReactBotProps } from '../../snippetParsers'
 
 type Props = { widthLabel?: string; heightLabel: string }
 
-export const NextjsStandardSnippet = ({
-  widthLabel,
-  heightLabel,
-}: Props) => {
+export const NextjsStandardSnippet = ({ widthLabel, heightLabel }: Props) => {
   const { typebot } = useTypebot()
   const snippet = prettier.format(
     `import { Standard } from "@typebot.io/nextjs";

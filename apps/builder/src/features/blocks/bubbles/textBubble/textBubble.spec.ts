@@ -49,7 +49,7 @@ test.describe('Text bubble block', () => {
     await page.fill('[data-testid="variables-input"]', 'test')
     await page.getByRole('menuitem', { name: 'Create test' }).click()
 
-    await page.click('text=Preview')
+    await page.click('text=Test')
     await expect(page.locator('span.slate-bold >> nth=0')).toHaveText(
       'Bold text'
     )

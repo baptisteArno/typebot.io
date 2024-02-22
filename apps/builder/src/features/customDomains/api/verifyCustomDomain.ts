@@ -16,7 +16,7 @@ export const verifyCustomDomain = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/custom-domains/{name}/verify',
+      path: '/v1/custom-domains/{name}/verify',
       protect: true,
       summary: 'Verify domain config',
       tags: ['Custom domains'],

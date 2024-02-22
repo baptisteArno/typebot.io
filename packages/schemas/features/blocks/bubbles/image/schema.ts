@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from '../../../../zod'
 import { BubbleBlockType } from '../constants'
 import { blockBaseSchema } from '../../shared'
 

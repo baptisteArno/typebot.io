@@ -8,7 +8,7 @@ export const listWorkspaces = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/workspaces',
+      path: '/v1/workspaces',
       protect: true,
       summary: 'List workspaces',
       tags: ['Workspace'],

@@ -8,6 +8,7 @@ import { uploadFiles } from '../helpers/uploadFiles'
 import { guessApiHost } from '@/utils/guessApiHost'
 import { getRuntimeVariable } from '@typebot.io/env/getRuntimeVariable'
 import { defaultFileInputOptions } from '@typebot.io/schemas/features/blocks/inputs/file/constants'
+import { isDefined } from '@typebot.io/lib'
 
 type Props = {
   context: BotContext
@@ -50,7 +51,9 @@ export const FileUploadForm = (props: Props) => {
   const startSingleFileUpload = async (file: File) => {
     if (props.context.isPreview || !props.context.resultId)
       return props.onSubmit({
-        label: `File uploaded`,
+        label:
+          props.block.options?.labels?.success?.single ??
+          defaultFileInputOptions.labels.success.single,
         value: 'http://fake-upload-url.com',
       })
     setIsUploading(true)
@@ -68,14 +71,26 @@ export const FileUploadForm = (props: Props) => {
     })
     setIsUploading(false)
     if (urls.length)
-      return props.onSubmit({ label: `File uploaded`, value: urls[0] ?? '' })
+      return props.onSubmit({
+        label:
+          props.block.options?.labels?.success?.single ??
+          defaultFileInputOptions.labels.success.single,
+        value: urls[0] ? encodeUrl(urls[0]) : '',
+      })
     setErrorMessage('An error occured while uploading the file')
   }
   const startFilesUpload = async (files: File[]) => {
     const resultId = props.context.resultId
     if (props.context.isPreview || !resultId)
       return props.onSubmit({
-        label: `${files.length} file${files.length > 1 ? 's' : ''} uploaded`,
+        label:
+          files.length > 1
+            ? (
+                props.block.options?.labels?.success?.multiple ??
+                defaultFileInputOptions.labels.success.multiple
+              ).replaceAll('{total}', files.length.toString())
+            : props.block.options?.labels?.success?.single ??
+              defaultFileInputOptions.labels.success.single,
         value: files
           .map((_, idx) => `http://fake-upload-url.com/${idx}`)
           .join(', '),
@@ -97,8 +112,15 @@ export const FileUploadForm = (props: Props) => {
     if (urls.length !== files.length)
       return setErrorMessage('An error occured while uploading the files')
     props.onSubmit({
-      label: `${urls.length} file${urls.length > 1 ? 's' : ''} uploaded`,
-      value: urls.join(', '),
+      label:
+        urls.length > 1
+          ? (
+              props.block.options?.labels?.success?.multiple ??
+              defaultFileInputOptions.labels.success.multiple
+            ).replaceAll('{total}', urls.length.toString())
+          : props.block.options?.labels?.success?.single ??
+            defaultFileInputOptions.labels.success.single,
+      value: urls.filter(isDefined).map(encodeUrl).join(', '),
     })
   }
 
@@ -219,7 +241,8 @@ export const FileUploadForm = (props: Props) => {
               </Button>
             </Show>
             <SendButton type="submit" disableIcon>
-              {props.block.options?.labels?.button ===
+              {(props.block.options?.labels?.button ??
+                defaultFileInputOptions.labels.button) ===
               defaultFileInputOptions.labels.button
                 ? `Upload ${selectedFiles().length} file${
                     selectedFiles().length > 1 ? 's' : ''
@@ -273,3 +296,10 @@ const FileIcon = () => (
     <polyline points="13 2 13 9 20 9" />
   </svg>
 )
+
+const encodeUrl = (url: string): string => {
+  const fileName = url.split('/').pop()
+  if (!fileName) return url
+  const encodedFileName = encodeURIComponent(fileName)
+  return url.replace(fileName, encodedFileName)
+}

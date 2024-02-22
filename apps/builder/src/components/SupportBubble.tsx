@@ -20,7 +20,6 @@ export const SupportBubble = (props: Omit<BubbleProps, 'typebot'>) => {
 
   return (
     <Bubble
-      apiHost="https://viewer.typebot.io"
       typebot="typebot-support"
       prefilledVariables={{
         'User ID': user?.id,

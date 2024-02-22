@@ -1,11 +1,11 @@
 {
-  "i18n-ally.localesPaths": ["apps/builder/public/locales"],
+  "i18n-ally.localesPaths": ["apps/builder/src/i18n"],
   "i18n-ally.keystyle": "flat",
   "i18n-ally.displayLanguage": "en",
   "i18n-ally.enabledFrameworks": ["custom"],
   "i18n-ally.sortKeys": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,

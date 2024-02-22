@@ -11,9 +11,7 @@ export const ImageBubbleContent = ({ block }: Props) => {
   const containsVariables =
     block.content?.url?.includes('{{') && block.content.url.includes('}}')
   return !block.content?.url ? (
-    <Text color={'gray.500'}>
-      {t('editor.blocks.bubbles.image.node.clickToEdit.text')}
-    </Text>
+    <Text color={'gray.500'}>{t('clickToEdit')}</Text>
   ) : (
     <Box w="full">
       <Image

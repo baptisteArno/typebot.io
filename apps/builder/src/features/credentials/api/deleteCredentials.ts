@@ -8,7 +8,7 @@ export const deleteCredentials = authenticatedProcedure
   .meta({
     openapi: {
       method: 'DELETE',
-      path: '/credentials/:credentialsId',
+      path: '/v1/credentials/:credentialsId',
       protect: true,
       summary: 'Delete credentials',
       tags: ['Credentials'],

@@ -27,7 +27,7 @@ export const EditableTypebotName = ({
   }
 
   return (
-    <Tooltip label={t('editor.editableTypebotName.tooltip.rename.label')}>
+    <Tooltip label={t('rename')}>
       <Editable
         value={currentName}
         onChange={setCurrentName}

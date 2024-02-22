@@ -21,11 +21,13 @@ import { getGoogleSheetsConsentScreenUrlQuery } from '../queries/getGoogleSheets
 
 type Props = {
   isOpen: boolean
+  typebotId: string
   blockId: string
   onClose: () => void
 }
 
 export const GoogleSheetConnectModal = ({
+  typebotId,
   blockId,
   isOpen,
   onClose,
@@ -38,20 +40,21 @@ export const GoogleSheetConnectModal = ({
         <ModalHeader>Connect Spreadsheets</ModalHeader>
         <ModalCloseButton />
         <ModalBody as={Stack} spacing="6">
-          <AlertInfo>
-            Typebot needs access to Google Drive in order to list all your
-            spreadsheets. It also needs access to your spreadsheets in order to
-            fetch or inject data in it.
-          </AlertInfo>
           <Text>
             Make sure to check all the permissions so that the integration works
             as expected:
           </Text>
           <Image
-            src="/images/google-spreadsheets-scopes.jpeg"
+            src="/images/google-spreadsheets-scopes.png"
             alt="Google Spreadsheets checkboxes"
             rounded="md"
           />
+          <AlertInfo>
+            Google does not provide more granular permissions than
+            &quot;read&quot; or &quot;write&quot; access. That&apos;s why it
+            states that Typebot can also delete your spreadsheets which it
+            won&apos;t.
+          </AlertInfo>
           <Flex>
             <Button
               as={Link}
@@ -62,7 +65,8 @@ export const GoogleSheetConnectModal = ({
               href={getGoogleSheetsConsentScreenUrlQuery(
                 window.location.href,
                 blockId,
-                workspace?.id
+                workspace?.id,
+                typebotId
               )}
               mx="auto"
             >

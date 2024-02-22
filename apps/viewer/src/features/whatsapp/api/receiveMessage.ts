@@ -8,7 +8,7 @@ export const receiveMessage = publicProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/workspaces/{workspaceId}/whatsapp/{credentialsId}/webhook',
+      path: '/v1/workspaces/{workspaceId}/whatsapp/{credentialsId}/webhook',
       summary: 'Message webhook',
       tags: ['WhatsApp'],
     },

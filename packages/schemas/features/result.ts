@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from '../zod'
 import { answerInputSchema, answerSchema } from './answer'
 import { variableWithValueSchema } from './typebot/variable'
 import {
@@ -72,3 +72,9 @@ export type ResultHeaderCell = {
   blockType?: InputBlockType
   variableIds?: string[]
 }
+
+export type CellValueType = { element?: JSX.Element; plainText: string }
+
+export type TableData = {
+  id: Pick<CellValueType, 'plainText'>
+} & Record<string, CellValueType>

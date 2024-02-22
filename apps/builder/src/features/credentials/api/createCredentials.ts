@@ -14,6 +14,7 @@ import {
 } from '@typebot.io/schemas'
 import { isDefined } from '@typebot.io/lib/utils'
 import { isWriteWorkspaceForbidden } from '@/features/workspace/helpers/isWriteWorkspaceForbidden'
+import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
 
 const inputShape = {
   data: true,
@@ -26,7 +27,7 @@ export const createCredentials = authenticatedProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/credentials',
+      path: '/v1/credentials',
       protect: true,
       summary: 'Create credentials',
       tags: ['Credentials'],
@@ -77,6 +78,14 @@ export const createCredentials = authenticatedProcedure
         id: true,
       },
     })
+    if (credentials.type === 'whatsApp')
+      await trackEvents([
+        {
+          workspaceId: workspace.id,
+          userId: user.id,
+          name: 'WhatsApp credentials created',
+        },
+      ])
     return { credentialsId: createdCredentials.id }
   })
 

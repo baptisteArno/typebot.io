@@ -8,7 +8,7 @@ import type {
   Block,
   TextInputBlock,
   TextBubbleBlock,
-  WebhookBlock,
+  HttpRequestBlock,
   ImageBubbleBlock,
   VideoBubbleBlock,
   BlockWithOptionsType,
@@ -19,6 +19,7 @@ import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/p
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
+import { enabledBlocks } from '@typebot.io/forge-repository'
 
 export const sendRequest = async <ResponseData>(
   params:
@@ -28,10 +29,11 @@ export const sendRequest = async <ResponseData>(
         body?: Record<string, unknown> | FormData
       }
     | string
-): Promise<{ data?: ResponseData; error?: Error }> => {
+): Promise<{ data?: ResponseData; error?: Error; response?: Response }> => {
+  let response
   try {
     const url = typeof params === 'string' ? params : params.url
-    const response = await fetch(url, {
+    response = await fetch(url, {
       method: typeof params === 'string' ? 'GET' : params.method,
       mode: 'cors',
       headers:
@@ -47,10 +49,10 @@ export const sendRequest = async <ResponseData>(
     })
     const data = await response.json()
     if (!response.ok) throw 'error' in data ? data.error : data
-    return { data }
+    return { data, response }
   } catch (e) {
     console.error(e)
-    return { error: e as Error }
+    return { error: e as Error, response }
   }
 }
 
@@ -109,9 +111,13 @@ export const isConditionBlock = (block: Block): block is ConditionBlock =>
   block.type === LogicBlockType.CONDITION
 
 export const isIntegrationBlock = (block: Block): block is IntegrationBlock =>
-  (Object.values(IntegrationBlockType) as string[]).includes(block.type)
+  (
+    Object.values(IntegrationBlockType).concat(
+      enabledBlocks as readonly any[]
+    ) as any[]
+  ).includes(block.type)
 
-export const isWebhookBlock = (block: Block): block is WebhookBlock =>
+export const isWebhookBlock = (block: Block): block is HttpRequestBlock =>
   [
     IntegrationBlockType.WEBHOOK,
     IntegrationBlockType.PABBLY_CONNECT,

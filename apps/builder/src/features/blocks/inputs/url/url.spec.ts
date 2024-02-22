@@ -19,7 +19,7 @@ test.describe('Url input block', () => {
 
     await page.goto(`/typebots/${typebotId}/edit`)
 
-    await page.click('text=Preview')
+    await page.click('text=Test')
     await expect(
       page.locator(
         `input[placeholder="${defaultUrlInputOptions.labels.placeholder}"]`
@@ -39,9 +39,7 @@ test.describe('Url input block', () => {
     )
 
     await page.click('text=Restart')
-    await page
-      .locator(`input[placeholder="Your URL..."]`)
-      .fill('https://https://test')
+    await page.locator(`input[placeholder="Your URL..."]`).fill('test')
     await page.locator('button >> text="Go"').click()
     await expect(page.locator('text=Try again bro')).toBeVisible()
     await page

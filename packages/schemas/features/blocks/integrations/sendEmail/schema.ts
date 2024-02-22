@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from '../../../../zod'
 import { blockBaseSchema, credentialsBaseSchema } from '../../shared'
 import { IntegrationBlockType } from '../constants'
 

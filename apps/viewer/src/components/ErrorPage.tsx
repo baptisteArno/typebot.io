@@ -1,5 +1,5 @@
+import { env } from '@typebot.io/env'
 import React from 'react'
-import { getViewerUrl } from '@typebot.io/lib/getViewerUrl'
 
 export const ErrorPage = ({ error }: { error: Error }) => {
   return (
@@ -13,15 +13,15 @@ export const ErrorPage = ({ error }: { error: Error }) => {
         padding: '0 1rem',
       }}
     >
-      {!getViewerUrl() ? (
+      {!env.NEXT_PUBLIC_VIEWER_URL[0] ? (
         <>
           <h1 style={{ fontWeight: 'bold', fontSize: '30px' }}>
             NEXT_PUBLIC_VIEWER_URL is missing
           </h1>
           <h2>
-            Make sure to configure the viewer properly (
-            <a href="https://docs.typebot.io/self-hosting/configuration#viewer">
-              https://docs.typebot.io/self-hosting/configuration#viewer
+            Make sure to configure the app properly (
+            <a href="https://docs.typebot.io/self-hosting/configuration">
+              https://docs.typebot.io/self-hosting/configuration
             </a>
             )
           </h2>

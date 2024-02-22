@@ -112,11 +112,7 @@ export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
   })
 
   return (
-    <Stack
-      spacing={1}
-      transition="none"
-      pointerEvents={isReadOnly ? 'none' : 'auto'}
-    >
+    <Stack spacing={1} transition="none">
       <PlaceholderNode
         isVisible={showSortPlaceholders}
         isExpanded={expandedPlaceholderIndex === 0}

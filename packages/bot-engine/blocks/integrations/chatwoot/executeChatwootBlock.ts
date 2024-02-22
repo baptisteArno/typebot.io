@@ -2,9 +2,9 @@ import { ExecuteIntegrationResponse } from '../../../types'
 import { env } from '@typebot.io/env'
 import { isDefined } from '@typebot.io/lib'
 import { ChatwootBlock, SessionState } from '@typebot.io/schemas'
-import { extractVariablesFromText } from '../../../variables/extractVariablesFromText'
-import { parseGuessedValueType } from '../../../variables/parseGuessedValueType'
-import { parseVariables } from '../../../variables/parseVariables'
+import { extractVariablesFromText } from '@typebot.io/variables/extractVariablesFromText'
+import { parseGuessedValueType } from '@typebot.io/variables/parseGuessedValueType'
+import { parseVariables } from '@typebot.io/variables/parseVariables'
 import { defaultChatwootOptions } from '@typebot.io/schemas/features/blocks/integrations/chatwoot/constants'
 
 const parseSetUserCode = (
@@ -13,7 +13,7 @@ const parseSetUserCode = (
 ) =>
   user?.email || user?.id
     ? `
-window.$chatwoot.setUser(${user?.id ?? `"${resultId}"`}, {
+window.$chatwoot.setUser(${user?.id ?? user.email ?? `"${resultId}"`}, {
   email: ${user?.email ? user.email : 'undefined'},
   name: ${user?.name ? user.name : 'undefined'},
   avatar_url: ${user?.avatarUrl ? user.avatarUrl : 'undefined'},
@@ -92,6 +92,7 @@ export const executeChatwootBlock = (
     outgoingEdgeId: block.outgoingEdgeId,
     clientSideActions: [
       {
+        type: 'chatwoot',
         chatwoot: {
           scriptToExecute: {
             content: parseVariables(typebot.variables, { fieldToParse: 'id' })(

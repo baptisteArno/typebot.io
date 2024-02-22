@@ -1,6 +1,6 @@
 import { PixelBlock, SessionState } from '@typebot.io/schemas'
 import { ExecuteIntegrationResponse } from '../../../types'
-import { deepParseVariables } from '../../../variables/deepParseVariables'
+import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
 
 export const executePixelBlock = (
   state: SessionState,
@@ -22,6 +22,7 @@ export const executePixelBlock = (
     outgoingEdgeId: block.outgoingEdgeId,
     clientSideActions: [
       {
+        type: 'pixel',
         pixel: {
           ...pixel,
           pixelId: block.options.pixelId,

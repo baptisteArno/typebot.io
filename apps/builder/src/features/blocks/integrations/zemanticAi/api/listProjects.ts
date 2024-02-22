@@ -8,29 +8,10 @@ import { ZemanticAiCredentials } from '@typebot.io/schemas/features/blocks/integ
 import got from 'got'
 
 export const listProjects = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: 'GET',
-      path: '/zemantic-ai/projects',
-      protect: true,
-      summary: 'List Zemantic AI projects',
-      tags: ['ZemanticAi'],
-    },
-  })
   .input(
     z.object({
       credentialsId: z.string(),
       workspaceId: z.string(),
-    })
-  )
-  .output(
-    z.object({
-      projects: z.array(
-        z.object({
-          label: z.string(),
-          value: z.string(),
-        })
-      ),
     })
   )
   .query(async ({ input: { credentialsId, workspaceId }, ctx: { user } }) => {

@@ -1,0 +1,269 @@
+{
+  "version": "6",
+  "id": "clpnu4plq00051abo2487q86h",
+  "name": "ChatGPT condition",
+  "events": [
+    {
+      "id": "ewnfbo0exlu7ihfu2lu2lusm",
+      "outgoingEdgeId": "q2fpvz66ei3gd6k3wwq6w8f2",
+      "graphCoordinates": { "x": -228.25, "y": -123.31 },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "qfrz5nwm63g12dajsjxothb5",
+      "title": "User input",
+      "graphCoordinates": { "x": -107.01, "y": -53.23 },
+      "blocks": [
+        {
+          "id": "emjcjxlvzm2xex10exq4wf5h",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "How can we help?" }] }
+            ]
+          }
+        },
+        {
+          "id": "ovgk70u0kfxrbtz9dy4e040o",
+          "outgoingEdgeId": "n396v90ad7quz0gwygr6n5fc",
+          "type": "text input",
+          "options": { "variableId": "vudksu3zyrat6s1bq6qne0rx3" }
+        }
+      ]
+    },
+    {
+      "id": "bh3uva3254p0jgp46gj92way",
+      "title": "Condition 🧠",
+      "graphCoordinates": { "x": 228.67, "y": -50.67 },
+      "blocks": [
+        {
+          "id": "ufwpq6z392ebsu5tda0md77a",
+          "type": "openai",
+          "options": {
+            "action": "Create chat completion",
+            "messages": [
+              {
+                "role": "system",
+                "content": "You are helpful assistant doing customer support for a software called Typebot.\n\nIf the user is asking a question about his account, please say \"ACCOUNT\".\n\nIf the user wants to talk to a human, please say \"HUMAN\".\n\nOtherwise, say \"OK\""
+              },
+              { "role": "user", "content": "Can I talk to a human?" },
+              { "role": "assistant", "content": "HUMAN" },
+              { "role": "user", "content": "I need to check my account" },
+              { "role": "assistant", "content": "ACCOUNT" },
+              { "role": "user", "content": "{{User Message}}" }
+            ],
+            "credentialsId": "clpjnjrbt00051aliw6610w1z",
+            "responseMapping": [
+              {
+                "item": "Message content",
+                "variableId": "vni6kwbch8zlq92dclgcivzyr"
+              }
+            ]
+          }
+        },
+        {
+          "id": "b63f0et5y70mragfcrmezifh",
+          "outgoingEdgeId": "wkecv7zg757mbsnbfdej6uph",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "d0bax1yf18x2bj5zt38vr6xs",
+              "outgoingEdgeId": "optu30rn5vjiwueijh0utvoi",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "iiv6h6ssgusrfza4vped0iqe",
+                    "variableId": "vni6kwbch8zlq92dclgcivzyr",
+                    "comparisonOperator": "Contains",
+                    "value": "ACCOUNT"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "ulf15sjzk9b7df95rzaqe40j",
+              "outgoingEdgeId": "ft02qowy1n8uy2k5dzdo0j22",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "qekpq2av325h7rkmnrvtumxn",
+                    "variableId": "vni6kwbch8zlq92dclgcivzyr",
+                    "comparisonOperator": "Contains",
+                    "value": "HUMAN"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "flt2vtb4pb6mvlvyrrxonzwf",
+      "title": "Account",
+      "graphCoordinates": { "x": 585.48, "y": -214.13 },
+      "blocks": [
+        {
+          "id": "h45t9e5yxc2fpfiv49gvmwjj",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "Ok feel free to check your account here" }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "fn0s0ezabail96c5n0xs24aq",
+          "type": "choice input",
+          "items": [{ "id": "tslv59v8oqbfpnd21la8qnz4", "content": "Account" }]
+        },
+        {
+          "id": "r16g3avw7mwzi12srqisuex0",
+          "type": "Redirect",
+          "options": { "url": "https://google.com" }
+        }
+      ]
+    },
+    {
+      "id": "jn9w80afa6a66czzjfto8tmt",
+      "title": "Human",
+      "graphCoordinates": { "x": 586.68, "y": 153.73 },
+      "blocks": [
+        {
+          "id": "nvkp4zm7f24b0g3b25u3rb59",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "I'm a human" }] }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "el01d0j1db9kp6v8wlrk9dob",
+      "title": "Else",
+      "graphCoordinates": { "x": 581.46, "y": 315.66 },
+      "blocks": [
+        {
+          "id": "tpy9wjrwmhw16xjgs8htao04",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "Else" }] }]
+          }
+        }
+      ]
+    },
+    {
+      "id": "vafybpsjqcbrbbhi8pwl0gic",
+      "title": "",
+      "graphCoordinates": { "x": 6.52, "y": -346.17 },
+      "blocks": [
+        {
+          "id": "q1tc6z6xfl4jtrxdvv8phgil",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "You need to add your OpenAI credentials to make this bot work. 🪄\n"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "b3ahk7pzsh4abp3bkdlijc0v",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Once it's done, delete this group and connect the "
+                  },
+                  { "bold": true, "text": "Start" },
+                  { "text": " event with " },
+                  { "bold": true, "text": "Intro" },
+                  { "text": " 🚀\n" }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "h5sk58j0ryrxmfv4gmw7r4dw",
+      "from": { "blockId": "gphm5wy1md9cunwkdtbzg6nq" },
+      "to": { "groupId": "qfrz5nwm63g12dajsjxothb5" }
+    },
+    {
+      "id": "y8ml9ljnsydol9b42fd9zdve",
+      "from": { "blockId": "myldn1l1nfdwwm8qvza71rwv" },
+      "to": { "groupId": "qfrz5nwm63g12dajsjxothb5" }
+    },
+    {
+      "id": "optu30rn5vjiwueijh0utvoi",
+      "from": {
+        "blockId": "b63f0et5y70mragfcrmezifh",
+        "itemId": "d0bax1yf18x2bj5zt38vr6xs"
+      },
+      "to": { "groupId": "flt2vtb4pb6mvlvyrrxonzwf" }
+    },
+    {
+      "id": "ft02qowy1n8uy2k5dzdo0j22",
+      "from": {
+        "blockId": "b63f0et5y70mragfcrmezifh",
+        "itemId": "ulf15sjzk9b7df95rzaqe40j"
+      },
+      "to": { "groupId": "jn9w80afa6a66czzjfto8tmt" }
+    },
+    {
+      "id": "wkecv7zg757mbsnbfdej6uph",
+      "from": { "blockId": "b63f0et5y70mragfcrmezifh" },
+      "to": { "groupId": "el01d0j1db9kp6v8wlrk9dob" }
+    },
+    {
+      "id": "n396v90ad7quz0gwygr6n5fc",
+      "from": { "blockId": "ovgk70u0kfxrbtz9dy4e040o" },
+      "to": { "groupId": "bh3uva3254p0jgp46gj92way" }
+    },
+    {
+      "from": { "eventId": "ewnfbo0exlu7ihfu2lu2lusm" },
+      "to": { "groupId": "vafybpsjqcbrbbhi8pwl0gic" },
+      "id": "q2fpvz66ei3gd6k3wwq6w8f2"
+    }
+  ],
+  "variables": [
+    { "id": "vni6kwbch8zlq92dclgcivzyr", "name": "Assistant Message" },
+    { "id": "vudksu3zyrat6s1bq6qne0rx3", "name": "User Message" }
+  ],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2023-12-02T09:12:14.750Z",
+  "updatedAt": "2023-12-02T09:14:20.047Z",
+  "icon": "🧠",
+  "folderId": null,
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null
+}

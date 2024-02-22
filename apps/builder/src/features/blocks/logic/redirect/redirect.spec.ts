@@ -18,7 +18,7 @@ test.describe('Redirect block', () => {
     await page.click('text=Configure...')
     await page.fill('input[placeholder="Type a URL..."]', 'google.com')
 
-    await page.click('text=Preview')
+    await page.click('text=Test')
     await page.locator('typebot-standard').locator('text=Go to URL').click()
     await expect(page).toHaveURL('https://www.google.com')
     await page.goBack()
@@ -26,7 +26,7 @@ test.describe('Redirect block', () => {
     await page.click('text=Redirect to google.com')
     await page.click('text=Open in new tab')
 
-    await page.click('text=Preview')
+    await page.click('text=Test')
     const [newPage] = await Promise.all([
       context.waitForEvent('page'),
       page.locator('typebot-standard').locator('text=Go to URL').click(),

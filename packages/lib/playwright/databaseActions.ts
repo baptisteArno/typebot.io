@@ -7,7 +7,7 @@ import {
   WorkspaceRole,
 } from '@typebot.io/prisma'
 import { createId } from '@paralleldrive/cuid2'
-import { Typebot, TypebotV6, Webhook } from '@typebot.io/schemas'
+import { Typebot, TypebotV6, HttpRequest } from '@typebot.io/schemas'
 import { readFileSync } from 'fs'
 import { proWorkspaceId, userId } from './databaseSetup'
 import {
@@ -144,6 +144,8 @@ export const updateUser = (data: Partial<User>) =>
     data: {
       ...data,
       onboardingCategories: data.onboardingCategories ?? [],
+      displayedInAppNotifications:
+        data.displayedInAppNotifications ?? Prisma.DbNull,
     },
     where: {
       id: userId,
@@ -152,7 +154,7 @@ export const updateUser = (data: Partial<User>) =>
 
 export const createWebhook = async (
   typebotId: string,
-  webhookProps?: Partial<Webhook>
+  webhookProps?: Partial<HttpRequest>
 ) => {
   try {
     await prisma.webhook.delete({ where: { id: 'webhook1' } })

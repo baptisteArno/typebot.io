@@ -3,6 +3,7 @@ import { ContainerColors } from '@typebot.io/schemas'
 import React from 'react'
 import { ColorPicker } from '../../../../components/ColorPicker'
 import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   guestBubbles: ContainerColors | undefined
@@ -10,6 +11,8 @@ type Props = {
 }
 
 export const GuestBubbles = ({ guestBubbles, onGuestBubblesChange }: Props) => {
+  const { t } = useTranslate()
+
   const updateBackground = (backgroundColor: string) =>
     onGuestBubblesChange({ ...guestBubbles, backgroundColor })
 
@@ -19,7 +22,7 @@ export const GuestBubbles = ({ guestBubbles, onGuestBubblesChange }: Props) => {
   return (
     <Stack data-testid="guest-bubbles-theme">
       <Flex justify="space-between" align="center">
-        <Text>Background:</Text>
+        <Text>{t('theme.sideMenu.chat.theme.background')}</Text>
         <ColorPicker
           value={
             guestBubbles?.backgroundColor ??
@@ -29,7 +32,7 @@ export const GuestBubbles = ({ guestBubbles, onGuestBubblesChange }: Props) => {
         />
       </Flex>
       <Flex justify="space-between" align="center">
-        <Text>Text:</Text>
+        <Text>{t('theme.sideMenu.chat.theme.text')}</Text>
         <ColorPicker
           value={guestBubbles?.color ?? defaultTheme.chat.guestBubbles.color}
           onColorChange={updateText}

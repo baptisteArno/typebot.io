@@ -1,5 +1,5 @@
 import type {
-  ChatReply,
+  ContinueChatResponse,
   ChoiceInputBlock,
   EmailInputBlock,
   FileInputBlock,
@@ -39,13 +39,14 @@ import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constan
 
 type Props = {
   ref: HTMLDivElement | undefined
-  block: NonNullable<ChatReply['input']>
+  block: NonNullable<ContinueChatResponse['input']>
   hasHostAvatar: boolean
   guestAvatar?: NonNullable<Theme['chat']>['guestAvatar']
   inputIndex: number
   context: BotContext
   isInputPrefillEnabled: boolean
   hasError: boolean
+  onTransitionEnd: () => void
   onSubmit: (answer: string) => void
   onSkip: () => void
 }
@@ -102,6 +103,8 @@ export const InputChatBlock = (props: Props) => {
             block={props.block}
             inputIndex={props.inputIndex}
             isInputPrefillEnabled={props.isInputPrefillEnabled}
+            existingAnswer={props.hasError ? answer() : undefined}
+            onTransitionEnd={props.onTransitionEnd}
             onSubmit={handleSubmit}
             onSkip={handleSkip}
           />
@@ -113,16 +116,19 @@ export const InputChatBlock = (props: Props) => {
 
 const Input = (props: {
   context: BotContext
-  block: NonNullable<ChatReply['input']>
+  block: NonNullable<ContinueChatResponse['input']>
   inputIndex: number
   isInputPrefillEnabled: boolean
+  existingAnswer?: string
+  onTransitionEnd: () => void
   onSubmit: (answer: InputSubmitContent) => void
   onSkip: (label: string) => void
 }) => {
   const onSubmit = (answer: InputSubmitContent) => props.onSubmit(answer)
 
   const getPrefilledValue = () =>
-    props.isInputPrefillEnabled ? props.block.prefilledValue : undefined
+    props.existingAnswer ??
+    (props.isInputPrefillEnabled ? props.block.prefilledValue : undefined)
 
   const submitPaymentSuccess = () =>
     props.onSubmit({
@@ -208,6 +214,7 @@ const Input = (props: {
                 defaultItems={block.items}
                 options={block.options}
                 onSubmit={onSubmit}
+                onTransitionEnd={props.onTransitionEnd}
               />
             </Match>
             <Match when={block.options?.isMultipleChoice}>
@@ -215,6 +222,7 @@ const Input = (props: {
                 defaultItems={block.items}
                 options={block.options}
                 onSubmit={onSubmit}
+                onTransitionEnd={props.onTransitionEnd}
               />
             </Match>
           </Switch>
@@ -245,6 +253,7 @@ const Input = (props: {
             } as PaymentInputBlock['options'] & RuntimeOptions
           }
           onSuccess={submitPaymentSuccess}
+          onTransitionEnd={props.onTransitionEnd}
         />
       </Match>
     </Switch>
@@ -252,11 +261,11 @@ const Input = (props: {
 }
 
 const isButtonsBlock = (
-  block: ChatReply['input']
+  block: ContinueChatResponse['input']
 ): ChoiceInputBlock | undefined =>
   block?.type === InputBlockType.CHOICE ? block : undefined
 
 const isPictureChoiceBlock = (
-  block: ChatReply['input']
+  block: ContinueChatResponse['input']
 ): PictureChoiceBlock | undefined =>
   block?.type === InputBlockType.PICTURE_CHOICE ? block : undefined

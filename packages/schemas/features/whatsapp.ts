@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from '../zod'
 import { credentialsBaseSchema } from './blocks/shared'
 import {
   ComparisonOperators,
@@ -135,6 +135,15 @@ export const incomingMessageSchema = z.discriminatedUnion('type', [
     from: z.string(),
     type: z.literal('document'),
     document: z.object({ id: z.string() }),
+    timestamp: z.string(),
+  }),
+  z.object({
+    from: z.string(),
+    type: z.literal('location'),
+    location: z.object({
+      latitude: z.number(),
+      longitude: z.number(),
+    }),
     timestamp: z.string(),
   }),
 ])

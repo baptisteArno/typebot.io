@@ -2,20 +2,20 @@ import { byId } from '@typebot.io/lib'
 import {
   MakeComBlock,
   PabblyConnectBlock,
-  ReplyLog,
+  ChatLog,
   VariableWithUnknowValue,
-  WebhookBlock,
+  HttpRequestBlock,
   ZapierBlock,
 } from '@typebot.io/schemas'
 import { SessionState } from '@typebot.io/schemas/features/chat/sessionState'
 import { ExecuteIntegrationResponse } from '../../../types'
-import { parseVariables } from '../../../variables/parseVariables'
-import { updateVariablesInSession } from '../../../variables/updateVariablesInSession'
+import { parseVariables } from '@typebot.io/variables/parseVariables'
+import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
 
 type Props = {
   state: SessionState
-  block: WebhookBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock
-  logs?: ReplyLog[]
+  block: HttpRequestBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock
+  logs?: ChatLog[]
   response: {
     statusCode: number
     data?: unknown

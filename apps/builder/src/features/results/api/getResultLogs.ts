@@ -8,7 +8,7 @@ export const getResultLogs = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/typebots/{typebotId}/results/{resultId}/logs',
+      path: '/v1/typebots/{typebotId}/results/{resultId}/logs',
       protect: true,
       summary: 'List result logs',
       tags: ['Results'],
@@ -16,7 +16,11 @@ export const getResultLogs = authenticatedProcedure
   })
   .input(
     z.object({
-      typebotId: z.string(),
+      typebotId: z
+        .string()
+        .describe(
+          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+        ),
       resultId: z.string(),
     })
   )
@@ -28,8 +32,18 @@ export const getResultLogs = authenticatedProcedure
       },
       select: {
         id: true,
-        workspaceId: true,
         groups: true,
+        workspace: {
+          select: {
+            isSuspended: true,
+            isPastDue: true,
+            members: {
+              select: {
+                userId: true,
+              },
+            },
+          },
+        },
         collaborators: {
           select: {
             userId: true,

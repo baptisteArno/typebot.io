@@ -12,7 +12,7 @@ import { useTranslate } from '@tolgee/react'
 
 type ConfirmDeleteModalProps = {
   isOpen: boolean
-  onConfirm: () => Promise<unknown>
+  onConfirm: () => Promise<unknown> | unknown
   onClose: () => void
   message: JSX.Element
   title?: string
@@ -61,7 +61,7 @@ export const ConfirmModal = ({
 
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose}>
-              Cancel
+              {t('cancel')}
             </Button>
             <Button
               colorScheme={confirmButtonColor}

@@ -44,7 +44,7 @@ test.describe.parallel('Embed bubble block', () => {
       ])
 
       await page.goto(`/typebots/${typebotId}/edit`)
-      await page.click('text=Preview')
+      await page.click('text=Test')
       await expect(page.locator('iframe#embed-bubble-content')).toHaveAttribute(
         'src',
         siteSrc

@@ -6,6 +6,42 @@ declare const window: {
   __ENV?: any
 }
 
+const guessNextAuthUrlForVercelPreview = (val: unknown) => {
+  if (
+    (val && typeof val === 'string' && val.length > 0) ||
+    process.env.VERCEL_ENV !== 'preview' ||
+    !process.env.VERCEL_BUILDER_PROJECT_NAME ||
+    !process.env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME
+  )
+    return val
+  const isBuilder = (process.env.VERCEL_BRANCH_URL as string).includes(
+    process.env.VERCEL_BUILDER_PROJECT_NAME
+  )
+  if (isBuilder) return `https://${process.env.VERCEL_BRANCH_URL}`
+  return `https://${process.env.VERCEL_BRANCH_URL}`.replace(
+    process.env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME,
+    process.env.VERCEL_BUILDER_PROJECT_NAME
+  )
+}
+
+const guessViewerUrlForVercelPreview = (val: unknown) => {
+  if (
+    (val && typeof val === 'string' && val.length > 0) ||
+    process.env.VERCEL_ENV !== 'preview' ||
+    !process.env.VERCEL_BUILDER_PROJECT_NAME ||
+    !process.env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME
+  )
+    return val
+  const isViewer = (process.env.VERCEL_BRANCH_URL as string).includes(
+    process.env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME
+  )
+  if (isViewer) return `https://${process.env.VERCEL_BRANCH_URL}`
+  return `https://${process.env.VERCEL_BRANCH_URL}`.replace(
+    process.env.VERCEL_BUILDER_PROJECT_NAME,
+    process.env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME
+  )
+}
+
 const boolean = z.enum(['true', 'false']).transform((value) => value === 'true')
 
 const baseEnv = {
@@ -16,9 +52,16 @@ const baseEnv = {
       .url()
       .refine((url) => url.startsWith('postgres') || url.startsWith('mysql')),
     ENCRYPTION_SECRET: z.string().length(32),
-    NEXTAUTH_URL: z.string().url(),
+    NEXTAUTH_URL: z.preprocess(
+      guessNextAuthUrlForVercelPreview,
+      z.string().url()
+    ),
     DISABLE_SIGNUP: boolean.optional().default('false'),
-    ADMIN_EMAIL: z.string().email().optional(),
+    ADMIN_EMAIL: z
+      .string()
+      .min(1)
+      .optional()
+      .transform((val) => val?.split(',')),
     DEFAULT_WORKSPACE_PLAN: z
       .enum(['FREE', 'STARTER', 'PRO', 'LIFETIME', 'UNLIMITED'])
       .refine((str) =>
@@ -26,28 +69,56 @@ const baseEnv = {
       )
       .default('FREE'),
     DEBUG: boolean.optional().default('false'),
+    CHAT_API_TIMEOUT: z.coerce.number().optional(),
+    RADAR_HIGH_RISK_KEYWORDS: z
+      .string()
+      .min(1)
+      .transform((val) => val.split(','))
+      .optional(),
+    RADAR_INTERMEDIATE_RISK_KEYWORDS: z
+      .string()
+      .min(1)
+      .transform((val) => val.split(','))
+      .optional(),
+    RADAR_CUMULATIVE_KEYWORDS: z
+      .string()
+      .min(1)
+      .transform((val) =>
+        val.split('/').map((s) => s.split(',').map((s) => s.split('|')))
+      )
+      .optional(),
   },
   client: {
     NEXT_PUBLIC_E2E_TEST: boolean.optional(),
-    NEXT_PUBLIC_VIEWER_URL: z
-      .string()
-      .min(1)
-      .transform((string) => string.split(',')),
-    NEXT_PUBLIC_VIEWER_INTERNAL_URL: z.string().url().optional(),
+    NEXT_PUBLIC_VIEWER_URL: z.preprocess(
+      guessViewerUrlForVercelPreview,
+      z
+        .string()
+        .min(1)
+        .transform((val) => val.split(','))
+    ),
     NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID: z.string().min(1).optional(),
     NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE: z.coerce.number().optional(),
+    NEXT_PUBLIC_VIEWER_404_TITLE: z.string().optional().default('404'),
+    NEXT_PUBLIC_VIEWER_404_SUBTITLE: z
+      .string()
+      .optional()
+      .default("The bot you're looking for doesn't exist"),
   },
   runtimeEnv: {
     NEXT_PUBLIC_E2E_TEST: getRuntimeVariable('NEXT_PUBLIC_E2E_TEST'),
     NEXT_PUBLIC_VIEWER_URL: getRuntimeVariable('NEXT_PUBLIC_VIEWER_URL'),
-    NEXT_PUBLIC_VIEWER_INTERNAL_URL: getRuntimeVariable(
-      'NEXT_PUBLIC_VIEWER_INTERNAL_URL'
-    ),
     NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID: getRuntimeVariable(
       'NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID'
     ),
     NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE: getRuntimeVariable(
       'NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE'
+    ),
+    NEXT_PUBLIC_VIEWER_404_TITLE: getRuntimeVariable(
+      'NEXT_PUBLIC_VIEWER_404_TITLE'
+    ),
+    NEXT_PUBLIC_VIEWER_404_SUBTITLE: getRuntimeVariable(
+      'NEXT_PUBLIC_VIEWER_404_SUBTITLE'
     ),
   },
 }
@@ -182,6 +253,7 @@ const vercelEnv = {
     VERCEL_TOKEN: z.string().min(1).optional(),
     VERCEL_TEAM_ID: z.string().min(1).optional(),
     VERCEL_GIT_COMMIT_SHA: z.string().min(1).optional(),
+    VERCEL_BUILDER_PROJECT_NAME: z.string().min(1).optional(),
   },
   client: {
     NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME: z.string().min(1).optional(),
@@ -225,7 +297,16 @@ const whatsAppEnv = {
     META_SYSTEM_USER_TOKEN: z.string().min(1).optional(),
     WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID: z.string().min(1).optional(),
     WHATSAPP_PREVIEW_TEMPLATE_NAME: z.string().min(1).optional(),
-    WHATSAPP_PREVIEW_TEMPLATE_LANG: z.string().min(1).optional().default('en'),
+    WHATSAPP_PREVIEW_TEMPLATE_LANG: z
+      .string()
+      .min(1)
+      .optional()
+      .default('en_US'),
+    WHATSAPP_CLOUD_API_URL: z
+      .string()
+      .url()
+      .optional()
+      .default('https://graph.facebook.com'),
   },
 }
 
@@ -252,8 +333,7 @@ const sentryEnv = {
 
 const telemetryEnv = {
   server: {
-    TELEMETRY_WEBHOOK_URL: z.string().url().optional(),
-    TELEMETRY_WEBHOOK_BEARER_TOKEN: z.string().min(1).optional(),
+    MESSAGE_WEBHOOK_URL: z.string().url().optional(),
     USER_CREATED_WEBHOOK_URL: z.string().url().optional(),
   },
 }
