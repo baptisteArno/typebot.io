@@ -721,7 +721,7 @@ New API endpoints:
 - 🐛 Fix forced color mode localStorage sync issue [[6a0f6e4](https://github.com/baptisteArno/typebot.io/commit/6a0f6e4ef241541b215eb1966e6d5cc9e862250e)]
 - 🐛 Fix persistence when user selects system color mode [[ce9ad8b](https://github.com/baptisteArno/typebot.io/commit/ce9ad8b9702bc68edb3699bde89e8cc520bcad27)]
 - 🐛 Fix remembered user reset hasStarted on page refresh [[9d29a88](https://github.com/baptisteArno/typebot.io/commit/9d29a88ed3c6260d2cbbdf20398bcae2c8cae49a)]
-- 🐛 (fileUpload) Make file type optional [[124cb8f](https://github.com/baptisteArno/typebot.io/commit/124cb8f359363259befd3ee0b5aade19194fbcde)]
+- 🐛 (fileUpload) Make file type optionnal [[124cb8f](https://github.com/baptisteArno/typebot.io/commit/124cb8f359363259befd3ee0b5aade19194fbcde)]
 - 💚 Make sure \_\_ENV.js file is properly cached [[a1179e3](https://github.com/baptisteArno/typebot.io/commit/a1179e39343ce150a84cf0bc48446f3c321b9d9e)]
 - 🐛 (embed) Make sure env.ts is not bundled in js embed lib [[da4005e](https://github.com/baptisteArno/typebot.io/commit/da4005e160bbab1622d8b667f5a851b8009cb4db)]
 - 🐛 (embed) Fix env reading in embed [[5b20f41](https://github.com/baptisteArno/typebot.io/commit/5b20f414c836715e3f3791607f1e93ce258994b0)]
