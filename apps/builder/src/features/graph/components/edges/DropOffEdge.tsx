@@ -73,7 +73,7 @@ export const DropOffEdge = ({
   )
   const { sourceEndpointYOffsets: sourceEndpoints } = useEndpoints()
 
-  const isWorkspaceProPlan = hasProPerks(workspace)
+  const isWorkspaceProPlan = true;
 
   const { totalDroppedUser, dropOffRate } = useMemo(() => {
     if (!publishedTypebot || !currentBlockId) return {}
