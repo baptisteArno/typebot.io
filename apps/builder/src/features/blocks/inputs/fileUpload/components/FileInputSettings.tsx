@@ -164,7 +164,7 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
       <DropdownList
         label="Visibility:"
         moreInfoTooltip='This setting determines who can see the uploaded files. "Public" means that anyone who has the link can see the files. "Private" means that only a members of this workspace can see the files.'
-        currentItem={options?.visibility}
+        currentItem={options?.visibility ?? defaultFileInputOptions.visibility}
         onItemSelect={updateVisibility}
         items={fileVisibilityOptions}
       />
