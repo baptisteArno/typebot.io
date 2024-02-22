@@ -131,7 +131,10 @@ export const updateTypebot = authenticatedProcedure
     if (
       typebot.customDomain &&
       existingTypebot.customDomain !== typebot.customDomain &&
-      (await isCustomDomainNotAvailable(typebot.customDomain))
+      (await isCustomDomainNotAvailable({
+        customDomain: typebot.customDomain,
+        workspaceId: existingTypebot.workspace.id,
+      }))
     )
       throw new TRPCError({
         code: 'BAD_REQUEST',
