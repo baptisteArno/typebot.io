@@ -130,7 +130,6 @@ export const Bot = (props: BotProps & { class?: string }) => {
   createEffect(() => {
     if (isNotDefined(props.typebot) || typeof props.typebot === 'string') return
     setCustomCss(props.typebot.theme.customCss ?? '')
-    console.log('GOOOO')
     if (
       props.typebot.theme.general?.progressBar?.isEnabled &&
       initialChatReply() &&
