@@ -7,10 +7,10 @@ import {
   theme,
 } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
+// import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import React, { useMemo } from 'react'
 import { useEndpoints } from '../../providers/EndpointsProvider'
-import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
+// import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
 import { computeDropOffPath } from '../../helpers/computeDropOffPath'
 import { computeSourceCoordinates } from '../../helpers/computeSourceCoordinates'
 import {
@@ -52,7 +52,7 @@ export const DropOffEdge = ({
     theme.colors.red[500],
     theme.colors.red[400]
   )
-  const { workspace } = useWorkspace()
+  // const { workspace } = useWorkspace()
   const { publishedTypebot } = useTypebot()
   const currentBlockId = useMemo(
     () =>
