@@ -6,6 +6,7 @@ import { TypebotHeader } from '@/features/editor/components/TypebotHeader'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { TypebotNotFoundPage } from '@/features/editor/components/TypebotNotFoundPage'
 import { env } from '@typebot.io/env'
+import { headerHeight } from '@/features/editor/constants'
 
 export const SettingsPage = () => {
   const { typebot, is404 } = useTypebot()
@@ -15,7 +16,7 @@ export const SettingsPage = () => {
     <Flex overflow="hidden" h="100vh" flexDir="column">
       <Seo title={typebot?.name ? `${typebot.name} | Settings` : 'Settings'} />
       <TypebotHeader />
-      <Flex h="full" w="full">
+      <Flex height={`calc(100vh - ${headerHeight}px)`} w="full">
         <SettingsSideMenu />
         <Flex flex="1">
           {typebot && (

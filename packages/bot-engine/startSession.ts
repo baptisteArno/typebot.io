@@ -137,6 +137,11 @@ export const startSession = async ({
       startParams.type === 'preview'
         ? undefined
         : typebot.settings.security?.allowedOrigins,
+    progressMetadata: initialSessionState?.whatsApp
+      ? undefined
+      : typebot.theme.general?.progressBar?.isEnabled
+      ? { totalAnswers: 0 }
+      : undefined,
     ...initialSessionState,
   }
 

@@ -3,15 +3,16 @@ import { Stack, Text } from '@chakra-ui/react'
 import { Background } from '@typebot.io/schemas'
 import React from 'react'
 import { BackgroundContent } from './BackgroundContent'
-import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/constants'
+import {
+  BackgroundType,
+  defaultTheme,
+} from '@typebot.io/schemas/features/typebot/theme/constants'
 import { useTranslate } from '@tolgee/react'
 
 type Props = {
   background?: Background
   onBackgroundChange: (newBackground: Background) => void
 }
-
-const defaultBackgroundType = BackgroundType.NONE
 
 export const BackgroundSelector = ({
   background,
@@ -20,11 +21,10 @@ export const BackgroundSelector = ({
   const { t } = useTranslate()
 
   const handleBackgroundTypeChange = (type: BackgroundType) =>
-    background &&
     onBackgroundChange({ ...background, type, content: undefined })
 
   const handleBackgroundContentChange = (content: string) =>
-    background && onBackgroundChange({ ...background, content })
+    onBackgroundChange({ ...background, content })
 
   return (
     <Stack spacing={4}>
@@ -44,7 +44,7 @@ export const BackgroundSelector = ({
             value: BackgroundType.NONE,
           },
         ]}
-        value={background?.type ?? defaultBackgroundType}
+        value={background?.type ?? defaultTheme.general.background.type}
         onSelect={handleBackgroundTypeChange}
       />
       <BackgroundContent

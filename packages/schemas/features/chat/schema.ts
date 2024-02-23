@@ -310,6 +310,12 @@ const chatResponseBaseSchema = z.object({
     .describe(
       'If the typebot contains dynamic avatars, dynamicTheme returns the new avatar URLs whenever their variables are updated.'
     ),
+  progress: z
+    .number()
+    .optional()
+    .describe(
+      'If progress bar is enabled, this field will return a number between 0 and 100 indicating the current progress based on the longest remaining path of the flow.'
+    ),
 })
 
 export const startChatResponseSchema = z
