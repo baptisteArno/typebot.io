@@ -13,7 +13,6 @@ import { ChatTheme, GeneralTheme, ThemeTemplate } from '@typebot.io/schemas'
 import React from 'react'
 import { CustomCssSettings } from './CustomCssSettings'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { headerHeight } from '@/features/editor/constants'
 import { ChatThemeSettings } from './chat/ChatThemeSettings'
 import { GeneralSettings } from './general/GeneralSettings'
 import { ThemeTemplates } from './ThemeTemplates'
@@ -61,7 +60,7 @@ export const ThemeSideMenu = () => {
     <Stack
       flex="1"
       maxW="400px"
-      height={`calc(100vh - ${headerHeight}px)`}
+      h="full"
       borderRightWidth={1}
       pt={10}
       spacing={10}

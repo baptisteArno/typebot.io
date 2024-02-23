@@ -83,6 +83,7 @@ export const startChatPreview = publicProcedure
         dynamicTheme,
         logs,
         clientSideActions,
+        progress: newSessionState.progressMetadata ? 0 : undefined,
       }
     }
   )

@@ -96,6 +96,7 @@ export const startChat = publicProcedure
         dynamicTheme,
         logs: logs?.filter(filterPotentiallySensitiveLogs),
         clientSideActions,
+        progress: newSessionState.progressMetadata ? 0 : undefined,
       }
     }
   )
