@@ -15,8 +15,9 @@ import {
   Box,
 } from '@chakra-ui/react'
 import { useTranslate } from '@tolgee/react'
-import React, { ChangeEvent, useState } from 'react'
+import React, { useState } from 'react'
 import tinyColor from 'tinycolor2'
+import { useDebouncedCallback } from 'use-debounce'
 
 const colorsSelection: `#${string}`[] = [
   '#666460',
@@ -42,9 +43,9 @@ export const ColorPicker = ({ value, defaultValue, onColorChange }: Props) => {
   const [color, setColor] = useState(defaultValue ?? '')
   const displayedValue = value ?? color
 
-  const handleColorChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setColor(e.target.value)
-    onColorChange(e.target.value)
+  const handleColorChange = (color: string) => {
+    setColor(color)
+    onColorChange(color)
   }
 
   const handleClick = (color: string) => () => {
@@ -103,7 +104,7 @@ export const ColorPicker = ({ value, defaultValue, onColorChange }: Props) => {
             aria-label={t('colorPicker.colorValue.ariaLabel')}
             size="sm"
             value={displayedValue}
-            onChange={handleColorChange}
+            onChange={(e) => handleColorChange(e.target.value)}
           />
           <NativeColorPicker
             size="sm"
@@ -124,8 +125,12 @@ const NativeColorPicker = ({
   ...props
 }: {
   color: string
-  onColorChange: (e: ChangeEvent<HTMLInputElement>) => void
+  onColorChange: (color: string) => void
 } & ButtonProps) => {
+  const debouncedOnColorChange = useDebouncedCallback((color: string) => {
+    onColorChange(color)
+  }, 200)
+
   return (
     <>
       <Button as="label" htmlFor="native-picker" {...props}>
@@ -136,7 +141,7 @@ const NativeColorPicker = ({
         display="none"
         id="native-picker"
         value={color}
-        onChange={onColorChange}
+        onChange={(e) => debouncedOnColorChange(e.target.value)}
       />
     </>
   )

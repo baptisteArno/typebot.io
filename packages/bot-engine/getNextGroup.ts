@@ -70,6 +70,13 @@ export const getNextGroup =
             ...state.typebotsQueue.slice(2),
           ],
         } satisfies SessionState
+        if (state.progressMetadata)
+          newSessionState.progressMetadata = {
+            ...state.progressMetadata,
+            totalAnswers:
+              state.progressMetadata.totalAnswers +
+              state.typebotsQueue[0].answers.length,
+          }
         const nextGroup = await getNextGroup(newSessionState)(nextEdgeId)
         newSessionState = nextGroup.newSessionState
         if (!nextGroup)
