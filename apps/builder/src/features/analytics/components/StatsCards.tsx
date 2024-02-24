@@ -72,7 +72,7 @@ export const StatsCards = ({
       <TimeFilterDropdown
         timeFilter={timeFilter}
         onTimeFilterChange={onTimeFilterChange}
-        backgroundColor="white"
+        colorScheme="gray"
         boxShadow="md"
       />
     </SimpleGrid>
