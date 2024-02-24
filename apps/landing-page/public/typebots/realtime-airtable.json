@@ -157,7 +157,7 @@
               ],
               "method": "PATCH",
               "url": "https://api.airtable.com/v0/appIk6d2053BqSMZa/book",
-              "body": "{\n  \"records\": [\n    {\n      \"id\": \"{{Airtable ID}}\",\n      \"fields\": {\n        \"Name\": \"{{Name}}\",\n        \"Message\": \"{{Message}}\",\n        \"Notes\": \"Mello\"\n      }\n    }\n  ]\n}"
+              "body": "{\n  \"records\": [\n    {\n      \"id\": \"{{Airtable ID}}\",\n      \"fields\": {\n        \"Name\": \"{{Name}}\",\n        \"Message\": \"{{Message}}\",\n      }\n    }\n  ]\n}"
             }
           }
         },
