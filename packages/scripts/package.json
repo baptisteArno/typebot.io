@@ -17,15 +17,27 @@
     "checkSubscriptionsStatus": "tsx checkSubscriptionsStatus.ts",
     "createChatsPrices": "tsx createChatsPrices.ts",
     "migrateSubscriptionsToUsageBased": "tsx migrateSubscriptionsToUsageBased.ts",
-    "importContactToBrevo": "tsx importContactToBrevo.ts",
-    "getUsage": "tsx getUsage.ts"
+    "insertUsersInBrevoList": "tsx insertUsersInBrevoList.ts",
+    "getUsage": "tsx getUsage.ts",
+    "suspendWorkspace": "tsx suspendWorkspace.ts",
+    "destroyUser": "tsx destroyUser.ts",
+    "updateTypebot": "tsx updateTypebot.ts",
+    "updateWorkspace": "tsx updateWorkspace.ts",
+    "inspectTypebot": "tsx inspectTypebot.ts",
+    "inspectWorkspace": "tsx inspectWorkspace.ts",
+    "getCoupon": "tsx getCoupon.ts",
+    "exportResults": "tsx exportResults.ts",
+    "updateUserEmail": "tsx updateUserEmail.ts",
+    "inspectChatSession": "tsx inspectChatSession.ts"
   },
   "devDependencies": {
     "@typebot.io/emails": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
+    "@types/cli-progress": "^3.11.5",
     "@types/node": "20.4.2",
+    "@types/papaparse": "5.3.7",
     "@types/prompts": "2.4.4",
     "deep-object-diff": "1.1.9",
     "got": "12.6.0",
@@ -36,6 +48,9 @@
     "zod": "3.22.4"
   },
   "dependencies": {
-    "@paralleldrive/cuid2": "2.2.1"
+    "@clack/prompts": "^0.7.0",
+    "@paralleldrive/cuid2": "2.2.1",
+    "cli-progress": "^3.12.0",
+    "papaparse": "5.4.1"
   }
 }

@@ -6,6 +6,7 @@ import { FormLabel, Stack } from '@chakra-ui/react'
 import { DateInputBlock, Variable } from '@typebot.io/schemas'
 import React from 'react'
 import { defaultDateInputOptions } from '@typebot.io/schemas/features/blocks/inputs/date/constants'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   options: DateInputBlock['options']
@@ -13,6 +14,7 @@ type Props = {
 }
 
 export const DateInputSettings = ({ options, onOptionsChange }: Props) => {
+  const { t } = useTranslate()
   const updateFromLabel = (from: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, from } })
   const updateToLabel = (to: string) =>
@@ -41,64 +43,69 @@ export const DateInputSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <Stack spacing={4}>
       <SwitchWithRelatedSettings
-        label="Is range?"
+        label={t('blocks.inputs.date.settings.isRange.label')}
         initialValue={options?.isRange ?? defaultDateInputOptions.isRange}
         onCheckChange={updateIsRange}
       >
         <TextInput
-          label="From label:"
+          label={t('blocks.inputs.date.settings.from.label')}
           defaultValue={
             options?.labels?.from ?? defaultDateInputOptions.labels.from
           }
           onChange={updateFromLabel}
         />
         <TextInput
-          label="To label:"
+          label={t('blocks.inputs.date.settings.to.label')}
           defaultValue={
-            options?.labels?.to ?? defaultDateInputOptions.labels.to
+            options?.labels?.to ??
+            t('blocks.inputs.date.settings.toInputValue.label')
           }
           onChange={updateToLabel}
         />
       </SwitchWithRelatedSettings>
       <SwitchWithLabel
-        label="With time?"
+        label={t('blocks.inputs.date.settings.withTime.label')}
         initialValue={options?.hasTime ?? defaultDateInputOptions.hasTime}
         onCheckChange={updateHasTime}
       />
       <TextInput
-        label="Button label:"
+        label={t('blocks.inputs.settings.button.label')}
         defaultValue={
           options?.labels?.button ?? defaultDateInputOptions.labels.button
         }
         onChange={updateButtonLabel}
       />
       <TextInput
-        label="Min:"
+        label={t('blocks.inputs.settings.min.label')}
         defaultValue={options?.min}
         placeholder={options?.hasTime ? 'YYYY-MM-DDTHH:mm' : 'YYYY-MM-DD'}
         onChange={updateMin}
       />
       <TextInput
-        label="Max:"
+        label={t('blocks.inputs.settings.max.label')}
         defaultValue={options?.max}
         placeholder={options?.hasTime ? 'YYYY-MM-DDTHH:mm' : 'YYYY-MM-DD'}
         onChange={updateMax}
       />
       <TextInput
-        label="Format:"
+        label={t('blocks.inputs.date.settings.format.label')}
         defaultValue={
           options?.format ??
           (options?.hasTime
             ? defaultDateInputOptions.formatWithTime
             : defaultDateInputOptions.format)
         }
-        moreInfoTooltip="i.e dd/MM/yyyy, MM/dd/yy, yyyy-MM-dd"
+        moreInfoTooltip={`
+					${t(
+            'blocks.inputs.date.settings.format.example.label'
+          )} dd/MM/yyyy, MM/dd/yy, yyyy-MM-dd
+				`}
         placeholder={options?.hasTime ? 'dd/MM/yyyy HH:mm' : 'dd/MM/yyyy'}
         onChange={updateFormat}
       />
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          Save answer in a variable:
+          {t('blocks.inputs.settings.saveAnswer.label')}
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}

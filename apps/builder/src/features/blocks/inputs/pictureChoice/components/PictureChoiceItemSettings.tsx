@@ -15,6 +15,7 @@ import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSetting
 import { ConditionForm } from '@/features/blocks/logic/condition/components/ConditionForm'
 import { Condition } from '@typebot.io/schemas'
 import { LogicalOperator } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   workspaceId: string
@@ -31,6 +32,8 @@ export const PictureChoiceItemSettings = ({
   item,
   onItemChange,
 }: Props) => {
+  const { t } = useTranslate()
+
   const updateTitle = (title: string) => onItemChange({ ...item, title })
 
   const updateImage = (pictureSrc: string) => {
@@ -61,13 +64,17 @@ export const PictureChoiceItemSettings = ({
   return (
     <Stack spacing={4}>
       <HStack>
-        <Text fontWeight="medium">Image:</Text>
+        <Text fontWeight="medium">
+          {t('blocks.inputs.picture.itemSettings.image.label')}
+        </Text>
         <Popover isLazy>
           {({ onClose }) => (
             <>
               <PopoverTrigger>
                 <Button size="sm">
-                  {item.pictureSrc ? 'Change image' : 'Pick an image'}
+                  {item.pictureSrc
+                    ? t('blocks.inputs.picture.itemSettings.image.change.label')
+                    : t('blocks.inputs.picture.itemSettings.image.pick.label')}
                 </Button>
               </PopoverTrigger>
               <PopoverContent p="4" w="500px">
@@ -91,17 +98,17 @@ export const PictureChoiceItemSettings = ({
         </Popover>
       </HStack>
       <TextInput
-        label="Title:"
+        label={t('blocks.inputs.picture.itemSettings.title.label')}
         defaultValue={item.title}
         onChange={updateTitle}
       />
       <Textarea
-        label="Description:"
+        label={t('blocks.inputs.settings.description.label')}
         defaultValue={item.description}
         onChange={updateDescription}
       />
       <SwitchWithRelatedSettings
-        label="Display condition"
+        label={t('blocks.inputs.settings.displayCondition.label')}
         initialValue={item.displayCondition?.isEnabled ?? false}
         onCheckChange={updateIsDisplayConditionEnabled}
       >

@@ -86,32 +86,11 @@ export const ConversationContainer = (props: Props) => {
   onMount(() => {
     ;(async () => {
       const initialChunk = chatChunks()[0]
-      if (initialChunk.clientSideActions) {
-        const actionsBeforeFirstBubble = initialChunk.clientSideActions.filter(
-          (action) => isNotDefined(action.lastBubbleBlockId)
-        )
-        for (const action of actionsBeforeFirstBubble) {
-          if (
-            'streamOpenAiChatCompletion' in action ||
-            'webhookToExecute' in action
-          )
-            setIsSending(true)
-          const response = await executeClientSideAction({
-            clientSideAction: action,
-            context: {
-              apiHost: props.context.apiHost,
-              sessionId: props.initialChatReply.sessionId,
-            },
-            onMessageStream: streamMessage,
-          })
-          if (response && 'replyToSend' in response) {
-            sendMessage(response.replyToSend, response.logs)
-            return
-          }
-          if (response && 'blockedPopupUrl' in response)
-            setBlockedPopupUrl(response.blockedPopupUrl)
-        }
-      }
+      if (!initialChunk.clientSideActions) return
+      const actionsBeforeFirstBubble = initialChunk.clientSideActions.filter(
+        (action) => isNotDefined(action.lastBubbleBlockId)
+      )
+      processClientSideActions(actionsBeforeFirstBubble)
     })()
   })
 
@@ -211,27 +190,7 @@ export const ConversationContainer = (props: Props) => {
       const actionsBeforeFirstBubble = data.clientSideActions.filter((action) =>
         isNotDefined(action.lastBubbleBlockId)
       )
-      for (const action of actionsBeforeFirstBubble) {
-        if (
-          'streamOpenAiChatCompletion' in action ||
-          'webhookToExecute' in action
-        )
-          setIsSending(true)
-        const response = await executeClientSideAction({
-          clientSideAction: action,
-          context: {
-            apiHost: props.context.apiHost,
-            sessionId: props.initialChatReply.sessionId,
-          },
-          onMessageStream: streamMessage,
-        })
-        if (response && 'replyToSend' in response) {
-          sendMessage(response.replyToSend, response.logs)
-          return
-        }
-        if (response && 'blockedPopupUrl' in response)
-          setBlockedPopupUrl(response.blockedPopupUrl)
-      }
+      processClientSideActions(actionsBeforeFirstBubble)
     }
     setChatChunks((displayedChunks) => [
       ...displayedChunks,
@@ -268,27 +227,35 @@ export const ConversationContainer = (props: Props) => {
       const actionsToExecute = lastChunk.clientSideActions.filter(
         (action) => action.lastBubbleBlockId === blockId
       )
-      for (const action of actionsToExecute) {
-        if (
-          'streamOpenAiChatCompletion' in action ||
-          'webhookToExecute' in action
-        )
-          setIsSending(true)
-        const response = await executeClientSideAction({
-          clientSideAction: action,
-          context: {
-            apiHost: props.context.apiHost,
-            sessionId: props.initialChatReply.sessionId,
-          },
-          onMessageStream: streamMessage,
-        })
-        if (response && 'replyToSend' in response) {
-          sendMessage(response.replyToSend, response.logs)
-          return
-        }
-        if (response && 'blockedPopupUrl' in response)
-          setBlockedPopupUrl(response.blockedPopupUrl)
+      await processClientSideActions(actionsToExecute)
+    }
+  }
+
+  const processClientSideActions = async (
+    actions: NonNullable<ContinueChatResponse['clientSideActions']>
+  ) => {
+    for (const action of actions) {
+      if (
+        'streamOpenAiChatCompletion' in action ||
+        'webhookToExecute' in action ||
+        'stream' in action
+      )
+        setIsSending(true)
+      const response = await executeClientSideAction({
+        clientSideAction: action,
+        context: {
+          apiHost: props.context.apiHost,
+          sessionId: props.initialChatReply.sessionId,
+        },
+        onMessageStream: streamMessage,
+      })
+      if (response && 'replyToSend' in response) {
+        setIsSending(false)
+        sendMessage(response.replyToSend, response.logs)
+        return
       }
+      if (response && 'blockedPopupUrl' in response)
+        setBlockedPopupUrl(response.blockedPopupUrl)
     }
   }
 
@@ -317,8 +284,7 @@ export const ConversationContainer = (props: Props) => {
             hideAvatar={
               !chatChunk.input &&
               ((chatChunks()[index() + 1]?.messages ?? 0).length > 0 ||
-                chatChunks()[index() + 1]?.streamingMessageId !== undefined ||
-                isSending())
+                chatChunks()[index() + 1]?.streamingMessageId !== undefined)
             }
             hasError={hasError() && index() === chatChunks().length - 1}
             onNewBubbleDisplayed={handleNewBubbleDisplayed}

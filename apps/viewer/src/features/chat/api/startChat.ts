@@ -6,6 +6,7 @@ import {
 import { startSession } from '@typebot.io/bot-engine/startSession'
 import { saveStateToDatabase } from '@typebot.io/bot-engine/saveStateToDatabase'
 import { restartSession } from '@typebot.io/bot-engine/queries/restartSession'
+import { filterPotentiallySensitiveLogs } from '@typebot.io/bot-engine/logs/filterPotentiallySensitiveLogs'
 
 export const startChat = publicProcedure
   .meta({
@@ -27,6 +28,7 @@ export const startChat = publicProcedure
         prefilledVariables,
         resultId: startResultId,
       },
+      ctx: { origin, res },
     }) => {
       const {
         typebot,
@@ -51,6 +53,19 @@ export const startChat = publicProcedure
         message,
       })
 
+      if (
+        newSessionState.allowedOrigins &&
+        newSessionState.allowedOrigins.length > 0
+      ) {
+        if (origin && newSessionState.allowedOrigins.includes(origin))
+          res.setHeader('Access-Control-Allow-Origin', origin)
+        else
+          res.setHeader(
+            'Access-Control-Allow-Origin',
+            newSessionState.allowedOrigins[0]
+          )
+      }
+
       const session = isOnlyRegistering
         ? await restartSession({
             state: newSessionState,
@@ -63,6 +78,9 @@ export const startChat = publicProcedure
             logs,
             clientSideActions,
             visitedEdges,
+            hasCustomEmbedBubble: messages.some(
+              (message) => message.type === 'custom-embed'
+            ),
           })
 
       return {
@@ -76,7 +94,7 @@ export const startChat = publicProcedure
         input,
         resultId,
         dynamicTheme,
-        logs,
+        logs: logs?.filter(filterPotentiallySensitiveLogs),
         clientSideActions,
       }
     }

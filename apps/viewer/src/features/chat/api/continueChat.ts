@@ -5,8 +5,9 @@ import { getSession } from '@typebot.io/bot-engine/queries/getSession'
 import { saveStateToDatabase } from '@typebot.io/bot-engine/saveStateToDatabase'
 import { continueBotFlow } from '@typebot.io/bot-engine/continueBotFlow'
 import { parseDynamicTheme } from '@typebot.io/bot-engine/parseDynamicTheme'
-import { isDefined } from '@typebot.io/lib/utils'
+import { isDefined, isNotDefined } from '@typebot.io/lib/utils'
 import { z } from 'zod'
+import { filterPotentiallySensitiveLogs } from '@typebot.io/bot-engine/logs/filterPotentiallySensitiveLogs'
 
 export const continueChat = publicProcedure
   .meta({
@@ -27,7 +28,7 @@ export const continueChat = publicProcedure
     })
   )
   .output(continueChatResponseSchema)
-  .mutation(async ({ input: { sessionId, message } }) => {
+  .mutation(async ({ input: { sessionId, message }, ctx: { res, origin } }) => {
     const session = await getSession(sessionId)
 
     if (!session) {
@@ -47,6 +48,19 @@ export const continueChat = publicProcedure
         code: 'NOT_FOUND',
         message: 'Session expired. You need to start a new session.',
       })
+
+    if (
+      session?.state.allowedOrigins &&
+      session.state.allowedOrigins.length > 0
+    ) {
+      if (origin && session.state.allowedOrigins.includes(origin))
+        res.setHeader('Access-Control-Allow-Origin', origin)
+      else
+        res.setHeader(
+          'Access-Control-Allow-Origin',
+          session.state.allowedOrigins[0]
+        )
+    }
 
     const {
       messages,
@@ -72,14 +86,19 @@ export const continueChat = publicProcedure
         logs,
         clientSideActions,
         visitedEdges,
+        hasCustomEmbedBubble: messages.some(
+          (message) => message.type === 'custom-embed'
+        ),
       })
+
+    const isPreview = isNotDefined(session.state.typebotsQueue[0].resultId)
 
     return {
       messages,
       input,
       clientSideActions,
       dynamicTheme: parseDynamicTheme(newSessionState),
-      logs,
+      logs: isPreview ? logs : logs?.filter(filterPotentiallySensitiveLogs),
       lastMessageNewFormat,
     }
   })

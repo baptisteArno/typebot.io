@@ -1,11 +1,11 @@
 {
-  "version": "2.20.0",
+  "version": "2.22.2",
   "name": "typebot-os",
   "private": true,
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "prepare": "husky install",
-    "docker:up": "docker compose -f docker-compose.dev.yml up -d && sleep 5",
+    "docker:up": "docker compose -f docker-compose.dev.yml up -d && node -e \"setTimeout(() => {}, 5000)\"",
     "docker:nuke": "docker compose -f docker-compose.dev.yml down --volumes --remove-orphans",
     "lint": "turbo run lint",
     "dev": "pnpm docker:up && turbo build --filter=@typebot.io/nextjs... && turbo run dev --filter=builder... --filter=viewer... --parallel --no-cache",
@@ -13,23 +13,24 @@
     "build:apps": "turbo run build --filter=builder... --filter=viewer...",
     "db:migrate": "cd packages/prisma && pnpm run db:migrate",
     "generate-change-log": "git fetch --all && pnpx gitmoji-changelog",
+    "locales:pull": "tolgee pull ./apps/builder/src/i18n",
+    "locales:push": "tolgee push ./apps/builder/src/i18n",
     "locales:sync": "tolgee sync './apps/builder/src/**/*.ts?(x)' --continue-on-warning --remove-unused",
-    "locales:push": "tolgee push ./apps/builder/public/locales",
-    "locales:pull": "tolgee pull ./apps/builder/public/locales",
-    "create-new-block": "cd packages/forge/cli && pnpm start"
+    "create-new-block": "cd packages/forge/cli && pnpm start",
+    "format:check": "turbo run format:check"
   },
   "devDependencies": {
+    "@tolgee/cli": "1.3.2",
     "cross-env": "7.0.3",
     "cz-emoji": "1.3.2-canary.2",
     "husky": "8.0.3",
     "prettier": "2.8.8",
-    "turbo": "1.10.12",
-    "@tolgee/cli": "1.3.2"
+    "turbo": "1.11.3"
   },
   "config": {
     "commitizen": {
       "path": "node_modules/cz-emoji"
     }
   },
-  "packageManager": "pnpm@8.6.12"
+  "packageManager": "pnpm@8.14.1"
 }

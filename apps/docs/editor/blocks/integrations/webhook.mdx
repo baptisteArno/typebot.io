@@ -2,6 +2,8 @@
 title: Webhook / API Request
 ---
 
+import { LoomVideo } from '/snippets/loom-video.mdx'
+
 The Webhook block allows you to either:
 
 - Call a Webhook URL of a 3rd party service to send information from the bot.
@@ -45,26 +47,7 @@ This video provides a step-by-step guide to successfully configure webhook block
 
 I demonstrate how to configure the webhook block, including the URL, method, and custom body. I also show you how to test the webhook call and save the newly created employee ID. Finally, I explain how to implement the find employee by ID endpoint and map the employee name to a variable.
 
-<div
-  style={{
-    position: 'relative',
-    paddingBottom: '64.5933014354067%',
-    height: 0,
-  }}
->
-  <iframe
-    src="https://www.loom.com/embed/d9aef6a37e0c43759b31be7d69c4dd6d?sid=2a24096c-9e2a-48da-aa2a-61a89877afe7"
-    mozallowfullscreen
-    allowFullScreen
-    style={{
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-    }}
-  />
-</div>
+<LoomVideo id="d9aef6a37e0c43759b31be7d69c4dd6d" />
 
 ### Example: fetch movie information
 
@@ -108,6 +91,10 @@ Then we can use these variables to display dynamic content in the next bubbles:
 Possibilities are endless when it comes to API calls, you can litteraly call any API and fetch any data you want.
 
 Feel free to ask the [community](https://typebot.io/discord) for help if you struggle setting up a Webhook block.
+
+## Timeout
+
+By default, the Webhook block will wait 10 seconds for the 3rd party service to respond. If it doesn't respond in time, the block will fail. You can customize this timeout value in the "Advanced params" section of your Webhook block settings.
 
 ## Troubleshooting
 

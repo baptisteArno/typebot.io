@@ -31,7 +31,6 @@ export const getWorkspace = authenticatedProcedure
         chatsLimitSecondEmailSentAt: true,
         storageLimitFirstEmailSentAt: true,
         storageLimitSecondEmailSentAt: true,
-        customChatsLimit: true,
         customStorageLimit: true,
         additionalChatsIndex: true,
         additionalStorageIndex: true,

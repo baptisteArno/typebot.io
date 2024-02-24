@@ -1,4 +1,5 @@
 import { Select } from '@chakra-ui/react'
+import { useTranslate } from '@tolgee/react'
 import React, { ChangeEvent } from 'react'
 
 type Props = {
@@ -7,12 +8,15 @@ type Props = {
 }
 
 export const CountryCodeSelect = ({ countryCode, onSelect }: Props) => {
+  const { t } = useTranslate()
   const handleOnChange = (e: ChangeEvent<HTMLSelectElement>) => {
     onSelect(e.target.value)
   }
   return (
     <Select
-      placeholder="International"
+      placeholder={t(
+        'blocks.inputs.phone.settings.international.placeholder.label'
+      )}
       value={countryCode}
       onChange={handleOnChange}
     >

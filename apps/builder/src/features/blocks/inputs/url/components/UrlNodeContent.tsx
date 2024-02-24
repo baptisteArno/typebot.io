@@ -8,8 +8,8 @@ type Props = {
   options: UrlInputBlock['options']
 }
 
-export const UrlNodeContent = ({ options }: Props) =>
-  options?.variableId ? (
+export const UrlNodeContent = ({ options }: Props) => {
+  return options?.variableId ? (
     <WithVariableContent variableId={options.variableId} />
   ) : (
     <Text color={'gray.500'} w="90%">
@@ -17,3 +17,4 @@ export const UrlNodeContent = ({ options }: Props) =>
         defaultUrlInputOptions.labels.placeholder}
     </Text>
   )
+}

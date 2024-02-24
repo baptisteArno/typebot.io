@@ -1,7 +1,7 @@
 import { z } from '../../../../zod'
 import { blockBaseSchema } from '../../shared'
 import { IntegrationBlockType } from '../constants'
-import { HttpMethod } from './constants'
+import { HttpMethod, maxTimeout } from './constants'
 
 const variableForTestSchema = z.object({
   id: z.string(),
@@ -46,6 +46,7 @@ export const webhookOptionsV5Schema = z.object({
   isCustomBody: z.boolean().optional(),
   isExecutedOnClient: z.boolean().optional(),
   webhook: webhookSchemas.v5.optional(),
+  timeout: z.number().min(1).max(maxTimeout).optional(),
 })
 
 const webhookOptionsSchemas = {

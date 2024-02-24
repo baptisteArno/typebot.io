@@ -21,7 +21,7 @@ Parameters marked with <span style={{color: '#ef5151'}}>\*</span> are required.
 | ENCRYPTION_SECRET <span style={{color: '#ef5151'}}>\*</span>      |         | A 256-bit key used to encrypt sensitive data. It is strongly recommended to [generate](https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx) a new one. The secret should be the same between builder and viewer. |
 | NEXTAUTH_URL <span style={{color: '#ef5151'}}>\*</span>           |         | The builder base URL. Should be the publicly accessible URL (i.e. `https://typebot.domain.com`)                                                                                                                                             |
 | NEXT_PUBLIC_VIEWER_URL <span style={{color: '#ef5151'}}>\*</span> |         | The viewer base URL. Should be the publicly accessible URL (i.e. `https://bot.domain.com`)                                                                                                                                                  |
-| ADMIN_EMAIL                                                       |         | The email that will get an `UNLIMITED` plan on user creation. The associated user will be able to bypass database rules.                                                                                                                    |
+| ADMIN_EMAIL                                                       |         | The email that will get an `UNLIMITED` plan on user creation. The associated user will be able to bypass database rules. You can provide multiple emails separated by a comma without spaces.                                               |
 | NEXTAUTH_URL_INTERNAL                                             |         | The internal builder base URL. You have to set it only when `NEXTAUTH_URL` can't be reached by your builder container / server. For a docker deployment, you should set it to `http://localhost:3000`.                                      |
 | DEFAULT_WORKSPACE_PLAN                                            | FREE    | Default workspace plan on user creation or when a user creates a new workspace. Possible values are `FREE`, `STARTER`, `PRO`, `LIFETIME`, `UNLIMITED`. The default plan for admin user is `UNLIMITED`                                       |
 | DISABLE_SIGNUP                                                    | false   | Disable new user sign ups. Invited users are still able to sign up.                                                                                                                                                                         |
@@ -140,6 +140,8 @@ The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/azure-
 
 For `*_PATH` parameters, you can use dot notation to access nested properties (i.e. `account.name`).
 
+The Authorization callback URL should be: `$NEXTAUTH_URL/api/auth/callback/custom-oauth`
+
 ## S3 Storage (Media uploads)
 
 Used for uploading images, videos, etc... It can be any S3 compatible object storage service (Minio, Digital Oceans Space, AWS S3...)
@@ -236,12 +238,13 @@ In order to be able to test your bot on WhatsApp from the Preview drawer, you ne
 
 </Accordion>
 
-| Parameter                             | Default | Description                                             |
-| ------------------------------------- | ------- | ------------------------------------------------------- |
-| META_SYSTEM_USER_TOKEN                |         | The system user token used to send WhatsApp messages    |
-| WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID |         | The phone number ID from which the message will be sent |
-| WHATSAPP_PREVIEW_TEMPLATE_NAME        |         | The preview start template message name                 |
-| WHATSAPP_PREVIEW_TEMPLATE_LANG        | en      | The preview start template message name                 |
+| Parameter                             | Default                    | Description                                             |
+| ------------------------------------- | -------------------------- | ------------------------------------------------------- |
+| META_SYSTEM_USER_TOKEN                |                            | The system user token used to send WhatsApp messages    |
+| WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID |                            | The phone number ID from which the message will be sent |
+| WHATSAPP_PREVIEW_TEMPLATE_NAME        |                            | The preview start template message name                 |
+| WHATSAPP_PREVIEW_TEMPLATE_LANG        | en                         | The preview start template message name                 |
+| WHATSAPP_CLOUD_API_URL                | https://graph.facebook.com | The WhatsApp Cloud API base URL                         |
 
 ## Others
 
@@ -294,18 +297,18 @@ The related environment variables are listed here but you are probably not inter
 
 <Accordion title="Telemetry">
 
-| Parameter                      | Default | Description                                                                                                     |
-| ------------------------------ | ------- | --------------------------------------------------------------------------------------------------------------- |
-| TELEMETRY_WEBHOOK_URL          |         | Webhook URL called whenever a new telemetry event is captured. See this file that lists all the possible events |
-| TELEMETRY_WEBHOOK_BEARER_TOKEN |         | Bearer token to add if the request needs to be authenticated                                                    |
+| Parameter                | Default | Description                                             |
+| ------------------------ | ------- | ------------------------------------------------------- |
+| MESSAGE_WEBHOOK_URL      |         | Webhook URL called to receive important system messages |
+| USER_CREATED_WEBHOOK_URL |         | Webhook URL called whenever a new user is created       |
 
 </Accordion>
 
 <Accordion title="PostHog">
 
-| Parameter                    | Default                 | Description      |
-| ---------------------------- | ----------------------- | ---------------- |
-| NEXT_PUBLIC_POSTHOG_API_KEY  |                         | PostHog API Key  |
-| NEXT_PUBLIC_POSTHOG_API_HOST | https://app.posthog.com | PostHog API Host |
+| Parameter                | Default                 | Description      |
+| ------------------------ | ----------------------- | ---------------- |
+| NEXT_PUBLIC_POSTHOG_KEY  |                         | PostHog API Key  |
+| NEXT_PUBLIC_POSTHOG_HOST | https://app.posthog.com | PostHog API Host |
 
 </Accordion>

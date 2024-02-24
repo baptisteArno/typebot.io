@@ -5,6 +5,7 @@ import {
   Stack,
   Tag,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { Settings } from '@typebot.io/schemas'
 import React from 'react'
@@ -27,6 +28,7 @@ export const GeneralSettingsForm = ({
   generalSettings,
   onGeneralSettingsChange,
 }: Props) => {
+  const keyBg = useColorModeValue(undefined, 'gray.600')
   const toggleRememberUser = (isEnabled: boolean) =>
     onGeneralSettingsChange({
       ...generalSettings,
@@ -98,12 +100,19 @@ export const GeneralSettingsForm = ({
             <MoreInfoTooltip>
               <Stack>
                 <Text>
-                  Choose <Tag size="sm">session</Tag> to remember the user as
-                  long as he does not closes the tab or the browser.
+                  Choose{' '}
+                  <Tag size="sm" bgColor={keyBg}>
+                    session
+                  </Tag>{' '}
+                  to remember the user as long as he does not closes the tab or
+                  the browser.
                 </Text>
                 <Text>
-                  Choose <Tag size="sm">local</Tag> to remember the user
-                  forever.
+                  Choose{' '}
+                  <Tag size="sm" bgColor={keyBg}>
+                    local
+                  </Tag>{' '}
+                  to remember the user forever.
                 </Text>
               </Stack>
             </MoreInfoTooltip>

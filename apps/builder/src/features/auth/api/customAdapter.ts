@@ -8,13 +8,13 @@ import {
 import type { Adapter, AdapterUser } from 'next-auth/adapters'
 import { createId } from '@paralleldrive/cuid2'
 import { generateId } from '@typebot.io/lib'
-import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 import { TelemetryEvent } from '@typebot.io/schemas/features/telemetry'
 import { convertInvitationsToCollaborations } from '@/features/auth/helpers/convertInvitationsToCollaborations'
 import { getNewUserInvitations } from '@/features/auth/helpers/getNewUserInvitations'
 import { joinWorkspaces } from '@/features/auth/helpers/joinWorkspaces'
 import { parseWorkspaceDefaultPlan } from '@/features/workspace/helpers/parseWorkspaceDefaultPlan'
 import { env } from '@typebot.io/env'
+import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
 
 export function customAdapter(p: PrismaClient): Adapter {
   return {
@@ -28,7 +28,7 @@ export function customAdapter(p: PrismaClient): Adapter {
       )
       if (
         env.DISABLE_SIGNUP &&
-        env.ADMIN_EMAIL !== user.email &&
+        env.ADMIN_EMAIL?.every((email) => email !== user.email) &&
         invitations.length === 0 &&
         workspaceInvitations.length === 0
       )
@@ -80,7 +80,7 @@ export function customAdapter(p: PrismaClient): Adapter {
           name: data.name ? (data.name as string).split(' ')[0] : undefined,
         },
       })
-      await sendTelemetryEvents(events)
+      await trackEvents(events)
       if (invitations.length > 0)
         await convertInvitationsToCollaborations(p, user, invitations)
       if (workspaceInvitations.length > 0)

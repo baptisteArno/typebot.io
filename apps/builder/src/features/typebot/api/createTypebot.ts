@@ -11,9 +11,9 @@ import {
   sanitizeGroups,
   sanitizeSettings,
 } from '../helpers/sanitizers'
-import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 import { createId } from '@paralleldrive/cuid2'
 import { EventType } from '@typebot.io/schemas/features/events/constants'
+import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
 
 const typebotCreateSchemaPick = {
   name: true,
@@ -80,6 +80,15 @@ export const createTypebot = authenticatedProcedure
         message: 'Public id not available',
       })
 
+    if (typebot.folderId) {
+      const existingFolder = await prisma.dashboardFolder.findUnique({
+        where: {
+          id: typebot.folderId,
+        },
+      })
+      if (!existingFolder) typebot.folderId = null
+    }
+
     const newTypebot = await prisma.typebot.create({
       data: {
         version: '6',
@@ -116,7 +125,7 @@ export const createTypebot = authenticatedProcedure
 
     const parsedNewTypebot = typebotV6Schema.parse(newTypebot)
 
-    await sendTelemetryEvents([
+    await trackEvents([
       {
         name: 'Typebot created',
         workspaceId: parsedNewTypebot.workspaceId,

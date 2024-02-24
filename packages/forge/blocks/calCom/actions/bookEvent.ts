@@ -23,9 +23,14 @@ export const bookEvent = createAction({
       label: 'Email',
       placeholder: 'johndoe@gmail.com',
     }),
+    phone: option.string.layout({
+      accordion: 'Prefill information',
+      label: 'Phone number',
+      placeholder: '+919999999999',
+    }),
     saveBookedDateInVariableId: option.string.layout({
       label: 'Save booked date',
-      input: 'variableDropdown',
+      inputType: 'variableDropdown',
     }),
   }),
   getSetVariableIds: ({ saveBookedDateInVariableId }) =>
@@ -42,7 +47,9 @@ export const bookEvent = createAction({
               content: `Cal("on", {
                 action: "bookingSuccessful",
                 callback: (e) => {
+                  if(window.calComBooked) return
                   continueFlow(e.detail.data.date)
+                  window.calComBooked = true
                 }
               })`,
             }
@@ -61,6 +68,7 @@ export const bookEvent = createAction({
               name: options.name ?? null,
               email: options.email ?? null,
               layout: parseLayoutAttr(options.layout),
+              phone: options.phone ?? null,
             },
             content: `(function (C, A, L) {
                 let p = function (a, ar) {
@@ -92,7 +100,15 @@ export const bookEvent = createAction({
                     p(cal, ar);
                   };
               })(window, baseUrl + "/embed/embed.js", "init");
+
+              window.calComBooked = false;
+
               Cal("init", { origin: baseUrl });
+
+              const location = phone ? JSON.stringify({
+                value: "phone",
+                optionValue: phone
+              }) : undefined
 
               Cal("inline", {
                 elementOrSelector: typebotElement,
@@ -101,6 +117,7 @@ export const bookEvent = createAction({
                 config: {
                   name: name ?? undefined,
                   email: email ?? undefined,
+                  location
                 }
               });
 

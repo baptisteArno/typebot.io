@@ -2,6 +2,8 @@
 title: OpenAI
 ---
 
+import { LoomVideo } from '/snippets/loom-video.mdx'
+
 ## Create chat completion
 
 With the OpenAI block, you can create a chat completion based on your user queries and display the answer back to your typebot.
@@ -31,6 +33,35 @@ Then you can give the OpenAI block access to this sequence of messages:
   />
 </Frame>
 
+### Tools
+
+The tools section allows you to add functions that the OpenAI model can execute. Here is an example of a function named `getWeather` that returns 'Sunny and warm' if you ask about the weather of Paris and 'Rainy and cold' if you ask for any other city 😂.
+
+A more useful example would be, of course, to call an API to get the weather of the city the user is asking about.
+
+<Frame>
+  <img src="/images/blocks/integrations/openai/tools.png" alt="OpenAI tools" />
+</Frame>
+
+As you can see, the code block expects the body of the Javascript function. You should use the `return` keyword to return value to give back to OpenAI as the result of the function.
+
+If you'd like to set variables directly in this code block, you can use the [`setVariable` function](../logic/script#setvariable-function).
+
+## Ask assistant
+
+This action allows you to talk with your [OpenAI assistant](https://platform.openai.com/assistants). All you have to do is to provide its ID.
+
+<Frame>
+  <img
+    src="/images/blocks/integrations/openai/ask-assistant.png"
+    alt="OpenAI ask assistant settings"
+  />
+</Frame>
+
+### Functions
+
+If you defined functions in your assistant, you can define the function to execute in the `Functions` section.
+
 ## Create speech
 
 This action allows you to transform a text input into an audio URL that you can reuse in your bot.
@@ -39,27 +70,7 @@ This action allows you to transform a text input into an audio URL that you can 
 The generated audio URLs are temporary and expire after 7 days. If you need to store them, make sure to download them before they expire.
 :::
 
-<div
-  style={{
-    position: 'relative',
-    paddingBottom: '64.5933014354067%',
-    height: 0,
-  }}
->
-  <iframe
-    src="https://www.loom.com/embed/ccca6cbf16ed4d01b513836775db06a3?sid=22a54baa-000b-435a-b770-bfaf32bfe453"
-    mozallowfullscreen
-    allowFullScreen
-    style={{
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      marginBottom: '1rem',
-    }}
-  />
-</div>
+<LoomVideo id="ccca6cbf16ed4d01b513836775db06a3" />
 
 ## Using Multiple Open AI Blocks: Tips and Tricks
 
@@ -69,26 +80,7 @@ I explain that streaming messages is not possible when they are prefixed or suff
 
 I also demonstrate how formatting can be affected by the presence of text before a message. Watch this video to learn how to optimize your use of multiple Open AI blocks.
 
-<div
-  style={{
-    position: 'relative',
-    paddingBottom: '64.63195691202873%',
-    height: 0,
-  }}
->
-  <iframe
-    src="https://www.loom.com/embed/35dc8af6b9244762acc4a5acf275fb43?sid=3723aa59-13ac-49f2-a95b-5608807ac76d"
-    mozallowfullscreen
-    allowfullscreen
-    style={{
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-    }}
-  ></iframe>
-</div>
+<LoomVideo id="35dc8af6b9244762acc4a5acf275fb43" />
 
 ## Troobleshooting
 

@@ -10,6 +10,9 @@ import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
 import { useTranslate } from '@tolgee/react'
 import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
+import { trpc } from '@/lib/trpc'
+import { env } from '@typebot.io/env'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 
 type Props = {
   isBrandingEnabled: boolean
@@ -27,7 +30,11 @@ export const GeneralSettings = ({
   const { t } = useTranslate()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { workspace } = useWorkspace()
+  const { typebot } = useTypebot()
   const isWorkspaceFreePlan = isFreePlan(workspace)
+
+  const { mutate: trackClientEvents } =
+    trpc.telemetry.trackClientEvents.useMutation()
 
   const handleSelectFont = (font: string) =>
     onGeneralThemeChange({ ...generalTheme, font })
@@ -37,6 +44,22 @@ export const GeneralSettings = ({
 
   const updateBranding = () => {
     if (isBrandingEnabled && isWorkspaceFreePlan) return
+    if (
+      env.NEXT_PUBLIC_POSTHOG_KEY &&
+      typebot &&
+      workspace &&
+      isBrandingEnabled
+    ) {
+      trackClientEvents({
+        events: [
+          {
+            name: 'Branding removed',
+            typebotId: typebot.id,
+            workspaceId: workspace.id,
+          },
+        ],
+      })
+    }
     onBrandingChange(!isBrandingEnabled)
   }
 
@@ -53,7 +76,7 @@ export const GeneralSettings = ({
         onClick={isWorkspaceFreePlan ? onOpen : undefined}
       >
         <FormLabel htmlFor="branding" mb="0" cursor="pointer">
-          Show Typebot brand{' '}
+          {t('theme.sideMenu.global.typebotBrand')}{' '}
           {isWorkspaceFreePlan && <LockTag plan={Plan.STARTER} />}
         </FormLabel>
         <Switch

@@ -74,7 +74,6 @@
                 "dialogueVariableId": "vu9adij5penetej2xz89htfe6"
               }
             ],
-            "credentialsId": "clpjnjrbt00051aliw6610w1z",
             "responseMapping": [
               {
                 "item": "Message content",
@@ -84,21 +83,22 @@
           }
         },
         {
-          "id": "kftq9x1wnrcefzc268ydmqkn",
-          "type": "Set variable",
-          "options": {
-            "variableId": "vu9adij5penetej2xz89htfe6",
-            "type": "Append value(s)",
-            "item": "{{Assistant Message}}"
-          }
-        },
-        {
           "id": "myldn1l1nfdwwm8qvza71rwv",
           "type": "text",
           "content": {
             "richText": [
               { "type": "p", "children": [{ "text": "{{Assistant Message}}" }] }
             ]
+          },
+          "groupId": "dmg57mgick51p8l5pnyqtyf9"
+        },
+        {
+          "id": "kftq9x1wnrcefzc268ydmqkn",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vu9adij5penetej2xz89htfe6",
+            "type": "Append value(s)",
+            "item": "{{Assistant Message}}"
           }
         },
         {
@@ -139,7 +139,6 @@
                 "dialogueVariableId": "vu9adij5penetej2xz89htfe6"
               }
             ],
-            "credentialsId": "clpjnjrbt00051aliw6610w1z",
             "responseMapping": [
               {
                 "item": "Message content",
@@ -149,21 +148,22 @@
           }
         },
         {
-          "id": "dyfigmu4095x8p99qe461zbh",
-          "type": "Set variable",
-          "options": {
-            "variableId": "vu9adij5penetej2xz89htfe6",
-            "type": "Append value(s)",
-            "item": "{{Assistant Message}}"
-          }
-        },
-        {
           "id": "sei88rrjcmpgm3vhxjvkofyt",
           "type": "text",
           "content": {
             "richText": [
               { "type": "p", "children": [{ "text": "{{Assistant Message}}" }] }
             ]
+          },
+          "groupId": "fj5z2nx488htv0843kq6qeyk"
+        },
+        {
+          "id": "dyfigmu4095x8p99qe461zbh",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vu9adij5penetej2xz89htfe6",
+            "type": "Append value(s)",
+            "item": "{{Assistant Message}}"
           }
         },
         {
@@ -204,7 +204,6 @@
                 "dialogueVariableId": "vu9adij5penetej2xz89htfe6"
               }
             ],
-            "credentialsId": "clpjnjrbt00051aliw6610w1z",
             "responseMapping": [
               {
                 "item": "Message content",
@@ -214,21 +213,22 @@
           }
         },
         {
-          "id": "usolgxcte60rin18ccygzbdu",
-          "type": "Set variable",
-          "options": {
-            "variableId": "vu9adij5penetej2xz89htfe6",
-            "type": "Append value(s)",
-            "item": "{{Assistant Message}}"
-          }
-        },
-        {
           "id": "h96lile0evtqa0jx24gmfo25",
           "type": "text",
           "content": {
             "richText": [
               { "type": "p", "children": [{ "text": "{{Assistant Message}}" }] }
             ]
+          },
+          "groupId": "csbysu8dr08zxr4i6hzvzjdf"
+        },
+        {
+          "id": "usolgxcte60rin18ccygzbdu",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vu9adij5penetej2xz89htfe6",
+            "type": "Append value(s)",
+            "item": "{{Assistant Message}}"
           }
         },
         {
@@ -678,9 +678,9 @@
       "to": { "groupId": "dmg57mgick51p8l5pnyqtyf9" }
     },
     {
+      "id": "k5bj58emklqfqv3hemko4u23",
       "from": { "eventId": "w99qhdr20tw02sfrfwkfc1tg" },
-      "to": { "groupId": "bofjp88arodr4k0btv2esyqy" },
-      "id": "k5bj58emklqfqv3hemko4u23"
+      "to": { "groupId": "bofjp88arodr4k0btv2esyqy" }
     }
   ],
   "variables": [

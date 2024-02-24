@@ -98,6 +98,7 @@ export const ZodObjectLayout = ({
             data={data?.[key]}
             blockDef={blockDef}
             blockOptions={blockOptions}
+            propName={key}
             onDataChange={(val) => onDataChange({ ...data, [key]: val })}
           />,
         ],

@@ -2,17 +2,18 @@ import { useToast } from '@/hooks/useToast'
 import {
   ResultHeaderCell,
   ResultWithAnswers,
+  TableData,
   Typebot,
 } from '@typebot.io/schemas'
 import { createContext, ReactNode, useContext, useMemo } from 'react'
-import { parseResultHeader } from '@typebot.io/lib/results'
 import { useTypebot } from '../editor/providers/TypebotProvider'
 import { useResultsQuery } from './hooks/useResultsQuery'
-import { TableData } from './types'
-import { convertResultsToTableData } from './helpers/convertResultsToTableData'
 import { trpc } from '@/lib/trpc'
 import { isDefined } from '@typebot.io/lib/utils'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { parseResultHeader } from '@typebot.io/lib/results/parseResultHeader'
+import { convertResultsToTableData } from '@typebot.io/lib/results/convertResultsToTableData'
+import { parseCellContent } from './helpers/parseCellContent'
 
 const resultsContext = createContext<{
   resultsList: { results: ResultWithAnswers[] }[] | undefined
@@ -94,7 +95,8 @@ export const ResultsProvider = ({
       publishedTypebot
         ? convertResultsToTableData(
             data?.flatMap((d) => d.results) ?? [],
-            resultHeader
+            resultHeader,
+            parseCellContent
           )
         : [],
     [publishedTypebot, data, resultHeader]

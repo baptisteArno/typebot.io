@@ -99,3 +99,31 @@ Then the values will be available on the Results page in specific columns:
     alt="Variables in results"
   />
 </Frame>
+
+### Valid value types
+
+Variables content can either be a text (`string`) or a list of texts (`string[]`).
+
+```ts
+// ✅ Good
+'Hello', ['item 1', 'item 2']
+
+// ❌ Not good
+2, true, { foo: 'bar' }
+// Will automatically converted into
+'2', 'true', '{ foo: "bar" }'
+```
+
+If you provide an object, number or boolean. It will always be converted into either a text
+or a list of texts before the variable is saved into the database.
+
+This limitation is intended. Variables should have simple content. It forces you to have a cleaner bot structure and to use the variable content in a more meaningful way.
+
+In some cases, the variable content will be dynamically parsed to match its intended type. For example, if you provide a text that
+looks like a number in a condition block, it will be converted into a number during the condition execution.
+
+If you really need to save a complex content into a variable, for example an object, you can use the `JSON.stringify` function to convert it into a text. And whenever you are using the variable, you can dynamically parse it back into an object using `JSON.parse` in an [inline format](#inline-variable-formatting):
+
+```ts
+{{=JSON.parse({{My object variable}})=}}
+```

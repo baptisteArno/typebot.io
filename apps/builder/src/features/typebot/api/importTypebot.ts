@@ -12,9 +12,9 @@ import {
 import { z } from 'zod'
 import { getUserRoleInWorkspace } from '@/features/workspace/helpers/getUserRoleInWorkspace'
 import { sanitizeGroups, sanitizeSettings } from '../helpers/sanitizers'
-import { sendTelemetryEvents } from '@typebot.io/lib/telemetry/sendTelemetryEvent'
 import { preprocessTypebot } from '@typebot.io/schemas/features/typebot/helpers/preprocessTypebot'
 import { migrateTypebot } from '@typebot.io/lib/migrations/migrateTypebot'
+import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
 
 const omittedProps = {
   id: true,
@@ -151,7 +151,7 @@ export const importTypebot = authenticatedProcedure
 
     const parsedNewTypebot = typebotV6Schema.parse(newTypebot)
 
-    await sendTelemetryEvents([
+    await trackEvents([
       {
         name: 'Typebot created',
         workspaceId: parsedNewTypebot.workspaceId,

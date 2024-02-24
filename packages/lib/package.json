@@ -9,14 +9,15 @@
     "@paralleldrive/cuid2": "2.2.1",
     "@playwright/test": "1.36.0",
     "@typebot.io/env": "workspace:*",
+    "@typebot.io/forge-repository": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
+    "@types/escape-html": "^1.0.4",
     "@types/nodemailer": "6.4.8",
-    "next": "14.0.3",
+    "next": "14.1.0",
     "nodemailer": "6.9.3",
-    "typescript": "5.3.2",
-    "@typebot.io/forge-repository": "workspace:*"
+    "typescript": "5.3.2"
   },
   "peerDependencies": {
     "next": "14.0.0",
@@ -25,12 +26,25 @@
   "dependencies": {
     "@sentry/nextjs": "7.77.0",
     "@trpc/server": "10.40.0",
+    "@udecode/plate-basic-marks": "21.1.5",
+    "@udecode/plate-block-quote": "30.1.2",
+    "@udecode/plate-code-block": "30.1.2",
     "@udecode/plate-common": "21.1.5",
+    "@udecode/plate-heading": "30.1.2",
+    "@udecode/plate-horizontal-rule": "30.1.2",
+    "@udecode/plate-link": "21.2.0",
+    "@udecode/plate-list": "30.1.2",
+    "@udecode/plate-media": "30.1.2",
+    "@udecode/plate-paragraph": "30.1.2",
+    "escape-html": "^1.0.3",
     "google-auth-library": "8.9.0",
     "got": "12.6.0",
     "minio": "7.1.3",
-    "remark-slate": "1.8.6",
+    "posthog-node": "3.1.1",
+    "remark-parse": "11.0.0",
     "stripe": "12.13.0",
-    "zod": "3.22.4"
+    "unified": "11.0.4",
+    "zod": "3.22.4",
+    "ky": "1.1.3"
   }
 }

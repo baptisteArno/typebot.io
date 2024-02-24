@@ -2,6 +2,8 @@
 title: Breaking changes
 ---
 
+import { LoomVideo } from '/snippets/loom-video.mdx'
+
 ## Typebot v6
 
 - List variables now don't automatically display the last item when inserted into a bubble. It was too "magical". Now you can leverage the inline code feature to easily get the last element of a list:
@@ -16,23 +18,4 @@ title: Breaking changes
 
 - `Message sequence` option in the OpenAI block was removed because it was also too "magical" and it. Now I've introduced the `Dialogue` option. For more information:
 
-  <div
-    style={{
-      position: 'relative',
-      paddingBottom: '64.5933014354067%',
-      height: 0,
-    }}
-  >
-    <iframe
-      src="https://www.loom.com/embed/df5d64dd01ca47daa5b7acd18b05a725?sid=e6df2f5b-643c-4175-8351-03e1726b2749"
-      mozallowfullscreen
-      allowFullScreen
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-      }}
-    />
-  </div>
+  <LoomVideo id="df5d64dd01ca47daa5b7acd18b05a725" />

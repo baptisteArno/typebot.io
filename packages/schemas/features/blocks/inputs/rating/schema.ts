@@ -1,4 +1,5 @@
 import { z } from '../../../../zod'
+import { variableStringSchema } from '../../../utils'
 import { optionBaseSchema, blockBaseSchema } from '../../shared'
 import { InputBlockType } from '../constants'
 
@@ -6,6 +7,7 @@ export const ratingInputOptionsSchema = optionBaseSchema.merge(
   z.object({
     buttonType: z.literal('Icons').or(z.literal('Numbers')).optional(),
     length: z.number().optional(),
+    startsAt: z.number().or(variableStringSchema).optional(),
     labels: z
       .object({
         left: z.string().optional(),

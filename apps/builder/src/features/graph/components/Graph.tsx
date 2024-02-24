@@ -1,24 +1,31 @@
-import { Flex, FlexProps, useEventListener } from '@chakra-ui/react'
+import { Fade, Flex, FlexProps, useEventListener } from '@chakra-ui/react'
 import React, { useRef, useMemo, useEffect, useState } from 'react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { BlockV6, PublicTypebotV6, TypebotV6 } from '@typebot.io/schemas'
 import { useDebounce } from 'use-debounce'
 import GraphElements from './GraphElements'
 import { createId } from '@paralleldrive/cuid2'
-import { useUser } from '@/features/account/hooks/useUser'
 import { ZoomButtons } from './ZoomButtons'
 import { useGesture } from '@use-gesture/react'
-import { GraphNavigation } from '@typebot.io/prisma'
 import { headerHeight } from '@/features/editor/constants'
-import { graphPositionDefaultValue, groupWidth } from '../constants'
+import { graphPositionDefaultValue } from '../constants'
 import { useBlockDnd } from '../providers/GraphDndProvider'
 import { useGraph } from '../providers/GraphProvider'
-import { useGroupsCoordinates } from '../providers/GroupsCoordinateProvider'
 import { Coordinates } from '../types'
 import {
   TotalAnswers,
   TotalVisitedEdges,
 } from '@typebot.io/schemas/features/analytics'
+import { SelectBox } from './SelectBox'
+import { computeSelectBoxDimensions } from '../helpers/computeSelectBoxDimensions'
+import { GroupSelectionMenu } from './GroupSelectionMenu'
+import { isSelectBoxIntersectingWithElement } from '../helpers/isSelectBoxIntersectingWithElement'
+import { useGroupsStore } from '../hooks/useGroupsStore'
+import { useShallow } from 'zustand/react/shallow'
+import { projectMouse } from '../helpers/projectMouse'
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
+import { useUser } from '@/features/account/hooks/useUser'
+import { GraphNavigation } from '@typebot.io/prisma'
 
 const maxScale = 2
 const minScale = 0.3
@@ -44,22 +51,63 @@ export const Graph = ({
     draggedItem,
     setDraggedItem,
   } = useBlockDnd()
-  const graphContainerRef = useRef<HTMLDivElement | null>(null)
-  const editorContainerRef = useRef<HTMLDivElement | null>(null)
   const { createGroup } = useTypebot()
+  const { user } = useUser()
   const {
+    isReadOnly,
     setGraphPosition: setGlobalGraphPosition,
     setOpenedBlockId,
     setOpenedItemId,
     setPreviewingEdge,
     connectingIds,
   } = useGraph()
-  const { updateGroupCoordinates } = useGroupsCoordinates()
+  const isDraggingGraph = useGroupsStore((state) => state.isDraggingGraph)
+  const setIsDraggingGraph = useGroupsStore((state) => state.setIsDraggingGraph)
+  const focusedGroups = useGroupsStore(
+    useShallow((state) => state.focusedGroups)
+  )
+  const {
+    setGroupsCoordinates,
+    blurGroups,
+    setFocusedGroups,
+    updateGroupCoordinates,
+  } = useGroupsStore(
+    useShallow((state) => ({
+      updateGroupCoordinates: state.updateGroupCoordinates,
+      setGroupsCoordinates: state.setGroupsCoordinates,
+      blurGroups: state.blurGroups,
+      setFocusedGroups: state.setFocusedGroups,
+    }))
+  )
+
   const [graphPosition, setGraphPosition] = useState(
     graphPositionDefaultValue(
       typebot.events[0].graphCoordinates ?? { x: 0, y: 0 }
     )
   )
+  const [autoMoveDirection, setAutoMoveDirection] = useState<
+    'top' | 'right' | 'bottom' | 'left' | undefined
+  >()
+  const [selectBoxCoordinates, setSelectBoxCoordinates] = useState<
+    | {
+        origin: Coordinates
+        dimension: {
+          width: number
+          height: number
+        }
+      }
+    | undefined
+  >()
+  const [groupRects, setGroupRects] = useState<
+    { groupId: string; rect: DOMRect }[] | undefined
+  >()
+  const [isDragging, setIsDragging] = useState(false)
+
+  const graphContainerRef = useRef<HTMLDivElement | null>(null)
+  const editorContainerRef = useRef<HTMLDivElement | null>(null)
+
+  useAutoMoveBoard(autoMoveDirection, setGraphPosition)
+
   const [debouncedGraphPosition] = useDebounce(graphPosition, 200)
   const transform = useMemo(
     () =>
@@ -68,12 +116,6 @@ export const Graph = ({
       )}px) scale(${graphPosition.scale})`,
     [graphPosition]
   )
-  const { user } = useUser()
-
-  const [autoMoveDirection, setAutoMoveDirection] = useState<
-    'top' | 'right' | 'bottom' | 'left' | undefined
-  >()
-  useAutoMoveBoard(autoMoveDirection, setGraphPosition)
 
   useEffect(() => {
     editorContainerRef.current = document.getElementById(
@@ -90,6 +132,11 @@ export const Graph = ({
       scale: debouncedGraphPosition.scale,
     })
   }, [debouncedGraphPosition, setGlobalGraphPosition])
+
+  useEffect(() => {
+    setGroupsCoordinates(typebot.groups)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleMouseUp = (e: MouseEvent) => {
     if (!typebot) return
@@ -117,7 +164,17 @@ export const Graph = ({
     if (isRightClick) e.stopPropagation()
   }
 
-  const handleClick = () => {
+  const handlePointerUp = () => {
+    if (isDraggingGraph) return
+    if (
+      !selectBoxCoordinates ||
+      Math.abs(selectBoxCoordinates?.dimension.width) +
+        Math.abs(selectBoxCoordinates?.dimension.height) <
+        5
+    ) {
+      blurGroups()
+    }
+    setSelectBoxCoordinates(undefined)
     setOpenedBlockId(undefined)
     setOpenedItemId(undefined)
     setPreviewingEdge(undefined)
@@ -125,20 +182,51 @@ export const Graph = ({
 
   useGesture(
     {
-      onDrag: ({ delta: [dx, dy] }) => {
-        setGraphPosition({
-          ...graphPosition,
-          x: graphPosition.x + dx,
-          y: graphPosition.y + dy,
-        })
+      onDrag: (props) => {
+        if (
+          isDraggingGraph ||
+          (user?.graphNavigation !== GraphNavigation.TRACKPAD &&
+            !props.shiftKey)
+        ) {
+          if (props.first) setIsDragging(true)
+          if (props.last) setIsDragging(false)
+          setGraphPosition({
+            ...graphPosition,
+            x: graphPosition.x + props.delta[0],
+            y: graphPosition.y + props.delta[1],
+          })
+          return
+        }
+        if (isReadOnly) return
+        const currentGroupRects = props.first
+          ? Array.from(document.querySelectorAll('.group')).map((element) => {
+              return {
+                groupId: element.id.split('-')[1],
+                rect: element.getBoundingClientRect(),
+              }
+            })
+          : groupRects
+        if (props.first) setGroupRects(currentGroupRects)
+        const dimensions = computeSelectBoxDimensions(props)
+        setSelectBoxCoordinates(dimensions)
+        const selectedGroups = currentGroupRects!.reduce<string[]>(
+          (groups, element) => {
+            if (isSelectBoxIntersectingWithElement(dimensions, element.rect)) {
+              return [...groups, element.groupId]
+            }
+            return groups
+          },
+          []
+        )
+        if (selectedGroups.length > 0) setFocusedGroups(selectedGroups)
       },
-      onWheel: ({ delta: [dx, dy], pinching }) => {
+      onWheel: ({ shiftKey, delta: [dx, dy], pinching }) => {
         if (pinching) return
 
         setGraphPosition({
           ...graphPosition,
           x: graphPosition.x - dx,
-          y: graphPosition.y - dy,
+          y: shiftKey ? graphPosition.y : graphPosition.y - dy,
         })
       },
       onPinch: ({ origin: [x, y], offset: [scale] }) => {
@@ -149,8 +237,7 @@ export const Graph = ({
       target: graphContainerRef,
       pinch: {
         scaleBounds: { min: minScale, max: maxScale },
-        modifierKey:
-          user?.graphNavigation === GraphNavigation.MOUSE ? null : 'ctrlKey',
+        modifierKey: 'ctrlKey',
       },
       drag: { pointer: { keys: false } },
     }
@@ -218,11 +305,23 @@ export const Graph = ({
     setAutoMoveDirection(undefined)
   }
 
+  useKeyboardShortcuts({})
+
+  useEventListener('keydown', (e) => {
+    if (e.key === ' ') setIsDraggingGraph(true)
+  })
+  useEventListener('keyup', (e) => {
+    if (e.key === ' ') {
+      setIsDraggingGraph(false)
+      setIsDragging(false)
+    }
+  })
+
   useEventListener('mousedown', handleCaptureMouseDown, undefined, {
     capture: true,
   })
   useEventListener('mouseup', handleMouseUp, graphContainerRef.current)
-  useEventListener('click', handleClick, editorContainerRef.current)
+  useEventListener('pointerup', handlePointerUp, editorContainerRef.current)
   useEventListener('mousemove', handleMouseMove)
 
   // Make sure pinch doesn't interfere with native Safari zoom
@@ -233,13 +332,32 @@ export const Graph = ({
   const zoomIn = () => zoom({ delta: zoomButtonsScaleBlock })
   const zoomOut = () => zoom({ delta: -zoomButtonsScaleBlock })
 
+  const cursor = isDraggingGraph ? (isDragging ? 'grabbing' : 'grab') : 'auto'
+
   return (
     <Flex
       ref={graphContainerRef}
       position="relative"
-      style={{ touchAction: 'none' }}
+      style={{
+        touchAction: 'none',
+        cursor,
+      }}
       {...props}
     >
+      {!isReadOnly && (
+        <>
+          {selectBoxCoordinates && <SelectBox {...selectBoxCoordinates} />}
+          <Fade in={!isReadOnly && focusedGroups.length > 1}>
+            <GroupSelectionMenu
+              graphPosition={graphPosition}
+              focusedGroups={focusedGroups}
+              blurGroups={blurGroups}
+              isReadOnly={isReadOnly}
+            />
+          </Fade>
+        </>
+      )}
+
       <ZoomButtons onZoomInClick={zoomIn} onZoomOutClick={zoomOut} />
       <Flex
         flex="1"
@@ -267,24 +385,6 @@ export const Graph = ({
       </Flex>
     </Flex>
   )
-}
-
-const projectMouse = (
-  mouseCoordinates: Coordinates,
-  graphPosition: Coordinates & { scale: number }
-) => {
-  return {
-    x:
-      (mouseCoordinates.x -
-        graphPosition.x -
-        groupWidth / (3 / graphPosition.scale)) /
-      graphPosition.scale,
-    y:
-      (mouseCoordinates.y -
-        graphPosition.y -
-        (headerHeight + 20 * graphPosition.scale)) /
-      graphPosition.scale,
-  }
 }
 
 const useAutoMoveBoard = (

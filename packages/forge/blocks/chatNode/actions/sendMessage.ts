@@ -23,7 +23,7 @@ export const sendMessage = createAction({
     message: option.string.layout({
       label: 'Message',
       placeholder: 'Hi, what can I do with ChatNode',
-      input: 'textarea',
+      inputType: 'textarea',
     }),
     responseMapping: option.saveResponseArray(['Message', 'Thread ID']).layout({
       accordion: 'Save response',

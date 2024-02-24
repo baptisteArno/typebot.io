@@ -57,7 +57,11 @@ const baseEnv = {
       z.string().url()
     ),
     DISABLE_SIGNUP: boolean.optional().default('false'),
-    ADMIN_EMAIL: z.string().email().optional(),
+    ADMIN_EMAIL: z
+      .string()
+      .min(1)
+      .optional()
+      .transform((val) => val?.split(',')),
     DEFAULT_WORKSPACE_PLAN: z
       .enum(['FREE', 'STARTER', 'PRO', 'LIFETIME', 'UNLIMITED'])
       .refine((str) =>
@@ -79,7 +83,9 @@ const baseEnv = {
     RADAR_CUMULATIVE_KEYWORDS: z
       .string()
       .min(1)
-      .transform((val) => val.split(','))
+      .transform((val) =>
+        val.split('/').map((s) => s.split(',').map((s) => s.split('|')))
+      )
       .optional(),
   },
   client: {
@@ -281,6 +287,11 @@ const whatsAppEnv = {
     WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID: z.string().min(1).optional(),
     WHATSAPP_PREVIEW_TEMPLATE_NAME: z.string().min(1).optional(),
     WHATSAPP_PREVIEW_TEMPLATE_LANG: z.string().min(1).optional().default('en'),
+    WHATSAPP_CLOUD_API_URL: z
+      .string()
+      .url()
+      .optional()
+      .default('https://graph.facebook.com'),
   },
 }
 
@@ -307,8 +318,6 @@ const sentryEnv = {
 
 const telemetryEnv = {
   server: {
-    TELEMETRY_WEBHOOK_URL: z.string().url().optional(),
-    TELEMETRY_WEBHOOK_BEARER_TOKEN: z.string().min(1).optional(),
     MESSAGE_WEBHOOK_URL: z.string().url().optional(),
     USER_CREATED_WEBHOOK_URL: z.string().url().optional(),
   },

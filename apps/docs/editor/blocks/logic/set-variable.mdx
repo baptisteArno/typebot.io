@@ -89,6 +89,11 @@ For example,
 
 </Info>
 
+<Info>
+  Variables content can either be a string or a list of strings. Check out
+  [Valid value types](../../variables#valid-value-types) for more information.
+</Info>
+
 ## Moment of the day
 
 It will set your variable with either one of these values based on the user's time of the day: `morning`, `afternoon`, `evening`, `night`.
@@ -116,3 +121,23 @@ This value block allows you to find the `Id` from `Ids` with the same index as `
     alt="Set variable map item with same index"
   />
 </Frame>
+
+## Get user's geo location
+
+For this you can provide the following custom code:
+
+```js
+function getPosition() {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => resolve(position),
+      (error) => reject(error),
+      { enableHighAccuracy: true, timeout: 5000 }
+    )
+  })
+}
+
+const coords = (await getPosition()).coords
+
+return `${coords.latitude}, ${coords.longitude}`
+```

@@ -3,6 +3,7 @@ import { FileInputBlock } from './schema'
 export const defaultFileInputOptions = {
   isRequired: true,
   isMultipleAllowed: false,
+  visibility: 'Auto',
   labels: {
     placeholder: `<strong>
       Click to upload
@@ -11,5 +12,11 @@ export const defaultFileInputOptions = {
     button: 'Upload',
     clear: 'Clear',
     skip: 'Skip',
+    success: {
+      single: 'File uploaded',
+      multiple: '{total} files uploaded',
+    },
   },
 } as const satisfies FileInputBlock['options']
+
+export const fileVisibilityOptions = ['Auto', 'Public', 'Private'] as const

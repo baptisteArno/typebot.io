@@ -181,7 +181,7 @@ export const AutocompleteInput = ({
             <Portal containerRef={parentModalRef}>
               <PopoverContent
                 maxH="35vh"
-                overflowY="scroll"
+                overflowY="auto"
                 role="menu"
                 w="inherit"
                 shadow="lg"

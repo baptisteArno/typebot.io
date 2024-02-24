@@ -109,7 +109,7 @@ export const NumberInput = <HasVariable extends boolean>({
       as={direction === 'column' ? Stack : HStack}
       isRequired={isRequired}
       justifyContent="space-between"
-      width={label ? 'full' : 'auto'}
+      width={label || props.width === 'full' ? 'full' : 'auto'}
       spacing={direction === 'column' ? 2 : 3}
     >
       {label && (

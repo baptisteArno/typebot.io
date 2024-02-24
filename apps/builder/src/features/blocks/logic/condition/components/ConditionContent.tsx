@@ -1,4 +1,5 @@
 import { Stack, Wrap, Tag, Text, useColorModeValue } from '@chakra-ui/react'
+import { useTranslate } from '@tolgee/react'
 import { byId } from '@typebot.io/lib'
 import { Condition, Variable } from '@typebot.io/schemas'
 import { ComparisonOperators } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
@@ -15,6 +16,7 @@ export const ConditionContent = ({
   size = 'sm',
   displaySemicolon,
 }: Props) => {
+  const { t } = useTranslate()
   const comparisonValueBg = useColorModeValue('gray.200', 'gray.700')
   return (
     <Stack>
@@ -22,7 +24,11 @@ export const ConditionContent = ({
         const variable = variables.find(byId(comparison.variableId))
         return (
           <Wrap key={comparison.id} spacing={1} noOfLines={1}>
-            {idx === 0 && <Text fontSize={size}>IF</Text>}
+            {idx === 0 && (
+              <Text fontSize={size}>
+                {t('blocks.inputs.button.conditionContent.if.label')}
+              </Text>
+            )}
             {idx > 0 && (
               <Text fontSize={size}>{condition.logicalOperator ?? ''}</Text>
             )}

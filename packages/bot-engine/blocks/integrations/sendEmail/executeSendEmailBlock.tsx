@@ -11,7 +11,6 @@ import {
 import { createTransport } from 'nodemailer'
 import Mail from 'nodemailer/lib/mailer'
 import { byId, isDefined, isEmpty, isNotDefined, omit } from '@typebot.io/lib'
-import { getDefinedVariables, parseAnswers } from '@typebot.io/lib/results'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { defaultFrom, defaultTransportOptions } from './constants'
 import { findUniqueVariableValue } from '@typebot.io/variables/findUniqueVariableValue'
@@ -20,6 +19,10 @@ import { ExecuteIntegrationResponse } from '../../../types'
 import prisma from '@typebot.io/lib/prisma'
 import { parseVariables } from '@typebot.io/variables/parseVariables'
 import { defaultSendEmailOptions } from '@typebot.io/schemas/features/blocks/integrations/sendEmail/constants'
+import { parseAnswers } from '@typebot.io/lib/results/parseAnswers'
+
+export const sendEmailSuccessDescription = 'Email successfully sent'
+export const sendEmailErrorDescription = 'Email not sent'
 
 export const executeSendEmailBlock = async (
   state: SessionState,
@@ -143,7 +146,7 @@ const sendEmail = async ({
   if (!emailBody) {
     logs.push({
       status: 'error',
-      description: 'Email not sent',
+      description: sendEmailErrorDescription,
       details: {
         error: 'No email body found',
         transportConfig,
@@ -177,7 +180,7 @@ const sendEmail = async ({
     await transporter.sendMail(email)
     logs.push({
       status: 'success',
-      description: 'Email successfully sent',
+      description: sendEmailSuccessDescription,
       details: {
         transportConfig: {
           ...transportConfig,
@@ -189,7 +192,7 @@ const sendEmail = async ({
   } catch (err) {
     logs.push({
       status: 'error',
-      description: 'Email not sent',
+      description: sendEmailErrorDescription,
       details: {
         error: err instanceof Error ? err.toString() : err,
         transportConfig: {
@@ -245,7 +248,7 @@ const getEmailBody = async ({
       text: !isBodyCode ? body : undefined,
     }
   const answers = parseAnswers({
-    variables: getDefinedVariables(typebot.variables),
+    variables: typebot.variables,
     answers: answersInSession,
   })
   return {

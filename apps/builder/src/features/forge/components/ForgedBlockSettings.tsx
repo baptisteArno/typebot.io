@@ -12,7 +12,10 @@ type Props = {
   onOptionsChange: (options: BlockOptions) => void
 }
 export const ForgedBlockSettings = ({ block, onOptionsChange }: Props) => {
-  const { blockDef, blockSchema } = useForgedBlock(block.type)
+  const { blockDef, blockSchema, actionDef } = useForgedBlock(
+    block.type,
+    block.options?.action
+  )
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const updateCredentialsId = (credentialsId?: string) => {
@@ -20,6 +23,34 @@ export const ForgedBlockSettings = ({ block, onOptionsChange }: Props) => {
       ...block.options,
       credentialsId,
     })
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const resetOptionsAction = (updates: any) => {
+    if (!actionDef) return
+    const actionOptionsKeys = Object.keys(actionDef.options?.shape ?? [])
+    const actionOptions = actionOptionsKeys.reduce(
+      (acc, key) => ({
+        ...acc,
+        [key]: undefined,
+      }),
+      {}
+    )
+    onOptionsChange({
+      ...updates,
+      ...actionOptions,
+    })
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updateOptions = (updates: any) => {
+    const isChangingAction =
+      actionDef && updates?.action && updates.action !== block.options.action
+    if (isChangingAction) {
+      resetOptionsAction(updates)
+      return
+    }
+    onOptionsChange(updates)
   }
 
   if (!blockDef || !blockSchema) return null
@@ -57,7 +88,7 @@ export const ForgedBlockSettings = ({ block, onOptionsChange }: Props) => {
             schema={blockSchema.shape.options}
             blockDef={blockDef}
             blockOptions={block.options}
-            onDataChange={onOptionsChange}
+            onDataChange={updateOptions}
           />
         </>
       )}

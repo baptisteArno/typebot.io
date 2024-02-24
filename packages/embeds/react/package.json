@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/react",
-  "version": "0.2.31",
+  "version": "0.2.41",
   "description": "Convenient library to display typebots on your React app",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,7 +10,8 @@
     "stories:build": "ladle build",
     "dev": "rollup --watch --config rollup.config.js",
     "build": "rollup --config rollup.config.js",
-    "lint": "eslint --fix \"src/**/*.ts*\""
+    "lint": "eslint --fix \"src/**/*.ts*\"",
+    "format:check": "prettier --check ./src"
   },
   "keywords": [],
   "author": "Baptiste Arnaud",
@@ -42,6 +43,6 @@
     "typescript": "5.3.2"
   },
   "peerDependencies": {
-    "react": "18.x"
+    "react": "^16.0.0 || ^17.0.0 || ^18.0.0"
   }
 }

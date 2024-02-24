@@ -8,8 +8,8 @@ import {
 } from '@typebot.io/lib/api'
 import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
 import { WhatsAppCredentials } from '@typebot.io/schemas/features/whatsapp'
-import got from 'got'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
+import { downloadMedia } from '@typebot.io/bot-engine/whatsapp/downloadMedia'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
@@ -60,25 +60,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       credentials.iv
     )) as WhatsAppCredentials['data']
 
-    const { body } = await got.get({
-      url: `https://graph.facebook.com/v17.0/${mediaId}`,
-      headers: {
-        Authorization: `Bearer ${credentialsData.systemUserAccessToken}`,
-      },
+    const { file, mimeType } = await downloadMedia({
+      mediaId,
+      systemUserAccessToken: credentialsData.systemUserAccessToken,
     })
 
-    const parsedBody = JSON.parse(body) as { url: string; mime_type: string }
-
-    const buffer = await got(parsedBody.url, {
-      headers: {
-        Authorization: `Bearer ${credentialsData.systemUserAccessToken}`,
-      },
-    }).buffer()
-
-    res.setHeader('Content-Type', parsedBody.mime_type)
+    res.setHeader('Content-Type', mimeType)
     res.setHeader('Cache-Control', 'public, max-age=86400')
 
-    return res.send(buffer)
+    return res.send(file)
   }
   return methodNotAllowed(res)
 }

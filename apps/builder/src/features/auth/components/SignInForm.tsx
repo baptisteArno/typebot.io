@@ -65,6 +65,17 @@ export const SignInForm = ({
     })()
   }, [status, router])
 
+  useEffect(() => {
+    if (!router.isReady) return
+    if (router.query.error === 'ip-banned') {
+      showToast({
+        status: 'info',
+        description:
+          'Your account has suspicious activity and is being reviewed by our team. Feel free to contact us.',
+      })
+    }
+  }, [router.isReady, router.query.error, showToast])
+
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) =>
     setEmailValue(e.target.value)
 
@@ -78,13 +89,7 @@ export const SignInForm = ({
         redirect: false,
       })
       if (response?.error) {
-        if (response.error.includes('ip-banned'))
-          showToast({
-            status: 'info',
-            description:
-              'Your account has suspicious activity and is being reviewed by our team. Feel free to contact us.',
-          })
-        else if (response.error.includes('rate-limited'))
+        if (response.error.includes('rate-limited'))
           showToast({
             status: 'info',
             description: t('auth.signinErrorToast.tooManyRequests'),

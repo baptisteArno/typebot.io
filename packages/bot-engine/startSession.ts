@@ -36,6 +36,8 @@ import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integr
 import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
 import { VisitedEdge } from '@typebot.io/prisma'
 import { env } from '@typebot.io/env'
+import { getFirstEdgeId } from './getFirstEdgeId'
+import { Reply } from './types'
 
 type StartParams =
   | ({
@@ -48,7 +50,7 @@ type StartParams =
 
 type Props = {
   version: 1 | 2
-  message: string | undefined
+  message: Reply
   startParams: StartParams
   initialSessionState?: Pick<SessionState, 'whatsApp' | 'expiryTimeout'>
 }
@@ -131,6 +133,10 @@ export const startSession = async ({
     dynamicTheme: parseDynamicThemeInState(typebot.theme),
     isStreamEnabled: startParams.isStreamEnabled,
     typingEmulation: typebot.settings.typingEmulation,
+    allowedOrigins:
+      startParams.type === 'preview'
+        ? undefined
+        : typebot.settings.security?.allowedOrigins,
     ...initialSessionState,
   }
 
@@ -162,9 +168,14 @@ export const startSession = async ({
 
   // If params has message and first block is an input block, we can directly continue the bot flow
   if (message) {
-    const firstEdgeId =
-      chatReply.newSessionState.typebotsQueue[0].typebot.groups[0].blocks[0]
-        .outgoingEdgeId
+    const firstEdgeId = getFirstEdgeId({
+      state: chatReply.newSessionState,
+      startEventId:
+        startParams.type === 'preview' &&
+        startParams.startFrom?.type === 'event'
+          ? startParams.startFrom.eventId
+          : undefined,
+    })
     const nextGroup = await getNextGroup(chatReply.newSessionState)(firstEdgeId)
     const newSessionState = nextGroup.newSessionState
     const firstBlock = nextGroup.group?.blocks.at(0)

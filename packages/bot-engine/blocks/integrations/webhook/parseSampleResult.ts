@@ -8,9 +8,9 @@ import {
   Variable,
 } from '@typebot.io/schemas'
 import { isInputBlock, byId, isNotDefined } from '@typebot.io/lib'
-import { parseResultHeader } from '@typebot.io/lib/results'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { parseResultHeader } from '@typebot.io/lib/results/parseResultHeader'
 
 export const parseSampleResult =
   (
@@ -54,16 +54,18 @@ const extractLinkedInputBlocks =
     const linkedBotInputs =
       previousLinkedTypebotBlocks.length > 0
         ? await Promise.all(
-            previousLinkedTypebotBlocks.map((linkedBot) =>
-              extractLinkedInputBlocks(
-                linkedTypebots.find((t) =>
-                  'typebotId' in t
-                    ? t.typebotId === linkedBot.options?.typebotId
-                    : t.id === linkedBot.options?.typebotId
-                ) as Typebot | PublicTypebot,
-                linkedTypebots
-              )(linkedBot.options?.groupId, 'forward')
-            )
+            previousLinkedTypebotBlocks.map((linkedBot) => {
+              const linkedTypebot = linkedTypebots.find((t) =>
+                'typebotId' in t
+                  ? t.typebotId === linkedBot.options?.typebotId
+                  : t.id === linkedBot.options?.typebotId
+              )
+              if (!linkedTypebot) return []
+              return extractLinkedInputBlocks(linkedTypebot, linkedTypebots)(
+                linkedBot.options?.groupId,
+                'forward'
+              )
+            })
           )
         : []
 

@@ -1,4 +1,5 @@
 import { useColorModeValue, HStack, Tag, Text } from '@chakra-ui/react'
+import { useTranslate } from '@tolgee/react'
 import { Variable } from '@typebot.io/schemas'
 
 export const SetVariableLabel = ({
@@ -8,6 +9,7 @@ export const SetVariableLabel = ({
   variableId: string
   variables?: Variable[]
 }) => {
+  const { t } = useTranslate()
   const textColor = useColorModeValue('gray.600', 'gray.400')
   const variableName = variables?.find(
     (variable) => variable.id === variableId
@@ -17,7 +19,7 @@ export const SetVariableLabel = ({
   return (
     <HStack fontStyle="italic" spacing={1}>
       <Text fontSize="sm" color={textColor}>
-        Set
+        {t('variables.set')}
       </Text>
       <Tag bg="orange.400" color="white" size="sm">
         {variableName}

@@ -1,4 +1,3 @@
-import { useEventListener } from '@chakra-ui/react'
 import {
   AbTestBlock,
   BlockV6,
@@ -18,6 +17,7 @@ import {
 } from 'react'
 import { Coordinates } from '../types'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { useEventListener } from '@/hooks/useEventListener'
 
 type NodeElement = {
   id: string
@@ -105,11 +105,13 @@ export const useDragDistance = ({
   onDrag,
   distanceTolerance = 20,
   isDisabled = false,
+  deps = [],
 }: {
   ref: React.MutableRefObject<HTMLDivElement | null>
   onDrag: (position: { absolute: Coordinates; relative: Coordinates }) => void
   distanceTolerance?: number
   isDisabled: boolean
+  deps?: unknown[]
 }) => {
   const mouseDownPosition = useRef<{
     absolute: Coordinates
@@ -119,7 +121,7 @@ export const useDragDistance = ({
   const handleMouseUp = () => {
     if (mouseDownPosition) mouseDownPosition.current = undefined
   }
-  useEventListener('mouseup', handleMouseUp)
+  useEventListener('mouseup', handleMouseUp, undefined, undefined, deps)
 
   const handleMouseDown = (e: MouseEvent) => {
     if (isDisabled || !ref.current) return
@@ -133,7 +135,7 @@ export const useDragDistance = ({
       },
     }
   }
-  useEventListener('mousedown', handleMouseDown, ref.current)
+  useEventListener('mousedown', handleMouseDown, ref, undefined, deps)
 
   useEffect(() => {
     let triggered = false

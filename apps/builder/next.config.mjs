@@ -39,7 +39,7 @@ const nextConfig = {
   ],
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'fr', 'pt', 'pt-BR', 'de', 'ro', 'es'],
+    locales: ['en', 'fr', 'pt', 'pt-BR', 'de', 'ro', 'es', 'it'],
   },
   experimental: {
     outputFileTracingRoot: join(__dirname, '../../'),
@@ -50,13 +50,28 @@ const nextConfig = {
     if (nextRuntime === 'edge') {
       config.resolve.alias['minio'] = false
       config.resolve.alias['got'] = false
+      config.resolve.alias['qrcode'] = false
       return config
     }
     // These packages are imports from the integrations definition files that can be ignored for the client.
     config.resolve.alias['minio'] = false
     config.resolve.alias['got'] = false
     config.resolve.alias['openai'] = false
+    config.resolve.alias['qrcode'] = false
     return config
+  },
+  headers: async () => {
+    return [
+      {
+        source: '/(.*)?',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN',
+          },
+        ],
+      },
+    ]
   },
   async rewrites() {
     return process.env.NEXT_PUBLIC_POSTHOG_KEY

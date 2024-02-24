@@ -1,0 +1,295 @@
+---
+title: Options
+---
+
+The Forge library extends the [Zod](https://github.com/colinhacks/zod) library. This means that you can use any Zod schema to validate the data that you want to store for your block. The Forge extends the zod schemas with the `layout` function property that allows you to define the layout of the data in the Typebot editor.
+
+Options extends the `z.ZodObject<any>` schema.
+
+The Forge provide convenient functions to create the options schema for you. Even though you could provide straight Zod schemas, we highly recommend using `option` functions to create the options schema.
+
+Here is an example of how a schema can be created using the `option` and `layout` functions:
+
+```ts
+option.object({
+  token: option.string.layout({
+    label: 'Token',
+    isRequired: true,
+    placeholder: 'Type your token...',
+    helperText: 'You can find your token [here](https://).',
+  }),
+  role: option.enum(['user', 'admin']).layout({
+    defaultValue: 'user',
+    label: 'Role',
+  }),
+  phoneNumber: option.string.layout({
+    accordion: 'Advanced settings',
+    label: 'Phone number',
+    placeholder: 'Type your phone number...',
+  }),
+  address: option.string.layout({
+    accordion: 'Advanced settings',
+    label: 'Address',
+    placeholder: 'Type your address...',
+  }),
+  isTestModeEnabled: option.boolean.layout({
+    label: 'Test mode',
+    defaultValue: true,
+    helperText: 'Enable test mode to use a test account.',
+  }),
+})
+```
+
+<Frame>
+  <img src="/images/contribute/layout-example.png" alt="Layout label" />
+</Frame>
+
+## Object
+
+```ts
+option.object({
+  //...
+})
+```
+
+## String
+
+Example:
+
+```ts
+option.string.layout({
+  label: 'Name',
+  placeholder: 'Type a name...',
+  withVariableButton: false,
+})
+```
+
+<Frame>
+  <img
+    src="/images/contribute/layout-string-example.png"
+    alt="Layout string example"
+  />
+</Frame>
+
+## Number
+
+Example:
+
+```ts
+option.number.layout({
+  label: 'Temperature',
+  defaultValue: 1,
+  direction: 'row',
+})
+```
+
+<Frame>
+  <img
+    src="/images/contribute/layout-number-example.png"
+    alt="Layout number example"
+  />
+</Frame>
+
+## Boolean
+
+```ts
+option.boolean.layout({
+  label: 'Test mode',
+  moreInfoTooltip: 'Enable test mode to use a test account.',
+})
+```
+
+{' '}
+
+<Frame>
+  <img
+    src="/images/contribute/layout-boolean-example.png"
+    alt="Layout boolean example"
+  />
+</Frame>
+
+## Enum
+
+Example:
+
+```ts
+option.enum(['user', 'admin']).layout({
+  label: 'Role',
+  defaultValue: 'user',
+})
+```
+
+<Frame>
+  <img
+    src="/images/contribute/layout-enum-example.png"
+    alt="Layout enum example"
+  />
+</Frame>
+
+## Discriminated unions
+
+Example:
+
+```ts
+option.discriminatedUnion('type', [
+  option.object({
+    type: option.literal('user'),
+    name: option.string.layout({ placeholder: 'Type a name...' }),
+  }),
+  option.object({
+    type: option.literal('admin'),
+    name: option.string.layout({ placeholder: 'Type a name...' }),
+    phoneNumber: option.string.layout({
+      placeholder: 'Type a phone number...',
+    }),
+  }),
+])
+```
+
+<Frame>
+  <img
+    src="/images/contribute/layout-discriminated-union-example.png"
+    alt="Layout discriminated union example"
+  />
+</Frame>
+
+## Literal
+
+Used mainly for [discriminated unions](./options#discriminated-unions). It is not visible on the Typebot editor.
+
+Example:
+
+```ts
+option.literal('user')
+```
+
+## Array
+
+Use this to collect a list of values.
+
+Example:
+
+- A list of names
+
+  ```ts
+  option.array(option.string.layout({ placeholder: 'Type a name...' })).layout({
+    label: 'Names',
+    itemLabel: 'name',
+  })
+  ```
+
+  <Frame>
+    <img
+      src="/images/contribute/layout-array-example.png"
+      alt="Layout array example"
+    />
+  </Frame>
+
+## Helpers
+
+### Save Response Array
+
+Use this to save the response of an array of options in variables.
+
+For example if you want your user to be able to save the response of an HTTP request to variables:
+
+```ts
+option.saveResponseArray(['Message content', 'Total tokens']).layout({
+  accordion: 'Save response',
+})
+```
+
+You provide the list of all the possible response values to save.
+
+<Frame>
+  <img
+    src="/images/contribute/layout-save-response-example.png"
+    alt="Layout save response array example"
+  />
+</Frame>
+
+## Layout props
+
+<ResponseField name="label" type="string">
+  The label of the option. Will often be displayed right above the input.
+</ResponseField>
+
+<ResponseField name="placeholder" type="string">
+  The placeholder of the input.
+</ResponseField>
+
+<ResponseField name="helperText" type="string">
+  The helper text of the input. Will often be displayed below the input.
+</ResponseField>
+
+<ResponseField name="accordion" type="string">
+  The name of the accordion where the option will be displayed in. For example if you'd like to group 2 properties in the same accordion named "Advanced settings", you can write:
+
+```ts
+option.object({
+  temperature: option.number.layout({
+    accordion: 'Advanced settings',
+  }),
+  humidity: option.number.layout({
+    accordion: 'Advanced settings',
+  }),
+})
+```
+
+</ResponseField>
+
+<ResponseField name="direction" type="'row' | 'column'" default="column">
+  The direction of the input. If set to `row`, the label will be displayed on
+  the left of the input.
+</ResponseField>
+
+<ResponseField name="defaultValue" type="any">
+  The default value of the input.
+</ResponseField>
+
+<ResponseField name="moreInfoTooltip" type="string">
+  The tooltip that will be displayed when the user hovers the info icon of the
+  input.
+</ResponseField>
+
+<ResponseField name="withVariableButton" type="boolean" default="true">
+  Whether or not to display the variable button next to the input.
+</ResponseField>
+
+<ResponseField
+  name="inputType"
+  type="'variableDropdown' | 'textarea' | 'password'"
+>
+  The type of the input to display.
+</ResponseField>
+
+<ResponseField name="isRequired" type="boolean" default="false">
+  Whether or not the input is required. Will display a red star next to the
+  label if set to `true`.
+</ResponseField>
+
+<ResponseField name="fetcher" type="string">
+  Set this if you'd like your input to provide a dropdown of dynamically fetched items.
+
+```ts
+option.string.layout({
+  fetcher: 'fetchModels',
+})
+```
+
+`fetchModels` should match the `id` of the fetcher that you defined in the
+`fetchers` prop of the action. See [Fetcher](./fetcher) for more information.
+
+</ResponseField>
+
+### Array only
+
+<ResponseField name="itemLabel" type="string">
+  The label of the items of an array option. Will be displayed next to the "Add"
+  label of the add button.
+</ResponseField>
+
+<ResponseField name="isOrdered" type="boolean" default="false">
+  Whether or not the order of the items in an array schema matters. Will display
+  "plus" buttons above and below when hovering on an item.
+</ResponseField>

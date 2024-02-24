@@ -6,17 +6,6 @@
   cursor: grabbing !important;
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.hide-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-
 /* * {
   outline: 1px solid #f00 !important;
   opacity: 1 !important;
@@ -24,9 +13,9 @@
 } */
 
 /*Hide track timeline in audio tag in Windows*/
-audio::-webkit-media-controls-timeline{
-  display:none;
+audio::-webkit-media-controls-timeline {
+  display: none;
 }
-audio::-webkit-media-controls-panel{
-  justify-content:space-between;
+audio::-webkit-media-controls-panel {
+  justify-content: space-between;
 }

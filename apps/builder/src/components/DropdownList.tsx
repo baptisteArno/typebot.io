@@ -17,11 +17,22 @@ import { ChevronLeftIcon } from '@/components/icons'
 import React, { ReactNode } from 'react'
 import { MoreInfoTooltip } from './MoreInfoTooltip'
 
+type Item =
+  | string
+  | number
+  | {
+      label: string
+      value: string
+    }
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Props<T extends readonly any[]> = {
-  currentItem: T[number] | undefined
-  onItemSelect: (item: T[number]) => void
-  items: T
+type Props<T extends Item> = {
+  currentItem: string | number | undefined
+  onItemSelect: (
+    value: T extends string ? T : T extends number ? T : string,
+    item?: T
+  ) => void
+  items: readonly T[]
   placeholder?: string
   label?: string
   isRequired?: boolean
@@ -31,7 +42,7 @@ type Props<T extends readonly any[]> = {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const DropdownList = <T extends readonly any[]>({
+export const DropdownList = <T extends Item>({
   currentItem,
   onItemSelect,
   items,
@@ -43,15 +54,21 @@ export const DropdownList = <T extends readonly any[]>({
   moreInfoTooltip,
   ...props
 }: Props<T> & ButtonProps) => {
-  const handleMenuItemClick = (operator: T[number]) => () => {
-    onItemSelect(operator)
+  const handleMenuItemClick = (item: T) => () => {
+    if (typeof item === 'string' || typeof item === 'number')
+      onItemSelect(item as T extends string ? T : T extends number ? T : string)
+    else
+      onItemSelect(
+        item.value as T extends string ? T : T extends number ? T : string,
+        item
+      )
   }
   return (
     <FormControl
       isRequired={isRequired}
       as={direction === 'column' ? Stack : HStack}
       justifyContent="space-between"
-      width={label ? 'full' : 'auto'}
+      width={props.width === 'full' || label ? 'full' : 'auto'}
       spacing={direction === 'column' ? 2 : 3}
     >
       {label && (
@@ -73,12 +90,20 @@ export const DropdownList = <T extends readonly any[]>({
           {...props}
         >
           <chakra.span noOfLines={1} display="block">
-            {currentItem ?? placeholder ?? 'Select an item'}
+            {currentItem
+              ? getItemLabel(
+                  items?.find((item) =>
+                    typeof item === 'string' || typeof item === 'number'
+                      ? currentItem === item
+                      : currentItem === item.value
+                  )
+                )
+              : placeholder ?? 'Select an item'}
           </chakra.span>
         </MenuButton>
         <Portal>
           <MenuList maxW="500px" zIndex={1500}>
-            <Stack maxH={'35vh'} overflowY="scroll" spacing="0">
+            <Stack maxH={'35vh'} overflowY="auto" spacing="0">
               {items.map((item) => (
                 <MenuItem
                   key={item as unknown as string}
@@ -88,7 +113,7 @@ export const DropdownList = <T extends readonly any[]>({
                   textOverflow="ellipsis"
                   onClick={handleMenuItemClick(item)}
                 >
-                  {item}
+                  {typeof item === 'object' ? item.label : item}
                 </MenuItem>
               ))}
             </Stack>
@@ -98,4 +123,10 @@ export const DropdownList = <T extends readonly any[]>({
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   )
+}
+
+const getItemLabel = (item?: Item) => {
+  if (!item) return ''
+  if (typeof item === 'object') return item.label
+  return item
 }

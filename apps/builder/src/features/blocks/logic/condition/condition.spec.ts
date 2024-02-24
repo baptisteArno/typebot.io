@@ -25,7 +25,7 @@ test.describe('Condition block', () => {
     await page.click('button:has-text("Greater than")', { force: true })
     await page.fill('input[placeholder="Type a number..."]', '80')
 
-    await page.click('button:has-text("Add a comparison")')
+    await page.click('button:has-text("Add comparison")')
 
     await page.fill(
       ':nth-match(input[placeholder="Search for a variable"], 2)',

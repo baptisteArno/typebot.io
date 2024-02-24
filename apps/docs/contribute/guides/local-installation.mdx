@@ -1,0 +1,61 @@
+---
+title: 'Install the project locally'
+sidebarTitle: 'Local installation'
+image: '/images/contribute/writing-robot.png'
+icon: 'laptop'
+---
+
+## Get started
+
+1. [Fork](https://help.github.com/articles/fork-a-repo/) this repository to your
+   own GitHub account and then
+   [clone](https://help.github.com/articles/cloning-a-repository/) it to your local device.
+
+## Running the project locally
+
+1. Install dependencies
+
+   ```sh
+   cd typebot.io
+   pnpm i
+   ```
+
+2. Set up environment variables
+
+   Copy `.env.dev.example` to `.env`
+
+   Check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration) if you want to enable more options
+
+3. Make sure you have [Docker](https://docs.docker.com/compose/install/) running
+
+4. Make sure you have Node.js installed. I suggest you use [`nvm`](https://github.com/nvm-sh/nvm) allowing you to manage different versions. Once you installed nvm, you can install and use the latest version of Node.js: `nvm install && nvm use`
+
+5. Start the builder and viewer
+
+   ```sh
+   pnpm dev
+   ```
+
+   Builder is available at [`http://localhost:3000`](http://localhost:3000)
+
+   Viewer is available at [`http://localhost:3001`](http://localhost:3001)
+
+   Database inspector is available at [`http://localhost:5555`](http://localhost:5555)
+
+   By default, you can easily authenticate in the builder using the "Github Sign In" button. For other options, check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration)
+
+6. (Optionnal) Start the landing page
+
+   Copy `apps/landing-page/.env.local.example` to `apps/landing-page/.env.local`
+
+   ```sh
+   cd apps/landing-page
+   pnpm dev
+   ```
+
+7. (Optionnal) Start the docs
+
+   ```sh
+   cd apps/docs
+   pnpm start
+   ```

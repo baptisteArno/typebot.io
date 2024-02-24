@@ -1,10 +1,13 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Typebot Docs",
   "openapi": [
     "/openapi-reference/builder.json",
     "/openapi-reference/viewer.json"
   ],
+  "feedback": {
+    "suggestEdit": true
+  },
   "logo": {
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
@@ -41,6 +44,10 @@
       "url": "self-hosting"
     },
     {
+      "name": "Contribute",
+      "url": "contribute"
+    },
+    {
       "name": "API Reference",
       "url": "api-reference"
     }
@@ -58,17 +65,9 @@
       "pages": ["get-started/introduction", "get-started/overview"]
     },
     {
-      "group": "Workspace",
-      "pages": [
-        "workspace",
-        "workspace/add-members-and-guests",
-        "workspace/subscription",
-        "workspace/preferences"
-      ]
-    },
-    {
       "group": "Flow",
       "pages": [
+        "editor/graph",
         {
           "group": "Blocks",
           "icon": "block",
@@ -126,7 +125,8 @@
                 "editor/blocks/integrations/chatwoot",
                 "editor/blocks/integrations/meta-pixel",
                 "editor/blocks/integrations/openai",
-                "editor/blocks/integrations/zemantic-ai"
+                "editor/blocks/integrations/zemantic-ai",
+                "editor/blocks/integrations/mistral"
               ]
             }
           ]
@@ -181,7 +181,16 @@
     },
     {
       "group": "Results",
-      "pages": ["results/overview"]
+      "pages": ["results/overview", "results/analytics"]
+    },
+    {
+      "group": "Workspace",
+      "pages": [
+        "workspace",
+        "workspace/add-members-and-guests",
+        "workspace/subscription",
+        "workspace/preferences"
+      ]
     },
     {
       "group": "Guides",
@@ -194,7 +203,7 @@
     },
     {
       "group": "Misc",
-      "pages": ["faq", "privacy-policies", "breaking-changes"]
+      "pages": ["faq", "privacy-policies", "report-abuse", "breaking-changes"]
     },
     {
       "group": "Get started",
@@ -219,6 +228,32 @@
     {
       "group": "Get started",
       "pages": ["api-reference/authentication", "api-reference/how-to"]
+    },
+    {
+      "group": "Get started",
+      "pages": ["contribute/overview"]
+    },
+    {
+      "group": "Guides",
+      "pages": [
+        "contribute/guides/local-installation",
+        "contribute/guides/create-block",
+        "contribute/guides/documentation",
+        "contribute/guides/translation"
+      ]
+    },
+    {
+      "group": "The Forge",
+      "pages": [
+        "contribute/the-forge/overview",
+        "contribute/the-forge/cli",
+        "contribute/the-forge/block",
+        "contribute/the-forge/auth",
+        "contribute/the-forge/action",
+        "contribute/the-forge/run",
+        "contribute/the-forge/options",
+        "contribute/the-forge/fetcher"
+      ]
     },
     {
       "group": "Chat",
@@ -254,6 +289,16 @@
       ]
     },
     {
+      "group": "Folder",
+      "pages": [
+        "api-reference/folder/list",
+        "api-reference/folder/get",
+        "api-reference/folder/create",
+        "api-reference/folder/update",
+        "api-reference/folder/delete"
+      ]
+    },
+    {
       "group": "Workspace",
       "pages": [
         "api-reference/workspace/list",
@@ -273,6 +318,8 @@
     }
   ],
   "footerSocials": {
+    "website": "https://typebot.io",
+    "discord": "https://typebot.io/discord",
     "twitter": "https://twitter.com/Typebot_io",
     "github": "https://github.com/baptisteArno/typebot.io"
   }

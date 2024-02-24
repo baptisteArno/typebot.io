@@ -1,0 +1,43 @@
+---
+title: Create a new block
+icon: screwdriver-wrench
+---
+
+import { LoomVideo } from '/snippets/loom-video.mdx'
+
+<Frame style={{ maxWidth: '400px' }}>
+  <img
+    src="/images/contribute/forging-robot.png"
+    alt="A blue robot forging a new block"
+  />
+</Frame>
+
+Creating a new block on Typebot is pretty easy and straightforward using our in-house framework [The Forge](../the-forge/overview).
+
+1. [Install the project locally](./local-installation)
+2. Create a new branch:
+
+   ```sh
+   git checkout -b MY_BRANCH_NAME
+   ```
+
+3. Create your new block using the [Forge CLI](../the-forge/overview#forge-cli):
+
+   ```sh
+   pnpm run create-new-block
+   ```
+
+4. The files should be generated in `packages/forge/blocks/YOUR_BLOCK_NAME`
+5. Add the block SVG logo in `packages/forge/blocks/YOUR_BLOCK_NAME/logo.tsx`
+6. Right away you should be able to [run the application](./local-installation#running-the-project-locally) and see your newly created logo in the sidebar of the editor.
+7. Create a new action in the `packages/forge/blocks/YOUR_BLOCK_NAME/actions` folder. See [Action](../the-forge/action) for more information.
+8. List this action in the `actions` array in `packages/forge/blocks/YOUR_BLOCK_NAME/index.tsx`
+9. To go further, check out the [Forge documentation](../the-forge/overview).
+
+Make sure to check out other blocks implementations in the [packages/forge/blocks](https://github.com/baptisteArno/typebot.io/tree/main/packages/forge/blocks) folder.
+
+## Live tutorials
+
+<LoomVideo id="c49ced0c2c394751b860458b7eb904a4" />
+
+Make sure to join our [Discord community](https://typebot.io/discord) to participate to these weekly office hours.

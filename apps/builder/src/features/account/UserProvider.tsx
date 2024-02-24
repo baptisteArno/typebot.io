@@ -2,13 +2,12 @@ import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import { isDefined, isNotDefined } from '@typebot.io/lib'
-import { User } from '@typebot.io/prisma'
+import { User } from '@typebot.io/schemas'
 import { setUser as setSentryUser } from '@sentry/nextjs'
 import { useToast } from '@/hooks/useToast'
 import { updateUserQuery } from './queries/updateUserQuery'
 import { useDebouncedCallback } from 'use-debounce'
 import { env } from '@typebot.io/env'
-import { identifyUser } from '../telemetry/posthog'
 import { useColorMode } from '@chakra-ui/react'
 
 export const userContext = createContext<{
@@ -62,7 +61,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
     if (parsedUser?.id) {
       setSentryUser({ id: parsedUser.id })
-      identifyUser(parsedUser.id)
     }
   }, [session, user])
 
@@ -87,13 +85,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     if (isNotDefined(user)) return
     const newUser = { ...user, ...updates }
     setUser(newUser)
-    saveUser(newUser)
+    saveUser(updates)
   }
 
   const saveUser = useDebouncedCallback(
-    async (newUser?: Partial<User>) => {
+    async (updates: Partial<User>) => {
       if (isNotDefined(user)) return
-      const { error } = await updateUserQuery(user.id, { ...user, ...newUser })
+      const { error } = await updateUserQuery(user.id, updates)
       if (error) showToast({ title: error.name, description: error.message })
       await refreshUser()
     },

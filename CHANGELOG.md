@@ -1,6 +1,283 @@
 # Changelog
 
+<a name="2.22.2"></a>
+## 2.22.2 (2024-02-06)
+
+### Changed
+
+- 💄 Fix key component in tooltip for dark mode [[5e9dfaa](https://github.com/baptisteArno/typebot.io/commit/5e9dfaaa49fad3b4b821d3db57cb889c21aed0a5)]
+
+### Fixed
+
+- 🚑 (folders) Make sure folders are not all listed in root folder [[fa2eeff](https://github.com/baptisteArno/typebot.io/commit/fa2eeff96e130c443caa0e92f7118ea365ba0fe4)]
+- 🐛 (calCom) Make sure Cal.com book event is emitted once per block [[83231e6](https://github.com/baptisteArno/typebot.io/commit/83231e6f13c3664b57f088ac041a4a7b9f20dd59)]
+- 🐛 (folders) Make sure to exit folder on workspace change [[c2603d9](https://github.com/baptisteArno/typebot.io/commit/c2603d99b1950ad38025e1deba51521ececa9d5e)]
+
+### Miscellaneous
+
+-  :monocle_face: Update add users to brevo list script [[9a36281](https://github.com/baptisteArno/typebot.io/commit/9a36281f504db4727ae6c099bd1619f7f8d276f2)]
+- 📝 Add v2.22 newsletter [[272adc0](https://github.com/baptisteArno/typebot.io/commit/272adc0e248c959a8b21c7e5ded2c45bd237b946)]
+
+
+<a name="2.22.1"></a>
+## 2.22.1 (2024-02-05)
+
+### Added
+
+- 👷‍♂️ Add posthog keys to github secrets [[9f0c6b3](https://github.com/baptisteArno/typebot.io/commit/9f0c6b3cc480ad9194c51d5bd17e9183a2962176)]
+- 📈 Track custom domain and WA enabled events [[b9183f9](https://github.com/baptisteArno/typebot.io/commit/b9183f9a3614ff17abd52a2d375228a9f492b74f)]
+- 📈 Send onboarding replies to PostHog [[fd4867f](https://github.com/baptisteArno/typebot.io/commit/fd4867f3ae314da60804ab7554fa5d4ebf63513f)]
+
+### Changed
+
+- 🚸 (fileUpload) Add success labels cutomization [[9fc05cb](https://github.com/baptisteArno/typebot.io/commit/9fc05cb150f9d9a8ca21168a79654b437bde3a5e)]
+- ♻️ Re-organize telemetry package [[92a1d67](https://github.com/baptisteArno/typebot.io/commit/92a1d672fd1bd0e101e5ff2d3a99b8f45db189b6)]
+
+### Fixed
+
+- 🐛 Revert to got for user created webhook to fix function crash [[9014c4a](https://github.com/baptisteArno/typebot.io/commit/9014c4ab0905fbd2f7081a6147ee2b7c983d1936)]
+- 🚑 Fix user creation crashing [[9222da6](https://github.com/baptisteArno/typebot.io/commit/9222da668143f75ec26d5f668cb33200970f0111)]
+- 💚 Fix mockedUser default props [[4122d73](https://github.com/baptisteArno/typebot.io/commit/4122d739083fcbbfb670c025201b8c049f9b26d4)]
+- 🐛 Make sure variables are parsed in date and picture choice options [[ce79e89](https://github.com/baptisteArno/typebot.io/commit/ce79e897a79ea2b825f2af9d3a583fd52d924c4c)]
+- 🐛 (openai) Fix 400 error when tools array empty [[c616117](https://github.com/baptisteArno/typebot.io/commit/c6161179d0dbe6b37cf20b444cbb86a8c4338094)]
+- 🚑 Fix inline variable parsing on new line issue [[b660611](https://github.com/baptisteArno/typebot.io/commit/b660611573710c946818a0c89b231f62481b2a21)]
+- 🐛 (buttons) Make sure to parse options if button has dynamic items [[be5482c](https://github.com/baptisteArno/typebot.io/commit/be5482c89a78f41d7191a0db408313a90d2bd85f)]
+- 🐛 Fix broken skippable file upload input [[3128ebd](https://github.com/baptisteArno/typebot.io/commit/3128ebd4316d392cb82a8af05ee77c155f8f55ca)]
+- 🐛 Fix new markdown parser on web runtime [[678e6d5](https://github.com/baptisteArno/typebot.io/commit/678e6d5c49938ef0344c6a795353a57dbdf67bcb)]
+- 💚 Move ky package to typebot.io/lib [[3e8e882](https://github.com/baptisteArno/typebot.io/commit/3e8e8829f1a4da64d6d3fb8d6ba26cda8c1cee2d)]
+
+### Miscellaneous
+
+- 🛂 (radar) Improve radar regex [[27b95c1](https://github.com/baptisteArno/typebot.io/commit/27b95c1f0b78776052a0d4e96c3326c8eaea0b78)]
+- 🧑‍💻 (folders) Add folder trpc endpoints ([#1218](https://github.com/baptisteArno/typebot.io/issues/1218)) [[84b9aca](https://github.com/baptisteArno/typebot.io/commit/84b9aca40b59c39c5c98bc2d189658b7d1686fad)]
+- 📝 Add geo location set variable example [[11678ac](https://github.com/baptisteArno/typebot.io/commit/11678ac2fe50a92824f37decf32637784873f23b)]
+
+
+<a name="2.22.0"></a>
+## 2.22.0 (2024-01-31)
+
+### Added
+
+- ✨ (analytics) Add time dropdown to filter analytics with a time range [[515fcaf](https://github.com/baptisteArno/typebot.io/commit/515fcafcd8e63bf5709426e8092c74985a458c43)]
+- 👷‍♂️ Change pre-commit format fix to check only [[4b8b80e](https://github.com/baptisteArno/typebot.io/commit/4b8b80e996c13469c4ad28e5f507c320b79c1e0e)]
+- ✨ Add Dify.AI block ([#1183](https://github.com/baptisteArno/typebot.io/issues/1183)) [[0817fba](https://github.com/baptisteArno/typebot.io/commit/0817fbaebbeae60b8c8d1affb6634f0072dbba89)]
+- ✨ Add Mistral AI block [[b68f16f](https://github.com/baptisteArno/typebot.io/commit/b68f16f4f7cb0fbed73ba4be32f7969d2786c496)]
+- 👷‍♂️ Fix usage emails banner broken images [[4ce29d6](https://github.com/baptisteArno/typebot.io/commit/4ce29d61d4ef01baa305d26892669ddf75e0cbba)]
+- ✨ (settings) Add delay between bubbles option and typing disabling on first message [[f052b4c](https://github.com/baptisteArno/typebot.io/commit/f052b4c8052027cf31e2d926b05bf8ae592f599b)]
+- ✨ (editor) Actions on multiple groups [[00dcb13](https://github.com/baptisteArno/typebot.io/commit/00dcb135f3cbbaa30a52642fe0097d003b317374)]
+- ✨ (openai) Add tools and functions support ([#1167](https://github.com/baptisteArno/typebot.io/issues/1167)) [[f4d315f](https://github.com/baptisteArno/typebot.io/commit/f4d315fed5a113649c7abf70669232bf0588888c)]
+- ✨ Customizable allowed origins [[8771def](https://github.com/baptisteArno/typebot.io/commit/8771def9a1d995c57c083a7c7c0571e2568f8eb7)]
+- ✨ (openai) Add &quot;Ask assistant&quot; action [[03258e0](https://github.com/baptisteArno/typebot.io/commit/03258e0f64a109e0577c10186f05b1d28ee66519)]
+- ✨ New QR code block ([#1142](https://github.com/baptisteArno/typebot.io/issues/1142)) [[799c694](https://github.com/baptisteArno/typebot.io/commit/799c69452230465f30a7fbd1598d520b06284ae6)]
+- 👷‍♂️ Replace sleep from docker:up script for cross-plat compatibility [[f3a4922](https://github.com/baptisteArno/typebot.io/commit/f3a4922286308192b325af1b8d9f83cce766f4b7)]
+
+### Changed
+
+- ⬆️ Upgrade next [[2462e79](https://github.com/baptisteArno/typebot.io/commit/2462e794c95131cc42b2c8f6526f032b62d0e548)]
+- ⬆️ Upgrade google-spreadsheet and fix openapi docs g… [[3b27f16](https://github.com/baptisteArno/typebot.io/commit/3b27f167358f3a5036f39759f4d73ec84fd3a77f)]
+- 🚸 Enable OneDrive video url parsing [[8ad4a09](https://github.com/baptisteArno/typebot.io/commit/8ad4a0996c42939c91df99fb53161d500d8426f9)]
+- 🚸 Rewrite the markdown deserializer to improve br… ([#1198](https://github.com/baptisteArno/typebot.io/issues/1198)) [[ff9c472](https://github.com/baptisteArno/typebot.io/commit/ff9c4726cc26c44aa17374835609bb762d96a37b)]
+- ⚡ (fileUpload) New visibility option: &quot;Public&quot;, &quot;Private&quot; or &quot;Auto&quot; ([#1196](https://github.com/baptisteArno/typebot.io/issues/1196)) [[6215cfb](https://github.com/baptisteArno/typebot.io/commit/6215cfbbaf50ef8b7a0fd25c9fb2084a60cdd3d0)]
+- 🚸 (editor) Avoid editor closing when pressing Enter [[3ab84b7](https://github.com/baptisteArno/typebot.io/commit/3ab84b755551ce7a6e91457259530e83ce331ca6)]
+- ⚡ (openai) Add enum support in function tools [[8d363c0](https://github.com/baptisteArno/typebot.io/commit/8d363c0c02bcefe8ced241b210826f5afe159918)]
+- 🚸 (editor) Remove blocks pointer events only in analytics [[c23e760](https://github.com/baptisteArno/typebot.io/commit/c23e760b395857bf1eef5d862b611bf3bc58423b)]
+- ♻️ Change overflow:scroll to overflow:auto [[ab01065](https://github.com/baptisteArno/typebot.io/commit/ab010657b2c9e5ff8ade643c136d8fabbadd72bb)]
+- 🚸 (openai) Make sure annotations are removed from assistant replies [[d8e2b74](https://github.com/baptisteArno/typebot.io/commit/d8e2b74f00142508c8b171391614058aa53413c8)]
+- ⏪ Re-implement trackpad/mouse choice and defau… [[5f0b369](https://github.com/baptisteArno/typebot.io/commit/5f0b36931a498256584bbc67d519fe5b85e35fe8)]
+- 🚸 (editor) Add graph gesture notification [[bf6c258](https://github.com/baptisteArno/typebot.io/commit/bf6c258edce51d25f81bd39a0cdeceadc65b3cf0)]
+- ⚡ (editor) Improve graph pan when dragging on groups [[be74ad1](https://github.com/baptisteArno/typebot.io/commit/be74ad103aa754a7db219b71231f33742beaa89e)]
+- ⚡ (openai) Enable setVariable function in tools [[42008f8](https://github.com/baptisteArno/typebot.io/commit/42008f8c18430e6194d9552b93c8ec04ec484d6e)]
+- ⚡ Receive WhatsApp location ([#1158](https://github.com/baptisteArno/typebot.io/issues/1158)) [[61bfe1b](https://github.com/baptisteArno/typebot.io/commit/61bfe1bb96f61e1c37532e533134b5a73edeb50f)]
+- ⚡ (sheets) Reset timeout after Google Sheets execution [[a44857e](https://github.com/baptisteArno/typebot.io/commit/a44857e03b4e30b852a113aa397c54dc1f85bc38)]
+- ⚡ (radar) Add radar cumulative keyword alternatives check [[0b00fa7](https://github.com/baptisteArno/typebot.io/commit/0b00fa7533b566b8a0b70b443dd0a0fd3ceece61)]
+- ⬆️ Upgrade root deps [[b412f0e](https://github.com/baptisteArno/typebot.io/commit/b412f0e4dc4459f84451f566cecd98360874c427)]
+- 📱 (editor) Fix editor header responsivity [[6d7c811](https://github.com/baptisteArno/typebot.io/commit/6d7c8112bcaf5d903634f67fc41cbc47cc3f2359)]
+- 🚸 (results) Add progress bar to export results modal [[5d971f7](https://github.com/baptisteArno/typebot.io/commit/5d971f7b6ff60f87a4c01144da420172c43dd24c)]
+- 🔧 Allow react lib to be used with v16 [[459dac4](https://github.com/baptisteArno/typebot.io/commit/459dac42240b87228b54d8e75aaca7cf56fbf39e)]
+- ⚡ (calCom) Add phone prefill option [[73d68f0](https://github.com/baptisteArno/typebot.io/commit/73d68f03c1998246e1c2dedffc294414df56cf68)]
+- ⚡ (whatsapp) Improve / fix markdown serializer [[244a294](https://github.com/baptisteArno/typebot.io/commit/244a29423b6d355f55c97bfc4a14ee7a1aa13633)]
+
+### Fixed
+
+- 🐛 Add max wait block timeout on WhatsApp runtime [[26872e2](https://github.com/baptisteArno/typebot.io/commit/26872e2bac0fe3b5ee1d0088392b67b0330911e7)]
+- 🐛 Fix listing deleted bots on Zapier and Make.com [[07928c7](https://github.com/baptisteArno/typebot.io/commit/07928c743cf48f6dc1a869d5fb9566d54b99ab27)]
+- 🐛 (editor) Fix dragging text bubble after editting [[1ebfc15](https://github.com/baptisteArno/typebot.io/commit/1ebfc15178ccd3177c4f91760d0841499d0d9f6f)]
+- 🐛 Fix unexported Popup and Bubble from react lib [[cf101d6](https://github.com/baptisteArno/typebot.io/commit/cf101d6cf622adc339c91467cb440160010b0a8c)]
+- 🐛 (share) Fix bubble button default background in embed modals [[f9e0cef](https://github.com/baptisteArno/typebot.io/commit/f9e0cef6fe99d9c99492aa79d727bfb9f4826f13)]
+- 🐛 (editor) Fix single block duplication [[b668ac1](https://github.com/baptisteArno/typebot.io/commit/b668ac15f1c5429abd4a108ac79613ad4ccf04db)]
+- 🐛 (setVariable) Avoid octal number evalution [[ef05b71](https://github.com/baptisteArno/typebot.io/commit/ef05b7186950e7ab650d94cb37c8d27413a6a4bc)]
+- 🐛 Fix templates not properly selected sometimes [[e80f297](https://github.com/baptisteArno/typebot.io/commit/e80f297e74d488bcd5f32524c41703ad73c01358)]
+- 🐛 (whatsapp) Fix first message capture regression [[32927e0](https://github.com/baptisteArno/typebot.io/commit/32927e00bfd71caa08d38cb2d3e75d7904d3b67e)]
+- 🐛 (calCom) Don&#x27;t delete session if chat reply has custom embed [[5627105](https://github.com/baptisteArno/typebot.io/commit/5627105ce5800f17c18272a778cb594dda0bef2a)]
+- 🐛 (webhook) Update zapier and make.com result sample parser [[233e993](https://github.com/baptisteArno/typebot.io/commit/233e99301ee7add8dc36aab75010837802e09fee)]
+- 🐛 (web) Dynamic first host avatar not displaying in viewer [[98107ee](https://github.com/baptisteArno/typebot.io/commit/98107ee6369583b403549bd3e1baa4b75ed549a0)]
+- 🐛 (cors) Fix cors setting when bot is origin-restricted [[d6f94d3](https://github.com/baptisteArno/typebot.io/commit/d6f94d37d8a2fcb681958e27aff550fae89a5411)]
+- ✏️ Fix URL starting with postgres error message [[30d6fcc](https://github.com/baptisteArno/typebot.io/commit/30d6fcc880e4de9c6499b99c3cbff3905f17417e)]
+- 🐛 (editor) Fix duplicate group unique key parsing [[1c4c058](https://github.com/baptisteArno/typebot.io/commit/1c4c058e01a90474490a2e23f3e4ad40efb011d2)]
+- 🐛 (whatsapp) Fix last char slicing if new line [[5d088b1](https://github.com/baptisteArno/typebot.io/commit/5d088b1e64a238a42245341d8f92d4adb7b7d48d)]
+- 🐛 (whatsapp) Fix inline variable serializing [[9b5b277](https://github.com/baptisteArno/typebot.io/commit/9b5b277b5bc72021c43d6da982e95964c14d7a03)]
+
+### Miscellaneous
+
+- 🛂 (billing) Disable sub update when workspace is past due [[0f245b8](https://github.com/baptisteArno/typebot.io/commit/0f245b8e57393ab009b9f928a0f9da475e119089)]
+-  👷 Update version of copied prisma files in Dockerfile ([#1186](https://github.com/baptisteArno/typebot.io/issues/1186)) [[7baaf59](https://github.com/baptisteArno/typebot.io/commit/7baaf59b528a2a31c6b61e4ad71205d9d9fffe02)]
+- 📝 Add notice for WhatsApp mismatch numbers in preview [[f0cfc20](https://github.com/baptisteArno/typebot.io/commit/f0cfc20eb74e8bf723b0a35db364404383052419)]
+- 📝 Add env WHATSAPP_CLOUD_API_URL to possible change https://gr… ([#1170](https://github.com/baptisteArno/typebot.io/issues/1170)) [[47af9a9](https://github.com/baptisteArno/typebot.io/commit/47af9a9a5949e81c5e2f53e55acde89c731a9621)]
+- 📝 Add report abuse doc [[8998276](https://github.com/baptisteArno/typebot.io/commit/8998276eac6b49c3baa1bedf059d8744d67b0e23)]
+-  :monocle_face: Add inspectChatSession script [[53e778e](https://github.com/baptisteArno/typebot.io/commit/53e778e0bbde74a236036d8bc6d9738cbd23cf84)]
+- 📝 (settings) Update wait between messages instruction [[7e9c67a](https://github.com/baptisteArno/typebot.io/commit/7e9c67a47c6e13c012caa6745ff91f49f8cac8d1)]
+- 📝 Fix graph pan keys typo [[d85a03f](https://github.com/baptisteArno/typebot.io/commit/d85a03f621cfec75d82677dbc9bb4d02050cb719)]
+- 🚀 (whatsapp) Remove beta status [[c08ab3d](https://github.com/baptisteArno/typebot.io/commit/c08ab3d0077b6301540e09f06152b11ea843f656)]
+-  fix OpenAi function calling with optional parameters [[2654e72](https://github.com/baptisteArno/typebot.io/commit/2654e7277d071cebc598fd41175490ed4f3b2bbe)]
+- 🛂 Enable allowed origins security to depreceated sendMessage endpoints [[b438c17](https://github.com/baptisteArno/typebot.io/commit/b438c174c44ebff12f131777a842868baf3c93a0)]
+- 🌐 Add it translations [[29bd5f1](https://github.com/baptisteArno/typebot.io/commit/29bd5f1539bd2d91469f6a1c2e7a098aa3f267ba)]
+- 📝 Add Framer embed instructions [[8283179](https://github.com/baptisteArno/typebot.io/commit/8283179ca6727a97e6d8a3a8f30f4f8beb579bf3)]
+- 📝 Add warning on manual deployment guide saying that it&#x27;s not for local [[07d349e](https://github.com/baptisteArno/typebot.io/commit/07d349eb754e88fa2766f5ac289e961e0a07cda1)]
+- 📝 Add auth callback URL info in custom oauth config [[218abcb](https://github.com/baptisteArno/typebot.io/commit/218abcbc8909e3215628f5b9272f0278cc5169dd)]
+- 📝 (sheets) Add additional insights to debug sheets not showing [[3610287](https://github.com/baptisteArno/typebot.io/commit/36102876cebb4f6058ddbe7fc430a1e48b5a8cbc)]
+- 📝 (makeCome) Move the return data section above video [[b2f8cd4](https://github.com/baptisteArno/typebot.io/commit/b2f8cd44b8f943685952b403bd0bbac2b937e54c)]
+- 📝 Add cal.com incompatible with whatsapp ([#1152](https://github.com/baptisteArno/typebot.io/issues/1152)) [[12af712](https://github.com/baptisteArno/typebot.io/commit/12af7129481873d751edd99f81717ace8b236a72)]
+- 📝 (variables) Add &quot;valid value types&quot; section [[e95e31e](https://github.com/baptisteArno/typebot.io/commit/e95e31e22c8d6cfa039ffba0447b2fd1b2f5ecf5)]
+-  :monocle_face: Improve suspendWorkspace script [[14858cb](https://github.com/baptisteArno/typebot.io/commit/14858cb114e0b2c2d699855425a120cc9da6cfa6)]
+-  :monocle_face: Improve inspectUser script [[1f5559f](https://github.com/baptisteArno/typebot.io/commit/1f5559fea18e0a6c1f8291271c7cb438c0110aeb)]
+-  :monocle_face: Add updateUserEmail script [[409aeb1](https://github.com/baptisteArno/typebot.io/commit/409aeb12d3ab45332311026fb7dc32fae84ebeb2)]
+-  :monocle_face: Add exportResults script [[69b113f](https://github.com/baptisteArno/typebot.io/commit/69b113fc85a04bc6d55045b3bb435b15ce7b323d)]
+- 📝 Add analytics doc [[006b9d6](https://github.com/baptisteArno/typebot.io/commit/006b9d665845404413db0595419e82b253f8cda3)]
+-  :monocle_face: Add inspectWorkspace script [[2b2e7c7](https://github.com/baptisteArno/typebot.io/commit/2b2e7c72f3f68ca043ee2fe237c021fb14df0cd6)]
+- 🛂 (radar) Loosen cumulative keywords check [[c1c053b](https://github.com/baptisteArno/typebot.io/commit/c1c053b0d1076e5a278ede64097af4fc6de7ea6c)]
+-  :monocle_face: Improve suspendWorkspace script [[311753f](https://github.com/baptisteArno/typebot.io/commit/311753fd0e2a6702d2c2390d7ae12aaaf4b8f1f4)]
+- 🛂 (radar) Enable multiple RADAR_CUMULATIVE_KEYWORDS sets [[56e0342](https://github.com/baptisteArno/typebot.io/commit/56e0342e86f27609dab6ee1f3da38156d0f6c826)]
+-  :monocle_face: Add more data inspection scripts [[3775919](https://github.com/baptisteArno/typebot.io/commit/37759195430a4ecd67f650991649ba5ef99a92ea)]
+-  :monocle_face: Add data exploration scripts [[7d6c964](https://github.com/baptisteArno/typebot.io/commit/7d6c964a0fcafdf0edc459b4f02d43fc9e6a64e8)]
+- 📝 Add a note on where to find resultId [[2385eaf](https://github.com/baptisteArno/typebot.io/commit/2385eaf7d52a92ad64640690b43e21f749f7a431)]
+
+
+<a name="2.21.3"></a>
+## 2.21.3 (2024-01-04)
+
+### Changed
+
+- 🔧 Muting Vercel bot notifications for viewer [[5266be1](https://github.com/baptisteArno/typebot.io/commit/5266be1a51de49cc0c9878c302ce235d1d20fd85)]
+- ⚡ (webhook) Add custom timeout option [[34917b0](https://github.com/baptisteArno/typebot.io/commit/34917b00efdc2c06362516ac2c28773afef1f019)]
+
+### Fixed
+
+- 🐛 (webhook) Fix test request execution invalid timeout [[f73bc46](https://github.com/baptisteArno/typebot.io/commit/f73bc46208367e2a0db33dbd89f50108d33401e9)]
+- 🐛 (webhook) Fix result parsing with same linked typebot [[d247e02](https://github.com/baptisteArno/typebot.io/commit/d247e02cad075fafa30c6eaddd70fb470c451d95)]
+
+### Miscellaneous
+
+- 📝 Add Contribute docs [[65f4fb0](https://github.com/baptisteArno/typebot.io/commit/65f4fb0d7a869bb61593317cdea38994c6f2bd29)]
+
+
+<a name="2.21.2"></a>
+## 2.21.2 (2024-01-02)
+
+### Miscellaneous
+
+- 🧑‍💻 (webhook) Disable webhook timeout if CHAT_API_TIM… [[e8b9ef4](https://github.com/baptisteArno/typebot.io/commit/e8b9ef4d6cdb770ba580539452780e0fd1cc57cf)]
+
+
+<a name="2.21.1"></a>
+## 2.21.1 (2024-01-02)
+
+### Security
+
+- 🔒 (logs) Remove some logs from API response to avoid sensit… [[b5fbba7](https://github.com/baptisteArno/typebot.io/commit/b5fbba70720261da0f8ecc00beb9b93efe1369d8)]
+
+
+<a name="2.21.0"></a>
+
+## 2.21.0 (2024-01-02)
+
+### Breaking changes
+
+The Google Sheets block config was updated and its configuration changed.
+
+1. The Google Picker API needs to be enabled in the Google Cloud console. You also need to enable it in your `NEXT_PUBLIC_GOOGLE_API_KEY`.
+2. Add the `drive.file` OAuth scope.
+
+For more info, see the new requirements: https://docs.typebot.io/self-hosting/configuration#google-auth-sheets-fonts
+
+### Added
+
+- ➕ (webhook) Add Orimon in long request whitelist [[3bd07c6](https://github.com/baptisteArno/typebot.io/commit/3bd07c60daa3c8bdf1ab124b507aadaecc7b4b27)]
+- ✨ Introducing The Forge ([#1072](https://github.com/baptisteArno/typebot.io/issues/1072)) [[5e019bb](https://github.com/baptisteArno/typebot.io/commit/5e019bbb224e96a558faee5fbcf06840e13748c9)]
+- 📈 Only send suspicious bot alert if risk level is below 100 [[eedb714](https://github.com/baptisteArno/typebot.io/commit/eedb7145ac950d1da328654cf8234039c2ff2f5f)]
+- ✨ Introducing Radar, fraud detection [[4fdc1bf](https://github.com/baptisteArno/typebot.io/commit/4fdc1bfe5c7f97a0dd1ac23f6748d98c0760643a)]
+
+### Changed
+
+- 🔧 Add suspendWorkspace script [[2250622](https://github.com/baptisteArno/typebot.io/commit/22506223a41b23557cc57abe4d35b1fc1706c69a)]
+- ⏪ (radar) Remove IP ban system [[7ce1a4d](https://github.com/baptisteArno/typebot.io/commit/7ce1a4d3d1d5b76d79281b0043a40ea47dcefafe)]
+- 🚸 (webhook) Stringify inline code for better reliability [[1160f58](https://github.com/baptisteArno/typebot.io/commit/1160f583691704a0ff0c77717e856d1ff9c50917)]
+- ⚡ Attempt to fix tolgee random crash due to provider not detected [[a235a7a](https://github.com/baptisteArno/typebot.io/commit/a235a7accd37720b6176fc5f0d2d029e0be425fa)]
+- 🔧 Add disableRequestTimeout param for automation integrations [[cee1373](https://github.com/baptisteArno/typebot.io/commit/cee1373e6a490db97a875d9c34ada94b89e4dccc)]
+- 🚸 (webhook) Improve header and query params parsing [[3bbaf67](https://github.com/baptisteArno/typebot.io/commit/3bbaf670a2d888fa245e4b2409e39aea997ca171)]
+- 🔧 Add anthropic to long request whitelist [[f4a0935](https://github.com/baptisteArno/typebot.io/commit/f4a0935c795dbbb9bf82f578eccfd23328137281)]
+- ⚡ (bot) Use ky for queries in bot to improve reliability [[a653646](https://github.com/baptisteArno/typebot.io/commit/a6536461e575e14496032c84649fbb1b1d9673a0)]
+- ⚡ (sheets) Use Google Drive picker and remove sensitive OAuth scope [[deab1a1](https://github.com/baptisteArno/typebot.io/commit/deab1a12e9d85f8e1c3444baadf79de1eb8b5d88)]
+- ⚡ Add dynamic timeout to bot engine api [[957eaf3](https://github.com/baptisteArno/typebot.io/commit/957eaf33dd76bb8fba1741d2a42e3ff28560770a)]
+- 🔧 Update main viewer domain to typebot.co [[8819e9e](https://github.com/baptisteArno/typebot.io/commit/8819e9e56770ed26611d6f0c79fff35da09eb7d7)]
+- 🔧 Update vercel.json to reflect new api path [[e2abfc6](https://github.com/baptisteArno/typebot.io/commit/e2abfc6bbc1927ee4cf5cb69bd6d20457357eb2f)]
+- ♻️ Remove references to old s3 URLs [[c2fc2df](https://github.com/baptisteArno/typebot.io/commit/c2fc2df735c2fb43ad6ac0ee6c6bdcf4e2ccfe46)]
+- 🚸 (docs) Open community search docs results in same tab [[61f7f67](https://github.com/baptisteArno/typebot.io/commit/61f7f67bf3ecc5b9e93d657e0a6de61009055194)]
+
+### Fixed
+
+- 💚 Fix arm docker build out of memory error [[a44b0e9](https://github.com/baptisteArno/typebot.io/commit/a44b0e969651b6de0e40866a800a100aad6452e8)]
+- ✏️ (docs) Fix docs title suffix [[6246429](https://github.com/baptisteArno/typebot.io/commit/624642974b654975ca1f4fba9fe7e095143e2cf3)]
+- 🐛 Fix crash on toast show up due to tolgee provider not defined [[7804ae2](https://github.com/baptisteArno/typebot.io/commit/7804ae25726db044bf27f8f01e42c4670bcb75f4)]
+- 🚑 Revert resultId optional in startChat response [[6e076e9](https://github.com/baptisteArno/typebot.io/commit/6e076e9fb8a1b5ce50aff558415690d81d58056c)]
+- 🚑 Add back runtimeOptions and fix popup width option [[867e68c](https://github.com/baptisteArno/typebot.io/commit/867e68c4d9e62ac1999e0a20be0384ccabe8c838)]
+- 🐛 Chatwoot widget open should not unmount bot if standard or popup [[512bb09](https://github.com/baptisteArno/typebot.io/commit/512bb092827c6d8877f8bb5271a2c36a40f91d15)]
+- 🐛 (whatsapp) Fix WA preview not starting and accept audio and documents messages [[780b4de](https://github.com/baptisteArno/typebot.io/commit/780b4dee1811630107b03ee0d5509547df218fe5)]
+- 🚑 Fix invalid timeout for long running integrations [[64fc59b](https://github.com/baptisteArno/typebot.io/commit/64fc59bd3a81f21c38d28ca5f226d3ed0a42c30c)]
+- 🐛 (results) Fix result modal answers order [[2dec0b8](https://github.com/baptisteArno/typebot.io/commit/2dec0b88c20761a4d1b8053193ca7481b8d9a93a)]
+- 🐛 (chatNode) Fix default responseMapping item run [[06b7f40](https://github.com/baptisteArno/typebot.io/commit/06b7f40924482b68045b50a3701a5440e533167b)]
+- 🐛 (stream) Fix target attribute being trimmed on message stream [[bf626bb](https://github.com/baptisteArno/typebot.io/commit/bf626bb0a34d6c0f398a441f4d04d66fce23e9dc)]
+- 🚑 Release new embed lib version and fix createId dep… [[fbddddc](https://github.com/baptisteArno/typebot.io/commit/fbddddcfa019121d6cadbd84458ba6e18db0b42d)]
+- 🐛 Fix next/image not loading in self-hosting [[c373108](https://github.com/baptisteArno/typebot.io/commit/c373108b55ea7175ea3c1d5c2b50620008b6b78e)]
+- 🐛 Fix change language not working in the editor [[0b93c2b](https://github.com/baptisteArno/typebot.io/commit/0b93c2b2390a3b19f6466ba70d737c0e45a97eba)]
+- 🐛 (sheets) Init OAuth client inside a function to avoid potential conflict [[7fcc4fb](https://github.com/baptisteArno/typebot.io/commit/7fcc4fb7485cddf0cdffff59f55dea962f020d0c)]
+- ✏️ Fix invalid ending comma in API instructions [[99c5aaf](https://github.com/baptisteArno/typebot.io/commit/99c5aafec13d9db9dd0d532bb30c7eae939691c0)]
+- 🐛 Fix right click in bubble text editor selects the group [[32b2bb6](https://github.com/baptisteArno/typebot.io/commit/32b2bb6a945c7d5282958a7f5209b4b27dd4cd81)]
+- 🐛 Fix multiple item dragged issue [[a43d047](https://github.com/baptisteArno/typebot.io/commit/a43d047f60aa34c9bf591e21fdb66b85f7ded597)]
+- 🐛 (editor) Fix old typebot flash when changing the typebot [[cb87a72](https://github.com/baptisteArno/typebot.io/commit/cb87a72cca3fe7265a03bb928def114d2c14b0e2)]
+
+### Security
+
+- 🔒 (radar) Add cumulative keywords auto ban [[00f8bbc](https://github.com/baptisteArno/typebot.io/commit/00f8bbc29b1e7ca33bb6b961479cfd29aebb7670)]
+- 🔒 (radar) Improve scam detection by analyzing the entire typebot [[7e3edfc](https://github.com/baptisteArno/typebot.io/commit/7e3edfc0f2567d2735fcde57a5d0a58ef0aa4bf1)]
+
+### Miscellaneous
+
+- 📝 Add suggest edits button [[ed7f5c7](https://github.com/baptisteArno/typebot.io/commit/ed7f5c732829f1a8e0edd0ca1fd13a262d99cffd)]
+- 🌐 Add translation keys for input blocks ([#1114](https://github.com/baptisteArno/typebot.io/issues/1114)) [[53b702e](https://github.com/baptisteArno/typebot.io/commit/53b702e8b1a061f5c678b305c0f07fb7f5d79160)]
+- 🌐 Add theme tab translation keys ([#1119](https://github.com/baptisteArno/typebot.io/issues/1119)) [[5fbbe9d](https://github.com/baptisteArno/typebot.io/commit/5fbbe9d86e52f6fc8370d5fea089781e07ea3043)]
+- 🌐 Improve i18n collaboration type and timeSince parsing [[f26eafd](https://github.com/baptisteArno/typebot.io/commit/f26eafd26ffa926d851d333d920a47268a4d2d39)]
+- 🌐 Add templates name and description translation keys ([#1120](https://github.com/baptisteArno/typebot.io/issues/1120)) [[5124373](https://github.com/baptisteArno/typebot.io/commit/51243730713cbf3114801d44669cb0ef33c83e0c)]
+- Typebots page pt-BR translation ([#1121](https://github.com/baptisteArno/typebot.io/issues/1121)) [[81a70d3](https://github.com/baptisteArno/typebot.io/commit/81a70d3b70fb9c08b4414eda98049af9e9cb90b6)]
+- 🌐 Sync french translations and fix some non-sentence translations [[28b2b1a](https://github.com/baptisteArno/typebot.io/commit/28b2b1a60c8cb56c56c5cb2222d87fd391f0ce5a)]
+- Add editor header translation keys ([#1110](https://github.com/baptisteArno/typebot.io/issues/1110)) [[d42e4a9](https://github.com/baptisteArno/typebot.io/commit/d42e4a9ce1e9604d46f9b1246180e50d2a61fb79)]
+- 🛂 (radar) Correctly block banned IP event when signing in with oauth providers [[74f5a17](https://github.com/baptisteArno/typebot.io/commit/74f5a17de0958aadcd50fc8e0cc9b8c23c227a54)]
+- 📝 Migrate from Docusaurus to Mintlify ([#1115](https://github.com/baptisteArno/typebot.io/issues/1115)) [[1e5fa5a](https://github.com/baptisteArno/typebot.io/commit/1e5fa5a575a20bda66459fd17395f1b092da61f7)]
+- 🩹 (radar) Only check existing risk if typebot was not manually checked [[3919f75](https://github.com/baptisteArno/typebot.io/commit/3919f75a366909bb3500269b50e1e8136590e5ba)]
+- 🛂 (radar) Match high risk keyword when not in urls [[f2cccbd](https://github.com/baptisteArno/typebot.io/commit/f2cccbd33f77f244f0644d769018988668127f4f)]
+- 🛂 (radar) Add isVerified field in workspace [[655b32e](https://github.com/baptisteArno/typebot.io/commit/655b32ef755bd689d79c31ddc3602ff49c0b0658)]
+- add specific link for ChatNode to TypeBot ([#1106](https://github.com/baptisteArno/typebot.io/issues/1106)) [[8c4eec4](https://github.com/baptisteArno/typebot.io/commit/8c4eec4b20aec40a6c7e81b2a102442ae6a2877d)]
+- 🛂 Auto ban IP on suspected bot publishing ([#1095](https://github.com/baptisteArno/typebot.io/issues/1095)) [[fcfbd63](https://github.com/baptisteArno/typebot.io/commit/fcfbd6344313c8f084047f26f83c22777b6810e2)]
+- 📝 (docs): fix typo in Unsplash description ([#1094](https://github.com/baptisteArno/typebot.io/issues/1094)) [[619a548](https://github.com/baptisteArno/typebot.io/commit/619a548fbaa8ced1ed8c50ba19d649580b5bf5a5)]
+- Update publishTypebot.ts [[248cee8](https://github.com/baptisteArno/typebot.io/commit/248cee886564df0f685b9fd67126c285d934f423)]
+- 🛂 Hide workspace members list from guest [[c339130](https://github.com/baptisteArno/typebot.io/commit/c339130e53a466f7f2a37cfaf1c1a87da79a6498)]
+- 🛂 (billing) Past due status only for unpaid invoices with additional usage [[b0d7039](https://github.com/baptisteArno/typebot.io/commit/b0d7039577249f51ddfefe1836951c09e5082854)]
+- 📝 Add node prerequisite in Contributing guide [[f64784f](https://github.com/baptisteArno/typebot.io/commit/f64784fefd399f12edcc0aaf2339f9d64b9331a0)]
+- 🧑‍💻 Automatically guess env URLs for Vercel preview deploy… ([#1076](https://github.com/baptisteArno/typebot.io/issues/1076)) [[d89a1eb](https://github.com/baptisteArno/typebot.io/commit/d89a1eb32396b3f8eb87500ed8f2af63df8f49e0)]
+- Updated vercel deployment guide. ([#1075](https://github.com/baptisteArno/typebot.io/issues/1075)) [[c02e4e1](https://github.com/baptisteArno/typebot.io/commit/c02e4e141b679e487df51954a75034552841f925)]
+- ⚗️ (docs) Replace Algolia search with Community Search [[c4f5df5](https://github.com/baptisteArno/typebot.io/commit/c4f5df51d56c9423a25d07dcfd7fd271b9bae575)]
+
 <a name="2.20.0"></a>
+
 ## 2.20.0 (2023-12-04)
 
 ### Added
@@ -42,8 +319,8 @@
 - 🛂 (billing) Add isPastDue field in workspace ([#1046](https://github.com/baptisteArno/typebot.io/issues/1046)) [[ca79934](https://github.com/baptisteArno/typebot.io/commit/ca79934ef5c86feaa60cde4d4bc42171149a1f15)]
 - 🌐 Add es and ro support [[f6ac389](https://github.com/baptisteArno/typebot.io/commit/f6ac3891f8d11089d81a3cb7be6c715460570f28)]
 
-
 <a name="2.19.1"></a>
+
 ## 2.19.1 (2023-11-17)
 
 ### Added
@@ -97,13 +374,13 @@
 - 🧑‍💻 (chat) Introduce startChat and continueChat endpoints [[084588a](https://github.com/baptisteArno/typebot.io/commit/084588a086c22029e53ffdef7ae1fe81d7e413b7)]
 - 🛂 Reduce sendMessage serverless function max memory [[bac2393](https://github.com/baptisteArno/typebot.io/commit/bac2393b5d7d14eb871945e84f260dcca72d3f65)]
 - 📝 Add breaking changes and OpenAI block improvements docs [[df57841](https://github.com/baptisteArno/typebot.io/commit/df578417aa6a261e878f62d0c4865ef7d58f77c0)]
--  fix: whole page overflowing on the x axis and displaying a horizontal scrollbar ([#1011](https://github.com/baptisteArno/typebot.io/issues/1011)) [[68e4fc7](https://github.com/baptisteArno/typebot.io/commit/68e4fc71fbee9f45e2869912798304493c75b1b0)]
+- fix: whole page overflowing on the x axis and displaying a horizontal scrollbar ([#1011](https://github.com/baptisteArno/typebot.io/issues/1011)) [[68e4fc7](https://github.com/baptisteArno/typebot.io/commit/68e4fc71fbee9f45e2869912798304493c75b1b0)]
 - 🛂 Update Cache-Control header in generatePresignedPostPolicy [[027c6ff](https://github.com/baptisteArno/typebot.io/commit/027c6ffcef30ff9f091bf9100e584efcc490976b)]
 - 📦 Add strict package versioning to avoid incompatibility in workspace [[0c22d85](https://github.com/baptisteArno/typebot.io/commit/0c22d858b749c0f39eb595ad6e8f74a497abc198)]
 - 📝 Add UTM params forwarding video tutorial [[57e4540](https://github.com/baptisteArno/typebot.io/commit/57e454008e85c197ad25c78f069d4a4b97d43c6a)]
 
-
 <a name="2.19.0"></a>
+
 ## 2.19.0 (2023-11-02)
 
 ### Changed
@@ -129,8 +406,8 @@
 - 🧑‍💻 Migrate to Tolgee ([#976](https://github.com/baptisteArno/typebot.io/issues/976)) [[bed8b42](https://github.com/baptisteArno/typebot.io/commit/bed8b42a2eb10bd81909ac38a6b3b51a423789c2)]
 - 🧑‍💻 Fix type resolution for @typebot.io/react and nextjs [[31b3fc3](https://github.com/baptisteArno/typebot.io/commit/31b3fc311ede7885ff89ee41467308e718c92d4d)]
 
-
 <a name="2.18.4"></a>
+
 ## 2.18.4 (2023-10-25)
 
 ### Fixed
@@ -142,7 +419,6 @@
 ### Miscellaneous
 
 - 🧑‍💻 (whatsapp) Improve whatsapp start log [[c2a08c4](https://github.com/baptisteArno/typebot.io/commit/c2a08c482efc30322b308880bb377e276f9cedfb)]
-
 
 <a name="2.18.3"></a>
 

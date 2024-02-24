@@ -29,13 +29,13 @@ export const searchDocuments = createAction({
       label: 'System prompt',
       moreInfoTooltip:
         'System prompt to send to the summarization LLM. This is prepended to the prompt and helps guide system behavior.',
-      input: 'textarea',
+      inputType: 'textarea',
     }),
     prompt: option.string.layout({
       accordion: 'Advanced settings',
       label: 'Prompt',
       moreInfoTooltip: 'Prompt to send to the summarization LLM.',
-      input: 'textarea',
+      inputType: 'textarea',
     }),
     responseMapping: option
       .saveResponseArray([

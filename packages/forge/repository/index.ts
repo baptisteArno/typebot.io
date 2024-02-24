@@ -4,4 +4,7 @@ export const enabledBlocks = [
   'zemantic-ai',
   'cal-com',
   'chat-node',
+  'qr-code',
+  'dify-ai',
+  'mistral',
 ] as const

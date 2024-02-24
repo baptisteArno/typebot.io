@@ -5,11 +5,14 @@ import { TableListItemProps } from '@/components/TableList'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { TextInput } from '@/components/inputs'
 import { ComparisonOperators } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
+import { useTranslate } from '@tolgee/react'
 
 export const ComparisonItem = ({
   item,
   onItemChange,
 }: TableListItemProps<Comparison>) => {
+  const { t } = useTranslate()
+
   const handleSelectVariable = (variable?: Variable) => {
     if (variable?.id === item.variableId) return
     onItemChange({ ...item, variableId: variable?.id })
@@ -31,13 +34,15 @@ export const ComparisonItem = ({
       <VariableSearchInput
         initialVariableId={item.variableId}
         onSelectVariable={handleSelectVariable}
-        placeholder="Search for a variable"
+        placeholder={t('variables.search')}
       />
       <DropdownList
         currentItem={item.comparisonOperator}
         onItemSelect={handleSelectComparisonOperator}
         items={Object.values(ComparisonOperators)}
-        placeholder="Select an operator"
+        placeholder={t(
+          'blocks.inputs.button.buttonSettings.displayCondition.selectOperator.label'
+        )}
       />
       {item.comparisonOperator !== ComparisonOperators.IS_SET &&
         item.comparisonOperator !== ComparisonOperators.IS_EMPTY && (

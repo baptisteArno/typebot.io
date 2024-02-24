@@ -7,10 +7,10 @@ import {
 import got from 'got'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { byId, isDefined, isEmpty } from '@typebot.io/lib'
-import { getDefinedVariables, parseAnswers } from '@typebot.io/lib/results'
 import prisma from '@typebot.io/lib/prisma'
 import { ExecuteIntegrationResponse } from '../../../types'
 import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
+import { parseAnswers } from '@typebot.io/lib/results/parseAnswers'
 
 const URL = 'https://api.zemantic.ai/v1/search-documents'
 
@@ -50,7 +50,7 @@ export const executeZemanticAiBlock = async (
   const { typebot, answers } = newSessionState.typebotsQueue[0]
 
   const templateVars = parseAnswers({
-    variables: getDefinedVariables(typebot.variables),
+    variables: typebot.variables,
     answers: answers,
   })
 
