@@ -36,6 +36,7 @@ export const receiveMessage = publicProcedure
     return resumeWhatsAppFlow({
       receivedMessage,
       sessionId: `wa-${phoneNumberId}-${receivedMessage.from}`,
+      phoneNumberId,
       credentialsId,
       workspaceId,
       contact: {
