@@ -87,5 +87,6 @@ export const startChat = async ({
     logs: logs?.filter(filterPotentiallySensitiveLogs),
     clientSideActions,
     corsOrigin,
+    progress: newSessionState.progressMetadata ? 0 : undefined,
   }
 }

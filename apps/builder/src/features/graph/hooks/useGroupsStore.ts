@@ -1,6 +1,7 @@
 import { createWithEqualityFn } from 'zustand/traditional'
 import { Coordinates, CoordinatesMap } from '../types'
 import { Edge, Group, GroupV6 } from '@typebot.io/schemas'
+import { persist } from 'zustand/middleware'
 
 type Store = {
   focusedGroups: string[]
@@ -19,69 +20,81 @@ type Store = {
   setIsDraggingGraph: (isDragging: boolean) => void
 }
 
-export const useGroupsStore = createWithEqualityFn<Store>((set, get) => ({
-  focusedGroups: [],
-  groupsCoordinates: undefined,
-  groupsInClipboard: undefined,
-  isDraggingGraph: false,
-  getGroupsCoordinates: () => get().groupsCoordinates,
-  focusGroup: (groupId, isShiftKeyPressed) =>
-    set((state) => ({
-      focusedGroups: isShiftKeyPressed
-        ? state.focusedGroups.includes(groupId)
-          ? state.focusedGroups.filter((id) => id !== groupId)
-          : [...state.focusedGroups, groupId]
-        : [groupId],
-    })),
-  blurGroups: () => set({ focusedGroups: [] }),
-  moveFocusedGroups: (delta) =>
-    set(({ focusedGroups, groupsCoordinates }) => ({
-      groupsCoordinates: groupsCoordinates
-        ? {
-            ...groupsCoordinates,
-            ...focusedGroups.reduce(
-              (coords, groupId) => ({
-                ...coords,
-                [groupId]: {
-                  x: groupsCoordinates[groupId].x + delta.x,
-                  y: groupsCoordinates[groupId].y + delta.y,
-                },
-              }),
-              groupsCoordinates
-            ),
-          }
-        : undefined,
-    })),
-  setFocusedGroups: (groupIds) => set({ focusedGroups: groupIds }),
-  setGroupsCoordinates: (groups) =>
-    set({
-      groupsCoordinates: groups
-        ? groups.reduce(
-            (coords, group) => ({
-              ...coords,
-              [group.id]: {
-                x: group.graphCoordinates.x,
-                y: group.graphCoordinates.y,
-              },
-            }),
-            {}
-          )
-        : undefined,
-    }),
-  updateGroupCoordinates: (groupId, newCoord) => {
-    set((state) => ({
-      groupsCoordinates: {
-        ...state.groupsCoordinates,
-        [groupId]: newCoord,
+export const useGroupsStore = createWithEqualityFn<Store>()(
+  persist(
+    (set, get) => ({
+      focusedGroups: [],
+      groupsCoordinates: undefined,
+      groupsInClipboard: undefined,
+      isDraggingGraph: false,
+      getGroupsCoordinates: () => get().groupsCoordinates,
+      focusGroup: (groupId, isShiftKeyPressed) =>
+        set((state) => ({
+          focusedGroups: isShiftKeyPressed
+            ? state.focusedGroups.includes(groupId)
+              ? state.focusedGroups.filter((id) => id !== groupId)
+              : [...state.focusedGroups, groupId]
+            : [groupId],
+        })),
+      blurGroups: () => set({ focusedGroups: [] }),
+      moveFocusedGroups: (delta) =>
+        set(({ focusedGroups, groupsCoordinates }) => ({
+          groupsCoordinates: groupsCoordinates
+            ? {
+                ...groupsCoordinates,
+                ...focusedGroups.reduce(
+                  (coords, groupId) => ({
+                    ...coords,
+                    [groupId]: {
+                      x: Number(
+                        (groupsCoordinates[groupId].x + delta.x).toFixed(2)
+                      ),
+                      y: Number(
+                        (groupsCoordinates[groupId].y + delta.y).toFixed(2)
+                      ),
+                    },
+                  }),
+                  groupsCoordinates
+                ),
+              }
+            : undefined,
+        })),
+      setFocusedGroups: (groupIds) => set({ focusedGroups: groupIds }),
+      setGroupsCoordinates: (groups) =>
+        set({
+          groupsCoordinates: groups
+            ? groups.reduce(
+                (coords, group) => ({
+                  ...coords,
+                  [group.id]: {
+                    x: group.graphCoordinates.x,
+                    y: group.graphCoordinates.y,
+                  },
+                }),
+                {}
+              )
+            : undefined,
+        }),
+      updateGroupCoordinates: (groupId, newCoord) => {
+        set((state) => ({
+          groupsCoordinates: {
+            ...state.groupsCoordinates,
+            [groupId]: newCoord,
+          },
+        }))
       },
-    }))
-  },
-  copyGroups: (groups, edges) =>
-    set({
-      groupsInClipboard: {
-        groups,
-        edges,
-      },
+      copyGroups: (groups, edges) =>
+        set({
+          groupsInClipboard: {
+            groups,
+            edges,
+          },
+        }),
+      setIsDraggingGraph: (isDragging) => set({ isDraggingGraph: isDragging }),
     }),
-  setIsDraggingGraph: (isDragging) => set({ isDraggingGraph: isDragging }),
-}))
+    {
+      name: 'store',
+      partialize: (state) => ({ groupsInClipboard: state.groupsInClipboard }),
+    }
+  )
+)

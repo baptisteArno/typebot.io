@@ -1,0 +1,19 @@
+{
+  "name": "transactional",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "SKIP_ENV_CHECK=true dotenv -e ./.env -e ../../.env -- email dev --port=3005 --dir=templates"
+  },
+  "keywords": [],
+  "author": "Baptiste Arnaud",
+  "license": "ISC",
+  "dependencies": {
+    "@react-email/components": "0.0.14",
+    "react-email": "2.0.0",
+    "@typebot.io/env": "workspace:*"
+  },
+  "devDependencies": {
+    "dotenv-cli": "7.2.1"
+  }
+}

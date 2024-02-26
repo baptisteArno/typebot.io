@@ -79,7 +79,7 @@ export const DropdownList = <T extends Item>({
           )}
         </FormLabel>
       )}
-      <Menu isLazy placement="bottom-end" matchWidth>
+      <Menu isLazy>
         <MenuButton
           as={Button}
           rightIcon={<ChevronLeftIcon transform={'rotate(-90deg)'} />}

@@ -1,9 +1,9 @@
 import { createAction, option } from '@typebot.io/forge'
 import { isDefined, isEmpty } from '@typebot.io/lib'
-import { got } from 'got'
+import { HTTPError, got } from 'got'
 import { auth } from '../auth'
-import { DifyResponse } from '../types'
 import { defaultBaseUrl } from '../constants'
+import { Chunk } from '../types'
 
 export const createChatMessage = createAction({
   auth,
@@ -29,7 +29,7 @@ export const createChatMessage = createAction({
       accordion: 'Inputs',
     }),
     responseMapping: option
-      .saveResponseArray(['Answer', 'Conversation ID', 'Total Tokens'])
+      .saveResponseArray(['Answer', 'Conversation ID', 'Total Tokens'] as const)
       .layout({
         accordion: 'Save response',
       }),
@@ -41,40 +41,104 @@ export const createChatMessage = createAction({
       credentials: { apiEndpoint, apiKey },
       options: { conversation_id, query, user, inputs, responseMapping },
       variables,
+      logs,
     }) => {
-      const res: DifyResponse = await got
-        .post((apiEndpoint ?? defaultBaseUrl) + '/v1/chat-messages', {
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-          },
-          json: {
-            inputs: inputs?.reduce((acc, { key, value }) => {
-              if (isEmpty(key) || isEmpty(value)) return acc
-              return {
-                ...acc,
-                [key]: value,
-              }
-            }, {}),
-            query,
-            response_mode: 'blocking',
-            conversation_id,
-            user,
-          },
+      try {
+        const stream = got.post(
+          (apiEndpoint ?? defaultBaseUrl) + '/v1/chat-messages',
+          {
+            headers: {
+              Authorization: `Bearer ${apiKey}`,
+            },
+            json: {
+              inputs:
+                inputs?.reduce((acc, { key, value }) => {
+                  if (isEmpty(key) || isEmpty(value)) return acc
+                  return {
+                    ...acc,
+                    [key]: value,
+                  }
+                }, {}) ?? {},
+              query,
+              response_mode: 'streaming',
+              conversation_id,
+              user,
+              files: [],
+            },
+            isStream: true,
+          }
+        )
+
+        const { answer, conversationId, totalTokens } = await new Promise<{
+          answer: string
+          conversationId: string | undefined
+          totalTokens: number | undefined
+        }>((resolve, reject) => {
+          let jsonChunk = ''
+          let answer = ''
+          let conversationId: string | undefined
+          let totalTokens: number | undefined
+
+          stream.on('data', (chunk) => {
+            const lines = chunk.toString().split('\n') as string[]
+            lines
+              .filter((line) => line.length > 0)
+              .forEach((line) => {
+                try {
+                  const data = JSON.parse(
+                    (jsonChunk.length > 0 ? jsonChunk : line).replace(
+                      /^data: /,
+                      ''
+                    )
+                  ) as Chunk
+                  jsonChunk = ''
+                  if (
+                    data.event === 'message' ||
+                    data.event === 'agent_message'
+                  ) {
+                    answer += data.answer
+                  }
+                  if (data.event === 'message_end') {
+                    totalTokens = data.metadata.usage.total_tokens
+                    conversationId = data.conversation_id
+                  }
+                } catch (error) {
+                  if (line.includes('event: ')) return
+                  jsonChunk += line
+                }
+              })
+          })
+
+          stream.on('end', () => {
+            resolve({ answer, conversationId, totalTokens })
+          })
+
+          stream.on('error', (error) => {
+            reject(error)
+          })
         })
-        .json()
 
-      responseMapping?.forEach((mapping) => {
-        if (!mapping.variableId) return
+        responseMapping?.forEach((mapping) => {
+          if (!mapping.variableId) return
 
-        const item = mapping.item ?? 'Answer'
-        if (item === 'Answer') variables.set(mapping.variableId, res.answer)
+          const item = mapping.item ?? 'Answer'
+          if (item === 'Answer') variables.set(mapping.variableId, answer)
 
-        if (item === 'Conversation ID')
-          variables.set(mapping.variableId, res.conversation_id)
+          if (item === 'Conversation ID')
+            variables.set(mapping.variableId, conversationId)
 
-        if (item === 'Total Tokens')
-          variables.set(mapping.variableId, res.metadata.usage.total_tokens)
-      })
+          if (item === 'Total Tokens')
+            variables.set(mapping.variableId, totalTokens)
+        })
+      } catch (error) {
+        if (error instanceof HTTPError)
+          return logs.add({
+            status: 'error',
+            description: error.message,
+            details: error.response.body,
+          })
+        console.error(error)
+      }
     },
   },
 })

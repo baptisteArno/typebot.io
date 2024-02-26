@@ -45,6 +45,7 @@ export type TextInputProps = {
   | 'autoFocus'
   | 'size'
   | 'maxWidth'
+  | 'flexShrink'
 >
 
 export const TextInput = forwardRef(function TextInput(
@@ -68,6 +69,7 @@ export const TextInput = forwardRef(function TextInput(
     maxWidth,
     direction = 'column',
     width,
+    flexShrink,
   }: TextInputProps,
   ref
 ) {
@@ -145,6 +147,7 @@ export const TextInput = forwardRef(function TextInput(
       justifyContent="space-between"
       width={label || width === 'full' ? 'full' : 'auto'}
       spacing={direction === 'column' ? 2 : 3}
+      flexShrink={flexShrink}
     >
       {label && (
         <FormLabel display="flex" flexShrink={0} gap="1" mb="0" mr="0">

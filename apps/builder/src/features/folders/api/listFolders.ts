@@ -46,7 +46,7 @@ export const listFolders = authenticatedProcedure
     const folders = await prisma.dashboardFolder.findMany({
       where: {
         workspaceId,
-        parentFolderId,
+        parentFolderId: parentFolderId ?? null,
       },
       orderBy: {
         createdAt: 'desc',

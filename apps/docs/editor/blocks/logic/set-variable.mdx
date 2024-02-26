@@ -94,6 +94,10 @@ For example,
   [Valid value types](../../variables#valid-value-types) for more information.
 </Info>
 
+## Result ID
+
+This will set your variable with the current result ID. The result ID is the ID that corresponds to a row of your [Results](../../../results/overview.mdx) table. It can be considered like a User ID for the currently chatting user.
+
 ## Moment of the day
 
 It will set your variable with either one of these values based on the user's time of the day: `morning`, `afternoon`, `evening`, `night`.
@@ -127,17 +131,25 @@ This value block allows you to find the `Id` from `Ids` with the same index as `
 For this you can provide the following custom code:
 
 ```js
-function getPosition() {
-  return new Promise((resolve, reject) => {
+function getLocation() {
+  return new Promise((resolve) => {
     navigator.geolocation.getCurrentPosition(
-      (position) => resolve(position),
-      (error) => reject(error),
+      (position) =>
+        resolve(`${position.coords.latitude}, ${position.coords.longitude}`),
+      (error) => resolve('error'),
       { enableHighAccuracy: true, timeout: 5000 }
     )
   })
 }
 
-const coords = (await getPosition()).coords
+const coords = await getLocation()
 
-return `${coords.latitude}, ${coords.longitude}`
+// Check for error
+if (coords === 'error') {
+  return 'Unable to get location'
+}
+
+return coords
 ```
+
+This custom function can only work when it is executed on the client browser so you need to make sure to enable the "Execute on client" option.

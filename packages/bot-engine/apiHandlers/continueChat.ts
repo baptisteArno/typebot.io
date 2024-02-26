@@ -5,6 +5,7 @@ import { continueBotFlow } from '../continueBotFlow'
 import { filterPotentiallySensitiveLogs } from '../logs/filterPotentiallySensitiveLogs'
 import { parseDynamicTheme } from '../parseDynamicTheme'
 import { saveStateToDatabase } from '../saveStateToDatabase'
+import { computeCurrentProgress } from '../computeCurrentProgress'
 
 type Props = {
   origin: string | undefined
@@ -74,6 +75,12 @@ export const continueChat = async ({ origin, sessionId, message }: Props) => {
 
   const isPreview = isNotDefined(session.state.typebotsQueue[0].resultId)
 
+  const isEnded =
+    newSessionState.progressMetadata &&
+    !input?.id &&
+    (clientSideActions?.filter((c) => c.expectsDedicatedReply).length ?? 0) ===
+      0
+
   return {
     messages,
     input,
@@ -82,5 +89,14 @@ export const continueChat = async ({ origin, sessionId, message }: Props) => {
     logs: isPreview ? logs : logs?.filter(filterPotentiallySensitiveLogs),
     lastMessageNewFormat,
     corsOrigin,
+    progress: newSessionState.progressMetadata
+      ? isEnded
+        ? 100
+        : computeCurrentProgress({
+            typebotsQueue: newSessionState.typebotsQueue,
+            progressMetadata: newSessionState.progressMetadata,
+            currentInputBlockId: input?.id as string,
+          })
+      : undefined,
   }
 }

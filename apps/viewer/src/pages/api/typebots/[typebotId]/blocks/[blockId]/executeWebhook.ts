@@ -3,8 +3,8 @@ import {
   ResultValues,
   Typebot,
   Variable,
-  Webhook,
-  WebhookResponse,
+  HttpRequest,
+  HttpResponse,
   Block,
 } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -58,7 +58,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const typebot = (await prisma.typebot.findUnique({
       where: { id: typebotId },
       include: { webhooks: true },
-    })) as unknown as (Typebot & { webhooks: Webhook[] }) | null
+    })) as unknown as (Typebot & { webhooks: HttpRequest[] }) | null
     if (!typebot) return notFound(res)
     const block = typebot.groups
       .flatMap<Block>((g) => g.blocks)
@@ -106,7 +106,7 @@ export const executeWebhook =
     isCustomBody,
     timeout,
   }: {
-    webhook: Webhook
+    webhook: HttpRequest
     variables: Variable[]
     groupId: string
     resultValues?: ResultValues
@@ -114,7 +114,7 @@ export const executeWebhook =
     parentTypebotIds: string[]
     isCustomBody?: boolean
     timeout?: number
-  }): Promise<WebhookResponse> => {
+  }): Promise<HttpResponse> => {
     if (!webhook.url)
       return {
         statusCode: 400,

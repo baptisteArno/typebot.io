@@ -50,7 +50,7 @@ export const WorkspaceProvider = ({
   typebotId,
   children,
 }: WorkspaceContextProps) => {
-  const { pathname, query, push, isReady: isRouterReady } = useRouter()
+  const { pathname, query, push, isReady: isRouterReady, replace } = useRouter()
   const { user } = useUser()
   const userId = user?.id
   const [workspaceId, setWorkspaceId] = useState<string | undefined>()
@@ -163,6 +163,7 @@ export const WorkspaceProvider = ({
   const switchWorkspace = (workspaceId: string) => {
     setWorkspaceIdInLocalStorage(workspaceId)
     setWorkspaceId(workspaceId)
+    replace('/typebots')
   }
 
   const createWorkspace = async (userFullName?: string) => {

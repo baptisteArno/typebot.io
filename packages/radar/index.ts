@@ -1,6 +1,10 @@
 import { env } from '@typebot.io/env'
 
-export const computeRiskLevel = (typebot: any) => {
+type Params = {
+  debug: boolean
+}
+
+export const computeRiskLevel = (typebot: any, params?: Params) => {
   const stringifiedTypebot = JSON.stringify(typebot)
   if (
     env.RADAR_HIGH_RISK_KEYWORDS?.some((keyword) =>
@@ -8,8 +12,20 @@ export const computeRiskLevel = (typebot: any) => {
         stringifiedTypebot
       )
     )
-  )
+  ) {
+    if (params?.debug) {
+      console.log(
+        'High risk keywords detected:',
+        env.RADAR_HIGH_RISK_KEYWORDS?.find((keyword) =>
+          new RegExp(`(?<!(https?://|@)[^\\s"]*)\\b${keyword}\\b`, 'gi').test(
+            stringifiedTypebot
+          )
+        )
+      )
+    }
     return 100
+  }
+
   if (
     env.RADAR_CUMULATIVE_KEYWORDS?.some((set) =>
       set.every((keyword) =>
@@ -20,8 +36,23 @@ export const computeRiskLevel = (typebot: any) => {
         )
       )
     )
-  )
+  ) {
+    if (params?.debug) {
+      console.log(
+        'Cumulative keywords detected:',
+        env.RADAR_CUMULATIVE_KEYWORDS?.find((set) =>
+          set.every((keyword) =>
+            keyword.some((k) =>
+              new RegExp(`(?<!(https?://|@)[^\\s"]*)\\b${k}\\b`, 'gi').test(
+                stringifiedTypebot
+              )
+            )
+          )
+        )
+      )
+    }
     return 100
+  }
   if (
     env.RADAR_INTERMEDIATE_RISK_KEYWORDS?.some((keyword) =>
       stringifiedTypebot.toLowerCase().includes(keyword)

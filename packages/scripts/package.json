@@ -17,7 +17,7 @@
     "checkSubscriptionsStatus": "tsx checkSubscriptionsStatus.ts",
     "createChatsPrices": "tsx createChatsPrices.ts",
     "migrateSubscriptionsToUsageBased": "tsx migrateSubscriptionsToUsageBased.ts",
-    "importContactToBrevo": "tsx importContactToBrevo.ts",
+    "insertUsersInBrevoList": "tsx insertUsersInBrevoList.ts",
     "getUsage": "tsx getUsage.ts",
     "suspendWorkspace": "tsx suspendWorkspace.ts",
     "destroyUser": "tsx destroyUser.ts",
@@ -26,6 +26,7 @@
     "inspectTypebot": "tsx inspectTypebot.ts",
     "inspectWorkspace": "tsx inspectWorkspace.ts",
     "getCoupon": "tsx getCoupon.ts",
+    "redeemCoupon": "tsx redeemCoupon.ts",
     "exportResults": "tsx exportResults.ts",
     "updateUserEmail": "tsx updateUserEmail.ts",
     "inspectChatSession": "tsx inspectChatSession.ts"

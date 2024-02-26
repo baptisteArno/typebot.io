@@ -74,5 +74,6 @@ export const startChatPreview = async ({
     dynamicTheme,
     logs,
     clientSideActions,
+    progress: newSessionState.progressMetadata ? 0 : undefined,
   }
 }

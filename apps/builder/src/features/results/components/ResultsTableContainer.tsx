@@ -6,8 +6,16 @@ import { useResults } from '../ResultsProvider'
 import { ResultModal } from './ResultModal'
 import { ResultsTable } from './table/ResultsTable'
 import { useRouter } from 'next/router'
+import { timeFilterValues } from '@/features/analytics/constants'
 
-export const ResultsTableContainer = () => {
+type Props = {
+  timeFilter: (typeof timeFilterValues)[number]
+  onTimeFilterChange: (timeFilter: (typeof timeFilterValues)[number]) => void
+}
+export const ResultsTableContainer = ({
+  timeFilter,
+  onTimeFilterChange,
+}: Props) => {
   const { query } = useRouter()
   const {
     flatResults: results,
@@ -61,8 +69,10 @@ export const ResultsTableContainer = () => {
           data={tableData}
           onScrollToBottom={fetchNextPage}
           hasMore={hasNextPage}
+          timeFilter={timeFilter}
           onLogOpenIndex={handleLogOpenIndex}
           onResultExpandIndex={handleResultExpandIndex}
+          onTimeFilterChange={onTimeFilterChange}
         />
       )}
     </Stack>

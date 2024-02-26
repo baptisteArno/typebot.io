@@ -1,15 +1,15 @@
 import {
-  WebhookBlock,
+  HttpRequestBlock,
   ZapierBlock,
   MakeComBlock,
   PabblyConnectBlock,
   SessionState,
-  Webhook,
+  HttpRequest,
   Variable,
-  WebhookResponse,
+  HttpResponse,
   KeyValue,
   ChatLog,
-  ExecutableWebhook,
+  ExecutableHttpRequest,
   AnswerInSessionState,
 } from '@typebot.io/schemas'
 import { stringify } from 'qs'
@@ -28,7 +28,7 @@ import {
 import { env } from '@typebot.io/env'
 import { parseAnswers } from '@typebot.io/lib/results/parseAnswers'
 
-type ParsedWebhook = ExecutableWebhook & {
+type ParsedWebhook = ExecutableHttpRequest & {
   basicAuth: { username?: string; password?: string }
   isJson: boolean
 }
@@ -48,7 +48,7 @@ type Params = { disableRequestTimeout?: boolean; timeout?: number }
 
 export const executeWebhookBlock = async (
   state: SessionState,
-  block: WebhookBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock,
+  block: HttpRequestBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock,
   params: Params = {}
 ): Promise<ExecuteIntegrationResponse> => {
   const logs: ChatLog[] = []
@@ -57,7 +57,7 @@ export const executeWebhookBlock = async (
     ('webhookId' in block
       ? ((await prisma.webhook.findUnique({
           where: { id: block.webhookId },
-        })) as Webhook | null)
+        })) as HttpRequest | null)
       : null)
   if (!webhook) return { outgoingEdgeId: block.outgoingEdgeId }
   const parsedWebhook = await parseWebhookAttributes(state)({
@@ -110,7 +110,7 @@ const parseWebhookAttributes =
     webhook,
     isCustomBody,
   }: {
-    webhook: Webhook
+    webhook: HttpRequest
     isCustomBody?: boolean
   }): Promise<ParsedWebhook | undefined> => {
     if (!webhook.url) return
@@ -136,7 +136,7 @@ const parseWebhookAttributes =
     const headers = convertKeyValueTableToObject(
       webhook.headers,
       typebot.variables
-    ) as ExecutableWebhook['headers'] | undefined
+    ) as ExecutableHttpRequest['headers'] | undefined
     const queryParams = stringify(
       convertKeyValueTableToObject(webhook.queryParams, typebot.variables)
     )
@@ -172,7 +172,7 @@ export const executeWebhook = async (
   webhook: ParsedWebhook,
   params: Params = {}
 ): Promise<{
-  response: WebhookResponse
+  response: HttpResponse
   logs?: ChatLog[]
   startTimeShouldBeUpdated?: boolean
 }> => {

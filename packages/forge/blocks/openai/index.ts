@@ -15,4 +15,5 @@ export const openAIBlock = createBlock({
   auth,
   options: baseOptions,
   actions: [createChatCompletion, askAssistant, createSpeech],
+  docsUrl: 'https://docs.typebot.io/forge/blocks/openai',
 })

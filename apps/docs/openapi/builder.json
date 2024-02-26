@@ -554,14 +554,37 @@
                                                       "type": {
                                                         "type": "string",
                                                         "enum": [
-                                                          "Today",
                                                           "Now",
                                                           "Yesterday",
-                                                          "Tomorrow",
+                                                          "Tomorrow"
+                                                        ]
+                                                      },
+                                                      "timeZone": {
+                                                        "type": "string"
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "type"
+                                                    ]
+                                                  },
+                                                  {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "variableId": {
+                                                        "type": "string"
+                                                      },
+                                                      "isExecutedOnClient": {
+                                                        "type": "boolean"
+                                                      },
+                                                      "type": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "Today",
                                                           "Moment of the day",
                                                           "Empty",
                                                           "Environment name",
                                                           "User ID",
+                                                          "Result ID",
                                                           "Random ID",
                                                           "Phone number",
                                                           "Contact name"
@@ -1954,7 +1977,8 @@
                                                 "type": "string",
                                                 "enum": [
                                                   "Webhook"
-                                                ]
+                                                ],
+                                                "description": "Legacy name for HTTP Request block"
                                               },
                                               "options": {
                                                 "type": "object",
@@ -2842,6 +2866,131 @@
                   },
                   "required": [
                     "totalVisitedEdges"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.BAD_REQUEST"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.NOT_FOUND"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.INTERNAL_SERVER_ERROR"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/typebots/{typebotId}/analytics/stats": {
+      "get": {
+        "operationId": "analytics-getStats",
+        "summary": "Get results stats",
+        "tags": [
+          "Analytics"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "typebotId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "timeFilter",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "today",
+                "last7Days",
+                "last30Days",
+                "yearToDate",
+                "allTime"
+              ],
+              "default": "today"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stats": {
+                      "type": "object",
+                      "properties": {
+                        "totalViews": {
+                          "type": "number"
+                        },
+                        "totalStarts": {
+                          "type": "number"
+                        },
+                        "totalCompleted": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "totalViews",
+                        "totalStarts",
+                        "totalCompleted"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "stats"
                   ]
                 }
               }
@@ -4276,6 +4425,9 @@
                                 }
                               ]
                             }
+                          },
+                          "updatedAt": {
+                            "type": "string"
                           }
                         },
                         "title": "Typebot V6"
@@ -4798,14 +4950,37 @@
                                                   "type": {
                                                     "type": "string",
                                                     "enum": [
-                                                      "Today",
                                                       "Now",
                                                       "Yesterday",
-                                                      "Tomorrow",
+                                                      "Tomorrow"
+                                                    ]
+                                                  },
+                                                  "timeZone": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "type"
+                                                ]
+                                              },
+                                              {
+                                                "type": "object",
+                                                "properties": {
+                                                  "variableId": {
+                                                    "type": "string"
+                                                  },
+                                                  "isExecutedOnClient": {
+                                                    "type": "boolean"
+                                                  },
+                                                  "type": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "Today",
                                                       "Moment of the day",
                                                       "Empty",
                                                       "Environment name",
                                                       "User ID",
+                                                      "Result ID",
                                                       "Random ID",
                                                       "Phone number",
                                                       "Contact name"
@@ -6198,7 +6373,8 @@
                                             "type": "string",
                                             "enum": [
                                               "Webhook"
-                                            ]
+                                            ],
+                                            "description": "Legacy name for HTTP Request block"
                                           },
                                           "options": {
                                             "type": "object",
@@ -6878,15 +7054,14 @@
                           },
                           "events": {
                             "type": "array"
+                          },
+                          "updatedAt": {
+                            "type": "string"
                           }
                         },
                         "title": "Typebot V5"
                       }
                     ]
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "description": "Used for checking if there is a newer version of the typebot in the database"
                   }
                 },
                 "required": [
@@ -8222,14 +8397,37 @@
                                                   "type": {
                                                     "type": "string",
                                                     "enum": [
-                                                      "Today",
                                                       "Now",
                                                       "Yesterday",
-                                                      "Tomorrow",
+                                                      "Tomorrow"
+                                                    ]
+                                                  },
+                                                  "timeZone": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "type"
+                                                ]
+                                              },
+                                              {
+                                                "type": "object",
+                                                "properties": {
+                                                  "variableId": {
+                                                    "type": "string"
+                                                  },
+                                                  "isExecutedOnClient": {
+                                                    "type": "boolean"
+                                                  },
+                                                  "type": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "Today",
                                                       "Moment of the day",
                                                       "Empty",
                                                       "Environment name",
                                                       "User ID",
+                                                      "Result ID",
                                                       "Random ID",
                                                       "Phone number",
                                                       "Contact name"
@@ -9622,7 +9820,8 @@
                                             "type": "string",
                                             "enum": [
                                               "Webhook"
-                                            ]
+                                            ],
+                                            "description": "Legacy name for HTTP Request block"
                                           },
                                           "options": {
                                             "type": "object",
@@ -10850,6 +11049,21 @@
             "name": "cursor",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "timeFilter",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "today",
+                "last7Days",
+                "last30Days",
+                "yearToDate",
+                "allTime"
+              ],
+              "default": "today"
             }
           }
         ],
@@ -15946,6 +16160,14 @@
               "length": {
                 "type": "number"
               },
+              "startsAt": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {}
+                ]
+              },
               "labels": {
                 "type": "object",
                 "properties": {
@@ -16685,14 +16907,37 @@
                           "type": {
                             "type": "string",
                             "enum": [
-                              "Today",
                               "Now",
                               "Yesterday",
-                              "Tomorrow",
+                              "Tomorrow"
+                            ]
+                          },
+                          "timeZone": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "variableId": {
+                            "type": "string"
+                          },
+                          "isExecutedOnClient": {
+                            "type": "boolean"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "Today",
                               "Moment of the day",
                               "Empty",
                               "Environment name",
                               "User ID",
+                              "Result ID",
                               "Random ID",
                               "Phone number",
                               "Contact name"
@@ -18027,7 +18272,8 @@
                     "type": "string",
                     "enum": [
                       "Webhook"
-                    ]
+                    ],
+                    "description": "Legacy name for HTTP Request block"
                   },
                   "options": {
                     "type": "object",
@@ -18545,7 +18791,8 @@
                   "chat-node",
                   "qr-code",
                   "dify-ai",
-                  "mistral"
+                  "mistral",
+                  "elevenlabs"
                 ]
               },
               "options": {}
@@ -19151,7 +19398,52 @@
             "type": "object",
             "properties": {
               "font": {
-                "type": "string"
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "Google"
+                            ]
+                          },
+                          "family": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "Custom"
+                            ]
+                          },
+                          "family": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ]
+                      }
+                    ]
+                  }
+                ]
               },
               "background": {
                 "type": "object",
@@ -20174,14 +20466,37 @@
                                   "type": {
                                     "type": "string",
                                     "enum": [
-                                      "Today",
                                       "Now",
                                       "Yesterday",
-                                      "Tomorrow",
+                                      "Tomorrow"
+                                    ]
+                                  },
+                                  "timeZone": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "type"
+                                ]
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "variableId": {
+                                    "type": "string"
+                                  },
+                                  "isExecutedOnClient": {
+                                    "type": "boolean"
+                                  },
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "Today",
                                       "Moment of the day",
                                       "Empty",
                                       "Environment name",
                                       "User ID",
+                                      "Result ID",
                                       "Random ID",
                                       "Phone number",
                                       "Contact name"
@@ -21574,7 +21889,8 @@
                             "type": "string",
                             "enum": [
                               "Webhook"
-                            ]
+                            ],
+                            "description": "Legacy name for HTTP Request block"
                           },
                           "options": {
                             "type": "object",
@@ -22971,14 +23287,37 @@
                                   "type": {
                                     "type": "string",
                                     "enum": [
-                                      "Today",
                                       "Now",
                                       "Yesterday",
-                                      "Tomorrow",
+                                      "Tomorrow"
+                                    ]
+                                  },
+                                  "timeZone": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "type"
+                                ]
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "variableId": {
+                                    "type": "string"
+                                  },
+                                  "isExecutedOnClient": {
+                                    "type": "boolean"
+                                  },
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "Today",
                                       "Moment of the day",
                                       "Empty",
                                       "Environment name",
                                       "User ID",
+                                      "Result ID",
                                       "Random ID",
                                       "Phone number",
                                       "Contact name"
@@ -24371,7 +24710,8 @@
                             "type": "string",
                             "enum": [
                               "Webhook"
-                            ]
+                            ],
+                            "description": "Legacy name for HTTP Request block"
                           },
                           "options": {
                             "type": "object",

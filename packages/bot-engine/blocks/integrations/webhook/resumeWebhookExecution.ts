@@ -4,7 +4,7 @@ import {
   PabblyConnectBlock,
   ChatLog,
   VariableWithUnknowValue,
-  WebhookBlock,
+  HttpRequestBlock,
   ZapierBlock,
 } from '@typebot.io/schemas'
 import { SessionState } from '@typebot.io/schemas/features/chat/sessionState'
@@ -14,7 +14,7 @@ import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesI
 
 type Props = {
   state: SessionState
-  block: WebhookBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock
+  block: HttpRequestBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock
   logs?: ChatLog[]
   response: {
     statusCode: number

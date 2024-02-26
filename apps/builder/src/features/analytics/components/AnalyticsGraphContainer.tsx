@@ -6,7 +6,7 @@ import {
 } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { Stats } from '@typebot.io/schemas'
-import React, { useState } from 'react'
+import React from 'react'
 import { StatsCards } from './StatsCards'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
 import { Graph } from '@/features/graph/components/Graph'
@@ -15,14 +15,22 @@ import { useTranslate } from '@tolgee/react'
 import { trpc } from '@/lib/trpc'
 import { isDefined } from '@typebot.io/lib'
 import { EventsCoordinatesProvider } from '@/features/graph/providers/EventsCoordinateProvider'
-import { defaultTimeFilter, timeFilterValues } from '../constants'
+import { timeFilterValues } from '../constants'
 
-export const AnalyticsGraphContainer = ({ stats }: { stats?: Stats }) => {
+type Props = {
+  timeFilter: (typeof timeFilterValues)[number]
+  onTimeFilterChange: (timeFilter: (typeof timeFilterValues)[number]) => void
+  stats?: Stats
+}
+
+export const AnalyticsGraphContainer = ({
+  timeFilter,
+  onTimeFilterChange,
+  stats,
+}: Props) => {
   const { t } = useTranslate()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { typebot, publishedTypebot } = useTypebot()
-  const [timeFilter, setTimeFilter] =
-    useState<(typeof timeFilterValues)[number]>(defaultTimeFilter)
   const { data } = trpc.analytics.getTotalAnswers.useQuery(
     {
       typebotId: typebot?.id as string,
@@ -85,7 +93,7 @@ export const AnalyticsGraphContainer = ({ stats }: { stats?: Stats }) => {
         stats={stats}
         pos="absolute"
         timeFilter={timeFilter}
-        setTimeFilter={setTimeFilter}
+        onTimeFilterChange={onTimeFilterChange}
       />
     </Flex>
   )

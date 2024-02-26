@@ -81,6 +81,11 @@ const sessionStateSchemaV2 = z.object({
     .describe('Expiry timeout in milliseconds'),
   typingEmulation: settingsSchema.shape.typingEmulation.optional(),
   currentVisitedEdgeIndex: z.number().optional(),
+  progressMetadata: z
+    .object({
+      totalAnswers: z.number(),
+    })
+    .optional(),
 })
 
 const sessionStateSchemaV3 = sessionStateSchemaV2

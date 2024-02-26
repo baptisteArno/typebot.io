@@ -67,7 +67,10 @@ export const createTypebot = authenticatedProcedure
 
     if (
       typebot.customDomain &&
-      (await isCustomDomainNotAvailable(typebot.customDomain))
+      (await isCustomDomainNotAvailable({
+        customDomain: typebot.customDomain,
+        workspaceId,
+      }))
     )
       throw new TRPCError({
         code: 'BAD_REQUEST',
@@ -79,6 +82,15 @@ export const createTypebot = authenticatedProcedure
         code: 'BAD_REQUEST',
         message: 'Public id not available',
       })
+
+    if (typebot.folderId) {
+      const existingFolder = await prisma.dashboardFolder.findUnique({
+        where: {
+          id: typebot.folderId,
+        },
+      })
+      if (!existingFolder) typebot.folderId = null
+    }
 
     const newTypebot = await prisma.typebot.create({
       data: {

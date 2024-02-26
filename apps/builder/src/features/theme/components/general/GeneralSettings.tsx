@@ -1,18 +1,30 @@
-import { Flex, FormLabel, Stack, Switch, useDisclosure } from '@chakra-ui/react'
-import { Background, Theme } from '@typebot.io/schemas'
+import {
+  Flex,
+  FormLabel,
+  Stack,
+  Switch,
+  useDisclosure,
+  Text,
+} from '@chakra-ui/react'
+import { Background, Font, ProgressBar, Theme } from '@typebot.io/schemas'
 import React from 'react'
 import { BackgroundSelector } from './BackgroundSelector'
-import { FontSelector } from './FontSelector'
 import { LockTag } from '@/features/billing/components/LockTag'
 import { Plan } from '@typebot.io/prisma'
 import { isFreePlan } from '@/features/billing/helpers/isFreePlan'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
 import { useTranslate } from '@tolgee/react'
-import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
+import {
+  defaultTheme,
+  fontTypes,
+} from '@typebot.io/schemas/features/typebot/theme/constants'
 import { trpc } from '@/lib/trpc'
 import { env } from '@typebot.io/env'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { RadioButtons } from '@/components/inputs/RadioButtons'
+import { FontForm } from './FontForm'
+import { ProgressBarForm } from './ProgressBarForm'
 
 type Props = {
   isBrandingEnabled: boolean
@@ -36,11 +48,24 @@ export const GeneralSettings = ({
   const { mutate: trackClientEvents } =
     trpc.telemetry.trackClientEvents.useMutation()
 
-  const handleSelectFont = (font: string) =>
+  const updateFont = (font: Font) =>
     onGeneralThemeChange({ ...generalTheme, font })
+
+  const updateFontType = (type: (typeof fontTypes)[number]) => {
+    onGeneralThemeChange({
+      ...generalTheme,
+      font:
+        typeof generalTheme?.font === 'string'
+          ? { type }
+          : { ...generalTheme?.font, type },
+    })
+  }
 
   const handleBackgroundChange = (background: Background) =>
     onGeneralThemeChange({ ...generalTheme, background })
+
+  const updateProgressBar = (progressBar: ProgressBar) =>
+    onGeneralThemeChange({ ...generalTheme, progressBar })
 
   const updateBranding = () => {
     if (isBrandingEnabled && isWorkspaceFreePlan) return
@@ -62,6 +87,11 @@ export const GeneralSettings = ({
     }
     onBrandingChange(!isBrandingEnabled)
   }
+
+  const fontType =
+    (typeof generalTheme?.font === 'string'
+      ? 'Google'
+      : generalTheme?.font?.type) ?? defaultTheme.general.font.type
 
   return (
     <Stack spacing={6}>
@@ -85,13 +115,22 @@ export const GeneralSettings = ({
           onChange={updateBranding}
         />
       </Flex>
-      <FontSelector
-        activeFont={generalTheme?.font ?? defaultTheme.general.font}
-        onSelectFont={handleSelectFont}
-      />
+      <Stack>
+        <Text>{t('theme.sideMenu.global.font')}</Text>
+        <RadioButtons
+          options={fontTypes}
+          defaultValue={fontType}
+          onSelect={updateFontType}
+        />
+        <FontForm font={generalTheme?.font} onFontChange={updateFont} />
+      </Stack>
       <BackgroundSelector
-        background={generalTheme?.background ?? defaultTheme.general.background}
+        background={generalTheme?.background}
         onBackgroundChange={handleBackgroundChange}
+      />
+      <ProgressBarForm
+        progressBar={generalTheme?.progressBar}
+        onProgressBarChange={updateProgressBar}
       />
     </Stack>
   )
