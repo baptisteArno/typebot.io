@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN apt-get -qy update && apt-get -qy --no-install-recommends install openssl git
+RUN apt-get -qy update && apt-get -qy --no-install-recommends install openssl ca-certificates -y && update-ca-certificates
 
 RUN bun install
 
