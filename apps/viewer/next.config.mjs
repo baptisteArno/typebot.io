@@ -17,6 +17,7 @@ const injectViewerUrlIfVercelPreview = (val) => {
   )
     return
   process.env.NEXT_PUBLIC_VIEWER_URL = `https://${process.env.VERCEL_BRANCH_URL}`
+  process.env.NEXT_PUBLIC_CHAT_API_URL = `https://${process.env.VERCEL_GIT_PULL_REQUEST_ID}.chat.typebot.io`
 }
 
 injectViewerUrlIfVercelPreview(process.env.NEXT_PUBLIC_VIEWER_URL)
