@@ -364,13 +364,10 @@ importers:
   apps/chat-api:
     dependencies:
       '@hono/typebox-validator':
-        specifier: ^0.2.2
+        specifier: 0.2.2
         version: 0.2.2(@sinclair/typebox@0.32.5)(hono@4.0.5)
-      '@hono/zod-validator':
-        specifier: ^0.1.11
-        version: 0.1.11(hono@4.0.5)(zod@3.22.4)
       '@sinclair/typebox':
-        specifier: ^0.32.5
+        specifier: 0.32.5
         version: 0.32.5
       '@trpc/server':
         specifier: 10.40.0
@@ -403,7 +400,7 @@ importers:
         specifier: 2.2.31
         version: 2.2.31(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)
       hono:
-        specifier: ^4.0.5
+        specifier: 4.0.5
         version: 4.0.5
       openai:
         specifier: 4.24.1
@@ -6313,16 +6310,6 @@ packages:
     dependencies:
       '@sinclair/typebox': 0.32.5
       hono: 4.0.5
-    dev: false
-
-  /@hono/zod-validator@0.1.11(hono@4.0.5)(zod@3.22.4):
-    resolution: {integrity: sha512-PQXeHUP0+36qpRt8yfeD7N2jbK3ETlGvSN6dMof/HwUC/APRokQRjpXZm4rrlG71Ft0aWE01+Bm4XejqPie5Uw==}
-    peerDependencies:
-      hono: '>=3.9.0'
-      zod: ^3.19.1
-    dependencies:
-      hono: 4.0.5
-      zod: 3.22.4
     dev: false
 
   /@humanwhocodes/config-array@0.11.14:

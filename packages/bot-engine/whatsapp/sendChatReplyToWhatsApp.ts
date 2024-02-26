@@ -108,7 +108,6 @@ export const sendChatReplyToWhatsApp = async ({
     if ((typingDuration ?? 0) > 0)
       await new Promise((resolve) => setTimeout(resolve, typingDuration))
     try {
-      console.log('sendWhatsAppMessage')
       await sendWhatsAppMessage({
         to,
         message: whatsAppMessage,

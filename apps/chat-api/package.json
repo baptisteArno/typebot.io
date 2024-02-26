@@ -10,9 +10,8 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@hono/typebox-validator": "^0.2.2",
-    "@hono/zod-validator": "^0.1.11",
-    "@sinclair/typebox": "^0.32.5",
+    "@hono/typebox-validator": "0.2.2",
+    "@sinclair/typebox": "0.32.5",
     "@trpc/server": "10.40.0",
     "@typebot.io/bot-engine": "workspace:*",
     "@typebot.io/env": "workspace:*",
@@ -23,7 +22,7 @@
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "ai": "2.2.31",
-    "hono": "^4.0.5",
+    "hono": "4.0.5",
     "openai": "4.24.1"
   },
   "devDependencies": {
