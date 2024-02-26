@@ -10,7 +10,7 @@ RUN bun install
 
 # Need Node for Prisma
 COPY --from=node:18 /usr/local/bin/node /usr/local/bin/node
-RUN DATABASE_URL=postgresql://postgres:typebot@localhost:5432/typebot bunx prisma generate --schema /app/packages/prisma/postgresql/schema.prisma
+RUN bun /app/packages/prisma/scripts/db-exec.ts bunx prisma generate
 
 RUN rm -rf /usr/local/bin/node
 RUN rm -rf /app/apps/builder
