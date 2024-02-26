@@ -1,10 +1,14 @@
-import { Elysia } from 'elysia'
-import { apiRuntime } from './runtimes/api/app'
-import { whatsAppRuntime } from './runtimes/whatsapp/app'
+import { Hono } from 'hono'
+import { webRuntime } from './runtimes/web'
+import { whatsAppRuntime } from './runtimes/whatsapp'
 
-new Elysia()
-  .use(apiRuntime)
-  .use(whatsAppRuntime)
-  .listen(process.env.PORT ?? 3002)
+const app = new Hono()
 
-console.log(`Chat API is running on port ${process.env.PORT ?? 3002}`)
+app.get('/ping', (c) => c.json({ status: 'ok' }, 200))
+app.route('/', webRuntime)
+app.route('/', whatsAppRuntime)
+
+export default {
+  port: process.env.PORT ?? 3002,
+  fetch: app.fetch,
+}

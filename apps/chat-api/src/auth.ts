@@ -3,10 +3,10 @@ import { mockedUser } from '@typebot.io/lib/mockedUser'
 import prisma from '@typebot.io/lib/prisma'
 
 export const getAuthenticatedUserId = async (
-  headers: Record<string, string | undefined>
+  authorizationHeaderValue: string | undefined
 ): Promise<string | undefined> => {
   if (env.NEXT_PUBLIC_E2E_TEST) return mockedUser.id
-  const bearerToken = extractBearerToken(headers)
+  const bearerToken = extractBearerToken(authorizationHeaderValue)
   if (!bearerToken) return
   return authenticateByToken(bearerToken)
 }
@@ -26,5 +26,5 @@ const authenticateByToken = async (
   return apiToken?.ownerId
 }
 
-const extractBearerToken = (headers: Record<string, string | undefined>) =>
-  headers['authorization']?.slice(7)
+const extractBearerToken = (authorizationHeaderValue: string | undefined) =>
+  authorizationHeaderValue?.slice(7)
