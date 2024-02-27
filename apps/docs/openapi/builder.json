@@ -19461,6 +19461,37 @@
                     "type": "string"
                   }
                 }
+              },
+              "progressBar": {
+                "type": "object",
+                "properties": {
+                  "isEnabled": {
+                    "type": "boolean"
+                  },
+                  "color": {
+                    "type": "string"
+                  },
+                  "backgroundColor": {
+                    "type": "string"
+                  },
+                  "placement": {
+                    "type": "string",
+                    "enum": [
+                      "Top",
+                      "Bottom"
+                    ]
+                  },
+                  "thickness": {
+                    "type": "number"
+                  },
+                  "position": {
+                    "type": "string",
+                    "enum": [
+                      "fixed",
+                      "absolute"
+                    ]
+                  }
+                }
               }
             }
           },
