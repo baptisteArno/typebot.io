@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@chakra-ui/react": "^2.0.0",
-    "@emotion/react": "^11.9.0",
+    "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.8.1",
     "aos": "^2.3.4",
     "bot-engine": "*",

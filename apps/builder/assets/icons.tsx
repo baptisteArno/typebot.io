@@ -393,6 +393,16 @@ export const PreReserveIcon = (props: any) => (
   </IconContext.Provider>
 )
 
+export const ConversationTagIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ color: props.color, className: 'global-class-name' }}
+  >
+    <div>
+      <MaterialDesign.MdSell />
+    </div>
+  </IconContext.Provider>
+)
+
 export const AlarmIcon = (props: any) => (
   <IconContext.Provider
     value={{ color: props.color, className: 'global-class-name' }}

@@ -23,6 +23,14 @@
   },
   "packageManager": "yarn@1.22.17",
   "dependencies": {
-    "react-icons": "^4.4.0"
+    "@chakra-ui/react": "^2.8.1",
+    "@emotion/react": "^11.8.1",
+    "@emotion/styled": "^11",
+    "chakra-react-select": "^4.7.3",
+    "framer-motion": "^6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.4.0",
+    "react-select": "^5.7.7"
   }
 }
