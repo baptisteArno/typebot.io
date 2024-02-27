@@ -1,0 +1,26 @@
+---
+title: Font
+---
+
+You can change the font of your typebot in the Theme tab under the Global section.
+
+There, you can choose between choosing a font from Google Fonts or defining your own custom font.
+
+## How to import my own font?
+
+You can import your own font by clicking on the "Custom" option. There you need to define the font family and the CSS that defines all the `@font-face` properties.
+
+For example, if I want to import my font called "Awesome Font", I would define the following family value: `"Awesome Font", "Helvetica Neue", sans-serif`. This should be a list of font names separated by commas. The first font name in the list is the font that will be used if it is available. If the name is not available, the browser will try to use the next font in the list. A font name that contains white-space should be quoted.
+
+Then I would define the content like so:
+
+```css
+@font-face {
+  font-family: 'Awesome Font';
+  src: url('https://example.com/awesome.woff') format('woff'), url('https://example.com/awesome.ttf') format('truetype');
+}
+```
+
+<Note>
+The server providing the fonts (`https://example.com/awesome.woff`) needs to support HTTPS and Cross-Origin Resource Sharing (CORS).
+</Note>

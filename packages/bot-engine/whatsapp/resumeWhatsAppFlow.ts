@@ -18,6 +18,7 @@ type Props = {
   receivedMessage: WhatsAppIncomingMessage
   sessionId: string
   credentialsId?: string
+  phoneNumberId?: string
   workspaceId?: string
   contact: NonNullable<SessionState['whatsApp']>['contact']
 }
@@ -27,6 +28,7 @@ export const resumeWhatsAppFlow = async ({
   sessionId,
   workspaceId,
   credentialsId,
+  phoneNumberId,
   contact,
 }: Props): Promise<{ message: string }> => {
   const messageSendDate = new Date(Number(receivedMessage.timestamp) * 1000)
@@ -49,6 +51,13 @@ export const resumeWhatsAppFlow = async ({
 
   if (!credentials) {
     console.error('Could not find credentials')
+    return {
+      message: 'Message received',
+    }
+  }
+
+  if (credentials.phoneNumberId !== phoneNumberId) {
+    console.error('Credentials point to another phone ID, skipping...')
     return {
       message: 'Message received',
     }

@@ -47,7 +47,8 @@ export type GoogleFont = z.infer<typeof googleFontSchema>
 const customFontSchema = z.object({
   type: z.literal(fontTypes[1]),
   family: z.string().optional(),
-  url: z.string().optional(),
+  css: z.string().optional(),
+  url: z.string().optional().describe('Deprecated, use `css` instead'),
 })
 export type CustomFont = z.infer<typeof customFontSchema>
 

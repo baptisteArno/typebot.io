@@ -7,7 +7,7 @@ export const playwrightBaseConfig: PlaywrightTestConfig = {
   expect: {
     timeout: process.env.CI ? 10 * 1000 : 5 * 1000,
   },
-  retries: process.env.NO_RETRIES ? 0 : 1,
+  retries: 0,
   workers: process.env.CI ? 2 : 3,
   reporter: [
     [process.env.CI ? 'github' : 'list'],

@@ -1,7 +1,10 @@
 {
   "$schema": "https://mintlify.com/schema.json",
   "name": "Flowdacity Docs",
-  "openapi": ["/openapi/builder.json", "/openapi/viewer.json"],
+  "openapi": [
+    "/openapi/builder.json",
+    "/openapi/viewer.json"
+  ],
   "feedback": {
     "suggestEdit": true
   },
@@ -51,7 +54,10 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["get-started/introduction", "get-started/overview"]
+      "pages": [
+        "get-started/introduction",
+        "get-started/overview"
+      ]
     },
     {
       "group": "Flow",
@@ -130,11 +136,16 @@
     },
     {
       "group": "Theme",
-      "pages": ["theme/overview"]
+      "pages": [
+        "theme/overview",
+        "theme/font"
+      ]
     },
     {
       "group": "Settings",
-      "pages": ["settings/overview"]
+      "pages": [
+        "settings/overview"
+      ]
     },
     {
       "group": "Deploy",
@@ -171,7 +182,10 @@
     },
     {
       "group": "Results",
-      "pages": ["results/overview", "results/analytics"]
+      "pages": [
+        "results/overview",
+        "results/analytics"
+      ]
     },
     {
       "group": "Workspace",
@@ -202,11 +216,18 @@
     },
     {
       "group": "Misc",
-      "pages": ["faq", "privacy-policies", "report-abuse"]
+      "pages": [
+        "faq",
+        "privacy-policies",
+        "report-abuse"
+      ]
     },
     {
       "group": "Get started",
-      "pages": ["api-reference/authentication", "api-reference/how-to"]
+      "pages": [
+        "api-reference/authentication",
+        "api-reference/how-to"
+      ]
     },
     {
       "group": "Chat",
@@ -243,7 +264,9 @@
     },
     {
       "group": "Analytics",
-      "pages": ["api-reference/analytics/get-stats"]
+      "pages": [
+        "api-reference/analytics/get-stats"
+      ]
     },
     {
       "group": "Folder",

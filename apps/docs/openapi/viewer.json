@@ -1380,6 +1380,10 @@
                         }
                       },
                       "description": "If the typebot contains dynamic avatars, dynamicTheme returns the new avatar URLs whenever their variables are updated."
+                    },
+                    "progress": {
+                      "type": "number",
+                      "description": "If progress bar is enabled, this field will return a number between 0 and 100 indicating the current progress based on the longest remaining path of the flow."
                     }
                   },
                   "required": [
@@ -1709,6 +1713,10 @@
                         }
                       },
                       "description": "If the typebot contains dynamic avatars, dynamicTheme returns the new avatar URLs whenever their variables are updated."
+                    },
+                    "progress": {
+                      "type": "number",
+                      "description": "If progress bar is enabled, this field will return a number between 0 and 100 indicating the current progress based on the longest remaining path of the flow."
                     }
                   },
                   "required": [
@@ -2127,6 +2135,10 @@
                         }
                       },
                       "description": "If the typebot contains dynamic avatars, dynamicTheme returns the new avatar URLs whenever their variables are updated."
+                    },
+                    "progress": {
+                      "type": "number",
+                      "description": "If progress bar is enabled, this field will return a number between 0 and 100 indicating the current progress based on the longest remaining path of the flow."
                     }
                   },
                   "required": [
@@ -6732,8 +6744,12 @@
                           "family": {
                             "type": "string"
                           },
-                          "url": {
+                          "css": {
                             "type": "string"
+                          },
+                          "url": {
+                            "type": "string",
+                            "description": "Deprecated, use `css` instead"
                           }
                         },
                         "required": [
@@ -6757,6 +6773,37 @@
                   },
                   "content": {
                     "type": "string"
+                  }
+                }
+              },
+              "progressBar": {
+                "type": "object",
+                "properties": {
+                  "isEnabled": {
+                    "type": "boolean"
+                  },
+                  "color": {
+                    "type": "string"
+                  },
+                  "backgroundColor": {
+                    "type": "string"
+                  },
+                  "placement": {
+                    "type": "string",
+                    "enum": [
+                      "Top",
+                      "Bottom"
+                    ]
+                  },
+                  "thickness": {
+                    "type": "number"
+                  },
+                  "position": {
+                    "type": "string",
+                    "enum": [
+                      "fixed",
+                      "absolute"
+                    ]
                   }
                 }
               }

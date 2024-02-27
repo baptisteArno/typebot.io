@@ -13,7 +13,6 @@ export const computeCurrentProgress = ({
   progressMetadata,
   currentInputBlockId,
 }: Props) => {
-  if (progressMetadata.totalAnswers === 0) return 0
   const paths = computePossibleNextInputBlocks({
     typebotsQueue: typebotsQueue,
     blockId: currentInputBlockId,
@@ -22,11 +21,10 @@ export const computeCurrentProgress = ({
     },
     currentPath: [],
   })
-
   return (
-    (progressMetadata.totalAnswers /
+    ((progressMetadata.totalAnswers + 1) /
       (Math.max(...paths.map((b) => b.length)) +
-        progressMetadata.totalAnswers)) *
+        (progressMetadata.totalAnswers + 1))) *
     100
   )
 }

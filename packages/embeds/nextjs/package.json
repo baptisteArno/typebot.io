@@ -1,7 +1,7 @@
 {
   "name": "@flowdacity/nextjs",
-  "version": "0.2.43",
-  "description": "Convenient library to display typebots on your Next.js website",
+  "version": "0.2.45",
+  "description": "Convenient library to display flowdacity chatbots on your Next.js website",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
