@@ -254,15 +254,15 @@ const setTypebotBackground = (
 }
 
 const parseBackgroundValue = ({ type, content }: Background = {}) => {
+  console.log('parseBackgroundValue', type, content)
   switch (type) {
     case BackgroundType.NONE:
       return 'transparent'
+    case undefined:
     case BackgroundType.COLOR:
-      return content ?? '#ffffff'
+      return content ?? defaultTheme.general.background.content
     case BackgroundType.IMAGE:
       return `url(${content})`
-    case undefined:
-      return defaultTheme.general.background.content
   }
 }
 
