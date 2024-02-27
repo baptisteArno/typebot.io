@@ -9,16 +9,17 @@ import {
   MARK_ITALIC,
   MARK_UNDERLINE,
 } from '@udecode/plate-basic-marks'
-import { getPluginType, usePlateEditorRef } from '@udecode/plate-core'
-import { LinkToolbarButton } from '@udecode/plate-ui-link'
-import { MarkToolbarButton } from '@udecode/plate-ui-toolbar'
+import { getPluginType, useEditorRef } from '@udecode/plate-core'
 import {
   BoldIcon,
   ItalicIcon,
   UnderlineIcon,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   LinkIcon,
   UserIcon,
 } from '@/components/icons'
+import { MarkToolbarButton } from './plate/MarkToolbarButton'
+import { LinkToolbarButton } from './plate/LinkToolbarButton'
 
 type Props = {
   onVariablesButtonClick: () => void
@@ -28,7 +29,8 @@ export const TextEditorToolBar = ({
   onVariablesButtonClick,
   ...props
 }: Props) => {
-  const editor = usePlateEditorRef()
+  const editor = useEditorRef()
+
   const handleVariablesButtonMouseDown = (e: React.MouseEvent) => {
     e.stopPropagation()
     e.preventDefault()
@@ -52,24 +54,27 @@ export const TextEditorToolBar = ({
       />
       <span data-testid="bold-button">
         <MarkToolbarButton
-          type={getPluginType(editor, MARK_BOLD)}
+          nodeType={getPluginType(editor, MARK_BOLD)}
           icon={<BoldIcon />}
+          aria-label="Toggle bold"
         />
       </span>
       <span data-testid="italic-button">
         <MarkToolbarButton
-          type={getPluginType(editor, MARK_ITALIC)}
+          nodeType={getPluginType(editor, MARK_ITALIC)}
           icon={<ItalicIcon />}
+          aria-label="Toggle italic"
         />
       </span>
       <span data-testid="underline-button">
         <MarkToolbarButton
-          type={getPluginType(editor, MARK_UNDERLINE)}
+          nodeType={getPluginType(editor, MARK_UNDERLINE)}
           icon={<UnderlineIcon />}
+          aria-label="Toggle underline"
         />
       </span>
       <span data-testid="link-button">
-        <LinkToolbarButton icon={<LinkIcon />} />
+        <LinkToolbarButton icon={<LinkIcon />} aria-label="Add link" />
       </span>
     </HStack>
   )
