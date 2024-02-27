@@ -10,6 +10,7 @@ type Props = {
 
 export const ConditionNodeContent = ({ item }: Props) => {
   const { typebot } = useTypebot()
+  
   return (
     <Flex px={2} py={2}>
       {item.content.comparisons.length === 0 ||
@@ -41,6 +42,14 @@ export const ConditionNodeContent = ({ item }: Props) => {
                     <Text noOfLines={0}>{comparison.value}</Text>
                   </Tag>
                 )}
+                {comparison?.secondaryValue && (
+                  <div>
+                    <span> E </span>
+                    <Tag bgColor={'gray.200'}>
+                      <Text noOfLines={0}>{comparison.secondaryValue}</Text>
+                    </Tag>
+                  </div>
+                )}
               </Wrap>
             )
           })}
@@ -63,17 +72,38 @@ const parseLogicalOperatorSymbol = (operator: LogicalOperator) => {
 
 const parseComparisonOperatorSymbol = (operator: ComparisonOperators) => {
   const toCompare = Object.keys(ComparisonOperators).indexOf(operator)
-  console.log('parseComparisonOperatorSymbol', { toCompare, operator })
   switch (Object.values(ComparisonOperators)[toCompare]) {
     case ComparisonOperators.CONTAINS:
       return 'contém'
     case ComparisonOperators.EQUAL:
-      return '='
-    case ComparisonOperators.GREATER:
-      return '>'
-    case ComparisonOperators.LESS:
-      return '<'
+        return '='
     case ComparisonOperators.NOT_EQUAL:
-      return '!='
+        return '!='
+    case ComparisonOperators.GREATER:
+        return '>'
+    case ComparisonOperators.GREATER_OR_EQUAL:
+        return '>='
+    case ComparisonOperators.LESS:
+        return '<'
+    case ComparisonOperators.LESS_OR_EQUAL:
+        return '<='
+    case ComparisonOperators.EMPTY:
+        return 'é vazio'
+    case ComparisonOperators.NOT_EMPTY:
+        return 'não é vazio'
+    case ComparisonOperators.START_WITH:
+        return 'inicia com'
+    case ComparisonOperators.NOT_START_WITH:
+        return 'não inicia com'
+    case ComparisonOperators.END_WITH:
+        return 'termina com'
+    case ComparisonOperators.NOT_END_WITH:
+        return 'não termina com'
+    case ComparisonOperators.NOT_CONTAINS:
+        return 'não contém'
+    case ComparisonOperators.BETWEEN:
+        return ' estiver entre '
+    case ComparisonOperators.NOT_BETWEEN:
+        return ' não estiver entre '
   }
 }
