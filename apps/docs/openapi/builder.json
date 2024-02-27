@@ -19433,8 +19433,12 @@
                           "family": {
                             "type": "string"
                           },
-                          "url": {
+                          "css": {
                             "type": "string"
+                          },
+                          "url": {
+                            "type": "string",
+                            "description": "Deprecated, use `css` instead"
                           }
                         },
                         "required": [

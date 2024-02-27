@@ -115,6 +115,10 @@ export const GeneralSettings = ({
           onChange={updateBranding}
         />
       </Flex>
+      <ProgressBarForm
+        progressBar={generalTheme?.progressBar}
+        onProgressBarChange={updateProgressBar}
+      />
       <Stack>
         <Text>{t('theme.sideMenu.global.font')}</Text>
         <RadioButtons
@@ -127,10 +131,6 @@ export const GeneralSettings = ({
       <BackgroundSelector
         background={generalTheme?.background}
         onBackgroundChange={handleBackgroundChange}
-      />
-      <ProgressBarForm
-        progressBar={generalTheme?.progressBar}
-        onProgressBarChange={updateProgressBar}
       />
     </Stack>
   )

@@ -242,12 +242,6 @@ pre {
   border-radius: 6px;
 }
 
-.typebot-host-bubble img,
-.typebot-host-bubble iframe,
-.typebot-host-bubble video {
-  border-radius: var(--typebot-border-radius);
-}
-
 .typebot-guest-bubble {
   color: var(--typebot-guest-bubble-color);
   background-color: var(--typebot-guest-bubble-bg-color);
@@ -409,7 +403,11 @@ select option {
 }
 
 .typebot-progress-bar-container {
-  background-color: var(--typebot-progress-bar-bg-color);
+  background-color: rgba(
+    var(--typebot-button-bg-color-rgb),
+    calc(var(--selectable-base-alpha) + 0.12)
+  );
+
   height: var(--typebot-progress-bar-height);
   position: var(--typebot-progress-bar-position);
   top: var(--typebot-progress-bar-top);
