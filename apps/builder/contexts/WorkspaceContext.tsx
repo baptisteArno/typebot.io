@@ -480,7 +480,6 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
   const createChatField = useCallback(
     (property: OctaProperty, variableId?: string): any => {
-      debugger
       if (octaChatFields.find((c) => c.token === property.token)) return
       if (property.token.endsWith('-contato') || property.token.endsWith('-organizacao')) return
 
