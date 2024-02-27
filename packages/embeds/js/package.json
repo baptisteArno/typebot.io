@@ -1,7 +1,7 @@
 {
   "name": "@flowdacity/js",
-  "version": "0.2.43",
-  "description": "Javascript library to display typebots on your website",
+  "version": "0.2.45",
+  "description": "Javascript library to display flowdacity chatbots on your website",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
