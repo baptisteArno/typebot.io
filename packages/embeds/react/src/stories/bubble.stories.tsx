@@ -39,7 +39,7 @@ export const Default = () => {
         typebot={leadGenerationTypebot}
         apiHost="http://localhost:3001"
         prefilledVariables={{
-          Name: 'John',
+          Name: ['John'],
         }}
         previewMessage={{
           avatarUrl: 'https://avatars.githubusercontent.com/u/16015833?v=4',

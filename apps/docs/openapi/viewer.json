@@ -1842,6 +1842,15 @@
                         ]
                       }
                     ]
+                  },
+                  "prefilledVariables": {
+                    "type": "object",
+                    "additionalProperties": {},
+                    "description": "[More info about prefilled variables.](../../editor/variables#prefilled-variables)",
+                    "example": {
+                      "First name": "John",
+                      "Email": "john@gmail.com"
+                    }
                   }
                 }
               }

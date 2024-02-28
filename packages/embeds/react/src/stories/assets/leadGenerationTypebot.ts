@@ -328,9 +328,11 @@ export const leadGenerationTypebot: StartTypebot = {
           id: 'clckrl870000y3b6sxyd24qwc',
           type: BubbleBlockType.TEXT,
           content: {
-            html: '<div>Hi {{Name}}!</div>',
-            richText: [{ type: 'p', children: [{ text: 'Hi {{Name}}!' }] }],
-            plainText: 'Hi {{Name}}!',
+            html: '<div>Hi {{={{Name}}[0]=}}!</div>',
+            richText: [
+              { type: 'p', children: [{ text: 'Hi {{={{Name}}[0]=}}!' }] },
+            ],
+            plainText: 'Hi {{={{Name}}[0]=}}!',
           },
           outgoingEdgeId: 'clckrlwmd00163b6sjlass4p8',
         },
@@ -443,7 +445,7 @@ export const leadGenerationTypebot: StartTypebot = {
     },
   },
   settings: {
-    general: { isBrandingEnabled: true },
+    general: { isBrandingEnabled: true, isInputPrefillEnabled: true },
     metadata: {
       description:
         'Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form.',
