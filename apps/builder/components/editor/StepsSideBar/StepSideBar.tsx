@@ -37,50 +37,67 @@ import { useStepDnd } from 'contexts/GraphDndContext'
 import React, { useState } from 'react'
 import { StepCard, StepCardOverlay } from './StepCard'
 import { LockedIcon, UnlockedIcon } from 'assets/icons'
-import { headerHeight } from 'components/shared/TypebotHeader'
 import { useUser } from 'contexts/UserContext'
 import { useWorkspace } from 'contexts/WorkspaceContext'
 import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 
 export const StepsSideBar = () => {
   const { setDraggedStepType, draggedStepType } = useStepDnd()
+
   const [position, setPosition] = useState({
     x: 0,
     y: 0,
   })
+
   const { workspace } = useWorkspace()
+
   const [relativeCoordinates, setRelativeCoordinates] = useState({ x: 0, y: 0 })
+
   const [isLocked, setIsLocked] = useState(true)
+
   const [isExtended, setIsExtended] = useState(true)
+
   const { isOpen, onOpen, onClose } = useDisclosure()
+
   const { typebot } = useTypebot()
 
   const { verifyFeatureToggle } = useUser()
 
   const handleMouseMove = (event: MouseEvent) => {
     if (!draggedStepType) return
+
     const { clientX, clientY } = event
+
     setPosition({
       ...position,
       x: clientX - relativeCoordinates.x,
       y: clientY - relativeCoordinates.y,
     })
   }
+
   useEventListener('mousemove', handleMouseMove)
 
   const handleMouseDown = (e: React.MouseEvent, type: DraggableStepType) => {
     const element = e.currentTarget as HTMLDivElement
+
     const rect = element.getBoundingClientRect()
+
     setPosition({ x: rect.left, y: rect.top })
+
     const x = e.clientX - rect.left
+
     const y = e.clientY - rect.top
+
     setRelativeCoordinates({ x, y })
+
     setDraggedStepType(type)
   }
 
   const handleMouseUp = () => {
     if (!draggedStepType) return
+
     setDraggedStepType(undefined)
+
     setPosition({
       x: 0,
       y: 0,
@@ -116,6 +133,7 @@ export const StepsSideBar = () => {
   const EVENT_AVAILABLE_STEPS: StepType[] = [IntegrationStepType.WEBHOOK]
 
   const LIMITED_DOMAINS = ['person', 'ticket']
+
   const isValidToCurrentDomain = (type: StepType) => {
     if (LIMITED_DOMAINS.includes(typebot?.domain || 'chat')) {
       return type === IntegrationStepType.WEBHOOK
@@ -189,10 +207,8 @@ export const StepsSideBar = () => {
       w="375px"
       pos="absolute"
       left="0"
-      h={`calc(100vh - ${headerHeight}px)`}
+      h="100vh"
       zIndex="2"
-      pl="4"
-      py="4"
       onMouseLeave={handleMouseLeave}
       transform={isExtended ? 'translateX(0)' : 'translateX(-350px)'}
       transition="transform 350ms cubic-bezier(0.075, 0.82, 0.165, 1) 0s"
@@ -200,8 +216,11 @@ export const StepsSideBar = () => {
       <Stack
         w="full"
         rounded="lg"
+        borderEndEndRadius={0}
         shadow="xl"
         borderWidth="1px"
+        borderLeft={0}
+        borderBottom={0}
         pt="2"
         pb="10"
         px="4"
@@ -212,26 +231,12 @@ export const StepsSideBar = () => {
         className="hide-scrollbar"
       >
         <HStack w="full">
-          <Button onClick={onOpen}>Primeiros passos</Button>
-          <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Primeiros passos</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <iframe
-                  src={`${getBaseUrl()}?appcue=eba38d22-a021-4c9d-a2a7-6435d5eb853c`}
-                  style={{ width: '100%', height: '400px' }}
-                />
-              </ModalBody>
-              <ModalFooter>
-                <Button colorScheme="blue" mr={3} onClick={onClose}>
-                  Fechar
-                </Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
+          <Text fontSize="lg" fontWeight="bold" color="gray.600">
+            Etapas da conversa
+          </Text>
+
           <Spacer />
+
           <Flex>
             <Tooltip
               label={
@@ -285,7 +290,7 @@ export const StepsSideBar = () => {
             </SimpleGrid>
           </Stack>
         )}
-        {wozSteps.length &&
+        {wozSteps.length && (
           <Stack>
             <Text fontSize="sm" fontWeight="semibold" color="gray.600">
               WOZ - IA da Octa

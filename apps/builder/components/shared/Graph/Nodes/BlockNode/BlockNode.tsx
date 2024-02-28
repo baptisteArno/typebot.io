@@ -2,6 +2,7 @@ import {
   Editable,
   EditableInput,
   EditablePreview,
+  Flex,
   SlideFade,
   Stack,
   useOutsideClick,
@@ -19,6 +20,7 @@ import { useDebounce } from 'use-debounce'
 import { setMultipleRefs } from 'services/utils'
 import { DraggableCore, DraggableData, DraggableEvent } from 'react-draggable'
 import { BlockFocusToolbar } from './BlockFocusToolbar'
+import { WarningTwoIcon } from '@chakra-ui/icons'
 
 type Props = {
   block: Block
@@ -37,28 +39,40 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
     setFocusedBlockId,
     graphPosition,
   } = useGraph()
+
   const { typebot, updateBlock, deleteBlock, duplicateBlock } = useTypebot()
+
   const { setMouseOverBlock, mouseOverBlock } = useStepDnd()
+
   const [isMouseDown, setIsMouseDown] = useState(false)
+
   const [isConnecting, setIsConnecting] = useState(false)
+
   const [isFocused, setIsFocused] = useState(false)
+
   const isPreviewing =
     previewingEdge?.from.blockId === block.id ||
     (previewingEdge?.to.blockId === block.id &&
       isNotDefined(previewingEdge.to.stepId))
+
   const isStartBlock =
     isDefined(block.steps[0]) && block.steps[0].type === 'start'
 
   const blockCoordinates = blocksCoordinates[block.id]
+
   const blockRef = useRef<HTMLDivElement | null>(null)
+
   const [debouncedBlockPosition] = useDebounce(blockCoordinates, 100)
+
   useEffect(() => {
     if (!debouncedBlockPosition || isReadOnly) return
+
     if (
       debouncedBlockPosition?.x === block.graphCoordinates.x &&
       debouncedBlockPosition.y === block.graphCoordinates.y
     )
       return
+
     updateBlock(blockIndex, { graphCoordinates: debouncedBlockPosition })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedBlockPosition])
@@ -79,21 +93,27 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
 
   const handleMouseEnter = () => {
     if (isReadOnly) return
+
     if (mouseOverBlock?.id !== block.id && !isStartBlock)
       setMouseOverBlock({ id: block.id, ref: blockRef })
+
     if (connectingIds)
       setConnectingIds({ ...connectingIds, target: { blockId: block.id } })
   }
 
   const handleMouseLeave = () => {
     if (isReadOnly) return
+
     setMouseOverBlock(undefined)
+
     if (connectingIds) setConnectingIds({ ...connectingIds, target: undefined })
   }
 
   const onDrag = (_: DraggableEvent, draggableData: DraggableData) => {
     _.preventDefault()
+
     const { deltaX, deltaY } = draggableData
+
     updateBlockCoordinates(block.id, {
       x: blockCoordinates.x + deltaX / graphPosition.scale,
       y: blockCoordinates.y + deltaY / graphPosition.scale,
@@ -102,6 +122,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
 
   const onDragStart = () => {
     setFocusedBlockId(block.id)
+
     setIsMouseDown(true)
   }
 
@@ -111,6 +132,19 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
   })
 
   const onDragStop = () => setIsMouseDown(false)
+
+  const stackBorderColor = (isOpened: boolean): string => {
+    if (!block.hasConnection) {
+      return 'yellow.500'
+    } else if (isConnecting || isOpened || isPreviewing || isFocused) {
+      return 'blue.400'
+    }
+
+    return '#ffffff'
+  }
+
+  const showEmptyConnectionAlert = () => !block.hasConnection
+
   return (
     <ContextMenu<HTMLDivElement>
       renderMenu={() => <BlockNodeContextMenu blockIndex={blockIndex} />}
@@ -133,11 +167,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
               bgColor="#ffffff"
               borderWidth="2px"
               maxWidth="313px"
-              borderColor={
-                isConnecting || isOpened || isPreviewing || isFocused
-                  ? 'blue.400'
-                  : '#ffffff'
-              }
+              borderColor={stackBorderColor(isOpened)}
               transition="border 300ms, box-shadow 200ms"
               pos="absolute"
               style={{
@@ -153,23 +183,31 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
               _hover={{ shadow: 'lg' }}
               zIndex={focusedBlockId === block.id ? 10 : 1}
             >
-              <Editable
-                defaultValue={block.title}
-                onSubmit={handleTitleSubmit}
-                fontWeight="semibold"
-                pointerEvents={isReadOnly || isStartBlock ? 'none' : 'auto'}
-              >
-                <EditablePreview
-                  _hover={{ bgColor: 'gray.200' }}
-                  px="1"
-                  userSelect={'none'}
-                />
-                <EditableInput
-                  minW="0"
-                  px="1"
-                  onMouseDown={(e) => e.stopPropagation()}
-                />
-              </Editable>
+              <Flex justifyContent="space-between" alignItems="center" gap="2">
+                <Editable
+                  defaultValue={block.title}
+                  onSubmit={handleTitleSubmit}
+                  fontWeight="semibold"
+                  pointerEvents={isReadOnly || isStartBlock ? 'none' : 'auto'}
+                >
+                  <EditablePreview
+                    _hover={{ bgColor: 'gray.200' }}
+                    px="1"
+                    userSelect={'none'}
+                  />
+
+                  <EditableInput
+                    minW="0"
+                    px="1"
+                    onMouseDown={(e) => e.stopPropagation()}
+                  />
+                </Editable>
+
+                {showEmptyConnectionAlert() && (
+                  <WarningTwoIcon color="#FAC300" />
+                )}
+              </Flex>
+
               {typebot && (
                 <StepNodesList
                   blockId={block.id}
@@ -179,6 +217,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
                   isStartBlock={isStartBlock}
                 />
               )}
+
               {isFocused && !isStartBlock && (
                 <SlideFade
                   in={isFocused}

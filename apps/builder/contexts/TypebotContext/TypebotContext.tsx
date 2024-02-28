@@ -48,6 +48,7 @@ import Agents from 'services/octadesk/agents/agents'
 import Groups from 'services/octadesk/groups/groups'
 import { BotsService } from 'services/octadesk/bots/bots'
 import { ASSIGN_TO } from 'enums/assign-to'
+import { updateBlocksHasConnections } from 'helpers/block-connections'
 import { TagsService } from 'services/octadesk/tags/tags.service'
 
 type UpdateTypebotPayload = Partial<{
@@ -168,14 +169,21 @@ export const TypebotContext = ({
 
   useEffect(() => {
     if (!typebot || !currentTypebotRef.current) return
+
+    const parsedTypebot = {
+      ...typebot,
+      blocks: updateBlocksHasConnections(typebot),
+    }
+
     if (typebotId !== currentTypebotRef.current.id) {
-      setLocalTypebot({ ...typebot }, { updateDate: false })
+      setLocalTypebot({ ...parsedTypebot }, { updateDate: false })
+
       flush()
     } else if (
       new Date(typebot.updatedAt) >
       new Date(currentTypebotRef.current.updatedAt)
     ) {
-      setLocalTypebot({ ...typebot })
+      setLocalTypebot({ ...parsedTypebot })
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -265,12 +273,22 @@ export const TypebotContext = ({
 
   useEffect(() => {
     if (isLoading) return
+
     if (!typebot) {
       toast({ status: 'info', description: "Couldn't find typebot" })
+
       router.replace(`${config.basePath || ''}/typebots`)
+
       return
     }
-    setLocalTypebot({ ...typebot })
+
+    const parsedTypebot = {
+      ...typebot,
+      blocks: updateBlocksHasConnections(typebot),
+    }
+
+    setLocalTypebot({ ...parsedTypebot })
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading])
 
@@ -564,12 +582,11 @@ export const TypebotContext = ({
           .getAll()
           .then((res) => {
             const itemList = res
-              .filter(function(tag: any) {
-                  return tag?.status == 'active';
-                })            
+              .filter(function (tag: any) {
+                return tag?.status == 'active'
+              })
               .sort((a: any, b: any) => a.name.localeCompare(b.name))
-              .map((tag: any, idx: number) => (
-              {
+              .map((tag: any, idx: number) => ({
                 ...tag,
                 label: tag.name,
                 value: { tag: tag.id },
@@ -578,7 +595,7 @@ export const TypebotContext = ({
               }))
 
             tagsList.push(...itemList)
-          })
+          }),
       ])
 
       setTagsList(tagsList)
@@ -589,7 +606,6 @@ export const TypebotContext = ({
       setTagsList(() => [])
     }
   }, [])
-
 
   return (
     <typebotContext.Provider
@@ -620,7 +636,7 @@ export const TypebotContext = ({
         octaAgents,
         octaGroups,
         botFluxesList,
-        tagsList
+        tagsList,
       }}
     >
       {children}

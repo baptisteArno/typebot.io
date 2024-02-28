@@ -6,21 +6,13 @@ import {
   Block,
   DraggableStep,
   DraggableStepType,
-  IntegrationStepType,
   StepIndices,
   Typebot,
-  OctaWabaStepType,
 } from 'models'
 import { SetTypebot } from '../TypebotContext'
 import { cleanUpEdgeDraft } from './edges'
 import { createStepDraft, duplicateStepDraft } from './steps'
-
-import {
-  BubbleStepType,
-  InputStepType,
-  OctaBubbleStepType,
-  OctaStepType,
-} from 'models'
+import { updateBlocksHasConnections } from 'helpers/block-connections'
 
 export type BlocksActions = {
   createBlock: (
@@ -53,23 +45,34 @@ const blocksActions = (setTypebot: SetTypebot): BlocksActions => ({
           graphCoordinates,
           title: `Grupo #${typebot?.blocks?.length || '1'}`,
           steps: [],
+          hasConnection: false,
         }
+
         typebot.blocks.push(newBlock)
+
+        typebot.blocks = updateBlocksHasConnections(typebot)
+
         createStepDraft(typebot, step, newBlock.id, indices)
       })
     ),
-  updateBlock: (blockIndex: number, updates: Partial<Omit<Block, 'id'>>) =>
+  updateBlock: (blockIndex: number, updates: Partial<Omit<Block, 'id'>>) => {
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const block = typebot.blocks[blockIndex]
+
         typebot.blocks[blockIndex] = { ...block, ...updates }
+
+        typebot.blocks = updateBlocksHasConnections(typebot)
       })
-    ),
-  duplicateBlock: (blockIndex: number) =>
+    )
+  },
+  duplicateBlock: (blockIndex: number) => {
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const block = typebot.blocks[blockIndex]
+
         const id = cuid()
+
         const newBlock: Block = {
           ...block,
           title: `${block.title} copy`,
@@ -79,16 +82,22 @@ const blocksActions = (setTypebot: SetTypebot): BlocksActions => ({
             x: block.graphCoordinates.x + 200,
             y: block.graphCoordinates.y + 100,
           },
+          hasConnection: false,
         }
+
         typebot.blocks.splice(blockIndex + 1, 0, newBlock)
       })
-    ),
-  deleteBlock: (blockIndex: number) =>
+    )
+  },
+  deleteBlock: (blockIndex: number) => {
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         deleteBlockDraft(typebot)(blockIndex)
+
+        typebot.blocks = updateBlocksHasConnections(typebot)
       })
-    ),
+    )
+  },
 })
 
 const deleteBlockDraft =
@@ -105,6 +114,7 @@ const removeEmptyBlocks = (typebot: WritableDraft<Typebot>) => {
     },
     []
   )
+
   emptyBlocksIndices.forEach(deleteBlockDraft(typebot))
 }
 

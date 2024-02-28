@@ -9,7 +9,9 @@ import {
 
 export enum RightPanel {
   PREVIEW,
+  TODOLIST,
 }
+
 const editorContext = createContext<{
   rightPanel?: RightPanel
   setRightPanel: Dispatch<SetStateAction<RightPanel | undefined>>

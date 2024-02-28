@@ -31,6 +31,7 @@ export type Block = {
     y: number
   }
   steps: Step[]
+  hasConnection: boolean
 }
 
 export type Source = {

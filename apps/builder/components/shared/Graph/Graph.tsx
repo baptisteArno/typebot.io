@@ -1,4 +1,11 @@
-import { Flex, FlexProps, useEventListener, Stack, Tooltip, IconButton } from '@chakra-ui/react'
+import {
+  Flex,
+  FlexProps,
+  useEventListener,
+  Stack,
+  Tooltip,
+  IconButton,
+} from '@chakra-ui/react'
 import { RedoIcon, UndoIcon } from 'assets/icons'
 import React, { useRef, useMemo, useEffect, useState } from 'react'
 import {
@@ -16,8 +23,6 @@ import { DraggableCore, DraggableData, DraggableEvent } from 'react-draggable'
 import GraphContent from './GraphContent'
 import cuid from 'cuid'
 import { headerHeight } from '../TypebotHeader'
-import { useUser } from 'contexts/UserContext'
-import { GraphNavigation } from 'model'
 import { ZoomButtons } from './ZoomButtons'
 
 const maxScale = 1.5
@@ -42,9 +47,13 @@ export const Graph = ({
     draggedItem,
     setDraggedItem,
   } = useStepDnd()
+
   const graphContainerRef = useRef<HTMLDivElement | null>(null)
+
   const editorContainerRef = useRef<HTMLDivElement | null>(null)
+
   const { createBlock, undo, redo, canUndo, canRedo } = useTypebot()
+
   const {
     setGraphPosition: setGlobalGraphPosition,
     setOpenedStepId,
@@ -52,14 +61,16 @@ export const Graph = ({
     setPreviewingEdge,
     connectingIds,
   } = useGraph()
+
   const [graphPosition, setGraphPosition] = useState(graphPositionDefaultValue)
+
   const [debouncedGraphPosition] = useDebounce(graphPosition, 200)
+
   const transform = useMemo(
     () =>
       `translate(${graphPosition.x}px, ${graphPosition.y}px) scale(${graphPosition.scale})`,
     [graphPosition]
   )
-  const { user } = useUser()
 
   const [autoMoveDirection, setAutoMoveDirection] = useState<
     'top' | 'right' | 'bottom' | 'left' | undefined
@@ -75,7 +86,9 @@ export const Graph = ({
 
   useEffect(() => {
     if (!graphContainerRef.current) return
+
     const { top, left } = graphContainerRef.current.getBoundingClientRect()
+
     setGlobalGraphPosition({
       x: left + debouncedGraphPosition.x,
       y: top + debouncedGraphPosition.y,
@@ -86,49 +99,64 @@ export const Graph = ({
 
   const handleMouseWheel = (e: WheelEvent) => {
     e.preventDefault()
+
     const isPinchingTrackpad = e.ctrlKey
+
     isPinchingTrackpad
-      ? zoom((e.deltaY > 0 ? -1 : 1) * zoomButtonsScaleStep, { x: e.clientX, y: e.clientY })
+      ? zoom((e.deltaY > 0 ? -1 : 1) * zoomButtonsScaleStep, {
+          x: e.clientX,
+          y: e.clientY,
+        })
       : setGraphPosition({
-        ...graphPosition,
-        x: graphPosition.x - e.deltaX,
-        y: graphPosition.y - e.deltaY,
-      })
+          ...graphPosition,
+          x: graphPosition.x - e.deltaX,
+          y: graphPosition.y - e.deltaY,
+        })
   }
 
   const handleMouseUp = (e: MouseEvent) => {
     if (!typebot) return
+
     if (draggedItem) setDraggedItem(undefined)
+
     if (!draggedStep && !draggedStepType) return
 
     const coordinates = projectMouse(
       { x: e.clientX, y: e.clientY },
       graphPosition
     )
+
     const id = cuid()
+
     updateBlockCoordinates(id, coordinates)
+
     createBlock({
       id,
       ...coordinates,
       step: draggedStep ?? (draggedStepType as DraggableStepType),
       indices: { blockIndex: typebot.blocks.length, stepIndex: 0 },
     })
+
     setDraggedStep(undefined)
+
     setDraggedStepType(undefined)
   }
 
   const handleCaptureMouseDown = (e: MouseEvent) => {
     const isRightClick = e.button === 2
+
     if (isRightClick) e.stopPropagation()
   }
 
   const handleClick = () => {
     setOpenedStepId(undefined)
+
     setPreviewingEdge(undefined)
   }
 
   const onDrag = (_: DraggableEvent, draggableData: DraggableData) => {
     const { deltaX, deltaY } = draggableData
+
     setGraphPosition({
       ...graphPosition,
       x: graphPosition.x + deltaX,
@@ -138,17 +166,23 @@ export const Graph = ({
 
   const zoom = (delta = zoomButtonsScaleStep, mousePosition?: Coordinates) => {
     const { x: mouseX, y } = mousePosition ?? { x: 0, y: 0 }
+
     const mouseY = y - headerHeight
+
     let scale = graphPosition.scale + delta
+
     if (
       (scale >= maxScale && graphPosition.scale === maxScale) ||
       (scale <= minScale && graphPosition.scale === minScale)
     )
       return
+
     scale = scale >= maxScale ? maxScale : scale <= minScale ? minScale : scale
 
     const xs = (mouseX - graphPosition.x) / graphPosition.scale
+
     const ys = (mouseY - graphPosition.y) / graphPosition.scale
+
     setGraphPosition({
       ...graphPosition,
       x: mouseX - xs * scale,
@@ -160,36 +194,50 @@ export const Graph = ({
   const handleMouseMove = (e: MouseEvent) => {
     if (!connectingIds)
       return autoMoveDirection ? setAutoMoveDirection(undefined) : undefined
+
     if (e.clientX <= 50) return setAutoMoveDirection('left')
+
     if (e.clientY <= 50 + headerHeight) return setAutoMoveDirection('top')
+
     if (e.clientX >= window.innerWidth - 50)
       return setAutoMoveDirection('right')
+
     if (e.clientY >= window.innerHeight - 50)
       return setAutoMoveDirection('bottom')
+
     setAutoMoveDirection(undefined)
   }
 
   useEventListener('wheel', handleMouseWheel, graphContainerRef.current)
+
   useEventListener('mousedown', handleCaptureMouseDown, undefined, {
     capture: true,
   })
+
   useEventListener('mouseup', handleMouseUp, graphContainerRef.current)
+
   useEventListener('click', handleClick, editorContainerRef.current)
+
   useEventListener('mousemove', handleMouseMove)
 
   const draggingStep = draggedStep || draggedStepType
 
   return (
     <DraggableCore onDrag={onDrag} enableUserSelectHack={false}>
-      <Flex ref={graphContainerRef} position="relative" {...props}
-        background={draggingStep ? "gray.200" : "#f4f5f8"}
+      <Flex
+        ref={graphContainerRef}
+        position="relative"
+        {...props}
+        background={draggingStep ? 'gray.200' : '#ffffff'}
         backgroundImage="radial-gradient(#c6d0e1 1px, transparent 0)"
         backgroundSize="40px 40px"
-        backgroundPosition="-19px -19px">
+        backgroundPosition="-19px -19px"
+      >
         <ZoomButtons
           onZoomIn={() => zoom(zoomButtonsScaleStep)}
           onZoomOut={() => zoom(-zoomButtonsScaleStep)}
         />
+
         <Stack
           pos="fixed"
           top={`calc(${headerHeight}px + 150px)`}
@@ -247,20 +295,18 @@ export const Graph = ({
 const projectMouse = (
   mouseCoordinates: Coordinates,
   graphPosition: Coordinates & { scale: number }
-) => {
-  return {
-    x:
-      (mouseCoordinates.x -
-        graphPosition.x -
-        blockWidth / (3 / graphPosition.scale)) /
-      graphPosition.scale,
-    y:
-      (mouseCoordinates.y -
-        graphPosition.y -
-        (headerHeight + 20 * graphPosition.scale)) /
-      graphPosition.scale,
-  }
-}
+) => ({
+  x:
+    (mouseCoordinates.x -
+      graphPosition.x -
+      blockWidth / (3 / graphPosition.scale)) /
+    graphPosition.scale,
+  y:
+    (mouseCoordinates.y -
+      graphPosition.y -
+      (headerHeight + 20 * graphPosition.scale)) /
+    graphPosition.scale,
+})
 
 const useAutoMoveBoard = (
   autoMoveDirection: 'top' | 'right' | 'bottom' | 'left' | undefined,
@@ -281,14 +327,14 @@ const useAutoMoveBoard = (
           autoMoveDirection === 'right'
             ? prev.x - 5
             : autoMoveDirection === 'left'
-              ? prev.x + 5
-              : prev.x,
+            ? prev.x + 5
+            : prev.x,
         y:
           autoMoveDirection === 'bottom'
             ? prev.y - 5
             : autoMoveDirection === 'top'
-              ? prev.y + 5
-              : prev.y,
+            ? prev.y + 5
+            : prev.y,
       }))
     }, 5)
 
