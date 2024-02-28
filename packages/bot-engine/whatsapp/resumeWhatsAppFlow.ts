@@ -56,7 +56,7 @@ export const resumeWhatsAppFlow = async ({
     }
   }
 
-  if (credentials.phoneNumberId !== phoneNumberId) {
+  if (credentials.phoneNumberId !== phoneNumberId && !isPreview) {
     console.error('Credentials point to another phone ID, skipping...')
     return {
       message: 'Message received',

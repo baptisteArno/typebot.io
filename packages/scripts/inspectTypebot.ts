@@ -38,6 +38,11 @@ const inspectTypebot = async () => {
       customDomain: true,
       createdAt: true,
       isArchived: true,
+      publishedTypebot: {
+        select: {
+          id: true,
+        },
+      },
       workspace: {
         select: {
           id: true,
