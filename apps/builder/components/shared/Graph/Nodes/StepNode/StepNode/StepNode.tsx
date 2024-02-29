@@ -6,20 +6,15 @@ import {
   PopoverTrigger,
   useDisclosure,
   Text,
-  Divider,
-  SlideFade,
-  AlertIcon,
   Spacer,
 } from '@chakra-ui/react'
 import React, { createContext, useEffect, useRef, useState } from 'react'
 import {
   BubbleStep,
-  BubbleStepContent,
   DraggableStep,
   Step,
   TextBubbleContent,
   TextBubbleStep,
-  OctaStep,
   AssignToTeamStep,
   CallOtherBotStep,
   OfficeHourStep,
@@ -29,7 +24,6 @@ import {
   WhatsAppOptionsListStep,
   WhatsAppButtonsListStep,
   OctaWabaStepType,
-  BubbleStepType,
 } from 'models'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
@@ -37,7 +31,6 @@ import { isBubbleStep, isTextBubbleStep, isOctaBubbleStep } from 'utils'
 import { StepNodeContent } from '../StepNodeContent/StepNodeContent/StepNodeContent'
 import { useTypebot } from 'contexts/TypebotContext'
 import { ContextMenu } from 'components/shared/ContextMenu'
-import { SettingsPopoverContent } from '../SettingsPopoverContent'
 import { StepNodeContextMenu } from '../StepNodeContextMenu'
 import { SourceEndpoint } from '../../../Endpoints/SourceEndpoint'
 import { hasDefaultConnector } from 'services/typebots'
@@ -46,17 +39,18 @@ import { SettingsModal } from '../SettingsPopoverContent/SettingsModal'
 import { StepSettings } from '../SettingsPopoverContent/SettingsPopoverContent'
 import { TextBubbleEditor } from '../TextBubbleEditor'
 import { TargetEndpoint } from '../../../Endpoints'
-import { MediaBubblePopoverContent } from '../MediaBubblePopoverContent'
 import { NodePosition, useDragDistance } from 'contexts/GraphDndContext'
 import { setMultipleRefs } from 'services/utils'
-import { isDefined } from 'utils'
 import { BlockStack } from './StepNode.style'
 import { StepTypeLabel } from 'components/editor/StepsSideBar/StepTypeLabel'
-import { BlockFocusToolbar } from 'components/shared/Graph/Nodes/BlockNode/BlockFocusToolbar'
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
 import { WarningIcon } from 'assets/icons'
 import OctaTooltip from 'components/octaComponents/OctaTooltip/OctaTooltip'
-import { VALIDATION_MESSAGE_TYPE, ValidationMessage, getValidationMessages } from '../../helpers/helpers'
+import {
+  VALIDATION_MESSAGE_TYPE,
+  ValidationMessage,
+  getValidationMessages,
+} from '../../helpers/helpers'
 
 type StepNodeContextProps = {
   setIsPopoverOpened?: (isPopoverOpened: boolean) => void
@@ -70,7 +64,7 @@ export const StepNode = ({
   indices,
   onMouseDown,
   isStartBlock,
-  unreachableNode
+  unreachableNode,
 }: {
   step: Step
   isConnectable: boolean
@@ -81,23 +75,21 @@ export const StepNode = ({
 }) => {
   const { query } = useRouter()
   const {
-    setConnectingIds,
     connectingIds,
     openedStepId,
     setOpenedStepId,
     setFocusedBlockId,
     previewingEdge,
   } = useGraph()
-  const { updateStep, duplicateStep, deleteStep } = useTypebot()
+  const { updateStep } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
-  const [isFocused, setIsFocused] = useState(false)
 
   const [isPopoverOpened, setIsPopoverOpened] = useState(
     openedStepId === step.id
   )
   const [isEditing, setIsEditing] = useState<boolean>(
     (isTextBubbleStep(step) || isOctaBubbleStep(step)) &&
-    step.content.plainText === ''
+      step.content.plainText === ''
   )
   const stepRef = useRef<HTMLDivElement | null>(null)
 
@@ -115,17 +107,17 @@ export const StepNode = ({
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
-  const [validationMessages, setValidationMessages] = useState<Array<ValidationMessage>>()
+  const [validationMessages, setValidationMessages] =
+    useState<Array<ValidationMessage>>()
 
   useEffect(() => {
     const currentMessages = getValidationMessages(step)
     setValidationMessages(currentMessages)
   }, [isEditing, isModalOpen])
 
-  const {
-    onOpen: onModalOpen,
-    onClose: onModalClose,
-  } = useDisclosure({ defaultIsOpen: true })
+  const { onClose: onModalClose } = useDisclosure({
+    defaultIsOpen: true,
+  })
 
   useEffect(() => {
     if (query.stepId?.toString() === step.id) setOpenedStepId(step.id)
@@ -135,7 +127,7 @@ export const StepNode = ({
   useEffect(() => {
     setIsConnecting(
       connectingIds?.target?.blockId === step.blockId &&
-      connectingIds?.target?.stepId === step.id
+        connectingIds?.target?.stepId === step.id
     )
   }, [connectingIds, step.blockId, step.id])
 
@@ -147,32 +139,12 @@ export const StepNode = ({
     setIsPopoverOpened(false)
   }
 
-  const handleMouseEnter = () => {
-    setIsFocused(true)
-    if (connectingIds)
-      setConnectingIds({
-        ...connectingIds,
-        target: { blockId: step.blockId, stepId: step.id },
-      })
-  }
-
-  const handleMouseLeave = () => {
-    setTimeout(() => {
-      setIsFocused(false)
-    }, 750);
-    if (connectingIds?.target)
-      setConnectingIds({
-        ...connectingIds,
-        target: { ...connectingIds.target, stepId: undefined },
-      })
-  }
-
   const handleKeyUp = (content: TextBubbleContent) => {
     const updatedStep = { ...step, content } as Step
     updateStep(indices, updatedStep)
   }
 
-  const handleCloseEditor = (content: TextBubbleContent) => {
+  const handleCloseEditor = () => {
     setIsEditing(false)
     setIsModalOpen(false)
     setIsPopoverOpened(false)
@@ -231,17 +203,19 @@ export const StepNode = ({
               <Flex
                 pos="relative"
                 ref={setMultipleRefs([ref, stepRef])}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
                 onClick={handleClick}
                 data-testid={`step`}
                 w="full"
                 direction="column"
               >
                 <Stack spacing={2}>
-                  <BlockStack isOpened={isOpened} isPreviewing={isPreviewing} style={{ borderColor: unreachableNode ? "#e3a820" : ""}}>
+                  <BlockStack
+                    isOpened={isOpened}
+                    isPreviewing={isPreviewing}
+                    style={{ borderColor: unreachableNode ? '#e3a820' : '' }}
+                  >
                     <Stack spacing={2} w="full">
-                      <HStack fontSize={"14px"}>
+                      <HStack fontSize={'14px'}>
                         <StepIcon
                           type={step.type}
                           mt="1"
@@ -252,35 +226,57 @@ export const StepNode = ({
                           data-testid={`${step.id}-icon`}
                         />
                         <Spacer />
-                        {unreachableNode &&
+                        {unreachableNode && (
                           <>
                             <OctaTooltip
-                              element={<WarningIcon color={"#FAC300"} />}
-                              contentText={'Essa ação não será executada. O bot já encerrou anteriormente.'}
-                              tooltipPlacement={"auto"}
+                              element={<WarningIcon color={'#FAC300'} />}
+                              contentText={
+                                'Essa ação não será executada. O bot já encerrou anteriormente.'
+                              }
+                              tooltipPlacement={'auto'}
                               popoverColor="#FFE894"
                               textColor="#574B24"
                               duration={3000}
                             />
                           </>
-                        }
-                        {!unreachableNode && validationMessages?.map(s => {
-                          return <OctaTooltip
-                            element={<WarningIcon color={s.type === VALIDATION_MESSAGE_TYPE.ERROR ? "#D33003" : "#FAC300"} />}
-                            contentText={s.message.join(' | ')}
-                            tooltipPlacement={"auto"}
-                            popoverColor={s.type === VALIDATION_MESSAGE_TYPE.ERROR ? "#FBD9D0" : "#FFE894"}
-                            textColor={s.type === VALIDATION_MESSAGE_TYPE.ERROR ? "#5B332E" : "#574B24"}
-                            duration={3000}
-                          />
-                        })}
+                        )}
+                        {!unreachableNode &&
+                          validationMessages?.map((s, index) => {
+                            return (
+                              <OctaTooltip
+                                key={index}
+                                element={
+                                  <WarningIcon
+                                    color={
+                                      s.type === VALIDATION_MESSAGE_TYPE.ERROR
+                                        ? '#D33003'
+                                        : '#FAC300'
+                                    }
+                                  />
+                                }
+                                contentText={s.message.join(' | ')}
+                                tooltipPlacement={'auto'}
+                                popoverColor={
+                                  s.type === VALIDATION_MESSAGE_TYPE.ERROR
+                                    ? '#FBD9D0'
+                                    : '#FFE894'
+                                }
+                                textColor={
+                                  s.type === VALIDATION_MESSAGE_TYPE.ERROR
+                                    ? '#5B332E'
+                                    : '#574B24'
+                                }
+                                duration={3000}
+                              />
+                            )
+                          })}
                       </HStack>
-                      {step.type !== 'start' &&
+                      {step.type !== 'start' && (
                         <span>
                           <OctaDivider />
                           <StepNodeContent step={step} indices={indices} />
                         </span>
-                      }
+                      )}
                       <TargetEndpoint
                         pos="absolute"
                         left="-32px"
@@ -300,27 +296,6 @@ export const StepNode = ({
                       )}
                     </Stack>
                   </BlockStack>
-                  {isFocused && !isStartBlock && (
-                    <SlideFade
-                      in={isFocused}
-                      style={{
-                        position: 'absolute',
-                        top: '-50px',
-                        right: 0,
-                      }}
-                      unmountOnExit
-                    >
-                      <BlockFocusToolbar
-                        onDuplicateClick={() => {
-                          setTimeout(() => {
-                            setIsFocused(false)
-                          }, 750);
-                          duplicateStep(indices)
-                        }}
-                        onDeleteClick={() => deleteStep(indices)}
-                      />
-                    </SlideFade>
-                  )}
 
                   {step.type === 'assign to team' &&
                     hasStepRedirectNoneAvailable(step) && (
@@ -377,7 +352,11 @@ export const StepNode = ({
                 </Stack>
               </Flex>
             </PopoverTrigger>
-            <SettingsModal isOpen={isModalOpen} onClose={handleModalClose} stepType={step.type}>
+            <SettingsModal
+              isOpen={isModalOpen}
+              onClose={handleModalClose}
+              stepType={step.type}
+            >
               <StepSettings step={step} onStepChange={handleStepUpdate} />
             </SettingsModal>
           </Popover>
@@ -386,14 +365,6 @@ export const StepNode = ({
     </StepNodeContext.Provider>
   )
 }
-
-const hasSettingsPopover = (step: Step): step is Exclude<Step, BubbleStep> =>
-  !(isBubbleStep(step) || isOctaBubbleStep(step))
-
-const isMediaBubbleStep = (
-  step: Step
-): step is Exclude<BubbleStep, TextBubbleStep> =>
-  isBubbleStep(step) && !isTextBubbleStep(step)
 
 const isEndConversationStep = (
   step: Step

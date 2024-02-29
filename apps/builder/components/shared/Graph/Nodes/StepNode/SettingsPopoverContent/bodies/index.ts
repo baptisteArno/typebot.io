@@ -11,3 +11,4 @@ export * from './WhatsAppBodies/WhatsAppButtonsListSettings/WhatsAppButtonsListS
 export * from './PreReserve/PreReserveSettingsBody'
 export * from './WOZSuggestion/WOZSuggestionSettingsBody'
 export * from './WOZAssign/WOZAssignSettingsBody'
+export * from './ConversationTag/ConversationTagBody'

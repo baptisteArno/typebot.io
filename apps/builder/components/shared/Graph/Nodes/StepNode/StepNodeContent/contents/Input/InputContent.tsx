@@ -80,7 +80,7 @@ const InputContent = ({ step, onUpdateStep }: Props) => {
   return (
     <Stack>
       <TextHtmlContent html={step?.options?.message?.html} />
-      
+
       <OctaDivider />
       <WithVariableContent variableId={step.options?.variableId} property={step.options?.property} />
     </Stack>

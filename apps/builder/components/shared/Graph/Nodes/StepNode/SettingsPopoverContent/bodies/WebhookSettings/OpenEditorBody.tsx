@@ -1,4 +1,13 @@
-import { Tooltip, Modal, ModalBody, ModalContent, ModalOverlay, ModalCloseButton, IconButton, useDisclosure } from "@chakra-ui/react"
+import {
+  Tooltip,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalOverlay,
+  ModalCloseButton,
+  IconButton,
+  useDisclosure,
+} from '@chakra-ui/react'
 import { EditIcon } from 'assets/icons'
 import { CodeEditor } from 'components/shared/CodeEditor'
 
@@ -15,7 +24,9 @@ type Props = {
   maxHeight?: string
   minWidth?: string
   onChange?: (value: string) => void
-  postVariableSelected: (variable: Pick<Variable, 'id' | 'name' | 'token'>) => void
+  postVariableSelected: (
+    variable: Pick<Variable, 'id' | 'name' | 'token'>
+  ) => void
 }
 
 export const OpenEditorBody = ({
@@ -31,35 +42,34 @@ export const OpenEditorBody = ({
 
   return (
     <>
-    <Tooltip label="Abrir editor">
-      <IconButton
-        icon={<EditIcon marginLeft="5px" />}
-        aria-label="Editor body"
-        size="xs"
-        onClick={onOpen}
-        alignSelf={"flex-end"}
-        width={"25px"}
-      />
-    </Tooltip>
+      <Tooltip label="Abrir editor">
+        <IconButton
+          icon={<EditIcon marginLeft="5px" />}
+          aria-label="Editor body"
+          size="xs"
+          onClick={onOpen}
+          alignSelf={'flex-end'}
+          width={'25px'}
+        />
+      </Tooltip>
       <Modal
         onClose={onClose}
         finalFocusRef={btnRef}
         isOpen={isOpen}
-        scrollBehavior={"inside"}
+        scrollBehavior={'inside'}
         size={'xl'}
       >
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
-          <ModalBody margin={'15px'} top={"-10px"}>
-          <CodeEditor
-            value={value}
-            lang="json"
-            onChange={onChange}
-            postVariableSelected={postVariableSelected}
-            debounceTimeout={0}
-            withVariableButton={props.withVariableButton}
-          />
+          <ModalBody margin={'15px'} top={'-10px'} overflow={'visible'}>
+            <CodeEditor
+              value={value}
+              lang="json"
+              onChange={onChange}
+              postVariableSelected={postVariableSelected}
+              debounceTimeout={0}
+            />
           </ModalBody>
         </ModalContent>
       </Modal>

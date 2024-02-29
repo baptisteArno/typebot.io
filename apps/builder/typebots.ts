@@ -52,7 +52,9 @@ import {
   defaultWOZSuggestionOptions,
   defaultWOZAssignOptions,
   WOZStepType,
-  WOZSuggestionOptions
+  WOZSuggestionOptions,
+  ConversationTagOptions,
+  defaultConversationTagOptions
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
@@ -244,11 +246,11 @@ const duplicateTypebot = (
       })),
       settings:
         typebot.settings.general.isBrandingEnabled === false &&
-        userPlan === Plan.FREE
+          userPlan === Plan.FREE
           ? {
-              ...typebot.settings,
-              general: { ...typebot.settings.general, isBrandingEnabled: true },
-            }
+            ...typebot.settings,
+            general: { ...typebot.settings.general, isBrandingEnabled: true },
+          }
           : typebot.settings,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -305,10 +307,10 @@ export const parseNewStep = (
   const id = cuid()
 
   const options = isOctaStepType(type) || isWOZStepType(type)
-  ? parseOctaStepOptions(type)
-  : stepTypeHasOption(type)
-    ? parseDefaultStepOptions(type)
-    : undefined
+    ? parseOctaStepOptions(type)
+    : stepTypeHasOption(type)
+      ? parseDefaultStepOptions(type)
+      : undefined
 
   return {
     id,
@@ -362,8 +364,7 @@ const parseDefaultContent = (
   }
 }
 
-const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType | WOZStepType): OctaStepOptions | OctaWabaStepOptions | WOZSuggestionOptions | null => {
-
+const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType | WOZStepType): OctaStepOptions | OctaWabaStepOptions | WOZSuggestionOptions | ConversationTagOptions | null => {
   switch (type) {
     case OctaStepType.ASSIGN_TO_TEAM:
       return defaultAssignToTeamOptions
@@ -381,6 +382,8 @@ const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType | WOZStepTyp
       return defaultWOZSuggestionOptions
     case WOZStepType.ASSIGN:
       return defaultWOZAssignOptions
+    case OctaStepType.CONVERSATION_TAG:
+      return defaultConversationTagOptions
     default:
       return null
   }

@@ -4,18 +4,14 @@ import {
   PopoverBody,
   useEventListener,
   Portal,
-  IconButton,
-  Stack
+  IconButton
 } from '@chakra-ui/react'
 import { ExpandIcon } from 'assets/icons'
 import {
-  ConditionItem,
-  ConditionStep,
   InputStepType,
   IntegrationStepType,
   LogicStepType,
   OctaStepType,
-  OctaBubbleStepType,
   Step,
   StepOptions,
   TextBubbleStep,
@@ -27,35 +23,25 @@ import {
 } from 'models'
 import { useRef } from 'react'
 import {
-  //TextInputSettingsBody,
-  //NumberInputSettingsBody,
-  EmailInputSettingsBody,
-  CpfInputSettingsBody,
   UrlInputSettingsBody,
-  DateInputSettingsBody,
   AssignToTeamSettingsBody,
   PreReserveSettingsBody,
   CallOtherBotSettingsBody,
   WhatsAppOptionsListSettingsBody,
   WhatsAppButtonsListSettingsBody,
   WOZSuggestionSettingBody,
-  WOZAssignSettingBody
+  WOZAssignSettingBody,
+  ConversationTagBody
 } from './bodies'
 import { ChoiceInputSettingsBody } from './bodies/ChoiceInputSettingsBody'
 import { CodeSettings } from './bodies/CodeSettings'
 import { ConditionSettingsBody } from './bodies/ConditionSettingsBody'
-import { GoogleAnalyticsSettings } from './bodies/GoogleAnalyticsSettings'
-import { GoogleSheetsSettingsBody } from './bodies/GoogleSheetsSettingsBody'
 import { OctaCommerceBody } from './bodies/OctaCommerceBody'
 import { OfficeHoursBody } from './bodies/OfficeHoursBody'
 import { PaymentSettings } from './bodies/PaymentSettings'
-import { PhoneNumberSettingsBody } from './bodies/PhoneNumberSettingsBody'
 import { RedirectSettings } from './bodies/RedirectSettings'
-import { SendEmailSettings } from './bodies/SendEmailSettings'
-import { SetVariableSettings } from './bodies/SetVariableSettings'
 import { TypebotLinkSettingsForm } from './bodies/TypebotLinkSettingsForm'
 import { WebhookSettings } from './bodies/WebhookSettings'
-import { ZapierSettings } from './bodies/ZapierSettings'
 import { InputSettingBody } from './bodies/InputSettingsBody'
 import { InputMediaSettingBody } from './bodies/InputMediaSettingsBody'
 
@@ -89,6 +75,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
       case LogicStepType.CONDITION:
       case OctaStepType.ASSIGN_TO_TEAM:
       case OctaStepType.CALL_OTHER_BOT:
+      case OctaStepType.CONVERSATION_TAG:
         width = 450;
         break;
       default:
@@ -276,6 +263,16 @@ export const StepSettings = ({
     case OctaWabaStepType.COMMERCE: {
       return (
         <OctaCommerceBody options={step.options} onOptionsChange={handleOptionsChange} />
+      )
+    }
+    case OctaStepType.CONVERSATION_TAG: {
+      return (
+        <ConversationTagBody
+          options={
+            step.options
+          }
+          onOptionsChange={handleOptionsChange}
+        />
       )
     }
     case OctaWabaStepType.WHATSAPP_OPTIONS_LIST: {

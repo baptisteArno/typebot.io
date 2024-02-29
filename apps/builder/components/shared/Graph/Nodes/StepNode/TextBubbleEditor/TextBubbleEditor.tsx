@@ -1,7 +1,8 @@
+import React, { useMemo, useRef, useState } from 'react'
 import { Flex, Stack, useOutsideClick } from '@chakra-ui/react'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
   Plate,
+  PlateEditor,
   selectEditor,
   serializeHtml,
   TEditor,
@@ -10,18 +11,26 @@ import {
   withPlate,
 } from '@udecode/plate-core'
 import { editorStyle, platePlugins } from 'libs/plate'
-import { BaseEditor, BaseSelection, createEditor, Transforms } from 'slate'
-import { ToolBar } from './ToolBar'
-import { parseHtmlStringToPlainText } from 'services/utils'
-import { defaultTextBubbleContent, TextBubbleContent, Variable } from 'models'
-import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
+import {
+  BaseEditor,
+  BaseSelection,
+  createEditor,
+  Node,
+  Path,
+  Transforms,
+} from 'slate'
 import { ReactEditor } from 'slate-react'
+import { defaultTextBubbleContent, TextBubbleContent, Variable } from 'models'
+import { parseHtmlStringToPlainText } from 'services/utils'
+import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
+import { ToolBar } from './ToolBar'
 
-type Props = {
+type TextBubbleEditorProps = {
   initialValue: TElement[]
   onClose: (newContent: TextBubbleContent) => void
   onKeyUp?: (newContent: TextBubbleContent) => void
   increment?: number
+  maxLength?: number
 }
 
 export const TextBubbleEditor = ({
@@ -29,26 +38,67 @@ export const TextBubbleEditor = ({
   onClose,
   onKeyUp,
   increment,
-}: Props) => {
+  maxLength,
+}: TextBubbleEditorProps) => {
+  const [value, setValue] = useState(initialValue)
+
+  const [isVariableDropdownOpen, setIsVariableDropdownOpen] = useState(false)
+  const varDropdownRef = useRef<HTMLDivElement | null>(null)
+  const rememberedSelection = useRef<BaseSelection | null>(null)
+  const textEditorRef = useRef<HTMLDivElement>(null)
+
   const randomEditorId = useMemo(
     () => `${Math.random().toString()}${increment ? `-${increment}` : ''}`,
     [increment]
   )
+
   const editor = useMemo(
     () =>
       withPlate(createEditor() as TEditor<Value>, {
         id: randomEditorId,
         plugins: platePlugins,
-      }),
+      }) as PlateEditor,
     [randomEditorId]
   )
+  const withMaxLength = (editor: PlateEditor) => {
+    editor.normalizeNode = (entry: [Node, Path]) => {
+      const [node, path] = entry
+      const nodeText = Node.string(node)
+      const currentLength = nodeText.length
+      if (maxLength && currentLength > maxLength) {
+        const lengthUntilBeforeTheLastNode = editor.children.reduce(
+          (acc, curr, i) => {
+            if (i === editor.children.length - 1) return acc
+            return acc + Node.string(curr).length
+          },
+          0
+        )
+        const lastNode = editor.children[editor.children.length - 1]
 
-  const [value, setValue] = useState(initialValue)
-  const varDropdownRef = useRef<HTMLDivElement | null>(null)
-  const rememberedSelection = useRef<BaseSelection | null>(null)
-  const [isVariableDropdownOpen, setIsVariableDropdownOpen] = useState(false)
+        const newNodes = [
+          {
+            type: 'p',
+            children: [
+              {
+                text: Node.string(lastNode).slice(
+                  0,
+                  maxLength - lengthUntilBeforeTheLastNode
+                ),
+              },
+            ],
+          },
+        ]
+        Transforms.removeNodes(editor as BaseEditor, {
+          match: (n) => n === lastNode,
+        })
+        Transforms.insertNodes(editor as BaseEditor, newNodes)
 
-  const textEditorRef = useRef<HTMLDivElement>(null)
+        return
+      }
+    }
+
+    return editor
+  }
   const closeEditor = () => {
     if (onClose) onClose(convertValueToStepContent(value))
   }
@@ -66,7 +116,8 @@ export const TextBubbleEditor = ({
     if (v.length === 0) defaultTextBubbleContent
     const html = serializeHtml(editor, {
       nodes: v,
-    })
+    }).replace(/<[^/>]*>\s*<\/[^>]*>/g, '')
+
     return {
       html,
       richText: v,
@@ -94,13 +145,25 @@ export const TextBubbleEditor = ({
   }
 
   const handleChangeEditorContent = (val: TElement[]) => {
+    const plainText = val.map((node) => Node.string(node)).join(' ')
+
+    if (maxLength && plainText.length > maxLength) {
+      const truncatedText = plainText.slice(0, maxLength)
+
+      const newValue = [{ type: 'p', children: [{ text: truncatedText }] }]
+      setValue(newValue)
+      return
+    }
+
     const timeout = setTimeout(() => {
       if (timeout) clearTimeout(timeout)
       setValue(val)
       keyUpEditor(val)
     }, 250)
+
     setIsVariableDropdownOpen(false)
   }
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.shiftKey) return
     if (e.key === 'Enter') closeEditor()
@@ -149,7 +212,7 @@ export const TextBubbleEditor = ({
             : initialValue
         }
         onChange={handleChangeEditorContent}
-        editor={editor}
+        editor={withMaxLength(editor)}
       />
       {isVariableDropdownOpen && (
         <Flex

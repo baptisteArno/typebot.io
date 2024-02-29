@@ -24,7 +24,6 @@ firebaseServiceAccount.json
 
 # Wordpress
 .svn
-tags
 
 *.history/
 

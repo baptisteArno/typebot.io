@@ -37,7 +37,7 @@ openssl rand -base64 32 | tr -d '\n' ; echo
 Now edit `docker-compose.yml` and:
 
 - Replace `<your-encryption-secret>` with the generated secret.
-- Replace `<your-builder-url>` with the public URL of the builder (i.e. `https://typebot.domain.com:8080`).
+- Replace `<your-builder-url>` with the public URL of the builder (i.e. `https://typebot.domain.com:8081`).
 - Replace `<your-viewer-url>` with the public URL of the viewer (i.e. `https://typebot.domain.com:8082`).
 - Replace `<your-admin-email>` with the email address of the administrator.
 - Configure at least one authentication provider (Email, Google, GitHub, Facebook or GitLab). More info here: [Configuration](https://docs.typebot.io/self-hosting/configuration).
@@ -56,10 +56,10 @@ When you run this command it does the following:
 
 - Create a database
 - Run the migrations
-- Start the builder on port 8080
+- Start the builder on port 8081
 - Start the viewer on port 8081
 
-You can now navigate to `http://typebot.domain.com:8080` and see the login screen. Login with the admin email to have access to a Team plan workspace automatically.
+You can now navigate to `http://typebot.domain.com:8081` and see the login screen. Login with the admin email to have access to a Team plan workspace automatically.
 
 Typebot server itself does not perform SSL termination. It only runs on unencrypted HTTP. If you want to run on HTTPS you also need to set up a reverse proxy in front of the server. See below instructions.
 
@@ -79,7 +79,7 @@ The self-hosted version is somewhat of a LTS, only getting the changes after the
 
 ### Reverse proxy
 
-By default, Typebot runs on unencrypted HTTP on ports 8080 for the builder and 8081 for the viewer. We recommend running it on HTTPS behind a reverse proxy of some sort. You may or may not already be running a reverse proxy on your host, let's look at both options:
+By default, Typebot runs on unencrypted HTTP on ports 8081 for the builder and 8081 for the viewer. We recommend running it on HTTPS behind a reverse proxy of some sort. You may or may not already be running a reverse proxy on your host, let's look at both options:
 
 #### No existing reverse proxy
 
@@ -108,7 +108,7 @@ services:
   typebot-builder:
     labels:
       virtual.host: 'typebot.domain.com' # change to your domain name
-      virtual.port: '8080'
+      virtual.port: '8081'
       virtual.tls-email: 'admin@example.com' # change to your email
 
   typebot-builder:
@@ -132,7 +132,7 @@ You can merge this compose file with the first one. It should automatically enab
 If you're already running a reverse proxy, the most important things to note are:
 
 1. Configure the virtual hosts to match the `NEXTAUTH_URL` and `NEXT_PUBLIC_VIEWER_URL` in your `docker-compose` configuration.
-2. Proxy the traffic to `127.0.0.1:8080` or `{ip-address}:8080` and to `127.0.0.1:8081` or `{ip-address}:8081` if running on a remote machine
+2. Proxy the traffic to `127.0.0.1:8081` or `{ip-address}:8081` and to `127.0.0.1:8081` or `{ip-address}:8081` if running on a remote machine
 
 :::note
 If you're self-hosting Typebot, [sponsoring me](https://github.com/sponsors/baptisteArno) is a great way to give back to the community and to contribute to the long-term sustainability of the project.

@@ -6,19 +6,21 @@ import {
   useDisclosure,
   IconButton,
   FormControl,
+  useOutsideClick,
 } from '@chakra-ui/react'
 import { TrashIcon } from 'assets/icons'
-import { useEffect, useRef, useState, useMemo } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import CodeMirror, { ReactCodeMirrorRef } from '@uiw/react-codemirror'
-import { githubDark, githubLight } from '@uiw/codemirror-theme-github'
+import { githubDark } from '@uiw/codemirror-theme-github'
 import { LanguageName, loadLanguage } from '@uiw/codemirror-extensions-langs'
 import { isDefined } from '@udecode/plate-common'
-import { linter } from '@codemirror/lint'
 import { VariableSearchInput } from './VariableSearchInput/VariableSearchInput'
 import { CreateButton } from './VariableSearchInput/VariableSearchInput.style'
 import { Variable } from 'models'
 import { isEmpty } from 'utils'
+
+import { KeyboardEvent } from 'react'
 
 type Props = {
   value?: string
@@ -31,7 +33,9 @@ type Props = {
   maxHeight?: string
   minWidth?: string
   onChange?: (value: string) => void
-  postVariableSelected?: (variable: Pick<Variable, 'id' | 'name' | 'token'>) => void
+  postVariableSelected?: (
+    variable: Pick<Variable, 'id' | 'name' | 'token'>
+  ) => void
 }
 export const CodeEditor = ({
   defaultValue,
@@ -46,12 +50,20 @@ export const CodeEditor = ({
   debounceTimeout = 1000,
   ...props
 }: Props & Omit<BoxProps, 'onChange'>) => {
-  const theme = useColorModeValue(githubLight, githubDark)
   const codeEditor = useRef<ReactCodeMirrorRef | null>(null)
+
+  const variablesSelector = useRef(null)
+
   const [carretPosition, setCarretPosition] = useState<number>(0)
+
+  const [variablesSelectorIsOpen, setVariablesSelectorIsOpen] = useState(false)
+
   const isVariableButtonDisplayed = withVariableButton && !isReadOnly
+
   const [value, _setValue] = useState(defaultValue ?? '{}')
-  const { onOpen, onClose, isOpen } = useDisclosure()
+
+  const { onOpen, onClose } = useDisclosure()
+
   const [addVariable, setAddVariable] = useState<boolean>(false)
 
   const setValue = useDebouncedCallback(
@@ -69,9 +81,16 @@ export const CodeEditor = ({
   const handleVariableSelected = (
     variable?: Pick<Variable, 'id' | 'name' | 'token'>
   ) => {
+    setVariablesSelectorIsOpen(false)
+
     if (!variable) return
+
     codeEditor.current?.view?.focus()
-    const insert = `${variable.token}`
+
+    const insert = variablesSelectorIsOpen
+      ? `${variable.token.replace('#', '')}`
+      : `${variable.token}`
+
     codeEditor.current?.view?.dispatch({
       changes: {
         from: carretPosition,
@@ -89,14 +108,38 @@ export const CodeEditor = ({
     )
   }
 
+  useOutsideClick({
+    ref: variablesSelector,
+    handler: () => {
+      setVariablesSelectorIsOpen(false)
+    },
+  })
+
   useEffect(
     () => () => {
       setValue.flush()
     },
     [setValue]
   )
+
   const handleButtonVariable = () => {
     setAddVariable(!addVariable)
+  }
+
+  const handleKeyUp = (e: KeyboardEvent) => {
+    const keyCode = e.keyCode || e.which
+
+    const hashTagKeyCode = 51
+
+    e.stopPropagation()
+
+    if (keyCode === hashTagKeyCode) {
+      if (!addVariable) {
+        handleButtonVariable()
+      }
+
+      setVariablesSelectorIsOpen(true)
+    }
   }
 
   return (
@@ -140,6 +183,7 @@ export const CodeEditor = ({
         value={props.value ?? value}
         onChange={handleChange}
         onBlur={rememberCarretPosition}
+        onKeyUp={handleKeyUp}
         theme={githubDark}
         extensions={[loadLanguage(lang)].filter(isDefined)}
         editable={!isReadOnly}
@@ -148,6 +192,7 @@ export const CodeEditor = ({
         }}
         spellCheck={false}
       />
+
       {isVariableButtonDisplayed && (
         <HStack flexDirection={'column'} width="full">
           {addVariable && (
@@ -162,18 +207,24 @@ export const CodeEditor = ({
               right={'10px'}
             />
           )}
+
           {addVariable && (
             <Stack rounded="md" flex="1" minHeight="18vh">
               <FormControl>
-                <VariableSearchInput
-                  onSelectVariable={handleVariableSelected}
-                  placeholder="Pesquise sua variável"
-                  isCloseModal={false}
-                  labelDefault='Adicionar variável ao body:'
-                />
+                <div ref={variablesSelector}>
+                  <VariableSearchInput
+                    onSelectVariable={handleVariableSelected}
+                    placeholder="Pesquise sua variável"
+                    isCloseModal={false}
+                    labelDefault="Adicionar variável ao body:"
+                    isApi
+                    variablesSelectorIsOpen={variablesSelectorIsOpen}
+                  />
+                </div>
               </FormControl>
             </Stack>
           )}
+
           {!addVariable && (
             <CreateButton onClick={handleButtonVariable}>
               {'Adicionar variável'}
