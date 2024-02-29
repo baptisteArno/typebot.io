@@ -13,7 +13,7 @@ import { Logo } from 'assets/icons/Logo'
 import { TextLink } from './TextLink'
 
 // const discordServerUrl = 'https://typebot.io/discord'
-const typebotUrl = 'https://typebot.io'
+// const typebotUrl = 'https://typebot.io'
 // const typebotLinkedInUrl = 'https://www.linkedin.com/company/typebot'
 // const typebotTwitterUrl = 'https://twitter.com/Typebot_io'
 const statusPageUrl = 'https://status.flowdacity.com'
@@ -34,11 +34,12 @@ export const Footer = () => {
                 Flowdacity.
               </Heading>
             </HStack>
-            <Text>
+            {/* <Text>
               Portions of Flowdacity are based on{' '}
               <TextLink href={typebotUrl}>Typebot.io</TextLink>, which is
               licensed under the GNU Affero General Public License, Version 3.
-            </Text>
+            </Text> */}
+            <Text>© 2024 Flowdacity. All Rights Reserved</Text>
           </Stack>
           <Stack align={'flex-start'}>
             <ListHeader>Product</ListHeader>

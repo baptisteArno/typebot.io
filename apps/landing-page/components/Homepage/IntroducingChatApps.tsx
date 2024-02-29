@@ -57,7 +57,7 @@ export const IntroducingChatApps = () => {
             color="gray.400"
             data-aos="fade"
           >
-            Typebot is a better way to ask for information. It leads to an
+            Flowdacity is a better way to ask for information. It leads to an
             increase in customer satisfaction and retention and multiply by 3
             your conversion rate compared to classical forms.
           </Text>

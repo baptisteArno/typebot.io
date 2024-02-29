@@ -1,4 +1,4 @@
-import { GitHubIcon } from 'assets/icons'
+// import { GitHubIcon } from 'assets/icons'
 import { DocIcon } from 'assets/icons/DocIcon'
 import { MapIcon } from 'assets/icons/MapIcon'
 import { PeopleCircleIcon } from 'assets/icons/PeopleCircleIcon'
@@ -8,12 +8,12 @@ export const links = [
   {
     label: 'Resources',
     children: [
-      {
-        label: 'GitHub repository',
-        description: 'Check out the entire source code of the project',
-        href: 'https://github.com/baptisteArno/typebot.io',
-        icon: <GitHubIcon fill="blue.300" />,
-      },
+      // {
+      //   label: 'GitHub repository',
+      //   description: 'Check out the entire source code of the project',
+      //   href: 'https://github.com/baptisteArno/typebot.io',
+      //   icon: <GitHubIcon fill="blue.300" />,
+      // },
       {
         label: 'Documentation',
         description:

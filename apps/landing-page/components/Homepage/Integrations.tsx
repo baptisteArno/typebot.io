@@ -112,8 +112,8 @@ export const Integrations = () => (
           fontSize={['lg', 'xl']}
           data-aos="fade-up"
         >
-          Typebot offers several native integrations blocks as well as
-          instructions on how to embed typebot on particular platforms
+          Flowdacity offers several native integrations blocks as well as
+          instructions on how to embed your chatbot on particular platforms
         </Text>
       </Stack>
     </Stack>
