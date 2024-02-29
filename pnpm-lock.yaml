@@ -1321,6 +1321,37 @@ importers:
         specifier: 5.3.2
         version: 5.3.2
 
+  packages/forge/blocks/togetherAi:
+    dependencies:
+      ai:
+        specifier: 2.2.33
+        version: 2.2.33(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)
+      openai:
+        specifier: 4.26.0
+        version: 4.26.0
+    devDependencies:
+      '@typebot.io/forge':
+        specifier: workspace:*
+        version: link:../../core
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../../../lib
+      '@typebot.io/openai-block':
+        specifier: workspace:*
+        version: link:../openai
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../../../tsconfig
+      '@typebot.io/variables':
+        specifier: workspace:*
+        version: link:../../../variables
+      '@types/react':
+        specifier: 18.2.15
+        version: 18.2.15
+      typescript:
+        specifier: 5.3.2
+        version: 5.3.2
+
   packages/forge/blocks/zemanticAi:
     devDependencies:
       '@typebot.io/forge':
@@ -1404,6 +1435,9 @@ importers:
       '@typebot.io/qrcode-block':
         specifier: workspace:*
         version: link:../blocks/qrcode
+      '@typebot.io/together-ai-block':
+        specifier: workspace:*
+        version: link:../blocks/togetherAi
       '@typebot.io/zemantic-ai-block':
         specifier: workspace:*
         version: link:../blocks/zemanticAi

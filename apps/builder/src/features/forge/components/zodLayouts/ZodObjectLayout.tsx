@@ -33,6 +33,8 @@ export const ZodObjectLayout = ({
   blockOptions?: ForgedBlock['options']
   onDataChange: (value: any) => void
 }) => {
+  const layout = getZodInnerSchema(schema)?._def?.layout
+  if (layout?.isHidden) return null
   return Object.keys(schema.shape).reduce<{
     nodes: ReactNode[]
     accordionsCreated: string[]
@@ -43,6 +45,7 @@ export const ZodObjectLayout = ({
       const layout = keySchema._def.layout as
         | ZodLayoutMetadata<ZodTypeAny>
         | undefined
+      if (layout?.isHidden) return nodes
       if (
         layout &&
         layout.accordion &&
