@@ -1,5 +1,5 @@
 import type { OpenAI } from 'openai'
-import { toolParametersSchema } from '../actions/createChatCompletion'
+import { toolParametersSchema } from '../shared/parseChatCompletionOptions'
 import { z } from '@typebot.io/forge/zod'
 
 export const parseToolParameters = (

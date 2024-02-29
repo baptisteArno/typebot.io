@@ -18792,7 +18792,8 @@
                   "qr-code",
                   "dify-ai",
                   "mistral",
-                  "elevenlabs"
+                  "elevenlabs",
+                  "together-ai"
                 ]
               },
               "options": {}

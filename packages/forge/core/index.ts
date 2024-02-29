@@ -42,88 +42,44 @@ export const parseBlockSchema = <
   A extends AuthDefinition,
   O extends z.ZodObject<any>
 >(
-  blockDefinition:
-    | BlockDefinition<I, A, O>
-    | Record<`v${number}`, BlockDefinition<I, A, O>>
+  blockDefinition: BlockDefinition<I, A, O>
 ) => {
-  if ('id' in blockDefinition) {
-    const options = z.discriminatedUnion('action', [
+  const options = z.discriminatedUnion('action', [
+    blockDefinition.options
+      ? blockDefinition.options.extend({
+          credentialsId: z.string().optional(),
+          action: z.undefined(),
+        })
+      : z.object({
+          credentialsId: z.string().optional(),
+          action: z.undefined(),
+        }),
+    ...blockDefinition.actions.map((action) =>
       blockDefinition.options
-        ? blockDefinition.options.extend({
-            credentialsId: z.string().optional(),
-            action: z.undefined(),
-          })
-        : z.object({
-            credentialsId: z.string().optional(),
-            action: z.undefined(),
-          }),
-      ...blockDefinition.actions.map((action) =>
-        blockDefinition.options
-          ? (blockDefinition.options
-              .extend({
-                credentialsId: z.string().optional(),
-              })
-              .extend({
-                action: z.literal(action.name),
-              })
-              .merge(action.options ?? z.object({})) as any)
-          : z
-              .object({
-                credentialsId: z.string().optional(),
-              })
-              .extend({
-                action: z.literal(action.name),
-              })
-              .merge(action.options ?? z.object({}))
-      ),
-    ])
-    return z.object({
-      id: z.string(),
-      outgoingEdgeId: z.string().optional(),
-      type: z.literal(blockDefinition.id),
-      options: options.optional(),
-    })
-  }
-  const schemas = Object.entries(blockDefinition).map(([version, block]) => {
-    const options = z.discriminatedUnion('action', [
-      block.options
-        ? block.options.extend({
-            credentialsId: z.string().optional(),
-            action: z.undefined(),
-          })
-        : z.object({
-            credentialsId: z.string().optional(),
-            action: z.undefined(),
-          }),
-      ...block.actions.map((action) =>
-        block.options
-          ? (block.options
-              .extend({
-                credentialsId: z.string().optional(),
-              })
-              .extend({
-                action: z.literal(action.name),
-              })
-              .merge(action.options ?? z.object({})) as any)
-          : z
-              .object({
-                credentialsId: z.string().optional(),
-              })
-              .extend({
-                action: z.literal(action.name),
-              })
-              .merge(action.options ?? z.object({}))
-      ),
-    ])
-    return z.object({
-      id: z.string(),
-      outgoingEdgeId: z.string().optional(),
-      type: z.literal(block.id),
-      version: z.literal(version),
-      options: options.optional(),
-    })
-  }) as unknown as [z.ZodObject<any>, ...z.ZodObject<any>[]]
-  return z.discriminatedUnion('version', schemas)
+        ? (blockDefinition.options
+            .extend({
+              credentialsId: z.string().optional(),
+            })
+            .extend({
+              action: z.literal(action.name),
+            })
+            .merge(action.options ?? z.object({})) as any)
+        : z
+            .object({
+              credentialsId: z.string().optional(),
+            })
+            .extend({
+              action: z.literal(action.name),
+            })
+            .merge(action.options ?? z.object({}))
+    ),
+  ])
+  return z.object({
+    id: z.string(),
+    outgoingEdgeId: z.string().optional(),
+    type: z.literal(blockDefinition.id),
+    options: options.optional(),
+  })
 }
 
 export const parseBlockCredentials = <
