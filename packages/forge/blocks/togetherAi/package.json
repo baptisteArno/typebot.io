@@ -13,9 +13,5 @@
     "@typebot.io/openai-block": "workspace:*",
     "@types/react": "18.2.15",
     "typescript": "5.3.2"
-  },
-  "dependencies": {
-    "ai": "2.2.33",
-    "openai": "4.26.0"
   }
 }
