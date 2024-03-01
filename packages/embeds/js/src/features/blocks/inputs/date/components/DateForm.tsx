@@ -94,10 +94,7 @@ export const DateForm = (props: Props) => {
             )}
           </div>
 
-          <SendButton
-            isDisabled={inputValues().to === '' && inputValues().from === ''}
-            class="my-2 ml-2"
-          >
+          <SendButton class="my-2 ml-2">
             {props.options?.labels?.button ??
               defaultDateInputOptions.labels.button}
           </SendButton>

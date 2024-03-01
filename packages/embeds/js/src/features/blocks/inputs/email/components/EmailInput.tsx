@@ -24,6 +24,7 @@ export const EmailInput = (props: Props) => {
 
   const submit = () => {
     if (checkIfInputIsValid()) props.onSubmit({ value: inputValue() })
+    else inputRef?.focus()
   }
 
   const submitWhenEnter = (e: KeyboardEvent) => {
@@ -65,12 +66,7 @@ export const EmailInput = (props: Props) => {
         type="email"
         autocomplete="email"
       />
-      <SendButton
-        type="button"
-        isDisabled={inputValue() === ''}
-        class="my-2 ml-2"
-        on:click={submit}
-      >
+      <SendButton type="button" class="my-2 ml-2" on:click={submit}>
         {props.block.options?.labels?.button ??
           defaultEmailInputOptions.labels.button}
       </SendButton>
