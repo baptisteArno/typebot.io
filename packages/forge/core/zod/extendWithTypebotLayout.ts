@@ -20,6 +20,7 @@ export interface ZodLayoutMetadata<
   itemLabel?: T extends OptionableZodType<ZodArray<any>> ? string : never
   isOrdered?: T extends OptionableZodType<ZodArray<any>> ? boolean : never
   moreInfoTooltip?: string
+  isHidden?: boolean
 }
 
 declare module 'zod' {
