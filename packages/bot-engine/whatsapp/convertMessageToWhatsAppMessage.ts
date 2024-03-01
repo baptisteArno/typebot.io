@@ -69,9 +69,6 @@ export const convertMessageToWhatsAppMessage = (
 export const isImageUrlNotCompatible = (url: string) =>
   !isHttpUrl(url) || isGifFileUrl(url) || isSvgSrc(url)
 
-export const isVideoUrlNotCompatible = (url: string) =>
-  !mp4HttpsUrlRegex.test(url)
-
 export const isHttpUrl = (text: string) =>
   text.startsWith('http://') || text.startsWith('https://')
 
