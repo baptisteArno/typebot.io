@@ -9414,7 +9414,8 @@
                   "dify-ai",
                   "mistral",
                   "razorpay",
-                  "elevenlabs"
+                  "elevenlabs",
+                  "together-ai"
                 ]
               },
               "options": {}

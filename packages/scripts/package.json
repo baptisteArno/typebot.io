@@ -29,7 +29,8 @@
     "redeemCoupon": "tsx redeemCoupon.ts",
     "exportResults": "tsx exportResults.ts",
     "updateUserEmail": "tsx updateUserEmail.ts",
-    "inspectChatSession": "tsx inspectChatSession.ts"
+    "inspectChatSession": "tsx inspectChatSession.ts",
+    "deleteChatSession": "tsx deleteChatSession.ts"
   },
   "devDependencies": {
     "@typebot.io/emails": "workspace:*",

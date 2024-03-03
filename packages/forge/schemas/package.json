@@ -17,6 +17,7 @@
     "@typebot.io/dify-ai-block": "workspace:*",
     "@typebot.io/mistral-block": "workspace:*",
     "@typebot.io/razorpay-block": "workspace:*",
-    "@typebot.io/elevenlabs-block": "workspace:*"
+    "@typebot.io/elevenlabs-block": "workspace:*",
+    "@typebot.io/together-ai-block": "workspace:*"
   }
 }
