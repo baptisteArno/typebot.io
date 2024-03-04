@@ -88,6 +88,7 @@ export const StarterPlanPricingCard = ({
             t('billing.pricingCard.starter.brandingRemoved'),
             t('billing.pricingCard.starter.fileUploadBlock'),
             t('billing.pricingCard.starter.createFolders'),
+            'Direct priority support',
           ]}
         />
       </Stack>

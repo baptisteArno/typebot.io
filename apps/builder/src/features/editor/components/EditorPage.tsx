@@ -16,6 +16,7 @@ import { GraphDndProvider } from '@/features/graph/providers/GraphDndProvider'
 import { GraphProvider } from '@/features/graph/providers/GraphProvider'
 import { EventsCoordinatesProvider } from '@/features/graph/providers/EventsCoordinateProvider'
 import { TypebotNotFoundPage } from './TypebotNotFoundPage'
+import { SuspectedTypebotBanner } from './SuspectedTypebotBanner'
 
 export const EditorPage = () => {
   const { typebot, currentUserMode, is404 } = useTypebot()
@@ -31,6 +32,9 @@ export const EditorPage = () => {
       <Seo title={typebot?.name ? `${typebot.name} | Editor` : 'Editor'} />
       <Flex overflow="clip" h="100vh" flexDir="column" id="editor-container">
         <GettingStartedModal />
+        {typebot?.riskLevel === 100 && (
+          <SuspectedTypebotBanner typebotId={typebot.id} />
+        )}
         <TypebotHeader />
         <Flex
           flex="1"

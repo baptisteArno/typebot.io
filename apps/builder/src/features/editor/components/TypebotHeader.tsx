@@ -33,6 +33,8 @@ import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { useTranslate } from '@tolgee/react'
 import { GuestTypebotHeader } from './UnauthenticatedTypebotHeader'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
+import { Plan } from '@typebot.io/prisma'
 
 export const TypebotHeader = () => {
   const { t } = useTranslate()
@@ -49,6 +51,7 @@ export const TypebotHeader = () => {
     isSavingLoading,
     currentUserMode,
   } = useTypebot()
+  const { workspace } = useWorkspace()
   const {
     setRightPanel,
     rightPanel,
@@ -99,9 +102,12 @@ export const TypebotHeader = () => {
   })
 
   const handleHelpClick = () => {
-    isCloudProdInstance()
+    isCloudProdInstance() && workspace?.plan && workspace.plan !== Plan.FREE
       ? onOpen()
-      : window.open('https://docs.flowdacity.com', '_blank')
+      : window.open(
+          'https://docs.flowdacity.com/guides/how-to-get-help',
+          '_blank'
+        )
   }
 
   if (currentUserMode === 'guest') return <GuestTypebotHeader />

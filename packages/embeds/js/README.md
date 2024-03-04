@@ -1,4 +1,4 @@
-# Typebot JS library
+# Flowdacity JS library
 
 Frontend library to embed typebots from [Flowdacity](https://www.flowdacity.com/).
 
