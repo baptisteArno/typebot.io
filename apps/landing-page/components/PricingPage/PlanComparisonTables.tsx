@@ -313,6 +313,28 @@ export const PlanComparisonTables = ({ onChatsTiersClick }: Props) => (
         </Thead>
         <Tbody>
           <Tr>
+            <Td>Community support</Td>
+            <Td>
+              <CheckIcon />
+            </Td>
+            <Td>
+              <CheckIcon />
+            </Td>
+            <Td>
+              <CheckIcon />
+            </Td>
+          </Tr>
+          <Tr>
+            <Td>Direct support channel</Td>
+            <Td />
+            <Td>
+              <CheckIcon />
+            </Td>
+            <Td>
+              <CheckIcon />
+            </Td>
+          </Tr>
+          <Tr>
             <Td>Priority support</Td>
             <Td />
             <Td />
