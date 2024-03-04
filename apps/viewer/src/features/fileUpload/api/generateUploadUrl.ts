@@ -172,7 +172,7 @@ export const generateUploadUrl = publicProcedure
       filePath,
       maxFileSize:
         fileUploadBlock.options && 'sizeLimit' in fileUploadBlock.options
-          ? (fileUploadBlock.options.sizeLimit as string)
+          ? (fileUploadBlock.options.sizeLimit as number)
           : env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE,
     })
 
