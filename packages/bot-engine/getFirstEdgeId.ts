@@ -19,5 +19,5 @@ export const getFirstEdgeId = ({
     return event.outgoingEdgeId
   }
   if (typebot.version === '6') return typebot.events[0].outgoingEdgeId
-  return typebot.groups[0].blocks[0].outgoingEdgeId
+  return typebot.groups.at(0)?.blocks.at(0)?.outgoingEdgeId
 }

@@ -70,6 +70,8 @@ export const ItemNode = ({
   const handleMouseEnter = () => setIsMouseOver(true)
   const handleMouseLeave = () => setIsMouseOver(false)
 
+  const groupId = typebot?.groups.at(indices.groupIndex)?.id
+
   return (
     <ContextMenu<HTMLDivElement>
       renderMenu={() => <ItemNodeContextMenu indices={indices} />}
@@ -114,20 +116,22 @@ export const ItemNode = ({
               isMouseOver={isMouseOver}
               indices={indices}
             />
-            {typebot && (isConnectable || pathname.endsWith('analytics')) && (
-              <BlockSourceEndpoint
-                source={{
-                  blockId: block.id,
-                  itemId: item.id,
-                }}
-                groupId={typebot.groups[indices.groupIndex].id}
-                pos="absolute"
-                right="-49px"
-                bottom="9px"
-                pointerEvents="all"
-                isHidden={!isConnectable}
-              />
-            )}
+            {typebot &&
+              (isConnectable || pathname.endsWith('analytics')) &&
+              groupId && (
+                <BlockSourceEndpoint
+                  source={{
+                    blockId: block.id,
+                    itemId: item.id,
+                  }}
+                  groupId={groupId}
+                  pos="absolute"
+                  right="-49px"
+                  bottom="9px"
+                  pointerEvents="all"
+                  isHidden={!isConnectable}
+                />
+              )}
           </Flex>
         </Stack>
       )}

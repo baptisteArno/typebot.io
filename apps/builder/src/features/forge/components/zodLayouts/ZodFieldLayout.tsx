@@ -61,6 +61,8 @@ export const ZodFieldLayout = ({
   const innerSchema = getZodInnerSchema(schema)
   const layout = innerSchema._def.layout
 
+  if (layout?.isHidden) return null
+
   switch (innerSchema._def.typeName) {
     case 'ZodObject':
       return (

@@ -69,6 +69,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
           ? inputValue()
           : `${selectedCountryDialCode ?? ''}${inputValue()}`,
       })
+    else inputRef?.focus()
   }
 
   const submitWhenEnter = (e: KeyboardEvent) => {
@@ -155,12 +156,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
         />
       </div>
 
-      <SendButton
-        type="button"
-        isDisabled={inputValue() === ''}
-        class="my-2 ml-2"
-        on:click={submit}
-      >
+      <SendButton type="button" class="my-2 ml-2" on:click={submit}>
         {props.labels?.button ?? defaultPhoneInputOptions.labels.button}
       </SendButton>
     </div>

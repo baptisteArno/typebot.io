@@ -1842,6 +1842,15 @@
                         ]
                       }
                     ]
+                  },
+                  "prefilledVariables": {
+                    "type": "object",
+                    "additionalProperties": {},
+                    "description": "[More info about prefilled variables.](../../editor/variables#prefilled-variables)",
+                    "example": {
+                      "First name": "John",
+                      "Email": "john@gmail.com"
+                    }
                   }
                 }
               }
@@ -9404,7 +9413,8 @@
                   "qr-code",
                   "dify-ai",
                   "mistral",
-                  "elevenlabs"
+                  "elevenlabs",
+                  "together-ai"
                 ]
               },
               "options": {}
