@@ -88,7 +88,7 @@ export const BlockNode = ({
     previewingEdge?.to.blockId === block.id ||
     previewingBlock?.id === block.id
 
-  const groupId = typebot?.groups[indices.groupIndex].id
+  const groupId = typebot?.groups.at(indices.groupIndex)?.id
 
   const isDraggingGraph = useGroupsStore((state) => state.isDraggingGraph)
 
@@ -240,11 +240,13 @@ export const BlockNode = ({
                 transition="border-color 0.2s"
               >
                 <BlockIcon type={block.type} mt=".25rem" />
-                {typebot?.groups[indices.groupIndex].id && (
+                {typebot?.groups.at(indices.groupIndex)?.id && (
                   <BlockNodeContent
                     block={block}
                     indices={indices}
-                    groupId={typebot.groups[indices.groupIndex].id}
+                    groupId={
+                      typebot.groups.at(indices.groupIndex)?.id as string
+                    }
                   />
                 )}
                 {(hasIcomingEdge || isDefined(connectingIds)) && (
