@@ -12,49 +12,52 @@ export const createMessage = createAction({
       label: 'Claude Model',
       isRequired: true,
     }),
+    messages: option.saveResponseArray(['User Input'] as const).layout({
+      accordion: 'Messages',
+    }),
     responseMapping: option
-      .saveResponseArray(['content_block_delta'] as const)
+      .saveResponseArray(['Message Content'] as const)
       .layout({
         accordion: 'Save Response',
       }),
   }),
   run: {
-    stream: {
-      getStreamVariableId: (options) =>
-        options.responseMapping?.find(
-          (res) => res.item === 'content_block_delta' || !res.item
-        )?.variableId,
-      run: async ({ credentials: { apiKey }, options, variables }) => {
-        const client = new Anthropic({
-          apiKey: apiKey,
-        })
+    server: async ({ credentials: { apiKey }, options, variables }) => {
+      const client = new Anthropic({
+        apiKey: apiKey,
+      })
 
-        const stream = client.messages.stream({
-          messages: [
-            {
-              role: 'user',
-              content: 'Hey Claude! How are you doing?',
-            },
-          ],
-          model: options.mdl as string, // Stinky cast since we will always have mdl set
-          max_tokens: 1024,
-        })
+      let userInput = ''
+      options.messages?.forEach((mapping) => {
+        if (!mapping.variableId) return
 
-        for await (const event of stream) {
-          console.log('content_block_delta', event)
-        }
+        if (!mapping.item || mapping.item === 'User Input')
+          userInput = variables.get(mapping.variableId) as string
+      })
 
-        const message = await stream.finalMessage()
-        console.log('finalMessage', message)
+      // TODO: implement chat history
+      // - put input var option
+      // - read input var and send msg (along with prevs msgs)
+      // - receive res -> show it on client -> store it in a msgs array
+      // -- loop from 2
 
-        return stream.toReadableStream()
+      const message = await client.messages.create({
+        messages: [
+          {
+            role: 'user',
+            content: userInput,
+          },
+        ],
+        model: options.mdl as string, // Stinky cast since we will always have mdl set
+        max_tokens: 1024,
+      })
 
-        // TODO: implement
-        // - put input var option
-        // - read input var and send msg (along with prevs msgs)
-        // - receive res -> show it on client -> store it in a msgs array
-        // -- loop from 2
-      },
+      options.responseMapping?.forEach((mapping) => {
+        if (!mapping.variableId) return
+
+        if (!mapping.item || mapping.item === 'Message Content')
+          variables.set(mapping.variableId, message.content[0].text)
+      })
     },
   },
 })
