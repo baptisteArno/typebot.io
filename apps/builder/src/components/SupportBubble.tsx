@@ -19,7 +19,7 @@ export const SupportBubble = (props: Omit<BubbleProps, 'typebot'>) => {
     setLastViewedTypebotId(typebot?.id)
   }, [lastViewedTypebotId, typebot?.id])
 
-  if (workspace?.plan && workspace.plan !== Plan.FREE) return null
+  if (!workspace?.plan || workspace.plan === Plan.FREE) return null
 
   return (
     <Bubble
