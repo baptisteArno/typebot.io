@@ -37,8 +37,6 @@ const insertUsersInBrevoList = async () => {
 
   console.log('Inserting users', users.length)
 
-  writeFileSync('logs/users.json', JSON.stringify(users, null, 2))
-
   const proceed = await confirm({ message: 'Proceed?' })
   if (!proceed || typeof proceed !== 'boolean') {
     console.log('Aborting')
