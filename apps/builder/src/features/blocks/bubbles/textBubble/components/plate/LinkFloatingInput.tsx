@@ -22,6 +22,7 @@ import {
   InputGroup,
   InputLeftElement,
   Stack,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { TextInputIcon } from '@/features/blocks/inputs/textInput/components/TextInputIcon'
 
@@ -41,6 +42,7 @@ export interface LinkFloatingToolbarProps {
 }
 
 export function LinkFloatingToolbar({ state }: LinkFloatingToolbarProps) {
+  const bgColor = useColorModeValue('white', 'gray.800')
   const urlInputRef = useRef<HTMLInputElement>(null)
   const insertState = useFloatingLinkInsertState({
     ...state,
@@ -79,12 +81,12 @@ export function LinkFloatingToolbar({ state }: LinkFloatingToolbarProps) {
   const input = (
     <Stack
       w="330px"
-      bgColor="white"
       px="4"
       py="2"
       rounded="md"
       borderWidth={1}
       shadow="md"
+      bgColor={bgColor}
     >
       <InputGroup>
         <InputLeftElement pointerEvents="none">

@@ -208,6 +208,7 @@
     {
       "group": "Guides",
       "pages": [
+        "guides/how-to-get-help",
         "guides/mailer-lite",
         "guides/multi-avatars",
         "guides/rtl",
