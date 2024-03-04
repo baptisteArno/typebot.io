@@ -40,7 +40,7 @@ export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
     x: 0,
     y: 0,
   })
-  const groupId = typebot?.groups[groupIndex].id
+  const groupId = typebot?.groups.at(groupIndex)?.id
   const isDraggingOnCurrentGroup =
     (draggedBlock || draggedBlockType) && mouseOverGroup?.id === groupId
   const showSortPlaceholders = isDefined(draggedBlock || draggedBlockType)

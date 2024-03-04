@@ -52,6 +52,12 @@ export const trackEvents = async (events: TelemetryEvent[]) => {
       properties:
         event.name === 'User updated'
           ? { $set: event.data }
+          : event.name === 'User logged in'
+          ? {
+              $set: {
+                lastActivityAt: new Date().toISOString(),
+              },
+            }
           : 'data' in event
           ? event.data
           : undefined,
