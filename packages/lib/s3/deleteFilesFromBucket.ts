@@ -22,10 +22,22 @@ export const deleteFilesFromBucket = async ({
 
   const bucket = env.S3_BUCKET
 
-  return minioClient.removeObjects(
-    bucket,
-    urls
-      .filter((url) => url.includes(env.S3_ENDPOINT as string))
-      .map((url) => url.split(`/${bucket}/`)[1])
+  const keys = urls.reduce<string[]>(
+    (keys, url) => [
+      ...keys,
+      ...addKeyIfIncludesPublicCustomDomain(url),
+      ...addKeyIfIncludesDefaultEndpoint(url, bucket),
+    ],
+    []
   )
+
+  return minioClient.removeObjects(bucket, keys)
 }
+
+const addKeyIfIncludesPublicCustomDomain = (url: string) =>
+  env.S3_PUBLIC_CUSTOM_DOMAIN && url.includes(env.S3_PUBLIC_CUSTOM_DOMAIN)
+    ? [url.split(env.S3_PUBLIC_CUSTOM_DOMAIN + '/')[1]]
+    : []
+
+const addKeyIfIncludesDefaultEndpoint = (url: string, bucket: string) =>
+  url.includes(env.S3_ENDPOINT as string) ? [url.split(`/${bucket}/`)[1]] : []
