@@ -25,12 +25,12 @@ const features = [
   {
     Icon: PersonAddIcon,
     title: 'Team collaboration',
-    content: 'Invite your teammates to work on your typebots with you',
+    content: 'Invite your teammates to work on your chatbot with you',
   },
   {
     Icon: ConditionIcon,
-    title: 'Link to sub typebots',
-    content: 'Reuse your typebots in different parent bots.',
+    title: 'Link to sub chatbot',
+    content: 'Reuse your chatbot in different parent bots.',
   },
   {
     Icon: CalculatorIcon,
@@ -39,14 +39,14 @@ const features = [
   },
   {
     Icon: ShareIcon,
-    title: 'Custom domain',
-    content: 'Connect your typebot to the custom URL of your choice',
+    title: 'Custom domain (Coming soon)',
+    content: 'Connect your chatbot to the custom URL of your choice',
   },
   {
     Icon: FolderIcon,
     title: 'Folder management',
     content:
-      'Organize your typebots in specific folders to keep it clean and work with multiple clients',
+      'Organize your chatbot in specific folders to keep it clean and work with multiple clients',
   },
 ]
 
@@ -70,7 +70,7 @@ export const Features = () => {
             textAlign="center"
             data-aos="fade"
           >
-            Typebot makes form building easy and comes with powerful features
+            Flowdacity makes form building easy and comes with powerful features
           </Text>
         </VStack>
         <SimpleGrid columns={[1, 3]} spacing="10" pt="10" data-aos="fade">
