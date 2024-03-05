@@ -10,4 +10,5 @@ export const enabledBlocks = [
   'razorpay',
   'elevenlabs',
   'together-ai',
+  'open-router',
 ] as const
