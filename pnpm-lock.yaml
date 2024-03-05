@@ -263,6 +263,9 @@ importers:
       use-debounce:
         specifier: 9.0.4
         version: 9.0.4(react@18.2.0)
+      zod-validation-error:
+        specifier: 3.0.3
+        version: 3.0.3(zod@3.22.4)
       zustand:
         specifier: 4.5.0
         version: 4.5.0(@types/react@18.2.15)(immer@10.0.2)(react@18.2.0)
@@ -1274,6 +1277,30 @@ importers:
         specifier: 5.3.2
         version: 5.3.2
 
+  packages/forge/blocks/openRouter:
+    devDependencies:
+      '@typebot.io/forge':
+        specifier: workspace:*
+        version: link:../../core
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../../../lib
+      '@typebot.io/openai-block':
+        specifier: workspace:*
+        version: link:../openai
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../../../tsconfig
+      '@types/react':
+        specifier: 18.2.15
+        version: 18.2.15
+      got:
+        specifier: 12.6.0
+        version: 12.6.0
+      typescript:
+        specifier: 5.3.2
+        version: 5.3.2
+
   packages/forge/blocks/openai:
     dependencies:
       ai:
@@ -1424,6 +1451,9 @@ importers:
         specifier: 3.22.4
         version: 3.22.4
     devDependencies:
+      '@typebot.io/forge-repository':
+        specifier: workspace:*
+        version: link:../repository
       '@typebot.io/tsconfig':
         specifier: workspace:*
         version: link:../../tsconfig
@@ -1456,6 +1486,9 @@ importers:
       '@typebot.io/mistral-block':
         specifier: workspace:*
         version: link:../blocks/mistral
+      '@typebot.io/open-router-block':
+        specifier: workspace:*
+        version: link:../blocks/openRouter
       '@typebot.io/openai-block':
         specifier: workspace:*
         version: link:../blocks/openai
@@ -22719,6 +22752,15 @@ packages:
     dependencies:
       zod: 3.22.4
     dev: true
+
+  /zod-validation-error@3.0.3(zod@3.22.4):
+    resolution: {integrity: sha512-cETTrcMq3Ze58vhdR0zD37uJm/694I6mAxcf/ei5bl89cC++fBNxrC2z8lkFze/8hVMPwrbtrwXHR2LB50fpHw==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      zod: ^3.18.0
+    dependencies:
+      zod: 3.22.4
+    dev: false
 
   /zod@3.22.4:
     resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
