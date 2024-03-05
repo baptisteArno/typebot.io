@@ -12,6 +12,15 @@ import { ModelsResponse } from '../types'
 export const createChatCompletion = createAction({
   name: 'Create chat completion',
   auth,
+  turnableInto: [
+    {
+      blockType: 'openai',
+    },
+    {
+      blockType: 'together-ai',
+    },
+    { blockType: 'mistral' },
+  ],
   options: parseChatCompletionOptions({
     modelFetchId: 'fetchModels',
   }),
