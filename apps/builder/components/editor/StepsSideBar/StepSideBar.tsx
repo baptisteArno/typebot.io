@@ -10,15 +10,7 @@ import {
   Spacer,
   Portal,
   HStack,
-  Button,
   useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
 } from '@chakra-ui/react'
 import { InfoIcon } from '@chakra-ui/icons'
 import {
@@ -189,18 +181,36 @@ export const StepsSideBar = () => {
     )
   }
 
-  const validationSteps = Object.values(LogicStepType).filter(step => shouldShowComponent(step))
-  const inputSteps = Object.values(InputStepType).filter(step => shouldShowComponent(step))
-  const octaWabaSteps = Object.values(OctaWabaStepType).filter((s) => !wabaMessageComponent().includes(s) && shouldShowComponent(s))
-  const bubbleSteps = Object.values(BubbleStepType).filter(step => shouldShowComponent(step))
-  const wabaMessageSteps = wabaMessageComponent().filter(step =>
+  const validationSteps = Object.values(LogicStepType).filter((step) =>
     shouldShowComponent(step)
-    && workspace?.channel === 'whatsapp'
-    && verifyFeatureToggle('commerce-enabled'))
-  const wozSteps = Object.values(WOZStepType).filter(step => shouldShowComponent(step) && verifyFeatureToggle('chat-ai'))
-  const octaBubbleSteps = Object.values(OctaBubbleStepType).filter(step => shouldShowComponent(step))
-  const octaSteps = Object.values(OctaStepType).filter(step => shouldShowComponent(step))
-  const integrationSteps = Object.values(IntegrationStepType).filter(step => shouldShowComponent(step))
+  )
+  const inputSteps = Object.values(InputStepType).filter((step) =>
+    shouldShowComponent(step)
+  )
+  const octaWabaSteps = Object.values(OctaWabaStepType).filter(
+    (s) => !wabaMessageComponent().includes(s) && shouldShowComponent(s)
+  )
+  const bubbleSteps = Object.values(BubbleStepType).filter((step) =>
+    shouldShowComponent(step)
+  )
+  const wabaMessageSteps = wabaMessageComponent().filter(
+    (step) =>
+      shouldShowComponent(step) &&
+      workspace?.channel === 'whatsapp' &&
+      verifyFeatureToggle('commerce-enabled')
+  )
+  const wozSteps = Object.values(WOZStepType).filter(
+    (step) => shouldShowComponent(step) && verifyFeatureToggle('chat-ai')
+  )
+  const octaBubbleSteps = Object.values(OctaBubbleStepType).filter((step) =>
+    shouldShowComponent(step)
+  )
+  const octaSteps = Object.values(OctaStepType).filter((step) =>
+    shouldShowComponent(step)
+  )
+  const integrationSteps = Object.values(IntegrationStepType).filter((step) =>
+    shouldShowComponent(step)
+  )
 
   return (
     <Flex
@@ -270,14 +280,13 @@ export const StepsSideBar = () => {
               </Tooltip>
             </Text>
             <SimpleGrid columns={1} spacing="3">
-              {bubbleSteps.map(
-                (type) =>
-                  <StepCard
-                    key={type}
-                    type={type}
-                    onMouseDown={handleMouseDown}
-                  />
-              )}
+              {bubbleSteps.map((type) => (
+                <StepCard
+                  key={type}
+                  type={type}
+                  onMouseDown={handleMouseDown}
+                />
+              ))}
               {wabaMessageSteps.map((type) => (
                 <StepCard
                   key={type}
@@ -306,7 +315,7 @@ export const StepsSideBar = () => {
               ))}
             </SimpleGrid>
           </Stack>
-        }
+        )}
         {inputSteps.length && (
           <Stack>
             <Text fontSize="sm" fontWeight="semibold" color="gray.600">
@@ -322,27 +331,24 @@ export const StepsSideBar = () => {
               </Tooltip>
             </Text>
             <SimpleGrid columns={1} spacing="3">
-              {inputSteps.map(
-                (type) =>
+              {inputSteps.map((type) => (
+                <StepCard
+                  key={type}
+                  type={type}
+                  onMouseDown={handleMouseDown}
+                  isDisabled={shouldDisableComponent(type)}
+                />
+              ))}
+              {workspace?.channel === 'whatsapp' &&
+                octaWabaSteps.map((type) => (
                   <StepCard
                     key={type}
                     type={type}
                     onMouseDown={handleMouseDown}
+                    badge={'WAB'}
                     isDisabled={shouldDisableComponent(type)}
                   />
-              )}
-              {workspace?.channel === 'whatsapp' &&
-                octaWabaSteps
-                  .map(
-                    (type) =>
-                      <StepCard
-                        key={type}
-                        type={type}
-                        onMouseDown={handleMouseDown}
-                        badge={'WAB'}
-                        isDisabled={shouldDisableComponent(type)}
-                      />
-                  )}
+                ))}
             </SimpleGrid>
           </Stack>
         )}
@@ -353,22 +359,24 @@ export const StepsSideBar = () => {
             </Text>
             {octaSteps.length && (
               <SimpleGrid columns={1} spacing="3">
-                {octaSteps.map(
-                  (type) => (
-                    <StepCard
-                      key={type}
-                      type={type}
-                      onMouseDown={handleMouseDown}
-                      isDisabled={shouldDisableComponent(type)}
-                    />
-                  )
-                )}
+                {octaSteps.map((type) => (
+                  <StepCard
+                    key={type}
+                    type={type}
+                    onMouseDown={handleMouseDown}
+                    isDisabled={shouldDisableComponent(type)}
+                  />
+                ))}
               </SimpleGrid>
             )}
             {octaBubbleSteps.length && (
               <SimpleGrid columns={1} spacing="3">
                 {octaBubbleSteps.map((type) => (
-                  <StepCard key={type} type={type} onMouseDown={handleMouseDown} />
+                  <StepCard
+                    key={type}
+                    type={type}
+                    onMouseDown={handleMouseDown}
+                  />
                 ))}
               </SimpleGrid>
             )}
@@ -406,15 +414,13 @@ export const StepsSideBar = () => {
               <Spacer />
             </Flex>
             <SimpleGrid columns={1} spacing="3">
-              {integrationSteps.map(
-                (type) => (
-                  <StepCard
-                    key={type}
-                    type={type}
-                    onMouseDown={handleMouseDown}
-                  />
-                )
-              )}
+              {integrationSteps.map((type) => (
+                <StepCard
+                  key={type}
+                  type={type}
+                  onMouseDown={handleMouseDown}
+                />
+              ))}
             </SimpleGrid>
           </Stack>
         )}
