@@ -7,7 +7,8 @@
   "author": "Enchatted P.C.",
   "license": "ISC",
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.14.1"
+    "@anthropic-ai/sdk": "^0.14.1",
+    "ai": "2.2.33"
   },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",

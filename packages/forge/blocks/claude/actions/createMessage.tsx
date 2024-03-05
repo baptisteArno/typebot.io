@@ -1,63 +1,138 @@
 import { createAction, option } from '@typebot.io/forge'
 import { auth } from '../auth'
 import { Anthropic } from '@anthropic-ai/sdk'
-import { claudeModels } from '../constants'
+import { AnthropicStream } from 'ai'
+import { claudeModels, defaultClaudeOptions } from '../constants'
+import { parseChatMessages } from '../helpers/parseChatMessages'
+
+const nativeMessageContentSchema = {
+  content: option.string.layout({
+    inputType: 'textarea',
+    placeholder: 'Content',
+  }),
+}
+
+const userMessageItemSchema = option
+  .object({
+    role: option.literal('user'),
+  })
+  .extend(nativeMessageContentSchema)
+
+const assistantMessageItemSchema = option
+  .object({
+    role: option.literal('assistant'),
+  })
+  .extend(nativeMessageContentSchema)
+
+const dialogueMessageItemSchema = option.object({
+  role: option.literal('dialogue'),
+  dialogueVariableId: option.string.layout({
+    inputType: 'variableDropdown',
+    placeholder: 'Dialogue variable',
+  }),
+  startsBy: option.enum(['user', 'assistant']).layout({
+    label: 'starts by',
+    direction: 'row',
+    defaultValue: 'user',
+  }),
+})
+
+export const options = option.object({
+  model: option.enum(claudeModels).layout({
+    label: 'Claude Model',
+    defaultValue: defaultClaudeOptions.model,
+    isRequired: true,
+  }),
+  messages: option
+    .array(
+      option.discriminatedUnion('role', [
+        userMessageItemSchema,
+        assistantMessageItemSchema,
+        dialogueMessageItemSchema,
+      ])
+    )
+    .layout({ accordion: 'Messages', itemLabel: 'message', isOrdered: true }),
+  systemMessage: option.string.layout({
+    accordion: 'Advanced Settings',
+    label: 'System Instruction',
+    direction: 'row',
+  }),
+  temperature: option.number.layout({
+    accordion: 'Advanced Settings',
+    label: 'Temperature',
+    direction: 'row',
+    defaultValue: defaultClaudeOptions.temperature,
+  }),
+  maxTokens: option.number.layout({
+    accordion: 'Advanced Settings',
+    label: 'Max Tokens',
+    direction: 'row',
+    defaultValue: defaultClaudeOptions.maxTokens,
+  }),
+  responseMapping: option
+    .saveResponseArray(['Message Content'] as const)
+    .layout({
+      accordion: 'Save Response',
+    }),
+})
 
 export const createMessage = createAction({
-  auth,
   name: 'Create Message',
-  options: option.object({
-    mdl: option.enum(claudeModels).layout({
-      defaultValue: 'claude-2.1',
-      label: 'Claude Model',
-      isRequired: true,
-    }),
-    messages: option.saveResponseArray(['User Input'] as const).layout({
-      accordion: 'Messages',
-    }),
-    responseMapping: option
-      .saveResponseArray(['Message Content'] as const)
-      .layout({
-        accordion: 'Save Response',
-      }),
-  }),
+  auth,
+  options,
   run: {
     server: async ({ credentials: { apiKey }, options, variables }) => {
       const client = new Anthropic({
         apiKey: apiKey,
       })
 
-      let userInput = ''
-      options.messages?.forEach((mapping) => {
-        if (!mapping.variableId) return
+      const messages = parseChatMessages({ options, variables })
 
-        if (!mapping.item || mapping.item === 'User Input')
-          userInput = variables.get(mapping.variableId) as string
+      const reply = await client.messages.create({
+        messages,
+        model: options.model ?? defaultClaudeOptions.model,
+        system: options.systemMessage,
+        temperature: options.temperature
+          ? Number(options.temperature)
+          : undefined,
+        max_tokens: Number(options.maxTokens) ?? defaultClaudeOptions.maxTokens,
       })
 
-      // TODO: implement chat history
-      // - put input var option
-      // - read input var and send msg (along with prevs msgs)
-      // - receive res -> show it on client -> store it in a msgs array
-      // -- loop from 2
-
-      const message = await client.messages.create({
-        messages: [
-          {
-            role: 'user',
-            content: userInput,
-          },
-        ],
-        model: options.mdl as string, // Stinky cast since we will always have mdl set
-        max_tokens: 1024,
-      })
+      messages.push(reply)
 
       options.responseMapping?.forEach((mapping) => {
         if (!mapping.variableId) return
 
         if (!mapping.item || mapping.item === 'Message Content')
-          variables.set(mapping.variableId, message.content[0].text)
+          variables.set(mapping.variableId, reply.content[0].text)
       })
+    },
+    stream: {
+      getStreamVariableId: (options) =>
+        options.responseMapping?.find(
+          (res) => res.item === 'Message Content' || !res.item
+        )?.variableId,
+      run: async ({ credentials: { apiKey }, options, variables }) => {
+        const client = new Anthropic({
+          apiKey: apiKey,
+        })
+
+        const messages = parseChatMessages({ options, variables })
+
+        const response = await client.messages.create({
+          messages,
+          model: options.model ?? defaultClaudeOptions.model,
+          system: options.systemMessage,
+          temperature: options.temperature
+            ? Number(options.temperature)
+            : undefined,
+          max_tokens:
+            Number(options.maxTokens) ?? defaultClaudeOptions.maxTokens,
+          stream: true,
+        })
+
+        return AnthropicStream(response)
+      },
     },
   },
 })
