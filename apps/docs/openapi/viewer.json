@@ -9414,7 +9414,8 @@
                   "dify-ai",
                   "mistral",
                   "elevenlabs",
-                  "together-ai"
+                  "together-ai",
+                  "open-router"
                 ]
               },
               "options": {}
