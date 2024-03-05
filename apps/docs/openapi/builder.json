@@ -18792,7 +18792,9 @@
                   "qr-code",
                   "dify-ai",
                   "mistral",
-                  "elevenlabs"
+                  "elevenlabs",
+                  "together-ai",
+                  "open-router"
                 ]
               },
               "options": {}
@@ -19433,8 +19435,12 @@
                           "family": {
                             "type": "string"
                           },
-                          "url": {
+                          "css": {
                             "type": "string"
+                          },
+                          "url": {
+                            "type": "string",
+                            "description": "Deprecated, use `css` instead"
                           }
                         },
                         "required": [
@@ -19458,6 +19464,37 @@
                   },
                   "content": {
                     "type": "string"
+                  }
+                }
+              },
+              "progressBar": {
+                "type": "object",
+                "properties": {
+                  "isEnabled": {
+                    "type": "boolean"
+                  },
+                  "color": {
+                    "type": "string"
+                  },
+                  "backgroundColor": {
+                    "type": "string"
+                  },
+                  "placement": {
+                    "type": "string",
+                    "enum": [
+                      "Top",
+                      "Bottom"
+                    ]
+                  },
+                  "thickness": {
+                    "type": "number"
+                  },
+                  "position": {
+                    "type": "string",
+                    "enum": [
+                      "fixed",
+                      "absolute"
+                    ]
                   }
                 }
               }

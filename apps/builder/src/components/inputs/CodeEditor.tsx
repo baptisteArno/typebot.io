@@ -163,6 +163,7 @@ export const CodeEditor = ({
           basicSetup={{
             highlightActiveLine: false,
           }}
+          placeholder={props.placeholder}
         />
         {isVariableButtonDisplayed && (
           <VariablesButton

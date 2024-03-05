@@ -44,7 +44,7 @@ export const ItemNodesList = ({
 
   const isLastBlock =
     isDefined(typebot) &&
-    typebot.groups[groupIndex]?.blocks?.[blockIndex + 1] === undefined
+    typebot.groups.at(groupIndex)?.blocks?.at(blockIndex + 1) === undefined
 
   const someChoiceItemsAreNotConnected =
     block.type === InputBlockType.CHOICE ||
@@ -131,6 +131,8 @@ export const ItemNodesList = ({
       elem && (placeholderRefs.current[idx] = elem)
     }
 
+  const groupId = typebot?.groups.at(groupIndex)?.id
+
   return (
     <Stack flex={1} spacing={1} maxW="full" onClick={stopPropagating}>
       <PlaceholderNode
@@ -153,11 +155,8 @@ export const ItemNodesList = ({
           />
         </Stack>
       ))}
-      {isLastBlock && someChoiceItemsAreNotConnected && (
-        <DefaultItemNode
-          block={block}
-          groupId={typebot.groups[groupIndex].id}
-        />
+      {isLastBlock && someChoiceItemsAreNotConnected && groupId && (
+        <DefaultItemNode block={block} groupId={groupId} />
       )}
 
       {draggedItem && draggedItem.blockId === block.id && (

@@ -139,7 +139,7 @@
     },
     {
       "group": "Theme",
-      "pages": ["theme/overview"]
+      "pages": ["theme/overview", "theme/font"]
     },
     {
       "group": "Settings",
@@ -194,6 +194,7 @@
     {
       "group": "Guides",
       "pages": [
+        "guides/how-to-get-help",
         "guides/mailer-lite",
         "guides/multi-avatars",
         "guides/rtl",

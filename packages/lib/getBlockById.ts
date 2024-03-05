@@ -7,10 +7,10 @@ export const getBlockById = (
   for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
     for (
       let blockIndex = 0;
-      blockIndex < groups[groupIndex].blocks.length;
+      blockIndex < (groups.at(groupIndex)?.blocks?.length ?? 0);
       blockIndex++
     ) {
-      if (groups[groupIndex].blocks[blockIndex].id === blockId) {
+      if (groups.at(groupIndex)?.blocks?.at(blockIndex)?.id === blockId) {
         return {
           block: groups[groupIndex].blocks[blockIndex],
           group: groups[groupIndex],

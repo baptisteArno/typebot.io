@@ -6,6 +6,7 @@ import { startSession } from '@typebot.io/bot-engine/startSession'
 import { saveStateToDatabase } from '@typebot.io/bot-engine/saveStateToDatabase'
 import { restartSession } from '@typebot.io/bot-engine/queries/restartSession'
 import { publicProcedure } from '@/helpers/server/trpc'
+import { computeCurrentProgress } from '@typebot.io/bot-engine/computeCurrentProgress'
 
 export const startChatPreview = publicProcedure
   .meta({
@@ -28,6 +29,7 @@ export const startChatPreview = publicProcedure
         startFrom,
         typebotId,
         typebot: startTypebot,
+        prefilledVariables,
       },
       ctx: { user },
     }) => {
@@ -50,6 +52,7 @@ export const startChatPreview = publicProcedure
           typebotId,
           typebot: startTypebot,
           userId: user?.id,
+          prefilledVariables,
         },
         message,
       })
@@ -71,6 +74,12 @@ export const startChatPreview = publicProcedure
             ),
           })
 
+      const isEnded =
+        newSessionState.progressMetadata &&
+        !input?.id &&
+        (clientSideActions?.filter((c) => c.expectsDedicatedReply).length ??
+          0) === 0
+
       return {
         sessionId: session.id,
         typebot: {
@@ -83,7 +92,15 @@ export const startChatPreview = publicProcedure
         dynamicTheme,
         logs,
         clientSideActions,
-        progress: newSessionState.progressMetadata ? 0 : undefined,
+        progress: newSessionState.progressMetadata
+          ? isEnded
+            ? 100
+            : computeCurrentProgress({
+                typebotsQueue: newSessionState.typebotsQueue,
+                progressMetadata: newSessionState.progressMetadata,
+                currentInputBlockId: input?.id as string,
+              })
+          : undefined,
       }
     }
   )

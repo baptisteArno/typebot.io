@@ -1,11 +1,24 @@
 import { MenuList, MenuItem } from '@chakra-ui/react'
 import { CopyIcon, TrashIcon } from '@/components/icons'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { BlockIndices } from '@typebot.io/schemas'
+import { BlockIndices, BlockV6 } from '@typebot.io/schemas'
 import { useTranslate } from '@tolgee/react'
+import { ForgedBlockTurnIntoMenu } from '@/features/forge/components/ForgedBlockTurnIntoMenu'
+import { TurnableIntoParam } from '@typebot.io/forge'
+import { ZodObject } from 'zod'
 
-type Props = { indices: BlockIndices }
-export const BlockNodeContextMenu = ({ indices }: Props) => {
+type Props = {
+  indices: BlockIndices
+  block: BlockV6
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  onTurnIntoClick: (params: TurnableIntoParam, schema: ZodObject<any>) => void
+}
+
+export const BlockNodeContextMenu = ({
+  indices,
+  block,
+  onTurnIntoClick,
+}: Props) => {
   const { t } = useTranslate()
   const { deleteBlock, duplicateBlock } = useTypebot()
 
@@ -15,6 +28,10 @@ export const BlockNodeContextMenu = ({ indices }: Props) => {
 
   return (
     <MenuList>
+      <ForgedBlockTurnIntoMenu
+        block={block}
+        onTurnIntoClick={onTurnIntoClick}
+      />
       <MenuItem icon={<CopyIcon />} onClick={handleDuplicateClick}>
         {t('duplicate')}
       </MenuItem>

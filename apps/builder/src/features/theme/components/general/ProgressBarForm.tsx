@@ -2,7 +2,7 @@ import { ColorPicker } from '@/components/ColorPicker'
 import { DropdownList } from '@/components/DropdownList'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
 import { NumberInput } from '@/components/inputs'
-import { HStack, Text } from '@chakra-ui/react'
+import { FormLabel, HStack } from '@chakra-ui/react'
 import { ProgressBar } from '@typebot.io/schemas'
 import {
   defaultTheme,
@@ -24,9 +24,6 @@ export const ProgressBarForm = ({
 
   const updateColor = (color: string) =>
     onProgressBarChange({ ...progressBar, color })
-
-  const updateBackgroundColor = (backgroundColor: string) =>
-    onProgressBarChange({ ...progressBar, backgroundColor })
 
   const updatePlacement = (placement: (typeof progressBarPlacements)[number]) =>
     onProgressBarChange({ ...progressBar, placement })
@@ -55,6 +52,29 @@ export const ProgressBarForm = ({
         onItemSelect={updatePlacement}
         items={progressBarPlacements}
       />
+
+      <HStack justifyContent="space-between">
+        <FormLabel mb="0" mr="0">
+          Color:
+        </FormLabel>
+        <ColorPicker
+          defaultValue={
+            progressBar?.color ?? defaultTheme.general.progressBar.color
+          }
+          onColorChange={updateColor}
+        />
+      </HStack>
+      <NumberInput
+        label="Thickness:"
+        direction="row"
+        withVariableButton={false}
+        maxW="100px"
+        defaultValue={
+          progressBar?.thickness ?? defaultTheme.general.progressBar.thickness
+        }
+        onValueChange={updateThickness}
+        size="sm"
+      />
       <DropdownList
         size="sm"
         direction="row"
@@ -66,36 +86,6 @@ export const ProgressBarForm = ({
         onItemSelect={updatePosition}
         items={progressBarPositions}
       />
-      <HStack justifyContent="space-between">
-        <Text>Color:</Text>
-        <ColorPicker
-          defaultValue={
-            progressBar?.color ?? defaultTheme.general.progressBar.color
-          }
-          onColorChange={updateColor}
-        />
-      </HStack>
-      <HStack justifyContent="space-between">
-        <Text>Background color:</Text>
-        <ColorPicker
-          defaultValue={
-            progressBar?.backgroundColor ??
-            defaultTheme.general.progressBar.backgroundColor
-          }
-          onColorChange={updateBackgroundColor}
-        />
-      </HStack>
-      <HStack justifyContent="space-between">
-        <Text>Thickness:</Text>
-        <NumberInput
-          withVariableButton={false}
-          defaultValue={
-            progressBar?.thickness ?? defaultTheme.general.progressBar.thickness
-          }
-          onValueChange={updateThickness}
-          size="sm"
-        />
-      </HStack>
     </SwitchWithRelatedSettings>
   )
 }

@@ -17,6 +17,8 @@
     "@typebot.io/dify-ai-block": "workspace:*",
     "@typebot.io/mistral-block": "workspace:*",
     "@typebot.io/elevenlabs-block": "workspace:*",
-    "@typebot.io/claude-block": "workspace:*"
+    "@typebot.io/claude-block": "workspace:*",
+    "@typebot.io/together-ai-block": "workspace:*",
+    "@typebot.io/open-router-block": "workspace:*"
   }
 }
