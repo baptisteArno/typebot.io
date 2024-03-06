@@ -1206,8 +1206,8 @@ importers:
   packages/forge/blocks/claude:
     dependencies:
       '@anthropic-ai/sdk':
-        specifier: ^0.14.1
-        version: 0.14.1
+        specifier: ^0.16.1
+        version: 0.16.1
       ai:
         specifier: 2.2.33
         version: 2.2.33(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)
@@ -1782,8 +1782,8 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.22
 
-  /@anthropic-ai/sdk@0.14.1:
-    resolution: {integrity: sha512-/o0+6ijSF0WSxnzQ0GUZPKaxOE0y1dqAn9gM9KPU7hc/tqiI4lzCYqe/EFSEw8pFONgYi1IjcvevYjgOOc2vpg==}
+  /@anthropic-ai/sdk@0.16.1:
+    resolution: {integrity: sha512-vHgvfWEyFy5ktqam56Nrhv8MVa7EJthsRYNi+1OrFFfyrj9tR2/aji1QbVbQjYU/pPhPFaYrdCEC/MLPFrmKwA==}
     dependencies:
       '@types/node': 18.11.18
       '@types/node-fetch': 2.6.11

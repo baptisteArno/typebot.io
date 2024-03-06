@@ -6,15 +6,15 @@
   "keywords": [],
   "author": "Enchatted P.C.",
   "license": "ISC",
-  "dependencies": {
-    "@anthropic-ai/sdk": "^0.14.1",
-    "ai": "2.2.33"
-  },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
     "@types/react": "18.2.15",
     "typescript": "5.3.2"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.16.1",
+    "ai": "2.2.33"
   }
 }
