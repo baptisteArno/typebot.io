@@ -8,6 +8,7 @@ import { ChatNodeResponse } from '../types'
 export const sendMessage = createAction({
   auth,
   name: 'Send Message',
+  turnableInto: undefined,
   options: option.object({
     botId: option.string.layout({
       label: 'Bot ID',
