@@ -8,7 +8,6 @@ import { SearchInput } from '@/components/inputs/SearchInput'
 import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
 
 type Props = {
-  inputIndex: number
   defaultItems: ChoiceInputBlock['items']
   options: ChoiceInputBlock['options']
   onSubmit: (value: InputSubmitContent) => void

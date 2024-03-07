@@ -8,7 +8,10 @@ import { BotContext, InitialChatReply, OutgoingLog } from '@/types'
 import { ErrorMessage } from './ErrorMessage'
 import {
   getExistingResultIdFromStorage,
+  getInitialChatReplyFromStorage,
+  setInitialChatReplyInStorage,
   setResultInStorage,
+  wipeExistingChatStateInStorage,
 } from '@/utils/storage'
 import { setCssVariablesValue } from '@/utils/setCssVariablesValue'
 import immutableCss from '../assets/immutable.css'
@@ -20,6 +23,8 @@ import { HTTPError } from 'ky'
 import { injectFont } from '@/utils/injectFont'
 import { ProgressBar } from './ProgressBar'
 import { Portal } from 'solid-js/web'
+import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
+import { persist } from '@/utils/persist'
 
 export type BotProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -35,6 +40,7 @@ export type BotProps = {
   onInit?: () => void
   onEnd?: () => void
   onNewLogs?: (logs: OutgoingLog[]) => void
+  onChatStatePersisted?: (isEnabled: boolean) => void
   startFrom?: StartFrom
 }
 
@@ -59,14 +65,13 @@ export const Bot = (props: BotProps & { class?: string }) => {
       typeof props.typebot === 'string' ? props.typebot : undefined
     const isPreview =
       typeof props.typebot !== 'string' || (props.isPreview ?? false)
+    const resultIdInStorage = getExistingResultIdFromStorage(typebotIdFromProps)
     const { data, error } = await startChatQuery({
       stripeRedirectStatus: urlParams.get('redirect_status') ?? undefined,
       typebot: props.typebot,
       apiHost: props.apiHost,
       isPreview,
-      resultId: isNotEmpty(props.resultId)
-        ? props.resultId
-        : getExistingResultIdFromStorage(typebotIdFromProps),
+      resultId: isNotEmpty(props.resultId) ? props.resultId : resultIdInStorage,
       prefilledVariables: {
         ...prefilledVariables,
         ...props.prefilledVariables,
@@ -111,17 +116,40 @@ export const Bot = (props: BotProps & { class?: string }) => {
       )
     }
 
-    if (data.resultId && typebotIdFromProps)
-      setResultInStorage(data.typebot.settings.general?.rememberUser?.storage)(
-        typebotIdFromProps,
-        data.resultId
+    if (
+      data.resultId &&
+      typebotIdFromProps &&
+      (data.typebot.settings.general?.rememberUser?.isEnabled ??
+        defaultSettings.general.rememberUser.isEnabled)
+    ) {
+      if (resultIdInStorage && resultIdInStorage !== data.resultId)
+        wipeExistingChatStateInStorage(data.typebot.id)
+      const storage =
+        data.typebot.settings.general?.rememberUser?.storage ??
+        defaultSettings.general.rememberUser.storage
+      setResultInStorage(storage)(typebotIdFromProps, data.resultId)
+      const initialChatInStorage = getInitialChatReplyFromStorage(
+        data.typebot.id
       )
-    setInitialChatReply(data)
-    setCustomCss(data.typebot.theme.customCss ?? '')
+      if (initialChatInStorage) {
+        setInitialChatReply(initialChatInStorage)
+      } else {
+        setInitialChatReply(data)
+        setInitialChatReplyInStorage(data, {
+          typebotId: data.typebot.id,
+          storage,
+        })
+      }
+      props.onChatStatePersisted?.(true)
+    } else {
+      setInitialChatReply(data)
+      if (data.input?.id && props.onNewInputBlock)
+        props.onNewInputBlock(data.input)
+      if (data.logs) props.onNewLogs?.(data.logs)
+      props.onChatStatePersisted?.(false)
+    }
 
-    if (data.input?.id && props.onNewInputBlock)
-      props.onNewInputBlock(data.input)
-    if (data.logs) props.onNewLogs?.(data.logs)
+    setCustomCss(data.typebot.theme.customCss ?? '')
   }
 
   createEffect(() => {
@@ -178,6 +206,16 @@ export const Bot = (props: BotProps & { class?: string }) => {
               resultId: initialChatReply.resultId,
               sessionId: initialChatReply.sessionId,
               typebot: initialChatReply.typebot,
+              storage:
+                initialChatReply.typebot.settings.general?.rememberUser
+                  ?.isEnabled &&
+                !(
+                  typeof props.typebot !== 'string' ||
+                  (props.isPreview ?? false)
+                )
+                  ? initialChatReply.typebot.settings.general?.rememberUser
+                      ?.storage ?? defaultSettings.general.rememberUser.storage
+                  : undefined,
             }}
             progressBarRef={props.progressBarRef}
             onNewInputBlock={props.onNewInputBlock}
@@ -203,8 +241,12 @@ type BotContentProps = {
 }
 
 const BotContent = (props: BotContentProps) => {
-  const [progressValue, setProgressValue] = createSignal<number | undefined>(
-    props.initialChatReply.progress
+  const [progressValue, setProgressValue] = persist(
+    createSignal<number | undefined>(props.initialChatReply.progress),
+    {
+      storage: props.context.storage,
+      key: `typebot-${props.context.typebot.id}-progressValue`,
+    }
   )
   let botContainer: HTMLDivElement | undefined
 

@@ -3,10 +3,11 @@ import { isMobile } from '@/utils/isMobileSignal'
 import { AudioBubbleBlock } from '@typebot.io/schemas'
 import { createSignal, onCleanup, onMount } from 'solid-js'
 import { defaultAudioBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/audio/constants'
+import clsx from 'clsx'
 
 type Props = {
   content: AudioBubbleBlock['content']
-  onTransitionEnd: (offsetTop?: number) => void
+  onTransitionEnd?: (offsetTop?: number) => void
 }
 
 const showAnimationDuration = 400
@@ -18,7 +19,9 @@ export const AudioBubble = (props: Props) => {
   let isPlayed = false
   let ref: HTMLDivElement | undefined
   let audioElement: HTMLAudioElement | undefined
-  const [isTyping, setIsTyping] = createSignal(true)
+  const [isTyping, setIsTyping] = createSignal(
+    props.onTransitionEnd ? true : false
+  )
 
   onMount(() => {
     typingTimeout = setTimeout(() => {
@@ -26,7 +29,7 @@ export const AudioBubble = (props: Props) => {
       isPlayed = true
       setIsTyping(false)
       setTimeout(
-        () => props.onTransitionEnd(ref?.offsetTop),
+        () => props.onTransitionEnd?.(ref?.offsetTop),
         showAnimationDuration
       )
     }, typingDuration)
@@ -37,7 +40,13 @@ export const AudioBubble = (props: Props) => {
   })
 
   return (
-    <div class="flex flex-col animate-fade-in" ref={ref}>
+    <div
+      class={clsx(
+        'flex flex-col',
+        props.onTransitionEnd ? 'animate-fade-in' : undefined
+      )}
+      ref={ref}
+    >
       <div class="flex w-full items-center">
         <div class="flex relative z-10 items-start typebot-host-bubble max-w-full">
           <div
@@ -53,8 +62,10 @@ export const AudioBubble = (props: Props) => {
             ref={audioElement}
             src={props.content?.url}
             autoplay={
-              props.content?.isAutoplayEnabled ??
-              defaultAudioBubbleContent.isAutoplayEnabled
+              props.onTransitionEnd
+                ? props.content?.isAutoplayEnabled ??
+                  defaultAudioBubbleContent.isAutoplayEnabled
+                : false
             }
             class={
               'z-10 text-fade-in ' +

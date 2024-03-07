@@ -142,7 +142,7 @@
     },
     {
       "group": "Settings",
-      "pages": ["settings/overview"]
+      "pages": ["settings/overview", "settings/remember-user"]
     },
     {
       "group": "Deploy",

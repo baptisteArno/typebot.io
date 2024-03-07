@@ -17,7 +17,6 @@ export const NumberInput = (props: NumberInputProps) => {
   const [inputValue, setInputValue] = createSignal<string | number>(
     props.defaultValue ?? ''
   )
-  // eslint-disable-next-line solid/reactivity
   const [staticValue, bindValue, targetValue] = numberInputHelper(() =>
     inputValue()
   )
