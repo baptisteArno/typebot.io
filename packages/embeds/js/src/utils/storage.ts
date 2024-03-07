@@ -94,3 +94,12 @@ export const parseRememberUserStorage = (
   (storage ?? defaultSettings.general.rememberUser.storage) === 'session'
     ? sessionStorage
     : localStorage
+
+export const wipeExistingChatStateInStorage = (typebotId: string) => {
+  Object.keys(localStorage).forEach((key) => {
+    if (key.startsWith(`typebot-${typebotId}`)) localStorage.removeItem(key)
+  })
+  Object.keys(sessionStorage).forEach((key) => {
+    if (key.startsWith(`typebot-${typebotId}`)) sessionStorage.removeItem(key)
+  })
+}

@@ -11,6 +11,7 @@ import {
   getInitialChatReplyFromStorage,
   setInitialChatReplyInStorage,
   setResultInStorage,
+  wipeExistingChatStateInStorage,
 } from '@/utils/storage'
 import { setCssVariablesValue } from '@/utils/setCssVariablesValue'
 import immutableCss from '../assets/immutable.css'
@@ -64,14 +65,13 @@ export const Bot = (props: BotProps & { class?: string }) => {
       typeof props.typebot === 'string' ? props.typebot : undefined
     const isPreview =
       typeof props.typebot !== 'string' || (props.isPreview ?? false)
+    const resultIdInStorage = getExistingResultIdFromStorage(typebotIdFromProps)
     const { data, error } = await startChatQuery({
       stripeRedirectStatus: urlParams.get('redirect_status') ?? undefined,
       typebot: props.typebot,
       apiHost: props.apiHost,
       isPreview,
-      resultId: isNotEmpty(props.resultId)
-        ? props.resultId
-        : getExistingResultIdFromStorage(typebotIdFromProps),
+      resultId: isNotEmpty(props.resultId) ? props.resultId : resultIdInStorage,
       prefilledVariables: {
         ...prefilledVariables,
         ...props.prefilledVariables,
@@ -122,6 +122,8 @@ export const Bot = (props: BotProps & { class?: string }) => {
       (data.typebot.settings.general?.rememberUser?.isEnabled ??
         defaultSettings.general.rememberUser.isEnabled)
     ) {
+      if (resultIdInStorage && resultIdInStorage !== data.resultId)
+        wipeExistingChatStateInStorage(data.typebot.id)
       const storage =
         data.typebot.settings.general?.rememberUser?.storage ??
         defaultSettings.general.rememberUser.storage
