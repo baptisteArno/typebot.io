@@ -8,6 +8,7 @@ import {
 import { useEffect } from 'react'
 import { BoardMenuButton } from 'components/editor/BoardMenuButton'
 import { PreviewDrawer } from 'components/editor/preview/PreviewDrawer'
+import { ToDoList } from 'components/editor/todoList'
 import { StepsSideBar } from 'components/editor/StepsSideBar'
 import { Graph } from 'components/shared/Graph'
 import { GraphProvider } from 'contexts/GraphContext'
@@ -33,6 +34,21 @@ function TypebotEditPage() {
     if (!dequal(typebot?.blocks, currentTypebot?.blocks)) {
       window.parent.postMessage({ name: 'hasUnsavedChanges' }, '*')
     }
+
+    const groupsWithoutConnection = typebot?.blocks?.filter(
+      (block) => !block.hasConnection
+    )
+
+    const hasGroupsWithoutConnection = !!groupsWithoutConnection?.length
+
+    window.parent.postMessage(
+      {
+        name: 'groupsWithoutConnection',
+        hasGroupsWithoutConnection,
+        quantity: groupsWithoutConnection?.length,
+      },
+      '*'
+    )
   }, [typebot?.blocks])
 
   const handleEventListeners = (e: any): void => {
@@ -53,6 +69,7 @@ function TypebotEditPage() {
         window.parent.postMessage(canGoBack, '*')
       }
     }
+
     if (e.data.name === 'saveClick') {
       save(e.data.personaName, e.data.personaThumbUrl).then((res) => {
         if (res.saved) {
@@ -80,6 +97,7 @@ function TypebotEditPage() {
         <Seo title="Editor" />
         <Flex overflow="clip" h="100vh" flexDir="column" id="editor-container">
           <GettingStartedModal />
+
           <Flex
             flex="1"
             pos="relative"
@@ -91,12 +109,15 @@ function TypebotEditPage() {
           >
             <GraphDndContext>
               <StepsSideBar />
+
               <GraphProvider
                 blocks={typebot?.blocks ?? []}
                 isReadOnly={isReadOnly}
               >
                 {typebot && <Graph flex="1" typebot={typebot} />}
+
                 <BoardMenuButton pos="absolute" right="40px" top="20px" />
+
                 <RightPanel />
               </GraphProvider>
             </GraphDndContext>
@@ -108,9 +129,31 @@ function TypebotEditPage() {
 }
 
 const RightPanel = () => {
-  const { rightPanel } = useEditor()
+  const { rightPanel, setRightPanel } = useEditor()
 
-  return rightPanel === RightPanelEnum.PREVIEW ? <PreviewDrawer /> : <></>
+  const { typebot } = useTypebot()
+
+  useEffect(() => {
+    window.addEventListener('message', handleEventListeners)
+
+    return () => window.removeEventListener('message', handleEventListeners)
+  }, [typebot])
+
+  const handleEventListeners = (e: any): void => {
+    if (e.data === 'openToDoList') {
+      setRightPanel(RightPanelEnum.TODOLIST)
+    }
+  }
+
+  if (rightPanel === RightPanelEnum.PREVIEW) {
+    return <PreviewDrawer />
+  }
+
+  if (rightPanel === RightPanelEnum.TODOLIST) {
+    return <ToDoList />
+  }
+
+  return <></>
 }
 
 export default TypebotEditPage

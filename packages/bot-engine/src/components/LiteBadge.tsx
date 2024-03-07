@@ -13,7 +13,6 @@ export const LiteBadge = () => {
       mutations_list.forEach(function (mutation) {
         mutation.removedNodes.forEach(function (removed_node) {
           if ((removed_node as HTMLElement).id == 'lite-badge') {
-            console.log('litebadge has been removed')
             container.append(liteBadge.current as Node)
           }
         })

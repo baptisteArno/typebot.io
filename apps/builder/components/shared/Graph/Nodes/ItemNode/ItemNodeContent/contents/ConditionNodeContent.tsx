@@ -1,6 +1,11 @@
 import { Stack, Tag, Text, Flex, Wrap } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext'
-import { Comparison, ConditionItem, ComparisonOperators, LogicalOperator } from 'models'
+import {
+  Comparison,
+  ConditionItem,
+  ComparisonOperators,
+  LogicalOperator,
+} from 'models'
 import React from 'react'
 import { byId, isNotDefined } from 'utils'
 
@@ -10,7 +15,7 @@ type Props = {
 
 export const ConditionNodeContent = ({ item }: Props) => {
   const { typebot } = useTypebot()
-  
+
   return (
     <Flex px={2} py={2}>
       {item.content.comparisons.length === 0 ||
@@ -24,12 +29,19 @@ export const ConditionNodeContent = ({ item }: Props) => {
             )
             return (
               <Wrap key={comparison.id} spacing={1} noOfLines={0}>
-                {idx > 0 && <Text>{parseLogicalOperatorSymbol(item.content.logicalOperator) ?? ''}</Text>}
+                {idx > 0 && (
+                  <Text>
+                    {parseLogicalOperatorSymbol(item.content.logicalOperator) ??
+                      ''}
+                  </Text>
+                )}
+
                 {variable?.token && (
                   <Tag bgColor="orange.400" color="white">
                     {variable.token}
                   </Tag>
                 )}
+
                 {comparison.comparisonOperator && (
                   <Text>
                     {parseComparisonOperatorSymbol(
@@ -37,6 +49,7 @@ export const ConditionNodeContent = ({ item }: Props) => {
                     )}
                   </Text>
                 )}
+
                 {comparison?.value && (
                   <Tag bgColor={'gray.200'}>
                     <Text noOfLines={0}>{comparison.value}</Text>
@@ -66,9 +79,9 @@ const comparisonIsEmpty = (comparison: Comparison) =>
 
 const parseLogicalOperatorSymbol = (operator: LogicalOperator) => {
   const toCompare = Object.keys(LogicalOperator).indexOf(operator)
+
   return Object.values(LogicalOperator)[toCompare]
 }
-
 
 const parseComparisonOperatorSymbol = (operator: ComparisonOperators) => {
   const toCompare = Object.keys(ComparisonOperators).indexOf(operator)
@@ -76,34 +89,34 @@ const parseComparisonOperatorSymbol = (operator: ComparisonOperators) => {
     case ComparisonOperators.CONTAINS:
       return 'contém'
     case ComparisonOperators.EQUAL:
-        return '='
+      return '='
     case ComparisonOperators.NOT_EQUAL:
-        return '!='
+      return '!='
     case ComparisonOperators.GREATER:
-        return '>'
+      return '>'
     case ComparisonOperators.GREATER_OR_EQUAL:
-        return '>='
+      return '>='
     case ComparisonOperators.LESS:
-        return '<'
+      return '<'
     case ComparisonOperators.LESS_OR_EQUAL:
-        return '<='
+      return '<='
     case ComparisonOperators.EMPTY:
-        return 'é vazio'
+      return 'é vazio'
     case ComparisonOperators.NOT_EMPTY:
-        return 'não é vazio'
+      return 'não é vazio'
     case ComparisonOperators.START_WITH:
-        return 'inicia com'
+      return 'inicia com'
     case ComparisonOperators.NOT_START_WITH:
-        return 'não inicia com'
+      return 'não inicia com'
     case ComparisonOperators.END_WITH:
-        return 'termina com'
+      return 'termina com'
     case ComparisonOperators.NOT_END_WITH:
-        return 'não termina com'
+      return 'não termina com'
     case ComparisonOperators.NOT_CONTAINS:
-        return 'não contém'
+      return 'não contém'
     case ComparisonOperators.BETWEEN:
-        return ' estiver entre '
+      return ' estiver entre '
     case ComparisonOperators.NOT_BETWEEN:
-        return ' não estiver entre '
+      return ' não estiver entre '
   }
 }
