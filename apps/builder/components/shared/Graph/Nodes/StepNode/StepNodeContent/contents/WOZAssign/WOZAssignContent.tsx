@@ -10,7 +10,6 @@ type Props = {
 }
 
 const WOZAssignContent = ({ step, indices }: Props) => {
-  console.log('WOZAssignContent', step)
   return (
     <Stack>
       <Text noOfLines={0}>

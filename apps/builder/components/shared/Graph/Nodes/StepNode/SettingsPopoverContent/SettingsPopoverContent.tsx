@@ -235,7 +235,6 @@ export const StepSettings = ({
       )
     }
     case WOZStepType.ASSIGN: {
-      console.log('step.options', step.options)
       return (
         <WOZAssignSettingBody
           options={
