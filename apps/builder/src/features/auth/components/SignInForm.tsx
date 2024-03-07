@@ -94,10 +94,19 @@ export const SignInForm = ({
             status: 'info',
             description: t('auth.signinErrorToast.tooManyRequests'),
           })
-        else
+        else if (response.error.includes('sign-up-disabled'))
           showToast({
             title: t('auth.signinErrorToast.title'),
             description: t('auth.signinErrorToast.description'),
+          })
+        else
+          showToast({
+            status: 'info',
+            description: t('errorMessage'),
+            details: {
+              content: 'Check server logs to see relevent error message.',
+              lang: 'json',
+            },
           })
       } else {
         setIsMagicLinkSent(true)

@@ -5,8 +5,6 @@ import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/con
 import { VideoBubbleContentType } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
 import { convertRichTextToMarkdown } from '@typebot.io/lib/markdown/convertRichTextToMarkdown'
 
-const mp4HttpsUrlRegex = /^https:\/\/.*\.mp4$/
-
 export const convertMessageToWhatsAppMessage = (
   message: ContinueChatResponse['messages'][number]
 ): WhatsAppSendingMessage | undefined => {
@@ -45,8 +43,7 @@ export const convertMessageToWhatsAppMessage = (
     case BubbleBlockType.VIDEO: {
       if (
         !message.content.url ||
-        (message.content.type !== VideoBubbleContentType.URL &&
-          isVideoUrlNotCompatible(message.content.url))
+        message.content.type !== VideoBubbleContentType.URL
       )
         return
       return {
@@ -71,9 +68,6 @@ export const convertMessageToWhatsAppMessage = (
 
 export const isImageUrlNotCompatible = (url: string) =>
   !isHttpUrl(url) || isGifFileUrl(url) || isSvgSrc(url)
-
-export const isVideoUrlNotCompatible = (url: string) =>
-  !mp4HttpsUrlRegex.test(url)
 
 export const isHttpUrl = (text: string) =>
   text.startsWith('http://') || text.startsWith('https://')

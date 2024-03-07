@@ -18,7 +18,7 @@ import {
 
 export interface ContextMenuProps<T extends HTMLElement> {
   onOpen?: () => void
-  renderMenu: () => JSX.Element | null
+  renderMenu: ({ onClose }: { onClose: () => void }) => JSX.Element | null
   children: (
     ref: MutableRefObject<T | null>,
     isOpened: boolean
@@ -101,7 +101,7 @@ export function ContextMenu<T extends HTMLElement = HTMLElement>(
               }}
               {...props.menuButtonProps}
             />
-            {props.renderMenu()}
+            {props.renderMenu({ onClose: onCloseHandler })}
           </Menu>
         </Portal>
       )}

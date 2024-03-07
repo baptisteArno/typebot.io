@@ -1,14 +1,13 @@
 import type { OpenAI } from 'openai'
-import { options as createChatCompletionOption } from '../actions/createChatCompletion'
 import { ReadOnlyVariableStore } from '@typebot.io/forge'
 import { isNotEmpty } from '@typebot.io/lib'
-import { z } from '@typebot.io/forge/zod'
+import { ChatCompletionOptions } from '../shared/parseChatCompletionOptions'
 
 export const parseChatCompletionMessages = ({
   options: { messages },
   variables,
 }: {
-  options: Pick<z.infer<typeof createChatCompletionOption>, 'messages'>
+  options: ChatCompletionOptions
   variables: ReadOnlyVariableStore
 }): OpenAI.Chat.ChatCompletionMessageParam[] => {
   const parsedMessages = messages

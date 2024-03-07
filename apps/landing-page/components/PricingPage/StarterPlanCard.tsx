@@ -41,6 +41,7 @@ export const StarterPlanCard = () => {
           'Branding removed',
           'Collect files from users',
           'Create folders',
+          'Direct priority support',
         ],
       }}
       borderWidth="1px"

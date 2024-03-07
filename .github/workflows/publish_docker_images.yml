@@ -2,7 +2,7 @@ name: Build Docker images
 
 on:
   push:
-    tags: ['v*']
+    tags: ['v*', 'next']
 
 jobs:
   build-amd:
@@ -138,6 +138,7 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
+            next
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:

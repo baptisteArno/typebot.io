@@ -10,12 +10,21 @@ export const createAuth = <A extends AuthDefinition>(authDefinition: A) =>
   authDefinition
 
 export const createBlock = <
-  I extends string,
+  Id extends string,
   A extends AuthDefinition,
   O extends z.ZodObject<any>
 >(
-  blockDefinition: BlockDefinition<I, A, O>
-): BlockDefinition<I, A, O> => blockDefinition
+  blockDefinition: BlockDefinition<Id, A, O>
+): BlockDefinition<Id, A, O> => blockDefinition
+
+export const createVersionedBlock = <
+  Blocks extends Record<
+    string,
+    BlockDefinition<string, AuthDefinition, z.ZodObject<any>>
+  >
+>(
+  blocks: Blocks
+): Blocks => blocks
 
 export const createAction = <
   A extends AuthDefinition,

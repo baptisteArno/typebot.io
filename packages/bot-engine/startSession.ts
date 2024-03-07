@@ -69,10 +69,9 @@ export const startSession = async ({
 > => {
   const typebot = await getTypebot(startParams)
 
-  const prefilledVariables =
-    startParams.type === 'live' && startParams.prefilledVariables
-      ? prefillVariables(typebot.variables, startParams.prefilledVariables)
-      : typebot.variables
+  const prefilledVariables = startParams.prefilledVariables
+    ? prefillVariables(typebot.variables, startParams.prefilledVariables)
+    : typebot.variables
 
   const result = await getResult({
     resultId: startParams.type === 'live' ? startParams.resultId : undefined,
@@ -137,6 +136,11 @@ export const startSession = async ({
       startParams.type === 'preview'
         ? undefined
         : typebot.settings.security?.allowedOrigins,
+    progressMetadata: initialSessionState?.whatsApp
+      ? undefined
+      : typebot.theme.general?.progressBar?.isEnabled
+      ? { totalAnswers: 0 }
+      : undefined,
     ...initialSessionState,
   }
 

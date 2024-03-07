@@ -103,6 +103,7 @@ export const createChatMessage = createAction({
                     conversationId = data.conversation_id
                   }
                 } catch (error) {
+                  if (line.includes('event: ')) return
                   jsonChunk += line
                 }
               })

@@ -1,6 +1,6 @@
 import { createAction, option } from '@typebot.io/forge'
 import { isDefined, isEmpty } from '@typebot.io/lib'
-import { got } from 'got'
+import { HTTPError, got } from 'got'
 import { apiBaseUrl } from '../constants'
 import { auth } from '../auth'
 import { ChatNodeResponse } from '../types'
@@ -8,6 +8,7 @@ import { ChatNodeResponse } from '../types'
 export const sendMessage = createAction({
   auth,
   name: 'Send Message',
+  turnableInto: undefined,
   options: option.object({
     botId: option.string.layout({
       label: 'Bot ID',
@@ -36,28 +37,39 @@ export const sendMessage = createAction({
       credentials: { apiKey },
       options: { botId, message, responseMapping, threadId },
       variables,
+      logs,
     }) => {
-      const res: ChatNodeResponse = await got
-        .post(apiBaseUrl + botId, {
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-          },
-          json: {
-            message,
-            chat_session_id: isEmpty(threadId) ? undefined : threadId,
-          },
+      try {
+        const res: ChatNodeResponse = await got
+          .post(apiBaseUrl + botId, {
+            headers: {
+              Authorization: `Bearer ${apiKey}`,
+            },
+            json: {
+              message,
+              chat_session_id: isEmpty(threadId) ? undefined : threadId,
+            },
+          })
+          .json()
+
+        responseMapping?.forEach((mapping) => {
+          if (!mapping.variableId) return
+
+          const item = mapping.item ?? 'Message'
+          if (item === 'Message') variables.set(mapping.variableId, res.message)
+
+          if (item === 'Thread ID')
+            variables.set(mapping.variableId, res.chat_session_id)
         })
-        .json()
-
-      responseMapping?.forEach((mapping) => {
-        if (!mapping.variableId) return
-
-        const item = mapping.item ?? 'Message'
-        if (item === 'Message') variables.set(mapping.variableId, res.message)
-
-        if (item === 'Thread ID')
-          variables.set(mapping.variableId, res.chat_session_id)
-      })
+      } catch (error) {
+        if (error instanceof HTTPError)
+          return logs.add({
+            status: 'error',
+            description: error.message,
+            details: error.response.body,
+          })
+        console.error(error)
+      }
     },
   },
 })

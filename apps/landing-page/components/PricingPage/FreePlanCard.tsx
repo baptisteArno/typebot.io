@@ -32,6 +32,7 @@ export const FreePlanCard = () => (
         'Native integrations',
         'Webhooks',
         'Custom Javascript & CSS',
+        'Community support & Docs',
       ],
     }}
     button={

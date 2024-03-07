@@ -8,6 +8,7 @@ import { parseDynamicTheme } from '@typebot.io/bot-engine/parseDynamicTheme'
 import { isDefined, isNotDefined } from '@typebot.io/lib/utils'
 import { z } from 'zod'
 import { filterPotentiallySensitiveLogs } from '@typebot.io/bot-engine/logs/filterPotentiallySensitiveLogs'
+import { computeCurrentProgress } from '@typebot.io/bot-engine/computeCurrentProgress'
 
 export const continueChat = publicProcedure
   .meta({
@@ -93,6 +94,12 @@ export const continueChat = publicProcedure
 
     const isPreview = isNotDefined(session.state.typebotsQueue[0].resultId)
 
+    const isEnded =
+      newSessionState.progressMetadata &&
+      !input?.id &&
+      (clientSideActions?.filter((c) => c.expectsDedicatedReply).length ??
+        0) === 0
+
     return {
       messages,
       input,
@@ -100,5 +107,14 @@ export const continueChat = publicProcedure
       dynamicTheme: parseDynamicTheme(newSessionState),
       logs: isPreview ? logs : logs?.filter(filterPotentiallySensitiveLogs),
       lastMessageNewFormat,
+      progress: newSessionState.progressMetadata
+        ? isEnded
+          ? 100
+          : computeCurrentProgress({
+              typebotsQueue: newSessionState.typebotsQueue,
+              progressMetadata: newSessionState.progressMetadata,
+              currentInputBlockId: input?.id as string,
+            })
+        : undefined,
     }
   })

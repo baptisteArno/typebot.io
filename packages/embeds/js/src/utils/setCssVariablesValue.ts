@@ -19,6 +19,14 @@ const cssVariableNames = {
     bgColor: '--typebot-container-bg-color',
     fontFamily: '--typebot-container-font-family',
     color: '--typebot-container-color',
+    progressBar: {
+      position: '--typebot-progress-bar-position',
+      color: '--typebot-progress-bar-color',
+      colorRgb: '--typebot-progress-bar-color-rgb',
+      height: '--typebot-progress-bar-height',
+      top: '--typebot-progress-bar-top',
+      bottom: '--typebot-progress-bar-bottom',
+    },
   },
   chat: {
     hostBubbles: {
@@ -49,18 +57,24 @@ const cssVariableNames = {
 
 export const setCssVariablesValue = (
   theme: Theme | undefined,
-  container: HTMLDivElement
+  container: HTMLDivElement,
+  isPreview?: boolean
 ) => {
   if (!theme) return
   const documentStyle = container?.style
   if (!documentStyle) return
-  setGeneralTheme(theme.general ?? defaultTheme.general, documentStyle)
+  setGeneralTheme(
+    theme.general ?? defaultTheme.general,
+    documentStyle,
+    isPreview
+  )
   setChatTheme(theme.chat ?? defaultTheme.chat, documentStyle)
 }
 
 const setGeneralTheme = (
   generalTheme: GeneralTheme,
-  documentStyle: CSSStyleDeclaration
+  documentStyle: CSSStyleDeclaration,
+  isPreview?: boolean
 ) => {
   setTypebotBackground(
     generalTheme.background ?? defaultTheme.general.background,
@@ -68,7 +82,56 @@ const setGeneralTheme = (
   )
   documentStyle.setProperty(
     cssVariableNames.general.fontFamily,
-    generalTheme.font ?? defaultTheme.general.font
+    (typeof generalTheme.font === 'string'
+      ? generalTheme.font
+      : generalTheme.font?.family) ?? defaultTheme.general.font.family
+  )
+  setProgressBar(
+    generalTheme.progressBar ?? defaultTheme.general.progressBar,
+    documentStyle,
+    isPreview
+  )
+}
+
+const setProgressBar = (
+  progressBar: NonNullable<GeneralTheme['progressBar']>,
+  documentStyle: CSSStyleDeclaration,
+  isPreview?: boolean
+) => {
+  const position =
+    progressBar.position ?? defaultTheme.general.progressBar.position
+
+  documentStyle.setProperty(
+    cssVariableNames.general.progressBar.position,
+    position === 'fixed' ? (isPreview ? 'absolute' : 'fixed') : position
+  )
+  documentStyle.setProperty(
+    cssVariableNames.general.progressBar.color,
+    progressBar.color ?? defaultTheme.general.progressBar.color
+  )
+  documentStyle.setProperty(
+    cssVariableNames.general.progressBar.colorRgb,
+    hexToRgb(
+      progressBar.backgroundColor ??
+        defaultTheme.general.progressBar.backgroundColor
+    ).join(', ')
+  )
+  documentStyle.setProperty(
+    cssVariableNames.general.progressBar.height,
+    `${progressBar.thickness ?? defaultTheme.general.progressBar.thickness}px`
+  )
+
+  const placement =
+    progressBar.placement ?? defaultTheme.general.progressBar.placement
+
+  documentStyle.setProperty(
+    cssVariableNames.general.progressBar.top,
+    placement === 'Top' ? '0' : 'auto'
+  )
+
+  documentStyle.setProperty(
+    cssVariableNames.general.progressBar.bottom,
+    placement === 'Bottom' ? '0' : 'auto'
   )
 }
 
@@ -196,12 +259,11 @@ const parseBackgroundValue = ({ type, content }: Background = {}) => {
   switch (type) {
     case BackgroundType.NONE:
       return 'transparent'
+    case undefined:
     case BackgroundType.COLOR:
-      return content ?? '#ffffff'
+      return content ?? defaultTheme.general.background.content
     case BackgroundType.IMAGE:
       return `url(${content})`
-    case undefined:
-      return defaultTheme.general.background.content
   }
 }
 

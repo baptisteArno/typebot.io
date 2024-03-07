@@ -18792,7 +18792,9 @@
                   "qr-code",
                   "dify-ai",
                   "mistral",
-                  "elevenlabs"
+                  "elevenlabs",
+                  "together-ai",
+                  "open-router"
                 ]
               },
               "options": {}
@@ -19398,7 +19400,56 @@
             "type": "object",
             "properties": {
               "font": {
-                "type": "string"
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "Google"
+                            ]
+                          },
+                          "family": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "Custom"
+                            ]
+                          },
+                          "family": {
+                            "type": "string"
+                          },
+                          "css": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string",
+                            "description": "Deprecated, use `css` instead"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ]
+                      }
+                    ]
+                  }
+                ]
               },
               "background": {
                 "type": "object",
@@ -19413,6 +19464,37 @@
                   },
                   "content": {
                     "type": "string"
+                  }
+                }
+              },
+              "progressBar": {
+                "type": "object",
+                "properties": {
+                  "isEnabled": {
+                    "type": "boolean"
+                  },
+                  "color": {
+                    "type": "string"
+                  },
+                  "backgroundColor": {
+                    "type": "string"
+                  },
+                  "placement": {
+                    "type": "string",
+                    "enum": [
+                      "Top",
+                      "Bottom"
+                    ]
+                  },
+                  "thickness": {
+                    "type": "number"
+                  },
+                  "position": {
+                    "type": "string",
+                    "enum": [
+                      "fixed",
+                      "absolute"
+                    ]
                   }
                 }
               }

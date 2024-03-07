@@ -7,6 +7,7 @@ import { startSession } from '@typebot.io/bot-engine/startSession'
 import { saveStateToDatabase } from '@typebot.io/bot-engine/saveStateToDatabase'
 import { restartSession } from '@typebot.io/bot-engine/queries/restartSession'
 import { filterPotentiallySensitiveLogs } from '@typebot.io/bot-engine/logs/filterPotentiallySensitiveLogs'
+import { computeCurrentProgress } from '@typebot.io/bot-engine/computeCurrentProgress'
 
 export const startChat = publicProcedure
   .meta({
@@ -83,6 +84,12 @@ export const startChat = publicProcedure
             ),
           })
 
+      const isEnded =
+        newSessionState.progressMetadata &&
+        !input?.id &&
+        (clientSideActions?.filter((c) => c.expectsDedicatedReply).length ??
+          0) === 0
+
       return {
         sessionId: session.id,
         typebot: {
@@ -96,6 +103,15 @@ export const startChat = publicProcedure
         dynamicTheme,
         logs: logs?.filter(filterPotentiallySensitiveLogs),
         clientSideActions,
+        progress: newSessionState.progressMetadata
+          ? isEnded
+            ? 100
+            : computeCurrentProgress({
+                typebotsQueue: newSessionState.typebotsQueue,
+                progressMetadata: newSessionState.progressMetadata,
+                currentInputBlockId: input?.id as string,
+              })
+          : undefined,
       }
     }
   )

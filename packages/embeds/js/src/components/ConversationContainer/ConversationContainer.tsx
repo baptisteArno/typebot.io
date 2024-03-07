@@ -64,6 +64,7 @@ type Props = {
   onAnswer?: (answer: { message: string; blockId: string }) => void
   onEnd?: () => void
   onNewLogs?: (logs: OutgoingLog[]) => void
+  onProgressUpdate?: (progress: number) => void
 }
 
 export const ConversationContainer = (props: Props) => {
@@ -172,6 +173,7 @@ export const ConversationContainer = (props: Props) => {
       return
     }
     if (!data) return
+    if (data.progress) props.onProgressUpdate?.(data.progress)
     if (data.lastMessageNewFormat) {
       setFormattedMessages([
         ...formattedMessages(),
@@ -269,7 +271,7 @@ export const ConversationContainer = (props: Props) => {
   return (
     <div
       ref={chatContainer}
-      class="flex flex-col overflow-y-scroll w-full min-h-full px-3 pt-10 relative scrollable-container typebot-chat-view scroll-smooth gap-2"
+      class="flex flex-col overflow-y-auto w-full min-h-full px-3 pt-10 relative scrollable-container typebot-chat-view scroll-smooth gap-2"
     >
       <For each={chatChunks()}>
         {(chatChunk, index) => (
@@ -284,7 +286,8 @@ export const ConversationContainer = (props: Props) => {
             hideAvatar={
               !chatChunk.input &&
               ((chatChunks()[index() + 1]?.messages ?? 0).length > 0 ||
-                chatChunks()[index() + 1]?.streamingMessageId !== undefined)
+                chatChunks()[index() + 1]?.streamingMessageId !== undefined ||
+                (chatChunk.messages.length > 0 && isSending()))
             }
             hasError={hasError() && index() === chatChunks().length - 1}
             onNewBubbleDisplayed={handleNewBubbleDisplayed}

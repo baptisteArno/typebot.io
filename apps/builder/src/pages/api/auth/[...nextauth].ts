@@ -20,6 +20,7 @@ import got from 'got'
 import { env } from '@typebot.io/env'
 import * as Sentry from '@sentry/nextjs'
 import { getIp } from '@typebot.io/lib/getIp'
+import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
 
 const providers: Provider[] = []
 
@@ -174,7 +175,7 @@ export const getAuthOptions = ({
         const { invitations, workspaceInvitations } =
           await getNewUserInvitations(prisma, user.email)
         if (invitations.length === 0 && workspaceInvitations.length === 0)
-          return false
+          throw new Error('sign-up-disabled')
       }
       const requiredGroups = getRequiredGroups(account.provider)
       if (requiredGroups.length > 0) {
@@ -218,11 +219,18 @@ const updateLastActivityDate = async (user: User) => {
     first.getMonth() === second.getMonth() &&
     first.getDate() === second.getDate()
 
-  if (!datesAreOnSameDay(user.lastActivityAt, new Date()))
+  if (!datesAreOnSameDay(user.lastActivityAt, new Date())) {
     await prisma.user.updateMany({
       where: { id: user.id },
       data: { lastActivityAt: new Date() },
     })
+    await trackEvents([
+      {
+        name: 'User logged in',
+        userId: user.id,
+      },
+    ])
+  }
 }
 
 const getUserGroups = async (account: Account): Promise<string[]> => {

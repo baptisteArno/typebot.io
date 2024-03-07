@@ -45,6 +45,10 @@ import { SettingsModal } from './SettingsModal'
 import { TElement } from '@udecode/plate-common'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { useGroupsStore } from '@/features/graph/hooks/useGroupsStore'
+import { TurnableIntoParam } from '@typebot.io/forge'
+import { ZodError, ZodObject } from 'zod'
+import { toast } from 'sonner'
+import { fromZodError } from 'zod-validation-error'
 
 export const BlockNode = ({
   block,
@@ -88,7 +92,7 @@ export const BlockNode = ({
     previewingEdge?.to.blockId === block.id ||
     previewingBlock?.id === block.id
 
-  const groupId = typebot?.groups[indices.groupIndex].id
+  const groupId = typebot?.groups.at(indices.groupIndex)?.id
 
   const isDraggingGraph = useGroupsStore((state) => state.isDraggingGraph)
 
@@ -186,6 +190,42 @@ export const BlockNode = ({
     }
   }, [])
 
+  const convertBlock = (
+    turnIntoParams: TurnableIntoParam,
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    targetBlockSchema: ZodObject<any>
+  ) => {
+    if (!('options' in block) || !block.options) return
+
+    const convertedBlockOptions = turnIntoParams.customMapping
+      ? turnIntoParams.customMapping(block.options)
+      : block.options
+    try {
+      updateBlock(
+        indices,
+        targetBlockSchema.parse({
+          ...block,
+          type: turnIntoParams.blockType,
+          options: {
+            ...convertedBlockOptions,
+            credentialsId: undefined,
+          },
+        } as Block)
+      )
+      setOpenedBlockId(block.id)
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const validationError = fromZodError(error)
+        console.error(validationError)
+        toast.error('Could not convert block', {
+          description: validationError.toString(),
+        })
+      } else {
+        toast.error('An error occured while converting the block')
+      }
+    }
+  }
+
   const hasIcomingEdge = typebot?.edges.some((edge) => {
     return edge.to.blockId === block.id
   })
@@ -198,7 +238,16 @@ export const BlockNode = ({
     />
   ) : (
     <ContextMenu<HTMLDivElement>
-      renderMenu={() => <BlockNodeContextMenu indices={indices} />}
+      renderMenu={({ onClose }) => (
+        <BlockNodeContextMenu
+          indices={indices}
+          block={block}
+          onTurnIntoClick={(params, schema) => {
+            convertBlock(params, schema)
+            onClose()
+          }}
+        />
+      )}
     >
       {(ref, isContextMenuOpened) => (
         <Popover
@@ -240,11 +289,13 @@ export const BlockNode = ({
                 transition="border-color 0.2s"
               >
                 <BlockIcon type={block.type} mt=".25rem" />
-                {typebot?.groups[indices.groupIndex].id && (
+                {typebot?.groups.at(indices.groupIndex)?.id && (
                   <BlockNodeContent
                     block={block}
                     indices={indices}
-                    groupId={typebot.groups[indices.groupIndex].id}
+                    groupId={
+                      typebot.groups.at(indices.groupIndex)?.id as string
+                    }
                   />
                 )}
                 {(hasIcomingEdge || isDefined(connectingIds)) && (

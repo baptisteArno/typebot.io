@@ -58,6 +58,10 @@ export const PictureChoiceItemNode = ({
   }
   useEventListener('wheel', handleMouseWheel, ref.current)
 
+  const blockId = typebot
+    ? typebot.groups.at(indices.groupIndex)?.blocks?.at(indices.blockIndex)?.id
+    : undefined
+
   return (
     <Popover
       placement="right"
@@ -132,15 +136,12 @@ export const PictureChoiceItemNode = ({
             shadow="lg"
             ref={ref}
           >
-            {typebot && (
+            {typebot && blockId && (
               <PictureChoiceItemSettings
                 workspaceId={typebot.workspaceId}
                 typebotId={typebot.id}
                 item={item}
-                blockId={
-                  typebot.groups[indices.groupIndex].blocks[indices.blockIndex]
-                    .id
-                }
+                blockId={blockId}
                 onItemChange={handleItemChange}
               />
             )}

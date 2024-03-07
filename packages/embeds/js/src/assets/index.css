@@ -31,6 +31,13 @@
 
   --typebot-border-radius: 6px;
 
+  --typebot-progress-bar-position: fixed;
+  --typebot-progress-bar-bg-color: #f7f8ff;
+  --typebot-progress-bar-color: #0042da;
+  --typebot-progress-bar-height: 6px;
+  --typebot-progress-bar-top: 0;
+  --typebot-progress-bar-bottom: auto;
+
   /* Phone input */
   --PhoneInputCountryFlag-borderColor: transparent;
   --PhoneInput-color--focus: transparent;
@@ -235,12 +242,6 @@ pre {
   border-radius: 6px;
 }
 
-.typebot-host-bubble img,
-.typebot-host-bubble iframe,
-.typebot-host-bubble video {
-  border-radius: var(--typebot-border-radius);
-}
-
 .typebot-guest-bubble {
   color: var(--typebot-guest-bubble-color);
   background-color: var(--typebot-guest-bubble-bg-color);
@@ -399,4 +400,26 @@ pre {
 select option {
   color: var(--typebot-input-color);
   background-color: var(--typebot-input-bg-color);
+}
+
+.typebot-progress-bar-container {
+  background-color: rgba(
+    var(--typebot-button-bg-color-rgb),
+    calc(var(--selectable-base-alpha) + 0.12)
+  );
+
+  height: var(--typebot-progress-bar-height);
+  position: var(--typebot-progress-bar-position);
+  top: var(--typebot-progress-bar-top);
+  bottom: var(--typebot-progress-bar-bottom);
+  left: 0;
+  width: 100%;
+  z-index: 42424242;
+}
+
+.typebot-progress-bar-container > .typebot-progress-bar {
+  background-color: var(--typebot-progress-bar-color);
+  position: absolute;
+  height: 100%;
+  transition: width 0.25s ease;
 }

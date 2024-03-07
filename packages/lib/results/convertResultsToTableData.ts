@@ -70,10 +70,19 @@ export const convertResultsToTableData = (
     }, {}),
   }))
 
-const convertDateToReadable = (date: Date): string =>
-  date.toDateString().split(' ').slice(1, 3).join(' ') +
-  ', ' +
-  date.toLocaleTimeString([], {
+const convertDateToReadable = (date: Date): string => {
+  const isThisYear = new Date().getFullYear() === date.getFullYear()
+
+  const dateString = date.toLocaleDateString('default', {
+    month: 'short',
+    day: 'numeric',
+    year: isThisYear ? undefined : 'numeric', // Only show the year if it's not the current year
+  })
+
+  const timeString = date.toLocaleTimeString('default', {
     hour: '2-digit',
     minute: '2-digit',
   })
+
+  return `${dateString}, ${timeString}`
+}

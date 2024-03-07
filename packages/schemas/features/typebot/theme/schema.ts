@@ -1,6 +1,11 @@
 import { ThemeTemplate as ThemeTemplatePrisma } from '@typebot.io/prisma'
 import { z } from '../../../zod'
-import { BackgroundType } from './constants'
+import {
+  BackgroundType,
+  fontTypes,
+  progressBarPlacements,
+  progressBarPositions,
+} from './constants'
 
 const avatarPropsSchema = z.object({
   isEnabled: z.boolean().optional(),
@@ -33,9 +38,39 @@ const backgroundSchema = z.object({
   content: z.string().optional().optional(),
 })
 
+const googleFontSchema = z.object({
+  type: z.literal(fontTypes[0]),
+  family: z.string().optional(),
+})
+export type GoogleFont = z.infer<typeof googleFontSchema>
+
+const customFontSchema = z.object({
+  type: z.literal(fontTypes[1]),
+  family: z.string().optional(),
+  css: z.string().optional(),
+  url: z.string().optional().describe('Deprecated, use `css` instead'),
+})
+export type CustomFont = z.infer<typeof customFontSchema>
+
+export const fontSchema = z
+  .string()
+  .or(z.discriminatedUnion('type', [googleFontSchema, customFontSchema]))
+export type Font = z.infer<typeof fontSchema>
+
+const progressBarSchema = z.object({
+  isEnabled: z.boolean().optional(),
+  color: z.string().optional(),
+  backgroundColor: z.string().optional(),
+  placement: z.enum(progressBarPlacements).optional(),
+  thickness: z.number().optional(),
+  position: z.enum(progressBarPositions).optional(),
+})
+export type ProgressBar = z.infer<typeof progressBarSchema>
+
 const generalThemeSchema = z.object({
-  font: z.string().optional(),
+  font: fontSchema.optional(),
   background: backgroundSchema.optional(),
+  progressBar: progressBarSchema.optional(),
 })
 
 export const themeSchema = z
@@ -56,7 +91,7 @@ export const themeTemplateSchema = z.object({
   workspaceId: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
-}) satisfies z.ZodType<ThemeTemplatePrisma>
+}) satisfies z.ZodType<Omit<ThemeTemplatePrisma, 'theme'>>
 
 export type Theme = z.infer<typeof themeSchema>
 export type ChatTheme = z.infer<typeof chatThemeSchema>

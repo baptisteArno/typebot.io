@@ -24,6 +24,7 @@ export const TextInput = (props: Props) => {
 
   const submit = () => {
     if (checkIfInputIsValid()) props.onSubmit({ value: inputValue() })
+    else inputRef?.focus()
   }
 
   const submitWhenEnter = (e: KeyboardEvent) => {
@@ -82,12 +83,7 @@ export const TextInput = (props: Props) => {
           }
         />
       )}
-      <SendButton
-        type="button"
-        isDisabled={inputValue() === ''}
-        class="my-2 ml-2"
-        on:click={submit}
-      >
+      <SendButton type="button" class="my-2 ml-2" on:click={submit}>
         {props.block.options?.labels?.button ??
           defaultTextInputOptions.labels.button}
       </SendButton>
