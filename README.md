@@ -74,7 +74,7 @@ Built for **developers**:
 - 🔓 No vendor-locking. Features built with flexibility in mind.
 - 💻 Easy-to-use [APIs](https://docs.typebot.io/api-reference).
 
-## Getting started with Typebot
+## Getting started with Botflow
 
 The easiest way to get started with Typebot is with [the official managed service in the Cloud](https://app.typebot.io). You'll have high availability, backups, security, and maintenance all managed for you by me, [Baptiste, Typebot's founder](https://twitter.com/baptisteArno).
 
