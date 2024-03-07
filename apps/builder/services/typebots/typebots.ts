@@ -69,7 +69,8 @@ import {
   stepHasItems,
   stepTypeHasItems,
   stepTypeHasOption,
-  isWOZStepType
+  isWOZStepType,
+  stepTypeHasWebhook,
 } from 'utils'
 import { dequal } from 'dequal'
 import { stringify } from 'qs'
