@@ -15,7 +15,7 @@ import {
 
 type Props = {
   content: VideoBubbleBlock['content']
-  onTransitionEnd: (offsetTop?: number) => void
+  onTransitionEnd?: (offsetTop?: number) => void
 }
 
 export const showAnimationDuration = 400
@@ -23,7 +23,9 @@ let typingTimeout: NodeJS.Timeout
 
 export const VideoBubble = (props: Props) => {
   let ref: HTMLDivElement | undefined
-  const [isTyping, setIsTyping] = createSignal(true)
+  const [isTyping, setIsTyping] = createSignal(
+    props.onTransitionEnd ? true : false
+  )
 
   onMount(() => {
     const typingDuration =
@@ -37,7 +39,7 @@ export const VideoBubble = (props: Props) => {
       if (!isTyping()) return
       setIsTyping(false)
       setTimeout(() => {
-        props.onTransitionEnd(ref?.offsetTop)
+        props.onTransitionEnd?.(ref?.offsetTop)
       }, showAnimationDuration)
     }, typingDuration)
   })
@@ -47,7 +49,13 @@ export const VideoBubble = (props: Props) => {
   })
 
   return (
-    <div class="flex flex-col w-full animate-fade-in" ref={ref}>
+    <div
+      class={clsx(
+        'flex flex-col w-full',
+        props.onTransitionEnd ? 'animate-fade-in' : undefined
+      )}
+      ref={ref}
+    >
       <div class="flex w-full items-center">
         <div class="flex relative z-10 items-start typebot-host-bubble overflow-hidden w-full max-w-full">
           <div
@@ -69,7 +77,7 @@ export const VideoBubble = (props: Props) => {
               }
             >
               <video
-                autoplay
+                autoplay={props.onTransitionEnd ? false : true}
                 src={props.content?.url}
                 controls
                 class={
