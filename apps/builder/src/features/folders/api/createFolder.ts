@@ -20,7 +20,7 @@ export const createFolder = authenticatedProcedure
   .input(
     z.object({
       workspaceId: z.string(),
-      folderName: z.string().default('New folder'),
+      folderName: z.string().default(''),
       parentFolderId: z.string().optional(),
     })
   )

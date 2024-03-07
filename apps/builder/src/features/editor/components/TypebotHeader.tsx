@@ -82,7 +82,10 @@ export const TypebotHeader = () => {
   )
 }
 
-const LeftElements = (props: StackProps & { onHelpClick: () => void }) => {
+const LeftElements = ({
+  onHelpClick,
+  ...props
+}: StackProps & { onHelpClick: () => void }) => {
   const { t } = useTranslate()
   const router = useRouter()
   const {
@@ -144,10 +147,10 @@ const LeftElements = (props: StackProps & { onHelpClick: () => void }) => {
             pathname: router.query.parentId
               ? '/typebots/[typebotId]/edit'
               : typebot?.folderId
-              ? '/typebots/folders/[folderId]'
+              ? '/typebots/folders/[id]'
               : '/typebots',
             query: {
-              folderId: typebot?.folderId ?? [],
+              id: typebot?.folderId ?? [],
               parentId: Array.isArray(router.query.parentId)
                 ? router.query.parentId.slice(0, -1)
                 : [],
@@ -222,7 +225,7 @@ const LeftElements = (props: StackProps & { onHelpClick: () => void }) => {
         )}
         <Button
           leftIcon={<BuoyIcon />}
-          onClick={props.onHelpClick}
+          onClick={onHelpClick}
           size="sm"
           iconSpacing={{ base: 0, xl: 2 }}
         >
@@ -243,7 +246,10 @@ const LeftElements = (props: StackProps & { onHelpClick: () => void }) => {
   )
 }
 
-const RightElements = (props: StackProps & { isResultsDisplayed: boolean }) => {
+const RightElements = ({
+  isResultsDisplayed,
+  ...props
+}: StackProps & { isResultsDisplayed: boolean }) => {
   const router = useRouter()
   const { t } = useTranslate()
   const { typebot, currentUserMode, save } = useTypebot()
@@ -266,7 +272,7 @@ const RightElements = (props: StackProps & { isResultsDisplayed: boolean }) => {
       <TypebotNav
         display={{ base: 'none', md: 'flex', xl: 'none' }}
         typebotId={typebot?.id}
-        isResultsDisplayed={props.isResultsDisplayed}
+        isResultsDisplayed={isResultsDisplayed}
       />
       <Flex pos="relative">
         <ShareTypebotButton isLoading={isNotDefined(typebot)} />

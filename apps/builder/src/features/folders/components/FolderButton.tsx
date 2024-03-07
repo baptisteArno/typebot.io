@@ -28,10 +28,12 @@ import { trpc } from '@/lib/trpc'
 
 export const FolderButton = ({
   folder,
+  index,
   onFolderDeleted,
   onFolderRenamed,
 }: {
   folder: DashboardFolder
+  index: number
   onFolderDeleted: () => void
   onFolderRenamed: () => void
 }) => {
@@ -124,10 +126,11 @@ export const FolderButton = ({
           color={useColorModeValue('blue.500', 'blue.400')}
         />
         <Editable
-          defaultValue={folder.name}
+          defaultValue={folder.name === '' ? 'New folder' : folder.name}
           fontSize="18"
           onClick={(e) => e.stopPropagation()}
           onSubmit={onRenameSubmit}
+          startWithEditView={index === 0 && folder.name === ''}
         >
           <EditablePreview
             _hover={{
