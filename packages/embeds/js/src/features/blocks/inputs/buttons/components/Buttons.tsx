@@ -7,7 +7,7 @@ import { For, Show, createSignal, onMount } from 'solid-js'
 import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
 
 type Props = {
-  inputIndex: number
+  chunkIndex: number
   defaultItems: ChoiceInputBlock['items']
   options: ChoiceInputBlock['options']
   onSubmit: (value: InputSubmitContent) => void
@@ -66,7 +66,7 @@ export const Buttons = (props: Props) => {
               >
                 {item.content}
               </Button>
-              {props.inputIndex === 0 && props.defaultItems.length === 1 && (
+              {props.chunkIndex === 0 && props.defaultItems.length === 1 && (
                 <span class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1 ping">
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full brightness-200 opacity-75" />
                   <span class="relative inline-flex rounded-full h-3 w-3 brightness-150" />

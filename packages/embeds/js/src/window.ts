@@ -1,4 +1,3 @@
-/* eslint-disable solid/reactivity */
 import { BubbleProps } from './features/bubble'
 import { PopupProps } from './features/popup'
 import { BotProps } from './components/Bot'

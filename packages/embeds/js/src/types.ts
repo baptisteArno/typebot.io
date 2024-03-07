@@ -11,6 +11,7 @@ export type BotContext = {
   isPreview: boolean
   apiHost?: string
   sessionId: string
+  storage: 'local' | 'session' | undefined
 }
 
 export type InitialChatReply = StartChatResponse & {

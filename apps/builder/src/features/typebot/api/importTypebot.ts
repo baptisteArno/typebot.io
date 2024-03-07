@@ -11,7 +11,11 @@ import {
 } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { getUserRoleInWorkspace } from '@/features/workspace/helpers/getUserRoleInWorkspace'
-import { sanitizeGroups, sanitizeSettings } from '../helpers/sanitizers'
+import {
+  sanitizeFolderId,
+  sanitizeGroups,
+  sanitizeSettings,
+} from '../helpers/sanitizers'
 import { preprocessTypebot } from '@typebot.io/schemas/features/typebot/helpers/preprocessTypebot'
 import { migrateTypebot } from '@typebot.io/lib/migrations/migrateTypebot'
 import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
@@ -29,7 +33,6 @@ const omittedProps = {
   resultsTablePreferencesSchema: true,
   selectedThemeTemplateId: true,
   publicId: true,
-  folderId: true,
 } as const
 
 const importingTypebotSchema = z.preprocess(
@@ -74,7 +77,6 @@ const migrateImportingTypebot = (
     isArchived: false,
     whatsAppCredentialsId: null,
     publicId: null,
-    folderId: null,
     riskLevel: null,
   } satisfies Typebot
   return migrateTypebot(fullTypebot)
@@ -141,7 +143,10 @@ export const importTypebot = authenticatedProcedure
               },
             }
           : {},
-        folderId: migratedTypebot.folderId,
+        folderId: await sanitizeFolderId({
+          folderId: migratedTypebot.folderId,
+          workspaceId: workspace.id,
+        }),
         variables: migratedTypebot.variables ?? [],
         edges: migratedTypebot.edges ?? [],
         resultsTablePreferences:

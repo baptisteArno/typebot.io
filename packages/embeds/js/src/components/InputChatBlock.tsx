@@ -36,13 +36,14 @@ import { formattedMessages } from '@/utils/formattedMessagesSignal'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { defaultPaymentInputOptions } from '@typebot.io/schemas/features/blocks/inputs/payment/constants'
 import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
+import { persist } from '@/utils/persist'
 
 type Props = {
   ref: HTMLDivElement | undefined
   block: NonNullable<ContinueChatResponse['input']>
   hasHostAvatar: boolean
   guestAvatar?: NonNullable<Theme['chat']>['guestAvatar']
-  inputIndex: number
+  chunkIndex: number
   context: BotContext
   isInputPrefillEnabled: boolean
   hasError: boolean
@@ -52,7 +53,10 @@ type Props = {
 }
 
 export const InputChatBlock = (props: Props) => {
-  const [answer, setAnswer] = createSignal<string>()
+  const [answer, setAnswer] = persist(createSignal<string>(), {
+    key: `typebot-${props.context.typebot.id}-input-${props.chunkIndex}`,
+    storage: props.context.storage,
+  })
   const [formattedMessage, setFormattedMessage] = createSignal<string>()
 
   const handleSubmit = async ({ label, value }: InputSubmitContent) => {
@@ -67,7 +71,7 @@ export const InputChatBlock = (props: Props) => {
 
   createEffect(() => {
     const formattedMessage = formattedMessages().findLast(
-      (message) => props.inputIndex === message.inputIndex
+      (message) => props.chunkIndex === message.inputIndex
     )?.formattedMessage
     if (formattedMessage) setFormattedMessage(formattedMessage)
   })
@@ -101,7 +105,7 @@ export const InputChatBlock = (props: Props) => {
           <Input
             context={props.context}
             block={props.block}
-            inputIndex={props.inputIndex}
+            chunkIndex={props.chunkIndex}
             isInputPrefillEnabled={props.isInputPrefillEnabled}
             existingAnswer={props.hasError ? answer() : undefined}
             onTransitionEnd={props.onTransitionEnd}
@@ -117,7 +121,7 @@ export const InputChatBlock = (props: Props) => {
 const Input = (props: {
   context: BotContext
   block: NonNullable<ContinueChatResponse['input']>
-  inputIndex: number
+  chunkIndex: number
   isInputPrefillEnabled: boolean
   existingAnswer?: string
   onTransitionEnd: () => void
@@ -189,7 +193,7 @@ const Input = (props: {
           <Switch>
             <Match when={!block.options?.isMultipleChoice}>
               <Buttons
-                inputIndex={props.inputIndex}
+                chunkIndex={props.chunkIndex}
                 defaultItems={block.items}
                 options={block.options}
                 onSubmit={onSubmit}
@@ -197,7 +201,6 @@ const Input = (props: {
             </Match>
             <Match when={block.options?.isMultipleChoice}>
               <MultipleChoicesForm
-                inputIndex={props.inputIndex}
                 defaultItems={block.items}
                 options={block.options}
                 onSubmit={onSubmit}

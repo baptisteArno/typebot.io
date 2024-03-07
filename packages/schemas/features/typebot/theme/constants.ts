@@ -40,7 +40,7 @@ export const defaultTheme = {
       color: '#0042DA',
       backgroundColor: '#e0edff',
       thickness: 4,
-      position: 'fixed',
+      position: 'absolute',
       placement: 'Top',
     },
   },
