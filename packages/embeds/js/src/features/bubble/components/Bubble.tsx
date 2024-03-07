@@ -55,6 +55,8 @@ export const Bubble = (props: BubbleProps) => {
     setButtonSize(parseButtonSize(bubbleProps.theme?.button?.size ?? 'medium'))
   })
 
+  let progressBarContainerRef
+
   onMount(() => {
     window.addEventListener('message', processIncomingEvent)
     const autoShowDelay = bubbleProps.autoShowDelay
@@ -164,6 +166,7 @@ export const Bubble = (props: BubbleProps) => {
         isBotOpened={isBotOpened()}
         buttonSize={buttonSize()}
       />
+      <div ref={progressBarContainerRef} />
       <div
         part="bot"
         style={{
@@ -194,6 +197,7 @@ export const Bubble = (props: BubbleProps) => {
             {...botProps}
             prefilledVariables={prefilledVariables()}
             class="rounded-lg"
+            progressBarRef={progressBarContainerRef}
           />
         </Show>
       </div>

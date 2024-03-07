@@ -19,6 +19,7 @@ import { clsx } from 'clsx'
 import { HTTPError } from 'ky'
 import { injectFont } from '@/utils/injectFont'
 import { ProgressBar } from './ProgressBar'
+import { Portal } from 'solid-js/web'
 
 export type BotProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -28,6 +29,7 @@ export type BotProps = {
   prefilledVariables?: Record<string, unknown>
   apiHost?: string
   font?: Font
+  progressBarRef?: HTMLDivElement
   onNewInputBlock?: (inputBlock: InputBlock) => void
   onAnswer?: (answer: { message: string; blockId: string }) => void
   onInit?: () => void
@@ -177,6 +179,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
               sessionId: initialChatReply.sessionId,
               typebot: initialChatReply.typebot,
             }}
+            progressBarRef={props.progressBarRef}
             onNewInputBlock={props.onNewInputBlock}
             onNewLogs={props.onNewLogs}
             onAnswer={props.onAnswer}
@@ -192,6 +195,7 @@ type BotContentProps = {
   initialChatReply: InitialChatReply
   context: BotContext
   class?: string
+  progressBarRef?: HTMLDivElement
   onNewInputBlock?: (inputBlock: InputBlock) => void
   onAnswer?: (answer: { message: string; blockId: string }) => void
   onEnd?: () => void
@@ -245,7 +249,19 @@ const BotContent = (props: BotContentProps) => {
           props.initialChatReply.typebot.theme.general?.progressBar?.isEnabled
         }
       >
-        <ProgressBar value={progressValue() as number} />
+        <Show
+          when={
+            props.progressBarRef &&
+            (props.initialChatReply.typebot.theme.general?.progressBar
+              ?.position ?? defaultTheme.general.progressBar.position) ===
+              'fixed'
+          }
+          fallback={<ProgressBar value={progressValue() as number} />}
+        >
+          <Portal mount={props.progressBarRef}>
+            <ProgressBar value={progressValue() as number} />
+          </Portal>
+        </Show>
       </Show>
       <div class="flex w-full h-full justify-center">
         <ConversationContainer
