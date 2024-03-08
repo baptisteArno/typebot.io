@@ -5,6 +5,7 @@ import GitlabProvider from 'next-auth/providers/gitlab'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
 import AzureADProvider from 'next-auth/providers/azure-ad'
+import TwitterProvider from 'next-auth/providers/twitter'
 import prisma from '@typebot.io/lib/prisma'
 import { Provider } from 'next-auth/providers'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -98,6 +99,15 @@ if (
       clientId: env.AZURE_AD_CLIENT_ID,
       clientSecret: env.AZURE_AD_CLIENT_SECRET,
       tenantId: env.AZURE_AD_TENANT_ID,
+    })
+  )
+}
+
+if (env.TWITTER_CLIENT_ID && env.TWITTER_CLIENT_SECRET) {
+  providers.push(
+    TwitterProvider({
+      clientId: env.TWITTER_CLIENT_ID,
+      clientSecret: env.TWITTER_CLIENT_SECRET,
     })
   )
 }
