@@ -52,6 +52,7 @@ const baseEnv = {
       .url()
       .refine((url) => url.startsWith('postgres') || url.startsWith('mysql')),
     ENCRYPTION_SECRET: z.string().length(32),
+    DATABASE_DIRECT_URL: z.string().url().optional(),
     NEXTAUTH_URL: z.preprocess(
       guessNextAuthUrlForVercelPreview,
       z.string().url()
