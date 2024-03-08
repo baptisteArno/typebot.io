@@ -129,6 +129,13 @@ const githubEnv = {
   },
 }
 
+const twitterEnv = {
+  server: {
+    TWITTER_CLIENT_ID: z.string().min(1).optional(),
+    TWITTER_CLIENT_SECRET: z.string().min(1).optional(),
+  },
+}
+
 const facebookEnv = {
   server: {
     FACEBOOK_CLIENT_ID: z.string().min(1).optional(),
@@ -378,6 +385,7 @@ export const env = createEnv({
   server: {
     ...baseEnv.server,
     ...githubEnv.server,
+    ...twitterEnv.server,
     ...facebookEnv.server,
     ...smtpEnv.server,
     ...googleEnv.server,

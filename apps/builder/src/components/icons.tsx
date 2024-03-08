@@ -374,6 +374,17 @@ export const GithubIcon = (props: IconProps) => (
   </Icon>
 )
 
+export const TwitterIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M23 2.5a9.25 9.25 0 0 1-2.675.733 4.625 4.625 0 0 0 2.025-2.55 9.25 9.25 0 0 1-2.925 1.125 4.625 4.625 0 0 0-7.875 4.225 13.125 13.125 0 0 1-9.525-4.825 4.625 4.625 0 0 0 1.425 6.15 4.625 4.625 0 0 1-2.1-.575v.05a4.625 4.625 0 0 0 3.7 4.55 4.625 4.625 0 0 1-2.075.075 4.625 4.625 0 0 0 4.325 3.225 9.25 9.25 0 0 1-5.75 2 13.125 13.125 0 0 0 7.075 2 13.125 13.125 0 0 0 13.125-13.125v-.625A9.25 9.25 0 0 0 23 2.5z"
+      fill={useColorModeValue('#1da1f2', 'white')}
+    />
+  </Icon>
+)
+
 export const UsersIcon = (props: IconProps) => (
   <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>

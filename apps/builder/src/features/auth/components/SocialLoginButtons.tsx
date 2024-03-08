@@ -1,5 +1,5 @@
 import { Stack, Button } from '@chakra-ui/react'
-import { GithubIcon } from '@/components/icons'
+import { GithubIcon, TwitterIcon } from '@/components/icons'
 import {
   ClientSafeProvider,
   LiteralUnion,
@@ -52,6 +52,8 @@ export const SocialLoginButtons = ({ providers }: Props) => {
 
   const handleCustomOAuthClick = () => handleSignIn('custom-oauth')
 
+  const handleTwitterClick = () => handleSignIn('twitter')
+
   return (
     <Stack>
       {providers?.github && (
@@ -66,6 +68,20 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           variant="outline"
         >
           {t('auth.socialLogin.githubButton.label')}
+        </Button>
+      )}
+      {providers?.twitter && (
+        <Button
+          leftIcon={<TwitterIcon />}
+          onClick={handleTwitterClick}
+          data-testid="twitter"
+          isLoading={
+            ['loading', 'authenticated'].includes(status) ||
+            authLoading === 'twitter'
+          }
+          variant="outline"
+        >
+          {'Continue with Twitter'}
         </Button>
       )}
       {providers?.google && (
