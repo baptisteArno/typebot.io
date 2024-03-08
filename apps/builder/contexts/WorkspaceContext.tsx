@@ -588,9 +588,12 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
       )
 
       if (octaPersonProperties) {
+        const itemsToAdd = octaPersonProperties.items.filter(
+          (o: { token: string }) => fixedPersonPropertiesWithId.findIndex((p) => p.token === o.token) === -1
+        )
         setOctaPersonItems([
           ...fixedPersonPropertiesWithId,
-          ...octaPersonProperties.items,
+          ...itemsToAdd,
         ])
       }
     }
@@ -604,9 +607,12 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
       )
 
       if (octaChatProperties) {
+        const itemsToAdd = octaChatProperties.items.filter(
+          (o: { token: string }) => fixedChatPropertiesWithId.findIndex((p) => p.token === o.token) === -1
+        )
         setOctaChatItems([
           ...fixedChatPropertiesWithId,
-          ...octaChatProperties.items,
+          ...itemsToAdd,
         ])
       }
     }
@@ -620,9 +626,12 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
       )
 
       if (octaOrganizationProperties) {
+        const itemsToAdd = octaOrganizationProperties.items.filter(
+          (o: { token: string }) => fixedOrganizationPropertiesWithId.findIndex((p) => p.token === o.token) === -1
+        )
         setOctaOrganizationItems([
           ...fixedOrganizationPropertiesWithId,
-          ...octaOrganizationProperties.items,
+          ...itemsToAdd,
         ])
       }
     }
