@@ -7837,6 +7837,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "folderId": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "resultsTablePreferences": {
                             "type": "object",
                             "nullable": true,
@@ -7880,7 +7884,8 @@
                           "variables",
                           "theme",
                           "settings",
-                          "icon"
+                          "icon",
+                          "folderId"
                         ],
                         "title": "Typebot V6"
                       },
@@ -10451,6 +10456,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "folderId": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "resultsTablePreferences": {
                             "type": "object",
                             "nullable": true,
@@ -10494,7 +10503,8 @@
                           "variables",
                           "theme",
                           "settings",
-                          "icon"
+                          "icon",
+                          "folderId"
                         ],
                         "title": "Typebot V5"
                       }
@@ -15348,7 +15358,7 @@
                   },
                   "folderName": {
                     "type": "string",
-                    "default": "New folder"
+                    "default": ""
                   },
                   "parentFolderId": {
                     "type": "string"

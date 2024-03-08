@@ -17,9 +17,11 @@ import { GraphProvider } from '@/features/graph/providers/GraphProvider'
 import { EventsCoordinatesProvider } from '@/features/graph/providers/EventsCoordinateProvider'
 import { TypebotNotFoundPage } from './TypebotNotFoundPage'
 import { SuspectedTypebotBanner } from './SuspectedTypebotBanner'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 
 export const EditorPage = () => {
   const { typebot, currentUserMode, is404 } = useTypebot()
+  const { workspace } = useWorkspace()
   const backgroundImage = useColorModeValue(
     'radial-gradient(#c6d0e1 1px, transparent 0)',
     'radial-gradient(#2f2f39 1px, transparent 0)'
@@ -32,7 +34,7 @@ export const EditorPage = () => {
       <Seo title={typebot?.name ? `${typebot.name} | Editor` : 'Editor'} />
       <Flex overflow="clip" h="100vh" flexDir="column" id="editor-container">
         <GettingStartedModal />
-        {typebot?.riskLevel === 100 && (
+        {typebot?.riskLevel === 100 && !workspace?.isVerified && (
           <SuspectedTypebotBanner typebotId={typebot.id} />
         )}
         <TypebotHeader />
