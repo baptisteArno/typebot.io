@@ -79,6 +79,7 @@ export type ChoiceInputStep = StepBase & {
 export type ButtonItem = ItemBase & {
   type: ItemType.BUTTON
   content?: string
+  readonly?: boolean
 }
 
 export type PaymentInputStep = StepBase & {
@@ -220,7 +221,7 @@ export const defaultEmailInputOptions: InputOptions = {
     plainText: 'Pode me informar o seu email?'
   },
   useFallback: true,
-  fallbackMessages: [ {
+  fallbackMessages: [{
     html: `<div style="margin-left: 8px;">Esse email não parece ser válido. Você pode digitar novamente?</div>`,
     richText: [{
       children: [{
@@ -283,7 +284,7 @@ export const defaultPhoneInputOptions: InputOptions = {
     plainText: 'Pode me informar o seu celular?'
   },
   useFallback: true,
-  fallbackMessages: [ {
+  fallbackMessages: [{
     html: `<div style="margin-left: 8px;">Isso não se parece com um telefone válido. Você pode digitar novamente?</div>`,
     richText: [{
       children: [{

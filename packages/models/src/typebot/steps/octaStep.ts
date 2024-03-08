@@ -91,8 +91,7 @@ export type WOZSuggestionStep = StepBase & {
 
 export type WOZAssignStep = StepBase & {
   type: WOZStepType.ASSIGN
-  options: WOZAssignOptions,
-  items: []
+  options: WOZAssignOptions
 }
 
 export type ConversationTagStep = StepBase & {

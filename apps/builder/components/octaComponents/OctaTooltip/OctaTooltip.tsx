@@ -1,5 +1,6 @@
 import { InfoIcon } from '@chakra-ui/icons'
 import {
+  HStack,
   Link,
   PlacementWithLogical,
   Popover,
@@ -26,7 +27,7 @@ interface OctaTooltipProps {
 
 const OctaTooltip = ({
   contentText,
-  duration = 2000,
+  duration,
   hrefUrl,
   contentLink,
   popoverColor = '#ffffff',
@@ -38,7 +39,8 @@ const OctaTooltip = ({
 
   const handleMouseEnter = () => {
     onOpen()
-    setTimeout(() => onClose(), duration)    
+    if (duration)
+      setTimeout(() => onClose(), duration)
   }
 
   const handleMouseLeave = () => {
@@ -46,10 +48,10 @@ const OctaTooltip = ({
   }
 
   return (
-    <Popover 
-      isOpen={isOpen} 
-      onOpen={onOpen} 
-      onClose={onClose} 
+    <Popover
+      isOpen={isOpen}
+      onOpen={onOpen}
+      onClose={onClose}
       placement={tooltipPlacement}>
       {isDefined(element) &&
         <PopoverTrigger><span onMouseEnter={() => handleMouseEnter()}>{element}</span></PopoverTrigger>
@@ -65,10 +67,12 @@ const OctaTooltip = ({
       <PopoverContent color={textColor} bg={popoverColor} width="100%">
         <PopoverArrow bg={popoverColor} />
         <PopoverBody onMouseLeave={() => handleMouseLeave()} onMouseEnter={onOpen}>
-          <Text width="500px">{contentText}</Text>
-          <Link href={hrefUrl} isExternal style={{ textDecoration: "underline" }}>
-            {contentLink}
-          </Link>
+          <HStack>
+            <Text>{contentText}</Text>
+            <Link href={hrefUrl} isExternal style={{ textDecoration: "underline" }}>
+              {contentLink}
+            </Link>
+          </HStack>
         </PopoverBody>
       </PopoverContent>
     </Popover>

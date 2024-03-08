@@ -7,6 +7,7 @@ import {
   Flex,
 } from '@chakra-ui/react'
 import { PlusIcon, TrashIcon } from 'assets/icons'
+import { TextBox } from 'components/shared/Textbox/TextBox'
 import { useTypebot } from 'contexts/TypebotContext'
 import { ButtonItem, ItemIndices, ItemType } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
@@ -39,6 +40,10 @@ export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
   }
 
   const hasMoreThanOneItem = () => indices.itemsCount && indices.itemsCount > 1
+
+  const isReadOnly = () => {
+    return !!item.readonly
+  }
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Escape' && itemValue === 'Editar opção de resposta' && hasMoreThanOneItem())
@@ -80,7 +85,7 @@ export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
           px={4}
           py={2}
         />
-        <EditableInput px={4} py={2} />
+        <EditableInput px={4} py={2} readOnly={isReadOnly()} />
       </Editable>
       <Fade
         in={isMouseOver}
@@ -100,15 +105,15 @@ export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
           colorScheme="gray"
           onClick={handlePlusClick}
         />
-        {hasMoreThanOneItem() && (
-        <IconButton
-          aria-label="Delete item"
-          icon={<TrashIcon />}
-          size="xs"
-          shadow="md"
-          colorScheme="gray"
-          onClick={handleDeleteClick}
-        />)}
+        {hasMoreThanOneItem() && !isReadOnly() && (
+          <IconButton
+            aria-label="Delete item"
+            icon={<TrashIcon />}
+            size="xs"
+            shadow="md"
+            colorScheme="gray"
+            onClick={handleDeleteClick}
+          />)}
       </Fade>
     </Flex>
   )

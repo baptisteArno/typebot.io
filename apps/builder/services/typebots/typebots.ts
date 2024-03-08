@@ -342,8 +342,25 @@ const parseDefaultItems = (
 ): Item[] => {
   switch (type) {
     case InputStepType.CHOICE:
-    case WOZStepType.ASSIGN:
       return [{ id: cuid(), stepId, type: ItemType.BUTTON }]
+    case WOZStepType.ASSIGN:
+      return [
+        {
+          id: cuid(),
+          stepId,
+          type: ItemType.BUTTON,
+          content: 'Encerrar a conversa',
+          readonly: true
+        },
+        {
+          id: cuid(),
+          stepId,
+          type: ItemType.BUTTON,
+          content: 'Falar com um humano',
+          readonly: true
+        }
+      ]
+
     case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
       return [
         {

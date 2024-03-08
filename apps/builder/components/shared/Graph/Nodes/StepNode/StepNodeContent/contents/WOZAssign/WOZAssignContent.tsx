@@ -1,8 +1,9 @@
 import { StepIndices, WOZAssignStep } from 'models'
 import React from 'react'
-import { Stack, Text } from '@chakra-ui/react'
+import { Stack, Text, Tooltip } from '@chakra-ui/react'
 import { ItemNodesList } from 'components/shared/Graph/Nodes/ItemNode'
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
+import OctaTooltip from 'components/octaComponents/OctaTooltip/OctaTooltip'
 
 type Props = {
   step: WOZAssignStep
@@ -21,9 +22,10 @@ const WOZAssignContent = ({ step, indices }: Props) => {
       </Text>
       <OctaDivider />
       <Text noOfLines={0}>
-        Caso a conversa se encaminhe para esses temas, siga o fluxo:
+        Redirecionamento baseado no assunto da conversa:
       </Text>
       <ItemNodesList step={step} indices={indices} />
+      <Text></Text>
     </Stack>
   )
 }
