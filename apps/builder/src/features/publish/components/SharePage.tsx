@@ -185,7 +185,7 @@ export const SharePage = () => {
             ) : null}
 
             <Stack mt="3">
-              <HStack spacing={3}>
+              <HStack spacing={3} mb={3}>
                 <Heading fontSize="2xl" as="h1">
                   {t('share.page.password')}
                 </Heading>

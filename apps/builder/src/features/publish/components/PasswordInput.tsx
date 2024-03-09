@@ -43,7 +43,7 @@ export const PasswordInput = ({
   }
 
   return (
-    <HStack spacing={'0.9rem'} mt="3">
+    <HStack spacing={3} mt="1">
       <InputGroup w={56}>
         <Input
           type={isPasswordVisible ? 'text' : 'password'}
