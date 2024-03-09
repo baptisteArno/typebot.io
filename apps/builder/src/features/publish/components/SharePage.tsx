@@ -11,6 +11,9 @@ import {
   Stack,
   Wrap,
   Text,
+  Button,
+  Tag,
+  TagLabel,
 } from '@chakra-ui/react'
 import { Plan } from '@typebot.io/prisma'
 import { isDefined, isNotDefined } from '@typebot.io/lib'
@@ -28,12 +31,23 @@ import { useTranslate } from '@tolgee/react'
 import { env } from '@typebot.io/env'
 import DomainStatusIcon from '@/features/customDomains/components/DomainStatusIcon'
 import { TypebotNotFoundPage } from '@/features/editor/components/TypebotNotFoundPage'
+import { useEffect, useState } from 'react'
+import { PasswordInput } from './PasswordInput'
+import { LockedIcon, UnlockedIcon } from '@/components/icons'
+import { TypebotV6 } from '@typebot.io/schemas/features/typebot'
 
 export const SharePage = () => {
   const { t } = useTranslate()
   const { workspace } = useWorkspace()
   const { typebot, updateTypebot, publishedTypebot, is404 } = useTypebot()
   const { showToast } = useToast()
+  const [isPasswordProtected, setIsPasswordProtected] = useState(false)
+
+  useEffect(() => {
+    if (typebot) {
+      setIsPasswordProtected(!!typebot.settings.security?.password)
+    }
+  }, [typebot])
 
   const handlePublicIdChange = async (publicId: string) => {
     updateTypebot({ updates: { publicId }, save: true })
@@ -86,6 +100,25 @@ export const SharePage = () => {
     }
 
     return true
+  }
+
+  const togglePasswordProtection = (state: boolean) => {
+    setIsPasswordProtected(state)
+    if (state === false) deletePassword()
+  }
+
+  const updatePassword = (updatedPassword: string): Promise<TypebotV6 | undefined> => {
+    return updateTypebot({
+      updates: { settings: { security: { password: updatedPassword } } },
+      save: true,
+    })
+  }
+
+  const deletePassword = () => {
+    updateTypebot({
+      updates: { settings: { security: { password: '' } } },
+      save: true,
+    })
   }
 
   if (is404) return <TypebotNotFoundPage />
@@ -148,6 +181,52 @@ export const SharePage = () => {
                 )}
               </>
             ) : null}
+
+            <Stack mt="3">
+              <HStack spacing={3}>
+                <Heading fontSize="2xl" as="h1">
+                  Protect your typebot
+                </Heading>
+                <Tag size="sm" colorScheme="purple" borderRadius="full">
+                  <TagLabel>Beta</TagLabel>
+                </Tag>
+              </HStack>
+
+              {isPublished ? (
+                <>
+                  {isPasswordProtected ? (
+                    <Stack>
+                      <Button
+                        onClick={() => togglePasswordProtection(false)}
+                        w="fit-content"
+                        colorScheme="red"
+                      >
+                        <UnlockedIcon mr="3" />
+                        Remove password protection
+                      </Button>
+                      <PasswordInput
+                        updatePassword={updatePassword}
+                        existingPassword={
+                          typebot?.settings.security?.password
+                            ? typebot?.settings.security?.password
+                            : undefined
+                        }
+                      />
+                    </Stack>
+                  ) : (
+                    <Button
+                      onClick={() => togglePasswordProtection(true)}
+                      w="fit-content"
+                    >
+                      <LockedIcon mr="3" />
+                      Enable password protection
+                    </Button>
+                  )}
+                </>
+              ) : (
+                <div>You need to publish your chatform first </div>
+              )}
+            </Stack>
           </Stack>
 
           <Stack spacing={4}>

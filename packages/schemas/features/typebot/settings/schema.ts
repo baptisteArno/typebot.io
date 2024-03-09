@@ -47,6 +47,7 @@ export const settingsSchema = z
     security: z
       .object({
         allowedOrigins: z.array(z.string()).optional(),
+        password: z.string().nullable().optional(),
       })
       .optional(),
   })
