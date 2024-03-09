@@ -78,7 +78,7 @@ export const TypebotPageV3 = ({
               color: '#475569',
             }}
           >
-            This chat is password protected
+            This bot is password protected
           </h1>
           <div
             style={{
