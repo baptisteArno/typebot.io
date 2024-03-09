@@ -107,7 +107,9 @@ export const SharePage = () => {
     if (state === false) deletePassword()
   }
 
-  const updatePassword = (updatedPassword: string): Promise<TypebotV6 | undefined> => {
+  const updatePassword = (
+    updatedPassword: string
+  ): Promise<TypebotV6 | undefined> => {
     return updateTypebot({
       updates: { settings: { security: { password: updatedPassword } } },
       save: true,
