@@ -132,7 +132,7 @@ export const SharePage = () => {
         <Stack maxW="1000px" w="full" pt="10" spacing={10}>
           <Stack spacing={4} align="flex-start">
             <Heading fontSize="2xl" as="h1">
-              Your typebot link
+              {t('share.page.link')}
             </Heading>
             {typebot && (
               <EditableUrl
@@ -187,7 +187,7 @@ export const SharePage = () => {
             <Stack mt="3">
               <HStack spacing={3}>
                 <Heading fontSize="2xl" as="h1">
-                  Protect your typebot
+                  {t('share.page.password')}
                 </Heading>
                 <Tag size="sm" colorScheme="purple" borderRadius="full">
                   <TagLabel>Beta</TagLabel>
@@ -204,7 +204,7 @@ export const SharePage = () => {
                         colorScheme="red"
                       >
                         <UnlockedIcon mr="3" />
-                        Remove password protection
+                        {t('share.page.password.disable')}
                       </Button>
                       <PasswordInput
                         updatePassword={updatePassword}
@@ -221,19 +221,19 @@ export const SharePage = () => {
                       w="fit-content"
                     >
                       <LockedIcon mr="3" />
-                      Enable password protection
+                      {t('share.page.password.enable')}
                     </Button>
                   )}
                 </>
               ) : (
-                <div>You need to publish your chatform first </div>
+                <div>{t('share.page.password.publishBeforeEnable')}</div>
               )}
             </Stack>
           </Stack>
 
           <Stack spacing={4}>
             <Heading fontSize="2xl" as="h1">
-              Embed your typebot
+              {t('share.page.embed')}
             </Heading>
             <Wrap spacing={7}>
               {integrationsList.map((IntegrationButton, idx) => (
