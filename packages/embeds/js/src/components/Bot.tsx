@@ -35,6 +35,9 @@ export type BotProps = {
   apiHost?: string
   font?: Font
   progressBarRef?: HTMLDivElement
+  password?: string
+  onPasswordProtected?: () => void
+  onPasswordInvalid?: () => void
   onNewInputBlock?: (inputBlock: InputBlock) => void
   onAnswer?: (answer: { message: string; blockId: string }) => void
   onInit?: () => void
@@ -77,6 +80,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
         ...props.prefilledVariables,
       },
       startFrom: props.startFrom,
+      password: props.password,
     })
     if (error instanceof HTTPError) {
       if (isPreview) {
@@ -93,6 +97,9 @@ export const Bot = (props: BotProps & { class?: string }) => {
         return setError(new Error('This bot is now closed.'))
       if (error.response.status === 404)
         return setError(new Error("The bot you're looking for doesn't exist."))
+      if (error.response.status === 423) return props.onPasswordProtected?.()
+      if (error.response.status === 401) return props.onPasswordInvalid?.()
+
       return setError(
         new Error(
           `Error! Couldn't initiate the chat. (${error.response.statusText})`

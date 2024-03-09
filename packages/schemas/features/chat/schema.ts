@@ -203,6 +203,12 @@ export const startChatInputSchema = z.object({
         Email: 'john@gmail.com',
       },
     }),
+  password: z
+    .string()
+    .optional()
+    .describe(
+      'If the typebot is password protected, the user need to provide the password to start the chat.'
+    ),
 })
 export type StartChatInput = z.infer<typeof startChatInputSchema>
 

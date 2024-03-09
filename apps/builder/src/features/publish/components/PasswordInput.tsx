@@ -30,6 +30,8 @@ export const PasswordInput = ({
   ] = useState<undefined | boolean>(undefined)
 
   const onUpdatePassword = () => {
+    if (isPasswordModificationSuccessful) return
+
     setIsLoading(true)
     updatePassword(password)
       .then(() => {

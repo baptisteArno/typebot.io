@@ -14,6 +14,9 @@ export const defaultBotProps: BotProps = {
   prefilledVariables: undefined,
   apiHost: undefined,
   resultId: undefined,
+  password: undefined,
+  onPasswordProtected: undefined,
+  onPasswordInvalid: undefined,
 }
 
 export const defaultPopupProps: PopupProps = {

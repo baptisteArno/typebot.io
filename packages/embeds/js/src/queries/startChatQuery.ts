@@ -21,6 +21,7 @@ type Props = {
   isPreview: boolean
   prefilledVariables?: Record<string, unknown>
   resultId?: string
+  password?: string
 }
 
 export async function startChatQuery({
@@ -31,6 +32,7 @@ export async function startChatQuery({
   resultId,
   stripeRedirectStatus,
   startFrom,
+  password,
 }: Props) {
   if (isNotDefined(typebot))
     throw new Error('Typebot ID is required to get initial messages')
@@ -107,6 +109,7 @@ export async function startChatQuery({
             prefilledVariables,
             resultId,
             isOnlyRegistering: false,
+            password,
           } satisfies Omit<StartChatInput, 'publicId'>,
           timeout: false,
         }

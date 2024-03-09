@@ -28,6 +28,7 @@ export const startChat = publicProcedure
         isStreamEnabled,
         prefilledVariables,
         resultId: startResultId,
+        password,
       },
       ctx: { origin, res },
     }) => {
@@ -65,6 +66,15 @@ export const startChat = publicProcedure
             'Access-Control-Allow-Origin',
             newSessionState.allowedOrigins[0]
           )
+      }
+
+      if (typebot.settings.security?.password) {
+        if (!password)
+          res.status(423).send('This chatform is protected by a password')
+
+        if (password !== typebot.settings.security.password) {
+          res.status(401).send('The password provided is incorrect')
+        }
       }
 
       const session = isOnlyRegistering

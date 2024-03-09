@@ -112,14 +112,12 @@ export const SharePage = () => {
   ): Promise<TypebotV6 | undefined> => {
     return updateTypebot({
       updates: { settings: { security: { password: updatedPassword } } },
-      save: true,
     })
   }
 
   const deletePassword = () => {
     updateTypebot({
-      updates: { settings: { security: { password: '' } } },
-      save: true,
+      updates: { settings: { security: { password: null } } },
     })
   }
 
