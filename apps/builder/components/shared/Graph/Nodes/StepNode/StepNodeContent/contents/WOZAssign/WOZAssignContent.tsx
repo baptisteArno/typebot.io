@@ -20,12 +20,18 @@ const WOZAssignContent = ({ step, indices }: Props) => {
       <Text noOfLines={0}>
         Apresenta-se como IA? {step?.options?.introduceAsIA ? 'Sim' : 'Não'}
       </Text>
+      <Text noOfLines={0}>
+        Pede confirmação antes de ir para próxima ação? {step?.options?.confirmContext ? 'Sim' : 'Não'}
+      </Text>
       <OctaDivider />
       <Text noOfLines={0}>
         Redirecionamento baseado no assunto da conversa:
       </Text>
       <ItemNodesList step={step} indices={indices} />
-      <Text></Text>
+      <OctaDivider />
+      <Text fontSize={"13px"} align={"center"} color={"blue"}>
+        <span>Saiba mais...</span>
+      </Text>
     </Stack>
   )
 }
