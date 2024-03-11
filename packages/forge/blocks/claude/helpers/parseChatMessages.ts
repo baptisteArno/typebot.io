@@ -1,5 +1,5 @@
 import { Anthropic } from '@anthropic-ai/sdk'
-import { options as createMessageOptions } from '../actions/createMessage'
+import { options as createMessageOptions } from '../actions/createChatMessage'
 import { ReadOnlyVariableStore } from '@typebot.io/forge'
 import { isNotEmpty } from '@typebot.io/lib'
 import { z } from '@typebot.io/forge/zod'
@@ -15,7 +15,7 @@ export const parseChatMessages = ({
     ?.flatMap((message) => {
       if (!message.role) return
 
-      if (message.role === 'dialogue') {
+      if (message.role === 'Dialogue') {
         if (!message.dialogueVariableId) return
         const dialogue = variables.get(message.dialogueVariableId) ?? []
         const dialogueArr = Array.isArray(dialogue) ? dialogue : [dialogue]

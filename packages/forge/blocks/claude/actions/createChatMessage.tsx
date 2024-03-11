@@ -4,6 +4,7 @@ import { Anthropic } from '@anthropic-ai/sdk'
 import { AnthropicStream } from 'ai'
 import { claudeModels, defaultClaudeOptions } from '../constants'
 import { parseChatMessages } from '../helpers/parseChatMessages'
+import { isDefined } from '@typebot.io/lib'
 
 const nativeMessageContentSchema = {
   content: option.string.layout({
@@ -25,7 +26,7 @@ const assistantMessageItemSchema = option
   .extend(nativeMessageContentSchema)
 
 const dialogueMessageItemSchema = option.object({
-  role: option.literal('dialogue'),
+  role: option.literal('Dialogue'),
   dialogueVariableId: option.string.layout({
     inputType: 'variableDropdown',
     placeholder: 'Dialogue variable',
@@ -39,9 +40,7 @@ const dialogueMessageItemSchema = option.object({
 
 export const options = option.object({
   model: option.enum(claudeModels).layout({
-    label: 'Claude Model',
     defaultValue: defaultClaudeOptions.model,
-    isRequired: true,
   }),
   messages: option
     .array(
@@ -54,8 +53,9 @@ export const options = option.object({
     .layout({ accordion: 'Messages', itemLabel: 'message', isOrdered: true }),
   systemMessage: option.string.layout({
     accordion: 'Advanced Settings',
-    label: 'System Instruction',
+    label: 'System prompt',
     direction: 'row',
+    inputType: 'textarea',
   }),
   temperature: option.number.layout({
     accordion: 'Advanced Settings',
@@ -76,10 +76,12 @@ export const options = option.object({
     }),
 })
 
-export const createMessage = createAction({
-  name: 'Create Message',
+export const createChatMessage = createAction({
+  name: 'Create Chat Message',
   auth,
   options,
+  getSetVariableIds: ({ responseMapping }) =>
+    responseMapping?.map((res) => res.variableId).filter(isDefined) ?? [],
   run: {
     server: async ({ credentials: { apiKey }, options, variables }) => {
       const client = new Anthropic({
@@ -95,7 +97,9 @@ export const createMessage = createAction({
         temperature: options.temperature
           ? Number(options.temperature)
           : undefined,
-        max_tokens: Number(options.maxTokens) ?? defaultClaudeOptions.maxTokens,
+        max_tokens: options.maxTokens
+          ? Number(options.maxTokens)
+          : defaultClaudeOptions.maxTokens,
       })
 
       messages.push(reply)
@@ -126,8 +130,9 @@ export const createMessage = createAction({
           temperature: options.temperature
             ? Number(options.temperature)
             : undefined,
-          max_tokens:
-            Number(options.maxTokens) ?? defaultClaudeOptions.maxTokens,
+          max_tokens: options.maxTokens
+            ? Number(options.maxTokens)
+            : defaultClaudeOptions.maxTokens,
           stream: true,
         })
 
