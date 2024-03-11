@@ -38,7 +38,12 @@ export const injectVariableValuesInButtonsInputBlock =
             contentAsJson = false;
           }
 
-          if (contentAsJson)
+          if (contentAsJson
+            &&
+            (contentAsJson.name && contentAsJson.name !== "") 
+            &&
+            (contentAsJson.id && contentAsJson.id != "")
+          )
           {
             result = Object.assign({}, result, {
               content: contentAsJson.name,

@@ -6,7 +6,7 @@ import {
   InputBlock,
   SessionState,
 } from '@typebot.io/schemas'
-import { isInputBlock, byId, isChoiceInput } from '@typebot.io/lib'
+import { isInputBlock, byId } from '@typebot.io/lib'
 import { executeGroup, parseInput } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
 import { validateEmail } from './blocks/inputs/email/validateEmail'
