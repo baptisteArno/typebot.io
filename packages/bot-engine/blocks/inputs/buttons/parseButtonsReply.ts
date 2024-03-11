@@ -75,8 +75,10 @@ export const parseButtonsReply =
           inputValue.toLowerCase().trim() === item.content.toLowerCase().trim())
     )
     if (!matchedItem) return { status: 'fail' }
+
     return {
       status: 'success',
+      replyId: matchedItem.contentId,
       reply: matchedItem.content ?? '',
     }
   }

@@ -23,11 +23,37 @@ export const injectVariableValuesInButtonsInputBlock =
       const value = getVariableValue(state)(variable)
       return {
         ...deepParseVariables(variables)(block),
-        items: value.filter(isDefined).map((item, idx) => ({
-          id: idx.toString(),
-          blockId: block.id,
-          content: item,
-        })),
+        items: value.filter(isDefined).map((item, idx) => {
+          var result = {
+            id: idx.toString(),
+            blockId: block.id,
+          }
+
+          var contentAsJson;
+          try {
+            contentAsJson = JSON.parse(item);
+          }
+          catch
+          {
+            contentAsJson = false;
+          }
+
+          if (contentAsJson)
+          {
+            result = Object.assign({}, result, {
+              content: contentAsJson.name,
+              contentId: contentAsJson.id
+            });
+          }
+          else
+          {
+            result = Object.assign({}, result, {
+              content: item
+            });
+          }
+
+          return result;
+        }),
       }
     }
     return deepParseVariables(variables)(filterChoiceItems(variables)(block))

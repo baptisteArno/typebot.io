@@ -6,7 +6,7 @@ import {
   InputBlock,
   SessionState,
 } from '@typebot.io/schemas'
-import { isInputBlock, byId } from '@typebot.io/lib'
+import { isInputBlock, byId, isChoiceInput } from '@typebot.io/lib'
 import { executeGroup, parseInput } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
 import { validateEmail } from './blocks/inputs/email/validateEmail'
@@ -170,8 +170,12 @@ export const continueBotFlow = async (
       }
 
     formattedReply =
-      'reply' in parsedReplyResult ? parsedReplyResult.reply : undefined
-    newSessionState = await processAndSaveAnswer(state, block)(formattedReply)
+      'reply' in parsedReplyResult ? parsedReplyResult.reply : undefined;
+
+    var formattedReplyId =
+      'replyId' in parsedReplyResult ? (parsedReplyResult.replyId ?? formattedReply) : formattedReply;
+
+    newSessionState = await processAndSaveAnswer(state, block)(formattedReplyId) 
   }
 
   const groupHasMoreBlocks = blockIndex < group.blocks.length - 1
