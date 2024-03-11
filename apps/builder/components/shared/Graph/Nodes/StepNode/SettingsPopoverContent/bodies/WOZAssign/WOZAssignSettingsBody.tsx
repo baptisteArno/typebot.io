@@ -56,25 +56,28 @@ export const WOZAssignSettingBody = ({ options, onOptionsChange }: Props) => {
             <Text color="gray.400" fontSize="sm">
               Aqui estão alguns benefícios dessa abordagem:
             </Text>
+            <OctaDivider width='100%' />
             <Text color="gray.400" fontSize="sm" fontWeight="bold">
               Transparência e Confiança:
             </Text>
             <Text color="gray.400" fontSize="sm">
               Ao comunicar claramente que estão interagindo com uma IA, os usuários percebem um maior nível de transparência por parte da nossa empresa. Isso constrói confiança, mostrando que somos honestos sobre o funcionamento do nosso serviço.
             </Text>
+            <OctaDivider width='100%' />
             <Text color="gray.400" fontSize="sm" fontWeight="bold">
               Gestão de Expectativas:
             </Text>
             <Text color="gray.400" fontSize="sm">
               Informar aos usuários que estão lidando com uma IA ajuda a estabelecer expectativas realistas sobre a natureza da interação. Isso reduz a frustração potencial se o chatbot não puder fornecer uma resposta precisa ou personalizada.
             </Text>
+            <OctaDivider width='100%' />
             <Text color="gray.400" fontSize="sm" fontWeight="bold">
               Melhoria da Experiência do Usuário:
             </Text>
             <Text color="gray.400" fontSize="sm">
               Consciência sobre a presença de uma IA pode encorajar os usuários a interagirem de forma mais eficaz e produtiva. Eles podem ajustar suas expectativas e utilizar o chatbot de maneira mais adequada, resultando em uma experiência geral mais positiva.
             </Text>
-
+            <OctaDivider width='100%' />
             <Text color="gray.400" fontSize="sm" fontWeight="bold">
               Ética e Privacidade:
             </Text>
@@ -100,12 +103,14 @@ export const WOZAssignSettingBody = ({ options, onOptionsChange }: Props) => {
             <Text color="gray.400" fontSize="sm">
               Aqui estão alguns benefícios dessa abordagem:
             </Text>
+            <OctaDivider width='100%' />
             <Text color="gray.400" fontSize="sm" fontWeight="bold">
               Proporcionar uma experiência mais personalizada e transparente.
             </Text>
             <Text color="gray.400" fontSize="sm">
               Ao confirmar a disposição de seu cliente em avançar, garantimos que ele esteja plenamente engajado e ciente das opções disponíveis.
             </Text>
+            <OctaDivider width='100%' />
             <Text color="gray.400" fontSize="sm" fontWeight="bold">
               Evita mal entendidos:
             </Text>
@@ -131,6 +136,7 @@ export const WOZAssignSettingBody = ({ options, onOptionsChange }: Props) => {
             <Text color="gray.400" fontSize="sm">
               Aqui você pode listar quais assuntos o WOZ deverá passar a conversa para outros componentes da árvore de decisão.
             </Text>
+            <OctaDivider width='100%' />
             <Text color="gray.400" fontSize="sm" fontWeight="bold">
               Contextos que sempre estarão disponíveis:
             </Text>
@@ -140,6 +146,7 @@ export const WOZAssignSettingBody = ({ options, onOptionsChange }: Props) => {
             <Text color="gray.400" fontSize="sm">
               Encerrar a conversa: O Woz irá indicar que o cliente quer encerrar a conversa, permitindo que a árvore seja montada para isso.
             </Text>
+            <OctaDivider width='100%' />
             <Text color="gray.400" fontSize="sm" fontWeight="bold">
               Configure contextos.
             </Text>
@@ -148,6 +155,7 @@ export const WOZAssignSettingBody = ({ options, onOptionsChange }: Props) => {
             </Text>
           </Stack>
         }
+        <OctaDivider width='100%' />
       </Stack>
     </Stack >
   )
