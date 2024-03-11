@@ -5,7 +5,7 @@ import { Block, SessionState } from '@typebot.io/schemas'
 type Props = {
   typebotsQueue: SessionState['typebotsQueue']
   progressMetadata: NonNullable<SessionState['progressMetadata']>
-  currentInputBlockId: string
+  currentInputBlockId: string | undefined
 }
 
 export const computeCurrentProgress = ({
@@ -13,6 +13,7 @@ export const computeCurrentProgress = ({
   progressMetadata,
   currentInputBlockId,
 }: Props) => {
+  if (!currentInputBlockId) return
   const paths = computePossibleNextInputBlocks({
     typebotsQueue: typebotsQueue,
     blockId: currentInputBlockId,
