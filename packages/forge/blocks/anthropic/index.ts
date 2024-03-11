@@ -1,13 +1,13 @@
 import { createBlock } from '@typebot.io/forge'
-import { ClaudeLogo } from './logo'
+import { AnthropicLogo } from './logo'
 import { auth } from './auth'
 import { createChatMessage } from './actions/createChatMessage'
 
-export const claude = createBlock({
-  id: 'claude',
-  name: 'Claude',
+export const anthropic = createBlock({
+  id: 'anthropic',
+  name: 'Anthropic',
   tags: ['ai', 'chat', 'completion', 'claude', 'anthropic'],
-  LightLogo: ClaudeLogo,
+  LightLogo: AnthropicLogo,
   auth,
   actions: [createChatMessage],
 })

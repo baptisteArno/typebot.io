@@ -2,7 +2,7 @@ import { createAction, option } from '@typebot.io/forge'
 import { auth } from '../auth'
 import { Anthropic } from '@anthropic-ai/sdk'
 import { AnthropicStream } from 'ai'
-import { claudeModels, defaultClaudeOptions } from '../constants'
+import { anthropicModels, defaultAnthropicOptions } from '../constants'
 import { parseChatMessages } from '../helpers/parseChatMessages'
 import { isDefined } from '@typebot.io/lib'
 
@@ -39,8 +39,8 @@ const dialogueMessageItemSchema = option.object({
 })
 
 export const options = option.object({
-  model: option.enum(claudeModels).layout({
-    defaultValue: defaultClaudeOptions.model,
+  model: option.enum(anthropicModels).layout({
+    defaultValue: defaultAnthropicOptions.model,
   }),
   messages: option
     .array(
@@ -61,13 +61,13 @@ export const options = option.object({
     accordion: 'Advanced Settings',
     label: 'Temperature',
     direction: 'row',
-    defaultValue: defaultClaudeOptions.temperature,
+    defaultValue: defaultAnthropicOptions.temperature,
   }),
   maxTokens: option.number.layout({
     accordion: 'Advanced Settings',
     label: 'Max Tokens',
     direction: 'row',
-    defaultValue: defaultClaudeOptions.maxTokens,
+    defaultValue: defaultAnthropicOptions.maxTokens,
   }),
   responseMapping: option
     .saveResponseArray(['Message Content'] as const)
@@ -92,14 +92,14 @@ export const createChatMessage = createAction({
 
       const reply = await client.messages.create({
         messages,
-        model: options.model ?? defaultClaudeOptions.model,
+        model: options.model ?? defaultAnthropicOptions.model,
         system: options.systemMessage,
         temperature: options.temperature
           ? Number(options.temperature)
           : undefined,
         max_tokens: options.maxTokens
           ? Number(options.maxTokens)
-          : defaultClaudeOptions.maxTokens,
+          : defaultAnthropicOptions.maxTokens,
       })
 
       messages.push(reply)
@@ -125,14 +125,14 @@ export const createChatMessage = createAction({
 
         const response = await client.messages.create({
           messages,
-          model: options.model ?? defaultClaudeOptions.model,
+          model: options.model ?? defaultAnthropicOptions.model,
           system: options.systemMessage,
           temperature: options.temperature
             ? Number(options.temperature)
             : undefined,
           max_tokens: options.maxTokens
             ? Number(options.maxTokens)
-            : defaultClaudeOptions.maxTokens,
+            : defaultAnthropicOptions.maxTokens,
           stream: true,
         })
 

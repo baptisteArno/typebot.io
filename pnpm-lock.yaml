@@ -1164,6 +1164,31 @@ importers:
         specifier: 6.0.0
         version: 6.0.0(eslint@8.44.0)(typescript@5.3.2)
 
+  packages/forge/blocks/anthropic:
+    dependencies:
+      '@anthropic-ai/sdk':
+        specifier: ^0.16.1
+        version: 0.16.1
+      ai:
+        specifier: 2.2.33
+        version: 2.2.33(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)
+    devDependencies:
+      '@typebot.io/forge':
+        specifier: workspace:*
+        version: link:../../core
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../../../lib
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../../../tsconfig
+      '@types/react':
+        specifier: 18.2.15
+        version: 18.2.15
+      typescript:
+        specifier: 5.3.2
+        version: 5.3.2
+
   packages/forge/blocks/calCom:
     devDependencies:
       '@typebot.io/forge':
@@ -1199,31 +1224,6 @@ importers:
       got:
         specifier: 12.6.0
         version: 12.6.0
-      typescript:
-        specifier: 5.3.2
-        version: 5.3.2
-
-  packages/forge/blocks/claude:
-    dependencies:
-      '@anthropic-ai/sdk':
-        specifier: ^0.16.1
-        version: 0.16.1
-      ai:
-        specifier: 2.2.33
-        version: 2.2.33(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)
-    devDependencies:
-      '@typebot.io/forge':
-        specifier: workspace:*
-        version: link:../../core
-      '@typebot.io/lib':
-        specifier: workspace:*
-        version: link:../../../lib
-      '@typebot.io/tsconfig':
-        specifier: workspace:*
-        version: link:../../../tsconfig
-      '@types/react':
-        specifier: 18.2.15
-        version: 18.2.15
       typescript:
         specifier: 5.3.2
         version: 5.3.2
@@ -1456,15 +1456,15 @@ importers:
 
   packages/forge/schemas:
     devDependencies:
+      '@typebot.io/anthropic-block':
+        specifier: workspace:*
+        version: link:../blocks/anthropic
       '@typebot.io/cal-com-block':
         specifier: workspace:*
         version: link:../blocks/calCom
       '@typebot.io/chat-node-block':
         specifier: workspace:*
         version: link:../blocks/chatNode
-      '@typebot.io/claude-block':
-        specifier: workspace:*
-        version: link:../blocks/claude
       '@typebot.io/dify-ai-block':
         specifier: workspace:*
         version: link:../blocks/difyAi
