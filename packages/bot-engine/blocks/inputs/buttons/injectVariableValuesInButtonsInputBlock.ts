@@ -13,14 +13,24 @@ export const injectVariableValuesInButtonsInputBlock =
   (state: SessionState) =>
   (block: ChoiceInputBlock): ChoiceInputBlock => {
     const { variables } = state.typebotsQueue[0].typebot
-    if (block.options?.dynamicVariableId) {
-      const variable = variables.find(
+    if (block.options?.dynamicVariableId || block.options?.dynamicVariableName) {
+      var variable = variables.find(
         (variable) =>
-          variable.id === block.options?.dynamicVariableId &&
+          variable.id === block.options?.dynamicVariableName &&
           isDefined(variable.value)
       ) as VariableWithValue | undefined
+      if (!variable)
+      {
+        variable = variables.find(
+          (variable) =>
+            variable.id === block.options?.dynamicVariableId &&
+            isDefined(variable.value)
+        )
+      }
+
       if (!variable) return block
       const value = getVariableValue(state)(variable)
+
       return {
         ...deepParseVariables(variables)(block),
         items: value.filter(isDefined).map((item, idx) => ({

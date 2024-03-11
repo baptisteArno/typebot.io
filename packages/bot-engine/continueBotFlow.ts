@@ -5,8 +5,9 @@ import {
   Group,
   InputBlock,
   SessionState,
+  ChoiceInputBlock
 } from '@typebot.io/schemas'
-import { isInputBlock, byId } from '@typebot.io/lib'
+import { isInputBlock, byId, isDefined } from '@typebot.io/lib'
 import { executeGroup, parseInput } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
 import { validateEmail } from './blocks/inputs/email/validateEmail'
@@ -167,11 +168,52 @@ export const continueBotFlow = async (
         ...(await parseRetryMessage(newSessionState)(block)),
         newSessionState,
         visitedEdges: [],
-      }
+    }
 
-    formattedReply =
-      'reply' in parsedReplyResult ? parsedReplyResult.reply : undefined
-    newSessionState = await processAndSaveAnswer(state, block)(formattedReply)
+    let variableId: string | undefined
+
+    const dynamicVariableId = state.typebotsQueue[0].typebot.variables.find(
+      (variable) =>
+          variable.id === (block as ChoiceInputBlock).options?.dynamicVariableId &&
+          isDefined(variable.value)
+      );
+    const dynamicVariableName = state.typebotsQueue[0].typebot.variables.find(
+      (variable) =>
+          variable.id === (block as ChoiceInputBlock).options?.dynamicVariableName &&
+          isDefined(variable.value)
+      );
+
+    if (dynamicVariableName && dynamicVariableName !== null)
+    {
+      // @ts-ignore
+      formattedReply = dynamicVariableName.value[parsedReplyResult.selectedIndex] ?? undefined;
+      variableId = formattedReply; // in case dynamicVariableId is not defined
+    }
+
+    if (dynamicVariableId && dynamicVariableId !== null)
+    {
+      // @ts-ignore
+      variableId = dynamicVariableId.value[parsedReplyResult.selectedIndex] ?? undefined;
+
+      if (!formattedReply)
+      {
+        // in case dynamicVariableName is not defined
+        formattedReply = variableId;
+      }
+    }
+
+    if (!formattedReply)
+    {
+      // should throw error here
+      formattedReply = undefined;
+    }
+    if (!variableId)
+    {
+      // should throw error here
+      variableId = undefined;
+    }
+
+    newSessionState = await processAndSaveAnswer(state, block)(variableId)
   }
 
   const groupHasMoreBlocks = blockIndex < group.blocks.length - 1
@@ -480,12 +522,17 @@ const parseReply =
             ? { status: 'fail' }
             : { status: 'skip' }
         const urls = reply.split(', ')
-        const status = urls.some((url) =>
+
+        if (urls.some((url) =>
           isURL(url, { require_tld: env.S3_ENDPOINT !== 'localhost' })
-        )
-          ? 'success'
-          : 'fail'
-        return { status, reply: reply }
+        ))
+        {
+          return { status: "success", reply: reply }
+        }
+        else
+        {
+          return { status: "fail", reply: reply }
+        }
       }
       case InputBlockType.PAYMENT: {
         if (!reply) return { status: 'fail' }

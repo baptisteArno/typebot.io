@@ -14,18 +14,30 @@ type Props = {
 export const ButtonsBlockNode = ({ block, indices }: Props) => {
   const { typebot } = useTypebot()
   const { t } = useTranslate()
-  const dynamicVariableName = typebot?.variables.find(
+  const dynamicVariableIdName = typebot?.variables.find(
     (variable) => variable.id === block.options?.dynamicVariableId
   )?.name
-
+  const dynamicVariableName = typebot?.variables.find(
+    (variable) => variable.id === block.options?.dynamicVariableName
+  )?.name
+  
   return (
     <Stack w="full">
-      {block.options?.dynamicVariableId ? (
+      {block.options?.dynamicVariableId || block.options?.dynamicVariableName ? (
         <Wrap spacing={1}>
           <Text>{t('blocks.inputs.button.variables.display.label')}</Text>
-          <Tag bg="orange.400" color="white">
-            {dynamicVariableName}
-          </Tag>
+          {
+            dynamicVariableIdName ? (
+            <Tag bg="orange.400" color="white">
+              {dynamicVariableIdName}
+            </Tag>) : null
+          }
+          {
+            dynamicVariableName ?(
+            <Tag bg="orange.400" color="white">
+              {dynamicVariableName}
+            </Tag>) : null
+          }
           <Text>{t('blocks.inputs.button.variables.buttons.label')}</Text>
         </Wrap>
       ) : (

@@ -9,6 +9,7 @@ export const choiceInputOptionsSchema = optionBaseSchema.merge(
     isMultipleChoice: z.boolean().optional(),
     buttonLabel: z.string().optional(),
     dynamicVariableId: z.string().optional(),
+    dynamicVariableName: z.string().optional(),
     isSearchable: z.boolean().optional(),
     searchInputPlaceholder: z.string().optional(),
   })

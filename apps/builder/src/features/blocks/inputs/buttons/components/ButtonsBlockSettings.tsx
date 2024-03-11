@@ -27,6 +27,8 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({ ...options, variableId: variable?.id })
   const updateDynamicDataVariable = (variable?: Variable) =>
     onOptionsChange({ ...options, dynamicVariableId: variable?.id })
+  const updateDynamicDataVariableName = (variable?: Variable) =>
+    onOptionsChange({ ...options, dynamicVariableName: variable?.id })
 
   return (
     <Stack spacing={4}>
@@ -72,6 +74,18 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
         <VariableSearchInput
           initialVariableId={options?.dynamicVariableId}
           onSelectVariable={updateDynamicDataVariable}
+        />
+      </FormControl>
+      <FormControl>
+        <FormLabel>
+          {t('blocks.inputs.button.settings.dynamicDataName.label')}{' '}
+          <MoreInfoTooltip>
+            {t('blocks.inputs.button.settings.dynamicDataName.infoText.label')}
+          </MoreInfoTooltip>
+        </FormLabel>
+        <VariableSearchInput
+          initialVariableId={options?.dynamicVariableName}
+          onSelectVariable={updateDynamicDataVariableName}
         />
       </FormControl>
       <Stack>
