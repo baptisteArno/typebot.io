@@ -103,7 +103,7 @@ export const WOZAssignSettingBody = ({ options, onOptionsChange }: Props) => {
               Ao confirmar a disposição de seu cliente em avançar, garantimos que ele esteja plenamente engajado e ciente das opções disponíveis.
             </Text>
             <Text color="gray.400" fontSize="sm" fontWeight="bold">
-              Evita mals entendidos:
+              Evita mal entendidos:
             </Text>
             <Text color="gray.400" fontSize="sm">
               Não permite que o cliente seja direcionado para qualquer direção da árvore sem confirmação do próprio.
