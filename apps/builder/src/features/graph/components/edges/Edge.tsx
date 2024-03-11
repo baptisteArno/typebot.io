@@ -61,6 +61,7 @@ export const Edge = ({ edge, fromGroupId }: Props) => {
   }, [edge.from, sourceEndpointYOffsets])
 
   const targetTop = useMemo(() => {
+    if (targetEndpointYOffsets.size === 0) return
     if (edge.to.blockId) {
       const targetOffset = targetEndpointYOffsets.get(edge.to.blockId)
       if (!targetOffset) {
