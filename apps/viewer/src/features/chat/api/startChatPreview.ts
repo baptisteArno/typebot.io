@@ -98,7 +98,7 @@ export const startChatPreview = publicProcedure
             : computeCurrentProgress({
                 typebotsQueue: newSessionState.typebotsQueue,
                 progressMetadata: newSessionState.progressMetadata,
-                currentInputBlockId: input?.id as string,
+                currentInputBlockId: input?.id,
               })
           : undefined,
       }
