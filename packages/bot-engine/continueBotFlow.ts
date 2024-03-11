@@ -172,7 +172,7 @@ export const continueBotFlow = async (
     formattedReply =
       'reply' in parsedReplyResult ? parsedReplyResult.reply : undefined;
 
-    var formattedReplyId =
+    const formattedReplyId : string | undefined =
       'replyId' in parsedReplyResult ? (parsedReplyResult.replyId ?? formattedReply) : formattedReply;
 
     newSessionState = await processAndSaveAnswer(state, block)(formattedReplyId) 

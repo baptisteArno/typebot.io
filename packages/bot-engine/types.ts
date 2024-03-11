@@ -29,5 +29,6 @@ export type Reply = string | WhatsAppMediaMessage | undefined
 
 export type ParsedReply =
   | { status: 'success'; reply: string }
+  | { status: 'success'; reply: string, replyId: string | undefined }
   | { status: 'fail' }
   | { status: 'skip' }
