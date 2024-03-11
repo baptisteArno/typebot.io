@@ -36,6 +36,10 @@ export const WOZAssignSettingBody = ({ options, onOptionsChange }: Props) => {
     return viewMoreInfo === 'confirmContext'
   }
 
+  const isRedirectionInfo = () => {
+    return viewMoreInfo === 'redirection'
+  }
+
   return (
     <Stack spacing={4}>
       <Stack>
@@ -110,6 +114,37 @@ export const WOZAssignSettingBody = ({ options, onOptionsChange }: Props) => {
             </Text>
             <Text color="gray.400" fontSize="sm">
               Acreditamos que essa opção só deva ser desligada caso as decisões do bot estejam sendo muito fieis aos desejos do seu cliente.
+            </Text>
+          </Stack>
+        }
+        <OctaDivider width='100%' />
+        <HStack justify="space-between">
+          <Text>
+            Redirecionamento baseado no assunto da conversa:
+          </Text>
+          <Text cursor={'pointer'} onClick={() => changeViewMoreInfo('redirection')} fontSize={"13px"} align={"center"} color={"blue"}>
+            <span>Ver {isRedirectionInfo() ? "menos" : "mais"}</span>
+          </Text>
+        </HStack>
+        {isRedirectionInfo() &&
+          <Stack justify="space-between">
+            <Text color="gray.400" fontSize="sm">
+              Aqui você pode listar quais assuntos o WOZ deverá passar a conversa para outros componentes da árvore de decisão.
+            </Text>
+            <Text color="gray.400" fontSize="sm" fontWeight="bold">
+              Contextos que sempre estarão disponíveis:
+            </Text>
+            <Text color="gray.400" fontSize="sm">
+              Falar com Humano: Garante que o WOZ saberá que seu usuário quer falar com algum atendente, permitindo que você o direcione o time de atendimento.
+            </Text>
+            <Text color="gray.400" fontSize="sm">
+              Encerrar a conversa: O Woz irá indicar que o cliente quer encerrar a conversa, permitindo que a árvore seja montada para isso.
+            </Text>
+            <Text color="gray.400" fontSize="sm" fontWeight="bold">
+              Configure contextos.
+            </Text>
+            <Text color="gray.400" fontSize="sm">
+              Você poderá adicionar outros assuntos que seu cliente pode querer conversar direcionando para outros componentes do bot, permitindo assim que você faça atualizações cadastrais usando o Conecte a outro sistema, busque dados em sua API para responder perguntas específicas, etc...
             </Text>
           </Stack>
         }

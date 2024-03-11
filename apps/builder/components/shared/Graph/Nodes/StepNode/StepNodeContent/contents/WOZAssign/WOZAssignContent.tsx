@@ -20,8 +20,9 @@ const WOZAssignContent = ({ step, indices }: Props) => {
       <Text noOfLines={0}>
         Apresenta-se como IA? {step?.options?.introduceAsIA ? 'Sim' : 'Não'}
       </Text>
+      <OctaDivider />
       <Text noOfLines={0}>
-        Pede confirmação antes de ir para próxima ação? {step?.options?.confirmContext ? 'Sim' : 'Não'}
+        Confirma ida para próxima ação? {step?.options?.confirmContext ? 'Sim' : 'Não'}
       </Text>
       <OctaDivider />
       <Text noOfLines={0}>
