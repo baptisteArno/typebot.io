@@ -25,7 +25,7 @@ export const injectVariableValuesInButtonsInputBlock =
           (variable) =>
             variable.id === block.options?.dynamicVariableId &&
             isDefined(variable.value)
-        )
+        ) as VariableWithValue | undefined
       }
 
       if (!variable) return block
