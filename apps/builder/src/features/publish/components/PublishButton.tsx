@@ -77,6 +77,11 @@ export const PublishButton = ({
           title: t('publish.error.label'),
           description: error.message,
         })
+        if (error.data?.httpStatus === 403) {
+          setTimeout(() => {
+            window.location.reload()
+          }, 3000)
+        }
       },
       onSuccess: () => {
         refetchPublishedTypebot({
