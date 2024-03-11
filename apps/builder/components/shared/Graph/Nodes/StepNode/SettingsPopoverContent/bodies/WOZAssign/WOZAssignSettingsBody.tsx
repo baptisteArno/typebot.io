@@ -25,7 +25,7 @@ export const WOZAssignSettingBody = ({ options, onOptionsChange }: Props) => {
   }
 
   const changeViewMoreInfo = (infoToShow: string) => {
-    setViewMoreInfo(infoToShow)
+    setViewMoreInfo(infoToShow === viewMoreInfo ? '' : infoToShow)
   }
 
   const isIntroduce = () => {
