@@ -10,6 +10,7 @@
     "test": "bun test"
   },
   "dependencies": {
+    "@hono/prometheus": "^1.0.0",
     "@hono/typebox-validator": "0.2.2",
     "@sinclair/typebox": "0.32.5",
     "@trpc/server": "10.40.0",
@@ -23,7 +24,8 @@
     "@typebot.io/variables": "workspace:*",
     "ai": "2.2.31",
     "hono": "4.0.5",
-    "openai": "4.24.1"
+    "openai": "4.24.1",
+    "prom-client": "^15.1.0"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
