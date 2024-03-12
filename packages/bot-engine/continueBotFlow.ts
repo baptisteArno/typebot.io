@@ -163,6 +163,8 @@ export const continueBotFlow = async (
   if (isInputBlock(block)) {
     const parsedReplyResult = await parseReply(newSessionState)(reply, block)
 
+    console.log(parsedReplyResult);
+
     if (parsedReplyResult.status === 'fail')
       return {
         ...(await parseRetryMessage(newSessionState)(block)),
@@ -204,13 +206,12 @@ export const continueBotFlow = async (
 
     if (!formattedReply)
     {
-      // should throw error here
-      formattedReply = undefined;
+      formattedReply =
+        'reply' in parsedReplyResult ? parsedReplyResult.reply : undefined
     }
     if (!variableId)
     {
-      // should throw error here
-      variableId = undefined;
+      variableId = formattedReply;
     }
 
     newSessionState = await processAndSaveAnswer(state, block)(variableId)
