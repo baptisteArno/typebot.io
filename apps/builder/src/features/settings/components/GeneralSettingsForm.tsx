@@ -85,7 +85,7 @@ export const GeneralSettingsForm = ({
       />
       <SwitchWithRelatedSettings
         label={'Remember user'}
-        moreInfoContent="If enabled, user previous variables will be prefilled and his new answers will override the previous ones."
+        moreInfoContent="If enabled, the chat state will be restored if the user comes back after exiting."
         initialValue={
           generalSettings?.rememberUser?.isEnabled ??
           (isDefined(generalSettings?.isNewResultOnRefreshEnabled)
@@ -112,7 +112,7 @@ export const GeneralSettingsForm = ({
                   <Tag size="sm" bgColor={keyBg}>
                     local
                   </Tag>{' '}
-                  to remember the user forever.
+                  to remember the user forever on the same device.
                 </Text>
               </Stack>
             </MoreInfoTooltip>

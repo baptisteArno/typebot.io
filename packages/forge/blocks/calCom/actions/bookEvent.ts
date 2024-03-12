@@ -23,6 +23,10 @@ export const bookEvent = createAction({
       label: 'Email',
       placeholder: 'johndoe@gmail.com',
     }),
+    additionalNotes: option.string.layout({
+      accordion: 'Prefill information',
+      label: 'Additional notes',
+    }),
     phone: option.string.layout({
       accordion: 'Prefill information',
       label: 'Phone number',
@@ -69,6 +73,7 @@ export const bookEvent = createAction({
               email: options.email ?? null,
               layout: parseLayoutAttr(options.layout),
               phone: options.phone ?? null,
+              additionalNotes: options.additionalNotes ?? null,
             },
             content: `(function (C, A, L) {
                 let p = function (a, ar) {
@@ -117,6 +122,7 @@ export const bookEvent = createAction({
                 config: {
                   name: name ?? undefined,
                   email: email ?? undefined,
+                  notes: additionalNotes ?? undefined,
                   location
                 }
               });

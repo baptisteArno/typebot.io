@@ -11,7 +11,7 @@ type Props = {
   content: TextBubbleBlock['content']
   typingEmulation: Settings['typingEmulation']
   isTypingSkipped: boolean
-  onTransitionEnd: (offsetTop?: number) => void
+  onTransitionEnd?: (offsetTop?: number) => void
 }
 
 export const showAnimationDuration = 400
@@ -20,13 +20,15 @@ let typingTimeout: NodeJS.Timeout
 
 export const TextBubble = (props: Props) => {
   let ref: HTMLDivElement | undefined
-  const [isTyping, setIsTyping] = createSignal(true)
+  const [isTyping, setIsTyping] = createSignal(
+    props.onTransitionEnd ? true : false
+  )
 
   const onTypingEnd = () => {
     if (!isTyping()) return
     setIsTyping(false)
     setTimeout(() => {
-      props.onTransitionEnd(ref?.offsetTop)
+      props.onTransitionEnd?.(ref?.offsetTop)
     }, showAnimationDuration)
   }
 
@@ -50,7 +52,13 @@ export const TextBubble = (props: Props) => {
   })
 
   return (
-    <div class="flex flex-col animate-fade-in" ref={ref}>
+    <div
+      class={clsx(
+        'flex flex-col',
+        props.onTransitionEnd ? 'animate-fade-in' : undefined
+      )}
+      ref={ref}
+    >
       <div class="flex w-full items-center">
         <div class="flex relative items-start typebot-host-bubble max-w-full">
           <div

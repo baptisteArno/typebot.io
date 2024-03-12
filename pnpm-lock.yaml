@@ -222,8 +222,8 @@ importers:
         specifier: 0.2.0
         version: 0.2.0
       openai:
-        specifier: 4.26.0
-        version: 4.26.0
+        specifier: 4.28.4
+        version: 4.28.4
       papaparse:
         specifier: 5.4.1
         version: 5.4.1
@@ -491,8 +491,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/prisma
       ai:
-        specifier: 2.2.33
-        version: 2.2.33(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)
+        specifier: 3.0.7
+        version: 3.0.7(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)(zod@3.22.4)
       bot-engine:
         specifier: workspace:*
         version: link:../../packages/deprecated/bot-engine
@@ -515,8 +515,8 @@ importers:
         specifier: 6.9.3
         version: 6.9.3
       openai:
-        specifier: 4.26.0
-        version: 4.26.0
+        specifier: 4.28.4
+        version: 4.28.4
       qs:
         specifier: 6.11.2
         version: 6.11.2
@@ -651,8 +651,8 @@ importers:
         specifier: 30.4.5
         version: 30.4.5(@types/react@18.2.15)(immer@10.0.2)(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)(slate-history@0.93.0)(slate-hyperscript@0.100.0)(slate-react@0.101.6)(slate@0.94.1)
       ai:
-        specifier: 2.2.33
-        version: 2.2.33(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)
+        specifier: 3.0.7
+        version: 3.0.7(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)(zod@3.22.4)
       chrono-node:
         specifier: 2.7.5
         version: 2.7.5
@@ -681,8 +681,8 @@ importers:
         specifier: 6.9.3
         version: 6.9.3
       openai:
-        specifier: 4.26.0
-        version: 4.26.0
+        specifier: 4.28.4
+        version: 4.28.4
       qs:
         specifier: 6.11.2
         version: 6.11.2
@@ -1277,8 +1277,8 @@ importers:
         specifier: 0.0.10
         version: 0.0.10
       ai:
-        specifier: 2.2.33
-        version: 2.2.33(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)
+        specifier: 3.0.7
+        version: 3.0.7(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)(zod@3.22.4)
     devDependencies:
       '@typebot.io/forge':
         specifier: workspace:*
@@ -1323,11 +1323,11 @@ importers:
   packages/forge/blocks/openai:
     dependencies:
       ai:
-        specifier: 2.2.33
-        version: 2.2.33(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)
+        specifier: 3.0.7
+        version: 3.0.7(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)(zod@3.22.4)
       openai:
-        specifier: 4.26.0
-        version: 4.26.0
+        specifier: 4.28.4
+        version: 4.28.4
     devDependencies:
       '@typebot.io/forge':
         specifier: workspace:*
@@ -9258,6 +9258,10 @@ packages:
     dependencies:
       '@types/ms': 0.7.34
 
+  /@types/diff-match-patch@1.0.36:
+    resolution: {integrity: sha512-xFdR6tkm0MWvBfO8xXCSsinYxHcqkQUlcHeSpMC2ukzOb6lwQAfDmW+Qt0AvlGd8HpsS28qKsB+oPeJn9I39jg==}
+    dev: false
+
   /@types/dompurify@3.0.3:
     resolution: {integrity: sha512-odiGr/9/qMqjcBOe5UhcNLOFHSYmKFOyr+bJ/Xu3Qp4k1pNPAlNLUVNNLcLfjQI7+W7ObX58EdD3H+3p3voOvA==}
     dependencies:
@@ -10744,14 +10748,15 @@ packages:
       indent-string: 5.0.0
     dev: true
 
-  /ai@2.2.33(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15):
-    resolution: {integrity: sha512-y9iMgt/RjFZCrjx5NuC+tdZqvunM9Bo1ufuC1BpgyjPmmE2RYduM+3Whjez0fu808KkwTQvvhUhhC5NkAy8/9g==}
+  /ai@3.0.7(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)(zod@3.22.4):
+    resolution: {integrity: sha512-WGCNDZQxBgRhuTpkx73HzncixholzLcnyjJNSTi0qsIUcBFjf+I6IBYVUAJQnt2XSmLExAF/eJxkR4NHC2Bx4w==}
     engines: {node: '>=14.6'}
     peerDependencies:
       react: ^18.2.0
       solid-js: ^1.7.7
       svelte: ^3.0.0 || ^4.0.0
       vue: ^3.3.4
+      zod: ^3.0.0
     peerDependenciesMeta:
       react:
         optional: true
@@ -10761,8 +10766,11 @@ packages:
         optional: true
       vue:
         optional: true
+      zod:
+        optional: true
     dependencies:
       eventsource-parser: 1.0.0
+      jsondiffpatch: 0.6.0
       nanoid: 3.3.6
       react: 18.2.0
       solid-js: 1.7.8
@@ -10773,6 +10781,8 @@ packages:
       swr-store: 0.10.6
       swrv: 1.0.4(vue@3.4.15)
       vue: 3.4.15(typescript@5.3.2)
+      zod: 3.22.4
+      zod-to-json-schema: 3.22.4(zod@3.22.4)
     dev: false
 
   /ajv-draft-04@1.0.0(ajv@8.12.0):
@@ -12634,6 +12644,10 @@ packages:
 
   /didyoumean@1.2.2:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}
+
+  /diff-match-patch@1.0.5:
+    resolution: {integrity: sha512-IayShXAgj/QMXgB0IWmKx+rOPuGMhqm5w6jvFxmVenXKIzRqTAAsbBPT3kWQeGANj3jGgvcvv4yK6SxqYmikgw==}
+    dev: false
 
   /diff-sequences@29.6.3:
     resolution: {integrity: sha512-EjePK1srD3P08o2j4f0ExnylqRs5B9tJjcp9t1krH2qRi8CCdsYfwe9JgSLurFBWwq4uOlipzfk5fHNvwFKr8Q==}
@@ -16209,6 +16223,16 @@ packages:
     engines: {node: '>=6'}
     hasBin: true
 
+  /jsondiffpatch@0.6.0:
+    resolution: {integrity: sha512-3QItJOXp2AP1uv7waBkao5nCvhEv+QmJAd38Ybq7wNI74Q+BBmnLn4EDKz6yI9xGAIQoUF87qHt+kc1IVxB4zQ==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+    hasBin: true
+    dependencies:
+      '@types/diff-match-patch': 1.0.36
+      chalk: 5.3.0
+      diff-match-patch: 1.0.5
+    dev: false
+
   /jsonfile@6.1.0:
     resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==}
     dependencies:
@@ -18425,8 +18449,8 @@ packages:
       is-docker: 2.2.1
       is-wsl: 2.2.0
 
-  /openai@4.26.0:
-    resolution: {integrity: sha512-HPC7tgYdeP38F3uHA5WgnoXZyGbAp9jgcIo23p6It+q/07u4C+NZ8xHKlMShsPbDDmFRpPsa3vdbXYpbhJH3eg==}
+  /openai@4.28.4:
+    resolution: {integrity: sha512-RNIwx4MT/F0zyizGcwS+bXKLzJ8QE9IOyigDG/ttnwB220d58bYjYFp0qjvGwEFBO6+pvFVIDABZPGDl46RFsg==}
     hasBin: true
     dependencies:
       '@types/node': 18.11.18
@@ -22835,7 +22859,6 @@ packages:
       zod: ^3.22.4
     dependencies:
       zod: 3.22.4
-    dev: true
 
   /zod-validation-error@3.0.3(zod@3.22.4):
     resolution: {integrity: sha512-cETTrcMq3Ze58vhdR0zD37uJm/694I6mAxcf/ei5bl89cC++fBNxrC2z8lkFze/8hVMPwrbtrwXHR2LB50fpHw==}
