@@ -80,6 +80,16 @@ export const createChatMessage = createAction({
   name: 'Create Chat Message',
   auth,
   options,
+  turnableInto: [
+    {
+      blockType: 'mistral',
+    },
+    {
+      blockType: 'openai',
+    },
+    { blockType: 'open-router' },
+    { blockType: 'together-ai' },
+  ],
   getSetVariableIds: ({ responseMapping }) =>
     responseMapping?.map((res) => res.variableId).filter(isDefined) ?? [],
   run: {

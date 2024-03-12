@@ -22,6 +22,7 @@ export const createChatCompletion = createAction({
       blockType: 'open-router',
     },
     { blockType: 'mistral' },
+    { blockType: 'anthropic' },
   ],
   getSetVariableIds: getChatCompletionSetVarIds,
   run: {
