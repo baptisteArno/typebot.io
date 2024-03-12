@@ -1,10 +1,10 @@
 <br />
 <p align="center">
-  <a href="https://typebot.io/#gh-light-mode-only" target="_blank">
-    <img src="./.github/images/logo-light.png" alt="Typebot illustration" width="350px">
+  <a href="https://flowdacity.com/#gh-light-mode-only" target="_blank">
+    <img src="https://github.com/ochui/flowdacity/assets/21917688/addaa53f-450f-4bce-bca6-11c2f5129353" alt="Flowdacity logo" width="350px">
   </a>
-  <a href="https://typebot.io/#gh-dark-mode-only" target="_blank">
-    <img src="./.github/images/logo-dark.png" alt="Typebot illustration" width="350px">
+  <a href="https://flowdacity.com/#gh-dark-mode-only" target="_blank">
+    <img src="https://github.com/ochui/flowdacity/assets/21917688/addaa53f-450f-4bce-bca6-11c2f5129353" alt="Flowdacity logo" width="350px">
   </a>
 </p>
 <br />
@@ -26,7 +26,7 @@ Flowdacity is a no-code AI chatbot/conversational builder. It allows you to crea
 </p>
 
 <h3 align="center">
-  <b><a href="https://app.flowdacity.com/register">Try Typebot</a></b>
+  <b><a href="https://app.flowdacity.com/register">Try Flowdacity</a></b>
   •
   <b><a href="https://docs.flowdacity.com/">Docs</a></b>
 
@@ -41,7 +41,6 @@ https://user-images.githubusercontent.com/16015833/168876388-0310678d-080b-4eca-
 Flowdacity makes it easy to create advanced chatbots. It provides the building blocks that are adaptable to any business use case.
 
 **Chat builder** with 34+ building blocks such as:
-
 - 💬 Bubbles: Text, Image / GIF, video, audio, embed.
 - 🔤 Inputs: Text, email, phone number, buttons, picture choice, date picker, payment (Stripe), file picker... inputs
 - 🧠 Logic: Conditional branching, URL redirections, scripting (Javascript), A/B testing
