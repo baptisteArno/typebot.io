@@ -8,6 +8,7 @@ export const enabledBlocks = [
   'dify-ai',
   'mistral',
   'elevenlabs',
+  'anthropic',
   'together-ai',
   'open-router',
 ] as const

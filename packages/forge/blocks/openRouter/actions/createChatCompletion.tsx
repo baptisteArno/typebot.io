@@ -20,6 +20,7 @@ export const createChatCompletion = createAction({
       blockType: 'together-ai',
     },
     { blockType: 'mistral' },
+    { blockType: 'anthropic' },
   ],
   options: parseChatCompletionOptions({
     modelFetchId: 'fetchModels',
