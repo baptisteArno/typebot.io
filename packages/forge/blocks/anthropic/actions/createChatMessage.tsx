@@ -93,33 +93,45 @@ export const createChatMessage = createAction({
   getSetVariableIds: ({ responseMapping }) =>
     responseMapping?.map((res) => res.variableId).filter(isDefined) ?? [],
   run: {
-    server: async ({ credentials: { apiKey }, options, variables }) => {
+    server: async ({ credentials: { apiKey }, options, variables, logs }) => {
       const client = new Anthropic({
         apiKey: apiKey,
       })
 
       const messages = parseChatMessages({ options, variables })
 
-      const reply = await client.messages.create({
-        messages,
-        model: options.model ?? defaultAnthropicOptions.model,
-        system: options.systemMessage,
-        temperature: options.temperature
-          ? Number(options.temperature)
-          : undefined,
-        max_tokens: options.maxTokens
-          ? Number(options.maxTokens)
-          : defaultAnthropicOptions.maxTokens,
-      })
+      try {
+        const reply = await client.messages.create({
+          messages,
+          model: options.model ?? defaultAnthropicOptions.model,
+          system: options.systemMessage,
+          temperature: options.temperature
+            ? Number(options.temperature)
+            : undefined,
+          max_tokens: options.maxTokens
+            ? Number(options.maxTokens)
+            : defaultAnthropicOptions.maxTokens,
+        })
 
-      messages.push(reply)
+        messages.push(reply)
 
-      options.responseMapping?.forEach((mapping) => {
-        if (!mapping.variableId) return
+        options.responseMapping?.forEach((mapping) => {
+          if (!mapping.variableId) return
 
-        if (!mapping.item || mapping.item === 'Message Content')
-          variables.set(mapping.variableId, reply.content[0].text)
-      })
+          if (!mapping.item || mapping.item === 'Message Content')
+            variables.set(mapping.variableId, reply.content[0].text)
+        })
+      } catch (error) {
+        if (error instanceof Anthropic.APIError) {
+          logs.add({
+            status: 'error',
+            description: `${error.status} ${error.name}`,
+            details: error.message,
+          })
+        } else {
+          throw error
+        }
+      }
     },
     stream: {
       getStreamVariableId: (options) =>
