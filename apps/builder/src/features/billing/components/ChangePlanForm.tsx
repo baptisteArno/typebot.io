@@ -1,5 +1,5 @@
 import { Stack, HStack, Text } from '@chakra-ui/react'
-import { Plan } from '@typebot.io/prisma'
+import { Plan, WorkspaceRole } from '@typebot.io/prisma'
 import { TextLink } from '@/components/TextLink'
 import { useToast } from '@/hooks/useToast'
 import { trpc } from '@/lib/trpc'
@@ -16,10 +16,15 @@ import { WorkspaceInApp } from '@/features/workspace/WorkspaceProvider'
 
 type Props = {
   workspace: WorkspaceInApp
+  currentRole?: WorkspaceRole
   excludedPlans?: ('STARTER' | 'PRO')[]
 }
 
-export const ChangePlanForm = ({ workspace, excludedPlans }: Props) => {
+export const ChangePlanForm = ({
+  workspace,
+  currentRole,
+  excludedPlans,
+}: Props) => {
   const { t } = useTranslate()
 
   const { user } = useUser()
@@ -81,6 +86,20 @@ export const ChangePlanForm = ({ workspace, excludedPlans }: Props) => {
     data?.subscription?.status === 'past_due'
   )
     return null
+
+  const isSubscribed =
+    (workspace.plan === Plan.STARTER || workspace.plan === Plan.PRO) &&
+    workspace.stripeId
+
+  if (workspace.plan !== Plan.FREE && !isSubscribed) return null
+
+  if (currentRole !== WorkspaceRole.ADMIN)
+    return (
+      <Text>
+        Only workspace admins can change the subscription plan. Contact your
+        workspace admin to change the plan.
+      </Text>
+    )
 
   return (
     <Stack spacing={6}>
