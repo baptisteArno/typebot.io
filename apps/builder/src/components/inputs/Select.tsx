@@ -69,17 +69,15 @@ export const Select = <T extends Item>({
   const inputRef = useRef<HTMLInputElement>(null)
   const { ref: parentModalRef } = useParentModal()
 
-  const filteredItems = (
-    isTouched
-      ? [
-          ...(items ?? []).filter((item) =>
-            getItemLabel(item)
-              .toLowerCase()
-              .includes((inputValue ?? '').toLowerCase())
-          ),
-        ]
-      : items ?? []
-  ).slice(0, 50)
+  const filteredItems = isTouched
+    ? [
+        ...(items ?? []).filter((item) =>
+          getItemLabel(item)
+            .toLowerCase()
+            .includes((inputValue ?? '').toLowerCase())
+        ),
+      ]
+    : items ?? []
 
   const closeDropdown = () => {
     onClose()

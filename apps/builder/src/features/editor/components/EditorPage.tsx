@@ -60,7 +60,7 @@ export const EditorPage = () => {
                   <BoardMenuButton
                     pos="absolute"
                     right="40px"
-                    top={`calc(20px + ${isSuspicious ? '70px' : '0'})`}
+                    top={`calc(20px + ${isSuspicious ? '70px' : '0px'})`}
                   />
                   <RightPanel />
                 </EventsCoordinatesProvider>
