@@ -1,12 +1,19 @@
 import {
   AnswerInSessionState,
   Block,
+  ChoiceInputBlock,
+  PictureChoiceBlock,
   ContinueChatResponse,
   Group,
   InputBlock,
   SessionState,
 } from '@typebot.io/schemas'
-import { isInputBlock, byId } from '@typebot.io/lib'
+import {
+  isInputBlock,
+  byId,
+  isPictureChoiceInput,
+  isChoiceInput,
+} from '@typebot.io/lib'
 import { executeGroup, parseInput } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
 import { validateEmail } from './blocks/inputs/email/validateEmail'
@@ -158,6 +165,7 @@ export const continueBotFlow = async (
   }
 
   let formattedReply: string | undefined
+  let variableAnswer: any
 
   if (isInputBlock(block)) {
     const parsedReplyResult = await parseReply(newSessionState)(reply, block)
@@ -171,7 +179,25 @@ export const continueBotFlow = async (
 
     formattedReply =
       'reply' in parsedReplyResult ? parsedReplyResult.reply : undefined
-    newSessionState = await processAndSaveAnswer(state, block)(formattedReply)
+    variableAnswer = formattedReply
+
+    if (isChoiceInput(block)) {
+      variableAnswer = (block as ChoiceInputBlock).options?.returnIndex
+        ? 'selectedIndex' in parsedReplyResult
+          ? parsedReplyResult.selectedIndex
+          : formattedReply
+        : formattedReply
+    }
+
+    if (isPictureChoiceInput(block)) {
+      variableAnswer = (block as PictureChoiceBlock).options?.returnIndex
+        ? 'selectedIndex' in parsedReplyResult
+          ? parsedReplyResult.selectedIndex
+          : formattedReply
+        : formattedReply
+    }
+
+    newSessionState = await processAndSaveAnswer(state, block)(variableAnswer)
   }
 
   const groupHasMoreBlocks = blockIndex < group.blocks.length - 1

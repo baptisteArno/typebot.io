@@ -17,7 +17,8 @@ export const pictureChoiceOptionsSchema = optionBaseSchema.merge(
         descriptionsVariableId: z.string().optional(),
         pictureSrcsVariableId: z.string().optional(),
       })
-      .optional(),
+    .optional(),
+    returnIndex: z.boolean().optional(),
   })
 )
 

@@ -78,5 +78,6 @@ export const parseButtonsReply =
     return {
       status: 'success',
       reply: matchedItem.content ?? '',
+      selectedIndex: matchedItem.id
     }
   }

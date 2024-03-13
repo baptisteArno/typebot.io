@@ -82,5 +82,6 @@ export const parsePictureChoicesReply =
     return {
       status: 'success',
       reply: matchedItem.title ?? matchedItem.pictureSrc ?? '',
+      selectedIndex: matchedItem.id,
     }
   }

@@ -5,6 +5,7 @@ import { Variable } from '@typebot.io/schemas'
 import React from 'react'
 import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { defaultPictureChoiceOptions } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice/constants'
 import { useTranslate } from '@tolgee/react'
 
@@ -62,6 +63,9 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
         descriptionsVariableId: variable?.id,
       },
     })
+
+  const updateReturnIndex = (returnIndex: boolean) =>
+    onOptionsChange({ ...options, returnIndex })
 
   return (
     <Stack spacing={4}>
@@ -136,6 +140,15 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
           />
         </Stack>
       </SwitchWithRelatedSettings>
+
+      <SwitchWithLabel
+        label={t('blocks.inputs.picture.settings.returnIndex.label')}
+        moreInfoContent={t(
+          'blocks.inputs.picture.settings.returnIndex.infoText.label'
+        )}
+        initialValue={options?.returnIndex ?? defaultPictureChoiceOptions.returnIndex}
+        onCheckChange={updateReturnIndex}
+      />
 
       <Stack>
         <FormLabel mb="0" htmlFor="variable">

@@ -9,4 +9,5 @@ export const defaultPictureChoiceOptions = {
   dynamicItems: {
     isEnabled: false,
   },
+  returnIndex: false,
 } as const satisfies PictureChoiceBlock['options']

@@ -5,6 +5,7 @@ import { FormControl, FormLabel, Stack } from '@chakra-ui/react'
 import { ChoiceInputBlock, Variable } from '@typebot.io/schemas'
 import React from 'react'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
 import { useTranslate } from '@tolgee/react'
 
@@ -27,6 +28,8 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({ ...options, variableId: variable?.id })
   const updateDynamicDataVariable = (variable?: Variable) =>
     onOptionsChange({ ...options, dynamicVariableId: variable?.id })
+  const updateReturnIndex = (returnIndex: boolean) =>
+    onOptionsChange({ ...options, returnIndex })
 
   return (
     <Stack spacing={4}>
@@ -74,6 +77,14 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
           onSelectVariable={updateDynamicDataVariable}
         />
       </FormControl>
+      <SwitchWithLabel
+        label={t('blocks.inputs.button.settings.returnIndex.label')}
+        moreInfoContent={t(
+          'blocks.inputs.button.settings.returnIndex.infoText.label'
+        )}
+        initialValue={options?.returnIndex ?? defaultChoiceInputOptions.returnIndex}
+        onCheckChange={updateReturnIndex}
+      />
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
           {t('blocks.inputs.settings.saveAnswer.label')}
