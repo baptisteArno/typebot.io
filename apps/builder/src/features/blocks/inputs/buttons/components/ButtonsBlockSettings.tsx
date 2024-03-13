@@ -82,7 +82,9 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
         moreInfoContent={t(
           'blocks.inputs.button.settings.returnIndex.infoText.label'
         )}
-        initialValue={options?.returnIndex ?? defaultChoiceInputOptions.returnIndex}
+        initialValue={
+          options?.returnIndex ?? defaultChoiceInputOptions.returnIndex
+        }
         onCheckChange={updateReturnIndex}
       />
       <Stack>

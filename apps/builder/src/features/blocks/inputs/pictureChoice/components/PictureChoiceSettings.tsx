@@ -146,7 +146,9 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
         moreInfoContent={t(
           'blocks.inputs.picture.settings.returnIndex.infoText.label'
         )}
-        initialValue={options?.returnIndex ?? defaultPictureChoiceOptions.returnIndex}
+        initialValue={
+          options?.returnIndex ?? defaultPictureChoiceOptions.returnIndex
+        }
         onCheckChange={updateReturnIndex}
       />
 
