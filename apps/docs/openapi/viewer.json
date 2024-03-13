@@ -128,8 +128,7 @@
                             ]
                           },
                           {
-                            "type": "object",
-                            "properties": {}
+                            "type": "object"
                           }
                         ]
                       }
@@ -639,8 +638,7 @@
                             ]
                           },
                           {
-                            "type": "object",
-                            "properties": {}
+                            "type": "object"
                           }
                         ]
                       }
@@ -9415,6 +9413,7 @@
                   "mistral",
                   "razorpay",
                   "elevenlabs",
+                  "anthropic",
                   "together-ai",
                   "open-router"
                 ]

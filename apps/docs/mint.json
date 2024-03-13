@@ -116,7 +116,8 @@
                 "editor/blocks/integrations/openai",
                 "editor/blocks/integrations/zemantic-ai",
                 "editor/blocks/integrations/mistral",
-                "editor/blocks/integrations/elevenlabs"
+                "editor/blocks/integrations/elevenlabs",
+                "editor/blocks/integrations/anthropic"
               ]
             }
           ]

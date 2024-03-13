@@ -67,6 +67,7 @@ const CloseButton = (props: {
 }) => (
   <button
     part="preview-message-close-button"
+    aria-label="Close"
     class={
       `absolute -top-2 -right-2 rounded-full w-6 h-6 p-1 hover:brightness-95 active:brightness-90 transition-all border ` +
       (props.isHovered ? 'opacity-100' : 'opacity-0')
