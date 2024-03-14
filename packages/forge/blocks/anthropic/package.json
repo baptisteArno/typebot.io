@@ -15,6 +15,6 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.16.1",
-    "ai": "2.2.33"
+    "ai": "3.0.12"
   }
 }
