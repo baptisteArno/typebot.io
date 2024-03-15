@@ -10,6 +10,7 @@ import { z } from 'zod'
 import {
   isCustomDomainNotAvailable,
   isPublicIdNotAvailable,
+  sanitizeCustomDomain,
   sanitizeGroups,
   sanitizeSettings,
 } from '../helpers/sanitizers'
@@ -201,8 +202,10 @@ export const updateTypebot = authenticatedProcedure
             : typebot.publicId && isPublicIdValid(typebot.publicId)
             ? typebot.publicId
             : undefined,
-        customDomain:
-          typebot.customDomain === null ? null : typebot.customDomain,
+        customDomain: await sanitizeCustomDomain({
+          customDomain: typebot.customDomain,
+          workspaceId: existingTypebot.workspace.id,
+        }),
         isClosed: typebot.isClosed,
         whatsAppCredentialsId: typebot.whatsAppCredentialsId ?? undefined,
         updatedAt: typebot.updatedAt,
