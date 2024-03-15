@@ -232,7 +232,7 @@ export const StepNode = ({
                           data-testid={`${step.id}-icon`}
                         />
                         <Spacer />
-                        {showWarning && (
+                        {unreachableNode && showWarning && (
                           <>
                             <OctaTooltip
                               element={<WarningIcon color={'#FAC300'} />}
