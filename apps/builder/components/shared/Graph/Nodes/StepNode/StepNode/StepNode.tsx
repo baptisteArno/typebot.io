@@ -88,7 +88,7 @@ export const StepNode = ({
     typebot?.availableFor?.length == 1 &&
     typebot.availableFor.includes('event')
 
-  const showWarning = unreachableNode && !availableOnlyForEvent
+  const showWarning = !availableOnlyForEvent
 
   const [isPopoverOpened, setIsPopoverOpened] = useState(
     openedStepId === step.id
@@ -218,7 +218,7 @@ export const StepNode = ({
                   <BlockStack
                     isOpened={isOpened}
                     isPreviewing={isPreviewing}
-                    style={{ borderColor: showWarning ? '#e3a820' : '' }}
+                    style={{ borderColor: unreachableNode && showWarning ? '#e3a820' : '' }}
                   >
                     <Stack spacing={2} w="full">
                       <HStack fontSize={'14px'}>
@@ -246,7 +246,7 @@ export const StepNode = ({
                             />
                           </>
                         )}
-                        {!unreachableNode && validationMessages?.length &&
+                        {!unreachableNode && showWarning &&
                           validationMessages?.map((s, index) => {
                             return (
                               <OctaTooltip
