@@ -9987,6 +9987,9 @@
           "content": {
             "type": "object",
             "properties": {
+              "maxBubbleWidth": {
+                "type": "number"
+              },
               "waitForEventFunction": {
                 "type": "object",
                 "properties": {

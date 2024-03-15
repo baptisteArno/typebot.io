@@ -33,7 +33,6 @@ type Item =
     }
 
 type Props<T extends Item> = {
-  isPopoverMatchingInputWidth?: boolean
   selectedItem?: string
   items: readonly T[] | undefined
   placeholder?: string
@@ -41,7 +40,6 @@ type Props<T extends Item> = {
 }
 
 export const Select = <T extends Item>({
-  isPopoverMatchingInputWidth = true,
   selectedItem,
   placeholder,
   items,
@@ -150,7 +148,6 @@ export const Select = <T extends Item>({
       <Popover
         isOpen={isOpen}
         initialFocusRef={inputRef}
-        matchWidth={isPopoverMatchingInputWidth}
         placement="bottom-start"
         offset={[0, 1]}
         isLazy
@@ -215,6 +212,7 @@ export const Select = <T extends Item>({
         <Portal containerRef={parentModalRef}>
           <PopoverContent
             maxH="35vh"
+            maxW="35vw"
             overflowY="auto"
             role="menu"
             w="inherit"

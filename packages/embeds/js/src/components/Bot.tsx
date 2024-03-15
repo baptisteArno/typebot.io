@@ -25,6 +25,7 @@ import { ProgressBar } from './ProgressBar'
 import { Portal } from 'solid-js/web'
 import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
 import { persist } from '@/utils/persist'
+import { setBotContainerHeight } from '@/utils/botContainerHeightSignal'
 
 export type BotProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -257,6 +258,7 @@ const BotContent = (props: BotContentProps) => {
   onMount(() => {
     if (!botContainer) return
     resizeObserver.observe(botContainer)
+    setBotContainerHeight(`${botContainer.clientHeight}px`)
   })
 
   createEffect(() => {

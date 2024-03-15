@@ -20,7 +20,7 @@
     "@flowdacity/js": "workspace:*",
     "@flowdacity/nextjs": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
-    "ai": "3.0.7",
+    "ai": "3.0.12",
     "bot-engine": "workspace:*",
     "cors": "2.8.5",
     "google-spreadsheet": "4.1.1",

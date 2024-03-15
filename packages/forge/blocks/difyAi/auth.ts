@@ -28,6 +28,7 @@ export const auth = {
       helperText: 'API Secret Key for your Dify App.',
       inputType: 'password',
       withVariableButton: false,
+      isDebounceDisabled: true,
     }),
   }),
 } satisfies AuthDefinition
