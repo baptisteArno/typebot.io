@@ -214,6 +214,7 @@ export const StepNode = ({
                 w="full"
                 direction="column"
               >
+
                 <Stack spacing={2}>
                   <BlockStack
                     isOpened={isOpened}

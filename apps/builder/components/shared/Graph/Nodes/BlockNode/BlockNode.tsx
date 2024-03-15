@@ -50,6 +50,12 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
 
   const [isFocused, setIsFocused] = useState(false)
 
+  const availableOnlyForEvent =
+    typebot?.availableFor?.length == 1 &&
+    typebot.availableFor.includes('event')
+
+  const showWarning = !availableOnlyForEvent
+
   const isPreviewing =
     previewingEdge?.from.blockId === block.id ||
     (previewingEdge?.to.blockId === block.id &&
@@ -80,7 +86,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
   useEffect(() => {
     setIsConnecting(
       connectingIds?.target?.blockId === block.id &&
-        isNotDefined(connectingIds.target?.stepId)
+      isNotDefined(connectingIds.target?.stepId)
     )
   }, [block.id, connectingIds])
 
@@ -134,7 +140,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
   const onDragStop = () => setIsMouseDown(false)
 
   const stackBorderColor = (isOpened: boolean): string => {
-    if (!block.hasConnection) {
+    if (!block.hasConnection && showWarning) {
       return 'yellow.500'
     } else if (isConnecting || isOpened || isPreviewing || isFocused) {
       return 'blue.400'
@@ -143,7 +149,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
     return '#ffffff'
   }
 
-  const showEmptyConnectionAlert = () => !block.hasConnection
+  const showEmptyConnectionAlert = () => !block.hasConnection && showWarning
 
   return (
     <ContextMenu<HTMLDivElement>
@@ -171,9 +177,8 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
               transition="border 300ms, box-shadow 200ms"
               pos="absolute"
               style={{
-                transform: `translate(${blockCoordinates?.x ?? 0}px, ${
-                  blockCoordinates?.y ?? 0
-                }px)`,
+                transform: `translate(${blockCoordinates?.x ?? 0}px, ${blockCoordinates?.y ?? 0
+                  }px)`,
               }}
               onMouseDown={handleMouseDown}
               onMouseEnter={handleMouseEnter}
