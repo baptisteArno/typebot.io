@@ -215,7 +215,7 @@ export const VariableSearchInput = ({
           initialFocusRef={inputRef}
           isLazy
           offset={[0, 2]}
-          placement="auto-start"
+          placement="bottom-start"
         >
           <PopoverAnchor>
             <Input
@@ -233,6 +233,7 @@ export const VariableSearchInput = ({
           <Portal containerRef={parentModalRef}>
             <PopoverContent
               maxH="35vh"
+              maxW="35vw"
               overflowY="auto"
               role="menu"
               w="inherit"
