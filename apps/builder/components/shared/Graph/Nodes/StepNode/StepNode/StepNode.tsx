@@ -84,8 +84,6 @@ export const StepNode = ({
   const { updateStep, typebot } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
 
-  debugger
-
   const availableOnlyForEvent =
     typebot?.availableFor?.length == 1 &&
     typebot.availableFor.includes('event')
@@ -248,7 +246,7 @@ export const StepNode = ({
                             />
                           </>
                         )}
-                        {!unreachableNode &&
+                        {!unreachableNode && validationMessages?.length &&
                           validationMessages?.map((s, index) => {
                             return (
                               <OctaTooltip
