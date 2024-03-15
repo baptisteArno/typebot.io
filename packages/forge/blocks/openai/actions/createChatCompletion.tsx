@@ -27,7 +27,13 @@ export const createChatCompletion = createAction({
       blockType: 'together-ai',
     },
     { blockType: 'mistral' },
-    { blockType: 'anthropic' },
+    {
+      blockType: 'anthropic',
+      transform: (options) => ({
+        ...options,
+        action: 'Create Chat Message',
+      }),
+    },
   ],
   fetchers: [
     {

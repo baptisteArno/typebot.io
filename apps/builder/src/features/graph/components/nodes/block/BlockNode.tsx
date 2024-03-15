@@ -185,8 +185,8 @@ export const BlockNode = ({
   ) => {
     if (!('options' in block) || !block.options) return
 
-    const convertedBlockOptions = turnIntoParams.customMapping
-      ? turnIntoParams.customMapping(block.options)
+    const convertedBlockOptions = turnIntoParams.transform
+      ? turnIntoParams.transform(block.options)
       : block.options
     try {
       updateBlock(

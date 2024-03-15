@@ -38,7 +38,7 @@ export type TurnableIntoParam<T = {}> = {
   /**
    * If defined will be used to convert the existing block options into the new block options.
    */
-  customMapping?: (options: T) => any
+  transform?: (options: T) => any
 }
 
 export type ActionDefinition<
