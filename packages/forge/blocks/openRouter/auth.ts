@@ -10,6 +10,7 @@ export const auth = {
       inputType: 'password',
       helperText:
         'You can generate an API key [here](https://openrouter.ai/keys).',
+      isDebounceDisabled: true,
     }),
   }),
 } satisfies AuthDefinition

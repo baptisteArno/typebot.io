@@ -160,6 +160,7 @@ export const ZodFieldLayout = ({
           onValueChange={onDataChange}
           direction={layout?.direction}
           width={width}
+          debounceTimeout={layout?.isDebounceDisabled ? 0 : undefined}
         />
       )
     }
@@ -234,6 +235,7 @@ export const ZodFieldLayout = ({
             moreInfoTooltip={layout.moreInfoTooltip}
             onChange={onDataChange}
             width={width}
+            debounceTimeout={layout?.isDebounceDisabled ? 0 : undefined}
           />
         )
       }
@@ -257,6 +259,7 @@ export const ZodFieldLayout = ({
             moreInfoTooltip={layout.moreInfoTooltip}
             onChange={onDataChange}
             width={width}
+            debounceTimeout={layout?.isDebounceDisabled ? 0 : undefined}
           />
         )
       return (
@@ -275,6 +278,7 @@ export const ZodFieldLayout = ({
           moreInfoTooltip={layout?.moreInfoTooltip}
           onChange={onDataChange}
           width={width}
+          debounceTimeout={layout?.isDebounceDisabled ? 0 : undefined}
         />
       )
     }

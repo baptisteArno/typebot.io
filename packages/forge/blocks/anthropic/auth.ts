@@ -12,6 +12,7 @@ export const auth = {
         'You can generate an API key [here](https://console.anthropic.com/settings/keys).',
       placeholder: 'sk-...',
       withVariableButton: false,
+      isDebounceDisabled: true,
     }),
   }),
 } satisfies AuthDefinition
