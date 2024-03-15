@@ -79,6 +79,9 @@ export const options = option.object({
 const transformToChatCompletionOptions = (options: any) => ({
   ...options,
   action: 'Create chat completion',
+  responseMapping: options.responseMapping?.map((res: any) =>
+    res.item === 'Message Content' ? { ...res, item: 'Message content' } : res
+  ),
 })
 
 export const createChatMessage = createAction({

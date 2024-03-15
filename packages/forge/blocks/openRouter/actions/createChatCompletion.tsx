@@ -25,6 +25,11 @@ export const createChatCompletion = createAction({
       transform: (options) => ({
         ...options,
         action: 'Create Chat Message',
+        responseMapping: options.responseMapping?.map((res: any) =>
+          res.item === 'Message content'
+            ? { ...res, item: 'Message Content' }
+            : res
+        ),
       }),
     },
   ],
