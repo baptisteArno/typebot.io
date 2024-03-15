@@ -11,4 +11,5 @@ export const enabledBlocks = [
   'anthropic',
   'together-ai',
   'open-router',
+  'nocodb',
 ] as const
