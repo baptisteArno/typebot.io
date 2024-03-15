@@ -79,12 +79,6 @@ export const BlockNode = ({
   const { mouseOverBlock, setMouseOverBlock } = useBlockDnd()
   const { typebot, updateBlock } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
-  const [isPopoverOpened, setIsPopoverOpened] = useState(
-    openedBlockId === block.id
-  )
-  const [isEditing, setIsEditing] = useState<boolean>(
-    isTextBubbleBlock(block) && (block.content?.richText?.length ?? 0) === 0
-  )
   const blockRef = useRef<HTMLDivElement | null>(null)
 
   const isPreviewing =
@@ -105,7 +99,7 @@ export const BlockNode = ({
     ref: blockRef,
     onDrag,
     isDisabled: !onMouseDown,
-    deps: [isEditing],
+    deps: [openedBlockId],
   })
 
   const {
@@ -153,13 +147,11 @@ export const BlockNode = ({
   const handleCloseEditor = (content: TElement[]) => {
     const updatedBlock = { ...block, content: { richText: content } }
     updateBlock(indices, updatedBlock)
-    setIsEditing(false)
   }
 
   const handleClick = (e: React.MouseEvent) => {
     setFocusedGroupId(groupId)
     e.stopPropagation()
-    if (isTextBubbleBlock(block) && !isReadOnly) setIsEditing(true)
     setOpenedBlockId(block.id)
   }
 
@@ -173,10 +165,6 @@ export const BlockNode = ({
 
   const handleContentChange = (content: BubbleBlockContent) =>
     updateBlock(indices, { ...block, content } as Block)
-
-  useEffect(() => {
-    setIsPopoverOpened(openedBlockId === block.id)
-  }, [block.id, openedBlockId])
 
   useEffect(() => {
     if (!blockRef.current) return
@@ -230,7 +218,7 @@ export const BlockNode = ({
     return edge.to.blockId === block.id
   })
 
-  return isEditing && isTextBubbleBlock(block) ? (
+  return openedBlockId === block.id && isTextBubbleBlock(block) ? (
     <TextBubbleEditor
       id={block.id}
       initialValue={block.content?.richText ?? []}
@@ -253,7 +241,7 @@ export const BlockNode = ({
         <Popover
           placement="left"
           isLazy
-          isOpen={isPopoverOpened}
+          isOpen={openedBlockId === block.id}
           closeOnBlur={false}
         >
           <PopoverTrigger>
