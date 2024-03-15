@@ -24,6 +24,8 @@ import {
   timeFilterValues,
 } from '@/features/analytics/constants'
 
+const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+
 export const ResultsPage = () => {
   const router = useRouter()
   const { workspace } = useWorkspace()
@@ -45,6 +47,7 @@ export const ResultsPage = () => {
     {
       typebotId: publishedTypebot?.typebotId as string,
       timeFilter,
+      timeZone,
     },
     {
       enabled: !!publishedTypebot,
