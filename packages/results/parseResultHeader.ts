@@ -6,8 +6,9 @@ import {
   InputBlock,
   Typebot,
 } from '@typebot.io/schemas'
+import { isInputBlock } from '@typebot.io/schemas/helpers'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { isInputBlock, byId, isNotEmpty } from '../utils'
+import { byId, isNotEmpty } from '@typebot.io/lib/utils'
 
 export const parseResultHeader = (
   typebot: Pick<Typebot, 'groups' | 'variables'>,

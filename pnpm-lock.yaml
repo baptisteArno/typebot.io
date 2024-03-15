@@ -276,6 +276,9 @@ importers:
       '@playwright/test':
         specifier: 1.41.2
         version: 1.41.2
+      '@typebot.io/billing':
+        specifier: workspace:*
+        version: link:../../packages/billing
       '@typebot.io/forge':
         specifier: workspace:*
         version: link:../../packages/forge/core
@@ -288,15 +291,27 @@ importers:
       '@typebot.io/lib':
         specifier: workspace:*
         version: link:../../packages/lib
+      '@typebot.io/migrations':
+        specifier: workspace:*
+        version: link:../../packages/migrations
+      '@typebot.io/playwright':
+        specifier: workspace:*
+        version: link:../../packages/playwright
       '@typebot.io/prisma':
         specifier: workspace:*
         version: link:../../packages/prisma
       '@typebot.io/radar':
         specifier: workspace:*
         version: link:../../packages/radar
+      '@typebot.io/results':
+        specifier: workspace:*
+        version: link:../../packages/results
       '@typebot.io/schemas':
         specifier: workspace:*
         version: link:../../packages/schemas
+      '@typebot.io/telemetry':
+        specifier: workspace:*
+        version: link:../../packages/telemetry
       '@typebot.io/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -381,6 +396,9 @@ importers:
       '@emotion/styled':
         specifier: 11.11.0
         version: 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.15)(react@18.2.0)
+      '@typebot.io/billing':
+        specifier: workspace:*
+        version: link:../../packages/billing
       '@typebot.io/lib':
         specifier: workspace:*
         version: link:../../packages/lib
@@ -557,6 +575,12 @@ importers:
       '@typebot.io/lib':
         specifier: workspace:*
         version: link:../../packages/lib
+      '@typebot.io/playwright':
+        specifier: workspace:*
+        version: link:../../packages/playwright
+      '@typebot.io/results':
+        specifier: workspace:*
+        version: link:../../packages/results
       '@typebot.io/schemas':
         specifier: workspace:*
         version: link:../../packages/schemas
@@ -584,6 +608,9 @@ importers:
       '@types/react':
         specifier: 18.2.15
         version: 18.2.15
+      dotenv:
+        specifier: 16.4.5
+        version: 16.4.5
       dotenv-cli:
         specifier: 7.2.1
         version: 7.2.1
@@ -612,6 +639,22 @@ importers:
         specifier: 3.22.4
         version: 3.22.4
 
+  packages/billing:
+    dependencies:
+      '@typebot.io/prisma':
+        specifier: workspace:*
+        version: link:../prisma
+      '@typebot.io/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+      stripe:
+        specifier: 12.13.0
+        version: 12.13.0
+    devDependencies:
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
   packages/bot-engine:
     dependencies:
       '@paralleldrive/cuid2':
@@ -638,6 +681,9 @@ importers:
       '@typebot.io/prisma':
         specifier: workspace:*
         version: link:../prisma
+      '@typebot.io/results':
+        specifier: workspace:*
+        version: link:../results
       '@typebot.io/schemas':
         specifier: workspace:*
         version: link:../schemas
@@ -1580,9 +1626,6 @@ importers:
       '@typebot.io/prisma':
         specifier: workspace:*
         version: link:../prisma
-      '@typebot.io/schemas':
-        specifier: workspace:*
-        version: link:../schemas
       '@typebot.io/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -1604,6 +1647,44 @@ importers:
       typescript:
         specifier: 5.3.2
         version: 5.3.2
+
+  packages/migrations:
+    dependencies:
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../lib
+      '@typebot.io/prisma':
+        specifier: workspace:*
+        version: link:../prisma
+      '@typebot.io/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+    devDependencies:
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/playwright:
+    dependencies:
+      '@playwright/test':
+        specifier: ^1.42.1
+        version: 1.42.1
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../lib
+      '@typebot.io/prisma':
+        specifier: workspace:*
+        version: link:../prisma
+      '@typebot.io/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+    devDependencies:
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: ^20.11.26
+        version: 20.11.26
 
   packages/prisma:
     dependencies:
@@ -1652,6 +1733,22 @@ importers:
         specifier: 5.3.2
         version: 5.3.2
 
+  packages/results:
+    dependencies:
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../lib
+      '@typebot.io/prisma':
+        specifier: workspace:*
+        version: link:../prisma
+      '@typebot.io/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+    devDependencies:
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
   packages/schemas:
     dependencies:
       '@udecode/plate-common':
@@ -1685,6 +1782,15 @@ importers:
       '@paralleldrive/cuid2':
         specifier: 2.2.1
         version: 2.2.1
+      '@typebot.io/billing':
+        specifier: workspace:*
+        version: link:../billing
+      '@typebot.io/results':
+        specifier: workspace:*
+        version: link:../results
+      '@typebot.io/telemetry':
+        specifier: workspace:*
+        version: link:../telemetry
       cli-progress:
         specifier: ^3.12.0
         version: 3.12.0
@@ -1737,6 +1843,25 @@ importers:
       zod:
         specifier: 3.22.4
         version: 3.22.4
+
+  packages/telemetry:
+    dependencies:
+      '@typebot.io/env':
+        specifier: workspace:*
+        version: link:../env
+      '@typebot.io/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+      got:
+        specifier: 12.6.0
+        version: 12.6.0
+      posthog-node:
+        specifier: 3.1.1
+        version: 3.1.1
+    devDependencies:
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
 
   packages/transactional:
     dependencies:
@@ -7621,6 +7746,14 @@ packages:
     dependencies:
       playwright: 1.41.2
     dev: true
+
+  /@playwright/test@1.42.1:
+    resolution: {integrity: sha512-Gq9rmS54mjBL/7/MvBaNOBwbfnh7beHvS6oS4srqXFcQHpQCV1+c8JXWE8VLPyRDhgS3H8x8A7hztqI9VnwrAQ==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dependencies:
+      playwright: 1.42.1
+    dev: false
 
   /@popperjs/core@2.11.8:
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
@@ -14358,7 +14491,6 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /fsevents@2.3.3:
@@ -18776,6 +18908,12 @@ packages:
     hasBin: true
     dev: true
 
+  /playwright-core@1.42.1:
+    resolution: {integrity: sha512-mxz6zclokgrke9p1vtdy/COWBH+eOZgYUVVU34C73M+4j4HLlQJHtfcqiqqxpP0o8HhMkflvfbquLX5dg6wlfA==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dev: false
+
   /playwright@1.41.2:
     resolution: {integrity: sha512-v0bOa6H2GJChDL8pAeLa/LZC4feoAMbSQm1/jF/ySsWWoaNItvrMP7GEkvEEFyCTUYKMxjQKaTSg5up7nR6/8A==}
     engines: {node: '>=16'}
@@ -18785,6 +18923,16 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
+
+  /playwright@1.42.1:
+    resolution: {integrity: sha512-PgwB03s2DZBcNRoW+1w9E+VkLBxweib6KTXM0M3tkiT4jVxKSi6PmVJ591J+0u10LUrgxB7dLRbiJqO5s2QPMg==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dependencies:
+      playwright-core: 1.42.1
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: false
 
   /pngjs@5.0.0:
     resolution: {integrity: sha512-40QW5YalBNfQo5yRYmiw7Yz6TKKVr3h6970B2YE+3fQpsWcrbj1PzJgxeJ19DRQjhMbKPIuMY8rFaXc8moolVw==}

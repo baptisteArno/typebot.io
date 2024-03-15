@@ -2,10 +2,10 @@ import test, { expect, Page } from '@playwright/test'
 import {
   createWebhook,
   importTypebotInDatabase,
-} from '@typebot.io/lib/playwright/databaseActions'
+} from '@typebot.io/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
-import { apiToken } from '@typebot.io/lib/playwright/databaseSetup'
+import { apiToken } from '@typebot.io/playwright/databaseSetup'
 import { env } from '@typebot.io/env'
 import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
 
@@ -22,7 +22,7 @@ test.describe('Builder', () => {
     await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure...')
     await page.fill(
-      'input[placeholder="Paste webhook URL..."]',
+      'input[placeholder="Paste URL..."]',
       `${env.NEXTAUTH_URL}/api/mock/webhook-easy-config`
     )
     await page.click('text=Test the request')
@@ -45,7 +45,7 @@ test.describe('Builder', () => {
     await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure...')
     await page.fill(
-      'input[placeholder="Paste webhook URL..."]',
+      'input[placeholder="Paste URL..."]',
       `${env.NEXTAUTH_URL}/api/mock/webhook`
     )
     await page.click('text=Advanced configuration')

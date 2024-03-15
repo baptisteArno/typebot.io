@@ -1,6 +1,6 @@
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { importTypebotInDatabase } from '@typebot.io/lib/playwright/databaseActions'
+import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
 import { SmtpCredentials } from '@typebot.io/schemas'
 import { env } from '@typebot.io/env'
 import { createSmtpCredentials } from './utils/databaseActions'

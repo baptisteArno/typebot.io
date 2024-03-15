@@ -1,4 +1,4 @@
-import { parseVideoUrl } from '@typebot.io/lib/parseVideoUrl'
+import { parseVideoUrl } from '@typebot.io/schemas/features/blocks/bubbles/video/helpers'
 import {
   BubbleBlock,
   Variable,

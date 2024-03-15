@@ -3,8 +3,8 @@ import { createId } from '@paralleldrive/cuid2'
 import {
   createTypebots,
   updateTypebot,
-} from '@typebot.io/lib/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+} from '@typebot.io/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/playwright/databaseHelpers'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { Settings } from '@typebot.io/schemas'
 import { defaultTextInputOptions } from '@typebot.io/schemas/features/blocks/inputs/text/constants'

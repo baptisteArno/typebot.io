@@ -1,5 +1,9 @@
-import { blockHasItems, isDefined, isInputBlock, byId } from '@typebot.io/lib'
-import { getBlockById } from '@typebot.io/lib/getBlockById'
+import { isDefined, byId } from '@typebot.io/lib'
+import {
+  getBlockById,
+  blockHasItems,
+  isInputBlock,
+} from '@typebot.io/schemas/helpers'
 import { Block, SessionState } from '@typebot.io/schemas'
 
 type Props = {

@@ -9,9 +9,9 @@ import {
   resultWithAnswersSchema,
 } from '@typebot.io/schemas'
 import { byId } from '@typebot.io/lib'
-import { parseResultHeader } from '@typebot.io/lib/results/parseResultHeader'
-import { convertResultsToTableData } from '@typebot.io/lib/results/convertResultsToTableData'
-import { parseColumnsOrder } from '@typebot.io/lib/results/parseColumnsOrder'
+import { parseResultHeader } from '@typebot.io/results/parseResultHeader'
+import { convertResultsToTableData } from '@typebot.io/results/convertResultsToTableData'
+import { parseColumnsOrder } from '@typebot.io/results/parseColumnsOrder'
 import { parseUniqueKey } from '@typebot.io/lib/parseUniqueKey'
 import { unparse } from 'papaparse'
 import { z } from 'zod'

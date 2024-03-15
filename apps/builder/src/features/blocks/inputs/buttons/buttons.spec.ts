@@ -2,8 +2,8 @@ import test, { expect } from '@playwright/test'
 import {
   createTypebots,
   importTypebotInDatabase,
-} from '@typebot.io/lib/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+} from '@typebot.io/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/playwright/databaseHelpers'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
@@ -26,13 +26,13 @@ test.describe.parallel('Buttons input block', () => {
     ])
 
     await page.goto(`/typebots/${typebotId}/edit`)
-    await page.fill('input[value="Click to edit"]', 'Item 1')
-    await page.press('input[value="Item 1"]', 'Enter')
-    await page.fill('input[value="Click to edit"]', 'Item 2')
-    await page.press('input[value="Item 2"]', 'Enter')
-    await page.fill('input[value="Click to edit"]', 'Item 3')
-    await page.press('input[value="Item 3"]', 'Enter')
-    await page.press('input[value="Click to edit"]', 'Escape')
+    await page.getByRole('textbox').fill('Item 1')
+    await page.getByRole('textbox').press('Enter')
+    await page.getByRole('textbox').fill('Item 2')
+    await page.getByRole('textbox').press('Enter')
+    await page.getByRole('textbox').fill('Item 3')
+    await page.getByRole('textbox').press('Enter')
+    await page.getByRole('textbox').press('Escape')
     await page.click('text=Item 2', { button: 'right' })
     await page.click('text=Delete')
     await expect(page.locator('text=Item 2')).toBeHidden()
@@ -51,11 +51,11 @@ test.describe.parallel('Buttons input block', () => {
     await expect(page.getByText('Setvar1')).toBeVisible()
     await page.getByTestId('block block2').click({ position: { x: 0, y: 0 } })
 
-    await page.locator('text=Item 1').hover()
+    await page.locator('span').filter({ hasText: 'Item 1' }).hover()
     await page.waitForTimeout(1000)
     await page.click('[aria-label="Add item"]')
-    await page.fill('input[value="Click to edit"]', 'Item 2')
-    await page.press('input[value="Item 2"]', 'Enter')
+    await page.getByTestId('block block2').getByRole('textbox').fill('Item 2')
+    await page.getByTestId('block block2').getByRole('textbox').press('Enter')
 
     await page.click('text=Test')
 
@@ -82,7 +82,7 @@ test('Variable buttons should work', async ({ page }) => {
   await expect(page.getByTestId('guest-bubble')).toHaveText('Variable item')
   await expect(page.locator('text=Ok great!')).toBeVisible()
   await page.click('text="Item 1"')
-  await page.fill('input[value="Item 1"]', '{{Item 2}}')
+  await page.getByRole('textbox').fill('{{Item 2}}')
   await page.getByTestId('block block1').click({ position: { x: 0, y: 0 } })
   await page.click('text=Multiple choice?')
   await page.click('text="Restart"')

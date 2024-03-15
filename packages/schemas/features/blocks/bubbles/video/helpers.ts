@@ -1,14 +1,14 @@
-import { VideoBubbleBlock } from '@typebot.io/schemas'
 import {
   VideoBubbleContentType,
-  gumletRegex,
-  horizontalVideoSuggestionSize,
-  oneDriveRegex,
-  tiktokRegex,
-  verticalVideoSuggestionSize,
-  vimeoRegex,
   youtubeRegex,
-} from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
+  verticalVideoSuggestionSize,
+  horizontalVideoSuggestionSize,
+  vimeoRegex,
+  tiktokRegex,
+  gumletRegex,
+  oneDriveRegex,
+} from './constants'
+import { VideoBubbleBlock } from './schema'
 
 export const parseVideoUrl = (
   url: string

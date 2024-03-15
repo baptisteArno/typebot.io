@@ -3,7 +3,7 @@ import { createId } from '@paralleldrive/cuid2'
 import {
   createWebhook,
   importTypebotInDatabase,
-} from '@typebot.io/lib/playwright/databaseActions'
+} from '@typebot.io/playwright/databaseActions'
 import { getTestAsset } from '@/test/utils/playwright'
 import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
 
