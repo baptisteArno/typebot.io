@@ -98,7 +98,7 @@ export const ConversationContainer = (props: Props) => {
       const actionsBeforeFirstBubble = initialChunk.clientSideActions.filter(
         (action) => isNotDefined(action.lastBubbleBlockId)
       )
-      processClientSideActions(actionsBeforeFirstBubble)
+      await processClientSideActions(actionsBeforeFirstBubble)
     })()
   })
 
@@ -199,7 +199,7 @@ export const ConversationContainer = (props: Props) => {
       const actionsBeforeFirstBubble = data.clientSideActions.filter((action) =>
         isNotDefined(action.lastBubbleBlockId)
       )
-      processClientSideActions(actionsBeforeFirstBubble)
+      await processClientSideActions(actionsBeforeFirstBubble)
     }
     setChatChunks((displayedChunks) => [
       ...displayedChunks,

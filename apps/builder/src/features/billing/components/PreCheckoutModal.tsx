@@ -152,7 +152,6 @@ export const PreCheckoutModal = ({
                 <Select
                   placeholder={t('billing.preCheckoutModal.taxId.placeholder')}
                   items={vatCodeLabels}
-                  isPopoverMatchingInputWidth={false}
                   onSelect={updateVatType}
                 />
                 <TextInput

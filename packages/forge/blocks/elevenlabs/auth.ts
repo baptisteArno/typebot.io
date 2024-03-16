@@ -10,6 +10,7 @@ export const auth = {
       inputType: 'password',
       helperText:
         'You can generate an API key in your ElevenLabs dashboard in the Profile menu.',
+      isDebounceDisabled: true,
     }),
   }),
 } satisfies AuthDefinition

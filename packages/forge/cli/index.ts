@@ -278,6 +278,8 @@ const createAuthFile = async (
                       inputType: 'password',
                       helperText:
                         'You can generate an API key [here](<INSERT_URL>).',
+                      withVariableButton: false,
+                      isDebounceDisabled: true,
                     }),
                   }),`
               : ''

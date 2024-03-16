@@ -76,6 +76,14 @@ export const options = option.object({
     }),
 })
 
+const transformToChatCompletionOptions = (options: any) => ({
+  ...options,
+  action: 'Create chat completion',
+  responseMapping: options.responseMapping?.map((res: any) =>
+    res.item === 'Message Content' ? { ...res, item: 'Message content' } : res
+  ),
+})
+
 export const createChatMessage = createAction({
   name: 'Create Chat Message',
   auth,
@@ -83,12 +91,14 @@ export const createChatMessage = createAction({
   turnableInto: [
     {
       blockType: 'mistral',
+      transform: transformToChatCompletionOptions,
     },
     {
       blockType: 'openai',
+      transform: transformToChatCompletionOptions,
     },
-    { blockType: 'open-router' },
-    { blockType: 'together-ai' },
+    { blockType: 'open-router', transform: transformToChatCompletionOptions },
+    { blockType: 'together-ai', transform: transformToChatCompletionOptions },
   ],
   getSetVariableIds: ({ responseMapping }) =>
     responseMapping?.map((res) => res.variableId).filter(isDefined) ?? [],

@@ -163,3 +163,20 @@ export const sanitizeFolderId = async ({
   })
   return folderCount !== 0 ? folderId : undefined
 }
+
+export const sanitizeCustomDomain = async ({
+  customDomain,
+  workspaceId,
+}: {
+  customDomain?: string | null
+  workspaceId: string
+}) => {
+  if (!customDomain) return customDomain
+  const domainCount = await prisma.customDomain.count({
+    where: {
+      name: customDomain?.split('/')[0],
+      workspaceId,
+    },
+  })
+  return domainCount === 0 ? null : customDomain
+}

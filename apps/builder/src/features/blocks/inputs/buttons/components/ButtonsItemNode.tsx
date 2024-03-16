@@ -135,7 +135,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
             <EditableTextarea
               onMouseDownCapture={(e) => e.stopPropagation()}
               resize="none"
-              rows={1}
+              onWheelCapture={(e) => e.stopPropagation()}
             />
           </Editable>
           <HitboxExtension />

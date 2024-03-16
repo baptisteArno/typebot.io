@@ -12,6 +12,7 @@ export const auth = createAuth({
       helperText:
         'You can generate an API key [here](https://platform.openai.com/account/api-keys)',
       withVariableButton: false,
+      isDebounceDisabled: true,
     }),
   }),
 })
