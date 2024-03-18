@@ -1,7 +1,7 @@
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
-import { archiveResults } from '@typebot.io/lib/api/helpers/archiveResults'
+import { archiveResults } from '@typebot.io/results/archiveResults'
 import prisma from '@typebot.io/lib/prisma'
 import { isWriteTypebotForbidden } from '@/features/typebot/helpers/isWriteTypebotForbidden'
 import { Typebot } from '@typebot.io/schemas'

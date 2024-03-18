@@ -38,7 +38,7 @@ export type TurnableIntoParam<T = {}> = {
   /**
    * If defined will be used to convert the existing block options into the new block options.
    */
-  customMapping?: (options: T) => any
+  transform?: (options: T) => any
 }
 
 export type ActionDefinition<
@@ -82,6 +82,7 @@ export type ActionDefinition<
         parseInitFunction: (params: {
           options: z.infer<BaseOptions> & z.infer<Options>
         }) => FunctionToExecute
+        maxBubbleWidth?: number
       }
       parseFunction?: (params: {
         options: z.infer<BaseOptions> & z.infer<Options>

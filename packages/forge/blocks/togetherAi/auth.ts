@@ -10,6 +10,7 @@ export const auth = {
       inputType: 'password',
       helperText:
         'You can get your API key [here](https://api.together.xyz/settings/api-keys).',
+      isDebounceDisabled: true,
     }),
   }),
 } satisfies AuthDefinition

@@ -198,7 +198,9 @@ export const Bubble = (props: BubbleProps) => {
         class={
           'fixed rounded-lg w-full' +
           (isBotOpened() ? ' opacity-1' : ' opacity-0 pointer-events-none') +
-          (props.theme?.placement === 'left' ? ' left-5' : ' right-5')
+          (props.theme?.placement === 'left'
+            ? ' left-5'
+            : ' sm:right-5 right-0')
         }
       >
         <Show when={isBotStarted()}>

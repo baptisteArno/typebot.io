@@ -128,8 +128,7 @@
                             ]
                           },
                           {
-                            "type": "object",
-                            "properties": {}
+                            "type": "object"
                           }
                         ]
                       }
@@ -639,8 +638,7 @@
                             ]
                           },
                           {
-                            "type": "object",
-                            "properties": {}
+                            "type": "object"
                           }
                         ]
                       }
@@ -9414,6 +9412,7 @@
                   "dify-ai",
                   "mistral",
                   "elevenlabs",
+                  "anthropic",
                   "together-ai",
                   "open-router"
                 ]
@@ -9987,6 +9986,9 @@
           "content": {
             "type": "object",
             "properties": {
+              "maxBubbleWidth": {
+                "type": "number"
+              },
               "waitForEventFunction": {
                 "type": "object",
                 "properties": {

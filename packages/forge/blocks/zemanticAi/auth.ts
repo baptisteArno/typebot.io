@@ -10,6 +10,7 @@ export const auth = {
       placeholder: 'ze...',
       helperText:
         'You can generate an API key [here](https://zemantic.ai/dashboard/settings).',
+      isDebounceDisabled: true,
     }),
   }),
 } satisfies AuthDefinition

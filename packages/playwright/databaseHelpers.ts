@@ -1,13 +1,12 @@
-import { createId } from '@paralleldrive/cuid2'
 import {
   BlockV5,
   BlockV6,
-  Group,
   PublicTypebot,
   Typebot,
   TypebotV6,
 } from '@typebot.io/schemas'
-import { isDefined } from '../utils'
+import { isDefined } from '@typebot.io/lib/utils'
+import { createId } from '@typebot.io/lib/createId'
 import { proWorkspaceId } from './databaseSetup'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { EventType } from '@typebot.io/schemas/features/events/constants'

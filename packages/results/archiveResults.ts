@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient } from '@typebot.io/prisma'
 import { Block, Typebot } from '@typebot.io/schemas'
-import { deleteFilesFromBucket } from '../../s3/deleteFilesFromBucket'
+import { deleteFilesFromBucket } from '@typebot.io/lib/s3/deleteFilesFromBucket'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 
 type ArchiveResultsProps = {

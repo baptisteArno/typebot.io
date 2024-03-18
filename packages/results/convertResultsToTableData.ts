@@ -6,7 +6,7 @@ import {
   TableData,
 } from '@typebot.io/schemas'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { isDefined } from '../utils'
+import { isDefined } from '../lib/utils'
 
 type CellParser = (
   content: VariableWithValue['value'],

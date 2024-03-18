@@ -1,8 +1,8 @@
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
-import { starterWorkspaceId } from '@typebot.io/lib/playwright/databaseSetup'
+import { createTypebots } from '@typebot.io/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/playwright/databaseHelpers'
+import { starterWorkspaceId } from '@typebot.io/playwright/databaseSetup'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 
 test('should be able to connect custom domain', async ({ page }) => {
@@ -26,7 +26,7 @@ test('should be able to connect custom domain', async ({ page }) => {
   await expect(page.locator('text="CNAME"')).toBeVisible()
   await page.click('text=Save')
   await expect(page.locator('text="https://sub.yolozeeer.com/"')).toBeVisible()
-  await page.click('text="Edit" >> nth=1')
+  await page.click('text="Edit"')
   await page.fill('text=https://sub.yolozeeer.com/Copy >> input', 'custom-path')
   await page.press(
     'text=https://sub.yolozeeer.com/custom-path >> input',

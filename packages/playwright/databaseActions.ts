@@ -6,7 +6,7 @@ import {
   Workspace,
   WorkspaceRole,
 } from '@typebot.io/prisma'
-import { createId } from '@paralleldrive/cuid2'
+import { createId } from '@typebot.io/lib/createId'
 import { Typebot, TypebotV6, HttpRequest } from '@typebot.io/schemas'
 import { readFileSync } from 'fs'
 import { proWorkspaceId, userId } from './databaseSetup'

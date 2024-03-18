@@ -22,6 +22,18 @@ export const createChatCompletion = createAction({
       blockType: 'open-router',
     },
     { blockType: 'mistral' },
+    {
+      blockType: 'anthropic',
+      transform: (options) => ({
+        ...options,
+        action: 'Create Chat Message',
+        responseMapping: options.responseMapping?.map((res: any) =>
+          res.item === 'Message content'
+            ? { ...res, item: 'Message Content' }
+            : res
+        ),
+      }),
+    },
   ],
   getSetVariableIds: getChatCompletionSetVarIds,
   run: {

@@ -1,6 +1,6 @@
 import { PrismaClient } from '@typebot.io/prisma'
 import { promptAndSetEnvironment } from './utils'
-import { archiveResults } from '@typebot.io/lib/api/helpers/archiveResults'
+import { archiveResults } from '@typebot.io/results/archiveResults'
 import { Typebot } from '@typebot.io/schemas'
 
 const prisma = new PrismaClient()

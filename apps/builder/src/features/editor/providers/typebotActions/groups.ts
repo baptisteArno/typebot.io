@@ -14,7 +14,8 @@ import {
   createBlockDraft,
   duplicateBlockDraft,
 } from './blocks'
-import { blockHasItems, byId, isEmpty } from '@typebot.io/lib'
+import { byId, isEmpty } from '@typebot.io/lib'
+import { blockHasItems } from '@typebot.io/schemas/helpers'
 import { Coordinates, CoordinatesMap } from '@/features/graph/types'
 import { parseUniqueKey } from '@typebot.io/lib/parseUniqueKey'
 

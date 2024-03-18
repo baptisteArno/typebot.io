@@ -42,6 +42,7 @@ export const bookEvent = createAction({
   run: {
     web: {
       displayEmbedBubble: {
+        maxBubbleWidth: 780,
         waitForEvent: {
           getSaveVariableId: ({ saveBookedDateInVariableId }) =>
             saveBookedDateInVariableId,

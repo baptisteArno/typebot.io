@@ -49,10 +49,10 @@
     "@udecode/plate-core": "30.4.5",
     "@udecode/plate-floating": "30.5.3",
     "@udecode/plate-link": "30.5.3",
-    "@uiw/codemirror-extensions-langs": "4.21.7",
-    "@uiw/codemirror-theme-github": "4.21.7",
-    "@uiw/codemirror-theme-tokyo-night": "4.21.7",
-    "@uiw/react-codemirror": "4.21.7",
+    "@uiw/codemirror-extensions-langs": "4.21.24",
+    "@uiw/codemirror-theme-github": "4.21.24",
+    "@uiw/codemirror-theme-tokyo-night": "4.21.24",
+    "@uiw/react-codemirror": "4.21.24",
     "@upstash/ratelimit": "0.4.3",
     "@upstash/redis": "1.22.0",
     "@use-gesture/react": "10.2.27",
@@ -122,6 +122,11 @@
     "next-runtime-env": "1.6.2",
     "superjson": "1.12.4",
     "typescript": "5.3.2",
-    "zod": "3.22.4"
+    "zod": "3.22.4",
+    "@typebot.io/playwright": "workspace:*",
+    "@typebot.io/billing": "workspace:*",
+    "@typebot.io/results": "workspace:*",
+    "@typebot.io/migrations": "workspace:*",
+    "@typebot.io/telemetry": "workspace:*"
   }
 }
