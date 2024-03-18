@@ -19,7 +19,10 @@ import {
 } from '@chakra-ui/react'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { DropdownList } from '@/components/DropdownList'
-import { ForgedBlockDefinition, ForgedBlock } from '@typebot.io/forge-schemas'
+import {
+  ForgedBlockDefinition,
+  ForgedBlock,
+} from '@typebot.io/forge-repository/types'
 import { PrimitiveList } from '@/components/PrimitiveList'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { CodeEditor } from '@/components/inputs/CodeEditor'

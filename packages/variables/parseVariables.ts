@@ -1,7 +1,7 @@
 import { safeStringify } from '@typebot.io/lib/safeStringify'
 import { isDefined, isNotDefined } from '@typebot.io/lib/utils'
-import { Variable, VariableWithValue } from '@typebot.io/schemas'
 import { parseGuessedValueType } from './parseGuessedValueType'
+import { Variable, VariableWithValue } from './types'
 
 export type ParseVariablesOptions = {
   fieldToParse?: 'value' | 'id'

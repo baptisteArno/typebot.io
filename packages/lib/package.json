@@ -9,7 +9,6 @@
     "@paralleldrive/cuid2": "2.2.1",
     "@playwright/test": "1.36.0",
     "@typebot.io/env": "workspace:*",
-    "@typebot.io/forge-repository": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
     "@types/escape-html": "^1.0.4",

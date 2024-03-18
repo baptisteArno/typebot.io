@@ -1,4 +1,4 @@
-import { enabledBlocks } from '@typebot.io/forge-repository'
+import { forgedBlockIds } from '@typebot.io/forge-repository/constants'
 import {
   Block,
   InputBlock,
@@ -62,9 +62,7 @@ export const isConditionBlock = (block: Block): block is ConditionBlock =>
 
 export const isIntegrationBlock = (block: Block): block is IntegrationBlock =>
   (
-    Object.values(IntegrationBlockType).concat(
-      enabledBlocks as readonly any[]
-    ) as any[]
+    Object.values(IntegrationBlockType).concat(forgedBlockIds as any[]) as any[]
   ).includes(block.type)
 
 export const isWebhookBlock = (block: Block): block is HttpRequestBlock =>

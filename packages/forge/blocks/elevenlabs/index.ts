@@ -3,7 +3,7 @@ import { ElevenlabsLogo, ElevenlabsLogoDark } from './logo'
 import { auth } from './auth'
 import { convertTextToSpeech } from './actions/convertTextToSpeech'
 
-export const elevenlabs = createBlock({
+export const elevenlabsBlock = createBlock({
   id: 'elevenlabs',
   name: 'ElevenLabs',
   tags: ['ai', 'voice', 'generation'],
