@@ -14,14 +14,14 @@ export const createChatCompletion = createAction({
   auth,
   turnableInto: [
     {
-      blockType: 'openai',
+      blockId: 'openai',
     },
     {
-      blockType: 'together-ai',
+      blockId: 'together-ai',
     },
-    { blockType: 'mistral' },
+    { blockId: 'mistral' },
     {
-      blockType: 'anthropic',
+      blockId: 'anthropic',
       transform: (options) => ({
         ...options,
         action: 'Create Chat Message',

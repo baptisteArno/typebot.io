@@ -2,7 +2,10 @@ import { DropdownList } from '@/components/DropdownList'
 import { z } from '@typebot.io/forge/zod'
 import { ZodObjectLayout } from './ZodObjectLayout'
 import { isDefined } from '@typebot.io/lib'
-import { ForgedBlockDefinition, ForgedBlock } from '@typebot.io/forge-schemas'
+import {
+  ForgedBlockDefinition,
+  ForgedBlock,
+} from '@typebot.io/forge-repository/types'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const ZodDiscriminatedUnionLayout = ({

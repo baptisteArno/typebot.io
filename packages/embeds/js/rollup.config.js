@@ -4,10 +4,14 @@ import { babel } from '@rollup/plugin-babel'
 import postcss from 'rollup-plugin-postcss'
 import autoprefixer from 'autoprefixer'
 import tailwindcss from 'tailwindcss'
-import typescript from '@rollup/plugin-typescript'
 import { typescriptPaths } from 'rollup-plugin-typescript-paths'
+import fs from 'fs'
 
 const extensions = ['.ts', '.tsx']
+
+const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'))
+const packageVersion = packageJson.version
+const preamble = `// v${packageVersion}`
 
 const indexConfig = {
   input: './src/index.ts',
@@ -23,6 +27,7 @@ const indexConfig = {
       presets: ['solid', '@babel/preset-typescript'],
       extensions,
     }),
+    typescriptPaths({ preserveExtensions: true }),
     postcss({
       plugins: [autoprefixer(), tailwindcss()],
       extract: false,
@@ -31,9 +36,9 @@ const indexConfig = {
       minimize: true,
       inject: false,
     }),
-    typescript(),
-    typescriptPaths({ preserveExtensions: true }),
-    terser({ output: { comments: false } }),
+    terser({
+      format: { preamble },
+    }),
   ],
 }
 

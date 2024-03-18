@@ -193,7 +193,7 @@ export const BlockNode = ({
         indices,
         targetBlockSchema.parse({
           ...block,
-          type: turnIntoParams.blockType,
+          type: turnIntoParams.blockId,
           options: {
             ...convertedBlockOptions,
             credentialsId: undefined,

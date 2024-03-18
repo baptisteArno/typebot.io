@@ -1,8 +1,8 @@
-import { Result, Variable } from '@typebot.io/schemas'
+import { Variable } from './types'
 
 export const injectVariablesFromExistingResult = (
   variables: Variable[],
-  resultVariables: Result['variables']
+  resultVariables: any[]
 ): Variable[] =>
   variables.map((variable) => {
     const resultVariable = resultVariables.find(
