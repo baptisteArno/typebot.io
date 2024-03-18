@@ -1213,8 +1213,8 @@ importers:
   packages/forge/blocks/anthropic:
     dependencies:
       '@anthropic-ai/sdk':
-        specifier: 0.15.0
-        version: 0.15.0
+        specifier: 0.18.0
+        version: 0.18.0
       ai:
         specifier: 3.0.12
         version: 3.0.12(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.12)(vue@3.4.21)(zod@3.22.4)
@@ -1907,8 +1907,8 @@ packages:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
 
-  /@anthropic-ai/sdk@0.15.0:
-    resolution: {integrity: sha512-QMNEFcwGGB64oEIL+U9b+mxSbat5TCdNxvQVV0qCNGQvg/nlnbOmq2/x/0mKhuKD0n5bioL75oCkTbQaAgyYtw==}
+  /@anthropic-ai/sdk@0.18.0:
+    resolution: {integrity: sha512-3XsWEn/4nPGRd4AdSguugbSDFy6Z2AWTNOeI3iK+aV22+w23+vY9CEb3Hiy0kvKIQuxSmZz/+5WKC8nPWy8gVg==}
     dependencies:
       '@types/node': 18.11.18
       '@types/node-fetch': 2.6.11
