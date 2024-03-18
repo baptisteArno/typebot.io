@@ -9,7 +9,8 @@ import {
 } from '@typebot.io/schemas'
 import { SetTypebot } from '../TypebotProvider'
 import { Draft, produce } from 'immer'
-import { byId, isDefined, blockHasItems } from '@typebot.io/lib'
+import { byId, isDefined } from '@typebot.io/lib'
+import { blockHasItems } from '@typebot.io/schemas/helpers'
 import { createId } from '@paralleldrive/cuid2'
 
 export type EdgesActions = {

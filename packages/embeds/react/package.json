@@ -1,6 +1,6 @@
 {
   "name": "@flowdacity/react",
-  "version": "0.2.51",
+  "version": "0.2.52",
   "description": "Convenient library to display flowdacity chatbots on your React app",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

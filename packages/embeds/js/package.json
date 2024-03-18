@@ -1,6 +1,6 @@
 {
   "name": "@flowdacity/js",
-  "version": "0.2.51",
+  "version": "0.2.52",
   "description": "Javascript library to display flowdacity chatbots on your website",
   "type": "module",
   "main": "dist/index.js",

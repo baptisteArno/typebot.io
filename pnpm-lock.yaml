@@ -276,6 +276,9 @@ importers:
       '@playwright/test':
         specifier: 1.41.2
         version: 1.41.2
+      '@typebot.io/billing':
+        specifier: workspace:*
+        version: link:../../packages/billing
       '@typebot.io/forge':
         specifier: workspace:*
         version: link:../../packages/forge/core
@@ -288,15 +291,27 @@ importers:
       '@typebot.io/lib':
         specifier: workspace:*
         version: link:../../packages/lib
+      '@typebot.io/migrations':
+        specifier: workspace:*
+        version: link:../../packages/migrations
+      '@typebot.io/playwright':
+        specifier: workspace:*
+        version: link:../../packages/playwright
       '@typebot.io/prisma':
         specifier: workspace:*
         version: link:../../packages/prisma
       '@typebot.io/radar':
         specifier: workspace:*
         version: link:../../packages/radar
+      '@typebot.io/results':
+        specifier: workspace:*
+        version: link:../../packages/results
       '@typebot.io/schemas':
         specifier: workspace:*
         version: link:../../packages/schemas
+      '@typebot.io/telemetry':
+        specifier: workspace:*
+        version: link:../../packages/telemetry
       '@typebot.io/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -387,6 +402,9 @@ importers:
       '@fontsource/league-spartan':
         specifier: ^5.0.18
         version: 5.0.18
+      '@typebot.io/billing':
+        specifier: workspace:*
+        version: link:../../packages/billing
       '@typebot.io/lib':
         specifier: workspace:*
         version: link:../../packages/lib
@@ -414,9 +432,6 @@ importers:
       react-dom:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
-      react-typed:
-        specifier: ^1.2.0
-        version: 1.2.0(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
       '@babel/core':
         specifier: 7.22.9
@@ -563,6 +578,12 @@ importers:
       '@typebot.io/lib':
         specifier: workspace:*
         version: link:../../packages/lib
+      '@typebot.io/playwright':
+        specifier: workspace:*
+        version: link:../../packages/playwright
+      '@typebot.io/results':
+        specifier: workspace:*
+        version: link:../../packages/results
       '@typebot.io/schemas':
         specifier: workspace:*
         version: link:../../packages/schemas
@@ -590,6 +611,9 @@ importers:
       '@types/react':
         specifier: 18.2.15
         version: 18.2.15
+      dotenv:
+        specifier: 16.4.5
+        version: 16.4.5
       dotenv-cli:
         specifier: 7.2.1
         version: 7.2.1
@@ -618,6 +642,22 @@ importers:
         specifier: 3.22.4
         version: 3.22.4
 
+  packages/billing:
+    dependencies:
+      '@typebot.io/prisma':
+        specifier: workspace:*
+        version: link:../prisma
+      '@typebot.io/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+      stripe:
+        specifier: 12.13.0
+        version: 12.13.0
+    devDependencies:
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
   packages/bot-engine:
     dependencies:
       '@paralleldrive/cuid2':
@@ -644,6 +684,9 @@ importers:
       '@typebot.io/prisma':
         specifier: workspace:*
         version: link:../prisma
+      '@typebot.io/results':
+        specifier: workspace:*
+        version: link:../results
       '@typebot.io/schemas':
         specifier: workspace:*
         version: link:../schemas
@@ -1173,8 +1216,8 @@ importers:
   packages/forge/blocks/anthropic:
     dependencies:
       '@anthropic-ai/sdk':
-        specifier: 0.15.0
-        version: 0.15.0
+        specifier: 0.18.0
+        version: 0.18.0
       ai:
         specifier: 3.0.12
         version: 3.0.12(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.9)(vue@3.4.15)(zod@3.22.4)
@@ -1617,9 +1660,6 @@ importers:
       '@typebot.io/prisma':
         specifier: workspace:*
         version: link:../prisma
-      '@typebot.io/schemas':
-        specifier: workspace:*
-        version: link:../schemas
       '@typebot.io/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -1641,6 +1681,44 @@ importers:
       typescript:
         specifier: 5.3.2
         version: 5.3.2
+
+  packages/migrations:
+    dependencies:
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../lib
+      '@typebot.io/prisma':
+        specifier: workspace:*
+        version: link:../prisma
+      '@typebot.io/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+    devDependencies:
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/playwright:
+    dependencies:
+      '@playwright/test':
+        specifier: ^1.42.1
+        version: 1.42.1
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../lib
+      '@typebot.io/prisma':
+        specifier: workspace:*
+        version: link:../prisma
+      '@typebot.io/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+    devDependencies:
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: ^20.11.26
+        version: 20.11.29
 
   packages/prisma:
     dependencies:
@@ -1689,6 +1767,22 @@ importers:
         specifier: 5.3.2
         version: 5.3.2
 
+  packages/results:
+    dependencies:
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../lib
+      '@typebot.io/prisma':
+        specifier: workspace:*
+        version: link:../prisma
+      '@typebot.io/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+    devDependencies:
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
   packages/schemas:
     dependencies:
       '@udecode/plate-common':
@@ -1722,6 +1816,15 @@ importers:
       '@paralleldrive/cuid2':
         specifier: 2.2.1
         version: 2.2.1
+      '@typebot.io/billing':
+        specifier: workspace:*
+        version: link:../billing
+      '@typebot.io/results':
+        specifier: workspace:*
+        version: link:../results
+      '@typebot.io/telemetry':
+        specifier: workspace:*
+        version: link:../telemetry
       cli-progress:
         specifier: ^3.12.0
         version: 3.12.0
@@ -1775,6 +1878,25 @@ importers:
         specifier: 3.22.4
         version: 3.22.4
 
+  packages/telemetry:
+    dependencies:
+      '@typebot.io/env':
+        specifier: workspace:*
+        version: link:../env
+      '@typebot.io/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+      got:
+        specifier: 12.6.0
+        version: 12.6.0
+      posthog-node:
+        specifier: 3.1.1
+        version: 3.1.1
+    devDependencies:
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
   packages/transactional:
     dependencies:
       '@react-email/components':
@@ -1819,8 +1941,8 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.22
 
-  /@anthropic-ai/sdk@0.15.0:
-    resolution: {integrity: sha512-QMNEFcwGGB64oEIL+U9b+mxSbat5TCdNxvQVV0qCNGQvg/nlnbOmq2/x/0mKhuKD0n5bioL75oCkTbQaAgyYtw==}
+  /@anthropic-ai/sdk@0.18.0:
+    resolution: {integrity: sha512-3XsWEn/4nPGRd4AdSguugbSDFy6Z2AWTNOeI3iK+aV22+w23+vY9CEb3Hiy0kvKIQuxSmZz/+5WKC8nPWy8gVg==}
     dependencies:
       '@types/node': 18.11.18
       '@types/node-fetch': 2.6.11
@@ -6611,7 +6733,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       chalk: 4.1.2
       jest-message-util: 29.7.0
       jest-util: 29.7.0
@@ -6632,14 +6754,14 @@ packages:
       '@jest/test-result': 29.7.0
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       ci-info: 3.9.0
       exit: 0.1.2
       graceful-fs: 4.2.11
       jest-changed-files: 29.7.0
-      jest-config: 29.7.0(@types/node@20.11.13)
+      jest-config: 29.7.0(@types/node@20.11.29)
       jest-haste-map: 29.7.0
       jest-message-util: 29.7.0
       jest-regex-util: 29.6.3
@@ -6667,7 +6789,7 @@ packages:
     dependencies:
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       jest-mock: 29.7.0
     dev: true
 
@@ -6694,7 +6816,7 @@ packages:
     dependencies:
       '@jest/types': 29.6.3
       '@sinonjs/fake-timers': 10.3.0
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       jest-message-util: 29.7.0
       jest-mock: 29.7.0
       jest-util: 29.7.0
@@ -6727,7 +6849,7 @@ packages:
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
       '@jridgewell/trace-mapping': 0.3.22
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       chalk: 4.1.2
       collect-v8-coverage: 1.0.2
       exit: 0.1.2
@@ -6815,7 +6937,7 @@ packages:
       '@jest/schemas': 29.6.3
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       '@types/yargs': 17.0.32
       chalk: 4.1.2
     dev: true
@@ -7689,6 +7811,14 @@ packages:
     dependencies:
       playwright: 1.41.2
     dev: true
+
+  /@playwright/test@1.42.1:
+    resolution: {integrity: sha512-Gq9rmS54mjBL/7/MvBaNOBwbfnh7beHvS6oS4srqXFcQHpQCV1+c8JXWE8VLPyRDhgS3H8x8A7hztqI9VnwrAQ==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dependencies:
+      playwright: 1.42.1
+    dev: false
 
   /@popperjs/core@2.11.8:
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
@@ -9257,7 +9387,7 @@ packages:
     resolution: {integrity: sha512-fB3Zu92ucau0iQ0JMCFQE7b/dv8Ot07NI3KaZIkIUNXq82k4eBAqUaneXfleGY9JWskeS9y+u0nXMyspcuQrCg==}
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
     dev: false
 
   /@types/canvas-confetti@1.6.0:
@@ -9267,13 +9397,13 @@ packages:
   /@types/cli-progress@3.11.5:
     resolution: {integrity: sha512-D4PbNRbviKyppS5ivBGyFO29POlySLmA2HyUFE4p5QGazAMM3CwkKWcvTl8gvElSuxRh6FPKL8XmidX873ou4g==}
     dependencies:
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
     dev: true
 
   /@types/connect@3.4.38:
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
     dependencies:
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
     dev: false
 
   /@types/content-type@1.1.8:
@@ -9332,7 +9462,7 @@ packages:
   /@types/express-serve-static-core@4.17.42:
     resolution: {integrity: sha512-ckM3jm2bf/MfB3+spLPWYPUH573plBFwpOhqQ2WottxYV85j1HQFlxmnTq57X1yHY9awZPig06hL/cLMgNWHIQ==}
     dependencies:
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       '@types/qs': 6.9.7
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.4
@@ -9350,7 +9480,7 @@ packages:
   /@types/graceful-fs@4.1.9:
     resolution: {integrity: sha512-olP3sd1qOEe5dXTSaFvQG+02VdRXcdytWLAZsAq1PecU8uqQAhkrnbli7DagjtXKW/Bl7YJbUsa8MPcuc8LHEQ==}
     dependencies:
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
     dev: true
 
   /@types/hast@2.3.10:
@@ -9406,7 +9536,7 @@ packages:
   /@types/jsdom@20.0.1:
     resolution: {integrity: sha512-d0r18sZPmMQr1eG35u12FZfhIXNrnsPU/g5wvRKCUf/tOGilKKwYMYGqh33BNR6ba+2gkHw1EUiHoN3mn7E5IQ==}
     dependencies:
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       '@types/tough-cookie': 4.0.5
       parse5: 7.1.2
     dev: true
@@ -9459,7 +9589,7 @@ packages:
   /@types/micro@7.3.7:
     resolution: {integrity: sha512-MFsX7eCj0Tg3TtphOQvANNvNtFpya+s/rYOCdV6o+DFjOQPFi2EVRbBALjbbgZTXUaJP1Q281MJiJOD40d0UxQ==}
     dependencies:
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
     dev: true
 
   /@types/mime@1.3.5:
@@ -9480,7 +9610,7 @@ packages:
   /@types/node-fetch@2.6.11:
     resolution: {integrity: sha512-24xFj9R5+rfQJLRyM56qh+wnVSYhyXC2tkoBndtY0U+vubqNsYXGjufB2nn8Q6gt0LrARwL6UBtMCSVCwl4B1g==}
     dependencies:
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       form-data: 4.0.0
     dev: false
 
@@ -9489,6 +9619,11 @@ packages:
 
   /@types/node@20.11.13:
     resolution: {integrity: sha512-5G4zQwdiQBSWYTDAH1ctw2eidqdhMJaNsiIDKHFr55ihz5Trl2qqR8fdrT732yPBho5gkNxXm67OxWFBqX9aPg==}
+    dependencies:
+      undici-types: 5.26.5
+
+  /@types/node@20.11.29:
+    resolution: {integrity: sha512-P99thMkD/1YkCvAtOd6/zGedKNA0p2fj4ZpjCzcNiSCBWgm3cNRTBfa/qjFnsKkkojxu4vVLtWpesnZ9+ap+gA==}
     dependencies:
       undici-types: 5.26.5
 
@@ -9533,7 +9668,7 @@ packages:
   /@types/prompts@2.4.4:
     resolution: {integrity: sha512-p5N9uoTH76lLvSAaYSZtBCdEXzpOOufsRjnhjVSrZGXikVGHX9+cc9ERtHRV4hvBKHyZb1bg4K+56Bd2TqUn4A==}
     dependencies:
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       kleur: 3.0.3
     dev: true
 
@@ -9599,7 +9734,7 @@ packages:
     resolution: {integrity: sha512-x2EM6TJOybec7c52BX0ZspPodMsQUd5L6PRwOunVyVUhXiBSKf3AezDL8Dgvgt5o0UfKNfuA0eMLr2wLT4AiBA==}
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
     dev: false
 
   /@types/serve-static@1.15.5:
@@ -9607,7 +9742,7 @@ packages:
     dependencies:
       '@types/http-errors': 2.0.4
       '@types/mime': 3.0.4
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
     dev: false
 
   /@types/stack-utils@2.0.3:
@@ -9639,7 +9774,7 @@ packages:
   /@types/webpack@5.28.5(@swc/core@1.3.101)(esbuild@0.19.11):
     resolution: {integrity: sha512-wR87cgvxj3p6D0Crt1r5avwqffqPXUkNlnQ1mjU93G7gCuFjufZR4I6j8cz5g1F1tTYpfOOFvly+cmIQwL9wvw==}
     dependencies:
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       tapable: 2.2.1
       webpack: 5.90.1(@swc/core@1.3.101)(esbuild@0.19.11)
     transitivePeerDependencies:
@@ -12211,7 +12346,7 @@ packages:
       chalk: 4.1.2
       exit: 0.1.2
       graceful-fs: 4.2.11
-      jest-config: 29.7.0(@types/node@20.11.13)
+      jest-config: 29.7.0(@types/node@20.11.29)
       jest-util: 29.7.0
       prompts: 2.4.2
     transitivePeerDependencies:
@@ -12830,6 +12965,11 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
+  /dotenv@16.4.5:
+    resolution: {integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==}
+    engines: {node: '>=12'}
+    dev: true
+
   /eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
@@ -12907,7 +13047,7 @@ packages:
     dependencies:
       '@types/cookie': 0.4.1
       '@types/cors': 2.8.13
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       accepts: 1.3.8
       base64id: 2.0.0
       cookie: 0.4.2
@@ -14337,7 +14477,6 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /fsevents@2.3.3:
@@ -15617,7 +15756,7 @@ packages:
       '@jest/expect': 29.7.0
       '@jest/test-result': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       chalk: 4.1.2
       co: 4.6.0
       dedent: 1.5.1
@@ -15655,7 +15794,7 @@ packages:
       create-jest: 29.7.0
       exit: 0.1.2
       import-local: 3.1.0
-      jest-config: 29.7.0(@types/node@20.11.13)
+      jest-config: 29.7.0(@types/node@20.11.29)
       jest-util: 29.7.0
       jest-validate: 29.7.0
       yargs: 17.7.2
@@ -15666,7 +15805,7 @@ packages:
       - ts-node
     dev: true
 
-  /jest-config@29.7.0(@types/node@20.11.13):
+  /jest-config@29.7.0(@types/node@20.11.29):
     resolution: {integrity: sha512-uXbpfeQ7R6TZBqI3/TxCU4q4ttk3u0PJeC+E0zbfSoSjq6bJ7buBPxzQPL0ifrkY4DNu4JUdk0ImlBUYi840eQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     peerDependencies:
@@ -15681,7 +15820,7 @@ packages:
       '@babel/core': 7.22.9
       '@jest/test-sequencer': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       babel-jest: 29.7.0(@babel/core@7.22.9)
       chalk: 4.1.2
       ci-info: 3.9.0
@@ -15764,7 +15903,7 @@ packages:
       '@jest/environment': 29.7.0
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       jest-mock: 29.7.0
       jest-util: 29.7.0
     dev: true
@@ -15780,7 +15919,7 @@ packages:
     dependencies:
       '@jest/types': 29.6.3
       '@types/graceful-fs': 4.1.9
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.11
@@ -15831,7 +15970,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       jest-util: 29.7.0
     dev: true
 
@@ -15886,7 +16025,7 @@ packages:
       '@jest/test-result': 29.7.0
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       chalk: 4.1.2
       emittery: 0.13.1
       graceful-fs: 4.2.11
@@ -15917,7 +16056,7 @@ packages:
       '@jest/test-result': 29.7.0
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       chalk: 4.1.2
       cjs-module-lexer: 1.2.3
       collect-v8-coverage: 1.0.2
@@ -15969,7 +16108,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       chalk: 4.1.2
       ci-info: 3.9.0
       graceful-fs: 4.2.11
@@ -15994,7 +16133,7 @@ packages:
     dependencies:
       '@jest/test-result': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       emittery: 0.13.1
@@ -16006,7 +16145,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: false
@@ -16015,7 +16154,7 @@ packages:
     resolution: {integrity: sha512-eIz2msL/EzL9UFTFFx7jBTkeZfku0yUAyZZZmJ93H2TYEiroIx2PQjEXcwYtYl8zXCxb+PAmA2hLIt/6ZEkPHw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       jest-util: 29.7.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
@@ -18239,7 +18378,7 @@ packages:
     engines: {node: '>=14'}
     dependencies:
       '@types/express': 4.17.21
-      '@types/node': 20.11.13
+      '@types/node': 20.11.29
       accepts: 1.3.8
       content-disposition: 0.5.4
       depd: 1.1.2
@@ -18751,6 +18890,12 @@ packages:
     hasBin: true
     dev: true
 
+  /playwright-core@1.42.1:
+    resolution: {integrity: sha512-mxz6zclokgrke9p1vtdy/COWBH+eOZgYUVVU34C73M+4j4HLlQJHtfcqiqqxpP0o8HhMkflvfbquLX5dg6wlfA==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dev: false
+
   /playwright@1.41.2:
     resolution: {integrity: sha512-v0bOa6H2GJChDL8pAeLa/LZC4feoAMbSQm1/jF/ySsWWoaNItvrMP7GEkvEEFyCTUYKMxjQKaTSg5up7nR6/8A==}
     engines: {node: '>=16'}
@@ -18760,6 +18905,16 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
+
+  /playwright@1.42.1:
+    resolution: {integrity: sha512-PgwB03s2DZBcNRoW+1w9E+VkLBxweib6KTXM0M3tkiT4jVxKSi6PmVJ591J+0u10LUrgxB7dLRbiJqO5s2QPMg==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dependencies:
+      playwright-core: 1.42.1
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: false
 
   /pngjs@5.0.0:
     resolution: {integrity: sha512-40QW5YalBNfQo5yRYmiw7Yz6TKKVr3h6970B2YE+3fQpsWcrbj1PzJgxeJ19DRQjhMbKPIuMY8rFaXc8moolVw==}
@@ -19849,18 +20004,6 @@ packages:
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-    dev: false
-
-  /react-typed@1.2.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-aDsaA6zkjAFJs8285APOqE85l/kwJ0/ZJmBhARwUrza4TTttrMM5FcMCGEDdThdfUdHo/0l9WXmxp1m2ik4qdw==}
-    peerDependencies:
-      react: ^16.3.0
-      react-dom: ^16.3.0
-    dependencies:
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      typed.js: 2.1.0
     dev: false
 
   /react-universal-interface@0.6.2(react@18.2.0)(tslib@2.6.0):
@@ -21867,10 +22010,6 @@ packages:
       call-bind: 1.0.5
       for-each: 0.3.3
       is-typed-array: 1.1.12
-
-  /typed.js@2.1.0:
-    resolution: {integrity: sha512-bDuXEf7YcaKN4g08NMTUM6G90XU25CK3bh6U0THC/Mod/QPKlEt9g/EjvbYB8x2Qwr2p6J6I3NrsoYaVnY6wsQ==}
-    dev: false
 
   /typescript@5.1.6:
     resolution: {integrity: sha512-zaWCozRZ6DLEWAWFrVDz1H6FVXzUSfTy5FUMWsQlU8Ym5JP9eO4xkTIROFCQvhQf61z6O/G6ugw3SgAnvvm+HA==}

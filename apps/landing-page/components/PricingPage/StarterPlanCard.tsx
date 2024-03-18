@@ -4,7 +4,7 @@ import { Plan } from '@typebot.io/prisma'
 import Link from 'next/link'
 import React from 'react'
 import { PricingCard } from './PricingCard'
-import { prices, seatsLimits } from '@typebot.io/lib/billing/constants'
+import { prices, seatsLimits } from '@typebot.io/billing/constants'
 
 export const StarterPlanCard = () => {
   return (

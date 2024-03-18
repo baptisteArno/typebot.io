@@ -14,7 +14,7 @@ import { getNewUserInvitations } from '@/features/auth/helpers/getNewUserInvitat
 import { joinWorkspaces } from '@/features/auth/helpers/joinWorkspaces'
 import { parseWorkspaceDefaultPlan } from '@/features/workspace/helpers/parseWorkspaceDefaultPlan'
 import { env } from '@typebot.io/env'
-import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
+import { trackEvents } from '@typebot.io/telemetry/trackEvents'
 
 export function customAdapter(p: PrismaClient): Adapter {
   return {

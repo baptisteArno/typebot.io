@@ -11,7 +11,7 @@ import {
 import * as React from 'react'
 import { CheckCircleIcon } from '../../../assets/icons/CheckCircleIcon'
 import { Card, CardProps } from './Card'
-import { formatPrice } from '@typebot.io/lib/billing/formatPrice'
+import { formatPrice } from '@typebot.io/billing/formatPrice'
 
 export interface PricingCardData {
   features: React.ReactNode[]

@@ -2,20 +2,18 @@ import { createFolders } from '@/test/utils/databaseActions'
 import { deleteButtonInConfirmDialog } from '@/test/utils/selectorUtils'
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
+import { createTypebots } from '@typebot.io/playwright/databaseActions'
 
 test('folders navigation should work', async ({ page }) => {
   await page.goto('/typebots')
   const createFolderButton = page.locator('button:has-text("Create a folder")')
   await expect(createFolderButton).not.toBeDisabled()
   await createFolderButton.click()
-  await page.click('text="New folder"')
   await page.fill('input[value="New folder"]', 'My folder #1')
   await page.press('input[value="My folder #1"]', 'Enter')
   await page.click('li:has-text("My folder #1")')
   await expect(page.locator('h1:has-text("My folder #1")')).toBeVisible()
   await createFolderButton.click()
-  await page.click('text="New folder"')
   await page.fill('input', 'My folder #2')
   await page.press('input', 'Enter')
 

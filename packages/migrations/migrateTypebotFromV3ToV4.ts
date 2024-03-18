@@ -5,8 +5,9 @@ import {
   TypebotV5,
   HttpRequest,
 } from '@typebot.io/schemas'
-import { isWebhookBlock, isDefined } from '../utils'
-import prisma from '../prisma'
+import { isWebhookBlock } from '@typebot.io/schemas/helpers'
+import { isDefined } from '@typebot.io/lib/utils'
+import prisma from '@typebot.io/lib/prisma'
 import {
   HttpMethod,
   defaultWebhookAttributes,

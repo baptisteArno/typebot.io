@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { canReadTypebots } from '@/helpers/databaseRules'
 import { totalAnswersSchema } from '@typebot.io/schemas/features/analytics'
 import { parseGroups } from '@typebot.io/schemas'
-import { isInputBlock } from '@typebot.io/lib'
+import { isInputBlock } from '@typebot.io/schemas/helpers'
 import { defaultTimeFilter, timeFilterValues } from '../constants'
 import {
   parseFromDateFromTimeFilter,

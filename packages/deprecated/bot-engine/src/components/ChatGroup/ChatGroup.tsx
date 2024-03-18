@@ -2,16 +2,15 @@ import { useEffect, useRef, useState } from 'react'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { AvatarSideContainer } from './AvatarSideContainer'
 import { LinkedTypebot, useTypebot } from '../../providers/TypebotProvider'
+import { isDefined, byId } from '@typebot.io/lib'
 import {
   isBubbleBlock,
   isBubbleBlockType,
   isChoiceInput,
-  isDefined,
   isInputBlock,
   isIntegrationBlock,
   isLogicBlock,
-  byId,
-} from '@typebot.io/lib'
+} from '@typebot.io/schemas/helpers'
 import {
   BubbleBlock,
   InputBlock,
@@ -30,7 +29,7 @@ import { executeLogic } from '@/utils/executeLogic'
 import { blockCanBeRetried, parseRetryBlock } from '@/utils/inputs'
 import { PopupBlockedToast } from '../PopupBlockedToast'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
-import { getBlockById } from '@typebot.io/lib/getBlockById'
+import { getBlockById } from '@typebot.io/schemas/helpers'
 
 type ChatGroupProps = {
   blocks: Block[]

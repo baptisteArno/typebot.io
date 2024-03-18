@@ -11,9 +11,9 @@ import {
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { GoogleSheetsAction } from '@typebot.io/schemas/features/blocks/integrations/googleSheets/constants'
 import { ComparisonOperators } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
-import { createId } from '@paralleldrive/cuid2'
+import { createId } from '@typebot.io/lib/createId'
 import { EventType } from '@typebot.io/schemas/features/events/constants'
-import { byId } from '../utils'
+import { byId } from '@typebot.io/lib/utils'
 
 export const migrateTypebotFromV5ToV6 = async (
   typebot: TypebotV5 | PublicTypebotV5

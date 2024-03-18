@@ -10,7 +10,7 @@ import { byId, isDefined, isEmpty } from '@typebot.io/lib'
 import prisma from '@typebot.io/lib/prisma'
 import { ExecuteIntegrationResponse } from '../../../types'
 import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
-import { parseAnswers } from '@typebot.io/lib/results/parseAnswers'
+import { parseAnswers } from '@typebot.io/results/parseAnswers'
 
 const URL = 'https://api.zemantic.ai/v1/search-documents'
 

@@ -6,7 +6,8 @@ import {
   InputBlock,
   SessionState,
 } from '@typebot.io/schemas'
-import { isInputBlock, byId } from '@typebot.io/lib'
+import { byId } from '@typebot.io/lib'
+import { isInputBlock } from '@typebot.io/schemas/helpers'
 import { executeGroup, parseInput } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
 import { validateEmail } from './blocks/inputs/email/validateEmail'
@@ -34,7 +35,7 @@ import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/i
 import { defaultPictureChoiceOptions } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice/constants'
 import { defaultFileInputOptions } from '@typebot.io/schemas/features/blocks/inputs/file/constants'
 import { VisitedEdge } from '@typebot.io/prisma'
-import { getBlockById } from '@typebot.io/lib/getBlockById'
+import { getBlockById } from '@typebot.io/schemas/helpers'
 import { ForgedBlock, forgedBlocks } from '@typebot.io/forge-schemas'
 import { enabledBlocks } from '@typebot.io/forge-repository'
 import { resumeChatCompletion } from './blocks/integrations/legacy/openai/resumeChatCompletion'
@@ -276,7 +277,9 @@ const parseRetryMessage =
       block.options &&
       'retryMessageContent' in block.options &&
       block.options.retryMessageContent
-        ? block.options.retryMessageContent
+        ? parseVariables(state.typebotsQueue[0].typebot.variables)(
+            block.options.retryMessageContent
+          )
         : parseDefaultRetryMessage(block)
     return {
       messages: [

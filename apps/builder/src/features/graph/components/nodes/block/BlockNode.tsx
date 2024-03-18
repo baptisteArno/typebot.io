@@ -15,12 +15,12 @@ import {
   TextBubbleBlock,
   BlockV6,
 } from '@typebot.io/schemas'
+import { isDefined } from '@typebot.io/lib'
 import {
-  isBubbleBlock,
-  isDefined,
   isInputBlock,
+  isBubbleBlock,
   isTextBubbleBlock,
-} from '@typebot.io/lib'
+} from '@typebot.io/schemas/helpers'
 import { BlockNodeContent } from './BlockNodeContent'
 import { BlockSettings, SettingsPopoverContent } from './SettingsPopoverContent'
 import { BlockNodeContextMenu } from './BlockNodeContextMenu'
@@ -147,6 +147,7 @@ export const BlockNode = ({
   const handleCloseEditor = (content: TElement[]) => {
     const updatedBlock = { ...block, content: { richText: content } }
     updateBlock(indices, updatedBlock)
+    setOpenedBlockId(undefined)
   }
 
   const handleClick = (e: React.MouseEvent) => {

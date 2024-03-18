@@ -11,7 +11,7 @@ import { StarterPlanPricingCard } from './StarterPlanPricingCard'
 import { ProPlanPricingCard } from './ProPlanPricingCard'
 import { useTranslate } from '@tolgee/react'
 import { StripeClimateLogo } from './StripeClimateLogo'
-import { guessIfUserIsEuropean } from '@typebot.io/lib/billing/guessIfUserIsEuropean'
+import { guessIfUserIsEuropean } from '@typebot.io/billing/guessIfUserIsEuropean'
 import { WorkspaceInApp } from '@/features/workspace/WorkspaceProvider'
 
 type Props = {

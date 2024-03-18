@@ -4,7 +4,7 @@ import { TRPCError } from '@trpc/server'
 import { typebotSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { isReadTypebotForbidden } from '../helpers/isReadTypebotForbidden'
-import { migrateTypebot } from '@typebot.io/lib/migrations/migrateTypebot'
+import { migrateTypebot } from '@typebot.io/migrations/migrateTypebot'
 import { CollaborationType } from '@typebot.io/prisma'
 import { env } from '@typebot.io/env'
 

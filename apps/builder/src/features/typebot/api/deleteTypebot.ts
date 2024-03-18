@@ -4,7 +4,7 @@ import { TRPCError } from '@trpc/server'
 import { Typebot } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
-import { archiveResults } from '@typebot.io/lib/api/helpers/archiveResults'
+import { archiveResults } from '@typebot.io/results/archiveResults'
 
 export const deleteTypebot = authenticatedProcedure
   .meta({

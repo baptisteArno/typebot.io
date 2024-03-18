@@ -26,7 +26,7 @@ import {
   maxTimeout,
 } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
 import { env } from '@typebot.io/env'
-import { parseAnswers } from '@typebot.io/lib/results/parseAnswers'
+import { parseAnswers } from '@typebot.io/results/parseAnswers'
 
 type ParsedWebhook = ExecutableHttpRequest & {
   basicAuth: { username?: string; password?: string }

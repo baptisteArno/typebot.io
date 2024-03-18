@@ -5,9 +5,9 @@ import prisma from '@typebot.io/lib/prisma'
 import {
   createTypebots,
   injectFakeResults,
-} from '@typebot.io/lib/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
-import { userId } from '@typebot.io/lib/playwright/databaseSetup'
+} from '@typebot.io/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/playwright/databaseHelpers'
+import { userId } from '@typebot.io/playwright/databaseSetup'
 import { createFolder } from '@/test/utils/databaseActions'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 

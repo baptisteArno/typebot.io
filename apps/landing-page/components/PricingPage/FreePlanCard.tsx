@@ -3,7 +3,7 @@ import { HelpCircleIcon } from 'assets/icons/HelpCircleIcon'
 import Link from 'next/link'
 import React from 'react'
 import { PricingCard } from './PricingCard'
-import { chatsLimits } from '@typebot.io/lib/billing/constants'
+import { chatsLimits } from '@typebot.io/billing/constants'
 
 export const FreePlanCard = () => (
   <PricingCard

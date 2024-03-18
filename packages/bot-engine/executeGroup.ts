@@ -5,13 +5,13 @@ import {
   RuntimeOptions,
   SessionState,
 } from '@typebot.io/schemas'
+import { isNotEmpty } from '@typebot.io/lib'
 import {
   isBubbleBlock,
   isInputBlock,
   isIntegrationBlock,
   isLogicBlock,
-  isNotEmpty,
-} from '@typebot.io/lib'
+} from '@typebot.io/schemas/helpers'
 import { getNextGroup } from './getNextGroup'
 import { executeLogic } from './executeLogic'
 import { executeIntegration } from './executeIntegration'

@@ -30,7 +30,7 @@ import { HeaderRow } from './HeaderRow'
 import { IndeterminateCheckbox } from './IndeterminateCheckbox'
 import { colors } from '@/lib/theme'
 import { HeaderIcon } from '../HeaderIcon'
-import { parseColumnsOrder } from '@typebot.io/lib/results/parseColumnsOrder'
+import { parseColumnsOrder } from '@typebot.io/results/parseColumnsOrder'
 import { TimeFilterDropdown } from '@/features/analytics/components/TimeFilterDropdown'
 import { timeFilterValues } from '@/features/analytics/constants'
 

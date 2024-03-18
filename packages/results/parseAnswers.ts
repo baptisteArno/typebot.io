@@ -3,7 +3,7 @@ import {
   Variable,
   VariableWithValue,
 } from '@typebot.io/schemas'
-import { isDefined, isEmpty } from '../utils'
+import { isDefined, isEmpty } from '../lib/utils'
 
 export const parseAnswers = ({
   answers,

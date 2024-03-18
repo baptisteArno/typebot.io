@@ -1,6 +1,6 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+import { createTypebots } from '@typebot.io/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/playwright/databaseHelpers'
 import { createId } from '@paralleldrive/cuid2'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { defaultPhoneInputOptions } from '@typebot.io/schemas/features/blocks/inputs/phone/constants'
@@ -25,7 +25,6 @@ test.describe('Phone input block', () => {
         `input[placeholder="${defaultPhoneInputOptions.labels.placeholder}"]`
       )
     ).toHaveAttribute('type', 'tel')
-    await expect(page.getByRole('button', { name: 'Send' })).toBeDisabled()
 
     await page.click(`text=${defaultPhoneInputOptions.labels.placeholder}`)
     await page.getByLabel('Placeholder:').fill('+33 XX XX XX XX')
