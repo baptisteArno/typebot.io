@@ -81,15 +81,21 @@ export const StepNode = ({
     setFocusedBlockId,
     previewingEdge,
   } = useGraph()
-  const { updateStep } = useTypebot()
+  const { updateStep, typebot } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
+
+  const availableOnlyForEvent =
+    typebot?.availableFor?.length == 1 &&
+    typebot.availableFor.includes('event')
+
+  const showWarning = !availableOnlyForEvent
 
   const [isPopoverOpened, setIsPopoverOpened] = useState(
     openedStepId === step.id
   )
   const [isEditing, setIsEditing] = useState<boolean>(
     (isTextBubbleStep(step) || isOctaBubbleStep(step)) &&
-      step.content.plainText === ''
+    step.content.plainText === ''
   )
   const stepRef = useRef<HTMLDivElement | null>(null)
 
@@ -127,7 +133,7 @@ export const StepNode = ({
   useEffect(() => {
     setIsConnecting(
       connectingIds?.target?.blockId === step.blockId &&
-        connectingIds?.target?.stepId === step.id
+      connectingIds?.target?.stepId === step.id
     )
   }, [connectingIds, step.blockId, step.id])
 
@@ -208,11 +214,12 @@ export const StepNode = ({
                 w="full"
                 direction="column"
               >
+
                 <Stack spacing={2}>
                   <BlockStack
                     isOpened={isOpened}
                     isPreviewing={isPreviewing}
-                    style={{ borderColor: unreachableNode ? '#e3a820' : '' }}
+                    style={{ borderColor: unreachableNode && showWarning ? '#e3a820' : '' }}
                   >
                     <Stack spacing={2} w="full">
                       <HStack fontSize={'14px'}>
@@ -226,7 +233,7 @@ export const StepNode = ({
                           data-testid={`${step.id}-icon`}
                         />
                         <Spacer />
-                        {unreachableNode && (
+                        {unreachableNode && showWarning && (
                           <>
                             <OctaTooltip
                               element={<WarningIcon color={'#FAC300'} />}
@@ -240,7 +247,7 @@ export const StepNode = ({
                             />
                           </>
                         )}
-                        {!unreachableNode &&
+                        {!unreachableNode && showWarning &&
                           validationMessages?.map((s, index) => {
                             return (
                               <OctaTooltip
