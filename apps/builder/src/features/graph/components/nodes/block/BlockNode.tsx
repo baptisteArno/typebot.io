@@ -147,6 +147,7 @@ export const BlockNode = ({
   const handleCloseEditor = (content: TElement[]) => {
     const updatedBlock = { ...block, content: { richText: content } }
     updateBlock(indices, updatedBlock)
+    setOpenedBlockId(undefined)
   }
 
   const handleClick = (e: React.MouseEvent) => {
