@@ -24,6 +24,8 @@ import {
   WhatsAppOptionsListStep,
   WhatsAppButtonsListStep,
   OctaWabaStepType,
+  WOZAssignStep,
+  WOZStepType,
 } from 'models'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
@@ -89,7 +91,7 @@ export const StepNode = ({
   )
   const [isEditing, setIsEditing] = useState<boolean>(
     (isTextBubbleStep(step) || isOctaBubbleStep(step)) &&
-      step.content.plainText === ''
+    step.content.plainText === ''
   )
   const stepRef = useRef<HTMLDivElement | null>(null)
 
@@ -127,7 +129,7 @@ export const StepNode = ({
   useEffect(() => {
     setIsConnecting(
       connectingIds?.target?.blockId === step.blockId &&
-        connectingIds?.target?.stepId === step.id
+      connectingIds?.target?.stepId === step.id
     )
   }, [connectingIds, step.blockId, step.id])
 
@@ -177,7 +179,8 @@ export const StepNode = ({
       !isWebhookStep(step) &&
       !isCallOtherBotStep(step) &&
       !isWhatsAppOptionsListStep(step) &&
-      !isWhatsAppButtonsListStep(step)
+      !isWhatsAppButtonsListStep(step) &&
+      !isWozAssignStep(step)
     )
   }
 
@@ -375,6 +378,10 @@ const isEndConversationStep = (
 
 const isAssignToTeamStep = (step: Step): step is AssignToTeamStep => {
   return step.type === OctaStepType.ASSIGN_TO_TEAM
+}
+
+const isWozAssignStep = (step: Step): step is WOZAssignStep => {
+  return step.type === WOZStepType.ASSIGN
 }
 
 const isCallOtherBotStep = (step: Step): step is CallOtherBotStep => {
