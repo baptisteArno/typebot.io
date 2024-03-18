@@ -50,6 +50,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <TextIcon color="#AA561C" {...props} />
     case WOZStepType.MESSAGE:
       return <WandIcon color="#AA561C" {...props} />
+    case WOZStepType.ASSIGN:
+      return <AssignToIcon color="#AA561C" {...props} />
     case BubbleStepType.MEDIA:
       return <LayoutIcon color="#AA561C" {...props} />
     case BubbleStepType.VIDEO:

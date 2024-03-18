@@ -118,7 +118,8 @@ export const StepsSideBar = () => {
       type !== LogicStepType.CODE &&
       type !== LogicStepType.TYPEBOT_LINK &&
       type !== InputStepType.DATE &&
-      type !== OctaStepType.CALL_OTHER_BOT
+      type !== OctaStepType.CALL_OTHER_BOT &&
+      type !== WOZStepType.MESSAGE
     )
   }
 
@@ -302,7 +303,7 @@ export const StepsSideBar = () => {
         {wozSteps.length && (
           <Stack>
             <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-              WOZ - IA da Octa
+              WOZ
             </Text>
             <SimpleGrid columns={1} spacing="3">
               {wozSteps.map((type) => (

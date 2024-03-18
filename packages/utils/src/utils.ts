@@ -26,16 +26,17 @@ import {
   OctaWabaStepType,
   WhatsAppOptionsListStep,
   WhatsAppButtonsListStep,
-  WOZStepType
+  WOZStepType,
+  WOZAssignStep
 } from 'models'
 
 export const sendRequest = async <ResponseData>(
   params:
     | {
-        url: string
-        method: string
-        body?: Record<string, unknown>
-      }
+      url: string
+      method: string
+      body?: Record<string, unknown>
+    }
     | string
 ): Promise<{ data?: ResponseData; error?: Error }> => {
   try {
@@ -46,8 +47,8 @@ export const sendRequest = async <ResponseData>(
       headers:
         typeof params !== 'string' && isDefined(params.body)
           ? {
-              'Content-Type': 'application/json',
-            }
+            'Content-Type': 'application/json',
+          }
           : undefined,
       body:
         typeof params !== 'string' && isDefined(params.body)
@@ -127,18 +128,16 @@ export const isOctaBubbleStepType = (type: StepType): type is OctaBubbleStepType
 
 // export const hasRedirectWhenNoneAvailable = (step: Step): step is OctaBubbleStepType =>
 
-export const isOctaStepType = (type: StepType): type is OctaStepType =>
-{
+export const isOctaStepType = (type: StepType): type is OctaStepType => {
   const octaType = Object.values(OctaStepType) as string[]
   return [...octaType, OctaWabaStepType.COMMERCE].includes(type)
 }
 
-export const isWOZStepType = (type: StepType): type is WOZStepType =>
-{
+export const isWOZStepType = (type: StepType): type is WOZStepType => {
   const octaType = Object.values(WOZStepType) as string[]
   return [...octaType].includes(type)
 }
-  
+
 
 export const stepTypeHasOption = (
   type: StepType
@@ -163,12 +162,12 @@ export const stepTypeHasWebhook = (
 
 export const stepTypeHasItems = (
   type: StepType
-): type is LogicStepType.CONDITION | InputStepType.CHOICE | OctaStepType.OFFICE_HOURS | IntegrationStepType.WEBHOOK | OctaWabaStepType.WHATSAPP_OPTIONS_LIST | OctaWabaStepType.WHATSAPP_BUTTONS_LIST | OctaWabaStepType.COMMERCE => 
-  [LogicStepType.CONDITION, InputStepType.CHOICE, OctaStepType.OFFICE_HOURS, IntegrationStepType.WEBHOOK, OctaWabaStepType.WHATSAPP_OPTIONS_LIST, OctaWabaStepType.WHATSAPP_BUTTONS_LIST, OctaWabaStepType.COMMERCE].includes(type)
+): type is LogicStepType.CONDITION | InputStepType.CHOICE | OctaStepType.OFFICE_HOURS | IntegrationStepType.WEBHOOK | OctaWabaStepType.WHATSAPP_OPTIONS_LIST | OctaWabaStepType.WHATSAPP_BUTTONS_LIST | OctaWabaStepType.COMMERCE | WOZStepType.ASSIGN =>
+  [LogicStepType.CONDITION, InputStepType.CHOICE, OctaStepType.OFFICE_HOURS, IntegrationStepType.WEBHOOK, OctaWabaStepType.WHATSAPP_OPTIONS_LIST, OctaWabaStepType.WHATSAPP_BUTTONS_LIST, OctaWabaStepType.COMMERCE, WOZStepType.ASSIGN].includes(type)
 
 export const stepHasItems = (
   step: Step
-): step is ConditionStep | ChoiceInputStep | OfficeHourStep | WebhookStep | WhatsAppOptionsListStep | WhatsAppButtonsListStep =>
+): step is ConditionStep | ChoiceInputStep | OfficeHourStep | WebhookStep | WhatsAppOptionsListStep | WhatsAppButtonsListStep | WOZAssignStep =>
   'items' in step && isDefined(step.items)
 
 export const byId = (id?: string) => (obj: { id: string }) => obj.id === id
@@ -197,17 +196,17 @@ export const omit: Omit = (obj, ...keys) => {
 
 export const sanitizeUrl = (url: string): string =>
   url.startsWith('http') ||
-  url.startsWith('mailto:') ||
-  url.startsWith('tel:') ||
-  url.startsWith('sms:')
+    url.startsWith('mailto:') ||
+    url.startsWith('tel:') ||
+    url.startsWith('sms:')
     ? url
     : `https://${url}`
 
-export const validateUrl =(url: string) =>{
+export const validateUrl = (url: string) => {
   const regexp =
-		/^((http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/|\/\/))?([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?/
-	const regexs = /^[/][a-z][a-z0-9.-]{0,49}$/
-	const candidate = url.replace(/ /g, '').trim()
+    /^((http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/|\/\/))?([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?/
+  const regexs = /^[/][a-z][a-z0-9.-]{0,49}$/
+  const candidate = url.replace(/ /g, '').trim()
 
-	return regexp.test(candidate) || regexs.test(candidate)
+  return regexp.test(candidate) || regexs.test(candidate)
 }

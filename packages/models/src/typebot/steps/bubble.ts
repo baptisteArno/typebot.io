@@ -18,6 +18,7 @@ export enum BubbleStepType {
 
 export enum WOZStepType {
   MESSAGE = 'woz message',
+  ASSIGN = 'woz assign',
 }
 
 export type BubbleStepContent =

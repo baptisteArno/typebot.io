@@ -35,6 +35,7 @@ import { useTypebot } from 'contexts/TypebotContext'
 import { MediaInputContent } from '../contents/MediaInput'
 import { InputItemsContent } from '../contents/InputItemsContent'
 import { WOZSuggestionContent } from '../contents/WOZSuggestion'
+import { WOZAssignContent } from '../contents/WOZAssign'
 import { ConversationTagContent } from '../contents/ConversationTag'
 // import { ProviderWebhookContent } from './contents/ZapierContent'
 
@@ -59,13 +60,13 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     case BubbleStepType.TEXT: {
       return <TextBubbleContent step={step} />
     }
-    case BubbleStepType.MEDIA: 
-    return (
-      <MediaInputContent step={step} />
-    )
+    case BubbleStepType.MEDIA:
+      return (
+        <MediaInputContent step={step} />
+      )
     case InputStepType.TEXT:
     case InputStepType.ASK_NAME:
-    case InputStepType.EMAIL: 
+    case InputStepType.EMAIL:
     case InputStepType.CPF:
     case InputStepType.DATE:
     case InputStepType.PHONE: {
@@ -187,6 +188,9 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     }
     case WOZStepType.MESSAGE: {
       return <WOZSuggestionContent step={step} />
+    }
+    case WOZStepType.ASSIGN: {
+      return <WOZAssignContent step={step} indices={indices} />
     }
     case OctaStepType.CONVERSATION_TAG: {
       return <ConversationTagContent step={step} />

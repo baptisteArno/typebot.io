@@ -24,6 +24,8 @@ import {
   OctaWabaStepType,
   StepIndices,
   StepWithItems,
+  WOZAssignStep,
+  WOZStepType,
 } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { ItemNode } from '../ItemNode'
@@ -37,7 +39,7 @@ import {
 import { CodeEditor } from 'components/shared/CodeEditor'
 
 type Props = {
-  step: StepWithItems
+  step: StepWithItems | WOZAssignStep
   indices: StepIndices
   isReadOnly?: boolean
 }
@@ -119,17 +121,17 @@ export const ItemNodesList = ({
 
   const handleStepMouseDown =
     (itemIndex: number) =>
-    (
-      { absolute, relative }: { absolute: Coordinates; relative: Coordinates },
-      item: ButtonItem
-    ) => {
-      if (!typebot || isReadOnly) return
-      placeholderRefs.current.splice(itemIndex + 1, 1)
-      detachItemFromStep({ blockIndex, stepIndex, itemIndex })
-      setPosition(absolute)
-      setRelativeCoordinates(relative)
-      setDraggedItem(item)
-    }
+      (
+        { absolute, relative }: { absolute: Coordinates; relative: Coordinates },
+        item: ButtonItem
+      ) => {
+        if (!typebot || isReadOnly) return
+        placeholderRefs.current.splice(itemIndex + 1, 1)
+        detachItemFromStep({ blockIndex, stepIndex, itemIndex })
+        setPosition(absolute)
+        setRelativeCoordinates(relative)
+        setDraggedItem(item)
+      }
 
   const stopPropagating = (e: React.MouseEvent) => e.stopPropagation()
 
@@ -234,22 +236,24 @@ export const ItemNodesList = ({
               <ItemNode
                 item={item}
                 step={step}
-                indices={{ blockIndex, stepIndex, itemIndex: idx }}
+                indices={{ blockIndex, stepIndex, itemIndex: idx, itemsCount: step.items.length }}
                 onMouseDown={handleStepMouseDown(idx)}
                 isReadOnly={isReadOnly}
               />
-              <Flex
-                ref={handlePushElementRef(idx + 1)}
-                h={
-                  showPlaceholders && expandedPlaceholderIndex === idx + 1
-                    ? '50px'
-                    : '2px'
-                }
-                bgColor={'gray.300'}
-                visibility={showPlaceholders ? 'visible' : 'hidden'}
-                rounded="lg"
-                transition={showPlaceholders ? 'height 200ms' : 'none'}
-              />
+              {step.type !== WOZStepType.ASSIGN && (
+                <Flex
+                  ref={handlePushElementRef(idx + 1)}
+                  h={
+                    showPlaceholders && expandedPlaceholderIndex === idx + 1
+                      ? '50px'
+                      : '2px'
+                  }
+                  bgColor={'gray.300'}
+                  visibility={showPlaceholders ? 'visible' : 'hidden'}
+                  rounded="lg"
+                  transition={showPlaceholders ? 'height 200ms' : 'none'}
+                />
+              )}
             </Stack>
           )
         })}
@@ -258,7 +262,8 @@ export const ItemNodesList = ({
         step.type !== InputStepType.CHOICE &&
         step.type !== IntegrationStepType.WEBHOOK &&
         step.type !== OctaWabaStepType.WHATSAPP_OPTIONS_LIST &&
-        step.type !== OctaWabaStepType.WHATSAPP_BUTTONS_LIST && (
+        step.type !== OctaWabaStepType.WHATSAPP_BUTTONS_LIST &&
+        step.type !== WOZStepType.ASSIGN && (
           <Flex
             px="4"
             py="2"

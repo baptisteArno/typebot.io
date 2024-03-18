@@ -50,7 +50,9 @@ import {
   defaultPreReserveOptions,
   WOZStepType,
   defaultWOZSuggestionOptions,
+  defaultWOZAssignOptions,
   WOZSuggestionOptions,
+  WOZAssignStep,
   defaultConversationTagOptions,
   ConversationTagOptions
 } from 'models'
@@ -67,6 +69,8 @@ import {
   stepHasItems,
   stepTypeHasItems,
   stepTypeHasOption,
+  isWOZStepType,
+  stepTypeHasWebhook,
 } from 'utils'
 import { dequal } from 'dequal'
 import { stringify } from 'qs'
@@ -218,6 +222,7 @@ const duplicateTypebot = (
               | OfficeHourStep
               | WhatsAppOptionsListStep
               | WhatsAppButtonsListStep
+              | WOZAssignStep
           }
 
           if (isWebhookStep(s)) {
@@ -302,19 +307,23 @@ export const parseNewStep = (
   blockId: string
 ): DraggableStep => {
   const id = cuid()
+
+  const options = isOctaStepType(type) || isWOZStepType(type)
+    ? parseOctaStepOptions(type)
+    : stepTypeHasOption(type)
+      ? parseDefaultStepOptions(type)
+      : undefined
+
   return {
     id,
     blockId,
     type,
-    content:
-      isBubbleStepType(type) || isOctaBubbleStepType(type)
-        ? parseDefaultContent(type)
-        : undefined,
-    options: isOctaStepType(type)
-      ? parseOctaStepOptions(type)
-      : stepTypeHasOption(type)
-        ? parseDefaultStepOptions(type)
-        : undefined,
+    content: isBubbleStepType(type) || isOctaBubbleStepType(type)
+      ? parseDefaultContent(type)
+      : undefined,
+    options,
+
+    webhookId: stepTypeHasWebhook(type) ? cuid() : undefined,
     items: stepTypeHasItems(type) ? parseDefaultItems(type, id) : undefined,
   } as DraggableStep
 }
@@ -327,12 +336,31 @@ const parseDefaultItems = (
     | IntegrationStepType.WEBHOOK
     | OctaWabaStepType.WHATSAPP_OPTIONS_LIST
     | OctaWabaStepType.WHATSAPP_BUTTONS_LIST
+    | WOZStepType.ASSIGN
     | OctaWabaStepType.COMMERCE,
   stepId: string
 ): Item[] => {
   switch (type) {
     case InputStepType.CHOICE:
       return [{ id: cuid(), stepId, type: ItemType.BUTTON }]
+    case WOZStepType.ASSIGN:
+      return [
+        {
+          id: cuid(),
+          stepId,
+          type: ItemType.BUTTON,
+          content: 'Encerrar a conversa',
+          readonly: true
+        },
+        {
+          id: cuid(),
+          stepId,
+          type: ItemType.BUTTON,
+          content: 'Falar com um humano',
+          readonly: true
+        }
+      ]
+
     case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
       return [
         {
@@ -465,6 +493,8 @@ const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType | WOZStepTyp
       return defaultConversationTagOptions
     case WOZStepType.MESSAGE:
       return defaultWOZSuggestionOptions
+    case WOZStepType.ASSIGN:
+      return defaultWOZAssignOptions
     case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
       return defaultWhatsAppOptionsListOptions
     case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:

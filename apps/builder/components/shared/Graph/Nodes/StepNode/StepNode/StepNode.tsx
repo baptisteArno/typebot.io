@@ -24,6 +24,8 @@ import {
   WhatsAppOptionsListStep,
   WhatsAppButtonsListStep,
   OctaWabaStepType,
+  WOZAssignStep,
+  WOZStepType,
 } from 'models'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
@@ -183,7 +185,8 @@ export const StepNode = ({
       !isWebhookStep(step) &&
       !isCallOtherBotStep(step) &&
       !isWhatsAppOptionsListStep(step) &&
-      !isWhatsAppButtonsListStep(step)
+      !isWhatsAppButtonsListStep(step) &&
+      !isWozAssignStep(step)
     )
   }
 
@@ -382,6 +385,10 @@ const isEndConversationStep = (
 
 const isAssignToTeamStep = (step: Step): step is AssignToTeamStep => {
   return step.type === OctaStepType.ASSIGN_TO_TEAM
+}
+
+const isWozAssignStep = (step: Step): step is WOZAssignStep => {
+  return step.type === WOZStepType.ASSIGN
 }
 
 const isCallOtherBotStep = (step: Step): step is CallOtherBotStep => {

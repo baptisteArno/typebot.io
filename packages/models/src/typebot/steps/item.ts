@@ -21,4 +21,5 @@ export type ItemIndices = {
   blockIndex: number
   stepIndex: number
   itemIndex: number
+  itemsCount?: number
 }
