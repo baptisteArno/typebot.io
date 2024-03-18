@@ -277,7 +277,9 @@ const parseRetryMessage =
       block.options &&
       'retryMessageContent' in block.options &&
       block.options.retryMessageContent
-        ? block.options.retryMessageContent
+        ? parseVariables(state.typebotsQueue[0].typebot.variables)(
+            block.options.retryMessageContent
+          )
         : parseDefaultRetryMessage(block)
     return {
       messages: [
