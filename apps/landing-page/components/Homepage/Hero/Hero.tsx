@@ -9,7 +9,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import * as React from 'react'
-import Typed from 'react-typed'
+import { ReactTyped } from 'react-typed'
 import { Header } from '../../common/Header/Header'
 // import { BackgroundPolygons } from './BackgroundPolygons'
 import * as Logos from './Brands'
@@ -35,7 +35,7 @@ export const Hero = () => {
               data-aos="fade-up"
             >
               Build{' '}
-              <Typed
+              <ReactTyped
                 strings={['advanced chatbots', 'conversational forms']}
                 typeSpeed={50}
                 backSpeed={100}
