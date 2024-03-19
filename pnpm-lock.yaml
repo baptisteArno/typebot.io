@@ -285,9 +285,6 @@ importers:
       '@typebot.io/forge-repository':
         specifier: workspace:*
         version: link:../../packages/forge/repository
-      '@typebot.io/forge-schemas':
-        specifier: workspace:*
-        version: link:../../packages/forge/schemas
       '@typebot.io/lib':
         specifier: workspace:*
         version: link:../../packages/lib
@@ -575,9 +572,6 @@ importers:
       '@typebot.io/forge-repository':
         specifier: workspace:*
         version: link:../../packages/forge/repository
-      '@typebot.io/forge-schemas':
-        specifier: workspace:*
-        version: link:../../packages/forge/schemas
       '@typebot.io/lib':
         specifier: workspace:*
         version: link:../../packages/lib
@@ -748,9 +742,6 @@ importers:
       '@typebot.io/forge-repository':
         specifier: workspace:*
         version: link:../forge/repository
-      '@typebot.io/forge-schemas':
-        specifier: workspace:*
-        version: link:../forge/schemas
       '@types/nodemailer':
         specifier: 6.4.8
         version: 6.4.8
@@ -1522,9 +1513,6 @@ importers:
         specifier: 3.22.4
         version: 3.22.4
     devDependencies:
-      '@typebot.io/forge-repository':
-        specifier: workspace:*
-        version: link:../repository
       '@typebot.io/tsconfig':
         specifier: workspace:*
         version: link:../../tsconfig
@@ -1532,9 +1520,7 @@ importers:
         specifier: 18.2.15
         version: 18.2.15
 
-  packages/forge/repository: {}
-
-  packages/forge/schemas:
+  packages/forge/repository:
     devDependencies:
       '@typebot.io/anthropic-block':
         specifier: workspace:*
@@ -1554,9 +1540,6 @@ importers:
       '@typebot.io/forge':
         specifier: workspace:*
         version: link:../core
-      '@typebot.io/forge-repository':
-        specifier: workspace:*
-        version: link:../repository
       '@typebot.io/mistral-block':
         specifier: workspace:*
         version: link:../blocks/mistral
@@ -1569,9 +1552,6 @@ importers:
       '@typebot.io/qrcode-block':
         specifier: workspace:*
         version: link:../blocks/qrcode
-      '@typebot.io/razorpay-block':
-        specifier: workspace:*
-        version: link:../blocks/razorpay
       '@typebot.io/together-ai-block':
         specifier: workspace:*
         version: link:../blocks/togetherAi
@@ -1657,9 +1637,6 @@ importers:
       '@typebot.io/env':
         specifier: workspace:*
         version: link:../env
-      '@typebot.io/forge-repository':
-        specifier: workspace:*
-        version: link:../forge/repository
       '@typebot.io/prisma':
         specifier: workspace:*
         version: link:../prisma
@@ -1681,6 +1658,9 @@ importers:
       nodemailer:
         specifier: 6.9.3
         version: 6.9.3
+      tslib:
+        specifier: 2.6.0
+        version: 2.6.0
       typescript:
         specifier: 5.3.2
         version: 5.3.2
@@ -1923,9 +1903,6 @@ importers:
       '@typebot.io/lib':
         specifier: workspace:*
         version: link:../lib
-      '@typebot.io/schemas':
-        specifier: workspace:*
-        version: link:../schemas
 
 packages:
 

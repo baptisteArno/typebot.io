@@ -1,5 +1,5 @@
 import { isNotDefined } from '@typebot.io/lib/utils'
-import { Variable, VariableWithValue } from '@typebot.io/schemas'
+import { Variable, VariableWithValue } from './types'
 
 export const transformVariablesToList =
   (variables: Variable[]) =>

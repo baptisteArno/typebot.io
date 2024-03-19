@@ -1,26 +1,22 @@
 import { safeStringify } from '@typebot.io/lib/safeStringify'
-import {
-  SessionState,
-  VariableWithUnknowValue,
-  Variable,
-} from '@typebot.io/schemas'
+import { Variable, VariableWithUnknowValue } from './types'
 
 export const updateVariablesInSession =
-  (state: SessionState) =>
-  (newVariables: VariableWithUnknowValue[]): SessionState => ({
+  (state: any) => (newVariables: VariableWithUnknowValue[]) => ({
     ...state,
-    typebotsQueue: state.typebotsQueue.map((typebotInQueue, index) =>
-      index === 0
-        ? {
-            ...typebotInQueue,
-            typebot: {
-              ...typebotInQueue.typebot,
-              variables: updateTypebotVariables(typebotInQueue.typebot)(
-                newVariables
-              ),
-            },
-          }
-        : typebotInQueue
+    typebotsQueue: state.typebotsQueue.map(
+      (typebotInQueue: { typebot: { variables: Variable[] } }, index: number) =>
+        index === 0
+          ? {
+              ...typebotInQueue,
+              typebot: {
+                ...typebotInQueue.typebot,
+                variables: updateTypebotVariables(typebotInQueue.typebot)(
+                  newVariables
+                ),
+              },
+            }
+          : typebotInQueue
     ),
   })
 

@@ -36,7 +36,6 @@
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/forge-repository": "workspace:*",
-    "@typebot.io/forge-schemas": "workspace:*",
     "@types/nodemailer": "6.4.8",
     "@types/qs": "6.9.7"
   }

@@ -1,5 +1,3 @@
-import { forgedBlockSchemas } from '@typebot.io/forge-schemas'
-import { enabledBlocks } from '@typebot.io/forge-repository'
 import prisma from '@typebot.io/lib/prisma'
 import { Plan } from '@typebot.io/prisma'
 import { Block, Typebot } from '@typebot.io/schemas'
@@ -50,25 +48,6 @@ const sanitizeBlock =
   (workspaceId: string) =>
   async (block: Block): Promise<Block> => {
     if (!('options' in block) || !block.options) return block
-
-    if (enabledBlocks.includes(block.type as (typeof enabledBlocks)[number])) {
-      const schema = forgedBlockSchemas.find(
-        (s) => s.shape.type.value === block.type
-      )
-      if (!schema)
-        throw new Error(
-          `Integration block schema not found for block type ${block.type}`
-        )
-      return schema.parse({
-        ...block,
-        options: {
-          ...block.options,
-          credentialsId: await sanitizeCredentialsId(workspaceId)(
-            block.options.credentialsId
-          ),
-        },
-      })
-    }
 
     if (!('credentialsId' in block.options) || !block.options.credentialsId)
       return block

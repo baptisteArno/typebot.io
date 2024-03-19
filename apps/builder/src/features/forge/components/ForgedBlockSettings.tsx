@@ -5,7 +5,7 @@ import { ForgedCredentialsModal } from './credentials/ForgedCredentialsModal'
 import { ZodObjectLayout } from './zodLayouts/ZodObjectLayout'
 import { ZodActionDiscriminatedUnion } from './zodLayouts/ZodActionDiscriminatedUnion'
 import { useForgedBlock } from '../hooks/useForgedBlock'
-import { ForgedBlock } from '@typebot.io/forge-schemas'
+import { ForgedBlock } from '@typebot.io/forge-repository/types'
 
 type Props = {
   block: ForgedBlock

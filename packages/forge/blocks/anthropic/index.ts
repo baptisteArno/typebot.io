@@ -3,7 +3,7 @@ import { AnthropicLogo } from './logo'
 import { auth } from './auth'
 import { createChatMessage } from './actions/createChatMessage'
 
-export const anthropic = createBlock({
+export const anthropicBlock = createBlock({
   id: 'anthropic',
   name: 'Anthropic',
   tags: ['ai', 'chat', 'completion', 'claude', 'anthropic'],

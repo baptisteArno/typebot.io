@@ -99,7 +99,6 @@
     "@playwright/test": "1.41.2",
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/forge-repository": "workspace:*",
-    "@typebot.io/forge-schemas": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/radar": "workspace:*",

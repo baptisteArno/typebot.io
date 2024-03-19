@@ -44,7 +44,6 @@
     "@typebot.io/env": "workspace:*",
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/forge-repository": "workspace:*",
-    "@typebot.io/forge-schemas": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",

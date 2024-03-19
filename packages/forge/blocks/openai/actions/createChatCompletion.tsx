@@ -21,14 +21,14 @@ export const createChatCompletion = createAction({
   getSetVariableIds: getChatCompletionSetVarIds,
   turnableInto: [
     {
-      blockType: 'open-router',
+      blockId: 'open-router',
     },
     {
-      blockType: 'together-ai',
+      blockId: 'together-ai',
     },
-    { blockType: 'mistral' },
+    { blockId: 'mistral' },
     {
-      blockType: 'anthropic',
+      blockId: 'anthropic',
       transform: (options) => ({
         ...options,
         action: 'Create Chat Message',
