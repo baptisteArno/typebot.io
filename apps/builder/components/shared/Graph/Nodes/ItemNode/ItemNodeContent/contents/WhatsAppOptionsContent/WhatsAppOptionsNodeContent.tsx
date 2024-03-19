@@ -90,7 +90,7 @@ export const WhatsAppOptionsNodeContent = ({
           px={4}
           py={2}
         />
-        <EditableInput px={4} py={2} maxLength={20} />
+        <EditableInput px={4} py={2} maxLength={24} />
       </Editable>
       <Fade
         in={isMouseOver}
@@ -111,14 +111,14 @@ export const WhatsAppOptionsNodeContent = ({
           onClick={handlePlusClick}
         />
         {hasMoreThanOneItem() && (
-        <IconButton
-          aria-label="Delete item"
-          icon={<TrashIcon />}
-          size="xs"
-          shadow="md"
-          colorScheme="gray"
-          onClick={handleDeleteClick}
-        />)}
+          <IconButton
+            aria-label="Delete item"
+            icon={<TrashIcon />}
+            size="xs"
+            shadow="md"
+            colorScheme="gray"
+            onClick={handleDeleteClick}
+          />)}
       </Fade>
     </Flex>
   )

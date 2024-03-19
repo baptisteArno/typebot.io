@@ -94,19 +94,6 @@ export const TableList = <T,>({
             onRemoveItem={handleCellDelete(itemIndex)}
             debounceTimeout={debounceTimeout}
           />
-          {items.length > (minItems || 0) && <Fade in={showDeleteIndex === itemIndex}>
-            <IconButton
-              icon={<TrashIcon />}
-              aria-label="Remove cell"
-              onClick={deleteItem(itemIndex)}
-              pos="absolute"
-              left="-15px"
-              top="-15px"
-              size="sm"
-              shadow="md"
-            />
-          </Fade>
-          }
         </Box>
       ))}
       {!shouldHideButton && (
