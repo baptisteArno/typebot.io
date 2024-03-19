@@ -2,6 +2,7 @@ import resolve from '@rollup/plugin-node-resolve'
 import terser from '@rollup/plugin-terser'
 import { babel } from '@rollup/plugin-babel'
 import { typescriptPaths } from 'rollup-plugin-typescript-paths'
+import typescript from '@rollup/plugin-typescript'
 import fs from 'fs'
 
 const extensions = ['.ts', '.tsx']
@@ -26,6 +27,7 @@ const indexConfig = {
       extensions,
     }),
     typescriptPaths({ preserveExtensions: true }),
+    typescript(),
     terser({ format: { preamble } }),
   ],
 }

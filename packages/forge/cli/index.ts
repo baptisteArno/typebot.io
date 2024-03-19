@@ -84,6 +84,7 @@ const main = async () => {
   await createLogoFile(newBlockPath, prompt)
   if (prompt.auth !== 'none') await createAuthFile(newBlockPath, prompt)
   await createSchemasFile(newBlockPath, prompt)
+  await addBlockToRepository(prompt)
   s.stop('Creating files...')
   s.start('Installing dependencies...')
   await new Promise<void>((resolve, reject) => {
@@ -186,7 +187,8 @@ const createTsConfig = async (path: string) => {
         compilerOptions: {
           lib: ['ESNext', 'DOM'],
           noEmit: true,
-          jsx: 'react',
+          jsx: 'preserve',
+          jsxImportSource: 'react',
         },
       }),
       { parser: 'json', ...prettierRc }
@@ -201,7 +203,7 @@ const createLogoFile = async (
   writeFileSync(
     join(path, 'logo.tsx'),
     await prettier.format(
-      `import React from 'react'
+      `/** @jsxImportSource react */
 
       export const ${capitalize(
         camelCaseId
@@ -244,6 +246,19 @@ const createAuthFile = async (
     )
   )
 
+const addBlockToRepository = async ({
+  camelCaseId,
+  id,
+}: {
+  camelCaseId: string
+  id: string
+}) => {
+  const schemasPath = await addBlockToRepoPackageJson(id)
+  await addBlockToRepoDefinitions(schemasPath, camelCaseId, id)
+  await addBlockToRepoConstants(schemasPath, id)
+  await addBlockToRepoSchemas(schemasPath, camelCaseId, id)
+}
+
 const createSchemasFile = async (
   path: string,
   {
@@ -263,6 +278,111 @@ export const ${camelCaseName}CredentialsSchema = parseBlockCredentials(${camelCa
       { parser: 'typescript', ...prettierRc }
     )
   )
+}
+
+async function addBlockToRepoDefinitions(
+  schemasPath: string,
+  camelCaseId: string,
+  id: string
+) {
+  const existingDefinitionsData = readFileSync(
+    join(schemasPath, 'definitions.ts')
+  ).toString()
+  const importStatement = `import { ${camelCaseId}Block } from '@typebot.io/${id}-block'`
+  const objectEntry = `  [${camelCaseId}Block.id]: ${camelCaseId}Block,`
+  const nextLineImportIndex = existingDefinitionsData.indexOf(
+    '\n',
+    existingDefinitionsData.lastIndexOf('import')
+  )
+
+  const newObjectEntryIndex = existingDefinitionsData.lastIndexOf(',') + 1
+
+  const newDefinitionsData = `${existingDefinitionsData.slice(
+    0,
+    nextLineImportIndex
+  )}
+${importStatement}
+${existingDefinitionsData.slice(nextLineImportIndex, newObjectEntryIndex)}
+${objectEntry}
+${existingDefinitionsData.slice(newObjectEntryIndex)}`
+
+  writeFileSync(
+    join(schemasPath, 'definitions.ts'),
+    await prettier.format(newDefinitionsData, {
+      parser: 'typescript',
+      ...prettierRc,
+    })
+  )
+}
+
+async function addBlockToRepoSchemas(
+  schemasPath: string,
+  camelCaseId: string,
+  id: string
+) {
+  const existingDefinitionsData = readFileSync(
+    join(schemasPath, 'schemas.ts')
+  ).toString()
+  const importStatement = `import { ${camelCaseId}Block } from '@typebot.io/${id}-block'
+import { ${camelCaseId}BlockSchema } from '@typebot.io/${id}-block/schemas'`
+  const objectEntry = `  [${camelCaseId}Block.id]: ${camelCaseId}BlockSchema,`
+  const nextLineImportIndex = existingDefinitionsData.indexOf(
+    '\n',
+    existingDefinitionsData.lastIndexOf('import')
+  )
+
+  const newObjectEntryIndex = existingDefinitionsData.lastIndexOf(',') + 1
+
+  const newDefinitionsData = `${existingDefinitionsData.slice(
+    0,
+    nextLineImportIndex
+  )}
+${importStatement}
+${existingDefinitionsData.slice(nextLineImportIndex, newObjectEntryIndex)}
+${objectEntry}
+${existingDefinitionsData.slice(newObjectEntryIndex)}`
+
+  writeFileSync(
+    join(schemasPath, 'schemas.ts'),
+    await prettier.format(newDefinitionsData, {
+      parser: 'typescript',
+      ...prettierRc,
+    })
+  )
+}
+
+async function addBlockToRepoConstants(schemasPath: string, id: string) {
+  const existingDefinitionsData = readFileSync(
+    join(schemasPath, 'constants.ts')
+  ).toString()
+
+  writeFileSync(
+    join(schemasPath, 'constants.ts'),
+    await prettier.format(
+      existingDefinitionsData.replace(
+        `] as const satisfies ForgedBlock['type'][]`,
+        `'${id}'] as const satisfies ForgedBlock['type'][]`
+      ),
+      {
+        parser: 'typescript',
+        ...prettierRc,
+      }
+    )
+  )
+}
+
+async function addBlockToRepoPackageJson(id: string) {
+  const schemasPath = join(process.cwd(), `../repository`)
+  const packageJson = require(join(schemasPath, 'package.json'))
+  packageJson.devDependencies[`@typebot.io/${id}-block`] = 'workspace:*'
+  writeFileSync(
+    join(schemasPath, 'package.json'),
+    await prettier.format(JSON.stringify(packageJson, null, 2), {
+      parser: 'json',
+      ...prettierRc,
+    })
+  )
+  return schemasPath
 }
 
 main()

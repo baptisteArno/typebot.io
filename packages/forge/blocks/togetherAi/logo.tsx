@@ -1,4 +1,4 @@
-import React from 'react'
+/** @jsxImportSource react */
 
 export const TogetherAiLogo = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 32 32" {...props}>

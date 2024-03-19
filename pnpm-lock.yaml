@@ -954,6 +954,9 @@ importers:
       '@rollup/plugin-terser':
         specifier: 0.4.3
         version: 0.4.3(rollup@3.26.2)
+      '@rollup/plugin-typescript':
+        specifier: 11.1.2
+        version: 11.1.2(rollup@3.26.2)(tslib@2.6.0)(typescript@5.3.2)
       '@typebot.io/bot-engine':
         specifier: workspace:*
         version: link:../../bot-engine
@@ -1033,6 +1036,9 @@ importers:
       '@rollup/plugin-terser':
         specifier: 0.4.3
         version: 0.4.3(rollup@3.26.2)
+      '@rollup/plugin-typescript':
+        specifier: 11.1.2
+        version: 11.1.2(rollup@3.26.2)(tslib@2.6.0)(typescript@5.3.2)
       '@typebot.io/js':
         specifier: workspace:*
         version: link:../js
@@ -1103,6 +1109,9 @@ importers:
       '@rollup/plugin-terser':
         specifier: 0.4.3
         version: 0.4.3(rollup@3.26.2)
+      '@rollup/plugin-typescript':
+        specifier: 11.1.2
+        version: 11.1.2(rollup@3.26.2)(tslib@2.6.0)(typescript@5.3.2)
       '@typebot.io/js':
         specifier: workspace:*
         version: link:../js
@@ -1615,6 +1624,9 @@ importers:
       nodemailer:
         specifier: 6.9.3
         version: 6.9.3
+      tslib:
+        specifier: 2.6.0
+        version: 2.6.0
       typescript:
         specifier: 5.3.2
         version: 5.3.2
@@ -8688,6 +8700,26 @@ packages:
       serialize-javascript: 6.0.2
       smob: 1.4.1
       terser: 5.29.1
+    dev: true
+
+  /@rollup/plugin-typescript@11.1.2(rollup@3.26.2)(tslib@2.6.0)(typescript@5.3.2):
+    resolution: {integrity: sha512-0ghSOCMcA7fl1JM+0gYRf+Q/HWyg+zg7/gDSc+fRLmlJWcW5K1I+CLRzaRhXf4Y3DRyPnnDo4M2ktw+a6JcDEg==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^2.14.0||^3.0.0
+      tslib: '*'
+      typescript: '>=3.7.0'
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+      tslib:
+        optional: true
+    dependencies:
+      '@rollup/pluginutils': 5.1.0(rollup@3.26.2)
+      resolve: 1.22.8
+      rollup: 3.26.2
+      tslib: 2.6.0
+      typescript: 5.3.2
     dev: true
 
   /@rollup/pluginutils@5.1.0(rollup@2.78.0):

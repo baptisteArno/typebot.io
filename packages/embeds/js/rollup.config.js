@@ -4,6 +4,7 @@ import { babel } from '@rollup/plugin-babel'
 import postcss from 'rollup-plugin-postcss'
 import autoprefixer from 'autoprefixer'
 import tailwindcss from 'tailwindcss'
+import typescript from '@rollup/plugin-typescript'
 import { typescriptPaths } from 'rollup-plugin-typescript-paths'
 import fs from 'fs'
 
@@ -28,6 +29,7 @@ const indexConfig = {
       extensions,
     }),
     typescriptPaths({ preserveExtensions: true }),
+    typescript(),
     postcss({
       plugins: [autoprefixer(), tailwindcss()],
       extract: false,

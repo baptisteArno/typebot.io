@@ -23,4 +23,4 @@ export const forgedBlocks = {
   [anthropicBlock.id]: anthropicBlock,
   [togetherAiBlock.id]: togetherAiBlock,
   [openRouterBlock.id]: openRouterBlock,
-} as const
+}
