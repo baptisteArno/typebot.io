@@ -1,3 +1,4 @@
+import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
 import prisma from '@typebot.io/lib/prisma'
 import { Plan } from '@typebot.io/prisma'
 import { Block, Typebot } from '@typebot.io/schemas'
@@ -27,9 +28,9 @@ export const sanitizeSettings = (
         isEnabled:
           mode === 'create'
             ? false
-            : workspacePlan === Plan.FREE
-            ? false
-            : settings.whatsApp.isEnabled,
+            : hasProPerks({ plan: workspacePlan })
+            ? settings.whatsApp.isEnabled
+            : false,
       }
     : undefined,
 })
