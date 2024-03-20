@@ -370,8 +370,11 @@ importers:
   apps/chat-api:
     dependencies:
       '@hono/prometheus':
-        specifier: ^1.0.0
+        specifier: 1.0.0
         version: 1.0.0(hono@4.0.5)(prom-client@15.1.0)
+      '@hono/sentry':
+        specifier: 1.0.1
+        version: 1.0.1(hono@4.0.5)
       '@hono/typebox-validator':
         specifier: 0.2.2
         version: 0.2.2(@sinclair/typebox@0.32.5)(hono@4.0.5)
@@ -406,16 +409,16 @@ importers:
         specifier: workspace:*
         version: link:../../packages/variables
       ai:
-        specifier: 2.2.31
-        version: 2.2.31(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.12)(vue@3.4.21)
+        specifier: 3.0.12
+        version: 3.0.12(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.12)(vue@3.4.21)(zod@3.22.4)
       hono:
         specifier: 4.0.5
         version: 4.0.5
       openai:
-        specifier: 4.24.1
-        version: 4.24.1
+        specifier: 4.28.4
+        version: 4.28.4
       prom-client:
-        specifier: ^15.1.0
+        specifier: 15.1.0
         version: 15.1.0
     devDependencies:
       '@typebot.io/tsconfig':
@@ -424,6 +427,9 @@ importers:
       '@types/react':
         specifier: 18.2.15
         version: 18.2.15
+      dotenv-cli:
+        specifier: 7.2.1
+        version: 7.2.1
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -6566,6 +6572,15 @@ packages:
       prom-client: 15.1.0
     dev: false
 
+  /@hono/sentry@1.0.1(hono@4.0.5):
+    resolution: {integrity: sha512-4JgwdyasCQIoH3lhl4yLNxrP4/SElfK01ZV3JUaMvexVJnyAOPuXDhtJasl9Gssg7qDNt8ZIDDjqmVrOwS+AIw==}
+    peerDependencies:
+      hono: '>=3.*'
+    dependencies:
+      hono: 4.0.5
+      toucan-js: 3.3.1
+    dev: false
+
   /@hono/typebox-validator@0.2.2(@sinclair/typebox@0.32.5)(hono@4.0.5):
     resolution: {integrity: sha512-6hLnF9Pe+nOWSvX5SIhobZ9Wt7vjTT3sjqDZ5lKALf+9J9XMtNzDyMSjpM5SQv8gg+fOPHu/ZSYxxmUhl65QOg==}
     peerDependencies:
@@ -8889,12 +8904,30 @@ packages:
       - supports-color
     dev: false
 
+  /@sentry/core@7.76.0:
+    resolution: {integrity: sha512-M+ptkCTeCNf6fn7p2MmEb1Wd9/JXUWxIT/0QEc+t11DNR4FYy1ZP2O9Zb3Zp2XacO7ORrlL3Yc+VIfl5JTgjfw==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry/types': 7.76.0
+      '@sentry/utils': 7.76.0
+    dev: false
+
   /@sentry/core@7.77.0:
     resolution: {integrity: sha512-Tj8oTYFZ/ZD+xW8IGIsU6gcFXD/gfE+FUxUaeSosd9KHwBQNOLhZSsYo/tTVf/rnQI/dQnsd4onPZLiL+27aTg==}
     engines: {node: '>=8'}
     dependencies:
       '@sentry/types': 7.77.0
       '@sentry/utils': 7.77.0
+    dev: false
+
+  /@sentry/integrations@7.76.0:
+    resolution: {integrity: sha512-4ea0PNZrGN9wKuE/8bBCRrxxw4Cq5T710y8rhdKHAlSUpbLqr/atRF53h8qH3Fi+ec0m38PB+MivKem9zUwlwA==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry/core': 7.76.0
+      '@sentry/types': 7.76.0
+      '@sentry/utils': 7.76.0
+      localforage: 1.10.0
     dev: false
 
   /@sentry/integrations@7.77.0:
@@ -8974,9 +9007,21 @@ packages:
       '@sentry/utils': 7.77.0
     dev: false
 
+  /@sentry/types@7.76.0:
+    resolution: {integrity: sha512-vj6z+EAbVrKAXmJPxSv/clpwS9QjPqzkraMFk2hIdE/kii8s8kwnkBwTSpIrNc8GnzV3qYC4r3qD+BXDxAGPaw==}
+    engines: {node: '>=8'}
+    dev: false
+
   /@sentry/types@7.77.0:
     resolution: {integrity: sha512-nfb00XRJVi0QpDHg+JkqrmEBHsqBnxJu191Ded+Cs1OJ5oPXEW6F59LVcBScGvMqe+WEk1a73eH8XezwfgrTsA==}
     engines: {node: '>=8'}
+    dev: false
+
+  /@sentry/utils@7.76.0:
+    resolution: {integrity: sha512-40jFD+yfQaKpFYINghdhovzec4IEpB7aAuyH/GtE7E0gLpcqnC72r55krEIVILfqIR2Mlr5OKUzyeoCyWAU/yw==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry/types': 7.76.0
     dev: false
 
   /@sentry/utils@7.77.0:
@@ -10930,38 +10975,6 @@ packages:
       clean-stack: 4.2.0
       indent-string: 5.0.0
     dev: true
-
-  /ai@2.2.31(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.12)(vue@3.4.21):
-    resolution: {integrity: sha512-WQH13RxP+RYo9IE/FX8foNQh9gcKO/dhl9OGy5JL2bHJVBlnugPmH2CYJWaRt+mvjXHaU8txB+jzGo/fbtH2HA==}
-    engines: {node: '>=14.6'}
-    peerDependencies:
-      react: ^18.2.0
-      solid-js: ^1.7.7
-      svelte: ^3.0.0 || ^4.0.0
-      vue: ^3.3.4
-    peerDependenciesMeta:
-      react:
-        optional: true
-      solid-js:
-        optional: true
-      svelte:
-        optional: true
-      vue:
-        optional: true
-    dependencies:
-      eventsource-parser: 1.0.0
-      jsondiffpatch: 0.6.0
-      nanoid: 3.3.6
-      react: 18.2.0
-      solid-js: 1.7.8
-      solid-swr-store: 0.10.7(solid-js@1.7.8)(swr-store@0.10.6)
-      sswr: 2.0.0(svelte@4.2.12)
-      svelte: 4.2.12
-      swr: 2.2.0(react@18.2.0)
-      swr-store: 0.10.6
-      swrv: 1.0.4(vue@3.4.21)
-      vue: 3.4.21(typescript@5.3.2)
-    dev: false
 
   /ai@3.0.12(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.12)(vue@3.4.21)(zod@3.22.4):
     resolution: {integrity: sha512-cP/Moag7PcDOE3kA7WU00YS+mQiuPpAxY+uf57lkWwnqSB1K3/RzwnRF+LD1FqgJfCubI4WEbajMPbnnCr8lAg==}
@@ -18712,23 +18725,6 @@ packages:
       is-docker: 2.2.1
       is-wsl: 2.2.0
 
-  /openai@4.24.1:
-    resolution: {integrity: sha512-ezm/O3eiZMnyBqirUnWm9N6INJU1WhNtz+nK/Zj/2oyKvRz9pgpViDxa5wYOtyGYXPn1sIKBV0I/S4BDhtydqw==}
-    hasBin: true
-    dependencies:
-      '@types/node': 18.11.18
-      '@types/node-fetch': 2.6.11
-      abort-controller: 3.0.0
-      agentkeepalive: 4.5.0
-      digest-fetch: 1.3.0
-      form-data-encoder: 1.7.2
-      formdata-node: 4.4.1
-      node-fetch: 2.7.0
-      web-streams-polyfill: 3.3.3
-    transitivePeerDependencies:
-      - encoding
-    dev: false
-
   /openai@4.28.4:
     resolution: {integrity: sha512-RNIwx4MT/F0zyizGcwS+bXKLzJ8QE9IOyigDG/ttnwB220d58bYjYFp0qjvGwEFBO6+pvFVIDABZPGDl46RFsg==}
     hasBin: true
@@ -21839,6 +21835,15 @@ packages:
   /toidentifier@1.0.1:
     resolution: {integrity: sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==}
     engines: {node: '>=0.6'}
+
+  /toucan-js@3.3.1:
+    resolution: {integrity: sha512-9BpkHb/Pzsrtl1ItNq9OEQPnuUHwzce0nV2uG+DYFiQ4fPyiA6mKTBcDwQzcvNkfSER038U+8TzvdkCev+Maww==}
+    dependencies:
+      '@sentry/core': 7.76.0
+      '@sentry/integrations': 7.76.0
+      '@sentry/types': 7.76.0
+      '@sentry/utils': 7.76.0
+    dev: false
 
   /tough-cookie@4.1.3:
     resolution: {integrity: sha512-aX/y5pVRkfRnfmuX+OdbSdXvPe6ieKX/G2s7e98f4poJHnqH3281gDPm/metm6E/WRamfx7WC4HUqkWHfQHprw==}
