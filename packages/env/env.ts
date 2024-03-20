@@ -6,8 +6,6 @@ declare const window: {
   __ENV?: any
 }
 
-console.log('test')
-
 const guessNextAuthUrlForVercelPreview = (val: unknown) => {
   if (
     (val && typeof val === 'string' && val.length > 0) ||
@@ -438,6 +436,7 @@ export const env = createEnv({
     process.env.SKIP_ENV_CHECK === 'true' ||
     (typeof window !== 'undefined' && window.__ENV === undefined),
   onValidationError(error) {
+    console.log('HI THERE')
     console.error(
       '❌ Invalid environment variables:',
       error.flatten().fieldErrors
