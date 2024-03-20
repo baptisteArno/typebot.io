@@ -11,7 +11,7 @@ export const SuspectedTypebotBanner = ({ typebotId }: Props) => {
   const { user } = useUser()
   const { workspace } = useWorkspace()
 
-  if (!user?.email) return null
+  if (!user?.email || !workspace) return null
 
   return (
     <HStack
