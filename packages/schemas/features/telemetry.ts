@@ -37,6 +37,12 @@ const userCreatedEventSchema = userEvent.merge(
   })
 )
 
+const userLoggedInEventSchema = userEvent.merge(
+  z.object({
+    name: z.literal('User logged in'),
+  })
+)
+
 const userUpdatedEventSchema = userEvent.merge(
   z.object({
     name: z.literal('User updated'),
@@ -173,6 +179,7 @@ export const clientSideEvents = [removedBrandingEventSchema] as const
 export const eventSchema = z.discriminatedUnion('name', [
   workspaceCreatedEventSchema,
   userCreatedEventSchema,
+  userLoggedInEventSchema,
   typebotCreatedEventSchema,
   publishedTypebotEventSchema,
   subscriptionUpdatedEventSchema,

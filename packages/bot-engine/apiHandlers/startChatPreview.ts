@@ -2,6 +2,7 @@ import { StartFrom, StartTypebot } from '@typebot.io/schemas'
 import { restartSession } from '../queries/restartSession'
 import { saveStateToDatabase } from '../saveStateToDatabase'
 import { startSession } from '../startSession'
+import { computeCurrentProgress } from '../computeCurrentProgress'
 
 type Props = {
   message?: string
@@ -11,6 +12,7 @@ type Props = {
   typebotId: string
   typebot?: StartTypebot
   userId?: string
+  prefilledVariables?: Record<string, unknown>
 }
 
 export const startChatPreview = async ({
@@ -21,6 +23,7 @@ export const startChatPreview = async ({
   typebotId,
   typebot: startTypebot,
   userId,
+  prefilledVariables,
 }: Props) => {
   const {
     typebot,
@@ -41,6 +44,7 @@ export const startChatPreview = async ({
       typebotId,
       typebot: startTypebot,
       userId,
+      prefilledVariables,
     },
     message,
   })
@@ -62,6 +66,12 @@ export const startChatPreview = async ({
         ),
       })
 
+  const isEnded =
+    newSessionState.progressMetadata &&
+    !input?.id &&
+    (clientSideActions?.filter((c) => c.expectsDedicatedReply).length ?? 0) ===
+      0
+
   return {
     sessionId: session.id,
     typebot: {
@@ -74,6 +84,14 @@ export const startChatPreview = async ({
     dynamicTheme,
     logs,
     clientSideActions,
-    progress: newSessionState.progressMetadata ? 0 : undefined,
+    progress: newSessionState.progressMetadata
+      ? isEnded
+        ? 100
+        : computeCurrentProgress({
+            typebotsQueue: newSessionState.typebotsQueue,
+            progressMetadata: newSessionState.progressMetadata,
+            currentInputBlockId: input?.id,
+          })
+      : undefined,
   }
 }

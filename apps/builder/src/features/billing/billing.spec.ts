@@ -11,7 +11,7 @@ import {
   createWorkspaces,
   deleteWorkspaces,
   injectFakeResults,
-} from '@typebot.io/lib/playwright/databaseActions'
+} from '@typebot.io/playwright/databaseActions'
 import { env } from '@typebot.io/env'
 
 const usageWorkspaceId = createId()
@@ -148,7 +148,7 @@ test('plan changes should work', async ({ page }) => {
   await expect(page.locator('text="$89"')).toBeVisible()
   await page.click('button >> text=Upgrade')
   await expect(
-    page.locator('text="Workspace PRO plan successfully updated 🎉" >> nth=0')
+    page.locator('text="Workspace PRO plan successfully updated" >> nth=0')
   ).toBeVisible()
 
   // Go to customer portal

@@ -10,8 +10,8 @@ import {
 import { Plan } from '@typebot.io/prisma'
 import { FeaturesList } from './FeaturesList'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
-import { formatPrice } from '@typebot.io/lib/billing/formatPrice'
-import { prices } from '@typebot.io/lib/billing/constants'
+import { formatPrice } from '@typebot.io/billing/formatPrice'
+import { prices } from '@typebot.io/billing/constants'
 import { T, useTranslate } from '@tolgee/react'
 
 type Props = {
@@ -88,6 +88,7 @@ export const StarterPlanPricingCard = ({
             t('billing.pricingCard.starter.brandingRemoved'),
             t('billing.pricingCard.starter.fileUploadBlock'),
             t('billing.pricingCard.starter.createFolders'),
+            'Direct priority support',
           ]}
         />
       </Stack>

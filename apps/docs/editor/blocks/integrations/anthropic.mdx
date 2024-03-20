@@ -1,0 +1,46 @@
+---
+title: Anthropic
+---
+
+<Warning>
+  There is an ongoing issue with Anthropic block streaming capabilities. We are
+  working on a fix and will update this page once the issue is resolved.
+</Warning>
+
+## Create Message
+
+With the Anthropic block, you can create chat messages based on your user queries and display the answer back to your typebot using Claude AI.
+
+<Frame>
+  <img
+    src="/images/blocks/integrations/anthropic/overview.png"
+    alt="Anthropic block"
+  />
+</Frame>
+
+Similarly to the OpenAI block, this integration comes with a convenient message type called **Dialogue**. It allows you to easily pass a sequence of saved assistant / user messages history to Claude AI:
+
+<Frame>
+  <img
+    src="/images/blocks/integrations/anthropic/append-to-history.png"
+    alt="Claude AI messages sequence"
+  />
+</Frame>
+
+Then you can give the Claude AI block access to this sequence of messages:
+
+<Frame>
+  <img
+    src="/images/blocks/integrations/anthropic/dialogue-usage.png"
+    alt="Claude AI messages sequence"
+  />
+</Frame>
+
+Finally, save the response of the assistant to a variable in order to append it in the chat history and also display it on your typebot.
+
+<Frame>
+  <img
+    src="/images/blocks/integrations/anthropic/assistant-message.png"
+    alt="Claude AI assistant message variable"
+  />
+</Frame>

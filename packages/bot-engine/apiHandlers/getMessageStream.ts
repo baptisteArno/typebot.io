@@ -1,9 +1,8 @@
-import { getBlockById } from '@typebot.io/lib/getBlockById'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { ChatCompletionOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { OpenAI } from 'openai'
 import { decryptV2 } from '@typebot.io/lib/api/encryption/decryptV2'
-import { forgedBlocks } from '@typebot.io/forge-schemas'
+import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
 import { ReadOnlyVariableStore } from '@typebot.io/forge'
 import {
   ParseVariablesOptions,
@@ -12,6 +11,8 @@ import {
 import { getOpenAIChatCompletionStream } from './legacy/getOpenAIChatCompletionStream'
 import { getCredentials } from '../queries/getCredentials'
 import { getSession } from '../queries/getSession'
+import { getBlockById } from '@typebot.io/schemas/helpers'
+import { isForgedBlockType } from '@typebot.io/schemas/features/blocks/forged/helpers'
 
 type Props = {
   sessionId: string
@@ -66,7 +67,13 @@ export const getMessageStream = async ({ sessionId, messages }: Props) => {
       }
     }
   }
-  const blockDef = forgedBlocks.find((b) => b.id === block.type)
+  if (!isForgedBlockType(block.type))
+    return {
+      status: 400,
+      message: 'This block does not have a stream function',
+    }
+
+  const blockDef = forgedBlocks[block.type]
   const action = blockDef?.actions.find((a) => a.name === block.options?.action)
 
   if (!action || !action.run?.stream)

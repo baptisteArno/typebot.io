@@ -31,7 +31,6 @@ import { parseDefaultPublicId } from '../helpers/parseDefaultPublicId'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { ConfirmModal } from '@/components/ConfirmModal'
 import { TextLink } from '@/components/TextLink'
-import { useUser } from '@/features/account/hooks/useUser'
 import { useTimeSince } from '@/hooks/useTimeSince'
 
 type Props = ButtonProps & {
@@ -45,7 +44,6 @@ export const PublishButton = ({
   const { workspace } = useWorkspace()
   const { push, query, pathname } = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { logOut } = useUser()
   const {
     isOpen: isNewEngineWarningOpen,
     onOpen: onNewEngineWarningOpen,
@@ -79,7 +77,11 @@ export const PublishButton = ({
           title: t('publish.error.label'),
           description: error.message,
         })
-        if (error.data?.httpStatus === 403) logOut()
+        if (error.data?.httpStatus === 403) {
+          setTimeout(() => {
+            window.location.reload()
+          }, 3000)
+        }
       },
       onSuccess: () => {
         refetchPublishedTypebot({

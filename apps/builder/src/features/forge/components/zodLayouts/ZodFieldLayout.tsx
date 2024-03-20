@@ -19,7 +19,10 @@ import {
 } from '@chakra-ui/react'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { DropdownList } from '@/components/DropdownList'
-import { ForgedBlockDefinition, ForgedBlock } from '@typebot.io/forge-schemas'
+import {
+  ForgedBlockDefinition,
+  ForgedBlock,
+} from '@typebot.io/forge-repository/types'
 import { PrimitiveList } from '@/components/PrimitiveList'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
@@ -60,6 +63,8 @@ export const ZodFieldLayout = ({
 }) => {
   const innerSchema = getZodInnerSchema(schema)
   const layout = innerSchema._def.layout
+
+  if (layout?.isHidden) return null
 
   switch (innerSchema._def.typeName) {
     case 'ZodObject':
@@ -158,6 +163,7 @@ export const ZodFieldLayout = ({
           onValueChange={onDataChange}
           direction={layout?.direction}
           width={width}
+          debounceTimeout={layout?.isDebounceDisabled ? 0 : undefined}
         />
       )
     }
@@ -232,6 +238,7 @@ export const ZodFieldLayout = ({
             moreInfoTooltip={layout.moreInfoTooltip}
             onChange={onDataChange}
             width={width}
+            debounceTimeout={layout?.isDebounceDisabled ? 0 : undefined}
           />
         )
       }
@@ -255,6 +262,7 @@ export const ZodFieldLayout = ({
             moreInfoTooltip={layout.moreInfoTooltip}
             onChange={onDataChange}
             width={width}
+            debounceTimeout={layout?.isDebounceDisabled ? 0 : undefined}
           />
         )
       return (
@@ -273,6 +281,7 @@ export const ZodFieldLayout = ({
           moreInfoTooltip={layout?.moreInfoTooltip}
           onChange={onDataChange}
           width={width}
+          debounceTimeout={layout?.isDebounceDisabled ? 0 : undefined}
         />
       )
     }

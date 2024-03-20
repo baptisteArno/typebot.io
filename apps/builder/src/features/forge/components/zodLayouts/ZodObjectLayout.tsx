@@ -9,11 +9,15 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { z } from '@typebot.io/forge/zod'
+import React from 'react'
 import { ZodLayoutMetadata } from '@typebot.io/forge/zod'
 import { ReactNode } from 'react'
 import { ZodTypeAny } from 'zod'
 import { ZodFieldLayout } from './ZodFieldLayout'
-import { ForgedBlockDefinition, ForgedBlock } from '@typebot.io/forge-schemas'
+import {
+  ForgedBlockDefinition,
+  ForgedBlock,
+} from '@typebot.io/forge-repository/types'
 import { getZodInnerSchema } from '../../helpers/getZodInnerSchema'
 
 export const ZodObjectLayout = ({
@@ -32,7 +36,9 @@ export const ZodObjectLayout = ({
   blockDef?: ForgedBlockDefinition
   blockOptions?: ForgedBlock['options']
   onDataChange: (value: any) => void
-}) => {
+}): ReactNode[] => {
+  const layout = getZodInnerSchema(schema)._def.layout
+  if (layout?.isHidden) return []
   return Object.keys(schema.shape).reduce<{
     nodes: ReactNode[]
     accordionsCreated: string[]
@@ -43,6 +49,8 @@ export const ZodObjectLayout = ({
       const layout = keySchema._def.layout as
         | ZodLayoutMetadata<ZodTypeAny>
         | undefined
+
+      if (layout?.isHidden) return nodes
       if (
         layout &&
         layout.accordion &&

@@ -17,12 +17,12 @@ export const convertTextToSpeech = createAction({
     }),
     voiceId: option.string.layout({
       fetcher: 'fetchVoices',
-      label: 'Voice ID',
+      label: 'Voice',
       placeholder: 'Select a voice',
     }),
     modelId: option.string.layout({
       fetcher: 'fetchModels',
-      label: 'Model ID',
+      label: 'Model',
       placeholder: 'Select a model',
       defaultValue: 'eleven_monolingual_v1',
     }),
@@ -64,10 +64,12 @@ export const convertTextToSpeech = createAction({
           })
           .json<ModelsResponse>()
 
-        return response.map((model) => ({
-          value: model.model_id,
-          label: model.name,
-        }))
+        return response
+          .filter((model) => model.can_do_text_to_speech)
+          .map((model) => ({
+            value: model.model_id,
+            label: model.name,
+          }))
       },
       dependencies: [],
     },

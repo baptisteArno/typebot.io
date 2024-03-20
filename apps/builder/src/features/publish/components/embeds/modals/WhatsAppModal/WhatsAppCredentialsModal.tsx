@@ -204,6 +204,7 @@ export const WhatsAppCredentialsModal = ({
       setIsVerifying(false)
       showToast({
         description: 'Could not get phone number info',
+        details: { content: JSON.stringify(err), lang: 'json' },
       })
       return false
     }

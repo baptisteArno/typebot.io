@@ -7,15 +7,17 @@ import {
   TypebotLinkBlock,
   Variable,
 } from '@typebot.io/schemas'
-import { isInputBlock, byId, isNotDefined } from '@typebot.io/lib'
+import { byId, isNotDefined } from '@typebot.io/lib'
+import { isInputBlock } from '@typebot.io/schemas/helpers'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
-import { parseResultHeader } from '@typebot.io/lib/results/parseResultHeader'
+import { parseResultHeader } from '@typebot.io/results/parseResultHeader'
 
 export const parseSampleResult =
   (
     typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>,
-    linkedTypebots: (Typebot | PublicTypebot)[]
+    linkedTypebots: (Typebot | PublicTypebot)[],
+    userEmail?: string
   ) =>
   async (
     currentGroupId: string,
@@ -30,7 +32,7 @@ export const parseSampleResult =
     return {
       message: 'This is a sample result, it has been generated ⬇️',
       submittedAt: new Date().toISOString(),
-      ...parseResultSample(linkedInputBlocks, header, variables),
+      ...parseResultSample(linkedInputBlocks, header, variables, userEmail),
     }
   }
 
@@ -83,7 +85,8 @@ const extractLinkedInputBlocks =
 const parseResultSample = (
   inputBlocks: InputBlock[],
   headerCells: ResultHeaderCell[],
-  variables: Variable[]
+  variables: Variable[],
+  userEmail?: string
 ) =>
   headerCells.reduce<Record<string, string | (string | null)[] | undefined>>(
     (resultSample, cell) => {
@@ -107,7 +110,7 @@ const parseResultSample = (
       const variableValue = variables.find(
         (variable) => cell.variableIds?.includes(variable.id) && variable.value
       )?.value
-      const value = variableValue ?? getSampleValue(inputBlock)
+      const value = variableValue ?? getSampleValue(inputBlock, userEmail)
       return {
         ...resultSample,
         [cell.label]: value,
@@ -116,7 +119,7 @@ const parseResultSample = (
     {}
   )
 
-const getSampleValue = (block: InputBlock): string => {
+const getSampleValue = (block: InputBlock, userEmail?: string): string => {
   switch (block.type) {
     case InputBlockType.CHOICE:
       return block.options?.isMultipleChoice
@@ -125,7 +128,7 @@ const getSampleValue = (block: InputBlock): string => {
     case InputBlockType.DATE:
       return new Date().toUTCString()
     case InputBlockType.EMAIL:
-      return 'test@email.com'
+      return userEmail ?? 'test@email.com'
     case InputBlockType.NUMBER:
       return '20'
     case InputBlockType.PHONE:

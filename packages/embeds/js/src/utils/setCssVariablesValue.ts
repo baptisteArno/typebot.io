@@ -22,7 +22,7 @@ const cssVariableNames = {
     progressBar: {
       position: '--typebot-progress-bar-position',
       color: '--typebot-progress-bar-color',
-      backgroundColor: '--typebot-progress-bar-bg-color',
+      colorRgb: '--typebot-progress-bar-color-rgb',
       height: '--typebot-progress-bar-height',
       top: '--typebot-progress-bar-top',
       bottom: '--typebot-progress-bar-bottom',
@@ -110,9 +110,11 @@ const setProgressBar = (
     progressBar.color ?? defaultTheme.general.progressBar.color
   )
   documentStyle.setProperty(
-    cssVariableNames.general.progressBar.backgroundColor,
-    progressBar.backgroundColor ??
-      defaultTheme.general.progressBar.backgroundColor
+    cssVariableNames.general.progressBar.colorRgb,
+    hexToRgb(
+      progressBar.backgroundColor ??
+        defaultTheme.general.progressBar.backgroundColor
+    ).join(', ')
   )
   documentStyle.setProperty(
     cssVariableNames.general.progressBar.height,
@@ -257,12 +259,11 @@ const parseBackgroundValue = ({ type, content }: Background = {}) => {
   switch (type) {
     case BackgroundType.NONE:
       return 'transparent'
+    case undefined:
     case BackgroundType.COLOR:
-      return content ?? '#ffffff'
+      return content ?? defaultTheme.general.background.content
     case BackgroundType.IMAGE:
       return `url(${content})`
-    case undefined:
-      return defaultTheme.general.background.content
   }
 }
 

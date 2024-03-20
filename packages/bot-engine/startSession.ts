@@ -1,6 +1,7 @@
 import { createId } from '@paralleldrive/cuid2'
 import { TRPCError } from '@trpc/server'
-import { isDefined, omit, isNotEmpty, isInputBlock } from '@typebot.io/lib'
+import { isDefined, omit, isNotEmpty } from '@typebot.io/lib'
+import { isInputBlock } from '@typebot.io/schemas/helpers'
 import {
   Variable,
   VariableWithValue,
@@ -69,10 +70,9 @@ export const startSession = async ({
 > => {
   const typebot = await getTypebot(startParams)
 
-  const prefilledVariables =
-    startParams.type === 'live' && startParams.prefilledVariables
-      ? prefillVariables(typebot.variables, startParams.prefilledVariables)
-      : typebot.variables
+  const prefilledVariables = startParams.prefilledVariables
+    ? prefillVariables(typebot.variables, startParams.prefilledVariables)
+    : typebot.variables
 
   const result = await getResult({
     resultId: startParams.type === 'live' ? startParams.resultId : undefined,

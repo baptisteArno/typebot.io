@@ -8,9 +8,11 @@ export const auth = createAuth({
       isRequired: true,
       label: 'API key',
       placeholder: 'sk-...',
+      inputType: 'password',
       helperText:
         'You can generate an API key [here](https://platform.openai.com/account/api-keys)',
       withVariableButton: false,
+      isDebounceDisabled: true,
     }),
   }),
 })

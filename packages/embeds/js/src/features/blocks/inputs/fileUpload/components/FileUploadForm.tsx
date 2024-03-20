@@ -39,7 +39,22 @@ export const FileUploadForm = (props: Props) => {
       return setErrorMessage(`A file is larger than ${sizeLimit}MB`)
     if (!props.block.options?.isMultipleAllowed && files)
       return startSingleFileUpload(newFiles[0])
-    setSelectedFiles([...selectedFiles(), ...newFiles])
+    if (selectedFiles().length === 0) {
+      setSelectedFiles(newFiles)
+      return
+    }
+    const parsedNewFiles = newFiles.map((newFile) => {
+      let fileName = newFile.name
+      let counter = 1
+      while (selectedFiles().some((file) => file.name === fileName)) {
+        const dotIndex = newFile.name.lastIndexOf('.')
+        const extension = dotIndex !== -1 ? newFile.name.slice(dotIndex) : ''
+        fileName = `${newFile.name.slice(0, dotIndex)}(${counter})${extension}`
+        counter++
+      }
+      return new File([newFile], fileName, { type: newFile.type })
+    })
+    setSelectedFiles([...selectedFiles(), ...parsedNewFiles])
   }
 
   const handleSubmit = async (e: SubmitEvent) => {

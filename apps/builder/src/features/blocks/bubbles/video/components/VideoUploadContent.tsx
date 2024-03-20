@@ -2,7 +2,7 @@ import { Stack, Text } from '@chakra-ui/react'
 import { VideoBubbleBlock } from '@typebot.io/schemas'
 import { TextInput } from '@/components/inputs'
 import { useTranslate } from '@tolgee/react'
-import { parseVideoUrl } from '@typebot.io/lib/parseVideoUrl'
+import { parseVideoUrl } from '@typebot.io/schemas/features/blocks/bubbles/video/helpers'
 import { defaultVideoBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
 
 type Props = {

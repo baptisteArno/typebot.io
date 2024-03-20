@@ -92,6 +92,7 @@ const embedMessageSchema = z
   })
 
 const displayEmbedBubbleSchema = z.object({
+  maxBubbleWidth: z.number().optional(),
   waitForEventFunction: z
     .object({
       args: z.record(z.string(), z.unknown()),
@@ -239,6 +240,18 @@ export const startPreviewChatInputSchema = z.object({
       'If set, it will override the typebot that is used to start the chat.'
     ),
   startFrom: startFromSchema.optional(),
+  prefilledVariables: z
+    .record(z.unknown())
+    .optional()
+    .describe(
+      '[More info about prefilled variables.](../../editor/variables#prefilled-variables)'
+    )
+    .openapi({
+      example: {
+        'First name': 'John',
+        Email: 'john@gmail.com',
+      },
+    }),
 })
 export type StartPreviewChatInput = z.infer<typeof startPreviewChatInputSchema>
 

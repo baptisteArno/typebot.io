@@ -27,7 +27,8 @@ export const ChangePlanModal = ({
   excludedPlans,
 }: ChangePlanModalProps) => {
   const { t } = useTranslate()
-  const { workspace } = useWorkspace()
+  const { workspace, currentRole } = useWorkspace()
+
   return (
     <Modal
       isOpen={isOpen}
@@ -46,6 +47,7 @@ export const ChangePlanModal = ({
             <ChangePlanForm
               workspace={workspace}
               excludedPlans={excludedPlans}
+              currentRole={currentRole}
             />
           )}
         </ModalBody>

@@ -9,8 +9,8 @@ import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { byId, isDefined, isEmpty } from '@typebot.io/lib'
 import { ExecuteIntegrationResponse } from '../../../types'
 import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
-import { parseAnswers } from '@typebot.io/lib/results/parseAnswers'
 import { getCredentials } from '../../../queries/getCredentials'
+import { parseAnswers } from '@typebot.io/results/parseAnswers'
 
 const URL = 'https://api.zemantic.ai/v1/search-documents'
 

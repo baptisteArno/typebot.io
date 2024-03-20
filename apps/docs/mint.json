@@ -1,10 +1,7 @@
 {
   "$schema": "https://mintlify.com/schema.json",
   "name": "Typebot Docs",
-  "openapi": [
-    "/openapi/builder.json",
-    "/openapi/viewer.json"
-  ],
+  "openapi": ["/openapi/builder.json", "/openapi/viewer.json"],
   "feedback": {
     "suggestEdit": true
   },
@@ -127,7 +124,8 @@
                 "editor/blocks/integrations/openai",
                 "editor/blocks/integrations/zemantic-ai",
                 "editor/blocks/integrations/mistral",
-                "editor/blocks/integrations/elevenlabs"
+                "editor/blocks/integrations/elevenlabs",
+                "editor/blocks/integrations/anthropic"
               ]
             }
           ]
@@ -141,11 +139,11 @@
     },
     {
       "group": "Theme",
-      "pages": ["theme/overview"]
+      "pages": ["theme/overview", "theme/font"]
     },
     {
       "group": "Settings",
-      "pages": ["settings/overview"]
+      "pages": ["settings/overview", "settings/remember-user"]
     },
     {
       "group": "Deploy",
@@ -196,6 +194,7 @@
     {
       "group": "Guides",
       "pages": [
+        "guides/how-to-get-help",
         "guides/mailer-lite",
         "guides/multi-avatars",
         "guides/rtl",

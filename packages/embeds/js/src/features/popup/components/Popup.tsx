@@ -12,6 +12,11 @@ import { isDefined, isNotDefined } from '@typebot.io/lib'
 import { PopupParams } from '../types'
 import { Bot, BotProps } from '../../../components/Bot'
 import { getPaymentInProgressInStorage } from '@/features/blocks/inputs/payment/helpers/paymentInProgressStorage'
+import {
+  getBotOpenedStateFromStorage,
+  removeBotOpenedStateInStorage,
+  setBotOpenedStateInStorage,
+} from '@/utils/storage'
 
 export type PopupProps = BotProps &
   PopupParams & {
@@ -32,18 +37,18 @@ export const Popup = (props: PopupProps) => {
   ])
 
   const [prefilledVariables, setPrefilledVariables] = createSignal(
-    // eslint-disable-next-line solid/reactivity
     botProps.prefilledVariables
   )
 
-  const [isBotOpened, setIsBotOpened] = createSignal(
-    // eslint-disable-next-line solid/reactivity
-    popupProps.isOpen ?? false
-  )
+  const [isBotOpened, setIsBotOpened] = createSignal(popupProps.isOpen ?? false)
 
   onMount(() => {
-    const paymentInProgress = getPaymentInProgressInStorage()
-    if (popupProps.defaultOpen || paymentInProgress) openBot()
+    if (
+      popupProps.defaultOpen ||
+      getPaymentInProgressInStorage() ||
+      getBotOpenedStateFromStorage()
+    )
+      openBot()
     window.addEventListener('message', processIncomingEvent)
     const autoShowDelay = popupProps.autoShowDelay
     if (isDefined(autoShowDelay)) {
@@ -99,10 +104,16 @@ export const Popup = (props: PopupProps) => {
     popupProps.onClose?.()
     document.body.style.overflow = 'auto'
     document.removeEventListener('pointerdown', closeBot)
+    removeBotOpenedStateInStorage()
   }
 
   const toggleBot = () => {
     isBotOpened() ? closeBot() : openBot()
+  }
+
+  const handleOnChatStatePersisted = (isPersisted: boolean) => {
+    botProps.onChatStatePersisted?.(isPersisted)
+    if (isPersisted) setBotOpenedStateInStorage()
   }
 
   return (
@@ -136,7 +147,11 @@ export const Popup = (props: PopupProps) => {
               }}
               on:pointerdown={stopPropagation}
             >
-              <Bot {...botProps} prefilledVariables={prefilledVariables()} />
+              <Bot
+                {...botProps}
+                prefilledVariables={prefilledVariables()}
+                onChatStatePersisted={handleOnChatStatePersisted}
+              />
             </div>
           </div>
         </div>

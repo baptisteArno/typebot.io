@@ -17,7 +17,7 @@
     "@typebot.io/bot-engine": "workspace:*",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/forge": "workspace:*",
-    "@typebot.io/forge-schemas": "workspace:*",
+    "@typebot.io/forge-repository": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/schemas": "workspace:*",

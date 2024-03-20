@@ -20,12 +20,8 @@ import { Plan } from '@typebot.io/prisma'
 import Link from 'next/link'
 import React from 'react'
 import { parseNumberWithCommas } from '@typebot.io/lib'
-import {
-  chatsLimits,
-  prices,
-  seatsLimits,
-} from '@typebot.io/lib/billing/constants'
-import { formatPrice } from '@typebot.io/lib/billing/formatPrice'
+import { chatsLimits, prices, seatsLimits } from '@typebot.io/billing/constants'
+import { formatPrice } from '@typebot.io/billing/formatPrice'
 
 type Props = {
   onChatsTiersClick: () => void
@@ -312,6 +308,28 @@ export const PlanComparisonTables = ({ onChatsTiersClick }: Props) => (
           </Tr>
         </Thead>
         <Tbody>
+          <Tr>
+            <Td>Community support</Td>
+            <Td>
+              <CheckIcon />
+            </Td>
+            <Td>
+              <CheckIcon />
+            </Td>
+            <Td>
+              <CheckIcon />
+            </Td>
+          </Tr>
+          <Tr>
+            <Td>Direct support channel</Td>
+            <Td />
+            <Td>
+              <CheckIcon />
+            </Td>
+            <Td>
+              <CheckIcon />
+            </Td>
+          </Tr>
           <Tr>
             <Td>Priority support</Td>
             <Td />

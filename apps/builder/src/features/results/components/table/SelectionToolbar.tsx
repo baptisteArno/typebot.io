@@ -15,7 +15,7 @@ import { useToast } from '@/hooks/useToast'
 import { useResults } from '../../ResultsProvider'
 import { trpc } from '@/lib/trpc'
 import { byId } from '@typebot.io/lib/utils'
-import { parseColumnsOrder } from '@typebot.io/lib/results/parseColumnsOrder'
+import { parseColumnsOrder } from '@typebot.io/results/parseColumnsOrder'
 import { parseUniqueKey } from '@typebot.io/lib/parseUniqueKey'
 
 type Props = {

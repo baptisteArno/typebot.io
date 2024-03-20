@@ -8,4 +8,5 @@ export type VoicesResponse = {
 export type ModelsResponse = {
   model_id: string
   name: string
+  can_do_text_to_speech: boolean
 }[]

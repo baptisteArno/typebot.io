@@ -46,7 +46,9 @@
           "id": "s1ZvUqWxV6b8UgFGYWh39pV",
           "groupId": "jd4S6BQsUQ2RuKieHXYKs9",
           "type": "Google Sheets",
-          "options": {},
+          "options": {
+            "spreadsheetId": "1k_pIDw3YHl9tlZusbBVSBRY0PeRPd2H6t4Nj7rwnOtM"
+          },
           "outgoingEdgeId": "tBsPNYzMW1mMSvFMHZpmx8"
         }
       ]

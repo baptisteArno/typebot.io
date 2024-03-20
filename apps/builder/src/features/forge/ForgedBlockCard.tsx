@@ -1,4 +1,4 @@
-import { ForgedBlock } from '@typebot.io/forge-schemas'
+import { ForgedBlock } from '@typebot.io/forge-repository/types'
 import { BlockV6 } from '@typebot.io/schemas'
 import { BlockIcon } from '../editor/components/BlockIcon'
 import { BlockLabel } from '../editor/components/BlockLabel'

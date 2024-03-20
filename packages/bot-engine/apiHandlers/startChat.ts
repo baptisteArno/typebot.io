@@ -1,3 +1,4 @@
+import { computeCurrentProgress } from '../computeCurrentProgress'
 import { filterPotentiallySensitiveLogs } from '../logs/filterPotentiallySensitiveLogs'
 import { restartSession } from '../queries/restartSession'
 import { saveStateToDatabase } from '../saveStateToDatabase'
@@ -73,6 +74,12 @@ export const startChat = async ({
         ),
       })
 
+  const isEnded =
+    newSessionState.progressMetadata &&
+    !input?.id &&
+    (clientSideActions?.filter((c) => c.expectsDedicatedReply).length ?? 0) ===
+      0
+
   return {
     sessionId: session.id,
     typebot: {
@@ -87,6 +94,14 @@ export const startChat = async ({
     logs: logs?.filter(filterPotentiallySensitiveLogs),
     clientSideActions,
     corsOrigin,
-    progress: newSessionState.progressMetadata ? 0 : undefined,
+    progress: newSessionState.progressMetadata
+      ? isEnded
+        ? 100
+        : computeCurrentProgress({
+            typebotsQueue: newSessionState.typebotsQueue,
+            progressMetadata: newSessionState.progressMetadata,
+            currentInputBlockId: input?.id,
+          })
+      : undefined,
   }
 }
