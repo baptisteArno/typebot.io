@@ -436,7 +436,6 @@ export const env = createEnv({
     process.env.SKIP_ENV_CHECK === 'true' ||
     (typeof window !== 'undefined' && window.__ENV === undefined),
   onValidationError(error) {
-    console.log('HI THERE')
     console.error(
       '❌ Invalid environment variables:',
       error.flatten().fieldErrors

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "dotenv -e ./.env -e ../../.env  -- bun --hot src/index.ts",
     "build": "dotenv -e ./.env -e ../../.env  -- bun build --target=bun ./src/index.ts --outdir ./dist",
-    "start": "PORT=3000 NODE_ENV=production bun src/index.ts"
+    "start": "bun src/index.ts"
   },
   "dependencies": {
     "@hono/prometheus": "1.0.0",
