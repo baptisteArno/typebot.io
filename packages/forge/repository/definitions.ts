@@ -10,6 +10,7 @@ import { chatNodeBlock } from '@typebot.io/chat-node-block'
 import { calComBlock } from '@typebot.io/cal-com-block'
 import { zemanticAiBlock } from '@typebot.io/zemantic-ai-block'
 import { openAIBlock } from '@typebot.io/openai-block'
+import { dataforseoBlock } from '@typebot.io/dataforseo-block'
 
 export const forgedBlocks = {
   [openAIBlock.id]: openAIBlock,
@@ -23,4 +24,5 @@ export const forgedBlocks = {
   [anthropicBlock.id]: anthropicBlock,
   [togetherAiBlock.id]: togetherAiBlock,
   [openRouterBlock.id]: openRouterBlock,
+  [dataforseoBlock.id]: dataforseoBlock,
 }

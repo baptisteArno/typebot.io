@@ -21,6 +21,8 @@ import { togetherAiBlock } from '@typebot.io/together-ai-block'
 import { togetherAiBlockSchema } from '@typebot.io/together-ai-block/schemas'
 import { zemanticAiBlock } from '@typebot.io/zemantic-ai-block'
 import { zemanticAiBlockSchema } from '@typebot.io/zemantic-ai-block/schemas'
+import { dataforseoBlock } from '@typebot.io/dataforseo-block'
+import { dataforseoBlockSchema } from '@typebot.io/dataforseo-block/schemas'
 
 export const forgedBlockSchemas = {
   [openAIBlock.id]: openAIBlockSchema,
@@ -34,4 +36,5 @@ export const forgedBlockSchemas = {
   [anthropicBlock.id]: anthropicBlockSchema,
   [togetherAiBlock.id]: togetherAiBlockSchema,
   [openRouterBlock.id]: openRouterBlockSchema,
+  [dataforseoBlock.id]: dataforseoBlockSchema,
 }
