@@ -10950,6 +10950,7 @@ packages:
         optional: true
     dependencies:
       eventsource-parser: 1.0.0
+      jsondiffpatch: 0.6.0
       nanoid: 3.3.6
       react: 18.2.0
       solid-js: 1.7.8

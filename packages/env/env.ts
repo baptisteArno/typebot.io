@@ -309,6 +309,7 @@ const whatsAppEnv = {
       .url()
       .optional()
       .default('https://graph.facebook.com'),
+    WHATSAPP_INTERACTIVE_GROUP_SIZE: z.coerce.number().optional().default(3),
   },
 }
 
