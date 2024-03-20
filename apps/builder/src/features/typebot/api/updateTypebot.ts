@@ -158,16 +158,6 @@ export const updateTypebot = authenticatedProcedure
         })
     }
 
-    if (
-      typebot.settings?.whatsApp?.isEnabled &&
-      !hasProPerks(existingTypebot.workspace)
-    ) {
-      throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: 'WhatsApp can be enabled only on a Pro workspaces',
-      })
-    }
-
     const newTypebot = await prisma.typebot.update({
       where: {
         id: existingTypebot.id,
