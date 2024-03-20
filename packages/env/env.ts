@@ -46,7 +46,9 @@ const boolean = z.enum(['true', 'false']).transform((value) => value === 'true')
 
 const baseEnv = {
   server: {
-    NODE_ENV: z.enum(['development', 'production', 'test']).optional(),
+    NODE_ENV: z
+      .enum(['development', 'staging', 'production', 'test'])
+      .optional(),
     DATABASE_URL: z
       .string()
       .url()
