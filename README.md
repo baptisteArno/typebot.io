@@ -85,7 +85,7 @@ You'll find many resources to help you get started with Flowdacity in the [docum
 
 ### Top contributors
 
-<a href="https://github.com/baptistearno/typebot.io/graphs/contributors">
+<a href="https://github.com/ochui/flowdacity/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=ochui/flowdacity" />
 </a>
 
