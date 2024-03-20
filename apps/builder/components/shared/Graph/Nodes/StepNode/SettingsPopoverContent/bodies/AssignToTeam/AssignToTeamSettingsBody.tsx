@@ -85,11 +85,6 @@ export const AssignToTeamSettingsBody = ({
   }
   const handleCheckAvailabilityChange = (isAvailable: boolean) =>
     onOptionsChange({ ...options, isAvailable })
-  const handleRedirectWhenNoneAvailable = (
-    shouldRedirectNoneAvailable: boolean
-  ) => {
-    onOptionsChange({ ...options, shouldRedirectNoneAvailable })
-  }
 
   return (
     <Stack spacing={4}>
