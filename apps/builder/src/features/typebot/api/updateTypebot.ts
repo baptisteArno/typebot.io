@@ -10,6 +10,7 @@ import { z } from 'zod'
 import {
   isCustomDomainNotAvailable,
   isPublicIdNotAvailable,
+  sanitizeCustomDomain,
   sanitizeGroups,
   sanitizeSettings,
 } from '../helpers/sanitizers'
@@ -17,7 +18,7 @@ import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { Prisma } from '@typebot.io/prisma'
 import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
-import { migrateTypebot } from '@typebot.io/lib/migrations/migrateTypebot'
+import { migrateTypebot } from '@typebot.io/migrations/migrateTypebot'
 
 const typebotUpdateSchemaPick = {
   version: true,
@@ -201,8 +202,10 @@ export const updateTypebot = authenticatedProcedure
             : typebot.publicId && isPublicIdValid(typebot.publicId)
             ? typebot.publicId
             : undefined,
-        customDomain:
-          typebot.customDomain === null ? null : typebot.customDomain,
+        customDomain: await sanitizeCustomDomain({
+          customDomain: typebot.customDomain,
+          workspaceId: existingTypebot.workspace.id,
+        }),
         isClosed: typebot.isClosed,
         whatsAppCredentialsId: typebot.whatsAppCredentialsId ?? undefined,
         updatedAt: typebot.updatedAt,

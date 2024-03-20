@@ -12,9 +12,9 @@ import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/const
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { BlockV6 } from '@typebot.io/schemas'
-import { enabledBlocks } from '@typebot.io/forge-repository'
 import { BlockCardLayout } from './BlockCardLayout'
 import { ForgedBlockCard } from '@/features/forge/ForgedBlockCard'
+import { isForgedBlockType } from '@typebot.io/schemas/features/blocks/forged/helpers'
 
 type Props = {
   type: BlockV6['type']
@@ -30,13 +30,8 @@ export const BlockCard = (
   const { t } = useTranslate()
   const { workspace } = useWorkspace()
 
-  if (enabledBlocks.includes(props.type as (typeof enabledBlocks)[number])) {
-    return (
-      <ForgedBlockCard
-        type={props.type as (typeof enabledBlocks)[number]}
-        onMouseDown={props.onMouseDown}
-      />
-    )
+  if (isForgedBlockType(props.type)) {
+    return <ForgedBlockCard type={props.type} onMouseDown={props.onMouseDown} />
   }
   switch (props.type) {
     case BubbleBlockType.EMBED:

@@ -15,7 +15,7 @@ import { Plan } from '@typebot.io/prisma'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { computeRiskLevel } from '@typebot.io/radar'
 import { env } from '@typebot.io/env'
-import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
+import { trackEvents } from '@typebot.io/telemetry/trackEvents'
 import { parseTypebotPublishEvents } from '@/features/telemetry/helpers/parseTypebotPublishEvents'
 
 export const publishTypebot = authenticatedProcedure
@@ -98,7 +98,11 @@ export const publishTypebot = authenticatedProcedure
           'Radar detected a potential malicious typebot. This bot is being manually reviewed by Fraud Prevention team.',
       })
 
-    const riskLevel = typebotWasVerified ? 0 : computeRiskLevel(existingTypebot)
+    const riskLevel = typebotWasVerified
+      ? 0
+      : computeRiskLevel(existingTypebot, {
+          debug: env.NODE_ENV === 'development',
+        })
 
     if (riskLevel > 0 && riskLevel !== existingTypebot.riskLevel) {
       if (env.MESSAGE_WEBHOOK_URL && riskLevel !== 100 && riskLevel > 60)

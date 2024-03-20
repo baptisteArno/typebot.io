@@ -18,7 +18,7 @@
     "@typebot.io/tsconfig": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "@udecode/plate-common": "30.4.5",
-    "ai": "2.2.33",
+    "ai": "3.0.12",
     "chrono-node": "2.7.5",
     "date-fns": "2.30.0",
     "date-fns-tz": "2.0.0",
@@ -28,14 +28,14 @@
     "libphonenumber-js": "1.10.37",
     "node-html-parser": "6.1.5",
     "nodemailer": "6.9.3",
-    "openai": "4.26.0",
+    "openai": "4.28.4",
     "qs": "6.11.2",
-    "stripe": "12.13.0"
+    "stripe": "12.13.0",
+    "@typebot.io/results": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/forge-repository": "workspace:*",
-    "@typebot.io/forge-schemas": "workspace:*",
     "@types/nodemailer": "6.4.8",
     "@types/qs": "6.9.7"
   }

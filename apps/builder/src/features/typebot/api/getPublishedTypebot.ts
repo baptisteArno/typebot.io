@@ -9,7 +9,7 @@ import {
 } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { isReadTypebotForbidden } from '../helpers/isReadTypebotForbidden'
-import { migratePublicTypebot } from '@typebot.io/lib/migrations/migrateTypebot'
+import { migratePublicTypebot } from '@typebot.io/migrations/migrateTypebot'
 
 export const getPublishedTypebot = authenticatedProcedure
   .meta({

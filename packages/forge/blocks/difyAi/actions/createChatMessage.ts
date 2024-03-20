@@ -82,29 +82,27 @@ export const createChatMessage = createAction({
           stream.on('data', (chunk) => {
             const lines = chunk.toString().split('\n') as string[]
             lines
-              .filter((line) => line.length > 0)
+              .filter((line) => line.length > 0 && line !== '\n')
               .forEach((line) => {
-                try {
-                  const data = JSON.parse(
-                    (jsonChunk.length > 0 ? jsonChunk : line).replace(
-                      /^data: /,
-                      ''
-                    )
-                  ) as Chunk
+                jsonChunk += line
+                if (jsonChunk.startsWith('event: ')) {
                   jsonChunk = ''
-                  if (
-                    data.event === 'message' ||
-                    data.event === 'agent_message'
-                  ) {
-                    answer += data.answer
-                  }
-                  if (data.event === 'message_end') {
-                    totalTokens = data.metadata.usage.total_tokens
-                    conversationId = data.conversation_id
-                  }
-                } catch (error) {
-                  if (line.includes('event: ')) return
-                  jsonChunk += line
+                  return
+                }
+                if (!jsonChunk.startsWith('data: ') || !jsonChunk.endsWith('}'))
+                  return
+
+                const data = JSON.parse(jsonChunk.slice(6)) as Chunk
+                jsonChunk = ''
+                if (
+                  data.event === 'message' ||
+                  data.event === 'agent_message'
+                ) {
+                  answer += data.answer
+                }
+                if (data.event === 'message_end') {
+                  totalTokens = data.metadata.usage.total_tokens
+                  conversationId = data.conversation_id
                 }
               })
           })

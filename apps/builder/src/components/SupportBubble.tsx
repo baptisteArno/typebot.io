@@ -4,6 +4,7 @@ import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import React, { useEffect, useState } from 'react'
 import { Bubble, BubbleProps } from '@typebot.io/nextjs'
 import { planToReadable } from '@/features/billing/helpers/planToReadable'
+import { Plan } from '@typebot.io/prisma'
 
 export const SupportBubble = (props: Omit<BubbleProps, 'typebot'>) => {
   const { typebot } = useTypebot()
@@ -17,6 +18,8 @@ export const SupportBubble = (props: Omit<BubbleProps, 'typebot'>) => {
     if (lastViewedTypebotId === typebot?.id) return
     setLastViewedTypebotId(typebot?.id)
   }, [lastViewedTypebotId, typebot?.id])
+
+  if (!workspace?.plan || workspace.plan === Plan.FREE) return null
 
   return (
     <Bubble

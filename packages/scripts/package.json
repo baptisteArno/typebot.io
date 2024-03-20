@@ -53,6 +53,9 @@
     "@clack/prompts": "^0.7.0",
     "@paralleldrive/cuid2": "2.2.1",
     "cli-progress": "^3.12.0",
-    "papaparse": "5.4.1"
+    "papaparse": "5.4.1",
+    "@typebot.io/results": "workspace:*",
+    "@typebot.io/billing": "workspace:*",
+    "@typebot.io/telemetry": "workspace:*"
   }
 }

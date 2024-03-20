@@ -14,7 +14,7 @@ import React from 'react'
 import { byId, isDefined } from '@typebot.io/lib'
 import { HeaderIcon } from './HeaderIcon'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { parseColumnsOrder } from '@typebot.io/lib/results/parseColumnsOrder'
+import { parseColumnsOrder } from '@typebot.io/results/parseColumnsOrder'
 
 type Props = {
   resultId: string | null

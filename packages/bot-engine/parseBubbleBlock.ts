@@ -1,4 +1,4 @@
-import { parseVideoUrl } from '@typebot.io/lib/parseVideoUrl'
+import { parseVideoUrl } from '@typebot.io/schemas/features/blocks/bubbles/video/helpers'
 import {
   BubbleBlock,
   Variable,
@@ -132,6 +132,7 @@ const parseVariablesInRichText = (
             ? variableInText.value
             : variableInText.value.replace(/[\n]+/g, ' ')
         )
+
         const variableElementsWithStyling = applyElementStyleToDescendants(
           variableElements,
           {
@@ -141,7 +142,12 @@ const parseVariablesInRichText = (
           }
         )
 
-        if (isStandaloneElement) {
+        if (
+          isStandaloneElement &&
+          !element.bold &&
+          !element.italic &&
+          !element.underline
+        ) {
           parsedElements.push(...variableElementsWithStyling)
           continue
         }

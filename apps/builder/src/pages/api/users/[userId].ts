@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import { methodNotAllowed, notAuthenticated } from '@typebot.io/lib/api'
 import { User } from '@typebot.io/schemas'
-import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
+import { trackEvents } from '@typebot.io/telemetry/trackEvents'
 import { Prisma } from '@typebot.io/prisma'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

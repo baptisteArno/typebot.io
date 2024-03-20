@@ -92,6 +92,7 @@ const embedMessageSchema = z
   })
 
 const displayEmbedBubbleSchema = z.object({
+  maxBubbleWidth: z.number().optional(),
   waitForEventFunction: z
     .object({
       args: z.record(z.string(), z.unknown()),

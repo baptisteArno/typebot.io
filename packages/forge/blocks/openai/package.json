@@ -7,8 +7,8 @@
   "author": "Baptiste Arnaud",
   "license": "ISC",
   "dependencies": {
-    "ai": "2.2.33",
-    "openai": "4.26.0"
+    "ai": "3.0.12",
+    "openai": "4.28.4"
   },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",

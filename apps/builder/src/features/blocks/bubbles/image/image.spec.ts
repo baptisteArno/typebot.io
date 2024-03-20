@@ -1,9 +1,9 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+import { createTypebots } from '@typebot.io/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/playwright/databaseHelpers'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
-import { proWorkspaceId } from '@typebot.io/lib/playwright/databaseSetup'
+import { proWorkspaceId } from '@typebot.io/playwright/databaseSetup'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 
 const unsplashImageSrc =

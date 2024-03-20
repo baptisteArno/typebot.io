@@ -32,6 +32,14 @@ export type FunctionToExecute = {
 
 export type ReadOnlyVariableStore = Omit<VariableStore, 'set'>
 
+export type TurnableIntoParam<T = {}> = {
+  blockId: string
+  /**
+   * If defined will be used to convert the existing block options into the new block options.
+   */
+  transform?: (options: T) => any
+}
+
 export type ActionDefinition<
   A extends AuthDefinition,
   BaseOptions extends z.ZodObject<ZodRawShape> = z.ZodObject<{}>,
@@ -40,6 +48,7 @@ export type ActionDefinition<
   name: string
   fetchers?: FetcherDefinition<A, z.infer<BaseOptions> & z.infer<Options>>[]
   options?: Options
+  turnableInto?: TurnableIntoParam<z.infer<Options>>[]
   getSetVariableIds?: (options: z.infer<Options>) => string[]
   run?: {
     server?: (params: {
@@ -72,6 +81,7 @@ export type ActionDefinition<
         parseInitFunction: (params: {
           options: z.infer<BaseOptions> & z.infer<Options>
         }) => FunctionToExecute
+        maxBubbleWidth?: number
       }
       parseFunction?: (params: {
         options: z.infer<BaseOptions> & z.infer<Options>

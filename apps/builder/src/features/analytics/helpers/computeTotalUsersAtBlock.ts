@@ -1,5 +1,6 @@
-import { isInputBlock, isNotDefined } from '@typebot.io/lib'
+import { isNotDefined } from '@typebot.io/lib'
 import { PublicTypebotV6 } from '@typebot.io/schemas'
+import { isInputBlock } from '@typebot.io/schemas/helpers'
 import {
   TotalAnswers,
   TotalVisitedEdges,

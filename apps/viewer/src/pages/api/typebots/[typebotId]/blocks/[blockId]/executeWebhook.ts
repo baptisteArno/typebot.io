@@ -9,14 +9,9 @@ import {
 } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
 import got, { Method, Headers, HTTPError } from 'got'
-import {
-  byId,
-  isEmpty,
-  isNotDefined,
-  isWebhookBlock,
-  omit,
-} from '@typebot.io/lib'
-import { parseAnswers } from '@typebot.io/lib/results/parseAnswers'
+import { byId, isEmpty, isNotDefined, omit } from '@typebot.io/lib'
+import { isWebhookBlock } from '@typebot.io/schemas/helpers'
+import { parseAnswers } from '@typebot.io/results/parseAnswers'
 import { initMiddleware, methodNotAllowed, notFound } from '@typebot.io/lib/api'
 import { stringify } from 'qs'
 import Cors from 'cors'
@@ -33,7 +28,7 @@ import {
   defaultWebhookAttributes,
   maxTimeout,
 } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
-import { getBlockById } from '@typebot.io/lib/getBlockById'
+import { getBlockById } from '@typebot.io/schemas/helpers'
 import {
   convertKeyValueTableToObject,
   longReqTimeoutWhitelist,

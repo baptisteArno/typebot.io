@@ -11,7 +11,7 @@ export const executeWait = (
   if (!block.options?.secondsToWaitFor)
     return { outgoingEdgeId: block.outgoingEdgeId }
 
-  const parsedSecondsToWaitFor = safeParseInt(
+  const parsedSecondsToWaitFor = safeParseFloat(
     parseVariables(variables)(block.options.secondsToWaitFor)
   )
 
@@ -33,7 +33,7 @@ export const executeWait = (
   }
 }
 
-const safeParseInt = (value: string) => {
-  const parsedValue = parseInt(value)
+const safeParseFloat = (value: string) => {
+  const parsedValue = parseFloat(value)
   return isNaN(parsedValue) ? undefined : parsedValue
 }

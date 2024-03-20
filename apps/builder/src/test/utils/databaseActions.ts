@@ -6,7 +6,7 @@ import {
   Workspace,
 } from '@typebot.io/prisma'
 import Stripe from 'stripe'
-import { proWorkspaceId } from '@typebot.io/lib/playwright/databaseSetup'
+import { proWorkspaceId } from '@typebot.io/playwright/databaseSetup'
 import { env } from '@typebot.io/env'
 
 const prisma = new PrismaClient()

@@ -1,4 +1,4 @@
-import React from 'react'
+/** @jsxImportSource react */
 
 export const ChatNodeLogo = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg" {...props}>

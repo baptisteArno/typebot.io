@@ -49,10 +49,10 @@
     "@udecode/plate-core": "30.4.5",
     "@udecode/plate-floating": "30.5.3",
     "@udecode/plate-link": "30.5.3",
-    "@uiw/codemirror-extensions-langs": "4.21.7",
-    "@uiw/codemirror-theme-github": "4.21.7",
-    "@uiw/codemirror-theme-tokyo-night": "4.21.7",
-    "@uiw/react-codemirror": "4.21.7",
+    "@uiw/codemirror-extensions-langs": "4.21.24",
+    "@uiw/codemirror-theme-github": "4.21.24",
+    "@uiw/codemirror-theme-tokyo-night": "4.21.24",
+    "@uiw/react-codemirror": "4.21.24",
     "@upstash/ratelimit": "0.4.3",
     "@upstash/redis": "1.22.0",
     "@use-gesture/react": "10.2.27",
@@ -77,7 +77,7 @@
     "nextjs-cors": "2.1.2",
     "nodemailer": "6.9.3",
     "nprogress": "0.2.0",
-    "openai": "4.26.0",
+    "openai": "4.28.4",
     "papaparse": "5.4.1",
     "prettier": "2.8.8",
     "qs": "6.11.2",
@@ -91,6 +91,7 @@
     "tinycolor2": "1.6.0",
     "unsplash-js": "7.0.18",
     "use-debounce": "9.0.4",
+    "zod-validation-error": "3.0.3",
     "zustand": "4.5.0"
   },
   "devDependencies": {
@@ -98,7 +99,6 @@
     "@playwright/test": "1.41.2",
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/forge-repository": "workspace:*",
-    "@typebot.io/forge-schemas": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/radar": "workspace:*",
@@ -121,6 +121,11 @@
     "next-runtime-env": "1.6.2",
     "superjson": "1.12.4",
     "typescript": "5.3.2",
-    "zod": "3.22.4"
+    "zod": "3.22.4",
+    "@typebot.io/playwright": "workspace:*",
+    "@typebot.io/billing": "workspace:*",
+    "@typebot.io/results": "workspace:*",
+    "@typebot.io/migrations": "workspace:*",
+    "@typebot.io/telemetry": "workspace:*"
   }
 }

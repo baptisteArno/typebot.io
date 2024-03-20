@@ -1,5 +1,6 @@
 import { VariableStore, LogsStore } from '@typebot.io/forge'
-import { ForgedBlock, forgedBlocks } from '@typebot.io/forge-schemas'
+import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
+import { ForgedBlock } from '@typebot.io/forge-repository/types'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { isPlaneteScale } from '@typebot.io/lib/isPlanetScale'
 import prisma from '@typebot.io/lib/prisma'
@@ -23,7 +24,7 @@ export const executeForgedBlock = async (
   state: SessionState,
   block: ForgedBlock
 ): Promise<ExecuteIntegrationResponse> => {
-  const blockDef = forgedBlocks.find((b) => b.id === block.type)
+  const blockDef = forgedBlocks[block.type]
   if (!blockDef) return { outgoingEdgeId: block.outgoingEdgeId }
   const action = blockDef.actions.find((a) => a.name === block.options.action)
   const noCredentialsError = {
@@ -150,6 +151,7 @@ export const executeForgedBlock = async (
       ? {
           type: 'custom-embed',
           content: {
+            maxBubbleWidth: action.run.web.displayEmbedBubble.maxBubbleWidth,
             initFunction: action.run.web.displayEmbedBubble.parseInitFunction({
               options: parsedOptions,
             }),

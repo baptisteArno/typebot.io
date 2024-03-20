@@ -14,6 +14,27 @@ export const createChatCompletion = createAction({
     modelHelperText:
       'You can find the list of all the models available [here](https://docs.together.ai/docs/inference-models#chat-models). Copy the model string for API.',
   }),
+  turnableInto: [
+    {
+      blockId: 'openai',
+    },
+    {
+      blockId: 'open-router',
+    },
+    { blockId: 'mistral' },
+    {
+      blockId: 'anthropic',
+      transform: (options) => ({
+        ...options,
+        action: 'Create Chat Message',
+        responseMapping: options.responseMapping?.map((res: any) =>
+          res.item === 'Message content'
+            ? { ...res, item: 'Message Content' }
+            : res
+        ),
+      }),
+    },
+  ],
   getSetVariableIds: getChatCompletionSetVarIds,
   run: {
     server: (params) =>

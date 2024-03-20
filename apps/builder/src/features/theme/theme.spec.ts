@@ -1,8 +1,8 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { importTypebotInDatabase } from '@typebot.io/lib/playwright/databaseActions'
-import { freeWorkspaceId } from '@typebot.io/lib/playwright/databaseSetup'
+import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
+import { freeWorkspaceId } from '@typebot.io/playwright/databaseSetup'
 
 const hostAvatarUrl =
   'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80'
@@ -31,9 +31,10 @@ test.describe.parallel('Theme page', () => {
 
       // Font
       await page.getByRole('textbox').fill('Roboto Slab')
+      await page.getByRole('menuitem', { name: 'Roboto Slab' }).click()
       await expect(page.locator('.typebot-container')).toHaveCSS(
         'font-family',
-        /"Roboto Slab"/
+        /Roboto Slab/
       )
 
       // BG color
@@ -184,10 +185,9 @@ test.describe.parallel('Theme page', () => {
         .locator('input[placeholder="Paste the image link..."]')
         .fill(guestAvatarUrl)
       await page.getByRole('button', { name: 'Go' }).click()
-      await expect(page.locator('.typebot-container img')).toHaveAttribute(
-        'src',
-        guestAvatarUrl
-      )
+      await expect(
+        page.getByRole('img', { name: 'Bot avatar' }).nth(2)
+      ).toHaveAttribute('src', guestAvatarUrl)
 
       await page.waitForTimeout(1000)
       // Input

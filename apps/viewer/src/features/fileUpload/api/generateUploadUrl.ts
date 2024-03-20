@@ -7,7 +7,7 @@ import prisma from '@typebot.io/lib/prisma'
 import { getSession } from '@typebot.io/bot-engine/queries/getSession'
 import { parseGroups } from '@typebot.io/schemas'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { getBlockById } from '@typebot.io/lib/getBlockById'
+import { getBlockById } from '@typebot.io/schemas/helpers'
 
 export const generateUploadUrl = publicProcedure
   .meta({
@@ -172,7 +172,7 @@ export const generateUploadUrl = publicProcedure
       filePath,
       maxFileSize:
         fileUploadBlock.options && 'sizeLimit' in fileUploadBlock.options
-          ? fileUploadBlock.options.sizeLimit
+          ? (fileUploadBlock.options.sizeLimit as number)
           : env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE,
     })
 

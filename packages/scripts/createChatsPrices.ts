@@ -1,9 +1,6 @@
 import Stripe from 'stripe'
 import { promptAndSetEnvironment } from './utils'
-import {
-  proChatTiers,
-  starterChatTiers,
-} from '@typebot.io/lib/billing/constants'
+import { proChatTiers, starterChatTiers } from '@typebot.io/billing/constants'
 
 const chatsProductId = 'prod_MVXtq5sATQzIcM'
 

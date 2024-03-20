@@ -181,9 +181,10 @@ export const FolderContent = ({ folder }: Props) => {
             )}
             {isFolderLoading && <ButtonSkeleton />}
             {folders &&
-              folders.map((folder) => (
+              folders.map((folder, index) => (
                 <FolderButton
                   key={folder.id.toString()}
+                  index={index}
                   folder={folder}
                   onFolderDeleted={refetchFolders}
                   onFolderRenamed={() => refetchFolders()}

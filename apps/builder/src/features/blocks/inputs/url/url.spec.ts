@@ -1,6 +1,6 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots } from '@typebot.io/lib/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from '@typebot.io/lib/playwright/databaseHelpers'
+import { createTypebots } from '@typebot.io/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@typebot.io/playwright/databaseHelpers'
 import { createId } from '@paralleldrive/cuid2'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { defaultUrlInputOptions } from '@typebot.io/schemas/features/blocks/inputs/url/constants'
@@ -25,9 +25,6 @@ test.describe('Url input block', () => {
         `input[placeholder="${defaultUrlInputOptions.labels.placeholder}"]`
       )
     ).toHaveAttribute('type', 'url')
-    await expect(
-      page.locator('typebot-standard').locator(`button`)
-    ).toBeDisabled()
 
     await page.click(`text=${defaultUrlInputOptions.labels.placeholder}`)
     await page.getByLabel('Placeholder:').fill('Your URL...')

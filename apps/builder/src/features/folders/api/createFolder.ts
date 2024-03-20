@@ -5,7 +5,7 @@ import { DashboardFolder, Plan, WorkspaceRole } from '@typebot.io/prisma'
 import { folderSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { getUserRoleInWorkspace } from '@/features/workspace/helpers/getUserRoleInWorkspace'
-import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
+import { trackEvents } from '@typebot.io/telemetry/trackEvents'
 
 export const createFolder = authenticatedProcedure
   .meta({
@@ -20,7 +20,7 @@ export const createFolder = authenticatedProcedure
   .input(
     z.object({
       workspaceId: z.string(),
-      folderName: z.string().default('New folder'),
+      folderName: z.string().default(''),
       parentFolderId: z.string().optional(),
     })
   )

@@ -15,12 +15,12 @@ import {
   TextBubbleBlock,
   BlockV6,
 } from '@typebot.io/schemas'
+import { isDefined } from '@typebot.io/lib'
 import {
-  isBubbleBlock,
-  isDefined,
   isInputBlock,
+  isBubbleBlock,
   isTextBubbleBlock,
-} from '@typebot.io/lib'
+} from '@typebot.io/schemas/helpers'
 import { BlockNodeContent } from './BlockNodeContent'
 import { BlockSettings, SettingsPopoverContent } from './SettingsPopoverContent'
 import { BlockNodeContextMenu } from './BlockNodeContextMenu'
@@ -45,6 +45,10 @@ import { SettingsModal } from './SettingsModal'
 import { TElement } from '@udecode/plate-common'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { useGroupsStore } from '@/features/graph/hooks/useGroupsStore'
+import { TurnableIntoParam } from '@typebot.io/forge'
+import { ZodError, ZodObject } from 'zod'
+import { toast } from 'sonner'
+import { fromZodError } from 'zod-validation-error'
 
 export const BlockNode = ({
   block,
@@ -75,12 +79,6 @@ export const BlockNode = ({
   const { mouseOverBlock, setMouseOverBlock } = useBlockDnd()
   const { typebot, updateBlock } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
-  const [isPopoverOpened, setIsPopoverOpened] = useState(
-    openedBlockId === block.id
-  )
-  const [isEditing, setIsEditing] = useState<boolean>(
-    isTextBubbleBlock(block) && (block.content?.richText?.length ?? 0) === 0
-  )
   const blockRef = useRef<HTMLDivElement | null>(null)
 
   const isPreviewing =
@@ -88,7 +86,7 @@ export const BlockNode = ({
     previewingEdge?.to.blockId === block.id ||
     previewingBlock?.id === block.id
 
-  const groupId = typebot?.groups[indices.groupIndex].id
+  const groupId = typebot?.groups.at(indices.groupIndex)?.id
 
   const isDraggingGraph = useGroupsStore((state) => state.isDraggingGraph)
 
@@ -101,7 +99,7 @@ export const BlockNode = ({
     ref: blockRef,
     onDrag,
     isDisabled: !onMouseDown,
-    deps: [isEditing],
+    deps: [openedBlockId],
   })
 
   const {
@@ -149,13 +147,12 @@ export const BlockNode = ({
   const handleCloseEditor = (content: TElement[]) => {
     const updatedBlock = { ...block, content: { richText: content } }
     updateBlock(indices, updatedBlock)
-    setIsEditing(false)
+    setOpenedBlockId(undefined)
   }
 
   const handleClick = (e: React.MouseEvent) => {
     setFocusedGroupId(groupId)
     e.stopPropagation()
-    if (isTextBubbleBlock(block) && !isReadOnly) setIsEditing(true)
     setOpenedBlockId(block.id)
   }
 
@@ -171,10 +168,6 @@ export const BlockNode = ({
     updateBlock(indices, { ...block, content } as Block)
 
   useEffect(() => {
-    setIsPopoverOpened(openedBlockId === block.id)
-  }, [block.id, openedBlockId])
-
-  useEffect(() => {
     if (!blockRef.current) return
     const blockElement = blockRef.current
     blockElement.addEventListener('pointerdown', (e) => e.stopPropagation())
@@ -186,11 +179,47 @@ export const BlockNode = ({
     }
   }, [])
 
+  const convertBlock = (
+    turnIntoParams: TurnableIntoParam,
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    targetBlockSchema: ZodObject<any>
+  ) => {
+    if (!('options' in block) || !block.options) return
+
+    const convertedBlockOptions = turnIntoParams.transform
+      ? turnIntoParams.transform(block.options)
+      : block.options
+    try {
+      updateBlock(
+        indices,
+        targetBlockSchema.parse({
+          ...block,
+          type: turnIntoParams.blockId,
+          options: {
+            ...convertedBlockOptions,
+            credentialsId: undefined,
+          },
+        } as Block)
+      )
+      setOpenedBlockId(block.id)
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const validationError = fromZodError(error)
+        console.error(validationError)
+        toast.error('Could not convert block', {
+          description: validationError.toString(),
+        })
+      } else {
+        toast.error('An error occured while converting the block')
+      }
+    }
+  }
+
   const hasIcomingEdge = typebot?.edges.some((edge) => {
     return edge.to.blockId === block.id
   })
 
-  return isEditing && isTextBubbleBlock(block) ? (
+  return openedBlockId === block.id && isTextBubbleBlock(block) ? (
     <TextBubbleEditor
       id={block.id}
       initialValue={block.content?.richText ?? []}
@@ -198,13 +227,22 @@ export const BlockNode = ({
     />
   ) : (
     <ContextMenu<HTMLDivElement>
-      renderMenu={() => <BlockNodeContextMenu indices={indices} />}
+      renderMenu={({ onClose }) => (
+        <BlockNodeContextMenu
+          indices={indices}
+          block={block}
+          onTurnIntoClick={(params, schema) => {
+            convertBlock(params, schema)
+            onClose()
+          }}
+        />
+      )}
     >
       {(ref, isContextMenuOpened) => (
         <Popover
           placement="left"
           isLazy
-          isOpen={isPopoverOpened}
+          isOpen={openedBlockId === block.id}
           closeOnBlur={false}
         >
           <PopoverTrigger>
@@ -240,11 +278,13 @@ export const BlockNode = ({
                 transition="border-color 0.2s"
               >
                 <BlockIcon type={block.type} mt=".25rem" />
-                {typebot?.groups[indices.groupIndex].id && (
+                {typebot?.groups.at(indices.groupIndex)?.id && (
                   <BlockNodeContent
                     block={block}
                     indices={indices}
-                    groupId={typebot.groups[indices.groupIndex].id}
+                    groupId={
+                      typebot.groups.at(indices.groupIndex)?.id as string
+                    }
                   />
                 )}
                 {(hasIcomingEdge || isDefined(connectingIds)) && (

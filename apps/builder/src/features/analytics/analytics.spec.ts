@@ -4,8 +4,8 @@ import { createId } from '@paralleldrive/cuid2'
 import {
   importTypebotInDatabase,
   injectFakeResults,
-} from '@typebot.io/lib/playwright/databaseActions'
-import { starterWorkspaceId } from '@typebot.io/lib/playwright/databaseSetup'
+} from '@typebot.io/playwright/databaseActions'
+import { starterWorkspaceId } from '@typebot.io/playwright/databaseSetup'
 
 test('analytics are not available for non-pro workspaces', async ({ page }) => {
   const typebotId = createId()

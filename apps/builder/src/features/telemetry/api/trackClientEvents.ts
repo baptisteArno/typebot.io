@@ -5,7 +5,7 @@ import prisma from '@typebot.io/lib/prisma'
 import { getUserRoleInWorkspace } from '@/features/workspace/helpers/getUserRoleInWorkspace'
 import { WorkspaceRole } from '@typebot.io/prisma'
 import { isWriteTypebotForbidden } from '@/features/typebot/helpers/isWriteTypebotForbidden'
-import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
+import { trackEvents } from '@typebot.io/telemetry/trackEvents'
 import { clientSideCreateEventSchema } from '@typebot.io/schemas'
 
 export const trackClientEvents = authenticatedProcedure
