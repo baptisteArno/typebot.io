@@ -17,7 +17,6 @@ import {
 import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { Prisma } from '@typebot.io/prisma'
-import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
 import { migrateTypebot } from '@typebot.io/migrations/migrateTypebot'
 
 const typebotUpdateSchemaPick = {
