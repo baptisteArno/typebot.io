@@ -17,7 +17,7 @@ type Props = {
 export const AssignToTeamContent = ({
   step,
 }: Props) => {
-  const { octaAgents, typebot } = useTypebot();
+  const { octaAgents } = useTypebot();
 
   const resolveAssignTo = (assignTo: string) => {
     const value = octaAgents.find(s => s.id === assignTo)
@@ -38,7 +38,7 @@ export const AssignToTeamContent = ({
       <TextHtmlContent html={
         step.options.messages?.firstMessage?.content?.html && (step.options.assignTo || step.options.assignType === ASSIGN_TO.noOne) ?
           step.options.messages?.firstMessage?.content?.html : undefined} />
-          
+
       <OctaDivider />
       <Text>
         <span>Atribuir conversa para {resolveAssignType(step.options.assignType, step.options.subType)}</span>
@@ -60,7 +60,6 @@ export const AssignToTeamContent = ({
       <Text fontSize={"13px"} align={"center"} color={"blue"}>
         <span>Ver mais detalhes</span>
       </Text>
-
     </Stack>
   )
 }
