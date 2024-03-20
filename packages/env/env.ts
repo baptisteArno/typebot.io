@@ -6,6 +6,8 @@ declare const window: {
   __ENV?: any
 }
 
+console.log('test')
+
 const guessNextAuthUrlForVercelPreview = (val: unknown) => {
   if (
     (val && typeof val === 'string' && val.length > 0) ||
