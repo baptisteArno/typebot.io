@@ -1,4 +1,5 @@
-import { Stack, IconButton } from '@chakra-ui/react'
+import { Stack, IconButton, Fade } from '@chakra-ui/react'
+import { TrashIcon } from 'assets/icons'
 import { DropdownList } from 'components/shared/DropdownList'
 import { Input } from 'components/shared/Textbox/Input'
 import { TableListItemProps } from 'components/shared/TableList'
@@ -6,6 +7,7 @@ import { VariableSearchInput } from 'components/shared/VariableSearchInput/Varia
 import { Comparison, Variable, ComparisonOperators } from 'models'
 import { useTypebot } from 'contexts/TypebotContext'
 import { useEffect, useState } from 'react'
+
 
 export const ComparisonItem = ({
   item,
