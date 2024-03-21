@@ -17,6 +17,12 @@ const injectViewerUrlIfVercelPreview = (val) => {
   )
     return
   process.env.NEXT_PUBLIC_VIEWER_URL = `https://${process.env.VERCEL_BRANCH_URL}`
+  if (process.env.NEXT_PUBLIC_CHAT_API_URL.includes('{{pr_id}}'))
+    process.env.NEXT_PUBLIC_CHAT_API_URL =
+      process.env.NEXT_PUBLIC_CHAT_API_URL.replace(
+        '{{pr_id}}',
+        process.env.VERCEL_GIT_PULL_REQUEST_ID
+      )
 }
 
 injectViewerUrlIfVercelPreview(process.env.NEXT_PUBLIC_VIEWER_URL)
