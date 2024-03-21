@@ -16,9 +16,6 @@ RUN rm -rf /usr/local/bin/node
 RUN rm -rf /app/apps/builder
 RUN rm -rf /app/apps/viewer
 
-RUN echo "hi"
-RUN cat /app/packages/env/env.ts
-
 ENV PORT=3000
 EXPOSE 3000
 CMD ["bun", "run", "apps/chat-api/src/index.ts"]

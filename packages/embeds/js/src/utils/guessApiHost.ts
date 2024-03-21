@@ -10,15 +10,18 @@ export const guessApiHost = (
   { ignoreChatApiUrl }: Params = { ignoreChatApiUrl: false }
 ) => {
   const chatApiUrl = getRuntimeVariable('NEXT_PUBLIC_CHAT_API_URL')
+  const newChatApiOnUrls = getRuntimeVariable(
+    'NEXT_PUBLIC_USE_EXPERIMENTAL_CHAT_API_ON'
+  )
+
   if (
     !ignoreChatApiUrl &&
     chatApiUrl &&
-    getRuntimeVariable('NEXT_PUBLIC_USE_EXPERIMENTAL_CHAT_API_ON')?.includes(
-      window.location.href
-    )
+    (!newChatApiOnUrls || newChatApiOnUrls.includes(window.location.href))
   ) {
     return chatApiUrl
   }
+
   return (
     getRuntimeVariable('NEXT_PUBLIC_VIEWER_URL')?.split(',')[0] ??
     chatApiCloudFallbackHost
