@@ -10,14 +10,17 @@ export const guessApiHost = (
   { ignoreChatApiUrl }: Params = { ignoreChatApiUrl: false }
 ) => {
   const chatApiUrl = getRuntimeVariable('NEXT_PUBLIC_CHAT_API_URL')
-  const newChatApiOnUrls = getRuntimeVariable(
-    'NEXT_PUBLIC_USE_EXPERIMENTAL_CHAT_API_ON'
-  )
+  const newChatApiOnUrls = (
+    getRuntimeVariable('NEXT_PUBLIC_USE_EXPERIMENTAL_CHAT_API_ON') as
+      | string
+      | undefined
+  )?.split(',')
 
   if (
     !ignoreChatApiUrl &&
     chatApiUrl &&
-    (!newChatApiOnUrls || newChatApiOnUrls.includes(window.location.href))
+    (!newChatApiOnUrls ||
+      newChatApiOnUrls.some((url) => url === window.location.href))
   ) {
     return chatApiUrl
   }
