@@ -1,4 +1,4 @@
-import { FormLabel, Stack } from '@chakra-ui/react'
+import { FormLabel, Stack, Text } from '@chakra-ui/react'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { AssignToTeamOptions, TextBubbleContent } from 'models'
 import React, { useEffect, useState } from 'react'
@@ -85,11 +85,6 @@ export const AssignToTeamSettingsBody = ({
   }
   const handleCheckAvailabilityChange = (isAvailable: boolean) =>
     onOptionsChange({ ...options, isAvailable })
-  const handleRedirectWhenNoneAvailable = (
-    shouldRedirectNoneAvailable: boolean
-  ) => {
-    onOptionsChange({ ...options, shouldRedirectNoneAvailable })
-  }
 
   return (
     <Stack spacing={4}>
@@ -150,28 +145,24 @@ export const AssignToTeamSettingsBody = ({
         initialValue={options?.isAvailable ?? false}
         onCheckChange={handleCheckAvailabilityChange}
       />
-      <Stack>
-        <FormLabel mb="0" htmlFor="placeholder">
-          Mensagem de indisponibilidade
-        </FormLabel>
-        (
-        <TextBubbleEditor
-          onClose={handleCloseEditorUnavailability}
-          initialValue={
-            options.messages.noAgentAvailable?.content
-              ? options.messages.noAgentAvailable.content.richText
-              : []
-          }
-          onKeyUp={handleCloseEditorUnavailability}
-        />
-        )
-      </Stack>
-      <SwitchWithLabel
-        id="switch"
-        label="Redirecionar quando não houver usuários?"
-        initialValue={options?.shouldRedirectNoneAvailable ?? false}
-        onCheckChange={handleRedirectWhenNoneAvailable}
-      />
+      {options.isAvailable &&
+        <Stack>
+          <FormLabel mb="0" htmlFor="placeholder">
+            Mensagem de indisponibilidade
+          </FormLabel>
+          <TextBubbleEditor
+            onClose={handleCloseEditorUnavailability}
+            initialValue={
+              options.messages.noAgentAvailable?.content
+                ? options.messages.noAgentAvailable.content.richText
+                : []
+            }
+            onKeyUp={handleCloseEditorUnavailability}
+          />
+          <Text color="gray.400" fontSize="sm">
+            Não se esqueça de dizer qual componente seguirá esse caminho na árvore.
+          </Text>
+        </Stack>}
     </Stack>
   )
 }
