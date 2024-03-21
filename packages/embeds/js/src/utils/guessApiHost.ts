@@ -1,6 +1,32 @@
 import { getRuntimeVariable } from '@typebot.io/env/getRuntimeVariable'
 
-const cloudViewerUrl = 'https://flowda.city'
+const chatApiCloudFallbackHost = 'https://chat.flowda.city'
 
-export const guessApiHost = () =>
-  getRuntimeVariable('NEXT_PUBLIC_VIEWER_URL')?.split(',')[0] ?? cloudViewerUrl
+type Params = {
+  ignoreChatApiUrl?: boolean
+}
+
+export const guessApiHost = (
+  { ignoreChatApiUrl }: Params = { ignoreChatApiUrl: false }
+) => {
+  const chatApiUrl = getRuntimeVariable('NEXT_PUBLIC_CHAT_API_URL')
+  const newChatApiOnUrls = (
+    getRuntimeVariable('NEXT_PUBLIC_USE_EXPERIMENTAL_CHAT_API_ON') as
+      | string
+      | undefined
+  )?.split(',')
+
+  if (
+    !ignoreChatApiUrl &&
+    chatApiUrl &&
+    (!newChatApiOnUrls ||
+      newChatApiOnUrls.some((url) => url === window.location.href))
+  ) {
+    return chatApiUrl
+  }
+
+  return (
+    getRuntimeVariable('NEXT_PUBLIC_VIEWER_URL')?.split(',')[0] ??
+    chatApiCloudFallbackHost
+  )
+}

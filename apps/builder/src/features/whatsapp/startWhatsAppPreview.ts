@@ -114,6 +114,7 @@ export const startWhatsAppPreview = authenticatedProcedure
         typebotId,
         startFrom,
         userId: user.id,
+        isStreamEnabled: false,
       },
       initialSessionState: {
         whatsApp: (existingSession?.state as SessionState | undefined)
