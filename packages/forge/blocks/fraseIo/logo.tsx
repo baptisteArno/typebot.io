@@ -1,17 +1,23 @@
 /** @jsxImportSource react */
 
-export const FraseIoLogo = (props: React.SVGProps<SVGSVGElement>) => (
-  <Logo {...props} dark={false} />
-)
+export const FraseIoLogo = (props: React.SVGProps<SVGSVGElement>) => {
+  return <Logo {...props} dark={false} />
+}
 
-export const FraseIoLogoDark = (props: React.SVGProps<SVGSVGElement>) => (
-  <Logo {...props} dark={true} />
-)
+export const FraseIoLogoDark = (props: React.SVGProps<SVGSVGElement>) => {
+  return <Logo {...props} dark={true} />
+}
 
 const Logo = (props: React.SVGProps<SVGSVGElement> & { dark: boolean }) => {
-  const fill = props.dark ? '#ffffff' : '#1aac84'
+  const { dark, ...rest } = props
+  const fill = dark ? '#ffffff' : '#1aac84'
+
   return (
-    <svg viewBox="0 0 210 297">
+    <svg
+      {...rest}
+      viewBox="0 0 87.043335 79.851799"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <ellipse
         fill="#e97a7d"
         stroke-width="0"

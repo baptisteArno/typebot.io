@@ -1,17 +1,22 @@
-import React from 'react'
+/** @jsxImportSource react */
 
-export const DataForSeoLogo = (props: React.SVGProps<SVGSVGElement>) => (
-  <Logo {...props} dark={false} />
-)
+export const DataForSeoLogo = (props: React.SVGProps<SVGSVGElement>) => {
+  return <Logo {...props} dark={false} />
+}
 
-export const DataForSeoLogoDark = (props: React.SVGProps<SVGSVGElement>) => (
-  <Logo {...props} dark={true} />
-)
+export const DataForSeoLogoDark = (props: React.SVGProps<SVGSVGElement>) => {
+  return <Logo {...props} dark={true} />
+}
 
 const Logo = (props: React.SVGProps<SVGSVGElement> & { dark: boolean }) => {
-  const fill = props.dark ? '#ffffff' : '#000000'
+  const { dark, ...rest } = props
+  const fill = dark ? '#ffffff' : '#000000'
   return (
-    <svg viewBox="0 0 40.01823 44.790028">
+    <svg
+      {...rest}
+      viewBox="0 0 40.01823 44.790028"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <g transform="translate(-81.21778,-138.15022)">
         <path
           fill={fill}
