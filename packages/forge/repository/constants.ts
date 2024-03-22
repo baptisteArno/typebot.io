@@ -14,4 +14,5 @@ export const forgedBlockIds = [
   'anthropic',
   'together-ai',
   'dataforseo',
+  'frase-io',
 ] as const satisfies ForgedBlock['type'][]

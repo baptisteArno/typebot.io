@@ -23,6 +23,8 @@ import { zemanticAiBlock } from '@typebot.io/zemantic-ai-block'
 import { zemanticAiBlockSchema } from '@typebot.io/zemantic-ai-block/schemas'
 import { dataforseoBlock } from '@typebot.io/dataforseo-block'
 import { dataforseoBlockSchema } from '@typebot.io/dataforseo-block/schemas'
+import { fraseIoBlock } from '@typebot.io/frase-io-block'
+import { fraseIoBlockSchema } from '@typebot.io/frase-io-block/schemas'
 
 export const forgedBlockSchemas = {
   [openAIBlock.id]: openAIBlockSchema,
@@ -37,4 +39,5 @@ export const forgedBlockSchemas = {
   [togetherAiBlock.id]: togetherAiBlockSchema,
   [openRouterBlock.id]: openRouterBlockSchema,
   [dataforseoBlock.id]: dataforseoBlockSchema,
+  [fraseIoBlock.id]: fraseIoBlockSchema,
 }
