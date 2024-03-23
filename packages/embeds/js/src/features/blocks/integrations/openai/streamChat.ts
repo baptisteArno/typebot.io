@@ -25,9 +25,9 @@ export const streamChat =
       const apiHost = context.apiHost
 
       const res = await fetch(
-        `${isNotEmpty(apiHost) ? apiHost : guessApiHost()}/api/v1/sessions/${
-          context.sessionId
-        }/streamMessage`,
+        `${
+          isNotEmpty(apiHost) ? apiHost : guessApiHost()
+        }/api/integrations/openai/streamer`,
         {
           method: 'POST',
           headers: {
@@ -35,6 +35,7 @@ export const streamChat =
           },
           body: JSON.stringify({
             messages,
+            sessionId: context.sessionId,
           }),
           signal: abortController.signal,
         }
