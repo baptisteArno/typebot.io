@@ -5,7 +5,7 @@ export const FraseIoLogo = (props: React.SVGProps<SVGSVGElement>) => {
 }
 
 export const FraseIoLogoDark = (props: React.SVGProps<SVGSVGElement>) => {
-  return <Logo {...props} dark={true} />
+  return <Logo {...props} dark={false} />
 }
 
 const Logo = (props: React.SVGProps<SVGSVGElement> & { dark: boolean }) => {

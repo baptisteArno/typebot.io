@@ -8,7 +8,8 @@ export const auth = {
       label: 'API key',
       isRequired: true,
       inputType: 'password',
-      helperText: 'You can generate an API key [here](<INSERT_URL>).',
+      helperText:
+        'More about geeting API key [here](https://docs.frase.io/article/375-authentication).',
       withVariableButton: false,
       isDebounceDisabled: true,
     }),

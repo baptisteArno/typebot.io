@@ -4,10 +4,14 @@ import { calComBlock } from '@typebot.io/cal-com-block'
 import { calComCredentialsSchema } from '@typebot.io/cal-com-block/schemas'
 import { chatNodeBlock } from '@typebot.io/chat-node-block'
 import { chatNodeCredentialsSchema } from '@typebot.io/chat-node-block/schemas'
+import { dataforseoBlock } from '@typebot.io/dataforseo-block'
+import { dataforseoCredentialsSchema } from '@typebot.io/dataforseo-block/schemas'
 import { difyAiBlock } from '@typebot.io/dify-ai-block'
 import { difyAiCredentialsSchema } from '@typebot.io/dify-ai-block/schemas'
 import { elevenlabsBlock } from '@typebot.io/elevenlabs-block'
 import { elevenlabsCredentialsSchema } from '@typebot.io/elevenlabs-block/schemas'
+import { fraseIoBlock } from '@typebot.io/frase-io-block'
+import { fraseIoCredentialsSchema } from '@typebot.io/frase-io-block/schemas'
 import { mistralBlock } from '@typebot.io/mistral-block'
 import { mistralCredentialsSchema } from '@typebot.io/mistral-block/schemas'
 import { openRouterBlock } from '@typebot.io/open-router-block'
@@ -33,4 +37,6 @@ export const forgedCredentialsSchemas = {
   [anthropicBlock.id]: anthropicCredentialsSchema,
   [togetherAiBlock.id]: togetherAiCredentialsSchema,
   [openRouterBlock.id]: openRouterCredentialsSchema,
+  [dataforseoBlock.id]: dataforseoCredentialsSchema,
+  [fraseIoBlock.id]: fraseIoCredentialsSchema,
 }
