@@ -4,14 +4,16 @@ import {
   DataForSeoLogoDark as DarkLogo,
 } from './logo'
 import { auth } from './auth'
-import { getKeywordData } from '../dataforseo/actions/getKeywordData'
+import { getSearchVolumeData } from './actions/getSearchVolumeData'
+import { getSerpData } from './actions/getSerpData'
+import { getKeywordSuggestions } from './actions/getKeywordSuggestions'
 
 export const dataforseoBlock = createBlock({
   id: 'dataforseo',
   name: 'DataForSEO',
-  tags: ['SEO', 'Data', 'Keywords'],
+  tags: ['SEO', 'Data', 'Keywords', 'SERP'],
   LightLogo,
   DarkLogo,
   auth,
-  actions: [getKeywordData],
+  actions: [getSearchVolumeData, getSerpData, getKeywordSuggestions],
 })

@@ -12,6 +12,6 @@ const languages = [
 ].sort((a, b) => a.name.localeCompare(b.name))
 
 // This is a mock function that simulates an API call
-export const getLanguages = () => {
+export const fetchLanguages = () => {
   return languages
 }
