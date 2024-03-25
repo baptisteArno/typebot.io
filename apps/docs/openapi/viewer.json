@@ -11213,6 +11213,259 @@
               "id",
               "type"
             ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "outgoingEdgeId": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "dataforseo"
+                ]
+              },
+              "options": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "credentialsId": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "credentialsId": {
+                        "type": "string"
+                      },
+                      "action": {
+                        "type": "string",
+                        "enum": [
+                          "Get Keyword Data"
+                        ]
+                      },
+                      "keyword": {
+                        "type": "string"
+                      },
+                      "language_code": {
+                        "type": "string"
+                      },
+                      "responseMapping": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "item": {
+                              "type": "string",
+                              "enum": [
+                                "Data",
+                                "Search Volume",
+                                "CPC",
+                                "Competition Index",
+                                "Competition"
+                              ]
+                            },
+                            "variableId": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "credentialsId": {
+                        "type": "string"
+                      },
+                      "action": {
+                        "type": "string",
+                        "enum": [
+                          "Get SERP Data"
+                        ]
+                      },
+                      "keyword": {
+                        "type": "string"
+                      },
+                      "language_code": {
+                        "type": "string"
+                      },
+                      "location_name": {
+                        "type": "string"
+                      },
+                      "search_param": {
+                        "type": "string"
+                      },
+                      "responseMapping": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "item": {
+                              "type": "string",
+                              "enum": [
+                                "PAA Titles"
+                              ]
+                            },
+                            "variableId": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "credentialsId": {
+                        "type": "string"
+                      },
+                      "action": {
+                        "type": "string",
+                        "enum": [
+                          "Get Keyword Suggestions"
+                        ]
+                      },
+                      "keyword": {
+                        "type": "string"
+                      },
+                      "location_name": {
+                        "type": "string"
+                      },
+                      "language_code": {
+                        "type": "string"
+                      },
+                      "responseMapping": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "item": {
+                              "type": "string",
+                              "enum": [
+                                "Suggestions"
+                              ]
+                            },
+                            "variableId": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "type"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "outgoingEdgeId": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "frase-io"
+                ]
+              },
+              "options": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "credentialsId": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "credentialsId": {
+                        "type": "string"
+                      },
+                      "action": {
+                        "type": "string",
+                        "enum": [
+                          "Process SERP"
+                        ]
+                      },
+                      "query": {
+                        "type": "string"
+                      },
+                      "user_url": {
+                        "type": "string"
+                      },
+                      "count": {
+                        "type": "string"
+                      },
+                      "language_code": {
+                        "type": "string"
+                      },
+                      "country_code": {
+                        "type": "string"
+                      },
+                      "responseMapping": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "item": {
+                              "type": "string",
+                              "enum": [
+                                "Titles",
+                                "URLs",
+                                "Average Word Count",
+                                "Average Header Count",
+                                "Average Ext.Links Count",
+                                "Average Score"
+                              ]
+                            },
+                            "variableId": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "type"
+            ]
           }
         ],
         "title": "Block"

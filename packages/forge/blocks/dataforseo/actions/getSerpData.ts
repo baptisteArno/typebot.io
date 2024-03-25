@@ -1,13 +1,7 @@
 import { createAction, option } from '@typebot.io/forge'
 import { isDefined, isEmpty } from '@typebot.io/lib'
 import { auth } from '../auth'
-import { got } from 'got'
-import {
-  ApiResponse,
-  SerpData,
-  SerpDataPAA,
-  SerpDataPAAElement,
-} from '../types'
+import { SerpDataPAA, SerpDataPAAElement } from '../types'
 import { apiGetSerpData, apiUrl, getHeaders } from '../api'
 import { fetchLanguages } from '../fetchers/fetch-languages'
 
@@ -19,6 +13,13 @@ export const getSerpData = createAction({
       label: 'Keyword',
       isRequired: true,
       helperText: 'Enter the keyword you want to get SERP data for.',
+    }),
+    language_code: option.string.layout({
+      fetcher: 'languages',
+      label: 'Language',
+      isRequired: true,
+      helperText: 'Select a language',
+      defaultValue: 'en',
     }),
     location_name: option.string.layout({
       label: 'Location',
@@ -32,12 +33,6 @@ export const getSerpData = createAction({
       helperText: 'Enter additional search parameters.',
     }),
 
-    language_code: option.string.layout({
-      fetcher: 'languages',
-      label: 'Language',
-      placeholder: 'Select a language',
-      defaultValue: 'en',
-    }),
     responseMapping: option.saveResponseArray(['PAA Titles'] as const).layout({
       accordion: 'Save Result',
     }),
@@ -48,7 +43,7 @@ export const getSerpData = createAction({
     {
       id: 'languages',
       fetch: async ({ credentials: { apiLogin, apiKey, sandbox } }) =>
-        fetchLanguages(apiLogin, apiKey, sandbox),
+        await fetchLanguages(apiLogin, apiKey, sandbox),
       dependencies: [],
     },
   ],
@@ -57,10 +52,10 @@ export const getSerpData = createAction({
       credentials: { apiKey, apiLogin, sandbox },
       options: {
         keyword,
-        responseMapping,
         language_code,
-        search_param,
         location_name,
+        search_param,
+        responseMapping,
       },
       variables,
       logs,
@@ -68,11 +63,13 @@ export const getSerpData = createAction({
       const request = [
         {
           keyword,
-          search_param,
           language_code,
           location_name,
+          search_param,
         },
       ]
+
+      console.log('getSERPdata request', request)
 
       try {
         const response = await apiGetSerpData(
@@ -92,12 +89,17 @@ export const getSerpData = createAction({
         if (peopleAlsoAsk) {
           const paaItems = peopleAlsoAsk.items as SerpDataPAAElement[]
           paaTitles = paaItems.map((i) => i.title)
+        } else {
+          logs.add({
+            status: 'error',
+            description: 'DataForSEO-getSerpData: PAA element not present',
+          })
+          console.error('DataForSEO-getSerpData: PAA element not present')
         }
 
         responseMapping?.forEach((mapping) => {
           if (!mapping.variableId) return
-          const item = mapping.item ?? 'Data'
-          if (item === 'Data') variables.set(mapping.variableId, taskResult)
+          const item = mapping.item
           if (item === 'PAA Titles')
             variables.set(mapping.variableId, paaTitles)
         })

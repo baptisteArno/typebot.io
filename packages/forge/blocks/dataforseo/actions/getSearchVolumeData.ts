@@ -69,7 +69,7 @@ export const getSearchVolumeData = createAction({
         const taskResult = response.tasks[0].result[0]
         responseMapping?.forEach((mapping) => {
           if (!mapping.variableId) return
-          const item = mapping.item ?? 'Data'
+          const item = mapping.item
           if (item === 'Data') variables.set(mapping.variableId, taskResult)
           if (item === 'Search Volume')
             variables.set(mapping.variableId, taskResult.search_volume)

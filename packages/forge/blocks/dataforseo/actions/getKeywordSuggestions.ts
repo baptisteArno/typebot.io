@@ -27,11 +27,9 @@ export const getKeywordSuggestions = createAction({
       placeholder: 'Select a language',
       defaultValue: 'en',
     }),
-    responseMapping: option
-      .saveResponseArray(['Data', 'Suggestions'] as const)
-      .layout({
-        accordion: 'Save Result',
-      }),
+    responseMapping: option.saveResponseArray(['Suggestions'] as const).layout({
+      accordion: 'Save Result',
+    }),
   }),
   getSetVariableIds: ({ responseMapping }) =>
     responseMapping?.map((r) => r.variableId).filter(isDefined) ?? [],
@@ -75,8 +73,7 @@ export const getKeywordSuggestions = createAction({
         const taskResult = response.tasks[0].result[0]
         responseMapping?.forEach((mapping) => {
           if (!mapping.variableId) return
-          const item = mapping.item ?? 'Data'
-          if (item === 'Data') variables.set(mapping.variableId, taskResult)
+          const item = mapping.item
           if (item === 'Suggestions') {
             const s = taskResult.items.map((item) => item.keyword)
             variables.set(mapping.variableId, s)
