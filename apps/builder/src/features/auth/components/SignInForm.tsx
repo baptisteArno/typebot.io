@@ -28,10 +28,12 @@ import { useToast } from '@/hooks/useToast'
 import { TextLink } from '@/components/TextLink'
 import { SignInError } from './SignInError'
 import { useTranslate } from '@tolgee/react'
+import { sanitizeUrl } from '@braintree/sanitize-url'
 
 type Props = {
   defaultEmail?: string
 }
+
 export const SignInForm = ({
   defaultEmail,
 }: Props & HTMLChakraProps<'form'>) => {
@@ -55,7 +57,8 @@ export const SignInForm = ({
 
   useEffect(() => {
     if (status === 'authenticated') {
-      router.replace(router.query.redirectPath?.toString() ?? '/typebots')
+      const redirectPath = router.query.redirectPath?.toString()
+      router.replace(redirectPath ? sanitizeUrl(redirectPath) : '/typebots')
       return
     }
     ;(async () => {
