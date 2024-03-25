@@ -10,6 +10,6 @@ const countries = [
 ].sort((a, b) => a.name.localeCompare(b.name))
 
 // This is a mock function that simulates an API call
-export const getCountries = () => {
+export const fetchCountries = () => {
   return countries
 }

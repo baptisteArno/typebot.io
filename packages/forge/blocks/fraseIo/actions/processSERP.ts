@@ -1,19 +1,9 @@
 import { createAction, option } from '@typebot.io/forge'
 import { isDefined, isEmpty } from '@typebot.io/lib'
 import { auth } from '../auth'
-import { got } from 'got'
-import { SerpResponse } from '../types'
-import { getLanguages } from '../get-languages'
-import { getCountries } from '../get-countries'
-
-const baseUrl = 'https://api.frase.io/api/v1/process_serp'
-
-const getHeaders = (apiKey?: string) => {
-  return {
-    'Content-Type': 'application/json',
-    token: `${apiKey}`,
-  }
-}
+import { fetchLanguages } from '../fetchers/fetch-languages'
+import { fetchCountries } from '../fetchers/fetch-countries'
+import { apiProcessSerp } from '../api'
 
 export const processSerp = createAction({
   auth,
@@ -71,7 +61,7 @@ export const processSerp = createAction({
     {
       id: 'languages',
       fetch: async ({ credentials: { apiKey } }) => {
-        const response = getLanguages()
+        const response = fetchLanguages()
         return response.map((l) => ({
           value: l.code,
           label: l.name,
@@ -82,7 +72,7 @@ export const processSerp = createAction({
     {
       id: 'countries',
       fetch: async ({ credentials: { apiKey } }) => {
-        const response = getCountries()
+        const response = fetchCountries()
         return response.map((c) => ({
           value: c.code,
           label: c.name,
@@ -115,19 +105,7 @@ export const processSerp = createAction({
       }
 
       try {
-        console.log('Request', request)
-        const r = await got.post(`${baseUrl}`, {
-          headers: getHeaders(apiKey),
-          json: request,
-        })
-        if (r.statusCode !== 200) {
-          logs.add({
-            status: 'error',
-            description: 'Frase.io-API: response ' + r.statusCode,
-          })
-          return
-        }
-        const response = JSON.parse(r.body) as SerpResponse
+        const response = await apiProcessSerp(apiKey, request)
 
         responseMapping?.forEach((mapping) => {
           if (!mapping.variableId) return
