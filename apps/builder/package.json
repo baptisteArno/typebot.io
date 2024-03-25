@@ -13,6 +13,7 @@
     "format:check": "prettier --check ./src"
   },
   "dependencies": {
+    "@braintree/sanitize-url": "7.0.1",
     "@chakra-ui/anatomy": "2.1.1",
     "@chakra-ui/react": "2.7.1",
     "@chakra-ui/theme-tools": "2.0.18",
