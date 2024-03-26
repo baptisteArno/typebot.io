@@ -1,4 +1,4 @@
-import { FormLabel, Stack, Text } from '@chakra-ui/react'
+import { Flex, FormLabel, Spacer, Stack, Text } from '@chakra-ui/react'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { AssignToTeamOptions, TextBubbleContent } from 'models'
 import React, { useEffect, useState } from 'react'
@@ -12,6 +12,8 @@ type AssignToTeamSettingsBodyProps = {
   options: AssignToTeamOptions
   onOptionsChange: (options: AssignToTeamOptions) => void
 }
+
+const MAX_LENGHT_TEXT = 500
 
 export const AssignToTeamSettingsBody = ({
   options,
@@ -80,7 +82,7 @@ export const AssignToTeamSettingsBody = ({
   const handleAssignToResponsibleChange = (e: any) => {
     onOptionsChange({
       ...options,
-      subType: e.value?.subType
+      subType: e.value?.subType,
     })
   }
   const handleCheckAvailabilityChange = (isAvailable: boolean) =>
@@ -89,11 +91,19 @@ export const AssignToTeamSettingsBody = ({
   return (
     <Stack spacing={4}>
       <Stack>
-        <FormLabel mb="0" htmlFor="placeholder">
-          Mensagem do bot
-        </FormLabel>
+        <Flex>
+          <FormLabel mb="0" htmlFor="placeholder">
+            Mensagem do bot
+          </FormLabel>
+          <Spacer />
+          <FormLabel mb="0" htmlFor="button">
+            {options.messages.firstMessage?.content?.plainText.length ?? 0}/
+            {MAX_LENGHT_TEXT}
+          </FormLabel>
+        </Flex>
         (
         <TextBubbleEditor
+          maxLength={500}
           onClose={handleCloseEditorBotMessage}
           initialValue={
             options.messages.firstMessage?.content
@@ -124,11 +134,19 @@ export const AssignToTeamSettingsBody = ({
         />
       </Stack>
       <Stack>
-        <FormLabel mb="0" htmlFor="placeholder">
-          Mensagem de conexão
-        </FormLabel>
+        <Flex>
+          <FormLabel mb="0" htmlFor="placeholder">
+            Mensagem de conexão
+          </FormLabel>
+          <Spacer />
+          <FormLabel mb="0" htmlFor="button">
+            {options.messages.connectionSuccess?.content?.plainText.length ?? 0}
+            /{MAX_LENGHT_TEXT}
+          </FormLabel>
+        </Flex>
         (
         <TextBubbleEditor
+          maxLength={MAX_LENGHT_TEXT}
           onClose={handleCloseEditorConnectionMessage}
           initialValue={
             options.messages.connectionSuccess?.content
@@ -145,12 +163,21 @@ export const AssignToTeamSettingsBody = ({
         initialValue={options?.isAvailable ?? false}
         onCheckChange={handleCheckAvailabilityChange}
       />
-      {options.isAvailable &&
+      {options.isAvailable && (
         <Stack>
-          <FormLabel mb="0" htmlFor="placeholder">
-            Mensagem de indisponibilidade
-          </FormLabel>
+          <Flex>
+            <FormLabel mb="0" htmlFor="placeholder">
+              Mensagem de indisponibilidade
+            </FormLabel>
+            <Spacer />
+            <FormLabel mb="0" htmlFor="button">
+              {options.messages.noAgentAvailable?.content?.plainText.length ??
+                0}
+              /{MAX_LENGHT_TEXT}
+            </FormLabel>
+          </Flex>
           <TextBubbleEditor
+            maxLength={MAX_LENGHT_TEXT}
             onClose={handleCloseEditorUnavailability}
             initialValue={
               options.messages.noAgentAvailable?.content
@@ -160,9 +187,11 @@ export const AssignToTeamSettingsBody = ({
             onKeyUp={handleCloseEditorUnavailability}
           />
           <Text color="gray.400" fontSize="sm">
-            Não se esqueça de dizer qual componente seguirá esse caminho na árvore.
+            Não se esqueça de dizer qual componente seguirá esse caminho na
+            árvore.
           </Text>
-        </Stack>}
+        </Stack>
+      )}
     </Stack>
   )
 }

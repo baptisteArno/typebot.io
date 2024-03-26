@@ -57,8 +57,6 @@ export const edgesAction = (setTypebot: SetTypebot): EdgesActions => ({
             stepIndex,
           })
         }
-
-        typebot.blocks = updateBlocksHasConnections(typebot)
       })
     )
   },

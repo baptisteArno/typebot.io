@@ -29,7 +29,7 @@ import {
 } from 'models'
 import { useGraph } from 'contexts/GraphContext'
 import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
-import { isBubbleStep, isTextBubbleStep, isOctaBubbleStep } from 'utils'
+import { isTextBubbleStep, isOctaBubbleStep } from 'utils'
 import { StepNodeContent } from '../StepNodeContent/StepNodeContent/StepNodeContent'
 import { useTypebot } from 'contexts/TypebotContext'
 import { ContextMenu } from 'components/shared/ContextMenu'
@@ -46,13 +46,15 @@ import { setMultipleRefs } from 'services/utils'
 import { BlockStack } from './StepNode.style'
 import { StepTypeLabel } from 'components/editor/StepsSideBar/StepTypeLabel'
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
-import { WarningIcon } from 'assets/icons'
+import { WarningIcon, ErrorIcon } from 'assets/icons'
 import OctaTooltip from 'components/octaComponents/OctaTooltip/OctaTooltip'
 import {
   VALIDATION_MESSAGE_TYPE,
   ValidationMessage,
   getValidationMessages,
 } from '../../helpers/helpers'
+import { ActionsTypeEmptyFields } from 'services/utils/useEmptyFields'
+import { colors } from 'libs/theme'
 
 type StepNodeContextProps = {
   setIsPopoverOpened?: (isPopoverOpened: boolean) => void
@@ -83,12 +85,11 @@ export const StepNode = ({
     setFocusedBlockId,
     previewingEdge,
   } = useGraph()
-  const { updateStep, typebot } = useTypebot()
+  const { updateStep, emptyFields, setEmptyFields, typebot } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
 
   const availableOnlyForEvent =
-    typebot?.availableFor?.length == 1 &&
-    typebot.availableFor.includes('event')
+    typebot?.availableFor?.length == 1 && typebot.availableFor.includes('event')
 
   const showWarning = !availableOnlyForEvent
 
@@ -97,7 +98,7 @@ export const StepNode = ({
   )
   const [isEditing, setIsEditing] = useState<boolean>(
     (isTextBubbleStep(step) || isOctaBubbleStep(step)) &&
-    step.content.plainText === ''
+      step.content.plainText === ''
   )
   const stepRef = useRef<HTMLDivElement | null>(null)
 
@@ -121,7 +122,20 @@ export const StepNode = ({
   useEffect(() => {
     const currentMessages = getValidationMessages(step)
     setValidationMessages(currentMessages)
-  }, [isEditing, isModalOpen])
+    if (currentMessages.length > 0) {
+      if (!emptyFields.find((field) => field?.step.id === step?.id)) {
+        setEmptyFields(
+          [{ step, errorMessage: currentMessages[0].message }],
+          ActionsTypeEmptyFields.ADD
+        )
+      }
+    } else {
+      const checking = emptyFields.some((field) => field?.step.id === step?.id)
+      if (checking) {
+        setEmptyFields([step?.id], ActionsTypeEmptyFields.REMOVE)
+      }
+    }
+  }, [step])
 
   const { onClose: onModalClose } = useDisclosure({
     defaultIsOpen: true,
@@ -135,7 +149,7 @@ export const StepNode = ({
   useEffect(() => {
     setIsConnecting(
       connectingIds?.target?.blockId === step.blockId &&
-      connectingIds?.target?.stepId === step.id
+        connectingIds?.target?.stepId === step.id
     )
   }, [connectingIds, step.blockId, step.id])
 
@@ -169,6 +183,12 @@ export const StepNode = ({
 
   const handleStepUpdate = (updates: Partial<Step>): void => {
     updateStep(indices, { ...step, ...updates })
+  }
+
+  const hasErrorMessage = () => {
+    return validationMessages?.some(
+      (s) => s.type === VALIDATION_MESSAGE_TYPE.WARNING
+    )
   }
 
   useEffect(() => {
@@ -217,12 +237,14 @@ export const StepNode = ({
                 w="full"
                 direction="column"
               >
-
                 <Stack spacing={2}>
                   <BlockStack
                     isOpened={isOpened}
                     isPreviewing={isPreviewing}
-                    style={{ borderColor: unreachableNode && showWarning ? '#e3a820' : '' }}
+                    style={{
+                      border: 'solid 2px',
+                      borderColor: hasErrorMessage() ? colors.red[400] : '',
+                    }}
                   >
                     <Stack spacing={2} w="full">
                       <HStack fontSize={'14px'}>
@@ -250,18 +272,16 @@ export const StepNode = ({
                             />
                           </>
                         )}
-                        {!unreachableNode && showWarning &&
+                        {!unreachableNode &&
+                          showWarning &&
                           validationMessages?.map((s, index) => {
                             return (
                               <OctaTooltip
                                 key={index}
                                 element={
-                                  <WarningIcon
-                                    color={
-                                      s.type === VALIDATION_MESSAGE_TYPE.ERROR
-                                        ? '#D33003'
-                                        : '#FAC300'
-                                    }
+                                  <ErrorIcon
+                                    size={20}
+                                    color={colors.red[400]}
                                   />
                                 }
                                 contentText={s.message.join(' | ')}
@@ -415,7 +435,9 @@ const isWhatsAppButtonsListStep = (
   return step.type === OctaWabaStepType.WHATSAPP_BUTTONS_LIST
 }
 
-const hasStepRedirectCheckAvailability = (step: Step): step is AssignToTeamStep => {
+const hasStepRedirectCheckAvailability = (
+  step: Step
+): step is AssignToTeamStep => {
   if (step.type === 'assign to team') {
     return step.options.isAvailable
   }

@@ -5,16 +5,16 @@ import {
   DraggableStepType,
   StepIndices,
 } from 'models'
-import { parseNewStep } from 'services/typebots/typebots'
 import { removeEmptyBlocks } from './blocks'
 import { WritableDraft } from 'immer/dist/types/types-external'
-import { SetTypebot } from '../TypebotContext'
+import { SetEmptyFields, SetTypebot } from '../TypebotContext'
 import produce from 'immer'
 import { cleanUpEdgeDraft, deleteEdgeDraft } from './edges'
 import cuid from 'cuid'
 import { byId, isWebhookStep, stepHasItems } from 'utils'
 import { duplicateItemDraft } from './items'
 import { BuildSteps } from 'helpers/builderStep/builder.step'
+import { ActionsTypeEmptyFields } from 'services/utils/useEmptyFields'
 
 export type StepsActions = {
   createStep: (
@@ -31,7 +31,10 @@ export type StepsActions = {
   deleteStep: (indices: StepIndices) => void
 }
 
-const stepsAction = (setTypebot: SetTypebot): StepsActions => ({
+const stepsAction = (
+  setTypebot: SetTypebot,
+  setEmptyFields: SetEmptyFields
+): StepsActions => ({
   createStep: (
     blockId: string,
     step: DraggableStep | DraggableStepType,
@@ -65,6 +68,9 @@ const stepsAction = (setTypebot: SetTypebot): StepsActions => ({
   deleteStep: ({ blockIndex, stepIndex }: StepIndices) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
+        const stepId = typebot.blocks[blockIndex].steps[stepIndex].id
+        setEmptyFields([stepId], ActionsTypeEmptyFields.REMOVE)
+
         const removingStep = typebot.blocks[blockIndex].steps[stepIndex]
         removeStepFromBlock({ blockIndex, stepIndex })(typebot)
         cleanUpEdgeDraft(typebot, removingStep.id)
@@ -104,7 +110,7 @@ const createNewStep = async (
   blockId: string,
   { blockIndex, stepIndex }: StepIndices
 ) => {
-  BuildSteps({ blockIndex, stepIndex }).apply(type, typebot, blockId);
+  BuildSteps({ blockIndex, stepIndex }).apply(type, typebot, blockId)
   // const newStep = parseNewStep(type, blockId)
   // typebot.blocks[blockIndex].steps.splice(stepIndex ?? 0, 0, newStep)
 }

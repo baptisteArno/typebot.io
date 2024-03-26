@@ -31,6 +31,7 @@ type TextBubbleEditorProps = {
   onKeyUp?: (newContent: TextBubbleContent) => void
   increment?: number
   maxLength?: number
+  required?: boolean | { errorMsg?: string }
 }
 
 export const TextBubbleEditor = ({
@@ -39,6 +40,7 @@ export const TextBubbleEditor = ({
   onKeyUp,
   increment,
   maxLength,
+  required,
 }: TextBubbleEditorProps) => {
   const [value, setValue] = useState(initialValue)
 
@@ -104,7 +106,9 @@ export const TextBubbleEditor = ({
   }
 
   const keyUpEditor = (v?: TElement[]) => {
-    if (onKeyUp) onKeyUp(convertValueToStepContent(v || value))
+    if (onKeyUp) {
+      onKeyUp(convertValueToStepContent(v || value))
+    }
   }
 
   useOutsideClick({
@@ -169,70 +173,88 @@ export const TextBubbleEditor = ({
     if (e.key === 'Enter') closeEditor()
   }
 
+  const checkRequiredField = () => {
+    return (
+      required &&
+      value.length <= 1 &&
+      value[0]?.children.every((c) => {
+        return c?.text?.trim().length < 1
+      })
+    )
+  }
   return (
-    <Stack
-      flex="1"
-      ref={textEditorRef}
-      borderWidth="2px"
-      borderColor="blue.400"
-      rounded="md"
-      onMouseDown={handleMouseDown}
-      pos="relative"
-      spacing={0}
-      cursor="text"
-    >
-      <ToolBar
-        editor={editor}
-        onVariablesButtonClick={(showDialog) => {
-          setIsVariableDropdownOpen(showDialog)
-        }}
-        onEmojiSelected={handleEmoji}
-      />
-      <Plate
-        id={randomEditorId}
-        editableProps={{
-          style: editorStyle,
-          autoFocus: true,
-          onFocus: () => {
-            if (editor.children.length === 0) return
-            selectEditor(editor, {
-              edge: 'end',
-            })
-          },
-          'aria-label': 'Text editor',
-          onBlur: () => {
-            rememberedSelection.current = editor.selection
-          },
-          onKeyDown: handleKeyDown,
-          onKeyUp: () => keyUpEditor(),
-        }}
-        initialValue={
-          initialValue.length === 0
-            ? [{ type: 'p', children: [{ text: '' }] }]
-            : initialValue
-        }
-        onChange={handleChangeEditorContent}
-        editor={withMaxLength(editor)}
-      />
-      {isVariableDropdownOpen && (
-        <Flex
-          pos="absolute"
-          ref={varDropdownRef}
-          shadow="lg"
-          rounded="md"
-          bgColor="white"
-          w="100%"
-          zIndex={10}
-        >
-          <VariableSearchInput
-            onSelectVariable={handleVariableSelected}
-            placeholder="Pesquise sua variável"
-            handleOutsideClick={() => setIsVariableDropdownOpen(false)}
-            isSaveContext={false}
-            labelDefault={'Selecione uma variável:'}
-          />
+    <>
+      <Stack
+        flex="1"
+        ref={textEditorRef}
+        borderWidth="2px"
+        borderColor={checkRequiredField() ? 'red.400' : 'blue.400'}
+        rounded="md"
+        onMouseDown={handleMouseDown}
+        pos="relative"
+        spacing={0}
+        cursor="text"
+      >
+        <ToolBar
+          editor={editor}
+          onVariablesButtonClick={(showDialog) => {
+            setIsVariableDropdownOpen(showDialog)
+          }}
+          onEmojiSelected={handleEmoji}
+        />
+        <Plate
+          id={randomEditorId}
+          editableProps={{
+            style: editorStyle,
+            autoFocus: true,
+            onFocus: () => {
+              if (editor.children.length === 0) return
+              selectEditor(editor, {
+                edge: 'end',
+              })
+            },
+            'aria-label': 'Text editor',
+            onBlur: () => {
+              rememberedSelection.current = editor.selection
+            },
+            onKeyDown: handleKeyDown,
+            onKeyUp: () => keyUpEditor(),
+          }}
+          initialValue={
+            initialValue.length === 0
+              ? [{ type: 'p', children: [{ text: '' }] }]
+              : initialValue
+          }
+          onChange={handleChangeEditorContent}
+          editor={withMaxLength(editor)}
+        />
+        {isVariableDropdownOpen && (
+          <Flex
+            pos="absolute"
+            ref={varDropdownRef}
+            shadow="lg"
+            rounded="md"
+            bgColor="white"
+            w="100%"
+            zIndex={10}
+          >
+            <VariableSearchInput
+              onSelectVariable={handleVariableSelected}
+              placeholder="Pesquise sua variável"
+              handleOutsideClick={() => setIsVariableDropdownOpen(false)}
+              isSaveContext={false}
+              labelDefault={'Selecione uma variável:'}
+            />
+          </Flex>
+        )}
+      </Stack>
+      {checkRequiredField() && (
+        <Flex color="red.400" fontSize="sm" mt={2}>
+          {typeof required === 'object'
+            ? required?.errorMsg
+            : 'Este campo é obrigatório'}
         </Flex>
       )}
-    </Stack>
+    </>
   )
 }

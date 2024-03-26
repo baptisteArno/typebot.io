@@ -9,10 +9,11 @@ import {
   StepIndices,
   Typebot,
 } from 'models'
-import { SetTypebot } from '../TypebotContext'
+import { SetEmptyFields, SetTypebot } from '../TypebotContext'
 import { cleanUpEdgeDraft } from './edges'
 import { createStepDraft, duplicateStepDraft } from './steps'
 import { updateBlocksHasConnections } from 'helpers/block-connections'
+import { ActionsTypeEmptyFields } from 'services/utils/useEmptyFields'
 
 export type BlocksActions = {
   createBlock: (
@@ -27,7 +28,10 @@ export type BlocksActions = {
   deleteBlock: (blockIndex: number) => void
 }
 
-const blocksActions = (setTypebot: SetTypebot): BlocksActions => ({
+const blocksActions = (
+  setTypebot: SetTypebot,
+  setEmptyFields: SetEmptyFields
+): BlocksActions => ({
   createBlock: ({
     id,
     step,
@@ -49,8 +53,6 @@ const blocksActions = (setTypebot: SetTypebot): BlocksActions => ({
         }
 
         typebot.blocks.push(newBlock)
-
-        typebot.blocks = updateBlocksHasConnections(typebot)
 
         createStepDraft(typebot, step, newBlock.id, indices)
       })
@@ -92,6 +94,8 @@ const blocksActions = (setTypebot: SetTypebot): BlocksActions => ({
   deleteBlock: (blockIndex: number) => {
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
+        const stepIds = typebot.blocks[blockIndex].steps.map((step) => step.id)
+        setEmptyFields(stepIds, ActionsTypeEmptyFields.REMOVE)
         deleteBlockDraft(typebot)(blockIndex)
 
         typebot.blocks = updateBlocksHasConnections(typebot)

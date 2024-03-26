@@ -1,6 +1,6 @@
 import { Flex, FormLabel, Spacer, Stack } from '@chakra-ui/react'
 import { WhatsAppOptionsListOptions, Variable } from 'models'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TextBubbleEditor } from 'components/shared/Graph/Nodes/StepNode/TextBubbleEditor'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
 import { Node } from 'slate'
@@ -123,6 +123,9 @@ export const WhatsAppOptionsListSettingsBody = ({
           </FormLabel>
         </Flex>
         <TextBubbleEditor
+          required={{
+            errorMsg: 'O campo "Texto do corpo da mensagem" é obrigatório',
+          }}
           onClose={handleBodyText}
           initialValue={
             options.body?.content ? options.body.content.richText : []
@@ -161,6 +164,7 @@ export const WhatsAppOptionsListSettingsBody = ({
           </FormLabel>
         </Flex>
         <TextBubbleEditor
+          required={{ errorMsg: 'O campo "Título da lista" é obrigatório' }}
           onClose={handleListTitle}
           initialValue={
             options.listTitle?.content

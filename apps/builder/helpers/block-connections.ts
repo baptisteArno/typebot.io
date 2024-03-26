@@ -1,4 +1,21 @@
-import { Typebot, Block, Edge } from 'models'
+import {
+  Typebot,
+  Block,
+  Edge,
+  OctaBubbleStepType,
+  OctaStepType,
+  WOZStepType,
+  InputStepType,
+  LogicStepType,
+  IntegrationStepType,
+  OctaWabaStepType,
+} from 'models'
+
+const finalSteps: string[] = [
+  OctaStepType.ASSIGN_TO_TEAM,
+  OctaBubbleStepType.END_CONVERSATION,
+  WOZStepType.MESSAGE,
+]
 
 const validIfHasConnection = (
   blockId: string,
@@ -6,104 +23,53 @@ const validIfHasConnection = (
   edges: Edge[]
 ) => !!edges.find((edge) => edge[side].blockId === blockId)
 
-const blocksWithOutConnection = (blocks: Block[]) =>
-  blocks.filter((item) => !item.hasConnection)
+const areAllItemsConnected = (block: Block): boolean => {
+  let result = false
+  block.steps.forEach((step) => {
+    const checkStepType =
+      step.type === InputStepType.CHOICE ||
+      step.type === IntegrationStepType.WEBHOOK ||
+      step.type === OctaStepType.OFFICE_HOURS ||
+      step.type === OctaWabaStepType.WHATSAPP_OPTIONS_LIST ||
+      step.type === OctaWabaStepType.WHATSAPP_BUTTONS_LIST ||
+      step.type === WOZStepType.ASSIGN
 
-const updateOneOnlyBlockWithoutConnection = ({
-  parsedBlocks,
-  edges,
-}: {
-  parsedBlocks: Block[]
-  edges: Edge[]
-}) => {
-  const singleBlockWithoutConnection = blocksWithOutConnection(
-    parsedBlocks
-  ).find((item) => item.hasConnection === false)
-
-  if (singleBlockWithoutConnection) {
-    parsedBlocks = parsedBlocks.map((block) => {
-      if (block.id === singleBlockWithoutConnection.id) {
-        block.hasConnection =
-          validIfHasConnection(block.id, 'from', edges) ||
-          validIfHasConnection(block.id, 'to', edges)
-      }
-
-      return block
-    })
-  }
-
-  return parsedBlocks
-}
-
-const findTargetBlock = (
-  startEdge: Edge,
-  targetBlockIds: string[],
-  edges: Edge[]
-): boolean => {
-  if (!startEdge) {
-    return false
-  }
-
-  if (targetBlockIds.includes(startEdge.from.blockId)) {
-    return true
-  }
-
-  const nextEdge = edges.find(
-    (edge) => edge.to.blockId === startEdge.from.blockId
-  )
-
-  if (nextEdge) {
-    return findTargetBlock(nextEdge, targetBlockIds, edges)
-  }
-
-  return false
-}
-
-const updateBlocksCanReachMultiConnections = ({
-  blocks,
-  parsedBlocks,
-  edges,
-}: {
-  blocks: Block[]
-  parsedBlocks: Block[]
-  edges: Edge[]
-}) => {
-  const blocksWithMultiConnections = blocks
-    .filter(
-      (item) =>
-        !!item.steps.filter((step) =>
-          [
-            'choice input',
-            'whatsapp options list',
-            'whatsapp buttons list',
-          ].includes(step.type)
-        )?.length
-    )
-    ?.map((block) => block.id)
-
-  blocksWithOutConnection(parsedBlocks).forEach((block) => {
-    const startEdge = edges.find((edge) => edge.to.blockId === block.id)
-
-    if (startEdge) {
-      const canReachMultiConnectionBlocks = findTargetBlock(
-        startEdge,
-        blocksWithMultiConnections,
-        edges
-      )
-
-      if (canReachMultiConnectionBlocks) {
-        parsedBlocks = parsedBlocks.map((parsedBlock) => {
-          if (parsedBlock.id === block.id) {
-            parsedBlock.hasConnection = true
-          }
-
-          return parsedBlock
-        })
+    if (checkStepType) {
+      const areAllChoicesConnected =
+        step?.items?.every((item) => !!item.outgoingEdgeId) ?? false
+      if (!!areAllChoicesConnected) {
+        result = true
       }
     }
   })
+  return result
+}
 
-  return parsedBlocks
+const hasAllEdgeCaseTrue = (block: Block): boolean => {
+  let result = true
+  block.steps.forEach((step) => {
+    if (step.type === LogicStepType.CONDITION) {
+      const hasEdgeCaseTrue = !!step.outgoingEdgeId
+      const hasEdgeCaseFalse =
+        step.items?.every((item) => !!item.outgoingEdgeId) ?? false
+      if (!hasEdgeCaseTrue || !hasEdgeCaseFalse) {
+        result = false
+      }
+    }
+  })
+  return result
+}
+
+const checkOutgoingEdgeOnAssignToTeam = (block: Block): boolean => {
+  let result = true
+  block.steps.forEach((step) => {
+    if (step.type === OctaStepType.ASSIGN_TO_TEAM) {
+      if (step.options?.isAvailable) {
+        result = !!step.outgoingEdgeId
+      }
+    }
+  })
+  return result
 }
 
 export const updateBlocksHasConnections = ({
@@ -117,39 +83,49 @@ export const updateBlocksHasConnections = ({
     }))
   }
 
-  let parsedBlocks = blocks.map((block, blockIndex) => {
-    if (blockIndex === 0) {
-      block.hasConnection = !!edges.find(
-        (edge) => edge.from.blockId === block.id
-      )
-    } else {
-      const hasToConnection = validIfHasConnection(block.id, 'to', edges)
+  const parsedBlocks = blocks.map((block, blockIndex) => {
+    const blockTypes = block.steps.map((s) => s.type)
 
-      const fromEdge = edges.find((edge) => edge.to.blockId === block.id)
+    const hasToConnection = validIfHasConnection(block.id, 'to', edges)
+    const hasFromConnection = validIfHasConnection(block.id, 'from', edges)
 
-      if (fromEdge?.from?.itemId) {
-        block.hasConnection = hasToConnection
-      } else {
-        block.hasConnection =
-          validIfHasConnection(block.id, 'from', edges) && hasToConnection
-      }
+    block.hasConnection =
+      blockIndex === 0
+        ? !!edges.find((edge) => edge.from.blockId === block.id)
+        : hasToConnection && hasFromConnection
+
+    const isFinalStep = blockTypes
+      .map((v) => finalSteps.includes(v))
+      .some((v) => !!v)
+
+    if (isFinalStep) {
+      block.hasConnection = validIfHasConnection(block.id, 'to', edges)
+    }
+
+    const hasToConnectEachItem =
+      blockTypes.includes(InputStepType.CHOICE) ||
+      blockTypes.includes(IntegrationStepType.WEBHOOK) ||
+      blockTypes.includes(OctaStepType.OFFICE_HOURS) ||
+      blockTypes.includes(OctaWabaStepType.WHATSAPP_OPTIONS_LIST) ||
+      blockTypes.includes(OctaWabaStepType.WHATSAPP_BUTTONS_LIST) ||
+      blockTypes.includes(WOZStepType.ASSIGN)
+
+    if (hasToConnectEachItem) {
+      block.hasConnection = areAllItemsConnected(block)
+    }
+
+    if (blockTypes.includes(LogicStepType.CONDITION)) {
+      block.hasConnection = hasAllEdgeCaseTrue(block)
+    }
+
+    if (blockTypes.includes(OctaStepType.ASSIGN_TO_TEAM)) {
+      block.hasConnection =
+        checkOutgoingEdgeOnAssignToTeam(block) &&
+        validIfHasConnection(block.id, 'to', edges)
     }
 
     return block
   })
-
-  if (blocksWithOutConnection(parsedBlocks).length === 1) {
-    parsedBlocks = updateOneOnlyBlockWithoutConnection({
-      parsedBlocks,
-      edges,
-    })
-  } else {
-    parsedBlocks = updateBlocksCanReachMultiConnections({
-      blocks,
-      parsedBlocks,
-      edges,
-    })
-  }
 
   return parsedBlocks
 }

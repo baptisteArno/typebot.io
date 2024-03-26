@@ -36,15 +36,13 @@ import {
   LogicStepType,
   StepType,
   OctaWabaStepType,
-  WOZStepType
+  WOZStepType,
 } from 'models'
 import React from 'react'
-
 
 type StepIconProps = { type: StepType } & IconProps
 
 export const StepIcon = ({ type, ...props }: StepIconProps) => {
-
   switch (type) {
     case BubbleStepType.TEXT:
       return <TextIcon color="#AA561C" {...props} />
@@ -57,7 +55,7 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
     case BubbleStepType.VIDEO:
       return <FilmIcon color="#AA561C" {...props} />
     case BubbleStepType.EMBED:
-      return <LayoutIcon color="#AA561C"  {...props} />
+      return <LayoutIcon color="#AA561C" {...props} />
     case InputStepType.TEXT:
       return <QuestionIcon color="#256F42" {...props} />
     case InputStepType.EMAIL:
@@ -102,11 +100,11 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
     case OctaStepType.OFFICE_HOURS:
       return <CalendarIcon color="#373A86" />
     case OctaWabaStepType.COMMERCE:
-      return <CommerceIcon color="#AA561C" />
+      return <CommerceIcon color="#AA561C" {...props} />
     case OctaStepType.PRE_RESERVE:
       return <PreReserveIcon color="#373A86" {...props} />
     case OctaStepType.CONVERSATION_TAG:
-      return <ConversationTagIcon color="#373A86" {...props} />      
+      return <ConversationTagIcon color="#373A86" {...props} />
     case 'start':
       return <FlagIcon {...props} />
     default:

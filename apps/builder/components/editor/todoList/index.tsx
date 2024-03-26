@@ -21,9 +21,13 @@ import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
 import { useTypebot } from 'contexts/TypebotContext'
 
 import { InputStepType } from 'models'
+import { ErrorIcon } from 'assets/icons'
+import { StepTypeLabel } from '../StepsSideBar/StepTypeLabel'
+import { colors } from 'libs/theme'
+import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
 
 export const ToDoList = () => {
-  const { typebot } = useTypebot()
+  const { typebot, emptyFields } = useTypebot()
 
   const { setRightPanel } = useEditor()
 
@@ -36,7 +40,25 @@ export const ToDoList = () => {
 
   const hasGroupsWithoutConnection = () => !!groupsWithoutConnection()?.length
 
-  const showEmptyPendenciesList = () => !hasGroupsWithoutConnection()
+  const showEmptyPendenciesList = () =>
+    !hasGroupsWithoutConnection() && emptyFields.length < 1
+
+  const groupsWithEmptyFields = () => {
+    if (emptyFields.length === 0) return []
+    const groups = emptyFields?.map((field) => {
+      const hasBlock = typebot?.blocks.find(
+        (block) => block.id === field.step.blockId
+      )
+      if (hasBlock) {
+        return {
+          ...field,
+          graphCordinates: hasBlock.graphCoordinates,
+        }
+      }
+    })
+
+    return groups
+  }
 
   const getShellPath = () =>
     (process.env.BASE_PATH || (window as any).BASE_PATH) + '/images/shell.svg'
@@ -119,52 +141,109 @@ export const ToDoList = () => {
           </Stack>
         ) : (
           <Flex w="full" flexDirection="column" gap="5">
-            {hasGroupsWithoutConnection() && (
-              <Flex w="full" flexDirection="column" gap="2.5">
-                <Flex
-                  w="full"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
+            <Flex w="full" flexDirection="column" gap="2.5">
+              {groupsWithEmptyFields().length > 0 && (
+                <>
                   <Flex
+                    w="full"
                     justifyContent="space-between"
                     alignItems="center"
-                    gap="6px"
                   >
-                    <WarningTwoIcon color="#FAC300" />
+                    <Flex
+                      justifyContent="space-between"
+                      alignItems="center"
+                      gap="6px"
+                    >
+                      <ErrorIcon color="#d33003" />
 
-                    <Title sm>Grupos sem conexão</Title>
-                  </Flex>
-
-                  <Tooltip
-                    hasArrow
-                    label="Um ou mais grupos do seu bot estão sem conexões."
-                    bg="gray.700"
-                    color="white"
-                    width="232px"
-                  >
-                    <InfoOutlineIcon color="#5A6377" />
-                  </Tooltip>
-                </Flex>
-
-                {groupsWithoutConnection()?.map((item) => (
-                  <Flex
-                    key={item.id}
-                    paddingY="3"
-                    paddingX="4"
-                    rounded="8px"
-                    justifyContent="space-between"
-                    background="#F4F4F5"
-                  >
-                    <Flex alignItems="center" gap="2">
-                      <StepIcon type={InputStepType.ASK_NAME} />
-
-                      <StepTitle>{item.title}</StepTitle>
+                      <Title sm>Campos obrigatórios</Title>
                     </Flex>
+
+                    <Tooltip
+                      hasArrow
+                      label="Uma ou mais etapas do seu bot estão com campos obrigatórios não preenchidos."
+                      bg="gray.700"
+                      color="white"
+                      width="232px"
+                    >
+                      <InfoOutlineIcon color="#5A6377" />
+                    </Tooltip>
                   </Flex>
-                ))}
-              </Flex>
-            )}
+                  {groupsWithEmptyFields()?.map((item) => {
+                    return (
+                      <Flex
+                        key={item?.step?.id}
+                        paddingY="3"
+                        paddingX="4"
+                        rounded="8px"
+                        justifyContent="space-between"
+                        background="#F4F4F5"
+                      >
+                        <Flex alignItems="center" gap="2">
+                          <StepIcon
+                            color={colors.orange[300]}
+                            type={item?.step.type}
+                          />
+                          <StepTitle>
+                            <StepTypeLabel type={item?.step?.type} />
+                          </StepTitle>
+                        </Flex>
+                      </Flex>
+                    )
+                  })}
+                </>
+              )}
+
+              {hasGroupsWithoutConnection() &&
+                groupsWithEmptyFields().length > 0 && (
+                  <OctaDivider width="100%" />
+                )}
+
+              {hasGroupsWithoutConnection() && (
+                <>
+                  <Flex
+                    w="full"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <Flex
+                      justifyContent="space-between"
+                      alignItems="center"
+                      gap="6px"
+                    >
+                      <WarningTwoIcon color="#FAC300" />
+
+                      <Title sm>Grupos sem conexão</Title>
+                    </Flex>
+
+                    <Tooltip
+                      hasArrow
+                      label="Um ou mais grupos do seu bot estão sem conexões."
+                      bg="gray.700"
+                      color="white"
+                      width="232px"
+                    >
+                      <InfoOutlineIcon color="#5A6377" />
+                    </Tooltip>
+                  </Flex>
+
+                  {groupsWithoutConnection()?.map((item) => (
+                    <Flex
+                      key={item.id}
+                      paddingY="3"
+                      paddingX="4"
+                      rounded="8px"
+                      justifyContent="space-between"
+                      background="#F4F4F5"
+                    >
+                      <Flex alignItems="center" gap="2">
+                        <StepTitle>{item.title}</StepTitle>
+                      </Flex>
+                    </Flex>
+                  ))}
+                </>
+              )}
+            </Flex>
           </Flex>
         )}
       </VStack>

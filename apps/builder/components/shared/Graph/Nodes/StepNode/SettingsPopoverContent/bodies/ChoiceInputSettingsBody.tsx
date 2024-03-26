@@ -1,4 +1,4 @@
-import { FormLabel, Stack } from '@chakra-ui/react'
+import { Flex, FormLabel, Spacer, Stack } from '@chakra-ui/react'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
 import { ChoiceInputOptions, TextBubbleContent, Variable } from 'models'
 import React from 'react'
@@ -10,6 +10,8 @@ type ChoiceInputSettingsBodyProps = {
   onOptionsChange: (options: ChoiceInputOptions) => void
 }
 
+const MAX_LENGHT_TEXT = 500
+
 export const ChoiceInputSettingsBody = ({
   options,
   onOptionsChange,
@@ -18,7 +20,7 @@ export const ChoiceInputSettingsBody = ({
     if (options) {
       onOptionsChange({
         ...options,
-        message: content
+        message: content,
       })
     }
   }
@@ -29,23 +31,28 @@ export const ChoiceInputSettingsBody = ({
   return (
     <Stack spacing={4}>
       <Stack>
-        <FormLabel mb="0" htmlFor="placeholder">
-          Texto da pergunta:
-        </FormLabel>
+        <Flex>
+          <FormLabel mb="0" htmlFor="placeholder">
+            Texto da pergunta
+          </FormLabel>
+          <Spacer />
+          <FormLabel mb="0" htmlFor="button">
+            {options?.message?.plainText?.length ?? 0}/{MAX_LENGHT_TEXT}
+          </FormLabel>
+        </Flex>
         (
         <TextBubbleEditor
+          required={{ errorMsg: 'O campo "Texto da pergunta" é obrigatório' }}
           onClose={handleCloseEditorBotMessage}
-          initialValue={
-            options?.message
-              ? options.message.richText
-              : []
-          }
+          initialValue={options?.message ? options.message.richText : []}
           onKeyUp={handleCloseEditorBotMessage}
+          maxLength={MAX_LENGHT_TEXT}
         />
         )
       </Stack>
       <FooterMessage>
-        Edite as opções que enviaremos com essa pergunta diretamente na árvore ;)
+        Edite as opções que enviaremos com essa pergunta diretamente na árvore
+        ;)
       </FooterMessage>
       <Stack>
         <VariableSearchInput

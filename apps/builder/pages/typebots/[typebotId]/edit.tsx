@@ -18,7 +18,8 @@ import { GettingStartedModal } from 'components/editor/GettingStartedModal'
 import { dequal } from 'dequal'
 
 function TypebotEditPage() {
-  const { typebot, isReadOnly, save, currentTypebot } = useTypebot()
+  const { typebot, isReadOnly, save, currentTypebot, emptyFields } =
+    useTypebot()
 
   useEffect(() => {
     window.addEventListener('message', handleEventListeners)
@@ -50,6 +51,16 @@ function TypebotEditPage() {
       '*'
     )
   }, [typebot?.blocks])
+
+  useEffect(() => {
+    window.parent.postMessage(
+      {
+        name: 'emptyFields',
+        fields: emptyFields,
+      },
+      '*'
+    )
+  }, [emptyFields])
 
   const handleEventListeners = (e: any): void => {
     if (e.data === 'backOrExitClick') {

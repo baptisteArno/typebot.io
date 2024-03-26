@@ -108,6 +108,7 @@ export const WhatsAppButtonsListSettingsBody = ({
           </FormLabel>
         </Flex>
         <TextBubbleEditor
+          required
           onClose={handleBodyText}
           initialValue={
             options.body?.content ? options.body.content.richText : []

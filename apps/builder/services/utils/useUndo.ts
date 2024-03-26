@@ -1,5 +1,6 @@
 import { isDefined } from '@udecode/plate-core'
 import { dequal } from 'dequal'
+import { updateBlocksHasConnections } from 'helpers/block-connections'
 // import { diff } from 'deep-object-diff'
 import { useReducer, useCallback, useRef } from 'react'
 import { isNotDefined } from 'utils'
@@ -87,7 +88,7 @@ const reducer = <T>(state: State<T>, action: Action<T>) => {
       ) {
         return state
       }
-      
+
       return {
         past: [...past, present].filter(isDefined),
         present: {
@@ -134,6 +135,11 @@ const useUndo = <T>(initialPresent: T): [State<T>, Actions<T>] => {
           ? newPresent
           : (newPresent as (current: T) => T)(presentRef.current)
       presentRef.current = updatedTypebot
+
+      if (updatedTypebot?.blocks) {
+        updatedTypebot.blocks = updateBlocksHasConnections(updatedTypebot)
+      }
+
       dispatch({
         type: ActionType.Set,
         newPresent: updatedTypebot,

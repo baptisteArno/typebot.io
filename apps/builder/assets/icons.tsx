@@ -704,3 +704,11 @@ export const WarningIcon = (props: any) => (
     </div>
   </IconContext.Provider>
 )
+
+export const ErrorIcon = (props: any) => (
+  <IconContext.Provider
+    value={{ ...props, color: props.color, className: 'global-class-name' }}
+  >
+    <MaterialDesign.MdError/>
+  </IconContext.Provider>
+)
