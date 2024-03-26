@@ -194,7 +194,7 @@ export const FolderContent = ({ folder }: Props) => {
             {folders &&
               folders.map((folder, index) => (
                 <FolderButton
-                  key={folder.id.toString()}
+                  key={folder.id}
                   index={index}
                   folder={folder}
                   onFolderDeleted={refetchFolders}
@@ -205,7 +205,7 @@ export const FolderContent = ({ folder }: Props) => {
             {typebots &&
               typebots.map((typebot) => (
                 <TypebotButton
-                  key={typebot.id.toString()}
+                  key={typebot.id}
                   typebot={typebot}
                   draggedTypebot={draggedTypebot}
                   onTypebotUpdated={refetchTypebots}

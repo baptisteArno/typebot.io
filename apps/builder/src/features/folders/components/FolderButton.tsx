@@ -192,5 +192,8 @@ export const ButtonSkeleton = () => (
 
 export default memo(
   FolderButton,
-  (prev, next) => prev.folder.id === next.folder.id && prev.index === next.index
+  (prev, next) =>
+    prev.folder.id === next.folder.id &&
+    prev.index === next.index &&
+    prev.folder.name === next.folder.name
 )

@@ -240,5 +240,8 @@ export default memo(
   (prev, next) =>
     prev.draggedTypebot?.id === next.draggedTypebot?.id &&
     prev.typebot.id === next.typebot.id &&
-    prev.isReadOnly === next.isReadOnly
+    prev.isReadOnly === next.isReadOnly &&
+    prev.typebot.name === next.typebot.name &&
+    prev.typebot.icon === next.typebot.icon &&
+    prev.typebot.publishedTypebotId === next.typebot.publishedTypebotId
 )
