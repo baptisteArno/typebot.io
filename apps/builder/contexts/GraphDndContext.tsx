@@ -79,6 +79,12 @@ export const useDragDistance = ({
   useEventListener('mouseup', handleMouseUp)
 
   const handleMouseDown = (e: MouseEvent) => {
+
+
+    const target = e.target as HTMLInputElement
+    if (target.inputMode = "text") return
+
+    if (ref.current?.inputMode) return
     if (isDisabled || !ref.current) return
     if (ref?.current?.dataset && ref.current.dataset['testid'] !== 'item') e.preventDefault()
     e.stopPropagation()
@@ -98,9 +104,9 @@ export const useDragDistance = ({
     const { clientX, clientY } = e
     if (
       Math.abs(mouseDownPosition.current.absolute.x - clientX) >
-        distanceTolerance ||
+      distanceTolerance ||
       Math.abs(mouseDownPosition.current.absolute.y - clientY) >
-        distanceTolerance
+      distanceTolerance
     ) {
       e.preventDefault()
       onDrag(mouseDownPosition.current)
