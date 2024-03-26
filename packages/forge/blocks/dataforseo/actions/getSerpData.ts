@@ -2,7 +2,7 @@ import { createAction, option } from '@typebot.io/forge'
 import { isDefined, isEmpty } from '@typebot.io/lib'
 import { auth } from '../auth'
 import { SerpDataPAA, SerpDataPAAElement } from '../types'
-import { apiGetSerpData, apiUrl, getHeaders } from '../api'
+import { apiGetSerpData } from '../api'
 import { fetchLanguages } from '../fetchers/fetch-languages'
 
 export const getSerpData = createAction({
