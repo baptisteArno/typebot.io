@@ -1,4 +1,4 @@
-import { got } from 'got'
+import { HTTPError, got } from 'got'
 import { ApiResponse, KeywordInfo, KeywordSuggestion, SerpData } from './types'
 
 export const apiUrl = (uri: string, sandbox = false) =>
@@ -18,19 +18,29 @@ export async function apiGetSearchVolume(
   request: any,
   sandbox = false
 ) {
-  const r = await got.post(
-    apiUrl('keywords_data/google_ads/search_volume/live', sandbox),
-    {
-      headers: getHeaders(apiLogin, apiKey),
-      json: request,
+  try {
+    const r = await got.post(
+      apiUrl('keywords_data/google_ads/search_volume/live', sandbox),
+      {
+        headers: getHeaders(apiLogin, apiKey),
+        json: request,
+      }
+    )
+    const response = JSON.parse(r.body) as ApiResponse<KeywordInfo>
+    processStandardErrors(response)
+    return response
+  } catch (error) {
+    if (error instanceof HTTPError) {
+      throw new Error(
+        'API: response (' +
+          error.response.statusCode +
+          ') ' +
+          error.response.body
+      )
+    } else {
+      throw new Error('API: request ' + (error as Error).message)
     }
-  )
-  if (r.statusCode !== 200) {
-    throw new Error('API: response ' + r.statusCode)
   }
-  const response = JSON.parse(r.body) as ApiResponse<KeywordInfo>
-  processStandardErrors(response)
-  return response
 }
 
 export async function apiGetSerpData(
@@ -39,20 +49,29 @@ export async function apiGetSerpData(
   request: any,
   sandbox = false
 ) {
-  const r = await got.post(
-    apiUrl('serp/google/organic/live/advanced', sandbox),
-    {
-      headers: getHeaders(apiLogin, apiKey),
-      json: request,
+  try {
+    const r = await got.post(
+      apiUrl('serp/google/organic/live/advanced', sandbox),
+      {
+        headers: getHeaders(apiLogin, apiKey),
+        json: request,
+      }
+    )
+    const response = JSON.parse(r.body) as ApiResponse<SerpData>
+    processStandardErrors(response)
+    return response
+  } catch (error) {
+    if (error instanceof HTTPError) {
+      throw new Error(
+        'API: response (' +
+          error.response.statusCode +
+          ') ' +
+          error.response.body
+      )
+    } else {
+      throw new Error('API: request ' + (error as Error).message)
     }
-  )
-
-  if (r.statusCode !== 200) {
-    throw new Error('API: response ' + r.statusCode)
   }
-  const response = JSON.parse(r.body) as ApiResponse<SerpData>
-  processStandardErrors(response)
-  return response
 }
 
 export async function apiGetKeywordSuggestions(
@@ -61,16 +80,29 @@ export async function apiGetKeywordSuggestions(
   request: any,
   sandbox = false
 ) {
-  const r = await got.post(
-    apiUrl('dataforseo_labs/google/keyword_suggestions/live', sandbox),
-    {
-      headers: getHeaders(apiLogin, apiKey),
-      json: request,
+  try {
+    const r = await got.post(
+      apiUrl('dataforseo_labs/google/keyword_suggestions/live', sandbox),
+      {
+        headers: getHeaders(apiLogin, apiKey),
+        json: request,
+      }
+    )
+    const response = JSON.parse(r.body) as ApiResponse<KeywordSuggestion>
+    processStandardErrors(response)
+    return response
+  } catch (error) {
+    if (error instanceof HTTPError) {
+      throw new Error(
+        'API: response (' +
+          error.response.statusCode +
+          ') ' +
+          error.response.body
+      )
+    } else {
+      throw new Error('API: request ' + (error as Error).message)
     }
-  )
-  const response = JSON.parse(r.body) as ApiResponse<KeywordSuggestion>
-  processStandardErrors(response)
-  return response
+  }
 }
 
 function processStandardErrors(response: ApiResponse<any>) {
