@@ -1,9 +1,7 @@
 import { createAction, option } from '@typebot.io/forge'
 import { isDefined, isEmpty } from '@typebot.io/lib'
 import { auth } from '../auth'
-import { got } from 'got'
-import { ApiResponse, KeywordInfo, KeywordSuggestion } from '../types'
-import { apiGetKeywordSuggestions, apiUrl, getHeaders } from '../api'
+import { apiGetKeywordSuggestions } from '../api'
 import { fetchLanguages } from '../fetchers/fetch-languages'
 
 export const getKeywordSuggestions = createAction({
