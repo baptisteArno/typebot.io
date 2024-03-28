@@ -460,7 +460,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
                 <label>{step.options.url ?? ''}</label>
                 <Textarea
                   placeholder=""
-                  onKeyDown={handleKeyDown as never}
+                  onKeyDown={handleKeyDown as any}
                   defaultValue={pathPortion ?? ''}
                   handleOpenVariablesSelect={variablesKeyDown}
                   onChange={handlePathChange}
@@ -482,7 +482,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
                 (ex.:https://apiurl.com/<strong>?cep=#cep</strong>)
               </Text>
               <TableList<QueryParameters>
-                initialItems={step.options.parameters as never}
+                initialItems={step.options.parameters as any}
                 onItemsChange={handleQueryParamsChange}
                 Item={QueryParamsInputs}
                 itemsList={step.options.parameters}
@@ -503,7 +503,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
                 <strong> (ex.: Authorization: Basic 1234)</strong>
               </Text>
               <TableList<QueryParameters>
-                initialItems={step.options.headers as never}
+                initialItems={step.options.headers as any}
                 onItemsChange={handleHeadersChange}
                 Item={QueryParamsInputs}
                 addLabel="Adicionar parâmetro"
@@ -558,7 +558,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
             </AccordionButton>
             <AccordionPanel pb={4} as={Stack} spacing="6">
               <TableList<VariableForTest>
-                initialItems={step.options?.variablesForTest as never}
+                initialItems={step.options?.variablesForTest as any}
                 onItemsChange={handleVariablesForTestChange}
                 itemsList={step.options.variablesForTest}
                 Item={VariableForTestInputs}
@@ -614,7 +614,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
               </AccordionButton>
               <AccordionPanel pb={4} as={Stack} spacing="6">
                 <TableList<ResponseVariableMapping>
-                  initialItems={step.options.responseVariableMapping as never}
+                  initialItems={step.options.responseVariableMapping as any}
                   onItemsChange={handleResponseMappingChange}
                   Item={ResponseMappingInputs}
                   addLabel="Adicionar variável"
