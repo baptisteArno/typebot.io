@@ -110,7 +110,7 @@ export const useDragDistance = ({
   ref: React.MutableRefObject<HTMLDivElement | null>
   onDrag: (position: { absolute: Coordinates; relative: Coordinates }) => void
   distanceTolerance?: number
-  isDisabled: boolean
+  isDisabled?: boolean
   deps?: unknown[]
 }) => {
   const mouseDownPosition = useRef<{
