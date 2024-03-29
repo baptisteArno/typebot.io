@@ -12,6 +12,7 @@ import { ConnectingIds } from '../../types'
 import { useEventsCoordinates } from '../../providers/EventsCoordinateProvider'
 import { eventWidth, groupWidth } from '../../constants'
 import { useGroupsStore } from '../../hooks/useGroupsStore'
+import { omit } from '@typebot.io/lib'
 
 type Props = {
   connectingIds: ConnectingIds
@@ -113,7 +114,13 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
 
   const createNewEdge = (connectingIds: ConnectingIds) => {
     assert(connectingIds.target)
-    createEdge({ from: connectingIds.source, to: connectingIds.target })
+    createEdge({
+      from:
+        'groupId' in connectingIds.source
+          ? omit(connectingIds.source, 'groupId')
+          : connectingIds.source,
+      to: connectingIds.target,
+    })
   }
 
   if (mousePosition && mousePosition.x === 0 && mousePosition.y === 0)
