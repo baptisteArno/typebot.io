@@ -126,14 +126,18 @@ const executeComparison =
       case ComparisonOperators.MATCHES_REGEX: {
         const matchesRegex = (a: string | null, b: string | null) => {
           if (b === '' || !b || !a) return false
-          return new RegExp(b).test(a)
+          const regex = preprocessRegex(b)
+          if (!regex) return false
+          return new RegExp(regex.pattern, regex.flags).test(a)
         }
         return compare(matchesRegex, inputValue, value, 'some')
       }
       case ComparisonOperators.NOT_MATCH_REGEX: {
         const matchesRegex = (a: string | null, b: string | null) => {
           if (b === '' || !b || !a) return false
-          return !new RegExp(b).test(a)
+          const regex = preprocessRegex(b)
+          if (!regex) return true
+          return !new RegExp(regex.pattern, regex.flags).test(a)
         }
         return compare(matchesRegex, inputValue, value)
       }
@@ -169,4 +173,12 @@ const parseDateOrNumber = (value: string): number => {
     return time
   }
   return parsed
+}
+
+const preprocessRegex = (regex: string) => {
+  const match = regex.match(/^\/([^\/]+)\/([gimuy]*)$/)
+
+  if (!match) return null
+
+  return { pattern: match[1], flags: match[2] }
 }

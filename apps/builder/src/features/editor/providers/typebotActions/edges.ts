@@ -12,6 +12,7 @@ import { Draft, produce } from 'immer'
 import { byId, isDefined } from '@typebot.io/lib'
 import { blockHasItems } from '@typebot.io/schemas/helpers'
 import { createId } from '@paralleldrive/cuid2'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 
 export type EdgesActions = {
   createEdge: (edge: Omit<Edge, 'id'>) => void
@@ -67,7 +68,11 @@ export const edgesAction = (setTypebot: SetTypebot): EdgesActions => ({
             const areAllItemsConnected = (block as BlockWithItems).items.every(
               (item) => isDefined(item.outgoingEdgeId)
             )
-            if (areAllItemsConnected) {
+            if (
+              areAllItemsConnected &&
+              (block.type === InputBlockType.CHOICE ||
+                block.type === InputBlockType.PICTURE_CHOICE)
+            ) {
               deleteEdgeDraft({
                 typebot,
                 edgeId: block.outgoingEdgeId,
