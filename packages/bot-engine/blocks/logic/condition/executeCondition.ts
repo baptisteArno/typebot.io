@@ -126,6 +126,7 @@ const executeComparison =
       case ComparisonOperators.MATCHES_REGEX: {
         const matchesRegex = (a: string | null, b: string | null) => {
           if (b === '' || !b || !a) return false
+          if (b.startsWith('/') && b.endsWith('/')) b = b.slice(1, -1)
           return new RegExp(b).test(a)
         }
         return compare(matchesRegex, inputValue, value, 'some')
