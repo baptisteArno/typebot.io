@@ -12,19 +12,17 @@ import {
 
 import { InfoOutlineIcon, WarningTwoIcon } from '@chakra-ui/icons'
 
-import { Title, Description, StepTitle } from './style'
+import { Title, Description } from './style'
 
 import { useEditor } from 'contexts/EditorContext'
 
-import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
-
 import { useTypebot } from 'contexts/TypebotContext'
 
-import { InputStepType } from 'models'
 import { ErrorIcon } from 'assets/icons'
-import { StepTypeLabel } from '../StepsSideBar/StepTypeLabel'
-import { colors } from 'libs/theme'
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
+import EmptyFieldsItem from './emptyFieldsItem'
+import GroupsWithoutConnectionItem from './groupsWithoutConectionItem'
+import { colors } from 'libs/theme'
 
 export const ToDoList = () => {
   const { typebot, emptyFields } = useTypebot()
@@ -140,7 +138,28 @@ export const ToDoList = () => {
             </Text>
           </Stack>
         ) : (
-          <Flex w="full" flexDirection="column" gap="5">
+          <Flex
+            w="full"
+            flexDirection="column"
+            gap="5"
+            overflow={'auto'}
+            padding={'0 10px'}
+            style={{
+              WebkitOverflowScrolling: 'touch',
+            }}
+            css={{
+              '&::-webkit-scrollbar': {
+                width: '5px',
+              },
+              '&::-webkit-scrollbar-track': {
+                width: '6px',
+              },
+              '&::-webkit-scrollbar-thumb': {
+                background: colors.gray[300],
+                borderRadius: '24px',
+              },
+            }}
+          >
             <Flex w="full" flexDirection="column" gap="2.5">
               {groupsWithEmptyFields().length > 0 && (
                 <>
@@ -169,27 +188,8 @@ export const ToDoList = () => {
                       <InfoOutlineIcon color="#5A6377" />
                     </Tooltip>
                   </Flex>
-                  {groupsWithEmptyFields()?.map((item) => {
-                    return (
-                      <Flex
-                        key={item?.step?.id}
-                        paddingY="3"
-                        paddingX="4"
-                        rounded="8px"
-                        justifyContent="space-between"
-                        background="#F4F4F5"
-                      >
-                        <Flex alignItems="center" gap="2">
-                          <StepIcon
-                            color={colors.orange[300]}
-                            type={item?.step.type}
-                          />
-                          <StepTitle>
-                            <StepTypeLabel type={item?.step?.type} />
-                          </StepTitle>
-                        </Flex>
-                      </Flex>
-                    )
+                  {emptyFields?.map((item) => {
+                    return <EmptyFieldsItem key={item?.step?.id} item={item} />
                   })}
                 </>
               )}
@@ -228,18 +228,7 @@ export const ToDoList = () => {
                   </Flex>
 
                   {groupsWithoutConnection()?.map((item) => (
-                    <Flex
-                      key={item.id}
-                      paddingY="3"
-                      paddingX="4"
-                      rounded="8px"
-                      justifyContent="space-between"
-                      background="#F4F4F5"
-                    >
-                      <Flex alignItems="center" gap="2">
-                        <StepTitle>{item.title}</StepTitle>
-                      </Flex>
-                    </Flex>
+                    <GroupsWithoutConnectionItem key={item.id} item={item} />
                   ))}
                 </>
               )}

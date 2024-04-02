@@ -111,11 +111,11 @@ export const updateBlocksHasConnections = ({
       blockTypes.includes(WOZStepType.ASSIGN)
 
     if (hasToConnectEachItem) {
-      block.hasConnection = areAllItemsConnected(block)
+      block.hasConnection = areAllItemsConnected(block) && hasToConnection
     }
 
     if (blockTypes.includes(LogicStepType.CONDITION)) {
-      block.hasConnection = hasAllEdgeCaseTrue(block)
+      block.hasConnection = hasAllEdgeCaseTrue(block) && hasToConnection
     }
 
     if (blockTypes.includes(OctaStepType.ASSIGN_TO_TEAM)) {

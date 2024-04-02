@@ -56,6 +56,7 @@ export const Graph = ({
 
   const {
     setGraphPosition: setGlobalGraphPosition,
+    graphPosition: globalGraphPosition,
     setOpenedStepId,
     updateBlockCoordinates,
     setPreviewingEdge,
@@ -66,16 +67,20 @@ export const Graph = ({
 
   const [debouncedGraphPosition] = useDebounce(graphPosition, 200)
 
-  const transform = useMemo(
-    () =>
-      `translate(${graphPosition.x}px, ${graphPosition.y}px) scale(${graphPosition.scale})`,
-    [graphPosition]
-  )
+  const transform = useMemo(() => {
+    return `translate(${graphPosition.x}px, ${graphPosition.y}px) scale(${graphPosition.scale})`
+  }, [graphPosition])
 
   const [autoMoveDirection, setAutoMoveDirection] = useState<
     'top' | 'right' | 'bottom' | 'left' | undefined
   >()
   useAutoMoveBoard(autoMoveDirection, setGraphPosition)
+
+  useEffect(() => {
+    if (JSON.stringify(globalGraphPosition) === JSON.stringify(graphPosition))
+      return
+    setGraphPosition({ ...globalGraphPosition })
+  }, [globalGraphPosition])
 
   useEffect(() => {
     editorContainerRef.current = document.getElementById(
@@ -278,6 +283,7 @@ export const Graph = ({
           position="absolute"
           style={{
             transform,
+            transition: '0.1s',
           }}
           willChange="transform"
           transformOrigin="0px 0px 0px"
