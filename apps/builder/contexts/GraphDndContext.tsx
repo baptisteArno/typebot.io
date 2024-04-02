@@ -83,8 +83,6 @@ export const useDragDistance = ({
 
     const target = e.target as HTMLInputElement
     if (target.inputMode = "text") return
-
-    if (ref.current?.inputMode) return
     if (isDisabled || !ref.current) return
     if (ref?.current?.dataset && ref.current.dataset['testid'] !== 'item') e.preventDefault()
     e.stopPropagation()
