@@ -176,9 +176,10 @@ const parseDateOrNumber = (value: string): number => {
 }
 
 const preprocessRegex = (regex: string) => {
-  const match = regex.match(/^\/([^\/]+)\/([gimuy]*)$/)
+  const regexWithFlags = regex.match(/\/(.+)\/([gimuy]*)$/)
 
-  if (!match) return null
+  if (regexWithFlags)
+    return { pattern: regexWithFlags[1], flags: regexWithFlags[2] }
 
-  return { pattern: match[1], flags: match[2] }
+  return { pattern: regex }
 }

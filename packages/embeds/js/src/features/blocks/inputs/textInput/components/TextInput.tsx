@@ -20,7 +20,7 @@ export const TextInput = (props: Props) => {
   const handleInput = (inputValue: string) => setInputValue(inputValue)
 
   const checkIfInputIsValid = () =>
-    inputValue() !== '' && inputRef?.reportValidity()
+    inputRef?.value !== '' && inputRef?.reportValidity()
 
   const submit = () => {
     if (checkIfInputIsValid()) props.onSubmit({ value: inputValue() })

@@ -53,6 +53,7 @@ export const blocksAction = (setTypebot: SetTypebot): BlocksActions => ({
   ) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
+        if (!typebot.groups[groupIndex]?.blocks[blockIndex]) return
         const block = typebot.groups[groupIndex].blocks[blockIndex]
         typebot.groups[groupIndex].blocks[blockIndex] = { ...block, ...updates }
       })

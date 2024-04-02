@@ -57,7 +57,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
   }
 
   const checkIfInputIsValid = () =>
-    inputValue() !== '' && inputRef?.reportValidity()
+    inputRef?.value !== '' && inputRef?.reportValidity()
 
   const submit = () => {
     const selectedCountryDialCode = phoneCountries.find(

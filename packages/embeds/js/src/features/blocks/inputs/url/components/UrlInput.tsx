@@ -26,7 +26,7 @@ export const UrlInput = (props: Props) => {
   }
 
   const checkIfInputIsValid = () =>
-    inputValue() !== '' && inputRef?.reportValidity()
+    inputRef?.value !== '' && inputRef?.reportValidity()
 
   const submit = () => {
     if (checkIfInputIsValid()) props.onSubmit({ value: inputValue() })
