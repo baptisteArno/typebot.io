@@ -70,7 +70,7 @@ type Props = {
 
 export const ConversationContainer = (props: Props) => {
   let chatContainer: HTMLDivElement | undefined
-  const [chatChunks, setChatChunks] = persist(
+  const [chatChunks, setChatChunks, isRecovered] = persist(
     createSignal<ChatChunkType[]>([
       {
         input: props.initialChatReply.input,
@@ -81,6 +81,11 @@ export const ConversationContainer = (props: Props) => {
     {
       key: `typebot-${props.context.typebot.id}-chatChunks`,
       storage: props.context.storage,
+      onRecovered: () => {
+        setTimeout(() => {
+          chatContainer?.scrollTo(0, chatContainer.scrollHeight)
+        }, 200)
+      },
     }
   )
   const [dynamicTheme, setDynamicTheme] = createSignal<
@@ -297,7 +302,10 @@ export const ConversationContainer = (props: Props) => {
                 (chatChunk.messages.length > 0 && isSending()))
             }
             hasError={hasError() && index() === chatChunks().length - 1}
-            isTransitionDisabled={index() !== chatChunks().length - 1}
+            isTransitionDisabled={
+              index() !== chatChunks().length - 1 ||
+              (!chatChunk.input && isRecovered())
+            }
             onNewBubbleDisplayed={handleNewBubbleDisplayed}
             onAllBubblesDisplayed={handleAllBubblesDisplayed}
             onSubmit={sendMessage}
