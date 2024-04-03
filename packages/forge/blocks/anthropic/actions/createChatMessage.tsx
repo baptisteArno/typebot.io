@@ -1,6 +1,5 @@
 import { createAction, option } from '@typebot.io/forge'
 import { auth } from '../auth'
-import { Anthropic } from '@anthropic-ai/sdk'
 import { AnthropicStream } from 'ai'
 import { anthropicModels, defaultAnthropicOptions } from '../constants'
 import { parseChatMessages } from '../helpers/parseChatMessages'
@@ -104,6 +103,8 @@ export const createChatMessage = createAction({
     responseMapping?.map((res) => res.variableId).filter(isDefined) ?? [],
   run: {
     server: async ({ credentials: { apiKey }, options, variables, logs }) => {
+      const { Anthropic } = await import('@anthropic-ai/sdk')
+
       const client = new Anthropic({
         apiKey: apiKey,
       })
@@ -149,6 +150,8 @@ export const createChatMessage = createAction({
           (res) => res.item === 'Message Content' || !res.item
         )?.variableId,
       run: async ({ credentials: { apiKey }, options, variables }) => {
+        const { Anthropic } = await import('@anthropic-ai/sdk')
+
         const client = new Anthropic({
           apiKey: apiKey,
         })

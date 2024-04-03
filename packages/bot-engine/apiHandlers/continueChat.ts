@@ -13,6 +13,7 @@ type Props = {
   sessionId: string
 }
 export const continueChat = async ({ origin, sessionId, message }: Props) => {
+  console.log('test')
   const session = await getSession(sessionId)
 
   if (!session) {

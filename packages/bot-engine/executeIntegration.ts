@@ -16,6 +16,7 @@ import { env } from '@typebot.io/env'
 export const executeIntegration =
   (state: SessionState) =>
   async (block: IntegrationBlock): Promise<ExecuteIntegrationResponse> => {
+    console.log('HI')
     switch (block.type) {
       case IntegrationBlockType.GOOGLE_SHEETS:
         return {

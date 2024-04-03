@@ -27,6 +27,7 @@ export const executeForgedBlock = async (
   const blockDef = forgedBlocks[block.type]
   if (!blockDef) return { outgoingEdgeId: block.outgoingEdgeId }
   const action = blockDef.actions.find((a) => a.name === block.options.action)
+  console.log('test', action)
   const noCredentialsError = {
     status: 'error',
     description: 'Credentials not provided for integration',
@@ -60,7 +61,9 @@ export const executeForgedBlock = async (
     state.isStreamEnabled &&
     !state.whatsApp &&
     // TODO: Enable once chat api is rolling
-    isPlaneteScale()
+    isPlaneteScale() &&
+    credentials &&
+    isCredentialsV2(credentials)
     // !process.env.VERCEL_ENV
   ) {
     return {
