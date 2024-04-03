@@ -29,7 +29,8 @@ export const UrlInput = (props: Props) => {
     inputRef?.value !== '' && inputRef?.reportValidity()
 
   const submit = () => {
-    if (checkIfInputIsValid()) props.onSubmit({ value: inputValue() })
+    if (checkIfInputIsValid())
+      props.onSubmit({ value: inputRef?.value ?? inputValue() })
     else inputRef?.focus()
   }
 

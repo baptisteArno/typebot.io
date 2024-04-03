@@ -1,7 +1,6 @@
 import { option, createAction } from '@typebot.io/forge'
 import { isDefined } from '@typebot.io/lib'
 import { auth } from '../auth'
-import MistralClient from '@mistralai/mistralai'
 import { parseMessages } from '../helpers/parseMessages'
 import { OpenAIStream } from 'ai'
 
@@ -96,6 +95,7 @@ export const createChatCompletion = createAction({
       id: 'fetchModels',
       dependencies: [],
       fetch: async ({ credentials }) => {
+        const MistralClient = (await import('@mistralai/mistralai')).default
         const client = new MistralClient(credentials.apiKey)
 
         const listModelsResponse = await client.listModels()
@@ -111,6 +111,7 @@ export const createChatCompletion = createAction({
   run: {
     server: async ({ credentials: { apiKey }, options, variables, logs }) => {
       if (!options.model) return logs.add('No model selected')
+      const MistralClient = (await import('@mistralai/mistralai')).default
       const client = new MistralClient(apiKey)
 
       const response = await client.chat({
@@ -131,6 +132,7 @@ export const createChatCompletion = createAction({
         )?.variableId,
       run: async ({ credentials: { apiKey }, options, variables }) => {
         if (!options.model) return
+        const MistralClient = (await import('@mistralai/mistralai')).default
         const client = new MistralClient(apiKey)
 
         const response = client.chatStream({

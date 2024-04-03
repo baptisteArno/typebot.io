@@ -10,7 +10,7 @@
     "test": "dotenv -e ./.env -e ../../.env -- pnpm playwright test",
     "test:show-report": "pnpm playwright show-report src/test/reporters",
     "test:ui": "dotenv -e ./.env -e ../../.env -- pnpm playwright test --ui",
-    "format:check": "prettier --check ./src"
+    "format:check": "prettier --check ./src --ignore-path ../../.prettierignore"
   },
   "dependencies": {
     "@braintree/sanitize-url": "7.0.1",

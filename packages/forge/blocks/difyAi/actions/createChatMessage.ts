@@ -120,7 +120,8 @@ export const createChatMessage = createAction({
           if (!mapping.variableId) return
 
           const item = mapping.item ?? 'Answer'
-          if (item === 'Answer') variables.set(mapping.variableId, answer)
+          if (item === 'Answer')
+            variables.set(mapping.variableId, convertNonMarkdownLinks(answer))
 
           if (item === 'Conversation ID')
             variables.set(mapping.variableId, conversationId)
@@ -140,3 +141,8 @@ export const createChatMessage = createAction({
     },
   },
 })
+
+const convertNonMarkdownLinks = (text: string) => {
+  const nonMarkdownLinks = /(?<![\([])https?:\/\/\S+/g
+  return text.replace(nonMarkdownLinks, (match) => `[${match}](${match})`)
+}

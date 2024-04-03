@@ -27,7 +27,7 @@ export const NumberInput = (props: NumberInputProps) => {
 
   const submit = () => {
     if (checkIfInputIsValid())
-      props.onSubmit({ value: inputValue().toString() })
+      props.onSubmit({ value: inputRef?.value ?? inputValue().toString() })
     else inputRef?.focus()
   }
 

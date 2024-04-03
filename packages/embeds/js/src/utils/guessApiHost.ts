@@ -25,8 +25,13 @@ export const guessApiHost = (
     return chatApiUrl
   }
 
-  return (
-    getRuntimeVariable('NEXT_PUBLIC_VIEWER_URL')?.split(',')[0] ??
-    chatApiCloudFallbackHost
+  const viewerUrls = getRuntimeVariable('NEXT_PUBLIC_VIEWER_URL')?.split(
+    ','
+  ) as string[] | undefined
+
+  const matchedUrl = viewerUrls?.find((url) =>
+    window.location.href.startsWith(url)
   )
+
+  return matchedUrl ?? viewerUrls?.[0] ?? chatApiCloudFallbackHost
 }
