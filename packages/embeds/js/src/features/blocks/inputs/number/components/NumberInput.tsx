@@ -23,11 +23,11 @@ export const NumberInput = (props: NumberInputProps) => {
   let inputRef: HTMLInputElement | undefined
 
   const checkIfInputIsValid = () =>
-    inputValue() !== '' && inputRef?.reportValidity()
+    inputRef?.value !== '' && inputRef?.reportValidity()
 
   const submit = () => {
     if (checkIfInputIsValid())
-      props.onSubmit({ value: inputValue().toString() })
+      props.onSubmit({ value: inputRef?.value ?? inputValue().toString() })
     else inputRef?.focus()
   }
 

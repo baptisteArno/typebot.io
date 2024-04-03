@@ -111,6 +111,7 @@ export const executeGroup = async (
         logs,
         visitedEdges,
       }
+    console.log('yes')
     const executionResponse = (
       isLogicBlock(block)
         ? await executeLogic(newSessionState)(block)

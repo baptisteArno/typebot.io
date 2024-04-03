@@ -13,6 +13,8 @@ An action can do one of the following things:
 
 The most common action is to execute a function on the server. This is done by simply declaring that function in the action block.
 
+If you need to use an external package that is not compatible with web browser environment, you will have to dynamically import it in the server function. You can find an example of this in the [Anthropic's Create Chat Message action](https://github.com/baptisteArno/typebot.io/blob/main/packages/forge/blocks/anthropic/actions/createChatMessage.tsx)
+
 Example:
 
 ```ts

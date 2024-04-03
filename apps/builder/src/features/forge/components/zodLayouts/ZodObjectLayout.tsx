@@ -14,7 +14,10 @@ import { ZodLayoutMetadata } from '@typebot.io/forge/zod'
 import { ReactNode } from 'react'
 import { ZodTypeAny } from 'zod'
 import { ZodFieldLayout } from './ZodFieldLayout'
-import { ForgedBlockDefinition, ForgedBlock } from '@typebot.io/forge-schemas'
+import {
+  ForgedBlockDefinition,
+  ForgedBlock,
+} from '@typebot.io/forge-repository/types'
 import { getZodInnerSchema } from '../../helpers/getZodInnerSchema'
 
 export const ZodObjectLayout = ({

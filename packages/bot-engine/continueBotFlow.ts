@@ -36,13 +36,14 @@ import { defaultPictureChoiceOptions } from '@typebot.io/schemas/features/blocks
 import { defaultFileInputOptions } from '@typebot.io/schemas/features/blocks/inputs/file/constants'
 import { VisitedEdge } from '@typebot.io/prisma'
 import { getBlockById } from '@typebot.io/schemas/helpers'
-import { ForgedBlock, forgedBlocks } from '@typebot.io/forge-schemas'
-import { enabledBlocks } from '@typebot.io/forge-repository'
+import { ForgedBlock } from '@typebot.io/forge-repository/types'
+import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
 import { resumeChatCompletion } from './blocks/integrations/legacy/openai/resumeChatCompletion'
 import { env } from '@typebot.io/env'
 import { downloadMedia } from './whatsapp/downloadMedia'
 import { uploadFileToBucket } from '@typebot.io/lib/s3/uploadFileToBucket'
 import { isURL } from '@typebot.io/lib/validators/isURL'
+import { isForgedBlockType } from '@typebot.io/schemas/features/blocks/forged/helpers'
 
 type Params = {
   version: 1 | 2
@@ -111,14 +112,12 @@ export const continueBotFlow = async (
       response: JSON.parse(reply),
     })
     if (result.newSessionState) newSessionState = result.newSessionState
-  } else if (
-    enabledBlocks.includes(block.type as (typeof enabledBlocks)[number])
-  ) {
+  } else if (isForgedBlockType(block.type)) {
     if (reply) {
       const options = (block as ForgedBlock).options
-      const action = forgedBlocks
-        .find((b) => b.id === block.type)
-        ?.actions.find((a) => a.name === options?.action)
+      const action = forgedBlocks[block.type].actions.find(
+        (a) => a.name === options?.action
+      )
       if (action) {
         if (action.run?.stream?.getStreamVariableId) {
           firstBubbleWasStreamed = true
@@ -277,7 +276,9 @@ const parseRetryMessage =
       block.options &&
       'retryMessageContent' in block.options &&
       block.options.retryMessageContent
-        ? block.options.retryMessageContent
+        ? parseVariables(state.typebotsQueue[0].typebot.variables)(
+            block.options.retryMessageContent
+          )
         : parseDefaultRetryMessage(block)
     return {
       messages: [

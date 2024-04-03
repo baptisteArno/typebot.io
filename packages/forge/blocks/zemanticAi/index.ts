@@ -5,7 +5,7 @@ import { searchDocuments } from './actions/searchDocuments'
 import { auth } from './auth'
 import { baseOptions } from './baseOptions'
 
-export const zemanticAi = createBlock({
+export const zemanticAiBlock = createBlock({
   id: 'zemantic-ai',
   name: 'Zemantic AI',
   tags: [],

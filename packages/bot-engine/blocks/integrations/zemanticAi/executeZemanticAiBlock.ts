@@ -7,9 +7,9 @@ import {
 import got from 'got'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { byId, isDefined, isEmpty } from '@typebot.io/lib'
-import prisma from '@typebot.io/lib/prisma'
 import { ExecuteIntegrationResponse } from '../../../types'
 import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
+import { getCredentials } from '../../../queries/getCredentials'
 import { parseAnswers } from '@typebot.io/results/parseAnswers'
 
 const URL = 'https://api.zemantic.ai/v1/search-documents'
@@ -25,11 +25,7 @@ export const executeZemanticAiBlock = async (
       outgoingEdgeId: block.outgoingEdgeId,
     }
 
-  const credentials = await prisma.credentials.findUnique({
-    where: {
-      id: block.options?.credentialsId,
-    },
-  })
+  const credentials = await getCredentials(block.options.credentialsId)
 
   if (!credentials) {
     return {

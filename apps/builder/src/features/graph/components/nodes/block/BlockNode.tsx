@@ -144,7 +144,11 @@ export const BlockNode = ({
       })
   }
 
-  const handleCloseEditor = (content: TElement[]) => {
+  const handleCloseEditor = () => {
+    setOpenedBlockId(undefined)
+  }
+
+  const handleTextEditorChange = (content: TElement[]) => {
     const updatedBlock = { ...block, content: { richText: content } }
     updateBlock(indices, updatedBlock)
   }
@@ -193,7 +197,7 @@ export const BlockNode = ({
         indices,
         targetBlockSchema.parse({
           ...block,
-          type: turnIntoParams.blockType,
+          type: turnIntoParams.blockId,
           options: {
             ...convertedBlockOptions,
             credentialsId: undefined,
@@ -222,6 +226,7 @@ export const BlockNode = ({
     <TextBubbleEditor
       id={block.id}
       initialValue={block.content?.richText ?? []}
+      onChange={handleTextEditorChange}
       onClose={handleCloseEditor}
     />
   ) : (

@@ -26,7 +26,7 @@ export type GroupsActions = {
       block: BlockV6 | BlockV6['type']
       indices: BlockIndices
     }
-  ) => void
+  ) => string | void
   updateGroup: (
     groupIndex: number,
     updates: Partial<Omit<GroupV6, 'id'>>
@@ -54,7 +54,8 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
     groupLabel?: string
     block: BlockV6 | BlockV6['type']
     indices: BlockIndices
-  }) =>
+  }) => {
+    let newBlockId
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const newGroup: GroupV6 = {
@@ -64,9 +65,11 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
           blocks: [],
         }
         typebot.groups.push(newGroup)
-        createBlockDraft(typebot, block, indices)
+        newBlockId = createBlockDraft(typebot, block, indices)
       })
-    ),
+    )
+    return newBlockId
+  },
   updateGroup: (groupIndex: number, updates: Partial<Omit<GroupV6, 'id'>>) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {

@@ -70,7 +70,7 @@ type Props = {
 
 export const ConversationContainer = (props: Props) => {
   let chatContainer: HTMLDivElement | undefined
-  const [chatChunks, setChatChunks] = persist(
+  const [chatChunks, setChatChunks, isRecovered] = persist(
     createSignal<ChatChunkType[]>([
       {
         input: props.initialChatReply.input,
@@ -81,6 +81,11 @@ export const ConversationContainer = (props: Props) => {
     {
       key: `typebot-${props.context.typebot.id}-chatChunks`,
       storage: props.context.storage,
+      onRecovered: () => {
+        setTimeout(() => {
+          chatContainer?.scrollTo(0, chatContainer.scrollHeight)
+        }, 200)
+      },
     }
   )
   const [dynamicTheme, setDynamicTheme] = createSignal<
@@ -243,6 +248,7 @@ export const ConversationContainer = (props: Props) => {
   const processClientSideActions = async (
     actions: NonNullable<ContinueChatResponse['clientSideActions']>
   ) => {
+    if (isRecovered()) return
     for (const action of actions) {
       if (
         'streamOpenAiChatCompletion' in action ||

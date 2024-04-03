@@ -148,7 +148,7 @@ export const Graph = ({
     )
     const id = createId()
     updateGroupCoordinates(id, coordinates)
-    createGroup({
+    const newBlockId = createGroup({
       id,
       ...coordinates,
       block: draggedBlock ?? (draggedBlockType as BlockV6['type']),
@@ -156,6 +156,7 @@ export const Graph = ({
     })
     setDraggedBlock(undefined)
     setDraggedBlockType(undefined)
+    if (newBlockId) setOpenedBlockId(newBlockId)
   }
 
   const handleCaptureMouseDown = (e: MouseEvent) => {

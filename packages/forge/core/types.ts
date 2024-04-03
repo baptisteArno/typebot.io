@@ -1,7 +1,6 @@
 import { SVGProps } from 'react'
 import { z } from './zod'
 import { ZodRawShape } from 'zod'
-import { enabledBlocks } from '@typebot.io/forge-repository'
 
 export type VariableStore = {
   get: (variableId: string) => string | (string | null)[] | null | undefined
@@ -34,7 +33,7 @@ export type FunctionToExecute = {
 export type ReadOnlyVariableStore = Omit<VariableStore, 'set'>
 
 export type TurnableIntoParam<T = {}> = {
-  blockType: (typeof enabledBlocks)[number]
+  blockId: string
   /**
    * If defined will be used to convert the existing block options into the new block options.
    */

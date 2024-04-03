@@ -1,4 +1,4 @@
-import React from 'react'
+/** @jsxImportSource react */
 
 export const CalComLogo = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 31 31" {...props}>
