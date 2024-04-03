@@ -1,5 +1,18 @@
 # Changelog
 
+<a name="2.24.1"></a>
+## 2.24.1 (2024-04-03)
+
+### Fixed
+
+- 🚑 (Revert stream condition for self-hosting) [[7237901](https://github.com/baptisteArno/typebot.io/commit/7237901c050548822c554cc871966a2d0dcd01d2)]
+- 🐛 (editor) Fix text bubble update conflict when deleting group [[7ce6d73](https://github.com/baptisteArno/typebot.io/commit/7ce6d737f506fe1d4901b88bf364096622fb627d)]
+
+### Miscellaneous
+
+- 📝 Add v2.24 newsletter [[af4dd95](https://github.com/baptisteArno/typebot.io/commit/af4dd956633bef2961395bd7b45a242e40985cab)]
+
+
 <a name="2.24.0"></a>
 ## 2.24.0 (2024-04-02)
 
