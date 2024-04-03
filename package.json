@@ -20,7 +20,6 @@
     "build": "pnpm docker:up && turbo run build",
     "build:apps": "turbo run build --filter=builder... --filter=viewer...",
     "db:migrate": "cd packages/prisma && pnpm run db:migrate",
-    "db:generate": "cd packages/prisma && pnpm run db:generate",
     "generate-change-log": "git fetch --all && pnpx gitmoji-changelog",
     "locales:pull": "tolgee pull ./apps/builder/src/i18n",
     "locales:push": "tolgee push ./apps/builder/src/i18n",
