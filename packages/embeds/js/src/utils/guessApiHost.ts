@@ -33,5 +33,5 @@ export const guessApiHost = (
     window.location.href.startsWith(url)
   )
 
-  return matchedUrl ?? chatApiCloudFallbackHost
+  return matchedUrl ?? viewerUrls?.[0] ?? chatApiCloudFallbackHost
 }
