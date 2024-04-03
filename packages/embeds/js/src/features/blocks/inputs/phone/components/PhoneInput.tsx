@@ -63,13 +63,14 @@ export const PhoneInput = (props: PhoneInputProps) => {
     const selectedCountryDialCode = phoneCountries.find(
       (country) => country.code === selectedCountryCode()
     )?.dial_code
-    if (checkIfInputIsValid())
+    if (checkIfInputIsValid()) {
+      const val = inputRef?.value ?? inputValue()
       props.onSubmit({
-        value: inputValue().startsWith('+')
-          ? inputValue()
-          : `${selectedCountryDialCode ?? ''}${inputValue()}`,
+        value: val.startsWith('+')
+          ? val
+          : `${selectedCountryDialCode ?? ''}${val}`,
       })
-    else inputRef?.focus()
+    } else inputRef?.focus()
   }
 
   const submitWhenEnter = (e: KeyboardEvent) => {
