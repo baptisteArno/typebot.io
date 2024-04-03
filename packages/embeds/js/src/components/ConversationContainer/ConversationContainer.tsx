@@ -248,6 +248,7 @@ export const ConversationContainer = (props: Props) => {
   const processClientSideActions = async (
     actions: NonNullable<ContinueChatResponse['clientSideActions']>
   ) => {
+    if (isRecovered()) return
     for (const action of actions) {
       if (
         'streamOpenAiChatCompletion' in action ||
@@ -302,10 +303,7 @@ export const ConversationContainer = (props: Props) => {
                 (chatChunk.messages.length > 0 && isSending()))
             }
             hasError={hasError() && index() === chatChunks().length - 1}
-            isTransitionDisabled={
-              index() !== chatChunks().length - 1 ||
-              (!chatChunk.input && isRecovered())
-            }
+            isTransitionDisabled={index() !== chatChunks().length - 1}
             onNewBubbleDisplayed={handleNewBubbleDisplayed}
             onAllBubblesDisplayed={handleAllBubblesDisplayed}
             onSubmit={sendMessage}
