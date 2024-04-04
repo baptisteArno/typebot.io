@@ -1,5 +1,5 @@
 import { createAction, option } from '@typebot.io/forge'
-import { isDefined, isEmpty } from '@typebot.io/lib'
+import { isDefined, isEmpty, isNotEmpty } from '@typebot.io/lib'
 import { HTTPError, got } from 'got'
 import { auth } from '../auth'
 import { defaultBaseUrl } from '../constants'
@@ -123,7 +123,7 @@ export const createChatMessage = createAction({
           if (item === 'Answer')
             variables.set(mapping.variableId, convertNonMarkdownLinks(answer))
 
-          if (item === 'Conversation ID')
+          if (item === 'Conversation ID' && isNotEmpty(conversationId))
             variables.set(mapping.variableId, conversationId)
 
           if (item === 'Total Tokens')
