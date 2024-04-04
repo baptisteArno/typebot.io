@@ -12,7 +12,9 @@ With the Google Sheets integration step, you can inject, update or get data from
   />
 </div>
 
-In order to properly work, your spreadsheet must have its first row as a header row. And all header names should be unique. This is how the block knows which columns to update:
+In order to properly work, your spreadsheet must have its first row as a header row. And all header names should be unique. This is how the block knows which columns to update.
+Make sure to have a unique ID as the first column so that the blocks do not to overwrite existing rows. Before the "Insert a row" block, create a new variable resultId and set its value to "Result ID". In the "Insert a row" block set the first column to be an ID and store the resultId there.
+:
 
 <Frame>
   <img
