@@ -8,8 +8,8 @@ import { Plan, WorkspaceRole } from '@typebot.io/prisma'
 import { RequestHandler } from 'next/dist/server/next'
 import { Settings } from '@typebot.io/schemas'
 import { env } from '@typebot.io/env'
-import { prices } from '@typebot.io/lib/billing/constants'
-import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
+import { prices } from '@typebot.io/billing/constants'
+import { trackEvents } from '@typebot.io/telemetry/trackEvents'
 
 if (!env.STRIPE_SECRET_KEY || !env.STRIPE_WEBHOOK_SECRET)
   throw new Error('STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET missing')

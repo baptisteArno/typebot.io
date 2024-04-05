@@ -1,5 +1,5 @@
 import test, { expect, Page } from '@playwright/test'
-import { importTypebotInDatabase } from '@typebot.io/lib/playwright/databaseActions'
+import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 
@@ -153,15 +153,6 @@ const fillInSpreadsheetInfo = async (page: Page) => {
   await page.click('text=pro-user@email.com')
 
   await page.waitForTimeout(1000)
-  await page.getByRole('button', { name: 'Pick a spreadsheet' }).click()
-  await page
-    .frameLocator('.picker-frame')
-    .getByLabel('CRM Google Sheets Not selected')
-    .click()
-  await page
-    .frameLocator('.picker-frame')
-    .getByRole('button', { name: 'Select' })
-    .click()
 
   await page.fill('input[placeholder="Select the sheet"]', 'Sh')
   await page.click('text=Sheet1')

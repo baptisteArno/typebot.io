@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Plate } from '@udecode/plate-core'
 import { platePlugins } from '@/lib/plate'
 import { TElement } from '@udecode/plate-common'
@@ -7,18 +7,28 @@ import { TextEditorEditorContent } from './TextEditorEditorContent'
 type TextBubbleEditorContentProps = {
   id: string
   initialValue: TElement[]
-  onClose: (newContent: TElement[]) => void
+  onChange: (newContent: TElement[]) => void
+  onClose: () => void
 }
 
 export const TextBubbleEditor = ({
   id,
   initialValue,
+  onChange,
   onClose,
 }: TextBubbleEditorContentProps) => {
-  const [textEditorValue, setTextEditorValue] =
-    useState<TElement[]>(initialValue)
+  const textEditorValueRef = useRef<TElement[]>(initialValue)
 
-  const closeEditor = () => onClose(textEditorValue)
+  const setTextEditorValue = (newValue: TElement[]) => {
+    textEditorValueRef.current = newValue
+  }
+
+  useEffect(
+    () => () => {
+      onChange(textEditorValueRef.current)
+    },
+    [onChange]
+  )
 
   return (
     <Plate
@@ -31,7 +41,7 @@ export const TextBubbleEditor = ({
       }
       onChange={setTextEditorValue}
     >
-      <TextEditorEditorContent closeEditor={closeEditor} />
+      <TextEditorEditorContent closeEditor={onClose} />
     </Plate>
   )
 }

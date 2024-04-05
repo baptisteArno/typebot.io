@@ -11,7 +11,7 @@ import { RepeatIcon, ChevronRightIcon } from '@/components/icons'
 import { useDebouncedCallback } from 'use-debounce'
 import { useForgedBlock } from '@/features/forge/hooks/useForgedBlock'
 import { ForgedBlockIcon } from '@/features/forge/ForgedBlockIcon'
-import { ForgedBlock } from '@typebot.io/forge-schemas'
+import { ForgedBlock } from '@typebot.io/forge-repository/types'
 import { TurnableIntoParam } from '@typebot.io/forge'
 import { ZodObject } from 'zod'
 import { BlockV6 } from '@typebot.io/schemas'
@@ -64,8 +64,8 @@ export const ForgedBlockTurnIntoMenu = ({ block, onTurnIntoClick }: Props) => {
       >
         {actionDef.turnableInto.map((params) => (
           <TurnIntoMenuItem
-            key={params.blockType}
-            blockType={params.blockType}
+            key={params.blockId}
+            blockType={params.blockId as ForgedBlock['type']}
             onClick={(blockSchema) => onTurnIntoClick(params, blockSchema)}
           />
         ))}

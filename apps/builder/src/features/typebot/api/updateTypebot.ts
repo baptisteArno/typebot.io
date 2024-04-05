@@ -17,8 +17,7 @@ import {
 import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { Prisma } from '@typebot.io/prisma'
-import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
-import { migrateTypebot } from '@typebot.io/lib/migrations/migrateTypebot'
+import { migrateTypebot } from '@typebot.io/migrations/migrateTypebot'
 
 const typebotUpdateSchemaPick = {
   version: true,
@@ -156,16 +155,6 @@ export const updateTypebot = authenticatedProcedure
           code: 'BAD_REQUEST',
           message: 'Public id not available',
         })
-    }
-
-    if (
-      typebot.settings?.whatsApp?.isEnabled &&
-      !hasProPerks(existingTypebot.workspace)
-    ) {
-      throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: 'WhatsApp can be enabled only on a Pro workspaces',
-      })
     }
 
     const newTypebot = await prisma.typebot.update({

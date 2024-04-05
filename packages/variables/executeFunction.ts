@@ -1,10 +1,11 @@
-import { Variable } from '@typebot.io/schemas'
 import { parseVariables } from './parseVariables'
 import { extractVariablesFromText } from './extractVariablesFromText'
 import { parseGuessedValueType } from './parseGuessedValueType'
 import { isDefined } from '@typebot.io/lib'
-import { defaultTimeout } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
 import { safeStringify } from '@typebot.io/lib/safeStringify'
+import { Variable } from './types'
+
+const defaultTimeout = 10
 
 type Props = {
   variables: Variable[]

@@ -179,10 +179,7 @@ export const Bubble = (props: BubbleProps) => {
       <div
         part="bot"
         style={{
-          height:
-            props.theme?.button?.size === 'large'
-              ? 'calc(100% - 95px)'
-              : 'calc(100% - 80px)',
+          height: `calc(100% - ${buttonSize()} - 32px)`,
           'max-height': props.theme?.chatWindow?.maxHeight ?? '704px',
           'max-width': props.theme?.chatWindow?.maxWidth ?? '400px',
           transition:

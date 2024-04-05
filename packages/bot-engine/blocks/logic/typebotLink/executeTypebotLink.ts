@@ -153,7 +153,7 @@ const addLinkedTypebotToState = async (
           ...linkedTypebot,
           variables: fillVariablesWithExistingValues(
             linkedTypebot.variables,
-            currentTypebotInQueue.typebot.variables
+            state.typebotsQueue
           ),
         },
         resultId: isPreview
@@ -204,13 +204,16 @@ const createResumeEdgeIfNecessary = (
 
 const fillVariablesWithExistingValues = (
   emptyVariables: Variable[],
-  existingVariables: Variable[]
+  typebotsQueue: SessionState['typebotsQueue']
 ): Variable[] =>
   emptyVariables.map((emptyVariable) => {
-    const matchedVariable = existingVariables.find(
-      (existingVariable) => existingVariable.name === emptyVariable.name
-    )
-
+    let matchedVariable
+    for (const typebotInQueue of typebotsQueue) {
+      matchedVariable = typebotInQueue.typebot.variables.find(
+        (v) => v.name === emptyVariable.name
+      )
+      if (matchedVariable) break
+    }
     return {
       ...emptyVariable,
       value: matchedVariable?.value,

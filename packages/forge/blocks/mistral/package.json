@@ -9,11 +9,11 @@
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
+    "@types/node": "^20.12.4",
     "@types/react": "18.2.15",
     "typescript": "5.3.2"
   },
   "dependencies": {
-    "@mistralai/mistralai": "0.0.10",
     "ai": "3.0.12"
   }
 }

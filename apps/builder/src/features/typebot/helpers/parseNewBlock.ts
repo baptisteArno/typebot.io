@@ -1,5 +1,5 @@
 import { createId } from '@paralleldrive/cuid2'
-import { blockTypeHasItems } from '@typebot.io/lib'
+import { blockTypeHasItems } from '@typebot.io/schemas/helpers'
 import { BlockV6, BlockWithItems, ItemV6 } from '@typebot.io/schemas'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'

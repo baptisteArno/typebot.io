@@ -90,15 +90,15 @@ export const createChatMessage = createAction({
   options,
   turnableInto: [
     {
-      blockType: 'mistral',
+      blockId: 'mistral',
       transform: transformToChatCompletionOptions,
     },
     {
-      blockType: 'openai',
+      blockId: 'openai',
       transform: transformToChatCompletionOptions,
     },
-    { blockType: 'open-router', transform: transformToChatCompletionOptions },
-    { blockType: 'together-ai', transform: transformToChatCompletionOptions },
+    { blockId: 'open-router', transform: transformToChatCompletionOptions },
+    { blockId: 'together-ai', transform: transformToChatCompletionOptions },
   ],
   getSetVariableIds: ({ responseMapping }) =>
     responseMapping?.map((res) => res.variableId).filter(isDefined) ?? [],

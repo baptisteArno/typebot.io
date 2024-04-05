@@ -1,4 +1,4 @@
-import React from 'react'
+/** @jsxImportSource react */
 
 export const ElevenlabsLogo = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 100 100" {...props}>

@@ -3,7 +3,7 @@ import { createId } from '@paralleldrive/cuid2'
 import { parse } from 'papaparse'
 import { readFileSync } from 'fs'
 import { isDefined } from '@typebot.io/lib'
-import { importTypebotInDatabase } from '@typebot.io/lib/playwright/databaseActions'
+import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
 import { getTestAsset } from '@/test/utils/playwright'
 import { env } from '@typebot.io/env'
 

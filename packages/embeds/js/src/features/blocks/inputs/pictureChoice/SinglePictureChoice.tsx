@@ -1,7 +1,7 @@
 import { SearchInput } from '@/components/inputs/SearchInput'
 import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
-import { isDefined, isSvgSrc } from '@typebot.io/lib/utils'
+import { isDefined, isNotEmpty, isSvgSrc } from '@typebot.io/lib/utils'
 import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
 import { For, Show, createEffect, createSignal, onMount } from 'solid-js'
 
@@ -24,7 +24,7 @@ export const SinglePictureChoice = (props: Props) => {
   const handleClick = (itemIndex: number) => {
     const item = filteredItems()[itemIndex]
     return props.onSubmit({
-      label: item.title ?? item.pictureSrc ?? item.id,
+      label: isNotEmpty(item.title) ? item.title : item.pictureSrc ?? item.id,
       value: item.id,
     })
   }

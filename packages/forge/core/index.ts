@@ -89,7 +89,7 @@ export const parseBlockCredentials = <
 >(
   blockDefinition: BlockDefinition<I, A, O>
 ) => {
-  if (!blockDefinition.auth) throw new Error('Block has no auth definition')
+  if (!blockDefinition.auth) return null
   return z.object({
     id: z.string(),
     type: z.literal(blockDefinition.id),

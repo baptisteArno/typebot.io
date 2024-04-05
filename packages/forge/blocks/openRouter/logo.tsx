@@ -1,4 +1,4 @@
-import React from 'react'
+/** @jsxImportSource react */
 
 export const OpenRouterLogo = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 512 512" fill="#71717A" stroke="#71717A" {...props}>

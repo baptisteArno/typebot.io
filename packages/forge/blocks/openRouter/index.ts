@@ -3,7 +3,7 @@ import { OpenRouterLogo } from './logo'
 import { auth } from './auth'
 import { createChatCompletion } from './actions/createChatCompletion'
 
-export const openRouter = createBlock({
+export const openRouterBlock = createBlock({
   id: 'open-router',
   name: 'OpenRouter',
   tags: ['ai', 'openai', 'chat', 'completion'],

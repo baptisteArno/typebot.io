@@ -29,6 +29,9 @@ importers:
 
   apps/builder:
     dependencies:
+      '@braintree/sanitize-url':
+        specifier: 7.0.1
+        version: 7.0.1
       '@chakra-ui/anatomy':
         specifier: 2.1.1
         version: 2.1.1
@@ -188,15 +191,15 @@ importers:
       google-spreadsheet:
         specifier: 4.1.1
         version: 4.1.1(google-auth-library@8.9.0)
-      got:
-        specifier: 12.6.0
-        version: 12.6.0
       immer:
         specifier: 10.0.2
         version: 10.0.2
       jsonwebtoken:
         specifier: 9.0.1
         version: 9.0.1
+      ky:
+        specifier: 1.2.3
+        version: 1.2.3
       libphonenumber-js:
         specifier: 1.10.37
         version: 1.10.37
@@ -211,13 +214,13 @@ importers:
         version: 14.1.0(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: 4.22.1
-        version: 4.22.1(next@14.1.0)(nodemailer@6.9.3)(react-dom@18.2.0)(react@18.2.0)
+        version: 4.22.1(next@14.1.0)(nodemailer@6.9.8)(react-dom@18.2.0)(react@18.2.0)
       nextjs-cors:
         specifier: 2.1.2
         version: 2.1.2(next@14.1.0)
       nodemailer:
-        specifier: 6.9.3
-        version: 6.9.3
+        specifier: 6.9.8
+        version: 6.9.8
       nprogress:
         specifier: 0.2.0
         version: 0.2.0
@@ -242,6 +245,9 @@ importers:
       react-markdown:
         specifier: ^9.0.1
         version: 9.0.1(@types/react@18.2.15)(react@18.2.0)
+      shared-zustand:
+        specifier: 2.0.0
+        version: 2.0.0
       sonner:
         specifier: 1.3.1
         version: 1.3.1(react-dom@18.2.0)(react@18.2.0)
@@ -276,27 +282,39 @@ importers:
       '@playwright/test':
         specifier: 1.41.2
         version: 1.41.2
+      '@typebot.io/billing':
+        specifier: workspace:*
+        version: link:../../packages/billing
       '@typebot.io/forge':
         specifier: workspace:*
         version: link:../../packages/forge/core
       '@typebot.io/forge-repository':
         specifier: workspace:*
         version: link:../../packages/forge/repository
-      '@typebot.io/forge-schemas':
-        specifier: workspace:*
-        version: link:../../packages/forge/schemas
       '@typebot.io/lib':
         specifier: workspace:*
         version: link:../../packages/lib
+      '@typebot.io/migrations':
+        specifier: workspace:*
+        version: link:../../packages/migrations
+      '@typebot.io/playwright':
+        specifier: workspace:*
+        version: link:../../packages/playwright
       '@typebot.io/prisma':
         specifier: workspace:*
         version: link:../../packages/prisma
       '@typebot.io/radar':
         specifier: workspace:*
         version: link:../../packages/radar
+      '@typebot.io/results':
+        specifier: workspace:*
+        version: link:../../packages/results
       '@typebot.io/schemas':
         specifier: workspace:*
         version: link:../../packages/schemas
+      '@typebot.io/telemetry':
+        specifier: workspace:*
+        version: link:../../packages/telemetry
       '@typebot.io/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -313,8 +331,8 @@ importers:
         specifier: 20.4.2
         version: 20.4.2
       '@types/nodemailer':
-        specifier: 6.4.8
-        version: 6.4.8
+        specifier: 6.4.14
+        version: 6.4.14
       '@types/nprogress':
         specifier: 0.2.0
         version: 0.2.0
@@ -355,6 +373,73 @@ importers:
         specifier: 3.22.4
         version: 3.22.4
 
+  apps/chat-api:
+    dependencies:
+      '@hono/prometheus':
+        specifier: 1.0.0
+        version: 1.0.0(hono@4.0.5)(prom-client@15.1.0)
+      '@hono/sentry':
+        specifier: 1.0.1
+        version: 1.0.1(hono@4.0.5)
+      '@hono/typebox-validator':
+        specifier: 0.2.2
+        version: 0.2.2(@sinclair/typebox@0.32.5)(hono@4.0.5)
+      '@sinclair/typebox':
+        specifier: 0.32.5
+        version: 0.32.5
+      '@trpc/server':
+        specifier: 10.40.0
+        version: 10.40.0
+      '@typebot.io/bot-engine':
+        specifier: workspace:*
+        version: link:../../packages/bot-engine
+      '@typebot.io/env':
+        specifier: workspace:*
+        version: link:../../packages/env
+      '@typebot.io/forge':
+        specifier: workspace:*
+        version: link:../../packages/forge/core
+      '@typebot.io/forge-repository':
+        specifier: workspace:*
+        version: link:../../packages/forge/repository
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../../packages/lib
+      '@typebot.io/prisma':
+        specifier: workspace:*
+        version: link:../../packages/prisma
+      '@typebot.io/schemas':
+        specifier: workspace:*
+        version: link:../../packages/schemas
+      '@typebot.io/variables':
+        specifier: workspace:*
+        version: link:../../packages/variables
+      ai:
+        specifier: 3.0.12
+        version: 3.0.12(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.12)(vue@3.4.21)(zod@3.22.4)
+      hono:
+        specifier: 4.0.5
+        version: 4.0.5
+      openai:
+        specifier: 4.28.4
+        version: 4.28.4
+      prom-client:
+        specifier: 15.1.0
+        version: 15.1.0
+    devDependencies:
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
+      '@types/react':
+        specifier: 18.2.15
+        version: 18.2.15
+      dotenv-cli:
+        specifier: 7.2.1
+        version: 7.2.1
+      react:
+        specifier: 18.2.0
+        version: 18.2.0
+
   apps/docs:
     devDependencies:
       dotenv-cli:
@@ -381,6 +466,9 @@ importers:
       '@emotion/styled':
         specifier: 11.11.0
         version: 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.15)(react@18.2.0)
+      '@typebot.io/billing':
+        specifier: workspace:*
+        version: link:../../packages/billing
       '@typebot.io/lib':
         specifier: workspace:*
         version: link:../../packages/lib
@@ -505,6 +593,9 @@ importers:
       got:
         specifier: 12.6.0
         version: 12.6.0
+      ky:
+        specifier: 1.2.3
+        version: 1.2.3
       next:
         specifier: 14.1.0
         version: 14.1.0(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
@@ -512,8 +603,8 @@ importers:
         specifier: 2.1.2
         version: 2.1.2(next@14.1.0)
       nodemailer:
-        specifier: 6.9.3
-        version: 6.9.3
+        specifier: 6.9.8
+        version: 6.9.8
       openai:
         specifier: 4.28.4
         version: 4.28.4
@@ -551,12 +642,15 @@ importers:
       '@typebot.io/forge-repository':
         specifier: workspace:*
         version: link:../../packages/forge/repository
-      '@typebot.io/forge-schemas':
-        specifier: workspace:*
-        version: link:../../packages/forge/schemas
       '@typebot.io/lib':
         specifier: workspace:*
         version: link:../../packages/lib
+      '@typebot.io/playwright':
+        specifier: workspace:*
+        version: link:../../packages/playwright
+      '@typebot.io/results':
+        specifier: workspace:*
+        version: link:../../packages/results
       '@typebot.io/schemas':
         specifier: workspace:*
         version: link:../../packages/schemas
@@ -573,8 +667,8 @@ importers:
         specifier: 20.4.2
         version: 20.4.2
       '@types/nodemailer':
-        specifier: 6.4.8
-        version: 6.4.8
+        specifier: 6.4.14
+        version: 6.4.14
       '@types/papaparse':
         specifier: 5.3.7
         version: 5.3.7
@@ -584,6 +678,9 @@ importers:
       '@types/react':
         specifier: 18.2.15
         version: 18.2.15
+      dotenv:
+        specifier: 16.4.5
+        version: 16.4.5
       dotenv-cli:
         specifier: 7.2.1
         version: 7.2.1
@@ -612,6 +709,22 @@ importers:
         specifier: 3.22.4
         version: 3.22.4
 
+  packages/billing:
+    dependencies:
+      '@typebot.io/prisma':
+        specifier: workspace:*
+        version: link:../prisma
+      '@typebot.io/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+      stripe:
+        specifier: 12.13.0
+        version: 12.13.0
+    devDependencies:
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
   packages/bot-engine:
     dependencies:
       '@paralleldrive/cuid2':
@@ -638,6 +751,9 @@ importers:
       '@typebot.io/prisma':
         specifier: workspace:*
         version: link:../prisma
+      '@typebot.io/results':
+        specifier: workspace:*
+        version: link:../results
       '@typebot.io/schemas':
         specifier: workspace:*
         version: link:../schemas
@@ -668,9 +784,9 @@ importers:
       google-spreadsheet:
         specifier: 4.1.1
         version: 4.1.1(google-auth-library@8.9.0)
-      got:
-        specifier: 12.6.0
-        version: 12.6.0
+      ky:
+        specifier: 1.2.3
+        version: 1.2.3
       libphonenumber-js:
         specifier: 1.10.37
         version: 1.10.37
@@ -678,8 +794,8 @@ importers:
         specifier: 6.1.5
         version: 6.1.5
       nodemailer:
-        specifier: 6.9.3
-        version: 6.9.3
+        specifier: 6.9.8
+        version: 6.9.8
       openai:
         specifier: 4.28.4
         version: 4.28.4
@@ -696,12 +812,12 @@ importers:
       '@typebot.io/forge-repository':
         specifier: workspace:*
         version: link:../forge/repository
-      '@typebot.io/forge-schemas':
-        specifier: workspace:*
-        version: link:../forge/schemas
+      '@types/node':
+        specifier: ^20.12.3
+        version: 20.12.3
       '@types/nodemailer':
-        specifier: 6.4.8
-        version: 6.4.8
+        specifier: 6.4.14
+        version: 6.4.14
       '@types/qs':
         specifier: 6.9.7
         version: 6.9.7
@@ -854,8 +970,8 @@ importers:
         specifier: 20.4.2
         version: 20.4.2
       '@types/nodemailer':
-        specifier: 6.4.8
-        version: 6.4.8
+        specifier: 6.4.14
+        version: 6.4.14
       '@types/react':
         specifier: 18.2.15
         version: 18.2.15
@@ -872,8 +988,8 @@ importers:
         specifier: 14.1.1
         version: 14.1.1
       nodemailer:
-        specifier: 6.9.3
-        version: 6.9.3
+        specifier: 6.9.8
+        version: 6.9.8
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -1167,8 +1283,8 @@ importers:
   packages/forge/blocks/anthropic:
     dependencies:
       '@anthropic-ai/sdk':
-        specifier: 0.15.0
-        version: 0.15.0
+        specifier: 0.18.0
+        version: 0.18.0
       ai:
         specifier: 3.0.12
         version: 3.0.12(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.12)(vue@3.4.21)(zod@3.22.4)
@@ -1221,9 +1337,9 @@ importers:
       '@types/react':
         specifier: 18.2.15
         version: 18.2.15
-      got:
-        specifier: 12.6.0
-        version: 12.6.0
+      ky:
+        specifier: 1.2.3
+        version: 1.2.3
       typescript:
         specifier: 5.3.2
         version: 5.3.2
@@ -1242,9 +1358,9 @@ importers:
       '@types/react':
         specifier: 18.2.15
         version: 18.2.15
-      got:
-        specifier: 12.6.0
-        version: 12.6.0
+      ky:
+        specifier: 1.2.3
+        version: 1.2.3
       typescript:
         specifier: 5.3.2
         version: 5.3.2
@@ -1254,9 +1370,9 @@ importers:
       '@typebot.io/lib':
         specifier: workspace:*
         version: link:../../../lib
-      got:
-        specifier: 12.6.0
-        version: 12.6.0
+      ky:
+        specifier: 1.2.3
+        version: 1.2.3
     devDependencies:
       '@typebot.io/forge':
         specifier: workspace:*
@@ -1273,9 +1389,6 @@ importers:
 
   packages/forge/blocks/mistral:
     dependencies:
-      '@mistralai/mistralai':
-        specifier: 0.0.10
-        version: 0.0.10
       ai:
         specifier: 3.0.12
         version: 3.0.12(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.12)(vue@3.4.21)(zod@3.22.4)
@@ -1289,6 +1402,9 @@ importers:
       '@typebot.io/tsconfig':
         specifier: workspace:*
         version: link:../../../tsconfig
+      '@types/node':
+        specifier: ^20.12.4
+        version: 20.12.4
       '@types/react':
         specifier: 18.2.15
         version: 18.2.15
@@ -1335,9 +1451,9 @@ importers:
       '@types/react':
         specifier: 18.2.15
         version: 18.2.15
-      got:
-        specifier: 12.6.0
-        version: 12.6.0
+      ky:
+        specifier: 1.2.3
+        version: 1.2.3
       typescript:
         specifier: 5.3.2
         version: 5.3.2
@@ -1433,9 +1549,9 @@ importers:
       '@types/react':
         specifier: 18.2.15
         version: 18.2.15
-      got:
-        specifier: 12.6.0
-        version: 12.6.0
+      ky:
+        specifier: 1.2.3
+        version: 1.2.3
       typescript:
         specifier: 5.3.2
         version: 5.3.2
@@ -1464,9 +1580,6 @@ importers:
         specifier: 3.22.4
         version: 3.22.4
     devDependencies:
-      '@typebot.io/forge-repository':
-        specifier: workspace:*
-        version: link:../repository
       '@typebot.io/tsconfig':
         specifier: workspace:*
         version: link:../../tsconfig
@@ -1474,9 +1587,7 @@ importers:
         specifier: 18.2.15
         version: 18.2.15
 
-  packages/forge/repository: {}
-
-  packages/forge/schemas:
+  packages/forge/repository:
     devDependencies:
       '@typebot.io/anthropic-block':
         specifier: workspace:*
@@ -1496,15 +1607,9 @@ importers:
       '@typebot.io/forge':
         specifier: workspace:*
         version: link:../core
-      '@typebot.io/forge-repository':
-        specifier: workspace:*
-        version: link:../repository
       '@typebot.io/mistral-block':
         specifier: workspace:*
         version: link:../blocks/mistral
-      '@typebot.io/nocodb-block':
-        specifier: workspace:*
-        version: link:../blocks/nocodb
       '@typebot.io/open-router-block':
         specifier: workspace:*
         version: link:../blocks/openRouter
@@ -1565,9 +1670,9 @@ importers:
       google-auth-library:
         specifier: 8.9.0
         version: 8.9.0
-      got:
-        specifier: 12.6.0
-        version: 12.6.0
+      ky:
+        specifier: 1.2.3
+        version: 1.2.3
       minio:
         specifier: 7.1.3
         version: 7.1.3
@@ -1599,15 +1704,9 @@ importers:
       '@typebot.io/env':
         specifier: workspace:*
         version: link:../env
-      '@typebot.io/forge-repository':
-        specifier: workspace:*
-        version: link:../forge/repository
       '@typebot.io/prisma':
         specifier: workspace:*
         version: link:../prisma
-      '@typebot.io/schemas':
-        specifier: workspace:*
-        version: link:../schemas
       '@typebot.io/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -1624,11 +1723,52 @@ importers:
         specifier: 14.1.0
         version: 14.1.0(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
       nodemailer:
-        specifier: 6.9.3
-        version: 6.9.3
+        specifier: 6.9.8
+        version: 6.9.8
+      tslib:
+        specifier: 2.6.0
+        version: 2.6.0
       typescript:
         specifier: 5.3.2
         version: 5.3.2
+
+  packages/migrations:
+    dependencies:
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../lib
+      '@typebot.io/prisma':
+        specifier: workspace:*
+        version: link:../prisma
+      '@typebot.io/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+    devDependencies:
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  packages/playwright:
+    dependencies:
+      '@playwright/test':
+        specifier: ^1.42.1
+        version: 1.42.1
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../lib
+      '@typebot.io/prisma':
+        specifier: workspace:*
+        version: link:../prisma
+      '@typebot.io/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+    devDependencies:
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: ^20.11.26
+        version: 20.11.26
 
   packages/prisma:
     dependencies:
@@ -1677,6 +1817,22 @@ importers:
         specifier: 5.3.2
         version: 5.3.2
 
+  packages/results:
+    dependencies:
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../lib
+      '@typebot.io/prisma':
+        specifier: workspace:*
+        version: link:../prisma
+      '@typebot.io/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+    devDependencies:
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
   packages/schemas:
     dependencies:
       '@udecode/plate-common':
@@ -1710,6 +1866,15 @@ importers:
       '@paralleldrive/cuid2':
         specifier: 2.2.1
         version: 2.2.1
+      '@typebot.io/billing':
+        specifier: workspace:*
+        version: link:../billing
+      '@typebot.io/results':
+        specifier: workspace:*
+        version: link:../results
+      '@typebot.io/telemetry':
+        specifier: workspace:*
+        version: link:../telemetry
       cli-progress:
         specifier: ^3.12.0
         version: 3.12.0
@@ -1744,9 +1909,9 @@ importers:
       deep-object-diff:
         specifier: 1.1.9
         version: 1.1.9
-      got:
-        specifier: 12.6.0
-        version: 12.6.0
+      ky:
+        specifier: 1.2.3
+        version: 1.2.3
       prompts:
         specifier: 2.4.2
         version: 2.4.2
@@ -1762,6 +1927,25 @@ importers:
       zod:
         specifier: 3.22.4
         version: 3.22.4
+
+  packages/telemetry:
+    dependencies:
+      '@typebot.io/env':
+        specifier: workspace:*
+        version: link:../env
+      '@typebot.io/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+      ky:
+        specifier: 1.2.3
+        version: 1.2.3
+      posthog-node:
+        specifier: 3.1.1
+        version: 3.1.1
+    devDependencies:
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
 
   packages/transactional:
     dependencies:
@@ -1786,9 +1970,6 @@ importers:
       '@typebot.io/lib':
         specifier: workspace:*
         version: link:../lib
-      '@typebot.io/schemas':
-        specifier: workspace:*
-        version: link:../schemas
 
 packages:
 
@@ -1807,8 +1988,8 @@ packages:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
 
-  /@anthropic-ai/sdk@0.15.0:
-    resolution: {integrity: sha512-QMNEFcwGGB64oEIL+U9b+mxSbat5TCdNxvQVV0qCNGQvg/nlnbOmq2/x/0mKhuKD0n5bioL75oCkTbQaAgyYtw==}
+  /@anthropic-ai/sdk@0.18.0:
+    resolution: {integrity: sha512-3XsWEn/4nPGRd4AdSguugbSDFy6Z2AWTNOeI3iK+aV22+w23+vY9CEb3Hiy0kvKIQuxSmZz/+5WKC8nPWy8gVg==}
     dependencies:
       '@types/node': 18.11.18
       '@types/node-fetch': 2.6.11
@@ -3180,6 +3361,10 @@ packages:
   /@bcoe/v8-coverage@0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
+
+  /@braintree/sanitize-url@7.0.1:
+    resolution: {integrity: sha512-URg8UM6lfC9ZYqFipItRSxYJdgpU5d2Z4KnjsJ+rj6tgAmGme7E+PQNCiud8g0HDaZKMovu2qjfa0f5Ge0Vlsg==}
+    dev: false
 
   /@chakra-ui/accordion@2.2.0(@chakra-ui/system@2.5.8)(framer-motion@10.12.20)(react@18.2.0):
     resolution: {integrity: sha512-2IK1iLzTZ22u8GKPPPn65mqJdZidn4AvkgAbv17ISdKA07VHJ8jSd4QF1T5iCXjKfZ0XaXozmhP4kDhjwF2IbQ==}
@@ -6412,6 +6597,35 @@ packages:
       - supports-color
     dev: false
 
+  /@hono/prometheus@1.0.0(hono@4.0.5)(prom-client@15.1.0):
+    resolution: {integrity: sha512-cB4TklEw3CVqOdgLYenl6g4TM1YwYimrE044azQmVLLq7arfJfnWupvzev42LM1+ntlhsAAwS0TfpjSdnQBggw==}
+    peerDependencies:
+      hono: ^3.12.0
+      prom-client: ^15.0.0
+    dependencies:
+      hono: 4.0.5
+      prom-client: 15.1.0
+    dev: false
+
+  /@hono/sentry@1.0.1(hono@4.0.5):
+    resolution: {integrity: sha512-4JgwdyasCQIoH3lhl4yLNxrP4/SElfK01ZV3JUaMvexVJnyAOPuXDhtJasl9Gssg7qDNt8ZIDDjqmVrOwS+AIw==}
+    peerDependencies:
+      hono: '>=3.*'
+    dependencies:
+      hono: 4.0.5
+      toucan-js: 3.3.1
+    dev: false
+
+  /@hono/typebox-validator@0.2.2(@sinclair/typebox@0.32.5)(hono@4.0.5):
+    resolution: {integrity: sha512-6hLnF9Pe+nOWSvX5SIhobZ9Wt7vjTT3sjqDZ5lKALf+9J9XMtNzDyMSjpM5SQv8gg+fOPHu/ZSYxxmUhl65QOg==}
+    peerDependencies:
+      '@sinclair/typebox': ^0.31.15
+      hono: '>=3.9.0'
+    dependencies:
+      '@sinclair/typebox': 0.32.5
+      hono: 4.0.5
+    dev: false
+
   /@humanwhocodes/config-array@0.11.14:
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
     engines: {node: '>=10.10.0'}
@@ -6649,7 +6863,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       chalk: 4.1.2
       jest-message-util: 29.7.0
       jest-util: 29.7.0
@@ -6670,14 +6884,14 @@ packages:
       '@jest/test-result': 29.7.0
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       ci-info: 3.9.0
       exit: 0.1.2
       graceful-fs: 4.2.11
       jest-changed-files: 29.7.0
-      jest-config: 29.7.0(@types/node@20.11.26)
+      jest-config: 29.7.0(@types/node@20.12.3)
       jest-haste-map: 29.7.0
       jest-message-util: 29.7.0
       jest-regex-util: 29.6.3
@@ -6705,7 +6919,7 @@ packages:
     dependencies:
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       jest-mock: 29.7.0
     dev: true
 
@@ -6732,7 +6946,7 @@ packages:
     dependencies:
       '@jest/types': 29.6.3
       '@sinonjs/fake-timers': 10.3.0
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       jest-message-util: 29.7.0
       jest-mock: 29.7.0
       jest-util: 29.7.0
@@ -6765,7 +6979,7 @@ packages:
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
       '@jridgewell/trace-mapping': 0.3.25
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       chalk: 4.1.2
       collect-v8-coverage: 1.0.2
       exit: 0.1.2
@@ -6853,7 +7067,7 @@ packages:
       '@jest/schemas': 29.6.3
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       '@types/yargs': 17.0.32
       chalk: 4.1.2
     dev: true
@@ -7272,14 +7486,6 @@ packages:
       zod-to-json-schema: 3.22.4(zod@3.22.4)
     dev: true
 
-  /@mistralai/mistralai@0.0.10:
-    resolution: {integrity: sha512-fZOt7A32DcPSff58wTa44pKUBoJBH5toAuzNI9yoM7s5NjTupa1IYcSqqk2LigO8M5EtOEkFsD/XzdyWPnhaRA==}
-    dependencies:
-      node-fetch: 2.7.0
-    transitivePeerDependencies:
-      - encoding
-    dev: false
-
   /@next/env@14.0.5-canary.46:
     resolution: {integrity: sha512-dvNzrArTfe3VY1VIscpb3E2e7SZ1qwFe82WGzpOVbxilT3JcsnVGYF/uq8Jj1qKWPI5C/aePNXwA97JRNAXpRQ==}
     dev: false
@@ -7608,6 +7814,11 @@ packages:
   /@one-ini/wasm@0.1.1:
     resolution: {integrity: sha512-XuySG1E38YScSJoMlqovLru4KTUNSjgVTIjyh7qMX6aNN5HY5Ct5LhRJdxO79JtTzKfzV/bnWpz+zquYrISsvw==}
 
+  /@opentelemetry/api@1.8.0:
+    resolution: {integrity: sha512-I/s6F7yKUDdtMsoBWXJe8Qz40Tui5vsuKCWJEWVL+5q9sSWRzzx6v2KeNsOBEwd94j0eWkpWCH4yB6rZg9Mf0w==}
+    engines: {node: '>=8.0.0'}
+    dev: false
+
   /@panva/hkdf@1.1.1:
     resolution: {integrity: sha512-dhPeilub1NuIG0X5Kvhh9lH4iW3ZsHlnzwgwbOlgwQ2wG1IqFzsgHqmKPk3WzsdWAeaxKJxgM0+W433RmN45GA==}
     dev: false
@@ -7633,7 +7844,7 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       playwright-core: 1.36.0
     optionalDependencies:
       fsevents: 2.3.2
@@ -7646,6 +7857,14 @@ packages:
     dependencies:
       playwright: 1.41.2
     dev: true
+
+  /@playwright/test@1.42.1:
+    resolution: {integrity: sha512-Gq9rmS54mjBL/7/MvBaNOBwbfnh7beHvS6oS4srqXFcQHpQCV1+c8JXWE8VLPyRDhgS3H8x8A7hztqI9VnwrAQ==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dependencies:
+      playwright: 1.42.1
+    dev: false
 
   /@popperjs/core@2.11.8:
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
@@ -8712,12 +8931,30 @@ packages:
       - supports-color
     dev: false
 
+  /@sentry/core@7.76.0:
+    resolution: {integrity: sha512-M+ptkCTeCNf6fn7p2MmEb1Wd9/JXUWxIT/0QEc+t11DNR4FYy1ZP2O9Zb3Zp2XacO7ORrlL3Yc+VIfl5JTgjfw==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry/types': 7.76.0
+      '@sentry/utils': 7.76.0
+    dev: false
+
   /@sentry/core@7.77.0:
     resolution: {integrity: sha512-Tj8oTYFZ/ZD+xW8IGIsU6gcFXD/gfE+FUxUaeSosd9KHwBQNOLhZSsYo/tTVf/rnQI/dQnsd4onPZLiL+27aTg==}
     engines: {node: '>=8'}
     dependencies:
       '@sentry/types': 7.77.0
       '@sentry/utils': 7.77.0
+    dev: false
+
+  /@sentry/integrations@7.76.0:
+    resolution: {integrity: sha512-4ea0PNZrGN9wKuE/8bBCRrxxw4Cq5T710y8rhdKHAlSUpbLqr/atRF53h8qH3Fi+ec0m38PB+MivKem9zUwlwA==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry/core': 7.76.0
+      '@sentry/types': 7.76.0
+      '@sentry/utils': 7.76.0
+      localforage: 1.10.0
     dev: false
 
   /@sentry/integrations@7.77.0:
@@ -8797,9 +9034,21 @@ packages:
       '@sentry/utils': 7.77.0
     dev: false
 
+  /@sentry/types@7.76.0:
+    resolution: {integrity: sha512-vj6z+EAbVrKAXmJPxSv/clpwS9QjPqzkraMFk2hIdE/kii8s8kwnkBwTSpIrNc8GnzV3qYC4r3qD+BXDxAGPaw==}
+    engines: {node: '>=8'}
+    dev: false
+
   /@sentry/types@7.77.0:
     resolution: {integrity: sha512-nfb00XRJVi0QpDHg+JkqrmEBHsqBnxJu191Ded+Cs1OJ5oPXEW6F59LVcBScGvMqe+WEk1a73eH8XezwfgrTsA==}
     engines: {node: '>=8'}
+    dev: false
+
+  /@sentry/utils@7.76.0:
+    resolution: {integrity: sha512-40jFD+yfQaKpFYINghdhovzec4IEpB7aAuyH/GtE7E0gLpcqnC72r55krEIVILfqIR2Mlr5OKUzyeoCyWAU/yw==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry/types': 7.76.0
     dev: false
 
   /@sentry/utils@7.77.0:
@@ -8832,6 +9081,10 @@ packages:
   /@sinclair/typebox@0.27.8:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
     dev: true
+
+  /@sinclair/typebox@0.32.5:
+    resolution: {integrity: sha512-0M6FyxZwIEu/Ly6W+l7iYqiZQYJ8khLOJGzg+cxivNKRKqk9hctcuDC0UYI7B9vNgycExA8w40m4M3yDKW37RA==}
+    dev: false
 
   /@sindresorhus/is@5.6.0:
     resolution: {integrity: sha512-TV7t8GKYaJWsn00tFDqBw8+Uqmr8A0fRU1tvTQhyZzGv0sJCGRQL3JGMI3ucuKo3XIZdUP+Lx7/gh2t3lewy7g==}
@@ -9217,7 +9470,7 @@ packages:
     resolution: {integrity: sha512-fB3Zu92ucau0iQ0JMCFQE7b/dv8Ot07NI3KaZIkIUNXq82k4eBAqUaneXfleGY9JWskeS9y+u0nXMyspcuQrCg==}
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
     dev: false
 
   /@types/canvas-confetti@1.6.0:
@@ -9227,13 +9480,13 @@ packages:
   /@types/cli-progress@3.11.5:
     resolution: {integrity: sha512-D4PbNRbviKyppS5ivBGyFO29POlySLmA2HyUFE4p5QGazAMM3CwkKWcvTl8gvElSuxRh6FPKL8XmidX873ou4g==}
     dependencies:
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
     dev: true
 
   /@types/connect@3.4.38:
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
     dependencies:
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
     dev: false
 
   /@types/content-type@1.1.8:
@@ -9246,7 +9499,7 @@ packages:
   /@types/cors@2.8.13:
     resolution: {integrity: sha512-RG8AStHlUiV5ysZQKq97copd2UmVYw3/pRMLefISZ3S1hK104Cwm7iLQ3fTKx+lsUH2CE8FlLaYeEA2LSeqYUA==}
     dependencies:
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
 
   /@types/debug@4.1.12:
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
@@ -9292,7 +9545,7 @@ packages:
   /@types/express-serve-static-core@4.17.43:
     resolution: {integrity: sha512-oaYtiBirUOPQGSWNGPWnzyAFJ0BP3cwvN4oWZQY+zUBwpVIGsKUkpBpSztp74drYcjavs7SKFZ4DX1V2QeN8rg==}
     dependencies:
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       '@types/qs': 6.9.7
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.4
@@ -9310,7 +9563,7 @@ packages:
   /@types/graceful-fs@4.1.9:
     resolution: {integrity: sha512-olP3sd1qOEe5dXTSaFvQG+02VdRXcdytWLAZsAq1PecU8uqQAhkrnbli7DagjtXKW/Bl7YJbUsa8MPcuc8LHEQ==}
     dependencies:
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
     dev: true
 
   /@types/hast@2.3.10:
@@ -9366,7 +9619,7 @@ packages:
   /@types/jsdom@20.0.1:
     resolution: {integrity: sha512-d0r18sZPmMQr1eG35u12FZfhIXNrnsPU/g5wvRKCUf/tOGilKKwYMYGqh33BNR6ba+2gkHw1EUiHoN3mn7E5IQ==}
     dependencies:
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       '@types/tough-cookie': 4.0.5
       parse5: 7.1.2
     dev: true
@@ -9381,7 +9634,7 @@ packages:
   /@types/jsonwebtoken@9.0.2:
     resolution: {integrity: sha512-drE6uz7QBKq1fYqqoFKTDRdFCPHd5TCub75BM+D+cMx7NU9hUz7SESLfC2fSCXVFMO5Yj8sOWHuGqPgjc+fz0Q==}
     dependencies:
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
     dev: true
 
   /@types/katex@0.16.7:
@@ -9419,7 +9672,7 @@ packages:
   /@types/micro@7.3.7:
     resolution: {integrity: sha512-MFsX7eCj0Tg3TtphOQvANNvNtFpya+s/rYOCdV6o+DFjOQPFi2EVRbBALjbbgZTXUaJP1Q281MJiJOD40d0UxQ==}
     dependencies:
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
     dev: true
 
   /@types/mime@1.3.5:
@@ -9440,7 +9693,7 @@ packages:
   /@types/node-fetch@2.6.11:
     resolution: {integrity: sha512-24xFj9R5+rfQJLRyM56qh+wnVSYhyXC2tkoBndtY0U+vubqNsYXGjufB2nn8Q6gt0LrARwL6UBtMCSVCwl4B1g==}
     dependencies:
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       form-data: 4.0.0
     dev: false
 
@@ -9451,6 +9704,18 @@ packages:
     resolution: {integrity: sha512-YwOMmyhNnAWijOBQweOJnQPl068Oqd4K3OFbTc6AHJwzweUwwWG3GIFY74OKks2PJUDkQPeddOQES9mLn1CTEQ==}
     dependencies:
       undici-types: 5.26.5
+    dev: true
+
+  /@types/node@20.12.3:
+    resolution: {integrity: sha512-sD+ia2ubTeWrOu+YMF+MTAB7E+O7qsMqAbMfW7DG3K1URwhZ5hN1pLlRVGbf4wDFzSfikL05M17EyorS86jShw==}
+    dependencies:
+      undici-types: 5.26.5
+
+  /@types/node@20.12.4:
+    resolution: {integrity: sha512-E+Fa9z3wSQpzgYQdYmme5X3OTuejnnTx88A6p6vkkJosR3KBz+HpE3kqNm98VE6cfLFcISx7zW7MsJkH6KwbTw==}
+    dependencies:
+      undici-types: 5.26.5
+    dev: true
 
   /@types/node@20.4.2:
     resolution: {integrity: sha512-Dd0BYtWgnWJKwO1jkmTrzofjK2QXXcai0dmtzvIBhcA+RsG5h8R3xlyta0kGOZRNfL9GuRtb1knmPEhQrePCEw==}
@@ -9459,10 +9724,16 @@ packages:
     resolution: {integrity: sha512-8e2HYcg7ohnTUbHk8focoklEQYvemQmu9M/f43DZVx43kHn0tE3BY/6gSDxS7k0SprtS0NHvj+L80cGLnoOUcQ==}
     dev: true
 
+  /@types/nodemailer@6.4.14:
+    resolution: {integrity: sha512-fUWthHO9k9DSdPCSPRqcu6TWhYyxTBg382vlNIttSe9M7XfsT06y0f24KHXtbnijPGGRIcVvdKHTNikOI6qiHA==}
+    dependencies:
+      '@types/node': 20.12.3
+    dev: true
+
   /@types/nodemailer@6.4.8:
     resolution: {integrity: sha512-oVsJSCkqViCn8/pEu2hfjwVO+Gb3e+eTWjg3PcjeFKRItfKpKwHphQqbYmPQrlMk+op7pNNWPbsJIEthpFN/OQ==}
     dependencies:
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
     dev: true
 
   /@types/normalize-package-data@2.4.4:
@@ -9475,7 +9746,7 @@ packages:
   /@types/papaparse@5.3.7:
     resolution: {integrity: sha512-f2HKmlnPdCvS0WI33WtCs5GD7X1cxzzS/aduaxSu3I7TbhWlENjSPs6z5TaB9K0J+BH1jbmqTaM+ja5puis4wg==}
     dependencies:
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
     dev: true
 
   /@types/parse-json@4.0.2:
@@ -9493,7 +9764,7 @@ packages:
   /@types/prompts@2.4.4:
     resolution: {integrity: sha512-p5N9uoTH76lLvSAaYSZtBCdEXzpOOufsRjnhjVSrZGXikVGHX9+cc9ERtHRV4hvBKHyZb1bg4K+56Bd2TqUn4A==}
     dependencies:
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       kleur: 3.0.3
     dev: true
 
@@ -9503,7 +9774,7 @@ packages:
   /@types/qrcode@1.5.5:
     resolution: {integrity: sha512-CdfBi/e3Qk+3Z/fXYShipBT13OJ2fDO2Q2w5CIP5anLTLIndQG9z6P1cnm+8zCWSpm5dnxMFd/uREtb0EXuQzg==}
     dependencies:
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
     dev: true
 
   /@types/qs@6.9.7:
@@ -9559,7 +9830,7 @@ packages:
     resolution: {integrity: sha512-x2EM6TJOybec7c52BX0ZspPodMsQUd5L6PRwOunVyVUhXiBSKf3AezDL8Dgvgt5o0UfKNfuA0eMLr2wLT4AiBA==}
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
     dev: false
 
   /@types/serve-static@1.15.5:
@@ -9567,7 +9838,7 @@ packages:
     dependencies:
       '@types/http-errors': 2.0.4
       '@types/mime': 3.0.4
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
     dev: false
 
   /@types/stack-utils@2.0.3:
@@ -9599,7 +9870,7 @@ packages:
   /@types/webpack@5.28.5(@swc/core@1.3.101)(esbuild@0.19.11):
     resolution: {integrity: sha512-wR87cgvxj3p6D0Crt1r5avwqffqPXUkNlnQ1mjU93G7gCuFjufZR4I6j8cz5g1F1tTYpfOOFvly+cmIQwL9wvw==}
     dependencies:
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       tapable: 2.2.1
       webpack: 5.90.3(@swc/core@1.3.101)(esbuild@0.19.11)
     transitivePeerDependencies:
@@ -11370,6 +11641,10 @@ packages:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
     engines: {node: '>=8'}
 
+  /bintrees@1.0.2:
+    resolution: {integrity: sha512-VOMgTMwjAaUG580SXn3LacVgjurrbMme7ZZNYGSSV7mmtY6QQRh0Eg3pwIcntQ77DErK1L0NxkbetjcoXzVwKw==}
+    dev: false
+
   /bl@4.1.0:
     resolution: {integrity: sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==}
     dependencies:
@@ -12211,7 +12486,7 @@ packages:
       chalk: 4.1.2
       exit: 0.1.2
       graceful-fs: 4.2.11
-      jest-config: 29.7.0(@types/node@20.11.26)
+      jest-config: 29.7.0(@types/node@20.12.3)
       jest-util: 29.7.0
       prompts: 2.4.2
     transitivePeerDependencies:
@@ -12924,7 +13199,7 @@ packages:
     dependencies:
       '@types/cookie': 0.4.1
       '@types/cors': 2.8.13
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       accepts: 1.3.8
       base64id: 2.0.0
       cookie: 0.4.2
@@ -14383,7 +14658,6 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /fsevents@2.3.3:
@@ -14843,6 +15117,11 @@ packages:
   /homedir@0.6.0:
     resolution: {integrity: sha512-KZFBHenkVuyyG4uaqRSXqWJr3HTxcaPguM7rU1BlH/mtbDlzaXNSXTa9AhV+fXEjrNemHu9vtLRIaM8/8OW0xA==}
     dev: true
+
+  /hono@4.0.5:
+    resolution: {integrity: sha512-6LEGL1Pf3+dLjVA0NJxAB/3FJ6S3W5qxd/XOG7Wl9YOrpMRZT9lt83R4Ojs8dO6GbAUSutI7zTyjStnSn9sbEg==}
+    engines: {node: '>=16.0.0'}
+    dev: false
 
   /hosted-git-info@2.8.9:
     resolution: {integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==}
@@ -15678,7 +15957,7 @@ packages:
       '@jest/expect': 29.7.0
       '@jest/test-result': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       chalk: 4.1.2
       co: 4.6.0
       dedent: 1.5.1
@@ -15716,7 +15995,7 @@ packages:
       create-jest: 29.7.0
       exit: 0.1.2
       import-local: 3.1.0
-      jest-config: 29.7.0(@types/node@20.11.26)
+      jest-config: 29.7.0(@types/node@20.12.3)
       jest-util: 29.7.0
       jest-validate: 29.7.0
       yargs: 17.7.2
@@ -15727,7 +16006,7 @@ packages:
       - ts-node
     dev: true
 
-  /jest-config@29.7.0(@types/node@20.11.26):
+  /jest-config@29.7.0(@types/node@20.12.3):
     resolution: {integrity: sha512-uXbpfeQ7R6TZBqI3/TxCU4q4ttk3u0PJeC+E0zbfSoSjq6bJ7buBPxzQPL0ifrkY4DNu4JUdk0ImlBUYi840eQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     peerDependencies:
@@ -15742,7 +16021,7 @@ packages:
       '@babel/core': 7.22.9
       '@jest/test-sequencer': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       babel-jest: 29.7.0(@babel/core@7.22.9)
       chalk: 4.1.2
       ci-info: 3.9.0
@@ -15808,7 +16087,7 @@ packages:
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
       '@types/jsdom': 20.0.1
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       jest-mock: 29.7.0
       jest-util: 29.7.0
       jsdom: 20.0.3
@@ -15825,7 +16104,7 @@ packages:
       '@jest/environment': 29.7.0
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       jest-mock: 29.7.0
       jest-util: 29.7.0
     dev: true
@@ -15841,7 +16120,7 @@ packages:
     dependencies:
       '@jest/types': 29.6.3
       '@types/graceful-fs': 4.1.9
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.11
@@ -15892,7 +16171,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       jest-util: 29.7.0
     dev: true
 
@@ -15947,7 +16226,7 @@ packages:
       '@jest/test-result': 29.7.0
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       chalk: 4.1.2
       emittery: 0.13.1
       graceful-fs: 4.2.11
@@ -15978,7 +16257,7 @@ packages:
       '@jest/test-result': 29.7.0
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       chalk: 4.1.2
       cjs-module-lexer: 1.2.3
       collect-v8-coverage: 1.0.2
@@ -16030,7 +16309,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       chalk: 4.1.2
       ci-info: 3.9.0
       graceful-fs: 4.2.11
@@ -16055,7 +16334,7 @@ packages:
     dependencies:
       '@jest/test-result': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       emittery: 0.13.1
@@ -16067,7 +16346,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: false
@@ -16076,7 +16355,7 @@ packages:
     resolution: {integrity: sha512-eIz2msL/EzL9UFTFFx7jBTkeZfku0yUAyZZZmJ93H2TYEiroIx2PQjEXcwYtYl8zXCxb+PAmA2hLIt/6ZEkPHw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       jest-util: 29.7.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
@@ -16407,6 +16686,10 @@ packages:
     resolution: {integrity: sha512-t7q8sJfazzHbfYxiCtuLIH4P+pWoCgunDll17O/GBZBqMt2vHjGSx5HzSxhOc2BDEg3YN/EmeA7VKrHnwuWDag==}
     engines: {node: '>=18'}
     dev: false
+
+  /ky@1.2.3:
+    resolution: {integrity: sha512-2IM3VssHfG2zYz2FsHRUqIp8chhLc9uxDMcK2THxgFfv8pQhnMfN8L0ul+iW4RdBl5AglF8ooPIflRm3yNH0IA==}
+    engines: {node: '>=18'}
 
   /language-subtag-registry@0.3.22:
     resolution: {integrity: sha512-tN0MCzyWnoz/4nHS6uxdlFWoUZT7ABptwKPQ52Ea7URk6vll88bWBVhodtnlfEuCcKWNGoc+uGbw1cwa9IKh/w==}
@@ -18116,7 +18399,7 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: false
 
-  /next-auth@4.22.1(next@14.1.0)(nodemailer@6.9.3)(react-dom@18.2.0)(react@18.2.0):
+  /next-auth@4.22.1(next@14.1.0)(nodemailer@6.9.8)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-NTR3f6W7/AWXKw8GSsgSyQcDW6jkslZLH8AiZa5PQ09w1kR8uHtR9rez/E9gAq/o17+p0JYHE8QjF3RoniiObA==}
     peerDependencies:
       next: ^12.2.5 || ^13
@@ -18132,7 +18415,7 @@ packages:
       cookie: 0.5.0
       jose: 4.15.5
       next: 14.1.0(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
-      nodemailer: 6.9.3
+      nodemailer: 6.9.8
       oauth: 0.9.15
       openid-client: 5.6.5
       preact: 10.19.6
@@ -18285,7 +18568,7 @@ packages:
     engines: {node: '>=14'}
     dependencies:
       '@types/express': 4.17.21
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       accepts: 1.3.8
       content-disposition: 0.5.4
       depd: 1.1.2
@@ -18301,8 +18584,8 @@ packages:
   /node-releases@2.0.14:
     resolution: {integrity: sha512-y10wOWt8yZpqXmOgRo77WaHEmhYQYGNA6y421PKsKYWEK8aW+cqAphborZDhqfyKrbZEN92CN1X2KbafY2s7Yw==}
 
-  /nodemailer@6.9.3:
-    resolution: {integrity: sha512-fy9v3NgTzBngrMFkDsKEj0r02U7jm6XfC3b52eoNV+GCrGj+s8pt5OqhiJdWKuw51zCTdiNR/IUD1z33LIIGpg==}
+  /nodemailer@6.9.8:
+    resolution: {integrity: sha512-cfrYUk16e67Ks051i4CntM9kshRYei1/o/Gi8K1d+R34OIs21xdFnW7Pt7EucmVKA0LKtqUGNcjMZ7ehjl49mQ==}
     engines: {node: '>=6.0.0'}
 
   /nopt@7.2.0:
@@ -18801,6 +19084,12 @@ packages:
     hasBin: true
     dev: true
 
+  /playwright-core@1.42.1:
+    resolution: {integrity: sha512-mxz6zclokgrke9p1vtdy/COWBH+eOZgYUVVU34C73M+4j4HLlQJHtfcqiqqxpP0o8HhMkflvfbquLX5dg6wlfA==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dev: false
+
   /playwright@1.41.2:
     resolution: {integrity: sha512-v0bOa6H2GJChDL8pAeLa/LZC4feoAMbSQm1/jF/ySsWWoaNItvrMP7GEkvEEFyCTUYKMxjQKaTSg5up7nR6/8A==}
     engines: {node: '>=16'}
@@ -18810,6 +19099,16 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
+
+  /playwright@1.42.1:
+    resolution: {integrity: sha512-PgwB03s2DZBcNRoW+1w9E+VkLBxweib6KTXM0M3tkiT4jVxKSi6PmVJ591J+0u10LUrgxB7dLRbiJqO5s2QPMg==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dependencies:
+      playwright-core: 1.42.1
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: false
 
   /pngjs@5.0.0:
     resolution: {integrity: sha512-40QW5YalBNfQo5yRYmiw7Yz6TKKVr3h6970B2YE+3fQpsWcrbj1PzJgxeJ19DRQjhMbKPIuMY8rFaXc8moolVw==}
@@ -19431,6 +19730,14 @@ packages:
   /progress@2.0.3:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
     engines: {node: '>=0.4.0'}
+    dev: false
+
+  /prom-client@15.1.0:
+    resolution: {integrity: sha512-cCD7jLTqyPdjEPBo/Xk4Iu8jxjuZgZJ3e/oET3L+ZwOuap/7Cw3dH/TJSsZKs1TQLZ2IHpIlRAKw82ef06kmMw==}
+    engines: {node: ^16 || ^18 || >=20}
+    dependencies:
+      '@opentelemetry/api': 1.8.0
+      tdigest: 0.1.2
     dev: false
 
   /promise.series@0.2.0:
@@ -20555,6 +20862,10 @@ packages:
   /setprototypeof@1.2.0:
     resolution: {integrity: sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==}
 
+  /shared-zustand@2.0.0:
+    resolution: {integrity: sha512-DKBWe2w62wZif79XcUXStBBQ47T4y3XEApueseZ1O3wEsMbamDK01ac0zQNVj4MOH9Z5jesM2oLuug/79LPM1A==}
+    dev: false
+
   /sharp@0.33.2:
     resolution: {integrity: sha512-WlYOPyyPDiiM07j/UO+E720ju6gtNtHjEGg5vovUk1Lgxyjm2LFO+37Nt/UI3MMh2l6hxTWQWi7qk3cXJTutcQ==}
     engines: {libvips: '>=8.15.1', node: ^18.17.0 || ^20.3.0 || >=21.0.0}
@@ -21117,7 +21428,7 @@ packages:
     resolution: {integrity: sha512-mn7CxL71FCRWkQp33jcJ7+xfRF7HGzPYZlq2c87U+6kxL1qd7f/N3S1g1E5uaSWe83V5v3jN/IiWqg9y8+kWRw==}
     engines: {node: '>=12.*'}
     dependencies:
-      '@types/node': 20.11.26
+      '@types/node': 20.12.3
       qs: 6.11.2
 
   /strnum@1.0.5:
@@ -21432,6 +21743,12 @@ packages:
       yallist: 4.0.0
     dev: true
 
+  /tdigest@0.1.2:
+    resolution: {integrity: sha512-+G0LLgjjo9BZX2MfdvPfH+MKLCrxlXSYec5DaPYP1fe6Iyhf0/fSmJ0bFiZ1F8BT6cGXl2LpltQptzjXKWEkKA==}
+    dependencies:
+      bintrees: 1.0.2
+    dev: false
+
   /terser-webpack-plugin@5.3.10(@swc/core@1.3.101)(esbuild@0.19.11)(webpack@5.90.3):
     resolution: {integrity: sha512-BKFPWlPDndPs+NGGCr1U59t0XScL5317Y0UReNrHaw9/FwhPENlq6bfgs+4yPfyP51vqC1bQ4rp1EfXW5ZSH9w==}
     engines: {node: '>= 10.13.0'}
@@ -21560,6 +21877,15 @@ packages:
   /toidentifier@1.0.1:
     resolution: {integrity: sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==}
     engines: {node: '>=0.6'}
+
+  /toucan-js@3.3.1:
+    resolution: {integrity: sha512-9BpkHb/Pzsrtl1ItNq9OEQPnuUHwzce0nV2uG+DYFiQ4fPyiA6mKTBcDwQzcvNkfSER038U+8TzvdkCev+Maww==}
+    dependencies:
+      '@sentry/core': 7.76.0
+      '@sentry/integrations': 7.76.0
+      '@sentry/types': 7.76.0
+      '@sentry/utils': 7.76.0
+    dev: false
 
   /tough-cookie@4.1.3:
     resolution: {integrity: sha512-aX/y5pVRkfRnfmuX+OdbSdXvPe6ieKX/G2s7e98f4poJHnqH3281gDPm/metm6E/WRamfx7WC4HUqkWHfQHprw==}
