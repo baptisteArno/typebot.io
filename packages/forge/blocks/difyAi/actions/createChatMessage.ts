@@ -1,9 +1,9 @@
 import { createAction, option } from '@typebot.io/forge'
 import { isDefined, isEmpty, isNotEmpty } from '@typebot.io/lib'
-import { HTTPError, got } from 'got'
 import { auth } from '../auth'
 import { defaultBaseUrl } from '../constants'
 import { Chunk } from '../types'
+import ky from 'ky'
 
 export const createChatMessage = createAction({
   auth,
@@ -44,13 +44,15 @@ export const createChatMessage = createAction({
       logs,
     }) => {
       try {
-        const stream = got.post(
+        const response = await ky(
           (apiEndpoint ?? defaultBaseUrl) + '/v1/chat-messages',
           {
+            method: 'POST',
             headers: {
               Authorization: `Bearer ${apiKey}`,
+              'Content-Type': 'application/json',
             },
-            json: {
+            body: JSON.stringify({
               inputs:
                 inputs?.reduce((acc, { key, value }) => {
                   if (isEmpty(key) || isEmpty(value)) return acc
@@ -64,56 +66,70 @@ export const createChatMessage = createAction({
               conversation_id,
               user,
               files: [],
-            },
-            isStream: true,
+            }),
           }
         )
+
+        const reader = response.body?.getReader()
+
+        if (!reader)
+          return logs.add({
+            status: 'error',
+            description: 'Failed to read response stream',
+          })
 
         const { answer, conversationId, totalTokens } = await new Promise<{
           answer: string
           conversationId: string | undefined
           totalTokens: number | undefined
-        }>((resolve, reject) => {
+        }>(async (resolve, reject) => {
           let jsonChunk = ''
           let answer = ''
           let conversationId: string | undefined
           let totalTokens: number | undefined
 
-          stream.on('data', (chunk) => {
-            const lines = chunk.toString().split('\n') as string[]
-            lines
-              .filter((line) => line.length > 0 && line !== '\n')
-              .forEach((line) => {
-                jsonChunk += line
-                if (jsonChunk.startsWith('event: ')) {
+          try {
+            while (true) {
+              const { value, done } = await reader.read()
+              if (done) {
+                resolve({ answer, conversationId, totalTokens })
+                return
+              }
+
+              const chunk = new TextDecoder().decode(value)
+
+              const lines = chunk.toString().split('\n') as string[]
+              lines
+                .filter((line) => line.length > 0 && line !== '\n')
+                .forEach((line) => {
+                  jsonChunk += line
+                  if (jsonChunk.startsWith('event: ')) {
+                    jsonChunk = ''
+                    return
+                  }
+                  if (
+                    !jsonChunk.startsWith('data: ') ||
+                    !jsonChunk.endsWith('}')
+                  )
+                    return
+
+                  const data = JSON.parse(jsonChunk.slice(6)) as Chunk
                   jsonChunk = ''
-                  return
-                }
-                if (!jsonChunk.startsWith('data: ') || !jsonChunk.endsWith('}'))
-                  return
-
-                const data = JSON.parse(jsonChunk.slice(6)) as Chunk
-                jsonChunk = ''
-                if (
-                  data.event === 'message' ||
-                  data.event === 'agent_message'
-                ) {
-                  answer += data.answer
-                }
-                if (data.event === 'message_end') {
-                  totalTokens = data.metadata.usage.total_tokens
-                  conversationId = data.conversation_id
-                }
-              })
-          })
-
-          stream.on('end', () => {
-            resolve({ answer, conversationId, totalTokens })
-          })
-
-          stream.on('error', (error) => {
-            reject(error)
-          })
+                  if (
+                    data.event === 'message' ||
+                    data.event === 'agent_message'
+                  ) {
+                    answer += data.answer
+                  }
+                  if (data.event === 'message_end') {
+                    totalTokens = data.metadata.usage.total_tokens
+                    conversationId = data.conversation_id
+                  }
+                })
+            }
+          } catch (e) {
+            reject(e)
+          }
         })
 
         responseMapping?.forEach((mapping) => {
@@ -130,12 +146,10 @@ export const createChatMessage = createAction({
             variables.set(mapping.variableId, totalTokens)
         })
       } catch (error) {
-        if (error instanceof HTTPError)
-          return logs.add({
-            status: 'error',
-            description: error.message,
-            details: error.response.body,
-          })
+        logs.add({
+          status: 'error',
+          description: 'Failed to create chat message',
+        })
         console.error(error)
       }
     },

@@ -1,4 +1,5 @@
 import { createAction, option } from '@typebot.io/forge'
+import { toBuffer as generateQrCodeBuffer } from 'qrcode'
 import { uploadFileToBucket } from '@typebot.io/lib/s3/uploadFileToBucket'
 import { createId } from '@typebot.io/lib/createId'
 
@@ -27,8 +28,6 @@ export const generateQrCode = createAction({
         return logs.add(
           'QR code image URL is not specified. Please select a variable to save the generated QR code image.'
         )
-
-      const generateQrCodeBuffer = (await import('qrcode')).toBuffer
 
       const url = await uploadFileToBucket({
         file: await generateQrCodeBuffer(options.data),

@@ -27,7 +27,6 @@ export const executeForgedBlock = async (
   const blockDef = forgedBlocks[block.type]
   if (!blockDef) return { outgoingEdgeId: block.outgoingEdgeId }
   const action = blockDef.actions.find((a) => a.name === block.options.action)
-  console.log('test', action)
   const noCredentialsError = {
     status: 'error',
     description: 'Credentials not provided for integration',

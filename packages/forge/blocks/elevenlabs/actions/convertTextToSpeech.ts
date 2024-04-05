@@ -2,7 +2,7 @@ import { createAction, option } from '@typebot.io/forge'
 import { auth } from '../auth'
 import { baseUrl } from '../constants'
 import { ModelsResponse, VoicesResponse } from '../type'
-import got, { HTTPError } from 'got'
+import got, { HTTPError } from 'ky'
 import { uploadFileToBucket } from '@typebot.io/lib/s3/uploadFileToBucket'
 import { createId } from '@typebot.io/lib/createId'
 
@@ -93,10 +93,10 @@ export const convertTextToSpeech = createAction({
               text: options.text,
             },
           })
-          .buffer()
+          .arrayBuffer()
 
         const url = await uploadFileToBucket({
-          file: response,
+          file: Buffer.from(response),
           key: `tmp/elevenlabs/audio/${createId() + createId()}.mp3`,
           mimeType: 'audio/mpeg',
         })
@@ -107,7 +107,7 @@ export const convertTextToSpeech = createAction({
           return logs.add({
             status: 'error',
             description: err.message,
-            details: err.response.body,
+            details: await err.response.text(),
           })
         }
       }

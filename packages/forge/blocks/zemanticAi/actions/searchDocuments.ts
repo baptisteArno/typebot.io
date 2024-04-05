@@ -1,7 +1,7 @@
 import { createAction, option } from '@typebot.io/forge'
 import { isDefined } from '@typebot.io/lib'
 import { ZemanticAiResponse } from '../types'
-import { got } from 'got'
+import ky from 'ky'
 import { apiBaseUrl } from '../constants'
 import { auth } from '../auth'
 import { baseOptions } from '../baseOptions'
@@ -63,7 +63,7 @@ export const searchDocuments = createAction({
       },
       variables,
     }) => {
-      const res: ZemanticAiResponse = await got
+      const res = await ky
         .post(apiBaseUrl, {
           headers: {
             Authorization: `Bearer ${apiKey}`,
@@ -79,7 +79,7 @@ export const searchDocuments = createAction({
             },
           },
         })
-        .json()
+        .json<ZemanticAiResponse>()
 
       responseMapping?.forEach((mapping) => {
         if (!mapping.variableId || !mapping.item) return

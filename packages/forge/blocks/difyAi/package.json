@@ -10,7 +10,7 @@
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
     "@types/react": "18.2.15",
-    "got": "12.6.0",
+    "ky": "1.2.3",
     "typescript": "5.3.2"
   }
 }

@@ -1,6 +1,6 @@
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { z } from 'zod'
-import got from 'got'
+import ky from 'ky'
 import prisma from '@typebot.io/lib/prisma'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { TRPCError } from '@trpc/server'
@@ -22,16 +22,13 @@ export const getPhoneNumber = authenticatedProcedure
         code: 'NOT_FOUND',
         message: 'Credentials not found',
       })
-    const { display_phone_number } = (await got(
-      `${env.WHATSAPP_CLOUD_API_URL}/v17.0/${credentials.phoneNumberId}`,
-      {
+    const { display_phone_number } = await ky
+      .get(`${env.WHATSAPP_CLOUD_API_URL}/v17.0/${credentials.phoneNumberId}`, {
         headers: {
           Authorization: `Bearer ${credentials.systemUserAccessToken}`,
         },
-      }
-    ).json()) as {
-      display_phone_number: string
-    }
+      })
+      .json<{ display_phone_number: string }>()
 
     const formattedPhoneNumber = `${
       display_phone_number.startsWith('+') ? '' : '+'

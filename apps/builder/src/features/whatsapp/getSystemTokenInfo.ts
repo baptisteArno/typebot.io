@@ -1,6 +1,6 @@
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { z } from 'zod'
-import got from 'got'
+import ky from 'ky'
 import { TRPCError } from '@trpc/server'
 import { WhatsAppCredentials } from '@typebot.io/schemas/features/whatsapp'
 import prisma from '@typebot.io/lib/prisma'
@@ -28,21 +28,23 @@ export const getSystemTokenInfo = authenticatedProcedure
       })
     const {
       data: { expires_at, scopes, app_id, application },
-    } = (await got(
-      `${env.WHATSAPP_CLOUD_API_URL}/v17.0/debug_token?input_token=${credentials.systemUserAccessToken}`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.systemUserAccessToken}`,
-        },
-      }
-    ).json()) as {
-      data: {
-        app_id: string
-        application: string
-        expires_at: number
-        scopes: string[]
-      }
-    }
+    } = await ky
+      .get(
+        `${env.WHATSAPP_CLOUD_API_URL}/v17.0/debug_token?input_token=${credentials.systemUserAccessToken}`,
+        {
+          headers: {
+            Authorization: `Bearer ${credentials.systemUserAccessToken}`,
+          },
+        }
+      )
+      .json<{
+        data: {
+          app_id: string
+          application: string
+          expires_at: number
+          scopes: string[]
+        }
+      }>()
 
     return {
       appId: app_id,

@@ -1,44 +1,35 @@
 import {
-  ResultValues,
   Typebot,
   Variable,
   HttpRequest,
   Block,
-  PublicTypebot,
   AnswerInSessionState,
 } from '@typebot.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { byId } from '@typebot.io/lib'
 import { isWebhookBlock } from '@typebot.io/schemas/helpers'
-import { initMiddleware, methodNotAllowed, notFound } from '@typebot.io/lib/api'
-import Cors from 'cors'
+import { methodNotAllowed, notFound } from '@typebot.io/lib/api'
 import prisma from '@typebot.io/lib/prisma'
 import { getBlockById } from '@typebot.io/schemas/helpers'
 import {
   executeWebhook,
   parseWebhookAttributes,
 } from '@typebot.io/bot-engine/blocks/integrations/webhook/executeWebhookBlock'
-import { fetchLinkedParentTypebots } from '@typebot.io/bot-engine/blocks/logic/typebotLink/fetchLinkedParentTypebots'
 import { fetchLinkedChildTypebots } from '@typebot.io/bot-engine/blocks/logic/typebotLink/fetchLinkedChildTypebots'
 import { parseSampleResult } from '@typebot.io/bot-engine/blocks/integrations/webhook/parseSampleResult'
 import { saveLog } from '@typebot.io/bot-engine/logs/saveLog'
-import { authenticateUser } from '@/helpers/authenticateUser'
-
-const cors = initMiddleware(Cors())
+import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  await cors(req, res)
   if (req.method === 'POST') {
-    const user = await authenticateUser(req)
+    const user = await getAuthenticatedUser(req, res)
     const typebotId = req.query.typebotId as string
     const blockId = req.query.blockId as string
     const resultId = req.query.resultId as string | undefined
-    const { resultValues, variables, parentTypebotIds } = (
+    const { variables } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as {
-      resultValues: ResultValues | undefined
       variables: Variable[]
-      parentTypebotIds: string[]
     }
     const typebot = (await prisma.typebot.findUnique({
       where: { id: typebotId },
@@ -62,34 +53,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .status(404)
         .send({ statusCode: 404, data: { message: `Couldn't find webhook` } })
     const { group } = getBlockById(blockId, typebot.groups)
-    const linkedTypebotsParents = (await fetchLinkedParentTypebots({
-      isPreview: !('typebotId' in typebot),
-      parentTypebotIds,
-      userId: user?.id,
-    })) as (Typebot | PublicTypebot)[]
-    const linkedTypebotsChildren = await fetchLinkedChildTypebots({
+    const linkedTypebots = await fetchLinkedChildTypebots({
       isPreview: !('typebotId' in typebot),
       typebots: [typebot],
       userId: user?.id,
     })([])
 
-    const linkedTypebots = [...linkedTypebotsParents, ...linkedTypebotsChildren]
-
-    const answers = resultValues
-      ? resultValues.answers.map((answer) => ({
-          key:
-            (answer.variableId
-              ? typebot.variables.find(
-                  (variable) => variable.id === answer.variableId
-                )?.name
-              : typebot.groups.find((group) =>
-                  group.blocks.find((block) => block.id === answer.blockId)
-                )?.title) ?? '',
-          value: answer.content,
-        }))
-      : arrayify(
-          await parseSampleResult(typebot, linkedTypebots)(group.id, variables)
-        )
+    const answers = arrayify(
+      await parseSampleResult(typebot, linkedTypebots)(group.id, variables)
+    )
 
     const parsedWebhook = await parseWebhookAttributes({
       webhook,
