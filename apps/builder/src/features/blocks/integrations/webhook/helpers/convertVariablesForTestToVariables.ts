@@ -17,7 +17,7 @@ export const convertVariablesForTestToVariables = (
         ) as Variable
         return { ...variable, value: parseVariableValue(variableForTest.value) }
       }, {}),
-  ]
+  ].filter((v) => v.value)
 }
 
 const parseVariableValue = (value: string | undefined): string | string[] => {

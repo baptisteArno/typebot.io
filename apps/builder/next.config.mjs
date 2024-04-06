@@ -21,7 +21,7 @@ const injectViewerUrlIfVercelPreview = (val) => {
       process.env.VERCEL_BUILDER_PROJECT_NAME,
       process.env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME
     )
-  if (process.env.NEXT_PUBLIC_CHAT_API_URL.includes('{{pr_id}}'))
+  if (process.env.NEXT_PUBLIC_CHAT_API_URL?.includes('{{pr_id}}'))
     process.env.NEXT_PUBLIC_CHAT_API_URL =
       process.env.NEXT_PUBLIC_CHAT_API_URL.replace(
         '{{pr_id}}',
@@ -56,12 +56,14 @@ const nextConfig = {
     if (nextRuntime === 'edge') {
       config.resolve.alias['minio'] = false
       config.resolve.alias['got'] = false
+      config.resolve.alias['qrcode'] = false
       return config
     }
     // These packages are imports from the integrations definition files that can be ignored for the client.
     config.resolve.alias['minio'] = false
     config.resolve.alias['got'] = false
     config.resolve.alias['openai'] = false
+    config.resolve.alias['qrcode'] = false
     return config
   },
   headers: async () => {

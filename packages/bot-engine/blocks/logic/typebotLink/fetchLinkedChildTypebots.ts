@@ -11,12 +11,12 @@ import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/consta
 
 type Props = {
   typebots: Pick<PublicTypebot, 'groups'>[]
-  user?: User
+  userId: string | undefined
   isPreview?: boolean
 }
 
-export const getPreviouslyLinkedTypebots =
-  ({ typebots, user, isPreview }: Props) =>
+export const fetchLinkedChildTypebots =
+  ({ typebots, userId, isPreview }: Props) =>
   async (
     capturedLinkedBots: (Typebot | PublicTypebot)[]
   ): Promise<(Typebot | PublicTypebot)[]> => {
@@ -40,13 +40,13 @@ export const getPreviouslyLinkedTypebots =
       .filter(isDefined)
     if (linkedTypebotIds.length === 0) return capturedLinkedBots
     const linkedTypebots = (await fetchLinkedTypebots({
-      user,
+      userId,
       typebotIds: linkedTypebotIds,
       isPreview,
     })) as (Typebot | PublicTypebot)[]
-    return getPreviouslyLinkedTypebots({
+    return fetchLinkedChildTypebots({
       typebots: linkedTypebots,
-      user,
+      userId,
       isPreview,
     })([...capturedLinkedBots, ...linkedTypebots])
   }

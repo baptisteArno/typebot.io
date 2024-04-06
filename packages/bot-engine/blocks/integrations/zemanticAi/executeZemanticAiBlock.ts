@@ -4,7 +4,7 @@ import {
   ZemanticAiCredentials,
   ZemanticAiResponse,
 } from '@typebot.io/schemas/features/blocks/integrations/zemanticAi'
-import got from 'got'
+import ky from 'ky'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { byId, isDefined, isEmpty } from '@typebot.io/lib'
 import { ExecuteIntegrationResponse } from '../../../types'
@@ -51,7 +51,7 @@ export const executeZemanticAiBlock = async (
   })
 
   try {
-    const res: ZemanticAiResponse = await got
+    const res: ZemanticAiResponse = await ky
       .post(URL, {
         headers: {
           Authorization: `Bearer ${apiKey}`,

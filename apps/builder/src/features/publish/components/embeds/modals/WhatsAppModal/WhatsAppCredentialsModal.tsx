@@ -377,6 +377,7 @@ const SystemUserToken = ({
     <ListItem>Copy and paste the generated token:</ListItem>
     <TextInput
       isRequired
+      type="password"
       label="System User Token"
       defaultValue={initialToken}
       onChange={(val) => setToken(val.trim())}

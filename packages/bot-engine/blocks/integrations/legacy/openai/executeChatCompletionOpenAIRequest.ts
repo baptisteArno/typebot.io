@@ -1,7 +1,7 @@
 import { isNotEmpty } from '@typebot.io/lib/utils'
 import { ContinueChatResponse } from '@typebot.io/schemas'
 import { OpenAIBlock } from '@typebot.io/schemas/features/blocks/integrations/openai'
-import { HTTPError } from 'got'
+import { HTTPError } from 'ky'
 import { ClientOptions, OpenAI } from 'openai'
 
 type Props = Pick<
@@ -55,9 +55,9 @@ export const executeChatCompletionOpenAIRequest = async ({
   } catch (error) {
     if (error instanceof HTTPError) {
       if (
-        (error.response.statusCode === 503 ||
-          error.response.statusCode === 500 ||
-          error.response.statusCode === 403) &&
+        (error.response.status === 503 ||
+          error.response.status === 500 ||
+          error.response.status === 403) &&
         !isRetrying
       ) {
         console.log('OpenAI API error - 503, retrying in 3 seconds')
@@ -73,7 +73,7 @@ export const executeChatCompletionOpenAIRequest = async ({
           isRetrying: true,
         })
       }
-      if (error.response.statusCode === 400) {
+      if (error.response.status === 400) {
         const log = {
           status: 'info',
           description:
@@ -93,8 +93,8 @@ export const executeChatCompletionOpenAIRequest = async ({
       }
       logs.push({
         status: 'error',
-        description: `OpenAI API error - ${error.response.statusCode}`,
-        details: error.response.body,
+        description: `OpenAI API error - ${error.response.status}`,
+        details: await error.response.text(),
       })
       return { logs }
     }

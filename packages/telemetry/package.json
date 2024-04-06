@@ -8,7 +8,7 @@
   "license": "ISC",
   "dependencies": {
     "@typebot.io/schemas": "workspace:*",
-    "got": "12.6.0",
+    "ky": "1.2.3",
     "posthog-node": "3.1.1",
     "@typebot.io/env": "workspace:*"
   },

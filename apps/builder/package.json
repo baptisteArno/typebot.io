@@ -67,7 +67,7 @@
     "framer-motion": "10.3.0",
     "google-auth-library": "8.9.0",
     "google-spreadsheet": "4.1.1",
-    "got": "12.6.0",
+    "ky": "1.2.3",
     "immer": "10.0.2",
     "jsonwebtoken": "9.0.1",
     "libphonenumber-js": "1.10.37",
