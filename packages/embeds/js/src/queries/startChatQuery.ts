@@ -83,7 +83,10 @@ export async function startChatQuery({
               startFrom,
               typebot,
               prefilledVariables,
-            } satisfies Omit<StartPreviewChatInput, 'typebotId'>,
+            } satisfies Omit<
+              StartPreviewChatInput,
+              'typebotId' | 'isOnlyRegistering'
+            >,
             timeout: false,
           }
         )

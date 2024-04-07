@@ -1,0 +1,18 @@
+{
+  "name": "@typebot.io/telemetry",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {},
+  "keywords": [],
+  "author": "Baptiste Arnaud",
+  "license": "ISC",
+  "dependencies": {
+    "@typebot.io/schemas": "workspace:*",
+    "ky": "1.2.3",
+    "posthog-node": "3.1.1",
+    "@typebot.io/env": "workspace:*"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
+  }
+}

@@ -1,11 +1,11 @@
 import { createBlock } from '@typebot.io/forge'
 import { ZemanticAiLogo } from './logo'
-import { got } from 'got'
+import ky from 'ky'
 import { searchDocuments } from './actions/searchDocuments'
 import { auth } from './auth'
 import { baseOptions } from './baseOptions'
 
-export const zemanticAi = createBlock({
+export const zemanticAiBlock = createBlock({
   id: 'zemantic-ai',
   name: 'Zemantic AI',
   tags: [],
@@ -19,7 +19,7 @@ export const zemanticAi = createBlock({
       fetch: async ({ credentials: { apiKey } }) => {
         const url = 'https://api.zemantic.ai/v1/projects'
 
-        const response = await got
+        const response = await ky
           .get(url, {
             headers: {
               Authorization: `Bearer ${apiKey}`,

@@ -5,6 +5,7 @@
   "compilerOptions": {
     "lib": ["ESNext", "DOM"],
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "preserve",
+    "jsxImportSource": "react"
   }
 }

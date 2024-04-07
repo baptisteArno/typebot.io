@@ -1,0 +1,19 @@
+{
+  "name": "@typebot.io/playwright",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {},
+  "keywords": [],
+  "author": "Baptiste Arnaud",
+  "license": "ISC",
+  "dependencies": {
+    "@playwright/test": "^1.42.1",
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/schemas": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.26",
+    "@typebot.io/tsconfig": "workspace:*"
+  }
+}

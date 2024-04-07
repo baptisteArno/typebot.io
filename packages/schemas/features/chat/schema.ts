@@ -92,6 +92,7 @@ const embedMessageSchema = z
   })
 
 const displayEmbedBubbleSchema = z.object({
+  maxBubbleWidth: z.number().optional(),
   waitForEventFunction: z
     .object({
       args: z.record(z.string(), z.unknown()),
@@ -224,14 +225,15 @@ export const startPreviewChatInputSchema = z.object({
     .describe(
       "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
     ),
-  isStreamEnabled: z.boolean().optional(),
+  isStreamEnabled: z.boolean().optional().default(false),
   message: z.string().optional(),
   isOnlyRegistering: z
     .boolean()
     .optional()
     .describe(
       'If set to `true`, it will only register the session and not start the bot. This is used for 3rd party chat platforms as it can require a session to be registered before sending the first message.'
-    ),
+    )
+    .default(false),
   typebot: startTypebotSchema
     .optional()
     .describe(

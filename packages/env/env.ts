@@ -46,7 +46,9 @@ const boolean = z.enum(['true', 'false']).transform((value) => value === 'true')
 
 const baseEnv = {
   server: {
-    NODE_ENV: z.enum(['development', 'production', 'test']).optional(),
+    NODE_ENV: z
+      .enum(['development', 'staging', 'production', 'test'])
+      .optional(),
     DATABASE_URL: z
       .string()
       .url()
@@ -99,6 +101,15 @@ const baseEnv = {
     ),
     NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID: z.string().min(1).optional(),
     NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE: z.coerce.number().optional(),
+    NEXT_PUBLIC_CHAT_API_URL: z.string().url().optional(),
+    // To remove to deploy chat API for all typebots
+    NEXT_PUBLIC_USE_EXPERIMENTAL_CHAT_API_ON: z
+      .string()
+      .min(1)
+      .transform((val) =>
+        val.split('/').map((s) => s.split(',').map((s) => s.split('|')))
+      )
+      .optional(),
     NEXT_PUBLIC_VIEWER_404_TITLE: z.string().optional().default('404'),
     NEXT_PUBLIC_VIEWER_404_SUBTITLE: z
       .string()
@@ -113,6 +124,10 @@ const baseEnv = {
     ),
     NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE: getRuntimeVariable(
       'NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE'
+    ),
+    NEXT_PUBLIC_CHAT_API_URL: getRuntimeVariable('NEXT_PUBLIC_CHAT_API_URL'),
+    NEXT_PUBLIC_USE_EXPERIMENTAL_CHAT_API_ON: getRuntimeVariable(
+      'NEXT_PUBLIC_USE_EXPERIMENTAL_CHAT_API_ON'
     ),
     NEXT_PUBLIC_VIEWER_404_TITLE: getRuntimeVariable(
       'NEXT_PUBLIC_VIEWER_404_TITLE'
@@ -307,6 +322,7 @@ const whatsAppEnv = {
       .url()
       .optional()
       .default('https://graph.facebook.com'),
+    WHATSAPP_INTERACTIVE_GROUP_SIZE: z.coerce.number().optional().default(3),
   },
 }
 

@@ -41,11 +41,7 @@ export const resumeWhatsAppFlow = async ({
     }
   }
 
-  const session = await getSession(sessionId)
-
   const isPreview = workspaceId === undefined || credentialsId === undefined
-
-  const { typebot } = session?.state.typebotsQueue[0] ?? {}
 
   const credentials = await getCredentials({ credentialsId, isPreview })
 
@@ -65,10 +61,11 @@ export const resumeWhatsAppFlow = async ({
 
   const reply = await getIncomingMessageContent({
     message: receivedMessage,
-    typebotId: typebot?.id,
     workspaceId,
     accessToken: credentials?.systemUserAccessToken,
   })
+
+  const session = await getSession(sessionId)
 
   const isSessionExpired =
     session &&
@@ -140,12 +137,10 @@ export const resumeWhatsAppFlow = async ({
 
 const getIncomingMessageContent = async ({
   message,
-  typebotId,
   workspaceId,
   accessToken,
 }: {
   message: WhatsAppIncomingMessage
-  typebotId?: string
   workspaceId?: string
   accessToken: string
 }): Promise<Reply> => {
@@ -161,7 +156,6 @@ const getIncomingMessageContent = async ({
     case 'audio':
     case 'video':
     case 'image':
-      if (!typebotId) return
       let mediaId: string | undefined
       if (message.type === 'video') mediaId = message.video.id
       if (message.type === 'image') mediaId = message.image.id

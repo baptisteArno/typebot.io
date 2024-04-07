@@ -17,18 +17,17 @@ export const NumberInput = (props: NumberInputProps) => {
   const [inputValue, setInputValue] = createSignal<string | number>(
     props.defaultValue ?? ''
   )
-  // eslint-disable-next-line solid/reactivity
   const [staticValue, bindValue, targetValue] = numberInputHelper(() =>
     inputValue()
   )
   let inputRef: HTMLInputElement | undefined
 
   const checkIfInputIsValid = () =>
-    inputValue() !== '' && inputRef?.reportValidity()
+    inputRef?.value !== '' && inputRef?.reportValidity()
 
   const submit = () => {
     if (checkIfInputIsValid())
-      props.onSubmit({ value: inputValue().toString() })
+      props.onSubmit({ value: inputRef?.value ?? inputValue().toString() })
     else inputRef?.focus()
   }
 

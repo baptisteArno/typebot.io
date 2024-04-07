@@ -4,8 +4,8 @@ import { SessionState } from '@typebot.io/schemas'
 import { StreamingTextResponse } from 'ai'
 import OpenAI from 'openai'
 import { NextResponse } from 'next/dist/server/web/spec-extension/response'
-import { getBlockById } from '@typebot.io/lib/getBlockById'
-import { forgedBlocks } from '@typebot.io/forge-schemas'
+import { getBlockById } from '@typebot.io/schemas/helpers'
+import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
 import { decryptV2 } from '@typebot.io/lib/api/encryption/decryptV2'
 import { ReadOnlyVariableStore } from '@typebot.io/forge'
 import {
@@ -15,6 +15,7 @@ import {
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { getChatCompletionStream } from '@typebot.io/bot-engine/blocks/integrations/legacy/openai/getChatCompletionStream'
 import { ChatCompletionOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai/schema'
+import { isForgedBlockType } from '@typebot.io/schemas/features/blocks/forged/helpers'
 
 export const runtime = 'edge'
 export const preferredRegion = 'lhr1'
@@ -109,7 +110,13 @@ export async function POST(req: Request) {
       }
     }
   }
-  const blockDef = forgedBlocks.find((b) => b.id === block.type)
+  if (!isForgedBlockType(block.type))
+    return NextResponse.json(
+      { message: 'Invalid forged block id' },
+      { status: 400, headers: responseHeaders }
+    )
+
+  const blockDef = forgedBlocks[block.type]
   const action = blockDef?.actions.find((a) => a.name === block.options?.action)
 
   if (!action || !action.run?.stream)

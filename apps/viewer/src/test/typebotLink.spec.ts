@@ -1,7 +1,7 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
 import { env } from '@typebot.io/env'
-import { importTypebotInDatabase } from '@typebot.io/lib/playwright/databaseActions'
+import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
 
 const typebotId = 'cl0ibhi7s0018n21aarlmg0cm'
 const typebotWithMergeDisabledId = 'cl0ibhi7s0018n21aarlag0cm'

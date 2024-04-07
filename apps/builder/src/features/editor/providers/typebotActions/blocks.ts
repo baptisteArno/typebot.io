@@ -10,12 +10,16 @@ import { SetTypebot } from '../TypebotProvider'
 import { produce, Draft } from 'immer'
 import { deleteConnectedEdgesDraft, deleteEdgeDraft } from './edges'
 import { createId } from '@paralleldrive/cuid2'
-import { byId, blockHasItems } from '@typebot.io/lib'
+import { byId } from '@typebot.io/lib'
+import { blockHasItems } from '@typebot.io/schemas/helpers'
 import { duplicateItemDraft } from './items'
 import { parseNewBlock } from '@/features/typebot/helpers/parseNewBlock'
 
 export type BlocksActions = {
-  createBlock: (block: BlockV6 | BlockV6['type'], indices: BlockIndices) => void
+  createBlock: (
+    block: BlockV6 | BlockV6['type'],
+    indices: BlockIndices
+  ) => string | undefined
   updateBlock: (
     indices: BlockIndices,
     updates: Partial<Omit<BlockV6, 'id' | 'type'>>
@@ -34,18 +38,22 @@ export type WebhookCallBacks = {
 }
 
 export const blocksAction = (setTypebot: SetTypebot): BlocksActions => ({
-  createBlock: (block: BlockV6 | BlockV6['type'], indices: BlockIndices) =>
+  createBlock: (block: BlockV6 | BlockV6['type'], indices: BlockIndices) => {
+    let blockId
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
-        createBlockDraft(typebot, block, indices)
+        blockId = createBlockDraft(typebot, block, indices)
       })
-    ),
+    )
+    return blockId
+  },
   updateBlock: (
     { groupIndex, blockIndex }: BlockIndices,
     updates: Partial<Omit<Block, 'id' | 'type'>>
   ) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
+        if (!typebot.groups[groupIndex]?.blocks[blockIndex]) return
         const block = typebot.groups[groupIndex].blocks[blockIndex]
         typebot.groups[groupIndex].blocks[blockIndex] = { ...block, ...updates }
       })
@@ -96,19 +104,22 @@ export const createBlockDraft = (
       edgeId: blocks[blockIndex - 1].outgoingEdgeId as string,
       groupIndex,
     })
-  typeof block === 'string'
-    ? createNewBlock(typebot, block, { groupIndex, blockIndex })
-    : moveBlockToGroup(typebot, block, { groupIndex, blockIndex })
+  const blockId =
+    typeof block === 'string'
+      ? createNewBlock(typebot, block, { groupIndex, blockIndex })
+      : moveBlockToGroup(typebot, block, { groupIndex, blockIndex })
   removeEmptyGroups(typebot)
+  return blockId
 }
 
-const createNewBlock = async (
+const createNewBlock = (
   typebot: Draft<Typebot>,
   type: BlockV6['type'],
   { groupIndex, blockIndex }: BlockIndices
 ) => {
   const newBlock = parseNewBlock(type)
   typebot.groups[groupIndex].blocks.splice(blockIndex ?? 0, 0, newBlock)
+  return newBlock.id
 }
 
 const moveBlockToGroup = (

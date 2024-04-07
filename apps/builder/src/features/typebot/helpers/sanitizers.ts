@@ -1,5 +1,4 @@
-import { forgedBlockSchemas } from '@typebot.io/forge-schemas'
-import { enabledBlocks } from '@typebot.io/forge-repository'
+import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
 import prisma from '@typebot.io/lib/prisma'
 import { Plan } from '@typebot.io/prisma'
 import { Block, Typebot } from '@typebot.io/schemas'
@@ -29,9 +28,9 @@ export const sanitizeSettings = (
         isEnabled:
           mode === 'create'
             ? false
-            : workspacePlan === Plan.FREE
-            ? false
-            : settings.whatsApp.isEnabled,
+            : hasProPerks({ plan: workspacePlan })
+            ? settings.whatsApp.isEnabled
+            : false,
       }
     : undefined,
 })
@@ -50,25 +49,6 @@ const sanitizeBlock =
   (workspaceId: string) =>
   async (block: Block): Promise<Block> => {
     if (!('options' in block) || !block.options) return block
-
-    if (enabledBlocks.includes(block.type as (typeof enabledBlocks)[number])) {
-      const schema = forgedBlockSchemas.find(
-        (s) => s.shape.type.value === block.type
-      )
-      if (!schema)
-        throw new Error(
-          `Integration block schema not found for block type ${block.type}`
-        )
-      return schema.parse({
-        ...block,
-        options: {
-          ...block.options,
-          credentialsId: await sanitizeCredentialsId(workspaceId)(
-            block.options.credentialsId
-          ),
-        },
-      })
-    }
 
     if (!('credentialsId' in block.options) || !block.options.credentialsId)
       return block
@@ -145,4 +125,38 @@ export const isCustomDomainNotAvailable = async ({
   })
 
   return typebotWithSameDomainCount > 0
+}
+
+export const sanitizeFolderId = async ({
+  folderId,
+  workspaceId,
+}: {
+  folderId: string | null
+  workspaceId: string
+}) => {
+  if (!folderId) return
+  const folderCount = await prisma.dashboardFolder.count({
+    where: {
+      id: folderId,
+      workspaceId,
+    },
+  })
+  return folderCount !== 0 ? folderId : undefined
+}
+
+export const sanitizeCustomDomain = async ({
+  customDomain,
+  workspaceId,
+}: {
+  customDomain?: string | null
+  workspaceId: string
+}) => {
+  if (!customDomain) return customDomain
+  const domainCount = await prisma.customDomain.count({
+    where: {
+      name: customDomain?.split('/')[0],
+      workspaceId,
+    },
+  })
+  return domainCount === 0 ? null : customDomain
 }

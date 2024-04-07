@@ -11,7 +11,6 @@
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/react": "18.2.15",
-    "@typebot.io/forge-repository": "workspace:*"
+    "@types/react": "18.2.15"
   }
 }

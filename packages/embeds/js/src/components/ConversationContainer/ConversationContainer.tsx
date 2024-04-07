@@ -32,6 +32,7 @@ import {
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { saveClientLogsQuery } from '@/queries/saveClientLogsQuery'
 import { HTTPError } from 'ky'
+import { persist } from '@/utils/persist'
 
 const parseDynamicTheme = (
   initialTheme: Theme,
@@ -69,13 +70,24 @@ type Props = {
 
 export const ConversationContainer = (props: Props) => {
   let chatContainer: HTMLDivElement | undefined
-  const [chatChunks, setChatChunks] = createSignal<ChatChunkType[]>([
+  const [chatChunks, setChatChunks, isRecovered] = persist(
+    createSignal<ChatChunkType[]>([
+      {
+        input: props.initialChatReply.input,
+        messages: props.initialChatReply.messages,
+        clientSideActions: props.initialChatReply.clientSideActions,
+      },
+    ]),
     {
-      input: props.initialChatReply.input,
-      messages: props.initialChatReply.messages,
-      clientSideActions: props.initialChatReply.clientSideActions,
-    },
-  ])
+      key: `typebot-${props.context.typebot.id}-chatChunks`,
+      storage: props.context.storage,
+      onRecovered: () => {
+        setTimeout(() => {
+          chatContainer?.scrollTo(0, chatContainer.scrollHeight)
+        }, 200)
+      },
+    }
+  )
   const [dynamicTheme, setDynamicTheme] = createSignal<
     ContinueChatResponse['dynamicTheme']
   >(props.initialChatReply.dynamicTheme)
@@ -91,7 +103,7 @@ export const ConversationContainer = (props: Props) => {
       const actionsBeforeFirstBubble = initialChunk.clientSideActions.filter(
         (action) => isNotDefined(action.lastBubbleBlockId)
       )
-      processClientSideActions(actionsBeforeFirstBubble)
+      await processClientSideActions(actionsBeforeFirstBubble)
     })()
   })
 
@@ -192,7 +204,7 @@ export const ConversationContainer = (props: Props) => {
       const actionsBeforeFirstBubble = data.clientSideActions.filter((action) =>
         isNotDefined(action.lastBubbleBlockId)
       )
-      processClientSideActions(actionsBeforeFirstBubble)
+      await processClientSideActions(actionsBeforeFirstBubble)
     }
     setChatChunks((displayedChunks) => [
       ...displayedChunks,
@@ -236,6 +248,7 @@ export const ConversationContainer = (props: Props) => {
   const processClientSideActions = async (
     actions: NonNullable<ContinueChatResponse['clientSideActions']>
   ) => {
+    if (isRecovered()) return
     for (const action of actions) {
       if (
         'streamOpenAiChatCompletion' in action ||
@@ -276,7 +289,7 @@ export const ConversationContainer = (props: Props) => {
       <For each={chatChunks()}>
         {(chatChunk, index) => (
           <ChatChunk
-            inputIndex={index()}
+            index={index()}
             messages={chatChunk.messages}
             input={chatChunk.input}
             theme={theme()}
@@ -290,6 +303,7 @@ export const ConversationContainer = (props: Props) => {
                 (chatChunk.messages.length > 0 && isSending()))
             }
             hasError={hasError() && index() === chatChunks().length - 1}
+            isTransitionDisabled={index() !== chatChunks().length - 1}
             onNewBubbleDisplayed={handleNewBubbleDisplayed}
             onAllBubblesDisplayed={handleAllBubblesDisplayed}
             onSubmit={sendMessage}

@@ -1,4 +1,4 @@
-import React from 'react'
+/** @jsxImportSource react */
 
 export const MistralLogo = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 256 233" {...props}>

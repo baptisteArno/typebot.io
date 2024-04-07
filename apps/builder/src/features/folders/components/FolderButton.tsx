@@ -21,20 +21,24 @@ import { FolderIcon, MoreVerticalIcon } from '@/components/icons'
 import { ConfirmModal } from '@/components/ConfirmModal'
 import { useTypebotDnd } from '../TypebotDndProvider'
 import { useRouter } from 'next/router'
-import React, { useMemo } from 'react'
+import React, { memo, useMemo } from 'react'
 import { useToast } from '@/hooks/useToast'
 import { T, useTranslate } from '@tolgee/react'
 import { trpc } from '@/lib/trpc'
 
-export const FolderButton = ({
-  folder,
-  onFolderDeleted,
-  onFolderRenamed,
-}: {
+type Props = {
   folder: DashboardFolder
+  index: number
   onFolderDeleted: () => void
   onFolderRenamed: () => void
-}) => {
+}
+
+const FolderButton = ({
+  folder,
+  index,
+  onFolderDeleted,
+  onFolderRenamed,
+}: Props) => {
   const { t } = useTranslate()
   const router = useRouter()
   const { draggedTypebot, setMouseOverFolderId, mouseOverFolderId } =
@@ -86,8 +90,9 @@ export const FolderButton = ({
       pos="relative"
       cursor="pointer"
       variant="outline"
-      colorScheme={isTypebotOver ? 'blue' : 'gray'}
-      borderWidth={isTypebotOver ? '3px' : '1px'}
+      colorScheme={isTypebotOver || draggedTypebot ? 'blue' : 'gray'}
+      borderWidth={isTypebotOver ? '2px' : '1px'}
+      transition={'border-width 0.1s ease'}
       justifyContent="center"
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
@@ -124,10 +129,11 @@ export const FolderButton = ({
           color={useColorModeValue('blue.500', 'blue.400')}
         />
         <Editable
-          defaultValue={folder.name}
+          defaultValue={folder.name === '' ? 'New folder' : folder.name}
           fontSize="18"
           onClick={(e) => e.stopPropagation()}
           onSubmit={onRenameSubmit}
+          startWithEditView={index === 0 && folder.name === ''}
         >
           <EditablePreview
             _hover={{
@@ -182,4 +188,12 @@ export const ButtonSkeleton = () => (
       <SkeletonText noOfLines={2} w="full" />
     </VStack>
   </Button>
+)
+
+export default memo(
+  FolderButton,
+  (prev, next) =>
+    prev.folder.id === next.folder.id &&
+    prev.index === next.index &&
+    prev.folder.name === next.folder.name
 )

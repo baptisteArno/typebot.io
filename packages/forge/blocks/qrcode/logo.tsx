@@ -1,4 +1,4 @@
-import React from 'react'
+/** @jsxImportSource react */
 
 export const QrCodeLogo = (props: React.SVGProps<SVGSVGElement>) => (
   <svg

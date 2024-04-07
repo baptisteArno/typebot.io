@@ -1,8 +1,8 @@
-import React from 'react'
+/** @jsxImportSource react */
 
 export const OpenRouterLogo = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 512 512" fill="#71717A" stroke="#71717A" {...props}>
-    <g clip-path="url(#clip0_205_3)">
+    <g clipPath="url(#clip0_205_3)">
       <path
         d="M3 248.945C18 248.945 76 236 106 219C136 202 136 202 198 158C276.497 102.293 332 120.945 423 120.945"
         strokeWidth="90"

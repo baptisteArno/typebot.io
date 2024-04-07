@@ -1,6 +1,6 @@
 import { getAuthOptions } from '@/pages/api/auth/[...nextauth]'
 import prisma from '@typebot.io/lib/prisma'
-import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
+import { trackEvents } from '@typebot.io/telemetry/trackEvents'
 import { User } from '@typebot.io/schemas'
 import { GetServerSidePropsContext } from 'next'
 import { getServerSession } from 'next-auth'

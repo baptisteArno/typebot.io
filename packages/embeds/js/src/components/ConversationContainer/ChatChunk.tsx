@@ -12,11 +12,12 @@ import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/c
 type Props = Pick<ContinueChatResponse, 'messages' | 'input'> & {
   theme: Theme
   settings: Settings
-  inputIndex: number
+  index: number
   context: BotContext
   hasError: boolean
   hideAvatar: boolean
   streamingMessageId: ChatChunkType['streamingMessageId']
+  isTransitionDisabled?: boolean
   onNewBubbleDisplayed: (blockId: string) => Promise<void>
   onScrollToBottom: (top?: number) => void
   onSubmit: (input?: string) => void
@@ -26,7 +27,9 @@ type Props = Pick<ContinueChatResponse, 'messages' | 'input'> & {
 
 export const ChatChunk = (props: Props) => {
   let inputRef: HTMLDivElement | undefined
-  const [displayedMessageIndex, setDisplayedMessageIndex] = createSignal(0)
+  const [displayedMessageIndex, setDisplayedMessageIndex] = createSignal(
+    props.isTransitionDisabled ? props.messages.length : 0
+  )
   const [lastBubbleOffsetTop, setLastBubbleOffsetTop] = createSignal<number>()
 
   onMount(() => {
@@ -45,7 +48,6 @@ export const ChatChunk = (props: Props) => {
         defaultSettings.typingEmulation.delayBetweenBubbles) > 0 &&
       displayedMessageIndex() < props.messages.length - 1
     ) {
-      // eslint-disable-next-line solid/reactivity
       await new Promise((resolve) =>
         setTimeout(
           resolve,
@@ -82,6 +84,7 @@ export const ChatChunk = (props: Props) => {
             <AvatarSideContainer
               hostAvatarSrc={props.theme.chat?.hostAvatar?.url}
               hideAvatar={props.hideAvatar}
+              isTransitionDisabled={props.isTransitionDisabled}
             />
           </Show>
 
@@ -108,10 +111,12 @@ export const ChatChunk = (props: Props) => {
                     (props.settings.typingEmulation?.isDisabledOnFirstMessage ??
                       defaultSettings.typingEmulation
                         .isDisabledOnFirstMessage) &&
-                    props.inputIndex === 0 &&
+                    props.index === 0 &&
                     idx() === 0
                   }
-                  onTransitionEnd={displayNextMessage}
+                  onTransitionEnd={
+                    props.isTransitionDisabled ? undefined : displayNextMessage
+                  }
                   onCompleted={props.onSubmit}
                 />
               )}
@@ -123,7 +128,7 @@ export const ChatChunk = (props: Props) => {
         <InputChatBlock
           ref={inputRef}
           block={props.input}
-          inputIndex={props.inputIndex}
+          chunkIndex={props.index}
           hasHostAvatar={
             props.theme.chat?.hostAvatar?.isEnabled ??
             defaultTheme.chat.hostAvatar.isEnabled

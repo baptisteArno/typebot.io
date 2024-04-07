@@ -21,60 +21,50 @@ type Props = {
   message: ChatMessage
   typingEmulation: Settings['typingEmulation']
   isTypingSkipped: boolean
-  onTransitionEnd: (offsetTop?: number) => void
+  onTransitionEnd?: (offsetTop?: number) => void
   onCompleted: (reply?: string) => void
 }
 
-export const HostBubble = (props: Props) => {
-  const onTransitionEnd = (offsetTop?: number) => {
-    props.onTransitionEnd(offsetTop)
-  }
-
-  const onCompleted = (reply?: string) => {
-    props.onCompleted(reply)
-  }
-
-  return (
-    <Switch>
-      <Match when={props.message.type === BubbleBlockType.TEXT}>
-        <TextBubble
-          content={props.message.content as TextBubbleBlock['content']}
-          isTypingSkipped={props.isTypingSkipped}
-          typingEmulation={props.typingEmulation}
-          onTransitionEnd={onTransitionEnd}
-        />
-      </Match>
-      <Match when={props.message.type === BubbleBlockType.IMAGE}>
-        <ImageBubble
-          content={props.message.content as ImageBubbleBlock['content']}
-          onTransitionEnd={onTransitionEnd}
-        />
-      </Match>
-      <Match when={props.message.type === BubbleBlockType.VIDEO}>
-        <VideoBubble
-          content={props.message.content as VideoBubbleBlock['content']}
-          onTransitionEnd={onTransitionEnd}
-        />
-      </Match>
-      <Match when={props.message.type === BubbleBlockType.EMBED}>
-        <EmbedBubble
-          content={props.message.content as EmbedBubbleBlock['content']}
-          onTransitionEnd={onTransitionEnd}
-        />
-      </Match>
-      <Match when={props.message.type === 'custom-embed'}>
-        <CustomEmbedBubble
-          content={props.message.content as CustomEmbedBubbleProps['content']}
-          onTransitionEnd={onTransitionEnd}
-          onCompleted={onCompleted}
-        />
-      </Match>
-      <Match when={props.message.type === BubbleBlockType.AUDIO}>
-        <AudioBubble
-          content={props.message.content as AudioBubbleBlock['content']}
-          onTransitionEnd={onTransitionEnd}
-        />
-      </Match>
-    </Switch>
-  )
-}
+export const HostBubble = (props: Props) => (
+  <Switch>
+    <Match when={props.message.type === BubbleBlockType.TEXT}>
+      <TextBubble
+        content={props.message.content as TextBubbleBlock['content']}
+        isTypingSkipped={props.isTypingSkipped}
+        typingEmulation={props.typingEmulation}
+        onTransitionEnd={props.onTransitionEnd}
+      />
+    </Match>
+    <Match when={props.message.type === BubbleBlockType.IMAGE}>
+      <ImageBubble
+        content={props.message.content as ImageBubbleBlock['content']}
+        onTransitionEnd={props.onTransitionEnd}
+      />
+    </Match>
+    <Match when={props.message.type === BubbleBlockType.VIDEO}>
+      <VideoBubble
+        content={props.message.content as VideoBubbleBlock['content']}
+        onTransitionEnd={props.onTransitionEnd}
+      />
+    </Match>
+    <Match when={props.message.type === BubbleBlockType.EMBED}>
+      <EmbedBubble
+        content={props.message.content as EmbedBubbleBlock['content']}
+        onTransitionEnd={props.onTransitionEnd}
+      />
+    </Match>
+    <Match when={props.message.type === 'custom-embed'}>
+      <CustomEmbedBubble
+        content={props.message.content as CustomEmbedBubbleProps['content']}
+        onTransitionEnd={props.onTransitionEnd}
+        onCompleted={props.onCompleted}
+      />
+    </Match>
+    <Match when={props.message.type === BubbleBlockType.AUDIO}>
+      <AudioBubble
+        content={props.message.content as AudioBubbleBlock['content']}
+        onTransitionEnd={props.onTransitionEnd}
+      />
+    </Match>
+  </Switch>
+)

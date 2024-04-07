@@ -1,7 +1,7 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { importTypebotInDatabase } from '@typebot.io/lib/playwright/databaseActions'
+import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
 import { defaultTextInputOptions } from '@typebot.io/schemas/features/blocks/inputs/text/constants'
 
 test.describe.parallel('Settings page', () => {
@@ -38,7 +38,7 @@ test.describe.parallel('Settings page', () => {
       await expect(
         page.locator('a:has-text("Made with Typebot")')
       ).toHaveAttribute('href', 'https://www.typebot.io/?utm_source=litebadge')
-      await page.click('button:has-text("Typing emulation")')
+      await page.click('button:has-text("Typing")')
       await page.fill('[data-testid="speed"] input', '350')
       await page.fill('[data-testid="max-delay"] input', '1.5')
       await page.click('text="Typing emulation" >> nth=-1')
