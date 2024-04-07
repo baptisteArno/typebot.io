@@ -37,7 +37,6 @@
     "stripe": "12.13.0"
   },
   "devDependencies": {
-    "dotenv": "16.4.5",
     "@faire/mjml-react": "3.3.0",
     "@paralleldrive/cuid2": "2.2.1",
     "@playwright/test": "1.36.0",
@@ -46,6 +45,8 @@
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/forge-repository": "workspace:*",
     "@typebot.io/lib": "workspace:*",
+    "@typebot.io/playwright": "workspace:*",
+    "@typebot.io/results": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
     "@typebot.io/variables": "workspace:*",
@@ -55,6 +56,8 @@
     "@types/papaparse": "5.3.7",
     "@types/qs": "6.9.7",
     "@types/react": "18.2.15",
+    "@vercel/edge": "1.1.1",
+    "dotenv": "16.4.5",
     "dotenv-cli": "7.2.1",
     "eslint": "8.44.0",
     "eslint-config-custom": "workspace:*",
@@ -63,8 +66,6 @@
     "papaparse": "5.4.1",
     "superjson": "1.12.4",
     "typescript": "5.3.2",
-    "zod": "3.22.4",
-    "@typebot.io/playwright": "workspace:*",
-    "@typebot.io/results": "workspace:*"
+    "zod": "3.22.4"
   }
 }

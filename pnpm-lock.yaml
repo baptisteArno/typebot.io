@@ -351,6 +351,9 @@ importers:
       '@types/tinycolor2':
         specifier: 1.4.3
         version: 1.4.3
+      '@vercel/edge':
+        specifier: 1.1.1
+        version: 1.1.1
       dotenv-cli:
         specifier: 7.2.1
         version: 7.2.1
@@ -678,6 +681,9 @@ importers:
       '@types/react':
         specifier: 18.2.15
         version: 18.2.15
+      '@vercel/edge':
+        specifier: 1.1.1
+        version: 1.1.1
       dotenv:
         specifier: 16.4.5
         version: 16.4.5
@@ -10669,6 +10675,10 @@ packages:
       '@use-gesture/core': 10.2.27
       react: 18.2.0
     dev: false
+
+  /@vercel/edge@1.1.1:
+    resolution: {integrity: sha512-NtKiIbn9Cq6HWGy+qRudz28mz5nxfOJWls5Pnckjw1yCfSX8rhXdvY/il3Sy3Zd5n/sKCM2h7VSCCpJF/oaDrQ==}
+    dev: true
 
   /@vitejs/plugin-react@3.1.0(vite@4.5.2):
     resolution: {integrity: sha512-AfgcRL8ZBhAlc3BFdigClmTUMISmmzHn7sB2h9U1odvc5U/MjWXsAaz18b/WoppUTDBzxOJwo2VdClfUcItu9g==}
