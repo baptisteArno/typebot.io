@@ -97,7 +97,7 @@ export const SharePage = () => {
         <Stack maxW="1000px" w="full" pt="10" spacing={10}>
           <Stack spacing={4} align="flex-start">
             <Heading fontSize="2xl" as="h1">
-              Your typebot link
+              Link to your Flow
             </Heading>
             {typebot && (
               <EditableUrl
@@ -150,20 +150,20 @@ export const SharePage = () => {
             ) : null}
           </Stack>
 
-          <Stack spacing={4}>
-            <Heading fontSize="2xl" as="h1">
-              Embed your typebot
-            </Heading>
-            <Wrap spacing={7}>
-              {integrationsList.map((IntegrationButton, idx) => (
-                <IntegrationButton
-                  key={idx}
-                  publicId={publicId}
-                  isPublished={isPublished}
-                />
-              ))}
-            </Wrap>
-          </Stack>
+          {/*<Stack spacing={4}>*/}
+          {/*  <Heading fontSize="2xl" as="h1">*/}
+          {/*    Embed your typebot*/}
+          {/*  </Heading>*/}
+          {/*  <Wrap spacing={7}>*/}
+          {/*    {integrationsList.map((IntegrationButton, idx) => (*/}
+          {/*      <IntegrationButton*/}
+          {/*        key={idx}*/}
+          {/*        publicId={publicId}*/}
+          {/*        isPublished={isPublished}*/}
+          {/*      />*/}
+          {/*    ))}*/}
+          {/*  </Wrap>*/}
+          {/*</Stack>*/}
         </Stack>
       </Flex>
     </Flex>

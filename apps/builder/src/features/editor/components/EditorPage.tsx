@@ -35,7 +35,7 @@ export const EditorPage = () => {
     <EditorProvider>
       <Seo title={typebot?.name ? `${typebot.name} | Editor` : 'Editor'} />
       <Flex overflow="clip" h="100vh" flexDir="column" id="editor-container">
-        <GettingStartedModal />
+        {/*<GettingStartedModal />*/}
         {isSuspicious && <SuspectedTypebotBanner typebotId={typebot.id} />}
         <TypebotHeader />
         <Flex
