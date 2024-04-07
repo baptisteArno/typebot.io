@@ -67,7 +67,7 @@
                 "type": "p",
                 "children": [
                   {
-                    "text": "I'm super pumped that you've decided to try out Typebot 😍"
+                    "text": "I'm super pumped that you've decided to try this out 😍"
                   }
                 ]
               }
@@ -98,7 +98,7 @@
               {
                 "type": "p",
                 "children": [
-                  { "text": "Let's get you set up for your Typebot journey." }
+                  { "text": "Let's get you set up for your Chatbot journey." }
                 ]
               }
             ]
@@ -155,7 +155,7 @@
                 "type": "p",
                 "children": [
                   {
-                    "text": "What type of bots are you planning to build with Typebot?"
+                    "text": "What type of bots are you planning to build with this?"
                   }
                 ]
               }
