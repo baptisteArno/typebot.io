@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { ZemanticAiCredentials } from '@typebot.io/schemas/features/blocks/integrations/zemanticAi'
-import got from 'got'
+import ky from 'ky'
 
 export const listProjects = authenticatedProcedure
   .input(
@@ -58,7 +58,7 @@ export const listProjects = authenticatedProcedure
     const url = 'https://api.zemantic.ai/v1/projects'
 
     try {
-      const response = await got
+      const response = await ky
         .get(url, {
           headers: {
             Authorization: `Bearer ${data.apiKey}`,

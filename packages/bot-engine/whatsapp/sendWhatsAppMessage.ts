@@ -3,7 +3,7 @@ import {
   WhatsAppSendingMessage,
 } from '@typebot.io/schemas/features/whatsapp'
 import { env } from '@typebot.io/env'
-import got from 'got'
+import ky from 'ky'
 
 type Props = {
   to: string
@@ -16,7 +16,7 @@ export const sendWhatsAppMessage = async ({
   message,
   credentials,
 }: Props) =>
-  got.post(
+  ky.post(
     `${env.WHATSAPP_CLOUD_API_URL}/v17.0/${credentials.phoneNumberId}/messages`,
     {
       headers: {

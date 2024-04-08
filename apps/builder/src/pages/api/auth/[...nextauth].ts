@@ -16,7 +16,7 @@ import { getNewUserInvitations } from '@/features/auth/helpers/getNewUserInvitat
 import { sendVerificationRequest } from '@/features/auth/helpers/sendVerificationRequest'
 import { Ratelimit } from '@upstash/ratelimit'
 import { Redis } from '@upstash/redis/nodejs'
-import got from 'got'
+import ky from 'ky'
 import { env } from '@typebot.io/env'
 import * as Sentry from '@sentry/nextjs'
 import { getIp } from '@typebot.io/lib/getIp'
@@ -164,10 +164,12 @@ export const getAuthOptions = ({
       if (!account) return false
       const isNewUser = !('createdAt' in user && isDefined(user.createdAt))
       if (isNewUser && user.email) {
-        const { body } = await got.get(
-          'https://raw.githubusercontent.com/disposable-email-domains/disposable-email-domains/master/disposable_email_blocklist.conf'
-        )
-        const disposableEmailDomains = body.split('\n')
+        const data = await ky
+          .get(
+            'https://raw.githubusercontent.com/disposable-email-domains/disposable-email-domains/master/disposable_email_blocklist.conf'
+          )
+          .text()
+        const disposableEmailDomains = data.split('\n')
         if (disposableEmailDomains.includes(user.email.split('@')[1]))
           return false
       }

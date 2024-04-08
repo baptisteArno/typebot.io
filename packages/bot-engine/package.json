@@ -14,6 +14,7 @@
     "@typebot.io/env": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/results": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
     "@typebot.io/variables": "workspace:*",
@@ -24,19 +25,18 @@
     "date-fns-tz": "2.0.0",
     "google-auth-library": "8.9.0",
     "google-spreadsheet": "4.1.1",
-    "got": "12.6.0",
-    "ky": "^1.1.3",
+    "ky": "1.2.3",
     "libphonenumber-js": "1.10.37",
     "node-html-parser": "6.1.5",
     "nodemailer": "6.9.8",
     "openai": "4.28.4",
     "qs": "6.11.2",
-    "stripe": "12.13.0",
-    "@typebot.io/results": "workspace:*"
+    "stripe": "12.13.0"
   },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/forge-repository": "workspace:*",
+    "@types/node": "^20.12.3",
     "@types/nodemailer": "6.4.14",
     "@types/qs": "6.9.7"
   }

@@ -3,6 +3,8 @@ import { isDefined } from '@typebot.io/lib'
 import { auth } from '../auth'
 import { parseMessages } from '../helpers/parseMessages'
 import { OpenAIStream } from 'ai'
+// @ts-ignore
+import MistralClient from '../helpers/client'
 
 const nativeMessageContentSchema = {
   content: option.string.layout({
@@ -95,15 +97,17 @@ export const createChatCompletion = createAction({
       id: 'fetchModels',
       dependencies: [],
       fetch: async ({ credentials }) => {
-        const MistralClient = (await import('@mistralai/mistralai')).default
         const client = new MistralClient(credentials.apiKey)
 
-        const listModelsResponse = await client.listModels()
+        const listModelsResponse: any = await client.listModels()
 
         return (
           listModelsResponse.data
-            .sort((a, b) => b.created - a.created)
-            .map((model) => model.id) ?? []
+            .sort(
+              (a: { created: number }, b: { created: number }) =>
+                b.created - a.created
+            )
+            .map((model: { id: any }) => model.id) ?? []
         )
       },
     },
@@ -111,10 +115,9 @@ export const createChatCompletion = createAction({
   run: {
     server: async ({ credentials: { apiKey }, options, variables, logs }) => {
       if (!options.model) return logs.add('No model selected')
-      const MistralClient = (await import('@mistralai/mistralai')).default
       const client = new MistralClient(apiKey)
 
-      const response = await client.chat({
+      const response: any = await client.chat({
         model: options.model,
         messages: parseMessages({ options, variables }),
       })
@@ -132,15 +135,13 @@ export const createChatCompletion = createAction({
         )?.variableId,
       run: async ({ credentials: { apiKey }, options, variables }) => {
         if (!options.model) return
-        const MistralClient = (await import('@mistralai/mistralai')).default
         const client = new MistralClient(apiKey)
 
-        const response = client.chatStream({
+        const response: any = client.chatStream({
           model: options.model,
           messages: parseMessages({ options, variables }),
         })
 
-        // @ts-ignore https://github.com/vercel/ai/issues/936
         return OpenAIStream(response)
       },
     },

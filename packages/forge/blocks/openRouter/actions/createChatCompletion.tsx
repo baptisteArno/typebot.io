@@ -6,7 +6,7 @@ import { getChatCompletionStreamVarId } from '@typebot.io/openai-block/shared/ge
 import { runChatCompletion } from '@typebot.io/openai-block/shared/runChatCompletion'
 import { runChatCompletionStream } from '@typebot.io/openai-block/shared/runChatCompletionStream'
 import { defaultOpenRouterOptions } from '../constants'
-import { got } from 'got'
+import ky from 'ky'
 import { ModelsResponse } from '../types'
 
 export const createChatCompletion = createAction({
@@ -42,7 +42,7 @@ export const createChatCompletion = createAction({
       id: 'fetchModels',
       dependencies: [],
       fetch: async () => {
-        const response = await got
+        const response = await ky
           .get(defaultOpenRouterOptions.baseUrl + '/models')
           .json<ModelsResponse>()
 

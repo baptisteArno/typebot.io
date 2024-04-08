@@ -32,7 +32,6 @@ export const getResultExample = authenticatedProcedure
     })
   )
   .query(async ({ input: { typebotId, blockId }, ctx: { user } }) => {
-    console.log('user', user)
     const typebot = (await prisma.typebot.findFirst({
       where: canReadTypebots(typebotId, user),
       select: {

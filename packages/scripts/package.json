@@ -42,7 +42,7 @@
     "@types/papaparse": "5.3.7",
     "@types/prompts": "2.4.4",
     "deep-object-diff": "1.1.9",
-    "got": "12.6.0",
+    "ky": "1.2.3",
     "prompts": "2.4.2",
     "stripe": "12.13.0",
     "tsx": "3.12.7",
