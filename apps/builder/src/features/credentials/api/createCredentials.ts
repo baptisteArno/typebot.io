@@ -14,7 +14,7 @@ import {
 } from '@typebot.io/schemas'
 import { isDefined } from '@typebot.io/lib/utils'
 import { isWriteWorkspaceForbidden } from '@/features/workspace/helpers/isWriteWorkspaceForbidden'
-import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
+import { trackEvents } from '@typebot.io/telemetry/trackEvents'
 
 const inputShape = {
   data: true,

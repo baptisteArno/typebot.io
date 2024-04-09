@@ -17,7 +17,7 @@ import {
 import { isDefined } from '@typebot.io/lib'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createApi } from 'unsplash-js'
-import { Basic as UnsplashImage } from 'unsplash-js/dist/methods/photos/types'
+import { Basic as UnsplashImageType } from 'unsplash-js/dist/methods/photos/types'
 import { TextInput } from '../inputs'
 import { UnsplashLogo } from '../logos/UnsplashLogo'
 import { TextLink } from '../TextLink'
@@ -35,7 +35,7 @@ type Props = {
 export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
   const unsplashLogoFillColor = useColorModeValue('black', 'white')
   const [isFetching, setIsFetching] = useState(false)
-  const [images, setImages] = useState<UnsplashImage[]>([])
+  const [images, setImages] = useState<UnsplashImageType[]>([])
   const [error, setError] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const scrollContainer = useRef<HTMLDivElement>(null)
@@ -113,7 +113,7 @@ export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
     setIsFetching(false)
   }
 
-  const selectImage = (image: UnsplashImage) => {
+  const selectImage = (image: UnsplashImageType) => {
     const url = image.urls[imageSize]
     api.photos.trackDownload({
       downloadLocation: image.links.download_location,
@@ -185,7 +185,7 @@ export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
 }
 
 type UnsplashImageProps = {
-  image: UnsplashImage
+  image: UnsplashImageType
   onClick: () => void
 }
 

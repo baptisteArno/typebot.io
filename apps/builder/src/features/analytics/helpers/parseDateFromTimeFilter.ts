@@ -1,18 +1,72 @@
 import { timeFilterValues } from '../constants'
+import {
+  startOfDay,
+  subDays,
+  startOfYear,
+  startOfMonth,
+  endOfMonth,
+  subMonths,
+} from 'date-fns'
+import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz'
 
-export const parseDateFromTimeFilter = (
-  timeFilter: (typeof timeFilterValues)[number]
-): Date | undefined => {
+export const parseFromDateFromTimeFilter = (
+  timeFilter: (typeof timeFilterValues)[number],
+  userTimezone: string = 'UTC'
+): Date | null => {
+  const nowInUserTimezone = utcToZonedTime(new Date(), userTimezone)
+
   switch (timeFilter) {
-    case 'today':
-      return new Date(new Date().setHours(0, 0, 0, 0))
-    case 'last7Days':
-      return new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-    case 'last30Days':
-      return new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
-    case 'yearToDate':
-      return new Date(new Date().getFullYear(), 0, 1)
+    case 'today': {
+      return zonedTimeToUtc(startOfDay(nowInUserTimezone), userTimezone)
+    }
+    case 'last7Days': {
+      return zonedTimeToUtc(
+        subDays(startOfDay(nowInUserTimezone), 6),
+        userTimezone
+      )
+    }
+    case 'last30Days': {
+      return zonedTimeToUtc(
+        subDays(startOfDay(nowInUserTimezone), 29),
+        userTimezone
+      )
+    }
+    case 'lastMonth': {
+      return zonedTimeToUtc(
+        subMonths(startOfMonth(nowInUserTimezone), 1),
+        userTimezone
+      )
+    }
+    case 'monthToDate': {
+      return zonedTimeToUtc(startOfMonth(nowInUserTimezone), userTimezone)
+    }
+    case 'yearToDate': {
+      return zonedTimeToUtc(startOfYear(nowInUserTimezone), userTimezone)
+    }
     case 'allTime':
-      return
+      return null
+  }
+}
+
+export const parseToDateFromTimeFilter = (
+  timeFilter: (typeof timeFilterValues)[number],
+  userTimezone: string = 'UTC'
+): Date | null => {
+  const nowInUserTimezone = utcToZonedTime(new Date(), userTimezone)
+
+  switch (timeFilter) {
+    case 'lastMonth': {
+      return zonedTimeToUtc(
+        subMonths(endOfMonth(nowInUserTimezone), 1),
+        userTimezone
+      )
+    }
+    case 'last30Days':
+    case 'last7Days':
+    case 'today':
+    case 'monthToDate':
+    case 'yearToDate':
+    case 'allTime':
+      return null
   }
 }

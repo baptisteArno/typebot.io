@@ -81,7 +81,7 @@ export const CustomDomainsDropdown = ({
   }
 
   return (
-    <Menu isLazy placement="bottom-start" matchWidth>
+    <Menu isLazy placement="bottom-start">
       {workspace?.id && (
         <CreateCustomDomainModal
           workspaceId={workspace.id}

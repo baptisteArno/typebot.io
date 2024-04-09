@@ -1,11 +1,15 @@
-import { blockHasItems, isDefined, isInputBlock, byId } from '@typebot.io/lib'
-import { getBlockById } from '@typebot.io/lib/getBlockById'
+import { isDefined, byId } from '@typebot.io/lib'
+import {
+  getBlockById,
+  blockHasItems,
+  isInputBlock,
+} from '@typebot.io/schemas/helpers'
 import { Block, SessionState } from '@typebot.io/schemas'
 
 type Props = {
   typebotsQueue: SessionState['typebotsQueue']
   progressMetadata: NonNullable<SessionState['progressMetadata']>
-  currentInputBlockId: string
+  currentInputBlockId: string | undefined
 }
 
 export const computeCurrentProgress = ({
@@ -13,6 +17,7 @@ export const computeCurrentProgress = ({
   progressMetadata,
   currentInputBlockId,
 }: Props) => {
+  if (!currentInputBlockId) return
   const paths = computePossibleNextInputBlocks({
     typebotsQueue: typebotsQueue,
     blockId: currentInputBlockId,

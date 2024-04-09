@@ -7,7 +7,7 @@ import {
   deleteTypebots,
   deleteWebhooks,
   importTypebotInDatabase,
-} from '@typebot.io/lib/playwright/databaseActions'
+} from '@typebot.io/playwright/databaseActions'
 import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
 import { StartChatInput, StartPreviewChatInput } from '@typebot.io/schemas'
 

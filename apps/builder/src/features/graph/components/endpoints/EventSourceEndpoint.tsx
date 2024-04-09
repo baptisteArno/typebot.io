@@ -4,17 +4,10 @@ import {
   useColorModeValue,
   useEventListener,
 } from '@chakra-ui/react'
-import React, {
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useEndpoints } from '../../providers/EndpointsProvider'
 import { useGraph } from '../../providers/GraphProvider'
 import { TEventSource } from '@typebot.io/schemas'
-import { isNotDefined } from '@typebot.io/lib'
 
 const endpointHeight = 32
 
@@ -35,23 +28,6 @@ export const EventSourceEndpoint = ({
   const [eventTransformProp, setEventTransformProp] = useState<string>()
   const ref = useRef<HTMLDivElement | null>(null)
 
-  const endpointY = useMemo(
-    () =>
-      ref.current
-        ? Number(
-            (
-              (ref.current?.getBoundingClientRect().y +
-                (endpointHeight * graphPosition.scale) / 2 -
-                graphPosition.y) /
-              graphPosition.scale
-            ).toFixed(2)
-          )
-        : undefined,
-    // We need to force recompute whenever the event node position changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [graphPosition.scale, graphPosition.y, eventTransformProp]
-  )
-
   useLayoutEffect(() => {
     const mutationObserver = new MutationObserver((entries) => {
       setEventTransformProp((entries[0].target as HTMLElement).style.transform)
@@ -68,12 +44,28 @@ export const EventSourceEndpoint = ({
   }, [source.eventId])
 
   useEffect(() => {
-    if (isNotDefined(endpointY)) return
+    const y = ref.current
+      ? Number(
+          (
+            (ref.current?.getBoundingClientRect().y +
+              (endpointHeight * graphPosition.scale) / 2 -
+              graphPosition.y) /
+            graphPosition.scale
+          ).toFixed(2)
+        )
+      : undefined
+    if (y === undefined) return
     setSourceEndpointYOffset?.({
       id: source.eventId,
-      y: endpointY,
+      y,
     })
-  }, [endpointY, setSourceEndpointYOffset, source.eventId])
+  }, [
+    graphPosition.scale,
+    graphPosition.y,
+    setSourceEndpointYOffset,
+    source.eventId,
+    eventTransformProp,
+  ])
 
   useEffect(
     () => () => {

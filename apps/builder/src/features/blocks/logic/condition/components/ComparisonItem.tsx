@@ -76,6 +76,6 @@ const parseValuePlaceholder = (
       return ''
     case ComparisonOperators.MATCHES_REGEX:
     case ComparisonOperators.NOT_MATCH_REGEX:
-      return '^[0-9]+$'
+      return '/^[0-9]+$/'
   }
 }

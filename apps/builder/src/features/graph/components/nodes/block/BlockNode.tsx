@@ -15,12 +15,12 @@ import {
   TextBubbleBlock,
   BlockV6,
 } from '@typebot.io/schemas'
+import { isDefined } from '@typebot.io/lib'
 import {
-  isBubbleBlock,
-  isDefined,
   isInputBlock,
+  isBubbleBlock,
   isTextBubbleBlock,
-} from '@typebot.io/lib'
+} from '@typebot.io/schemas/helpers'
 import { BlockNodeContent } from './BlockNodeContent'
 import { BlockSettings, SettingsPopoverContent } from './SettingsPopoverContent'
 import { BlockNodeContextMenu } from './BlockNodeContextMenu'
@@ -79,12 +79,6 @@ export const BlockNode = ({
   const { mouseOverBlock, setMouseOverBlock } = useBlockDnd()
   const { typebot, updateBlock } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
-  const [isPopoverOpened, setIsPopoverOpened] = useState(
-    openedBlockId === block.id
-  )
-  const [isEditing, setIsEditing] = useState<boolean>(
-    isTextBubbleBlock(block) && (block.content?.richText?.length ?? 0) === 0
-  )
   const blockRef = useRef<HTMLDivElement | null>(null)
 
   const isPreviewing =
@@ -105,7 +99,7 @@ export const BlockNode = ({
     ref: blockRef,
     onDrag,
     isDisabled: !onMouseDown,
-    deps: [isEditing],
+    deps: [openedBlockId],
   })
 
   const {
@@ -150,16 +144,18 @@ export const BlockNode = ({
       })
   }
 
-  const handleCloseEditor = (content: TElement[]) => {
+  const handleCloseEditor = () => {
+    setOpenedBlockId(undefined)
+  }
+
+  const handleTextEditorChange = (content: TElement[]) => {
     const updatedBlock = { ...block, content: { richText: content } }
     updateBlock(indices, updatedBlock)
-    setIsEditing(false)
   }
 
   const handleClick = (e: React.MouseEvent) => {
     setFocusedGroupId(groupId)
     e.stopPropagation()
-    if (isTextBubbleBlock(block) && !isReadOnly) setIsEditing(true)
     setOpenedBlockId(block.id)
   }
 
@@ -173,10 +169,6 @@ export const BlockNode = ({
 
   const handleContentChange = (content: BubbleBlockContent) =>
     updateBlock(indices, { ...block, content } as Block)
-
-  useEffect(() => {
-    setIsPopoverOpened(openedBlockId === block.id)
-  }, [block.id, openedBlockId])
 
   useEffect(() => {
     if (!blockRef.current) return
@@ -197,15 +189,15 @@ export const BlockNode = ({
   ) => {
     if (!('options' in block) || !block.options) return
 
-    const convertedBlockOptions = turnIntoParams.customMapping
-      ? turnIntoParams.customMapping(block.options)
+    const convertedBlockOptions = turnIntoParams.transform
+      ? turnIntoParams.transform(block.options)
       : block.options
     try {
       updateBlock(
         indices,
         targetBlockSchema.parse({
           ...block,
-          type: turnIntoParams.blockType,
+          type: turnIntoParams.blockId,
           options: {
             ...convertedBlockOptions,
             credentialsId: undefined,
@@ -230,10 +222,11 @@ export const BlockNode = ({
     return edge.to.blockId === block.id
   })
 
-  return isEditing && isTextBubbleBlock(block) ? (
+  return openedBlockId === block.id && isTextBubbleBlock(block) ? (
     <TextBubbleEditor
       id={block.id}
       initialValue={block.content?.richText ?? []}
+      onChange={handleTextEditorChange}
       onClose={handleCloseEditor}
     />
   ) : (
@@ -253,7 +246,7 @@ export const BlockNode = ({
         <Popover
           placement="left"
           isLazy
-          isOpen={isPopoverOpened}
+          isOpen={openedBlockId === block.id}
           closeOnBlur={false}
         >
           <PopoverTrigger>

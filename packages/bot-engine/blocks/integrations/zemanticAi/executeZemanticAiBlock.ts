@@ -4,13 +4,13 @@ import {
   ZemanticAiCredentials,
   ZemanticAiResponse,
 } from '@typebot.io/schemas/features/blocks/integrations/zemanticAi'
-import got from 'got'
+import ky from 'ky'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { byId, isDefined, isEmpty } from '@typebot.io/lib'
-import prisma from '@typebot.io/lib/prisma'
 import { ExecuteIntegrationResponse } from '../../../types'
 import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
-import { parseAnswers } from '@typebot.io/lib/results/parseAnswers'
+import { getCredentials } from '../../../queries/getCredentials'
+import { parseAnswers } from '@typebot.io/results/parseAnswers'
 
 const URL = 'https://api.zemantic.ai/v1/search-documents'
 
@@ -25,11 +25,7 @@ export const executeZemanticAiBlock = async (
       outgoingEdgeId: block.outgoingEdgeId,
     }
 
-  const credentials = await prisma.credentials.findUnique({
-    where: {
-      id: block.options?.credentialsId,
-    },
-  })
+  const credentials = await getCredentials(block.options.credentialsId)
 
   if (!credentials) {
     return {
@@ -55,7 +51,7 @@ export const executeZemanticAiBlock = async (
   })
 
   try {
-    const res: ZemanticAiResponse = await got
+    const res: ZemanticAiResponse = await ky
       .post(URL, {
         headers: {
           Authorization: `Bearer ${apiKey}`,

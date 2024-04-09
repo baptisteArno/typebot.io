@@ -60,13 +60,19 @@ export const Edge = ({ edge, fromGroupId }: Props) => {
     return sourceEndpointYOffsets.get(endpointId)?.y
   }, [edge.from, sourceEndpointYOffsets])
 
-  const targetTop = useMemo(
-    () =>
-      edge?.to.blockId
-        ? targetEndpointYOffsets.get(edge?.to.blockId)?.y
-        : undefined,
-    [edge?.to.blockId, targetEndpointYOffsets]
-  )
+  const targetTop = useMemo(() => {
+    if (targetEndpointYOffsets.size === 0) return
+    if (edge.to.blockId) {
+      const targetOffset = targetEndpointYOffsets.get(edge.to.blockId)
+      if (!targetOffset) {
+        // Something went wrong, the edge is connected to a block that doesn't exist anymore.
+        deleteEdge(edge.id)
+        return
+      }
+      return targetOffset.y
+    }
+    return
+  }, [deleteEdge, edge.id, edge.to.blockId, targetEndpointYOffsets])
 
   const path = useMemo(() => {
     if (!sourceElementCoordinates || !toGroupCoordinates || !sourceTop)

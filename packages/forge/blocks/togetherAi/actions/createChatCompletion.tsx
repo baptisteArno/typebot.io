@@ -16,12 +16,24 @@ export const createChatCompletion = createAction({
   }),
   turnableInto: [
     {
-      blockType: 'openai',
+      blockId: 'openai',
     },
     {
-      blockType: 'open-router',
+      blockId: 'open-router',
     },
-    { blockType: 'mistral' },
+    { blockId: 'mistral' },
+    {
+      blockId: 'anthropic',
+      transform: (options) => ({
+        ...options,
+        action: 'Create Chat Message',
+        responseMapping: options.responseMapping?.map((res: any) =>
+          res.item === 'Message content'
+            ? { ...res, item: 'Message Content' }
+            : res
+        ),
+      }),
+    },
   ],
   getSetVariableIds: getChatCompletionSetVarIds,
   run: {

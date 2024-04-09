@@ -20,6 +20,27 @@ const defaultTextColor = '#303235'
 export const PreviewMessage = (props: PreviewMessageProps) => {
   const [isPreviewMessageHovered, setIsPreviewMessageHovered] =
     createSignal(false)
+  const [touchStartPosition, setTouchStartPosition] = createSignal({
+    x: 0,
+    y: 0,
+  })
+
+  const handleTouchStart = (e: TouchEvent) => {
+    setTouchStartPosition({ x: e.touches[0].clientX, y: e.touches[0].clientY })
+  }
+
+  const handleTouchEnd = (e: TouchEvent) => {
+    const x = e.changedTouches[0].clientX
+    const y = e.changedTouches[0].clientY
+
+    if (
+      Math.abs(x - touchStartPosition().x) > 10 ||
+      y - touchStartPosition().y > 10
+    )
+      props.onCloseClick()
+
+    setTouchStartPosition({ x: 0, y: 0 })
+  }
 
   return (
     <div
@@ -38,6 +59,8 @@ export const PreviewMessage = (props: PreviewMessageProps) => {
       }}
       onMouseEnter={() => setIsPreviewMessageHovered(true)}
       onMouseLeave={() => setIsPreviewMessageHovered(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       <CloseButton
         isHovered={isPreviewMessageHovered()}
@@ -67,6 +90,7 @@ const CloseButton = (props: {
 }) => (
   <button
     part="preview-message-close-button"
+    aria-label="Close"
     class={
       `absolute -top-2 -right-2 rounded-full w-6 h-6 p-1 hover:brightness-95 active:brightness-90 transition-all border ` +
       (props.isHovered ? 'opacity-100' : 'opacity-0')

@@ -1,5 +1,5 @@
 import test, { expect } from '@playwright/test'
-import { importTypebotInDatabase } from '@typebot.io/lib/playwright/databaseActions'
+import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 import { env } from '@typebot.io/env'
@@ -57,7 +57,7 @@ test.describe('Send email block', () => {
     )
     await page.getByLabel('Subject:').fill('Email subject')
     await page.click('text="Custom content?"')
-    await page.locator('textarea').fill('Here is my email')
+    await page.locator('textarea').last().fill('Here is my email')
 
     await page.click('text=Test')
     await page.locator('typebot-standard').locator('text=Go').click()

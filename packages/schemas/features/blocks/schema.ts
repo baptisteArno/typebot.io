@@ -6,7 +6,7 @@ import { bubbleBlockSchemas } from './bubbles/schema'
 import { LogicBlock, logicBlockSchemas } from './logic/schema'
 import { InputBlock, inputBlockSchemas } from './inputs/schema'
 import { IntegrationBlock, integrationBlockSchemas } from './integrations'
-import { enabledBlocks } from '@typebot.io/forge-repository'
+import { forgedBlockSchemas } from '@typebot.io/forge-repository/schemas'
 
 export type BlockWithOptions = Extract<Block, { options?: any }>
 
@@ -34,15 +34,8 @@ export const blockSchemaV6 = z
     ...inputBlockSchemas.v6,
     ...logicBlockSchemas.v6,
     ...integrationBlockSchemas.v6,
+    ...Object.values(forgedBlockSchemas),
   ])
-  .or(
-    blockBaseSchema.merge(
-      z.object({
-        type: z.enum(enabledBlocks),
-        options: z.any().optional(),
-      })
-    )
-  )
   .openapi({
     title: 'Block',
     ref: 'block',

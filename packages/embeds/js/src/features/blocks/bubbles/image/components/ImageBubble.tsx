@@ -52,7 +52,6 @@ export const ImageBubble = (props: Props) => {
         props.content?.clickLink?.alt ?? defaultImageBubbleContent.clickLink.alt
       }
       class={clsx(
-        'w-full',
         isTyping() ? 'opacity-0' : 'opacity-100',
         props.onTransitionEnd ? 'text-fade-in' : undefined
       )}

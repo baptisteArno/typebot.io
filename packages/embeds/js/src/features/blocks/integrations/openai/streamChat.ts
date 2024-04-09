@@ -34,8 +34,8 @@ export const streamChat =
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            sessionId: context.sessionId,
             messages,
+            sessionId: context.sessionId,
           }),
           signal: abortController.signal,
         }

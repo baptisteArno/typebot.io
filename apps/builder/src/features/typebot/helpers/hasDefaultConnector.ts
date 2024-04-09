@@ -1,9 +1,9 @@
+import { isDefined } from '@typebot.io/lib'
 import {
   isChoiceInput,
   isConditionBlock,
-  isDefined,
   isPictureChoiceInput,
-} from '@typebot.io/lib'
+} from '@typebot.io/schemas/helpers'
 import { BlockV6 } from '@typebot.io/schemas'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'

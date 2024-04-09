@@ -17,8 +17,8 @@ import {
   Tr,
 } from '@chakra-ui/react'
 import { useTranslate } from '@tolgee/react'
-import { proChatTiers } from '@typebot.io/lib/billing/constants'
-import { formatPrice } from '@typebot.io/lib/billing/formatPrice'
+import { proChatTiers } from '@typebot.io/billing/constants'
+import { formatPrice } from '@typebot.io/billing/formatPrice'
 
 type Props = {
   isOpen: boolean

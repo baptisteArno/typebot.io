@@ -2,7 +2,7 @@ import { SetVariableLabel } from '@/components/SetVariableLabel'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { Stack, Text } from '@chakra-ui/react'
 import { useForgedBlock } from '../hooks/useForgedBlock'
-import { ForgedBlock } from '@typebot.io/forge-schemas'
+import { ForgedBlock } from '@typebot.io/forge-repository/types'
 
 type Props = {
   block: ForgedBlock

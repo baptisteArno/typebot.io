@@ -158,6 +158,10 @@ export const WhatsAppCredentialsModal = ({
       setIsVerifying(false)
       showToast({
         description: 'Could not get system info',
+        details:
+          err instanceof Error
+            ? { content: err.message, lang: 'json' }
+            : undefined,
       })
       return false
     }
@@ -204,7 +208,10 @@ export const WhatsAppCredentialsModal = ({
       setIsVerifying(false)
       showToast({
         description: 'Could not get phone number info',
-        details: { content: JSON.stringify(err), lang: 'json' },
+        details:
+          err instanceof Error
+            ? { content: err.message, lang: 'json' }
+            : undefined,
       })
       return false
     }
@@ -377,6 +384,7 @@ const SystemUserToken = ({
     <ListItem>Copy and paste the generated token:</ListItem>
     <TextInput
       isRequired
+      type="password"
       label="System User Token"
       defaultValue={initialToken}
       onChange={(val) => setToken(val.trim())}

@@ -1,10 +1,10 @@
-import { Variable } from '@typebot.io/schemas'
 import {
   defaultParseVariablesOptions,
   parseVariables,
   ParseVariablesOptions,
 } from './parseVariables'
 import { parseGuessedTypeFromString } from './parseGuessedTypeFromString'
+import { Variable } from './types'
 
 type DeepParseOptions = {
   guessCorrectTypes?: boolean

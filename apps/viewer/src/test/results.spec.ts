@@ -1,7 +1,7 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { importTypebotInDatabase } from '@typebot.io/lib/playwright/databaseActions'
+import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
 import { env } from '@typebot.io/env'
 
 test('Big groups should work as expected', async ({ page }) => {

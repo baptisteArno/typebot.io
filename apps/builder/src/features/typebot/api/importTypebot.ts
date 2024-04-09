@@ -17,8 +17,8 @@ import {
   sanitizeSettings,
 } from '../helpers/sanitizers'
 import { preprocessTypebot } from '@typebot.io/schemas/features/typebot/helpers/preprocessTypebot'
-import { migrateTypebot } from '@typebot.io/lib/migrations/migrateTypebot'
-import { trackEvents } from '@typebot.io/lib/telemetry/trackEvents'
+import { migrateTypebot } from '@typebot.io/migrations/migrateTypebot'
+import { trackEvents } from '@typebot.io/telemetry/trackEvents'
 
 const omittedProps = {
   id: true,

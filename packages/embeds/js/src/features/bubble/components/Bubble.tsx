@@ -179,10 +179,7 @@ export const Bubble = (props: BubbleProps) => {
       <div
         part="bot"
         style={{
-          height:
-            props.theme?.button?.size === 'large'
-              ? 'calc(100% - 95px)'
-              : 'calc(100% - 80px)',
+          height: `calc(100% - ${buttonSize()} - 32px)`,
           'max-height': props.theme?.chatWindow?.maxHeight ?? '704px',
           'max-width': props.theme?.chatWindow?.maxWidth ?? '400px',
           transition:
@@ -198,7 +195,9 @@ export const Bubble = (props: BubbleProps) => {
         class={
           'fixed rounded-lg w-full' +
           (isBotOpened() ? ' opacity-1' : ' opacity-0 pointer-events-none') +
-          (props.theme?.placement === 'left' ? ' left-5' : ' right-5')
+          (props.theme?.placement === 'left'
+            ? ' left-5'
+            : ' sm:right-5 right-0')
         }
       >
         <Show when={isBotStarted()}>

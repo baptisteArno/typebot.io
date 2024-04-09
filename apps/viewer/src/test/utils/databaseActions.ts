@@ -1,7 +1,7 @@
 import { PrismaClient } from '@typebot.io/prisma'
 import { SmtpCredentials } from '@typebot.io/schemas'
 import { encrypt } from '@typebot.io/lib/api/encryption/encrypt'
-import { proWorkspaceId } from '@typebot.io/lib/playwright/databaseSetup'
+import { proWorkspaceId } from '@typebot.io/playwright/databaseSetup'
 
 const prisma = new PrismaClient()
 

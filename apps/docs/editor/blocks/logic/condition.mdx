@@ -18,3 +18,64 @@ A condition can contain different comparisons that are evaluated in order and li
     className="absolute top-0 left-0 w-full h-full"
   />
 </div>
+
+## Operators
+
+<ResponseField name="Equal to">
+  Will match if the provided value is strictly equal to the value.
+</ResponseField>
+
+<ResponseField name="Not equal">
+  Will match if the provided value is not equal to the value.
+</ResponseField>
+
+<ResponseField name="Contains">
+  Will match if the provided value contains the value. If a list is provided, it
+  will match if the list has at least one element in common with the value.
+</ResponseField>
+
+<ResponseField name="Does not contain">
+  Same as `Contains` but will match the inverse.
+</ResponseField>
+
+<ResponseField name="Greater than">
+  Will match if the provided value is greater or equal than the value.
+</ResponseField>
+
+<ResponseField name="Less than">
+  Will match if the provided value is less or equal than the value.
+</ResponseField>
+
+<ResponseField name="Is set">
+  Will match if the provided value is not null or undefined and not an empty
+  string.
+</ResponseField>
+
+<ResponseField name="Is empty">
+  Will match if the provided value is null, undefined, or an empty string.
+</ResponseField>
+
+<ResponseField name="Starts with">
+  Will match if the provided value starts with the value.
+</ResponseField>
+
+<ResponseField name="Ends with">
+  Will match if the provided value ends with the value.
+</ResponseField>
+
+<ResponseField name="Matches regex">
+Value should start and end with `/` and contain a valid regex pattern.
+
+Example:
+
+- `/^hello$/` will match if the string is strictly equal to "hello".
+- `/hello/` will match if the string contains "hello". Like "hello world".
+- `/hello/i` will match if the string contains "hello" case-insensitive. Like "Hello world".
+- `/[0-9]+/` will match if the string contains one or more digits. Like "123".
+
+</ResponseField>
+
+<ResponseField name="Does not match regex">
+  Same as `Matches regex` but will match if the provided value does not match
+  the regex pattern.
+</ResponseField>

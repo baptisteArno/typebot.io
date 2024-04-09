@@ -10,6 +10,7 @@ export const auth = {
       inputType: 'password',
       helperText:
         'You can generate an API key [here](https://console.mistral.ai/api-keys).',
+      isDebounceDisabled: true,
     }),
   }),
 } satisfies AuthDefinition
