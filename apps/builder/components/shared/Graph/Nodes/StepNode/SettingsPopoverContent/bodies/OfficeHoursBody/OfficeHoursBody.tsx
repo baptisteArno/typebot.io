@@ -21,12 +21,15 @@ import {
   ButtonDays,
   FormControlRow,
 } from './OfficeHoursBody.style'
-import { Text, useDisclosure } from '@chakra-ui/react'
+import { Flex, Text, useDisclosure } from '@chakra-ui/react'
 import { ItemWithId, TableList } from 'components/shared/TableList'
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
 import { DayOfWeekComponent } from './DayOfWeek'
 import { SpecialDateComponent } from './SpecialDate'
 import { ConfirmModal } from 'components/modals/ConfirmModal'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
 
 type Props = {
   options: OfficeHour
@@ -48,6 +51,11 @@ export type SpecialDate = {
   date?: string
   dayOfWeek?: number
   hours?: Array<Interval>
+}
+
+enum ScreensType {
+  SETTINGS = 'SETTINGS',
+  CREATE_OFFICE_HOURS = 'CREATE-OFFICE-HOURS',
 }
 
 export const dayPerNumber = (number: number): { min: string; full: string } => {
@@ -95,6 +103,37 @@ export const OfficeHoursBody = ({ options, onOptionsChange }: Props) => {
   const [hasSpecialDates, setHasSpecialDates] = useState<boolean>(false)
   const [hasSameHour, setHasSameHour] = useState<boolean>(true)
   const [isEdited, setisEdited] = useState<boolean>(false)
+  const schema = z.object({
+    name: z
+      .string()
+      .min(1, { message: 'Campo obrigatório' })
+      .max(255, { message: 'Campo obrigatório' })
+      .refine(
+        (value) => {
+          return !optionsOfficeHour.some(
+            (createdOption) =>
+              createdOption.label === value &&
+              createdOption.value.id !== currentId
+          )
+        },
+        { message: 'Esse nome já existe na sua lista' }
+      ),
+    timezone: z.string().min(1, { message: 'Campo obrigatório' }),
+  })
+  const {
+    trigger,
+    setValue,
+    getValues,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: '',
+      timezone: '',
+    },
+  })
 
   const handleToggle = () => {
     setHasSpecialDates((prevHasSpecialDates) => !prevHasSpecialDates)
@@ -126,8 +165,6 @@ export const OfficeHoursBody = ({ options, onOptionsChange }: Props) => {
     },
   ])
 
-  const [name, setName] = useState('')
-  const [timeZone, setTimeZone] = useState('')
   const [currentId, setCurrentId] = useState<string | undefined>(options?.id)
 
   const handleToggleSameDayHour = () => {
@@ -153,8 +190,8 @@ export const OfficeHoursBody = ({ options, onOptionsChange }: Props) => {
   }
 
   const setCurrentOffice = (current: OfficeHour | undefined) => {
-    setTimeZone(current?.timeZone || '')
-    setName(current?.name || '')
+    setValue('name', current?.name || '')
+    setValue('timezone', current?.timeZone || '')
     setIs24Hours(
       current?.daysOfWeek?.is24hours !== undefined
         ? current.daysOfWeek.is24hours
@@ -225,6 +262,14 @@ export const OfficeHoursBody = ({ options, onOptionsChange }: Props) => {
   }
 
   useEffect(() => {
+    return () => {
+      if (screen === ScreensType.CREATE_OFFICE_HOURS) {
+        reset()
+      }
+    }
+  }, [screen])
+
+  useEffect(() => {
     const getTimezones = async () => {
       const timezones = await service.getTimeZones()
 
@@ -279,12 +324,12 @@ export const OfficeHoursBody = ({ options, onOptionsChange }: Props) => {
   const saveOfficeHour = async (): Promise<OfficeHour | null> => {
     const toSave = {
       id: currentId,
-      name: name,
+      name: getValues('name'),
       specialDates: {
         active: hasSpecialDates,
         dates: hasSpecialDates ? specialDates : [],
       },
-      timeZone: timeZone,
+      timeZone: getValues('timezone'),
       daysOfWeek: {
         days: is24hours ? [] : (daysOfWeek as Array<DayOfWeek>),
         is24hours,
@@ -320,13 +365,15 @@ export const OfficeHoursBody = ({ options, onOptionsChange }: Props) => {
     setScreen('SETTINGS')
   }
 
-  const handleChangeName = (event: ChangeEvent<HTMLInputElement>): void => {
+  const handleChangeName = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
-    setName(value)
+    setValue('name', value)
+    trigger('name')
   }
 
   const handleChangeTimezone = (selectedOption: string) => {
-    setTimeZone(selectedOption)
+    setValue('timezone', selectedOption)
+    trigger('timezone')
   }
 
   const handleSelectDaysOfWeek = (number: number): void => {
@@ -431,160 +478,171 @@ export const OfficeHoursBody = ({ options, onOptionsChange }: Props) => {
         </Container>
       )}
       {screen === 'CREATE-OFFICE-HOURS' && (
-        <ContainerCreate>
-          <Title>Novo horário de expediente</Title>
-          <Description>
-            Defina o fuso, dias e horários em que seu time está disponível e
-            prepare seu bot para atender as conversas que iniciarem fora desse
-            horário
-          </Description>
-          <FormArea>
-            <FormControl>
-              <FormControlRow>
-                <Text width={'50%'}>Dê um nome para esse expediente</Text>
-                {optionsTimezone && (
-                  <Text width={'50%'}>
-                    Qual é o fuso horário do expediente?
-                  </Text>
-                )}
-              </FormControlRow>
-              <FormControlRow>
-                <OctaInput
-                  name="name"
-                  placeholder="Novo horário expediente"
-                  onChange={handleChangeName}
-                  label=""
-                  required
-                  width={'50%'}
-                  margin-right={'10px'}
-                  value={name}
-                />
-                {optionsTimezone && (
-                  <OctaSelect
-                    findable
-                    key={'timezone-select'}
-                    options={optionsTimezone}
-                    defaultValue="America/Sao_Paulo"
-                    onChange={(value) => handleChangeTimezone(value)}
-                    value={timeZone}
-                    placeholder="Selecione um fuso horário"
-                    width={'50%'}
-                    defaultSelected={timeZone}
-                  />
-                )}
-              </FormControlRow>
-            </FormControl>
-          </FormArea>
-          <FormArea>
-            <FormControl></FormControl>
-          </FormArea>
-          <FormArea>
-            <FormControlRow>
-              <Text>A sua operação é 24/7?</Text>
-              <Options>
-                <OptionRadio>
-                  <input
-                    type="radio"
-                    name="operation"
-                    id="yes"
-                    defaultChecked={is24hours}
-                    onChange={() => setIs24Hours(true)}
-                  />{' '}
-                  Sim
-                </OptionRadio>
-                <OptionRadio>
-                  <input
-                    type="radio"
-                    name="operation"
-                    id="not"
-                    defaultChecked={!is24hours}
-                    onChange={() => setIs24Hours(false)}
-                  />{' '}
-                  Não
-                </OptionRadio>
-              </Options>
-            </FormControlRow>
-          </FormArea>
-
-          <div>
-            {!is24hours && (
-              <>
-                <FormArea>
-                  <h4>
-                    Em quais dias você estará <strong>disponível</strong>?
-                  </h4>
-                </FormArea>
-                <FormArea>
-                  {WEEK_DAYS.map((day) => (
-                    <ButtonDays
-                      key={day}
-                      onClick={() => handleSelectDaysOfWeek(day)}
-                      className={selectedDays.includes(day) ? 'active' : ''}
-                    >
-                      {dayPerNumber(day).min}
-                    </ButtonDays>
-                  ))}
-                </FormArea>
-                <FormArea>
-                  {hasSameHour}
-                  <Toggle>
-                    <input
-                      type="checkbox"
-                      id="switchSameHour"
-                      onChange={handleToggleSameDayHour}
-                      checked={hasSameHour}
+        <form onSubmit={(e) => event?.preventDefault()}>
+          <ContainerCreate>
+            <Title>Novo horário de expediente</Title>
+            <Description>
+              Defina o fuso, dias e horários em que seu time está disponível e
+              prepare seu bot para atender as conversas que iniciarem fora desse
+              horário
+            </Description>
+            <FormArea>
+              <FormControl>
+                <FormControlRow>
+                  <Text width={'50%'}>Dê um nome para esse expediente</Text>
+                  {optionsTimezone && (
+                    <Text width={'50%'}>
+                      Qual é o fuso horário do expediente?
+                    </Text>
+                  )}
+                </FormControlRow>
+                <FormControlRow>
+                  <Flex w="full" flexDirection={'column'} mr={2}>
+                    <OctaInput
+                      id="name"
+                      name="name"
+                      placeholder="Novo horário expediente"
+                      onChange={handleChangeName}
+                      label=""
+                      margin-right={'10px'}
+                      value={getValues('name')}
                     />
-                    <label htmlFor="switchSameHour">Toggle</label>
-                    <div className="input-label">
-                      Usar o mesmo horário para todos os dias
-                    </div>
-                  </Toggle>
-                </FormArea>
-                <TableList<ItemWithId<DayOfWeek>>
-                  initialItems={daysOfWeek}
-                  onItemsChange={handleDayOfWeekChange}
-                  itemsList={daysOfWeek}
-                  Item={DayOfWeekComponent}
-                  shouldHideButton={true}
-                  debounceTimeout={0}
-                  ComponentBetweenItems={() => <OctaDivider width="100%" />}
-                  buttonWidth="50%"
+                    <Text color={'red.400'}>{errors.name?.message}</Text>
+                  </Flex>
+                  {optionsTimezone && (
+                    <Flex w="full" flexDirection={'column'}>
+                      <OctaSelect
+                        findable
+                        key={'timezone-select'}
+                        options={optionsTimezone}
+                        defaultValue="America/Sao_Paulo"
+                        onChange={(value) => handleChangeTimezone(value)}
+                        value={getValues('timezone')}
+                        placeholder="Selecione um fuso horário"
+                        defaultSelected={getValues('timezone')}
+                        width={'100%'}
+                      />
+                      <Text color={'red.400'}>{errors.timezone?.message}</Text>
+                    </Flex>
+                  )}
+                </FormControlRow>
+              </FormControl>
+            </FormArea>
+            <FormArea>
+              <FormControl></FormControl>
+            </FormArea>
+            <FormArea>
+              <FormControlRow>
+                <Text>A sua operação é 24/7?</Text>
+                <Options>
+                  <OptionRadio>
+                    <input
+                      type="radio"
+                      name="operation"
+                      id="yes"
+                      defaultChecked={is24hours}
+                      onChange={() => setIs24Hours(true)}
+                    />{' '}
+                    Sim
+                  </OptionRadio>
+                  <OptionRadio>
+                    <input
+                      type="radio"
+                      name="operation"
+                      id="not"
+                      defaultChecked={!is24hours}
+                      onChange={() => setIs24Hours(false)}
+                    />{' '}
+                    Não
+                  </OptionRadio>
+                </Options>
+              </FormControlRow>
+            </FormArea>
+
+            <div>
+              {!is24hours && (
+                <>
+                  <FormArea>
+                    <h4>
+                      Em quais dias você estará <strong>disponível</strong>?
+                    </h4>
+                  </FormArea>
+                  <FormArea>
+                    {WEEK_DAYS.map((day) => (
+                      <ButtonDays
+                        key={day}
+                        onClick={() => handleSelectDaysOfWeek(day)}
+                        className={selectedDays.includes(day) ? 'active' : ''}
+                      >
+                        {dayPerNumber(day).min}
+                      </ButtonDays>
+                    ))}
+                  </FormArea>
+                  <FormArea>
+                    {hasSameHour}
+                    <Toggle>
+                      <input
+                        type="checkbox"
+                        id="switchSameHour"
+                        onChange={handleToggleSameDayHour}
+                        checked={hasSameHour}
+                      />
+                      <label htmlFor="switchSameHour">Toggle</label>
+                      <div className="input-label">
+                        Usar o mesmo horário para todos os dias
+                      </div>
+                    </Toggle>
+                  </FormArea>
+                  <TableList<ItemWithId<DayOfWeek>>
+                    initialItems={daysOfWeek}
+                    onItemsChange={handleDayOfWeekChange}
+                    itemsList={daysOfWeek}
+                    Item={DayOfWeekComponent}
+                    shouldHideButton={true}
+                    debounceTimeout={0}
+                    ComponentBetweenItems={() => <OctaDivider width="100%" />}
+                    buttonWidth="50%"
+                  />
+                </>
+              )}
+            </div>
+            <FormArea>
+              {hasSpecialDates}
+              <Toggle>
+                <input
+                  type="checkbox"
+                  id="switch"
+                  onChange={handleToggle}
+                  checked={hasSpecialDates}
                 />
-              </>
-            )}
-          </div>
-          <FormArea>
-            {hasSpecialDates}
-            <Toggle>
-              <input
-                type="checkbox"
-                id="switch"
-                onChange={handleToggle}
-                checked={hasSpecialDates}
+                <label htmlFor="switch">Toggle</label>
+                <div className="input-label">
+                  Incluir datas e horários especiais
+                </div>
+              </Toggle>
+            </FormArea>
+            {hasSpecialDates && (
+              <TableList<ItemWithId<SpecialDate>>
+                initialItems={specialDates}
+                onItemsChange={handleSpecialDatesChange}
+                Item={SpecialDateComponent}
+                addLabel="Adicionar data"
+                debounceTimeout={0}
+                ComponentBetweenItems={() => <OctaDivider width="100%" />}
+                minItems={1}
+                buttonWidth="50%"
               />
-              <label htmlFor="switch">Toggle</label>
-              <div className="input-label">
-                Incluir datas e horários especiais
-              </div>
-            </Toggle>
-          </FormArea>
-          {hasSpecialDates && (
-            <TableList<ItemWithId<SpecialDate>>
-              initialItems={specialDates}
-              onItemsChange={handleSpecialDatesChange}
-              Item={SpecialDateComponent}
-              addLabel="Adicionar data"
-              debounceTimeout={0}
-              ComponentBetweenItems={() => <OctaDivider width="100%" />}
-              minItems={1}
-              buttonWidth="50%"
-            />
-          )}
-          <FormArea>
-            <ButtonCreate onClick={saveOfficeHour}>Salvar</ButtonCreate>
-            <ButtonCancel onClick={cancelCreate}>Cancelar</ButtonCancel>
-          </FormArea>
-        </ContainerCreate>
+            )}
+            <FormArea>
+              <ButtonCreate
+                onClick={handleSubmit((values) => saveOfficeHour())}
+              >
+                Salvar
+              </ButtonCreate>
+              <ButtonCancel onClick={cancelCreate}>Cancelar</ButtonCancel>
+            </FormArea>
+          </ContainerCreate>
+        </form>
       )}
     </>
   )
