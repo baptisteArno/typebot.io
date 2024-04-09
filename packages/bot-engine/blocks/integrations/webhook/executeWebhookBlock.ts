@@ -15,7 +15,7 @@ import {
 } from '@typebot.io/schemas'
 import { stringify } from 'qs'
 import { isDefined, isEmpty, isNotDefined, omit } from '@typebot.io/lib'
-import ky, { HTTPError, Options } from 'ky'
+import ky, { HTTPError, Options, TimeoutError } from 'ky'
 import { resumeWebhookExecution } from './resumeWebhookExecution'
 import { ExecuteIntegrationResponse } from '../../../types'
 import { parseVariables } from '@typebot.io/variables/parseVariables'
@@ -42,7 +42,7 @@ export const longReqTimeoutWhitelist = [
   'https://api.anthropic.com',
 ]
 
-export const webhookSuccessDescription = `Webhook successfuly executed.`
+export const webhookSuccessDescription = `Webhook successfully executed.`
 export const webhookErrorDescription = `Webhook returned an error.`
 
 type Params = { disableRequestTimeout?: boolean; timeout?: number }
@@ -250,19 +250,18 @@ export const executeWebhook = async (
       })
       return { response, logs, startTimeShouldBeUpdated: true }
     }
-    if (
-      typeof error === 'object' &&
-      error &&
-      'code' in error &&
-      error.code === 'ETIMEDOUT'
-    ) {
+    if (error instanceof TimeoutError) {
       const response = {
         statusCode: 408,
-        data: { message: `Request timed out.` },
+        data: {
+          message: `Request timed out. (${(request.timeout ?? 0) / 1000}ms)`,
+        },
       }
       logs.push({
         status: 'error',
-        description: `Webhook request timed out. (${request.timeout}ms)`,
+        description: `Webhook request timed out. (${
+          (request.timeout ?? 0) / 1000
+        }s)`,
         details: {
           response,
           request,
