@@ -311,17 +311,15 @@ const BotContent = (props: BotContentProps) => {
           </Portal>
         </Show>
       </Show>
-      <div class="flex w-full h-full justify-center items-center">
-        <ConversationContainer
-          context={props.context}
-          initialChatReply={props.initialChatReply}
-          onNewInputBlock={props.onNewInputBlock}
-          onAnswer={props.onAnswer}
-          onEnd={props.onEnd}
-          onNewLogs={props.onNewLogs}
-          onProgressUpdate={setProgressValue}
-        />
-      </div>
+      <ConversationContainer
+        context={props.context}
+        initialChatReply={props.initialChatReply}
+        onNewInputBlock={props.onNewInputBlock}
+        onAnswer={props.onAnswer}
+        onEnd={props.onEnd}
+        onNewLogs={props.onNewLogs}
+        onProgressUpdate={setProgressValue}
+      />
       <Show
         when={
           props.initialChatReply.typebot.settings.general?.isBrandingEnabled
