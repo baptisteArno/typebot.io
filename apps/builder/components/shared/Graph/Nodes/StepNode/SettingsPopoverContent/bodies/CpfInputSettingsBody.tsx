@@ -1,6 +1,4 @@
-import { FormLabel, Stack } from '@chakra-ui/react'
-import OctaButton from 'components/octaComponents/OctaButton/OctaButton'
-import { Input } from 'components/shared/Textbox'
+import { Stack } from '@chakra-ui/react'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
 import { CpfInputOptions, Variable } from 'models'
 import React from 'react'
@@ -18,11 +16,11 @@ export const CpfInputSettingsBody = ({
     onOptionsChange({
       ...options,
       property: {
-        domain: "CHAT",
+        domain: 'CHAT',
         name: variable.name,
-        type: variable.type ? variable.type : "string",
-        token: variable.token
-      }
+        type: variable.type ? variable.type : 'string',
+        token: variable.token,
+      },
     })
   }
 

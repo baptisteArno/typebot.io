@@ -48,6 +48,7 @@ export const DateInputSettingsBody = ({
           </FormLabel>
           <Input
             id="from"
+            value={options.labels.from}
             defaultValue={options.labels.from}
             onChange={handleFromChange}
           />
@@ -60,6 +61,7 @@ export const DateInputSettingsBody = ({
           </FormLabel>
           <Input
             id="to"
+            value={options.labels.to}
             defaultValue={options.labels.to}
             onChange={handleToChange}
           />
@@ -71,6 +73,7 @@ export const DateInputSettingsBody = ({
         </FormLabel>
         <Input
           id="button"
+          value={options.labels.button}
           defaultValue={options.labels.button}
           onChange={handleButtonLabelChange}
         />

@@ -5,7 +5,7 @@ import {
   TextareaProps,
 } from '@chakra-ui/react'
 import { Variable } from 'models'
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { isEmpty } from 'utils'
 import { VariablesButton } from '../buttons/VariablesButton'
@@ -32,8 +32,6 @@ export const TextBox = ({
     null
   )
   const [carretPosition, setCarretPosition] = useState<number>(0)
-  const [value, setValue] = useState(props.defaultValue ?? '')
-  const [isTouched, setIsTouched] = useState(false)
   const debounced = useDebouncedCallback(
     (value) => {
       onChange(value)
@@ -42,16 +40,10 @@ export const TextBox = ({
   )
 
   useEffect(() => {
-    if (props.defaultValue !== value && value === '' && !isTouched)
-      setValue(props.defaultValue ?? '')
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.defaultValue])
-
-  useEffect(() => {
-    if(handleOpenVariablesSelect?.key === '#' && document) {
-      (document?.querySelector("#variables-button") as HTMLDivElement)?.click()
+    if (handleOpenVariablesSelect?.key === '#' && document) {
+      const d = document?.querySelector('#variables-button') as HTMLDivElement
+      d?.click()
     }
-
   }, [handleOpenVariablesSelect])
 
   useEffect(
@@ -61,17 +53,8 @@ export const TextBox = ({
     [debounced]
   )
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement & HTMLTextAreaElement>
-  ) => {
-    setIsTouched(true)
-    setValue(e.target.value)
-    debounced(e.target.value)
-  }
-
   const handleVariableSelected = (variable?: Variable) => {
     if (!textBoxRef.current || !variable) return
-    setIsTouched(true)
     const cursorPosition = carretPosition
     const textBeforeCursorPosition = textBoxRef.current.value.substring(
       0,
@@ -82,10 +65,7 @@ export const TextBox = ({
       textBoxRef.current.value.length
     )
     const newValue =
-      textBeforeCursorPosition +
-      `${variable.token}` +
-      textAfterCursorPosition
-    setValue(newValue)
+      textBeforeCursorPosition + `${variable.token}` + textAfterCursorPosition
     debounced(newValue)
     textBoxRef.current.focus()
     setTimeout(() => {
@@ -101,13 +81,19 @@ export const TextBox = ({
     setCarretPosition(textBoxRef.current.selectionStart)
   }
 
+  const adapterValueOnChange = (event: any) => {
+    if (typeof event === 'string') {
+      return event
+    }
+    return event.target.value
+  }
+
   if (!withVariableButton) {
     return (
       <TextBox
         ref={textBoxRef}
-        onChange={handleChange}
+        onChange={(e) => onChange(adapterValueOnChange(e))}
         bgColor={'white'}
-        value={value}
         {...props}
       />
     )
@@ -115,15 +101,18 @@ export const TextBox = ({
   return (
     <HStack spacing={0} align={'flex-end'}>
       <TextBox
+        {...props}
+        onBlur={props.onBlur}
         ref={textBoxRef}
-        value={value}
         onKeyUp={handleKeyUp}
         onClick={handleKeyUp}
-        onChange={handleChange}
+        onChange={(e) => onChange(adapterValueOnChange(e))}
         bgColor={'white'}
-        {...props}
       />
-      <VariablesButton onSelectVariable={handleVariableSelected} id='variables-button' />
+      <VariablesButton
+        onSelectVariable={handleVariableSelected}
+        id="variables-button"
+      />
     </HStack>
   )
 }

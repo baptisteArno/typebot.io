@@ -4,7 +4,7 @@ import {
   PopoverBody,
   useEventListener,
   Portal,
-  IconButton
+  IconButton,
 } from '@chakra-ui/react'
 import { ExpandIcon } from 'assets/icons'
 import {
@@ -31,7 +31,7 @@ import {
   WhatsAppButtonsListSettingsBody,
   WOZSuggestionSettingBody,
   WOZAssignSettingBody,
-  ConversationTagBody
+  ConversationTagBody,
 } from './bodies'
 import { ChoiceInputSettingsBody } from './bodies/ChoiceInputSettingsBody'
 import { CodeSettings } from './bodies/CodeSettings'
@@ -61,49 +61,53 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
   useEventListener('wheel', handleMouseWheel, ref.current)
 
   const handleWidthPerComponent = (step: Step): number | undefined => {
-    let width;
+    let width
     switch (step.type) {
       case OctaWabaStepType.WHATSAPP_BUTTONS_LIST:
       case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
       case OctaStepType.OFFICE_HOURS:
       case OctaWabaStepType.COMMERCE:
-        width = 450;
-        break;
+        width = 450
+        break
       case IntegrationStepType.WEBHOOK:
-        width = 500;
-        break;
+        width = 500
+        break
       case LogicStepType.CONDITION:
       case OctaStepType.ASSIGN_TO_TEAM:
       case OctaStepType.CALL_OTHER_BOT:
       case OctaStepType.CONVERSATION_TAG:
-        width = 450;
-        break;
+        width = 450
+        break
       default:
         width = undefined
-        break;
+        break
     }
-    return width;
+    return width
   }
 
   const handleHeightPerComponent = (step: Step): number | undefined => {
-    let height;
+    let height
     switch (step.type) {
       case OctaStepType.CALL_OTHER_BOT:
-        height = 400;
-        break;
+        height = 400
+        break
       case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
-        height = 800;
-        break;
+        height = 800
+        break
       default:
         height = undefined
-        break;
+        break
     }
-    return height;
+    return height
   }
 
   return (
     <Portal>
-      <PopoverContent onMouseDown={handleMouseDown} pos="relative" w={handleWidthPerComponent(props.step)}>
+      <PopoverContent
+        onMouseDown={handleMouseDown}
+        pos="relative"
+        w={handleWidthPerComponent(props.step)}
+      >
         <PopoverArrow />
         <PopoverBody
           pt="10"
@@ -149,6 +153,7 @@ export const StepSettings = ({
       items: [{ ...(step as any).items[0], ...updates }],
     } as Partial<Step>)
   }
+  console.log(step.type)
   switch (step.type) {
     case InputStepType.URL: {
       return (
@@ -227,9 +232,7 @@ export const StepSettings = ({
     case WOZStepType.MESSAGE: {
       return (
         <WOZSuggestionSettingBody
-          options={
-            step.options
-          }
+          options={step.options}
           onOptionsChange={handleOptionsChange}
         />
       )
@@ -237,9 +240,7 @@ export const StepSettings = ({
     case WOZStepType.ASSIGN: {
       return (
         <WOZAssignSettingBody
-          options={
-            step.options
-          }
+          options={step.options}
           onOptionsChange={handleOptionsChange}
         />
       )
@@ -247,29 +248,31 @@ export const StepSettings = ({
     case OctaStepType.CALL_OTHER_BOT: {
       return (
         <CallOtherBotSettingsBody
-          options={
-            step.options || { botToCall: '1' }
-          }
+          options={step.options || { botToCall: '1' }}
           onOptionsChange={handleOptionsChange}
         />
       )
     }
     case OctaStepType.OFFICE_HOURS: {
       return (
-        <OfficeHoursBody options={step.options} onOptionsChange={handleOptionsChange} />
+        <OfficeHoursBody
+          options={step.options}
+          onOptionsChange={handleOptionsChange}
+        />
       )
     }
     case OctaWabaStepType.COMMERCE: {
       return (
-        <OctaCommerceBody options={step.options} onOptionsChange={handleOptionsChange} />
+        <OctaCommerceBody
+          options={step.options}
+          onOptionsChange={handleOptionsChange}
+        />
       )
     }
     case OctaStepType.CONVERSATION_TAG: {
       return (
         <ConversationTagBody
-          options={
-            step.options
-          }
+          options={step.options}
           onOptionsChange={handleOptionsChange}
         />
       )
@@ -277,9 +280,7 @@ export const StepSettings = ({
     case OctaWabaStepType.WHATSAPP_OPTIONS_LIST: {
       return (
         <WhatsAppOptionsListSettingsBody
-          options={
-            step.options || { name: '' }
-          }
+          options={step.options || { name: '' }}
           onOptionsChange={handleOptionsChange}
         />
       )
@@ -287,18 +288,14 @@ export const StepSettings = ({
     case OctaWabaStepType.WHATSAPP_BUTTONS_LIST: {
       return (
         <WhatsAppButtonsListSettingsBody
-          options={
-            step.options || { name: '' }
-          }
+          options={step.options || { name: '' }}
           onOptionsChange={handleOptionsChange}
         />
       )
     }
     case IntegrationStepType.WEBHOOK: {
       return (
-        <WebhookSettings
-          step={step}
-          onOptionsChange={handleOptionsChange} />
+        <WebhookSettings step={step} onOptionsChange={handleOptionsChange} />
       )
     }
     case InputStepType.ASK_NAME:
@@ -308,10 +305,7 @@ export const StepSettings = ({
     case InputStepType.DATE:
     case InputStepType.CPF: {
       return (
-        <InputSettingBody
-          step={step}
-          onOptionsChange={handleOptionsChange}
-        />
+        <InputSettingBody step={step} onOptionsChange={handleOptionsChange} />
       )
     }
     case BubbleStepType.MEDIA: {
@@ -323,6 +317,6 @@ export const StepSettings = ({
       )
     }
     default:
-      return (<span></span>)
+      return <span></span>
   }
 }

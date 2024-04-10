@@ -104,7 +104,7 @@ export const VariableSearchInput = ({
   }
 
   const myVariable = (typebot?.variables.find(
-    (v) => v.id === initialVariableId
+    (v) => v.id === initialVariableId || v.token === initialVariableId
   ) ||
     (isSaveContext && !isApi && dontSave)) as Variable
 
@@ -217,22 +217,22 @@ export const VariableSearchInput = ({
     const { value } = e.target
     setCustomVariable(
       (state): Variable =>
-      ({
-        ...state,
-        token: value,
-        fieldId: value.replace('#', ''),
-        name: value.replace('#', ''),
-      } as Variable)
+        ({
+          ...state,
+          token: value,
+          fieldId: value.replace('#', ''),
+          name: value.replace('#', ''),
+        } as Variable)
     )
   }
 
   const handleSelectTypeVariable = (type: string) => {
     setCustomVariable(
       (state): Variable =>
-      ({
-        ...state,
-        type,
-      } as Variable)
+        ({
+          ...state,
+          type,
+        } as Variable)
     )
   }
 

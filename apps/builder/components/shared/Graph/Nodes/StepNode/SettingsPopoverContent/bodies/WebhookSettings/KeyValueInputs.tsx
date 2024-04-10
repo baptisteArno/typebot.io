@@ -5,7 +5,9 @@ import { QueryParameters } from 'models'
 import { useTypebot } from 'contexts/TypebotContext'
 import { TrashIcon } from 'assets/icons'
 
-export const QueryParamsInputs = (props: TableListItemProps<QueryParameters>) => (
+export const QueryParamsInputs = (
+  props: TableListItemProps<QueryParameters>
+) => (
   <KeyValueInputs
     {...props}
     keyPlaceholder="Ex. email"
@@ -32,7 +34,6 @@ export const KeyValueInputs = ({
   keyPlaceholder?: string
   valuePlaceholder?: string
 }) => {
-
   const { typebot } = useTypebot()
 
   const handleKeyChange = (key: string) => {
@@ -43,12 +44,13 @@ export const KeyValueInputs = ({
   const handleValueChange = (value: string) => {
     if (value === item.value) return
     const name = value.replace('{{', '').replace('}}', '')
-    const variable = typebot?.variables.filter(item => item.token === name) || []
+    const variable =
+      typebot?.variables.filter((item) => item.token === name) || []
     onItemChange({ ...item, value, properties: variable[0] })
   }
 
   const onDeleteClick = () => {
-    if(onRemoveItem) onRemoveItem(item)
+    if (onRemoveItem) onRemoveItem(item)
   }
 
   return (
@@ -65,6 +67,7 @@ export const KeyValueInputs = ({
       <FormLabel htmlFor={'key' + item.key}>Chave:</FormLabel>
       <Input
         id={'key' + item.key}
+        value={item.key}
         defaultValue={item.key ?? ''}
         onChange={handleKeyChange}
         placeholder={keyPlaceholder}
@@ -73,6 +76,7 @@ export const KeyValueInputs = ({
       <FormLabel htmlFor={'value' + item.value}>Valor:</FormLabel>
       <Input
         id={'value' + item.value}
+        value={item.value}
         defaultValue={item.value ?? ''}
         onChange={handleValueChange}
         placeholder={valuePlaceholder}

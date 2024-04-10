@@ -34,13 +34,19 @@ import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { sendOctaRequest } from 'util/octaRequest'
 import { QueryParamsInputs } from './KeyValueInputs'
 import { Input, Textarea } from 'components/shared/Textbox'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
 
 type Props = {
   step: WebhookStep
   onOptionsChange: (options: WebhookOptions) => void
 }
 
-export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
+export const WebhookSettings = React.memo(function WebhookSettings({
+  step,
+  onOptionsChange,
+}: Props) {
   const { typebot } = useTypebot()
 
   const [isTestResponseLoading, setIsTestResponseLoading] = useState(false)
@@ -66,10 +72,23 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
     status: 'success',
   })
 
-  const [webhookUrl, setWebhookUrl] = useState(step.options?.url)
-  const [pathPortion, setPath] = useState(step.options?.path)
-  // const [bodyPortion, setBody] = useState(step.options?.body)
   const [variablesKeyDown, setVariablesKeyDown] = useState<KeyboardEvent>()
+  const schema = z.object({
+    url: z.string().url({ message: 'url inválida' }),
+    pathPortion: z.string().min(1, { message: 'Campo obrigatório' }),
+  })
+  const {
+    trigger,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      url: step?.options?.url,
+      pathPortion: step.options.path,
+    },
+  })
 
   const getHttpMethodDescription = (method: HttpMethodsWebhook) => {
     switch (method) {
@@ -89,6 +108,7 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
   }
 
   const effectPathChange = () => {
+    const pathPortion = getValues('pathPortion')
     handleVariablesHashList(pathPortion)
     onOptionsChange({
       ...step.options,
@@ -97,7 +117,9 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
   }
 
   const handlePathChange = (path: string) => {
-    setPath(path)
+    clearOptions()
+    setValue('pathPortion', path)
+    trigger('pathPortion')
   }
 
   const clearOptions = () => {
@@ -110,11 +132,14 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
 
   const handleUrlChange = (url: string) => {
     clearOptions()
-
-    setWebhookUrl(url)
+    setValue('url', url)
+    trigger('url')
   }
 
   const effectUrlChange = () => {
+    const webhookUrl = getValues('url')
+    const currentPathPortion = getValues('pathPortion')
+    if (errors.url) return
     if (step.options.url != webhookUrl) clearOptions()
 
     if (webhookUrl && webhookUrl.length > 5) {
@@ -123,15 +148,23 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
       )
 
       if (newUrl.search) handleParams(newUrl.search.replace(/_hash_/g, '#'))
+      setValue('url', newUrl.origin)
+      trigger('url')
 
-      setWebhookUrl(newUrl.origin)
+      const updatedPath = newUrl.pathname?.replace(/_hash_/g, '#')
 
-      setPath(newUrl.pathname?.replace(/_hash_/g, '#') || '')
+      if (updatedPath.length > 1) {
+        setValue('pathPortion', updatedPath)
+        trigger('pathPortion')
+      }
+
+      const path =
+        updatedPath.length > 1 ? updatedPath : currentPathPortion || ''
 
       onOptionsChange({
         ...step.options,
         url: newUrl.origin || '',
-        path: newUrl.pathname?.replace(/_hash_/g, '#') || '',
+        path,
       })
     }
   }
@@ -357,7 +390,8 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
   }
 
   const handleTestRequestClick = async () => {
-    if (!typebot || !step.options) return
+    console.log(!!Object.keys(errors).length)
+    if (!typebot || !step.options || !!Object.keys(errors).length) return
     setIsTestResponseLoading(true)
 
     const options = step.options as WebhookOptions
@@ -434,16 +468,19 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
               URL
               <AccordionIcon />
             </AccordionButton>
-            <AccordionPanel pb={4} as={Stack} spacing="6">
+            <AccordionPanel pb={4} as={Stack} spacing="0">
               <Input
                 placeholder="Digite o endereço da API ou do sistema"
-                defaultValue={webhookUrl ?? ''}
+                defaultValue={getValues('url')}
                 onChange={handleUrlChange}
                 onBlur={() => effectUrlChange()}
-                value={webhookUrl ?? ''}
+                value={getValues('url')}
                 debounceTimeout={5}
                 withVariableButton={false}
               />
+              <Text color="red.400" fontSize="sm" mt={0.5}>
+                {errors.url?.message}
+              </Text>
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem>
@@ -461,13 +498,17 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
                 <Textarea
                   placeholder=""
                   onKeyDown={handleKeyDown as any}
-                  defaultValue={pathPortion ?? ''}
+                  defaultValue={getValues('pathPortion')}
                   handleOpenVariablesSelect={variablesKeyDown}
                   onChange={handlePathChange}
                   onBlur={() => effectPathChange()}
                   debounceTimeout={5}
-                  value={pathPortion}
+                  value={getValues('pathPortion')}
+                  withVariableButton={true}
                 />
+                <Text color="red.400" fontSize="sm" mt={0.5}>
+                  {errors.pathPortion?.message}
+                </Text>
               </Stack>
             </AccordionPanel>
           </AccordionItem>
@@ -628,4 +669,4 @@ export const WebhookSettings = ({ step, onOptionsChange }: Props) => {
       as
     </Stack>
   )
-}
+})

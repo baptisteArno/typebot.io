@@ -22,6 +22,7 @@ export const CodeSettings = ({ options, onOptionsChange }: Props) => {
         </FormLabel>
         <Input
           id="name"
+          value={options.name}
           defaultValue={options.name}
           onChange={handleNameChange}
           withVariableButton={false}
