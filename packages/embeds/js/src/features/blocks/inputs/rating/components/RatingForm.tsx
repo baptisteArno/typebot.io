@@ -1,7 +1,7 @@
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
 import type { RatingInputBlock } from '@typebot.io/schemas'
-import { createSignal, For, Match, Switch } from 'solid-js'
+import { createSignal, For, Match, Switch, Show } from 'solid-js'
 import { isDefined, isEmpty, isNotDefined } from '@typebot.io/lib'
 import { Button } from '@/components/Button'
 import { defaultRatingInputOptions } from '@typebot.io/schemas/features/blocks/inputs/rating/constants'
@@ -107,17 +107,24 @@ const RatingButton = (props: RatingButtonProps) => {
           'Numbers'
         }
       >
-        <Button
-          on:click={handleClick}
-          class={
-            props.isOneClickSubmitEnabled ||
-            (isDefined(props.rating) && props.idx <= props.rating)
-              ? ''
-              : 'selectable'
-          }
-        >
-          {props.idx}
-        </Button>
+        <Show when={props.isOneClickSubmitEnabled}>
+          <Button on:click={handleClick}>{props.idx}</Button>
+        </Show>
+        <Show when={!props.isOneClickSubmitEnabled}>
+          <div
+            role="checkbox"
+            aria-checked={isDefined(props.rating) && props.idx <= props.rating}
+            on:click={handleClick}
+            class={
+              'py-2 px-4 font-semibold focus:outline-none cursor-pointer select-none typebot-selectable' +
+              (isDefined(props.rating) && props.idx <= props.rating
+                ? ' selected'
+                : '')
+            }
+          >
+            {props.idx}
+          </div>
+        </Show>
       </Match>
       <Match
         when={

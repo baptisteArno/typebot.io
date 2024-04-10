@@ -122,6 +122,9 @@ importers:
       '@typebot.io/nextjs':
         specifier: workspace:*
         version: link:../../packages/embeds/nextjs
+      '@typebot.io/theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
       '@udecode/cn':
         specifier: 29.0.1
         version: 29.0.1(@types/react@18.2.15)(class-variance-authority@0.7.0)(react-dom@18.2.0)(react@18.2.0)(tailwind-merge@2.2.1)
@@ -1048,6 +1051,9 @@ importers:
       '@typebot.io/schemas':
         specifier: workspace:*
         version: link:../../schemas
+      '@typebot.io/theme':
+        specifier: workspace:*
+        version: link:../../theme
       '@typebot.io/tsconfig':
         specifier: workspace:*
         version: link:../../tsconfig
@@ -1924,6 +1930,15 @@ importers:
       '@typebot.io/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+
+  packages/theme:
+    dependencies:
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../lib
+      '@typebot.io/schemas':
+        specifier: workspace:*
+        version: link:../schemas
 
   packages/transactional:
     dependencies:

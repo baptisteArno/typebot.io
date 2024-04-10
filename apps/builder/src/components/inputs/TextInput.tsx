@@ -24,6 +24,7 @@ import { env } from '@typebot.io/env'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
 export type TextInputProps = {
+  forceDebounce?: boolean
   defaultValue?: string
   onChange?: (value: string) => void
   debounceTimeout?: number
@@ -62,6 +63,7 @@ export const TextInput = forwardRef(function TextInput(
     autoComplete,
     isDisabled,
     autoFocus,
+    forceDebounce,
     onChange: _onChange,
     onFocus,
     onKeyUp,
@@ -83,7 +85,7 @@ export const TextInput = forwardRef(function TextInput(
   const onChange = useDebouncedCallback(
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     _onChange ?? (() => {}),
-    env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
+    env.NEXT_PUBLIC_E2E_TEST && !forceDebounce ? 0 : debounceTimeout
   )
 
   useEffect(() => {
