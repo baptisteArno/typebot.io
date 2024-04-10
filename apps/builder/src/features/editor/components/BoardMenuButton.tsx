@@ -26,7 +26,7 @@ import { useRouter } from 'next/router'
 
 export const BoardMenuButton = (props: FlexProps) => {
   const { query } = useRouter()
-  const { typebot } = useTypebot()
+  const { typebot, currentUserMode } = useTypebot()
   const { user } = useUser()
   const [isDownloading, setIsDownloading] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -78,9 +78,11 @@ export const BoardMenuButton = (props: FlexProps) => {
           <MenuItem icon={<SettingsIcon />} onClick={onOpen}>
             {t('editor.graph.menu.editorSettingsItem.label')}
           </MenuItem>
-          <MenuItem icon={<DownloadIcon />} onClick={downloadFlow}>
-            {t('editor.graph.menu.exportFlowItem.label')}
-          </MenuItem>
+          {currentUserMode !== 'guest' ? (
+            <MenuItem icon={<DownloadIcon />} onClick={downloadFlow}>
+              {t('editor.graph.menu.exportFlowItem.label')}
+            </MenuItem>
+          ) : null}
         </MenuList>
         <EditorSettingsModal isOpen={isOpen} onClose={onClose} />
       </Menu>
