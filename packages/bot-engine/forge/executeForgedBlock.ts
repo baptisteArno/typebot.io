@@ -58,12 +58,7 @@ export const executeForgedBlock = async (
       action.run.stream.getStreamVariableId(block.options)
     ) &&
     state.isStreamEnabled &&
-    !state.whatsApp &&
-    // TODO: Enable once chat api is rolling
-    isPlaneteScale() &&
-    credentials &&
-    isCredentialsV2(credentials)
-    // !process.env.VERCEL_ENV
+    !state.whatsApp
   ) {
     return {
       outgoingEdgeId: block.outgoingEdgeId,
