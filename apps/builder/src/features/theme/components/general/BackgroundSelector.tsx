@@ -1,11 +1,11 @@
 import { RadioButtons } from '@/components/inputs/RadioButtons'
-import { Stack, Text } from '@chakra-ui/react'
+import { Stack } from '@chakra-ui/react'
 import { Background } from '@typebot.io/schemas'
 import React from 'react'
 import { BackgroundContent } from './BackgroundContent'
 import {
   BackgroundType,
-  defaultTheme,
+  defaultBackgroundType,
 } from '@typebot.io/schemas/features/typebot/theme/constants'
 import { useTranslate } from '@tolgee/react'
 
@@ -28,7 +28,6 @@ export const BackgroundSelector = ({
 
   return (
     <Stack spacing={4}>
-      <Text>{t('theme.sideMenu.global.background')}</Text>
       <RadioButtons
         options={[
           {
@@ -44,7 +43,7 @@ export const BackgroundSelector = ({
             value: BackgroundType.NONE,
           },
         ]}
-        value={background?.type ?? defaultTheme.general.background.type}
+        value={background?.type ?? defaultBackgroundType}
         onSelect={handleBackgroundTypeChange}
       />
       <BackgroundContent

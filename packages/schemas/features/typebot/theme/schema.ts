@@ -2,9 +2,11 @@ import { ThemeTemplate as ThemeTemplatePrisma } from '@typebot.io/prisma'
 import { z } from '../../../zod'
 import {
   BackgroundType,
+  borderRoundness,
   fontTypes,
   progressBarPlacements,
   progressBarPositions,
+  shadows,
 } from './constants'
 
 const avatarPropsSchema = z.object({
@@ -12,25 +14,48 @@ const avatarPropsSchema = z.object({
   url: z.string().optional(),
 })
 
-const containerColorsSchema = z.object({
-  backgroundColor: z.string().optional(),
+const containerBorderThemeSchema = z.object({
+  thickness: z.number().optional(),
   color: z.string().optional(),
+  roundeness: z.enum(borderRoundness).optional(),
+  customRoundeness: z.number().optional(),
+  opacity: z.number().min(0).max(1).optional(),
 })
 
-const inputColorsSchema = containerColorsSchema.merge(
-  z.object({
-    placeholderColor: z.string().optional(),
+export type ContainerBorderTheme = z.infer<typeof containerBorderThemeSchema>
+
+const containerThemeSchema = z.object({
+  backgroundColor: z.string().optional(),
+  color: z.string().optional(),
+  blur: z.number().optional(),
+  opacity: z.number().min(0).max(1).optional(),
+  shadow: z.enum(shadows).optional(),
+  border: containerBorderThemeSchema.optional(),
+})
+
+const inputThemeSchema = containerThemeSchema.extend({
+  placeholderColor: z.string().optional(),
+})
+
+const chatContainerSchema = z
+  .object({
+    maxWidth: z.string().optional(),
+    maxHeight: z.string().optional(),
   })
-)
+  .merge(containerThemeSchema)
 
 export const chatThemeSchema = z.object({
+  container: chatContainerSchema.optional(),
   hostAvatar: avatarPropsSchema.optional(),
   guestAvatar: avatarPropsSchema.optional(),
-  hostBubbles: containerColorsSchema.optional(),
-  guestBubbles: containerColorsSchema.optional(),
-  buttons: containerColorsSchema.optional(),
-  inputs: inputColorsSchema.optional(),
-  roundness: z.enum(['none', 'medium', 'large']).optional(),
+  hostBubbles: containerThemeSchema.optional(),
+  guestBubbles: containerThemeSchema.optional(),
+  buttons: containerThemeSchema.optional(),
+  inputs: inputThemeSchema.optional(),
+  roundness: z
+    .enum(['none', 'medium', 'large'])
+    .optional()
+    .describe('Deprecated, use `container.border.roundeness` instead'),
 })
 
 const backgroundSchema = z.object({
@@ -98,6 +123,6 @@ export type ChatTheme = z.infer<typeof chatThemeSchema>
 export type AvatarProps = z.infer<typeof avatarPropsSchema>
 export type GeneralTheme = z.infer<typeof generalThemeSchema>
 export type Background = z.infer<typeof backgroundSchema>
-export type ContainerColors = z.infer<typeof containerColorsSchema>
-export type InputColors = z.infer<typeof inputColorsSchema>
+export type ContainerTheme = z.infer<typeof containerThemeSchema>
+export type InputTheme = z.infer<typeof inputThemeSchema>
 export type ThemeTemplate = z.infer<typeof themeTemplateSchema>

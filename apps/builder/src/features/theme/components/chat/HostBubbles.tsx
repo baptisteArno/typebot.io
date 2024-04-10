@@ -1,13 +1,16 @@
 import { Stack, Flex, Text } from '@chakra-ui/react'
-import { ContainerColors } from '@typebot.io/schemas'
+import { ContainerTheme } from '@typebot.io/schemas'
 import React from 'react'
 import { ColorPicker } from '../../../../components/ColorPicker'
-import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
 import { useTranslate } from '@tolgee/react'
+import {
+  defaultHostBubblesBackgroundColor,
+  defaultHostBubblesColor,
+} from '@typebot.io/schemas/features/typebot/theme/constants'
 
 type Props = {
-  hostBubbles: ContainerColors | undefined
-  onHostBubblesChange: (hostBubbles: ContainerColors | undefined) => void
+  hostBubbles: ContainerTheme | undefined
+  onHostBubblesChange: (hostBubbles: ContainerTheme | undefined) => void
 }
 
 export const HostBubbles = ({ hostBubbles, onHostBubblesChange }: Props) => {
@@ -24,8 +27,7 @@ export const HostBubbles = ({ hostBubbles, onHostBubblesChange }: Props) => {
         <Text>{t('theme.sideMenu.chat.theme.background')}</Text>
         <ColorPicker
           value={
-            hostBubbles?.backgroundColor ??
-            defaultTheme.chat.hostBubbles.backgroundColor
+            hostBubbles?.backgroundColor ?? defaultHostBubblesBackgroundColor
           }
           onColorChange={handleBackgroundChange}
         />
@@ -33,7 +35,7 @@ export const HostBubbles = ({ hostBubbles, onHostBubblesChange }: Props) => {
       <Flex justify="space-between" align="center">
         <Text>{t('theme.sideMenu.chat.theme.text')}</Text>
         <ColorPicker
-          value={hostBubbles?.color ?? defaultTheme.chat.hostBubbles.color}
+          value={hostBubbles?.color ?? defaultHostBubblesColor}
           onColorChange={handleTextChange}
         />
       </Flex>

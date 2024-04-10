@@ -35,8 +35,8 @@ import { MultiplePictureChoice } from '@/features/blocks/inputs/pictureChoice/Mu
 import { formattedMessages } from '@/utils/formattedMessagesSignal'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { defaultPaymentInputOptions } from '@typebot.io/schemas/features/blocks/inputs/payment/constants'
-import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
 import { persist } from '@/utils/persist'
+import { defaultGuestAvatarIsEnabled } from '@typebot.io/schemas/features/typebot/theme/constants'
 
 type Props = {
   ref: HTMLDivElement | undefined
@@ -82,8 +82,7 @@ export const InputChatBlock = (props: Props) => {
         <GuestBubble
           message={formattedMessage() ?? (answer() as string)}
           showAvatar={
-            props.guestAvatar?.isEnabled ??
-            defaultTheme.chat.guestAvatar.isEnabled
+            props.guestAvatar?.isEnabled ?? defaultGuestAvatarIsEnabled
           }
           avatarSrc={props.guestAvatar?.url && props.guestAvatar.url}
         />

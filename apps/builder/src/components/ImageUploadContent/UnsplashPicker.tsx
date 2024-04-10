@@ -141,6 +141,8 @@ export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
             fetchNewImages(query, 0)
           }}
           withVariableButton={false}
+          debounceTimeout={500}
+          forceDebounce
         />
         <Link
           isExternal
