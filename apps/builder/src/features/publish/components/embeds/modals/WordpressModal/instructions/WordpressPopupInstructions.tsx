@@ -7,11 +7,16 @@ import {
   Link,
   Stack,
   Text,
+  Code,
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { PopupSettings } from '../../../settings/PopupSettings'
 import { parseInitPopupCode } from '../../../snippetParsers/popup'
 import { parseApiHostValue } from '../../../snippetParsers'
+import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
+import packageJson from '../../../../../../../../../../packages/embeds/js/package.json'
+
+const typebotCloudLibraryVersion = '0.2'
 
 type Props = {
   publicId: string
@@ -41,6 +46,14 @@ export const WordpressPopupInstructions = ({
           the official Typebot WordPress plugin
           <ExternalLinkIcon mx="2px" />
         </Link>
+      </ListItem>
+      <ListItem>
+        Set <Code>Library version</Code> to{' '}
+        <Code>
+          {isCloudProdInstance()
+            ? typebotCloudLibraryVersion
+            : packageJson.version}
+        </Code>
       </ListItem>
       <ListItem>
         <Stack spacing={4}>
