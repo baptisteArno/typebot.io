@@ -325,7 +325,9 @@ const setHostBubbles = (
 
   documentStyle.setProperty(
     cssVariableNames.chat.hostBubbles.opacity,
-    isDefined(hostBubbles?.opacity)
+    hostBubbles?.backgroundColor === 'transparent'
+      ? '0'
+      : isDefined(hostBubbles?.opacity)
       ? hostBubbles.opacity.toString()
       : defaultOpacity.toString()
   )
@@ -397,7 +399,9 @@ const setGuestBubbles = (
 
   documentStyle.setProperty(
     cssVariableNames.chat.guestBubbles.opacity,
-    isDefined(guestBubbles?.opacity)
+    guestBubbles?.backgroundColor === 'transparent'
+      ? '0'
+      : isDefined(guestBubbles?.opacity)
       ? guestBubbles.opacity.toString()
       : defaultOpacity.toString()
   )
@@ -471,7 +475,9 @@ const setButtons = (
 
   documentStyle.setProperty(
     cssVariableNames.chat.buttons.opacity,
-    isDefined(buttons?.opacity)
+    buttons?.backgroundColor === 'transparent'
+      ? '0'
+      : isDefined(buttons?.opacity)
       ? buttons.opacity.toString()
       : defaultOpacity.toString()
   )
@@ -530,7 +536,9 @@ const setInputs = (
 
   documentStyle.setProperty(
     cssVariableNames.chat.inputs.opacity,
-    isDefined(inputs?.opacity)
+    inputs?.backgroundColor === 'transparent'
+      ? '0'
+      : isDefined(inputs?.opacity)
       ? inputs.opacity.toString()
       : defaultOpacity.toString()
   )
