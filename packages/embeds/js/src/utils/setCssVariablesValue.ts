@@ -49,7 +49,7 @@ const cssVariableNames = {
     progressBar: {
       position: '--typebot-progress-bar-position',
       color: '--typebot-progress-bar-color',
-      colorRgb: '--typebot-progress-bar-color-rgb',
+      colorRgb: '--typebot-progress-bar-bg-rgb',
       height: '--typebot-progress-bar-height',
       top: '--typebot-progress-bar-top',
       bottom: '--typebot-progress-bar-bottom',

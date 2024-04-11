@@ -427,7 +427,7 @@ select option {
 
 .typebot-progress-bar-container {
   background-color: rgba(
-    var(--typebot-button-bg-rgb),
+    var(--typebot-progress-bar-bg-rgb),
     calc(var(--selectable-alpha-ratio) * 0.12)
   );
 
