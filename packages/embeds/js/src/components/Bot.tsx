@@ -146,6 +146,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
       }
       props.onChatStatePersisted?.(true)
     } else {
+      wipeExistingChatStateInStorage(data.typebot.id)
       setInitialChatReply(data)
       if (data.input?.id && props.onNewInputBlock)
         props.onNewInputBlock(data.input)
