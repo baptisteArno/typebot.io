@@ -7,16 +7,22 @@ let abortController: AbortController | null = null
 const secondsToWaitBeforeRetries = 3
 const maxRetryAttempts = 3
 
+const edgeRuntimePath = '/api/integrations/openai/streamer'
+const nodejsRuntimePath = (sessionId: string) =>
+  `/api/v1/sessions/${sessionId}/streamMessage`
+
 export const streamChat =
   (context: ClientSideActionContext & { retryAttempt?: number }) =>
   async ({
     messages,
+    runtime,
     onMessageStream,
   }: {
     messages?: {
       content?: string | undefined
       role?: 'system' | 'user' | 'assistant' | undefined
     }[]
+    runtime: 'edge' | 'nodejs'
     onMessageStream?: (props: { id: string; message: string }) => void
   }): Promise<{ message?: string; error?: object }> => {
     try {
@@ -25,9 +31,12 @@ export const streamChat =
       const apiHost = context.apiHost
 
       const res = await fetch(
-        `${
-          isNotEmpty(apiHost) ? apiHost : guessApiHost()
-        }/api/integrations/openai/streamer`,
+        isNotEmpty(apiHost)
+          ? apiHost
+          : guessApiHost() +
+              (runtime === 'edge'
+                ? edgeRuntimePath
+                : nodejsRuntimePath(context.sessionId)),
         {
           method: 'POST',
           headers: {
@@ -35,7 +44,7 @@ export const streamChat =
           },
           body: JSON.stringify({
             messages,
-            sessionId: context.sessionId,
+            sessionId: runtime === 'edge' ? context.sessionId : undefined,
           }),
           signal: abortController.signal,
         }
@@ -52,7 +61,7 @@ export const streamChat =
           return streamChat({
             ...context,
             retryAttempt: (context.retryAttempt ?? 0) + 1,
-          })({ messages, onMessageStream })
+          })({ messages, onMessageStream, runtime })
         }
         return {
           error: (await res.json()) || 'Failed to fetch the chat response.',

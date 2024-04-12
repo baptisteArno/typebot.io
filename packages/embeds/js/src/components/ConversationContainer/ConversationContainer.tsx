@@ -154,6 +154,7 @@ export const ConversationContainer = (props: Props) => {
     const longRequest = setTimeout(() => {
       setIsSending(true)
     }, 1000)
+    autoScrollToBottom()
     const { data, error } = await continueChatQuery({
       apiHost: props.context.apiHost,
       sessionId: props.initialChatReply.sessionId,
@@ -205,6 +206,11 @@ export const ConversationContainer = (props: Props) => {
         isNotDefined(action.lastBubbleBlockId)
       )
       await processClientSideActions(actionsBeforeFirstBubble)
+      if (
+        data.clientSideActions.length === 1 &&
+        data.clientSideActions[0].type === 'stream'
+      )
+        return
     }
     setChatChunks((displayedChunks) => [
       ...displayedChunks,
