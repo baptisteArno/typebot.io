@@ -378,6 +378,18 @@ export const phoneCountries = [
     dial_code: '+1849',
   },
   {
+    name: 'Dominican Republic',
+    flag: '🇩🇴',
+    code: 'DO',
+    dial_code: '+1829',
+  },
+  {
+    name: 'Dominican Republic',
+    flag: '🇩🇴',
+    code: 'DO',
+    dial_code: '+1809',
+  },
+  {
     name: 'Ecuador',
     flag: '🇪🇨',
     code: 'EC',

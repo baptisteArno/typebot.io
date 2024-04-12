@@ -24,7 +24,7 @@ export const injectVariableValuesInButtonsInputBlock =
       return {
         ...deepParseVariables(variables)(block),
         items: value.filter(isDefined).map((item, idx) => ({
-          id: idx.toString(),
+          id: 'choice' + idx.toString(),
           blockId: block.id,
           content: item,
         })),

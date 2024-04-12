@@ -5,6 +5,7 @@ import { NumberInput } from '@/components/inputs'
 import { FormLabel, HStack } from '@chakra-ui/react'
 import { ProgressBar } from '@typebot.io/schemas'
 import {
+  defaultProgressBarBackgroundColor,
   defaultProgressBarColor,
   defaultProgressBarIsEnabled,
   defaultProgressBarPlacement,
@@ -38,6 +39,9 @@ export const ProgressBarForm = ({
   const updateThickness = (thickness?: number) =>
     onProgressBarChange({ ...progressBar, thickness })
 
+  const updateBackgroundColor = (backgroundColor: string) =>
+    onProgressBarChange({ ...progressBar, backgroundColor })
+
   return (
     <SwitchWithRelatedSettings
       label={'Enable progress bar?'}
@@ -53,6 +57,17 @@ export const ProgressBarForm = ({
         items={progressBarPlacements}
       />
 
+      <HStack justifyContent="space-between">
+        <FormLabel mb="0" mr="0">
+          Background color:
+        </FormLabel>
+        <ColorPicker
+          defaultValue={
+            progressBar?.backgroundColor ?? defaultProgressBarBackgroundColor
+          }
+          onColorChange={updateBackgroundColor}
+        />
+      </HStack>
       <HStack justifyContent="space-between">
         <FormLabel mb="0" mr="0">
           Color:
