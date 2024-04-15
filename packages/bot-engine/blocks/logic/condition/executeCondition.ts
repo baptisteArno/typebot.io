@@ -57,7 +57,7 @@ const executeComparison =
               return a.normalize() !== b.normalize()
             return a !== b
           }
-          return compare(notEqual, inputValue, value, 'some')
+          return compare(notEqual, inputValue, value)
         }
         const notContains = (a: string | null, b: string | null) => {
           if (b === '' || !b || !a) return true
