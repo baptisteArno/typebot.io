@@ -1,13 +1,13 @@
 {
   "name": "@typebot.io/wordpress",
-  "version": "3.5.0",
+  "version": "3.6.0",
   "main": "index.js",
   "repository": "https://github.com/baptisteArno/typebot.io",
   "author": "baptisteArno",
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "deploy": "pnpm copy && pnpm commit",
-    "copy": "svn copy ./trunk ./tags/3.5.0",
-    "commit": "svn ci -m 'Add lib_version attr in shortcode'"
+    "copy": "svn copy ./trunk ./tags/3.6.0",
+    "commit": "svn ci -m 'Add lib_version attr in admin panel'"
   }
 }

@@ -32,6 +32,14 @@ const executeComparison =
     if (isNotDefined(comparison.comparisonOperator)) return false
     switch (comparison.comparisonOperator) {
       case ComparisonOperators.CONTAINS: {
+        if (Array.isArray(inputValue)) {
+          const equal = (a: string | null, b: string | null) => {
+            if (typeof a === 'string' && typeof b === 'string')
+              return a.normalize() === b.normalize()
+            return a !== b
+          }
+          return compare(equal, inputValue, value, 'some')
+        }
         const contains = (a: string | null, b: string | null) => {
           if (b === '' || !b || !a) return false
           return a
@@ -43,6 +51,14 @@ const executeComparison =
         return compare(contains, inputValue, value, 'some')
       }
       case ComparisonOperators.NOT_CONTAINS: {
+        if (Array.isArray(inputValue)) {
+          const notEqual = (a: string | null, b: string | null) => {
+            if (typeof a === 'string' && typeof b === 'string')
+              return a.normalize() !== b.normalize()
+            return a !== b
+          }
+          return compare(notEqual, inputValue, value)
+        }
         const notContains = (a: string | null, b: string | null) => {
           if (b === '' || !b || !a) return true
           return !a

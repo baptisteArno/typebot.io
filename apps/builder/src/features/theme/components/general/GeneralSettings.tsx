@@ -4,7 +4,11 @@ import {
   Stack,
   Switch,
   useDisclosure,
-  Text,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
 } from '@chakra-ui/react'
 import { Background, Font, ProgressBar, Theme } from '@typebot.io/schemas'
 import React from 'react'
@@ -16,7 +20,7 @@ import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
 import { useTranslate } from '@tolgee/react'
 import {
-  defaultTheme,
+  defaultFontType,
   fontTypes,
 } from '@typebot.io/schemas/features/typebot/theme/constants'
 import { trpc } from '@/lib/trpc'
@@ -91,7 +95,7 @@ export const GeneralSettings = ({
   const fontType =
     (typeof generalTheme?.font === 'string'
       ? 'Google'
-      : generalTheme?.font?.type) ?? defaultTheme.general.font.type
+      : generalTheme?.font?.type) ?? defaultFontType
 
   return (
     <Stack spacing={6}>
@@ -115,23 +119,46 @@ export const GeneralSettings = ({
           onChange={updateBranding}
         />
       </Flex>
-      <ProgressBarForm
-        progressBar={generalTheme?.progressBar}
-        onProgressBarChange={updateProgressBar}
-      />
-      <Stack>
-        <Text>{t('theme.sideMenu.global.font')}</Text>
-        <RadioButtons
-          options={fontTypes}
-          defaultValue={fontType}
-          onSelect={updateFontType}
-        />
-        <FontForm font={generalTheme?.font} onFontChange={updateFont} />
-      </Stack>
-      <BackgroundSelector
-        background={generalTheme?.background}
-        onBackgroundChange={handleBackgroundChange}
-      />
+      <Accordion allowToggle>
+        <AccordionItem>
+          <AccordionButton justifyContent="space-between">
+            Progress Bar
+            <AccordionIcon />
+          </AccordionButton>
+          <AccordionPanel>
+            <ProgressBarForm
+              progressBar={generalTheme?.progressBar}
+              onProgressBarChange={updateProgressBar}
+            />
+          </AccordionPanel>
+        </AccordionItem>
+        <AccordionItem>
+          <AccordionButton justifyContent="space-between">
+            {t('theme.sideMenu.global.font')}
+            <AccordionIcon />
+          </AccordionButton>
+          <AccordionPanel as={Stack}>
+            <RadioButtons
+              options={fontTypes}
+              defaultValue={fontType}
+              onSelect={updateFontType}
+            />
+            <FontForm font={generalTheme?.font} onFontChange={updateFont} />
+          </AccordionPanel>
+        </AccordionItem>
+        <AccordionItem>
+          <AccordionButton justifyContent="space-between">
+            {t('theme.sideMenu.global.background')}
+            <AccordionIcon />
+          </AccordionButton>
+          <AccordionPanel>
+            <BackgroundSelector
+              background={generalTheme?.background}
+              onBackgroundChange={handleBackgroundChange}
+            />
+          </AccordionPanel>
+        </AccordionItem>
+      </Accordion>
     </Stack>
   )
 }

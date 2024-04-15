@@ -1,14 +1,15 @@
 import { streamingMessage } from '@/utils/streamingMessageSignal'
-import { createEffect, createSignal } from 'solid-js'
+import { For, createEffect, createSignal } from 'solid-js'
 import { marked } from 'marked'
 import domPurify from 'dompurify'
+import { isNotEmpty } from '@typebot.io/lib'
 
 type Props = {
   streamingMessageId: string
 }
 
 export const StreamingBubble = (props: Props) => {
-  const [content, setContent] = createSignal<string>('')
+  const [content, setContent] = createSignal<string[]>([])
 
   marked.use({
     renderer: {
@@ -19,12 +20,28 @@ export const StreamingBubble = (props: Props) => {
   })
 
   createEffect(() => {
-    if (streamingMessage()?.id === props.streamingMessageId)
-      setContent(
-        domPurify.sanitize(marked.parse(streamingMessage()?.content ?? ''), {
-          ADD_ATTR: ['target'],
+    if (streamingMessage()?.id !== props.streamingMessageId) return []
+    setContent(
+      streamingMessage()
+        ?.content.split('```')
+        .map((block, index) => {
+          if (index % 2 === 0) {
+            return block.split('\n\n').map((line) =>
+              domPurify.sanitize(marked.parse(line), {
+                ADD_ATTR: ['target'],
+              })
+            )
+          } else {
+            return [
+              domPurify.sanitize(marked.parse('```' + block + '```'), {
+                ADD_ATTR: ['target'],
+              }),
+            ]
+          }
         })
-      )
+        .flat()
+        .filter(isNotEmpty) ?? []
+    )
   })
 
   return (
@@ -43,8 +60,9 @@ export const StreamingBubble = (props: Props) => {
             class={
               'flex flex-col overflow-hidden text-fade-in mx-4 my-2 relative text-ellipsis h-full gap-6'
             }
-            innerHTML={content()}
-          />
+          >
+            <For each={content()}>{(line) => <span innerHTML={line} />}</For>
+          </div>
         </div>
       </div>
     </div>

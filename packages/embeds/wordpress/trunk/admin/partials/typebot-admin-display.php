@@ -10,6 +10,11 @@
         do_settings_sections('typebot');
         ?>
         <div style="display: flex; flex-direction: column">
+          <label>Library version:</label>
+          <input name="lib_version" value="<?php echo esc_attr(get_option('lib_version') !== null && get_option('lib_version') !== ''  ? get_option('lib_version') : '0.2'); ?>" style="padding: .5rem" />
+        </div>
+
+        <div style="display: flex; flex-direction: column">
           <label>If embedding as <strong>Popup</strong> or <strong>Bubble</strong>, paste the initialization snippet here:</label>
           <textarea name="init_snippet" style="min-height: 150px; padding: 0.5rem; margin-top: 1rem"><?php echo esc_attr(get_option('init_snippet')); ?></textarea>
         </div>

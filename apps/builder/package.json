@@ -13,6 +13,7 @@
     "format:check": "prettier --check ./src --ignore-path ../../.prettierignore"
   },
   "dependencies": {
+    "@typebot.io/theme": "workspace:*",
     "@braintree/sanitize-url": "7.0.1",
     "@chakra-ui/anatomy": "2.1.1",
     "@chakra-ui/react": "2.7.1",

@@ -173,7 +173,12 @@ export const getAuthOptions = ({
         if (disposableEmailDomains.includes(user.email.split('@')[1]))
           return false
       }
-      if (env.DISABLE_SIGNUP && isNewUser && user.email) {
+      if (
+        env.DISABLE_SIGNUP &&
+        isNewUser &&
+        user.email &&
+        !env.ADMIN_EMAIL?.includes(user.email)
+      ) {
         const { invitations, workspaceInvitations } =
           await getNewUserInvitations(prisma, user.email)
         if (invitations.length === 0 && workspaceInvitations.length === 0)

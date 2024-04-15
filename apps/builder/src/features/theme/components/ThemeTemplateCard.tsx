@@ -19,8 +19,13 @@ import { Theme, ThemeTemplate } from '@typebot.io/schemas'
 import { useState } from 'react'
 import { DefaultAvatar } from './DefaultAvatar'
 import {
+  defaultButtonsBackgroundColor,
   BackgroundType,
-  defaultTheme,
+  defaultGuestAvatarIsEnabled,
+  defaultGuestBubblesBackgroundColor,
+  defaultHostAvatarIsEnabled,
+  defaultBackgroundColor,
+  defaultHostBubblesBackgroundColor,
 } from '@typebot.io/schemas/features/typebot/theme/constants'
 import { useTranslate } from '@tolgee/react'
 
@@ -71,28 +76,28 @@ export const ThemeTemplateCard = ({
   const hostAvatar = {
     isEnabled:
       themeTemplate.theme.chat?.hostAvatar?.isEnabled ??
-      defaultTheme.chat.hostAvatar.isEnabled,
+      defaultHostAvatarIsEnabled,
     url: themeTemplate.theme.chat?.hostAvatar?.url,
   }
 
   const hostBubbleBgColor =
     themeTemplate.theme.chat?.hostBubbles?.backgroundColor ??
-    defaultTheme.chat.hostBubbles.backgroundColor
+    defaultHostBubblesBackgroundColor
 
   const guestAvatar = {
     isEnabled:
       themeTemplate.theme.chat?.guestAvatar?.isEnabled ??
-      defaultTheme.chat.guestAvatar.isEnabled,
+      defaultGuestAvatarIsEnabled,
     url: themeTemplate.theme.chat?.guestAvatar?.url,
   }
 
   const guestBubbleBgColor =
     themeTemplate.theme.chat?.guestBubbles?.backgroundColor ??
-    defaultTheme.chat.guestBubbles.backgroundColor
+    defaultGuestBubblesBackgroundColor
 
   const buttonBgColor =
     themeTemplate.theme.chat?.buttons?.backgroundColor ??
-    defaultTheme.chat.buttons.backgroundColor
+    defaultButtonsBackgroundColor
 
   return (
     <Stack
@@ -197,8 +202,7 @@ const parseBackground = (
     case undefined:
     case BackgroundType.COLOR:
       return {
-        backgroundColor:
-          background?.content ?? defaultTheme.general.background.content,
+        backgroundColor: background?.content ?? defaultBackgroundColor,
       }
     case BackgroundType.IMAGE:
       return { backgroundImage: `url(${background.content})` }

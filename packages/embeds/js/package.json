@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/js",
-  "version": "0.2.64",
+  "version": "0.2.73",
   "description": "Javascript library to display typebots on your website",
   "type": "module",
   "main": "dist/index.js",
@@ -31,6 +31,7 @@
     "@typebot.io/env": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
+    "@typebot.io/theme": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
     "@types/dompurify": "3.0.3",
     "autoprefixer": "10.4.14",

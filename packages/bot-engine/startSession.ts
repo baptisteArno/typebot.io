@@ -34,11 +34,14 @@ import { continueBotFlow } from './continueBotFlow'
 import { parseVariables } from '@typebot.io/variables/parseVariables'
 import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
-import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
 import { VisitedEdge } from '@typebot.io/prisma'
 import { env } from '@typebot.io/env'
 import { getFirstEdgeId } from './getFirstEdgeId'
 import { Reply } from './types'
+import {
+  defaultGuestAvatarIsEnabled,
+  defaultHostAvatarIsEnabled,
+} from '@typebot.io/schemas/features/typebot/theme/constants'
 
 type StartParams =
   | ({
@@ -385,12 +388,11 @@ const getResult = async ({
 
 const parseDynamicThemeInState = (theme: Theme) => {
   const hostAvatarUrl =
-    theme.chat?.hostAvatar?.isEnabled ?? defaultTheme.chat.hostAvatar.isEnabled
+    theme.chat?.hostAvatar?.isEnabled ?? defaultHostAvatarIsEnabled
       ? theme.chat?.hostAvatar?.url
       : undefined
   const guestAvatarUrl =
-    theme.chat?.guestAvatar?.isEnabled ??
-    defaultTheme.chat.guestAvatar.isEnabled
+    theme.chat?.guestAvatar?.isEnabled ?? defaultGuestAvatarIsEnabled
       ? theme.chat?.guestAvatar?.url
       : undefined
   if (!hostAvatarUrl?.startsWith('{{') && !guestAvatarUrl?.startsWith('{{'))

@@ -6,8 +6,11 @@ import { HostBubble } from '../bubbles/HostBubble'
 import { InputChatBlock } from '../InputChatBlock'
 import { AvatarSideContainer } from './AvatarSideContainer'
 import { StreamingBubble } from '../bubbles/StreamingBubble'
-import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
 import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
+import {
+  defaultGuestAvatarIsEnabled,
+  defaultHostAvatarIsEnabled,
+} from '@typebot.io/schemas/features/typebot/theme/constants'
 
 type Props = Pick<ContinueChatResponse, 'messages' | 'input'> & {
   theme: Theme
@@ -77,7 +80,7 @@ export const ChatChunk = (props: Props) => {
           <Show
             when={
               (props.theme.chat?.hostAvatar?.isEnabled ??
-                defaultTheme.chat.hostAvatar.isEnabled) &&
+                defaultHostAvatarIsEnabled) &&
               props.messages.length > 0
             }
           >
@@ -93,7 +96,7 @@ export const ChatChunk = (props: Props) => {
             style={{
               'max-width':
                 props.theme.chat?.guestAvatar?.isEnabled ??
-                defaultTheme.chat.guestAvatar.isEnabled
+                defaultGuestAvatarIsEnabled
                   ? isMobile()
                     ? 'calc(100% - 32px - 32px)'
                     : 'calc(100% - 48px - 48px)'
@@ -131,7 +134,7 @@ export const ChatChunk = (props: Props) => {
           chunkIndex={props.index}
           hasHostAvatar={
             props.theme.chat?.hostAvatar?.isEnabled ??
-            defaultTheme.chat.hostAvatar.isEnabled
+            defaultHostAvatarIsEnabled
           }
           guestAvatar={props.theme.chat?.guestAvatar}
           context={props.context}
@@ -151,7 +154,7 @@ export const ChatChunk = (props: Props) => {
             <Show
               when={
                 props.theme.chat?.hostAvatar?.isEnabled ??
-                defaultTheme.chat.hostAvatar.isEnabled
+                defaultHostAvatarIsEnabled
               }
             >
               <AvatarSideContainer
@@ -165,7 +168,7 @@ export const ChatChunk = (props: Props) => {
               style={{
                 'max-width':
                   props.theme.chat?.hostAvatar?.isEnabled ??
-                  defaultTheme.chat.hostAvatar.isEnabled
+                  defaultHostAvatarIsEnabled
                     ? isMobile()
                       ? 'calc(100% - 32px - 32px)'
                       : 'calc(100% - 48px - 48px)'

@@ -8,6 +8,7 @@ export const DefaultAvatar = (props: IconProps) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       boxSize="40px"
+      borderRadius="full"
       data-testid="default-avatar"
       {...props}
     >
