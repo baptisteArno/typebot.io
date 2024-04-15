@@ -208,7 +208,9 @@ export const ConversationContainer = (props: Props) => {
       await processClientSideActions(actionsBeforeFirstBubble)
       if (
         data.clientSideActions.length === 1 &&
-        data.clientSideActions[0].type === 'stream'
+        data.clientSideActions[0].type === 'stream' &&
+        data.messages.length === 0 &&
+        data.input === undefined
       )
         return
     }
