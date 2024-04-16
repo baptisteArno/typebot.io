@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { isNotDefined } from '@typebot.io/lib'
 import { resumeWhatsAppFlow } from '@typebot.io/bot-engine/whatsapp/resumeWhatsAppFlow'
 
+// TODO: Delete file, replaced by /api/v1/workspaces/[workspaceId]/whatsapp/[credentialsId]/webhook.ts
 export const receiveMessage = publicProcedure
   .meta({
     openapi: {

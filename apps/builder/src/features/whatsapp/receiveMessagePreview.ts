@@ -6,6 +6,7 @@ import { isNotDefined } from '@typebot.io/lib'
 import { TRPCError } from '@trpc/server'
 import { env } from '@typebot.io/env'
 
+// TODO: Delete file, replaced by /api/v1/whatsapp/preview/webhook.ts
 export const receiveMessagePreview = publicProcedure
   .meta({
     openapi: {
