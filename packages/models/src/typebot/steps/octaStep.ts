@@ -9,7 +9,13 @@ import {
 import { TextBubbleContent, WOZStepType } from './bubble'
 
 // Regular steps
-export type OctaStep = AssignToTeamStep | OfficeHourStep | CallOtherBotStep | PreReserveStep | CommerceStep | ConversationTagStep
+export type OctaStep =
+  | AssignToTeamStep
+  | OfficeHourStep
+  | CallOtherBotStep
+  | PreReserveStep
+  | CommerceStep
+  | ConversationTagStep
 
 // Waba steps
 
@@ -59,7 +65,7 @@ export enum OctaStepType {
   ASSIGN_TO_TEAM = 'assign to team',
   CALL_OTHER_BOT = 'call other bot',
   PRE_RESERVE = 'pre reserve',
-  CONVERSATION_TAG = 'conversation tag'
+  CONVERSATION_TAG = 'conversation tag',
 }
 
 // Waba step types
@@ -386,21 +392,23 @@ export const defaultAssignToTeamOptions: AssignToTeamOptions = {
   assignTo: '',
   assignType: '',
   subType: '',
-  isAvailable: true,
+  isAvailable: false,
 }
 
 export const defaultPreReserveOptions: PreReserveOptions = {
   assignTo: '',
   assignType: '',
   name: '',
-  subject: ''
+  subject: '',
 }
 
 export const defaultConversationTagOptions: ConversationTagOptions = {
-  tags: [{
-    _id: '',
-    name: ''
-  }]
+  tags: [
+    {
+      _id: '',
+      name: '',
+    },
+  ],
 }
 
 export const defaultWOZSuggestionOptions: WOZSuggestionOptions = {
@@ -414,7 +422,7 @@ export const defaultWOZAssignOptions: WOZAssignOptions = {
   subject: '',
   virtualAgentId: undefined,
   introduceAsIA: true,
-  confirmContext: false
+  confirmContext: false,
 }
 
 export const defaultCallOtherBotOptions: CallOtherBotOptions = {
@@ -426,20 +434,20 @@ export const defaultCallOtherBotOptions: CallOtherBotOptions = {
 
 const seeYa = 'Até mais!'
 export const defaultEndConversationBubbleContent: EndConversationBubbleContent =
-{
-  html: `<div style="margin-left: 8px;">${seeYa}</div>`,
-  richText: [
-    {
-      children: [
-        {
-          text: seeYa,
-        },
-      ],
-      type: 'p',
-    },
-  ],
-  plainText: seeYa,
-}
+  {
+    html: `<div style="margin-left: 8px;">${seeYa}</div>`,
+    richText: [
+      {
+        children: [
+          {
+            text: seeYa,
+          },
+        ],
+        type: 'p',
+      },
+    ],
+    plainText: seeYa,
+  }
 
 export const defaultCommerceOptions: CommerceOptions = {
   catalogId: '',
