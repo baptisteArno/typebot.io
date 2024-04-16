@@ -19,7 +19,7 @@ export default async function handler(
       return res.status(401).json({
         error: 'Unauthorized',
       })
-    return Number(challenge)
+    return res.status(200).send(Number(challenge))
   }
   if (req.method === 'POST') {
     if (!env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID)

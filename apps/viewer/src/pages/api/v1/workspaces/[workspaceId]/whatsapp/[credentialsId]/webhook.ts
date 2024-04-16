@@ -43,7 +43,7 @@ export default async function handler(
         token,
       },
     })
-    return Number(challenge)
+    return res.status(200).send(Number(challenge))
   }
   if (req.method === 'POST') {
     const workspaceId = req.query.workspaceId as string
