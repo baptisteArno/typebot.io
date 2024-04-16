@@ -1,4 +1,4 @@
-import { TElement, TText, TDescendant } from '@udecode/plate-common'
+import { TElement, TText, TDescendant } from '@udecode/slate'
 import { PlateText } from './PlateText'
 
 export const PlateBlock = ({ element }: { element: TElement | TText }) => {

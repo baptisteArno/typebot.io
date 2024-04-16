@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { ModalProps } from '../../EmbedButton'
 import { EmbedModal } from '../../EmbedModal'
-import { isDefined } from '@udecode/plate-common'
 import { JavascriptInstructions } from './instructions/JavascriptInstructions'
+import { isDefined } from '@typebot.io/lib/utils'
 
 export const JavascriptModal = ({
   isOpen,

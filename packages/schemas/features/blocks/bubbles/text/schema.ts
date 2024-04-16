@@ -1,5 +1,5 @@
 import { z } from '../../../../zod'
-import type { TElement } from '@udecode/plate-common'
+import type { TElement } from '@udecode/slate'
 import { blockBaseSchema } from '../../shared'
 import { BubbleBlockType } from '../constants'
 

@@ -9,7 +9,6 @@ import {
   Preview,
   Text,
 } from '@react-email/components'
-import * as React from 'react'
 import { env } from '@typebot.io/env'
 
 interface Props {

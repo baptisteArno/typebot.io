@@ -13,7 +13,7 @@ import {
   notAuthenticated,
 } from '@typebot.io/lib/api'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
-import { sendGuestInvitationEmail } from '@typebot.io/emails'
+import { sendGuestInvitationEmail } from '@typebot.io/email-legacy'
 import { env } from '@typebot.io/env'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

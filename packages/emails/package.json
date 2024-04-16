@@ -1,5 +1,5 @@
 {
-  "name": "@typebot.io/emails",
+  "name": "@typebot.io/email-legacy",
   "version": "1.0.0",
   "description": "",
   "private": true,
@@ -13,7 +13,7 @@
   },
   "keywords": [],
   "author": "Baptiste Arnaud",
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "@faire/mjml-react": "3.3.0",
     "@types/node": "20.4.2",

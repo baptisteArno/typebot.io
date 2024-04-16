@@ -162,7 +162,7 @@ const createPackageJson = async (path: string, { id }: { id: unknown }) => {
         description: '',
         main: 'index.ts',
         keywords: [],
-        license: 'ISC',
+        license: 'AGPL-3.0-or-later',
         devDependencies: {
           '@typebot.io/forge': 'workspace:*',
           '@typebot.io/tsconfig': 'workspace:*',

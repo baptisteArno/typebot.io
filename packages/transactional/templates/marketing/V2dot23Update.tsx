@@ -9,10 +9,8 @@ import {
   Text,
   Hr,
   Heading,
-  Button,
   Section,
 } from '@react-email/components'
-import * as React from 'react'
 import { env } from '@typebot.io/env'
 import {
   main,

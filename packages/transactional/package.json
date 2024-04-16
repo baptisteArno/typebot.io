@@ -1,5 +1,5 @@
 {
-  "name": "transactional",
+  "name": "@typebot.io/emails",
   "version": "1.0.0",
   "description": "",
   "scripts": {
@@ -7,13 +7,15 @@
   },
   "keywords": [],
   "author": "Baptiste Arnaud",
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "dependencies": {
-    "@react-email/components": "0.0.14",
-    "react-email": "2.0.0",
-    "@typebot.io/env": "workspace:*"
+    "@react-email/components": "0.0.16",
+    "@react-email/render": "0.0.12",
+    "@typebot.io/env": "workspace:*",
+    "react-email": "2.1.1"
   },
   "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:^",
     "dotenv-cli": "7.2.1"
   }
 }

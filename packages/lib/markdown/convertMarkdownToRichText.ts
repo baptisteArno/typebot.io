@@ -2,9 +2,9 @@ import {
   createPlateEditor,
   createPluginFactory,
   getPluginOptions,
-  isUrl,
-  Value,
-} from '@udecode/plate-common'
+} from '@udecode/plate-core'
+import { Value } from '@udecode/slate'
+import { isUrl } from '@udecode/utils'
 import markdown from 'remark-parse'
 import { unified } from 'unified'
 

@@ -5,7 +5,7 @@
   "main": "index.ts",
   "keywords": [],
   "author": "Enchatted P.C.",
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",

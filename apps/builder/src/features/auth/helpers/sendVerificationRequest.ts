@@ -1,4 +1,4 @@
-import { sendMagicLinkEmail } from '@typebot.io/emails'
+import { sendMagicLinkEmail } from '@typebot.io/email-legacy'
 
 type Props = {
   identifier: string

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { ModalProps } from '../../EmbedButton'
 import { EmbedModal } from '../../EmbedModal'
-import { isDefined } from '@udecode/plate-common'
 import { ScriptInstructions } from './instructions/ScriptInstructions'
+import { isDefined } from '@typebot.io/lib/utils'
 
 export const ScriptModal = ({ isOpen, onClose, isPublished }: ModalProps) => {
   const [selectedEmbedType, setSelectedEmbedType] = useState<

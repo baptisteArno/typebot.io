@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { Plate } from '@udecode/plate-core'
 import { platePlugins } from '@/lib/plate'
-import { TElement } from '@udecode/plate-common'
+import { TElement } from '@udecode/slate'
 import { TextEditorEditorContent } from './TextEditorEditorContent'
 
 type TextBubbleEditorContentProps = {

@@ -42,7 +42,7 @@ import { hasDefaultConnector } from '@/features/typebot/helpers/hasDefaultConnec
 import { setMultipleRefs } from '@/helpers/setMultipleRefs'
 import { TargetEndpoint } from '../../endpoints/TargetEndpoint'
 import { SettingsModal } from './SettingsModal'
-import { TElement } from '@udecode/plate-common'
+import { TElement } from '@udecode/slate'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { useGroupsStore } from '@/features/graph/hooks/useGroupsStore'
 import { TurnableIntoParam } from '@typebot.io/forge'

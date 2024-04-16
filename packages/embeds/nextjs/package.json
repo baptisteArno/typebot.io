@@ -13,7 +13,7 @@
   },
   "keywords": [],
   "author": "Baptiste Arnaud",
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "@babel/preset-react": "7.22.5",
     "@babel/preset-typescript": "7.22.5",

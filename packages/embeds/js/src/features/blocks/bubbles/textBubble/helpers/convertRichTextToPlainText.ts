@@ -1,4 +1,4 @@
-import type { TDescendant } from '@udecode/plate-common'
+import type { TDescendant } from '@udecode/slate'
 
 export const computePlainText = (elements: TDescendant[]): string =>
   elements

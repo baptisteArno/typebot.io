@@ -3,13 +3,8 @@ import {
   ELEMENT_CODE_BLOCK,
   ELEMENT_CODE_LINE,
 } from '@udecode/plate-code-block'
-import {
-  getPluginType,
-  TDescendant,
-  TElement,
-  TText,
-  Value,
-} from '@udecode/plate-common'
+import { TDescendant, TElement, TText, Value } from '@udecode/slate'
+import { getPluginType } from '@udecode/plate-core'
 import {
   ELEMENT_H1,
   ELEMENT_H2,

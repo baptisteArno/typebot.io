@@ -11,7 +11,7 @@ import {
   getVariablesToParseInfoInText,
   parseVariables,
 } from '@typebot.io/variables/parseVariables'
-import { TDescendant } from '@udecode/plate-common'
+import { TDescendant } from '@udecode/slate'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 import { defaultVideoBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
 import { convertMarkdownToRichText } from '@typebot.io/lib/markdown/convertMarkdownToRichText'

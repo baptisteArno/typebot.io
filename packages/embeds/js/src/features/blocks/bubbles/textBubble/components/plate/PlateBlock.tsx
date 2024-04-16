@@ -1,4 +1,4 @@
-import type { TElement, TText, TDescendant } from '@udecode/plate-common'
+import type { TElement, TText, TDescendant } from '@udecode/slate'
 import { PlateText, PlateTextProps } from './PlateText'
 import { For, JSXElement, Match, Switch } from 'solid-js'
 import { isDefined } from '@typebot.io/lib/utils'

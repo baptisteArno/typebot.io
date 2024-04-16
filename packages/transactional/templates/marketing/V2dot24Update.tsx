@@ -11,7 +11,6 @@ import {
   Heading,
   Section,
 } from '@react-email/components'
-import * as React from 'react'
 import { env } from '@typebot.io/env'
 import {
   main,

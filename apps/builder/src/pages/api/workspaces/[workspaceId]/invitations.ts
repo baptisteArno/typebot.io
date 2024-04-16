@@ -7,7 +7,7 @@ import {
   notAuthenticated,
 } from '@typebot.io/lib/api'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
-import { sendWorkspaceMemberInvitationEmail } from '@typebot.io/emails'
+import { sendWorkspaceMemberInvitationEmail } from '@typebot.io/email-legacy'
 import { getSeatsLimit } from '@typebot.io/billing/getSeatsLimit'
 import { env } from '@typebot.io/env'
 

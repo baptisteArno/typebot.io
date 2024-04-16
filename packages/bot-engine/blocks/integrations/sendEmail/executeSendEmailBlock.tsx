@@ -1,4 +1,5 @@
-import { DefaultBotNotificationEmail, render } from '@typebot.io/emails'
+import { render } from '@typebot.io/emails/render'
+import DefaultSendEmailNotification from '@typebot.io/emails/templates/transactional/DefaultSendEmailNotification'
 import {
   AnswerInSessionState,
   ChatLog,
@@ -253,11 +254,11 @@ const getEmailBody = async ({
   })
   return {
     html: render(
-      <DefaultBotNotificationEmail
+      <DefaultSendEmailNotification
         resultsUrl={`${env.NEXTAUTH_URL}/typebots/${typebot.id}/results`}
         answers={omit(answers, 'submittedAt')}
       />
-    ).html,
+    ),
   }
 }
 

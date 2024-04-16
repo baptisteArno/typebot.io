@@ -6,7 +6,7 @@
   "license": "AGPL-3.0-or-later",
   "private": true,
   "dependencies": {
-    "@udecode/plate-common": "30.4.5",
+    "@udecode/slate": "31.0.0",
     "zod": "3.22.4",
     "zod-openapi": "^2.11.0"
   },

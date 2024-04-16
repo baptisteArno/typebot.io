@@ -1,6 +1,6 @@
-import { TElement } from '@udecode/plate-common'
 import serialize from './serializer/serialize'
 import { defaultNodeTypes } from './serializer/ast-types'
+import { TElement } from '@udecode/slate'
 
 export const convertRichTextToMarkdown = (
   richText: TElement[],

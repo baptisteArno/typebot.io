@@ -5,7 +5,7 @@
   "main": "index.ts",
   "keywords": [],
   "author": "Baptiste Arnaud",
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "dependencies": {
     "ai": "3.0.12",
     "openai": "4.28.4"

@@ -40,7 +40,6 @@ const nextConfig = {
   transpilePackages: [
     '@typebot.io/lib',
     '@typebot.io/schemas',
-    '@typebot.io/emails',
     '@typebot.io/env',
   ],
   i18n: {

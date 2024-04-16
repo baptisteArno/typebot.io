@@ -1,4 +1,5 @@
-import { PlateEditor, TElement, Value } from '@udecode/plate-common'
+import { TElement, Value } from '@udecode/slate'
+import { PlateEditor } from '@udecode/plate-core'
 
 export type MdastElementType =
   | 'paragraph'

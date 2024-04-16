@@ -2,7 +2,7 @@ import React from 'react'
 import {
   useMarkToolbarButton,
   useMarkToolbarButtonState,
-} from '@udecode/plate-common'
+} from '@udecode/plate-utils'
 import { IconButton, IconButtonProps } from '@chakra-ui/react'
 
 type Props = {

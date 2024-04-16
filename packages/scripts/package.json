@@ -33,7 +33,7 @@
     "deleteChatSession": "tsx deleteChatSession.ts"
   },
   "devDependencies": {
-    "@typebot.io/emails": "workspace:*",
+    "@typebot.io/email-legacy": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/schemas": "workspace:*",

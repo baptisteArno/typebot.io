@@ -12473,10 +12473,18 @@
                     }
                   }
                 }
+              },
+              "runtime": {
+                "type": "string",
+                "enum": [
+                  "edge",
+                  "nodejs"
+                ]
               }
             },
             "required": [
-              "messages"
+              "messages",
+              "runtime"
             ]
           },
           "lastBubbleBlockId": {
@@ -12753,6 +12761,13 @@
               true
             ]
           },
+          "runtime": {
+            "type": "string",
+            "enum": [
+              "edge",
+              "nodejs"
+            ]
+          },
           "lastBubbleBlockId": {
             "type": "string"
           },
@@ -12762,7 +12777,8 @@
         },
         "required": [
           "type",
-          "stream"
+          "stream",
+          "runtime"
         ],
         "title": "Exec stream"
       },

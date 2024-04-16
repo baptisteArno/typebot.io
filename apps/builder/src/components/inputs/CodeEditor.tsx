@@ -18,9 +18,9 @@ import CodeMirror, { ReactCodeMirrorRef } from '@uiw/react-codemirror'
 import { tokyoNight } from '@uiw/codemirror-theme-tokyo-night'
 import { githubLight } from '@uiw/codemirror-theme-github'
 import { LanguageName, loadLanguage } from '@uiw/codemirror-extensions-langs'
-import { isDefined } from '@udecode/plate-common'
 import { CopyButton } from '../CopyButton'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
+import { isDefined } from '@typebot.io/lib/utils'
 
 type Props = {
   label?: string

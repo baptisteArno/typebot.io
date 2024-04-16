@@ -1,5 +1,5 @@
 import { trpc } from '@/lib/trpc'
-import { isDefined } from '@udecode/plate-common'
+import { isDefined } from '@typebot.io/lib/utils'
 
 export const useLogs = (
   typebotId: string,

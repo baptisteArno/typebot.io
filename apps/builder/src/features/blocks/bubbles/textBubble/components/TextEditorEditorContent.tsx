@@ -15,8 +15,10 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { TextEditorToolBar } from './TextEditorToolBar'
 import { useTranslate } from '@tolgee/react'
 import { PlateContent, useEditorRef } from '@udecode/plate-core'
-import { focusEditor, insertText, selectEditor } from '@udecode/plate-common'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
+import { insertText } from '@udecode/slate'
+import { focusEditor } from '@udecode/slate-react'
+import { selectEditor } from '@udecode/plate-utils'
 
 type Props = {
   closeEditor: () => void

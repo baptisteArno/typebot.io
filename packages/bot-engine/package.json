@@ -18,7 +18,7 @@
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
     "@typebot.io/variables": "workspace:*",
-    "@udecode/plate-common": "30.4.5",
+    "@udecode/slate": "31.0.0",
     "ai": "3.0.12",
     "chrono-node": "2.7.5",
     "date-fns": "2.30.0",

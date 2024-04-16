@@ -5,7 +5,7 @@
   "scripts": {},
   "keywords": [],
   "author": "Baptiste Arnaud",
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "dependencies": {
     "@playwright/test": "^1.42.1",
     "@typebot.io/lib": "workspace:*",
