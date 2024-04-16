@@ -3,6 +3,8 @@ import prisma from '@typebot.io/lib/prisma'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
+// TODO: Delete in favor of /api
+
 export const subscribeWebhook = publicProcedure
   .meta({
     openapi: {

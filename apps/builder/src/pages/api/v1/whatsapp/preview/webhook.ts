@@ -6,27 +6,40 @@ import { resumeWhatsAppFlow } from '@typebot.io/bot-engine/whatsapp/resumeWhatsA
 import { isNotDefined } from '@typebot.io/lib'
 import { env } from '@typebot.io/env'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { methodNotAllowed } from '@typebot.io/lib/api'
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (!env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID)
-    return res
-      .status(500)
-      .send('WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID is not defined')
-  const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-  const { entry } = whatsAppWebhookRequestBodySchema.parse(body)
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const ctx = globalThis[Symbol.for('@vercel/request-context')]
-  if (ctx?.get?.().waitUntil) {
-    ctx.get().waitUntil(() => processWhatsAppReply(entry))
-    return res.status(200).json({ message: 'Message is being processed.' })
+  if (req.method === 'GET') {
+    const token = req.query['hub.verify_token'] as string | undefined
+    const challenge = req.query['hub.challenge'] as string | undefined
+    if (token !== env.ENCRYPTION_SECRET)
+      return res.status(401).json({
+        error: 'Unauthorized',
+      })
+    return Number(challenge)
   }
-  console.log('Processing message')
-  const { message } = await processWhatsAppReply(entry)
-  return res.status(200).json({ message })
+  if (req.method === 'POST') {
+    if (!env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID)
+      return res
+        .status(500)
+        .send('WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID is not defined')
+    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+    const { entry } = whatsAppWebhookRequestBodySchema.parse(body)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const ctx = globalThis[Symbol.for('@vercel/request-context')]
+    if (ctx?.get?.().waitUntil) {
+      ctx.get().waitUntil(() => processWhatsAppReply(entry))
+      return res.status(200).json({ message: 'Message is being processed.' })
+    }
+    console.log('Processing message')
+    const { message } = await processWhatsAppReply(entry)
+    return res.status(200).json({ message })
+  }
+  return methodNotAllowed(res)
 }
 
 const processWhatsAppReply = async (

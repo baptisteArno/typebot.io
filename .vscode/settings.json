@@ -15,7 +15,8 @@
     "DATABASE_URL": "postgresql://postgres:typebot@127.0.0.1:5432/typebot",
     "NEXT_PUBLIC_VIEWER_URL": "http://localhost:3001",
     "NEXTAUTH_URL": "http://localhost:3000",
-    "ENCRYPTION_SECRET": "H+KbL/OFrqbEuDy/1zX8bsPG+spXri3S"
+    "ENCRYPTION_SECRET": "H+KbL/OFrqbEuDy/1zX8bsPG+spXri3S",
+    "S3_ENDPOINT": "http://localhost:9000"
   },
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"

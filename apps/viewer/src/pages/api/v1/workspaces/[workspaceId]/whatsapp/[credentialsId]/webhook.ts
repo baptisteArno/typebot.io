@@ -5,6 +5,8 @@ import {
 import { resumeWhatsAppFlow } from '@typebot.io/bot-engine/whatsapp/resumeWhatsAppFlow'
 import { isNotDefined } from '@typebot.io/lib'
 import { NextApiRequest, NextApiResponse } from 'next'
+import prisma from '@typebot.io/lib/prisma'
+import { methodNotAllowed } from '@typebot.io/lib/api/utils'
 
 type Props = {
   entry: WhatsAppWebhookRequestBody['entry']
@@ -20,27 +22,53 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const workspaceId = req.query.workspaceId as string
-  const credentialsId = req.query.credentialsId as string
-  const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-  const { entry } = whatsAppWebhookRequestBodySchema.parse(body)
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const ctx = globalThis[Symbol.for('@vercel/request-context')]
-  if (ctx?.get?.().waitUntil) {
-    ctx
-      .get()
-      .waitUntil(() =>
-        processWhatsAppReply({ entry, workspaceId, credentialsId })
-      )
-    return res.status(200).json({ message: 'Message is being processed.' })
+  if (req.method === 'GET') {
+    const token = req.query['hub.verify_token'] as string | undefined
+    const challenge = req.query['hub.challenge'] as string | undefined
+    if (!token || !challenge)
+      return res.status(400).json({
+        error: 'hub.verify_token and hub.challenge are required',
+      })
+    const verificationToken = await prisma.verificationToken.findUnique({
+      where: {
+        token,
+      },
+    })
+    if (!verificationToken)
+      return res.status(401).json({
+        error: 'Unauthorized',
+      })
+    await prisma.verificationToken.delete({
+      where: {
+        token,
+      },
+    })
+    return Number(challenge)
   }
-  const { message } = await processWhatsAppReply({
-    entry,
-    workspaceId,
-    credentialsId,
-  })
-  return res.status(200).json({ message })
+  if (req.method === 'POST') {
+    const workspaceId = req.query.workspaceId as string
+    const credentialsId = req.query.credentialsId as string
+    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+    const { entry } = whatsAppWebhookRequestBodySchema.parse(body)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const ctx = globalThis[Symbol.for('@vercel/request-context')]
+    if (ctx?.get?.().waitUntil) {
+      ctx
+        .get()
+        .waitUntil(() =>
+          processWhatsAppReply({ entry, workspaceId, credentialsId })
+        )
+      return res.status(200).json({ message: 'Message is being processed.' })
+    }
+    const { message } = await processWhatsAppReply({
+      entry,
+      workspaceId,
+      credentialsId,
+    })
+    return res.status(200).json({ message })
+  }
+  return methodNotAllowed(res)
 }
 
 const processWhatsAppReply = async ({

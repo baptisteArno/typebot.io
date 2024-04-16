@@ -3,6 +3,7 @@ import { TRPCError } from '@trpc/server'
 import { env } from '@typebot.io/env'
 import { z } from 'zod'
 
+// TODO: Delete in favor of /api
 export const subscribePreviewWebhook = publicProcedure
   .meta({
     openapi: {
