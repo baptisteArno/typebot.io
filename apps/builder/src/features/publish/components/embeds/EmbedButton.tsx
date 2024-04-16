@@ -104,113 +104,137 @@ export const integrationsList = [
 
     return (
       <ParentModalProvider>
-        <EmbedButton
-          logo={
-            <WhatsAppLogo
-              height={100}
-              width="60px"
-              color={whatsAppBrandColor}
-            />
-          }
-          label="WhatsApp"
-          lockTagPlan={hasProPerks(workspace) ? undefined : 'PRO'}
-          modal={({ onClose, isOpen }) => (
-            <WhatsAppModal isOpen={isOpen} onClose={onClose} {...props} />
-          )}
-          {...props}
-        />
+        <div hidden>
+          <EmbedButton
+            logo={
+              <WhatsAppLogo
+                height={100}
+                width="60px"
+                color={whatsAppBrandColor}
+              />
+            }
+            label="WhatsApp"
+            lockTagPlan={hasProPerks(workspace) ? undefined : 'PRO'}
+            modal={({ onClose, isOpen }) => (
+              <WhatsAppModal isOpen={isOpen} onClose={onClose} {...props} />
+            )}
+            {...props}
+          />
+        </div>
       </ParentModalProvider>
     )
   },
   (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
-    <EmbedButton
-      logo={<WordpressLogo height={100} width="70px" />}
-      label="Wordpress"
-      modal={({ onClose, isOpen }) => (
-        <WordpressModal isOpen={isOpen} onClose={onClose} {...props} />
-      )}
-      {...props}
-    />
+    <div hidden>
+      <EmbedButton
+        logo={<WordpressLogo height={100} width="70px" />}
+        label="Wordpress"
+        modal={({ onClose, isOpen }) => (
+          <WordpressModal isOpen={isOpen} onClose={onClose} {...props} />
+        )}
+        {...props}
+      />
+    </div>
   ),
   (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
-    <EmbedButton
-      logo={<ShopifyLogo height={100} width="65px" />}
-      label="Shopify"
-      modal={(modalProps) => <ShopifyModal {...modalProps} {...props} />}
-      {...props}
-    />
+    <div hidden>
+      <EmbedButton
+        logo={<ShopifyLogo height={100} width="65px" />}
+        label="Shopify"
+        modal={(modalProps) => <ShopifyModal {...modalProps} {...props} />}
+        {...props}
+      />
+    </div>
   ),
   (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
-    <EmbedButton
-      logo={<WixLogo height={100} width="90px" />}
-      label="Wix"
-      modal={(modalProps) => <WixModal {...modalProps} {...props} />}
-      {...props}
-    />
+    <div hidden>
+      <EmbedButton
+        logo={<WixLogo height={100} width="90px" />}
+        label="Wix"
+        modal={(modalProps) => <WixModal {...modalProps} {...props} />}
+        {...props}
+      />
+    </div>
   ),
   (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
-    <EmbedButton
-      logo={<GtmLogo height={100} width="70px" />}
-      label="Google Tag Manager"
-      modal={(modalProps) => <GtmModal {...modalProps} {...props} />}
-      {...props}
-    />
+    <div hidden>
+      <EmbedButton
+        logo={<GtmLogo height={100} width="70px" />}
+        label="Google Tag Manager"
+        modal={(modalProps) => <GtmModal {...modalProps} {...props} />}
+        {...props}
+      />
+    </div>
   ),
   (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
-    <EmbedButton
-      logo={<JavascriptLogo height={100} width="70px" />}
-      label="HTML & Javascript"
-      modal={(modalProps) => <JavascriptModal {...modalProps} {...props} />}
-      {...props}
-    />
+    <div hidden>
+      <EmbedButton
+        logo={<JavascriptLogo height={100} width="70px" />}
+        label="HTML & Javascript"
+        modal={(modalProps) => <JavascriptModal {...modalProps} {...props} />}
+        {...props}
+      />
+    </div>
   ),
   (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
-    <EmbedButton
-      logo={<ReactLogo height={100} width="70px" />}
-      label="React"
-      modal={(modalProps) => <ReactModal {...modalProps} {...props} />}
-      {...props}
-    />
+    <div hidden>
+      <EmbedButton
+        logo={<ReactLogo height={100} width="70px" />}
+        label="React"
+        modal={(modalProps) => <ReactModal {...modalProps} {...props} />}
+        {...props}
+      />
+    </div>
   ),
   (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
-    <EmbedButton
-      logo={<NextjsLogo height={100} width="70px" />}
-      label="Nextjs"
-      modal={(modalProps) => <NextjsModal {...modalProps} {...props} />}
-      {...props}
-    />
+    <div hidden>
+      <EmbedButton
+        logo={<NextjsLogo height={100} width="70px" />}
+        label="Nextjs"
+        modal={(modalProps) => <NextjsModal {...modalProps} {...props} />}
+        {...props}
+      />
+    </div>
   ),
   (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
-    <EmbedButton
-      logo={<CodeIcon height={100} width="60px" />}
-      label="API"
-      modal={(modalProps) => <ApiModal {...modalProps} {...props} />}
-      {...props}
-    />
+    <div hidden>
+      <EmbedButton
+        logo={<CodeIcon height={100} width="60px" />}
+        label="API"
+        modal={(modalProps) => <ApiModal {...modalProps} {...props} />}
+        {...props}
+      />
+    </div>
   ),
   (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
-    <EmbedButton
-      logo={<NotionLogo height={100} width="60px" />}
-      label="Notion"
-      modal={(modalProps) => <NotionModal {...modalProps} {...props} />}
-      {...props}
-    />
+    <div hidden>
+      <EmbedButton
+        logo={<NotionLogo height={100} width="60px" />}
+        label="Notion"
+        modal={(modalProps) => <NotionModal {...modalProps} {...props} />}
+        {...props}
+      />
+    </div>
   ),
   (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
-    <EmbedButton
-      logo={<WebflowLogo height={100} width="70px" />}
-      label="Webflow"
-      modal={(modalProps) => <WebflowModal {...modalProps} {...props} />}
-      {...props}
-    />
+    <div hidden>
+      <EmbedButton
+        logo={<WebflowLogo height={100} width="70px" />}
+        label="Webflow"
+        modal={(modalProps) => <WebflowModal {...modalProps} {...props} />}
+        {...props}
+      />
+    </div>
   ),
   (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
-    <EmbedButton
-      logo={<FlutterFlowLogo height={100} width="60px" />}
-      label="FlutterFlow"
-      modal={(modalProps) => <FlutterFlowModal {...modalProps} {...props} />}
-      {...props}
-    />
+    <div hidden>
+      <EmbedButton
+        logo={<FlutterFlowLogo height={100} width="60px" />}
+        label="FlutterFlow"
+        modal={(modalProps) => <FlutterFlowModal {...modalProps} {...props} />}
+        {...props}
+      />
+    </div>
   ),
   (props: Pick<ModalProps, 'publicId' | 'isPublished'>) => (
     <EmbedButton

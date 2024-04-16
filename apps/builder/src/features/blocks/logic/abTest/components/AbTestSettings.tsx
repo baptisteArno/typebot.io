@@ -4,6 +4,7 @@ import { isDefined } from '@typebot.io/lib'
 import { AbTestBlock } from '@typebot.io/schemas'
 import { NumberInput } from '@/components/inputs'
 import { defaultAbTestOptions } from '@typebot.io/schemas/features/blocks/logic/abTest/constants'
+import { useTranslate } from '@tolgee/react'
 
 type Props = {
   options: AbTestBlock['options']
@@ -11,6 +12,7 @@ type Props = {
 }
 
 export const AbTestSettings = ({ options, onOptionsChange }: Props) => {
+  const { t } = useTranslate()
   const updateAPercent = (aPercent?: number) =>
     isDefined(aPercent) ? onOptionsChange({ ...options, aPercent }) : null
 
@@ -20,7 +22,7 @@ export const AbTestSettings = ({ options, onOptionsChange }: Props) => {
         defaultValue={options?.aPercent ?? defaultAbTestOptions.aPercent}
         onValueChange={updateAPercent}
         withVariableButton={false}
-        label="Percent of users to follow A:"
+        label={t('editor.graph.menu.percent.users.label')}
         direction="column"
         max={100}
         min={0}

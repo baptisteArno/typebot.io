@@ -64,7 +64,7 @@ export const UserPreferencesForm = () => {
 
   return (
     <Stack spacing={12}>
-      <HStack spacing={4}>
+      <HStack spacing={4} hidden>
         <Heading size="md">{t('account.preferences.language.heading')}</Heading>
         <Menu>
           <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>

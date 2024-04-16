@@ -4,13 +4,14 @@ import { JavascriptStandardSnippet } from '../../Javascript/JavascriptStandardSn
 export const FramerStandardInstructions = () => (
   <OrderedList spacing={4} pl={5}>
     <ListItem>
-      Press <Code>A</Code> to open the <Code>Add elements</Code> panel
+      Pressione <Code>A</Code> para abrir o painel{' '}
+      <Code>Adicionar Elementos</Code>
     </ListItem>
     <ListItem>
       <Stack spacing={4}>
         <Text>
-          Add an <Code>Embed</Code> element from the <Code>components</Code>{' '}
-          section and paste this code:
+          Adicione um elemento <Code>Embed</Code> da sessão de{' '}
+          <Code>componentes</Code> e cole este código:{' '}
         </Text>
         <JavascriptStandardSnippet />
       </Stack>

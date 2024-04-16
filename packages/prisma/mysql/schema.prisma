@@ -380,6 +380,13 @@ model BannedIp {
   @@index([userId])
 }
 
+model Embed {
+  id          String  @id @default(cuid())
+  hash        String
+  createdAt   DateTime
+  updatedAt   DateTime
+}
+
 enum WorkspaceRole {
   ADMIN
   MEMBER

@@ -120,7 +120,7 @@
   "confirmModal.defaultTitle": "¿Estás seguro?",
   "dashboard.header.settingsButton.label": "Configuración y Miembros",
   "dashboard.redirectionMessage": "Estás siendo redirigido...",
-  "dashboard.title": "Mis typebots",
+  "dashboard.title": "Mis bots",
   "delete": "Eliminar",
   "downgrade": "Degradar",
   "editor.blockCard.logicBlock.tooltip.code.label": "Ejecutar código Javascript",

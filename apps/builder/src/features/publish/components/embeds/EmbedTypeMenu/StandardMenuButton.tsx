@@ -26,7 +26,7 @@ export const StandardMenuButton = (props: Props) => {
         <Text fontSize="lg" fontWeight="semibold">
           Standard
         </Text>
-        <Text textColor="gray.500">Embed in a container on your site</Text>
+        <Text textColor="gray.500">Embarque em seu site</Text>
       </Stack>
     </MotionStack>
   )

@@ -146,6 +146,19 @@ export const BlocksSideBar = () => {
           </SimpleGrid>
         </Stack>
 
+        {/* <Stack>
+          <Text fontSize="sm" fontWeight="semibold">
+            {t('editor.sidebarBlocks.blockType.bubbles.heading')}
+          </Text>
+          <SimpleGrid columns={2} spacing="3">
+            {Object.values(BubbleBlockType)
+              .filter((type, index, self) => ['text', 'image', 'video'].includes(type) && self.indexOf(type) === index)
+              .map((filteredType) => (
+                <BlockCard key={filteredType} type={filteredType} onMouseDown={handleMouseDown} />
+              ))}
+          </SimpleGrid>
+        </Stack> */}
+
         <Stack>
           <Text fontSize="sm" fontWeight="semibold">
             {t('editor.sidebarBlocks.blockType.inputs.heading')}

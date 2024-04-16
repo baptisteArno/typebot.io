@@ -72,8 +72,8 @@ const nextConfig = {
         source: '/(.*)?',
         headers: [
           {
-            key: 'X-Frame-Options',
-            value: 'SAMEORIGIN',
+            key: 'Accept',
+            value: '*',
           },
         ],
       },

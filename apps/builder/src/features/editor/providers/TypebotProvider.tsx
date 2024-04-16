@@ -126,7 +126,6 @@ export const TypebotProvider = ({
       },
     }
   )
-
   const { data: publishedTypebotData } =
     trpc.typebot.getPublishedTypebot.useQuery(
       { typebotId: typebotId as string, migrateToLatestVersion: true },

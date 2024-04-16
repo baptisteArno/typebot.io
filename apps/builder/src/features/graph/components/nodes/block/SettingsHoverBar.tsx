@@ -7,8 +7,9 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { BlockWithOptions } from '@typebot.io/schemas'
-import { getHelpDocUrl } from '@/features/graph/helpers/getHelpDocUrl'
-import { useForgedBlock } from '@/features/forge/hooks/useForgedBlock'
+//import { getHelpDocUrl } from '@/features/graph/helpers/getHelpDocUrl'
+import { getHelpUrls } from '@/features/graph/helpers/getHelpUrls'
+//import { useForgedBlock } from '@/features/forge/hooks/useForgedBlock'
 import { useTranslate } from '@tolgee/react'
 
 type Props = {
@@ -18,8 +19,9 @@ type Props = {
 
 export const SettingsHoverBar = ({ blockType, onExpandClick }: Props) => {
   const { t } = useTranslate()
-  const { blockDef } = useForgedBlock(blockType)
-  const helpDocUrl = getHelpDocUrl(blockType, blockDef)
+  //const { blockDef } = useForgedBlock(blockType)
+  //const helpDocUrl = getHelpDocUrl(blockType, blockDef)
+  const helpUrls = getHelpUrls(blockType)
   return (
     <HStack
       rounded="md"
@@ -38,14 +40,14 @@ export const SettingsHoverBar = ({ blockType, onExpandClick }: Props) => {
         onClick={onExpandClick}
         size="xs"
       />
-      {helpDocUrl && (
+      {helpUrls && (
         <Button
           as={Link}
           leftIcon={<BuoyIcon />}
           borderLeftRadius="none"
           size="xs"
           variant="ghost"
-          href={helpDocUrl}
+          href={helpUrls}
           isExternal
         >
           {t('help')}

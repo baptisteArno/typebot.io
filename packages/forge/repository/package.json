@@ -17,6 +17,8 @@
     "@typebot.io/elevenlabs-block": "workspace:*",
     "@typebot.io/anthropic-block": "workspace:*",
     "@typebot.io/together-ai-block": "workspace:*",
-    "@typebot.io/open-router-block": "workspace:*"
+    "@typebot.io/open-router-block": "workspace:*",
+    "@typebot.io/instantchat-block": "workspace:*",
+    "@typebot.io/pause-block": "workspace:*"
   }
 }

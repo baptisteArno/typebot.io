@@ -327,7 +327,7 @@
   "templates.modal.product.userOnboarding.description": "Un bot qui demande des informations sur les nouveaux utilisateurs avant qu'ils commencent à utiliser ton produit.",
   "templates.modal.product.userOnboarding.name": "Intégration Utilisateur",
   "templates.modal.useTemplateButton.label": "Utiliser ce modèle",
-  "typebots.defaultName": "Mon typebot",
+  "typebots.defaultName": "Mon bot",
   "upgrade": "Upgrade",
   "video.aspectRatioInput.label": "Ratio",
   "video.aspectRatioInput.moreInfoTooltip": "Exemple: \"16/9\" ou \"9/16\"",

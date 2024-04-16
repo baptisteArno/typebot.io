@@ -65,7 +65,12 @@ export const TypebotHeader = () => {
       flexShrink={0}
     >
       {isOpen && <SupportBubble autoShowDelay={0} />}
-      <LeftElements pos="absolute" left="1rem" onHelpClick={handleHelpClick} />
+      <LeftElements
+        pos="absolute"
+        left="1rem"
+        onHelpClick={handleHelpClick}
+        hidden
+      />
       <TypebotNav
         display={{ base: 'none', xl: 'flex' }}
         pos={{ base: 'absolute' }}
@@ -140,6 +145,7 @@ const LeftElements = ({
     <HStack justify="center" align="center" spacing="6" {...props}>
       <HStack alignItems="center" spacing={3}>
         <IconButton
+          hidden
           as={Link}
           aria-label="Navigate back"
           icon={<ChevronLeftIcon fontSize={25} />}
@@ -274,7 +280,7 @@ const RightElements = ({
         typebotId={typebot?.id}
         isResultsDisplayed={isResultsDisplayed}
       />
-      <Flex pos="relative">
+      <Flex pos="relative" hidden>
         <ShareTypebotButton isLoading={isNotDefined(typebot)} />
       </Flex>
       {router.pathname.includes('/edit') && isNotDefined(rightPanel) && (
@@ -342,6 +348,7 @@ const TypebotNav = ({
         colorScheme={router.pathname.endsWith('share') ? 'blue' : 'gray'}
         variant={router.pathname.endsWith('share') ? 'outline' : 'ghost'}
         size="sm"
+        hidden
       >
         {t('share.button.label')}
       </Button>
@@ -352,6 +359,7 @@ const TypebotNav = ({
           colorScheme={router.pathname.includes('results') ? 'blue' : 'gray'}
           variant={router.pathname.includes('results') ? 'outline' : 'ghost'}
           size="sm"
+          hidden
         >
           {t('editor.header.resultsButton.label')}
         </Button>
