@@ -263,7 +263,7 @@ export const StepNode = ({
                             <OctaTooltip
                               element={<WarningIcon color={'#FAC300'} />}
                               contentText={
-                                'Essa ação não será executada. O bot já encerrou anteriormente.'
+                                'Atenção! Essa ação não será executada pois o bot já encerrou ou foi direcionado anteriormente'
                               }
                               tooltipPlacement={'auto'}
                               popoverColor="#FFE894"

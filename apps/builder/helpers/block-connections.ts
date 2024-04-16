@@ -9,10 +9,10 @@ import {
   LogicStepType,
   IntegrationStepType,
   OctaWabaStepType,
+  Step,
 } from 'models'
 
 const finalSteps: string[] = [
-  OctaStepType.ASSIGN_TO_TEAM,
   OctaBubbleStepType.END_CONVERSATION,
   WOZStepType.MESSAGE,
 ]
@@ -23,52 +23,33 @@ const validIfHasConnection = (
   edges: Edge[]
 ) => !!edges.find((edge) => edge[side].blockId === blockId)
 
-const areAllItemsConnected = (block: Block): boolean => {
+const areAllItemsConnected = (step: Step): boolean => {
   let result = false
-  block.steps.forEach((step) => {
-    const checkStepType =
-      step.type === InputStepType.CHOICE ||
-      step.type === IntegrationStepType.WEBHOOK ||
-      step.type === OctaStepType.OFFICE_HOURS ||
-      step.type === OctaWabaStepType.WHATSAPP_OPTIONS_LIST ||
-      step.type === OctaWabaStepType.WHATSAPP_BUTTONS_LIST ||
-      step.type === WOZStepType.ASSIGN
-
-    if (checkStepType) {
-      const areAllChoicesConnected =
-        step?.items?.every((item) => !!item.outgoingEdgeId) ?? false
-      if (!!areAllChoicesConnected) {
-        result = true
-      }
-    }
-  })
+  const areAllChoicesConnected =
+    step?.items?.every((item) => !!item.outgoingEdgeId) ?? false
+  if (!!areAllChoicesConnected) {
+    result = true
+  }
   return result
 }
 
-const hasAllEdgeCaseTrue = (block: Block): boolean => {
+const hasAllEdgeCaseTrue = (step: Step, block: Block): boolean => {
   let result = true
-  block.steps.forEach((step) => {
-    if (step.type === LogicStepType.CONDITION) {
-      const hasEdgeCaseTrue = !!step.outgoingEdgeId
-      const hasEdgeCaseFalse =
-        step.items?.every((item) => !!item.outgoingEdgeId) ?? false
-      if (!hasEdgeCaseTrue || !hasEdgeCaseFalse) {
-        result = false
-      }
-    }
-  })
+  const isThereNextStep = !!block.steps[block.steps.indexOf(step) + 1]
+  const hasEdgeCaseTrue = isThereNextStep || !!step.outgoingEdgeId
+  const hasEdgeCaseFalse =
+    step.items?.every((item) => !!item.outgoingEdgeId) ?? false
+  if (!hasEdgeCaseTrue || !hasEdgeCaseFalse) {
+    result = false
+  }
   return result
 }
 
-const checkOutgoingEdgeOnAssignToTeam = (block: Block): boolean => {
+const checkOutgoingEdgeOnAssignToTeam = (step: Step): boolean => {
   let result = true
-  block.steps.forEach((step) => {
-    if (step.type === OctaStepType.ASSIGN_TO_TEAM) {
-      if (step.options?.isAvailable) {
-        result = !!step.outgoingEdgeId
-      }
-    }
-  })
+  if (step.options?.isAvailable) {
+    result = !!step.outgoingEdgeId
+  }
   return result
 }
 
@@ -84,46 +65,79 @@ export const updateBlocksHasConnections = ({
   }
 
   const parsedBlocks = blocks.map((block, blockIndex) => {
-    const blockTypes = block.steps.map((s) => s.type)
-
     const hasToConnection = validIfHasConnection(block.id, 'to', edges)
     const hasFromConnection = validIfHasConnection(block.id, 'from', edges)
+    block.hasConnection = true
+    block.steps.forEach((step, stepIndex) => {
+      const isInitialStep = blockIndex === 0
+      if (isInitialStep) {
+        if (!hasFromConnection) {
+          block.hasConnection = false
+        }
+        return
+      }
 
-    block.hasConnection =
-      blockIndex === 0
-        ? !!edges.find((edge) => edge.from.blockId === block.id)
-        : hasToConnection && hasFromConnection
+      const isFinalStep = finalSteps.includes(step.type)
+      if (isFinalStep) {
+        if (!hasToConnection) {
+          block.hasConnection = false
+        }
+        return
+      }
 
-    const isFinalStep = blockTypes
-      .map((v) => finalSteps.includes(v))
-      .some((v) => !!v)
+      const hasToConnectEachItem =
+        step.type === InputStepType.CHOICE ||
+        step.type === IntegrationStepType.WEBHOOK ||
+        step.type === OctaStepType.OFFICE_HOURS ||
+        step.type === OctaWabaStepType.WHATSAPP_OPTIONS_LIST ||
+        step.type === OctaWabaStepType.WHATSAPP_BUTTONS_LIST ||
+        step.type === WOZStepType.ASSIGN
 
-    if (isFinalStep) {
-      block.hasConnection = validIfHasConnection(block.id, 'to', edges)
-    }
+      if (hasToConnectEachItem) {
+        if (!areAllItemsConnected(step)) {
+          block.hasConnection = false
+        }
+        return
+      }
 
-    const hasToConnectEachItem =
-      blockTypes.includes(InputStepType.CHOICE) ||
-      blockTypes.includes(IntegrationStepType.WEBHOOK) ||
-      blockTypes.includes(OctaStepType.OFFICE_HOURS) ||
-      blockTypes.includes(OctaWabaStepType.WHATSAPP_OPTIONS_LIST) ||
-      blockTypes.includes(OctaWabaStepType.WHATSAPP_BUTTONS_LIST) ||
-      blockTypes.includes(WOZStepType.ASSIGN)
+      if (step.type === LogicStepType.CONDITION) {
+        if (!(hasAllEdgeCaseTrue(step, block) && hasToConnection)) {
+          block.hasConnection = false
+        }
+        return
+      }
 
-    if (hasToConnectEachItem) {
-      block.hasConnection = areAllItemsConnected(block) && hasToConnection
-    }
+      if (step.type === OctaStepType.ASSIGN_TO_TEAM) {
+        if (!(checkOutgoingEdgeOnAssignToTeam(step) && hasToConnection)) {
+          block.hasConnection = false
+        }
+        return
+      }
 
-    if (blockTypes.includes(LogicStepType.CONDITION)) {
-      block.hasConnection = hasAllEdgeCaseTrue(block) && hasToConnection
-    }
+      const isThereConditionalBlockBeforeMe = block.steps.some(
+        (s, index) => s.type === LogicStepType.CONDITION && index < stepIndex
+      )
 
-    if (blockTypes.includes(OctaStepType.ASSIGN_TO_TEAM)) {
-      block.hasConnection =
-        checkOutgoingEdgeOnAssignToTeam(block) &&
-        validIfHasConnection(block.id, 'to', edges)
-    }
+      if (
+        isThereConditionalBlockBeforeMe &&
+        block.steps.length === stepIndex + 1
+      ) {
+        if (!step.outgoingEdgeId) {
+          block.hasConnection = false
+        }
+        return
+      }
 
+      const lastStep = block.steps[block.steps.length - 1]
+      const isLastStepFinalStep =
+        finalSteps.includes(lastStep?.type) ||
+        (lastStep.type === OctaStepType.ASSIGN_TO_TEAM &&
+          !lastStep?.options?.isAvailable)
+
+      if (!(hasToConnection && hasFromConnection) && !isLastStepFinalStep) {
+        block.hasConnection = false
+      }
+    })
     return block
   })
 
