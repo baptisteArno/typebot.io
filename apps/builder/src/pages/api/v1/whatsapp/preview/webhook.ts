@@ -32,7 +32,7 @@ export default async function handler(
     // @ts-ignore
     const ctx = globalThis[Symbol.for('@vercel/request-context')]
     if (ctx?.get?.().waitUntil) {
-      ctx.get().waitUntil(() => processWhatsAppReply(entry))
+      ctx.get().waitUntil(processWhatsAppReply(entry))
       return res.status(200).json({ message: 'Message is being processed.' })
     }
     console.log('Processing message')

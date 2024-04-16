@@ -56,9 +56,7 @@ export default async function handler(
     if (ctx?.get?.().waitUntil) {
       ctx
         .get()
-        .waitUntil(() =>
-          processWhatsAppReply({ entry, workspaceId, credentialsId })
-        )
+        .waitUntil(processWhatsAppReply({ entry, workspaceId, credentialsId }))
       return res.status(200).json({ message: 'Message is being processed.' })
     }
     const { message } = await processWhatsAppReply({
