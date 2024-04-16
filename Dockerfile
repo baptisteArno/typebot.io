@@ -45,13 +45,13 @@ COPY --from=builder /app/node_modules/.pnpm/next-runtime-env@1.6.2/node_modules/
 
 ## Copy prisma package and its dependencies and generate schema
 COPY ./packages/prisma/postgresql ./packages/prisma/postgresql
-COPY --from=builder /app/node_modules/.pnpm/@prisma+client@5.8.0_prisma@5.8.0/node_modules/@prisma/client ./node_modules/@prisma/client
-COPY --from=builder /app/node_modules/.pnpm/@prisma+engines@5.8.0/node_modules/@prisma/engines ./node_modules/@prisma/engines
-COPY --from=builder /app/node_modules/.pnpm/@prisma+debug@5.8.0/node_modules/@prisma/debug ./node_modules/@prisma/debug
-COPY --from=builder /app/node_modules/.pnpm/@prisma+get-platform@5.8.0/node_modules/@prisma/get-platform ./node_modules/@prisma/get-platform
-COPY --from=builder /app/node_modules/.pnpm/@prisma+fetch-engine@5.8.0/node_modules/@prisma/fetch-engine ./node_modules/@prisma/fetch-engine
-COPY --from=builder /app/node_modules/.pnpm/@prisma+engines-version@5.8.0-37.0a83d8541752d7582de2ebc1ece46519ce72a848/node_modules/@prisma/engines-version ./node_modules/@prisma/engines-version
-COPY --from=builder /app/node_modules/.pnpm/prisma@5.8.0/node_modules/prisma ./node_modules/prisma
+COPY --from=builder /app/node_modules/.pnpm/@prisma+client@5.12.1_prisma@5.12.1/node_modules/@prisma/client ./node_modules/@prisma/client
+COPY --from=builder /app/node_modules/.pnpm/@prisma+engines@5.12.1/node_modules/@prisma/engines ./node_modules/@prisma/engines
+COPY --from=builder /app/node_modules/.pnpm/@prisma+debug@5.12.1/node_modules/@prisma/debug ./node_modules/@prisma/debug
+COPY --from=builder /app/node_modules/.pnpm/@prisma+get-platform@5.12.1/node_modules/@prisma/get-platform ./node_modules/@prisma/get-platform
+COPY --from=builder /app/node_modules/.pnpm/@prisma+fetch-engine@5.12.1/node_modules/@prisma/fetch-engine ./node_modules/@prisma/fetch-engine
+COPY --from=builder /app/node_modules/.pnpm/@prisma+engines-version@5.12.0-21.473ed3124229e22d881cb7addf559799debae1ab/node_modules/@prisma/engines-version ./node_modules/@prisma/engines-version
+COPY --from=builder /app/node_modules/.pnpm/prisma@5.12.1/node_modules/prisma ./node_modules/prisma
 COPY --from=builder /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
 RUN ./node_modules/.bin/prisma generate --schema=packages/prisma/postgresql/schema.prisma;
 
