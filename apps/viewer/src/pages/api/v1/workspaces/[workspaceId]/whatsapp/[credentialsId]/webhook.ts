@@ -88,17 +88,22 @@ const processWhatsAppReply = async ({
   if (!phoneNumberId) return { message: 'No phone number id found' }
   console.log('Received message:', receivedMessage)
   console.log('sessionId', `wa-${phoneNumberId}-${receivedMessage.from}`)
-  const { message } = await resumeWhatsAppFlow({
-    receivedMessage,
-    sessionId: `wa-${phoneNumberId}-${receivedMessage.from}`,
-    phoneNumberId,
-    credentialsId,
-    workspaceId,
-    contact: {
-      name: contactName,
-      phoneNumber: contactPhoneNumber,
-    },
-  })
-  console.log('Message:', message)
-  return { message }
+  try {
+    const { message } = await resumeWhatsAppFlow({
+      receivedMessage,
+      sessionId: `wa-${phoneNumberId}-${receivedMessage.from}`,
+      phoneNumberId,
+      credentialsId,
+      workspaceId,
+      contact: {
+        name: contactName,
+        phoneNumber: contactPhoneNumber,
+      },
+    })
+    console.log('Message:', message)
+    return { message }
+  } catch (err) {
+    console.error('Error:', err)
+    return { message: 'Error processing message' }
+  }
 }
