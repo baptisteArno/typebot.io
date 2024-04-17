@@ -31,6 +31,7 @@ export const resumeWhatsAppFlow = async ({
   phoneNumberId,
   contact,
 }: Props): Promise<{ message: string }> => {
+  console.log('fire')
   const messageSendDate = new Date(Number(receivedMessage.timestamp) * 1000)
   const messageSentBefore3MinutesAgo =
     messageSendDate.getTime() < Date.now() - 180000
@@ -65,6 +66,8 @@ export const resumeWhatsAppFlow = async ({
     accessToken: credentials?.systemUserAccessToken,
   })
 
+  console.log('incoming message content:', reply)
+
   const session = await getSession(sessionId)
 
   const isSessionExpired =
@@ -72,6 +75,7 @@ export const resumeWhatsAppFlow = async ({
     isDefined(session.state.expiryTimeout) &&
     session?.updatedAt.getTime() + session.state.expiryTimeout < Date.now()
 
+  console.log('Process')
   const resumeResponse =
     session && !isSessionExpired
       ? await continueBotFlow(reply, {
@@ -86,6 +90,8 @@ export const resumeWhatsAppFlow = async ({
           contact,
         })
       : { error: 'workspaceId not found' }
+
+  console.log('resumeResponse:', resumeResponse)
 
   if ('error' in resumeResponse) {
     console.log('Chat not starting:', resumeResponse.error)
