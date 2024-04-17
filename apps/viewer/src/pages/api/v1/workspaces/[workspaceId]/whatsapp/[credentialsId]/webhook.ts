@@ -103,7 +103,7 @@ const processWhatsAppReply = async ({
     console.log('Message:', message)
     return { message }
   } catch (err) {
-    console.error('Error:', err)
+    console.log('Error', JSON.stringify(err))
     return { message: 'Error processing message' }
   }
 }
