@@ -33,8 +33,10 @@ export const resumeWhatsAppFlow = async ({
 }: Props): Promise<{ message: string }> => {
   console.log('fire')
   const messageSendDate = new Date(Number(receivedMessage.timestamp) * 1000)
+  console.log('messageSendDate:', messageSendDate)
   const messageSentBefore3MinutesAgo =
     messageSendDate.getTime() < Date.now() - 180000
+  console.log('messageSentBefore3MinutesAgo:', messageSentBefore3MinutesAgo)
   if (messageSentBefore3MinutesAgo) {
     console.log('Message is too old', messageSendDate.getTime())
     return {
@@ -46,20 +48,21 @@ export const resumeWhatsAppFlow = async ({
 
   const credentials = await getCredentials({ credentialsId, isPreview })
 
+  console.log('credentials', isDefined(credentials))
   if (!credentials) {
     console.error('Could not find credentials')
     return {
       message: 'Message received',
     }
   }
-
+  console.log('yes')
   if (credentials.phoneNumberId !== phoneNumberId && !isPreview) {
     console.error('Credentials point to another phone ID, skipping...')
     return {
       message: 'Message received',
     }
   }
-
+  console.log('yes2')
   const reply = await getIncomingMessageContent({
     message: receivedMessage,
     workspaceId,
