@@ -54,16 +54,19 @@ export default async function handler(
     // @ts-ignore
     const ctx = globalThis[Symbol.for('@vercel/request-context')]
     if (ctx?.get?.().waitUntil) {
+      console.log('Using waitUntil')
       ctx
         .get()
         .waitUntil(processWhatsAppReply({ entry, workspaceId, credentialsId }))
       return res.status(200).json({ message: 'Message is being processed.' })
     }
+    console.log('Not using waitUntil')
     const { message } = await processWhatsAppReply({
       entry,
       workspaceId,
       credentialsId,
     })
+    console.log('Message:', message)
     return res.status(200).json({ message })
   }
   return methodNotAllowed(res)
@@ -83,7 +86,9 @@ const processWhatsAppReply = async ({
   const phoneNumberId = entry.at(0)?.changes.at(0)?.value
     .metadata.phone_number_id
   if (!phoneNumberId) return { message: 'No phone number id found' }
-  return resumeWhatsAppFlow({
+  console.log('Received message:', receivedMessage)
+  console.log('sessionId', `wa-${phoneNumberId}-${receivedMessage.from}`)
+  const { message } = await resumeWhatsAppFlow({
     receivedMessage,
     sessionId: `wa-${phoneNumberId}-${receivedMessage.from}`,
     phoneNumberId,
@@ -94,4 +99,6 @@ const processWhatsAppReply = async ({
       phoneNumber: contactPhoneNumber,
     },
   })
+  console.log('Message:', message)
+  return { message }
 }
