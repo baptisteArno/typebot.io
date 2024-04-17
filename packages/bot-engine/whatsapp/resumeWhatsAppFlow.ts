@@ -46,6 +46,7 @@ export const resumeWhatsAppFlow = async ({
 
   const isPreview = workspaceId === undefined || credentialsId === undefined
 
+  console.log('get credentials', credentialsId)
   const credentials = await getCredentials({ credentialsId, isPreview })
 
   console.log('credentials', isDefined(credentials))
@@ -198,6 +199,7 @@ const getCredentials = async ({
 
   if (!credentialsId) return
 
+  console.log('prisma go')
   const credentials = await prisma.credentials.findUnique({
     where: {
       id: credentialsId,
@@ -207,11 +209,14 @@ const getCredentials = async ({
       iv: true,
     },
   })
+  console.log('prisma done')
   if (!credentials) return
+  console.log('decrypt')
   const data = (await decrypt(
     credentials.data,
     credentials.iv
   )) as WhatsAppCredentials['data']
+  console.log('decrypted')
   return {
     systemUserAccessToken: data.systemUserAccessToken,
     phoneNumberId: data.phoneNumberId,
