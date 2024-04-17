@@ -87,7 +87,11 @@ const processWhatsAppReply = async ({
     .metadata.phone_number_id
   if (!phoneNumberId) return { message: 'No phone number id found' }
   console.log('Received message:', receivedMessage)
-  console.log('sessionId', `wa-${phoneNumberId}-${receivedMessage.from}`)
+  console.log(
+    'sessionId',
+    `wa-${phoneNumberId}-${receivedMessage.from}`,
+    new Date().toISOString()
+  )
   try {
     const { message } = await resumeWhatsAppFlow({
       receivedMessage,

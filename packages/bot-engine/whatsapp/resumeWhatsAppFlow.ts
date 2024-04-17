@@ -10,9 +10,9 @@ import { getSession } from '../queries/getSession'
 import { continueBotFlow } from '../continueBotFlow'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { saveStateToDatabase } from '../saveStateToDatabase'
-import prisma from '@typebot.io/lib/prisma'
 import { isDefined } from '@typebot.io/lib/utils'
 import { Reply } from '../types'
+import { PrismaClient } from '@typebot.io/prisma'
 
 type Props = {
   receivedMessage: WhatsAppIncomingMessage
@@ -199,7 +199,9 @@ const getCredentials = async ({
 
   if (!credentialsId) return
 
-  console.log('prisma go')
+  console.log('prisma client')
+  const prisma = new PrismaClient()
+  console.log('prisma go', new Date().toISOString())
   const credentials = await prisma.credentials.findUnique({
     where: {
       id: credentialsId,
