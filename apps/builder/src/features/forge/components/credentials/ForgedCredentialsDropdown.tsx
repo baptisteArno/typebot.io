@@ -91,6 +91,15 @@ export const ForgedCredentialsDropdown = ({
     router.query.credentialsId,
   ])
 
+  useEffect(() => {
+    // Hacking the credential dropdown selection for instantchat actions
+    data?.credentials.forEach((credential) => {
+      if (credential.name === 'Instant All-In-One') {
+        onCredentialsSelect(credential.id)
+      }
+    })
+  }, [data, onCredentialsSelect])
+
   const deleteCredentials =
     (credentialsId: string) => async (e: React.MouseEvent) => {
       if (!workspace) return
@@ -113,6 +122,7 @@ export const ForgedCredentialsDropdown = ({
       </Button>
     )
   }
+
   return (
     <Menu isLazy>
       <MenuButton

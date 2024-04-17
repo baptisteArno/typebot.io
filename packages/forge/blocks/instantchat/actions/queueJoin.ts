@@ -8,11 +8,11 @@ const parseQueueName = (queue: string) => {
 }
 
 export const queueJoin = createAction({
-  name: 'Queue join',
+  name: 'Fila',
   baseOptions,
   options: option.object({
     queue: option.string.layout({
-      label: 'Queue ID',
+      label: 'Fila',
       fetcher: 'fetchQueues',
       moreInfoTooltip:
         'Informe o código da fila ou escolha a variável que contém essa informação.',
@@ -21,13 +21,13 @@ export const queueJoin = createAction({
     //   accordion: 'Save response',
     queueVar: option.string.layout({
       accordion: 'Avançado',
-      label: 'Queue Var',
+      label: 'Variável',
       isRequired: false,
       withVariableButton: true,
     }),
     // }),
     responseMapping: option.string.layout({
-      label: 'Save response',
+      label: 'Salvar resultado',
       inputType: 'variableDropdown',
     }),
   }),

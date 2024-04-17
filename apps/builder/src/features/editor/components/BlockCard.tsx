@@ -22,13 +22,25 @@ type Props = {
   isDisabled?: boolean
   children: React.ReactNode
   onMouseDown: (e: React.MouseEvent, type: BlockV6['type']) => void
+  action?: string
 }
 
 export const BlockCard = (
-  props: Pick<Props, 'type' | 'onMouseDown'>
+  props: Pick<Props, 'type' | 'onMouseDown' | 'action'>
 ): JSX.Element => {
   const { t } = useTranslate()
   const { workspace } = useWorkspace()
+
+  if (props.action) {
+    // Created in a separate if to ease conflicts
+    return (
+      <ForgedBlockCard
+        type={props.action as (typeof enabledBlocks)[number]}
+        onMouseDown={props.onMouseDown}
+        action={props.action}
+      />
+    )
+  }
 
   if (isForgedBlockType(props.type)) {
     return <ForgedBlockCard type={props.type} onMouseDown={props.onMouseDown} />

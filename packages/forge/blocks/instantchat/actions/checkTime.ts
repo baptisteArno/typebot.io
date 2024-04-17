@@ -4,11 +4,11 @@ import { baseOptions } from '../baseOptions'
 import { auth } from '../auth'
 
 export const checkTime = createAction({
-  name: 'Check time',
+  name: 'Horário',
   baseOptions,
   options: option.object({
     checktime: option.string.layout({
-      label: 'Check time',
+      label: 'Horário',
       moreInfoTooltip:
         'Informe o nome do ckecktime ou escolha a variável que contém essa informação.',
       fetcher: 'fetchChecktimes',

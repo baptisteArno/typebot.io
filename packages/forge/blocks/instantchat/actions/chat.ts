@@ -14,7 +14,7 @@ export const chat = createAction({
     responseMapping: option
       .saveResponseArray(['Identificador do Cliente', 'Data e Hora', 'Unique ID', 'Plataforma', 'Dado Adicional 1 (chave)', 'Dado Adicional 1 (valor)', 'Dado Adicional 2 (chave)', 'Dado Adicional 2 (valor)', 'Mensagens', 'Nome do Agente', 'Fila do Agente', 'Email do Agente'] as const)
       .layout({
-        accordion: 'Salvar dados',
+        accordion: 'Salvar resultado',
       }),
   }),
   getSetVariableIds: ({ responseMapping }) =>
