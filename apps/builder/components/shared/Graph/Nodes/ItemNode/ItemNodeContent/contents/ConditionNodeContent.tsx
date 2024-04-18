@@ -7,7 +7,7 @@ import {
   LogicalOperator,
 } from 'models'
 import React from 'react'
-import { byId, isNotDefined } from 'utils'
+import { byIdOrToken, isNotDefined } from 'utils'
 
 type Props = {
   item: ConditionItem
@@ -19,7 +19,7 @@ export const ConditionNodeContent = ({ item }: Props) => {
   return (
     <Flex px={2} py={2}>
       {item.content.comparisons.length === 0 ||
-      comparisonIsEmpty(item.content.comparisons[0]) ? (
+        comparisonIsEmpty(item.content.comparisons[0]) ? (
         <Text color={'gray.500'}>Adicionar uma regra...</Text>
       ) : (
         <Stack maxW="170px">
