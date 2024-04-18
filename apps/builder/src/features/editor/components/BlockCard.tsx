@@ -15,6 +15,7 @@ import { BlockV6 } from '@typebot.io/schemas'
 import { BlockCardLayout } from './BlockCardLayout'
 import { ForgedBlockCard } from '@/features/forge/ForgedBlockCard'
 import { isForgedBlockType } from '@typebot.io/schemas/features/blocks/forged/helpers'
+import { ForgedBlock } from '@typebot.io/forge-repository/types'
 
 type Props = {
   type: BlockV6['type']
@@ -35,7 +36,7 @@ export const BlockCard = (
     // Created in a separate if to ease conflicts
     return (
       <ForgedBlockCard
-        type={props.action as (typeof enabledBlocks)[number]}
+        type={props.action as ForgedBlock['type']}
         onMouseDown={props.onMouseDown}
         action={props.action}
       />
