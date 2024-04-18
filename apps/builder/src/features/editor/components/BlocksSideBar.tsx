@@ -25,7 +25,7 @@ import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/consta
 import { BlockV6 } from '@typebot.io/schemas'
 import { useDebouncedCallback } from 'use-debounce'
 import { forgedBlockIds } from '@typebot.io/forge-repository/constants'
-import { forgedBlocks } from '@typebot.io/forge-schemas'
+import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
 
 // Integration blocks migrated to forged blocks
 const legacyIntegrationBlocks = [
@@ -34,11 +34,9 @@ const legacyIntegrationBlocks = [
 ]
 
 const getInstantAIOActions = () => {
-  const block = forgedBlocks.filter((block) => {
-    return block.name === 'InstantAIO'
-  })[0]
-  const actions = block.actions
-  return actions.map((action) => action.name)
+  const block = forgedBlocks['instantchat']
+  if (block && block.actions) return block.actions.map((action) => action.name)
+  return []
 }
 
 export const BlocksSideBar = () => {

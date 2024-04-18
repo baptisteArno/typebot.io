@@ -49,17 +49,16 @@ import { TurnableIntoParam } from '@typebot.io/forge'
 import { ZodError, ZodObject } from 'zod'
 import { toast } from 'sonner'
 import { fromZodError } from 'zod-validation-error'
-import { forgedBlocks } from '@typebot.io/forge-schemas'
+import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
 
 const isInstantAIOAction = (action: string) => {
-  const actions = forgedBlocks.filter((block) => {
-    return block.name === 'InstantAIO'
-  })[0].actions
-
+  const block = forgedBlocks['instantchat']
   let exists = false
-  actions.forEach((obj) => {
-    if (obj.name === action) exists = true
-  })
+  if (block && block.actions) {
+    block.actions.forEach((obj) => {
+      if (obj.name === action) exists = true
+    })
+  }
   return exists
 }
 
