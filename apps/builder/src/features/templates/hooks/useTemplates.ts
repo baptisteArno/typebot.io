@@ -94,7 +94,6 @@ export const useTemplates = (): TemplateProps[] => {
       emoji: '🤖',
       fileName: 'audio-chat-gpt.json',
       description: t('templates.modal.other.audioChatGpt.description'),
-      isNew: true,
     },
     {
       name: t('templates.modal.other.chatGptPersonas.name'),
@@ -120,7 +119,6 @@ export const useTemplates = (): TemplateProps[] => {
       name: t('templates.modal.other.openAiConditions.name'),
       emoji: '🧠',
       fileName: 'openai-conditions.json',
-      isNew: true,
       description: t('templates.modal.other.openAiConditions.description'),
     },
   ]
