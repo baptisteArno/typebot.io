@@ -8,9 +8,11 @@ export const parseDateInput =
     const variables = state.typebotsQueue[0].typebot.variables
     if (!block.options) return deepParseVariables(variables)(block)
     return {
-      ...deepParseVariables(variables)(block),
+      ...block,
       options: {
-        ...deepParseVariables(variables)(block.options),
+        ...deepParseVariables(variables, { removeEmptyStrings: true })(
+          block.options
+        ),
         min: parseDateLimit(
           block.options.min,
           block.options.hasTime,

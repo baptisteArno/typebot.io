@@ -118,7 +118,8 @@ export const executeForgedBlock = async (
     : undefined
 
   const parsedOptions = deepParseVariables(
-    state.typebotsQueue[0].typebot.variables
+    state.typebotsQueue[0].typebot.variables,
+    { removeEmptyStrings: true }
   )(block.options)
   await action?.run?.server?.({
     credentials: credentialsData ?? {},

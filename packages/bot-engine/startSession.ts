@@ -154,7 +154,8 @@ export const startSession = async ({
       typebot: {
         id: typebot.id,
         settings: deepParseVariables(
-          initialState.typebotsQueue[0].typebot.variables
+          initialState.typebotsQueue[0].typebot.variables,
+          { removeEmptyStrings: true }
         )(typebot.settings),
         theme: sanitizeAndParseTheme(typebot.theme, {
           variables: initialState.typebotsQueue[0].typebot.variables,
@@ -257,7 +258,8 @@ export const startSession = async ({
       typebot: {
         id: typebot.id,
         settings: deepParseVariables(
-          newSessionState.typebotsQueue[0].typebot.variables
+          newSessionState.typebotsQueue[0].typebot.variables,
+          { removeEmptyStrings: true }
         )(typebot.settings),
         theme: sanitizeAndParseTheme(typebot.theme, {
           variables: initialState.typebotsQueue[0].typebot.variables,
@@ -274,7 +276,8 @@ export const startSession = async ({
     typebot: {
       id: typebot.id,
       settings: deepParseVariables(
-        newSessionState.typebotsQueue[0].typebot.variables
+        newSessionState.typebotsQueue[0].typebot.variables,
+        { removeEmptyStrings: true }
       )(typebot.settings),
       theme: sanitizeAndParseTheme(typebot.theme, {
         variables: initialState.typebotsQueue[0].typebot.variables,
@@ -451,9 +454,11 @@ const sanitizeAndParseTheme = (
   { variables }: { variables: Variable[] }
 ): Theme => ({
   general: theme.general
-    ? deepParseVariables(variables)(theme.general)
+    ? deepParseVariables(variables, { removeEmptyStrings: true })(theme.general)
     : undefined,
-  chat: theme.chat ? deepParseVariables(variables)(theme.chat) : undefined,
+  chat: theme.chat
+    ? deepParseVariables(variables, { removeEmptyStrings: true })(theme.chat)
+    : undefined,
   customCss: theme.customCss
     ? removeLiteBadgeCss(parseVariables(variables)(theme.customCss))
     : undefined,

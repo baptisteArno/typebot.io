@@ -226,7 +226,8 @@ export const parseInput =
       }
       case InputBlockType.NUMBER: {
         const parsedBlock = deepParseVariables(
-          state.typebotsQueue[0].typebot.variables
+          state.typebotsQueue[0].typebot.variables,
+          { removeEmptyStrings: true }
         )({
           ...block,
           prefilledValue: getPrefilledInputValue(
@@ -254,7 +255,8 @@ export const parseInput =
       }
       case InputBlockType.RATING: {
         const parsedBlock = deepParseVariables(
-          state.typebotsQueue[0].typebot.variables
+          state.typebotsQueue[0].typebot.variables,
+          { removeEmptyStrings: true }
         )({
           ...block,
           prefilledValue: getPrefilledInputValue(
@@ -272,7 +274,9 @@ export const parseInput =
         }
       }
       default: {
-        return deepParseVariables(state.typebotsQueue[0].typebot.variables)({
+        return deepParseVariables(state.typebotsQueue[0].typebot.variables, {
+          removeEmptyStrings: true,
+        })({
           ...block,
           runtimeOptions: await computeRuntimeOptions(state)(block),
           prefilledValue: getPrefilledInputValue(

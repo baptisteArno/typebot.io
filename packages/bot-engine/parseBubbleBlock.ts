@@ -55,7 +55,9 @@ export const parseBubbleBlock = (
     }
 
     case BubbleBlockType.EMBED: {
-      const message = deepParseVariables(variables)(block)
+      const message = deepParseVariables(variables, {
+        removeEmptyStrings: true,
+      })(block)
       return {
         ...message,
         content: {
@@ -69,7 +71,9 @@ export const parseBubbleBlock = (
     }
     case BubbleBlockType.VIDEO: {
       const parsedContent = block.content
-        ? deepParseVariables(variables)(block.content)
+        ? deepParseVariables(variables, { removeEmptyStrings: true })(
+            block.content
+          )
         : undefined
 
       return {
@@ -85,7 +89,7 @@ export const parseBubbleBlock = (
       }
     }
     default:
-      return deepParseVariables(variables)(block)
+      return deepParseVariables(variables, { removeEmptyStrings: true })(block)
   }
 }
 
