@@ -25,12 +25,19 @@ import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/consta
 import { BlockV6 } from '@typebot.io/schemas'
 import { useDebouncedCallback } from 'use-debounce'
 import { forgedBlockIds } from '@typebot.io/forge-repository/constants'
+import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
 
 // Integration blocks migrated to forged blocks
 const legacyIntegrationBlocks = [
   IntegrationBlockType.OPEN_AI,
   IntegrationBlockType.ZEMANTIC_AI,
 ]
+
+const getInstantAIOActions = () => {
+  const block = forgedBlocks['instantchat']
+  if (block && block.actions) return block.actions.map((action) => action.name)
+  return []
+}
 
 export const BlocksSideBar = () => {
   const { t } = useTranslate()
@@ -177,6 +184,22 @@ export const BlocksSideBar = () => {
           <SimpleGrid columns={2} spacing="3">
             {Object.values(LogicBlockType).map((type) => (
               <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
+            ))}
+          </SimpleGrid>
+        </Stack>
+
+        <Stack>
+          <Text fontSize="sm" fontWeight="semibold">
+            Instant All-In-One
+          </Text>
+          <SimpleGrid columns={2} spacing="3">
+            {getInstantAIOActions().map((type) => (
+              <BlockCard
+                key="instantchat"
+                type="instantchat"
+                onMouseDown={handleMouseDown}
+                action={type}
+              />
             ))}
           </SimpleGrid>
         </Stack>

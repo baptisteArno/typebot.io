@@ -49,6 +49,18 @@ import { TurnableIntoParam } from '@typebot.io/forge'
 import { ZodError, ZodObject } from 'zod'
 import { toast } from 'sonner'
 import { fromZodError } from 'zod-validation-error'
+import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
+
+const isInstantAIOAction = (action: string) => {
+  const block = forgedBlocks['instantchat']
+  let exists = false
+  if (block && block.actions) {
+    block.actions.forEach((obj) => {
+      if (obj.name === action) exists = true
+    })
+  }
+  return exists
+}
 
 export const BlockNode = ({
   block,
@@ -221,6 +233,16 @@ export const BlockNode = ({
   const hasIcomingEdge = typebot?.edges.some((edge) => {
     return edge.to.blockId === block.id
   })
+
+  if (isInstantAIOAction(block.type)) {
+    // Hacking the immutable object to force a specific instantchat action
+    const newBlock = {
+      id: block.id,
+      type: 'instantchat',
+      options: { action: block.type },
+    } as BlockV6
+    block = newBlock
+  }
 
   return openedBlockId === block.id && isTextBubbleBlock(block) ? (
     <TextBubbleEditor
