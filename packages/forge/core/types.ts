@@ -70,6 +70,12 @@ export type ActionDefinition<
     }
     web?: {
       displayEmbedBubble?: {
+        /**
+         * Used to determine the URL to be displayed as a text bubble in runtimes where the code can't be executed. (i.e. WhatsApp)
+         */
+        parseUrl: (params: {
+          options: z.infer<BaseOptions> & z.infer<Options>
+        }) => string | undefined
         waitForEvent?: {
           getSaveVariableId?: (
             options: z.infer<BaseOptions> & z.infer<Options>

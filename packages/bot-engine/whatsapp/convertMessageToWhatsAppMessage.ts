@@ -7,11 +7,11 @@ import { convertRichTextToMarkdown } from '@typebot.io/lib/markdown/convertRichT
 
 export const convertMessageToWhatsAppMessage = (
   message: ContinueChatResponse['messages'][number]
-): WhatsAppSendingMessage | undefined => {
+): WhatsAppSendingMessage | null => {
   switch (message.type) {
     case BubbleBlockType.TEXT: {
       if (!message.content.richText || message.content.richText.length === 0)
-        return
+        return null
       return {
         type: 'text',
         text: {
@@ -23,7 +23,7 @@ export const convertMessageToWhatsAppMessage = (
     }
     case BubbleBlockType.IMAGE: {
       if (!message.content.url || isImageUrlNotCompatible(message.content.url))
-        return
+        return null
       return {
         type: 'image',
         image: {
@@ -32,7 +32,7 @@ export const convertMessageToWhatsAppMessage = (
       }
     }
     case BubbleBlockType.AUDIO: {
-      if (!message.content.url) return
+      if (!message.content.url) return null
       return {
         type: 'audio',
         audio: {
@@ -45,7 +45,7 @@ export const convertMessageToWhatsAppMessage = (
         !message.content.url ||
         message.content.type !== VideoBubbleContentType.URL
       )
-        return
+        return null
       return {
         type: 'video',
         video: {
@@ -54,7 +54,17 @@ export const convertMessageToWhatsAppMessage = (
       }
     }
     case BubbleBlockType.EMBED: {
-      if (!message.content.url) return
+      if (!message.content.url) return null
+      return {
+        type: 'text',
+        text: {
+          body: message.content.url,
+        },
+        preview_url: true,
+      }
+    }
+    case 'custom-embed': {
+      if (!message.content.url) return null
       return {
         type: 'text',
         text: {

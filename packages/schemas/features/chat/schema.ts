@@ -99,6 +99,7 @@ const embedMessageSchema = z
   })
 
 const displayEmbedBubbleSchema = z.object({
+  url: z.string().optional(),
   maxBubbleWidth: z.number().optional(),
   waitForEventFunction: z
     .object({
