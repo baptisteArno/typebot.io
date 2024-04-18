@@ -328,10 +328,11 @@ model ClaimableCustomPlan {
 }
 
 model ChatSession {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  state     Json
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+  state      Json
+  isReplying Boolean?
 }
 
 model ThemeTemplate {

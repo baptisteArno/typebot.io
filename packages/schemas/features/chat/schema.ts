@@ -28,13 +28,20 @@ import { preprocessTypebot } from '../typebot/helpers/preprocessTypebot'
 import { typebotV5Schema, typebotV6Schema } from '../typebot/typebot'
 import { BubbleBlockType } from '../blocks/bubbles/constants'
 import { clientSideActionSchema } from './clientSideAction'
+import { ChatSession as ChatSessionFromPrisma } from '@typebot.io/prisma'
 
 const chatSessionSchema = z.object({
   id: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
   state: sessionStateSchema,
-})
+  isReplying: z
+    .boolean()
+    .nullable()
+    .describe(
+      'Used in WhatsApp runtime to avoid concurrent replies from the bot'
+    ),
+}) satisfies z.ZodType<ChatSessionFromPrisma, z.ZodTypeDef, unknown>
 export type ChatSession = z.infer<typeof chatSessionSchema>
 
 const textMessageSchema = z

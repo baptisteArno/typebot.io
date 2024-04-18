@@ -16,7 +16,6 @@ type Props = {
   logs: ContinueChatResponse['logs']
   clientSideActions: ContinueChatResponse['clientSideActions']
   visitedEdges: VisitedEdge[]
-  forceCreateSession?: boolean
   hasCustomEmbedBubble?: boolean
 }
 
@@ -25,7 +24,6 @@ export const saveStateToDatabase = async ({
   input,
   logs,
   clientSideActions,
-  forceCreateSession,
   visitedEdges,
   hasCustomEmbedBubble,
 }: Props) => {
@@ -43,13 +41,12 @@ export const saveStateToDatabase = async ({
 
   if (id) {
     if (isCompleted && resultId) queries.push(deleteSession(id))
-    else queries.push(updateSession({ id, state }))
+    else queries.push(updateSession({ id, state, isReplying: false }))
   }
 
-  const session =
-    id && !forceCreateSession
-      ? { state, id }
-      : await createSession({ id, state })
+  const session = id
+    ? { state, id }
+    : await createSession({ id, state, isReplying: false })
 
   if (!resultId) {
     if (queries.length > 0) await prisma.$transaction(queries)
