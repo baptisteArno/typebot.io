@@ -7,7 +7,7 @@ import { defaultImageBubbleContent } from '@typebot.io/schemas/features/blocks/b
 
 type Props = {
   content: ImageBubbleBlock['content']
-  onTransitionEnd?: (offsetTop?: number) => void
+  onTransitionEnd?: (ref?: HTMLDivElement) => void
 }
 
 export const showAnimationDuration = 400
@@ -27,7 +27,7 @@ export const ImageBubble = (props: Props) => {
     if (!isTyping()) return
     setIsTyping(false)
     setTimeout(() => {
-      props.onTransitionEnd?.(ref?.offsetTop)
+      props.onTransitionEnd?.(ref)
     }, showAnimationDuration)
   }
 

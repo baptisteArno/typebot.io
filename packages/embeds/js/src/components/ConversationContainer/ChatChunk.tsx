@@ -22,7 +22,7 @@ type Props = Pick<ContinueChatResponse, 'messages' | 'input'> & {
   streamingMessageId: ChatChunkType['streamingMessageId']
   isTransitionDisabled?: boolean
   onNewBubbleDisplayed: (blockId: string) => Promise<void>
-  onScrollToBottom: (top?: number) => void
+  onScrollToBottom: (ref?: HTMLDivElement, offset?: number) => void
   onSubmit: (input?: string) => void
   onSkip: () => void
   onAllBubblesDisplayed: () => void
@@ -33,19 +33,17 @@ export const ChatChunk = (props: Props) => {
   const [displayedMessageIndex, setDisplayedMessageIndex] = createSignal(
     props.isTransitionDisabled ? props.messages.length : 0
   )
-  const [lastBubbleOffsetTop, setLastBubbleOffsetTop] = createSignal<number>()
+  const [lastBubble, setLastBubble] = createSignal<HTMLDivElement>()
 
   onMount(() => {
     if (props.streamingMessageId) return
     if (props.messages.length === 0) {
       props.onAllBubblesDisplayed()
     }
-    props.onScrollToBottom(
-      inputRef?.offsetTop ? inputRef?.offsetTop - 50 : undefined
-    )
+    props.onScrollToBottom(inputRef, 50)
   })
 
-  const displayNextMessage = async (bubbleOffsetTop?: number) => {
+  const displayNextMessage = async (bubbleRef?: HTMLDivElement) => {
     if (
       (props.settings.typingEmulation?.delayBetweenBubbles ??
         defaultSettings.typingEmulation.delayBetweenBubbles) > 0 &&
@@ -66,9 +64,9 @@ export const ChatChunk = (props: Props) => {
         ? displayedMessageIndex()
         : displayedMessageIndex() + 1
     )
-    props.onScrollToBottom(bubbleOffsetTop)
+    props.onScrollToBottom(bubbleRef)
     if (displayedMessageIndex() === props.messages.length) {
-      setLastBubbleOffsetTop(bubbleOffsetTop)
+      setLastBubble(bubbleRef)
       props.onAllBubblesDisplayed()
     }
   }
@@ -143,7 +141,7 @@ export const ChatChunk = (props: Props) => {
             defaultSettings.general.isInputPrefillEnabled
           }
           hasError={props.hasError}
-          onTransitionEnd={() => props.onScrollToBottom(lastBubbleOffsetTop())}
+          onTransitionEnd={() => props.onScrollToBottom(lastBubble())}
           onSubmit={props.onSubmit}
           onSkip={props.onSkip}
         />

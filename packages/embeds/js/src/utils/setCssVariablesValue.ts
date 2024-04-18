@@ -525,7 +525,6 @@ const setInputs = (
       : '0'
   )
 
-  console.log(hexToRgb(inputs?.border?.color ?? '').join(', '))
   documentStyle.setProperty(
     cssVariableNames.chat.inputs.borderColor,
     hexToRgb(inputs?.border?.color ?? '').join(', ')

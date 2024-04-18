@@ -224,14 +224,27 @@ export const ConversationContainer = (props: Props) => {
     ])
   }
 
-  const autoScrollToBottom = (offsetTop?: number) => {
-    const chunks = chatChunks()
-    const lastChunkWasStreaming =
-      chunks.length >= 2 && chunks[chunks.length - 2].streamingMessageId
-    if (lastChunkWasStreaming) return
-    setTimeout(() => {
-      chatContainer?.scrollTo(0, offsetTop ?? chatContainer.scrollHeight)
-    }, 50)
+  const autoScrollToBottom = (lastElement?: HTMLDivElement, offset = 0) => {
+    if (!chatContainer) return
+    if (!lastElement) {
+      setTimeout(() => {
+        chatContainer?.scrollTo(0, chatContainer.scrollHeight)
+      }, 50)
+      return
+    }
+    const lastElementRect = lastElement.getBoundingClientRect()
+    const containerRect = chatContainer.getBoundingClientRect()
+    const lastElementTopRelative =
+      lastElementRect.top - containerRect.top + chatContainer.scrollTop
+
+    const isLastElementInVisibleArea =
+      lastElementTopRelative < chatContainer.scrollTop + containerRect.height &&
+      lastElementTopRelative + lastElementRect.height > chatContainer.scrollTop
+
+    if (isLastElementInVisibleArea)
+      setTimeout(() => {
+        chatContainer?.scrollTo(0, lastElement.offsetTop - offset)
+      }, 50)
   }
 
   const handleAllBubblesDisplayed = async () => {
