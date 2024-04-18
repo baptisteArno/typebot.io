@@ -25,7 +25,7 @@ export const ConditionNodeContent = ({ item }: Props) => {
         <Stack maxW="170px">
           {item.content.comparisons.map((comparison, idx) => {
             const variable = typebot?.variables.find(
-              byId(comparison.variableId)
+              byIdOrToken(comparison.variableId)
             )
             return (
               <Wrap key={comparison.id} spacing={1} noOfLines={0}>

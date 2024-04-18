@@ -172,6 +172,8 @@ export const stepHasItems = (
 
 export const byId = (id?: string) => (obj: { id: string }) => obj.id === id
 
+export const byIdOrToken = (comparison?: string) => (obj: { id: string, token: string }) => obj.id === comparison || obj.token === comparison
+
 export const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 
 interface Omit {
