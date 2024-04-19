@@ -128,6 +128,16 @@ const nextConfig = {
                 ],
               }))
             )
+            .concat([
+              {
+                source: '/blog',
+                destination: `${process.env.LANDING_PAGE_URL}/blog`,
+              },
+              {
+                source: '/blog/:slug',
+                destination: `${process.env.LANDING_PAGE_URL}/blog/:slug`, // Matched parameters can be used in the destination
+              },
+            ])
         : []
       )
         .concat([
