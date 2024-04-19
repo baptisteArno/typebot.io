@@ -3,7 +3,7 @@
   "license": "AGPL-3.0-or-later",
   "version": "0.1.0",
   "scripts": {
-    "dev": "dotenv -e ./.env -e ../../.env  -- next dev -p 3001",
+    "dev": "dotenv -e ./.env -e ../../.env  -- next dev -p 3101",
     "build": "dotenv -e ./.env -e ../../.env -- next build",
     "start": "dotenv -e ./.env -e ../../.env -- next start",
     "lint": "dotenv -e ./.env -e ../../.env -- next lint",

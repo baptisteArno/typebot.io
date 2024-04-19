@@ -17,11 +17,25 @@ export const ForgedBlockCard = (props: {
 
   if (props.action) {
     // Created in a separate if to ease conflicts
+    let tooltip
+    switch (props.action) {
+      case 'Fila':
+        tooltip = 'Transferir o atendimento para uma fila'
+        break
+      case 'Horário':
+        tooltip = 'Verificar horário de atendimento'
+        break
+      case 'Cortex':
+        tooltip = 'Perguntar ao atendente virtual Cortex'
+        break
+      case 'Infos':
+        tooltip = 'Obter informações sobre o atendimento'
+        break
+      default:
+        break
+    }
     return (
-      <BlockCardLayout
-        {...props}
-        tooltip={blockDef?.fullName ? blockDef.fullName : undefined}
-      >
+      <BlockCardLayout {...props} tooltip={tooltip}>
         <BlockIcon type={type} />
         <Text fontSize="sm">{props.action}</Text>
       </BlockCardLayout>
