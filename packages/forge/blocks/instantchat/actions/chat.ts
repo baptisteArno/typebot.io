@@ -3,7 +3,7 @@ import { isDefined } from '@typebot.io/lib'
 import { baseOptions } from '../baseOptions'
 
 export const chat = createAction({
-  name: 'Atendimento',
+  name: 'Infos',
   baseOptions,
   options: option.object({
     uniqueId: option.string.layout({
