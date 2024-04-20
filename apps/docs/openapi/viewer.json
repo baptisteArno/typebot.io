@@ -12033,6 +12033,9 @@
           "content": {
             "type": "object",
             "properties": {
+              "url": {
+                "type": "string"
+              },
               "maxBubbleWidth": {
                 "type": "number"
               },

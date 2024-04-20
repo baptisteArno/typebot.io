@@ -26,6 +26,7 @@
     "next-mdx-remote": "4.4.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-tweet": "3.2.1",
     "sugar-high": "0.6.0"
   },
   "devDependencies": {

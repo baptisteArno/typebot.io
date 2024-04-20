@@ -1,9 +1,29 @@
+/* eslint-disable jsx-a11y/alt-text */
 'use client'
 
 import { Link } from '@chakra-ui/next-js'
-import { Heading, Stack, Text } from '@chakra-ui/react'
+import {
+  Alert,
+  AlertIcon,
+  Heading,
+  Stack,
+  Table,
+  TableCaption,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Tfoot,
+  Th,
+  Thead,
+  Tr,
+  Image,
+} from '@chakra-ui/react'
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { highlight } from 'sugar-high'
+import { Tweet } from './Tweet'
+import { Standard } from '@typebot.io/nextjs'
+import { EndCta } from '@/components/Homepage/EndCta'
 
 type Props = {
   metadata: {
@@ -14,7 +34,7 @@ type Props = {
 }
 
 export const Post = ({ metadata, mdxSource }: Props) => (
-  <Stack spacing={10} my="20">
+  <Stack spacing={10} my="20" w="full">
     <Stack mx="auto" w="full" maxW="65ch">
       <Heading>{metadata.title}</Heading>
       <Text>{formatDate(metadata.publishedAt)}</Text>
@@ -23,7 +43,7 @@ export const Post = ({ metadata, mdxSource }: Props) => (
       mx="auto"
       spacing={0}
       as="article"
-      className="prose prose-quoteless prose-neutral prose-invert"
+      className="prose prose-quoteless prose-neutral prose-invert max-w-none w-full px-3 sm:px-0"
     >
       <MDXRemote
         {...mdxSource}
@@ -42,6 +62,87 @@ export const Post = ({ metadata, mdxSource }: Props) => (
           },
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           link: (props: any) => <Link {...props} />,
+          Image: (props) => (
+            <Image rounded="md" maxW={['full', '65ch']} {...props} />
+          ),
+          Callout: ({ children, ...props }) => (
+            <Alert rounded="md" {...props}>
+              <AlertIcon />
+              {children}
+            </Alert>
+          ),
+          Tweet,
+          Typebot: Standard,
+          Youtube: ({ id }: { id: string }) => (
+            <div className="w-full">
+              <div
+                style={{
+                  position: 'relative',
+                  paddingBottom: '64.63195691202873%',
+                  height: 0,
+                  width: '100%',
+                }}
+              >
+                <iframe
+                  src={`https://www.youtube.com/embed/${id}`}
+                  allowFullScreen
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                  }}
+                ></iframe>
+              </div>
+            </div>
+          ),
+          Loom: ({ id }: { id: string }) => (
+            <div className="w-full">
+              <div
+                style={{
+                  position: 'relative',
+                  paddingBottom: '64.63195691202873%',
+                  height: 0,
+                  width: '100%',
+                }}
+              >
+                <iframe
+                  src={`https://www.loom.com/embed/${id}`}
+                  allowFullScreen
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                  }}
+                ></iframe>
+              </div>
+            </div>
+          ),
+          Cta: (props) => (
+            <EndCta
+              {...props}
+              style={{ maxWidth: 'none' }}
+              w="full"
+              height="70vh"
+              className="w-full"
+              bgGradient={undefined}
+            />
+          ),
+          table: (props) => (
+            <TableContainer>
+              <Table {...props} />
+            </TableContainer>
+          ),
+          thead: Thead,
+          tbody: Tbody,
+          th: Th,
+          td: Td,
+          tfoot: Tfoot,
+          tr: Tr,
+          caption: TableCaption,
         }}
       />
     </Stack>
