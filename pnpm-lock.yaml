@@ -509,7 +509,7 @@ importers:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
       react-tweet:
-        specifier: ^3.2.1
+        specifier: 3.2.1
         version: 3.2.1(react-dom@18.2.0)(react@18.2.0)
       sugar-high:
         specifier: 0.6.0
