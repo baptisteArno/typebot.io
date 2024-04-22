@@ -65,12 +65,7 @@ export const TypebotHeader = () => {
       flexShrink={0}
     >
       {isOpen && <SupportBubble autoShowDelay={0} />}
-      <LeftElements
-        pos="absolute"
-        left="1rem"
-        onHelpClick={handleHelpClick}
-        hidden
-      />
+      <LeftElements pos="absolute" left="1rem" onHelpClick={handleHelpClick} />
       <TypebotNav
         display={{ base: 'none', xl: 'flex' }}
         pos={{ base: 'absolute' }}
@@ -230,6 +225,7 @@ const LeftElements = ({
           </HStack>
         )}
         <Button
+          hidden
           leftIcon={<BuoyIcon />}
           onClick={onHelpClick}
           size="sm"
