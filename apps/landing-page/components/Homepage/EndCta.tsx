@@ -12,7 +12,12 @@ import Link from 'next/link'
 import React from 'react'
 import { BackgroundPolygons } from './Hero/BackgroundPolygons'
 
-export const EndCta = (props: StackProps) => {
+type Props = {
+  heading?: string
+  polygonsBaseTop?: string
+} & StackProps
+
+export const EndCta = (props: Props) => {
   return (
     <VStack
       as="section"
@@ -23,22 +28,24 @@ export const EndCta = (props: StackProps) => {
       justifyContent="center"
       {...props}
     >
-      <BackgroundPolygons />
+      <BackgroundPolygons baseTop={props.polygonsBaseTop} />
       <VStack
         spacing="6"
-        maxW="2xl"
+        maxW="3xl"
         mx="auto"
         px={{ base: '6', lg: '8' }}
         py={{ base: '16', sm: '20' }}
         textAlign="center"
       >
-        <Heading
-          fontWeight="extrabold"
-          letterSpacing="tight"
-          data-aos="fade-up"
-        >
-          Improve conversion and user engagement with typebots
-        </Heading>
+        {props.heading ? (
+          <Heading
+            fontWeight="extrabold"
+            letterSpacing="tight"
+            data-aos="fade-up"
+          >
+            {props.heading}
+          </Heading>
+        ) : null}
         <Flex>
           <Button
             as={Link}

@@ -113,9 +113,11 @@ export const Post = ({ metadata, mdxSource }: Props) => (
               {...props}
               style={{ maxWidth: 'none' }}
               w="full"
-              height="70vh"
+              h="auto"
+              py="0"
               className="w-full"
               bgGradient={undefined}
+              polygonsBaseTop="0px"
             />
           ),
           Table,
