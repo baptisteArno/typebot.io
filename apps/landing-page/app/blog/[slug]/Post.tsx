@@ -2,28 +2,13 @@
 'use client'
 
 import { Link } from '@chakra-ui/next-js'
-import {
-  Alert,
-  AlertIcon,
-  Heading,
-  Stack,
-  Table,
-  TableCaption,
-  TableContainer,
-  Tbody,
-  Td,
-  Text,
-  Tfoot,
-  Th,
-  Thead,
-  Tr,
-  Image,
-} from '@chakra-ui/react'
+import { Alert, AlertIcon, Heading, Stack, Text, Image } from '@chakra-ui/react'
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { highlight } from 'sugar-high'
 import { Tweet } from './Tweet'
 import { Standard } from '@typebot.io/nextjs'
 import { EndCta } from '@/components/Homepage/EndCta'
+import { Table } from './Table'
 
 type Props = {
   metadata: {
@@ -35,7 +20,7 @@ type Props = {
 
 export const Post = ({ metadata, mdxSource }: Props) => (
   <Stack spacing={10} my="20" w="full">
-    <Stack mx="auto" w="full" maxW="65ch">
+    <Stack mx="auto" w="full" maxW={['full', '46rem']} px={3}>
       <Heading>{metadata.title}</Heading>
       <Text>{formatDate(metadata.publishedAt)}</Text>
     </Stack>
@@ -43,7 +28,9 @@ export const Post = ({ metadata, mdxSource }: Props) => (
       mx="auto"
       spacing={0}
       as="article"
-      className="prose prose-quoteless prose-neutral prose-invert max-w-none w-full px-3 sm:px-0"
+      px={3}
+      w="full"
+      className="prose prose-quoteless prose-neutral prose-invert max-w-none"
     >
       <MDXRemote
         {...mdxSource}
@@ -63,7 +50,7 @@ export const Post = ({ metadata, mdxSource }: Props) => (
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           link: (props: any) => <Link {...props} />,
           Image: (props) => (
-            <Image rounded="md" maxW={['full', '65ch']} {...props} />
+            <Image rounded="md" maxW={['full', '46rem']} {...props} />
           ),
           Callout: ({ children, ...props }) => (
             <Alert rounded="md" {...props}>
@@ -131,18 +118,7 @@ export const Post = ({ metadata, mdxSource }: Props) => (
               bgGradient={undefined}
             />
           ),
-          table: (props) => (
-            <TableContainer>
-              <Table {...props} />
-            </TableContainer>
-          ),
-          thead: Thead,
-          tbody: Tbody,
-          th: Th,
-          td: Td,
-          tfoot: Tfoot,
-          tr: Tr,
-          caption: TableCaption,
+          Table,
         }}
       />
     </Stack>

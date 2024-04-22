@@ -15,7 +15,8 @@
 }
 
 .prose > * {
-  max-width: 65ch;
+  width: 100%;
+  max-width: 46rem;
   margin-left: auto;
   margin-right: auto;
 }

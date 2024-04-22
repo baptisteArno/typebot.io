@@ -48,5 +48,27 @@ Here are all the components you can use in your blog post:
 - `YouTube`: To embed a YouTube video. Example: `<YouTube id="<YOUTUBE_VIDEO_ID>" />`
 - `Loom`: To embed a Loom video. Example: `<Loom id="<LOOM_VIDEO_ID>" />`
 - `Cta`: To display a call-to-action that redirects to Typebot. Example: `<Cta />`
+- `Table`: To display a table. It expects 2 props: `headers` and `rows`. Example:
 
-For rendering tables you should use the native html table related tags.
+  ```tsx
+  <Table
+    headers={['Feature', 'Typebot', 'Landbot']}
+    rows={[
+      [
+        'Pricing',
+        'Free plan, $39/mo Starter, $99/mo Pro',
+        'Free plan, €40/mo Starter, €150/mo Pro, €400/mo Business',
+      ],
+      [
+        'Integrations',
+        'Google Sheets, Webhooks, Zapier, Make, SendGrid',
+        'Dialogflow, Salesforce, Slack, Google Sheets, Zapier, Mailchimp',
+      ],
+      [
+        'Customization',
+        'Full theme customization, custom CSS',
+        'Limited theme options',
+      ],
+    ]}
+  />
+  ```
