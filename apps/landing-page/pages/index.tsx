@@ -23,7 +23,7 @@ const App = () => {
       <RealTimeResults />
       <Features />
       <Testimonials />
-      <EndCta />
+      <EndCta heading="Improve conversion and user engagement with typebots" />
       <Footer />
     </Stack>
   )
