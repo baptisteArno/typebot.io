@@ -4,7 +4,6 @@ import type { Metadata } from 'next'
 import { Header } from 'components/common/Header/Header'
 import { Footer } from 'components/common/Footer'
 import { Providers } from './providers'
-import { EndCta } from '@/components/Homepage/EndCta'
 import 'assets/style.css'
 
 export const metadata: Metadata = {
@@ -33,7 +32,6 @@ export default function RootLayout({
         <Providers>
           <Header />
           {children}
-          <EndCta />
           <Footer />
         </Providers>
       </body>

@@ -13,3 +13,9 @@
   --sh-keyword: #f47067;
   --sh-comment: #a19595;
 }
+
+.prose > * {
+  max-width: 65ch;
+  margin-left: auto;
+  margin-right: auto;
+}
