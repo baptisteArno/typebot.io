@@ -2,13 +2,14 @@
 'use client'
 
 import { Link } from '@chakra-ui/next-js'
-import { Alert, AlertIcon, Heading, Stack, Text, Image } from '@chakra-ui/react'
+import { Alert, AlertIcon, Heading, Stack, Text } from '@chakra-ui/react'
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { highlight } from 'sugar-high'
 import { Tweet } from './Tweet'
 import { Standard } from '@typebot.io/nextjs'
 import { EndCta } from '@/components/Homepage/EndCta'
 import { Table } from './Table'
+import Image from 'next/image'
 
 type Props = {
   metadata: {
@@ -50,7 +51,7 @@ export const Post = ({ metadata, mdxSource }: Props) => (
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           link: (props: any) => <Link {...props} />,
           Image: (props) => (
-            <Image rounded="md" maxW={['full', '46rem']} {...props} />
+            <Image {...props} style={{ borderRadius: '.5rem' }} />
           ),
           Callout: ({ children, ...props }) => (
             <Alert rounded="md" {...props}>
