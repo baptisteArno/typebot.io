@@ -2,7 +2,14 @@
 'use client'
 
 import { Link } from '@chakra-ui/next-js'
-import { Alert, AlertIcon, Heading, Stack, Text } from '@chakra-ui/react'
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  Heading,
+  Stack,
+  Text,
+} from '@chakra-ui/react'
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { highlight } from 'sugar-high'
 import { Tweet } from './Tweet'
@@ -53,9 +60,10 @@ export const Post = ({ metadata, mdxSource }: Props) => (
           Image: (props) => (
             <Image {...props} style={{ borderRadius: '.5rem' }} />
           ),
-          Callout: ({ children, ...props }) => (
+          Callout: ({ children, title, ...props }) => (
             <Alert rounded="md" {...props}>
               <AlertIcon />
+              {title ? <AlertTitle>{title}</AlertTitle> : null}
               {children}
             </Alert>
           ),
