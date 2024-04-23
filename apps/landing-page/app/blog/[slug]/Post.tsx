@@ -68,7 +68,17 @@ export const Post = ({ metadata, mdxSource }: Props) => (
             </Alert>
           ),
           Tweet,
-          Typebot: Standard,
+          Typebot: (props) => (
+            <Standard
+              {...props}
+              typebot={props.typebot}
+              style={{
+                borderRadius: '0.375rem',
+                borderWidth: '1px',
+                height: '533px',
+              }}
+            />
+          ),
           Youtube: ({ id }: { id: string }) => (
             <div className="w-full">
               <div
