@@ -324,6 +324,20 @@ services:
       "
 ```
 
+## Build your own images
+
+To build your own builder Docker image
+
+```sh
+docker build -t typebot-builder --build-arg SCOPE=builder .
+```
+
+To build your own viewer Docker image
+
+```sh
+docker build -t typebot-viewer --build-arg SCOPE=viewer .
+```
+
 <Note>
   If you're self-hosting Typebot, [sponsoring
   me](https://github.com/sponsors/baptisteArno) is a great way to give back to
