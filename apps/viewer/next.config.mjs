@@ -141,6 +141,17 @@ const nextConfig = {
                 destination: `${process.env.LANDING_PAGE_URL}/blog/:slug`,
               },
               {
+                source: '/_next/static/:static*',
+                has: [
+                  {
+                    type: 'header',
+                    key: 'referer',
+                    value: `https://typebot.io/blog/(?<slug>.*)`,
+                  },
+                ],
+                destination: `${process.env.LANDING_PAGE_URL}/_next/static/:static*`,
+              },
+              {
                 source: '/typebots/:typebot*',
                 has: [
                   {
