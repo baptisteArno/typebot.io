@@ -10419,7 +10419,7 @@
                       "query": {
                         "type": "string"
                       },
-                      "conversation_id": {
+                      "conversationVariableId": {
                         "type": "string"
                       },
                       "user": {
@@ -10457,6 +10457,10 @@
                             }
                           }
                         }
+                      },
+                      "conversation_id": {
+                        "type": "string",
+                        "description": "Deprecated, use `conversationVariableId` instead"
                       }
                     },
                     "required": [

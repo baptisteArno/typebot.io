@@ -1,6 +1,6 @@
-import { ZodRawShape } from 'zod'
+import { ZodRawShape, ZodTypeAny } from 'zod'
 import { AuthDefinition, BlockDefinition, ActionDefinition } from './types'
-import { z } from './zod'
+import { ZodLayoutMetadata, z } from './zod'
 
 export const variableStringSchema = z.custom<`{{${string}}}`>((val) =>
   /^{{.+}}$/g.test(val as string)
@@ -137,17 +137,31 @@ export const option = {
       z.object({ [field]: z.undefined() }),
       ...schemas,
     ]),
-  saveResponseArray: <I extends readonly [string, ...string[]]>(items: I) =>
+  saveResponseArray: <I extends readonly [string, ...string[]]>(
+    items: I,
+    layouts?: {
+      item?: ZodLayoutMetadata<ZodTypeAny>
+      variableId?: ZodLayoutMetadata<ZodTypeAny>
+    }
+  ) =>
     z
       .array(
         z.object({
-          item: z.enum(items).optional().layout({
-            placeholder: 'Select a response',
-            defaultValue: items[0],
-          }),
-          variableId: z.string().optional().layout({
-            inputType: 'variableDropdown',
-          }),
+          item: z
+            .enum(items)
+            .optional()
+            .layout({
+              ...(layouts?.item ?? {}),
+              placeholder: 'Select a response',
+              defaultValue: items[0],
+            }),
+          variableId: z
+            .string()
+            .optional()
+            .layout({
+              ...(layouts?.variableId ?? {}),
+              inputType: 'variableDropdown',
+            }),
         })
       )
       .optional(),
