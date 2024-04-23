@@ -121,5 +121,14 @@ export const useTemplates = (): TemplateProps[] => {
       fileName: 'openai-conditions.json',
       description: t('templates.modal.other.openAiConditions.description'),
     },
+    {
+      name: 'High ticket lead follow-up',
+      emoji: '📞',
+      isNew: true,
+      fileName: 'high-ticket-lead-follow-up.json',
+      category: 'marketing',
+      description:
+        'Simulates a bot that could be triggered after a high ticket lead just downloaded a lead magnet. This bot asks questions about the prospect business and their needs. Every question are powered with AI blocks to make the conversation more engaging and human-like.',
+    },
   ]
 }
