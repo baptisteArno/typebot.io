@@ -53,7 +53,8 @@ export const ImageBubble = (props: Props) => {
       }
       class={clsx(
         isTyping() ? 'opacity-0' : 'opacity-100',
-        props.onTransitionEnd ? 'text-fade-in' : undefined
+        props.onTransitionEnd ? 'text-fade-in' : undefined,
+        props.content?.url?.endsWith('.svg') ? 'w-full' : undefined
       )}
       style={{
         'max-height': '512px',
