@@ -1,5 +1,5 @@
 import type { OpenAI } from 'openai'
-import { ReadOnlyVariableStore } from '@typebot.io/forge'
+import { VariableStore } from '@typebot.io/forge'
 import { isNotEmpty } from '@typebot.io/lib'
 import { ChatCompletionOptions } from '../shared/parseChatCompletionOptions'
 
@@ -8,7 +8,7 @@ export const parseChatCompletionMessages = ({
   variables,
 }: {
   options: ChatCompletionOptions
-  variables: ReadOnlyVariableStore
+  variables: VariableStore
 }): OpenAI.Chat.ChatCompletionMessageParam[] => {
   const parsedMessages = messages
     ?.flatMap((message) => {

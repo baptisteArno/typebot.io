@@ -26,11 +26,6 @@ export async function POST(
   req: Request,
   { params }: { params: { sessionId: string } }
 ) {
-  if (process.env.VERCEL_ENV)
-    return NextResponse.json(
-      { message: "Can't get streaming if hosted on Vercel" },
-      { status: 400, headers: responseHeaders }
-    )
   const messages =
     typeof req.body === 'string' ? JSON.parse(req.body) : req.body
   const { stream, status, message } = await getMessageStream({
