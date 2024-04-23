@@ -37,12 +37,12 @@ summary: 'A short summary of the blog post.'
 
 By default the og image is generated from the title of the blog post. If you want to use a custom og image, you can specify a `image` field in the frontmatter.
 
-All images need to be placed under the `public/images/blog/<POST_FILENAME>` folder where `<POST_FILENAME>` is the name of the mdx file you are creating/editing. The image file name should be in lowercase and separated by `-`.
+All images need to be placed under the `public/images/blog/<POST_FILENAME>` folder where `<POST_FILENAME>` is the name of the mdx file you are creating/editing. The image file name should be in lowercase and separated by `-`. It is best if the image width is no more than 800px.
 
 Here are all the components you can use in your blog post:
 
 - `Image`: To display an image. `width` and `height` props are required and must match the actual size of the image. Example: `<Image src="/images/blog/my-awesome-blog-post/image.jpg" alt="My awesome image" width={800} height={600} />`
-- `Callout`: To display a callout. Example: `<Callout status="info">This is an info callout</Callout>`. You can provide a `status` prop with the value `info`, `warning`, `success`, or `error`.
+- `Callout`: To display a callout. Example: `<Callout status="info" title="Takeaway">This is an info callout</Callout>`. You can provide a `status` prop with the value `info`, `warning`, `success`, or `error`. You can also pass an optional `title` prop.
 - `Tweet`: To embed a tweet. Example: `<Tweet id="1234567890123456789" />`
 - `Typebot`: To embed a typebot as a Standard component. Example: `<Typebot typebot="<YOUR_BOT_PUBLIC_ID>" />`. You can provide the same props as the [Standard component](../../deploy/web/libraries/react#standard).
 - `YouTube`: To embed a YouTube video. Example: `<YouTube id="<YOUTUBE_VIDEO_ID>" />`

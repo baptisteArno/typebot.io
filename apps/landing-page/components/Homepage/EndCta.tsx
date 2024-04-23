@@ -17,7 +17,7 @@ type Props = {
   polygonsBaseTop?: string
 } & StackProps
 
-export const EndCta = (props: Props) => {
+export const EndCta = ({ heading, polygonsBaseTop, ...props }: Props) => {
   return (
     <VStack
       as="section"
@@ -28,7 +28,7 @@ export const EndCta = (props: Props) => {
       justifyContent="center"
       {...props}
     >
-      <BackgroundPolygons baseTop={props.polygonsBaseTop} />
+      <BackgroundPolygons baseTop={polygonsBaseTop} />
       <VStack
         spacing="6"
         maxW="3xl"
@@ -37,13 +37,13 @@ export const EndCta = (props: Props) => {
         py={{ base: '16', sm: '20' }}
         textAlign="center"
       >
-        {props.heading ? (
+        {heading ? (
           <Heading
             fontWeight="extrabold"
             letterSpacing="tight"
             data-aos="fade-up"
           >
-            {props.heading}
+            {heading}
           </Heading>
         ) : null}
         <Flex>

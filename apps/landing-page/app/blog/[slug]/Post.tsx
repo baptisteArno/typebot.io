@@ -2,7 +2,14 @@
 'use client'
 
 import { Link } from '@chakra-ui/next-js'
-import { Alert, AlertIcon, Heading, Stack, Text } from '@chakra-ui/react'
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  Heading,
+  Stack,
+  Text,
+} from '@chakra-ui/react'
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { highlight } from 'sugar-high'
 import { Tweet } from './Tweet'
@@ -21,7 +28,7 @@ type Props = {
 
 export const Post = ({ metadata, mdxSource }: Props) => (
   <Stack spacing={10} my="20" w="full">
-    <Stack mx="auto" w="full" maxW={['full', '46rem']} px={3}>
+    <Stack mx="auto" w="full" maxW={['full', '46rem']} px={[3, 3, 0]}>
       <Heading>{metadata.title}</Heading>
       <Text>{formatDate(metadata.publishedAt)}</Text>
     </Stack>
@@ -37,11 +44,11 @@ export const Post = ({ metadata, mdxSource }: Props) => (
         {...mdxSource}
         components={{
           h1: (props) => <Heading as="h1" {...props} />,
-          h2: (props) => <Heading as="h2" {...props} />,
-          h3: (props) => <Heading as="h3" {...props} />,
-          h4: (props) => <Heading as="h4" {...props} />,
-          h5: (props) => <Heading as="h5" {...props} />,
-          h6: (props) => <Heading as="h6" {...props} />,
+          h2: (props) => <Heading as="h2" fontSize="3xl" {...props} />,
+          h3: (props) => <Heading as="h3" fontSize="2xl" {...props} />,
+          h4: (props) => <Heading as="h4" fontSize="xl" {...props} />,
+          h5: (props) => <Heading as="h5" fontSize="lg" {...props} />,
+          h6: (props) => <Heading as="h6" fontSize="md" {...props} />,
           code: ({ children, ...props }) => {
             const codeHTML = highlight(children?.toString() ?? '')
             return (
@@ -53,14 +60,25 @@ export const Post = ({ metadata, mdxSource }: Props) => (
           Image: (props) => (
             <Image {...props} style={{ borderRadius: '.5rem' }} />
           ),
-          Callout: ({ children, ...props }) => (
+          Callout: ({ children, title, ...props }) => (
             <Alert rounded="md" {...props}>
               <AlertIcon />
+              {title ? <AlertTitle>{title}</AlertTitle> : null}
               {children}
             </Alert>
           ),
           Tweet,
-          Typebot: Standard,
+          Typebot: (props) => (
+            <Standard
+              {...props}
+              typebot={props.typebot}
+              style={{
+                borderRadius: '0.375rem',
+                borderWidth: '1px',
+                height: '533px',
+              }}
+            />
+          ),
           Youtube: ({ id }: { id: string }) => (
             <div className="w-full">
               <div
