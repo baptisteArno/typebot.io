@@ -74,8 +74,7 @@ export const UrlInput = (props: Props) => {
         autocomplete="url"
       />
       <SendButton type="button" class="my-2 ml-2" on:click={submit}>
-        {props.block.options?.labels?.button ??
-          defaultUrlInputOptions.labels.button}
+        {props.block.options?.labels?.button}
       </SendButton>
     </div>
   )
