@@ -36,7 +36,7 @@ export const NumberInput = (props: NumberInputProps) => {
   }
 
   onMount(() => {
-    if (!isMobile() && inputRef) inputRef.focus()
+    if (!isMobile() && inputRef) inputRef.focus({ preventScroll: true })
     window.addEventListener('message', processIncomingEvent)
   })
 

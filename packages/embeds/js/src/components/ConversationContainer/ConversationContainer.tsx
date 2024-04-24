@@ -234,17 +234,15 @@ export const ConversationContainer = (props: Props) => {
     }
     const lastElementRect = lastElement.getBoundingClientRect()
     const containerRect = chatContainer.getBoundingClientRect()
-    const lastElementTopRelative =
-      lastElementRect.top - containerRect.top + chatContainer.scrollTop
 
-    const isLastElementInVisibleArea =
-      lastElementTopRelative < chatContainer.scrollTop + containerRect.height &&
-      lastElementTopRelative + lastElementRect.height > chatContainer.scrollTop
+    const isBottomOfLastElementInView =
+      lastElementRect.top + lastElementRect.height < containerRect.height
 
-    if (isLastElementInVisibleArea)
+    if (isBottomOfLastElementInView) {
       setTimeout(() => {
         chatContainer?.scrollTo(0, lastElement.offsetTop - offset)
       }, 50)
+    }
   }
 
   const handleAllBubblesDisplayed = async () => {

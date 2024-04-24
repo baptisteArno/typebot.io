@@ -90,7 +90,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
   }
 
   onMount(() => {
-    if (!isMobile() && inputRef) inputRef.focus()
+    if (!isMobile() && inputRef) inputRef.focus({ preventScroll: true })
     window.addEventListener('message', processIncomingEvent)
   })
 
