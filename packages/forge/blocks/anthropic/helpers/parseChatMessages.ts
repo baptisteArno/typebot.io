@@ -1,6 +1,6 @@
 import { Anthropic } from '@anthropic-ai/sdk'
 import { options as createMessageOptions } from '../actions/createChatMessage'
-import { ReadOnlyVariableStore } from '@typebot.io/forge'
+import { VariableStore } from '@typebot.io/forge'
 import { isNotEmpty } from '@typebot.io/lib'
 import { z } from '@typebot.io/forge/zod'
 
@@ -9,7 +9,7 @@ export const parseChatMessages = ({
   variables,
 }: {
   options: Pick<z.infer<typeof createMessageOptions>, 'messages'>
-  variables: ReadOnlyVariableStore
+  variables: VariableStore
 }): Anthropic.Messages.MessageParam[] => {
   const parsedMessages = messages
     ?.flatMap((message) => {

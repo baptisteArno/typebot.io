@@ -1,5 +1,5 @@
 import { options as createChatCompletionOption } from '../actions/createChatCompletion'
-import { ReadOnlyVariableStore } from '@typebot.io/forge'
+import { VariableStore } from '@typebot.io/forge'
 import { isDefined, isNotEmpty } from '@typebot.io/lib'
 import { z } from '@typebot.io/forge/zod'
 
@@ -8,7 +8,7 @@ export const parseMessages = ({
   variables,
 }: {
   options: Pick<z.infer<typeof createChatCompletionOption>, 'messages'>
-  variables: ReadOnlyVariableStore
+  variables: VariableStore
 }) =>
   messages
     ?.flatMap((message) => {

@@ -5,7 +5,7 @@ import { SessionState } from '@typebot.io/schemas'
 type Props = {
   id: string
   state: SessionState
-  isReplying: boolean
+  isReplying: boolean | undefined
 }
 
 export const updateSession = ({

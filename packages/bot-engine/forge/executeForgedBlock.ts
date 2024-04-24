@@ -58,9 +58,7 @@ export const executeForgedBlock = async (
       action.run.stream.getStreamVariableId(block.options)
     ) &&
     state.isStreamEnabled &&
-    !state.whatsApp &&
-    (!process.env.VERCEL_ENV ||
-      (isPlaneteScale() && credentials && isCredentialsV2(credentials)))
+    !state.whatsApp
   ) {
     return {
       outgoingEdgeId: block.outgoingEdgeId,
@@ -69,7 +67,6 @@ export const executeForgedBlock = async (
           type: 'stream',
           expectsDedicatedReply: true,
           stream: true,
-          runtime: process.env.VERCEL_ENV ? 'edge' : 'nodejs',
         },
       ],
     }

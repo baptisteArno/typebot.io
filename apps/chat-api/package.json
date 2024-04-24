@@ -22,9 +22,9 @@
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/variables": "workspace:*",
-    "ai": "3.0.12",
+    "ai": "3.0.31",
     "hono": "4.0.5",
-    "openai": "4.28.4",
+    "openai": "4.38.3",
     "prom-client": "15.1.0"
   },
   "devDependencies": {

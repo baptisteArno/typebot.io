@@ -19149,7 +19149,7 @@
                       "assistantId": {
                         "type": "string"
                       },
-                      "threadId": {
+                      "threadVariableId": {
                         "type": "string"
                       },
                       "message": {
@@ -19186,6 +19186,9 @@
                             }
                           }
                         }
+                      },
+                      "threadId": {
+                        "type": "string"
                       }
                     },
                     "required": [

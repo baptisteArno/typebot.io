@@ -30,8 +30,6 @@ export type FunctionToExecute = {
   content: string
 }
 
-export type ReadOnlyVariableStore = Omit<VariableStore, 'set'>
-
 export type TurnableIntoParam<T = {}> = {
   blockId: string
   /**
@@ -65,7 +63,7 @@ export type ActionDefinition<
       run: (params: {
         credentials: CredentialsFromAuthDef<A>
         options: z.infer<BaseOptions> & z.infer<Options>
-        variables: ReadOnlyVariableStore
+        variables: VariableStore
       }) => Promise<ReadableStream<any> | undefined>
     }
     web?: {

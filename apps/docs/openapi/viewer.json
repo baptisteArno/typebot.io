@@ -9977,7 +9977,7 @@
                       "assistantId": {
                         "type": "string"
                       },
-                      "threadId": {
+                      "threadVariableId": {
                         "type": "string"
                       },
                       "message": {
@@ -10014,6 +10014,9 @@
                             }
                           }
                         }
+                      },
+                      "threadId": {
+                        "type": "string"
                       }
                     },
                     "required": [
@@ -12480,18 +12483,10 @@
                     }
                   }
                 }
-              },
-              "runtime": {
-                "type": "string",
-                "enum": [
-                  "edge",
-                  "nodejs"
-                ]
               }
             },
             "required": [
-              "messages",
-              "runtime"
+              "messages"
             ]
           },
           "lastBubbleBlockId": {
@@ -12768,13 +12763,6 @@
               true
             ]
           },
-          "runtime": {
-            "type": "string",
-            "enum": [
-              "edge",
-              "nodejs"
-            ]
-          },
           "lastBubbleBlockId": {
             "type": "string"
           },
@@ -12784,8 +12772,7 @@
         },
         "required": [
           "type",
-          "stream",
-          "runtime"
+          "stream"
         ],
         "title": "Exec stream"
       },

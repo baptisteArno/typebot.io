@@ -11,9 +11,9 @@
     "@typebot.io/tsconfig": "workspace:*",
     "@types/node": "^20.12.4",
     "@types/react": "18.2.15",
-    "typescript": "5.3.2"
+    "typescript": "5.4.5"
   },
   "dependencies": {
-    "ai": "3.0.12"
+    "ai": "3.0.31"
   }
 }

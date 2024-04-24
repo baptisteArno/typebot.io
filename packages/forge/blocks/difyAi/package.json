@@ -11,6 +11,6 @@
     "@typebot.io/tsconfig": "workspace:*",
     "@types/react": "18.2.15",
     "ky": "1.2.3",
-    "typescript": "5.3.2"
+    "typescript": "5.4.5"
   }
 }

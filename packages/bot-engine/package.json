@@ -19,7 +19,7 @@
     "@typebot.io/tsconfig": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "@udecode/plate-common": "30.4.5",
-    "ai": "3.0.12",
+    "ai": "3.0.31",
     "chrono-node": "2.7.5",
     "date-fns": "2.30.0",
     "date-fns-tz": "2.0.0",
@@ -29,7 +29,7 @@
     "libphonenumber-js": "1.10.37",
     "node-html-parser": "6.1.5",
     "nodemailer": "6.9.8",
-    "openai": "4.28.4",
+    "openai": "4.38.3",
     "qs": "6.11.2",
     "stripe": "12.13.0"
   },
