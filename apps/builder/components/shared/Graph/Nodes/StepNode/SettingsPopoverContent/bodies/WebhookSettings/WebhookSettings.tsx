@@ -390,7 +390,6 @@ export const WebhookSettings = React.memo(function WebhookSettings({
   }
 
   const handleTestRequestClick = async () => {
-    console.log(!!Object.keys(errors).length)
     if (!typebot || !step.options || !!Object.keys(errors).length) return
     setIsTestResponseLoading(true)
 

@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react'
 import { AutoAssignToSelect } from './AutoAssignToSelect'
 import { AssignToResponsibleSelect } from './AssignToResponsibleSelect'
 import { TextBubbleEditor } from '../../../TextBubbleEditor'
-import { ASSIGN_TO } from 'enums/assign-to'
 import { useUser } from 'contexts/UserContext'
 
 type AssignToTeamSettingsBodyProps = {
@@ -21,9 +20,6 @@ export const AssignToTeamSettingsBody = ({
 }: AssignToTeamSettingsBodyProps) => {
   const { verifyFeatureToggle } = useUser()
 
-  const [autoAssignToTitle, setAutoAssignToTitle] = useState<string>(
-    'Atribuir automaticamente para:'
-  )
   const [hasResponsibleContact, setHasResponsibleContact] =
     useState<boolean>(false)
   useEffect(() => {
@@ -31,11 +27,6 @@ export const AssignToTeamSettingsBody = ({
       'responsible-contact-enabled'
     )
     setHasResponsibleContact(responsibleContactEnabled)
-    if (responsibleContactEnabled) {
-      setAutoAssignToTitle(
-        'Se não houver um responsável pelo contato, atribuir para:'
-      )
-    }
   }, [])
 
   const handleCloseEditorBotMessage = (content: TextBubbleContent) => {
@@ -80,9 +71,15 @@ export const AssignToTeamSettingsBody = ({
     })
   }
   const handleAssignToResponsibleChange = (e: any) => {
+    const updatedOptions = {
+      assignTo: e.assignTo,
+      subType: e.subType,
+      assignType: e.assignType,
+    }
+
     onOptionsChange({
       ...options,
-      subType: e.value?.subType,
+      ...updatedOptions,
     })
   }
   const handleCheckAvailabilityChange = (isAvailable: boolean) =>
@@ -114,25 +111,27 @@ export const AssignToTeamSettingsBody = ({
         />
         )
       </Stack>
-      {hasResponsibleContact && (
+      <Stack>
+        <FormLabel mb="0" htmlFor="button">
+          Atribuir conversa para:
+        </FormLabel>
+        <AssignToResponsibleSelect
+          hasResponsibleContact={hasResponsibleContact}
+          options={options}
+          onSelect={handleAssignToResponsibleChange}
+        />
+      </Stack>
+      {options.subType === 'RESPONSIBLE_CONTACT' && (
         <Stack>
           <FormLabel mb="0" htmlFor="button">
-            Atribuir conversa para:
+            Se não houver um responsável pelo contato, atribuir para:
           </FormLabel>
-          <AssignToResponsibleSelect
-            onSelect={handleAssignToResponsibleChange}
+          <AutoAssignToSelect
+            selectedUserGroup={options.assignTo}
+            onSelect={handleDefaultAssignToChange}
           />
         </Stack>
       )}
-      <Stack>
-        <FormLabel mb="0" htmlFor="button">
-          {autoAssignToTitle}
-        </FormLabel>
-        <AutoAssignToSelect
-          selectedUserGroup={options.assignTo || ASSIGN_TO.noOne}
-          onSelect={handleDefaultAssignToChange}
-        />
-      </Stack>
       <Stack>
         <Flex>
           <FormLabel mb="0" htmlFor="placeholder">
