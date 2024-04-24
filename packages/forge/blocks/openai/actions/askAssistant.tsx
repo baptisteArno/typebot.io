@@ -9,8 +9,9 @@ import { auth } from '../auth'
 import { ClientOptions, OpenAI } from 'openai'
 import { baseOptions } from '../baseOptions'
 import { executeFunction } from '@typebot.io/variables/executeFunction'
-import { AssistantResponse, readDataStream } from 'ai'
+import { readDataStream } from 'ai'
 import { deprecatedAskAssistantOptions } from '../deprecated'
+import { OpenAIAssistantStream } from '../helpers/OpenAIAssistantStream'
 
 export const askAssistant = createAction({
   auth,
@@ -138,8 +139,8 @@ export const askAssistant = createAction({
       getStreamVariableId: ({ responseMapping }) =>
         responseMapping?.find((m) => !m.item || m.item === 'Message')
           ?.variableId,
-      run: async ({ credentials, options, variables }) => {
-        const response = await parseAssistantResponse({
+      run: async ({ credentials, options, variables }) =>
+        createAssistantStream({
           apiKey: credentials.apiKey,
           assistantId: options.assistantId,
           message: options.message,
@@ -149,29 +150,7 @@ export const askAssistant = createAction({
           variables,
           functions: options.functions,
           responseMapping: options.responseMapping,
-        })
-
-        if (!response) return
-
-        return new ReadableStream({
-          async start(controller) {
-            try {
-              await processAssistantResponse(response, {
-                onNewMessageChunk: (message) => {
-                  controller.enqueue(new TextEncoder().encode(message))
-                },
-                onError: (message) => {
-                  controller.error(message)
-                },
-              })
-            } catch (e) {
-              console.error(e)
-              controller.error(e) // Properly closing the stream with an error
-            }
-            controller.close()
-          },
-        })
-      },
+        }),
     },
     server: async ({
       credentials: { apiKey },
@@ -188,7 +167,7 @@ export const askAssistant = createAction({
       variables,
       logs,
     }) => {
-      const response = await parseAssistantResponse({
+      const stream = await createAssistantStream({
         apiKey,
         assistantId,
         logs,
@@ -201,18 +180,15 @@ export const askAssistant = createAction({
         functions,
       })
 
-      if (!response) return
+      if (!stream) return
 
       let writingMessage = ''
 
-      await processAssistantResponse(response, {
-        onNewMessageChunk: (chunk) => {
-          writingMessage += chunk
-        },
-        onError: (message) => {
-          logs.add(message)
-        },
-      })
+      for await (const { type, value } of readDataStream(stream.getReader())) {
+        if (type === 'text') {
+          writingMessage += value
+        }
+      }
 
       responseMapping?.forEach((mapping) => {
         if (!mapping.variableId) return
@@ -227,7 +203,7 @@ export const askAssistant = createAction({
   },
 })
 
-const parseAssistantResponse = async ({
+const createAssistantStream = async ({
   apiKey,
   assistantId,
   logs,
@@ -254,7 +230,7 @@ const parseAssistantResponse = async ({
   }[]
   logs?: LogsStore
   variables: VariableStore
-}): Promise<Response | undefined> => {
+}): Promise<ReadableStream | undefined> => {
   if (isEmpty(assistantId)) {
     logs?.add('Assistant ID is empty')
     return
@@ -311,7 +287,7 @@ const parseAssistantResponse = async ({
       content: message,
     }
   )
-  return AssistantResponse(
+  return OpenAIAssistantStream(
     { threadId: currentThreadId, messageId: createdMessage.id },
     async ({ forwardStream }) => {
       const runStream = openai.beta.threads.runs.createAndStream(
@@ -369,43 +345,4 @@ const parseAssistantResponse = async ({
       }
     }
   )
-}
-
-const processAssistantResponse = async (
-  response: Response,
-  callbacks: {
-    onNewMessageChunk?: (chunk: string) => void
-    onError?: (message: string) => void
-  }
-) => {
-  let writingMessage = ''
-
-  const reader = response.body?.getReader()
-
-  if (!reader) {
-    callbacks.onError?.('Could not get assistant stream.')
-    return
-  }
-
-  for await (const { type, value } of readDataStream(reader)) {
-    switch (type) {
-      case 'assistant_message': {
-        let chunk = ''
-        if (writingMessage.length > 0) chunk += '\n\n'
-        chunk += value.content[0].text.value
-        callbacks.onNewMessageChunk?.(chunk)
-        break
-      }
-
-      case 'text': {
-        callbacks.onNewMessageChunk?.(value)
-        break
-      }
-
-      case 'error': {
-        callbacks.onError?.(value)
-        break
-      }
-    }
-  }
 }

@@ -67,7 +67,6 @@ export const executeForgedBlock = async (
           type: 'stream',
           expectsDedicatedReply: true,
           stream: true,
-          runtime: 'nodejs',
         },
       ],
     }

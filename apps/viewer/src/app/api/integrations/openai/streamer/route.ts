@@ -38,6 +38,7 @@ export async function OPTIONS() {
   })
 }
 
+// Deprecated in favor of `/api/v1/sessions/:sessionId/streamMessage`.
 export async function POST(req: Request) {
   const { sessionId, messages } = (await req.json()) as {
     messages: OpenAI.Chat.ChatCompletionMessage[] | undefined

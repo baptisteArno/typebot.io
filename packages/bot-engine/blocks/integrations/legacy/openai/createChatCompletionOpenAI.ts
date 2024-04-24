@@ -89,9 +89,7 @@ export const createChatCompletionOpenAI = async (
     isNextBubbleMessageWithAssistantMessage(typebot)(
       blockId,
       assistantMessageVariableName
-    ) &&
-    (!process.env.VERCEL_ENV ||
-      (isPlaneteScale() && credentials && isCredentialsV2(credentials)))
+    )
   ) {
     return {
       clientSideActions: [
@@ -102,7 +100,6 @@ export const createChatCompletionOpenAI = async (
               content?: string
               role: (typeof chatCompletionMessageRoles)[number]
             }[],
-            runtime: process.env.VERCEL_ENV ? 'edge' : 'nodejs',
           },
           expectsDedicatedReply: true,
         },

@@ -21,7 +21,7 @@
     "@typebot.io/js": "workspace:*",
     "@typebot.io/nextjs": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
-    "ai": "3.0.26",
+    "ai": "3.0.31",
     "bot-engine": "workspace:*",
     "cors": "2.8.5",
     "google-spreadsheet": "4.1.1",

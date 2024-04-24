@@ -7,7 +7,7 @@
   "author": "Baptiste Arnaud",
   "license": "ISC",
   "dependencies": {
-    "ai": "3.0.26",
+    "ai": "3.0.31",
     "openai": "4.38.3"
   },
   "devDependencies": {

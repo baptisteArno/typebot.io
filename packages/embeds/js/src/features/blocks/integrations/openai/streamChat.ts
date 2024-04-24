@@ -1,4 +1,5 @@
 import { ClientSideActionContext } from '@/types'
+import { readDataStream } from '@/utils/ai/readDataStream'
 import { guessApiHost } from '@/utils/guessApiHost'
 import { isNotEmpty } from '@typebot.io/lib/utils'
 import { createUniqueId } from 'solid-js'
@@ -7,22 +8,16 @@ let abortController: AbortController | null = null
 const secondsToWaitBeforeRetries = 3
 const maxRetryAttempts = 3
 
-const edgeRuntimePath = '/api/integrations/openai/streamer'
-const nodejsRuntimePath = (sessionId: string) =>
-  `/api/v1/sessions/${sessionId}/streamMessage`
-
 export const streamChat =
   (context: ClientSideActionContext & { retryAttempt?: number }) =>
   async ({
     messages,
-    runtime,
     onMessageStream,
   }: {
     messages?: {
       content?: string | undefined
       role?: 'system' | 'user' | 'assistant' | undefined
     }[]
-    runtime: 'edge' | 'nodejs'
     onMessageStream?: (props: { id: string; message: string }) => void
   }): Promise<{ message?: string; error?: object }> => {
     try {
@@ -31,12 +26,8 @@ export const streamChat =
       const apiHost = context.apiHost
 
       const res = await fetch(
-        isNotEmpty(apiHost)
-          ? apiHost
-          : guessApiHost() +
-              (runtime === 'edge'
-                ? edgeRuntimePath
-                : nodejsRuntimePath(context.sessionId)),
+        (isNotEmpty(apiHost) ? apiHost : guessApiHost()) +
+          `/api/v2/sessions/${context.sessionId}/streamMessage`,
         {
           method: 'POST',
           headers: {
@@ -44,7 +35,6 @@ export const streamChat =
           },
           body: JSON.stringify({
             messages,
-            sessionId: runtime === 'edge' ? context.sessionId : undefined,
           }),
           signal: abortController.signal,
         }
@@ -61,7 +51,7 @@ export const streamChat =
           return streamChat({
             ...context,
             retryAttempt: (context.retryAttempt ?? 0) + 1,
-          })({ messages, onMessageStream, runtime })
+          })({ messages, onMessageStream })
         }
         return {
           error: (await res.json()) || 'Failed to fetch the chat response.',
@@ -75,22 +65,15 @@ export const streamChat =
       let message = ''
 
       const reader = res.body.getReader()
-      const decoder = new TextDecoder()
 
       const id = createUniqueId()
 
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) {
-          break
-        }
-        const chunk = decoder.decode(value)
-        message += chunk
-        if (onMessageStream) onMessageStream({ id, message })
-        if (abortController === null) {
-          reader.cancel()
-          break
+      for await (const { type, value } of readDataStream(reader, {
+        isAborted: () => abortController === null,
+      })) {
+        if (type === 'text') {
+          message += value
+          if (onMessageStream) onMessageStream({ id, message })
         }
       }
 
