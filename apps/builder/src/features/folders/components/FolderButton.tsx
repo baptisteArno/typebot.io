@@ -129,7 +129,7 @@ const FolderButton = ({
           color={useColorModeValue('blue.500', 'blue.400')}
         />
         <Editable
-          defaultValue={folder.name === '' ? 'New folder' : folder.name}
+          defaultValue={folder.name === '' ? 'Nova pasta' : folder.name}
           fontSize="18"
           onClick={(e) => e.stopPropagation()}
           onSubmit={onRenameSubmit}

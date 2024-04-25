@@ -5,15 +5,9 @@ import {
   Stack,
   Text,
   Button,
-  Avatar,
   Flex,
 } from '@chakra-ui/react'
-import {
-  CreditCardIcon,
-  HardDriveIcon,
-  SettingsIcon,
-  UsersIcon,
-} from '@/components/icons'
+import { HardDriveIcon, SettingsIcon } from '@/components/icons'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
 import { User, WorkspaceRole } from '@typebot.io/prisma'
 import { useState } from 'react'
@@ -42,7 +36,6 @@ type SettingsTab =
 
 export const WorkspaceSettingsModal = ({
   isOpen,
-  user,
   workspace,
   onClose,
 }: Props) => {
@@ -65,25 +58,6 @@ export const WorkspaceSettingsModal = ({
         >
           <Stack spacing={8}>
             <Stack>
-              <Text pl="4" color="gray.500">
-                {user.email}
-              </Text>
-              <Button
-                variant={selectedTab === 'my-account' ? 'solid' : 'ghost'}
-                onClick={() => setSelectedTab('my-account')}
-                leftIcon={
-                  <Avatar
-                    name={user.name ?? undefined}
-                    src={user.image ?? undefined}
-                    boxSize="15px"
-                  />
-                }
-                size="sm"
-                justifyContent="flex-start"
-                pl="4"
-              >
-                {t('workspace.settings.modal.menu.myAccount.label')}
-              </Button>
               <Button
                 variant={selectedTab === 'user-settings' ? 'solid' : 'ghost'}
                 onClick={() => setSelectedTab('user-settings')}
@@ -94,11 +68,6 @@ export const WorkspaceSettingsModal = ({
               >
                 {t('workspace.settings.modal.menu.preferences.label')}
               </Button>
-            </Stack>
-            <Stack>
-              <Text pl="4" color="gray.500">
-                {t('workspace.settings.modal.menu.workspace.label')}
-              </Text>
               {canEditWorkspace && (
                 <Button
                   variant={
@@ -119,31 +88,16 @@ export const WorkspaceSettingsModal = ({
                   {t('workspace.settings.modal.menu.settings.label')}
                 </Button>
               )}
-              {currentRole !== WorkspaceRole.GUEST && (
-                <Button
-                  variant={selectedTab === 'members' ? 'solid' : 'ghost'}
-                  onClick={() => setSelectedTab('members')}
-                  leftIcon={<UsersIcon />}
-                  size="sm"
-                  justifyContent="flex-start"
-                  pl="4"
-                >
-                  {t('workspace.settings.modal.menu.members.label')}
-                </Button>
-              )}
-              {canEditWorkspace && (
-                <Button
-                  variant={selectedTab === 'billing' ? 'solid' : 'ghost'}
-                  onClick={() => setSelectedTab('billing')}
-                  leftIcon={<CreditCardIcon />}
-                  size="sm"
-                  justifyContent="flex-start"
-                  pl="4"
-                  overflow="auto"
-                >
-                  {t('workspace.settings.modal.menu.billingAndUsage.label')}
-                </Button>
-              )}
+              <Button
+                variant={selectedTab === 'my-account' ? 'solid' : 'ghost'}
+                onClick={() => setSelectedTab('my-account')}
+                leftIcon={<SettingsIcon />}
+                size="sm"
+                justifyContent="flex-start"
+                pl="4"
+              >
+                {t('workspace.settings.modal.menu.myAccount.label')}
+              </Button>
             </Stack>
           </Stack>
 
