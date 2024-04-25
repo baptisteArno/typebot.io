@@ -34,6 +34,9 @@ import { saveClientLogsQuery } from '@/queries/saveClientLogsQuery'
 import { HTTPError } from 'ky'
 import { persist } from '@/utils/persist'
 
+const autoScrollBottomToleranceScreenPercent = 0.6
+const bottomSpacerHeight = 128
+
 const parseDynamicTheme = (
   initialTheme: Theme,
   dynamicTheme: ContinueChatResponse['dynamicTheme']
@@ -226,21 +229,23 @@ export const ConversationContainer = (props: Props) => {
 
   const autoScrollToBottom = (lastElement?: HTMLDivElement, offset = 0) => {
     if (!chatContainer) return
-    if (!lastElement) {
-      setTimeout(() => {
-        chatContainer?.scrollTo(0, chatContainer.scrollHeight)
-      }, 50)
-      return
-    }
-    const lastElementRect = lastElement.getBoundingClientRect()
-    const containerRect = chatContainer.getBoundingClientRect()
+
+    const bottomTolerance =
+      chatContainer.clientHeight * autoScrollBottomToleranceScreenPercent -
+      bottomSpacerHeight
 
     const isBottomOfLastElementInView =
-      lastElementRect.top + lastElementRect.height < containerRect.height
+      chatContainer.scrollTop + chatContainer.clientHeight >=
+      chatContainer.scrollHeight - bottomTolerance
 
     if (isBottomOfLastElementInView) {
       setTimeout(() => {
-        chatContainer?.scrollTo(0, lastElement.offsetTop - offset)
+        chatContainer?.scrollTo(
+          0,
+          lastElement
+            ? lastElement.offsetTop - offset
+            : chatContainer.scrollHeight
+        )
       }, 50)
     }
   }
@@ -350,5 +355,10 @@ export const ConversationContainer = (props: Props) => {
 }
 
 const BottomSpacer = () => {
-  return <div class="w-full h-32 flex-shrink-0" />
+  return (
+    <div
+      class="w-full flex-shrink-0"
+      style={{ height: bottomSpacerHeight + 'px' }}
+    />
+  )
 }
