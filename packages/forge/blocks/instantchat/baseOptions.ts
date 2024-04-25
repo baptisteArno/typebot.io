@@ -45,4 +45,18 @@ export const baseOptions = option.object({
     withVariableButton: false,
     isRequired: false,
   }),
+  kwikToken: option.string.layout({
+    accordion: 'Kwik',
+    label: 'kwik Token',
+    defaultValue: '',
+    withVariableButton: false,
+    isRequired: false,
+  }),
+  enterpriseId: option.string.layout({
+    accordion: 'Kwik',
+    label: 'Enterprise ID',
+    defaultValue: '',
+    withVariableButton: false,
+    isRequired: true,
+  }),
 })

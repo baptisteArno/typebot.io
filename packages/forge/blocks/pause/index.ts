@@ -4,7 +4,7 @@ import { pauseAction } from './actions/pause'
 
 export const pauseBlock = createBlock({
   id: 'pause',
-  name: 'pause',
+  name: 'Pause',
   tags: [],
   LightLogo: PauseLogo,
   actions: [pauseAction],

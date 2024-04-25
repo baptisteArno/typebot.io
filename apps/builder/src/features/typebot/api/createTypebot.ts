@@ -15,7 +15,6 @@ import { createId } from '@paralleldrive/cuid2'
 import { EventType } from '@typebot.io/schemas/features/events/constants'
 import { trackEvents } from '@typebot.io/telemetry/trackEvents'
 import { createInstantProviderCredentials } from '@/features/typebot/api/autocreateprovider'
-import { createInstantVariables } from '@/features/typebot/api/autocreatevariables'
 
 const typebotCreateSchemaPick = {
   name: true,
@@ -93,48 +92,13 @@ export const createTypebot = authenticatedProcedure
       })
       if (!existingFolder) typebot.folderId = null
     }
-    //let is_variables: Array<string> = null;
+
     let is_variables: { id: string; name: string }[] = []
-    if (user.email !== null && workspaceId !== null) {
-      const [host, acc] = user.email.split('@')
-      const accountcode = acc.split('.')[0]
-      const baseUrl = 'https://' + host
-      const url = `${baseUrl}/ivci/webhook/accountcode_info/${accountcode}`
-      const response = await fetch(url, { method: 'GET' })
-      if (response.status < 300 && response.status >= 200) {
-        const { wsKey, cortexAccountID, cortexUrl, cortexToken } =
-          await response.json()
-        const data = {
-          baseUrl,
-          accountcode,
-          wsKey,
-          cortexUrl,
-          cortexAccountID,
-          cortexToken,
-        }
-        console.log('Creating credentials with cortex data. ', data)
-        createInstantProviderCredentials({
-          data,
-          type: 'instantchat',
-          workspaceId: workspaceId,
-          name: 'Instant All-In-One',
-        })
-        is_variables = await createInstantVariables(data)
-        if (is_variables) {
-          console.log('Variables created create typebot', is_variables)
-        }
-      } else {
-        console.log('Creating credentials without cortex data. ', baseUrl)
-        createInstantProviderCredentials({
-          data: {
-            baseUrl,
-            accountcode,
-          },
-          type: 'instantchat',
-          workspaceId: workspaceId,
-          name: 'Instant All-In-One',
-        })
-      }
+    if (user.email) {
+      is_variables = await createInstantProviderCredentials(
+        user.email,
+        workspaceId
+      )
     }
 
     const newTypebot = await prisma.typebot.create({
