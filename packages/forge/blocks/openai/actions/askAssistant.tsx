@@ -270,8 +270,7 @@ const createAssistantStream = async ({
     )
     if (threadIdResponseMapping?.variableId)
       variables.set(threadIdResponseMapping.variableId, currentThreadId)
-
-    if (threadVariableId) variables.set(threadVariableId, currentThreadId)
+    else if (threadVariableId) variables.set(threadVariableId, currentThreadId)
   }
 
   if (!currentThreadId) {
