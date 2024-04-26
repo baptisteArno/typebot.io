@@ -1,5 +1,6 @@
 import prisma from '@typebot.io/lib/prisma'
 import { encrypt } from '@typebot.io/lib/api/encryption/encrypt'
+import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { createInstantVariables } from '@/features/typebot/api/autocreatevariables'
 
 interface Credentials {
