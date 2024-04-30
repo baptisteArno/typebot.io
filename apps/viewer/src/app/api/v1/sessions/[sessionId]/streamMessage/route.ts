@@ -26,8 +26,8 @@ export async function POST(
   req: Request,
   { params }: { params: { sessionId: string } }
 ) {
-  const messages =
-    typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+  const body = await req.text()
+  const messages = body ? JSON.parse(body).messages : undefined
   const { stream, status, message } = await getMessageStream({
     sessionId: params.sessionId,
     messages,
