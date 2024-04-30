@@ -176,6 +176,24 @@ export type OfficeHoursContent = {
   subType: null
 }
 
+const generateFallback = (msg: string) => {
+  const obj = {
+    html: `<div style="margin-left: 8px;">${msg}</div>`,
+    richText: [
+      {
+        children: [
+          {
+            text: msg,
+          },
+        ],
+        type: 'p',
+      },
+    ],
+    plainText: msg,
+  }
+  return [obj, obj, obj]
+}
+
 export type OfficeHoursOptions = BaseOctaOptions & {
   id: string
   presetName: string
@@ -309,6 +327,8 @@ export type WhatsAppOptionsListOptions = BaseOctaOptions & {
     value: string
   }>
   property: OctaProperty
+  useFallback: boolean
+  fallbackMessages: Array<TextBubbleContent>
   variableId: string
 }
 
@@ -324,6 +344,8 @@ export type WhatsAppButtonsListOptions = BaseOctaOptions & {
   footer: {
     content?: TextBubbleContent
   }
+  useFallback: boolean
+  fallbackMessages: Array<TextBubbleContent>
   property: OctaProperty
   variableId: string
 }
@@ -533,6 +555,10 @@ export const defaultWhatsAppOptionsListOptions: WhatsAppOptionsListOptions = {
     token: '',
     type: '',
   },
+  useFallback: true,
+  fallbackMessages: generateFallback(
+    'Opção inválida. Escolha uma das opções disponíveis'
+  ),
   variableId: '',
 }
 
@@ -556,5 +582,9 @@ export const defaultWhatsAppButtonsListOptions: WhatsAppButtonsListOptions = {
     token: '',
     type: '',
   },
+  useFallback: true,
+  fallbackMessages: generateFallback(
+    'Opção inválida. Escolha uma das opções disponíveis'
+  ),
   variableId: '',
 }

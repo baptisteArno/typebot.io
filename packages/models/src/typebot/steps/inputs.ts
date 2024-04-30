@@ -21,7 +21,7 @@ export enum InputStepType {
   PHONE = 'phone number input',
   CHOICE = 'choice input',
   PAYMENT = 'payment input',
-  TEXT = 'text input'
+  TEXT = 'text input',
 }
 
 export type InputStepOptions =
@@ -95,10 +95,10 @@ export type CreditCardDetails = {
 }
 
 export type OctaProperty = {
-  domain: string;
-  name: string;
-  token: string;
-  type: string;
+  domain: string
+  name: string
+  token: string
+  type: string
 }
 
 type OptionBase = { variableId?: string; property?: OctaProperty }
@@ -180,6 +180,24 @@ export type PaymentInputOptions = OptionBase & {
   labels: { button: string }
 }
 
+const generateFallback = (msg: string) => {
+  const obj = {
+    html: `<div style="margin-left: 8px;">${msg}</div>`,
+    richText: [
+      {
+        children: [
+          {
+            text: msg,
+          },
+        ],
+        type: 'p',
+      },
+    ],
+    plainText: msg,
+  }
+  return [obj, obj, obj]
+}
+
 const defaultButtonLabel = 'Enviar'
 
 export const defaultGenericInputOptions: InputOptions = {
@@ -188,70 +206,75 @@ export const defaultGenericInputOptions: InputOptions = {
   fallbackMessages: undefined,
   initialVariableToken: '',
   property: undefined,
-  variableId: undefined
+  variableId: undefined,
 }
 
 export const defaultAskNameOptions: InputOptions = {
   message: {
     html: `<div style="margin-left: 8px;">Pode me dizer o seu nome?</div>`,
-    richText: [{
-      children: [{
-        text: 'Pode me dizer o seu nome?',
-      }],
-      type: "p"
-    }],
-    plainText: 'Pode me dizer o seu nome?'
+    richText: [
+      {
+        children: [
+          {
+            text: 'Pode me dizer o seu nome?',
+          },
+        ],
+        type: 'p',
+      },
+    ],
+    plainText: 'Pode me dizer o seu nome?',
   },
   useFallback: false,
   fallbackMessages: undefined,
   initialVariableToken: '#nome-contato',
   property: undefined,
-  variableId: undefined
+  variableId: undefined,
 }
 
 export const defaultEmailInputOptions: InputOptions = {
   message: {
     html: `<div style="margin-left: 8px;">Pode me informar o seu email?</div>`,
-    richText: [{
-      children: [{
-        text: 'Pode me informar o seu email?',
-      }],
-      type: "p"
-    }],
-    plainText: 'Pode me informar o seu email?'
+    richText: [
+      {
+        children: [
+          {
+            text: 'Pode me informar o seu email?',
+          },
+        ],
+        type: 'p',
+      },
+    ],
+    plainText: 'Pode me informar o seu email?',
   },
   useFallback: true,
-  fallbackMessages: [{
-    html: `<div style="margin-left: 8px;">Esse email não parece ser válido. Você pode digitar novamente?</div>`,
-    richText: [{
-      children: [{
-        text: "Esse email não parece ser válido. Você pode digitar novamente?",
-      }],
-      type: "p"
-    }],
-    plainText: "Esse email não parece ser válido. Você pode digitar novamente?",
-  }],
+  fallbackMessages: generateFallback(
+    'Esse email não parece ser válido. Você pode digitar novamente?'
+  ),
   initialVariableToken: '#email-contato',
   property: undefined,
-  variableId: undefined
+  variableId: undefined,
 }
 
 export const defaultCpfInputOptions: InputOptions = {
   message: {
     html: `<div style="margin-left: 8px;">Pode me informar o seu CPF?</div>`,
-    richText: [{
-      children: [{
-        text: 'Pode me informar o seu CPF?',
-      }],
-      type: "p"
-    }],
-    plainText: 'Pode me informar o seu CPF?'
+    richText: [
+      {
+        children: [
+          {
+            text: 'Pode me informar o seu CPF?',
+          },
+        ],
+        type: 'p',
+      },
+    ],
+    plainText: 'Pode me informar o seu CPF?',
   },
   useFallback: false,
   fallbackMessages: undefined,
   initialVariableToken: '#cpf-contato',
   property: undefined,
-  variableId: undefined
+  variableId: undefined,
 }
 
 export const defaultUrlInputOptions: UrlInputOptions = {
@@ -260,7 +283,7 @@ export const defaultUrlInputOptions: UrlInputOptions = {
     placeholder: 'Digite a URL...',
   },
   retryMessageContent:
-    "Essa URL não parece válida. Você pode digitar novamente?",
+    'Essa URL não parece válida. Você pode digitar novamente?',
 }
 
 export const defaultDateInputOptions: InputOptions = {
@@ -269,45 +292,44 @@ export const defaultDateInputOptions: InputOptions = {
   fallbackMessages: undefined,
   initialVariableToken: '',
   property: undefined,
-  variableId: undefined
+  variableId: undefined,
 }
 
 export const defaultPhoneInputOptions: InputOptions = {
   message: {
     html: `<div style="margin-left: 8px;">Pode me informar o seu celular?</div>`,
-    richText: [{
-      children: [{
-        text: 'Pode me informar o seu celular?',
-      }],
-      type: "p"
-    }],
-    plainText: 'Pode me informar o seu celular?'
+    richText: [
+      {
+        children: [
+          {
+            text: 'Pode me informar o seu celular?',
+          },
+        ],
+        type: 'p',
+      },
+    ],
+    plainText: 'Pode me informar o seu celular?',
   },
   useFallback: true,
-  fallbackMessages: [{
-    html: `<div style="margin-left: 8px;">Isso não se parece com um telefone válido. Você pode digitar novamente?</div>`,
-    richText: [{
-      children: [{
-        text: "Isso não se parece com um telefone válido. Você pode digitar novamente?",
-      }],
-      type: "p"
-    }],
-    plainText: "Isso não se parece com um telefone válido. Você pode digitar novamente?",
-  }],
+  fallbackMessages: generateFallback(
+    'Esse número de celular não parece ser válido. Você pode digitar novamente?'
+  ),
   initialVariableToken: '#tel-celular-contato',
   property: undefined,
-  variableId: undefined
+  variableId: undefined,
 }
 
 export const defaultChoiceInputOptions: ChoiceInputOptions = {
   message: undefined,
-  useFallback: false,
-  fallbackMessages: undefined,
+  useFallback: true,
+  fallbackMessages: generateFallback(
+    'Essa opção não é válida. Escolha uma das opções disponíveis.'
+  ),
   initialVariableToken: '',
   property: undefined,
   variableId: undefined,
   isMultipleChoice: false,
-  buttonLabel: ''
+  buttonLabel: '',
 }
 
 export const defaultPaymentInputOptions: PaymentInputOptions = {

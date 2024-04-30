@@ -1,9 +1,8 @@
 import { Flex, FormLabel, Spacer, Stack } from '@chakra-ui/react'
-import { WhatsAppOptionsListOptions, Variable } from 'models'
-import React, { useEffect, useState } from 'react'
+import { WhatsAppOptionsListOptions, Variable, TextBubbleContent } from 'models'
+import React, { useState } from 'react'
 import { TextBubbleEditor } from 'components/shared/Graph/Nodes/StepNode/TextBubbleEditor'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
-import { Node } from 'slate'
 
 type WhatsAppOptionsListSettingsBodyProps = {
   options: WhatsAppOptionsListOptions
@@ -91,6 +90,19 @@ export const WhatsAppOptionsListSettingsBody = ({
     })
   }
 
+  const handleFallBackMessage = (content: TextBubbleContent, index: number) => {
+    if (!options) return
+    if (!options?.fallbackMessages) options.fallbackMessages = []
+
+    if (options.fallbackMessages.length > index)
+      options.fallbackMessages[index] = content
+    else options.fallbackMessages.push(content)
+
+    onOptionsChange({
+      ...options,
+    })
+  }
+
   return (
     <Stack spacing={4}>
       <Stack>
@@ -134,6 +146,33 @@ export const WhatsAppOptionsListSettingsBody = ({
           maxLength={MAX_LENGHT_BODY}
         />
       </Stack>
+      {options?.useFallback &&
+        (options?.fallbackMessages?.length ? (
+          options?.fallbackMessages.map((message, index) => (
+            <>
+              <FormLabel mb="0" htmlFor="placeholder">
+                Mensagem para resposta inválida - Tentativa {index + 1}
+              </FormLabel>
+              <TextBubbleEditor
+                required={{
+                  errorMsg: `O campo "Mensagem para resposta inválida - Tentativa ${
+                    index + 1
+                  }" é obrigatório`,
+                }}
+                onClose={(content) => handleFallBackMessage(content, index)}
+                initialValue={message ? message.richText : []}
+                onKeyUp={(content) => handleFallBackMessage(content, index)}
+                maxLength={MAX_LENGHT_BODY}
+              />
+            </>
+          ))
+        ) : (
+          <TextBubbleEditor
+            onClose={(content) => handleFallBackMessage(content, 0)}
+            initialValue={[]}
+            onKeyUp={(content) => handleFallBackMessage(content, 0)}
+          />
+        ))}
       <Stack>
         <Flex>
           <FormLabel mb="0" htmlFor="button">

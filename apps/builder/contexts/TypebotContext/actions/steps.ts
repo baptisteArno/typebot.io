@@ -52,7 +52,10 @@ const stepsAction = (
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const step = typebot.blocks[blockIndex].steps[stepIndex]
-        typebot.blocks[blockIndex].steps[stepIndex] = { ...step, ...updates }
+        const removedReferenceUpdates = JSON.parse(
+          JSON.stringify({ ...step, ...updates })
+        )
+        typebot.blocks[blockIndex].steps[stepIndex] = removedReferenceUpdates
       })
     ),
   duplicateStep: ({ blockIndex, stepIndex }: StepIndices) =>

@@ -1,7 +1,11 @@
 import React from 'react'
 import { Stack } from '@chakra-ui/react'
 
-import { StepIndices, WhatsAppButtonsListStep } from 'models'
+import {
+  StepIndices,
+  WhatsAppButtonsListStep,
+  defaultWhatsAppButtonsListOptions,
+} from 'models'
 import { ItemNodesList } from 'components/shared/Graph/Nodes/ItemNode'
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
 
@@ -14,6 +18,8 @@ type Props = {
 }
 
 const WhatsApButtonsContent = ({ step, indices }: Props) => {
+  if (!step.options) step.options = defaultWhatsAppButtonsListOptions
+
   return (
     <Stack>
       <TextHtmlContent

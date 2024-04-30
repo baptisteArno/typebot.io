@@ -32,7 +32,13 @@ const runStringValidation = ({ max, min }: any) => {
   })
 }
 
-const inpuStepsWithFallbackMessages = [InputStepType.EMAIL, InputStepType.PHONE]
+const inpuStepsWithFallbackMessages = [
+  InputStepType.EMAIL,
+  InputStepType.PHONE,
+  OctaWabaStepType.WHATSAPP_OPTIONS_LIST,
+  OctaWabaStepType.WHATSAPP_BUTTONS_LIST,
+  InputStepType.CHOICE,
+]
 
 export const getValidationMessages = (step: Step): Array<ValidationMessage> => {
   try {
@@ -42,14 +48,6 @@ export const getValidationMessages = (step: Step): Array<ValidationMessage> => {
       data.push({
         message: step?.options?.message?.plainText,
       })
-
-      if (inpuStepsWithFallbackMessages.includes(step.type)) {
-        step?.options?.fallbackMessages?.forEach((fallbackMessage) => {
-          data.push({
-            message: fallbackMessage?.plainText,
-          })
-        })
-      }
 
       if (step.type === InputStepType.CHOICE) {
         step?.items?.forEach((item) => {
@@ -80,6 +78,7 @@ export const getValidationMessages = (step: Step): Array<ValidationMessage> => {
         message: step?.options?.body?.content?.plainText,
         max: { value: 1024 },
       })
+
       if (OctaWabaStepType.WHATSAPP_OPTIONS_LIST === step.type) {
         data.push({
           message: step?.options?.listTitle?.content?.plainText,
@@ -105,10 +104,19 @@ export const getValidationMessages = (step: Step): Array<ValidationMessage> => {
         }
       )
     }
+
     if (OctaBubbleStepType.END_CONVERSATION === step.type) {
       data.push({
         message: step?.content?.plainText,
         min: { value: -1 },
+      })
+    }
+
+    if (inpuStepsWithFallbackMessages.includes(step.type)) {
+      step?.options?.fallbackMessages?.forEach((fallbackMessage) => {
+        data.push({
+          message: fallbackMessage?.plainText,
+        })
       })
     }
 
