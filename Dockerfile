@@ -8,7 +8,7 @@ RUN apt-get -qy update \
     && apt-get autoremove -yq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-RUN npm --global install pnpm
+RUN npm --global install pnpm@8
 
 FROM base AS pruner
 RUN npm --global install turbo@1.11.3

@@ -1,7 +1,7 @@
 # Changelog
 
 <a name="2.25.0"></a>
-## 2.25.0 (2024-04-30)
+## 2.25.0 (2024-05-01)
 
 ### Added
 
@@ -37,6 +37,7 @@
 
 ### Fixed
 
+- 🐛 (httpReq) Properly parse big ints [[7efb79d](https://github.com/baptisteArno/typebot.io/commit/7efb79d58196b1a787c282fb2f787dde0a7c1b86)]
 - 🐛 (openai) Fix streaming for legacy OpenAI block config [[49c1c0e](https://github.com/baptisteArno/typebot.io/commit/49c1c0efb29496f5a6c3b3b801419a464e2b2871)]
 - ✏️ Fix typo in self-hosting troubleshooting ([#1478](https://github.com/baptisteArno/typebot.io/issues/1478)) [[1c84d29](https://github.com/baptisteArno/typebot.io/commit/1c84d296ca2e0c92c7a021f0abcba49181baabea)]
 - 🐛 (forge) Fix CLI auth gen [[72a5f4a](https://github.com/baptisteArno/typebot.io/commit/72a5f4a3002ba4ca7a25def3da5ce2e66b1a2a1d)]
@@ -81,6 +82,7 @@
 
 
 <a name="2.24.1"></a>
+
 ## 2.24.1 (2024-04-03)
 
 ### Fixed
@@ -92,8 +94,8 @@
 
 - 📝 Add v2.24 newsletter [[af4dd95](https://github.com/baptisteArno/typebot.io/commit/af4dd956633bef2961395bd7b45a242e40985cab)]
 
-
 <a name="2.24.0"></a>
+
 ## 2.24.0 (2024-04-02)
 
 ### Added
@@ -202,7 +204,6 @@
 - 📝 Improve get help doc [[14022fe](https://github.com/baptisteArno/typebot.io/commit/14022fe92f224361fb82ae74b21aefc53f736408)]
 - 🛂 Disable direct support for Free users [[6d8a007](https://github.com/baptisteArno/typebot.io/commit/6d8a007f090616f394c41176e62d15ea050c1d9d)]
 - 📝 Add v2.23 newsletter [[ef69b5b](https://github.com/baptisteArno/typebot.io/commit/ef69b5b77cf7ad569b326adc0b3166fea0c06bd4)]
-
 
 <a name="2.23.0"></a>
 
