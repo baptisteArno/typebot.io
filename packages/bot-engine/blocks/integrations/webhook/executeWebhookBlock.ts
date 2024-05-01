@@ -28,6 +28,7 @@ import {
 } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
 import { env } from '@typebot.io/env'
 import { parseAnswers } from '@typebot.io/results/parseAnswers'
+import { JSONParse } from '@typebot.io/lib/JSONParse'
 
 type ParsedWebhook = ExecutableHttpRequest & {
   basicAuth: { username?: string; password?: string }
@@ -326,7 +327,7 @@ export const convertKeyValueTableToObject = (
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const safeJsonParse = (json: unknown): { data: any; isJson: boolean } => {
   try {
-    return { data: JSON.parse(json as string), isJson: true }
+    return { data: JSONParse(json as string), isJson: true }
   } catch (err) {
     return { data: json, isJson: false }
   }
