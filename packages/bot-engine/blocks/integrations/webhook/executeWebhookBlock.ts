@@ -205,7 +205,7 @@ export const executeWebhook = async (
     json: !isFormData && body && isJson ? body : undefined,
     body: (isFormData && body ? body : undefined) as any,
     timeout: isNotDefined(env.CHAT_API_TIMEOUT)
-      ? undefined
+      ? false
       : params.timeout && params.timeout !== defaultTimeout
       ? Math.min(params.timeout, maxTimeout) * 1000
       : isLongRequest
@@ -215,30 +215,39 @@ export const executeWebhook = async (
 
   try {
     const response = await ky(request.url, omit(request, 'url'))
-    const body = await response.text()
+    const body = response.headers.get('content-type')?.includes('json')
+      ? await response.json()
+      : await response.text()
     logs.push({
       status: 'success',
       description: webhookSuccessDescription,
       details: {
         statusCode: response.status,
-        response: safeJsonParse(body).data,
+        response: typeof body === 'string' ? safeJsonParse(body).data : body,
         request,
       },
     })
     return {
       response: {
         statusCode: response.status,
-        data: safeJsonParse(body).data,
+        data: typeof body === 'string' ? safeJsonParse(body).data : body,
       },
       logs,
       startTimeShouldBeUpdated: true,
     }
   } catch (error) {
     if (error instanceof HTTPError) {
-      const responseBody = await error.response.text()
+      const responseBody = error.response.headers
+        .get('content-type')
+        ?.includes('json')
+        ? await error.response.json()
+        : await error.response.text()
       const response = {
         statusCode: error.response.status,
-        data: safeJsonParse(responseBody).data,
+        data:
+          typeof responseBody === 'string'
+            ? safeJsonParse(responseBody).data
+            : responseBody,
       }
       logs.push({
         status: 'error',
@@ -255,13 +264,15 @@ export const executeWebhook = async (
       const response = {
         statusCode: 408,
         data: {
-          message: `Request timed out. (${(request.timeout ?? 0) / 1000}ms)`,
+          message: `Request timed out. (${
+            (request.timeout ? request.timeout : 0) / 1000
+          }ms)`,
         },
       }
       logs.push({
         status: 'error',
         description: `Webhook request timed out. (${
-          (request.timeout ?? 0) / 1000
+          (request.timeout ? request.timeout : 0) / 1000
         }s)`,
         details: {
           response,
