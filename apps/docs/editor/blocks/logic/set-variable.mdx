@@ -126,6 +126,14 @@ This value block allows you to find the `Id` from `Ids` with the same index as `
   />
 </Frame>
 
+## Save in results
+
+By default, new variables are not persisted in the [Results](../../../results) table. They are only stored for the current user chat session. Enabling this option will save the variable in the `Results` table.
+
+## Execute on client
+
+This option is useful when you want to execute the custom code on the client side. This is only necessary when you need access the user's browser information. So, if you need access to `window`, `document`, `navigator`, etc., you should enable this option.
+
 ## Get user's geo location
 
 For this you can provide the following custom code:

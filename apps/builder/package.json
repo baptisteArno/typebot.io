@@ -99,7 +99,7 @@
   },
   "devDependencies": {
     "@chakra-ui/styled-system": "2.9.1",
-    "@playwright/test": "1.41.2",
+    "@playwright/test": "1.43.1",
     "@typebot.io/billing": "workspace:*",
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/forge-repository": "workspace:*",
@@ -123,12 +123,13 @@
     "@types/qs": "6.9.7",
     "@types/react": "18.2.15",
     "@types/tinycolor2": "1.4.3",
-    "dotenv-cli": "7.2.1",
+    "dotenv-cli": "7.4.1",
     "eslint": "8.44.0",
     "eslint-config-custom": "workspace:*",
     "next-runtime-env": "1.6.2",
     "superjson": "1.12.4",
     "typescript": "5.4.5",
-    "zod": "3.22.4"
+    "zod": "3.22.4",
+    "dotenv": "16.4.5"
   }
 }

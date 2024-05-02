@@ -258,8 +258,21 @@
     }
   ],
   "variables": [
-    { "id": "giiLFGw5xXBCHzvp1qAbdX", "name": "Name" },
-    { "id": "3VFChNVSCXQ2rXv4DrJ8Ah", "name": "Email" },
+    {
+      "id": "giiLFGw5xXBCHzvp1qAbdX",
+      "name": "Name",
+      "isSessionVariable": true
+    },
+    {
+      "id": "3VFChNVSCXQ2rXv4DrJ8Ah",
+      "name": "Email",
+      "isSessionVariable": true
+    },
+    {
+      "id": "8Q8t9YCc3ieAEXSYkmnCxH",
+      "name": "utm_session",
+      "isSessionVariable": true
+    },
     { "id": "8Q8t9YCc3ieAEXSYkmnCxH", "name": "utm_source" },
     { "id": "ds54chWAyWC4zjkdWAm3Vc", "name": "utm_userid" }
   ],
