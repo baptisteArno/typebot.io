@@ -214,34 +214,40 @@ export const executeWebhook = async (
   } satisfies Options & { url: string; body: any }
 
   try {
-    console.log('Webhook request:', new Date().toISOString())
     const response = await ky(request.url, omit(request, 'url'))
-    console.log('Got response:', new Date().toISOString())
-    const body = await response.text()
-    console.log('Got text:', new Date().toISOString())
+    const body = response.headers.get('content-type')?.includes('json')
+      ? await response.json()
+      : await response.text()
     logs.push({
       status: 'success',
       description: webhookSuccessDescription,
       details: {
         statusCode: response.status,
-        response: safeJsonParse(body).data,
+        response: typeof body === 'string' ? safeJsonParse(body).data : body,
         request,
       },
     })
     return {
       response: {
         statusCode: response.status,
-        data: safeJsonParse(body).data,
+        data: typeof body === 'string' ? safeJsonParse(body).data : body,
       },
       logs,
       startTimeShouldBeUpdated: true,
     }
   } catch (error) {
     if (error instanceof HTTPError) {
-      const responseBody = await error.response.text()
+      const responseBody = error.response.headers
+        .get('content-type')
+        ?.includes('json')
+        ? await error.response.json()
+        : await error.response.text()
       const response = {
         statusCode: error.response.status,
-        data: safeJsonParse(responseBody).data,
+        data:
+          typeof responseBody === 'string'
+            ? safeJsonParse(responseBody).data
+            : responseBody,
       }
       logs.push({
         status: 'error',
