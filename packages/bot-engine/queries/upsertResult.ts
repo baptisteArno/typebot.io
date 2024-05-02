@@ -1,7 +1,7 @@
 import prisma from '@typebot.io/lib/prisma'
 import { Prisma } from '@typebot.io/prisma'
 import { TypebotInSession } from '@typebot.io/schemas'
-import { filterVariablesWithValues } from '@typebot.io/variables/filterVariablesWithValues'
+import { filterNonSessionVariablesWithValues } from '@typebot.io/variables/filterVariablesWithValues'
 
 type Props = {
   resultId: string
@@ -15,7 +15,9 @@ export const upsertResult = ({
   hasStarted,
   isCompleted,
 }: Props): Prisma.PrismaPromise<any> => {
-  const variablesWithValue = filterVariablesWithValues(typebot.variables)
+  const variablesWithValue = filterNonSessionVariablesWithValues(
+    typebot.variables
+  )
   return prisma.result.upsert({
     where: { id: resultId },
     update: {

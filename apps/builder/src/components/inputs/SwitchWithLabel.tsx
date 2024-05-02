@@ -6,8 +6,9 @@ import {
   Switch,
   SwitchProps,
 } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
+import { isDefined } from '@typebot.io/lib'
 
 export type SwitchWithLabelProps = {
   label: string
@@ -31,6 +32,11 @@ export const SwitchWithLabel = ({
     setIsChecked(!isChecked)
     if (onCheckChange) onCheckChange(!isChecked)
   }
+
+  useEffect(() => {
+    if (isChecked === undefined && isDefined(initialValue))
+      setIsChecked(initialValue)
+  }, [initialValue, isChecked])
 
   return (
     <FormControl as={HStack} justifyContent={justifyContent}>
