@@ -205,7 +205,7 @@ export const executeWebhook = async (
     json: !isFormData && body && isJson ? body : undefined,
     body: (isFormData && body ? body : undefined) as any,
     timeout: isNotDefined(env.CHAT_API_TIMEOUT)
-      ? undefined
+      ? false
       : params.timeout && params.timeout !== defaultTimeout
       ? Math.min(params.timeout, maxTimeout) * 1000
       : isLongRequest
@@ -214,8 +214,11 @@ export const executeWebhook = async (
   } satisfies Options & { url: string; body: any }
 
   try {
+    console.log('Webhook request:', new Date().toISOString())
     const response = await ky(request.url, omit(request, 'url'))
+    console.log('Got response:', new Date().toISOString())
     const body = await response.text()
+    console.log('Got text:', new Date().toISOString())
     logs.push({
       status: 'success',
       description: webhookSuccessDescription,
@@ -255,13 +258,15 @@ export const executeWebhook = async (
       const response = {
         statusCode: 408,
         data: {
-          message: `Request timed out. (${(request.timeout ?? 0) / 1000}ms)`,
+          message: `Request timed out. (${
+            (request.timeout ? request.timeout : 0) / 1000
+          }ms)`,
         },
       }
       logs.push({
         status: 'error',
         description: `Webhook request timed out. (${
-          (request.timeout ?? 0) / 1000
+          (request.timeout ? request.timeout : 0) / 1000
         }s)`,
         details: {
           response,
