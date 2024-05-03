@@ -146,12 +146,7 @@ const nextConfig = {
                   {
                     type: 'header',
                     key: 'referer',
-                    value: `https://typebot.io/blog/(?<slug>.*)`,
-                  },
-                  {
-                    type: 'header',
-                    key: 'referer',
-                    value: `https://typebot.io/blog`,
+                    value: `https://typebot.io/blog/(?<slug>/.*)`,
                   },
                 ],
                 destination: `${process.env.LANDING_PAGE_URL}/_next/static/:static*`,
@@ -162,12 +157,7 @@ const nextConfig = {
                   {
                     type: 'header',
                     key: 'referer',
-                    value: `https://typebot.io/blog/(?<slug>.*)`,
-                  },
-                  {
-                    type: 'header',
-                    key: 'referer',
-                    value: `https://typebot.io/blog`,
+                    value: `https://typebot.io/blog/(?<slug>/.*)`,
                   },
                 ],
                 destination: `${process.env.LANDING_PAGE_URL}/images/blog/:images*`,
@@ -178,12 +168,7 @@ const nextConfig = {
                   {
                     type: 'header',
                     key: 'referer',
-                    value: `https://typebot.io/blog/(?<slug>.*)`,
-                  },
-                  {
-                    type: 'header',
-                    key: 'referer',
-                    value: `https://typebot.io/blog`,
+                    value: `https://typebot.io/blog(?<slug>/.*)`,
                   },
                 ],
                 destination: `${process.env.LANDING_PAGE_URL}/typebots/:typebot*`,
@@ -194,12 +179,7 @@ const nextConfig = {
                   {
                     type: 'header',
                     key: 'referer',
-                    value: `https://typebot.io/blog/(?<slug>.*)`,
-                  },
-                  {
-                    type: 'header',
-                    key: 'referer',
-                    value: `https://typebot.io/blog`,
+                    value: `https://typebot.io/blog/(?<slug>/.*)`,
                   },
                 ],
                 destination: `${process.env.LANDING_PAGE_URL}/styles/:style*`,
