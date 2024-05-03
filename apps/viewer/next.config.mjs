@@ -146,7 +146,7 @@ const nextConfig = {
                   {
                     type: 'header',
                     key: 'referer',
-                    value: `https://typebot.io/blog/(?<slug>/.*)`,
+                    value: `https://typebot.io/blog(?<slug>/.*)`,
                   },
                 ],
                 destination: `${process.env.LANDING_PAGE_URL}/_next/static/:static*`,
@@ -157,7 +157,7 @@ const nextConfig = {
                   {
                     type: 'header',
                     key: 'referer',
-                    value: `https://typebot.io/blog/(?<slug>/.*)`,
+                    value: `https://typebot.io/blog(?<slug>/.*)`,
                   },
                 ],
                 destination: `${process.env.LANDING_PAGE_URL}/images/blog/:images*`,
@@ -179,7 +179,7 @@ const nextConfig = {
                   {
                     type: 'header',
                     key: 'referer',
-                    value: `https://typebot.io/blog/(?<slug>/.*)`,
+                    value: `https://typebot.io/blog(?<slug>/.*)`,
                   },
                 ],
                 destination: `${process.env.LANDING_PAGE_URL}/styles/:style*`,
