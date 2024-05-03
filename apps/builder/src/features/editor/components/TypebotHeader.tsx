@@ -14,6 +14,7 @@ import {
 import {
   BuoyIcon,
   ChevronLeftIcon,
+  CopyIcon,
   PlayIcon,
   RedoIcon,
   UndoIcon,
@@ -289,6 +290,17 @@ const RightElements = ({
           <chakra.span display={{ base: 'none', xl: 'inline' }}>
             {t('editor.header.previewButton.label')}
           </chakra.span>
+        </Button>
+      )}
+      {currentUserMode === 'guest' && (
+        <Button
+          as={Link}
+          href={`/typebots/${typebot?.id}/duplicate`}
+          leftIcon={<CopyIcon />}
+          isLoading={isNotDefined(typebot)}
+          size="sm"
+        >
+          Duplicate
         </Button>
       )}
       {currentUserMode === 'write' && <PublishButton size="sm" />}
