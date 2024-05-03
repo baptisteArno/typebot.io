@@ -139,5 +139,11 @@ export const useTemplates = (): TemplateProps[] => {
       description:
         'Designed specifically for athlete fueling brands looking to attract and engage active audiences, this chatbot serves as an effective lead magnet by providing instant, customized carbohydrate intake recommendations based on user input.',
     },
+    {
+      name: 'OpenAI Assistant Chat',
+      emoji: '🤖',
+      fileName: 'openai-assistant-chat.json',
+      description: 'A simple conversation with your OpenAI assistant.',
+    },
   ]
 }
