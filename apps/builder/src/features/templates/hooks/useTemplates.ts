@@ -130,5 +130,14 @@ export const useTemplates = (): TemplateProps[] => {
       description:
         'Simulates a bot that could be triggered after a high ticket lead just downloaded a lead magnet. This bot asks questions about the prospect business and their needs. Every question are powered with AI blocks to make the conversation more engaging and human-like.',
     },
+    {
+      name: 'Quick Carb Calculator',
+      emoji: '🏃‍♂️',
+      isNew: true,
+      fileName: 'quick-carb-calculator.json',
+      category: 'marketing',
+      description:
+        'Designed specifically for athlete fueling brands looking to attract and engage active audiences, this chatbot serves as an effective lead magnet by providing instant, customized carbohydrate intake recommendations based on user input.',
+    },
   ]
 }

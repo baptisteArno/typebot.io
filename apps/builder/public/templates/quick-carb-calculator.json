@@ -1,0 +1,437 @@
+{
+  "version": "6",
+  "id": "clvqpyldu0005pub4sj4fi9sx",
+  "name": "Quick Carb Calculator",
+  "events": [
+    {
+      "id": "idpi6p77jtl07g95i59472ov",
+      "outgoingEdgeId": "u6s1xbl0f22isp1yw59wgjpc",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "x2x6f3wzxrtym647g57e4382",
+      "title": "Sport",
+      "graphCoordinates": { "x": 190.73, "y": 331.22 },
+      "blocks": [
+        {
+          "id": "vivxy8mvydql0e5u6tecpx1q",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "Welcome to the Quick Carb Calculator!" }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "dcopvbfbdvhq0te4g760pgn2",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": " I'll help you figure out how much fuel you'll need to perform at your best. Let's get started! 🚴‍♂️🏃"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "jdvfdtxzdce1busleqs9ure0",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "First, what are you fueling for?" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "yura2cvzxy8qea4x1m71ulcy",
+          "outgoingEdgeId": "gnwha6pow6q6occm6gn3d9o3",
+          "type": "choice input",
+          "items": [
+            { "id": "omopw9oy3srowddb0o3f4xs5", "content": "Swim 🏊‍♂️" },
+            { "id": "anpwbn8hvolyod2vsh06et68", "content": "Ride 🚴‍♂️" },
+            { "id": "uto1ghh5c6icwygszercxybz", "content": "Run 🏃" },
+            { "id": "sau0amab8nmeqfqyhhzle03v", "content": "Triathlon 🏊‍♂️🚴‍♂️🏃" },
+            { "id": "tqvjhk0qmvn43h5hyc9ibdd3", "content": "Swimrun 🏊‍♂️🏃" },
+            {
+              "id": "mu0m5v7m55vfikbs29lpcm3h",
+              "outgoingEdgeId": "hbh8d8q39wzgy1foclpy15s2",
+              "content": "Other"
+            }
+          ],
+          "options": { "variableId": "vc5qxl1y2rzmy7uqeasq8bd3q" }
+        }
+      ]
+    },
+    {
+      "id": "fdcibngr9fycd37o46dwlvuq",
+      "title": "",
+      "graphCoordinates": { "x": 589.06, "y": 781.87 },
+      "blocks": [
+        {
+          "id": "lglw9gtixolxnch9sqy4djyj",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "What sport?" }] }
+            ]
+          }
+        },
+        {
+          "id": "hcp2ebjsxmzjydpp6qkym5fo",
+          "outgoingEdgeId": "pow7libu0danm0n84k5dvrh2",
+          "type": "text input",
+          "options": { "variableId": "vc5qxl1y2rzmy7uqeasq8bd3q" }
+        }
+      ]
+    },
+    {
+      "id": "ujeec2r6ph4l0gbdlzvfen9c",
+      "title": "Duration",
+      "graphCoordinates": { "x": 605.2, "y": 329.71 },
+      "blocks": [
+        {
+          "id": "gt4pnocv289vzg7lbrqvuld6",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "Great! How long will you be doing this activity?" }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "je03xo9p9vipnvw07y859ng7",
+          "outgoingEdgeId": "ee0zj9456t8oj1cbgn0d5pci",
+          "type": "text input",
+          "options": { "variableId": "veiz4m7fe9er6k5qy676qwhfb" }
+        }
+      ]
+    },
+    {
+      "id": "n45do8ao8c2fzgu107wdsrr3",
+      "title": "Intensity",
+      "graphCoordinates": { "x": 1008.15, "y": 332.34 },
+      "blocks": [
+        {
+          "id": "zm8sjanqyezg1pk427t1ywph",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "Understood! Now, how hard will you be going?" }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "zxvlig3wytb4n7s81prfszau",
+          "outgoingEdgeId": "r0sy9h8oux00p1pqkuczhg9n",
+          "type": "rating input",
+          "options": {
+            "variableId": "vprpht8foqzxv4bs8hlozqoq7",
+            "length": 7,
+            "startsAt": 1,
+            "labels": { "left": "Easy", "right": "Racing" }
+          }
+        }
+      ]
+    },
+    {
+      "id": "er51741iln7nja5jn8qrkyeh",
+      "title": "AI gen",
+      "graphCoordinates": { "x": 1730.53, "y": 325.38 },
+      "blocks": [
+        {
+          "id": "cnof27ok7s9d2ly8psdyoe4y",
+          "type": "openai",
+          "options": {
+            "credentialsId": "clvqq3hey0007pub4almxnhk2",
+            "action": "Create chat completion",
+            "model": "gpt-4-turbo",
+            "messages": [
+              {
+                "role": "system",
+                "content": "Your job is to estimate how much carbs an athelete has to ingest during a race. You should also generate a simple fueling strategy.\n\nYou are working for a company called Precision Hydration and you are selling a 30g gels with or without caffeine and 90g gels with or without caffeine.\n\nYour answer should be based on the context inside the <context> XML element\n\n<context>\nI am training for {{Sport}}. My time goal is {{Duration}}. On a scale of 1 to 7, 1 being easy and 7 being intense racing, I would say {{Intensity}}.\n</context>\n\nAvoid explaining your guess too much, directly provide the total carbs, then a quick explanation and finally the fueling strategy."
+              }
+            ],
+            "responseMapping": [{ "variableId": "vi3aeka9tjab0hmuqnc1uvzjz" }]
+          }
+        },
+        {
+          "id": "ncqf0arxg4a4gry512dqk2v7",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "{{Assistant message}}" }] }
+            ]
+          }
+        },
+        {
+          "id": "peycxrwyv23d396c27j75nsy",
+          "outgoingEdgeId": "bk3wsui0h91kbf9zobqh15pb",
+          "type": "Email",
+          "options": {
+            "isCustomBody": true,
+            "recipients": ["{{Email}}"],
+            "subject": "Your fueling plan",
+            "body": "Hey,\n\nThank you for answering...\n\nHere is the estimation:\n\n{{Assistant message}}\n\nSee you soon,\nPerformance Hydration."
+          }
+        }
+      ]
+    },
+    {
+      "id": "i477wpsojbu2fbqct541qqa1",
+      "title": "Email",
+      "graphCoordinates": { "x": 1370.12, "y": 338.17 },
+      "blocks": [
+        {
+          "id": "ro1y65vqxcozqxla4ghgrvs1",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "To keep a record of your carb calculations and for easy future reference, could you please provide your email address? "
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "u9vbh5h4009ujs3a2meknec5",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "This way, I can send you a personalized summary of your fueling plan. 📧"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "prd6ni8tnjoi62tj29dnthlj",
+          "outgoingEdgeId": "d7ihuksdgn0gdqm7138xnzf4",
+          "type": "email input",
+          "options": { "variableId": "vb0jqpcdbqr7c2fq1ijs7j3wt" }
+        }
+      ]
+    },
+    {
+      "id": "h709w0mid2cu06xe0vu5agj1",
+      "title": "CTA",
+      "graphCoordinates": { "x": 2080.11, "y": 324.59 },
+      "blocks": [
+        {
+          "id": "q7w7wypml8fpoqmrwdyv5zfm",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Now that you know how many carbs you'll need, would you like to check out our selection of top-rated carbohydrate gels and other fueling products? 🛒"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "g0nd8jfs64h90lxy41ztufkf",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "y7w3u1i6np6umnwxfs7u7x4a",
+              "outgoingEdgeId": "nnaxabsjpk161s6kygdxm68k",
+              "content": "Go shopping"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d5ihz070zlpirjzz26hx8ak4",
+      "title": "",
+      "graphCoordinates": { "x": 2425.42, "y": 591.25 },
+      "blocks": [
+        {
+          "id": "tukplu3km8f59cuqyrwhlnjz",
+          "type": "Redirect",
+          "options": {
+            "url": "https://www.precisionhydration.com/eu/en/products/pf-30-gel/"
+          }
+        }
+      ]
+    },
+    {
+      "id": "irklbryotgaxozsrot5qxeoc",
+      "title": "",
+      "graphCoordinates": { "x": 269.91, "y": -3.13 },
+      "blocks": [
+        {
+          "id": "jl3b2nltipe5b5ejtqbfgx9j",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "You need to add your OpenAI credentials to make this bot work. 🪄"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "mnakzjvql9qrsctwscctzx74",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Once it's done, delete this group and connect the "
+                  },
+                  { "bold": true, "text": "Start" },
+                  { "text": " event with " },
+                  { "bold": true, "text": "Sport group" },
+                  { "text": " 🚀" }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "hbh8d8q39wzgy1foclpy15s2",
+      "from": {
+        "blockId": "yura2cvzxy8qea4x1m71ulcy",
+        "itemId": "mu0m5v7m55vfikbs29lpcm3h"
+      },
+      "to": { "groupId": "fdcibngr9fycd37o46dwlvuq" }
+    },
+    {
+      "id": "gnwha6pow6q6occm6gn3d9o3",
+      "from": { "blockId": "yura2cvzxy8qea4x1m71ulcy" },
+      "to": { "groupId": "ujeec2r6ph4l0gbdlzvfen9c" }
+    },
+    {
+      "id": "pow7libu0danm0n84k5dvrh2",
+      "from": { "blockId": "hcp2ebjsxmzjydpp6qkym5fo" },
+      "to": { "groupId": "ujeec2r6ph4l0gbdlzvfen9c" }
+    },
+    {
+      "id": "ee0zj9456t8oj1cbgn0d5pci",
+      "from": { "blockId": "je03xo9p9vipnvw07y859ng7" },
+      "to": { "groupId": "n45do8ao8c2fzgu107wdsrr3" }
+    },
+    {
+      "id": "r0sy9h8oux00p1pqkuczhg9n",
+      "from": { "blockId": "zxvlig3wytb4n7s81prfszau" },
+      "to": { "groupId": "i477wpsojbu2fbqct541qqa1" }
+    },
+    {
+      "id": "d7ihuksdgn0gdqm7138xnzf4",
+      "from": { "blockId": "prd6ni8tnjoi62tj29dnthlj" },
+      "to": { "groupId": "er51741iln7nja5jn8qrkyeh" }
+    },
+    {
+      "id": "bk3wsui0h91kbf9zobqh15pb",
+      "from": { "blockId": "peycxrwyv23d396c27j75nsy" },
+      "to": { "groupId": "h709w0mid2cu06xe0vu5agj1" }
+    },
+    {
+      "id": "nnaxabsjpk161s6kygdxm68k",
+      "from": {
+        "blockId": "g0nd8jfs64h90lxy41ztufkf",
+        "itemId": "y7w3u1i6np6umnwxfs7u7x4a"
+      },
+      "to": { "groupId": "d5ihz070zlpirjzz26hx8ak4" }
+    },
+    {
+      "from": { "eventId": "idpi6p77jtl07g95i59472ov" },
+      "to": { "groupId": "irklbryotgaxozsrot5qxeoc" },
+      "id": "u6s1xbl0f22isp1yw59wgjpc"
+    }
+  ],
+  "variables": [
+    {
+      "id": "vc5qxl1y2rzmy7uqeasq8bd3q",
+      "name": "Sport",
+      "isSessionVariable": true
+    },
+    {
+      "id": "veiz4m7fe9er6k5qy676qwhfb",
+      "name": "Duration",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vprpht8foqzxv4bs8hlozqoq7",
+      "name": "Intensity",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vi3aeka9tjab0hmuqnc1uvzjz",
+      "name": "Assistant message",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vb0jqpcdbqr7c2fq1ijs7j3wt",
+      "name": "Email",
+      "isSessionVariable": true
+    }
+  ],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2024-05-03T13:37:03.426Z",
+  "updatedAt": "2024-05-03T13:48:08.061Z",
+  "icon": "🏃‍♂️",
+  "folderId": null,
+  "publicId": "quick-carb-calculator-j4fi9sx",
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}
