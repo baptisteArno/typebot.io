@@ -2517,6 +2517,9 @@
                                     "name": {
                                       "type": "string"
                                     },
+                                    "isSessionVariable": {
+                                      "type": "boolean"
+                                    },
                                     "value": {
                                       "nullable": true,
                                       "anyOf": [
@@ -2575,6 +2578,9 @@
                                     },
                                     "name": {
                                       "type": "string"
+                                    },
+                                    "isSessionVariable": {
+                                      "type": "boolean"
                                     },
                                     "value": {
                                       "nullable": true,
@@ -3917,6 +3923,9 @@
                             "name": {
                               "type": "string"
                             },
+                            "isSessionVariable": {
+                              "type": "boolean"
+                            },
                             "value": {
                               "nullable": true,
                               "anyOf": [
@@ -4311,6 +4320,9 @@
                                 },
                                 "name": {
                                   "type": "string"
+                                },
+                                "isSessionVariable": {
+                                  "type": "boolean"
                                 },
                                 "value": {
                                   "nullable": true,
@@ -6949,6 +6961,9 @@
                                 },
                                 "name": {
                                   "type": "string"
+                                },
+                                "isSessionVariable": {
+                                  "type": "boolean"
                                 },
                                 "value": {
                                   "nullable": true,
@@ -7832,6 +7847,9 @@
                                 "name": {
                                   "type": "string"
                                 },
+                                "isSessionVariable": {
+                                  "type": "boolean"
+                                },
                                 "value": {
                                   "nullable": true,
                                   "anyOf": [
@@ -10451,6 +10469,9 @@
                                 "name": {
                                   "type": "string"
                                 },
+                                "isSessionVariable": {
+                                  "type": "boolean"
+                                },
                                 "value": {
                                   "nullable": true,
                                   "anyOf": [
@@ -11146,6 +11167,9 @@
                                 "name": {
                                   "type": "string"
                                 },
+                                "isSessionVariable": {
+                                  "type": "boolean"
+                                },
                                 "value": {
                                   "anyOf": [
                                     {
@@ -11454,6 +11478,9 @@
                               },
                               "name": {
                                 "type": "string"
+                              },
+                              "isSessionVariable": {
+                                "type": "boolean"
                               },
                               "value": {
                                 "anyOf": [
@@ -21959,6 +21986,9 @@
                 "name": {
                   "type": "string"
                 },
+                "isSessionVariable": {
+                  "type": "boolean"
+                },
                 "value": {
                   "nullable": true,
                   "anyOf": [
@@ -24624,6 +24654,9 @@
                 "name": {
                   "type": "string"
                 },
+                "isSessionVariable": {
+                  "type": "boolean"
+                },
                 "value": {
                   "nullable": true,
                   "anyOf": [
@@ -24859,6 +24892,9 @@
                 },
                 "name": {
                   "type": "string"
+                },
+                "isSessionVariable": {
+                  "type": "boolean"
                 },
                 "value": {
                   "nullable": true,
@@ -27447,6 +27483,9 @@
                 },
                 "name": {
                   "type": "string"
+                },
+                "isSessionVariable": {
+                  "type": "boolean"
                 },
                 "value": {
                   "nullable": true,
