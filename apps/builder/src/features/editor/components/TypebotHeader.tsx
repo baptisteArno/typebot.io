@@ -253,7 +253,7 @@ const RightElements = ({
 }: StackProps & { isResultsDisplayed: boolean }) => {
   const router = useRouter()
   const { t } = useTranslate()
-  const { typebot, currentUserMode, save } = useTypebot()
+  const { typebot, currentUserMode, save, isSavingLoading } = useTypebot()
   const {
     setRightPanel,
     rightPanel,
@@ -264,7 +264,7 @@ const RightElements = ({
   const handlePreviewClick = async () => {
     setStartPreviewAtGroup(undefined)
     setStartPreviewAtEvent(undefined)
-    save().then()
+    await save()
     setRightPanel(RightPanel.PREVIEW)
   }
 
@@ -282,7 +282,7 @@ const RightElements = ({
         <Button
           colorScheme="gray"
           onClick={handlePreviewClick}
-          isLoading={isNotDefined(typebot)}
+          isLoading={isNotDefined(typebot) || isSavingLoading}
           leftIcon={<PlayIcon />}
           size="sm"
           iconSpacing={{ base: 0, xl: 2 }}
