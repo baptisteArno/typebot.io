@@ -53,6 +53,8 @@ export const queueJoin = createAction({
     },
     web: {
       displayEmbedBubble: {
+        parseUrl: ({}) => '',
+        maxBubbleWidth: 780,
         waitForEvent: {
           getSaveVariableId: ({ responseMapping }) => responseMapping,
           parseFunction: () => {

@@ -18,6 +18,8 @@ export const pauseAction = createAction({
   run: {
     web: {
       displayEmbedBubble: {
+        parseUrl: ({}) => '',
+        maxBubbleWidth: 780,
         waitForEvent: {
           parseFunction: () => {
             return {

@@ -123,6 +123,8 @@ export const cortex = createAction({
     },
     web: {
       displayEmbedBubble: {
+        parseUrl: ({}) => '',
+        maxBubbleWidth: 780,
         waitForEvent: {
           getSaveVariableId: ({ responseMapping }) => responseMapping,
           parseFunction: () => {
