@@ -341,9 +341,7 @@ const setHostBubbles = (
 
   documentStyle.setProperty(
     cssVariableNames.chat.hostBubbles.blur,
-    isDefined(hostBubbles?.blur)
-      ? `${hostBubbles.blur ?? 0}px`
-      : defaultBlur.toString()
+    isDefined(hostBubbles?.blur) ? `${hostBubbles.blur ?? 0}px` : 'none'
   )
 
   setShadow(
@@ -408,9 +406,7 @@ const setGuestBubbles = (
 
   documentStyle.setProperty(
     cssVariableNames.chat.guestBubbles.blur,
-    isDefined(guestBubbles?.blur)
-      ? `${guestBubbles.blur ?? 0}px`
-      : defaultBlur.toString()
+    isDefined(guestBubbles?.blur) ? `${guestBubbles.blur ?? 0}px` : 'none'
   )
 
   setShadow(
@@ -484,7 +480,7 @@ const setButtons = (
 
   documentStyle.setProperty(
     cssVariableNames.chat.buttons.blur,
-    isDefined(buttons?.blur) ? `${buttons.blur ?? 0}px` : defaultBlur.toString()
+    isDefined(buttons?.blur) ? `${buttons.blur ?? 0}px` : 'none'
   )
 
   setShadow(
@@ -535,6 +531,13 @@ const setInputs = (
   )
 
   documentStyle.setProperty(
+    cssVariableNames.chat.inputs.borderOpacity,
+    isDefined(inputs?.border?.opacity)
+      ? inputs.border.opacity.toString()
+      : defaultOpacity.toString()
+  )
+
+  documentStyle.setProperty(
     cssVariableNames.chat.inputs.opacity,
     inputs?.backgroundColor === 'transparent'
       ? '0'
@@ -545,7 +548,7 @@ const setInputs = (
 
   documentStyle.setProperty(
     cssVariableNames.chat.inputs.blur,
-    isDefined(inputs?.blur) ? `${inputs.blur ?? 0}px` : defaultBlur.toString()
+    isDefined(inputs?.blur) ? `${inputs.blur ?? 0}px` : 'none'
   )
 
   setShadow(

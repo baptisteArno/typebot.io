@@ -7,7 +7,7 @@ import { NextResponse } from 'next/dist/server/web/spec-extension/response'
 import { getBlockById } from '@typebot.io/schemas/helpers'
 import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
 import { decryptV2 } from '@typebot.io/lib/api/encryption/decryptV2'
-import { ReadOnlyVariableStore } from '@typebot.io/forge'
+import { VariableStore } from '@typebot.io/forge'
 import {
   ParseVariablesOptions,
   parseVariables,
@@ -38,6 +38,7 @@ export async function OPTIONS() {
   })
 }
 
+// Deprecated in favor of `/api/v1/sessions/:sessionId/streamMessage`.
 export async function POST(req: Request) {
   const { sessionId, messages } = (await req.json()) as {
     messages: OpenAI.Chat.ChatCompletionMessage[] | undefined
@@ -140,7 +141,7 @@ export async function POST(req: Request) {
       credentials.data,
       credentials.iv
     )
-    const variables: ReadOnlyVariableStore = {
+    const variables: VariableStore = {
       list: () => state.typebotsQueue[0].typebot.variables,
       get: (id: string) => {
         const variable = state.typebotsQueue[0].typebot.variables.find(
@@ -150,6 +151,8 @@ export async function POST(req: Request) {
       },
       parse: (text: string, params?: ParseVariablesOptions) =>
         parseVariables(state.typebotsQueue[0].typebot.variables, params)(text),
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      set: (_1: string, _2: unknown) => {},
     }
     const stream = await action.run.stream.run({
       credentials: decryptedCredentials,

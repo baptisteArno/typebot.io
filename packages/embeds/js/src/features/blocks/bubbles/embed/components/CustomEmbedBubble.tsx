@@ -8,7 +8,7 @@ import { botContainerHeight } from '@/utils/botContainerHeightSignal'
 
 type Props = {
   content: CustomEmbedBubbleProps['content']
-  onTransitionEnd?: (offsetTop?: number) => void
+  onTransitionEnd?: (ref?: HTMLDivElement) => void
   onCompleted: (reply?: string) => void
 }
 
@@ -43,10 +43,7 @@ export const CustomEmbedBubble = (props: Props) => {
 
     typingTimeout = setTimeout(() => {
       setIsTyping(false)
-      setTimeout(
-        () => props.onTransitionEnd?.(ref?.offsetTop),
-        showAnimationDuration
-      )
+      setTimeout(() => props.onTransitionEnd?.(ref), showAnimationDuration)
     }, 2000)
   })
 

@@ -11,7 +11,7 @@ type Props = {
   content: TextBubbleBlock['content']
   typingEmulation: Settings['typingEmulation']
   isTypingSkipped: boolean
-  onTransitionEnd?: (offsetTop?: number) => void
+  onTransitionEnd?: (ref?: HTMLDivElement) => void
 }
 
 export const showAnimationDuration = 400
@@ -28,7 +28,7 @@ export const TextBubble = (props: Props) => {
     if (!isTyping()) return
     setIsTyping(false)
     setTimeout(() => {
-      props.onTransitionEnd?.(ref?.offsetTop)
+      props.onTransitionEnd?.(ref)
     }, showAnimationDuration)
   }
 

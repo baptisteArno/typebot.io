@@ -42,6 +42,16 @@ const guessViewerUrlForVercelPreview = (val: unknown) => {
   )
 }
 
+const guessLandingUrlForVercelPreview = (val: unknown) => {
+  if (
+    (val && typeof val === 'string' && val.length > 0) ||
+    process.env.VERCEL_ENV !== 'preview' ||
+    !process.env.VERCEL_LANDING_PROJECT_NAME
+  )
+    return val
+  return `https://${process.env.VERCEL_BRANCH_URL}`
+}
+
 const boolean = z.enum(['true', 'false']).transform((value) => value === 'true')
 
 const baseEnv = {
@@ -89,6 +99,10 @@ const baseEnv = {
         val.split('/').map((s) => s.split(',').map((s) => s.split('|')))
       )
       .optional(),
+    LANDING_PAGE_URL: z.preprocess(
+      guessLandingUrlForVercelPreview,
+      z.string().url().optional()
+    ),
   },
   client: {
     NEXT_PUBLIC_E2E_TEST: boolean.optional(),
@@ -269,6 +283,7 @@ const vercelEnv = {
     VERCEL_TEAM_ID: z.string().min(1).optional(),
     VERCEL_GIT_COMMIT_SHA: z.string().min(1).optional(),
     VERCEL_BUILDER_PROJECT_NAME: z.string().min(1).optional(),
+    VERCEL_LANDING_PROJECT_NAME: z.string().min(1).optional(),
   },
   client: {
     NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME: z.string().min(1).optional(),

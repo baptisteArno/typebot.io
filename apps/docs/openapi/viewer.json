@@ -5667,6 +5667,9 @@
                 "name": {
                   "type": "string"
                 },
+                "isSessionVariable": {
+                  "type": "boolean"
+                },
                 "value": {
                   "nullable": true,
                   "anyOf": [
@@ -7258,6 +7261,9 @@
                 },
                 "name": {
                   "type": "string"
+                },
+                "isSessionVariable": {
+                  "type": "boolean"
                 },
                 "value": {
                   "nullable": true,
@@ -9977,7 +9983,7 @@
                       "assistantId": {
                         "type": "string"
                       },
-                      "threadId": {
+                      "threadVariableId": {
                         "type": "string"
                       },
                       "message": {
@@ -10014,6 +10020,9 @@
                             }
                           }
                         }
+                      },
+                      "threadId": {
+                        "type": "string"
                       }
                     },
                     "required": [
@@ -10419,7 +10428,7 @@
                       "query": {
                         "type": "string"
                       },
-                      "conversation_id": {
+                      "conversationVariableId": {
                         "type": "string"
                       },
                       "user": {
@@ -10457,6 +10466,10 @@
                             }
                           }
                         }
+                      },
+                      "conversation_id": {
+                        "type": "string",
+                        "description": "Deprecated, use `conversationVariableId` instead"
                       }
                     },
                     "required": [
@@ -12033,6 +12046,9 @@
           "content": {
             "type": "object",
             "properties": {
+              "url": {
+                "type": "string"
+              },
               "maxBubbleWidth": {
                 "type": "number"
               },

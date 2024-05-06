@@ -149,7 +149,8 @@ const parseVariablesHeaders = (
     if (
       existingInputResultHeaders.some((existingInputResultHeader) =>
         existingInputResultHeader.variableIds?.includes(variable.id)
-      )
+      ) ||
+      variable.isSessionVariable
     )
       return existingHeaders
 

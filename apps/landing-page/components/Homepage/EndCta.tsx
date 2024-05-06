@@ -1,9 +1,23 @@
-import { Heading, Button, Text, Flex, VStack } from '@chakra-ui/react'
+'use client'
+
+import {
+  Heading,
+  Button,
+  Text,
+  Flex,
+  VStack,
+  StackProps,
+} from '@chakra-ui/react'
 import Link from 'next/link'
 import React from 'react'
 import { BackgroundPolygons } from './Hero/BackgroundPolygons'
 
-export const EndCta = () => {
+type Props = {
+  heading?: string
+  polygonsBaseTop?: string
+} & StackProps
+
+export const EndCta = ({ heading, polygonsBaseTop, ...props }: Props) => {
   return (
     <VStack
       as="section"
@@ -12,23 +26,26 @@ export const EndCta = () => {
       bgGradient="linear(to-b, gray.900, gray.800)"
       height="100vh"
       justifyContent="center"
+      {...props}
     >
-      <BackgroundPolygons />
+      <BackgroundPolygons baseTop={polygonsBaseTop} />
       <VStack
         spacing="6"
-        maxW="2xl"
+        maxW="3xl"
         mx="auto"
         px={{ base: '6', lg: '8' }}
         py={{ base: '16', sm: '20' }}
         textAlign="center"
       >
-        <Heading
-          fontWeight="extrabold"
-          letterSpacing="tight"
-          data-aos="fade-up"
-        >
-          Take your forms to the next level
-        </Heading>
+        {heading ? (
+          <Heading
+            fontWeight="extrabold"
+            letterSpacing="tight"
+            data-aos="fade-up"
+          >
+            {heading}
+          </Heading>
+        ) : null}
         <Flex>
           <Button
             as={Link}
@@ -44,7 +61,7 @@ export const EndCta = () => {
         </Flex>
 
         <Text color="gray.400" data-aos="fade-up" data-aos-delay="400">
-          No trial. Generous, unlimited <strong>free</strong> plan.
+          No trial. Generous <strong>free</strong> plan.
         </Text>
       </VStack>
     </VStack>

@@ -177,7 +177,7 @@ test("can't add new members when limit is reached", async ({ page }) => {
   await page.click('button >> text="Invite"')
   await expect(
     page.locator(
-      'text="Upgrade your plan to work with more team members, and unlock awesome power features 🚀"'
+      'text="Upgrade your plan to work with more team members, and unlock awesome power features"'
     )
   ).toBeVisible()
   await expect(page.locator('button >> text="Invite"')).toBeDisabled()

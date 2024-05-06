@@ -4,45 +4,67 @@ import { auth } from '../auth'
 import { defaultBaseUrl } from '../constants'
 import { Chunk } from '../types'
 import ky from 'ky'
+import { deprecatedCreateChatMessageOptions } from '../deprecated'
 
 export const createChatMessage = createAction({
   auth,
   name: 'Create Chat Message',
-  options: option.object({
-    query: option.string.layout({
-      label: 'Query',
-      placeholder: 'User input/question content',
-      inputType: 'textarea',
-      isRequired: true,
-    }),
-    conversation_id: option.string.layout({
-      label: 'Conversation ID',
-      moreInfoTooltip:
-        'Used to remember the conversation with the user. If empty, a new conversation id is created.',
-    }),
-    user: option.string.layout({
-      label: 'User',
-      moreInfoTooltip:
-        'The user identifier, defined by the developer, must ensure uniqueness within the app.',
-    }),
-    inputs: option.keyValueList.layout({
-      accordion: 'Inputs',
-    }),
-    responseMapping: option
-      .saveResponseArray(['Answer', 'Conversation ID', 'Total Tokens'] as const)
-      .layout({
-        accordion: 'Save response',
+  options: option
+    .object({
+      query: option.string.layout({
+        label: 'Query',
+        placeholder: 'User input/question content',
+        inputType: 'textarea',
+        isRequired: true,
       }),
-  }),
+
+      conversationVariableId: option.string.layout({
+        label: 'Conversation ID',
+        moreInfoTooltip:
+          'Used to remember the conversation with the user. If empty, a new conversation ID is created.',
+        inputType: 'variableDropdown',
+      }),
+      user: option.string.layout({
+        label: 'User',
+        moreInfoTooltip:
+          'The user identifier, defined by the developer, must ensure uniqueness within the app.',
+      }),
+      inputs: option.keyValueList.layout({
+        accordion: 'Inputs',
+      }),
+      responseMapping: option
+        .saveResponseArray(
+          ['Answer', 'Conversation ID', 'Total Tokens'] as const,
+          {
+            item: {
+              hiddenItems: ['Conversation ID'],
+            },
+          }
+        )
+        .layout({
+          accordion: 'Save response',
+        }),
+    })
+    .merge(deprecatedCreateChatMessageOptions),
   getSetVariableIds: ({ responseMapping }) =>
     responseMapping?.map((r) => r.variableId).filter(isDefined) ?? [],
   run: {
     server: async ({
       credentials: { apiEndpoint, apiKey },
-      options: { conversation_id, query, user, inputs, responseMapping },
+      options: {
+        conversationVariableId,
+        conversation_id,
+        query,
+        user,
+        inputs,
+        responseMapping,
+      },
       variables,
       logs,
     }) => {
+      const existingDifyConversationId = conversationVariableId
+        ? variables.get(conversationVariableId)
+        : conversation_id
       try {
         const response = await ky(
           (apiEndpoint ?? defaultBaseUrl) + '/v1/chat-messages',
@@ -63,7 +85,7 @@ export const createChatMessage = createAction({
                 }, {}) ?? {},
               query,
               response_mode: 'streaming',
-              conversation_id,
+              conversation_id: existingDifyConversationId,
               user,
               files: [],
             }),
@@ -139,8 +161,19 @@ export const createChatMessage = createAction({
           if (item === 'Answer')
             variables.set(mapping.variableId, convertNonMarkdownLinks(answer))
 
-          if (item === 'Conversation ID' && isNotEmpty(conversationId))
+          if (
+            item === 'Conversation ID' &&
+            isNotEmpty(conversationId) &&
+            isEmpty(existingDifyConversationId?.toString())
+          )
             variables.set(mapping.variableId, conversationId)
+
+          if (
+            conversationVariableId &&
+            isNotEmpty(conversationId) &&
+            isEmpty(existingDifyConversationId?.toString())
+          )
+            variables.set(conversationVariableId, conversationId)
 
           if (item === 'Total Tokens')
             variables.set(mapping.variableId, totalTokens)

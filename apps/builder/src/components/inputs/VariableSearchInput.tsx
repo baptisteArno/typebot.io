@@ -123,7 +123,7 @@ export const VariableSearchInput = ({
     if (!inputValue || inputValue === '') return
     const id = 'v' + createId()
     onSelectVariable({ id, name: inputValue })
-    createVariable({ id, name: inputValue })
+    createVariable({ id, name: inputValue, isSessionVariable: true })
     inputRef.current?.blur()
     onClose()
   }

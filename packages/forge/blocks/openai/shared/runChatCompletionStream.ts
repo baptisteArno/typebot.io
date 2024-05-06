@@ -1,4 +1,4 @@
-import { LogsStore, ReadOnlyVariableStore } from '@typebot.io/forge/types'
+import { VariableStore } from '@typebot.io/forge/types'
 import { ChatCompletionOptions } from './parseChatCompletionOptions'
 import { executeFunction } from '@typebot.io/variables/executeFunction'
 import { OpenAIStream, ToolCallPayload } from 'ai'
@@ -10,7 +10,7 @@ import { parseToolParameters } from '../helpers/parseToolParameters'
 type Props = {
   credentials: { apiKey?: string }
   options: ChatCompletionOptions
-  variables: ReadOnlyVariableStore
+  variables: VariableStore
   config: { baseUrl: string; defaultModel?: string }
 }
 export const runChatCompletionStream = async ({

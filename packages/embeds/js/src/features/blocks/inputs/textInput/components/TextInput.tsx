@@ -40,7 +40,10 @@ export const TextInput = (props: Props) => {
   }
 
   onMount(() => {
-    if (!isMobile() && inputRef) inputRef.focus()
+    if (!isMobile() && inputRef)
+      inputRef.focus({
+        preventScroll: true,
+      })
     window.addEventListener('message', processIncomingEvent)
   })
 
@@ -89,8 +92,7 @@ export const TextInput = (props: Props) => {
         />
       )}
       <SendButton type="button" class="my-2 ml-2" on:click={submit}>
-        {props.block.options?.labels?.button ??
-          defaultTextInputOptions.labels.button}
+        {props.block.options?.labels?.button}
       </SendButton>
     </div>
   )

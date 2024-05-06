@@ -21,7 +21,7 @@ export const getRow = async (
   const logs: ChatLog[] = []
   const { variables } = state.typebotsQueue[0].typebot
   const { sheetId, cellsToExtract, filter, ...parsedOptions } =
-    deepParseVariables(variables)(options)
+    deepParseVariables(variables, { removeEmptyStrings: true })(options)
   if (!sheetId) return { outgoingEdgeId }
 
   const doc = await getAuthenticatedGoogleDoc({

@@ -13,6 +13,7 @@ import { saveStateToDatabase } from '../saveStateToDatabase'
 import prisma from '@typebot.io/lib/prisma'
 import { isDefined } from '@typebot.io/lib/utils'
 import { Reply } from '../types'
+import { setChatSessionHasReplying } from '../queries/setChatSessionHasReplying'
 
 type Props = {
   receivedMessage: WhatsAppIncomingMessage
@@ -67,6 +68,18 @@ export const resumeWhatsAppFlow = async ({
 
   const session = await getSession(sessionId)
 
+  if (session?.isReplying) {
+    console.log('Is currently replying, skipping...')
+    return {
+      message: 'Message received',
+    }
+  }
+
+  await setChatSessionHasReplying({
+    existingSessionId: session?.id,
+    newSessionId: sessionId,
+  })
+
   const isSessionExpired =
     session &&
     isDefined(session.state.expiryTimeout) &&
@@ -116,7 +129,6 @@ export const resumeWhatsAppFlow = async ({
   })
 
   await saveStateToDatabase({
-    forceCreateSession: !session && isDefined(input),
     clientSideActions: [],
     input,
     logs,

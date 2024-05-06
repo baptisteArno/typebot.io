@@ -7,14 +7,14 @@
   "author": "Baptiste Arnaud",
   "license": "ISC",
   "dependencies": {
-    "ai": "3.0.12",
-    "openai": "4.28.4"
+    "ai": "3.0.31",
+    "openai": "4.38.3"
   },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
     "@types/react": "18.2.15",
-    "typescript": "5.3.2",
+    "typescript": "5.4.5",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/variables": "workspace:*"
   }

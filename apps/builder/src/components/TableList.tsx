@@ -44,7 +44,8 @@ export const TableList = <T,>({
   onItemsChange,
 }: Props<T>) => {
   const [items, setItems] = useState(
-    initialItems ?? (hasDefaultItem ? ([defaultItem] as ItemWithId<T>[]) : [])
+    addIdsIfMissing(initialItems) ??
+      (hasDefaultItem ? ([defaultItem] as ItemWithId<T>[]) : [])
   )
   const [showDeleteIndex, setShowDeleteIndex] = useState<number | null>(null)
 
@@ -183,3 +184,9 @@ export const TableList = <T,>({
     </Stack>
   )
 }
+
+const addIdsIfMissing = <T,>(items?: T[]): ItemWithId<T>[] | undefined =>
+  items?.map((item) => ({
+    id: createId(),
+    ...item,
+  }))

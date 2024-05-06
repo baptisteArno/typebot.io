@@ -90,7 +90,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
   }
 
   onMount(() => {
-    if (!isMobile() && inputRef) inputRef.focus()
+    if (!isMobile() && inputRef) inputRef.focus({ preventScroll: true })
     window.addEventListener('message', processIncomingEvent)
   })
 
@@ -158,7 +158,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
       </div>
 
       <SendButton type="button" class="my-2 ml-2" on:click={submit}>
-        {props.labels?.button ?? defaultPhoneInputOptions.labels.button}
+        {props.labels?.button}
       </SendButton>
     </div>
   )

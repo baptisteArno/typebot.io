@@ -1,6 +1,12 @@
 import * as p from '@clack/prompts'
 import { spinner } from '@clack/prompts'
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  writeFileSync,
+} from 'fs'
 import { join } from 'path'
 import prettier from 'prettier'
 import { spawn } from 'child_process'
@@ -70,14 +76,14 @@ const main = async () => {
   const s = spinner()
   s.start('Creating files...')
   const newBlockPath = join(process.cwd(), `../blocks/${prompt.camelCaseId}`)
-  if (existsSync(newBlockPath)) {
+  if (existsSync(newBlockPath) && readdirSync(newBlockPath).length > 1) {
     s.stop('Creating files...')
     p.log.error(
       `An integration with the ID "${prompt.id}" already exists. Please choose a different ID.`
     )
     process.exit(1)
   }
-  mkdirSync(newBlockPath)
+  if (!existsSync(newBlockPath)) mkdirSync(newBlockPath)
   await createPackageJson(newBlockPath, prompt)
   await createTsConfig(newBlockPath)
   await createIndexFile(newBlockPath, prompt)
@@ -247,9 +253,11 @@ const createAuthFile = async (
   )
 
 const addBlockToRepository = async ({
+  auth,
   camelCaseId,
   id,
 }: {
+  auth: string
   camelCaseId: string
   id: string
 }) => {
@@ -257,6 +265,8 @@ const addBlockToRepository = async ({
   await addBlockToRepoDefinitions(schemasPath, camelCaseId, id)
   await addBlockToRepoConstants(schemasPath, id)
   await addBlockToRepoSchemas(schemasPath, camelCaseId, id)
+  if (auth !== 'none')
+    await addBlockToCredentialsRepoSchemas(schemasPath, camelCaseId, id)
 }
 
 const createSchemasFile = async (
@@ -344,6 +354,42 @@ ${existingDefinitionsData.slice(newObjectEntryIndex)}`
 
   writeFileSync(
     join(schemasPath, 'schemas.ts'),
+    await prettier.format(newDefinitionsData, {
+      parser: 'typescript',
+      ...prettierRc,
+    })
+  )
+}
+
+async function addBlockToCredentialsRepoSchemas(
+  schemasPath: string,
+  camelCaseId: string,
+  id: string
+) {
+  const existingSchemasData = readFileSync(
+    join(schemasPath, 'credentials.ts')
+  ).toString()
+  const importStatement = `import { ${camelCaseId}Block } from '@typebot.io/${id}-block'
+import { ${camelCaseId}CredentialsSchema } from '@typebot.io/${id}-block/schemas'`
+  const objectEntry = `  [${camelCaseId}Block.id]: ${camelCaseId}CredentialsSchema,`
+  const nextLineImportIndex = existingSchemasData.indexOf(
+    '\n',
+    existingSchemasData.lastIndexOf('import')
+  )
+
+  const newObjectEntryIndex = existingSchemasData.lastIndexOf(',') + 1
+
+  const newDefinitionsData = `${existingSchemasData.slice(
+    0,
+    nextLineImportIndex
+  )}
+${importStatement}
+${existingSchemasData.slice(nextLineImportIndex, newObjectEntryIndex)}
+${objectEntry}
+${existingSchemasData.slice(newObjectEntryIndex)}`
+
+  writeFileSync(
+    join(schemasPath, 'credentials.ts'),
     await prettier.format(newDefinitionsData, {
       parser: 'typescript',
       ...prettierRc,

@@ -97,7 +97,7 @@ const AboutPage = () => {
           tutorials.
         </Text>
       </Stack>
-      <EndCta />
+      <EndCta heading="Improve conversion and user engagement with typebots" />
       <Footer />
     </div>
   )

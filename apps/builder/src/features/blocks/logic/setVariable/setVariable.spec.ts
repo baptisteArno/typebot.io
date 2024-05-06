@@ -28,11 +28,16 @@ test.describe('Set variable block', () => {
       .fill('1000 * {{Num}}')
 
     await page.click('text=Click to edit...', { force: true })
+    await expect(page.getByText('Save in results?')).toBeHidden()
     await page.fill(
       'input[placeholder="Select a variable"] >> nth=-1',
       'Custom var'
     )
     await page.getByRole('menuitem', { name: 'Create Custom var' }).click()
+    await expect(page.getByText('Save in results?')).toBeVisible()
+    await expect(
+      page.getByRole('group').nth(1).locator('.chakra-switch')
+    ).not.toHaveAttribute('data-checked')
     await page
       .getByTestId('code-editor')
       .getByRole('textbox')

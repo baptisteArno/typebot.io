@@ -34,6 +34,9 @@ import { saveClientLogsQuery } from '@/queries/saveClientLogsQuery'
 import { HTTPError } from 'ky'
 import { persist } from '@/utils/persist'
 
+const autoScrollBottomToleranceScreenPercent = 0.6
+const bottomSpacerHeight = 128
+
 const parseDynamicTheme = (
   initialTheme: Theme,
   dynamicTheme: ContinueChatResponse['dynamicTheme']
@@ -224,14 +227,27 @@ export const ConversationContainer = (props: Props) => {
     ])
   }
 
-  const autoScrollToBottom = (offsetTop?: number) => {
-    const chunks = chatChunks()
-    const lastChunkWasStreaming =
-      chunks.length >= 2 && chunks[chunks.length - 2].streamingMessageId
-    if (lastChunkWasStreaming) return
-    setTimeout(() => {
-      chatContainer?.scrollTo(0, offsetTop ?? chatContainer.scrollHeight)
-    }, 50)
+  const autoScrollToBottom = (lastElement?: HTMLDivElement, offset = 0) => {
+    if (!chatContainer) return
+
+    const bottomTolerance =
+      chatContainer.clientHeight * autoScrollBottomToleranceScreenPercent -
+      bottomSpacerHeight
+
+    const isBottomOfLastElementInView =
+      chatContainer.scrollTop + chatContainer.clientHeight >=
+      chatContainer.scrollHeight - bottomTolerance
+
+    if (isBottomOfLastElementInView) {
+      setTimeout(() => {
+        chatContainer?.scrollTo(
+          0,
+          lastElement
+            ? lastElement.offsetTop - offset
+            : chatContainer.scrollHeight
+        )
+      }, 50)
+    }
   }
 
   const handleAllBubblesDisplayed = async () => {
@@ -339,5 +355,10 @@ export const ConversationContainer = (props: Props) => {
 }
 
 const BottomSpacer = () => {
-  return <div class="w-full h-32 flex-shrink-0" />
+  return (
+    <div
+      class="w-full flex-shrink-0"
+      style={{ height: bottomSpacerHeight + 'px' }}
+    />
+  )
 }

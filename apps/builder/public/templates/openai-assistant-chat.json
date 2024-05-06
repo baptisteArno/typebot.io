@@ -1,0 +1,143 @@
+{
+  "version": "6",
+  "id": "clvqu4l5j00015bxibaf44slo",
+  "name": "OpenAI Assistant Chat",
+  "events": [
+    {
+      "id": "rjtz087ma51znox79ztbl24d",
+      "outgoingEdgeId": "jxwozbvpgu1bprh2l8afqorb",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "cokban593khtw85h0edk89ty",
+      "title": "AI loop",
+      "graphCoordinates": { "x": 287.4, "y": 316.89 },
+      "blocks": [
+        {
+          "id": "us3drnvz2uw6ws3spubulsqn",
+          "type": "text input",
+          "options": { "variableId": "vamyvpkzwn8v0713jkkcmj91j" }
+        },
+        {
+          "id": "vagvtddqccum6fv4m0yzeesx",
+          "type": "openai",
+          "options": {
+            "credentialsId": "clvqq3hey0007pub4almxnhk2",
+            "action": "Ask Assistant",
+            "assistantId": "asst_jy7aW39QWtAcVDrLOBr2JSWo",
+            "threadVariableId": "vf5gxmpqddsy4qugev6o0qs5c",
+            "message": "{{User last message}}",
+            "responseMapping": [{ "variableId": "vn8h1gigkjwv40godw2hrgclh" }]
+          }
+        },
+        {
+          "id": "pipczcrp1522bwl1vkp0m29r",
+          "outgoingEdgeId": "goqez0r5ffvf6nhryb27oa5y",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "{{Assistant last message}}" }]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "j8xkqp8ttb7rgaif45k2phl2",
+      "title": "",
+      "graphCoordinates": { "x": 285.64, "y": 0.29 },
+      "blocks": [
+        {
+          "id": "y91lk866alizxm5wx93ujcdz",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "You need to add your OpenAI credentials and select your Assistant to make this bot work. 🪄"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "c3fo3cynj459dwjnnamgxdq6",
+          "outgoingEdgeId": "m3q4vly744c3q2ri2jc266hy",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Once it's done, delete this group and connect the "
+                  },
+                  { "bold": true, "text": "Start" },
+                  { "text": " event with " },
+                  { "bold": true, "text": "AI loop" },
+                  { "text": " 🚀" }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "goqez0r5ffvf6nhryb27oa5y",
+      "from": { "blockId": "pipczcrp1522bwl1vkp0m29r" },
+      "to": {
+        "groupId": "cokban593khtw85h0edk89ty",
+        "blockId": "us3drnvz2uw6ws3spubulsqn"
+      }
+    },
+    {
+      "id": "jxwozbvpgu1bprh2l8afqorb",
+      "from": { "eventId": "rjtz087ma51znox79ztbl24d" },
+      "to": { "groupId": "j8xkqp8ttb7rgaif45k2phl2" }
+    }
+  ],
+  "variables": [
+    {
+      "id": "vamyvpkzwn8v0713jkkcmj91j",
+      "name": "User last message",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vf5gxmpqddsy4qugev6o0qs5c",
+      "name": "Thread ID",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vn8h1gigkjwv40godw2hrgclh",
+      "name": "Assistant last message",
+      "isSessionVariable": true
+    }
+  ],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2024-05-03T15:33:41.527Z",
+  "updatedAt": "2024-05-03T15:36:41.953Z",
+  "icon": "🤖",
+  "folderId": null,
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}
