@@ -23,6 +23,8 @@ import { zemanticAiBlock } from '@typebot.io/zemantic-ai-block'
 import { zemanticAiBlockSchema } from '@typebot.io/zemantic-ai-block/schemas'
 import { nocodbBlock } from '@typebot.io/nocodb-block'
 import { nocodbBlockSchema } from '@typebot.io/nocodb-block/schemas'
+import { claudiaBlock } from '@typebot.io/claudia-block'
+import { claudiaBlockSchema } from '@typebot.io/claudia-block/schemas'
 
 export const forgedBlockSchemas = {
   [openAIBlock.id]: openAIBlockSchema,
@@ -37,4 +39,5 @@ export const forgedBlockSchemas = {
   [togetherAiBlock.id]: togetherAiBlockSchema,
   [openRouterBlock.id]: openRouterBlockSchema,
   [nocodbBlock.id]: nocodbBlockSchema,
+  [claudiaBlock.id]: claudiaBlockSchema,
 }

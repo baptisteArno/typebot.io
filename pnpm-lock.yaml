@@ -1346,6 +1346,24 @@ importers:
         specifier: 5.4.5
         version: 5.4.5
 
+  packages/forge/blocks/claudia:
+    devDependencies:
+      '@typebot.io/forge':
+        specifier: workspace:*
+        version: link:../../core
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../../../lib
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../../../tsconfig
+      '@types/react':
+        specifier: 18.2.15
+        version: 18.2.15
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+
   packages/forge/blocks/difyAi:
     dependencies:
       ai:
@@ -1610,6 +1628,9 @@ importers:
       '@typebot.io/chat-node-block':
         specifier: workspace:*
         version: link:../blocks/chatNode
+      '@typebot.io/claudia-block':
+        specifier: workspace:*
+        version: link:../blocks/claudia
       '@typebot.io/dify-ai-block':
         specifier: workspace:*
         version: link:../blocks/difyAi
