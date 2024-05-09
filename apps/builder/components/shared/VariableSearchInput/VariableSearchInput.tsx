@@ -101,6 +101,7 @@ export const VariableSearchInput = ({
     id: 'new',
     key: 'new-variable',
     token: '+ criar variável',
+    domain: 'CHAT',
   }
 
   const myVariable = (typebot?.variables.find(
@@ -222,6 +223,7 @@ export const VariableSearchInput = ({
           token: value,
           fieldId: value.replace('#', ''),
           name: value.replace('#', ''),
+          domain: 'CHAT',
         } as Variable)
     )
   }

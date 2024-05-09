@@ -575,7 +575,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
         ...octaOrganizationItems,
       ]
 
-      if (typebot?.variables.length === variables.length) return
+      if ((typebot?.variables?.length || 0) >= variables?.length) return
       setVariables(variables)
     }
   }, [loaded, octaPersonItems, octaChatItems, octaOrganizationItems])
