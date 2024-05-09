@@ -2,7 +2,7 @@ name: Typebot CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 env:
   AWS_REGION: us-east-1
@@ -15,49 +15,48 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v
+      - name: Checkout
+        uses: actions/checkout@v
 
-    - name: Configure AWS credentials production              
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_CI_EKS_PRODUCTION_KEY }}
-        aws-secret-access-key: ${{ secrets.AWS_CI_EKS_PRODUCTION_SECRET }}
-        aws-region: us-east-1
+      - name: Configure AWS credentials production
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_CI_EKS_PRODUCTION_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_CI_EKS_PRODUCTION_SECRET }}
+          aws-region: us-east-1
 
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Build, tag, and push image to Amazon ECR
-      if: ${{ github.ref == 'refs/heads/main' }}
-      env:
-        IMAGE_TAG: ${{ github.sha }}
-      run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+      - name: Build, tag, and push image to Amazon ECR
+        if: ${{ github.ref == 'refs/heads/main' }}
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-    - name: install kubectl and kustomize                          
-      if: ${{ github.ref == 'refs/heads/main' }}
-      run: |
-        curl -sfLo kustomize.tar.gz https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.1.1/kustomize_v4.1.1_linux_amd64.tar.gz && tar -xvf kustomize.tar.gz && chmod u+x kustomize
-        curl -LO "https://dl.k8s.io/release/v1.23.6/bin/linux/amd64/kubectl" && chmod u+x kubectl
-    
-    - name: export common variables           
-      run: |
-        echo "KUSTOMIZE_CMD=$PWD/kustomize" >> $GITHUB_ENV
-        echo "KUBECTL_CMD=$PWD/kubectl" >> $GITHUB_ENV
-    
-    - name: Deploy in production                       
-      if: ${{ github.ref == 'refs/heads/main' }}
-      env:          
-        IMAGE_TAG: ${{ github.sha }}
-      run: |
-        pushd deploy/base
-        $KUSTOMIZE_CMD edit set image cloud-hub-image="$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-        popd
-        aws eks --region us-east-1 update-kubeconfig --name kubernetes-production
-        $KUSTOMIZE_CMD build deploy/overlays/prd
-        $KUSTOMIZE_CMD build deploy/overlays/prd | $KUBECTL_CMD apply -f -
-    
+      - name: install kubectl and kustomize
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          curl -sfLo kustomize.tar.gz https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.1.1/kustomize_v4.1.1_linux_amd64.tar.gz && tar -xvf kustomize.tar.gz && chmod u+x kustomize
+          curl -LO "https://dl.k8s.io/release/v1.23.6/bin/linux/amd64/kubectl" && chmod u+x kubectl
+
+      - name: export common variables
+        run: |
+          echo "KUSTOMIZE_CMD=$PWD/kustomize" >> $GITHUB_ENV
+          echo "KUBECTL_CMD=$PWD/kubectl" >> $GITHUB_ENV
+
+      - name: Deploy in production
+        if: ${{ github.ref == 'refs/heads/main' }}
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          pushd deploy/base
+          $KUSTOMIZE_CMD edit set image typebot-image="$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          popd
+          aws eks --region us-east-1 update-kubeconfig --name kubernetes-production
+          $KUSTOMIZE_CMD build deploy/overlays/prd
+          $KUSTOMIZE_CMD build deploy/overlays/prd | $KUBECTL_CMD apply -f -
