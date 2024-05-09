@@ -19,8 +19,8 @@ The first step is to sign up for a free Typebot account at https://www.typebot.i
 Once you've created your account, it's time to start designing your chatbot's conversation flow. Typebot's visual builder makes this process intuitive and engaging.
 
 <Image
-  src="/images/blog/create-whatsapp-chatbot/typebot-blocs.png"
-  alt="All blocs offered by Typebot"
+  src="/images/blog/create-whatsapp-chatbot/typebot-blocks.png"
+  alt="All blocks offered by Typebot"
   width={318}
   height={535}
 />
@@ -60,7 +60,7 @@ Present the user with a set of buttons, each representing a different feedback c
 
 <Image
   src="/images/blog/create-whatsapp-chatbot/flow-first-ask.png"
-  alt="Bloc that asks for feedback type"
+  alt="block that asks for feedback type"
   width={344}
   height={274}
 />
@@ -71,7 +71,7 @@ Depending on the user's choice, you can now ask specific questions to gather the
 
 <Image
   src="/images/blog/create-whatsapp-chatbot/flow-ask-email.png"
-  alt="Bloc that asks for email and feedback"
+  alt="block that asks for email and feedback"
   width={800}
   height={493}
 />
@@ -164,7 +164,7 @@ Before launching your chatbot, thoroughly test it in the WhatsApp environment. T
 
 To access the WhatsApp preview:
 
-1. Click on the "Preview" button in the Typebot editor.
+1. Click on the "Test" button in the Typebot editor.
 2. Change the runtime to "WhatsApp."
 
    <Image
@@ -259,9 +259,15 @@ One powerful aspect of WhatsApp is automatically capturing user contact informat
 
 Typebot makes it easy to leverage this data within your chatbot flow using dedicated system variables.
 
-For example, you can use the `{{waba.name}}` variable to personalize your chatbot's greetings and responses with the user's name. This simple touch can make the experience feel more human and tailored to the individual.
-
-Similarly, the `{{waba.phone}}` variable can pre-populate input fields or integrate with systems that require the user's phone number, streamlining the overall experience.
+<Image
+  src="/images/blog/create-whatsapp-chatbot/contact-var.png"
+  alt="Variables provided by WhatsApp"
+  width={800}
+  height={670}
+/>
+WhatsApp provide contact information of the user. You can assign them to variables
+to personalize your chatbot's greetings and responses. This simple touch can make
+the experience feel more human and tailored to the individual.
 
 ### Session Expiration and Start Bot Conditions
 
