@@ -62,6 +62,7 @@ export const listInvoices = authenticatedProcedure
     })
     const invoices = await stripe.invoices.list({
       customer: workspace.stripeId,
+      limit: 50,
     })
     return {
       invoices: invoices.data
