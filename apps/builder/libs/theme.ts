@@ -115,6 +115,14 @@ const components = {
       },
     },
   },
+  Text: {
+    variants: {
+      label: () => ({
+        color: 'gray.400',
+        fontSize: 'sm',
+      }),
+    },
+  },
 }
 
 const styles = {

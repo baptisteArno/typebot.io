@@ -1,9 +1,20 @@
-import { Flex, FormLabel, Spacer, Stack } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Collapse,
+  Flex,
+  FormLabel,
+  Spacer,
+  Stack,
+  Text,
+} from '@chakra-ui/react'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
 import { InputOptions, TextBubbleContent, Variable } from 'models'
 import React from 'react'
 import { TextBubbleEditor } from '../../TextBubbleEditor'
 import { useTypebot } from 'contexts/TypebotContext'
+import { SlArrowDown, SlArrowUp } from 'react-icons/sl'
+import { AssignToResponsibleSelect } from './AssignToTeam/AssignToResponsibleSelect'
 
 type InputSettingBodyProps = {
   step: {
@@ -20,6 +31,7 @@ export const InputSettingBody = ({
   onOptionsChange,
 }: InputSettingBodyProps) => {
   const { typebot } = useTypebot()
+  const [isCollapsed, setIsCollapsed] = React.useState(false)
 
   const handleVariableChange = (variable: Variable) => {
     if (variable) {
@@ -70,6 +82,37 @@ export const InputSettingBody = ({
     }
   }
 
+  const onAssign = (v) => {
+    onOptionsChange({
+      ...step.options,
+      ...v,
+    })
+  }
+
+  const fallbackMessageComponent = (
+    message: TextBubbleContent,
+    index: number
+  ) => {
+    return (
+      <Box>
+        <FormLabel mb="0" htmlFor="placeholder">
+          Mensagem para resposta inválida - Tentativa {index + 1}
+        </FormLabel>
+        <TextBubbleEditor
+          required={{
+            errorMsg: `O campo "Mensagem para resposta inválida - Tentativa ${
+              index + 1
+            }" é obrigatório`,
+          }}
+          onClose={(content) => handleFallBackMessage(content, index)}
+          initialValue={message ? message.richText : []}
+          onKeyUp={(content) => handleFallBackMessage(content, index)}
+          maxLength={MAX_LENGHT_TEXTS_QUESTION}
+        />
+      </Box>
+    )
+  }
+
   return (
     <Stack spacing={4}>
       <Stack>
@@ -103,24 +146,34 @@ export const InputSettingBody = ({
       </Stack>
       {step.options.useFallback &&
         (step.options.fallbackMessages?.length ? (
-          step.options.fallbackMessages.map((message, index) => (
-            <>
-              <FormLabel mb="0" htmlFor="placeholder">
-                Mensagem para resposta inválida - Tentativa {index + 1}
-              </FormLabel>
-              <TextBubbleEditor
-                required={{
-                  errorMsg: `O campo "Mensagem para resposta inválida - Tentativa ${
-                    index + 1
-                  }" é obrigatório`,
-                }}
-                onClose={(content) => handleFallBackMessage(content, index)}
-                initialValue={message ? message.richText : []}
-                onKeyUp={(content) => handleFallBackMessage(content, index)}
-                maxLength={MAX_LENGHT_TEXTS_QUESTION}
-              />
-            </>
-          ))
+          <>
+            <Flex justifyContent={'space-between'} alignItems={'center'}>
+              <Text>Se o cliente não responder com nenhuma das opções:</Text>
+              <Button
+                background={'transparent'}
+                onClick={() => setIsCollapsed((v) => !v)}
+              >
+                {isCollapsed ? <SlArrowDown /> : <SlArrowUp />}
+              </Button>
+            </Flex>
+            <Collapse in={isCollapsed}>
+              <Flex direction={'column'} gap={4}>
+                {step.options?.fallbackMessages.map((message, index) =>
+                  fallbackMessageComponent(message, index)
+                )}
+                <Box>
+                  <FormLabel mb="0" htmlFor="placeholder">
+                    Se o cliente errar 3 vezes seguidas, atribuir conversa para:
+                  </FormLabel>
+                  <AssignToResponsibleSelect
+                    hasResponsibleContact={false}
+                    options={step?.options}
+                    onSelect={onAssign}
+                  />
+                </Box>
+              </Flex>
+            </Collapse>
+          </>
         ) : (
           <TextBubbleEditor
             onClose={(content) => handleFallBackMessage(content, 0)}
