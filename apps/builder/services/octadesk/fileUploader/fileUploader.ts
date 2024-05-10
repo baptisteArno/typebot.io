@@ -7,10 +7,12 @@ export const fileUploader = async (): Promise<FileUploaderService> => {
   return {
     async upload(file): Promise<any> {
       if (file) {
+        const token = Storage.getItem('userToken')
         const formData = new FormData()
         formData.append('file', file)
         return client.post('/upload', formData, {
           headers: {
+            authorization: token ? `Bearer ${token}` : '',
             AppSubDomain: Storage.getItem('company'),
             'X-Requested-With': null,
           },
