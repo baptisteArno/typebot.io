@@ -6,6 +6,7 @@ import { checkTime } from '../instantchat/actions/checkTime'
 import { cortex } from '../instantchat/actions/cortex'
 import { chat } from '../instantchat/actions/chat'
 import { wppNotify } from './actions/wppNotify'
+import { intent } from './actions/intent'
 
 export const instantchatBlock = createBlock({
   id: 'instantchat' as const,
@@ -13,5 +14,5 @@ export const instantchatBlock = createBlock({
   tags: [],
   LightLogo: InstantchatLogo,
   auth,
-  actions: [queueJoin, checkTime, cortex, chat, wppNotify],
+  actions: [queueJoin, checkTime, cortex, chat, wppNotify, intent],
 })
