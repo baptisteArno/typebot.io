@@ -11,16 +11,16 @@ export const intent = createAction({
       label: 'Pergunta',
     }),
     intents: option
-      .array(option.string.layout({ placeholder: 'Type a name...' }))
+      .array(
+        option.string.layout({
+          placeholder: 'Type a name...',
+        })
+      )
       .layout({
         label: 'Intenções',
         itemLabel: 'intenção',
-      }),
-    descriptions: option
-      .array(option.string.layout({ placeholder: 'Type a name...' }))
-      .layout({
-        label: 'Descrições',
-        itemLabel: 'descrição',
+        helperText:
+          'As intenções deve estar no formato. \nnome: descrição.\n\nExemplo:\n comercial: Útil quando o cliente deseja falar com a equipe comercial.',
       }),
     responseMapping: option.string.layout({
       label: 'Salvar resultado',
@@ -31,21 +31,23 @@ export const intent = createAction({
     responseMapping ? [responseMapping] : [],
   run: {
     server: async ({ credentials, options, variables }) => {
-      const { intents, descriptions, question, responseMapping } = options
+      const { intents, question, responseMapping } = options
       let { cortexToken, baseUrl, cortexUrl } = credentials
 
-      if (!intents || !descriptions || !question) {
+      if (!intents || !question) {
         console.log('Missing intents and descriptions.')
         return
       }
 
-      const l = Math.min(intents.length, descriptions.length)
       const intentList = []
-      for (let i = 0; i < l; i++) {
-        intentList.push({
-          name: intents[i],
-          description: descriptions[i],
-        })
+      for (let i = 0; i < intents.length; i++) {
+        if (intents[i]) {
+          const x = intents[i]!.split(':', 2)
+          intentList.push({
+            name: x[0],
+            description: x[1],
+          })
+        }
       }
 
       if (!cortexToken || !baseUrl || !cortexUrl) {
