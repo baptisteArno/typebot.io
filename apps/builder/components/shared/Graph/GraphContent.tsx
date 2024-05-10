@@ -15,6 +15,7 @@ const MyComponent = ({ answersCounts, onUnlockProPlanClick }: Props) => {
     <>
       <Edges
         edges={typebot?.edges ?? []}
+        blocks={typebot?.blocks ?? []}
         answersCounts={answersCounts}
         onUnlockProPlanClick={onUnlockProPlanClick}
       />

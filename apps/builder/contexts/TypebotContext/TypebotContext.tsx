@@ -183,15 +183,12 @@ export const TypebotContext = ({
 
   useEffect(() => {
     if (!typebot || !currentTypebotRef.current) return
-
     const parsedTypebot = {
       ...typebot,
       blocks: updateBlocksHasConnections(typebot),
     }
-
     if (typebotId !== currentTypebotRef.current.id) {
       setLocalTypebot({ ...parsedTypebot }, { updateDate: false })
-
       flush()
     } else if (
       new Date(typebot.updatedAt) >
@@ -199,7 +196,6 @@ export const TypebotContext = ({
     ) {
       setLocalTypebot({ ...parsedTypebot })
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typebot])
 
@@ -630,46 +626,47 @@ export const TypebotContext = ({
     }
   }, [])
 
+  const contextValue = useMemo(() => {
+    return {
+      typebot: localTypebot,
+      emptyFields,
+      setEmptyFields,
+      currentTypebot: typebot,
+      publishedTypebot,
+      linkedTypebots,
+      isReadOnly,
+      isSavingLoading,
+      save: saveTypebot,
+      undo,
+      redo,
+      canUndo,
+      canRedo,
+      publishTypebot,
+      isPublishing,
+      isPublished,
+      updateTypebot: updateLocalTypebot,
+      restorePublishedTypebot,
+      updateOnBothTypebots,
+      updateWebhook,
+      ...blocksActions(
+        setLocalTypebot as SetTypebot,
+        setEmptyFields as SetEmptyFields
+      ),
+      ...stepsAction(
+        setLocalTypebot as SetTypebot,
+        setEmptyFields as SetEmptyFields
+      ),
+      ...variablesAction(setLocalTypebot as SetTypebot),
+      ...edgesAction(setLocalTypebot as SetTypebot),
+      ...itemsAction(setLocalTypebot as SetTypebot),
+      octaAgents,
+      octaGroups,
+      botFluxesList,
+      tagsList,
+    }
+  }, [localTypebot, isSavingLoading, isPublishing])
   return (
-    <typebotContext.Provider
-      value={{
-        typebot: localTypebot,
-        emptyFields,
-        setEmptyFields,
-        currentTypebot: typebot,
-        publishedTypebot,
-        linkedTypebots,
-        isReadOnly,
-        isSavingLoading,
-        save: saveTypebot,
-        undo,
-        redo,
-        canUndo,
-        canRedo,
-        publishTypebot,
-        isPublishing,
-        isPublished,
-        updateTypebot: updateLocalTypebot,
-        restorePublishedTypebot,
-        updateOnBothTypebots,
-        updateWebhook,
-        ...blocksActions(
-          setLocalTypebot as SetTypebot,
-          setEmptyFields as SetEmptyFields
-        ),
-        ...stepsAction(
-          setLocalTypebot as SetTypebot,
-          setEmptyFields as SetEmptyFields
-        ),
-        ...variablesAction(setLocalTypebot as SetTypebot),
-        ...edgesAction(setLocalTypebot as SetTypebot),
-        ...itemsAction(setLocalTypebot as SetTypebot),
-        octaAgents,
-        octaGroups,
-        botFluxesList,
-        tagsList,
-      }}
-    >
+    <typebotContext.Provider value={contextValue}>
       {children}
     </typebotContext.Provider>
   )
@@ -693,8 +690,9 @@ export const useFetchedTypebot = ({
     },
     Error
   >(`/getTypebot-${typebotId}`, fetcher, {
-    dedupingInterval: isEmpty(process.env.NEXT_PUBLIC_E2E_TEST) ? undefined : 0,
+    dedupingInterval: 60000 * 60 * 24,
   })
+
   if (error) onError(error)
   return {
     typebot: data?.typebot,

@@ -6,7 +6,7 @@ import {
   getEndpointTopOffset,
   getSourceEndpointId,
 } from 'services/graph'
-import { Edge as EdgeProps } from 'models'
+import { Block, Edge as EdgeProps } from 'models'
 import { Portal, useDisclosure } from '@chakra-ui/react'
 import { useTypebot } from 'contexts/TypebotContext'
 import { EdgeMenu } from './EdgeMenu'
@@ -19,7 +19,7 @@ export type AnchorsPositionProps = {
   totalSegments: number
 }
 
-export const Edge = ({ edge }: { edge: EdgeProps }) => {
+export const Edge = ({ edge, block }: { edge: EdgeProps; block: Block }) => {
   const { deleteEdge } = useTypebot()
   const {
     previewingEdge,
@@ -34,6 +34,7 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [edgeMenuPosition, setEdgeMenuPosition] = useState({ x: 0, y: 0 })
   const [refreshEdge, setRefreshEdge] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   const isPreviewing = isMouseOver || previewingEdge?.id === edge.id
 
@@ -43,20 +44,35 @@ export const Edge = ({ edge }: { edge: EdgeProps }) => {
     blocksCoordinates && blocksCoordinates[edge.to.blockId]
 
   const sourceTop = useMemo(
-    () =>
-      getEndpointTopOffset({
+    () => {
+      return getEndpointTopOffset({
         endpoints: sourceEndpoints,
         graphOffsetY: graphPosition.y,
         endpointId: getSourceEndpointId(edge),
         graphScale: graphPosition.scale,
-      }),
+      })
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [sourceBlockCoordinates?.y, edge, sourceEndpoints, refreshEdge]
+    [refreshEdge]
   )
 
   useEffect(() => {
-    setTimeout(() => setRefreshEdge(true), 50)
-  }, [])
+    if (isRefreshing) return
+    setIsRefreshing(true)
+    const timer = setTimeout(() => {
+      setRefreshEdge((v) => !v)
+      setIsRefreshing(false)
+
+      return () => clearTimeout(timer)
+    }, 200)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    sourceBlockCoordinates?.y,
+    edge,
+    sourceEndpoints.block,
+    block,
+    graphPosition.y,
+  ])
 
   const [targetTop, setTargetTop] = useState(
     getEndpointTopOffset({

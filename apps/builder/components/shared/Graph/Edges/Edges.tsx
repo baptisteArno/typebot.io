@@ -1,6 +1,6 @@
 import { chakra } from '@chakra-ui/system'
 import { colors } from 'libs/theme'
-import { Edge as EdgeProps } from 'models'
+import { Block, Edge as EdgeProps } from 'models'
 import React from 'react'
 import { AnswersCount } from 'services/analytics'
 import { DrawingEdge } from './DrawingEdge'
@@ -9,11 +9,13 @@ import { Edge } from './Edge'
 
 type Props = {
   edges: EdgeProps[]
+  blocks: Block[]
   answersCounts?: AnswersCount[]
   onUnlockProPlanClick?: () => void
 }
 export const Edges = ({
   edges,
+  blocks,
   answersCounts,
   onUnlockProPlanClick,
 }: Props) => {
@@ -29,9 +31,10 @@ export const Edges = ({
       shapeRendering="geometricPrecision"
     >
       <DrawingEdge />
-      {edges.map((edge) => (
-        <Edge key={edge.id} edge={edge} />
-      ))}
+      {edges.map((edge) => {
+        const b = blocks.find((b) => b.id === edge.from.blockId)
+        return <Edge block={b || ({} as Block)} key={edge.id} edge={edge} />
+      })}
       {answersCounts?.slice(1)?.map((answerCount) => (
         <DropOffEdge
           key={answerCount.blockId}
