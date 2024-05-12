@@ -46,10 +46,10 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
     })
   }
 
-  const updateHideControls = (hideControls: boolean) => {
+  const updateHideControls = (areControlsDisplayed: boolean) => {
     return onSubmit({
       ...content,
-      hideControls,
+      areControlsDisplayed,
     })
   }
 
@@ -90,8 +90,11 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
 
       {content?.type === VideoBubbleContentType.URL && (
         <SwitchWithLabel
-          label={t('video.hideControlsInput.label')}
-          initialValue={content?.hideControls ?? false}
+          label={'Display controls'}
+          initialValue={
+            content?.areControlsDisplayed ??
+            defaultVideoBubbleContent.areControlsDisplayed
+          }
           onCheckChange={updateHideControls}
         />
       )}
