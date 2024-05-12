@@ -27,6 +27,10 @@ export const AudioBubbleForm = ({
   const updateAutoPlay = (isAutoplayEnabled: boolean) =>
     onContentChange({ ...content, isAutoplayEnabled })
 
+  const updateHideControls = (hideControls: boolean) => {
+    onContentChange({ ...content, hideControls })
+  }
+
   return (
     <Stack>
       <HStack>
@@ -81,6 +85,11 @@ export const AudioBubbleForm = ({
             defaultAudioBubbleContent.isAutoplayEnabled
           }
           onCheckChange={updateAutoPlay}
+        />
+        <SwitchWithLabel
+          label={t('editor.blocks.bubbles.audio.settings.hideControls.label')}
+          initialValue={content?.hideControls ?? false}
+          onCheckChange={updateHideControls}
         />
       </Stack>
     </Stack>

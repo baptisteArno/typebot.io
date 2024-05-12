@@ -1,9 +1,12 @@
 import { Stack, Text } from '@chakra-ui/react'
 import { VideoBubbleBlock } from '@typebot.io/schemas'
-import { TextInput } from '@/components/inputs'
+import { TextInput, SwitchWithLabel } from '@/components/inputs'
 import { useTranslate } from '@tolgee/react'
 import { parseVideoUrl } from '@typebot.io/schemas/features/blocks/bubbles/video/helpers'
-import { defaultVideoBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
+import {
+  VideoBubbleContentType,
+  defaultVideoBubbleContent,
+} from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
 
 type Props = {
   content?: VideoBubbleBlock['content']
@@ -43,6 +46,13 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
     })
   }
 
+  const updateHideControls = (hideControls: boolean) => {
+    return onSubmit({
+      ...content,
+      hideControls,
+    })
+  }
+
   return (
     <Stack p="2" spacing={4}>
       <Stack>
@@ -76,6 +86,14 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
             direction="row"
           />
         </Stack>
+      )}
+
+      {content?.type === VideoBubbleContentType.URL && (
+        <SwitchWithLabel
+          label={t('video.hideControlsInput.label')}
+          initialValue={content?.hideControls ?? false}
+          onCheckChange={updateHideControls}
+        />
       )}
     </Stack>
   )

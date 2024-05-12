@@ -71,7 +71,7 @@ export const AudioBubble = (props: Props) => {
             style={{
               height: isTyping() ? (isMobile() ? '32px' : '36px') : 'revert',
             }}
-            controls
+            controls={props.content?.hideControls ? false : true}
           />
         </div>
       </div>
