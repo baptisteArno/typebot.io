@@ -1,12 +1,12 @@
-import { ContinueChatResponse, ChatSession } from '@typebot.io/schemas'
+import {
+  ContinueChatResponse,
+  ChatSession,
+  SetVariableHistoryItem,
+} from '@typebot.io/schemas'
 import { upsertResult } from './queries/upsertResult'
-import { saveLogs } from './queries/saveLogs'
 import { updateSession } from './queries/updateSession'
-import { formatLogDetails } from './logs/helpers/formatLogDetails'
 import { createSession } from './queries/createSession'
 import { deleteSession } from './queries/deleteSession'
-import * as Sentry from '@sentry/nextjs'
-import { saveVisitedEdges } from './queries/saveVisitedEdges'
 import { Prisma, VisitedEdge } from '@typebot.io/prisma'
 import prisma from '@typebot.io/lib/prisma'
 
@@ -16,7 +16,9 @@ type Props = {
   logs: ContinueChatResponse['logs']
   clientSideActions: ContinueChatResponse['clientSideActions']
   visitedEdges: VisitedEdge[]
+  setVariableHistory: SetVariableHistoryItem[]
   hasCustomEmbedBubble?: boolean
+  initialSessionId?: string
 }
 
 export const saveStateToDatabase = async ({
@@ -25,7 +27,9 @@ export const saveStateToDatabase = async ({
   logs,
   clientSideActions,
   visitedEdges,
+  setVariableHistory,
   hasCustomEmbedBubble,
+  initialSessionId,
 }: Props) => {
   const containsSetVariableClientSideAction = clientSideActions?.some(
     (action) => action.expectsDedicatedReply
@@ -46,7 +50,7 @@ export const saveStateToDatabase = async ({
 
   const session = id
     ? { state, id }
-    : await createSession({ id, state, isReplying: false })
+    : await createSession({ id: initialSessionId, state, isReplying: false })
 
   if (!resultId) {
     if (queries.length > 0) await prisma.$transaction(queries)
@@ -63,24 +67,12 @@ export const saveStateToDatabase = async ({
         !input && !containsSetVariableClientSideAction && answers.length > 0
       ),
       hasStarted: answers.length > 0,
+      lastChatSessionId: session.id,
+      logs,
+      visitedEdges,
+      setVariableHistory,
     })
   )
-
-  if (logs && logs.length > 0)
-    try {
-      await saveLogs(
-        logs.map((log) => ({
-          ...log,
-          resultId,
-          details: formatLogDetails(log.details),
-        }))
-      )
-    } catch (e) {
-      console.error('Failed to save logs', e)
-      Sentry.captureException(e)
-    }
-
-  if (visitedEdges.length > 0) queries.push(saveVisitedEdges(visitedEdges))
 
   await prisma.$transaction(queries)
 

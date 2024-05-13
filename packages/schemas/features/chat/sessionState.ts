@@ -1,6 +1,6 @@
 import { z } from '../../zod'
 import { answerSchema } from '../answer'
-import { resultSchema } from '../result'
+import { resultSchema, setVariableHistoryItemSchema } from '../result'
 import { typebotInSessionStateSchema, dynamicThemeSchema } from './shared'
 import { settingsSchema } from '../typebot/settings'
 
@@ -94,6 +94,25 @@ const sessionStateSchemaV3 = sessionStateSchemaV2
     version: z.literal('3'),
     currentBlockId: z.string().optional(),
     allowedOrigins: z.array(z.string()).optional(),
+    setVariableIdsForHistory: z.array(z.string()).optional(),
+    currentSetVariableHistoryIndex: z.number().optional(),
+    previewMetadata: z
+      .object({
+        answers: z
+          .array(answerSchema.pick({ blockId: true, content: true }))
+          .optional(),
+        visitedEdges: z.array(z.string()).optional(),
+        setVariableHistory: z
+          .array(
+            setVariableHistoryItemSchema.pick({
+              blockId: true,
+              variableId: true,
+              value: true,
+            })
+          )
+          .optional(),
+      })
+      .optional(),
   })
 
 export type SessionState = z.infer<typeof sessionStateSchemaV3>

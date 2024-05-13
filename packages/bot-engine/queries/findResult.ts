@@ -15,7 +15,6 @@ export const findResult = ({ id }: Props) =>
         select: {
           content: true,
           blockId: true,
-          variableId: true,
         },
       },
     },

@@ -105,6 +105,7 @@ export const startWhatsAppPreview = authenticatedProcedure
       clientSideActions,
       logs,
       visitedEdges,
+      setVariableHistory,
     } = await startSession({
       version: 2,
       message: undefined,
@@ -145,6 +146,7 @@ export const startWhatsAppPreview = authenticatedProcedure
           state: newSessionState,
         },
         visitedEdges,
+        setVariableHistory,
       })
     } else {
       await restartSession({

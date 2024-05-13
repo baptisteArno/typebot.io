@@ -13,6 +13,7 @@ type Props = {
   typebot?: StartTypebot
   userId?: string
   prefilledVariables?: Record<string, unknown>
+  sessionId?: string
 }
 
 export const startChatPreview = async ({
@@ -24,6 +25,7 @@ export const startChatPreview = async ({
   typebot: startTypebot,
   userId,
   prefilledVariables,
+  sessionId,
 }: Props) => {
   const {
     typebot,
@@ -34,6 +36,7 @@ export const startChatPreview = async ({
     clientSideActions,
     newSessionState,
     visitedEdges,
+    setVariableHistory,
   } = await startSession({
     version: 2,
     startParams: {
@@ -45,6 +48,7 @@ export const startChatPreview = async ({
       typebot: startTypebot,
       userId,
       prefilledVariables,
+      sessionId,
     },
     message,
   })
@@ -61,9 +65,11 @@ export const startChatPreview = async ({
         logs,
         clientSideActions,
         visitedEdges,
+        setVariableHistory,
         hasCustomEmbedBubble: messages.some(
           (message) => message.type === 'custom-embed'
         ),
+        initialSessionId: sessionId,
       })
 
   const isEnded =

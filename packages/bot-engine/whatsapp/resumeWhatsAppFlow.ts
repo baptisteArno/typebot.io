@@ -114,6 +114,7 @@ export const resumeWhatsAppFlow = async ({
     messages,
     clientSideActions,
     visitedEdges,
+    setVariableHistory,
   } = resumeResponse
 
   const isFirstChatChunk = (!session || isSessionExpired) ?? false
@@ -140,6 +141,7 @@ export const resumeWhatsAppFlow = async ({
       },
     },
     visitedEdges,
+    setVariableHistory,
   })
 
   return {

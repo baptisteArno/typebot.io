@@ -107,12 +107,16 @@ export const createSpeechOpenAI = async (
     mimeType: 'audio/mpeg',
   })
 
-  newSessionState = updateVariablesInSession(newSessionState)([
-    {
-      ...saveUrlInVariable,
-      value: url,
-    },
-  ])
+  newSessionState = updateVariablesInSession({
+    newVariables: [
+      {
+        ...saveUrlInVariable,
+        value: url,
+      },
+    ],
+    state: newSessionState,
+    currentBlockId: undefined,
+  }).updatedState
 
   return {
     startTimeShouldBeUpdated: true,

@@ -2,15 +2,14 @@ import { z } from '../zod'
 import { Answer as AnswerPrisma, Prisma } from '@typebot.io/prisma'
 
 export const answerSchema = z.object({
+  id: z.number(),
   createdAt: z.date(),
   resultId: z.string(),
   blockId: z.string(),
   groupId: z.string(),
   variableId: z.string().nullable(),
   content: z.string(),
-  storageUsed: z.number().nullable(),
-  // TO-DO: remove once itemId is removed from database schema
-}) satisfies z.ZodType<Omit<AnswerPrisma, 'itemId'>>
+}) satisfies z.ZodType<AnswerPrisma>
 
 export const answerInputSchema = answerSchema
   .omit({

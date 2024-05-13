@@ -8,6 +8,7 @@ import { WhatsAppLogo } from '@/components/logos/WhatsAppLogo'
 import {
   defaultSetVariableOptions,
   hiddenTypes,
+  sessionOnlySetVariableOptions,
   valueTypes,
 } from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
 import { TextInput } from '@/components/inputs'
@@ -48,6 +49,12 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
     })
   }
 
+  const isSessionOnly =
+    options?.type &&
+    sessionOnlySetVariableOptions.includes(
+      options.type as (typeof sessionOnlySetVariableOptions)[number]
+    )
+
   return (
     <Stack spacing={4}>
       <Stack>
@@ -80,7 +87,7 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
           />
         </Stack>
 
-        {selectedVariable && (
+        {selectedVariable && !isSessionOnly && (
           <SwitchWithLabel
             key={selectedVariable.id}
             label="Save in results?"
@@ -244,6 +251,7 @@ const SetVariableValue = ({
     case 'Today':
     case 'Result ID':
     case 'Empty':
+    case 'Transcript':
       return null
   }
 }

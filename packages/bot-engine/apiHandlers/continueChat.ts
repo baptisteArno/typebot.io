@@ -52,6 +52,7 @@ export const continueChat = async ({ origin, sessionId, message }: Props) => {
     logs,
     lastMessageNewFormat,
     visitedEdges,
+    setVariableHistory,
   } = await continueBotFlow(message, {
     version: 2,
     state: session.state,
@@ -68,6 +69,7 @@ export const continueChat = async ({ origin, sessionId, message }: Props) => {
       logs,
       clientSideActions,
       visitedEdges,
+      setVariableHistory,
       hasCustomEmbedBubble: messages.some(
         (message) => message.type === 'custom-embed'
       ),

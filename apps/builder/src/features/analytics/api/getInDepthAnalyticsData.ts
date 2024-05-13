@@ -12,13 +12,14 @@ import {
   parseToDateFromTimeFilter,
 } from '../helpers/parseDateFromTimeFilter'
 
-export const getTotalAnswers = authenticatedProcedure
+export const getInDepthAnalyticsData = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/v1/typebots/{typebotId}/analytics/totalAnswersInBlocks',
+      path: '/v1/typebots/{typebotId}/analytics/inDepthData',
       protect: true,
-      summary: 'List total answers in blocks',
+      summary:
+        'List total answers in blocks and off-default paths visited edges',
       tags: ['Analytics'],
     },
   })
@@ -29,7 +30,14 @@ export const getTotalAnswers = authenticatedProcedure
       timeZone: z.string().optional(),
     })
   )
-  .output(z.object({ totalAnswers: z.array(totalAnswersSchema) }))
+  .output(
+    z.object({
+      totalAnswers: z.array(totalAnswersSchema),
+      offDefaultPathVisitedEdges: z.array(
+        z.object({ edgeId: z.string(), total: z.number() })
+      ),
+    })
+  )
   .query(
     async ({ input: { typebotId, timeFilter, timeZone }, ctx: { user } }) => {
       const typebot = await prisma.typebot.findFirst({
@@ -46,7 +54,7 @@ export const getTotalAnswers = authenticatedProcedure
       const toDate = parseToDateFromTimeFilter(timeFilter, timeZone)
 
       const totalAnswersPerBlock = await prisma.answer.groupBy({
-        by: ['blockId'],
+        by: ['blockId', 'resultId'],
         where: {
           result: {
             typebotId: typebot.publishedTypebot.typebotId,
@@ -65,13 +73,40 @@ export const getTotalAnswers = authenticatedProcedure
             ),
           },
         },
-        _count: { _all: true },
+      })
+
+      const uniqueCounts = totalAnswersPerBlock.reduce<{
+        [key: string]: Set<string>
+      }>((acc, { blockId, resultId }) => {
+        acc[blockId] = acc[blockId] || new Set()
+        acc[blockId].add(resultId)
+        return acc
+      }, {})
+
+      const offDefaultPathVisitedEdges = await prisma.visitedEdge.groupBy({
+        by: ['edgeId'],
+        where: {
+          result: {
+            typebotId: typebot.publishedTypebot.typebotId,
+            createdAt: fromDate
+              ? {
+                  gte: fromDate,
+                  lte: toDate ?? undefined,
+                }
+              : undefined,
+          },
+        },
+        _count: { resultId: true },
       })
 
       return {
-        totalAnswers: totalAnswersPerBlock.map((a) => ({
-          blockId: a.blockId,
-          total: a._count._all,
+        totalAnswers: Object.keys(uniqueCounts).map((blockId) => ({
+          blockId,
+          total: uniqueCounts[blockId].size,
+        })),
+        offDefaultPathVisitedEdges: offDefaultPathVisitedEdges.map((e) => ({
+          edgeId: e.edgeId,
+          total: e._count.resultId,
         })),
       }
     }
