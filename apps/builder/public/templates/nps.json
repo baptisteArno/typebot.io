@@ -575,8 +575,16 @@
     }
   ],
   "variables": [
-    { "id": "vwqc8tzl0380h30vxh07fekmm", "name": "Recommend rate" },
-    { "id": "vcgkjbh8intf2cql1oteyj4mu", "name": "Type" }
+    {
+      "id": "vwqc8tzl0380h30vxh07fekmm",
+      "name": "Recommend rate",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vcgkjbh8intf2cql1oteyj4mu",
+      "name": "Type",
+      "isSessionVariable": true
+    }
   ],
   "theme": {},
   "selectedThemeTemplateId": null,

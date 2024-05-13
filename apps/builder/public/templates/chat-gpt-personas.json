@@ -684,9 +684,21 @@
     }
   ],
   "variables": [
-    { "id": "vni6kwbch8zlq92dclgcivzyr", "name": "Assistant Message" },
-    { "id": "vevnx5f5bojz0sv648x6ppcmv", "name": "User Message" },
-    { "id": "vu9adij5penetej2xz89htfe6", "name": "Chat history" }
+    {
+      "id": "vni6kwbch8zlq92dclgcivzyr",
+      "name": "Assistant Message",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vevnx5f5bojz0sv648x6ppcmv",
+      "name": "User Message",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vu9adij5penetej2xz89htfe6",
+      "name": "Chat history",
+      "isSessionVariable": true
+    }
   ],
   "theme": {},
   "selectedThemeTemplateId": null,

@@ -400,12 +400,36 @@
     }
   ],
   "variables": [
-    { "id": "giiLFGw5xXBCHzvp1qAbdX", "name": "Company" },
-    { "id": "v3VFChNVSCXQ2rXv4DrJ8Ah", "name": "Email" },
-    { "id": "vi0mmx9o2m4s8z9cccsjcvpj5", "name": "Services" },
-    { "id": "vpvkbogoj3rmogz0ssh5odmnn", "name": "AI reply" },
-    { "id": "vhp0ymgwq4id82l97g0kliglf", "name": "Additional information" },
-    { "id": "vi5ta5lktses2h6skf5ky2zs0", "name": "AI Dialogue" }
+    {
+      "id": "giiLFGw5xXBCHzvp1qAbdX",
+      "name": "Company",
+      "isSessionVariable": true
+    },
+    {
+      "id": "v3VFChNVSCXQ2rXv4DrJ8Ah",
+      "name": "Email",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vi0mmx9o2m4s8z9cccsjcvpj5",
+      "name": "Services",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vpvkbogoj3rmogz0ssh5odmnn",
+      "name": "AI reply",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vhp0ymgwq4id82l97g0kliglf",
+      "name": "Additional information",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vi5ta5lktses2h6skf5ky2zs0",
+      "name": "AI Dialogue",
+      "isSessionVariable": true
+    }
   ],
   "theme": {},
   "selectedThemeTemplateId": null,
