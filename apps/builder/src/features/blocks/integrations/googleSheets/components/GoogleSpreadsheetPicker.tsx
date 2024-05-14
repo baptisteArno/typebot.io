@@ -78,6 +78,7 @@ export const GoogleSpreadsheetPicker = ({
         .setOAuthToken(data.accessToken)
         .setDeveloperKey(env.NEXT_PUBLIC_GOOGLE_API_KEY)
         .setCallback(pickerCallback)
+        .setOrigin(env.NEXT_PUBLIC_INSTALLATION_URL)
         .build()
 
       picker.setVisible(true)
