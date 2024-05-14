@@ -2,6 +2,7 @@ import { safeStringify } from '@typebot.io/lib/safeStringify'
 import { isDefined, isNotDefined } from '@typebot.io/lib/utils'
 import { parseGuessedValueType } from './parseGuessedValueType'
 import { Variable, VariableWithValue } from './types'
+import vm from 'vm'
 
 export type ParseVariablesOptions = {
   fieldToParse?: 'value' | 'id'
@@ -73,11 +74,17 @@ const evaluateInlineCode = (
   { variables }: { variables: Variable[] }
 ) => {
   const evaluating = parseVariables(variables, { fieldToParse: 'id' })(
-    code.includes('return ') ? code : `return ${code}`
+    `(async function() {${
+      code.includes('return ') ? code : 'return ' + code
+    }})()`
   )
   try {
-    const func = Function(...variables.map((v) => v.id), evaluating)
-    return func(...variables.map((v) => parseGuessedValueType(v.value)))
+    const sandbox = vm.createContext({
+      ...Object.fromEntries(
+        variables.map((v) => [v.id, parseGuessedValueType(v.value)])
+      ),
+    })
+    return vm.runInContext(evaluating, sandbox)
   } catch (err) {
     return parseVariables(variables)(code)
   }

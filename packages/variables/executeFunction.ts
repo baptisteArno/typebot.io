@@ -4,6 +4,7 @@ import { parseGuessedValueType } from './parseGuessedValueType'
 import { isDefined } from '@typebot.io/lib'
 import { safeStringify } from '@typebot.io/lib/safeStringify'
 import { Variable } from './types'
+import vm from 'vm'
 
 const defaultTimeout = 10
 
@@ -18,7 +19,9 @@ export const executeFunction = async ({
   body,
   args: initialArgs,
 }: Props) => {
-  const parsedBody = parseVariables(variables, { fieldToParse: 'id' })(body)
+  const parsedBody = `(async function() {${parseVariables(variables, {
+    fieldToParse: 'id',
+  })(body)}})()`
 
   const args = (
     extractVariablesFromText(variables)(body).map((variable) => ({
@@ -30,22 +33,25 @@ export const executeFunction = async ({
       ? Object.entries(initialArgs).map(([id, value]) => ({ id, value }))
       : []
   )
-  const func = AsyncFunction(
-    ...args.map(({ id }) => id),
-    'setVariable',
-    parsedBody
-  )
 
   let updatedVariables: Record<string, any> = {}
 
   const setVariable = (key: string, value: any) => {
     updatedVariables[key] = value
   }
+
+  const context = vm.createContext({
+    ...Object.fromEntries(args.map(({ id, value }) => [id, value])),
+    setVariable,
+    fetch,
+    setTimeout,
+  })
+
   const timeout = new Timeout()
 
   try {
     const output: unknown = await timeout.wrap(
-      func(...args.map(({ value }) => value), setVariable),
+      await vm.runInContext(parsedBody, context),
       defaultTimeout * 1000
     )
     timeout.clear()
@@ -80,8 +86,6 @@ export const executeFunction = async ({
     }
   }
 }
-
-const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
 
 class Timeout {
   private ids: NodeJS.Timeout[]
