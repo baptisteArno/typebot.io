@@ -58,11 +58,11 @@ export const cortex = createAction({
 
       const id_chatbot = variables
         .list()
-        .find((v) => v.name === 'id_chatbot')?.value
+        .find((v) => v.name === 'is_chatbotid')?.value
 
       const id_cliente = variables
         .list()
-        .find((v) => v.name === 'id_cliente')?.value
+        .find((v) => v.name === 'is_clientid')?.value
 
       let result = false
 
@@ -194,13 +194,13 @@ export const cortex = createAction({
 
           const hash = variables
             .list()
-            .find((v) => v.name === 'id_atendimento')?.value
+            .find((v) => v.name === 'is_contactid')?.value
 
           const id_chatbot =
-            variables.list().find((v) => v.name === 'id_chatbot')?.value || ''
+            variables.list().find((v) => v.name === 'is_chatbotid')?.value || ''
 
           const id_cliente =
-            variables.list().find((v) => v.name === 'id_cliente')?.value || ''
+            variables.list().find((v) => v.name === 'is_clientid')?.value || ''
 
           const params = new URLSearchParams({
             initial_message: initialMessage.toString(),

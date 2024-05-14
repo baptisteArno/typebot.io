@@ -39,16 +39,19 @@ export const queueJoin = createAction({
       const { baseUrl } = credentials
       const id_chatbot = variables
         .list()
-        .find((v) => v.name === 'id_chatbot')?.value
+        .find((v) => v.name === 'is_chatbotid')?.value
       const id_cliente = variables
         .list()
-        .find((v) => v.name === 'id_cliente')?.value
+        .find((v) => v.name === 'is_clientid')?.value
       const queueId = queueVar ? queueVar : queue
-      console.log('Going to call queue ', queueId)
       const url = `${baseUrl}/ivci/webhook/queue_join?queue=${queueId}&page_id=${id_chatbot}&sender_id=${id_cliente}`
       const response = await fetch(url, { method: 'POST' })
       if (response.status < 300 && response.status >= 200) {
         const res = await response.json()
+      } else {
+        console.error(
+          `Error calling queue ${queueId} -> ${response.status}: ${response.statusText}`
+        )
       }
     },
     web: {
@@ -102,7 +105,7 @@ export const queueJoin = createAction({
           const { baseUrl } = credentials
           const hash = variables
             .list()
-            .find((v) => v.name === 'id_atendimento')?.value
+            .find((v) => v.name === 'is_contactid')?.value
           const url = `${baseUrl}/builder_chat/${hash}/`
           return {
             args: {},
