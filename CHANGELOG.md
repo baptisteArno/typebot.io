@@ -1,5 +1,44 @@
 # Changelog
 
+<a name="2.25.1"></a>
+## 2.25.1 (2024-05-14)
+
+### Added
+
+- ✨ Add variables panel [[1afa25a](https://github.com/baptisteArno/typebot.io/commit/1afa25a01564988933fa82dbac57e2443f8503c4)]
+- 🔊 (customDomain) Add debug log for custom domains req… [[6f0e236](https://github.com/baptisteArno/typebot.io/commit/6f0e23622cd428492725faa5fc42c29cabaa42fe)]
+- ✨ Add &quot;OpenAI Assistant Chat&quot; template [[a413d1b](https://github.com/baptisteArno/typebot.io/commit/a413d1bdc4ec981da6b4aa236fff55489dce45ca)]
+- ✨ Add &quot;Quick Carb Calculator&quot; template [[04e29ba](https://github.com/baptisteArno/typebot.io/commit/04e29bab084c90ed5a8de853440f0251f8ce8c2f)]
+
+### Changed
+
+- ♻️ (templates) Update variables isSession props [[218f689](https://github.com/baptisteArno/typebot.io/commit/218f6892690da5c2cb58c4c470b3b8009e6a24f5)]
+- 🚸 (billing) Increase invoices limit list [[e4a7774](https://github.com/baptisteArno/typebot.io/commit/e4a7774c40260b799532724369fd5e5ae0c83f85)]
+- ⏪ (blog) Revert rewrite referer regex and manually add entry for /blog [[58ba6a4](https://github.com/baptisteArno/typebot.io/commit/58ba6a4089768f0403a0a782c28f9718a094d8ff)]
+- 🚸 (elevenlabs) Remove variable button in cred… [[8a27cea](https://github.com/baptisteArno/typebot.io/commit/8a27cea36b5a32cf2e550e3e3fd48b12e41cb96d)]
+- ⚡ (variables) Add session option in variables ([#1490](https://github.com/baptisteArno/typebot.io/issues/1490)) [[b4ae098](https://github.com/baptisteArno/typebot.io/commit/b4ae098440fff317fe3f976d95176659c1b29ab1)]
+
+### Fixed
+
+- 🐛 Fix inconsistent updatedAt when timezone is different fro… [[ad4d1a1](https://github.com/baptisteArno/typebot.io/commit/ad4d1a1000575fb3b887c03e5bed3692b3150e3c)]
+- 🐛 (blog) Fix referer regex matcher [[1e5e085](https://github.com/baptisteArno/typebot.io/commit/1e5e0851f9f23e2e28123b2315d2a318e645ca41)]
+- 🚑 (blog) Replace matching host regex instead of multi value in list [[29d0cae](https://github.com/baptisteArno/typebot.io/commit/29d0caea1c311219c9c417f6285a1c56a1300f76)]
+- 🐛 (blog) Fix image not loading when coming from /blog [[30f81c8](https://github.com/baptisteArno/typebot.io/commit/30f81c810a1b620041360280d80d0d17bea9b00d)]
+- 🐛 (payment) Fix description variable parsing [[2578335](https://github.com/baptisteArno/typebot.io/commit/2578335cc91503bbafebdfa704bbc2c7665eb388)]
+- 🐛 (share) Show duplicate button for authenticated guests [[9b1ff84](https://github.com/baptisteArno/typebot.io/commit/9b1ff8461cb40aa8ac28f391a73ca67311924012)]
+- 🐛 Fix webhook default timeout and unoptimized json parser ([#1492](https://github.com/baptisteArno/typebot.io/issues/1492)) [[7d70f02](https://github.com/baptisteArno/typebot.io/commit/7d70f0243bc9a8a861346648c8ba4a3079add9c8)]
+
+### Security
+
+- 🔒 Use vm instead of Function in Node.js ([#1509](https://github.com/baptisteArno/typebot.io/issues/1509)) [[75c44d6](https://github.com/baptisteArno/typebot.io/commit/75c44d61d5ac249b3bc5dda6fd14f5b234593b74)]
+
+### Miscellaneous
+
+- 📝 (whatsapp) Add position collection example [[e755f08](https://github.com/baptisteArno/typebot.io/commit/e755f08b403cdb4193ce93b1bb02098444f99a89)]
+- 📝 (openai) Add Ask Assistant video demo [[86441a5](https://github.com/baptisteArno/typebot.io/commit/86441a5337c3d78d511a441274d0bd752abb73ce)]
+- 📝 Add &#x27;best chatbot for wordpress&#x27; blog post ([#1489](https://github.com/baptisteArno/typebot.io/issues/1489)) [[3b3e3fd](https://github.com/baptisteArno/typebot.io/commit/3b3e3fd79245410c6ee34bbc116d50017173cf24)]
+
+
 <a name="2.25.0"></a>
 ## 2.25.0 (2024-05-01)
 
