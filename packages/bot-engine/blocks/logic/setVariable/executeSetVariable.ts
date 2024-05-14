@@ -7,6 +7,7 @@ import { parseVariables } from '@typebot.io/variables/parseVariables'
 import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
 import { createId } from '@paralleldrive/cuid2'
 import { utcToZonedTime, format as tzFormat } from 'date-fns-tz'
+import vm from 'vm'
 
 export const executeSetVariable = (
   state: SessionState,
@@ -67,11 +68,16 @@ const evaluateSetVariableExpression =
     // To avoid octal number evaluation
     if (!isNaN(str as unknown as number) && /0[^.].+/.test(str)) return str
     const evaluating = parseVariables(variables, { fieldToParse: 'id' })(
-      str.includes('return ') ? str : `return ${str}`
+      `(function() {${str.includes('return ') ? str : 'return ' + str}})()`
     )
     try {
-      const func = Function(...variables.map((v) => v.id), evaluating)
-      return func(...variables.map((v) => parseGuessedValueType(v.value)))
+      const sandbox = vm.createContext({
+        ...Object.fromEntries(
+          variables.map((v) => [v.id, parseGuessedValueType(v.value)])
+        ),
+        fetch,
+      })
+      return vm.runInContext(evaluating, sandbox)
     } catch (err) {
       return parseVariables(variables)(str)
     }
