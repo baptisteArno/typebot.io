@@ -47,10 +47,10 @@ export const chat = createAction({
       const { baseUrl } = credentials
       const id_chatbot = variables
         .list()
-        .find((v) => v.name === 'id_chatbot')?.value
+        .find((v) => v.name === 'is_chatbotid')?.value
       const id_cliente = variables
         .list()
-        .find((v) => v.name === 'id_cliente')?.value
+        .find((v) => v.name === 'is_clientid')?.value
       const url = `${baseUrl}/ivci/webhook/get_chat?unique_id=${uniqueId}&page_id=${id_chatbot}&sender_id=${id_cliente}`
       const response = await fetch(url, { method: 'POST' })
       if (response.status < 300 && response.status >= 200) {

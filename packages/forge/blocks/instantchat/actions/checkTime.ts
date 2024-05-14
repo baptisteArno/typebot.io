@@ -29,7 +29,7 @@ export const checkTime = createAction({
 
       const accountcode = variables
         .list()
-        .find((v) => v.name === 'accountcode')?.value
+        .find((v) => v.name === 'is_accountcode')?.value
 
       let result = false
       if (accountcode && checktime) {
