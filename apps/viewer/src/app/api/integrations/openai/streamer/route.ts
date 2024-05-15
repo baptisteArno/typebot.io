@@ -17,7 +17,6 @@ import { getChatCompletionStream } from '@typebot.io/bot-engine/blocks/integrati
 import { ChatCompletionOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai/schema'
 import { isForgedBlockType } from '@typebot.io/schemas/features/blocks/forged/helpers'
 
-export const runtime = 'edge'
 export const preferredRegion = 'lhr1'
 export const dynamic = 'force-dynamic'
 

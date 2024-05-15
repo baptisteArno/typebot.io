@@ -19,6 +19,7 @@ import {
 } from '@typebot.io/logic/computeResultTranscript'
 import prisma from '@typebot.io/lib/prisma'
 import { sessionOnlySetVariableOptions } from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
+import vm from 'vm'
 
 export const executeSetVariable = async (
   state: SessionState,
@@ -97,11 +98,16 @@ const evaluateSetVariableExpression =
     // To avoid octal number evaluation
     if (!isNaN(str as unknown as number) && /0[^.].+/.test(str)) return str
     const evaluating = parseVariables(variables, { fieldToParse: 'id' })(
-      str.includes('return ') ? str : `return ${str}`
+      `(function() {${str.includes('return ') ? str : 'return ' + str}})()`
     )
     try {
-      const func = Function(...variables.map((v) => v.id), evaluating)
-      return func(...variables.map((v) => parseGuessedValueType(v.value)))
+      const sandbox = vm.createContext({
+        ...Object.fromEntries(
+          variables.map((v) => [v.id, parseGuessedValueType(v.value)])
+        ),
+        fetch,
+      })
+      return vm.runInContext(evaluating, sandbox)
     } catch (err) {
       return parseVariables(variables)(str)
     }
