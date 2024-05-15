@@ -35,7 +35,11 @@ export const parseResultHeader = (
     { label: 'Submitted at', id: 'date' },
     ...inputsResultHeader,
     ...parseVariablesHeaders(parsedVariables, inputsResultHeader),
-    ...parseResultsFromPreviousBotVersions(results ?? [], inputsResultHeader),
+    ...parseResultsFromPreviousBotVersions({
+      results: results ?? [],
+      existingInputResultHeaders: inputsResultHeader,
+      groups: parsedGroups,
+    }),
   ]
 }
 
@@ -176,19 +180,22 @@ const parseVariablesHeaders = (
     return [...existingHeaders, newHeaderCell]
   }, [])
 
-const parseResultsFromPreviousBotVersions = (
-  results: ResultWithAnswers[],
+const parseResultsFromPreviousBotVersions = ({
+  results,
+  existingInputResultHeaders,
+  groups,
+}: {
+  results: ResultWithAnswers[]
   existingInputResultHeaders: ResultHeaderCell[]
-): ResultHeaderCell[] =>
+  groups: Group[]
+}): ResultHeaderCell[] =>
   results
     .flatMap((result) => result.answers)
     .filter(
       (answer) =>
-        !answer.variableId &&
         existingInputResultHeaders.every(
           (header) => header.id !== answer.blockId
-        ) &&
-        isNotEmpty(answer.content)
+        ) && isNotEmpty(answer.content)
     )
     .reduce<ResultHeaderCell[]>((existingHeaders, answer) => {
       if (
@@ -197,6 +204,10 @@ const parseResultsFromPreviousBotVersions = (
         )
       )
         return existingHeaders
+      const groupId =
+        groups.find((group) =>
+          group.blocks.some((block) => block.id === answer.blockId)
+        )?.id ?? ''
       return [
         ...existingHeaders,
         {
@@ -205,7 +216,7 @@ const parseResultsFromPreviousBotVersions = (
           blocks: [
             {
               id: answer.blockId,
-              groupId: answer.groupId,
+              groupId,
             },
           ],
           blockType: InputBlockType.TEXT,

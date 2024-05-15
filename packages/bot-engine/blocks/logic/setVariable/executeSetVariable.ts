@@ -18,6 +18,7 @@ import {
   parseTranscriptMessageText,
 } from '@typebot.io/logic/computeResultTranscript'
 import prisma from '@typebot.io/lib/prisma'
+import { sessionOnlySetVariableOptions } from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
 
 export const executeSetVariable = async (
   state: SessionState,
@@ -67,7 +68,16 @@ export const executeSetVariable = async (
   }
   const { newSetVariableHistory, updatedState } = updateVariablesInSession({
     state,
-    newVariables: [newVariable],
+    newVariables: [
+      {
+        ...newVariable,
+        isSessionVariable: sessionOnlySetVariableOptions.includes(
+          block.options.type as (typeof sessionOnlySetVariableOptions)[number]
+        )
+          ? true
+          : newVariable.isSessionVariable,
+      },
+    ],
     currentBlockId: block.id,
   })
 
@@ -254,6 +264,12 @@ const parseResultTranscriptProps = async (
           content: true,
         },
       },
+      answersV2: {
+        select: {
+          blockId: true,
+          content: true,
+        },
+      },
       setVariableHistory: {
         select: {
           blockId: true,
@@ -266,7 +282,7 @@ const parseResultTranscriptProps = async (
   })
   if (!result) return
   return {
-    answers: result.answers,
+    answers: result.answersV2.concat(result.answers),
     setVariableHistory: (
       result.setVariableHistory as SetVariableHistoryItem[]
     ).sort((a, b) => a.index - b.index),

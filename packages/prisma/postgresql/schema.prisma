@@ -246,6 +246,7 @@ model Result {
   lastChatSessionId  String?
   typebot            Typebot                  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
   answers            Answer[]
+  answersV2          AnswerV2[]
   logs               Log[]
   edges              VisitedEdge[]
   setVariableHistory SetVariableHistoryItem[]
@@ -286,9 +287,7 @@ model Log {
   @@index([resultId])
 }
 
-// TODO: gradually remove variableId and groupId
 model Answer {
-  id         Int      @id @default(autoincrement())
   createdAt  DateTime @default(now()) @updatedAt
   resultId   String
   blockId    String
@@ -296,6 +295,16 @@ model Answer {
   variableId String?
   content    String
   result     Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
+
+  @@unique([resultId, blockId, groupId])
+}
+
+model AnswerV2 {
+  id       Int    @id @default(autoincrement())
+  blockId  String
+  content  String
+  resultId String
+  result   Result @relation(fields: [resultId], references: [id], onDelete: Cascade)
 
   @@index([blockId])
 }

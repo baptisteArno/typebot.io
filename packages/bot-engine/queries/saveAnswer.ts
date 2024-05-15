@@ -3,14 +3,14 @@ import { Prisma } from '@typebot.io/prisma'
 import { SessionState } from '@typebot.io/schemas'
 
 type Props = {
-  answer: Omit<Prisma.AnswerUncheckedCreateInput, 'resultId'>
+  answer: Omit<Prisma.AnswerV2CreateManyInput, 'resultId'>
   reply: string
   state: SessionState
 }
 export const saveAnswer = async ({ answer, state }: Props) => {
   const resultId = state.typebotsQueue[0].resultId
   if (!resultId) return
-  return prisma.answer.createMany({
+  return prisma.answerV2.createMany({
     data: [{ ...answer, resultId }],
   })
 }

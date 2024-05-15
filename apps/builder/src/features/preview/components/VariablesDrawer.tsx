@@ -22,7 +22,7 @@ import { FormEvent, useState } from 'react'
 import { headerHeight } from '../../editor/constants'
 import { useDrag } from '@use-gesture/react'
 import { ResizeHandle } from './ResizeHandle'
-import { Variable } from '@typebot.io/schemas'
+import { InputBlock, SetVariableBlock, Variable } from '@typebot.io/schemas'
 import {
   CheckIcon,
   MoreHorizontalIcon,
@@ -32,6 +32,9 @@ import {
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { isNotEmpty } from '@typebot.io/lib'
 import { createId } from '@paralleldrive/cuid2'
+import { isInputBlock } from '@typebot.io/schemas/helpers'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { sessionOnlySetVariableOptions } from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
 
 type Props = {
   onClose: () => void
@@ -69,6 +72,14 @@ export const VariablesDrawer = ({ onClose }: Props) => {
       name: searchValue,
     })
   }
+
+  const setVariableAndInputBlocks =
+    typebot?.groups.flatMap(
+      (g) =>
+        g.blocks.filter(
+          (b) => b.type === LogicBlockType.SET_VARIABLE || isInputBlock(b)
+        ) as (InputBlock | SetVariableBlock)[]
+    ) ?? []
 
   return (
     <Flex
@@ -132,6 +143,7 @@ export const VariablesDrawer = ({ onClose }: Props) => {
               variable={variable}
               onChange={(changes) => updateVariable(variable.id, changes)}
               onDelete={() => deleteVariable(variable.id)}
+              setVariableAndInputBlocks={setVariableAndInputBlocks}
             />
           ))}
         </Stack>
@@ -144,58 +156,76 @@ const VariableItem = ({
   variable,
   onChange,
   onDelete,
+  setVariableAndInputBlocks,
 }: {
   variable: Variable
   onChange: (variable: Partial<Variable>) => void
   onDelete: () => void
-}) => (
-  <HStack justifyContent="space-between">
-    <Editable
-      defaultValue={variable.name}
-      onSubmit={(name) => onChange({ name })}
-    >
-      <EditablePreview
-        px="2"
-        noOfLines={1}
-        cursor="text"
-        _hover={{
-          bg: useColorModeValue('gray.100', 'gray.700'),
-        }}
-      />
-      <EditableInput ml="1" pl="1" />
-    </Editable>
+  setVariableAndInputBlocks: (InputBlock | SetVariableBlock)[]
+}) => {
+  const isSessionOnly = setVariableAndInputBlocks.some(
+    (b) =>
+      b.type === LogicBlockType.SET_VARIABLE &&
+      sessionOnlySetVariableOptions.includes(
+        b.options?.type as (typeof sessionOnlySetVariableOptions)[number]
+      )
+  )
 
-    <HStack>
-      <Popover>
-        <PopoverTrigger>
-          <IconButton
-            icon={<MoreHorizontalIcon />}
-            aria-label={'Settings'}
-            size="sm"
-          />
-        </PopoverTrigger>
-        <PopoverContent>
-          <PopoverBody>
-            <SwitchWithLabel
-              label="Save in results?"
-              moreInfoContent="Check this option if you want to save the variable value in the typebot Results table."
-              initialValue={!variable.isSessionVariable}
-              onCheckChange={() =>
-                onChange({
-                  ...variable,
-                  isSessionVariable: !variable.isSessionVariable,
-                })
-              }
-            />
-          </PopoverBody>
-        </PopoverContent>
+  const isLinkedToAnswer = setVariableAndInputBlocks.some(
+    (b) => isInputBlock(b) && b.options?.variableId === variable.id
+  )
+
+  return (
+    <HStack justifyContent="space-between">
+      <Editable
+        defaultValue={variable.name}
+        onSubmit={(name) => onChange({ name })}
+      >
+        <EditablePreview
+          px="2"
+          noOfLines={1}
+          cursor="text"
+          _hover={{
+            bg: useColorModeValue('gray.100', 'gray.700'),
+          }}
+        />
+        <EditableInput ml="1" pl="1" />
+      </Editable>
+
+      <HStack>
+        {!isSessionOnly && !isLinkedToAnswer && (
+          <Popover>
+            <PopoverTrigger>
+              <IconButton
+                icon={<MoreHorizontalIcon />}
+                aria-label={'Settings'}
+                size="sm"
+              />
+            </PopoverTrigger>
+            <PopoverContent>
+              <PopoverBody>
+                <SwitchWithLabel
+                  label="Save in results?"
+                  moreInfoContent="Check this option if you want to save the variable value in the typebot Results table."
+                  initialValue={!variable.isSessionVariable}
+                  onCheckChange={() =>
+                    onChange({
+                      ...variable,
+                      isSessionVariable: !variable.isSessionVariable,
+                    })
+                  }
+                />
+              </PopoverBody>
+            </PopoverContent>
+          </Popover>
+        )}
         <IconButton
           icon={<TrashIcon />}
           onClick={onDelete}
           aria-label="Delete"
           size="sm"
         />
-      </Popover>
+      </HStack>
     </HStack>
-  </HStack>
-)
+  )
+}

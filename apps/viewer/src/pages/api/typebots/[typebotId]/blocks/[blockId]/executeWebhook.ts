@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ResultValues,
   Typebot,
@@ -36,7 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { resultValues, variables, parentTypebotIds } = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as {
-      resultValues: ResultValues | undefined
+      resultValues: ResultValues
       variables: Variable[]
       parentTypebotIds: string[]
     }
@@ -76,7 +77,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const linkedTypebots = [...linkedTypebotsParents, ...linkedTypebotsChildren]
 
     const answers = resultValues
-      ? resultValues.answers.map((answer) => ({
+      ? resultValues.answers.map((answer: any) => ({
           key:
             (answer.variableId
               ? typebot.variables.find(

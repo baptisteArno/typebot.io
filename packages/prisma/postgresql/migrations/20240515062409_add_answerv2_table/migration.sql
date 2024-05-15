@@ -8,14 +8,9 @@
 -- DropIndex
 DROP INDEX "Answer_blockId_itemId_idx";
 
--- DropIndex
-DROP INDEX "Answer_resultId_blockId_groupId_key";
-
 -- AlterTable
 ALTER TABLE "Answer" DROP COLUMN "itemId",
-DROP COLUMN "storageUsed",
-ADD COLUMN     "id" SERIAL NOT NULL,
-ADD CONSTRAINT "Answer_pkey" PRIMARY KEY ("id");
+DROP COLUMN "storageUsed";
 
 -- AlterTable
 ALTER TABLE "Result" ADD COLUMN     "lastChatSessionId" TEXT;
@@ -29,11 +24,24 @@ CREATE TABLE "SetVariableHistoryItem" (
     "value" JSONB NOT NULL
 );
 
+-- CreateTable
+CREATE TABLE "AnswerV2" (
+    "id" SERIAL NOT NULL,
+    "blockId" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
+    "resultId" TEXT NOT NULL,
+
+    CONSTRAINT "AnswerV2_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "SetVariableHistoryItem_resultId_index_key" ON "SetVariableHistoryItem"("resultId", "index");
 
 -- CreateIndex
-CREATE INDEX "Answer_blockId_idx" ON "Answer"("blockId");
+CREATE INDEX "AnswerV2_blockId_idx" ON "AnswerV2"("blockId");
 
 -- AddForeignKey
 ALTER TABLE "SetVariableHistoryItem" ADD CONSTRAINT "SetVariableHistoryItem_resultId_fkey" FOREIGN KEY ("resultId") REFERENCES "Result"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "AnswerV2" ADD CONSTRAINT "AnswerV2_resultId_fkey" FOREIGN KEY ("resultId") REFERENCES "Result"("id") ON DELETE CASCADE ON UPDATE CASCADE;

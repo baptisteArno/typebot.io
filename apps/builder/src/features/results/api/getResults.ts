@@ -104,7 +104,20 @@ export const getResults = authenticatedProcedure
       orderBy: {
         createdAt: 'desc',
       },
-      include: { answers: true },
+      include: {
+        answers: {
+          select: {
+            blockId: true,
+            content: true,
+          },
+        },
+        answersV2: {
+          select: {
+            blockId: true,
+            content: true,
+          },
+        },
+      },
     })
 
     let nextCursor: typeof cursor | undefined
@@ -114,7 +127,11 @@ export const getResults = authenticatedProcedure
     }
 
     return {
-      results: z.array(resultWithAnswersSchema).parse(results),
+      results: z
+        .array(resultWithAnswersSchema)
+        .parse(
+          results.map((r) => ({ ...r, answers: r.answersV2.concat(r.answers) }))
+        ),
       nextCursor,
     }
   })

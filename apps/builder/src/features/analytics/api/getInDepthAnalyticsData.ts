@@ -75,13 +75,37 @@ export const getInDepthAnalyticsData = authenticatedProcedure
         },
       })
 
-      const uniqueCounts = totalAnswersPerBlock.reduce<{
-        [key: string]: Set<string>
-      }>((acc, { blockId, resultId }) => {
-        acc[blockId] = acc[blockId] || new Set()
-        acc[blockId].add(resultId)
-        return acc
-      }, {})
+      const totalAnswersV2PerBlock = await prisma.answerV2.groupBy({
+        by: ['blockId', 'resultId'],
+        where: {
+          result: {
+            typebotId: typebot.publishedTypebot.typebotId,
+            createdAt: fromDate
+              ? {
+                  gte: fromDate,
+                  lte: toDate ?? undefined,
+                }
+              : undefined,
+          },
+          blockId: {
+            in: parseGroups(typebot.publishedTypebot.groups, {
+              typebotVersion: typebot.publishedTypebot.version,
+            }).flatMap((group) =>
+              group.blocks.filter(isInputBlock).map((block) => block.id)
+            ),
+          },
+        },
+      })
+
+      const uniqueCounts = totalAnswersPerBlock
+        .concat(totalAnswersV2PerBlock)
+        .reduce<{
+          [key: string]: Set<string>
+        }>((acc, { blockId, resultId }) => {
+          acc[blockId] = acc[blockId] || new Set()
+          acc[blockId].add(resultId)
+          return acc
+        }, {})
 
       const offDefaultPathVisitedEdges = await prisma.visitedEdge.groupBy({
         by: ['edgeId'],

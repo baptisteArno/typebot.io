@@ -333,9 +333,7 @@ const saveAnswerInDb =
     await saveAnswer({
       answer: {
         blockId: block.id,
-        groupId,
         content: reply,
-        variableId: block.options?.variableId,
       },
       reply,
       state,

@@ -14,6 +14,7 @@ import {
 import { TextInput } from '@/components/inputs'
 import { isDefined } from '@typebot.io/lib'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { isInputBlock } from '@typebot.io/schemas/helpers'
 
 type Props = {
   options: SetVariableBlock['options']
@@ -55,6 +56,14 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
       options.type as (typeof sessionOnlySetVariableOptions)[number]
     )
 
+  const isLinkedToAnswer =
+    options?.variableId &&
+    typebot?.groups.some((g) =>
+      g.blocks.some(
+        (b) => isInputBlock(b) && b.options?.variableId === options.variableId
+      )
+    )
+
   return (
     <Stack spacing={4}>
       <Stack>
@@ -87,7 +96,7 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
           />
         </Stack>
 
-        {selectedVariable && !isSessionOnly && (
+        {selectedVariable && !isSessionOnly && !isLinkedToAnswer && (
           <SwitchWithLabel
             key={selectedVariable.id}
             label="Save in results?"

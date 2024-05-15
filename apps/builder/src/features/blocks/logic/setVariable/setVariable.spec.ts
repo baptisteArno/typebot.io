@@ -3,10 +3,11 @@ import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 
-const typebotId = createId()
+test.describe.configure({ mode: 'parallel' })
 
 test.describe('Set variable block', () => {
   test('its configuration should work', async ({ page }) => {
+    const typebotId = createId()
     await importTypebotInDatabase(
       getTestAsset('typebots/logic/setVariable.json'),
       {
@@ -74,6 +75,7 @@ test.describe('Set variable block', () => {
   test('Transcription variable setting should work in preview', async ({
     page,
   }) => {
+    const typebotId = createId()
     await importTypebotInDatabase(
       getTestAsset('typebots/logic/setVariable2.json'),
       {

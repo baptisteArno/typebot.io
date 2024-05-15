@@ -78,6 +78,11 @@ export const archiveResults =
             resultId: { in: resultIds },
           },
         }),
+        prisma.answerV2.deleteMany({
+          where: {
+            resultId: { in: resultIds },
+          },
+        }),
         prisma.visitedEdge.deleteMany({
           where: {
             resultId: { in: resultIds },

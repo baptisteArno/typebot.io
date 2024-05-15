@@ -11101,36 +11101,15 @@
                             "items": {
                               "type": "object",
                               "properties": {
-                                "id": {
-                                  "type": "number"
-                                },
-                                "createdAt": {
-                                  "type": "string"
-                                },
-                                "resultId": {
-                                  "type": "string"
-                                },
                                 "blockId": {
                                   "type": "string"
-                                },
-                                "groupId": {
-                                  "type": "string"
-                                },
-                                "variableId": {
-                                  "type": "string",
-                                  "nullable": true
                                 },
                                 "content": {
                                   "type": "string"
                                 }
                               },
                               "required": [
-                                "id",
-                                "createdAt",
-                                "resultId",
                                 "blockId",
-                                "groupId",
-                                "variableId",
                                 "content"
                               ]
                             }
@@ -11417,36 +11396,15 @@
                           "items": {
                             "type": "object",
                             "properties": {
-                              "id": {
-                                "type": "number"
-                              },
-                              "createdAt": {
-                                "type": "string"
-                              },
-                              "resultId": {
-                                "type": "string"
-                              },
                               "blockId": {
                                 "type": "string"
-                              },
-                              "groupId": {
-                                "type": "string"
-                              },
-                              "variableId": {
-                                "type": "string",
-                                "nullable": true
                               },
                               "content": {
                                 "type": "string"
                               }
                             },
                             "required": [
-                              "id",
-                              "createdAt",
-                              "resultId",
                               "blockId",
-                              "groupId",
-                              "variableId",
                               "content"
                             ]
                           }
