@@ -260,6 +260,12 @@ export const startPreviewChatInputSchema = z.object({
         Email: 'john@gmail.com',
       },
     }),
+  sessionId: z
+    .string()
+    .optional()
+    .describe(
+      'If provided, will be used as the session ID and will overwrite any existing session with the same ID.'
+    ),
 })
 export type StartPreviewChatInput = z.infer<typeof startPreviewChatInputSchema>
 

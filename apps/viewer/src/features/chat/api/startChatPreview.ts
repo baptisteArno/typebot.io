@@ -27,6 +27,7 @@ export const startChatPreview = publicProcedure
         typebotId,
         typebot: startTypebot,
         prefilledVariables,
+        sessionId,
       },
       ctx: { user },
     }) =>
@@ -39,5 +40,6 @@ export const startChatPreview = publicProcedure
         typebot: startTypebot,
         userId: user?.id,
         prefilledVariables,
+        sessionId,
       })
   )

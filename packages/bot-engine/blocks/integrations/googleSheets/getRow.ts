@@ -14,9 +14,14 @@ import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesI
 export const getRow = async (
   state: SessionState,
   {
+    blockId,
     outgoingEdgeId,
     options,
-  }: { outgoingEdgeId?: string; options: GoogleSheetsGetOptions }
+  }: {
+    blockId: string
+    outgoingEdgeId?: string
+    options: GoogleSheetsGetOptions
+  }
 ): Promise<ExecuteIntegrationResponse> => {
   const logs: ChatLog[] = []
   const { variables } = state.typebotsQueue[0].typebot
@@ -79,10 +84,15 @@ export const getRow = async (
       []
     )
     if (!newVariables) return { outgoingEdgeId }
-    const newSessionState = updateVariablesInSession(state)(newVariables)
+    const { updatedState, newSetVariableHistory } = updateVariablesInSession({
+      state,
+      newVariables,
+      currentBlockId: blockId,
+    })
     return {
       outgoingEdgeId,
-      newSessionState,
+      newSessionState: updatedState,
+      newSetVariableHistory,
     }
   } catch (err) {
     logs.push({

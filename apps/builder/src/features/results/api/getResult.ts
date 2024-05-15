@@ -71,11 +71,31 @@ export const getResult = authenticatedProcedure
       orderBy: {
         createdAt: 'desc',
       },
-      include: { answers: true },
+      include: {
+        answers: {
+          select: {
+            blockId: true,
+            content: true,
+          },
+        },
+        answersV2: {
+          select: {
+            blockId: true,
+            content: true,
+          },
+        },
+      },
     })
 
     if (results.length === 0)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Result not found' })
 
-    return { result: resultWithAnswersSchema.parse(results[0]) }
+    const { answers, answersV2, ...result } = results[0]
+
+    return {
+      result: resultWithAnswersSchema.parse({
+        ...result,
+        answers: answers.concat(answersV2),
+      }),
+    }
   })

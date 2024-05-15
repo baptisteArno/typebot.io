@@ -24,11 +24,19 @@ const defaultCellParser: CellParser = (content, blockType) => {
     : { plainText: content.toString() }
 }
 
-export const convertResultsToTableData = (
-  results: ResultWithAnswers[] | undefined,
-  headerCells: ResultHeaderCell[],
-  cellParser: CellParser = defaultCellParser
-): TableData[] =>
+type Props = {
+  results: ResultWithAnswers[] | undefined
+  headerCells: ResultHeaderCell[]
+  cellParser?: CellParser
+  blockIdVariableIdMap: Record<string, string>
+}
+
+export const convertResultsToTableData = ({
+  results,
+  headerCells,
+  cellParser = defaultCellParser,
+  blockIdVariableIdMap,
+}: Props): TableData[] =>
   (results ?? []).map((result) => ({
     id: { plainText: result.id },
     date: {
@@ -37,23 +45,23 @@ export const convertResultsToTableData = (
     ...[...result.answers, ...result.variables].reduce<{
       [key: string]: { element?: JSX.Element; plainText: string }
     }>((tableData, answerOrVariable) => {
-      if ('groupId' in answerOrVariable) {
-        const answer = answerOrVariable satisfies Answer
-        const header = answer.variableId
+      if ('blockId' in answerOrVariable) {
+        const answer = answerOrVariable satisfies Pick<
+          Answer,
+          'blockId' | 'content'
+        >
+        const answerVariableId = blockIdVariableIdMap[answer.blockId]
+        const header = answerVariableId
           ? headerCells.find((headerCell) =>
-              headerCell.variableIds?.includes(answer.variableId as string)
+              headerCell.variableIds?.includes(answerVariableId)
             )
           : headerCells.find((headerCell) =>
               headerCell.blocks?.some((block) => block.id === answer.blockId)
             )
         if (!header || !header.blocks || !header.blockType) return tableData
-        const variableValue = result.variables.find(
-          (variable) => variable.id === answer.variableId
-        )?.value
-        const content = variableValue ?? answer.content
         return {
           ...tableData,
-          [header.id]: cellParser(content, header.blockType),
+          [header.id]: cellParser(answer.content, header.blockType),
         }
       }
       const variable = answerOrVariable satisfies VariableWithValue

@@ -2,12 +2,12 @@ import { VariableStore, LogsStore } from '@typebot.io/forge'
 import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
 import { ForgedBlock } from '@typebot.io/forge-repository/types'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
-import { isPlaneteScale } from '@typebot.io/lib/isPlanetScale'
 import {
   SessionState,
   ContinueChatResponse,
   Block,
   TypebotInSession,
+  SetVariableHistoryItem,
 } from '@typebot.io/schemas'
 import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
 import {
@@ -73,6 +73,7 @@ export const executeForgedBlock = async (
   }
 
   let newSessionState = state
+  let setVariableHistory: SetVariableHistoryItem[] = []
 
   const variables: VariableStore = {
     get: (id: string) => {
@@ -86,9 +87,13 @@ export const executeForgedBlock = async (
         (variable) => variable.id === id
       )
       if (!variable) return
-      newSessionState = updateVariablesInSession(newSessionState)([
-        { ...variable, value },
-      ])
+      const { newSetVariableHistory, updatedState } = updateVariablesInSession({
+        newVariables: [{ ...variable, value }],
+        state: newSessionState,
+        currentBlockId: block.id,
+      })
+      newSessionState = updatedState
+      setVariableHistory.push(...newSetVariableHistory)
     },
     parse: (text: string, params?: ParseVariablesOptions) =>
       parseVariables(
@@ -159,6 +164,7 @@ export const executeForgedBlock = async (
           },
         }
       : undefined,
+    newSetVariableHistory: setVariableHistory,
   }
 }
 

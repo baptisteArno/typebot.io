@@ -60,6 +60,7 @@ export const sendMessageV1 = publicProcedure
           clientSideActions,
           newSessionState,
           visitedEdges,
+          setVariableHistory,
         } = await startSession({
           version: 1,
           startParams:
@@ -136,6 +137,7 @@ export const sendMessageV1 = publicProcedure
               hasCustomEmbedBubble: messages.some(
                 (message) => message.type === 'custom-embed'
               ),
+              setVariableHistory,
             })
 
         return {
@@ -176,6 +178,7 @@ export const sendMessageV1 = publicProcedure
           logs,
           lastMessageNewFormat,
           visitedEdges,
+          setVariableHistory,
         } = await continueBotFlow(message, { version: 1, state: session.state })
 
         const allLogs = clientLogs ? [...(logs ?? []), ...clientLogs] : logs
@@ -193,6 +196,7 @@ export const sendMessageV1 = publicProcedure
             hasCustomEmbedBubble: messages.some(
               (message) => message.type === 'custom-embed'
             ),
+            setVariableHistory,
           })
 
         return {

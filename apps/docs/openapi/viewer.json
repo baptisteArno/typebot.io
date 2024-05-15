@@ -1851,6 +1851,10 @@
                       "First name": "John",
                       "Email": "john@gmail.com"
                     }
+                  },
+                  "sessionId": {
+                    "type": "string",
+                    "description": "If provided, will be used as the session ID and will overwrite any existing session with the same ID."
                   }
                 }
               }
@@ -3675,7 +3679,8 @@
                                       "Result ID",
                                       "Random ID",
                                       "Phone number",
-                                      "Contact name"
+                                      "Contact name",
+                                      "Transcript"
                                     ]
                                   }
                                 },
@@ -7818,7 +7823,8 @@
                           "Result ID",
                           "Random ID",
                           "Phone number",
-                          "Contact name"
+                          "Contact name",
+                          "Transcript"
                         ]
                       }
                     },

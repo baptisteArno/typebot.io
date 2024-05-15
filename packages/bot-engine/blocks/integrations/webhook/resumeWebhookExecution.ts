@@ -70,10 +70,15 @@ export const resumeWebhookExecution = ({
     }
   }, [])
   if (newVariables && newVariables.length > 0) {
-    const newSessionState = updateVariablesInSession(state)(newVariables)
+    const { updatedState, newSetVariableHistory } = updateVariablesInSession({
+      newVariables,
+      state,
+      currentBlockId: block.id,
+    })
     return {
       outgoingEdgeId: block.outgoingEdgeId,
-      newSessionState,
+      newSessionState: updatedState,
+      newSetVariableHistory,
       logs,
     }
   }

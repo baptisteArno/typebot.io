@@ -3,6 +3,7 @@ import {
   ContinueChatResponse,
   PublicTypebot,
   SessionState,
+  SetVariableHistoryItem,
   Settings,
   Typebot,
 } from '@typebot.io/schemas'
@@ -35,6 +36,7 @@ export const startWhatsAppSession = async ({
   | (ContinueChatResponse & {
       newSessionState: SessionState
       visitedEdges: VisitedEdge[]
+      setVariableHistory: SetVariableHistoryItem[]
     })
   | { error: string }
 > => {

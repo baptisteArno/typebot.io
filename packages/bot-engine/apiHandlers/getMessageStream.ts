@@ -16,6 +16,7 @@ import { isForgedBlockType } from '@typebot.io/schemas/features/blocks/forged/he
 import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
 import { updateSession } from '../queries/updateSession'
 import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
+import { saveSetVariableHistoryItems } from '../queries/saveSetVariableHistoryItems'
 
 type Props = {
   sessionId: string
@@ -114,11 +115,17 @@ export const getMessageStream = async ({ sessionId, messages }: Props) => {
           (variable) => variable.id === id
         )
         if (!variable) return
+        const { updatedState, newSetVariableHistory } =
+          updateVariablesInSession({
+            newVariables: [{ ...variable, value }],
+            state: session.state,
+            currentBlockId: session.state.currentBlockId,
+          })
+        if (newSetVariableHistory.length > 0)
+          await saveSetVariableHistoryItems(newSetVariableHistory)
         await updateSession({
           id: session.id,
-          state: updateVariablesInSession(session.state)([
-            { ...variable, value },
-          ]),
+          state: updatedState,
           isReplying: undefined,
         })
       },

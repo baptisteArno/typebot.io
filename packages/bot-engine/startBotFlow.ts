@@ -2,6 +2,7 @@ import { TRPCError } from '@trpc/server'
 import {
   ContinueChatResponse,
   SessionState,
+  SetVariableHistoryItem,
   StartFrom,
 } from '@typebot.io/schemas'
 import { executeGroup } from './executeGroup'
@@ -25,10 +26,12 @@ export const startBotFlow = async ({
   ContinueChatResponse & {
     newSessionState: SessionState
     visitedEdges: VisitedEdge[]
+    setVariableHistory: SetVariableHistoryItem[]
   }
 > => {
   let newSessionState = state
   const visitedEdges: VisitedEdge[] = []
+  const setVariableHistory: SetVariableHistoryItem[] = []
   if (startFrom?.type === 'group') {
     const group = state.typebotsQueue[0].typebot.groups.find(
       (group) => group.id === startFrom.groupId
@@ -42,22 +45,34 @@ export const startBotFlow = async ({
       version,
       state: newSessionState,
       visitedEdges,
+      setVariableHistory,
       startTime,
     })
   }
   const firstEdgeId = getFirstEdgeId({
-    state: newSessionState,
+    typebot: newSessionState.typebotsQueue[0].typebot,
     startEventId: startFrom?.type === 'event' ? startFrom.eventId : undefined,
   })
-  if (!firstEdgeId) return { messages: [], newSessionState, visitedEdges: [] }
-  const nextGroup = await getNextGroup(newSessionState)(firstEdgeId)
+  if (!firstEdgeId)
+    return {
+      messages: [],
+      newSessionState,
+      setVariableHistory: [],
+      visitedEdges: [],
+    }
+  const nextGroup = await getNextGroup({
+    state: newSessionState,
+    edgeId: firstEdgeId,
+    isOffDefaultPath: false,
+  })
   newSessionState = nextGroup.newSessionState
-  if (nextGroup.visitedEdge) visitedEdges.push(nextGroup.visitedEdge)
-  if (!nextGroup.group) return { messages: [], newSessionState, visitedEdges }
+  if (!nextGroup.group)
+    return { messages: [], newSessionState, visitedEdges, setVariableHistory }
   return executeGroup(nextGroup.group, {
     version,
     state: newSessionState,
     visitedEdges,
+    setVariableHistory,
     startTime,
   })
 }

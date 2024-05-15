@@ -8,11 +8,13 @@ import { WhatsAppLogo } from '@/components/logos/WhatsAppLogo'
 import {
   defaultSetVariableOptions,
   hiddenTypes,
+  sessionOnlySetVariableOptions,
   valueTypes,
 } from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
 import { TextInput } from '@/components/inputs'
 import { isDefined } from '@typebot.io/lib'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { isInputBlock } from '@typebot.io/schemas/helpers'
 
 type Props = {
   options: SetVariableBlock['options']
@@ -48,6 +50,20 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
     })
   }
 
+  const isSessionOnly =
+    options?.type &&
+    sessionOnlySetVariableOptions.includes(
+      options.type as (typeof sessionOnlySetVariableOptions)[number]
+    )
+
+  const isLinkedToAnswer =
+    options?.variableId &&
+    typebot?.groups.some((g) =>
+      g.blocks.some(
+        (b) => isInputBlock(b) && b.options?.variableId === options.variableId
+      )
+    )
+
   return (
     <Stack spacing={4}>
       <Stack>
@@ -80,7 +96,7 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
           />
         </Stack>
 
-        {selectedVariable && (
+        {selectedVariable && !isSessionOnly && !isLinkedToAnswer && (
           <SwitchWithLabel
             key={selectedVariable.id}
             label="Save in results?"
@@ -244,6 +260,7 @@ const SetVariableValue = ({
     case 'Today':
     case 'Result ID':
     case 'Empty':
+    case 'Transcript':
       return null
   }
 }

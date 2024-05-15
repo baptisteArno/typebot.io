@@ -6,7 +6,7 @@ import {
   Typebot,
 } from '@typebot.io/schemas'
 import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
-import { isEmpty, isNotEmpty } from '@typebot.io/lib/utils'
+import { isDefined, isEmpty, isNotEmpty } from '@typebot.io/lib/utils'
 import {
   getVariablesToParseInfoInText,
   parseVariables,
@@ -49,7 +49,7 @@ export const parseBubbleBlock = (
           richText: parseVariablesInRichText(block.content?.richText ?? [], {
             variables,
             takeLatestIfList: typebotVersion !== '6',
-          }),
+          }).parsedElements,
         },
       }
     }
@@ -93,14 +93,15 @@ export const parseBubbleBlock = (
   }
 }
 
-const parseVariablesInRichText = (
+export const parseVariablesInRichText = (
   elements: TDescendant[],
   {
     variables,
     takeLatestIfList,
   }: { variables: Variable[]; takeLatestIfList?: boolean }
-): TDescendant[] => {
+): { parsedElements: TDescendant[]; parsedVariableIds: string[] } => {
   const parsedElements: TDescendant[] = []
+  const parsedVariableIds: string[] = []
   for (const element of elements) {
     if ('text' in element) {
       const text = element.text as string
@@ -112,6 +113,9 @@ const parseVariablesInRichText = (
         variables,
         takeLatestIfList,
       })
+      parsedVariableIds.push(
+        ...variablesInText.map((v) => v.variableId).filter(isDefined)
+      )
       if (variablesInText.length === 0) {
         parsedElements.push(element)
         continue
@@ -185,19 +189,28 @@ const parseVariablesInRichText = (
         ? 'variable'
         : element.type
 
+    const {
+      parsedElements: parsedChildren,
+      parsedVariableIds: parsedChildrenVariableIds,
+    } = parseVariablesInRichText(element.children as TDescendant[], {
+      variables,
+      takeLatestIfList,
+    })
+
+    parsedVariableIds.push(...parsedChildrenVariableIds)
     parsedElements.push({
       ...element,
       url: element.url
         ? parseVariables(variables)(element.url as string)
         : undefined,
       type,
-      children: parseVariablesInRichText(element.children as TDescendant[], {
-        variables,
-        takeLatestIfList,
-      }),
+      children: parsedChildren,
     })
   }
-  return parsedElements
+  return {
+    parsedElements,
+    parsedVariableIds,
+  }
 }
 
 const applyElementStyleToDescendants = (

@@ -95,6 +95,7 @@ type VariableToParseInformation = {
   endIndex: number
   textToReplace: string
   value: string
+  variableId?: string
 }
 
 export const getVariablesToParseInfoInText = (
@@ -146,6 +147,7 @@ export const getVariablesToParseInfoInText = (
             ? variable?.value[variable?.value.length - 1]
             : variable?.value
         ) ?? '',
+      variableId: variable?.id,
     })
   })
   return variablesToParseInfo.sort((a, b) => a.startIndex - b.startIndex)

@@ -25,6 +25,7 @@ export const executeGoogleSheetBlock = async (
       })
     case GoogleSheetsAction.GET:
       return getRow(state, {
+        blockId: block.id,
         options: block.options,
         outgoingEdgeId: block.outgoingEdgeId,
       })

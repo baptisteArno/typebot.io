@@ -33,6 +33,7 @@ export const startChat = async ({
     clientSideActions,
     newSessionState,
     visitedEdges,
+    setVariableHistory,
   } = await startSession({
     version: 2,
     startParams: {
@@ -69,6 +70,7 @@ export const startChat = async ({
         logs,
         clientSideActions,
         visitedEdges,
+        setVariableHistory,
         hasCustomEmbedBubble: messages.some(
           (message) => message.type === 'custom-embed'
         ),

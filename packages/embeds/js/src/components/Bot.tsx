@@ -39,13 +39,14 @@ export type BotProps = {
   apiHost?: string
   font?: Font
   progressBarRef?: HTMLDivElement
+  startFrom?: StartFrom
+  sessionId?: string
   onNewInputBlock?: (inputBlock: InputBlock) => void
   onAnswer?: (answer: { message: string; blockId: string }) => void
   onInit?: () => void
   onEnd?: () => void
   onNewLogs?: (logs: OutgoingLog[]) => void
   onChatStatePersisted?: (isEnabled: boolean) => void
-  startFrom?: StartFrom
 }
 
 export const Bot = (props: BotProps & { class?: string }) => {
@@ -81,6 +82,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
         ...props.prefilledVariables,
       },
       startFrom: props.startFrom,
+      sessionId: props.sessionId,
     })
     if (error instanceof HTTPError) {
       if (isPreview) {

@@ -5,6 +5,7 @@ import {
   Group,
   InputBlock,
   SessionState,
+  SetVariableHistoryItem,
 } from '@typebot.io/schemas'
 import { byId } from '@typebot.io/lib'
 import { isInputBlock } from '@typebot.io/schemas/helpers'
@@ -13,7 +14,7 @@ import { getNextGroup } from './getNextGroup'
 import { validateEmail } from './blocks/inputs/email/validateEmail'
 import { formatPhoneNumber } from './blocks/inputs/phone/formatPhoneNumber'
 import { resumeWebhookExecution } from './blocks/integrations/webhook/resumeWebhookExecution'
-import { upsertAnswer } from './queries/upsertAnswer'
+import { saveAnswer } from './queries/saveAnswer'
 import { parseButtonsReply } from './blocks/inputs/buttons/parseButtonsReply'
 import { ParsedReply, Reply } from './types'
 import { validateNumber } from './blocks/inputs/number/validateNumber'
@@ -57,11 +58,13 @@ export const continueBotFlow = async (
   ContinueChatResponse & {
     newSessionState: SessionState
     visitedEdges: VisitedEdge[]
+    setVariableHistory: SetVariableHistoryItem[]
   }
 > => {
   let firstBubbleWasStreamed = false
   let newSessionState = { ...state }
   const visitedEdges: VisitedEdge[] = []
+  const setVariableHistory: SetVariableHistoryItem[] = []
 
   if (!newSessionState.currentBlockId) return startBotFlow({ state, version })
 
@@ -76,16 +79,17 @@ export const continueBotFlow = async (
       message: 'Group / block not found',
     })
 
+  let variableToUpdate
+
   if (block.type === LogicBlockType.SET_VARIABLE) {
     const existingVariable = state.typebotsQueue[0].typebot.variables.find(
       byId(block.options?.variableId)
     )
     if (existingVariable && reply && typeof reply === 'string') {
-      const newVariable = {
+      variableToUpdate = {
         ...existingVariable,
         value: safeJsonParse(reply),
       }
-      newSessionState = updateVariablesInSession(state)([newVariable])
     }
   }
   // Legacy
@@ -121,40 +125,39 @@ export const continueBotFlow = async (
       if (action) {
         if (action.run?.stream?.getStreamVariableId) {
           firstBubbleWasStreamed = true
-          const variableToUpdate =
-            state.typebotsQueue[0].typebot.variables.find(
-              (v) => v.id === action?.run?.stream?.getStreamVariableId(options)
-            )
-          if (variableToUpdate)
-            newSessionState = updateVariablesInSession(state)([
-              {
-                ...variableToUpdate,
-                value: reply,
-              },
-            ])
+          variableToUpdate = state.typebotsQueue[0].typebot.variables.find(
+            (v) => v.id === action?.run?.stream?.getStreamVariableId(options)
+          )
         }
 
         if (
           action.run?.web?.displayEmbedBubble?.waitForEvent?.getSaveVariableId
         ) {
-          const variableToUpdate =
-            state.typebotsQueue[0].typebot.variables.find(
-              (v) =>
-                v.id ===
-                action?.run?.web?.displayEmbedBubble?.waitForEvent?.getSaveVariableId?.(
-                  options
-                )
-            )
-          if (variableToUpdate)
-            newSessionState = updateVariablesInSession(state)([
-              {
-                ...variableToUpdate,
-                value: reply,
-              },
-            ])
+          variableToUpdate = state.typebotsQueue[0].typebot.variables.find(
+            (v) =>
+              v.id ===
+              action?.run?.web?.displayEmbedBubble?.waitForEvent?.getSaveVariableId?.(
+                options
+              )
+          )
         }
       }
     }
+  }
+
+  if (variableToUpdate) {
+    const { newSetVariableHistory, updatedState } = updateVariablesInSession({
+      state: newSessionState,
+      currentBlockId: block.id,
+      newVariables: [
+        {
+          ...variableToUpdate,
+          value: reply,
+        },
+      ],
+    })
+    newSessionState = updatedState
+    setVariableHistory.push(...newSetVariableHistory)
   }
 
   let formattedReply: string | undefined
@@ -167,6 +170,7 @@ export const continueBotFlow = async (
         ...(await parseRetryMessage(newSessionState)(block)),
         newSessionState,
         visitedEdges: [],
+        setVariableHistory: [],
       }
 
     formattedReply =
@@ -176,7 +180,9 @@ export const continueBotFlow = async (
 
   const groupHasMoreBlocks = blockIndex < group.blocks.length - 1
 
-  const nextEdgeId = getOutgoingEdgeId(newSessionState)(block, formattedReply)
+  const { edgeId: nextEdgeId, isOffDefaultPath } = getOutgoingEdgeId(
+    newSessionState
+  )(block, formattedReply)
 
   if (groupHasMoreBlocks && !nextEdgeId) {
     const chatReply = await executeGroup(
@@ -188,6 +194,7 @@ export const continueBotFlow = async (
         version,
         state: newSessionState,
         visitedEdges,
+        setVariableHistory,
         firstBubbleWasStreamed,
         startTime,
       }
@@ -206,9 +213,14 @@ export const continueBotFlow = async (
       lastMessageNewFormat:
         formattedReply !== reply ? formattedReply : undefined,
       visitedEdges,
+      setVariableHistory,
     }
 
-  const nextGroup = await getNextGroup(newSessionState)(nextEdgeId)
+  const nextGroup = await getNextGroup({
+    state: newSessionState,
+    edgeId: nextEdgeId,
+    isOffDefaultPath,
+  })
 
   if (nextGroup.visitedEdge) visitedEdges.push(nextGroup.visitedEdge)
 
@@ -221,6 +233,7 @@ export const continueBotFlow = async (
       lastMessageNewFormat:
         formattedReply !== reply ? formattedReply : undefined,
       visitedEdges,
+      setVariableHistory,
     }
 
   const chatReply = await executeGroup(nextGroup.group, {
@@ -228,6 +241,7 @@ export const continueBotFlow = async (
     state: newSessionState,
     firstBubbleWasStreamed,
     visitedEdges,
+    setVariableHistory,
     startTime,
   })
 
@@ -241,8 +255,7 @@ const processAndSaveAnswer =
   (state: SessionState, block: InputBlock) =>
   async (reply: string | undefined): Promise<SessionState> => {
     if (!reply) return state
-    let newState = await saveAnswer(state, block)(reply)
-    newState = saveVariableValueIfAny(newState, block)(reply)
+    let newState = await saveAnswerInDb(state, block)(reply)
     return newState
   }
 
@@ -255,16 +268,20 @@ const saveVariableValueIfAny =
     )
     if (!foundVariable) return state
 
-    const newSessionState = updateVariablesInSession(state)([
-      {
-        ...foundVariable,
-        value: Array.isArray(foundVariable.value)
-          ? foundVariable.value.concat(reply)
-          : reply,
-      },
-    ])
+    const { updatedState } = updateVariablesInSession({
+      newVariables: [
+        {
+          ...foundVariable,
+          value: Array.isArray(foundVariable.value)
+            ? foundVariable.value.concat(reply)
+            : reply,
+        },
+      ],
+      currentBlockId: undefined,
+      state,
+    })
 
-    return newSessionState
+    return updatedState
   }
 
 const parseRetryMessage =
@@ -305,31 +322,43 @@ const parseDefaultRetryMessage = (block: InputBlock): string => {
   }
 }
 
-const saveAnswer =
+const saveAnswerInDb =
   (state: SessionState, block: InputBlock) =>
   async (reply: string): Promise<SessionState> => {
+    let newSessionState = state
     const groupId = state.typebotsQueue[0].typebot.groups.find((group) =>
       group.blocks.some((blockInGroup) => blockInGroup.id === block.id)
     )?.id
     if (!groupId) throw new Error('saveAnswer: Group not found')
-    await upsertAnswer({
+    await saveAnswer({
       answer: {
         blockId: block.id,
-        groupId,
         content: reply,
-        variableId: block.options?.variableId,
       },
       reply,
       state,
     })
 
+    newSessionState = {
+      ...saveVariableValueIfAny(newSessionState, block)(reply),
+      previewMetadata: state.typebotsQueue[0].resultId
+        ? newSessionState.previewMetadata
+        : {
+            ...newSessionState.previewMetadata,
+            answers: (newSessionState.previewMetadata?.answers ?? []).concat({
+              blockId: block.id,
+              content: reply,
+            }),
+          },
+    }
+
     const key = block.options?.variableId
-      ? state.typebotsQueue[0].typebot.variables.find(
+      ? newSessionState.typebotsQueue[0].typebot.variables.find(
           (variable) => variable.id === block.options?.variableId
         )?.name
-      : parseGroupKey(block.id, { state })
+      : parseGroupKey(block.id, { state: newSessionState })
 
-    return setNewAnswerInState(state)({
+    return setNewAnswerInState(newSessionState)({
       key: key ?? block.id,
       value: reply,
     })
@@ -375,7 +404,10 @@ const setNewAnswerInState =
 
 const getOutgoingEdgeId =
   (state: Pick<SessionState, 'typebotsQueue'>) =>
-  (block: Block, reply: string | undefined) => {
+  (
+    block: Block,
+    reply: string | undefined
+  ): { edgeId: string | undefined; isOffDefaultPath: boolean } => {
     const variables = state.typebotsQueue[0].typebot.variables
     if (
       block.type === InputBlockType.CHOICE &&
@@ -390,7 +422,8 @@ const getOutgoingEdgeId =
           parseVariables(variables)(item.content).normalize() ===
           reply.normalize()
       )
-      if (matchedItem?.outgoingEdgeId) return matchedItem.outgoingEdgeId
+      if (matchedItem?.outgoingEdgeId)
+        return { edgeId: matchedItem.outgoingEdgeId, isOffDefaultPath: true }
     }
     if (
       block.type === InputBlockType.PICTURE_CHOICE &&
@@ -405,9 +438,10 @@ const getOutgoingEdgeId =
           parseVariables(variables)(item.title).normalize() ===
           reply.normalize()
       )
-      if (matchedItem?.outgoingEdgeId) return matchedItem.outgoingEdgeId
+      if (matchedItem?.outgoingEdgeId)
+        return { edgeId: matchedItem.outgoingEdgeId, isOffDefaultPath: true }
     }
-    return block.outgoingEdgeId
+    return { edgeId: block.outgoingEdgeId, isOffDefaultPath: false }
   }
 
 const parseReply =

@@ -4,6 +4,7 @@ import {
   InputBlock,
   RuntimeOptions,
   SessionState,
+  SetVariableHistoryItem,
 } from '@typebot.io/schemas'
 import { isNotEmpty } from '@typebot.io/lib'
 import {
@@ -21,16 +22,16 @@ import { injectVariableValuesInPictureChoiceBlock } from './blocks/inputs/pictur
 import { getPrefilledInputValue } from './getPrefilledValue'
 import { parseDateInput } from './blocks/inputs/date/parseDateInput'
 import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
-import {
-  BubbleBlockWithDefinedContent,
-  parseBubbleBlock,
-} from './parseBubbleBlock'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { VisitedEdge } from '@typebot.io/prisma'
 import { env } from '@typebot.io/env'
 import { TRPCError } from '@trpc/server'
 import { ExecuteIntegrationResponse, ExecuteLogicResponse } from './types'
 import { createId } from '@paralleldrive/cuid2'
+import {
+  BubbleBlockWithDefinedContent,
+  parseBubbleBlock,
+} from './parseBubbleBlock'
 
 type ContextProps = {
   version: 1 | 2
@@ -39,6 +40,7 @@ type ContextProps = {
   currentLastBubbleId?: string
   firstBubbleWasStreamed?: boolean
   visitedEdges: VisitedEdge[]
+  setVariableHistory: SetVariableHistoryItem[]
   startTime?: number
 }
 
@@ -48,6 +50,7 @@ export const executeGroup = async (
     version,
     state,
     visitedEdges,
+    setVariableHistory,
     currentReply,
     currentLastBubbleId,
     firstBubbleWasStreamed,
@@ -56,6 +59,7 @@ export const executeGroup = async (
 ): Promise<
   ContinueChatResponse & {
     newSessionState: SessionState
+    setVariableHistory: SetVariableHistoryItem[]
     visitedEdges: VisitedEdge[]
   }
 > => {
@@ -70,6 +74,7 @@ export const executeGroup = async (
 
   let newSessionState = state
 
+  let isNextEdgeOffDefaultPath = false
   let index = -1
   for (const block of group.blocks) {
     if (
@@ -110,6 +115,7 @@ export const executeGroup = async (
         clientSideActions,
         logs,
         visitedEdges,
+        setVariableHistory,
       }
     const executionResponse = (
       isLogicBlock(block)
@@ -120,6 +126,29 @@ export const executeGroup = async (
     ) as ExecuteLogicResponse | ExecuteIntegrationResponse | null
 
     if (!executionResponse) continue
+    if (
+      executionResponse.newSetVariableHistory &&
+      executionResponse.newSetVariableHistory?.length > 0
+    ) {
+      if (!newSessionState.typebotsQueue[0].resultId)
+        newSessionState = {
+          ...newSessionState,
+          previewMetadata: {
+            ...newSessionState.previewMetadata,
+            setVariableHistory: (
+              newSessionState.previewMetadata?.setVariableHistory ?? []
+            ).concat(
+              executionResponse.newSetVariableHistory.map((item) => ({
+                blockId: item.blockId,
+                variableId: item.variableId,
+                value: item.value,
+              }))
+            ),
+          },
+        }
+      else setVariableHistory.push(...executionResponse.newSetVariableHistory)
+    }
+
     if (
       'startTimeShouldBeUpdated' in executionResponse &&
       executionResponse.startTimeShouldBeUpdated
@@ -165,33 +194,55 @@ export const executeGroup = async (
           clientSideActions,
           logs,
           visitedEdges,
+          setVariableHistory,
         }
       }
     }
 
     if (executionResponse.outgoingEdgeId) {
+      isNextEdgeOffDefaultPath =
+        block.outgoingEdgeId !== executionResponse.outgoingEdgeId
       nextEdgeId = executionResponse.outgoingEdgeId
       break
     }
   }
 
   if (!nextEdgeId && newSessionState.typebotsQueue.length === 1)
-    return { messages, newSessionState, clientSideActions, logs, visitedEdges }
+    return {
+      messages,
+      newSessionState,
+      clientSideActions,
+      logs,
+      visitedEdges,
+      setVariableHistory,
+    }
 
-  const nextGroup = await getNextGroup(newSessionState)(nextEdgeId ?? undefined)
+  const nextGroup = await getNextGroup({
+    state: newSessionState,
+    edgeId: nextEdgeId ?? undefined,
+    isOffDefaultPath: isNextEdgeOffDefaultPath,
+  })
 
   newSessionState = nextGroup.newSessionState
 
   if (nextGroup.visitedEdge) visitedEdges.push(nextGroup.visitedEdge)
 
   if (!nextGroup.group) {
-    return { messages, newSessionState, clientSideActions, logs, visitedEdges }
+    return {
+      messages,
+      newSessionState,
+      clientSideActions,
+      logs,
+      visitedEdges,
+      setVariableHistory,
+    }
   }
 
   return executeGroup(nextGroup.group, {
     version,
     state: newSessionState,
     visitedEdges,
+    setVariableHistory,
     currentReply: {
       messages,
       clientSideActions,
