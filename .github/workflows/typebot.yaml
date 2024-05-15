@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v
+        uses: actions/checkout@v2
 
       - name: Configure AWS credentials production
         uses: aws-actions/configure-aws-credentials@v1
