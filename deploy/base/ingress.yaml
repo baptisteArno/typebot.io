@@ -7,7 +7,7 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt
 spec:
   rules:
-    - host: typebot.us-east-1.dev.cloudhumans.io
+    - host: eddie.us-east-1.dev.cloudhumans.io
       http:
         paths:
           - backend:
@@ -19,5 +19,5 @@ spec:
             pathType: ImplementationSpecific
   tls:
     - hosts:
-        - typebot.us-east-1.dev.cloudhumans.io
+        - eddie.us-east-1.dev.cloudhumans.io
       secretName: typebot-tls-secret

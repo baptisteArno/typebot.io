@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: typebot
 data:
-  SAMPLE_ENV: test
+  NODE_ENV: development
