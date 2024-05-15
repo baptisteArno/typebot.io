@@ -74,9 +74,9 @@ const evaluateInlineCode = (
   { variables }: { variables: Variable[] }
 ) => {
   const evaluating = parseVariables(variables, { fieldToParse: 'id' })(
-    `(async function() {${
-      code.includes('return ') ? code : 'return ' + code
-    }})()`
+    `(function() {
+      ${code.includes('return ') ? code : 'return ' + code}
+    })()`
   )
   try {
     const sandbox = vm.createContext({
