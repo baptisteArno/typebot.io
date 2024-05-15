@@ -4,7 +4,7 @@ type Props = {
   existingSessionId: string | undefined
   newSessionId: string
 }
-export const setChatSessionHasReplying = async ({
+export const setIsReplyingInChatSession = async ({
   existingSessionId,
   newSessionId,
 }: Props) => {
