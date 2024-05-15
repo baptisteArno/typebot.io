@@ -27,7 +27,12 @@ const MediaInputContent = ({ step }: Props) => {
         <Text pl={'8px'}>Clique para editar...</Text>
       ) : (
         <>
-          <RenderContent url={step.content?.url} name={step.content?.name} size={step.content?.size} containsVariables={containsVariables} />
+          <RenderContent
+            url={step.content?.url}
+            name={step.content?.name}
+            size={step.content?.size}
+            containsVariables={containsVariables}
+          />
         </>
       )}
     </Container>
@@ -35,14 +40,20 @@ const MediaInputContent = ({ step }: Props) => {
 }
 
 export type RenderProps = {
-  url: string;
-  name?: string;
-  size?: number;
+  url: string
+  name?: string
+  size?: number
   fullImage?: boolean
-  containsVariables?: boolean;
+  containsVariables?: boolean
 }
-export const RenderContent = ({ url, containsVariables, name, size, fullImage }: RenderProps) => {
-  const typed = url.split('.').pop();
+export const RenderContent = ({
+  url,
+  containsVariables,
+  name,
+  size,
+  fullImage,
+}: RenderProps) => {
+  const typed = url.split('.').pop()
   const imageTypes = ['jpg', 'png', 'bmp', 'jpeg']
 
   const isImage = typed && imageTypes.includes(typed)
@@ -51,11 +62,10 @@ export const RenderContent = ({ url, containsVariables, name, size, fullImage }:
     if (!size) return
     const sizeInBytes = size * 1000 * 1000
     let sizeInMb = sizeInBytes / 1024 / 1024
-    const sizes = ["mb", "kb", "b"]
+    const sizes = ['mb', 'kb', 'b']
 
     for (let i = 0; i < sizes.length; i++) {
-      if (sizeInMb > 1)
-        return sizeInMb.toFixed(1) + sizes[i]
+      if (sizeInMb > 1) return sizeInMb.toFixed(1) + sizes[i]
       sizeInMb *= 1024
     }
 
@@ -64,41 +74,56 @@ export const RenderContent = ({ url, containsVariables, name, size, fullImage }:
 
   const resolvedSize = resolveSize()
 
-  return (<>
-    {fullImage && <Box w="full">
-      {isImage && <Image
-        src={
-          containsVariables ? '/images/dynamic-image.png' : url
-        }
-        alt="Block image"
-        rounded="md"
-        objectFit="cover"
-      />}
-    </Box>}
+  return (
+    <>
+      {fullImage && (
+        <Box w="full">
+          {isImage && (
+            <Image
+              src={containsVariables ? '/images/dynamic-image.png' : url}
+              alt="Block image"
+              rounded="md"
+              objectFit="cover"
+            />
+          )}
+        </Box>
+      )}
 
-    <HStack>
-      {!fullImage && isImage && <ImageIcon fontSize={40} color='rgba(90, 99, 119, .7)' />}
-      {!isImage &&
-        <UploadFileIcon fontSize={fullImage ? 80 : 40} color='rgba(90, 99, 119, .7)' />
-      }
-
-      <Stack>
-        {!fullImage &&
-          <OctaTooltip
-            element={<NameText name={name} fullImage={false}></NameText>}
-            contentText={name || ''}
-            tooltipPlacement={"auto"}
-            popoverColor="#303243"
-            textColor="#F4F4F5"
+      <HStack>
+        {!fullImage && isImage && (
+          <ImageIcon fontSize={40} color="rgba(90, 99, 119, .7)" />
+        )}
+        {!isImage && (
+          <UploadFileIcon
+            fontSize={fullImage ? 80 : 40}
+            color="rgba(90, 99, 119, .7)"
           />
-        }
-        {fullImage && <NameText name={name} fullImage={fullImage}></NameText>}
-        {(!fullImage || !isImage) &&
-          <Text fontSize={"12px"} fontWeight={"normal"} textTransform={"uppercase"}>{typed} - {resolvedSize}</Text>
-        }
-      </Stack>
-    </HStack>
-  </>)
+        )}
+
+        <Stack>
+          {!fullImage && (
+            <OctaTooltip
+              element={<NameText name={name} fullImage={false}></NameText>}
+              contentText={name || ''}
+              tooltipPlacement={'auto'}
+              popoverColor="#303243"
+              textColor="#F4F4F5"
+            />
+          )}
+          {fullImage && <NameText name={name} fullImage={fullImage}></NameText>}
+          {(!fullImage || !isImage) && (
+            <Text
+              fontSize={'12px'}
+              fontWeight={'normal'}
+              textTransform={'uppercase'}
+            >
+              {typed} - {resolvedSize}
+            </Text>
+          )}
+        </Stack>
+      </HStack>
+    </>
+  )
 }
 
 type NameTextProps = {
@@ -107,7 +132,21 @@ type NameTextProps = {
 }
 
 const NameText = ({ name, fullImage }: NameTextProps) => {
-  return <Text fontSize={"14px"} fontWeight={"600"} textOverflow={"ellipsis"} overflow={"hidden"} width={fullImage ? "auto" : "210px"} whiteSpace={"nowrap"}>{name}</Text>
+  return (
+    <Text
+      fontSize={'14px'}
+      fontWeight={'600'}
+      textOverflow={'ellipsis'}
+      overflow={'hidden'}
+      sx={{
+        display: '-webkit-box',
+        '-webkit-line-clamp': '1',
+        '-webkit-box-orient': 'vertical',
+      }}
+    >
+      {name}
+    </Text>
+  )
 }
 
 export default MediaInputContent
