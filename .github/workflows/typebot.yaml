@@ -1,12 +1,14 @@
 name: Typebot CI
 
-on:
+'on':
   push:
-    branches: [main]
+    branches:
+      - main
 
 env:
   AWS_REGION: us-east-1
-  ECR_REPOSITORY: typebot
+  ECR_BUILDER_REPOSITORY: typebot-builder
+  ECR_VIEWER_REPOSITORY: typebot-viewer
   ECR_REGISTRY: 585814034319.dkr.ecr.us-east-1.amazonaws.com
 
 jobs:
@@ -29,14 +31,21 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build, tag, and push image to Amazon ECR
+      - name: Build, tag, and push BUILDER image to Amazon ECR
         if: ${{ github.ref == 'refs/heads/main' }}
         env:
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg SCOPE=builder .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build -t $ECR_REGISTRY/$ECR_BUILDER_REPOSITORY:$IMAGE_TAG --build-arg SCOPE=builder .
+          docker push $ECR_REGISTRY/$ECR_BUILDER_REPOSITORY:$IMAGE_TAG
 
+      - name: Build, tag, and push VIEWER image to Amazon ECR
+        if: ${{ github.ref == 'refs/heads/main' }}
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_VIEWER_REPOSITORY:$IMAGE_TAG --build-arg SCOPE=viewer .
+          docker push $ECR_REGISTRY/$ECR_VIEWER_REPOSITORY:$IMAGE_TAG
 
       - name: install kubectl and kustomize
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -55,7 +64,8 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           pushd deploy/base
-          $KUSTOMIZE_CMD edit set image typebot-image="$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          $KUSTOMIZE_CMD edit set image typebot-builder-image="$ECR_REGISTRY/$ECR_BUILDER_REPOSITORY:$IMAGE_TAG"
+          $KUSTOMIZE_CMD edit set image typebot-viewer-image="$ECR_REGISTRY/$ECR_VIEWER_REPOSITORY:$IMAGE_TAG"
           popd
           aws eks --region us-east-1 update-kubeconfig --name kubernetes-production
           $KUSTOMIZE_CMD build deploy/overlays/prd

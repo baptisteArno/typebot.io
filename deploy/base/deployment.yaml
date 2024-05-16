@@ -25,11 +25,10 @@ spec:
                 name: typebot
             - secretRef:
                 name: typebot
-          image: typebot-image
+          image: typebot-builder-image
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
-              protocol: TCP
           resources:
             requests:
               cpu: 100m
@@ -37,23 +36,21 @@ spec:
             limits:
               cpu: 400m
               memory: 1536Mi
-          livenessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /api/health
-              port: 3000
-            initialDelaySeconds: 180
-            periodSeconds: 15
-            timeoutSeconds: 3
-          readinessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /api/health
-              port: 3000
-            initialDelaySeconds: 25
-            periodSeconds: 20
-            timeoutSeconds: 3
-            successThreshold: 2
+        - name: typebot-viewer
+          envFrom:
+            - configMapRef:
+                name: typebot
+            - secretRef:
+                name: typebot
+          image: typebot-viewer-image
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 400m
+              memory: 1536Mi
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
