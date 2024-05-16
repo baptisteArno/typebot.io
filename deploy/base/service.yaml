@@ -6,10 +6,14 @@ metadata:
   name: typebot
 spec:
   ports:
-    - name: http
+    - name: http-main
       port: 80
       protocol: TCP
       targetPort: 3000
+    - name: http-viewer
+      port: 81
+      protocol: TCP
+      targetPort: 3001
   selector:
     app: typebot
   sessionAffinity: None

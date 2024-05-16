@@ -10,13 +10,20 @@ spec:
     - host: eddie.us-east-1.dev.cloudhumans.io
       http:
         paths:
-          - backend:
+          - path: /viewer
+            pathType: ImplementationSpecific
+            backend:
               service:
                 name: typebot
                 port:
-                  name: http
-            path: /
+                  number: 81
+          - path: /
             pathType: ImplementationSpecific
+            backend:
+              service:
+                name: typebot
+                port:
+                  number: 80
   tls:
     - hosts:
         - eddie.us-east-1.dev.cloudhumans.io
