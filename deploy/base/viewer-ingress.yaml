@@ -20,4 +20,4 @@ spec:
   tls:
     - hosts:
         - eddieeyes.us-east-1.dev.cloudhumans.io
-      secretName: typebot-tls-secret
+      secretName: typebot-viewer-tls-secret

@@ -20,4 +20,4 @@ spec:
   tls:
     - hosts:
         - eddie.us-east-1.dev.cloudhumans.io
-      secretName: typebot-tls-secret
+      secretName: typebot-builder-tls-secret
