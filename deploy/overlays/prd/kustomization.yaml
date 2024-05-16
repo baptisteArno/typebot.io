@@ -5,14 +5,14 @@ bases:
   - ../../base
 
 commonLabels:
-  enviroment: prd
+  environment: prd
 
 patchesJson6902:
   - target:
       group: networking.k8s.io
       version: v1
       kind: Ingress
-      name: disturbdesk-ingress
+      name: typebot-ingress
     patch: |-
       - op: replace
         path: /spec/rules/0/host
@@ -23,7 +23,7 @@ patchesJson6902:
   - target:
       version: v1
       kind: ConfigMap
-      name: disturbdesk-config
+      name: typebot
     patch: |-
       - op: replace
         path: /data/NODE_ENV

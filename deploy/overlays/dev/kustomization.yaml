@@ -4,4 +4,4 @@ bases:
   - ../../base
 
 commonLabels:
-  enviroment: dev
+  environment: dev
