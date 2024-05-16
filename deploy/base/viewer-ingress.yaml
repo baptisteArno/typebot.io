@@ -16,7 +16,7 @@ spec:
               service:
                 name: typebot
                 port:
-                  name: http-main
+                  name: http-viewer
   tls:
     - hosts:
         - eddieeyes.us-east-1.dev.cloudhumans.io

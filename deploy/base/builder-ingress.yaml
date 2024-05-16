@@ -16,7 +16,7 @@ spec:
               service:
                 name: typebot
                 port:
-                  name: http-main
+                  name: http-builder
   tls:
     - hosts:
         - eddie.us-east-1.dev.cloudhumans.io

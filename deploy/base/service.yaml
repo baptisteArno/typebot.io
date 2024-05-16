@@ -6,7 +6,7 @@ metadata:
   name: typebot
 spec:
   ports:
-    - name: http-main
+    - name: http-builder
       port: 80
       protocol: TCP
       targetPort: 3000
