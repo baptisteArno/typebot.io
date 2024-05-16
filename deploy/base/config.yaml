@@ -5,4 +5,4 @@ metadata:
 data:
   NODE_ENV: development
   NEXTAUTH_URL: http://localhost:3000
-  NEXT_PUBLIC_VIEWER_URL: http://localhost:3001 # em produção é essa tb
+  NEXT_PUBLIC_VIEWER_URL: http://localhost:3001
