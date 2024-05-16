@@ -10,4 +10,5 @@ resources:
   - config.yaml
   - deployment.yaml
   - service.yaml
-  - ingress.yaml
+  - builder-ingress.yaml
+  - viewer-ingress.yaml

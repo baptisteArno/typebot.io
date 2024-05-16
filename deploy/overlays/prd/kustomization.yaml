@@ -12,7 +12,7 @@ patchesJson6902:
       group: networking.k8s.io
       version: v1
       kind: Ingress
-      name: typebot-ingress
+      name: typebot-builder-ingress
     patch: |-
       - op: replace
         path: /spec/rules/0/host
@@ -20,6 +20,18 @@ patchesJson6902:
       - op: replace
         path: /spec/tls/0/hosts/0
         value: eddie.us-east-1.prd.cloudhumans.io
+  - target:
+      group: networking.k8s.io
+      version: v1
+      kind: Ingress
+      name: typebot-viewer-ingress
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: eddieeyes.us-east-1.prd.cloudhumans.io
+      - op: replace
+        path: /spec/tls/0/hosts/0
+        value: eddieeyes.us-east-1.prd.cloudhumans.io        
   - target:
       version: v1
       kind: ConfigMap
@@ -31,3 +43,7 @@ patchesJson6902:
       - op: replace
         path: /data/NEXTAUTH_URL
         value: https://eddie.us-east-1.prd.cloudhumans.io
+      - op: replace
+        path: /data/NEXT_PUBLIC_VIEWER_URL
+        value: https://eddieeyes.us-east-1.prd.cloudhumans.io
+        

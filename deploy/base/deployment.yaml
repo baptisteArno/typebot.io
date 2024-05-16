@@ -44,6 +44,8 @@ spec:
                 name: typebot
           image: typebot-viewer-image
           imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3001
           resources:
             requests:
               cpu: 100m
