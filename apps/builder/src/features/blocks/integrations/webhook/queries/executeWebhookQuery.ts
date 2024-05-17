@@ -7,7 +7,7 @@ export const executeWebhook = (
   { blockId }: { blockId: string }
 ) =>
   sendRequest<HttpResponse>({
-    url: `/api/typebots/${typebotId}/blocks/${blockId}/testWebhook`,
+    url: `/api/eddies/${typebotId}/blocks/${blockId}/testWebhook`,
     method: 'POST',
     body: {
       variables,

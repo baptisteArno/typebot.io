@@ -57,7 +57,7 @@ export const FileUploadForm = ({
       })
     setIsUploading(true)
     const urls = await uploadFiles({
-      basePath: `/api/typebots/${currentTypebotId}/blocks/${id}`,
+      basePath: `/api/eddies/${currentTypebotId}/blocks/${id}`,
       files: [
         {
           file,
@@ -80,7 +80,7 @@ export const FileUploadForm = ({
       })
     setIsUploading(true)
     const urls = await uploadFiles({
-      basePath: `/api/typebots/${currentTypebotId}/blocks/${id}`,
+      basePath: `/api/eddies/${currentTypebotId}/blocks/${id}`,
       files: files.map((file) => ({
         file: file,
         path: `public/results/${resultId}/${id}/${file.name}`,

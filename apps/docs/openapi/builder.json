@@ -13,7 +13,7 @@
     "url": "https://docs.typebot.io/api-reference"
   },
   "paths": {
-    "/v1/typebots/{typebotId}/linkedTypebots": {
+    "/v1/eddies/{typebotId}/linkedTypebots": {
       "get": {
         "operationId": "getLinkedTypebots",
         "summary": "Get linked typebots",
@@ -2564,7 +2564,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/analytics/stats": {
+    "/v1/eddies/{typebotId}/analytics/stats": {
       "get": {
         "operationId": "analytics-getStats",
         "summary": "Get results stats",
@@ -3414,7 +3414,7 @@
         }
       }
     },
-    "/v1/typebots": {
+    "/v1/eddies": {
       "post": {
         "operationId": "typebot-createTypebot",
         "summary": "Create a typebot",
@@ -3779,7 +3779,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}": {
+    "/v1/eddies/{typebotId}": {
       "patch": {
         "operationId": "typebot-updateTypebot",
         "summary": "Update a typebot",
@@ -6641,7 +6641,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/publishedTypebot": {
+    "/v1/eddies/{typebotId}/publishedTypebot": {
       "get": {
         "operationId": "typebot-getPublishedTypebot",
         "summary": "Get published typebot",
@@ -6765,7 +6765,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/publish": {
+    "/v1/eddies/{typebotId}/publish": {
       "post": {
         "operationId": "typebot-publishTypebot",
         "summary": "Publish a typebot",
@@ -6848,7 +6848,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/unpublish": {
+    "/v1/eddies/{typebotId}/unpublish": {
       "post": {
         "operationId": "typebot-unpublishTypebot",
         "summary": "Unpublish a typebot",
@@ -6931,7 +6931,7 @@
         }
       }
     },
-    "/v1/typebots/import": {
+    "/v1/eddies/import": {
       "post": {
         "operationId": "typebot-importTypebot",
         "summary": "Import a typebot",
@@ -9544,7 +9544,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/webhookBlocks": {
+    "/v1/eddies/{typebotId}/webhookBlocks": {
       "get": {
         "operationId": "webhook-listWebhookBlocks",
         "summary": "List webhook blocks",
@@ -9654,7 +9654,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/getResultExample": {
+    "/v1/eddies/{typebotId}/webhookBlocks/{blockId}/getResultExample": {
       "get": {
         "operationId": "webhook-getResultExample",
         "summary": "Get result example",
@@ -9755,7 +9755,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/subscribe": {
+    "/v1/eddies/{typebotId}/webhookBlocks/{blockId}/subscribe": {
       "post": {
         "operationId": "webhook-subscribeWebhook",
         "summary": "Subscribe to webhook block",
@@ -9863,7 +9863,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/unsubscribe": {
+    "/v1/eddies/{typebotId}/webhookBlocks/{blockId}/unsubscribe": {
       "post": {
         "operationId": "webhook-unsubscribeWebhook",
         "summary": "Unsubscribe from webhook block",
@@ -9955,7 +9955,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/results": {
+    "/v1/eddies/{typebotId}/results": {
       "get": {
         "operationId": "results-getResults",
         "summary": "List results ordered by descending creation date",
@@ -10270,7 +10270,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/results/{resultId}": {
+    "/v1/eddies/{typebotId}/results/{resultId}": {
       "get": {
         "operationId": "results-getResult",
         "summary": "Get result by id",
@@ -10456,7 +10456,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/results/{resultId}/logs": {
+    "/v1/eddies/{typebotId}/results/{resultId}/logs": {
       "get": {
         "operationId": "results-getResultLogs",
         "summary": "List result logs",
@@ -12373,7 +12373,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/collaborators": {
+    "/v1/eddies/{typebotId}/collaborators": {
       "get": {
         "operationId": "collaborators-getCollaborators",
         "summary": "Get collaborators",
@@ -12962,7 +12962,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/whatsapp/start-preview": {
+    "/v1/eddies/{typebotId}/whatsapp/start-preview": {
       "post": {
         "operationId": "whatsApp-startWhatsAppPreview",
         "summary": "Start preview",

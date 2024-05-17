@@ -37,7 +37,7 @@ test.describe('Typebot owner', () => {
         }),
       },
     ])
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/eddies/${typebotId}/edit`)
     await page.click('button[aria-label="Open share popover"]')
     await expect(page.locator('text=Free user')).toBeHidden()
     await page.fill(
@@ -102,7 +102,7 @@ test.describe('Guest with read access', () => {
     })
     await createFolder(guestWorkspaceId, 'Guest folder')
     await injectFakeResults({ typebotId, count: 10 })
-    await page.goto(`/typebots`)
+    await page.goto(`/eddies`)
     await page.click('text=Pro workspace')
     await page.click('text=Guest workspace #2')
     await expect(page.locator('text=Guest typebot')).toBeVisible()
@@ -115,7 +115,7 @@ test.describe('Guest with read access', () => {
     await expect(page.locator('text=John Doe')).toBeVisible()
     await page.click('text=Group #1', { force: true })
     await expect(page.locator('input[value="Group #1"]')).toBeHidden()
-    await page.goto(`/typebots/${typebotId}/results`)
+    await page.goto(`/eddies/${typebotId}/results`)
     await expect(page.locator('text="See logs" >> nth=9')).toBeVisible()
   })
 })
@@ -158,7 +158,7 @@ test.describe('Guest with write access', () => {
       },
     })
     await createFolder(guestWorkspaceId, 'Guest folder')
-    await page.goto(`/typebots`)
+    await page.goto(`/eddies`)
     await page.click('text=Pro workspace')
     await page.click('text=Guest workspace #3')
     await expect(page.locator('text=Guest typebot')).toBeVisible()
@@ -198,7 +198,7 @@ test.describe('Guest on public typebot', () => {
         },
       },
     ])
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/eddies/${typebotId}/edit`)
     await expect(page.getByText('Guest typebot')).toBeVisible()
     await expect(page.getByText('Duplicate')).toBeVisible()
     await expect(page.getByText('Group #1')).toBeVisible()

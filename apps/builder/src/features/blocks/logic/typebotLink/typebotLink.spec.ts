@@ -15,7 +15,7 @@ test('should be configurable', async ({ page }) => {
     { id: linkedTypebotId, name: 'My link typebot 2' }
   )
 
-  await page.goto(`/typebots/${typebotId}/edit`)
+  await page.goto(`/eddies/${typebotId}/edit`)
   await page.click('text=Configure...')
   await page.click('input[placeholder="Select a typebot"]')
   await page.click('text=My link typebot 2')
@@ -23,11 +23,11 @@ test('should be configurable', async ({ page }) => {
   await expect(page.getByText('Jump in My link typebot 2')).toBeVisible()
   await page.click('[aria-label="Navigate to typebot"]')
   await expect(page).toHaveURL(
-    `/typebots/${linkedTypebotId}/edit?parentId=${typebotId}`
+    `/eddies/${linkedTypebotId}/edit?parentId=${typebotId}`
   )
   await page.waitForTimeout(500)
   await page.click('[aria-label="Navigate back"]')
-  await expect(page).toHaveURL(`/typebots/${typebotId}/edit`)
+  await expect(page).toHaveURL(`/eddies/${typebotId}/edit`)
   await page.click('text=Jump in My link typebot 2')
   await expect(page.getByTestId('selected-item-label').first()).toHaveText(
     'My link typebot 2'

@@ -35,7 +35,7 @@ test('should send an email', async ({ page }) => {
   await page.goto(`/${typebotId}-public`)
   await page.locator('text=Send email').click()
   await expect(page.getByText('Email sent!')).toBeVisible()
-  await page.goto(`${env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
+  await page.goto(`${env.NEXTAUTH_URL}/eddies/${typebotId}/results`)
   await page.click('text="See logs"')
   await expect(page.locator('text="Email successfully sent"')).toBeVisible()
 })

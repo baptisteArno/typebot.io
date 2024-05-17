@@ -146,10 +146,10 @@ const LeftElements = ({
           icon={<ChevronLeftIcon fontSize={25} />}
           href={{
             pathname: router.query.parentId
-              ? '/typebots/[typebotId]/edit'
+              ? '/eddies/[typebotId]/edit'
               : typebot?.folderId
-              ? '/typebots/folders/[id]'
-              : '/typebots',
+              ? '/eddies/folders/[id]'
+              : '/eddies',
             query: {
               id: typebot?.folderId ?? [],
               parentId: Array.isArray(router.query.parentId)
@@ -296,7 +296,7 @@ const RightElements = ({
       {currentUserMode === 'guest' && (
         <Button
           as={Link}
-          href={`/typebots/${typebot?.id}/duplicate`}
+          href={`/eddies/${typebot?.id}/duplicate`}
           leftIcon={<CopyIcon />}
           isLoading={isNotDefined(typebot)}
           size="sm"
@@ -324,7 +324,7 @@ const TypebotNav = ({
     <HStack {...stackProps}>
       <Button
         as={Link}
-        href={`/typebots/${typebotId}/edit`}
+        href={`/eddies/${typebotId}/edit`}
         colorScheme={router.pathname.includes('/edit') ? 'blue' : 'gray'}
         variant={router.pathname.includes('/edit') ? 'outline' : 'ghost'}
         size="sm"
@@ -333,7 +333,7 @@ const TypebotNav = ({
       </Button>
       <Button
         as={Link}
-        href={`/typebots/${typebotId}/theme`}
+        href={`/eddies/${typebotId}/theme`}
         colorScheme={router.pathname.endsWith('theme') ? 'blue' : 'gray'}
         variant={router.pathname.endsWith('theme') ? 'outline' : 'ghost'}
         size="sm"
@@ -342,7 +342,7 @@ const TypebotNav = ({
       </Button>
       <Button
         as={Link}
-        href={`/typebots/${typebotId}/settings`}
+        href={`/eddies/${typebotId}/settings`}
         colorScheme={router.pathname.endsWith('settings') ? 'blue' : 'gray'}
         variant={router.pathname.endsWith('settings') ? 'outline' : 'ghost'}
         size="sm"
@@ -351,7 +351,7 @@ const TypebotNav = ({
       </Button>
       <Button
         as={Link}
-        href={`/typebots/${typebotId}/share`}
+        href={`/eddies/${typebotId}/share`}
         colorScheme={router.pathname.endsWith('share') ? 'blue' : 'gray'}
         variant={router.pathname.endsWith('share') ? 'outline' : 'ghost'}
         size="sm"
@@ -361,7 +361,7 @@ const TypebotNav = ({
       {isResultsDisplayed && (
         <Button
           as={Link}
-          href={`/typebots/${typebotId}/results`}
+          href={`/eddies/${typebotId}/results`}
           colorScheme={router.pathname.includes('results') ? 'blue' : 'gray'}
           variant={router.pathname.includes('results') ? 'outline' : 'ghost'}
           size="sm"

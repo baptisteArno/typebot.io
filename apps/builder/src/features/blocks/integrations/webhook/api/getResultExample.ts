@@ -12,7 +12,7 @@ export const getResultExample = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/v1/typebots/{typebotId}/webhookBlocks/{blockId}/getResultExample',
+      path: '/v1/eddies/{typebotId}/webhookBlocks/{blockId}/getResultExample',
       protect: true,
       summary: 'Get result example',
       description:

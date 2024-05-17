@@ -11,7 +11,7 @@ test.describe.parallel('Settings page', () => {
       await importTypebotInDatabase(getTestAsset('typebots/settings.json'), {
         id: typebotId,
       })
-      await page.goto(`/typebots/${typebotId}/settings`)
+      await page.goto(`/eddies/${typebotId}/settings`)
 
       await page.click('text="Remember user"')
 
@@ -34,7 +34,7 @@ test.describe.parallel('Settings page', () => {
       await importTypebotInDatabase(getTestAsset('typebots/settings.json'), {
         id: typebotId,
       })
-      await page.goto(`/typebots/${typebotId}/settings`)
+      await page.goto(`/eddies/${typebotId}/settings`)
       await expect(
         page.locator('a:has-text("Made with Typebot")')
       ).toHaveAttribute('href', 'https://www.typebot.io/?utm_source=litebadge')
@@ -55,7 +55,7 @@ test.describe.parallel('Settings page', () => {
       await importTypebotInDatabase(getTestAsset('typebots/settings.json'), {
         id: typebotId,
       })
-      await page.goto(`/typebots/${typebotId}/settings`)
+      await page.goto(`/eddies/${typebotId}/settings`)
       await expect(
         page.locator(
           `input[placeholder="${defaultTextInputOptions.labels.placeholder}"]`

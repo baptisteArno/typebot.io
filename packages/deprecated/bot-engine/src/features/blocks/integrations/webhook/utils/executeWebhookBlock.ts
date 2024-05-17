@@ -27,7 +27,7 @@ export const executeWebhook = async (
 ) => {
   const params = stringify({ resultId })
   const { data, error } = await sendRequest({
-    url: `${apiHost}/api/typebots/${typebotId}/blocks/${blockId}/executeWebhook?${params}`,
+    url: `${apiHost}/api/eddies/${typebotId}/blocks/${blockId}/executeWebhook?${params}`,
     method: 'POST',
     body: {
       variables,

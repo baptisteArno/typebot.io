@@ -30,7 +30,7 @@ test.describe.parallel('Picture choice input block', () => {
       },
     ])
 
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/eddies/${typebotId}/edit`)
     await page.getByTestId('item-node').click()
     await page.getByRole('button', { name: 'Pick an image' }).click()
     await page.getByPlaceholder('Paste the image link...').fill(firstImageSrc)

@@ -22,7 +22,7 @@ test.describe.parallel('Image bubble block', () => {
         },
       ])
 
-      await page.goto(`/typebots/${typebotId}/edit`)
+      await page.goto(`/eddies/${typebotId}/edit`)
 
       await page.click('text=Click to edit...')
       await page.getByRole('button', { name: 'Upload' }).click()
@@ -30,7 +30,7 @@ test.describe.parallel('Image bubble block', () => {
       await expect(page.locator('img')).toHaveAttribute(
         'src',
         new RegExp(
-          `/public/workspaces/${proWorkspaceId}/typebots/${typebotId}/blocks/block2`,
+          `/public/workspaces/${proWorkspaceId}/eddies/${typebotId}/blocks/block2`,
           'gm'
         )
       )
@@ -47,7 +47,7 @@ test.describe.parallel('Image bubble block', () => {
         },
       ])
 
-      await page.goto(`/typebots/${typebotId}/edit`)
+      await page.goto(`/eddies/${typebotId}/edit`)
 
       await page.click('text=Click to edit...')
       await page.fill(
@@ -68,7 +68,7 @@ test.describe.parallel('Image bubble block', () => {
         },
       ])
 
-      await page.goto(`/typebots/${typebotId}/edit`)
+      await page.goto(`/eddies/${typebotId}/edit`)
 
       await page.click('text=Click to edit...')
       await page.click('text=Giphy')
@@ -115,7 +115,7 @@ test.describe.parallel('Image bubble block', () => {
         },
       ])
 
-      await page.goto(`/typebots/${typebotId}/edit`)
+      await page.goto(`/eddies/${typebotId}/edit`)
       await page.click('text=Test')
       await expect(page.locator('img')).toHaveAttribute('src', unsplashImageSrc)
     })

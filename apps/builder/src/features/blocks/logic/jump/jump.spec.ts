@@ -9,7 +9,7 @@ test('should work as expected', async ({ page }) => {
     id: typebotId,
   })
 
-  await page.goto(`/typebots/${typebotId}/edit`)
+  await page.goto(`/eddies/${typebotId}/edit`)
   await page.getByText('Configure...').click()
   await page.getByPlaceholder('Select a group').click()
   await expect(page.getByRole('menuitem', { name: 'Group #2' })).toBeHidden()

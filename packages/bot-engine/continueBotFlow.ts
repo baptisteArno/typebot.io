@@ -465,7 +465,7 @@ const parseReply =
           status: 'success',
           reply:
             env.NEXTAUTH_URL +
-            `/api/typebots/${state.typebotsQueue[0].typebot.id}/whatsapp/media/${reply.mediaId}`,
+            `/api/eddies/${state.typebotsQueue[0].typebot.id}/whatsapp/media/${reply.mediaId}`,
         }
       }
       const { file, mimeType } = await downloadMedia({
@@ -474,7 +474,7 @@ const parseReply =
       })
       const url = await uploadFileToBucket({
         file,
-        key: `public/workspaces/${reply.workspaceId}/typebots/${state.typebotsQueue[0].typebot.id}/results/${state.typebotsQueue[0].resultId}/${reply.mediaId}`,
+        key: `public/workspaces/${reply.workspaceId}/eddies/${state.typebotsQueue[0].typebot.id}/results/${state.typebotsQueue[0].resultId}/${reply.mediaId}`,
         mimeType,
       })
       return {

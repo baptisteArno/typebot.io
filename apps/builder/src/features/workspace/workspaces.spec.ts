@@ -38,7 +38,7 @@ test.beforeAll(async () => {
 })
 
 test('can switch between workspaces and access typebot', async ({ page }) => {
-  await page.goto('/typebots')
+  await page.goto('/eddies')
   await expect(page.locator('text="Pro typebot"')).toBeVisible({
     timeout: 20000,
   })
@@ -50,7 +50,7 @@ test('can switch between workspaces and access typebot', async ({ page }) => {
 })
 
 test('can create and delete a new workspace', async ({ page }) => {
-  await page.goto('/typebots')
+  await page.goto('/eddies')
   await page.click('text=Pro workspace')
   await expect(page.locator('text="Pro workspace" >> nth=1')).toBeHidden()
   await page.click('text=New workspace')
@@ -70,7 +70,7 @@ test('can create and delete a new workspace', async ({ page }) => {
 })
 
 test('can update workspace info', async ({ page }) => {
-  await page.goto('/typebots')
+  await page.goto('/eddies')
   await page.click('text=Settings & Members')
   await page.click('text="Settings"')
   await page.click('[data-testid="editable-icon"]')
@@ -86,7 +86,7 @@ test('can update workspace info', async ({ page }) => {
 })
 
 test('can manage members', async ({ page }) => {
-  await page.goto('/typebots')
+  await page.goto('/eddies')
   await page.click('text=Settings & Members')
   await page.click('text="Members"')
   await expect(
@@ -141,7 +141,7 @@ test('can manage members', async ({ page }) => {
   await expect(page.locator('text="guest@email.com"')).toBeHidden()
 
   await mockSessionResponsesToOtherUser(page)
-  await page.goto('/typebots')
+  await page.goto('/eddies')
   await page.click('text=Settings & Members')
   await expect(page.locator('text="Settings"')).toBeHidden()
   await page.click('text="Members"')
@@ -154,7 +154,7 @@ test('can manage members', async ({ page }) => {
 })
 
 test("can't add new members when limit is reached", async ({ page }) => {
-  await page.goto('/typebots')
+  await page.goto('/eddies')
   await page.click('text="My awesome workspace"')
   await page.click('text="Free workspace"')
   await page.click('text=Settings & Members')

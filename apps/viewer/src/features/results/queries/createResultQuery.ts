@@ -3,7 +3,7 @@ import { sendRequest } from '@typebot.io/lib'
 
 export const createResultQuery = async (typebotId: string) => {
   return sendRequest<{ result: Result; hasReachedLimit: boolean }>({
-    url: `/api/typebots/${typebotId}/results`,
+    url: `/api/eddies/${typebotId}/results`,
     method: 'POST',
   })
 }
