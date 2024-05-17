@@ -8,7 +8,7 @@ const typebotId = createId()
 test.describe('Redirect block', () => {
   test('its configuration should work', async ({ page, context }) => {
     await importTypebotInDatabase(
-      getTestAsset('eddies/logic/redirect.json'),
+      getTestAsset('typebots/logic/redirect.json'),
       {
         id: typebotId,
       }

@@ -8,7 +8,7 @@ const typebotId = createId()
 test.describe('Condition block', () => {
   test('its configuration should work', async ({ page }) => {
     await importTypebotInDatabase(
-      getTestAsset('eddies/logic/condition.json'),
+      getTestAsset('typebots/logic/condition.json'),
       {
         id: typebotId,
       }

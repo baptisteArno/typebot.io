@@ -10,18 +10,18 @@ const linkedTypebotId = 'cl0ibhv8d0130n21aw8doxhj5'
 test.beforeAll(async () => {
   try {
     await importTypebotInDatabase(
-      getTestAsset('eddies/linkTypebots/1.json'),
+      getTestAsset('typebots/linkTypebots/1.json'),
       { id: typebotId, publicId: `${typebotId}-public` }
     )
     await importTypebotInDatabase(
-      getTestAsset('eddies/linkTypebots/1-merge-disabled.json'),
+      getTestAsset('typebots/linkTypebots/1-merge-disabled.json'),
       {
         id: typebotWithMergeDisabledId,
         publicId: `${typebotWithMergeDisabledId}-public`,
       }
     )
     await importTypebotInDatabase(
-      getTestAsset('eddies/linkTypebots/2.json'),
+      getTestAsset('typebots/linkTypebots/2.json'),
       { id: linkedTypebotId, publicId: `${linkedTypebotId}-public` }
     )
   } catch (err) {

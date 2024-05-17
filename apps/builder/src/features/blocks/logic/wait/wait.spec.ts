@@ -7,7 +7,7 @@ const typebotId = createId()
 
 test.describe('Wait block', () => {
   test('wait should trigger', async ({ page }) => {
-    await importTypebotInDatabase(getTestAsset('eddies/logic/wait.json'), {
+    await importTypebotInDatabase(getTestAsset('typebots/logic/wait.json'), {
       id: typebotId,
     })
 

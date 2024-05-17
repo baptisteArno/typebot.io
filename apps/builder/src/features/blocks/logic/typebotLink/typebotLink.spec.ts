@@ -7,11 +7,11 @@ test('should be configurable', async ({ page }) => {
   const typebotId = createId()
   const linkedTypebotId = createId()
   await importTypebotInDatabase(
-    getTestAsset('eddies/logic/linkTypebots/1.json'),
+    getTestAsset('typebots/logic/linkTypebots/1.json'),
     { id: typebotId, name: 'My link typebot 1' }
   )
   await importTypebotInDatabase(
-    getTestAsset('eddies/logic/linkTypebots/2.json'),
+    getTestAsset('typebots/logic/linkTypebots/2.json'),
     { id: linkedTypebotId, name: 'My link typebot 2' }
   )
 

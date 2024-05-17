@@ -5,7 +5,7 @@ import { getTestAsset } from '@/test/utils/playwright'
 
 test('should work as expected', async ({ page }) => {
   const typebotId = createId()
-  await importTypebotInDatabase(getTestAsset('eddies/logic/jump.json'), {
+  await importTypebotInDatabase(getTestAsset('typebots/logic/jump.json'), {
     id: typebotId,
   })
 

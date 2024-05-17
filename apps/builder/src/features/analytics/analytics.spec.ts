@@ -10,7 +10,7 @@ import { starterWorkspaceId } from '@typebot.io/playwright/databaseSetup'
 test('analytics are not available for non-pro workspaces', async ({ page }) => {
   const typebotId = createId()
   await importTypebotInDatabase(
-    getTestAsset('eddies/results/submissionHeader.json'),
+    getTestAsset('typebots/results/submissionHeader.json'),
     {
       id: typebotId,
       workspaceId: starterWorkspaceId,

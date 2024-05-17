@@ -7,7 +7,7 @@ const typebotId = createId()
 
 test.describe('AB Test block', () => {
   test('its configuration should work', async ({ page }) => {
-    await importTypebotInDatabase(getTestAsset('eddies/logic/abTest.json'), {
+    await importTypebotInDatabase(getTestAsset('typebots/logic/abTest.json'), {
       id: typebotId,
     })
 

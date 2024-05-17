@@ -70,7 +70,7 @@ test.describe.parallel('Buttons input block', () => {
 test('Variable buttons should work', async ({ page }) => {
   const typebotId = createId()
   await importTypebotInDatabase(
-    getTestAsset('eddies/inputs/variableButton.json'),
+    getTestAsset('typebots/inputs/variableButton.json'),
     {
       id: typebotId,
     }

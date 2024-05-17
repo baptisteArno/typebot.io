@@ -13,7 +13,7 @@ const typebotId = createId()
 
 test.beforeEach(async () => {
   await importTypebotInDatabase(
-    getTestAsset('eddies/results/submissionHeader.json'),
+    getTestAsset('typebots/results/submissionHeader.json'),
     {
       id: typebotId,
     }

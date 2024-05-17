@@ -19,7 +19,7 @@ test.describe.parallel('Theme page', () => {
   test.describe('General', () => {
     test('should reflect change in real-time', async ({ page }) => {
       const typebotId = createId()
-      await importTypebotInDatabase(getTestAsset('eddies/theme.json'), {
+      await importTypebotInDatabase(getTestAsset('typebots/theme.json'), {
         id: typebotId,
       })
       await page.goto(`/typebots/${typebotId}/theme`)
@@ -77,7 +77,7 @@ test.describe.parallel('Theme page', () => {
     test('should reflect change in real-time', async ({ page }) => {
       const typebotId = 'chat-theme-typebot'
       try {
-        await importTypebotInDatabase(getTestAsset('eddies/theme.json'), {
+        await importTypebotInDatabase(getTestAsset('typebots/theme.json'), {
           id: typebotId,
         })
       } catch {
@@ -220,7 +220,7 @@ test.describe.parallel('Theme page', () => {
   test.describe('Custom CSS', () => {
     test('should reflect change in real-time', async ({ page }) => {
       const typebotId = createId()
-      await importTypebotInDatabase(getTestAsset('eddies/theme.json'), {
+      await importTypebotInDatabase(getTestAsset('typebots/theme.json'), {
         id: typebotId,
       })
       await page.goto(`/typebots/${typebotId}/theme`)
@@ -240,7 +240,7 @@ test.describe.parallel('Theme page', () => {
   test.describe('Theme templates', () => {
     test('should reflect change in real-time', async ({ page }) => {
       const typebotId = createId()
-      await importTypebotInDatabase(getTestAsset('eddies/theme.json'), {
+      await importTypebotInDatabase(getTestAsset('typebots/theme.json'), {
         id: typebotId,
       })
       await page.goto(`/typebots/${typebotId}/theme`)
@@ -278,7 +278,7 @@ test.describe.parallel('Theme page', () => {
 test.describe('Free workspace', () => {
   test("can't remove branding", async ({ page }) => {
     const typebotId = createId()
-    await importTypebotInDatabase(getTestAsset('eddies/settings.json'), {
+    await importTypebotInDatabase(getTestAsset('typebots/settings.json'), {
       id: typebotId,
       workspaceId: freeWorkspaceId,
     })

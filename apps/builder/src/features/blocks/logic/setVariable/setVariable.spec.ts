@@ -9,7 +9,7 @@ test.describe('Set variable block', () => {
   test('its configuration should work', async ({ page }) => {
     const typebotId = createId()
     await importTypebotInDatabase(
-      getTestAsset('eddies/logic/setVariable.json'),
+      getTestAsset('typebots/logic/setVariable.json'),
       {
         id: typebotId,
       }
