@@ -71,7 +71,7 @@ const inspectTypebot = async () => {
     return
   }
 
-  console.log(`https://app.typebot.io/eddies/${typebot.id}/edit`)
+  console.log(`https://app.typebot.io/typebots/${typebot.id}/edit`)
 
   console.log(JSON.stringify(typebot, null, 2))
 }

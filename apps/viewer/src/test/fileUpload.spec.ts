@@ -24,7 +24,7 @@ test('should work as expected', async ({ page, browser }) => {
   await expect(page.locator(`text="3"`)).toBeVisible()
   await page.locator('text="Upload 3 files"').click()
   await expect(page.locator(`text="3 files uploaded"`)).toBeVisible()
-  await page.goto(`${env.NEXTAUTH_URL}/eddies/${typebotId}/results`)
+  await page.goto(`${env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
   await expect(page.getByRole('link', { name: 'api.json' })).toHaveAttribute(
     'href',
     /.+\/api\.json/

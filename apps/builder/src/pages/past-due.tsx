@@ -12,7 +12,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!workspace || workspace.isPastDue) return
-    replace('/eddies')
+    replace('/typebots')
   }, [replace, workspace])
 
   return (

@@ -19,7 +19,7 @@ test('options should work', async ({ page }) => {
     },
   ])
 
-  await page.goto(`/eddies/${typebotId}/edit`)
+  await page.goto(`/typebots/${typebotId}/edit`)
 
   await page.click('text=Test')
   await expect(page.locator(`text=Click to upload`)).toBeVisible()
@@ -64,7 +64,7 @@ test.describe('Free workspace', () => {
         workspaceId: freeWorkspaceId,
       },
     ])
-    await page.goto(`/eddies/${typebotId}/edit`)
+    await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text="Collect file"')
     await page.click('text="Allow multiple files?"')
     await page.click('text="Publish"')

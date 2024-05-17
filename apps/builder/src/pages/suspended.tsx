@@ -11,7 +11,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!workspace || workspace.isSuspended) return
-    replace('/eddies')
+    replace('/typebots')
   }, [replace, workspace])
 
   return (

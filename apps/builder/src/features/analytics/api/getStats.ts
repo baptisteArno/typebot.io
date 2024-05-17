@@ -14,7 +14,7 @@ export const getStats = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/v1/eddies/{typebotId}/analytics/stats',
+      path: '/v1/typebots/{typebotId}/analytics/stats',
       protect: true,
       summary: 'Get results stats',
       tags: ['Analytics'],

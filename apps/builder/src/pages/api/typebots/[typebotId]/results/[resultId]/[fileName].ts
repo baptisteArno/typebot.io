@@ -53,7 +53,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!typebot) return notFound(res, 'Typebot not found')
 
     const tmpUrl = await getFileTempUrl({
-      key: `private/workspaces/${typebot.workspace.id}/eddies/${typebotId}/results/${resultId}/${fileName}`,
+      key: `private/workspaces/${typebot.workspace.id}/typebots/${typebotId}/results/${resultId}/${fileName}`,
     })
 
     if (!tmpUrl) return notFound(res, 'File not found')

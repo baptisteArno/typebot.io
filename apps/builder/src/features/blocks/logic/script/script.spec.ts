@@ -11,7 +11,7 @@ test.describe('Script block', () => {
       id: typebotId,
     })
 
-    await page.goto(`/eddies/${typebotId}/edit`)
+    await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure...')
     await page.fill(
       'div[role="textbox"]',

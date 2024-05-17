@@ -19,7 +19,7 @@ test.describe('Builder', () => {
       }
     )
     await createWebhook(typebotId, { method: HttpMethod.POST })
-    await page.goto(`/eddies/${typebotId}/edit`)
+    await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure...')
     await page.fill(
       'input[placeholder="Paste URL..."]',
@@ -42,7 +42,7 @@ test.describe('Builder', () => {
     )
     await createWebhook(typebotId)
 
-    await page.goto(`/eddies/${typebotId}/edit`)
+    await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure...')
     await page.fill(
       'input[placeholder="Paste URL..."]',
@@ -118,7 +118,7 @@ test.describe('API', () => {
 
   test('can get webhook blocks', async ({ request }) => {
     const response = await request.get(
-      `/api/v1/eddies/${typebotId}/webhookBlocks`,
+      `/api/v1/typebots/${typebotId}/webhookBlocks`,
       {
         headers: { Authorization: `Bearer ${apiToken}` },
       }
@@ -135,7 +135,7 @@ test.describe('API', () => {
   test('can subscribe webhook', async ({ request }) => {
     const url = 'https://test.com'
     const response = await request.post(
-      `/api/v1/eddies/${typebotId}/webhookBlocks/webhookBlock/subscribe`,
+      `/api/v1/typebots/${typebotId}/webhookBlocks/webhookBlock/subscribe`,
       {
         headers: {
           Authorization: `Bearer ${apiToken}`,
@@ -152,7 +152,7 @@ test.describe('API', () => {
 
   test('can unsubscribe webhook', async ({ request }) => {
     const response = await request.post(
-      `/api/v1/eddies/${typebotId}/webhookBlocks/webhookBlock/unsubscribe`,
+      `/api/v1/typebots/${typebotId}/webhookBlocks/webhookBlock/unsubscribe`,
       {
         headers: { Authorization: `Bearer ${apiToken}` },
       }
@@ -166,7 +166,7 @@ test.describe('API', () => {
 
   test('can get a sample result', async ({ request }) => {
     const response = await request.get(
-      `/api/v1/eddies/${typebotId}/webhookBlocks/webhookBlock/getResultExample`,
+      `/api/v1/typebots/${typebotId}/webhookBlocks/webhookBlock/getResultExample`,
       {
         headers: { Authorization: `Bearer ${apiToken}` },
       }

@@ -6,7 +6,7 @@ Some API endpoints are protected, and therefore require that you authenticate us
 
 ## Generate a token
 
-1. Navigate to your typebot dashboard (https://app.typebot.io/eddies)
+1. Navigate to your typebot dashboard (https://app.typebot.io/typebots)
 2. Click on Settings & Members > My account
 3. Under the "API tokens" section, click on "Create"
 4. Give it a name, then click on "Create token"
@@ -27,7 +27,7 @@ You can authenticate by adding an `Authorization` header to all your HTTP calls.
 Example:
 
 ```sh
-curl -L -X GET 'https://app.typebot.io/api/eddies/:typebotId/results' \
+curl -L -X GET 'https://app.typebot.io/api/typebots/:typebotId/results' \
 -H 'Accept: application/json' \
 -H 'Authorization: Bearer myAwesomeToken'
 ```

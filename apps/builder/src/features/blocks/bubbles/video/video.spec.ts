@@ -23,7 +23,7 @@ test.describe.parallel('Video bubble block', () => {
         },
       ])
 
-      await page.goto(`/eddies/${typebotId}/edit`)
+      await page.goto(`/typebots/${typebotId}/edit`)
 
       await page.click('text=Click to edit...')
       await page.fill('input[placeholder="Paste the video link..."]', videoSrc)
@@ -50,7 +50,7 @@ test.describe.parallel('Video bubble block', () => {
         },
       ])
 
-      await page.goto(`/eddies/${typebotId}/edit`)
+      await page.goto(`/typebots/${typebotId}/edit`)
       await page.click('text=Test')
       await expect(page.locator('video').nth(1)).toHaveAttribute(
         'src',
@@ -74,7 +74,7 @@ test.describe.parallel('Video bubble block', () => {
         },
       ])
 
-      await page.goto(`/eddies/${typebotId}/edit`)
+      await page.goto(`/typebots/${typebotId}/edit`)
       await page.click('text=Test')
       await expect(page.locator('iframe').nth(1)).toHaveAttribute(
         'src',
@@ -98,7 +98,7 @@ test.describe.parallel('Video bubble block', () => {
         },
       ])
 
-      await page.goto(`/eddies/${typebotId}/edit`)
+      await page.goto(`/typebots/${typebotId}/edit`)
       await page.click('text=Test')
       await expect(page.locator('iframe').nth(1)).toHaveAttribute(
         'src',

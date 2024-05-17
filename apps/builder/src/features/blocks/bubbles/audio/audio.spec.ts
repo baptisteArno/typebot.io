@@ -20,7 +20,7 @@ test('should work as expected', async ({ page }) => {
     },
   ])
 
-  await page.goto(`/eddies/${typebotId}/edit`)
+  await page.goto(`/typebots/${typebotId}/edit`)
   await page.getByText('Click to edit...').click()
   await page
     .getByPlaceholder('Paste the audio file link...')
@@ -31,7 +31,7 @@ test('should work as expected', async ({ page }) => {
   await expect(page.locator('audio')).toHaveAttribute(
     'src',
     RegExp(
-      `/public/workspaces/${proWorkspaceId}/eddies/${typebotId}/blocks`,
+      `/public/workspaces/${proWorkspaceId}/typebots/${typebotId}/blocks`,
       'gm'
     )
   )
@@ -39,7 +39,7 @@ test('should work as expected', async ({ page }) => {
   await expect(page.locator('audio')).toHaveAttribute(
     'src',
     RegExp(
-      `/public/workspaces/${proWorkspaceId}/eddies/${typebotId}/blocks`,
+      `/public/workspaces/${proWorkspaceId}/typebots/${typebotId}/blocks`,
       'gm'
     )
   )

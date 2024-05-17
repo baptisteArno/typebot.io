@@ -57,7 +57,7 @@ export const GuestTypebotHeader = () => {
       >
         <Button
           as={Link}
-          href={`/eddies/${typebot?.id}/edit`}
+          href={`/typebots/${typebot?.id}/edit`}
           colorScheme={router.pathname.includes('/edit') ? 'blue' : 'gray'}
           variant={router.pathname.includes('/edit') ? 'outline' : 'ghost'}
           size="sm"
@@ -66,7 +66,7 @@ export const GuestTypebotHeader = () => {
         </Button>
         <Button
           as={Link}
-          href={`/eddies/${typebot?.id}/theme`}
+          href={`/typebots/${typebot?.id}/theme`}
           colorScheme={router.pathname.endsWith('theme') ? 'blue' : 'gray'}
           variant={router.pathname.endsWith('theme') ? 'outline' : 'ghost'}
           size="sm"
@@ -75,7 +75,7 @@ export const GuestTypebotHeader = () => {
         </Button>
         <Button
           as={Link}
-          href={`/eddies/${typebot?.id}/settings`}
+          href={`/typebots/${typebot?.id}/settings`}
           colorScheme={router.pathname.endsWith('settings') ? 'blue' : 'gray'}
           variant={router.pathname.endsWith('settings') ? 'outline' : 'ghost'}
           size="sm"
@@ -122,10 +122,10 @@ export const GuestTypebotHeader = () => {
                   ? {
                       pathname: `/register`,
                       query: {
-                        redirectPath: `/eddies/${typebot.id}/duplicate`,
+                        redirectPath: `/typebots/${typebot.id}/duplicate`,
                       },
                     }
-                  : `/eddies/${typebot.id}/duplicate`
+                  : `/typebots/${typebot.id}/duplicate`
               }
               leftIcon={<CopyIcon />}
               isLoading={isNotDefined(typebot)}

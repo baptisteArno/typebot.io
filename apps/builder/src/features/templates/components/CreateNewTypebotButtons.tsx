@@ -41,7 +41,7 @@ export const CreateNewTypebotButtons = () => {
     },
     onSuccess: (data) => {
       router.push({
-        pathname: `/eddies/${data.typebot.id}/edit`,
+        pathname: `/typebots/${data.typebot.id}/edit`,
         query:
           router.query.isFirstBot === 'true'
             ? {
@@ -67,7 +67,7 @@ export const CreateNewTypebotButtons = () => {
     },
     onSuccess: (data) => {
       router.push({
-        pathname: `/eddies/${data.typebot.id}/edit`,
+        pathname: `/typebots/${data.typebot.id}/edit`,
         query:
           router.query.isFirstBot === 'true'
             ? {

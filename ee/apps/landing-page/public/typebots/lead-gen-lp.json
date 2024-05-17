@@ -323,7 +323,7 @@
       "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" },
       "hostAvatar": {
         "isEnabled": true,
-        "url": "https://s3.eu-west-3.amazonaws.com/typebot/public/eddies/cl0s4zy9m247009l1ybkoojxe/me-square.png"
+        "url": "https://s3.eu-west-3.amazonaws.com/typebot/public/typebots/cl0s4zy9m247009l1ybkoojxe/me-square.png"
       }
     },
     "general": {
