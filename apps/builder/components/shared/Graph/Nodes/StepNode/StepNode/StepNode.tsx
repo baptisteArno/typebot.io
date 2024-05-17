@@ -383,6 +383,7 @@ export const StepNode = ({
               </Flex>
             </PopoverTrigger>
             <SettingsModal
+              id="settings-modal"
               isOpen={isModalOpen}
               onClose={handleModalClose}
               stepType={step.type}

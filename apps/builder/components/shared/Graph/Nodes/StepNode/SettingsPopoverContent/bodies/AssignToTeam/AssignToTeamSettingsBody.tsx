@@ -1,4 +1,12 @@
-import { Flex, FormLabel, Spacer, Stack, Text } from '@chakra-ui/react'
+import {
+  Collapse,
+  Flex,
+  FormLabel,
+  Spacer,
+  Stack,
+  Text,
+  useModalContext,
+} from '@chakra-ui/react'
 import { SwitchWithLabel } from 'components/shared/SwitchWithLabel'
 import { AssignToTeamOptions, TextBubbleContent } from 'models'
 import React, { useEffect, useState } from 'react'
@@ -14,14 +22,17 @@ type AssignToTeamSettingsBodyProps = {
 
 const MAX_LENGHT_TEXT = 500
 
-export const AssignToTeamSettingsBody = ({
-  options,
-  onOptionsChange,
-}: AssignToTeamSettingsBodyProps) => {
-  const { verifyFeatureToggle } = useUser()
+export const AssignToTeamSettingsBody = (
+  props: AssignToTeamSettingsBodyProps
+) => {
+  const { dialogRef } = useModalContext()
+  const settingsModal = dialogRef?.current?.querySelector('#settings-modal')
 
+  const { verifyFeatureToggle } = useUser()
+  const { options, onOptionsChange } = props
   const [hasResponsibleContact, setHasResponsibleContact] =
     useState<boolean>(false)
+
   useEffect(() => {
     const responsibleContactEnabled = verifyFeatureToggle(
       'responsible-contact-enabled'
@@ -82,8 +93,15 @@ export const AssignToTeamSettingsBody = ({
       ...updatedOptions,
     })
   }
-  const handleCheckAvailabilityChange = (isAvailable: boolean) =>
+  const handleCheckAvailabilityChange = (isAvailable: boolean) => {
     onOptionsChange({ ...options, isAvailable })
+
+    setTimeout(() => {
+      if (settingsModal?.scrollTop !== undefined) {
+        settingsModal.scrollTop = settingsModal.scrollHeight
+      }
+    }, 500)
+  }
 
   return (
     <Stack spacing={4}>
@@ -162,7 +180,7 @@ export const AssignToTeamSettingsBody = ({
         initialValue={options?.isAvailable ?? false}
         onCheckChange={handleCheckAvailabilityChange}
       />
-      {options.isAvailable && (
+      <Collapse in={options?.isAvailable}>
         <Stack>
           <Flex>
             <FormLabel mb="0" htmlFor="placeholder">
@@ -190,7 +208,36 @@ export const AssignToTeamSettingsBody = ({
             árvore.
           </Text>
         </Stack>
-      )}
+      </Collapse>
+      {/* {options.isAvailable && (
+        <Stack>
+          <Flex>
+            <FormLabel mb="0" htmlFor="placeholder">
+              Mensagem de indisponibilidade
+            </FormLabel>
+            <Spacer />
+            <FormLabel mb="0" htmlFor="button">
+              {options.messages.noAgentAvailable?.content?.plainText.length ??
+                0}
+              /{MAX_LENGHT_TEXT}
+            </FormLabel>
+          </Flex>
+          <TextBubbleEditor
+            maxLength={MAX_LENGHT_TEXT}
+            onClose={handleCloseEditorUnavailability}
+            initialValue={
+              options.messages.noAgentAvailable?.content
+                ? options.messages.noAgentAvailable.content.richText
+                : []
+            }
+            onKeyUp={handleCloseEditorUnavailability}
+          />
+          <Text color="gray.400" fontSize="sm">
+            Não se esqueça de dizer qual componente seguirá esse caminho na
+            árvore.
+          </Text>
+        </Stack>
+      )} */}
     </Stack>
   )
 }
