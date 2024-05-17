@@ -68,7 +68,7 @@ const TypebotButton = ({
       showToast({ description: error.message })
     },
     onSuccess: ({ typebot }) => {
-      router.push(`/eddies/${typebot.id}/edit`)
+      router.push(`/typebots/${typebot.id}/edit`)
     },
   })
 
@@ -95,8 +95,8 @@ const TypebotButton = ({
     if (draggedTypebotDebounced) return
     router.push(
       isMobile
-        ? `/eddies/${typebot.id}/results`
-        : `/eddies/${typebot.id}/edit`
+        ? `/typebots/${typebot.id}/results`
+        : `/typebots/${typebot.id}/edit`
     )
   }
 

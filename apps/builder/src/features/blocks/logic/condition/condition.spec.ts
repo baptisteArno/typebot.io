@@ -14,7 +14,7 @@ test.describe('Condition block', () => {
       }
     )
 
-    await page.goto(`/eddies/${typebotId}/edit`)
+    await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure... >> nth=0', { force: true })
     await page.fill(
       'input[placeholder="Search for a variable"] >> nth=-1',

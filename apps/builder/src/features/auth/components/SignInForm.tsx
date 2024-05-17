@@ -58,7 +58,7 @@ export const SignInForm = ({
   useEffect(() => {
     if (status === 'authenticated') {
       const redirectPath = router.query.redirectPath?.toString()
-      router.replace(redirectPath ? sanitizeUrl(redirectPath) : '/eddies')
+      router.replace(redirectPath ? sanitizeUrl(redirectPath) : '/typebots')
       return
     }
     ;(async () => {

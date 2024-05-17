@@ -16,7 +16,7 @@ export const RealTimeResults = () => {
 
   const fetchTemplate = async () => {
     const { data, error } = await sendRequest(
-      `/eddies/realtime-airtable.json`
+      `/typebots/realtime-airtable.json`
     )
     if (error) return
     const typebot = data as Typebot

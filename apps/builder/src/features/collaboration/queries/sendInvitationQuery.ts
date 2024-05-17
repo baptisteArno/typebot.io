@@ -7,6 +7,6 @@ export const sendInvitationQuery = (
 ) =>
   sendRequest({
     method: 'POST',
-    url: `/api/eddies/${typebotId}/invitations`,
+    url: `/api/typebots/${typebotId}/invitations`,
     body: { email, type },
   })

@@ -3,7 +3,7 @@ import test, { expect } from '@playwright/test'
 
 test.describe.parallel('Templates page', () => {
   test('From scratch should create a blank typebot', async ({ page }) => {
-    await page.goto('/eddies/create')
+    await page.goto('/typebots/create')
     await expect(
       page.locator('button >> text="Settings & Members"')
     ).toBeEnabled()
@@ -12,7 +12,7 @@ test.describe.parallel('Templates page', () => {
   })
 
   test('From file should import correctly', async ({ page }) => {
-    await page.goto('/eddies/create')
+    await page.goto('/typebots/create')
     await page.waitForTimeout(2000)
     await page.setInputFiles(
       'input[type="file"]',
@@ -22,7 +22,7 @@ test.describe.parallel('Templates page', () => {
   })
 
   test('Templates should be previewable and usable', async ({ page }) => {
-    await page.goto('/eddies/create')
+    await page.goto('/typebots/create')
     await page.click('text=Start from a template')
     await page.click('text=Customer Support')
     await expect(page.locator('text=How can I help you?')).toBeVisible()

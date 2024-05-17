@@ -12,7 +12,7 @@ test.describe.parallel('Google sheets integration', () => {
         id: typebotId,
       }
     )
-    await page.goto(`/eddies/${typebotId}/edit`)
+    await page.goto(`/typebots/${typebotId}/edit`)
     await fillInSpreadsheetInfo(page)
     await page.click('text=Select an operation')
     await page.click('text=Insert a row')
@@ -53,7 +53,7 @@ test.describe.parallel('Google sheets integration', () => {
         id: typebotId,
       }
     )
-    await page.goto(`/eddies/${typebotId}/edit`)
+    await page.goto(`/typebots/${typebotId}/edit`)
     await fillInSpreadsheetInfo(page)
     await page.click('text=Select an operation')
     await page.click('text=Update a row')
@@ -98,7 +98,7 @@ test.describe.parallel('Google sheets integration', () => {
         id: typebotId,
       }
     )
-    await page.goto(`/eddies/${typebotId}/edit`)
+    await page.goto(`/typebots/${typebotId}/edit`)
     await fillInSpreadsheetInfo(page)
     await page.click('text=Select an operation')
     await page.click('text=Get data from sheet')

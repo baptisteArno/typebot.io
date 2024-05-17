@@ -22,7 +22,7 @@ test.beforeEach(async () => {
 })
 
 test('table features should work', async ({ page }) => {
-  await page.goto(`/eddies/${typebotId}/results`)
+  await page.goto(`/typebots/${typebotId}/results`)
 
   await test.step('Check header format', async () => {
     await expect(page.locator('text=Submitted at')).toBeVisible()
@@ -185,7 +185,7 @@ const scrollToBottom = (page: Page) =>
 const saveAndReload = async (page: Page) => {
   await page.click('text="Theme"')
   await page.waitForTimeout(2000)
-  await page.goto(`/eddies/${typebotId}/results`)
+  await page.goto(`/typebots/${typebotId}/results`)
 }
 
 const getNthCheckbox = (page: Page, n: number) =>

@@ -8,6 +8,6 @@ export const updateInvitationQuery = (
 ) =>
   sendRequest({
     method: 'PATCH',
-    url: `/api/eddies/${typebotId}/invitations/${email}`,
+    url: `/api/typebots/${typebotId}/invitations/${email}`,
     body: invitation,
   })

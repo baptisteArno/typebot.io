@@ -30,8 +30,8 @@ export const getServerSideProps = async (
       permanent: false,
       destination:
         context.locale !== context.defaultLocale
-          ? `/${context.locale}/eddies`
-          : '/eddies',
+          ? `/${context.locale}/typebots`
+          : '/typebots',
     },
   }
 }

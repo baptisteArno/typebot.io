@@ -164,9 +164,9 @@ const parseFilePath = async ({
       message: 'Typebot not found',
     })
   if (!('blockId' in input)) {
-    return `public/workspaces/${input.workspaceId}/eddies/${input.typebotId}/${input.fileName}`
+    return `public/workspaces/${input.workspaceId}/typebots/${input.typebotId}/${input.fileName}`
   }
-  return `public/workspaces/${input.workspaceId}/eddies/${
+  return `public/workspaces/${input.workspaceId}/typebots/${
     input.typebotId
   }/blocks/${input.blockId}${input.itemId ? `/items/${input.itemId}` : ''}`
 }

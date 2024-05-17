@@ -25,7 +25,7 @@ test.describe.parallel('Buttons input block', () => {
       },
     ])
 
-    await page.goto(`/eddies/${typebotId}/edit`)
+    await page.goto(`/typebots/${typebotId}/edit`)
     await page.getByRole('textbox').fill('Item 1')
     await page.getByRole('textbox').press('Enter')
     await page.getByRole('textbox').fill('Item 2')
@@ -76,7 +76,7 @@ test('Variable buttons should work', async ({ page }) => {
     }
   )
 
-  await page.goto(`/eddies/${typebotId}/edit`)
+  await page.goto(`/typebots/${typebotId}/edit`)
   await page.click('text=Test')
   await page.getByRole('button', { name: 'Variable item' }).click()
   await expect(page.getByTestId('guest-bubble')).toHaveText('Variable item')

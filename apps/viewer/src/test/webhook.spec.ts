@@ -58,7 +58,7 @@ test('should execute webhooks properly', async ({ page }) => {
   await expect(
     page.getByText('{"name":"John","age":30,"gender":"Male"}')
   ).toBeVisible()
-  await page.goto(`http://localhost:3000/eddies/${typebotId}/results`)
+  await page.goto(`http://localhost:3000/typebots/${typebotId}/results`)
   await page.click('text="See logs"')
   await expect(
     page.locator('text="Webhook successfuly executed." >> nth=1')

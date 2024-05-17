@@ -17,7 +17,7 @@ export const CreateBotButton = ({
 
   const handleClick = () =>
     router.push(
-      `/eddies/create?${stringify({
+      `/typebots/create?${stringify({
         isFirstBot: !isFirstBot ? undefined : isFirstBot,
         folderId,
       })}`

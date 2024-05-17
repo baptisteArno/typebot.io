@@ -25,7 +25,7 @@ test('should not be able to submit taken url ID', async ({ page }) => {
       publicId: typebotId + '-public',
     },
   ])
-  await page.goto(`/eddies/${typebotId}/share`)
+  await page.goto(`/typebots/${typebotId}/share`)
   await page.getByText(`${typebotId}-public`).click()
   await page.getByRole('textbox').fill('id with spaces')
   await page.getByRole('textbox').press('Enter')

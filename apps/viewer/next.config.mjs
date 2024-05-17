@@ -86,7 +86,7 @@ const nextConfig = {
             }))
             .concat(
               landingPagePaths.map((path) => ({
-                source: '/eddies/:typebot*',
+                source: '/typebots/:typebot*',
                 has: [
                   {
                     type: 'header',
@@ -94,7 +94,7 @@ const nextConfig = {
                     value: `https://typebot.io${path}`,
                   },
                 ],
-                destination: `${process.env.LANDING_PAGE_URL}/eddies/:typebot*`,
+                destination: `${process.env.LANDING_PAGE_URL}/typebots/:typebot*`,
               }))
             )
             .concat(
@@ -167,7 +167,7 @@ const nextConfig = {
                 destination: `${process.env.LANDING_PAGE_URL}/images/blog/:images*`,
               },
               {
-                source: '/eddies/:typebot*',
+                source: '/typebots/:typebot*',
                 has: [
                   {
                     type: 'header',
@@ -175,7 +175,7 @@ const nextConfig = {
                     value: `https://typebot.io/blog/(?<slug>.*)`,
                   },
                 ],
-                destination: `${process.env.LANDING_PAGE_URL}/eddies/:typebot*`,
+                destination: `${process.env.LANDING_PAGE_URL}/typebots/:typebot*`,
               },
               {
                 source: '/styles/:style*',
@@ -194,9 +194,9 @@ const nextConfig = {
         .concat([
           {
             source:
-              '/api/eddies/:typebotId/blocks/:blockId/storage/upload-url',
+              '/api/typebots/:typebotId/blocks/:blockId/storage/upload-url',
             destination:
-              '/api/v1/eddies/:typebotId/blocks/:blockId/storage/upload-url',
+              '/api/v1/typebots/:typebotId/blocks/:blockId/storage/upload-url',
           },
         ])
         .concat(
@@ -204,33 +204,33 @@ const nextConfig = {
             ? [
                 {
                   source:
-                    '/api/eddies/:typebotId/blocks/:blockId/steps/:stepId/sampleResult',
-                  destination: `${process.env.NEXTAUTH_URL}/api/v1/eddies/:typebotId/webhookBlocks/:blockId/getResultExample`,
+                    '/api/typebots/:typebotId/blocks/:blockId/steps/:stepId/sampleResult',
+                  destination: `${process.env.NEXTAUTH_URL}/api/v1/typebots/:typebotId/webhookBlocks/:blockId/getResultExample`,
                 },
                 {
                   source:
-                    '/api/eddies/:typebotId/blocks/:blockId/sampleResult',
-                  destination: `${process.env.NEXTAUTH_URL}/api/v1/eddies/:typebotId/webhookBlocks/:blockId/getResultExample`,
+                    '/api/typebots/:typebotId/blocks/:blockId/sampleResult',
+                  destination: `${process.env.NEXTAUTH_URL}/api/v1/typebots/:typebotId/webhookBlocks/:blockId/getResultExample`,
                 },
                 {
                   source:
-                    '/api/eddies/:typebotId/blocks/:blockId/steps/:stepId/unsubscribeWebhook',
-                  destination: `${process.env.NEXTAUTH_URL}/api/v1/eddies/:typebotId/webhookBlocks/:blockId/unsubscribe`,
+                    '/api/typebots/:typebotId/blocks/:blockId/steps/:stepId/unsubscribeWebhook',
+                  destination: `${process.env.NEXTAUTH_URL}/api/v1/typebots/:typebotId/webhookBlocks/:blockId/unsubscribe`,
                 },
                 {
                   source:
-                    '/api/eddies/:typebotId/blocks/:blockId/unsubscribeWebhook',
-                  destination: `${process.env.NEXTAUTH_URL}/api/v1/eddies/:typebotId/webhookBlocks/:blockId/unsubscribe`,
+                    '/api/typebots/:typebotId/blocks/:blockId/unsubscribeWebhook',
+                  destination: `${process.env.NEXTAUTH_URL}/api/v1/typebots/:typebotId/webhookBlocks/:blockId/unsubscribe`,
                 },
                 {
                   source:
-                    '/api/eddies/:typebotId/blocks/:blockId/steps/:stepId/subscribeWebhook',
-                  destination: `${process.env.NEXTAUTH_URL}/api/v1/eddies/:typebotId/webhookBlocks/:blockId/subscribe`,
+                    '/api/typebots/:typebotId/blocks/:blockId/steps/:stepId/subscribeWebhook',
+                  destination: `${process.env.NEXTAUTH_URL}/api/v1/typebots/:typebotId/webhookBlocks/:blockId/subscribe`,
                 },
                 {
                   source:
-                    '/api/eddies/:typebotId/blocks/:blockId/subscribeWebhook',
-                  destination: `${process.env.NEXTAUTH_URL}/api/v1/eddies/:typebotId/webhookBlocks/:blockId/subscribe`,
+                    '/api/typebots/:typebotId/blocks/:blockId/subscribeWebhook',
+                  destination: `${process.env.NEXTAUTH_URL}/api/v1/typebots/:typebotId/webhookBlocks/:blockId/subscribe`,
                 },
               ]
             : []

@@ -16,7 +16,7 @@ test.describe('Google Analytics block', () => {
       },
     ])
 
-    await page.goto(`/eddies/${typebotId}/edit`)
+    await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure...')
     await page.fill('input[placeholder="G-123456..."]', 'G-VWX9WG1TNS')
     await page.fill('input[placeholder="Example: conversion"]', 'conversion')

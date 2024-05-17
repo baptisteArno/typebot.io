@@ -16,7 +16,7 @@ test.describe('Text bubble block', () => {
       },
     ])
 
-    await page.goto(`/eddies/${typebotId}/edit`)
+    await page.goto(`/typebots/${typebotId}/edit`)
 
     await page.getByTestId('block block2').locator('div').first().click()
     await page.click('[data-testid="bold-button"]')

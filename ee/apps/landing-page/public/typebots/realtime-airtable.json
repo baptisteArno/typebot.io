@@ -18,10 +18,7 @@
         }
       ],
       "title": "Start",
-      "graphCoordinates": {
-        "x": 0,
-        "y": 0
-      }
+      "graphCoordinates": { "x": 0, "y": 0 }
     },
     {
       "id": "nrFcoNFtGcGJNifcjiEFya",
@@ -52,9 +49,7 @@
               {
                 "type": "p",
                 "children": [
-                  {
-                    "text": "You can think of it as a guestbook 😂"
-                  }
+                  { "text": "You can think of it as a guestbook 😂" }
                 ]
               }
             ]
@@ -65,16 +60,7 @@
           "type": "text",
           "groupId": "nrFcoNFtGcGJNifcjiEFya",
           "content": {
-            "richText": [
-              {
-                "type": "p",
-                "children": [
-                  {
-                    "text": "Ready?"
-                  }
-                ]
-              }
-            ]
+            "richText": [{ "type": "p", "children": [{ "text": "Ready?" }] }]
           }
         },
         {
@@ -89,18 +75,12 @@
             }
           ],
           "groupId": "nrFcoNFtGcGJNifcjiEFya",
-          "options": {
-            "buttonLabel": "Send",
-            "isMultipleChoice": false
-          },
+          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "outgoingEdgeId": "5CjxPmqfthouJL71zCWW5X"
         }
       ],
       "title": "Block #1",
-      "graphCoordinates": {
-        "x": 1,
-        "y": 165
-      }
+      "graphCoordinates": { "x": 1, "y": 165 }
     },
     {
       "id": "9mz6QbFyQB1uMggt9YbweU",
@@ -113,11 +93,7 @@
             "richText": [
               {
                 "type": "p",
-                "children": [
-                  {
-                    "text": "If you have anything to say..."
-                  }
-                ]
+                "children": [{ "text": "If you have anything to say..." }]
               }
             ]
           }
@@ -170,10 +146,7 @@
         }
       ],
       "title": "Block #3",
-      "graphCoordinates": {
-        "x": 660,
-        "y": 159
-      }
+      "graphCoordinates": { "x": 660, "y": 159 }
     },
     {
       "id": "dypuPQjb1q55tQavVzZv4e",
@@ -191,24 +164,12 @@
           "type": "text",
           "groupId": "dypuPQjb1q55tQavVzZv4e",
           "content": {
-            "richText": [
-              {
-                "type": "p",
-                "children": [
-                  {
-                    "text": "Cheers!"
-                  }
-                ]
-              }
-            ]
+            "richText": [{ "type": "p", "children": [{ "text": "Cheers!" }] }]
           }
         }
       ],
       "title": "Block #4",
-      "graphCoordinates": {
-        "x": 985,
-        "y": 149
-      }
+      "graphCoordinates": { "x": 985, "y": 149 }
     },
     {
       "id": "m299Kw31LhXpxZLNNb7WT5",
@@ -219,14 +180,7 @@
           "groupId": "m299Kw31LhXpxZLNNb7WT5",
           "content": {
             "richText": [
-              {
-                "type": "p",
-                "children": [
-                  {
-                    "text": "What's your name?"
-                  }
-                ]
-              }
+              { "type": "p", "children": [{ "text": "What's your name?" }] }
             ]
           }
         },
@@ -236,10 +190,7 @@
           "groupId": "m299Kw31LhXpxZLNNb7WT5",
           "options": {
             "isLong": false,
-            "labels": {
-              "button": "Send",
-              "placeholder": "Type your name..."
-            },
+            "labels": { "button": "Send", "placeholder": "Type your name..." },
             "variableId": "fTRLkn4FVe83Ev9snHosfL"
           }
         },
@@ -284,44 +235,21 @@
         }
       ],
       "title": "Block #5",
-      "graphCoordinates": {
-        "x": 335,
-        "y": 158
-      }
+      "graphCoordinates": { "x": 335, "y": 158 }
     }
   ],
   "variables": [
-    {
-      "id": "fTRLkn4FVe83Ev9snHosfL",
-      "name": "Name"
-    },
-    {
-      "id": "hVKa5kBxCrKHr2zSwa27k1",
-      "name": "Email"
-    },
-    {
-      "id": "v6NeJkZ8fSEjMVUA9D51u5k",
-      "name": "Message"
-    },
-    {
-      "id": "p9MgewxfYHHARsp13uvc9d",
-      "name": "Chat ID"
-    },
-    {
-      "id": "s65Gqu75c9mq9nbjN84D1S",
-      "name": "Date"
-    },
-    {
-      "id": "mkMg6BRLLJM69LcSo4DFLc",
-      "name": "Airtable ID"
-    }
+    { "id": "fTRLkn4FVe83Ev9snHosfL", "name": "Name" },
+    { "id": "hVKa5kBxCrKHr2zSwa27k1", "name": "Email" },
+    { "id": "v6NeJkZ8fSEjMVUA9D51u5k", "name": "Message" },
+    { "id": "p9MgewxfYHHARsp13uvc9d", "name": "Chat ID" },
+    { "id": "s65Gqu75c9mq9nbjN84D1S", "name": "Date" },
+    { "id": "mkMg6BRLLJM69LcSo4DFLc", "name": "Airtable ID" }
   ],
   "edges": [
     {
       "id": "hRuNVikDAguMkxd6sRgQ7b",
-      "to": {
-        "groupId": "nrFcoNFtGcGJNifcjiEFya"
-      },
+      "to": { "groupId": "nrFcoNFtGcGJNifcjiEFya" },
       "from": {
         "blockId": "4Ez8hEpERMo48FQcH4ny8F",
         "groupId": "dpg9fjkvZs2zhNDrXavZw2"
@@ -329,9 +257,7 @@
     },
     {
       "id": "5CjxPmqfthouJL71zCWW5X",
-      "to": {
-        "groupId": "m299Kw31LhXpxZLNNb7WT5"
-      },
+      "to": { "groupId": "m299Kw31LhXpxZLNNb7WT5" },
       "from": {
         "blockId": "su4yR8LMVu311nKJsSj3u6q",
         "groupId": "nrFcoNFtGcGJNifcjiEFya"
@@ -342,9 +268,7 @@
         "groupId": "m299Kw31LhXpxZLNNb7WT5",
         "blockId": "ssHNtWrqhDcJNUDqd3oLj6r"
       },
-      "to": {
-        "groupId": "9mz6QbFyQB1uMggt9YbweU"
-      },
+      "to": { "groupId": "9mz6QbFyQB1uMggt9YbweU" },
       "id": "oHDLXGgNtGU4n4Br6QDnyB"
     },
     {
@@ -352,9 +276,7 @@
         "groupId": "9mz6QbFyQB1uMggt9YbweU",
         "blockId": "s5sGoeApf3QASX1bbPMve5q"
       },
-      "to": {
-        "groupId": "dypuPQjb1q55tQavVzZv4e"
-      },
+      "to": { "groupId": "dypuPQjb1q55tQavVzZv4e" },
       "id": "tiFY1tFr1u5CjGrbziEtc9"
     }
   ],
@@ -365,29 +287,17 @@
         "backgroundColor": "#1e293b",
         "placeholderColor": "#9095A0"
       },
-      "buttons": {
-        "color": "#ffffff",
-        "backgroundColor": "#1a5fff"
-      },
-      "hostBubbles": {
-        "color": "#ffffff",
-        "backgroundColor": "#1e293b"
-      },
-      "guestBubbles": {
-        "color": "#FFFFFF",
-        "backgroundColor": "#FF8E21"
-      },
+      "buttons": { "color": "#ffffff", "backgroundColor": "#1a5fff" },
+      "hostBubbles": { "color": "#ffffff", "backgroundColor": "#1e293b" },
+      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" },
       "hostAvatar": {
         "isEnabled": true,
-        "url": "https://s3.eu-west-3.amazonaws.com/typebot/public/eddies/cl0saxjo1000009l7c4brqlo4/me-square.png"
+        "url": "https://s3.eu-west-3.amazonaws.com/typebot/public/typebots/cl0saxjo1000009l7c4brqlo4/me-square.png"
       }
     },
     "general": {
       "font": "Open Sans",
-      "background": {
-        "type": "Color",
-        "content": "#171923"
-      }
+      "background": { "type": "Color", "content": "#171923" }
     },
     "customCss": ".typebot-button {box-shadow: inset 0 1px 0 0 rgb(255 255 255/0.2)}"
   },
@@ -400,11 +310,7 @@
     "metadata": {
       "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
     },
-    "typingEmulation": {
-      "speed": 300,
-      "enabled": true,
-      "maxDelay": 1.5
-    }
+    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
   },
   "publicId": "my-typebot-4brqlo4",
   "customDomain": null

@@ -55,7 +55,7 @@ export const ApiModal = ({
                   lang={'shell'}
                   value={`${parseApiHost(
                     typebot?.customDomain
-                  )}/api/v1/eddies/${publicId}/startChat`}
+                  )}/api/v1/typebots/${publicId}/startChat`}
                 />
               </Stack>
             </ListItem>

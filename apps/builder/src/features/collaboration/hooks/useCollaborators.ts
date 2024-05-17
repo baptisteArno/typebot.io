@@ -12,7 +12,7 @@ export const useCollaborators = ({
   const { data, error, mutate } = useSWR<
     { collaborators: Collaborator[] },
     Error
-  >(typebotId ? `/api/eddies/${typebotId}/collaborators` : null, fetcher)
+  >(typebotId ? `/api/typebots/${typebotId}/collaborators` : null, fetcher)
   if (error) onError(error)
   return {
     collaborators: data?.collaborators,

@@ -22,7 +22,7 @@ test.describe('Send email block', () => {
       }
     )
 
-    await page.goto(`/eddies/${typebotId}/edit`)
+    await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure...')
     await page.click(`text=notifications@typebot.io`)
     await page.click('text=Connect new')

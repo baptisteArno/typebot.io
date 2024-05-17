@@ -16,7 +16,7 @@ test.describe('Pixel block', () => {
       },
     ])
 
-    await page.goto(`/eddies/${typebotId}/edit`)
+    await page.goto(`/typebots/${typebotId}/edit`)
     await page.click('text=Configure...')
     await page.getByPlaceholder('Pixel ID (e.g. "123456789")').fill('pixelid')
     await expect(page.getByText('Init Pixel')).toBeVisible()

@@ -20,7 +20,7 @@ test.describe('Chatwoot block', () => {
       },
     ])
 
-    await page.goto(`/eddies/${typebotId}/edit`)
+    await page.goto(`/typebots/${typebotId}/edit`)
     await page.getByText('Configure...').click()
     await expect(page.getByLabel('Base URL')).toHaveAttribute(
       'value',

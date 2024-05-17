@@ -8,6 +8,6 @@ export const updateCollaboratorQuery = (
 ) =>
   sendRequest({
     method: 'PATCH',
-    url: `/api/eddies/${typebotId}/collaborators/${userId}`,
+    url: `/api/typebots/${typebotId}/collaborators/${userId}`,
     body: collaborator,
   })

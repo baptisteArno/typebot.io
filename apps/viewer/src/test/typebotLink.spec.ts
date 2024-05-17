@@ -34,7 +34,7 @@ test('should work as expected', async ({ page }) => {
   await page.locator('input').fill('Hello there!')
   await page.locator('input').press('Enter')
   await expect(page.getByText('Cheers!')).toBeVisible()
-  await page.goto(`${env.NEXTAUTH_URL}/eddies/${typebotId}/results`)
+  await page.goto(`${env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
   await expect(page.locator('text=Hello there!')).toBeVisible()
 })
 
@@ -45,12 +45,12 @@ test.describe('Merge disabled', () => {
     await page.locator('input').press('Enter')
     await expect(page.getByText('Cheers!')).toBeVisible()
     await page.goto(
-      `${process.env.NEXTAUTH_URL}/eddies/${typebotWithMergeDisabledId}/results`
+      `${process.env.NEXTAUTH_URL}/typebots/${typebotWithMergeDisabledId}/results`
     )
     await expect(page.locator('text=Submitted at')).toBeVisible()
     await expect(page.locator('text=Hello there!')).toBeHidden()
     await page.goto(
-      `${process.env.NEXTAUTH_URL}/eddies/${linkedTypebotId}/results`
+      `${process.env.NEXTAUTH_URL}/typebots/${linkedTypebotId}/results`
     )
     await expect(page.locator('text=Hello there!')).toBeVisible()
   })

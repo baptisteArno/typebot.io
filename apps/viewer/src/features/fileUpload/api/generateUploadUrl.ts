@@ -76,7 +76,7 @@ export const generateUploadUrl = publicProcedure
           message: "Can't find workspaceId",
         })
 
-      const filePath = `public/workspaces/${workspaceId}/eddies/${filePathProps.typebotId}/results/${filePathProps.resultId}/${filePathProps.fileName}`
+      const filePath = `public/workspaces/${workspaceId}/typebots/${filePathProps.typebotId}/results/${filePathProps.resultId}/${filePathProps.fileName}`
 
       const fileUploadBlock = parseGroups(publicTypebot.groups, {
         typebotVersion: publicTypebot.version,
@@ -163,7 +163,7 @@ export const generateUploadUrl = publicProcedure
 
     const filePath = `${
       fileUploadBlock.options?.visibility === 'Private' ? 'private' : 'public'
-    }/workspaces/${workspaceId}/eddies/${typebotId}/results/${resultId}/${
+    }/workspaces/${workspaceId}/typebots/${typebotId}/results/${resultId}/${
       filePathProps.fileName
     }`
 
@@ -181,7 +181,7 @@ export const generateUploadUrl = publicProcedure
       formData: presignedPostPolicy.formData,
       fileUrl:
         fileUploadBlock.options?.visibility === 'Private'
-          ? `${env.NEXTAUTH_URL}/api/eddies/${typebotId}/results/${resultId}/${filePathProps.fileName}`
+          ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/${filePathProps.fileName}`
           : env.S3_PUBLIC_CUSTOM_DOMAIN
           ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
           : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,

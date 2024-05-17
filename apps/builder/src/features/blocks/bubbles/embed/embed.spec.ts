@@ -20,7 +20,7 @@ test.describe.parallel('Embed bubble block', () => {
         },
       ])
 
-      await page.goto(`/eddies/${typebotId}/edit`)
+      await page.goto(`/typebots/${typebotId}/edit`)
       await page.click('text=Click to edit...')
       await page.fill('input[placeholder="Paste the link or code..."]', pdfSrc)
       await expect(page.locator('text="Show embed"')).toBeVisible()
@@ -43,7 +43,7 @@ test.describe.parallel('Embed bubble block', () => {
         },
       ])
 
-      await page.goto(`/eddies/${typebotId}/edit`)
+      await page.goto(`/typebots/${typebotId}/edit`)
       await page.click('text=Test')
       await expect(page.locator('iframe#embed-bubble-content')).toHaveAttribute(
         'src',
