@@ -10,7 +10,7 @@ import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/web
 const typebotId = createId()
 
 test.beforeEach(async () => {
-  await importTypebotInDatabase(getTestAsset('typebots/webhook.json'), {
+  await importTypebotInDatabase(getTestAsset('eddies/webhook.json'), {
     id: typebotId,
     publicId: `${typebotId}-public`,
   })

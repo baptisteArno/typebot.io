@@ -6,7 +6,7 @@ import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
 test('should correctly be injected', async ({ page }) => {
   const typebotId = createId()
   await importTypebotInDatabase(
-    getTestAsset('typebots/predefinedVariables.json'),
+    getTestAsset('eddies/predefinedVariables.json'),
     { id: typebotId, publicId: `${typebotId}-public` }
   )
   await page.goto(`/${typebotId}-public`)

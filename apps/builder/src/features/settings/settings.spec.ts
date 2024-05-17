@@ -8,7 +8,7 @@ test.describe.parallel('Settings page', () => {
   test.describe('General', () => {
     test('should reflect change in real-time', async ({ page }) => {
       const typebotId = createId()
-      await importTypebotInDatabase(getTestAsset('typebots/settings.json'), {
+      await importTypebotInDatabase(getTestAsset('eddies/settings.json'), {
         id: typebotId,
       })
       await page.goto(`/eddies/${typebotId}/settings`)
@@ -31,7 +31,7 @@ test.describe.parallel('Settings page', () => {
   test.describe('Typing emulation', () => {
     test('should be fillable', async ({ page }) => {
       const typebotId = createId()
-      await importTypebotInDatabase(getTestAsset('typebots/settings.json'), {
+      await importTypebotInDatabase(getTestAsset('eddies/settings.json'), {
         id: typebotId,
       })
       await page.goto(`/eddies/${typebotId}/settings`)
@@ -52,7 +52,7 @@ test.describe.parallel('Settings page', () => {
       const favIconUrl = 'https://www.baptistearno.com/favicon.png'
       const imageUrl = 'https://www.baptistearno.com/images/site-preview.png'
       const typebotId = createId()
-      await importTypebotInDatabase(getTestAsset('typebots/settings.json'), {
+      await importTypebotInDatabase(getTestAsset('eddies/settings.json'), {
         id: typebotId,
       })
       await page.goto(`/eddies/${typebotId}/settings`)

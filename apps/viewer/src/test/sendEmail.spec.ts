@@ -28,7 +28,7 @@ test.beforeAll(async () => {
 
 test('should send an email', async ({ page }) => {
   const typebotId = createId()
-  await importTypebotInDatabase(getTestAsset('typebots/sendEmail.json'), {
+  await importTypebotInDatabase(getTestAsset('eddies/sendEmail.json'), {
     id: typebotId,
     publicId: `${typebotId}-public`,
   })

@@ -9,7 +9,7 @@ import { env } from '@typebot.io/env'
 
 test('should work as expected', async ({ page, browser }) => {
   const typebotId = createId()
-  await importTypebotInDatabase(getTestAsset('typebots/fileUpload.json'), {
+  await importTypebotInDatabase(getTestAsset('eddies/fileUpload.json'), {
     id: typebotId,
     publicId: `${typebotId}-public`,
   })
@@ -17,9 +17,9 @@ test('should work as expected', async ({ page, browser }) => {
   await page
     .locator(`input[type="file"]`)
     .setInputFiles([
-      getTestAsset('typebots/api.json'),
-      getTestAsset('typebots/fileUpload.json'),
-      getTestAsset('typebots/hugeGroup.json'),
+      getTestAsset('eddies/api.json'),
+      getTestAsset('eddies/fileUpload.json'),
+      getTestAsset('eddies/hugeGroup.json'),
     ])
   await expect(page.locator(`text="3"`)).toBeVisible()
   await page.locator('text="Upload 3 files"').click()

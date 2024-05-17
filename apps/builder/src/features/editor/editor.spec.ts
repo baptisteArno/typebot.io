@@ -91,7 +91,7 @@ test('Rename and icon change should work', async ({ page }) => {
 test('Preview from group should work', async ({ page }) => {
   const typebotId = createId()
   await importTypebotInDatabase(
-    getTestAsset('typebots/editor/previewFromGroup.json'),
+    getTestAsset('eddies/editor/previewFromGroup.json'),
     {
       id: typebotId,
     }

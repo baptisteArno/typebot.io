@@ -16,7 +16,7 @@ test.describe('Send email block', () => {
     )
       throw new Error('SMTP_ env vars are missing')
     await importTypebotInDatabase(
-      getTestAsset('typebots/integrations/sendEmail.json'),
+      getTestAsset('eddies/integrations/sendEmail.json'),
       {
         id: typebotId,
       }

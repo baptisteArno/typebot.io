@@ -16,7 +16,7 @@ test.describe.parallel('Templates page', () => {
     await page.waitForTimeout(2000)
     await page.setInputFiles(
       'input[type="file"]',
-      getTestAsset('typebots/singleChoiceTarget.json')
+      getTestAsset('eddies/singleChoiceTarget.json')
     )
     await expect(page).toHaveURL(new RegExp(`/edit`), { timeout: 20000 })
   })

@@ -13,7 +13,7 @@ test.describe('Builder', () => {
   test('easy configuration should work', async ({ page }) => {
     const typebotId = createId()
     await importTypebotInDatabase(
-      getTestAsset('typebots/integrations/easyConfigWebhook.json'),
+      getTestAsset('eddies/integrations/easyConfigWebhook.json'),
       {
         id: typebotId,
       }
@@ -35,7 +35,7 @@ test.describe('Builder', () => {
   test('its configuration should work', async ({ page }) => {
     const typebotId = createId()
     await importTypebotInDatabase(
-      getTestAsset('typebots/integrations/webhook.json'),
+      getTestAsset('eddies/integrations/webhook.json'),
       {
         id: typebotId,
       }
@@ -107,7 +107,7 @@ test.describe('API', () => {
 
   test.beforeAll(async () => {
     try {
-      await importTypebotInDatabase(getTestAsset('typebots/api.json'), {
+      await importTypebotInDatabase(getTestAsset('eddies/api.json'), {
         id: typebotId,
       })
       await createWebhook(typebotId)

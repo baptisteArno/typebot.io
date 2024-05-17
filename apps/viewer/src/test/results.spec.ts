@@ -6,7 +6,7 @@ import { env } from '@typebot.io/env'
 
 test('Big groups should work as expected', async ({ page }) => {
   const typebotId = createId()
-  await importTypebotInDatabase(getTestAsset('typebots/hugeGroup.json'), {
+  await importTypebotInDatabase(getTestAsset('eddies/hugeGroup.json'), {
     id: typebotId,
     publicId: `${typebotId}-public`,
   })

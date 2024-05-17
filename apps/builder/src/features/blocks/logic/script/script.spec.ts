@@ -7,7 +7,7 @@ const typebotId = createId()
 
 test.describe('Script block', () => {
   test('script should trigger', async ({ page }) => {
-    await importTypebotInDatabase(getTestAsset('typebots/logic/script.json'), {
+    await importTypebotInDatabase(getTestAsset('eddies/logic/script.json'), {
       id: typebotId,
     })
 

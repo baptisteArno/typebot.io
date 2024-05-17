@@ -7,7 +7,7 @@ test.describe.parallel('Google sheets integration', () => {
   test('Insert row should work', async ({ page }) => {
     const typebotId = createId()
     await importTypebotInDatabase(
-      getTestAsset('typebots/integrations/googleSheets.json'),
+      getTestAsset('eddies/integrations/googleSheets.json'),
       {
         id: typebotId,
       }
@@ -48,7 +48,7 @@ test.describe.parallel('Google sheets integration', () => {
   test('Update row should work', async ({ page }) => {
     const typebotId = createId()
     await importTypebotInDatabase(
-      getTestAsset('typebots/integrations/googleSheets.json'),
+      getTestAsset('eddies/integrations/googleSheets.json'),
       {
         id: typebotId,
       }
@@ -93,7 +93,7 @@ test.describe.parallel('Google sheets integration', () => {
   test('Get row should work', async ({ page }) => {
     const typebotId = createId()
     await importTypebotInDatabase(
-      getTestAsset('typebots/integrations/googleSheetsGet.json'),
+      getTestAsset('eddies/integrations/googleSheetsGet.json'),
       {
         id: typebotId,
       }
