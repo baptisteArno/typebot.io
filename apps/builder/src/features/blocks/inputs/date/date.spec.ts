@@ -16,7 +16,7 @@ test.describe('Date input block', () => {
       },
     ])
 
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/eddies/${typebotId}/edit`)
 
     await page.click('text=Test')
     await expect(page.locator('[data-testid="from-date"]')).toHaveAttribute(

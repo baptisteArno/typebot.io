@@ -29,7 +29,7 @@ export const DashboardHeader = () => {
         maxW="1000px"
         flex="1"
       >
-        <Link href="/typebots" data-testid="typebot-logo">
+        <Link href="/eddies" data-testid="typebot-logo">
           <EmojiOrImageIcon
             boxSize="30px"
             icon={workspace?.icon}

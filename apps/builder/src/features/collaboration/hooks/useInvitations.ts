@@ -11,7 +11,7 @@ export const useInvitations = ({
   onError: (error: Error) => void
 }) => {
   const { data, error, mutate } = useSWR<{ invitations: Invitation[] }, Error>(
-    typebotId ? `/api/typebots/${typebotId}/invitations` : null,
+    typebotId ? `/api/eddies/${typebotId}/invitations` : null,
     fetcher,
     {
       dedupingInterval: env.NEXT_PUBLIC_E2E_TEST ? 0 : undefined,

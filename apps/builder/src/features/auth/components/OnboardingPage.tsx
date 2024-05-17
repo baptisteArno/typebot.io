@@ -44,7 +44,7 @@ export const OnboardingPage = () => {
   useEffect(() => {
     if (!user?.createdAt) return
     if (isNewUser === false || !env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID)
-      replace({ pathname: '/typebots', query })
+      replace({ pathname: '/eddies', query })
   }, [isNewUser, query, replace, user?.createdAt])
 
   const initConfettis = () => {
@@ -94,14 +94,14 @@ export const OnboardingPage = () => {
 
   const skipOnboarding = () => {
     updateUser(onboardingReplies)
-    replace({ pathname: '/typebots', query })
+    replace({ pathname: '/eddies', query })
   }
 
   const updateUserAndProceedToTypebotCreation = () => {
     updateUser(onboardingReplies)
     setTimeout(() => {
       replace({
-        pathname: '/typebots',
+        pathname: '/eddies',
         query: { ...query, isFirstBot: true },
       })
     }, 2000)

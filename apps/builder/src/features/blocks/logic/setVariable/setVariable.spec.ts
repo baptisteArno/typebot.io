@@ -15,7 +15,7 @@ test.describe('Set variable block', () => {
       }
     )
 
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/eddies/${typebotId}/edit`)
     await page.click('text=Type a number...')
     await page.fill('input[placeholder="Select a variable"] >> nth=-1', 'Num')
     await page.getByRole('menuitem', { name: 'Create Num' }).click()

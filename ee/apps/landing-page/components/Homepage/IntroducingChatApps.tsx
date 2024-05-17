@@ -27,7 +27,7 @@ export const IntroducingChatApps = () => {
   }, [])
 
   const fetchTemplate = async () => {
-    const { data, error } = await sendRequest(`/typebots/lead-gen-lp.json`)
+    const { data, error } = await sendRequest(`/eddies/lead-gen-lp.json`)
     if (error) return
     setTypebot(data as PublicTypebot)
   }

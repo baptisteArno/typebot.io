@@ -11,7 +11,7 @@ export const unsubscribeWebhook = authenticatedProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/v1/typebots/{typebotId}/webhookBlocks/{blockId}/unsubscribe',
+      path: '/v1/eddies/{typebotId}/webhookBlocks/{blockId}/unsubscribe',
       protect: true,
       summary: 'Unsubscribe from webhook block',
       tags: ['Webhook'],

@@ -9,7 +9,7 @@ export const startChatPreview = publicProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/v1/typebots/{typebotId}/preview/startChat',
+      path: '/v1/eddies/{typebotId}/preview/startChat',
       summary: 'Start preview chat',
       description:
         'Use this endpoint to test your bot. The answers will not be saved. And some blocks like "Send email" will be skipped.',

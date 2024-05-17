@@ -15,7 +15,7 @@ test('should be able to connect custom domain', async ({ page }) => {
       }),
     },
   ])
-  await page.goto(`/typebots/${typebotId}/share`)
+  await page.goto(`/eddies/${typebotId}/share`)
   await page.click('text=Add my domain')
   await page.click('text=Connect new')
   await page.fill('input[placeholder="bot.my-domain.com"]', 'test')
@@ -54,7 +54,7 @@ test.describe('Starter workspace', () => {
         }),
       },
     ])
-    await page.goto(`/typebots/${typebotId}/share`)
+    await page.goto(`/eddies/${typebotId}/share`)
     await expect(
       page.locator('[data-testid="pro-lock-tag"]').nth(0)
     ).toBeVisible()

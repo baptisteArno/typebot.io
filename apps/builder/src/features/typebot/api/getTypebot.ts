@@ -12,7 +12,7 @@ export const getTypebot = publicProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/v1/typebots/{typebotId}',
+      path: '/v1/eddies/{typebotId}',
       protect: true,
       summary: 'Get a typebot',
       tags: ['Typebot'],

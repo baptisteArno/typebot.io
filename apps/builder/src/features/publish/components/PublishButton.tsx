@@ -88,7 +88,7 @@ export const PublishButton = ({
           typebotId: typebot?.id as string,
         })
         if (!publishedTypebot && !pathname.endsWith('share'))
-          push(`/typebots/${query.typebotId}/share`)
+          push(`/eddies/${query.typebotId}/share`)
       },
     })
 

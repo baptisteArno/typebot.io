@@ -11,7 +11,7 @@ test.describe('AB Test block', () => {
       id: typebotId,
     })
 
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/eddies/${typebotId}/edit`)
     await page.getByText('A 50%').click()
     await page.getByLabel('Percent of users to follow A:').fill('100')
     await expect(page.getByText('A 100%')).toBeVisible()

@@ -26,7 +26,7 @@ export const executeSendEmailBlock = (
   }
   const { options } = block
   sendRequest({
-    url: `${apiHost}/api/typebots/${typebotId}/integrations/email?resultId=${resultId}`,
+    url: `${apiHost}/api/eddies/${typebotId}/integrations/email?resultId=${resultId}`,
     method: 'POST',
     body: {
       credentialsId: options?.credentialsId,

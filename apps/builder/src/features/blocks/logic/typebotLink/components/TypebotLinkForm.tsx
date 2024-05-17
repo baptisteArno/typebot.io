@@ -1,7 +1,7 @@
 import { Stack } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { GroupsDropdown } from './GroupsDropdown'
-import { TypebotsDropdown } from './TypebotsDropdown'
+import { TypebotsDropdown } from './eddiesDropdown'
 import { trpc } from '@/lib/trpc'
 import { isNotEmpty } from '@typebot.io/lib'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'

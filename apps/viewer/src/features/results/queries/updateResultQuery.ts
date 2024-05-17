@@ -6,7 +6,7 @@ export const updateResultQuery = async (
   result: Partial<Result>
 ) =>
   sendRequest<Result>({
-    url: `/api/typebots/t/results/${resultId}`,
+    url: `/api/eddies/t/results/${resultId}`,
     method: 'PATCH',
     body: result,
   })

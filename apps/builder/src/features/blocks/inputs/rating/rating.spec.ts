@@ -28,7 +28,7 @@ test('options should work', async ({ page }) => {
     },
   ])
 
-  await page.goto(`/typebots/${typebotId}/edit`)
+  await page.goto(`/eddies/${typebotId}/edit`)
 
   await page.click('text=Test')
   await expect(page.locator(`text=Send`)).toBeHidden()

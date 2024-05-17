@@ -17,7 +17,7 @@ test.describe('Phone input block', () => {
       },
     ])
 
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/eddies/${typebotId}/edit`)
 
     await page.click('text=Test')
     await expect(

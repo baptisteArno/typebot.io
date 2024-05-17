@@ -11,7 +11,7 @@ test.describe('Wait block', () => {
       id: typebotId,
     })
 
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/eddies/${typebotId}/edit`)
     await page.click('text=Configure...')
     await page.getByRole('textbox', { name: 'Seconds to wait for:' }).fill('3')
 

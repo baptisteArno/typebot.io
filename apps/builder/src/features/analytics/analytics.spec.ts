@@ -17,7 +17,7 @@ test('analytics are not available for non-pro workspaces', async ({ page }) => {
     }
   )
   await injectFakeResults({ typebotId, count: 10 })
-  await page.goto(`/typebots/${typebotId}/results/analytics`)
+  await page.goto(`/eddies/${typebotId}/results/analytics`)
   const firstDropoffBox = page.locator('text="%" >> nth=0')
   await firstDropoffBox.hover()
   await expect(
