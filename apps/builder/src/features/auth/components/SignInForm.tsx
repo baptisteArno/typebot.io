@@ -80,10 +80,11 @@ export const SignInForm = ({
   }, [router.isReady, router.query.error, showToast])
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) =>
-    setEmailValue(e.target.value.toLowerCase())
+    setEmailValue(e.target.value)
 
   const handleEmailSubmit = async (e: FormEvent) => {
     e.preventDefault()
+    setEmailValue(emailValue.toLowerCase())
     if (isMagicLinkSent) return
     setAuthLoading(true)
     try {
