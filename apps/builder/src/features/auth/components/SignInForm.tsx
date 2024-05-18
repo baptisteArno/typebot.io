@@ -80,7 +80,7 @@ export const SignInForm = ({
   }, [router.isReady, router.query.error, showToast])
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) =>
-    setEmailValue(e.target.value)
+    setEmailValue(e.target.value.toLowerCase())
 
   const handleEmailSubmit = async (e: FormEvent) => {
     e.preventDefault()
