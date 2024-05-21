@@ -84,7 +84,6 @@ export const SignInForm = ({
 
   const handleEmailSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    setEmailValue(emailValue.toLowerCase())
     if (isMagicLinkSent) return
     setAuthLoading(true)
     try {
