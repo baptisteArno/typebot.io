@@ -1,4 +1,13 @@
-import React, { ChangeEvent, Ref, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, {
+  ChangeEvent,
+  Ref,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import useOuterClick from 'hooks/useOuterClick'
 import {
   Container,
@@ -8,24 +17,37 @@ import {
   Separator,
   InputSearch,
 } from './OctaSelect.style'
-import { OctaSelectProps, OptionProps } from './OctaSelect.type';
-import { Button, HStack, background, color } from '@chakra-ui/react';
-import { EditIcon, PencilIcon } from 'assets/icons';
-import { DeleteIcon } from '@chakra-ui/icons';
-import { defaultLightThemeOption } from '@uiw/react-codemirror';
+import { OctaSelectProps, OptionProps } from './OctaSelect.type'
+import { Button, HStack, background, color } from '@chakra-ui/react'
+import { EditIcon, PencilIcon } from 'assets/icons'
+import { DeleteIcon } from '@chakra-ui/icons'
+import { defaultLightThemeOption } from '@uiw/react-codemirror'
 
 export enum SELECT_ACTION {
   DELETE = 'DELETE',
-  EDIT = 'EDIT'
+  EDIT = 'EDIT',
 }
 
-const Option = ({ value, children, optionKey, isTitle, disabled, onClick, selected, showEdit, showDelete, onIconClicked }: OptionProps) => {
-  const hasActionToClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>): void => {
-    if ((!isTitle && !disabled) && onClick) {
+const Option = ({
+  value,
+  children,
+  optionKey,
+  isTitle,
+  disabled,
+  onClick,
+  selected,
+  showEdit,
+  showDelete,
+  onIconClicked,
+}: OptionProps) => {
+  const hasActionToClick = (
+    e: React.MouseEvent<HTMLLIElement, MouseEvent>
+  ): void => {
+    if (!isTitle && !disabled && onClick) {
       onClick(e)
     }
   }
-  
+
   return (
     <OptionItem
       key={optionKey}
@@ -33,38 +55,50 @@ const Option = ({ value, children, optionKey, isTitle, disabled, onClick, select
       data-istitle={isTitle}
       data-disabled={!!isTitle || disabled}
       onClick={hasActionToClick}
-      className={`${children === selected?.label ? "actived" : ""} ${isTitle ? "isTitle" : ""}`}
+      className={`${children === selected?.label ? 'actived' : ''} ${
+        isTitle ? 'isTitle' : ''
+      }`}
     >
       <>
         {children}
-        {showDelete && !isTitle &&
-          <Button size="xs" onClick={(e) => {
-            if (onIconClicked) onIconClicked(value, SELECT_ACTION.DELETE)
-            e.stopPropagation()
-          }} float={"right"}>
+        {showDelete && !isTitle && (
+          <Button
+            size="xs"
+            onClick={(e) => {
+              if (onIconClicked) onIconClicked(value, SELECT_ACTION.DELETE)
+              e.stopPropagation()
+            }}
+            float={'right'}
+          >
             <DeleteIcon />
           </Button>
-        }
-        {showEdit && !isTitle &&
-          <Button size="xs" onMouseOver={(e) => e.stopPropagation()} onClick={(e) => {
+        )}
+        {showEdit && !isTitle && (
+          <Button
+            size="xs"
+            onMouseOver={(e) => e.stopPropagation()}
+            onClick={(e) => {
               if (onIconClicked) onIconClicked(value, SELECT_ACTION.EDIT)
               e.stopPropagation()
-            }} float={"right"}>
+            }}
+            float={'right'}
+          >
             <EditIcon />
           </Button>
-        }
+        )}
       </>
-    </OptionItem >
+    </OptionItem>
   )
 }
 
 const OctaSelect = (props: OctaSelectProps) => {
-  const [toggle, setToggle] = useState<boolean>(false);
-  const [selected, setSelected] = useState<any>();
-  const { ref, isComponentVisible, setIsComponentVisible } = useOuterClick(toggle);
-  const [search, setSearch] = useState<string>();
+  const [toggle, setToggle] = useState<boolean>(false)
+  const [selected, setSelected] = useState<any>()
+  const { ref, isComponentVisible, setIsComponentVisible } =
+    useOuterClick(toggle)
+  const [search, setSearch] = useState<string>()
 
-  const allOptions = useMemo(() => (props.options), [props.options]);
+  const allOptions = useMemo(() => props.options, [props.options])
 
   useLayoutEffect(() => {
     setIsComponentVisible(toggle)
@@ -72,9 +106,12 @@ const OctaSelect = (props: OctaSelectProps) => {
 
   useEffect(() => {
     if (props.defaultSelected) {
-      const newSelected = allOptions?.find(s => (s.value?.id || s.value) === props.defaultSelected) || props.defaultSelected
+      const newSelected =
+        allOptions?.find(
+          (s) => (s?.value?.id || s?.value) === props.defaultSelected
+        ) || props.defaultSelected
       setSelected(newSelected)
-    } else { 
+    } else {
       setSelected('')
     }
   }, [props.defaultSelected, props.options])
@@ -85,40 +122,46 @@ const OctaSelect = (props: OctaSelectProps) => {
   }
 
   const handleChangeFind = (value: any): void => {
-    setSearch(value.label);
-    setSelected(value);
-    if (props?.onChange)
-      props.onChange(value.value, value);
+    setSearch(value.label)
+    setSelected(value)
+    if (props?.onChange) props.onChange(value.value, value)
   }
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>): void => {
-    const { value } = event.target;
-    setSearch(value);
+    const { value } = event.target
+    setSearch(value)
   }
 
   const getOptions = useCallback(() => {
     if (!allOptions) {
-      return [];
+      return []
     }
-    return allOptions.filter((option) => {
-      return option.label.toLocaleLowerCase().indexOf(search ? search.toLocaleLowerCase() : "") >= 0
-    });
+    return allOptions?.filter((option) => {
+      return (
+        option?.label
+          .toLocaleLowerCase()
+          .indexOf(search ? search.toLocaleLowerCase() : '') >= 0
+      )
+    })
   }, [allOptions, search])
 
   return (
-    <Container ref={ref} onClick={handleToggle} style={{ width: "100%", ...props }}>
+    <Container
+      ref={ref}
+      onClick={handleToggle}
+      style={{ width: '100%', ...props }}
+    >
       <>
-        {(!selected && !props.findable) && props.placeholder}
-        {(selected && !props.findable) && selected.label}
-        {props.findable
-          &&
+        {!selected && !props.findable && props.placeholder}
+        {selected && !props.findable && selected.label}
+        {props.findable && (
           <InputSearch
             placeholder={selected ? selected.label : props.placeholder}
-            defaultValue={selected && selected.label ? selected.label : ""}
+            defaultValue={selected && selected.label ? selected.label : ''}
             value={search}
             onChange={handleSearch}
           />
-        }
+        )}
         <OptionGroup
           className={toggle && isComponentVisible ? 'opened' : ''}
           {...(props as any)}
@@ -135,7 +178,8 @@ const OctaSelect = (props: OctaSelectProps) => {
                 disabled={option.disabled}
                 showEdit={props.showEdit}
                 showDelete={props.showDelete}
-                onIconClicked={props.onIconClicked}>
+                onIconClicked={props.onIconClicked}
+              >
                 {option.label}
               </Option>
             ))}
@@ -147,4 +191,4 @@ const OctaSelect = (props: OctaSelectProps) => {
   )
 }
 
-export default OctaSelect;
+export default OctaSelect

@@ -664,7 +664,33 @@ export const TypebotContext = ({
       botFluxesList,
       tagsList,
     }
-  }, [localTypebot, isSavingLoading, isPublishing])
+  }, [
+    localTypebot,
+    emptyFields,
+    setEmptyFields,
+    typebot,
+    publishedTypebot,
+    linkedTypebots,
+    isReadOnly,
+    isSavingLoading,
+    saveTypebot,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
+    publishTypebot,
+    isPublishing,
+    isPublished,
+    updateLocalTypebot,
+    restorePublishedTypebot,
+    updateOnBothTypebots,
+    updateWebhook,
+    setLocalTypebot,
+    octaAgents,
+    octaGroups,
+    botFluxesList,
+    tagsList,
+  ])
   return (
     <typebotContext.Provider value={contextValue}>
       {children}
