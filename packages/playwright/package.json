@@ -13,7 +13,7 @@
     "@typebot.io/schemas": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^20.11.26",
+    "@types/node": "20.4.2",
     "@typebot.io/tsconfig": "workspace:*"
   }
 }

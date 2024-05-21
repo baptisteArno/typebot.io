@@ -101,7 +101,7 @@ export type FetcherDefinition<A extends AuthDefinition, T = {}> = {
    */
   dependencies: (keyof T)[]
   fetch: (params: {
-    credentials: CredentialsFromAuthDef<A>
+    credentials: CredentialsFromAuthDef<A> | undefined
     options: T
   }) => Promise<(string | { label: string; value: string })[]>
 }
