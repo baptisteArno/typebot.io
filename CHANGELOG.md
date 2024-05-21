@@ -1,5 +1,28 @@
 # Changelog
 
+<a name="2.25.2"></a>
+## 2.25.2 (2024-05-21)
+
+### Added
+
+- ✨ (setVariable) Add Transcription system var ([#1507](https://github.com/baptisteArno/typebot.io/issues/1507)) [[40f2120](https://github.com/baptisteArno/typebot.io/commit/40f21203b50e57c4cdd2b4cc70a6625d35b9cb45)]
+
+### Changed
+
+- 🚸 (whatsapp) Enable embed video thumbnail previ… [[9b8298b](https://github.com/baptisteArno/typebot.io/commit/9b8298b1315506a7bd9233d120b6135725d1b122)]
+- 💄 Fix bubble preview image full size [[8151d7f](https://github.com/baptisteArno/typebot.io/commit/8151d7fd907ecf2baa242367a275d18fd9a36f5c)]
+- 💄 (bot) Fix bubble max widths and guest avatar shrinking [[3662c0d](https://github.com/baptisteArno/typebot.io/commit/3662c0d631383d3bd2cb24230e9fcc6b3b976999)]
+- 🗃️ Convert answerv2 content field to Text field [[41ccf24](https://github.com/baptisteArno/typebot.io/commit/41ccf2434853afcc5e7d951dca1f245c50035831)]
+
+### Fixed
+
+- 🚑 (httpRequests) Fix save variable parsing [[304bfcf](https://github.com/baptisteArno/typebot.io/commit/304bfcf355e62912600bcbaf1414d6908673f3c5)]
+- 🐛 (transcript) Fix typebot link incorrect next group [[fa45564](https://github.com/baptisteArno/typebot.io/commit/fa4556450426cf886654596f817f683340702ba2)]
+- 🐛 Fix select input displaying id instead of label on refresh [[f211a3e](https://github.com/baptisteArno/typebot.io/commit/f211a3e29fb5e8d47d8064333fe07da87a968764)]
+- 🐛 (wa) Fix WhatsApp session stuck if state object is empty [[8351e20](https://github.com/baptisteArno/typebot.io/commit/8351e20fd30a732d51c09bbe2552fbb4edeec872)]
+- 🚑 (setVariable) Fix inline code parser [[91603aa](https://github.com/baptisteArno/typebot.io/commit/91603aa6cee6b6effd20ef8a2ab6de1cee0f534c)]
+
+
 <a name="2.25.1"></a>
 ## 2.25.1 (2024-05-14)
 
