@@ -57,11 +57,11 @@ export const resumeWebhookExecution = ({
     const existingVariable = typebot.variables.find(byId(varMapping.variableId))
     if (!existingVariable) return newVariables
     const sandbox = vm.createContext({
-      data: response.data,
+      data: response,
     })
     try {
       const value: unknown = vm.runInContext(
-        parseVariables(typebot.variables)(varMapping?.bodyPath),
+        `data.${parseVariables(typebot.variables)(varMapping?.bodyPath)}`,
         sandbox
       )
       return [...newVariables, { ...existingVariable, value }]
