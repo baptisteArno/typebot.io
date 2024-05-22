@@ -261,12 +261,14 @@ const parseResultTranscriptProps = async (
         select: {
           blockId: true,
           content: true,
+          createdAt: true,
         },
       },
       answersV2: {
         select: {
           blockId: true,
           content: true,
+          createdAt: true,
         },
       },
       setVariableHistory: {
@@ -281,7 +283,9 @@ const parseResultTranscriptProps = async (
   })
   if (!result) return
   return {
-    answers: result.answersV2.concat(result.answers),
+    answers: result.answersV2
+      .concat(result.answers)
+      .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime()),
     setVariableHistory: (
       result.setVariableHistory as SetVariableHistoryItem[]
     ).sort((a, b) => a.index - b.index),
