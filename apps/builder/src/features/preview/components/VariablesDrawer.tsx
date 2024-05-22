@@ -168,7 +168,8 @@ const VariableItem = ({
       b.type === LogicBlockType.SET_VARIABLE &&
       sessionOnlySetVariableOptions.includes(
         b.options?.type as (typeof sessionOnlySetVariableOptions)[number]
-      )
+      ) &&
+      b.options?.variableId === variable.id
   )
 
   const isLinkedToAnswer = setVariableAndInputBlocks.some(
