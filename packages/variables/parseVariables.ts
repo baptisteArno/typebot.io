@@ -1,8 +1,7 @@
 import { safeStringify } from '@typebot.io/lib/safeStringify'
 import { isDefined, isNotDefined } from '@typebot.io/lib/utils'
-import { parseGuessedValueType } from './parseGuessedValueType'
 import { Variable, VariableWithValue } from './types'
-import vm from 'vm'
+import { createCodeRunner } from './codeRunners'
 
 export type ParseVariablesOptions = {
   fieldToParse?: 'value' | 'id'
@@ -73,18 +72,10 @@ const evaluateInlineCode = (
   code: string,
   { variables }: { variables: Variable[] }
 ) => {
-  const evaluating = parseVariables(variables, { fieldToParse: 'id' })(
-    `(function() {
-      ${code.includes('return ') ? code : 'return ' + code}
-    })()`
-  )
   try {
-    const sandbox = vm.createContext({
-      ...Object.fromEntries(
-        variables.map((v) => [v.id, parseGuessedValueType(v.value)])
-      ),
-    })
-    return vm.runInContext(evaluating, sandbox)
+    return createCodeRunner({ variables })(
+      parseVariables(variables, { fieldToParse: 'id' })(code)
+    )
   } catch (err) {
     return parseVariables(variables)(code)
   }
