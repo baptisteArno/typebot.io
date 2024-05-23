@@ -12055,9 +12055,6 @@
               "url": {
                 "type": "string"
               },
-              "maxBubbleWidth": {
-                "type": "number"
-              },
               "waitForEventFunction": {
                 "type": "object",
                 "properties": {

@@ -153,7 +153,6 @@ export const executeForgedBlock = async (
             url: action.run.web.displayEmbedBubble.parseUrl({
               options: parsedOptions,
             }),
-            maxBubbleWidth: action.run.web.displayEmbedBubble.maxBubbleWidth,
             initFunction: action.run.web.displayEmbedBubble.parseInitFunction({
               options: parsedOptions,
             }),

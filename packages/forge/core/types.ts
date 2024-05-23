@@ -85,7 +85,6 @@ export type ActionDefinition<
         parseInitFunction: (params: {
           options: z.infer<BaseOptions> & z.infer<Options>
         }) => FunctionToExecute
-        maxBubbleWidth?: number
       }
       parseFunction?: (params: {
         options: z.infer<BaseOptions> & z.infer<Options>

@@ -43,7 +43,6 @@ export const bookEvent = createAction({
     web: {
       displayEmbedBubble: {
         parseUrl: ({ options }) => options.link,
-        maxBubbleWidth: 780,
         waitForEvent: {
           getSaveVariableId: ({ saveBookedDateInVariableId }) =>
             saveBookedDateInVariableId,
