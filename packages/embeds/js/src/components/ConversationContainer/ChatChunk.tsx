@@ -72,7 +72,7 @@ export const ChatChunk = (props: Props) => {
   }
 
   return (
-    <div class="flex flex-col w-full min-w-0 gap-2">
+    <div class="flex flex-col w-full min-w-0 gap-2 typebot-chat-chunk">
       <Show when={props.messages.length > 0}>
         <div class={'flex' + (isMobile() ? ' gap-1' : ' gap-2')}>
           <Show

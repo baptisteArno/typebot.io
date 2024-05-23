@@ -90,7 +90,7 @@ export const InputChatBlock = (props: Props) => {
       </Match>
       <Match when={isNotDefined(answer()) || props.hasError}>
         <div
-          class="flex justify-end animate-fade-in gap-2"
+          class="flex justify-end animate-fade-in gap-2 typebot-input-container"
           data-blockid={props.block.id}
           ref={props.ref}
         >
