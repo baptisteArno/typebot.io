@@ -49,14 +49,20 @@ export const bookEvent = createAction({
           parseFunction: () => {
             return {
               args: {},
-              content: `Cal("on", {
-                action: "bookingSuccessful",
-                callback: (e) => {
-                  if(window.calComBooked) return
+              content: `{
+                const callback = (e) => {
                   continueFlow(e.detail.data.date)
-                  window.calComBooked = true
+                  Cal("off", {
+                    action: "bookingSuccessful",
+                    callback
+                  })
                 }
-              })`,
+
+                Cal("on", {
+                  action: "bookingSuccessful",
+                  callback
+                })
+              }`,
             }
           },
         },
@@ -106,8 +112,6 @@ export const bookEvent = createAction({
                     p(cal, ar);
                   };
               })(window, baseUrl + "/embed/embed.js", "init");
-
-              window.calComBooked = false;
 
               Cal("init", { origin: baseUrl });
 
