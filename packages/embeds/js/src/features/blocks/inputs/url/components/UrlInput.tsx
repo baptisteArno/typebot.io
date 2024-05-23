@@ -18,10 +18,6 @@ export const UrlInput = (props: Props) => {
   let inputRef: HTMLInputElement | HTMLTextAreaElement | undefined
 
   const handleInput = (inputValue: string) => {
-    if (!inputValue.startsWith('https://'))
-      return inputValue === 'https:/'
-        ? undefined
-        : setInputValue(`https://${inputValue}`)
     setInputValue(inputValue)
   }
 
@@ -29,6 +25,8 @@ export const UrlInput = (props: Props) => {
     inputRef?.value !== '' && inputRef?.reportValidity()
 
   const submit = () => {
+    if (inputRef && !inputRef?.value.startsWith('http'))
+      inputRef.value = `https://${inputRef.value}`
     if (checkIfInputIsValid())
       props.onSubmit({ value: inputRef?.value ?? inputValue() })
     else inputRef?.focus()
