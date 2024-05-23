@@ -5,6 +5,7 @@ import GitlabProvider from 'next-auth/providers/gitlab'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
 import AzureADProvider from 'next-auth/providers/azure-ad'
+import KeycloakProvider from 'next-auth/providers/keycloak'
 import prisma from '@typebot.io/lib/prisma'
 import { Provider } from 'next-auth/providers'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -98,6 +99,21 @@ if (
       clientId: env.AZURE_AD_CLIENT_ID,
       clientSecret: env.AZURE_AD_CLIENT_SECRET,
       tenantId: env.AZURE_AD_TENANT_ID,
+    })
+  )
+}
+
+if (
+  env.KEYCLOAK_CLIENT_ID &&
+  env.KEYCLOAK_BASE_URL &&
+  env.KEYCLOAK_CLIENT_SECRET &&
+  env.KEYCLOAK_REALM
+) {
+  providers.push(
+    KeycloakProvider({
+      clientId: env.KEYCLOAK_CLIENT_ID,
+      clientSecret: env.KEYCLOAK_CLIENT_SECRET,
+      issuer: `${env.KEYCLOAK_BASE_URL}/${env.KEYCLOAK_REALM}`,
     })
   )
 }
