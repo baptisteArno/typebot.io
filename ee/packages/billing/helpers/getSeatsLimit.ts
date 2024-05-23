@@ -1,5 +1,5 @@
 import { Workspace } from '@typebot.io/schemas'
-import { seatsLimits } from './constants'
+import { seatsLimits } from '../constants'
 import { Plan } from '@typebot.io/prisma'
 
 export const getSeatsLimit = ({

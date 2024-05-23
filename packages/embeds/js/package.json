@@ -11,7 +11,7 @@
     "lint": "eslint --fix \"src/**/*.ts*\"",
     "format:check": "prettier --check ./src"
   },
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
   "dependencies": {
     "@stripe/stripe-js": "1.54.1",
     "@udecode/plate-common": "30.4.5",

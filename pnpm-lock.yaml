@@ -290,7 +290,7 @@ importers:
         version: 1.43.1
       '@typebot.io/billing':
         specifier: workspace:*
-        version: link:../../packages/billing
+        version: link:../../ee/packages/billing
       '@typebot.io/forge':
         specifier: workspace:*
         version: link:../../packages/forge/core
@@ -393,124 +393,6 @@ importers:
       tsx:
         specifier: ^4.6.2
         version: 4.7.1
-
-  apps/landing-page:
-    dependencies:
-      '@chakra-ui/icon':
-        specifier: 3.0.15
-        version: 3.0.15(@chakra-ui/system@2.6.2)(react@18.2.0)
-      '@chakra-ui/next-js':
-        specifier: 2.2.0
-        version: 2.2.0(@chakra-ui/react@2.7.1)(@emotion/react@11.11.1)(next@14.1.0)(react@18.2.0)
-      '@chakra-ui/react':
-        specifier: 2.7.1
-        version: 2.7.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.15)(framer-motion@10.12.20)(react-dom@18.2.0)(react@18.2.0)
-      '@emotion/react':
-        specifier: 11.11.1
-        version: 11.11.1(@types/react@18.2.15)(react@18.2.0)
-      '@emotion/styled':
-        specifier: 11.11.0
-        version: 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.15)(react@18.2.0)
-      '@typebot.io/billing':
-        specifier: workspace:*
-        version: link:../../packages/billing
-      '@typebot.io/lib':
-        specifier: workspace:*
-        version: link:../../packages/lib
-      '@typebot.io/nextjs':
-        specifier: workspace:*
-        version: link:../../packages/embeds/nextjs
-      '@typebot.io/prisma':
-        specifier: workspace:*
-        version: link:../../packages/prisma
-      '@typebot.io/schemas':
-        specifier: workspace:*
-        version: link:../../packages/schemas
-      aos:
-        specifier: 2.3.4
-        version: 2.3.4
-      focus-visible:
-        specifier: 5.2.0
-        version: 5.2.0
-      framer-motion:
-        specifier: 10.12.20
-        version: 10.12.20(react-dom@18.2.0)(react@18.2.0)
-      next:
-        specifier: 14.1.0
-        version: 14.1.0(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
-      next-mdx-remote:
-        specifier: 4.4.1
-        version: 4.4.1(react-dom@18.2.0)(react@18.2.0)
-      react:
-        specifier: 18.2.0
-        version: 18.2.0
-      react-dom:
-        specifier: 18.2.0
-        version: 18.2.0(react@18.2.0)
-      react-tweet:
-        specifier: 3.2.1
-        version: 3.2.1(react-dom@18.2.0)(react@18.2.0)
-      sugar-high:
-        specifier: 0.6.0
-        version: 0.6.0
-    devDependencies:
-      '@babel/core':
-        specifier: 7.22.9
-        version: 7.22.9
-      '@chakra-ui/styled-system':
-        specifier: 2.9.1
-        version: 2.9.1
-      '@tailwindcss/typography':
-        specifier: 0.5.12
-        version: 0.5.12(tailwindcss@3.3.3)
-      '@typebot.io/env':
-        specifier: workspace:*
-        version: link:../../packages/env
-      '@typebot.io/tsconfig':
-        specifier: workspace:*
-        version: link:../../packages/tsconfig
-      '@types/aos':
-        specifier: 3.0.4
-        version: 3.0.4
-      '@types/node':
-        specifier: 20.4.2
-        version: 20.4.2
-      '@types/react':
-        specifier: 18.2.15
-        version: 18.2.15
-      autoprefixer:
-        specifier: 10.4.14
-        version: 10.4.14(postcss@8.4.26)
-      cross-env:
-        specifier: 7.0.3
-        version: 7.0.3
-      dotenv-cli:
-        specifier: 7.4.1
-        version: 7.4.1
-      eslint:
-        specifier: 8.44.0
-        version: 8.44.0
-      eslint-config-custom:
-        specifier: workspace:*
-        version: link:../../packages/eslint-config-custom
-      next-runtime-env:
-        specifier: 1.6.2
-        version: 1.6.2
-      next-transpile-modules:
-        specifier: 10.0.0
-        version: 10.0.0
-      postcss:
-        specifier: 8.4.26
-        version: 8.4.26
-      prettier:
-        specifier: 3.0.0
-        version: 3.0.0
-      tailwindcss:
-        specifier: 3.3.3
-        version: 3.3.3
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
 
   apps/viewer:
     dependencies:
@@ -672,21 +554,160 @@ importers:
         specifier: 3.22.4
         version: 3.22.4
 
-  packages/billing:
+  ee/apps/landing-page:
     dependencies:
+      '@chakra-ui/icon':
+        specifier: 3.0.15
+        version: 3.0.15(@chakra-ui/system@2.6.2)(react@18.2.0)
+      '@chakra-ui/next-js':
+        specifier: 2.2.0
+        version: 2.2.0(@chakra-ui/react@2.7.1)(@emotion/react@11.11.1)(next@14.1.0)(react@18.2.0)
+      '@chakra-ui/react':
+        specifier: 2.7.1
+        version: 2.7.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.15)(framer-motion@10.12.20)(react-dom@18.2.0)(react@18.2.0)
+      '@emotion/react':
+        specifier: 11.11.1
+        version: 11.11.1(@types/react@18.2.15)(react@18.2.0)
+      '@emotion/styled':
+        specifier: 11.11.0
+        version: 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.15)(react@18.2.0)
+      '@typebot.io/billing':
+        specifier: workspace:*
+        version: link:../../packages/billing
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../../../packages/lib
+      '@typebot.io/nextjs':
+        specifier: workspace:*
+        version: link:../../../packages/embeds/nextjs
       '@typebot.io/prisma':
         specifier: workspace:*
-        version: link:../prisma
+        version: link:../../../packages/prisma
       '@typebot.io/schemas':
         specifier: workspace:*
-        version: link:../schemas
+        version: link:../../../packages/schemas
+      aos:
+        specifier: 2.3.4
+        version: 2.3.4
+      focus-visible:
+        specifier: 5.2.0
+        version: 5.2.0
+      framer-motion:
+        specifier: 10.12.20
+        version: 10.12.20(react-dom@18.2.0)(react@18.2.0)
+      next:
+        specifier: 14.1.0
+        version: 14.1.0(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
+      next-mdx-remote:
+        specifier: 4.4.1
+        version: 4.4.1(react-dom@18.2.0)(react@18.2.0)
+      react:
+        specifier: 18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: 18.2.0
+        version: 18.2.0(react@18.2.0)
+      react-tweet:
+        specifier: 3.2.1
+        version: 3.2.1(react-dom@18.2.0)(react@18.2.0)
+      sugar-high:
+        specifier: 0.6.0
+        version: 0.6.0
+    devDependencies:
+      '@babel/core':
+        specifier: 7.22.9
+        version: 7.22.9
+      '@chakra-ui/styled-system':
+        specifier: 2.9.1
+        version: 2.9.1
+      '@tailwindcss/typography':
+        specifier: 0.5.12
+        version: 0.5.12(tailwindcss@3.3.3)
+      '@typebot.io/env':
+        specifier: workspace:*
+        version: link:../../../packages/env
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../../../packages/tsconfig
+      '@types/aos':
+        specifier: 3.0.4
+        version: 3.0.4
+      '@types/node':
+        specifier: 20.4.2
+        version: 20.4.2
+      '@types/react':
+        specifier: 18.2.15
+        version: 18.2.15
+      autoprefixer:
+        specifier: 10.4.14
+        version: 10.4.14(postcss@8.4.26)
+      cross-env:
+        specifier: 7.0.3
+        version: 7.0.3
+      dotenv-cli:
+        specifier: 7.4.1
+        version: 7.4.1
+      eslint:
+        specifier: 8.44.0
+        version: 8.44.0
+      eslint-config-custom:
+        specifier: workspace:*
+        version: link:../../../packages/eslint-config-custom
+      next-runtime-env:
+        specifier: 1.6.2
+        version: 1.6.2
+      next-transpile-modules:
+        specifier: 10.0.0
+        version: 10.0.0
+      postcss:
+        specifier: 8.4.26
+        version: 8.4.26
+      prettier:
+        specifier: 3.0.0
+        version: 3.0.0
+      tailwindcss:
+        specifier: 3.3.3
+        version: 3.3.3
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+
+  ee/packages/billing:
+    dependencies:
+      '@trpc/server':
+        specifier: 10.40.0
+        version: 10.40.0
+      '@typebot.io/db-rules':
+        specifier: workspace:*
+        version: link:../../../packages/db-rules
+      '@typebot.io/env':
+        specifier: workspace:*
+        version: link:../../../packages/env
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../../../packages/lib
+      '@typebot.io/prisma':
+        specifier: workspace:*
+        version: link:../../../packages/prisma
+      '@typebot.io/schemas':
+        specifier: workspace:*
+        version: link:../../../packages/schemas
+      '@typebot.io/telemetry':
+        specifier: workspace:*
+        version: link:../../../packages/telemetry
+      micro:
+        specifier: 10.0.1
+        version: 10.0.1
+      next:
+        specifier: 14.1.0
+        version: 14.1.0(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
       stripe:
         specifier: 12.13.0
         version: 12.13.0
     devDependencies:
       '@typebot.io/tsconfig':
         specifier: workspace:*
-        version: link:../tsconfig
+        version: link:../../../packages/tsconfig
 
   packages/bot-engine:
     dependencies:
@@ -790,6 +811,15 @@ importers:
       '@types/qs':
         specifier: 6.9.7
         version: 6.9.7
+
+  packages/db-rules:
+    dependencies:
+      '@typebot.io/env':
+        specifier: workspace:*
+        version: link:../env
+      '@typebot.io/prisma':
+        specifier: workspace:*
+        version: link:../prisma
 
   packages/deprecated/bot-engine:
     dependencies:
@@ -1843,7 +1873,7 @@ importers:
         version: 2.2.1
       '@typebot.io/billing':
         specifier: workspace:*
-        version: link:../billing
+        version: link:../../ee/packages/billing
       '@typebot.io/results':
         specifier: workspace:*
         version: link:../results
@@ -21476,7 +21506,7 @@ packages:
     resolution: {integrity: sha512-mn7CxL71FCRWkQp33jcJ7+xfRF7HGzPYZlq2c87U+6kxL1qd7f/N3S1g1E5uaSWe83V5v3jN/IiWqg9y8+kWRw==}
     engines: {node: '>=12.*'}
     dependencies:
-      '@types/node': 20.12.4
+      '@types/node': 20.4.9
       qs: 6.11.2
 
   /strnum@1.0.5:

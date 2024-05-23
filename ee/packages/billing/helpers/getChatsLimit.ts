@@ -1,5 +1,5 @@
 import { Plan } from '@typebot.io/prisma'
-import { chatsLimits } from './constants'
+import { chatsLimits } from '../constants'
 import { Workspace } from '@typebot.io/schemas'
 
 export const getChatsLimit = ({

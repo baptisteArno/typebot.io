@@ -17,8 +17,8 @@ import {
 import { useRouter } from 'next/router'
 import React, { FormEvent, useState } from 'react'
 import { isDefined } from '@typebot.io/lib'
-import { taxIdTypes } from '../taxIdTypes'
 import { useTranslate } from '@tolgee/react'
+import { taxIdTypes } from '@typebot.io/billing/taxIdTypes'
 
 export type PreCheckoutModalProps = {
   selectedSubscription:
