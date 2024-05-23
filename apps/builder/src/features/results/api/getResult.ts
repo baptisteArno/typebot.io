@@ -76,12 +76,14 @@ export const getResult = authenticatedProcedure
           select: {
             blockId: true,
             content: true,
+            createdAt: true,
           },
         },
         answersV2: {
           select: {
             blockId: true,
             content: true,
+            createdAt: true,
           },
         },
       },
@@ -95,7 +97,9 @@ export const getResult = authenticatedProcedure
     return {
       result: resultWithAnswersSchema.parse({
         ...result,
-        answers: answers.concat(answersV2),
+        answers: answers
+          .concat(answersV2)
+          .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime()),
       }),
     }
   })

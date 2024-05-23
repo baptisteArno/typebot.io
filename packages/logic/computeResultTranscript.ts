@@ -217,7 +217,11 @@ const executeGroup = ({
         block.options &&
         (block.options.typebotId === 'current' ||
           block.options.typebotId === typebotsQueue[0].typebot.id)
-      if (!isLinkingSameTypebot) continue
+
+      const linkedGroup = typebotsQueue[0].typebot.groups.find(
+        (g) => g.id === block.options?.groupId
+      )
+      if (!isLinkingSameTypebot || !linkedGroup) continue
       let resumeEdge: Edge | undefined
       if (!block.outgoingEdgeId) {
         const currentBlockIndex = nextGroup.group.blocks.findIndex(
@@ -257,7 +261,9 @@ const executeGroup = ({
         answers,
         setVariableHistory,
         currentTranscript,
-        nextGroup,
+        nextGroup: {
+          group: linkedGroup,
+        },
         visitedEdges,
         stopAtBlockId,
       })

@@ -7,8 +7,8 @@ icon: gear
   If you're self-hosting Typebot, [sponsoring
   me](https://github.com/sponsors/baptisteArno) is a great way to give back to
   the community and to contribute to the long-term sustainability of the
-  project. Thank you for supporting independent creators of Free Open Source
-  Software!
+  project. It also comes with some perks like priority support and private
+  workshops. ❤️
 </Note>
 
 Parameters marked with <span style={{color: '#ef5151'}}>\*</span> are required.
@@ -298,31 +298,6 @@ The [official Typebot managed service](https://app.typebot.io/) uses other servi
 
 The related environment variables are listed here but you are probably not interested in these if you self-host Typebot.
 
-<Accordion title="Stripe">
-
-| Parameter                     | Default | Description                               |
-| ----------------------------- | ------- | ----------------------------------------- |
-| NEXT_PUBLIC_STRIPE_PUBLIC_KEY |         | Stripe public key                         |
-| STRIPE_SECRET_KEY             |         | Stripe secret key                         |
-| STRIPE_STARTER_PRICE_ID       |         | Starter plan price id                     |
-| STRIPE_PRO_PRICE_ID           |         | Pro monthly plan price id                 |
-| STRIPE_STARTER_CHATS_PRICE_ID |         | Starter Additional chats monthly price id |
-| STRIPE_PRO_CHATS_PRICE_ID     |         | Pro Additional chats monthly price id     |
-| STRIPE_WEBHOOK_SECRET         |         | Stripe Webhook secret                     |
-
-</Accordion>
-
-<Accordion title="Sentry">
-
-| Parameter              | Default | Description                            |
-| ---------------------- | ------- | -------------------------------------- |
-| NEXT_PUBLIC_SENTRY_DSN |         | Sentry DSN                             |
-| SENTRY_AUTH_TOKEN      |         | Used to upload sourcemaps on app build |
-| SENTRY_PROJECT         |         | Sentry project name                    |
-| SENTRY_ORG             |         | Sentry organization name               |
-
-</Accordion>
-
 <Accordion title="Vercel (custom domains)">
 
 | Parameter                              | Default | Description                                     |
@@ -330,14 +305,6 @@ The related environment variables are listed here but you are probably not inter
 | VERCEL_TOKEN                           |         | Vercel API token                                |
 | NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME |         | The name of the viewer project in Vercel        |
 | VERCEL_TEAM_ID                         |         | Vercel team ID that contains the viewer project |
-
-</Accordion>
-
-<Accordion title="Sleekplan">
-
-| Parameter         | Default | Description                                                              |
-| ----------------- | ------- | ------------------------------------------------------------------------ |
-| SLEEKPLAN_SSO_KEY |         | Sleekplan SSO key used to automatically authenticate a user in Sleekplan |
 
 </Accordion>
 

@@ -11,7 +11,7 @@ import { SessionState } from '@typebot.io/schemas/features/chat/sessionState'
 import { ExecuteIntegrationResponse } from '../../../types'
 import { parseVariables } from '@typebot.io/variables/parseVariables'
 import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
-import vm from 'vm'
+import { createHttpReqResponseMappingRunner } from '@typebot.io/variables/codeRunners'
 
 type Props = {
   state: SessionState
@@ -50,19 +50,21 @@ export const resumeWebhookExecution = ({
           }
     )
 
+  let run: (varMapping: string) => unknown
+  if (block.options?.responseVariableMapping) {
+    run = createHttpReqResponseMappingRunner(response)
+  }
   const newVariables = block.options?.responseVariableMapping?.reduce<
     VariableWithUnknowValue[]
   >((newVariables, varMapping) => {
-    if (!varMapping?.bodyPath || !varMapping.variableId) return newVariables
+    if (!varMapping?.bodyPath || !varMapping.variableId || !run)
+      return newVariables
     const existingVariable = typebot.variables.find(byId(varMapping.variableId))
     if (!existingVariable) return newVariables
-    const sandbox = vm.createContext({
-      data: response.data,
-    })
+
     try {
-      const value: unknown = vm.runInContext(
-        parseVariables(typebot.variables)(varMapping?.bodyPath),
-        sandbox
+      const value: unknown = run(
+        parseVariables(typebot.variables)(varMapping?.bodyPath)
       )
       return [...newVariables, { ...existingVariable, value }]
     } catch (err) {

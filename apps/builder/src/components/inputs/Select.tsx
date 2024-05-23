@@ -15,7 +15,7 @@ import {
   IconButton,
   HStack,
 } from '@chakra-ui/react'
-import { useState, useRef, ChangeEvent } from 'react'
+import { useState, useRef, ChangeEvent, useEffect } from 'react'
 import { isDefined } from '@typebot.io/lib'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
@@ -23,14 +23,14 @@ import { ChevronDownIcon, CloseIcon } from '../icons'
 
 const dropdownCloseAnimationDuration = 300
 
-type Item =
-  | string
-  | {
-      icon?: JSX.Element
-      label: string
-      value: string
-      extras?: Record<string, unknown>
-    }
+type RichItem = {
+  icon?: JSX.Element
+  label: string
+  value: string
+  extras?: Record<string, unknown>
+}
+
+type Item = string | RichItem
 
 type Props<T extends Item> = {
   selectedItem?: string
@@ -58,6 +58,18 @@ export const Select = <T extends Item>({
       ) ?? selectedItem
     )
   )
+
+  useEffect(() => {
+    if (!items || typeof items[0] === 'string' || !selectedItem || isTouched)
+      return
+    setInputValue(
+      getItemLabel(
+        (items as readonly RichItem[]).find(
+          (item) => selectedItem === item.value
+        ) ?? selectedItem
+      )
+    )
+  }, [isTouched, items, selectedItem])
 
   const [keyboardFocusIndex, setKeyboardFocusIndex] = useState<
     number | undefined

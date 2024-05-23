@@ -109,12 +109,14 @@ export const getResults = authenticatedProcedure
           select: {
             blockId: true,
             content: true,
+            createdAt: true,
           },
         },
         answersV2: {
           select: {
             blockId: true,
             content: true,
+            createdAt: true,
           },
         },
       },
@@ -127,11 +129,14 @@ export const getResults = authenticatedProcedure
     }
 
     return {
-      results: z
-        .array(resultWithAnswersSchema)
-        .parse(
-          results.map((r) => ({ ...r, answers: r.answersV2.concat(r.answers) }))
-        ),
+      results: z.array(resultWithAnswersSchema).parse(
+        results.map((r) => ({
+          ...r,
+          answers: r.answersV2
+            .concat(r.answers)
+            .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime()),
+        }))
+      ),
       nextCursor,
     }
   })

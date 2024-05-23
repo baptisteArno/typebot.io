@@ -11,7 +11,7 @@ import { byId } from '@typebot.io/lib'
 import { isInputBlock } from '@typebot.io/schemas/helpers'
 import { executeGroup, parseInput } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
-import { validateEmail } from './blocks/inputs/email/validateEmail'
+import { formatEmail } from './blocks/inputs/email/formatEmail'
 import { formatPhoneNumber } from './blocks/inputs/phone/formatPhoneNumber'
 import { resumeWebhookExecution } from './blocks/integrations/webhook/resumeWebhookExecution'
 import { saveAnswer } from './queries/saveAnswer'
@@ -474,9 +474,9 @@ const parseReply =
     switch (block.type) {
       case InputBlockType.EMAIL: {
         if (!reply) return { status: 'fail' }
-        const isValid = validateEmail(reply)
-        if (!isValid) return { status: 'fail' }
-        return { status: 'success', reply: reply }
+        const formattedEmail = formatEmail(reply)
+        if (!formattedEmail) return { status: 'fail' }
+        return { status: 'success', reply: formattedEmail }
       }
       case InputBlockType.PHONE: {
         if (!reply) return { status: 'fail' }

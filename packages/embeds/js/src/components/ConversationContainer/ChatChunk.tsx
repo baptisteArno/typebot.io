@@ -96,11 +96,9 @@ export const ChatChunk = (props: Props) => {
                 props.theme.chat?.guestAvatar?.isEnabled ??
                 defaultGuestAvatarIsEnabled
                   ? isMobile()
-                    ? 'calc(100% - 32px - 32px)'
+                    ? 'calc(100% - 60px)'
                     : 'calc(100% - 48px - 48px)'
-                  : isMobile()
-                  ? 'calc(100% - 32px)'
-                  : 'calc(100% - 48px)',
+                  : '100%',
             }}
           >
             <For each={props.messages.slice(0, displayedMessageIndex() + 1)}>
@@ -168,11 +166,9 @@ export const ChatChunk = (props: Props) => {
                   props.theme.chat?.guestAvatar?.isEnabled ??
                   defaultGuestAvatarIsEnabled
                     ? isMobile()
-                      ? 'calc(100% - 32px - 32px)'
+                      ? 'calc(100% - 60px)'
                       : 'calc(100% - 48px - 48px)'
-                    : isMobile()
-                    ? 'calc(100% - 32px)'
-                    : 'calc(100% - 48px)',
+                    : '100%',
               }}
             >
               <StreamingBubble streamingMessageId={streamingMessageId} />

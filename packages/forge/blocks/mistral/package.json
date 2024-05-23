@@ -4,16 +4,18 @@
   "description": "",
   "main": "index.ts",
   "keywords": [],
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/node": "^20.12.4",
+    "@types/node": "20.4.2",
     "@types/react": "18.2.15",
     "typescript": "5.4.5"
   },
   "dependencies": {
-    "ai": "3.0.31"
+    "@ai-sdk/mistral": "0.0.11",
+    "ai": "3.1.12",
+    "ky": "1.2.4"
   }
 }

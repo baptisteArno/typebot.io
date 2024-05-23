@@ -16,13 +16,15 @@ export const zemanticAiBlock = createBlock({
     {
       id: 'fetchProjects',
       dependencies: [],
-      fetch: async ({ credentials: { apiKey } }) => {
+      fetch: async ({ credentials }) => {
+        if (!credentials?.apiKey) return []
+
         const url = 'https://api.zemantic.ai/v1/projects'
 
         const response = await ky
           .get(url, {
             headers: {
-              Authorization: `Bearer ${apiKey}`,
+              Authorization: `Bearer ${credentials.apiKey}`,
             },
           })
           .json()

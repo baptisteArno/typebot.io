@@ -8,11 +8,11 @@
   },
   "keywords": [],
   "author": "Baptiste Arnaud",
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "@clack/prompts": "^0.7.0",
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/node": "^20.10.1",
+    "@types/node": "20.4.2",
     "tsx": "^4.6.1",
     "prettier": "3.0.0"
   }

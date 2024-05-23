@@ -1,6 +1,6 @@
 import { Plan, PrismaClient, WorkspaceRole } from '@typebot.io/prisma'
 import { isDefined, isEmpty } from '@typebot.io/lib'
-import { getChatsLimit } from '@typebot.io/billing/getChatsLimit'
+import { getChatsLimit } from '@typebot.io/billing/helpers/getChatsLimit'
 import { promptAndSetEnvironment } from './utils'
 import { Workspace } from '@typebot.io/schemas'
 import { sendAlmostReachedChatsLimitEmail } from '@typebot.io/emails/src/emails/AlmostReachedChatsLimitEmail'

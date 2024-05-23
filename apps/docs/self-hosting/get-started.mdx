@@ -3,7 +3,7 @@ title: Overview
 icon: server
 ---
 
-Typebot is 100% open-source and can be self-hosted on your own server. This guide will walk you through the process of setting up your own instance of Typebot.
+Typebot is open-source and can be self-hosted on your own server. This guide will walk you through the process of setting up your own instance of Typebot.
 
 <Note>
   The easiest way to get started with Typebot is with [the official managed
@@ -25,11 +25,16 @@ Typebot is 100% open-source and can be self-hosted on your own server. This guid
 
 ## License requirements
 
-Typebot is open-source under the GNU Affero General Public License Version 3 (AGPLv3). You can find it [here](https://raw.githubusercontent.com/baptisteArno/typebot.io/main/LICENSE). The goal of the AGPLv3 license is to:
+You can find the full license [here](https://raw.githubusercontent.com/baptisteArno/typebot.io/main/LICENSE).
+
+Here is a summary of the license:
+
+All content that resides under the [ee](https://github.com/baptisteArno/typebot.io/tree/main/ee) directory of this repository is licensed under the license defined in [ee/LICENSE](./ee/LICENSE). The [ee](https://github.com/baptisteArno/typebot.io/tree/main/ee) folder contains the code for the [landing page](https://typebot.io) and the billing feature. We restrict these to a Commercial License to make sure other companies can't simply clone Typebot's homepage and billing system and offer the same service without contributing to the open-source project.
+
+Content outside of this directory is available under the GNU Affero General Public License Version 3 (AGPLv3). The goal of the AGPLv3 license is to:
 
 - Maximize user freedom and to encourage companies to contribute to open source.
-- Prevent corporations from taking the code and using it as part of their closed-source proprietary products
-- Prevent corporations from offering Typebot as a service without contributing to the open source project
+- Prevent corporations from offering Typebot as a service without contributing back to the open source project
 - Prevent corporations from confusing people and making them think that the service they sell is in any shape or form approved by the original team
 
 Here are the 3 different possible use cases:
@@ -46,7 +51,7 @@ Here are the 3 different possible use cases:
 
 <Accordion title="You'd like to commercialize your own version of Typebot">
   <ol>
-    <li>You need to open-source your modifications.</li>{' '}
+    <li>You need to open-source your fork of the project.</li>
     <li>
       After your users registration, you should provide a prominent mention and
       link to the original project (https://typebot.io). You should clearly
@@ -54,10 +59,25 @@ Here are the 3 different possible use cases:
       Typebot. It would be also a good place to explain your version advantages
       comparing to the original project.
     </li>
+    <li>If you want to use code that resides under the [ee](https://github.com/baptisteArno/typebot.io/tree/main/ee) folder (landing page or billing feature), you need a [Commercial License key](https://typebot.io/enterprise-lead-form).</li>
     <li>You need to provide a link to your forked repository somewhere in the landing page or the builder. This way, interested users can easily access and review the modifications you've made.</li>
   </ol>
 </Accordion>
 </AccordionGroup>
+
+<Note>
+  Either use case, [sponsoring the
+  project](https://github.com/sponsors/baptisteArno) is a great way to give back
+  to the community and to contribute to the long-term sustainability of the
+  project. It also comes with some perks like priority support and private
+  workshops. ❤️
+</Note>
+
+## Releases
+
+The self-hosted version is somewhat of a LTS, you only get new release once a month. If you want features as soon as they are available, consider becoming a [cloud user](https://app.typebot.io). New versions are published on the [releases page](https://github.com/baptisteArno/typebot.io/releases).
+
+## Ready to self-host?
 
 Typebot is composed of 2 Next.js applications you need to deploy:
 
@@ -69,3 +89,5 @@ I've written guides on how to deploy Typebot using:
 - [Docker](/self-hosting/deploy/docker)
 - [Vercel](/self-hosting/deploy/vercel)
 - [Manual](/self-hosting/deploy/manual)
+
+If you have any questions, feel free to reach out on the [Discord server](https://typebot.io/discord) 🔥

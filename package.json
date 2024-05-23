@@ -1,9 +1,10 @@
 {
-  "version": "2.25.1",
+  "version": "2.25.2",
   "name": "typebot-os",
   "private": true,
-  "license": "AGPL-3.0-or-later",
   "workspaces": [
+    "ee/apps/*",
+    "ee/packages/*",
     "packages/*",
     "packages/deprecated/*",
     "packages/embeds/*",
@@ -16,7 +17,7 @@
     "docker:up": "docker compose -f docker-compose.dev.yml up -d && node -e \"setTimeout(() => {}, 5000)\"",
     "docker:nuke": "docker compose -f docker-compose.dev.yml down --volumes --remove-orphans",
     "lint": "turbo run lint",
-    "dev": "pnpm docker:up && turbo build --filter=@typebot.io/nextjs... && turbo run dev --filter=builder... --filter=viewer... --filter=chat-api... --parallel --no-cache",
+    "dev": "pnpm docker:up && turbo build --filter=@typebot.io/nextjs... && turbo run dev --filter=builder... --filter=viewer... --parallel --no-cache",
     "build": "pnpm docker:up && turbo run build",
     "build:apps": "turbo run build --filter=builder... --filter=viewer...",
     "db:migrate": "cd packages/prisma && pnpm run db:migrate",

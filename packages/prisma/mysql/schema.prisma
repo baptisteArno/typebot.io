@@ -320,11 +320,12 @@ model Answer {
 }
 
 model AnswerV2 {
-  id       Int    @id @default(autoincrement())
-  blockId  String
-  content  String @db.Text
-  resultId String
-  result   Result @relation(fields: [resultId], references: [id], onDelete: Cascade)
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  blockId   String
+  content   String   @db.Text
+  resultId  String
+  result    Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
 
   @@index([resultId])
   @@index([blockId])

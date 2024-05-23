@@ -8,7 +8,6 @@ import {
 import { byId, isEmpty } from '@typebot.io/lib'
 import { ExecuteLogicResponse } from '../../../types'
 import { parseScriptToExecuteClientSideAction } from '../script/executeScript'
-import { parseGuessedValueType } from '@typebot.io/variables/parseGuessedValueType'
 import { parseVariables } from '@typebot.io/variables/parseVariables'
 import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
 import { createId } from '@paralleldrive/cuid2'
@@ -19,7 +18,7 @@ import {
 } from '@typebot.io/logic/computeResultTranscript'
 import prisma from '@typebot.io/lib/prisma'
 import { sessionOnlySetVariableOptions } from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
-import vm from 'vm'
+import { createCodeRunner } from '@typebot.io/variables/codeRunners'
 
 export const executeSetVariable = async (
   state: SessionState,
@@ -97,17 +96,11 @@ const evaluateSetVariableExpression =
     if (isSingleVariable) return parseVariables(variables)(str)
     // To avoid octal number evaluation
     if (!isNaN(str as unknown as number) && /0[^.].+/.test(str)) return str
-    const evaluating = parseVariables(variables, { fieldToParse: 'id' })(
-      `(function() {${str.includes('return ') ? str : 'return ' + str}})()`
-    )
     try {
-      const sandbox = vm.createContext({
-        ...Object.fromEntries(
-          variables.map((v) => [v.id, parseGuessedValueType(v.value)])
-        ),
-        fetch,
-      })
-      return vm.runInContext(evaluating, sandbox)
+      const body = parseVariables(variables, { fieldToParse: 'id' })(str)
+      return createCodeRunner({ variables })(
+        body.includes('return ') ? body : `return ${body}`
+      )
     } catch (err) {
       return parseVariables(variables)(str)
     }
@@ -268,12 +261,14 @@ const parseResultTranscriptProps = async (
         select: {
           blockId: true,
           content: true,
+          createdAt: true,
         },
       },
       answersV2: {
         select: {
           blockId: true,
           content: true,
+          createdAt: true,
         },
       },
       setVariableHistory: {
@@ -288,7 +283,9 @@ const parseResultTranscriptProps = async (
   })
   if (!result) return
   return {
-    answers: result.answersV2.concat(result.answers),
+    answers: result.answersV2
+      .concat(result.answers)
+      .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime()),
     setVariableHistory: (
       result.setVariableHistory as SetVariableHistoryItem[]
     ).sort((a, b) => a.index - b.index),
