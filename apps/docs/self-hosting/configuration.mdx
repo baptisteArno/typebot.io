@@ -169,6 +169,20 @@ The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/azure-
 | AZURE_AD_CLIENT_SECRET |         | Application client secret. Can be obtained from Azure Portal. |
 | AZURE_AD_TENANT_ID     |         | Azure Tenant ID                                               |
 
+## Keycloak (Auth)
+
+Used for authenticating with Keycloak.
+Follow the official Keycloak guide for creating OAuth2 applications [here](https://www.keycloak.org/).
+
+| Parameter                | Default            | Description                                                                          |
+| ------------------------ | ------------------ | ------------------------------------------------------------------------------------ |
+| KEYCLOAK_CLIENT_ID       |                    | Application client ID.                                                               |
+| KEYCLOAK_CLIENT_SECRET   |                    | Application secret                                                                   |
+| KEYCLOAK_REALM           |                    | Your Keycloak Realm                                                                  |
+| KEYCLOAK_BASE_URL        |                    | Base URL of the Keycloak instance                                                    |
+
+
+
 ## Custom OAuth Provider (Auth)
 
 | Parameter                    | Default              | Description                                                                             |
