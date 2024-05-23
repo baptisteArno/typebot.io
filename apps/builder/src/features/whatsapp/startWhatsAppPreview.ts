@@ -116,6 +116,7 @@ export const startWhatsAppPreview = authenticatedProcedure
         startFrom,
         userId: user.id,
         isStreamEnabled: false,
+        textBubbleContentFormat: 'richText',
       },
       initialSessionState: {
         whatsApp: (existingSession?.state as SessionState | undefined)

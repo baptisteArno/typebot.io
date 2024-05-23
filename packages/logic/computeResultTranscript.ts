@@ -147,6 +147,7 @@ const executeGroup = ({
           version: 2,
           variables: typebotsQueue[0].typebot.variables,
           typebotVersion: typebotsQueue[0].typebot.version,
+          textBubbleContentFormat: 'markdown',
         }
       )
       const newMessage =
@@ -321,11 +322,11 @@ const convertChatMessageToTranscriptMessage = (
 ): TranscriptMessage | null => {
   switch (chatMessage.type) {
     case BubbleBlockType.TEXT: {
-      if (!chatMessage.content.richText) return null
+      if (chatMessage.content.type === 'richText') return null
       return {
         role: 'bot',
         type: 'text',
-        text: convertRichTextToMarkdown(chatMessage.content.richText),
+        text: chatMessage.content.markdown,
       }
     }
     case BubbleBlockType.IMAGE: {

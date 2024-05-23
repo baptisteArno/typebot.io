@@ -92,6 +92,7 @@ export const sendMessageV1 = publicProcedure
                       : startParams.typebot,
                   message,
                   userId: user?.id,
+                  textBubbleContentFormat: 'richText',
                 }
               : {
                   type: 'live',
@@ -101,6 +102,7 @@ export const sendMessageV1 = publicProcedure
                   prefilledVariables: startParams.prefilledVariables,
                   resultId: startParams.resultId,
                   message,
+                  textBubbleContentFormat: 'richText',
                 },
           message,
         })
@@ -179,7 +181,11 @@ export const sendMessageV1 = publicProcedure
           lastMessageNewFormat,
           visitedEdges,
           setVariableHistory,
-        } = await continueBotFlow(message, { version: 1, state: session.state })
+        } = await continueBotFlow(message, {
+          version: 1,
+          state: session.state,
+          textBubbleContentFormat: 'richText',
+        })
 
         const allLogs = clientLogs ? [...(logs ?? []), ...clientLogs] : logs
 

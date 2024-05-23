@@ -42,6 +42,7 @@ type ContextProps = {
   visitedEdges: VisitedEdge[]
   setVariableHistory: SetVariableHistoryItem[]
   startTime?: number
+  textBubbleContentFormat: 'richText' | 'markdown'
 }
 
 export const executeGroup = async (
@@ -55,6 +56,7 @@ export const executeGroup = async (
     currentLastBubbleId,
     firstBubbleWasStreamed,
     startTime,
+    textBubbleContentFormat,
   }: ContextProps
 ): Promise<
   ContinueChatResponse & {
@@ -98,6 +100,7 @@ export const executeGroup = async (
           version,
           variables: newSessionState.typebotsQueue[0].typebot.variables,
           typebotVersion: newSessionState.typebotsQueue[0].typebot.version,
+          textBubbleContentFormat,
         })
       )
       lastBubbleBlockId = block.id
@@ -250,6 +253,7 @@ export const executeGroup = async (
     },
     currentLastBubbleId: lastBubbleBlockId,
     startTime: newStartTime,
+    textBubbleContentFormat,
   })
 }
 

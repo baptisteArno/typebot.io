@@ -88,7 +88,7 @@ export async function startChatQuery({
               sessionId,
             } satisfies Omit<
               StartPreviewChatInput,
-              'typebotId' | 'isOnlyRegistering'
+              'typebotId' | 'isOnlyRegistering' | 'textBubbleContentFormat'
             >,
             timeout: false,
           }
@@ -113,7 +113,10 @@ export async function startChatQuery({
             prefilledVariables,
             resultId,
             isOnlyRegistering: false,
-          } satisfies Omit<StartChatInput, 'publicId'>,
+          } satisfies Omit<
+            StartChatInput,
+            'publicId' | 'textBubbleContentFormat'
+          >,
           timeout: false,
         }
       )

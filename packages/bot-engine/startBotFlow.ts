@@ -15,6 +15,7 @@ type Props = {
   state: SessionState
   startFrom?: StartFrom
   startTime?: number
+  textBubbleContentFormat: 'richText' | 'markdown'
 }
 
 export const startBotFlow = async ({
@@ -22,6 +23,7 @@ export const startBotFlow = async ({
   state,
   startFrom,
   startTime,
+  textBubbleContentFormat,
 }: Props): Promise<
   ContinueChatResponse & {
     newSessionState: SessionState
@@ -47,6 +49,7 @@ export const startBotFlow = async ({
       visitedEdges,
       setVariableHistory,
       startTime,
+      textBubbleContentFormat,
     })
   }
   const firstEdgeId = getFirstEdgeId({
@@ -74,5 +77,6 @@ export const startBotFlow = async ({
     visitedEdges,
     setVariableHistory,
     startTime,
+    textBubbleContentFormat,
   })
 }

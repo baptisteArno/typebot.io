@@ -50,10 +50,11 @@ type Params = {
   version: 1 | 2
   state: SessionState
   startTime?: number
+  textBubbleContentFormat: 'richText' | 'markdown'
 }
 export const continueBotFlow = async (
   reply: Reply,
-  { state, version, startTime }: Params
+  { state, version, startTime, textBubbleContentFormat }: Params
 ): Promise<
   ContinueChatResponse & {
     newSessionState: SessionState
@@ -66,7 +67,8 @@ export const continueBotFlow = async (
   const visitedEdges: VisitedEdge[] = []
   const setVariableHistory: SetVariableHistoryItem[] = []
 
-  if (!newSessionState.currentBlockId) return startBotFlow({ state, version })
+  if (!newSessionState.currentBlockId)
+    return startBotFlow({ state, version, textBubbleContentFormat })
 
   const { block, group, blockIndex } = getBlockById(
     newSessionState.currentBlockId,
@@ -167,7 +169,10 @@ export const continueBotFlow = async (
 
     if (parsedReplyResult.status === 'fail')
       return {
-        ...(await parseRetryMessage(newSessionState)(block)),
+        ...(await parseRetryMessage(newSessionState)(
+          block,
+          textBubbleContentFormat
+        )),
         newSessionState,
         visitedEdges: [],
         setVariableHistory: [],
@@ -197,6 +202,7 @@ export const continueBotFlow = async (
         setVariableHistory,
         firstBubbleWasStreamed,
         startTime,
+        textBubbleContentFormat,
       }
     )
     return {
@@ -243,6 +249,7 @@ export const continueBotFlow = async (
     visitedEdges,
     setVariableHistory,
     startTime,
+    textBubbleContentFormat,
   })
 
   return {
@@ -287,7 +294,8 @@ const saveVariableValueIfAny =
 const parseRetryMessage =
   (state: SessionState) =>
   async (
-    block: InputBlock
+    block: InputBlock,
+    textBubbleContentFormat: 'richText' | 'markdown'
   ): Promise<Pick<ContinueChatResponse, 'messages' | 'input'>> => {
     const retryMessage =
       block.options &&
@@ -302,9 +310,16 @@ const parseRetryMessage =
         {
           id: block.id,
           type: BubbleBlockType.TEXT,
-          content: {
-            richText: [{ type: 'p', children: [{ text: retryMessage }] }],
-          },
+          content:
+            textBubbleContentFormat === 'richText'
+              ? {
+                  type: 'richText',
+                  richText: [{ type: 'p', children: [{ text: retryMessage }] }],
+                }
+              : {
+                  type: 'markdown',
+                  markdown: retryMessage,
+                },
         },
       ],
       input: await parseInput(state)(block),

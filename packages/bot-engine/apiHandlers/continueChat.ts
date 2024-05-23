@@ -11,8 +11,14 @@ type Props = {
   origin: string | undefined
   message?: string
   sessionId: string
+  textBubbleContentFormat: 'richText' | 'markdown'
 }
-export const continueChat = async ({ origin, sessionId, message }: Props) => {
+export const continueChat = async ({
+  origin,
+  sessionId,
+  message,
+  textBubbleContentFormat,
+}: Props) => {
   const session = await getSession(sessionId)
 
   if (!session) {
@@ -57,6 +63,7 @@ export const continueChat = async ({ origin, sessionId, message }: Props) => {
     version: 2,
     state: session.state,
     startTime: Date.now(),
+    textBubbleContentFormat,
   })
 
   if (newSessionState)

@@ -93,6 +93,7 @@ export const resumeWhatsAppFlow = async ({
       ? await continueBotFlow(reply, {
           version: 2,
           state: { ...session.state, whatsApp: { contact } },
+          textBubbleContentFormat: 'richText',
         })
       : workspaceId
       ? await startWhatsAppSession({

@@ -17,6 +17,8 @@ export const convertMessageToWhatsAppMessage = (
 ): WhatsAppSendingMessage | null => {
   switch (message.type) {
     case BubbleBlockType.TEXT: {
+      if (message.content.type === 'markdown')
+        throw new Error('Expect rich text message')
       if (!message.content.richText || message.content.richText.length === 0)
         return null
       return {
