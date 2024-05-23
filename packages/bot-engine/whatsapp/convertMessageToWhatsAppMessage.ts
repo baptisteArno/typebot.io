@@ -71,8 +71,8 @@ export const convertMessageToWhatsAppMessage = (
                 message.content.type as EmbeddableVideoBubbleContentType
               ]
             }/${message.content.id}`,
+            preview_url: true,
           },
-          preview_url: true,
         }
       return null
     }
@@ -82,8 +82,8 @@ export const convertMessageToWhatsAppMessage = (
         type: 'text',
         text: {
           body: message.content.url,
+          preview_url: true,
         },
-        preview_url: true,
       }
     }
     case 'custom-embed': {
@@ -92,8 +92,8 @@ export const convertMessageToWhatsAppMessage = (
         type: 'text',
         text: {
           body: message.content.url,
+          preview_url: true,
         },
-        preview_url: true,
       }
     }
   }
