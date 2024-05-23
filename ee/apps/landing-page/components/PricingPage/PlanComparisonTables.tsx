@@ -21,7 +21,7 @@ import Link from 'next/link'
 import React from 'react'
 import { parseNumberWithCommas } from '@typebot.io/lib'
 import { chatsLimits, prices, seatsLimits } from '@typebot.io/billing/constants'
-import { formatPrice } from '@typebot.io/billing/formatPrice'
+import { formatPrice } from '@typebot.io/billing/helpers/formatPrice'
 
 type Props = {
   onChatsTiersClick: () => void

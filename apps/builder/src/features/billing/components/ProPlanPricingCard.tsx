@@ -14,7 +14,7 @@ import {
 import { Plan } from '@typebot.io/prisma'
 import { FeaturesList } from './FeaturesList'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
-import { formatPrice } from '@typebot.io/billing/formatPrice'
+import { formatPrice } from '@typebot.io/billing/helpers/formatPrice'
 import { ChatsProTiersModal } from './ChatsProTiersModal'
 import { prices } from '@typebot.io/billing/constants'
 import { T, useTranslate } from '@tolgee/react'

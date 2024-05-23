@@ -1,5 +1,5 @@
 {
-  "name": "@typebot.io/billing",
+  "name": "@typebot.io/db-rules",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,13 +8,9 @@
   },
   "keywords": [],
   "author": "Baptiste Arnaud",
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "dependencies": {
     "@typebot.io/prisma": "workspace:*",
-    "@typebot.io/schemas": "workspace:*",
-    "stripe": "12.13.0"
-  },
-  "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
+    "@typebot.io/env": "workspace:*"
   }
 }

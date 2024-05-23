@@ -6,3 +6,5 @@ packages:
   - 'packages/forge/blocks/*'
   - 'apps/*'
   - 'packages/transactional/.react-email'
+  - 'ee/packages/*'
+  - 'ee/apps/*'

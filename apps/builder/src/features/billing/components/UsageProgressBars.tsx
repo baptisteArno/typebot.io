@@ -12,7 +12,7 @@ import { AlertIcon } from '@/components/icons'
 import { WorkspaceInApp } from '@/features/workspace/WorkspaceProvider'
 import { parseNumberWithCommas } from '@typebot.io/lib'
 import { defaultQueryOptions, trpc } from '@/lib/trpc'
-import { getChatsLimit } from '@typebot.io/billing/getChatsLimit'
+import { getChatsLimit } from '@typebot.io/billing/helpers/getChatsLimit'
 import { useTranslate } from '@tolgee/react'
 
 type Props = {

@@ -5,7 +5,7 @@
   "scripts": {},
   "keywords": [],
   "author": "Baptiste Arnaud",
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "dependencies": {
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/lib": "workspace:*",

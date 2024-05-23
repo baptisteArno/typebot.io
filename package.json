@@ -2,8 +2,9 @@
   "version": "2.25.2",
   "name": "typebot-os",
   "private": true,
-  "license": "AGPL-3.0-or-later",
   "workspaces": [
+    "ee/apps/*",
+    "ee/packages/*",
     "packages/*",
     "packages/deprecated/*",
     "packages/embeds/*",
