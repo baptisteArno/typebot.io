@@ -22,7 +22,7 @@ export const PlateElement = (props: Props) => (
         <Match when={props.element.type === 'a'}>
           <a
             href={props.element.url as string}
-            target="_blank"
+            target="_self"
             rel="noopener noreferrer"
           >
             <For each={props.element.children as TDescendant[]}>
