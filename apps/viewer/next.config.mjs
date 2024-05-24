@@ -36,6 +36,7 @@ const landingPagePaths = [
   '/terms-of-service',
   '/about',
   '/oss-friends',
+  '/blog',
 ]
 
 /** @type {import('next').NextConfig} */
@@ -49,21 +50,14 @@ const nextConfig = {
   output: 'standalone',
   experimental: {
     outputFileTracingRoot: join(__dirname, '../../'),
+    serverComponentsExternalPackages: ['isolated-vm'],
   },
-  webpack: (config, { nextRuntime }) => {
-    if (nextRuntime === 'nodejs') return config
+  webpack: (config, { isServer }) => {
+    if (isServer) return config
 
-    if (nextRuntime === 'edge') {
-      config.resolve.alias['minio'] = false
-      config.resolve.alias['got'] = false
-      config.resolve.alias['qrcode'] = false
-      return config
-    }
-    // These packages are imports from the integrations definition files that can be ignored for the client.
     config.resolve.alias['minio'] = false
-    config.resolve.alias['got'] = false
-    config.resolve.alias['openai'] = false
     config.resolve.alias['qrcode'] = false
+    config.resolve.alias['isolated-vm'] = false
     return config
   },
   async redirects() {
@@ -81,7 +75,6 @@ const nextConfig = {
         ? landingPagePaths
             .map((path) => ({
               source: '/_next/static/:static*',
-              destination: `${process.env.LANDING_PAGE_URL}/_next/static/:static*`,
               has: [
                 {
                   type: 'header',
@@ -89,11 +82,11 @@ const nextConfig = {
                   value: `https://typebot.io${path}`,
                 },
               ],
+              destination: `${process.env.LANDING_PAGE_URL}/_next/static/:static*`,
             }))
             .concat(
               landingPagePaths.map((path) => ({
                 source: '/typebots/:typebot*',
-                destination: `${process.env.LANDING_PAGE_URL}/typebots/:typebot*`,
                 has: [
                   {
                     type: 'header',
@@ -101,12 +94,12 @@ const nextConfig = {
                     value: `https://typebot.io${path}`,
                   },
                 ],
+                destination: `${process.env.LANDING_PAGE_URL}/typebots/:typebot*`,
               }))
             )
             .concat(
               landingPagePaths.map((path) => ({
                 source: '/styles/:style*',
-                destination: `${process.env.LANDING_PAGE_URL}/styles/:style*`,
                 has: [
                   {
                     type: 'header',
@@ -114,20 +107,88 @@ const nextConfig = {
                     value: `https://typebot.io${path}`,
                   },
                 ],
+                destination: `${process.env.LANDING_PAGE_URL}/styles/:style*`,
               }))
             )
             .concat(
               landingPagePaths.map((path) => ({
                 source: path,
-                destination: `${process.env.LANDING_PAGE_URL}${path}`,
                 has: [
                   {
                     type: 'host',
                     value: 'typebot.io',
                   },
                 ],
+                destination: `${process.env.LANDING_PAGE_URL}${path}`,
               }))
             )
+            .concat([
+              {
+                source: '/blog/:slug',
+                has: [
+                  {
+                    type: 'host',
+                    value: 'typebot.io',
+                  },
+                ],
+                destination: `${process.env.LANDING_PAGE_URL}/blog/:slug`,
+              },
+              {
+                source: '/_next/static/:static*',
+                has: [
+                  {
+                    type: 'header',
+                    key: 'referer',
+                    value: `https://typebot.io/blog/(?<slug>.*)`,
+                  },
+                ],
+                destination: `${process.env.LANDING_PAGE_URL}/_next/static/:static*`,
+              },
+              {
+                source: '/images/blog/:images*',
+                has: [
+                  {
+                    type: 'header',
+                    key: 'referer',
+                    value: `https://typebot.io/blog/(?<slug>.*)`,
+                  },
+                ],
+                destination: `${process.env.LANDING_PAGE_URL}/images/blog/:images*`,
+              },
+              {
+                source: '/images/blog/:images*',
+                has: [
+                  {
+                    type: 'header',
+                    key: 'referer',
+                    value: `https://typebot.io/blog`,
+                  },
+                ],
+                destination: `${process.env.LANDING_PAGE_URL}/images/blog/:images*`,
+              },
+              {
+                source: '/typebots/:typebot*',
+                has: [
+                  {
+                    type: 'header',
+                    key: 'referer',
+                    value: `https://typebot.io/blog/(?<slug>.*)`,
+                  },
+                ],
+                destination: `${process.env.LANDING_PAGE_URL}/typebots/:typebot*`,
+              },
+              {
+                source: '/styles/:style*',
+                has: [
+                  {
+                    type: 'header',
+                    key: 'referer',
+                    value: `https://typebot.io/blog/(?<slug>.*)`,
+                  },
+                ],
+                destination: `${process.env.LANDING_PAGE_URL}/styles/:style*`,
+              },
+            ])
         : []
       )
         .concat([

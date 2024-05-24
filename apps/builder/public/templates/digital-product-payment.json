@@ -398,8 +398,16 @@
     }
   ],
   "variables": [
-    { "id": "vcl3u45hek000b2e6gkl05z1da", "name": "Name" },
-    { "id": "vcl3u4n1vk00162e6gs6x59o2k", "name": "Email" }
+    {
+      "id": "vcl3u45hek000b2e6gkl05z1da",
+      "name": "Name",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vcl3u4n1vk00162e6gs6x59o2k",
+      "name": "Email",
+      "isSessionVariable": true
+    }
   ],
   "theme": {},
   "selectedThemeTemplateId": null,

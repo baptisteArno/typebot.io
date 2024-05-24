@@ -31,6 +31,7 @@ export const createChatCompletion = createAction({
       blockId: 'anthropic',
       transform: (options) => ({
         ...options,
+        model: undefined,
         action: 'Create Chat Message',
         responseMapping: options.responseMapping?.map((res: any) =>
           res.item === 'Message content'
@@ -45,6 +46,8 @@ export const createChatCompletion = createAction({
       id: 'fetchModels',
       dependencies: ['baseUrl', 'apiVersion'],
       fetch: async ({ credentials, options }) => {
+        if (!credentials?.apiKey) return []
+
         const baseUrl = options?.baseUrl ?? defaultOpenAIOptions.baseUrl
         const config = {
           apiKey: credentials.apiKey,

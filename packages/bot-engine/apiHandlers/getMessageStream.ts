@@ -3,7 +3,7 @@ import { ChatCompletionOpenAIOptions } from '@typebot.io/schemas/features/blocks
 import { OpenAI } from 'openai'
 import { decryptV2 } from '@typebot.io/lib/api/encryption/decryptV2'
 import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
-import { ReadOnlyVariableStore } from '@typebot.io/forge'
+import { VariableStore } from '@typebot.io/forge'
 import {
   ParseVariablesOptions,
   parseVariables,
@@ -13,6 +13,10 @@ import { getCredentials } from '../queries/getCredentials'
 import { getSession } from '../queries/getSession'
 import { getBlockById } from '@typebot.io/schemas/helpers'
 import { isForgedBlockType } from '@typebot.io/schemas/features/blocks/forged/helpers'
+import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
+import { updateSession } from '../queries/updateSession'
+import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
+import { saveSetVariableHistoryItems } from '../queries/saveSetVariableHistoryItems'
 
 type Props = {
   sessionId: string
@@ -92,7 +96,8 @@ export const getMessageStream = async ({ sessionId, messages }: Props) => {
       credentials.data,
       credentials.iv
     )
-    const variables: ReadOnlyVariableStore = {
+
+    const variables: VariableStore = {
       list: () => session.state.typebotsQueue[0].typebot.variables,
       get: (id: string) => {
         const variable = session.state.typebotsQueue[0].typebot.variables.find(
@@ -105,10 +110,31 @@ export const getMessageStream = async ({ sessionId, messages }: Props) => {
           session.state.typebotsQueue[0].typebot.variables,
           params
         )(text),
+      set: async (id: string, value: unknown) => {
+        const variable = session.state.typebotsQueue[0].typebot.variables.find(
+          (variable) => variable.id === id
+        )
+        if (!variable) return
+        const { updatedState, newSetVariableHistory } =
+          updateVariablesInSession({
+            newVariables: [{ ...variable, value }],
+            state: session.state,
+            currentBlockId: session.state.currentBlockId,
+          })
+        if (newSetVariableHistory.length > 0)
+          await saveSetVariableHistoryItems(newSetVariableHistory)
+        await updateSession({
+          id: session.id,
+          state: updatedState,
+          isReplying: undefined,
+        })
+      },
     }
     const stream = await action.run.stream.run({
       credentials: decryptedCredentials,
-      options: block.options,
+      options: deepParseVariables(
+        session.state.typebotsQueue[0].typebot.variables
+      )(block.options),
       variables,
     })
     if (!stream) return { status: 500, message: 'Could not create stream' }

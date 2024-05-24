@@ -1,0 +1,63 @@
+/* Light theme (default) */
+.tweet .react-tweet-theme {
+  /* margin is handled by our wrappers */
+  --tweet-container-margin: 0;
+  --tweet-font-family: inherit;
+  --tweet-font-color: inherit;
+
+  --tweet-bg-color: #222;
+  --tweet-bg-color-hover: var(--tweet-bg-color);
+  --tweet-quoted-bg-color-hover: rgba(255, 255, 255, 0.03);
+  --tweet-border: 1px solid #333;
+  --tweet-color-blue-secondary: theme('colors.white');
+  --tweet-color-blue-secondary-hover: #333;
+  --tweet-font-color-secondary: theme('colors.gray.400');
+
+  /* Common properties for both themes */
+  --tweet-quoted-bg-color-hover: rgba(0, 0, 0, 0.03);
+  --tweet-border: 1px solid rgb(64, 64, 64);
+  --tweet-skeleton-gradient: linear-gradient(
+    270deg,
+    #fafafa,
+    #eaeaea,
+    #eaeaea,
+    #fafafa
+  );
+  --tweet-color-red-primary: rgb(249, 24, 128);
+  --tweet-color-red-primary-hover: rgba(249, 24, 128, 0.1);
+  --tweet-color-green-primary: rgb(0, 186, 124);
+  --tweet-color-green-primary-hover: rgba(0, 186, 124, 0.1);
+  --tweet-twitter-icon-color: var(--tweet-font-color);
+  --tweet-verified-old-color: rgb(130, 154, 171);
+  --tweet-verified-blue-color: var(--tweet-color-blue-primary);
+
+  --tweet-actions-font-weight: 500;
+  --tweet-replies-font-weight: 500;
+}
+
+/* Common styles for both themes */
+.tweet .react-tweet-theme p {
+  font-size: inherit;
+  line-height: 1.3rem;
+}
+
+.tweet .react-tweet-theme p a {
+  @apply border-b transition-[border-color] border-gray-500 text-white hover:border-white;
+}
+
+/* Remove link underline on hover for both themes */
+.tweet .react-tweet-theme p a:hover {
+  text-decoration: none;
+}
+
+.tweet a div {
+  @apply font-medium tracking-tight;
+}
+
+.tweet div[class*='mediaWrapper'] {
+  max-height: 250px;
+}
+
+.tweet .react-tweet-theme img {
+  margin: 0;
+}

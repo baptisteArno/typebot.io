@@ -19,6 +19,7 @@ export const executeZemanticAiBlock = async (
   block: ZemanticAiBlock
 ): Promise<ExecuteIntegrationResponse> => {
   let newSessionState = state
+  let setVariableHistory = []
 
   if (!block.options?.credentialsId)
     return {
@@ -82,23 +83,33 @@ export const executeZemanticAiBlock = async (
 
     for (const r of block.options.responseMapping || []) {
       const variable = typebot.variables.find(byId(r.variableId))
+      let newVariables = []
       switch (r.valueToExtract) {
         case 'Summary':
           if (isDefined(variable) && !isEmpty(res.summary)) {
-            newSessionState = updateVariablesInSession(newSessionState)([
-              { ...variable, value: res.summary },
-            ])
+            newVariables.push({ ...variable, value: res.summary })
           }
           break
         case 'Results':
           if (isDefined(variable) && res.results.length) {
-            newSessionState = updateVariablesInSession(newSessionState)([
-              { ...variable, value: JSON.stringify(res.results) },
-            ])
+            newVariables.push({
+              ...variable,
+              value: JSON.stringify(res.results),
+            })
           }
           break
         default:
           break
+      }
+      if (newVariables.length > 0) {
+        const { newSetVariableHistory, updatedState } =
+          updateVariablesInSession({
+            newVariables,
+            state: newSessionState,
+            currentBlockId: block.id,
+          })
+        newSessionState = updatedState
+        setVariableHistory.push(...newSetVariableHistory)
       }
     }
   } catch (e) {
@@ -112,6 +123,7 @@ export const executeZemanticAiBlock = async (
           description: 'Could not execute Zemantic AI request',
         },
       ],
+      newSetVariableHistory: setVariableHistory,
     }
   }
 

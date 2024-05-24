@@ -38,6 +38,8 @@ export const convertTextToSpeech = createAction({
     {
       id: 'fetchVoices',
       fetch: async ({ credentials }) => {
+        if (!credentials?.apiKey) return []
+
         const response = await got
           .get(baseUrl + '/v1/voices', {
             headers: {
@@ -56,6 +58,8 @@ export const convertTextToSpeech = createAction({
     {
       id: 'fetchModels',
       fetch: async ({ credentials }) => {
+        if (!credentials?.apiKey) return []
+
         const response = await got
           .get(baseUrl + '/v1/models', {
             headers: {

@@ -24,7 +24,7 @@ import { PhoneInput } from '@/features/blocks/inputs/phone'
 import { DateForm } from '@/features/blocks/inputs/date'
 import { RatingForm } from '@/features/blocks/inputs/rating'
 import { FileUploadForm } from '@/features/blocks/inputs/fileUpload'
-import { createSignal, Switch, Match, createEffect } from 'solid-js'
+import { createSignal, Switch, Match, createEffect, Show } from 'solid-js'
 import { isNotDefined } from '@typebot.io/lib'
 import { isMobile } from '@/utils/isMobileSignal'
 import { PaymentForm } from '@/features/blocks/inputs/payment'
@@ -35,8 +35,8 @@ import { MultiplePictureChoice } from '@/features/blocks/inputs/pictureChoice/Mu
 import { formattedMessages } from '@/utils/formattedMessagesSignal'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { defaultPaymentInputOptions } from '@typebot.io/schemas/features/blocks/inputs/payment/constants'
-import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
 import { persist } from '@/utils/persist'
+import { defaultGuestAvatarIsEnabled } from '@typebot.io/schemas/features/typebot/theme/constants'
 
 type Props = {
   ref: HTMLDivElement | undefined
@@ -82,26 +82,26 @@ export const InputChatBlock = (props: Props) => {
         <GuestBubble
           message={formattedMessage() ?? (answer() as string)}
           showAvatar={
-            props.guestAvatar?.isEnabled ??
-            defaultTheme.chat.guestAvatar.isEnabled
+            props.guestAvatar?.isEnabled ?? defaultGuestAvatarIsEnabled
           }
           avatarSrc={props.guestAvatar?.url && props.guestAvatar.url}
+          hasHostAvatar={props.hasHostAvatar}
         />
       </Match>
       <Match when={isNotDefined(answer()) || props.hasError}>
         <div
-          class="flex justify-end animate-fade-in gap-2"
+          class="flex justify-end animate-fade-in gap-2 typebot-input-container"
           data-blockid={props.block.id}
           ref={props.ref}
         >
-          {props.hasHostAvatar && (
+          <Show when={props.hasHostAvatar}>
             <div
               class={
                 'flex flex-shrink-0 items-center ' +
                 (isMobile() ? 'w-6 h-6' : 'w-10 h-10')
               }
             />
-          )}
+          </Show>
           <Input
             context={props.context}
             block={props.block}

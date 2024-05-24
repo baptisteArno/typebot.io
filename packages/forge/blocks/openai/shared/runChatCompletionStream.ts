@@ -1,4 +1,4 @@
-import { LogsStore, ReadOnlyVariableStore } from '@typebot.io/forge/types'
+import { VariableStore } from '@typebot.io/forge/types'
 import { ChatCompletionOptions } from './parseChatCompletionOptions'
 import { executeFunction } from '@typebot.io/variables/executeFunction'
 import { OpenAIStream, ToolCallPayload } from 'ai'
@@ -10,7 +10,7 @@ import { parseToolParameters } from '../helpers/parseToolParameters'
 type Props = {
   credentials: { apiKey?: string }
   options: ChatCompletionOptions
-  variables: ReadOnlyVariableStore
+  variables: VariableStore
   config: { baseUrl: string; defaultModel?: string }
 }
 export const runChatCompletionStream = async ({
@@ -75,7 +75,7 @@ export const runChatCompletionStream = async ({
           continue
         }
 
-        const { output } = await executeFunction({
+        const { output, newVariables } = await executeFunction({
           variables: variables.list(),
           args:
             typeof toolCall.func.arguments === 'string'
@@ -84,8 +84,7 @@ export const runChatCompletionStream = async ({
           body: toolDefinition.code,
         })
 
-        // TO-DO: enable once we're out of edge runtime.
-        // newVariables?.forEach((v) => variables.set(v.id, v.value))
+        newVariables?.forEach((v) => variables.set(v.id, v.value))
 
         const newMessages = appendToolCallMessage({
           tool_call_id: toolCall.id,

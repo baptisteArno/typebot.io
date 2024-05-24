@@ -60,6 +60,7 @@
   "auth.socialLogin.githubButton.label": "Continuați cu GitHub",
   "auth.socialLogin.gitlabButton.label": "Continuați cu {customProviderName}",
   "auth.socialLogin.googleButton.label": "Continuați cu Google",
+  "auth.socialLogin.keycloakButton.label": "Continuați cu Keycloak",
   "back": "Înapoi",
   "billing.billingPortalButton.label": "Portalul de facturare",
   "billing.contribution.link": "Află mai multe.",

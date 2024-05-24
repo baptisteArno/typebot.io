@@ -26,20 +26,30 @@ export async function POST(
   req: Request,
   { params }: { params: { sessionId: string } }
 ) {
-  if (process.env.VERCEL_ENV)
-    return NextResponse.json(
-      { message: "Can't get streaming if hosted on Vercel" },
-      { status: 400, headers: responseHeaders }
-    )
-  const messages =
-    typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+  const body = await req.text()
+  const messages = body ? JSON.parse(body).messages : undefined
   const { stream, status, message } = await getMessageStream({
     sessionId: params.sessionId,
     messages,
   })
   if (!stream)
     return NextResponse.json({ message }, { status, headers: responseHeaders })
-  return new StreamingTextResponse(stream, {
-    headers: responseHeaders,
+  return new StreamingTextResponse(
+    stream.pipeThrough(createStreamDataTransformer()),
+    {
+      headers: responseHeaders,
+    }
+  )
+}
+
+const createStreamDataTransformer = () => {
+  const encoder = new TextEncoder()
+  const decoder = new TextDecoder()
+  return new TransformStream({
+    transform: async (chunk, controller) => {
+      const decodedChunk = decoder.decode(chunk)
+      if (decodedChunk[0] !== '0') return
+      controller.enqueue(encoder.encode(JSON.parse(decodedChunk.slice(2))))
+    },
   })
 }

@@ -18,10 +18,6 @@ export const UrlInput = (props: Props) => {
   let inputRef: HTMLInputElement | HTMLTextAreaElement | undefined
 
   const handleInput = (inputValue: string) => {
-    if (!inputValue.startsWith('https://'))
-      return inputValue === 'https:/'
-        ? undefined
-        : setInputValue(`https://${inputValue}`)
     setInputValue(inputValue)
   }
 
@@ -29,6 +25,8 @@ export const UrlInput = (props: Props) => {
     inputRef?.value !== '' && inputRef?.reportValidity()
 
   const submit = () => {
+    if (inputRef && !inputRef?.value.startsWith('http'))
+      inputRef.value = `https://${inputRef.value}`
     if (checkIfInputIsValid())
       props.onSubmit({ value: inputRef?.value ?? inputValue() })
     else inputRef?.focus()
@@ -39,7 +37,10 @@ export const UrlInput = (props: Props) => {
   }
 
   onMount(() => {
-    if (!isMobile() && inputRef) inputRef.focus()
+    if (!isMobile() && inputRef)
+      inputRef.focus({
+        preventScroll: true,
+      })
     window.addEventListener('message', processIncomingEvent)
   })
 
@@ -74,8 +75,7 @@ export const UrlInput = (props: Props) => {
         autocomplete="url"
       />
       <SendButton type="button" class="my-2 ml-2" on:click={submit}>
-        {props.block.options?.labels?.button ??
-          defaultUrlInputOptions.labels.button}
+        {props.block.options?.labels?.button}
       </SendButton>
     </div>
   )

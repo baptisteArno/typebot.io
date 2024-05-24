@@ -36,7 +36,7 @@ export const NumberInput = (props: NumberInputProps) => {
   }
 
   onMount(() => {
-    if (!isMobile() && inputRef) inputRef.focus()
+    if (!isMobile() && inputRef) inputRef.focus({ preventScroll: true })
     window.addEventListener('message', processIncomingEvent)
   })
 
@@ -80,8 +80,7 @@ export const NumberInput = (props: NumberInputProps) => {
         step={props.block.options?.step ?? 'any'}
       />
       <SendButton type="button" class="my-2 ml-2" on:click={submit}>
-        {props.block.options?.labels?.button ??
-          defaultNumberInputOptions.labels.button}
+        {props.block.options?.labels?.button}
       </SendButton>
     </div>
   )

@@ -5,6 +5,7 @@ import GitlabProvider from 'next-auth/providers/gitlab'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
 import AzureADProvider from 'next-auth/providers/azure-ad'
+import KeycloakProvider from 'next-auth/providers/keycloak'
 import prisma from '@typebot.io/lib/prisma'
 import { Provider } from 'next-auth/providers'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -102,6 +103,21 @@ if (
   )
 }
 
+if (
+  env.KEYCLOAK_CLIENT_ID &&
+  env.KEYCLOAK_BASE_URL &&
+  env.KEYCLOAK_CLIENT_SECRET &&
+  env.KEYCLOAK_REALM
+) {
+  providers.push(
+    KeycloakProvider({
+      clientId: env.KEYCLOAK_CLIENT_ID,
+      clientSecret: env.KEYCLOAK_CLIENT_SECRET,
+      issuer: `${env.KEYCLOAK_BASE_URL}/${env.KEYCLOAK_REALM}`,
+    })
+  )
+}
+
 if (env.CUSTOM_OAUTH_WELL_KNOWN_URL) {
   providers.push({
     id: 'custom-oauth',
@@ -173,7 +189,12 @@ export const getAuthOptions = ({
         if (disposableEmailDomains.includes(user.email.split('@')[1]))
           return false
       }
-      if (env.DISABLE_SIGNUP && isNewUser && user.email) {
+      if (
+        env.DISABLE_SIGNUP &&
+        isNewUser &&
+        user.email &&
+        !env.ADMIN_EMAIL?.includes(user.email)
+      ) {
         const { invitations, workspaceInvitations } =
           await getNewUserInvitations(prisma, user.email)
         if (invitations.length === 0 && workspaceInvitations.length === 0)

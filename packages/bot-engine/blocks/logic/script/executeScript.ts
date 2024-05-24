@@ -24,14 +24,25 @@ export const executeScript = async (
       body: block.options.content,
     })
 
-    const newSessionState = newVariables
-      ? updateVariablesInSession(state)(newVariables)
-      : state
+    const updateVarResults = newVariables
+      ? updateVariablesInSession({
+          newVariables,
+          state,
+          currentBlockId: block.id,
+        })
+      : undefined
+
+    let newSessionState = state
+
+    if (updateVarResults) {
+      newSessionState = updateVarResults.updatedState
+    }
 
     return {
       outgoingEdgeId: block.outgoingEdgeId,
       logs: error ? [{ status: 'error', description: error }] : [],
       newSessionState,
+      newSetVariableHistory: updateVarResults?.newSetVariableHistory,
     }
   }
 

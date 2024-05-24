@@ -70,7 +70,7 @@ export const CountryCodeSelect = ({ countryCode, onSelect }: Props) => {
       <option value="DK">Denmark (+45)</option>
       <option value="DJ">Djibouti (+253)</option>
       <option value="DM">Dominica (+1809)</option>
-      <option value="DO">Dominican Republic (+1809)</option>
+      <option value="DO">Dominican Republic (+18XX)</option>
       <option value="EC">Ecuador (+593)</option>
       <option value="EG">Egypt (+20)</option>
       <option value="SV">El Salvador (+503)</option>

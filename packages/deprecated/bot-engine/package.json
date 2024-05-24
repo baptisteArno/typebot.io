@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "scripts": {
-    "build": "pnpm tsc --noEmit && tsup",
+    "build": "tsup",
     "dev": "tsup --watch"
   },
   "dependencies": {
@@ -20,7 +20,7 @@
     "resize-observer": "1.0.4"
   },
   "devDependencies": {
-    "@types/node": "18.11.18",
+    "@types/node": "20.4.2",
     "@types/qs": "6.9.7",
     "@types/react": "18.2.15",
     "@types/react-phone-number-input": "3.0.14",
@@ -29,7 +29,7 @@
     "autoprefixer": "10.4.13",
     "@typebot.io/prisma": "workspace:*",
     "esbuild": "0.17.5",
-    "eslint": "8.32.0",
+    "eslint": "8.44.0",
     "eslint-config-custom": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "postcss": "8.4.21",
@@ -40,7 +40,7 @@
     "@typebot.io/tsconfig": "workspace:*",
     "tsup": "6.5.0",
     "typebot-js": "workspace:*",
-    "typescript": "5.3.2",
+    "typescript": "5.4.5",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/env": "workspace:*"
   },

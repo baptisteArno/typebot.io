@@ -4,7 +4,7 @@ export const DefaultAvatar = () => {
   return (
     <figure
       class={
-        'flex justify-center items-center rounded-full text-white relative ' +
+        'flex justify-center items-center rounded-full text-white relative flex-shrink-0 ' +
         (isMobile() ? 'w-6 h-6 text-sm' : 'w-10 h-10 text-xl')
       }
       data-testid="default-avatar"

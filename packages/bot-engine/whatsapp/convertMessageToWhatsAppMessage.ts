@@ -1,17 +1,26 @@
-import { ContinueChatResponse } from '@typebot.io/schemas'
+import {
+  ContinueChatResponse,
+  EmbeddableVideoBubbleContentType,
+} from '@typebot.io/schemas'
 import { WhatsAppSendingMessage } from '@typebot.io/schemas/features/whatsapp'
 import { isSvgSrc } from '@typebot.io/lib/utils'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
-import { VideoBubbleContentType } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
+import {
+  VideoBubbleContentType,
+  embedBaseUrls,
+  embeddableVideoTypes,
+} from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
 import { convertRichTextToMarkdown } from '@typebot.io/lib/markdown/convertRichTextToMarkdown'
 
 export const convertMessageToWhatsAppMessage = (
   message: ContinueChatResponse['messages'][number]
-): WhatsAppSendingMessage | undefined => {
+): WhatsAppSendingMessage | null => {
   switch (message.type) {
     case BubbleBlockType.TEXT: {
+      if (message.content.type === 'markdown')
+        throw new Error('Expect rich text message')
       if (!message.content.richText || message.content.richText.length === 0)
-        return
+        return null
       return {
         type: 'text',
         text: {
@@ -23,7 +32,7 @@ export const convertMessageToWhatsAppMessage = (
     }
     case BubbleBlockType.IMAGE: {
       if (!message.content.url || isImageUrlNotCompatible(message.content.url))
-        return
+        return null
       return {
         type: 'image',
         image: {
@@ -32,7 +41,7 @@ export const convertMessageToWhatsAppMessage = (
       }
     }
     case BubbleBlockType.AUDIO: {
-      if (!message.content.url) return
+      if (!message.content.url) return null
       return {
         type: 'audio',
         audio: {
@@ -41,26 +50,50 @@ export const convertMessageToWhatsAppMessage = (
       }
     }
     case BubbleBlockType.VIDEO: {
+      if (!message.content.url) return null
+      if (message.content.type === VideoBubbleContentType.URL)
+        return {
+          type: 'video',
+          video: {
+            link: message.content.url,
+          },
+        }
       if (
-        !message.content.url ||
-        message.content.type !== VideoBubbleContentType.URL
+        embeddableVideoTypes.includes(
+          message.content.type as EmbeddableVideoBubbleContentType
+        )
       )
-        return
-      return {
-        type: 'video',
-        video: {
-          link: message.content.url,
-        },
-      }
+        return {
+          type: 'text',
+          text: {
+            body: `${
+              embedBaseUrls[
+                message.content.type as EmbeddableVideoBubbleContentType
+              ]
+            }/${message.content.id}`,
+            preview_url: true,
+          },
+        }
+      return null
     }
     case BubbleBlockType.EMBED: {
-      if (!message.content.url) return
+      if (!message.content.url) return null
       return {
         type: 'text',
         text: {
           body: message.content.url,
+          preview_url: true,
         },
-        preview_url: true,
+      }
+    }
+    case 'custom-embed': {
+      if (!message.content.url) return null
+      return {
+        type: 'text',
+        text: {
+          body: message.content.url,
+          preview_url: true,
+        },
       }
     }
   }

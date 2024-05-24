@@ -5,12 +5,13 @@ import cliProgress from 'cli-progress'
 import { writeFileSync } from 'fs'
 import {
   ResultWithAnswers,
-  Typebot,
+  TypebotV6,
   resultWithAnswersSchema,
 } from '@typebot.io/schemas'
 import { byId } from '@typebot.io/lib'
 import { parseResultHeader } from '@typebot.io/results/parseResultHeader'
 import { convertResultsToTableData } from '@typebot.io/results/convertResultsToTableData'
+import { parseBlockIdVariableIdMap } from '@typebot.io/results/parseBlockIdVariableIdMap'
 import { parseColumnsOrder } from '@typebot.io/results/parseColumnsOrder'
 import { parseUniqueKey } from '@typebot.io/lib/parseUniqueKey'
 import { unparse } from 'papaparse'
@@ -39,7 +40,7 @@ const exportResults = async () => {
     where: {
       id: typebotId,
     },
-  })) as Typebot | null
+  })) as TypebotV6 | null
 
   if (!typebot) {
     console.log('No typebot found')
@@ -61,19 +62,34 @@ const exportResults = async () => {
   for (let skip = 0; skip < totalResultsToExport; skip += 50) {
     results.push(
       ...z.array(resultWithAnswersSchema).parse(
-        await prisma.result.findMany({
-          take: 50,
-          skip,
-          where: {
-            typebotId,
-            hasStarted: true,
-            isArchived: false,
-          },
-          orderBy: {
-            createdAt: 'desc',
-          },
-          include: { answers: true },
-        })
+        (
+          await prisma.result.findMany({
+            take: 50,
+            skip,
+            where: {
+              typebotId,
+              hasStarted: true,
+              isArchived: false,
+            },
+            orderBy: {
+              createdAt: 'desc',
+            },
+            include: {
+              answers: {
+                select: {
+                  content: true,
+                  blockId: true,
+                },
+              },
+              answersV2: {
+                select: {
+                  content: true,
+                  blockId: true,
+                },
+              },
+            },
+          })
+        ).map((r) => ({ ...r, answers: r.answersV2.concat(r.answers) }))
       )
     )
     progressBar.increment(50)
@@ -85,7 +101,11 @@ const exportResults = async () => {
 
   const resultHeader = parseResultHeader(typebot, [])
 
-  const dataToUnparse = convertResultsToTableData(results, resultHeader)
+  const dataToUnparse = convertResultsToTableData({
+    results,
+    headerCells: resultHeader,
+    blockIdVariableIdMap: parseBlockIdVariableIdMap(typebot?.groups),
+  })
 
   const headerIds = parseColumnsOrder(
     typebot?.resultsTablePreferences?.columnsOrder,

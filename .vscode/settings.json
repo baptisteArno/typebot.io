@@ -11,11 +11,6 @@
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "playwright.env": {
-    "DATABASE_URL": "postgresql://postgres:typebot@localhost:5432/typebot",
-    "NEXT_PUBLIC_VIEWER_URL": "http://localhost:3001",
-    "NEXTAUTH_URL": "http://localhost:3000"
-  },
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
   }

@@ -6,6 +6,7 @@ import { isMobile } from '@/utils/isMobileSignal'
 import type { TextInputBlock } from '@typebot.io/schemas'
 import { createSignal, onCleanup, onMount } from 'solid-js'
 import { defaultTextInputOptions } from '@typebot.io/schemas/features/blocks/inputs/text/constants'
+import clsx from 'clsx'
 
 type Props = {
   block: TextInputBlock
@@ -39,7 +40,10 @@ export const TextInput = (props: Props) => {
   }
 
   onMount(() => {
-    if (!isMobile() && inputRef) inputRef.focus()
+    if (!isMobile() && inputRef)
+      inputRef.focus({
+        preventScroll: true,
+      })
     window.addEventListener('message', processIncomingEvent)
   })
 
@@ -55,7 +59,10 @@ export const TextInput = (props: Props) => {
 
   return (
     <div
-      class={'flex items-end justify-between pr-2 typebot-input w-full'}
+      class={clsx(
+        'flex justify-between pr-2 typebot-input w-full',
+        props.block.options?.isLong ? 'items-end' : 'items-center'
+      )}
       data-testid="input"
       style={{
         'max-width': props.block.options?.isLong ? undefined : '350px',
@@ -85,8 +92,7 @@ export const TextInput = (props: Props) => {
         />
       )}
       <SendButton type="button" class="my-2 ml-2" on:click={submit}>
-        {props.block.options?.labels?.button ??
-          defaultTextInputOptions.labels.button}
+        {props.block.options?.labels?.button}
       </SendButton>
     </div>
   )

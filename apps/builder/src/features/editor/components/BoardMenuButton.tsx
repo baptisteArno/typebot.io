@@ -1,17 +1,18 @@
 import {
-  Flex,
-  FlexProps,
+  HStack,
   IconButton,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
+  StackProps,
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react'
 import assert from 'assert'
 import {
   BookIcon,
+  BracesIcon,
   DownloadIcon,
   MoreVerticalIcon,
   SettingsIcon,
@@ -23,14 +24,16 @@ import { parseDefaultPublicId } from '@/features/publish/helpers/parseDefaultPub
 import { useTranslate } from '@tolgee/react'
 import { useUser } from '@/features/account/hooks/useUser'
 import { useRouter } from 'next/router'
+import { RightPanel, useEditor } from '../providers/EditorProvider'
 
-export const BoardMenuButton = (props: FlexProps) => {
+export const BoardMenuButton = (props: StackProps) => {
   const { query } = useRouter()
-  const { typebot } = useTypebot()
+  const { typebot, currentUserMode } = useTypebot()
   const { user } = useUser()
   const [isDownloading, setIsDownloading] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { t } = useTranslate()
+  const { setRightPanel } = useEditor()
 
   useEffect(() => {
     if (user && !user.graphNavigation && !query.isFirstBot) onOpen()
@@ -57,11 +60,15 @@ export const BoardMenuButton = (props: FlexProps) => {
     window.open('https://docs.typebot.io/editor/graph', '_blank')
 
   return (
-    <Flex
-      bgColor={useColorModeValue('white', 'gray.900')}
-      rounded="md"
-      {...props}
-    >
+    <HStack rounded="md" spacing="4" {...props}>
+      <IconButton
+        icon={<BracesIcon />}
+        aria-label="Open variables drawer"
+        size="sm"
+        shadow="lg"
+        bgColor={useColorModeValue('white', undefined)}
+        onClick={() => setRightPanel(RightPanel.VARIABLES)}
+      />
       <Menu>
         <MenuButton
           as={IconButton}
@@ -78,12 +85,14 @@ export const BoardMenuButton = (props: FlexProps) => {
           <MenuItem icon={<SettingsIcon />} onClick={onOpen}>
             {t('editor.graph.menu.editorSettingsItem.label')}
           </MenuItem>
-          <MenuItem icon={<DownloadIcon />} onClick={downloadFlow}>
-            {t('editor.graph.menu.exportFlowItem.label')}
-          </MenuItem>
+          {currentUserMode !== 'guest' ? (
+            <MenuItem icon={<DownloadIcon />} onClick={downloadFlow}>
+              {t('editor.graph.menu.exportFlowItem.label')}
+            </MenuItem>
+          ) : null}
         </MenuList>
         <EditorSettingsModal isOpen={isOpen} onClose={onClose} />
       </Menu>
-    </Flex>
+    </HStack>
   )
 }

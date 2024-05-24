@@ -18,6 +18,7 @@ import { EventsCoordinatesProvider } from '@/features/graph/providers/EventsCoor
 import { TypebotNotFoundPage } from './TypebotNotFoundPage'
 import { SuspectedTypebotBanner } from './SuspectedTypebotBanner'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
+import { VariablesDrawer } from '@/features/preview/components/VariablesDrawer'
 
 export const EditorPage = () => {
   const { typebot, currentUserMode, is404 } = useTypebot()
@@ -78,6 +79,14 @@ export const EditorPage = () => {
 }
 
 const RightPanel = () => {
-  const { rightPanel } = useEditor()
-  return rightPanel === RightPanelEnum.PREVIEW ? <PreviewDrawer /> : <></>
+  const { rightPanel, setRightPanel } = useEditor()
+
+  switch (rightPanel) {
+    case RightPanelEnum.PREVIEW:
+      return <PreviewDrawer />
+    case RightPanelEnum.VARIABLES:
+      return <VariablesDrawer onClose={() => setRightPanel(undefined)} />
+    case undefined:
+      return null
+  }
 }

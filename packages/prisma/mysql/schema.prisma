@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["metrics"]
 }
 
 datasource db {
@@ -254,20 +255,34 @@ model PublicTypebot {
 }
 
 model Result {
-  id          String        @id @default(cuid())
-  createdAt   DateTime      @default(now())
-  typebotId   String
-  variables   Json
-  isCompleted Boolean
-  hasStarted  Boolean?
-  isArchived  Boolean?      @default(false)
-  typebot     Typebot       @relation(fields: [typebotId], references: [id], onDelete: Cascade)
-  answers     Answer[]
-  logs        Log[]
-  edges       VisitedEdge[]
+  id                 String                   @id @default(cuid())
+  createdAt          DateTime                 @default(now())
+  typebotId          String
+  variables          Json
+  isCompleted        Boolean
+  hasStarted         Boolean?
+  isArchived         Boolean?                 @default(false)
+  lastChatSessionId  String?
+  typebot            Typebot                  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  answers            Answer[]
+  logs               Log[]
+  edges              VisitedEdge[]
+  setVariableHistory SetVariableHistoryItem[]
+  answersV2          AnswerV2[]
 
   @@index([typebotId, isArchived, hasStarted, createdAt(sort: Desc)])
   @@index([typebotId, isArchived, isCompleted])
+}
+
+model SetVariableHistoryItem {
+  result     Result @relation(fields: [resultId], references: [id], onDelete: Cascade)
+  resultId   String
+  index      Int
+  variableId String
+  blockId    String
+  value      Json // string or list of strings
+
+  @@unique([resultId, index])
 }
 
 model VisitedEdge {
@@ -291,20 +306,29 @@ model Log {
   @@index([resultId])
 }
 
+// TODO: gradually remove variableId and groupId
 model Answer {
-  createdAt   DateTime @default(now()) @updatedAt
-  resultId    String
-  blockId     String
-  itemId      String?
-  groupId     String
-  variableId  String?
-  content     String   @db.Text
-  storageUsed Int?
-  result      Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now()) @updatedAt
+  resultId   String
+  blockId    String
+  groupId    String
+  variableId String?
+  content    String   @db.Text
+  result     Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
 
   @@unique([resultId, blockId, groupId])
-  @@index([blockId, itemId])
-  @@index([storageUsed])
+}
+
+model AnswerV2 {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  blockId   String
+  content   String   @db.Text
+  resultId  String
+  result    Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
+
+  @@index([resultId])
+  @@index([blockId])
 }
 
 model Coupon {
@@ -348,10 +372,11 @@ model ClaimableCustomPlan {
 }
 
 model ChatSession {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  state     Json
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+  state      Json
+  isReplying Boolean?
 }
 
 model ThemeTemplate {

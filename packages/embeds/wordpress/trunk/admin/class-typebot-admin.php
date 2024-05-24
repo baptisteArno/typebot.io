@@ -25,6 +25,7 @@ class Typebot_Admin
 
   public function register_typebot_settings()
   {
+    register_setting('typebot', 'lib_version');
     register_setting('typebot', 'init_snippet');
     register_setting('typebot', 'excluded_pages');
   }

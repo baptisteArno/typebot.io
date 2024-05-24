@@ -1,0 +1,74 @@
+---
+title: 'Contribute to the blog'
+sidebarTitle: 'Blog'
+icon: 'newspaper'
+---
+
+The [official Typebot blog](https://typebot.io/blog) is a place where we share any ideas, original content related to the chatbot industry, and Typebot itself.
+
+You are free to contribute to the blog or fix any typos you may find.
+
+1. Head over to the [content folder](https://github.com/baptisteArno/typebot.io/tree/main/apps/landing-page/content) on the Github repo.
+2. Click on the blog post file you want to edit. Or create a new file by clicking on the `Add file` button.
+3. If you did not already have a fork of the repository, you will be prompted to create one.
+4. Once you're happy with your changes, hit `Commit changes...`.
+5. Click on `Create pull request`.
+6. Add a title and a description to describe your changes.
+7. Click on `Create pull request`.
+
+It will be reviewed and merged if approved!
+
+## New article guidelines
+
+- The article should be related to chatbots, or Typebot.
+- The article should be written in English.
+- The article should be original content. No plagiarism.
+- The article should not be 100% AI-generated.
+
+The mdx file should always start with the following frontmatter:
+
+```md
+---
+title: 'My awesome blog post'
+publishedAt: '2023-11-19'
+summary: 'A short summary of the blog post.'
+---
+```
+
+By default the og image is generated from the title of the blog post. If you want to use a custom og image, you can specify a `image` field in the frontmatter.
+
+All images need to be placed under the `public/images/blog/<POST_FILENAME>` folder where `<POST_FILENAME>` is the name of the mdx file you are creating/editing. The image file name should be in lowercase and separated by `-`. It is best if the image width is no more than 800px.
+
+Here are all the components you can use in your blog post:
+
+- `Image`: To display an image. `width` and `height` props are required and must match the actual size of the image. Example: `<Image src="/images/blog/my-awesome-blog-post/image.jpg" alt="My awesome image" width={800} height={600} />`
+- `Callout`: To display a callout. Example: `<Callout status="info" title="Takeaway">This is an info callout</Callout>`. You can provide a `status` prop with the value `info`, `warning`, `success`, or `error`. You can also pass an optional `title` prop.
+- `Tweet`: To embed a tweet. Example: `<Tweet id="1234567890123456789" />`
+- `Typebot`: To embed a typebot as a Standard component. Example: `<Typebot typebot="<YOUR_BOT_PUBLIC_ID>" />`. You can provide the same props as the [Standard component](../../deploy/web/libraries/react#standard).
+- `YouTube`: To embed a YouTube video. Example: `<YouTube id="<YOUTUBE_VIDEO_ID>" />`
+- `Loom`: To embed a Loom video. Example: `<Loom id="<LOOM_VIDEO_ID>" />`
+- `Cta`: To display a call-to-action that redirects to Typebot. Example: `<Cta />`
+- `Table`: To display a table. It expects 2 props: `headers` and `rows`. Example:
+
+  ```tsx
+  <Table
+    headers={['Feature', 'Typebot', 'Landbot']}
+    rows={[
+      [
+        'Pricing',
+        'Free plan, $39/mo Starter, $99/mo Pro',
+        'Free plan, €40/mo Starter, €150/mo Pro, €400/mo Business',
+      ],
+      [
+        'Integrations',
+        'Google Sheets, Webhooks, Zapier, Make, SendGrid',
+        'Dialogflow, Salesforce, Slack, Google Sheets, Zapier, Mailchimp',
+      ],
+      [
+        'Customization',
+        'Full theme customization, custom CSS',
+        'Limited theme options',
+      ],
+    ]}
+  />
+  ```

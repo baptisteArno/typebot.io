@@ -109,4 +109,32 @@ export const galleryTemplates: Pick<ThemeTemplate, 'id' | 'name' | 'theme'>[] =
         },
       },
     },
+    {
+      id: 'aqua-glass',
+      name: 'Aqua Glass',
+      theme: {
+        general: {
+          background: {
+            type: BackgroundType.IMAGE,
+            content:
+              'https://images.unsplash.com/photo-1552083974-186346191183?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0MjU2MDR8MHwxfHNlYXJjaHw4fHxhYnN0cmFjdHxlbnwwfDB8fHwxNzEzMjg2NDY1fDA&ixlib=rb-4.0.3&q=80&w=1080',
+          },
+        },
+        chat: {
+          container: {
+            maxWidth: '750px',
+            maxHeight: '80%',
+            backgroundColor: '#ffffff',
+            blur: 5,
+            opacity: 0.6,
+            border: {
+              thickness: 2,
+              color: '#FFFFFF',
+              roundeness: 'large',
+              opacity: 0.5,
+            },
+          },
+        },
+      },
+    },
   ]

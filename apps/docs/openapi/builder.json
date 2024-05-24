@@ -587,7 +587,8 @@
                                                           "Result ID",
                                                           "Random ID",
                                                           "Phone number",
-                                                          "Contact name"
+                                                          "Contact name",
+                                                          "Transcript"
                                                         ]
                                                       }
                                                     },
@@ -2517,6 +2518,9 @@
                                     "name": {
                                       "type": "string"
                                     },
+                                    "isSessionVariable": {
+                                      "type": "boolean"
+                                    },
                                     "value": {
                                       "nullable": true,
                                       "anyOf": [
@@ -2575,6 +2579,9 @@
                                     },
                                     "name": {
                                       "type": "string"
+                                    },
+                                    "isSessionVariable": {
+                                      "type": "boolean"
                                     },
                                     "value": {
                                       "nullable": true,
@@ -2673,10 +2680,10 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/analytics/totalAnswersInBlocks": {
+    "/v1/typebots/{typebotId}/analytics/inDepthData": {
       "get": {
-        "operationId": "analytics-getTotalAnswers",
-        "summary": "List total answers in blocks",
+        "operationId": "analytics-getInDepthAnalyticsData",
+        "summary": "List total answers in blocks and off-default paths visited edges",
         "tags": [
           "Analytics"
         ],
@@ -2747,123 +2754,8 @@
                           "total"
                         ]
                       }
-                    }
-                  },
-                  "required": [
-                    "totalAnswers"
-                  ]
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input data",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error.BAD_REQUEST"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authorization not provided",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Insufficient access",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error.FORBIDDEN"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error.NOT_FOUND"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error.INTERNAL_SERVER_ERROR"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/typebots/{typebotId}/analytics/totalVisitedEdges": {
-      "get": {
-        "operationId": "analytics-getTotalVisitedEdges",
-        "summary": "List total edges used in results",
-        "tags": [
-          "Analytics"
-        ],
-        "security": [
-          {
-            "Authorization": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "typebotId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          },
-          {
-            "in": "query",
-            "name": "timeFilter",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "today",
-                "last7Days",
-                "last30Days",
-                "monthToDate",
-                "lastMonth",
-                "yearToDate",
-                "allTime"
-              ],
-              "default": "last7Days"
-            }
-          },
-          {
-            "in": "query",
-            "name": "timeZone",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "totalVisitedEdges": {
+                    },
+                    "offDefaultPathVisitedEdges": {
                       "type": "array",
                       "items": {
                         "type": "object",
@@ -2883,7 +2775,8 @@
                     }
                   },
                   "required": [
-                    "totalVisitedEdges"
+                    "totalAnswers",
+                    "offDefaultPathVisitedEdges"
                   ]
                 }
               }
@@ -3917,6 +3810,9 @@
                             "name": {
                               "type": "string"
                             },
+                            "isSessionVariable": {
+                              "type": "boolean"
+                            },
                             "value": {
                               "nullable": true,
                               "anyOf": [
@@ -4311,6 +4207,9 @@
                                 },
                                 "name": {
                                   "type": "string"
+                                },
+                                "isSessionVariable": {
+                                  "type": "boolean"
                                 },
                                 "value": {
                                   "nullable": true,
@@ -5010,7 +4909,8 @@
                                                       "Result ID",
                                                       "Random ID",
                                                       "Phone number",
-                                                      "Contact name"
+                                                      "Contact name",
+                                                      "Transcript"
                                                     ]
                                                   }
                                                 },
@@ -6949,6 +6849,9 @@
                                 },
                                 "name": {
                                   "type": "string"
+                                },
+                                "isSessionVariable": {
+                                  "type": "boolean"
                                 },
                                 "value": {
                                   "nullable": true,
@@ -7832,6 +7735,9 @@
                                 "name": {
                                   "type": "string"
                                 },
+                                "isSessionVariable": {
+                                  "type": "boolean"
+                                },
                                 "value": {
                                   "nullable": true,
                                   "anyOf": [
@@ -8462,7 +8368,8 @@
                                                       "Result ID",
                                                       "Random ID",
                                                       "Phone number",
-                                                      "Contact name"
+                                                      "Contact name",
+                                                      "Transcript"
                                                     ]
                                                   }
                                                 },
@@ -10451,6 +10358,9 @@
                                 "name": {
                                   "type": "string"
                                 },
+                                "isSessionVariable": {
+                                  "type": "boolean"
+                                },
                                 "value": {
                                   "nullable": true,
                                   "anyOf": [
@@ -11146,6 +11056,9 @@
                                 "name": {
                                   "type": "string"
                                 },
+                                "isSessionVariable": {
+                                  "type": "boolean"
+                                },
                                 "value": {
                                   "anyOf": [
                                     {
@@ -11179,43 +11092,25 @@
                             "type": "boolean",
                             "nullable": true
                           },
+                          "lastChatSessionId": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "answers": {
                             "type": "array",
                             "items": {
                               "type": "object",
                               "properties": {
-                                "createdAt": {
-                                  "type": "string"
-                                },
-                                "resultId": {
-                                  "type": "string"
-                                },
                                 "blockId": {
                                   "type": "string"
                                 },
-                                "groupId": {
-                                  "type": "string"
-                                },
-                                "variableId": {
-                                  "type": "string",
-                                  "nullable": true
-                                },
                                 "content": {
                                   "type": "string"
-                                },
-                                "storageUsed": {
-                                  "type": "number",
-                                  "nullable": true
                                 }
                               },
                               "required": [
-                                "createdAt",
-                                "resultId",
                                 "blockId",
-                                "groupId",
-                                "variableId",
-                                "content",
-                                "storageUsed"
+                                "content"
                               ]
                             }
                           }
@@ -11228,6 +11123,7 @@
                           "isCompleted",
                           "hasStarted",
                           "isArchived",
+                          "lastChatSessionId",
                           "answers"
                         ]
                       }
@@ -11455,6 +11351,9 @@
                               "name": {
                                 "type": "string"
                               },
+                              "isSessionVariable": {
+                                "type": "boolean"
+                              },
                               "value": {
                                 "anyOf": [
                                   {
@@ -11488,43 +11387,25 @@
                           "type": "boolean",
                           "nullable": true
                         },
+                        "lastChatSessionId": {
+                          "type": "string",
+                          "nullable": true
+                        },
                         "answers": {
                           "type": "array",
                           "items": {
                             "type": "object",
                             "properties": {
-                              "createdAt": {
-                                "type": "string"
-                              },
-                              "resultId": {
-                                "type": "string"
-                              },
                               "blockId": {
                                 "type": "string"
                               },
-                              "groupId": {
-                                "type": "string"
-                              },
-                              "variableId": {
-                                "type": "string",
-                                "nullable": true
-                              },
                               "content": {
                                 "type": "string"
-                              },
-                              "storageUsed": {
-                                "type": "number",
-                                "nullable": true
                               }
                             },
                             "required": [
-                              "createdAt",
-                              "resultId",
                               "blockId",
-                              "groupId",
-                              "variableId",
-                              "content",
-                              "storageUsed"
+                              "content"
                             ]
                           }
                         }
@@ -11537,6 +11418,7 @@
                         "isCompleted",
                         "hasStarted",
                         "isArchived",
+                        "lastChatSessionId",
                         "answers"
                       ]
                     }
@@ -16984,7 +16866,8 @@
                           "Result ID",
                           "Random ID",
                           "Phone number",
-                          "Contact name"
+                          "Contact name",
+                          "Transcript"
                         ]
                       }
                     },
@@ -19149,7 +19032,7 @@
                       "assistantId": {
                         "type": "string"
                       },
-                      "threadId": {
+                      "threadVariableId": {
                         "type": "string"
                       },
                       "message": {
@@ -19186,6 +19069,9 @@
                             }
                           }
                         }
+                      },
+                      "threadId": {
+                        "type": "string"
                       }
                     },
                     "required": [
@@ -19591,7 +19477,7 @@
                       "query": {
                         "type": "string"
                       },
-                      "conversation_id": {
+                      "conversationVariableId": {
                         "type": "string"
                       },
                       "user": {
@@ -19629,6 +19515,10 @@
                             }
                           }
                         }
+                      },
+                      "conversation_id": {
+                        "type": "string",
+                        "description": "Deprecated, use `conversationVariableId` instead"
                       }
                     },
                     "required": [
@@ -21342,6 +21232,70 @@
           "chat": {
             "type": "object",
             "properties": {
+              "container": {
+                "type": "object",
+                "properties": {
+                  "maxWidth": {
+                    "type": "string"
+                  },
+                  "maxHeight": {
+                    "type": "string"
+                  },
+                  "backgroundColor": {
+                    "type": "string"
+                  },
+                  "color": {
+                    "type": "string"
+                  },
+                  "blur": {
+                    "type": "number"
+                  },
+                  "opacity": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "shadow": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                      "2xl"
+                    ]
+                  },
+                  "border": {
+                    "type": "object",
+                    "properties": {
+                      "thickness": {
+                        "type": "number"
+                      },
+                      "color": {
+                        "type": "string"
+                      },
+                      "roundeness": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "medium",
+                          "large",
+                          "custom"
+                        ]
+                      },
+                      "customRoundeness": {
+                        "type": "number"
+                      },
+                      "opacity": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      }
+                    }
+                  }
+                }
+              },
               "hostAvatar": {
                 "type": "object",
                 "properties": {
@@ -21372,6 +21326,53 @@
                   },
                   "color": {
                     "type": "string"
+                  },
+                  "blur": {
+                    "type": "number"
+                  },
+                  "opacity": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "shadow": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                      "2xl"
+                    ]
+                  },
+                  "border": {
+                    "type": "object",
+                    "properties": {
+                      "thickness": {
+                        "type": "number"
+                      },
+                      "color": {
+                        "type": "string"
+                      },
+                      "roundeness": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "medium",
+                          "large",
+                          "custom"
+                        ]
+                      },
+                      "customRoundeness": {
+                        "type": "number"
+                      },
+                      "opacity": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      }
+                    }
                   }
                 }
               },
@@ -21383,6 +21384,53 @@
                   },
                   "color": {
                     "type": "string"
+                  },
+                  "blur": {
+                    "type": "number"
+                  },
+                  "opacity": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "shadow": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                      "2xl"
+                    ]
+                  },
+                  "border": {
+                    "type": "object",
+                    "properties": {
+                      "thickness": {
+                        "type": "number"
+                      },
+                      "color": {
+                        "type": "string"
+                      },
+                      "roundeness": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "medium",
+                          "large",
+                          "custom"
+                        ]
+                      },
+                      "customRoundeness": {
+                        "type": "number"
+                      },
+                      "opacity": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      }
+                    }
                   }
                 }
               },
@@ -21394,6 +21442,53 @@
                   },
                   "color": {
                     "type": "string"
+                  },
+                  "blur": {
+                    "type": "number"
+                  },
+                  "opacity": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "shadow": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                      "2xl"
+                    ]
+                  },
+                  "border": {
+                    "type": "object",
+                    "properties": {
+                      "thickness": {
+                        "type": "number"
+                      },
+                      "color": {
+                        "type": "string"
+                      },
+                      "roundeness": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "medium",
+                          "large",
+                          "custom"
+                        ]
+                      },
+                      "customRoundeness": {
+                        "type": "number"
+                      },
+                      "opacity": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      }
+                    }
                   }
                 }
               },
@@ -21406,6 +21501,53 @@
                   "color": {
                     "type": "string"
                   },
+                  "blur": {
+                    "type": "number"
+                  },
+                  "opacity": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "shadow": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                      "2xl"
+                    ]
+                  },
+                  "border": {
+                    "type": "object",
+                    "properties": {
+                      "thickness": {
+                        "type": "number"
+                      },
+                      "color": {
+                        "type": "string"
+                      },
+                      "roundeness": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "medium",
+                          "large",
+                          "custom"
+                        ]
+                      },
+                      "customRoundeness": {
+                        "type": "number"
+                      },
+                      "opacity": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      }
+                    }
+                  },
                   "placeholderColor": {
                     "type": "string"
                   }
@@ -21417,7 +21559,8 @@
                   "none",
                   "medium",
                   "large"
-                ]
+                ],
+                "description": "Deprecated, use `container.border.roundeness` instead"
               }
             }
           },
@@ -21698,6 +21841,9 @@
                 },
                 "name": {
                   "type": "string"
+                },
+                "isSessionVariable": {
+                  "type": "boolean"
                 },
                 "value": {
                   "nullable": true,
@@ -22375,7 +22521,8 @@
                                       "Result ID",
                                       "Random ID",
                                       "Phone number",
-                                      "Contact name"
+                                      "Contact name",
+                                      "Transcript"
                                     ]
                                   }
                                 },
@@ -24364,6 +24511,9 @@
                 "name": {
                   "type": "string"
                 },
+                "isSessionVariable": {
+                  "type": "boolean"
+                },
                 "value": {
                   "nullable": true,
                   "anyOf": [
@@ -24599,6 +24749,9 @@
                 },
                 "name": {
                   "type": "string"
+                },
+                "isSessionVariable": {
+                  "type": "boolean"
                 },
                 "value": {
                   "nullable": true,
@@ -25196,7 +25349,8 @@
                                       "Result ID",
                                       "Random ID",
                                       "Phone number",
-                                      "Contact name"
+                                      "Contact name",
+                                      "Transcript"
                                     ]
                                   }
                                 },
@@ -27187,6 +27341,9 @@
                 },
                 "name": {
                   "type": "string"
+                },
+                "isSessionVariable": {
+                  "type": "boolean"
                 },
                 "value": {
                   "nullable": true,

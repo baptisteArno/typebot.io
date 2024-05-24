@@ -60,6 +60,7 @@
   "auth.socialLogin.githubButton.label": "Mit GitHub fortfahren",
   "auth.socialLogin.gitlabButton.label": "Mit {gitlabProviderName} fortfahren",
   "auth.socialLogin.googleButton.label": "Mit Google fortfahren",
+  "auth.socialLogin.keycloakButton.label": "Mit Keycloak fortfahren",
   "back": "Zurück",
   "billing.billingPortalButton.label": "Abrechnungsportal",
   "billing.contribution.link": "Erfahre mehr.",

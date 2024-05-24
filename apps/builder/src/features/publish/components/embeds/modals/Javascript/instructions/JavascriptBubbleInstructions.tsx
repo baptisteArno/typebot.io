@@ -5,13 +5,13 @@ import { Typebot } from '@typebot.io/schemas'
 import { useState } from 'react'
 import { BubbleSettings } from '../../../settings/BubbleSettings/BubbleSettings'
 import { JavascriptBubbleSnippet } from '../JavascriptBubbleSnippet'
-import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
+import { defaultButtonsBackgroundColor } from '@typebot.io/schemas/features/typebot/theme/constants'
 
 export const parseDefaultBubbleTheme = (typebot?: Typebot) => ({
   button: {
     backgroundColor:
       typebot?.theme.chat?.buttons?.backgroundColor ??
-      defaultTheme.chat.buttons.backgroundColor,
+      defaultButtonsBackgroundColor,
   },
 })
 

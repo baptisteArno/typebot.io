@@ -21,7 +21,7 @@ type Props = {
   message: ChatMessage
   typingEmulation: Settings['typingEmulation']
   isTypingSkipped: boolean
-  onTransitionEnd?: (offsetTop?: number) => void
+  onTransitionEnd?: (ref?: HTMLDivElement) => void
   onCompleted: (reply?: string) => void
 }
 

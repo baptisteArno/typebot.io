@@ -11,6 +11,7 @@ import {
   SessionState,
   TypebotInSession,
   Block,
+  SetVariableHistoryItem,
 } from '@typebot.io/schemas'
 import {
   StartChatInput,
@@ -31,14 +32,23 @@ import { injectVariablesFromExistingResult } from '@typebot.io/variables/injectV
 import { getNextGroup } from './getNextGroup'
 import { upsertResult } from './queries/upsertResult'
 import { continueBotFlow } from './continueBotFlow'
-import { parseVariables } from '@typebot.io/variables/parseVariables'
+import {
+  getVariablesToParseInfoInText,
+  parseVariables,
+} from '@typebot.io/variables/parseVariables'
 import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
-import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
 import { VisitedEdge } from '@typebot.io/prisma'
 import { env } from '@typebot.io/env'
 import { getFirstEdgeId } from './getFirstEdgeId'
 import { Reply } from './types'
+import {
+  defaultGuestAvatarIsEnabled,
+  defaultHostAvatarIsEnabled,
+} from '@typebot.io/schemas/features/typebot/theme/constants'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { parseVariablesInRichText } from './parseBubbleBlock'
 
 type StartParams =
   | ({
@@ -65,6 +75,7 @@ export const startSession = async ({
   Omit<StartChatResponse, 'resultId' | 'isStreamEnabled' | 'sessionId'> & {
     newSessionState: SessionState
     visitedEdges: VisitedEdge[]
+    setVariableHistory: SetVariableHistoryItem[]
     resultId?: string
   }
 > => {
@@ -142,6 +153,8 @@ export const startSession = async ({
       : typebot.theme.general?.progressBar?.isEnabled
       ? { totalAnswers: 0 }
       : undefined,
+    setVariableIdsForHistory:
+      extractVariableIdsUsedForTranscript(typebotInSession),
     ...initialSessionState,
   }
 
@@ -151,7 +164,8 @@ export const startSession = async ({
       typebot: {
         id: typebot.id,
         settings: deepParseVariables(
-          initialState.typebotsQueue[0].typebot.variables
+          initialState.typebotsQueue[0].typebot.variables,
+          { removeEmptyStrings: true }
         )(typebot.settings),
         theme: sanitizeAndParseTheme(typebot.theme, {
           variables: initialState.typebotsQueue[0].typebot.variables,
@@ -160,6 +174,7 @@ export const startSession = async ({
       dynamicTheme: parseDynamicTheme(initialState),
       messages: [],
       visitedEdges: [],
+      setVariableHistory: [],
     }
   }
 
@@ -169,19 +184,24 @@ export const startSession = async ({
     startFrom:
       startParams.type === 'preview' ? startParams.startFrom : undefined,
     startTime: Date.now(),
+    textBubbleContentFormat: startParams.textBubbleContentFormat,
   })
 
   // If params has message and first block is an input block, we can directly continue the bot flow
   if (message) {
     const firstEdgeId = getFirstEdgeId({
-      state: chatReply.newSessionState,
+      typebot: chatReply.newSessionState.typebotsQueue[0].typebot,
       startEventId:
         startParams.type === 'preview' &&
         startParams.startFrom?.type === 'event'
           ? startParams.startFrom.eventId
           : undefined,
     })
-    const nextGroup = await getNextGroup(chatReply.newSessionState)(firstEdgeId)
+    const nextGroup = await getNextGroup({
+      state: chatReply.newSessionState,
+      edgeId: firstEdgeId,
+      isOffDefaultPath: false,
+    })
     const newSessionState = nextGroup.newSessionState
     const firstBlock = nextGroup.group?.blocks.at(0)
     if (firstBlock && isInputBlock(firstBlock)) {
@@ -199,6 +219,7 @@ export const startSession = async ({
           ...newSessionState,
           currentBlockId: firstBlock.id,
         },
+        textBubbleContentFormat: startParams.textBubbleContentFormat,
       })
     }
   }
@@ -210,6 +231,7 @@ export const startSession = async ({
     newSessionState,
     logs,
     visitedEdges,
+    setVariableHistory,
   } = chatReply
 
   const clientSideActions = startFlowClientActions ?? []
@@ -254,7 +276,8 @@ export const startSession = async ({
       typebot: {
         id: typebot.id,
         settings: deepParseVariables(
-          newSessionState.typebotsQueue[0].typebot.variables
+          newSessionState.typebotsQueue[0].typebot.variables,
+          { removeEmptyStrings: true }
         )(typebot.settings),
         theme: sanitizeAndParseTheme(typebot.theme, {
           variables: initialState.typebotsQueue[0].typebot.variables,
@@ -263,6 +286,7 @@ export const startSession = async ({
       dynamicTheme: parseDynamicTheme(newSessionState),
       logs: startLogs.length > 0 ? startLogs : undefined,
       visitedEdges,
+      setVariableHistory,
     }
 
   return {
@@ -271,7 +295,8 @@ export const startSession = async ({
     typebot: {
       id: typebot.id,
       settings: deepParseVariables(
-        newSessionState.typebotsQueue[0].typebot.variables
+        newSessionState.typebotsQueue[0].typebot.variables,
+        { removeEmptyStrings: true }
       )(typebot.settings),
       theme: sanitizeAndParseTheme(typebot.theme, {
         variables: initialState.typebotsQueue[0].typebot.variables,
@@ -284,6 +309,7 @@ export const startSession = async ({
     dynamicTheme: parseDynamicTheme(newSessionState),
     logs: startLogs.length > 0 ? startLogs : undefined,
     visitedEdges,
+    setVariableHistory,
   }
 }
 
@@ -385,12 +411,11 @@ const getResult = async ({
 
 const parseDynamicThemeInState = (theme: Theme) => {
   const hostAvatarUrl =
-    theme.chat?.hostAvatar?.isEnabled ?? defaultTheme.chat.hostAvatar.isEnabled
+    theme.chat?.hostAvatar?.isEnabled ?? defaultHostAvatarIsEnabled
       ? theme.chat?.hostAvatar?.url
       : undefined
   const guestAvatarUrl =
-    theme.chat?.guestAvatar?.isEnabled ??
-    defaultTheme.chat.guestAvatar.isEnabled
+    theme.chat?.guestAvatar?.isEnabled ?? defaultGuestAvatarIsEnabled
       ? theme.chat?.guestAvatar?.url
       : undefined
   if (!hostAvatarUrl?.startsWith('{{') && !guestAvatarUrl?.startsWith('{{'))
@@ -449,9 +474,11 @@ const sanitizeAndParseTheme = (
   { variables }: { variables: Variable[] }
 ): Theme => ({
   general: theme.general
-    ? deepParseVariables(variables)(theme.general)
+    ? deepParseVariables(variables, { removeEmptyStrings: true })(theme.general)
     : undefined,
-  chat: theme.chat ? deepParseVariables(variables)(theme.chat) : undefined,
+  chat: theme.chat
+    ? deepParseVariables(variables, { removeEmptyStrings: true })(theme.chat)
+    : undefined,
   customCss: theme.customCss
     ? removeLiteBadgeCss(parseVariables(variables)(theme.customCss))
     : undefined,
@@ -490,3 +517,59 @@ const convertStartTypebotToTypebotInSession = (
         variables: startVariables,
         events: typebot.events,
       }
+
+const extractVariableIdsUsedForTranscript = (
+  typebot: TypebotInSession
+): string[] => {
+  const variableIds: Set<string> = new Set()
+  const parseVarParams = {
+    variables: typebot.variables,
+    takeLatestIfList: typebot.version !== '6',
+  }
+  typebot.groups.forEach((group) => {
+    group.blocks.forEach((block) => {
+      if (block.type === BubbleBlockType.TEXT) {
+        const { parsedVariableIds } = parseVariablesInRichText(
+          block.content?.richText ?? [],
+          parseVarParams
+        )
+        parsedVariableIds.forEach((variableId) => variableIds.add(variableId))
+      }
+      if (
+        block.type === BubbleBlockType.IMAGE ||
+        block.type === BubbleBlockType.VIDEO ||
+        block.type === BubbleBlockType.AUDIO
+      ) {
+        if (!block.content?.url) return
+        const variablesInfo = getVariablesToParseInfoInText(
+          block.content.url,
+          parseVarParams
+        )
+        variablesInfo.forEach((variableInfo) =>
+          variableInfo.variableId
+            ? variableIds.add(variableInfo.variableId ?? '')
+            : undefined
+        )
+      }
+      if (block.type === LogicBlockType.CONDITION) {
+        block.items.forEach((item) =>
+          item.content?.comparisons?.forEach((comparison) => {
+            if (comparison.variableId) variableIds.add(comparison.variableId)
+            if (comparison.value) {
+              const variableIdsInValue = getVariablesToParseInfoInText(
+                comparison.value,
+                parseVarParams
+              )
+              variableIdsInValue.forEach((variableInfo) => {
+                variableInfo.variableId
+                  ? variableIds.add(variableInfo.variableId)
+                  : undefined
+              })
+            }
+          })
+        )
+      }
+    })
+  })
+  return [...variableIds]
+}

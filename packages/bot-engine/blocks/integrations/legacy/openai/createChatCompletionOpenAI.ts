@@ -13,7 +13,6 @@ import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { resumeChatCompletion } from './resumeChatCompletion'
 import { parseChatCompletionMessages } from './parseChatCompletionMessages'
 import { executeChatCompletionOpenAIRequest } from './executeChatCompletionOpenAIRequest'
-import { isPlaneteScale } from '@typebot.io/lib/isPlanetScale'
 import prisma from '@typebot.io/lib/prisma'
 import { ExecuteIntegrationResponse } from '../../../../types'
 import { parseVariableNumber } from '@typebot.io/variables/parseVariableNumber'
@@ -68,9 +67,11 @@ export const createChatCompletionOpenAI = async (
     typebot.variables
   )(options.messages)
   if (variablesTransformedToList.length > 0)
-    newSessionState = updateVariablesInSession(state)(
-      variablesTransformedToList
-    )
+    newSessionState = updateVariablesInSession({
+      state,
+      newVariables: variablesTransformedToList,
+      currentBlockId: undefined,
+    }).updatedState
 
   const temperature = parseVariableNumber(typebot.variables)(
     options.advancedSettings?.temperature
@@ -89,8 +90,7 @@ export const createChatCompletionOpenAI = async (
     isNextBubbleMessageWithAssistantMessage(typebot)(
       blockId,
       assistantMessageVariableName
-    ) &&
-    !process.env.VERCEL_ENV
+    )
   ) {
     return {
       clientSideActions: [

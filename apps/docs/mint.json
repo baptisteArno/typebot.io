@@ -125,7 +125,8 @@
                 "editor/blocks/integrations/zemantic-ai",
                 "editor/blocks/integrations/mistral",
                 "editor/blocks/integrations/elevenlabs",
-                "editor/blocks/integrations/anthropic"
+                "editor/blocks/integrations/anthropic",
+                "editor/blocks/integrations/dify-ai"
               ]
             }
           ]
@@ -239,6 +240,7 @@
         "contribute/guides/local-installation",
         "contribute/guides/create-block",
         "contribute/guides/documentation",
+        "contribute/guides/blog",
         "contribute/guides/translation"
       ]
     },

@@ -60,7 +60,6 @@ const sendingMessageSchema = z.discriminatedUnion('type', [
       body: z.string(),
       preview_url: z.boolean().optional(),
     }),
-    preview_url: z.boolean().optional(),
   }),
   z.object({
     type: z.literal('image'),

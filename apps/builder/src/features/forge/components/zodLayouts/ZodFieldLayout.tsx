@@ -132,7 +132,13 @@ export const ZodFieldLayout = ({
         <DropdownList
           currentItem={data ?? layout?.defaultValue}
           onItemSelect={onDataChange}
-          items={innerSchema._def.values}
+          items={
+            layout?.hiddenItems
+              ? innerSchema._def.values.filter(
+                  (v: any) => !layout.hiddenItems.includes(v)
+                )
+              : innerSchema._def.values
+          }
           label={layout?.label}
           helperText={
             layout?.helperText ? (
@@ -198,6 +204,7 @@ export const ZodFieldLayout = ({
             moreInfoTooltip={layout?.moreInfoTooltip}
             onChange={onDataChange}
             width={width}
+            withVariableButton={layout.withVariableButton ?? true}
           />
         )
       }
