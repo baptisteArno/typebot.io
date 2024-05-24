@@ -58,7 +58,10 @@ export const Post = ({ metadata, mdxSource }: Props) => (
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           link: (props: any) => <Link {...props} />,
           Image: (props) => (
-            <Image {...props} style={{ borderRadius: '.5rem' }} />
+            <Image
+              style={{ borderRadius: '.5rem', ...props.style }}
+              {...props}
+            />
           ),
           Callout: ({ children, title, ...props }) => (
             <Alert rounded="md" {...props}>
@@ -70,13 +73,13 @@ export const Post = ({ metadata, mdxSource }: Props) => (
           Tweet,
           Typebot: (props) => (
             <Standard
-              {...props}
-              typebot={props.typebot}
               style={{
                 borderRadius: '0.375rem',
                 borderWidth: '1px',
                 height: '533px',
+                ...props.style,
               }}
+              {...props}
             />
           ),
           Youtube: ({ id }: { id: string }) => (
@@ -129,14 +132,14 @@ export const Post = ({ metadata, mdxSource }: Props) => (
           ),
           Cta: (props) => (
             <EndCta
-              {...props}
-              style={{ maxWidth: 'none' }}
+              style={{ maxWidth: 'none', ...props.style }}
               w="full"
               h="auto"
               py="0"
               className="w-full"
               bgGradient={undefined}
               polygonsBaseTop="0px"
+              {...props}
             />
           ),
           Table,

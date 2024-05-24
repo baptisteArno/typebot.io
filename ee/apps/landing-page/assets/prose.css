@@ -15,8 +15,11 @@
 }
 
 .prose > * {
-  width: 100%;
   max-width: 46rem;
   margin-left: auto;
   margin-right: auto;
+}
+
+.prose > *:not(img) {
+  width: 100%;
 }
