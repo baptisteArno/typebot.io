@@ -1,31 +1,16 @@
 import { createBlock } from '@typebot.io/forge'
 import { NocodbLogo } from './logo'
 import { auth } from './auth'
-import { listTableRecords } from './actions/listTableRecords'
-import { createTableRecord } from './actions/createTableRecord'
-import { updateTableRecord } from './actions/updateTableRecord'
-import { deleteTableRecords } from './actions/deleteTableRecords'
-import { readTableRecord } from './actions/readTableRecord'
-import { countTableRecords } from './actions/countTableRecords'
-import { listLinkedRecords } from './actions/listLinkedRecords'
-import { linkRecords } from './actions/linkRecords'
-import { unlinkRecords } from './actions/unlinkRecords'
+import { searchRecords } from './actions/searchRecords'
+import { createRecord } from './actions/createRecord'
+import { updateExistingRecord } from './actions/updateExistingRecord'
 
-export const nocodb = createBlock({
+export const nocodbBlock = createBlock({
   id: 'nocodb',
   name: 'NocoDB',
+  docsUrl: 'https://docs.typebot.io/forge/blocks/nocodb',
   tags: ['database'],
   LightLogo: NocodbLogo,
   auth,
-  actions: [
-    listTableRecords,
-    createTableRecord,
-    updateTableRecord,
-    deleteTableRecords,
-    readTableRecord,
-    countTableRecords,
-    listLinkedRecords,
-    linkRecords,
-    unlinkRecords,
-  ],
+  actions: [searchRecords, createRecord, updateExistingRecord],
 })

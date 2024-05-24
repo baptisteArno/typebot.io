@@ -1422,9 +1422,9 @@ importers:
 
   packages/forge/blocks/nocodb:
     dependencies:
-      got:
-        specifier: 12.6.0
-        version: 12.6.0
+      ky:
+        specifier: 1.2.3
+        version: 1.2.3
     devDependencies:
       '@typebot.io/forge':
         specifier: workspace:*
@@ -1618,6 +1618,9 @@ importers:
       '@typebot.io/mistral-block':
         specifier: workspace:*
         version: link:../blocks/mistral
+      '@typebot.io/nocodb-block':
+        specifier: workspace:*
+        version: link:../blocks/nocodb
       '@typebot.io/open-router-block':
         specifier: workspace:*
         version: link:../blocks/openRouter

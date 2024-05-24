@@ -1,19 +1,22 @@
 import { option, AuthDefinition } from '@typebot.io/forge'
+import { defaultBaseUrl } from './constants'
 
 export const auth = {
   type: 'encryptedCredentials',
   name: 'NocoDB account',
   schema: option.object({
-    apiEndpoint: option.string.layout({
-      label: 'API Endpoint',
+    baseUrl: option.string.layout({
+      label: 'Base URL',
       isRequired: true,
-      helperText: 'URI where the Service API is hosted.',
+      helperText: 'Change it only if you are self-hosting NocoDB.',
       withVariableButton: false,
+      defaultValue: defaultBaseUrl,
     }),
     apiKey: option.string.layout({
-      label: 'API Token key',
+      label: 'API Token',
       isRequired: true,
-      helperText: 'API Secret Key for your NocoDB App.',
+      helperText:
+        'You can generate an API token [here](https://app.nocodb.com/#/account/tokens)',
       inputType: 'password',
       withVariableButton: false,
     }),
