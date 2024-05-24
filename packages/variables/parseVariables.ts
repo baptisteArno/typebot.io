@@ -73,8 +73,9 @@ const evaluateInlineCode = (
   { variables }: { variables: Variable[] }
 ) => {
   try {
+    const body = parseVariables(variables, { fieldToParse: 'id' })(code)
     return createCodeRunner({ variables })(
-      parseVariables(variables, { fieldToParse: 'id' })(code)
+      body.includes('return ') ? body : `return ${body}`
     )
   } catch (err) {
     return parseVariables(variables)(code)
