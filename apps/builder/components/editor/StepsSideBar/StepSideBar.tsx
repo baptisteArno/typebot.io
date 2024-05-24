@@ -201,7 +201,7 @@ export const StepsSideBar = () => {
       verifyFeatureToggle('commerce-enabled')
   )
   const wozSteps = Object.values(WOZStepType).filter(
-    (step) => shouldShowComponent(step) && verifyFeatureToggle('chat-ai')
+    (step) => shouldShowComponent(step) && verifyFeatureToggle('woz-in-bot')
   )
   const octaBubbleSteps = Object.values(OctaBubbleStepType).filter((step) =>
     shouldShowComponent(step)
