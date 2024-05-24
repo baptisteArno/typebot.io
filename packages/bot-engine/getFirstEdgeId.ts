@@ -1,14 +1,13 @@
 import { TRPCError } from '@trpc/server'
-import { SessionState } from '@typebot.io/schemas'
+import { TypebotInSession } from '@typebot.io/schemas'
 
 export const getFirstEdgeId = ({
-  state,
+  typebot,
   startEventId,
 }: {
-  state: SessionState
+  typebot: Pick<TypebotInSession, 'events' | 'groups' | 'version'>
   startEventId: string | undefined
 }) => {
-  const { typebot } = state.typebotsQueue[0]
   if (startEventId) {
     const event = typebot.events?.find((e) => e.id === startEventId)
     if (!event)
@@ -18,6 +17,6 @@ export const getFirstEdgeId = ({
       })
     return event.outgoingEdgeId
   }
-  if (typebot.version === '6') return typebot.events[0].outgoingEdgeId
+  if (typebot.version === '6') return typebot.events?.[0].outgoingEdgeId
   return typebot.groups.at(0)?.blocks.at(0)?.outgoingEdgeId
 }

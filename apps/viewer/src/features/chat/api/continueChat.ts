@@ -19,15 +19,24 @@ export const continueChat = publicProcedure
         .describe(
           'The session ID you got from the [startChat](./start-chat) response.'
         ),
+      textBubbleContentFormat: z
+        .enum(['richText', 'markdown'])
+        .default('richText'),
     })
   )
   .output(continueChatResponseSchema)
-  .mutation(async ({ input: { sessionId, message }, ctx: { origin, res } }) => {
-    const { corsOrigin, ...response } = await continueChatFn({
-      origin,
-      sessionId,
-      message,
-    })
-    if (corsOrigin) res.setHeader('Access-Control-Allow-Origin', corsOrigin)
-    return response
-  })
+  .mutation(
+    async ({
+      input: { sessionId, message, textBubbleContentFormat },
+      ctx: { origin, res },
+    }) => {
+      const { corsOrigin, ...response } = await continueChatFn({
+        origin,
+        sessionId,
+        message,
+        textBubbleContentFormat,
+      })
+      if (corsOrigin) res.setHeader('Access-Control-Allow-Origin', corsOrigin)
+      return response
+    }
+  )

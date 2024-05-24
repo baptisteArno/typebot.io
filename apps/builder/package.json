@@ -13,7 +13,6 @@
     "format:check": "prettier --check ./src --ignore-path ../../.prettierignore"
   },
   "dependencies": {
-    "@typebot.io/theme": "workspace:*",
     "@braintree/sanitize-url": "7.0.1",
     "@chakra-ui/anatomy": "2.1.1",
     "@chakra-ui/react": "2.7.1",
@@ -45,6 +44,7 @@
     "@typebot.io/env": "workspace:*",
     "@typebot.io/js": "workspace:*",
     "@typebot.io/nextjs": "workspace:*",
+    "@typebot.io/theme": "workspace:*",
     "@udecode/cn": "29.0.1",
     "@udecode/plate-basic-marks": "30.5.3",
     "@udecode/plate-common": "30.4.5",
@@ -68,9 +68,10 @@
     "framer-motion": "10.3.0",
     "google-auth-library": "8.9.0",
     "google-spreadsheet": "4.1.1",
-    "ky": "1.2.3",
     "immer": "10.0.2",
+    "isolated-vm": "4.7.2",
     "jsonwebtoken": "9.0.1",
+    "ky": "1.2.3",
     "libphonenumber-js": "1.10.37",
     "micro": "10.0.1",
     "micro-cors": "0.1.1",
@@ -79,7 +80,7 @@
     "nextjs-cors": "2.1.2",
     "nodemailer": "6.9.8",
     "nprogress": "0.2.0",
-    "openai": "4.28.4",
+    "openai": "4.47.1",
     "papaparse": "5.4.1",
     "prettier": "2.8.8",
     "qs": "6.11.2",
@@ -123,13 +124,13 @@
     "@types/qs": "6.9.7",
     "@types/react": "18.2.15",
     "@types/tinycolor2": "1.4.3",
+    "dotenv": "16.4.5",
     "dotenv-cli": "7.4.1",
     "eslint": "8.44.0",
     "eslint-config-custom": "workspace:*",
     "next-runtime-env": "1.6.2",
     "superjson": "1.12.4",
     "typescript": "5.4.5",
-    "zod": "3.22.4",
-    "dotenv": "16.4.5"
+    "zod": "3.22.4"
   }
 }

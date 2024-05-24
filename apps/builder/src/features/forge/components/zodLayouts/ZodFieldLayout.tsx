@@ -204,6 +204,7 @@ export const ZodFieldLayout = ({
             moreInfoTooltip={layout?.moreInfoTooltip}
             onChange={onDataChange}
             width={width}
+            withVariableButton={layout.withVariableButton ?? true}
           />
         )
       }

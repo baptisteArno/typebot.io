@@ -140,6 +140,15 @@ export const useTemplates = (): TemplateProps[] => {
         'Designed specifically for athlete fueling brands looking to attract and engage active audiences, this chatbot serves as an effective lead magnet by providing instant, customized carbohydrate intake recommendations based on user input.',
     },
     {
+      name: 'Skin Typology',
+      emoji: '💆‍♀️',
+      isNew: true,
+      fileName: 'skin-typology.json',
+      category: 'marketing',
+      description:
+        "A skin typology expert chatbot! Designed as a lead magnet for Typology, this bot asks a series of personalized questions to determine the user's unique skin type. He then receives a detailed diagnosis and tailored skincare AI-based recommendations.",
+    },
+    {
       name: 'OpenAI Assistant Chat',
       emoji: '🤖',
       fileName: 'openai-assistant-chat.json',

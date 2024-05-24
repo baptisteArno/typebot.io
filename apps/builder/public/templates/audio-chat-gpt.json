@@ -177,11 +177,31 @@
     }
   ],
   "variables": [
-    { "id": "vni6kwbch8zlq92dclgcivzyr", "name": "Assistant Message" },
-    { "id": "vudksu3zyrat6s1bq6qne0rx3", "name": "User Message" },
-    { "id": "vabkycu0qqff5d6ar2ama16pf", "name": "Chat history" },
-    { "id": "vxw4quja426402hvhtm33tsp3", "name": "Welcome audio" },
-    { "id": "vgr0iwg95npp7pztkmdyn89m1", "name": "Assistant audio message" }
+    {
+      "id": "vni6kwbch8zlq92dclgcivzyr",
+      "name": "Assistant Message",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vudksu3zyrat6s1bq6qne0rx3",
+      "name": "User Message",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vabkycu0qqff5d6ar2ama16pf",
+      "name": "Chat history",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vxw4quja426402hvhtm33tsp3",
+      "name": "Welcome audio",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vgr0iwg95npp7pztkmdyn89m1",
+      "name": "Assistant audio message",
+      "isSessionVariable": true
+    }
   ],
   "theme": {},
   "selectedThemeTemplateId": null,

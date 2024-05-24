@@ -5,6 +5,7 @@ export const valueTypes = [
   'Empty',
   'Append value(s)',
   'Environment name',
+  'Transcript',
   'User ID',
   'Result ID',
   'Now',
@@ -19,6 +20,8 @@ export const valueTypes = [
 ] as const
 
 export const hiddenTypes = ['Today', 'User ID'] as const
+
+export const sessionOnlySetVariableOptions = ['Transcript'] as const
 
 export const defaultSetVariableOptions = {
   type: 'Custom',

@@ -67,6 +67,8 @@ export const askAssistant = createAction({
     {
       id: 'fetchAssistants',
       fetch: async ({ options, credentials }) => {
+        if (!credentials?.apiKey) return []
+
         const config = {
           apiKey: credentials.apiKey,
           baseURL: options.baseUrl,
@@ -100,7 +102,8 @@ export const askAssistant = createAction({
     {
       id: 'fetchAssistantFunctions',
       fetch: async ({ options, credentials }) => {
-        if (!options.assistantId) return []
+        if (!options.assistantId || !credentials?.apiKey) return []
+
         const config = {
           apiKey: credentials.apiKey,
           baseURL: options.baseUrl,

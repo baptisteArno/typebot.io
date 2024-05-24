@@ -110,4 +110,4 @@ Made with [contrib.rocks](https://contrib.rocks).
 
 ## License
 
-Typebot is open-source under the GNU Affero General Public License Version 3 (AGPLv3). You will find more information about the license and how to comply with it [here](https://docs.typebot.io/self-hosting#license-requirements).
+Most of Typebot's code is open-source under the GNU Affero General Public License Version 3 (AGPLv3). You will find more information about the license and how to comply with it [here](https://docs.typebot.io/self-hosting#license-requirements).

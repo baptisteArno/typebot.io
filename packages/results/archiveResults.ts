@@ -2,6 +2,7 @@ import { Prisma, PrismaClient } from '@typebot.io/prisma'
 import { Block, Typebot } from '@typebot.io/schemas'
 import { deleteFilesFromBucket } from '@typebot.io/lib/s3/deleteFilesFromBucket'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { isDefined } from '@typebot.io/lib'
 
 type ArchiveResultsProps = {
   typebot: Pick<Typebot, 'groups'>
@@ -42,6 +43,7 @@ export const archiveResults =
         },
         select: {
           id: true,
+          lastChatSessionId: true,
         },
         take: batchSize,
       })
@@ -74,6 +76,30 @@ export const archiveResults =
         prisma.answer.deleteMany({
           where: {
             resultId: { in: resultIds },
+          },
+        }),
+        prisma.answerV2.deleteMany({
+          where: {
+            resultId: { in: resultIds },
+          },
+        }),
+        prisma.visitedEdge.deleteMany({
+          where: {
+            resultId: { in: resultIds },
+          },
+        }),
+        prisma.setVariableHistoryItem.deleteMany({
+          where: {
+            resultId: { in: resultIds },
+          },
+        }),
+        prisma.chatSession.deleteMany({
+          where: {
+            id: {
+              in: resultsToDelete
+                .map((r) => r.lastChatSessionId)
+                .filter(isDefined),
+            },
           },
         }),
         prisma.result.updateMany({

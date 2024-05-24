@@ -58,13 +58,12 @@ const createAnswers = ({
   count,
   resultIdPrefix,
 }: { resultIdPrefix: string } & Pick<CreateFakeResultsProps, 'count'>) => {
-  return prisma.answer.createMany({
+  return prisma.answerV2.createMany({
     data: [
       ...Array.from(Array(count)).map((_, idx) => ({
         resultId: `${resultIdPrefix}-result${idx}`,
         content: `content${idx}`,
         blockId: 'block1',
-        groupId: 'group1',
       })),
     ],
   })

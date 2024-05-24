@@ -4,6 +4,8 @@
   "license": "AGPL-3.0-or-later",
   "private": true,
   "dependencies": {
-    "@typebot.io/lib": "workspace:*"
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/tsconfig": "workspace:*",
+    "isolated-vm": "4.7.2"
   }
 }

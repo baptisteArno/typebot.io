@@ -48,6 +48,7 @@ test('API chat execution should work on preview bot', async ({ request }) => {
         data: {
           isOnlyRegistering: false,
           isStreamEnabled: false,
+          textBubbleContentFormat: 'richText',
         } satisfies Omit<StartPreviewChatInput, 'typebotId'>,
       })
     ).json()
@@ -120,6 +121,7 @@ test('API chat execution should work on published bot', async ({ request }) => {
         data: {
           isOnlyRegistering: false,
           isStreamEnabled: false,
+          textBubbleContentFormat: 'richText',
         } satisfies Omit<StartChatInput, 'publicId'>,
       })
     ).json()
@@ -302,6 +304,7 @@ test('API chat execution should work on published bot', async ({ request }) => {
             message: 'Hey',
             isStreamEnabled: false,
             isOnlyRegistering: false,
+            textBubbleContentFormat: 'richText',
           } satisfies Omit<StartChatInput, 'publicId'>,
         }
       )
@@ -316,5 +319,20 @@ test('API chat execution should work on published bot', async ({ request }) => {
         type: 'p',
       },
     ])
+  })
+  await test.step('Markdown text bubble format should work', async () => {
+    const { messages } = await (
+      await request.post(`/api/v1/typebots/${typebotId}/preview/startChat`, {
+        data: {
+          isOnlyRegistering: false,
+          isStreamEnabled: false,
+          textBubbleContentFormat: 'markdown',
+        } satisfies Omit<StartPreviewChatInput, 'typebotId'>,
+      })
+    ).json()
+    expect(messages[0].content.markdown).toStrictEqual('Hi there! 👋')
+    expect(messages[1].content.markdown).toStrictEqual(
+      'Welcome. What&#39;s your name?'
+    )
   })
 })

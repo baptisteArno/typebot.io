@@ -140,7 +140,7 @@ const BubbleIcon = ({
             ? buttonTheme?.size === 'large'
               ? '36px'
               : '28px'
-            : '90%'
+            : '100%'
         }
         rounded={isSvgSrc(buttonTheme.customIconSrc) ? undefined : 'full'}
         alt="Bubble button icon"

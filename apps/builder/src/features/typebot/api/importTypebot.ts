@@ -15,6 +15,7 @@ import {
   sanitizeFolderId,
   sanitizeGroups,
   sanitizeSettings,
+  sanitizeVariables,
 } from '../helpers/sanitizers'
 import { preprocessTypebot } from '@typebot.io/schemas/features/typebot/helpers/preprocessTypebot'
 import { migrateTypebot } from '@typebot.io/migrations/migrateTypebot'
@@ -122,6 +123,12 @@ export const importTypebot = authenticatedProcedure
 
     const migratedTypebot = await migrateImportingTypebot(typebot)
 
+    const groups = (
+      migratedTypebot.groups
+        ? await sanitizeGroups(workspaceId)(migratedTypebot.groups)
+        : []
+    ) as TypebotV6['groups']
+
     const newTypebot = await prisma.typebot.create({
       data: {
         version: '6',
@@ -129,9 +136,7 @@ export const importTypebot = authenticatedProcedure
         name: migratedTypebot.name,
         icon: migratedTypebot.icon,
         selectedThemeTemplateId: migratedTypebot.selectedThemeTemplateId,
-        groups: (migratedTypebot.groups
-          ? await sanitizeGroups(workspaceId)(migratedTypebot.groups)
-          : []) as TypebotV6['groups'],
+        groups,
         events: migratedTypebot.events ?? undefined,
         theme: migratedTypebot.theme ? migratedTypebot.theme : {},
         settings: migratedTypebot.settings
@@ -147,7 +152,9 @@ export const importTypebot = authenticatedProcedure
           folderId: migratedTypebot.folderId,
           workspaceId: workspace.id,
         }),
-        variables: migratedTypebot.variables ?? [],
+        variables: migratedTypebot.variables
+          ? sanitizeVariables({ variables: migratedTypebot.variables, groups })
+          : [],
         edges: migratedTypebot.edges ?? [],
         resultsTablePreferences:
           migratedTypebot.resultsTablePreferences ?? undefined,
