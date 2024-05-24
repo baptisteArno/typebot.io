@@ -341,10 +341,6 @@ const saveAnswerInDb =
   (state: SessionState, block: InputBlock) =>
   async (reply: string): Promise<SessionState> => {
     let newSessionState = state
-    const groupId = state.typebotsQueue[0].typebot.groups.find((group) =>
-      group.blocks.some((blockInGroup) => blockInGroup.id === block.id)
-    )?.id
-    if (!groupId) throw new Error('saveAnswer: Group not found')
     await saveAnswer({
       answer: {
         blockId: block.id,
