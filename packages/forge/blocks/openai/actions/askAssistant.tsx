@@ -142,8 +142,8 @@ export const askAssistant = createAction({
       getStreamVariableId: ({ responseMapping }) =>
         responseMapping?.find((m) => !m.item || m.item === 'Message')
           ?.variableId,
-      run: async ({ credentials, options, variables }) =>
-        createAssistantStream({
+      run: async ({ credentials, options, variables }) => ({
+        stream: await createAssistantStream({
           apiKey: credentials.apiKey,
           assistantId: options.assistantId,
           message: options.message,
@@ -154,6 +154,7 @@ export const askAssistant = createAction({
           functions: options.functions,
           responseMapping: options.responseMapping,
         }),
+      }),
     },
     server: async ({
       credentials: { apiKey },

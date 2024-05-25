@@ -139,7 +139,7 @@ export const createChatCompletion = createAction({
           (res) => res.item === 'Message content' || !res.item
         )?.variableId,
       run: async ({ credentials: { apiKey }, options, variables }) => {
-        if (!options.model) return
+        if (!options.model) return {}
         const model = createMistral({
           apiKey,
         })(options.model)
@@ -149,7 +149,7 @@ export const createChatCompletion = createAction({
           messages: parseMessages({ options, variables }),
         })
 
-        return response.toAIStream()
+        return { stream: response.toAIStream() }
       },
     },
   },

@@ -168,7 +168,7 @@ export const createChatMessage = createAction({
           stream: true,
         })
 
-        return AnthropicStream(response)
+        return { stream: AnthropicStream(response) }
       },
     },
   },

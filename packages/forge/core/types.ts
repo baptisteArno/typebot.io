@@ -64,7 +64,10 @@ export type ActionDefinition<
         credentials: CredentialsFromAuthDef<A>
         options: z.infer<BaseOptions> & z.infer<Options>
         variables: VariableStore
-      }) => Promise<ReadableStream<any> | undefined>
+      }) => Promise<{
+        stream?: ReadableStream<any>
+        httpError?: { status: number; message: string }
+      }>
     }
     web?: {
       displayEmbedBubble?: {

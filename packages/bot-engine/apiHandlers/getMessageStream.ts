@@ -23,7 +23,14 @@ type Props = {
   messages: OpenAI.Chat.ChatCompletionMessage[] | undefined
 }
 
-export const getMessageStream = async ({ sessionId, messages }: Props) => {
+export const getMessageStream = async ({
+  sessionId,
+  messages,
+}: Props): Promise<{
+  stream?: ReadableStream<any>
+  status?: number
+  message?: string
+}> => {
   const session = await getSession(sessionId)
 
   if (!session?.state || !session.state.currentBlockId)
@@ -130,13 +137,15 @@ export const getMessageStream = async ({ sessionId, messages }: Props) => {
         })
       },
     }
-    const stream = await action.run.stream.run({
+    const { stream, httpError } = await action.run.stream.run({
       credentials: decryptedCredentials,
       options: deepParseVariables(
         session.state.typebotsQueue[0].typebot.variables
       )(block.options),
       variables,
     })
+    if (httpError) return httpError
+
     if (!stream) return { status: 500, message: 'Could not create stream' }
 
     return { stream }

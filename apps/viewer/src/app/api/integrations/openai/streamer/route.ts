@@ -153,7 +153,7 @@ export async function POST(req: Request) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       set: (_1: string, _2: unknown) => {},
     }
-    const stream = await action.run.stream.run({
+    const { stream } = await action.run.stream.run({
       credentials: decryptedCredentials,
       options: block.options,
       variables,
