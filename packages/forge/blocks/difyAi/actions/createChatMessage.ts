@@ -29,9 +29,20 @@ export const createChatMessage = createAction({
         moreInfoTooltip:
           'The user identifier, defined by the developer, must ensure uniqueness within the app.',
       }),
-      inputs: option.keyValueList.layout({
-        accordion: 'Inputs',
-      }),
+      inputs: option
+        .array(
+          option.object({
+            key: option.string.layout({
+              label: 'Key',
+            }),
+            value: option.string.layout({
+              label: 'Value',
+            }),
+          })
+        )
+        .layout({
+          accordion: 'Inputs',
+        }),
       responseMapping: option
         .saveResponseArray(
           ['Answer', 'Conversation ID', 'Total Tokens'] as const,
