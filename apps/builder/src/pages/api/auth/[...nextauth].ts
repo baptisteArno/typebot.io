@@ -179,7 +179,7 @@ export const getAuthOptions = ({
       if (restricted === 'rate-limited') throw new Error('rate-limited')
       if (!account) return false
       const isNewUser = !('createdAt' in user && isDefined(user.createdAt))
-      if (isNewUser && user.email && user?.email != env.ADMIN_EMAIL) {
+      if (isNewUser && user.email && user.email !== env.ADMIN_EMAIL) {
         const data = await ky
           .get(
             'https://raw.githubusercontent.com/disposable-email-domains/disposable-email-domains/master/disposable_email_blocklist.conf'
