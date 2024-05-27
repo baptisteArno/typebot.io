@@ -1082,6 +1082,14 @@
                       "First name": "John",
                       "Email": "john@gmail.com"
                     }
+                  },
+                  "textBubbleContentFormat": {
+                    "type": "string",
+                    "enum": [
+                      "richText",
+                      "markdown"
+                    ],
+                    "default": "richText"
                   }
                 }
               }
@@ -1441,6 +1449,14 @@
                 "properties": {
                   "message": {
                     "type": "string"
+                  },
+                  "textBubbleContentFormat": {
+                    "type": "string",
+                    "enum": [
+                      "richText",
+                      "markdown"
+                    ],
+                    "default": "richText"
                   }
                 }
               }
@@ -1855,6 +1871,14 @@
                   "sessionId": {
                     "type": "string",
                     "description": "If provided, will be used as the session ID and will overwrite any existing session with the same ID."
+                  },
+                  "textBubbleContentFormat": {
+                    "type": "string",
+                    "enum": [
+                      "richText",
+                      "markdown"
+                    ],
+                    "default": "richText"
                   }
                 }
               }
@@ -11879,19 +11903,41 @@
             ]
           },
           "content": {
-            "type": "object",
-            "properties": {
-              "html": {
-                "type": "string"
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "richText"
+                    ]
+                  },
+                  "richText": {}
+                },
+                "required": [
+                  "type"
+                ]
               },
-              "richText": {
-                "type": "array",
-                "items": {}
-              },
-              "plainText": {
-                "type": "string"
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "markdown"
+                    ]
+                  },
+                  "markdown": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "markdown"
+                ]
               }
-            }
+            ]
           }
         },
         "required": [
