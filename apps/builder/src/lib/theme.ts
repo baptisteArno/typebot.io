@@ -14,6 +14,7 @@ import {
   popoverAnatomy,
   switchAnatomy,
 } from '@chakra-ui/anatomy'
+import { qitheme } from './qitheme'
 
 const config: ThemeConfig = {
   initialColorMode: 'system',
@@ -40,18 +41,7 @@ export const colors = {
     850: '#1f1f23',
     900: '#18181b',
   },
-  blue: {
-    50: '#e9177c',
-    100: '#ef4288',
-    200: '#f45d95',
-    300: '#f874a1',
-    400: '#fc8aae',
-    500: '#ff9ebb',
-    600: '#ffb2c9',
-    700: '#ffc5d6',
-    800: '#ffd9e3',
-    900: '#ffecf1',
-  },
+  blue: qitheme,
   orange: {
     50: '#fff1da',
     100: '#ffd7ae',
