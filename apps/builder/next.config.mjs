@@ -44,7 +44,7 @@ const nextConfig = {
     '@typebot.io/env',
   ],
   i18n: {
-    defaultLocale: 'en',
+    defaultLocale: 'pt-BR',
     locales: ['en', 'fr', 'pt', 'pt-BR', 'de', 'ro', 'es', 'it'],
   },
   experimental: {
