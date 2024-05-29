@@ -23,13 +23,15 @@ export const listTypebotsClaudia = authenticatedProcedure
     })
   )
   .output(
-    z.array(
-      typebotV5Schema._def.schema.pick({
-        id: true,
-        name: true,
-        publicId: true,
-      })
-    )
+    z.object({
+      typebots: z.array(
+        typebotV5Schema._def.schema.pick({
+          id: true,
+          name: true,
+          publicId: true,
+        })
+      ),
+    })
   )
   .query(async ({ input: { workspaceName, folderId }, ctx: { user } }) => {
     const workspace = await prisma.workspace.findFirst({
@@ -73,5 +75,5 @@ export const listTypebotsClaudia = authenticatedProcedure
     if (!typebots)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'No typebots found' })
 
-    return typebots
+    return { typebots }
   })
