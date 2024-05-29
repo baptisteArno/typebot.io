@@ -11,7 +11,7 @@ type AgentMessageChunk = {
 type MessageEndChunk = {
   event: 'message_end'
   metadata: {
-    usage: {
+    usage?: {
       total_tokens: number
     }
   }

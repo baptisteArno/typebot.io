@@ -20532,6 +20532,242 @@
               "id",
               "type"
             ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "outgoingEdgeId": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "nocodb"
+                ]
+              },
+              "options": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "credentialsId": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "credentialsId": {
+                        "type": "string"
+                      },
+                      "action": {
+                        "type": "string",
+                        "enum": [
+                          "Search Records"
+                        ]
+                      },
+                      "tableId": {
+                        "type": "string"
+                      },
+                      "viewId": {
+                        "type": "string"
+                      },
+                      "returnType": {
+                        "type": "string",
+                        "enum": [
+                          "All",
+                          "First",
+                          "Last",
+                          "Random"
+                        ]
+                      },
+                      "filter": {
+                        "type": "object",
+                        "properties": {
+                          "comparisons": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "input": {
+                                  "type": "string"
+                                },
+                                "operator": {
+                                  "type": "string",
+                                  "enum": [
+                                    "Equal to",
+                                    "Not equal",
+                                    "Contains",
+                                    "Greater than",
+                                    "Less than",
+                                    "Is set",
+                                    "Is empty",
+                                    "Starts with",
+                                    "Ends with"
+                                  ]
+                                },
+                                "value": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "joiner": {
+                            "type": "string",
+                            "enum": [
+                              "AND",
+                              "OR"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "comparisons"
+                        ]
+                      },
+                      "responseMapping": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "fieldName": {
+                              "type": "string"
+                            },
+                            "variableId": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "credentialsId": {
+                        "type": "string"
+                      },
+                      "action": {
+                        "type": "string",
+                        "enum": [
+                          "Create Record"
+                        ]
+                      },
+                      "tableId": {
+                        "type": "string"
+                      },
+                      "fields": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "key": {
+                              "type": "string"
+                            },
+                            "value": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "credentialsId": {
+                        "type": "string"
+                      },
+                      "action": {
+                        "type": "string",
+                        "enum": [
+                          "Update Existing Record"
+                        ]
+                      },
+                      "tableId": {
+                        "type": "string"
+                      },
+                      "viewId": {
+                        "type": "string"
+                      },
+                      "filter": {
+                        "type": "object",
+                        "properties": {
+                          "comparisons": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "input": {
+                                  "type": "string"
+                                },
+                                "operator": {
+                                  "type": "string",
+                                  "enum": [
+                                    "Equal to",
+                                    "Not equal",
+                                    "Contains",
+                                    "Greater than",
+                                    "Less than",
+                                    "Is set",
+                                    "Is empty",
+                                    "Starts with",
+                                    "Ends with"
+                                  ]
+                                },
+                                "value": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "joiner": {
+                            "type": "string",
+                            "enum": [
+                              "AND",
+                              "OR"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "comparisons"
+                        ]
+                      },
+                      "updates": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "fieldName": {
+                              "type": "string"
+                            },
+                            "value": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "type"
+            ]
           }
         ],
         "title": "Block"

@@ -1,6 +1,7 @@
 import { NumberInput, TextInput, Textarea } from '@/components/inputs'
 import { z } from '@typebot.io/forge/zod'
 import { ZodLayoutMetadata } from '@typebot.io/forge/zod'
+import { evaluateIsHidden } from '@typebot.io/forge/zod/helpers/evaluateIsHidden'
 import Markdown, { Components } from 'react-markdown'
 import { ZodTypeAny } from 'zod'
 import { ForgeSelectInput } from '../ForgeSelectInput'
@@ -64,7 +65,7 @@ export const ZodFieldLayout = ({
   const innerSchema = getZodInnerSchema(schema)
   const layout = innerSchema._def.layout
 
-  if (layout?.isHidden) return null
+  if (evaluateIsHidden(layout?.isHidden, blockOptions)) return null
 
   switch (innerSchema._def.typeName) {
     case 'ZodObject':

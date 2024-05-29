@@ -1347,6 +1347,10 @@ importers:
         version: 5.4.5
 
   packages/forge/blocks/difyAi:
+    dependencies:
+      ai:
+        specifier: 3.1.12
+        version: 3.1.12(openai@4.47.1)(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.12)(vue@3.4.21)(zod@3.22.4)
     devDependencies:
       '@typebot.io/forge':
         specifier: workspace:*
@@ -1419,6 +1423,28 @@ importers:
       typescript:
         specifier: 5.4.5
         version: 5.4.5
+
+  packages/forge/blocks/nocodb:
+    dependencies:
+      ky:
+        specifier: 1.2.3
+        version: 1.2.3
+    devDependencies:
+      '@typebot.io/forge':
+        specifier: workspace:*
+        version: link:../../core
+      '@typebot.io/lib':
+        specifier: workspace:*
+        version: link:../../../lib
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../../../tsconfig
+      '@types/react':
+        specifier: 18.2.15
+        version: 18.2.15
+      typescript:
+        specifier: 5.3.2
+        version: 5.3.2
 
   packages/forge/blocks/openRouter:
     devDependencies:
@@ -1596,6 +1622,9 @@ importers:
       '@typebot.io/mistral-block':
         specifier: workspace:*
         version: link:../blocks/mistral
+      '@typebot.io/nocodb-block':
+        specifier: workspace:*
+        version: link:../blocks/nocodb
       '@typebot.io/open-router-block':
         specifier: workspace:*
         version: link:../blocks/openRouter
@@ -22391,6 +22420,12 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
     dev: false
+
+  /typescript@5.3.2:
+    resolution: {integrity: sha512-6l+RyNy7oAHDfxC4FzSJcz9vnjTKxrLpDG5M2Vu4SHRVNg6xzqZp6LYSR9zjqQTu8DU/f5xwxUdADOkbrIX2gQ==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+    dev: true
 
   /typescript@5.4.5:
     resolution: {integrity: sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==}

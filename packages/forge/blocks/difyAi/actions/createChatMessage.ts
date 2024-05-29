@@ -5,6 +5,7 @@ import { defaultBaseUrl } from '../constants'
 import { Chunk } from '../types'
 import ky, { HTTPError } from 'ky'
 import { deprecatedCreateChatMessageOptions } from '../deprecated'
+import { formatStreamPart } from 'ai'
 
 export const createChatMessage = createAction({
   auth,
@@ -29,9 +30,20 @@ export const createChatMessage = createAction({
         moreInfoTooltip:
           'The user identifier, defined by the developer, must ensure uniqueness within the app.',
       }),
-      inputs: option.keyValueList.layout({
-        accordion: 'Inputs',
-      }),
+      inputs: option
+        .array(
+          option.object({
+            key: option.string.layout({
+              label: 'Key',
+            }),
+            value: option.string.layout({
+              label: 'Value',
+            }),
+          })
+        )
+        .layout({
+          accordion: 'Inputs',
+        }),
       responseMapping: option
         .saveResponseArray(
           ['Answer', 'Conversation ID', 'Total Tokens'] as const,
@@ -109,7 +121,7 @@ export const createChatMessage = createAction({
                     onMessage: (message) => {
                       controller.enqueue(
                         new TextEncoder().encode(
-                          '0:"' + message.replace(/"/g, '\\"') + '"\n'
+                          formatStreamPart('text', message)
                         )
                       )
                     },
@@ -288,7 +300,7 @@ const processDifyStream = async (
       totalTokens,
       conversationId,
     }: {
-      totalTokens: number
+      totalTokens?: number
       conversationId: string
     }) => void
   }
@@ -322,7 +334,7 @@ const processDifyStream = async (
         }
         if (data.event === 'message_end') {
           callbacks.onMessageEnd?.({
-            totalTokens: data.metadata.usage.total_tokens,
+            totalTokens: data.metadata.usage?.total_tokens,
             conversationId: data.conversation_id,
           })
         }

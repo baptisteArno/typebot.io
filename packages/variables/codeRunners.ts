@@ -47,7 +47,7 @@ export const createHttpReqResponseMappingRunner = (response: any) => {
   }
 }
 
-const parseTransferrableValue = (value: unknown) => {
+export const parseTransferrableValue = (value: unknown) => {
   if (typeof value === 'object') {
     return new ivm.ExternalCopy(value).copyInto()
   }

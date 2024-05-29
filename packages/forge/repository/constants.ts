@@ -13,4 +13,5 @@ export const forgedBlockIds = [
   'anthropic',
   'together-ai',
   'open-router',
+  'nocodb',
 ] as const satisfies ForgedBlock['type'][]
