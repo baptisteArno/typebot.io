@@ -1,11 +1,9 @@
 import React, {
   ChangeEvent,
-  Ref,
   useCallback,
   useEffect,
   useLayoutEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react'
 import useOuterClick from 'hooks/useOuterClick'
@@ -14,14 +12,12 @@ import {
   OptionGroup,
   OptionItem,
   DropDownIcon,
-  Separator,
   InputSearch,
 } from './OctaSelect.style'
 import { OctaSelectProps, OptionProps } from './OctaSelect.type'
-import { Button, HStack, background, color } from '@chakra-ui/react'
-import { EditIcon, PencilIcon } from 'assets/icons'
+import { Button, useModalContext } from '@chakra-ui/react'
+import { EditIcon } from 'assets/icons'
 import { DeleteIcon } from '@chakra-ui/icons'
-import { defaultLightThemeOption } from '@uiw/react-codemirror'
 
 export enum SELECT_ACTION {
   DELETE = 'DELETE',
@@ -97,12 +93,27 @@ const OctaSelect = (props: OctaSelectProps) => {
   const { ref, isComponentVisible, setIsComponentVisible } =
     useOuterClick(toggle)
   const [search, setSearch] = useState<string>()
+  const { dialogRef } = useModalContext()
 
   const allOptions = useMemo(() => props.options, [props.options])
 
   useLayoutEffect(() => {
     setIsComponentVisible(toggle)
   }, [toggle, setIsComponentVisible])
+
+  useEffect(() => {
+    const settingsModal = dialogRef?.current?.querySelector(
+      '#settings-modal'
+    ) as HTMLElement
+    if (!settingsModal) return
+
+    if (isComponentVisible) {
+      settingsModal.style.overflow = 'hidden'
+
+      return
+    }
+    settingsModal.style.overflow = 'auto'
+  }, [dialogRef, isComponentVisible])
 
   useEffect(() => {
     if (props.defaultSelected) {
@@ -115,6 +126,27 @@ const OctaSelect = (props: OctaSelectProps) => {
       setSelected('')
     }
   }, [props.defaultSelected, props.options])
+
+  const openToTopOrDown = () => {
+    let top = ''
+    if (!ref.current) return
+    const containerRect = ref.current.getBoundingClientRect()
+    const viewportHeight = window.innerHeight
+    const optionGroupHeight = 250
+    if (containerRect.bottom + optionGroupHeight <= viewportHeight) {
+      top = `${ref.current.getBoundingClientRect().bottom}px` ?? '0px'
+    } else {
+      top =
+        `${ref.current.getBoundingClientRect().top - optionGroupHeight}px` ??
+        '0px'
+    }
+
+    return {
+      top,
+      left: `${ref.current.getBoundingClientRect().left}px` ?? '0px',
+      width: `${ref.current.getBoundingClientRect().width}px` ?? '100%',
+    }
+  }
 
   const handleToggle = (): void => {
     setToggle((e) => !e)
@@ -146,48 +178,51 @@ const OctaSelect = (props: OctaSelectProps) => {
   }, [allOptions, search])
 
   return (
-    <Container
-      ref={ref}
-      onClick={handleToggle}
-      style={{ width: '100%', ...props }}
-    >
-      <>
-        {!selected && !props.findable && props.placeholder}
-        {selected && !props.findable && selected.label}
-        {props.findable && (
-          <InputSearch
-            placeholder={selected ? selected.label : props.placeholder}
-            defaultValue={selected && selected.label ? selected.label : ''}
-            value={search}
-            onChange={handleSearch}
-          />
-        )}
-        <OptionGroup
-          className={toggle && isComponentVisible ? 'opened' : ''}
-          {...(props as any)}
-        >
-          {props.label && props.label}
-          <>
-            {getOptions().map((option, id) => (
-              <Option
-                key={option.key}
-                value={option.value}
-                selected={selected}
-                onClick={() => handleChangeFind(option)}
-                isTitle={option.isTitle}
-                disabled={option.disabled}
-                showEdit={props.showEdit}
-                showDelete={props.showDelete}
-                onIconClicked={props.onIconClicked}
-              >
-                {option.label}
-              </Option>
-            ))}
-          </>
-        </OptionGroup>
-        <DropDownIcon />
-      </>
-    </Container>
+    <>
+      <Container
+        ref={ref}
+        onClick={handleToggle}
+        style={{ width: '100%', ...props }}
+      >
+        <>
+          {!selected && !props.findable && props.placeholder}
+          {selected && !props.findable && selected.label}
+          {props.findable && (
+            <InputSearch
+              placeholder={selected ? selected.label : props.placeholder}
+              defaultValue={selected && selected.label ? selected.label : ''}
+              value={search}
+              onChange={handleSearch}
+            />
+          )}
+          <DropDownIcon />
+        </>
+      </Container>
+      <OptionGroup
+        className={toggle && isComponentVisible ? 'opened' : ''}
+        {...(props as any)}
+        style={openToTopOrDown()}
+      >
+        {props.label && props.label}
+        <>
+          {getOptions().map((option, id) => (
+            <Option
+              key={option.key}
+              value={option.value}
+              selected={selected}
+              onClick={() => handleChangeFind(option)}
+              isTitle={option.isTitle}
+              disabled={option.disabled}
+              showEdit={props.showEdit}
+              showDelete={props.showDelete}
+              onIconClicked={props.onIconClicked}
+            >
+              {option.label}
+            </Option>
+          ))}
+        </>
+      </OptionGroup>
+    </>
   )
 }
 

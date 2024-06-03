@@ -41,6 +41,7 @@ type Props = {
   labelDefault?: string
   isSaveContext?: boolean
   isApi?: boolean
+  menuPosition?: 'absolute' | 'fixed'
   variablesSelectorIsOpen?: boolean | undefined
   handleOutsideClick?: () => void
   onSelectVariable: (
@@ -71,10 +72,10 @@ export const VariableSearchInput = ({
   isSaveContext = true,
   isApi = false,
   variablesSelectorIsOpen = false,
+  menuPosition = 'fixed',
   ...inputProps
 }: Props) => {
   const { onOpen, onClose } = useDisclosure()
-
   const { typebot, createVariable } = useTypebot()
 
   const variables = typebot?.variables ?? []
@@ -285,13 +286,14 @@ export const VariableSearchInput = ({
               value={myVariable}
               noOptionsMessage={() => 'Variável não encontrada'}
               onChange={onInputChange}
-              minMenuHeight={50}
               options={options}
               placeholder={inputProps.placeholder ?? 'Selecione a variável'}
               getOptionLabel={(option: Variable) => option.token}
               getOptionValue={(option: Variable) =>
                 option.variableId || option.id
               }
+              menuPlacement="auto"
+              menuPosition={menuPosition}
             />
           </div>
         </Container>

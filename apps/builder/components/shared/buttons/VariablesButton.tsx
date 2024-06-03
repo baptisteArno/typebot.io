@@ -14,7 +14,7 @@ import { VariableSearchInput } from '../VariableSearchInput/VariableSearchInput'
 
 type Props = {
   onSelectVariable: (
-    variable: Pick<Variable, 'name' | 'id' |'token'> | undefined
+    variable: Pick<Variable, 'name' | 'id' | 'token'> | undefined
   ) => void
 } & Omit<IconButtonProps, 'aria-label'>
 
@@ -38,6 +38,7 @@ export const VariablesButton = ({ onSelectVariable, ...props }: Props) => {
           onSelectVariable={onSelectVariable}
           placeholder="Pesquise sua variável"
           shadow="lg"
+          menuPosition="absolute"
         />
       </PopoverContent>
     </Popover>

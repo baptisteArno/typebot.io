@@ -20,16 +20,14 @@ export const VariableForTestInputs = ({
           Nome da variável: {item.token}
         </FormLabel>
       </FormControl>
-      <FormControl>
-        <FormLabel htmlFor={'value' + item.id}>Valor de teste:</FormLabel>
-        <Input
-          value={item.value}
-          id={'value' + item.id}
-          defaultValue={item.value ?? ''}
-          onChange={handleValueChange}
-          debounceTimeout={debounceTimeout}
-        />
-      </FormControl>
+      <FormLabel htmlFor={'value' + item.id}>Valor de teste:</FormLabel>
+      <Input
+        value={item.value}
+        id={'value' + item.id}
+        defaultValue={item.value ?? ''}
+        onChange={handleValueChange}
+        debounceTimeout={debounceTimeout}
+      />
     </Stack>
   )
 }

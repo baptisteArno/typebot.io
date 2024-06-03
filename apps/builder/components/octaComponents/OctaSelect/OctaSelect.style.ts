@@ -3,7 +3,7 @@ import { MdOutlineExpandMore } from 'react-icons/md'
 import OctaInput from '../OctaInput/OctaInput'
 
 export const OptionGroup = styled.ul`
-  display: flex;
+  display: none;
   flex-direction: column;
   margin: 0;
   padding: 0;
@@ -22,9 +22,11 @@ export const OptionGroup = styled.ul`
   border-radius: 3px;
   left: 0;
   &.opened {
+    display: flex;
     top: 44px;
     min-height: 250px;
     max-height: 300px;
+    position: fixed;
   }
   &::-webkit-scrollbar-track {
     background-color: transparent;
@@ -63,16 +65,16 @@ export const OptionItem = styled.li`
       background-color: transparent;
     }
   }
-  &.actived{
-    background-color: rgb(19,102,201);
-    color: white
+  &.actived {
+    background-color: rgb(19, 102, 201);
+    color: white;
   }
 
   &.actived button {
-    color: black
+    color: black;
   }
 
-  &.isTitle{
+  &.isTitle {
     color: #bebebe;
   }
 `
@@ -89,7 +91,7 @@ export const Container = styled.div`
   position: relative;
   border: 1px solid #c4c7cf;
   border-radius: 6px;
-  font-size: .8rem;
+  font-size: 0.8rem;
 `
 
 export const DropDownIcon = styled(MdOutlineExpandMore)`
@@ -107,4 +109,4 @@ export const InputSearch = styled(OctaInput)`
   position: absolute;
   top: 0;
   left: 0;
-`;
+`
