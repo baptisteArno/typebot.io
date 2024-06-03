@@ -215,9 +215,7 @@ export const executeWebhook = async (
 
   try {
     const response = await ky(request.url, omit(request, 'url'))
-    const body = response.headers.get('content-type')?.includes('json')
-      ? await response.json()
-      : await response.text()
+    const body = await parseJsonResponse(response)
     logs.push({
       status: 'success',
       description: webhookSuccessDescription,
@@ -237,11 +235,8 @@ export const executeWebhook = async (
     }
   } catch (error) {
     if (error instanceof HTTPError) {
-      const responseBody = error.response.headers
-        .get('content-type')
-        ?.includes('json')
-        ? await error.response.json()
-        : await error.response.text()
+      const responseBody = await parseJsonResponse(error.response);
+
       const response = {
         statusCode: error.response.status,
         data:
@@ -350,4 +345,17 @@ const parseFormDataBody = (body: object) => {
     searchParams.set(key, value)
   })
   return searchParams
+}
+
+async function parseJsonResponse(response) {
+  try {
+    return await response.json();
+  } catch (error) {
+    const text = await response.text();
+    try {
+      return JSON.parse(text);
+    } catch {
+      return text;
+    }
+  }
 }
