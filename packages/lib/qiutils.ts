@@ -42,7 +42,7 @@ const disabledIntegrations = [
   // 'Webhook',
   'Email',
   'Zapier',
-  // 'Make.com',
+  'Make.com',
   'Pabbly',
   'Chatwoot',
   'Pixel',
