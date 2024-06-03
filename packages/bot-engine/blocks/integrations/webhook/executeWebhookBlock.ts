@@ -347,7 +347,7 @@ const parseFormDataBody = (body: object) => {
   return searchParams
 }
 
-async function parseJsonResponse(response) {
+async function parseJsonResponse(response: any) {
   try {
     return await response.json();
   } catch (error) {
