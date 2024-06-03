@@ -351,6 +351,11 @@ async function parseJsonResponse(response: any) {
   try {
     return await response.json();
   } catch (error) {
-    return await response.text();
+    const text = await response.text();
+    try {
+      return JSON.parse(text);
+    } catch {
+      return text;
+    }
   }
 }
