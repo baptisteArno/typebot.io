@@ -102,7 +102,7 @@ export const OnboardingPage = () => {
     setTimeout(() => {
       replace({
         pathname: '/typebots',
-        query: { ...query, isFirstBot: true },
+        query: { ...query },
       })
     }, 2000)
   }

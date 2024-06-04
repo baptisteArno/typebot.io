@@ -136,6 +136,10 @@ export type BlockDefinition<
   LightLogo: (props: SVGProps<SVGSVGElement>) => JSX.Element
   DarkLogo?: (props: SVGProps<SVGSVGElement>) => JSX.Element
   docsUrl?: string
+  onboarding?: {
+    deployedAt: Date
+    youtubeId: string
+  }
   auth?: Auth
   options?: Options | undefined
   fetchers?: FetcherDefinition<Auth, Options>[]
