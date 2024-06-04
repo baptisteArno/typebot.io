@@ -69,7 +69,7 @@
     "google-auth-library": "8.9.0",
     "google-spreadsheet": "4.1.1",
     "immer": "10.0.2",
-    "isolated-vm": "5.0.0",
+    "isolated-vm": "4.7.2",
     "jsonwebtoken": "9.0.1",
     "ky": "1.2.3",
     "libphonenumber-js": "1.10.37",

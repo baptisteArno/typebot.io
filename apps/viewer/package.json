@@ -26,7 +26,7 @@
     "cors": "2.8.5",
     "google-spreadsheet": "4.1.1",
     "got": "12.6.0",
-    "isolated-vm": "5.0.0",
+    "isolated-vm": "4.7.2",
     "ky": "1.2.3",
     "next": "14.1.0",
     "nextjs-cors": "2.1.2",
