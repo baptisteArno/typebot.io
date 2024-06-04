@@ -49,10 +49,13 @@ if (env.NEXT_PUBLIC_SMTP_FROM && !env.SMTP_AUTH_DISABLED)
         host: env.SMTP_HOST,
         port: env.SMTP_PORT,
         secure: env.SMTP_SECURE,
-        auth: {
-          user: env.SMTP_USERNAME,
-          pass: env.SMTP_PASSWORD,
-        },
+        auth:
+          env.SMTP_USERNAME || env.SMTP_PASSWORD
+            ? {
+                user: env.SMTP_USERNAME,
+                pass: env.SMTP_PASSWORD,
+              }
+            : undefined,
       },
       from: env.NEXT_PUBLIC_SMTP_FROM,
       sendVerificationRequest,
