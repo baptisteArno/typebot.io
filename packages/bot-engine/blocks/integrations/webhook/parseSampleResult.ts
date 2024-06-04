@@ -181,35 +181,38 @@ const getGroupIdsLinkedToGroup =
   (
     typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>,
     direction: 'backward' | 'forward',
-    existingGroupIds: string[] = []
+    visitedGroupIds: string[] = []
   ) =>
   (groupId: string): string[] => {
-    if (existingGroupIds.includes(groupId)) return existingGroupIds
-    const groups = typebot.edges.reduce<string[]>((groupIds, edge) => {
+    const linkedGroupIds = typebot.edges.reduce<string[]>((groupIds, edge) => {
       const fromGroupId = typebot.groups.find((g) =>
         g.blocks.some(
           (b) => 'blockId' in edge.from && b.id === edge.from.blockId
         )
       )?.id
       if (!fromGroupId) return groupIds
-      if (direction === 'forward')
-        return (!existingGroupIds ||
-          !existingGroupIds?.includes(edge.to.groupId)) &&
+      if (direction === 'forward') {
+        if (
+          (!visitedGroupIds || !visitedGroupIds?.includes(edge.to.groupId)) &&
           fromGroupId === groupId
-          ? groupIds.concat(edge.to.groupId)
-          : groupIds
-      return (!existingGroupIds || !existingGroupIds.includes(fromGroupId)) &&
+        ) {
+          visitedGroupIds.push(edge.to.groupId)
+          return groupIds.concat(edge.to.groupId)
+        }
+        return groupIds
+      }
+      if (
+        !visitedGroupIds.includes(fromGroupId) &&
         edge.to.groupId === groupId
-        ? groupIds.concat(fromGroupId)
-        : groupIds
+      ) {
+        visitedGroupIds.push(fromGroupId)
+        return groupIds.concat(fromGroupId)
+      }
+      return groupIds
     }, [])
-    return groups.concat(
-      groups.flatMap(
-        getGroupIdsLinkedToGroup(
-          typebot,
-          direction,
-          existingGroupIds.concat(groups)
-        )
+    return linkedGroupIds.concat(
+      linkedGroupIds.flatMap(
+        getGroupIdsLinkedToGroup(typebot, direction, visitedGroupIds)
       )
     )
   }
