@@ -215,6 +215,7 @@ export const StepNode = ({
       initialValue={step.content.richText}
       onClose={handleCloseEditor}
       onKeyUp={handleKeyUp}
+      menuPosition="absolute"
     />
   ) : (
     <StepNodeContext.Provider value={{ setIsPopoverOpened }}>
