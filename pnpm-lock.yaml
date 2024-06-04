@@ -198,8 +198,8 @@ importers:
         specifier: 10.0.2
         version: 10.0.2
       isolated-vm:
-        specifier: 4.7.2
-        version: 4.7.2
+        specifier: 5.0.0
+        version: 5.0.0
       jsonwebtoken:
         specifier: 9.0.1
         version: 9.0.1
@@ -436,8 +436,8 @@ importers:
         specifier: 12.6.0
         version: 12.6.0
       isolated-vm:
-        specifier: 4.7.2
-        version: 4.7.2
+        specifier: 5.0.0
+        version: 5.0.0
       ky:
         specifier: 1.2.3
         version: 1.2.3
@@ -772,8 +772,8 @@ importers:
         specifier: 4.1.1
         version: 4.1.1(google-auth-library@8.9.0)
       isolated-vm:
-        specifier: 4.7.2
-        version: 4.7.2
+        specifier: 5.0.0
+        version: 5.0.0
       ky:
         specifier: 1.2.3
         version: 1.2.3
@@ -2017,8 +2017,8 @@ importers:
         specifier: workspace:*
         version: link:../tsconfig
       isolated-vm:
-        specifier: 4.7.2
-        version: 4.7.2
+        specifier: 5.0.0
+        version: 5.0.0
 
 packages:
 
@@ -15871,9 +15871,9 @@ packages:
   /isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
 
-  /isolated-vm@4.7.2:
-    resolution: {integrity: sha512-JVEs5gzWObzZK5+OlBplCdYSpokMcdhLSs/xWYYxmYWVfOOFF4oZJsYh7E/FmfX8e7gMioXMpMMeEyX1afuKrg==}
-    engines: {node: '>=16.0.0'}
+  /isolated-vm@5.0.0:
+    resolution: {integrity: sha512-rIMTrIUuwOZ57wK1V3/dmgyXMc1oX4YbGgALAiAH59xHrWoEwOtCQjjvuPZGZwllkMgYlOoNk6hW0+Mg04gJEw==}
+    engines: {node: '>=18.0.0'}
     requiresBuild: true
     dependencies:
       prebuild-install: 7.1.2
