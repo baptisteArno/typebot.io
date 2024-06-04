@@ -1,5 +1,17 @@
 # Changelog
 
+<a name="2.26.1"></a>
+## 2.26.1 (2024-06-04)
+
+### Fixed
+
+- 🚑 Fix webhook sample result parsing [[a936bc2](https://github.com/baptisteArno/typebot.io/commit/a936bc206adb446fb4bd469e8681b09dafe3a57a)]
+
+### Miscellaneous
+
+- 📝 Add v2.26 newsletter [[45aa4c6](https://github.com/baptisteArno/typebot.io/commit/45aa4c6da5f24d12cfa0f0c582f47a32fc28ee05)]
+
+
 <a name="2.26.0"></a>
 ## 2.26.0 (2024-05-30)
 
