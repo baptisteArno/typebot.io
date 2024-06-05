@@ -84,7 +84,9 @@ export const askAssistant = createAction({
 
         const openai = new OpenAI(config)
 
-        const response = await openai.beta.assistants.list()
+        const response = await openai.beta.assistants.list({
+          limit: 100,
+        })
 
         return response.data
           .map((assistant) =>

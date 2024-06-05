@@ -35,6 +35,7 @@ export const upsertResult = ({
               ...log,
               details: formatLogDetails(log.details),
             })),
+            skipDuplicates: true,
           },
         }
       : undefined
@@ -48,6 +49,7 @@ export const upsertResult = ({
               value: item.value === null ? Prisma.JsonNull : item.value,
               resultId: undefined,
             })),
+            skipDuplicates: true,
           },
         } as Prisma.SetVariableHistoryItemUpdateManyWithoutResultNestedInput)
       : undefined
@@ -60,6 +62,7 @@ export const upsertResult = ({
               ...edge,
               resultId: undefined,
             })),
+            skipDuplicates: true,
           },
         }
       : undefined

@@ -5,6 +5,7 @@ import { isDefined } from '@typebot.io/lib'
 import { safeStringify } from '@typebot.io/lib/safeStringify'
 import { Variable } from './types'
 import ivm from 'isolated-vm'
+import { parseTransferrableValue } from './codeRunners'
 
 const defaultTimeout = 10 * 1000
 
@@ -59,7 +60,7 @@ export const executeFunction = async ({
     ]
   )
   args.forEach(({ id, value }) => {
-    jail.setSync(id, value)
+    jail.setSync(id, parseTransferrableValue(value))
   })
   const run = (code: string) =>
     context.evalClosure(

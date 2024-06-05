@@ -45,6 +45,9 @@ import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integr
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { ForgedBlockSettings } from '../../../../forge/components/ForgedBlockSettings'
 import { OpenAISettings } from '@/features/blocks/integrations/openai/components/OpenAISettings'
+import { useForgedBlock } from '@/features/forge/hooks/useForgedBlock'
+import { VideoOnboardingPopover } from '@/features/onboarding/components/VideoOnboardingPopover'
+import { hasOnboardingVideo } from '@/features/onboarding/helpers/hasOnboardingVideo'
 
 type Props = {
   block: BlockWithOptions
@@ -56,6 +59,7 @@ type Props = {
 export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
   const [isHovering, setIsHovering] = useState(false)
   const arrowColor = useColorModeValue('white', 'gray.800')
+  const { blockDef } = useForgedBlock(props.block.type)
   const ref = useRef<HTMLDivElement | null>(null)
   const handleMouseDown = (e: React.MouseEvent) => e.stopPropagation()
 
@@ -63,39 +67,54 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
     e.stopPropagation()
   }
   useEventListener('wheel', handleMouseWheel, ref.current)
+
   return (
     <Portal>
       <PopoverContent onMouseDown={handleMouseDown} pos="relative">
         <PopoverArrow bgColor={arrowColor} />
-        <PopoverBody
-          py="3"
-          overflowY="auto"
-          maxH="400px"
-          ref={ref}
-          shadow="lg"
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
+
+        <VideoOnboardingPopover.Root
+          type={props.block.type}
+          blockDef={blockDef}
         >
-          <Stack spacing={3}>
-            <Flex
-              w="full"
-              pos="absolute"
-              top="-56px"
-              height="64px"
-              right={0}
-              justifyContent="flex-end"
-              align="center"
+          {({ onToggle }) => (
+            <PopoverBody
+              py="3"
+              overflowY="auto"
+              maxH="400px"
+              ref={ref}
+              shadow="lg"
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={() => setIsHovering(false)}
             >
-              <SlideFade in={isHovering} unmountOnExit>
-                <SettingsHoverBar
-                  onExpandClick={onExpandClick}
-                  blockType={props.block.type}
-                />
-              </SlideFade>
-            </Flex>
-            <BlockSettings {...props} />
-          </Stack>
-        </PopoverBody>
+              <Stack spacing={3}>
+                <Flex
+                  w="full"
+                  pos="absolute"
+                  top="-56px"
+                  height="64px"
+                  right={0}
+                  justifyContent="flex-end"
+                  align="center"
+                >
+                  <SlideFade in={isHovering} unmountOnExit>
+                    <SettingsHoverBar
+                      onExpandClick={onExpandClick}
+                      onVideoOnboardingClick={onToggle}
+                      blockType={props.block.type}
+                      blockDef={blockDef}
+                      isVideoOnboardingItemDisplayed={hasOnboardingVideo({
+                        blockType: props.block.type,
+                        blockDef,
+                      })}
+                    />
+                  </SlideFade>
+                </Flex>
+                <BlockSettings {...props} />
+              </Stack>
+            </PopoverBody>
+          )}
+        </VideoOnboardingPopover.Root>
       </PopoverContent>
     </Portal>
   )
