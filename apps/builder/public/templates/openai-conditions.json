@@ -249,8 +249,16 @@
     }
   ],
   "variables": [
-    { "id": "vni6kwbch8zlq92dclgcivzyr", "name": "Assistant Message" },
-    { "id": "vudksu3zyrat6s1bq6qne0rx3", "name": "User Message" }
+    {
+      "id": "vni6kwbch8zlq92dclgcivzyr",
+      "name": "Assistant Message",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vudksu3zyrat6s1bq6qne0rx3",
+      "name": "User Message",
+      "isSessionVariable": true
+    }
   ],
   "theme": {},
   "selectedThemeTemplateId": null,

@@ -12,6 +12,7 @@ type Props = {
   isStreamEnabled: boolean
   prefilledVariables?: Record<string, unknown>
   resultId?: string
+  textBubbleContentFormat: 'richText' | 'markdown'
 }
 
 export const startChat = async ({
@@ -22,6 +23,7 @@ export const startChat = async ({
   isStreamEnabled,
   prefilledVariables,
   resultId: startResultId,
+  textBubbleContentFormat,
 }: Props) => {
   const {
     typebot,
@@ -33,6 +35,7 @@ export const startChat = async ({
     clientSideActions,
     newSessionState,
     visitedEdges,
+    setVariableHistory,
   } = await startSession({
     version: 2,
     startParams: {
@@ -42,6 +45,7 @@ export const startChat = async ({
       publicId,
       prefilledVariables,
       resultId: startResultId,
+      textBubbleContentFormat,
     },
     message,
   })
@@ -69,6 +73,7 @@ export const startChat = async ({
         logs,
         clientSideActions,
         visitedEdges,
+        setVariableHistory,
         hasCustomEmbedBubble: messages.some(
           (message) => message.type === 'custom-embed'
         ),

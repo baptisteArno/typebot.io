@@ -41,7 +41,6 @@ const getVariableValue =
       const [transformedVariable] = transformVariablesToList(variables)([
         variable.id,
       ])
-      updateVariablesInSession(state)([transformedVariable])
       return transformedVariable.value as string[]
     }
     return variable.value

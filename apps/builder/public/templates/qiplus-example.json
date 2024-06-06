@@ -1,0 +1,1064 @@
+{
+  "version": "6",
+  "id": "clx0iitxo000i7dsgobn9nrs7",
+  "name": "QiPlus Sniper Example",
+  "events": [
+      {
+          "id": "sqevz7kku0jrlyguuyj11771",
+          "outgoingEdgeId": "cknc3obthv3ewq80m3llbrm2",
+          "graphCoordinates": {
+              "x": 305.15,
+              "y": -830.3
+          },
+          "type": "start"
+      }
+  ],
+  "groups": [
+      {
+          "id": "dk22wt8didsel4qrjbwy0bsj",
+          "title": "Welcome Message",
+          "graphCoordinates": {
+              "x": -401.45,
+              "y": -414.26
+          },
+          "blocks": [
+              {
+                  "id": "l6xnwp7a0qu7lcc5d7ygaq7n",
+                  "type": "text",
+                  "content": {
+                      "richText": [
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "Olá, seja bem vindo, eu sou {{bot}}, a assistente virtual da {{company}}.  Poderia informar seu nome?"
+                                  }
+                              ]
+                          }
+                      ]
+                  }
+              },
+              {
+                  "id": "ur7n69kwpqsvlf131qou5bem",
+                  "type": "text input",
+                  "options": {
+                      "labels": {
+                          "placeholder": "Como gostaria de ser chamado?"
+                      },
+                      "variableId": "vwlb46aequnke766oe7v0cjgz"
+                  }
+              },
+              {
+                  "id": "keczk9yiwyrptbq3adddgi85",
+                  "outgoingEdgeId": "nx6ij33bbh2xf0mwwtots5t1",
+                  "type": "Condition",
+                  "items": [
+                      {
+                          "id": "vh2q4wq3r8wgin5vf94rymp1",
+                          "outgoingEdgeId": "hnf38akpywo4vr862s2787j7",
+                          "content": {
+                              "comparisons": [
+                                  {
+                                      "id": "w5pkmvhhzq6fer9p4j59n4lb",
+                                      "variableId": "vwlb46aequnke766oe7v0cjgz",
+                                      "comparisonOperator": "Is empty"
+                                  }
+                              ]
+                          }
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "x8qgzhn6eud2a2b75m5p2iig",
+          "title": "Settings",
+          "graphCoordinates": {
+              "x": -96.4,
+              "y": -739.48
+          },
+          "blocks": [
+              {
+                  "id": "vso5ycyatnymq3c7ugfkf5t8",
+                  "type": "Set variable",
+                  "options": {
+                      "variableId": "vepek0ynqlz48qdizfgog1kbf",
+                      "expressionToEvaluate": "QIPLUS"
+                  }
+              },
+              {
+                  "id": "sn1vvv4g4jkz6h1a7nen46qx",
+                  "type": "Set variable",
+                  "options": {
+                      "variableId": "vrlg1njj7ysr941wv1xu53vsg",
+                      "expressionToEvaluate": "SOU IA"
+                  }
+              },
+              {
+                  "id": "gv0yi0t0y0dyqn49w7vagb2p",
+                  "outgoingEdgeId": "z60ys3y642h8ilu17u0guxu2",
+                  "type": "Set variable",
+                  "options": {
+                      "variableId": "vwlb46aequnke766oe7v0cjgz"
+                  }
+              }
+          ]
+      },
+      {
+          "id": "uenp04bzsp4n07ob8fprj1cf",
+          "title": "Name Error",
+          "graphCoordinates": {
+              "x": -70.78,
+              "y": -420.03
+          },
+          "blocks": [
+              {
+                  "id": "s9ee6pw0s7qfuztrpvsz0sjz",
+                  "outgoingEdgeId": "u3o287z5wg9frr5vctjk80ky",
+                  "type": "text",
+                  "content": {
+                      "richText": [
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "Poxa, não consegui enteder"
+                                  }
+                              ]
+                          }
+                      ]
+                  }
+              }
+          ]
+      },
+      {
+          "id": "da4vvil6vb7mloe62l8xktth",
+          "title": "Confirm Name",
+          "graphCoordinates": {
+              "x": 15.18,
+              "y": -146.13
+          },
+          "blocks": [
+              {
+                  "id": "g27egx3q8z2gpozpw0bwy82a",
+                  "type": "text",
+                  "content": {
+                      "richText": [
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "O nome que você informou foi {{clientName}}:"
+                                  }
+                              ]
+                          },
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "1 - Para confirmar"
+                                  }
+                              ]
+                          },
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "2 - Para alterar ou corrigir"
+                                  }
+                              ]
+                          }
+                      ]
+                  }
+              },
+              {
+                  "id": "yve4u34s98c72f06jrp8r2l5",
+                  "type": "number input",
+                  "options": {
+                      "variableId": "vynxjg5bhiuxlm70ruy74xt1q",
+                      "labels": {
+                          "placeholder": "Opção"
+                      }
+                  }
+              },
+              {
+                  "id": "wgxp65jhfmrlrfg5osii7zwe",
+                  "type": "Condition",
+                  "items": [
+                      {
+                          "id": "jybgqo34552707k9897x1z37",
+                          "outgoingEdgeId": "d003jo9f89gcnhp7psggb3k0",
+                          "content": {
+                              "comparisons": [
+                                  {
+                                      "id": "vh3rd4uq47cgoehbfl7cscll",
+                                      "variableId": "vynxjg5bhiuxlm70ruy74xt1q",
+                                      "comparisonOperator": "Equal to",
+                                      "value": "1"
+                                  }
+                              ]
+                          }
+                      },
+                      {
+                          "id": "a2rg61kabtckjxstq9kdb9cc",
+                          "outgoingEdgeId": "u6iezkckmajim7suykj67kz2",
+                          "content": {
+                              "comparisons": [
+                                  {
+                                      "id": "shhc41gruoiupj4tp469aaxo",
+                                      "variableId": "vynxjg5bhiuxlm70ruy74xt1q",
+                                      "comparisonOperator": "Equal to",
+                                      "value": "2"
+                                  }
+                              ]
+                          }
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "q60tapycqa0gfjks88g6uujo",
+          "title": "Reset Client name",
+          "graphCoordinates": {
+              "x": 454.76,
+              "y": -6.61
+          },
+          "blocks": [
+              {
+                  "id": "t7nx2rtqzfn7n4m1qpxan5fy",
+                  "type": "text",
+                  "content": {
+                      "richText": [
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "Sem problemas, poderia repetir seu nome?"
+                                  }
+                              ]
+                          }
+                      ]
+                  }
+              },
+              {
+                  "id": "uoetaiffowyv700boje338d4",
+                  "outgoingEdgeId": "rnhe7mtkpmd00h2aj4jryfl3",
+                  "type": "text input",
+                  "options": {
+                      "labels": {
+                          "placeholder": ""
+                      },
+                      "variableId": "vwlb46aequnke766oe7v0cjgz"
+                  }
+              }
+          ]
+      },
+      {
+          "id": "v7cr3dopknn7hbq7e5eytr5p",
+          "title": "Get Email",
+          "graphCoordinates": {
+              "x": 451.33,
+              "y": -346.31
+          },
+          "blocks": [
+              {
+                  "id": "ct1projg9lr96r04dbuygnu9",
+                  "type": "text",
+                  "content": {
+                      "richText": [
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "Obrigado {{clientName}}, agora por favor digite seu email"
+                                  }
+                              ]
+                          },
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": ""
+                                  }
+                              ]
+                          }
+                      ]
+                  }
+              },
+              {
+                  "id": "lc6pmtbrw2u29qudi5hmmy86",
+                  "outgoingEdgeId": "w7td2jie40s9xkv6ytui880g",
+                  "type": "text input",
+                  "options": {
+                      "labels": {
+                          "placeholder": ""
+                      },
+                      "variableId": "vzm0bdetega22a1xu3t04j342"
+                  }
+              }
+          ]
+      },
+      {
+          "id": "uu4w9b41bo0ftm5czhcjm6hc",
+          "title": "Confirm Email",
+          "graphCoordinates": {
+              "x": 862.12,
+              "y": -150.03
+          },
+          "blocks": [
+              {
+                  "id": "cn56j7pnnyklm1s8xrui36g1",
+                  "type": "text",
+                  "content": {
+                      "richText": [
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "O email  que você informou foi "
+                                  },
+                                  {
+                                      "bold": true,
+                                      "text": "{{email}}"
+                                  },
+                                  {
+                                      "text": ":"
+                                  }
+                              ]
+                          },
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "1 - Para confirmar"
+                                  }
+                              ]
+                          },
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "2 - Para alterar ou corrigir"
+                                  }
+                              ]
+                          }
+                      ]
+                  }
+              },
+              {
+                  "id": "q5zqatv4i8rggozubvwd709z",
+                  "type": "number input",
+                  "options": {
+                      "variableId": "vynxjg5bhiuxlm70ruy74xt1q",
+                      "labels": {
+                          "placeholder": "Opção"
+                      }
+                  }
+              },
+              {
+                  "id": "uo9dor7plnpt9vjxybh4180i",
+                  "type": "Condition",
+                  "items": [
+                      {
+                          "id": "ssc2k5m9b66arhurep9yfrtw",
+                          "outgoingEdgeId": "i4pfpu7a97zbxovbdag0usz0",
+                          "content": {
+                              "comparisons": [
+                                  {
+                                      "id": "vh3rd4uq47cgoehbfl7cscll",
+                                      "variableId": "vynxjg5bhiuxlm70ruy74xt1q",
+                                      "comparisonOperator": "Equal to",
+                                      "value": "1"
+                                  }
+                              ]
+                          }
+                      },
+                      {
+                          "id": "sehksggjqcseaj24s8ij1phb",
+                          "outgoingEdgeId": "zqrlm23l4p5563mbfrve1msh",
+                          "content": {
+                              "comparisons": [
+                                  {
+                                      "id": "shhc41gruoiupj4tp469aaxo",
+                                      "variableId": "vynxjg5bhiuxlm70ruy74xt1q",
+                                      "comparisonOperator": "Equal to",
+                                      "value": "2"
+                                  }
+                              ]
+                          }
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "j2a6gkbrutw9lgu3xslseh0t",
+          "title": "Reset email",
+          "graphCoordinates": {
+              "x": 1302.82,
+              "y": 182.7
+          },
+          "blocks": [
+              {
+                  "id": "nse9qh36bxvg9uctsrz64yq0",
+                  "type": "text",
+                  "content": {
+                      "richText": [
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "Sem problemas,{{clientName}} poderia repetir seu email?"
+                                  }
+                              ]
+                          },
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": ""
+                                  }
+                              ]
+                          }
+                      ]
+                  }
+              },
+              {
+                  "id": "u1kf5utr6jhfkex20unczo03",
+                  "outgoingEdgeId": "evyzgikvopax559umg08djjf",
+                  "type": "text input",
+                  "options": {
+                      "labels": {
+                          "placeholder": ""
+                      },
+                      "variableId": "vzm0bdetega22a1xu3t04j342"
+                  }
+              }
+          ]
+      },
+      {
+          "id": "jksn6nq65nmadznvpgm3rvmy",
+          "title": "Get Phone",
+          "graphCoordinates": {
+              "x": 1312.38,
+              "y": -266.73
+          },
+          "blocks": [
+              {
+                  "id": "xw74w5ezawsq1hhmzo8bhpis",
+                  "type": "text",
+                  "content": {
+                      "richText": [
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "Por fim me diga seu telefone"
+                                  }
+                              ]
+                          }
+                      ]
+                  }
+              },
+              {
+                  "id": "lesucsuvjiur7sn1uflfr5u4",
+                  "outgoingEdgeId": "wbhigz4vqhjmjcgrylmszdue",
+                  "type": "phone number input",
+                  "options": {
+                      "variableId": "vdj2lqzijiyu9hlhrbb7vmmxw",
+                      "labels": {
+                          "placeholder": ""
+                      },
+                      "retryMessageContent": "",
+                      "defaultCountryCode": "BR"
+                  }
+              }
+          ]
+      },
+      {
+          "id": "d2elssijk91epc47xoon8blo",
+          "title": "Confirm Phone",
+          "graphCoordinates": {
+              "x": 1764.54,
+              "y": -258.5
+          },
+          "blocks": [
+              {
+                  "id": "i6asc2swd41gvcubwxrgxytj",
+                  "type": "text",
+                  "content": {
+                      "richText": [
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "O telefone  que você informou foi "
+                                  },
+                                  {
+                                      "bold": true,
+                                      "text": "{{phone}}"
+                                  }
+                              ]
+                          },
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "1 - Para confirmar"
+                                  }
+                              ]
+                          },
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "2 - Para alterar ou corrigir"
+                                  }
+                              ]
+                          }
+                      ]
+                  }
+              },
+              {
+                  "id": "afkxnhq1od6ms1qfmt4cymi7",
+                  "type": "number input",
+                  "options": {
+                      "variableId": "vynxjg5bhiuxlm70ruy74xt1q",
+                      "labels": {
+                          "placeholder": "Opção"
+                      }
+                  }
+              },
+              {
+                  "id": "qoxbfvxsvljtt9iuphgy7tpa",
+                  "type": "Condition",
+                  "items": [
+                      {
+                          "id": "fp4bft62kj2wcqu04baxjfiz",
+                          "outgoingEdgeId": "o8s4hix4y73dsjmefvu4flns",
+                          "content": {
+                              "comparisons": [
+                                  {
+                                      "id": "vh3rd4uq47cgoehbfl7cscll",
+                                      "variableId": "vynxjg5bhiuxlm70ruy74xt1q",
+                                      "comparisonOperator": "Equal to",
+                                      "value": "1"
+                                  }
+                              ]
+                          }
+                      },
+                      {
+                          "id": "bzw8ajynz8bbh6az05vvsp0a",
+                          "outgoingEdgeId": "fs5cnqemldmpiziry3659fy8",
+                          "content": {
+                              "comparisons": [
+                                  {
+                                      "id": "shhc41gruoiupj4tp469aaxo",
+                                      "variableId": "vynxjg5bhiuxlm70ruy74xt1q",
+                                      "comparisonOperator": "Equal to",
+                                      "value": "2"
+                                  }
+                              ]
+                          }
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "tmtflciklqonvf99crfzzqvf",
+          "title": "Reset phone",
+          "graphCoordinates": {
+              "x": 1774.41,
+              "y": 589.67
+          },
+          "blocks": [
+              {
+                  "id": "wh67hnokltdgf76u804lb5ab",
+                  "type": "text",
+                  "content": {
+                      "richText": [
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "Sem problemas,{{clientName}} poderia repetir seu telefone?"
+                                  }
+                              ]
+                          },
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": ""
+                                  }
+                              ]
+                          }
+                      ]
+                  }
+              },
+              {
+                  "id": "ekh831z4ojafj87s0fbmajuq",
+                  "outgoingEdgeId": "nv030yo9c1uzak2cjh8zncp6",
+                  "type": "text input",
+                  "options": {
+                      "labels": {
+                          "placeholder": ""
+                      },
+                      "variableId": "vdj2lqzijiyu9hlhrbb7vmmxw"
+                  }
+              }
+          ]
+      },
+      {
+          "id": "bi0a6028rcrg0xhh0xqv6k99",
+          "title": "Menu",
+          "graphCoordinates": {
+              "x": 2244.73,
+              "y": -246.9
+          },
+          "blocks": [
+              {
+                  "id": "si1a7ryzgf8tafwqteslrz6p",
+                  "type": "text",
+                  "content": {
+                      "richText": [
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "Muito Obrigado agora me diga qual setor gostaria de falar"
+                                  }
+                              ]
+                          },
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "1 - Para comercial"
+                                  }
+                              ]
+                          },
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "2 - Para suporte"
+                                  }
+                              ]
+                          }
+                      ]
+                  }
+              },
+              {
+                  "id": "a6xph6jpscc2jpz0tzwoixlk",
+                  "type": "number input",
+                  "options": {
+                      "variableId": "vynxjg5bhiuxlm70ruy74xt1q",
+                      "labels": {
+                          "placeholder": "Opção"
+                      }
+                  }
+              },
+              {
+                  "id": "bettqwcx1w3g5csh8cd8e08i",
+                  "type": "Condition",
+                  "items": [
+                      {
+                          "id": "tr4a1cwk7vhl2crg6fclo70r",
+                          "outgoingEdgeId": "pd26p8y3qs1ssqgnpbuw8hfj",
+                          "content": {
+                              "comparisons": [
+                                  {
+                                      "id": "vh3rd4uq47cgoehbfl7cscll",
+                                      "variableId": "vynxjg5bhiuxlm70ruy74xt1q",
+                                      "comparisonOperator": "Equal to",
+                                      "value": "1"
+                                  }
+                              ]
+                          }
+                      },
+                      {
+                          "id": "hccgjk7pjid3sztkcxydypnr",
+                          "outgoingEdgeId": "pk4ly0g3gveuqfnjdpizk18c",
+                          "content": {
+                              "comparisons": [
+                                  {
+                                      "id": "shhc41gruoiupj4tp469aaxo",
+                                      "variableId": "vynxjg5bhiuxlm70ruy74xt1q",
+                                      "comparisonOperator": "Equal to",
+                                      "value": "2"
+                                  }
+                              ]
+                          }
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "id": "lxmivufte9g52slpv8dgy9ms",
+          "title": "Suport",
+          "graphCoordinates": {
+              "x": 2483.17,
+              "y": 579.09
+          },
+          "blocks": [
+              {
+                  "id": "jmrxyryqijtiuj5wiazuvdtz",
+                  "type": "text",
+                  "content": {
+                      "richText": [
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "Por favor click no link  "
+                                  },
+                                  {
+                                      "url": "https://dev.qiplus.com.br/forms/QY1Dzh3zMgTXYOccTglJ/?preview=true",
+                                      "type": "a",
+                                      "children": [
+                                          {
+                                              "text": "https://dev.qiplus.com.br/forms/QY1Dzh3zMgTXYOccTglJ/?preview=true"
+                                          }
+                                      ]
+                                  },
+                                  {
+                                      "text": " para nosso time de suporte entrar em contato"
+                                  }
+                              ]
+                          },
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": ""
+                                  }
+                              ]
+                          }
+                      ]
+                  }
+              }
+          ]
+      },
+      {
+          "id": "x4tbsy787utx0yvfhl88beba",
+          "title": "Comercial",
+          "graphCoordinates": {
+              "x": 2679.09,
+              "y": -230.09
+          },
+          "blocks": [
+              {
+                  "id": "y7zl62ooa1ay4mx6a1sxpi43",
+                  "type": "text",
+                  "content": {
+                      "richText": [
+                          {
+                              "type": "p",
+                              "children": [
+                                  {
+                                      "text": "Obrigado, nosso time comercial entrará em contato com você "
+                                  }
+                              ]
+                          }
+                      ]
+                  }
+              }
+          ]
+      }
+  ],
+  "edges": [
+      {
+          "id": "caitfyw4jw2v5rc5flr7h3vc",
+          "from": {
+              "blockId": "kkaq2j3mkhg8qr0juq5qhwk0",
+              "itemId": "z42n84m3gg7kwjix7fai9yik"
+          },
+          "to": {
+              "groupId": "uenp04bzsp4n07ob8fprj1cf"
+          }
+      },
+      {
+          "id": "i5m01mrqn9pphp63cl5xyexw",
+          "from": {
+              "blockId": "kkaq2j3mkhg8qr0juq5qhwk0"
+          },
+          "to": {
+              "groupId": "da4vvil6vb7mloe62l8xktth"
+          }
+      },
+      {
+          "id": "bsy9j56kcwoqsbbo2pbd89ct",
+          "from": {
+              "blockId": "ac4pughu72g175lso6vg8vyo"
+          },
+          "to": {
+              "groupId": "da4vvil6vb7mloe62l8xktth"
+          }
+      },
+      {
+          "id": "u6iezkckmajim7suykj67kz2",
+          "from": {
+              "blockId": "wgxp65jhfmrlrfg5osii7zwe",
+              "itemId": "a2rg61kabtckjxstq9kdb9cc"
+          },
+          "to": {
+              "groupId": "q60tapycqa0gfjks88g6uujo",
+              "blockId": "t7nx2rtqzfn7n4m1qpxan5fy"
+          }
+      },
+      {
+          "id": "rnhe7mtkpmd00h2aj4jryfl3",
+          "from": {
+              "blockId": "uoetaiffowyv700boje338d4"
+          },
+          "to": {
+              "groupId": "da4vvil6vb7mloe62l8xktth",
+              "blockId": "g27egx3q8z2gpozpw0bwy82a"
+          }
+      },
+      {
+          "id": "d003jo9f89gcnhp7psggb3k0",
+          "from": {
+              "blockId": "wgxp65jhfmrlrfg5osii7zwe",
+              "itemId": "jybgqo34552707k9897x1z37"
+          },
+          "to": {
+              "groupId": "v7cr3dopknn7hbq7e5eytr5p"
+          }
+      },
+      {
+          "id": "yzw11pgyx1flo214sy1edxvt",
+          "from": {
+              "blockId": "n740l2rw40ttnanzzsyxvrrx"
+          },
+          "to": {
+              "groupId": "uu4w9b41bo0ftm5czhcjm6hc",
+              "blockId": "cn56j7pnnyklm1s8xrui36g1"
+          }
+      },
+      {
+          "id": "w7td2jie40s9xkv6ytui880g",
+          "from": {
+              "blockId": "lc6pmtbrw2u29qudi5hmmy86"
+          },
+          "to": {
+              "groupId": "uu4w9b41bo0ftm5czhcjm6hc"
+          }
+      },
+      {
+          "id": "hnf38akpywo4vr862s2787j7",
+          "from": {
+              "blockId": "keczk9yiwyrptbq3adddgi85",
+              "itemId": "vh2q4wq3r8wgin5vf94rymp1"
+          },
+          "to": {
+              "groupId": "uenp04bzsp4n07ob8fprj1cf"
+          }
+      },
+      {
+          "id": "nx6ij33bbh2xf0mwwtots5t1",
+          "from": {
+              "blockId": "keczk9yiwyrptbq3adddgi85"
+          },
+          "to": {
+              "groupId": "da4vvil6vb7mloe62l8xktth"
+          }
+      },
+      {
+          "id": "zqrlm23l4p5563mbfrve1msh",
+          "from": {
+              "blockId": "uo9dor7plnpt9vjxybh4180i",
+              "itemId": "sehksggjqcseaj24s8ij1phb"
+          },
+          "to": {
+              "groupId": "j2a6gkbrutw9lgu3xslseh0t"
+          }
+      },
+      {
+          "id": "evyzgikvopax559umg08djjf",
+          "from": {
+              "blockId": "u1kf5utr6jhfkex20unczo03"
+          },
+          "to": {
+              "groupId": "uu4w9b41bo0ftm5czhcjm6hc"
+          }
+      },
+      {
+          "id": "i4pfpu7a97zbxovbdag0usz0",
+          "from": {
+              "blockId": "uo9dor7plnpt9vjxybh4180i",
+              "itemId": "ssc2k5m9b66arhurep9yfrtw"
+          },
+          "to": {
+              "groupId": "jksn6nq65nmadznvpgm3rvmy"
+          }
+      },
+      {
+          "id": "wbhigz4vqhjmjcgrylmszdue",
+          "from": {
+              "blockId": "lesucsuvjiur7sn1uflfr5u4"
+          },
+          "to": {
+              "groupId": "d2elssijk91epc47xoon8blo",
+              "blockId": "i6asc2swd41gvcubwxrgxytj"
+          }
+      },
+      {
+          "id": "nv030yo9c1uzak2cjh8zncp6",
+          "from": {
+              "blockId": "ekh831z4ojafj87s0fbmajuq"
+          },
+          "to": {
+              "groupId": "d2elssijk91epc47xoon8blo"
+          }
+      },
+      {
+          "id": "fs5cnqemldmpiziry3659fy8",
+          "from": {
+              "blockId": "qoxbfvxsvljtt9iuphgy7tpa",
+              "itemId": "bzw8ajynz8bbh6az05vvsp0a"
+          },
+          "to": {
+              "groupId": "tmtflciklqonvf99crfzzqvf",
+              "blockId": "wh67hnokltdgf76u804lb5ab"
+          }
+      },
+      {
+          "id": "o8s4hix4y73dsjmefvu4flns",
+          "from": {
+              "blockId": "qoxbfvxsvljtt9iuphgy7tpa",
+              "itemId": "fp4bft62kj2wcqu04baxjfiz"
+          },
+          "to": {
+              "groupId": "bi0a6028rcrg0xhh0xqv6k99"
+          }
+      },
+      {
+          "id": "pk4ly0g3gveuqfnjdpizk18c",
+          "from": {
+              "blockId": "bettqwcx1w3g5csh8cd8e08i",
+              "itemId": "hccgjk7pjid3sztkcxydypnr"
+          },
+          "to": {
+              "groupId": "lxmivufte9g52slpv8dgy9ms"
+          }
+      },
+      {
+          "id": "pd26p8y3qs1ssqgnpbuw8hfj",
+          "from": {
+              "blockId": "bettqwcx1w3g5csh8cd8e08i",
+              "itemId": "tr4a1cwk7vhl2crg6fclo70r"
+          },
+          "to": {
+              "groupId": "x4tbsy787utx0yvfhl88beba",
+              "blockId": "y7zl62ooa1ay4mx6a1sxpi43"
+          }
+      },
+      {
+          "from": {
+              "blockId": "e92fz55kqzl2zytrob3nfh5z"
+          },
+          "to": {
+              "groupId": "dk22wt8didsel4qrjbwy0bsj"
+          },
+          "id": "tuzzdrz97uw1ew9sus0vt2gs"
+      },
+      {
+          "from": {
+              "eventId": "sqevz7kku0jrlyguuyj11771"
+          },
+          "to": {
+              "groupId": "x8qgzhn6eud2a2b75m5p2iig",
+              "blockId": "gv0yi0t0y0dyqn49w7vagb2p"
+          },
+          "id": "cknc3obthv3ewq80m3llbrm2"
+      },
+      {
+          "from": {
+              "blockId": "gv0yi0t0y0dyqn49w7vagb2p"
+          },
+          "to": {
+              "groupId": "dk22wt8didsel4qrjbwy0bsj"
+          },
+          "id": "z60ys3y642h8ilu17u0guxu2"
+      }
+  ],
+  "variables": [
+      {
+          "id": "vy776ml0vpbcoyj4x0ol2nnua",
+          "name": "recado"
+      },
+      {
+          "id": "vepek0ynqlz48qdizfgog1kbf",
+          "name": "company"
+      },
+      {
+          "id": "vrlg1njj7ysr941wv1xu53vsg",
+          "name": "bot"
+      },
+      {
+          "id": "vuo2tdg1zlskt1nhzwsc0zcgt",
+          "name": "welcomeMessage"
+      },
+      {
+          "id": "vwlb46aequnke766oe7v0cjgz",
+          "name": "clientName"
+      },
+      {
+          "id": "vynxjg5bhiuxlm70ruy74xt1q",
+          "name": "optionSelected"
+      },
+      {
+          "id": "vzm0bdetega22a1xu3t04j342",
+          "name": "email",
+          "isSessionVariable": true
+      },
+      {
+          "id": "vdj2lqzijiyu9hlhrbb7vmmxw",
+          "name": "phone",
+          "isSessionVariable": true
+      },
+      {
+          "id": "vi8kd3ptkmoj2wwpkxn0ykj2a",
+          "name": "what",
+          "isSessionVariable": true
+      }
+  ],
+  "theme": {
+      "general": {
+          "background": {
+              "type": "Color",
+              "content": "#171923"
+          }
+      },
+      "chat": {
+          "hostBubbles": {
+              "backgroundColor": "#1e293b",
+              "color": "#ffffff"
+          },
+          "inputs": {
+              "backgroundColor": "#1e293b",
+              "color": "#ffffff",
+              "placeholderColor": "#9095A0"
+          }
+      }
+  },
+  "selectedThemeTemplateId": "typebot-dark",
+  "settings": {},
+  "createdAt": "2024-06-04T14:46:14.796Z",
+  "updatedAt": "2024-06-04T19:57:44.395Z",
+  "icon": null,
+  "folderId": null,
+  "publicId": "meu-typebot-bn9nrs7",
+  "customDomain": null,
+  "workspaceId": "clx0d87ca00097dsgukqpcx6c",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

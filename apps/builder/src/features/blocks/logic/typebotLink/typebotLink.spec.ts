@@ -43,7 +43,7 @@ test('should be configurable', async ({ page }) => {
   await page.click('[aria-label="Close"]')
   await page.click('text=Jump to Group #2 in My link typebot 2')
   await page.getByTestId('selected-item-label').nth(1).click({ force: true })
-  await page.click('button >> text=Start')
+  await page.getByLabel('Clear').click()
 
   await page.click('text=Test')
   await page.locator('typebot-standard').locator('input').fill('Hello there!')
@@ -53,7 +53,7 @@ test('should be configurable', async ({ page }) => {
   ).toBeVisible()
 
   await page.click('[aria-label="Close"]')
-  await page.click('text=Jump to Start in My link typebot 2')
+  await page.click('text=Jump in My link typebot 2')
   await page.waitForTimeout(1000)
   await page.getByTestId('selected-item-label').first().click({ force: true })
   await page.click('button >> text=Current typebot')

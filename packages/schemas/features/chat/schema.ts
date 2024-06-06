@@ -47,7 +47,16 @@ export type ChatSession = z.infer<typeof chatSessionSchema>
 const textMessageSchema = z
   .object({
     type: z.literal(BubbleBlockType.TEXT),
-    content: textBubbleContentSchema,
+    content: z.discriminatedUnion('type', [
+      z.object({
+        type: z.literal('richText'),
+        richText: z.any(),
+      }),
+      z.object({
+        type: z.literal('markdown'),
+        markdown: z.string(),
+      }),
+    ]),
   })
   .openapi({
     title: 'Text',
@@ -100,7 +109,6 @@ const embedMessageSchema = z
 
 const displayEmbedBubbleSchema = z.object({
   url: z.string().optional(),
-  maxBubbleWidth: z.number().optional(),
   waitForEventFunction: z
     .object({
       args: z.record(z.string(), z.unknown()),
@@ -212,6 +220,7 @@ export const startChatInputSchema = z.object({
         Email: 'john@gmail.com',
       },
     }),
+  textBubbleContentFormat: z.enum(['richText', 'markdown']).default('richText'),
 })
 export type StartChatInput = z.infer<typeof startChatInputSchema>
 
@@ -260,6 +269,13 @@ export const startPreviewChatInputSchema = z.object({
         Email: 'john@gmail.com',
       },
     }),
+  sessionId: z
+    .string()
+    .optional()
+    .describe(
+      'If provided, will be used as the session ID and will overwrite any existing session with the same ID.'
+    ),
+  textBubbleContentFormat: z.enum(['richText', 'markdown']).default('richText'),
 })
 export type StartPreviewChatInput = z.infer<typeof startPreviewChatInputSchema>
 

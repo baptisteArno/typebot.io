@@ -16,6 +16,7 @@ import { AzureAdLogo } from '@/components/logos/AzureAdLogo'
 import { FacebookLogo } from '@/components/logos/FacebookLogo'
 import { GitlabLogo } from '@/components/logos/GitlabLogo'
 import { useTranslate } from '@tolgee/react'
+import { KeycloackLogo } from '@/components/logos/KeycloakLogo'
 
 type Props = {
   providers:
@@ -51,6 +52,8 @@ export const SocialLoginButtons = ({ providers }: Props) => {
   const handleAzureAdClick = () => handleSignIn('azure-ad')
 
   const handleCustomOAuthClick = () => handleSignIn('custom-oauth')
+
+  const handleKeyCloackClick = () => handleSignIn('keycloak')
 
   return (
     <Stack>
@@ -140,6 +143,20 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           {t('auth.socialLogin.customButton.label', {
             customProviderName: providers['custom-oauth'].name,
           })}
+        </Button>
+      )}
+      {providers?.keycloak && (
+        <Button
+          leftIcon={<KeycloackLogo />}
+          onClick={handleKeyCloackClick}
+          data-testid="keycloak"
+          isLoading={
+            ['loading', 'authenticated'].includes(status) ||
+            authLoading === 'keycloak'
+          }
+          variant="outline"
+        >
+          {t('auth.socialLogin.keycloakButton.label')}
         </Button>
       )}
     </Stack>

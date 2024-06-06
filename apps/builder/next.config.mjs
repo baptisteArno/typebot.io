@@ -44,26 +44,19 @@ const nextConfig = {
     '@typebot.io/env',
   ],
   i18n: {
-    defaultLocale: 'en',
+    defaultLocale: 'pt-BR',
     locales: ['en', 'fr', 'pt', 'pt-BR', 'de', 'ro', 'es', 'it'],
   },
   experimental: {
     outputFileTracingRoot: join(__dirname, '../../'),
+    serverComponentsExternalPackages: ['isolated-vm'],
   },
-  webpack: (config, { nextRuntime }) => {
-    if (nextRuntime === 'nodejs') return config
+  webpack: (config, { isServer }) => {
+    if (isServer) return config
 
-    if (nextRuntime === 'edge') {
-      config.resolve.alias['minio'] = false
-      config.resolve.alias['got'] = false
-      config.resolve.alias['qrcode'] = false
-      return config
-    }
-    // These packages are imports from the integrations definition files that can be ignored for the client.
     config.resolve.alias['minio'] = false
-    config.resolve.alias['got'] = false
-    config.resolve.alias['openai'] = false
     config.resolve.alias['qrcode'] = false
+    config.resolve.alias['isolated-vm'] = false
     return config
   },
   headers: async () => {

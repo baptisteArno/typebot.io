@@ -2,9 +2,10 @@ import { option, createAction } from '@typebot.io/forge'
 import { isDefined } from '@typebot.io/lib'
 import { auth } from '../auth'
 import { parseMessages } from '../helpers/parseMessages'
-import { OpenAIStream } from 'ai'
-// @ts-ignore
-import MistralClient from '../helpers/client'
+import { createMistral } from '@ai-sdk/mistral'
+import { apiBaseUrl } from '../constants'
+import ky from 'ky'
+import { generateText, streamText } from 'ai'
 
 const nativeMessageContentSchema = {
   content: option.string.layout({
@@ -98,35 +99,38 @@ export const createChatCompletion = createAction({
       id: 'fetchModels',
       dependencies: [],
       fetch: async ({ credentials }) => {
-        const client = new MistralClient(credentials.apiKey)
+        if (!credentials?.apiKey) return []
 
-        const listModelsResponse: any = await client.listModels()
+        const { data } = await ky
+          .get(apiBaseUrl + '/v1/models', {
+            headers: {
+              Authorization: `Bearer ${credentials.apiKey}`,
+            },
+          })
+          .json<{ data: { id: string }[] }>()
 
-        return (
-          listModelsResponse.data
-            .sort(
-              (a: { created: number }, b: { created: number }) =>
-                b.created - a.created
-            )
-            .map((model: { id: any }) => model.id) ?? []
-        )
+        return data.map((model) => model.id)
       },
     },
   ],
   run: {
     server: async ({ credentials: { apiKey }, options, variables, logs }) => {
       if (!options.model) return logs.add('No model selected')
-      const client = new MistralClient(apiKey)
 
-      const response: any = await client.chat({
-        model: options.model,
+      const model = createMistral({
+        apiKey,
+      })(options.model)
+
+      const { text } = await generateText({
+        model,
         messages: parseMessages({ options, variables }),
+        tools: {},
       })
 
       options.responseMapping?.forEach((mapping) => {
         if (!mapping.variableId) return
         if (!mapping.item || mapping.item === 'Message content')
-          variables.set(mapping.variableId, response.choices[0].message.content)
+          variables.set(mapping.variableId, text)
       })
     },
     stream: {
@@ -136,14 +140,16 @@ export const createChatCompletion = createAction({
         )?.variableId,
       run: async ({ credentials: { apiKey }, options, variables }) => {
         if (!options.model) return
-        const client = new MistralClient(apiKey)
+        const model = createMistral({
+          apiKey,
+        })(options.model)
 
-        const response: any = client.chatStream({
-          model: options.model,
+        const response = await streamText({
+          model,
           messages: parseMessages({ options, variables }),
         })
 
-        return OpenAIStream(response)
+        return response.toAIStream()
       },
     },
   },

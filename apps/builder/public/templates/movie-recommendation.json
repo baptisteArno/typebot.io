@@ -548,22 +548,86 @@
     }
   ],
   "variables": [
-    { "id": "vh5bxx07kl3016wr1undh2yb3", "name": "API Key" },
-    { "id": "vx0bbqzug4vk3zpc31ly8k7al", "name": "Genres" },
-    { "id": "vkmbb3rb2hcfd2io1fhf7rz5x", "name": "Selected genre" },
-    { "id": "vwc00rydyp035vtb0nlaqyzwr", "name": "Genre IDs" },
-    { "id": "vwewa4yugqch2sswdpneszk3i", "name": "Selected genre ID" },
-    { "id": "vad8vq3jfyybxo4la57hfd529", "name": "Movies" },
-    { "id": "vhc2pc1sv4xc778r9od2ctooz", "name": "Movie IDs" },
-    { "id": "vyyr3j2pu76uzvf88laai8snl", "name": "Selected Movie" },
-    { "id": "vzslfw8oyo1f08uo5rpkegn0x", "name": "Selected Movie ID" },
-    { "id": "vdvjx1w1sorma4zq0qtsdqrdi", "name": "IMDB ID" },
-    { "id": "vzns0wpumgo8vxjdty2w5t54a", "name": "Movie Overview" },
-    { "id": "vzf5ryexokpr4dihiur2spm8z", "name": "Poster path" },
-    { "id": "vwitf3um5uweynypc0hxxwm14", "name": "Poster URL" },
-    { "id": "vkzk96oh1pmdjv2bt5ps60qc0", "name": "Trending Movies" },
-    { "id": "vcmybxcoaytd2geo5sqx7v8hw", "name": "Trending IDs" },
-    { "id": "vulnb1om2fk8mvkcesl8s15cr", "name": "Selected Trending Movie" }
+    {
+      "id": "vh5bxx07kl3016wr1undh2yb3",
+      "name": "API Key",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vx0bbqzug4vk3zpc31ly8k7al",
+      "name": "Genres",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vkmbb3rb2hcfd2io1fhf7rz5x",
+      "name": "Selected genre",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vwc00rydyp035vtb0nlaqyzwr",
+      "name": "Genre IDs",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vwewa4yugqch2sswdpneszk3i",
+      "name": "Selected genre ID",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vad8vq3jfyybxo4la57hfd529",
+      "name": "Movies",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vhc2pc1sv4xc778r9od2ctooz",
+      "name": "Movie IDs",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vyyr3j2pu76uzvf88laai8snl",
+      "name": "Selected Movie",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vzslfw8oyo1f08uo5rpkegn0x",
+      "name": "Selected Movie ID",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vdvjx1w1sorma4zq0qtsdqrdi",
+      "name": "IMDB ID",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vzns0wpumgo8vxjdty2w5t54a",
+      "name": "Movie Overview",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vzf5ryexokpr4dihiur2spm8z",
+      "name": "Poster path",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vwitf3um5uweynypc0hxxwm14",
+      "name": "Poster URL",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vkzk96oh1pmdjv2bt5ps60qc0",
+      "name": "Trending Movies",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vcmybxcoaytd2geo5sqx7v8hw",
+      "name": "Trending IDs",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vulnb1om2fk8mvkcesl8s15cr",
+      "name": "Selected Trending Movie",
+      "isSessionVariable": true
+    }
   ],
   "theme": {},
   "selectedThemeTemplateId": null,

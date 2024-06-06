@@ -4,8 +4,9 @@ import { parseGuessedValueType } from './parseGuessedValueType'
 import { isDefined } from '@typebot.io/lib'
 import { safeStringify } from '@typebot.io/lib/safeStringify'
 import { Variable } from './types'
+import ivm from 'isolated-vm'
 
-const defaultTimeout = 10
+const defaultTimeout = 10 * 1000
 
 type Props = {
   variables: Variable[]
@@ -18,7 +19,9 @@ export const executeFunction = async ({
   body,
   args: initialArgs,
 }: Props) => {
-  const parsedBody = parseVariables(variables, { fieldToParse: 'id' })(body)
+  const parsedBody = parseVariables(variables, {
+    fieldToParse: 'id',
+  })(body)
 
   const args = (
     extractVariablesFromText(variables)(body).map((variable) => ({
@@ -30,25 +33,47 @@ export const executeFunction = async ({
       ? Object.entries(initialArgs).map(([id, value]) => ({ id, value }))
       : []
   )
-  const func = AsyncFunction(
-    ...args.map(({ id }) => id),
-    'setVariable',
-    parsedBody
-  )
 
   let updatedVariables: Record<string, any> = {}
 
   const setVariable = (key: string, value: any) => {
     updatedVariables[key] = value
   }
-  const timeout = new Timeout()
+
+  const isolate = new ivm.Isolate()
+  const context = isolate.createContextSync()
+  const jail = context.global
+  jail.setSync('global', jail.derefInto())
+  context.evalClosure(
+    'globalThis.setVariable = (...args) => $0.apply(undefined, args, { arguments: { copy: true }, promise: true, result: { copy: true, promise: true } })',
+    [new ivm.Reference(setVariable)]
+  )
+  context.evalClosure(
+    'globalThis.fetch = (...args) => $0.apply(undefined, args, { arguments: { copy: true }, promise: true, result: { copy: true, promise: true } })',
+    [
+      new ivm.Reference(async (...args: any[]) => {
+        // @ts-ignore
+        const response = await fetch(...args)
+        return response.text()
+      }),
+    ]
+  )
+  args.forEach(({ id, value }) => {
+    jail.setSync(id, value)
+  })
+  const run = (code: string) =>
+    context.evalClosure(
+      `return (async function() {
+		const AsyncFunction = async function () {}.constructor;
+		return new AsyncFunction($0)();
+	}())`,
+      [code],
+      { result: { copy: true, promise: true }, timeout: defaultTimeout }
+    )
 
   try {
-    const output: unknown = await timeout.wrap(
-      func(...args.map(({ value }) => value), setVariable),
-      defaultTimeout * 1000
-    )
-    timeout.clear()
+    const output = await run(parsedBody)
+    console.log('Output', output)
     return {
       output: safeStringify(output) ?? '',
       newVariables: Object.entries(updatedVariables)
@@ -78,37 +103,5 @@ export const executeFunction = async ({
       error,
       output: error,
     }
-  }
-}
-
-const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
-
-class Timeout {
-  private ids: NodeJS.Timeout[]
-
-  constructor() {
-    this.ids = []
-  }
-
-  private set = (delay: number) =>
-    new Promise((_, reject) => {
-      const id = setTimeout(() => {
-        reject(`Script ${defaultTimeout}s timeout reached`)
-        this.clear(id)
-      }, delay)
-      this.ids.push(id)
-    })
-
-  wrap = (promise: Promise<any>, delay: number) =>
-    Promise.race([promise, this.set(delay)])
-
-  clear = (...ids: NodeJS.Timeout[]) => {
-    this.ids = this.ids.filter((id) => {
-      if (ids.includes(id)) {
-        clearTimeout(id)
-        return false
-      }
-      return true
-    })
   }
 }

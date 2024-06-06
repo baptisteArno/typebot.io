@@ -9,6 +9,7 @@ import {
 
 export enum RightPanel {
   PREVIEW,
+  VARIABLES,
 }
 
 const editorContext = createContext<{
