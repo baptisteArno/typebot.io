@@ -3,7 +3,7 @@ import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { trpc } from '@/lib/trpc'
 import { Text, HStack, Button, Stack } from '@chakra-ui/react'
-import { PlanTag } from '@/features/billing/components/PlanTag'
+// import { PlanTag } from '@/features/billing/components/PlanTag'
 import { HardDriveIcon } from '@/components/icons'
 import { useRouter } from 'next/router'
 import { RadioButtons } from '@/components/inputs/RadioButtons'
@@ -53,7 +53,7 @@ const Page = () => {
                 defaultIcon={HardDriveIcon}
               />
               <Text>{workspace.name}</Text>
-              <PlanTag plan={workspace.plan} />
+              {/* <PlanTag plan={workspace.plan} /> */}
             </HStack>
           ),
         }))}
