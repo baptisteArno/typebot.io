@@ -1,0 +1,422 @@
+{
+  "version": "6",
+  "id": "clwi1kk3m002cuip5mau6pa32",
+  "name": "QiPlus Sniper Example",
+  "events": [
+    {
+      "id": "sqevz7kku0jrlyguuyj11771",
+      "outgoingEdgeId": "v20u0d7u06wl8cvwtsxaounj",
+      "graphCoordinates": {
+        "x": 38,
+        "y": 0
+      },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "dk22wt8didsel4qrjbwy0bsj",
+      "title": "Welcome Message",
+      "graphCoordinates": {
+        "x": 340,
+        "y": 5
+      },
+      "blocks": [
+        {
+          "id": "l6xnwp7a0qu7lcc5d7ygaq7n",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Olá, seja bem vindo, eu sou {{bot}}, o assistente virtual da {{company}}. "
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "keczk9yiwyrptbq3adddgi85",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "vh2q4wq3r8wgin5vf94rymp1",
+              "outgoingEdgeId": "zttulbdakzlz0iuu74lguib7",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "w5pkmvhhzq6fer9p4j59n4lb",
+                    "variableId": "vwlb46aequnke766oe7v0cjgz",
+                    "comparisonOperator": "Is empty"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "x8qgzhn6eud2a2b75m5p2iig",
+      "title": "Settings",
+      "graphCoordinates": {
+        "x": -2,
+        "y": 81
+      },
+      "blocks": [
+        {
+          "id": "vso5ycyatnymq3c7ugfkf5t8",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vepek0ynqlz48qdizfgog1kbf",
+            "expressionToEvaluate": "Nome da Empresa"
+          }
+        },
+        {
+          "id": "sn1vvv4g4jkz6h1a7nen46qx",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vrlg1njj7ysr941wv1xu53vsg",
+            "expressionToEvaluate": "Bot Name"
+          }
+        },
+        {
+          "id": "gv0yi0t0y0dyqn49w7vagb2p",
+          "outgoingEdgeId": "m493m1qsvhww7fzjeoaashan",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vwlb46aequnke766oe7v0cjgz"
+          }
+        }
+      ]
+    },
+    {
+      "id": "iqzo2yn2c73hmwyob7u646e0",
+      "title": "ClientName",
+      "graphCoordinates": {
+        "x": 682,
+        "y": 7
+      },
+      "blocks": [
+        {
+          "id": "ur7n69kwpqsvlf131qou5bem",
+          "type": "text input",
+          "options": {
+            "labels": {
+              "placeholder": "Como gostaria de ser chamado?"
+            },
+            "variableId": "vwlb46aequnke766oe7v0cjgz"
+          }
+        },
+        {
+          "id": "kkaq2j3mkhg8qr0juq5qhwk0",
+          "outgoingEdgeId": "i5m01mrqn9pphp63cl5xyexw",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "z42n84m3gg7kwjix7fai9yik",
+              "outgoingEdgeId": "caitfyw4jw2v5rc5flr7h3vc",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "gmywihtdxsc3blev05xkv90w",
+                    "variableId": "vwlb46aequnke766oe7v0cjgz",
+                    "comparisonOperator": "Is empty"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "uenp04bzsp4n07ob8fprj1cf",
+      "title": "Name Error",
+      "graphCoordinates": {
+        "x": 1041,
+        "y": 9
+      },
+      "blocks": [
+        {
+          "id": "s9ee6pw0s7qfuztrpvsz0sjz",
+          "outgoingEdgeId": "u3o287z5wg9frr5vctjk80ky",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Poxa, não consegui enteder"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "da4vvil6vb7mloe62l8xktth",
+      "title": "Confirm Name",
+      "graphCoordinates": {
+        "x": 1044,
+        "y": 183
+      },
+      "blocks": [
+        {
+          "id": "g27egx3q8z2gpozpw0bwy82a",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "O nome que você informou foi {{clientName}}:"
+                  }
+                ]
+              },
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "1 - Para confirmar"
+                  }
+                ]
+              },
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "2 - Para alterar ou corrigir"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "yve4u34s98c72f06jrp8r2l5",
+          "type": "number input",
+          "options": {
+            "variableId": "vynxjg5bhiuxlm70ruy74xt1q",
+            "labels": {
+              "placeholder": "Opção"
+            }
+          }
+        },
+        {
+          "id": "wgxp65jhfmrlrfg5osii7zwe",
+          "outgoingEdgeId": "gnm9cw5khg81mqw0c7ybwg4q",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "jybgqo34552707k9897x1z37",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "vh3rd4uq47cgoehbfl7cscll",
+                    "variableId": "vynxjg5bhiuxlm70ruy74xt1q",
+                    "comparisonOperator": "Equal to",
+                    "value": "1"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "a2rg61kabtckjxstq9kdb9cc",
+              "outgoingEdgeId": "yiyj2rdj31h8ll691w98jdpu",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "shhc41gruoiupj4tp469aaxo",
+                    "variableId": "vynxjg5bhiuxlm70ruy74xt1q",
+                    "comparisonOperator": "Equal to",
+                    "value": "2"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "n3xiq1x6qsd1zp09gfmawv3v",
+      "title": "Confirm Error",
+      "graphCoordinates": {
+        "x": 1429,
+        "y": 15
+      },
+      "blocks": [
+        {
+          "id": "ac4pughu72g175lso6vg8vyo",
+          "outgoingEdgeId": "bsy9j56kcwoqsbbo2pbd89ct",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Poxa, não consegui enteder"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "v20u0d7u06wl8cvwtsxaounj",
+      "from": {
+        "eventId": "sqevz7kku0jrlyguuyj11771"
+      },
+      "to": {
+        "groupId": "x8qgzhn6eud2a2b75m5p2iig"
+      }
+    },
+    {
+      "id": "m493m1qsvhww7fzjeoaashan",
+      "from": {
+        "blockId": "gv0yi0t0y0dyqn49w7vagb2p"
+      },
+      "to": {
+        "groupId": "dk22wt8didsel4qrjbwy0bsj"
+      }
+    },
+    {
+      "id": "zttulbdakzlz0iuu74lguib7",
+      "from": {
+        "blockId": "keczk9yiwyrptbq3adddgi85",
+        "itemId": "vh2q4wq3r8wgin5vf94rymp1"
+      },
+      "to": {
+        "groupId": "iqzo2yn2c73hmwyob7u646e0"
+      }
+    },
+    {
+      "id": "caitfyw4jw2v5rc5flr7h3vc",
+      "from": {
+        "blockId": "kkaq2j3mkhg8qr0juq5qhwk0",
+        "itemId": "z42n84m3gg7kwjix7fai9yik"
+      },
+      "to": {
+        "groupId": "uenp04bzsp4n07ob8fprj1cf"
+      }
+    },
+    {
+      "id": "u3o287z5wg9frr5vctjk80ky",
+      "from": {
+        "blockId": "s9ee6pw0s7qfuztrpvsz0sjz"
+      },
+      "to": {
+        "groupId": "iqzo2yn2c73hmwyob7u646e0"
+      }
+    },
+    {
+      "id": "i5m01mrqn9pphp63cl5xyexw",
+      "from": {
+        "blockId": "kkaq2j3mkhg8qr0juq5qhwk0"
+      },
+      "to": {
+        "groupId": "da4vvil6vb7mloe62l8xktth"
+      }
+    },
+    {
+      "id": "yiyj2rdj31h8ll691w98jdpu",
+      "from": {
+        "blockId": "wgxp65jhfmrlrfg5osii7zwe",
+        "itemId": "a2rg61kabtckjxstq9kdb9cc"
+      },
+      "to": {
+        "groupId": "iqzo2yn2c73hmwyob7u646e0"
+      }
+    },
+    {
+      "id": "gnm9cw5khg81mqw0c7ybwg4q",
+      "from": {
+        "blockId": "wgxp65jhfmrlrfg5osii7zwe"
+      },
+      "to": {
+        "groupId": "n3xiq1x6qsd1zp09gfmawv3v"
+      }
+    },
+    {
+      "id": "bsy9j56kcwoqsbbo2pbd89ct",
+      "from": {
+        "blockId": "ac4pughu72g175lso6vg8vyo"
+      },
+      "to": {
+        "groupId": "da4vvil6vb7mloe62l8xktth"
+      }
+    }
+  ],
+  "variables": [
+    {
+      "id": "vy776ml0vpbcoyj4x0ol2nnua",
+      "name": "recado"
+    },
+    {
+      "id": "vepek0ynqlz48qdizfgog1kbf",
+      "name": "company"
+    },
+    {
+      "id": "vrlg1njj7ysr941wv1xu53vsg",
+      "name": "bot"
+    },
+    {
+      "id": "vuo2tdg1zlskt1nhzwsc0zcgt",
+      "name": "welcomeMessage"
+    },
+    {
+      "id": "vwlb46aequnke766oe7v0cjgz",
+      "name": "clientName"
+    },
+    {
+      "id": "vynxjg5bhiuxlm70ruy74xt1q",
+      "name": "optionSelected"
+    }
+  ],
+  "theme": {
+    "general": {
+      "background": {
+        "type": "Color",
+        "content": "#171923"
+      }
+    },
+    "chat": {
+      "hostBubbles": {
+        "backgroundColor": "#1e293b",
+        "color": "#ffffff"
+      },
+      "inputs": {
+        "backgroundColor": "#1e293b",
+        "color": "#ffffff",
+        "placeholderColor": "#9095A0"
+      }
+    }
+  },
+  "selectedThemeTemplateId": "typebot-dark",
+  "settings": {},
+  "createdAt": "2024-05-22T16:31:50.722Z",
+  "updatedAt": "2024-06-03T18:37:50.733Z",
+  "icon": null,
+  "folderId": null,
+  "publicId": "meu-typebot-au6pa32",
+  "customDomain": null,
+  "workspaceId": "clvy025tb000guip5bj9n4uc6",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

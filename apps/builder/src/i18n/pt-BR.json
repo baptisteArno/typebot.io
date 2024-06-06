@@ -386,6 +386,7 @@
   "templates.modal.marketing.leadScoring.name": "Pontuação de Leads",
   "templates.modal.marketing.productRecommendation.description": "A Näak é uma empresa que comercializa barras energéticas, mix de hidratação e produtos de recuperação. Este bot ajuda o visitante a escolher o produto certo. Ajuda você a qualificar seu lead e fornecer uma recomendação personalizada.",
   "templates.modal.marketing.productRecommendation.name": "Recomendação de Produto",
+  "templates.modal.marketing.qiplusExample.name": "QiPlus Sniper Exemplo",
   "templates.modal.marketing.quiz.description": "Um teste divertido para interagir com seus usuários e coletar seus e-mails.",
   "templates.modal.marketing.quiz.name": "Quiz",
   "templates.modal.menuHeading.marketing": "Marketing",
