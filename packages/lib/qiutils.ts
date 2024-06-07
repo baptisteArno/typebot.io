@@ -37,7 +37,7 @@ const disabledLogic = [
 // Integrations to be disabled
 const disabledIntegrations = [
   'Google Sheets',
-  // 'OpenAI',
+  // 'openai',
   'Google Analytics',
   // 'Webhook',
   'Email',
@@ -46,7 +46,16 @@ const disabledIntegrations = [
   'Pabbly',
   'Chatwoot',
   'Pixel',
-  'Zemantic AI',
+  'zemantic-ai',
+  'cal-com',
+  'chat-node',
+  'qr-code',
+  'dify-ai',
+  'mistral',
+  'elevenlabs',
+  'anthropic',
+  'together-ai',
+  'open-router',
 ]
 // TODO: remove from here to enable blocks
 export const disabledBlocks = [

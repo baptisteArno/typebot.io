@@ -9,7 +9,7 @@ import {
   Flex,
 } from '@chakra-ui/react'
 import {
-  CreditCardIcon,
+  // CreditCardIcon,
   HardDriveIcon,
   SettingsIcon,
   UsersIcon,
