@@ -63,7 +63,7 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
         </FormLabel>
         <DropdownList
           onItemSelect={handleLengthChange}
-          items={[3, 4, 5, 6, 7, 8, 9, 10]}
+          items={[2, 3, 4, 5, 6, 7, 8, 9, 10]}
           currentItem={length}
         />
       </Stack>
