@@ -6,6 +6,7 @@ import {
   InputBlock,
   SessionState,
   SetVariableHistoryItem,
+  Variable,
 } from '@typebot.io/schemas'
 import { byId } from '@typebot.io/lib'
 import { isInputBlock } from '@typebot.io/schemas/helpers'
@@ -81,7 +82,7 @@ export const continueBotFlow = async (
       message: 'Group / block not found',
     })
 
-  let variableToUpdate
+  let variableToUpdate: Variable | undefined
 
   if (block.type === LogicBlockType.SET_VARIABLE) {
     const existingVariable = state.typebotsQueue[0].typebot.variables.find(
@@ -90,7 +91,6 @@ export const continueBotFlow = async (
     if (existingVariable && reply && typeof reply === 'string') {
       variableToUpdate = {
         ...existingVariable,
-        value: safeJsonParse(reply),
       }
     }
   }
@@ -154,7 +154,7 @@ export const continueBotFlow = async (
       newVariables: [
         {
           ...variableToUpdate,
-          value: reply,
+          value: safeJsonParse(reply as string),
         },
       ],
     })
