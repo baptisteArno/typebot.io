@@ -12,6 +12,8 @@ import { executeFunction } from '@typebot.io/variables/executeFunction'
 import { readDataStream } from 'ai'
 import { deprecatedAskAssistantOptions } from '../deprecated'
 import { OpenAIAssistantStream } from '../helpers/OpenAIAssistantStream'
+import { isModelCompatibleWithVision } from '../helpers/isModelCompatibleWithVision'
+import { splitUserTextMessageIntoBlocks } from '../helpers/splitUserTextMessageIntoBlocks'
 
 export const askAssistant = createAction({
   auth,
@@ -284,12 +286,16 @@ const createAssistantStream = async ({
     return
   }
 
+  const assistant = await openai.beta.assistants.retrieve(assistantId)
+
   // Add a message to the thread
   const createdMessage = await openai.beta.threads.messages.create(
     currentThreadId,
     {
       role: 'user',
-      content: message,
+      content: isModelCompatibleWithVision(assistant.model)
+        ? await splitUserTextMessageIntoBlocks(message)
+        : message,
     }
   )
   return OpenAIAssistantStream(

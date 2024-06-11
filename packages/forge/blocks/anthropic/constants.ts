@@ -12,3 +12,12 @@ export const defaultAnthropicOptions = {
   temperature: 1,
   maxTokens: 1024,
 } as const
+
+export const modelsWithImageUrlSupport = ['claude-3*']
+
+export const supportedImageTypes = [
+  'image/png',
+  'image/jpeg',
+  'image/gif',
+  'image/webp',
+] as const

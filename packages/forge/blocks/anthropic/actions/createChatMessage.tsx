@@ -108,7 +108,7 @@ export const createChatMessage = createAction({
         apiKey: apiKey,
       })
 
-      const messages = parseChatMessages({ options, variables })
+      const messages = await parseChatMessages({ options, variables })
 
       try {
         const reply = await client.messages.create({
@@ -153,7 +153,7 @@ export const createChatMessage = createAction({
           apiKey: apiKey,
         })
 
-        const messages = parseChatMessages({ options, variables })
+        const messages = await parseChatMessages({ options, variables })
 
         const response = await client.messages.create({
           messages,

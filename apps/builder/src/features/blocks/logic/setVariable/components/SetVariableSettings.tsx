@@ -11,7 +11,7 @@ import {
   sessionOnlySetVariableOptions,
   valueTypes,
 } from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
-import { TextInput } from '@/components/inputs'
+import { TextInput, Textarea } from '@/components/inputs'
 import { isDefined } from '@typebot.io/lib'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { isInputBlock } from '@typebot.io/schemas/helpers'
@@ -215,7 +215,7 @@ const SetVariableValue = ({
       )
     }
     case 'Append value(s)': {
-      return <TextInput defaultValue={options.item} onChange={updateItem} />
+      return <Textarea defaultValue={options.item} onChange={updateItem} />
     }
     case 'Moment of the day': {
       return (

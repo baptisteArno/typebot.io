@@ -157,10 +157,13 @@ const getExpressionToEvaluate =
       return ${options.mapListItemParams?.targetListVariableId}.at(itemIndex)`
       }
       case 'Append value(s)': {
-        return `if(!${options.item}) return ${options.variableId};
-        if(!${options.variableId}) return [${options.item}];
-        if(!Array.isArray(${options.variableId})) return [${options.variableId}, ${options.item}];
-        return (${options.variableId}).concat(${options.item});`
+        const item = parseVariables(state.typebotsQueue[0].typebot.variables)(
+          options.item
+        )
+        return `if(\`${item}\` === '') return ${options.variableId};
+        if(!${options.variableId}) return [\`${item}\`];
+        if(!Array.isArray(${options.variableId})) return [${options.variableId}, \`${item}\`];
+        return (${options.variableId}).concat(\`${item}\`);`
       }
       case 'Empty': {
         return null

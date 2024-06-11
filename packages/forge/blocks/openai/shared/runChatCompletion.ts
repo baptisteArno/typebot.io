@@ -59,7 +59,7 @@ export const runChatCompletion = async ({
       },
     })) satisfies ChatCompletionTool[] | undefined
 
-  const messages = parseChatCompletionMessages({ options, variables })
+  const messages = await parseChatCompletionMessages({ options, variables })
 
   const body = {
     model,
