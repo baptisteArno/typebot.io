@@ -14,6 +14,7 @@ type Props<T extends string> = {
   value?: T
   defaultValue?: T
   direction?: 'row' | 'column'
+  size?: 'md' | 'sm'
   onSelect: (newValue: T) => void
 }
 export const RadioButtons = <T extends string>({
@@ -21,6 +22,7 @@ export const RadioButtons = <T extends string>({
   value,
   defaultValue,
   direction = 'row',
+  size = 'md',
   onSelect,
 }: Props<T>) => {
   const { getRootProps, getRadioProps } = useRadioGroup({
@@ -36,7 +38,7 @@ export const RadioButtons = <T extends string>({
       {options.map((item) => {
         const radio = getRadioProps({ value: parseValue(item) })
         return (
-          <RadioCard key={parseValue(item)} {...radio}>
+          <RadioCard key={parseValue(item)} {...radio} size={size}>
             {parseLabel(item)}
           </RadioCard>
         )
@@ -45,7 +47,9 @@ export const RadioButtons = <T extends string>({
   )
 }
 
-export const RadioCard = (props: UseRadioProps & { children: ReactNode }) => {
+export const RadioCard = (
+  props: UseRadioProps & { children: ReactNode; size?: 'md' | 'sm' }
+) => {
   const { getInputProps, getCheckboxProps } = useRadio(props)
 
   const input = getInputProps()
@@ -68,10 +72,11 @@ export const RadioCard = (props: UseRadioProps & { children: ReactNode }) => {
         _active={{
           bgColor: useColorModeValue('gray.200', 'gray.600'),
         }}
-        px={5}
-        py={2}
+        px={props.size === 'sm' ? 3 : 5}
+        py={props.size === 'sm' ? 1 : 2}
         transition="background-color 150ms, color 150ms, border 150ms"
         justifyContent="center"
+        fontSize={props.size === 'sm' ? 'sm' : undefined}
       >
         {props.children}
       </Flex>

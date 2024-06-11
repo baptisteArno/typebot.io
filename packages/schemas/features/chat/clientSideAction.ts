@@ -21,6 +21,7 @@ export type StartPropsToInject = z.infer<typeof startPropsToInjectSchema>
 
 const scriptToExecuteSchema = z.object({
   content: z.string(),
+  isCode: z.boolean().optional(),
   args: z.array(
     z.object({
       id: z.string(),
