@@ -81,8 +81,17 @@ const nextConfig = {
               (process.env.NEXT_PUBLIC_POSTHOG_HOST ??
                 'https://app.posthog.com') + '/:path*',
           },
+          {
+            source: '/healthz',
+            destination: '/api/health',
+          },
         ]
-      : []
+      : [
+          {
+            source: '/healthz',
+            destination: '/api/health',
+          },
+        ]
   },
 }
 
