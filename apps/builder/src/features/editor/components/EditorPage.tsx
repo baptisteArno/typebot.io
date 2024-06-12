@@ -8,7 +8,6 @@ import {
 import { useTypebot } from '../providers/TypebotProvider'
 import { BlocksSideBar } from './BlocksSideBar'
 import { BoardMenuButton } from './BoardMenuButton'
-import { GettingStartedModal } from './GettingStartedModal'
 import { PreviewDrawer } from '@/features/preview/components/PreviewDrawer'
 import { TypebotHeader } from './TypebotHeader'
 import { Graph } from '@/features/graph/components/Graph'
@@ -19,6 +18,7 @@ import { TypebotNotFoundPage } from './TypebotNotFoundPage'
 import { SuspectedTypebotBanner } from './SuspectedTypebotBanner'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { VariablesDrawer } from '@/features/preview/components/VariablesDrawer'
+import { VideoOnboardingFloatingWindow } from '@/features/onboarding/components/VideoOnboardingFloatingWindow'
 
 export const EditorPage = () => {
   const { typebot, currentUserMode, is404 } = useTypebot()
@@ -32,11 +32,12 @@ export const EditorPage = () => {
   const isSuspicious = typebot?.riskLevel === 100 && !workspace?.isVerified
 
   if (is404) return <TypebotNotFoundPage />
+
   return (
     <EditorProvider>
       <Seo title={typebot?.name ? `${typebot.name} | Editor` : 'Editor'} />
       <Flex overflow="clip" h="100vh" flexDir="column" id="editor-container">
-        <GettingStartedModal />
+        <VideoOnboardingFloatingWindow type="editor" />
         {isSuspicious && <SuspectedTypebotBanner typebotId={typebot.id} />}
         <TypebotHeader />
         <Flex

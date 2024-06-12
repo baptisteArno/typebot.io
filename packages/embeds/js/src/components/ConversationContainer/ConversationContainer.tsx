@@ -131,18 +131,18 @@ export const ConversationContainer = (props: Props) => {
     )
   })
 
-  const sendMessage = async (
-    message: string | undefined,
-    clientLogs?: ChatLog[]
-  ) => {
-    if (clientLogs) {
-      props.onNewLogs?.(clientLogs)
-      await saveClientLogsQuery({
-        apiHost: props.context.apiHost,
-        sessionId: props.initialChatReply.sessionId,
-        clientLogs,
-      })
-    }
+  const saveLogs = async (clientLogs?: ChatLog[]) => {
+    if (!clientLogs) return
+    props.onNewLogs?.(clientLogs)
+    if (props.context.isPreview) return
+    await saveClientLogsQuery({
+      apiHost: props.context.apiHost,
+      sessionId: props.initialChatReply.sessionId,
+      clientLogs,
+    })
+  }
+
+  const sendMessage = async (message: string | undefined) => {
     setHasError(false)
     const currentInputBlock = [...chatChunks()].pop()?.input
     if (currentInputBlock?.id && props.onAnswer && message)
@@ -288,9 +288,10 @@ export const ConversationContainer = (props: Props) => {
         },
         onMessageStream: streamMessage,
       })
+      if (response && 'logs' in response) saveLogs(response.logs)
       if (response && 'replyToSend' in response) {
         setIsSending(false)
-        sendMessage(response.replyToSend, response.logs)
+        sendMessage(response.replyToSend)
         return
       }
       if (response && 'blockedPopupUrl' in response)

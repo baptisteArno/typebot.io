@@ -17,8 +17,12 @@ import {
   parseTranscriptMessageText,
 } from '@typebot.io/logic/computeResultTranscript'
 import prisma from '@typebot.io/lib/prisma'
-import { sessionOnlySetVariableOptions } from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
+import {
+  defaultSetVariableOptions,
+  sessionOnlySetVariableOptions,
+} from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
 import { createCodeRunner } from '@typebot.io/variables/codeRunners'
+import { stringifyError } from '@typebot.io/lib/stringifyError'
 
 export const executeSetVariable = async (
   state: SessionState,
@@ -34,6 +38,9 @@ export const executeSetVariable = async (
     block.id
   )
   const isCustomValue = !block.options.type || block.options.type === 'Custom'
+  const isCode =
+    (!block.options.type || block.options.type === 'Custom') &&
+    (block.options.isCode ?? defaultSetVariableOptions.isCode)
   if (
     expressionToEvaluate &&
     !state.whatsApp &&
@@ -50,21 +57,25 @@ export const executeSetVariable = async (
         {
           type: 'setVariable',
           setVariable: {
-            scriptToExecute,
+            scriptToExecute: {
+              ...scriptToExecute,
+              isCode,
+            },
           },
           expectsDedicatedReply: true,
         },
       ],
     }
   }
-  const evaluatedExpression = expressionToEvaluate
-    ? evaluateSetVariableExpression(variables)(expressionToEvaluate)
-    : undefined
+  const { value, error } =
+    (expressionToEvaluate
+      ? evaluateSetVariableExpression(variables)(expressionToEvaluate)
+      : undefined) ?? {}
   const existingVariable = variables.find(byId(block.options.variableId))
   if (!existingVariable) return { outgoingEdgeId: block.outgoingEdgeId }
   const newVariable = {
     ...existingVariable,
-    value: evaluatedExpression,
+    value,
   }
   const { newSetVariableHistory, updatedState } = updateVariablesInSession({
     state,
@@ -85,24 +96,40 @@ export const executeSetVariable = async (
     outgoingEdgeId: block.outgoingEdgeId,
     newSessionState: updatedState,
     newSetVariableHistory,
+    logs:
+      error && isCode
+        ? [
+            {
+              status: 'error',
+              description: 'Error evaluating Set variable code',
+              details: error,
+            },
+          ]
+        : undefined,
   }
 }
 
 const evaluateSetVariableExpression =
   (variables: Variable[]) =>
-  (str: string): unknown => {
+  (str: string): { value: unknown; error?: string } => {
     const isSingleVariable =
       str.startsWith('{{') && str.endsWith('}}') && str.split('{{').length === 2
-    if (isSingleVariable) return parseVariables(variables)(str)
+    if (isSingleVariable) return { value: parseVariables(variables)(str) }
     // To avoid octal number evaluation
-    if (!isNaN(str as unknown as number) && /0[^.].+/.test(str)) return str
+    if (!isNaN(str as unknown as number) && /0[^.].+/.test(str))
+      return { value: str }
     try {
       const body = parseVariables(variables, { fieldToParse: 'id' })(str)
-      return createCodeRunner({ variables })(
-        body.includes('return ') ? body : `return ${body}`
-      )
+      return {
+        value: createCodeRunner({ variables })(
+          body.includes('return ') ? body : `return ${body}`
+        ),
+      }
     } catch (err) {
-      return parseVariables(variables)(str)
+      return {
+        value: parseVariables(variables)(str),
+        error: stringifyError(err),
+      }
     }
   }
 
@@ -157,10 +184,13 @@ const getExpressionToEvaluate =
       return ${options.mapListItemParams?.targetListVariableId}.at(itemIndex)`
       }
       case 'Append value(s)': {
-        return `if(!${options.item}) return ${options.variableId};
-        if(!${options.variableId}) return [${options.item}];
-        if(!Array.isArray(${options.variableId})) return [${options.variableId}, ${options.item}];
-        return (${options.variableId}).concat(${options.item});`
+        const item = parseVariables(state.typebotsQueue[0].typebot.variables)(
+          options.item
+        )
+        return `if(\`${item}\` === '') return ${options.variableId};
+        if(!${options.variableId}) return [\`${item}\`];
+        if(!Array.isArray(${options.variableId})) return [${options.variableId}, \`${item}\`];
+        return (${options.variableId}).concat(\`${item}\`);`
       }
       case 'Empty': {
         return null

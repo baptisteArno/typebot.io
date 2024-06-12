@@ -12,6 +12,11 @@ export const validateNumber = (
     variables: Variable[]
   }
 ) => {
+  if (inputValue === '') return false
+
+  const parsedNumber = Number(inputValue)
+  if (isNaN(parsedNumber)) return false
+
   const min =
     options?.min && typeof options.min === 'string'
       ? Number(parseVariables(variables)(options.min))
@@ -20,10 +25,8 @@ export const validateNumber = (
     options?.min && typeof options.min === 'string'
       ? Number(parseVariables(variables)(options.min))
       : undefined
-
   return (
-    inputValue !== '' &&
-    (isNotDefined(min) || Number(inputValue) >= min) &&
-    (isNotDefined(max) || Number(inputValue) <= max)
+    (isNotDefined(min) || parsedNumber >= min) &&
+    (isNotDefined(max) || parsedNumber <= max)
   )
 }

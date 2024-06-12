@@ -5,6 +5,8 @@ import { isDefined } from '@typebot.io/lib'
 import { safeStringify } from '@typebot.io/lib/safeStringify'
 import { Variable } from './types'
 import ivm from 'isolated-vm'
+import { parseTransferrableValue } from './codeRunners'
+import { stringifyError } from '@typebot.io/lib/stringifyError'
 
 const defaultTimeout = 10 * 1000
 
@@ -59,7 +61,7 @@ export const executeFunction = async ({
     ]
   )
   args.forEach(({ id, value }) => {
-    jail.setSync(id, value)
+    jail.setSync(id, parseTransferrableValue(value))
   })
   const run = (code: string) =>
     context.evalClosure(
@@ -73,7 +75,6 @@ export const executeFunction = async ({
 
   try {
     const output = await run(parsedBody)
-    console.log('Output', output)
     return {
       output: safeStringify(output) ?? '',
       newVariables: Object.entries(updatedVariables)
@@ -92,12 +93,7 @@ export const executeFunction = async ({
     console.log('Error while executing script')
     console.error(e)
 
-    const error =
-      typeof e === 'string'
-        ? e
-        : e instanceof Error
-        ? e.message
-        : JSON.stringify(e)
+    const error = stringifyError(e)
 
     return {
       error,

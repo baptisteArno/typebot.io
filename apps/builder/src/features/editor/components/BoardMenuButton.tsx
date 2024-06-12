@@ -18,26 +18,18 @@ import {
   SettingsIcon,
 } from '@/components/icons'
 import { useTypebot } from '../providers/TypebotProvider'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { EditorSettingsModal } from './EditorSettingsModal'
 import { parseDefaultPublicId } from '@/features/publish/helpers/parseDefaultPublicId'
 import { useTranslate } from '@tolgee/react'
-import { useUser } from '@/features/account/hooks/useUser'
-import { useRouter } from 'next/router'
 import { RightPanel, useEditor } from '../providers/EditorProvider'
 
 export const BoardMenuButton = (props: StackProps) => {
-  const { query } = useRouter()
   const { typebot, currentUserMode } = useTypebot()
-  const { user } = useUser()
   const [isDownloading, setIsDownloading] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { t } = useTranslate()
   const { setRightPanel } = useEditor()
-
-  useEffect(() => {
-    if (user && !user.graphNavigation && !query.isFirstBot) onOpen()
-  }, [onOpen, query.isFirstBot, user, user?.graphNavigation])
 
   const downloadFlow = () => {
     assert(typebot)

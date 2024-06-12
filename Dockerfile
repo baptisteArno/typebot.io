@@ -17,7 +17,7 @@ COPY . .
 RUN turbo prune --scope=${SCOPE} --docker
 
 FROM base AS builder
-RUN apt-get -qy update && apt-get -qy --no-install-recommends install openssl git
+RUN apt-get -qy update && apt-get -qy --no-install-recommends install openssl git python3 g++ build-essential
 WORKDIR /app
 COPY .gitignore .gitignore
 COPY .npmrc .pnpmfile.cjs ./

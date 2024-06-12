@@ -1,9 +1,13 @@
-import type { ScriptToExecute } from '@typebot.io/schemas'
+import { stringifyError } from '@typebot.io/lib/stringifyError'
+import type { ChatLog, ScriptToExecute } from '@typebot.io/schemas'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
 
-export const executeScript = async ({ content, args }: ScriptToExecute) => {
+export const executeScript = async ({
+  content,
+  args,
+}: ScriptToExecute): Promise<void | { logs: ChatLog[] }> => {
   try {
     const func = AsyncFunction(
       ...args.map((arg) => arg.id),
@@ -11,7 +15,15 @@ export const executeScript = async ({ content, args }: ScriptToExecute) => {
     )
     await func(...args.map((arg) => arg.value))
   } catch (err) {
-    console.warn('Script threw an error:', err)
+    return {
+      logs: [
+        {
+          status: 'error',
+          description: 'Script block failed to execute',
+          details: stringifyError(err),
+        },
+      ],
+    }
   }
 }
 

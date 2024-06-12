@@ -50,9 +50,14 @@ export const Post = ({ metadata, mdxSource }: Props) => (
           h5: (props) => <Heading as="h5" fontSize="lg" {...props} />,
           h6: (props) => <Heading as="h6" fontSize="md" {...props} />,
           code: ({ children, ...props }) => {
-            const codeHTML = highlight(children?.toString() ?? '')
+            if (!props.className || props.className?.includes('md'))
+              return <code {...props}>{children}</code>
+            const hightlightedCode = highlight(children?.toString() ?? '')
             return (
-              <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />
+              <code
+                dangerouslySetInnerHTML={{ __html: hightlightedCode }}
+                {...props}
+              />
             )
           },
           // eslint-disable-next-line @typescript-eslint/no-explicit-any

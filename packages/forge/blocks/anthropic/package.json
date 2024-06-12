@@ -10,11 +10,13 @@
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
+    "@types/node": "^20.14.2",
     "@types/react": "18.2.15",
     "typescript": "5.4.5"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "0.20.6",
-    "ai": "3.1.12"
+    "ai": "3.1.12",
+    "ky": "1.2.3"
   }
 }

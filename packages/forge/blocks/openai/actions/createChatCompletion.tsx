@@ -86,14 +86,15 @@ export const createChatCompletion = createAction({
       }),
     stream: {
       getStreamVariableId: getChatCompletionStreamVarId,
-      run: (params) =>
-        runChatCompletionStream({
+      run: async (params) => ({
+        stream: await runChatCompletionStream({
           ...params,
           config: {
             baseUrl: defaultOpenAIOptions.baseUrl,
             defaultModel: defaultOpenAIOptions.model,
           },
         }),
+      }),
     },
   },
 })

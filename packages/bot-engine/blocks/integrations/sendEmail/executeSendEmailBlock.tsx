@@ -48,7 +48,7 @@ export const executeSendEmailBlock = async (
   )
   const body = bodyUniqueVariable
     ? stringifyUniqueVariableValueAsHtml(bodyUniqueVariable)
-    : parseVariables(typebot.variables, { isInsideHtml: true })(
+    : parseVariables(typebot.variables, { isInsideHtml: !options?.isBodyCode })(
         options?.body ?? ''
       )
 

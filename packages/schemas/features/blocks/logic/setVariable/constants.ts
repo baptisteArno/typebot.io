@@ -26,4 +26,5 @@ export const sessionOnlySetVariableOptions = ['Transcript'] as const
 export const defaultSetVariableOptions = {
   type: 'Custom',
   isExecutedOnClient: false,
+  isCode: false,
 } as const satisfies SetVariableBlock['options']

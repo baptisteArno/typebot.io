@@ -47,7 +47,7 @@ export const runChatCompletionStream = async ({
       },
     })) satisfies ChatCompletionTool[] | undefined
 
-  const messages = parseChatCompletionMessages({ options, variables })
+  const messages = await parseChatCompletionMessages({ options, variables })
 
   const response = await openai.chat.completions.create({
     model,

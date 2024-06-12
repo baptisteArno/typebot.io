@@ -1,7 +1,7 @@
 import { isDefined } from '@typebot.io/lib'
 import { ParsedReply } from '../../../types'
 import { DateInputBlock } from '@typebot.io/schemas'
-import { parse as chronoParse } from 'chrono-node'
+import { en as chronoParser } from 'chrono-node'
 import { format } from 'date-fns'
 import { defaultDateInputOptions } from '@typebot.io/schemas/features/blocks/inputs/date/constants'
 
@@ -9,7 +9,11 @@ export const parseDateReply = (
   reply: string,
   block: DateInputBlock
 ): ParsedReply => {
-  const parsedDate = chronoParse(reply)
+  const parsedDate = (
+    block.options?.format ?? defaultDateInputOptions.format
+  ).startsWith('dd')
+    ? chronoParser.GB.parse(reply)
+    : chronoParser.parse(reply)
   if (parsedDate.length === 0) return { status: 'fail' }
   const formatString =
     block.options?.format ??

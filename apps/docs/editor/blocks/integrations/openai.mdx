@@ -84,6 +84,18 @@ I also demonstrate how formatting can be affected by the presence of text before
 
 <LoomVideo id="35dc8af6b9244762acc4a5acf275fb43" />
 
+## Vision support
+
+`Create Chat Message` and `Ask Assistant` blocks support vision. This means that Typebot automatically detects images URL in any user message provided to OpenAI and parse it. The URL needs to be isolated from the rest of the text message to be properly detected. Here is an example of a message with an image URL:
+
+If the selected model is [not compatible with vision](https://platform.openai.com/docs/models), the image URL will be parsed as a plain text message.
+
+```
+What's in this picture?
+
+https://domain.com/image.png
+```
+
 ## Troobleshooting
 
 ### Error message: "OpenAI block returned error"
