@@ -19,9 +19,11 @@ export const defaultSettings = {
   },
   metadata: {
     description:
-      'Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form.',
+      // 'Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form.',
+      'Fale com os seus clientes como eles quiserem! O Futuro do Atendimento já é presente!',
     favIconUrl: (viewerBaseUrl: string) => viewerBaseUrl + '/favicon.png',
-    imageUrl: (viewerBaseUrl: string) => viewerBaseUrl + '/site-preview.png',
+    // imageUrl: (viewerBaseUrl: string) => viewerBaseUrl + '/site-preview.png',
+    imageUrl: (viewerBaseUrl: string) => viewerBaseUrl + '/kwik_preview.png',
   },
 } as const
 

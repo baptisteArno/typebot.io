@@ -11,14 +11,14 @@ import {
 } from '@chakra-ui/react'
 import assert from 'assert'
 import {
-  BookIcon,
+  //BookIcon,
   BracesIcon,
   DownloadIcon,
   MoreVerticalIcon,
   SettingsIcon,
 } from '@/components/icons'
 import { useTypebot } from '../providers/TypebotProvider'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { EditorSettingsModal } from './EditorSettingsModal'
 import { parseDefaultPublicId } from '@/features/publish/helpers/parseDefaultPublicId'
 import { useTranslate } from '@tolgee/react'
@@ -37,7 +37,7 @@ export const BoardMenuButton = (props: StackProps) => {
     const data =
       'data:application/json;charset=utf-8,' +
       encodeURIComponent(JSON.stringify(typebot))
-    const fileName = `typebot-export-${parseDefaultPublicId(
+    const fileName = `bot-export-${parseDefaultPublicId(
       typebot.name,
       typebot.id
     )}.json`
@@ -47,10 +47,11 @@ export const BoardMenuButton = (props: StackProps) => {
     linkElement.click()
     setIsDownloading(false)
   }
-
+  /* prettier-ignore */
+  {/*
   const redirectToDocumentation = () =>
     window.open('https://docs.typebot.io/editor/graph', '_blank')
-
+  */}
   return (
     <HStack rounded="md" spacing="4" {...props}>
       <IconButton
@@ -71,9 +72,11 @@ export const BoardMenuButton = (props: StackProps) => {
           bgColor={useColorModeValue('white', undefined)}
         />
         <MenuList>
+          {/* 
           <MenuItem icon={<BookIcon />} onClick={redirectToDocumentation}>
             {t('editor.graph.menu.documentationItem.label')}
           </MenuItem>
+          */}
           <MenuItem icon={<SettingsIcon />} onClick={onOpen}>
             {t('editor.graph.menu.editorSettingsItem.label')}
           </MenuItem>

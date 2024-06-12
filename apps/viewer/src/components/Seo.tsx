@@ -41,7 +41,8 @@ export const SEO = ({
         name="description"
         content={
           description ??
-          'Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form.'
+          // 'Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form.'
+          'Fale com os seus clientes como eles quiserem! O Futuro do Atendimento já é presente!'
         }
       />
 
@@ -53,7 +54,8 @@ export const SEO = ({
         property="og:description"
         content={
           description ??
-          'Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form.'
+          // 'Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form.'
+          'Fale com os seus clientes como eles quiserem! O Futuro do Atendimento já é presente!'
         }
       />
       <meta
@@ -72,7 +74,8 @@ export const SEO = ({
         property="twitter:description"
         content={
           description ??
-          'Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form.'
+          // 'Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form.'
+          'Fale com os seus clientes como eles quiserem! O Futuro do Atendimento já é presente!'
         }
       />
       <meta

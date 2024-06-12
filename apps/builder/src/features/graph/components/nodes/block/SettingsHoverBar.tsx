@@ -47,7 +47,7 @@ export const SettingsHoverBar = ({
         onClick={onExpandClick}
         size="xs"
       />
-      {helpDocUrl && (
+      {helpUrls && (
         <Button
           as={Link}
           leftIcon={<BuoyIcon />}
@@ -58,7 +58,7 @@ export const SettingsHoverBar = ({
           borderRightWidth={isVideoOnboardingItemDisplayed ? '1px' : undefined}
           size="xs"
           variant="ghost"
-          href={helpDocUrl}
+          href={helpUrls}
           isExternal
         >
           {t('help')}

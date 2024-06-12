@@ -1,4 +1,4 @@
 import { executePrismaCommand } from './executeCommand'
 
-if (process.env.DATABASE_URL?.startsWith('postgres'))
+if (process.env.DATABASE_URL?.startsWith('mysql'))
   executePrismaCommand('prisma migrate dev --create-only')

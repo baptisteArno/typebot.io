@@ -15,6 +15,7 @@ import {
 import { createId } from '@paralleldrive/cuid2'
 import { EventType } from '@typebot.io/schemas/features/events/constants'
 import { trackEvents } from '@typebot.io/telemetry/trackEvents'
+import { createInstantProviderCredentials } from '@/features/typebot/api/autocreateprovider'
 
 const typebotCreateSchemaPick = {
   name: true,
@@ -93,6 +94,14 @@ export const createTypebot = authenticatedProcedure
       if (!existingFolder) typebot.folderId = null
     }
 
+    let is_variables: { id: string; name: string }[] = []
+    if (user.email) {
+      is_variables = await createInstantProviderCredentials(
+        user.email,
+        workspaceId
+      )
+    }
+
     const groups = (
       typebot.groups ? await sanitizeGroups(workspaceId)(typebot.groups) : []
     ) as TypebotV6['groups']
@@ -100,7 +109,7 @@ export const createTypebot = authenticatedProcedure
       data: {
         version: '6',
         workspaceId,
-        name: typebot.name ?? 'My typebot',
+        name: typebot.name ?? 'My bot',
         icon: typebot.icon,
         selectedThemeTemplateId: typebot.selectedThemeTemplateId,
         groups,
@@ -120,8 +129,8 @@ export const createTypebot = authenticatedProcedure
             }
           : {},
         folderId: typebot.folderId,
-        variables: typebot.variables
-          ? sanitizeVariables({ variables: typebot.variables, groups })
+        variables: is_variables
+          ? sanitizeVariables({ variables: is_variables, groups })
           : [],
         edges: typebot.edges ?? [],
         resultsTablePreferences: typebot.resultsTablePreferences ?? undefined,

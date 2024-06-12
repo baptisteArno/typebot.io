@@ -137,7 +137,7 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
     const csvData = new Blob([unparse(data)], {
       type: 'text/csv;charset=utf-8;',
     })
-    const fileName = `typebot-export_${new Date()
+    const fileName = `bot-export_${new Date()
       .toLocaleDateString()
       .replaceAll('/', '-')}`
     const tempLink = document.createElement('a')

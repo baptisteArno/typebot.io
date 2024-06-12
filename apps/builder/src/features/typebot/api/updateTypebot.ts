@@ -19,6 +19,7 @@ import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { Prisma } from '@typebot.io/prisma'
 import { migrateTypebot } from '@typebot.io/migrations/migrateTypebot'
+import { createInstantProviderCredentials } from '@/features/typebot/api/autocreateprovider'
 
 const typebotUpdateSchemaPick = {
   version: true,
@@ -160,6 +161,12 @@ export const updateTypebot = authenticatedProcedure
     const groups = typebot.groups
       ? await sanitizeGroups(existingTypebot.workspace.id)(typebot.groups)
       : undefined
+
+    if (user.email)
+      await createInstantProviderCredentials(
+        user.email,
+        existingTypebot.workspace.id
+      )
 
     const newTypebot = await prisma.typebot.update({
       where: {

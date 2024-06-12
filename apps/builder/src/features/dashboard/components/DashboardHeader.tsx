@@ -28,6 +28,7 @@ export const DashboardHeader = () => {
         h="16"
         maxW="1000px"
         flex="1"
+        hidden
       >
         <Link href="/typebots" data-testid="typebot-logo">
           <EmojiOrImageIcon

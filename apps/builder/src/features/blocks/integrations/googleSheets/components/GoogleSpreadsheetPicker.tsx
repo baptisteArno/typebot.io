@@ -71,14 +71,21 @@ export const GoogleSpreadsheetPicker = ({
     if (!data) return
     if (!isPickerInitialized) throw new Error('Google Picker not inited')
 
-    const picker = new window.google.picker.PickerBuilder()
-      .addView(window.google.picker.ViewId.SPREADSHEETS)
-      .setOAuthToken(data.accessToken)
-      .setDeveloperKey(env.NEXT_PUBLIC_GOOGLE_API_KEY)
-      .setCallback(pickerCallback)
-      .build()
+    try {
+      // Your selected code goes here
+      const picker = new window.google.picker.PickerBuilder()
+        .addView(window.google.picker.ViewId.SPREADSHEETS)
+        .setOAuthToken(data.accessToken)
+        .setDeveloperKey(env.NEXT_PUBLIC_GOOGLE_API_KEY)
+        .setCallback(pickerCallback)
+        .setOrigin(env.NEXT_PUBLIC_INSTALLATION_URL)
+        .build()
 
-    picker.setVisible(true)
+      picker.setVisible(true)
+    } catch (error) {
+      const errorMessage = (error as Error).message
+      alert(errorMessage)
+    }
   }
 
   const pickerCallback = (data: { action: string; docs: { id: string }[] }) => {

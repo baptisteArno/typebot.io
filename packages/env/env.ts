@@ -113,6 +113,7 @@ const baseEnv = {
         .min(1)
         .transform((val) => val.split(','))
     ),
+    NEXT_PUBLIC_INSTALLATION_URL: z.string().url().optional(),
     NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID: z.string().min(1).optional(),
     NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE: z.coerce.number().optional(),
     NEXT_PUBLIC_CHAT_API_URL: z.string().url().optional(),
@@ -133,6 +134,9 @@ const baseEnv = {
   runtimeEnv: {
     NEXT_PUBLIC_E2E_TEST: getRuntimeVariable('NEXT_PUBLIC_E2E_TEST'),
     NEXT_PUBLIC_VIEWER_URL: getRuntimeVariable('NEXT_PUBLIC_VIEWER_URL'),
+    NEXT_PUBLIC_INSTALLATION_URL: getRuntimeVariable(
+      'NEXT_PUBLIC_INSTALLATION_URL'
+    ),
     NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID: getRuntimeVariable(
       'NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID'
     ),

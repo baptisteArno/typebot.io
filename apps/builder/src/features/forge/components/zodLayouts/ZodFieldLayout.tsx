@@ -17,6 +17,8 @@ import {
   FormLabel,
   Stack,
   Text,
+  FormHelperText,
+  FormControl,
 } from '@chakra-ui/react'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { DropdownList } from '@/components/DropdownList'
@@ -317,7 +319,14 @@ const ZodArrayContent = ({
   if (type === 'ZodString' || type === 'ZodNumber' || type === 'ZodEnum')
     return (
       <Stack spacing={0}>
-        {layout?.label && <FormLabel>{layout.label}</FormLabel>}
+        {layout?.label && (
+          <FormControl>
+            <FormLabel>{layout.label}</FormLabel>
+            {layout.helperText && (
+              <FormHelperText mt="0">{layout.helperText}</FormHelperText>
+            )}
+          </FormControl>
+        )}
         <Stack p="4" rounded="md" flex="1" borderWidth="1px">
           <PrimitiveList
             onItemsChange={(items) => {

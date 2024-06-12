@@ -42,7 +42,7 @@ if (env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET)
     })
   )
 
-if (env.NEXT_PUBLIC_SMTP_FROM && !env.SMTP_AUTH_DISABLED)
+if (env.NEXT_PUBLIC_SMTP_FROM && !env.SMTP_AUTH_DISABLED) {
   providers.push(
     EmailProvider({
       server: {
@@ -61,6 +61,22 @@ if (env.NEXT_PUBLIC_SMTP_FROM && !env.SMTP_AUTH_DISABLED)
       sendVerificationRequest,
     })
   )
+} else {
+  providers.push(
+    EmailProvider({
+      server: {
+        host: '',
+        port: 25,
+        auth: {
+          user: '',
+          pass: '',
+        },
+      },
+      from: '',
+      sendVerificationRequest,
+    })
+  )
+}
 
 if (env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET)
   providers.push(
