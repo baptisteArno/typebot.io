@@ -2,8 +2,10 @@ import { createAction, option } from '@typebot.io/forge'
 import { isDefined } from '@typebot.io/lib'
 import { baseOptions } from '../baseOptions'
 import { defaultCortexOptions } from '../constants'
+import { auth } from '../auth'
 
 export const intent = createAction({
+  auth,
   name: 'Detectar Intenção',
   baseOptions,
   options: option.object({

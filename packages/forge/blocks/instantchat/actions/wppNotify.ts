@@ -4,6 +4,7 @@ import { fetchQueues } from '../fetchers/fetchQueues'
 import { fetchTemplates } from '../fetchers/fetchTemplates'
 import { fetchSenders } from '../fetchers/fetchSenders'
 import { fetchUserEmails } from '../fetchers/fetchUserEmails'
+import { auth } from '../auth'
 
 const orderTplParams = function (variables: VariableStore) {
   let params: string[] = []
@@ -37,6 +38,7 @@ export const getToken = () => sessionStorage.getItem(KWIKAPI_TOKEN)
 export const getAdminToken = () => sessionStorage.getItem(KWIKAPI_ADMIN_TOKEN)
 
 export const wppNotify = createAction({
+  auth,
   name: 'WhatsApp Notify',
   options: option.object({
     from: option.string.layout({

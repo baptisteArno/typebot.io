@@ -2,8 +2,10 @@ import { createAction, option } from '@typebot.io/forge'
 import { isDefined } from '@typebot.io/lib'
 import { baseOptions } from '../baseOptions'
 import { defaultCortexOptions } from '../constants'
+import { auth } from '../auth'
 
 export const cortex = createAction({
+  auth,
   name: 'Cortex',
   baseOptions,
   options: option.object({
@@ -41,7 +43,7 @@ export const cortex = createAction({
     responseMapping ? [responseMapping] : [],
   run: {
     server: async ({ credentials, options, variables }) => {
-      let { cortexToken, baseUrl, cortexUrl } = credentials
+      let { cortexToken, baseUrl, cortexUrl } = options
       const { knowledgeBase, cortexUser } = options
       const initialMessage = options.initialMessage
         ? options.initialMessage
@@ -124,7 +126,6 @@ export const cortex = createAction({
     web: {
       displayEmbedBubble: {
         parseUrl: ({}) => '',
-        maxBubbleWidth: 780,
         waitForEvent: {
           getSaveVariableId: ({ responseMapping }) => responseMapping,
           parseFunction: () => {
@@ -233,7 +234,7 @@ export const cortex = createAction({
       id: 'fetchKBs',
       dependencies: ['cortexToken', 'cortexUrl', 'cortexAccountID'],
       fetch: async ({ credentials, options }) => {
-        let { cortexAccountID, cortexToken, cortexUrl } = credentials
+        let { cortexAccountID, cortexToken, cortexUrl } = options
         if (cortexUrl && cortexToken && cortexAccountID) {
           const queryParams = {
             limit: '20',
@@ -281,7 +282,7 @@ export const cortex = createAction({
       id: 'fetchCortexUsers',
       dependencies: ['cortexToken', 'cortexUrl', 'cortexAccountID'],
       fetch: async ({ credentials, options }) => {
-        let { cortexAccountID, cortexToken, cortexUrl } = credentials
+        let { cortexAccountID, cortexToken, cortexUrl } = options
         if (cortexUrl && cortexToken && cortexAccountID) {
           const queryParams = {
             limit: '20',

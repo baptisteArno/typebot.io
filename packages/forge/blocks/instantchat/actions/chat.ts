@@ -1,8 +1,10 @@
 import { createAction, option } from '@typebot.io/forge'
 import { isDefined } from '@typebot.io/lib'
 import { baseOptions } from '../baseOptions'
+import { auth } from '../auth'
 
 export const chat = createAction({
+  auth,
   name: 'Infos',
   baseOptions,
   options: option.object({

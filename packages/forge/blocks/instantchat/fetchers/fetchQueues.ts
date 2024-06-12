@@ -9,7 +9,7 @@ export const fetchQueues: FetcherDefinition<AuthDefinition, any> = {
   id: 'fetchQueues',
   dependencies: ['baseUrl', 'accountcode', 'wsKey'],
   fetch: async ({ credentials, options }) => {
-    const { baseUrl, accountcode, wsKey } = credentials
+    const { baseUrl, accountcode, wsKey } = options
 
     if (baseUrl && accountcode && wsKey) {
       const body = {

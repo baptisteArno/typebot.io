@@ -28,7 +28,7 @@ export const SettingsHoverBar = ({
   onVideoOnboardingClick,
 }: Props) => {
   const { t } = useTranslate()
-  const helpDocUrl = getHelpDocUrl(blockType, blockDef)
+  const helpUrls = getHelpDocUrl(blockType, blockDef)
   return (
     <HStack
       rounded="md"

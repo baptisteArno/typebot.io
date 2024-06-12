@@ -367,9 +367,6 @@ importers:
       '@types/tinycolor2':
         specifier: 1.4.3
         version: 1.4.3
-      dotenv:
-        specifier: 16.4.5
-        version: 16.4.5
       dotenv-cli:
         specifier: 7.4.1
         version: 7.4.1

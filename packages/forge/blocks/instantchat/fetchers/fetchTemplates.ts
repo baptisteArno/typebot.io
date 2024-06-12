@@ -4,7 +4,7 @@ export const fetchTemplates: FetcherDefinition<AuthDefinition, any> = {
   id: 'fetchTemplates',
   dependencies: ['baseUrl', 'kwikToken'],
   fetch: async ({ credentials, options }) => {
-    const { baseUrl, kwikToken } = credentials
+    const { baseUrl, kwikToken } = options
     const apiUrl = `${baseUrl}/api/api/public/v1/templates/`
     const apiResponse = await fetch(apiUrl, {
       method: 'GET',
