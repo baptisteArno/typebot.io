@@ -45,7 +45,7 @@ export const StreamingBubble = (props: Props) => {
   })
 
   return (
-    <div class="flex flex-col animate-fade-in">
+    <div class="flex flex-col animate-fade-in typebot-streaming-container">
       <div class="flex w-full items-center">
         <div class="flex relative items-start typebot-host-bubble max-w-full">
           <div

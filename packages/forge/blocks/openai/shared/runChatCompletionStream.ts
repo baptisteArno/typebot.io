@@ -75,7 +75,7 @@ export const runChatCompletionStream = async ({
           continue
         }
 
-        const { output } = await executeFunction({
+        const { output, newVariables } = await executeFunction({
           variables: variables.list(),
           args:
             typeof toolCall.func.arguments === 'string'
@@ -84,8 +84,7 @@ export const runChatCompletionStream = async ({
           body: toolDefinition.code,
         })
 
-        // TO-DO: enable once we're out of edge runtime.
-        // newVariables?.forEach((v) => variables.set(v.id, v.value))
+        newVariables?.forEach((v) => variables.set(v.id, v.value))
 
         const newMessages = appendToolCallMessage({
           tool_call_id: toolCall.id,

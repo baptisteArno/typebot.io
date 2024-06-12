@@ -591,10 +591,26 @@
     }
   ],
   "variables": [
-    { "id": "vgl2m65vej3cjwqvkawnpih2l", "name": "Name" },
-    { "id": "vhl1s7qoksnw7r8b1soocxwsd", "name": "Pronoun" },
-    { "id": "vq61f8ykwadq1pj8389qf9h91", "name": "Estimated price" },
-    { "id": "vzhkagzjqqa0amfc78jekl2gz", "name": "Email" }
+    {
+      "id": "vgl2m65vej3cjwqvkawnpih2l",
+      "name": "Name",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vhl1s7qoksnw7r8b1soocxwsd",
+      "name": "Pronoun",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vq61f8ykwadq1pj8389qf9h91",
+      "name": "Estimated price",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vzhkagzjqqa0amfc78jekl2gz",
+      "name": "Email",
+      "isSessionVariable": true
+    }
   ],
   "theme": {},
   "selectedThemeTemplateId": null,

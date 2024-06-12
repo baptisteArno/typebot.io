@@ -2,6 +2,7 @@ import { options as createChatCompletionOption } from '../actions/createChatComp
 import { VariableStore } from '@typebot.io/forge'
 import { isDefined, isNotEmpty } from '@typebot.io/lib'
 import { z } from '@typebot.io/forge/zod'
+import { CoreMessage } from 'ai'
 
 export const parseMessages = ({
   options: { messages },
@@ -11,7 +12,7 @@ export const parseMessages = ({
   variables: VariableStore
 }) =>
   messages
-    ?.flatMap((message) => {
+    ?.flatMap<CoreMessage | undefined>((message) => {
       if (!message.role) return
 
       if (message.role === 'Dialogue') {

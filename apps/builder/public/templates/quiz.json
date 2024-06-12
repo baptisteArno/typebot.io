@@ -738,7 +738,13 @@
       "to": { "groupId": "cl1r09bc6000h2e6dqml18p4p" }
     }
   ],
-  "variables": [{ "id": "vcl1r0bxdj000z2e6d65u7n41b", "name": "Score" }],
+  "variables": [
+    {
+      "id": "vcl1r0bxdj000z2e6d65u7n41b",
+      "name": "Score",
+      "isSessionVariable": true
+    }
+  ],
   "theme": {},
   "selectedThemeTemplateId": null,
   "settings": { "general": {} },

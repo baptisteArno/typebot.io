@@ -1,9 +1,10 @@
 import { z } from '../zod'
 import { answerInputSchema, answerSchema } from './answer'
-import { variableWithValueSchema } from './typebot/variable'
+import { listVariableValue, variableWithValueSchema } from './typebot/variable'
 import {
   Result as ResultPrisma,
   Log as LogPrisma,
+  SetVariableHistoryItem as SetVariableHistoryItemPrisma,
   VisitedEdge,
 } from '@typebot.io/prisma'
 import { InputBlockType } from './blocks/inputs/constants'
@@ -16,6 +17,7 @@ export const resultSchema = z.object({
   isCompleted: z.boolean(),
   hasStarted: z.boolean().nullable(),
   isArchived: z.boolean().nullable(),
+  lastChatSessionId: z.string().nullable(),
 }) satisfies z.ZodType<ResultPrisma>
 
 export const resultWithAnswersSchema = resultSchema.merge(
@@ -78,3 +80,14 @@ export type CellValueType = { element?: JSX.Element; plainText: string }
 export type TableData = {
   id: Pick<CellValueType, 'plainText'>
 } & Record<string, CellValueType>
+
+export const setVariableHistoryItemSchema = z.object({
+  resultId: z.string(),
+  index: z.number(),
+  blockId: z.string(),
+  variableId: z.string(),
+  value: z.string().or(listVariableValue).nullable(),
+}) satisfies z.ZodType<SetVariableHistoryItemPrisma>
+export type SetVariableHistoryItem = z.infer<
+  typeof setVariableHistoryItemSchema
+>

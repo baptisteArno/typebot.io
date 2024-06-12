@@ -5,7 +5,7 @@ import {
   PlusIcon,
   LogOutIcon,
 } from '@/components/icons'
-import { PlanTag } from '@/features/billing/components/PlanTag'
+// import { PlanTag } from '@/features/billing/components/PlanTag'
 import { trpc } from '@/lib/trpc'
 import { useTranslate } from '@tolgee/react'
 import {
@@ -46,7 +46,7 @@ export const WorkspaceDropdown = ({
               <Text noOfLines={1} maxW="200px">
                 {currentWorkspace.name}
               </Text>
-              <PlanTag plan={currentWorkspace.plan} />
+              {/* <PlanTag plan={currentWorkspace.plan} /> */}
             </>
           )}
           <ChevronLeftIcon transform="rotate(-90deg)" />
@@ -67,7 +67,7 @@ export const WorkspaceDropdown = ({
                   defaultIcon={HardDriveIcon}
                 />
                 <Text>{workspace.name}</Text>
-                <PlanTag plan={workspace.plan} />
+                {/* <PlanTag plan={workspace.plan} /> */}
               </HStack>
             </MenuItem>
           ))}

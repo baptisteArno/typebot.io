@@ -1,10 +1,8 @@
 import { router } from '@/helpers/server/trpc'
-import { getTotalAnswers } from './getTotalAnswers'
-import { getTotalVisitedEdges } from './getTotalVisitedEdges'
 import { getStats } from './getStats'
+import { getInDepthAnalyticsData } from './getInDepthAnalyticsData'
 
 export const analyticsRouter = router({
-  getTotalAnswers,
-  getTotalVisitedEdges,
+  getInDepthAnalyticsData,
   getStats,
 })

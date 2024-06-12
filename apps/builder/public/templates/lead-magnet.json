@@ -470,9 +470,21 @@
     }
   ],
   "variables": [
-    { "id": "vyu4paeim4jcjgmxr26bdk286", "name": "Name" },
-    { "id": "vf49immob0ih3kxn5b0nraqkq", "name": "Goal" },
-    { "id": "vrhd0bug6b6dzgijevfoonvo2", "name": "Email" }
+    {
+      "id": "vyu4paeim4jcjgmxr26bdk286",
+      "name": "Name",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vf49immob0ih3kxn5b0nraqkq",
+      "name": "Goal",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vrhd0bug6b6dzgijevfoonvo2",
+      "name": "Email",
+      "isSessionVariable": true
+    }
   ],
   "theme": {},
   "selectedThemeTemplateId": null,

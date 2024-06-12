@@ -1,0 +1,28 @@
+{
+  "name": "@typebot.io/billing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Baptiste Arnaud",
+  "dependencies": {
+    "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/schemas": "workspace:*",
+    "stripe": "12.13.0",
+    "@typebot.io/lib": "workspace:*",
+    "@trpc/server": "10.40.0",
+    "@typebot.io/env": "workspace:*",
+    "@typebot.io/telemetry": "workspace:*",
+    "@typebot.io/db-rules": "workspace:*",
+    "next": "14.1.0",
+    "micro": "10.0.1"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
+  }
+}

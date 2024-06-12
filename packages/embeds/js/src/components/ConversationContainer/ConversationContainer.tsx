@@ -354,11 +354,9 @@ export const ConversationContainer = (props: Props) => {
   )
 }
 
-const BottomSpacer = () => {
-  return (
-    <div
-      class="w-full flex-shrink-0"
-      style={{ height: bottomSpacerHeight + 'px' }}
-    />
-  )
-}
+const BottomSpacer = () => (
+  <div
+    class="w-full flex-shrink-0 typebot-bottom-spacer"
+    style={{ height: bottomSpacerHeight + 'px' }}
+  />
+)

@@ -1,7 +1,7 @@
 import { safeStringify } from '@typebot.io/lib/safeStringify'
 import { isDefined, isNotDefined } from '@typebot.io/lib/utils'
-import { parseGuessedValueType } from './parseGuessedValueType'
 import { Variable, VariableWithValue } from './types'
+import { createCodeRunner } from './codeRunners'
 
 export type ParseVariablesOptions = {
   fieldToParse?: 'value' | 'id'
@@ -72,12 +72,11 @@ const evaluateInlineCode = (
   code: string,
   { variables }: { variables: Variable[] }
 ) => {
-  const evaluating = parseVariables(variables, { fieldToParse: 'id' })(
-    code.includes('return ') ? code : `return ${code}`
-  )
   try {
-    const func = Function(...variables.map((v) => v.id), evaluating)
-    return func(...variables.map((v) => parseGuessedValueType(v.value)))
+    const body = parseVariables(variables, { fieldToParse: 'id' })(code)
+    return createCodeRunner({ variables })(
+      body.includes('return ') ? body : `return ${body}`
+    )
   } catch (err) {
     return parseVariables(variables)(code)
   }
@@ -88,6 +87,7 @@ type VariableToParseInformation = {
   endIndex: number
   textToReplace: string
   value: string
+  variableId?: string
 }
 
 export const getVariablesToParseInfoInText = (
@@ -139,6 +139,7 @@ export const getVariablesToParseInfoInText = (
             ? variable?.value[variable?.value.length - 1]
             : variable?.value
         ) ?? '',
+      variableId: variable?.id,
     })
   })
   return variablesToParseInfo.sort((a, b) => a.startIndex - b.startIndex)

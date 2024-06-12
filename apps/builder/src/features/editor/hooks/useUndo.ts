@@ -110,10 +110,14 @@ export const useUndo = <T extends { updatedAt: Date }>(
 
   const setUpdateDate = useCallback(
     (updatedAt: Date) => {
-      set((current) => ({
-        ...current,
-        updatedAt,
-      }))
+      set((current) =>
+        current
+          ? {
+              ...current,
+              updatedAt,
+            }
+          : current
+      )
     },
     [set]
   )

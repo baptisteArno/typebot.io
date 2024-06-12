@@ -18,7 +18,7 @@ import {
   TotalVisitedEdges,
 } from '@typebot.io/schemas/features/analytics'
 import { computeTotalUsersAtBlock } from '@/features/analytics/helpers/computeTotalUsersAtBlock'
-import { byId } from '@typebot.io/lib'
+import { byId, isNotDefined } from '@typebot.io/lib'
 import { blockHasItems } from '@typebot.io/schemas/helpers'
 import { groupWidth } from '../../constants'
 import { getTotalAnswersAtBlock } from '@/features/analytics/helpers/getTotalAnswersAtBlock'
@@ -130,7 +130,7 @@ export const DropOffEdge = ({
     return lastBlock?.id === currentBlockId
   }, [publishedTypebot, currentBlockId])
 
-  if (!endpointCoordinates) return null
+  if (!endpointCoordinates || isNotDefined(dropOffRate)) return null
 
   return (
     <>

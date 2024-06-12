@@ -9,7 +9,7 @@ import {
   Flex,
 } from '@chakra-ui/react'
 import {
-  CreditCardIcon,
+  // CreditCardIcon,
   HardDriveIcon,
   SettingsIcon,
   UsersIcon,
@@ -131,7 +131,7 @@ export const WorkspaceSettingsModal = ({
                   {t('workspace.settings.modal.menu.members.label')}
                 </Button>
               )}
-              {canEditWorkspace && (
+              {/* {canEditWorkspace && (
                 <Button
                   variant={selectedTab === 'billing' ? 'solid' : 'ghost'}
                   onClick={() => setSelectedTab('billing')}
@@ -143,7 +143,7 @@ export const WorkspaceSettingsModal = ({
                 >
                   {t('workspace.settings.modal.menu.billingAndUsage.label')}
                 </Button>
-              )}
+              )} */}
             </Stack>
           </Stack>
 

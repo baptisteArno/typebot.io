@@ -325,8 +325,16 @@
     }
   ],
   "variables": [
-    { "id": "t2k6cj3uYfNdJX13APA4b9", "name": "Email" },
-    { "id": "v51BcuecnB6kRU1tsttaGyR", "name": "Content" }
+    {
+      "id": "t2k6cj3uYfNdJX13APA4b9",
+      "name": "Email",
+      "isSessionVariable": true
+    },
+    {
+      "id": "v51BcuecnB6kRU1tsttaGyR",
+      "name": "Content",
+      "isSessionVariable": true
+    }
   ],
   "theme": {},
   "selectedThemeTemplateId": null,

@@ -91,7 +91,7 @@ export const UserPreferencesForm = () => {
             ))}
           </MenuList>
         </Menu>
-        {currentLanguage !== 'en' && (
+        {currentLanguage !== 'pt-BR' && (
           <MoreInfoTooltip>
             {t('account.preferences.language.tooltip')}
           </MoreInfoTooltip>

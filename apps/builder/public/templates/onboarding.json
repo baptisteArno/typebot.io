@@ -321,10 +321,26 @@
     }
   ],
   "variables": [
-    { "id": "cl126f4hf000i2e6d8zvzc3t1", "name": "Name" },
-    { "id": "cl126jqww000w2e6dq9yv4ifq", "name": "Company" },
-    { "id": "cl126mo3t001b2e6dvyi16bkd", "name": "Categories" },
-    { "id": "cl126q38p001q2e6d0hj23f6b", "name": "Other categories" }
+    {
+      "id": "cl126f4hf000i2e6d8zvzc3t1",
+      "name": "Name",
+      "isSessionVariable": true
+    },
+    {
+      "id": "cl126jqww000w2e6dq9yv4ifq",
+      "name": "Company",
+      "isSessionVariable": true
+    },
+    {
+      "id": "cl126mo3t001b2e6dvyi16bkd",
+      "name": "Categories",
+      "isSessionVariable": true
+    },
+    {
+      "id": "cl126q38p001q2e6d0hj23f6b",
+      "name": "Other categories",
+      "isSessionVariable": true
+    }
   ],
   "theme": {},
   "selectedThemeTemplateId": null,

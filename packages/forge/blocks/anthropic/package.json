@@ -5,7 +5,7 @@
   "main": "index.ts",
   "keywords": [],
   "author": "Enchatted P.C.",
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
@@ -15,6 +15,6 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "0.20.6",
-    "ai": "3.0.31"
+    "ai": "3.1.12"
   }
 }

@@ -20,7 +20,7 @@ export const addEdgeToTypebot = (
 })
 
 export const createPortalEdge = ({ to }: Pick<Edge, 'to'>) => ({
-  id: createId(),
+  id: 'virtual-' + createId(),
   from: { blockId: '', groupId: '' },
   to,
 })

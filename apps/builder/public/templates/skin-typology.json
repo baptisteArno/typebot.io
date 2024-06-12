@@ -1,0 +1,1486 @@
+{
+  "version": "6",
+  "id": "clwhwkq7w0003fst2e28qqj62",
+  "name": "Sking Typology",
+  "events": [
+    {
+      "id": "zi8w5km7bu2ngms13zrv7xak",
+      "outgoingEdgeId": "kdyyyj6hynn94ldk3wxxlzoy",
+      "graphCoordinates": { "x": -576.98, "y": 1.75 },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "f929zr1jbr52rzp28v3susa3",
+      "title": "1",
+      "graphCoordinates": { "x": -287.05, "y": -6.77 },
+      "blocks": [
+        {
+          "id": "k6gpdpfpmfjt430h0a7wa96t",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "What’s your top skin concern?" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "auaiu25dafv33l0ybyydcfhi",
+          "type": "Typebot link",
+          "options": {
+            "typebotId": "current",
+            "groupId": "m7v9f7qpr94kgonkcidmc7c1"
+          }
+        },
+        {
+          "id": "zix9zhcgb3km57n5q36zl0ri",
+          "outgoingEdgeId": "ytel1g0jmiasr5o5ouvnadm1",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vtyvtib894a8eeqgr21yb17tv",
+            "type": "Append value(s)",
+            "item": "{{Selected skin problem}}"
+          }
+        }
+      ]
+    },
+    {
+      "id": "m7v9f7qpr94kgonkcidmc7c1",
+      "title": "Skin problem",
+      "graphCoordinates": { "x": -845.27, "y": 1244.58 },
+      "blocks": [
+        {
+          "id": "o9twf6rt9lvgv6vzue8wt8b3",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "muzbinpvhlwxsnhka6y14cyk",
+              "outgoingEdgeId": "b2lis4t1syk9qd30t3yb6e9a",
+              "content": "Pimples",
+              "displayCondition": {
+                "isEnabled": true,
+                "condition": {
+                  "logicalOperator": "AND",
+                  "comparisons": [
+                    {
+                      "id": "otxfdcr5stoaf8ojhmy1v744",
+                      "variableId": "vtyvtib894a8eeqgr21yb17tv",
+                      "comparisonOperator": "Does not contain",
+                      "value": "Pimples"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "fotnwnbfwz1d33w0vjqypu11",
+              "content": "Blackheads",
+              "displayCondition": {
+                "isEnabled": true,
+                "condition": {
+                  "logicalOperator": "AND",
+                  "comparisons": [
+                    {
+                      "id": "b7gunmey81lb6z8zxej7jrom",
+                      "variableId": "vtyvtib894a8eeqgr21yb17tv",
+                      "comparisonOperator": "Does not contain",
+                      "value": "Blackheads"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "i7zt5rhiv17xtosui349mdgs",
+              "content": "Visible pores",
+              "displayCondition": {
+                "isEnabled": true,
+                "condition": {
+                  "logicalOperator": "AND",
+                  "comparisons": [
+                    {
+                      "id": "ud4brp55zctwvmcd5go5hms6",
+                      "variableId": "vtyvtib894a8eeqgr21yb17tv",
+                      "comparisonOperator": "Does not contain",
+                      "value": "Visible pores"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "r5s0sazlv4qzfeq7nvsxo0mb",
+              "content": "Shiny areas",
+              "displayCondition": {
+                "isEnabled": true,
+                "condition": {
+                  "logicalOperator": "AND",
+                  "comparisons": [
+                    {
+                      "id": "ke2ofnjduuwl4cq3ww377rcg",
+                      "variableId": "vtyvtib894a8eeqgr21yb17tv",
+                      "comparisonOperator": "Does not contain",
+                      "value": "Shiny areas"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "szqscovkv1ddnpt8mkt0vvxt",
+              "outgoingEdgeId": "e2ol7wfl5ve73b1rdhhzqfk4",
+              "content": "Hyperpigmentation (dark spots/marks)",
+              "displayCondition": {
+                "isEnabled": true,
+                "condition": {
+                  "logicalOperator": "AND",
+                  "comparisons": [
+                    {
+                      "id": "bcx0eywmzthypk3et7vmikec",
+                      "variableId": "vtyvtib894a8eeqgr21yb17tv",
+                      "comparisonOperator": "Does not contain",
+                      "value": "Hyperpigmentation (dark spots/marks)"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "i0rzns61pszrww0y44isqh5v",
+              "outgoingEdgeId": "hneunup1qv7md47yoh7544cj",
+              "content": "Wrinkles (prevention or treatment)",
+              "displayCondition": {
+                "isEnabled": true,
+                "condition": {
+                  "logicalOperator": "AND",
+                  "comparisons": [
+                    {
+                      "id": "fki7wy53v39t86dg0gsqqucu",
+                      "variableId": "vtyvtib894a8eeqgr21yb17tv",
+                      "comparisonOperator": "Does not contain",
+                      "value": "Wrinkles (prevention or treatment)"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "u226tpojjg7p16xz3mrxf9x0",
+              "outgoingEdgeId": "agd81aldnxptroxm59r6bnmt",
+              "content": "Redness",
+              "displayCondition": {
+                "isEnabled": true,
+                "condition": {
+                  "logicalOperator": "AND",
+                  "comparisons": [
+                    {
+                      "id": "mvpyyl9am8xrrkjyd5hynblx",
+                      "variableId": "vtyvtib894a8eeqgr21yb17tv",
+                      "comparisonOperator": "Does not contain",
+                      "value": "Redness"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "e8f057alv81bvbnsq7qbvqgc",
+              "outgoingEdgeId": "ei2w9q6ozvi8jm4btm0j9pdo",
+              "content": "Dryness and/or dehydration",
+              "displayCondition": {
+                "isEnabled": true,
+                "condition": {
+                  "logicalOperator": "AND",
+                  "comparisons": [
+                    {
+                      "id": "b9z0ro8qdkshz445s68owvkl",
+                      "variableId": "vtyvtib894a8eeqgr21yb17tv",
+                      "comparisonOperator": "Does not contain",
+                      "value": "Dryness and/or dehydration"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "ccwxganzyrvzlsy67dv3nw1c",
+              "content": "Eye bags/dark circles",
+              "displayCondition": {
+                "isEnabled": true,
+                "condition": {
+                  "logicalOperator": "AND",
+                  "comparisons": [
+                    {
+                      "id": "udl5idehtp1c5motq3pkneta",
+                      "variableId": "vtyvtib894a8eeqgr21yb17tv",
+                      "comparisonOperator": "Does not contain",
+                      "value": "Eye bags/dark circles"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "y9y2zzc68iaxl27si3lumrl6",
+              "outgoingEdgeId": "q4zonpkmvkgebxw6mq9xlj6g",
+              "content": "Dullness",
+              "displayCondition": {
+                "isEnabled": true,
+                "condition": {
+                  "logicalOperator": "AND",
+                  "comparisons": [
+                    {
+                      "id": "qy73cb8aya3dc33zluzx4cbl",
+                      "variableId": "vtyvtib894a8eeqgr21yb17tv",
+                      "comparisonOperator": "Does not contain",
+                      "value": "Dullness"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "ls05hhlv8ijgze1kfbkpi6ug",
+              "content": "I don't have any particular concerns",
+              "displayCondition": {
+                "isEnabled": false,
+                "condition": {
+                  "logicalOperator": "AND",
+                  "comparisons": [
+                    {
+                      "id": "kixcwnztsro4o91sbtdavzff",
+                      "variableId": "vtyvtib894a8eeqgr21yb17tv",
+                      "value": "I don't have any partic"
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "options": { "variableId": "vqvuz8egpkhp3d6y4dquvlomc" }
+        }
+      ]
+    },
+    {
+      "id": "od3pji6ymtdrxllffb5d81wn",
+      "title": "2",
+      "graphCoordinates": { "x": 107.46, "y": -15.58 },
+      "blocks": [
+        {
+          "id": "usa4flws5fa3klgmwsqa4fm7",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Do you have a second concern?" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "as64u7dfdb2a5nvvx66du2z0",
+          "type": "Typebot link",
+          "options": {
+            "typebotId": "current",
+            "groupId": "m7v9f7qpr94kgonkcidmc7c1"
+          }
+        },
+        {
+          "id": "hkhswiz5jz67hsbee8nyupjo",
+          "outgoingEdgeId": "k9iqgr93gy1j7y7wcau0796d",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vtyvtib894a8eeqgr21yb17tv",
+            "type": "Append value(s)",
+            "item": "{{Selected skin problem}}"
+          }
+        }
+      ]
+    },
+    {
+      "id": "kt05yubhbv5f2sh2xe2ps916",
+      "title": "Group #4",
+      "graphCoordinates": { "x": -224.85, "y": 460.3 },
+      "blocks": [
+        {
+          "id": "g3lu22vq7pxex5j44nc5vnwg",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vm8iu1iexkbk01ptkqnfwdva4",
+            "expressionToEvaluate": "{{Sebum score}} + 1"
+          }
+        },
+        {
+          "id": "qzjhj1a7qb0ses258p15tq2o",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "When do you break out?" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "a0czqnu2wrlsty9isaof3mn3",
+          "outgoingEdgeId": "as0kqkyfgbmb6wbjus0lp0h9",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "nlep75ws189xkac98ym7sqi9",
+              "content": "Every day or most days"
+            },
+            { "id": "a56xhexuvzgh2rj7qg0g2zx2", "content": "Every week" },
+            {
+              "id": "s40qpkdcid728qzi4o70teeb",
+              "content": "During my menstrual cycle"
+            },
+            { "id": "ncd5kjzbqsev653nzkxbb75b", "content": "Occasionally" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ar4itsju3ovwti5k1kpdwt74",
+      "title": "Group #5",
+      "graphCoordinates": { "x": 246.8, "y": 418.48 },
+      "blocks": [
+        {
+          "id": "qychn1d8kprdjp2jglqttsko",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "What kind of blemishes are they?" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "avph27ix78gojvnf670pxvr6",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "krc7t1c11ux52lk7fm9gw1od",
+              "content": "Small red or pink bumps"
+            },
+            {
+              "id": "uf2dm7zi73nx0992xje0iw9p",
+              "content": "Red and inflamed with a whitehead"
+            },
+            {
+              "id": "n2ltb5bb1umw3busctep8776",
+              "content": "Rough, bumpy skin (whiteheads) on the forehead, chin and cheeks"
+            },
+            { "id": "dasjmu5og82zi8ah549byyg6", "content": "I don't know" }
+          ],
+          "options": {
+            "variableId": "vd5zutxjechfh2ihdzsw2rcc3",
+            "isMultipleChoice": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "h9kmezz8xhw7my1serv3tefl",
+      "title": "Group #6",
+      "graphCoordinates": { "x": -173.97, "y": 1124.74 },
+      "blocks": [
+        {
+          "id": "lzm0wj11a5d6ho39nhf1fghv",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Your pigmentation marks occur…" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "zqy1p2pa6cmmj5574axlm605",
+          "outgoingEdgeId": "vix01g2eobwcc805xeesi9yc",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "jkt7vj18r8infhllc788abim",
+              "content": "On areas exposed to the sun"
+            },
+            { "id": "indtjedkbr4dsiynsymm6xsc", "content": "During pregnancy" },
+            {
+              "id": "ihcq3u6hhcva47f45qlavufq",
+              "content": "After taking hormonal contraceptives"
+            },
+            {
+              "id": "ssa3xzeabbsmzcv26vkh10et",
+              "content": "After acne breakouts"
+            },
+            {
+              "id": "e18s16wgx4t8358tq4rjaacs",
+              "content": "After a skin trauma (e.g. scar, burn, damaged skin)"
+            },
+            {
+              "id": "xozv08rwn1d4wbqtxa3ynvau",
+              "content": "I don't know. (Most likely caused by sun exposure)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d3whha2i7oa7yl2g5taztdl6",
+      "title": "Group #7",
+      "graphCoordinates": { "x": 245.63, "y": 1112.45 },
+      "blocks": [
+        {
+          "id": "cu86zbmytiq36lvymnh5lolf",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Where do you have sun spots?" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "tqdnlx1r3gc1rrwimbe9sexw",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "fklzqs3jpu8dp5it0xot8i9r",
+              "content": "I have a few, just on my face"
+            },
+            {
+              "id": "y9v2l0c4j2n00r32om7hf83x",
+              "content": "I have many on my forehead, temples, cheeks and nose"
+            },
+            {
+              "id": "ivlfhoitcbe2gg27ab3pfjsx",
+              "content": "I have them on my face, chest, and the back of my hands"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "b0wfn809ywofapum1xjk15og",
+      "title": "Group #8",
+      "graphCoordinates": { "x": -135.13, "y": 1966.33 },
+      "blocks": [
+        {
+          "id": "karskhl36y3hm3sm4hhyb4u1",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "Tell us about your wrinkles/fine lines." }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "vyby5a9ub4w3ffcic939kll3",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "ju2u3eqjoba95glemoyuct5a",
+              "content": "I have fine lines on my forehead and/or around my eyes"
+            },
+            {
+              "id": "fpd8yaz5z6qzjb5s1uc23qet",
+              "content": "I just have expression lines, when I smile"
+            },
+            {
+              "id": "c9mrly2xy8owl3v4b2yh94hj",
+              "content": "I have static wrinkles even when my face is at rest"
+            },
+            {
+              "id": "s4ogb3nycgkyw4rkwbtnx9m5",
+              "content": "I have deep wrinkles all over the face"
+            },
+            {
+              "id": "y2ppxpnbmf21qa9rh94fsxid",
+              "content": "I don’t have fine lines or wrinkles, but I want to prevent them"
+            }
+          ],
+          "options": { "isMultipleChoice": true }
+        }
+      ]
+    },
+    {
+      "id": "ukh9p9xqcrbvjw9y5dx1ae0e",
+      "title": "Group #9",
+      "graphCoordinates": { "x": -70.79, "y": 2835.6 },
+      "blocks": [
+        {
+          "id": "cmj33qws3awxcvchbp2pimhz",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Could you tell us more about the redness on your skin?"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "uq1gykjk5w2jds9o6y2wpcuw",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "vg6j2x257gxe3e0w2mxvvtes",
+              "content": "My skin looks irritated and feels tight or itchy"
+            },
+            {
+              "id": "nri9tz8v0uyvqqt65ym7zgrj",
+              "content": "I have redness on my cheeks, and it gets worse when it's hot, when I drink alcohol, or when I'm stressed"
+            },
+            {
+              "id": "x2yyqm5m40ypmny91fc9ftoj",
+              "content": "I have red, inflamed spots, as well as redness"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kxp3lgzl3ilatxs7yub8pvpk",
+      "title": "Group #10",
+      "graphCoordinates": { "x": -319.86, "y": 3489.86 },
+      "blocks": [
+        {
+          "id": "jir4lah1bvvzn6z2bg9leo07",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "When does your skin feel uncomfortable?" }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "tugkxhxqs5cyuno64k29mirj",
+          "outgoingEdgeId": "v97pa9h725258bqelwi0gkai",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "q7av1ewiha9a64vruv0vzk28",
+              "content": "After cleansing using a dermatological treatment or when the temperature changes"
+            },
+            {
+              "id": "h2vgep3cc1oitclupkcofwti",
+              "content": "All the time even in the summer"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "j9gcw3ztjmxguvmf1dnxcglf",
+      "title": "Group #11",
+      "graphCoordinates": { "x": 185.52, "y": 3492.18 },
+      "blocks": [
+        {
+          "id": "oal1ubewv5h2199tidypxdi1",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "When your skin is uncomfortable, how does it feel?"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "kr8s93v55d36j1w1bdujixhk",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "f02ntm6dw8c5dnz3alba27aj",
+              "content": "My skin feels tight"
+            },
+            {
+              "id": "fok90m47fj2gizsfq7gkarcz",
+              "content": "My skin feels itchy"
+            },
+            { "id": "qtmxm4xay9ggtftp388qter4", "content": "My skin peels" },
+            {
+              "id": "xfvm0lcmajnk85kxzjjaoj2x",
+              "content": "My skin doesn't feel soft"
+            }
+          ],
+          "options": { "isMultipleChoice": true }
+        }
+      ]
+    },
+    {
+      "id": "sglbdkc4yyr2k6d2jpyifmo5",
+      "title": "Group #12",
+      "graphCoordinates": { "x": -389.81, "y": 4060.6 },
+      "blocks": [
+        {
+          "id": "jzknl780z9uw1duynj9lwrse",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Help us to understand why your skin lacks radiance."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "me39l1ozsnmurf0n98g70mcd",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "sn51zr3rvefzgaaqtcskqt5o",
+              "content": "I smoke and/or I live in a polluted environment"
+            },
+            {
+              "id": "smp4ssk1dbpafret89jr52gu",
+              "content": "The surface of my skin is uneven"
+            },
+            {
+              "id": "c30mu2o31wb4fxy1c2lg4he5",
+              "content": "My skin needs some sunshine"
+            }
+          ],
+          "options": { "isMultipleChoice": true }
+        }
+      ]
+    },
+    {
+      "id": "x5oenwyua4u0mz2hhfiypt7p",
+      "title": "3",
+      "graphCoordinates": { "x": 478.04, "y": -17.21 },
+      "blocks": [
+        {
+          "id": "rg3racl6pvin69iupc2ynfay",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Do you have another concern?" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "iaoru5srzl2qq9u07la8oppi",
+          "type": "Typebot link",
+          "options": {
+            "typebotId": "current",
+            "groupId": "m7v9f7qpr94kgonkcidmc7c1"
+          }
+        },
+        {
+          "id": "q1vcfx4rofsof3uv9m8138uk",
+          "outgoingEdgeId": "qlptft5rpnqxdrl5rn818apo",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vtyvtib894a8eeqgr21yb17tv",
+            "type": "Append value(s)",
+            "item": "{{Selected skin problem}}"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fmjx6wzmn64dn2wi4fmofloi",
+      "title": "Group #14",
+      "graphCoordinates": { "x": 901.5, "y": -38.93 },
+      "blocks": [
+        {
+          "id": "f2yrzqwqr50ytyxo0ix81fvy",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Has a dermatologist diagnosed any of the following skin concerns?"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "qcev9xsh8ucgngc8g04zsktk",
+          "outgoingEdgeId": "g7tf8a5s5qufdgsbj3a896io",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "q7wgxzmlsgsvmggxo1v4f4lu",
+              "content": "Eczema/atopic dermatitis"
+            },
+            { "id": "rublicdb3i6afz4vey2gxvrp", "content": "Psoriasis" },
+            { "id": "dib7mwjl197qrpfxj5yg3jot", "content": "Rosacea" },
+            {
+              "id": "esl7htipishc8d85gvi67jsn",
+              "content": "Seborrheic dermatitis"
+            },
+            { "id": "ybswy2crnxiesdt8s1b3uufm", "content": "No" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lew50rhih9it6fz9u7c0fabi",
+      "title": "Group #15",
+      "graphCoordinates": { "x": 1318.25, "y": -42.99 },
+      "blocks": [
+        {
+          "id": "qpd3pd6dw3brus2dx39i6qrt",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "How do you describe yourself?" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "a3ucpz37jr9af6etzwrgpxwa",
+          "outgoingEdgeId": "ira3wejjdsnzejby5i31zgng",
+          "type": "choice input",
+          "items": [
+            { "id": "t63xhbb613uqvzl81qjkqo76", "content": "A woman" },
+            { "id": "p2zvlph9yysxdalxq3b7tfzn", "content": "A man" },
+            { "id": "brh3p7gj7qxwekc76u0k194o", "content": "Non-binary" },
+            {
+              "id": "ufeb3cencrz0yxh9853reyvx",
+              "content": "I don’t wish to define myself"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ya9rdndrzy273h1zzx2eq82i",
+      "title": "Group #16",
+      "graphCoordinates": { "x": 1696.04, "y": -52.65 },
+      "blocks": [
+        {
+          "id": "gsupz0i4mh0616u04rjj3ls8",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "How does your skin feel throughout the day if you haven't applied any skincare products or makeup?"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "txhrcc5ii8wfidw0lj7hhvcx",
+          "outgoingEdgeId": "jvv84pjq21xnaqzoq1shk4ts",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "vmzalnc9qvfl667lfoxyfp4o",
+              "content": "If I don't apply a mattifying product, my skin is shiny from the middle of the day onwards"
+            },
+            {
+              "id": "b7vequ8pgco2e0rpnxj0sky3",
+              "content": "If I want my skin to feel comfortable, I need to moisturize morning and evening"
+            },
+            {
+              "id": "q8tazj46hwsrcw63kysgh2gt",
+              "content": "I don't have any particular problems (my t-zone is naturally oilier than the rest of my face, that's all)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sdar8z8vwxziddba5p07nprv",
+      "title": "Group #17",
+      "graphCoordinates": { "x": 2035.2, "y": -63.94 },
+      "blocks": [
+        {
+          "id": "vqciagailn22pvgr83l2tu4q",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "What do you see when you look in the mirror?" }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "zse327o8uf7v2vgjefzhmhzw",
+          "outgoingEdgeId": "ewgw4tgd11irl5qr24g6fr58",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "vs9o2fpleeykcxt9gufaive5",
+              "content": "No wrinkles. My skin is supple and firm"
+            },
+            {
+              "id": "him733u0w39bvan7ribgcxiw",
+              "content": "Fine lines on my forehead and/or around my eyes"
+            },
+            {
+              "id": "a55oyxj5crnkuqoo6948ejg8",
+              "content": "Expression lines, when I smile"
+            },
+            {
+              "id": "os3af3kvgkm6ip59iu85hyzv",
+              "content": "Static wrinkles that are visible all the time, even when my face is at rest"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "j47xycbp95hd9wlvfjqlp3dm",
+      "title": "Group #18",
+      "graphCoordinates": { "x": 2413.54, "y": -71.58 },
+      "blocks": [
+        {
+          "id": "ty5muam6nlspc7xulm4crs51",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "How does your skin react to cosmetic products?" }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "r8p3bllvh6902cn9l6wfzjg2",
+          "outgoingEdgeId": "asquip1jyoa7kn34xsb0jrvu",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "riidiklh7td0y881rfxd635j",
+              "content": "I've never had a bad reaction"
+            },
+            {
+              "id": "l9l6wsxrsn2ltq63wwc83zmc",
+              "content": "It gets momentarily red if I use products that are too aggressive for my skin"
+            },
+            {
+              "id": "jnud3df8zn0g75uo42qaokm6",
+              "content": "My skin is very reactive and prone to allergic reactions to cosmetics"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "yly57wl5horq6h46xlz0pdof",
+      "title": "Group #19",
+      "graphCoordinates": { "x": 2771.21, "y": -71.25 },
+      "blocks": [
+        {
+          "id": "ajlhkbgdl8kam2l5gumnndm1",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Do you wear makeup?" }] }
+            ]
+          }
+        },
+        {
+          "id": "czxq9ogv5t309zwvqf06c0lh",
+          "outgoingEdgeId": "ovypkxkt0k8w3b9yo0s0libr",
+          "type": "choice input",
+          "items": [
+            { "id": "ukk542pqy2ltnyi67u94veob", "content": "No, never" },
+            {
+              "id": "a4jpqg1k5pzs4ywgzbfw3x0h",
+              "content": "Rarely, just for special occasions"
+            },
+            {
+              "id": "grv94a64xsc5iwxezi200ljl",
+              "content": "Regularly, several times a week"
+            },
+            { "id": "ywlbkscrzezw5vkk30wogoje", "content": "Every day" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "en5pphruiiau597j614ngg3q",
+      "title": "Group #20",
+      "graphCoordinates": { "x": 3129, "y": -74.37 },
+      "blocks": [
+        {
+          "id": "dsvi5k6iouka67mosjepfa53",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Tell us about where you live." }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "ffo7dzm08uapuawzp1rbe44a",
+          "outgoingEdgeId": "fi56xu9q9iqtz399ahn3j9u1",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "p7u13e8zbrybrs9b3sr7jlwm",
+              "content": "There's a lot of pollution"
+            },
+            {
+              "id": "xl375gwn8kgu6kg7yuyj1qol",
+              "content": "There's some pollution"
+            },
+            {
+              "id": "e7n697c90shslft6qlpqkk3b",
+              "content": "There isn't much pollution"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "y902leuaeotwv8k1i4gnkf4p",
+      "title": "Group #21",
+      "graphCoordinates": { "x": 3484.44, "y": -67.32 },
+      "blocks": [
+        {
+          "id": "y41i08ngcmuu9jy6km8qmkcz",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Do you smoke?" }] }
+            ]
+          }
+        },
+        {
+          "id": "lajq4bpdwcoyjek8hy5o9hhs",
+          "outgoingEdgeId": "gkfa620lz2ejdvn890n3vb5y",
+          "type": "choice input",
+          "items": [
+            { "id": "fqztopzjmce2ohr12xz9gmu3", "content": "No" },
+            { "id": "mcq5lpn493w24q6lcohmc5yr", "content": "Occasionally" },
+            {
+              "id": "n9urk18o0g9j3y6k74wrnhm5",
+              "content": "1 to 10 cigarettes a day"
+            },
+            {
+              "id": "hj4soju8lmrmqnizsvej442z",
+              "content": "10 to 20 cigarettes a day"
+            },
+            {
+              "id": "sfi7a9booyqoi40fi1pdzavt",
+              "content": "More than a pack a day"
+            },
+            {
+              "id": "otve51lvqfrubdbn7ruk3lcn",
+              "content": "I smoke electronic cigarettes"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "yke5fhaejaghtgv3qmyv3h74",
+      "title": "Group #22",
+      "graphCoordinates": { "x": 3841.88, "y": -68.48 },
+      "blocks": [
+        {
+          "id": "us1bb0ah3io3s3kf3ipe71ic",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "Select the skin tone that best represents you:" }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "wmysi2qtw69ggq94fx5qnrog",
+          "outgoingEdgeId": "iuzkts0oxz0q677cwmjwwokm",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "urogsq3r6okpwkn147o4zsjg",
+              "content": "Fair with some freckles. Doesn’t really tan, gets red in the sun"
+            },
+            {
+              "id": "euytvrcv3covqac6c8hlr6qi",
+              "content": "Light with pink or yellow undertones. Tans gradually. Sunburns are common in the beginning of summer"
+            },
+            {
+              "id": "dhinnrwwiokf8myup10vvkco",
+              "content": "Medium with warm or olive undertones. Tans easily but sometimes burns"
+            },
+            {
+              "id": "nulsi1x0g5n86a04mm6h5bsi",
+              "content": "Matte with bronze undertones. Sunburns occasionally"
+            },
+            {
+              "id": "oznwtn9niiayc72jjh4gjgx4",
+              "content": "Brown. Sunburns are very rare. Tans in the sun"
+            },
+            {
+              "id": "pnu9f8osvs3z9my6h4iymk2r",
+              "content": "Dark with cool undertones. Doesn’t sunburn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "x7qlgkrl2rk496lywuyaya6d",
+      "title": "Group #23",
+      "graphCoordinates": { "x": 4217.97, "y": -65.72 },
+      "blocks": [
+        {
+          "id": "qkmmo2ago6qhttf11n64skah",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "How often do you get strong sun exposure?" }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "pujmgbezgnf3xgdmpymhs565",
+          "outgoingEdgeId": "ff5mm3s3w4y19au133ca5d29",
+          "type": "choice input",
+          "items": [
+            { "id": "ab58o8ylnquxr7vaovhhtahr", "content": "Almost never" },
+            {
+              "id": "dnqdhzaozbh2udu0uq82k1py",
+              "content": "One week per year"
+            },
+            {
+              "id": "se6rgn2uixr72ft4y6mfmnzc",
+              "content": "Several weeks per year"
+            },
+            {
+              "id": "sa8q4ohl8rnn7z7ulvnifsd1",
+              "content": "More than a month per year"
+            },
+            {
+              "id": "e0xypcvrzurygxsncii50c2q",
+              "content": "All year round, more or less"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ffle7a76hw8wbfshfikyk21c",
+      "title": "Group #24",
+      "graphCoordinates": { "x": 4571.56, "y": -61.58 },
+      "blocks": [
+        {
+          "id": "t0ts15623sbklxxc6tbh0q84",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "To keep a record of your skin diagnostic result, please provide your e-mail address :"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "xc63yyy5eobay5msj26t4dpe",
+          "outgoingEdgeId": "dwls95sfkvly3ykdsxu835u8",
+          "type": "email input",
+          "options": { "variableId": "vnzqkgmwlwlu7ut6jjelel53w" }
+        }
+      ]
+    },
+    {
+      "id": "h5qb2gmhwqctl155fhfqmu7u",
+      "title": "Group #27",
+      "graphCoordinates": { "x": 4905.35, "y": -60.75 },
+      "blocks": [
+        {
+          "id": "heto2wo9f08d4ypr40hvrfww",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vwgpda1jav43mrn4cx2gxp0ym",
+            "type": "Transcript"
+          }
+        },
+        {
+          "id": "jsm97vs0varhi8mh7knggojd",
+          "type": "openai",
+          "options": {
+            "credentialsId": "clwhwq9sf0005fst2cxft51xa",
+            "action": "Create chat completion",
+            "model": "gpt-4o",
+            "messages": [
+              {
+                "role": "system",
+                "content": "Your job is to provide the skin typology of the user.\n\nYou compute this typology based on 3 metrics and each metric has different levels:\n- Skin aging: A (absent), D (discreet), V (visible), P (pronounced)\n- Oxydation factors: E (exposed), P (protected)\n- Sebum Production: - (low), . (balanced), + (high)\n\nWith these metrics you can categorize the skin.\n\nExamples:\n- \"PP-\" for an aging protected skin with low sebum production\n- \"AE+\" for an exposed non aging skin with lot of sebum production\n\nYou are working for a company called Typology and you are selling skin care products. Your job is to provide the skin typology of the user.\n\nYour answer should be based on the context inside the <context> XML element\n\n<context>\n{{Transcript}}\n</context>\n\nYour report is meant to be read by the user so make it friendly and interesting to read.\n\nFirst provide the typology and then explain it."
+              }
+            ],
+            "responseMapping": [{ "variableId": "vdpuiv26xmgtrwg1aq8owoxej" }]
+          }
+        },
+        {
+          "id": "f1th6k4tt5d9cmh3jmvmvdhm",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "{{Gen AI}}" }] }
+            ]
+          }
+        },
+        {
+          "id": "for2wo573unezh3a2ru5c43x",
+          "type": "Email",
+          "options": {
+            "isCustomBody": true,
+            "recipients": ["{{Email}}"],
+            "subject": "Your Personalized Skin Typology Diagnosis",
+            "body": "Hi,\n\nThank you for taking the time to answer our questions. Based on your responses, we have determined your skin typology. Here is a detailed recap of your diagnosis:\n\n{{Gen AI}}\n\nWe hope you find these recommendations helpful. If you have any further questions or need additional assistance, please do not hesitate to reach out.\n\nBest regards,"
+          },
+          "outgoingEdgeId": "x9uoi6aeb4ui53c6fi7gxtzk"
+        }
+      ]
+    },
+    {
+      "id": "iz6tldba9ypmmvqa48j19v86",
+      "title": "CTA",
+      "graphCoordinates": { "x": 5264.79, "y": -52.26 },
+      "blocks": [
+        {
+          "id": "rt3bntjm7x2m6pkz2n47lwvv",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Now that you know your skin typology, would you like to check out our selection of top-rated skin-care products? 💆"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "s10p30kymib9np9wbs3gqwyq",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "hmnuvpvu3ihtflhj5spx5lf3",
+              "outgoingEdgeId": "f6zvru644gs2qoc5xavc87vs",
+              "content": "Go shopping"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "x5u41e030i07cxhbmujx4ngb",
+      "title": "",
+      "graphCoordinates": { "x": 5610.1, "y": 214.4 },
+      "blocks": [
+        {
+          "id": "nha5wj8a0czia8yd3qupm7zh",
+          "type": "Redirect",
+          "options": { "url": "https://global.typology.com/" }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "ytel1g0jmiasr5o5ouvnadm1",
+      "from": { "blockId": "zix9zhcgb3km57n5q36zl0ri" },
+      "to": { "groupId": "od3pji6ymtdrxllffb5d81wn" }
+    },
+    {
+      "id": "b2lis4t1syk9qd30t3yb6e9a",
+      "from": {
+        "blockId": "o9twf6rt9lvgv6vzue8wt8b3",
+        "itemId": "muzbinpvhlwxsnhka6y14cyk"
+      },
+      "to": { "groupId": "kt05yubhbv5f2sh2xe2ps916" }
+    },
+    {
+      "id": "as0kqkyfgbmb6wbjus0lp0h9",
+      "from": { "blockId": "a0czqnu2wrlsty9isaof3mn3" },
+      "to": { "groupId": "ar4itsju3ovwti5k1kpdwt74" }
+    },
+    {
+      "id": "e2ol7wfl5ve73b1rdhhzqfk4",
+      "from": {
+        "blockId": "o9twf6rt9lvgv6vzue8wt8b3",
+        "itemId": "szqscovkv1ddnpt8mkt0vvxt"
+      },
+      "to": { "groupId": "h9kmezz8xhw7my1serv3tefl" }
+    },
+    {
+      "id": "vix01g2eobwcc805xeesi9yc",
+      "from": { "blockId": "zqy1p2pa6cmmj5574axlm605" },
+      "to": { "groupId": "d3whha2i7oa7yl2g5taztdl6" }
+    },
+    {
+      "id": "hneunup1qv7md47yoh7544cj",
+      "from": {
+        "blockId": "o9twf6rt9lvgv6vzue8wt8b3",
+        "itemId": "i0rzns61pszrww0y44isqh5v"
+      },
+      "to": { "groupId": "b0wfn809ywofapum1xjk15og" }
+    },
+    {
+      "id": "agd81aldnxptroxm59r6bnmt",
+      "from": {
+        "blockId": "o9twf6rt9lvgv6vzue8wt8b3",
+        "itemId": "u226tpojjg7p16xz3mrxf9x0"
+      },
+      "to": { "groupId": "ukh9p9xqcrbvjw9y5dx1ae0e" }
+    },
+    {
+      "id": "ei2w9q6ozvi8jm4btm0j9pdo",
+      "from": {
+        "blockId": "o9twf6rt9lvgv6vzue8wt8b3",
+        "itemId": "e8f057alv81bvbnsq7qbvqgc"
+      },
+      "to": { "groupId": "kxp3lgzl3ilatxs7yub8pvpk" }
+    },
+    {
+      "id": "v97pa9h725258bqelwi0gkai",
+      "from": { "blockId": "tugkxhxqs5cyuno64k29mirj" },
+      "to": { "groupId": "j9gcw3ztjmxguvmf1dnxcglf" }
+    },
+    {
+      "id": "q4zonpkmvkgebxw6mq9xlj6g",
+      "from": {
+        "blockId": "o9twf6rt9lvgv6vzue8wt8b3",
+        "itemId": "y9y2zzc68iaxl27si3lumrl6"
+      },
+      "to": { "groupId": "sglbdkc4yyr2k6d2jpyifmo5" }
+    },
+    {
+      "id": "k9iqgr93gy1j7y7wcau0796d",
+      "from": { "blockId": "hkhswiz5jz67hsbee8nyupjo" },
+      "to": { "groupId": "x5oenwyua4u0mz2hhfiypt7p" }
+    },
+    {
+      "id": "qlptft5rpnqxdrl5rn818apo",
+      "from": { "blockId": "q1vcfx4rofsof3uv9m8138uk" },
+      "to": { "groupId": "fmjx6wzmn64dn2wi4fmofloi" }
+    },
+    {
+      "id": "ira3wejjdsnzejby5i31zgng",
+      "from": { "blockId": "a3ucpz37jr9af6etzwrgpxwa" },
+      "to": { "groupId": "ya9rdndrzy273h1zzx2eq82i" }
+    },
+    {
+      "id": "g7tf8a5s5qufdgsbj3a896io",
+      "from": { "blockId": "qcev9xsh8ucgngc8g04zsktk" },
+      "to": { "groupId": "lew50rhih9it6fz9u7c0fabi" }
+    },
+    {
+      "id": "jvv84pjq21xnaqzoq1shk4ts",
+      "from": { "blockId": "txhrcc5ii8wfidw0lj7hhvcx" },
+      "to": { "groupId": "sdar8z8vwxziddba5p07nprv" }
+    },
+    {
+      "id": "ewgw4tgd11irl5qr24g6fr58",
+      "from": { "blockId": "zse327o8uf7v2vgjefzhmhzw" },
+      "to": { "groupId": "j47xycbp95hd9wlvfjqlp3dm" }
+    },
+    {
+      "id": "asquip1jyoa7kn34xsb0jrvu",
+      "from": { "blockId": "r8p3bllvh6902cn9l6wfzjg2" },
+      "to": { "groupId": "yly57wl5horq6h46xlz0pdof" }
+    },
+    {
+      "id": "ovypkxkt0k8w3b9yo0s0libr",
+      "from": { "blockId": "czxq9ogv5t309zwvqf06c0lh" },
+      "to": { "groupId": "en5pphruiiau597j614ngg3q" }
+    },
+    {
+      "id": "fi56xu9q9iqtz399ahn3j9u1",
+      "from": { "blockId": "ffo7dzm08uapuawzp1rbe44a" },
+      "to": { "groupId": "y902leuaeotwv8k1i4gnkf4p" }
+    },
+    {
+      "id": "gkfa620lz2ejdvn890n3vb5y",
+      "from": { "blockId": "lajq4bpdwcoyjek8hy5o9hhs" },
+      "to": { "groupId": "yke5fhaejaghtgv3qmyv3h74" }
+    },
+    {
+      "id": "iuzkts0oxz0q677cwmjwwokm",
+      "from": { "blockId": "wmysi2qtw69ggq94fx5qnrog" },
+      "to": { "groupId": "x7qlgkrl2rk496lywuyaya6d" }
+    },
+    {
+      "id": "ff5mm3s3w4y19au133ca5d29",
+      "from": { "blockId": "pujmgbezgnf3xgdmpymhs565" },
+      "to": { "groupId": "ffle7a76hw8wbfshfikyk21c" }
+    },
+    {
+      "id": "fn91ar1pog2h9vowmlg123hh",
+      "from": { "blockId": "rozemsgzi7n29kcrgke2pz48" },
+      "to": { "groupId": "f929zr1jbr52rzp28v3susa3" }
+    },
+    {
+      "id": "kdyyyj6hynn94ldk3wxxlzoy",
+      "from": { "eventId": "zi8w5km7bu2ngms13zrv7xak" },
+      "to": { "groupId": "f929zr1jbr52rzp28v3susa3" }
+    },
+    {
+      "id": "dwls95sfkvly3ykdsxu835u8",
+      "from": { "blockId": "xc63yyy5eobay5msj26t4dpe" },
+      "to": { "groupId": "h5qb2gmhwqctl155fhfqmu7u" }
+    },
+    {
+      "id": "f6zvru644gs2qoc5xavc87vs",
+      "from": {
+        "blockId": "s10p30kymib9np9wbs3gqwyq",
+        "itemId": "hmnuvpvu3ihtflhj5spx5lf3"
+      },
+      "to": { "groupId": "x5u41e030i07cxhbmujx4ngb" }
+    },
+    {
+      "from": { "blockId": "for2wo573unezh3a2ru5c43x" },
+      "to": { "groupId": "iz6tldba9ypmmvqa48j19v86" },
+      "id": "x9uoi6aeb4ui53c6fi7gxtzk"
+    }
+  ],
+  "variables": [
+    {
+      "id": "vnzqkgmwlwlu7ut6jjelel53w",
+      "name": "Email",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vdpuiv26xmgtrwg1aq8owoxej",
+      "name": "Gen AI",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vwgpda1jav43mrn4cx2gxp0ym",
+      "name": "Transcript",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vqvuz8egpkhp3d6y4dquvlomc",
+      "name": "Selected skin problem",
+      "isSessionVariable": true
+    },
+    { "id": "vtyvtib894a8eeqgr21yb17tv", "name": "Skin problems" }
+  ],
+  "theme": {
+    "general": {
+      "background": {
+        "type": "Image",
+        "content": "https://s3.typebot.io/public/workspaces/cl35yesle00188gcpgqu70ia1/typebots/clv5eazpu000t352j1d8ycszj/background?v=1713457182851"
+      },
+      "progressBar": {
+        "isEnabled": true,
+        "color": "#000",
+        "backgroundColor": "#FFFFFF",
+        "thickness": 7
+      }
+    },
+    "chat": {
+      "container": {
+        "maxHeight": "80%",
+        "backgroundColor": "#EAEBE6",
+        "blur": 5,
+        "opacity": 0.5
+      },
+      "hostAvatar": { "isEnabled": false },
+      "hostBubbles": { "backgroundColor": "#FBF9F7" },
+      "guestBubbles": {
+        "backgroundColor": "transparent",
+        "color": "#000",
+        "border": { "thickness": 1, "roundeness": "none" }
+      },
+      "buttons": {
+        "backgroundColor": "#000",
+        "border": { "roundeness": "none" }
+      }
+    }
+  },
+  "selectedThemeTemplateId": "typebot-light",
+  "settings": {},
+  "createdAt": "2024-05-22T14:12:00.571Z",
+  "updatedAt": "2024-05-22T14:29:58.092Z",
+  "icon": "💆‍♀️",
+  "folderId": null,
+  "publicId": "typology-28qqj62",
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

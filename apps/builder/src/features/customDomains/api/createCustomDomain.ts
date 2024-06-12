@@ -65,6 +65,7 @@ export const createCustomDomain = authenticatedProcedure
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to create custom domain on Vercel',
+          cause: await err.response.text(),
         })
       }
     }
