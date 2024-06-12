@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   PublicTypebot,
   ResultValues,
@@ -203,7 +204,7 @@ const getEmailBody = async ({
   })) as unknown as PublicTypebot
   if (!typebot) return
   const answers = parseAnswers({
-    answers: resultValues.answers.map((answer) => ({
+    answers: (resultValues as any).answers.map((answer: any) => ({
       key:
         (answer.variableId
           ? typebot.variables.find(

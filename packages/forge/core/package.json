@@ -5,7 +5,7 @@
   "main": "index.ts",
   "keywords": [],
   "author": "Baptiste Arnaud",
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "dependencies": {
     "zod": "3.22.4"
   },

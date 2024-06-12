@@ -37,7 +37,22 @@ const landingPagePaths = [
   '/about',
   '/oss-friends',
   '/blog',
+  '/blog/:slug*',
 ]
+
+const landingPageReferers = [
+  '/',
+  '/pricing',
+  '/privacy-policies',
+  '/terms-of-service',
+  '/about',
+  '/oss-friends',
+  '/blog',
+].concat(['/blog/(.+)'])
+
+const currentHost = 'typebot.io'
+const currentOrigin = `https://${currentHost}`
+const optionalQueryParams = `(\\/?\\?.*)?`
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -50,21 +65,14 @@ const nextConfig = {
   output: 'standalone',
   experimental: {
     outputFileTracingRoot: join(__dirname, '../../'),
+    serverComponentsExternalPackages: ['isolated-vm'],
   },
-  webpack: (config, { nextRuntime }) => {
-    if (nextRuntime === 'nodejs') return config
+  webpack: (config, { isServer }) => {
+    if (isServer) return config
 
-    if (nextRuntime === 'edge') {
-      config.resolve.alias['minio'] = false
-      config.resolve.alias['got'] = false
-      config.resolve.alias['qrcode'] = false
-      return config
-    }
-    // These packages are imports from the integrations definition files that can be ignored for the client.
     config.resolve.alias['minio'] = false
-    config.resolve.alias['got'] = false
-    config.resolve.alias['openai'] = false
     config.resolve.alias['qrcode'] = false
+    config.resolve.alias['isolated-vm'] = false
     return config
   },
   async redirects() {
@@ -79,39 +87,39 @@ const nextConfig = {
   async rewrites() {
     return {
       beforeFiles: (process.env.LANDING_PAGE_URL
-        ? landingPagePaths
+        ? landingPageReferers
             .map((path) => ({
               source: '/_next/static/:static*',
               has: [
                 {
                   type: 'header',
                   key: 'referer',
-                  value: `https://typebot.io${path}`,
+                  value: `${currentOrigin}${path}${optionalQueryParams}`,
                 },
               ],
               destination: `${process.env.LANDING_PAGE_URL}/_next/static/:static*`,
             }))
             .concat(
-              landingPagePaths.map((path) => ({
+              landingPageReferers.map((path) => ({
                 source: '/typebots/:typebot*',
                 has: [
                   {
                     type: 'header',
                     key: 'referer',
-                    value: `https://typebot.io${path}`,
+                    value: `${currentOrigin}${path}${optionalQueryParams}`,
                   },
                 ],
                 destination: `${process.env.LANDING_PAGE_URL}/typebots/:typebot*`,
               }))
             )
             .concat(
-              landingPagePaths.map((path) => ({
+              landingPageReferers.map((path) => ({
                 source: '/styles/:style*',
                 has: [
                   {
                     type: 'header',
                     key: 'referer',
-                    value: `https://typebot.io${path}`,
+                    value: `${currentOrigin}${path}${optionalQueryParams}`,
                   },
                 ],
                 destination: `${process.env.LANDING_PAGE_URL}/styles/:style*`,
@@ -123,79 +131,25 @@ const nextConfig = {
                 has: [
                   {
                     type: 'host',
-                    value: 'typebot.io',
+                    value: currentHost,
                   },
                 ],
                 destination: `${process.env.LANDING_PAGE_URL}${path}`,
               }))
             )
-            .concat([
-              {
-                source: '/blog/:slug',
-                has: [
-                  {
-                    type: 'host',
-                    value: 'typebot.io',
-                  },
-                ],
-                destination: `${process.env.LANDING_PAGE_URL}/blog/:slug`,
-              },
-              {
-                source: '/_next/static/:static*',
+            .concat(
+              landingPageReferers.map((path) => ({
+                source: '/images/:image*',
                 has: [
                   {
                     type: 'header',
                     key: 'referer',
-                    value: `https://typebot.io/blog/(?<slug>.*)`,
+                    value: `${currentOrigin}${path}${optionalQueryParams}`,
                   },
                 ],
-                destination: `${process.env.LANDING_PAGE_URL}/_next/static/:static*`,
-              },
-              {
-                source: '/images/blog/:images*',
-                has: [
-                  {
-                    type: 'header',
-                    key: 'referer',
-                    value: `https://typebot.io/blog/(?<slug>.*)`,
-                  },
-                ],
-                destination: `${process.env.LANDING_PAGE_URL}/images/blog/:images*`,
-              },
-              {
-                source: '/images/blog/:images*',
-                has: [
-                  {
-                    type: 'header',
-                    key: 'referer',
-                    value: `https://typebot.io/blog`,
-                  },
-                ],
-                destination: `${process.env.LANDING_PAGE_URL}/images/blog/:images*`,
-              },
-              {
-                source: '/typebots/:typebot*',
-                has: [
-                  {
-                    type: 'header',
-                    key: 'referer',
-                    value: `https://typebot.io/blog/(?<slug>.*)`,
-                  },
-                ],
-                destination: `${process.env.LANDING_PAGE_URL}/typebots/:typebot*`,
-              },
-              {
-                source: '/styles/:style*',
-                has: [
-                  {
-                    type: 'header',
-                    key: 'referer',
-                    value: `https://typebot.io/blog/(?<slug>.*)`,
-                  },
-                ],
-                destination: `${process.env.LANDING_PAGE_URL}/styles/:style*`,
-              },
-            ])
+                destination: `${process.env.LANDING_PAGE_URL}/images/:image*`,
+              }))
+            )
         : []
       )
         .concat([
@@ -204,6 +158,10 @@ const nextConfig = {
               '/api/typebots/:typebotId/blocks/:blockId/storage/upload-url',
             destination:
               '/api/v1/typebots/:typebotId/blocks/:blockId/storage/upload-url',
+          },
+          {
+            source: '/healthz',
+            destination: '/api/health',
           },
         ])
         .concat(

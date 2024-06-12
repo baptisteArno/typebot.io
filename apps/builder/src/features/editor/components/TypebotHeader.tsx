@@ -60,7 +60,7 @@ export const TypebotHeader = () => {
       justify="center"
       align="center"
       h={`${headerHeight}px`}
-      zIndex={100}
+      zIndex={1}
       pos="relative"
       bgColor={headerBgColor}
       flexShrink={0}
@@ -280,20 +280,21 @@ const RightElements = ({
       <Flex pos="relative" hidden>
         <ShareTypebotButton isLoading={isNotDefined(typebot)} />
       </Flex>
-      {router.pathname.includes('/edit') && isNotDefined(rightPanel) && (
-        <Button
-          colorScheme="gray"
-          onClick={handlePreviewClick}
-          isLoading={isNotDefined(typebot) || isSavingLoading}
-          leftIcon={<PlayIcon />}
-          size="sm"
-          iconSpacing={{ base: 0, xl: 2 }}
-        >
-          <chakra.span display={{ base: 'none', xl: 'inline' }}>
-            {t('editor.header.previewButton.label')}
-          </chakra.span>
-        </Button>
-      )}
+      {router.pathname.includes('/edit') &&
+        rightPanel !== RightPanel.PREVIEW && (
+          <Button
+            colorScheme="gray"
+            onClick={handlePreviewClick}
+            isLoading={isNotDefined(typebot) || isSavingLoading}
+            leftIcon={<PlayIcon />}
+            size="sm"
+            iconSpacing={{ base: 0, xl: 2 }}
+          >
+            <chakra.span display={{ base: 'none', xl: 'inline' }}>
+              {t('editor.header.previewButton.label')}
+            </chakra.span>
+          </Button>
+        )}
       {currentUserMode === 'guest' && (
         <Button
           as={Link}

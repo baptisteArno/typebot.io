@@ -608,10 +608,26 @@
     }
   ],
   "variables": [
-    { "id": "vcl1sezzln002b2e6e6ssxh9bf", "name": "Lead Score" },
-    { "id": "vcl1sf1ko5002g2e6egjmyb16v", "name": "Team size" },
-    { "id": "vcl1sf525q00362e6eoyosycte", "name": "Country" },
-    { "id": "vcl1sf93s2003l2e6eojomb66g", "name": "Company" }
+    {
+      "id": "vcl1sezzln002b2e6e6ssxh9bf",
+      "name": "Lead Score",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vcl1sf1ko5002g2e6egjmyb16v",
+      "name": "Team size",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vcl1sf525q00362e6eoyosycte",
+      "name": "Country",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vcl1sf93s2003l2e6eojomb66g",
+      "name": "Company",
+      "isSessionVariable": true
+    }
   ],
   "theme": {},
   "selectedThemeTemplateId": null,

@@ -2,8 +2,10 @@ import { createAction, option } from '@typebot.io/forge'
 import { isDefined } from '@typebot.io/lib'
 import { baseOptions } from '../baseOptions'
 import { fetchQueues } from '../fetchers/fetchQueues'
+import { auth } from '../auth'
 
 export const queueJoin = createAction({
+  auth,
   name: 'Fila',
   baseOptions,
   options: option.object({
@@ -57,7 +59,6 @@ export const queueJoin = createAction({
     web: {
       displayEmbedBubble: {
         parseUrl: ({}) => '',
-        maxBubbleWidth: 780,
         waitForEvent: {
           getSaveVariableId: ({ responseMapping }) => responseMapping,
           parseFunction: () => {

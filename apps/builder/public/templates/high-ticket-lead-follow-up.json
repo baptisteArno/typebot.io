@@ -605,13 +605,41 @@
     }
   ],
   "variables": [
-    { "id": "vct90f8lq4uuyqupv6qco5jfq", "name": "last utterance" },
-    { "id": "vaut2rkwqv5gwwihthbk7uhqd", "name": "Assistant message" },
-    { "id": "voleiyma8rwvqi3hcn3axrij5", "name": "Global system prompt" },
-    { "id": "vm8s6oxkp7k3ikf9cmq80688u", "name": "JSON" },
-    { "id": "vabp22hjq8st3roj9qo8lbub3", "name": "Business" },
-    { "id": "vuffpsxxfqujokeyh10hfm65p", "name": "Average revenue" },
-    { "id": "vvmh29a0tgn5ugzhnxzqth546", "name": "SEO interest" }
+    {
+      "id": "vct90f8lq4uuyqupv6qco5jfq",
+      "name": "last utterance",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vaut2rkwqv5gwwihthbk7uhqd",
+      "name": "Assistant message",
+      "isSessionVariable": true
+    },
+    {
+      "id": "voleiyma8rwvqi3hcn3axrij5",
+      "name": "Global system prompt",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vm8s6oxkp7k3ikf9cmq80688u",
+      "name": "JSON",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vabp22hjq8st3roj9qo8lbub3",
+      "name": "Business",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vuffpsxxfqujokeyh10hfm65p",
+      "name": "Average revenue",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vvmh29a0tgn5ugzhnxzqth546",
+      "name": "SEO interest",
+      "isSessionVariable": true
+    }
   ],
   "theme": {},
   "selectedThemeTemplateId": null,

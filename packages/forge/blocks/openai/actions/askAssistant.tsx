@@ -12,6 +12,8 @@ import { executeFunction } from '@typebot.io/variables/executeFunction'
 import { readDataStream } from 'ai'
 import { deprecatedAskAssistantOptions } from '../deprecated'
 import { OpenAIAssistantStream } from '../helpers/OpenAIAssistantStream'
+import { isModelCompatibleWithVision } from '../helpers/isModelCompatibleWithVision'
+import { splitUserTextMessageIntoBlocks } from '../helpers/splitUserTextMessageIntoBlocks'
 
 export const askAssistant = createAction({
   auth,
@@ -67,6 +69,8 @@ export const askAssistant = createAction({
     {
       id: 'fetchAssistants',
       fetch: async ({ options, credentials }) => {
+        if (!credentials?.apiKey) return []
+
         const config = {
           apiKey: credentials.apiKey,
           baseURL: options.baseUrl,
@@ -82,7 +86,9 @@ export const askAssistant = createAction({
 
         const openai = new OpenAI(config)
 
-        const response = await openai.beta.assistants.list()
+        const response = await openai.beta.assistants.list({
+          limit: 100,
+        })
 
         return response.data
           .map((assistant) =>
@@ -100,7 +106,8 @@ export const askAssistant = createAction({
     {
       id: 'fetchAssistantFunctions',
       fetch: async ({ options, credentials }) => {
-        if (!options.assistantId) return []
+        if (!options.assistantId || !credentials?.apiKey) return []
+
         const config = {
           apiKey: credentials.apiKey,
           baseURL: options.baseUrl,
@@ -139,8 +146,8 @@ export const askAssistant = createAction({
       getStreamVariableId: ({ responseMapping }) =>
         responseMapping?.find((m) => !m.item || m.item === 'Message')
           ?.variableId,
-      run: async ({ credentials, options, variables }) =>
-        createAssistantStream({
+      run: async ({ credentials, options, variables }) => ({
+        stream: await createAssistantStream({
           apiKey: credentials.apiKey,
           assistantId: options.assistantId,
           message: options.message,
@@ -151,6 +158,7 @@ export const askAssistant = createAction({
           functions: options.functions,
           responseMapping: options.responseMapping,
         }),
+      }),
     },
     server: async ({
       credentials: { apiKey },
@@ -278,12 +286,16 @@ const createAssistantStream = async ({
     return
   }
 
+  const assistant = await openai.beta.assistants.retrieve(assistantId)
+
   // Add a message to the thread
   const createdMessage = await openai.beta.threads.messages.create(
     currentThreadId,
     {
       role: 'user',
-      content: message,
+      content: isModelCompatibleWithVision(assistant.model)
+        ? await splitUserTextMessageIntoBlocks(message)
+        : message,
     }
   )
   return OpenAIAssistantStream(

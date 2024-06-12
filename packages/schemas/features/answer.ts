@@ -1,27 +1,28 @@
 import { z } from '../zod'
-import { Answer as AnswerPrisma, Prisma } from '@typebot.io/prisma'
+import { Answer as AnswerV1Prisma, Prisma } from '@typebot.io/prisma'
 
-export const answerSchema = z.object({
+const answerV1Schema = z.object({
   createdAt: z.date(),
   resultId: z.string(),
   blockId: z.string(),
   groupId: z.string(),
   variableId: z.string().nullable(),
   content: z.string(),
-  storageUsed: z.number().nullable(),
-  // TO-DO: remove once itemId is removed from database schema
-}) satisfies z.ZodType<Omit<AnswerPrisma, 'itemId'>>
+}) satisfies z.ZodType<AnswerV1Prisma>
 
-export const answerInputSchema = answerSchema
+export const answerSchema = z.object({
+  blockId: z.string(),
+  content: z.string(),
+})
+
+export const answerInputSchema = answerV1Schema
   .omit({
     createdAt: true,
     resultId: true,
     variableId: true,
-    storageUsed: true,
   })
   .extend({
     variableId: z.string().nullish(),
-    storageUsed: z.number().nullish(),
   }) satisfies z.ZodType<Prisma.AnswerUncheckedUpdateInput>
 
 export const statsSchema = z.object({

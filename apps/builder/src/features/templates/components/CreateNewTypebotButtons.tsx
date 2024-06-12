@@ -42,12 +42,6 @@ export const CreateNewTypebotButtons = () => {
     onSuccess: (data) => {
       router.push({
         pathname: `/typebots/${data.typebot.id}/edit`,
-        query:
-          router.query.isFirstBot === 'true'
-            ? {
-                isFirstBot: 'true',
-              }
-            : {},
       })
     },
     onSettled: () => {
@@ -68,12 +62,6 @@ export const CreateNewTypebotButtons = () => {
     onSuccess: (data) => {
       router.push({
         pathname: `/typebots/${data.typebot.id}/edit`,
-        query:
-          router.query.isFirstBot === 'true'
-            ? {
-                isFirstBot: 'true',
-              }
-            : {},
       })
     },
     onSettled: () => {

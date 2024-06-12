@@ -8,11 +8,14 @@ import { WhatsAppLogo } from '@/components/logos/WhatsAppLogo'
 import {
   defaultSetVariableOptions,
   hiddenTypes,
+  sessionOnlySetVariableOptions,
   valueTypes,
 } from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
-import { TextInput } from '@/components/inputs'
+import { TextInput, Textarea } from '@/components/inputs'
 import { isDefined } from '@typebot.io/lib'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { isInputBlock } from '@typebot.io/schemas/helpers'
+import { RadioButtons } from '@/components/inputs/RadioButtons'
 
 type Props = {
   options: SetVariableBlock['options']
@@ -48,6 +51,20 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
     })
   }
 
+  const isSessionOnly =
+    options?.type &&
+    sessionOnlySetVariableOptions.includes(
+      options.type as (typeof sessionOnlySetVariableOptions)[number]
+    )
+
+  const isLinkedToAnswer =
+    options?.variableId &&
+    typebot?.groups.some((g) =>
+      g.blocks.some(
+        (b) => isInputBlock(b) && b.options?.variableId === options.variableId
+      )
+    )
+
   return (
     <Stack spacing={4}>
       <Stack>
@@ -80,7 +97,7 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
           />
         </Stack>
 
-        {selectedVariable && (
+        {selectedVariable && !isSessionOnly && !isLinkedToAnswer && (
           <SwitchWithLabel
             key={selectedVariable.id}
             label="Save in results?"
@@ -156,6 +173,14 @@ const SetVariableValue = ({
     })
   }
 
+  const updateIsCode = (radio: 'Text' | 'Code') => {
+    if (options?.type && options.type !== 'Custom') return
+    onOptionsChange({
+      ...options,
+      isCode: radio === 'Code',
+    })
+  }
+
   switch (options?.type) {
     case 'Custom':
     case undefined:
@@ -170,11 +195,31 @@ const SetVariableValue = ({
             }
             onCheckChange={updateClientExecution}
           />
-          <CodeEditor
-            defaultValue={options?.expressionToEvaluate ?? ''}
-            onChange={updateExpression}
-            lang="javascript"
-          />
+          <Stack>
+            <RadioButtons
+              size="sm"
+              options={['Text', 'Code']}
+              defaultValue={
+                options?.isCode ?? defaultSetVariableOptions.isCode
+                  ? 'Code'
+                  : 'Text'
+              }
+              onSelect={updateIsCode}
+            />
+            {options?.isCode === undefined || options.isCode ? (
+              <CodeEditor
+                defaultValue={options?.expressionToEvaluate ?? ''}
+                onChange={updateExpression}
+                lang="javascript"
+              />
+            ) : (
+              <Textarea
+                defaultValue={options?.expressionToEvaluate ?? ''}
+                onChange={updateExpression}
+                width="full"
+              />
+            )}
+          </Stack>
         </>
       )
     case 'Map item with same index': {
@@ -199,7 +244,7 @@ const SetVariableValue = ({
       )
     }
     case 'Append value(s)': {
-      return <TextInput defaultValue={options.item} onChange={updateItem} />
+      return <Textarea defaultValue={options.item} onChange={updateItem} />
     }
     case 'Moment of the day': {
       return (
@@ -244,6 +289,7 @@ const SetVariableValue = ({
     case 'Today':
     case 'Result ID':
     case 'Empty':
+    case 'Transcript':
       return null
   }
 }

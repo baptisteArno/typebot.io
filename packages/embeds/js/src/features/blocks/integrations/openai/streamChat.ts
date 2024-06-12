@@ -6,7 +6,7 @@ import { createUniqueId } from 'solid-js'
 
 let abortController: AbortController | null = null
 const secondsToWaitBeforeRetries = 3
-const maxRetryAttempts = 3
+const maxRetryAttempts = 1
 
 export const streamChat =
   (context: ClientSideActionContext & { retryAttempt?: number }) =>

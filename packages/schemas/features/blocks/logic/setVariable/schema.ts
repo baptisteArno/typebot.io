@@ -21,6 +21,7 @@ const basicSetVariableOptionsSchema = baseOptions.extend({
     'Random ID',
     'Phone number',
     'Contact name',
+    'Transcript',
   ]),
 })
 

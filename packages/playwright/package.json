@@ -5,7 +5,7 @@
   "scripts": {},
   "keywords": [],
   "author": "Baptiste Arnaud",
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "dependencies": {
     "@playwright/test": "^1.42.1",
     "@typebot.io/lib": "workspace:*",
@@ -13,7 +13,7 @@
     "@typebot.io/schemas": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^20.11.26",
+    "@types/node": "20.4.2",
     "@typebot.io/tsconfig": "workspace:*"
   }
 }

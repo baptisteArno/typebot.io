@@ -4,7 +4,7 @@
   "description": "",
   "keywords": [],
   "author": "Baptiste Arnaud",
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/openai-block": "workspace:*",
@@ -18,6 +18,7 @@
     "@typebot.io/anthropic-block": "workspace:*",
     "@typebot.io/together-ai-block": "workspace:*",
     "@typebot.io/open-router-block": "workspace:*",
+    "@typebot.io/nocodb-block": "workspace:*",
     "@typebot.io/instantchat-block": "workspace:*",
     "@typebot.io/pause-block": "workspace:*"
   }

@@ -187,7 +187,6 @@ export const FolderContent = ({ folder }: Props) => {
               <CreateBotButton
                 folderId={folder?.id}
                 isLoading={isTypebotLoading}
-                isFirstBot={typebots?.length === 0 && folder === null}
               />
             )}
             {isFolderLoading && <ButtonSkeleton />}

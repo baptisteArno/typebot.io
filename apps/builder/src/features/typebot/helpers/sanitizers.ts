@@ -4,6 +4,9 @@ import { Plan } from '@typebot.io/prisma'
 import { Block, Typebot } from '@typebot.io/schemas'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { defaultSendEmailOptions } from '@typebot.io/schemas/features/blocks/integrations/sendEmail/constants'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { sessionOnlySetVariableOptions } from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
+import { isInputBlock } from '@typebot.io/schemas/helpers'
 
 export const sanitizeSettings = (
   settings: Typebot['settings'],
@@ -159,4 +162,39 @@ export const sanitizeCustomDomain = async ({
     },
   })
   return domainCount === 0 ? null : customDomain
+}
+
+export const sanitizeVariables = ({
+  variables,
+  groups,
+}: Pick<Typebot, 'variables' | 'groups'>): Typebot['variables'] => {
+  const blocks = groups
+    .flatMap((group) => group.blocks as Block[])
+    .filter((b) => isInputBlock(b) || b.type === LogicBlockType.SET_VARIABLE)
+  return variables.map((variable) => {
+    if (variable.isSessionVariable) return variable
+    const isVariableLinkedToInputBlock = blocks.some(
+      (block) =>
+        isInputBlock(block) && block.options?.variableId === variable.id
+    )
+    if (isVariableLinkedToInputBlock)
+      return {
+        ...variable,
+        isSessionVariable: true,
+      }
+    const isVariableSetToForbiddenResultVar = blocks.some(
+      (block) =>
+        block.type === LogicBlockType.SET_VARIABLE &&
+        block.options?.variableId === variable.id &&
+        sessionOnlySetVariableOptions.includes(
+          block.options.type as (typeof sessionOnlySetVariableOptions)[number]
+        )
+    )
+    if (isVariableSetToForbiddenResultVar)
+      return {
+        ...variable,
+        isSessionVariable: true,
+      }
+    return variable
+  })
 }

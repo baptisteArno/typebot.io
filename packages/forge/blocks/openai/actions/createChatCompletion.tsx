@@ -46,6 +46,8 @@ export const createChatCompletion = createAction({
       id: 'fetchModels',
       dependencies: ['baseUrl', 'apiVersion'],
       fetch: async ({ credentials, options }) => {
+        if (!credentials?.apiKey) return []
+
         const baseUrl = options?.baseUrl ?? defaultOpenAIOptions.baseUrl
         const config = {
           apiKey: credentials.apiKey,
@@ -84,14 +86,15 @@ export const createChatCompletion = createAction({
       }),
     stream: {
       getStreamVariableId: getChatCompletionStreamVarId,
-      run: (params) =>
-        runChatCompletionStream({
+      run: async (params) => ({
+        stream: await runChatCompletionStream({
           ...params,
           config: {
             baseUrl: defaultOpenAIOptions.baseUrl,
             defaultModel: defaultOpenAIOptions.model,
           },
         }),
+      }),
     },
   },
 })

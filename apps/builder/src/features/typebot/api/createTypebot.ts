@@ -10,6 +10,7 @@ import {
   isPublicIdNotAvailable,
   sanitizeGroups,
   sanitizeSettings,
+  sanitizeVariables,
 } from '../helpers/sanitizers'
 import { createId } from '@paralleldrive/cuid2'
 import { EventType } from '@typebot.io/schemas/features/events/constants'
@@ -101,6 +102,9 @@ export const createTypebot = authenticatedProcedure
       )
     }
 
+    const groups = (
+      typebot.groups ? await sanitizeGroups(workspaceId)(typebot.groups) : []
+    ) as TypebotV6['groups']
     const newTypebot = await prisma.typebot.create({
       data: {
         version: '6',
@@ -108,9 +112,7 @@ export const createTypebot = authenticatedProcedure
         name: typebot.name ?? 'My bot',
         icon: typebot.icon,
         selectedThemeTemplateId: typebot.selectedThemeTemplateId,
-        groups: (typebot.groups
-          ? await sanitizeGroups(workspaceId)(typebot.groups)
-          : []) as TypebotV6['groups'],
+        groups,
         events: typebot.events ?? [
           {
             type: EventType.START,
@@ -127,7 +129,9 @@ export const createTypebot = authenticatedProcedure
             }
           : {},
         folderId: typebot.folderId,
-        variables: is_variables ?? [],
+        variables: is_variables
+          ? sanitizeVariables({ variables: is_variables, groups })
+          : [],
         edges: typebot.edges ?? [],
         resultsTablePreferences: typebot.resultsTablePreferences ?? undefined,
         publicId: typebot.publicId ?? undefined,

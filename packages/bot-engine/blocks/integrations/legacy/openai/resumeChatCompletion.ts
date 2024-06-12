@@ -42,7 +42,11 @@ export const resumeChatCompletion =
       return newVariables
     }, [])
     if (newVariables && newVariables.length > 0)
-      newSessionState = updateVariablesInSession(newSessionState)(newVariables)
+      newSessionState = updateVariablesInSession({
+        newVariables,
+        state: newSessionState,
+        currentBlockId: undefined,
+      }).updatedState
     return {
       outgoingEdgeId,
       newSessionState,

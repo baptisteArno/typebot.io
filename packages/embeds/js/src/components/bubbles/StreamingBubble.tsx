@@ -27,15 +27,25 @@ export const StreamingBubble = (props: Props) => {
         .map((block, index) => {
           if (index % 2 === 0) {
             return block.split('\n\n').map((line) =>
-              domPurify.sanitize(marked.parse(line.replace(/【.+】/g, '')), {
-                ADD_ATTR: ['target'],
-              })
+              domPurify.sanitize(
+                marked.parse(line.replace(/【.+】/g, ''), {
+                  breaks: true,
+                }),
+                {
+                  ADD_ATTR: ['target'],
+                }
+              )
             )
           } else {
             return [
-              domPurify.sanitize(marked.parse('```' + block + '```'), {
-                ADD_ATTR: ['target'],
-              }),
+              domPurify.sanitize(
+                marked.parse('```' + block + '```', {
+                  breaks: true,
+                }),
+                {
+                  ADD_ATTR: ['target'],
+                }
+              ),
             ]
           }
         })
@@ -45,7 +55,7 @@ export const StreamingBubble = (props: Props) => {
   })
 
   return (
-    <div class="flex flex-col animate-fade-in">
+    <div class="flex flex-col animate-fade-in typebot-streaming-container">
       <div class="flex w-full items-center">
         <div class="flex relative items-start typebot-host-bubble max-w-full">
           <div

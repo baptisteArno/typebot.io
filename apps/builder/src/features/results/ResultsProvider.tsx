@@ -15,6 +15,7 @@ import { parseResultHeader } from '@typebot.io/results/parseResultHeader'
 import { convertResultsToTableData } from '@typebot.io/results/convertResultsToTableData'
 import { parseCellContent } from './helpers/parseCellContent'
 import { timeFilterValues } from '../analytics/constants'
+import { parseBlockIdVariableIdMap } from '@typebot.io/results/parseBlockIdVariableIdMap'
 
 const resultsContext = createContext<{
   resultsList: { results: ResultWithAnswers[] }[] | undefined
@@ -97,11 +98,14 @@ export const ResultsProvider = ({
   const tableData = useMemo(
     () =>
       publishedTypebot
-        ? convertResultsToTableData(
-            data?.flatMap((d) => d.results) ?? [],
-            resultHeader,
-            parseCellContent
-          )
+        ? convertResultsToTableData({
+            results: data?.flatMap((d) => d.results) ?? [],
+            headerCells: resultHeader,
+            cellParser: parseCellContent,
+            blockIdVariableIdMap: parseBlockIdVariableIdMap(
+              publishedTypebot.groups
+            ),
+          })
         : [],
     [publishedTypebot, data, resultHeader]
   )

@@ -5,8 +5,14 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { Stats } from '@typebot.io/schemas'
-import React from 'react'
+import {
+  Edge,
+  GroupV6,
+  Stats,
+  TotalAnswers,
+  TotalVisitedEdges,
+} from '@typebot.io/schemas'
+import React, { useMemo } from 'react'
 import { StatsCards } from './StatsCards'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
 import { Graph } from '@/features/graph/components/Graph'
@@ -16,6 +22,7 @@ import { trpc } from '@/lib/trpc'
 import { isDefined } from '@typebot.io/lib'
 import { EventsCoordinatesProvider } from '@/features/graph/providers/EventsCoordinateProvider'
 import { timeFilterValues } from '../constants'
+import { blockHasItems, isInputBlock } from '@typebot.io/schemas/helpers'
 
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
@@ -33,7 +40,7 @@ export const AnalyticsGraphContainer = ({
   const { t } = useTranslate()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { typebot, publishedTypebot } = useTypebot()
-  const { data } = trpc.analytics.getTotalAnswers.useQuery(
+  const { data } = trpc.analytics.getInDepthAnalyticsData.useQuery(
     {
       typebotId: typebot?.id as string,
       timeFilter,
@@ -42,14 +49,36 @@ export const AnalyticsGraphContainer = ({
     { enabled: isDefined(publishedTypebot) }
   )
 
-  const { data: edgesData } = trpc.analytics.getTotalVisitedEdges.useQuery(
-    {
-      typebotId: typebot?.id as string,
-      timeFilter,
-      timeZone,
-    },
-    { enabled: isDefined(publishedTypebot) }
-  )
+  const totalVisitedEdges = useMemo(() => {
+    if (
+      !publishedTypebot?.edges ||
+      !publishedTypebot.groups ||
+      !publishedTypebot.events ||
+      !data?.totalAnswers ||
+      !stats?.totalViews
+    )
+      return
+    const firstEdgeId = publishedTypebot.events[0].outgoingEdgeId
+    if (!firstEdgeId) return
+    return populateEdgesWithVisitData({
+      edgeId: firstEdgeId,
+      edges: publishedTypebot.edges,
+      groups: publishedTypebot.groups,
+      currentTotalUsers: stats.totalViews,
+      totalVisitedEdges: data.offDefaultPathVisitedEdges
+        ? [...data.offDefaultPathVisitedEdges]
+        : [],
+      totalAnswers: data.totalAnswers,
+      edgeVisitHistory: [],
+    })
+  }, [
+    data?.offDefaultPathVisitedEdges,
+    data?.totalAnswers,
+    publishedTypebot?.edges,
+    publishedTypebot?.groups,
+    publishedTypebot?.events,
+    stats?.totalViews,
+  ])
 
   return (
     <Flex
@@ -73,7 +102,7 @@ export const AnalyticsGraphContainer = ({
               typebot={publishedTypebot}
               onUnlockProPlanClick={onOpen}
               totalAnswers={data?.totalAnswers}
-              totalVisitedEdges={edgesData?.totalVisitedEdges}
+              totalVisitedEdges={totalVisitedEdges}
             />
           </EventsCoordinatesProvider>
         </GraphProvider>
@@ -101,4 +130,73 @@ export const AnalyticsGraphContainer = ({
       />
     </Flex>
   )
+}
+
+const populateEdgesWithVisitData = ({
+  edgeId,
+  edges,
+  groups,
+  currentTotalUsers,
+  totalVisitedEdges,
+  totalAnswers,
+  edgeVisitHistory,
+}: {
+  edgeId: string
+  edges: Edge[]
+  groups: GroupV6[]
+  currentTotalUsers: number
+  totalVisitedEdges: TotalVisitedEdges[]
+  totalAnswers: TotalAnswers[]
+  edgeVisitHistory: string[]
+}): TotalVisitedEdges[] => {
+  if (edgeVisitHistory.find((e) => e === edgeId)) return totalVisitedEdges
+  totalVisitedEdges.push({
+    edgeId,
+    total: currentTotalUsers,
+  })
+  edgeVisitHistory.push(edgeId)
+  const edge = edges.find((edge) => edge.id === edgeId)
+  if (!edge) return totalVisitedEdges
+  const group = groups.find((group) => edge?.to.groupId === group.id)
+  if (!group) return totalVisitedEdges
+  for (const block of edge.to.blockId
+    ? group.blocks.slice(
+        group.blocks.findIndex((b) => b.id === edge.to.blockId)
+      )
+    : group.blocks) {
+    if (blockHasItems(block)) {
+      for (const item of block.items) {
+        if (item.outgoingEdgeId) {
+          totalVisitedEdges = populateEdgesWithVisitData({
+            edgeId: item.outgoingEdgeId,
+            edges,
+            groups,
+            currentTotalUsers:
+              totalVisitedEdges.find(
+                (tve) => tve.edgeId === item.outgoingEdgeId
+              )?.total ?? 0,
+            totalVisitedEdges,
+            totalAnswers,
+            edgeVisitHistory,
+          })
+        }
+      }
+    }
+    if (block.outgoingEdgeId) {
+      const totalUsers = isInputBlock(block)
+        ? totalAnswers.find((a) => a.blockId === block.id)?.total
+        : currentTotalUsers
+      totalVisitedEdges = populateEdgesWithVisitData({
+        edgeId: block.outgoingEdgeId,
+        edges,
+        groups,
+        currentTotalUsers: totalUsers ?? 0,
+        totalVisitedEdges,
+        totalAnswers,
+        edgeVisitHistory,
+      })
+    }
+  }
+
+  return totalVisitedEdges
 }

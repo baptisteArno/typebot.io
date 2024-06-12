@@ -21,6 +21,8 @@ import { togetherAiBlock } from '@typebot.io/together-ai-block'
 import { togetherAiBlockSchema } from '@typebot.io/together-ai-block/schemas'
 import { zemanticAiBlock } from '@typebot.io/zemantic-ai-block'
 import { zemanticAiBlockSchema } from '@typebot.io/zemantic-ai-block/schemas'
+import { nocodbBlock } from '@typebot.io/nocodb-block'
+import { nocodbBlockSchema } from '@typebot.io/nocodb-block/schemas'
 import { instantchatBlock } from '@typebot.io/instantchat-block'
 import { instantchatBlockSchema } from '@typebot.io/instantchat-block/schemas'
 import { pauseBlock } from '@typebot.io/pause-block'
@@ -38,6 +40,7 @@ export const forgedBlockSchemas = {
   [anthropicBlock.id]: anthropicBlockSchema,
   [togetherAiBlock.id]: togetherAiBlockSchema,
   [openRouterBlock.id]: openRouterBlockSchema,
+  [nocodbBlock.id]: nocodbBlockSchema,
   [instantchatBlock.id]: instantchatBlockSchema,
   [pauseBlock.id]: pauseBlockSchema,
 }

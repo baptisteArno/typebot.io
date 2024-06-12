@@ -2,6 +2,7 @@ import {
   ContinueChatResponse,
   CustomEmbedBubble,
   SessionState,
+  SetVariableHistoryItem,
 } from '@typebot.io/schemas'
 
 export type EdgeId = string
@@ -9,6 +10,7 @@ export type EdgeId = string
 export type ExecuteLogicResponse = {
   outgoingEdgeId: EdgeId | undefined
   newSessionState?: SessionState
+  newSetVariableHistory?: SetVariableHistoryItem[]
 } & Pick<ContinueChatResponse, 'clientSideActions' | 'logs'>
 
 export type ExecuteIntegrationResponse = {
@@ -16,6 +18,7 @@ export type ExecuteIntegrationResponse = {
   newSessionState?: SessionState
   startTimeShouldBeUpdated?: boolean
   customEmbedBubble?: CustomEmbedBubble
+  newSetVariableHistory?: SetVariableHistoryItem[]
 } & Pick<ContinueChatResponse, 'clientSideActions' | 'logs'>
 
 type WhatsAppMediaMessage = {

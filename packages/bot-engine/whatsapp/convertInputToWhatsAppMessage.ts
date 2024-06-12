@@ -13,7 +13,8 @@ export const convertInputToWhatsAppMessages = (
   lastMessage: ContinueChatResponse['messages'][number] | undefined
 ): WhatsAppSendingMessage[] => {
   const lastMessageText =
-    lastMessage?.type === BubbleBlockType.TEXT
+    lastMessage?.type === BubbleBlockType.TEXT &&
+    lastMessage.content.type === 'richText'
       ? convertRichTextToMarkdown(lastMessage.content.richText ?? [], {
           flavour: 'whatsapp',
         })

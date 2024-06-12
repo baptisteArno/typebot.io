@@ -27,6 +27,7 @@ export const executeClientSideAction = async ({
 }: Props): Promise<
   | { blockedPopupUrl: string }
   | { replyToSend: string | undefined; logs?: ChatLog[] }
+  | { logs: ChatLog[] }
   | void
 > => {
   if ('chatwoot' in clientSideAction) {

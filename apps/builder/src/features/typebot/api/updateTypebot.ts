@@ -13,6 +13,7 @@ import {
   sanitizeCustomDomain,
   sanitizeGroups,
   sanitizeSettings,
+  sanitizeVariables,
 } from '../helpers/sanitizers'
 import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
@@ -157,6 +158,10 @@ export const updateTypebot = authenticatedProcedure
         })
     }
 
+    const groups = typebot.groups
+      ? await sanitizeGroups(existingTypebot.workspace.id)(typebot.groups)
+      : undefined
+
     if (user.email)
       await createInstantProviderCredentials(
         user.email,
@@ -173,9 +178,7 @@ export const updateTypebot = authenticatedProcedure
         icon: typebot.icon,
         selectedThemeTemplateId: typebot.selectedThemeTemplateId,
         events: typebot.events ?? undefined,
-        groups: typebot.groups
-          ? await sanitizeGroups(existingTypebot.workspace.id)(typebot.groups)
-          : undefined,
+        groups,
         theme: typebot.theme ? typebot.theme : undefined,
         settings: typebot.settings
           ? sanitizeSettings(
@@ -185,7 +188,13 @@ export const updateTypebot = authenticatedProcedure
             )
           : undefined,
         folderId: typebot.folderId,
-        variables: typebot.variables,
+        variables:
+          typebot.variables && groups
+            ? sanitizeVariables({
+                variables: typebot.variables,
+                groups,
+              })
+            : undefined,
         edges: typebot.edges,
         resultsTablePreferences:
           typebot.resultsTablePreferences === null

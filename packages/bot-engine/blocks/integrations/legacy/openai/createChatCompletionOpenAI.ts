@@ -22,7 +22,6 @@ import {
   defaultOpenAIOptions,
 } from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
-import { isPlaneteScale } from '@typebot.io/lib/isPlanetScale'
 
 export const createChatCompletionOpenAI = async (
   state: SessionState,
@@ -68,9 +67,11 @@ export const createChatCompletionOpenAI = async (
     typebot.variables
   )(options.messages)
   if (variablesTransformedToList.length > 0)
-    newSessionState = updateVariablesInSession(state)(
-      variablesTransformedToList
-    )
+    newSessionState = updateVariablesInSession({
+      state,
+      newVariables: variablesTransformedToList,
+      currentBlockId: undefined,
+    }).updatedState
 
   const temperature = parseVariableNumber(typebot.variables)(
     options.advancedSettings?.temperature

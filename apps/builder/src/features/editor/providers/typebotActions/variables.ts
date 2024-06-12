@@ -15,7 +15,7 @@ export const variablesAction = (setTypebot: SetTypebot): VariablesActions => ({
   createVariable: (newVariable: Variable) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
-        typebot.variables.push(newVariable)
+        typebot.variables.unshift(newVariable)
       })
     ),
   updateVariable: (

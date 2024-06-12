@@ -71,6 +71,7 @@ const Expression = ({
     case 'Result ID':
     case 'Moment of the day':
     case 'Environment name':
+    case 'Transcript':
     case 'Yesterday': {
       return (
         <Text as="span">
