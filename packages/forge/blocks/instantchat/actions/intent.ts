@@ -5,7 +5,6 @@ import { defaultCortexOptions } from '../constants'
 import { auth } from '../auth'
 
 export const intent = createAction({
-  auth,
   name: 'Detectar Intenção',
   baseOptions,
   options: option.object({

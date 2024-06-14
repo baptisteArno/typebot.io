@@ -5,7 +5,6 @@ import { fetchQueues } from '../fetchers/fetchQueues'
 import { auth } from '../auth'
 
 export const queueJoin = createAction({
-  auth,
   name: 'Fila',
   baseOptions,
   options: option.object({

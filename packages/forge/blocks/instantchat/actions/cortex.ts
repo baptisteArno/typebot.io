@@ -5,7 +5,6 @@ import { defaultCortexOptions } from '../constants'
 import { auth } from '../auth'
 
 export const cortex = createAction({
-  auth,
   name: 'Cortex',
   baseOptions,
   options: option.object({
