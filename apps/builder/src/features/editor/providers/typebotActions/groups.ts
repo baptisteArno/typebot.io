@@ -164,6 +164,8 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
                         id: outgoingEdgeId,
                       })
                       oldToNewIdsMapping.set(item.id, id)
+                    } else {
+                      outgoingEdgeId = undefined
                     }
                   }
                   return {
@@ -183,6 +185,8 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
                     ...edge,
                     id: outgoingEdgeId,
                   })
+                } else {
+                  outgoingEdgeId = undefined
                 }
               }
               return {
