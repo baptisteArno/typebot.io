@@ -61,7 +61,7 @@ export const checkTime = createAction({
       id: 'fetchChecktimes',
       dependencies: ['baseUrl', 'accountcode'],
       fetch: async ({ credentials, options }) => {
-        const { baseUrl, accountcode } = options
+        const { baseUrl, accountcode } = credentials || {}
 
         if (baseUrl && accountcode) {
           const url = `${baseUrl}/ivci/webhook/checktime/${accountcode}`

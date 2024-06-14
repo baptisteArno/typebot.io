@@ -4,7 +4,7 @@ export const fetchAgents: FetcherDefinition<AuthDefinition, any> = {
   id: 'fetchAgents',
   dependencies: ['baseUrl', 'accountcode', 'wsKey'],
   fetch: async ({ credentials, options }) => {
-    const { baseUrl, accountcode, wsKey } = credentials
+    const { baseUrl, accountcode, wsKey } = credentials || {}
     let agents = []
     if (baseUrl && accountcode && wsKey) {
       const agentListResponse = await fetch(`${baseUrl}/ivws/instantrest`, {

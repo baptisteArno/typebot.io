@@ -234,7 +234,7 @@ export const cortex = createAction({
       id: 'fetchKBs',
       dependencies: ['cortexToken', 'cortexUrl', 'cortexAccountID'],
       fetch: async ({ credentials, options }) => {
-        let { cortexAccountID, cortexToken, cortexUrl } = options
+        let { cortexAccountID, cortexToken, cortexUrl } = credentials || {}
         if (cortexUrl && cortexToken && cortexAccountID) {
           const queryParams = {
             limit: '20',
