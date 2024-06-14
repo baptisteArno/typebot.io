@@ -3,6 +3,7 @@ import { auth } from '../auth'
 import ky, { HTTPError } from 'ky'
 import { defaultBaseUrl } from '../constants'
 import { parseRecordsCreateBody } from '../helpers/parseRecordCreateBody'
+import { parseErrorResponse } from '../helpers/parseErrorResponse'
 
 export const createRecord = createAction({
   auth,
@@ -52,7 +53,7 @@ export const createRecord = createAction({
           return logs.add({
             status: 'error',
             description: error.message,
-            details: await error.response.text(),
+            details: await parseErrorResponse(error.response),
           })
         console.error(error)
       }

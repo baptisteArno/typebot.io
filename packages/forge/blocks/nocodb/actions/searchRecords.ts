@@ -10,6 +10,7 @@ import {
   defaultLimitForSearch,
   filterOperators,
 } from '../constants'
+import { parseErrorResponse } from '../helpers/parseErrorResponse'
 
 export const searchRecords = createAction({
   auth,
@@ -127,7 +128,7 @@ export const searchRecords = createAction({
           return logs.add({
             status: 'error',
             description: error.message,
-            details: await error.response.text(),
+            details: await parseErrorResponse(error.response),
           })
         console.error(error)
       }
