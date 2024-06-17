@@ -1,4 +1,4 @@
-import Icon, { IconProps } from '@chakra-ui/icon'
+import { Icon, IconProps } from '@chakra-ui/icon'
 import { featherIconsBaseProps } from './HamburgerIcon'
 
 export const EmailIcon = (props: IconProps) => (

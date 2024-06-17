@@ -42,10 +42,10 @@
     "@types/papaparse": "5.3.7",
     "@types/prompts": "2.4.4",
     "deep-object-diff": "1.1.9",
-    "ky": "1.2.3",
+    "ky": "1.2.4",
     "prompts": "2.4.2",
     "stripe": "12.13.0",
-    "tsx": "3.12.7",
+    "tsx": "4.6.2",
     "typescript": "5.4.5",
     "zod": "3.22.4"
   },

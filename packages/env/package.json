@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/node": "20.4.9",
+    "@types/node": "20.4.2",
     "esbuild": "0.19.5"
   },
   "scripts": {

@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "mintlify": "4.0.75",
-    "tsx": "^4.6.2",
+    "tsx": "4.6.2",
     "dotenv-cli": "7.4.1"
   }
 }

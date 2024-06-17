@@ -11,6 +11,6 @@
     "@types/react": "18.2.15",
     "typescript": "5.4.5",
     "@typebot.io/lib": "workspace:*",
-    "ky": "1.2.3"
+    "ky": "1.2.4"
   }
 }

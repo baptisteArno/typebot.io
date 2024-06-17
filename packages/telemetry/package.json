@@ -8,7 +8,7 @@
   "license": "AGPL-3.0-or-later",
   "dependencies": {
     "@typebot.io/schemas": "workspace:*",
-    "ky": "1.2.3",
+    "ky": "1.2.4",
     "posthog-node": "3.1.1",
     "@typebot.io/env": "workspace:*"
   },
