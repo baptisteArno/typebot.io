@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { useEditor } from '../../editor/providers/EditorProvider'
 import { useGraph } from '@/features/graph/providers/GraphProvider'
-import { useTypebot } from '../../editor/providers/TypebotProvider'
+import { useSniper } from '../../editor/providers/SniperProvider'
 import React, { useState } from 'react'
 import { headerHeight } from '../../editor/constants'
 import { RuntimeMenu } from './RuntimeMenu'
@@ -21,8 +21,8 @@ import { useTranslate } from '@tolgee/react'
 
 const preferredRuntimeKey = 'preferredRuntime'
 
-const getDefaultRuntime = (typebotId?: string) => {
-  if (!typebotId) return runtimes[0]
+const getDefaultRuntime = (sniperId?: string) => {
+  if (!sniperId) return runtimes[0]
   const preferredRuntime = localStorage.getItem(preferredRuntimeKey)
   return (
     runtimes.find((runtime) => runtime.name === preferredRuntime) ?? runtimes[0]
@@ -30,7 +30,7 @@ const getDefaultRuntime = (typebotId?: string) => {
 }
 
 export const PreviewDrawer = () => {
-  const { typebot, save, isSavingLoading } = useTypebot()
+  const { sniper, save, isSavingLoading } = useSniper()
   const { t } = useTranslate()
   const { setRightPanel } = useEditor()
   const { setPreviewingBlock } = useGraph()
@@ -39,7 +39,7 @@ export const PreviewDrawer = () => {
   const [restartKey, setRestartKey] = useState(0)
   const [selectedRuntime, setSelectedRuntime] = useState<
     (typeof runtimes)[number]
-  >(getDefaultRuntime(typebot?.id))
+  >(getDefaultRuntime(sniper?.id))
 
   const handleRestartClick = async () => {
     await save()

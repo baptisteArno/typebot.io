@@ -1,4 +1,4 @@
-import { DashboardFolder } from '@typebot.io/prisma'
+import { DashboardFolder } from '@sniper.io/prisma'
 import { z } from 'zod'
 
 export const folderSchema = z.object({

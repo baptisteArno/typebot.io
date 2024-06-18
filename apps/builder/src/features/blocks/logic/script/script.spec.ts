@@ -1,17 +1,17 @@
 import test, { expect } from '@playwright/test'
-import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
+import { importSniperInDatabase } from '@sniper.io/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 
-const typebotId = createId()
+const sniperId = createId()
 
 test.describe('Script block', () => {
   test('script should trigger', async ({ page }) => {
-    await importTypebotInDatabase(getTestAsset('typebots/logic/script.json'), {
-      id: typebotId,
+    await importSniperInDatabase(getTestAsset('snipers/logic/script.json'), {
+      id: sniperId,
     })
 
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/snipers/${sniperId}/edit`)
     await page.click('text=Configure...')
     await page.fill(
       'div[role="textbox"]',

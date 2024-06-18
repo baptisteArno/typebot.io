@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import { isDefined, isNotDefined } from '@typebot.io/lib/utils'
+import { isDefined, isNotDefined } from '@sniper.io/lib/utils'
 import { getSession } from '../queries/getSession'
 import { continueBotFlow } from '../continueBotFlow'
 import { filterPotentiallySensitiveLogs } from '../logs/filterPotentiallySensitiveLogs'
@@ -82,7 +82,7 @@ export const continueChat = async ({
       ),
     })
 
-  const isPreview = isNotDefined(session.state.typebotsQueue[0].resultId)
+  const isPreview = isNotDefined(session.state.snipersQueue[0].resultId)
 
   const isEnded =
     newSessionState.progressMetadata &&
@@ -102,7 +102,7 @@ export const continueChat = async ({
       ? isEnded
         ? 100
         : computeCurrentProgress({
-            typebotsQueue: newSessionState.typebotsQueue,
+            snipersQueue: newSessionState.snipersQueue,
             progressMetadata: newSessionState.progressMetadata,
             currentInputBlockId: input?.id,
           })

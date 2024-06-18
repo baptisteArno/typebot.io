@@ -1,6 +1,6 @@
 import { BotContext } from '@/types'
 import { StripePaymentForm } from './StripePaymentForm'
-import { PaymentInputBlock, RuntimeOptions } from '@typebot.io/schemas'
+import { PaymentInputBlock, RuntimeOptions } from '@sniper.io/schemas'
 
 type Props = {
   context: BotContext

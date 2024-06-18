@@ -113,10 +113,10 @@ const baseEnv = {
         .min(1)
         .transform((val) => val.split(','))
     ),
-    NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID: z.string().min(1).optional(),
+    NEXT_PUBLIC_ONBOARDING_SNIPER_ID: z.string().min(1).optional(),
     NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE: z.coerce.number().optional(),
     NEXT_PUBLIC_CHAT_API_URL: z.string().url().optional(),
-    // To remove to deploy chat API for all typebots
+    // To remove to deploy chat API for all snipers
     NEXT_PUBLIC_USE_EXPERIMENTAL_CHAT_API_ON: z
       .string()
       .min(1)
@@ -133,8 +133,8 @@ const baseEnv = {
   runtimeEnv: {
     NEXT_PUBLIC_E2E_TEST: getRuntimeVariable('NEXT_PUBLIC_E2E_TEST'),
     NEXT_PUBLIC_VIEWER_URL: getRuntimeVariable('NEXT_PUBLIC_VIEWER_URL'),
-    NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID: getRuntimeVariable(
-      'NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID'
+    NEXT_PUBLIC_ONBOARDING_SNIPER_ID: getRuntimeVariable(
+      'NEXT_PUBLIC_ONBOARDING_SNIPER_ID'
     ),
     NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE: getRuntimeVariable(
       'NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE'
@@ -259,7 +259,7 @@ const s3Env = {
   server: {
     S3_ACCESS_KEY: z.string().min(1).optional(),
     S3_SECRET_KEY: z.string().min(1).optional(),
-    S3_BUCKET: z.string().min(1).optional().default('typebot'),
+    S3_BUCKET: z.string().min(1).optional().default('sniper'),
     S3_PORT: z.coerce.number().optional(),
     S3_ENDPOINT: z.string().min(1).optional(),
     S3_SSL: boolean.optional().default('true'),
@@ -431,7 +431,7 @@ export const env = createEnv({
     ...customOAuthEnv.server,
     ...sentryEnv.server,
     ...telemetryEnv.server,
-    ...keycloakEnv.server
+    ...keycloakEnv.server,
   },
   client: {
     ...baseEnv.client,

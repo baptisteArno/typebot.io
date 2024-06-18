@@ -13,7 +13,7 @@ import {
   Section,
 } from '@react-email/components'
 import * as React from 'react'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import {
   main,
   container,
@@ -35,14 +35,14 @@ const imagesBaseUrl = `${env.NEXTAUTH_URL}/images/emails/V2dot22Update`
 export const V2dot22Update = ({}: Props) => (
   <Html>
     <Head />
-    <Preview>January hottest new features on Typebot 🔥</Preview>
+    <Preview>January hottest new features on Sniper 🔥</Preview>
     <Body style={main}>
       <Container style={container}>
         <Img
           src={`${env.NEXTAUTH_URL}/images/logo.png`}
           width="32"
           height="32"
-          alt="Typebot's Logo"
+          alt="Sniper's Logo"
           style={{
             margin: '24px 0',
           }}
@@ -53,7 +53,7 @@ export const V2dot22Update = ({}: Props) => (
           We started 2024 on fire. What a productive month! Some of it has been
           possible thanks to the new in-house framework to build new blocks:{' '}
           <Link
-            href="https://docs.typebot.io/contribute/guides/create-block"
+            href="https://docs.sniper.io/contribute/guides/create-block"
             target="_blank"
             style={{ ...link }}
           >
@@ -64,7 +64,7 @@ export const V2dot22Update = ({}: Props) => (
           So I want to thank all new contributors for their work this month. 🙏
         </Text>
         <Button
-          href="https://app.typebot.io"
+          href="https://app.sniper.io"
           style={{
             backgroundColor: '#0042DA',
             padding: '10px 16px',
@@ -84,7 +84,7 @@ export const V2dot22Update = ({}: Props) => (
           <Heading style={heading}>New graph gestures</Heading>
           <Text style={text}>
             At last! You can select multiple groups, move them together, and
-            duplicate them, accross all typebots.
+            duplicate them, accross all snipers.
           </Text>
           <Img
             src={`${imagesBaseUrl}/groupSelection.gif`}
@@ -101,7 +101,7 @@ export const V2dot22Update = ({}: Props) => (
             <br />
             <span style={{ fontWeight: 'bold' }}>QR Code</span>: generate a QR
             code image URL on the fly to use in your chat. Super useful for
-            typebots displayed on physical devices in a store or at an event.
+            snipers displayed on physical devices in a store or at an event.
             <br />
             <br />
             <span style={{ fontWeight: 'bold' }}>Mistral</span>: an alternative
@@ -110,7 +110,7 @@ export const V2dot22Update = ({}: Props) => (
             <br />
             <br />
             <span style={{ fontWeight: 'bold' }}>Dify.AI</span>: craft your own
-            AI agent on Dify and consume it directly on Typebot to have the best
+            AI agent on Dify and consume it directly on Sniper to have the best
             of both worlds.
           </Text>
           <Img
@@ -149,7 +149,7 @@ export const V2dot22Update = ({}: Props) => (
             🧠 Tools / functions support in OpenAI block
             <br />
             <br />
-            🔒 New "Allowed origins" typebot settings to make sure your typebot
+            🔒 New "Allowed origins" sniper settings to make sure your sniper
             can only be ran from your domain.
             <br />
             <br />
@@ -174,13 +174,13 @@ export const V2dot22Update = ({}: Props) => (
           src={`${env.NEXTAUTH_URL}/images/logo.png`}
           width="32"
           height="32"
-          alt="Typebot's Logo"
+          alt="Sniper's Logo"
           style={{
             marginTop: '24px',
           }}
         />
 
-        <Text style={footer}>Typebot.io - Powering Conversations at Scale</Text>
+        <Text style={footer}>Sniper.io - Powering Conversations at Scale</Text>
         <Link
           href="{{unsubscribe}}"
           target="_blank"

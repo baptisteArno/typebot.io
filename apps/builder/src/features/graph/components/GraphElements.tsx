@@ -1,13 +1,13 @@
-import { Edge, GroupV6, TEvent } from '@typebot.io/schemas'
+import { Edge, GroupV6, TEvent } from '@sniper.io/schemas'
 import {
   TotalAnswers,
   TotalVisitedEdges,
-} from '@typebot.io/schemas/features/analytics'
+} from '@sniper.io/schemas/features/analytics'
 import React, { memo } from 'react'
 import { EndpointsProvider } from '../providers/EndpointsProvider'
 import { Edges } from './edges/Edges'
 import { GroupNode } from './nodes/group/GroupNode'
-import { isInputBlock } from '@typebot.io/schemas/helpers'
+import { isInputBlock } from '@sniper.io/schemas/helpers'
 import { EventNode } from './nodes/event'
 
 type Props = {

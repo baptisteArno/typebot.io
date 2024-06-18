@@ -2,7 +2,7 @@ import { CommandData } from '../types'
 
 export const hidePreviewMessage = () => {
   const message: CommandData = {
-    isFromTypebot: true,
+    isFromSniper: true,
     command: 'hidePreviewMessage',
   }
   window.postMessage(message)

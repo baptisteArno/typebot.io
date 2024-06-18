@@ -1,6 +1,6 @@
 import { useTranslate } from '@tolgee/react'
 import { Box, Text, Image } from '@chakra-ui/react'
-import { ImageBubbleBlock } from '@typebot.io/schemas'
+import { ImageBubbleBlock } from '@sniper.io/schemas'
 
 type Props = {
   block: ImageBubbleBlock

@@ -1,12 +1,12 @@
-import prisma from '@typebot.io/lib/prisma'
-import { Prisma, SetVariableHistoryItem, VisitedEdge } from '@typebot.io/prisma'
-import { ContinueChatResponse, TypebotInSession } from '@typebot.io/schemas'
-import { filterNonSessionVariablesWithValues } from '@typebot.io/variables/filterVariablesWithValues'
+import prisma from '@sniper.io/lib/prisma'
+import { Prisma, SetVariableHistoryItem, VisitedEdge } from '@sniper.io/prisma'
+import { ContinueChatResponse, SniperInSession } from '@sniper.io/schemas'
+import { filterNonSessionVariablesWithValues } from '@sniper.io/variables/filterVariablesWithValues'
 import { formatLogDetails } from '../logs/helpers/formatLogDetails'
 
 type Props = {
   resultId: string
-  typebot: TypebotInSession
+  sniper: SniperInSession
   hasStarted: boolean
   isCompleted: boolean
   lastChatSessionId?: string
@@ -16,7 +16,7 @@ type Props = {
 }
 export const upsertResult = ({
   resultId,
-  typebot,
+  sniper,
   hasStarted,
   isCompleted,
   lastChatSessionId,
@@ -25,7 +25,7 @@ export const upsertResult = ({
   setVariableHistory,
 }: Props): Prisma.PrismaPromise<any> => {
   const variablesWithValue = filterNonSessionVariablesWithValues(
-    typebot.variables
+    sniper.variables
   )
   const logsToCreate =
     logs && logs.length > 0
@@ -77,7 +77,7 @@ export const upsertResult = ({
     },
     create: {
       id: resultId,
-      typebotId: typebot.id,
+      sniperId: sniper.id,
       isCompleted: isCompleted ? true : false,
       hasStarted,
       variables: variablesWithValue,

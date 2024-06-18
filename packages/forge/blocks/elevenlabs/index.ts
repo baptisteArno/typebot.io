@@ -1,4 +1,4 @@
-import { createBlock } from '@typebot.io/forge'
+import { createBlock } from '@sniper.io/forge'
 import { ElevenlabsLogo, ElevenlabsLogoDark } from './logo'
 import { auth } from './auth'
 import { convertTextToSpeech } from './actions/convertTextToSpeech'
@@ -11,5 +11,5 @@ export const elevenlabsBlock = createBlock({
   DarkLogo: ElevenlabsLogoDark,
   auth,
   actions: [convertTextToSpeech],
-  docsUrl: 'https://docs.typebot.io/forge/blocks/elevenlabs',
+  docsUrl: 'https://docs.sniper.io/forge/blocks/elevenlabs',
 })

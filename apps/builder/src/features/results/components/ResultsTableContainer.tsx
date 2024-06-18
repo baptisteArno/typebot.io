@@ -1,7 +1,7 @@
 import { Stack } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { LogsModal } from './LogsModal'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { useResults } from '../ResultsProvider'
 import { ResultModal } from './ResultModal'
 import { ResultsTable } from './table/ResultsTable'
@@ -24,7 +24,7 @@ export const ResultsTableContainer = ({
     resultHeader,
     tableData,
   } = useResults()
-  const { typebot, publishedTypebot } = useTypebot()
+  const { sniper, publishedSniper } = useSniper()
   const [inspectingLogsResultId, setInspectingLogsResultId] = useState<
     string | null
   >(null)
@@ -50,9 +50,9 @@ export const ResultsTableContainer = ({
 
   return (
     <Stack pb="28" px={['4', '0']} spacing="4" maxW="1600px" w="full">
-      {publishedTypebot && (
+      {publishedSniper && (
         <LogsModal
-          typebotId={publishedTypebot?.typebotId}
+          sniperId={publishedSniper?.sniperId}
           resultId={inspectingLogsResultId}
           onClose={handleLogsModalClose}
         />
@@ -62,9 +62,9 @@ export const ResultsTableContainer = ({
         onClose={handleResultModalClose}
       />
 
-      {typebot && (
+      {sniper && (
         <ResultsTable
-          preferences={typebot.resultsTablePreferences ?? undefined}
+          preferences={sniper.resultsTablePreferences ?? undefined}
           resultHeader={resultHeader}
           data={tableData}
           onScrollToBottom={fetchNextPage}

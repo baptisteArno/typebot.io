@@ -1,16 +1,16 @@
 import React from 'react'
 import { Tag, Text } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { byId, isDefined } from '@typebot.io/lib'
-import { JumpBlock } from '@typebot.io/schemas/features/blocks/logic/jump'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
+import { byId, isDefined } from '@sniper.io/lib'
+import { JumpBlock } from '@sniper.io/schemas/features/blocks/logic/jump'
 
 type Props = {
   options: JumpBlock['options']
 }
 
 export const JumpNodeBody = ({ options }: Props) => {
-  const { typebot } = useTypebot()
-  const selectedGroup = typebot?.groups.find(byId(options?.groupId))
+  const { sniper } = useSniper()
+  const selectedGroup = sniper?.groups.find(byId(options?.groupId))
   const blockIndex = selectedGroup?.blocks.findIndex(byId(options?.blockId))
   if (!selectedGroup) return <Text color="gray.500">Configure...</Text>
   return (

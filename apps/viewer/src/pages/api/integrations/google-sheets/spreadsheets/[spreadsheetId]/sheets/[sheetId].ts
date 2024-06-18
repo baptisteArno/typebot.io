@@ -4,23 +4,23 @@ import {
   initMiddleware,
   methodNotAllowed,
   notFound,
-} from '@typebot.io/lib/api'
-import { hasValue, isDefined } from '@typebot.io/lib'
+} from '@sniper.io/lib/api'
+import { hasValue, isDefined } from '@sniper.io/lib'
 import { GoogleSpreadsheet, GoogleSpreadsheetRow } from 'google-spreadsheet'
 import {
   GoogleSheetsGetOptions,
   GoogleSheetsInsertRowOptions,
   GoogleSheetsUpdateRowOptions,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import Cors from 'cors'
 import { getAuthenticatedGoogleClient } from '@/lib/google-sheets'
-import { saveErrorLog } from '@typebot.io/bot-engine/logs/saveErrorLog'
-import { saveSuccessLog } from '@typebot.io/bot-engine/logs/saveSuccessLog'
-import { GoogleSheetsAction } from '@typebot.io/schemas/features/blocks/integrations/googleSheets/constants'
+import { saveErrorLog } from '@sniper.io/bot-engine/logs/saveErrorLog'
+import { saveSuccessLog } from '@sniper.io/bot-engine/logs/saveSuccessLog'
+import { GoogleSheetsAction } from '@sniper.io/schemas/features/blocks/integrations/googleSheets/constants'
 import {
   ComparisonOperators,
   LogicalOperator,
-} from '@typebot.io/schemas/features/blocks/logic/condition/constants'
+} from '@sniper.io/schemas/features/blocks/logic/condition/constants'
 
 const cors = initMiddleware(Cors())
 

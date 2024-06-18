@@ -1,5 +1,5 @@
 {
-  "name": "@typebot.io/anthropic-block",
+  "name": "@sniper.io/anthropic-block",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
@@ -7,9 +7,9 @@
   "author": "Enchatted P.C.",
   "license": "AGPL-3.0-or-later",
   "devDependencies": {
-    "@typebot.io/forge": "workspace:*",
-    "@typebot.io/lib": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
+    "@sniper.io/forge": "workspace:*",
+    "@sniper.io/lib": "workspace:*",
+    "@sniper.io/tsconfig": "workspace:*",
     "@types/react": "18.2.15",
     "typescript": "5.4.5"
   },

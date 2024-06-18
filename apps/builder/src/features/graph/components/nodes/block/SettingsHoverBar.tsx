@@ -6,7 +6,7 @@ import {
   Link,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { BlockWithOptions } from '@typebot.io/schemas'
+import { BlockWithOptions } from '@sniper.io/schemas'
 import { getHelpDocUrl } from '@/features/graph/helpers/getHelpDocUrl'
 import { useForgedBlock } from '@/features/forge/hooks/useForgedBlock'
 import { useTranslate } from '@tolgee/react'

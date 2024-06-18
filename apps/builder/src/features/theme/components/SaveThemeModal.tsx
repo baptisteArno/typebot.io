@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import { createId } from '@paralleldrive/cuid2'
 import { useTranslate } from '@tolgee/react'
-import { ThemeTemplate } from '@typebot.io/schemas'
+import { ThemeTemplate } from '@sniper.io/schemas'
 import { FormEvent, useRef, useState } from 'react'
 
 type Props = {

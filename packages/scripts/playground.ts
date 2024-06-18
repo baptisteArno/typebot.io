@@ -1,4 +1,4 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { PrismaClient } from '@sniper.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 
 const executePlayground = async () => {
@@ -25,7 +25,7 @@ const executePlayground = async () => {
     },
     include: {
       members: true,
-      typebots: {
+      snipers: {
         select: {
           name: true,
           riskLevel: true,

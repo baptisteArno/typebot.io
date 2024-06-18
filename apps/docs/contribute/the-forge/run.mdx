@@ -156,7 +156,7 @@ The web function needs to return an object with `args` and `content`.
 ## Display embed bubble
 
 If you want to display a custom embed bubble, you can use the `displayEmbedBubble` object. See [Cal.com
-block](https://github.com/baptisteArno/typebot.io/blob/main/packages/forge/blocks/calCom/actions/bookEvent.ts)
+block](https://github.com/baptisteArno/sniper.io/blob/main/packages/forge/blocks/calCom/actions/bookEvent.ts)
 as an example.
 
 Example:
@@ -214,7 +214,7 @@ export const bookEvent = createAction({
               Cal("init", { origin: baseUrl });
 
               Cal("inline", {
-                elementOrSelector: typebotElement,
+                elementOrSelector: sniperElement,
                 calLink: link,
                 layout,
                 config: {
@@ -247,6 +247,6 @@ export const bookEvent = createAction({
 })
 ```
 
-The `displayEmbedBubble` accepts a `parseInitFunction` function. This function needs to return the same object as the [`web` function](./run#client-function). The function content can use the `typebotElement` variable to get the DOM element where the block is rendered.
+The `displayEmbedBubble` accepts a `parseInitFunction` function. This function needs to return the same object as the [`web` function](./run#client-function). The function content can use the `sniperElement` variable to get the DOM element where the block is rendered.
 
 Optionally you can also define a `waitForEvent` object. This object accepts a `getSaveVariableId` function that returns the variable id where the event data should be saved. It also accepts a `parseFunction` function that returns the same object as the [`web` function](./run#client-function). The function content can use the `continueFlow` function to continue the flow with the event data.

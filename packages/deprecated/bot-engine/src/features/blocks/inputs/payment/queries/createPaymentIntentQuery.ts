@@ -1,5 +1,5 @@
-import { PaymentInputBlock, Variable } from '@typebot.io/schemas'
-import { sendRequest } from '@typebot.io/lib'
+import { PaymentInputBlock, Variable } from '@sniper.io/schemas'
+import { sendRequest } from '@sniper.io/lib'
 
 export const createPaymentIntentQuery = ({
   apiHost,

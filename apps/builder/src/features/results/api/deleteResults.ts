@@ -1,16 +1,16 @@
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
-import { archiveResults } from '@typebot.io/results/archiveResults'
-import prisma from '@typebot.io/lib/prisma'
-import { isWriteTypebotForbidden } from '@/features/typebot/helpers/isWriteTypebotForbidden'
-import { Typebot } from '@typebot.io/schemas'
+import { archiveResults } from '@sniper.io/results/archiveResults'
+import prisma from '@sniper.io/lib/prisma'
+import { isWriteSniperForbidden } from '@/features/sniper/helpers/isWriteSniperForbidden'
+import { Sniper } from '@sniper.io/schemas'
 
 export const deleteResults = authenticatedProcedure
   .meta({
     openapi: {
       method: 'DELETE',
-      path: '/v1/typebots/{typebotId}/results',
+      path: '/v1/snipers/{sniperId}/results',
       protect: true,
       summary: 'Delete results',
       tags: ['Results'],
@@ -18,10 +18,10 @@ export const deleteResults = authenticatedProcedure
   })
   .input(
     z.object({
-      typebotId: z
+      sniperId: z
         .string()
         .describe(
-          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+          "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)"
         ),
       resultIds: z
         .string()
@@ -34,10 +34,10 @@ export const deleteResults = authenticatedProcedure
   .output(z.void())
   .mutation(async ({ input, ctx: { user } }) => {
     const idsArray = input.resultIds?.split(',')
-    const { typebotId } = input
-    const typebot = await prisma.typebot.findUnique({
+    const { sniperId } = input
+    const sniper = await prisma.sniper.findUnique({
       where: {
-        id: typebotId,
+        id: sniperId,
       },
       select: {
         groups: true,
@@ -61,21 +61,21 @@ export const deleteResults = authenticatedProcedure
         },
       },
     })
-    if (!typebot || (await isWriteTypebotForbidden(typebot, user)))
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+    if (!sniper || (await isWriteSniperForbidden(sniper, user)))
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Sniper not found' })
     const { success } = await archiveResults(prisma)({
-      typebot: {
-        groups: typebot.groups,
-      } as Pick<Typebot, 'groups'>,
+      sniper: {
+        groups: sniper.groups,
+      } as Pick<Sniper, 'groups'>,
       resultsFilter: {
         id: (idsArray?.length ?? 0) > 0 ? { in: idsArray } : undefined,
-        typebotId,
+        sniperId,
       },
     })
 
     if (!success)
       throw new TRPCError({
         code: 'NOT_FOUND',
-        message: 'Typebot not found',
+        message: 'Sniper not found',
       })
   })

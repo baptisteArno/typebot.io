@@ -1,5 +1,5 @@
-import { Variable, VariableWithValue } from '@typebot.io/schemas'
-import { isDefined, isNotDefined } from '@typebot.io/lib'
+import { Variable, VariableWithValue } from '@sniper.io/schemas'
+import { isDefined, isNotDefined } from '@sniper.io/lib'
 
 export const stringContainsVariable = (str: string): boolean =>
   /\{\{(.*?)\}\}/g.test(str)

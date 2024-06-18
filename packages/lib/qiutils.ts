@@ -28,7 +28,7 @@ const disabledLogic = [
   // 'Condition',
   // 'Redirect',
   // 'Code',
-  // 'Typebot link',
+  // 'Sniper link',
   // 'Wait',
   // 'Jump',
   // 'AB test',

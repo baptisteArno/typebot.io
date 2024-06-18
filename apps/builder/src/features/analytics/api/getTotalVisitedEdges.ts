@@ -1,9 +1,9 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
-import { canReadTypebots } from '@/helpers/databaseRules'
-import { totalVisitedEdgesSchema } from '@typebot.io/schemas'
+import { canReadSnipers } from '@/helpers/databaseRules'
+import { totalVisitedEdgesSchema } from '@sniper.io/schemas'
 import { defaultTimeFilter, timeFilterValues } from '../constants'
 import {
   parseFromDateFromTimeFilter,
@@ -14,7 +14,7 @@ export const getTotalVisitedEdges = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/v1/typebots/{typebotId}/analytics/totalVisitedEdges',
+      path: '/v1/snipers/{sniperId}/analytics/totalVisitedEdges',
       protect: true,
       summary: 'List total edges used in results',
       tags: ['Analytics'],
@@ -22,7 +22,7 @@ export const getTotalVisitedEdges = authenticatedProcedure
   })
   .input(
     z.object({
-      typebotId: z.string(),
+      sniperId: z.string(),
       timeFilter: z.enum(timeFilterValues).default(defaultTimeFilter),
       timeZone: z.string().optional(),
     })
@@ -33,15 +33,15 @@ export const getTotalVisitedEdges = authenticatedProcedure
     })
   )
   .query(
-    async ({ input: { typebotId, timeFilter, timeZone }, ctx: { user } }) => {
-      const typebot = await prisma.typebot.findFirst({
-        where: canReadTypebots(typebotId, user),
+    async ({ input: { sniperId, timeFilter, timeZone }, ctx: { user } }) => {
+      const sniper = await prisma.sniper.findFirst({
+        where: canReadSnipers(sniperId, user),
         select: { id: true },
       })
-      if (!typebot?.id)
+      if (!sniper?.id)
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'Published typebot not found',
+          message: 'Published sniper not found',
         })
 
       const fromDate = parseFromDateFromTimeFilter(timeFilter, timeZone)
@@ -51,7 +51,7 @@ export const getTotalVisitedEdges = authenticatedProcedure
         by: ['edgeId'],
         where: {
           result: {
-            typebotId: typebot.id,
+            sniperId: sniper.id,
             createdAt: fromDate
               ? {
                   gte: fromDate,

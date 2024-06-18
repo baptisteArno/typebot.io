@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
-import type { BotProps } from '@typebot.io/js'
-import '@typebot.io/js/dist/web'
+import type { BotProps } from '@sniper.io/js'
+import '@sniper.io/js/dist/web'
 
 type Props = BotProps & {
   style?: React.CSSProperties
@@ -10,7 +10,7 @@ type Props = BotProps & {
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      'typebot-standard': React.DetailedHTMLProps<
+      'sniper-standard': React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,
         HTMLElement
       > & { class?: string }
@@ -28,7 +28,7 @@ export const Standard = ({ style, className, ...assignableProps }: Props) => {
     Object.assign(ref.current, assignableProps)
   }, [assignableProps])
 
-  return <typebot-standard ref={ref} style={style} class={className} />
+  return <sniper-standard ref={ref} style={style} class={className} />
 }
 
 export default Standard

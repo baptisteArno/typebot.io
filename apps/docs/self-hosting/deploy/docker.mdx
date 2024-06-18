@@ -3,13 +3,13 @@ title: Docker
 ---
 
 <Info>
-  The easiest way to get started with Typebot is with [the official managed
-  service in the Cloud](https://app.typebot.io). You'll have high availability,
+  The easiest way to get started with Sniper is with [the official managed
+  service in the Cloud](https://app.sniper.io). You'll have high availability,
   backups, security, and maintenance all managed for you by me, Baptiste,
-  Typebot's founder. The cloud version can save a substantial amount of
-  developer time and resources. For most sites this ends up being the best value
-  option and the revenue goes to funding the maintenance and further development
-  of Typebot. So you'll be supporting open source software and getting a great
+  Sniper's founder. The cloud version can save a substantial amount of developer
+  time and resources. For most sites this ends up being the best value option
+  and the revenue goes to funding the maintenance and further development of
+  Sniper. So you'll be supporting open source software and getting a great
   service!
 </Info>
 
@@ -24,8 +24,8 @@ You need a server with Docker installed. If your server doesn't come with Docker
 On your server, download the latest `docker-compose.yml` and the starter `.env` file:
 
 ```sh
- wget https://raw.githubusercontent.com/baptisteArno/typebot.io/latest/docker-compose.yml
- wget https://raw.githubusercontent.com/baptisteArno/typebot.io/latest/.env.example -O .env
+ wget https://raw.githubusercontent.com/baptisteArno/sniper.io/latest/docker-compose.yml
+ wget https://raw.githubusercontent.com/baptisteArno/sniper.io/latest/.env.example -O .env
 ```
 
 ### 2. Add the required configuration
@@ -39,7 +39,7 @@ On your server, download the latest `docker-compose.yml` and the starter `.env` 
 2. Fill the `.env` file with your values.
 3. Configure at least one authentication provider (Email, Google, GitHub, Facebook or GitLab). More info here: [Configuration](../configuration).
 
-By default the compose file will pull the latest stable Typebot images: `baptistearno/typebot-builder:latest` and `baptistearno/typebot-viewer:latest`. You can decide to replace `latest` with a specific version. You can find all the existing tags [here](https://hub.docker.com/r/baptistearno/typebot-builder/tags)
+By default the compose file will pull the latest stable Sniper images: `baptistearno/sniper-builder:latest` and `baptistearno/sniper-viewer:latest`. You can decide to replace `latest` with a specific version. You can find all the existing tags [here](https://hub.docker.com/r/baptistearno/sniper-builder/tags)
 
 ### 3. Start the server
 
@@ -55,28 +55,28 @@ When you run this command, by default, it does the following:
 - Run the migrations
 - Start the builder on port 8080
 - Start the viewer on port 8081
-- All Typebot's data is stored in the `.typebot` folder in the current directory
+- All Sniper's data is stored in the `.sniper` folder in the current directory
 
-You can now navigate to `http://typebot.domain.com:8080` and see the login screen. Login with the admin email to have access to a Team plan workspace automatically.
+You can now navigate to `http://sniper.domain.com:8080` and see the login screen. Login with the admin email to have access to a Team plan workspace automatically.
 
-Typebot server itself does not perform SSL termination. It only runs on unencrypted HTTP. If you want to run on HTTPS you also need to set up a reverse proxy in front of the server. See below instructions.
+Sniper server itself does not perform SSL termination. It only runs on unencrypted HTTP. If you want to run on HTTPS you also need to set up a reverse proxy in front of the server. See below instructions.
 
-### Update Typebot
+### Update Sniper
 
-Typebot is updated regularly, but it is up to you to apply these updates on your server. By virtue of using Docker, these updates are safe and easy to apply.
+Sniper is updated regularly, but it is up to you to apply these updates on your server. By virtue of using Docker, these updates are safe and easy to apply.
 
 1. Pull the new images:
 
    ```sh
-   docker-compose pull typebot-builder
-   docker-compose pull typebot-viewer
+   docker-compose pull sniper-builder
+   docker-compose pull sniper-viewer
    ```
 
    Alternatively, you can pull specific versions:
 
    ```sh
-    docker-compose pull typebot-builder:1.0.0
-    docker-compose pull typebot-viewer:1.0.0
+    docker-compose pull sniper-builder:1.0.0
+    docker-compose pull sniper-viewer:1.0.0
    ```
 
 2. Stop the server:
@@ -91,19 +91,19 @@ Typebot is updated regularly, but it is up to you to apply these updates on your
     docker-compose up -d
    ```
 
-The self-hosted version is somewhat of a LTS, only getting the changes (~ once per month) after they have been battle tested on the cloud version. If you want features as soon as they are available, consider becoming a [cloud user](https://app.typebot.io).
+The self-hosted version is somewhat of a LTS, only getting the changes (~ once per month) after they have been battle tested on the cloud version. If you want features as soon as they are available, consider becoming a [cloud user](https://app.sniper.io).
 
 ## Optional extras
 
 ### Reverse proxy
 
-By default, Typebot runs on unencrypted HTTP on ports 8080 for the builder and 8081 for the viewer. We recommend running it on HTTPS behind a reverse proxy of some sort. You may or may not already be running a reverse proxy on your host, let's look at both options:
+By default, Sniper runs on unencrypted HTTP on ports 8080 for the builder and 8081 for the viewer. We recommend running it on HTTPS behind a reverse proxy of some sort. You may or may not already be running a reverse proxy on your host, let's look at both options:
 
 #### No existing reverse proxy
 
-If your DNS is managed by a service that offers a proxy option with automatic SSL management, feel free to use that. For example, you could use Cloudflare as a reverse proxy in front of Typebot.
+If your DNS is managed by a service that offers a proxy option with automatic SSL management, feel free to use that. For example, you could use Cloudflare as a reverse proxy in front of Sniper.
 
-Alternatively, you can run your Caddy server as a reverse proxy. This way your SSL certificate will be stored on the host machine and managed by Let's Encrypt. The Caddy server will expose port 443, terminate SSL traffic and proxy the requests to your Typebot server.
+Alternatively, you can run your Caddy server as a reverse proxy. This way your SSL certificate will be stored on the host machine and managed by Let's Encrypt. The Caddy server will expose port 443, terminate SSL traffic and proxy the requests to your Sniper server.
 
 Here is an example of a docker-compose file using Caddy as a reverse proxy:
 
@@ -116,21 +116,21 @@ services:
     restart: always
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - {$PWD}/.typebot/caddy-certificates:/data/caddy
+      - {$PWD}/.sniper/caddy-certificates:/data/caddy
     ports:
       - '80:80'
       - '443:443'
     depends_on:
-      - typebot-builder
-      - typebot-viewer
+      - sniper-builder
+      - sniper-viewer
 
-  typebot-builder:
+  sniper-builder:
     labels:
-      virtual.host: 'typebot.domain.com' # change to your domain name
+      virtual.host: 'sniper.domain.com' # change to your domain name
       virtual.port: '3000'
       virtual.tls-email: 'admin@example.com' # change to your email
 
-  typebot-viewer:
+  sniper-viewer:
     labels:
       virtual.host: 'bot.domain.com' # change to your domain name
       virtual.port: '3000'
@@ -140,15 +140,15 @@ services:
 This config requires you to add the following DNS entry:
 
 ```
-typebot IN A <server_ip>
+sniper IN A <server_ip>
 bot IN A <server_ip>
 ```
 
-You can merge this compose file with the first one. Make sure that `NEXTAUTH_URL` is set to `https://typebot.domain.com` and `NEXT_PUBLIC_VIEWER_URL` is set to `https://bot.domain.com`.
+You can merge this compose file with the first one. Make sure that `NEXTAUTH_URL` is set to `https://sniper.domain.com` and `NEXT_PUBLIC_VIEWER_URL` is set to `https://bot.domain.com`.
 
 When running the compose file, it should automatically enable SSL on your server and you should be able to navigate to:
 
-- `https://typebot.domain.com` for the builder
+- `https://sniper.domain.com` for the builder
 - `https://bot.domain.com` for the viewer
 
 #### Existing reverse proxy
@@ -176,10 +176,10 @@ And add the following variables to your `.env` file:
 
 ```
 SMTP_HOST=mail
-NEXT_PUBLIC_SMTP_FROM=notifications@typebot.domain.com
+NEXT_PUBLIC_SMTP_FROM=notifications@sniper.domain.com
 ```
 
-You will probably need to make sure that `typebot.domain.com` has a valid SPF record and that your server IP has a rDNS set up.
+You will probably need to make sure that `sniper.domain.com` has a valid SPF record and that your server IP has a rDNS set up.
 
 You can merge this compose file with the main one.
 
@@ -213,8 +213,8 @@ services:
       /bin/sh -c "
       sleep 10;
       /usr/bin/mc config host add minio http://minio:9000 minio minio123;
-      /usr/bin/mc mb minio/typebot;
-      /usr/bin/mc anonymous set public minio/typebot/public;
+      /usr/bin/mc mb minio/sniper;
+      /usr/bin/mc anonymous set public minio/sniper/public;
       exit 0;
       "
 ```
@@ -224,7 +224,7 @@ And add the following variables to your `.env` file:
 ```
 S3_ACCESS_KEY=minio
 S3_SECRET_KEY=minio123
-S3_BUCKET=typebot
+S3_BUCKET=sniper
 S3_ENDPOINT=storage.domain.com
 ```
 
@@ -238,7 +238,7 @@ You can merge this compose file with the main one.
 
 ## Config example with all the extras
 
-Here is a config example that spins up Typebot with HTTPS, SMTP and S3 storage.
+Here is a config example that spins up Sniper with HTTPS, SMTP and S3 storage.
 
 ```yml
 version: '3.3'
@@ -253,43 +253,43 @@ services:
     restart: always
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - {$PWD}/.typebot/caddy-certificates:/data/caddy
+      - {$PWD}/.sniper/caddy-certificates:/data/caddy
     ports:
       - '80:80'
       - '443:443'
     depends_on:
-      - typebot-builder
-      - typebot-viewer
-  typebot-db:
+      - sniper-builder
+      - sniper-viewer
+  sniper-db:
     image: postgres:14-alpine
     restart: always
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=typebot
-      - POSTGRES_PASSWORD=typebot
-  typebot-builder:
+      - POSTGRES_DB=sniper
+      - POSTGRES_PASSWORD=sniper
+  sniper-builder:
     labels:
-      virtual.host: 'typebot.domain.com' # change to your domain
+      virtual.host: 'sniper.domain.com' # change to your domain
       virtual.port: '3000'
       virtual.tls-email: 'admin@example.com' # change to your email
-    image: baptistearno/typebot-builder:latest
+    image: baptistearno/sniper-builder:latest
     restart: always
     depends_on:
-      - typebot-db
+      - sniper-db
     extra_hosts:
       - 'host.docker.internal:host-gateway'
-    # See https://docs.typebot.io/self-hosting/configuration for more configuration options
+    # See https://docs.sniper.io/self-hosting/configuration for more configuration options
     env_file:
       - .env
-  typebot-viewer:
+  sniper-viewer:
     labels:
       virtual.host: 'bot.domain.com' # change to your domain
       virtual.port: '3000'
       virtual.tls-email: 'admin@example.com' # change to your email
-    image: baptistearno/typebot-viewer:latest
+    image: baptistearno/sniper-viewer:latest
     restart: always
-    # See https://docs.typebot.io/self-hosting/configuration for more configuration options
+    # See https://docs.sniper.io/self-hosting/configuration for more configuration options
     env_file:
       - .env
   mail:
@@ -318,8 +318,8 @@ services:
       /bin/sh -c "
       sleep 10;
       /usr/bin/mc config host add minio http://minio:9000 minio minio123;
-      /usr/bin/mc mb minio/typebot;
-      /usr/bin/mc anonymous set public minio/typebot/public;
+      /usr/bin/mc mb minio/sniper;
+      /usr/bin/mc anonymous set public minio/sniper/public;
       exit 0;
       "
 ```
@@ -329,17 +329,17 @@ services:
 To build your own builder Docker image
 
 ```sh
-docker build -t typebot-builder --build-arg SCOPE=builder .
+docker build -t sniper-builder --build-arg SCOPE=builder .
 ```
 
 To build your own viewer Docker image
 
 ```sh
-docker build -t typebot-viewer --build-arg SCOPE=viewer .
+docker build -t sniper-viewer --build-arg SCOPE=viewer .
 ```
 
 <Note>
-  If you're self-hosting Typebot, [sponsoring
+  If you're self-hosting Sniper, [sponsoring
   me](https://github.com/sponsors/baptisteArno) is a great way to give back to
   the community and to contribute to the long-term sustainability of the
   project. It also comes with some perks like priority support and private

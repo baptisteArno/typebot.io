@@ -1,4 +1,4 @@
-import { option } from '@typebot.io/forge'
+import { option } from '@sniper.io/forge'
 import { defaultOpenAIOptions } from './constants'
 
 export const baseOptions = option

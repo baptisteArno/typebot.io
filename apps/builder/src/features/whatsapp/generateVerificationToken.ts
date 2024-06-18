@@ -1,5 +1,5 @@
 import { authenticatedProcedure } from '@/helpers/server/trpc'
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { createId } from '@paralleldrive/cuid2'
 
 export const generateVerificationToken = authenticatedProcedure.mutation(

@@ -1,7 +1,7 @@
 import { parseVariablesInObject } from '@/features/variables'
 import { sendGaEvent } from '@/lib/gtag'
 import { IntegrationState } from '@/types'
-import { GoogleAnalyticsBlock } from '@typebot.io/schemas'
+import { GoogleAnalyticsBlock } from '@sniper.io/schemas'
 
 export const executeGoogleAnalyticsBlock = async (
   block: GoogleAnalyticsBlock,

@@ -9,8 +9,8 @@ import {
 import React from 'react'
 import { TextInput } from '@/components/inputs'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
-import { WaitBlock } from '@typebot.io/schemas'
-import { defaultWaitOptions } from '@typebot.io/schemas/features/blocks/logic/wait/constants'
+import { WaitBlock } from '@sniper.io/schemas'
+import { defaultWaitOptions } from '@sniper.io/schemas/features/blocks/logic/wait/constants'
 
 type Props = {
   options: WaitBlock['options']

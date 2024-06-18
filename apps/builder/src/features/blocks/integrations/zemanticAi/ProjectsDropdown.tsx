@@ -1,5 +1,5 @@
 import { Select } from '@/components/inputs/Select'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'
 import { trpc } from '@/lib/trpc'
@@ -16,7 +16,7 @@ export const ProjectsDropdown = ({
   onChange,
   credentialsId,
 }: Props) => {
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
   const { workspace } = useWorkspace()
   const { showToast } = useToast()
 
@@ -26,7 +26,7 @@ export const ProjectsDropdown = ({
       workspaceId: workspace?.id as string,
     },
     {
-      enabled: !!typebot && !!workspace,
+      enabled: !!sniper && !!workspace,
       onError: (error) => {
         showToast({
           description: error.message,

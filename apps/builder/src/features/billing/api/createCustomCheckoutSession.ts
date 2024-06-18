@@ -1,6 +1,6 @@
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { z } from 'zod'
-import { createCustomCheckoutSession as createCustomCheckoutSessionHandler } from '@typebot.io/billing/api/createCustomCheckoutSession'
+import { createCustomCheckoutSession as createCustomCheckoutSessionHandler } from '@sniper.io/billing/api/createCustomCheckoutSession'
 
 export const createCustomCheckoutSession = authenticatedProcedure
   .meta({

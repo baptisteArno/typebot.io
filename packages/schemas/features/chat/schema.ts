@@ -14,7 +14,7 @@ import {
   urlInputSchema,
 } from '../blocks'
 import { logSchema } from '../result'
-import { settingsSchema, themeSchema } from '../typebot'
+import { settingsSchema, themeSchema } from '../sniper'
 import {
   textBubbleContentSchema,
   imageBubbleContentSchema,
@@ -24,11 +24,11 @@ import {
 } from '../blocks/bubbles'
 import { sessionStateSchema } from './sessionState'
 import { dynamicThemeSchema } from './shared'
-import { preprocessTypebot } from '../typebot/helpers/preprocessTypebot'
-import { typebotV5Schema, typebotV6Schema } from '../typebot/typebot'
+import { preprocessSniper } from '../sniper/helpers/preprocessSniper'
+import { sniperV5Schema, sniperV6Schema } from '../sniper/sniper'
 import { BubbleBlockType } from '../blocks/bubbles/constants'
 import { clientSideActionSchema } from './clientSideAction'
-import { ChatSession as ChatSessionFromPrisma } from '@typebot.io/prisma'
+import { ChatSession as ChatSessionFromPrisma } from '@sniper.io/prisma'
 
 const chatSessionSchema = z.object({
   id: z.string(),
@@ -145,7 +145,7 @@ export const chatMessageSchema = z
   )
 export type ChatMessage = z.infer<typeof chatMessageSchema>
 
-const startTypebotPick = {
+const startSniperPick = {
   version: true,
   id: true,
   groups: true,
@@ -155,20 +155,20 @@ const startTypebotPick = {
   settings: true,
   theme: true,
 } as const
-export const startTypebotSchema = z.preprocess(
-  preprocessTypebot,
+export const startSniperSchema = z.preprocess(
+  preprocessSniper,
   z.discriminatedUnion('version', [
-    typebotV5Schema._def.schema.pick(startTypebotPick).openapi({
-      title: 'Typebot V5',
-      ref: 'typebotV5',
+    sniperV5Schema._def.schema.pick(startSniperPick).openapi({
+      title: 'Sniper V5',
+      ref: 'sniperV5',
     }),
-    typebotV6Schema.pick(startTypebotPick).openapi({
-      title: 'Typebot V6',
-      ref: 'typebotV6',
+    sniperV6Schema.pick(startSniperPick).openapi({
+      title: 'Sniper V6',
+      ref: 'sniperV6',
     }),
   ])
 )
-export type StartTypebot = z.infer<typeof startTypebotSchema>
+export type StartSniper = z.infer<typeof startSniperSchema>
 
 export const chatLogSchema = logSchema
   .pick({
@@ -237,10 +237,10 @@ export const startFromSchema = z.discriminatedUnion('type', [
 export type StartFrom = z.infer<typeof startFromSchema>
 
 export const startPreviewChatInputSchema = z.object({
-  typebotId: z
+  sniperId: z
     .string()
     .describe(
-      "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+      "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)"
     ),
   isStreamEnabled: z.boolean().optional().default(false),
   message: z.string().optional(),
@@ -251,10 +251,10 @@ export const startPreviewChatInputSchema = z.object({
       'If set to `true`, it will only register the session and not start the bot. This is used for 3rd party chat platforms as it can require a session to be registered before sending the first message.'
     )
     .default(false),
-  typebot: startTypebotSchema
+  sniper: startSniperSchema
     .optional()
     .describe(
-      'If set, it will override the typebot that is used to start the chat.'
+      'If set, it will override the sniper that is used to start the chat.'
     ),
   startFrom: startFromSchema.optional(),
   prefilledVariables: z
@@ -282,7 +282,7 @@ export type StartPreviewChatInput = z.infer<typeof startPreviewChatInputSchema>
 export const runtimeOptionsSchema = paymentInputRuntimeOptionsSchema.optional()
 export type RuntimeOptions = z.infer<typeof runtimeOptionsSchema>
 
-const typebotInChatReplyPick = {
+const sniperInChatReplyPick = {
   version: true,
   id: true,
   groups: true,
@@ -291,11 +291,11 @@ const typebotInChatReplyPick = {
   settings: true,
   theme: true,
 } as const
-export const typebotInChatReply = z.preprocess(
-  preprocessTypebot,
+export const sniperInChatReply = z.preprocess(
+  preprocessSniper,
   z.discriminatedUnion('version', [
-    typebotV5Schema._def.schema.pick(typebotInChatReplyPick),
-    typebotV6Schema.pick(typebotInChatReplyPick),
+    sniperV5Schema._def.schema.pick(sniperInChatReplyPick),
+    sniperV6Schema.pick(sniperInChatReplyPick),
   ])
 )
 
@@ -346,7 +346,7 @@ const chatResponseBaseSchema = z.object({
   dynamicTheme: dynamicThemeSchema
     .optional()
     .describe(
-      'If the typebot contains dynamic avatars, dynamicTheme returns the new avatar URLs whenever their variables are updated.'
+      'If the sniper contains dynamic avatars, dynamicTheme returns the new avatar URLs whenever their variables are updated.'
     ),
   progress: z
     .number()
@@ -362,7 +362,7 @@ export const startChatResponseSchema = z
       .string()
       .describe('To save and use for /continueChat requests.'),
     resultId: z.string().optional(),
-    typebot: z.object({
+    sniper: z.object({
       id: z.string(),
       theme: themeSchema,
       settings: settingsSchema,

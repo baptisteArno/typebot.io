@@ -11,8 +11,7 @@ export const mockSessionResponsesToOtherUser = async (page: Page) =>
     return route.continue()
   })
 
-export const typebotViewer = (page: Page) =>
-  page.frameLocator('#typebot-iframe')
+export const sniperViewer = (page: Page) => page.frameLocator('#sniper-iframe')
 
 export const waitForSuccessfulPutRequest = (page: Page) =>
   page.waitForResponse(

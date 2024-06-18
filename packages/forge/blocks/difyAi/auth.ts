@@ -1,6 +1,6 @@
-import { option, AuthDefinition } from '@typebot.io/forge'
+import { option, AuthDefinition } from '@sniper.io/forge'
 import { defaultBaseUrl } from './constants'
-import { isURL } from '@typebot.io/lib/validators/isURL'
+import { isURL } from '@sniper.io/lib/validators/isURL'
 
 const extractBaseUrl = (val: string | undefined) => {
   if (!val) return val

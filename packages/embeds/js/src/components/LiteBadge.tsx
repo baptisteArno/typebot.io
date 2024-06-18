@@ -1,5 +1,5 @@
 import { onCleanup, onMount } from 'solid-js'
-import { TypebotLogo } from './icons/TypebotLogo'
+import { SniperLogo } from './icons/SniperLogo'
 
 type Props = {
   botContainer: HTMLDivElement | undefined
@@ -40,14 +40,14 @@ export const LiteBadge = (props: Props) => {
   return (
     <a
       ref={liteBadge}
-      href={'https://www.typebot.io/?utm_source=litebadge'}
+      href={'https://www.sniper.io/?utm_source=litebadge'}
       target="_blank"
       rel="noopener noreferrer"
       class="lite-badge"
       id="lite-badge"
     >
-      <TypebotLogo />
-      <span>Made with Typebot</span>
+      <SniperLogo />
+      <span>Made with Sniper</span>
     </a>
   )
 }

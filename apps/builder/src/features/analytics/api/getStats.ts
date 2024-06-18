@@ -1,9 +1,9 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
-import { canReadTypebots } from '@/helpers/databaseRules'
-import { Stats, statsSchema } from '@typebot.io/schemas'
+import { canReadSnipers } from '@/helpers/databaseRules'
+import { Stats, statsSchema } from '@sniper.io/schemas'
 import { defaultTimeFilter, timeFilterValues } from '../constants'
 import {
   parseFromDateFromTimeFilter,
@@ -14,7 +14,7 @@ export const getStats = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/v1/typebots/{typebotId}/analytics/stats',
+      path: '/v1/snipers/{sniperId}/analytics/stats',
       protect: true,
       summary: 'Get results stats',
       tags: ['Analytics'],
@@ -22,22 +22,22 @@ export const getStats = authenticatedProcedure
   })
   .input(
     z.object({
-      typebotId: z.string(),
+      sniperId: z.string(),
       timeFilter: z.enum(timeFilterValues).default(defaultTimeFilter),
       timeZone: z.string().optional(),
     })
   )
   .output(z.object({ stats: statsSchema }))
   .query(
-    async ({ input: { typebotId, timeFilter, timeZone }, ctx: { user } }) => {
-      const typebot = await prisma.typebot.findFirst({
-        where: canReadTypebots(typebotId, user),
-        select: { publishedTypebot: true, id: true },
+    async ({ input: { sniperId, timeFilter, timeZone }, ctx: { user } }) => {
+      const sniper = await prisma.sniper.findFirst({
+        where: canReadSnipers(sniperId, user),
+        select: { publishedSniper: true, id: true },
       })
-      if (!typebot?.publishedTypebot)
+      if (!sniper?.publishedSniper)
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'Published typebot not found',
+          message: 'Published sniper not found',
         })
 
       const fromDate = parseFromDateFromTimeFilter(timeFilter, timeZone)
@@ -47,7 +47,7 @@ export const getStats = authenticatedProcedure
         await prisma.$transaction([
           prisma.result.count({
             where: {
-              typebotId: typebot.id,
+              sniperId: sniper.id,
               isArchived: false,
               createdAt: fromDate
                 ? {
@@ -59,7 +59,7 @@ export const getStats = authenticatedProcedure
           }),
           prisma.result.count({
             where: {
-              typebotId: typebot.id,
+              sniperId: sniper.id,
               isArchived: false,
               hasStarted: true,
               createdAt: fromDate
@@ -72,7 +72,7 @@ export const getStats = authenticatedProcedure
           }),
           prisma.result.count({
             where: {
-              typebotId: typebot.id,
+              sniperId: sniper.id,
               isArchived: false,
               isCompleted: true,
               createdAt: fromDate

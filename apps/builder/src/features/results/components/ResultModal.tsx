@@ -11,10 +11,10 @@ import {
 } from '@chakra-ui/react'
 import { useResults } from '../ResultsProvider'
 import React from 'react'
-import { byId, isDefined } from '@typebot.io/lib'
+import { byId, isDefined } from '@sniper.io/lib'
 import { HeaderIcon } from './HeaderIcon'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { parseColumnsOrder } from '@typebot.io/results/parseColumnsOrder'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
+import { parseColumnsOrder } from '@sniper.io/results/parseColumnsOrder'
 
 type Props = {
   resultId: string | null
@@ -23,13 +23,13 @@ type Props = {
 
 export const ResultModal = ({ resultId, onClose }: Props) => {
   const { tableData, resultHeader } = useResults()
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
   const result = isDefined(resultId)
     ? tableData.find((data) => data.id.plainText === resultId)
     : undefined
 
   const columnsOrder = parseColumnsOrder(
-    typebot?.resultsTablePreferences?.columnsOrder,
+    sniper?.resultsTablePreferences?.columnsOrder,
     resultHeader
   )
 

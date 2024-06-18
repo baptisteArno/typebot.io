@@ -1,4 +1,4 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { PrismaClient } from '@sniper.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 
 const getUsage = async () => {
@@ -15,7 +15,7 @@ const getUsage = async () => {
 
   const count = await prisma.result.count({
     where: {
-      typebot: { workspaceId: '' },
+      sniper: { workspaceId: '' },
       hasStarted: true,
       createdAt: {
         gte: '2023-09-18T00:00:00.000Z',

@@ -1,7 +1,7 @@
 import { Select } from '@/components/inputs/Select'
-import { env } from '@typebot.io/env'
-import { GoogleFont } from '@typebot.io/schemas'
-import { defaultFontFamily } from '@typebot.io/schemas/features/typebot/theme/constants'
+import { env } from '@sniper.io/env'
+import { GoogleFont } from '@sniper.io/schemas'
+import { defaultFontFamily } from '@sniper.io/schemas/features/sniper/theme/constants'
 import { useState, useEffect } from 'react'
 
 type Props = {

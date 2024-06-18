@@ -58,7 +58,7 @@ export const SignInForm = ({
   useEffect(() => {
     if (status === 'authenticated') {
       const redirectPath = router.query.redirectPath?.toString()
-      router.replace(redirectPath ? sanitizeUrl(redirectPath) : '/typebots')
+      router.replace(redirectPath ? sanitizeUrl(redirectPath) : '/snipers')
       return
     }
     ;(async () => {
@@ -129,7 +129,7 @@ export const SignInForm = ({
       <Text>
         {t('auth.noProvider.preLink')}{' '}
         <TextLink
-          href="https://docs.typebot.io/self-hosting/configuration"
+          href="https://docs.sniper.io/self-hosting/configuration"
           isExternal
         >
           {t('auth.noProvider.link')}

@@ -1,5 +1,5 @@
-import type { ScriptToExecute } from '@typebot.io/schemas'
-import { safeStringify } from '@typebot.io/lib/safeStringify'
+import type { ScriptToExecute } from '@sniper.io/schemas'
+import { safeStringify } from '@sniper.io/lib/safeStringify'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor

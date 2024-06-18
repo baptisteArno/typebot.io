@@ -1,6 +1,6 @@
 import { TRPCError } from '@trpc/server'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
-import { getAuthenticatedGoogleClient } from '@typebot.io/lib/google'
+import { getAuthenticatedGoogleClient } from '@sniper.io/lib/google'
 
 export const getAuthenticatedGoogleDoc = async ({
   credentialsId,

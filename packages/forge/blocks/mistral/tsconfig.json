@@ -1,9 +1,18 @@
 {
-  "extends": "@typebot.io/tsconfig/base.json",
-  "include": ["**/*.ts", "**/*.tsx", "helpers/client.ts"],
-  "exclude": ["node_modules"],
+  "extends": "@sniper.io/tsconfig/base.json",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "helpers/client.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
   "compilerOptions": {
-    "lib": ["ESNext", "DOM"],
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
     "noEmit": true,
     "jsx": "preserve",
     "jsxImportSource": "react"

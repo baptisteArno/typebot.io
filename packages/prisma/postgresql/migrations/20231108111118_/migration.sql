@@ -1,8 +1,8 @@
 -- AlterTable
-ALTER TABLE "PublicTypebot" ADD COLUMN     "events" JSONB;
+ALTER TABLE "PublicSniper" ADD COLUMN     "events" JSONB;
 
 -- AlterTable
-ALTER TABLE "Typebot" ADD COLUMN     "events" JSONB;
+ALTER TABLE "Sniper" ADD COLUMN     "events" JSONB;
 
 -- CreateTable
 CREATE TABLE "VisitedEdge" (

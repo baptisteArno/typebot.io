@@ -1,6 +1,6 @@
 import { Tag, TagProps } from '@chakra-ui/react'
 import { LockedIcon } from '@/components/icons'
-import { Plan } from '@typebot.io/prisma'
+import { Plan } from '@sniper.io/prisma'
 import { planColorSchemes } from './PlanTag'
 
 export const LockTag = ({ plan, ...props }: { plan?: Plan } & TagProps) => (

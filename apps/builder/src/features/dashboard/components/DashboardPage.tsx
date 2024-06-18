@@ -6,15 +6,15 @@ import {
 } from '@/features/billing/components/PreCheckoutModal'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { Stack, VStack, Spinner, Text } from '@chakra-ui/react'
-import { Plan } from '@typebot.io/prisma'
+import { Plan } from '@sniper.io/prisma'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { DashboardHeader } from './DashboardHeader'
 import { FolderContent } from '@/features/folders/components/FolderContent'
-import { TypebotDndProvider } from '@/features/folders/TypebotDndProvider'
+import { SniperDndProvider } from '@/features/folders/SniperDndProvider'
 import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvider'
 import { trpc } from '@/lib/trpc'
-import { guessIfUserIsEuropean } from '@typebot.io/billing/helpers/guessIfUserIsEuropean'
+import { guessIfUserIsEuropean } from '@sniper.io/billing/helpers/guessIfUserIsEuropean'
 import { useTranslate } from '@tolgee/react'
 
 export const DashboardPage = () => {
@@ -43,7 +43,7 @@ export const DashboardPage = () => {
       createCustomCheckoutSession({
         email: user.email,
         workspaceId: workspace.id,
-        returnUrl: `${window.location.origin}/typebots`,
+        returnUrl: `${window.location.origin}/snipers`,
       })
     }
     if (workspace && subscribePlan && user && workspace.plan === 'FREE') {
@@ -70,7 +70,7 @@ export const DashboardPage = () => {
           />
         </ParentModalProvider>
       )}
-      <TypebotDndProvider>
+      <SniperDndProvider>
         {isLoading ? (
           <VStack w="full" justifyContent="center" pt="10" spacing={6}>
             <Text>{t('dashboard.redirectionMessage')}</Text>
@@ -79,7 +79,7 @@ export const DashboardPage = () => {
         ) : (
           <FolderContent folder={null} />
         )}
-      </TypebotDndProvider>
+      </SniperDndProvider>
     </Stack>
   )
 }

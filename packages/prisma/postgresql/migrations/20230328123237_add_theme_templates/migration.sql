@@ -1,5 +1,5 @@
 -- AlterTable
-ALTER TABLE "Typebot" ADD COLUMN     "selectedThemeTemplateId" TEXT;
+ALTER TABLE "Sniper" ADD COLUMN     "selectedThemeTemplateId" TEXT;
 
 -- CreateTable
 CREATE TABLE "ThemeTemplate" (

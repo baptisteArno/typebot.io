@@ -1,12 +1,12 @@
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { z } from 'zod'
 import { TRPCError } from '@trpc/server'
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { getUserRoleInWorkspace } from '@/features/workspace/helpers/getUserRoleInWorkspace'
-import { WorkspaceRole } from '@typebot.io/prisma'
-import { isWriteTypebotForbidden } from '@/features/typebot/helpers/isWriteTypebotForbidden'
-import { trackEvents } from '@typebot.io/telemetry/trackEvents'
-import { clientSideCreateEventSchema } from '@typebot.io/schemas'
+import { WorkspaceRole } from '@sniper.io/prisma'
+import { isWriteSniperForbidden } from '@/features/sniper/helpers/isWriteSniperForbidden'
+import { trackEvents } from '@sniper.io/telemetry/trackEvents'
+import { clientSideCreateEventSchema } from '@sniper.io/schemas'
 
 export const trackClientEvents = authenticatedProcedure
   .input(
@@ -33,12 +33,12 @@ export const trackClientEvents = authenticatedProcedure
         members: true,
       },
     })
-    const typebots = await prisma.typebot.findMany({
+    const snipers = await prisma.sniper.findMany({
       where: {
         id: {
           in: events
-            .filter((event) => 'typebotId' in event)
-            .map((event) => (event as { typebotId: string }).typebotId),
+            .filter((event) => 'sniperId' in event)
+            .map((event) => (event as { sniperId: string }).sniperId),
         },
       },
       select: {
@@ -79,12 +79,12 @@ export const trackClientEvents = authenticatedProcedure
           })
       }
 
-      if ('typebotId' in event) {
-        const typebot = typebots.find((t) => t.id === event.typebotId)
-        if (!typebot || (await isWriteTypebotForbidden(typebot, user)))
+      if ('sniperId' in event) {
+        const sniper = snipers.find((t) => t.id === event.sniperId)
+        if (!sniper || (await isWriteSniperForbidden(sniper, user)))
           throw new TRPCError({
             code: 'NOT_FOUND',
-            message: 'Typebot not found',
+            message: 'Sniper not found',
           })
       }
     }

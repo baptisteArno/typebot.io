@@ -1,5 +1,5 @@
-import { Variable, Cell } from '@typebot.io/schemas'
-import { parseVariables } from '@typebot.io/variables/parseVariables'
+import { Variable, Cell } from '@sniper.io/schemas'
+import { parseVariables } from '@sniper.io/variables/parseVariables'
 
 export const parseCellValues =
   (variables: Variable[]) =>

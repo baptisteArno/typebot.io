@@ -1,11 +1,11 @@
-import { SetVariableBlock, Variable } from '@typebot.io/schemas'
-import { byId } from '@typebot.io/lib'
+import { SetVariableBlock, Variable } from '@sniper.io/schemas'
+import { byId } from '@sniper.io/lib'
 import { EdgeId, LogicState } from '@/types'
 import { parseVariables, parseCorrectValueType } from '@/features/variables'
 
 export const executeSetVariable = (
   block: SetVariableBlock,
-  { typebot: { variables }, updateVariableValue, updateVariables }: LogicState
+  { sniper: { variables }, updateVariableValue, updateVariables }: LogicState
 ): EdgeId | undefined => {
   if (!block.options?.variableId) return block.outgoingEdgeId
   if (block.options.type !== undefined && block.options.type !== 'Custom')

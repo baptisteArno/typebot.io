@@ -1,8 +1,8 @@
 import { NumberInput } from '@/components/inputs'
 import { FormLabel, HStack, Input, Stack, Switch, Text } from '@chakra-ui/react'
-import { PreviewMessageParams } from '@typebot.io/nextjs'
+import { PreviewMessageParams } from '@sniper.io/nextjs'
 import { useState } from 'react'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 
 type Props = {
   defaultAvatar: string

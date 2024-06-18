@@ -1,5 +1,5 @@
-import { createAction, option } from '@typebot.io/forge'
-import { isDefined } from '@typebot.io/lib'
+import { createAction, option } from '@sniper.io/forge'
+import { isDefined } from '@sniper.io/lib'
 import { ZemanticAiResponse } from '../types'
 import ky from 'ky'
 import { apiBaseUrl } from '../constants'

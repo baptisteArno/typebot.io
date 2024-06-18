@@ -1,18 +1,18 @@
 import test, { expect, Page } from '@playwright/test'
-import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
+import { importSniperInDatabase } from '@sniper.io/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 
 test.describe.parallel('Google sheets integration', () => {
   test('Insert row should work', async ({ page }) => {
-    const typebotId = createId()
-    await importTypebotInDatabase(
-      getTestAsset('typebots/integrations/googleSheets.json'),
+    const sniperId = createId()
+    await importSniperInDatabase(
+      getTestAsset('snipers/integrations/googleSheets.json'),
       {
-        id: typebotId,
+        id: sniperId,
       }
     )
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/snipers/${sniperId}/edit`)
     await fillInSpreadsheetInfo(page)
     await page.click('text=Select an operation')
     await page.click('text=Insert a row')
@@ -33,11 +33,11 @@ test.describe.parallel('Google sheets integration', () => {
 
     await page.click('text=Test')
     await page
-      .locator('typebot-standard')
+      .locator('sniper-standard')
       .locator('input[placeholder="Type your email..."]')
       .fill('georges@gmail.com')
     await page
-      .locator('typebot-standard')
+      .locator('sniper-standard')
       .locator('input[placeholder="Type your email..."]')
       .press('Enter')
     await expect(
@@ -46,14 +46,14 @@ test.describe.parallel('Google sheets integration', () => {
   })
 
   test('Update row should work', async ({ page }) => {
-    const typebotId = createId()
-    await importTypebotInDatabase(
-      getTestAsset('typebots/integrations/googleSheets.json'),
+    const sniperId = createId()
+    await importSniperInDatabase(
+      getTestAsset('snipers/integrations/googleSheets.json'),
       {
-        id: typebotId,
+        id: sniperId,
       }
     )
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/snipers/${sniperId}/edit`)
     await fillInSpreadsheetInfo(page)
     await page.click('text=Select an operation')
     await page.click('text=Update a row')
@@ -78,11 +78,11 @@ test.describe.parallel('Google sheets integration', () => {
 
     await page.click('text=Test')
     await page
-      .locator('typebot-standard')
+      .locator('sniper-standard')
       .locator('input[placeholder="Type your email..."]')
       .fill('test@test.com')
     await page
-      .locator('typebot-standard')
+      .locator('sniper-standard')
       .locator('input[placeholder="Type your email..."]')
       .press('Enter')
     await expect(
@@ -91,14 +91,14 @@ test.describe.parallel('Google sheets integration', () => {
   })
 
   test('Get row should work', async ({ page }) => {
-    const typebotId = createId()
-    await importTypebotInDatabase(
-      getTestAsset('typebots/integrations/googleSheetsGet.json'),
+    const sniperId = createId()
+    await importSniperInDatabase(
+      getTestAsset('snipers/integrations/googleSheetsGet.json'),
       {
-        id: typebotId,
+        id: sniperId,
       }
     )
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/snipers/${sniperId}/edit`)
     await fillInSpreadsheetInfo(page)
     await page.click('text=Select an operation')
     await page.click('text=Get data from sheet')
@@ -134,15 +134,15 @@ test.describe.parallel('Google sheets integration', () => {
 
     await page.click('text=Test')
     await page
-      .locator('typebot-standard')
+      .locator('sniper-standard')
       .locator('input[placeholder="Type your email..."]')
       .fill('test2@test.com')
     await page
-      .locator('typebot-standard')
+      .locator('sniper-standard')
       .locator('input[placeholder="Type your email..."]')
       .press('Enter')
     await expect(
-      page.locator('typebot-standard').locator('text=Georges2')
+      page.locator('sniper-standard').locator('text=Georges2')
     ).toBeVisible()
   })
 })

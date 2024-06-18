@@ -4,28 +4,26 @@ import {
   Group,
   Variable,
   InputBlock,
-  Typebot,
-} from '@typebot.io/schemas'
-import { isInputBlock } from '@typebot.io/schemas/helpers'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { byId, isNotEmpty } from '@typebot.io/lib/utils'
+  Sniper,
+} from '@sniper.io/schemas'
+import { isInputBlock } from '@sniper.io/schemas/helpers'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { byId, isNotEmpty } from '@sniper.io/lib/utils'
 
 export const parseResultHeader = (
-  typebot: Pick<Typebot, 'groups' | 'variables'>,
-  linkedTypebots: Pick<Typebot, 'groups' | 'variables'>[] | undefined,
+  sniper: Pick<Sniper, 'groups' | 'variables'>,
+  linkedSnipers: Pick<Sniper, 'groups' | 'variables'>[] | undefined,
   results?: ResultWithAnswers[]
 ): ResultHeaderCell[] => {
   const parsedGroups = [
-    ...typebot.groups,
-    ...(linkedTypebots ?? []).flatMap(
-      (linkedTypebot) => linkedTypebot.groups as Group[]
+    ...sniper.groups,
+    ...(linkedSnipers ?? []).flatMap(
+      (linkedSniper) => linkedSniper.groups as Group[]
     ),
   ]
   const parsedVariables = [
-    ...typebot.variables,
-    ...(linkedTypebots ?? []).flatMap(
-      (linkedTypebot) => linkedTypebot.variables
-    ),
+    ...sniper.variables,
+    ...(linkedSnipers ?? []).flatMap((linkedSniper) => linkedSniper.variables),
   ]
   const inputsResultHeader = parseInputsResultHeader({
     groups: parsedGroups,

@@ -2,7 +2,7 @@ import { streamingMessage } from '@/utils/streamingMessageSignal'
 import { For, createEffect, createSignal } from 'solid-js'
 import { marked } from 'marked'
 import domPurify from 'dompurify'
-import { isNotEmpty } from '@typebot.io/lib'
+import { isNotEmpty } from '@sniper.io/lib'
 
 type Props = {
   streamingMessageId: string
@@ -45,9 +45,9 @@ export const StreamingBubble = (props: Props) => {
   })
 
   return (
-    <div class="flex flex-col animate-fade-in typebot-streaming-container">
+    <div class="flex flex-col animate-fade-in sniper-streaming-container">
       <div class="flex w-full items-center">
-        <div class="flex relative items-start typebot-host-bubble max-w-full">
+        <div class="flex relative items-start sniper-host-bubble max-w-full">
           <div
             class="flex items-center absolute px-4 py-2 bubble-typing "
             style={{

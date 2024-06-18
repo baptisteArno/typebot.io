@@ -2,8 +2,8 @@ import { HStack, Text } from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
 import { TableListItemProps } from '@/components/TableList'
 import { TextInput } from '@/components/inputs'
-import { WhatsAppComparison } from '@typebot.io/schemas/features/whatsapp'
-import { ComparisonOperators } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
+import { WhatsAppComparison } from '@sniper.io/schemas/features/whatsapp'
+import { ComparisonOperators } from '@sniper.io/schemas/features/blocks/logic/condition/constants'
 
 export const WhatsAppComparisonItem = ({
   item,

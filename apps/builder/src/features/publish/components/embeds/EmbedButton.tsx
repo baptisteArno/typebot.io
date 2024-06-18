@@ -46,7 +46,7 @@ import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvi
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
 import { LockTag } from '@/features/billing/components/LockTag'
-import { Plan } from '@typebot.io/prisma'
+import { Plan } from '@sniper.io/prisma'
 import { FramerModal } from './modals/FramerModal'
 import { FramerLogo } from './logos/FramerLogo'
 

@@ -2,15 +2,15 @@ import { publicProcedure } from '@/helpers/server/trpc'
 import {
   sendMessageInputSchema,
   chatReplySchema,
-} from '@typebot.io/schemas/features/chat/legacy/schema'
+} from '@sniper.io/schemas/features/chat/legacy/schema'
 import { TRPCError } from '@trpc/server'
-import { getSession } from '@typebot.io/bot-engine/queries/getSession'
-import { startSession } from '@typebot.io/bot-engine/startSession'
-import { saveStateToDatabase } from '@typebot.io/bot-engine/saveStateToDatabase'
-import { restartSession } from '@typebot.io/bot-engine/queries/restartSession'
-import { continueBotFlow } from '@typebot.io/bot-engine/continueBotFlow'
-import { parseDynamicTheme } from '@typebot.io/bot-engine/parseDynamicTheme'
-import { isDefined } from '@typebot.io/lib/utils'
+import { getSession } from '@sniper.io/bot-engine/queries/getSession'
+import { startSession } from '@sniper.io/bot-engine/startSession'
+import { saveStateToDatabase } from '@sniper.io/bot-engine/saveStateToDatabase'
+import { restartSession } from '@sniper.io/bot-engine/queries/restartSession'
+import { continueBotFlow } from '@sniper.io/bot-engine/continueBotFlow'
+import { parseDynamicTheme } from '@sniper.io/bot-engine/parseDynamicTheme'
+import { isDefined } from '@sniper.io/lib/utils'
 
 export const sendMessageV1 = publicProcedure
   .meta({
@@ -19,7 +19,7 @@ export const sendMessageV1 = publicProcedure
       path: '/v1/sendMessage',
       summary: 'Send a message',
       description:
-        'To initiate a chat, do not provide a `sessionId` nor a `message`.\n\nContinue the conversation by providing the `sessionId` and the `message` that should answer the previous question.\n\nSet the `isPreview` option to `true` to chat with the non-published version of the typebot.',
+        'To initiate a chat, do not provide a `sessionId` nor a `message`.\n\nContinue the conversation by providing the `sessionId` and the `message` that should answer the previous question.\n\nSet the `isPreview` option to `true` to chat with the non-published version of the sniper.',
       tags: ['Deprecated'],
       deprecated: true,
     },
@@ -51,7 +51,7 @@ export const sendMessageV1 = publicProcedure
             message: 'Missing startParams',
           })
         const {
-          typebot,
+          sniper,
           messages,
           input,
           resultId,
@@ -64,7 +64,7 @@ export const sendMessageV1 = publicProcedure
         } = await startSession({
           version: 1,
           startParams:
-            startParams.isPreview || typeof startParams.typebot !== 'string'
+            startParams.isPreview || typeof startParams.sniper !== 'string'
               ? {
                   type: 'preview',
                   isOnlyRegistering: startParams.isOnlyRegistering ?? false,
@@ -82,14 +82,14 @@ export const sendMessageV1 = publicProcedure
                           eventId: startParams.startEventId,
                         }
                       : undefined,
-                  typebotId:
-                    typeof startParams.typebot === 'string'
-                      ? startParams.typebot
-                      : startParams.typebot.id,
-                  typebot:
-                    typeof startParams.typebot === 'string'
+                  sniperId:
+                    typeof startParams.sniper === 'string'
+                      ? startParams.sniper
+                      : startParams.sniper.id,
+                  sniper:
+                    typeof startParams.sniper === 'string'
                       ? undefined
-                      : startParams.typebot,
+                      : startParams.sniper,
                   message,
                   userId: user?.id,
                   textBubbleContentFormat: 'richText',
@@ -98,7 +98,7 @@ export const sendMessageV1 = publicProcedure
                   type: 'live',
                   isOnlyRegistering: startParams.isOnlyRegistering ?? false,
                   isStreamEnabled: startParams.isStreamEnabled ?? false,
-                  publicId: startParams.typebot,
+                  publicId: startParams.sniper,
                   prefilledVariables: startParams.prefilledVariables,
                   resultId: startParams.resultId,
                   message,
@@ -107,7 +107,7 @@ export const sendMessageV1 = publicProcedure
           message,
         })
 
-        if (startParams.isPreview || typeof startParams.typebot !== 'string') {
+        if (startParams.isPreview || typeof startParams.sniper !== 'string') {
           if (
             newSessionState.allowedOrigins &&
             newSessionState.allowedOrigins.length > 0
@@ -144,11 +144,11 @@ export const sendMessageV1 = publicProcedure
 
         return {
           sessionId: session.id,
-          typebot: typebot
+          sniper: sniper
             ? {
-                id: typebot.id,
-                theme: typebot.theme,
-                settings: typebot.settings,
+                id: sniper.id,
+                theme: sniper.theme,
+                settings: sniper.settings,
               }
             : undefined,
           messages,

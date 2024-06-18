@@ -5,32 +5,32 @@ import {
   GeneralTheme,
   InputTheme,
   Theme,
-} from '@typebot.io/schemas'
-import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/constants'
+} from '@sniper.io/schemas'
+import { BackgroundType } from '@sniper.io/schemas/features/sniper/theme/constants'
 
 const cssVariableNames = {
   general: {
-    bgImage: '--typebot-container-bg-image',
-    bgColor: '--typebot-container-bg-color',
-    fontFamily: '--typebot-container-font-family',
+    bgImage: '--sniper-container-bg-image',
+    bgColor: '--sniper-container-bg-color',
+    fontFamily: '--sniper-container-font-family',
   },
   chat: {
     hostBubbles: {
-      bgColor: '--typebot-host-bubble-bg-color',
-      color: '--typebot-host-bubble-color',
+      bgColor: '--sniper-host-bubble-bg-color',
+      color: '--sniper-host-bubble-color',
     },
     guestBubbles: {
-      bgColor: '--typebot-guest-bubble-bg-color',
-      color: '--typebot-guest-bubble-color',
+      bgColor: '--sniper-guest-bubble-bg-color',
+      color: '--sniper-guest-bubble-color',
     },
     inputs: {
-      bgColor: '--typebot-input-bg-color',
-      color: '--typebot-input-color',
-      placeholderColor: '--typebot-input-placeholder-color',
+      bgColor: '--sniper-input-bg-color',
+      color: '--sniper-input-color',
+      placeholderColor: '--sniper-input-placeholder-color',
     },
     buttons: {
-      bgColor: '--typebot-button-bg-color',
-      color: '--typebot-button-color',
+      bgColor: '--sniper-button-bg-color',
+      color: '--sniper-button-color',
     },
   },
 }
@@ -49,7 +49,7 @@ const setGeneralTheme = (
   documentStyle: CSSStyleDeclaration
 ) => {
   const { background, font } = generalTheme
-  if (background) setTypebotBackground
+  if (background) setSniperBackground
   if (font && typeof font === 'string')
     documentStyle.setProperty(cssVariableNames.general.fontFamily, font)
 }
@@ -128,7 +128,7 @@ const setInputs = (inputs: InputTheme, documentStyle: CSSStyleDeclaration) => {
     )
 }
 
-const setTypebotBackground = (
+const setSniperBackground = (
   background: Background,
   documentStyle: CSSStyleDeclaration
 ) => {

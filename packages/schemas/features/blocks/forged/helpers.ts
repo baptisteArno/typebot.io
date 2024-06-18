@@ -1,5 +1,5 @@
-import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
-import { ForgedBlock } from '@typebot.io/forge-repository/types'
+import { forgedBlocks } from '@sniper.io/forge-repository/definitions'
+import { ForgedBlock } from '@sniper.io/forge-repository/types'
 import { Block } from '../schema'
 
 export const isForgedBlock = (block: Block): block is ForgedBlock =>

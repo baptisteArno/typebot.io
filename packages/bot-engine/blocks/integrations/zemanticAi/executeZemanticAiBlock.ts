@@ -1,16 +1,16 @@
-import { SessionState } from '@typebot.io/schemas'
+import { SessionState } from '@sniper.io/schemas'
 import {
   ZemanticAiBlock,
   ZemanticAiCredentials,
   ZemanticAiResponse,
-} from '@typebot.io/schemas/features/blocks/integrations/zemanticAi'
+} from '@sniper.io/schemas/features/blocks/integrations/zemanticAi'
 import ky from 'ky'
-import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
-import { byId, isDefined, isEmpty } from '@typebot.io/lib'
+import { decrypt } from '@sniper.io/lib/api/encryption/decrypt'
+import { byId, isDefined, isEmpty } from '@sniper.io/lib'
 import { ExecuteIntegrationResponse } from '../../../types'
-import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
+import { updateVariablesInSession } from '@sniper.io/variables/updateVariablesInSession'
 import { getCredentials } from '../../../queries/getCredentials'
-import { parseAnswers } from '@typebot.io/results/parseAnswers'
+import { parseAnswers } from '@sniper.io/results/parseAnswers'
 
 const URL = 'https://api.zemantic.ai/v1/search-documents'
 
@@ -44,10 +44,10 @@ export const executeZemanticAiBlock = async (
     credentials.iv
   )) as ZemanticAiCredentials['data']
 
-  const { typebot, answers } = newSessionState.typebotsQueue[0]
+  const { sniper, answers } = newSessionState.snipersQueue[0]
 
   const templateVars = parseAnswers({
-    variables: typebot.variables,
+    variables: sniper.variables,
     answers: answers,
   })
 
@@ -82,7 +82,7 @@ export const executeZemanticAiBlock = async (
       .json()
 
     for (const r of block.options.responseMapping || []) {
-      const variable = typebot.variables.find(byId(r.variableId))
+      const variable = sniper.variables.find(byId(r.variableId))
       let newVariables = []
       switch (r.valueToExtract) {
         case 'Summary':

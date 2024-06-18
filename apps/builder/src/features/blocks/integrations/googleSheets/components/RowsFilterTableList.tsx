@@ -4,10 +4,10 @@ import { Flex } from '@chakra-ui/react'
 import {
   GoogleSheetsGetOptions,
   RowsFilterComparison,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import React from 'react'
 import { RowsFilterComparisonItem } from './RowsFilterComparisonItem'
-import { LogicalOperator } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
+import { LogicalOperator } from '@sniper.io/schemas/features/blocks/logic/condition/constants'
 
 type Props = {
   filter: GoogleSheetsGetOptions['filter']

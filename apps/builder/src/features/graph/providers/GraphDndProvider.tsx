@@ -3,7 +3,7 @@ import {
   BlockV6,
   BlockWithItems,
   ItemV6,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import {
   createContext,
   Dispatch,
@@ -16,7 +16,7 @@ import {
   useState,
 } from 'react'
 import { Coordinates } from '../types'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
 import { useEventListener } from '@/hooks/useEventListener'
 
 type NodeElement = {

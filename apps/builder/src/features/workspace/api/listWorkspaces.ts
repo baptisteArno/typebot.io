@@ -1,7 +1,7 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { workspaceSchema } from '@typebot.io/schemas'
+import { workspaceSchema } from '@sniper.io/schemas'
 import { z } from 'zod'
 
 export const listWorkspaces = authenticatedProcedure

@@ -13,7 +13,7 @@ import {
   ContainerTheme,
   ContainerBorderTheme,
   InputTheme,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import React from 'react'
 import { ColorPicker } from '../../../../components/ColorPicker'
 import { useTranslate } from '@tolgee/react'
@@ -23,7 +23,7 @@ import {
   borderRoundness,
   defaultOpacity,
   shadows,
-} from '@typebot.io/schemas/features/typebot/theme/constants'
+} from '@sniper.io/schemas/features/sniper/theme/constants'
 
 type Props<T extends ((placeholder: string) => void) | undefined> = {
   theme: (T extends undefined ? ContainerTheme : InputTheme) | undefined

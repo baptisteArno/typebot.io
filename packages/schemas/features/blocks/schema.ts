@@ -6,7 +6,7 @@ import { bubbleBlockSchemas } from './bubbles/schema'
 import { LogicBlock, logicBlockSchemas } from './logic/schema'
 import { InputBlock, inputBlockSchemas } from './inputs/schema'
 import { IntegrationBlock, integrationBlockSchemas } from './integrations'
-import { forgedBlockSchemas } from '@typebot.io/forge-repository/schemas'
+import { forgedBlockSchemas } from '@sniper.io/forge-repository/schemas'
 
 export type BlockWithOptions = Extract<Block, { options?: any }>
 

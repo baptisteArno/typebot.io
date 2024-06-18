@@ -1,9 +1,9 @@
 import { Select } from '@/components/inputs/Select'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { Stack } from '@chakra-ui/react'
-import { JumpBlock } from '@typebot.io/schemas/features/blocks/logic/jump'
+import { JumpBlock } from '@sniper.io/schemas/features/blocks/logic/jump'
 import React from 'react'
-import { byId, isNotEmpty } from '@typebot.io/lib'
+import { byId, isNotEmpty } from '@sniper.io/lib'
 import { BlockIcon } from '@/features/editor/components/BlockIcon'
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
 }
 
 export const JumpSettings = ({ groupId, options, onOptionsChange }: Props) => {
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
 
   const handleGroupIdChange = (groupId?: string) =>
     onOptionsChange({ ...options, groupId })
@@ -21,16 +21,16 @@ export const JumpSettings = ({ groupId, options, onOptionsChange }: Props) => {
   const handleBlockIdChange = (blockId?: string) =>
     onOptionsChange({ ...options, blockId })
 
-  const currentGroupId = typebot?.groups.find(byId(groupId))?.id
+  const currentGroupId = sniper?.groups.find(byId(groupId))?.id
 
-  const selectedGroup = typebot?.groups.find(byId(options?.groupId))
+  const selectedGroup = sniper?.groups.find(byId(options?.groupId))
 
-  if (!typebot) return null
+  if (!sniper) return null
 
   return (
     <Stack spacing={4}>
       <Select
-        items={typebot.groups
+        items={sniper.groups
           .filter(
             (group) => group.id !== currentGroupId && isNotEmpty(group.title)
           )

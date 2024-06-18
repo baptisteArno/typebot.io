@@ -1,22 +1,22 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots } from '@typebot.io/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from '@typebot.io/playwright/databaseHelpers'
+import { createSnipers } from '@sniper.io/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@sniper.io/playwright/databaseHelpers'
 import { createId } from '@paralleldrive/cuid2'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
 
 test.describe('Text bubble block', () => {
   test('rich text features should work', async ({ page }) => {
-    const typebotId = createId()
-    await createTypebots([
+    const sniperId = createId()
+    await createSnipers([
       {
-        id: typebotId,
+        id: sniperId,
         ...parseDefaultGroupWithBlock({
           type: BubbleBlockType.TEXT,
         }),
       },
     ])
 
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/snipers/${sniperId}/edit`)
 
     await page.getByTestId('block block2').locator('div').first().click()
     await page.click('[data-testid="bold-button"]')
@@ -61,7 +61,7 @@ test.describe('Text bubble block', () => {
       'Underlined text'
     )
     await expect(
-      page.locator('typebot-standard').locator('a[href="https://github.com"]')
+      page.locator('sniper-standard').locator('a[href="https://github.com"]')
     ).toHaveText('My super link')
   })
 })

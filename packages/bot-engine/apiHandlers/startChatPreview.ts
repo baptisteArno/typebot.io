@@ -1,4 +1,4 @@
-import { StartFrom, StartTypebot } from '@typebot.io/schemas'
+import { StartFrom, StartSniper } from '@sniper.io/schemas'
 import { restartSession } from '../queries/restartSession'
 import { saveStateToDatabase } from '../saveStateToDatabase'
 import { startSession } from '../startSession'
@@ -9,8 +9,8 @@ type Props = {
   isOnlyRegistering: boolean
   isStreamEnabled: boolean
   startFrom?: StartFrom
-  typebotId: string
-  typebot?: StartTypebot
+  sniperId: string
+  sniper?: StartSniper
   userId?: string
   prefilledVariables?: Record<string, unknown>
   sessionId?: string
@@ -22,15 +22,15 @@ export const startChatPreview = async ({
   isOnlyRegistering,
   isStreamEnabled,
   startFrom,
-  typebotId,
-  typebot: startTypebot,
+  sniperId,
+  sniper: startSniper,
   userId,
   prefilledVariables,
   sessionId,
   textBubbleContentFormat,
 }: Props) => {
   const {
-    typebot,
+    sniper,
     messages,
     input,
     dynamicTheme,
@@ -46,8 +46,8 @@ export const startChatPreview = async ({
       isOnlyRegistering,
       isStreamEnabled,
       startFrom,
-      typebotId,
-      typebot: startTypebot,
+      sniperId,
+      sniper: startSniper,
       userId,
       prefilledVariables,
       sessionId,
@@ -83,10 +83,10 @@ export const startChatPreview = async ({
 
   return {
     sessionId: session.id,
-    typebot: {
-      id: typebot.id,
-      theme: typebot.theme,
-      settings: typebot.settings,
+    sniper: {
+      id: sniper.id,
+      theme: sniper.theme,
+      settings: sniper.settings,
     },
     messages,
     input,
@@ -97,7 +97,7 @@ export const startChatPreview = async ({
       ? isEnded
         ? 100
         : computeCurrentProgress({
-            typebotsQueue: newSessionState.typebotsQueue,
+            snipersQueue: newSessionState.snipersQueue,
             progressMetadata: newSessionState.progressMetadata,
             currentInputBlockId: input?.id,
           })

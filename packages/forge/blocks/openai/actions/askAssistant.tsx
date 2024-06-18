@@ -3,12 +3,12 @@ import {
   VariableStore,
   createAction,
   option,
-} from '@typebot.io/forge'
-import { isDefined, isEmpty, isNotEmpty } from '@typebot.io/lib'
+} from '@sniper.io/forge'
+import { isDefined, isEmpty, isNotEmpty } from '@sniper.io/lib'
 import { auth } from '../auth'
 import { ClientOptions, OpenAI } from 'openai'
 import { baseOptions } from '../baseOptions'
-import { executeFunction } from '@typebot.io/variables/executeFunction'
+import { executeFunction } from '@sniper.io/variables/executeFunction'
 import { readDataStream } from 'ai'
 import { deprecatedAskAssistantOptions } from '../deprecated'
 import { OpenAIAssistantStream } from '../helpers/OpenAIAssistantStream'

@@ -2,10 +2,10 @@ import { TextInput } from '@/components/inputs'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormControl, FormLabel, Stack } from '@chakra-ui/react'
-import { ChoiceInputBlock, Variable } from '@typebot.io/schemas'
+import { ChoiceInputBlock, Variable } from '@sniper.io/schemas'
 import React from 'react'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
-import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
+import { defaultChoiceInputOptions } from '@sniper.io/schemas/features/blocks/inputs/choice/constants'
 import { useTranslate } from '@tolgee/react'
 
 type Props = {

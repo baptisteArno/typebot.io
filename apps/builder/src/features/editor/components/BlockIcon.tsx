@@ -28,16 +28,16 @@ import { ZapierLogo } from '@/features/blocks/integrations/zapier/components/Zap
 import { ConditionIcon } from '@/features/blocks/logic/condition/components/ConditionIcon'
 import { RedirectIcon } from '@/features/blocks/logic/redirect/components/RedirectIcon'
 import { SetVariableIcon } from '@/features/blocks/logic/setVariable/components/SetVariableIcon'
-import { TypebotLinkIcon } from '@/features/blocks/logic/typebotLink/components/TypebotLinkIcon'
+import { SniperLinkIcon } from '@/features/blocks/logic/sniperLink/components/SniperLinkIcon'
 import { AbTestIcon } from '@/features/blocks/logic/abTest/components/AbTestIcon'
 import { PictureChoiceIcon } from '@/features/blocks/inputs/pictureChoice/components/PictureChoiceIcon'
 import { PixelLogo } from '@/features/blocks/integrations/pixel/components/PixelLogo'
 import { ZemanticAiLogo } from '@/features/blocks/integrations/zemanticAi/ZemanticAiLogo'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
-import { Block } from '@typebot.io/schemas'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { IntegrationBlockType } from '@sniper.io/schemas/features/blocks/integrations/constants'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
+import { Block } from '@sniper.io/schemas'
 import { OpenAILogo } from '@/features/blocks/integrations/openai/components/OpenAILogo'
 import { ForgedBlockIcon } from '@/features/forge/ForgedBlockIcon'
 
@@ -94,8 +94,8 @@ export const BlockIcon = ({ type, mt }: BlockIconProps): JSX.Element => {
       return <WaitIcon color={purple} mt={mt} />
     case LogicBlockType.JUMP:
       return <JumpIcon color={purple} mt={mt} />
-    case LogicBlockType.TYPEBOT_LINK:
-      return <TypebotLinkIcon color={purple} mt={mt} />
+    case LogicBlockType.SNIPER_LINK:
+      return <SniperLinkIcon color={purple} mt={mt} />
     case LogicBlockType.AB_TEST:
       return <AbTestIcon color={purple} mt={mt} />
     case IntegrationBlockType.GOOGLE_SHEETS:

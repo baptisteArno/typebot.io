@@ -1,7 +1,7 @@
 import { Text } from '@chakra-ui/react'
 import { useTranslate } from '@tolgee/react'
-import { PaymentInputBlock } from '@typebot.io/schemas'
-import { defaultPaymentInputOptions } from '@typebot.io/schemas/features/blocks/inputs/payment/constants'
+import { PaymentInputBlock } from '@sniper.io/schemas'
+import { defaultPaymentInputOptions } from '@sniper.io/schemas/features/blocks/inputs/payment/constants'
 
 type Props = {
   block: PaymentInputBlock

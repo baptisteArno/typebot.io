@@ -1,18 +1,18 @@
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
+import { importSniperInDatabase } from '@sniper.io/playwright/databaseActions'
 import { getTestAsset } from './utils/playwright'
 
 test('Transcript set variable should be correctly computed', async ({
   page,
 }) => {
-  const typebotId = createId()
-  await importTypebotInDatabase(getTestAsset('typebots/transcript.json'), {
-    id: typebotId,
-    publicId: `${typebotId}-public`,
+  const sniperId = createId()
+  await importSniperInDatabase(getTestAsset('snipers/transcript.json'), {
+    id: sniperId,
+    publicId: `${sniperId}-public`,
   })
 
-  await page.goto(`/${typebotId}-public`)
+  await page.goto(`/${sniperId}-public`)
   await page.getByPlaceholder('Type your answer...').fill('hey')
   await page.getByRole('button').click()
   await page.getByPlaceholder('Type your answer...').fill('hey 2')

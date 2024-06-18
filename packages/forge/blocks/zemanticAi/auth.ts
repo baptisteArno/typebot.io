@@ -1,4 +1,4 @@
-import { AuthDefinition, option } from '@typebot.io/forge'
+import { AuthDefinition, option } from '@sniper.io/forge'
 
 export const auth = {
   type: 'encryptedCredentials',

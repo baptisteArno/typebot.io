@@ -26,7 +26,7 @@ export const startChat = async ({
   textBubbleContentFormat,
 }: Props) => {
   const {
-    typebot,
+    sniper,
     messages,
     input,
     resultId,
@@ -87,10 +87,10 @@ export const startChat = async ({
 
   return {
     sessionId: session.id,
-    typebot: {
-      id: typebot.id,
-      theme: typebot.theme,
-      settings: typebot.settings,
+    sniper: {
+      id: sniper.id,
+      theme: sniper.theme,
+      settings: sniper.settings,
     },
     messages,
     input,
@@ -103,7 +103,7 @@ export const startChat = async ({
       ? isEnded
         ? 100
         : computeCurrentProgress({
-            typebotsQueue: newSessionState.typebotsQueue,
+            snipersQueue: newSessionState.snipersQueue,
             progressMetadata: newSessionState.progressMetadata,
             currentInputBlockId: input?.id,
           })

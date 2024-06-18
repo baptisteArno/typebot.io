@@ -3,9 +3,9 @@ import { SendButton } from '@/components/SendButton'
 import { CommandData } from '@/features/commands/types'
 import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
-import type { EmailInputBlock } from '@typebot.io/schemas'
+import type { EmailInputBlock } from '@sniper.io/schemas'
 import { createSignal, onCleanup, onMount } from 'solid-js'
-import { defaultEmailInputOptions } from '@typebot.io/schemas/features/blocks/inputs/email/constants'
+import { defaultEmailInputOptions } from '@sniper.io/schemas/features/blocks/inputs/email/constants'
 
 type Props = {
   block: EmailInputBlock
@@ -43,13 +43,13 @@ export const EmailInput = (props: Props) => {
 
   const processIncomingEvent = (event: MessageEvent<CommandData>) => {
     const { data } = event
-    if (!data.isFromTypebot) return
+    if (!data.isFromSniper) return
     if (data.command === 'setInputValue') setInputValue(data.value)
   }
 
   return (
     <div
-      class={'flex items-end justify-between pr-2 typebot-input w-full'}
+      class={'flex items-end justify-between pr-2 sniper-input w-full'}
       data-testid="input"
       style={{
         'max-width': '350px',

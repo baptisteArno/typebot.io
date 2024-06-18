@@ -1,4 +1,4 @@
-import { ResultHeaderCell } from '@typebot.io/schemas'
+import { ResultHeaderCell } from '@sniper.io/schemas'
 
 export const parseColumnsOrder = (
   existingOrder: string[] | undefined,

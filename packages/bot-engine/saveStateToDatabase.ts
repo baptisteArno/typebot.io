@@ -2,13 +2,13 @@ import {
   ContinueChatResponse,
   ChatSession,
   SetVariableHistoryItem,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import { upsertResult } from './queries/upsertResult'
 import { updateSession } from './queries/updateSession'
 import { createSession } from './queries/createSession'
 import { deleteSession } from './queries/deleteSession'
-import { Prisma, VisitedEdge } from '@typebot.io/prisma'
-import prisma from '@typebot.io/lib/prisma'
+import { Prisma, VisitedEdge } from '@sniper.io/prisma'
+import prisma from '@sniper.io/lib/prisma'
 
 type Props = {
   session: Pick<ChatSession, 'state'> & { id?: string }
@@ -41,7 +41,7 @@ export const saveStateToDatabase = async ({
 
   const queries: Prisma.PrismaPromise<any>[] = []
 
-  const resultId = state.typebotsQueue[0].resultId
+  const resultId = state.snipersQueue[0].resultId
 
   if (id) {
     if (isCompleted && resultId) queries.push(deleteSession(id))
@@ -57,12 +57,12 @@ export const saveStateToDatabase = async ({
     return session
   }
 
-  const answers = state.typebotsQueue[0].answers
+  const answers = state.snipersQueue[0].answers
 
   queries.push(
     upsertResult({
       resultId,
-      typebot: state.typebotsQueue[0].typebot,
+      sniper: state.snipersQueue[0].sniper,
       isCompleted: Boolean(
         !input && !containsSetVariableClientSideAction && answers.length > 0
       ),

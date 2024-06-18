@@ -1,10 +1,10 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { inferAsyncReturnType } from '@trpc/server'
 import * as trpcNext from '@trpc/server/adapters/next'
-import { User } from '@typebot.io/prisma'
+import { User } from '@sniper.io/prisma'
 import { NextApiRequest } from 'next'
-import { mockedUser } from '@typebot.io/lib/mockedUser'
-import { env } from '@typebot.io/env'
+import { mockedUser } from '@sniper.io/lib/mockedUser'
+import { env } from '@sniper.io/env'
 
 export async function createContext(opts: trpcNext.CreateNextContextOptions) {
   const user = await getAuthenticatedUser(opts.req)

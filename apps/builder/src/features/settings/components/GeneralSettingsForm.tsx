@@ -7,9 +7,9 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { Settings } from '@typebot.io/schemas'
+import { Settings } from '@sniper.io/schemas'
 import React from 'react'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
 import { DropdownList } from '@/components/DropdownList'
@@ -17,7 +17,7 @@ import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 import {
   defaultSettings,
   rememberUserStorages,
-} from '@typebot.io/schemas/features/typebot/settings/constants'
+} from '@sniper.io/schemas/features/sniper/settings/constants'
 
 type Props = {
   generalSettings: Settings['general'] | undefined

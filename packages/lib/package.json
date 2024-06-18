@@ -1,5 +1,5 @@
 {
-  "name": "@typebot.io/lib",
+  "name": "@sniper.io/lib",
   "version": "1.0.0",
   "license": "AGPL-3.0-or-later",
   "private": true,
@@ -8,9 +8,9 @@
   "devDependencies": {
     "@paralleldrive/cuid2": "2.2.1",
     "@playwright/test": "1.36.0",
-    "@typebot.io/env": "workspace:*",
-    "@typebot.io/prisma": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
+    "@sniper.io/env": "workspace:*",
+    "@sniper.io/prisma": "workspace:*",
+    "@sniper.io/tsconfig": "workspace:*",
     "@types/escape-html": "^1.0.4",
     "@types/nodemailer": "6.4.14",
     "@types/validator": "13.11.9",

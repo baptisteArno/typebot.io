@@ -1,4 +1,4 @@
-import { z } from '@typebot.io/forge/zod'
+import { z } from '@sniper.io/forge/zod'
 
 export const getZodInnerSchema = (schema: z.ZodTypeAny): z.ZodTypeAny => {
   if (schema._def.typeName === 'ZodEffects')

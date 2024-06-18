@@ -1,4 +1,4 @@
-import { sendRequest } from '@typebot.io/lib/utils'
+import { sendRequest } from '@sniper.io/lib/utils'
 
 type UploadFileProps = {
   basePath?: string

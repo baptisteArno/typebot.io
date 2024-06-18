@@ -1,17 +1,17 @@
 import { fetcher } from '@/helpers/fetcher'
-import { Invitation } from '@typebot.io/prisma'
+import { Invitation } from '@sniper.io/prisma'
 import useSWR from 'swr'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 export const useInvitations = ({
-  typebotId,
+  sniperId,
   onError,
 }: {
-  typebotId?: string
+  sniperId?: string
   onError: (error: Error) => void
 }) => {
   const { data, error, mutate } = useSWR<{ invitations: Invitation[] }, Error>(
-    typebotId ? `/api/typebots/${typebotId}/invitations` : null,
+    sniperId ? `/api/snipers/${sniperId}/invitations` : null,
     fetcher,
     {
       dedupingInterval: env.NEXT_PUBLIC_E2E_TEST ? 0 : undefined,

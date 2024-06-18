@@ -1,5 +1,5 @@
-import { option, createAction } from '@typebot.io/forge'
-import { isDefined } from '@typebot.io/lib'
+import { option, createAction } from '@sniper.io/forge'
+import { isDefined } from '@sniper.io/lib'
 import { auth } from '../auth'
 import { parseMessages } from '../helpers/parseMessages'
 import { createMistral } from '@ai-sdk/mistral'

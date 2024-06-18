@@ -6,22 +6,22 @@ import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
 import AzureADProvider from 'next-auth/providers/azure-ad'
 import KeycloakProvider from 'next-auth/providers/keycloak'
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { Provider } from 'next-auth/providers'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { customAdapter } from '../../../features/auth/api/customAdapter'
-import { User } from '@typebot.io/prisma'
-import { getAtPath, isDefined } from '@typebot.io/lib'
-import { mockedUser } from '@typebot.io/lib/mockedUser'
+import { User } from '@sniper.io/prisma'
+import { getAtPath, isDefined } from '@sniper.io/lib'
+import { mockedUser } from '@sniper.io/lib/mockedUser'
 import { getNewUserInvitations } from '@/features/auth/helpers/getNewUserInvitations'
 import { sendVerificationRequest } from '@/features/auth/helpers/sendVerificationRequest'
 import { Ratelimit } from '@upstash/ratelimit'
 import { Redis } from '@upstash/redis/nodejs'
 import ky from 'ky'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import * as Sentry from '@sentry/nextjs'
-import { getIp } from '@typebot.io/lib/getIp'
-import { trackEvents } from '@typebot.io/telemetry/trackEvents'
+import { getIp } from '@sniper.io/lib/getIp'
+import { trackEvents } from '@sniper.io/telemetry/trackEvents'
 
 const providers: Provider[] = []
 
@@ -155,7 +155,7 @@ export const getAuthOptions = ({
   },
   pages: {
     signIn: '/signin',
-    newUser: env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID ? '/onboarding' : undefined,
+    newUser: env.NEXT_PUBLIC_ONBOARDING_SNIPER_ID ? '/onboarding' : undefined,
     error: '/signin',
   },
   events: {

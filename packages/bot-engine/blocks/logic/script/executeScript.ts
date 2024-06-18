@@ -1,17 +1,17 @@
 import { ExecuteLogicResponse } from '../../../types'
-import { ScriptBlock, SessionState, Variable } from '@typebot.io/schemas'
-import { extractVariablesFromText } from '@typebot.io/variables/extractVariablesFromText'
-import { parseGuessedValueType } from '@typebot.io/variables/parseGuessedValueType'
-import { parseVariables } from '@typebot.io/variables/parseVariables'
-import { defaultScriptOptions } from '@typebot.io/schemas/features/blocks/logic/script/constants'
-import { executeFunction } from '@typebot.io/variables/executeFunction'
-import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
+import { ScriptBlock, SessionState, Variable } from '@sniper.io/schemas'
+import { extractVariablesFromText } from '@sniper.io/variables/extractVariablesFromText'
+import { parseGuessedValueType } from '@sniper.io/variables/parseGuessedValueType'
+import { parseVariables } from '@sniper.io/variables/parseVariables'
+import { defaultScriptOptions } from '@sniper.io/schemas/features/blocks/logic/script/constants'
+import { executeFunction } from '@sniper.io/variables/executeFunction'
+import { updateVariablesInSession } from '@sniper.io/variables/updateVariablesInSession'
 
 export const executeScript = async (
   state: SessionState,
   block: ScriptBlock
 ): Promise<ExecuteLogicResponse> => {
-  const { variables } = state.typebotsQueue[0].typebot
+  const { variables } = state.snipersQueue[0].sniper
   if (!block.options?.content || state.whatsApp)
     return { outgoingEdgeId: block.outgoingEdgeId }
 

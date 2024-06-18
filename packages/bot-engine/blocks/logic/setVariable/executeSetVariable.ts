@@ -4,27 +4,27 @@ import {
   SetVariableBlock,
   SetVariableHistoryItem,
   Variable,
-} from '@typebot.io/schemas'
-import { byId, isEmpty } from '@typebot.io/lib'
+} from '@sniper.io/schemas'
+import { byId, isEmpty } from '@sniper.io/lib'
 import { ExecuteLogicResponse } from '../../../types'
 import { parseScriptToExecuteClientSideAction } from '../script/executeScript'
-import { parseVariables } from '@typebot.io/variables/parseVariables'
-import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
+import { parseVariables } from '@sniper.io/variables/parseVariables'
+import { updateVariablesInSession } from '@sniper.io/variables/updateVariablesInSession'
 import { createId } from '@paralleldrive/cuid2'
 import { utcToZonedTime, format as tzFormat } from 'date-fns-tz'
 import {
   computeResultTranscript,
   parseTranscriptMessageText,
-} from '@typebot.io/logic/computeResultTranscript'
-import prisma from '@typebot.io/lib/prisma'
-import { sessionOnlySetVariableOptions } from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
-import { createCodeRunner } from '@typebot.io/variables/codeRunners'
+} from '@sniper.io/logic/computeResultTranscript'
+import prisma from '@sniper.io/lib/prisma'
+import { sessionOnlySetVariableOptions } from '@sniper.io/schemas/features/blocks/logic/setVariable/constants'
+import { createCodeRunner } from '@sniper.io/variables/codeRunners'
 
 export const executeSetVariable = async (
   state: SessionState,
   block: SetVariableBlock
 ): Promise<ExecuteLogicResponse> => {
-  const { variables } = state.typebotsQueue[0].typebot
+  const { variables } = state.snipersQueue[0].sniper
   if (!block.options?.variableId)
     return {
       outgoingEdgeId: block.outgoingEdgeId,
@@ -120,9 +120,9 @@ const getExpressionToEvaluate =
         return phoneNumber ? `"${state.whatsApp?.contact.phoneNumber}"` : null
       }
       case 'Now': {
-        const timeZone = parseVariables(
-          state.typebotsQueue[0].typebot.variables
-        )(options.timeZone)
+        const timeZone = parseVariables(state.snipersQueue[0].sniper.variables)(
+          options.timeZone
+        )
         if (isEmpty(timeZone)) return 'new Date().toISOString()'
         return toISOWithTz(new Date(), timeZone)
       }
@@ -130,17 +130,17 @@ const getExpressionToEvaluate =
       case 'Today':
         return 'new Date().toISOString()'
       case 'Tomorrow': {
-        const timeZone = parseVariables(
-          state.typebotsQueue[0].typebot.variables
-        )(options.timeZone)
+        const timeZone = parseVariables(state.snipersQueue[0].sniper.variables)(
+          options.timeZone
+        )
         if (isEmpty(timeZone))
           return 'new Date(Date.now() + 86400000).toISOString()'
         return toISOWithTz(new Date(Date.now() + 86400000), timeZone)
       }
       case 'Yesterday': {
-        const timeZone = parseVariables(
-          state.typebotsQueue[0].typebot.variables
-        )(options.timeZone)
+        const timeZone = parseVariables(state.snipersQueue[0].sniper.variables)(
+          options.timeZone
+        )
         if (isEmpty(timeZone))
           return 'new Date(Date.now() - 86400000).toISOString()'
         return toISOWithTz(new Date(Date.now() - 86400000), timeZone)
@@ -150,7 +150,7 @@ const getExpressionToEvaluate =
       }
       case 'Result ID':
       case 'User ID': {
-        return state.typebotsQueue[0].resultId ?? `"${createId()}"`
+        return state.snipersQueue[0].resultId ?? `"${createId()}"`
       }
       case 'Map item with same index': {
         return `const itemIndex = ${options.mapListItemParams?.baseListVariableId}.indexOf(${options.mapListItemParams?.baseItemVariableId})
@@ -178,15 +178,15 @@ const getExpressionToEvaluate =
       case 'Transcript': {
         const props = await parseTranscriptProps(state)
         if (!props) return ''
-        const typebotWithEmptyVariables = {
-          ...state.typebotsQueue[0].typebot,
-          variables: state.typebotsQueue[0].typebot.variables.map((v) => ({
+        const sniperWithEmptyVariables = {
+          ...state.snipersQueue[0].sniper,
+          variables: state.snipersQueue[0].sniper.variables.map((v) => ({
             ...v,
             value: undefined,
           })),
         }
         const transcript = computeResultTranscript({
-          typebot: typebotWithEmptyVariables,
+          sniper: sniperWithEmptyVariables,
           stopAtBlockId: blockId,
           ...props,
         })
@@ -227,8 +227,7 @@ type ParsedTranscriptProps = {
 const parseTranscriptProps = async (
   state: SessionState
 ): Promise<ParsedTranscriptProps | undefined> => {
-  if (!state.typebotsQueue[0].resultId)
-    return parsePreviewTranscriptProps(state)
+  if (!state.snipersQueue[0].resultId) return parsePreviewTranscriptProps(state)
   return parseResultTranscriptProps(state)
 }
 
@@ -248,7 +247,7 @@ const parseResultTranscriptProps = async (
 ): Promise<ParsedTranscriptProps | undefined> => {
   const result = await prisma.result.findUnique({
     where: {
-      id: state.typebotsQueue[0].resultId,
+      id: state.snipersQueue[0].resultId,
     },
     select: {
       edges: {

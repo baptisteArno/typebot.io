@@ -1,4 +1,4 @@
-import { GoogleAnalyticsBlock } from '@typebot.io/schemas'
+import { GoogleAnalyticsBlock } from '@sniper.io/schemas'
 
 declare const gtag: (
   type: string,

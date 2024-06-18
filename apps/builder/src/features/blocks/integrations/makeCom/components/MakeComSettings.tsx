@@ -1,6 +1,6 @@
 import { Alert, AlertIcon, Button, Link, Stack, Text } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@/components/icons'
-import { MakeComBlock, HttpRequest } from '@typebot.io/schemas'
+import { MakeComBlock, HttpRequest } from '@sniper.io/schemas'
 import React from 'react'
 import { HttpRequestAdvancedConfigForm } from '../../webhook/components/HttpRequestAdvancedConfigForm'
 
@@ -33,7 +33,7 @@ export const MakeComSettings = ({
             <Text>Head up to Make.com to configure this block:</Text>
             <Button
               as={Link}
-              href="https://www.make.com/en/integrations/typebot"
+              href="https://www.make.com/en/integrations/sniper"
               isExternal
               colorScheme="blue"
             >

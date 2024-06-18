@@ -10,7 +10,7 @@ import {
   Text,
 } from '@react-email/components'
 import * as React from 'react'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 interface Props {
   magicLinkUrl: string
@@ -28,7 +28,7 @@ export const MagicLink = ({ magicLinkUrl }: Props) => (
           src={`${imagesBaseUrl}/logo.png`}
           width="32"
           height="32"
-          alt="Typebot's Logo"
+          alt="Sniper's Logo"
           style={{
             margin: '24px 0',
           }}
@@ -61,7 +61,7 @@ export const MagicLink = ({ magicLinkUrl }: Props) => (
             target="_blank"
             style={{ ...link, color: '#898989' }}
           >
-            Typebot.io
+            Sniper.io
           </Link>
           - Powering Conversations at Scale
         </Text>

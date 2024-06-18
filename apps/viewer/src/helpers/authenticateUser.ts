@@ -1,6 +1,6 @@
-import { User } from '@typebot.io/prisma'
+import { User } from '@sniper.io/prisma'
 import { NextApiRequest } from 'next'
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 
 export const authenticateUser = async (
   req: NextApiRequest

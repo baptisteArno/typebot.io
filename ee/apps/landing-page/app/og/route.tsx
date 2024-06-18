@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og'
 import { NextRequest } from 'next/server'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 export const runtime = 'edge'
 

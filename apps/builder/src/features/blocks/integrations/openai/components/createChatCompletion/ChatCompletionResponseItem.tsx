@@ -2,12 +2,12 @@ import { DropdownList } from '@/components/DropdownList'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { TableListItemProps } from '@/components/TableList'
 import { Stack } from '@chakra-ui/react'
-import { Variable } from '@typebot.io/schemas'
-import { ChatCompletionOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai'
+import { Variable } from '@sniper.io/schemas'
+import { ChatCompletionOpenAIOptions } from '@sniper.io/schemas/features/blocks/integrations/openai'
 import {
   chatCompletionResponseValues,
   defaultOpenAIResponseMappingItem,
-} from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
+} from '@sniper.io/schemas/features/blocks/integrations/openai/constants'
 
 type Props = TableListItemProps<
   NonNullable<ChatCompletionOpenAIOptions['responseMapping']>[number]

@@ -1,10 +1,10 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
-import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
-import { ZemanticAiCredentials } from '@typebot.io/schemas/features/blocks/integrations/zemanticAi'
+import { decrypt } from '@sniper.io/lib/api/encryption/decrypt'
+import { ZemanticAiCredentials } from '@sniper.io/schemas/features/blocks/integrations/zemanticAi'
 import ky from 'ky'
 
 export const listProjects = authenticatedProcedure

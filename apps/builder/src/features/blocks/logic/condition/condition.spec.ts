@@ -1,20 +1,17 @@
 import test, { expect } from '@playwright/test'
-import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
+import { importSniperInDatabase } from '@sniper.io/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 
-const typebotId = createId()
+const sniperId = createId()
 
 test.describe('Condition block', () => {
   test('its configuration should work', async ({ page }) => {
-    await importTypebotInDatabase(
-      getTestAsset('typebots/logic/condition.json'),
-      {
-        id: typebotId,
-      }
-    )
+    await importSniperInDatabase(getTestAsset('snipers/logic/condition.json'), {
+      id: sniperId,
+    })
 
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/snipers/${sniperId}/edit`)
     await page.click('text=Configure... >> nth=0', { force: true })
     await page.fill(
       'input[placeholder="Search for a variable"] >> nth=-1',
@@ -51,32 +48,32 @@ test.describe('Condition block', () => {
 
     await page.click('text=Test')
     await page
-      .locator('typebot-standard')
+      .locator('sniper-standard')
       .locator('input[placeholder="Type a number..."]')
       .fill('15')
-    await page.locator('typebot-standard').locator('text=Send').click()
+    await page.locator('sniper-standard').locator('text=Send').click()
     await expect(
-      page.locator('typebot-standard').getByText('You are younger than 20')
+      page.locator('sniper-standard').getByText('You are younger than 20')
     ).toBeVisible()
 
     await page.click('text=Restart')
     await page
-      .locator('typebot-standard')
+      .locator('sniper-standard')
       .locator('input[placeholder="Type a number..."]')
       .fill('45')
-    await page.locator('typebot-standard').locator('text=Send').click()
+    await page.locator('sniper-standard').locator('text=Send').click()
     await expect(
-      page.locator('typebot-standard').getByText('You are older than 20')
+      page.locator('sniper-standard').getByText('You are older than 20')
     ).toBeVisible()
 
     await page.click('text=Restart')
     await page
-      .locator('typebot-standard')
+      .locator('sniper-standard')
       .locator('input[placeholder="Type a number..."]')
       .fill('90')
-    await page.locator('typebot-standard').locator('text=Send').click()
+    await page.locator('sniper-standard').locator('text=Send').click()
     await expect(
-      page.locator('typebot-standard').getByText('You are older than 80')
+      page.locator('sniper-standard').getByText('You are older than 80')
     ).toBeVisible()
   })
 })

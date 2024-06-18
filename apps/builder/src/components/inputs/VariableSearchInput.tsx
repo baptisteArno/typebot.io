@@ -19,9 +19,9 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { EditIcon, PlusIcon, TrashIcon } from '@/components/icons'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { createId } from '@paralleldrive/cuid2'
-import { Variable } from '@typebot.io/schemas'
+import { Variable } from '@sniper.io/schemas'
 import React, {
   useState,
   useRef,
@@ -29,7 +29,7 @@ import React, {
   useEffect,
   ReactNode,
 } from 'react'
-import { byId, isDefined, isNotDefined } from '@typebot.io/lib'
+import { byId, isDefined, isNotDefined } from '@sniper.io/lib'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
@@ -64,9 +64,8 @@ export const VariableSearchInput = ({
 }: Props) => {
   const focusedItemBgColor = useColorModeValue('gray.200', 'gray.700')
   const { onOpen, onClose, isOpen } = useDisclosure()
-  const { typebot, createVariable, deleteVariable, updateVariable } =
-    useTypebot()
-  const variables = typebot?.variables ?? []
+  const { sniper, createVariable, deleteVariable, updateVariable } = useSniper()
+  const variables = sniper?.variables ?? []
   const [inputValue, setInputValue] = useState(
     variables.find(byId(initialVariableId))?.name ?? ''
   )

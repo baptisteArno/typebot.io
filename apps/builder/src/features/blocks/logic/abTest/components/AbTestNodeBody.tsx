@@ -1,8 +1,8 @@
 import React from 'react'
 import { Flex, Stack, useColorModeValue, Text, Tag } from '@chakra-ui/react'
-import { AbTestBlock } from '@typebot.io/schemas'
+import { AbTestBlock } from '@sniper.io/schemas'
 import { BlockSourceEndpoint } from '@/features/graph/components/endpoints/BlockSourceEndpoint'
-import { defaultAbTestOptions } from '@typebot.io/schemas/features/blocks/logic/abTest/constants'
+import { defaultAbTestOptions } from '@sniper.io/schemas/features/blocks/logic/abTest/constants'
 
 type Props = {
   block: AbTestBlock

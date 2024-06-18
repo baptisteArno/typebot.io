@@ -1,8 +1,8 @@
 import { TextInput } from '@/components/inputs'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { Stack } from '@chakra-ui/react'
-import { RedirectBlock } from '@typebot.io/schemas'
-import { defaultRedirectOptions } from '@typebot.io/schemas/features/blocks/logic/redirect/constants'
+import { RedirectBlock } from '@sniper.io/schemas'
+import { defaultRedirectOptions } from '@sniper.io/schemas/features/blocks/logic/redirect/constants'
 
 type Props = {
   options: RedirectBlock['options']

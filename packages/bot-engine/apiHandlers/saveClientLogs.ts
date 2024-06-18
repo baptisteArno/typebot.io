@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import { ChatLog } from '@typebot.io/schemas'
+import { ChatLog } from '@sniper.io/schemas'
 import { formatLogDetails } from '../logs/helpers/formatLogDetails'
 import { getSession } from '../queries/getSession'
 import { saveLogs } from '../queries/saveLogs'
@@ -19,7 +19,7 @@ export const saveClientLogs = async ({ sessionId, clientLogs }: Props) => {
     })
   }
 
-  const resultId = session.state.typebotsQueue[0].resultId
+  const resultId = session.state.snipersQueue[0].resultId
 
   if (!resultId) {
     throw new TRPCError({

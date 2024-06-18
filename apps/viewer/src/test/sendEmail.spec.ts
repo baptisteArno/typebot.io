@@ -1,8 +1,8 @@
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
-import { SmtpCredentials } from '@typebot.io/schemas'
-import { env } from '@typebot.io/env'
+import { importSniperInDatabase } from '@sniper.io/playwright/databaseActions'
+import { SmtpCredentials } from '@sniper.io/schemas'
+import { env } from '@sniper.io/env'
 import { createSmtpCredentials } from './utils/databaseActions'
 import { getTestAsset } from './utils/playwright'
 
@@ -27,15 +27,15 @@ test.beforeAll(async () => {
 })
 
 test('should send an email', async ({ page }) => {
-  const typebotId = createId()
-  await importTypebotInDatabase(getTestAsset('typebots/sendEmail.json'), {
-    id: typebotId,
-    publicId: `${typebotId}-public`,
+  const sniperId = createId()
+  await importSniperInDatabase(getTestAsset('snipers/sendEmail.json'), {
+    id: sniperId,
+    publicId: `${sniperId}-public`,
   })
-  await page.goto(`/${typebotId}-public`)
+  await page.goto(`/${sniperId}-public`)
   await page.locator('text=Send email').click()
   await expect(page.getByText('Email sent!')).toBeVisible()
-  await page.goto(`${env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
+  await page.goto(`${env.NEXTAUTH_URL}/snipers/${sniperId}/results`)
   await page.click('text="See logs"')
   await expect(page.locator('text="Email successfully sent"')).toBeVisible()
 })

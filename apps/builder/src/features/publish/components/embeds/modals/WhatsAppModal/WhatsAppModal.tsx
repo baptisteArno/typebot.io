@@ -23,7 +23,7 @@ import {
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { CredentialsDropdown } from '@/features/credentials/components/CredentialsDropdown'
 import { ModalProps } from '../../EmbedButton'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { WhatsAppCredentialsModal } from './WhatsAppCredentialsModal'
 import { TextLink } from '@/components/TextLink'
 import { PublishButton } from '../../../PublishButton'
@@ -31,21 +31,21 @@ import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
 import { trpc } from '@/lib/trpc'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { TableList } from '@/components/TableList'
-import { Comparison } from '@typebot.io/schemas'
+import { Comparison } from '@sniper.io/schemas'
 import { DropdownList } from '@/components/DropdownList'
 import { WhatsAppComparisonItem } from './WhatsAppComparisonItem'
 import { AlertInfo } from '@/components/AlertInfo'
 import { NumberInput } from '@/components/inputs'
-import { defaultSessionExpiryTimeout } from '@typebot.io/schemas/features/whatsapp'
+import { defaultSessionExpiryTimeout } from '@sniper.io/schemas/features/whatsapp'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
-import { isDefined } from '@typebot.io/lib/utils'
+import { isDefined } from '@sniper.io/lib/utils'
 import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
 import { UnlockPlanAlertInfo } from '@/components/UnlockPlanAlertInfo'
 import { PlanTag } from '@/features/billing/components/PlanTag'
-import { LogicalOperator } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
+import { LogicalOperator } from '@sniper.io/schemas/features/blocks/logic/condition/constants'
 
 export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
-  const { typebot, updateTypebot, isPublished } = useTypebot()
+  const { sniper, updateSniper, isPublished } = useSniper()
   const { ref } = useParentModal()
   const { workspace } = useWorkspace()
   const {
@@ -54,26 +54,26 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
     onClose: onCredentialsModalClose,
   } = useDisclosure()
 
-  const whatsAppSettings = typebot?.settings.whatsApp
+  const whatsAppSettings = sniper?.settings.whatsApp
 
   const { data: phoneNumberData } =
     trpc.whatsAppInternal.getPhoneNumber.useQuery(
       {
-        credentialsId: typebot?.whatsAppCredentialsId as string,
+        credentialsId: sniper?.whatsAppCredentialsId as string,
       },
       {
-        enabled: !!typebot?.whatsAppCredentialsId,
+        enabled: !!sniper?.whatsAppCredentialsId,
       }
     )
 
   const toggleEnableWhatsApp = (isChecked: boolean) => {
-    if (!phoneNumberData?.id || !typebot) return
-    updateTypebot({
+    if (!phoneNumberData?.id || !sniper) return
+    updateSniper({
       updates: {
         settings: {
-          ...typebot.settings,
+          ...sniper.settings,
           whatsApp: {
-            ...typebot.settings.whatsApp,
+            ...sniper.settings.whatsApp,
             isEnabled: isChecked,
           },
         },
@@ -82,8 +82,8 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
   }
 
   const updateCredentialsId = (credentialsId: string | undefined) => {
-    if (!typebot) return
-    updateTypebot({
+    if (!sniper) return
+    updateSniper({
       updates: {
         whatsAppCredentialsId: credentialsId,
       },
@@ -91,16 +91,16 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
   }
 
   const updateStartConditionComparisons = (comparisons: Comparison[]) => {
-    if (!typebot) return
-    updateTypebot({
+    if (!sniper) return
+    updateSniper({
       updates: {
         settings: {
-          ...typebot.settings,
+          ...sniper.settings,
           whatsApp: {
-            ...typebot.settings.whatsApp,
+            ...sniper.settings.whatsApp,
             startCondition: {
               logicalOperator:
-                typebot.settings.whatsApp?.startCondition?.logicalOperator ??
+                sniper.settings.whatsApp?.startCondition?.logicalOperator ??
                 LogicalOperator.AND,
               comparisons,
             },
@@ -113,16 +113,16 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
   const updateStartConditionLogicalOperator = (
     logicalOperator: LogicalOperator
   ) => {
-    if (!typebot) return
-    updateTypebot({
+    if (!sniper) return
+    updateSniper({
       updates: {
         settings: {
-          ...typebot.settings,
+          ...sniper.settings,
           whatsApp: {
-            ...typebot.settings.whatsApp,
+            ...sniper.settings.whatsApp,
             startCondition: {
               comparisons:
-                typebot.settings.whatsApp?.startCondition?.comparisons ?? [],
+                sniper.settings.whatsApp?.startCondition?.comparisons ?? [],
               logicalOperator,
             },
           },
@@ -132,13 +132,13 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
   }
 
   const updateIsStartConditionEnabled = (isEnabled: boolean) => {
-    if (!typebot) return
-    updateTypebot({
+    if (!sniper) return
+    updateSniper({
       updates: {
         settings: {
-          ...typebot.settings,
+          ...sniper.settings,
           whatsApp: {
-            ...typebot.settings.whatsApp,
+            ...sniper.settings.whatsApp,
             startCondition: !isEnabled
               ? undefined
               : {
@@ -153,17 +153,17 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
 
   const updateSessionExpiryTimeout = (sessionExpiryTimeout?: number) => {
     if (
-      !typebot ||
+      !sniper ||
       (sessionExpiryTimeout &&
         (sessionExpiryTimeout <= 0 || sessionExpiryTimeout > 48))
     )
       return
-    updateTypebot({
+    updateSniper({
       updates: {
         settings: {
-          ...typebot.settings,
+          ...sniper.settings,
           whatsApp: {
-            ...typebot.settings.whatsApp,
+            ...sniper.settings.whatsApp,
             sessionExpiryTimeout,
           },
         },
@@ -204,7 +204,7 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
                       type="whatsApp"
                       workspaceId={workspace.id}
                       currentCredentialsId={
-                        typebot?.whatsAppCredentialsId ?? undefined
+                        sniper?.whatsAppCredentialsId ?? undefined
                       }
                       onCredentialsSelect={updateCredentialsId}
                       onCreateNewClick={onOpen}
@@ -215,7 +215,7 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
                 )}
               </HStack>
             </ListItem>
-            {typebot?.whatsAppCredentialsId && (
+            {sniper?.whatsAppCredentialsId && (
               <>
                 <ListItem>
                   <Accordion allowToggle>
@@ -283,9 +283,7 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
                   <SwitchWithLabel
                     isDisabled={!hasProPerks(workspace)}
                     label="Enable WhatsApp integration"
-                    initialValue={
-                      typebot?.settings.whatsApp?.isEnabled ?? false
-                    }
+                    initialValue={sniper?.settings.whatsApp?.isEnabled ?? false}
                     onCheckChange={toggleEnableWhatsApp}
                     justifyContent="flex-start"
                   />

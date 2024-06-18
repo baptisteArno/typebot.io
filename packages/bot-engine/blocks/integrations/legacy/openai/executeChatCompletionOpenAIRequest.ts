@@ -1,6 +1,6 @@
-import { isNotEmpty } from '@typebot.io/lib/utils'
-import { ContinueChatResponse } from '@typebot.io/schemas'
-import { OpenAIBlock } from '@typebot.io/schemas/features/blocks/integrations/openai'
+import { isNotEmpty } from '@sniper.io/lib/utils'
+import { ContinueChatResponse } from '@sniper.io/schemas'
+import { OpenAIBlock } from '@sniper.io/schemas/features/blocks/integrations/openai'
 import { HTTPError } from 'ky'
 import { ClientOptions, OpenAI } from 'openai'
 

@@ -10,7 +10,7 @@ import {
   InputProps,
   Stack,
 } from '@chakra-ui/react'
-import { Variable } from '@typebot.io/schemas'
+import { Variable } from '@sniper.io/schemas'
 import React, {
   forwardRef,
   ReactNode,
@@ -20,7 +20,7 @@ import React, {
   useState,
 } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
 export type TextInputProps = {

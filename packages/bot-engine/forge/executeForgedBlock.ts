@@ -1,23 +1,23 @@
-import { VariableStore, LogsStore } from '@typebot.io/forge'
-import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
-import { ForgedBlock } from '@typebot.io/forge-repository/types'
-import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
+import { VariableStore, LogsStore } from '@sniper.io/forge'
+import { forgedBlocks } from '@sniper.io/forge-repository/definitions'
+import { ForgedBlock } from '@sniper.io/forge-repository/types'
+import { decrypt } from '@sniper.io/lib/api/encryption/decrypt'
 import {
   SessionState,
   ContinueChatResponse,
   Block,
-  TypebotInSession,
+  SniperInSession,
   SetVariableHistoryItem,
-} from '@typebot.io/schemas'
-import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
+} from '@sniper.io/schemas'
+import { deepParseVariables } from '@sniper.io/variables/deepParseVariables'
 import {
   ParseVariablesOptions,
   parseVariables,
-} from '@typebot.io/variables/parseVariables'
-import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
+} from '@sniper.io/variables/parseVariables'
+import { updateVariablesInSession } from '@sniper.io/variables/updateVariablesInSession'
 import { ExecuteIntegrationResponse } from '../types'
-import { byId } from '@typebot.io/lib'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import { byId } from '@sniper.io/lib'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
 import { getCredentials } from '../queries/getCredentials'
 
 export const executeForgedBlock = async (
@@ -50,10 +50,10 @@ export const executeForgedBlock = async (
     }
   }
 
-  const typebot = state.typebotsQueue[0].typebot
+  const sniper = state.snipersQueue[0].sniper
   if (
     action?.run?.stream &&
-    isNextBubbleTextWithStreamingVar(typebot)(
+    isNextBubbleTextWithStreamingVar(sniper)(
       block.id,
       action.run.stream.getStreamVariableId(block.options)
     ) &&
@@ -77,13 +77,13 @@ export const executeForgedBlock = async (
 
   const variables: VariableStore = {
     get: (id: string) => {
-      const variable = newSessionState.typebotsQueue[0].typebot.variables.find(
+      const variable = newSessionState.snipersQueue[0].sniper.variables.find(
         (variable) => variable.id === id
       )
       return variable?.value
     },
     set: (id: string, value: unknown) => {
-      const variable = newSessionState.typebotsQueue[0].typebot.variables.find(
+      const variable = newSessionState.snipersQueue[0].sniper.variables.find(
         (variable) => variable.id === id
       )
       if (!variable) return
@@ -97,10 +97,10 @@ export const executeForgedBlock = async (
     },
     parse: (text: string, params?: ParseVariablesOptions) =>
       parseVariables(
-        newSessionState.typebotsQueue[0].typebot.variables,
+        newSessionState.snipersQueue[0].sniper.variables,
         params
       )(text),
-    list: () => newSessionState.typebotsQueue[0].typebot.variables,
+    list: () => newSessionState.snipersQueue[0].sniper.variables,
   }
   let logs: NonNullable<ContinueChatResponse['logs']> = []
   const logsStore: LogsStore = {
@@ -120,7 +120,7 @@ export const executeForgedBlock = async (
     : undefined
 
   const parsedOptions = deepParseVariables(
-    state.typebotsQueue[0].typebot.variables,
+    state.snipersQueue[0].sniper.variables,
     { removeEmptyStrings: true }
   )(block.options)
   await action?.run?.server?.({
@@ -168,13 +168,13 @@ export const executeForgedBlock = async (
 }
 
 const isNextBubbleTextWithStreamingVar =
-  (typebot: TypebotInSession) =>
+  (sniper: SniperInSession) =>
   (blockId: string, streamVariableId?: string): boolean => {
-    const streamVariable = typebot.variables.find(
+    const streamVariable = sniper.variables.find(
       (variable) => variable.id === streamVariableId
     )
     if (!streamVariable) return false
-    const nextBlock = getNextBlock(typebot)(blockId)
+    const nextBlock = getNextBlock(sniper)(blockId)
     if (!nextBlock) return false
     return (
       nextBlock.type === BubbleBlockType.TEXT &&
@@ -185,9 +185,9 @@ const isNextBubbleTextWithStreamingVar =
   }
 
 const getNextBlock =
-  (typebot: TypebotInSession) =>
+  (sniper: SniperInSession) =>
   (blockId: string): Block | undefined => {
-    const group = typebot.groups.find((group) =>
+    const group = sniper.groups.find((group) =>
       group.blocks.find(byId(blockId))
     )
     if (!group) return
@@ -196,9 +196,9 @@ const getNextBlock =
     if (nextBlockInGroup) return nextBlockInGroup
     const outgoingEdgeId = group.blocks.at(blockIndex)?.outgoingEdgeId
     if (!outgoingEdgeId) return
-    const outgoingEdge = typebot.edges.find(byId(outgoingEdgeId))
+    const outgoingEdge = sniper.edges.find(byId(outgoingEdgeId))
     if (!outgoingEdge) return
-    const connectedGroup = typebot.groups.find(byId(outgoingEdge?.to.groupId))
+    const connectedGroup = sniper.groups.find(byId(outgoingEdge?.to.groupId))
     if (!connectedGroup) return
     return outgoingEdge.to.blockId
       ? connectedGroup.blocks.find(

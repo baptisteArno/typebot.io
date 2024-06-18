@@ -12,11 +12,11 @@ import '@/assets/styles/md.css'
 import { UserProvider } from '@/features/account/UserProvider'
 import { useRouter } from 'next/router'
 import { SupportBubble } from '@/components/SupportBubble'
-import { toTitleCase } from '@typebot.io/lib'
-import { Plan } from '@typebot.io/prisma'
+import { toTitleCase } from '@sniper.io/lib'
+import { Plan } from '@sniper.io/prisma'
 import { trpc } from '@/lib/trpc'
 import { NewVersionPopup } from '@/components/NewVersionPopup'
-import { TypebotProvider } from '@/features/editor/providers/TypebotProvider'
+import { SniperProvider } from '@/features/editor/providers/SniperProvider'
 import { WorkspaceProvider } from '@/features/workspace/WorkspaceProvider'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { TolgeeProvider, useTolgeeSSR } from '@tolgee/react'
@@ -55,7 +55,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       })
   }, [router.query.stripe])
 
-  const typebotId = router.query.typebotId?.toString()
+  const sniperId = router.query.sniperId?.toString()
 
   return (
     <TolgeeProvider tolgee={ssrTolgee}>
@@ -64,15 +64,15 @@ const App = ({ Component, pageProps }: AppProps) => {
         <Toaster />
         <SessionProvider session={pageProps.session}>
           <UserProvider>
-            <TypebotProvider typebotId={typebotId}>
-              <WorkspaceProvider typebotId={typebotId}>
+            <SniperProvider sniperId={sniperId}>
+              <WorkspaceProvider sniperId={sniperId}>
                 <Component {...pageProps} />
                 {!router.pathname.endsWith('edit') && isCloudProdInstance() && (
                   <SupportBubble />
                 )}
                 <NewVersionPopup />
               </WorkspaceProvider>
-            </TypebotProvider>
+            </SniperProvider>
           </UserProvider>
         </SessionProvider>
       </ChakraProvider>

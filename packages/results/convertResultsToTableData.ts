@@ -4,8 +4,8 @@ import {
   VariableWithValue,
   Answer,
   TableData,
-} from '@typebot.io/schemas'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+} from '@sniper.io/schemas'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
 import { isDefined } from '../lib/utils'
 
 type CellParser = (

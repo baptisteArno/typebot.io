@@ -1,4 +1,4 @@
-import { isNotDefined } from '@typebot.io/lib/utils'
+import { isNotDefined } from '@sniper.io/lib/utils'
 
 export const formatLogDetails = (details: unknown): string | null => {
   if (isNotDefined(details)) return null

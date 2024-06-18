@@ -1,4 +1,4 @@
-import { option } from '@typebot.io/forge'
+import { option } from '@sniper.io/forge'
 
 export const deprecatedAskAssistantOptions = option.object({
   threadId: option.string.layout({

@@ -1,4 +1,4 @@
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 import { Variable, VariableWithValue } from '../schemas'
 
 export const filterNonSessionVariablesWithValues = (

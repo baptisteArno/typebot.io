@@ -17,17 +17,17 @@ import {
   Text,
   Tag,
 } from '@chakra-ui/react'
-import { Log } from '@typebot.io/prisma'
-import { isDefined } from '@typebot.io/lib'
+import { Log } from '@sniper.io/prisma'
+import { isDefined } from '@sniper.io/lib'
 import { useLogs } from '../hooks/useLogs'
 
 type Props = {
-  typebotId: string
+  sniperId: string
   resultId: string | null
   onClose: () => void
 }
-export const LogsModal = ({ typebotId, resultId, onClose }: Props) => {
-  const { isLoading, logs } = useLogs(typebotId, resultId)
+export const LogsModal = ({ sniperId, resultId, onClose }: Props) => {
+  const { isLoading, logs } = useLogs(sniperId, resultId)
 
   return (
     <Modal isOpen={isDefined(resultId)} onClose={onClose} size="xl">

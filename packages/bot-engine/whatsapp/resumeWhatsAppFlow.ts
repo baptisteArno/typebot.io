@@ -1,17 +1,17 @@
-import { SessionState } from '@typebot.io/schemas'
+import { SessionState } from '@sniper.io/schemas'
 import {
   WhatsAppCredentials,
   WhatsAppIncomingMessage,
-} from '@typebot.io/schemas/features/whatsapp'
-import { env } from '@typebot.io/env'
+} from '@sniper.io/schemas/features/whatsapp'
+import { env } from '@sniper.io/env'
 import { sendChatReplyToWhatsApp } from './sendChatReplyToWhatsApp'
 import { startWhatsAppSession } from './startWhatsAppSession'
 import { getSession } from '../queries/getSession'
 import { continueBotFlow } from '../continueBotFlow'
-import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
+import { decrypt } from '@sniper.io/lib/api/encryption/decrypt'
 import { saveStateToDatabase } from '../saveStateToDatabase'
-import prisma from '@typebot.io/lib/prisma'
-import { isDefined } from '@typebot.io/lib/utils'
+import prisma from '@sniper.io/lib/prisma'
+import { isDefined } from '@sniper.io/lib/utils'
 import { Reply } from '../types'
 import { setIsReplyingInChatSession } from '../queries/setIsReplyingInChatSession'
 import { removeIsReplyingInChatSession } from '../queries/removeIsReplyingInChatSession'

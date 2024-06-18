@@ -11,7 +11,7 @@ import { executeWait } from '@/features/blocks/logic/wait/utils/executeWait'
 import { executeWebhook } from '@/features/blocks/integrations/webhook/executeWebhook'
 import { executePixel } from '@/features/blocks/integrations/pixel/executePixel'
 import { ClientSideActionContext } from '@/types'
-import type { ContinueChatResponse, ChatLog } from '@typebot.io/schemas'
+import type { ContinueChatResponse, ChatLog } from '@sniper.io/schemas'
 import { injectStartProps } from './injectStartProps'
 
 type Props = {

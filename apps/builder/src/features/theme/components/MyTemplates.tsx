@@ -1,7 +1,7 @@
 import { SaveIcon } from '@/components/icons'
 import { trpc } from '@/lib/trpc'
 import { Button, SimpleGrid, Stack, useDisclosure } from '@chakra-ui/react'
-import { ThemeTemplate } from '@typebot.io/schemas'
+import { ThemeTemplate } from '@sniper.io/schemas'
 import { areThemesEqual } from '../helpers/areThemesEqual'
 import { SaveThemeModal } from './SaveThemeModal'
 import { ThemeTemplateCard } from './ThemeTemplateCard'

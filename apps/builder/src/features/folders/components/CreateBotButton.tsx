@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { stringify } from 'qs'
 import React from 'react'
 import { useTranslate } from '@tolgee/react'
-import { useTypebotDnd } from '../TypebotDndProvider'
+import { useSniperDnd } from '../SniperDndProvider'
 
 export const CreateBotButton = ({
   folderId,
@@ -13,11 +13,11 @@ export const CreateBotButton = ({
 }: { folderId?: string; isFirstBot: boolean } & ButtonProps) => {
   const { t } = useTranslate()
   const router = useRouter()
-  const { draggedTypebot } = useTypebotDnd()
+  const { draggedSniper } = useSniperDnd()
 
   const handleClick = () =>
     router.push(
-      `/typebots/create?${stringify({
+      `/snipers/create?${stringify({
         isFirstBot: !isFirstBot ? undefined : isFirstBot,
         folderId,
       })}`
@@ -30,7 +30,7 @@ export const CreateBotButton = ({
       paddingX={6}
       whiteSpace={'normal'}
       colorScheme="blue"
-      opacity={draggedTypebot ? 0.3 : 1}
+      opacity={draggedSniper ? 0.3 : 1}
       {...props}
     >
       <VStack spacing="6">
@@ -42,7 +42,7 @@ export const CreateBotButton = ({
           textAlign="center"
           mt="6"
         >
-          {t('folders.createTypebotButton.label')}
+          {t('folders.createSniperButton.label')}
         </Text>
       </VStack>
     </Button>

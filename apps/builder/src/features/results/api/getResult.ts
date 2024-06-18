@@ -1,15 +1,15 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { resultWithAnswersSchema } from '@typebot.io/schemas'
+import { resultWithAnswersSchema } from '@sniper.io/schemas'
 import { z } from 'zod'
-import { isReadTypebotForbidden } from '@/features/typebot/helpers/isReadTypebotForbidden'
+import { isReadSniperForbidden } from '@/features/sniper/helpers/isReadSniperForbidden'
 
 export const getResult = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/v1/typebots/{typebotId}/results/{resultId}',
+      path: '/v1/snipers/{sniperId}/results/{resultId}',
       protect: true,
       summary: 'Get result by id',
       tags: ['Results'],
@@ -17,10 +17,10 @@ export const getResult = authenticatedProcedure
   })
   .input(
     z.object({
-      typebotId: z
+      sniperId: z
         .string()
         .describe(
-          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+          "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)"
         ),
       resultId: z
         .string()
@@ -35,9 +35,9 @@ export const getResult = authenticatedProcedure
     })
   )
   .query(async ({ input, ctx: { user } }) => {
-    const typebot = await prisma.typebot.findUnique({
+    const sniper = await prisma.sniper.findUnique({
       where: {
-        id: input.typebotId,
+        id: input.sniperId,
       },
       select: {
         id: true,
@@ -61,12 +61,12 @@ export const getResult = authenticatedProcedure
         },
       },
     })
-    if (!typebot || (await isReadTypebotForbidden(typebot, user)))
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+    if (!sniper || (await isReadSniperForbidden(sniper, user)))
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Sniper not found' })
     const results = await prisma.result.findMany({
       where: {
         id: input.resultId,
-        typebotId: typebot.id,
+        sniperId: sniper.id,
       },
       orderBy: {
         createdAt: 'desc',

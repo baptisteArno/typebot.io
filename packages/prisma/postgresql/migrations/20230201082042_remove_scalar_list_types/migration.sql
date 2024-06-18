@@ -1,5 +1,5 @@
 ALTER TABLE
-  "PublicTypebot"
+  "PublicSniper"
 ALTER COLUMN
   variables TYPE JSONB USING array_to_json(variables);
 
@@ -9,7 +9,7 @@ ALTER COLUMN
   variables TYPE JSONB USING array_to_json(variables);
 
 ALTER TABLE
-  "Typebot"
+  "Sniper"
 ALTER COLUMN
   variables TYPE JSONB USING array_to_json(variables);
 

@@ -2,13 +2,13 @@ import { SendButton } from '@/components/SendButton'
 import { createSignal, onMount, Show } from 'solid-js'
 import type { Stripe, StripeElements } from '@stripe/stripe-js'
 import { BotContext } from '@/types'
-import type { PaymentInputBlock, RuntimeOptions } from '@typebot.io/schemas'
+import type { PaymentInputBlock, RuntimeOptions } from '@sniper.io/schemas'
 import { loadStripe } from '@/lib/stripe'
 import {
   removePaymentInProgressFromStorage,
   setPaymentInProgressInStorage,
 } from '../helpers/paymentInProgressStorage'
-import { defaultPaymentInputOptions } from '@typebot.io/schemas/features/blocks/inputs/payment/constants'
+import { defaultPaymentInputOptions } from '@sniper.io/schemas/features/blocks/inputs/payment/constants'
 
 type Props = {
   context: BotContext
@@ -39,7 +39,7 @@ export const StripePaymentForm = (props: Props) => {
         theme: 'stripe',
         variables: {
           colorPrimary: getComputedStyle(paymentElementSlot).getPropertyValue(
-            '--typebot-button-bg-color'
+            '--sniper-button-bg-color'
           ),
         },
       },
@@ -64,7 +64,7 @@ export const StripePaymentForm = (props: Props) => {
 
     setPaymentInProgressInStorage({
       sessionId: props.context.sessionId,
-      typebot: props.context.typebot,
+      sniper: props.context.sniper,
     })
     const { postalCode, ...address } =
       props.options?.additionalInformation?.address ?? {}
@@ -98,7 +98,7 @@ export const StripePaymentForm = (props: Props) => {
     <form
       id="payment-form"
       onSubmit={handleSubmit}
-      class="flex flex-col p-4 typebot-input w-full items-center"
+      class="flex flex-col p-4 sniper-input w-full items-center"
     >
       <slot name={slotName} ref={paymentElementSlot} />
       <Show when={isMounted()}>
@@ -114,7 +114,7 @@ export const StripePaymentForm = (props: Props) => {
       </Show>
 
       <Show when={message()}>
-        <div class="typebot-input-error-message mt-4 text-center animate-fade-in">
+        <div class="sniper-input-error-message mt-4 text-center animate-fade-in">
           {message()}
         </div>
       </Show>

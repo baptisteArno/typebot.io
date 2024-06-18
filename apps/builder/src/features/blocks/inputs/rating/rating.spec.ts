@@ -1,8 +1,8 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots } from '@typebot.io/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from '@typebot.io/playwright/databaseHelpers'
+import { createSnipers } from '@sniper.io/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@sniper.io/playwright/databaseHelpers'
 import { createId } from '@paralleldrive/cuid2'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
 
 const boxSvg = `<svg
     xmlns="http://www.w3.org/2000/svg"
@@ -18,17 +18,17 @@ const boxSvg = `<svg
   </svg>`
 
 test('options should work', async ({ page }) => {
-  const typebotId = createId()
-  await createTypebots([
+  const sniperId = createId()
+  await createSnipers([
     {
-      id: typebotId,
+      id: sniperId,
       ...parseDefaultGroupWithBlock({
         type: InputBlockType.RATING,
       }),
     },
   ])
 
-  await page.goto(`/typebots/${typebotId}/edit`)
+  await page.goto(`/snipers/${sniperId}/edit`)
 
   await page.click('text=Test')
   await expect(page.locator(`text=Send`)).toBeHidden()
@@ -48,6 +48,6 @@ test('options should work', async ({ page }) => {
   await page.click('text="Restart"')
   await expect(page.locator(`text=Not likely at all`)).toBeVisible()
   await expect(page.locator(`text=Extremely likely`)).toBeVisible()
-  await page.locator('typebot-standard').locator(`svg >> nth=4`).click()
-  await expect(page.locator('typebot-standard').locator(`text=5`)).toBeVisible()
+  await page.locator('sniper-standard').locator(`svg >> nth=4`).click()
+  await expect(page.locator('sniper-standard').locator(`text=5`)).toBeVisible()
 })

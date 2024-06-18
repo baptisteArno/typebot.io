@@ -1,8 +1,8 @@
 import { TRPCError } from '@trpc/server'
-import { isAdminWriteWorkspaceForbidden } from '@typebot.io/db-rules/isAdminWriteWorkspaceForbidden'
-import { env } from '@typebot.io/env'
-import prisma from '@typebot.io/lib/prisma'
-import { Plan, User } from '@typebot.io/prisma'
+import { isAdminWriteWorkspaceForbidden } from '@sniper.io/db-rules/isAdminWriteWorkspaceForbidden'
+import { env } from '@sniper.io/env'
+import prisma from '@sniper.io/lib/prisma'
+import { Plan, User } from '@sniper.io/prisma'
 import Stripe from 'stripe'
 
 type Props = {

@@ -6,18 +6,18 @@
   },
   "servers": [
     {
-      "url": "https://typebot.io/api"
+      "url": "https://sniper.io/api"
     }
   ],
   "externalDocs": {
-    "url": "https://docs.typebot.io/api-reference"
+    "url": "https://docs.sniper.io/api-reference"
   },
   "paths": {
     "/v1/sendMessage": {
       "post": {
         "operationId": "sendMessageV1",
         "summary": "Send a message",
-        "description": "To initiate a chat, do not provide a `sessionId` nor a `message`.\n\nContinue the conversation by providing the `sessionId` and the `message` that should answer the previous question.\n\nSet the `isPreview` option to `true` to chat with the non-published version of the typebot.",
+        "description": "To initiate a chat, do not provide a `sessionId` nor a `message`.\n\nContinue the conversation by providing the `sessionId` and the `message` that should answer the previous question.\n\nSet the `isPreview` option to `true` to chat with the non-published version of the sniper.",
         "tags": [
           "Deprecated"
         ],
@@ -42,24 +42,24 @@
                       {
                         "type": "object",
                         "properties": {
-                          "typebot": {
+                          "sniper": {
                             "anyOf": [
                               {
                                 "oneOf": [
                                   {
-                                    "$ref": "#/components/schemas/typebotV5"
+                                    "$ref": "#/components/schemas/sniperV5"
                                   },
                                   {
-                                    "$ref": "#/components/schemas/typebotV6"
+                                    "$ref": "#/components/schemas/sniperV6"
                                   }
                                 ],
                                 "discriminator": {
                                   "propertyName": "version",
                                   "mapping": {
-                                    "3": "#/components/schemas/typebotV5",
-                                    "4": "#/components/schemas/typebotV5",
-                                    "5": "#/components/schemas/typebotV5",
-                                    "6": "#/components/schemas/typebotV6"
+                                    "3": "#/components/schemas/sniperV5",
+                                    "4": "#/components/schemas/sniperV5",
+                                    "5": "#/components/schemas/sniperV5",
+                                    "6": "#/components/schemas/sniperV6"
                                   }
                                 }
                               },
@@ -67,7 +67,7 @@
                                 "type": "string"
                               }
                             ],
-                            "description": "Either a Typebot ID or a Typebot object. If you provide a Typebot object, it will be executed in preview mode. ([How can I find my typebot ID?](https://docs.typebot.io/api-reference#how-to-find-my-typebotid))."
+                            "description": "Either a Sniper ID or a Sniper object. If you provide a Sniper object, it will be executed in preview mode. ([How can I find my sniper ID?](https://docs.sniper.io/api-reference#how-to-find-my-sniperid))."
                           },
                           "isPreview": {
                             "type": "boolean",
@@ -80,7 +80,7 @@
                           "prefilledVariables": {
                             "type": "object",
                             "additionalProperties": {},
-                            "description": "[More info about prefilled variables.](https://docs.typebot.io/editor/variables#prefilled-variables)"
+                            "description": "[More info about prefilled variables.](https://docs.sniper.io/editor/variables#prefilled-variables)"
                           },
                           "isStreamEnabled": {
                             "type": "boolean",
@@ -92,7 +92,7 @@
                           }
                         },
                         "required": [
-                          "typebot"
+                          "sniper"
                         ]
                       },
                       {
@@ -422,7 +422,7 @@
                     "sessionId": {
                       "type": "string"
                     },
-                    "typebot": {
+                    "sniper": {
                       "type": "object",
                       "properties": {
                         "id": {
@@ -527,7 +527,7 @@
       "post": {
         "operationId": "sendMessageV2",
         "summary": "Send a message",
-        "description": "To initiate a chat, do not provide a `sessionId` nor a `message`.\n\nContinue the conversation by providing the `sessionId` and the `message` that should answer the previous question.\n\nSet the `isPreview` option to `true` to chat with the non-published version of the typebot.",
+        "description": "To initiate a chat, do not provide a `sessionId` nor a `message`.\n\nContinue the conversation by providing the `sessionId` and the `message` that should answer the previous question.\n\nSet the `isPreview` option to `true` to chat with the non-published version of the sniper.",
         "tags": [
           "Deprecated"
         ],
@@ -552,24 +552,24 @@
                       {
                         "type": "object",
                         "properties": {
-                          "typebot": {
+                          "sniper": {
                             "anyOf": [
                               {
                                 "oneOf": [
                                   {
-                                    "$ref": "#/components/schemas/typebotV5"
+                                    "$ref": "#/components/schemas/sniperV5"
                                   },
                                   {
-                                    "$ref": "#/components/schemas/typebotV6"
+                                    "$ref": "#/components/schemas/sniperV6"
                                   }
                                 ],
                                 "discriminator": {
                                   "propertyName": "version",
                                   "mapping": {
-                                    "3": "#/components/schemas/typebotV5",
-                                    "4": "#/components/schemas/typebotV5",
-                                    "5": "#/components/schemas/typebotV5",
-                                    "6": "#/components/schemas/typebotV6"
+                                    "3": "#/components/schemas/sniperV5",
+                                    "4": "#/components/schemas/sniperV5",
+                                    "5": "#/components/schemas/sniperV5",
+                                    "6": "#/components/schemas/sniperV6"
                                   }
                                 }
                               },
@@ -577,7 +577,7 @@
                                 "type": "string"
                               }
                             ],
-                            "description": "Either a Typebot ID or a Typebot object. If you provide a Typebot object, it will be executed in preview mode. ([How can I find my typebot ID?](https://docs.typebot.io/api-reference#how-to-find-my-typebotid))."
+                            "description": "Either a Sniper ID or a Sniper object. If you provide a Sniper object, it will be executed in preview mode. ([How can I find my sniper ID?](https://docs.sniper.io/api-reference#how-to-find-my-sniperid))."
                           },
                           "isPreview": {
                             "type": "boolean",
@@ -590,7 +590,7 @@
                           "prefilledVariables": {
                             "type": "object",
                             "additionalProperties": {},
-                            "description": "[More info about prefilled variables.](https://docs.typebot.io/editor/variables#prefilled-variables)"
+                            "description": "[More info about prefilled variables.](https://docs.sniper.io/editor/variables#prefilled-variables)"
                           },
                           "isStreamEnabled": {
                             "type": "boolean",
@@ -602,7 +602,7 @@
                           }
                         },
                         "required": [
-                          "typebot"
+                          "sniper"
                         ]
                       },
                       {
@@ -932,7 +932,7 @@
                     "sessionId": {
                       "type": "string"
                     },
-                    "typebot": {
+                    "sniper": {
                       "type": "object",
                       "properties": {
                         "id": {
@@ -1033,7 +1033,7 @@
         }
       }
     },
-    "/v1/typebots/{publicId}/startChat": {
+    "/v1/snipers/{publicId}/startChat": {
       "post": {
         "operationId": "startChat",
         "summary": "Start chat",
@@ -1103,7 +1103,7 @@
                     "resultId": {
                       "type": "string"
                     },
-                    "typebot": {
+                    "sniper": {
                       "type": "object",
                       "properties": {
                         "id": {
@@ -1377,7 +1377,7 @@
                           "type": "string"
                         }
                       },
-                      "description": "If the typebot contains dynamic avatars, dynamicTheme returns the new avatar URLs whenever their variables are updated."
+                      "description": "If the sniper contains dynamic avatars, dynamicTheme returns the new avatar URLs whenever their variables are updated."
                     },
                     "progress": {
                       "type": "number",
@@ -1386,7 +1386,7 @@
                   },
                   "required": [
                     "sessionId",
-                    "typebot",
+                    "sniper",
                     "messages"
                   ]
                 }
@@ -1710,7 +1710,7 @@
                           "type": "string"
                         }
                       },
-                      "description": "If the typebot contains dynamic avatars, dynamicTheme returns the new avatar URLs whenever their variables are updated."
+                      "description": "If the sniper contains dynamic avatars, dynamicTheme returns the new avatar URLs whenever their variables are updated."
                     },
                     "progress": {
                       "type": "number",
@@ -1747,7 +1747,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/preview/startChat": {
+    "/v1/snipers/{sniperId}/preview/startChat": {
       "post": {
         "operationId": "startChatPreview",
         "summary": "Start preview chat",
@@ -1755,11 +1755,11 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
-            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
+            "name": "sniperId",
+            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)",
             "schema": {
               "type": "string",
-              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)"
             },
             "required": true
           }
@@ -1783,25 +1783,25 @@
                     "description": "If set to `true`, it will only register the session and not start the bot. This is used for 3rd party chat platforms as it can require a session to be registered before sending the first message.",
                     "default": false
                   },
-                  "typebot": {
+                  "sniper": {
                     "oneOf": [
                       {
-                        "$ref": "#/components/schemas/typebotV5"
+                        "$ref": "#/components/schemas/sniperV5"
                       },
                       {
-                        "$ref": "#/components/schemas/typebotV6"
+                        "$ref": "#/components/schemas/sniperV6"
                       }
                     ],
                     "discriminator": {
                       "propertyName": "version",
                       "mapping": {
-                        "3": "#/components/schemas/typebotV5",
-                        "4": "#/components/schemas/typebotV5",
-                        "5": "#/components/schemas/typebotV5",
-                        "6": "#/components/schemas/typebotV6"
+                        "3": "#/components/schemas/sniperV5",
+                        "4": "#/components/schemas/sniperV5",
+                        "5": "#/components/schemas/sniperV5",
+                        "6": "#/components/schemas/sniperV6"
                       }
                     },
-                    "description": "If set, it will override the typebot that is used to start the chat."
+                    "description": "If set, it will override the sniper that is used to start the chat."
                   },
                   "startFrom": {
                     "oneOf": [
@@ -1873,7 +1873,7 @@
                       "type": "string",
                       "description": "To save and use for /continueChat requests."
                     },
-                    "typebot": {
+                    "sniper": {
                       "type": "object",
                       "properties": {
                         "id": {
@@ -2147,7 +2147,7 @@
                           "type": "string"
                         }
                       },
-                      "description": "If the typebot contains dynamic avatars, dynamicTheme returns the new avatar URLs whenever their variables are updated."
+                      "description": "If the sniper contains dynamic avatars, dynamicTheme returns the new avatar URLs whenever their variables are updated."
                     },
                     "progress": {
                       "type": "number",
@@ -2156,7 +2156,7 @@
                   },
                   "required": [
                     "sessionId",
-                    "typebot",
+                    "sniper",
                     "messages"
                   ]
                 }
@@ -2186,7 +2186,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/blocks/{blockId}/storage/upload-url": {
+    "/v1/snipers/{sniperId}/blocks/{blockId}/storage/upload-url": {
       "get": {
         "operationId": "getUploadUrl",
         "summary": "Get upload URL for a file",
@@ -2198,7 +2198,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
+            "name": "sniperId",
             "schema": {
               "type": "string"
             },
@@ -2301,7 +2301,7 @@
                       {
                         "type": "object",
                         "properties": {
-                          "typebotId": {
+                          "sniperId": {
                             "type": "string"
                           },
                           "blockId": {
@@ -2315,7 +2315,7 @@
                           }
                         },
                         "required": [
-                          "typebotId",
+                          "sniperId",
                           "blockId",
                           "resultId",
                           "fileName"
@@ -2400,11 +2400,11 @@
         }
       }
     },
-    "/v1/sessions/{sessionId}/updateTypebot": {
+    "/v1/sessions/{sessionId}/updateSniper": {
       "post": {
-        "operationId": "updateTypebotInSession",
-        "summary": "Update typebot in session",
-        "description": "Update chat session with latest typebot modifications. This is useful when you want to update the typebot in an ongoing session after making changes to it.",
+        "operationId": "updateSniperInSession",
+        "summary": "Update sniper in session",
+        "description": "Update chat session with latest sniper modifications. This is useful when you want to update the sniper in an ongoing session after making changes to it.",
         "security": [
           {
             "Authorization": []
@@ -3136,7 +3136,7 @@
       }
     },
     "schemas": {
-      "typebotV5": {
+      "sniperV5": {
         "type": "object",
         "properties": {
           "version": {
@@ -3791,13 +3791,13 @@
                           "type": {
                             "type": "string",
                             "enum": [
-                              "Typebot link"
+                              "Sniper link"
                             ]
                           },
                           "options": {
                             "type": "object",
                             "properties": {
-                              "typebotId": {
+                              "sniperId": {
                                 "type": "string"
                               },
                               "groupId": {
@@ -5714,7 +5714,7 @@
           "settings",
           "theme"
         ],
-        "title": "Typebot V5"
+        "title": "Sniper V5"
       },
       "textInput": {
         "type": "object",
@@ -7167,7 +7167,7 @@
         },
         "title": "Theme"
       },
-      "typebotV6": {
+      "sniperV6": {
         "type": "object",
         "properties": {
           "version": {
@@ -7309,7 +7309,7 @@
           "settings",
           "theme"
         ],
-        "title": "Typebot V6"
+        "title": "Sniper V6"
       },
       "groupV6": {
         "type": "object",
@@ -7935,13 +7935,13 @@
               "type": {
                 "type": "string",
                 "enum": [
-                  "Typebot link"
+                  "Sniper link"
                 ]
               },
               "options": {
                 "type": "object",
                 "properties": {
-                  "typebotId": {
+                  "sniperId": {
                     "type": "string"
                   },
                   "groupId": {

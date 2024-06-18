@@ -2,7 +2,7 @@ import { ShortTextInput } from '@/components/inputs/ShortTextInput'
 import { Textarea } from '@/components/inputs/Textarea'
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
-import { TextInputBlock } from '@typebot.io/schemas'
+import { TextInputBlock } from '@sniper.io/schemas'
 import React, { MutableRefObject, useRef, useState } from 'react'
 
 type TextInputProps = {
@@ -40,7 +40,7 @@ export const TextInput = ({
   return (
     <div
       className={
-        'flex items-end justify-between rounded-lg pr-2 typebot-input w-full'
+        'flex items-end justify-between rounded-lg pr-2 sniper-input w-full'
       }
       data-testid="input"
       style={{

@@ -1,5 +1,5 @@
 {
-  "name": "@typebot.io/prisma",
+  "name": "@sniper.io/prisma",
   "license": "AGPL-3.0-or-later",
   "version": "0.1.0",
   "main": "./index.ts",
@@ -20,7 +20,7 @@
     "@types/node": "20.4.2",
     "dotenv-cli": "7.4.1",
     "prisma": "5.12.1",
-    "@typebot.io/tsconfig": "workspace:*",
+    "@sniper.io/tsconfig": "workspace:*",
     "tsx": "3.12.7",
     "typescript": "5.4.5"
   }

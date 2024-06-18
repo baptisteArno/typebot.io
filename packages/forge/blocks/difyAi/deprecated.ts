@@ -1,4 +1,4 @@
-import { option } from '@typebot.io/forge'
+import { option } from '@sniper.io/forge'
 
 export const deprecatedCreateChatMessageOptions = option.object({
   conversation_id: option.string

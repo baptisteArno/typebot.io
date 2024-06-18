@@ -2,10 +2,10 @@ import {
   VariableWithValue,
   PictureChoiceBlock,
   Variable,
-} from '@typebot.io/schemas'
-import { isDefined } from '@typebot.io/lib'
+} from '@sniper.io/schemas'
+import { isDefined } from '@sniper.io/lib'
 import { filterPictureChoiceItems } from './filterPictureChoiceItems'
-import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
+import { deepParseVariables } from '@sniper.io/variables/deepParseVariables'
 
 export const injectVariableValuesInPictureChoiceBlock =
   (variables: Variable[]) =>

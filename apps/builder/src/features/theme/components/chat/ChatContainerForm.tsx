@@ -1,5 +1,5 @@
 import { FormLabel, HStack, Stack } from '@chakra-ui/react'
-import { ChatTheme, GeneralTheme } from '@typebot.io/schemas'
+import { ChatTheme, GeneralTheme } from '@sniper.io/schemas'
 import React from 'react'
 import {
   defaultBlur,
@@ -10,11 +10,11 @@ import {
   defaultLightTextColor,
   defaultOpacity,
   defaultRoundness,
-} from '@typebot.io/schemas/features/typebot/theme/constants'
+} from '@sniper.io/schemas/features/sniper/theme/constants'
 import { ContainerThemeForm } from './ContainerThemeForm'
 import { NumberInput } from '@/components/inputs'
 import { DropdownList } from '@/components/DropdownList'
-import { isChatContainerLight } from '@typebot.io/theme/isChatContainerLight'
+import { isChatContainerLight } from '@sniper.io/theme/isChatContainerLight'
 
 type Props = {
   generalBackground: GeneralTheme['background']

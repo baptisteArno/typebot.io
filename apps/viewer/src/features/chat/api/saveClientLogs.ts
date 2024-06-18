@@ -1,7 +1,7 @@
 import { publicProcedure } from '@/helpers/server/trpc'
-import { chatLogSchema } from '@typebot.io/schemas/features/chat/schema'
+import { chatLogSchema } from '@sniper.io/schemas/features/chat/schema'
 import { z } from 'zod'
-import { saveClientLogs as saveClientLogsFn } from '@typebot.io/bot-engine/apiHandlers/saveClientLogs'
+import { saveClientLogs as saveClientLogsFn } from '@sniper.io/bot-engine/apiHandlers/saveClientLogs'
 
 export const saveClientLogs = publicProcedure
   .meta({

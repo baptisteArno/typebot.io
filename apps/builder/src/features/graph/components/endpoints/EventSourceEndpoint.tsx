@@ -7,7 +7,7 @@ import {
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useEndpoints } from '../../providers/EndpointsProvider'
 import { useGraph } from '../../providers/GraphProvider'
-import { TEventSource } from '@typebot.io/schemas'
+import { TEventSource } from '@sniper.io/schemas'
 
 const endpointHeight = 32
 

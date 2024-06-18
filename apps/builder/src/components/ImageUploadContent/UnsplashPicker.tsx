@@ -14,14 +14,14 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createApi } from 'unsplash-js'
 import { Basic as UnsplashImageType } from 'unsplash-js/dist/methods/photos/types'
 import { TextInput } from '../inputs'
 import { UnsplashLogo } from '../logos/UnsplashLogo'
 import { TextLink } from '../TextLink'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 const api = createApi({
   accessKey: env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY ?? '',

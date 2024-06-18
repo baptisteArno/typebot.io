@@ -1,4 +1,4 @@
-import { createAction } from '@typebot.io/forge'
+import { createAction } from '@sniper.io/forge'
 import OpenAI, { ClientOptions } from 'openai'
 import { defaultOpenAIOptions } from '../constants'
 import { auth } from '../auth'

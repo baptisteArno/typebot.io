@@ -1,12 +1,12 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
-import { customDomainSchema } from '@typebot.io/schemas/features/customDomains'
+import { customDomainSchema } from '@sniper.io/schemas/features/customDomains'
 import ky, { HTTPError } from 'ky'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import { isWriteWorkspaceForbidden } from '@/features/workspace/helpers/isWriteWorkspaceForbidden'
-import { trackEvents } from '@typebot.io/telemetry/trackEvents'
+import { trackEvents } from '@sniper.io/telemetry/trackEvents'
 
 export const createCustomDomain = authenticatedProcedure
   .meta({

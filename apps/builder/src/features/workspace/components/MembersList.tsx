@@ -6,11 +6,11 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { UnlockPlanAlertInfo } from '@/components/UnlockPlanAlertInfo'
-import { WorkspaceInvitation, WorkspaceRole } from '@typebot.io/prisma'
+import { WorkspaceInvitation, WorkspaceRole } from '@sniper.io/prisma'
 import React from 'react'
 import { AddMemberForm } from './AddMemberForm'
 import { MemberItem } from './MemberItem'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 import { useUser } from '@/features/account/hooks/useUser'
 import { useMembers } from '../hooks/useMembers'
 import { deleteInvitationQuery } from '../queries/deleteInvitationQuery'
@@ -19,7 +19,7 @@ import { updateInvitationQuery } from '../queries/updateInvitationQuery'
 import { updateMemberQuery } from '../queries/updateMemberQuery'
 import { Member } from '../types'
 import { useWorkspace } from '../WorkspaceProvider'
-import { getSeatsLimit } from '@typebot.io/billing/helpers/getSeatsLimit'
+import { getSeatsLimit } from '@sniper.io/billing/helpers/getSeatsLimit'
 import { useTranslate } from '@tolgee/react'
 
 export const MembersList = () => {

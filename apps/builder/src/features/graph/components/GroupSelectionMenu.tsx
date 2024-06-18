@@ -1,6 +1,6 @@
 import { CopyIcon, TrashIcon } from '@/components/icons'
 import { headerHeight } from '@/features/editor/constants'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import {
   HStack,
@@ -13,7 +13,7 @@ import { useRef, useState } from 'react'
 import { useGroupsStore } from '../hooks/useGroupsStore'
 import { toast } from 'sonner'
 import { createId } from '@paralleldrive/cuid2'
-import { Edge, GroupV6 } from '@typebot.io/schemas'
+import { Edge, GroupV6 } from '@sniper.io/schemas'
 import { Coordinates } from '../types'
 import { useShallow } from 'zustand/react/shallow'
 import { projectMouse } from '../helpers/projectMouse'
@@ -32,7 +32,7 @@ export const GroupSelectionMenu = ({
   blurGroups,
 }: Props) => {
   const [mousePosition, setMousePosition] = useState<Coordinates>()
-  const { typebot, deleteGroups, pasteGroups } = useTypebot()
+  const { sniper, deleteGroups, pasteGroups } = useSniper()
   const ref = useRef<HTMLDivElement>(null)
 
   const groupsInClipboard = useGroupsStore(
@@ -57,9 +57,9 @@ export const GroupSelectionMenu = ({
   })
 
   const handleCopy = () => {
-    if (!typebot) return
-    const groups = typebot.groups.filter((g) => focusedGroups.includes(g.id))
-    const edges = typebot.edges.filter((edge) =>
+    if (!sniper) return
+    const groups = sniper.groups.filter((g) => focusedGroups.includes(g.id))
+    const edges = sniper.edges.filter((edge) =>
       groups.find((g) => g.id === edge.to.groupId)
     )
     copyGroups(groups, edges)

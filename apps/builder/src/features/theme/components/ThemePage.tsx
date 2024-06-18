@@ -1,26 +1,26 @@
 import { Seo } from '@/components/Seo'
-import { TypebotHeader } from '@/features/editor/components/TypebotHeader'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { SniperHeader } from '@/features/editor/components/SniperHeader'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { Flex } from '@chakra-ui/react'
-import { Standard } from '@typebot.io/nextjs'
+import { Standard } from '@sniper.io/nextjs'
 import { ThemeSideMenu } from './ThemeSideMenu'
-import { TypebotNotFoundPage } from '@/features/editor/components/TypebotNotFoundPage'
+import { SniperNotFoundPage } from '@/features/editor/components/SniperNotFoundPage'
 import { headerHeight } from '@/features/editor/constants'
 
 export const ThemePage = () => {
-  const { typebot, is404 } = useTypebot()
+  const { sniper, is404 } = useSniper()
 
-  if (is404) return <TypebotNotFoundPage />
+  if (is404) return <SniperNotFoundPage />
   return (
     <Flex overflow="hidden" h="100vh" flexDir="column">
-      <Seo title={typebot?.name ? `${typebot.name} | Theme` : 'Theme'} />
-      <TypebotHeader />
+      <Seo title={sniper?.name ? `${sniper.name} | Theme` : 'Theme'} />
+      <SniperHeader />
       <Flex w="full" height={`calc(100vh - ${headerHeight}px)`}>
         <ThemeSideMenu />
         <Flex flex="1">
-          {typebot && (
+          {sniper && (
             <Standard
-              typebot={typebot}
+              sniper={sniper}
               style={{
                 width: '100%',
                 height: '100%',

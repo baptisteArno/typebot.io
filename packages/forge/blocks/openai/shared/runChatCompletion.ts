@@ -1,11 +1,11 @@
 import OpenAI, { ClientOptions } from 'openai'
 import { parseToolParameters } from '../helpers/parseToolParameters'
-import { executeFunction } from '@typebot.io/variables/executeFunction'
+import { executeFunction } from '@sniper.io/variables/executeFunction'
 import { ChatCompletionTool, ChatCompletionMessage } from 'openai/resources'
 import { maxToolCalls } from '../constants'
 import { parseChatCompletionMessages } from '../helpers/parseChatCompletionMessages'
 import { ChatCompletionOptions } from './parseChatCompletionOptions'
-import { LogsStore, VariableStore } from '@typebot.io/forge/types'
+import { LogsStore, VariableStore } from '@sniper.io/forge/types'
 
 type OpenAIConfig = {
   baseUrl: string

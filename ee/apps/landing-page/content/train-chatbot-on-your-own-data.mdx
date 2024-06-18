@@ -1,28 +1,28 @@
 ---
-title: How to Train Chatbot on Your Own Data with Typebot and ChatGPT
-description: Maximize your chatbot's potential with Typebot and OpenAI's ChatGPT. This guide offers a step-by-step tutorial on creating a personalized assistant.
+title: How to Train Chatbot on Your Own Data with Sniper and ChatGPT
+description: Maximize your chatbot's potential with Sniper and OpenAI's ChatGPT. This guide offers a step-by-step tutorial on creating a personalized assistant.
 publishedAt: 2024-05-16
 ---
 
-Imagine having a chatbot that understands your unique needs and can answer all your Typebot-related queries flawlessly. Sounds like magic, right? With the power of Typebot and OpenAI's ChatGPT, you can create a custom assistant trained on your own data. This guide will walk you through the exact steps to make this happen, so you can focus on what really matters—engaging with your users. Ready to transform your chatbot experience?
+Imagine having a chatbot that understands your unique needs and can answer all your Sniper-related queries flawlessly. Sounds like magic, right? With the power of Sniper and OpenAI's ChatGPT, you can create a custom assistant trained on your own data. This guide will walk you through the exact steps to make this happen, so you can focus on what really matters—engaging with your users. Ready to transform your chatbot experience?
 
 ## Getting started
 
 ### Importance of Training Chatbots on Personalized Data
 
-Personalized data ensures that your chatbot delivers highly relevant and accurate responses. This enhances user satisfaction. By tailoring the chatbot to your specific content, like Typebot’s documentation, users get precise information. This makes interactions smoother and more productive.
+Personalized data ensures that your chatbot delivers highly relevant and accurate responses. This enhances user satisfaction. By tailoring the chatbot to your specific content, like Sniper’s documentation, users get precise information. This makes interactions smoother and more productive.
 
 ### Overview of the Tutorial
 
-In this step-by-step guide, you'll learn how to train your chatbot using Typebot and OpenAI. We will use Typebot’s documentation to build a question-answering bot. The process is actionable and easy to follow. You’ll see exactly how to set up your environment, create the assistant, and integrate everything without writing a single line of code.
+In this step-by-step guide, you'll learn how to train your chatbot using Sniper and OpenAI. We will use Sniper’s documentation to build a question-answering bot. The process is actionable and easy to follow. You’ll see exactly how to set up your environment, create the assistant, and integrate everything without writing a single line of code.
 
-### Benefits of Using Typebot and OpenAI for Training
+### Benefits of Using Sniper and OpenAI for Training
 
-Typebot provides an intuitive, no-code platform that simplifies the creation of advanced conversational apps. Pairing Typebot with OpenAI’s powerful AI models allows you to harness natural language understanding and generation. This combination delivers a robust chatbot capable of providing detailed and context-aware responses.
+Sniper provides an intuitive, no-code platform that simplifies the creation of advanced conversational apps. Pairing Sniper with OpenAI’s powerful AI models allows you to harness natural language understanding and generation. This combination delivers a robust chatbot capable of providing detailed and context-aware responses.
 
 ## Curating Your Knowledge: Preparing Your Data
 
-The quality of your chatbot's responses directly ties to the data you feed it during training. Before training your chatbot, gather the documents or data you want it to use. For our example, we’ll use the Typebot documentation to create a question-answering chatbot for Typebot users.
+The quality of your chatbot's responses directly ties to the data you feed it during training. Before training your chatbot, gather the documents or data you want it to use. For our example, we’ll use the Sniper documentation to create a question-answering chatbot for Sniper users.
 
 ### Types of Data to Collect
 
@@ -55,36 +55,36 @@ Ensure your data is well-organized. Divide it into clear sections and topics so 
 
 Remove irrelevant information and correct any errors. Preprocessed data helps the assistant generate more accurate responses.
 
-## Step 1: Create your Typebot
+## Step 1: Create your Sniper
 
-### Introduction to Typebot
+### Introduction to Sniper
 
-Typebot is an open-source chatbot builder that empowers you to create advanced conversational apps visually. No coding skills? No problem. With its intuitive drag-and-drop interface, you can add text bubbles, inputs, conditional logic, webhooks, and even integrate third-party services like Google Sheets and OpenAI.
+Sniper is an open-source chatbot builder that empowers you to create advanced conversational apps visually. No coding skills? No problem. With its intuitive drag-and-drop interface, you can add text bubbles, inputs, conditional logic, webhooks, and even integrate third-party services like Google Sheets and OpenAI.
 
-### Setting Up Your Typebot Account
+### Setting Up Your Sniper Account
 
-Begin by setting up your Typebot account. Visit [Typebot.io](https://typebot.io/) and click on the "Sign Up" button. Fill in the required details, verify your email, and you’re in.
+Begin by setting up your Sniper account. Visit [Sniper.io](https://sniper.io/) and click on the "Sign Up" button. Fill in the required details, verify your email, and you’re in.
 
 Your dashboard is the control center where all the magic happens.
 
-### Creating Your First Bot in Typebot
+### Creating Your First Bot in Sniper
 
 1. **Navigate to the Dashboard:**
    - Click on the "Create New Bot" button.
 2. **Choose a Template or Start from Scratch:**
    - For ease, select a pre-made template or choose to start from scratch for full customization.
 3. **Name Your Bot:**
-   - Give your bot a unique name that resonates with your purpose, such as "Typebot Helper."
+   - Give your bot a unique name that resonates with your purpose, such as "Sniper Helper."
 4. **Configure Basic Settings:**
    - Set parameters like language and initial message to greet users.
 
-By following these initial steps, you have successfully set up your Typebot account and created a new bot. Next, we’ll move on to integrating the bot with OpenAI to leverage its advanced AI capabilities.
+By following these initial steps, you have successfully set up your Sniper account and created a new bot. Next, we’ll move on to integrating the bot with OpenAI to leverage its advanced AI capabilities.
 
 ## Step 2: Setup the ChatGPT assistant
 
 ### Overview of OpenAI Capabilities
 
-OpenAI offers powerful AI models that can generate human-like text, making them perfect for enhancing your chatbot’s capabilities. With OpenAI's ChatGPT, your Typebot can handle complex queries, offer nuanced responses, and continuously learn from interactions.
+OpenAI offers powerful AI models that can generate human-like text, making them perfect for enhancing your chatbot’s capabilities. With OpenAI's ChatGPT, your Sniper can handle complex queries, offer nuanced responses, and continuously learn from interactions.
 
 ### Setting Up an OpenAI Account
 
@@ -98,7 +98,7 @@ OpenAI offers powerful AI models that can generate human-like text, making them 
        width={370}
        height={455}
      />
-   - Generate a new API key. Keep this key handy as you'll need it for integrating with Typebot.
+   - Generate a new API key. Keep this key handy as you'll need it for integrating with Sniper.
      <Image
        alt="Openai Create Apikey"
        src="/images/blog/train-chatbot-on-own-data/openai-create-apikey.jpg"
@@ -129,7 +129,7 @@ If you don’t have an assistant ready, you’ll need to create one in the OpenA
 
    - Provide a friendly name.
    - Choose a relevant model, such as GPT-4.
-   - Upload any necessary files that the assistant can refer to. In our example, we will use Typebot’s documentation.
+   - Upload any necessary files that the assistant can refer to. In our example, we will use Sniper’s documentation.
      <Image
        alt="Openai Upload Documents"
        src="/images/blog/train-chatbot-on-own-data/openai-upload-documents.jpg"
@@ -141,15 +141,15 @@ If you don’t have an assistant ready, you’ll need to create one in the OpenA
 
 ### Adding a Text Input Element
 
-Start by adding a text input element to your Typebot. This is essential as it will collect the user's initial message. Here’s how to do it:
+Start by adding a text input element to your Sniper. This is essential as it will collect the user's initial message. Here’s how to do it:
 
-1. Go to your bot’s editor in Typebot.
+1. Go to your bot’s editor in Sniper.
 2. Click on “Add Element” and choose “Texts” from the Input options.
 3. Save the user’s answer in a variable.
 
    <Image
-     alt="Typebot Input Variable"
-     src="/images/blog/train-chatbot-on-own-data/typebot-input-variable.jpg"
+     alt="Sniper Input Variable"
+     src="/images/blog/train-chatbot-on-own-data/sniper-input-variable.jpg"
      width={684}
      height={452}
    />
@@ -161,14 +161,14 @@ To bring your bot to life with AI responses, you’ll integrate an OpenAI block.
 1. **Add OpenAI Block:**
    - Drag the "OpenAI" block from the left panel and drop it into your "AI Loop" group.
      <Image
-       alt="Typebot Openai Block"
-       src="/images/blog/train-chatbot-on-own-data/typebot-openai-block.jpg"
+       alt="Sniper Openai Block"
+       src="/images/blog/train-chatbot-on-own-data/sniper-openai-block.jpg"
        width={340}
        height={550}
      />
      <Image
-       alt="Typebot Drag Openai Block"
-       src="/images/blog/train-chatbot-on-own-data/typebot-drag-openai-block.gif"
+       alt="Sniper Drag Openai Block"
+       src="/images/blog/train-chatbot-on-own-data/sniper-drag-openai-block.gif"
        width={592}
        height={800}
      />
@@ -176,16 +176,16 @@ To bring your bot to life with AI responses, you’ll integrate an OpenAI block.
    - Click on the OpenAI block to open its settings.
    - Select your OpenAI account from the dropdown menu. Create one if necessary.
      <Image
-       alt="Typebot Add Openai Key"
-       src="/images/blog/train-chatbot-on-own-data/typebot-add-openai-key.jpg"
+       alt="Sniper Add Openai Key"
+       src="/images/blog/train-chatbot-on-own-data/sniper-add-openai-key.jpg"
        width={700}
        height={235}
      />
 3. **Select 'Ask Assistant':**
    - Choose the "Ask Assistant" option to configure the assistant that will respond to user inputs.
      <Image
-       alt="Typebot Ask Assistant"
-       src="/images/blog/train-chatbot-on-own-data/typebot-ask-assistant.jpg"
+       alt="Sniper Ask Assistant"
+       src="/images/blog/train-chatbot-on-own-data/sniper-ask-assistant.jpg"
        width={655}
        height={350}
      />
@@ -195,26 +195,26 @@ To bring your bot to life with AI responses, you’ll integrate an OpenAI block.
 5. **Save Assistant's Response:**
    - Collect the assistant’s reply and store it in a new variable, such as `assistant last message`. The Assistant should look like this:
      <Image
-       alt="Typebot Assistant Parameters"
-       src="/images/blog/train-chatbot-on-own-data/typebot-assistant-parameters.jpg"
+       alt="Sniper Assistant Parameters"
+       src="/images/blog/train-chatbot-on-own-data/sniper-assistant-parameters.jpg"
        width={800}
        height={917}
      />
 6. **Show Response to User:**
-   - Use a text bubble to display the `assistant last message` on your Typebot interface.
+   - Use a text bubble to display the `assistant last message` on your Sniper interface.
 7. **Link the Blocks:**
    - Connect the "Text Input" block to the "OpenAI" block to ensure user messages are sent to the AI for processing. And then, connect the last message to the first input. As soon as the assistant has answered, the user will be allowed to send a message back.
 
 The final result should look like this:
 
 <Image
-  alt="Typebot Assistant Configured"
-  src="/images/blog/train-chatbot-on-own-data/typebot-assistant-configured.jpg"
+  alt="Sniper Assistant Configured"
+  src="/images/blog/train-chatbot-on-own-data/sniper-assistant-configured.jpg"
   width={1060}
   height={914}
 />
 
-These steps integrate OpenAI’s capabilities into your Typebot, ensuring that your chatbot can intelligently respond to user queries based on the configured assistant.
+These steps integrate OpenAI’s capabilities into your Sniper, ensuring that your chatbot can intelligently respond to user queries based on the configured assistant.
 
 ## Step 4: Testing and Iterating Your Chatbot
 
@@ -230,7 +230,7 @@ Before deploying your chatbot, thorough testing is essential to ensure it functi
 />
 
 1. **Run Initial Tests:**
-   - Enter your Typebot dashboard and initiate your bot.
+   - Enter your Sniper dashboard and initiate your bot.
    - Send a simple message, like "Hi there," to see how the chatbot responds.
 2. **Observe Responses:**
    - Ensure the assistant's response is correctly displayed.
@@ -264,16 +264,16 @@ Continuous improvement is vital for maintaining a top-notch chatbot.
    - Routinely run tests after making adjustments.
    - Ensure improvements lead to better interactions and user satisfaction.
 
-By systematically testing, troubleshooting, and iterating your chatbot, you’ll ensure it delivers exceptional user experiences continuously, keeping your Typebot AI-driven and user-focused.
+By systematically testing, troubleshooting, and iterating your chatbot, you’ll ensure it delivers exceptional user experiences continuously, keeping your Sniper AI-driven and user-focused.
 
 ## Using Templates for Quick Setup
 
-### Selecting a Template in Typebot
+### Selecting a Template in Sniper
 
 If building from scratch seems daunting, templates can provide a quick and efficient alternative.
 
 1. **Access Templates:**
-   - Navigate to the Typebot dashboard and click on "Create New Bot."
+   - Navigate to the Sniper dashboard and click on "Create New Bot."
    - Choose "Start from a Template."
 2. **Choose Relevant Template:**
    - Select the "OpenAI Assistant Chat" template from the available options.

@@ -13,7 +13,7 @@ import type {
   PictureChoiceBlock,
   PaymentInputBlock,
   DateInputBlock,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import { GuestBubble } from './bubbles/GuestBubble'
 import { BotContext, InputSubmitContent } from '@/types'
 import { TextInput } from '@/features/blocks/inputs/textInput'
@@ -25,7 +25,7 @@ import { DateForm } from '@/features/blocks/inputs/date'
 import { RatingForm } from '@/features/blocks/inputs/rating'
 import { FileUploadForm } from '@/features/blocks/inputs/fileUpload'
 import { createSignal, Switch, Match, createEffect, Show } from 'solid-js'
-import { isNotDefined } from '@typebot.io/lib'
+import { isNotDefined } from '@sniper.io/lib'
 import { isMobile } from '@/utils/isMobileSignal'
 import { PaymentForm } from '@/features/blocks/inputs/payment'
 import { MultipleChoicesForm } from '@/features/blocks/inputs/buttons/components/MultipleChoicesForm'
@@ -33,10 +33,10 @@ import { Buttons } from '@/features/blocks/inputs/buttons/components/Buttons'
 import { SinglePictureChoice } from '@/features/blocks/inputs/pictureChoice/SinglePictureChoice'
 import { MultiplePictureChoice } from '@/features/blocks/inputs/pictureChoice/MultiplePictureChoice'
 import { formattedMessages } from '@/utils/formattedMessagesSignal'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { defaultPaymentInputOptions } from '@typebot.io/schemas/features/blocks/inputs/payment/constants'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { defaultPaymentInputOptions } from '@sniper.io/schemas/features/blocks/inputs/payment/constants'
 import { persist } from '@/utils/persist'
-import { defaultGuestAvatarIsEnabled } from '@typebot.io/schemas/features/typebot/theme/constants'
+import { defaultGuestAvatarIsEnabled } from '@sniper.io/schemas/features/sniper/theme/constants'
 
 type Props = {
   ref: HTMLDivElement | undefined
@@ -54,7 +54,7 @@ type Props = {
 
 export const InputChatBlock = (props: Props) => {
   const [answer, setAnswer] = persist(createSignal<string>(), {
-    key: `typebot-${props.context.typebot.id}-input-${props.chunkIndex}`,
+    key: `sniper-${props.context.sniper.id}-input-${props.chunkIndex}`,
     storage: props.context.storage,
   })
   const [formattedMessage, setFormattedMessage] = createSignal<string>()
@@ -90,7 +90,7 @@ export const InputChatBlock = (props: Props) => {
       </Match>
       <Match when={isNotDefined(answer()) || props.hasError}>
         <div
-          class="flex justify-end animate-fade-in gap-2 typebot-input-container"
+          class="flex justify-end animate-fade-in gap-2 sniper-input-container"
           data-blockid={props.block.id}
           ref={props.ref}
         >

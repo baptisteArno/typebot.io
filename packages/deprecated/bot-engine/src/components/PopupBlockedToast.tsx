@@ -19,7 +19,7 @@ export const PopupBlockedToast = ({ url, onLinkClick }: Props) => {
       <a
         href={url}
         target="_blank"
-        className="py-1 px-4 justify-center text-sm font-semibold rounded-md text-white focus:outline-none flex items-center disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 transition-all filter hover:brightness-90 active:brightness-75 typebot-button"
+        className="py-1 px-4 justify-center text-sm font-semibold rounded-md text-white focus:outline-none flex items-center disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 transition-all filter hover:brightness-90 active:brightness-75 sniper-button"
         rel="noreferrer"
         onClick={onLinkClick}
       >

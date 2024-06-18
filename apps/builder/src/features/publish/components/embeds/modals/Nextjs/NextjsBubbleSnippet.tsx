@@ -1,6 +1,6 @@
 import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { BubbleProps } from '@typebot.io/nextjs'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
+import { BubbleProps } from '@sniper.io/nextjs'
 import parserBabel from 'prettier/parser-babel'
 import prettier from 'prettier/standalone'
 import { parseReactBubbleProps } from '../../snippetParsers'
@@ -9,14 +9,14 @@ export const NextjsBubbleSnippet = ({
   theme,
   previewMessage,
 }: Pick<BubbleProps, 'theme' | 'previewMessage'>) => {
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
 
   const snippet = prettier.format(
-    `import { Bubble } from "@typebot.io/nextjs";
+    `import { Bubble } from "@sniper.io/nextjs";
 
       const App = () => {
         return <Bubble ${parseReactBubbleProps({
-          typebot: typebot?.publicId ?? '',
+          sniper: sniper?.publicId ?? '',
           theme,
           previewMessage,
         })}/>

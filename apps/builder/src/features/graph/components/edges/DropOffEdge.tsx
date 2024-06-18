@@ -6,7 +6,7 @@ import {
   useColorModeValue,
   theme,
 } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import React, { useMemo } from 'react'
 import { useEndpoints } from '../../providers/EndpointsProvider'
@@ -16,10 +16,10 @@ import { computeSourceCoordinates } from '../../helpers/computeSourceCoordinates
 import {
   TotalAnswers,
   TotalVisitedEdges,
-} from '@typebot.io/schemas/features/analytics'
+} from '@sniper.io/schemas/features/analytics'
 import { computeTotalUsersAtBlock } from '@/features/analytics/helpers/computeTotalUsersAtBlock'
-import { byId, isNotDefined } from '@typebot.io/lib'
-import { blockHasItems } from '@typebot.io/schemas/helpers'
+import { byId, isNotDefined } from '@sniper.io/lib'
+import { blockHasItems } from '@sniper.io/schemas/helpers'
 import { groupWidth } from '../../constants'
 import { getTotalAnswersAtBlock } from '@/features/analytics/helpers/getTotalAnswersAtBlock'
 import { useGroupsStore } from '../../hooks/useGroupsStore'
@@ -54,15 +54,14 @@ export const DropOffEdge = ({
     theme.colors.red[400]
   )
   const { workspace } = useWorkspace()
-  const { publishedTypebot } = useTypebot()
+  const { publishedSniper } = useSniper()
   const currentBlockId = useMemo(
     () =>
-      publishedTypebot?.groups.flatMap((g) => g.blocks)?.find(byId(blockId))
-        ?.id,
-    [blockId, publishedTypebot?.groups]
+      publishedSniper?.groups.flatMap((g) => g.blocks)?.find(byId(blockId))?.id,
+    [blockId, publishedSniper?.groups]
   )
 
-  const groupId = publishedTypebot?.groups.find((group) =>
+  const groupId = publishedSniper?.groups.find((group) =>
     group.blocks.some((block) => block.id === currentBlockId)
   )?.id
   const groupCoordinates = useGroupsStore(
@@ -77,14 +76,14 @@ export const DropOffEdge = ({
   const isWorkspaceProPlan = hasProPerks(workspace)
 
   const { totalDroppedUser, dropOffRate } = useMemo(() => {
-    if (!publishedTypebot || !currentBlockId) return {}
+    if (!publishedSniper || !currentBlockId) return {}
     const totalUsersAtBlock = computeTotalUsersAtBlock(currentBlockId, {
-      publishedTypebot,
+      publishedSniper,
       totalVisitedEdges,
       totalAnswers,
     })
     const totalBlockReplies = getTotalAnswersAtBlock(currentBlockId, {
-      publishedTypebot,
+      publishedSniper,
       totalAnswers,
     })
     if (totalUsersAtBlock === 0) return {}
@@ -94,21 +93,21 @@ export const DropOffEdge = ({
       totalDroppedUser,
       dropOffRate: Math.round((totalDroppedUser / totalUsersAtBlock) * 100),
     }
-  }, [currentBlockId, publishedTypebot, totalAnswers, totalVisitedEdges])
+  }, [currentBlockId, publishedSniper, totalAnswers, totalVisitedEdges])
 
   const sourceTop = useMemo(() => {
     const blockTop = currentBlockId
       ? sourceEndpoints.get(currentBlockId)?.y
       : undefined
     if (blockTop) return blockTop
-    const block = publishedTypebot?.groups
+    const block = publishedSniper?.groups
       .flatMap((group) => group.blocks)
       .find((block) => block.id === currentBlockId)
     if (!block || !blockHasItems(block)) return 0
     const itemId = block.items.at(-1)?.id
     if (!itemId) return 0
     return sourceEndpoints.get(itemId)?.y
-  }, [currentBlockId, publishedTypebot?.groups, sourceEndpoints])
+  }, [currentBlockId, publishedSniper?.groups, sourceEndpoints])
 
   const endpointCoordinates = useMemo(() => {
     if (!groupId) return undefined
@@ -121,14 +120,14 @@ export const DropOffEdge = ({
   }, [groupId, groupCoordinates, sourceTop])
 
   const isLastBlock = useMemo(() => {
-    if (!publishedTypebot) return false
-    const lastBlock = publishedTypebot.groups
+    if (!publishedSniper) return false
+    const lastBlock = publishedSniper.groups
       .find((group) =>
         group.blocks.some((block) => block.id === currentBlockId)
       )
       ?.blocks.at(-1)
     return lastBlock?.id === currentBlockId
-  }, [publishedTypebot, currentBlockId])
+  }, [publishedSniper, currentBlockId])
 
   if (!endpointCoordinates || isNotDefined(dropOffRate)) return null
 

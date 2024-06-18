@@ -34,7 +34,7 @@ export const Standard = (
 
   const processIncomingEvent = (event: MessageEvent<CommandData>) => {
     const { data } = event
-    if (!data.isFromTypebot) return
+    if (!data.isFromSniper) return
   }
 
   onCleanup(() => {

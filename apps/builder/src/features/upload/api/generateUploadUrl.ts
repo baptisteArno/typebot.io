@@ -1,24 +1,24 @@
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { z } from 'zod'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import { TRPCError } from '@trpc/server'
-import { generatePresignedPostPolicy } from '@typebot.io/lib/s3/generatePresignedPostPolicy'
-import prisma from '@typebot.io/lib/prisma'
+import { generatePresignedPostPolicy } from '@sniper.io/lib/s3/generatePresignedPostPolicy'
+import prisma from '@sniper.io/lib/prisma'
 import { isWriteWorkspaceForbidden } from '@/features/workspace/helpers/isWriteWorkspaceForbidden'
-import { isWriteTypebotForbidden } from '@/features/typebot/helpers/isWriteTypebotForbidden'
+import { isWriteSniperForbidden } from '@/features/sniper/helpers/isWriteSniperForbidden'
 
 const inputSchema = z.object({
   filePathProps: z
     .object({
       workspaceId: z.string(),
-      typebotId: z.string(),
+      sniperId: z.string(),
       blockId: z.string(),
       itemId: z.string().optional(),
     })
     .or(
       z.object({
         workspaceId: z.string(),
-        typebotId: z.string(),
+        sniperId: z.string(),
         fileName: z.string(),
       })
     )
@@ -103,7 +103,7 @@ const parseFilePath = async ({
       code: 'BAD_REQUEST',
       message: 'workspaceId is missing',
     })
-  if (!('typebotId' in input)) {
+  if (!('sniperId' in input)) {
     const workspace = await prisma.workspace.findUnique({
       where: {
         id: input.workspaceId,
@@ -127,9 +127,9 @@ const parseFilePath = async ({
       })
     return `public/workspaces/${input.workspaceId}/${input.fileName}`
   }
-  const typebot = await prisma.typebot.findUnique({
+  const sniper = await prisma.sniper.findUnique({
     where: {
-      id: input.typebotId,
+      id: input.sniperId,
     },
     select: {
       workspace: {
@@ -154,19 +154,19 @@ const parseFilePath = async ({
     },
   })
   if (
-    !typebot ||
-    (await isWriteTypebotForbidden(typebot, {
+    !sniper ||
+    (await isWriteSniperForbidden(sniper, {
       id: authenticatedUserId,
     }))
   )
     throw new TRPCError({
       code: 'NOT_FOUND',
-      message: 'Typebot not found',
+      message: 'Sniper not found',
     })
   if (!('blockId' in input)) {
-    return `public/workspaces/${input.workspaceId}/typebots/${input.typebotId}/${input.fileName}`
+    return `public/workspaces/${input.workspaceId}/snipers/${input.sniperId}/${input.fileName}`
   }
-  return `public/workspaces/${input.workspaceId}/typebots/${
-    input.typebotId
+  return `public/workspaces/${input.workspaceId}/snipers/${
+    input.sniperId
   }/blocks/${input.blockId}${input.itemId ? `/items/${input.itemId}` : ''}`
 }

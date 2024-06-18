@@ -2,11 +2,11 @@ import { parseVariables, parseCorrectValueType } from '@/features/variables'
 import { LogicState } from '@/types'
 import { sendEventToParent } from '@/utils/chat'
 import { isEmbedded } from '@/utils/helpers'
-import { ScriptBlock } from '@typebot.io/schemas'
+import { ScriptBlock } from '@sniper.io/schemas'
 
 export const executeScript = async (
   block: ScriptBlock,
-  { typebot: { variables } }: LogicState
+  { sniper: { variables } }: LogicState
 ) => {
   if (!block.options?.content) return
   if (block.options.shouldExecuteInParentContext && isEmbedded) {

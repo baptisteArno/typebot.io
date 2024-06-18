@@ -1,4 +1,4 @@
-import { isNotDefined } from '@typebot.io/lib/utils'
+import { isNotDefined } from '@sniper.io/lib/utils'
 import { Variable, VariableWithValue } from './types'
 
 export const transformVariablesToList =

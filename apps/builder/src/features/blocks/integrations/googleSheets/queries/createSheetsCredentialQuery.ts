@@ -1,5 +1,5 @@
 import { stringify } from 'qs'
-import { sendRequest } from '@typebot.io/lib'
+import { sendRequest } from '@sniper.io/lib'
 
 export const createSheetsCredentialQuery = async (code: string) => {
   const queryParams = stringify({ code })

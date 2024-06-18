@@ -1,8 +1,8 @@
 import { publicProcedure } from '@/helpers/server/trpc'
-import { whatsAppWebhookRequestBodySchema } from '@typebot.io/schemas/features/whatsapp'
+import { whatsAppWebhookRequestBodySchema } from '@sniper.io/schemas/features/whatsapp'
 import { z } from 'zod'
-import { isNotDefined } from '@typebot.io/lib'
-import { resumeWhatsAppFlow } from '@typebot.io/bot-engine/whatsapp/resumeWhatsAppFlow'
+import { isNotDefined } from '@sniper.io/lib'
+import { resumeWhatsAppFlow } from '@sniper.io/bot-engine/whatsapp/resumeWhatsAppFlow'
 
 export const receiveMessage = publicProcedure
   .meta({

@@ -1,8 +1,8 @@
 import { parseVariables } from './parseVariables'
 import { extractVariablesFromText } from './extractVariablesFromText'
 import { parseGuessedValueType } from './parseGuessedValueType'
-import { isDefined } from '@typebot.io/lib'
-import { safeStringify } from '@typebot.io/lib/safeStringify'
+import { isDefined } from '@sniper.io/lib'
+import { safeStringify } from '@sniper.io/lib/safeStringify'
 import { Variable } from './types'
 import ivm from 'isolated-vm'
 

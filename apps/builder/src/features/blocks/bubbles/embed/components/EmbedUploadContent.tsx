@@ -1,9 +1,9 @@
 import { TextInput, NumberInput } from '@/components/inputs'
 import { Stack, Text } from '@chakra-ui/react'
-import { EmbedBubbleBlock } from '@typebot.io/schemas'
-import { sanitizeUrl } from '@typebot.io/lib'
+import { EmbedBubbleBlock } from '@sniper.io/schemas'
+import { sanitizeUrl } from '@sniper.io/lib'
 import { useTranslate } from '@tolgee/react'
-import { defaultEmbedBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/embed/constants'
+import { defaultEmbedBubbleContent } from '@sniper.io/schemas/features/blocks/bubbles/embed/constants'
 
 type Props = {
   content: EmbedBubbleBlock['content']

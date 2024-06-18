@@ -1,19 +1,19 @@
-import prisma from '@typebot.io/lib/prisma'
-import { canReadTypebots } from '@/helpers/databaseRules'
+import prisma from '@sniper.io/lib/prisma'
+import { canReadSnipers } from '@/helpers/databaseRules'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
-import { parseGroups } from '@typebot.io/schemas/features/typebot/group'
-import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
-import { Block } from '@typebot.io/schemas'
-import { isWebhookBlock } from '@typebot.io/schemas/helpers'
-import { byId } from '@typebot.io/lib'
+import { parseGroups } from '@sniper.io/schemas/features/sniper/group'
+import { IntegrationBlockType } from '@sniper.io/schemas/features/blocks/integrations/constants'
+import { Block } from '@sniper.io/schemas'
+import { isWebhookBlock } from '@sniper.io/schemas/helpers'
+import { byId } from '@sniper.io/lib'
 
 export const listWebhookBlocks = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/v1/typebots/{typebotId}/webhookBlocks',
+      path: '/v1/snipers/{sniperId}/webhookBlocks',
       protect: true,
       summary: 'List webhook blocks',
       description:
@@ -23,7 +23,7 @@ export const listWebhookBlocks = authenticatedProcedure
   })
   .input(
     z.object({
-      typebotId: z.string(),
+      sniperId: z.string(),
     })
   )
   .output(
@@ -43,20 +43,20 @@ export const listWebhookBlocks = authenticatedProcedure
       ),
     })
   )
-  .query(async ({ input: { typebotId }, ctx: { user } }) => {
-    const typebot = await prisma.typebot.findFirst({
-      where: canReadTypebots(typebotId, user),
+  .query(async ({ input: { sniperId }, ctx: { user } }) => {
+    const sniper = await prisma.sniper.findFirst({
+      where: canReadSnipers(sniperId, user),
       select: {
         version: true,
         groups: true,
         webhooks: true,
       },
     })
-    if (!typebot)
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+    if (!sniper)
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Sniper not found' })
 
-    const groups = parseGroups(typebot.groups, {
-      typebotVersion: typebot.version,
+    const groups = parseGroups(sniper.groups, {
+      sniperVersion: sniper.version,
     })
 
     const webhookBlocks = groups.reduce<
@@ -80,7 +80,7 @@ export const listWebhookBlocks = authenticatedProcedure
           label: `${group.title} > ${block.id}`,
           url:
             'webhookId' in block && !block.options?.webhook
-              ? typebot?.webhooks.find(byId(block.webhookId))?.url ?? undefined
+              ? sniper?.webhooks.find(byId(block.webhookId))?.url ?? undefined
               : block.options?.webhook?.url,
         })),
       ]

@@ -1,9 +1,9 @@
-import { byId, isNotEmpty } from '@typebot.io/lib'
-import { Variable, VariableWithValue } from '@typebot.io/schemas'
-import { ChatCompletionOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai'
+import { byId, isNotEmpty } from '@sniper.io/lib'
+import { Variable, VariableWithValue } from '@sniper.io/schemas'
+import { ChatCompletionOpenAIOptions } from '@sniper.io/schemas/features/blocks/integrations/openai'
 import type { OpenAI } from 'openai'
-import { parseVariables } from '@typebot.io/variables/parseVariables'
-import { transformVariablesToList } from '@typebot.io/variables/transformVariablesToList'
+import { parseVariables } from '@sniper.io/variables/parseVariables'
+import { transformVariablesToList } from '@sniper.io/variables/transformVariablesToList'
 
 export const parseChatCompletionMessages =
   (variables: Variable[]) =>

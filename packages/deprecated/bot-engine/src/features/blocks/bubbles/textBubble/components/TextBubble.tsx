@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useTypebot } from '@/providers/TypebotProvider'
-import { TextBubbleBlock } from '@typebot.io/schemas'
+import { useSniper } from '@/providers/SniperProvider'
+import { TextBubbleBlock } from '@sniper.io/schemas'
 import { computeTypingDuration } from '../utils/computeTypingDuration'
 import { parseVariables } from '@/features/variables'
 import { TypingBubble } from '@/components/TypingBubble'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
 
 type Props = {
   block: TextBubbleBlock
@@ -14,12 +14,12 @@ type Props = {
 export const showAnimationDuration = 400
 
 export const TextBubble = ({ block, onTransitionEnd }: Props) => {
-  const { typebot, isLoading } = useTypebot()
+  const { sniper, isLoading } = useSniper()
   const messageContainer = useRef<HTMLDivElement | null>(null)
   const [isTyping, setIsTyping] = useState(true)
 
   const [content] = useState(
-    parseVariables(typebot.variables)(block.content?.html)
+    parseVariables(sniper.variables)(block.content?.html)
   )
 
   const onTypingEnd = useCallback(() => {
@@ -34,7 +34,7 @@ export const TextBubble = ({ block, onTransitionEnd }: Props) => {
 
     const typingTimeout = computeTypingDuration({
       bubbleContent: block.content?.plainText ?? '',
-      typingSettings: typebot.settings?.typingEmulation,
+      typingSettings: sniper.settings?.typingEmulation,
     })
     const timeout = setTimeout(() => {
       onTypingEnd()
@@ -48,13 +48,13 @@ export const TextBubble = ({ block, onTransitionEnd }: Props) => {
     isLoading,
     isTyping,
     onTypingEnd,
-    typebot.settings?.typingEmulation,
+    sniper.settings?.typingEmulation,
   ])
 
   return (
     <div className="flex flex-col" ref={messageContainer}>
       <div className="flex mb-2 w-full items-center">
-        <div className={'flex relative items-start typebot-host-bubble'}>
+        <div className={'flex relative items-start sniper-host-bubble'}>
           <div
             className="flex items-center absolute px-4 py-2 rounded-lg bubble-typing "
             style={{

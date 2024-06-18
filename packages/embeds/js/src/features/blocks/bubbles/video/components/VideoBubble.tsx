@@ -7,11 +7,11 @@ import {
   embedBaseUrls,
   embeddableVideoTypes,
   VideoBubbleContentType,
-} from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
+} from '@sniper.io/schemas/features/blocks/bubbles/video/constants'
 import {
   EmbeddableVideoBubbleContentType,
   VideoBubbleBlock,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 
 type Props = {
   content: VideoBubbleBlock['content']
@@ -57,7 +57,7 @@ export const VideoBubble = (props: Props) => {
       ref={ref}
     >
       <div class="flex w-full items-center">
-        <div class="flex relative z-10 items-start typebot-host-bubble overflow-hidden w-full max-w-full">
+        <div class="flex relative z-10 items-start sniper-host-bubble overflow-hidden w-full max-w-full">
           <div
             class="flex items-center absolute px-4 py-2 bubble-typing z-10 "
             style={{

@@ -1,2 +1,2 @@
 -- AlterTable
-ALTER TABLE "Typebot" ADD COLUMN     "whatsAppCredentialsId" TEXT;
+ALTER TABLE "Sniper" ADD COLUMN     "whatsAppCredentialsId" TEXT;

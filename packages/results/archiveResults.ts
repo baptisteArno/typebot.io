@@ -1,21 +1,21 @@
-import { Prisma, PrismaClient } from '@typebot.io/prisma'
-import { Block, Typebot } from '@typebot.io/schemas'
-import { deleteFilesFromBucket } from '@typebot.io/lib/s3/deleteFilesFromBucket'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { isDefined } from '@typebot.io/lib'
+import { Prisma, PrismaClient } from '@sniper.io/prisma'
+import { Block, Sniper } from '@sniper.io/schemas'
+import { deleteFilesFromBucket } from '@sniper.io/lib/s3/deleteFilesFromBucket'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { isDefined } from '@sniper.io/lib'
 
 type ArchiveResultsProps = {
-  typebot: Pick<Typebot, 'groups'>
-  resultsFilter?: Omit<Prisma.ResultWhereInput, 'typebotId'> & {
-    typebotId: string
+  sniper: Pick<Sniper, 'groups'>
+  resultsFilter?: Omit<Prisma.ResultWhereInput, 'sniperId'> & {
+    sniperId: string
   }
 }
 
 export const archiveResults =
   (prisma: PrismaClient) =>
-  async ({ typebot, resultsFilter }: ArchiveResultsProps) => {
+  async ({ sniper, resultsFilter }: ArchiveResultsProps) => {
     const batchSize = 100
-    const fileUploadBlockIds = typebot.groups
+    const fileUploadBlockIds = sniper.groups
       .flatMap<Block>((group) => group.blocks)
       .filter((block) => block.type === InputBlockType.FILE)
       .map((block) => block.id)

@@ -1,8 +1,8 @@
 import { SearchInput } from '@/components/inputs/SearchInput'
 import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
-import { isDefined, isNotEmpty, isSvgSrc } from '@typebot.io/lib/utils'
-import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
+import { isDefined, isNotEmpty, isSvgSrc } from '@sniper.io/lib/utils'
+import { PictureChoiceBlock } from '@sniper.io/schemas/features/blocks/inputs/pictureChoice'
 import { For, Show, createEffect, createSignal, onMount } from 'solid-js'
 
 type Props = {
@@ -58,7 +58,7 @@ export const SinglePictureChoice = (props: Props) => {
   return (
     <div class="flex flex-col gap-2 w-full">
       <Show when={props.options?.isSearchable}>
-        <div class="flex items-end typebot-input w-full">
+        <div class="flex items-end sniper-input w-full">
           <SearchInput
             ref={inputRef}
             onInput={filterItems}
@@ -81,7 +81,7 @@ export const SinglePictureChoice = (props: Props) => {
               on:click={() => handleClick(index())}
               data-itemid={item.id}
               class={
-                'flex flex-col typebot-picture-button focus:outline-none filter hover:brightness-90 active:brightness-75 justify-between  ' +
+                'flex flex-col sniper-picture-button focus:outline-none filter hover:brightness-90 active:brightness-75 justify-between  ' +
                 (isSvgSrc(item.pictureSrc) ? 'has-svg' : '')
               }
             >

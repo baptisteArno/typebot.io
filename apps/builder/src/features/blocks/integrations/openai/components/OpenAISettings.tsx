@@ -15,7 +15,7 @@ import {
   CreateImageOpenAIOptions,
   CreateSpeechOpenAIOptions,
   OpenAIBlock,
-} from '@typebot.io/schemas/features/blocks/integrations/openai'
+} from '@sniper.io/schemas/features/blocks/integrations/openai'
 import { OpenAICredentialsModal } from './OpenAICredentialsModal'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { DropdownList } from '@/components/DropdownList'
@@ -24,7 +24,7 @@ import { TextInput } from '@/components/inputs'
 import {
   defaultOpenAIOptions,
   openAITasks,
-} from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
+} from '@sniper.io/schemas/features/blocks/integrations/openai/constants'
 import { OpenAICreateSpeechSettings } from './audio/OpenAICreateSpeechSettings'
 
 type OpenAITask = (typeof openAITasks)[number]

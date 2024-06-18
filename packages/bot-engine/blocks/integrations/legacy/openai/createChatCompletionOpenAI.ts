@@ -2,26 +2,26 @@ import {
   Block,
   Credentials,
   SessionState,
-  TypebotInSession,
-} from '@typebot.io/schemas'
+  SniperInSession,
+} from '@sniper.io/schemas'
 import {
   ChatCompletionOpenAIOptions,
   OpenAICredentials,
-} from '@typebot.io/schemas/features/blocks/integrations/openai'
-import { byId, isEmpty } from '@typebot.io/lib'
-import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
+} from '@sniper.io/schemas/features/blocks/integrations/openai'
+import { byId, isEmpty } from '@sniper.io/lib'
+import { decrypt } from '@sniper.io/lib/api/encryption/decrypt'
 import { resumeChatCompletion } from './resumeChatCompletion'
 import { parseChatCompletionMessages } from './parseChatCompletionMessages'
 import { executeChatCompletionOpenAIRequest } from './executeChatCompletionOpenAIRequest'
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { ExecuteIntegrationResponse } from '../../../../types'
-import { parseVariableNumber } from '@typebot.io/variables/parseVariableNumber'
-import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
+import { parseVariableNumber } from '@sniper.io/variables/parseVariableNumber'
+import { updateVariablesInSession } from '@sniper.io/variables/updateVariablesInSession'
 import {
   chatCompletionMessageRoles,
   defaultOpenAIOptions,
-} from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+} from '@sniper.io/schemas/features/blocks/integrations/openai/constants'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
 
 export const createChatCompletionOpenAI = async (
   state: SessionState,
@@ -61,10 +61,10 @@ export const createChatCompletionOpenAI = async (
     credentials.iv
   )) as OpenAICredentials['data']
 
-  const { typebot } = newSessionState.typebotsQueue[0]
+  const { sniper } = newSessionState.snipersQueue[0]
 
   const { variablesTransformedToList, messages } = parseChatCompletionMessages(
-    typebot.variables
+    sniper.variables
   )(options.messages)
   if (variablesTransformedToList.length > 0)
     newSessionState = updateVariablesInSession({
@@ -73,11 +73,11 @@ export const createChatCompletionOpenAI = async (
       currentBlockId: undefined,
     }).updatedState
 
-  const temperature = parseVariableNumber(typebot.variables)(
+  const temperature = parseVariableNumber(sniper.variables)(
     options.advancedSettings?.temperature
   )
 
-  const assistantMessageVariableName = typebot.variables.find(
+  const assistantMessageVariableName = sniper.variables.find(
     (variable) =>
       options.responseMapping?.find(
         (m) => m.valueToExtract === 'Message content'
@@ -87,7 +87,7 @@ export const createChatCompletionOpenAI = async (
   if (
     newSessionState.isStreamEnabled &&
     !newSessionState.whatsApp &&
-    isNextBubbleMessageWithAssistantMessage(typebot)(
+    isNextBubbleMessageWithAssistantMessage(sniper)(
       blockId,
       assistantMessageVariableName
     )
@@ -141,10 +141,10 @@ export const createChatCompletionOpenAI = async (
 }
 
 const isNextBubbleMessageWithAssistantMessage =
-  (typebot: TypebotInSession) =>
+  (sniper: SniperInSession) =>
   (blockId: string, assistantVariableName?: string): boolean => {
     if (!assistantVariableName) return false
-    const nextBlock = getNextBlock(typebot)(blockId)
+    const nextBlock = getNextBlock(sniper)(blockId)
     if (!nextBlock) return false
     return (
       nextBlock.type === BubbleBlockType.TEXT &&
@@ -155,9 +155,9 @@ const isNextBubbleMessageWithAssistantMessage =
   }
 
 const getNextBlock =
-  (typebot: TypebotInSession) =>
+  (sniper: SniperInSession) =>
   (blockId: string): Block | undefined => {
-    const group = typebot.groups.find((group) =>
+    const group = sniper.groups.find((group) =>
       group.blocks.find(byId(blockId))
     )
     if (!group) return
@@ -166,9 +166,9 @@ const getNextBlock =
     if (nextBlockInGroup) return nextBlockInGroup
     const outgoingEdgeId = group.blocks.at(blockIndex)?.outgoingEdgeId
     if (!outgoingEdgeId) return
-    const outgoingEdge = typebot.edges.find(byId(outgoingEdgeId))
+    const outgoingEdge = sniper.edges.find(byId(outgoingEdgeId))
     if (!outgoingEdge) return
-    const connectedGroup = typebot.groups.find(byId(outgoingEdge?.to.groupId))
+    const connectedGroup = sniper.groups.find(byId(outgoingEdge?.to.groupId))
     if (!connectedGroup) return
     return outgoingEdge.to.blockId
       ? connectedGroup.blocks.find(

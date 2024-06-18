@@ -1,5 +1,5 @@
 {
-  "name": "@typebot.io/openai-block",
+  "name": "@sniper.io/openai-block",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
@@ -11,11 +11,11 @@
     "openai": "4.47.1"
   },
   "devDependencies": {
-    "@typebot.io/forge": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
+    "@sniper.io/forge": "workspace:*",
+    "@sniper.io/tsconfig": "workspace:*",
     "@types/react": "18.2.15",
     "typescript": "5.4.5",
-    "@typebot.io/lib": "workspace:*",
-    "@typebot.io/variables": "workspace:*"
+    "@sniper.io/lib": "workspace:*",
+    "@sniper.io/variables": "workspace:*"
   }
 }

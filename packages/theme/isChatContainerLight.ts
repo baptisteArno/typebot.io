@@ -1,13 +1,13 @@
-import { isLight } from '@typebot.io/lib/hexToRgb'
-import { ContainerTheme, GeneralTheme } from '@typebot.io/schemas'
+import { isLight } from '@sniper.io/lib/hexToRgb'
+import { ContainerTheme, GeneralTheme } from '@sniper.io/schemas'
 import {
   BackgroundType,
   defaultBackgroundColor,
   defaultBackgroundType,
   defaultContainerBackgroundColor,
   defaultOpacity,
-} from '@typebot.io/schemas/features/typebot/theme/constants'
-import { isEmpty, isNotEmpty } from '@typebot.io/lib'
+} from '@sniper.io/schemas/features/sniper/theme/constants'
+import { isEmpty, isNotEmpty } from '@sniper.io/lib'
 
 type Props = {
   chatContainer: ContainerTheme | undefined

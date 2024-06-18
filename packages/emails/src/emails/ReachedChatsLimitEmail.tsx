@@ -8,10 +8,10 @@ import {
 } from '@faire/mjml-react'
 import { render } from '@faire/mjml-react/utils/render'
 import { Button, Head, HeroImage, Text } from '../components'
-import { parseNumberWithCommas } from '@typebot.io/lib'
+import { parseNumberWithCommas } from '@sniper.io/lib'
 import { SendMailOptions } from 'nodemailer'
 import { sendEmail } from '../sendEmail'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 type ReachedChatsLimitEmailProps = {
   chatsLimit: number

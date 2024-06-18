@@ -1,6 +1,6 @@
 import { NumberInput, TextInput, Textarea } from '@/components/inputs'
-import { z } from '@typebot.io/forge/zod'
-import { ZodLayoutMetadata } from '@typebot.io/forge/zod'
+import { z } from '@sniper.io/forge/zod'
+import { ZodLayoutMetadata } from '@sniper.io/forge/zod'
 import Markdown, { Components } from 'react-markdown'
 import { ZodTypeAny } from 'zod'
 import { ForgeSelectInput } from '../ForgeSelectInput'
@@ -22,7 +22,7 @@ import { DropdownList } from '@/components/DropdownList'
 import {
   ForgedBlockDefinition,
   ForgedBlock,
-} from '@typebot.io/forge-repository/types'
+} from '@sniper.io/forge-repository/types'
 import { PrimitiveList } from '@/components/PrimitiveList'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { CodeEditor } from '@/components/inputs/CodeEditor'

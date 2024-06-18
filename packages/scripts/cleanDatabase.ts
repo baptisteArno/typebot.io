@@ -1,7 +1,7 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { PrismaClient } from '@sniper.io/prisma'
 import { promptAndSetEnvironment } from './utils'
-import { archiveResults } from '@typebot.io/results/archiveResults'
-import { Typebot } from '@typebot.io/schemas'
+import { archiveResults } from '@sniper.io/results/archiveResults'
+import { Sniper } from '@sniper.io/schemas'
 
 const prisma = new PrismaClient()
 
@@ -15,18 +15,18 @@ export const cleanDatabase = async () => {
   const isFirstOfMonth = new Date().getDate() === 1
   if (isFirstOfMonth) {
     await deleteArchivedResults()
-    await deleteArchivedTypebots()
+    await deleteArchivedSnipers()
     await resetBillingProps()
   }
   console.log('Database cleaned!')
 }
 
-const deleteArchivedTypebots = async () => {
+const deleteArchivedSnipers = async () => {
   const lastDayTwoMonthsAgo = new Date()
   lastDayTwoMonthsAgo.setMonth(lastDayTwoMonthsAgo.getMonth() - 1)
   lastDayTwoMonthsAgo.setDate(0)
 
-  const typebots = await prisma.typebot.findMany({
+  const snipers = await prisma.sniper.findMany({
     where: {
       updatedAt: {
         lte: lastDayTwoMonthsAgo,
@@ -36,16 +36,16 @@ const deleteArchivedTypebots = async () => {
     select: { id: true },
   })
 
-  console.log(`Deleting ${typebots.length} archived typebots...`)
+  console.log(`Deleting ${snipers.length} archived snipers...`)
 
   const chunkSize = 1000
-  for (let i = 0; i < typebots.length; i += chunkSize) {
-    const chunk = typebots.slice(i, i + chunkSize)
-    await deleteResultsFromArchivedTypebotsIfAny(chunk)
-    await prisma.typebot.deleteMany({
+  for (let i = 0; i < snipers.length; i += chunkSize) {
+    const chunk = snipers.slice(i, i + chunkSize)
+    await deleteResultsFromArchivedSnipersIfAny(chunk)
+    await prisma.sniper.deleteMany({
       where: {
         id: {
-          in: chunk.map((typebot) => typebot.id),
+          in: chunk.map((sniper) => sniper.id),
         },
       },
     })
@@ -191,14 +191,14 @@ const resetBillingProps = async () => {
   console.log(`Resetted ${count} workspaces.`)
 }
 
-const deleteResultsFromArchivedTypebotsIfAny = async (
-  typebotIds: { id: string }[]
+const deleteResultsFromArchivedSnipersIfAny = async (
+  sniperIds: { id: string }[]
 ) => {
-  console.log('Checking for archived typebots with non-archived results...')
-  const archivedTypebotsWithResults = (await prisma.typebot.findMany({
+  console.log('Checking for archived snipers with non-archived results...')
+  const archivedSnipersWithResults = (await prisma.sniper.findMany({
     where: {
       id: {
-        in: typebotIds.map((typebot) => typebot.id),
+        in: sniperIds.map((sniper) => sniper.id),
       },
       isArchived: true,
       results: {
@@ -209,16 +209,16 @@ const deleteResultsFromArchivedTypebotsIfAny = async (
       id: true,
       groups: true,
     },
-  })) as Pick<Typebot, 'groups' | 'id'>[]
-  if (archivedTypebotsWithResults.length === 0) return
+  })) as Pick<Sniper, 'groups' | 'id'>[]
+  if (archivedSnipersWithResults.length === 0) return
   console.log(
-    `Found ${archivedTypebotsWithResults.length} archived typebots with non-archived results.`
+    `Found ${archivedSnipersWithResults.length} archived snipers with non-archived results.`
   )
-  for (const archivedTypebot of archivedTypebotsWithResults) {
+  for (const archivedSniper of archivedSnipersWithResults) {
     await archiveResults(prisma)({
-      typebot: archivedTypebot,
+      sniper: archivedSniper,
       resultsFilter: {
-        typebotId: archivedTypebot.id,
+        sniperId: archivedSniper.id,
       },
     })
   }

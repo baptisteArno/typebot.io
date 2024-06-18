@@ -1,5 +1,5 @@
 import { Button, HStack, Stack } from '@chakra-ui/react'
-import { ThemeTemplate } from '@typebot.io/schemas'
+import { ThemeTemplate } from '@sniper.io/schemas'
 import { useState } from 'react'
 import { MyTemplates } from './MyTemplates'
 import { TemplatesGallery } from './TemplatesGallery'

@@ -1,11 +1,11 @@
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
-import { ChoiceInputBlock } from '@typebot.io/schemas'
+import { ChoiceInputBlock } from '@sniper.io/schemas'
 import { createSignal, For, onMount, Show } from 'solid-js'
 import { Checkbox } from './Checkbox'
 import { SearchInput } from '@/components/inputs/SearchInput'
-import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
+import { defaultChoiceInputOptions } from '@sniper.io/schemas/features/blocks/inputs/choice/constants'
 
 type Props = {
   defaultItems: ChoiceInputBlock['items']
@@ -59,7 +59,7 @@ export const MultipleChoicesForm = (props: Props) => {
   return (
     <form class="flex flex-col items-end gap-2 w-full" onSubmit={handleSubmit}>
       <Show when={props.options?.isSearchable}>
-        <div class="flex items-end typebot-input w-full">
+        <div class="flex items-end sniper-input w-full">
           <SearchInput
             ref={inputRef}
             onInput={filterItems}
@@ -89,7 +89,7 @@ export const MultipleChoicesForm = (props: Props) => {
                 )}
                 on:click={() => handleClick(item.id)}
                 class={
-                  'w-full py-2 px-4 font-semibold focus:outline-none cursor-pointer select-none typebot-selectable' +
+                  'w-full py-2 px-4 font-semibold focus:outline-none cursor-pointer select-none sniper-selectable' +
                   (selectedItemIds().some(
                     (selectedItemId) => selectedItemId === item.id
                   )
@@ -123,7 +123,7 @@ export const MultipleChoicesForm = (props: Props) => {
                 aria-checked
                 on:click={() => handleClick(selectedItemId)}
                 class={
-                  'w-full py-2 px-4 font-semibold focus:outline-none cursor-pointer select-none typebot-selectable selected'
+                  'w-full py-2 px-4 font-semibold focus:outline-none cursor-pointer select-none sniper-selectable selected'
                 }
                 data-itemid={selectedItemId}
               >

@@ -164,5 +164,5 @@
 }
 
 input.PhoneInputInput::placeholder {
-  color: var(--typebot-input-placeholder-color);
+  color: var(--sniper-input-placeholder-color);
 }

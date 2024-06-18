@@ -3,7 +3,7 @@ import {
   CustomEmbedBubble,
   SessionState,
   SetVariableHistoryItem,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 
 export type EdgeId = string
 

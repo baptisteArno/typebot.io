@@ -1,6 +1,6 @@
-import { isNotDefined } from '@typebot.io/lib'
-import { NumberInputBlock, Variable } from '@typebot.io/schemas'
-import { parseVariables } from '@typebot.io/variables/parseVariables'
+import { isNotDefined } from '@sniper.io/lib'
+import { NumberInputBlock, Variable } from '@sniper.io/schemas'
+import { parseVariables } from '@sniper.io/variables/parseVariables'
 
 export const validateNumber = (
   inputValue: string,

@@ -2,14 +2,14 @@ import { BotContext } from '@/types'
 
 export const setPaymentInProgressInStorage = (state: {
   sessionId: string
-  typebot: BotContext['typebot']
+  sniper: BotContext['sniper']
 }) => {
-  sessionStorage.setItem('typebotPaymentInProgress', JSON.stringify(state))
+  sessionStorage.setItem('sniperPaymentInProgress', JSON.stringify(state))
 }
 
 export const getPaymentInProgressInStorage = () =>
-  sessionStorage.getItem('typebotPaymentInProgress')
+  sessionStorage.getItem('sniperPaymentInProgress')
 
 export const removePaymentInProgressFromStorage = () => {
-  sessionStorage.removeItem('typebotPaymentInProgress')
+  sessionStorage.removeItem('sniperPaymentInProgress')
 }

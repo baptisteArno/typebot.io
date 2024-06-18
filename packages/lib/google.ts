@@ -1,5 +1,5 @@
-import { env } from '@typebot.io/env'
-import { Credentials as CredentialsFromDb } from '@typebot.io/prisma'
+import { env } from '@sniper.io/env'
+import { Credentials as CredentialsFromDb } from '@sniper.io/prisma'
 import { decrypt } from './api/encryption/decrypt'
 import { encrypt } from './api/encryption/encrypt'
 import prisma from './prisma'

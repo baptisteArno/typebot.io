@@ -19,7 +19,7 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { ModalProps } from '../EmbedButton'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 export const FlutterFlowModal = ({
   isPublished,
@@ -46,7 +46,7 @@ export const FlutterFlowModal = ({
             <ListItem>
               <Stack>
                 <Text>
-                  As the <Code>Webview URL</Code>, paste your typebot URL
+                  As the <Code>Webview URL</Code>, paste your sniper URL
                 </Text>
                 <InputGroup size="sm">
                   <Input

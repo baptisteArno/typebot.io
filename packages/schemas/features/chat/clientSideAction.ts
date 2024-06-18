@@ -1,6 +1,6 @@
 import { z } from '../../zod'
 import { extendZodWithOpenApi } from 'zod-openapi'
-import { listVariableValue } from '../typebot/variable'
+import { listVariableValue } from '../sniper/variable'
 import {
   googleAnalyticsOptionsSchema,
   executableHttpRequestSchema,

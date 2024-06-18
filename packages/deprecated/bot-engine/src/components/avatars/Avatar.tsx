@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 import { DefaultAvatar } from './DefaultAvatar'
 
 export const Avatar = ({ avatarSrc }: { avatarSrc?: string }) => {

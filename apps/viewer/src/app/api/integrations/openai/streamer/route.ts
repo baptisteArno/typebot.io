@@ -1,21 +1,21 @@
 import { connect } from '@planetscale/database'
-import { env } from '@typebot.io/env'
-import { SessionState } from '@typebot.io/schemas'
+import { env } from '@sniper.io/env'
+import { SessionState } from '@sniper.io/schemas'
 import { StreamingTextResponse } from 'ai'
 import OpenAI from 'openai'
 import { NextResponse } from 'next/dist/server/web/spec-extension/response'
-import { getBlockById } from '@typebot.io/schemas/helpers'
-import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
-import { decryptV2 } from '@typebot.io/lib/api/encryption/decryptV2'
-import { VariableStore } from '@typebot.io/forge'
+import { getBlockById } from '@sniper.io/schemas/helpers'
+import { forgedBlocks } from '@sniper.io/forge-repository/definitions'
+import { decryptV2 } from '@sniper.io/lib/api/encryption/decryptV2'
+import { VariableStore } from '@sniper.io/forge'
 import {
   ParseVariablesOptions,
   parseVariables,
-} from '@typebot.io/variables/parseVariables'
-import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
-import { getChatCompletionStream } from '@typebot.io/bot-engine/blocks/integrations/legacy/openai/getChatCompletionStream'
-import { ChatCompletionOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai/schema'
-import { isForgedBlockType } from '@typebot.io/schemas/features/blocks/forged/helpers'
+} from '@sniper.io/variables/parseVariables'
+import { IntegrationBlockType } from '@sniper.io/schemas/features/blocks/integrations/constants'
+import { getChatCompletionStream } from '@sniper.io/bot-engine/blocks/integrations/legacy/openai/getChatCompletionStream'
+import { ChatCompletionOpenAIOptions } from '@sniper.io/schemas/features/blocks/integrations/openai/schema'
+import { isForgedBlockType } from '@sniper.io/schemas/features/blocks/forged/helpers'
 
 export const preferredRegion = 'lhr1'
 export const dynamic = 'force-dynamic'
@@ -68,7 +68,7 @@ export async function POST(req: Request) {
 
   const { group, block } = getBlockById(
     state.currentBlockId,
-    state.typebotsQueue[0].typebot.groups
+    state.snipersQueue[0].sniper.groups
   )
   if (!block || !group)
     return NextResponse.json(
@@ -141,15 +141,15 @@ export async function POST(req: Request) {
       credentials.iv
     )
     const variables: VariableStore = {
-      list: () => state.typebotsQueue[0].typebot.variables,
+      list: () => state.snipersQueue[0].sniper.variables,
       get: (id: string) => {
-        const variable = state.typebotsQueue[0].typebot.variables.find(
+        const variable = state.snipersQueue[0].sniper.variables.find(
           (variable) => variable.id === id
         )
         return variable?.value
       },
       parse: (text: string, params?: ParseVariablesOptions) =>
-        parseVariables(state.typebotsQueue[0].typebot.variables, params)(text),
+        parseVariables(state.snipersQueue[0].sniper.variables, params)(text),
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       set: (_1: string, _2: unknown) => {},
     }

@@ -3,27 +3,27 @@ import parserHtml from 'prettier/parser-html'
 import {
   parseApiHostValue,
   parseInitBubbleCode,
-  typebotImportCode,
+  sniperImportCode,
 } from '../../snippetParsers'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { BubbleProps } from '@typebot.io/nextjs'
+import { BubbleProps } from '@sniper.io/nextjs'
 
 type Props = Pick<BubbleProps, 'theme' | 'previewMessage'>
 
 export const JavascriptBubbleSnippet = ({ theme, previewMessage }: Props) => {
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
 
   const snippet = prettier.format(
-    `<script type="module">${typebotImportCode}
+    `<script type="module">${sniperImportCode}
     
 ${parseInitBubbleCode({
-  typebot: typebot?.publicId ?? '',
-  apiHost: parseApiHostValue(typebot?.customDomain),
+  sniper: sniper?.publicId ?? '',
+  apiHost: parseApiHostValue(sniper?.customDomain),
   theme: {
     ...theme,
     chatWindow: {
-      backgroundColor: typebot?.theme.general?.background?.content ?? '#fff',
+      backgroundColor: sniper?.theme.general?.background?.content ?? '#fff',
     },
   },
   previewMessage,

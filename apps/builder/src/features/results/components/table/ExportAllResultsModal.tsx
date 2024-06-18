@@ -1,7 +1,7 @@
 import { AlertInfo } from '@/components/AlertInfo'
 import { DownloadIcon } from '@/components/icons'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { useToast } from '@/hooks/useToast'
 import { trpc } from '@/lib/trpc'
 import {
@@ -20,14 +20,14 @@ import {
 import { TRPCError } from '@trpc/server'
 import { unparse } from 'papaparse'
 import { useState } from 'react'
-import { parseResultHeader } from '@typebot.io/results/parseResultHeader'
-import { convertResultsToTableData } from '@typebot.io/results/convertResultsToTableData'
-import { parseColumnsOrder } from '@typebot.io/results/parseColumnsOrder'
-import { parseUniqueKey } from '@typebot.io/lib/parseUniqueKey'
+import { parseResultHeader } from '@sniper.io/results/parseResultHeader'
+import { convertResultsToTableData } from '@sniper.io/results/convertResultsToTableData'
+import { parseColumnsOrder } from '@sniper.io/results/parseColumnsOrder'
+import { parseUniqueKey } from '@sniper.io/lib/parseUniqueKey'
 import { useResults } from '../../ResultsProvider'
-import { byId, isDefined } from '@typebot.io/lib'
-import { Typebot } from '@typebot.io/schemas'
-import { parseBlockIdVariableIdMap } from '@typebot.io/results/parseBlockIdVariableIdMap'
+import { byId, isDefined } from '@sniper.io/lib'
+import { Sniper } from '@sniper.io/schemas'
+import { parseBlockIdVariableIdMap } from '@sniper.io/results/parseBlockIdVariableIdMap'
 
 type Props = {
   isOpen: boolean
@@ -35,9 +35,9 @@ type Props = {
 }
 
 export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
-  const { typebot, publishedTypebot } = useTypebot()
-  const workspaceId = typebot?.workspaceId
-  const typebotId = typebot?.id
+  const { sniper, publishedSniper } = useSniper()
+  const workspaceId = sniper?.workspaceId
+  const sniperId = sniper?.id
   const { showToast } = useToast()
   const { resultHeader: existingResultHeader, totalResults } = useResults()
   const trpcContext = trpc.useContext()
@@ -47,17 +47,17 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
   const [areDeletedBlocksIncluded, setAreDeletedBlocksIncluded] =
     useState(false)
 
-  const { data: linkedTypebotsData } = trpc.getLinkedTypebots.useQuery(
+  const { data: linkedSnipersData } = trpc.getLinkedSnipers.useQuery(
     {
-      typebotId: typebotId as string,
+      sniperId: sniperId as string,
     },
     {
-      enabled: isDefined(typebotId),
+      enabled: isDefined(sniperId),
     }
   )
 
   const getAllResults = async () => {
-    if (!workspaceId || !typebotId) return []
+    if (!workspaceId || !sniperId) return []
     const allResults = []
     let cursor: string | undefined
     setExportProgressValue(0)
@@ -65,7 +65,7 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
       try {
         const { results, nextCursor } =
           await trpcContext.results.getResults.fetch({
-            typebotId,
+            sniperId,
             limit: 100,
             cursor,
             timeFilter: 'allTime',
@@ -83,7 +83,7 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
   }
 
   const exportAllResultsToCSV = async () => {
-    if (!publishedTypebot) return
+    if (!publishedSniper) return
 
     setIsExportLoading(true)
 
@@ -93,11 +93,8 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
 
     const resultHeader = areDeletedBlocksIncluded
       ? parseResultHeader(
-          publishedTypebot,
-          linkedTypebotsData?.typebots as Pick<
-            Typebot,
-            'groups' | 'variables'
-          >[],
+          publishedSniper,
+          linkedSnipersData?.snipers as Pick<Sniper, 'groups' | 'variables'>[],
           results
         )
       : existingResultHeader
@@ -105,15 +102,15 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
     const dataToUnparse = convertResultsToTableData({
       results,
       headerCells: resultHeader,
-      blockIdVariableIdMap: parseBlockIdVariableIdMap(typebot?.groups),
+      blockIdVariableIdMap: parseBlockIdVariableIdMap(sniper?.groups),
     })
 
     const headerIds = parseColumnsOrder(
-      typebot?.resultsTablePreferences?.columnsOrder,
+      sniper?.resultsTablePreferences?.columnsOrder,
       resultHeader
     ).reduce<string[]>((currentHeaderIds, columnId) => {
       if (
-        typebot?.resultsTablePreferences?.columnsVisibility[columnId] === false
+        sniper?.resultsTablePreferences?.columnsVisibility[columnId] === false
       )
         return currentHeaderIds
       const columnLabel = resultHeader.find(
@@ -137,7 +134,7 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
     const csvData = new Blob([unparse(data)], {
       type: 'text/csv;charset=utf-8;',
     })
-    const fileName = `typebot-export_${new Date()
+    const fileName = `sniper-export_${new Date()
       .toLocaleDateString()
       .replaceAll('/', '-')}`
     const tempLink = document.createElement('a')

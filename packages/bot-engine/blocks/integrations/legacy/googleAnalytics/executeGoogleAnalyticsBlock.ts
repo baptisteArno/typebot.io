@@ -1,15 +1,15 @@
 import { ExecuteIntegrationResponse } from '../../../../types'
-import { GoogleAnalyticsBlock, SessionState } from '@typebot.io/schemas'
-import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
+import { GoogleAnalyticsBlock, SessionState } from '@sniper.io/schemas'
+import { deepParseVariables } from '@sniper.io/variables/deepParseVariables'
 
 export const executeGoogleAnalyticsBlock = (
   state: SessionState,
   block: GoogleAnalyticsBlock
 ): ExecuteIntegrationResponse => {
-  const { typebot, resultId } = state.typebotsQueue[0]
+  const { sniper, resultId } = state.snipersQueue[0]
   if (!resultId || state.whatsApp || !block.options)
     return { outgoingEdgeId: block.outgoingEdgeId }
-  const googleAnalytics = deepParseVariables(typebot.variables, {
+  const googleAnalytics = deepParseVariables(sniper.variables, {
     guessCorrectTypes: true,
     removeEmptyStrings: true,
   })(block.options)

@@ -15,10 +15,10 @@ import {
   EditableTextarea,
 } from '@chakra-ui/react'
 import { PlusIcon, SettingsIcon } from '@/components/icons'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { ButtonItem, Item, ItemIndices } from '@typebot.io/schemas'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
+import { ButtonItem, Item, ItemIndices } from '@sniper.io/schemas'
 import React, { useRef, useState } from 'react'
-import { isEmpty } from '@typebot.io/lib'
+import { isEmpty } from '@sniper.io/lib'
 import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { ButtonsItemSettings } from './ButtonsItemSettings'
 import { useTranslate } from '@tolgee/react'
@@ -31,7 +31,7 @@ type Props = {
 
 export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
   const { t } = useTranslate()
-  const { deleteItem, updateItem, createItem } = useTypebot()
+  const { deleteItem, updateItem, createItem } = useSniper()
   const { openedItemId, setOpenedItemId } = useGraph()
   const [itemValue, setItemValue] = useState(
     item.content ??

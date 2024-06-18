@@ -2,8 +2,8 @@ import { TextInput, NumberInput } from '@/components/inputs'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { useTranslate } from '@tolgee/react'
-import { NumberInputBlock, Variable } from '@typebot.io/schemas'
-import { defaultNumberInputOptions } from '@typebot.io/schemas/features/blocks/inputs/number/constants'
+import { NumberInputBlock, Variable } from '@sniper.io/schemas'
+import { defaultNumberInputOptions } from '@sniper.io/schemas/features/blocks/inputs/number/constants'
 import React from 'react'
 
 type Props = {

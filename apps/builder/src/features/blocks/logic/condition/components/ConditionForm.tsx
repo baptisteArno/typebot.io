@@ -1,13 +1,13 @@
 import { Flex } from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
-import { Comparison, Condition } from '@typebot.io/schemas'
+import { Comparison, Condition } from '@sniper.io/schemas'
 import React from 'react'
 import { ComparisonItem } from './ComparisonItem'
 import { TableList } from '@/components/TableList'
 import {
   LogicalOperator,
   defaultConditionItemContent,
-} from '@typebot.io/schemas/features/blocks/logic/condition/constants'
+} from '@sniper.io/schemas/features/blocks/logic/condition/constants'
 import { useTranslate } from '@tolgee/react'
 
 type Props = {

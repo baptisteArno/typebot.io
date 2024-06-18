@@ -1,8 +1,8 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { PrismaClient } from '@sniper.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 import * as p from '@clack/prompts'
 
-const updateTypebot = async () => {
+const updateSniper = async () => {
   await promptAndSetEnvironment('production')
 
   const prisma = new PrismaClient({
@@ -31,4 +31,4 @@ const updateTypebot = async () => {
   console.log(workspace)
 }
 
-updateTypebot()
+updateSniper()

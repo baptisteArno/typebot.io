@@ -1,5 +1,5 @@
 import { TableList } from '@/components/TableList'
-import { ChatCompletionOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai'
+import { ChatCompletionOpenAIOptions } from '@sniper.io/schemas/features/blocks/integrations/openai'
 import { ChatCompletionMessageItem } from './ChatCompletionMessageItem'
 import {
   Accordion,

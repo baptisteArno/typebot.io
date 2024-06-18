@@ -1,12 +1,12 @@
-import { CollaborationType } from '@typebot.io/prisma'
-import { sendRequest } from '@typebot.io/lib'
+import { CollaborationType } from '@sniper.io/prisma'
+import { sendRequest } from '@sniper.io/lib'
 
 export const sendInvitationQuery = (
-  typebotId: string,
+  sniperId: string,
   { email, type }: { email: string; type: CollaborationType }
 ) =>
   sendRequest({
     method: 'POST',
-    url: `/api/typebots/${typebotId}/invitations`,
+    url: `/api/snipers/${sniperId}/invitations`,
     body: { email, type },
   })

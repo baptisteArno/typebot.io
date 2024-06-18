@@ -4,11 +4,11 @@ import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
 import { createSignal, For, onCleanup, onMount } from 'solid-js'
-import { isEmpty } from '@typebot.io/lib'
-import { phoneCountries } from '@typebot.io/lib/phoneCountries'
+import { isEmpty } from '@sniper.io/lib'
+import { phoneCountries } from '@sniper.io/lib/phoneCountries'
 import { CommandData } from '@/features/commands/types'
-import { PhoneNumberInputBlock } from '@typebot.io/schemas'
-import { defaultPhoneInputOptions } from '@typebot.io/schemas/features/blocks/inputs/phone/constants'
+import { PhoneNumberInputBlock } from '@sniper.io/schemas'
+import { defaultPhoneInputOptions } from '@sniper.io/schemas/features/blocks/inputs/phone/constants'
 
 type PhoneInputProps = Pick<
   NonNullable<PhoneNumberInputBlock['options']>,
@@ -100,13 +100,13 @@ export const PhoneInput = (props: PhoneInputProps) => {
 
   const processIncomingEvent = (event: MessageEvent<CommandData>) => {
     const { data } = event
-    if (!data.isFromTypebot) return
+    if (!data.isFromSniper) return
     if (data.command === 'setInputValue') setInputValue(data.value)
   }
 
   return (
     <div
-      class={'flex items-end justify-between pr-2 typebot-input'}
+      class={'flex items-end justify-between pr-2 sniper-input'}
       data-testid="input"
       style={{
         'max-width': '400px',
@@ -114,7 +114,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
       onKeyDown={submitWhenEnter}
     >
       <div class="flex">
-        <div class="relative typebot-country-select flex justify-center items-center">
+        <div class="relative sniper-country-select flex justify-center items-center">
           <div class="pl-2 pr-1 flex items-center gap-2">
             <span>
               {

@@ -1,11 +1,11 @@
 import { Spinner, SendButton } from '@/components/SendButton'
 import { useAnswers } from '@/providers/AnswersProvider'
-import { useTypebot } from '@/providers/TypebotProvider'
+import { useSniper } from '@/providers/SniperProvider'
 import { InputSubmitContent } from '@/types'
-import { FileInputBlock } from '@typebot.io/schemas'
+import { FileInputBlock } from '@sniper.io/schemas'
 import React, { ChangeEvent, FormEvent, useState, DragEvent } from 'react'
 import { uploadFiles } from '../helpers/uploadFiles'
-import { defaultFileInputOptions } from '@typebot.io/schemas/features/blocks/inputs/file/constants'
+import { defaultFileInputOptions } from '@sniper.io/schemas/features/blocks/inputs/file/constants'
 
 type Props = {
   block: FileInputBlock
@@ -21,7 +21,7 @@ export const FileUploadForm = ({
   const { isMultipleAllowed, labels, isRequired } = options ?? {}
   const sizeLimit =
     options && 'sizeLimit' in options ? options?.sizeLimit : undefined
-  const { isPreview, currentTypebotId } = useTypebot()
+  const { isPreview, currentSniperId } = useSniper()
   const { resultId } = useAnswers()
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const [isUploading, setIsUploading] = useState(false)
@@ -57,7 +57,7 @@ export const FileUploadForm = ({
       })
     setIsUploading(true)
     const urls = await uploadFiles({
-      basePath: `/api/typebots/${currentTypebotId}/blocks/${id}`,
+      basePath: `/api/snipers/${currentSniperId}/blocks/${id}`,
       files: [
         {
           file,
@@ -80,7 +80,7 @@ export const FileUploadForm = ({
       })
     setIsUploading(true)
     const urls = await uploadFiles({
-      basePath: `/api/typebots/${currentTypebotId}/blocks/${id}`,
+      basePath: `/api/snipers/${currentSniperId}/blocks/${id}`,
       files: files.map((file) => ({
         file: file,
         path: `public/results/${resultId}/${id}/${file.name}`,
@@ -118,7 +118,7 @@ export const FileUploadForm = ({
       <label
         htmlFor="dropzone-file"
         className={
-          'typebot-upload-input py-6 flex flex-col justify-center items-center w-full bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-100 px-8 mb-2 ' +
+          'sniper-upload-input py-6 flex flex-col justify-center items-center w-full bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-100 px-8 mb-2 ' +
           (isDraggingOver ? 'dragging-over' : '')
         }
         onDragOver={handleDragOver}
@@ -178,7 +178,7 @@ export const FileUploadForm = ({
         <div className="flex justify-end">
           <button
             className={
-              'py-2 px-4 justify-center font-semibold rounded-md text-white focus:outline-none flex items-center disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 transition-all filter hover:brightness-90 active:brightness-75 typebot-button '
+              'py-2 px-4 justify-center font-semibold rounded-md text-white focus:outline-none flex items-center disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 transition-all filter hover:brightness-90 active:brightness-75 sniper-button '
             }
             onClick={onSkip}
           >

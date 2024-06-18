@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Row as RowProps } from '@tanstack/react-table'
 import Cell from './Cell'
-import { TableData } from '@typebot.io/schemas'
+import { TableData } from '@sniper.io/schemas'
 
 type Props = {
   row: RowProps<TableData>

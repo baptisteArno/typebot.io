@@ -1,26 +1,26 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots } from '@typebot.io/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from '@typebot.io/playwright/databaseHelpers'
+import { createSnipers } from '@sniper.io/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@sniper.io/playwright/databaseHelpers'
 import { createId } from '@paralleldrive/cuid2'
-import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
-import { defaultChatwootOptions } from '@typebot.io/schemas/features/blocks/integrations/chatwoot/constants'
+import { IntegrationBlockType } from '@sniper.io/schemas/features/blocks/integrations/constants'
+import { defaultChatwootOptions } from '@sniper.io/schemas/features/blocks/integrations/chatwoot/constants'
 
-const typebotId = createId()
+const sniperId = createId()
 
 const chatwootTestWebsiteToken = 'tueXiiqEmrWUCZ4NUyoR7nhE'
 
 test.describe('Chatwoot block', () => {
   test('should be configurable', async ({ page }) => {
-    await createTypebots([
+    await createSnipers([
       {
-        id: typebotId,
+        id: sniperId,
         ...parseDefaultGroupWithBlock({
           type: IntegrationBlockType.CHATWOOT,
         }),
       },
     ])
 
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/snipers/${sniperId}/edit`)
     await page.getByText('Configure...').click()
     await expect(page.getByLabel('Base URL')).toHaveAttribute(
       'value',

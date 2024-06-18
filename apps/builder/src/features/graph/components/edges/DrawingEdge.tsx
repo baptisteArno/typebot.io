@@ -1,6 +1,6 @@
 import { useEventListener } from '@chakra-ui/react'
 import assert from 'assert'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { colors } from '@/lib/theme'
 import React, { useMemo, useState } from 'react'
 import { useEndpoints } from '../../providers/EndpointsProvider'
@@ -12,7 +12,7 @@ import { ConnectingIds } from '../../types'
 import { useEventsCoordinates } from '../../providers/EventsCoordinateProvider'
 import { eventWidth, groupWidth } from '../../constants'
 import { useGroupsStore } from '../../hooks/useGroupsStore'
-import { omit } from '@typebot.io/lib'
+import { omit } from '@sniper.io/lib'
 
 type Props = {
   connectingIds: ConnectingIds
@@ -30,7 +30,7 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
     () => true
   )
   const { eventsCoordinates } = useEventsCoordinates()
-  const { createEdge } = useTypebot()
+  const { createEdge } = useSniper()
   const [mousePosition, setMousePosition] = useState<Coordinates | null>(null)
 
   const sourceElementCoordinates = connectingIds

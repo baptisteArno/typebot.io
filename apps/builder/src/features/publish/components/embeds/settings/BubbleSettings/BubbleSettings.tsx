@@ -7,11 +7,11 @@ import {
   Image,
   chakra,
 } from '@chakra-ui/react'
-import { BubbleProps } from '@typebot.io/nextjs'
-import { isDefined, isSvgSrc } from '@typebot.io/lib'
+import { BubbleProps } from '@sniper.io/nextjs'
+import { isDefined, isSvgSrc } from '@sniper.io/lib'
 import { PreviewMessageSettings } from './PreviewMessageSettings'
 import { ThemeSettings } from './ThemeSettings'
-import { isLight } from '@typebot.io/lib/hexToRgb'
+import { isLight } from '@sniper.io/lib/hexToRgb'
 
 type Props = {
   defaultPreviewMessageAvatar: string

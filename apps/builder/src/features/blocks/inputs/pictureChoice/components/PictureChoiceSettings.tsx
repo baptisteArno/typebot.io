@@ -1,11 +1,11 @@
 import { TextInput } from '@/components/inputs'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormLabel, Stack } from '@chakra-ui/react'
-import { Variable } from '@typebot.io/schemas'
+import { Variable } from '@sniper.io/schemas'
 import React from 'react'
-import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
+import { PictureChoiceBlock } from '@sniper.io/schemas/features/blocks/inputs/pictureChoice'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
-import { defaultPictureChoiceOptions } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice/constants'
+import { defaultPictureChoiceOptions } from '@sniper.io/schemas/features/blocks/inputs/pictureChoice/constants'
 import { useTranslate } from '@tolgee/react'
 
 type Props = {

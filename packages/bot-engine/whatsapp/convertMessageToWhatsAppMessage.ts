@@ -1,16 +1,16 @@
 import {
   ContinueChatResponse,
   EmbeddableVideoBubbleContentType,
-} from '@typebot.io/schemas'
-import { WhatsAppSendingMessage } from '@typebot.io/schemas/features/whatsapp'
-import { isSvgSrc } from '@typebot.io/lib/utils'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+} from '@sniper.io/schemas'
+import { WhatsAppSendingMessage } from '@sniper.io/schemas/features/whatsapp'
+import { isSvgSrc } from '@sniper.io/lib/utils'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
 import {
   VideoBubbleContentType,
   embedBaseUrls,
   embeddableVideoTypes,
-} from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
-import { convertRichTextToMarkdown } from '@typebot.io/lib/markdown/convertRichTextToMarkdown'
+} from '@sniper.io/schemas/features/blocks/bubbles/video/constants'
+import { convertRichTextToMarkdown } from '@sniper.io/lib/markdown/convertRichTextToMarkdown'
 
 export const convertMessageToWhatsAppMessage = (
   message: ContinueChatResponse['messages'][number]

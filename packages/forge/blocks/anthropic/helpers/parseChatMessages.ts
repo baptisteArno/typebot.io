@@ -1,8 +1,8 @@
 import { Anthropic } from '@anthropic-ai/sdk'
 import { options as createMessageOptions } from '../actions/createChatMessage'
-import { VariableStore } from '@typebot.io/forge'
-import { isNotEmpty } from '@typebot.io/lib'
-import { z } from '@typebot.io/forge/zod'
+import { VariableStore } from '@sniper.io/forge'
+import { isNotEmpty } from '@sniper.io/lib'
+import { z } from '@sniper.io/forge/zod'
 
 export const parseChatMessages = ({
   options: { messages },

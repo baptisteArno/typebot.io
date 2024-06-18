@@ -1,7 +1,7 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { workspaceMemberSchema } from '@typebot.io/schemas'
+import { workspaceMemberSchema } from '@sniper.io/schemas'
 import { z } from 'zod'
 import { isReadWorkspaceFobidden } from '../helpers/isReadWorkspaceFobidden'
 

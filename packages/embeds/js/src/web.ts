@@ -1,10 +1,10 @@
 import { registerWebComponents } from './register'
-import { parseTypebot, injectTypebotInWindow } from './window'
+import { parseSniper, injectSniperInWindow } from './window'
 
 registerWebComponents()
 
-const typebot = parseTypebot()
+const sniper = parseSniper()
 
-injectTypebotInWindow(typebot)
+injectSniperInWindow(sniper)
 
-export default typebot
+export default sniper

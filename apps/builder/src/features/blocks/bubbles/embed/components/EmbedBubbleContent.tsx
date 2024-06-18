@@ -1,6 +1,6 @@
 import { useTranslate } from '@tolgee/react'
 import { Text } from '@chakra-ui/react'
-import { EmbedBubbleBlock } from '@typebot.io/schemas'
+import { EmbedBubbleBlock } from '@sniper.io/schemas'
 
 type Props = {
   block: EmbedBubbleBlock

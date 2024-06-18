@@ -13,8 +13,8 @@ import {
   BubbleBlock,
   BubbleBlockContent,
   TextBubbleBlock,
-} from '@typebot.io/schemas'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+} from '@sniper.io/schemas'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
 import { useRef } from 'react'
 
 type Props = {

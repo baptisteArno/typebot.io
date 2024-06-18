@@ -2,9 +2,9 @@ import { IncomingMessage } from 'http'
 import { ErrorPage } from '@/components/ErrorPage'
 import { NotFoundPage } from '@/components/NotFoundPage'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
-import { isDefined, isNotDefined, omit } from '@typebot.io/lib'
-import { TypebotPageProps, TypebotPageV2 } from '@/components/TypebotPageV2'
-import prisma from '@typebot.io/lib/prisma'
+import { isDefined, isNotDefined, omit } from '@sniper.io/lib'
+import { SniperPageProps, SniperPageV2 } from '@/components/SniperPageV2'
+import prisma from '@sniper.io/lib/prisma'
 
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
@@ -13,13 +13,13 @@ export const getServerSideProps: GetServerSideProps = async (
   const { host, forwardedHost } = getHost(context.req)
   try {
     if (!host) return { props: {} }
-    const publishedTypebot = await getTypebotFromPublicId(
+    const publishedSniper = await getSniperFromPublicId(
       context.query.publicId?.toString()
     )
-    const headCode = publishedTypebot?.settings.metadata?.customHeadCode
+    const headCode = publishedSniper?.settings.metadata?.customHeadCode
     return {
       props: {
-        publishedTypebot,
+        publishedSniper,
         url: `https://${forwardedHost ?? host}${pathname}`,
         customHeadCode:
           isDefined(headCode) && headCode !== '' ? headCode : null,
@@ -35,21 +35,21 @@ export const getServerSideProps: GetServerSideProps = async (
   }
 }
 
-const getTypebotFromPublicId = async (
+const getSniperFromPublicId = async (
   publicId?: string
-): Promise<TypebotPageProps['publishedTypebot'] | null> => {
-  const publishedTypebot = await prisma.publicTypebot.findFirst({
-    where: { typebot: { publicId: publicId ?? '' } },
+): Promise<SniperPageProps['publishedSniper'] | null> => {
+  const publishedSniper = await prisma.publicSniper.findFirst({
+    where: { sniper: { publicId: publicId ?? '' } },
     include: {
-      typebot: { select: { name: true, isClosed: true, isArchived: true } },
+      sniper: { select: { name: true, isClosed: true, isArchived: true } },
     },
   })
-  if (isNotDefined(publishedTypebot)) return null
+  if (isNotDefined(publishedSniper)) return null
   return omit(
-    publishedTypebot,
+    publishedSniper,
     'createdAt',
     'updatedAt'
-  ) as TypebotPageProps['publishedTypebot']
+  ) as SniperPageProps['publishedSniper']
 }
 
 const getHost = (
@@ -59,12 +59,12 @@ const getHost = (
   forwardedHost: req?.headers['x-forwarded-host'] as string | undefined,
 })
 
-const App = ({ publishedTypebot, ...props }: TypebotPageProps) => {
-  if (!publishedTypebot || publishedTypebot.typebot.isArchived)
+const App = ({ publishedSniper, ...props }: SniperPageProps) => {
+  if (!publishedSniper || publishedSniper.sniper.isArchived)
     return <NotFoundPage />
-  if (publishedTypebot.typebot.isClosed)
+  if (publishedSniper.sniper.isClosed)
     return <ErrorPage error={new Error('This bot is now closed')} />
-  return <TypebotPageV2 publishedTypebot={publishedTypebot} {...props} />
+  return <SniperPageV2 publishedSniper={publishedSniper} {...props} />
 }
 
 export default App

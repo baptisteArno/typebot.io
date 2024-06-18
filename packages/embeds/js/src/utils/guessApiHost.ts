@@ -1,6 +1,6 @@
-import { getRuntimeVariable } from '@typebot.io/env/getRuntimeVariable'
+import { getRuntimeVariable } from '@sniper.io/env/getRuntimeVariable'
 
-const chatApiCloudFallbackHost = 'https://typebot.io'
+const chatApiCloudFallbackHost = 'https://sniper.io'
 
 type Params = {
   ignoreChatApiUrl?: boolean

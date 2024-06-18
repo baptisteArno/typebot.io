@@ -1,10 +1,10 @@
 import { useTranslate } from '@tolgee/react'
 import { Box, Text, Image } from '@chakra-ui/react'
-import { VideoBubbleBlock } from '@typebot.io/schemas'
+import { VideoBubbleBlock } from '@sniper.io/schemas'
 import {
   VideoBubbleContentType,
   embedBaseUrls,
-} from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
+} from '@sniper.io/schemas/features/blocks/bubbles/video/constants'
 
 type Props = {
   block: VideoBubbleBlock

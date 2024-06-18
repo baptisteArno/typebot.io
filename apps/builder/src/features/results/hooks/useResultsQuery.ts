@@ -3,19 +3,19 @@ import { trpc } from '@/lib/trpc'
 
 type Params = {
   timeFilter: (typeof timeFilterValues)[number]
-  typebotId: string
+  sniperId: string
   onError?: (error: string) => void
 }
 
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
-export const useResultsQuery = ({ timeFilter, typebotId, onError }: Params) => {
+export const useResultsQuery = ({ timeFilter, sniperId, onError }: Params) => {
   const { data, error, fetchNextPage, hasNextPage, refetch } =
     trpc.results.getResults.useInfiniteQuery(
       {
         timeZone,
         timeFilter,
-        typebotId,
+        sniperId,
       },
       {
         getNextPageParam: (lastPage) => lastPage.nextCursor,

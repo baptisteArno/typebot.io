@@ -2,7 +2,7 @@ import type {
   BotProps,
   PopupProps,
   BubbleProps,
-} from '@typebot.io/js/dist/index'
+} from '@sniper.io/js/dist/index'
 import dynamic from 'next/dynamic'
 
 export const Standard: React.ComponentType<
@@ -10,20 +10,20 @@ export const Standard: React.ComponentType<
     style?: React.CSSProperties
     className?: string
   }
-> = dynamic(() => import('@typebot.io/react/src/Standard'), { ssr: false })
+> = dynamic(() => import('@sniper.io/react/src/Standard'), { ssr: false })
 
 export const Popup: React.ComponentType<PopupProps> = dynamic(
-  () => import('@typebot.io/react/src/Popup'),
+  () => import('@sniper.io/react/src/Popup'),
   {
     ssr: false,
   }
 )
 
 export const Bubble: React.ComponentType<BubbleProps> = dynamic(
-  () => import('@typebot.io/react/src/Bubble'),
+  () => import('@sniper.io/react/src/Bubble'),
   {
     ssr: false,
   }
 )
 
-export * from '@typebot.io/js'
+export * from '@sniper.io/js'

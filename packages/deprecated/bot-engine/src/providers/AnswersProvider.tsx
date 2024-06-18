@@ -5,9 +5,9 @@ import {
   Variable,
   VariableWithUnknowValue,
   VariableWithValue,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import { createContext, ReactNode, useContext, useState } from 'react'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 
 const answersContext = createContext<{
   resultId?: string

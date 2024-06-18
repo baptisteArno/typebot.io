@@ -1,9 +1,9 @@
 import { FormControl, FormLabel, Stack } from '@chakra-ui/react'
-import { Settings } from '@typebot.io/schemas'
+import { Settings } from '@sniper.io/schemas'
 import React from 'react'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 import { TextInput } from '@/components/inputs'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 import { PrimitiveList } from '@/components/PrimitiveList'
 
@@ -26,7 +26,7 @@ export const SecurityForm = ({ security, onUpdate }: Props) => {
         <FormLabel display="flex" flexShrink={0} gap="1" mr="0" mb="4">
           Allowed origins
           <MoreInfoTooltip>
-            Restrict the execution of your typebot to specific website origins.
+            Restrict the execution of your sniper to specific website origins.
             By default your bot can be executed on any website.
           </MoreInfoTooltip>
         </FormLabel>

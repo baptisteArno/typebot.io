@@ -1,12 +1,12 @@
 import React, { FormEvent, useEffect, useState } from 'react'
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
-import { PaymentInputBlock, Variable } from '@typebot.io/schemas'
+import { PaymentInputBlock, Variable } from '@sniper.io/schemas'
 import { SendButton, Spinner } from '@/components/SendButton'
 import { initStripe } from '@/lib/stripe'
 import { parseVariables } from '@/features/variables'
 import { useChat } from '@/providers/ChatProvider'
-import { useTypebot } from '@/providers/TypebotProvider'
+import { useSniper } from '@/providers/SniperProvider'
 import { createPaymentIntentQuery } from '../../queries/createPaymentIntentQuery'
 import { Stripe } from '@stripe/stripe-js'
 
@@ -19,9 +19,9 @@ export const StripePaymentForm = ({ options, onSuccess }: Props) => {
   const {
     apiHost,
     isPreview,
-    typebot: { variables },
+    sniper: { variables },
     onNewLog,
-  } = useTypebot()
+  } = useSniper()
   const [stripe, setStripe] = useState<Stripe | null>(null)
   const [clientSecret, setClientSecret] = useState('')
   const [amountLabel, setAmountLabel] = useState('')
@@ -163,7 +163,7 @@ const CheckoutForm = ({
     <form
       id="payment-form"
       onSubmit={handleSubmit}
-      className="flex flex-col rounded-lg p-4 typebot-input w-full items-center"
+      className="flex flex-col rounded-lg p-4 sniper-input w-full items-center"
     >
       <PaymentElement
         id="payment-element"
@@ -183,7 +183,7 @@ const CheckoutForm = ({
       {message && (
         <div
           id="payment-message"
-          className="typebot-input-error-message mt-4 text-center"
+          className="sniper-input-error-message mt-4 text-center"
         >
           {message}
         </div>

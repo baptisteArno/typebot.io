@@ -1,14 +1,14 @@
 import { SendButton } from '@/components/SendButton'
 import { BotContext, InputSubmitContent } from '@/types'
-import { FileInputBlock } from '@typebot.io/schemas'
+import { FileInputBlock } from '@sniper.io/schemas'
 import { createSignal, Match, Show, Switch } from 'solid-js'
 import { Button } from '@/components/Button'
 import { Spinner } from '@/components/Spinner'
 import { uploadFiles } from '../helpers/uploadFiles'
 import { guessApiHost } from '@/utils/guessApiHost'
-import { getRuntimeVariable } from '@typebot.io/env/getRuntimeVariable'
-import { defaultFileInputOptions } from '@typebot.io/schemas/features/blocks/inputs/file/constants'
-import { isDefined } from '@typebot.io/lib'
+import { getRuntimeVariable } from '@sniper.io/env/getRuntimeVariable'
+import { defaultFileInputOptions } from '@sniper.io/schemas/features/blocks/inputs/file/constants'
+import { isDefined } from '@sniper.io/lib'
 
 type Props = {
   context: BotContext
@@ -167,7 +167,7 @@ export const FileUploadForm = (props: Props) => {
       <label
         for="dropzone-file"
         class={
-          'typebot-upload-input py-6 flex flex-col justify-center items-center w-full bg-gray-50 border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-100 px-8 ' +
+          'sniper-upload-input py-6 flex flex-col justify-center items-center w-full bg-gray-50 border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-100 px-8 ' +
           (isDraggingOver() ? 'dragging-over' : '')
         }
         onDragOver={handleDragOver}

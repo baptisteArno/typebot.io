@@ -8,16 +8,16 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { z } from '@typebot.io/forge/zod'
+import { z } from '@sniper.io/forge/zod'
 import React from 'react'
-import { ZodLayoutMetadata } from '@typebot.io/forge/zod'
+import { ZodLayoutMetadata } from '@sniper.io/forge/zod'
 import { ReactNode } from 'react'
 import { ZodTypeAny } from 'zod'
 import { ZodFieldLayout } from './ZodFieldLayout'
 import {
   ForgedBlockDefinition,
   ForgedBlock,
-} from '@typebot.io/forge-repository/types'
+} from '@sniper.io/forge-repository/types'
 import { getZodInnerSchema } from '../../helpers/getZodInnerSchema'
 
 export const ZodObjectLayout = ({

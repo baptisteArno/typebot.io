@@ -42,7 +42,7 @@ export const Hero = () => {
               data-aos="fade-up"
               data-aos-delay="100"
             >
-              Typebot gives you powerful blocks to create unique chat
+              Sniper gives you powerful blocks to create unique chat
               experiences. Embed them anywhere on your web/mobile apps and start
               collecting results like magic.
             </Text>
@@ -53,13 +53,13 @@ export const Hero = () => {
             >
               <Button
                 as={Link}
-                href="https://app.typebot.io/register"
+                href="https://app.sniper.io/register"
                 colorScheme="orange"
                 size="lg"
                 height="4rem"
                 px="2rem"
               >
-                Create a typebot for free
+                Create a sniper for free
               </Button>
             </Stack>
           </VStack>

@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Typebot Docs",
+  "name": "Sniper Docs",
   "openapi": ["/openapi/builder.json", "/openapi/viewer.json"],
   "feedback": {
     "suggestEdit": true
@@ -25,12 +25,12 @@
   "topbarLinks": [
     {
       "name": "Github",
-      "url": "https://github.com/baptisteArno/typebot.io"
+      "url": "https://github.com/baptisteArno/sniper.io"
     }
   ],
   "topbarCtaButton": {
     "name": "Dashboard",
-    "url": "https://app.typebot.io"
+    "url": "https://app.sniper.io"
   },
   "primaryTab": {
     "name": "Learn"
@@ -53,7 +53,7 @@
     {
       "name": "Community",
       "icon": "discord",
-      "url": "https://typebot.io/discord"
+      "url": "https://sniper.io/discord"
     }
   ],
   "navigation": [
@@ -103,7 +103,7 @@
                 "editor/blocks/logic/condition",
                 "editor/blocks/logic/redirect",
                 "editor/blocks/logic/script",
-                "editor/blocks/logic/typebot-link",
+                "editor/blocks/logic/sniper-link",
                 "editor/blocks/logic/wait",
                 "editor/blocks/logic/jump",
                 "editor/blocks/logic/ab-test"
@@ -264,21 +264,21 @@
         "api-reference/chat/start-preview-chat",
         "api-reference/chat/continue-chat",
         "api-reference/chat/save-logs",
-        "api-reference/chat/update-typebot-in-session"
+        "api-reference/chat/update-sniper-in-session"
       ]
     },
     {
-      "group": "Typebot",
+      "group": "Sniper",
       "pages": [
-        "api-reference/typebot/list",
-        "api-reference/typebot/get",
-        "api-reference/typebot/create",
-        "api-reference/typebot/import",
-        "api-reference/typebot/update",
-        "api-reference/typebot/delete",
-        "api-reference/typebot/get-published-bot",
-        "api-reference/typebot/publish",
-        "api-reference/typebot/unpublish"
+        "api-reference/sniper/list",
+        "api-reference/sniper/get",
+        "api-reference/sniper/create",
+        "api-reference/sniper/import",
+        "api-reference/sniper/update",
+        "api-reference/sniper/delete",
+        "api-reference/sniper/get-published-bot",
+        "api-reference/sniper/publish",
+        "api-reference/sniper/unpublish"
       ]
     },
     {
@@ -324,9 +324,9 @@
     }
   ],
   "footerSocials": {
-    "website": "https://typebot.io",
-    "discord": "https://typebot.io/discord",
-    "twitter": "https://twitter.com/Typebot_io",
-    "github": "https://github.com/baptisteArno/typebot.io"
+    "website": "https://sniper.io",
+    "discord": "https://sniper.io/discord",
+    "twitter": "https://twitter.com/Sniper_io",
+    "github": "https://github.com/baptisteArno/sniper.io"
   }
 }

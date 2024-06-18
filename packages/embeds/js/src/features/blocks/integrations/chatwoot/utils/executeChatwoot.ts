@@ -1,5 +1,5 @@
 import { executeScript } from '@/features/blocks/logic/script/executeScript'
-import type { ScriptToExecute } from '@typebot.io/schemas'
+import type { ScriptToExecute } from '@sniper.io/schemas'
 
 export const executeChatwoot = (chatwoot: {
   scriptToExecute: ScriptToExecute

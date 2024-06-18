@@ -1,7 +1,7 @@
 import { Fade, Flex, FlexProps, useEventListener } from '@chakra-ui/react'
 import React, { useRef, useMemo, useEffect, useState } from 'react'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { BlockV6, PublicTypebotV6, TypebotV6 } from '@typebot.io/schemas'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
+import { BlockV6, PublicSniperV6, SniperV6 } from '@sniper.io/schemas'
 import { useDebounce } from 'use-debounce'
 import GraphElements from './GraphElements'
 import { createId } from '@paralleldrive/cuid2'
@@ -15,7 +15,7 @@ import { Coordinates } from '../types'
 import {
   TotalAnswers,
   TotalVisitedEdges,
-} from '@typebot.io/schemas/features/analytics'
+} from '@sniper.io/schemas/features/analytics'
 import { SelectBox } from './SelectBox'
 import { computeSelectBoxDimensions } from '../helpers/computeSelectBoxDimensions'
 import { GroupSelectionMenu } from './GroupSelectionMenu'
@@ -24,20 +24,20 @@ import { useGroupsStore } from '../hooks/useGroupsStore'
 import { useShallow } from 'zustand/react/shallow'
 import { projectMouse } from '../helpers/projectMouse'
 import { useUser } from '@/features/account/hooks/useUser'
-import { GraphNavigation } from '@typebot.io/prisma'
+import { GraphNavigation } from '@sniper.io/prisma'
 
 const maxScale = 2
 const minScale = 0.3
 const zoomButtonsScaleBlock = 0.2
 
 export const Graph = ({
-  typebot,
+  sniper,
   totalAnswers,
   totalVisitedEdges,
   onUnlockProPlanClick,
   ...props
 }: {
-  typebot: TypebotV6 | PublicTypebotV6
+  sniper: SniperV6 | PublicSniperV6
   totalVisitedEdges?: TotalVisitedEdges[]
   totalAnswers?: TotalAnswers[]
   onUnlockProPlanClick?: () => void
@@ -50,7 +50,7 @@ export const Graph = ({
     draggedItem,
     setDraggedItem,
   } = useBlockDnd()
-  const { createGroup } = useTypebot()
+  const { createGroup } = useSniper()
   const { user } = useUser()
   const {
     isReadOnly,
@@ -81,7 +81,7 @@ export const Graph = ({
 
   const [graphPosition, setGraphPosition] = useState(
     graphPositionDefaultValue(
-      typebot.events[0].graphCoordinates ?? { x: 0, y: 0 }
+      sniper.events[0].graphCoordinates ?? { x: 0, y: 0 }
     )
   )
   const [autoMoveDirection, setAutoMoveDirection] = useState<
@@ -133,12 +133,12 @@ export const Graph = ({
   }, [debouncedGraphPosition, setGlobalGraphPosition])
 
   useEffect(() => {
-    setGroupsCoordinates(typebot.groups)
+    setGroupsCoordinates(sniper.groups)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleMouseUp = (e: MouseEvent) => {
-    if (!typebot) return
+    if (!sniper) return
     if (draggedItem) setDraggedItem(undefined)
     if (!draggedBlock && !draggedBlockType) return
 
@@ -152,7 +152,7 @@ export const Graph = ({
       id,
       ...coordinates,
       block: draggedBlock ?? (draggedBlockType as BlockV6['type']),
-      indices: { groupIndex: typebot.groups.length, blockIndex: 0 },
+      indices: { groupIndex: sniper.groups.length, blockIndex: 0 },
     })
     setDraggedBlock(undefined)
     setDraggedBlockType(undefined)
@@ -383,9 +383,9 @@ export const Graph = ({
         transformOrigin="0px 0px 0px"
       >
         <GraphElements
-          edges={typebot.edges}
-          groups={typebot.groups}
-          events={typebot.events}
+          edges={sniper.edges}
+          groups={sniper.groups}
+          events={sniper.events}
           totalAnswers={totalAnswers}
           totalVisitedEdges={totalVisitedEdges}
           onUnlockProPlanClick={onUnlockProPlanClick}

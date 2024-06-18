@@ -1,13 +1,13 @@
 import { ExecuteLogicResponse } from '../../../types'
-import { SessionState, WaitBlock } from '@typebot.io/schemas'
-import { parseVariables } from '@typebot.io/variables/parseVariables'
-import { isNotDefined } from '@typebot.io/lib'
+import { SessionState, WaitBlock } from '@sniper.io/schemas'
+import { parseVariables } from '@sniper.io/variables/parseVariables'
+import { isNotDefined } from '@sniper.io/lib'
 
 export const executeWait = (
   state: SessionState,
   block: WaitBlock
 ): ExecuteLogicResponse => {
-  const { variables } = state.typebotsQueue[0].typebot
+  const { variables } = state.snipersQueue[0].sniper
   if (!block.options?.secondsToWaitFor)
     return { outgoingEdgeId: block.outgoingEdgeId }
 

@@ -22,7 +22,7 @@ export const GuestBubble = ({
         style={{ marginLeft: '50px' }}
       >
         <span
-          className="px-4 py-2 rounded-lg mr-2 whitespace-pre-wrap max-w-full typebot-guest-bubble cursor-pointer"
+          className="px-4 py-2 rounded-lg mr-2 whitespace-pre-wrap max-w-full sniper-guest-bubble cursor-pointer"
           data-testid="guest-bubble"
         >
           {content}

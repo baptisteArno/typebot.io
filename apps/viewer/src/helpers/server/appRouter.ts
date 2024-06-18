@@ -1,7 +1,7 @@
 import { sendMessageV1 } from '@/features/chat/api/legacy/sendMessageV1'
 import { whatsAppRouter } from '@/features/whatsapp/api/router'
 import { router } from './trpc'
-import { updateTypebotInSession } from '@/features/chat/api/updateTypebotInSession'
+import { updateSniperInSession } from '@/features/chat/api/updateSniperInSession'
 import { getUploadUrl } from '@/features/fileUpload/api/deprecated/getUploadUrl'
 import { generateUploadUrl } from '@/features/fileUpload/api/generateUploadUrl'
 import { sendMessageV2 } from '@/features/chat/api/legacy/sendMessageV2'
@@ -18,7 +18,7 @@ export const appRouter = router({
   startChatPreview: startChatPreview,
   getUploadUrl,
   generateUploadUrl,
-  updateTypebotInSession,
+  updateSniperInSession,
   whatsAppRouter,
   saveClientLogs,
 })

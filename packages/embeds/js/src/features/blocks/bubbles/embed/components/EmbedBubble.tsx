@@ -2,8 +2,8 @@ import { TypingBubble } from '@/components'
 import { isMobile } from '@/utils/isMobileSignal'
 import { createSignal, onCleanup, onMount } from 'solid-js'
 import { clsx } from 'clsx'
-import { EmbedBubbleBlock } from '@typebot.io/schemas'
-import { defaultEmbedBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/embed/constants'
+import { EmbedBubbleBlock } from '@sniper.io/schemas'
+import { defaultEmbedBubbleContent } from '@sniper.io/schemas/features/blocks/bubbles/embed/constants'
 
 type Props = {
   content: EmbedBubbleBlock['content']
@@ -42,7 +42,7 @@ export const EmbedBubble = (props: Props) => {
       ref={ref}
     >
       <div class="flex w-full items-center">
-        <div class="flex relative z-10 items-start typebot-host-bubble w-full max-w-full">
+        <div class="flex relative z-10 items-start sniper-host-bubble w-full max-w-full">
           <div
             class="flex items-center absolute px-4 py-2 bubble-typing z-10 "
             style={{

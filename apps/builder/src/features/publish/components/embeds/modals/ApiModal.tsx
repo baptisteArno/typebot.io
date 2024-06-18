@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react'
 import { ModalProps } from '../EmbedButton'
 import { parseApiHost } from '../snippetParsers/shared'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 
 export const ApiModal = ({
   isPublished,
@@ -26,7 +26,7 @@ export const ApiModal = ({
   isOpen,
   onClose,
 }: ModalProps): JSX.Element => {
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
 
   const replyBody = `{
   "message": "This is my reply"
@@ -54,8 +54,8 @@ export const ApiModal = ({
                   isReadOnly
                   lang={'shell'}
                   value={`${parseApiHost(
-                    typebot?.customDomain
-                  )}/api/v1/typebots/${publicId}/startChat`}
+                    sniper?.customDomain
+                  )}/api/v1/snipers/${publicId}/startChat`}
                 />
               </Stack>
             </ListItem>
@@ -72,7 +72,7 @@ export const ApiModal = ({
                   isReadOnly
                   lang={'shell'}
                   value={`${parseApiHost(
-                    typebot?.customDomain
+                    sniper?.customDomain
                   )}/api/v1/sessions/<ID_FROM_FIRST_RESPONSE>/continueChat`}
                 />
                 <Text>With the following JSON body:</Text>
@@ -87,7 +87,7 @@ export const ApiModal = ({
           <Text fontSize="sm" colorScheme="gray">
             Check out the{' '}
             <TextLink
-              href="https://docs.typebot.io/api-reference/chat/start-chat"
+              href="https://docs.sniper.io/api-reference/chat/start-chat"
               isExternal
             >
               API reference

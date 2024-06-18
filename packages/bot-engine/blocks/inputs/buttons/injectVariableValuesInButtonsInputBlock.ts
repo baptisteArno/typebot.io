@@ -2,17 +2,17 @@ import {
   SessionState,
   VariableWithValue,
   ChoiceInputBlock,
-} from '@typebot.io/schemas'
-import { isDefined } from '@typebot.io/lib'
+} from '@sniper.io/schemas'
+import { isDefined } from '@sniper.io/lib'
 import { filterChoiceItems } from './filterChoiceItems'
-import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
-import { transformVariablesToList } from '@typebot.io/variables/transformVariablesToList'
-import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
+import { deepParseVariables } from '@sniper.io/variables/deepParseVariables'
+import { transformVariablesToList } from '@sniper.io/variables/transformVariablesToList'
+import { updateVariablesInSession } from '@sniper.io/variables/updateVariablesInSession'
 
 export const injectVariableValuesInButtonsInputBlock =
   (state: SessionState) =>
   (block: ChoiceInputBlock): ChoiceInputBlock => {
-    const { variables } = state.typebotsQueue[0].typebot
+    const { variables } = state.snipersQueue[0].sniper
     if (block.options?.dynamicVariableId) {
       const variable = variables.find(
         (variable) =>
@@ -37,7 +37,7 @@ const getVariableValue =
   (state: SessionState) =>
   (variable: VariableWithValue): (string | null)[] => {
     if (!Array.isArray(variable.value)) {
-      const { variables } = state.typebotsQueue[0].typebot
+      const { variables } = state.snipersQueue[0].sniper
       const [transformedVariable] = transformVariablesToList(variables)([
         variable.id,
       ])

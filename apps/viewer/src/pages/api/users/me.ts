@@ -1,7 +1,7 @@
 import { authenticateUser } from '@/helpers/authenticateUser'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { isNotDefined } from '@typebot.io/lib'
-import { methodNotAllowed } from '@typebot.io/lib/api'
+import { isNotDefined } from '@sniper.io/lib'
+import { methodNotAllowed } from '@sniper.io/lib/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {

@@ -1,10 +1,5 @@
 import { Heading, Stack } from '@chakra-ui/react'
-import {
-  AvatarProps,
-  ChatTheme,
-  GeneralTheme,
-  Theme,
-} from '@typebot.io/schemas'
+import { AvatarProps, ChatTheme, GeneralTheme, Theme } from '@sniper.io/schemas'
 import React from 'react'
 import { AvatarForm } from './AvatarForm'
 import { useTranslate } from '@tolgee/react'
@@ -25,11 +20,11 @@ import {
   defaultOpacity,
   defaultBlur,
   defaultRoundness,
-} from '@typebot.io/schemas/features/typebot/theme/constants'
+} from '@sniper.io/schemas/features/sniper/theme/constants'
 
 type Props = {
   workspaceId: string
-  typebotId: string
+  sniperId: string
   generalBackground: GeneralTheme['background']
   chatTheme: Theme['chat']
   onChatThemeChange: (chatTheme: ChatTheme) => void
@@ -37,7 +32,7 @@ type Props = {
 
 export const ChatThemeSettings = ({
   workspaceId,
-  typebotId,
+  sniperId,
   chatTheme,
   generalBackground,
   onChatThemeChange,
@@ -87,7 +82,7 @@ export const ChatThemeSettings = ({
       <AvatarForm
         uploadFileProps={{
           workspaceId,
-          typebotId,
+          sniperId,
           fileName: 'hostAvatar',
         }}
         title={t('theme.sideMenu.chat.botAvatar')}
@@ -98,7 +93,7 @@ export const ChatThemeSettings = ({
       <AvatarForm
         uploadFileProps={{
           workspaceId,
-          typebotId,
+          sniperId,
           fileName: 'guestAvatar',
         }}
         title={t('theme.sideMenu.chat.userAvatar')}

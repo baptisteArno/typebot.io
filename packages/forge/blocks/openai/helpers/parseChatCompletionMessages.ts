@@ -1,6 +1,6 @@
 import type { OpenAI } from 'openai'
-import { VariableStore } from '@typebot.io/forge'
-import { isNotEmpty } from '@typebot.io/lib'
+import { VariableStore } from '@sniper.io/forge'
+import { isNotEmpty } from '@sniper.io/lib'
 import { ChatCompletionOptions } from '../shared/parseChatCompletionOptions'
 
 export const parseChatCompletionMessages = ({

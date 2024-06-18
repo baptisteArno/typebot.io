@@ -8,10 +8,10 @@ import {
   Link,
 } from '@chakra-ui/react'
 import { HelpCircleIcon } from 'assets/icons/HelpCircleIcon'
-import { Plan } from '@typebot.io/prisma'
+import { Plan } from '@sniper.io/prisma'
 import React from 'react'
 import { PricingCard } from './PricingCard'
-import { prices, seatsLimits } from '@typebot.io/billing/constants'
+import { prices, seatsLimits } from '@sniper.io/billing/constants'
 
 type Props = {
   onChatsTiersClick: () => void
@@ -64,7 +64,7 @@ independant of the number of messages he sends and receives."
     button={
       <Button
         as={Link}
-        href={`https://app.typebot.io/register?subscribePlan=${Plan.PRO}`}
+        href={`https://app.sniper.io/register?subscribePlan=${Plan.PRO}`}
         colorScheme="blue"
         size="lg"
         w="full"

@@ -1,10 +1,10 @@
-import { createAction, option } from '@typebot.io/forge'
+import { createAction, option } from '@sniper.io/forge'
 import { auth } from '../auth'
 import { Anthropic } from '@anthropic-ai/sdk'
 import { AnthropicStream } from 'ai'
 import { anthropicModels, defaultAnthropicOptions } from '../constants'
 import { parseChatMessages } from '../helpers/parseChatMessages'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 
 const nativeMessageContentSchema = {
   content: option.string.layout({

@@ -3,9 +3,9 @@ import prettier from 'prettier/standalone'
 import {
   parseApiHostValue,
   parseInitStandardCode,
-  typebotImportCode,
+  sniperImportCode,
 } from '../../snippetParsers'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 
 type Props = {
@@ -17,10 +17,10 @@ export const JavascriptStandardSnippet = ({
   widthLabel,
   heightLabel,
 }: Props) => {
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
 
   const snippet = prettier.format(
-    `${parseStandardHeadCode(typebot?.publicId, typebot?.customDomain)}
+    `${parseStandardHeadCode(sniper?.publicId, sniper?.customDomain)}
       ${parseStandardElementCode(widthLabel, heightLabel)}`,
     {
       parser: 'html',
@@ -36,21 +36,21 @@ export const parseStandardHeadCode = (
   customDomain?: string | null
 ) =>
   prettier.format(
-    `<script type="module">${typebotImportCode};
+    `<script type="module">${sniperImportCode};
 
 ${parseInitStandardCode({
-  typebot: publicId ?? '',
+  sniper: publicId ?? '',
   apiHost: parseApiHostValue(customDomain),
 })}</script>`,
     { parser: 'html', plugins: [parserHtml] }
   )
 
 export const parseStandardElementCode = (width?: string, height?: string) => {
-  if (!width && !height) return '<typebot-standard></typebot-standard>'
+  if (!width && !height) return '<sniper-standard></sniper-standard>'
   return prettier.format(
-    `<typebot-standard style="${width ? `width: ${width}; ` : ''}${
+    `<sniper-standard style="${width ? `width: ${width}; ` : ''}${
       height ? `height: ${height}; ` : ''
-    }"></typebot-standard>`,
+    }"></sniper-standard>`,
     { parser: 'html', plugins: [parserHtml] }
   )
 }

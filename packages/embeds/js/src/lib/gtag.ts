@@ -1,5 +1,5 @@
-import { isDefined, isEmpty } from '@typebot.io/lib/utils'
-import { GoogleAnalyticsBlock } from '@typebot.io/schemas'
+import { isDefined, isEmpty } from '@sniper.io/lib/utils'
+import { GoogleAnalyticsBlock } from '@sniper.io/schemas'
 
 declare const window: {
   gtag?: (

@@ -21,11 +21,11 @@ const createHtmlFile = () => {
     path.resolve(__dirname, 'dist', 'guestInvitation.html'),
     render(
       <GuestInvitationEmail
-        workspaceName={'Typebot'}
-        typebotName={'Lead Generation'}
-        url={'https://app.typebot.io'}
-        hostEmail={'host@typebot.io'}
-        guestEmail={'guest@typebot.io'}
+        workspaceName={'Sniper'}
+        sniperName={'Lead Generation'}
+        url={'https://app.sniper.io'}
+        hostEmail={'host@sniper.io'}
+        guestEmail={'guest@sniper.io'}
       />
     ).html
   )
@@ -33,10 +33,10 @@ const createHtmlFile = () => {
     path.resolve(__dirname, 'dist', 'workspaceMemberInvitation.html'),
     render(
       <WorkspaceMemberInvitation
-        workspaceName={'Typebot'}
-        url={'https://app.typebot.io'}
-        hostEmail={'host@typebot.io'}
-        guestEmail={'guest@typebot.io'}
+        workspaceName={'Sniper'}
+        url={'https://app.sniper.io'}
+        hostEmail={'host@sniper.io'}
+        guestEmail={'guest@sniper.io'}
       />
     ).html
   )
@@ -54,7 +54,7 @@ const createHtmlFile = () => {
     path.resolve(__dirname, 'dist', 'defaultBotNotification.html'),
     render(
       <DefaultBotNotificationEmail
-        resultsUrl={'https://app.typebot.io'}
+        resultsUrl={'https://app.sniper.io'}
         answers={{
           'Group #1': 'Answer #1',
           Name: 'Baptiste',
@@ -65,7 +65,7 @@ const createHtmlFile = () => {
   )
   fs.writeFileSync(
     path.resolve(__dirname, 'dist', 'magicLink.html'),
-    render(<MagicLinkEmail url={'https://app.typebot.io'} />).html
+    render(<MagicLinkEmail url={'https://app.sniper.io'} />).html
   )
 }
 

@@ -1,6 +1,6 @@
 import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { PopupProps } from '@typebot.io/nextjs'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
+import { PopupProps } from '@sniper.io/nextjs'
 import parserBabel from 'prettier/parser-babel'
 import prettier from 'prettier/standalone'
 import { parseReactPopupProps } from '../../snippetParsers'
@@ -8,14 +8,14 @@ import { parseReactPopupProps } from '../../snippetParsers'
 export const ReactPopupSnippet = ({
   autoShowDelay,
 }: Pick<PopupProps, 'autoShowDelay'>) => {
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
 
   const snippet = prettier.format(
-    `import { Popup } from "@typebot.io/react";
+    `import { Popup } from "@sniper.io/react";
 
       const App = () => {
         return <Popup ${parseReactPopupProps({
-          typebot: typebot?.publicId ?? '',
+          sniper: sniper?.publicId ?? '',
           autoShowDelay,
         })}/>;
       }`,

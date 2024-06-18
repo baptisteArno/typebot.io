@@ -1,6 +1,6 @@
 import { createWithEqualityFn } from 'zustand/traditional'
 import { Coordinates, CoordinatesMap } from '../types'
-import { Edge, Group, GroupV6 } from '@typebot.io/schemas'
+import { Edge, Group, GroupV6 } from '@sniper.io/schemas'
 import { subscribeWithSelector } from 'zustand/middleware'
 import { share } from 'shared-zustand'
 
@@ -9,7 +9,7 @@ type Store = {
   groupsCoordinates: CoordinatesMap | undefined
   groupsInClipboard: { groups: GroupV6[]; edges: Edge[] } | undefined
   isDraggingGraph: boolean
-  // TO-DO: remove once Typebot provider is migrated to a Zustand store. We will be able to get it internally in the store (if mutualized).
+  // TO-DO: remove once Sniper provider is migrated to a Zustand store. We will be able to get it internally in the store (if mutualized).
   getGroupsCoordinates: () => CoordinatesMap | undefined
   focusGroup: (groupId: string, isAppending?: boolean) => void
   blurGroups: () => void
