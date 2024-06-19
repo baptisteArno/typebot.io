@@ -13,7 +13,7 @@ import { SetEmptyFields, SetTypebot } from '../TypebotContext'
 import { cleanUpEdgeDraft } from './edges'
 import { createStepDraft, duplicateStepDraft } from './steps'
 import { updateBlocksHasConnections } from 'helpers/block-connections'
-import { ActionsTypeEmptyFields } from 'services/utils/useEmptyFields'
+import { ActionsTypeEmptyFields } from 'hooks/EmptyFields/useEmptyFields'
 
 export type BlocksActions = {
   createBlock: (

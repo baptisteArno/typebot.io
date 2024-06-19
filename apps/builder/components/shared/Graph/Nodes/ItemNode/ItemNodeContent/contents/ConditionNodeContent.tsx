@@ -5,6 +5,7 @@ import {
   ConditionItem,
   ComparisonOperators,
   LogicalOperator,
+  Variable,
 } from 'models'
 import React from 'react'
 import { byIdOrToken, isNotDefined } from 'utils'
@@ -14,60 +15,73 @@ type Props = {
 }
 
 export const ConditionNodeContent = ({ item }: Props) => {
-  const { typebot } = useTypebot()
+  const { typebot, customVariables } = useTypebot()
+
+  const getComparisonValue = (
+    variable: Variable | undefined,
+    comparison: Comparison
+  ) => {
+    if (variable?.type !== 'select' || !variable) return comparison.value
+
+    return customVariables.find((v) => comparison.value === v.id)?.name
+  }
+  const content = () => {
+    if (
+      item.content.comparisons.length === 0 ||
+      comparisonIsEmpty(item.content.comparisons[0])
+    ) {
+      return <Text color={'gray.500'}>Adicionar uma regra...</Text>
+    }
+
+    return (
+      <Stack maxW="170px">
+        {item.content.comparisons.map((comparison, idx) => {
+          const variable = typebot?.variables.find(
+            byIdOrToken(comparison.variableId)
+          )
+          return (
+            <Wrap key={comparison.id} spacing={1} noOfLines={0}>
+              {idx > 0 && (
+                <Text>
+                  {parseLogicalOperatorSymbol(item.content.logicalOperator) ??
+                    ''}
+                </Text>
+              )}
+              {variable?.token && (
+                <Tag bgColor="orange.400" color="white">
+                  {variable.token}
+                </Tag>
+              )}
+              {comparison.comparisonOperator && (
+                <Text>
+                  {parseComparisonOperatorSymbol(comparison.comparisonOperator)}
+                </Text>
+              )}
+              {comparison?.value && (
+                <Tag bgColor={'gray.200'}>
+                  <Text noOfLines={0}>
+                    {getComparisonValue(variable, comparison)}
+                  </Text>
+                </Tag>
+              )}
+              {comparison?.secondaryValue && (
+                <div>
+                  <span> E </span>
+                  <Tag bgColor={'gray.200'}>
+                    <Text noOfLines={0}>{comparison.secondaryValue}</Text>
+                  </Tag>
+                </div>
+              )}
+            </Wrap>
+          )
+        })}
+      </Stack>
+    )
+  }
 
   return (
     <Flex px={2} py={2}>
-      {item.content.comparisons.length === 0 ||
-        comparisonIsEmpty(item.content.comparisons[0]) ? (
-        <Text color={'gray.500'}>Adicionar uma regra...</Text>
-      ) : (
-        <Stack maxW="170px">
-          {item.content.comparisons.map((comparison, idx) => {
-            const variable = typebot?.variables.find(
-              byIdOrToken(comparison.variableId)
-            )
-            return (
-              <Wrap key={comparison.id} spacing={1} noOfLines={0}>
-                {idx > 0 && (
-                  <Text>
-                    {parseLogicalOperatorSymbol(item.content.logicalOperator) ??
-                      ''}
-                  </Text>
-                )}
-
-                {variable?.token && (
-                  <Tag bgColor="orange.400" color="white">
-                    {variable.token}
-                  </Tag>
-                )}
-
-                {comparison.comparisonOperator && (
-                  <Text>
-                    {parseComparisonOperatorSymbol(
-                      comparison.comparisonOperator
-                    )}
-                  </Text>
-                )}
-
-                {comparison?.value && (
-                  <Tag bgColor={'gray.200'}>
-                    <Text noOfLines={0}>{comparison.value}</Text>
-                  </Tag>
-                )}
-                {comparison?.secondaryValue && (
-                  <div>
-                    <span> E </span>
-                    <Tag bgColor={'gray.200'}>
-                      <Text noOfLines={0}>{comparison.secondaryValue}</Text>
-                    </Tag>
-                  </div>
-                )}
-              </Wrap>
-            )
-          })}
-        </Stack>
-      )}
+      {content()}
     </Flex>
   )
 }

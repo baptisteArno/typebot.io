@@ -1,4 +1,4 @@
-import { Stack, IconButton, Fade } from '@chakra-ui/react'
+import { Stack, IconButton, Fade, Select } from '@chakra-ui/react'
 import { TrashIcon } from 'assets/icons'
 import { DropdownList } from 'components/shared/DropdownList'
 import { Input } from 'components/shared/Textbox/Input'
@@ -8,29 +8,33 @@ import { Comparison, Variable, ComparisonOperators } from 'models'
 import { useTypebot } from 'contexts/TypebotContext'
 import { useEffect, useState } from 'react'
 
-
 export const ComparisonItem = ({
   item,
   onItemChange,
-  onRemoveItem
+  onRemoveItem,
 }: TableListItemProps<Comparison>) => {
-  const { typebot } = useTypebot()
-  let myVariable = typebot?.variables?.find((v: Variable) => v.id === item?.variableId)
+  const { typebot, customVariables } = useTypebot()
+  let myVariable = typebot?.variables?.find(
+    (v: Variable) => v.token === item?.variableId || v.id === item?.variableId
+  )
   let myComparisonOperator = item?.comparisonOperator
 
-  const [needSecondaryValue, setNeedSecondaryValue] = useState<boolean>(!!item.secondaryValue)
+  const [needSecondaryValue, setNeedSecondaryValue] = useState<boolean>(
+    !!item.secondaryValue
+  )
   const [needValue, setNeedValue] = useState<boolean>(true)
 
   const handleSelectVariable = (variable?: Variable) => {
     if (variable?.id === item.variableId) return
     myVariable = variable
-    onItemChange({ ...item, variableId: variable?.id })
+    onItemChange({ ...item, variableId: variable?.id, value: '' })
   }
 
   const handleSelectComparisonOperator = (
     comparisonOperator: ComparisonOperators
   ) => {
-    const indexOf = Object.values(ComparisonOperators).indexOf(comparisonOperator)
+    const indexOf =
+      Object.values(ComparisonOperators).indexOf(comparisonOperator)
     const val = Object.keys(ComparisonOperators)[indexOf]
 
     if (val === item.comparisonOperator) return
@@ -59,7 +63,7 @@ export const ComparisonItem = ({
       ComparisonOperators.EQUAL,
       ComparisonOperators.NOT_EQUAL,
       ComparisonOperators.EMPTY,
-      ComparisonOperators.NOT_EMPTY
+      ComparisonOperators.NOT_EMPTY,
     ]
 
     const stringArray = [
@@ -68,7 +72,7 @@ export const ComparisonItem = ({
       ComparisonOperators.END_WITH,
       ComparisonOperators.NOT_END_WITH,
       ComparisonOperators.CONTAINS,
-      ComparisonOperators.NOT_CONTAINS
+      ComparisonOperators.NOT_CONTAINS,
     ]
 
     const numberArray = [
@@ -77,28 +81,39 @@ export const ComparisonItem = ({
       ComparisonOperators.LESS,
       ComparisonOperators.LESS_OR_EQUAL,
       ComparisonOperators.BETWEEN,
-      ComparisonOperators.NOT_BETWEEN
+      ComparisonOperators.NOT_BETWEEN,
     ]
 
     if (!myVariable || (myVariable?.type || '') === '') return allTypesArray
 
-    if (['string', 'text', 'order'].includes(myVariable.type || '')) return [...allTypesArray, ...stringArray]
-    if (['float', 'number', 'date'].includes(myVariable.type || '')) return [...allTypesArray, ...numberArray]
+    if (['string', 'text', 'order'].includes(myVariable.type || ''))
+      return [...allTypesArray, ...stringArray]
+    if (['float', 'number', 'date'].includes(myVariable.type || ''))
+      return [...allTypesArray, ...numberArray]
 
     return allTypesArray
   }
 
   const handleDeleteClick = () => {
-    onRemoveItem({ ...item });
+    onRemoveItem({ ...item })
   }
 
   useEffect(() => {
-    const index = Object.keys(ComparisonOperators).indexOf(myComparisonOperator || ComparisonOperators.EQUAL)
+    const index = Object.keys(ComparisonOperators).indexOf(
+      myComparisonOperator || ComparisonOperators.EQUAL
+    )
     const myValue = Object.values(ComparisonOperators)[index]
-    setNeedSecondaryValue([ComparisonOperators.BETWEEN, ComparisonOperators.NOT_BETWEEN].includes(myValue))
-    setNeedValue(![ComparisonOperators.EMPTY, ComparisonOperators.NOT_EMPTY].includes(myValue))
-  }, [myComparisonOperator]
-  )
+    setNeedSecondaryValue(
+      [ComparisonOperators.BETWEEN, ComparisonOperators.NOT_BETWEEN].includes(
+        myValue
+      )
+    )
+    setNeedValue(
+      ![ComparisonOperators.EMPTY, ComparisonOperators.NOT_EMPTY].includes(
+        myValue
+      )
+    )
+  }, [myComparisonOperator])
 
   useEffect(() => {
     if (needValue) return
@@ -110,12 +125,44 @@ export const ComparisonItem = ({
     onItemChange({ ...item, secondaryValue: undefined })
   }, [needSecondaryValue])
 
+  const typeOfInputValue = () => {
+    const onSelect = (e: any) => {
+      handleChangeValue(e.target.value)
+    }
+
+    if (!needValue) return
+    if (myVariable?.type === 'select') {
+      return (
+        <Select
+          value={item.value}
+          onChange={onSelect}
+          placeholder="selecione uma opção"
+        >
+          {customVariables.map((v) => (
+            <option key={v?.id} value={v?.id}>
+              {v?.name}
+            </option>
+          ))}
+        </Select>
+      )
+    }
+
+    return (
+      <Input
+        defaultValue={item.value ?? ''}
+        onChange={handleChangeValue}
+        placeholder="Digite um valor..."
+      />
+    )
+  }
+
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
       <VariableSearchInput
         initialVariableId={item.variableId}
         onSelectVariable={handleSelectVariable}
         placeholder="Pesquise sua variável"
+        labelDefault="Se"
       />
       <DropdownList<ComparisonOperators>
         currentItem={showCorrectInput(item.comparisonOperator)}
@@ -123,13 +170,7 @@ export const ComparisonItem = ({
         items={resolveOperators()}
         placeholder="Selecione um operador"
       />
-      {needValue && (
-        <Input
-          defaultValue={item.value ?? ''}
-          onChange={handleChangeValue}
-          placeholder="Digite um valor..."
-        />
-      )}
+      {typeOfInputValue()}
       {needSecondaryValue && (
         <div>
           <span> E </span>

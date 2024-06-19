@@ -14,7 +14,7 @@ import cuid from 'cuid'
 import { byId, isWebhookStep, stepHasItems } from 'utils'
 import { duplicateItemDraft } from './items'
 import { BuildSteps } from 'helpers/builderStep/builder.step'
-import { ActionsTypeEmptyFields } from 'services/utils/useEmptyFields'
+import { ActionsTypeEmptyFields } from 'hooks/EmptyFields/useEmptyFields'
 
 export type StepsActions = {
   createStep: (
