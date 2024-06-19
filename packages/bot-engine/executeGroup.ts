@@ -6,7 +6,7 @@ import {
   SessionState,
   SetVariableHistoryItem,
 } from '@typebot.io/schemas'
-import { isNotEmpty } from '@typebot.io/lib'
+import { isEmpty, isNotEmpty } from '@typebot.io/lib'
 import {
   isBubbleBlock,
   isInputBlock,
@@ -32,6 +32,7 @@ import {
   BubbleBlockWithDefinedContent,
   parseBubbleBlock,
 } from './parseBubbleBlock'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 
 type ContextProps = {
   version: 1 | 2
@@ -95,14 +96,30 @@ export const executeGroup = async (
 
     if (isBubbleBlock(block)) {
       if (!block.content || (firstBubbleWasStreamed && index === 0)) continue
-      messages.push(
-        parseBubbleBlock(block as BubbleBlockWithDefinedContent, {
-          version,
-          variables: newSessionState.typebotsQueue[0].typebot.variables,
-          typebotVersion: newSessionState.typebotsQueue[0].typebot.version,
-          textBubbleContentFormat,
-        })
-      )
+      const message = parseBubbleBlock(block as BubbleBlockWithDefinedContent, {
+        version,
+        variables: newSessionState.typebotsQueue[0].typebot.variables,
+        typebotVersion: newSessionState.typebotsQueue[0].typebot.version,
+        textBubbleContentFormat,
+      })
+      messages.push(message)
+      if (
+        message.type === BubbleBlockType.EMBED &&
+        message.content.waitForEvent?.isEnabled
+      ) {
+        return {
+          messages,
+          newSessionState: {
+            ...newSessionState,
+            currentBlockId: block.id,
+          },
+          clientSideActions,
+          logs,
+          visitedEdges,
+          setVariableHistory,
+        }
+      }
+
       lastBubbleBlockId = block.id
       continue
     }

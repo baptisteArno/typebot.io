@@ -145,6 +145,13 @@ export const continueBotFlow = async (
         }
       }
     }
+  } else if (
+    block.type === BubbleBlockType.EMBED &&
+    block.content?.waitForEvent?.saveDataInVariableId
+  ) {
+    variableToUpdate = state.typebotsQueue[0].typebot.variables.find(
+      (v) => v.id === block.content?.waitForEvent?.saveDataInVariableId
+    )
   }
 
   if (variableToUpdate) {

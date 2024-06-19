@@ -16,7 +16,6 @@ import {
 import { logSchema } from '../result'
 import { settingsSchema, themeSchema } from '../typebot'
 import {
-  textBubbleContentSchema,
   imageBubbleContentSchema,
   videoBubbleContentSchema,
   audioBubbleContentSchema,

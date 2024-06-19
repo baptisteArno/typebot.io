@@ -51,6 +51,7 @@ export const HostBubble = (props: Props) => (
       <EmbedBubble
         content={props.message.content as EmbedBubbleBlock['content']}
         onTransitionEnd={props.onTransitionEnd}
+        onCompleted={props.onCompleted}
       />
     </Match>
     <Match when={props.message.type === 'custom-embed'}>

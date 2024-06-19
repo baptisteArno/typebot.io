@@ -3,6 +3,7 @@ import { restartSession } from '../queries/restartSession'
 import { saveStateToDatabase } from '../saveStateToDatabase'
 import { startSession } from '../startSession'
 import { computeCurrentProgress } from '../computeCurrentProgress'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 
 type Props = {
   message?: string
@@ -69,8 +70,11 @@ export const startChatPreview = async ({
         clientSideActions,
         visitedEdges,
         setVariableHistory,
-        hasCustomEmbedBubble: messages.some(
-          (message) => message.type === 'custom-embed'
+        hasEmbedBubbleWithWaitEvent: messages.some(
+          (message) =>
+            message.type === 'custom-embed' ||
+            (message.type === BubbleBlockType.EMBED &&
+              message.content.waitForEvent?.isEnabled)
         ),
         initialSessionId: sessionId,
       })

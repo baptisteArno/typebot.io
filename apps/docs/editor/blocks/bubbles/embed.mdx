@@ -35,3 +35,24 @@ The Embed bubble block allows you to display a website or an iframe to your user
 For this, you'll need to select the pdf file you want to embed. Right click > Preview > More actions > Open in a new window. Now click More actions > Embed item.
 
 Copy the embed code and paste it in the Embed bubble block configuration.
+
+## Wait for event
+
+Enable this if you are the owner of the website you want to embed and would like to continue the bot flow only when an event from the embed is sent to the bot. This event dispatch needs to be executed in the embed website. Here is an example:
+
+```js
+window.parent.postMessage(
+  { name: 'My event', data: 'Custom data passed to the typebot variable' },
+  '*'
+)
+```
+
+You can choose the name of the event, it needs to match what you've set in the Embed bubble block configuration.
+
+<Frame>
+  <img
+    src="/images/blocks/bubbles/embed-wait.jpg"
+    alt="Embed bubble"
+    className="rounded-lg"
+  />
+</Frame>

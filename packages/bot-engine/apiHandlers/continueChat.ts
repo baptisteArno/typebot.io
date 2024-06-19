@@ -1,11 +1,12 @@
 import { TRPCError } from '@trpc/server'
-import { isDefined, isNotDefined } from '@typebot.io/lib/utils'
+import { isDefined, isNotDefined, isNotEmpty } from '@typebot.io/lib/utils'
 import { getSession } from '../queries/getSession'
 import { continueBotFlow } from '../continueBotFlow'
 import { filterPotentiallySensitiveLogs } from '../logs/filterPotentiallySensitiveLogs'
 import { parseDynamicTheme } from '../parseDynamicTheme'
 import { saveStateToDatabase } from '../saveStateToDatabase'
 import { computeCurrentProgress } from '../computeCurrentProgress'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 
 type Props = {
   origin: string | undefined
@@ -77,8 +78,11 @@ export const continueChat = async ({
       clientSideActions,
       visitedEdges,
       setVariableHistory,
-      hasCustomEmbedBubble: messages.some(
-        (message) => message.type === 'custom-embed'
+      hasEmbedBubbleWithWaitEvent: messages.some(
+        (message) =>
+          message.type === 'custom-embed' ||
+          (message.type === BubbleBlockType.EMBED &&
+            message.content.waitForEvent?.isEnabled)
       ),
     })
 
