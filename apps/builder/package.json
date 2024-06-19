@@ -131,6 +131,7 @@
     "next-runtime-env": "1.6.2",
     "superjson": "1.12.4",
     "typescript": "5.4.5",
-    "zod": "3.22.4"
+    "zod": "3.22.4",
+    "@typebot.io/variables": "workspace:*"
   }
 }
