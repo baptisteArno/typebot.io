@@ -273,6 +273,20 @@
                                                       },
                                                       {}
                                                     ]
+                                                  },
+                                                  "waitForEvent": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "isEnabled": {
+                                                        "type": "boolean"
+                                                      },
+                                                      "name": {
+                                                        "type": "string"
+                                                      },
+                                                      "saveDataInVariableId": {
+                                                        "type": "string"
+                                                      }
+                                                    }
                                                   }
                                                 }
                                               }
@@ -4595,6 +4609,20 @@
                                                   },
                                                   {}
                                                 ]
+                                              },
+                                              "waitForEvent": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "isEnabled": {
+                                                    "type": "boolean"
+                                                  },
+                                                  "name": {
+                                                    "type": "string"
+                                                  },
+                                                  "saveDataInVariableId": {
+                                                    "type": "string"
+                                                  }
+                                                }
                                               }
                                             }
                                           }
@@ -8054,6 +8082,20 @@
                                                   },
                                                   {}
                                                 ]
+                                              },
+                                              "waitForEvent": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "isEnabled": {
+                                                    "type": "boolean"
+                                                  },
+                                                  "name": {
+                                                    "type": "string"
+                                                  },
+                                                  "saveDataInVariableId": {
+                                                    "type": "string"
+                                                  }
+                                                }
                                               }
                                             }
                                           }
@@ -16555,6 +16597,20 @@
                       },
                       {}
                     ]
+                  },
+                  "waitForEvent": {
+                    "type": "object",
+                    "properties": {
+                      "isEnabled": {
+                        "type": "boolean"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "saveDataInVariableId": {
+                        "type": "string"
+                      }
+                    }
                   }
                 }
               }
@@ -22853,6 +22909,20 @@
                                   },
                                   {}
                                 ]
+                              },
+                              "waitForEvent": {
+                                "type": "object",
+                                "properties": {
+                                  "isEnabled": {
+                                    "type": "boolean"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "saveDataInVariableId": {
+                                    "type": "string"
+                                  }
+                                }
                               }
                             }
                           }
@@ -25681,6 +25751,20 @@
                                   },
                                   {}
                                 ]
+                              },
+                              "waitForEvent": {
+                                "type": "object",
+                                "properties": {
+                                  "isEnabled": {
+                                    "type": "boolean"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "saveDataInVariableId": {
+                                    "type": "string"
+                                  }
+                                }
                               }
                             }
                           }

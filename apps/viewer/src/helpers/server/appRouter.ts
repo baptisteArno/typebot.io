@@ -3,6 +3,7 @@ import { whatsAppRouter } from '@/features/whatsapp/api/router'
 import { router } from './trpc'
 import { updateTypebotInSession } from '@/features/chat/api/updateTypebotInSession'
 import { getUploadUrl } from '@/features/fileUpload/api/deprecated/getUploadUrl'
+import { generateUploadUrl as generateUploadUrlV1 } from '@/features/fileUpload/api/deprecated/generateUploadUrl'
 import { generateUploadUrl } from '@/features/fileUpload/api/generateUploadUrl'
 import { sendMessageV2 } from '@/features/chat/api/legacy/sendMessageV2'
 import { continueChat } from '@/features/chat/api/continueChat'
@@ -17,6 +18,7 @@ export const appRouter = router({
   continueChat,
   startChatPreview: startChatPreview,
   getUploadUrl,
+  generateUploadUrlV1,
   generateUploadUrl,
   updateTypebotInSession,
   whatsAppRouter,
