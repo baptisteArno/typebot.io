@@ -1,0 +1,587 @@
+{
+  "version": "6",
+  "id": "clxn6xejx0001zejjw0ymvxf7",
+  "name": "Savings Estimator",
+  "events": [
+    {
+      "id": "gxnioe7j4j37m4rukf9osvud",
+      "outgoingEdgeId": "h6ipc7hpzt6eoz5n5vi1q3cm",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "on7ym4flw1hxplw7rdto1jz7",
+      "title": "Welcome",
+      "graphCoordinates": { "x": 238.55, "y": -30.7 },
+      "blocks": [
+        {
+          "id": "gm8c2bzxouv5x74zohjdvuwk",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Hi there! Are you curious to see how much you can save by switching to reusable sponges and paper towels? 🌱"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "pfsd7hh9kkzk7d41qh70cwpp",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Let's find out together!" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "rpf1u0bigv1v1z9x2q7m7g27",
+          "outgoingEdgeId": "k0ikr8x3bu9s5o86g5njqfts",
+          "type": "choice input",
+          "items": [
+            { "id": "ih0cv1bnpyc83qwz4qq6ywk3", "content": "Yes, let's go!" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "o61u4a9i5p1rhpn6qwinbpo8",
+      "title": "Sponge usage",
+      "graphCoordinates": { "x": 618.58, "y": 4.61 },
+      "blocks": [
+        {
+          "id": "m6kz7rkv1ioe36n9dn7znep8",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Where do you typically use sponges in your house?"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "dufhivf25jztks3a52hdyo6s",
+          "outgoingEdgeId": "sj4gzsj102ge9gvyujn7dptw",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "x10afn6nfah52jsu0avz6br9",
+              "content": "Kitchen - for dishes, counter, and appliances"
+            },
+            {
+              "id": "eeogjc9povplcvgqny1dc6uj",
+              "content": "Bathroom - for sinks, showers, and tubs"
+            },
+            {
+              "id": "asy0lmqlzprtlfepmz8c6mfz",
+              "content": "Living Room and Bedrooms - for furniture and windows"
+            },
+            {
+              "id": "qqp3qjm4z7r60py4sg21pqd6",
+              "content": "Laundry Room - for cleaning spills and surfaces"
+            },
+            {
+              "id": "jk7vgqy5cgfrklnkuddkfj9q",
+              "content": "Garage and Outdoors - for vehicles and garden tools"
+            },
+            { "id": "cnx6lctjxc23opp5gdnvvxbu", "content": "dishes" }
+          ],
+          "options": { "isMultipleChoice": true }
+        }
+      ]
+    },
+    {
+      "id": "wawbx9rl4pzy1tkqloxfcb11",
+      "title": "Sponge freq",
+      "graphCoordinates": { "x": 957.3, "y": -4.27 },
+      "blocks": [
+        {
+          "id": "m9xp0uifcpbw6m9xx5ez4eo8",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "How often would you say that you are throwing a sponge away?"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "qiayx3hjmo5ef1n3w3uxux4g",
+          "type": "choice input",
+          "items": [
+            { "id": "huq3z8tuxmumghzu1tvdcxd9", "content": "Once a week" },
+            { "id": "g1ceimdl36gwcfgzf8jpqsbg", "content": "Every 2 weeks" },
+            {
+              "id": "ky6khj0qwt2zteo8ffjg4xdc",
+              "outgoingEdgeId": "pyh36n2t83a0ig4edaj461ho",
+              "content": "Once a month"
+            },
+            {
+              "id": "lz0kymgy0nlismoen7rr5mcf",
+              "outgoingEdgeId": "cmv8ea1pfiwslctusogdkg9u",
+              "content": "Every 2 months"
+            },
+            {
+              "id": "oaqrb7n82xgzxxwgd12i4z43",
+              "outgoingEdgeId": "blsd3tlps0jaq1mu6y91tuca",
+              "content": "Every 3 months or more"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "roilot2p0wynrsw77um4ybvd",
+      "title": "Bacterias heads up",
+      "graphCoordinates": { "x": 1351.64, "y": -152.89 },
+      "blocks": [
+        {
+          "id": "px06vnhab1vs5vhfb3jmfl3l",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Did you know that used sponges can harbor a significant number of bacteria if not replaced regularly?"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "gqechdy2jk2t6f241e5tetcf",
+          "outgoingEdgeId": "zfd6bll1qb2ankw7jymtigrj",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "We definitely suggest you to change your sponge more frequently ✨"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "naylnhd5qqpbv2l9sh0ey4d3",
+      "title": "Paper towel freq",
+      "graphCoordinates": { "x": 1691.54, "y": 215.99 },
+      "blocks": [
+        {
+          "id": "luxwsvs9m89bmxh125iqa69p",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "Now, let's talk about paper towels. 🧻" }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "e9u3rmjx2ta6kvrjz9ghsqkl",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "How often would you say that you are ending a roll?"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "yimucmlyxmz85pjsmm9953z8",
+          "outgoingEdgeId": "yeqwcskb3lut4m5838y64pp2",
+          "type": "choice input",
+          "items": [
+            { "id": "vywwo2km0q0j1fxu7kpgaaun", "content": "Once a week" },
+            { "id": "wzg1uhu2hdgmkc7tps3wyo3e", "content": "Every 2 weeks" },
+            { "id": "sdx6okf2a2jdypry8yd9vi81", "content": "Once a month" },
+            { "id": "vva4hfgvpx5r3uzyumf2mpjj", "content": "Every 2 months" },
+            {
+              "id": "kvf1ev4hskteaopfnbzoy2xt",
+              "content": "Every 3 months or more"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pvssa7cigqxwk9c3hd9sacc2",
+      "title": "Gen AI",
+      "graphCoordinates": { "x": 2455.03, "y": 208.82 },
+      "blocks": [
+        {
+          "id": "kj2amicd12ep88qd7z5ry5py",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vig2qkffhfib01ptwfp5lxhgq",
+            "type": "Transcript"
+          }
+        },
+        {
+          "id": "iaf9mfqhyp3tmo5srtepke4b",
+          "type": "openai",
+          "options": {
+            "action": "Create chat completion",
+            "model": "gpt-4o",
+            "messages": [
+              {
+                "role": "system",
+                "content": "You work for INGA an ecommerce that sells reusable sponges and reusable paper towels.\n\nYour job is to estimate how much the client would save if he decide to buy INGA products knowing that:\n\n4 INGA sponges = 100 disposable sponges\n1 INGA paper towel roll = 200 disposable paper towel rolls\n\nThe average price of a disposable sponge is 0.90€ and the average price of a disposable paper towels roll is 0.80€\n\nINGA offers a pack of 4 sponges and 1 paper towel roll at 50€\n\nHere is what the user replied:\n\n<context>\n{{Transcript}}\n</context>\n\nProvide the savings first and only then a quick summary of how it was computed"
+              }
+            ],
+            "responseMapping": [
+              {
+                "item": "Message content",
+                "variableId": "vbcffz9tiylldmtx0laxmimfq"
+              }
+            ]
+          }
+        },
+        {
+          "id": "mlwonw3gl6trzensgoxfdiqw",
+          "outgoingEdgeId": "py8b2un8cakonuonoz3h4q9o",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "{{AI Gen}}" }] }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "ccg2yrs7i23jh2xhfpnm5cm4",
+      "title": "Concerns",
+      "graphCoordinates": { "x": 2806.11, "y": 204.6 },
+      "blocks": [
+        {
+          "id": "b61hd7ow6brr7iyrt2ha608i",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Do you have any concerns or hesitations about switching to reusable INGA products?"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "ticb2wd6zydjn27p6r0m80vo",
+          "outgoingEdgeId": "i8dgsa6vkrytpk21d5ko8nja",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "r4f918h8pxbpkyb2t3943f8h",
+              "content": "Durability and Effectiveness"
+            },
+            { "id": "boe0nf1y87sf6o8klmo5sg81", "content": "One-time cost" },
+            { "id": "udz9u4nhyg4zqh1qc6iwqi1x", "content": "Hygiene" },
+            { "id": "uuhrshjb2hxgrs85nvk95uyq", "content": "Convenience" },
+            {
+              "id": "y9cmigd58j10u8bre90obxpp",
+              "content": "Environmental Impact"
+            },
+            { "id": "mkubt8mqhwz34s7xqotbpaw0", "content": "Other" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ho6yqjmkyklrpqvph5ncgtdx",
+      "title": "Detailed concern",
+      "graphCoordinates": { "x": 3166.36, "y": 196.44 },
+      "blocks": [
+        {
+          "id": "t7jzvg5f8s6z021u5izwwu89",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Thanks for sharing. 🙏" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "cy8qtfy082jswfkn7o6e0y13",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Could you tell us more about that?" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "n8qrxik30fxrh9dxa3xu5yvf",
+          "outgoingEdgeId": "d0qydik94v0dda73gkpsxsht",
+          "type": "text input",
+          "options": { "isLong": true }
+        }
+      ]
+    },
+    {
+      "id": "k5oaquhzu84z6ovv9fumrxze",
+      "title": "CTA",
+      "graphCoordinates": { "x": 3509.81, "y": 194.92 },
+      "blocks": [
+        {
+          "id": "xkd14a6q6s5wz58des6d6ko7",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "That's super clear, thank you" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "ha64vzgqtafz8xidc6jho08a",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Feel free to check out our selection of reusable cleaning products. 🧽"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "z95sfiyhk4mk3y693ku9ugud",
+          "type": "choice input",
+          "items": [
+            { "id": "vagoik95tnerdxebvdqghipf", "content": "Go shopping" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gmp7wwwk07ie48to14pnz9bz",
+      "title": "Email",
+      "graphCoordinates": { "x": 2087.17, "y": 217.89 },
+      "blocks": [
+        {
+          "id": "x1vhd8yhaeqew8x8wro4as8c",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "To keep a record of your carb calculations and for easy future reference, could you please provide your email address? "
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "uc36wedqizekyfyeckpy7hfi",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "This way, I can send you a personalized summary of your fueling plan. 📧"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "xwpzbigjxduvrno7e21f84wh",
+          "outgoingEdgeId": "xv6njl5ywntcj5rob2kr116u",
+          "type": "email input",
+          "options": { "variableId": "k53o6d9neq13sujwfpfj6ohj" }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "h6ipc7hpzt6eoz5n5vi1q3cm",
+      "from": { "eventId": "gxnioe7j4j37m4rukf9osvud" },
+      "to": { "groupId": "on7ym4flw1hxplw7rdto1jz7" }
+    },
+    {
+      "id": "k0ikr8x3bu9s5o86g5njqfts",
+      "from": { "blockId": "rpf1u0bigv1v1z9x2q7m7g27" },
+      "to": { "groupId": "o61u4a9i5p1rhpn6qwinbpo8" }
+    },
+    {
+      "id": "cmv8ea1pfiwslctusogdkg9u",
+      "from": {
+        "blockId": "qiayx3hjmo5ef1n3w3uxux4g",
+        "itemId": "lz0kymgy0nlismoen7rr5mcf"
+      },
+      "to": { "groupId": "roilot2p0wynrsw77um4ybvd" }
+    },
+    {
+      "id": "blsd3tlps0jaq1mu6y91tuca",
+      "from": {
+        "blockId": "qiayx3hjmo5ef1n3w3uxux4g",
+        "itemId": "oaqrb7n82xgzxxwgd12i4z43"
+      },
+      "to": { "groupId": "roilot2p0wynrsw77um4ybvd" }
+    },
+    {
+      "id": "pyh36n2t83a0ig4edaj461ho",
+      "from": {
+        "blockId": "qiayx3hjmo5ef1n3w3uxux4g",
+        "itemId": "ky6khj0qwt2zteo8ffjg4xdc"
+      },
+      "to": { "groupId": "roilot2p0wynrsw77um4ybvd" }
+    },
+    {
+      "id": "o2lr2yb1ezr4xqwsmdung1yh",
+      "from": { "blockId": "f7pac5s7ialbl37spmirs1a7" },
+      "to": { "groupId": "wawbx9rl4pzy1tkqloxfcb11" }
+    },
+    {
+      "id": "vvgx4hhl7hhgtxnki0d7nxa9",
+      "from": { "blockId": "gs4r4i61pf8pi3xhrlgxkwkg" },
+      "to": { "groupId": "pvssa7cigqxwk9c3hd9sacc2" }
+    },
+    {
+      "id": "zfd6bll1qb2ankw7jymtigrj",
+      "from": { "blockId": "gqechdy2jk2t6f241e5tetcf" },
+      "to": { "groupId": "naylnhd5qqpbv2l9sh0ey4d3" }
+    },
+    {
+      "id": "sj4gzsj102ge9gvyujn7dptw",
+      "from": { "blockId": "dufhivf25jztks3a52hdyo6s" },
+      "to": { "groupId": "wawbx9rl4pzy1tkqloxfcb11" }
+    },
+    {
+      "id": "py8b2un8cakonuonoz3h4q9o",
+      "from": { "blockId": "mlwonw3gl6trzensgoxfdiqw" },
+      "to": { "groupId": "ccg2yrs7i23jh2xhfpnm5cm4" }
+    },
+    {
+      "id": "i8dgsa6vkrytpk21d5ko8nja",
+      "from": { "blockId": "ticb2wd6zydjn27p6r0m80vo" },
+      "to": { "groupId": "ho6yqjmkyklrpqvph5ncgtdx" }
+    },
+    {
+      "id": "d0qydik94v0dda73gkpsxsht",
+      "from": { "blockId": "n8qrxik30fxrh9dxa3xu5yvf" },
+      "to": { "groupId": "k5oaquhzu84z6ovv9fumrxze" }
+    },
+    {
+      "id": "yeqwcskb3lut4m5838y64pp2",
+      "from": { "blockId": "yimucmlyxmz85pjsmm9953z8" },
+      "to": { "groupId": "gmp7wwwk07ie48to14pnz9bz" }
+    },
+    {
+      "id": "xv6njl5ywntcj5rob2kr116u",
+      "from": { "blockId": "xwpzbigjxduvrno7e21f84wh" },
+      "to": { "groupId": "pvssa7cigqxwk9c3hd9sacc2" }
+    }
+  ],
+  "variables": [
+    {
+      "id": "k53o6d9neq13sujwfpfj6ohj",
+      "name": "Email",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vkg7lukoza5cma6eu0mvitm3s",
+      "name": "Name",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vbcffz9tiylldmtx0laxmimfq",
+      "name": "AI Gen",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vig2qkffhfib01ptwfp5lxhgq",
+      "name": "Transcript",
+      "isSessionVariable": true
+    }
+  ],
+  "theme": {
+    "chat": {
+      "hostAvatar": { "isEnabled": false },
+      "hostBubbles": { "backgroundColor": "#F7F2E8" },
+      "guestBubbles": { "backgroundColor": "#96B1F8" },
+      "buttons": {
+        "backgroundColor": "#F47A5D",
+        "border": { "roundeness": "custom", "customRoundeness": 10 }
+      }
+    }
+  },
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2024-06-20T11:40:21.357Z",
+  "updatedAt": "2024-06-20T13:10:21.948Z",
+  "icon": null,
+  "folderId": null,
+  "publicId": "my-typebot-0ymvxf7",
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

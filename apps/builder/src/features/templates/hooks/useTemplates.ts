@@ -154,5 +154,14 @@ export const useTemplates = (): TemplateProps[] => {
       fileName: 'openai-assistant-chat.json',
       description: 'A simple conversation with your OpenAI assistant.',
     },
+    {
+      name: 'Savings Estimator',
+      emoji: '💰',
+      fileName: 'savings-estimator.json',
+      isNew: true,
+      category: 'marketing',
+      description:
+        "This bot works for INGA, a commerce that sells reusable sponges and paper towels. It asks simple question to estimate the user's potential savings if he decides to buy INGA products.",
+    },
   ]
 }

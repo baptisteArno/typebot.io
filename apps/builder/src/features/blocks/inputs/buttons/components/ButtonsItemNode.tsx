@@ -70,8 +70,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
   }
 
   const handleEditableChange = (val: string) => {
-    if (val.length - itemValue.length && val.endsWith('\n')) return
-    if (val.length - itemValue.length === 1) return setItemValue(val)
+    if (itemValue !== '') return setItemValue(val)
     const values = convertStrToList(val)
     if (values.length === 1) {
       setItemValue(values[0])
