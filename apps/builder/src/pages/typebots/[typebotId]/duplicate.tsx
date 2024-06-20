@@ -1,5 +1,5 @@
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { trpc } from '@/lib/trpc'
 import { Text, HStack, Button, Stack } from '@chakra-ui/react'
@@ -11,17 +11,17 @@ import { useState } from 'react'
 
 const Page = () => {
   const { push } = useRouter()
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
   const { workspaces } = useWorkspace()
   const [selectedWorkspaceId, setSelectedWorkspaceId] = useState<string>()
-  const { mutate, isLoading } = trpc.typebot.importTypebot.useMutation({
+  const { mutate, isLoading } = trpc.sniper.importSniper.useMutation({
     onSuccess: (data) => {
-      push(`/typebots/${data.typebot.id}/edit`)
+      push(`/snipers/${data.sniper.id}/edit`)
     },
   })
 
-  const duplicateTypebot = (workspaceId: string) => {
-    mutate({ workspaceId, typebot })
+  const duplicateSniper = (workspaceId: string) => {
+    mutate({ workspaceId, sniper })
   }
 
   const updateSelectedWorkspaceId = (workspaceId: string) => {
@@ -39,7 +39,7 @@ const Page = () => {
       spacing={4}
     >
       <Text>
-        Choose a workspace to duplicate <strong>{typebot?.name}</strong> in:
+        Choose a workspace to duplicate <strong>{sniper?.name}</strong> in:
       </Text>
       <RadioButtons
         direction="column"
@@ -62,7 +62,7 @@ const Page = () => {
       />
       <Button
         isDisabled={!selectedWorkspaceId}
-        onClick={() => duplicateTypebot(selectedWorkspaceId as string)}
+        onClick={() => duplicateSniper(selectedWorkspaceId as string)}
         isLoading={isLoading}
         colorScheme="blue"
         size="sm"

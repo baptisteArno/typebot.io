@@ -1,6 +1,6 @@
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { ExternalLinkIcon } from '@/components/icons'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import {
   OrderedList,
   ListItem,
@@ -10,7 +10,7 @@ import {
   Text,
   Code,
 } from '@chakra-ui/react'
-import { BubbleProps } from '@typebot.io/nextjs'
+import { BubbleProps } from '@sniper.io/nextjs'
 import { useState } from 'react'
 import { BubbleSettings } from '../../../settings/BubbleSettings/BubbleSettings'
 import { parseApiHostValue, parseInitBubbleCode } from '../../../snippetParsers'
@@ -18,27 +18,27 @@ import { parseDefaultBubbleTheme } from '../../Javascript/instructions/Javascrip
 import packageJson from '../../../../../../../../../../packages/embeds/js/package.json'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 
-const typebotCloudLibraryVersion = '0.2'
+const sniperCloudLibraryVersion = '0.2'
 
 type Props = {
   publicId: string
 }
 export const WordpressBubbleInstructions = ({ publicId }: Props) => {
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
 
   const [theme, setTheme] = useState<BubbleProps['theme']>(
-    parseDefaultBubbleTheme(typebot)
+    parseDefaultBubbleTheme(sniper)
   )
   const [previewMessage, setPreviewMessage] =
     useState<BubbleProps['previewMessage']>()
 
   const initCode = parseInitBubbleCode({
-    typebot: publicId,
-    apiHost: parseApiHostValue(typebot?.customDomain),
+    sniper: publicId,
+    apiHost: parseApiHostValue(sniper?.customDomain),
     theme: {
       ...theme,
       chatWindow: {
-        backgroundColor: typebot?.theme.general?.background?.content ?? '#fff',
+        backgroundColor: sniper?.theme.general?.background?.content ?? '#fff',
       },
     },
     previewMessage,
@@ -49,11 +49,11 @@ export const WordpressBubbleInstructions = ({ publicId }: Props) => {
       <ListItem>
         Install{' '}
         <Link
-          href="https://wordpress.org/plugins/typebot/"
+          href="https://wordpress.org/plugins/sniper/"
           isExternal
           color={useColorModeValue('blue.500', 'blue.300')}
         >
-          the official Typebot WordPress plugin
+          the official Sniper WordPress plugin
           <ExternalLinkIcon mx="2px" />
         </Link>
       </ListItem>
@@ -61,7 +61,7 @@ export const WordpressBubbleInstructions = ({ publicId }: Props) => {
         Set <Code>Library version</Code> to{' '}
         <Code>
           {isCloudProdInstance()
-            ? typebotCloudLibraryVersion
+            ? sniperCloudLibraryVersion
             : packageJson.version}
         </Code>
       </ListItem>
@@ -70,14 +70,14 @@ export const WordpressBubbleInstructions = ({ publicId }: Props) => {
           <BubbleSettings
             previewMessage={previewMessage}
             defaultPreviewMessageAvatar={
-              typebot?.theme.chat?.hostAvatar?.url ?? ''
+              sniper?.theme.chat?.hostAvatar?.url ?? ''
             }
             theme={theme}
             onPreviewMessageChange={setPreviewMessage}
             onThemeChange={setTheme}
           />
           <Text>
-            You can now place the following code snippet in the Typebot panel in
+            You can now place the following code snippet in the Sniper panel in
             your WordPress admin:
           </Text>
           <CodeEditor value={initCode} lang="javascript" isReadOnly />

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { AvatarSideContainer } from './AvatarSideContainer'
-import { LinkedTypebot, useTypebot } from '../../providers/TypebotProvider'
-import { isDefined, byId } from '@typebot.io/lib'
+import { LinkedSniper, useSniper } from '../../providers/SniperProvider'
+import { isDefined, byId } from '@sniper.io/lib'
 import {
   isBubbleBlock,
   isBubbleBlockType,
@@ -10,13 +10,13 @@ import {
   isInputBlock,
   isIntegrationBlock,
   isLogicBlock,
-} from '@typebot.io/schemas/helpers'
+} from '@sniper.io/schemas/helpers'
 import {
   BubbleBlock,
   InputBlock,
-  PublicTypebot,
+  PublicSniper,
   Block,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import { HostBubble } from './ChatBlock/bubbles/HostBubble'
 import { InputChatBlock } from './ChatBlock/InputChatBlock'
 import { parseVariables } from '@/features/variables'
@@ -28,8 +28,8 @@ import { executeIntegration } from '@/utils/executeIntegration'
 import { executeLogic } from '@/utils/executeLogic'
 import { blockCanBeRetried, parseRetryBlock } from '@/utils/inputs'
 import { PopupBlockedToast } from '../PopupBlockedToast'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
-import { getBlockById } from '@typebot.io/schemas/helpers'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
+import { getBlockById } from '@sniper.io/schemas/helpers'
 
 type ChatGroupProps = {
   blocks: Block[]
@@ -38,10 +38,10 @@ type ChatGroupProps = {
   keepShowingHostAvatar: boolean
   onGroupEnd: ({
     edgeId,
-    updatedTypebot,
+    updatedSniper,
   }: {
     edgeId?: string
-    updatedTypebot?: PublicTypebot | LinkedTypebot
+    updatedSniper?: PublicSniper | LinkedSniper
   }) => void
 }
 
@@ -55,20 +55,20 @@ export const ChatGroup = ({
   keepShowingHostAvatar,
 }: ChatGroupProps) => {
   const {
-    currentTypebotId,
-    typebot,
+    currentSniperId,
+    sniper,
     updateVariableValue,
     createEdge,
     apiHost,
     isPreview,
-    parentTypebotIds,
+    parentSniperIds,
     onNewLog,
-    injectLinkedTypebot,
-    linkedTypebots,
-    setCurrentTypebotId,
-    pushEdgeIdInLinkedTypebotQueue,
-    pushParentTypebotId,
-  } = useTypebot()
+    injectLinkedSniper,
+    linkedSnipers,
+    setCurrentSniperId,
+    pushEdgeIdInLinkedSniperQueue,
+    pushParentSniperId,
+  } = useSniper()
   const { resultValues, updateVariables, resultId } = useAnswers()
   const { scroll } = useChat()
   const [processedBlocks, setProcessedBlocks] = useState<Block[]>([])
@@ -122,22 +122,22 @@ export const ChatGroup = ({
     const currentBlock = [...processedBlocks].pop()
     if (!currentBlock) return
     if (isLogicBlock(currentBlock)) {
-      const { nextEdgeId, linkedTypebot, blockedPopupUrl } = await executeLogic(
+      const { nextEdgeId, linkedSniper, blockedPopupUrl } = await executeLogic(
         currentBlock,
         {
           isPreview,
           apiHost,
-          typebot,
-          linkedTypebots,
+          sniper,
+          linkedSnipers,
           updateVariableValue,
           updateVariables,
-          injectLinkedTypebot,
+          injectLinkedSniper,
           onNewLog,
           createEdge,
-          setCurrentTypebotId,
-          pushEdgeIdInLinkedTypebotQueue,
-          currentTypebotId,
-          pushParentTypebotId,
+          setCurrentSniperId,
+          pushEdgeIdInLinkedSniperQueue,
+          currentSniperId,
+          pushParentSniperId,
         }
       )
       if (blockedPopupUrl) setBlockedPopupUrl(blockedPopupUrl)
@@ -146,27 +146,27 @@ export const ChatGroup = ({
         currentBlock.options?.isNewTab === false
       if (isRedirecting) return
       nextEdgeId
-        ? onGroupEnd({ edgeId: nextEdgeId, updatedTypebot: linkedTypebot })
+        ? onGroupEnd({ edgeId: nextEdgeId, updatedSniper: linkedSniper })
         : displayNextBlock()
     }
     if (isIntegrationBlock(currentBlock)) {
-      const { group } = getBlockById(currentBlock.id, typebot.groups)
+      const { group } = getBlockById(currentBlock.id, sniper.groups)
       const nextEdgeId = await executeIntegration({
         block: currentBlock,
         context: {
           apiHost,
-          typebotId: currentTypebotId,
+          sniperId: currentSniperId,
           groupId: group.id,
           blockId: currentBlock.id,
-          variables: typebot.variables,
+          variables: sniper.variables,
           isPreview,
           updateVariableValue,
           updateVariables,
           resultValues,
-          groups: typebot.groups,
+          groups: sniper.groups,
           onNewLog,
           resultId,
-          parentTypebotIds,
+          parentSniperIds,
         },
       })
       nextEdgeId ? onGroupEnd({ edgeId: nextEdgeId }) : displayNextBlock()
@@ -183,9 +183,9 @@ export const ChatGroup = ({
     const currentBlock = [...processedBlocks].pop()
     if (currentBlock) {
       if (isRetry && blockCanBeRetried(currentBlock)) {
-        const { group } = getBlockById(currentBlock.id, typebot.groups)
+        const { group } = getBlockById(currentBlock.id, sniper.groups)
         return insertBlockInStack(
-          parseRetryBlock(currentBlock, group.id, typebot.variables, createEdge)
+          parseRetryBlock(currentBlock, group.id, sniper.variables, createEdge)
         )
       }
       if (
@@ -217,7 +217,7 @@ export const ChatGroup = ({
     nextBlock ? insertBlockInStack(nextBlock) : onGroupEnd({})
   }
 
-  const avatarSrc = typebot.theme.chat?.hostAvatar?.url
+  const avatarSrc = sniper.theme.chat?.hostAvatar?.url
 
   return (
     <div className="flex w-full" data-group-name={groupTitle}>
@@ -227,10 +227,10 @@ export const ChatGroup = ({
             key={idx}
             displayChunk={chunk}
             hostAvatar={{
-              isEnabled: typebot.theme.chat?.hostAvatar?.isEnabled ?? true,
-              src: avatarSrc && parseVariables(typebot.variables)(avatarSrc),
+              isEnabled: sniper.theme.chat?.hostAvatar?.isEnabled ?? true,
+              src: avatarSrc && parseVariables(sniper.variables)(avatarSrc),
             }}
-            hasGuestAvatar={typebot.theme.chat?.guestAvatar?.isEnabled ?? false}
+            hasGuestAvatar={sniper.theme.chat?.guestAvatar?.isEnabled ?? false}
             onDisplayNextBlock={displayNextBlock}
             keepShowingHostAvatar={keepShowingHostAvatar}
             blockedPopupUrl={blockedPopupUrl}

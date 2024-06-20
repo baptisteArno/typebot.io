@@ -3,7 +3,7 @@ import { IframeParams } from '../types'
 export const setHiddenVariables = (
   hiddenVariables: IframeParams['hiddenVariables']
 ) => {
-  const existingIframe = document.querySelector('.typebot-iframe') as
+  const existingIframe = document.querySelector('.sniper-iframe') as
     | HTMLIFrameElement
     | undefined
   if (!existingIframe) return

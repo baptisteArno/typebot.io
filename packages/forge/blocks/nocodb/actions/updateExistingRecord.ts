@@ -1,4 +1,4 @@
-import { createAction, option } from '@typebot.io/forge'
+import { createAction, option } from '@sniper.io/forge'
 import { auth } from '../auth'
 import ky, { HTTPError } from 'ky'
 import { parseRecordsUpdateBody } from '../helpers/parseRecordsUpdateBody'

@@ -1,5 +1,5 @@
-import { Typebot, TypebotV6 } from './typebot'
+import { Sniper, SniperV6 } from './sniper'
 
-export type Group = Typebot['groups'][number]
+export type Group = Sniper['groups'][number]
 
-export type TEvent = TypebotV6['events'][number]
+export type TEvent = SniperV6['events'][number]

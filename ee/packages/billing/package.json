@@ -1,5 +1,5 @@
 {
-  "name": "@typebot.io/billing",
+  "name": "@sniper.io/billing",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,18 +11,18 @@
   "keywords": [],
   "author": "Baptiste Arnaud",
   "dependencies": {
-    "@typebot.io/prisma": "workspace:*",
-    "@typebot.io/schemas": "workspace:*",
+    "@sniper.io/prisma": "workspace:*",
+    "@sniper.io/schemas": "workspace:*",
     "stripe": "12.13.0",
-    "@typebot.io/lib": "workspace:*",
+    "@sniper.io/lib": "workspace:*",
     "@trpc/server": "10.40.0",
-    "@typebot.io/env": "workspace:*",
-    "@typebot.io/telemetry": "workspace:*",
-    "@typebot.io/db-rules": "workspace:*",
+    "@sniper.io/env": "workspace:*",
+    "@sniper.io/telemetry": "workspace:*",
+    "@sniper.io/db-rules": "workspace:*",
     "next": "14.1.0",
     "micro": "10.0.1"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
+    "@sniper.io/tsconfig": "workspace:*"
   }
 }

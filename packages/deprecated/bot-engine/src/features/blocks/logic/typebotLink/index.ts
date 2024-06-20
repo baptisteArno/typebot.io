@@ -1,1 +1,1 @@
-export { executeTypebotLink } from './utils/executeTypebotLink'
+export { executeSniperLink } from './utils/executeSniperLink'

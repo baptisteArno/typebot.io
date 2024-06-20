@@ -1,9 +1,9 @@
-#typebot-bubble {
+#sniper-bubble {
   z-index: 99999;
   position: fixed;
 }
 
-#typebot-bubble > button {
+#sniper-bubble > button {
   padding: 0px;
   display: flex;
   align-items: center;
@@ -22,30 +22,30 @@
   border: medium none;
 }
 
-#typebot-bubble button:hover {
+#sniper-bubble button:hover {
   filter: brightness(0.95);
 }
 
-#typebot-bubble button:active {
+#sniper-bubble button:active {
   filter: brightness(0.75);
 }
 
-#typebot-bubble > button:focus {
+#sniper-bubble > button:focus {
   outline: none;
 }
 
-#typebot-bubble > button > .icon {
+#sniper-bubble > button > .icon {
   transition: opacity 500ms ease-out 0s, transform 500ms ease-out 0s;
 }
 
-#typebot-bubble > button > svg.icon {
+#sniper-bubble > button > svg.icon {
   fill: none;
   width: 55%;
   stroke-width: 2px;
   stroke: white;
 }
 
-#typebot-bubble > button > img.icon {
+#sniper-bubble > button > img.icon {
   width: 80%;
   height: 80%;
   border-radius: 100%;
@@ -53,12 +53,12 @@
   object-position: center;
 }
 
-#typebot-bubble.iframe-opened > button > .icon {
+#sniper-bubble.iframe-opened > button > .icon {
   transform: rotate(90deg) scale(0);
   opacity: 0;
 }
 
-#typebot-bubble > button > .close-icon {
+#sniper-bubble > button > .close-icon {
   position: absolute;
   transform: rotate(-90deg) scale(0);
   opacity: 0;
@@ -68,12 +68,12 @@
   stroke: white;
 }
 
-#typebot-bubble.iframe-opened > button > .close-icon {
+#sniper-bubble.iframe-opened > button > .close-icon {
   transform: rotate(90deg) scale(1);
   opacity: 1;
 }
 
-#typebot-bubble > iframe {
+#sniper-bubble > iframe {
   opacity: 0;
   display: flex;
   border-radius: 10px;
@@ -93,32 +93,32 @@
   background-color: white;
 }
 
-#typebot-bubble.iframe-opened > iframe {
+#sniper-bubble.iframe-opened > iframe {
   transform: translate(0, 0);
   opacity: 1;
 }
 
-.typebot-chat-button.active .typebot-chat-icon {
+.sniper-chat-button.active .sniper-chat-icon {
   transform: rotate(90deg) scale(0);
   opacity: 0;
 }
 
-.typebot-chat-button:not(.active) .typebot-chat-close {
+.sniper-chat-button:not(.active) .sniper-chat-close {
   transform: rotate(-90deg) scale(0);
   opacity: 0;
 }
 
-.typebot-iframe-container:not(.active) {
+.sniper-iframe-container:not(.active) {
   opacity: 0;
   transform: translate(0, 100px);
 }
-.typebot-iframe-container.active {
+.sniper-iframe-container.active {
   opacity: 1;
   transform: translate(0, 0);
 }
 
 /* Proactive message */
-#typebot-bubble > .proactive-message {
+#sniper-bubble > .proactive-message {
   font-size: 18px;
   color: #303235;
   opacity: 0;
@@ -141,13 +141,13 @@
   border-radius: 8px;
 }
 
-#typebot-bubble.message-opened > .proactive-message {
+#sniper-bubble.message-opened > .proactive-message {
   opacity: 1;
   visibility: visible;
   transform: translate(0, 0);
 }
 
-#typebot-bubble > .proactive-message > .close-button {
+#sniper-bubble > .proactive-message > .close-button {
   position: absolute;
   top: -15px;
   right: -7px;
@@ -163,7 +163,7 @@
   padding: 2px;
 }
 
-#typebot-bubble > .proactive-message > img {
+#sniper-bubble > .proactive-message > img {
   margin-right: 8px;
   width: 40px;
   height: 40px;
@@ -172,26 +172,26 @@
   object-fit: cover;
 }
 
-#typebot-bubble > .proactive-message > p {
+#sniper-bubble > .proactive-message > p {
   margin: 0;
 }
 
 @media screen and (max-width: 450px) {
-  #typebot-bubble > .proactive-message {
+  #sniper-bubble > .proactive-message {
     max-width: 200px;
     font-size: 15px;
     bottom: 70px;
     right: 10px;
   }
 
-  #typebot-bubble > button {
+  #sniper-bubble > button {
     width: 50px !important;
     height: 50px !important;
     bottom: 10px !important;
     right: 10px !important;
   }
 
-  #typebot-bubble > iframe {
+  #sniper-bubble > iframe {
     inset: 0 0 auto auto;
     width: 100%;
     height: calc(100% - 70px);

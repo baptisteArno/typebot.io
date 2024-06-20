@@ -1,6 +1,6 @@
-import { AbTestBlock, SessionState } from '@typebot.io/schemas'
+import { AbTestBlock, SessionState } from '@sniper.io/schemas'
 import { ExecuteLogicResponse } from '../../../types'
-import { defaultAbTestOptions } from '@typebot.io/schemas/features/blocks/logic/abTest/constants'
+import { defaultAbTestOptions } from '@sniper.io/schemas/features/blocks/logic/abTest/constants'
 
 export const executeAbTest = (
   _: SessionState,

@@ -1,7 +1,7 @@
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/helpers'
-import { PhoneNumberInputBlock } from '@typebot.io/schemas'
+import { PhoneNumberInputBlock } from '@sniper.io/schemas'
 import React, { useRef, useState } from 'react'
 import ReactPhoneNumberInput, { Value, Country } from 'react-phone-number-input'
 
@@ -39,7 +39,7 @@ export const PhoneInput = ({
   return (
     <div
       className={
-        'flex items-end justify-between rounded-lg pr-2 typebot-input w-full'
+        'flex items-end justify-between rounded-lg pr-2 sniper-input w-full'
       }
       data-testid="input"
       style={{

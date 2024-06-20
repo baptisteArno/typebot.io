@@ -1,8 +1,8 @@
 import React from 'react'
 import { Text } from '@chakra-ui/react'
 import { WithVariableContent } from '@/features/graph/components/nodes/block/WithVariableContent'
-import { PhoneNumberInputBlock } from '@typebot.io/schemas'
-import { defaultPhoneInputOptions } from '@typebot.io/schemas/features/blocks/inputs/phone/constants'
+import { PhoneNumberInputBlock } from '@sniper.io/schemas'
+import { defaultPhoneInputOptions } from '@sniper.io/schemas/features/blocks/inputs/phone/constants'
 
 type Props = {
   options: PhoneNumberInputBlock['options']

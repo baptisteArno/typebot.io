@@ -1,15 +1,15 @@
 import { Connection } from '@planetscale/database'
-import { decryptV2 } from '@typebot.io/lib/api/encryption/decryptV2'
-import { isNotEmpty } from '@typebot.io/lib/utils'
+import { decryptV2 } from '@sniper.io/lib/api/encryption/decryptV2'
+import { isNotEmpty } from '@sniper.io/lib/utils'
 import {
   ChatCompletionOpenAIOptions,
   OpenAICredentials,
-} from '@typebot.io/schemas/features/blocks/integrations/openai'
-import { SessionState } from '@typebot.io/schemas/features/chat/sessionState'
+} from '@sniper.io/schemas/features/blocks/integrations/openai'
+import { SessionState } from '@sniper.io/schemas/features/chat/sessionState'
 import { OpenAIStream } from 'ai'
-import { parseVariableNumber } from '@typebot.io/variables/parseVariableNumber'
+import { parseVariableNumber } from '@sniper.io/variables/parseVariableNumber'
 import { ClientOptions, OpenAI } from 'openai'
-import { defaultOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
+import { defaultOpenAIOptions } from '@sniper.io/schemas/features/blocks/integrations/openai/constants'
 
 export const getChatCompletionStream =
   (conn: Connection) =>
@@ -33,8 +33,8 @@ export const getChatCompletionStream =
       credentials.iv
     )) as OpenAICredentials['data']
 
-    const { typebot } = state.typebotsQueue[0]
-    const temperature = parseVariableNumber(typebot.variables)(
+    const { sniper } = state.snipersQueue[0]
+    const temperature = parseVariableNumber(sniper.variables)(
       options.advancedSettings?.temperature
     )
 

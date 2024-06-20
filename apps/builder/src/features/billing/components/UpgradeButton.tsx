@@ -1,7 +1,7 @@
 import { Button, ButtonProps, useDisclosure } from '@chakra-ui/react'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import React from 'react'
-import { isNotDefined } from '@typebot.io/lib'
+import { isNotDefined } from '@sniper.io/lib'
 import { ChangePlanModal } from './ChangePlanModal'
 import { useTranslate } from '@tolgee/react'
 

@@ -1,4 +1,4 @@
-import { wildcardMatch } from '@typebot.io/lib/wildcardMatch'
+import { wildcardMatch } from '@sniper.io/lib/wildcardMatch'
 import {
   excludedModelsFromImageUrlSupport,
   modelsWithImageUrlSupport,

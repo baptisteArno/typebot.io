@@ -1,12 +1,12 @@
 import { InputSubmitContent } from '@/types'
-import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
+import { PictureChoiceBlock } from '@sniper.io/schemas/features/blocks/inputs/pictureChoice'
 import { For, Show, createEffect, createSignal, onMount } from 'solid-js'
 import { Checkbox } from '../buttons/components/Checkbox'
 import { SendButton } from '@/components'
-import { isDefined, isEmpty, isNotEmpty, isSvgSrc } from '@typebot.io/lib'
+import { isDefined, isEmpty, isNotEmpty, isSvgSrc } from '@sniper.io/lib'
 import { SearchInput } from '@/components/inputs/SearchInput'
 import { isMobile } from '@/utils/isMobileSignal'
-import { defaultPictureChoiceOptions } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice/constants'
+import { defaultPictureChoiceOptions } from '@sniper.io/schemas/features/blocks/inputs/pictureChoice/constants'
 
 type Props = {
   defaultItems: PictureChoiceBlock['items']
@@ -81,7 +81,7 @@ export const MultiplePictureChoice = (props: Props) => {
   return (
     <form class="flex flex-col gap-2 w-full items-end" onSubmit={handleSubmit}>
       <Show when={props.options?.isSearchable}>
-        <div class="flex items-end typebot-input w-full">
+        <div class="flex items-end sniper-input w-full">
           <SearchInput
             ref={inputRef}
             onInput={filterItems}
@@ -110,7 +110,7 @@ export const MultiplePictureChoice = (props: Props) => {
               )}
               on:click={() => handleClick(item.id)}
               class={
-                'flex flex-col focus:outline-none cursor-pointer select-none typebot-selectable-picture' +
+                'flex flex-col focus:outline-none cursor-pointer select-none sniper-selectable-picture' +
                 (selectedItemIds().some(
                   (selectedItemId) => selectedItemId === item.id
                 )
@@ -177,7 +177,7 @@ export const MultiplePictureChoice = (props: Props) => {
               aria-checked
               on:click={() => handleClick(selectedItem.id)}
               class={
-                'flex flex-col focus:outline-none cursor-pointer select-none typebot-selectable-picture selected'
+                'flex flex-col focus:outline-none cursor-pointer select-none sniper-selectable-picture selected'
               }
               data-itemid={selectedItem.id}
             >

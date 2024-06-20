@@ -1,5 +1,5 @@
 {
-  "name": "@typebot.io/playwright",
+  "name": "@sniper.io/playwright",
   "version": "1.0.0",
   "description": "",
   "scripts": {},
@@ -8,12 +8,12 @@
   "license": "AGPL-3.0-or-later",
   "dependencies": {
     "@playwright/test": "1.43.1",
-    "@typebot.io/lib": "workspace:*",
-    "@typebot.io/prisma": "workspace:*",
-    "@typebot.io/schemas": "workspace:*"
+    "@sniper.io/lib": "workspace:*",
+    "@sniper.io/prisma": "workspace:*",
+    "@sniper.io/schemas": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "20.4.2",
-    "@typebot.io/tsconfig": "workspace:*"
+    "@sniper.io/tsconfig": "workspace:*"
   }
 }

@@ -1,25 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  PublicTypebot,
+  PublicSniper,
   ResultValues,
   SendEmailBlock,
   SmtpCredentials,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport, getTestMessageUrl } from 'nodemailer'
-import { isDefined, isEmpty, isNotDefined, omit } from '@typebot.io/lib'
-import { parseAnswers } from '@typebot.io/results/parseAnswers'
-import { methodNotAllowed, initMiddleware } from '@typebot.io/lib/api'
-import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
+import { isDefined, isEmpty, isNotDefined, omit } from '@sniper.io/lib'
+import { parseAnswers } from '@sniper.io/results/parseAnswers'
+import { methodNotAllowed, initMiddleware } from '@sniper.io/lib/api'
+import { decrypt } from '@sniper.io/lib/api/encryption/decrypt'
 
 import Cors from 'cors'
 import Mail from 'nodemailer/lib/mailer'
-import { DefaultBotNotificationEmail } from '@typebot.io/emails'
+import { DefaultBotNotificationEmail } from '@sniper.io/emails'
 import { render } from '@faire/mjml-react/utils/render'
-import prisma from '@typebot.io/lib/prisma'
-import { env } from '@typebot.io/env'
-import { saveErrorLog } from '@typebot.io/bot-engine/logs/saveErrorLog'
-import { saveSuccessLog } from '@typebot.io/bot-engine/logs/saveSuccessLog'
+import prisma from '@sniper.io/lib/prisma'
+import { env } from '@sniper.io/env'
+import { saveErrorLog } from '@sniper.io/bot-engine/logs/saveErrorLog'
+import { saveSuccessLog } from '@sniper.io/bot-engine/logs/saveSuccessLog'
 
 const cors = initMiddleware(Cors())
 
@@ -41,7 +41,7 @@ const defaultFrom = {
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res)
   if (req.method === 'POST') {
-    const typebotId = req.query.typebotId as string
+    const sniperId = req.query.sniperId as string
     const resultId = req.query.resultId as string | undefined
     const {
       credentialsId,
@@ -85,7 +85,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       body,
       isCustomBody,
       isBodyCode,
-      typebotId,
+      sniperId,
       resultValues,
     })
 
@@ -185,10 +185,10 @@ const getEmailBody = async ({
   body,
   isCustomBody,
   isBodyCode,
-  typebotId,
+  sniperId,
   resultValues,
 }: {
-  typebotId: string
+  sniperId: string
   resultValues: ResultValues
 } & Pick<
   NonNullable<SendEmailBlock['options']>,
@@ -199,18 +199,18 @@ const getEmailBody = async ({
       html: isBodyCode ? body : undefined,
       text: !isBodyCode ? body : undefined,
     }
-  const typebot = (await prisma.publicTypebot.findUnique({
-    where: { typebotId },
-  })) as unknown as PublicTypebot
-  if (!typebot) return
+  const sniper = (await prisma.publicSniper.findUnique({
+    where: { sniperId },
+  })) as unknown as PublicSniper
+  if (!sniper) return
   const answers = parseAnswers({
     answers: (resultValues as any).answers.map((answer: any) => ({
       key:
         (answer.variableId
-          ? typebot.variables.find(
+          ? sniper.variables.find(
               (variable) => variable.id === answer.variableId
             )?.name
-          : typebot.groups.find((group) =>
+          : sniper.groups.find((group) =>
               group.blocks.find((block) => block.id === answer.blockId)
             )?.title) ?? '',
       value: answer.content,
@@ -220,7 +220,7 @@ const getEmailBody = async ({
   return {
     html: render(
       <DefaultBotNotificationEmail
-        resultsUrl={`${env.NEXTAUTH_URL}/typebots/${typebot.id}/results`}
+        resultsUrl={`${env.NEXTAUTH_URL}/snipers/${sniper.id}/results`}
         answers={omit(answers, 'submittedAt')}
       />
     ).html,

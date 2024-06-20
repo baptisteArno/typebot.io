@@ -3,23 +3,23 @@ import { TRPCError } from '@trpc/server'
 import {
   Block,
   FileInputBlock,
-  TypebotLinkBlock,
+  SniperLinkBlock,
   parseGroups,
-} from '@typebot.io/schemas'
-import { byId, isDefined } from '@typebot.io/lib'
+} from '@sniper.io/schemas'
+import { byId, isDefined } from '@sniper.io/lib'
 import { z } from 'zod'
-import { generatePresignedUrl } from '@typebot.io/lib/s3/deprecated/generatePresignedUrl'
-import { env } from '@typebot.io/env'
-import prisma from '@typebot.io/lib/prisma'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
-import { PublicTypebot } from '@typebot.io/prisma'
+import { generatePresignedUrl } from '@sniper.io/lib/s3/deprecated/generatePresignedUrl'
+import { env } from '@sniper.io/env'
+import prisma from '@sniper.io/lib/prisma'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
+import { PublicSniper } from '@sniper.io/prisma'
 
 export const getUploadUrl = publicProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/v1/typebots/{typebotId}/blocks/{blockId}/storage/upload-url',
+      path: '/v1/snipers/{sniperId}/blocks/{blockId}/storage/upload-url',
       summary: 'Get upload URL for a file',
       description: 'Used for the web client to get the bucket upload file.',
       deprecated: true,
@@ -28,7 +28,7 @@ export const getUploadUrl = publicProcedure
   })
   .input(
     z.object({
-      typebotId: z.string(),
+      sniperId: z.string(),
       blockId: z.string(),
       filePath: z.string(),
       fileType: z.string().optional(),
@@ -40,7 +40,7 @@ export const getUploadUrl = publicProcedure
       hasReachedStorageLimit: z.boolean(),
     })
   )
-  .query(async ({ input: { typebotId, blockId, filePath, fileType } }) => {
+  .query(async ({ input: { sniperId, blockId, filePath, fileType } }) => {
     if (!env.S3_ENDPOINT || !env.S3_ACCESS_KEY || !env.S3_SECRET_KEY)
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
@@ -48,22 +48,22 @@ export const getUploadUrl = publicProcedure
           'S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY',
       })
 
-    const publicTypebot = await prisma.publicTypebot.findFirst({
-      where: { typebotId },
+    const publicSniper = await prisma.publicSniper.findFirst({
+      where: { sniperId },
       select: {
         version: true,
         groups: true,
-        typebotId: true,
+        sniperId: true,
       },
     })
 
-    if (!publicTypebot)
+    if (!publicSniper)
       throw new TRPCError({
         code: 'BAD_REQUEST',
-        message: 'Typebot not found',
+        message: 'Sniper not found',
       })
 
-    const fileUploadBlock = await getFileUploadBlock(publicTypebot, blockId)
+    const fileUploadBlock = await getFileUploadBlock(publicSniper, blockId)
 
     if (!fileUploadBlock)
       throw new TRPCError({
@@ -83,34 +83,34 @@ export const getUploadUrl = publicProcedure
   })
 
 const getFileUploadBlock = async (
-  publicTypebot: Pick<PublicTypebot, 'groups' | 'typebotId' | 'version'>,
+  publicSniper: Pick<PublicSniper, 'groups' | 'sniperId' | 'version'>,
   blockId: string
 ): Promise<FileInputBlock | null> => {
-  const groups = parseGroups(publicTypebot.groups, {
-    typebotVersion: publicTypebot.version,
+  const groups = parseGroups(publicSniper.groups, {
+    sniperVersion: publicSniper.version,
   })
   const fileUploadBlock = groups
     .flatMap<Block>((group) => group.blocks)
     .find(byId(blockId))
   if (fileUploadBlock?.type === InputBlockType.FILE) return fileUploadBlock
-  const linkedTypebotIds = groups
+  const linkedSniperIds = groups
     .flatMap<Block>((group) => group.blocks)
-    .filter((block) => block.type === LogicBlockType.TYPEBOT_LINK)
-    .flatMap((block) => (block as TypebotLinkBlock).options?.typebotId)
+    .filter((block) => block.type === LogicBlockType.SNIPER_LINK)
+    .flatMap((block) => (block as SniperLinkBlock).options?.sniperId)
     .filter(isDefined)
-  const linkedTypebots = await prisma.publicTypebot.findMany({
-    where: { typebotId: { in: linkedTypebotIds } },
+  const linkedSnipers = await prisma.publicSniper.findMany({
+    where: { sniperId: { in: linkedSniperIds } },
     select: {
       groups: true,
     },
   })
-  const fileUploadBlockFromLinkedTypebots = parseGroups(
-    linkedTypebots.flatMap((typebot) => typebot.groups),
-    { typebotVersion: publicTypebot.version }
+  const fileUploadBlockFromLinkedSnipers = parseGroups(
+    linkedSnipers.flatMap((sniper) => sniper.groups),
+    { sniperVersion: publicSniper.version }
   )
     .flatMap<Block>((group) => group.blocks)
     .find(byId(blockId))
-  if (fileUploadBlockFromLinkedTypebots?.type === InputBlockType.FILE)
-    return fileUploadBlockFromLinkedTypebots
+  if (fileUploadBlockFromLinkedSnipers?.type === InputBlockType.FILE)
+    return fileUploadBlockFromLinkedSnipers
   return null
 }

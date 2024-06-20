@@ -8,7 +8,7 @@ export const initPopup = (params: PopupParams): PopupActions => {
     window.addEventListener('load', () => initPopup(params))
     return { close: () => {}, open: () => {} }
   }
-  const existingPopup = document.getElementById('typebot-popup')
+  const existingPopup = document.getElementById('sniper-popup')
   if (existingPopup) existingPopup.remove()
   const popupElement = createPopup(params)
   !document.body
@@ -34,7 +34,7 @@ const createPopup = (params: PopupParams): HTMLElement => {
 
 const createOverlayElement = (delay: number | undefined) => {
   const overlayElement = document.createElement('div')
-  overlayElement.id = 'typebot-popup'
+  overlayElement.id = 'sniper-popup'
   if (delay !== undefined) setShowTimeout(overlayElement, delay)
   return overlayElement
 }
@@ -78,7 +78,7 @@ export const getPopupActions = (
   popupElement?: HTMLDivElement
 ): PopupActions => {
   const existingPopupElement =
-    popupElement ?? (document.querySelector('#typebot-popup') as HTMLDivElement)
+    popupElement ?? (document.querySelector('#sniper-popup') as HTMLDivElement)
   return {
     open: () => {
       openPopup(existingPopupElement)

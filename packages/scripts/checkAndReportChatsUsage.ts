@@ -1,11 +1,11 @@
-import { Plan, PrismaClient, WorkspaceRole } from '@typebot.io/prisma'
-import { isDefined, isEmpty } from '@typebot.io/lib'
-import { getChatsLimit } from '@typebot.io/billing/helpers/getChatsLimit'
+import { Plan, PrismaClient, WorkspaceRole } from '@sniper.io/prisma'
+import { isDefined, isEmpty } from '@sniper.io/lib'
+import { getChatsLimit } from '@sniper.io/billing/helpers/getChatsLimit'
 import { promptAndSetEnvironment } from './utils'
-import { Workspace } from '@typebot.io/schemas'
-import { sendAlmostReachedChatsLimitEmail } from '@typebot.io/emails/src/emails/AlmostReachedChatsLimitEmail'
-import { TelemetryEvent } from '@typebot.io/schemas/features/telemetry'
-import { trackEvents } from '@typebot.io/telemetry/trackEvents'
+import { Workspace } from '@sniper.io/schemas'
+import { sendAlmostReachedChatsLimitEmail } from '@sniper.io/emails/src/emails/AlmostReachedChatsLimitEmail'
+import { TelemetryEvent } from '@sniper.io/schemas/features/telemetry'
+import { trackEvents } from '@sniper.io/telemetry/trackEvents'
 import Stripe from 'stripe'
 import { createId } from '@paralleldrive/cuid2'
 
@@ -22,7 +22,7 @@ export const checkAndReportChatsUsage = async () => {
   const hourAgo = new Date(zeroedMinutesHour.getTime() - 1000 * 60 * 60)
 
   const results = await prisma.result.groupBy({
-    by: ['typebotId'],
+    by: ['sniperId'],
     _count: {
       _all: true,
     },
@@ -44,16 +44,16 @@ export const checkAndReportChatsUsage = async () => {
 
   const workspaces = await prisma.workspace.findMany({
     where: {
-      typebots: {
+      snipers: {
         some: {
-          id: { in: results.map((result) => result.typebotId) },
+          id: { in: results.map((result) => result.sniperId) },
         },
       },
     },
     select: {
       id: true,
       name: true,
-      typebots: { select: { id: true } },
+      snipers: { select: { id: true } },
       members: {
         select: { user: { select: { id: true, email: true } }, role: true },
       },
@@ -189,7 +189,7 @@ export const checkAndReportChatsUsage = async () => {
   const resultsWithWorkspaces = results
     .flatMap((result) => {
       const workspace = workspaces.find((workspace) =>
-        workspace.typebots.some((typebot) => typebot.id === result.typebotId)
+        workspace.snipers.some((sniper) => sniper.id === result.sniperId)
       )
       if (!workspace) return
       return workspace.members
@@ -197,7 +197,7 @@ export const checkAndReportChatsUsage = async () => {
         .map((member, memberIndex) => ({
           userId: member.user.id,
           workspace: workspace,
-          typebotId: result.typebotId,
+          sniperId: result.sniperId,
           totalResultsLastHour: result._count._all,
           isFirstOfKind: memberIndex === 0 ? (true as const) : undefined,
         }))
@@ -210,7 +210,7 @@ export const checkAndReportChatsUsage = async () => {
         name: 'New results collected',
         userId: result.userId,
         workspaceId: result.workspace.id,
-        typebotId: result.typebotId,
+        sniperId: result.sniperId,
         data: {
           total: result.totalResultsLastHour,
           isFirstOfKind: result.isFirstOfKind,
@@ -292,7 +292,7 @@ const getUsage =
     workspaceId: string
     subscription: Stripe.Subscription | undefined
   }) => {
-    const typebots = await prisma.typebot.findMany({
+    const snipers = await prisma.sniper.findMany({
       where: {
         workspaceId,
       },
@@ -306,7 +306,7 @@ const getUsage =
 
     const totalChatsUsed = await prisma.result.count({
       where: {
-        typebotId: { in: typebots.map((typebot) => typebot.id) },
+        sniperId: { in: snipers.map((sniper) => sniper.id) },
         hasStarted: true,
         createdAt: {
           gte: subscription

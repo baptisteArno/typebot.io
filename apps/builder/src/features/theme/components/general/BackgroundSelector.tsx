@@ -1,12 +1,12 @@
 import { RadioButtons } from '@/components/inputs/RadioButtons'
 import { Stack } from '@chakra-ui/react'
-import { Background } from '@typebot.io/schemas'
+import { Background } from '@sniper.io/schemas'
 import React from 'react'
 import { BackgroundContent } from './BackgroundContent'
 import {
   BackgroundType,
   defaultBackgroundType,
-} from '@typebot.io/schemas/features/typebot/theme/constants'
+} from '@sniper.io/schemas/features/sniper/theme/constants'
 import { useTranslate } from '@tolgee/react'
 
 type Props = {

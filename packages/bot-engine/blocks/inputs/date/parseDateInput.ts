@@ -1,11 +1,11 @@
 import { getPrefilledInputValue } from '../../../getPrefilledValue'
-import { DateInputBlock, SessionState, Variable } from '@typebot.io/schemas'
-import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
-import { parseVariables } from '@typebot.io/variables/parseVariables'
+import { DateInputBlock, SessionState, Variable } from '@sniper.io/schemas'
+import { deepParseVariables } from '@sniper.io/variables/deepParseVariables'
+import { parseVariables } from '@sniper.io/variables/parseVariables'
 
 export const parseDateInput =
   (state: SessionState) => (block: DateInputBlock) => {
-    const variables = state.typebotsQueue[0].typebot.variables
+    const variables = state.snipersQueue[0].sniper.variables
     if (!block.options) return deepParseVariables(variables)(block)
     return {
       ...block,

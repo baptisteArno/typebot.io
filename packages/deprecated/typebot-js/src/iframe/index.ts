@@ -1,6 +1,6 @@
 import { close } from '../commands'
 import { parseQueryParams } from '../commands/setHiddenVariables'
-import { TypebotPostMessageData, IframeCallbacks, IframeParams } from '../types'
+import { SniperPostMessageData, IframeCallbacks, IframeParams } from '../types'
 import './style.css'
 
 export const createIframe = ({
@@ -25,21 +25,21 @@ export const createIframe = ({
   const uniqueId = `${url}-${randomThreeLettersId}`
   iframe.setAttribute('id', uniqueId)
   if (backgroundColor) iframe.style.backgroundColor = backgroundColor
-  iframe.classList.add('typebot-iframe')
+  iframe.classList.add('sniper-iframe')
   const { onNewVariableValue } = iframeParams
-  listenForTypebotMessages({ onNewVariableValue })
+  listenForSniperMessages({ onNewVariableValue })
   return iframe
 }
 
-export const listenForTypebotMessages = (callbacks: IframeCallbacks) => {
+export const listenForSniperMessages = (callbacks: IframeCallbacks) => {
   window.addEventListener('message', (event) => {
-    const data = event.data as { from?: 'typebot' } & TypebotPostMessageData
-    if (data.from === 'typebot') processMessage(event.data, callbacks)
+    const data = event.data as { from?: 'sniper' } & SniperPostMessageData
+    if (data.from === 'sniper') processMessage(event.data, callbacks)
   })
 }
 
 const processMessage = (
-  data: TypebotPostMessageData,
+  data: SniperPostMessageData,
   callbacks: IframeCallbacks
 ) => {
   if (data.redirectUrl) window.open(data.redirectUrl)

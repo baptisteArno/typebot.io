@@ -5,24 +5,24 @@ import { createId } from '@paralleldrive/cuid2'
 import { readFileSync } from 'fs'
 import { parse } from 'papaparse'
 import {
-  importTypebotInDatabase,
+  importSniperInDatabase,
   injectFakeResults,
-} from '@typebot.io/playwright/databaseActions'
+} from '@sniper.io/playwright/databaseActions'
 
-const typebotId = createId()
+const sniperId = createId()
 
 test.beforeEach(async () => {
-  await importTypebotInDatabase(
-    getTestAsset('typebots/results/submissionHeader.json'),
+  await importSniperInDatabase(
+    getTestAsset('snipers/results/submissionHeader.json'),
     {
-      id: typebotId,
+      id: sniperId,
     }
   )
-  await injectFakeResults({ typebotId, count: 200, isChronological: true })
+  await injectFakeResults({ sniperId, count: 200, isChronological: true })
 })
 
 test('table features should work', async ({ page }) => {
-  await page.goto(`/typebots/${typebotId}/results`)
+  await page.goto(`/snipers/${sniperId}/results`)
 
   await test.step('Check header format', async () => {
     await expect(page.locator('text=Submitted at')).toBeVisible()
@@ -185,7 +185,7 @@ const scrollToBottom = (page: Page) =>
 const saveAndReload = async (page: Page) => {
   await page.click('text="Theme"')
   await page.waitForTimeout(2000)
-  await page.goto(`/typebots/${typebotId}/results`)
+  await page.goto(`/snipers/${sniperId}/results`)
 }
 
 const getNthCheckbox = (page: Page, n: number) =>

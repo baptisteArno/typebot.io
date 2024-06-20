@@ -11,20 +11,20 @@ export const links = [
       {
         label: 'GitHub repository',
         description: 'Check out the entire source code of the project',
-        href: 'https://github.com/baptisteArno/typebot.io',
+        href: 'https://github.com/baptisteArno/sniper.io',
         icon: <GitHubIcon fill="blue.300" />,
       },
       {
         label: 'Documentation',
         description:
-          "Everything you need to know about how to use Typebot's builder",
-        href: 'https://docs.typebot.io',
+          "Everything you need to know about how to use Sniper's builder",
+        href: 'https://docs.sniper.io',
         icon: <DocIcon />,
       },
       {
         label: 'Blog',
         description:
-          'Read the latest news and updates about Typebot and the chatbots ecosystem',
+          'Read the latest news and updates about Sniper and the chatbots ecosystem',
         href: '/blog',
         icon: <NewspaperIcon />,
       },

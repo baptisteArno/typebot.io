@@ -1,18 +1,18 @@
 import { z } from '../zod'
 import { answerInputSchema, answerSchema } from './answer'
-import { listVariableValue, variableWithValueSchema } from './typebot/variable'
+import { listVariableValue, variableWithValueSchema } from './sniper/variable'
 import {
   Result as ResultPrisma,
   Log as LogPrisma,
   SetVariableHistoryItem as SetVariableHistoryItemPrisma,
   VisitedEdge,
-} from '@typebot.io/prisma'
+} from '@sniper.io/prisma'
 import { InputBlockType } from './blocks/inputs/constants'
 
 export const resultSchema = z.object({
   id: z.string(),
   createdAt: z.date(),
-  typebotId: z.string(),
+  sniperId: z.string(),
   variables: z.array(variableWithValueSchema),
   isCompleted: z.boolean(),
   hasStarted: z.boolean().nullable(),

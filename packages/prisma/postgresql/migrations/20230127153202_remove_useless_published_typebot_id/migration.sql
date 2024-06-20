@@ -1,8 +1,8 @@
 /*
   Warnings:
 
-  - You are about to drop the column `publishedTypebotId` on the `Typebot` table. All the data in the column will be lost.
+  - You are about to drop the column `publishedSniperId` on the `Sniper` table. All the data in the column will be lost.
 
 */
 -- AlterTable
-ALTER TABLE "Typebot" DROP COLUMN "publishedTypebotId";
+ALTER TABLE "Sniper" DROP COLUMN "publishedSniperId";

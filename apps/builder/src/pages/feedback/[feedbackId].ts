@@ -1,10 +1,10 @@
 import { getServerSession } from 'next-auth'
-import { User } from '@typebot.io/prisma'
-import { isNotDefined } from '@typebot.io/lib'
+import { User } from '@sniper.io/prisma'
+import { isNotDefined } from '@sniper.io/lib'
 import { sign } from 'jsonwebtoken'
 import { getAuthOptions } from '../api/auth/[...nextauth]'
 import { GetServerSidePropsContext } from 'next'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 export default function Page() {
   return null
@@ -28,7 +28,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     redirect: {
       permanent: false,
-      destination: `https://feedback.typebot.io/feedback/${feedbackId}/?sso=${sleekplanToken}`,
+      destination: `https://feedback.sniper.io/feedback/${feedbackId}/?sso=${sleekplanToken}`,
     },
   }
 }

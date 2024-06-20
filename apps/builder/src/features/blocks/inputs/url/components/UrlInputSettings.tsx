@@ -2,8 +2,8 @@ import { TextInput } from '@/components/inputs'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { useTranslate } from '@tolgee/react'
-import { UrlInputBlock, Variable } from '@typebot.io/schemas'
-import { defaultUrlInputOptions } from '@typebot.io/schemas/features/blocks/inputs/url/constants'
+import { UrlInputBlock, Variable } from '@sniper.io/schemas'
+import { defaultUrlInputOptions } from '@sniper.io/schemas/features/blocks/inputs/url/constants'
 import React from 'react'
 
 type Props = {

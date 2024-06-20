@@ -9,16 +9,16 @@ import {
 import { ToolIcon, TemplateIcon, DownloadIcon } from '@/components/icons'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { ImportTypebotFromFileButton } from './ImportTypebotFromFileButton'
+import { ImportSniperFromFileButton } from './ImportSniperFromFileButton'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useUser } from '@/features/account/hooks/useUser'
 import { useToast } from '@/hooks/useToast'
 import { trpc } from '@/lib/trpc'
 import { useTranslate } from '@tolgee/react'
-import { Typebot } from '@typebot.io/schemas'
+import { Sniper } from '@sniper.io/schemas'
 import { TemplatesModal } from './TemplatesModal'
 
-export const CreateNewTypebotButtons = () => {
+export const CreateNewSniperButtons = () => {
   const { t } = useTranslate()
   const { workspace } = useWorkspace()
   const { user } = useUser()
@@ -29,7 +29,7 @@ export const CreateNewTypebotButtons = () => {
 
   const { showToast } = useToast()
 
-  const { mutate: createTypebot } = trpc.typebot.createTypebot.useMutation({
+  const { mutate: createSniper } = trpc.sniper.createSniper.useMutation({
     onMutate: () => {
       setIsLoading(true)
     },
@@ -41,7 +41,7 @@ export const CreateNewTypebotButtons = () => {
     },
     onSuccess: (data) => {
       router.push({
-        pathname: `/typebots/${data.typebot.id}/edit`,
+        pathname: `/snipers/${data.sniper.id}/edit`,
       })
     },
     onSettled: () => {
@@ -49,7 +49,7 @@ export const CreateNewTypebotButtons = () => {
     },
   })
 
-  const { mutate: importTypebot } = trpc.typebot.importTypebot.useMutation({
+  const { mutate: importSniper } = trpc.sniper.importSniper.useMutation({
     onMutate: () => {
       setIsLoading(true)
     },
@@ -61,7 +61,7 @@ export const CreateNewTypebotButtons = () => {
     },
     onSuccess: (data) => {
       router.push({
-        pathname: `/typebots/${data.typebot.id}/edit`,
+        pathname: `/snipers/${data.sniper.id}/edit`,
       })
     },
     onSettled: () => {
@@ -69,22 +69,22 @@ export const CreateNewTypebotButtons = () => {
     },
   })
 
-  const handleCreateSubmit = async (typebot?: Typebot) => {
+  const handleCreateSubmit = async (sniper?: Sniper) => {
     if (!user || !workspace) return
     const folderId = router.query.folderId?.toString() ?? null
-    if (typebot)
-      importTypebot({
+    if (sniper)
+      importSniper({
         workspaceId: workspace.id,
-        typebot: {
-          ...typebot,
+        sniper: {
+          ...sniper,
           folderId,
         },
       })
     else
-      createTypebot({
+      createSniper({
         workspaceId: workspace.id,
-        typebot: {
-          name: t('typebots.defaultName'),
+        sniper: {
+          name: t('snipers.defaultName'),
           folderId,
         },
       })
@@ -128,7 +128,7 @@ export const CreateNewTypebotButtons = () => {
         >
           {t('templates.buttons.fromTemplateButton.label')}
         </Button>
-        <ImportTypebotFromFileButton
+        <ImportSniperFromFileButton
           variant="outline"
           w="full"
           py="8"
@@ -141,15 +141,15 @@ export const CreateNewTypebotButtons = () => {
             />
           }
           isLoading={isLoading}
-          onNewTypebot={handleCreateSubmit}
+          onNewSniper={handleCreateSubmit}
         >
           {t('templates.buttons.importFileButton.label')}
-        </ImportTypebotFromFileButton>
+        </ImportSniperFromFileButton>
       </Stack>
       <TemplatesModal
         isOpen={isOpen}
         onClose={onClose}
-        onTypebotChoose={handleCreateSubmit}
+        onSniperChoose={handleCreateSubmit}
         isLoading={isLoading}
       />
     </VStack>

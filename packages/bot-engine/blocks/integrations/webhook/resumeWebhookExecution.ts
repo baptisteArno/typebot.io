@@ -1,4 +1,4 @@
-import { byId } from '@typebot.io/lib'
+import { byId } from '@sniper.io/lib'
 import {
   MakeComBlock,
   PabblyConnectBlock,
@@ -6,12 +6,12 @@ import {
   VariableWithUnknowValue,
   HttpRequestBlock,
   ZapierBlock,
-} from '@typebot.io/schemas'
-import { SessionState } from '@typebot.io/schemas/features/chat/sessionState'
+} from '@sniper.io/schemas'
+import { SessionState } from '@sniper.io/schemas/features/chat/sessionState'
 import { ExecuteIntegrationResponse } from '../../../types'
-import { parseVariables } from '@typebot.io/variables/parseVariables'
-import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
-import { createHttpReqResponseMappingRunner } from '@typebot.io/variables/codeRunners'
+import { parseVariables } from '@sniper.io/variables/parseVariables'
+import { updateVariablesInSession } from '@sniper.io/variables/updateVariablesInSession'
+import { createHttpReqResponseMappingRunner } from '@sniper.io/variables/codeRunners'
 
 type Props = {
   state: SessionState
@@ -29,7 +29,7 @@ export const resumeWebhookExecution = ({
   logs = [],
   response,
 }: Props): ExecuteIntegrationResponse => {
-  const { typebot } = state.typebotsQueue[0]
+  const { sniper } = state.snipersQueue[0]
   const status = response.statusCode.toString()
   const isError = status.startsWith('4') || status.startsWith('5')
 
@@ -59,12 +59,12 @@ export const resumeWebhookExecution = ({
   >((newVariables, varMapping) => {
     if (!varMapping?.bodyPath || !varMapping.variableId || !run)
       return newVariables
-    const existingVariable = typebot.variables.find(byId(varMapping.variableId))
+    const existingVariable = sniper.variables.find(byId(varMapping.variableId))
     if (!existingVariable) return newVariables
 
     try {
       const value: unknown = run(
-        parseVariables(typebot.variables)(varMapping?.bodyPath)
+        parseVariables(sniper.variables)(varMapping?.bodyPath)
       )
       return [...newVariables, { ...existingVariable, value }]
     } catch (err) {

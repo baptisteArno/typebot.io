@@ -1,20 +1,20 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { WorkspaceRole } from '@typebot.io/prisma'
-import { PublicTypebot, Typebot, typebotV5Schema } from '@typebot.io/schemas'
-import { omit } from '@typebot.io/lib'
+import { WorkspaceRole } from '@sniper.io/prisma'
+import { PublicSniper, Sniper, sniperV5Schema } from '@sniper.io/schemas'
+import { omit } from '@sniper.io/lib'
 import { z } from 'zod'
 import { getUserRoleInWorkspace } from '@/features/workspace/helpers/getUserRoleInWorkspace'
 
-export const listTypebots = authenticatedProcedure
+export const listSnipers = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/v1/typebots',
+      path: '/v1/snipers',
       protect: true,
-      summary: 'List typebots',
-      tags: ['Typebot'],
+      summary: 'List snipers',
+      tags: ['Sniper'],
     },
   })
   .input(
@@ -29,14 +29,14 @@ export const listTypebots = authenticatedProcedure
   )
   .output(
     z.object({
-      typebots: z.array(
-        typebotV5Schema._def.schema
+      snipers: z.array(
+        sniperV5Schema._def.schema
           .pick({
             name: true,
             icon: true,
             id: true,
           })
-          .merge(z.object({ publishedTypebotId: z.string().optional() }))
+          .merge(z.object({ publishedSniperId: z.string().optional() }))
       ),
     })
   )
@@ -48,7 +48,7 @@ export const listTypebots = authenticatedProcedure
     const userRole = getUserRoleInWorkspace(user.id, workspace?.members)
     if (userRole === undefined)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Workspace not found' })
-    const typebots = (await prisma.typebot.findMany({
+    const snipers = (await prisma.sniper.findMany({
       where: {
         isArchived: { not: true },
         folderId:
@@ -66,21 +66,21 @@ export const listTypebots = authenticatedProcedure
       orderBy: { createdAt: 'desc' },
       select: {
         name: true,
-        publishedTypebot: { select: { id: true } },
+        publishedSniper: { select: { id: true } },
         id: true,
         icon: true,
       },
-    })) as (Pick<Typebot, 'name' | 'id' | 'icon'> & {
-      publishedTypebot: Pick<PublicTypebot, 'id'>
+    })) as (Pick<Sniper, 'name' | 'id' | 'icon'> & {
+      publishedSniper: Pick<PublicSniper, 'id'>
     })[]
 
-    if (!typebots)
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'No typebots found' })
+    if (!snipers)
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'No snipers found' })
 
     return {
-      typebots: typebots.map((typebot) => ({
-        publishedTypebotId: typebot.publishedTypebot?.id,
-        ...omit(typebot, 'publishedTypebot'),
+      snipers: snipers.map((sniper) => ({
+        publishedSniperId: sniper.publishedSniper?.id,
+        ...omit(sniper, 'publishedSniper'),
       })),
     }
   })

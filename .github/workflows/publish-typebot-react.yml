@@ -1,4 +1,4 @@
-name: Publish @typebot.io/react package to NPM
+name: Publish @sniper.io/react package to NPM
 
 on:
   push:
@@ -14,5 +14,5 @@ jobs:
       - uses: actions/checkout@v2
       - uses: pnpm/action-setup@v2.2.2
       - run: pnpm i --frozen-lockfile
-      - run: pnpm turbo build --filter=@typebot.io/react...
+      - run: pnpm turbo build --filter=@sniper.io/react...
       - run: cd packages/embeds/react && pnpm publish --no-git-checks --access public

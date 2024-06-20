@@ -1,15 +1,15 @@
 import { parseVariables } from '@/features/variables'
 import { EdgeId, LogicState } from '@/types'
-import { Comparison, ConditionBlock, Variable } from '@typebot.io/schemas'
-import { isNotDefined, isDefined } from '@typebot.io/lib'
+import { Comparison, ConditionBlock, Variable } from '@sniper.io/schemas'
+import { isNotDefined, isDefined } from '@sniper.io/lib'
 import {
   LogicalOperator,
   ComparisonOperators,
-} from '@typebot.io/schemas/features/blocks/logic/condition/constants'
+} from '@sniper.io/schemas/features/blocks/logic/condition/constants'
 
 export const executeCondition = (
   block: ConditionBlock,
-  { typebot: { variables } }: LogicState
+  { sniper: { variables } }: LogicState
 ): EdgeId | undefined => {
   const passedCondition = block.items.find((item) => {
     const { content } = item

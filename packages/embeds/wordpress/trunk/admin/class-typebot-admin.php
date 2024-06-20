@@ -3,30 +3,30 @@ if (!defined('ABSPATH')) {
   exit();
 }
 
-class Typebot_Admin
+class Sniper_Admin
 {
   public function my_admin_menu()
   {
     add_menu_page(
-      'Typebot Settings',
-      'Typebot',
+      'Sniper Settings',
+      'Sniper',
       'manage_options',
-      'typebot/settings.php',
-      [$this, 'typebot_settings_callback'],
+      'sniper/settings.php',
+      [$this, 'sniper_settings_callback'],
       'dashicons-format-chat',
       250
     );
   }
 
-  public function typebot_settings_callback()
+  public function sniper_settings_callback()
   {
-    require_once 'partials/typebot-admin-display.php';
+    require_once 'partials/sniper-admin-display.php';
   }
 
-  public function register_typebot_settings()
+  public function register_sniper_settings()
   {
-    register_setting('typebot', 'lib_version');
-    register_setting('typebot', 'init_snippet');
-    register_setting('typebot', 'excluded_pages');
+    register_setting('sniper', 'lib_version');
+    register_setting('sniper', 'init_snippet');
+    register_setting('sniper', 'excluded_pages');
   }
 }

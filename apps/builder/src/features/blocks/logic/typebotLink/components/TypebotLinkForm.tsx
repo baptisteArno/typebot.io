@@ -1,32 +1,31 @@
 import { Stack } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { GroupsDropdown } from './GroupsDropdown'
-import { TypebotsDropdown } from './TypebotsDropdown'
+import { SnipersDropdown } from './SnipersDropdown'
 import { trpc } from '@/lib/trpc'
-import { isNotEmpty } from '@typebot.io/lib'
+import { isNotEmpty } from '@sniper.io/lib'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
-import { TypebotLinkBlock } from '@typebot.io/schemas'
-import { defaultTypebotLinkOptions } from '@typebot.io/schemas/features/blocks/logic/typebotLink/constants'
+import { SniperLinkBlock } from '@sniper.io/schemas'
+import { defaultSniperLinkOptions } from '@sniper.io/schemas/features/blocks/logic/sniperLink/constants'
 
 type Props = {
-  options: TypebotLinkBlock['options']
-  onOptionsChange: (options: TypebotLinkBlock['options']) => void
+  options: SniperLinkBlock['options']
+  onOptionsChange: (options: SniperLinkBlock['options']) => void
 }
 
-export const TypebotLinkForm = ({ options, onOptionsChange }: Props) => {
-  const { typebot } = useTypebot()
+export const SniperLinkForm = ({ options, onOptionsChange }: Props) => {
+  const { sniper } = useSniper()
 
-  const handleTypebotIdChange = async (
-    typebotId: string | 'current' | undefined
-  ) => onOptionsChange({ ...options, typebotId, groupId: undefined })
+  const handleSniperIdChange = async (
+    sniperId: string | 'current' | undefined
+  ) => onOptionsChange({ ...options, sniperId, groupId: undefined })
 
-  const { data: linkedTypebotData } = trpc.typebot.getTypebot.useQuery(
+  const { data: linkedSniperData } = trpc.sniper.getSniper.useQuery(
     {
-      typebotId: options?.typebotId as string,
+      sniperId: options?.sniperId as string,
     },
     {
-      enabled:
-        isNotEmpty(options?.typebotId) && options?.typebotId !== 'current',
+      enabled: isNotEmpty(options?.sniperId) && options?.sniperId !== 'current',
     }
   )
 
@@ -36,44 +35,44 @@ export const TypebotLinkForm = ({ options, onOptionsChange }: Props) => {
   const updateMergeResults = (mergeResults: boolean) =>
     onOptionsChange({ ...options, mergeResults })
 
-  const isCurrentTypebotSelected =
-    (typebot && options?.typebotId === typebot.id) ||
-    options?.typebotId === 'current'
+  const isCurrentSniperSelected =
+    (sniper && options?.sniperId === sniper.id) ||
+    options?.sniperId === 'current'
 
   return (
     <Stack>
-      {typebot && (
-        <TypebotsDropdown
-          idsToExclude={[typebot.id]}
-          typebotId={options?.typebotId}
-          onSelect={handleTypebotIdChange}
-          currentWorkspaceId={typebot.workspaceId as string}
+      {sniper && (
+        <SnipersDropdown
+          idsToExclude={[sniper.id]}
+          sniperId={options?.sniperId}
+          onSelect={handleSniperIdChange}
+          currentWorkspaceId={sniper.workspaceId as string}
         />
       )}
-      {options?.typebotId && (
+      {options?.sniperId && (
         <GroupsDropdown
-          key={options.typebotId}
+          key={options.sniperId}
           groups={
-            typebot && isCurrentTypebotSelected
-              ? typebot.groups
-              : linkedTypebotData?.typebot?.groups ?? []
+            sniper && isCurrentSniperSelected
+              ? sniper.groups
+              : linkedSniperData?.sniper?.groups ?? []
           }
           groupId={options.groupId}
           onGroupIdSelected={handleGroupIdChange}
           isLoading={
-            linkedTypebotData?.typebot === undefined &&
-            options.typebotId !== 'current' &&
-            typebot &&
-            typebot.id !== options.typebotId
+            linkedSniperData?.sniper === undefined &&
+            options.sniperId !== 'current' &&
+            sniper &&
+            sniper.id !== options.sniperId
           }
         />
       )}
-      {!isCurrentTypebotSelected && (
+      {!isCurrentSniperSelected && (
         <SwitchWithLabel
           label="Merge answers"
-          moreInfoContent="If enabled, the answers collected in the linked typebot will be merged with the results of the current typebot."
+          moreInfoContent="If enabled, the answers collected in the linked sniper will be merged with the results of the current sniper."
           initialValue={
-            options?.mergeResults ?? defaultTypebotLinkOptions.mergeResults
+            options?.mergeResults ?? defaultSniperLinkOptions.mergeResults
           }
           onCheckChange={updateMergeResults}
         />

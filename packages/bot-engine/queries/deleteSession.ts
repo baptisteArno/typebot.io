@@ -1,4 +1,4 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 
 export const deleteSession = (id: string) =>
   prisma.chatSession.deleteMany({

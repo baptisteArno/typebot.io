@@ -1,15 +1,15 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
-import { collaboratorSchema } from '@typebot.io/schemas/features/collaborators'
-import { isReadTypebotForbidden } from '@/features/typebot/helpers/isReadTypebotForbidden'
+import { collaboratorSchema } from '@sniper.io/schemas/features/collaborators'
+import { isReadSniperForbidden } from '@/features/sniper/helpers/isReadSniperForbidden'
 
 export const getCollaborators = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/v1/typebots/{typebotId}/collaborators',
+      path: '/v1/snipers/{sniperId}/collaborators',
       protect: true,
       summary: 'Get collaborators',
       tags: ['Collaborators'],
@@ -17,7 +17,7 @@ export const getCollaborators = authenticatedProcedure
   })
   .input(
     z.object({
-      typebotId: z.string(),
+      sniperId: z.string(),
     })
   )
   .output(
@@ -25,10 +25,10 @@ export const getCollaborators = authenticatedProcedure
       collaborators: z.array(collaboratorSchema),
     })
   )
-  .query(async ({ input: { typebotId }, ctx: { user } }) => {
-    const existingTypebot = await prisma.typebot.findFirst({
+  .query(async ({ input: { sniperId }, ctx: { user } }) => {
+    const existingSniper = await prisma.sniper.findFirst({
       where: {
-        id: typebotId,
+        id: sniperId,
       },
       include: {
         collaborators: true,
@@ -46,12 +46,12 @@ export const getCollaborators = authenticatedProcedure
       },
     })
     if (
-      !existingTypebot?.id ||
-      (await isReadTypebotForbidden(existingTypebot, user))
+      !existingSniper?.id ||
+      (await isReadSniperForbidden(existingSniper, user))
     )
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Sniper not found' })
 
     return {
-      collaborators: existingTypebot.collaborators,
+      collaborators: existingSniper.collaborators,
     }
   })

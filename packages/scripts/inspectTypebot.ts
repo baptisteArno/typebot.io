@@ -1,9 +1,9 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { PrismaClient } from '@sniper.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 import * as p from '@clack/prompts'
 import { isCancel } from '@clack/prompts'
 
-const inspectTypebot = async () => {
+const inspectSniper = async () => {
   await promptAndSetEnvironment('production')
 
   const type = await p.select<any, 'id' | 'publicId'>({
@@ -26,7 +26,7 @@ const inspectTypebot = async () => {
     log: [{ emit: 'event', level: 'query' }, 'info', 'warn', 'error'],
   })
 
-  const typebot = await prisma.typebot.findFirst({
+  const sniper = await prisma.sniper.findFirst({
     where: {
       [type]: val,
     },
@@ -39,7 +39,7 @@ const inspectTypebot = async () => {
       createdAt: true,
       isArchived: true,
       isClosed: true,
-      publishedTypebot: {
+      publishedSniper: {
         select: {
           id: true,
         },
@@ -66,14 +66,14 @@ const inspectTypebot = async () => {
     },
   })
 
-  if (!typebot) {
-    console.log('Typebot not found')
+  if (!sniper) {
+    console.log('Sniper not found')
     return
   }
 
-  console.log(`https://app.typebot.io/typebots/${typebot.id}/edit`)
+  console.log(`https://app.sniper.io/snipers/${sniper.id}/edit`)
 
-  console.log(JSON.stringify(typebot, null, 2))
+  console.log(JSON.stringify(sniper, null, 2))
 }
 
-inspectTypebot()
+inspectSniper()

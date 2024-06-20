@@ -11,7 +11,7 @@ import {
 import { useOnboardingDisclosure } from '../hooks/useOnboardingDisclosure'
 import { onboardingVideos } from '../data'
 import { useUser } from '@/features/account/hooks/useUser'
-import { ForgedBlockDefinition } from '@typebot.io/forge-repository/types'
+import { ForgedBlockDefinition } from '@sniper.io/forge-repository/types'
 import { YoutubeIframe } from './YoutubeIframe'
 
 type Props = {

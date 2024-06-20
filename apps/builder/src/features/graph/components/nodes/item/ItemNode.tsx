@@ -1,12 +1,12 @@
 import { Flex, useColorModeValue, Stack } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { BlockWithItems, Item, ItemIndices } from '@typebot.io/schemas'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
+import { BlockWithItems, Item, ItemIndices } from '@sniper.io/schemas'
 import React, { useRef, useState } from 'react'
 import { BlockSourceEndpoint } from '../../endpoints/BlockSourceEndpoint'
 import { ItemNodeContent } from './ItemNodeContent'
 import { ItemNodeContextMenu } from './ItemNodeContextMenu'
 import { ContextMenu } from '@/components/ContextMenu'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 import { Coordinates } from '@/features/graph/types'
 import {
   DraggableItem,
@@ -17,7 +17,7 @@ import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { setMultipleRefs } from '@/helpers/setMultipleRefs'
 import { ConditionContent } from '@/features/blocks/logic/condition/components/ConditionContent'
 import { useRouter } from 'next/router'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
 
 type Props = {
   item: Item
@@ -40,7 +40,7 @@ export const ItemNode = ({
   const previewingBorderColor = useColorModeValue('blue.400', 'blue.300')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const bg = useColorModeValue('white', 'gray.850')
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
   const { previewingEdge } = useGraph()
   const { pathname } = useRouter()
   const [isMouseOver, setIsMouseOver] = useState(false)
@@ -50,7 +50,7 @@ export const ItemNode = ({
     'itemId' in previewingEdge.from &&
     previewingEdge.from.itemId === item.id
   const isConnectable =
-    isDefined(typebot) &&
+    isDefined(sniper) &&
     !connectionDisabled &&
     !(
       block.options &&
@@ -70,7 +70,7 @@ export const ItemNode = ({
   const handleMouseEnter = () => setIsMouseOver(true)
   const handleMouseLeave = () => setIsMouseOver(false)
 
-  const groupId = typebot?.groups.at(indices.groupIndex)?.id
+  const groupId = sniper?.groups.at(indices.groupIndex)?.id
 
   return (
     <ContextMenu<HTMLDivElement>
@@ -88,7 +88,7 @@ export const ItemNode = ({
             item.displayCondition.condition && (
               <ConditionContent
                 condition={item.displayCondition.condition}
-                variables={typebot?.variables ?? []}
+                variables={sniper?.variables ?? []}
                 size="xs"
                 displaySemicolon
               />
@@ -116,7 +116,7 @@ export const ItemNode = ({
               isMouseOver={isMouseOver}
               indices={indices}
             />
-            {typebot &&
+            {sniper &&
               (isConnectable || pathname.endsWith('analytics')) &&
               groupId && (
                 <BlockSourceEndpoint

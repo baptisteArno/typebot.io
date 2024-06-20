@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Plugin Name:       Typebot
+ * Plugin Name:       Sniper
  * Description:       Convert more with conversational forms
  * Version:           3.6.0
- * Author:            Typebot
- * Author URI:        http://typebot.io/
+ * Author:            Sniper
+ * Author URI:        http://sniper.io/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       typebot
+ * Text Domain:       sniper
  * Domain Path:       /languages
  */
 
@@ -16,30 +16,30 @@ if (!defined('WPINC')) {
   die();
 }
 
-define('TYPEBOT_VERSION', '3.6.0');
+define('SNIPER_VERSION', '3.6.0');
 
-function activate_typebot()
+function activate_sniper()
 {
   require_once plugin_dir_path(__FILE__) .
-    'includes/class-typebot-activator.php';
-  Typebot_Activator::activate();
+    'includes/class-sniper-activator.php';
+  Sniper_Activator::activate();
 }
 
-function deactivate_typebot()
+function deactivate_sniper()
 {
   require_once plugin_dir_path(__FILE__) .
-    'includes/class-typebot-deactivator.php';
-  Typebot_Deactivator::deactivate();
+    'includes/class-sniper-deactivator.php';
+  Sniper_Deactivator::deactivate();
 }
 
-register_activation_hook(__FILE__, 'activate_typebot');
-register_deactivation_hook(__FILE__, 'deactivate_typebot');
+register_activation_hook(__FILE__, 'activate_sniper');
+register_deactivation_hook(__FILE__, 'deactivate_sniper');
 
-require plugin_dir_path(__FILE__) . 'includes/class-typebot.php';
+require plugin_dir_path(__FILE__) . 'includes/class-sniper.php';
 
-function run_typebot()
+function run_sniper()
 {
-  $plugin = new Typebot();
+  $plugin = new Sniper();
   $plugin->run();
 }
-run_typebot();
+run_sniper();

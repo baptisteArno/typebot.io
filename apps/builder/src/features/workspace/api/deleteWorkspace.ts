@@ -1,11 +1,11 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { z } from 'zod'
 import { isAdminWriteWorkspaceForbidden } from '../helpers/isAdminWriteWorkspaceForbidden'
 import { TRPCError } from '@trpc/server'
-import { isNotEmpty } from '@typebot.io/lib/utils'
+import { isNotEmpty } from '@sniper.io/lib/utils'
 import Stripe from 'stripe'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 export const deleteWorkspace = authenticatedProcedure
   .meta({

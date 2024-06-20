@@ -4,10 +4,10 @@ import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { FilePathUploadProps } from '@/features/upload/api/generateUploadUrl'
 import { useTranslate } from '@tolgee/react'
 import { Stack } from '@chakra-ui/react'
-import { isDefined, isNotEmpty } from '@typebot.io/lib'
-import { ImageBubbleBlock } from '@typebot.io/schemas'
+import { isDefined, isNotEmpty } from '@sniper.io/lib'
+import { ImageBubbleBlock } from '@sniper.io/schemas'
 import React, { useState } from 'react'
-import { defaultImageBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/image/constants'
+import { defaultImageBubbleContent } from '@sniper.io/schemas/features/blocks/bubbles/image/constants'
 
 type Props = {
   uploadFileProps: FilePathUploadProps

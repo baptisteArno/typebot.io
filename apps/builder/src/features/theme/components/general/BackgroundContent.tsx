@@ -1,5 +1,5 @@
 import { ImageUploadContent } from '@/components/ImageUploadContent'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import {
   Flex,
   Popover,
@@ -10,15 +10,15 @@ import {
   Button,
   Portal,
 } from '@chakra-ui/react'
-import { isNotEmpty } from '@typebot.io/lib'
-import { Background } from '@typebot.io/schemas'
+import { isNotEmpty } from '@sniper.io/lib'
+import { Background } from '@sniper.io/schemas'
 import React from 'react'
 import { ColorPicker } from '../../../../components/ColorPicker'
 import {
   BackgroundType,
   defaultBackgroundColor,
   defaultBackgroundType,
-} from '@typebot.io/schemas/features/typebot/theme/constants'
+} from '@sniper.io/schemas/features/sniper/theme/constants'
 import { useTranslate } from '@tolgee/react'
 
 type BackgroundContentProps = {
@@ -31,12 +31,12 @@ export const BackgroundContent = ({
   onBackgroundContentChange,
 }: BackgroundContentProps) => {
   const { t } = useTranslate()
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
   const handleContentChange = (content: string) =>
     onBackgroundContentChange(content)
 
   if ((background?.type ?? defaultBackgroundType) === BackgroundType.IMAGE) {
-    if (!typebot) return null
+    if (!sniper) return null
     return (
       <Popover isLazy placement="top">
         <PopoverTrigger>
@@ -61,8 +61,8 @@ export const BackgroundContent = ({
           <PopoverContent p="4" w="500px">
             <ImageUploadContent
               uploadFileProps={{
-                workspaceId: typebot.workspaceId,
-                typebotId: typebot.id,
+                workspaceId: sniper.workspaceId,
+                sniperId: sniper.id,
                 fileName: 'background',
               }}
               defaultUrl={background?.content}

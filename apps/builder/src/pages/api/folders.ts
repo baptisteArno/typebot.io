@@ -1,11 +1,11 @@
-import { DashboardFolder, WorkspaceRole } from '@typebot.io/prisma'
-import prisma from '@typebot.io/lib/prisma'
+import { DashboardFolder, WorkspaceRole } from '@sniper.io/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import {
   badRequest,
   methodNotAllowed,
   notAuthenticated,
-} from '@typebot.io/lib/api'
+} from '@sniper.io/lib/api'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 
 // TODO: Delete as it has been migrated to TRPC endpoints

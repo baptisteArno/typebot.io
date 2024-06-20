@@ -8,7 +8,7 @@ import {
   StatNumber,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { Stats } from '@typebot.io/schemas'
+import { Stats } from '@sniper.io/schemas'
 import React from 'react'
 import { timeFilterValues } from '../constants'
 import { TimeFilterDropdown } from './TimeFilterDropdown'

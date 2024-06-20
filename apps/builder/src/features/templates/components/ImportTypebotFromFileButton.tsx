@@ -1,15 +1,15 @@
 import { useToast } from '@/hooks/useToast'
 import { Button, ButtonProps, chakra } from '@chakra-ui/react'
-import { Typebot } from '@typebot.io/schemas'
+import { Sniper } from '@sniper.io/schemas'
 import React, { ChangeEvent } from 'react'
 import { useTranslate } from '@tolgee/react'
 
 type Props = {
-  onNewTypebot: (typebot: Typebot) => void
+  onNewSniper: (sniper: Sniper) => void
 } & ButtonProps
 
-export const ImportTypebotFromFileButton = ({
-  onNewTypebot,
+export const ImportSniperFromFileButton = ({
+  onNewSniper,
   ...props
 }: Props) => {
   const { t } = useTranslate()
@@ -20,13 +20,13 @@ export const ImportTypebotFromFileButton = ({
     const file = e.target.files[0]
     const fileContent = await readFile(file)
     try {
-      const typebot = JSON.parse(fileContent)
-      onNewTypebot({
-        ...typebot,
-        events: typebot.events ?? null,
-        icon: typebot.icon ?? null,
-        name: typebot.name ?? 'My typebot',
-      } as Typebot)
+      const sniper = JSON.parse(fileContent)
+      onNewSniper({
+        ...sniper,
+        events: sniper.events ?? null,
+        icon: sniper.icon ?? null,
+        name: sniper.name ?? 'My sniper',
+      } as Sniper)
     } catch (err) {
       console.error(err)
       showToast({

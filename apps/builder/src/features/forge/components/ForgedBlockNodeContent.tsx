@@ -1,8 +1,8 @@
 import { SetVariableLabel } from '@/components/SetVariableLabel'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { Stack, Text } from '@chakra-ui/react'
 import { useForgedBlock } from '../hooks/useForgedBlock'
-import { ForgedBlock } from '@typebot.io/forge-repository/types'
+import { ForgedBlock } from '@sniper.io/forge-repository/types'
 
 type Props = {
   block: ForgedBlock
@@ -12,7 +12,7 @@ export const ForgedBlockNodeContent = ({ block }: Props) => {
     block.type,
     block.options?.action
   )
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
 
   const setVariableIds = actionDef?.getSetVariableIds?.(block.options) ?? []
 
@@ -23,12 +23,12 @@ export const ForgedBlockNodeContent = ({ block }: Props) => {
       <Text color={isConfigured ? 'currentcolor' : 'gray.500'} noOfLines={1}>
         {isConfigured ? block.options.action : 'Configure...'}
       </Text>
-      {typebot &&
+      {sniper &&
         isConfigured &&
         setVariableIds.map((variableId, idx) => (
           <SetVariableLabel
             key={variableId + idx}
-            variables={typebot.variables}
+            variables={sniper.variables}
             variableId={variableId}
           />
         ))}

@@ -6,11 +6,11 @@ import {
   Link,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { BlockWithOptions } from '@typebot.io/schemas'
+import { BlockWithOptions } from '@sniper.io/schemas'
 import { getHelpDocUrl } from '@/features/graph/helpers/getHelpDocUrl'
 import { useTranslate } from '@tolgee/react'
 import { VideoOnboardingPopover } from '@/features/onboarding/components/VideoOnboardingPopover'
-import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
+import { forgedBlocks } from '@sniper.io/forge-repository/definitions'
 
 type Props = {
   blockType: BlockWithOptions['type']

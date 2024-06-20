@@ -1,4 +1,4 @@
-import { createBlock } from '@typebot.io/forge'
+import { createBlock } from '@sniper.io/forge'
 import { NocodbLogo } from './logo'
 import { auth } from './auth'
 import { searchRecords } from './actions/searchRecords'
@@ -8,7 +8,7 @@ import { updateExistingRecord } from './actions/updateExistingRecord'
 export const nocodbBlock = createBlock({
   id: 'nocodb',
   name: 'NocoDB',
-  docsUrl: 'https://docs.typebot.io/forge/blocks/nocodb',
+  docsUrl: 'https://docs.sniper.io/forge/blocks/nocodb',
   tags: ['database'],
   LightLogo: NocodbLogo,
   auth,

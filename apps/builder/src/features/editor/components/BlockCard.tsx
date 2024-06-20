@@ -2,19 +2,19 @@ import { HStack } from '@chakra-ui/react'
 import React from 'react'
 import { BlockIcon } from './BlockIcon'
 import { isFreePlan } from '@/features/billing/helpers/isFreePlan'
-import { Plan } from '@typebot.io/prisma'
+import { Plan } from '@sniper.io/prisma'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { BlockLabel } from './BlockLabel'
 import { LockTag } from '@/features/billing/components/LockTag'
 import { useTranslate } from '@tolgee/react'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
-import { BlockV6 } from '@typebot.io/schemas'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { IntegrationBlockType } from '@sniper.io/schemas/features/blocks/integrations/constants'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
+import { BlockV6 } from '@sniper.io/schemas'
 import { BlockCardLayout } from './BlockCardLayout'
 import { ForgedBlockCard } from '@/features/forge/ForgedBlockCard'
-import { isForgedBlockType } from '@typebot.io/schemas/features/blocks/forged/helpers'
+import { isForgedBlockType } from '@sniper.io/schemas/features/blocks/forged/helpers'
 
 type Props = {
   type: BlockV6['type']
@@ -67,11 +67,11 @@ export const BlockCard = (
           <BlockLabel type={props.type} />
         </BlockCardLayout>
       )
-    case LogicBlockType.TYPEBOT_LINK:
+    case LogicBlockType.SNIPER_LINK:
       return (
         <BlockCardLayout
           {...props}
-          tooltip={t('editor.blockCard.logicBlock.tooltip.typebotLink.label')}
+          tooltip={t('editor.blockCard.logicBlock.tooltip.sniperLink.label')}
         >
           <BlockIcon type={props.type} />
           <BlockLabel type={props.type} />

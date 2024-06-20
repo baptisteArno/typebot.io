@@ -1,11 +1,11 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import {
-  typebotSchema,
-  typebotV5Schema,
-  typebotV6Schema,
-} from '@typebot.io/schemas'
+  sniperSchema,
+  sniperV5Schema,
+  sniperV6Schema,
+} from '@sniper.io/schemas'
 import { z } from 'zod'
 import {
   isCustomDomainNotAvailable,
@@ -15,12 +15,12 @@ import {
   sanitizeSettings,
   sanitizeVariables,
 } from '../helpers/sanitizers'
-import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
+import { isWriteSniperForbidden } from '../helpers/isWriteSniperForbidden'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
-import { Prisma } from '@typebot.io/prisma'
-import { migrateTypebot } from '@typebot.io/migrations/migrateTypebot'
+import { Prisma } from '@sniper.io/prisma'
+import { migrateSniper } from '@sniper.io/migrations/migrateSniper'
 
-const typebotUpdateSchemaPick = {
+const sniperUpdateSchemaPick = {
   version: true,
   name: true,
   icon: true,
@@ -41,45 +41,45 @@ const typebotUpdateSchemaPick = {
   updatedAt: true,
 } as const
 
-export const updateTypebot = authenticatedProcedure
+export const updateSniper = authenticatedProcedure
   .meta({
     openapi: {
       method: 'PATCH',
-      path: '/v1/typebots/{typebotId}',
+      path: '/v1/snipers/{sniperId}',
       protect: true,
-      summary: 'Update a typebot',
-      tags: ['Typebot'],
+      summary: 'Update a sniper',
+      tags: ['Sniper'],
     },
   })
   .input(
     z.object({
-      typebotId: z
+      sniperId: z
         .string()
         .describe(
-          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+          "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)"
         ),
-      typebot: z.union([
-        typebotV6Schema.pick(typebotUpdateSchemaPick).partial().openapi({
-          title: 'Typebot V6',
+      sniper: z.union([
+        sniperV6Schema.pick(sniperUpdateSchemaPick).partial().openapi({
+          title: 'Sniper V6',
         }),
-        typebotV5Schema._def.schema
-          .pick(typebotUpdateSchemaPick)
+        sniperV5Schema._def.schema
+          .pick(sniperUpdateSchemaPick)
           .partial()
           .openapi({
-            title: 'Typebot V5',
+            title: 'Sniper V5',
           }),
       ]),
     })
   )
   .output(
     z.object({
-      typebot: typebotV6Schema,
+      sniper: sniperV6Schema,
     })
   )
-  .mutation(async ({ input: { typebotId, typebot }, ctx: { user } }) => {
-    const existingTypebot = await prisma.typebot.findFirst({
+  .mutation(async ({ input: { sniperId, sniper }, ctx: { user } }) => {
+    const existingSniper = await prisma.sniper.findFirst({
       where: {
-        id: typebotId,
+        id: sniperId,
       },
       select: {
         version: true,
@@ -111,29 +111,29 @@ export const updateTypebot = authenticatedProcedure
     })
 
     if (
-      !existingTypebot?.id ||
-      (await isWriteTypebotForbidden(existingTypebot, user))
+      !existingSniper?.id ||
+      (await isWriteSniperForbidden(existingSniper, user))
     )
       throw new TRPCError({
         code: 'NOT_FOUND',
-        message: 'Typebot not found',
+        message: 'Sniper not found',
       })
 
     if (
-      typebot.updatedAt &&
-      existingTypebot.updatedAt.getTime() > typebot.updatedAt.getTime()
+      sniper.updatedAt &&
+      existingSniper.updatedAt.getTime() > sniper.updatedAt.getTime()
     )
       throw new TRPCError({
         code: 'CONFLICT',
-        message: 'Found newer version of the typebot in database',
+        message: 'Found newer version of the sniper in database',
       })
 
     if (
-      typebot.customDomain &&
-      existingTypebot.customDomain !== typebot.customDomain &&
+      sniper.customDomain &&
+      existingSniper.customDomain !== sniper.customDomain &&
       (await isCustomDomainNotAvailable({
-        customDomain: typebot.customDomain,
-        workspaceId: existingTypebot.workspace.id,
+        customDomain: sniper.customDomain,
+        workspaceId: existingSniper.workspace.id,
       }))
     )
       throw new TRPCError({
@@ -141,15 +141,15 @@ export const updateTypebot = authenticatedProcedure
         message: 'Custom domain not available',
       })
 
-    if (typebot.publicId) {
-      if (isCloudProdInstance() && typebot.publicId.length < 4)
+    if (sniper.publicId) {
+      if (isCloudProdInstance() && sniper.publicId.length < 4)
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: 'Public id should be at least 4 characters long',
         })
       if (
-        existingTypebot.publicId !== typebot.publicId &&
-        (await isPublicIdNotAvailable(typebot.publicId))
+        existingSniper.publicId !== sniper.publicId &&
+        (await isPublicIdNotAvailable(sniper.publicId))
       )
         throw new TRPCError({
           code: 'BAD_REQUEST',
@@ -157,62 +157,60 @@ export const updateTypebot = authenticatedProcedure
         })
     }
 
-    const groups = typebot.groups
-      ? await sanitizeGroups(existingTypebot.workspace.id)(typebot.groups)
+    const groups = sniper.groups
+      ? await sanitizeGroups(existingSniper.workspace.id)(sniper.groups)
       : undefined
 
-    const newTypebot = await prisma.typebot.update({
+    const newSniper = await prisma.sniper.update({
       where: {
-        id: existingTypebot.id,
+        id: existingSniper.id,
       },
       data: {
-        version: typebot.version ?? undefined,
-        name: typebot.name,
-        icon: typebot.icon,
-        selectedThemeTemplateId: typebot.selectedThemeTemplateId,
-        events: typebot.events ?? undefined,
+        version: sniper.version ?? undefined,
+        name: sniper.name,
+        icon: sniper.icon,
+        selectedThemeTemplateId: sniper.selectedThemeTemplateId,
+        events: sniper.events ?? undefined,
         groups,
-        theme: typebot.theme ? typebot.theme : undefined,
-        settings: typebot.settings
+        theme: sniper.theme ? sniper.theme : undefined,
+        settings: sniper.settings
           ? sanitizeSettings(
-              typebot.settings,
-              existingTypebot.workspace.plan,
+              sniper.settings,
+              existingSniper.workspace.plan,
               'update'
             )
           : undefined,
-        folderId: typebot.folderId,
+        folderId: sniper.folderId,
         variables:
-          typebot.variables && groups
+          sniper.variables && groups
             ? sanitizeVariables({
-                variables: typebot.variables,
+                variables: sniper.variables,
                 groups,
               })
             : undefined,
-        edges: typebot.edges,
+        edges: sniper.edges,
         resultsTablePreferences:
-          typebot.resultsTablePreferences === null
+          sniper.resultsTablePreferences === null
             ? Prisma.DbNull
-            : typebot.resultsTablePreferences,
+            : sniper.resultsTablePreferences,
         publicId:
-          typebot.publicId === null
+          sniper.publicId === null
             ? null
-            : typebot.publicId && isPublicIdValid(typebot.publicId)
-            ? typebot.publicId
+            : sniper.publicId && isPublicIdValid(sniper.publicId)
+            ? sniper.publicId
             : undefined,
         customDomain: await sanitizeCustomDomain({
-          customDomain: typebot.customDomain,
-          workspaceId: existingTypebot.workspace.id,
+          customDomain: sniper.customDomain,
+          workspaceId: existingSniper.workspace.id,
         }),
-        isClosed: typebot.isClosed,
-        whatsAppCredentialsId: typebot.whatsAppCredentialsId ?? undefined,
+        isClosed: sniper.isClosed,
+        whatsAppCredentialsId: sniper.whatsAppCredentialsId ?? undefined,
       },
     })
 
-    const migratedTypebot = await migrateTypebot(
-      typebotSchema.parse(newTypebot)
-    )
+    const migratedSniper = await migrateSniper(sniperSchema.parse(newSniper))
 
-    return { typebot: migratedTypebot }
+    return { sniper: migratedSniper }
   })
 
 const isPublicIdValid = (str: string) =>

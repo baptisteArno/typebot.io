@@ -1,7 +1,7 @@
-import { sendRequest } from '@typebot.io/lib'
+import { sendRequest } from '@sniper.io/lib'
 
-export const deleteInvitationQuery = (typebotId: string, email: string) =>
+export const deleteInvitationQuery = (sniperId: string, email: string) =>
   sendRequest({
     method: 'DELETE',
-    url: `/api/typebots/${typebotId}/invitations/${email}`,
+    url: `/api/snipers/${sniperId}/invitations/${email}`,
   })

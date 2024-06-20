@@ -1,11 +1,11 @@
 import { Text } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslate } from '@tolgee/react'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
-import { Block } from '@typebot.io/schemas'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { IntegrationBlockType } from '@sniper.io/schemas/features/blocks/integrations/constants'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
+import { Block } from '@sniper.io/schemas'
 import { ForgedBlockLabel } from '@/features/forge/ForgedBlockLabel'
 
 type Props = { type: Block['type'] }
@@ -63,8 +63,8 @@ export const BlockLabel = ({ type }: Props): JSX.Element => {
       )
     case LogicBlockType.SCRIPT:
       return <Text fontSize="sm">{t('editor.sidebarBlock.script.label')}</Text>
-    case LogicBlockType.TYPEBOT_LINK:
-      return <Text fontSize="sm">{t('editor.sidebarBlock.typebot.label')}</Text>
+    case LogicBlockType.SNIPER_LINK:
+      return <Text fontSize="sm">{t('editor.sidebarBlock.sniper.label')}</Text>
     case LogicBlockType.WAIT:
       return <Text fontSize="sm">{t('editor.sidebarBlock.wait.label')}</Text>
     case LogicBlockType.JUMP:

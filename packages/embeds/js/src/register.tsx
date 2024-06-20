@@ -11,7 +11,7 @@ import { Standard } from './features/standard'
 export const registerWebComponents = () => {
   if (typeof window === 'undefined') return
   // @ts-expect-error element incorect type
-  customElement('typebot-standard', defaultBotProps, Standard)
-  customElement('typebot-bubble', defaultBubbleProps, Bubble)
-  customElement('typebot-popup', defaultPopupProps, Popup)
+  customElement('sniper-standard', defaultBotProps, Standard)
+  customElement('sniper-bubble', defaultBubbleProps, Bubble)
+  customElement('sniper-popup', defaultPopupProps, Popup)
 }

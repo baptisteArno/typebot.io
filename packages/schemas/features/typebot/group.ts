@@ -24,9 +24,9 @@ export type GroupV6 = z.infer<typeof groupV6Schema>
 
 export const parseGroups = <T extends string | null>(
   groups: unknown,
-  { typebotVersion }: { typebotVersion: T }
+  { sniperVersion }: { sniperVersion: T }
 ): T extends '6' ? GroupV6[] : GroupV5[] => {
-  if (typebotVersion === '6') {
+  if (sniperVersion === '6') {
     return z.array(groupV6Schema).parse(groups) as T extends '6'
       ? GroupV6[]
       : GroupV5[]

@@ -1,11 +1,18 @@
 {
-  "extends": "@typebot.io/tsconfig/base.json",
-  "include": ["src/**/*"],
-  "exclude": ["dist", "node_modules"],
+  "extends": "@sniper.io/tsconfig/base.json",
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "src/*"
+      ]
     },
     "jsx": "preserve",
     "jsxImportSource": "solid-js",

@@ -3,8 +3,8 @@ import { EmbedBubble } from '@/features/blocks/bubbles/embed'
 import { ImageBubble } from '@/features/blocks/bubbles/image'
 import { TextBubble } from '@/features/blocks/bubbles/textBubble'
 import { VideoBubble } from '@/features/blocks/bubbles/video'
-import { BubbleBlock } from '@typebot.io/schemas'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import { BubbleBlock } from '@sniper.io/schemas'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
 
 type Props = {
   block: BubbleBlock

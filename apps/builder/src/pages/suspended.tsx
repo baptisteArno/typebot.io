@@ -11,7 +11,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!workspace || workspace.isSuspended) return
-    replace('/typebots')
+    replace('/snipers')
   }, [replace, workspace])
 
   return (
@@ -25,9 +25,9 @@ export default function Page() {
       >
         <Heading>Your workspace has been suspended.</Heading>
         <Text>
-          We detected that one of your typebots does not comply with our{' '}
+          We detected that one of your snipers does not comply with our{' '}
           <TextLink
-            href="https://typebot.io/terms-of-service#scam-typebots"
+            href="https://sniper.io/terms-of-service#scam-snipers"
             isExternal
           >
             terms of service

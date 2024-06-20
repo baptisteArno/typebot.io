@@ -1,15 +1,15 @@
-> ⚠️ This library is deprecated in favor of [`@typebot.io/js`](https://www.npmjs.com/package/@typebot.io/js) and [`@typebot.io/react`](https://www.npmjs.com/package/@typebot.io/react)
+> ⚠️ This library is deprecated in favor of [`@sniper.io/js`](https://www.npmjs.com/package/@sniper.io/js) and [`@sniper.io/react`](https://www.npmjs.com/package/@sniper.io/react)
 
-# Typebot JS library
+# Sniper JS library
 
-Frontend library to embed typebots from [Typebot](https://www.typebot.io/).
+Frontend library to embed snipers from [Sniper](https://www.sniper.io/).
 
 ## Installation
 
 To install, simply run:
 
 ```bash
-npm install typebot-js
+npm install sniper-js
 ```
 
 ## Usage
@@ -22,12 +22,12 @@ initPopup()
 initBubble()
 ```
 
-You can configure them directly in the "Share" tab of your typebot.
+You can configure them directly in the "Share" tab of your sniper.
 
 Example:
 
 ```ts
-import { initContainer } from 'typebot-js'
+import { initContainer } from 'sniper-js'
 
 const plausible = initContainer('container-id', {
   publishId: 'my-app.com',

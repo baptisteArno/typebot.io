@@ -1,18 +1,17 @@
 import { edgeSchema } from '../edge'
 
-export const preprocessTypebot = (typebot: any) => {
-  if (!typebot || typebot.version === '5' || typebot.version === '6')
-    return typebot
+export const preprocessSniper = (sniper: any) => {
+  if (!sniper || sniper.version === '5' || sniper.version === '6') return sniper
   return {
-    ...typebot,
+    ...sniper,
     version:
-      typebot.version === undefined || typebot.version === null
+      sniper.version === undefined || sniper.version === null
         ? '3'
-        : typebot.version,
-    groups: typebot.groups ? typebot.groups.map(preprocessGroup) : [],
+        : sniper.version,
+    groups: sniper.groups ? sniper.groups.map(preprocessGroup) : [],
     events: null,
-    edges: typebot.edges
-      ? typebot.edges?.filter((edge: any) => edgeSchema.safeParse(edge).success)
+    edges: sniper.edges
+      ? sniper.edges?.filter((edge: any) => edgeSchema.safeParse(edge).success)
       : [],
   }
 }

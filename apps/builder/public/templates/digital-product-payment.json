@@ -96,7 +96,7 @@
           "id": "cl3u49lmg000f2e6guhhgf825",
           "type": "video",
           "content": {
-            "url": "https://typebot.s3.eu-west-3.amazonaws.com/assets/bullseye+template+preview.mp4",
+            "url": "https://sniper.s3.eu-west-3.amazonaws.com/assets/bullseye+template+preview.mp4",
             "type": "url"
           }
         },

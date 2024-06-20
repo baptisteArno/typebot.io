@@ -1,5 +1,5 @@
 {
-  "name": "typebot-js",
+  "name": "sniper-js",
   "version": "2.2.17",
   "main": "dist/index.js",
   "unpkg": "dist/index.global.js",
@@ -19,6 +19,6 @@
     "prettier": "2.8.8",
     "ts-jest": "29.0.5",
     "typescript": "5.4.5",
-    "@typebot.io/tsconfig": "workspace:*"
+    "@sniper.io/tsconfig": "workspace:*"
   }
 }

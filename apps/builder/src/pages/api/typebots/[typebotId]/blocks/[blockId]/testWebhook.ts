@@ -1,29 +1,29 @@
 import {
-  Typebot,
+  Sniper,
   Variable,
   HttpRequest,
   Block,
   AnswerInSessionState,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { byId } from '@typebot.io/lib'
-import { isWebhookBlock } from '@typebot.io/schemas/helpers'
-import { methodNotAllowed, notFound } from '@typebot.io/lib/api'
-import prisma from '@typebot.io/lib/prisma'
-import { getBlockById } from '@typebot.io/schemas/helpers'
+import { byId } from '@sniper.io/lib'
+import { isWebhookBlock } from '@sniper.io/schemas/helpers'
+import { methodNotAllowed, notFound } from '@sniper.io/lib/api'
+import prisma from '@sniper.io/lib/prisma'
+import { getBlockById } from '@sniper.io/schemas/helpers'
 import {
   executeWebhook,
   parseWebhookAttributes,
-} from '@typebot.io/bot-engine/blocks/integrations/webhook/executeWebhookBlock'
-import { fetchLinkedChildTypebots } from '@typebot.io/bot-engine/blocks/logic/typebotLink/fetchLinkedChildTypebots'
-import { parseSampleResult } from '@typebot.io/bot-engine/blocks/integrations/webhook/parseSampleResult'
-import { saveLog } from '@typebot.io/bot-engine/logs/saveLog'
+} from '@sniper.io/bot-engine/blocks/integrations/webhook/executeWebhookBlock'
+import { fetchLinkedChildSnipers } from '@sniper.io/bot-engine/blocks/logic/sniperLink/fetchLinkedChildSnipers'
+import { parseSampleResult } from '@sniper.io/bot-engine/blocks/integrations/webhook/parseSampleResult'
+import { saveLog } from '@sniper.io/bot-engine/logs/saveLog'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const user = await getAuthenticatedUser(req, res)
-    const typebotId = req.query.typebotId as string
+    const sniperId = req.query.sniperId as string
     const blockId = req.query.blockId as string
     const resultId = req.query.resultId as string | undefined
     const { variables } = (
@@ -31,12 +31,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     ) as {
       variables: Variable[]
     }
-    const typebot = (await prisma.typebot.findUnique({
-      where: { id: typebotId },
+    const sniper = (await prisma.sniper.findUnique({
+      where: { id: sniperId },
       include: { webhooks: true },
-    })) as unknown as (Typebot & { webhooks: HttpRequest[] }) | null
-    if (!typebot) return notFound(res)
-    const block = typebot.groups
+    })) as unknown as (Sniper & { webhooks: HttpRequest[] }) | null
+    if (!sniper) return notFound(res)
+    const block = sniper.groups
       .flatMap<Block>((g) => g.blocks)
       .find(byId(blockId))
     if (!block || !isWebhookBlock(block))
@@ -44,7 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const webhookId = 'webhookId' in block ? block.webhookId : undefined
     const webhook =
       block.options?.webhook ??
-      typebot.webhooks.find((w) => {
+      sniper.webhooks.find((w) => {
         if ('id' in w) return w.id === webhookId
         return false
       })
@@ -52,23 +52,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res
         .status(404)
         .send({ statusCode: 404, data: { message: `Couldn't find webhook` } })
-    const { group } = getBlockById(blockId, typebot.groups)
-    const linkedTypebots = await fetchLinkedChildTypebots({
-      isPreview: !('typebotId' in typebot),
-      typebots: [typebot],
+    const { group } = getBlockById(blockId, sniper.groups)
+    const linkedSnipers = await fetchLinkedChildSnipers({
+      isPreview: !('sniperId' in sniper),
+      snipers: [sniper],
       userId: user?.id,
     })([])
 
     const answers = arrayify(
-      await parseSampleResult(typebot, linkedTypebots)(group.id, variables)
+      await parseSampleResult(sniper, linkedSnipers)(group.id, variables)
     )
 
     const parsedWebhook = await parseWebhookAttributes({
       webhook,
       isCustomBody: block.options?.isCustomBody,
-      typebot: {
-        ...typebot,
-        variables: typebot.variables.map((v) => {
+      sniper: {
+        ...sniper,
+        variables: sniper.variables.map((v) => {
           const matchingVariable = variables.find(byId(v.id))
           if (!matchingVariable) return v
           return { ...v, value: matchingVariable.value }

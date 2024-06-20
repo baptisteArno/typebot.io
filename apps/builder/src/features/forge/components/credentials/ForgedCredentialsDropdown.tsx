@@ -14,7 +14,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { trpc } from '@/lib/trpc'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { ForgedBlockDefinition } from '@typebot.io/forge-repository/types'
+import { ForgedBlockDefinition } from '@sniper.io/forge-repository/types'
 import { useToast } from '@/hooks/useToast'
 
 type Props = Omit<ButtonProps, 'type'> & {

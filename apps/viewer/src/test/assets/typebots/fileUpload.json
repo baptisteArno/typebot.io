@@ -3,7 +3,7 @@
   "createdAt": "2022-06-08T14:22:14.879Z",
   "updatedAt": "2022-06-08T16:19:32.893Z",
   "icon": null,
-  "name": "My typebot",
+  "name": "My sniper",
   "folderId": null,
   "groups": [
     {
@@ -120,7 +120,7 @@
     },
     "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
   },
-  "publicId": "my-typebot-699t0qj",
+  "publicId": "my-sniper-699t0qj",
   "customDomain": null,
   "workspaceId": "proWorkspace"
 }

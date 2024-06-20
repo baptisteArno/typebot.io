@@ -1,6 +1,6 @@
 import React from 'react'
 import { Stack } from '@chakra-ui/react'
-import { HttpRequest, HttpRequestBlock } from '@typebot.io/schemas'
+import { HttpRequest, HttpRequestBlock } from '@sniper.io/schemas'
 import { TextInput } from '@/components/inputs'
 import { HttpRequestAdvancedConfigForm } from './HttpRequestAdvancedConfigForm'
 

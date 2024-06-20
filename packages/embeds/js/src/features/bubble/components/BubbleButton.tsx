@@ -1,7 +1,7 @@
 import { Show } from 'solid-js'
-import { isNotDefined, isSvgSrc } from '@typebot.io/lib'
+import { isNotDefined, isSvgSrc } from '@sniper.io/lib'
 import { BubbleTheme, ButtonTheme } from '../types'
-import { isLight } from '@typebot.io/lib/hexToRgb'
+import { isLight } from '@sniper.io/lib/hexToRgb'
 import { clsx } from 'clsx'
 
 type Props = Pick<BubbleTheme, 'placement'> &

@@ -1,4 +1,4 @@
-#typebot-popup {
+#sniper-popup {
   position: fixed;
   top: 0;
   width: 100vw;
@@ -13,12 +13,12 @@
   z-index: 99999;
 }
 
-#typebot-popup.opened {
+#sniper-popup.opened {
   opacity: 1;
   visibility: visible;
 }
 
-#typebot-popup > iframe {
+#sniper-popup > iframe {
   width: 100%;
   height: 600px;
   max-width: 800px;

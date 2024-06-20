@@ -1,19 +1,19 @@
 import {
   Block,
-  Typebot,
+  Sniper,
   BlockIndices,
   HttpRequest,
   BlockV6,
-  TypebotV6,
-} from '@typebot.io/schemas'
-import { SetTypebot } from '../TypebotProvider'
+  SniperV6,
+} from '@sniper.io/schemas'
+import { SetSniper } from '../SniperProvider'
 import { produce, Draft } from 'immer'
 import { deleteConnectedEdgesDraft, deleteEdgeDraft } from './edges'
 import { createId } from '@paralleldrive/cuid2'
-import { byId } from '@typebot.io/lib'
-import { blockHasItems } from '@typebot.io/schemas/helpers'
+import { byId } from '@sniper.io/lib'
+import { blockHasItems } from '@sniper.io/schemas/helpers'
 import { duplicateItemDraft } from './items'
-import { parseNewBlock } from '@/features/typebot/helpers/parseNewBlock'
+import { parseNewBlock } from '@/features/sniper/helpers/parseNewBlock'
 
 export type BlocksActions = {
   createBlock: (
@@ -37,12 +37,12 @@ export type WebhookCallBacks = {
   ) => void
 }
 
-export const blocksAction = (setTypebot: SetTypebot): BlocksActions => ({
+export const blocksAction = (setSniper: SetSniper): BlocksActions => ({
   createBlock: (block: BlockV6 | BlockV6['type'], indices: BlockIndices) => {
     let blockId
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        blockId = createBlockDraft(typebot, block, indices)
+    setSniper((sniper) =>
+      produce(sniper, (sniper) => {
+        blockId = createBlockDraft(sniper, block, indices)
       })
     )
     return blockId
@@ -51,99 +51,99 @@ export const blocksAction = (setTypebot: SetTypebot): BlocksActions => ({
     { groupIndex, blockIndex }: BlockIndices,
     updates: Partial<Omit<Block, 'id' | 'type'>>
   ) =>
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        if (!typebot.groups[groupIndex]?.blocks[blockIndex]) return
-        const block = typebot.groups[groupIndex].blocks[blockIndex]
-        typebot.groups[groupIndex].blocks[blockIndex] = { ...block, ...updates }
+    setSniper((sniper) =>
+      produce(sniper, (sniper) => {
+        if (!sniper.groups[groupIndex]?.blocks[blockIndex]) return
+        const block = sniper.groups[groupIndex].blocks[blockIndex]
+        sniper.groups[groupIndex].blocks[blockIndex] = { ...block, ...updates }
       })
     ),
   duplicateBlock: ({ groupIndex, blockIndex }: BlockIndices) =>
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        const block = { ...typebot.groups[groupIndex].blocks[blockIndex] }
-        const blocks = typebot.groups[groupIndex].blocks
+    setSniper((sniper) =>
+      produce(sniper, (sniper) => {
+        const block = { ...sniper.groups[groupIndex].blocks[blockIndex] }
+        const blocks = sniper.groups[groupIndex].blocks
         if (blockIndex === blocks.length - 1 && block.outgoingEdgeId)
-          deleteEdgeDraft({ typebot, edgeId: block.outgoingEdgeId })
+          deleteEdgeDraft({ sniper, edgeId: block.outgoingEdgeId })
         const newBlock = duplicateBlockDraft(block)
-        typebot.groups[groupIndex].blocks.splice(blockIndex + 1, 0, newBlock)
+        sniper.groups[groupIndex].blocks.splice(blockIndex + 1, 0, newBlock)
       })
     ),
   detachBlockFromGroup: (indices: BlockIndices) =>
-    setTypebot((typebot) => produce(typebot, removeBlockFromGroup(indices))),
+    setSniper((sniper) => produce(sniper, removeBlockFromGroup(indices))),
   deleteBlock: ({ groupIndex, blockIndex }: BlockIndices) =>
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        const removingBlock = typebot.groups[groupIndex].blocks[blockIndex]
-        deleteConnectedEdgesDraft(typebot, removingBlock.id)
-        removeBlockFromGroup({ groupIndex, blockIndex })(typebot)
-        removeEmptyGroups(typebot)
+    setSniper((sniper) =>
+      produce(sniper, (sniper) => {
+        const removingBlock = sniper.groups[groupIndex].blocks[blockIndex]
+        deleteConnectedEdgesDraft(sniper, removingBlock.id)
+        removeBlockFromGroup({ groupIndex, blockIndex })(sniper)
+        removeEmptyGroups(sniper)
       })
     ),
 })
 
 const removeBlockFromGroup =
   ({ groupIndex, blockIndex }: BlockIndices) =>
-  (typebot: Draft<TypebotV6>) => {
-    typebot.groups[groupIndex].blocks.splice(blockIndex, 1)
+  (sniper: Draft<SniperV6>) => {
+    sniper.groups[groupIndex].blocks.splice(blockIndex, 1)
   }
 
 export const createBlockDraft = (
-  typebot: Draft<TypebotV6>,
+  sniper: Draft<SniperV6>,
   block: BlockV6 | BlockV6['type'],
   { groupIndex, blockIndex }: BlockIndices
 ) => {
-  const blocks = typebot.groups[groupIndex].blocks
+  const blocks = sniper.groups[groupIndex].blocks
   if (
     blockIndex === blocks.length &&
     blockIndex > 0 &&
     blocks[blockIndex - 1].outgoingEdgeId
   )
     deleteEdgeDraft({
-      typebot,
+      sniper,
       edgeId: blocks[blockIndex - 1].outgoingEdgeId as string,
       groupIndex,
     })
   const blockId =
     typeof block === 'string'
-      ? createNewBlock(typebot, block, { groupIndex, blockIndex })
-      : moveBlockToGroup(typebot, block, { groupIndex, blockIndex })
-  removeEmptyGroups(typebot)
+      ? createNewBlock(sniper, block, { groupIndex, blockIndex })
+      : moveBlockToGroup(sniper, block, { groupIndex, blockIndex })
+  removeEmptyGroups(sniper)
   return blockId
 }
 
 const createNewBlock = (
-  typebot: Draft<Typebot>,
+  sniper: Draft<Sniper>,
   type: BlockV6['type'],
   { groupIndex, blockIndex }: BlockIndices
 ) => {
   const newBlock = parseNewBlock(type)
-  typebot.groups[groupIndex].blocks.splice(blockIndex ?? 0, 0, newBlock)
+  sniper.groups[groupIndex].blocks.splice(blockIndex ?? 0, 0, newBlock)
   return newBlock.id
 }
 
 const moveBlockToGroup = (
-  typebot: Draft<TypebotV6>,
+  sniper: Draft<SniperV6>,
   block: BlockV6,
   { groupIndex, blockIndex }: BlockIndices
 ) => {
   const newBlock = { ...block }
   if (block.outgoingEdgeId) {
-    if (typebot.groups[groupIndex].blocks.length > blockIndex ?? 0) {
-      deleteEdgeDraft({ typebot, edgeId: block.outgoingEdgeId, groupIndex })
+    if (sniper.groups[groupIndex].blocks.length > blockIndex ?? 0) {
+      deleteEdgeDraft({ sniper, edgeId: block.outgoingEdgeId, groupIndex })
       newBlock.outgoingEdgeId = undefined
     } else {
-      const edgeIndex = typebot.edges.findIndex(byId(block.outgoingEdgeId))
+      const edgeIndex = sniper.edges.findIndex(byId(block.outgoingEdgeId))
       if (edgeIndex === -1) newBlock.outgoingEdgeId = undefined
     }
   }
-  const groupId = typebot.groups[groupIndex].id
-  typebot.edges.forEach((edge) => {
+  const groupId = sniper.groups[groupIndex].id
+  sniper.edges.forEach((edge) => {
     if (edge.to.blockId === block.id) {
       edge.to.groupId = groupId
     }
   })
-  typebot.groups[groupIndex].blocks.splice(blockIndex ?? 0, 0, newBlock)
+  sniper.groups[groupIndex].blocks.splice(blockIndex ?? 0, 0, newBlock)
 }
 
 export const duplicateBlockDraft = (block: BlockV6): BlockV6 => {
@@ -163,18 +163,18 @@ export const duplicateBlockDraft = (block: BlockV6): BlockV6 => {
 }
 
 export const deleteGroupDraft =
-  (typebot: Draft<TypebotV6>) => (groupIndex: number) => {
-    deleteConnectedEdgesDraft(typebot, typebot.groups[groupIndex].id)
-    typebot.groups.splice(groupIndex, 1)
+  (sniper: Draft<SniperV6>) => (groupIndex: number) => {
+    deleteConnectedEdgesDraft(sniper, sniper.groups[groupIndex].id)
+    sniper.groups.splice(groupIndex, 1)
   }
 
-export const removeEmptyGroups = (typebot: Draft<TypebotV6>) => {
-  const emptyGroupsIndices = typebot.groups.reduce<number[]>(
+export const removeEmptyGroups = (sniper: Draft<SniperV6>) => {
+  const emptyGroupsIndices = sniper.groups.reduce<number[]>(
     (arr, group, idx) => {
       group.blocks.length === 0 && arr.push(idx)
       return arr
     },
     []
   )
-  emptyGroupsIndices.forEach(deleteGroupDraft(typebot))
+  emptyGroupsIndices.forEach(deleteGroupDraft(sniper))
 }

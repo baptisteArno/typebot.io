@@ -2,7 +2,7 @@ import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
 import { useState } from 'react'
 import { parseReadableDate } from '../utils/parseReadableDate'
-import { DateInputBlock } from '@typebot.io/schemas'
+import { DateInputBlock } from '@sniper.io/schemas'
 
 type DateInputProps = {
   onSubmit: (inputValue: InputSubmitContent) => void
@@ -20,7 +20,7 @@ export const DateForm = ({
       <div className="flex items-center">
         <form
           className={
-            'flex justify-between rounded-lg typebot-input pr-2 items-end'
+            'flex justify-between rounded-lg sniper-input pr-2 items-end'
           }
           onSubmit={(e) => {
             if (inputValues.from === '' && inputValues.to === '') return

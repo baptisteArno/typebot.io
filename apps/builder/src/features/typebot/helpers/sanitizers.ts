@@ -1,18 +1,18 @@
 import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
-import prisma from '@typebot.io/lib/prisma'
-import { Plan } from '@typebot.io/prisma'
-import { Block, Typebot } from '@typebot.io/schemas'
-import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
-import { defaultSendEmailOptions } from '@typebot.io/schemas/features/blocks/integrations/sendEmail/constants'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
-import { sessionOnlySetVariableOptions } from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
-import { isInputBlock } from '@typebot.io/schemas/helpers'
+import prisma from '@sniper.io/lib/prisma'
+import { Plan } from '@sniper.io/prisma'
+import { Block, Sniper } from '@sniper.io/schemas'
+import { IntegrationBlockType } from '@sniper.io/schemas/features/blocks/integrations/constants'
+import { defaultSendEmailOptions } from '@sniper.io/schemas/features/blocks/integrations/sendEmail/constants'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
+import { sessionOnlySetVariableOptions } from '@sniper.io/schemas/features/blocks/logic/setVariable/constants'
+import { isInputBlock } from '@sniper.io/schemas/helpers'
 
 export const sanitizeSettings = (
-  settings: Typebot['settings'],
+  settings: Sniper['settings'],
   workspacePlan: Plan,
   mode: 'create' | 'update'
-): Typebot['settings'] => ({
+): Sniper['settings'] => ({
   ...settings,
   publicShare: mode === 'create' ? undefined : settings.publicShare,
   general:
@@ -40,13 +40,13 @@ export const sanitizeSettings = (
 
 export const sanitizeGroups =
   (workspaceId: string) =>
-  async (groups: Typebot['groups']): Promise<Typebot['groups']> =>
+  async (groups: Sniper['groups']): Promise<Sniper['groups']> =>
     Promise.all(
       groups.map(async (group) => ({
         ...group,
         blocks: await Promise.all(group.blocks.map(sanitizeBlock(workspaceId))),
       }))
-    ) as Promise<Typebot['groups']>
+    ) as Promise<Sniper['groups']>
 
 const sanitizeBlock =
   (workspaceId: string) =>
@@ -98,12 +98,12 @@ const sanitizeCredentialsId =
   }
 
 export const isPublicIdNotAvailable = async (publicId: string) => {
-  const typebotWithSameIdCount = await prisma.typebot.count({
+  const sniperWithSameIdCount = await prisma.sniper.count({
     where: {
       publicId,
     },
   })
-  return typebotWithSameIdCount > 0
+  return sniperWithSameIdCount > 0
 }
 
 export const isCustomDomainNotAvailable = async ({
@@ -121,13 +121,13 @@ export const isCustomDomainNotAvailable = async ({
   })
   if (domainCount === 0) return true
 
-  const typebotWithSameDomainCount = await prisma.typebot.count({
+  const sniperWithSameDomainCount = await prisma.sniper.count({
     where: {
       customDomain,
     },
   })
 
-  return typebotWithSameDomainCount > 0
+  return sniperWithSameDomainCount > 0
 }
 
 export const sanitizeFolderId = async ({
@@ -167,7 +167,7 @@ export const sanitizeCustomDomain = async ({
 export const sanitizeVariables = ({
   variables,
   groups,
-}: Pick<Typebot, 'variables' | 'groups'>): Typebot['variables'] => {
+}: Pick<Sniper, 'variables' | 'groups'>): Sniper['variables'] => {
   const blocks = groups
     .flatMap((group) => group.blocks as Block[])
     .filter((b) => isInputBlock(b) || b.type === LogicBlockType.SET_VARIABLE)

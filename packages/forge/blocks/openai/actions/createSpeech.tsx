@@ -1,9 +1,9 @@
-import { option, createAction } from '@typebot.io/forge'
+import { option, createAction } from '@sniper.io/forge'
 import { defaultOpenAIOptions, openAIVoices } from '../constants'
 import OpenAI, { ClientOptions } from 'openai'
-import { isNotEmpty } from '@typebot.io/lib'
-import { createId } from '@typebot.io/lib/createId'
-import { uploadFileToBucket } from '@typebot.io/lib/s3/uploadFileToBucket'
+import { isNotEmpty } from '@sniper.io/lib'
+import { createId } from '@sniper.io/lib/createId'
+import { uploadFileToBucket } from '@sniper.io/lib/s3/uploadFileToBucket'
 import { auth } from '../auth'
 import { baseOptions } from '../baseOptions'
 

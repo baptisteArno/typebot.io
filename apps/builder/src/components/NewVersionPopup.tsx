@@ -1,4 +1,4 @@
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { trpc } from '@/lib/trpc'
 import {
   Button,
@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react'
 import { PackageIcon } from './icons'
 
 export const NewVersionPopup = () => {
-  const { typebot, save } = useTypebot()
+  const { sniper, save } = useSniper()
   const [isReloading, setIsReloading] = useState(false)
   const { data } = trpc.getAppVersionProcedure.useQuery()
   const [currentVersion, setCurrentVersion] = useState<string>()
@@ -66,13 +66,13 @@ export const NewVersionPopup = () => {
                 </HStack>
 
                 <Text fontSize="sm" color="gray.100">
-                  An improved version of Typebot is available. Please reload now
+                  An improved version of Sniper is available. Please reload now
                   to upgrade.
                 </Text>
               </Stack>
               <Flex justifyContent="flex-end">
                 <Button size="sm" onClick={saveAndReload}>
-                  {typebot?.id ? 'Save and reload' : 'Reload'}
+                  {sniper?.id ? 'Save and reload' : 'Reload'}
                 </Button>
               </Flex>
             </Stack>

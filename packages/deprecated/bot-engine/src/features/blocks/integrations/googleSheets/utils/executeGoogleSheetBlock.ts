@@ -9,9 +9,9 @@ import {
   VariableWithValue,
   Cell,
   Variable,
-} from '@typebot.io/schemas'
-import { sendRequest, byId } from '@typebot.io/lib'
-import { GoogleSheetsAction } from '@typebot.io/schemas/features/blocks/integrations/googleSheets/constants'
+} from '@sniper.io/schemas'
+import { sendRequest, byId } from '@sniper.io/lib'
+import { GoogleSheetsAction } from '@sniper.io/schemas/features/blocks/integrations/googleSheets/constants'
 
 export const executeGoogleSheetBlock = async (
   block: GoogleSheetsBlock,

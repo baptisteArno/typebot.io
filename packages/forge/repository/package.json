@@ -1,23 +1,23 @@
 {
-  "name": "@typebot.io/forge-repository",
+  "name": "@sniper.io/forge-repository",
   "version": "1.0.0",
   "description": "",
   "keywords": [],
   "author": "Baptiste Arnaud",
   "license": "AGPL-3.0-or-later",
   "devDependencies": {
-    "@typebot.io/forge": "workspace:*",
-    "@typebot.io/openai-block": "workspace:*",
-    "@typebot.io/zemantic-ai-block": "workspace:*",
-    "@typebot.io/cal-com-block": "workspace:*",
-    "@typebot.io/chat-node-block": "workspace:*",
-    "@typebot.io/qrcode-block": "workspace:*",
-    "@typebot.io/dify-ai-block": "workspace:*",
-    "@typebot.io/mistral-block": "workspace:*",
-    "@typebot.io/elevenlabs-block": "workspace:*",
-    "@typebot.io/anthropic-block": "workspace:*",
-    "@typebot.io/together-ai-block": "workspace:*",
-    "@typebot.io/open-router-block": "workspace:*",
-    "@typebot.io/nocodb-block": "workspace:*"
+    "@sniper.io/forge": "workspace:*",
+    "@sniper.io/openai-block": "workspace:*",
+    "@sniper.io/zemantic-ai-block": "workspace:*",
+    "@sniper.io/cal-com-block": "workspace:*",
+    "@sniper.io/chat-node-block": "workspace:*",
+    "@sniper.io/qrcode-block": "workspace:*",
+    "@sniper.io/dify-ai-block": "workspace:*",
+    "@sniper.io/mistral-block": "workspace:*",
+    "@sniper.io/elevenlabs-block": "workspace:*",
+    "@sniper.io/anthropic-block": "workspace:*",
+    "@sniper.io/together-ai-block": "workspace:*",
+    "@sniper.io/open-router-block": "workspace:*",
+    "@sniper.io/nocodb-block": "workspace:*"
   }
 }

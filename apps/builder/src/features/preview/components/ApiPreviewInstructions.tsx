@@ -1,7 +1,7 @@
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { TextLink } from '@/components/TextLink'
 import { useEditor } from '@/features/editor/providers/EditorProvider'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { parseApiHost } from '@/features/publish/components/embeds/snippetParsers'
 import {
   Code,
@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react'
 
 export const ApiPreviewInstructions = (props: StackProps) => {
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
   const { startPreviewAtGroup } = useEditor()
 
   const startParamsBody = startPreviewAtGroup
@@ -31,7 +31,7 @@ export const ApiPreviewInstructions = (props: StackProps) => {
       <OrderedList spacing={6} px="1">
         <ListItem>
           All your requests need to be authenticated with an API token.{' '}
-          <TextLink href="https://docs.typebot.io/api-reference/authentication">
+          <TextLink href="https://docs.sniper.io/api-reference/authentication">
             See instructions
           </TextLink>
           .
@@ -44,8 +44,8 @@ export const ApiPreviewInstructions = (props: StackProps) => {
             <CodeEditor
               isReadOnly
               lang={'shell'}
-              value={`${parseApiHost(typebot?.customDomain)}/api/v1/typebots/${
-                typebot?.id
+              value={`${parseApiHost(sniper?.customDomain)}/api/v1/snipers/${
+                sniper?.id
               }/preview/startChat`}
             />
             {startPreviewAtGroup && (
@@ -69,7 +69,7 @@ export const ApiPreviewInstructions = (props: StackProps) => {
               isReadOnly
               lang={'shell'}
               value={`${parseApiHost(
-                typebot?.customDomain
+                sniper?.customDomain
               )}/api/v1/sessions/<ID_FROM_FIRST_RESPONSE>/continueChat`}
             />
             <Text>With the following JSON body:</Text>
@@ -84,7 +84,7 @@ export const ApiPreviewInstructions = (props: StackProps) => {
       <Text fontSize="sm" pl="1">
         Check out the{' '}
         <TextLink
-          href="https://docs.typebot.io/api-reference/chat/start-preview-chat"
+          href="https://docs.sniper.io/api-reference/chat/start-preview-chat"
           isExternal
         >
           API reference

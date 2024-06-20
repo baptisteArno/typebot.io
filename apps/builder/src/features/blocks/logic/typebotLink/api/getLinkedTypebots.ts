@@ -1,13 +1,13 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
-import { isReadTypebotForbidden } from '@/features/typebot/helpers/isReadTypebotForbidden'
-import { isDefined } from '@typebot.io/lib'
-import { preprocessTypebot } from '@typebot.io/schemas/features/typebot/helpers/preprocessTypebot'
-import { parseGroups } from '@typebot.io/schemas/features/typebot/group'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
-import { typebotV5Schema, typebotV6Schema } from '@typebot.io/schemas'
+import { isReadSniperForbidden } from '@/features/sniper/helpers/isReadSniperForbidden'
+import { isDefined } from '@sniper.io/lib'
+import { preprocessSniper } from '@sniper.io/schemas/features/sniper/helpers/preprocessSniper'
+import { parseGroups } from '@sniper.io/schemas/features/sniper/group'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
+import { sniperV5Schema, sniperV6Schema } from '@sniper.io/schemas'
 
 const pick = {
   version: true,
@@ -17,37 +17,37 @@ const pick = {
 } as const
 
 const output = z.object({
-  typebots: z.array(
+  snipers: z.array(
     z.preprocess(
-      preprocessTypebot,
+      preprocessSniper,
       z.discriminatedUnion('version', [
-        typebotV5Schema._def.schema.pick(pick),
-        typebotV6Schema.pick(pick),
+        sniperV5Schema._def.schema.pick(pick),
+        sniperV6Schema.pick(pick),
       ])
     )
   ),
 })
 
-export const getLinkedTypebots = authenticatedProcedure
+export const getLinkedSnipers = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/v1/typebots/{typebotId}/linkedTypebots',
+      path: '/v1/snipers/{sniperId}/linkedSnipers',
       protect: true,
-      summary: 'Get linked typebots',
-      tags: ['Typebot'],
+      summary: 'Get linked snipers',
+      tags: ['Sniper'],
     },
   })
   .input(
     z.object({
-      typebotId: z.string(),
+      sniperId: z.string(),
     })
   )
   .output(output)
-  .query(async ({ input: { typebotId }, ctx: { user } }) => {
-    const typebot = await prisma.typebot.findFirst({
+  .query(async ({ input: { sniperId }, ctx: { user } }) => {
+    const sniper = await prisma.sniper.findFirst({
       where: {
-        id: typebotId,
+        id: sniperId,
       },
       select: {
         id: true,
@@ -76,29 +76,29 @@ export const getLinkedTypebots = authenticatedProcedure
       },
     })
 
-    if (!typebot || (await isReadTypebotForbidden(typebot, user)))
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'No typebot found' })
+    if (!sniper || (await isReadSniperForbidden(sniper, user)))
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'No sniper found' })
 
-    const linkedTypebotIds =
-      parseGroups(typebot.groups, { typebotVersion: typebot.version })
+    const linkedSniperIds =
+      parseGroups(sniper.groups, { sniperVersion: sniper.version })
         .flatMap((group) => group.blocks)
-        .reduce<string[]>((typebotIds, block) => {
-          if (block.type !== LogicBlockType.TYPEBOT_LINK) return typebotIds
-          const typebotId = block.options?.typebotId
-          return isDefined(typebotId) &&
-            !typebotIds.includes(typebotId) &&
+        .reduce<string[]>((sniperIds, block) => {
+          if (block.type !== LogicBlockType.SNIPER_LINK) return sniperIds
+          const sniperId = block.options?.sniperId
+          return isDefined(sniperId) &&
+            !sniperIds.includes(sniperId) &&
             block.options?.mergeResults !== false
-            ? [...typebotIds, typebotId]
-            : typebotIds
+            ? [...sniperIds, sniperId]
+            : sniperIds
         }, []) ?? []
 
-    if (!linkedTypebotIds.length) return { typebots: [] }
+    if (!linkedSniperIds.length) return { snipers: [] }
 
-    const typebots = (
-      await prisma.typebot.findMany({
+    const snipers = (
+      await prisma.sniper.findMany({
         where: {
           isArchived: { not: true },
-          id: { in: linkedTypebotIds },
+          id: { in: linkedSniperIds },
         },
         select: {
           id: true,
@@ -127,20 +127,20 @@ export const getLinkedTypebots = authenticatedProcedure
         },
       })
     )
-      .filter(async (typebot) => !(await isReadTypebotForbidden(typebot, user)))
-      // To avoid the out of sort memory error, we sort the typebots manually
+      .filter(async (sniper) => !(await isReadSniperForbidden(sniper, user)))
+      // To avoid the out of sort memory error, we sort the snipers manually
       .sort((a, b) => {
         return b.createdAt.getTime() - a.createdAt.getTime()
       })
-      .map((typebot) => ({
-        ...typebot,
-        groups: parseGroups(typebot.groups, {
-          typebotVersion: typebot.version,
+      .map((sniper) => ({
+        ...sniper,
+        groups: parseGroups(sniper.groups, {
+          sniperVersion: sniper.version,
         }),
-        variables: typebotV6Schema.shape.variables.parse(typebot.variables),
+        variables: sniperV6Schema.shape.variables.parse(sniper.variables),
       }))
 
     return {
-      typebots,
+      snipers,
     }
   })

@@ -1,6 +1,6 @@
 import { produce } from 'immer'
-import { TEvent } from '@typebot.io/schemas'
-import { SetTypebot } from '../TypebotProvider'
+import { TEvent } from '@sniper.io/schemas'
+import { SetSniper } from '../SniperProvider'
 
 export type EventsActions = {
   updateEvent: (
@@ -9,12 +9,12 @@ export type EventsActions = {
   ) => void
 }
 
-const eventsActions = (setTypebot: SetTypebot): EventsActions => ({
+const eventsActions = (setSniper: SetSniper): EventsActions => ({
   updateEvent: (eventIndex: number, updates: Partial<Omit<TEvent, 'id'>>) =>
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        const event = typebot.events[eventIndex]
-        typebot.events[eventIndex] = { ...event, ...updates }
+    setSniper((sniper) =>
+      produce(sniper, (sniper) => {
+        const event = sniper.events[eventIndex]
+        sniper.events[eventIndex] = { ...event, ...updates }
       })
     ),
 })

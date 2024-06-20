@@ -1,8 +1,8 @@
 import { useDisclosure } from '@chakra-ui/react'
 import { onboardingVideos } from '../data'
-import { User } from '@typebot.io/schemas'
+import { User } from '@sniper.io/schemas'
 import { useEffect, useState } from 'react'
-import { ForgedBlockDefinition } from '@typebot.io/forge-repository/types'
+import { ForgedBlockDefinition } from '@sniper.io/forge-repository/types'
 
 type Props = {
   key?: keyof typeof onboardingVideos

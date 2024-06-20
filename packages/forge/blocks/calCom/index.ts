@@ -1,4 +1,4 @@
-import { createBlock } from '@typebot.io/forge'
+import { createBlock } from '@sniper.io/forge'
 import { CalComLogo } from './logo'
 import { bookEvent } from './actions/bookEvent'
 import { baseOptions } from './baseOptions'

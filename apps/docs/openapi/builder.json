@@ -6,19 +6,19 @@
   },
   "servers": [
     {
-      "url": "https://app.typebot.io/api"
+      "url": "https://app.sniper.io/api"
     }
   ],
   "externalDocs": {
-    "url": "https://docs.typebot.io/api-reference"
+    "url": "https://docs.sniper.io/api-reference"
   },
   "paths": {
-    "/v1/typebots/{typebotId}/linkedTypebots": {
+    "/v1/snipers/{sniperId}/linkedSnipers": {
       "get": {
-        "operationId": "getLinkedTypebots",
-        "summary": "Get linked typebots",
+        "operationId": "getLinkedSnipers",
+        "summary": "Get linked snipers",
         "tags": [
-          "Typebot"
+          "Sniper"
         ],
         "security": [
           {
@@ -28,7 +28,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
+            "name": "sniperId",
             "schema": {
               "type": "string"
             },
@@ -43,7 +43,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "typebots": {
+                    "snipers": {
                       "type": "array",
                       "items": {
                         "oneOf": [
@@ -713,13 +713,13 @@
                                               "type": {
                                                 "type": "string",
                                                 "enum": [
-                                                  "Typebot link"
+                                                  "Sniper link"
                                                 ]
                                               },
                                               "options": {
                                                 "type": "object",
                                                 "properties": {
-                                                  "typebotId": {
+                                                  "sniperId": {
                                                     "type": "string"
                                                   },
                                                   "groupId": {
@@ -2635,7 +2635,7 @@
                     }
                   },
                   "required": [
-                    "typebots"
+                    "snipers"
                   ]
                 }
               }
@@ -2694,7 +2694,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/analytics/inDepthData": {
+    "/v1/snipers/{sniperId}/analytics/inDepthData": {
       "get": {
         "operationId": "analytics-getInDepthAnalyticsData",
         "summary": "List total answers in blocks and off-default paths visited edges",
@@ -2709,7 +2709,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
+            "name": "sniperId",
             "schema": {
               "type": "string"
             },
@@ -2849,7 +2849,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/analytics/stats": {
+    "/v1/snipers/{sniperId}/analytics/stats": {
       "get": {
         "operationId": "analytics-getStats",
         "summary": "Get results stats",
@@ -2864,7 +2864,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
+            "name": "sniperId",
             "schema": {
               "type": "string"
             },
@@ -3749,12 +3749,12 @@
         }
       }
     },
-    "/v1/typebots": {
+    "/v1/snipers": {
       "post": {
-        "operationId": "typebot-createTypebot",
-        "summary": "Create a typebot",
+        "operationId": "sniper-createSniper",
+        "summary": "Create a sniper",
         "tags": [
-          "Typebot"
+          "Sniper"
         ],
         "security": [
           {
@@ -3771,7 +3771,7 @@
                   "workspaceId": {
                     "type": "string"
                   },
-                  "typebot": {
+                  "sniper": {
                     "type": "object",
                     "properties": {
                       "name": {
@@ -3950,7 +3950,7 @@
                 },
                 "required": [
                   "workspaceId",
-                  "typebot"
+                  "sniper"
                 ]
               }
             }
@@ -3964,12 +3964,12 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "typebot": {
-                      "$ref": "#/components/schemas/typebotV6"
+                    "sniper": {
+                      "$ref": "#/components/schemas/sniperV6"
                     }
                   },
                   "required": [
-                    "typebot"
+                    "sniper"
                   ]
                 }
               }
@@ -4018,10 +4018,10 @@
         }
       },
       "get": {
-        "operationId": "typebot-listTypebots",
-        "summary": "List typebots",
+        "operationId": "sniper-listSnipers",
+        "summary": "List snipers",
         "tags": [
-          "Typebot"
+          "Sniper"
         ],
         "security": [
           {
@@ -4055,7 +4055,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "typebots": {
+                    "snipers": {
                       "type": "array",
                       "items": {
                         "type": "object",
@@ -4070,7 +4070,7 @@
                           "id": {
                             "type": "string"
                           },
-                          "publishedTypebotId": {
+                          "publishedSniperId": {
                             "type": "string"
                           }
                         },
@@ -4083,7 +4083,7 @@
                     }
                   },
                   "required": [
-                    "typebots"
+                    "snipers"
                   ]
                 }
               }
@@ -4142,12 +4142,12 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}": {
+    "/v1/snipers/{sniperId}": {
       "patch": {
-        "operationId": "typebot-updateTypebot",
-        "summary": "Update a typebot",
+        "operationId": "sniper-updateSniper",
+        "summary": "Update a sniper",
         "tags": [
-          "Typebot"
+          "Sniper"
         ],
         "security": [
           {
@@ -4157,11 +4157,11 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
-            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
+            "name": "sniperId",
+            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)",
             "schema": {
               "type": "string",
-              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)"
             },
             "required": true
           }
@@ -4173,7 +4173,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "typebot": {
+                  "sniper": {
                     "anyOf": [
                       {
                         "type": "object",
@@ -4370,7 +4370,7 @@
                             "type": "string"
                           }
                         },
-                        "title": "Typebot V6"
+                        "title": "Sniper V6"
                       },
                       {
                         "type": "object",
@@ -5049,13 +5049,13 @@
                                           "type": {
                                             "type": "string",
                                             "enum": [
-                                              "Typebot link"
+                                              "Sniper link"
                                             ]
                                           },
                                           "options": {
                                             "type": "object",
                                             "properties": {
-                                              "typebotId": {
+                                              "sniperId": {
                                                 "type": "string"
                                               },
                                               "groupId": {
@@ -7017,13 +7017,13 @@
                             "type": "string"
                           }
                         },
-                        "title": "Typebot V5"
+                        "title": "Sniper V5"
                       }
                     ]
                   }
                 },
                 "required": [
-                  "typebot"
+                  "sniper"
                 ]
               }
             }
@@ -7037,12 +7037,12 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "typebot": {
-                      "$ref": "#/components/schemas/typebotV6"
+                    "sniper": {
+                      "$ref": "#/components/schemas/sniperV6"
                     }
                   },
                   "required": [
-                    "typebot"
+                    "sniper"
                   ]
                 }
               }
@@ -7101,10 +7101,10 @@
         }
       },
       "get": {
-        "operationId": "typebot-getTypebot",
-        "summary": "Get a typebot",
+        "operationId": "sniper-getSniper",
+        "summary": "Get a sniper",
         "tags": [
-          "Typebot"
+          "Sniper"
         ],
         "security": [
           {
@@ -7114,22 +7114,22 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
-            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
+            "name": "sniperId",
+            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)",
             "schema": {
               "type": "string",
-              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)"
             },
             "required": true
           },
           {
             "in": "query",
             "name": "migrateToLatestVersion",
-            "description": "If enabled, the typebot will be converted to the latest schema version",
+            "description": "If enabled, the sniper will be converted to the latest schema version",
             "schema": {
               "type": "boolean",
               "default": false,
-              "description": "If enabled, the typebot will be converted to the latest schema version"
+              "description": "If enabled, the sniper will be converted to the latest schema version"
             }
           }
         ],
@@ -7141,22 +7141,22 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "typebot": {
+                    "sniper": {
                       "oneOf": [
                         {
-                          "$ref": "#/components/schemas/typebotV6"
+                          "$ref": "#/components/schemas/sniperV6"
                         },
                         {
-                          "$ref": "#/components/schemas/typebotV5"
+                          "$ref": "#/components/schemas/sniperV5"
                         }
                       ],
                       "discriminator": {
                         "propertyName": "version",
                         "mapping": {
-                          "3": "#/components/schemas/typebotV5",
-                          "4": "#/components/schemas/typebotV5",
-                          "5": "#/components/schemas/typebotV5",
-                          "6": "#/components/schemas/typebotV6"
+                          "3": "#/components/schemas/sniperV5",
+                          "4": "#/components/schemas/sniperV5",
+                          "5": "#/components/schemas/sniperV5",
+                          "6": "#/components/schemas/sniperV6"
                         }
                       }
                     },
@@ -7170,7 +7170,7 @@
                     }
                   },
                   "required": [
-                    "typebot",
+                    "sniper",
                     "currentUserMode"
                   ]
                 }
@@ -7230,10 +7230,10 @@
         }
       },
       "delete": {
-        "operationId": "typebot-deleteTypebot",
-        "summary": "Delete a typebot",
+        "operationId": "sniper-deleteSniper",
+        "summary": "Delete a sniper",
         "tags": [
-          "Typebot"
+          "Sniper"
         ],
         "security": [
           {
@@ -7243,11 +7243,11 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
-            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
+            "name": "sniperId",
+            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)",
             "schema": {
               "type": "string",
-              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)"
             },
             "required": true
           }
@@ -7327,12 +7327,12 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/publishedTypebot": {
+    "/v1/snipers/{sniperId}/publishedSniper": {
       "get": {
-        "operationId": "typebot-getPublishedTypebot",
-        "summary": "Get published typebot",
+        "operationId": "sniper-getPublishedSniper",
+        "summary": "Get published sniper",
         "tags": [
-          "Typebot"
+          "Sniper"
         ],
         "security": [
           {
@@ -7342,22 +7342,22 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
-            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
+            "name": "sniperId",
+            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)",
             "schema": {
               "type": "string",
-              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)"
             },
             "required": true
           },
           {
             "in": "query",
             "name": "migrateToLatestVersion",
-            "description": "If enabled, the typebot will be converted to the latest schema version",
+            "description": "If enabled, the sniper will be converted to the latest schema version",
             "schema": {
               "type": "boolean",
               "default": false,
-              "description": "If enabled, the typebot will be converted to the latest schema version"
+              "description": "If enabled, the sniper will be converted to the latest schema version"
             }
           }
         ],
@@ -7369,23 +7369,23 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "publishedTypebot": {
+                    "publishedSniper": {
                       "nullable": true,
                       "oneOf": [
                         {
-                          "$ref": "#/components/schemas/publicTypebotV6"
+                          "$ref": "#/components/schemas/publicSniperV6"
                         },
                         {
-                          "$ref": "#/components/schemas/publicTypebotV5"
+                          "$ref": "#/components/schemas/publicSniperV5"
                         }
                       ],
                       "discriminator": {
                         "propertyName": "version",
                         "mapping": {
-                          "3": "#/components/schemas/publicTypebotV5",
-                          "4": "#/components/schemas/publicTypebotV5",
-                          "5": "#/components/schemas/publicTypebotV5",
-                          "6": "#/components/schemas/publicTypebotV6"
+                          "3": "#/components/schemas/publicSniperV5",
+                          "4": "#/components/schemas/publicSniperV5",
+                          "5": "#/components/schemas/publicSniperV5",
+                          "6": "#/components/schemas/publicSniperV6"
                         }
                       }
                     },
@@ -7401,7 +7401,7 @@
                     }
                   },
                   "required": [
-                    "publishedTypebot"
+                    "publishedSniper"
                   ]
                 }
               }
@@ -7460,12 +7460,12 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/publish": {
+    "/v1/snipers/{sniperId}/publish": {
       "post": {
-        "operationId": "typebot-publishTypebot",
-        "summary": "Publish a typebot",
+        "operationId": "sniper-publishSniper",
+        "summary": "Publish a sniper",
         "tags": [
-          "Typebot"
+          "Sniper"
         ],
         "security": [
           {
@@ -7475,11 +7475,11 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
-            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
+            "name": "sniperId",
+            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)",
             "schema": {
               "type": "string",
-              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)"
             },
             "required": true
           }
@@ -7549,12 +7549,12 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/unpublish": {
+    "/v1/snipers/{sniperId}/unpublish": {
       "post": {
-        "operationId": "typebot-unpublishTypebot",
-        "summary": "Unpublish a typebot",
+        "operationId": "sniper-unpublishSniper",
+        "summary": "Unpublish a sniper",
         "tags": [
-          "Typebot"
+          "Sniper"
         ],
         "security": [
           {
@@ -7564,11 +7564,11 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
-            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
+            "name": "sniperId",
+            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)",
             "schema": {
               "type": "string",
-              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)"
             },
             "required": true
           }
@@ -7638,12 +7638,12 @@
         }
       }
     },
-    "/v1/typebots/import": {
+    "/v1/snipers/import": {
       "post": {
-        "operationId": "typebot-importTypebot",
-        "summary": "Import a typebot",
+        "operationId": "sniper-importSniper",
+        "summary": "Import a sniper",
         "tags": [
-          "Typebot"
+          "Sniper"
         ],
         "security": [
           {
@@ -7661,7 +7661,7 @@
                     "type": "string",
                     "description": "[Where to find my workspace ID?](../how-to#how-to-find-my-workspaceid)"
                   },
-                  "typebot": {
+                  "sniper": {
                     "oneOf": [
                       {
                         "type": "object",
@@ -7848,7 +7848,7 @@
                           "icon",
                           "folderId"
                         ],
-                        "title": "Typebot V6"
+                        "title": "Sniper V6"
                       },
                       {
                         "type": "object",
@@ -8522,13 +8522,13 @@
                                           "type": {
                                             "type": "string",
                                             "enum": [
-                                              "Typebot link"
+                                              "Sniper link"
                                             ]
                                           },
                                           "options": {
                                             "type": "object",
                                             "properties": {
-                                              "typebotId": {
+                                              "sniperId": {
                                                 "type": "string"
                                               },
                                               "groupId": {
@@ -10485,14 +10485,14 @@
                           "icon",
                           "folderId"
                         ],
-                        "title": "Typebot V5"
+                        "title": "Sniper V5"
                       }
                     ]
                   }
                 },
                 "required": [
                   "workspaceId",
-                  "typebot"
+                  "sniper"
                 ]
               }
             }
@@ -10506,12 +10506,12 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "typebot": {
-                      "$ref": "#/components/schemas/typebotV6"
+                    "sniper": {
+                      "$ref": "#/components/schemas/sniperV6"
                     }
                   },
                   "required": [
-                    "typebot"
+                    "sniper"
                   ]
                 }
               }
@@ -10560,7 +10560,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/webhookBlocks": {
+    "/v1/snipers/{sniperId}/webhookBlocks": {
       "get": {
         "operationId": "webhook-listWebhookBlocks",
         "summary": "List webhook blocks",
@@ -10576,7 +10576,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
+            "name": "sniperId",
             "schema": {
               "type": "string"
             },
@@ -10683,7 +10683,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/getResultExample": {
+    "/v1/snipers/{sniperId}/webhookBlocks/{blockId}/getResultExample": {
       "get": {
         "operationId": "webhook-getResultExample",
         "summary": "Get result example",
@@ -10699,7 +10699,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
+            "name": "sniperId",
             "schema": {
               "type": "string"
             },
@@ -10788,7 +10788,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/subscribe": {
+    "/v1/snipers/{sniperId}/webhookBlocks/{blockId}/subscribe": {
       "post": {
         "operationId": "webhook-subscribeWebhook",
         "summary": "Subscribe to webhook block",
@@ -10803,7 +10803,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
+            "name": "sniperId",
             "schema": {
               "type": "string"
             },
@@ -10903,7 +10903,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/unsubscribe": {
+    "/v1/snipers/{sniperId}/webhookBlocks/{blockId}/unsubscribe": {
       "post": {
         "operationId": "webhook-unsubscribeWebhook",
         "summary": "Unsubscribe from webhook block",
@@ -10918,7 +10918,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
+            "name": "sniperId",
             "schema": {
               "type": "string"
             },
@@ -11000,7 +11000,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/results": {
+    "/v1/snipers/{sniperId}/results": {
       "get": {
         "operationId": "results-getResults",
         "summary": "List results ordered by descending creation date",
@@ -11015,11 +11015,11 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
-            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
+            "name": "sniperId",
+            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)",
             "schema": {
               "type": "string",
-              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)"
             },
             "required": true
           },
@@ -11084,7 +11084,7 @@
                           "createdAt": {
                             "type": "string"
                           },
-                          "typebotId": {
+                          "sniperId": {
                             "type": "string"
                           },
                           "variables": {
@@ -11160,7 +11160,7 @@
                         "required": [
                           "id",
                           "createdAt",
-                          "typebotId",
+                          "sniperId",
                           "variables",
                           "isCompleted",
                           "hasStarted",
@@ -11248,11 +11248,11 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
-            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
+            "name": "sniperId",
+            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)",
             "schema": {
               "type": "string",
-              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)"
             },
             "required": true
           },
@@ -11328,7 +11328,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/results/{resultId}": {
+    "/v1/snipers/{sniperId}/results/{resultId}": {
       "get": {
         "operationId": "results-getResult",
         "summary": "Get result by id",
@@ -11343,11 +11343,11 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
-            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
+            "name": "sniperId",
+            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)",
             "schema": {
               "type": "string",
-              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)"
             },
             "required": true
           },
@@ -11379,7 +11379,7 @@
                         "createdAt": {
                           "type": "string"
                         },
-                        "typebotId": {
+                        "sniperId": {
                           "type": "string"
                         },
                         "variables": {
@@ -11455,7 +11455,7 @@
                       "required": [
                         "id",
                         "createdAt",
-                        "typebotId",
+                        "sniperId",
                         "variables",
                         "isCompleted",
                         "hasStarted",
@@ -11525,7 +11525,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/results/{resultId}/logs": {
+    "/v1/snipers/{sniperId}/results/{resultId}/logs": {
       "get": {
         "operationId": "results-getResultLogs",
         "summary": "List result logs",
@@ -11540,11 +11540,11 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
-            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
+            "name": "sniperId",
+            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)",
             "schema": {
               "type": "string",
-              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)"
             },
             "required": true
           },
@@ -13616,7 +13616,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/collaborators": {
+    "/v1/snipers/{sniperId}/collaborators": {
       "get": {
         "operationId": "collaborators-getCollaborators",
         "summary": "Get collaborators",
@@ -13631,7 +13631,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
+            "name": "sniperId",
             "schema": {
               "type": "string"
             },
@@ -13662,7 +13662,7 @@
                           "userId": {
                             "type": "string"
                           },
-                          "typebotId": {
+                          "sniperId": {
                             "type": "string"
                           },
                           "createdAt": {
@@ -13675,7 +13675,7 @@
                         "required": [
                           "type",
                           "userId",
-                          "typebotId",
+                          "sniperId",
                           "createdAt",
                           "updatedAt"
                         ]
@@ -14246,7 +14246,7 @@
         }
       }
     },
-    "/v1/typebots/{typebotId}/whatsapp/start-preview": {
+    "/v1/snipers/{sniperId}/whatsapp/start-preview": {
       "post": {
         "operationId": "whatsApp-startWhatsAppPreview",
         "summary": "Start preview",
@@ -14261,7 +14261,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "typebotId",
+            "name": "sniperId",
             "schema": {
               "type": "string"
             },
@@ -17034,13 +17034,13 @@
               "type": {
                 "type": "string",
                 "enum": [
-                  "Typebot link"
+                  "Sniper link"
                 ]
               },
               "options": {
                 "type": "object",
                 "properties": {
-                  "typebotId": {
+                  "sniperId": {
                     "type": "string"
                   },
                   "groupId": {
@@ -22441,7 +22441,7 @@
         },
         "title": "Settings"
       },
-      "typebotV6": {
+      "sniperV6": {
         "type": "object",
         "properties": {
           "version": {
@@ -22672,9 +22672,9 @@
           "whatsAppCredentialsId",
           "riskLevel"
         ],
-        "title": "Typebot V6"
+        "title": "Sniper V6"
       },
-      "typebotV5": {
+      "sniperV5": {
         "type": "object",
         "properties": {
           "version": {
@@ -23349,13 +23349,13 @@
                           "type": {
                             "type": "string",
                             "enum": [
-                              "Typebot link"
+                              "Sniper link"
                             ]
                           },
                           "options": {
                             "type": "object",
                             "properties": {
-                              "typebotId": {
+                              "sniperId": {
                                 "type": "string"
                               },
                               "groupId": {
@@ -25355,9 +25355,9 @@
           "whatsAppCredentialsId",
           "riskLevel"
         ],
-        "title": "Typebot V5"
+        "title": "Sniper V5"
       },
-      "publicTypebotV6": {
+      "publicSniperV6": {
         "type": "object",
         "properties": {
           "id": {
@@ -25375,7 +25375,7 @@
           "updatedAt": {
             "type": "string"
           },
-          "typebotId": {
+          "sniperId": {
             "type": "string"
           },
           "groups": {
@@ -25503,7 +25503,7 @@
           "version",
           "createdAt",
           "updatedAt",
-          "typebotId",
+          "sniperId",
           "groups",
           "events",
           "edges",
@@ -25511,9 +25511,9 @@
           "theme",
           "settings"
         ],
-        "title": "Public Typebot V6"
+        "title": "Public Sniper V6"
       },
-      "publicTypebotV5": {
+      "publicSniperV5": {
         "type": "object",
         "properties": {
           "id": {
@@ -25533,7 +25533,7 @@
           "updatedAt": {
             "type": "string"
           },
-          "typebotId": {
+          "sniperId": {
             "type": "string"
           },
           "groups": {
@@ -26191,13 +26191,13 @@
                           "type": {
                             "type": "string",
                             "enum": [
-                              "Typebot link"
+                              "Sniper link"
                             ]
                           },
                           "options": {
                             "type": "object",
                             "properties": {
-                              "typebotId": {
+                              "sniperId": {
                                 "type": "string"
                               },
                               "groupId": {
@@ -28109,7 +28109,7 @@
           "version",
           "createdAt",
           "updatedAt",
-          "typebotId",
+          "sniperId",
           "groups",
           "events",
           "edges",
@@ -28117,7 +28117,7 @@
           "theme",
           "settings"
         ],
-        "title": "Public Typebot V5"
+        "title": "Public Sniper V5"
       }
     }
   }

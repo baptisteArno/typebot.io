@@ -44,7 +44,7 @@ export const ResourcesMenu = ({ isOpen }: Props) => (
               _focus={{ shadow: 'outline' }}
               target={
                 item.href.startsWith('https') &&
-                !item.href.includes('app.typebot.io')
+                !item.href.includes('app.sniper.io')
                   ? '_blank'
                   : undefined
               }

@@ -36,7 +36,7 @@ const Pricing = () => {
         bgGradient="linear(to-b, gray.900, gray.800)"
         pb={40}
       >
-        <SocialMetaTags currentUrl={`https://www.typebot.io/pricing`} />
+        <SocialMetaTags currentUrl={`https://www.sniper.io/pricing`} />
         <BackgroundPolygons />
         <DarkMode>
           <Header />
@@ -65,7 +65,7 @@ const Pricing = () => {
                 <Text as="span" fontWeight="bold">
                   large company
                 </Text>
-                , Typebot is here to help you build high-performing chat forms
+                , Sniper is here to help you build high-performing chat forms
                 for the right price. Pay for as little or as much usage as you
                 need.
               </Text>
@@ -80,7 +80,7 @@ const Pricing = () => {
             >
               <StripeClimateLogo />
               <Text fontSize="sm">
-                Typebot is contributing 1% of your subscription to remove CO₂
+                Sniper is contributing 1% of your subscription to remove CO₂
                 from the atmosphere.{' '}
                 <TextLink href="https://climate.stripe.com/5VCRAq" isExternal>
                   More info

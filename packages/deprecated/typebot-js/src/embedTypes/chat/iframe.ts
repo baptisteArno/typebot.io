@@ -10,20 +10,20 @@ export const createIframeContainer = (
 }
 
 export const openIframe = (bubble: Element): void => {
-  const iframe = bubble.querySelector('.typebot-iframe') as HTMLIFrameElement
-  loadTypebotIfFirstOpen(iframe)
+  const iframe = bubble.querySelector('.sniper-iframe') as HTMLIFrameElement
+  loadSniperIfFirstOpen(iframe)
   iframe.style.display = 'flex'
   setTimeout(() => bubble.classList.add('iframe-opened'), 50)
   bubble.classList.remove('message-opened')
 }
 
 export const closeIframe = (bubble: Element): void => {
-  const iframe = bubble.querySelector('.typebot-iframe') as HTMLIFrameElement
+  const iframe = bubble.querySelector('.sniper-iframe') as HTMLIFrameElement
   bubble.classList.remove('iframe-opened')
   setTimeout(() => (iframe.style.display = 'none'), 550)
 }
 
-export const loadTypebotIfFirstOpen = (iframe: HTMLIFrameElement): void => {
+export const loadSniperIfFirstOpen = (iframe: HTMLIFrameElement): void => {
   if (!iframe.dataset.src) return
   iframe.src = iframe.dataset.src
   iframe.removeAttribute('data-src')

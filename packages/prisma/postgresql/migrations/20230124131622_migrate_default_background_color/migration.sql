@@ -1,6 +1,6 @@
 -- Set background to white for all themes that have no background color set
 UPDATE
-  "Typebot" t
+  "Sniper" t
 SET
   "theme" = jsonb_set(
     jsonb_set(

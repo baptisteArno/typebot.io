@@ -13,10 +13,10 @@ import {
   Text,
   FormHelperText,
 } from '@chakra-ui/react'
-import { Variable, VariableString } from '@typebot.io/schemas'
+import { Variable, VariableString } from '@sniper.io/schemas'
 import { ReactNode, useEffect, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import { MoreInfoTooltip } from '../MoreInfoTooltip'
 
 type Value<HasVariable> = HasVariable extends true | undefined

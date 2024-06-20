@@ -3,8 +3,8 @@ import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { useTranslate } from '@tolgee/react'
-import { TextInputBlock, Variable } from '@typebot.io/schemas'
-import { defaultTextInputOptions } from '@typebot.io/schemas/features/blocks/inputs/text/constants'
+import { TextInputBlock, Variable } from '@sniper.io/schemas'
+import { defaultTextInputOptions } from '@sniper.io/schemas/features/blocks/inputs/text/constants'
 import React from 'react'
 
 type Props = {

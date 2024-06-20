@@ -1,4 +1,4 @@
-import { createBlock } from '@typebot.io/forge'
+import { createBlock } from '@sniper.io/forge'
 import { TogetherAiLogo } from './logo'
 import { auth } from './auth'
 import { createChatCompletion } from './actions/createChatCompletion'

@@ -7,13 +7,13 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
-import { TypebotInDashboard } from '@/features/dashboard/types'
+import { SniperInDashboard } from '@/features/dashboard/types'
 
 type Props = {
-  typebot: TypebotInDashboard
+  sniper: SniperInDashboard
 } & BoxProps
 
-export const TypebotCardOverlay = ({ typebot, ...props }: Props) => {
+export const SniperCardOverlay = ({ sniper, ...props }: Props) => {
   return (
     <Box
       display="flex"
@@ -39,9 +39,9 @@ export const TypebotCardOverlay = ({ typebot, ...props }: Props) => {
           alignItems="center"
           fontSize={'4xl'}
         >
-          <EmojiOrImageIcon icon={typebot.icon} boxSize={'35px'} />
+          <EmojiOrImageIcon icon={sniper.icon} boxSize={'35px'} />
         </Flex>
-        <Text>{typebot.name}</Text>
+        <Text>{sniper.name}</Text>
       </VStack>
     </Box>
   )

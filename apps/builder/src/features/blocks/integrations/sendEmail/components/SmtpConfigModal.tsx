@@ -10,12 +10,12 @@ import {
 } from '@chakra-ui/react'
 import { useUser } from '@/features/account/hooks/useUser'
 import React, { useState } from 'react'
-import { isNotDefined } from '@typebot.io/lib'
+import { isNotDefined } from '@sniper.io/lib'
 import { SmtpConfigForm } from './SmtpConfigForm'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'
 import { testSmtpConfig } from '../queries/testSmtpConfigQuery'
-import { SmtpCredentials } from '@typebot.io/schemas'
+import { SmtpCredentials } from '@sniper.io/schemas'
 import { trpc } from '@/lib/trpc'
 
 type Props = {

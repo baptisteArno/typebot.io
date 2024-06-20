@@ -1,10 +1,10 @@
-import { BlockIndices } from '@typebot.io/schemas'
+import { BlockIndices } from '@sniper.io/schemas'
 import React from 'react'
 import { Stack, Tag, Wrap, Text } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { SetVariableLabel } from '@/components/SetVariableLabel'
 import { ItemNodesList } from '@/features/graph/components/nodes/item/ItemNodesList'
-import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
+import { PictureChoiceBlock } from '@sniper.io/schemas/features/blocks/inputs/pictureChoice'
 import { useTranslate } from '@tolgee/react'
 
 type Props = {
@@ -14,8 +14,8 @@ type Props = {
 
 export const PictureChoiceNode = ({ block, indices }: Props) => {
   const { t } = useTranslate()
-  const { typebot } = useTypebot()
-  const dynamicVariableName = typebot?.variables.find(
+  const { sniper } = useSniper()
+  const dynamicVariableName = sniper?.variables.find(
     (variable) =>
       variable.id === block.options?.dynamicItems?.pictureSrcsVariableId
   )?.name
@@ -42,7 +42,7 @@ export const PictureChoiceNode = ({ block, indices }: Props) => {
       {block.options?.variableId ? (
         <SetVariableLabel
           variableId={block.options.variableId}
-          variables={typebot?.variables}
+          variables={sniper?.variables}
         />
       ) : null}
     </Stack>

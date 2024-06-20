@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useTypebot } from '@/providers/TypebotProvider'
-import { ImageBubbleBlock } from '@typebot.io/schemas'
+import { useSniper } from '@/providers/SniperProvider'
+import { ImageBubbleBlock } from '@sniper.io/schemas'
 import { TypingBubble } from '@/components/TypingBubble'
 import { parseVariables } from '@/features/variables'
 
@@ -14,11 +14,11 @@ export const showAnimationDuration = 400
 export const mediaLoadingFallbackTimeout = 5000
 
 export const ImageBubble = ({ block, onTransitionEnd }: Props) => {
-  const { typebot, isLoading } = useTypebot()
+  const { sniper, isLoading } = useSniper()
   const messageContainer = useRef<HTMLDivElement | null>(null)
   const image = useRef<HTMLImageElement | null>(null)
   const [isTyping, setIsTyping] = useState(true)
-  const [url] = useState(parseVariables(typebot.variables)(block.content?.url))
+  const [url] = useState(parseVariables(sniper.variables)(block.content?.url))
 
   const onTypingEnd = useCallback(() => {
     setIsTyping(false)
@@ -55,7 +55,7 @@ export const ImageBubble = ({ block, onTransitionEnd }: Props) => {
   return (
     <div className="flex flex-col" ref={messageContainer}>
       <div className="flex mb-2 w-full lg:w-11/12 items-center">
-        <div className={'flex relative z-10 items-start typebot-host-bubble'}>
+        <div className={'flex relative z-10 items-start sniper-host-bubble'}>
           <div
             className="flex items-center absolute px-4 py-2 rounded-lg bubble-typing z-10 "
             style={{

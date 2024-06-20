@@ -1,4 +1,4 @@
-import { isNotEmpty } from '@typebot.io/lib'
+import { isNotEmpty } from '@sniper.io/lib'
 import { useEventListener } from './useEventListener'
 
 type Props = {

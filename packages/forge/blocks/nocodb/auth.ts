@@ -1,4 +1,4 @@
-import { option, AuthDefinition } from '@typebot.io/forge'
+import { option, AuthDefinition } from '@sniper.io/forge'
 import { defaultBaseUrl } from './constants'
 
 export const auth = {

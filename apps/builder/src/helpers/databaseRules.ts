@@ -4,20 +4,20 @@ import {
   Prisma,
   User,
   WorkspaceRole,
-} from '@typebot.io/prisma'
-import prisma from '@typebot.io/lib/prisma'
+} from '@sniper.io/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { NextApiResponse } from 'next'
-import { forbidden } from '@typebot.io/lib/api'
-import { env } from '@typebot.io/env'
+import { forbidden } from '@sniper.io/lib/api'
+import { env } from '@sniper.io/env'
 
-export const canWriteTypebots = (
-  typebotIds: string[] | string,
+export const canWriteSnipers = (
+  sniperIds: string[] | string,
   user: Pick<User, 'email' | 'id'>
-): Prisma.TypebotWhereInput =>
+): Prisma.SniperWhereInput =>
   env.NEXT_PUBLIC_E2E_TEST
-    ? { id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds } }
+    ? { id: typeof sniperIds === 'string' ? sniperIds : { in: sniperIds } }
     : {
-        id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds },
+        id: typeof sniperIds === 'string' ? sniperIds : { in: sniperIds },
         OR: [
           {
             workspace: {
@@ -34,11 +34,11 @@ export const canWriteTypebots = (
         ],
       }
 
-export const canReadTypebots = (
-  typebotIds: string | string[],
+export const canReadSnipers = (
+  sniperIds: string | string[],
   user: Pick<User, 'email' | 'id'>
 ) => ({
-  id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds },
+  id: typeof sniperIds === 'string' ? sniperIds : { in: sniperIds },
   workspace:
     env.ADMIN_EMAIL?.some((email) => email === user.email) ||
     env.NEXT_PUBLIC_E2E_TEST
@@ -50,8 +50,8 @@ export const canReadTypebots = (
         },
 })
 
-export const canEditGuests = (user: User, typebotId: string) => ({
-  id: typebotId,
+export const canEditGuests = (user: User, sniperId: string) => ({
+  id: sniperId,
   workspace: {
     members: {
       some: { userId: user.id, role: { not: WorkspaceRole.GUEST } },

@@ -12,7 +12,7 @@ import {
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
-export const TypebotNotFoundPage = () => {
+export const SniperNotFoundPage = () => {
   const { replace, asPath } = useRouter()
   const { user, isLoading } = useUser()
 
@@ -32,11 +32,11 @@ export const TypebotNotFoundPage = () => {
         <VStack spacing={6}>
           <VStack>
             <Heading>404</Heading>
-            <Text fontSize="xl">Typebot not found.</Text>
+            <Text fontSize="xl">Sniper not found.</Text>
           </VStack>
           <Button
             as={Link}
-            href="/typebots"
+            href="/snipers"
             colorScheme="blue"
             leftIcon={<ChevronLeftIcon />}
           >

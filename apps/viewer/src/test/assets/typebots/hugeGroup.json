@@ -2,7 +2,7 @@
   "id": "cl0jrltqx0037601agzjiy7t4",
   "createdAt": "2022-03-09T16:17:51.321Z",
   "updatedAt": "2022-03-09T16:19:07.037Z",
-  "name": "My typebot",
+  "name": "My sniper",
   "folderId": null,
   "groups": [
     {
@@ -140,6 +140,6 @@
     },
     "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
   },
-  "publicId": "my-typebot-zjiy7t4",
+  "publicId": "my-sniper-zjiy7t4",
   "customDomain": null
 }

@@ -1,6 +1,6 @@
 import { Select } from '@/components/inputs/Select'
 import { Input } from '@chakra-ui/react'
-import { Group } from '@typebot.io/schemas'
+import { Group } from '@sniper.io/schemas'
 
 type Props = {
   groups: Group[]

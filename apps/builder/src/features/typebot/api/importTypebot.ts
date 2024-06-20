@@ -1,14 +1,14 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Plan, WorkspaceRole } from '@typebot.io/prisma'
+import { Plan, WorkspaceRole } from '@sniper.io/prisma'
 import {
-  Typebot,
-  TypebotV6,
+  Sniper,
+  SniperV6,
   resultsTablePreferencesSchema,
-  typebotV5Schema,
-  typebotV6Schema,
-} from '@typebot.io/schemas'
+  sniperV5Schema,
+  sniperV6Schema,
+} from '@sniper.io/schemas'
 import { z } from 'zod'
 import { getUserRoleInWorkspace } from '@/features/workspace/helpers/getUserRoleInWorkspace'
 import {
@@ -17,9 +17,9 @@ import {
   sanitizeSettings,
   sanitizeVariables,
 } from '../helpers/sanitizers'
-import { preprocessTypebot } from '@typebot.io/schemas/features/typebot/helpers/preprocessTypebot'
-import { migrateTypebot } from '@typebot.io/migrations/migrateTypebot'
-import { trackEvents } from '@typebot.io/telemetry/trackEvents'
+import { preprocessSniper } from '@sniper.io/schemas/features/sniper/helpers/preprocessSniper'
+import { migrateSniper } from '@sniper.io/migrations/migrateSniper'
+import { trackEvents } from '@sniper.io/telemetry/trackEvents'
 
 const omittedProps = {
   id: true,
@@ -36,41 +36,39 @@ const omittedProps = {
   publicId: true,
 } as const
 
-const importingTypebotSchema = z.preprocess(
-  preprocessTypebot,
+const importingSniperSchema = z.preprocess(
+  preprocessSniper,
   z.discriminatedUnion('version', [
-    typebotV6Schema
+    sniperV6Schema
       .omit(omittedProps)
       .extend({
         resultsTablePreferences: resultsTablePreferencesSchema.nullish(),
         selectedThemeTemplateId: z.string().nullish(),
       })
       .openapi({
-        title: 'Typebot V6',
+        title: 'Sniper V6',
       }),
-    typebotV5Schema._def.schema
+    sniperV5Schema._def.schema
       .omit(omittedProps)
       .extend({
         resultsTablePreferences: resultsTablePreferencesSchema.nullish(),
         selectedThemeTemplateId: z.string().nullish(),
       })
       .openapi({
-        title: 'Typebot V5',
+        title: 'Sniper V5',
       }),
   ])
 )
 
-type ImportingTypebot = z.infer<typeof importingTypebotSchema>
+type ImportingSniper = z.infer<typeof importingSniperSchema>
 
-const migrateImportingTypebot = (
-  typebot: ImportingTypebot
-): Promise<TypebotV6> => {
-  const fullTypebot = {
-    ...typebot,
+const migrateImportingSniper = (sniper: ImportingSniper): Promise<SniperV6> => {
+  const fullSniper = {
+    ...sniper,
     id: 'dummy id',
     workspaceId: 'dummy workspace id',
-    resultsTablePreferences: typebot.resultsTablePreferences ?? null,
-    selectedThemeTemplateId: typebot.selectedThemeTemplateId ?? null,
+    resultsTablePreferences: sniper.resultsTablePreferences ?? null,
+    selectedThemeTemplateId: sniper.selectedThemeTemplateId ?? null,
     createdAt: new Date(),
     updatedAt: new Date(),
     customDomain: null,
@@ -79,18 +77,18 @@ const migrateImportingTypebot = (
     whatsAppCredentialsId: null,
     publicId: null,
     riskLevel: null,
-  } satisfies Typebot
-  return migrateTypebot(fullTypebot)
+  } satisfies Sniper
+  return migrateSniper(fullSniper)
 }
 
-export const importTypebot = authenticatedProcedure
+export const importSniper = authenticatedProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/v1/typebots/import',
+      path: '/v1/snipers/import',
       protect: true,
-      summary: 'Import a typebot',
-      tags: ['Typebot'],
+      summary: 'Import a sniper',
+      tags: ['Sniper'],
     },
   })
   .input(
@@ -100,15 +98,15 @@ export const importTypebot = authenticatedProcedure
         .describe(
           '[Where to find my workspace ID?](../how-to#how-to-find-my-workspaceid)'
         ),
-      typebot: importingTypebotSchema,
+      sniper: importingSniperSchema,
     })
   )
   .output(
     z.object({
-      typebot: typebotV6Schema,
+      sniper: sniperV6Schema,
     })
   )
-  .mutation(async ({ input: { typebot, workspaceId }, ctx: { user } }) => {
+  .mutation(async ({ input: { sniper, workspaceId }, ctx: { user } }) => {
     const workspace = await prisma.workspace.findUnique({
       where: { id: workspaceId },
       select: { id: true, members: true, plan: true },
@@ -121,26 +119,26 @@ export const importTypebot = authenticatedProcedure
     )
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Workspace not found' })
 
-    const migratedTypebot = await migrateImportingTypebot(typebot)
+    const migratedSniper = await migrateImportingSniper(sniper)
 
     const groups = (
-      migratedTypebot.groups
-        ? await sanitizeGroups(workspaceId)(migratedTypebot.groups)
+      migratedSniper.groups
+        ? await sanitizeGroups(workspaceId)(migratedSniper.groups)
         : []
-    ) as TypebotV6['groups']
+    ) as SniperV6['groups']
 
-    const newTypebot = await prisma.typebot.create({
+    const newSniper = await prisma.sniper.create({
       data: {
         version: '6',
         workspaceId,
-        name: migratedTypebot.name,
-        icon: migratedTypebot.icon,
-        selectedThemeTemplateId: migratedTypebot.selectedThemeTemplateId,
+        name: migratedSniper.name,
+        icon: migratedSniper.icon,
+        selectedThemeTemplateId: migratedSniper.selectedThemeTemplateId,
         groups,
-        events: migratedTypebot.events ?? undefined,
-        theme: migratedTypebot.theme ? migratedTypebot.theme : {},
-        settings: migratedTypebot.settings
-          ? sanitizeSettings(migratedTypebot.settings, workspace.plan, 'create')
+        events: migratedSniper.events ?? undefined,
+        theme: migratedSniper.theme ? migratedSniper.theme : {},
+        settings: migratedSniper.settings
+          ? sanitizeSettings(migratedSniper.settings, workspace.plan, 'create')
           : workspace.plan === Plan.FREE
           ? {
               general: {
@@ -149,31 +147,31 @@ export const importTypebot = authenticatedProcedure
             }
           : {},
         folderId: await sanitizeFolderId({
-          folderId: migratedTypebot.folderId,
+          folderId: migratedSniper.folderId,
           workspaceId: workspace.id,
         }),
-        variables: migratedTypebot.variables
-          ? sanitizeVariables({ variables: migratedTypebot.variables, groups })
+        variables: migratedSniper.variables
+          ? sanitizeVariables({ variables: migratedSniper.variables, groups })
           : [],
-        edges: migratedTypebot.edges ?? [],
+        edges: migratedSniper.edges ?? [],
         resultsTablePreferences:
-          migratedTypebot.resultsTablePreferences ?? undefined,
-      } satisfies Partial<TypebotV6>,
+          migratedSniper.resultsTablePreferences ?? undefined,
+      } satisfies Partial<SniperV6>,
     })
 
-    const parsedNewTypebot = typebotV6Schema.parse(newTypebot)
+    const parsedNewSniper = sniperV6Schema.parse(newSniper)
 
     await trackEvents([
       {
-        name: 'Typebot created',
-        workspaceId: parsedNewTypebot.workspaceId,
-        typebotId: parsedNewTypebot.id,
+        name: 'Sniper created',
+        workspaceId: parsedNewSniper.workspaceId,
+        sniperId: parsedNewSniper.id,
         userId: user.id,
         data: {
-          name: newTypebot.name,
+          name: newSniper.name,
         },
       },
     ])
 
-    return { typebot: parsedNewTypebot }
+    return { sniper: parsedNewSniper }
   })

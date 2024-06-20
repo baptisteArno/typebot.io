@@ -1,2 +1,2 @@
 -- CreateIndex
-CREATE INDEX CONCURRENTLY "Typebot_workspaceId_idx" ON "Typebot"("workspaceId");
+CREATE INDEX CONCURRENTLY "Sniper_workspaceId_idx" ON "Sniper"("workspaceId");

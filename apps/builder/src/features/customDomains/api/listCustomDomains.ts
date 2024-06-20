@@ -1,9 +1,9 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
-import { customDomainSchema } from '@typebot.io/schemas/features/customDomains'
+import { customDomainSchema } from '@sniper.io/schemas/features/customDomains'
 
 export const listCustomDomains = authenticatedProcedure
   .meta({

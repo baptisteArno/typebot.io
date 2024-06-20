@@ -1,6 +1,6 @@
 import type { OpenAI } from 'openai'
-import { VariableStore } from '@typebot.io/forge'
-import { isDefined, isEmpty } from '@typebot.io/lib'
+import { VariableStore } from '@sniper.io/forge'
+import { isDefined, isEmpty } from '@sniper.io/lib'
 import { ChatCompletionOptions } from '../shared/parseChatCompletionOptions'
 import ky, { HTTPError } from 'ky'
 import { defaultOpenAIOptions, modelsWithImageUrlSupport } from '../constants'

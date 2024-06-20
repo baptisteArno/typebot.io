@@ -1,15 +1,15 @@
 import test, { expect } from '@playwright/test'
-import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
+import { importSniperInDatabase } from '@sniper.io/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 
 test('should work as expected', async ({ page }) => {
-  const typebotId = createId()
-  await importTypebotInDatabase(getTestAsset('typebots/logic/jump.json'), {
-    id: typebotId,
+  const sniperId = createId()
+  await importSniperInDatabase(getTestAsset('snipers/logic/jump.json'), {
+    id: sniperId,
   })
 
-  await page.goto(`/typebots/${typebotId}/edit`)
+  await page.goto(`/snipers/${sniperId}/edit`)
   await page.getByText('Configure...').click()
   await page.getByPlaceholder('Select a group').click()
   await expect(page.getByRole('menuitem', { name: 'Group #2' })).toBeHidden()
@@ -20,9 +20,9 @@ test('should work as expected', async ({ page }) => {
   await page.getByPlaceholder('Type your answer...').fill('Hi there!')
   await page.getByRole('button', { name: 'Send' }).click()
   await expect(
-    page.locator('typebot-standard').getByText('How are you?').nth(1)
+    page.locator('sniper-standard').getByText('How are you?').nth(1)
   ).toBeVisible()
   await expect(
-    page.locator('typebot-standard').getByText('Hello this is a test!').nth(1)
+    page.locator('sniper-standard').getByText('Hello this is a test!').nth(1)
   ).toBeHidden()
 })

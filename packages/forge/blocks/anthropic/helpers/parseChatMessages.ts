@@ -1,15 +1,15 @@
 import { Anthropic } from '@anthropic-ai/sdk'
 import { options as createMessageOptions } from '../actions/createChatMessage'
-import { VariableStore } from '@typebot.io/forge'
-import { isDefined, isEmpty } from '@typebot.io/lib'
-import { z } from '@typebot.io/forge/zod'
+import { VariableStore } from '@sniper.io/forge'
+import { isDefined, isEmpty } from '@sniper.io/lib'
+import { z } from '@sniper.io/forge/zod'
 import ky, { HTTPError } from 'ky'
 import {
   defaultAnthropicOptions,
   modelsWithImageUrlSupport,
   supportedImageTypes,
 } from '../constants'
-import { wildcardMatch } from '@typebot.io/lib/wildcardMatch'
+import { wildcardMatch } from '@sniper.io/lib/wildcardMatch'
 
 const isModelCompatibleWithImageUrls = (model: string | undefined) =>
   model ? wildcardMatch(modelsWithImageUrlSupport)(model) : false

@@ -4,10 +4,10 @@ import {
   SessionState,
   SetVariableHistoryItem,
   StartFrom,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import { executeGroup } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
-import { VisitedEdge } from '@typebot.io/prisma'
+import { VisitedEdge } from '@sniper.io/prisma'
 import { getFirstEdgeId } from './getFirstEdgeId'
 
 type Props = {
@@ -35,7 +35,7 @@ export const startBotFlow = async ({
   const visitedEdges: VisitedEdge[] = []
   const setVariableHistory: SetVariableHistoryItem[] = []
   if (startFrom?.type === 'group') {
-    const group = state.typebotsQueue[0].typebot.groups.find(
+    const group = state.snipersQueue[0].sniper.groups.find(
       (group) => group.id === startFrom.groupId
     )
     if (!group)
@@ -53,7 +53,7 @@ export const startBotFlow = async ({
     })
   }
   const firstEdgeId = getFirstEdgeId({
-    typebot: newSessionState.typebotsQueue[0].typebot,
+    sniper: newSessionState.snipersQueue[0].sniper,
     startEventId: startFrom?.type === 'event' ? startFrom.eventId : undefined,
   })
   if (!firstEdgeId)

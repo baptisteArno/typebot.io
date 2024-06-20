@@ -2,7 +2,7 @@
   "id": "cl0j7q9el0032b51al3rx6jo7",
   "createdAt": "2022-03-09T07:01:25.917Z",
   "updatedAt": "2022-03-09T07:01:25.917Z",
-  "name": "My typebot",
+  "name": "My sniper",
   "folderId": null,
   "groups": [
     {
@@ -27,7 +27,7 @@
         {
           "id": "s8Pz7fPg4niG1JcvBS3CwAs",
           "groupId": "nyD3H7h6tEZqDmGwGciGV4",
-          "type": "Typebot link",
+          "type": "Sniper link",
           "options": {}
         }
       ]

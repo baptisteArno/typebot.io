@@ -1,8 +1,8 @@
-import { BubbleBlock, InputBlock, Block } from '@typebot.io/schemas'
-import { isInputBlock, isBubbleBlock } from '@typebot.io/schemas/helpers'
-import type { TypebotPostMessageData } from 'typebot-js'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { BubbleBlock, InputBlock, Block } from '@sniper.io/schemas'
+import { isInputBlock, isBubbleBlock } from '@sniper.io/schemas/helpers'
+import type { SniperPostMessageData } from 'sniper-js'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
 
 export const getLastChatBlockType = (
   blocks: Block[]
@@ -13,11 +13,11 @@ export const getLastChatBlockType = (
   return displayedBlocks.pop()?.type
 }
 
-export const sendEventToParent = (data: TypebotPostMessageData) => {
+export const sendEventToParent = (data: SniperPostMessageData) => {
   try {
     window.top?.postMessage(
       {
-        from: 'typebot',
+        from: 'sniper',
         ...data,
       },
       '*'

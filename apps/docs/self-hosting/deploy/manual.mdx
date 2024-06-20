@@ -3,19 +3,19 @@ title: Manual
 ---
 
 <Warning>
-  This doc is for deploying Typebot on a server manually. If you're looking for
-  running Typebot locally, for development purposes, check out the [local
+  This doc is for deploying Sniper on a server manually. If you're looking for
+  running Sniper locally, for development purposes, check out the [local
   installation guide](../../contribute/guides/local-installation).
 </Warning>
 
 <Note>
-  The easiest way to get started with Typebot is with [the official managed
-  service in the Cloud](https://app.typebot.io). You'll have high availability,
+  The easiest way to get started with Sniper is with [the official managed
+  service in the Cloud](https://app.sniper.io). You'll have high availability,
   backups, security, and maintenance all managed for you by me, Baptiste,
-  Typebot's founder. The cloud version can save a substantial amount of
+  Sniper's founder. The cloud version can save a substantial amount of
   developer time and resources. For most sites this ends up being the best value
   option and the revenue goes to funding the maintenance and further development
-  of Typebot. So you'll be supporting open source software and getting a great
+  of Sniper. So you'll be supporting open source software and getting a great
   service!
 </Note>
 
@@ -30,8 +30,8 @@ title: Manual
 1. Fork/clone the repository and checkout the latest stable version.
 
 ```sh
-git clone git@github.com:<username>/typebot.io.git
-cd typebot.io
+git clone git@github.com:<username>/sniper.io.git
+cd sniper.io
 git checkout latest
 ```
 
@@ -82,9 +82,9 @@ pnpm start -p 3001
 2. Deploy the builder with PM2
 
 ```sh
-pm2 start --name=typebot pnpm -- start
+pm2 start --name=sniper pnpm -- start
 # or select a different port
-pm2 start --name=typebot pnpm -- start -p 3001
+pm2 start --name=sniper pnpm -- start -p 3001
 ```
 
 ### Deploy the viewer
@@ -101,25 +101,25 @@ pnpm start -p 3002
 2. Deploy the viewer with PM2
 
 ```sh
-pm2 start --name=typebot pnpm -- start
+pm2 start --name=sniper pnpm -- start
 # or select a different port
-pm2 start --name=typebot pnpm -- start -p 3002
+pm2 start --name=sniper pnpm -- start -p 3002
 ```
 
 ## Nginx configuration
 
-You can use the following configuration to serve the builder and viewer with Nginx. Make sure to replace the `server_name` with the respective domain name for your Typebot instance. Check out [this guide](https://www.coderrocketfuel.com/article/how-to-deploy-a-next-js-website-to-a-digital-ocean-server/) for a step-by-step guide on how to setup Nginx and PM2.
+You can use the following configuration to serve the builder and viewer with Nginx. Make sure to replace the `server_name` with the respective domain name for your Sniper instance. Check out [this guide](https://www.coderrocketfuel.com/article/how-to-deploy-a-next-js-website-to-a-digital-ocean-server/) for a step-by-step guide on how to setup Nginx and PM2.
 
 ```nginx
 server {
      listen 80;
-     server_name typebot.example.com www.typebot.example.com;
-     return 301 https://typebot.example.com$request_uri;
+     server_name sniper.example.com www.sniper.example.com;
+     return 301 https://sniper.example.com$request_uri;
 }
 
 server {
     listen 443 ssl;
-    server_name typebot.example.com www.typebot.example.com;
+    server_name sniper.example.com www.sniper.example.com;
 
     # managed by Certbot
     ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem; # ma>

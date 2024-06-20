@@ -1,2 +1,2 @@
 -- CreateIndex
-CREATE INDEX CONCURRENTLY "Result_typebotId_idx" ON "Result"("typebotId");
+CREATE INDEX CONCURRENTLY "Result_sniperId_idx" ON "Result"("sniperId");

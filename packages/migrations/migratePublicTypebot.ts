@@ -1,15 +1,15 @@
-import { PublicTypebot, PublicTypebotV6 } from '@typebot.io/schemas'
-import { migrateTypebotFromV3ToV4 } from './migrateTypebotFromV3ToV4'
-import { migrateTypebotFromV5ToV6 } from './migrateTypebotFromV5ToV6'
+import { PublicSniper, PublicSniperV6 } from '@sniper.io/schemas'
+import { migrateSniperFromV3ToV4 } from './migrateSniperFromV3ToV4'
+import { migrateSniperFromV5ToV6 } from './migrateSniperFromV5ToV6'
 
-export const migrateTypebot = async (
-  typebot: PublicTypebot
-): Promise<PublicTypebotV6> => {
-  if (typebot.version === '6') return typebot
-  let migratedTypebot: any = typebot
-  if (migratedTypebot.version === '3')
-    migratedTypebot = await migrateTypebotFromV3ToV4(typebot)
-  if (migratedTypebot.version === '4' || migratedTypebot.version === '5')
-    migratedTypebot = migrateTypebotFromV5ToV6(migratedTypebot)
-  return migratedTypebot
+export const migrateSniper = async (
+  sniper: PublicSniper
+): Promise<PublicSniperV6> => {
+  if (sniper.version === '6') return sniper
+  let migratedSniper: any = sniper
+  if (migratedSniper.version === '3')
+    migratedSniper = await migrateSniperFromV3ToV4(sniper)
+  if (migratedSniper.version === '4' || migratedSniper.version === '5')
+    migratedSniper = migrateSniperFromV5ToV6(migratedSniper)
+  return migratedSniper
 }

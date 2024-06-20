@@ -1,32 +1,32 @@
 import {
   InputBlock,
-  PublicTypebot,
+  PublicSniper,
   ResultHeaderCell,
   Block,
-  Typebot,
-  TypebotLinkBlock,
+  Sniper,
+  SniperLinkBlock,
   Variable,
-} from '@typebot.io/schemas'
-import { byId, isNotDefined } from '@typebot.io/lib'
-import { isInputBlock } from '@typebot.io/schemas/helpers'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
-import { parseResultHeader } from '@typebot.io/results/parseResultHeader'
+} from '@sniper.io/schemas'
+import { byId, isNotDefined } from '@sniper.io/lib'
+import { isInputBlock } from '@sniper.io/schemas/helpers'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
+import { parseResultHeader } from '@sniper.io/results/parseResultHeader'
 
 export const parseSampleResult =
   (
-    typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>,
-    linkedTypebots: (Typebot | PublicTypebot)[],
+    sniper: Pick<Sniper | PublicSniper, 'groups' | 'variables' | 'edges'>,
+    linkedSnipers: (Sniper | PublicSniper)[],
     userEmail?: string
   ) =>
   async (
     currentGroupId: string,
     variables: Variable[]
   ): Promise<Record<string, string | boolean | undefined>> => {
-    const header = parseResultHeader(typebot, linkedTypebots)
+    const header = parseResultHeader(sniper, linkedSnipers)
     const linkedInputBlocks = await extractLinkedInputBlocks(
-      typebot,
-      linkedTypebots
+      sniper,
+      linkedSnipers
     )(currentGroupId)
 
     return {
@@ -38,32 +38,32 @@ export const parseSampleResult =
 
 const extractLinkedInputBlocks =
   (
-    typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>,
-    linkedTypebots: (Typebot | PublicTypebot)[]
+    sniper: Pick<Sniper | PublicSniper, 'groups' | 'variables' | 'edges'>,
+    linkedSnipers: (Sniper | PublicSniper)[]
   ) =>
   async (
     currentGroupId?: string,
     direction: 'backward' | 'forward' = 'backward'
   ): Promise<InputBlock[]> => {
-    const previousLinkedTypebotBlocks = walkEdgesAndExtract(
+    const previousLinkedSniperBlocks = walkEdgesAndExtract(
       'linkedBot',
       direction,
-      typebot
+      sniper
     )({
       groupId: currentGroupId,
-    }) as TypebotLinkBlock[]
+    }) as SniperLinkBlock[]
 
     const linkedBotInputs =
-      previousLinkedTypebotBlocks.length > 0
+      previousLinkedSniperBlocks.length > 0
         ? await Promise.all(
-            previousLinkedTypebotBlocks.map((linkedBot) => {
-              const linkedTypebot = linkedTypebots.find((t) =>
-                'typebotId' in t
-                  ? t.typebotId === linkedBot.options?.typebotId
-                  : t.id === linkedBot.options?.typebotId
+            previousLinkedSniperBlocks.map((linkedBot) => {
+              const linkedSniper = linkedSnipers.find((t) =>
+                'sniperId' in t
+                  ? t.sniperId === linkedBot.options?.sniperId
+                  : t.id === linkedBot.options?.sniperId
               )
-              if (!linkedTypebot) return []
-              return extractLinkedInputBlocks(linkedTypebot, linkedTypebots)(
+              if (!linkedSniper) return []
+              return extractLinkedInputBlocks(linkedSniper, linkedSnipers)(
                 linkedBot.options?.groupId,
                 'forward'
               )
@@ -75,7 +75,7 @@ const extractLinkedInputBlocks =
       walkEdgesAndExtract(
         'input',
         direction,
-        typebot
+        sniper
       )({
         groupId: currentGroupId,
       }) as InputBlock[]
@@ -154,38 +154,38 @@ const walkEdgesAndExtract =
   (
     type: 'input' | 'linkedBot',
     direction: 'backward' | 'forward',
-    typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>
+    sniper: Pick<Sniper | PublicSniper, 'groups' | 'variables' | 'edges'>
   ) =>
   ({ groupId }: { groupId?: string }): Block[] => {
     const currentGroupId =
       groupId ??
-      (typebot.groups.find((b) => b.blocks[0].type === 'start')?.id as string)
+      (sniper.groups.find((b) => b.blocks[0].type === 'start')?.id as string)
     const blocksInGroup = extractBlocksInGroup(
       type,
-      typebot
+      sniper
     )({
       groupId: currentGroupId,
     })
     const otherGroupIds = getGroupIdsLinkedToGroup(
-      typebot,
+      sniper,
       direction
     )(currentGroupId)
     return blocksInGroup.concat(
       otherGroupIds.flatMap((groupId) =>
-        extractBlocksInGroup(type, typebot)({ groupId })
+        extractBlocksInGroup(type, sniper)({ groupId })
       )
     )
   }
 
 const getGroupIdsLinkedToGroup =
   (
-    typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>,
+    sniper: Pick<Sniper | PublicSniper, 'groups' | 'variables' | 'edges'>,
     direction: 'backward' | 'forward',
     visitedGroupIds: string[] = []
   ) =>
   (groupId: string): string[] => {
-    const linkedGroupIds = typebot.edges.reduce<string[]>((groupIds, edge) => {
-      const fromGroupId = typebot.groups.find((g) =>
+    const linkedGroupIds = sniper.edges.reduce<string[]>((groupIds, edge) => {
+      const fromGroupId = sniper.groups.find((g) =>
         g.blocks.some(
           (b) => 'blockId' in edge.from && b.id === edge.from.blockId
         )
@@ -212,7 +212,7 @@ const getGroupIdsLinkedToGroup =
     }, [])
     return linkedGroupIds.concat(
       linkedGroupIds.flatMap(
-        getGroupIdsLinkedToGroup(typebot, direction, visitedGroupIds)
+        getGroupIdsLinkedToGroup(sniper, direction, visitedGroupIds)
       )
     )
   }
@@ -220,16 +220,16 @@ const getGroupIdsLinkedToGroup =
 const extractBlocksInGroup =
   (
     type: 'input' | 'linkedBot',
-    typebot: Pick<Typebot | PublicTypebot, 'groups' | 'variables' | 'edges'>
+    sniper: Pick<Sniper | PublicSniper, 'groups' | 'variables' | 'edges'>
   ) =>
   ({ groupId, blockId }: { groupId: string; blockId?: string }) => {
-    const currentGroup = typebot.groups.find(byId(groupId))
+    const currentGroup = sniper.groups.find(byId(groupId))
     if (!currentGroup) return []
     const blocks: Block[] = []
     for (const block of currentGroup.blocks) {
       if (block.id === blockId) break
       if (type === 'input' && isInputBlock(block)) blocks.push(block)
-      if (type === 'linkedBot' && block.type === LogicBlockType.TYPEBOT_LINK)
+      if (type === 'linkedBot' && block.type === LogicBlockType.SNIPER_LINK)
         blocks.push(block)
     }
     return blocks

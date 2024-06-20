@@ -8,13 +8,13 @@ import {
   chakra,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { Standard } from '@typebot.io/nextjs'
+import { Standard } from '@sniper.io/nextjs'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import confetti from 'canvas-confetti'
 import { useUser } from '@/features/account/hooks/useUser'
 import { useTranslate } from '@tolgee/react'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 const totalSteps = 5
 
@@ -43,8 +43,8 @@ export const OnboardingPage = () => {
 
   useEffect(() => {
     if (!user?.createdAt) return
-    if (isNewUser === false || !env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID)
-      replace({ pathname: '/typebots', query })
+    if (isNewUser === false || !env.NEXT_PUBLIC_ONBOARDING_SNIPER_ID)
+      replace({ pathname: '/snipers', query })
   }, [isNewUser, query, replace, user?.createdAt])
 
   const initConfettis = () => {
@@ -94,14 +94,14 @@ export const OnboardingPage = () => {
 
   const skipOnboarding = () => {
     updateUser(onboardingReplies)
-    replace({ pathname: '/typebots', query })
+    replace({ pathname: '/snipers', query })
   }
 
-  const updateUserAndProceedToTypebotCreation = () => {
+  const updateUserAndProceedToSniperCreation = () => {
     updateUser(onboardingReplies)
     setTimeout(() => {
       replace({
-        pathname: '/typebots',
+        pathname: '/snipers',
         query: { ...query },
       })
     }, 2000)
@@ -124,10 +124,10 @@ export const OnboardingPage = () => {
       <Dots currentStep={currentStep} pos="fixed" top="9" />
       <Flex w="full" maxW="800px" h="full" maxH="70vh" rounded="lg">
         <Standard
-          typebot={env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID}
+          sniper={env.NEXT_PUBLIC_ONBOARDING_SNIPER_ID}
           style={{ borderRadius: '1rem' }}
           prefilledVariables={{ Name: user?.name, Email: user?.email }}
-          onEnd={updateUserAndProceedToTypebotCreation}
+          onEnd={updateUserAndProceedToSniperCreation}
           onAnswer={setOnboardingAnswer}
         />
       </Flex>

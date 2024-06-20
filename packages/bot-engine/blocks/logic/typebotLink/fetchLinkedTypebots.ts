@@ -1,22 +1,22 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 
 type Props = {
   isPreview?: boolean
-  typebotIds: string[]
+  sniperIds: string[]
   userId: string | undefined
 }
 
-export const fetchLinkedTypebots = async ({
+export const fetchLinkedSnipers = async ({
   userId,
   isPreview,
-  typebotIds,
+  sniperIds,
 }: Props) => {
   if (!userId || !isPreview)
-    return prisma.publicTypebot.findMany({
-      where: { typebotId: { in: typebotIds } },
+    return prisma.publicSniper.findMany({
+      where: { sniperId: { in: sniperIds } },
     })
-  const linkedTypebots = await prisma.typebot.findMany({
-    where: { id: { in: typebotIds } },
+  const linkedSnipers = await prisma.sniper.findMany({
+    where: { id: { in: sniperIds } },
     include: {
       collaborators: {
         select: {
@@ -35,10 +35,10 @@ export const fetchLinkedTypebots = async ({
     },
   })
 
-  return linkedTypebots.filter(
-    (typebot) =>
-      typebot.collaborators.some(
+  return linkedSnipers.filter(
+    (sniper) =>
+      sniper.collaborators.some(
         (collaborator) => collaborator.userId === userId
-      ) || typebot.workspace.members.some((member) => member.userId === userId)
+      ) || sniper.workspace.members.some((member) => member.userId === userId)
   )
 }

@@ -1,7 +1,7 @@
-import prisma from '@typebot.io/lib/prisma'
-import { Answer } from '@typebot.io/prisma'
+import prisma from '@sniper.io/lib/prisma'
+import { Answer } from '@sniper.io/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { methodNotAllowed } from '@typebot.io/lib/api'
+import { methodNotAllowed } from '@sniper.io/lib/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'PUT') {

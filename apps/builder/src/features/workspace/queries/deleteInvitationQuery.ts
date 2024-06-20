@@ -1,4 +1,4 @@
-import { sendRequest } from '@typebot.io/lib'
+import { sendRequest } from '@sniper.io/lib'
 
 export const deleteInvitationQuery = (invitation: {
   workspaceId: string

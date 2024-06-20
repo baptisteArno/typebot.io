@@ -1,19 +1,19 @@
-import { LinkedTypebot } from '@/providers/TypebotProvider'
+import { LinkedSniper } from '@/providers/SniperProvider'
 import { LogicState } from '@/types'
-import { TypebotLinkBlock, Typebot, PublicTypebot } from '@typebot.io/schemas'
-import { sendRequest } from '@typebot.io/lib'
+import { SniperLinkBlock, Sniper, PublicSniper } from '@sniper.io/schemas'
+import { sendRequest } from '@sniper.io/lib'
 
-export const fetchAndInjectTypebot = async (
-  block: TypebotLinkBlock,
-  { apiHost, injectLinkedTypebot, isPreview }: LogicState
-): Promise<LinkedTypebot | undefined> => {
+export const fetchAndInjectSniper = async (
+  block: SniperLinkBlock,
+  { apiHost, injectLinkedSniper, isPreview }: LogicState
+): Promise<LinkedSniper | undefined> => {
   const { data, error } = isPreview
-    ? await sendRequest<{ typebot: Typebot }>(
-        `/api/typebots/${block.options?.typebotId}`
+    ? await sendRequest<{ sniper: Sniper }>(
+        `/api/snipers/${block.options?.sniperId}`
       )
-    : await sendRequest<{ typebot: PublicTypebot }>(
-        `${apiHost}/api/publicTypebots/${block.options?.typebotId}`
+    : await sendRequest<{ sniper: PublicSniper }>(
+        `${apiHost}/api/publicSnipers/${block.options?.sniperId}`
       )
   if (!data || error) return
-  return injectLinkedTypebot(data.typebot)
+  return injectLinkedSniper(data.sniper)
 }

@@ -1,5 +1,5 @@
 import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { Stack, Text } from '@chakra-ui/react'
 import { useState } from 'react'
 import { PopupSettings } from '../../../settings/PopupSettings'
@@ -7,19 +7,19 @@ import { parseInitPopupCode } from '../../../snippetParsers'
 import {
   parseApiHostValue,
   parseInlineScript,
-  typebotImportCode,
+  sniperImportCode,
 } from '../../../snippetParsers/shared'
 
 export const ScriptPopupInstructions = () => {
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
   const [inputValue, setInputValue] = useState<number>()
 
   const scriptSnippet = parseInlineScript(
-    `${typebotImportCode}
+    `${sniperImportCode}
 
 ${parseInitPopupCode({
-  typebot: typebot?.publicId ?? '',
-  apiHost: parseApiHostValue(typebot?.customDomain),
+  sniper: sniper?.publicId ?? '',
+  apiHost: parseApiHostValue(sniper?.customDomain),
   autoShowDelay: inputValue,
 })}`
   )
@@ -29,7 +29,7 @@ ${parseInitPopupCode({
       <PopupSettings
         onUpdateSettings={(settings) => setInputValue(settings.autoShowDelay)}
       />
-      <Text>Run this script to initialize the typebot:</Text>
+      <Text>Run this script to initialize the sniper:</Text>
       <CodeEditor isReadOnly value={scriptSnippet} lang="javascript" />
     </Stack>
   )

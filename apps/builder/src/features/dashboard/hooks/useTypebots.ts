@@ -1,6 +1,6 @@
 import { trpc } from '@/lib/trpc'
 
-export const useTypebots = ({
+export const useSnipers = ({
   folderId,
   workspaceId,
   onError,
@@ -9,7 +9,7 @@ export const useTypebots = ({
   folderId?: string | 'root'
   onError: (error: Error) => void
 }) => {
-  const { data, isLoading, refetch } = trpc.typebot.listTypebots.useQuery(
+  const { data, isLoading, refetch } = trpc.sniper.listSnipers.useQuery(
     {
       workspaceId: workspaceId as string,
       folderId,
@@ -22,7 +22,7 @@ export const useTypebots = ({
     }
   )
   return {
-    typebots: data?.typebots,
+    snipers: data?.snipers,
     isLoading,
     refetch,
   }

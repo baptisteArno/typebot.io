@@ -1,9 +1,9 @@
 import {
-  PublicTypebot,
-  PublicTypebotV6,
-  TypebotV6,
-  typebotV6Schema,
-} from '@typebot.io/schemas'
+  PublicSniper,
+  PublicSniperV6,
+  SniperV6,
+  sniperV6Schema,
+} from '@sniper.io/schemas'
 import { Router } from 'next/router'
 import {
   createContext,
@@ -14,29 +14,29 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { isDefined, omit } from '@typebot.io/lib'
-import { edgesAction, EdgesActions } from './typebotActions/edges'
-import { itemsAction, ItemsActions } from './typebotActions/items'
-import { GroupsActions, groupsActions } from './typebotActions/groups'
-import { blocksAction, BlocksActions } from './typebotActions/blocks'
-import { variablesAction, VariablesActions } from './typebotActions/variables'
+import { isDefined, omit } from '@sniper.io/lib'
+import { edgesAction, EdgesActions } from './sniperActions/edges'
+import { itemsAction, ItemsActions } from './sniperActions/items'
+import { GroupsActions, groupsActions } from './sniperActions/groups'
+import { blocksAction, BlocksActions } from './sniperActions/blocks'
+import { variablesAction, VariablesActions } from './sniperActions/variables'
 import { dequal } from 'dequal'
 import { useToast } from '@/hooks/useToast'
 import { useUndo } from '../hooks/useUndo'
 import { useAutoSave } from '@/hooks/useAutoSave'
 import { preventUserFromRefreshing } from '@/helpers/preventUserFromRefreshing'
-import { areTypebotsEqual } from '@/features/publish/helpers/areTypebotsEqual'
+import { areSnipersEqual } from '@/features/publish/helpers/areSnipersEqual'
 import { isPublished as isPublishedHelper } from '@/features/publish/helpers/isPublished'
-import { convertPublicTypebotToTypebot } from '@/features/publish/helpers/convertPublicTypebotToTypebot'
+import { convertPublicSniperToSniper } from '@/features/publish/helpers/convertPublicSniperToSniper'
 import { trpc } from '@/lib/trpc'
-import { EventsActions, eventsActions } from './typebotActions/events'
+import { EventsActions, eventsActions } from './sniperActions/events'
 import { useGroupsStore } from '@/features/graph/hooks/useGroupsStore'
 
 const autoSaveTimeout = 15000
 
-type UpdateTypebotPayload = Partial<
+type UpdateSniperPayload = Partial<
   Pick<
-    TypebotV6,
+    SniperV6,
     | 'theme'
     | 'selectedThemeTemplateId'
     | 'settings'
@@ -51,15 +51,15 @@ type UpdateTypebotPayload = Partial<
   >
 >
 
-export type SetTypebot = (
-  newPresent: TypebotV6 | ((current: TypebotV6) => TypebotV6)
+export type SetSniper = (
+  newPresent: SniperV6 | ((current: SniperV6) => SniperV6)
 ) => void
 
-const typebotContext = createContext<
+const sniperContext = createContext<
   {
-    typebot?: TypebotV6
-    publishedTypebot?: PublicTypebotV6
-    publishedTypebotVersion?: PublicTypebot['version']
+    sniper?: SniperV6
+    publishedSniper?: PublicSniperV6
+    publishedSniperVersion?: PublicSniper['version']
     currentUserMode: 'guest' | 'read' | 'write'
     is404: boolean
     isPublished: boolean
@@ -69,11 +69,11 @@ const typebotContext = createContext<
     redo: () => void
     canRedo: boolean
     canUndo: boolean
-    updateTypebot: (props: {
-      updates: UpdateTypebotPayload
+    updateSniper: (props: {
+      updates: UpdateSniperPayload
       save?: boolean
-    }) => Promise<TypebotV6 | undefined>
-    restorePublishedTypebot: () => void
+    }) => Promise<SniperV6 | undefined>
+    restorePublishedSniper: () => void
   } & GroupsActions &
     BlocksActions &
     ItemsActions &
@@ -84,12 +84,12 @@ const typebotContext = createContext<
   //@ts-ignore
 >({})
 
-export const TypebotProvider = ({
+export const SniperProvider = ({
   children,
-  typebotId,
+  sniperId,
 }: {
   children: ReactNode
-  typebotId?: string
+  sniperId?: string
 }) => {
   const { showToast } = useToast()
   const [is404, setIs404] = useState(false)
@@ -98,13 +98,13 @@ export const TypebotProvider = ({
   )
 
   const {
-    data: typebotData,
-    isLoading: isFetchingTypebot,
-    refetch: refetchTypebot,
-  } = trpc.typebot.getTypebot.useQuery(
-    { typebotId: typebotId as string, migrateToLatestVersion: true },
+    data: sniperData,
+    isLoading: isFetchingSniper,
+    refetch: refetchSniper,
+  } = trpc.sniper.getSniper.useQuery(
+    { sniperId: sniperId as string, migrateToLatestVersion: true },
     {
-      enabled: isDefined(typebotId),
+      enabled: isDefined(sniperId),
       retry: 0,
       onError: (error) => {
         if (error.data?.httpStatus === 404) {
@@ -113,7 +113,7 @@ export const TypebotProvider = ({
         }
         setIs404(false)
         showToast({
-          title: 'Could not fetch typebot',
+          title: 'Could not fetch sniper',
           description: error.message,
           details: {
             content: JSON.stringify(error.data?.zodError?.fieldErrors, null, 2),
@@ -127,63 +127,50 @@ export const TypebotProvider = ({
     }
   )
 
-  const { data: publishedTypebotData } =
-    trpc.typebot.getPublishedTypebot.useQuery(
-      { typebotId: typebotId as string, migrateToLatestVersion: true },
-      {
-        enabled:
-          isDefined(typebotId) &&
-          (typebotData?.currentUserMode === 'read' ||
-            typebotData?.currentUserMode === 'write'),
-        onError: (error) => {
-          showToast({
-            title: 'Could not fetch published typebot',
-            description: error.message,
-            details: {
-              content: JSON.stringify(
-                error.data?.zodError?.fieldErrors,
-                null,
-                2
-              ),
-              lang: 'json',
-            },
-          })
-        },
-      }
-    )
+  const { data: publishedSniperData } = trpc.sniper.getPublishedSniper.useQuery(
+    { sniperId: sniperId as string, migrateToLatestVersion: true },
+    {
+      enabled:
+        isDefined(sniperId) &&
+        (sniperData?.currentUserMode === 'read' ||
+          sniperData?.currentUserMode === 'write'),
+      onError: (error) => {
+        showToast({
+          title: 'Could not fetch published sniper',
+          description: error.message,
+          details: {
+            content: JSON.stringify(error.data?.zodError?.fieldErrors, null, 2),
+            lang: 'json',
+          },
+        })
+      },
+    }
+  )
 
-  const { mutateAsync: updateTypebot, isLoading: isSaving } =
-    trpc.typebot.updateTypebot.useMutation({
+  const { mutateAsync: updateSniper, isLoading: isSaving } =
+    trpc.sniper.updateSniper.useMutation({
       onError: (error) =>
         showToast({
-          title: 'Error while updating typebot',
+          title: 'Error while updating sniper',
           description: error.message,
         }),
       onSuccess: () => {
-        if (!typebotId) return
-        refetchTypebot()
+        if (!sniperId) return
+        refetchSniper()
       },
     })
 
-  const typebot = typebotData?.typebot as TypebotV6
-  const publishedTypebot = (publishedTypebotData?.publishedTypebot ??
-    undefined) as PublicTypebotV6 | undefined
+  const sniper = sniperData?.sniper as SniperV6
+  const publishedSniper = (publishedSniperData?.publishedSniper ??
+    undefined) as PublicSniperV6 | undefined
   const isReadOnly =
-    typebotData &&
-    ['read', 'guest'].includes(typebotData?.currentUserMode ?? 'guest')
+    sniperData &&
+    ['read', 'guest'].includes(sniperData?.currentUserMode ?? 'guest')
 
   const [
-    localTypebot,
-    {
-      redo,
-      undo,
-      flush,
-      canRedo,
-      canUndo,
-      set: setLocalTypebot,
-      setUpdateDate,
-    },
-  ] = useUndo<TypebotV6>(undefined, {
+    localSniper,
+    { redo, undo, flush, canRedo, canUndo, set: setLocalSniper, setUpdateDate },
+  ] = useUndo<SniperV6>(undefined, {
     isReadOnly,
     onUndo: (t) => {
       setGroupsCoordinates(t.groups)
@@ -194,158 +181,156 @@ export const TypebotProvider = ({
   })
 
   useEffect(() => {
-    if (!typebot && isDefined(localTypebot)) {
-      setLocalTypebot(undefined)
+    if (!sniper && isDefined(localSniper)) {
+      setLocalSniper(undefined)
       setGroupsCoordinates(undefined)
     }
-    if (isFetchingTypebot || !typebot) return
+    if (isFetchingSniper || !sniper) return
     if (
-      typebot.id !== localTypebot?.id ||
-      new Date(typebot.updatedAt).getTime() >
-        new Date(localTypebot.updatedAt).getTime()
+      sniper.id !== localSniper?.id ||
+      new Date(sniper.updatedAt).getTime() >
+        new Date(localSniper.updatedAt).getTime()
     ) {
-      setLocalTypebot({ ...typebot })
-      setGroupsCoordinates(typebot.groups)
+      setLocalSniper({ ...sniper })
+      setGroupsCoordinates(sniper.groups)
       flush()
     }
   }, [
     flush,
-    isFetchingTypebot,
-    localTypebot,
+    isFetchingSniper,
+    localSniper,
     setGroupsCoordinates,
-    setLocalTypebot,
+    setLocalSniper,
     showToast,
-    typebot,
+    sniper,
   ])
 
-  const saveTypebot = useCallback(
-    async (updates?: Partial<TypebotV6>) => {
-      if (!localTypebot || !typebot || isReadOnly) return
-      const typebotToSave = {
-        ...localTypebot,
+  const saveSniper = useCallback(
+    async (updates?: Partial<SniperV6>) => {
+      if (!localSniper || !sniper || isReadOnly) return
+      const sniperToSave = {
+        ...localSniper,
         ...updates,
       }
       if (
         dequal(
-          JSON.parse(JSON.stringify(omit(typebot, 'updatedAt'))),
-          JSON.parse(JSON.stringify(omit(typebotToSave, 'updatedAt')))
+          JSON.parse(JSON.stringify(omit(sniper, 'updatedAt'))),
+          JSON.parse(JSON.stringify(omit(sniperToSave, 'updatedAt')))
         )
       )
         return
-      const newParsedTypebot = typebotV6Schema.parse({ ...typebotToSave })
-      setLocalTypebot(newParsedTypebot)
+      const newParsedSniper = sniperV6Schema.parse({ ...sniperToSave })
+      setLocalSniper(newParsedSniper)
       try {
         const {
-          typebot: { updatedAt },
-        } = await updateTypebot({
-          typebotId: newParsedTypebot.id,
-          typebot: newParsedTypebot,
+          sniper: { updatedAt },
+        } = await updateSniper({
+          sniperId: newParsedSniper.id,
+          sniper: newParsedSniper,
         })
         setUpdateDate(updatedAt)
       } catch {
-        setLocalTypebot({
-          ...localTypebot,
+        setLocalSniper({
+          ...localSniper,
         })
       }
     },
     [
       isReadOnly,
-      localTypebot,
-      setLocalTypebot,
+      localSniper,
+      setLocalSniper,
       setUpdateDate,
-      typebot,
-      updateTypebot,
+      sniper,
+      updateSniper,
     ]
   )
 
   useAutoSave(
     {
-      handler: saveTypebot,
-      item: localTypebot,
+      handler: saveSniper,
+      item: localSniper,
       debounceTimeout: autoSaveTimeout,
     },
-    [saveTypebot, localTypebot]
+    [saveSniper, localSniper]
   )
 
   useEffect(() => {
-    const handleSaveTypebot = () => {
-      saveTypebot()
+    const handleSaveSniper = () => {
+      saveSniper()
     }
-    Router.events.on('routeChangeStart', handleSaveTypebot)
+    Router.events.on('routeChangeStart', handleSaveSniper)
     return () => {
-      Router.events.off('routeChangeStart', handleSaveTypebot)
+      Router.events.off('routeChangeStart', handleSaveSniper)
     }
-  }, [saveTypebot])
+  }, [saveSniper])
 
   const isPublished = useMemo(
     () =>
-      isDefined(localTypebot) &&
-      isDefined(localTypebot.publicId) &&
-      isDefined(publishedTypebot) &&
-      isPublishedHelper(localTypebot, publishedTypebot),
-    [localTypebot, publishedTypebot]
+      isDefined(localSniper) &&
+      isDefined(localSniper.publicId) &&
+      isDefined(publishedSniper) &&
+      isPublishedHelper(localSniper, publishedSniper),
+    [localSniper, publishedSniper]
   )
 
   useEffect(() => {
-    if (!localTypebot || !typebot || isReadOnly) return
-    if (!areTypebotsEqual(localTypebot, typebot)) {
+    if (!localSniper || !sniper || isReadOnly) return
+    if (!areSnipersEqual(localSniper, sniper)) {
       window.addEventListener('beforeunload', preventUserFromRefreshing)
     }
 
     return () => {
       window.removeEventListener('beforeunload', preventUserFromRefreshing)
     }
-  }, [localTypebot, typebot, isReadOnly])
+  }, [localSniper, sniper, isReadOnly])
 
-  const updateLocalTypebot = async ({
+  const updateLocalSniper = async ({
     updates,
     save,
   }: {
-    updates: UpdateTypebotPayload
+    updates: UpdateSniperPayload
     save?: boolean
   }) => {
-    if (!localTypebot || isReadOnly) return
-    const newTypebot = { ...localTypebot, ...updates }
-    setLocalTypebot(newTypebot)
-    if (save) await saveTypebot(newTypebot)
-    return newTypebot
+    if (!localSniper || isReadOnly) return
+    const newSniper = { ...localSniper, ...updates }
+    setLocalSniper(newSniper)
+    if (save) await saveSniper(newSniper)
+    return newSniper
   }
 
-  const restorePublishedTypebot = () => {
-    if (!publishedTypebot || !localTypebot) return
-    setLocalTypebot(
-      convertPublicTypebotToTypebot(publishedTypebot, localTypebot)
-    )
+  const restorePublishedSniper = () => {
+    if (!publishedSniper || !localSniper) return
+    setLocalSniper(convertPublicSniperToSniper(publishedSniper, localSniper))
   }
 
   return (
-    <typebotContext.Provider
+    <sniperContext.Provider
       value={{
-        typebot: localTypebot,
-        publishedTypebot,
-        publishedTypebotVersion: publishedTypebotData?.version,
-        currentUserMode: typebotData?.currentUserMode ?? 'guest',
+        sniper: localSniper,
+        publishedSniper,
+        publishedSniperVersion: publishedSniperData?.version,
+        currentUserMode: sniperData?.currentUserMode ?? 'guest',
         isSavingLoading: isSaving,
         is404,
-        save: saveTypebot,
+        save: saveSniper,
         undo,
         redo,
         canUndo,
         canRedo,
         isPublished,
-        updateTypebot: updateLocalTypebot,
-        restorePublishedTypebot,
-        ...groupsActions(setLocalTypebot as SetTypebot),
-        ...blocksAction(setLocalTypebot as SetTypebot),
-        ...variablesAction(setLocalTypebot as SetTypebot),
-        ...edgesAction(setLocalTypebot as SetTypebot),
-        ...itemsAction(setLocalTypebot as SetTypebot),
-        ...eventsActions(setLocalTypebot as SetTypebot),
+        updateSniper: updateLocalSniper,
+        restorePublishedSniper,
+        ...groupsActions(setLocalSniper as SetSniper),
+        ...blocksAction(setLocalSniper as SetSniper),
+        ...variablesAction(setLocalSniper as SetSniper),
+        ...edgesAction(setLocalSniper as SetSniper),
+        ...itemsAction(setLocalSniper as SetSniper),
+        ...eventsActions(setLocalSniper as SetSniper),
       }}
     >
       {children}
-    </typebotContext.Provider>
+    </sniperContext.Provider>
   )
 }
 
-export const useTypebot = () => useContext(typebotContext)
+export const useSniper = () => useContext(sniperContext)

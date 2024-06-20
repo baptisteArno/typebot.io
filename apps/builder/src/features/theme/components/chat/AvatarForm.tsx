@@ -1,5 +1,5 @@
 import React from 'react'
-import { AvatarProps } from '@typebot.io/schemas'
+import { AvatarProps } from '@sniper.io/schemas'
 import {
   Heading,
   HStack,

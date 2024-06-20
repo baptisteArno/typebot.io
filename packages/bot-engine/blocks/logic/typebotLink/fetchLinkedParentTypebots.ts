@@ -1,19 +1,19 @@
-import { fetchLinkedTypebots } from './fetchLinkedTypebots'
+import { fetchLinkedSnipers } from './fetchLinkedSnipers'
 
 type Props = {
-  parentTypebotIds: string[]
+  parentSniperIds: string[]
   userId: string | undefined
   isPreview?: boolean
 }
 
-export const fetchLinkedParentTypebots = ({
-  parentTypebotIds,
+export const fetchLinkedParentSnipers = ({
+  parentSniperIds,
   isPreview,
   userId,
 }: Props) =>
-  parentTypebotIds.length > 0
-    ? fetchLinkedTypebots({
-        typebotIds: parentTypebotIds,
+  parentSniperIds.length > 0
+    ? fetchLinkedSnipers({
+        sniperIds: parentSniperIds,
         isPreview,
         userId,
       })

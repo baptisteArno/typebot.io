@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { methodNotAllowed } from '@typebot.io/lib/api'
+import { methodNotAllowed } from '@sniper.io/lib/api'
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const firstParam = req.query.firstParam?.toString()
     const secondParam = req.query.secondParam?.toString()
-    const customHeader = req.headers['custom-typebot']
+    const customHeader = req.headers['custom-sniper']
     const { body } = req
     if (
       body.customField === 'secret4' &&

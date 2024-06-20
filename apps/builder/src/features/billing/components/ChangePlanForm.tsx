@@ -1,5 +1,5 @@
 import { Stack, HStack, Text } from '@chakra-ui/react'
-import { Plan, WorkspaceRole } from '@typebot.io/prisma'
+import { Plan, WorkspaceRole } from '@sniper.io/prisma'
 import { TextLink } from '@/components/TextLink'
 import { useToast } from '@/hooks/useToast'
 import { trpc } from '@/lib/trpc'
@@ -11,7 +11,7 @@ import { StarterPlanPricingCard } from './StarterPlanPricingCard'
 import { ProPlanPricingCard } from './ProPlanPricingCard'
 import { useTranslate } from '@tolgee/react'
 import { StripeClimateLogo } from './StripeClimateLogo'
-import { guessIfUserIsEuropean } from '@typebot.io/billing/helpers/guessIfUserIsEuropean'
+import { guessIfUserIsEuropean } from '@sniper.io/billing/helpers/guessIfUserIsEuropean'
 import { WorkspaceInApp } from '@/features/workspace/WorkspaceProvider'
 
 type Props = {
@@ -148,7 +148,7 @@ export const ChangePlanForm = ({
 
       <Text color="gray.500">
         {t('billing.customLimit.preLink')}{' '}
-        <TextLink href={'https://typebot.io/enterprise-lead-form'} isExternal>
+        <TextLink href={'https://sniper.io/enterprise-lead-form'} isExternal>
           {t('billing.customLimit.link')}
         </TextLink>
       </Text>

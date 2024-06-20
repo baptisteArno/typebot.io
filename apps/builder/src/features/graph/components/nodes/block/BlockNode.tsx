@@ -14,13 +14,13 @@ import {
   BlockWithOptions,
   TextBubbleBlock,
   BlockV6,
-} from '@typebot.io/schemas'
-import { isDefined } from '@typebot.io/lib'
+} from '@sniper.io/schemas'
+import { isDefined } from '@sniper.io/lib'
 import {
   isInputBlock,
   isBubbleBlock,
   isTextBubbleBlock,
-} from '@typebot.io/schemas/helpers'
+} from '@sniper.io/schemas/helpers'
 import { BlockNodeContent } from './BlockNodeContent'
 import { BlockSettings, SettingsPopoverContent } from './SettingsPopoverContent'
 import { BlockNodeContextMenu } from './BlockNodeContextMenu'
@@ -30,7 +30,7 @@ import { MediaBubblePopoverContent } from './MediaBubblePopoverContent'
 import { ContextMenu } from '@/components/ContextMenu'
 import { TextBubbleEditor } from '@/features/blocks/bubbles/textBubble/components/TextBubbleEditor'
 import { BlockIcon } from '@/features/editor/components/BlockIcon'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import {
   NodePosition,
   useBlockDnd,
@@ -38,14 +38,14 @@ import {
 } from '@/features/graph/providers/GraphDndProvider'
 import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvider'
-import { hasDefaultConnector } from '@/features/typebot/helpers/hasDefaultConnector'
+import { hasDefaultConnector } from '@/features/sniper/helpers/hasDefaultConnector'
 import { setMultipleRefs } from '@/helpers/setMultipleRefs'
 import { TargetEndpoint } from '../../endpoints/TargetEndpoint'
 import { SettingsModal } from './SettingsModal'
 import { TElement } from '@udecode/plate-common'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
 import { useGroupsStore } from '@/features/graph/hooks/useGroupsStore'
-import { TurnableIntoParam } from '@typebot.io/forge'
+import { TurnableIntoParam } from '@sniper.io/forge'
 import { ZodError, ZodObject } from 'zod'
 import { toast } from 'sonner'
 import { fromZodError } from 'zod-validation-error'
@@ -77,7 +77,7 @@ export const BlockNode = ({
     previewingBlock,
   } = useGraph()
   const { mouseOverBlock, setMouseOverBlock } = useBlockDnd()
-  const { typebot, updateBlock } = useTypebot()
+  const { sniper, updateBlock } = useSniper()
   const [isConnecting, setIsConnecting] = useState(false)
   const blockRef = useRef<HTMLDivElement | null>(null)
 
@@ -86,7 +86,7 @@ export const BlockNode = ({
     previewingEdge?.to.blockId === block.id ||
     previewingBlock?.id === block.id
 
-  const groupId = typebot?.groups.at(indices.groupIndex)?.id
+  const groupId = sniper?.groups.at(indices.groupIndex)?.id
 
   const isDraggingGraph = useGroupsStore((state) => state.isDraggingGraph)
 
@@ -218,7 +218,7 @@ export const BlockNode = ({
     }
   }
 
-  const hasIcomingEdge = typebot?.edges.some((edge) => {
+  const hasIcomingEdge = sniper?.edges.some((edge) => {
     return edge.to.blockId === block.id
   })
 
@@ -282,13 +282,11 @@ export const BlockNode = ({
                 transition="border-color 0.2s"
               >
                 <BlockIcon type={block.type} mt=".25rem" />
-                {typebot?.groups.at(indices.groupIndex)?.id && (
+                {sniper?.groups.at(indices.groupIndex)?.id && (
                   <BlockNodeContent
                     block={block}
                     indices={indices}
-                    groupId={
-                      typebot.groups.at(indices.groupIndex)?.id as string
-                    }
+                    groupId={sniper.groups.at(indices.groupIndex)?.id as string}
                   />
                 )}
                 {(hasIcomingEdge || isDefined(connectingIds)) && (
@@ -338,11 +336,11 @@ export const BlockNode = ({
               </ParentModalProvider>
             </>
           )}
-          {typebot && isMediaBubbleBlock(block) && (
+          {sniper && isMediaBubbleBlock(block) && (
             <MediaBubblePopoverContent
               uploadFileProps={{
-                workspaceId: typebot.workspaceId,
-                typebotId: typebot.id,
+                workspaceId: sniper.workspaceId,
+                sniperId: sniper.id,
                 blockId: block.id,
               }}
               block={block}

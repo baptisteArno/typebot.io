@@ -1,6 +1,6 @@
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { OrderedList, ListItem, Code, Stack, Text } from '@chakra-ui/react'
-import { Typebot } from '@typebot.io/schemas'
+import { Sniper } from '@sniper.io/schemas'
 import { useState } from 'react'
 import { StandardSettings } from '../../../settings/StandardSettings'
 import {
@@ -10,7 +10,7 @@ import {
 
 export const GtmStandardInstructions = ({
   publicId,
-}: Pick<Typebot, 'publicId'>) => {
+}: Pick<Sniper, 'publicId'>) => {
   const [windowSizes, setWindowSizes] = useState<{
     height: string
     width?: string
@@ -54,7 +54,7 @@ export const GtmStandardInstructions = ({
             }
           />
           <Text>
-            On your web page, you need to have an element on which the typebot
+            On your web page, you need to have an element on which the sniper
             will go:
           </Text>
           <CodeEditor value={elementCode} isReadOnly lang="html" />

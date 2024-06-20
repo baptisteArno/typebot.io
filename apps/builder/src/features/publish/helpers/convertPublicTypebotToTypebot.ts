@@ -1,32 +1,32 @@
-import { PublicTypebot, TypebotV6 } from '@typebot.io/schemas'
+import { PublicSniper, SniperV6 } from '@sniper.io/schemas'
 
-export const convertPublicTypebotToTypebot = (
-  typebot: PublicTypebot,
-  existingTypebot: TypebotV6
-): TypebotV6 => {
-  if (typebot.version !== '6') return existingTypebot
+export const convertPublicSniperToSniper = (
+  sniper: PublicSniper,
+  existingSniper: SniperV6
+): SniperV6 => {
+  if (sniper.version !== '6') return existingSniper
   return {
-    id: typebot.typebotId,
-    version: typebot.version,
-    groups: typebot.groups,
-    edges: typebot.edges,
-    name: existingTypebot.name,
-    publicId: existingTypebot.publicId,
-    settings: typebot.settings,
-    theme: typebot.theme,
-    variables: typebot.variables,
-    customDomain: existingTypebot.customDomain,
-    createdAt: existingTypebot.createdAt,
-    updatedAt: existingTypebot.updatedAt,
-    folderId: existingTypebot.folderId,
-    icon: existingTypebot.icon,
-    workspaceId: existingTypebot.workspaceId,
-    isArchived: existingTypebot.isArchived,
-    isClosed: existingTypebot.isClosed,
-    resultsTablePreferences: existingTypebot.resultsTablePreferences,
-    selectedThemeTemplateId: existingTypebot.selectedThemeTemplateId,
-    whatsAppCredentialsId: existingTypebot.whatsAppCredentialsId,
-    riskLevel: existingTypebot.riskLevel,
-    events: typebot.events,
+    id: sniper.sniperId,
+    version: sniper.version,
+    groups: sniper.groups,
+    edges: sniper.edges,
+    name: existingSniper.name,
+    publicId: existingSniper.publicId,
+    settings: sniper.settings,
+    theme: sniper.theme,
+    variables: sniper.variables,
+    customDomain: existingSniper.customDomain,
+    createdAt: existingSniper.createdAt,
+    updatedAt: existingSniper.updatedAt,
+    folderId: existingSniper.folderId,
+    icon: existingSniper.icon,
+    workspaceId: existingSniper.workspaceId,
+    isArchived: existingSniper.isArchived,
+    isClosed: existingSniper.isClosed,
+    resultsTablePreferences: existingSniper.resultsTablePreferences,
+    selectedThemeTemplateId: existingSniper.selectedThemeTemplateId,
+    whatsAppCredentialsId: existingSniper.whatsAppCredentialsId,
+    riskLevel: existingSniper.riskLevel,
+    events: sniper.events,
   }
 }

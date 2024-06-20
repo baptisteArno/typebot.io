@@ -10,7 +10,7 @@ import { render } from '@faire/mjml-react/utils/render'
 import { HeroImage, Text, Button, Head } from '../components'
 import { SendMailOptions } from 'nodemailer'
 import { sendEmail } from '../sendEmail'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 type Props = {
   url: string
@@ -39,7 +39,7 @@ export const MagicLinkEmail = ({ url }: Props) => (
           </Text>
           <Text>
             Best,
-            <br />- Typebot Team.
+            <br />- Sniper Team.
           </Text>
         </MjmlColumn>
       </MjmlSection>
@@ -53,6 +53,6 @@ export const sendMagicLinkEmail = ({
 }: Pick<SendMailOptions, 'to'> & ComponentProps<typeof MagicLinkEmail>) =>
   sendEmail({
     to,
-    subject: 'Sign in to Typebot',
+    subject: 'Sign in to Sniper',
     html: render(<MagicLinkEmail {...props} />).html,
   })

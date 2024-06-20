@@ -1,24 +1,24 @@
-import { PublicTypebot as PrismaPublicTypebot } from '@typebot.io/prisma'
+import { PublicSniper as PrismaPublicSniper } from '@sniper.io/prisma'
 import {
   variableSchema,
   themeSchema,
   settingsSchema,
   groupV5Schema,
   groupV6Schema,
-} from './typebot'
+} from './sniper'
 import { z } from '../zod'
-import { preprocessTypebot } from './typebot/helpers/preprocessTypebot'
-import { edgeSchema } from './typebot/edge'
+import { preprocessSniper } from './sniper/helpers/preprocessSniper'
+import { edgeSchema } from './sniper/edge'
 import { startEventSchema } from './events'
 
-export const publicTypebotSchemaV5 = z.preprocess(
-  preprocessTypebot,
+export const publicSniperSchemaV5 = z.preprocess(
+  preprocessSniper,
   z.object({
     id: z.string(),
     version: z.enum(['3', '4', '5']),
     createdAt: z.date(),
     updatedAt: z.date(),
-    typebotId: z.string(),
+    sniperId: z.string(),
     groups: z.array(groupV5Schema),
     events: z.null().openapi({
       type: 'array',
@@ -28,27 +28,27 @@ export const publicTypebotSchemaV5 = z.preprocess(
     theme: themeSchema,
     settings: settingsSchema,
   })
-) satisfies z.ZodType<Partial<PrismaPublicTypebot>, z.ZodTypeDef, unknown>
-export type PublicTypebotV5 = z.infer<typeof publicTypebotSchemaV5>
+) satisfies z.ZodType<Partial<PrismaPublicSniper>, z.ZodTypeDef, unknown>
+export type PublicSniperV5 = z.infer<typeof publicSniperSchemaV5>
 
-export const publicTypebotSchemaV6 = publicTypebotSchemaV5._def.schema.extend({
+export const publicSniperSchemaV6 = publicSniperSchemaV5._def.schema.extend({
   version: z.literal('6'),
   groups: z.array(groupV6Schema),
   events: z.tuple([startEventSchema]),
 })
-export type PublicTypebotV6 = z.infer<typeof publicTypebotSchemaV6>
+export type PublicSniperV6 = z.infer<typeof publicSniperSchemaV6>
 
-export const publicTypebotSchema = z.preprocess(
-  preprocessTypebot,
+export const publicSniperSchema = z.preprocess(
+  preprocessSniper,
   z.discriminatedUnion('version', [
-    publicTypebotSchemaV6.openapi({
-      ref: 'publicTypebotV6',
-      title: 'Public Typebot V6',
+    publicSniperSchemaV6.openapi({
+      ref: 'publicSniperV6',
+      title: 'Public Sniper V6',
     }),
-    publicTypebotSchemaV5._def.schema.openapi({
-      ref: 'publicTypebotV5',
-      title: 'Public Typebot V5',
+    publicSniperSchemaV5._def.schema.openapi({
+      ref: 'publicSniperV5',
+      title: 'Public Sniper V5',
     }),
   ])
 )
-export type PublicTypebot = z.infer<typeof publicTypebotSchema>
+export type PublicSniper = z.infer<typeof publicSniperSchema>

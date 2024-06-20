@@ -1,14 +1,14 @@
-import { StartTypebot } from '@typebot.io/schemas'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { StartSniper } from '@sniper.io/schemas'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
 import {
   ComparisonOperators,
   LogicalOperator,
-} from '@typebot.io/schemas/features/blocks/logic/condition/constants'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
-import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/constants'
+} from '@sniper.io/schemas/features/blocks/logic/condition/constants'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
+import { BackgroundType } from '@sniper.io/schemas/features/sniper/theme/constants'
 
-export const leadGenerationTypebot: StartTypebot = {
+export const leadGenerationSniper: StartSniper = {
   version: '3',
   id: 'clckrl4q5000t3b6sabwokaar',
   events: null,

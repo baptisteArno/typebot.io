@@ -16,7 +16,7 @@ import {
   HStack,
 } from '@chakra-ui/react'
 import { useState, useRef, ChangeEvent, useEffect } from 'react'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
 import { ChevronDownIcon, CloseIcon } from '../icons'

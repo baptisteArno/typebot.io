@@ -1,2 +1,2 @@
-export * from './components/TypebotViewer'
+export * from './components/SniperViewer'
 export { parseVariables } from '@/features/variables'

@@ -1,12 +1,12 @@
-import { LogsStore, VariableStore } from '@typebot.io/forge/types'
+import { LogsStore, VariableStore } from '@sniper.io/forge/types'
 import {
   GenerateVariablesOptions,
   toolParametersSchema,
 } from './parseGenerateVariablesOptions'
 import { generateObject, LanguageModel } from 'ai'
-import { Variable } from '@typebot.io/variables/types'
-import { z } from '@typebot.io/forge/zod'
-import { isNotEmpty } from '@typebot.io/lib/utils'
+import { Variable } from '@sniper.io/variables/types'
+import { z } from '@sniper.io/forge/zod'
+import { isNotEmpty } from '@sniper.io/lib/utils'
 
 type Props = {
   model: LanguageModel

@@ -1,37 +1,35 @@
-import prisma from '@typebot.io/lib/prisma'
-import { canReadTypebots } from '@/helpers/databaseRules'
-import { User } from '@typebot.io/prisma'
-import { Block, PublicTypebot, Typebot } from '@typebot.io/schemas'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import prisma from '@sniper.io/lib/prisma'
+import { canReadSnipers } from '@/helpers/databaseRules'
+import { User } from '@sniper.io/prisma'
+import { Block, PublicSniper, Sniper } from '@sniper.io/schemas'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
 
-export const fetchLinkedTypebots = async (
-  typebot: Pick<PublicTypebot, 'groups'>,
+export const fetchLinkedSnipers = async (
+  sniper: Pick<PublicSniper, 'groups'>,
   user?: User
-): Promise<(Typebot | PublicTypebot)[]> => {
-  const linkedTypebotIds = typebot.groups
+): Promise<(Sniper | PublicSniper)[]> => {
+  const linkedSniperIds = sniper.groups
     .flatMap<Block>((group) => group.blocks)
-    .reduce<string[]>((typebotIds, block) => {
-      if (block.type !== LogicBlockType.TYPEBOT_LINK) return typebotIds
-      const typebotId = block.options?.typebotId
-      if (!typebotId) return typebotIds
-      return typebotIds.includes(typebotId)
-        ? typebotIds
-        : [...typebotIds, typebotId]
+    .reduce<string[]>((sniperIds, block) => {
+      if (block.type !== LogicBlockType.SNIPER_LINK) return sniperIds
+      const sniperId = block.options?.sniperId
+      if (!sniperId) return sniperIds
+      return sniperIds.includes(sniperId) ? sniperIds : [...sniperIds, sniperId]
     }, [])
-  if (linkedTypebotIds.length === 0) return []
-  const typebots = (await ('typebotId' in typebot
-    ? prisma.publicTypebot.findMany({
-        where: { id: { in: linkedTypebotIds } },
+  if (linkedSniperIds.length === 0) return []
+  const snipers = (await ('sniperId' in sniper
+    ? prisma.publicSniper.findMany({
+        where: { id: { in: linkedSniperIds } },
       })
-    : prisma.typebot.findMany({
+    : prisma.sniper.findMany({
         where: user
           ? {
               AND: [
-                { id: { in: linkedTypebotIds } },
-                canReadTypebots(linkedTypebotIds, user as User),
+                { id: { in: linkedSniperIds } },
+                canReadSnipers(linkedSniperIds, user as User),
               ],
             }
-          : { id: { in: linkedTypebotIds } },
-      }))) as (Typebot | PublicTypebot)[]
-  return typebots
+          : { id: { in: linkedSniperIds } },
+      }))) as (Sniper | PublicSniper)[]
+  return snipers
 }

@@ -1,11 +1,11 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
-import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
-import { forgedBlockIds } from '@typebot.io/forge-repository/constants'
-import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
+import { forgedBlocks } from '@sniper.io/forge-repository/definitions'
+import { forgedBlockIds } from '@sniper.io/forge-repository/constants'
+import { decrypt } from '@sniper.io/lib/api/encryption/decrypt'
 
 export const fetchSelectItems = authenticatedProcedure
   .input(

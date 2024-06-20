@@ -1,4 +1,4 @@
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 export const defaultTransportOptions = {
   host: env.SMTP_HOST,

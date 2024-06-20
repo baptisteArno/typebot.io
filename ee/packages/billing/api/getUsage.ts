@@ -1,9 +1,9 @@
 import { TRPCError } from '@trpc/server'
-import { env } from '@typebot.io/env'
-import prisma from '@typebot.io/lib/prisma'
-import { User } from '@typebot.io/prisma'
+import { env } from '@sniper.io/env'
+import prisma from '@sniper.io/lib/prisma'
+import { User } from '@sniper.io/prisma'
 import Stripe from 'stripe'
-import { isReadWorkspaceFobidden } from '@typebot.io/db-rules/isReadWorkspaceFobidden'
+import { isReadWorkspaceFobidden } from '@sniper.io/db-rules/isReadWorkspaceFobidden'
 
 type Props = {
   workspaceId: string
@@ -23,7 +23,7 @@ export const getUsage = async ({ workspaceId, user }: Props) => {
           userId: true,
         },
       },
-      typebots: {
+      snipers: {
         select: { id: true },
       },
     },
@@ -44,7 +44,7 @@ export const getUsage = async ({ workspaceId, user }: Props) => {
 
     const totalChatsUsed = await prisma.result.count({
       where: {
-        typebotId: { in: workspace.typebots.map((typebot) => typebot.id) },
+        sniperId: { in: workspace.snipers.map((sniper) => sniper.id) },
         hasStarted: true,
         createdAt: {
           gte: firstDayOfMonth,
@@ -81,7 +81,7 @@ export const getUsage = async ({ workspaceId, user }: Props) => {
 
   const totalChatsUsed = await prisma.result.count({
     where: {
-      typebotId: { in: workspace.typebots.map((typebot) => typebot.id) },
+      sniperId: { in: workspace.snipers.map((sniper) => sniper.id) },
       hasStarted: true,
       createdAt: {
         gte: new Date(currentSubscription.current_period_start * 1000),

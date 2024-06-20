@@ -1,6 +1,6 @@
 import { fetcher } from '@/helpers/fetcher'
 import useSWR from 'swr'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import { ApiTokenFromServer } from '../types'
 
 type ServerResponse = {

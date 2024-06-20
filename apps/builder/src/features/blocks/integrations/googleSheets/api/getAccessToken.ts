@@ -1,12 +1,12 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
-import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
-import { GoogleSheetsCredentials } from '@typebot.io/schemas'
+import { decrypt } from '@sniper.io/lib/api/encryption/decrypt'
+import { GoogleSheetsCredentials } from '@sniper.io/schemas'
 import { OAuth2Client } from 'google-auth-library'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 export const getAccessToken = authenticatedProcedure
   .input(

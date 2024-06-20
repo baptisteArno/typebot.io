@@ -1,22 +1,22 @@
-import { Standard } from '@typebot.io/nextjs'
+import { Standard } from '@sniper.io/nextjs'
 import { useRouter } from 'next/router'
 import { SEO } from './Seo'
-import { Typebot } from '@typebot.io/schemas/features/typebot/typebot'
-import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/constants'
-import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
-import { Font } from '@typebot.io/schemas'
+import { Sniper } from '@sniper.io/schemas/features/sniper/sniper'
+import { BackgroundType } from '@sniper.io/schemas/features/sniper/theme/constants'
+import { defaultSettings } from '@sniper.io/schemas/features/sniper/settings/constants'
+import { Font } from '@sniper.io/schemas'
 
-export type TypebotV3PageProps = {
+export type SniperV3PageProps = {
   url: string
   name: string
   publicId: string | null
   font: Font | null
   isHideQueryParamsEnabled: boolean | null
-  background: NonNullable<Typebot['theme']['general']>['background']
-  metadata: Typebot['settings']['metadata']
+  background: NonNullable<Sniper['theme']['general']>['background']
+  metadata: Sniper['settings']['metadata']
 }
 
-export const TypebotPageV3 = ({
+export const SniperPageV3 = ({
   font,
   publicId,
   name,
@@ -24,7 +24,7 @@ export const TypebotPageV3 = ({
   isHideQueryParamsEnabled,
   metadata,
   background,
-}: TypebotV3PageProps) => {
+}: SniperV3PageProps) => {
   const { asPath, push } = useRouter()
 
   const clearQueryParamsIfNecessary = () => {
@@ -53,9 +53,9 @@ export const TypebotPageV3 = ({
             : '#fff',
       }}
     >
-      <SEO url={url} typebotName={name} metadata={metadata} />
+      <SEO url={url} sniperName={name} metadata={metadata} />
       <Standard
-        typebot={publicId}
+        sniper={publicId}
         onInit={clearQueryParamsIfNecessary}
         font={font ?? undefined}
       />

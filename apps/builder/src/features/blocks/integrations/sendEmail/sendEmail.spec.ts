@@ -1,10 +1,10 @@
 import test, { expect } from '@playwright/test'
-import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
+import { importSniperInDatabase } from '@sniper.io/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
-const typebotId = createId()
+const sniperId = createId()
 
 test.describe('Send email block', () => {
   test('its configuration should work', async ({ page }) => {
@@ -15,16 +15,16 @@ test.describe('Send email block', () => {
       !env.NEXT_PUBLIC_SMTP_FROM
     )
       throw new Error('SMTP_ env vars are missing')
-    await importTypebotInDatabase(
-      getTestAsset('typebots/integrations/sendEmail.json'),
+    await importSniperInDatabase(
+      getTestAsset('snipers/integrations/sendEmail.json'),
       {
-        id: typebotId,
+        id: sniperId,
       }
     )
 
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/snipers/${sniperId}/edit`)
     await page.click('text=Configure...')
-    await page.click(`text=notifications@typebot.io`)
+    await page.click(`text=notifications@sniper.io`)
     await page.click('text=Connect new')
     const createButton = page.locator('button >> text=Create')
     await expect(createButton).toBeDisabled()
@@ -60,7 +60,7 @@ test.describe('Send email block', () => {
     await page.locator('textarea').last().fill('Here is my email')
 
     await page.click('text=Test')
-    await page.locator('typebot-standard').locator('text=Go').click()
+    await page.locator('sniper-standard').locator('text=Go').click()
     await expect(
       page.locator('text=Emails are not sent in preview mode >> nth=0')
     ).toBeVisible()

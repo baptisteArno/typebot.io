@@ -1,5 +1,5 @@
-import { safeStringify } from '@typebot.io/lib/safeStringify'
-import { isDefined, isNotDefined } from '@typebot.io/lib/utils'
+import { safeStringify } from '@sniper.io/lib/safeStringify'
+import { isDefined, isNotDefined } from '@sniper.io/lib/utils'
 import { Variable, VariableWithValue } from './types'
 import { createCodeRunner } from './codeRunners'
 

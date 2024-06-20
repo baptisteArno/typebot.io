@@ -1,2 +1,2 @@
 -- CreateIndex
-CREATE INDEX IF NOT EXISTS "Result_typebotId_idx" ON "Result"("typebotId");
+CREATE INDEX IF NOT EXISTS "Result_sniperId_idx" ON "Result"("sniperId");

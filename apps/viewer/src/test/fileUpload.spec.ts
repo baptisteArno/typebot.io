@@ -2,29 +2,29 @@ import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
 import { parse } from 'papaparse'
 import { readFileSync } from 'fs'
-import { isDefined } from '@typebot.io/lib'
-import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
+import { isDefined } from '@sniper.io/lib'
+import { importSniperInDatabase } from '@sniper.io/playwright/databaseActions'
 import { getTestAsset } from '@/test/utils/playwright'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 test('should work as expected', async ({ page, browser }) => {
-  const typebotId = createId()
-  await importTypebotInDatabase(getTestAsset('typebots/fileUpload.json'), {
-    id: typebotId,
-    publicId: `${typebotId}-public`,
+  const sniperId = createId()
+  await importSniperInDatabase(getTestAsset('snipers/fileUpload.json'), {
+    id: sniperId,
+    publicId: `${sniperId}-public`,
   })
-  await page.goto(`/${typebotId}-public`)
+  await page.goto(`/${sniperId}-public`)
   await page
     .locator(`input[type="file"]`)
     .setInputFiles([
-      getTestAsset('typebots/api.json'),
-      getTestAsset('typebots/fileUpload.json'),
-      getTestAsset('typebots/hugeGroup.json'),
+      getTestAsset('snipers/api.json'),
+      getTestAsset('snipers/fileUpload.json'),
+      getTestAsset('snipers/hugeGroup.json'),
     ])
   await expect(page.locator(`text="3"`)).toBeVisible()
   await page.locator('text="Upload 3 files"').click()
   await expect(page.locator(`text="3 files uploaded"`)).toBeVisible()
-  await page.goto(`${env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
+  await page.goto(`${env.NEXTAUTH_URL}/snipers/${sniperId}/results`)
   await expect(page.getByRole('link', { name: 'api.json' })).toHaveAttribute(
     'href',
     /.+\/api\.json/

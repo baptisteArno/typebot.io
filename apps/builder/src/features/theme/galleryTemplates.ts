@@ -1,6 +1,6 @@
-import { env } from '@typebot.io/env'
-import { ThemeTemplate } from '@typebot.io/schemas'
-import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/constants'
+import { env } from '@sniper.io/env'
+import { ThemeTemplate } from '@sniper.io/schemas'
+import { BackgroundType } from '@sniper.io/schemas/features/sniper/theme/constants'
 
 const getOrigin = () => {
   if (typeof window !== 'undefined') {
@@ -13,13 +13,13 @@ const getOrigin = () => {
 export const galleryTemplates: Pick<ThemeTemplate, 'id' | 'name' | 'theme'>[] =
   [
     {
-      id: 'typebot-light',
-      name: 'Typebot Light',
+      id: 'sniper-light',
+      name: 'Sniper Light',
       theme: {},
     },
     {
-      id: 'typebot-dark',
-      name: 'Typebot Dark',
+      id: 'sniper-dark',
+      name: 'Sniper Dark',
       theme: {
         chat: {
           inputs: {

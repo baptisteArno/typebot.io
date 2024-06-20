@@ -1,11 +1,11 @@
 import { TRPCError } from '@trpc/server'
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import {
   SessionState,
   Variable,
-  PublicTypebot,
-  Typebot,
-} from '@typebot.io/schemas'
+  PublicSniper,
+  Sniper,
+} from '@sniper.io/schemas'
 import { getSession } from '../queries/getSession'
 
 type Props = {
@@ -13,17 +13,17 @@ type Props = {
   sessionId: string
 }
 
-export const updateTypebotInSession = async ({ user, sessionId }: Props) => {
+export const updateSniperInSession = async ({ user, sessionId }: Props) => {
   if (!user)
     throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Unauthorized' })
   const session = await getSession(sessionId)
   if (!session)
     throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' })
 
-  const publicTypebot = (await prisma.publicTypebot.findFirst({
+  const publicSniper = (await prisma.publicSniper.findFirst({
     where: {
-      typebot: {
-        id: session.state.typebotsQueue[0].typebot.id,
+      sniper: {
+        id: session.state.snipersQueue[0].sniper.id,
         OR: [
           {
             workspace: {
@@ -45,12 +45,12 @@ export const updateTypebotInSession = async ({ user, sessionId }: Props) => {
       groups: true,
       variables: true,
     },
-  })) as Pick<PublicTypebot, 'edges' | 'variables' | 'groups'> | null
+  })) as Pick<PublicSniper, 'edges' | 'variables' | 'groups'> | null
 
-  if (!publicTypebot)
+  if (!publicSniper)
     throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Unauthorized' })
 
-  const newSessionState = updateSessionState(session.state, publicTypebot)
+  const newSessionState = updateSessionState(session.state, publicSniper)
 
   await prisma.chatSession.updateMany({
     where: { id: session.id },
@@ -62,30 +62,30 @@ export const updateTypebotInSession = async ({ user, sessionId }: Props) => {
 
 const updateSessionState = (
   currentState: SessionState,
-  newTypebot: Pick<PublicTypebot, 'edges' | 'variables' | 'groups'>
+  newSniper: Pick<PublicSniper, 'edges' | 'variables' | 'groups'>
 ): SessionState => ({
   ...currentState,
-  typebotsQueue: currentState.typebotsQueue.map((typebotInQueue, index) =>
+  snipersQueue: currentState.snipersQueue.map((sniperInQueue, index) =>
     index === 0
       ? {
-          ...typebotInQueue,
-          typebot: {
-            ...typebotInQueue.typebot,
-            edges: newTypebot.edges,
-            groups: newTypebot.groups,
+          ...sniperInQueue,
+          sniper: {
+            ...sniperInQueue.sniper,
+            edges: newSniper.edges,
+            groups: newSniper.groups,
             variables: updateVariablesInSession(
-              typebotInQueue.typebot.variables,
-              newTypebot.variables
+              sniperInQueue.sniper.variables,
+              newSniper.variables
             ),
           },
         }
-      : typebotInQueue
-  ) as SessionState['typebotsQueue'],
+      : sniperInQueue
+  ) as SessionState['snipersQueue'],
 })
 
 const updateVariablesInSession = (
   currentVariables: Variable[],
-  newVariables: Typebot['variables']
+  newVariables: Sniper['variables']
 ): Variable[] => [
   ...currentVariables,
   ...newVariables.filter(

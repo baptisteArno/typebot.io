@@ -1,6 +1,6 @@
 import { Stack, Text } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { HttpRequestBlock } from '@typebot.io/schemas'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
+import { HttpRequestBlock } from '@sniper.io/schemas'
 import { SetVariableLabel } from '@/components/SetVariableLabel'
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 }
 
 export const WebhookContent = ({ block: { options } }: Props) => {
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
   const webhook = options?.webhook
 
   if (!webhook?.url) return <Text color="gray.500">Configure...</Text>
@@ -23,7 +23,7 @@ export const WebhookContent = ({ block: { options } }: Props) => {
           <SetVariableLabel
             key={mapping.variableId}
             variableId={mapping.variableId as string}
-            variables={typebot?.variables}
+            variables={sniper?.variables}
           />
         ))}
     </Stack>

@@ -1,8 +1,8 @@
 import { createId } from '@paralleldrive/cuid2'
-import { blockTypeHasItems } from '@typebot.io/schemas/helpers'
-import { BlockV6, BlockWithItems, ItemV6 } from '@typebot.io/schemas'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { blockTypeHasItems } from '@sniper.io/schemas/helpers'
+import { BlockV6, BlockWithItems, ItemV6 } from '@sniper.io/schemas'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
 
 const parseDefaultItems = (type: BlockWithItems['type']): ItemV6[] => {
   switch (type) {

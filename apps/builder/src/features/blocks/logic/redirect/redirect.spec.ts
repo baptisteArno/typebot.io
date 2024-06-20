@@ -1,25 +1,22 @@
 import test, { expect } from '@playwright/test'
-import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
+import { importSniperInDatabase } from '@sniper.io/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 
-const typebotId = createId()
+const sniperId = createId()
 
 test.describe('Redirect block', () => {
   test('its configuration should work', async ({ page, context }) => {
-    await importTypebotInDatabase(
-      getTestAsset('typebots/logic/redirect.json'),
-      {
-        id: typebotId,
-      }
-    )
+    await importSniperInDatabase(getTestAsset('snipers/logic/redirect.json'), {
+      id: sniperId,
+    })
 
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/snipers/${sniperId}/edit`)
     await page.click('text=Configure...')
     await page.fill('input[placeholder="Type a URL..."]', 'google.com')
 
     await page.click('text=Test')
-    await page.locator('typebot-standard').locator('text=Go to URL').click()
+    await page.locator('sniper-standard').locator('text=Go to URL').click()
     await expect(page).toHaveURL('https://www.google.com')
     await page.goBack()
 
@@ -29,7 +26,7 @@ test.describe('Redirect block', () => {
     await page.click('text=Test')
     const [newPage] = await Promise.all([
       context.waitForEvent('page'),
-      page.locator('typebot-standard').locator('text=Go to URL').click(),
+      page.locator('sniper-standard').locator('text=Go to URL').click(),
     ])
     await newPage.waitForLoadState()
     await expect(newPage).toHaveURL('https://www.google.com')

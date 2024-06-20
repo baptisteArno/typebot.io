@@ -1,7 +1,7 @@
-import { WorkspaceInvitation } from '@typebot.io/prisma'
+import { WorkspaceInvitation } from '@sniper.io/prisma'
 import { fetcher } from '@/helpers/fetcher'
 import useSWR from 'swr'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import { Member } from '../types'
 
 export const useMembers = ({ workspaceId }: { workspaceId?: string }) => {

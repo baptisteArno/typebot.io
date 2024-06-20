@@ -1,4 +1,4 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { PrismaClient } from '@sniper.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 import { Stripe } from 'stripe'
 import { createId } from '@paralleldrive/cuid2'
@@ -201,7 +201,7 @@ const migrateSubscriptionsToUsageBased = async () => {
 
     const totalResults = await prisma.result.count({
       where: {
-        typebot: { workspaceId: workspace.id },
+        sniper: { workspaceId: workspace.id },
         hasStarted: true,
         createdAt: {
           gte: new Date(newSubscription.current_period_start * 1000),

@@ -1,4 +1,4 @@
-import { User } from '@typebot.io/prisma'
+import { User } from '@sniper.io/prisma'
 
 export const mockedUser: User = {
   id: 'userId',

@@ -1,6 +1,6 @@
-import { VariableStore } from '@typebot.io/forge/types'
+import { VariableStore } from '@sniper.io/forge/types'
 import { ChatCompletionOptions } from './parseChatCompletionOptions'
-import { executeFunction } from '@typebot.io/variables/executeFunction'
+import { executeFunction } from '@sniper.io/variables/executeFunction'
 import { OpenAIStream, ToolCallPayload } from 'ai'
 import OpenAI, { ClientOptions } from 'openai'
 import { ChatCompletionTool } from 'openai/resources'

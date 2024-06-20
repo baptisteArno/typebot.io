@@ -9,21 +9,21 @@ import {
 import { CopyIcon, PlayIcon } from '@/components/icons'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { isNotDefined } from '@typebot.io/lib'
+import { isNotDefined } from '@sniper.io/lib'
 import Link from 'next/link'
 import { headerHeight } from '../constants'
 import { RightPanel, useEditor } from '../providers/EditorProvider'
-import { useTypebot } from '../providers/TypebotProvider'
+import { useSniper } from '../providers/SniperProvider'
 import { useTranslate } from '@tolgee/react'
-import { TypebotLogo } from '@/components/TypebotLogo'
+import { SniperLogo } from '@/components/SniperLogo'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
 import { useUser } from '@/features/account/hooks/useUser'
 
-export const GuestTypebotHeader = () => {
+export const GuestSniperHeader = () => {
   const { t } = useTranslate()
   const router = useRouter()
   const { user } = useUser()
-  const { typebot, save } = useTypebot()
+  const { sniper, save } = useSniper()
   const {
     setRightPanel,
     rightPanel,
@@ -57,7 +57,7 @@ export const GuestTypebotHeader = () => {
       >
         <Button
           as={Link}
-          href={`/typebots/${typebot?.id}/edit`}
+          href={`/snipers/${sniper?.id}/edit`}
           colorScheme={router.pathname.includes('/edit') ? 'blue' : 'gray'}
           variant={router.pathname.includes('/edit') ? 'outline' : 'ghost'}
           size="sm"
@@ -66,7 +66,7 @@ export const GuestTypebotHeader = () => {
         </Button>
         <Button
           as={Link}
-          href={`/typebots/${typebot?.id}/theme`}
+          href={`/snipers/${sniper?.id}/theme`}
           colorScheme={router.pathname.endsWith('theme') ? 'blue' : 'gray'}
           variant={router.pathname.endsWith('theme') ? 'outline' : 'ghost'}
           size="sm"
@@ -75,7 +75,7 @@ export const GuestTypebotHeader = () => {
         </Button>
         <Button
           as={Link}
-          href={`/typebots/${typebot?.id}/settings`}
+          href={`/snipers/${sniper?.id}/settings`}
           colorScheme={router.pathname.endsWith('settings') ? 'blue' : 'gray'}
           variant={router.pathname.endsWith('settings') ? 'outline' : 'ghost'}
           size="sm"
@@ -91,8 +91,8 @@ export const GuestTypebotHeader = () => {
         spacing="6"
       >
         <HStack alignItems="center" spacing={3}>
-          {typebot && (
-            <EmojiOrImageIcon icon={typebot.icon} emojiFontSize="2xl" />
+          {sniper && (
+            <EmojiOrImageIcon icon={sniper.icon} emojiFontSize="2xl" />
           )}
           <Text
             noOfLines={2}
@@ -102,7 +102,7 @@ export const GuestTypebotHeader = () => {
             minW="30px"
             minH="20px"
           >
-            {typebot?.name}
+            {sniper?.name}
           </Text>
         </HStack>
       </HStack>
@@ -114,7 +114,7 @@ export const GuestTypebotHeader = () => {
         spacing={4}
       >
         <HStack>
-          {typebot?.id && (
+          {sniper?.id && (
             <Button
               as={Link}
               href={
@@ -122,13 +122,13 @@ export const GuestTypebotHeader = () => {
                   ? {
                       pathname: `/register`,
                       query: {
-                        redirectPath: `/typebots/${typebot.id}/duplicate`,
+                        redirectPath: `/snipers/${sniper.id}/duplicate`,
                       },
                     }
-                  : `/typebots/${typebot.id}/duplicate`
+                  : `/snipers/${sniper.id}/duplicate`
               }
               leftIcon={<CopyIcon />}
-              isLoading={isNotDefined(typebot)}
+              isLoading={isNotDefined(sniper)}
               size="sm"
             >
               Duplicate
@@ -138,7 +138,7 @@ export const GuestTypebotHeader = () => {
             <Button
               colorScheme="blue"
               onClick={handlePreviewClick}
-              isLoading={isNotDefined(typebot)}
+              isLoading={isNotDefined(sniper)}
               leftIcon={<PlayIcon />}
               size="sm"
             >
@@ -153,11 +153,11 @@ export const GuestTypebotHeader = () => {
             <Button
               as={Link}
               href={`/register`}
-              leftIcon={<TypebotLogo width="20px" />}
+              leftIcon={<SniperLogo width="20px" />}
               variant="outline"
               size="sm"
             >
-              Try Typebot
+              Try Sniper
             </Button>
           </>
         )}

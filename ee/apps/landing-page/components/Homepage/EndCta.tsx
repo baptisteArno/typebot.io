@@ -49,14 +49,14 @@ export const EndCta = ({ heading, polygonsBaseTop, ...props }: Props) => {
         <Flex>
           <Button
             as={Link}
-            href="https://app.typebot.io/register"
+            href="https://app.sniper.io/register"
             size="lg"
             colorScheme="orange"
             height="4rem"
             data-aos="fade-up"
             data-aos-delay="300"
           >
-            Create a typebot
+            Create a sniper
           </Button>
         </Flex>
 

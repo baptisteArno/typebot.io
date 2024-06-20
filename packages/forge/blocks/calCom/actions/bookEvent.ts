@@ -1,4 +1,4 @@
-import { createAction, option } from '@typebot.io/forge'
+import { createAction, option } from '@sniper.io/forge'
 import { baseOptions } from '../baseOptions'
 import { defaultBaseUrl } from '../constants'
 
@@ -121,7 +121,7 @@ export const bookEvent = createAction({
               }) : undefined
 
               Cal("inline", {
-                elementOrSelector: typebotElement,
+                elementOrSelector: sniperElement,
                 calLink: link,
                 layout,
                 config: {

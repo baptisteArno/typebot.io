@@ -1,7 +1,7 @@
 import { createId } from '@paralleldrive/cuid2'
 import { TRPCError } from '@trpc/server'
-import { isDefined, omit, isNotEmpty } from '@typebot.io/lib'
-import { isInputBlock } from '@typebot.io/schemas/helpers'
+import { isDefined, omit, isNotEmpty } from '@sniper.io/lib'
+import { isInputBlock } from '@sniper.io/schemas/helpers'
 import {
   Variable,
   VariableWithValue,
@@ -9,45 +9,45 @@ import {
   GoogleAnalyticsBlock,
   PixelBlock,
   SessionState,
-  TypebotInSession,
+  SniperInSession,
   Block,
   SetVariableHistoryItem,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import {
   StartChatInput,
   StartChatResponse,
   StartPreviewChatInput,
-  StartTypebot,
-  startTypebotSchema,
-} from '@typebot.io/schemas/features/chat/schema'
+  StartSniper,
+  startSniperSchema,
+} from '@sniper.io/schemas/features/chat/schema'
 import parse, { NodeType } from 'node-html-parser'
 import { parseDynamicTheme } from './parseDynamicTheme'
-import { findTypebot } from './queries/findTypebot'
-import { findPublicTypebot } from './queries/findPublicTypebot'
+import { findSniper } from './queries/findSniper'
+import { findPublicSniper } from './queries/findPublicSniper'
 import { findResult } from './queries/findResult'
 import { startBotFlow } from './startBotFlow'
-import { prefillVariables } from '@typebot.io/variables/prefillVariables'
-import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
-import { injectVariablesFromExistingResult } from '@typebot.io/variables/injectVariablesFromExistingResult'
+import { prefillVariables } from '@sniper.io/variables/prefillVariables'
+import { deepParseVariables } from '@sniper.io/variables/deepParseVariables'
+import { injectVariablesFromExistingResult } from '@sniper.io/variables/injectVariablesFromExistingResult'
 import { getNextGroup } from './getNextGroup'
 import { upsertResult } from './queries/upsertResult'
 import { continueBotFlow } from './continueBotFlow'
 import {
   getVariablesToParseInfoInText,
   parseVariables,
-} from '@typebot.io/variables/parseVariables'
-import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
-import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
-import { VisitedEdge } from '@typebot.io/prisma'
-import { env } from '@typebot.io/env'
+} from '@sniper.io/variables/parseVariables'
+import { defaultSettings } from '@sniper.io/schemas/features/sniper/settings/constants'
+import { IntegrationBlockType } from '@sniper.io/schemas/features/blocks/integrations/constants'
+import { VisitedEdge } from '@sniper.io/prisma'
+import { env } from '@sniper.io/env'
 import { getFirstEdgeId } from './getFirstEdgeId'
 import { Reply } from './types'
 import {
   defaultGuestAvatarIsEnabled,
   defaultHostAvatarIsEnabled,
-} from '@typebot.io/schemas/features/typebot/theme/constants'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+} from '@sniper.io/schemas/features/sniper/theme/constants'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
 import { parseVariablesInRichText } from './parseBubbleBlock'
 
 type StartParams =
@@ -79,21 +79,21 @@ export const startSession = async ({
     resultId?: string
   }
 > => {
-  const typebot = await getTypebot(startParams)
+  const sniper = await getSniper(startParams)
 
   const prefilledVariables = startParams.prefilledVariables
-    ? prefillVariables(typebot.variables, startParams.prefilledVariables)
-    : typebot.variables
+    ? prefillVariables(sniper.variables, startParams.prefilledVariables)
+    : sniper.variables
 
   const result = await getResult({
     resultId: startParams.type === 'live' ? startParams.resultId : undefined,
     isPreview: startParams.type === 'preview',
-    typebotId: typebot.id,
+    sniperId: sniper.id,
     prefilledVariables,
     isRememberUserEnabled:
-      typebot.settings.general?.rememberUser?.isEnabled ??
-      (isDefined(typebot.settings.general?.isNewResultOnRefreshEnabled)
-        ? !typebot.settings.general?.isNewResultOnRefreshEnabled
+      sniper.settings.general?.rememberUser?.isEnabled ??
+      (isDefined(sniper.settings.general?.isNewResultOnRefreshEnabled)
+        ? !sniper.settings.general?.isNewResultOnRefreshEnabled
         : defaultSettings.general.rememberUser.isEnabled),
   })
 
@@ -102,20 +102,20 @@ export const startSession = async ({
       ? injectVariablesFromExistingResult(prefilledVariables, result.variables)
       : prefilledVariables
 
-  const typebotInSession = convertStartTypebotToTypebotInSession(
-    typebot,
+  const sniperInSession = convertStartSniperToSniperInSession(
+    sniper,
     startVariables
   )
 
   const initialState: SessionState = {
     version: '3',
-    typebotsQueue: [
+    snipersQueue: [
       {
         resultId: result?.id,
-        typebot: typebotInSession,
+        sniper: sniperInSession,
         answers: result
           ? result.answers.map((answer) => {
-              const block = typebot.groups
+              const block = sniper.groups
                 .flatMap<Block>((group) => group.blocks)
                 .find((block) => block.id === answer.blockId)
               if (!block || !isInputBlock(block))
@@ -128,7 +128,7 @@ export const startSession = async ({
                   ? startVariables.find(
                       (variable) => variable.id === block.options?.variableId
                     )?.name
-                  : typebot.groups.find((group) =>
+                  : sniper.groups.find((group) =>
                       group.blocks.find(
                         (blockInGroup) => blockInGroup.id === block.id
                       )
@@ -141,34 +141,34 @@ export const startSession = async ({
           : [],
       },
     ],
-    dynamicTheme: parseDynamicThemeInState(typebot.theme),
+    dynamicTheme: parseDynamicThemeInState(sniper.theme),
     isStreamEnabled: startParams.isStreamEnabled,
-    typingEmulation: typebot.settings.typingEmulation,
+    typingEmulation: sniper.settings.typingEmulation,
     allowedOrigins:
       startParams.type === 'preview'
         ? undefined
-        : typebot.settings.security?.allowedOrigins,
+        : sniper.settings.security?.allowedOrigins,
     progressMetadata: initialSessionState?.whatsApp
       ? undefined
-      : typebot.theme.general?.progressBar?.isEnabled
+      : sniper.theme.general?.progressBar?.isEnabled
       ? { totalAnswers: 0 }
       : undefined,
     setVariableIdsForHistory:
-      extractVariableIdsUsedForTranscript(typebotInSession),
+      extractVariableIdsUsedForTranscript(sniperInSession),
     ...initialSessionState,
   }
 
   if (startParams.isOnlyRegistering) {
     return {
       newSessionState: initialState,
-      typebot: {
-        id: typebot.id,
+      sniper: {
+        id: sniper.id,
         settings: deepParseVariables(
-          initialState.typebotsQueue[0].typebot.variables,
+          initialState.snipersQueue[0].sniper.variables,
           { removeEmptyStrings: true }
-        )(typebot.settings),
-        theme: sanitizeAndParseTheme(typebot.theme, {
-          variables: initialState.typebotsQueue[0].typebot.variables,
+        )(sniper.settings),
+        theme: sanitizeAndParseTheme(sniper.theme, {
+          variables: initialState.snipersQueue[0].sniper.variables,
         }),
       },
       dynamicTheme: parseDynamicTheme(initialState),
@@ -190,7 +190,7 @@ export const startSession = async ({
   // If params has message and first block is an input block, we can directly continue the bot flow
   if (message) {
     const firstEdgeId = getFirstEdgeId({
-      typebot: chatReply.newSessionState.typebotsQueue[0].typebot,
+      sniper: chatReply.newSessionState.snipersQueue[0].sniper,
       startEventId:
         startParams.type === 'preview' &&
         startParams.startFrom?.type === 'event'
@@ -205,13 +205,13 @@ export const startSession = async ({
     const newSessionState = nextGroup.newSessionState
     const firstBlock = nextGroup.group?.blocks.at(0)
     if (firstBlock && isInputBlock(firstBlock)) {
-      const resultId = newSessionState.typebotsQueue[0].resultId
+      const resultId = newSessionState.snipersQueue[0].resultId
       if (resultId)
         await upsertResult({
           hasStarted: true,
           isCompleted: false,
           resultId,
-          typebot: newSessionState.typebotsQueue[0].typebot,
+          sniper: newSessionState.snipersQueue[0].sniper,
         })
       chatReply = await continueBotFlow(message, {
         version,
@@ -236,7 +236,7 @@ export const startSession = async ({
 
   const clientSideActions = startFlowClientActions ?? []
 
-  const startClientSideAction = parseStartClientSideAction(typebot)
+  const startClientSideAction = parseStartClientSideAction(sniper)
 
   const startLogs = logs ?? []
 
@@ -273,14 +273,14 @@ export const startSession = async ({
       messages,
       clientSideActions:
         clientSideActions.length > 0 ? clientSideActions : undefined,
-      typebot: {
-        id: typebot.id,
+      sniper: {
+        id: sniper.id,
         settings: deepParseVariables(
-          newSessionState.typebotsQueue[0].typebot.variables,
+          newSessionState.snipersQueue[0].sniper.variables,
           { removeEmptyStrings: true }
-        )(typebot.settings),
-        theme: sanitizeAndParseTheme(typebot.theme, {
-          variables: initialState.typebotsQueue[0].typebot.variables,
+        )(sniper.settings),
+        theme: sanitizeAndParseTheme(sniper.theme, {
+          variables: initialState.snipersQueue[0].sniper.variables,
         }),
       },
       dynamicTheme: parseDynamicTheme(newSessionState),
@@ -292,14 +292,14 @@ export const startSession = async ({
   return {
     newSessionState,
     resultId: result?.id,
-    typebot: {
-      id: typebot.id,
+    sniper: {
+      id: sniper.id,
       settings: deepParseVariables(
-        newSessionState.typebotsQueue[0].typebot.variables,
+        newSessionState.snipersQueue[0].sniper.variables,
         { removeEmptyStrings: true }
-      )(typebot.settings),
-      theme: sanitizeAndParseTheme(typebot.theme, {
-        variables: initialState.typebotsQueue[0].typebot.variables,
+      )(sniper.settings),
+      theme: sanitizeAndParseTheme(sniper.theme, {
+        variables: initialState.snipersQueue[0].sniper.variables,
       }),
     },
     messages,
@@ -313,9 +313,9 @@ export const startSession = async ({
   }
 }
 
-const getTypebot = async (startParams: StartParams): Promise<StartTypebot> => {
-  if (startParams.type === 'preview' && startParams.typebot)
-    return startParams.typebot
+const getSniper = async (startParams: StartParams): Promise<StartSniper> => {
+  if (startParams.type === 'preview' && startParams.sniper)
+    return startParams.sniper
 
   if (
     startParams.type === 'preview' &&
@@ -327,45 +327,45 @@ const getTypebot = async (startParams: StartParams): Promise<StartTypebot> => {
       message: 'You need to be authenticated to perform this action',
     })
 
-  const typebotQuery =
+  const sniperQuery =
     startParams.type === 'preview'
-      ? await findTypebot({
-          id: startParams.typebotId,
+      ? await findSniper({
+          id: startParams.sniperId,
           userId: startParams.userId,
         })
-      : await findPublicTypebot({ publicId: startParams.publicId })
+      : await findPublicSniper({ publicId: startParams.publicId })
 
-  const parsedTypebot =
-    typebotQuery && 'typebot' in typebotQuery
+  const parsedSniper =
+    sniperQuery && 'sniper' in sniperQuery
       ? {
-          id: typebotQuery.typebotId,
-          ...omit(typebotQuery.typebot, 'workspace'),
-          ...omit(typebotQuery, 'typebot', 'typebotId'),
+          id: sniperQuery.sniperId,
+          ...omit(sniperQuery.sniper, 'workspace'),
+          ...omit(sniperQuery, 'sniper', 'sniperId'),
         }
-      : typebotQuery
+      : sniperQuery
 
-  if (!parsedTypebot || parsedTypebot.isArchived)
+  if (!parsedSniper || parsedSniper.isArchived)
     throw new TRPCError({
       code: 'NOT_FOUND',
-      message: 'Typebot not found',
+      message: 'Sniper not found',
     })
 
   const isQuarantinedOrSuspended =
-    typebotQuery &&
-    'typebot' in typebotQuery &&
-    (typebotQuery.typebot.workspace.isQuarantined ||
-      typebotQuery.typebot.workspace.isSuspended)
+    sniperQuery &&
+    'sniper' in sniperQuery &&
+    (sniperQuery.sniper.workspace.isQuarantined ||
+      sniperQuery.sniper.workspace.isSuspended)
 
   if (
-    ('isClosed' in parsedTypebot && parsedTypebot.isClosed) ||
+    ('isClosed' in parsedSniper && parsedSniper.isClosed) ||
     isQuarantinedOrSuspended
   )
     throw new TRPCError({
       code: 'BAD_REQUEST',
-      message: 'Typebot is closed',
+      message: 'Sniper is closed',
     })
 
-  return startTypebotSchema.parse(parsedTypebot)
+  return startSniperSchema.parse(parsedSniper)
 }
 
 const getResult = async ({
@@ -376,7 +376,7 @@ const getResult = async ({
 }: {
   resultId: string | undefined
   isPreview: boolean
-  typebotId: string
+  sniperId: string
   prefilledVariables: Variable[]
   isRememberUserEnabled: boolean
 }) => {
@@ -429,9 +429,9 @@ const parseDynamicThemeInState = (theme: Theme) => {
 }
 
 const parseStartClientSideAction = (
-  typebot: StartTypebot
+  sniper: StartSniper
 ): NonNullable<StartChatResponse['clientSideActions']>[number] | undefined => {
-  const blocks = typebot.groups.flatMap<Block>((group) => group.blocks)
+  const blocks = sniper.groups.flatMap<Block>((group) => group.blocks)
   const pixelBlocks = (
     blocks.filter(
       (block) =>
@@ -442,12 +442,12 @@ const parseStartClientSideAction = (
   ).map((pixelBlock) => pixelBlock.options?.pixelId as string)
 
   const startPropsToInject = {
-    customHeadCode: isNotEmpty(typebot.settings.metadata?.customHeadCode)
+    customHeadCode: isNotEmpty(sniper.settings.metadata?.customHeadCode)
       ? sanitizeAndParseHeadCode(
-          typebot.settings.metadata?.customHeadCode as string
+          sniper.settings.metadata?.customHeadCode as string
         )
       : undefined,
-    gtmId: typebot.settings.metadata?.googleTagManagerId,
+    gtmId: sniper.settings.metadata?.googleTagManagerId,
     googleAnalyticsId: (
       blocks.find(
         (block) =>
@@ -496,37 +496,37 @@ const removeLiteBadgeCss = (code: string) => {
   return code.replace(liteBadgeCssRegex, '')
 }
 
-const convertStartTypebotToTypebotInSession = (
-  typebot: StartTypebot,
+const convertStartSniperToSniperInSession = (
+  sniper: StartSniper,
   startVariables: Variable[]
-): TypebotInSession =>
-  typebot.version === '6'
+): SniperInSession =>
+  sniper.version === '6'
     ? {
-        version: typebot.version,
-        id: typebot.id,
-        groups: typebot.groups,
-        edges: typebot.edges,
+        version: sniper.version,
+        id: sniper.id,
+        groups: sniper.groups,
+        edges: sniper.edges,
         variables: startVariables,
-        events: typebot.events,
+        events: sniper.events,
       }
     : {
-        version: typebot.version,
-        id: typebot.id,
-        groups: typebot.groups,
-        edges: typebot.edges,
+        version: sniper.version,
+        id: sniper.id,
+        groups: sniper.groups,
+        edges: sniper.edges,
         variables: startVariables,
-        events: typebot.events,
+        events: sniper.events,
       }
 
 const extractVariableIdsUsedForTranscript = (
-  typebot: TypebotInSession
+  sniper: SniperInSession
 ): string[] => {
   const variableIds: Set<string> = new Set()
   const parseVarParams = {
-    variables: typebot.variables,
-    takeLatestIfList: typebot.version !== '6',
+    variables: sniper.variables,
+    takeLatestIfList: sniper.version !== '6',
   }
-  typebot.groups.forEach((group) => {
+  sniper.groups.forEach((group) => {
     group.blocks.forEach((block) => {
       if (block.type === BubbleBlockType.TEXT) {
         const { parsedVariableIds } = parseVariablesInRichText(

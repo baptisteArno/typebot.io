@@ -1,4 +1,4 @@
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 
 export const PlateText = ({
   text,
@@ -25,7 +25,7 @@ export const PlateText = ({
 }
 
 const PlateTextContent = ({ text }: { text: string }) => {
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
 
   return (
     <>
@@ -40,7 +40,7 @@ const PlateTextContent = ({ text }: { text: string }) => {
         return str.split(/\{\{(.*?\}\})/g).map((str, idx) => {
           if (str.endsWith('}}')) {
             const variableName = str.trim().slice(0, -2)
-            const matchingVariable = typebot?.variables.find(
+            const matchingVariable = sniper?.variables.find(
               (variable) => variable.name === variableName
             )
             if (!matchingVariable) return '{{' + str

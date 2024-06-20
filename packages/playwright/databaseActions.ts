@@ -5,20 +5,17 @@ import {
   User,
   Workspace,
   WorkspaceRole,
-} from '@typebot.io/prisma'
-import { createId } from '@typebot.io/lib/createId'
-import { Typebot, TypebotV6, HttpRequest } from '@typebot.io/schemas'
+} from '@sniper.io/prisma'
+import { createId } from '@sniper.io/lib/createId'
+import { Sniper, SniperV6, HttpRequest } from '@sniper.io/schemas'
 import { readFileSync } from 'fs'
 import { proWorkspaceId, userId } from './databaseSetup'
-import {
-  parseTestTypebot,
-  parseTypebotToPublicTypebot,
-} from './databaseHelpers'
+import { parseTestSniper, parseSniperToPublicSniper } from './databaseHelpers'
 
 const prisma = new PrismaClient()
 
 type CreateFakeResultsProps = {
-  typebotId: string
+  sniperId: string
   count: number
   customResultIdPrefix?: string
   isChronological?: boolean
@@ -27,7 +24,7 @@ type CreateFakeResultsProps = {
 export const injectFakeResults = async ({
   count,
   customResultIdPrefix,
-  typebotId,
+  sniperId,
   isChronological,
 }: CreateFakeResultsProps) => {
   const resultIdPrefix = customResultIdPrefix ?? createId()
@@ -38,7 +35,7 @@ export const injectFakeResults = async ({
         const rand = Math.random()
         return {
           id: `${resultIdPrefix}-result${idx}`,
-          typebotId,
+          sniperId,
           createdAt: isChronological
             ? new Date(
                 today.setTime(today.getTime() + 1000 * 60 * 60 * 24 * idx)
@@ -69,27 +66,27 @@ const createAnswers = ({
   })
 }
 
-export const importTypebotInDatabase = async (
+export const importSniperInDatabase = async (
   path: string,
-  updates?: Partial<Typebot>
+  updates?: Partial<Sniper>
 ) => {
-  const typebotFile = JSON.parse(readFileSync(path).toString())
-  const typebot = {
+  const sniperFile = JSON.parse(readFileSync(path).toString())
+  const sniper = {
     events: null,
-    ...typebotFile,
+    ...sniperFile,
     workspaceId: proWorkspaceId,
     ...updates,
   }
-  await prisma.typebot.create({
-    data: parseCreateTypebot(typebot),
+  await prisma.sniper.create({
+    data: parseCreateSniper(sniper),
   })
-  return prisma.publicTypebot.create({
+  return prisma.publicSniper.create({
     data: {
-      ...parseTypebotToPublicTypebot(
+      ...parseSniperToPublicSniper(
         updates?.id ? `${updates?.id}-public` : 'publicBot',
-        typebot
+        sniper
       ),
-      events: typebot.events === null ? Prisma.DbNull : typebot.events,
+      events: sniper.events === null ? Prisma.DbNull : sniper.events,
     },
   })
 }
@@ -100,9 +97,9 @@ export const deleteWorkspaces = async (workspaceIds: string[]) => {
   })
 }
 
-export const deleteTypebots = async (typebotIds: string[]) => {
-  await prisma.typebot.deleteMany({
-    where: { id: { in: typebotIds } },
+export const deleteSnipers = async (sniperIds: string[]) => {
+  await prisma.sniper.deleteMany({
+    where: { id: { in: sniperIds } },
   })
 }
 
@@ -152,7 +149,7 @@ export const updateUser = (data: Partial<User>) =>
   })
 
 export const createWebhook = async (
-  typebotId: string,
+  sniperId: string,
   webhookProps?: Partial<HttpRequest>
 ) => {
   try {
@@ -161,7 +158,7 @@ export const createWebhook = async (
   return prisma.webhook.create({
     data: {
       method: 'GET',
-      typebotId,
+      sniperId,
       id: 'webhook1',
       ...webhookProps,
       queryParams: webhookProps?.queryParams ?? [],
@@ -170,38 +167,38 @@ export const createWebhook = async (
   })
 }
 
-export const createTypebots = async (partialTypebots: Partial<TypebotV6>[]) => {
-  const typebotsWithId = partialTypebots.map((typebot) => {
-    const typebotId = typebot.id ?? createId()
+export const createSnipers = async (partialSnipers: Partial<SniperV6>[]) => {
+  const snipersWithId = partialSnipers.map((sniper) => {
+    const sniperId = sniper.id ?? createId()
     return {
-      ...typebot,
-      id: typebotId,
-      publicId: typebot.publicId ?? typebotId + '-public',
+      ...sniper,
+      id: sniperId,
+      publicId: sniper.publicId ?? sniperId + '-public',
     }
   })
-  await prisma.typebot.createMany({
-    data: typebotsWithId.map(parseTestTypebot).map(parseCreateTypebot),
+  await prisma.sniper.createMany({
+    data: snipersWithId.map(parseTestSniper).map(parseCreateSniper),
   })
-  return prisma.publicTypebot.createMany({
-    data: typebotsWithId.map((t) => ({
-      ...parseTypebotToPublicTypebot(t.publicId, parseTestTypebot(t)),
+  return prisma.publicSniper.createMany({
+    data: snipersWithId.map((t) => ({
+      ...parseSniperToPublicSniper(t.publicId, parseTestSniper(t)),
     })) as any,
   })
 }
 
-export const updateTypebot = async (
-  partialTypebot: Partial<Typebot> & { id: string }
+export const updateSniper = async (
+  partialSniper: Partial<Sniper> & { id: string }
 ) => {
-  await prisma.typebot.updateMany({
-    where: { id: partialTypebot.id },
-    data: parseUpdateTypebot(partialTypebot),
+  await prisma.sniper.updateMany({
+    where: { id: partialSniper.id },
+    data: parseUpdateSniper(partialSniper),
   })
-  return prisma.publicTypebot.updateMany({
-    where: { typebotId: partialTypebot.id },
+  return prisma.publicSniper.updateMany({
+    where: { sniperId: partialSniper.id },
     data: {
-      ...partialTypebot,
+      ...partialSniper,
       events:
-        partialTypebot.events === null ? Prisma.DbNull : partialTypebot.events,
+        partialSniper.events === null ? Prisma.DbNull : partialSniper.events,
     },
   })
 }
@@ -216,20 +213,20 @@ export const updateWorkspace = async (
   })
 }
 
-export const parseCreateTypebot = (typebot: Typebot) => ({
-  ...typebot,
+export const parseCreateSniper = (sniper: Sniper) => ({
+  ...sniper,
   resultsTablePreferences:
-    typebot.resultsTablePreferences === null
+    sniper.resultsTablePreferences === null
       ? Prisma.DbNull
-      : typebot.resultsTablePreferences,
-  events: typebot.events === null ? Prisma.DbNull : typebot.events,
+      : sniper.resultsTablePreferences,
+  events: sniper.events === null ? Prisma.DbNull : sniper.events,
 })
 
-const parseUpdateTypebot = (typebot: Partial<Typebot>) => ({
-  ...typebot,
+const parseUpdateSniper = (sniper: Partial<Sniper>) => ({
+  ...sniper,
   resultsTablePreferences:
-    typebot.resultsTablePreferences === null
+    sniper.resultsTablePreferences === null
       ? Prisma.DbNull
-      : typebot.resultsTablePreferences,
-  events: typebot.events === null ? Prisma.DbNull : typebot.events,
+      : sniper.resultsTablePreferences,
+  events: sniper.events === null ? Prisma.DbNull : sniper.events,
 })

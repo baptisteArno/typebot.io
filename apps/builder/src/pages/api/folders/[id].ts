@@ -1,7 +1,7 @@
-import { DashboardFolder } from '@typebot.io/prisma'
-import prisma from '@typebot.io/lib/prisma'
+import { DashboardFolder } from '@sniper.io/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { methodNotAllowed, notAuthenticated } from '@typebot.io/lib/api'
+import { methodNotAllowed, notAuthenticated } from '@sniper.io/lib/api'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 
 // TODO: Delete as it has been migrated to TRPC endpoints
@@ -36,7 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       data,
     })
-    return res.send({ typebots: folders })
+    return res.send({ snipers: folders })
   }
   return methodNotAllowed(res)
 }

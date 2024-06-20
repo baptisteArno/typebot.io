@@ -19,7 +19,7 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { ModalProps } from '../EmbedButton'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 export const NotionModal = ({
   isPublished,
@@ -45,7 +45,7 @@ export const NotionModal = ({
             </ListItem>
             <ListItem>
               <Stack>
-                <Text>Paste your typebot URL</Text>
+                <Text>Paste your sniper URL</Text>
                 <InputGroup size="sm">
                   <Input
                     type={'text'}

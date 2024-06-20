@@ -1,6 +1,6 @@
 <?php
 
-class Typebot_Activator
+class Sniper_Activator
 {
 	public static function activate()
 	{

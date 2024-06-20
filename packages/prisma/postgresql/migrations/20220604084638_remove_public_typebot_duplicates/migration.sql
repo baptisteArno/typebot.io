@@ -1,10 +1,10 @@
 -- DropIndex
-DROP INDEX "PublicTypebot_customDomain_key";
+DROP INDEX "PublicSniper_customDomain_key";
 
 -- DropIndex
-DROP INDEX "PublicTypebot_publicId_key";
+DROP INDEX "PublicSniper_publicId_key";
 
 -- AlterTable
-ALTER TABLE "PublicTypebot" DROP COLUMN "customDomain",
+ALTER TABLE "PublicSniper" DROP COLUMN "customDomain",
 DROP COLUMN "name",
 DROP COLUMN "publicId";

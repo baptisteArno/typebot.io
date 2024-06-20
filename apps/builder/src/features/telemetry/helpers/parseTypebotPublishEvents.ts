@@ -1,24 +1,24 @@
-import { env } from '@typebot.io/env'
-import prisma from '@typebot.io/lib/prisma'
-import { parseGroups, Typebot } from '@typebot.io/schemas'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { env } from '@sniper.io/env'
+import prisma from '@sniper.io/lib/prisma'
+import { parseGroups, Sniper } from '@sniper.io/schemas'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
 
 type Props = {
-  existingTypebot: Pick<Typebot, 'id' | 'workspaceId'>
+  existingSniper: Pick<Sniper, 'id' | 'workspaceId'>
   userId: string
   hasFileUploadBlocks: boolean
 }
 
-export const parseTypebotPublishEvents = async ({
-  existingTypebot,
+export const parseSniperPublishEvents = async ({
+  existingSniper,
   userId,
   hasFileUploadBlocks,
 }: Props) => {
   if (!env.NEXT_PUBLIC_POSTHOG_KEY) return []
   const events = []
-  const existingPublishedTypebot = await prisma.publicTypebot.findFirst({
+  const existingPublishedSniper = await prisma.publicSniper.findFirst({
     where: {
-      typebotId: existingTypebot.id,
+      sniperId: existingSniper.id,
     },
     select: {
       version: true,
@@ -29,9 +29,9 @@ export const parseTypebotPublishEvents = async ({
 
   const isPublishingFileUploadBlockForTheFirstTime =
     hasFileUploadBlocks &&
-    (!existingPublishedTypebot ||
-      !parseGroups(existingPublishedTypebot.groups, {
-        typebotVersion: existingPublishedTypebot.version,
+    (!existingPublishedSniper ||
+      !parseGroups(existingPublishedSniper.groups, {
+        sniperVersion: existingPublishedSniper.version,
       }).some((group) =>
         group.blocks.some((block) => block.type === InputBlockType.FILE)
       ))
@@ -39,8 +39,8 @@ export const parseTypebotPublishEvents = async ({
   if (isPublishingFileUploadBlockForTheFirstTime)
     events.push({
       name: 'File upload block published',
-      workspaceId: existingTypebot.workspaceId,
-      typebotId: existingTypebot.id,
+      workspaceId: existingSniper.workspaceId,
+      sniperId: existingSniper.id,
       userId,
     } as const)
 

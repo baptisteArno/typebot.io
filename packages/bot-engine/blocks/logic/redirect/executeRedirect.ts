@@ -1,13 +1,13 @@
-import { RedirectBlock, SessionState } from '@typebot.io/schemas'
-import { sanitizeUrl } from '@typebot.io/lib'
+import { RedirectBlock, SessionState } from '@sniper.io/schemas'
+import { sanitizeUrl } from '@sniper.io/lib'
 import { ExecuteLogicResponse } from '../../../types'
-import { parseVariables } from '@typebot.io/variables/parseVariables'
+import { parseVariables } from '@sniper.io/variables/parseVariables'
 
 export const executeRedirect = (
   state: SessionState,
   block: RedirectBlock
 ): ExecuteLogicResponse => {
-  const { variables } = state.typebotsQueue[0].typebot
+  const { variables } = state.snipersQueue[0].sniper
   if (!block.options?.url) return { outgoingEdgeId: block.outgoingEdgeId }
   const formattedUrl = sanitizeUrl(parseVariables(variables)(block.options.url))
   return {

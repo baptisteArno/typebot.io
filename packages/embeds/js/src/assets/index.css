@@ -24,7 +24,7 @@
 .bubble1,
 .bubble2,
 .bubble3 {
-  background-color: var(--typebot-host-bubble-color);
+  background-color: var(--sniper-host-bubble-color);
   opacity: 0.5;
 }
 
@@ -105,204 +105,204 @@ pre {
 }
 
 .text-input::-webkit-input-placeholder {
-  color: var(--typebot-input-placeholder-color) !important;
+  color: var(--sniper-input-placeholder-color) !important;
   opacity: 1 !important;
 }
 .text-input::-moz-placeholder {
-  color: var(--typebot-input-placeholder-color) !important;
+  color: var(--sniper-input-placeholder-color) !important;
   opacity: 1 !important;
 }
 .text-input::placeholder {
-  color: var(--typebot-input-placeholder-color) !important;
+  color: var(--sniper-input-placeholder-color) !important;
   opacity: 1 !important;
 }
 
-.typebot-container {
-  background-image: var(--typebot-container-bg-image);
-  background-color: var(--typebot-container-bg-color);
+.sniper-container {
+  background-image: var(--sniper-container-bg-image);
+  background-color: var(--sniper-container-bg-color);
   background-position: center;
   background-size: cover;
-  font-family: var(--typebot-container-font-family), -apple-system,
+  font-family: var(--sniper-container-font-family), -apple-system,
     BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   container-type: inline-size;
 }
 
-.typebot-chat-view {
-  max-width: var(--typebot-chat-container-max-width);
+.sniper-chat-view {
+  max-width: var(--sniper-chat-container-max-width);
   background-color: rgba(
-    var(--typebot-chat-container-bg-rgb),
-    var(--typebot-chat-container-opacity)
+    var(--sniper-chat-container-bg-rgb),
+    var(--sniper-chat-container-opacity)
   );
-  color: rgb(var(--typebot-chat-container-color));
+  color: rgb(var(--sniper-chat-container-color));
   min-height: 100%;
-  backdrop-filter: blur(var(--typebot-chat-container-blur));
-  border-width: var(--typebot-chat-container-border-width);
+  backdrop-filter: blur(var(--sniper-chat-container-blur));
+  border-width: var(--sniper-chat-container-border-width);
   border-color: rgba(
-    var(--typebot-chat-container-border-rgb),
-    var(--typebot-chat-container-border-opacity)
+    var(--sniper-chat-container-border-rgb),
+    var(--sniper-chat-container-border-opacity)
   );
   padding-left: 20px;
   padding-right: 20px;
-  box-shadow: var(--typebot-chat-container-box-shadow);
+  box-shadow: var(--sniper-chat-container-box-shadow);
 }
 
 @container (min-width: 480px) {
-  .typebot-chat-view {
-    min-height: var(--typebot-chat-container-max-height);
-    max-height: var(--typebot-chat-container-max-height);
-    border-radius: var(--typebot-chat-container-border-radius);
+  .sniper-chat-view {
+    min-height: var(--sniper-chat-container-max-height);
+    max-height: var(--sniper-chat-container-max-height);
+    border-radius: var(--sniper-chat-container-border-radius);
   }
 }
 
-.typebot-button {
-  color: var(--typebot-button-color);
+.sniper-button {
+  color: var(--sniper-button-color);
   background-color: rgba(
-    var(--typebot-button-bg-rgb),
-    var(--typebot-button-opacity)
+    var(--sniper-button-bg-rgb),
+    var(--sniper-button-opacity)
   );
-  border-width: var(--typebot-button-border-width);
+  border-width: var(--sniper-button-border-width);
   border-color: rgba(
-    var(--typebot-button-border-rgb),
-    var(--typebot-button-border-opacity)
+    var(--sniper-button-border-rgb),
+    var(--sniper-button-border-opacity)
   );
-  border-radius: var(--typebot-button-border-radius);
-  box-shadow: var(--typebot-button-box-shadow);
-  backdrop-filter: blur(var(--typebot-button-blur));
+  border-radius: var(--sniper-button-border-radius);
+  box-shadow: var(--sniper-button-box-shadow);
+  backdrop-filter: blur(var(--sniper-button-blur));
   transition: all 0.3s ease;
 }
 
-.typebot-selectable {
-  border-width: var(--typebot-button-border-width);
+.sniper-selectable {
+  border-width: var(--sniper-button-border-width);
   border-color: rgba(
-    var(--typebot-button-border-rgb),
+    var(--sniper-button-border-rgb),
     calc(var(--selectable-alpha-ratio) * 0.25)
   );
-  border-radius: var(--typebot-button-border-radius);
-  color: rgb(var(--typebot-chat-container-color));
+  border-radius: var(--sniper-button-border-radius);
+  color: rgb(var(--sniper-chat-container-color));
   background-color: rgba(
-    var(--typebot-button-bg-rgb),
+    var(--sniper-button-bg-rgb),
     calc(var(--selectable-alpha-ratio) * 0.08)
   );
   transition: all 0.3s ease;
 }
 
-.typebot-selectable:hover {
+.sniper-selectable:hover {
   background-color: rgba(
-    var(--typebot-button-bg-rgb),
+    var(--sniper-button-bg-rgb),
     calc(var(--selectable-alpha-ratio) * 0.12)
   );
   border-color: rgba(
-    var(--typebot-button-border-rgb),
+    var(--sniper-button-border-rgb),
     calc(var(--selectable-alpha-ratio) * 0.3)
   );
 }
 
-.typebot-selectable.selected {
+.sniper-selectable.selected {
   background-color: rgba(
-    var(--typebot-button-bg-rgb),
+    var(--sniper-button-bg-rgb),
     calc(var(--selectable-alpha-ratio) * 0.18)
   );
   border-color: rgba(
-    var(--typebot-button-border-rgb),
+    var(--sniper-button-border-rgb),
     calc(var(--selectable-alpha-ratio) * 0.35)
   );
 }
 
-.typebot-checkbox {
+.sniper-checkbox {
   border: 1px solid
-    rgba(var(--typebot-button-bg-rgb), var(--typebot-button-opacity));
-  border-radius: var(--typebot-button-border-radius);
-  background-color: rgba(var(--typebot-checkbox-bg-rgb));
-  color: var(--typebot-button-color);
+    rgba(var(--sniper-button-bg-rgb), var(--sniper-button-opacity));
+  border-radius: var(--sniper-button-border-radius);
+  background-color: rgba(var(--sniper-checkbox-bg-rgb));
+  color: var(--sniper-button-color);
   padding: 1px;
   border-radius: 2px;
   transition: all 0.3s ease;
 }
 
-.typebot-checkbox.checked {
-  background-color: rgb(var(--typebot-button-bg-rgb));
+.sniper-checkbox.checked {
+  background-color: rgb(var(--sniper-button-bg-rgb));
 }
 
-.typebot-host-bubble {
-  color: var(--typebot-host-bubble-color);
+.sniper-host-bubble {
+  color: var(--sniper-host-bubble-color);
 }
 
-.typebot-host-bubble > .bubble-typing {
+.sniper-host-bubble > .bubble-typing {
   background-color: rgba(
-    var(--typebot-host-bubble-bg-rgb),
-    var(--typebot-host-bubble-opacity)
+    var(--sniper-host-bubble-bg-rgb),
+    var(--sniper-host-bubble-opacity)
   );
-  border-width: var(--typebot-host-bubble-border-width);
+  border-width: var(--sniper-host-bubble-border-width);
   border-color: rgba(
-    var(--typebot-host-bubble-border-rgb),
-    var(--typebot-host-bubble-border-opacity)
+    var(--sniper-host-bubble-border-rgb),
+    var(--sniper-host-bubble-border-opacity)
   );
-  border-radius: var(--typebot-host-bubble-border-radius);
-  box-shadow: var(--typebot-host-bubble-box-shadow);
-  backdrop-filter: blur(var(--typebot-host-bubble-blur));
+  border-radius: var(--sniper-host-bubble-border-radius);
+  box-shadow: var(--sniper-host-bubble-box-shadow);
+  backdrop-filter: blur(var(--sniper-host-bubble-blur));
 }
 
-.typebot-host-bubble img,
-.typebot-host-bubble video,
-.typebot-host-bubble iframe {
+.sniper-host-bubble img,
+.sniper-host-bubble video,
+.sniper-host-bubble iframe {
   border-radius: 6px;
 }
 
-.typebot-guest-bubble {
-  color: var(--typebot-guest-bubble-color);
+.sniper-guest-bubble {
+  color: var(--sniper-guest-bubble-color);
   background-color: rgba(
-    var(--typebot-guest-bubble-bg-rgb),
-    var(--typebot-guest-bubble-opacity)
+    var(--sniper-guest-bubble-bg-rgb),
+    var(--sniper-guest-bubble-opacity)
   );
-  border-width: var(--typebot-guest-bubble-border-width);
+  border-width: var(--sniper-guest-bubble-border-width);
   border-color: rgba(
-    var(--typebot-guest-bubble-border-rgb),
-    var(--typebot-guest-bubble-border-opacity)
+    var(--sniper-guest-bubble-border-rgb),
+    var(--sniper-guest-bubble-border-opacity)
   );
-  border-radius: var(--typebot-guest-bubble-border-radius);
-  box-shadow: var(--typebot-guest-bubble-box-shadow);
-  backdrop-filter: blur(var(--typebot-guest-bubble-blur));
+  border-radius: var(--sniper-guest-bubble-border-radius);
+  box-shadow: var(--sniper-guest-bubble-box-shadow);
+  backdrop-filter: blur(var(--sniper-guest-bubble-blur));
 }
 
-.typebot-input {
-  color: var(--typebot-input-color);
+.sniper-input {
+  color: var(--sniper-input-color);
   background-color: rgba(
-    var(--typebot-input-bg-rgb),
-    var(--typebot-input-opacity)
+    var(--sniper-input-bg-rgb),
+    var(--sniper-input-opacity)
   );
-  border-width: var(--typebot-input-border-width);
+  border-width: var(--sniper-input-border-width);
   border-color: rgba(
-    var(--typebot-input-border-rgb),
-    var(--typebot-input-border-opacity)
+    var(--sniper-input-border-rgb),
+    var(--sniper-input-border-opacity)
   );
-  border-radius: var(--typebot-input-border-radius);
-  box-shadow: var(--typebot-input-box-shadow);
-  backdrop-filter: blur(var(--typebot-input-blur));
+  border-radius: var(--sniper-input-border-radius);
+  box-shadow: var(--sniper-input-box-shadow);
+  backdrop-filter: blur(var(--sniper-input-blur));
 }
 
-.typebot-input-error-message {
-  color: var(--typebot-input-color);
+.sniper-input-error-message {
+  color: var(--sniper-input-color);
 }
 
-.typebot-button > .send-icon {
-  fill: var(--typebot-button-color);
+.sniper-button > .send-icon {
+  fill: var(--sniper-button-color);
 }
 
 .ping span {
-  background-color: rgb(var(--typebot-button-bg-rgb));
+  background-color: rgb(var(--sniper-button-bg-rgb));
 }
 
 .rating-icon-container svg {
   width: 42px;
   height: 42px;
-  stroke: rgb(var(--typebot-button-bg-rgb));
-  fill: var(--typebot-host-bubble-bg-color);
+  stroke: rgb(var(--sniper-button-bg-rgb));
+  fill: var(--sniper-host-bubble-bg-color);
   transition: fill 100ms ease-out;
 }
 
 .rating-icon-container.selected svg {
-  fill: rgb(var(--typebot-button-bg-rgb));
+  fill: rgb(var(--sniper-button-bg-rgb));
 }
 
 .rating-icon-container:hover svg {
@@ -314,60 +314,60 @@ pre {
 }
 
 .upload-progress-bar {
-  background-color: rgb(var(--typebot-button-bg-rgb));
-  border-radius: var(--typebot-input-border-radius);
+  background-color: rgb(var(--sniper-button-bg-rgb));
+  border-radius: var(--sniper-input-border-radius);
 }
 
 .total-files-indicator {
-  background-color: rgb(var(--typebot-button-bg-rgb));
-  color: var(--typebot-button-color);
+  background-color: rgb(var(--sniper-button-bg-rgb));
+  color: var(--sniper-button-color);
   font-size: 10px;
 }
 
-.typebot-upload-input {
+.sniper-upload-input {
   transition: border-color 100ms ease-out;
-  border-radius: var(--typebot-input-border-radius);
+  border-radius: var(--sniper-input-border-radius);
 }
 
-.typebot-upload-input.dragging-over {
-  border-color: rgb(var(--typebot-button-bg-rgb));
+.sniper-upload-input.dragging-over {
+  border-color: rgb(var(--sniper-button-bg-rgb));
 }
 
 .secondary-button {
-  background-color: var(--typebot-host-bubble-bg-color);
-  color: var(--typebot-host-bubble-color);
-  border-radius: var(--typebot-button-border-radius);
+  background-color: var(--sniper-host-bubble-bg-color);
+  color: var(--sniper-host-bubble-color);
+  border-radius: var(--sniper-button-border-radius);
 }
 
-.typebot-country-select {
-  color: var(--typebot-input-color);
-  background-color: var(--typebot-input-bg-color);
-  border-radius: var(--typebot-button-border-radius);
+.sniper-country-select {
+  color: var(--sniper-input-color);
+  background-color: var(--sniper-input-bg-color);
+  border-radius: var(--sniper-button-border-radius);
 }
 
-.typebot-date-input {
+.sniper-date-input {
   color-scheme: light;
-  color: var(--typebot-input-color);
-  background-color: var(--typebot-input-bg-color);
-  border-radius: var(--typebot-input-border-radius);
+  color: var(--sniper-input-color);
+  background-color: var(--sniper-input-bg-color);
+  border-radius: var(--sniper-input-border-radius);
 }
 
-.typebot-popup-blocked-toast {
-  border-radius: var(--typebot-input-border-radius);
+.sniper-popup-blocked-toast {
+  border-radius: var(--sniper-input-border-radius);
 }
 
-.typebot-picture-button {
-  color: var(--typebot-button-color);
-  background-color: rgb(var(--typebot-button-bg-rgb));
-  border-radius: var(--typebot-button-border-radius);
+.sniper-picture-button {
+  color: var(--sniper-button-color);
+  background-color: rgb(var(--sniper-button-bg-rgb));
+  border-radius: var(--sniper-button-border-radius);
   transition: all 0.3s ease;
   width: 236px;
 }
 
-.typebot-picture-button > img,
-.typebot-selectable-picture > img {
-  border-radius: var(--typebot-button-border-radius)
-    var(--typebot-button-border-radius) 0 0;
+.sniper-picture-button > img,
+.sniper-selectable-picture > img {
+  border-radius: var(--sniper-button-border-radius)
+    var(--sniper-button-border-radius) 0 0;
   min-width: 200px;
   width: 100%;
   max-height: 200px;
@@ -375,73 +375,73 @@ pre {
   object-fit: cover;
 }
 
-.typebot-picture-button.has-svg > img,
-.typebot-selectable-picture.has-svg > img {
+.sniper-picture-button.has-svg > img,
+.sniper-selectable-picture.has-svg > img {
   max-height: 128px;
   object-fit: contain;
   padding: 1rem;
 }
 
-.typebot-selectable-picture {
+.sniper-selectable-picture {
   border: 1px solid
     rgba(
-      var(--typebot-button-bg-rgb),
+      var(--sniper-button-bg-rgb),
       calc(var(--selectable-alpha-ratio) * 0.25)
     );
-  border-radius: var(--typebot-button-border-radius);
-  color: rgb(var(--typebot-chat-container-color));
+  border-radius: var(--sniper-button-border-radius);
+  color: rgb(var(--sniper-chat-container-color));
   background-color: rgba(
-    var(--typebot-button-bg-rgb),
+    var(--sniper-button-bg-rgb),
     calc(var(--selectable-alpha-ratio) * 0.08)
   );
   transition: all 0.3s ease;
   width: 236px;
 }
 
-.typebot-selectable-picture:hover {
+.sniper-selectable-picture:hover {
   background-color: rgba(
-    var(--typebot-button-bg-rgb),
+    var(--sniper-button-bg-rgb),
     calc(var(--selectable-alpha-ratio) * 0.12)
   );
   border-color: rgba(
-    var(--typebot-button-bg-rgb),
+    var(--sniper-button-bg-rgb),
     calc(var(--selectable-alpha-ratio) * 0.3)
   );
 }
 
-.typebot-selectable-picture.selected {
+.sniper-selectable-picture.selected {
   background-color: rgba(
-    var(--typebot-button-bg-rgb),
+    var(--sniper-button-bg-rgb),
     calc(var(--selectable-alpha-ratio) * 0.18)
   );
   border-color: rgba(
-    var(--typebot-button-bg-rgb),
+    var(--sniper-button-bg-rgb),
     calc(var(--selectable-alpha-ratio) * 0.35)
   );
 }
 
 select option {
-  color: var(--typebot-input-color);
-  background-color: var(--typebot-input-bg-color);
+  color: var(--sniper-input-color);
+  background-color: var(--sniper-input-bg-color);
 }
 
-.typebot-progress-bar-container {
+.sniper-progress-bar-container {
   background-color: rgba(
-    var(--typebot-progress-bar-bg-rgb),
+    var(--sniper-progress-bar-bg-rgb),
     calc(var(--selectable-alpha-ratio) * 0.12)
   );
 
-  height: var(--typebot-progress-bar-height);
-  position: var(--typebot-progress-bar-position);
-  top: var(--typebot-progress-bar-top);
-  bottom: var(--typebot-progress-bar-bottom);
+  height: var(--sniper-progress-bar-height);
+  position: var(--sniper-progress-bar-position);
+  top: var(--sniper-progress-bar-top);
+  bottom: var(--sniper-progress-bar-bottom);
   left: 0;
   width: 100%;
   z-index: 42424242;
 }
 
-.typebot-progress-bar-container > .typebot-progress-bar {
-  background-color: var(--typebot-progress-bar-color);
+.sniper-progress-bar-container > .sniper-progress-bar {
+  background-color: var(--sniper-progress-bar-color);
   position: absolute;
   height: 100%;
   transition: width 0.25s ease;

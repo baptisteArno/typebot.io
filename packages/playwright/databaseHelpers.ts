@@ -1,25 +1,25 @@
 import {
   BlockV5,
   BlockV6,
-  PublicTypebot,
-  Typebot,
-  TypebotV6,
-} from '@typebot.io/schemas'
-import { isDefined } from '@typebot.io/lib/utils'
-import { createId } from '@typebot.io/lib/createId'
+  PublicSniper,
+  Sniper,
+  SniperV6,
+} from '@sniper.io/schemas'
+import { isDefined } from '@sniper.io/lib/utils'
+import { createId } from '@sniper.io/lib/createId'
 import { proWorkspaceId } from './databaseSetup'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { EventType } from '@typebot.io/schemas/features/events/constants'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { EventType } from '@sniper.io/schemas/features/events/constants'
 
-export const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => {
-  const version = partialTypebot.version ?? ('3' as any)
+export const parseTestSniper = (partialSniper: Partial<Sniper>): Sniper => {
+  const version = partialSniper.version ?? ('3' as any)
 
   return {
     id: createId(),
     version,
     workspaceId: proWorkspaceId,
     folderId: null,
-    name: 'My typebot',
+    name: 'My sniper',
     theme: {},
     settings: {},
     publicId: null,
@@ -45,7 +45,7 @@ export const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => {
           ]
         : null,
     variables: [{ id: 'var1', name: 'var1' }],
-    ...partialTypebot,
+    ...partialSniper,
     edges: [
       {
         id: 'edge1',
@@ -54,7 +54,7 @@ export const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => {
       },
     ],
     groups: (version === '6'
-      ? partialTypebot.groups ?? []
+      ? partialSniper.groups ?? []
       : [
           {
             id: 'group0',
@@ -69,24 +69,24 @@ export const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => {
             ],
             graphCoordinates: { x: 0, y: 0 },
           },
-          ...(partialTypebot.groups ?? []),
+          ...(partialSniper.groups ?? []),
         ]) as any[],
   }
 }
 
-export const parseTypebotToPublicTypebot = (
+export const parseSniperToPublicSniper = (
   id: string,
-  typebot: Typebot
-): Omit<PublicTypebot, 'createdAt' | 'updatedAt'> => ({
+  sniper: Sniper
+): Omit<PublicSniper, 'createdAt' | 'updatedAt'> => ({
   id,
-  version: typebot.version,
-  groups: typebot.groups,
-  typebotId: typebot.id,
-  theme: typebot.theme,
-  settings: typebot.settings,
-  variables: typebot.variables,
-  edges: typebot.edges,
-  events: typebot.events,
+  version: sniper.version,
+  groups: sniper.groups,
+  sniperId: sniper.id,
+  theme: sniper.theme,
+  settings: sniper.settings,
+  variables: sniper.variables,
+  edges: sniper.edges,
+  events: sniper.events,
 })
 
 type Options = {
@@ -96,7 +96,7 @@ type Options = {
 export const parseDefaultGroupWithBlock = (
   block: Partial<BlockV6>,
   options?: Options
-): Pick<TypebotV6, 'groups'> => ({
+): Pick<SniperV6, 'groups'> => ({
   groups: [
     {
       graphCoordinates: { x: 200, y: 200 },

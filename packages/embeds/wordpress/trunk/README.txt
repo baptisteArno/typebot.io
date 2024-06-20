@@ -1,6 +1,6 @@
-=== Typebot | Create advanced chat experiences without coding ===
+=== Sniper | Create advanced chat experiences without coding ===
 Contributors: baptisteArno
-Tags: typebot, forms, surveys, quizzes, form builder, survey builder, quiz builder, custom forms, mobile forms, payment forms, order forms, feedback forms, enquiry forms, stripe, dropbox, google sheets, mailchimp, salesforce, hubspot, activecampaign, infusionsoft, asana, hipchat, slack, trello, zendesk
+Tags: sniper, forms, surveys, quizzes, form builder, survey builder, quiz builder, custom forms, mobile forms, payment forms, order forms, feedback forms, enquiry forms, stripe, dropbox, google sheets, mailchimp, salesforce, hubspot, activecampaign, infusionsoft, asana, hipchat, slack, trello, zendesk
 Requires at least: 5.0
 Tested up to: 6.5
 License: GPL 2.0
@@ -8,20 +8,20 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 Stable Tag: 3.6.0
 
 == Description ==
-Collect 4x more responses with conversational apps using Typebot.
+Collect 4x more responses with conversational apps using Sniper.
 
 👉 Build beautiful conversational apps and easily embed them in your Wordpress site.
-👉 Typebot helps you publish chat apps that feel native to your product and it provides the best experience for your users.
-👉 With Typebot, you collect the answer as soon as the user answers the first question. You get to know exactly when the user tends to drop your form.
+👉 Sniper helps you publish chat apps that feel native to your product and it provides the best experience for your users.
+👉 With Sniper, you collect the answer as soon as the user answers the first question. You get to know exactly when the user tends to drop your form.
 
-This plugin relies on Typebot which is a tool that allows you to create conversational forms and directly integrate them on your Wordpress site.
-💁‍♂️ More information about Typebot: https://www.typebot.io/
-👨🏼‍💻 How Typebot handles collected data: https://www.typebot.io/privacy-policies
+This plugin relies on Sniper which is a tool that allows you to create conversational forms and directly integrate them on your Wordpress site.
+💁‍♂️ More information about Sniper: https://www.sniper.io/
+👨🏼‍💻 How Sniper handles collected data: https://www.sniper.io/privacy-policies
 
 == Installation ==
 1. Add the plugin folder to the /wp-content/plugins/ directory
 2. Activate the plugin through the ‘Plugins’ menu in WordPress
-3. Activate your Typebot with the "Typebot" admin button located in the sidebar
+3. Activate your Sniper with the "Sniper" admin button located in the sidebar
 
 == Changelog ==
 = 3.6.0 =
@@ -35,10 +35,10 @@ This plugin relies on Typebot which is a tool that allows you to create conversa
 * Affect v0.2.15 to Standard embed as well
 
 = 3.4.1 =
-* Import typebot lib specific version: 0.2.15
+* Import sniper lib specific version: 0.2.15
 
 = 3.4.0 =
-* Import typebot lib v0.2 to get the new variable parser
+* Import sniper lib v0.2 to get the new variable parser
 
 = 3.3.0 =
 * Fix loading with Gravity Forms and add query params exclusion
@@ -76,7 +76,7 @@ This plugin relies on Typebot which is a tool that allows you to create conversa
 * Fix flow not proceeding on unknown domains
 
 = 3.0.0 =
-* Complete rework of the plugin. You are now required to generate a code snippet on https://app.typebot.io
+* Complete rework of the plugin. You are now required to generate a code snippet on https://app.sniper.io
 
 = 2.1.9 =
 * Fix standard embed when window is already loaded
@@ -88,7 +88,7 @@ This plugin relies on Typebot which is a tool that allows you to create conversa
 * Fix auto open bubble even if empty param
 
 = 2.1.4 =
-* Fix bug when Typebot URL is empty
+* Fix bug when Sniper URL is empty
 
 = 2.1.2 =
 * Fix shortcode default bot URL
@@ -97,7 +97,7 @@ This plugin relies on Typebot which is a tool that allows you to create conversa
 * Added auto open delay for bubble embed
 
 = 2.0.0 =
-* Support for Typebot 2.0
+* Support for Sniper 2.0
 
 = 1.4.8 =
 * Fix shortcodes
@@ -124,13 +124,13 @@ This plugin relies on Typebot which is a tool that allows you to create conversa
 * Make the library more reliable
 
 = 1.4.0 =
-* Introduce new typebot lib and give access to open / close commands for popups and bubbles
+* Introduce new sniper lib and give access to open / close commands for popups and bubbles
 
 = 1.3.3 =
-* Add `url` option to shortcodes in order to add multiple typebots on the same page.
+* Add `url` option to shortcodes in order to add multiple snipers on the same page.
 
 = 1.3.0 =
-* Adding wordpress user variables support. More info here: http://docs.typebot.io/embed/wordpress#personalize-user-experience-hidden-variables
+* Adding wordpress user variables support. More info here: http://docs.sniper.io/embed/wordpress#personalize-user-experience-hidden-variables
 
 = 1.2.3 =
 * Add "Don't show message when opened or closed once" option
@@ -142,7 +142,7 @@ This plugin relies on Typebot which is a tool that allows you to create conversa
 * Can set publish or full URL (for custom domains).
 
 = 1.2.0 =
-* Add advanced setup where you can paste the code from Typebot.
+* Add advanced setup where you can paste the code from Sniper.
 
 = 1.1.2 =
 * Bug fixes

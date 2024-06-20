@@ -1,7 +1,7 @@
 import { ShortTextInput } from '@/components/inputs/ShortTextInput'
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
-import { UrlInputBlock } from '@typebot.io/schemas'
+import { UrlInputBlock } from '@sniper.io/schemas'
 import React, { MutableRefObject, useRef, useState } from 'react'
 
 type UrlInputProps = {
@@ -42,7 +42,7 @@ export const UrlInput = ({
   return (
     <div
       className={
-        'flex items-end justify-between rounded-lg pr-2 typebot-input w-full'
+        'flex items-end justify-between rounded-lg pr-2 sniper-input w-full'
       }
       data-testid="input"
       style={{

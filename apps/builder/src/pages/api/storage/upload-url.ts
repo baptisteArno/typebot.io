@@ -4,9 +4,9 @@ import {
   badRequest,
   methodNotAllowed,
   notAuthenticated,
-} from '@typebot.io/lib/api'
-import { generatePresignedPostPolicy } from '@typebot.io/lib/s3/generatePresignedPostPolicy'
-import { env } from '@typebot.io/env'
+} from '@sniper.io/lib/api'
+import { generatePresignedPostPolicy } from '@sniper.io/lib/s3/generatePresignedPostPolicy'
+import { env } from '@sniper.io/env'
 
 const handler = async (
   req: NextApiRequest,

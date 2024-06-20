@@ -1,4 +1,4 @@
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 const algorithm = 'AES-GCM'
 const secretKey = env.ENCRYPTION_SECRET

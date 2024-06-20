@@ -1,5 +1,5 @@
-import { stringifyError } from '@typebot.io/lib/stringifyError'
-import type { ChatLog, ScriptToExecute } from '@typebot.io/schemas'
+import { stringifyError } from '@sniper.io/lib/stringifyError'
+import type { ChatLog, ScriptToExecute } from '@sniper.io/schemas'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor

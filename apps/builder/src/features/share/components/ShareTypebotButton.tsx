@@ -10,7 +10,7 @@ import React from 'react'
 import { SharePopoverContent } from './SharePopoverContent'
 import { useTranslate } from '@tolgee/react'
 
-export const ShareTypebotButton = ({ isLoading }: { isLoading: boolean }) => {
+export const ShareSniperButton = ({ isLoading }: { isLoading: boolean }) => {
   const { t } = useTranslate()
 
   return (

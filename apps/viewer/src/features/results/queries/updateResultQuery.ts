@@ -1,12 +1,12 @@
-import { Result } from '@typebot.io/schemas'
-import { sendRequest } from '@typebot.io/lib'
+import { Result } from '@sniper.io/schemas'
+import { sendRequest } from '@sniper.io/lib'
 
 export const updateResultQuery = async (
   resultId: string,
   result: Partial<Result>
 ) =>
   sendRequest<Result>({
-    url: `/api/typebots/t/results/${resultId}`,
+    url: `/api/snipers/t/results/${resultId}`,
     method: 'PATCH',
     body: result,
   })

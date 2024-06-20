@@ -2,11 +2,11 @@ import { z } from '../../zod'
 import { settingsSchema } from './settings'
 import { themeSchema } from './theme'
 import { variableSchema } from './variable'
-import { Typebot as TypebotPrisma } from '@typebot.io/prisma'
+import { Sniper as SniperPrisma } from '@sniper.io/prisma'
 import {
   preprocessColumnsWidthResults,
-  preprocessTypebot,
-} from './helpers/preprocessTypebot'
+  preprocessSniper,
+} from './helpers/preprocessSniper'
 import { edgeSchema } from './edge'
 import { groupV5Schema, groupV6Schema } from './group'
 import { startEventSchema } from '../events/start/schema'
@@ -25,8 +25,8 @@ const isDomainNameWithPathNameCompatible = (str: string) =>
     str
   )
 
-export const typebotV5Schema = z.preprocess(
-  preprocessTypebot,
+export const sniperV5Schema = z.preprocess(
+  preprocessSniper,
   z.object({
     version: z.enum(['3', '4', '5']),
     id: z.string(),
@@ -58,34 +58,34 @@ export const typebotV5Schema = z.preprocess(
     isClosed: z.boolean(),
     whatsAppCredentialsId: z.string().nullable(),
     riskLevel: z.number().nullable(),
-  }) satisfies z.ZodType<TypebotPrisma, z.ZodTypeDef, unknown>
+  }) satisfies z.ZodType<SniperPrisma, z.ZodTypeDef, unknown>
 )
 
-export type TypebotV5 = z.infer<typeof typebotV5Schema>
+export type SniperV5 = z.infer<typeof sniperV5Schema>
 
-export const typebotV6Schema = typebotV5Schema._def.schema
+export const sniperV6Schema = sniperV5Schema._def.schema
   .extend({
     version: z.literal('6'),
     groups: z.array(groupV6Schema),
     events: z.tuple([startEventSchema]),
   })
   .openapi({
-    title: 'Typebot V6',
-    ref: 'typebotV6',
+    title: 'Sniper V6',
+    ref: 'sniperV6',
   })
-export type TypebotV6 = z.infer<typeof typebotV6Schema>
+export type SniperV6 = z.infer<typeof sniperV6Schema>
 
-export const typebotSchema = z.preprocess(
-  preprocessTypebot,
+export const sniperSchema = z.preprocess(
+  preprocessSniper,
   z.discriminatedUnion('version', [
-    typebotV6Schema,
-    typebotV5Schema._def.schema.openapi({
-      title: 'Typebot V5',
-      ref: 'typebotV5',
+    sniperV6Schema,
+    sniperV5Schema._def.schema.openapi({
+      title: 'Sniper V5',
+      ref: 'sniperV5',
     }),
   ])
 )
-export type Typebot = z.infer<typeof typebotSchema>
+export type Sniper = z.infer<typeof sniperSchema>
 
 export type ResultsTablePreferences = z.infer<
   typeof resultsTablePreferencesSchema

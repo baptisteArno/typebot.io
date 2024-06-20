@@ -1,9 +1,9 @@
-import { createAction } from '@typebot.io/forge'
+import { createAction } from '@sniper.io/forge'
 import { auth } from '../auth'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 import { createAnthropic } from '@ai-sdk/anthropic'
-import { parseGenerateVariablesOptions } from '@typebot.io/openai-block/shared/parseGenerateVariablesOptions'
-import { runGenerateVariables } from '@typebot.io/openai-block/shared/runGenerateVariables'
+import { parseGenerateVariablesOptions } from '@sniper.io/openai-block/shared/parseGenerateVariablesOptions'
+import { runGenerateVariables } from '@sniper.io/openai-block/shared/runGenerateVariables'
 import { anthropicModels } from '../constants'
 
 export const generateVariables = createAction({

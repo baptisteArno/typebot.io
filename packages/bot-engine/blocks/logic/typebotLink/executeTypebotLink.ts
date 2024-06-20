@@ -1,59 +1,59 @@
-import { addEdgeToTypebot, createPortalEdge } from '../../../addEdgeToTypebot'
+import { addEdgeToSniper, createPortalEdge } from '../../../addEdgeToSniper'
 import {
-  TypebotLinkBlock,
+  SniperLinkBlock,
   SessionState,
   Variable,
   ChatLog,
   Edge,
-  typebotInSessionStateSchema,
-  TypebotInSession,
-} from '@typebot.io/schemas'
+  sniperInSessionStateSchema,
+  SniperInSession,
+} from '@sniper.io/schemas'
 import { ExecuteLogicResponse } from '../../../types'
 import { createId } from '@paralleldrive/cuid2'
-import { isNotDefined, byId } from '@typebot.io/lib/utils'
+import { isNotDefined, byId } from '@sniper.io/lib/utils'
 import { createResultIfNotExist } from '../../../queries/createResultIfNotExist'
-import prisma from '@typebot.io/lib/prisma'
-import { defaultTypebotLinkOptions } from '@typebot.io/schemas/features/blocks/logic/typebotLink/constants'
+import prisma from '@sniper.io/lib/prisma'
+import { defaultSniperLinkOptions } from '@sniper.io/schemas/features/blocks/logic/sniperLink/constants'
 
-export const executeTypebotLink = async (
+export const executeSniperLink = async (
   state: SessionState,
-  block: TypebotLinkBlock
+  block: SniperLinkBlock
 ): Promise<ExecuteLogicResponse> => {
   const logs: ChatLog[] = []
-  const typebotId = block.options?.typebotId
-  if (!typebotId) {
+  const sniperId = block.options?.sniperId
+  if (!sniperId) {
     logs.push({
       status: 'error',
-      description: `Failed to link typebot`,
-      details: `Typebot ID is not specified`,
+      description: `Failed to link sniper`,
+      details: `Sniper ID is not specified`,
     })
     return { outgoingEdgeId: block.outgoingEdgeId, logs }
   }
-  const isLinkingSameTypebot =
-    typebotId === 'current' || typebotId === state.typebotsQueue[0].typebot.id
+  const isLinkingSameSniper =
+    sniperId === 'current' || sniperId === state.snipersQueue[0].sniper.id
   let newSessionState = state
   let nextGroupId: string | undefined
-  if (isLinkingSameTypebot) {
-    newSessionState = await addSameTypebotToState({ state, block })
+  if (isLinkingSameSniper) {
+    newSessionState = await addSameSniperToState({ state, block })
     nextGroupId = block.options?.groupId
   } else {
-    const linkedTypebot = await fetchTypebot(state, typebotId)
-    if (!linkedTypebot) {
+    const linkedSniper = await fetchSniper(state, sniperId)
+    if (!linkedSniper) {
       logs.push({
         status: 'error',
-        description: `Failed to link typebot`,
-        details: `Typebot with ID ${block.options?.typebotId} not found`,
+        description: `Failed to link sniper`,
+        details: `Sniper with ID ${block.options?.sniperId} not found`,
       })
       return { outgoingEdgeId: block.outgoingEdgeId, logs }
     }
-    newSessionState = await addLinkedTypebotToState(state, block, linkedTypebot)
-    nextGroupId = getNextGroupId(block.options?.groupId, linkedTypebot)
+    newSessionState = await addLinkedSniperToState(state, block, linkedSniper)
+    nextGroupId = getNextGroupId(block.options?.groupId, linkedSniper)
   }
 
   if (!nextGroupId) {
     logs.push({
       status: 'error',
-      description: `Failed to link typebot`,
+      description: `Failed to link sniper`,
       details: `Group with ID "${block.options?.groupId}" not found`,
     })
     return { outgoingEdgeId: block.outgoingEdgeId, logs }
@@ -61,7 +61,7 @@ export const executeTypebotLink = async (
 
   const portalEdge = createPortalEdge({ to: { groupId: nextGroupId } })
 
-  newSessionState = addEdgeToTypebot(newSessionState, portalEdge)
+  newSessionState = addEdgeToSniper(newSessionState, portalEdge)
 
   return {
     outgoingEdgeId: portalEdge.id,
@@ -69,116 +69,116 @@ export const executeTypebotLink = async (
   }
 }
 
-const addSameTypebotToState = async ({
+const addSameSniperToState = async ({
   state,
   block,
 }: {
   state: SessionState
-  block: TypebotLinkBlock
+  block: SniperLinkBlock
 }) => {
-  const currentTypebotInQueue = state.typebotsQueue[0]
+  const currentSniperInQueue = state.snipersQueue[0]
 
   const resumeEdge = createResumeEdgeIfNecessary(state, block)
 
-  const currentTypebotWithResumeEdge = resumeEdge
+  const currentSniperWithResumeEdge = resumeEdge
     ? {
-        ...currentTypebotInQueue,
-        typebot: {
-          ...currentTypebotInQueue.typebot,
-          edges: [...currentTypebotInQueue.typebot.edges, resumeEdge],
+        ...currentSniperInQueue,
+        sniper: {
+          ...currentSniperInQueue.sniper,
+          edges: [...currentSniperInQueue.sniper.edges, resumeEdge],
         },
       }
-    : currentTypebotInQueue
+    : currentSniperInQueue
 
   return {
     ...state,
-    typebotsQueue: [
+    snipersQueue: [
       {
-        typebot: {
-          ...currentTypebotInQueue.typebot,
+        sniper: {
+          ...currentSniperInQueue.sniper,
         },
-        resultId: currentTypebotInQueue.resultId,
+        resultId: currentSniperInQueue.resultId,
         edgeIdToTriggerWhenDone: block.outgoingEdgeId ?? resumeEdge?.id,
-        answers: currentTypebotInQueue.answers,
+        answers: currentSniperInQueue.answers,
         isMergingWithParent: true,
       },
-      currentTypebotWithResumeEdge,
-      ...state.typebotsQueue.slice(1),
+      currentSniperWithResumeEdge,
+      ...state.snipersQueue.slice(1),
     ],
   }
 }
 
-const addLinkedTypebotToState = async (
+const addLinkedSniperToState = async (
   state: SessionState,
-  block: TypebotLinkBlock,
-  linkedTypebot: TypebotInSession
+  block: SniperLinkBlock,
+  linkedSniper: SniperInSession
 ): Promise<SessionState> => {
-  const currentTypebotInQueue = state.typebotsQueue[0]
+  const currentSniperInQueue = state.snipersQueue[0]
 
   const resumeEdge = createResumeEdgeIfNecessary(state, block)
 
-  const currentTypebotWithResumeEdge = resumeEdge
+  const currentSniperWithResumeEdge = resumeEdge
     ? {
-        ...currentTypebotInQueue,
-        typebot: {
-          ...currentTypebotInQueue.typebot,
-          edges: [...currentTypebotInQueue.typebot.edges, resumeEdge],
+        ...currentSniperInQueue,
+        sniper: {
+          ...currentSniperInQueue.sniper,
+          edges: [...currentSniperInQueue.sniper.edges, resumeEdge],
         },
       }
-    : currentTypebotInQueue
+    : currentSniperInQueue
 
   const shouldMergeResults =
-    currentTypebotInQueue.typebot.version === '6'
-      ? block.options?.mergeResults ?? defaultTypebotLinkOptions.mergeResults
+    currentSniperInQueue.sniper.version === '6'
+      ? block.options?.mergeResults ?? defaultSniperLinkOptions.mergeResults
       : block.options?.mergeResults !== false
 
   if (
-    currentTypebotInQueue.resultId &&
-    currentTypebotInQueue.answers.length === 0
+    currentSniperInQueue.resultId &&
+    currentSniperInQueue.answers.length === 0
   ) {
     await createResultIfNotExist({
-      resultId: currentTypebotInQueue.resultId,
-      typebot: currentTypebotInQueue.typebot,
+      resultId: currentSniperInQueue.resultId,
+      sniper: currentSniperInQueue.sniper,
       hasStarted: false,
       isCompleted: false,
     })
   }
 
-  const isPreview = isNotDefined(currentTypebotInQueue.resultId)
+  const isPreview = isNotDefined(currentSniperInQueue.resultId)
   return {
     ...state,
-    typebotsQueue: [
+    snipersQueue: [
       {
-        typebot: {
-          ...linkedTypebot,
+        sniper: {
+          ...linkedSniper,
           variables: fillVariablesWithExistingValues(
-            linkedTypebot.variables,
-            state.typebotsQueue
+            linkedSniper.variables,
+            state.snipersQueue
           ),
         },
         resultId: isPreview
           ? undefined
           : shouldMergeResults
-          ? currentTypebotInQueue.resultId
+          ? currentSniperInQueue.resultId
           : createId(),
         edgeIdToTriggerWhenDone: block.outgoingEdgeId ?? resumeEdge?.id,
-        answers: shouldMergeResults ? currentTypebotInQueue.answers : [],
+        answers: shouldMergeResults ? currentSniperInQueue.answers : [],
         isMergingWithParent: shouldMergeResults,
       },
-      currentTypebotWithResumeEdge,
-      ...state.typebotsQueue.slice(1),
+      currentSniperWithResumeEdge,
+      ...state.snipersQueue.slice(1),
     ],
   }
 }
 
 const createResumeEdgeIfNecessary = (
   state: SessionState,
-  block: TypebotLinkBlock
+  block: SniperLinkBlock
 ): Edge | undefined => {
-  const currentTypebotInQueue = state.typebotsQueue[0]
+  const currentSniperInQueue = state.snipersQueue[0]
   const blockId = block.id
   if (block.outgoingEdgeId) return
-  const currentGroup = currentTypebotInQueue.typebot.groups.find((group) =>
+  const currentGroup = currentSniperInQueue.sniper.groups.find((group) =>
     group.blocks.some((block) => block.id === blockId)
   )
   if (!currentGroup) return
@@ -204,12 +204,12 @@ const createResumeEdgeIfNecessary = (
 
 const fillVariablesWithExistingValues = (
   emptyVariables: Variable[],
-  typebotsQueue: SessionState['typebotsQueue']
+  snipersQueue: SessionState['snipersQueue']
 ): Variable[] =>
   emptyVariables.map((emptyVariable) => {
     let matchedVariable
-    for (const typebotInQueue of typebotsQueue) {
-      matchedVariable = typebotInQueue.typebot.variables.find(
+    for (const sniperInQueue of snipersQueue) {
+      matchedVariable = sniperInQueue.sniper.variables.find(
         (v) => v.name === emptyVariable.name
       )
       if (matchedVariable) break
@@ -220,12 +220,12 @@ const fillVariablesWithExistingValues = (
     }
   })
 
-const fetchTypebot = async (state: SessionState, typebotId: string) => {
-  const { resultId } = state.typebotsQueue[0]
+const fetchSniper = async (state: SessionState, sniperId: string) => {
+  const { resultId } = state.snipersQueue[0]
   const isPreview = !resultId
   if (isPreview) {
-    const typebot = await prisma.typebot.findUnique({
-      where: { id: typebotId },
+    const sniper = await prisma.sniper.findUnique({
+      where: { id: sniperId },
       select: {
         version: true,
         id: true,
@@ -235,10 +235,10 @@ const fetchTypebot = async (state: SessionState, typebotId: string) => {
         events: true,
       },
     })
-    return typebotInSessionStateSchema.parse(typebot)
+    return sniperInSessionStateSchema.parse(sniper)
   }
-  const typebot = await prisma.publicTypebot.findUnique({
-    where: { typebotId },
+  const sniper = await prisma.publicSniper.findUnique({
+    where: { sniperId },
     select: {
       version: true,
       id: true,
@@ -248,23 +248,23 @@ const fetchTypebot = async (state: SessionState, typebotId: string) => {
       events: true,
     },
   })
-  if (!typebot) return null
-  return typebotInSessionStateSchema.parse({
-    ...typebot,
-    id: typebotId,
+  if (!sniper) return null
+  return sniperInSessionStateSchema.parse({
+    ...sniper,
+    id: sniperId,
   })
 }
 
 const getNextGroupId = (
   groupId: string | undefined,
-  typebot: TypebotInSession
+  sniper: SniperInSession
 ) => {
   if (groupId) return groupId
-  if (typebot.version === '6') {
-    const startEdge = typebot.edges.find(byId(typebot.events[0].outgoingEdgeId))
+  if (sniper.version === '6') {
+    const startEdge = sniper.edges.find(byId(sniper.events[0].outgoingEdgeId))
     return startEdge?.to.groupId
   }
-  return typebot.groups.find((group) =>
+  return sniper.groups.find((group) =>
     group.blocks.some((block) => block.type === 'start')
   )?.id
 }

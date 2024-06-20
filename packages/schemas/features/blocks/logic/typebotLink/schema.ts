@@ -2,17 +2,17 @@ import { z } from '../../../../zod'
 import { blockBaseSchema } from '../../shared'
 import { LogicBlockType } from '../constants'
 
-export const typebotLinkOptionsSchema = z.object({
-  typebotId: z.string().optional(),
+export const sniperLinkOptionsSchema = z.object({
+  sniperId: z.string().optional(),
   groupId: z.string().optional(),
   mergeResults: z.boolean().optional(),
 })
 
-export const typebotLinkBlockSchema = blockBaseSchema.merge(
+export const sniperLinkBlockSchema = blockBaseSchema.merge(
   z.object({
-    type: z.enum([LogicBlockType.TYPEBOT_LINK]),
-    options: typebotLinkOptionsSchema.optional(),
+    type: z.enum([LogicBlockType.SNIPER_LINK]),
+    options: sniperLinkOptionsSchema.optional(),
   })
 )
 
-export type TypebotLinkBlock = z.infer<typeof typebotLinkBlockSchema>
+export type SniperLinkBlock = z.infer<typeof sniperLinkBlockSchema>

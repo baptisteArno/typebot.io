@@ -20,7 +20,7 @@ ALTER TABLE "DashboardFolder" ADD COLUMN     "workspaceId" TEXT,
 ALTER COLUMN "ownerId" DROP NOT NULL;
 
 -- AlterTable
-ALTER TABLE "Typebot" ADD COLUMN     "workspaceId" TEXT,
+ALTER TABLE "Sniper" ADD COLUMN     "workspaceId" TEXT,
 ALTER COLUMN "ownerId" DROP NOT NULL;
 
 -- AlterTable
@@ -81,4 +81,4 @@ ALTER TABLE "Credentials" ADD CONSTRAINT "Credentials_workspaceId_fkey" FOREIGN 
 ALTER TABLE "DashboardFolder" ADD CONSTRAINT "DashboardFolder_workspaceId_fkey" FOREIGN KEY ("workspaceId") REFERENCES "Workspace"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Typebot" ADD CONSTRAINT "Typebot_workspaceId_fkey" FOREIGN KEY ("workspaceId") REFERENCES "Workspace"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Sniper" ADD CONSTRAINT "Sniper_workspaceId_fkey" FOREIGN KEY ("workspaceId") REFERENCES "Workspace"("id") ON DELETE CASCADE ON UPDATE CASCADE;

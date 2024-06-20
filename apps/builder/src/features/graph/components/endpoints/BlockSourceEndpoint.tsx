@@ -4,7 +4,7 @@ import {
   useColorModeValue,
   useEventListener,
 } from '@chakra-ui/react'
-import { BlockSource } from '@typebot.io/schemas'
+import { BlockSource } from '@sniper.io/schemas'
 import React, {
   useEffect,
   useLayoutEffect,

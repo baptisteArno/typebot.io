@@ -1,24 +1,24 @@
-import { Webhook as WebhookFromDb } from '@typebot.io/prisma'
+import { Webhook as WebhookFromDb } from '@sniper.io/prisma'
 import {
   BlockV5,
-  PublicTypebotV5,
-  TypebotV5,
+  PublicSniperV5,
+  SniperV5,
   HttpRequest,
-} from '@typebot.io/schemas'
-import { isWebhookBlock } from '@typebot.io/schemas/helpers'
-import { isDefined } from '@typebot.io/lib/utils'
-import prisma from '@typebot.io/lib/prisma'
+} from '@sniper.io/schemas'
+import { isWebhookBlock } from '@sniper.io/schemas/helpers'
+import { isDefined } from '@sniper.io/lib/utils'
+import prisma from '@sniper.io/lib/prisma'
 import {
   HttpMethod,
   defaultWebhookAttributes,
-} from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
+} from '@sniper.io/schemas/features/blocks/integrations/webhook/constants'
 
-export const migrateTypebotFromV3ToV4 = async (
-  typebot: TypebotV5 | PublicTypebotV5
-): Promise<Omit<TypebotV5 | PublicTypebotV5, 'version'> & { version: '4' }> => {
-  if (typebot.version === '4')
-    return typebot as Omit<TypebotV5, 'version'> & { version: '4' }
-  const webhookBlocks = typebot.groups
+export const migrateSniperFromV3ToV4 = async (
+  sniper: SniperV5 | PublicSniperV5
+): Promise<Omit<SniperV5 | PublicSniperV5, 'version'> & { version: '4' }> => {
+  if (sniper.version === '4')
+    return sniper as Omit<SniperV5, 'version'> & { version: '4' }
+  const webhookBlocks = sniper.groups
     .flatMap((group) => group.blocks)
     .filter(isWebhookBlock)
   const webhooks = await prisma.webhook.findMany({
@@ -31,9 +31,9 @@ export const migrateTypebotFromV3ToV4 = async (
     },
   })
   return {
-    ...typebot,
+    ...sniper,
     version: '4',
-    groups: typebot.groups.map((group) => ({
+    groups: sniper.groups.map((group) => ({
       ...group,
       blocks: group.blocks.map(migrateWebhookBlock(webhooks)),
     })),

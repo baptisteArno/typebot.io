@@ -1,28 +1,28 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { PrismaClient } from '@sniper.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 import * as p from '@clack/prompts'
 
-const updateTypebot = async () => {
+const updateSniper = async () => {
   await promptAndSetEnvironment('production')
 
   const prisma = new PrismaClient()
 
-  const typebotId = await p.text({
-    message: 'Typebot ID?',
+  const sniperId = await p.text({
+    message: 'Sniper ID?',
   })
 
-  if (!typebotId || p.isCancel(typebotId)) process.exit()
+  if (!sniperId || p.isCancel(sniperId)) process.exit()
 
-  const typebot = await prisma.typebot.update({
+  const sniper = await prisma.sniper.update({
     where: {
-      id: typebotId,
+      id: sniperId,
     },
     data: {
       riskLevel: -1,
     },
   })
 
-  console.log(typebot)
+  console.log(sniper)
 }
 
-updateTypebot()
+updateSniper()

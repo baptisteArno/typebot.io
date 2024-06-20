@@ -1,4 +1,4 @@
-import { Plan } from '@typebot.io/prisma'
+import { Plan } from '@sniper.io/prisma'
 import type { Stripe } from 'stripe'
 
 export const prices = {

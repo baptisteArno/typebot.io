@@ -1,8 +1,8 @@
 import { WithVariableContent } from '@/features/graph/components/nodes/block/WithVariableContent'
 import { Text } from '@chakra-ui/react'
 import { useTranslate } from '@tolgee/react'
-import { RatingInputBlock } from '@typebot.io/schemas'
-import { defaultRatingInputOptions } from '@typebot.io/schemas/features/blocks/inputs/rating/constants'
+import { RatingInputBlock } from '@sniper.io/schemas'
+import { defaultRatingInputOptions } from '@sniper.io/schemas/features/blocks/inputs/rating/constants'
 
 type Props = {
   variableId?: string

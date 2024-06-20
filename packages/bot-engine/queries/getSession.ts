@@ -1,5 +1,5 @@
-import prisma from '@typebot.io/lib/prisma'
-import { sessionStateSchema } from '@typebot.io/schemas'
+import prisma from '@sniper.io/lib/prisma'
+import { sessionStateSchema } from '@sniper.io/schemas'
 import { deleteSession } from './deleteSession'
 
 export const getSession = async (sessionId: string) => {

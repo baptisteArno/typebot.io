@@ -10,8 +10,8 @@ import { useRef, useState } from 'react'
 import { CloseIcon } from './icons'
 import { colors } from '@/lib/theme'
 import { AnimatePresence, motion } from 'framer-motion'
-import { convertStrToList } from '@typebot.io/lib/convertStrToList'
-import { isEmpty } from '@typebot.io/lib/utils'
+import { convertStrToList } from '@sniper.io/lib/convertStrToList'
+import { isEmpty } from '@sniper.io/lib/utils'
 
 type Props = {
   items?: string[]

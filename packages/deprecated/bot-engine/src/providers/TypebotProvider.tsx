@@ -1,8 +1,8 @@
-import { TypebotViewerProps } from '@/components/TypebotViewer'
+import { SniperViewerProps } from '@/components/SniperViewer'
 import { safeStringify } from '@/features/variables'
 import { sendEventToParent } from '@/utils/chat'
-import { Log } from '@typebot.io/prisma'
-import { Edge, PublicTypebot, Typebot, Variable } from '@typebot.io/schemas'
+import { Log } from '@sniper.io/prisma'
+import { Edge, PublicSniper, Sniper, Variable } from '@sniper.io/schemas'
 import {
   createContext,
   ReactNode,
@@ -10,35 +10,35 @@ import {
   useEffect,
   useState,
 } from 'react'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 
-export type LinkedTypebot = Pick<
-  PublicTypebot | Typebot,
+export type LinkedSniper = Pick<
+  PublicSniper | Sniper,
   'id' | 'groups' | 'variables' | 'edges'
 >
 
-export type LinkedTypebotQueue = {
-  typebotId: string
+export type LinkedSniperQueue = {
+  sniperId: string
   edgeId: string
 }[]
 
-const typebotContext = createContext<{
-  currentTypebotId: string
-  typebot: TypebotViewerProps['typebot']
-  linkedTypebots: LinkedTypebot[]
+const sniperContext = createContext<{
+  currentSniperId: string
+  sniper: SniperViewerProps['sniper']
+  linkedSnipers: LinkedSniper[]
   apiHost: string
   isPreview: boolean
-  linkedBotQueue: LinkedTypebotQueue
+  linkedBotQueue: LinkedSniperQueue
   isLoading: boolean
-  parentTypebotIds: string[]
-  setCurrentTypebotId: (id: string) => void
+  parentSniperIds: string[]
+  setCurrentSniperId: (id: string) => void
   updateVariableValue: (variableId: string, value: unknown) => void
   createEdge: (edge: Edge) => void
-  injectLinkedTypebot: (typebot: Typebot | PublicTypebot) => LinkedTypebot
-  pushParentTypebotId: (typebotId: string) => void
-  popEdgeIdFromLinkedTypebotQueue: () => void
-  pushEdgeIdInLinkedTypebotQueue: (bot: {
-    typebotId: string
+  injectLinkedSniper: (sniper: Sniper | PublicSniper) => LinkedSniper
+  pushParentSniperId: (sniperId: string) => void
+  popEdgeIdFromLinkedSniperQueue: () => void
+  pushEdgeIdInLinkedSniperQueue: (bot: {
+    sniperId: string
     edgeId: string
   }) => void
   onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
@@ -46,36 +46,36 @@ const typebotContext = createContext<{
   //@ts-ignore
 }>({})
 
-export const TypebotProvider = ({
+export const SniperProvider = ({
   children,
-  typebot,
+  sniper,
   apiHost,
   isPreview,
   isLoading,
   onNewLog,
 }: {
   children: ReactNode
-  typebot: TypebotViewerProps['typebot']
+  sniper: SniperViewerProps['sniper']
   apiHost: string
   isLoading: boolean
   isPreview: boolean
   onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
 }) => {
-  const [localTypebot, setLocalTypebot] =
-    useState<TypebotViewerProps['typebot']>(typebot)
-  const [linkedTypebots, setLinkedTypebots] = useState<LinkedTypebot[]>([])
-  const [currentTypebotId, setCurrentTypebotId] = useState(typebot.typebotId)
-  const [linkedBotQueue, setLinkedBotQueue] = useState<LinkedTypebotQueue>([])
-  const [parentTypebotIds, setParentTypebotIds] = useState<string[]>([])
+  const [localSniper, setLocalSniper] =
+    useState<SniperViewerProps['sniper']>(sniper)
+  const [linkedSnipers, setLinkedSnipers] = useState<LinkedSniper[]>([])
+  const [currentSniperId, setCurrentSniperId] = useState(sniper.sniperId)
+  const [linkedBotQueue, setLinkedBotQueue] = useState<LinkedSniperQueue>([])
+  const [parentSniperIds, setParentSniperIds] = useState<string[]>([])
 
   useEffect(() => {
-    setLocalTypebot((localTypebot) => ({
-      ...localTypebot,
-      theme: typebot.theme,
-      settings: typebot.settings,
+    setLocalSniper((localSniper) => ({
+      ...localSniper,
+      theme: sniper.theme,
+      settings: sniper.settings,
     }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [typebot.theme, typebot.settings])
+  }, [sniper.theme, sniper.settings])
 
   const updateVariableValue = (variableId: string, value: unknown) => {
     const formattedValue = safeStringify(value)
@@ -83,23 +83,23 @@ export const TypebotProvider = ({
     sendEventToParent({
       newVariableValue: {
         name:
-          localTypebot.variables.find((variable) => variable.id === variableId)
+          localSniper.variables.find((variable) => variable.id === variableId)
             ?.name ?? '',
         value: formattedValue ?? '',
       },
     })
 
-    const variable = localTypebot.variables.find((v) => v.id === variableId)
-    const otherVariablesWithSameName = localTypebot.variables.filter(
+    const variable = localSniper.variables.find((v) => v.id === variableId)
+    const otherVariablesWithSameName = localSniper.variables.filter(
       (v) => v.name === variable?.name && v.id !== variableId
     )
     const variablesToUpdate = [variable, ...otherVariablesWithSameName].filter(
       isDefined
     )
 
-    setLocalTypebot((typebot) => ({
-      ...typebot,
-      variables: typebot.variables.map((variable) =>
+    setLocalSniper((sniper) => ({
+      ...sniper,
+      variables: sniper.variables.map((variable) =>
         variablesToUpdate.some(
           (variableToUpdate) => variableToUpdate.id === variable.id
         )
@@ -110,32 +110,32 @@ export const TypebotProvider = ({
   }
 
   const createEdge = (edge: Edge) => {
-    setLocalTypebot((typebot) => ({
-      ...typebot,
-      edges: [...typebot.edges, edge],
+    setLocalSniper((sniper) => ({
+      ...sniper,
+      edges: [...sniper.edges, edge],
     }))
   }
 
-  const injectLinkedTypebot = (typebot: Typebot | PublicTypebot) => {
+  const injectLinkedSniper = (sniper: Sniper | PublicSniper) => {
     const newVariables = fillVariablesWithExistingValues(
-      typebot.variables,
-      localTypebot.variables
+      sniper.variables,
+      localSniper.variables
     )
-    const typebotToInject = {
-      id: 'typebotId' in typebot ? typebot.typebotId : typebot.id,
-      groups: typebot.groups,
-      edges: typebot.edges,
+    const sniperToInject = {
+      id: 'sniperId' in sniper ? sniper.sniperId : sniper.id,
+      groups: sniper.groups,
+      edges: sniper.edges,
       variables: newVariables,
     }
-    setLinkedTypebots((typebots) => [...typebots, typebotToInject])
-    const updatedTypebot = {
-      ...localTypebot,
-      groups: [...localTypebot.groups, ...typebotToInject.groups],
-      variables: [...localTypebot.variables, ...typebotToInject.variables],
-      edges: [...localTypebot.edges, ...typebotToInject.edges],
-    } as TypebotViewerProps['typebot']
-    setLocalTypebot(updatedTypebot)
-    return typebotToInject
+    setLinkedSnipers((snipers) => [...snipers, sniperToInject])
+    const updatedSniper = {
+      ...localSniper,
+      groups: [...localSniper.groups, ...sniperToInject.groups],
+      variables: [...localSniper.variables, ...sniperToInject.variables],
+      edges: [...localSniper.edges, ...sniperToInject.edges],
+    } as SniperViewerProps['sniper']
+    setLocalSniper(updatedSniper)
+    return sniperToInject
   }
 
   const fillVariablesWithExistingValues = (
@@ -153,45 +153,45 @@ export const TypebotProvider = ({
       }
     })
 
-  const pushParentTypebotId = (typebotId: string) => {
-    setParentTypebotIds((ids) => [...ids, typebotId])
+  const pushParentSniperId = (sniperId: string) => {
+    setParentSniperIds((ids) => [...ids, sniperId])
   }
 
-  const pushEdgeIdInLinkedTypebotQueue = (bot: {
-    typebotId: string
+  const pushEdgeIdInLinkedSniperQueue = (bot: {
+    sniperId: string
     edgeId: string
   }) => setLinkedBotQueue((queue) => [...queue, bot])
 
-  const popEdgeIdFromLinkedTypebotQueue = () => {
+  const popEdgeIdFromLinkedSniperQueue = () => {
     setLinkedBotQueue((queue) => queue.slice(1))
-    setParentTypebotIds((ids) => ids.slice(1))
-    setCurrentTypebotId(linkedBotQueue[0].typebotId)
+    setParentSniperIds((ids) => ids.slice(1))
+    setCurrentSniperId(linkedBotQueue[0].sniperId)
   }
 
   return (
-    <typebotContext.Provider
+    <sniperContext.Provider
       value={{
-        typebot: localTypebot,
-        linkedTypebots,
+        sniper: localSniper,
+        linkedSnipers,
         apiHost,
         isPreview,
         updateVariableValue,
         createEdge,
-        injectLinkedTypebot,
+        injectLinkedSniper,
         onNewLog,
         linkedBotQueue,
         isLoading,
-        parentTypebotIds,
-        pushParentTypebotId,
-        pushEdgeIdInLinkedTypebotQueue,
-        popEdgeIdFromLinkedTypebotQueue,
-        currentTypebotId,
-        setCurrentTypebotId,
+        parentSniperIds,
+        pushParentSniperId,
+        pushEdgeIdInLinkedSniperQueue,
+        popEdgeIdFromLinkedSniperQueue,
+        currentSniperId,
+        setCurrentSniperId,
       }}
     >
       {children}
-    </typebotContext.Provider>
+    </sniperContext.Provider>
   )
 }
 
-export const useTypebot = () => useContext(typebotContext)
+export const useSniper = () => useContext(sniperContext)

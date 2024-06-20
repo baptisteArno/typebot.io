@@ -21,33 +21,33 @@ import { useToast } from '@/hooks/useToast'
 import { MoreButton } from './MoreButton'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
 import { T, useTranslate } from '@tolgee/react'
-import { TypebotInDashboard } from '@/features/dashboard/types'
+import { SniperInDashboard } from '@/features/dashboard/types'
 import { isMobile } from '@/helpers/isMobile'
 import { trpc, trpcVanilla } from '@/lib/trpc'
-import { duplicateName } from '@/features/typebot/helpers/duplicateName'
+import { duplicateName } from '@/features/sniper/helpers/duplicateName'
 import {
   NodePosition,
   useDragDistance,
 } from '@/features/graph/providers/GraphDndProvider'
 
 type Props = {
-  typebot: TypebotInDashboard
+  sniper: SniperInDashboard
   isReadOnly?: boolean
-  draggedTypebot: TypebotInDashboard | undefined
-  onTypebotUpdated: () => void
+  draggedSniper: SniperInDashboard | undefined
+  onSniperUpdated: () => void
   onDrag: (position: NodePosition) => void
 }
 
-const TypebotButton = ({
-  typebot,
+const SniperButton = ({
+  sniper,
   isReadOnly = false,
-  draggedTypebot,
-  onTypebotUpdated,
+  draggedSniper,
+  onSniperUpdated,
   onDrag,
 }: Props) => {
   const { t } = useTranslate()
   const router = useRouter()
-  const [draggedTypebotDebounced] = useDebounce(draggedTypebot, 200)
+  const [draggedSniperDebounced] = useDebounce(draggedSniper, 200)
   const {
     isOpen: isDeleteOpen,
     onOpen: onDeleteOpen,
@@ -63,62 +63,59 @@ const TypebotButton = ({
 
   const { showToast } = useToast()
 
-  const { mutate: importTypebot } = trpc.typebot.importTypebot.useMutation({
+  const { mutate: importSniper } = trpc.sniper.importSniper.useMutation({
     onError: (error) => {
       showToast({ description: error.message })
     },
-    onSuccess: ({ typebot }) => {
-      router.push(`/typebots/${typebot.id}/edit`)
+    onSuccess: ({ sniper }) => {
+      router.push(`/snipers/${sniper.id}/edit`)
     },
   })
 
-  const { mutate: deleteTypebot } = trpc.typebot.deleteTypebot.useMutation({
+  const { mutate: deleteSniper } = trpc.sniper.deleteSniper.useMutation({
     onError: (error) => {
       showToast({ description: error.message })
     },
     onSuccess: () => {
-      onTypebotUpdated()
+      onSniperUpdated()
     },
   })
 
-  const { mutate: unpublishTypebot } =
-    trpc.typebot.unpublishTypebot.useMutation({
-      onError: (error) => {
-        showToast({ description: error.message })
-      },
-      onSuccess: () => {
-        onTypebotUpdated()
-      },
-    })
+  const { mutate: unpublishSniper } = trpc.sniper.unpublishSniper.useMutation({
+    onError: (error) => {
+      showToast({ description: error.message })
+    },
+    onSuccess: () => {
+      onSniperUpdated()
+    },
+  })
 
-  const handleTypebotClick = () => {
-    if (draggedTypebotDebounced) return
+  const handleSniperClick = () => {
+    if (draggedSniperDebounced) return
     router.push(
-      isMobile
-        ? `/typebots/${typebot.id}/results`
-        : `/typebots/${typebot.id}/edit`
+      isMobile ? `/snipers/${sniper.id}/results` : `/snipers/${sniper.id}/edit`
     )
   }
 
-  const handleDeleteTypebotClick = async () => {
+  const handleDeleteSniperClick = async () => {
     if (isReadOnly) return
-    deleteTypebot({
-      typebotId: typebot.id,
+    deleteSniper({
+      sniperId: sniper.id,
     })
   }
 
   const handleDuplicateClick = async (e: React.MouseEvent) => {
     e.stopPropagation()
-    const { typebot: typebotToDuplicate } =
-      await trpcVanilla.typebot.getTypebot.query({
-        typebotId: typebot.id,
+    const { sniper: sniperToDuplicate } =
+      await trpcVanilla.sniper.getSniper.query({
+        sniperId: sniper.id,
       })
-    if (!typebotToDuplicate) return
-    importTypebot({
-      workspaceId: typebotToDuplicate.workspaceId,
-      typebot: {
-        ...typebotToDuplicate,
-        name: duplicateName(typebotToDuplicate.name),
+    if (!sniperToDuplicate) return
+    importSniper({
+      workspaceId: sniperToDuplicate.workspaceId,
+      sniper: {
+        ...sniperToDuplicate,
+        name: duplicateName(sniperToDuplicate.name),
       },
     })
   }
@@ -130,15 +127,15 @@ const TypebotButton = ({
 
   const handleUnpublishClick = async (e: React.MouseEvent) => {
     e.stopPropagation()
-    if (!typebot.publishedTypebotId) return
-    unpublishTypebot({ typebotId: typebot.id })
+    if (!sniper.publishedSniperId) return
+    unpublishSniper({ sniperId: sniper.id })
   }
 
   return (
     <Button
       ref={buttonRef}
       as={WrapItem}
-      onClick={handleTypebotClick}
+      onClick={handleSniperClick}
       display="flex"
       flexDir="column"
       variant="outline"
@@ -146,10 +143,10 @@ const TypebotButton = ({
       h="270px"
       rounded="lg"
       whiteSpace="normal"
-      opacity={draggedTypebot ? 0.3 : 1}
+      opacity={draggedSniper ? 0.3 : 1}
       cursor="pointer"
     >
-      {typebot.publishedTypebotId && (
+      {sniper.publishedSniperId && (
         <Tag
           colorScheme="blue"
           variant="solid"
@@ -158,7 +155,7 @@ const TypebotButton = ({
           top="27px"
           size="sm"
         >
-          {t('folders.typebotButton.live')}
+          {t('folders.sniperButton.live')}
         </Tag>
       )}
       {!isReadOnly && (
@@ -178,18 +175,18 @@ const TypebotButton = ({
             pos="absolute"
             top="20px"
             right="20px"
-            aria-label={t('folders.typebotButton.showMoreOptions')}
+            aria-label={t('folders.sniperButton.showMoreOptions')}
           >
-            {typebot.publishedTypebotId && (
+            {sniper.publishedSniperId && (
               <MenuItem onClick={handleUnpublishClick}>
-                {t('folders.typebotButton.unpublish')}
+                {t('folders.sniperButton.unpublish')}
               </MenuItem>
             )}
             <MenuItem onClick={handleDuplicateClick}>
-              {t('folders.typebotButton.duplicate')}
+              {t('folders.sniperButton.duplicate')}
             </MenuItem>
             <MenuItem color="red.400" onClick={handleDeleteClick}>
-              {t('folders.typebotButton.delete')}
+              {t('folders.sniperButton.delete')}
             </MenuItem>
           </MoreButton>
         </>
@@ -201,10 +198,10 @@ const TypebotButton = ({
           alignItems="center"
           fontSize={'4xl'}
         >
-          {<EmojiOrImageIcon icon={typebot.icon} boxSize={'35px'} />}
+          {<EmojiOrImageIcon icon={sniper.icon} boxSize={'35px'} />}
         </Flex>
         <Text textAlign="center" noOfLines={4} maxW="180px">
-          {typebot.name}
+          {sniper.name}
         </Text>
       </VStack>
       {!isReadOnly && (
@@ -213,20 +210,20 @@ const TypebotButton = ({
             <Stack spacing="4">
               <Text>
                 <T
-                  keyName="folders.typebotButton.deleteConfirmationMessage"
+                  keyName="folders.sniperButton.deleteConfirmationMessage"
                   params={{
-                    strong: <strong>{typebot.name}</strong>,
+                    strong: <strong>{sniper.name}</strong>,
                   }}
                 />
               </Text>
               <Alert status="warning">
                 <AlertIcon />
-                {t('folders.typebotButton.deleteConfirmationMessageWarning')}
+                {t('folders.sniperButton.deleteConfirmationMessageWarning')}
               </Alert>
             </Stack>
           }
           confirmButtonLabel={t('delete')}
-          onConfirm={handleDeleteTypebotClick}
+          onConfirm={handleDeleteSniperClick}
           isOpen={isDeleteOpen}
           onClose={onDeleteClose}
         />
@@ -236,12 +233,12 @@ const TypebotButton = ({
 }
 
 export default memo(
-  TypebotButton,
+  SniperButton,
   (prev, next) =>
-    prev.draggedTypebot?.id === next.draggedTypebot?.id &&
-    prev.typebot.id === next.typebot.id &&
+    prev.draggedSniper?.id === next.draggedSniper?.id &&
+    prev.sniper.id === next.sniper.id &&
     prev.isReadOnly === next.isReadOnly &&
-    prev.typebot.name === next.typebot.name &&
-    prev.typebot.icon === next.typebot.icon &&
-    prev.typebot.publishedTypebotId === next.typebot.publishedTypebotId
+    prev.sniper.name === next.sniper.name &&
+    prev.sniper.icon === next.sniper.icon &&
+    prev.sniper.publishedSniperId === next.sniper.publishedSniperId
 )

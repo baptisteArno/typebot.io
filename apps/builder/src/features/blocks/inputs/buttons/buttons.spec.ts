@@ -1,19 +1,19 @@
 import test, { expect } from '@playwright/test'
 import {
-  createTypebots,
-  importTypebotInDatabase,
-} from '@typebot.io/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from '@typebot.io/playwright/databaseHelpers'
+  createSnipers,
+  importSniperInDatabase,
+} from '@sniper.io/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@sniper.io/playwright/databaseHelpers'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
 
 test.describe.parallel('Buttons input block', () => {
   test('can edit button items', async ({ page }) => {
-    const typebotId = createId()
-    await createTypebots([
+    const sniperId = createId()
+    await createSnipers([
       {
-        id: typebotId,
+        id: sniperId,
         ...parseDefaultGroupWithBlock({
           type: InputBlockType.CHOICE,
           items: [
@@ -25,7 +25,7 @@ test.describe.parallel('Buttons input block', () => {
       },
     ])
 
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/snipers/${sniperId}/edit`)
     await page.getByRole('textbox').fill('Item 1')
     await page.getByRole('textbox').press('Enter')
     await page.getByRole('textbox').fill('Item 2')
@@ -68,15 +68,15 @@ test.describe.parallel('Buttons input block', () => {
 })
 
 test('Variable buttons should work', async ({ page }) => {
-  const typebotId = createId()
-  await importTypebotInDatabase(
-    getTestAsset('typebots/inputs/variableButton.json'),
+  const sniperId = createId()
+  await importSniperInDatabase(
+    getTestAsset('snipers/inputs/variableButton.json'),
     {
-      id: typebotId,
+      id: sniperId,
     }
   )
 
-  await page.goto(`/typebots/${typebotId}/edit`)
+  await page.goto(`/snipers/${sniperId}/edit`)
   await page.click('text=Test')
   await page.getByRole('button', { name: 'Variable item' }).click()
   await expect(page.getByTestId('guest-bubble')).toHaveText('Variable item')
@@ -87,12 +87,12 @@ test('Variable buttons should work', async ({ page }) => {
   await page.click('text=Multiple choice?')
   await page.click('text="Restart"')
   await page
-    .locator('typebot-standard')
+    .locator('sniper-standard')
     .getByRole('checkbox', { name: 'Variable item' })
     .first()
     .click()
   await page
-    .locator('typebot-standard')
+    .locator('sniper-standard')
     .getByRole('checkbox', { name: 'Variable item' })
     .nth(1)
     .click()

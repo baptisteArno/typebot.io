@@ -1,52 +1,52 @@
-import { User } from '@typebot.io/prisma'
+import { User } from '@sniper.io/prisma'
 import {
   Block,
-  PublicTypebot,
-  Typebot,
-  TypebotLinkBlock,
-} from '@typebot.io/schemas'
-import { isDefined } from '@typebot.io/lib'
-import { fetchLinkedTypebots } from './fetchLinkedTypebots'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+  PublicSniper,
+  Sniper,
+  SniperLinkBlock,
+} from '@sniper.io/schemas'
+import { isDefined } from '@sniper.io/lib'
+import { fetchLinkedSnipers } from './fetchLinkedSnipers'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
 
 type Props = {
-  typebots: Pick<PublicTypebot, 'groups'>[]
+  snipers: Pick<PublicSniper, 'groups'>[]
   userId: string | undefined
   isPreview?: boolean
 }
 
-export const fetchLinkedChildTypebots =
-  ({ typebots, userId, isPreview }: Props) =>
+export const fetchLinkedChildSnipers =
+  ({ snipers, userId, isPreview }: Props) =>
   async (
-    capturedLinkedBots: (Typebot | PublicTypebot)[]
-  ): Promise<(Typebot | PublicTypebot)[]> => {
-    const linkedTypebotIds = typebots
-      .flatMap((typebot) =>
+    capturedLinkedBots: (Sniper | PublicSniper)[]
+  ): Promise<(Sniper | PublicSniper)[]> => {
+    const linkedSniperIds = snipers
+      .flatMap((sniper) =>
         (
-          typebot.groups
+          sniper.groups
             .flatMap<Block>((group) => group.blocks)
             .filter(
               (block) =>
-                block.type === LogicBlockType.TYPEBOT_LINK &&
-                isDefined(block.options?.typebotId) &&
+                block.type === LogicBlockType.SNIPER_LINK &&
+                isDefined(block.options?.sniperId) &&
                 !capturedLinkedBots.some(
                   (bot) =>
-                    ('typebotId' in bot ? bot.typebotId : bot.id) ===
-                    block.options?.typebotId
+                    ('sniperId' in bot ? bot.sniperId : bot.id) ===
+                    block.options?.sniperId
                 )
-            ) as TypebotLinkBlock[]
-        ).map((b) => b.options?.typebotId)
+            ) as SniperLinkBlock[]
+        ).map((b) => b.options?.sniperId)
       )
       .filter(isDefined)
-    if (linkedTypebotIds.length === 0) return capturedLinkedBots
-    const linkedTypebots = (await fetchLinkedTypebots({
+    if (linkedSniperIds.length === 0) return capturedLinkedBots
+    const linkedSnipers = (await fetchLinkedSnipers({
       userId,
-      typebotIds: linkedTypebotIds,
+      sniperIds: linkedSniperIds,
       isPreview,
-    })) as (Typebot | PublicTypebot)[]
-    return fetchLinkedChildTypebots({
-      typebots: linkedTypebots,
+    })) as (Sniper | PublicSniper)[]
+    return fetchLinkedChildSnipers({
+      snipers: linkedSnipers,
       userId,
       isPreview,
-    })([...capturedLinkedBots, ...linkedTypebots])
+    })([...capturedLinkedBots, ...linkedSnipers])
   }

@@ -1,17 +1,17 @@
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import {
-  CollaboratorsOnTypebots,
+  CollaboratorsOnSnipers,
   User,
   Workspace,
   MemberInWorkspace,
-  Typebot,
-} from '@typebot.io/prisma'
-import { settingsSchema } from '@typebot.io/schemas'
+  Sniper,
+} from '@sniper.io/prisma'
+import { settingsSchema } from '@sniper.io/schemas'
 
-export const isReadTypebotForbidden = async (
-  typebot: {
-    settings?: Typebot['settings']
-    collaborators: Pick<CollaboratorsOnTypebots, 'userId'>[]
+export const isReadSniperForbidden = async (
+  sniper: {
+    settings?: Sniper['settings']
+    collaborators: Pick<CollaboratorsOnSnipers, 'userId'>[]
   } & {
     workspace: Pick<Workspace, 'isSuspended' | 'isPastDue'> & {
       members: Pick<MemberInWorkspace, 'userId'>[]
@@ -19,19 +19,19 @@ export const isReadTypebotForbidden = async (
   },
   user?: Pick<User, 'email' | 'id'>
 ) => {
-  const settings = typebot.settings
-    ? settingsSchema.parse(typebot.settings)
+  const settings = sniper.settings
+    ? settingsSchema.parse(sniper.settings)
     : undefined
-  const isTypebotPublic = settings?.publicShare?.isEnabled === true
-  if (isTypebotPublic) return false
+  const isSniperPublic = settings?.publicShare?.isEnabled === true
+  if (isSniperPublic) return false
   return (
     !user ||
-    typebot.workspace.isSuspended ||
-    typebot.workspace.isPastDue ||
+    sniper.workspace.isSuspended ||
+    sniper.workspace.isPastDue ||
     (env.ADMIN_EMAIL?.every((email) => email !== user.email) &&
-      !typebot.collaborators.some(
+      !sniper.collaborators.some(
         (collaborator) => collaborator.userId === user.id
       ) &&
-      !typebot.workspace.members.some((member) => member.userId === user.id))
+      !sniper.workspace.members.some((member) => member.userId === user.id))
   )
 }

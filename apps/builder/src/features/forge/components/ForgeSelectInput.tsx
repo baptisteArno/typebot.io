@@ -15,7 +15,7 @@ import {
 import {
   ForgedBlockDefinition,
   ForgedBlock,
-} from '@typebot.io/forge-repository/types'
+} from '@sniper.io/forge-repository/types'
 import { ReactNode, useMemo } from 'react'
 
 type Props = {

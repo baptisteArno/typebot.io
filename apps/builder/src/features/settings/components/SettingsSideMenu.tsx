@@ -14,38 +14,38 @@ import {
   LockedIcon,
   MoreVerticalIcon,
 } from '@/components/icons'
-import { Settings } from '@typebot.io/schemas'
+import { Settings } from '@sniper.io/schemas'
 import React from 'react'
 import { GeneralSettingsForm } from './GeneralSettingsForm'
 import { MetadataForm } from './MetadataForm'
 import { TypingEmulationForm } from './TypingEmulationForm'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { SecurityForm } from './SecurityForm'
 
 export const SettingsSideMenu = () => {
-  const { typebot, updateTypebot } = useTypebot()
+  const { sniper, updateSniper } = useSniper()
 
   const updateTypingEmulation = (
     typingEmulation: Settings['typingEmulation']
   ) =>
-    typebot &&
-    updateTypebot({
-      updates: { settings: { ...typebot.settings, typingEmulation } },
+    sniper &&
+    updateSniper({
+      updates: { settings: { ...sniper.settings, typingEmulation } },
     })
 
   const updateSecurity = (security: Settings['security']) =>
-    typebot &&
-    updateTypebot({
-      updates: { settings: { ...typebot.settings, security } },
+    sniper &&
+    updateSniper({
+      updates: { settings: { ...sniper.settings, security } },
     })
 
   const handleGeneralSettingsChange = (general: Settings['general']) =>
-    typebot &&
-    updateTypebot({ updates: { settings: { ...typebot.settings, general } } })
+    sniper &&
+    updateSniper({ updates: { settings: { ...sniper.settings, general } } })
 
   const handleMetadataChange = (metadata: Settings['metadata']) =>
-    typebot &&
-    updateTypebot({ updates: { settings: { ...typebot.settings, metadata } } })
+    sniper &&
+    updateSniper({ updates: { settings: { ...sniper.settings, metadata } } })
 
   return (
     <Stack
@@ -71,9 +71,9 @@ export const SettingsSideMenu = () => {
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel pb={4} px="6">
-            {typebot && (
+            {sniper && (
               <GeneralSettingsForm
-                generalSettings={typebot.settings.general}
+                generalSettings={sniper.settings.general}
                 onGeneralSettingsChange={handleGeneralSettingsChange}
               />
             )}
@@ -88,9 +88,9 @@ export const SettingsSideMenu = () => {
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel pb={4} px="6">
-            {typebot && (
+            {sniper && (
               <TypingEmulationForm
-                typingEmulation={typebot.settings.typingEmulation}
+                typingEmulation={sniper.settings.typingEmulation}
                 onUpdate={updateTypingEmulation}
               />
             )}
@@ -105,9 +105,9 @@ export const SettingsSideMenu = () => {
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel pb={4} px="6">
-            {typebot && (
+            {sniper && (
               <SecurityForm
-                security={typebot.settings.security}
+                security={sniper.settings.security}
                 onUpdate={updateSecurity}
               />
             )}
@@ -122,12 +122,12 @@ export const SettingsSideMenu = () => {
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel pb={4} px="6">
-            {typebot && (
+            {sniper && (
               <MetadataForm
-                workspaceId={typebot.workspaceId}
-                typebotId={typebot.id}
-                typebotName={typebot.name}
-                metadata={typebot.settings.metadata}
+                workspaceId={sniper.workspaceId}
+                sniperId={sniper.id}
+                sniperName={sniper.name}
+                metadata={sniper.settings.metadata}
                 onMetadataChange={handleMetadataChange}
               />
             )}

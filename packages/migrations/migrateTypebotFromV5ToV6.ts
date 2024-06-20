@@ -3,22 +3,22 @@ import {
   BlockV6,
   GoogleSheetsBlockV5,
   GoogleSheetsBlockV6,
-  PublicTypebotV5,
-  PublicTypebotV6,
-  TypebotV5,
-  TypebotV6,
-} from '@typebot.io/schemas'
-import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
-import { GoogleSheetsAction } from '@typebot.io/schemas/features/blocks/integrations/googleSheets/constants'
-import { ComparisonOperators } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
-import { createId } from '@typebot.io/lib/createId'
-import { EventType } from '@typebot.io/schemas/features/events/constants'
-import { byId } from '@typebot.io/lib/utils'
+  PublicSniperV5,
+  PublicSniperV6,
+  SniperV5,
+  SniperV6,
+} from '@sniper.io/schemas'
+import { IntegrationBlockType } from '@sniper.io/schemas/features/blocks/integrations/constants'
+import { GoogleSheetsAction } from '@sniper.io/schemas/features/blocks/integrations/googleSheets/constants'
+import { ComparisonOperators } from '@sniper.io/schemas/features/blocks/logic/condition/constants'
+import { createId } from '@sniper.io/lib/createId'
+import { EventType } from '@sniper.io/schemas/features/events/constants'
+import { byId } from '@sniper.io/lib/utils'
 
-export const migrateTypebotFromV5ToV6 = async (
-  typebot: TypebotV5 | PublicTypebotV5
-): Promise<TypebotV6 | PublicTypebotV6> => {
-  const startGroup = typebot.groups.find((group) =>
+export const migrateSniperFromV5ToV6 = async (
+  sniper: SniperV5 | PublicSniperV5
+): Promise<SniperV6 | PublicSniperV6> => {
+  const startGroup = sniper.groups.find((group) =>
     group.blocks.some((b) => b.type === 'start')
   )
 
@@ -28,12 +28,12 @@ export const migrateTypebotFromV5ToV6 = async (
 
   if (!startBlock) throw new Error('Start block not found')
 
-  const startOutgoingEdge = typebot.edges.find(byId(startBlock.outgoingEdgeId))
+  const startOutgoingEdge = sniper.edges.find(byId(startBlock.outgoingEdgeId))
 
   return {
-    ...typebot,
+    ...sniper,
     groups: migrateGroups(
-      typebot.groups.filter((g) => g.blocks.some((b) => b.type !== 'start'))
+      sniper.groups.filter((g) => g.blocks.some((b) => b.type !== 'start'))
     ),
     version: '6',
     events: [
@@ -52,20 +52,20 @@ export const migrateTypebotFromV5ToV6 = async (
               eventId: startGroup.id,
             },
           },
-          ...typebot.edges.filter((e) => e.id !== startOutgoingEdge.id),
+          ...sniper.edges.filter((e) => e.id !== startOutgoingEdge.id),
         ]
-      : typebot.edges,
+      : sniper.edges,
   }
 }
 
-const migrateGroups = (groups: TypebotV5['groups']): TypebotV6['groups'] =>
+const migrateGroups = (groups: SniperV5['groups']): SniperV6['groups'] =>
   groups.map((group) => ({
     ...group,
     blocks: migrateBlocksFromV1ToV2(group.blocks),
   }))
 
 const migrateBlocksFromV1ToV2 = (
-  blocks: TypebotV5['groups'][0]['blocks']
+  blocks: SniperV5['groups'][0]['blocks']
 ): BlockV6[] =>
   (
     blocks.filter((block) => block.type !== 'start') as Exclude<

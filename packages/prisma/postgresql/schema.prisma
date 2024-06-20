@@ -38,12 +38,12 @@ model Session {
 }
 
 model User {
-  id                          String                    @id @default(cuid())
-  createdAt                   DateTime                  @default(now())
-  updatedAt                   DateTime                  @default(now()) @updatedAt
-  lastActivityAt              DateTime                  @default(now())
+  id                          String                   @id @default(cuid())
+  createdAt                   DateTime                 @default(now())
+  updatedAt                   DateTime                 @default(now()) @updatedAt
+  lastActivityAt              DateTime                 @default(now())
   name                        String?
-  email                       String?                   @unique
+  email                       String?                  @unique
   emailVerified               DateTime?
   image                       String?
   company                     String?
@@ -53,7 +53,7 @@ model User {
   preferredAppAppearance      String?
   accounts                    Account[]
   apiTokens                   ApiToken[]
-  CollaboratorsOnTypebots     CollaboratorsOnTypebots[]
+  CollaboratorsOnSnipers      CollaboratorsOnSnipers[]
   workspaces                  MemberInWorkspace[]
   sessions                    Session[]
   bannedIps                   BannedIp[]
@@ -81,7 +81,7 @@ model Workspace {
   customDomains                 CustomDomain[]
   folders                       DashboardFolder[]
   members                       MemberInWorkspace[]
-  typebots                      Typebot[]
+  snipers                       Sniper[]
   invitations                   WorkspaceInvitation[]
   additionalChatsIndex          Int                   @default(0)
   additionalStorageIndex        Int                   @default(0)
@@ -158,14 +158,14 @@ model DashboardFolder {
   parentFolder   DashboardFolder?  @relation("ParentChild", fields: [parentFolderId], references: [id])
   workspace      Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   childrenFolder DashboardFolder[] @relation("ParentChild")
-  typebots       Typebot[]
+  snipers        Sniper[]
 }
 
-model Typebot {
-  id                      String                    @id @default(cuid())
+model Sniper {
+  id                      String                   @id @default(cuid())
   version                 String?
-  createdAt               DateTime                  @default(now())
-  updatedAt               DateTime                  @default(now()) @updatedAt
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @default(now()) @updatedAt
   icon                    String?
   name                    String
   folderId                String?
@@ -176,19 +176,19 @@ model Typebot {
   theme                   Json
   selectedThemeTemplateId String?
   settings                Json
-  publicId                String?                   @unique
-  customDomain            String?                   @unique
+  publicId                String?                  @unique
+  customDomain            String?                  @unique
   workspaceId             String
   resultsTablePreferences Json?
-  folder                  DashboardFolder?          @relation(fields: [folderId], references: [id])
-  workspace               Workspace                 @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  collaborators           CollaboratorsOnTypebots[]
+  folder                  DashboardFolder?         @relation(fields: [folderId], references: [id])
+  workspace               Workspace                @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  collaborators           CollaboratorsOnSnipers[]
   invitations             Invitation[]
-  publishedTypebot        PublicTypebot?
+  publishedSniper         PublicSniper?
   results                 Result[]
   webhooks                Webhook[]
-  isArchived              Boolean                   @default(false)
-  isClosed                Boolean                   @default(false)
+  isArchived              Boolean                  @default(false)
+  isClosed                Boolean                  @default(false)
   whatsAppCredentialsId   String?
   riskLevel               Int?
   bannedIps               BannedIp[]
@@ -201,58 +201,58 @@ model Invitation {
   createdAt DateTime          @default(now())
   updatedAt DateTime          @default(now()) @updatedAt
   email     String
-  typebotId String
+  sniperId  String
   type      CollaborationType
-  typebot   Typebot           @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  sniper    Sniper            @relation(fields: [sniperId], references: [id], onDelete: Cascade)
 
-  @@unique([email, typebotId])
+  @@unique([email, sniperId])
 }
 
-model CollaboratorsOnTypebots {
+model CollaboratorsOnSnipers {
   createdAt DateTime          @default(now())
   updatedAt DateTime          @default(now()) @updatedAt
   userId    String
-  typebotId String
+  sniperId  String
   type      CollaborationType
-  typebot   Typebot           @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  sniper    Sniper            @relation(fields: [sniperId], references: [id], onDelete: Cascade)
   user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, typebotId])
+  @@unique([userId, sniperId])
 }
 
-model PublicTypebot {
+model PublicSniper {
   id        String   @id @default(cuid())
   version   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
-  typebotId String   @unique
+  sniperId  String   @unique
   groups    Json
   events    Json?
   variables Json
   edges     Json
   theme     Json
   settings  Json
-  typebot   Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  sniper    Sniper   @relation(fields: [sniperId], references: [id], onDelete: Cascade)
 }
 
 model Result {
   id                 String                   @id @default(cuid())
   createdAt          DateTime                 @default(now())
-  typebotId          String
+  sniperId           String
   variables          Json
   isCompleted        Boolean
   hasStarted         Boolean?
   isArchived         Boolean?                 @default(false)
   lastChatSessionId  String?
-  typebot            Typebot                  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  sniper             Sniper                   @relation(fields: [sniperId], references: [id], onDelete: Cascade)
   answers            Answer[]
   answersV2          AnswerV2[]
   logs               Log[]
   edges              VisitedEdge[]
   setVariableHistory SetVariableHistoryItem[]
 
-  @@index([typebotId, hasStarted, createdAt(sort: Desc)])
-  @@index([typebotId, isCompleted])
+  @@index([sniperId, hasStarted, createdAt(sort: Desc)])
+  @@index([sniperId, isCompleted])
 }
 
 model SetVariableHistoryItem {
@@ -325,8 +325,8 @@ model Webhook {
   queryParams Json
   headers     Json
   body        String?
-  typebotId   String
-  typebot     Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  sniperId    String
+  sniper      Sniper   @relation(fields: [sniperId], references: [id], onDelete: Cascade)
 }
 
 model ClaimableCustomPlan {
@@ -367,13 +367,13 @@ model ThemeTemplate {
 }
 
 model BannedIp {
-  id                   String   @id @default(cuid())
-  createdAt            DateTime @default(now())
-  ip                   String   @unique
-  responsibleTypebot   Typebot  @relation(fields: [responsibleTypebotId], references: [id], onDelete: Restrict)
-  responsibleTypebotId String
-  user                 User     @relation(fields: [userId], references: [id], onDelete: Restrict)
-  userId               String
+  id                  String   @id @default(cuid())
+  createdAt           DateTime @default(now())
+  ip                  String   @unique
+  responsibleSniper   Sniper   @relation(fields: [responsibleSniperId], references: [id], onDelete: Restrict)
+  responsibleSniperId String
+  user                User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+  userId              String
 }
 
 enum WorkspaceRole {

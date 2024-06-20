@@ -1,9 +1,9 @@
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 import { ParsedReply } from '../../../types'
-import { DateInputBlock } from '@typebot.io/schemas'
+import { DateInputBlock } from '@sniper.io/schemas'
 import { en as chronoParser } from 'chrono-node'
 import { format } from 'date-fns'
-import { defaultDateInputOptions } from '@typebot.io/schemas/features/blocks/inputs/date/constants'
+import { defaultDateInputOptions } from '@sniper.io/schemas/features/blocks/inputs/date/constants'
 
 export const parseDateReply = (
   reply: string,

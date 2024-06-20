@@ -9,54 +9,53 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { ChatIcon, CodeIcon, DropletIcon, TableIcon } from '@/components/icons'
-import { ChatTheme, GeneralTheme, ThemeTemplate } from '@typebot.io/schemas'
+import { ChatTheme, GeneralTheme, ThemeTemplate } from '@sniper.io/schemas'
 import React from 'react'
 import { CustomCssSettings } from './CustomCssSettings'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { ChatThemeSettings } from './chat/ChatThemeSettings'
 import { GeneralSettings } from './general/GeneralSettings'
 import { ThemeTemplates } from './ThemeTemplates'
-import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
+import { defaultSettings } from '@sniper.io/schemas/features/sniper/settings/constants'
 import { useTranslate } from '@tolgee/react'
 
 export const ThemeSideMenu = () => {
   const { t } = useTranslate()
 
-  const { typebot, updateTypebot, currentUserMode } = useTypebot()
+  const { sniper, updateSniper, currentUserMode } = useSniper()
 
   const updateChatTheme = (chat: ChatTheme) =>
-    typebot && updateTypebot({ updates: { theme: { ...typebot.theme, chat } } })
+    sniper && updateSniper({ updates: { theme: { ...sniper.theme, chat } } })
 
   const updateGeneralTheme = (general?: GeneralTheme) =>
-    typebot &&
-    updateTypebot({ updates: { theme: { ...typebot.theme, general } } })
+    sniper && updateSniper({ updates: { theme: { ...sniper.theme, general } } })
 
   const updateCustomCss = (customCss: string) =>
-    typebot &&
-    updateTypebot({ updates: { theme: { ...typebot.theme, customCss } } })
+    sniper &&
+    updateSniper({ updates: { theme: { ...sniper.theme, customCss } } })
 
   const selectTemplate = (
     selectedTemplate: Partial<Pick<ThemeTemplate, 'id' | 'theme'>>
   ) => {
-    if (!typebot) return
+    if (!sniper) return
     const { theme, id } = selectedTemplate
-    updateTypebot({
+    updateSniper({
       updates: {
         selectedThemeTemplateId: id,
-        theme: theme ? { ...theme } : typebot.theme,
+        theme: theme ? { ...theme } : sniper.theme,
       },
     })
   }
 
   const updateBranding = (isBrandingEnabled: boolean) =>
-    typebot &&
-    updateTypebot({
+    sniper &&
+    updateSniper({
       updates: {
-        settings: { ...typebot.settings, general: { isBrandingEnabled } },
+        settings: { ...sniper.settings, general: { isBrandingEnabled } },
       },
     })
 
-  const templateId = typebot?.selectedThemeTemplateId ?? undefined
+  const templateId = sniper?.selectedThemeTemplateId ?? undefined
 
   return (
     <Stack
@@ -84,11 +83,11 @@ export const ThemeSideMenu = () => {
               <AccordionIcon />
             </AccordionButton>
             <AccordionPanel pb={12}>
-              {typebot && (
+              {sniper && (
                 <ThemeTemplates
                   selectedTemplateId={templateId}
-                  currentTheme={typebot.theme}
-                  workspaceId={typebot.workspaceId}
+                  currentTheme={sniper.theme}
+                  workspaceId={sniper.workspaceId}
                   onTemplateSelect={selectTemplate}
                 />
               )}
@@ -104,14 +103,14 @@ export const ThemeSideMenu = () => {
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel pb={4}>
-            {typebot && (
+            {sniper && (
               <GeneralSettings
                 key={templateId}
                 isBrandingEnabled={
-                  typebot.settings.general?.isBrandingEnabled ??
+                  sniper.settings.general?.isBrandingEnabled ??
                   defaultSettings.general.isBrandingEnabled
                 }
-                generalTheme={typebot.theme.general}
+                generalTheme={sniper.theme.general}
                 onGeneralThemeChange={updateGeneralTheme}
                 onBrandingChange={updateBranding}
               />
@@ -127,13 +126,13 @@ export const ThemeSideMenu = () => {
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel pb={4}>
-            {typebot && (
+            {sniper && (
               <ChatThemeSettings
                 key={templateId}
-                workspaceId={typebot.workspaceId}
-                typebotId={typebot.id}
-                chatTheme={typebot.theme.chat}
-                generalBackground={typebot.theme.general?.background}
+                workspaceId={sniper.workspaceId}
+                sniperId={sniper.id}
+                chatTheme={sniper.theme.chat}
+                generalBackground={sniper.theme.general?.background}
                 onChatThemeChange={updateChatTheme}
               />
             )}
@@ -148,10 +147,10 @@ export const ThemeSideMenu = () => {
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel pb={4}>
-            {typebot && (
+            {sniper && (
               <CustomCssSettings
                 key={templateId}
-                customCss={typebot.theme.customCss}
+                customCss={sniper.theme.customCss}
                 onCustomCssChange={updateCustomCss}
               />
             )}

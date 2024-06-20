@@ -1,50 +1,50 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { publicProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { typebotSchema } from '@typebot.io/schemas'
+import { sniperSchema } from '@sniper.io/schemas'
 import { z } from 'zod'
-import { isReadTypebotForbidden } from '../helpers/isReadTypebotForbidden'
-import { migrateTypebot } from '@typebot.io/migrations/migrateTypebot'
-import { CollaborationType } from '@typebot.io/prisma'
-import { env } from '@typebot.io/env'
+import { isReadSniperForbidden } from '../helpers/isReadSniperForbidden'
+import { migrateSniper } from '@sniper.io/migrations/migrateSniper'
+import { CollaborationType } from '@sniper.io/prisma'
+import { env } from '@sniper.io/env'
 
-export const getTypebot = publicProcedure
+export const getSniper = publicProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/v1/typebots/{typebotId}',
+      path: '/v1/snipers/{sniperId}',
       protect: true,
-      summary: 'Get a typebot',
-      tags: ['Typebot'],
+      summary: 'Get a sniper',
+      tags: ['Sniper'],
     },
   })
   .input(
     z.object({
-      typebotId: z
+      sniperId: z
         .string()
         .describe(
-          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+          "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)"
         ),
       migrateToLatestVersion: z
         .boolean()
         .optional()
         .default(false)
         .describe(
-          'If enabled, the typebot will be converted to the latest schema version'
+          'If enabled, the sniper will be converted to the latest schema version'
         ),
     })
   )
   .output(
     z.object({
-      typebot: typebotSchema,
+      sniper: sniperSchema,
       currentUserMode: z.enum(['guest', 'read', 'write']),
     })
   )
   .query(
-    async ({ input: { typebotId, migrateToLatestVersion }, ctx: { user } }) => {
-      const existingTypebot = await prisma.typebot.findFirst({
+    async ({ input: { sniperId, migrateToLatestVersion }, ctx: { user } }) => {
+      const existingSniper = await prisma.sniper.findFirst({
         where: {
-          id: typebotId,
+          id: sniperId,
         },
         include: {
           collaborators: true,
@@ -62,24 +62,24 @@ export const getTypebot = publicProcedure
         },
       })
       if (
-        !existingTypebot?.id ||
-        (await isReadTypebotForbidden(existingTypebot, user))
+        !existingSniper?.id ||
+        (await isReadSniperForbidden(existingSniper, user))
       )
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Sniper not found' })
 
       try {
-        const parsedTypebot = migrateToLatestVersion
-          ? await migrateTypebot(typebotSchema.parse(existingTypebot))
-          : typebotSchema.parse(existingTypebot)
+        const parsedSniper = migrateToLatestVersion
+          ? await migrateSniper(sniperSchema.parse(existingSniper))
+          : sniperSchema.parse(existingSniper)
 
         return {
-          typebot: parsedTypebot,
-          currentUserMode: getCurrentUserMode(user, existingTypebot),
+          sniper: parsedSniper,
+          currentUserMode: getCurrentUserMode(user, existingSniper),
         }
       } catch (err) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to parse typebot',
+          message: 'Failed to parse sniper',
           cause: err,
         })
       }
@@ -88,12 +88,12 @@ export const getTypebot = publicProcedure
 
 const getCurrentUserMode = (
   user: { email: string | null; id: string } | undefined,
-  typebot: { collaborators: { userId: string; type: CollaborationType }[] } & {
+  sniper: { collaborators: { userId: string; type: CollaborationType }[] } & {
     workspace: { members: { userId: string }[] }
   }
 ) => {
-  const collaborator = typebot.collaborators.find((c) => c.userId === user?.id)
-  const isMemberOfWorkspace = typebot.workspace.members.some(
+  const collaborator = sniper.collaborators.find((c) => c.userId === user?.id)
+  const isMemberOfWorkspace = sniper.workspace.members.some(
     (m) => m.userId === user?.id
   )
   if (

@@ -5,19 +5,19 @@ import {
   ConditionItem,
   ButtonItem,
   PictureChoiceItem,
-} from '@typebot.io/schemas'
-import { SetTypebot } from '../TypebotProvider'
+} from '@sniper.io/schemas'
+import { SetSniper } from '../SniperProvider'
 import { Draft, produce } from 'immer'
 import { deleteConnectedEdgesDraft } from './edges'
-import { byId } from '@typebot.io/lib'
-import { blockHasItems } from '@typebot.io/schemas/helpers'
+import { byId } from '@sniper.io/lib'
+import { blockHasItems } from '@sniper.io/schemas/helpers'
 import { createId } from '@paralleldrive/cuid2'
 import {
   BlockWithCreatableItems,
   DraggableItem,
 } from '@/features/graph/providers/GraphDndProvider'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
 
 type NewItem = Pick<DraggableItem, 'outgoingEdgeId'> & Partial<DraggableItem>
 
@@ -105,14 +105,14 @@ const duplicateItem = (
   }
 }
 
-const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
+const itemsAction = (setSniper: SetSniper): ItemsActions => ({
   createItem: (
     item: NewItem,
     { groupIndex, blockIndex, itemIndex }: ItemIndices
   ) =>
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        const block = typebot.groups[groupIndex].blocks[
+    setSniper((sniper) =>
+      produce(sniper, (sniper) => {
+        const block = sniper.groups[groupIndex].blocks[
           blockIndex
         ] as BlockWithCreatableItems
 
@@ -121,9 +121,9 @@ const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
         if (!newItem) return
 
         if (item.outgoingEdgeId) {
-          const edgeIndex = typebot.edges.findIndex(byId(item.outgoingEdgeId))
+          const edgeIndex = sniper.edges.findIndex(byId(item.outgoingEdgeId))
           edgeIndex !== -1
-            ? (typebot.edges[edgeIndex].from = {
+            ? (sniper.edges[edgeIndex].from = {
                 blockId: block.id,
                 itemId: newItem.id,
               })
@@ -132,9 +132,9 @@ const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
       })
     ),
   duplicateItem: ({ groupIndex, blockIndex, itemIndex }: ItemIndices) =>
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        const block = typebot.groups[groupIndex].blocks[
+    setSniper((sniper) =>
+      produce(sniper, (sniper) => {
+        const block = sniper.groups[groupIndex].blocks[
           blockIndex
         ] as BlockWithCreatableItems
         duplicateItem(block, itemIndex)
@@ -144,37 +144,37 @@ const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
     { groupIndex, blockIndex, itemIndex }: ItemIndices,
     updates: Partial<Omit<Item, 'id'>>
   ) =>
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        const block = typebot.groups[groupIndex].blocks[blockIndex]
+    setSniper((sniper) =>
+      produce(sniper, (sniper) => {
+        const block = sniper.groups[groupIndex].blocks[blockIndex]
         if (!blockHasItems(block)) return
-        ;(
-          typebot.groups[groupIndex].blocks[blockIndex] as BlockWithItems
-        ).items[itemIndex] = {
+        ;(sniper.groups[groupIndex].blocks[blockIndex] as BlockWithItems).items[
+          itemIndex
+        ] = {
           ...block.items[itemIndex],
           ...updates,
         } as Item
       })
     ),
   detachItemFromBlock: ({ groupIndex, blockIndex, itemIndex }: ItemIndices) =>
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        const block = typebot.groups[groupIndex].blocks[
+    setSniper((sniper) =>
+      produce(sniper, (sniper) => {
+        const block = sniper.groups[groupIndex].blocks[
           blockIndex
         ] as BlockWithItems
         block.items.splice(itemIndex, 1)
       })
     ),
   deleteItem: ({ groupIndex, blockIndex, itemIndex }: ItemIndices) =>
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        const block = typebot.groups[groupIndex].blocks[
+    setSniper((sniper) =>
+      produce(sniper, (sniper) => {
+        const block = sniper.groups[groupIndex].blocks[
           blockIndex
         ] as BlockWithItems
         if (block.items.length === 1) return
         const removingItem = block.items[itemIndex]
         block.items.splice(itemIndex, 1)
-        deleteConnectedEdgesDraft(typebot, removingItem.id)
+        deleteConnectedEdgesDraft(sniper, removingItem.id)
       })
     ),
 })

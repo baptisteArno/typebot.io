@@ -243,7 +243,7 @@
             "isCustomBody": true,
             "recipients": ["{{Email}}"],
             "subject": "Here is your community bundle ✨",
-            "body": "Hey {{Name}},\n\nHere is a link to download the community bundle:\n\nhttps://typebot.io\n\nI hope it will help you create the right community for your project 🚀\n\nBest,\nTypebot team."
+            "body": "Hey {{Name}},\n\nHere is a link to download the community bundle:\n\nhttps://sniper.io\n\nI hope it will help you create the right community for your project 🚀\n\nBest,\nSniper team."
           }
         }
       ]

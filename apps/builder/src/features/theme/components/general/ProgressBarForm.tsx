@@ -3,7 +3,7 @@ import { DropdownList } from '@/components/DropdownList'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
 import { NumberInput } from '@/components/inputs'
 import { FormLabel, HStack } from '@chakra-ui/react'
-import { ProgressBar } from '@typebot.io/schemas'
+import { ProgressBar } from '@sniper.io/schemas'
 import {
   defaultProgressBarBackgroundColor,
   defaultProgressBarColor,
@@ -13,7 +13,7 @@ import {
   defaultProgressBarThickness,
   progressBarPlacements,
   progressBarPositions,
-} from '@typebot.io/schemas/features/typebot/theme/constants'
+} from '@sniper.io/schemas/features/sniper/theme/constants'
 
 type Props = {
   progressBar: ProgressBar | undefined

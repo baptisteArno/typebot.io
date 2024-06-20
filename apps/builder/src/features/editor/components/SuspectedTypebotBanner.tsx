@@ -2,12 +2,12 @@ import { TextLink } from '@/components/TextLink'
 import { useUser } from '@/features/account/hooks/useUser'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { HStack, Text } from '@chakra-ui/react'
-import { Plan } from '@typebot.io/prisma'
+import { Plan } from '@sniper.io/prisma'
 
 type Props = {
-  typebotId: string
+  sniperId: string
 }
-export const SuspectedTypebotBanner = ({ typebotId }: Props) => {
+export const SuspectedSniperBanner = ({ sniperId }: Props) => {
   const { user } = useUser()
   const { workspace } = useWorkspace()
 
@@ -25,16 +25,16 @@ export const SuspectedTypebotBanner = ({ typebotId }: Props) => {
       py="2"
     >
       <Text fontWeight="bold">
-        Our anti-scam system flagged your typebot. It is currently being
-        reviewed manually.
+        Our anti-scam system flagged your sniper. It is currently being reviewed
+        manually.
         {workspace?.plan !== Plan.FREE ? (
           <>
             <br />
             If you think that&apos;s a mistake,{' '}
             <TextLink
-              href={`https://typebot.co/claim-non-scam?Email=${encodeURIComponent(
+              href={`https://sniper.co/claim-non-scam?Email=${encodeURIComponent(
                 user.email
-              )}&typebotId=${typebotId}`}
+              )}&sniperId=${sniperId}`}
             >
               contact us
             </TextLink>

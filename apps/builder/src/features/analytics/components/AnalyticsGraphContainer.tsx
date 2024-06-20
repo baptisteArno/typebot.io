@@ -4,14 +4,14 @@ import {
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import {
   Edge,
   GroupV6,
   Stats,
   TotalAnswers,
   TotalVisitedEdges,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import React, { useMemo } from 'react'
 import { StatsCards } from './StatsCards'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
@@ -19,10 +19,10 @@ import { Graph } from '@/features/graph/components/Graph'
 import { GraphProvider } from '@/features/graph/providers/GraphProvider'
 import { useTranslate } from '@tolgee/react'
 import { trpc } from '@/lib/trpc'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 import { EventsCoordinatesProvider } from '@/features/graph/providers/EventsCoordinateProvider'
 import { timeFilterValues } from '../constants'
-import { blockHasItems, isInputBlock } from '@typebot.io/schemas/helpers'
+import { blockHasItems, isInputBlock } from '@sniper.io/schemas/helpers'
 
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
@@ -39,31 +39,31 @@ export const AnalyticsGraphContainer = ({
 }: Props) => {
   const { t } = useTranslate()
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { typebot, publishedTypebot } = useTypebot()
+  const { sniper, publishedSniper } = useSniper()
   const { data } = trpc.analytics.getInDepthAnalyticsData.useQuery(
     {
-      typebotId: typebot?.id as string,
+      sniperId: sniper?.id as string,
       timeFilter,
       timeZone,
     },
-    { enabled: isDefined(publishedTypebot) }
+    { enabled: isDefined(publishedSniper) }
   )
 
   const totalVisitedEdges = useMemo(() => {
     if (
-      !publishedTypebot?.edges ||
-      !publishedTypebot.groups ||
-      !publishedTypebot.events ||
+      !publishedSniper?.edges ||
+      !publishedSniper.groups ||
+      !publishedSniper.events ||
       !data?.totalAnswers ||
       !stats?.totalViews
     )
       return
-    const firstEdgeId = publishedTypebot.events[0].outgoingEdgeId
+    const firstEdgeId = publishedSniper.events[0].outgoingEdgeId
     if (!firstEdgeId) return
     return populateEdgesWithVisitData({
       edgeId: firstEdgeId,
-      edges: publishedTypebot.edges,
-      groups: publishedTypebot.groups,
+      edges: publishedSniper.edges,
+      groups: publishedSniper.groups,
       currentTotalUsers: stats.totalViews,
       totalVisitedEdges: data.offDefaultPathVisitedEdges
         ? [...data.offDefaultPathVisitedEdges]
@@ -74,9 +74,9 @@ export const AnalyticsGraphContainer = ({
   }, [
     data?.offDefaultPathVisitedEdges,
     data?.totalAnswers,
-    publishedTypebot?.edges,
-    publishedTypebot?.groups,
-    publishedTypebot?.events,
+    publishedSniper?.edges,
+    publishedSniper?.groups,
+    publishedSniper?.events,
     stats?.totalViews,
   ])
 
@@ -94,12 +94,12 @@ export const AnalyticsGraphContainer = ({
       h="full"
       justifyContent="center"
     >
-      {publishedTypebot && stats ? (
+      {publishedSniper && stats ? (
         <GraphProvider isReadOnly isAnalytics>
-          <EventsCoordinatesProvider events={publishedTypebot?.events}>
+          <EventsCoordinatesProvider events={publishedSniper?.events}>
             <Graph
               flex="1"
-              typebot={publishedTypebot}
+              sniper={publishedSniper}
               onUnlockProPlanClick={onOpen}
               totalAnswers={data?.totalAnswers}
               totalVisitedEdges={totalVisitedEdges}

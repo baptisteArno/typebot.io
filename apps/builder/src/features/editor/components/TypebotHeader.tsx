@@ -21,26 +21,26 @@ import {
 } from '@/components/icons'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { isDefined, isNotDefined } from '@typebot.io/lib'
-import { EditableTypebotName } from './EditableTypebotName'
+import { isDefined, isNotDefined } from '@sniper.io/lib'
+import { EditableSniperName } from './EditableSniperName'
 import Link from 'next/link'
 import { EditableEmojiOrImageIcon } from '@/components/EditableEmojiOrImageIcon'
 import { useDebouncedCallback } from 'use-debounce'
-import { ShareTypebotButton } from '@/features/share/components/ShareTypebotButton'
+import { ShareSniperButton } from '@/features/share/components/ShareSniperButton'
 import { PublishButton } from '@/features/publish/components/PublishButton'
 import { headerHeight } from '../constants'
 import { RightPanel, useEditor } from '../providers/EditorProvider'
-import { useTypebot } from '../providers/TypebotProvider'
+import { useSniper } from '../providers/SniperProvider'
 import { SupportBubble } from '@/components/SupportBubble'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { useTranslate } from '@tolgee/react'
-import { GuestTypebotHeader } from './UnauthenticatedTypebotHeader'
+import { GuestSniperHeader } from './UnauthenticatedSniperHeader'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { Plan } from '@typebot.io/prisma'
+import { Plan } from '@sniper.io/prisma'
 
-export const TypebotHeader = () => {
-  const { typebot, publishedTypebot, currentUserMode } = useTypebot()
+export const SniperHeader = () => {
+  const { sniper, publishedSniper, currentUserMode } = useSniper()
   const { workspace } = useWorkspace()
 
   const { isOpen, onOpen } = useDisclosure()
@@ -49,10 +49,10 @@ export const TypebotHeader = () => {
   const handleHelpClick = () => {
     isCloudProdInstance() && workspace?.plan && workspace.plan !== Plan.FREE
       ? onOpen()
-      : window.open('https://docs.typebot.io/guides/how-to-get-help', '_blank')
+      : window.open('https://docs.sniper.io/guides/how-to-get-help', '_blank')
   }
 
-  if (currentUserMode === 'guest') return <GuestTypebotHeader />
+  if (currentUserMode === 'guest') return <GuestSniperHeader />
   return (
     <Flex
       w="full"
@@ -67,17 +67,17 @@ export const TypebotHeader = () => {
     >
       {isOpen && <SupportBubble autoShowDelay={0} />}
       <LeftElements pos="absolute" left="1rem" onHelpClick={handleHelpClick} />
-      <TypebotNav
+      <SniperNav
         display={{ base: 'none', xl: 'flex' }}
         pos={{ base: 'absolute' }}
-        typebotId={typebot?.id}
-        isResultsDisplayed={isDefined(publishedTypebot)}
+        sniperId={sniper?.id}
+        isResultsDisplayed={isDefined(publishedSniper)}
       />
       <RightElements
         right="40px"
         pos="absolute"
         display={['none', 'flex']}
-        isResultsDisplayed={isDefined(publishedTypebot)}
+        isResultsDisplayed={isDefined(publishedSniper)}
       />
     </Flex>
   )
@@ -90,15 +90,15 @@ const LeftElements = ({
   const { t } = useTranslate()
   const router = useRouter()
   const {
-    typebot,
-    updateTypebot,
+    sniper,
+    updateSniper,
     canUndo,
     canRedo,
     undo,
     redo,
     currentUserMode,
     isSavingLoading,
-  } = useTypebot()
+  } = useSniper()
 
   const [isRedoShortcutTooltipOpen, setRedoShortcutTooltipOpen] =
     useState(false)
@@ -114,11 +114,9 @@ const LeftElements = ({
     setRedoShortcutTooltipOpen(false)
   }, 1000)
 
-  const handleNameSubmit = (name: string) =>
-    updateTypebot({ updates: { name } })
+  const handleNameSubmit = (name: string) => updateSniper({ updates: { name } })
 
-  const handleChangeIcon = (icon: string) =>
-    updateTypebot({ updates: { icon } })
+  const handleChangeIcon = (icon: string) => updateSniper({ updates: { icon } })
 
   useKeyboardShortcuts({
     undo: () => {
@@ -146,16 +144,16 @@ const LeftElements = ({
           icon={<ChevronLeftIcon fontSize={25} />}
           href={{
             pathname: router.query.parentId
-              ? '/typebots/[typebotId]/edit'
-              : typebot?.folderId
-              ? '/typebots/folders/[id]'
-              : '/typebots',
+              ? '/snipers/[sniperId]/edit'
+              : sniper?.folderId
+              ? '/snipers/folders/[id]'
+              : '/snipers',
             query: {
-              id: typebot?.folderId ?? [],
+              id: sniper?.folderId ?? [],
               parentId: Array.isArray(router.query.parentId)
                 ? router.query.parentId.slice(0, -1)
                 : [],
-              typebotId: Array.isArray(router.query.parentId)
+              sniperId: Array.isArray(router.query.parentId)
                 ? [...router.query.parentId].pop()
                 : router.query.parentId ?? [],
             },
@@ -163,21 +161,21 @@ const LeftElements = ({
           size="sm"
         />
         <HStack spacing={1}>
-          {typebot && (
+          {sniper && (
             <EditableEmojiOrImageIcon
               uploadFileProps={{
-                workspaceId: typebot.workspaceId,
-                typebotId: typebot.id,
+                workspaceId: sniper.workspaceId,
+                sniperId: sniper.id,
                 fileName: 'icon',
               }}
-              icon={typebot?.icon}
+              icon={sniper?.icon}
               onChangeIcon={handleChangeIcon}
             />
           )}
           (
-          <EditableTypebotName
-            key={`typebot-name-${typebot?.name ?? ''}`}
-            defaultName={typebot?.name ?? ''}
+          <EditableSniperName
+            key={`sniper-name-${sniper?.name ?? ''}`}
+            defaultName={sniper?.name ?? ''}
             onNewName={handleNameSubmit}
           />
           )
@@ -254,7 +252,7 @@ const RightElements = ({
 }: StackProps & { isResultsDisplayed: boolean }) => {
   const router = useRouter()
   const { t } = useTranslate()
-  const { typebot, currentUserMode, save, isSavingLoading } = useTypebot()
+  const { sniper, currentUserMode, save, isSavingLoading } = useSniper()
   const {
     setRightPanel,
     rightPanel,
@@ -271,20 +269,20 @@ const RightElements = ({
 
   return (
     <HStack {...props}>
-      <TypebotNav
+      <SniperNav
         display={{ base: 'none', md: 'flex', xl: 'none' }}
-        typebotId={typebot?.id}
+        sniperId={sniper?.id}
         isResultsDisplayed={isResultsDisplayed}
       />
       <Flex pos="relative">
-        <ShareTypebotButton isLoading={isNotDefined(typebot)} />
+        <ShareSniperButton isLoading={isNotDefined(sniper)} />
       </Flex>
       {router.pathname.includes('/edit') &&
         rightPanel !== RightPanel.PREVIEW && (
           <Button
             colorScheme="gray"
             onClick={handlePreviewClick}
-            isLoading={isNotDefined(typebot) || isSavingLoading}
+            isLoading={isNotDefined(sniper) || isSavingLoading}
             leftIcon={<PlayIcon />}
             size="sm"
             iconSpacing={{ base: 0, xl: 2 }}
@@ -297,9 +295,9 @@ const RightElements = ({
       {currentUserMode === 'guest' && (
         <Button
           as={Link}
-          href={`/typebots/${typebot?.id}/duplicate`}
+          href={`/snipers/${sniper?.id}/duplicate`}
           leftIcon={<CopyIcon />}
-          isLoading={isNotDefined(typebot)}
+          isLoading={isNotDefined(sniper)}
           size="sm"
         >
           Duplicate
@@ -310,12 +308,12 @@ const RightElements = ({
   )
 }
 
-const TypebotNav = ({
-  typebotId,
+const SniperNav = ({
+  sniperId,
   isResultsDisplayed,
   ...stackProps
 }: {
-  typebotId?: string
+  sniperId?: string
   isResultsDisplayed: boolean
 } & StackProps) => {
   const { t } = useTranslate()
@@ -325,7 +323,7 @@ const TypebotNav = ({
     <HStack {...stackProps}>
       <Button
         as={Link}
-        href={`/typebots/${typebotId}/edit`}
+        href={`/snipers/${sniperId}/edit`}
         colorScheme={router.pathname.includes('/edit') ? 'blue' : 'gray'}
         variant={router.pathname.includes('/edit') ? 'outline' : 'ghost'}
         size="sm"
@@ -334,7 +332,7 @@ const TypebotNav = ({
       </Button>
       <Button
         as={Link}
-        href={`/typebots/${typebotId}/theme`}
+        href={`/snipers/${sniperId}/theme`}
         colorScheme={router.pathname.endsWith('theme') ? 'blue' : 'gray'}
         variant={router.pathname.endsWith('theme') ? 'outline' : 'ghost'}
         size="sm"
@@ -343,7 +341,7 @@ const TypebotNav = ({
       </Button>
       <Button
         as={Link}
-        href={`/typebots/${typebotId}/settings`}
+        href={`/snipers/${sniperId}/settings`}
         colorScheme={router.pathname.endsWith('settings') ? 'blue' : 'gray'}
         variant={router.pathname.endsWith('settings') ? 'outline' : 'ghost'}
         size="sm"
@@ -352,7 +350,7 @@ const TypebotNav = ({
       </Button>
       <Button
         as={Link}
-        href={`/typebots/${typebotId}/share`}
+        href={`/snipers/${sniperId}/share`}
         colorScheme={router.pathname.endsWith('share') ? 'blue' : 'gray'}
         variant={router.pathname.endsWith('share') ? 'outline' : 'ghost'}
         size="sm"
@@ -362,7 +360,7 @@ const TypebotNav = ({
       {isResultsDisplayed && (
         <Button
           as={Link}
-          href={`/typebots/${typebotId}/results`}
+          href={`/snipers/${sniperId}/results`}
           colorScheme={router.pathname.includes('results') ? 'blue' : 'gray'}
           variant={router.pathname.includes('results') ? 'outline' : 'ghost'}
           size="sm"

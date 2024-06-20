@@ -1,8 +1,8 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Plan, WorkspaceRole } from '@typebot.io/prisma'
-import { TypebotV6, typebotV6Schema } from '@typebot.io/schemas'
+import { Plan, WorkspaceRole } from '@sniper.io/prisma'
+import { SniperV6, sniperV6Schema } from '@sniper.io/schemas'
 import { z } from 'zod'
 import { getUserRoleInWorkspace } from '@/features/workspace/helpers/getUserRoleInWorkspace'
 import {
@@ -13,10 +13,10 @@ import {
   sanitizeVariables,
 } from '../helpers/sanitizers'
 import { createId } from '@paralleldrive/cuid2'
-import { EventType } from '@typebot.io/schemas/features/events/constants'
-import { trackEvents } from '@typebot.io/telemetry/trackEvents'
+import { EventType } from '@sniper.io/schemas/features/events/constants'
+import { trackEvents } from '@sniper.io/telemetry/trackEvents'
 
-const typebotCreateSchemaPick = {
+const sniperCreateSchemaPick = {
   name: true,
   icon: true,
   selectedThemeTemplateId: true,
@@ -32,28 +32,28 @@ const typebotCreateSchemaPick = {
   customDomain: true,
 } as const
 
-export const createTypebot = authenticatedProcedure
+export const createSniper = authenticatedProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/v1/typebots',
+      path: '/v1/snipers',
       protect: true,
-      summary: 'Create a typebot',
-      tags: ['Typebot'],
+      summary: 'Create a sniper',
+      tags: ['Sniper'],
     },
   })
   .input(
     z.object({
       workspaceId: z.string(),
-      typebot: typebotV6Schema.pick(typebotCreateSchemaPick).partial(),
+      sniper: sniperV6Schema.pick(sniperCreateSchemaPick).partial(),
     })
   )
   .output(
     z.object({
-      typebot: typebotV6Schema,
+      sniper: sniperV6Schema,
     })
   )
-  .mutation(async ({ input: { typebot, workspaceId }, ctx: { user } }) => {
+  .mutation(async ({ input: { sniper, workspaceId }, ctx: { user } }) => {
     const workspace = await prisma.workspace.findUnique({
       where: { id: workspaceId },
       select: { id: true, members: true, plan: true },
@@ -67,9 +67,9 @@ export const createTypebot = authenticatedProcedure
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Workspace not found' })
 
     if (
-      typebot.customDomain &&
+      sniper.customDomain &&
       (await isCustomDomainNotAvailable({
-        customDomain: typebot.customDomain,
+        customDomain: sniper.customDomain,
         workspaceId,
       }))
     )
@@ -78,71 +78,71 @@ export const createTypebot = authenticatedProcedure
         message: 'Custom domain not available',
       })
 
-    if (typebot.publicId && (await isPublicIdNotAvailable(typebot.publicId)))
+    if (sniper.publicId && (await isPublicIdNotAvailable(sniper.publicId)))
       throw new TRPCError({
         code: 'BAD_REQUEST',
         message: 'Public id not available',
       })
 
-    if (typebot.folderId) {
+    if (sniper.folderId) {
       const existingFolder = await prisma.dashboardFolder.findUnique({
         where: {
-          id: typebot.folderId,
+          id: sniper.folderId,
         },
       })
-      if (!existingFolder) typebot.folderId = null
+      if (!existingFolder) sniper.folderId = null
     }
 
     const groups = (
-      typebot.groups ? await sanitizeGroups(workspaceId)(typebot.groups) : []
-    ) as TypebotV6['groups']
-    const newTypebot = await prisma.typebot.create({
+      sniper.groups ? await sanitizeGroups(workspaceId)(sniper.groups) : []
+    ) as SniperV6['groups']
+    const newSniper = await prisma.sniper.create({
       data: {
         version: '6',
         workspaceId,
-        name: typebot.name ?? 'My typebot',
-        icon: typebot.icon,
-        selectedThemeTemplateId: typebot.selectedThemeTemplateId,
+        name: sniper.name ?? 'My sniper',
+        icon: sniper.icon,
+        selectedThemeTemplateId: sniper.selectedThemeTemplateId,
         groups,
-        events: typebot.events ?? [
+        events: sniper.events ?? [
           {
             type: EventType.START,
             graphCoordinates: { x: 0, y: 0 },
             id: createId(),
           },
         ],
-        theme: typebot.theme ? typebot.theme : {},
-        settings: typebot.settings
-          ? sanitizeSettings(typebot.settings, workspace.plan, 'create')
+        theme: sniper.theme ? sniper.theme : {},
+        settings: sniper.settings
+          ? sanitizeSettings(sniper.settings, workspace.plan, 'create')
           : workspace.plan === Plan.FREE
           ? {
               general: { isBrandingEnabled: true },
             }
           : {},
-        folderId: typebot.folderId,
-        variables: typebot.variables
-          ? sanitizeVariables({ variables: typebot.variables, groups })
+        folderId: sniper.folderId,
+        variables: sniper.variables
+          ? sanitizeVariables({ variables: sniper.variables, groups })
           : [],
-        edges: typebot.edges ?? [],
-        resultsTablePreferences: typebot.resultsTablePreferences ?? undefined,
-        publicId: typebot.publicId ?? undefined,
-        customDomain: typebot.customDomain ?? undefined,
-      } satisfies Partial<TypebotV6>,
+        edges: sniper.edges ?? [],
+        resultsTablePreferences: sniper.resultsTablePreferences ?? undefined,
+        publicId: sniper.publicId ?? undefined,
+        customDomain: sniper.customDomain ?? undefined,
+      } satisfies Partial<SniperV6>,
     })
 
-    const parsedNewTypebot = typebotV6Schema.parse(newTypebot)
+    const parsedNewSniper = sniperV6Schema.parse(newSniper)
 
     await trackEvents([
       {
-        name: 'Typebot created',
-        workspaceId: parsedNewTypebot.workspaceId,
-        typebotId: parsedNewTypebot.id,
+        name: 'Sniper created',
+        workspaceId: parsedNewSniper.workspaceId,
+        sniperId: parsedNewSniper.id,
         userId: user.id,
         data: {
-          name: newTypebot.name,
+          name: newSniper.name,
         },
       },
     ])
 
-    return { typebot: parsedNewTypebot }
+    return { sniper: parsedNewSniper }
   })

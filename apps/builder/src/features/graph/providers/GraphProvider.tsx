@@ -1,5 +1,5 @@
 import { Coordinates } from '@dnd-kit/utilities'
-import { Edge } from '@typebot.io/schemas'
+import { Edge } from '@sniper.io/schemas'
 import {
   createContext,
   Dispatch,

@@ -1,5 +1,5 @@
-import { SessionState } from '@typebot.io/schemas'
-import { OpenAIBlock } from '@typebot.io/schemas/features/blocks/integrations/openai'
+import { SessionState } from '@sniper.io/schemas'
+import { OpenAIBlock } from '@sniper.io/schemas/features/blocks/integrations/openai'
 import { createChatCompletionOpenAI } from './createChatCompletionOpenAI'
 import { ExecuteIntegrationResponse } from '../../../../types'
 import { createSpeechOpenAI } from './audio/createSpeechOpenAI'

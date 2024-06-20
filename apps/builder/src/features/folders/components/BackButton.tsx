@@ -1,18 +1,18 @@
 import { Button } from '@chakra-ui/react'
 import { ChevronLeftIcon } from '@/components/icons'
-import { useTypebotDnd } from '../TypebotDndProvider'
+import { useSniperDnd } from '../SniperDndProvider'
 import Link from 'next/link'
 import React, { useMemo } from 'react'
 import { useTranslate } from '@tolgee/react'
 
 export const BackButton = ({ id }: { id: string | null }) => {
   const { t } = useTranslate()
-  const { draggedTypebot, setMouseOverFolderId, mouseOverFolderId } =
-    useTypebotDnd()
+  const { draggedSniper, setMouseOverFolderId, mouseOverFolderId } =
+    useSniperDnd()
 
-  const isTypebotOver = useMemo(
-    () => draggedTypebot && mouseOverFolderId === id,
-    [draggedTypebot, id, mouseOverFolderId]
+  const isSniperOver = useMemo(
+    () => draggedSniper && mouseOverFolderId === id,
+    [draggedSniper, id, mouseOverFolderId]
   )
 
   const handleMouseEnter = () => setMouseOverFolderId(id)
@@ -20,11 +20,11 @@ export const BackButton = ({ id }: { id: string | null }) => {
   return (
     <Button
       as={Link}
-      href={id ? `/typebots/folders/${id}` : '/typebots'}
+      href={id ? `/snipers/folders/${id}` : '/snipers'}
       leftIcon={<ChevronLeftIcon />}
       variant={'outline'}
-      colorScheme={isTypebotOver || draggedTypebot ? 'blue' : 'gray'}
-      borderWidth={isTypebotOver ? '2px' : '1px'}
+      colorScheme={isSniperOver || draggedSniper ? 'blue' : 'gray'}
+      borderWidth={isSniperOver ? '2px' : '1px'}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

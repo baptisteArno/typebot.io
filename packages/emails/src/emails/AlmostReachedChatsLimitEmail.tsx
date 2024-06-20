@@ -2,10 +2,10 @@ import React, { ComponentProps } from 'react'
 import { Mjml, MjmlBody, MjmlSection, MjmlColumn } from '@faire/mjml-react'
 import { render } from '@faire/mjml-react/utils/render'
 import { Head, HeroImage, Text } from '../components'
-import { parseNumberWithCommas } from '@typebot.io/lib'
+import { parseNumberWithCommas } from '@sniper.io/lib'
 import { SendMailOptions } from 'nodemailer'
 import { sendEmail } from '../sendEmail'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 type AlmostReachedChatsLimitEmailProps = {
   workspaceName: string
@@ -53,9 +53,8 @@ export const AlmostReachedChatsLimitEmail = ({
               settings.
             </Text>
             <Text>
-              Check out the{' '}
-              <a href="https://typebot.io/pricing">pricing page</a> for
-              information about the pay as you go tiers.
+              Check out the <a href="https://sniper.io/pricing">pricing page</a>{' '}
+              for information about the pay as you go tiers.
             </Text>
             <Text>
               As a reminder, your billing cycle ends on {readableResetDate}.

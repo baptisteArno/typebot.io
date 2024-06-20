@@ -1,9 +1,9 @@
-import { omit } from '@typebot.io/lib'
-import { Typebot } from '@typebot.io/schemas'
+import { omit } from '@sniper.io/lib'
+import { Sniper } from '@sniper.io/schemas'
 import { dequal } from 'dequal'
 
-export const areTypebotsEqual = (typebotA: Typebot, typebotB: Typebot) =>
+export const areSnipersEqual = (sniperA: Sniper, sniperB: Sniper) =>
   dequal(
-    JSON.parse(JSON.stringify(omit(typebotA, 'updatedAt'))),
-    JSON.parse(JSON.stringify(omit(typebotB, 'updatedAt')))
+    JSON.parse(JSON.stringify(omit(sniperA, 'updatedAt'))),
+    JSON.parse(JSON.stringify(omit(sniperB, 'updatedAt')))
   )

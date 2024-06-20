@@ -30,14 +30,14 @@ export const LiteBadge = () => {
   return (
     <a
       ref={liteBadge}
-      href={'https://www.typebot.io/?utm_source=litebadge'}
+      href={'https://www.sniper.io/?utm_source=litebadge'}
       target="_blank"
       rel="noopener noreferrer"
       className="fixed py-1 px-2 bg-white z-50 rounded shadow-md lite-badge"
       style={{ bottom: '20px' }}
       id="lite-badge"
     >
-      Made with <span className="text-blue-500">Typebot</span>.
+      Made with <span className="text-blue-500">Sniper</span>.
     </a>
   )
 }

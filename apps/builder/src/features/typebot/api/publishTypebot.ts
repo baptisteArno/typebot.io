@@ -1,4 +1,4 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import {
@@ -8,32 +8,32 @@ import {
   variableSchema,
   parseGroups,
   startEventSchema,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import { z } from 'zod'
-import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
-import { Plan } from '@typebot.io/prisma'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { computeRiskLevel } from '@typebot.io/radar'
-import { env } from '@typebot.io/env'
-import { trackEvents } from '@typebot.io/telemetry/trackEvents'
-import { parseTypebotPublishEvents } from '@/features/telemetry/helpers/parseTypebotPublishEvents'
+import { isWriteSniperForbidden } from '../helpers/isWriteSniperForbidden'
+import { Plan } from '@sniper.io/prisma'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { computeRiskLevel } from '@sniper.io/radar'
+import { env } from '@sniper.io/env'
+import { trackEvents } from '@sniper.io/telemetry/trackEvents'
+import { parseSniperPublishEvents } from '@/features/telemetry/helpers/parseSniperPublishEvents'
 
-export const publishTypebot = authenticatedProcedure
+export const publishSniper = authenticatedProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/v1/typebots/{typebotId}/publish',
+      path: '/v1/snipers/{sniperId}/publish',
       protect: true,
-      summary: 'Publish a typebot',
-      tags: ['Typebot'],
+      summary: 'Publish a sniper',
+      tags: ['Sniper'],
     },
   })
   .input(
     z.object({
-      typebotId: z
+      sniperId: z
         .string()
         .describe(
-          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+          "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)"
         ),
     })
   )
@@ -42,14 +42,14 @@ export const publishTypebot = authenticatedProcedure
       message: z.literal('success'),
     })
   )
-  .mutation(async ({ input: { typebotId }, ctx: { user } }) => {
-    const existingTypebot = await prisma.typebot.findFirst({
+  .mutation(async ({ input: { sniperId }, ctx: { user } }) => {
+    const existingSniper = await prisma.sniper.findFirst({
       where: {
-        id: typebotId,
+        id: sniperId,
       },
       include: {
         collaborators: true,
-        publishedTypebot: true,
+        publishedSniper: true,
         workspace: {
           select: {
             plan: true,
@@ -67,132 +67,132 @@ export const publishTypebot = authenticatedProcedure
       },
     })
     if (
-      !existingTypebot?.id ||
-      (await isWriteTypebotForbidden(existingTypebot, user))
+      !existingSniper?.id ||
+      (await isWriteSniperForbidden(existingSniper, user))
     )
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Sniper not found' })
 
-    const hasFileUploadBlocks = parseGroups(existingTypebot.groups, {
-      typebotVersion: existingTypebot.version,
+    const hasFileUploadBlocks = parseGroups(existingSniper.groups, {
+      sniperVersion: existingSniper.version,
     }).some((group) =>
       group.blocks.some((block) => block.type === InputBlockType.FILE)
     )
 
-    if (hasFileUploadBlocks && existingTypebot.workspace.plan === Plan.FREE)
+    if (hasFileUploadBlocks && existingSniper.workspace.plan === Plan.FREE)
       throw new TRPCError({
         code: 'BAD_REQUEST',
         message: "File upload blocks can't be published on the free plan",
       })
 
-    const typebotWasVerified =
-      existingTypebot.riskLevel === -1 || existingTypebot.workspace.isVerified
+    const sniperWasVerified =
+      existingSniper.riskLevel === -1 || existingSniper.workspace.isVerified
 
     if (
-      !typebotWasVerified &&
-      existingTypebot.riskLevel &&
-      existingTypebot.riskLevel > 80
+      !sniperWasVerified &&
+      existingSniper.riskLevel &&
+      existingSniper.riskLevel > 80
     )
       throw new TRPCError({
         code: 'FORBIDDEN',
         message:
-          'Radar detected a potential malicious typebot. This bot is being manually reviewed by Fraud Prevention team.',
+          'Radar detected a potential malicious sniper. This bot is being manually reviewed by Fraud Prevention team.',
       })
 
-    const riskLevel = typebotWasVerified
+    const riskLevel = sniperWasVerified
       ? 0
-      : computeRiskLevel(existingTypebot, {
+      : computeRiskLevel(existingSniper, {
           debug: env.NODE_ENV === 'development',
         })
 
-    if (riskLevel > 0 && riskLevel !== existingTypebot.riskLevel) {
+    if (riskLevel > 0 && riskLevel !== existingSniper.riskLevel) {
       if (env.MESSAGE_WEBHOOK_URL && riskLevel !== 100 && riskLevel > 60)
         await fetch(env.MESSAGE_WEBHOOK_URL, {
           method: 'POST',
-          body: `⚠️ Suspicious typebot to be reviewed: ${existingTypebot.name} (${env.NEXTAUTH_URL}/typebots/${existingTypebot.id}/edit) (workspace: ${existingTypebot.workspaceId})`,
+          body: `⚠️ Suspicious sniper to be reviewed: ${existingSniper.name} (${env.NEXTAUTH_URL}/snipers/${existingSniper.id}/edit) (workspace: ${existingSniper.workspaceId})`,
         }).catch((err) => {
           console.error('Failed to send message', err)
         })
 
-      await prisma.typebot.updateMany({
+      await prisma.sniper.updateMany({
         where: {
-          id: existingTypebot.id,
+          id: existingSniper.id,
         },
         data: {
           riskLevel,
         },
       })
       if (riskLevel > 80) {
-        if (existingTypebot.publishedTypebot)
-          await prisma.publicTypebot.deleteMany({
+        if (existingSniper.publishedSniper)
+          await prisma.publicSniper.deleteMany({
             where: {
-              id: existingTypebot.publishedTypebot.id,
+              id: existingSniper.publishedSniper.id,
             },
           })
         throw new TRPCError({
           code: 'FORBIDDEN',
           message:
-            'Radar detected a potential malicious typebot. This bot is being manually reviewed by Fraud Prevention team.',
+            'Radar detected a potential malicious sniper. This bot is being manually reviewed by Fraud Prevention team.',
         })
       }
     }
 
-    const publishEvents = await parseTypebotPublishEvents({
-      existingTypebot,
+    const publishEvents = await parseSniperPublishEvents({
+      existingSniper,
       userId: user.id,
       hasFileUploadBlocks,
     })
 
-    if (existingTypebot.publishedTypebot)
-      await prisma.publicTypebot.updateMany({
+    if (existingSniper.publishedSniper)
+      await prisma.publicSniper.updateMany({
         where: {
-          id: existingTypebot.publishedTypebot.id,
+          id: existingSniper.publishedSniper.id,
         },
         data: {
-          version: existingTypebot.version,
-          edges: z.array(edgeSchema).parse(existingTypebot.edges),
-          groups: parseGroups(existingTypebot.groups, {
-            typebotVersion: existingTypebot.version,
+          version: existingSniper.version,
+          edges: z.array(edgeSchema).parse(existingSniper.edges),
+          groups: parseGroups(existingSniper.groups, {
+            sniperVersion: existingSniper.version,
           }),
           events:
-            (existingTypebot.version === '6'
+            (existingSniper.version === '6'
               ? z.tuple([startEventSchema])
               : z.null()
-            ).parse(existingTypebot.events) ?? undefined,
-          settings: settingsSchema.parse(existingTypebot.settings),
-          variables: z.array(variableSchema).parse(existingTypebot.variables),
-          theme: themeSchema.parse(existingTypebot.theme),
+            ).parse(existingSniper.events) ?? undefined,
+          settings: settingsSchema.parse(existingSniper.settings),
+          variables: z.array(variableSchema).parse(existingSniper.variables),
+          theme: themeSchema.parse(existingSniper.theme),
         },
       })
     else
-      await prisma.publicTypebot.createMany({
+      await prisma.publicSniper.createMany({
         data: {
-          version: existingTypebot.version,
-          typebotId: existingTypebot.id,
-          edges: z.array(edgeSchema).parse(existingTypebot.edges),
-          groups: parseGroups(existingTypebot.groups, {
-            typebotVersion: existingTypebot.version,
+          version: existingSniper.version,
+          sniperId: existingSniper.id,
+          edges: z.array(edgeSchema).parse(existingSniper.edges),
+          groups: parseGroups(existingSniper.groups, {
+            sniperVersion: existingSniper.version,
           }),
           events:
-            (existingTypebot.version === '6'
+            (existingSniper.version === '6'
               ? z.tuple([startEventSchema])
               : z.null()
-            ).parse(existingTypebot.events) ?? undefined,
-          settings: settingsSchema.parse(existingTypebot.settings),
-          variables: z.array(variableSchema).parse(existingTypebot.variables),
-          theme: themeSchema.parse(existingTypebot.theme),
+            ).parse(existingSniper.events) ?? undefined,
+          settings: settingsSchema.parse(existingSniper.settings),
+          variables: z.array(variableSchema).parse(existingSniper.variables),
+          theme: themeSchema.parse(existingSniper.theme),
         },
       })
 
     await trackEvents([
       ...publishEvents,
       {
-        name: 'Typebot published',
-        workspaceId: existingTypebot.workspaceId,
-        typebotId: existingTypebot.id,
+        name: 'Sniper published',
+        workspaceId: existingSniper.workspaceId,
+        sniperId: existingSniper.id,
         userId: user.id,
         data: {
-          name: existingTypebot.name,
-          isFirstPublish: existingTypebot.publishedTypebot ? undefined : true,
+          name: existingSniper.name,
+          isFirstPublish: existingSniper.publishedSniper ? undefined : true,
         },
       },
     ])

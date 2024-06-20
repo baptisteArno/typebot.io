@@ -18,7 +18,7 @@ export const initBubble = (params: BubbleParams): BubbleActions => {
     window.addEventListener('load', () => initBubble(params))
     return { close: () => {}, open: () => {} }
   }
-  const existingBubble = document.getElementById('typebot-bubble') as
+  const existingBubble = document.getElementById('sniper-bubble') as
     | HTMLDivElement
     | undefined
   if (existingBubble) existingBubble.remove()
@@ -44,7 +44,7 @@ const createBubble = (
   proactiveMessageElement?: HTMLDivElement
 } => {
   const bubbleElement = document.createElement('div')
-  bubbleElement.id = 'typebot-bubble'
+  bubbleElement.id = 'sniper-bubble'
   const buttonElement = createButton(params.button)
   bubbleElement.appendChild(buttonElement)
   const proactiveMessageElement =
@@ -79,11 +79,11 @@ export const getBubbleActions = (
 ): BubbleActions => {
   const existingBubbleElement =
     bubbleElement ??
-    (document.querySelector('#typebot-bubble') as HTMLDivElement | undefined)
+    (document.querySelector('#sniper-bubble') as HTMLDivElement | undefined)
   if (!existingBubbleElement) return { close: () => {}, open: () => {} }
   const existingProactiveMessage =
     proactiveMessageElement ??
-    document.querySelector('#typebot-bubble .proactive-message')
+    document.querySelector('#sniper-bubble .proactive-message')
   return {
     openProactiveMessage: existingProactiveMessage
       ? () => {

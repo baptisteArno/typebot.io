@@ -1,4 +1,4 @@
-import { isEmpty } from '@typebot.io/lib'
+import { isEmpty } from '@sniper.io/lib'
 import { Show } from 'solid-js'
 
 export type PlateTextProps = {

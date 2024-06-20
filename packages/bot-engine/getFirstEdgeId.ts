@@ -1,15 +1,15 @@
 import { TRPCError } from '@trpc/server'
-import { TypebotInSession } from '@typebot.io/schemas'
+import { SniperInSession } from '@sniper.io/schemas'
 
 export const getFirstEdgeId = ({
-  typebot,
+  sniper,
   startEventId,
 }: {
-  typebot: Pick<TypebotInSession, 'events' | 'groups' | 'version'>
+  sniper: Pick<SniperInSession, 'events' | 'groups' | 'version'>
   startEventId: string | undefined
 }) => {
   if (startEventId) {
-    const event = typebot.events?.find((e) => e.id === startEventId)
+    const event = sniper.events?.find((e) => e.id === startEventId)
     if (!event)
       throw new TRPCError({
         code: 'BAD_REQUEST',
@@ -17,6 +17,6 @@ export const getFirstEdgeId = ({
       })
     return event.outgoingEdgeId
   }
-  if (typebot.version === '6') return typebot.events?.[0].outgoingEdgeId
-  return typebot.groups.at(0)?.blocks.at(0)?.outgoingEdgeId
+  if (sniper.version === '6') return sniper.events?.[0].outgoingEdgeId
+  return sniper.groups.at(0)?.blocks.at(0)?.outgoingEdgeId
 }

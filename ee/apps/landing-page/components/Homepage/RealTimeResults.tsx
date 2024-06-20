@@ -1,26 +1,24 @@
 import { Flex, Stack, Heading, Text, Button, VStack } from '@chakra-ui/react'
-import { Standard } from '@typebot.io/nextjs'
+import { Standard } from '@sniper.io/nextjs'
 import { ArrowRight } from 'assets/icons/ArrowRight'
 import { HandDrawnArrow } from 'assets/illustrations/HandDrawnArrow'
-import { PublicTypebot, Typebot } from '@typebot.io/schemas'
+import { PublicSniper, Sniper } from '@sniper.io/schemas'
 import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
-import { sendRequest } from '@typebot.io/lib'
+import { sendRequest } from '@sniper.io/lib'
 
 const nameBlockId = 'shuUtMDMw9P4iAHbz7B5SqJ'
 const messageBlockId = 'sqvXpT1YXE3Htp6BCPvVGv3'
 
 export const RealTimeResults = () => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
-  const [typebot, setTypebot] = useState<PublicTypebot>()
+  const [sniper, setSniper] = useState<PublicSniper>()
 
   const fetchTemplate = async () => {
-    const { data, error } = await sendRequest(
-      `/typebots/realtime-airtable.json`
-    )
+    const { data, error } = await sendRequest(`/snipers/realtime-airtable.json`)
     if (error) return
-    const typebot = data as Typebot
-    setTypebot({ ...typebot, typebotId: typebot.id } as PublicTypebot)
+    const sniper = data as Sniper
+    setSniper({ ...sniper, sniperId: sniper.id } as PublicSniper)
   }
 
   useEffect(() => {
@@ -71,7 +69,7 @@ export const RealTimeResults = () => {
             <Button
               as={Link}
               rightIcon={<ArrowRight />}
-              href={`https://app.typebot.io/register`}
+              href={`https://app.sniper.io/register`}
               variant="ghost"
               colorScheme="blue"
               data-aos="fade"
@@ -88,9 +86,9 @@ export const RealTimeResults = () => {
           pos="relative"
           data-aos="fade"
         >
-          {typebot && (
+          {sniper && (
             <Standard
-              typebot="airtable-real-time"
+              sniper="airtable-real-time"
               onAnswer={handleAnswer}
               style={{
                 borderRadius: '0.375rem',

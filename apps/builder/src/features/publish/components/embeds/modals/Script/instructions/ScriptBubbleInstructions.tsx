@@ -1,31 +1,31 @@
 import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { Stack, Text } from '@chakra-ui/react'
-import { BubbleProps } from '@typebot.io/nextjs'
+import { BubbleProps } from '@sniper.io/nextjs'
 import { useState } from 'react'
 import { BubbleSettings } from '../../../settings/BubbleSettings/BubbleSettings'
 import {
   parseInlineScript,
   parseInitBubbleCode,
-  typebotImportCode,
+  sniperImportCode,
   parseApiHostValue,
 } from '../../../snippetParsers'
 import { parseDefaultBubbleTheme } from '../../Javascript/instructions/JavascriptBubbleInstructions'
 
 export const ScriptBubbleInstructions = () => {
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
   const [theme, setTheme] = useState<BubbleProps['theme']>(
-    parseDefaultBubbleTheme(typebot)
+    parseDefaultBubbleTheme(sniper)
   )
   const [previewMessage, setPreviewMessage] =
     useState<BubbleProps['previewMessage']>()
 
   const scriptSnippet = parseInlineScript(
-    `${typebotImportCode}
+    `${sniperImportCode}
 
 ${parseInitBubbleCode({
-  typebot: typebot?.publicId ?? '',
-  apiHost: parseApiHostValue(typebot?.customDomain),
+  sniper: sniper?.publicId ?? '',
+  apiHost: parseApiHostValue(sniper?.customDomain),
   theme,
   previewMessage,
 })}`
@@ -36,11 +36,11 @@ ${parseInitBubbleCode({
       <BubbleSettings
         theme={theme}
         previewMessage={previewMessage}
-        defaultPreviewMessageAvatar={typebot?.theme.chat?.hostAvatar?.url ?? ''}
+        defaultPreviewMessageAvatar={sniper?.theme.chat?.hostAvatar?.url ?? ''}
         onThemeChange={setTheme}
         onPreviewMessageChange={setPreviewMessage}
       />
-      <Text>Run this script to initialize the typebot:</Text>
+      <Text>Run this script to initialize the sniper:</Text>
       <CodeEditor isReadOnly value={scriptSnippet} lang="javascript" />
     </Stack>
   )

@@ -1,15 +1,15 @@
 <br />
 <p align="center">
-  <a href="https://typebot.io/#gh-light-mode-only" target="_blank">
-    <img src="../.github/images/logo-light.png" alt="Typebot illustration" width="350px">
+  <a href="https://sniper.io/#gh-light-mode-only" target="_blank">
+    <img src="../.github/images/logo-light.png" alt="Sniper illustration" width="350px">
   </a>
-  <a href="https://typebot.io/#gh-dark-mode-only" target="_blank">
-    <img src="../.github/images/logo-dark.png" alt="Typebot illustration" width="350px">
+  <a href="https://sniper.io/#gh-dark-mode-only" target="_blank">
+    <img src="../.github/images/logo-dark.png" alt="Sniper illustration" width="350px">
   </a>
 </p>
 <br />
 
-<a align="center" href="https://typebot.io/enterprise-lead-form">
+<a align="center" href="https://sniper.io/enterprise-lead-form">
 Get a license key
 </a>
 
@@ -21,7 +21,7 @@ This folder contains all the code associated to the landing page and billing fea
 
 This Enterprise edition exists mainly to prevent people to simply fork the project and re-sell it without providing any modifications.
 
-> ❗ WARNING: This repository is copyrighted (unlike the main repo). You are not allowed to use this code in your self-hosted instance of Typebot without obtaining a proper [license](https://typebot.io/enterprise-lead-form) first❗
+> ❗ WARNING: This repository is copyrighted (unlike the main repo). You are not allowed to use this code in your self-hosted instance of Sniper without obtaining a proper [license](https://sniper.io/enterprise-lead-form) first❗
 
 ### Configure STRIPE
 

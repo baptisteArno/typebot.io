@@ -2,16 +2,16 @@ import { IncomingMessage } from 'http'
 import { ErrorPage } from '@/components/ErrorPage'
 import { NotFoundPage } from '@/components/NotFoundPage'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
-import { isNotDefined } from '@typebot.io/lib'
-import { TypebotPageProps, TypebotPageV2 } from '@/components/TypebotPageV2'
-import { TypebotPageV3, TypebotV3PageProps } from '@/components/TypebotPageV3'
-import { env } from '@typebot.io/env'
-import prisma from '@typebot.io/lib/prisma'
-import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
+import { isNotDefined } from '@sniper.io/lib'
+import { SniperPageProps, SniperPageV2 } from '@/components/SniperPageV2'
+import { SniperPageV3, SniperV3PageProps } from '@/components/SniperPageV3'
+import { env } from '@sniper.io/env'
+import prisma from '@sniper.io/lib/prisma'
+import { defaultSettings } from '@sniper.io/schemas/features/sniper/settings/constants'
 import {
   defaultBackgroundColor,
   defaultBackgroundType,
-} from '@typebot.io/schemas/features/typebot/theme/constants'
+} from '@sniper.io/schemas/features/sniper/theme/constants'
 
 // Browsers that doesn't support ES modules and/or web components
 const incompatibleBrowsers = [
@@ -63,13 +63,13 @@ export const getServerSideProps: GetServerSideProps = async (
     const customDomain = `${forwardedHost ?? host}${
       pathname === '/' ? '' : pathname
     }`
-    const publishedTypebot = isMatchingViewerUrl
-      ? await getTypebotFromPublicId(context.query.publicId?.toString())
-      : await getTypebotFromCustomDomain(customDomain)
+    const publishedSniper = isMatchingViewerUrl
+      ? await getSniperFromPublicId(context.query.publicId?.toString())
+      : await getSniperFromCustomDomain(customDomain)
 
     return {
       props: {
-        publishedTypebot,
+        publishedSniper,
         incompatibleBrowser,
         url: `https://${forwardedHost ?? host}${pathname}`,
       },
@@ -85,9 +85,9 @@ export const getServerSideProps: GetServerSideProps = async (
   }
 }
 
-const getTypebotFromPublicId = async (publicId?: string) => {
-  const publishedTypebot = (await prisma.publicTypebot.findFirst({
-    where: { typebot: { publicId: publicId ?? '' } },
+const getSniperFromPublicId = async (publicId?: string) => {
+  const publishedSniper = (await prisma.publicSniper.findFirst({
+    where: { sniper: { publicId: publicId ?? '' } },
     select: {
       variables: true,
       settings: true,
@@ -95,9 +95,9 @@ const getTypebotFromPublicId = async (publicId?: string) => {
       version: true,
       groups: true,
       edges: true,
-      typebotId: true,
+      sniperId: true,
       id: true,
-      typebot: {
+      sniper: {
         select: {
           name: true,
           isClosed: true,
@@ -106,23 +106,23 @@ const getTypebotFromPublicId = async (publicId?: string) => {
         },
       },
     },
-  })) as TypebotPageProps['publishedTypebot'] | null
-  if (isNotDefined(publishedTypebot)) return null
-  return publishedTypebot.version
+  })) as SniperPageProps['publishedSniper'] | null
+  if (isNotDefined(publishedSniper)) return null
+  return publishedSniper.version
     ? ({
-        name: publishedTypebot.typebot.name,
-        publicId: publishedTypebot.typebot.publicId ?? null,
-        background: publishedTypebot.theme.general?.background ?? {
+        name: publishedSniper.sniper.name,
+        publicId: publishedSniper.sniper.publicId ?? null,
+        background: publishedSniper.theme.general?.background ?? {
           type: defaultBackgroundType,
           content: defaultBackgroundColor,
         },
         isHideQueryParamsEnabled:
-          publishedTypebot.settings.general?.isHideQueryParamsEnabled ??
+          publishedSniper.settings.general?.isHideQueryParamsEnabled ??
           defaultSettings.general.isHideQueryParamsEnabled,
-        metadata: publishedTypebot.settings.metadata ?? {},
-        font: publishedTypebot.theme.general?.font ?? null,
+        metadata: publishedSniper.settings.metadata ?? {},
+        font: publishedSniper.theme.general?.font ?? null,
       } satisfies Pick<
-        TypebotV3PageProps,
+        SniperV3PageProps,
         | 'name'
         | 'publicId'
         | 'background'
@@ -130,12 +130,12 @@ const getTypebotFromPublicId = async (publicId?: string) => {
         | 'metadata'
         | 'font'
       >)
-    : publishedTypebot
+    : publishedSniper
 }
 
-const getTypebotFromCustomDomain = async (customDomain: string) => {
-  const publishedTypebot = (await prisma.publicTypebot.findFirst({
-    where: { typebot: { customDomain } },
+const getSniperFromCustomDomain = async (customDomain: string) => {
+  const publishedSniper = (await prisma.publicSniper.findFirst({
+    where: { sniper: { customDomain } },
     select: {
       variables: true,
       settings: true,
@@ -143,9 +143,9 @@ const getTypebotFromCustomDomain = async (customDomain: string) => {
       version: true,
       groups: true,
       edges: true,
-      typebotId: true,
+      sniperId: true,
       id: true,
-      typebot: {
+      sniper: {
         select: {
           name: true,
           isClosed: true,
@@ -154,23 +154,23 @@ const getTypebotFromCustomDomain = async (customDomain: string) => {
         },
       },
     },
-  })) as TypebotPageProps['publishedTypebot'] | null
-  if (isNotDefined(publishedTypebot)) return null
-  return publishedTypebot.version
+  })) as SniperPageProps['publishedSniper'] | null
+  if (isNotDefined(publishedSniper)) return null
+  return publishedSniper.version
     ? ({
-        name: publishedTypebot.typebot.name,
-        publicId: publishedTypebot.typebot.publicId ?? null,
-        background: publishedTypebot.theme.general?.background ?? {
+        name: publishedSniper.sniper.name,
+        publicId: publishedSniper.sniper.publicId ?? null,
+        background: publishedSniper.theme.general?.background ?? {
           type: defaultBackgroundType,
           content: defaultBackgroundColor,
         },
         isHideQueryParamsEnabled:
-          publishedTypebot.settings.general?.isHideQueryParamsEnabled ??
+          publishedSniper.settings.general?.isHideQueryParamsEnabled ??
           defaultSettings.general.isHideQueryParamsEnabled,
-        metadata: publishedTypebot.settings.metadata ?? {},
-        font: publishedTypebot.theme.general?.font ?? null,
+        metadata: publishedSniper.settings.metadata ?? {},
+        font: publishedSniper.theme.general?.font ?? null,
       } satisfies Pick<
-        TypebotV3PageProps,
+        SniperV3PageProps,
         | 'name'
         | 'publicId'
         | 'background'
@@ -178,7 +178,7 @@ const getTypebotFromCustomDomain = async (customDomain: string) => {
         | 'metadata'
         | 'font'
       >)
-    : publishedTypebot
+    : publishedSniper
 }
 
 const getHost = (
@@ -189,17 +189,17 @@ const getHost = (
 })
 
 const App = ({
-  publishedTypebot,
+  publishedSniper,
   incompatibleBrowser,
   ...props
 }: {
   isIE: boolean
   customHeadCode: string | null
   url: string
-  publishedTypebot:
-    | TypebotPageProps['publishedTypebot']
+  publishedSniper:
+    | SniperPageProps['publishedSniper']
     | Pick<
-        TypebotV3PageProps,
+        SniperV3PageProps,
         | 'name'
         | 'publicId'
         | 'background'
@@ -220,31 +220,31 @@ const App = ({
       />
     )
   if (
-    !publishedTypebot ||
-    ('typebot' in publishedTypebot && publishedTypebot.typebot.isArchived)
+    !publishedSniper ||
+    ('sniper' in publishedSniper && publishedSniper.sniper.isArchived)
   )
     return <NotFoundPage />
-  if ('typebot' in publishedTypebot && publishedTypebot.typebot.isClosed)
+  if ('sniper' in publishedSniper && publishedSniper.sniper.isClosed)
     return <ErrorPage error={new Error('This bot is now closed')} />
-  return 'typebot' in publishedTypebot ? (
-    <TypebotPageV2 publishedTypebot={publishedTypebot} {...props} />
+  return 'sniper' in publishedSniper ? (
+    <SniperPageV2 publishedSniper={publishedSniper} {...props} />
   ) : (
-    <TypebotPageV3
+    <SniperPageV3
       url={props.url}
-      name={publishedTypebot.name}
-      publicId={publishedTypebot.publicId}
+      name={publishedSniper.name}
+      publicId={publishedSniper.publicId}
       isHideQueryParamsEnabled={
-        publishedTypebot.isHideQueryParamsEnabled ??
+        publishedSniper.isHideQueryParamsEnabled ??
         defaultSettings.general.isHideQueryParamsEnabled
       }
       background={
-        publishedTypebot.background ?? {
+        publishedSniper.background ?? {
           type: defaultBackgroundType,
           content: defaultBackgroundColor,
         }
       }
-      metadata={publishedTypebot.metadata ?? {}}
-      font={publishedTypebot.font}
+      metadata={publishedSniper.metadata ?? {}}
+      font={publishedSniper.font}
     />
   )
 }

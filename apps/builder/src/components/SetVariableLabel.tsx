@@ -1,6 +1,6 @@
 import { useColorModeValue, HStack, Tag, Text } from '@chakra-ui/react'
 import { useTranslate } from '@tolgee/react'
-import { Variable } from '@typebot.io/schemas'
+import { Variable } from '@sniper.io/schemas'
 
 export const SetVariableLabel = ({
   variableId,

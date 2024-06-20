@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { TypebotProvider } from '../providers/TypebotProvider'
+import { SniperProvider } from '../providers/SniperProvider'
 import styles from '../assets/style.css'
 import importantStyles from '../assets/importantStyles.css'
 import phoneSyle from '../assets/phone.css'
@@ -8,16 +8,16 @@ import { AnswersProvider } from '../providers/AnswersProvider'
 import {
   AnswerInput,
   Edge,
-  PublicTypebot,
+  PublicSniper,
   VariableWithValue,
-} from '@typebot.io/schemas'
-import { Log } from '@typebot.io/prisma'
+} from '@sniper.io/schemas'
+import { Log } from '@sniper.io/prisma'
 import { LiteBadge } from './LiteBadge'
-import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/constants'
-import { env } from '@typebot.io/env'
+import { BackgroundType } from '@sniper.io/schemas/features/sniper/theme/constants'
+import { env } from '@sniper.io/env'
 
-export type TypebotViewerProps = {
-  typebot: Omit<PublicTypebot, 'updatedAt' | 'createdAt'>
+export type SniperViewerProps = {
+  sniper: Omit<PublicSniper, 'updatedAt' | 'createdAt'>
   isPreview?: boolean
   apiHost?: string
   predefinedVariables?: { [key: string]: string | undefined }
@@ -33,8 +33,8 @@ export type TypebotViewerProps = {
   onVariablesUpdated?: (variables: VariableWithValue[]) => void
 }
 
-export const TypebotViewer = ({
-  typebot,
+export const SniperViewer = ({
+  sniper,
   apiHost = env.NEXT_PUBLIC_VIEWER_URL[0],
   isPreview = false,
   isLoading = false,
@@ -46,13 +46,13 @@ export const TypebotViewer = ({
   onNewAnswer,
   onCompleted,
   onVariablesUpdated,
-}: TypebotViewerProps) => {
+}: SniperViewerProps) => {
   const containerBgColor = useMemo(
     () =>
-      typebot?.theme?.general?.background?.type === BackgroundType.COLOR
-        ? typebot.theme.general.background.content
+      sniper?.theme?.general?.background?.type === BackgroundType.COLOR
+        ? sniper.theme.general.background.content
         : 'transparent',
-    [typebot?.theme?.general?.background]
+    [sniper?.theme?.general?.background]
   )
   const handleNewGroupVisible = (edge: Edge) =>
     onNewGroupVisible && onNewGroupVisible(edge)
@@ -71,19 +71,19 @@ export const TypebotViewer = ({
         {phoneSyle}
         {styles}
       </style>
-      <style>{typebot.theme?.customCss}</style>
+      <style>{sniper.theme?.customCss}</style>
       <style>{importantStyles}</style>
-      {typebot?.theme?.general?.font && (
+      {sniper?.theme?.general?.font && (
         <style
           dangerouslySetInnerHTML={{
             __html: `@import url('https://fonts.googleapis.com/css2?family=${
-              typebot.theme.general?.font ?? 'Open Sans'
+              sniper.theme.general?.font ?? 'Open Sans'
             }:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');`,
           }}
         />
       )}
-      <TypebotProvider
-        typebot={typebot}
+      <SniperProvider
+        sniper={sniper}
         apiHost={apiHost}
         isPreview={isPreview}
         onNewLog={handleNewLog}
@@ -95,7 +95,7 @@ export const TypebotViewer = ({
           onVariablesUpdated={onVariablesUpdated}
         >
           <div
-            className="flex text-base overflow-hidden bg-cover h-screen w-screen flex-col items-center typebot-container"
+            className="flex text-base overflow-hidden bg-cover h-screen w-screen flex-col items-center sniper-container"
             style={{
               // We set this as inline style to avoid color flash for SSR
               backgroundColor: containerBgColor ?? 'transparent',
@@ -104,17 +104,17 @@ export const TypebotViewer = ({
           >
             <div className="flex w-full h-full justify-center">
               <ConversationContainer
-                theme={typebot.theme}
+                theme={sniper.theme}
                 onNewGroupVisible={handleNewGroupVisible}
                 onCompleted={handleCompleted}
                 predefinedVariables={predefinedVariables}
                 startGroupId={startGroupId}
               />
             </div>
-            {typebot.settings.general?.isBrandingEnabled && <LiteBadge />}
+            {sniper.settings.general?.isBrandingEnabled && <LiteBadge />}
           </div>
         </AnswersProvider>
-      </TypebotProvider>
+      </SniperProvider>
     </>
   )
 }

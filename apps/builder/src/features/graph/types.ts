@@ -5,7 +5,7 @@ import {
   Target,
   BlockSource,
   TEventSource,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 
 export type Coordinates = { x: number; y: number }
 

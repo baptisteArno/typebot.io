@@ -1,4 +1,4 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { PrismaClient } from '@sniper.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 import { text, isCancel, confirm } from '@clack/prompts'
 import { destroyUser } from './helpers/destroyUser'

@@ -1,6 +1,6 @@
 import { isMobile } from '@/utils/isMobileSignal'
 import { createEffect, createSignal, Show } from 'solid-js'
-import { isNotEmpty } from '@typebot.io/lib'
+import { isNotEmpty } from '@sniper.io/lib'
 import { DefaultAvatar } from './DefaultAvatar'
 
 export const Avatar = (props: { initialAvatarSrc?: string }) => {

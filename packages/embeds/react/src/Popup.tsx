@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useRef } from 'react'
-import type { PopupProps } from '@typebot.io/js'
-import '@typebot.io/js/dist/web'
+import type { PopupProps } from '@sniper.io/js'
+import '@sniper.io/js/dist/web'
 
 type Props = PopupProps
 
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      'typebot-popup': React.DetailedHTMLProps<
+      'sniper-popup': React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,
         HTMLElement
       > & { class?: string }
@@ -22,7 +22,7 @@ export const Popup = (props: Props) => {
   const popupRef = useRef<PopupElement | null>(null)
 
   const attachPopupToContainer = useCallback((props: Props) => {
-    const popupElement = document.createElement('typebot-popup') as PopupElement
+    const popupElement = document.createElement('sniper-popup') as PopupElement
     popupRef.current = popupElement
     injectPropsToElement(popupRef.current, props)
     if (!containerRef.current) {

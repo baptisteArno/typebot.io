@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from 'next'
 import ResultsPage from '../results'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import { trackAnalyticsPageView } from '@/features/telemetry/helpers/trackAnalyticsPageView'
 
 const AnalyticsPage = ResultsPage

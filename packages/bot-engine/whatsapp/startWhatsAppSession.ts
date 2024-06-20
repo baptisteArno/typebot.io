@@ -1,23 +1,23 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import {
   ContinueChatResponse,
-  PublicTypebot,
+  PublicSniper,
   SessionState,
   SetVariableHistoryItem,
   Settings,
-  Typebot,
-} from '@typebot.io/schemas'
+  Sniper,
+} from '@sniper.io/schemas'
 import {
   WhatsAppCredentials,
   defaultSessionExpiryTimeout,
-} from '@typebot.io/schemas/features/whatsapp'
-import { isNotDefined } from '@typebot.io/lib/utils'
+} from '@sniper.io/schemas/features/whatsapp'
+import { isNotDefined } from '@sniper.io/lib/utils'
 import { startSession } from '../startSession'
 import {
   LogicalOperator,
   ComparisonOperators,
-} from '@typebot.io/schemas/features/blocks/logic/condition/constants'
-import { VisitedEdge } from '@typebot.io/prisma'
+} from '@sniper.io/schemas/features/blocks/logic/condition/constants'
+import { VisitedEdge } from '@sniper.io/prisma'
 import { Reply } from '../types'
 
 type Props = {
@@ -40,52 +40,50 @@ export const startWhatsAppSession = async ({
     })
   | { error: string }
 > => {
-  const publicTypebotsWithWhatsAppEnabled =
-    (await prisma.publicTypebot.findMany({
-      where: {
-        typebot: { workspaceId, whatsAppCredentialsId: credentials.id },
-      },
-      select: {
-        settings: true,
-        typebot: {
-          select: {
-            publicId: true,
-          },
+  const publicSnipersWithWhatsAppEnabled = (await prisma.publicSniper.findMany({
+    where: {
+      sniper: { workspaceId, whatsAppCredentialsId: credentials.id },
+    },
+    select: {
+      settings: true,
+      sniper: {
+        select: {
+          publicId: true,
         },
       },
-    })) as (Pick<PublicTypebot, 'settings'> & {
-      typebot: Pick<Typebot, 'publicId'>
-    })[]
+    },
+  })) as (Pick<PublicSniper, 'settings'> & {
+    sniper: Pick<Sniper, 'publicId'>
+  })[]
 
-  const botsWithWhatsAppEnabled = publicTypebotsWithWhatsAppEnabled.filter(
-    (publicTypebot) =>
-      publicTypebot.typebot.publicId &&
-      publicTypebot.settings.whatsApp?.isEnabled
+  const botsWithWhatsAppEnabled = publicSnipersWithWhatsAppEnabled.filter(
+    (publicSniper) =>
+      publicSniper.sniper.publicId && publicSniper.settings.whatsApp?.isEnabled
   )
 
-  const publicTypebotWithMatchedCondition = botsWithWhatsAppEnabled.find(
-    (publicTypebot) =>
-      (publicTypebot.settings.whatsApp?.startCondition?.comparisons.length ??
+  const publicSniperWithMatchedCondition = botsWithWhatsAppEnabled.find(
+    (publicSniper) =>
+      (publicSniper.settings.whatsApp?.startCondition?.comparisons.length ??
         0) > 0 &&
       messageMatchStartCondition(
         incomingMessage ?? '',
-        publicTypebot.settings.whatsApp?.startCondition
+        publicSniper.settings.whatsApp?.startCondition
       )
   )
 
-  const publicTypebot =
-    publicTypebotWithMatchedCondition ??
+  const publicSniper =
+    publicSniperWithMatchedCondition ??
     botsWithWhatsAppEnabled.find(
-      (publicTypebot) => !publicTypebot.settings.whatsApp?.startCondition
+      (publicSniper) => !publicSniper.settings.whatsApp?.startCondition
     )
 
-  if (isNotDefined(publicTypebot))
+  if (isNotDefined(publicSniper))
     return botsWithWhatsAppEnabled.length > 0
       ? { error: 'Message did not matched any condition' }
-      : { error: 'No public typebot with WhatsApp integration found' }
+      : { error: 'No public sniper with WhatsApp integration found' }
 
   const sessionExpiryTimeoutHours =
-    publicTypebot.settings.whatsApp?.sessionExpiryTimeout ??
+    publicSniper.settings.whatsApp?.sessionExpiryTimeout ??
     defaultSessionExpiryTimeout
 
   return startSession({
@@ -93,7 +91,7 @@ export const startWhatsAppSession = async ({
     message: incomingMessage,
     startParams: {
       type: 'live',
-      publicId: publicTypebot.typebot.publicId as string,
+      publicId: publicSniper.sniper.publicId as string,
       isOnlyRegistering: false,
       isStreamEnabled: false,
       textBubbleContentFormat: 'richText',

@@ -1,5 +1,5 @@
 import { Text } from '@chakra-ui/react'
-import { ChatwootBlock } from '@typebot.io/schemas'
+import { ChatwootBlock } from '@sniper.io/schemas'
 
 type Props = {
   block: ChatwootBlock

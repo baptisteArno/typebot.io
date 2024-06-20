@@ -1,13 +1,13 @@
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { createContext, ReactNode, useEffect, useState } from 'react'
-import { isDefined, isNotDefined } from '@typebot.io/lib'
-import { User } from '@typebot.io/schemas'
+import { isDefined, isNotDefined } from '@sniper.io/lib'
+import { User } from '@sniper.io/schemas'
 import { setUser as setSentryUser } from '@sentry/nextjs'
 import { useToast } from '@/hooks/useToast'
 import { updateUserQuery } from './queries/updateUserQuery'
 import { useDebouncedCallback } from 'use-debounce'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import { useColorMode } from '@chakra-ui/react'
 
 export const userContext = createContext<{
@@ -68,7 +68,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     if (!router.isReady) return
     if (status === 'loading') return
     const isSignInPath = ['/signin', '/register'].includes(router.pathname)
-    const isPathPublicFriendly = /\/typebots\/.+\/(edit|theme|settings)/.test(
+    const isPathPublicFriendly = /\/snipers\/.+\/(edit|theme|settings)/.test(
       router.pathname
     )
     if (isSignInPath || isPathPublicFriendly) return

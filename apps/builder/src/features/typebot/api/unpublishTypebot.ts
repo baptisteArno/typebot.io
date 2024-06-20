@@ -1,25 +1,25 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
-import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
+import { isWriteSniperForbidden } from '../helpers/isWriteSniperForbidden'
 
-export const unpublishTypebot = authenticatedProcedure
+export const unpublishSniper = authenticatedProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/v1/typebots/{typebotId}/unpublish',
+      path: '/v1/snipers/{sniperId}/unpublish',
       protect: true,
-      summary: 'Unpublish a typebot',
-      tags: ['Typebot'],
+      summary: 'Unpublish a sniper',
+      tags: ['Sniper'],
     },
   })
   .input(
     z.object({
-      typebotId: z
+      sniperId: z
         .string()
         .describe(
-          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+          "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)"
         ),
     })
   )
@@ -28,14 +28,14 @@ export const unpublishTypebot = authenticatedProcedure
       message: z.literal('success'),
     })
   )
-  .mutation(async ({ input: { typebotId }, ctx: { user } }) => {
-    const existingTypebot = await prisma.typebot.findFirst({
+  .mutation(async ({ input: { sniperId }, ctx: { user } }) => {
+    const existingSniper = await prisma.sniper.findFirst({
       where: {
-        id: typebotId,
+        id: sniperId,
       },
       include: {
         collaborators: true,
-        publishedTypebot: true,
+        publishedSniper: true,
         workspace: {
           select: {
             isSuspended: true,
@@ -50,21 +50,21 @@ export const unpublishTypebot = authenticatedProcedure
         },
       },
     })
-    if (!existingTypebot?.publishedTypebot)
+    if (!existingSniper?.publishedSniper)
       throw new TRPCError({
         code: 'NOT_FOUND',
-        message: 'Published typebot not found',
+        message: 'Published sniper not found',
       })
 
     if (
-      !existingTypebot.id ||
-      (await isWriteTypebotForbidden(existingTypebot, user))
+      !existingSniper.id ||
+      (await isWriteSniperForbidden(existingSniper, user))
     )
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Sniper not found' })
 
-    await prisma.publicTypebot.deleteMany({
+    await prisma.publicSniper.deleteMany({
       where: {
-        id: existingTypebot.publishedTypebot.id,
+        id: existingSniper.publishedSniper.id,
       },
     })
 

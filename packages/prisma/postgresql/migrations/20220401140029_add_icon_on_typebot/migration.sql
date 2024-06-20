@@ -1,2 +1,2 @@
 -- AlterTable
-ALTER TABLE "Typebot" ADD COLUMN     "icon" TEXT;
+ALTER TABLE "Sniper" ADD COLUMN     "icon" TEXT;

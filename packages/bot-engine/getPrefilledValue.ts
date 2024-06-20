@@ -1,6 +1,6 @@
-import { isDefined } from '@typebot.io/lib/utils'
-import { InputBlock } from '@typebot.io/schemas'
-import { Variable } from '@typebot.io/schemas/features/typebot/variable'
+import { isDefined } from '@sniper.io/lib/utils'
+import { InputBlock } from '@sniper.io/schemas'
+import { Variable } from '@sniper.io/schemas/features/sniper/variable'
 
 export const getPrefilledInputValue =
   (variables: Variable[]) => (block: InputBlock) => {

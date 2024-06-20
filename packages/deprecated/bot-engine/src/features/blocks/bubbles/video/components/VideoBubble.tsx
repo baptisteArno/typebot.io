@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useTypebot } from '@/providers/TypebotProvider'
-import { Variable, VideoBubbleBlock } from '@typebot.io/schemas'
+import { useSniper } from '@/providers/SniperProvider'
+import { Variable, VideoBubbleBlock } from '@sniper.io/schemas'
 import { TypingBubble } from '@/components/TypingBubble'
 import { parseVariables } from '@/features/variables'
-import { VideoBubbleContentType } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
+import { VideoBubbleContentType } from '@sniper.io/schemas/features/blocks/bubbles/video/constants'
 
 type Props = {
   block: VideoBubbleBlock
@@ -15,7 +15,7 @@ export const showAnimationDuration = 400
 export const mediaLoadingFallbackTimeout = 5000
 
 export const VideoBubble = ({ block, onTransitionEnd }: Props) => {
-  const { typebot, isLoading } = useTypebot()
+  const { sniper, isLoading } = useSniper()
   const messageContainer = useRef<HTMLDivElement | null>(null)
   const [isTyping, setIsTyping] = useState(true)
 
@@ -41,7 +41,7 @@ export const VideoBubble = ({ block, onTransitionEnd }: Props) => {
   return (
     <div className="flex flex-col" ref={messageContainer}>
       <div className="flex mb-2 w-full lg:w-11/12 items-center">
-        <div className={'flex relative z-10 items-start typebot-host-bubble'}>
+        <div className={'flex relative z-10 items-start sniper-host-bubble'}>
           <div
             className="flex items-center absolute px-4 py-2 rounded-lg bubble-typing z-10 "
             style={{
@@ -54,7 +54,7 @@ export const VideoBubble = ({ block, onTransitionEnd }: Props) => {
           <VideoContent
             content={block.content}
             isTyping={isTyping}
-            variables={typebot.variables}
+            variables={sniper.variables}
           />
         </div>
       </div>

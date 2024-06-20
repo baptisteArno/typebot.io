@@ -1,6 +1,6 @@
 import { Popup } from '../Popup'
-import { open, toggle } from '@typebot.io/js'
-import { leadGenerationTypebot } from './assets/leadGenerationTypebot'
+import { open, toggle } from '@sniper.io/js'
+import { leadGenerationSniper } from './assets/leadGenerationSniper'
 
 export const Default = () => {
   return (
@@ -8,7 +8,7 @@ export const Default = () => {
       <button onClick={open}>Open modal</button>
       <button onClick={toggle}>Toggle modal</button>
       <Popup
-        typebot={leadGenerationTypebot}
+        sniper={leadGenerationSniper}
         apiHost="http://localhost:3001"
         autoShowDelay={3000}
         theme={{

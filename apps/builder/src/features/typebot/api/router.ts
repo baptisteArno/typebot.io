@@ -1,22 +1,22 @@
 import { router } from '@/helpers/server/trpc'
-import { listTypebots } from './listTypebots'
-import { createTypebot } from './createTypebot'
-import { updateTypebot } from './updateTypebot'
-import { getTypebot } from './getTypebot'
-import { getPublishedTypebot } from './getPublishedTypebot'
-import { publishTypebot } from './publishTypebot'
-import { unpublishTypebot } from './unpublishTypebot'
-import { deleteTypebot } from './deleteTypebot'
-import { importTypebot } from './importTypebot'
+import { listSnipers } from './listSnipers'
+import { createSniper } from './createSniper'
+import { updateSniper } from './updateSniper'
+import { getSniper } from './getSniper'
+import { getPublishedSniper } from './getPublishedSniper'
+import { publishSniper } from './publishSniper'
+import { unpublishSniper } from './unpublishSniper'
+import { deleteSniper } from './deleteSniper'
+import { importSniper } from './importSniper'
 
-export const typebotRouter = router({
-  createTypebot,
-  updateTypebot,
-  getTypebot,
-  getPublishedTypebot,
-  publishTypebot,
-  unpublishTypebot,
-  listTypebots,
-  deleteTypebot,
-  importTypebot,
+export const sniperRouter = router({
+  createSniper,
+  updateSniper,
+  getSniper,
+  getPublishedSniper,
+  publishSniper,
+  unpublishSniper,
+  listSnipers,
+  deleteSniper,
+  importSniper,
 })

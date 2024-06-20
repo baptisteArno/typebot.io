@@ -2,11 +2,11 @@ import { DropdownList } from '@/components/DropdownList'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { TableListItemProps } from '@/components/TableList'
 import { Stack } from '@chakra-ui/react'
-import { Variable, ZemanticAiBlock } from '@typebot.io/schemas'
+import { Variable, ZemanticAiBlock } from '@sniper.io/schemas'
 import {
   defaultZemanticAiResponseMappingItem,
   searchResponseValues,
-} from '@typebot.io/schemas/features/blocks/integrations/zemanticAi/constants'
+} from '@sniper.io/schemas/features/blocks/integrations/zemanticAi/constants'
 
 type Props = TableListItemProps<
   NonNullable<

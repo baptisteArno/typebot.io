@@ -8,11 +8,11 @@ import {
   AccordionPanel,
   Stack,
 } from '@chakra-ui/react'
-import { ChatwootBlock } from '@typebot.io/schemas'
+import { ChatwootBlock } from '@sniper.io/schemas'
 import {
   chatwootTasks,
   defaultChatwootOptions,
-} from '@typebot.io/schemas/features/blocks/integrations/chatwoot/constants'
+} from '@sniper.io/schemas/features/blocks/integrations/chatwoot/constants'
 import React from 'react'
 
 type Props = {

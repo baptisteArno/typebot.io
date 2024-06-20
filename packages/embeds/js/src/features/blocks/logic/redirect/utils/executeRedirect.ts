@@ -1,4 +1,4 @@
-import { RedirectBlock } from '@typebot.io/schemas'
+import { RedirectBlock } from '@sniper.io/schemas'
 
 export const executeRedirect = ({
   url,

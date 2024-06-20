@@ -1,4 +1,4 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import {
@@ -6,24 +6,24 @@ import {
   methodNotAllowed,
   notAuthenticated,
   notFound,
-} from '@typebot.io/lib/api'
-import { getFileTempUrl } from '@typebot.io/lib/s3/getFileTempUrl'
-import { isReadTypebotForbidden } from '@/features/typebot/helpers/isReadTypebotForbidden'
+} from '@sniper.io/lib/api'
+import { getFileTempUrl } from '@sniper.io/lib/s3/getFileTempUrl'
+import { isReadSniperForbidden } from '@/features/sniper/helpers/isReadSniperForbidden'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const user = await getAuthenticatedUser(req, res)
     if (!user) return notAuthenticated(res)
 
-    const typebotId = req.query.typebotId as string
+    const sniperId = req.query.sniperId as string
     const resultId = req.query.resultId as string
     const fileName = req.query.fileName as string
 
     if (!fileName) return badRequest(res, 'fileName missing not found')
 
-    const typebot = await prisma.typebot.findFirst({
+    const sniper = await prisma.sniper.findFirst({
       where: {
-        id: typebotId,
+        id: sniperId,
       },
       select: {
         whatsAppCredentialsId: true,
@@ -47,13 +47,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     })
 
-    if (!typebot?.workspace || (await isReadTypebotForbidden(typebot, user)))
+    if (!sniper?.workspace || (await isReadSniperForbidden(sniper, user)))
       return notFound(res, 'Workspace not found')
 
-    if (!typebot) return notFound(res, 'Typebot not found')
+    if (!sniper) return notFound(res, 'Sniper not found')
 
     const tmpUrl = await getFileTempUrl({
-      key: `private/workspaces/${typebot.workspace.id}/typebots/${typebotId}/results/${resultId}/${fileName}`,
+      key: `private/workspaces/${sniper.workspace.id}/snipers/${sniperId}/results/${resultId}/${fileName}`,
     })
 
     if (!tmpUrl) return notFound(res, 'File not found')

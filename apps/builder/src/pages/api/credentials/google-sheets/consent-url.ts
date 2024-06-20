@@ -1,4 +1,4 @@
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import { OAuth2Client } from 'google-auth-library'
 import { NextApiRequest, NextApiResponse } from 'next'
 

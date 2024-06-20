@@ -1,54 +1,54 @@
-import { LinkedTypebot } from '@/providers/TypebotProvider'
+import { LinkedSniper } from '@/providers/SniperProvider'
 import { EdgeId, LogicState } from '@/types'
-import { TypebotLinkBlock, Edge, PublicTypebot } from '@typebot.io/schemas'
-import { fetchAndInjectTypebot } from '../queries/fetchAndInjectTypebotQuery'
+import { SniperLinkBlock, Edge, PublicSniper } from '@sniper.io/schemas'
+import { fetchAndInjectSniper } from '../queries/fetchAndInjectSniperQuery'
 
-export const executeTypebotLink = async (
-  block: TypebotLinkBlock,
+export const executeSniperLink = async (
+  block: SniperLinkBlock,
   context: LogicState
 ): Promise<{
   nextEdgeId?: EdgeId
-  linkedTypebot?: PublicTypebot | LinkedTypebot
+  linkedSniper?: PublicSniper | LinkedSniper
 }> => {
   const {
-    typebot,
-    linkedTypebots,
+    sniper,
+    linkedSnipers,
     onNewLog,
     createEdge,
-    setCurrentTypebotId,
-    pushEdgeIdInLinkedTypebotQueue,
-    pushParentTypebotId,
-    currentTypebotId,
+    setCurrentSniperId,
+    pushEdgeIdInLinkedSniperQueue,
+    pushParentSniperId,
+    currentSniperId,
   } = context
-  const linkedTypebot = (
-    block.options?.typebotId === 'current'
-      ? typebot
-      : [typebot, ...linkedTypebots].find((typebot) =>
-          'typebotId' in typebot
-            ? typebot.typebotId === block.options?.typebotId
-            : typebot.id === block.options?.typebotId
-        ) ?? (await fetchAndInjectTypebot(block, context))
-  ) as PublicTypebot | LinkedTypebot | undefined
-  if (!linkedTypebot) {
+  const linkedSniper = (
+    block.options?.sniperId === 'current'
+      ? sniper
+      : [sniper, ...linkedSnipers].find((sniper) =>
+          'sniperId' in sniper
+            ? sniper.sniperId === block.options?.sniperId
+            : sniper.id === block.options?.sniperId
+        ) ?? (await fetchAndInjectSniper(block, context))
+  ) as PublicSniper | LinkedSniper | undefined
+  if (!linkedSniper) {
     onNewLog({
       status: 'error',
-      description: 'Failed to link typebot',
+      description: 'Failed to link sniper',
       details: '',
     })
     return { nextEdgeId: block.outgoingEdgeId }
   }
   if (block.outgoingEdgeId)
-    pushEdgeIdInLinkedTypebotQueue({
+    pushEdgeIdInLinkedSniperQueue({
       edgeId: block.outgoingEdgeId,
-      typebotId: currentTypebotId,
+      sniperId: currentSniperId,
     })
-  pushParentTypebotId(currentTypebotId)
-  setCurrentTypebotId(
-    'typebotId' in linkedTypebot ? linkedTypebot.typebotId : linkedTypebot.id
+  pushParentSniperId(currentSniperId)
+  setCurrentSniperId(
+    'sniperId' in linkedSniper ? linkedSniper.sniperId : linkedSniper.id
   )
   const nextGroupId =
     block.options?.groupId ??
-    linkedTypebot.groups.find((b) => b.blocks.some((s) => s.type === 'start'))
+    linkedSniper.groups.find((b) => b.blocks.some((s) => s.type === 'start'))
       ?.id
   if (!nextGroupId) return { nextEdgeId: block.outgoingEdgeId }
   const newEdge: Edge = {
@@ -61,9 +61,9 @@ export const executeTypebotLink = async (
   createEdge(newEdge)
   return {
     nextEdgeId: newEdge.id,
-    linkedTypebot: {
-      ...linkedTypebot,
-      edges: [...linkedTypebot.edges, newEdge],
+    linkedSniper: {
+      ...linkedSniper,
+      edges: [...linkedSniper.edges, newEdge],
     },
   }
 }

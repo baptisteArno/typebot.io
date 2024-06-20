@@ -1,12 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
-import { TypebotViewer } from 'bot-engine'
+import { SniperViewer } from 'bot-engine'
 import {
   AnswerInput,
-  PublicTypebot,
-  Typebot,
+  PublicSniper,
+  Sniper,
   VariableWithValue,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import {
@@ -14,7 +14,7 @@ import {
   isDefined,
   isNotDefined,
   isNotEmpty,
-} from '@typebot.io/lib'
+} from '@sniper.io/lib'
 import { SEO } from './Seo'
 import { ErrorPage } from './ErrorPage'
 import { gtmBodyElement } from '@/lib/google-tag-manager'
@@ -25,25 +25,25 @@ import {
 import { upsertAnswerQuery } from '@/features/answers/queries/upsertAnswerQuery'
 import { createResultQuery } from '@/features/results/queries/createResultQuery'
 import { updateResultQuery } from '@/features/results/queries/updateResultQuery'
-import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
+import { defaultSettings } from '@sniper.io/schemas/features/sniper/settings/constants'
 
-export type TypebotPageProps = {
-  publishedTypebot: Omit<PublicTypebot, 'createdAt' | 'updatedAt'> & {
-    typebot: Pick<Typebot, 'name' | 'isClosed' | 'isArchived' | 'publicId'>
+export type SniperPageProps = {
+  publishedSniper: Omit<PublicSniper, 'createdAt' | 'updatedAt'> & {
+    sniper: Pick<Sniper, 'name' | 'isClosed' | 'isArchived' | 'publicId'>
   }
   url: string
   isIE: boolean
   customHeadCode: string | null
 }
 
-export const TypebotPageV2 = ({
-  publishedTypebot,
+export const SniperPageV2 = ({
+  publishedSniper,
   isIE,
   url,
   customHeadCode,
-}: TypebotPageProps) => {
+}: SniperPageProps) => {
   const { asPath, push } = useRouter()
-  const [showTypebot, setShowTypebot] = useState(false)
+  const [showSniper, setShowSniper] = useState(false)
   const [predefinedVariables, setPredefinedVariables] = useState<{
     [key: string]: string
   }>()
@@ -57,7 +57,7 @@ export const TypebotPageV2 = ({
   const [chatStarted, setChatStarted] = useState(false)
 
   useEffect(() => {
-    setShowTypebot(true)
+    setShowSniper(true)
     const urlParams = new URLSearchParams(location.search)
     clearQueryParams()
     const predefinedVariables: { [key: string]: string } = {}
@@ -67,7 +67,7 @@ export const TypebotPageV2 = ({
     setPredefinedVariables(predefinedVariables)
     initializeResult().then()
     if (isDefined(customHeadCode)) injectCustomHeadCode(customHeadCode)
-    const gtmId = publishedTypebot.settings.metadata?.googleTagManagerId
+    const gtmId = publishedSniper.settings.metadata?.googleTagManagerId
     if (isNotEmpty(gtmId)) document.body.prepend(gtmBodyElement(gtmId))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -76,7 +76,7 @@ export const TypebotPageV2 = ({
     const hasQueryParams = asPath.includes('?')
     if (
       hasQueryParams &&
-      (publishedTypebot.settings.general?.isHideQueryParamsEnabled ??
+      (publishedSniper.settings.general?.isHideQueryParamsEnabled ??
         defaultSettings.general.isHideQueryParamsEnabled) !== false
     )
       push(asPath.split('?')[0], undefined, { shallow: true })
@@ -86,17 +86,14 @@ export const TypebotPageV2 = ({
     const resultIdFromSession = getExistingResultFromSession()
     if (resultIdFromSession) setResultId(resultIdFromSession)
     else {
-      const { error, data } = await createResultQuery(
-        publishedTypebot.typebotId
-      )
+      const { error, data } = await createResultQuery(publishedSniper.sniperId)
       if (error) return setError(error)
       if (data?.hasReachedLimit)
         return setError(new Error('This bot is now closed.'))
       if (data?.result) {
         setResultId(data.result.id)
         if (
-          publishedTypebot.settings.general?.isNewResultOnRefreshEnabled !==
-          true
+          publishedSniper.settings.general?.isNewResultOnRefreshEnabled !== true
         )
           setResultInSession(data.result.id)
       }
@@ -147,12 +144,12 @@ export const TypebotPageV2 = ({
     <div style={{ height: '100vh' }}>
       <SEO
         url={url}
-        typebotName={publishedTypebot.typebot.name}
-        metadata={publishedTypebot.settings.metadata}
+        sniperName={publishedSniper.sniper.name}
+        metadata={publishedSniper.settings.metadata}
       />
-      {showTypebot && (
-        <TypebotViewer
-          typebot={publishedTypebot}
+      {showSniper && (
+        <SniperViewer
+          sniper={publishedSniper}
           resultId={resultId}
           predefinedVariables={predefinedVariables}
           onNewAnswer={handleNewAnswer}

@@ -36,7 +36,7 @@ declare module 'zod' {
   }
 }
 
-export const extendWithTypebotLayout = (zod: typeof z) => {
+export const extendWithSniperLayout = (zod: typeof z) => {
   if (typeof zod.ZodType.prototype.layout !== 'undefined') {
     return
   }

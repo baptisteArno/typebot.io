@@ -4,12 +4,12 @@ import {
   PaymentInputRuntimeOptions,
   SessionState,
   StripeCredentials,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import Stripe from 'stripe'
-import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
-import { parseVariables } from '@typebot.io/variables/parseVariables'
-import prisma from '@typebot.io/lib/prisma'
-import { defaultPaymentInputOptions } from '@typebot.io/schemas/features/blocks/inputs/payment/constants'
+import { decrypt } from '@sniper.io/lib/api/encryption/decrypt'
+import { parseVariables } from '@sniper.io/variables/parseVariables'
+import prisma from '@sniper.io/lib/prisma'
+import { defaultPaymentInputOptions } from '@sniper.io/schemas/features/blocks/inputs/payment/constants'
 
 export const computePaymentInputRuntimeOptions =
   (state: SessionState) => (options: PaymentInputBlock['options']) =>
@@ -22,8 +22,8 @@ const createStripePaymentIntent =
   ): Promise<PaymentInputRuntimeOptions> => {
     const {
       resultId,
-      typebot: { variables },
-    } = state.typebotsQueue[0]
+      sniper: { variables },
+    } = state.snipersQueue[0]
     const isPreview = !resultId
     if (!options?.credentialsId)
       throw new TRPCError({

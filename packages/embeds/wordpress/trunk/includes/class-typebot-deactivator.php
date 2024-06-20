@@ -1,6 +1,6 @@
 <?php
 
-class Typebot_Deactivator
+class Sniper_Deactivator
 {
 	public static function deactivate()
 	{

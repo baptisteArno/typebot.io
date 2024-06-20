@@ -1,6 +1,6 @@
 import { Alert, AlertIcon, FormLabel, Stack, Tag, Text } from '@chakra-ui/react'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { SetVariableBlock, Variable } from '@typebot.io/schemas'
+import { SetVariableBlock, Variable } from '@sniper.io/schemas'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { Select } from '@/components/inputs/Select'
@@ -10,11 +10,11 @@ import {
   hiddenTypes,
   sessionOnlySetVariableOptions,
   valueTypes,
-} from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
+} from '@sniper.io/schemas/features/blocks/logic/setVariable/constants'
 import { TextInput, Textarea } from '@/components/inputs'
-import { isDefined } from '@typebot.io/lib'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { isInputBlock } from '@typebot.io/schemas/helpers'
+import { isDefined } from '@sniper.io/lib'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
+import { isInputBlock } from '@sniper.io/schemas/helpers'
 import { RadioButtons } from '@/components/inputs/RadioButtons'
 
 type Props = {
@@ -27,8 +27,8 @@ const setVarTypes = valueTypes.filter(
 )
 
 export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
-  const { typebot, updateVariable } = useTypebot()
-  const selectedVariable = typebot?.variables.find(
+  const { sniper, updateVariable } = useSniper()
+  const selectedVariable = sniper?.variables.find(
     (variable) => variable.id === options?.variableId
   )
 
@@ -59,7 +59,7 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
 
   const isLinkedToAnswer =
     options?.variableId &&
-    typebot?.groups.some((g) =>
+    sniper?.groups.some((g) =>
       g.blocks.some(
         (b) => isInputBlock(b) && b.options?.variableId === options.variableId
       )
@@ -101,7 +101,7 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
           <SwitchWithLabel
             key={selectedVariable.id}
             label="Save in results?"
-            moreInfoContent="By default, the variable is saved only for the user chat session. Check this option if you want to also store the variable in the typebot Results table."
+            moreInfoContent="By default, the variable is saved only for the user chat session. Check this option if you want to also store the variable in the sniper Results table."
             initialValue={!selectedVariable.isSessionVariable}
             onCheckChange={updateIsSessionVariable}
           />

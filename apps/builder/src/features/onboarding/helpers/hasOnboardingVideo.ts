@@ -1,7 +1,7 @@
-import { ForgedBlockDefinition } from '@typebot.io/forge-repository/types'
-import { Block } from '@typebot.io/schemas'
+import { ForgedBlockDefinition } from '@sniper.io/forge-repository/types'
+import { Block } from '@sniper.io/schemas'
 import { onboardingVideos } from '../data'
-import { isDefined } from '@typebot.io/lib/utils'
+import { isDefined } from '@sniper.io/lib/utils'
 
 type Props = {
   blockType: Block['type']

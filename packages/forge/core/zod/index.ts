@@ -1,10 +1,10 @@
 import { z } from 'zod'
 import {
-  extendWithTypebotLayout,
+  extendWithSniperLayout,
   ZodLayoutMetadata,
-} from './extendWithTypebotLayout'
+} from './extendWithSniperLayout'
 
-extendWithTypebotLayout(z)
+extendWithSniperLayout(z)
 
 export { z }
 export type { ZodLayoutMetadata }

@@ -4,14 +4,14 @@ import { useAnswers } from '../providers/AnswersProvider'
 import {
   Group,
   Edge,
-  PublicTypebot,
+  PublicSniper,
   Theme,
   VariableWithValue,
-} from '@typebot.io/schemas'
-import { byId, isDefined, isNotDefined } from '@typebot.io/lib'
-import { isInputBlock } from '@typebot.io/schemas/helpers'
+} from '@sniper.io/schemas'
+import { byId, isDefined, isNotDefined } from '@sniper.io/lib'
+import { isInputBlock } from '@sniper.io/schemas/helpers'
 import { animateScroll as scroll } from 'react-scroll'
-import { LinkedTypebot, useTypebot } from '@/providers/TypebotProvider'
+import { LinkedSniper, useSniper } from '@/providers/SniperProvider'
 import { setCssVariablesValue } from '@/features/theme'
 import { ChatProvider } from '@/providers/ChatProvider'
 
@@ -30,11 +30,11 @@ export const ConversationContainer = ({
   onCompleted,
 }: Props) => {
   const {
-    typebot,
+    sniper,
     updateVariableValue,
     linkedBotQueue,
-    popEdgeIdFromLinkedTypebotQueue,
-  } = useTypebot()
+    popEdgeIdFromLinkedSniperQueue,
+  } = useSniper()
   const [displayedGroups, setDisplayedGroups] = useState<
     { group: Group; startBlockIndex: number }[]
   >([])
@@ -45,16 +45,16 @@ export const ConversationContainer = ({
 
   const displayNextGroup = ({
     edgeId,
-    updatedTypebot,
+    updatedSniper,
     groupId,
   }: {
     edgeId?: string
     groupId?: string
-    updatedTypebot?: PublicTypebot | LinkedTypebot
+    updatedSniper?: PublicSniper | LinkedSniper
   }) => {
-    const currentTypebot = updatedTypebot ?? typebot
+    const currentSniper = updatedSniper ?? sniper
     if (groupId) {
-      const nextGroup = currentTypebot.groups.find(byId(groupId))
+      const nextGroup = currentSniper.groups.find(byId(groupId))
       if (!nextGroup) return
       onNewGroupVisible({
         id: 'edgeId',
@@ -66,16 +66,16 @@ export const ConversationContainer = ({
         { group: nextGroup, startBlockIndex: 0 },
       ])
     }
-    const nextEdge = currentTypebot.edges.find(byId(edgeId))
+    const nextEdge = currentSniper.edges.find(byId(edgeId))
     if (!nextEdge) {
       if (linkedBotQueue.length > 0) {
         const nextEdgeId = linkedBotQueue[0].edgeId
-        popEdgeIdFromLinkedTypebotQueue()
+        popEdgeIdFromLinkedSniperQueue()
         displayNextGroup({ edgeId: nextEdgeId })
       }
       return onCompleted()
     }
-    const nextGroup = currentTypebot.groups.find(byId(nextEdge.to.groupId))
+    const nextGroup = currentSniper.groups.find(byId(nextEdge.to.groupId))
     if (!nextGroup) return onCompleted()
     const startBlockIndex = nextEdge.to.blockId
       ? nextGroup.blocks.findIndex(byId(nextEdge.to.blockId))
@@ -100,7 +100,7 @@ export const ConversationContainer = ({
       updateVariables(prefilledVariables)
     }
     setHasStarted(true)
-    const startEdge = typebot.groups[0].blocks[0].outgoingEdgeId
+    const startEdge = sniper.groups[0].blocks[0].outgoingEdgeId
     if (!startEdge && !startGroupId) return
     displayNextGroup({
       edgeId: startGroupId ? undefined : startEdge,
@@ -114,7 +114,7 @@ export const ConversationContainer = ({
   }) => {
     const prefilledVariables: VariableWithValue[] = []
     Object.keys(predefinedVariables).forEach((key) => {
-      const matchingVariable = typebot.variables.find(
+      const matchingVariable = sniper.variables.find(
         (v) => v.name.toLowerCase() === key.toLowerCase()
       )
       if (!predefinedVariables || isNotDefined(matchingVariable)) return
@@ -144,7 +144,7 @@ export const ConversationContainer = ({
   return (
     <div
       ref={scrollableContainer}
-      className="overflow-y-scroll w-full lg:w-3/4 min-h-full rounded lg:px-5 px-3 pt-10 relative scrollable-container typebot-chat-view"
+      className="overflow-y-scroll w-full lg:w-3/4 min-h-full rounded lg:px-5 px-3 pt-10 relative scrollable-container sniper-chat-view"
     >
       <ChatProvider onScroll={autoScrollToBottom}>
         {displayedGroups.map((displayedGroup, idx) => {

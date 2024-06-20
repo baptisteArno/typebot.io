@@ -2,7 +2,7 @@
   "id": "cl0s4zy9m247009l1ybkoojxe",
   "createdAt": "2022-03-15T12:54:54.778Z",
   "updatedAt": "2022-03-15T13:13:54.482Z",
-  "name": "My typebot",
+  "name": "My sniper",
   "folderId": null,
   "groups": [
     {
@@ -323,14 +323,14 @@
       "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" },
       "hostAvatar": {
         "isEnabled": true,
-        "url": "https://s3.eu-west-3.amazonaws.com/typebot/public/typebots/cl0s4zy9m247009l1ybkoojxe/me-square.png"
+        "url": "https://s3.eu-west-3.amazonaws.com/sniper/public/snipers/cl0s4zy9m247009l1ybkoojxe/me-square.png"
       }
     },
     "general": {
       "font": "Open Sans",
       "background": { "type": "Color", "content": "#171923" }
     },
-    "customCss": ".typebot-button {box-shadow: inset 0 1px 0 0 rgb(255 255 255/0.2)}"
+    "customCss": ".sniper-button {box-shadow: inset 0 1px 0 0 rgb(255 255 255/0.2)}"
   },
   "settings": {
     "general": { "isBrandingEnabled": false },

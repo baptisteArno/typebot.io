@@ -1,5 +1,5 @@
-import { WhatsAppWebhookRequestBody } from '@typebot.io/schemas/features/whatsapp'
-import { isNotDefined } from '@typebot.io/lib'
+import { WhatsAppWebhookRequestBody } from '@sniper.io/schemas/features/whatsapp'
+import { isNotDefined } from '@sniper.io/lib'
 import { resumeWhatsAppFlow } from '../whatsapp/resumeWhatsAppFlow'
 
 type Props = {

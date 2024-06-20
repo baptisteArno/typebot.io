@@ -1,10 +1,10 @@
 import { Stack } from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
-import { Comparison, Variable } from '@typebot.io/schemas'
+import { Comparison, Variable } from '@sniper.io/schemas'
 import { TableListItemProps } from '@/components/TableList'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { TextInput } from '@/components/inputs'
-import { ComparisonOperators } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
+import { ComparisonOperators } from '@sniper.io/schemas/features/blocks/logic/condition/constants'
 import { useTranslate } from '@tolgee/react'
 
 export const ComparisonItem = ({

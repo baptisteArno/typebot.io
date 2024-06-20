@@ -1,10 +1,10 @@
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
 import { computeCurrentProgress } from '../computeCurrentProgress'
 import { filterPotentiallySensitiveLogs } from '../logs/filterPotentiallySensitiveLogs'
 import { restartSession } from '../queries/restartSession'
 import { saveStateToDatabase } from '../saveStateToDatabase'
 import { startSession } from '../startSession'
-import { isNotEmpty } from '@typebot.io/lib'
+import { isNotEmpty } from '@sniper.io/lib'
 
 type Props = {
   origin: string | undefined
@@ -28,7 +28,7 @@ export const startChat = async ({
   textBubbleContentFormat,
 }: Props) => {
   const {
-    typebot,
+    sniper,
     messages,
     input,
     resultId,
@@ -92,10 +92,10 @@ export const startChat = async ({
 
   return {
     sessionId: session.id,
-    typebot: {
-      id: typebot.id,
-      theme: typebot.theme,
-      settings: typebot.settings,
+    sniper: {
+      id: sniper.id,
+      theme: sniper.theme,
+      settings: sniper.settings,
     },
     messages,
     input,
@@ -108,7 +108,7 @@ export const startChat = async ({
       ? isEnded
         ? 100
         : computeCurrentProgress({
-            typebotsQueue: newSessionState.typebotsQueue,
+            snipersQueue: newSessionState.snipersQueue,
             progressMetadata: newSessionState.progressMetadata,
             currentInputBlockId: input?.id,
           })

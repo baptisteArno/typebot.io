@@ -1,6 +1,6 @@
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { ListItem, OrderedList, Stack, Text } from '@chakra-ui/react'
-import { BubbleProps } from '@typebot.io/nextjs'
+import { BubbleProps } from '@sniper.io/nextjs'
 import { useState } from 'react'
 import { BubbleSettings } from '../../../settings/BubbleSettings/BubbleSettings'
 import { InstallReactPackageSnippet } from '../InstallReactPackageSnippet'
@@ -8,9 +8,9 @@ import { ReactBubbleSnippet } from '../ReactBubbleSnippet'
 import { parseDefaultBubbleTheme } from '../../Javascript/instructions/JavascriptBubbleInstructions'
 
 export const ReactBubbleInstructions = () => {
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
   const [theme, setTheme] = useState<BubbleProps['theme']>(
-    parseDefaultBubbleTheme(typebot)
+    parseDefaultBubbleTheme(sniper)
   )
   const [previewMessage, setPreviewMessage] =
     useState<BubbleProps['previewMessage']>()
@@ -29,7 +29,7 @@ export const ReactBubbleInstructions = () => {
             theme={theme}
             previewMessage={previewMessage}
             defaultPreviewMessageAvatar={
-              typebot?.theme.chat?.hostAvatar?.url ?? ''
+              sniper?.theme.chat?.hostAvatar?.url ?? ''
             }
             onThemeChange={setTheme}
             onPreviewMessageChange={setPreviewMessage}

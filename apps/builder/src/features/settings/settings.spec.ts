@@ -1,17 +1,17 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
-import { defaultTextInputOptions } from '@typebot.io/schemas/features/blocks/inputs/text/constants'
+import { importSniperInDatabase } from '@sniper.io/playwright/databaseActions'
+import { defaultTextInputOptions } from '@sniper.io/schemas/features/blocks/inputs/text/constants'
 
 test.describe.parallel('Settings page', () => {
   test.describe('General', () => {
     test('should reflect change in real-time', async ({ page }) => {
-      const typebotId = createId()
-      await importTypebotInDatabase(getTestAsset('typebots/settings.json'), {
-        id: typebotId,
+      const sniperId = createId()
+      await importSniperInDatabase(getTestAsset('snipers/settings.json'), {
+        id: sniperId,
       })
-      await page.goto(`/typebots/${typebotId}/settings`)
+      await page.goto(`/snipers/${sniperId}/settings`)
 
       await page.click('text="Remember user"')
 
@@ -30,14 +30,14 @@ test.describe.parallel('Settings page', () => {
 
   test.describe('Typing emulation', () => {
     test('should be fillable', async ({ page }) => {
-      const typebotId = createId()
-      await importTypebotInDatabase(getTestAsset('typebots/settings.json'), {
-        id: typebotId,
+      const sniperId = createId()
+      await importSniperInDatabase(getTestAsset('snipers/settings.json'), {
+        id: sniperId,
       })
-      await page.goto(`/typebots/${typebotId}/settings`)
+      await page.goto(`/snipers/${sniperId}/settings`)
       await expect(
-        page.locator('a:has-text("Made with Typebot")')
-      ).toHaveAttribute('href', 'https://www.typebot.io/?utm_source=litebadge')
+        page.locator('a:has-text("Made with Sniper")')
+      ).toHaveAttribute('href', 'https://www.sniper.io/?utm_source=litebadge')
       await page.click('button:has-text("Typing")')
       await page.fill('[data-testid="speed"] input', '350')
       await page.fill('[data-testid="max-delay"] input', '1.5')
@@ -51,11 +51,11 @@ test.describe.parallel('Settings page', () => {
     test('should be fillable', async ({ page }) => {
       const favIconUrl = 'https://www.baptistearno.com/favicon.png'
       const imageUrl = 'https://www.baptistearno.com/images/site-preview.png'
-      const typebotId = createId()
-      await importTypebotInDatabase(getTestAsset('typebots/settings.json'), {
-        id: typebotId,
+      const sniperId = createId()
+      await importSniperInDatabase(getTestAsset('snipers/settings.json'), {
+        id: sniperId,
       })
-      await page.goto(`/typebots/${typebotId}/settings`)
+      await page.goto(`/snipers/${sniperId}/settings`)
       await expect(
         page.locator(
           `input[placeholder="${defaultTextInputOptions.labels.placeholder}"]`
@@ -93,7 +93,7 @@ test.describe.parallel('Settings page', () => {
       await page.fill('input[placeholder="Paste the image link..."]', imageUrl)
       await expect(websiteImg).toHaveAttribute('src', imageUrl)
 
-      await page.getByRole('textbox', { name: 'Title' }).fill('Awesome typebot')
+      await page.getByRole('textbox', { name: 'Title' }).fill('Awesome sniper')
       await page
         .getByRole('textbox', { name: 'Description' })
         .fill('Lorem ipsum')

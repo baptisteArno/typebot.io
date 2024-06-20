@@ -1,9 +1,9 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots } from '@typebot.io/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from '@typebot.io/playwright/databaseHelpers'
+import { createSnipers } from '@sniper.io/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@sniper.io/playwright/databaseHelpers'
 import { createId } from '@paralleldrive/cuid2'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
-import { VideoBubbleContentType } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
+import { VideoBubbleContentType } from '@sniper.io/schemas/features/blocks/bubbles/video/constants'
 
 const videoSrc =
   'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'
@@ -13,17 +13,17 @@ const vimeoVideoSrc = 'https://vimeo.com/649301125'
 test.describe.parallel('Video bubble block', () => {
   test.describe('Content settings', () => {
     test('should import video url correctly', async ({ page }) => {
-      const typebotId = createId()
-      await createTypebots([
+      const sniperId = createId()
+      await createSnipers([
         {
-          id: typebotId,
+          id: sniperId,
           ...parseDefaultGroupWithBlock({
             type: BubbleBlockType.VIDEO,
           }),
         },
       ])
 
-      await page.goto(`/typebots/${typebotId}/edit`)
+      await page.goto(`/snipers/${sniperId}/edit`)
 
       await page.click('text=Click to edit...')
       await page.fill('input[placeholder="Paste the video link..."]', videoSrc)
@@ -36,10 +36,10 @@ test.describe.parallel('Video bubble block', () => {
 
   test.describe('Preview', () => {
     test('should display video correctly', async ({ page }) => {
-      const typebotId = createId()
-      await createTypebots([
+      const sniperId = createId()
+      await createSnipers([
         {
-          id: typebotId,
+          id: sniperId,
           ...parseDefaultGroupWithBlock({
             type: BubbleBlockType.VIDEO,
             content: {
@@ -50,7 +50,7 @@ test.describe.parallel('Video bubble block', () => {
         },
       ])
 
-      await page.goto(`/typebots/${typebotId}/edit`)
+      await page.goto(`/snipers/${sniperId}/edit`)
       await page.click('text=Test')
       await expect(page.locator('video').nth(1)).toHaveAttribute(
         'src',
@@ -59,10 +59,10 @@ test.describe.parallel('Video bubble block', () => {
     })
 
     test('should display youtube video correctly', async ({ page }) => {
-      const typebotId = createId()
-      await createTypebots([
+      const sniperId = createId()
+      await createSnipers([
         {
-          id: typebotId,
+          id: sniperId,
           ...parseDefaultGroupWithBlock({
             type: BubbleBlockType.VIDEO,
             content: {
@@ -74,7 +74,7 @@ test.describe.parallel('Video bubble block', () => {
         },
       ])
 
-      await page.goto(`/typebots/${typebotId}/edit`)
+      await page.goto(`/snipers/${sniperId}/edit`)
       await page.click('text=Test')
       await expect(page.locator('iframe').nth(1)).toHaveAttribute(
         'src',
@@ -83,10 +83,10 @@ test.describe.parallel('Video bubble block', () => {
     })
 
     test('should display vimeo video correctly', async ({ page }) => {
-      const typebotId = createId()
-      await createTypebots([
+      const sniperId = createId()
+      await createSnipers([
         {
-          id: typebotId,
+          id: sniperId,
           ...parseDefaultGroupWithBlock({
             type: BubbleBlockType.VIDEO,
             content: {
@@ -98,7 +98,7 @@ test.describe.parallel('Video bubble block', () => {
         },
       ])
 
-      await page.goto(`/typebots/${typebotId}/edit`)
+      await page.goto(`/snipers/${sniperId}/edit`)
       await page.click('text=Test')
       await expect(page.locator('iframe').nth(1)).toHaveAttribute(
         'src',

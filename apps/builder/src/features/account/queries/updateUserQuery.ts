@@ -1,5 +1,5 @@
-import { sendRequest } from '@typebot.io/lib'
-import { User } from '@typebot.io/schemas'
+import { sendRequest } from '@sniper.io/lib'
+import { User } from '@sniper.io/schemas'
 
 export const updateUserQuery = async (id: string, user: Partial<User>) =>
   sendRequest({

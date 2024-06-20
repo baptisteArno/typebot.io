@@ -4,7 +4,7 @@ import { getBlogPosts } from '@/app/db/blog'
 import { Post } from './Post'
 import { serialize } from 'next-mdx-remote/serialize'
 import '@/assets/prose.css'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 export async function generateMetadata({
   params,

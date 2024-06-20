@@ -1,10 +1,10 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Workspace, workspaceSchema } from '@typebot.io/schemas'
+import { Workspace, workspaceSchema } from '@sniper.io/schemas'
 import { z } from 'zod'
 import { parseWorkspaceDefaultPlan } from '../helpers/parseWorkspaceDefaultPlan'
-import { trackEvents } from '@typebot.io/telemetry/trackEvents'
+import { trackEvents } from '@sniper.io/telemetry/trackEvents'
 
 export const createWorkspace = authenticatedProcedure
   .meta({

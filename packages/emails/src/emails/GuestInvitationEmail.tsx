@@ -10,11 +10,11 @@ import { render } from '@faire/mjml-react/utils/render'
 import { HeroImage, Text, Button, Head } from '../components'
 import { SendMailOptions } from 'nodemailer'
 import { sendEmail } from '../sendEmail'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 type GuestInvitationEmailProps = {
   workspaceName: string
-  typebotName: string
+  sniperName: string
   url: string
   hostEmail: string
   guestEmail: string
@@ -22,7 +22,7 @@ type GuestInvitationEmailProps = {
 
 export const GuestInvitationEmail = ({
   workspaceName,
-  typebotName,
+  sniperName,
   url,
   hostEmail,
   guestEmail,
@@ -38,18 +38,18 @@ export const GuestInvitationEmail = ({
       <MjmlSection padding="0 24px" cssClass="smooth">
         <MjmlColumn>
           <Text>
-            You have been invited by {hostEmail} to collaborate on his typebot{' '}
-            <strong>{typebotName}</strong>.
+            You have been invited by {hostEmail} to collaborate on his sniper{' '}
+            <strong>{sniperName}</strong>.
           </Text>
           <Text>
-            From now on you will see this typebot in your dashboard under his
+            From now on you will see this sniper in your dashboard under his
             workspace &quot;{workspaceName}&quot; 👍
           </Text>
           <Text>
             Make sure to log in as <i>{guestEmail}</i>.
           </Text>
           <MjmlSpacer height="24px" />
-          <Button link={url}>Go to typebot</Button>
+          <Button link={url}>Go to sniper</Button>
         </MjmlColumn>
       </MjmlSection>
     </MjmlBody>

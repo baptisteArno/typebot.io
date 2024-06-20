@@ -1,9 +1,9 @@
-import { CollaborationType, WorkspaceRole } from '@typebot.io/prisma'
-import prisma from '@typebot.io/lib/prisma'
+import { CollaborationType, WorkspaceRole } from '@sniper.io/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import {
-  canReadTypebots,
-  canWriteTypebots,
+  canReadSnipers,
+  canWriteSnipers,
   isUniqueConstraintError,
 } from '@/helpers/databaseRules'
 import {
@@ -11,30 +11,30 @@ import {
   forbidden,
   methodNotAllowed,
   notAuthenticated,
-} from '@typebot.io/lib/api'
+} from '@sniper.io/lib/api'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
-import { sendGuestInvitationEmail } from '@typebot.io/emails'
-import { env } from '@typebot.io/env'
+import { sendGuestInvitationEmail } from '@sniper.io/emails'
+import { env } from '@sniper.io/env'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res)
   if (!user) return notAuthenticated(res)
-  const typebotId = req.query.typebotId as string | undefined
-  if (!typebotId) return badRequest(res)
+  const sniperId = req.query.sniperId as string | undefined
+  if (!sniperId) return badRequest(res)
   if (req.method === 'GET') {
     const invitations = await prisma.invitation.findMany({
-      where: { typebotId, typebot: canReadTypebots(typebotId, user) },
+      where: { sniperId, sniper: canReadSnipers(sniperId, user) },
     })
     return res.send({
       invitations,
     })
   }
   if (req.method === 'POST') {
-    const typebot = await prisma.typebot.findFirst({
-      where: canWriteTypebots(typebotId, user),
+    const sniper = await prisma.sniper.findFirst({
+      where: canWriteSnipers(sniperId, user),
       include: { workspace: { select: { name: true } } },
     })
-    if (!typebot || !typebot.workspaceId) return forbidden(res)
+    if (!sniper || !sniper.workspaceId) return forbidden(res)
     const { email, type } =
       (req.body as
         | { email: string | undefined; type: CollaborationType | undefined }
@@ -46,17 +46,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
     if (existingUser) {
       try {
-        await prisma.collaboratorsOnTypebots.create({
+        await prisma.collaboratorsOnSnipers.create({
           data: {
             type,
-            typebotId,
+            sniperId,
             userId: existingUser.id,
           },
         })
       } catch (error) {
         if (isUniqueConstraintError(error)) {
           return res.status(400).send({
-            message: 'User already has access to this typebot.',
+            message: 'User already has access to this sniper.',
           })
         }
         throw error
@@ -66,28 +66,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         where: {
           userId_workspaceId: {
             userId: existingUser.id,
-            workspaceId: typebot.workspaceId,
+            workspaceId: sniper.workspaceId,
           },
         },
         create: {
           role: WorkspaceRole.GUEST,
           userId: existingUser.id,
-          workspaceId: typebot.workspaceId,
+          workspaceId: sniper.workspaceId,
         },
         update: {},
       })
     } else
       await prisma.invitation.create({
-        data: { email: email.toLowerCase().trim(), type, typebotId },
+        data: { email: email.toLowerCase().trim(), type, sniperId },
       })
     if (!env.NEXT_PUBLIC_E2E_TEST)
       await sendGuestInvitationEmail({
         to: email,
         hostEmail: user.email ?? '',
-        url: `${env.NEXTAUTH_URL}/typebots?workspaceId=${typebot.workspaceId}`,
+        url: `${env.NEXTAUTH_URL}/snipers?workspaceId=${sniper.workspaceId}`,
         guestEmail: email.toLowerCase(),
-        typebotName: typebot.name,
-        workspaceName: typebot.workspace?.name ?? '',
+        sniperName: sniper.name,
+        workspaceName: sniper.workspace?.name ?? '',
       })
     return res.send({
       message: 'success',

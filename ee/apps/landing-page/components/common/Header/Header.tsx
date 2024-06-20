@@ -45,7 +45,7 @@ export const Header = () => {
           <HStack as={Link} href="/" rel="home" ml="2">
             <Logo boxSize="35px" />
             <Heading as="p" fontSize="lg">
-              Typebot
+              Sniper
             </Heading>
           </HStack>
         </Flex>
@@ -89,7 +89,7 @@ export const Header = () => {
           </Button>
           <Button
             as={Link}
-            href="https://app.typebot.io/signin"
+            href="https://app.sniper.io/signin"
             colorScheme="blue"
             variant="outline"
             fontWeight={700}
@@ -98,11 +98,11 @@ export const Header = () => {
           </Button>
           <Button
             as={Link}
-            href="https://app.typebot.io/register"
+            href="https://app.sniper.io/register"
             colorScheme="orange"
             fontWeight={700}
           >
-            Create a typebot
+            Create a sniper
           </Button>
         </HStack>
       </HStack>

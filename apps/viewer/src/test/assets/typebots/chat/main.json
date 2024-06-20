@@ -221,9 +221,9 @@
         {
           "id": "clauuq2l6001d3b6qyltfcvgb",
           "groupId": "clauuq2l6001c3b6qpmq3ivwk",
-          "type": "Typebot link",
+          "type": "Sniper link",
           "options": {
-            "typebotId": "chat-sub-bot",
+            "sniperId": "chat-sub-bot",
             "groupId": "clauupd6q00183b6qcm8qbz62"
           },
           "outgoingEdgeId": "clauureo3001h3b6qk6epabxq"

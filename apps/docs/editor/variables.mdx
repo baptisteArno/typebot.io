@@ -3,7 +3,7 @@ title: Variables
 icon: brackets-curly
 ---
 
-Variables are placeholders for content that you can then use anywhere in the Typebot. It's a very important concept to understand to truly create a customized experience for the user.
+Variables are placeholders for content that you can then use anywhere in the Sniper. It's a very important concept to understand to truly create a customized experience for the user.
 
 ## Save an answer in a variable
 
@@ -61,14 +61,14 @@ Here is a quick video that showcases advanced concepts about variables:
 
 By default, any declared variables in the bot can be prefilled by passing initial values in the URL.
 
-Let's say my typebot contains these variables:
+Let's say my sniper contains these variables:
 
 - "Email"
 - "First name"
 
 They can be initialized in the URL as [URL parameters](https://www.semrush.com/blog/url-parameters/). If I'm launching my bot using this URL:
 
-`https://typebot.io/my-bot?Email=test@test.com&First%20name=John` (Note that spaces in variable names should be replaced by `%20`)
+`https://sniper.io/my-bot?Email=test@test.com&First%20name=John` (Note that spaces in variable names should be replaced by `%20`)
 
 Then the variables will be prefilled as following:
 
@@ -78,8 +78,8 @@ Then the variables will be prefilled as following:
 Prefilling variables using the embed library is even easier. You need to add an object named `prefilledVariables` that contains a dictionary of your values. For example:
 
 ```js
-Typebot.initBubble({
-  typebot: `my-bot`,
+Sniper.initBubble({
+  sniper: `my-bot`,
   prefilledVariables: {
     Email: 'test@test.com',
     'First name': 'John',
@@ -91,7 +91,7 @@ Typebot.initBubble({
 
 ### Hidden variables
 
-Your typebot's variables don't have to be displayed to the user. You could create variables that are only used internally by the bot and displayed in your results. This allows you to add some context to a session for example a User ID, a `utm_source` parameter (in the case of a marketing campaign), or anything else.
+Your sniper's variables don't have to be displayed to the user. You could create variables that are only used internally by the bot and displayed in your results. This allows you to add some context to a session for example a User ID, a `utm_source` parameter (in the case of a marketing campaign), or anything else.
 
 You just have to make sure that the variables exist in the variables dropdown:
 

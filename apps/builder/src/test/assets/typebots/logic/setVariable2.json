@@ -116,9 +116,9 @@
                 "children": [
                   { "text": "👉 " },
                   {
-                    "url": "https://app.typebot.io/feedback",
+                    "url": "https://app.sniper.io/feedback",
                     "type": "a",
-                    "children": [{ "text": "https://app.typebot.io/feedback" }]
+                    "children": [{ "text": "https://app.sniper.io/feedback" }]
                   },
                   { "text": "" }
                 ]
@@ -168,7 +168,7 @@
                 "children": [
                   { "text": "First, don't forget to check out the " },
                   {
-                    "url": "https://docs.typebot.io/",
+                    "url": "https://docs.sniper.io/",
                     "type": "a",
                     "children": [{ "text": "Documentation 🙏" }]
                   }

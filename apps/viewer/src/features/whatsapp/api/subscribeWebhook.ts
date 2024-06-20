@@ -1,5 +1,5 @@
 import { publicProcedure } from '@/helpers/server/trpc'
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 

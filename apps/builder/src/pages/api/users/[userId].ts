@@ -1,10 +1,10 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
-import { methodNotAllowed, notAuthenticated } from '@typebot.io/lib/api'
-import { User } from '@typebot.io/schemas'
-import { trackEvents } from '@typebot.io/telemetry/trackEvents'
-import { Prisma } from '@typebot.io/prisma'
+import { methodNotAllowed, notAuthenticated } from '@sniper.io/lib/api'
+import { User } from '@sniper.io/schemas'
+import { trackEvents } from '@sniper.io/telemetry/trackEvents'
+import { Prisma } from '@sniper.io/prisma'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res)
@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const data = (
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body
     ) as Partial<User>
-    const typebots = await prisma.user.update({
+    const snipers = await prisma.user.update({
       where: { id },
       data: {
         ...data,
@@ -37,7 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           },
         },
       ])
-    return res.send({ typebots })
+    return res.send({ snipers })
   }
   return methodNotAllowed(res)
 }

@@ -1,27 +1,27 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Typebot } from '@typebot.io/schemas'
+import { Sniper } from '@sniper.io/schemas'
 import { z } from 'zod'
-import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
-import { archiveResults } from '@typebot.io/results/archiveResults'
+import { isWriteSniperForbidden } from '../helpers/isWriteSniperForbidden'
+import { archiveResults } from '@sniper.io/results/archiveResults'
 
-export const deleteTypebot = authenticatedProcedure
+export const deleteSniper = authenticatedProcedure
   .meta({
     openapi: {
       method: 'DELETE',
-      path: '/v1/typebots/{typebotId}',
+      path: '/v1/snipers/{sniperId}',
       protect: true,
-      summary: 'Delete a typebot',
-      tags: ['Typebot'],
+      summary: 'Delete a sniper',
+      tags: ['Sniper'],
     },
   })
   .input(
     z.object({
-      typebotId: z
+      sniperId: z
         .string()
         .describe(
-          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+          "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)"
         ),
     })
   )
@@ -30,10 +30,10 @@ export const deleteTypebot = authenticatedProcedure
       message: z.literal('success'),
     })
   )
-  .mutation(async ({ input: { typebotId }, ctx: { user } }) => {
-    const existingTypebot = await prisma.typebot.findFirst({
+  .mutation(async ({ input: { sniperId }, ctx: { user } }) => {
+    const existingSniper = await prisma.sniper.findFirst({
       where: {
-        id: typebotId,
+        id: sniperId,
       },
       select: {
         id: true,
@@ -59,27 +59,27 @@ export const deleteTypebot = authenticatedProcedure
       },
     })
     if (
-      !existingTypebot?.id ||
-      (await isWriteTypebotForbidden(existingTypebot, user))
+      !existingSniper?.id ||
+      (await isWriteSniperForbidden(existingSniper, user))
     )
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Sniper not found' })
 
     const { success } = await archiveResults(prisma)({
-      typebot: {
-        groups: existingTypebot.groups,
-      } as Pick<Typebot, 'groups'>,
-      resultsFilter: { typebotId },
+      sniper: {
+        groups: existingSniper.groups,
+      } as Pick<Sniper, 'groups'>,
+      resultsFilter: { sniperId },
     })
     if (!success)
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to archive results',
       })
-    await prisma.publicTypebot.deleteMany({
-      where: { typebotId },
+    await prisma.publicSniper.deleteMany({
+      where: { sniperId },
     })
-    await prisma.typebot.updateMany({
-      where: { id: typebotId },
+    await prisma.sniper.updateMany({
+      where: { id: sniperId },
       data: { isArchived: true, publicId: null, customDomain: null },
     })
     return {

@@ -1,20 +1,20 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { Prisma } from '@typebot.io/prisma'
-import prisma from '@typebot.io/lib/prisma'
+import { Prisma } from '@sniper.io/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { googleSheetsScopes } from './consent-url'
-import { badRequest, notAuthenticated } from '@typebot.io/lib/api'
+import { badRequest, notAuthenticated } from '@sniper.io/lib/api'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
-import { env } from '@typebot.io/env'
-import { encrypt } from '@typebot.io/lib/api/encryption/encrypt'
+import { env } from '@sniper.io/env'
+import { encrypt } from '@sniper.io/lib/api/encryption/encrypt'
 import { OAuth2Client } from 'google-auth-library'
-import { parseGroups } from '@typebot.io/schemas'
+import { parseGroups } from '@sniper.io/schemas'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res)
   if (!user) return notAuthenticated(res)
   const state = req.query.state as string | undefined
   if (!state) return badRequest(res)
-  const { typebotId, redirectUrl, blockId, workspaceId } = JSON.parse(
+  const { sniperId, redirectUrl, blockId, workspaceId } = JSON.parse(
     Buffer.from(state, 'base64').toString()
   )
   if (req.method === 'GET') {
@@ -55,18 +55,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { id: credentialsId } = await prisma.credentials.create({
       data: credentials,
     })
-    const typebot = await prisma.typebot.findFirst({
+    const sniper = await prisma.sniper.findFirst({
       where: {
-        id: typebotId,
+        id: sniperId,
       },
       select: {
         version: true,
         groups: true,
       },
     })
-    if (!typebot) return res.status(404).send({ message: 'Typebot not found' })
-    const groups = parseGroups(typebot.groups, {
-      typebotVersion: typebot.version,
+    if (!sniper) return res.status(404).send({ message: 'Sniper not found' })
+    const groups = parseGroups(sniper.groups, {
+      sniperVersion: sniper.version,
     }).map((group) => {
       const block = group.blocks.find((block) => block.id === blockId)
       if (!block) return group
@@ -84,9 +84,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }),
       }
     })
-    await prisma.typebot.updateMany({
+    await prisma.sniper.updateMany({
       where: {
-        id: typebotId,
+        id: sniperId,
       },
       data: {
         groups,

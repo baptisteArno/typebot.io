@@ -25,7 +25,7 @@ You can set a custom body with your collected variables. Here is a working examp
 
 ### Example with a dummy API: CREATE and GET
 
-This video provides a step-by-step guide to successfully configure HTTP request blocks in Typebot.
+This video provides a step-by-step guide to successfully configure HTTP request blocks in Sniper.
 
 I demonstrate how to configure the HTTP request block, including the URL, method, and custom body. I also show you how to test the request and save the newly created employee ID. Finally, I explain how to implement the find employee by ID endpoint and map the employee name to a variable.
 
@@ -37,7 +37,7 @@ Let's create a bot that ask for a movie and retrieve its informations (By sendin
 
 From the documentation, I know that by calling this specific URL: http://www.omdbapi.com/?t=Star%20Wars&apikey=1eb4670b, it will search for "Star Wars" movie information and return JSON data.
 
-What I need in my case is instead of inserting "Star Wars", I'd like to insert a Typebot variable:
+What I need in my case is instead of inserting "Star Wars", I'd like to insert a Sniper variable:
 
 <Frame>
   <img
@@ -72,7 +72,7 @@ Then we can use these variables to display dynamic content in the next bubbles:
 
 Possibilities are endless when it comes to API calls, you can litteraly call any API and fetch any data you want.
 
-Feel free to ask the [community](https://typebot.io/discord) for help if you struggle setting up a Webhook block.
+Feel free to ask the [community](https://sniper.io/discord) for help if you struggle setting up a Webhook block.
 
 ## Call a Webhook URL
 
@@ -99,6 +99,6 @@ The Webhook block request fail or didn't seem to trigger? Make sure to check the
 
 ### Webhook is not executed in the right order?
 
-That is expected, Typebot actually computes all the blocks between each input blocks from a server before displaying anything.
+That is expected, Sniper actually computes all the blocks between each input blocks from a server before displaying anything.
 
 <LoomVideo id="9cc00a9a8c8245709d6322f197c9fb45" />

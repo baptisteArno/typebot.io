@@ -7,39 +7,39 @@ import {
   useEffect,
   useState,
 } from 'react'
-import { TypebotInDashboard } from '../dashboard/types'
+import { SniperInDashboard } from '../dashboard/types'
 
-const typebotDndContext = createContext<{
-  draggedTypebot?: TypebotInDashboard
-  setDraggedTypebot: Dispatch<SetStateAction<TypebotInDashboard | undefined>>
+const sniperDndContext = createContext<{
+  draggedSniper?: SniperInDashboard
+  setDraggedSniper: Dispatch<SetStateAction<SniperInDashboard | undefined>>
   mouseOverFolderId?: string | null
   setMouseOverFolderId: Dispatch<SetStateAction<string | undefined | null>>
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
 }>({})
 
-export const TypebotDndProvider = ({ children }: { children: ReactNode }) => {
-  const [draggedTypebot, setDraggedTypebot] = useState<TypebotInDashboard>()
+export const SniperDndProvider = ({ children }: { children: ReactNode }) => {
+  const [draggedSniper, setDraggedSniper] = useState<SniperInDashboard>()
   const [mouseOverFolderId, setMouseOverFolderId] = useState<string | null>()
 
   useEffect(() => {
-    draggedTypebot
+    draggedSniper
       ? document.body.classList.add('grabbing')
       : document.body.classList.remove('grabbing')
-  }, [draggedTypebot])
+  }, [draggedSniper])
 
   return (
-    <typebotDndContext.Provider
+    <sniperDndContext.Provider
       value={{
-        draggedTypebot,
-        setDraggedTypebot,
+        draggedSniper,
+        setDraggedSniper,
         mouseOverFolderId,
         setMouseOverFolderId,
       }}
     >
       {children}
-    </typebotDndContext.Provider>
+    </sniperDndContext.Provider>
   )
 }
 
-export const useTypebotDnd = () => useContext(typebotDndContext)
+export const useSniperDnd = () => useContext(sniperDndContext)

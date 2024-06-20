@@ -7,7 +7,7 @@ import {
   useCallback,
 } from 'react'
 import { Coordinates, CoordinatesMap } from '../types'
-import { TypebotV6 } from '@typebot.io/schemas'
+import { SniperV6 } from '@sniper.io/schemas'
 
 const eventsCoordinatesContext = createContext<{
   eventsCoordinates: CoordinatesMap
@@ -21,7 +21,7 @@ export const EventsCoordinatesProvider = ({
   events,
 }: {
   children: ReactNode
-  events: TypebotV6['events'][number][]
+  events: SniperV6['events'][number][]
   isReadOnly?: boolean
 }) => {
   const [eventsCoordinates, setEventsCoordinates] = useState<CoordinatesMap>({})

@@ -1,23 +1,23 @@
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
 import {
-  createTypebots,
-  importTypebotInDatabase,
-} from '@typebot.io/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from '@typebot.io/playwright/databaseHelpers'
+  createSnipers,
+  importSniperInDatabase,
+} from '@sniper.io/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@sniper.io/playwright/databaseHelpers'
 import { getTestAsset } from '@/test/utils/playwright'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
 
 test.describe.configure({ mode: 'parallel' })
 
 test('Edges connection should work', async ({ page }) => {
-  const typebotId = createId()
-  await createTypebots([
+  const sniperId = createId()
+  await createSnipers([
     {
-      id: typebotId,
+      id: sniperId,
     },
   ])
-  await page.goto(`/typebots/${typebotId}/edit`)
+  await page.goto(`/snipers/${sniperId}/edit`)
   await expect(page.locator("text='Start'")).toBeVisible()
   await page.dragAndDrop('text=Button', '#editor-container', {
     targetPosition: { x: 1000, y: 400 },
@@ -63,48 +63,48 @@ test('Edges connection should work', async ({ page }) => {
 })
 
 test('Rename and icon change should work', async ({ page }) => {
-  const typebotId = createId()
-  await createTypebots([
+  const sniperId = createId()
+  await createSnipers([
     {
-      id: typebotId,
-      name: 'My awesome typebot',
+      id: sniperId,
+      name: 'My awesome sniper',
       ...parseDefaultGroupWithBlock({
         type: InputBlockType.TEXT,
       }),
     },
   ])
 
-  await page.goto(`/typebots/${typebotId}/edit`)
+  await page.goto(`/snipers/${sniperId}/edit`)
   await page.click('[data-testid="editable-icon"]')
   await page.getByRole('button', { name: 'Emoji' }).click()
-  await expect(page.locator('text="My awesome typebot"')).toBeVisible()
+  await expect(page.locator('text="My awesome sniper"')).toBeVisible()
   await page.fill('input[placeholder="Search..."]', 'love')
   await page.click('text="😍"')
-  await page.click('text="My awesome typebot"')
-  await page.fill('input[value="My awesome typebot"]', 'My superb typebot')
-  await page.press('input[value="My superb typebot"]', 'Enter')
+  await page.click('text="My awesome sniper"')
+  await page.fill('input[value="My awesome sniper"]', 'My superb sniper')
+  await page.press('input[value="My superb sniper"]', 'Enter')
   await page.click('[aria-label="Navigate back"]')
   await expect(page.locator('text="😍"')).toBeVisible()
-  await expect(page.locator('text="My superb typebot"')).toBeVisible()
+  await expect(page.locator('text="My superb sniper"')).toBeVisible()
 })
 
 test('Preview from group should work', async ({ page }) => {
-  const typebotId = createId()
-  await importTypebotInDatabase(
-    getTestAsset('typebots/editor/previewFromGroup.json'),
+  const sniperId = createId()
+  await importSniperInDatabase(
+    getTestAsset('snipers/editor/previewFromGroup.json'),
     {
-      id: typebotId,
+      id: sniperId,
     }
   )
 
-  await page.goto(`/typebots/${typebotId}/edit`)
+  await page.goto(`/snipers/${sniperId}/edit`)
   await page
     .getByTestId('group')
     .nth(0)
     .click({ position: { x: 100, y: 10 } })
   await page.click('[aria-label="Preview bot from this group"]')
   await expect(
-    page.locator('typebot-standard').locator('text="Hello this is group 1"')
+    page.locator('sniper-standard').locator('text="Hello this is group 1"')
   ).toBeVisible()
   await page
     .getByTestId('group')
@@ -112,38 +112,38 @@ test('Preview from group should work', async ({ page }) => {
     .click({ position: { x: 100, y: 10 } })
   await page.click('[aria-label="Preview bot from this group"]')
   await expect(
-    page.locator('typebot-standard').locator('text="Hello this is group 2"')
+    page.locator('sniper-standard').locator('text="Hello this is group 2"')
   ).toBeVisible()
   await page.click('[aria-label="Close"]')
   await page.click('text="Test"')
   await expect(
-    page.locator('typebot-standard').locator('text="Hello this is group 1"')
+    page.locator('sniper-standard').locator('text="Hello this is group 1"')
   ).toBeVisible()
 })
 
-test('Published typebot menu should work', async ({ page }) => {
-  const typebotId = createId()
-  await createTypebots([
+test('Published sniper menu should work', async ({ page }) => {
+  const sniperId = createId()
+  await createSnipers([
     {
-      id: typebotId,
-      name: 'My awesome typebot',
+      id: sniperId,
+      name: 'My awesome sniper',
       ...parseDefaultGroupWithBlock({
         type: InputBlockType.TEXT,
       }),
       version: '6',
     },
   ])
-  await page.goto(`/typebots/${typebotId}/edit`)
+  await page.goto(`/snipers/${sniperId}/edit`)
   await expect(page.locator("text='Start'")).toBeVisible()
   await expect(page.locator('button >> text="Published"')).toBeVisible()
-  await page.click('[aria-label="Show published typebot menu"]')
-  await page.click('text="Close typebot to new responses"')
+  await page.click('[aria-label="Show published sniper menu"]')
+  await page.click('text="Close sniper to new responses"')
   await expect(page.locator('button >> text="Closed"')).toBeDisabled()
-  await page.click('[aria-label="Show published typebot menu"]')
-  await page.click('text="Reopen typebot to new responses"')
+  await page.click('[aria-label="Show published sniper menu"]')
+  await page.click('text="Reopen sniper to new responses"')
   await expect(page.locator('button >> text="Published"')).toBeDisabled()
-  await page.click('[aria-label="Show published typebot menu"]')
-  await page.click('button >> text="Unpublish typebot"')
+  await page.click('[aria-label="Show published sniper menu"]')
+  await page.click('button >> text="Unpublish sniper"')
   await page.click('button >> text="Publish"')
   await expect(page.locator('button >> text="Published"')).toBeVisible()
 })

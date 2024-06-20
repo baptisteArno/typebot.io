@@ -1,21 +1,21 @@
 import { createId } from '@paralleldrive/cuid2'
-import { SessionState, Edge } from '@typebot.io/schemas'
+import { SessionState, Edge } from '@sniper.io/schemas'
 
-export const addEdgeToTypebot = (
+export const addEdgeToSniper = (
   state: SessionState,
   edge: Edge
 ): SessionState => ({
   ...state,
-  typebotsQueue: state.typebotsQueue.map((typebot, index) =>
+  snipersQueue: state.snipersQueue.map((sniper, index) =>
     index === 0
       ? {
-          ...typebot,
-          typebot: {
-            ...typebot.typebot,
-            edges: [...typebot.typebot.edges, edge],
+          ...sniper,
+          sniper: {
+            ...sniper.sniper,
+            edges: [...sniper.sniper.edges, edge],
           },
         }
-      : typebot
+      : sniper
   ),
 })
 

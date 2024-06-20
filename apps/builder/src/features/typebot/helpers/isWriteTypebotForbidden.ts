@@ -1,14 +1,14 @@
 import {
   CollaborationType,
-  CollaboratorsOnTypebots,
+  CollaboratorsOnSnipers,
   MemberInWorkspace,
   User,
   Workspace,
-} from '@typebot.io/prisma'
+} from '@sniper.io/prisma'
 
-export const isWriteTypebotForbidden = async (
-  typebot: {
-    collaborators: Pick<CollaboratorsOnTypebots, 'userId' | 'type'>[]
+export const isWriteSniperForbidden = async (
+  sniper: {
+    collaborators: Pick<CollaboratorsOnSnipers, 'userId' | 'type'>[]
   } & {
     workspace: Pick<Workspace, 'isSuspended' | 'isPastDue'> & {
       members: Pick<MemberInWorkspace, 'userId' | 'role'>[]
@@ -17,14 +17,14 @@ export const isWriteTypebotForbidden = async (
   user: Pick<User, 'id'>
 ) => {
   return (
-    typebot.workspace.isSuspended ||
-    typebot.workspace.isPastDue ||
-    (!typebot.collaborators.some(
+    sniper.workspace.isSuspended ||
+    sniper.workspace.isPastDue ||
+    (!sniper.collaborators.some(
       (collaborator) =>
         collaborator.userId === user.id &&
         collaborator.type === CollaborationType.WRITE
     ) &&
-      !typebot.workspace.members.some(
+      !sniper.workspace.members.some(
         (m) => m.userId === user.id && m.role !== 'GUEST'
       ))
   )

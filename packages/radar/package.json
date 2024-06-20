@@ -1,5 +1,5 @@
 {
-  "name": "@typebot.io/radar",
+  "name": "@sniper.io/radar",
   "version": "1.0.0",
   "main": "./index.ts",
   "types": "./index.ts",
@@ -9,10 +9,10 @@
     "@udecode/plate-common": "30.4.5"
   },
   "devDependencies": {
-    "@typebot.io/schemas": "workspace:*",
-    "@typebot.io/prisma": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
-    "@typebot.io/env": "workspace:*",
+    "@sniper.io/schemas": "workspace:*",
+    "@sniper.io/prisma": "workspace:*",
+    "@sniper.io/tsconfig": "workspace:*",
+    "@sniper.io/env": "workspace:*",
     "typescript": "5.4.5"
   }
 }

@@ -1,4 +1,4 @@
-import { sendRequest } from '@typebot.io/lib'
+import { sendRequest } from '@sniper.io/lib'
 
 export const deleteMemberQuery = (workspaceId: string, userId: string) =>
   sendRequest({

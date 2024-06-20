@@ -1,22 +1,22 @@
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { z } from 'zod'
 import { TRPCError } from '@trpc/server'
-import { startSession } from '@typebot.io/bot-engine/startSession'
-import { env } from '@typebot.io/env'
+import { startSession } from '@sniper.io/bot-engine/startSession'
+import { env } from '@sniper.io/env'
 import { HTTPError } from 'ky'
-import prisma from '@typebot.io/lib/prisma'
-import { saveStateToDatabase } from '@typebot.io/bot-engine/saveStateToDatabase'
-import { restartSession } from '@typebot.io/bot-engine/queries/restartSession'
-import { sendChatReplyToWhatsApp } from '@typebot.io/bot-engine/whatsapp/sendChatReplyToWhatsApp'
-import { sendWhatsAppMessage } from '@typebot.io/bot-engine/whatsapp/sendWhatsAppMessage'
-import { isReadTypebotForbidden } from '../typebot/helpers/isReadTypebotForbidden'
-import { SessionState, startFromSchema } from '@typebot.io/schemas'
+import prisma from '@sniper.io/lib/prisma'
+import { saveStateToDatabase } from '@sniper.io/bot-engine/saveStateToDatabase'
+import { restartSession } from '@sniper.io/bot-engine/queries/restartSession'
+import { sendChatReplyToWhatsApp } from '@sniper.io/bot-engine/whatsapp/sendChatReplyToWhatsApp'
+import { sendWhatsAppMessage } from '@sniper.io/bot-engine/whatsapp/sendWhatsAppMessage'
+import { isReadSniperForbidden } from '../sniper/helpers/isReadSniperForbidden'
+import { SessionState, startFromSchema } from '@sniper.io/schemas'
 
 export const startWhatsAppPreview = authenticatedProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/v1/typebots/{typebotId}/whatsapp/start-preview',
+      path: '/v1/snipers/{sniperId}/whatsapp/start-preview',
       summary: 'Start preview',
       tags: ['WhatsApp'],
       protect: true,
@@ -30,7 +30,7 @@ export const startWhatsAppPreview = authenticatedProcedure
         .transform((value) =>
           value.replace(/\s/g, '').replace(/\+/g, '').replace(/-/g, '')
         ),
-      typebotId: z.string(),
+      sniperId: z.string(),
       startFrom: startFromSchema.optional(),
     })
   )
@@ -39,7 +39,7 @@ export const startWhatsAppPreview = authenticatedProcedure
       message: z.string(),
     })
   )
-  .mutation(async ({ input: { to, typebotId, startFrom }, ctx: { user } }) => {
+  .mutation(async ({ input: { to, sniperId, startFrom }, ctx: { user } }) => {
     if (
       !env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID ||
       !env.META_SYSTEM_USER_TOKEN ||
@@ -51,9 +51,9 @@ export const startWhatsAppPreview = authenticatedProcedure
           'Missing WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID or META_SYSTEM_USER_TOKEN or WHATSAPP_PREVIEW_TEMPLATE_NAME env variables',
       })
 
-    const existingTypebot = await prisma.typebot.findFirst({
+    const existingSniper = await prisma.sniper.findFirst({
       where: {
-        id: typebotId,
+        id: sniperId,
       },
       select: {
         id: true,
@@ -76,10 +76,10 @@ export const startWhatsAppPreview = authenticatedProcedure
       },
     })
     if (
-      !existingTypebot?.id ||
-      (await isReadTypebotForbidden(existingTypebot, user))
+      !existingSniper?.id ||
+      (await isReadSniperForbidden(existingSniper, user))
     )
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Sniper not found' })
 
     const sessionId = `wa-preview-${to}`
 
@@ -112,7 +112,7 @@ export const startWhatsAppPreview = authenticatedProcedure
       startParams: {
         isOnlyRegistering: !canSendDirectMessagesToUser,
         type: 'preview',
-        typebotId,
+        sniperId,
         startFrom,
         userId: user.id,
         isStreamEnabled: false,

@@ -1,4 +1,4 @@
-import { MemberInWorkspace, User } from '@typebot.io/prisma'
+import { MemberInWorkspace, User } from '@sniper.io/prisma'
 
 export const isWriteWorkspaceForbidden = (
   workspace: {

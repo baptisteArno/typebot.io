@@ -1,5 +1,5 @@
-import { TypebotLinkBlock } from './schema'
+import { SniperLinkBlock } from './schema'
 
-export const defaultTypebotLinkOptions = {
+export const defaultSniperLinkOptions = {
   mergeResults: false,
-} as const satisfies TypebotLinkBlock['options']
+} as const satisfies SniperLinkBlock['options']

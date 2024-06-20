@@ -1,18 +1,18 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { canEditGuests } from '@/helpers/databaseRules'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
-import { methodNotAllowed, notAuthenticated } from '@typebot.io/lib/api'
+import { methodNotAllowed, notAuthenticated } from '@sniper.io/lib/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res)
   if (!user) return notAuthenticated(res)
-  const typebotId = req.query.typebotId as string
+  const sniperId = req.query.sniperId as string
   const userId = req.query.userId as string
   if (req.method === 'PATCH') {
     const data = req.body
-    await prisma.collaboratorsOnTypebots.updateMany({
-      where: { userId, typebot: canEditGuests(user, typebotId) },
+    await prisma.collaboratorsOnSnipers.updateMany({
+      where: { userId, sniper: canEditGuests(user, sniperId) },
       data: { type: data.type },
     })
     return res.send({
@@ -20,8 +20,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
   }
   if (req.method === 'DELETE') {
-    await prisma.collaboratorsOnTypebots.deleteMany({
-      where: { userId, typebot: canEditGuests(user, typebotId) },
+    await prisma.collaboratorsOnSnipers.deleteMany({
+      where: { userId, sniper: canEditGuests(user, sniperId) },
     })
     return res.send({
       message: 'success',

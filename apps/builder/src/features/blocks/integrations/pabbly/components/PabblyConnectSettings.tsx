@@ -1,6 +1,6 @@
 import { Alert, AlertIcon, Button, Link, Stack, Text } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@/components/icons'
-import { PabblyConnectBlock, HttpRequest } from '@typebot.io/schemas'
+import { PabblyConnectBlock, HttpRequest } from '@sniper.io/schemas'
 import React from 'react'
 import { HttpRequestAdvancedConfigForm } from '../../webhook/components/HttpRequestAdvancedConfigForm'
 import { TextInput } from '@/components/inputs'
@@ -38,7 +38,7 @@ export const PabblyConnectSettings = ({
             <Text>Head up to Pabbly Connect to get the webhook URL:</Text>
             <Button
               as={Link}
-              href="https://www.pabbly.com/connect/integrations/typebot/"
+              href="https://www.pabbly.com/connect/integrations/sniper/"
               isExternal
               colorScheme="blue"
             >

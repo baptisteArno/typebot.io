@@ -1,8 +1,8 @@
 {
-  "name": "@typebot.io/wordpress",
+  "name": "@sniper.io/wordpress",
   "version": "3.6.0",
   "main": "index.js",
-  "repository": "https://github.com/baptisteArno/typebot.io",
+  "repository": "https://github.com/baptisteArno/sniper.io",
   "author": "baptisteArno",
   "license": "AGPL-3.0-or-later",
   "scripts": {

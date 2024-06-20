@@ -1,4 +1,4 @@
-import { PrismaClient, WorkspaceInvitation } from '@typebot.io/prisma'
+import { PrismaClient, WorkspaceInvitation } from '@sniper.io/prisma'
 import { InvitationWithWorkspaceId } from './convertInvitationsToCollaborations'
 
 export const getNewUserInvitations = async (
@@ -11,7 +11,7 @@ export const getNewUserInvitations = async (
   const [invitations, workspaceInvitations] = await p.$transaction([
     p.invitation.findMany({
       where: { email },
-      include: { typebot: { select: { workspaceId: true } } },
+      include: { sniper: { select: { workspaceId: true } } },
     }),
     p.workspaceInvitation.findMany({
       where: { email },

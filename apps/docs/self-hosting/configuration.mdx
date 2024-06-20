@@ -4,7 +4,7 @@ icon: gear
 ---
 
 <Note>
-  If you're self-hosting Typebot, [sponsoring
+  If you're self-hosting Sniper, [sponsoring
   me](https://github.com/sponsors/baptisteArno) is a great way to give back to
   the community and to contribute to the long-term sustainability of the
   project. It also comes with some perks like priority support and private
@@ -19,13 +19,13 @@ Parameters marked with <span style={{color: '#ef5151'}}>\*</span> are required.
 | ----------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | DATABASE_URL <span style={{color: '#ef5151'}}>\*</span>           |         | The database URL                                                                                                                                                                                              |
 | ENCRYPTION_SECRET <span style={{color: '#ef5151'}}>\*</span>      |         | A 256-bit key used to encrypt sensitive data. It is strongly recommended to [generate](./deploy/docker#2-add-the-required-configuration) a new one. The secret should be the same between builder and viewer. |
-| NEXTAUTH_URL <span style={{color: '#ef5151'}}>\*</span>           |         | The builder base URL. Should be the publicly accessible URL (i.e. `https://typebot.domain.com`)                                                                                                               |
+| NEXTAUTH_URL <span style={{color: '#ef5151'}}>\*</span>           |         | The builder base URL. Should be the publicly accessible URL (i.e. `https://sniper.domain.com`)                                                                                                                |
 | NEXT_PUBLIC_VIEWER_URL <span style={{color: '#ef5151'}}>\*</span> |         | The viewer base URL. Should be the publicly accessible URL (i.e. `https://bot.domain.com`)                                                                                                                    |
 | ADMIN_EMAIL                                                       |         | The email that will get an `UNLIMITED` plan on user creation. The associated user will be able to bypass database rules. You can provide multiple emails separated by a comma without spaces.                 |
 | NEXTAUTH_URL_INTERNAL                                             |         | The internal builder base URL. You have to set it only when `NEXTAUTH_URL` can't be reached by your builder container / server. For a docker deployment, you should set it to `http://localhost:3000`.        |
 | DEFAULT_WORKSPACE_PLAN                                            | FREE    | Default workspace plan on user creation or when a user creates a new workspace. Possible values are `FREE`, `STARTER`, `PRO`, `LIFETIME`, `UNLIMITED`. The default plan for admin user is `UNLIMITED`         |
 | DISABLE_SIGNUP                                                    | false   | Disable new user sign ups. Invited users are still able to sign up.                                                                                                                                           |
-| NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID                                 |         | Typebot ID used for the onboarding. Onboarding page is skipped if not provided.                                                                                                                               |
+| NEXT_PUBLIC_ONBOARDING_SNIPER_ID                                  |         | Sniper ID used for the onboarding. Onboarding page is skipped if not provided.                                                                                                                                |
 | DEBUG                                                             | false   | If enabled, the server will print valuable logs to debug config issues.                                                                                                                                       |
 | NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE                              |         | Limits the size of each file that can be uploaded in the bots (i.e. Set `10` to limit the file upload to 10MB)                                                                                                |
 
@@ -39,7 +39,7 @@ Used for sending email notifications and authentication
 | SMTP_PASSWORD         |         | SMTP password                                                                                                                                                                                                                                              |
 | SMTP_HOST             |         | SMTP host. (i.e. `smtp.host.com`)                                                                                                                                                                                                                          |
 | SMTP_PORT             | 25      | SMTP port                                                                                                                                                                                                                                                  |
-| NEXT_PUBLIC_SMTP_FROM |         | From name and email (i.e. `'Typebot Notifications' <notifications@host.com>`)                                                                                                                                                                              |
+| NEXT_PUBLIC_SMTP_FROM |         | From name and email (i.e. `'Sniper Notifications' <notifications@host.com>`)                                                                                                                                                                               |
 | SMTP_SECURE           | false   | If true the connection will use TLS when connecting to server. If false (the default) then TLS is used if server supports the STARTTLS extension. In most cases set this value to true if you are connecting to port 465. For port 587 or 25 keep it false |
 | SMTP_AUTH_DISABLED    | false   | To disable the authentication by email but still use the provided config for notifications                                                                                                                                                                 |
 
@@ -125,7 +125,7 @@ Used authentication in the builder and for the Google Sheets integration step.
 
 ## GitHub (Auth)
 
-Used for authenticating with GitHub. By default, it uses the credentials of a Typebot-dev app.
+Used for authenticating with GitHub. By default, it uses the credentials of a Sniper-dev app.
 
 You can create your own GitHub OAuth app [here](https://github.com/settings/developers). The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/github`
 
@@ -174,14 +174,12 @@ The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/azure-
 Used for authenticating with Keycloak.
 Follow the official Keycloak guide for creating OAuth2 applications [here](https://www.keycloak.org/).
 
-| Parameter                | Default            | Description                                                                          |
-| ------------------------ | ------------------ | ------------------------------------------------------------------------------------ |
-| KEYCLOAK_CLIENT_ID       |                    | Application client ID.                                                               |
-| KEYCLOAK_CLIENT_SECRET   |                    | Application secret                                                                   |
-| KEYCLOAK_REALM           |                    | Your Keycloak Realm                                                                  |
-| KEYCLOAK_BASE_URL        |                    | Base URL of the Keycloak instance                                                    |
-
-
+| Parameter              | Default | Description                       |
+| ---------------------- | ------- | --------------------------------- |
+| KEYCLOAK_CLIENT_ID     |         | Application client ID.            |
+| KEYCLOAK_CLIENT_SECRET |         | Application secret                |
+| KEYCLOAK_REALM         |         | Your Keycloak Realm               |
+| KEYCLOAK_BASE_URL      |         | Base URL of the Keycloak instance |
 
 ## Custom OAuth Provider (Auth)
 
@@ -209,7 +207,7 @@ Used for uploading images, videos, etc... It can be any S3 compatible object sto
 | ----------------------- | ------- | ---------------------------------------------------------------------------------- |
 | S3_ACCESS_KEY           |         | S3 access key. Also used to check if upload feature is enabled                     |
 | S3_SECRET_KEY           |         | S3 secret key.                                                                     |
-| S3_BUCKET               | typebot | Name of the bucket where assets will be uploaded in.                               |
+| S3_BUCKET               | sniper  | Name of the bucket where assets will be uploaded in.                               |
 | S3_PORT                 |         | S3 Host port number                                                                |
 | S3_ENDPOINT             |         | S3 endpoint (i.e. `s3.domain.com`).                                                |
 | S3_SSL                  | true    | Use SSL when establishing the connection.                                          |
@@ -240,7 +238,7 @@ Used to search for images. You can create an Unsplash app [here](https://unsplas
 ## Tolgee (i18n contribution dev tool)
 
 <Note>
-  If you'd like to join contribute to Typebot's translation join the [Discord
+  If you'd like to join contribute to Sniper's translation join the [Discord
   server](https://discord.gg/xjyQczWAXV) and ask for an access to Tolgee in the
   [#contributors
   channel](https://discord.com/channels/1155799591220953138/1155883114455900190).
@@ -308,9 +306,9 @@ In order to be able to test your bot on WhatsApp from the Preview drawer, you ne
 
 ## Others
 
-The [official Typebot managed service](https://app.typebot.io/) uses other services such as [Stripe](https://stripe.com/) for processing payments, [Sentry](https://sentry.io/) for tracking bugs and [Sleekplan](https://sleekplan.com/) for user feedbacks.
+The [official Sniper managed service](https://app.sniper.io/) uses other services such as [Stripe](https://stripe.com/) for processing payments, [Sentry](https://sentry.io/) for tracking bugs and [Sleekplan](https://sleekplan.com/) for user feedbacks.
 
-The related environment variables are listed here but you are probably not interested in these if you self-host Typebot.
+The related environment variables are listed here but you are probably not interested in these if you self-host Sniper.
 
 <Accordion title="Vercel (custom domains)">
 

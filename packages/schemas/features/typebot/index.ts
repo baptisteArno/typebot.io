@@ -1,4 +1,4 @@
-export * from './typebot'
+export * from './sniper'
 export * from './theme'
 export * from './settings'
 export * from './variable'

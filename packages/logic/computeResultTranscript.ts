@@ -4,24 +4,24 @@ import {
   Edge,
   Group,
   InputBlock,
-  TypebotInSession,
+  SniperInSession,
   Variable,
-} from '@typebot.io/schemas'
-import { SetVariableHistoryItem } from '@typebot.io/schemas/features/result'
-import { isBubbleBlock, isInputBlock } from '@typebot.io/schemas/helpers'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
-import { convertRichTextToMarkdown } from '@typebot.io/lib/markdown/convertRichTextToMarkdown'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
-import { createId } from '@typebot.io/lib/createId'
+} from '@sniper.io/schemas'
+import { SetVariableHistoryItem } from '@sniper.io/schemas/features/result'
+import { isBubbleBlock, isInputBlock } from '@sniper.io/schemas/helpers'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
+import { convertRichTextToMarkdown } from '@sniper.io/lib/markdown/convertRichTextToMarkdown'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
+import { createId } from '@sniper.io/lib/createId'
 import { executeCondition } from './executeCondition'
 import {
   parseBubbleBlock,
   BubbleBlockWithDefinedContent,
 } from '../bot-engine/parseBubbleBlock'
-import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
-import { defaultPictureChoiceOptions } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice/constants'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { parseVariables } from '@typebot.io/variables/parseVariables'
+import { defaultChoiceInputOptions } from '@sniper.io/schemas/features/blocks/inputs/choice/constants'
+import { defaultPictureChoiceOptions } from '@sniper.io/schemas/features/blocks/inputs/pictureChoice/constants'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { parseVariables } from '@sniper.io/variables/parseVariables'
 
 type TranscriptMessage =
   | {
@@ -49,13 +49,13 @@ export const parseTranscriptMessageText = (
 }
 
 export const computeResultTranscript = ({
-  typebot,
+  sniper,
   answers,
   setVariableHistory,
   visitedEdges,
   stopAtBlockId,
 }: {
-  typebot: TypebotInSession
+  sniper: SniperInSession
   answers: Pick<Answer, 'blockId' | 'content'>[]
   setVariableHistory: Pick<
     SetVariableHistoryItem,
@@ -64,14 +64,14 @@ export const computeResultTranscript = ({
   visitedEdges: string[]
   stopAtBlockId?: string
 }): TranscriptMessage[] => {
-  const firstEdgeId = getFirstEdgeId(typebot)
+  const firstEdgeId = getFirstEdgeId(sniper)
   if (!firstEdgeId) return []
-  const firstEdge = typebot.edges.find((edge) => edge.id === firstEdgeId)
+  const firstEdge = sniper.edges.find((edge) => edge.id === firstEdgeId)
   if (!firstEdge) return []
-  const firstGroup = getNextGroup(typebot, firstEdgeId)
+  const firstGroup = getNextGroup(sniper, firstEdgeId)
   if (!firstGroup) return []
   return executeGroup({
-    typebotsQueue: [{ typebot }],
+    snipersQueue: [{ sniper }],
     nextGroup: firstGroup,
     currentTranscript: [],
     answers,
@@ -81,18 +81,18 @@ export const computeResultTranscript = ({
   })
 }
 
-const getFirstEdgeId = (typebot: TypebotInSession) => {
-  if (typebot.version === '6') return typebot.events?.[0].outgoingEdgeId
-  return typebot.groups.at(0)?.blocks.at(0)?.outgoingEdgeId
+const getFirstEdgeId = (sniper: SniperInSession) => {
+  if (sniper.version === '6') return sniper.events?.[0].outgoingEdgeId
+  return sniper.groups.at(0)?.blocks.at(0)?.outgoingEdgeId
 }
 
 const getNextGroup = (
-  typebot: TypebotInSession,
+  sniper: SniperInSession,
   edgeId: string
 ): { group: Group; blockIndex?: number } | undefined => {
-  const edge = typebot.edges.find((edge) => edge.id === edgeId)
+  const edge = sniper.edges.find((edge) => edge.id === edgeId)
   if (!edge) return
-  const group = typebot.groups.find((group) => group.id === edge.to.groupId)
+  const group = sniper.groups.find((group) => group.id === edge.to.groupId)
   if (!group) return
   const blockIndex = edge.to.blockId
     ? group.blocks.findIndex((block) => block.id === edge.to.blockId)
@@ -102,7 +102,7 @@ const getNextGroup = (
 
 const executeGroup = ({
   currentTranscript,
-  typebotsQueue,
+  snipersQueue,
   answers,
   nextGroup,
   setVariableHistory,
@@ -116,8 +116,8 @@ const executeGroup = ({
         blockIndex?: number | undefined
       }
     | undefined
-  typebotsQueue: {
-    typebot: TypebotInSession
+  snipersQueue: {
+    sniper: SniperInSession
     resumeEdgeId?: string
   }[]
   answers: Pick<Answer, 'blockId' | 'content'>[]
@@ -134,9 +134,9 @@ const executeGroup = ({
   )) {
     if (stopAtBlockId && block.id === stopAtBlockId) return currentTranscript
     if (setVariableHistory.at(0)?.blockId === block.id)
-      typebotsQueue[0].typebot.variables = applySetVariable(
+      snipersQueue[0].sniper.variables = applySetVariable(
         setVariableHistory.shift(),
-        typebotsQueue[0].typebot
+        snipersQueue[0].sniper
       )
     let nextEdgeId = block.outgoingEdgeId
     if (isBubbleBlock(block)) {
@@ -145,8 +145,8 @@ const executeGroup = ({
         block as BubbleBlockWithDefinedContent,
         {
           version: 2,
-          variables: typebotsQueue[0].typebot.variables,
-          typebotVersion: typebotsQueue[0].typebot.version,
+          variables: snipersQueue[0].sniper.variables,
+          sniperVersion: snipersQueue[0].sniper.version,
           textBubbleContentFormat: 'markdown',
         }
       )
@@ -157,12 +157,12 @@ const executeGroup = ({
       const answer = answers.shift()
       if (!answer) break
       if (block.options?.variableId) {
-        const variable = typebotsQueue[0].typebot.variables.find(
+        const variable = snipersQueue[0].sniper.variables.find(
           (variable) => variable.id === block.options?.variableId
         )
         if (variable) {
-          typebotsQueue[0].typebot.variables =
-            typebotsQueue[0].typebot.variables.map((v) =>
+          snipersQueue[0].sniper.variables =
+            snipersQueue[0].sniper.variables.map((v) =>
               v.id === variable.id ? { ...v, value: answer.content } : v
             )
         }
@@ -175,7 +175,7 @@ const executeGroup = ({
       const outgoingEdge = getOutgoingEdgeId({
         block,
         answer: answer.content,
-        variables: typebotsQueue[0].typebot.variables,
+        variables: snipersQueue[0].sniper.variables,
       })
       if (outgoingEdge.isOffDefaultPath) visitedEdges.shift()
       nextEdgeId = outgoingEdge.edgeId
@@ -184,7 +184,7 @@ const executeGroup = ({
         (item) =>
           item.content &&
           executeCondition({
-            variables: typebotsQueue[0].typebot.variables,
+            variables: snipersQueue[0].sniper.variables,
             condition: item.content,
           })
       )
@@ -196,7 +196,7 @@ const executeGroup = ({
       nextEdgeId = visitedEdges.shift() ?? nextEdgeId
     } else if (block.type === LogicBlockType.JUMP) {
       if (!block.options?.groupId) continue
-      const groupToJumpTo = typebotsQueue[0].typebot.groups.find(
+      const groupToJumpTo = snipersQueue[0].sniper.groups.find(
         (group) => group.id === block.options?.groupId
       )
       const blockToJumpTo =
@@ -210,19 +210,19 @@ const executeGroup = ({
         from: { blockId: '', groupId: '' },
         to: { groupId: block.options.groupId, blockId: blockToJumpTo.id },
       }
-      typebotsQueue[0].typebot.edges.push(portalEdge)
+      snipersQueue[0].sniper.edges.push(portalEdge)
       visitedEdges.shift()
       nextEdgeId = portalEdge.id
-    } else if (block.type === LogicBlockType.TYPEBOT_LINK) {
-      const isLinkingSameTypebot =
+    } else if (block.type === LogicBlockType.SNIPER_LINK) {
+      const isLinkingSameSniper =
         block.options &&
-        (block.options.typebotId === 'current' ||
-          block.options.typebotId === typebotsQueue[0].typebot.id)
+        (block.options.sniperId === 'current' ||
+          block.options.sniperId === snipersQueue[0].sniper.id)
 
-      const linkedGroup = typebotsQueue[0].typebot.groups.find(
+      const linkedGroup = snipersQueue[0].sniper.groups.find(
         (g) => g.id === block.options?.groupId
       )
-      if (!isLinkingSameTypebot || !linkedGroup) continue
+      if (!isLinkingSameSniper || !linkedGroup) continue
       let resumeEdge: Edge | undefined
       if (!block.outgoingEdgeId) {
         const currentBlockIndex = nextGroup.group.blocks.findIndex(
@@ -245,18 +245,18 @@ const executeGroup = ({
           }
       }
       return executeGroup({
-        typebotsQueue: [
+        snipersQueue: [
           {
-            typebot: typebotsQueue[0].typebot,
+            sniper: snipersQueue[0].sniper,
             resumeEdgeId: resumeEdge ? resumeEdge.id : block.outgoingEdgeId,
           },
           {
-            typebot: resumeEdge
+            sniper: resumeEdge
               ? {
-                  ...typebotsQueue[0].typebot,
-                  edges: typebotsQueue[0].typebot.edges.concat([resumeEdge]),
+                  ...snipersQueue[0].sniper,
+                  edges: snipersQueue[0].sniper.edges.concat([resumeEdge]),
                 }
-              : typebotsQueue[0].typebot,
+              : snipersQueue[0].sniper,
           },
         ],
         answers,
@@ -270,10 +270,10 @@ const executeGroup = ({
       })
     }
     if (nextEdgeId) {
-      const nextGroup = getNextGroup(typebotsQueue[0].typebot, nextEdgeId)
+      const nextGroup = getNextGroup(snipersQueue[0].sniper, nextEdgeId)
       if (nextGroup) {
         return executeGroup({
-          typebotsQueue,
+          snipersQueue,
           answers,
           setVariableHistory,
           currentTranscript,
@@ -284,15 +284,15 @@ const executeGroup = ({
       }
     }
   }
-  if (typebotsQueue.length > 1 && typebotsQueue[0].resumeEdgeId) {
+  if (snipersQueue.length > 1 && snipersQueue[0].resumeEdgeId) {
     return executeGroup({
-      typebotsQueue: typebotsQueue.slice(1),
+      snipersQueue: snipersQueue.slice(1),
       answers,
       setVariableHistory,
       currentTranscript,
       nextGroup: getNextGroup(
-        typebotsQueue[1].typebot,
-        typebotsQueue[0].resumeEdgeId
+        snipersQueue[1].sniper,
+        snipersQueue[0].resumeEdgeId
       ),
       visitedEdges: visitedEdges.slice(1),
       stopAtBlockId,
@@ -305,14 +305,14 @@ const applySetVariable = (
   setVariable:
     | Pick<SetVariableHistoryItem, 'blockId' | 'variableId' | 'value'>
     | undefined,
-  typebot: TypebotInSession
+  sniper: SniperInSession
 ): Variable[] => {
-  if (!setVariable) return typebot.variables
-  const variable = typebot.variables.find(
+  if (!setVariable) return sniper.variables
+  const variable = sniper.variables.find(
     (variable) => variable.id === setVariable.variableId
   )
-  if (!variable) return typebot.variables
-  return typebot.variables.map((v) =>
+  if (!variable) return sniper.variables
+  return sniper.variables.map((v) =>
     v.id === variable.id ? { ...v, value: setVariable.value } : v
   )
 }

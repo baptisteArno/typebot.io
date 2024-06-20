@@ -1,6 +1,6 @@
-import { PaymentInputBlock } from '@typebot.io/schemas'
+import { PaymentInputBlock } from '@sniper.io/schemas'
 import { StripePaymentForm } from './StripePaymentForm'
-import { PaymentProvider } from '@typebot.io/schemas/features/blocks/inputs/payment/constants'
+import { PaymentProvider } from '@sniper.io/schemas/features/blocks/inputs/payment/constants'
 
 type Props = {
   onSuccess: () => void

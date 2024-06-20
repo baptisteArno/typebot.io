@@ -1,7 +1,7 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { PrismaClient } from '@sniper.io/prisma'
 import { promptAndSetEnvironment } from './utils'
-import { Result } from '@typebot.io/schemas'
-import { isDefined, isNotDefined } from '@typebot.io/lib'
+import { Result } from '@sniper.io/schemas'
+import { isDefined, isNotDefined } from '@sniper.io/lib'
 
 let progress = 0
 

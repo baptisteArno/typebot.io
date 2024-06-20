@@ -5,71 +5,71 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Select } from '@/components/inputs/Select'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
-import { useTypebots } from '@/features/dashboard/hooks/useTypebots'
+import { useSnipers } from '@/features/dashboard/hooks/useSnipers'
 
 type Props = {
   idsToExclude: string[]
-  typebotId?: string | 'current'
+  sniperId?: string | 'current'
   currentWorkspaceId: string
-  onSelect: (typebotId: string | 'current' | undefined) => void
+  onSelect: (sniperId: string | 'current' | undefined) => void
 }
 
-export const TypebotsDropdown = ({
+export const SnipersDropdown = ({
   idsToExclude,
-  typebotId,
+  sniperId,
   onSelect,
   currentWorkspaceId,
 }: Props) => {
   const { query } = useRouter()
   const { showToast } = useToast()
-  const { typebots, isLoading } = useTypebots({
+  const { snipers, isLoading } = useSnipers({
     workspaceId: currentWorkspaceId,
     onError: (e) => showToast({ title: e.name, description: e.message }),
   })
 
   if (isLoading) return <Input value="Loading..." isDisabled />
-  if (!typebots || typebots.length === 0)
-    return <Input value="No typebots found" isDisabled />
+  if (!snipers || snipers.length === 0)
+    return <Input value="No snipers found" isDisabled />
   return (
     <HStack>
       <Select
-        selectedItem={typebotId}
+        selectedItem={sniperId}
         items={[
           {
-            label: 'Current typebot',
+            label: 'Current sniper',
             value: 'current',
           },
-          ...(typebots ?? [])
-            .filter((typebot) => !idsToExclude.includes(typebot.id))
-            .map((typebot) => ({
+          ...(snipers ?? [])
+            .filter((sniper) => !idsToExclude.includes(sniper.id))
+            .map((sniper) => ({
               icon: (
                 <EmojiOrImageIcon
-                  icon={typebot.icon}
+                  icon={sniper.icon}
                   boxSize="18px"
                   emojiFontSize="18px"
                 />
               ),
-              label: typebot.name,
-              value: typebot.id,
+              label: sniper.name,
+              value: sniper.id,
             })),
         ]}
         onSelect={onSelect}
-        placeholder={'Select a typebot'}
+        placeholder={'Select a sniper'}
       />
-      {typebotId && typebotId !== 'current' && (
+      {sniperId && sniperId !== 'current' && (
         <IconButton
-          aria-label="Navigate to typebot"
+          aria-label="Navigate to sniper"
           icon={<ExternalLinkIcon />}
           as={Link}
           href={{
-            pathname: '/typebots/[typebotId]/edit',
+            pathname: '/snipers/[sniperId]/edit',
             query: {
-              typebotId,
+              sniperId,
               parentId: query.parentId
                 ? Array.isArray(query.parentId)
-                  ? query.parentId.concat(query.typebotId?.toString() ?? '')
-                  : [query.parentId, query.typebotId?.toString() ?? '']
-                : query.typebotId ?? [],
+                  ? query.parentId.concat(query.sniperId?.toString() ?? '')
+                  : [query.parentId, query.sniperId?.toString() ?? '']
+                : query.sniperId ?? [],
             },
           }}
         />

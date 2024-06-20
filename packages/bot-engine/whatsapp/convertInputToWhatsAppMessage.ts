@@ -1,12 +1,12 @@
-import { ButtonItem, ContinueChatResponse } from '@typebot.io/schemas'
-import { WhatsAppSendingMessage } from '@typebot.io/schemas/features/whatsapp'
-import { isDefined, isEmpty } from '@typebot.io/lib/utils'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { defaultPictureChoiceOptions } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice/constants'
-import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
-import { convertRichTextToMarkdown } from '@typebot.io/lib/markdown/convertRichTextToMarkdown'
-import { env } from '@typebot.io/env'
+import { ButtonItem, ContinueChatResponse } from '@sniper.io/schemas'
+import { WhatsAppSendingMessage } from '@sniper.io/schemas/features/whatsapp'
+import { isDefined, isEmpty } from '@sniper.io/lib/utils'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { defaultPictureChoiceOptions } from '@sniper.io/schemas/features/blocks/inputs/pictureChoice/constants'
+import { defaultChoiceInputOptions } from '@sniper.io/schemas/features/blocks/inputs/choice/constants'
+import { convertRichTextToMarkdown } from '@sniper.io/lib/markdown/convertRichTextToMarkdown'
+import { env } from '@sniper.io/env'
 
 export const convertInputToWhatsAppMessages = (
   input: NonNullable<ContinueChatResponse['input']>,

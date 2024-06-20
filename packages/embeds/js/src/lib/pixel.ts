@@ -1,4 +1,4 @@
-import { PixelBlock } from '@typebot.io/schemas'
+import { PixelBlock } from '@sniper.io/schemas'
 
 declare const window: {
   fbq?: (

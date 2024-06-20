@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text } from '@chakra-ui/react'
-import { PixelBlock } from '@typebot.io/schemas'
+import { PixelBlock } from '@sniper.io/schemas'
 
 type Props = {
   options: PixelBlock['options']

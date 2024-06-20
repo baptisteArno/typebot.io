@@ -51,7 +51,7 @@ export type Variable = {
   value: string
 }
 
-export type TypebotPostMessageData = {
+export type SniperPostMessageData = {
   redirectUrl?: string
   newVariableValue?: Variable
   codeToExecute?: string

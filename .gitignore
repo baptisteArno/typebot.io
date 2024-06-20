@@ -32,10 +32,10 @@ dump.tar
 __env.js
 __ENV.js
 
-typebotsToFix.json
+snipersToFix.json
 **/scripts/logs
 
 snapshots
 
 .env
-.typebot-build
+.sniper-build

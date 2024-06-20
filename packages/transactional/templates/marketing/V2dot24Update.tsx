@@ -12,7 +12,7 @@ import {
   Section,
 } from '@react-email/components'
 import * as React from 'react'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import {
   main,
   container,
@@ -34,14 +34,14 @@ const imagesBaseUrl = `${env.NEXTAUTH_URL}/images/emails/V2dot24Update`
 export const V2dot24Update = ({}: Props) => (
   <Html>
     <Head />
-    <Preview>Unveiling Typebot's Latest Innovations - v2.24 Update! 🌟</Preview>
+    <Preview>Unveiling Sniper's Latest Innovations - v2.24 Update! 🌟</Preview>
     <Body style={main}>
       <Container style={container}>
         <Img
           src={`${env.NEXTAUTH_URL}/images/logo.png`}
           width="32"
           height="32"
-          alt="Typebot's Logo"
+          alt="Sniper's Logo"
           style={{
             margin: '24px 0',
           }}
@@ -49,7 +49,7 @@ export const V2dot24Update = ({}: Props) => (
         <Text style={text}>
           Hey, <br />
           <br />
-          Typebot v2.24 was just released. This update introduces powerful new
+          Sniper v2.24 was just released. This update introduces powerful new
           blocks and improved tool stability.
           <br />
           <br />
@@ -83,7 +83,7 @@ export const V2dot24Update = ({}: Props) => (
           </Heading>
           <Text style={text}>
             Now, if you enable the "Remember user" option, if the user comes
-            back to the typebot, it will display the previous chat state.
+            back to the sniper, it will display the previous chat state.
             <br />
             <br />
             It also works magically when your bot is embedded 🔥
@@ -118,16 +118,16 @@ export const V2dot24Update = ({}: Props) => (
           </Heading>
           <Text style={text}>
             We all hate bugs, right? Well, this month I've decided to fixing
-            literaly all of the known issues and reported bugs to make Typebot
+            literaly all of the known issues and reported bugs to make Sniper
             more reliable.
             <br />
             <br />
             And from now on I've decided to always focus fixing newly reported
-            bugs. That's that kind of standard I want to set for Typebot.
+            bugs. That's that kind of standard I want to set for Sniper.
             <br />
             <br />
             Check out the full changelog{' '}
-            <Link href="https://github.com/baptisteArno/typebot.io/releases/tag/v2.24.0">
+            <Link href="https://github.com/baptisteArno/sniper.io/releases/tag/v2.24.0">
               here
             </Link>
             !
@@ -147,13 +147,13 @@ export const V2dot24Update = ({}: Props) => (
           src={`${env.NEXTAUTH_URL}/images/logo.png`}
           width="32"
           height="32"
-          alt="Typebot's Logo"
+          alt="Sniper's Logo"
           style={{
             marginTop: '24px',
           }}
         />
 
-        <Text style={footer}>Typebot.io - Powering Conversations at Scale</Text>
+        <Text style={footer}>Sniper.io - Powering Conversations at Scale</Text>
         <Link
           href="{{unsubscribe}}"
           target="_blank"

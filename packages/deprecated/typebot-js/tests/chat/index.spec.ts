@@ -1,4 +1,4 @@
-import * as Typebot from '../../src'
+import * as Sniper from '../../src'
 
 describe('initBubble', () => {
   beforeEach(() => {
@@ -7,8 +7,8 @@ describe('initBubble', () => {
 
   it('should initialize a bubble embed', () => {
     expect.assertions(2)
-    Typebot.initBubble({ url: 'https://typebot.io/typebot-id' })
-    const bubbleElement = document.getElementById('typebot-bubble')
+    Sniper.initBubble({ url: 'https://sniper.io/sniper-id' })
+    const bubbleElement = document.getElementById('sniper-bubble')
     const frame = document.getElementsByTagName('iframe')[0]
     expect(frame).toBeDefined()
     expect(bubbleElement).toBeDefined()
@@ -16,40 +16,40 @@ describe('initBubble', () => {
 
   it('should overwrite bubble if exists', () => {
     expect.assertions(2)
-    Typebot.initBubble({
-      url: 'https://typebot.io/typebot-id',
+    Sniper.initBubble({
+      url: 'https://sniper.io/sniper-id',
       hiddenVariables: { var1: 'test' },
     })
-    Typebot.initBubble({ url: 'https://typebot.io/typebot-id2' })
+    Sniper.initBubble({ url: 'https://sniper.io/sniper-id2' })
     const frames = document.getElementsByTagName('iframe')
     expect(frames).toHaveLength(1)
-    expect(frames[0].dataset.src).toBe('https://typebot.io/typebot-id2')
+    expect(frames[0].dataset.src).toBe('https://sniper.io/sniper-id2')
   })
 
   it('show open after the corresponding delay', async () => {
     expect.assertions(3)
-    Typebot.initBubble({
+    Sniper.initBubble({
       autoOpenDelay: 1000,
-      url: 'https://typebot.io/typebot-id',
+      url: 'https://sniper.io/sniper-id',
     })
-    const bubble = document.querySelector('#typebot-bubble') as HTMLDivElement
+    const bubble = document.querySelector('#sniper-bubble') as HTMLDivElement
     expect(bubble.classList.contains('iframe-opened')).toBe(false)
     await new Promise((r) => setTimeout(r, 1100))
     expect(bubble.classList.contains('iframe-opened')).toBe(true)
     const rememberCloseDecisionFromStorage = localStorage.getItem(
-      Typebot.localStorageKeys.rememberClose
+      Sniper.localStorageKeys.rememberClose
     )
     expect(rememberCloseDecisionFromStorage).toBe('true')
   })
 
   it('should remember close decision if set to true', async () => {
     expect.assertions(1)
-    localStorage.setItem(Typebot.localStorageKeys.rememberClose, 'true')
-    Typebot.initBubble({
+    localStorage.setItem(Sniper.localStorageKeys.rememberClose, 'true')
+    Sniper.initBubble({
       autoOpenDelay: 1000,
-      url: 'https://typebot.io/typebot-id',
+      url: 'https://sniper.io/sniper-id',
     })
-    const bubble = document.querySelector('#typebot-bubble') as HTMLDivElement
+    const bubble = document.querySelector('#sniper-bubble') as HTMLDivElement
     await new Promise((r) => setTimeout(r, 1500))
     expect(bubble.classList.contains('iframe-opened')).toBe(false)
   })

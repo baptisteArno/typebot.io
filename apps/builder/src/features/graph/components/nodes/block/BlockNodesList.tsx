@@ -1,11 +1,11 @@
 import { useEventListener, Stack, Portal } from '@chakra-ui/react'
-import { BlockV6 } from '@typebot.io/schemas'
+import { BlockV6 } from '@sniper.io/schemas'
 import { useEffect, useRef, useState } from 'react'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { BlockNode } from './BlockNode'
 import { BlockNodeOverlay } from './BlockNodeOverlay'
 import { PlaceholderNode } from '../PlaceholderNode'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 import {
   useBlockDnd,
   computeNearestPlaceholderIndex,
@@ -26,7 +26,7 @@ export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
     mouseOverGroup,
     setDraggedBlockType,
   } = useBlockDnd()
-  const { typebot, createBlock, detachBlockFromGroup } = useTypebot()
+  const { sniper, createBlock, detachBlockFromGroup } = useSniper()
   const { isReadOnly, graphPosition, setOpenedBlockId } = useGraph()
   const [expandedPlaceholderIndex, setExpandedPlaceholderIndex] = useState<
     number | undefined
@@ -40,7 +40,7 @@ export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
     x: 0,
     y: 0,
   })
-  const groupId = typebot?.groups.at(groupIndex)?.id
+  const groupId = sniper?.groups.at(groupIndex)?.id
   const isDraggingOnCurrentGroup =
     (draggedBlock || draggedBlockType) && mouseOverGroup?.id === groupId
   const showSortPlaceholders = isDefined(draggedBlock || draggedBlockType)
@@ -119,7 +119,7 @@ export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
         isExpanded={expandedPlaceholderIndex === 0}
         onRef={handlePushElementRef(0)}
       />
-      {typebot &&
+      {sniper &&
         blocks.map((block, idx) => (
           <Stack key={block.id} spacing={1}>
             <BlockNode

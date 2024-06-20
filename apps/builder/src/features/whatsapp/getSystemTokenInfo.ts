@@ -2,10 +2,10 @@ import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { z } from 'zod'
 import ky from 'ky'
 import { TRPCError } from '@trpc/server'
-import { WhatsAppCredentials } from '@typebot.io/schemas/features/whatsapp'
-import prisma from '@typebot.io/lib/prisma'
-import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
-import { env } from '@typebot.io/env'
+import { WhatsAppCredentials } from '@sniper.io/schemas/features/whatsapp'
+import prisma from '@sniper.io/lib/prisma'
+import { decrypt } from '@sniper.io/lib/api/encryption/decrypt'
+import { env } from '@sniper.io/env'
 
 const inputSchema = z.object({
   token: z.string().optional(),

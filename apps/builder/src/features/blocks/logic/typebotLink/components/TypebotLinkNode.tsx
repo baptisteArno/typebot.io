@@ -1,38 +1,38 @@
-import { TypebotLinkBlock } from '@typebot.io/schemas'
+import { SniperLinkBlock } from '@sniper.io/schemas'
 import React from 'react'
 import { Tag, Text } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { byId, isNotEmpty } from '@typebot.io/lib'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
+import { byId, isNotEmpty } from '@sniper.io/lib'
 import { trpc } from '@/lib/trpc'
 
 type Props = {
-  block: TypebotLinkBlock
+  block: SniperLinkBlock
 }
 
-export const TypebotLinkNode = ({ block }: Props) => {
-  const { typebot } = useTypebot()
+export const SniperLinkNode = ({ block }: Props) => {
+  const { sniper } = useSniper()
 
-  const { data: linkedTypebotData } = trpc.typebot.getTypebot.useQuery(
+  const { data: linkedSniperData } = trpc.sniper.getSniper.useQuery(
     {
-      typebotId: block.options?.typebotId as string,
+      sniperId: block.options?.sniperId as string,
     },
     {
       enabled:
-        isNotEmpty(block.options?.typebotId) &&
-        block.options?.typebotId !== 'current',
+        isNotEmpty(block.options?.sniperId) &&
+        block.options?.sniperId !== 'current',
     }
   )
 
-  const isCurrentTypebot =
-    typebot &&
-    (block.options?.typebotId === typebot.id ||
-      block.options?.typebotId === 'current')
-  const linkedTypebot = isCurrentTypebot ? typebot : linkedTypebotData?.typebot
-  const blockTitle = linkedTypebot?.groups.find(
+  const isCurrentSniper =
+    sniper &&
+    (block.options?.sniperId === sniper.id ||
+      block.options?.sniperId === 'current')
+  const linkedSniper = isCurrentSniper ? sniper : linkedSniperData?.sniper
+  const blockTitle = linkedSniper?.groups.find(
     byId(block.options?.groupId)
   )?.title
 
-  if (!block.options?.typebotId)
+  if (!block.options?.sniperId)
     return <Text color="gray.500">Configure...</Text>
   return (
     <Text>
@@ -44,9 +44,9 @@ export const TypebotLinkNode = ({ block }: Props) => {
       ) : (
         <></>
       )}{' '}
-      {!isCurrentTypebot ? (
+      {!isCurrentSniper ? (
         <>
-          in <Tag colorScheme="blue">{linkedTypebot?.name}</Tag>
+          in <Tag colorScheme="blue">{linkedSniper?.name}</Tag>
         </>
       ) : (
         <></>

@@ -6,20 +6,20 @@ import {
   BlockWithItems,
   Edge,
   GroupV6,
-  TypebotV6,
+  SniperV6,
   Variable,
-} from '@typebot.io/schemas'
-import { SetTypebot } from '../TypebotProvider'
+} from '@sniper.io/schemas'
+import { SetSniper } from '../SniperProvider'
 import {
   deleteGroupDraft,
   createBlockDraft,
   duplicateBlockDraft,
 } from './blocks'
-import { byId, isEmpty } from '@typebot.io/lib'
-import { blockHasItems, blockHasOptions } from '@typebot.io/schemas/helpers'
+import { byId, isEmpty } from '@sniper.io/lib'
+import { blockHasItems, blockHasOptions } from '@sniper.io/schemas/helpers'
 import { Coordinates, CoordinatesMap } from '@/features/graph/types'
-import { parseUniqueKey } from '@typebot.io/lib/parseUniqueKey'
-import { extractVariableIdsFromObject } from '@typebot.io/variables/extractVariablesFromObject'
+import { parseUniqueKey } from '@sniper.io/lib/parseUniqueKey'
+import { extractVariableIdsFromObject } from '@sniper.io/variables/extractVariablesFromObject'
 
 export type GroupsActions = {
   createGroup: (
@@ -45,7 +45,7 @@ export type GroupsActions = {
   deleteGroups: (groupIds: string[]) => void
 }
 
-const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
+const groupsActions = (setSniper: SetSniper): GroupsActions => ({
   createGroup: ({
     id,
     block,
@@ -59,31 +59,31 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
     indices: BlockIndices
   }) => {
     let newBlockId
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
+    setSniper((sniper) =>
+      produce(sniper, (sniper) => {
         const newGroup: GroupV6 = {
           id,
           graphCoordinates,
-          title: `${groupLabel ?? 'Group'} #${typebot.groups.length + 1}`,
+          title: `${groupLabel ?? 'Group'} #${sniper.groups.length + 1}`,
           blocks: [],
         }
-        typebot.groups.push(newGroup)
-        newBlockId = createBlockDraft(typebot, block, indices)
+        sniper.groups.push(newGroup)
+        newBlockId = createBlockDraft(sniper, block, indices)
       })
     )
     return newBlockId
   },
   updateGroup: (groupIndex: number, updates: Partial<Omit<GroupV6, 'id'>>) =>
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        const block = typebot.groups[groupIndex]
-        typebot.groups[groupIndex] = { ...block, ...updates }
+    setSniper((sniper) =>
+      produce(sniper, (sniper) => {
+        const block = sniper.groups[groupIndex]
+        sniper.groups[groupIndex] = { ...block, ...updates }
       })
     ),
   updateGroupsCoordinates: (newCoord: CoordinatesMap) => {
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        typebot.groups.forEach((group) => {
+    setSniper((sniper) =>
+      produce(sniper, (sniper) => {
+        sniper.groups.forEach((group) => {
           if (newCoord[group.id]) {
             group.graphCoordinates = newCoord[group.id]
           }
@@ -92,16 +92,16 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
     )
   },
   duplicateGroup: (groupIndex: number) =>
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        const group = typebot.groups[groupIndex]
+    setSniper((sniper) =>
+      produce(sniper, (sniper) => {
+        const group = sniper.groups[groupIndex]
         const id = createId()
 
         const groupTitle = isEmpty(group.title)
           ? ''
           : parseUniqueKey(
               group.title,
-              typebot.groups.map((g) => g.title)
+              sniper.groups.map((g) => g.title)
             )
 
         const newGroup: GroupV6 = {
@@ -114,20 +114,20 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
             y: group.graphCoordinates.y + 100,
           },
         }
-        typebot.groups.splice(groupIndex + 1, 0, newGroup)
+        sniper.groups.splice(groupIndex + 1, 0, newGroup)
       })
     ),
   deleteGroup: (groupIndex: number) =>
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        deleteGroupDraft(typebot)(groupIndex)
+    setSniper((sniper) =>
+      produce(sniper, (sniper) => {
+        deleteGroupDraft(sniper)(groupIndex)
       })
     ),
   deleteGroups: (groupIds: string[]) =>
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
+    setSniper((sniper) =>
+      produce(sniper, (sniper) => {
         groupIds.forEach((groupId) => {
-          deleteGroupByIdDraft(typebot)(groupId)
+          deleteGroupByIdDraft(sniper)(groupId)
         })
       })
     ),
@@ -138,12 +138,12 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
     oldToNewIdsMapping: Map<string, string>
   ) => {
     const createdGroups: GroupV6[] = []
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
+    setSniper((sniper) =>
+      produce(sniper, (sniper) => {
         const edgesToCreate: Edge[] = []
         const variablesToCreate: Omit<Variable, 'value'>[] = []
         variables.forEach((variable) => {
-          const existingVariable = typebot.variables.find(
+          const existingVariable = sniper.variables.find(
             (v) => v.name === variable.name
           )
           if (existingVariable) {
@@ -162,7 +162,7 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
             ? ''
             : parseUniqueKey(
                 group.title,
-                typebot.groups.map((g) => g.title)
+                sniper.groups.map((g) => g.title)
               )
           const newGroup: GroupV6 = {
             ...group,
@@ -235,7 +235,7 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
               }
             }),
           }
-          typebot.groups.push(newGroup)
+          sniper.groups.push(newGroup)
           createdGroups.push(newGroup)
         })
 
@@ -261,22 +261,21 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
                 : undefined,
             },
           }
-          typebot.edges.push(newEdge)
+          sniper.edges.push(newEdge)
         })
 
         variablesToCreate.forEach((variableToCreate) => {
-          typebot.variables.unshift(variableToCreate)
+          sniper.variables.unshift(variableToCreate)
         })
       })
     )
   },
 })
 
-const deleteGroupByIdDraft =
-  (typebot: Draft<TypebotV6>) => (groupId: string) => {
-    const groupIndex = typebot.groups.findIndex(byId(groupId))
-    if (groupIndex === -1) return
-    deleteGroupDraft(typebot)(groupIndex)
-  }
+const deleteGroupByIdDraft = (sniper: Draft<SniperV6>) => (groupId: string) => {
+  const groupIndex = sniper.groups.findIndex(byId(groupId))
+  if (groupIndex === -1) return
+  deleteGroupDraft(sniper)(groupIndex)
+}
 
 export { groupsActions }

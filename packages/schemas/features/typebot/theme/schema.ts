@@ -1,4 +1,4 @@
-import { ThemeTemplate as ThemeTemplatePrisma } from '@typebot.io/prisma'
+import { ThemeTemplate as ThemeTemplatePrisma } from '@sniper.io/prisma'
 import { z } from '../../../zod'
 import {
   BackgroundType,

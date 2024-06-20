@@ -1,5 +1,5 @@
 import { SimpleGrid, Stack } from '@chakra-ui/react'
-import { ThemeTemplate } from '@typebot.io/schemas'
+import { ThemeTemplate } from '@sniper.io/schemas'
 import { galleryTemplates } from '../galleryTemplates'
 import { ThemeTemplateCard } from './ThemeTemplateCard'
 

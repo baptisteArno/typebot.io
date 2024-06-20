@@ -1,49 +1,49 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import {
-  Typebot,
-  publicTypebotSchema,
-  publicTypebotSchemaV5,
-  publicTypebotSchemaV6,
-} from '@typebot.io/schemas'
+  Sniper,
+  publicSniperSchema,
+  publicSniperSchemaV5,
+  publicSniperSchemaV6,
+} from '@sniper.io/schemas'
 import { z } from 'zod'
-import { isReadTypebotForbidden } from '../helpers/isReadTypebotForbidden'
-import { migratePublicTypebot } from '@typebot.io/migrations/migrateTypebot'
+import { isReadSniperForbidden } from '../helpers/isReadSniperForbidden'
+import { migratePublicSniper } from '@sniper.io/migrations/migrateSniper'
 
-export const getPublishedTypebot = authenticatedProcedure
+export const getPublishedSniper = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/v1/typebots/{typebotId}/publishedTypebot',
+      path: '/v1/snipers/{sniperId}/publishedSniper',
       protect: true,
-      summary: 'Get published typebot',
-      tags: ['Typebot'],
+      summary: 'Get published sniper',
+      tags: ['Sniper'],
     },
   })
   .input(
     z.object({
-      typebotId: z
+      sniperId: z
         .string()
         .describe(
-          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+          "[Where to find my bot's ID?](../how-to#how-to-find-my-sniperid)"
         ),
       migrateToLatestVersion: z
         .boolean()
         .optional()
         .default(false)
         .describe(
-          'If enabled, the typebot will be converted to the latest schema version'
+          'If enabled, the sniper will be converted to the latest schema version'
         ),
     })
   )
   .output(
     z.object({
-      publishedTypebot: publicTypebotSchema.nullable(),
+      publishedSniper: publicSniperSchema.nullable(),
       version: z
         .enum([
-          ...publicTypebotSchemaV5._def.schema.shape.version._def.values,
-          publicTypebotSchemaV6.shape.version._def.value,
+          ...publicSniperSchemaV5._def.schema.shape.version._def.values,
+          publicSniperSchemaV6.shape.version._def.value,
         ])
         .optional()
         .describe(
@@ -52,14 +52,14 @@ export const getPublishedTypebot = authenticatedProcedure
     })
   )
   .query(
-    async ({ input: { typebotId, migrateToLatestVersion }, ctx: { user } }) => {
-      const existingTypebot = await prisma.typebot.findFirst({
+    async ({ input: { sniperId, migrateToLatestVersion }, ctx: { user } }) => {
+      const existingSniper = await prisma.sniper.findFirst({
         where: {
-          id: typebotId,
+          id: sniperId,
         },
         include: {
           collaborators: true,
-          publishedTypebot: true,
+          publishedSniper: true,
           workspace: {
             select: {
               isSuspended: true,
@@ -74,33 +74,33 @@ export const getPublishedTypebot = authenticatedProcedure
         },
       })
       if (
-        !existingTypebot?.id ||
-        (await isReadTypebotForbidden(existingTypebot, user))
+        !existingSniper?.id ||
+        (await isReadSniperForbidden(existingSniper, user))
       )
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Sniper not found' })
 
-      if (!existingTypebot.publishedTypebot)
+      if (!existingSniper.publishedSniper)
         return {
-          publishedTypebot: null,
+          publishedSniper: null,
         }
 
       try {
-        const parsedTypebot = migrateToLatestVersion
-          ? await migratePublicTypebot(
-              publicTypebotSchema.parse(existingTypebot.publishedTypebot)
+        const parsedSniper = migrateToLatestVersion
+          ? await migratePublicSniper(
+              publicSniperSchema.parse(existingSniper.publishedSniper)
             )
-          : publicTypebotSchema.parse(existingTypebot.publishedTypebot)
+          : publicSniperSchema.parse(existingSniper.publishedSniper)
 
         return {
-          publishedTypebot: parsedTypebot,
+          publishedSniper: parsedSniper,
           version: migrateToLatestVersion
-            ? ((existingTypebot.version ?? '3') as Typebot['version'])
+            ? ((existingSniper.version ?? '3') as Sniper['version'])
             : undefined,
         }
       } catch (err) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to parse published typebot',
+          message: 'Failed to parse published sniper',
           cause: err,
         })
       }

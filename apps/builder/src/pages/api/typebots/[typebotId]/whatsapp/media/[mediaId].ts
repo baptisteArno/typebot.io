@@ -1,26 +1,26 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import {
   methodNotAllowed,
   notAuthenticated,
   notFound,
-} from '@typebot.io/lib/api'
+} from '@sniper.io/lib/api'
 import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
-import { WhatsAppCredentials } from '@typebot.io/schemas/features/whatsapp'
-import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
-import { downloadMedia } from '@typebot.io/bot-engine/whatsapp/downloadMedia'
+import { WhatsAppCredentials } from '@sniper.io/schemas/features/whatsapp'
+import { decrypt } from '@sniper.io/lib/api/encryption/decrypt'
+import { downloadMedia } from '@sniper.io/bot-engine/whatsapp/downloadMedia'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const user = await getAuthenticatedUser(req, res)
     if (!user) return notAuthenticated(res)
 
-    const typebotId = req.query.typebotId as string
+    const sniperId = req.query.sniperId as string
 
-    const typebot = await prisma.typebot.findFirst({
+    const sniper = await prisma.sniper.findFirst({
       where: {
-        id: typebotId,
+        id: sniperId,
       },
       select: {
         whatsAppCredentialsId: true,
@@ -41,15 +41,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     })
 
-    if (!typebot?.workspace || isReadWorkspaceFobidden(typebot.workspace, user))
+    if (!sniper?.workspace || isReadWorkspaceFobidden(sniper.workspace, user))
       return notFound(res, 'Workspace not found')
 
-    if (!typebot) return notFound(res, 'Typebot not found')
+    if (!sniper) return notFound(res, 'Sniper not found')
 
     const mediaId = req.query.mediaId as string
-    const credentialsId = typebot.whatsAppCredentialsId
+    const credentialsId = sniper.whatsAppCredentialsId
 
-    const credentials = typebot.workspace.credentials.find(
+    const credentials = sniper.workspace.credentials.find(
       (credential) => credential.id === credentialsId
     )
 

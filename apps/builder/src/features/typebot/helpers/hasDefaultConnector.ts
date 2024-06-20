@@ -1,12 +1,12 @@
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 import {
   isChoiceInput,
   isConditionBlock,
   isPictureChoiceInput,
-} from '@typebot.io/schemas/helpers'
-import { BlockV6 } from '@typebot.io/schemas'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+} from '@sniper.io/schemas/helpers'
+import { BlockV6 } from '@sniper.io/schemas'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
 
 export const hasDefaultConnector = (block: BlockV6) =>
   (!isChoiceInput(block) &&

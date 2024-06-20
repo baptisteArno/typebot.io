@@ -2,8 +2,8 @@
   "id": "cl0saxjo1000009l7c4brqlo4",
   "createdAt": "2022-03-15T15:41:00.241Z",
   "updatedAt": "2022-03-15T17:32:29.840Z",
-  "name": "My typebot",
-  "publishedTypebotId": "pioizXgk6U9Xtz1BdyjPFy",
+  "name": "My sniper",
+  "publishedSniperId": "pioizXgk6U9Xtz1BdyjPFy",
   "folderId": null,
   "groups": [
     {
@@ -140,7 +140,7 @@
           "type": "Code",
           "options": {
             "name": "Code snippet",
-            "content": "postMessage({from: \"typebot\"}, \"*\")"
+            "content": "postMessage({from: \"sniper\"}, \"*\")"
           },
           "outgoingEdgeId": "tiFY1tFr1u5CjGrbziEtc9"
         }
@@ -229,7 +229,7 @@
           "type": "Code",
           "options": {
             "name": "Code snippet",
-            "content": "postMessage({from: \"typebot\"}, \"*\")"
+            "content": "postMessage({from: \"sniper\"}, \"*\")"
           },
           "outgoingEdgeId": "oHDLXGgNtGU4n4Br6QDnyB"
         }
@@ -292,14 +292,14 @@
       "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" },
       "hostAvatar": {
         "isEnabled": true,
-        "url": "https://s3.eu-west-3.amazonaws.com/typebot/public/typebots/cl0saxjo1000009l7c4brqlo4/me-square.png"
+        "url": "https://s3.eu-west-3.amazonaws.com/sniper/public/snipers/cl0saxjo1000009l7c4brqlo4/me-square.png"
       }
     },
     "general": {
       "font": "Open Sans",
       "background": { "type": "Color", "content": "#171923" }
     },
-    "customCss": ".typebot-button {box-shadow: inset 0 1px 0 0 rgb(255 255 255/0.2)}"
+    "customCss": ".sniper-button {box-shadow: inset 0 1px 0 0 rgb(255 255 255/0.2)}"
   },
   "settings": {
     "general": {
@@ -312,6 +312,6 @@
     },
     "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
   },
-  "publicId": "my-typebot-4brqlo4",
+  "publicId": "my-sniper-4brqlo4",
   "customDomain": null
 }

@@ -11,7 +11,7 @@ import React, { useState } from 'react'
 import { stringify } from 'qs'
 import { BuiltInProviderType } from 'next-auth/providers'
 import { GoogleLogo } from '@/components/GoogleLogo'
-import { omit } from '@typebot.io/lib'
+import { omit } from '@sniper.io/lib'
 import { AzureAdLogo } from '@/components/logos/AzureAdLogo'
 import { FacebookLogo } from '@/components/logos/FacebookLogo'
 import { GitlabLogo } from '@/components/logos/GitlabLogo'
@@ -36,7 +36,7 @@ export const SocialLoginButtons = ({ providers }: Props) => {
     await signIn(provider, {
       callbackUrl:
         query.callbackUrl?.toString() ??
-        `/typebots?${stringify(omit(query, 'error', 'callbackUrl'))}`,
+        `/snipers?${stringify(omit(query, 'error', 'callbackUrl'))}`,
     })
     setTimeout(() => setAuthLoading(undefined), 3000)
   }

@@ -4,10 +4,10 @@ import {
   Prisma,
   PrismaClient,
   Workspace,
-} from '@typebot.io/prisma'
+} from '@sniper.io/prisma'
 import Stripe from 'stripe'
-import { proWorkspaceId } from '@typebot.io/playwright/databaseSetup'
-import { env } from '@typebot.io/env'
+import { proWorkspaceId } from '@sniper.io/playwright/databaseSetup'
+import { env } from '@sniper.io/env'
 
 const prisma = new PrismaClient()
 
@@ -69,10 +69,9 @@ export const cancelSubscription = async (stripeId: string) => {
 
 export const createCollaboration = (
   userId: string,
-  typebotId: string,
+  sniperId: string,
   type: CollaborationType
-) =>
-  prisma.collaboratorsOnTypebots.create({ data: { userId, typebotId, type } })
+) => prisma.collaboratorsOnSnipers.create({ data: { userId, sniperId, type } })
 
 export const getSignedInUser = (email: string) =>
   prisma.user.findFirst({ where: { email } })

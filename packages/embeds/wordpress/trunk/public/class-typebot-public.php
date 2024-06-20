@@ -1,18 +1,18 @@
 <?php
-class Typebot_Public
+class Sniper_Public
 {
   public function __construct()
   {
     add_action('wp_head', array($this, 'parse_wp_user'));
-    add_action('wp_footer', array($this, 'typebot_script'));
+    add_action('wp_footer', array($this, 'sniper_script'));
   }
 
   public function parse_wp_user()
   {
     $wp_user = wp_get_current_user();
     echo '<script>
-      if(typeof window.typebotWpUser === "undefined"){
-      window.typebotWpUser = {
+      if(typeof window.sniperWpUser === "undefined"){
+      window.sniperWpUser = {
           "WP ID":"' .
       $wp_user->ID .
       '",
@@ -38,27 +38,27 @@ class Typebot_Public
     $this->parse_wp_user();
   }
 
-  function typebot_script()
+  function sniper_script()
   {
     $lib_version = get_option('lib_version') !== null && get_option('lib_version') !== ''  ? get_option('lib_version') : '0.2';
-    echo '<script type="module">import Typebot from "https://cdn.jsdelivr.net/npm/@typebot.io/js@'.$lib_version.'/dist/web.js";';
+    echo '<script type="module">import Sniper from "https://cdn.jsdelivr.net/npm/@sniper.io/js@' . $lib_version . '/dist/web.js";';
     if (
       get_option('excluded_pages') !== null &&
       get_option('excluded_pages') !== ''
     ) {
       $paths = explode(',', get_option('excluded_pages'));
-      $arr_js = 'const typebotExcludePaths = [';
+      $arr_js = 'const sniperExcludePaths = [';
       foreach ($paths as $path) {
         $arr_js = $arr_js . '"' . $path . '",';
       }
       $arr_js = substr($arr_js, 0, -1) . '];';
       echo $arr_js;
     } else {
-      echo 'const typebotExcludePaths = null;';
+      echo 'const sniperExcludePaths = null;';
     }
 
     if (get_option('init_snippet') && get_option('init_snippet') !== '') {
-      echo 'if(!typebotExcludePaths || typebotExcludePaths.every((path) => {
+      echo 'if(!sniperExcludePaths || sniperExcludePaths.every((path) => {
           let [excludePath, excludeSearch] = path.trim().split("?");
           const excludeSearchParams = excludeSearch ? new URLSearchParams(excludeSearch) : null; 
 					let windowPath = window.location.pathname;
@@ -84,49 +84,49 @@ class Typebot_Public
           }
 				})) {
           ' . get_option('init_snippet') . '
-          Typebot.setPrefilledVariables({ ...typebotWpUser });
+          Sniper.setPrefilledVariables({ ...sniperWpUser });
         }';
     }
     echo '</script>';
   }
 
-  public function add_typebot_container($attributes = [])
+  public function add_sniper_container($attributes = [])
   {
     $lib_version = '0.2';
-    if(array_key_exists('lib_version', $attributes)) {
+    if (array_key_exists('lib_version', $attributes)) {
       $lib_version = sanitize_text_field($attributes['lib_version']);
     }
-    $lib_url = "https://cdn.jsdelivr.net/npm/@typebot.io/js@". $lib_version ."/dist/web.js";
+    $lib_url = "https://cdn.jsdelivr.net/npm/@sniper.io/js@" . $lib_version . "/dist/web.js";
     $width = '100%';
     $height = '500px';
-    $api_host = 'https://typebot.io';
+    $api_host = 'https://sniper.io';
     if (array_key_exists('width', $attributes)) {
       $width = sanitize_text_field($attributes['width']);
     }
     if (array_key_exists('height', $attributes)) {
       $height = sanitize_text_field($attributes['height']);
     }
-    if (array_key_exists('typebot', $attributes)) {
-      $typebot = sanitize_text_field($attributes['typebot']);
+    if (array_key_exists('sniper', $attributes)) {
+      $sniper = sanitize_text_field($attributes['sniper']);
     }
     if (array_key_exists('host', $attributes)) {
       $api_host = sanitize_text_field($attributes['host']);
     }
-    if (!$typebot) {
+    if (!$sniper) {
       return;
     }
 
     $id = $this->generateRandomString();
 
     $bot_initializer = '<script type="module">
-    import Typebot from "' . $lib_url . '"
+    import Sniper from "' . $lib_url . '"
 
     const urlParams = new URLSearchParams(window.location.search);
     const queryParams = Object.fromEntries(urlParams.entries());
 
-    Typebot.initStandard({ apiHost: "' . $api_host . '", id: "' . $id . '", typebot: "' . $typebot . '", prefilledVariables: { ...window.typebotWpUser, ...queryParams } });</script>';
+    Sniper.initStandard({ apiHost: "' . $api_host . '", id: "' . $id . '", sniper: "' . $sniper . '", prefilledVariables: { ...window.sniperWpUser, ...queryParams } });</script>';
 
-    return  '<typebot-standard id="' . $id . '" style="width: ' . $width . '; height: ' . $height . ';"></typebot-standard>' . $bot_initializer;
+    return  '<sniper-standard id="' . $id . '" style="width: ' . $width . '; height: ' . $height . ';"></sniper-standard>' . $bot_initializer;
   }
 
   private function generateRandomString($length = 10)

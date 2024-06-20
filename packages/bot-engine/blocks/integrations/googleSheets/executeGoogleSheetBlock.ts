@@ -1,9 +1,9 @@
-import { GoogleSheetsBlock, SessionState } from '@typebot.io/schemas'
+import { GoogleSheetsBlock, SessionState } from '@sniper.io/schemas'
 import { insertRow } from './insertRow'
 import { updateRow } from './updateRow'
 import { getRow } from './getRow'
 import { ExecuteIntegrationResponse } from '../../../types'
-import { GoogleSheetsAction } from '@typebot.io/schemas/features/blocks/integrations/googleSheets/constants'
+import { GoogleSheetsAction } from '@sniper.io/schemas/features/blocks/integrations/googleSheets/constants'
 
 export const executeGoogleSheetBlock = async (
   state: SessionState,

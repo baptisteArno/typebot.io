@@ -1,18 +1,18 @@
 import {
-  Typebot,
+  Sniper,
   Edge,
   BlockWithItems,
   BlockIndices,
   ItemIndices,
   Block,
-  TypebotV6,
-} from '@typebot.io/schemas'
-import { SetTypebot } from '../TypebotProvider'
+  SniperV6,
+} from '@sniper.io/schemas'
+import { SetSniper } from '../SniperProvider'
 import { Draft, produce } from 'immer'
-import { byId, isDefined } from '@typebot.io/lib'
-import { blockHasItems } from '@typebot.io/schemas/helpers'
+import { byId, isDefined } from '@sniper.io/lib'
+import { blockHasItems } from '@sniper.io/schemas/helpers'
 import { createId } from '@paralleldrive/cuid2'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
 
 export type EdgesActions = {
   createEdge: (edge: Omit<Edge, 'id'>) => void
@@ -20,50 +20,50 @@ export type EdgesActions = {
   deleteEdge: (edgeId: string) => void
 }
 
-export const edgesAction = (setTypebot: SetTypebot): EdgesActions => ({
+export const edgesAction = (setSniper: SetSniper): EdgesActions => ({
   createEdge: (edge: Omit<Edge, 'id'>) =>
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
+    setSniper((sniper) =>
+      produce(sniper, (sniper) => {
         const newEdge = {
           ...edge,
           id: createId(),
         }
-        removeExistingEdge(typebot, edge)
-        typebot.edges.push(newEdge)
+        removeExistingEdge(sniper, edge)
+        sniper.edges.push(newEdge)
         if ('eventId' in edge.from) {
-          const eventIndex = typebot.events.findIndex(byId(edge.from.eventId))
-          addEdgeIdToEvent(typebot, newEdge.id, {
+          const eventIndex = sniper.events.findIndex(byId(edge.from.eventId))
+          addEdgeIdToEvent(sniper, newEdge.id, {
             eventIndex,
           })
         } else {
-          const groupIndex = typebot.groups.findIndex((g) =>
+          const groupIndex = sniper.groups.findIndex((g) =>
             g.blocks.some(
               (b) => 'blockId' in edge.from && b.id === edge.from.blockId
             )
           )
-          const blockIndex = typebot.groups[groupIndex].blocks.findIndex(
+          const blockIndex = sniper.groups[groupIndex].blocks.findIndex(
             byId(edge.from.blockId)
           )
           const itemIndex = edge.from.itemId
             ? (
-                typebot.groups[groupIndex].blocks[blockIndex] as
+                sniper.groups[groupIndex].blocks[blockIndex] as
                   | BlockWithItems
                   | undefined
               )?.items.findIndex(byId(edge.from.itemId))
             : null
 
           isDefined(itemIndex) && itemIndex !== -1
-            ? addEdgeIdToItem(typebot, newEdge.id, {
+            ? addEdgeIdToItem(sniper, newEdge.id, {
                 groupIndex,
                 blockIndex,
                 itemIndex,
               })
-            : addEdgeIdToBlock(typebot, newEdge.id, {
+            : addEdgeIdToBlock(sniper, newEdge.id, {
                 groupIndex,
                 blockIndex,
               })
 
-          const block = typebot.groups[groupIndex].blocks[blockIndex]
+          const block = sniper.groups[groupIndex].blocks[blockIndex]
           if (isDefined(itemIndex) && isDefined(block.outgoingEdgeId)) {
             const areAllItemsConnected = (block as BlockWithItems).items.every(
               (item) => isDefined(item.outgoingEdgeId)
@@ -74,7 +74,7 @@ export const edgesAction = (setTypebot: SetTypebot): EdgesActions => ({
                 block.type === InputBlockType.PICTURE_CHOICE)
             ) {
               deleteEdgeDraft({
-                typebot,
+                sniper,
                 edgeId: block.outgoingEdgeId,
                 groupIndex,
               })
@@ -84,81 +84,81 @@ export const edgesAction = (setTypebot: SetTypebot): EdgesActions => ({
       })
     ),
   updateEdge: (edgeIndex: number, updates: Partial<Omit<Edge, 'id'>>) =>
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        const currentEdge = typebot.edges[edgeIndex]
-        typebot.edges[edgeIndex] = {
+    setSniper((sniper) =>
+      produce(sniper, (sniper) => {
+        const currentEdge = sniper.edges[edgeIndex]
+        sniper.edges[edgeIndex] = {
           ...currentEdge,
           ...updates,
         }
       })
     ),
   deleteEdge: (edgeId: string) =>
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        deleteEdgeDraft({ typebot, edgeId })
+    setSniper((sniper) =>
+      produce(sniper, (sniper) => {
+        deleteEdgeDraft({ sniper, edgeId })
       })
     ),
 })
 
 const addEdgeIdToEvent = (
-  typebot: Draft<TypebotV6>,
+  sniper: Draft<SniperV6>,
   edgeId: string,
   { eventIndex }: { eventIndex: number }
-) => (typebot.events[eventIndex].outgoingEdgeId = edgeId)
+) => (sniper.events[eventIndex].outgoingEdgeId = edgeId)
 
 const addEdgeIdToBlock = (
-  typebot: Draft<Typebot>,
+  sniper: Draft<Sniper>,
   edgeId: string,
   { groupIndex, blockIndex }: BlockIndices
 ) => {
-  typebot.groups[groupIndex].blocks[blockIndex].outgoingEdgeId = edgeId
+  sniper.groups[groupIndex].blocks[blockIndex].outgoingEdgeId = edgeId
 }
 
 const addEdgeIdToItem = (
-  typebot: Draft<Typebot>,
+  sniper: Draft<Sniper>,
   edgeId: string,
   { groupIndex, blockIndex, itemIndex }: ItemIndices
 ) =>
-  ((typebot.groups[groupIndex].blocks[blockIndex] as BlockWithItems).items[
+  ((sniper.groups[groupIndex].blocks[blockIndex] as BlockWithItems).items[
     itemIndex
   ].outgoingEdgeId = edgeId)
 
 export const deleteEdgeDraft = ({
-  typebot,
+  sniper,
   edgeId,
   groupIndex,
 }: {
-  typebot: Draft<TypebotV6>
+  sniper: Draft<SniperV6>
   edgeId: string
   groupIndex?: number
 }) => {
-  const edgeIndex = typebot.edges.findIndex(byId(edgeId))
+  const edgeIndex = sniper.edges.findIndex(byId(edgeId))
   if (edgeIndex === -1) return
-  deleteOutgoingEdgeIdProps({ typebot, edgeId, groupIndex })
-  typebot.edges.splice(edgeIndex, 1)
+  deleteOutgoingEdgeIdProps({ sniper, edgeId, groupIndex })
+  sniper.edges.splice(edgeIndex, 1)
 }
 
 const deleteOutgoingEdgeIdProps = ({
-  typebot,
+  sniper,
   edgeId,
   groupIndex,
 }: {
-  typebot: Draft<TypebotV6>
+  sniper: Draft<SniperV6>
   edgeId: string
   groupIndex?: number
 }) => {
-  const edge = typebot.edges.find(byId(edgeId))
+  const edge = sniper.edges.find(byId(edgeId))
   if (!edge) return
   if ('eventId' in edge.from) {
-    const eventIndex = typebot.events.findIndex(byId(edge.from.eventId))
+    const eventIndex = sniper.events.findIndex(byId(edge.from.eventId))
     if (eventIndex === -1) return
-    typebot.events[eventIndex].outgoingEdgeId = undefined
+    sniper.events[eventIndex].outgoingEdgeId = undefined
     return
   }
   const fromGroupIndex =
     groupIndex ??
-    typebot.groups.findIndex(
+    sniper.groups.findIndex(
       (g) =>
         edge.to.groupId === g.id ||
         g.blocks.some(
@@ -167,10 +167,10 @@ const deleteOutgoingEdgeIdProps = ({
             (b.id === edge.from.blockId || b.id === edge.to.blockId)
         )
     )
-  const fromBlockIndex = typebot.groups[fromGroupIndex].blocks.findIndex(
+  const fromBlockIndex = sniper.groups[fromGroupIndex].blocks.findIndex(
     byId(edge.from.blockId)
   )
-  const block = typebot.groups[fromGroupIndex].blocks[fromBlockIndex] as
+  const block = sniper.groups[fromGroupIndex].blocks[fromBlockIndex] as
     | Block
     | undefined
   if (!block) return
@@ -180,18 +180,18 @@ const deleteOutgoingEdgeIdProps = ({
       : -1
   if (fromItemIndex !== -1) {
     ;(
-      typebot.groups[fromGroupIndex].blocks[fromBlockIndex] as BlockWithItems
+      sniper.groups[fromGroupIndex].blocks[fromBlockIndex] as BlockWithItems
     ).items[fromItemIndex ?? 0].outgoingEdgeId = undefined
   } else if (fromBlockIndex !== -1)
-    typebot.groups[fromGroupIndex].blocks[fromBlockIndex].outgoingEdgeId =
+    sniper.groups[fromGroupIndex].blocks[fromBlockIndex].outgoingEdgeId =
       undefined
 }
 
 export const deleteConnectedEdgesDraft = (
-  typebot: Draft<TypebotV6>,
+  sniper: Draft<SniperV6>,
   deletedNodeId: string
 ) => {
-  const edgesToDelete = typebot.edges.filter((edge) => {
+  const edgesToDelete = sniper.edges.filter((edge) => {
     if ('eventId' in edge.from)
       return [edge.from.eventId, edge.to.groupId, edge.to.blockId].includes(
         deletedNodeId
@@ -205,14 +205,11 @@ export const deleteConnectedEdgesDraft = (
     ].includes(deletedNodeId)
   })
 
-  edgesToDelete.forEach((edge) => deleteEdgeDraft({ typebot, edgeId: edge.id }))
+  edgesToDelete.forEach((edge) => deleteEdgeDraft({ sniper, edgeId: edge.id }))
 }
 
-const removeExistingEdge = (
-  typebot: Draft<Typebot>,
-  edge: Omit<Edge, 'id'>
-) => {
-  typebot.edges = typebot.edges.filter((e) => {
+const removeExistingEdge = (sniper: Draft<Sniper>, edge: Omit<Edge, 'id'>) => {
+  sniper.edges = sniper.edges.filter((e) => {
     if ('eventId' in edge.from) {
       if ('eventId' in e.from) return e.from.eventId !== edge.from.eventId
       return true

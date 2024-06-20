@@ -1,7 +1,7 @@
 import { Text } from '@chakra-ui/react'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 import { useTranslate } from '@tolgee/react'
-import { AudioBubbleBlock } from '@typebot.io/schemas'
+import { AudioBubbleBlock } from '@sniper.io/schemas'
 
 type Props = {
   url: NonNullable<AudioBubbleBlock['content']>['url']

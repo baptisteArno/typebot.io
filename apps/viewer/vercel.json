@@ -5,7 +5,7 @@
       
       "memory": 500
     },
-    "src/pages/api/typebots/[typebotId]/blocks/[blockId]/executeWebhook.ts": {
+    "src/pages/api/snipers/[sniperId]/blocks/[blockId]/executeWebhook.ts": {
       "maxDuration": 10,
       "memory": 500
     }
