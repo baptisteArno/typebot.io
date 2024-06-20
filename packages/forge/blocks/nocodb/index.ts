@@ -13,4 +13,8 @@ export const nocodbBlock = createBlock({
   LightLogo: NocodbLogo,
   auth,
   actions: [searchRecords, createRecord, updateExistingRecord],
+  onboarding: {
+    youtubeId: 'ViKETDQ8Sfg',
+    deployedAt: new Date('2023-06-20'),
+  },
 })
