@@ -20,7 +20,7 @@
     "@typebot.io/variables": "workspace:*",
     "@udecode/plate-common": "30.4.5",
     "@typebot.io/logic": "workspace:*",
-    "ai": "3.1.34",
+    "ai": "3.2.1",
     "chrono-node": "2.7.6",
     "date-fns": "2.30.0",
     "date-fns-tz": "2.0.0",
