@@ -6,6 +6,7 @@ import {
   PopoverContent,
   Flex,
   useColorModeValue,
+  Portal,
 } from '@chakra-ui/react'
 import React from 'react'
 import { EmojiOrImageIcon } from './EmojiOrImageIcon'
@@ -55,16 +56,19 @@ export const EditableEmojiOrImageIcon = ({
               </PopoverTrigger>
             </Flex>
           </Tooltip>
-          <PopoverContent p="2">
-            <ImageUploadContent
-              uploadFileProps={uploadFileProps}
-              defaultUrl={icon ?? ''}
-              onSubmit={onChangeIcon}
-              excludedTabs={['giphy', 'unsplash']}
-              onClose={onClose}
-              initialTab="icon"
-            />
-          </PopoverContent>
+          <Portal>
+            <PopoverContent p="2">
+              <ImageUploadContent
+                uploadFileProps={uploadFileProps}
+                defaultUrl={icon ?? ''}
+                onSubmit={onChangeIcon}
+                excludedTabs={['giphy', 'unsplash']}
+                onClose={onClose}
+                initialTab="icon"
+                linkWithVariableButton={false}
+              />
+            </PopoverContent>
+          </Portal>
         </>
       )}
     </Popover>

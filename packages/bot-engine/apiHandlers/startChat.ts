@@ -1,8 +1,10 @@
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 import { computeCurrentProgress } from '../computeCurrentProgress'
 import { filterPotentiallySensitiveLogs } from '../logs/filterPotentiallySensitiveLogs'
 import { restartSession } from '../queries/restartSession'
 import { saveStateToDatabase } from '../saveStateToDatabase'
 import { startSession } from '../startSession'
+import { isNotEmpty } from '@typebot.io/lib'
 
 type Props = {
   origin: string | undefined
@@ -74,8 +76,11 @@ export const startChat = async ({
         clientSideActions,
         visitedEdges,
         setVariableHistory,
-        hasCustomEmbedBubble: messages.some(
-          (message) => message.type === 'custom-embed'
+        hasEmbedBubbleWithWaitEvent: messages.some(
+          (message) =>
+            message.type === 'custom-embed' ||
+            (message.type === BubbleBlockType.EMBED &&
+              message.content.waitForEvent?.isEnabled)
         ),
       })
 

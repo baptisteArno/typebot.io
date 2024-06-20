@@ -30,9 +30,10 @@ export const uploadFiles = async ({
       fileUrl: string
     }>({
       method: 'POST',
-      url: `${apiHost}/api/v1/generate-upload-url`,
+      url: `${apiHost}/api/v2/generate-upload-url`,
       body: {
-        filePathProps: input,
+        fileName: input.fileName,
+        sessionId: input.sessionId,
         fileType: file.type,
       },
     })

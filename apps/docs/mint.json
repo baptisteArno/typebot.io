@@ -265,6 +265,7 @@
         "api-reference/chat/start-preview-chat",
         "api-reference/chat/continue-chat",
         "api-reference/chat/save-logs",
+        "api-reference/chat/generate-upload-url",
         "api-reference/chat/update-typebot-in-session"
       ]
     },

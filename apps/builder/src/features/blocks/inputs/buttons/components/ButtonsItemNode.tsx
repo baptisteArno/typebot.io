@@ -22,6 +22,7 @@ import { isEmpty } from '@typebot.io/lib'
 import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { ButtonsItemSettings } from './ButtonsItemSettings'
 import { useTranslate } from '@tolgee/react'
+import { convertStrToList } from '@typebot.io/lib/convertStrToList'
 
 type Props = {
   item: ButtonItem
@@ -69,27 +70,18 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
   }
 
   const handleEditableChange = (val: string) => {
-    if (val.length - itemValue.length && val.endsWith('\n')) return
-    const splittedBreakLines = val.split('\n')
-    const splittedCommas = val.split(',')
-    const isPastingMultipleItems =
-      val.length - itemValue.length > 1 &&
-      (splittedBreakLines.length > 2 || splittedCommas.length > 2)
-    if (isPastingMultipleItems) {
-      const values =
-        splittedBreakLines.length > 2 ? splittedBreakLines : splittedCommas
-      return values.forEach((v, i) => {
-        if (i === 0) {
-          setItemValue(v)
-        } else {
-          createItem(
-            { content: v.trim() },
-            { ...indices, itemIndex: indices.itemIndex + i }
-          )
-        }
+    if (itemValue !== '') return setItemValue(val)
+    const values = convertStrToList(val)
+    if (values.length === 1) {
+      setItemValue(values[0])
+    } else {
+      values.forEach((v, i) => {
+        createItem(
+          { content: v },
+          { ...indices, itemIndex: indices.itemIndex + i }
+        )
       })
     }
-    setItemValue(val)
   }
 
   const handlePlusClick = () => {

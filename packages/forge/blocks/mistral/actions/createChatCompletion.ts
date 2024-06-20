@@ -3,9 +3,8 @@ import { isDefined } from '@typebot.io/lib'
 import { auth } from '../auth'
 import { parseMessages } from '../helpers/parseMessages'
 import { createMistral } from '@ai-sdk/mistral'
-import { apiBaseUrl } from '../constants'
-import ky from 'ky'
 import { generateText, streamText } from 'ai'
+import { fetchModels } from '../helpers/fetchModels'
 
 const nativeMessageContentSchema = {
   content: option.string.layout({
@@ -98,19 +97,7 @@ export const createChatCompletion = createAction({
     {
       id: 'fetchModels',
       dependencies: [],
-      fetch: async ({ credentials }) => {
-        if (!credentials?.apiKey) return []
-
-        const { data } = await ky
-          .get(apiBaseUrl + '/v1/models', {
-            headers: {
-              Authorization: `Bearer ${credentials.apiKey}`,
-            },
-          })
-          .json<{ data: { id: string }[] }>()
-
-        return data.map((model) => model.id)
-      },
+      fetch: fetchModels,
     },
   ],
   run: {

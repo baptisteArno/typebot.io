@@ -1,6 +1,6 @@
 import { GitHubIcon } from 'assets/icons'
 import { DocIcon } from 'assets/icons/DocIcon'
-import { MapIcon } from 'assets/icons/MapIcon'
+import { NewspaperIcon } from 'assets/icons/NewspaperIcon'
 import { PeopleCircleIcon } from 'assets/icons/PeopleCircleIcon'
 import * as React from 'react'
 
@@ -22,11 +22,11 @@ export const links = [
         icon: <DocIcon />,
       },
       {
-        label: 'Roadmap',
+        label: 'Blog',
         description:
-          "Follow the development and make suggestions for which features you'd like to see",
-        href: 'https://feedback.typebot.io/roadmap',
-        icon: <MapIcon />,
+          'Read the latest news and updates about Typebot and the chatbots ecosystem',
+        href: '/blog',
+        icon: <NewspaperIcon />,
       },
       {
         label: 'Community',

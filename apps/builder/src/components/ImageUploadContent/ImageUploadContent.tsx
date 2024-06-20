@@ -16,6 +16,7 @@ type Props = {
   defaultUrl?: string
   imageSize?: 'small' | 'regular' | 'thumb'
   initialTab?: Tabs
+  linkWithVariableButton?: boolean
   onSubmit: (url: string) => void
   onClose?: () => void
 } & (
@@ -43,6 +44,7 @@ export const ImageUploadContent = ({
   imageSize = 'regular',
   onClose,
   initialTab,
+  linkWithVariableButton,
   ...props
 }: Props) => {
   const includedTabs =
@@ -128,6 +130,7 @@ export const ImageUploadContent = ({
         imageSize={imageSize}
         onSubmit={handleSubmit}
         defaultUrl={defaultUrl}
+        linkWithVariableButton={linkWithVariableButton}
       />
     </Stack>
   )
@@ -138,12 +141,14 @@ const BodyContent = ({
   tab,
   defaultUrl,
   imageSize,
+  linkWithVariableButton,
   onSubmit,
 }: {
   uploadFileProps?: FilePathUploadProps
   tab: Tabs
   defaultUrl?: string
   imageSize: 'small' | 'regular' | 'thumb'
+  linkWithVariableButton?: boolean
   onSubmit: (url: string) => void
 }) => {
   switch (tab) {
@@ -157,7 +162,13 @@ const BodyContent = ({
       )
     }
     case 'link':
-      return <EmbedLinkContent defaultUrl={defaultUrl} onNewUrl={onSubmit} />
+      return (
+        <EmbedLinkContent
+          defaultUrl={defaultUrl}
+          onNewUrl={onSubmit}
+          withVariableButton={linkWithVariableButton}
+        />
+      )
     case 'giphy':
       return <GiphyContent onNewUrl={onSubmit} />
     case 'emoji':
@@ -194,7 +205,8 @@ const UploadFileContent = ({
 const EmbedLinkContent = ({
   defaultUrl,
   onNewUrl,
-}: ContentProps & { defaultUrl?: string }) => {
+  withVariableButton,
+}: ContentProps & { defaultUrl?: string; withVariableButton?: boolean }) => {
   const { t } = useTranslate()
 
   return (
@@ -203,6 +215,7 @@ const EmbedLinkContent = ({
         placeholder={t('editor.header.linkTab.searchInputPlaceholder.label')}
         onChange={onNewUrl}
         defaultValue={defaultUrl ?? ''}
+        withVariableButton={withVariableButton}
       />
     </Stack>
   )

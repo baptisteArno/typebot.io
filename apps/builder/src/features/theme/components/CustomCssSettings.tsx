@@ -12,6 +12,7 @@ export const CustomCssSettings = ({ customCss, onCustomCssChange }: Props) => {
       value={customCss ?? ''}
       lang="css"
       onChange={onCustomCssChange}
+      withVariableButton={false}
     />
   )
 }

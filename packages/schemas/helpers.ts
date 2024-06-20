@@ -14,6 +14,7 @@ import {
   IntegrationBlock,
   HttpRequestBlock,
   BlockWithOptionsType,
+  BlockWithOptions,
 } from './features/blocks'
 import { BubbleBlockType } from './features/blocks/bubbles/constants'
 import { defaultChoiceInputOptions } from './features/blocks/inputs/choice/constants'
@@ -78,13 +79,8 @@ export const isBubbleBlockType = (
 ): type is BubbleBlockType =>
   (Object.values(BubbleBlockType) as string[]).includes(type)
 
-export const blockTypeHasOption = (
-  type: Block['type']
-): type is BlockWithOptionsType =>
-  (Object.values(InputBlockType) as string[])
-    .concat(Object.values(LogicBlockType))
-    .concat(Object.values(IntegrationBlockType))
-    .includes(type)
+export const blockHasOptions = (block: Block): block is BlockWithOptions =>
+  'options' in block
 
 export const blockTypeHasItems = (
   type: Block['type']

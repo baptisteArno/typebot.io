@@ -16,7 +16,7 @@
     "eslint-config-custom": "workspace:*",
     "jest": "29.4.1",
     "jest-environment-jsdom": "29.4.1",
-    "prettier": "2.8.3",
+    "prettier": "2.8.8",
     "ts-jest": "29.0.5",
     "typescript": "5.4.5",
     "@typebot.io/tsconfig": "workspace:*"

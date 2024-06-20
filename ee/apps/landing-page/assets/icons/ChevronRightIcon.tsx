@@ -1,4 +1,4 @@
-import Icon, { IconProps } from '@chakra-ui/icon'
+import { Icon, IconProps } from '@chakra-ui/icon'
 import React from 'react'
 
 export const ChevronRightIcon = (props: IconProps) => (

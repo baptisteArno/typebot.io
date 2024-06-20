@@ -10,6 +10,7 @@ import {
 import { parseSearchParams } from '../helpers/parseSearchParams'
 import { convertFilterToWhereClause } from '../helpers/convertFilterToWhereClause'
 import { ListTableRecordsResponse } from '../types'
+import { parseErrorResponse } from '../helpers/parseErrorResponse'
 
 export const updateExistingRecord = createAction({
   auth,
@@ -94,7 +95,7 @@ export const updateExistingRecord = createAction({
           return logs.add({
             status: 'error',
             description: error.message,
-            details: await error.response.text(),
+            details: await parseErrorResponse(error.response),
           })
         console.error(error)
       }

@@ -32,7 +32,7 @@ import { trpc } from '@/lib/trpc'
 import { EventsActions, eventsActions } from './typebotActions/events'
 import { useGroupsStore } from '@/features/graph/hooks/useGroupsStore'
 
-const autoSaveTimeout = 10000
+const autoSaveTimeout = 15000
 
 type UpdateTypebotPayload = Partial<
   Pick<
@@ -225,7 +225,12 @@ export const TypebotProvider = ({
         ...localTypebot,
         ...updates,
       }
-      if (dequal(omit(typebot, 'updatedAt'), omit(typebotToSave, 'updatedAt')))
+      if (
+        dequal(
+          JSON.parse(JSON.stringify(omit(typebot, 'updatedAt'))),
+          JSON.parse(JSON.stringify(omit(typebotToSave, 'updatedAt')))
+        )
+      )
         return
       const newParsedTypebot = typebotV6Schema.parse({ ...typebotToSave })
       setLocalTypebot(newParsedTypebot)

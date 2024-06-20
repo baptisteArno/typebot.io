@@ -1,11 +1,11 @@
 {
   "version": "6",
-  "id": "clvch0psb0001p9py1jx1e8wq",
+  "id": "clxn14e0w0001b4nz8a9dpemb",
   "name": "High ticket lead follow-up",
   "events": [
     {
       "id": "mb3o7c0khkqp5mzf1zifdc65",
-      "outgoingEdgeId": "m77o21luo3uzqvgybje01yo1",
+      "outgoingEdgeId": "aauahl2wn37wghyr0ndd6v51",
       "graphCoordinates": { "x": 0, "y": 0 },
       "type": "start"
     }
@@ -14,7 +14,7 @@
     {
       "id": "hemncfdck31b3l9urzs3djtm",
       "title": "Welcome",
-      "graphCoordinates": { "x": 198.73, "y": 159.13 },
+      "graphCoordinates": { "x": 225, "y": 387.85 },
       "blocks": [
         {
           "id": "j4i5syifxmq7650xfz8bnd1o",
@@ -79,7 +79,7 @@
     {
       "id": "a3txw7jcd5qalxizrvqu0fqt",
       "title": "Business",
-      "graphCoordinates": { "x": 576.4, "y": 154.56 },
+      "graphCoordinates": { "x": 602.78, "y": 382.85 },
       "blocks": [
         {
           "id": "rowpy0lwuecc83xecbb8tzcn",
@@ -112,29 +112,16 @@
           "id": "ikvrw5cy41k18ql2pwvzesqt",
           "type": "mistral",
           "options": {
-            "action": "Create chat completion",
-            "model": "mistral-medium",
-            "messages": [
+            "action": "Generate variables",
+            "model": "mistral-large-latest",
+            "prompt": "Extract the information based on user's previous answer:\n\n\"{{last utterance}}\"",
+            "variablesToExtract": [
               {
-                "role": "system",
-                "content": "You are an assistant that generates JSON. You always return JSON with no additional description or context.\n\nYour answer should match this JSON schema:\n\n{\n  \"business\": {\n   \"type\": \"string\",\n    \"description\": \"A summary of the business the user is in\"\n  }\n}\n\nIf the information does not exists, provide an empty string."
-              },
-              { "role": "user", "content": "{{last utterance}}" }
-            ],
-            "responseMapping": [
-              {
-                "item": "Message content",
-                "variableId": "vaut2rkwqv5gwwihthbk7uhqd"
+                "type": "string",
+                "variableId": "vabp22hjq8st3roj9qo8lbub3",
+                "isRequired": false
               }
             ]
-          }
-        },
-        {
-          "id": "xwxh1vqghkhe9ipmdm07p3is",
-          "type": "Set variable",
-          "options": {
-            "variableId": "vabp22hjq8st3roj9qo8lbub3",
-            "expressionToEvaluate": "JSON.parse({{Assistant message}}).business"
           }
         },
         {
@@ -165,7 +152,7 @@
             "messages": [
               {
                 "role": "system",
-                "content": "Your job is to know the user current business.\n\nDo your best to collect that information.\n\nProvide short answers with a casual tone."
+                "content": "Your only job is to collect user's business information. Nothing else.\n\nProvide short answers with a casual tone.\n\nTry to reassure the user and always end your message by asking what's the current user's business."
               },
               {
                 "role": "assistant",
@@ -196,7 +183,7 @@
     {
       "id": "iwhknwvhh53jbw83fu5wgfen",
       "title": "Revenue",
-      "graphCoordinates": { "x": 969.61, "y": 149.26 },
+      "graphCoordinates": { "x": 995.88, "y": 377.98 },
       "blocks": [
         {
           "id": "qwjk8w0249ijb9x6hvna5vgo",
@@ -250,32 +237,19 @@
           "options": { "variableId": "vct90f8lq4uuyqupv6qco5jfq" }
         },
         {
-          "id": "r3qf1l12ml1zh9n6uikf6gp3",
+          "id": "tfpnyw09powo19vt0g0f3usk",
           "type": "mistral",
           "options": {
-            "action": "Create chat completion",
-            "model": "mistral-medium",
-            "messages": [
+            "action": "Generate variables",
+            "model": "mistral-large-latest",
+            "prompt": "Extract the information based on user's previous answer:\n\n\"{{last utterance}}\"",
+            "variablesToExtract": [
               {
-                "role": "system",
-                "content": "You are an assistant that generates JSON. You always return JSON with no additional description or context.\n\nYour answer should match this JSON schema:\n\n{\n  \"average_revenue\": {\n   \"type\": \"string\",\n    \"description\": \"The user's average revenue\"\n  }\n}\n\nIf the information does not exists, provide an empty string."
-              },
-              { "role": "user", "content": "{{last utterance}}" }
-            ],
-            "responseMapping": [
-              {
-                "item": "Message content",
-                "variableId": "vaut2rkwqv5gwwihthbk7uhqd"
+                "type": "string",
+                "variableId": "vuffpsxxfqujokeyh10hfm65p",
+                "isRequired": false
               }
             ]
-          }
-        },
-        {
-          "id": "u3iezgunlf653o66g6f61itx",
-          "type": "Set variable",
-          "options": {
-            "variableId": "vuffpsxxfqujokeyh10hfm65p",
-            "expressionToEvaluate": "JSON.parse({{Assistant message}}).average_revenue"
           }
         },
         {
@@ -306,11 +280,11 @@
             "messages": [
               {
                 "role": "system",
-                "content": "Your job is to know the user average yearly revenue\n\nDo your best to collect that information.\n\nProvide short answers with a casual tone."
+                "content": "Your only job is to collect user's average revenue per year. Nothing else.\n\nProvide short answers with a casual tone.\n\nTry to reassure the user and always end your message by asking what's the current user's average yearly revenu."
               },
               {
                 "role": "assistant",
-                "content": "What's your current business?"
+                "content": "What's your average revenue per year?"
               },
               { "role": "user", "content": "{{last utterance}}" }
             ],
@@ -337,7 +311,7 @@
     {
       "id": "w1fxjymnv9v6zdvleaa0wts6",
       "title": "Interest in SEO",
-      "graphCoordinates": { "x": 1349.17, "y": 155.47 },
+      "graphCoordinates": { "x": 1375.44, "y": 384.19 },
       "blocks": [
         {
           "id": "w5x7e2m30y58586jpm1zra4j",
@@ -392,33 +366,21 @@
           }
         },
         {
-          "id": "r20ryth0rugk6ysixpngj9c6",
+          "id": "lnsv798yj73ai3mill4huwyq",
+          "outgoingEdgeId": "ohz6k1woo8y2g0ib5i4l8tyx",
           "type": "mistral",
           "options": {
-            "action": "Create chat completion",
-            "model": "mistral-medium",
-            "messages": [
+            "action": "Generate variables",
+            "model": "mistral-large-latest",
+            "prompt": "Extract the information based on user's previous answer:\n\n\"{{last utterance}}\"",
+            "variablesToExtract": [
               {
-                "role": "system",
-                "content": "You are an assistant that generates JSON. You always return JSON with no additional description or context.\n\nYour answer should match this JSON schema:\n\n{\n  \"seo_interest\": {\n   \"type\": \"string\",\n    \"description\": \"A summary of the reason why the user is interested in SEO\"\n  }\n}\n\nIf the information does not exists, provide an empty string."
-              },
-              { "role": "user", "content": "{{last utterance}}" }
-            ],
-            "responseMapping": [
-              {
-                "item": "Message content",
-                "variableId": "vaut2rkwqv5gwwihthbk7uhqd"
+                "type": "string",
+                "variableId": "vvmh29a0tgn5ugzhnxzqth546",
+                "description": "Why the user is interested in SEO right now",
+                "isRequired": true
               }
             ]
-          }
-        },
-        {
-          "id": "zi7j7e5jm3dxjwkw3jagknyy",
-          "outgoingEdgeId": "uqtn3tka6th5eh2gchevr5qn",
-          "type": "Set variable",
-          "options": {
-            "variableId": "vvmh29a0tgn5ugzhnxzqth546",
-            "expressionToEvaluate": "JSON.parse({{Assistant message}}).seo_interest"
           }
         }
       ]
@@ -426,7 +388,7 @@
     {
       "id": "bndagu5imd89vi5kdvlpi8py",
       "title": "Booking",
-      "graphCoordinates": { "x": 1741.11, "y": 152.18 },
+      "graphCoordinates": { "x": 1767.38, "y": 380.9 },
       "blocks": [
         {
           "id": "ewu53md22e3izomzy7czqf4x",
@@ -492,12 +454,12 @@
       ]
     },
     {
-      "id": "s0h5ia9ntolcu58kduuwxl5p",
+      "id": "obcf7n03hrbuz45hxudp7vyg",
       "title": "",
-      "graphCoordinates": { "x": 291.9, "y": -304.36 },
+      "graphCoordinates": { "x": 269.38, "y": -8.11 },
       "blocks": [
         {
-          "id": "qrxehakom6ig3s1zg4n5mlt5",
+          "id": "j87l3ef5tpji9lpqeb1x1jab",
           "type": "text",
           "content": {
             "richText": [
@@ -513,7 +475,7 @@
           }
         },
         {
-          "id": "mwe2voc2n4ioanai2auyrvzi",
+          "id": "xsfpajnunr48xf9niv1zuoiv",
           "type": "text",
           "content": {
             "richText": [
@@ -529,8 +491,7 @@
           }
         },
         {
-          "id": "r5m1dsd7yjyzzmw017ce1syy",
-          "outgoingEdgeId": "i71agoe5gvra0enfznfxvde6",
+          "id": "fwrkxexujzmud7p02ehm8s79",
           "type": "text",
           "content": {
             "richText": [
@@ -594,14 +555,14 @@
       "to": { "groupId": "w1fxjymnv9v6zdvleaa0wts6" }
     },
     {
-      "id": "uqtn3tka6th5eh2gchevr5qn",
-      "from": { "blockId": "zi7j7e5jm3dxjwkw3jagknyy" },
+      "id": "ohz6k1woo8y2g0ib5i4l8tyx",
+      "from": { "blockId": "lnsv798yj73ai3mill4huwyq" },
       "to": { "groupId": "bndagu5imd89vi5kdvlpi8py" }
     },
     {
-      "id": "m77o21luo3uzqvgybje01yo1",
       "from": { "eventId": "mb3o7c0khkqp5mzf1zifdc65" },
-      "to": { "groupId": "s0h5ia9ntolcu58kduuwxl5p" }
+      "to": { "groupId": "obcf7n03hrbuz45hxudp7vyg" },
+      "id": "aauahl2wn37wghyr0ndd6v51"
     }
   ],
   "variables": [
@@ -644,8 +605,8 @@
   "theme": {},
   "selectedThemeTemplateId": null,
   "settings": {},
-  "createdAt": "2024-04-23T14:17:59.435Z",
-  "updatedAt": "2024-04-23T14:20:53.922Z",
+  "createdAt": "2024-06-20T08:57:49.568Z",
+  "updatedAt": "2024-06-20T10:05:01.573Z",
   "icon": "🤓",
   "folderId": null,
   "publicId": null,

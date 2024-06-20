@@ -1,0 +1,20 @@
+---
+title: 'Generate upload URL'
+openapi: POST /v2/generate-upload-url
+---
+
+The `presignedUrl` and `formData` fields can be then used to upload the file to the S3 bucket, directly from the browser if necessary. Here is an example:
+
+```js
+// data contains the presignedUrl and formData fields from the response
+
+const formData = new FormData()
+Object.entries(data.formData).forEach(([key, value]) => {
+  formData.append(key, value)
+})
+formData.append('file', file)
+const upload = await fetch(data.presignedUrl, {
+  method: 'POST',
+  body: formData,
+})
+```

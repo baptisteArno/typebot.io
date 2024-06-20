@@ -29,6 +29,7 @@ import {
   defaultFontType,
   defaultProgressBarPosition,
 } from '@typebot.io/schemas/features/typebot/theme/constants'
+import { CorsError } from '@/utils/CorsError'
 
 export type BotProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -104,6 +105,10 @@ export const Bot = (props: BotProps & { class?: string }) => {
           `Error! Couldn't initiate the chat. (${error.response.statusText})`
         )
       )
+    }
+
+    if (error instanceof CorsError) {
+      return setError(new Error(error.message))
     }
 
     if (!data) {

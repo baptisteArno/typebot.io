@@ -6,6 +6,13 @@ import { BubbleBlockType } from '../constants'
 export const embedBubbleContentSchema = z.object({
   url: z.string().optional(),
   height: z.number().or(variableStringSchema).optional(),
+  waitForEvent: z
+    .object({
+      isEnabled: z.boolean().optional(),
+      name: z.string().optional(),
+      saveDataInVariableId: z.string().optional(),
+    })
+    .optional(),
 })
 
 export const embedBubbleBlockSchema = blockBaseSchema.merge(
