@@ -104,7 +104,9 @@ export async function startChatQuery({
 
   try {
     const iframeReferrerOrigin =
-      parent !== window ? new URL(document.referrer).origin : undefined
+      parent !== window && isNotEmpty(document.referrer)
+        ? new URL(document.referrer).origin
+        : undefined
     const response = await ky.post(
       `${
         isNotEmpty(apiHost) ? apiHost : guessApiHost()
