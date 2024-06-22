@@ -2,7 +2,7 @@ import { DropdownList } from '@/components/DropdownList'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { TableList, TableListItemProps } from '@/components/TableList'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { useToast } from '@/hooks/useToast'
 import {
   Stack,
@@ -21,7 +21,7 @@ import {
   ResponseVariableMapping,
   HttpRequest,
   HttpRequestBlock,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import { useState, useMemo } from 'react'
 import { executeWebhook } from '../queries/executeWebhookQuery'
 import { convertVariablesForTestToVariables } from '../helpers/convertVariablesForTestToVariables'
@@ -36,7 +36,7 @@ import {
   defaultWebhookAttributes,
   defaultWebhookBlockOptions,
   maxTimeout,
-} from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
+} from '@sniper.io/schemas/features/blocks/integrations/webhook/constants'
 import { NumberInput } from '@/components/inputs'
 
 type Props = {
@@ -54,7 +54,7 @@ export const HttpRequestAdvancedConfigForm = ({
   onWebhookChange,
   onOptionsChange,
 }: Props) => {
-  const { typebot, save } = useTypebot()
+  const { sniper, save } = useSniper()
   const [isTestResponseLoading, setIsTestResponseLoading] = useState(false)
   const [testResponse, setTestResponse] = useState<string>()
   const [responseKeys, setResponseKeys] = useState<string[]>([])
@@ -88,15 +88,15 @@ export const HttpRequestAdvancedConfigForm = ({
     onOptionsChange({ ...options, timeout })
 
   const executeTestRequest = async () => {
-    if (!typebot) return
+    if (!sniper) return
     setIsTestResponseLoading(true)
     if (!options?.webhook) await save()
     else await save()
     const { data, error } = await executeWebhook(
-      typebot.id,
+      sniper.id,
       convertVariablesForTestToVariables(
         options?.variablesForTest ?? [],
-        typebot.variables
+        sniper.variables
       ),
       { blockId }
     )

@@ -1,7 +1,7 @@
 // See `where`: https://docs.nocodb.com/0.109.7/developer-resources/rest-apis/#query-params
 // Example: (colName,eq,colValue)~or(colName2,gt,colValue2)
 
-import { isEmpty } from '@typebot.io/lib'
+import { isEmpty } from '@sniper.io/lib'
 
 export const convertFilterToWhereClause = (
   filter:

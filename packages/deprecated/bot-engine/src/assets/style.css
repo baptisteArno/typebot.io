@@ -3,25 +3,25 @@
 @tailwind utilities;
 
 :root {
-  --typebot-container-bg-image: none;
-  --typebot-container-bg-color: transparent;
-  --typebot-container-font-family: 'Open Sans';
+  --sniper-container-bg-image: none;
+  --sniper-container-bg-color: transparent;
+  --sniper-container-font-family: 'Open Sans';
 
-  --typebot-button-bg-color: #0042da;
-  --typebot-button-color: #ffffff;
+  --sniper-button-bg-color: #0042da;
+  --sniper-button-color: #ffffff;
 
-  --typebot-host-bubble-bg-color: #f7f8ff;
-  --typebot-host-bubble-color: #303235;
+  --sniper-host-bubble-bg-color: #f7f8ff;
+  --sniper-host-bubble-color: #303235;
 
-  --typebot-guest-bubble-bg-color: #ff8e21;
-  --typebot-guest-bubble-color: #ffffff;
+  --sniper-guest-bubble-bg-color: #ff8e21;
+  --sniper-guest-bubble-color: #ffffff;
 
-  --typebot-input-bg-color: #ffffff;
-  --typebot-input-color: #303235;
-  --typebot-input-placeholder-color: #9095a0;
+  --sniper-input-bg-color: #ffffff;
+  --sniper-input-color: #303235;
+  --sniper-input-placeholder-color: #9095a0;
 
-  --typebot-header-bg-color: #ffffff;
-  --typebot-header-color: #303235;
+  --sniper-header-bg-color: #ffffff;
+  --sniper-header-color: #303235;
 
   /* Phone input */
   --PhoneInputCountryFlag-borderColor: transparent;
@@ -71,7 +71,7 @@
 .bubble1,
 .bubble2,
 .bubble3 {
-  background-color: var(--typebot-host-bubble-color);
+  background-color: var(--sniper-host-bubble-color);
   opacity: 0.5;
 }
 
@@ -128,87 +128,87 @@ textarea {
 }
 
 .text-input::-webkit-input-placeholder {
-  color: var(--typebot-input-placeholder-color) !important;
+  color: var(--sniper-input-placeholder-color) !important;
   opacity: 1 !important;
 }
 .text-input::-moz-placeholder {
-  color: var(--typebot-input-placeholder-color) !important;
+  color: var(--sniper-input-placeholder-color) !important;
   opacity: 1 !important;
 }
 .text-input::placeholder {
-  color: var(--typebot-input-placeholder-color) !important;
+  color: var(--sniper-input-placeholder-color) !important;
   opacity: 1 !important;
 }
 
-.typebot-container {
-  background-image: var(--typebot-container-bg-image);
-  background-color: var(--typebot-container-bg-color);
-  font-family: var(--typebot-container-font-family);
+.sniper-container {
+  background-image: var(--sniper-container-bg-image);
+  background-color: var(--sniper-container-bg-color);
+  font-family: var(--sniper-container-font-family);
 }
 
 .custom-header {
-  color: var(--typebot-header-color);
-  background-color: var(--typebot-header-bg-color);
+  color: var(--sniper-header-color);
+  background-color: var(--sniper-header-bg-color);
 }
 
-.typebot-button {
-  color: var(--typebot-button-color);
-  background-color: var(--typebot-button-bg-color);
-  border: 1px solid var(--typebot-button-bg-color);
+.sniper-button {
+  color: var(--sniper-button-color);
+  background-color: var(--sniper-button-bg-color);
+  border: 1px solid var(--sniper-button-bg-color);
 }
 
-.typebot-button.selectable {
-  color: var(--typebot-host-bubble-color);
-  background-color: var(--typebot-host-bubble-bg-color);
-  border: 1px solid var(--typebot-button-bg-color);
+.sniper-button.selectable {
+  color: var(--sniper-host-bubble-color);
+  background-color: var(--sniper-host-bubble-bg-color);
+  border: 1px solid var(--sniper-button-bg-color);
 }
 
-.typebot-host-bubble {
-  color: var(--typebot-host-bubble-color);
+.sniper-host-bubble {
+  color: var(--sniper-host-bubble-color);
 }
 
-.typebot-host-bubble > .bubble-typing {
-  background-color: var(--typebot-host-bubble-bg-color);
-  border: var(--typebot-host-bubble-border);
+.sniper-host-bubble > .bubble-typing {
+  background-color: var(--sniper-host-bubble-bg-color);
+  border: var(--sniper-host-bubble-border);
 }
 
-.typebot-guest-bubble {
-  color: var(--typebot-guest-bubble-color);
-  background-color: var(--typebot-guest-bubble-bg-color);
+.sniper-guest-bubble {
+  color: var(--sniper-guest-bubble-color);
+  background-color: var(--sniper-guest-bubble-bg-color);
 }
 
-.typebot-input {
-  color: var(--typebot-input-color);
-  background-color: var(--typebot-input-bg-color);
+.sniper-input {
+  color: var(--sniper-input-color);
+  background-color: var(--sniper-input-bg-color);
   box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.typebot-input-error-message {
-  color: var(--typebot-input-color);
+.sniper-input-error-message {
+  color: var(--sniper-input-color);
 }
 
-.typebot-button > .send-icon {
-  fill: var(--typebot-button-color);
+.sniper-button > .send-icon {
+  fill: var(--sniper-button-color);
 }
 
-.typebot-chat-view {
+.sniper-chat-view {
   max-width: 800px;
 }
 
 .ping span {
-  background-color: var(--typebot-button-bg-color);
+  background-color: var(--sniper-button-bg-color);
 }
 
 .rating-icon-container svg {
   width: 42px;
   height: 42px;
-  stroke: var(--typebot-button-bg-color);
-  fill: var(--typebot-host-bubble-bg-color);
+  stroke: var(--sniper-button-bg-color);
+  fill: var(--sniper-host-bubble-bg-color);
   transition: fill 100ms ease-out;
 }
 
 .rating-icon-container.selected svg {
-  fill: var(--typebot-button-bg-color);
+  fill: var(--sniper-button-bg-color);
 }
 
 .rating-icon-container:hover svg {
@@ -220,24 +220,24 @@ textarea {
 }
 
 .upload-progress-bar {
-  background-color: var(--typebot-button-bg-color);
+  background-color: var(--sniper-button-bg-color);
 }
 
 .total-files-indicator {
-  background-color: var(--typebot-button-bg-color);
-  color: var(--typebot-button-color);
+  background-color: var(--sniper-button-bg-color);
+  color: var(--sniper-button-color);
   font-size: 10px;
 }
 
-.typebot-upload-input {
+.sniper-upload-input {
   transition: border-color 100ms ease-out;
 }
 
-.typebot-upload-input.dragging-over {
-  border-color: var(--typebot-button-bg-color);
+.sniper-upload-input.dragging-over {
+  border-color: var(--sniper-button-bg-color);
 }
 
 .secondary-button {
-  background-color: var(--typebot-host-bubble-bg-color);
-  color: var(--typebot-host-bubble-color);
+  background-color: var(--sniper-host-bubble-bg-color);
+  color: var(--sniper-host-bubble-color);
 }

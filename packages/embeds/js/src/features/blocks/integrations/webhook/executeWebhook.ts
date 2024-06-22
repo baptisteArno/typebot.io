@@ -1,4 +1,4 @@
-import { ExecutableHttpRequest } from '@typebot.io/schemas'
+import { ExecutableHttpRequest } from '@sniper.io/schemas'
 
 export const executeWebhook = async (
   webhookToExecute: ExecutableHttpRequest

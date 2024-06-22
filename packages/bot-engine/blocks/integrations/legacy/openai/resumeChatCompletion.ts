@@ -1,8 +1,8 @@
-import { byId, isDefined } from '@typebot.io/lib'
-import { ContinueChatResponse, SessionState } from '@typebot.io/schemas'
-import { ChatCompletionOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai'
-import { VariableWithUnknowValue } from '@typebot.io/schemas/features/typebot/variable'
-import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
+import { byId, isDefined } from '@sniper.io/lib'
+import { ContinueChatResponse, SessionState } from '@sniper.io/schemas'
+import { ChatCompletionOpenAIOptions } from '@sniper.io/schemas/features/blocks/integrations/openai'
+import { VariableWithUnknowValue } from '@sniper.io/schemas/features/sniper/variable'
+import { updateVariablesInSession } from '@sniper.io/variables/updateVariablesInSession'
 
 export const resumeChatCompletion =
   (
@@ -22,8 +22,8 @@ export const resumeChatCompletion =
     const newVariables = options.responseMapping?.reduce<
       VariableWithUnknowValue[]
     >((newVariables, mapping) => {
-      const { typebot } = newSessionState.typebotsQueue[0]
-      const existingVariable = typebot.variables.find(byId(mapping.variableId))
+      const { sniper } = newSessionState.snipersQueue[0]
+      const existingVariable = sniper.variables.find(byId(mapping.variableId))
       if (!existingVariable) return newVariables
       if (mapping.valueToExtract === 'Message content') {
         newVariables.push({

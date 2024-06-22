@@ -1,29 +1,29 @@
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { createTypebots } from '@typebot.io/playwright/databaseActions'
+import { createSnipers } from '@sniper.io/playwright/databaseActions'
 import {
   proWorkspaceId,
   starterWorkspaceId,
-} from '@typebot.io/playwright/databaseSetup'
-import { parseDefaultGroupWithBlock } from '@typebot.io/playwright/databaseHelpers'
-import { mockSessionResponsesToOtherUser } from '@typebot.io/playwright/testHelpers'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+} from '@sniper.io/playwright/databaseSetup'
+import { parseDefaultGroupWithBlock } from '@sniper.io/playwright/databaseHelpers'
+import { mockSessionResponsesToOtherUser } from '@sniper.io/playwright/testHelpers'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
 
-const proTypebotId = createId()
-const starterTypebotId = createId()
+const proSniperId = createId()
+const starterSniperId = createId()
 
 test.beforeAll(async () => {
-  await createTypebots([
+  await createSnipers([
     {
-      id: proTypebotId,
-      name: 'Pro typebot',
+      id: proSniperId,
+      name: 'Pro sniper',
       workspaceId: proWorkspaceId,
     },
   ])
-  await createTypebots([
+  await createSnipers([
     {
-      id: starterTypebotId,
-      name: 'Starter typebot',
+      id: starterSniperId,
+      name: 'Starter sniper',
       workspaceId: starterWorkspaceId,
       ...parseDefaultGroupWithBlock({
         type: InputBlockType.TEXT,
@@ -37,24 +37,24 @@ test.beforeAll(async () => {
   ])
 })
 
-test('can switch between workspaces and access typebot', async ({ page }) => {
-  await page.goto('/typebots')
-  await expect(page.locator('text="Pro typebot"')).toBeVisible({
+test('can switch between workspaces and access sniper', async ({ page }) => {
+  await page.goto('/snipers')
+  await expect(page.locator('text="Pro sniper"')).toBeVisible({
     timeout: 20000,
   })
   await page.click('text=Pro workspace')
   await page.click('text="Starter workspace"')
-  await expect(page.locator('text="Pro typebot"')).toBeHidden()
-  await page.click('text="Starter typebot"')
+  await expect(page.locator('text="Pro sniper"')).toBeHidden()
+  await page.click('text="Starter sniper"')
   await expect(page.locator('text="Hey there"')).toBeVisible()
 })
 
 test('can create and delete a new workspace', async ({ page }) => {
-  await page.goto('/typebots')
+  await page.goto('/snipers')
   await page.click('text=Pro workspace')
   await expect(page.locator('text="Pro workspace" >> nth=1')).toBeHidden()
   await page.click('text=New workspace')
-  await expect(page.locator('text="Pro typebot"')).toBeHidden()
+  await expect(page.locator('text="Pro sniper"')).toBeHidden()
   await page.click("text=John Doe's workspace")
   await expect(page.locator('text="Pro workspace"')).toBeVisible()
   await page.click('text=Settings & Members')
@@ -70,7 +70,7 @@ test('can create and delete a new workspace', async ({ page }) => {
 })
 
 test('can update workspace info', async ({ page }) => {
-  await page.goto('/typebots')
+  await page.goto('/snipers')
   await page.click('text=Settings & Members')
   await page.click('text="Settings"')
   await page.click('[data-testid="editable-icon"]')
@@ -79,14 +79,14 @@ test('can update workspace info', async ({ page }) => {
   await page.click('text="🏦"')
   await page.waitForTimeout(500)
   await page.fill('input[value="Pro workspace"]', 'My awesome workspace')
-  await page.getByTestId('typebot-logo').click({ force: true })
+  await page.getByTestId('sniper-logo').click({ force: true })
   await expect(
     page.getByRole('button', { name: 'My awesome workspace Pro' })
   ).toBeVisible()
 })
 
 test('can manage members', async ({ page }) => {
-  await page.goto('/typebots')
+  await page.goto('/snipers')
   await page.click('text=Settings & Members')
   await page.click('text="Members"')
   await expect(
@@ -141,7 +141,7 @@ test('can manage members', async ({ page }) => {
   await expect(page.locator('text="guest@email.com"')).toBeHidden()
 
   await mockSessionResponsesToOtherUser(page)
-  await page.goto('/typebots')
+  await page.goto('/snipers')
   await page.click('text=Settings & Members')
   await expect(page.locator('text="Settings"')).toBeHidden()
   await page.click('text="Members"')
@@ -154,7 +154,7 @@ test('can manage members', async ({ page }) => {
 })
 
 test("can't add new members when limit is reached", async ({ page }) => {
-  await page.goto('/typebots')
+  await page.goto('/snipers')
   await page.click('text="My awesome workspace"')
   await page.click('text="Free workspace"')
   await page.click('text=Settings & Members')

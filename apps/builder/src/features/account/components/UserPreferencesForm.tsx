@@ -8,7 +8,7 @@ import {
   Button,
   HStack,
 } from '@chakra-ui/react'
-import { GraphNavigation } from '@typebot.io/prisma'
+import { GraphNavigation } from '@sniper.io/prisma'
 import React, { useEffect } from 'react'
 import { AppearanceRadioGroup } from './AppearanceRadioGroup'
 import { useUser } from '../hooks/useUser'

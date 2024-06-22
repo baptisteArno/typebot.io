@@ -1,21 +1,21 @@
-import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
-import { ChatCompletionOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai'
+import { IntegrationBlockType } from '@sniper.io/schemas/features/blocks/integrations/constants'
+import { ChatCompletionOpenAIOptions } from '@sniper.io/schemas/features/blocks/integrations/openai'
 import { OpenAI } from 'openai'
-import { decryptV2 } from '@typebot.io/lib/api/encryption/decryptV2'
-import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
-import { VariableStore } from '@typebot.io/forge'
+import { decryptV2 } from '@sniper.io/lib/api/encryption/decryptV2'
+import { forgedBlocks } from '@sniper.io/forge-repository/definitions'
+import { VariableStore } from '@sniper.io/forge'
 import {
   ParseVariablesOptions,
   parseVariables,
-} from '@typebot.io/variables/parseVariables'
+} from '@sniper.io/variables/parseVariables'
 import { getOpenAIChatCompletionStream } from './legacy/getOpenAIChatCompletionStream'
 import { getCredentials } from '../queries/getCredentials'
 import { getSession } from '../queries/getSession'
-import { getBlockById } from '@typebot.io/schemas/helpers'
-import { isForgedBlockType } from '@typebot.io/schemas/features/blocks/forged/helpers'
-import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
+import { getBlockById } from '@sniper.io/schemas/helpers'
+import { isForgedBlockType } from '@sniper.io/schemas/features/blocks/forged/helpers'
+import { updateVariablesInSession } from '@sniper.io/variables/updateVariablesInSession'
 import { updateSession } from '../queries/updateSession'
-import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
+import { deepParseVariables } from '@sniper.io/variables/deepParseVariables'
 import { saveSetVariableHistoryItems } from '../queries/saveSetVariableHistoryItems'
 
 type Props = {
@@ -38,7 +38,7 @@ export const getMessageStream = async ({
 
   const { group, block } = getBlockById(
     session.state.currentBlockId,
-    session.state.typebotsQueue[0].typebot.groups
+    session.state.snipersQueue[0].sniper.groups
   )
   if (!block || !group)
     return {
@@ -105,20 +105,20 @@ export const getMessageStream = async ({
     )
 
     const variables: VariableStore = {
-      list: () => session.state.typebotsQueue[0].typebot.variables,
+      list: () => session.state.snipersQueue[0].sniper.variables,
       get: (id: string) => {
-        const variable = session.state.typebotsQueue[0].typebot.variables.find(
+        const variable = session.state.snipersQueue[0].sniper.variables.find(
           (variable) => variable.id === id
         )
         return variable?.value
       },
       parse: (text: string, params?: ParseVariablesOptions) =>
         parseVariables(
-          session.state.typebotsQueue[0].typebot.variables,
+          session.state.snipersQueue[0].sniper.variables,
           params
         )(text),
       set: async (id: string, value: unknown) => {
-        const variable = session.state.typebotsQueue[0].typebot.variables.find(
+        const variable = session.state.snipersQueue[0].sniper.variables.find(
           (variable) => variable.id === id
         )
         if (!variable) return
@@ -140,7 +140,7 @@ export const getMessageStream = async ({
     const { stream, httpError } = await action.run.stream.run({
       credentials: decryptedCredentials,
       options: deepParseVariables(
-        session.state.typebotsQueue[0].typebot.variables
+        session.state.snipersQueue[0].sniper.variables
       )(block.options),
       variables,
     })

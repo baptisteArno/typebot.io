@@ -1,20 +1,20 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { openAICredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/openai'
-import { smtpCredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/sendEmail'
-import { encrypt } from '@typebot.io/lib/api/encryption/encrypt'
+import { openAICredentialsSchema } from '@sniper.io/schemas/features/blocks/integrations/openai'
+import { smtpCredentialsSchema } from '@sniper.io/schemas/features/blocks/integrations/sendEmail'
+import { encrypt } from '@sniper.io/lib/api/encryption/encrypt'
 import { z } from 'zod'
-import { whatsAppCredentialsSchema } from '@typebot.io/schemas/features/whatsapp'
+import { whatsAppCredentialsSchema } from '@sniper.io/schemas/features/whatsapp'
 import {
   Credentials,
   googleSheetsCredentialsSchema,
   stripeCredentialsSchema,
   zemanticAiCredentialsSchema,
-} from '@typebot.io/schemas'
-import { isDefined } from '@typebot.io/lib/utils'
+} from '@sniper.io/schemas'
+import { isDefined } from '@sniper.io/lib/utils'
 import { isWriteWorkspaceForbidden } from '@/features/workspace/helpers/isWriteWorkspaceForbidden'
-import { trackEvents } from '@typebot.io/telemetry/trackEvents'
+import { trackEvents } from '@sniper.io/telemetry/trackEvents'
 
 const inputShape = {
   data: true,

@@ -1,4 +1,4 @@
-import { Plan } from '@typebot.io/prisma'
+import { Plan } from '@sniper.io/prisma'
 import { z } from '../zod'
 
 const userEvent = z.object({
@@ -11,9 +11,9 @@ const workspaceEvent = userEvent.merge(
   })
 )
 
-const typebotEvent = workspaceEvent.merge(
+const sniperEvent = workspaceEvent.merge(
   z.object({
-    typebotId: z.string(),
+    sniperId: z.string(),
   })
 )
 
@@ -55,9 +55,9 @@ const userUpdatedEventSchema = userEvent.merge(
   })
 )
 
-const typebotCreatedEventSchema = typebotEvent.merge(
+const sniperCreatedEventSchema = sniperEvent.merge(
   z.object({
-    name: z.literal('Typebot created'),
+    name: z.literal('Sniper created'),
     data: z.object({
       name: z.string(),
       template: z.string().optional(),
@@ -65,9 +65,9 @@ const typebotCreatedEventSchema = typebotEvent.merge(
   })
 )
 
-const publishedTypebotEventSchema = typebotEvent.merge(
+const publishedSniperEventSchema = sniperEvent.merge(
   z.object({
-    name: z.literal('Typebot published'),
+    name: z.literal('Sniper published'),
     data: z.object({
       name: z.string(),
       isFirstPublish: z.literal(true).optional(),
@@ -108,7 +108,7 @@ const subscriptionAutoUpdatedEventSchema = workspaceEvent.merge(
   })
 )
 
-const newResultsCollectedEventSchema = typebotEvent.merge(
+const newResultsCollectedEventSchema = sniperEvent.merge(
   z.object({
     name: z.literal('New results collected'),
     data: z.object({
@@ -150,7 +150,7 @@ export const workspaceNotPastDueEventSchema = workspaceEvent.merge(
   })
 )
 
-export const removedBrandingEventSchema = typebotEvent.merge(
+export const removedBrandingEventSchema = sniperEvent.merge(
   z.object({
     name: z.literal('Branding removed'),
   })
@@ -162,13 +162,13 @@ export const createdFolderEventSchema = workspaceEvent.merge(
   })
 )
 
-export const publishedFileUploadBlockEventSchema = typebotEvent.merge(
+export const publishedFileUploadBlockEventSchema = sniperEvent.merge(
   z.object({
     name: z.literal('File upload block published'),
   })
 )
 
-export const visitedAnalyticsEventSchema = typebotEvent.merge(
+export const visitedAnalyticsEventSchema = sniperEvent.merge(
   z.object({
     name: z.literal('Analytics visited'),
   })
@@ -180,8 +180,8 @@ export const eventSchema = z.discriminatedUnion('name', [
   workspaceCreatedEventSchema,
   userCreatedEventSchema,
   userLoggedInEventSchema,
-  typebotCreatedEventSchema,
-  publishedTypebotEventSchema,
+  sniperCreatedEventSchema,
+  publishedSniperEventSchema,
   subscriptionUpdatedEventSchema,
   newResultsCollectedEventSchema,
   workspaceLimitReachedEventSchema,

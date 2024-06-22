@@ -10,9 +10,9 @@ export const ArticleCallToAction = () => (
       size="lg"
       colorScheme="orange"
       as="a"
-      href="https://app.typebot.io/register"
+      href="https://app.sniper.io/register"
     >
-      Create a typebot
+      Create a sniper
     </Button>
     <Text fontSize="sm" fontStyle="italic" color="gray.600">
       It&apos;s free!

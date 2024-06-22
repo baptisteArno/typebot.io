@@ -1,6 +1,6 @@
 import React from 'react'
 import { TextInput, Textarea } from '@/components/inputs'
-import { PictureChoiceItem } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
+import { PictureChoiceItem } from '@sniper.io/schemas/features/blocks/inputs/pictureChoice'
 import {
   Button,
   HStack,
@@ -13,13 +13,13 @@ import {
 import { ImageUploadContent } from '@/components/ImageUploadContent'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
 import { ConditionForm } from '@/features/blocks/logic/condition/components/ConditionForm'
-import { Condition } from '@typebot.io/schemas'
-import { LogicalOperator } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
+import { Condition } from '@sniper.io/schemas'
+import { LogicalOperator } from '@sniper.io/schemas/features/blocks/logic/condition/constants'
 import { useTranslate } from '@tolgee/react'
 
 type Props = {
   workspaceId: string
-  typebotId: string
+  sniperId: string
   blockId: string
   item: PictureChoiceItem
   onItemChange: (updates: Partial<PictureChoiceItem>) => void
@@ -27,7 +27,7 @@ type Props = {
 
 export const PictureChoiceItemSettings = ({
   workspaceId,
-  typebotId,
+  sniperId,
   blockId,
   item,
   onItemChange,
@@ -81,7 +81,7 @@ export const PictureChoiceItemSettings = ({
                 <ImageUploadContent
                   uploadFileProps={{
                     workspaceId,
-                    typebotId,
+                    sniperId,
                     blockId,
                     itemId: item.id,
                   }}

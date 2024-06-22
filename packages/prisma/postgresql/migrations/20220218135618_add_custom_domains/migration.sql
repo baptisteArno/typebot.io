@@ -1,15 +1,15 @@
 /*
   Warnings:
 
-  - A unique constraint covering the columns `[customDomain]` on the table `PublicTypebot` will be added. If there are existing duplicate values, this will fail.
-  - A unique constraint covering the columns `[customDomain]` on the table `Typebot` will be added. If there are existing duplicate values, this will fail.
+  - A unique constraint covering the columns `[customDomain]` on the table `PublicSniper` will be added. If there are existing duplicate values, this will fail.
+  - A unique constraint covering the columns `[customDomain]` on the table `Sniper` will be added. If there are existing duplicate values, this will fail.
 
 */
 -- AlterTable
-ALTER TABLE "PublicTypebot" ADD COLUMN     "customDomain" TEXT;
+ALTER TABLE "PublicSniper" ADD COLUMN     "customDomain" TEXT;
 
 -- AlterTable
-ALTER TABLE "Typebot" ADD COLUMN     "customDomain" TEXT;
+ALTER TABLE "Sniper" ADD COLUMN     "customDomain" TEXT;
 
 -- CreateTable
 CREATE TABLE "CustomDomain" (
@@ -21,10 +21,10 @@ CREATE TABLE "CustomDomain" (
 CREATE UNIQUE INDEX "CustomDomain_name_key" ON "CustomDomain"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "PublicTypebot_customDomain_key" ON "PublicTypebot"("customDomain");
+CREATE UNIQUE INDEX "PublicSniper_customDomain_key" ON "PublicSniper"("customDomain");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Typebot_customDomain_key" ON "Typebot"("customDomain");
+CREATE UNIQUE INDEX "Sniper_customDomain_key" ON "Sniper"("customDomain");
 
 -- AddForeignKey
 ALTER TABLE "CustomDomain" ADD CONSTRAINT "CustomDomain_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { EmbedBubbleBlock } from '@typebot.io/schemas'
+import { EmbedBubbleBlock } from '@sniper.io/schemas'
 import { TypingBubble } from '../../../../../components/TypingBubble'
 import { parseVariables } from '@/features/variables'
-import { useTypebot } from '@/providers/TypebotProvider'
+import { useSniper } from '@/providers/SniperProvider'
 
 type Props = {
   block: EmbedBubbleBlock
@@ -12,10 +12,10 @@ type Props = {
 export const showAnimationDuration = 400
 
 export const EmbedBubble = ({ block, onTransitionEnd }: Props) => {
-  const { typebot, isLoading } = useTypebot()
+  const { sniper, isLoading } = useSniper()
   const messageContainer = useRef<HTMLDivElement | null>(null)
   const [isTyping, setIsTyping] = useState(true)
-  const [url] = useState(parseVariables(typebot.variables)(block.content?.url))
+  const [url] = useState(parseVariables(sniper.variables)(block.content?.url))
 
   const onTypingEnd = useCallback(() => {
     setIsTyping(false)
@@ -38,7 +38,7 @@ export const EmbedBubble = ({ block, onTransitionEnd }: Props) => {
 
   const height = block.content?.height
     ? typeof block.content.height === 'string'
-      ? parseVariables(typebot.variables)(block.content.height) + 'px'
+      ? parseVariables(sniper.variables)(block.content.height) + 'px'
       : block.content.height
     : '2rem'
 
@@ -46,9 +46,7 @@ export const EmbedBubble = ({ block, onTransitionEnd }: Props) => {
     <div className="flex flex-col w-full" ref={messageContainer}>
       <div className="flex mb-2 w-full lg:w-11/12 items-center">
         <div
-          className={
-            'flex relative z-10 items-start typebot-host-bubble w-full'
-          }
+          className={'flex relative z-10 items-start sniper-host-bubble w-full'}
         >
           <div
             className="flex items-center absolute px-4 py-2 rounded-lg bubble-typing z-10 "

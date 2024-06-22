@@ -18,17 +18,17 @@ import {
   LockedIcon,
   UnlockedIcon,
 } from '@/components/icons'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useRouter } from 'next/router'
-import { isNotDefined } from '@typebot.io/lib'
+import { isNotDefined } from '@sniper.io/lib'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
 import { isFreePlan } from '@/features/billing/helpers/isFreePlan'
 import { T, useTranslate } from '@tolgee/react'
 import { trpc } from '@/lib/trpc'
 import { useToast } from '@/hooks/useToast'
 import { parseDefaultPublicId } from '../helpers/parseDefaultPublicId'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
 import { ConfirmModal } from '@/components/ConfirmModal'
 import { TextLink } from '@/components/TextLink'
 import { useTimeSince } from '@/hooks/useTimeSince'
@@ -51,27 +51,27 @@ export const PublishButton = ({
   } = useDisclosure()
   const {
     isPublished,
-    publishedTypebot,
-    restorePublishedTypebot,
-    typebot,
+    publishedSniper,
+    restorePublishedSniper,
+    sniper,
     isSavingLoading,
-    updateTypebot,
+    updateSniper,
     save,
-    publishedTypebotVersion,
-  } = useTypebot()
+    publishedSniperVersion,
+  } = useSniper()
   const timeSinceLastPublish = useTimeSince(
-    publishedTypebot?.updatedAt.toString()
+    publishedSniper?.updatedAt.toString()
   )
   const { showToast } = useToast()
 
   const {
-    typebot: {
-      getPublishedTypebot: { refetch: refetchPublishedTypebot },
+    sniper: {
+      getPublishedSniper: { refetch: refetchPublishedSniper },
     },
   } = trpc.useContext()
 
-  const { mutate: publishTypebotMutate, isLoading: isPublishing } =
-    trpc.typebot.publishTypebot.useMutation({
+  const { mutate: publishSniperMutate, isLoading: isPublishing } =
+    trpc.sniper.publishSniper.useMutation({
       onError: (error) => {
         showToast({
           title: t('publish.error.label'),
@@ -84,61 +84,61 @@ export const PublishButton = ({
         }
       },
       onSuccess: () => {
-        refetchPublishedTypebot({
-          typebotId: typebot?.id as string,
+        refetchPublishedSniper({
+          sniperId: sniper?.id as string,
         })
-        if (!publishedTypebot && !pathname.endsWith('share'))
-          push(`/typebots/${query.typebotId}/share`)
+        if (!publishedSniper && !pathname.endsWith('share'))
+          push(`/snipers/${query.sniperId}/share`)
       },
     })
 
-  const { mutate: unpublishTypebotMutate, isLoading: isUnpublishing } =
-    trpc.typebot.unpublishTypebot.useMutation({
+  const { mutate: unpublishSniperMutate, isLoading: isUnpublishing } =
+    trpc.sniper.unpublishSniper.useMutation({
       onError: (error) =>
         showToast({
-          title: t('editor.header.unpublishTypebot.error.label'),
+          title: t('editor.header.unpublishSniper.error.label'),
           description: error.message,
         }),
       onSuccess: () => {
-        refetchPublishedTypebot()
+        refetchPublishedSniper()
       },
     })
 
-  const hasInputFile = typebot?.groups
+  const hasInputFile = sniper?.groups
     .flatMap((g) => g.blocks)
     .some((b) => b.type === InputBlockType.FILE)
 
   const handlePublishClick = async () => {
-    if (!typebot?.id) return
+    if (!sniper?.id) return
     if (isFreePlan(workspace) && hasInputFile) return onOpen()
-    if (!typebot.publicId) {
-      await updateTypebot({
+    if (!sniper.publicId) {
+      await updateSniper({
         updates: {
-          publicId: parseDefaultPublicId(typebot.name, typebot.id),
+          publicId: parseDefaultPublicId(sniper.name, sniper.id),
         },
         save: true,
       })
     } else await save()
-    publishTypebotMutate({
-      typebotId: typebot.id,
+    publishSniperMutate({
+      sniperId: sniper.id,
     })
   }
 
-  const unpublishTypebot = async () => {
-    if (!typebot?.id) return
-    if (typebot.isClosed)
-      await updateTypebot({ updates: { isClosed: false }, save: true })
-    unpublishTypebotMutate({
-      typebotId: typebot?.id,
+  const unpublishSniper = async () => {
+    if (!sniper?.id) return
+    if (sniper.isClosed)
+      await updateSniper({ updates: { isClosed: false }, save: true })
+    unpublishSniperMutate({
+      sniperId: sniper?.id,
     })
   }
 
-  const closeTypebot = async () => {
-    await updateTypebot({ updates: { isClosed: true }, save: true })
+  const closeSniper = async () => {
+    await updateSniper({ updates: { isClosed: true }, save: true })
   }
 
-  const openTypebot = async () => {
-    await updateTypebot({ updates: { isClosed: false }, save: true })
+  const openSniper = async () => {
+    await updateSniper({ updates: { isClosed: false }, save: true })
   }
 
   return (
@@ -148,7 +148,7 @@ export const PublishButton = ({
         onClose={onClose}
         type={t('billing.limitMessage.fileInput')}
       />
-      {publishedTypebot && publishedTypebotVersion !== typebot?.version && (
+      {publishedSniper && publishedSniperVersion !== sniper?.version && (
         <ConfirmModal
           isOpen={isNewEngineWarningOpen}
           onConfirm={handlePublishClick}
@@ -166,7 +166,7 @@ export const PublishButton = ({
                   params={{
                     link: (
                       <TextLink
-                        href="https://docs.typebot.io/breaking-changes#typebot-v6"
+                        href="https://docs.sniper.io/breaking-changes#sniper-v6"
                         isExternal
                       />
                     ),
@@ -198,31 +198,31 @@ export const PublishButton = ({
             ) : null}
           </Stack>
         }
-        isDisabled={isNotDefined(publishedTypebot) || isPublished}
+        isDisabled={isNotDefined(publishedSniper) || isPublished}
       >
         <Button
           colorScheme="blue"
           isLoading={isPublishing || isUnpublishing}
           isDisabled={isPublished || isSavingLoading}
           onClick={() => {
-            publishedTypebot && publishedTypebotVersion !== typebot?.version
+            publishedSniper && publishedSniperVersion !== sniper?.version
               ? onNewEngineWarningOpen()
               : handlePublishClick()
           }}
           borderRightRadius={
-            publishedTypebot && !isMoreMenuDisabled ? 0 : undefined
+            publishedSniper && !isMoreMenuDisabled ? 0 : undefined
           }
           {...props}
         >
           {isPublished
-            ? typebot?.isClosed
+            ? sniper?.isClosed
               ? t('publishButton.closed.label')
               : t('publishButton.published.label')
             : t('publishButton.label')}
         </Button>
       </Tooltip>
 
-      {!isMoreMenuDisabled && publishedTypebot && (
+      {!isMoreMenuDisabled && publishedSniper && (
         <Menu>
           <MenuButton
             as={IconButton}
@@ -235,20 +235,20 @@ export const PublishButton = ({
           />
           <MenuList>
             {!isPublished && (
-              <MenuItem onClick={restorePublishedTypebot}>
+              <MenuItem onClick={restorePublishedSniper}>
                 {t('publishButton.dropdown.restoreVersion.label')}
               </MenuItem>
             )}
-            {!typebot?.isClosed ? (
-              <MenuItem onClick={closeTypebot} icon={<LockedIcon />}>
+            {!sniper?.isClosed ? (
+              <MenuItem onClick={closeSniper} icon={<LockedIcon />}>
                 {t('publishButton.dropdown.close.label')}
               </MenuItem>
             ) : (
-              <MenuItem onClick={openTypebot} icon={<UnlockedIcon />}>
+              <MenuItem onClick={openSniper} icon={<UnlockedIcon />}>
                 {t('publishButton.dropdown.reopen.label')}
               </MenuItem>
             )}
-            <MenuItem onClick={unpublishTypebot} icon={<CloudOffIcon />}>
+            <MenuItem onClick={unpublishSniper} icon={<CloudOffIcon />}>
               {t('publishButton.dropdown.unpublish.label')}
             </MenuItem>
           </MenuList>

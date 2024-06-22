@@ -3,7 +3,7 @@ import { splitProps } from 'solid-js'
 import { JSX } from 'solid-js/jsx-runtime'
 import { SendIcon } from './icons'
 import { Button } from './Button'
-import { isEmpty } from '@typebot.io/lib'
+import { isEmpty } from '@sniper.io/lib'
 
 type SendButtonProps = {
   isDisabled?: boolean

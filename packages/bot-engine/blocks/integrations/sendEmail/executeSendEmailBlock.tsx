@@ -1,25 +1,25 @@
-import { DefaultBotNotificationEmail, render } from '@typebot.io/emails'
+import { DefaultBotNotificationEmail, render } from '@sniper.io/emails'
 import {
   AnswerInSessionState,
   ChatLog,
   SendEmailBlock,
   SessionState,
   SmtpCredentials,
-  TypebotInSession,
+  SniperInSession,
   Variable,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import { createTransport } from 'nodemailer'
 import Mail from 'nodemailer/lib/mailer'
-import { byId, isDefined, isEmpty, isNotDefined, omit } from '@typebot.io/lib'
-import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
+import { byId, isDefined, isEmpty, isNotDefined, omit } from '@sniper.io/lib'
+import { decrypt } from '@sniper.io/lib/api/encryption/decrypt'
 import { defaultFrom, defaultTransportOptions } from './constants'
-import { findUniqueVariableValue } from '@typebot.io/variables/findUniqueVariableValue'
-import { env } from '@typebot.io/env'
+import { findUniqueVariableValue } from '@sniper.io/variables/findUniqueVariableValue'
+import { env } from '@sniper.io/env'
 import { ExecuteIntegrationResponse } from '../../../types'
-import prisma from '@typebot.io/lib/prisma'
-import { parseVariables } from '@typebot.io/variables/parseVariables'
-import { defaultSendEmailOptions } from '@typebot.io/schemas/features/blocks/integrations/sendEmail/constants'
-import { parseAnswers } from '@typebot.io/results/parseAnswers'
+import prisma from '@sniper.io/lib/prisma'
+import { parseVariables } from '@sniper.io/variables/parseVariables'
+import { defaultSendEmailOptions } from '@sniper.io/schemas/features/blocks/integrations/sendEmail/constants'
+import { parseAnswers } from '@sniper.io/results/parseAnswers'
 
 export const sendEmailSuccessDescription = 'Email successfully sent'
 export const sendEmailErrorDescription = 'Email not sent'
@@ -30,7 +30,7 @@ export const executeSendEmailBlock = async (
 ): Promise<ExecuteIntegrationResponse> => {
   const logs: ChatLog[] = []
   const { options } = block
-  const { typebot, resultId, answers } = state.typebotsQueue[0]
+  const { sniper, resultId, answers } = state.snipersQueue[0]
   const isPreview = !resultId
   if (isPreview)
     return {
@@ -43,12 +43,12 @@ export const executeSendEmailBlock = async (
       ],
     }
 
-  const bodyUniqueVariable = findUniqueVariableValue(typebot.variables)(
+  const bodyUniqueVariable = findUniqueVariableValue(sniper.variables)(
     options?.body
   )
   const body = bodyUniqueVariable
     ? stringifyUniqueVariableValueAsHtml(bodyUniqueVariable)
-    : parseVariables(typebot.variables, { isInsideHtml: !options?.isBodyCode })(
+    : parseVariables(sniper.variables, { isInsideHtml: !options?.isBodyCode })(
         options?.body ?? ''
       )
 
@@ -57,25 +57,25 @@ export const executeSendEmailBlock = async (
 
   try {
     const sendEmailLogs = await sendEmail({
-      typebot,
+      sniper,
       answers,
       credentialsId:
         options.credentialsId ?? defaultSendEmailOptions.credentialsId,
-      recipients: options.recipients.map(parseVariables(typebot.variables)),
+      recipients: options.recipients.map(parseVariables(sniper.variables)),
       subject: options.subject
-        ? parseVariables(typebot.variables)(options?.subject)
+        ? parseVariables(sniper.variables)(options?.subject)
         : undefined,
       body,
       cc: options.cc
-        ? options.cc.map(parseVariables(typebot.variables))
+        ? options.cc.map(parseVariables(sniper.variables))
         : undefined,
       bcc: options.bcc
-        ? options.bcc.map(parseVariables(typebot.variables))
+        ? options.bcc.map(parseVariables(sniper.variables))
         : undefined,
       replyTo: options.replyTo
-        ? parseVariables(typebot.variables)(options.replyTo)
+        ? parseVariables(sniper.variables)(options.replyTo)
         : undefined,
-      fileUrls: getFileUrls(typebot.variables)(options.attachmentsVariableId),
+      fileUrls: getFileUrls(sniper.variables)(options.attachmentsVariableId),
       isCustomBody: options.isCustomBody,
       isBodyCode: options.isBodyCode,
     })
@@ -92,7 +92,7 @@ export const executeSendEmailBlock = async (
 }
 
 const sendEmail = async ({
-  typebot,
+  sniper,
   answers,
   credentialsId,
   recipients,
@@ -114,7 +114,7 @@ const sendEmail = async ({
   replyTo: string | undefined
   isBodyCode: boolean | undefined
   isCustomBody: boolean | undefined
-  typebot: TypebotInSession
+  sniper: SniperInSession
   answers: AnswerInSessionState[]
   fileUrls?: string | string[]
 }): Promise<ChatLog[] | undefined> => {
@@ -139,7 +139,7 @@ const sendEmail = async ({
     body,
     isCustomBody,
     isBodyCode,
-    typebot,
+    sniper,
     answersInSession: answers,
   })
 
@@ -233,10 +233,10 @@ const getEmailBody = async ({
   body,
   isCustomBody,
   isBodyCode,
-  typebot,
+  sniper,
   answersInSession,
 }: {
-  typebot: TypebotInSession
+  sniper: SniperInSession
   answersInSession: AnswerInSessionState[]
 } & Pick<
   NonNullable<SendEmailBlock['options']>,
@@ -248,13 +248,13 @@ const getEmailBody = async ({
       text: !isBodyCode ? body : undefined,
     }
   const answers = parseAnswers({
-    variables: typebot.variables,
+    variables: sniper.variables,
     answers: answersInSession,
   })
   return {
     html: render(
       <DefaultBotNotificationEmail
-        resultsUrl={`${env.NEXTAUTH_URL}/typebots/${typebot.id}/results`}
+        resultsUrl={`${env.NEXTAUTH_URL}/snipers/${sniper.id}/results`}
         answers={omit(answers, 'submittedAt')}
       />
     ).html,

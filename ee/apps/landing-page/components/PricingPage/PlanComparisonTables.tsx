@@ -16,12 +16,12 @@ import {
 } from '@chakra-ui/react'
 import { CheckIcon } from 'assets/icons/CheckIcon'
 import { HelpCircleIcon } from 'assets/icons/HelpCircleIcon'
-import { Plan } from '@typebot.io/prisma'
+import { Plan } from '@sniper.io/prisma'
 import Link from 'next/link'
 import React from 'react'
-import { parseNumberWithCommas } from '@typebot.io/lib'
-import { chatsLimits, prices, seatsLimits } from '@typebot.io/billing/constants'
-import { formatPrice } from '@typebot.io/billing/helpers/formatPrice'
+import { parseNumberWithCommas } from '@sniper.io/lib'
+import { chatsLimits, prices, seatsLimits } from '@sniper.io/billing/constants'
+import { formatPrice } from '@sniper.io/billing/helpers/formatPrice'
 
 type Props = {
   onChatsTiersClick: () => void
@@ -251,7 +251,7 @@ export const PlanComparisonTables = ({ onChatsTiersClick }: Props) => (
           <Tr>
             <TdWithTooltip
               text="Folders"
-              tooltip="Organize your typebots into folders"
+              tooltip="Organize your snipers into folders"
             />
             <Td />
             <Td>Unlimited</Td>
@@ -360,7 +360,7 @@ export const PlanComparisonTables = ({ onChatsTiersClick }: Props) => (
           Personal
         </Heading>
         <Heading as="h3">Free</Heading>
-        <Link href="https://app.typebot.io/register">
+        <Link href="https://app.sniper.io/register">
           <Button variant="outline" colorScheme="gray">
             Get started
           </Button>
@@ -375,7 +375,7 @@ export const PlanComparisonTables = ({ onChatsTiersClick }: Props) => (
           <chakra.span fontSize="lg">/ month</chakra.span>
         </Heading>
         <Link
-          href={`https://app.typebot.io/register?subscribePlan=${Plan.STARTER}`}
+          href={`https://app.sniper.io/register?subscribePlan=${Plan.STARTER}`}
         >
           <Button variant="outline" colorScheme="orange">
             Subscribe
@@ -390,9 +390,7 @@ export const PlanComparisonTables = ({ onChatsTiersClick }: Props) => (
           {formatPrice(prices.PRO)}{' '}
           <chakra.span fontSize="lg">/ month</chakra.span>
         </Heading>
-        <Link
-          href={`https://app.typebot.io/register?subscribePlan=${Plan.PRO}`}
-        >
+        <Link href={`https://app.sniper.io/register?subscribePlan=${Plan.PRO}`}>
           <Button>Subscribe</Button>
         </Link>
       </Stack>

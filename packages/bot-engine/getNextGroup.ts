@@ -1,7 +1,7 @@
-import { byId, isDefined, isNotDefined } from '@typebot.io/lib'
-import { Group, SessionState, VariableWithValue } from '@typebot.io/schemas'
+import { byId, isDefined, isNotDefined } from '@sniper.io/lib'
+import { Group, SessionState, VariableWithValue } from '@sniper.io/schemas'
 import { upsertResult } from './queries/upsertResult'
-import { VisitedEdge } from '@typebot.io/prisma'
+import { VisitedEdge } from '@sniper.io/prisma'
 
 export type NextGroup = {
   group?: Group
@@ -18,62 +18,62 @@ export const getNextGroup = async ({
   edgeId?: string
   isOffDefaultPath: boolean
 }): Promise<NextGroup> => {
-  const nextEdge = state.typebotsQueue[0].typebot.edges.find(byId(edgeId))
+  const nextEdge = state.snipersQueue[0].sniper.edges.find(byId(edgeId))
   if (!nextEdge) {
-    if (state.typebotsQueue.length > 1) {
-      const nextEdgeId = state.typebotsQueue[0].edgeIdToTriggerWhenDone
-      const isMergingWithParent = state.typebotsQueue[0].isMergingWithParent
-      const currentResultId = state.typebotsQueue[0].resultId
+    if (state.snipersQueue.length > 1) {
+      const nextEdgeId = state.snipersQueue[0].edgeIdToTriggerWhenDone
+      const isMergingWithParent = state.snipersQueue[0].isMergingWithParent
+      const currentResultId = state.snipersQueue[0].resultId
       if (!isMergingWithParent && currentResultId)
         await upsertResult({
           resultId: currentResultId,
-          typebot: state.typebotsQueue[0].typebot,
+          sniper: state.snipersQueue[0].sniper,
           isCompleted: true,
-          hasStarted: state.typebotsQueue[0].answers.length > 0,
+          hasStarted: state.snipersQueue[0].answers.length > 0,
         })
       let newSessionState = {
         ...state,
-        typebotsQueue: [
+        snipersQueue: [
           {
-            ...state.typebotsQueue[1],
-            typebot: isMergingWithParent
+            ...state.snipersQueue[1],
+            sniper: isMergingWithParent
               ? {
-                  ...state.typebotsQueue[1].typebot,
-                  variables: state.typebotsQueue[1].typebot.variables
+                  ...state.snipersQueue[1].sniper,
+                  variables: state.snipersQueue[1].sniper.variables
                     .map((variable) => ({
                       ...variable,
                       value:
-                        state.typebotsQueue[0].typebot.variables.find(
+                        state.snipersQueue[0].sniper.variables.find(
                           (v) => v.name === variable.name
                         )?.value ?? variable.value,
                     }))
                     .concat(
-                      state.typebotsQueue[0].typebot.variables.filter(
+                      state.snipersQueue[0].sniper.variables.filter(
                         (variable) =>
                           isDefined(variable.value) &&
                           isNotDefined(
-                            state.typebotsQueue[1].typebot.variables.find(
+                            state.snipersQueue[1].sniper.variables.find(
                               (v) => v.name === variable.name
                             )
                           )
                       ) as VariableWithValue[]
                     ),
                 }
-              : state.typebotsQueue[1].typebot,
+              : state.snipersQueue[1].sniper,
             answers: isMergingWithParent
               ? [
-                  ...state.typebotsQueue[1].answers.filter(
+                  ...state.snipersQueue[1].answers.filter(
                     (incomingAnswer) =>
-                      !state.typebotsQueue[0].answers.find(
+                      !state.snipersQueue[0].answers.find(
                         (currentAnswer) =>
                           currentAnswer.key === incomingAnswer.key
                       )
                   ),
-                  ...state.typebotsQueue[0].answers,
+                  ...state.snipersQueue[0].answers,
                 ]
-              : state.typebotsQueue[1].answers,
+              : state.snipersQueue[1].answers,
           },
-          ...state.typebotsQueue.slice(2),
+          ...state.snipersQueue.slice(2),
         ],
       } satisfies SessionState
       if (state.progressMetadata)
@@ -81,7 +81,7 @@ export const getNextGroup = async ({
           ...state.progressMetadata,
           totalAnswers:
             state.progressMetadata.totalAnswers +
-            state.typebotsQueue[0].answers.length,
+            state.snipersQueue[0].answers.length,
         }
       const nextGroup = await getNextGroup({
         state: newSessionState,
@@ -102,7 +102,7 @@ export const getNextGroup = async ({
       newSessionState: state,
     }
   }
-  const nextGroup = state.typebotsQueue[0].typebot.groups.find(
+  const nextGroup = state.snipersQueue[0].sniper.groups.find(
     byId(nextEdge.to.groupId)
   )
   if (!nextGroup)
@@ -115,7 +115,7 @@ export const getNextGroup = async ({
   const currentVisitedEdgeIndex = isOffDefaultPath
     ? (state.currentVisitedEdgeIndex ?? -1) + 1
     : state.currentVisitedEdgeIndex
-  const resultId = state.typebotsQueue[0].resultId
+  const resultId = state.snipersQueue[0].resultId
   return {
     group: {
       ...nextGroup,

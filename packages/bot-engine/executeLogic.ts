@@ -1,14 +1,14 @@
 import { executeWait } from './blocks/logic/wait/executeWait'
-import { LogicBlock, SessionState } from '@typebot.io/schemas'
+import { LogicBlock, SessionState } from '@sniper.io/schemas'
 import { ExecuteLogicResponse } from './types'
 import { executeScript } from './blocks/logic/script/executeScript'
 import { executeJumpBlock } from './blocks/logic/jump/executeJumpBlock'
 import { executeRedirect } from './blocks/logic/redirect/executeRedirect'
 import { executeConditionBlock } from './blocks/logic/condition/executeConditionBlock'
 import { executeSetVariable } from './blocks/logic/setVariable/executeSetVariable'
-import { executeTypebotLink } from './blocks/logic/typebotLink/executeTypebotLink'
+import { executeSniperLink } from './blocks/logic/sniperLink/executeSniperLink'
 import { executeAbTest } from './blocks/logic/abTest/executeAbTest'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
 
 export const executeLogic =
   (state: SessionState) =>
@@ -22,8 +22,8 @@ export const executeLogic =
         return executeRedirect(state, block)
       case LogicBlockType.SCRIPT:
         return executeScript(state, block)
-      case LogicBlockType.TYPEBOT_LINK:
-        return executeTypebotLink(state, block)
+      case LogicBlockType.SNIPER_LINK:
+        return executeSniperLink(state, block)
       case LogicBlockType.WAIT:
         return executeWait(state, block)
       case LogicBlockType.JUMP:

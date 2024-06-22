@@ -1,8 +1,8 @@
 import { TypingBubble } from '@/components'
 import { isMobile } from '@/utils/isMobileSignal'
-import { AudioBubbleBlock } from '@typebot.io/schemas'
+import { AudioBubbleBlock } from '@sniper.io/schemas'
 import { createSignal, onCleanup, onMount } from 'solid-js'
-import { defaultAudioBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/audio/constants'
+import { defaultAudioBubbleContent } from '@sniper.io/schemas/features/blocks/bubbles/audio/constants'
 import clsx from 'clsx'
 
 type Props = {
@@ -45,7 +45,7 @@ export const AudioBubble = (props: Props) => {
       ref={ref}
     >
       <div class="flex w-full items-center">
-        <div class="flex relative z-10 items-start typebot-host-bubble max-w-full">
+        <div class="flex relative z-10 items-start sniper-host-bubble max-w-full">
           <div
             class="flex items-center absolute px-4 py-2 bubble-typing z-10 "
             style={{

@@ -1,5 +1,5 @@
-import { WorkspaceInvitation } from '@typebot.io/prisma'
-import { sendRequest } from '@typebot.io/lib'
+import { WorkspaceInvitation } from '@sniper.io/prisma'
+import { sendRequest } from '@sniper.io/lib'
 
 export const updateInvitationQuery = (
   invitation: Partial<WorkspaceInvitation>

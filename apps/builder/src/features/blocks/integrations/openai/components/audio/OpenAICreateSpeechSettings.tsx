@@ -1,12 +1,12 @@
-import { CreateSpeechOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai'
+import { CreateSpeechOpenAIOptions } from '@sniper.io/schemas/features/blocks/integrations/openai'
 import { FormControl, FormLabel, Stack, Text } from '@chakra-ui/react'
 import { TextLink } from '@/components/TextLink'
 import { ModelsDropdown } from '../ModelsDropdown'
 import { Textarea } from '@/components/inputs'
 import { DropdownList } from '@/components/DropdownList'
-import { openAIVoices } from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
+import { openAIVoices } from '@sniper.io/schemas/features/blocks/integrations/openai/constants'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
-import { Variable } from '@typebot.io/schemas'
+import { Variable } from '@sniper.io/schemas'
 
 const apiReferenceUrl =
   'https://platform.openai.com/docs/api-reference/audio/createSpeech'

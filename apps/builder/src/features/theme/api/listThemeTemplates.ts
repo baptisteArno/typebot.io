@@ -1,10 +1,10 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { ThemeTemplate, themeTemplateSchema } from '@typebot.io/schemas'
+import { ThemeTemplate, themeTemplateSchema } from '@sniper.io/schemas'
 import { z } from 'zod'
 import { getUserRoleInWorkspace } from '@/features/workspace/helpers/getUserRoleInWorkspace'
-import { WorkspaceRole } from '@typebot.io/prisma'
+import { WorkspaceRole } from '@sniper.io/prisma'
 
 export const listThemeTemplates = authenticatedProcedure
   .meta({

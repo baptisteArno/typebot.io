@@ -1,13 +1,13 @@
-import { PictureChoiceBlock, SessionState } from '@typebot.io/schemas'
+import { PictureChoiceBlock, SessionState } from '@sniper.io/schemas'
 import { ParsedReply } from '../../../types'
 import { injectVariableValuesInPictureChoiceBlock } from './injectVariableValuesInPictureChoiceBlock'
-import { isNotEmpty } from '@typebot.io/lib/utils'
+import { isNotEmpty } from '@sniper.io/lib/utils'
 
 export const parsePictureChoicesReply =
   (state: SessionState) =>
   (inputValue: string, block: PictureChoiceBlock): ParsedReply => {
     const displayedItems = injectVariableValuesInPictureChoiceBlock(
-      state.typebotsQueue[0].typebot.variables
+      state.snipersQueue[0].sniper.variables
     )(block).items
     if (block.options?.isMultipleChoice) {
       const longestItemsFirst = [...displayedItems].sort(

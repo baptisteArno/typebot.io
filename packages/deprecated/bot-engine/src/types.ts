@@ -1,15 +1,15 @@
-import { Log } from '@typebot.io/prisma'
+import { Log } from '@sniper.io/prisma'
 import {
   Edge,
   Group,
-  PublicTypebot,
+  PublicSniper,
   ResultValuesInput,
-  Typebot,
+  Sniper,
   Variable,
   VariableWithUnknowValue,
-} from '@typebot.io/schemas'
-import { TypebotViewerProps } from './components/TypebotViewer'
-import { LinkedTypebot } from './providers/TypebotProvider'
+} from '@sniper.io/schemas'
+import { SniperViewerProps } from './components/SniperViewer'
+import { LinkedSniper } from './providers/SniperProvider'
 
 export type InputSubmitContent = {
   label?: string
@@ -22,25 +22,25 @@ export type EdgeId = string
 export type LogicState = {
   isPreview: boolean
   apiHost: string
-  typebot: TypebotViewerProps['typebot']
-  linkedTypebots: LinkedTypebot[]
-  currentTypebotId: string
-  pushParentTypebotId: (id: string) => void
-  pushEdgeIdInLinkedTypebotQueue: (bot: {
+  sniper: SniperViewerProps['sniper']
+  linkedSnipers: LinkedSniper[]
+  currentSniperId: string
+  pushParentSniperId: (id: string) => void
+  pushEdgeIdInLinkedSniperQueue: (bot: {
     edgeId: string
-    typebotId: string
+    sniperId: string
   }) => void
-  setCurrentTypebotId: (id: string) => void
+  setCurrentSniperId: (id: string) => void
   updateVariableValue: (variableId: string, value: unknown) => void
   updateVariables: (variables: VariableWithUnknowValue[]) => void
-  injectLinkedTypebot: (typebot: Typebot | PublicTypebot) => LinkedTypebot
+  injectLinkedSniper: (sniper: Sniper | PublicSniper) => LinkedSniper
   onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
   createEdge: (edge: Edge) => void
 }
 
 export type IntegrationState = {
   apiHost: string
-  typebotId: string
+  sniperId: string
   groupId: string
   blockId: string
   isPreview: boolean
@@ -48,7 +48,7 @@ export type IntegrationState = {
   resultValues: ResultValuesInput
   groups: Group[]
   resultId?: string
-  parentTypebotIds: string[]
+  parentSniperIds: string[]
   updateVariables: (variables: VariableWithUnknowValue[]) => void
   updateVariableValue: (variableId: string, value: unknown) => void
   onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void

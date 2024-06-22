@@ -8,7 +8,7 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { FileInputBlock, Variable } from '@typebot.io/schemas'
+import { FileInputBlock, Variable } from '@sniper.io/schemas'
 import React from 'react'
 import { TextInput } from '@/components/inputs'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
@@ -16,7 +16,7 @@ import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import {
   defaultFileInputOptions,
   fileVisibilityOptions,
-} from '@typebot.io/schemas/features/blocks/inputs/file/constants'
+} from '@sniper.io/schemas/features/blocks/inputs/file/constants'
 import { useTranslate } from '@tolgee/react'
 import { DropdownList } from '@/components/DropdownList'
 

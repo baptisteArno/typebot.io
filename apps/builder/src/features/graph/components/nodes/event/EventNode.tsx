@@ -14,11 +14,11 @@ import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { useEventsCoordinates } from '@/features/graph/providers/EventsCoordinateProvider'
 import { setMultipleRefs } from '@/helpers/setMultipleRefs'
 import { Coordinates } from '@/features/graph/types'
-import { TEvent } from '@typebot.io/schemas'
+import { TEvent } from '@sniper.io/schemas'
 import { EventNodeContent } from './EventNodeContent'
 import { EventSourceEndpoint } from '../../endpoints/EventSourceEndpoint'
 import { eventWidth } from '@/features/graph/constants'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { useGroupsStore } from '@/features/graph/hooks/useGroupsStore'
 
 type Props = {
@@ -54,7 +54,7 @@ const NonMemoizedDraggableEventNode = ({
   const elementBgColor = useColorModeValue('white', 'gray.900')
   const previewingBorderColor = useColorModeValue('blue.400', 'blue.300')
   const { previewingEdge, isReadOnly, graphPosition } = useGraph()
-  const { updateEvent } = useTypebot()
+  const { updateEvent } = useSniper()
   const { setRightPanel, setStartPreviewAtEvent } = useEditor()
 
   const [isMouseDown, setIsMouseDown] = useState(false)

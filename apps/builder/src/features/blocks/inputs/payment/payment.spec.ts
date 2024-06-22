@@ -1,27 +1,27 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots } from '@typebot.io/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from '@typebot.io/playwright/databaseHelpers'
+import { createSnipers } from '@sniper.io/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@sniper.io/playwright/databaseHelpers'
 import { createId } from '@paralleldrive/cuid2'
 import { stripePaymentForm } from '@/test/utils/selectorUtils'
-import { env } from '@typebot.io/env'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { env } from '@sniper.io/env'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
 
 test.describe('Payment input block', () => {
   test('Can configure Stripe account', async ({ page }) => {
-    const typebotId = createId()
-    await createTypebots([
+    const sniperId = createId()
+    await createSnipers([
       {
-        id: typebotId,
+        id: sniperId,
         ...parseDefaultGroupWithBlock({
           type: InputBlockType.PAYMENT,
         }),
       },
     ])
 
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/snipers/${sniperId}/edit`)
     await page.click('text=Configure...')
     await page.getByRole('button', { name: 'Add Stripe account' }).click()
-    await page.fill('[placeholder="Typebot"]', 'My Stripe Account')
+    await page.fill('[placeholder="Sniper"]', 'My Stripe Account')
     await page.fill('[placeholder="sk_test_..."]', env.STRIPE_SECRET_KEY ?? '')
     await page.fill('[placeholder="sk_live_..."]', env.STRIPE_SECRET_KEY ?? '')
     await page.fill(
@@ -40,7 +40,7 @@ test.describe('Payment input block', () => {
     await page.selectOption('select', 'EUR')
     await page.click('text=Additional information')
     await page.fill('[placeholder="John Smith"]', 'Baptiste')
-    await page.fill('[placeholder="john@gmail.com"]', 'test@typebot.io')
+    await page.fill('[placeholder="john@gmail.com"]', 'test@sniper.io')
     await expect(page.locator('text="Phone number:"')).toBeVisible()
 
     await page.click('text=Test')

@@ -1,11 +1,11 @@
 import { Stack, useDisclosure } from '@chakra-ui/react'
-import { BlockOptions } from '@typebot.io/schemas'
+import { BlockOptions } from '@sniper.io/schemas'
 import { ForgedCredentialsDropdown } from './credentials/ForgedCredentialsDropdown'
 import { ForgedCredentialsModal } from './credentials/ForgedCredentialsModal'
 import { ZodObjectLayout } from './zodLayouts/ZodObjectLayout'
 import { ZodActionDiscriminatedUnion } from './zodLayouts/ZodActionDiscriminatedUnion'
 import { useForgedBlock } from '../hooks/useForgedBlock'
-import { ForgedBlock } from '@typebot.io/forge-repository/types'
+import { ForgedBlock } from '@sniper.io/forge-repository/types'
 import { useState } from 'react'
 
 type Props = {

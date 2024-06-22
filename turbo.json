@@ -11,13 +11,13 @@
     "dev": {
       "dependsOn": [
         "^dev",
-        "@typebot.io/prisma#db:generate",
-        "@typebot.io/prisma#db:push"
+        "@sniper.io/prisma#db:generate",
+        "@sniper.io/prisma#db:push"
       ],
       "cache": false
     },
     "build": {
-      "dependsOn": ["^build", "@typebot.io/prisma#db:generate"],
+      "dependsOn": ["^build", "@sniper.io/prisma#db:generate"],
       "outputs": [
         ".next/**",
         "!.next/cache/**",
@@ -34,7 +34,7 @@
       "outputMode": "new-only"
     },
     "api:generate": {
-      "dependsOn": ["bot-engine#build", "@typebot.io/prisma#db:generate"],
+      "dependsOn": ["bot-engine#build", "@sniper.io/prisma#db:generate"],
       "cache": false
     },
     "db:generate": {
@@ -44,11 +44,11 @@
       "cache": false
     },
     "db:cleanDatabase": {
-      "dependsOn": ["@typebot.io/prisma#db:generate"],
+      "dependsOn": ["@sniper.io/prisma#db:generate"],
       "cache": false
     },
     "checkAndReportChatsUsage": {
-      "dependsOn": ["@typebot.io/prisma#db:generate"],
+      "dependsOn": ["@sniper.io/prisma#db:generate"],
       "cache": false
     }
   }

@@ -1,5 +1,5 @@
 import { Flex } from '@chakra-ui/react'
-import { TextBubbleBlock } from '@typebot.io/schemas'
+import { TextBubbleBlock } from '@sniper.io/schemas'
 import React from 'react'
 import { PlateBlock } from './plate/PlateBlock'
 

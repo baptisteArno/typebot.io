@@ -1,5 +1,5 @@
-import { createAction, option } from '@typebot.io/forge'
-import { isDefined, isEmpty } from '@typebot.io/lib'
+import { createAction, option } from '@sniper.io/forge'
+import { isDefined, isEmpty } from '@sniper.io/lib'
 import ky, { HTTPError } from 'ky'
 import { apiBaseUrl } from '../constants'
 import { auth } from '../auth'

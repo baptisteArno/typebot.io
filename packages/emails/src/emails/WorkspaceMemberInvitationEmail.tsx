@@ -10,7 +10,7 @@ import { render } from '@faire/mjml-react/utils/render'
 import { HeroImage, Text, Button, Head } from '../components'
 import { SendMailOptions } from 'nodemailer'
 import { sendEmail } from '../sendEmail'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 type WorkspaceMemberInvitationProps = {
   workspaceName: string

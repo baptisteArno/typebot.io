@@ -1,6 +1,6 @@
 version: '3.3'
 services:
-  typebot-db:
+  sniper-db:
     image: postgres:13
     ports:
       - '5432:5432'
@@ -8,8 +8,8 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: 'typebot'
-      POSTGRES_PASSWORD: 'typebot'
+      POSTGRES_DB: 'sniper'
+      POSTGRES_PASSWORD: 'sniper'
   minio:
     image: minio/minio
     command: server /data --console-address ":9001"
@@ -30,8 +30,8 @@ services:
       /bin/sh -c "
       sleep 10;
       /usr/bin/mc config host add minio http://minio:9000 minio minio123;
-      /usr/bin/mc mb minio/typebot;
-      /usr/bin/mc anonymous set public minio/typebot/public;
+      /usr/bin/mc mb minio/sniper;
+      /usr/bin/mc anonymous set public minio/sniper/public;
       exit 0;
       "
 volumes:

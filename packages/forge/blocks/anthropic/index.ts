@@ -1,4 +1,4 @@
-import { createBlock } from '@typebot.io/forge'
+import { createBlock } from '@sniper.io/forge'
 import { AnthropicLogo } from './logo'
 import { auth } from './auth'
 import { createChatMessage } from './actions/createChatMessage'

@@ -1,5 +1,5 @@
-import { ForgedBlock } from '@typebot.io/forge-repository/types'
-import { BlockV6 } from '@typebot.io/schemas'
+import { ForgedBlock } from '@sniper.io/forge-repository/types'
+import { BlockV6 } from '@sniper.io/schemas'
 import { BlockIcon } from '../editor/components/BlockIcon'
 import { BlockLabel } from '../editor/components/BlockLabel'
 import { useForgedBlock } from './hooks/useForgedBlock'

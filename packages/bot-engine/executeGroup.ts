@@ -5,14 +5,14 @@ import {
   RuntimeOptions,
   SessionState,
   SetVariableHistoryItem,
-} from '@typebot.io/schemas'
-import { isEmpty, isNotEmpty } from '@typebot.io/lib'
+} from '@sniper.io/schemas'
+import { isEmpty, isNotEmpty } from '@sniper.io/lib'
 import {
   isBubbleBlock,
   isInputBlock,
   isIntegrationBlock,
   isLogicBlock,
-} from '@typebot.io/schemas/helpers'
+} from '@sniper.io/schemas/helpers'
 import { getNextGroup } from './getNextGroup'
 import { executeLogic } from './executeLogic'
 import { executeIntegration } from './executeIntegration'
@@ -21,10 +21,10 @@ import { injectVariableValuesInButtonsInputBlock } from './blocks/inputs/buttons
 import { injectVariableValuesInPictureChoiceBlock } from './blocks/inputs/pictureChoice/injectVariableValuesInPictureChoiceBlock'
 import { getPrefilledInputValue } from './getPrefilledValue'
 import { parseDateInput } from './blocks/inputs/date/parseDateInput'
-import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { VisitedEdge } from '@typebot.io/prisma'
-import { env } from '@typebot.io/env'
+import { deepParseVariables } from '@sniper.io/variables/deepParseVariables'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { VisitedEdge } from '@sniper.io/prisma'
+import { env } from '@sniper.io/env'
 import { TRPCError } from '@trpc/server'
 import { ExecuteIntegrationResponse, ExecuteLogicResponse } from './types'
 import { createId } from '@paralleldrive/cuid2'
@@ -32,7 +32,7 @@ import {
   BubbleBlockWithDefinedContent,
   parseBubbleBlock,
 } from './parseBubbleBlock'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
 
 type ContextProps = {
   version: 1 | 2
@@ -98,8 +98,8 @@ export const executeGroup = async (
       if (!block.content || (firstBubbleWasStreamed && index === 0)) continue
       const message = parseBubbleBlock(block as BubbleBlockWithDefinedContent, {
         version,
-        variables: newSessionState.typebotsQueue[0].typebot.variables,
-        typebotVersion: newSessionState.typebotsQueue[0].typebot.version,
+        variables: newSessionState.snipersQueue[0].sniper.variables,
+        sniperVersion: newSessionState.snipersQueue[0].sniper.version,
         textBubbleContentFormat,
       })
       messages.push(message)
@@ -150,7 +150,7 @@ export const executeGroup = async (
       executionResponse.newSetVariableHistory &&
       executionResponse.newSetVariableHistory?.length > 0
     ) {
-      if (!newSessionState.typebotsQueue[0].resultId)
+      if (!newSessionState.snipersQueue[0].resultId)
         newSessionState = {
           ...newSessionState,
           previewMetadata: {
@@ -227,7 +227,7 @@ export const executeGroup = async (
     }
   }
 
-  if (!nextEdgeId && newSessionState.typebotsQueue.length === 1)
+  if (!nextEdgeId && newSessionState.snipersQueue.length === 1)
     return {
       messages,
       newSessionState,
@@ -293,17 +293,17 @@ export const parseInput =
       }
       case InputBlockType.PICTURE_CHOICE: {
         return injectVariableValuesInPictureChoiceBlock(
-          state.typebotsQueue[0].typebot.variables
+          state.snipersQueue[0].sniper.variables
         )(block)
       }
       case InputBlockType.NUMBER: {
         const parsedBlock = deepParseVariables(
-          state.typebotsQueue[0].typebot.variables,
+          state.snipersQueue[0].sniper.variables,
           { removeEmptyStrings: true }
         )({
           ...block,
           prefilledValue: getPrefilledInputValue(
-            state.typebotsQueue[0].typebot.variables
+            state.snipersQueue[0].sniper.variables
           )(block),
         })
         return {
@@ -327,12 +327,12 @@ export const parseInput =
       }
       case InputBlockType.RATING: {
         const parsedBlock = deepParseVariables(
-          state.typebotsQueue[0].typebot.variables,
+          state.snipersQueue[0].sniper.variables,
           { removeEmptyStrings: true }
         )({
           ...block,
           prefilledValue: getPrefilledInputValue(
-            state.typebotsQueue[0].typebot.variables
+            state.snipersQueue[0].sniper.variables
           )(block),
         })
         return {
@@ -346,13 +346,13 @@ export const parseInput =
         }
       }
       default: {
-        return deepParseVariables(state.typebotsQueue[0].typebot.variables, {
+        return deepParseVariables(state.snipersQueue[0].sniper.variables, {
           removeEmptyStrings: true,
         })({
           ...block,
           runtimeOptions: await computeRuntimeOptions(state)(block),
           prefilledValue: getPrefilledInputValue(
-            state.typebotsQueue[0].typebot.variables
+            state.snipersQueue[0].sniper.variables
           )(block),
         })
       }

@@ -1,4 +1,4 @@
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import React from 'react'
 
 export const ErrorPage = ({ error }: { error: Error }) => {
@@ -20,8 +20,8 @@ export const ErrorPage = ({ error }: { error: Error }) => {
           </h1>
           <h2>
             Make sure to configure the app properly (
-            <a href="https://docs.typebot.io/self-hosting/configuration">
-              https://docs.typebot.io/self-hosting/configuration
+            <a href="https://docs.sniper.io/self-hosting/configuration">
+              https://docs.sniper.io/self-hosting/configuration
             </a>
             )
           </h2>

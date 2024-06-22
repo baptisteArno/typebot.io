@@ -7,9 +7,9 @@ import {
   ConditionItem,
   Item,
   ItemIndices,
-} from '@typebot.io/schemas'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+} from '@sniper.io/schemas'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
 import React from 'react'
 
 type Props = {

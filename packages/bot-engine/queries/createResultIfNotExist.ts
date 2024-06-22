@@ -1,16 +1,16 @@
-import prisma from '@typebot.io/lib/prisma'
-import { TypebotInSession } from '@typebot.io/schemas'
+import prisma from '@sniper.io/lib/prisma'
+import { SniperInSession } from '@sniper.io/schemas'
 
 type Props = {
   resultId: string
-  typebot: TypebotInSession
+  sniper: SniperInSession
   hasStarted: boolean
   isCompleted: boolean
 }
 
 export const createResultIfNotExist = async ({
   resultId,
-  typebot,
+  sniper,
   hasStarted,
   isCompleted,
 }: Props) => {
@@ -23,10 +23,10 @@ export const createResultIfNotExist = async ({
     data: [
       {
         id: resultId,
-        typebotId: typebot.id,
+        sniperId: sniper.id,
         isCompleted: isCompleted ? true : false,
         hasStarted,
-        variables: typebot.variables,
+        variables: sniper.variables,
       },
     ],
   })

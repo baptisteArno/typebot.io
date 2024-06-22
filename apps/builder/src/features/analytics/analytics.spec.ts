@@ -2,22 +2,22 @@ import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
 import {
-  importTypebotInDatabase,
+  importSniperInDatabase,
   injectFakeResults,
-} from '@typebot.io/playwright/databaseActions'
-import { starterWorkspaceId } from '@typebot.io/playwright/databaseSetup'
+} from '@sniper.io/playwright/databaseActions'
+import { starterWorkspaceId } from '@sniper.io/playwright/databaseSetup'
 
 test('analytics are not available for non-pro workspaces', async ({ page }) => {
-  const typebotId = createId()
-  await importTypebotInDatabase(
-    getTestAsset('typebots/results/submissionHeader.json'),
+  const sniperId = createId()
+  await importSniperInDatabase(
+    getTestAsset('snipers/results/submissionHeader.json'),
     {
-      id: typebotId,
+      id: sniperId,
       workspaceId: starterWorkspaceId,
     }
   )
-  await injectFakeResults({ typebotId, count: 10 })
-  await page.goto(`/typebots/${typebotId}/results/analytics`)
+  await injectFakeResults({ sniperId, count: 10 })
+  await page.goto(`/snipers/${sniperId}/results/analytics`)
   const firstDropoffBox = page.locator('text="%" >> nth=0')
   await firstDropoffBox.hover()
   await expect(

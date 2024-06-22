@@ -2,7 +2,7 @@ import { Select } from '@/components/inputs/Select'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'
 import { trpc } from '@/lib/trpc'
-import { defaultOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
+import { defaultOpenAIOptions } from '@sniper.io/schemas/features/blocks/integrations/openai/constants'
 
 type Props = {
   baseUrl?: string

@@ -1,5 +1,5 @@
 {
-  "name": "@typebot.io/telemetry",
+  "name": "@sniper.io/telemetry",
   "version": "1.0.0",
   "description": "",
   "scripts": {},
@@ -7,12 +7,12 @@
   "author": "Baptiste Arnaud",
   "license": "AGPL-3.0-or-later",
   "dependencies": {
-    "@typebot.io/schemas": "workspace:*",
+    "@sniper.io/schemas": "workspace:*",
     "ky": "1.2.4",
     "posthog-node": "3.1.1",
-    "@typebot.io/env": "workspace:*"
+    "@sniper.io/env": "workspace:*"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
+    "@sniper.io/tsconfig": "workspace:*"
   }
 }

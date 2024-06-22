@@ -28,7 +28,7 @@ const disabledLogic = [
   // 'Condition',
   // 'Redirect',
   // 'Code',
-  // 'Typebot link',
+  // 'Sniper link',
   // 'Wait',
   // 'Jump',
   // 'AB test',
@@ -56,6 +56,7 @@ const disabledIntegrations = [
   'anthropic',
   'together-ai',
   'open-router',
+  'nocodb',
 ]
 // TODO: remove from here to enable blocks
 export const disabledBlocks = [

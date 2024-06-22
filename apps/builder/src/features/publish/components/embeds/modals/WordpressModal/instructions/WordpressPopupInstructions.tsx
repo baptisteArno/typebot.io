@@ -16,7 +16,7 @@ import { parseApiHostValue } from '../../../snippetParsers'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import packageJson from '../../../../../../../../../../packages/embeds/js/package.json'
 
-const typebotCloudLibraryVersion = '0.2'
+const sniperCloudLibraryVersion = '0.2'
 
 type Props = {
   publicId: string
@@ -29,7 +29,7 @@ export const WordpressPopupInstructions = ({
   const [autoShowDelay, setAutoShowDelay] = useState<number>()
 
   const initCode = parseInitPopupCode({
-    typebot: publicId,
+    sniper: publicId,
     apiHost: parseApiHostValue(customDomain),
     autoShowDelay,
   })
@@ -39,11 +39,11 @@ export const WordpressPopupInstructions = ({
       <ListItem>
         Install{' '}
         <Link
-          href="https://wordpress.org/plugins/typebot/"
+          href="https://wordpress.org/plugins/sniper/"
           isExternal
           color={useColorModeValue('blue.500', 'blue.300')}
         >
-          the official Typebot WordPress plugin
+          the official Sniper WordPress plugin
           <ExternalLinkIcon mx="2px" />
         </Link>
       </ListItem>
@@ -51,7 +51,7 @@ export const WordpressPopupInstructions = ({
         Set <Code>Library version</Code> to{' '}
         <Code>
           {isCloudProdInstance()
-            ? typebotCloudLibraryVersion
+            ? sniperCloudLibraryVersion
             : packageJson.version}
         </Code>
       </ListItem>
@@ -63,7 +63,7 @@ export const WordpressPopupInstructions = ({
             }
           />
           <Text>
-            You can now place the following code snippet in the Typebot panel in
+            You can now place the following code snippet in the Sniper panel in
             your WordPress admin:
           </Text>
           <CodeEditor value={initCode} lang="javascript" isReadOnly />

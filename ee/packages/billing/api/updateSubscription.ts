@@ -1,11 +1,11 @@
 import { TRPCError } from '@trpc/server'
-import { env } from '@typebot.io/env'
-import prisma from '@typebot.io/lib/prisma'
-import { Plan } from '@typebot.io/prisma'
+import { env } from '@sniper.io/env'
+import prisma from '@sniper.io/lib/prisma'
+import { Plan } from '@sniper.io/prisma'
 import Stripe from 'stripe'
-import { trackEvents } from '@typebot.io/telemetry/trackEvents'
-import { isAdminWriteWorkspaceForbidden } from '@typebot.io/db-rules/isAdminWriteWorkspaceForbidden'
-import { User } from '@typebot.io/schemas'
+import { trackEvents } from '@sniper.io/telemetry/trackEvents'
+import { isAdminWriteWorkspaceForbidden } from '@sniper.io/db-rules/isAdminWriteWorkspaceForbidden'
+import { User } from '@sniper.io/schemas'
 import { createCheckoutSessionUrl } from '../helpers/createCheckoutSessionUrl'
 
 type Props = {
@@ -97,7 +97,7 @@ export const updateSubscription = async ({
     if (plan === 'STARTER') {
       const totalChatsUsed = await prisma.result.count({
         where: {
-          typebot: { workspaceId },
+          sniper: { workspaceId },
           hasStarted: true,
           createdAt: {
             gte: new Date(subscription.current_period_start * 1000),

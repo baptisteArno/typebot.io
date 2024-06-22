@@ -8,7 +8,7 @@ import {
   Box,
   Stack,
 } from '@chakra-ui/react'
-import { GoogleAnalyticsBlock } from '@typebot.io/schemas'
+import { GoogleAnalyticsBlock } from '@sniper.io/schemas'
 import React from 'react'
 
 type Props = {
@@ -72,7 +72,7 @@ export const GoogleAnalyticsSettings = ({
             <TextInput
               label="Event category:"
               defaultValue={options?.category}
-              placeholder="Example: Typebot"
+              placeholder="Example: Sniper"
               onChange={updateCategory}
             />
             <TextInput

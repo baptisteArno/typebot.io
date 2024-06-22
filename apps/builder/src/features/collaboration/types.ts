@@ -1,6 +1,6 @@
-import { CollaboratorsOnTypebots } from '@typebot.io/prisma'
+import { CollaboratorsOnSnipers } from '@sniper.io/prisma'
 
-export type Collaborator = CollaboratorsOnTypebots & {
+export type Collaborator = CollaboratorsOnSnipers & {
   user: {
     name: string | null
     image: string | null

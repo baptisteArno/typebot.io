@@ -1,11 +1,11 @@
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
-import { RatingInputBlock, Variable } from '@typebot.io/schemas'
+import { RatingInputBlock, Variable } from '@sniper.io/schemas'
 import React from 'react'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { NumberInput, TextInput } from '@/components/inputs'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
-import { defaultRatingInputOptions } from '@typebot.io/schemas/features/blocks/inputs/rating/constants'
+import { defaultRatingInputOptions } from '@sniper.io/schemas/features/blocks/inputs/rating/constants'
 import { useTranslate } from '@tolgee/react'
 
 type Props = {

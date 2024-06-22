@@ -7,9 +7,9 @@ import {
   hidePreviewMessage,
   setPrefilledVariables,
   setInputValue,
-} from '@typebot.io/js'
+} from '@sniper.io/js'
 import { useState } from 'react'
-import { leadGenerationTypebot } from './assets/leadGenerationTypebot'
+import { leadGenerationSniper } from './assets/leadGenerationSniper'
 import './assets/index.css'
 
 export const Default = () => {
@@ -36,7 +36,7 @@ export const Default = () => {
       </div>
 
       <Bubble
-        typebot={leadGenerationTypebot}
+        sniper={leadGenerationSniper}
         apiHost="http://localhost:3001"
         prefilledVariables={{
           Name: ['John'],

@@ -1,5 +1,5 @@
-import { env } from '@typebot.io/env'
-import { MemberInWorkspace, User } from '@typebot.io/prisma'
+import { env } from '@sniper.io/env'
+import { MemberInWorkspace, User } from '@sniper.io/prisma'
 
 export const isReadWorkspaceFobidden = (
   workspace: {

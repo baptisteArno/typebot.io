@@ -1,11 +1,11 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { getAuthOptions } from '@/pages/api/auth/[...nextauth]'
 import * as Sentry from '@sentry/nextjs'
-import { User } from '@typebot.io/prisma'
+import { User } from '@sniper.io/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth'
-import { env } from '@typebot.io/env'
-import { mockedUser } from '@typebot.io/lib/mockedUser'
+import { env } from '@sniper.io/env'
+import { mockedUser } from '@sniper.io/lib/mockedUser'
 
 export const getAuthenticatedUser = async (
   req: NextApiRequest,

@@ -1,26 +1,26 @@
 import { useTranslate } from '@tolgee/react'
 import { Stack, Text } from '@chakra-ui/react'
-import { EmbedBubbleBlock } from '@typebot.io/schemas'
+import { EmbedBubbleBlock } from '@sniper.io/schemas'
 import { SetVariableLabel } from '@/components/SetVariableLabel'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 
 type Props = {
   block: EmbedBubbleBlock
 }
 
 export const EmbedBubbleContent = ({ block }: Props) => {
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
   const { t } = useTranslate()
   if (!block.content?.url)
     return <Text color="gray.500">{t('clickToEdit')}</Text>
   return (
     <Stack>
       <Text>{t('editor.blocks.bubbles.embed.node.show.text')}</Text>
-      {typebot &&
+      {sniper &&
         block.content.waitForEvent?.isEnabled &&
         block.content.waitForEvent.saveDataInVariableId && (
           <SetVariableLabel
-            variables={typebot.variables}
+            variables={sniper.variables}
             variableId={block.content.waitForEvent.saveDataInVariableId}
           />
         )}

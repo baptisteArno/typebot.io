@@ -13,13 +13,13 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { ImageIcon, PlusIcon } from '@/components/icons'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { ItemIndices } from '@typebot.io/schemas'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
+import { ItemIndices } from '@sniper.io/schemas'
 import React, { useRef } from 'react'
-import { PictureChoiceItem } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
+import { PictureChoiceItem } from '@sniper.io/schemas/features/blocks/inputs/pictureChoice'
 import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { PictureChoiceItemSettings } from './PictureChoiceItemSettings'
-import { isSvgSrc } from '@typebot.io/lib'
+import { isSvgSrc } from '@sniper.io/lib'
 
 type Props = {
   item: PictureChoiceItem
@@ -34,7 +34,7 @@ export const PictureChoiceItemNode = ({
 }: Props) => {
   const emptyImageBgColor = useColorModeValue('gray.100', 'gray.700')
   const { openedItemId, setOpenedItemId } = useGraph()
-  const { updateItem, createItem, typebot } = useTypebot()
+  const { updateItem, createItem, sniper } = useSniper()
   const ref = useRef<HTMLDivElement | null>(null)
 
   const handlePlusClick = (e: React.MouseEvent) => {
@@ -58,8 +58,8 @@ export const PictureChoiceItemNode = ({
   }
   useEventListener('wheel', handleMouseWheel, ref.current)
 
-  const blockId = typebot
-    ? typebot.groups.at(indices.groupIndex)?.blocks?.at(indices.blockIndex)?.id
+  const blockId = sniper
+    ? sniper.groups.at(indices.groupIndex)?.blocks?.at(indices.blockIndex)?.id
     : undefined
 
   return (
@@ -136,10 +136,10 @@ export const PictureChoiceItemNode = ({
             shadow="lg"
             ref={ref}
           >
-            {typebot && blockId && (
+            {sniper && blockId && (
               <PictureChoiceItemSettings
-                workspaceId={typebot.workspaceId}
-                typebotId={typebot.id}
+                workspaceId={sniper.workspaceId}
+                sniperId={sniper.id}
                 item={item}
                 blockId={blockId}
                 onItemChange={handleItemChange}

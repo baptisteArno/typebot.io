@@ -1,2 +1,2 @@
 -- AlterTable
-ALTER TABLE "Typebot" ADD COLUMN     "riskLevel" INTEGER;
+ALTER TABLE "Sniper" ADD COLUMN     "riskLevel" INTEGER;

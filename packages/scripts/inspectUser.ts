@@ -1,4 +1,4 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { PrismaClient } from '@sniper.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 import { isCancel, text, confirm } from '@clack/prompts'
 
@@ -50,7 +50,7 @@ const inspectUser = async () => {
                 },
               },
               additionalStorageIndex: true,
-              typebots: {
+              snipers: {
                 orderBy: {
                   updatedAt: 'desc',
                 },
@@ -60,9 +60,9 @@ const inspectUser = async () => {
                   createdAt: true,
                   updatedAt: true,
                   riskLevel: true,
-                  publishedTypebot: {
+                  publishedSniper: {
                     select: {
-                      typebot: {
+                      sniper: {
                         select: { publicId: true },
                       },
                     },
@@ -87,10 +87,10 @@ const inspectUser = async () => {
   console.log('Computing collected results...')
 
   for (const workspace of user?.workspaces ?? []) {
-    for (const typebot of workspace.workspace.typebots) {
+    for (const sniper of workspace.workspace.snipers) {
       const resultsCount = await prisma.result.count({
         where: {
-          typebotId: typebot.id,
+          sniperId: sniper.id,
           isArchived: false,
           hasStarted: true,
         },
@@ -99,7 +99,7 @@ const inspectUser = async () => {
       if (resultsCount === 0) continue
 
       console.log(
-        `Typebot "${typebot.name}" (${typebot.id}) has ${resultsCount} collected results`
+        `Sniper "${sniper.name}" (${sniper.id}) has ${resultsCount} collected results`
       )
     }
   }

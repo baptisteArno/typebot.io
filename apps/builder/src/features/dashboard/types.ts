@@ -1,5 +1,5 @@
-import { Typebot } from '@typebot.io/schemas'
+import { Sniper } from '@sniper.io/schemas'
 
-export type TypebotInDashboard = Pick<Typebot, 'id' | 'name' | 'icon'> & {
-  publishedTypebotId?: string
+export type SniperInDashboard = Pick<Sniper, 'id' | 'name' | 'icon'> & {
+  publishedSniperId?: string
 }

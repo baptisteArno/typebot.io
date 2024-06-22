@@ -10,9 +10,9 @@ import {
 } from '@chakra-ui/react'
 import { AlertIcon } from '@/components/icons'
 import { WorkspaceInApp } from '@/features/workspace/WorkspaceProvider'
-import { parseNumberWithCommas } from '@typebot.io/lib'
+import { parseNumberWithCommas } from '@sniper.io/lib'
 import { defaultQueryOptions, trpc } from '@/lib/trpc'
-import { getChatsLimit } from '@typebot.io/billing/helpers/getChatsLimit'
+import { getChatsLimit } from '@sniper.io/billing/helpers/getChatsLimit'
 import { useTranslate } from '@tolgee/react'
 
 type Props = {

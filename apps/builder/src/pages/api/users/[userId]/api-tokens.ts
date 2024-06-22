@@ -1,8 +1,8 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
-import { generateId } from '@typebot.io/lib'
-import { methodNotAllowed, notAuthenticated } from '@typebot.io/lib/api'
+import { generateId } from '@sniper.io/lib'
+import { methodNotAllowed, notAuthenticated } from '@sniper.io/lib/api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res)

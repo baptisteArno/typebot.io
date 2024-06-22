@@ -3,19 +3,19 @@ import {
   ResultHeaderCell,
   ResultWithAnswers,
   TableData,
-  Typebot,
-} from '@typebot.io/schemas'
+  Sniper,
+} from '@sniper.io/schemas'
 import { createContext, ReactNode, useContext, useMemo } from 'react'
-import { useTypebot } from '../editor/providers/TypebotProvider'
+import { useSniper } from '../editor/providers/SniperProvider'
 import { useResultsQuery } from './hooks/useResultsQuery'
 import { trpc } from '@/lib/trpc'
-import { isDefined } from '@typebot.io/lib/utils'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
-import { parseResultHeader } from '@typebot.io/results/parseResultHeader'
-import { convertResultsToTableData } from '@typebot.io/results/convertResultsToTableData'
+import { isDefined } from '@sniper.io/lib/utils'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
+import { parseResultHeader } from '@sniper.io/results/parseResultHeader'
+import { convertResultsToTableData } from '@sniper.io/results/convertResultsToTableData'
 import { parseCellContent } from './helpers/parseCellContent'
 import { timeFilterValues } from '../analytics/constants'
-import { parseBlockIdVariableIdMap } from '@typebot.io/results/parseBlockIdVariableIdMap'
+import { parseBlockIdVariableIdMap } from '@sniper.io/results/parseBlockIdVariableIdMap'
 
 const resultsContext = createContext<{
   resultsList: { results: ResultWithAnswers[] }[] | undefined
@@ -34,45 +34,45 @@ const resultsContext = createContext<{
 export const ResultsProvider = ({
   timeFilter,
   children,
-  typebotId,
+  sniperId,
   totalResults,
   onDeleteResults,
 }: {
   timeFilter: (typeof timeFilterValues)[number]
   children: ReactNode
-  typebotId: string
+  sniperId: string
   totalResults: number
   onDeleteResults: (totalResultsDeleted: number) => void
 }) => {
-  const { publishedTypebot } = useTypebot()
+  const { publishedSniper } = useSniper()
   const { showToast } = useToast()
   const { data, fetchNextPage, hasNextPage, refetch } = useResultsQuery({
     timeFilter,
-    typebotId,
+    sniperId,
     onError: (error) => {
       showToast({ description: error })
     },
   })
 
-  const linkedTypebotIds =
-    publishedTypebot?.groups
+  const linkedSniperIds =
+    publishedSniper?.groups
       .flatMap((group) => group.blocks)
-      .reduce<string[]>((typebotIds, block) => {
-        if (block.type !== LogicBlockType.TYPEBOT_LINK) return typebotIds
-        const typebotId = block.options?.typebotId
-        return isDefined(typebotId) &&
-          !typebotIds.includes(typebotId) &&
+      .reduce<string[]>((sniperIds, block) => {
+        if (block.type !== LogicBlockType.SNIPER_LINK) return sniperIds
+        const sniperId = block.options?.sniperId
+        return isDefined(sniperId) &&
+          !sniperIds.includes(sniperId) &&
           block.options?.mergeResults !== false
-          ? [...typebotIds, typebotId]
-          : typebotIds
+          ? [...sniperIds, sniperId]
+          : sniperIds
       }, []) ?? []
 
-  const { data: linkedTypebotsData } = trpc.getLinkedTypebots.useQuery(
+  const { data: linkedSnipersData } = trpc.getLinkedSnipers.useQuery(
     {
-      typebotId,
+      sniperId,
     },
     {
-      enabled: linkedTypebotIds.length > 0,
+      enabled: linkedSniperIds.length > 0,
     }
   )
 
@@ -83,31 +83,28 @@ export const ResultsProvider = ({
 
   const resultHeader = useMemo(
     () =>
-      publishedTypebot
+      publishedSniper
         ? parseResultHeader(
-            publishedTypebot,
-            linkedTypebotsData?.typebots as Pick<
-              Typebot,
-              'groups' | 'variables'
-            >[]
+            publishedSniper,
+            linkedSnipersData?.snipers as Pick<Sniper, 'groups' | 'variables'>[]
           )
         : [],
-    [linkedTypebotsData?.typebots, publishedTypebot]
+    [linkedSnipersData?.snipers, publishedSniper]
   )
 
   const tableData = useMemo(
     () =>
-      publishedTypebot
+      publishedSniper
         ? convertResultsToTableData({
             results: data?.flatMap((d) => d.results) ?? [],
             headerCells: resultHeader,
             cellParser: parseCellContent,
             blockIdVariableIdMap: parseBlockIdVariableIdMap(
-              publishedTypebot.groups
+              publishedSniper.groups
             ),
           })
         : [],
-    [publishedTypebot, data, resultHeader]
+    [publishedSniper, data, resultHeader]
   )
 
   return (

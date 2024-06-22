@@ -1,7 +1,7 @@
 import { StackProps, HStack, useColorModeValue } from '@chakra-ui/react'
 import { BlockIcon } from './BlockIcon'
 import { BlockLabel } from './BlockLabel'
-import { BlockV6 } from '@typebot.io/schemas'
+import { BlockV6 } from '@sniper.io/schemas'
 
 export const BlockCardOverlay = ({
   type,

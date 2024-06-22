@@ -7,9 +7,9 @@ import {
   SessionState,
   SetVariableHistoryItem,
   Variable,
-} from '@typebot.io/schemas'
-import { byId } from '@typebot.io/lib'
-import { isInputBlock } from '@typebot.io/schemas/helpers'
+} from '@sniper.io/schemas'
+import { byId } from '@sniper.io/lib'
+import { isInputBlock } from '@sniper.io/schemas/helpers'
 import { executeGroup, parseInput } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
 import { formatEmail } from './blocks/inputs/email/formatEmail'
@@ -22,30 +22,30 @@ import { validateNumber } from './blocks/inputs/number/validateNumber'
 import { parseDateReply } from './blocks/inputs/date/parseDateReply'
 import { validateRatingReply } from './blocks/inputs/rating/validateRatingReply'
 import { parsePictureChoicesReply } from './blocks/inputs/pictureChoice/parsePictureChoicesReply'
-import { parseVariables } from '@typebot.io/variables/parseVariables'
-import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
+import { parseVariables } from '@sniper.io/variables/parseVariables'
+import { updateVariablesInSession } from '@sniper.io/variables/updateVariablesInSession'
 import { startBotFlow } from './startBotFlow'
 import { TRPCError } from '@trpc/server'
 import { parseNumber } from './blocks/inputs/number/parseNumber'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { defaultPaymentInputOptions } from '@typebot.io/schemas/features/blocks/inputs/payment/constants'
-import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
-import { defaultEmailInputOptions } from '@typebot.io/schemas/features/blocks/inputs/email/constants'
-import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
-import { defaultPictureChoiceOptions } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice/constants'
-import { defaultFileInputOptions } from '@typebot.io/schemas/features/blocks/inputs/file/constants'
-import { VisitedEdge } from '@typebot.io/prisma'
-import { getBlockById } from '@typebot.io/schemas/helpers'
-import { ForgedBlock } from '@typebot.io/forge-repository/types'
-import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { defaultPaymentInputOptions } from '@sniper.io/schemas/features/blocks/inputs/payment/constants'
+import { IntegrationBlockType } from '@sniper.io/schemas/features/blocks/integrations/constants'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
+import { defaultEmailInputOptions } from '@sniper.io/schemas/features/blocks/inputs/email/constants'
+import { defaultChoiceInputOptions } from '@sniper.io/schemas/features/blocks/inputs/choice/constants'
+import { defaultPictureChoiceOptions } from '@sniper.io/schemas/features/blocks/inputs/pictureChoice/constants'
+import { defaultFileInputOptions } from '@sniper.io/schemas/features/blocks/inputs/file/constants'
+import { VisitedEdge } from '@sniper.io/prisma'
+import { getBlockById } from '@sniper.io/schemas/helpers'
+import { ForgedBlock } from '@sniper.io/forge-repository/types'
+import { forgedBlocks } from '@sniper.io/forge-repository/definitions'
 import { resumeChatCompletion } from './blocks/integrations/legacy/openai/resumeChatCompletion'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import { downloadMedia } from './whatsapp/downloadMedia'
-import { uploadFileToBucket } from '@typebot.io/lib/s3/uploadFileToBucket'
-import { isURL } from '@typebot.io/lib/validators/isURL'
-import { isForgedBlockType } from '@typebot.io/schemas/features/blocks/forged/helpers'
+import { uploadFileToBucket } from '@sniper.io/lib/s3/uploadFileToBucket'
+import { isURL } from '@sniper.io/lib/validators/isURL'
+import { isForgedBlockType } from '@sniper.io/schemas/features/blocks/forged/helpers'
 
 type Params = {
   version: 1 | 2
@@ -73,7 +73,7 @@ export const continueBotFlow = async (
 
   const { block, group, blockIndex } = getBlockById(
     newSessionState.currentBlockId,
-    state.typebotsQueue[0].typebot.groups
+    state.snipersQueue[0].sniper.groups
   )
 
   if (!block)
@@ -85,7 +85,7 @@ export const continueBotFlow = async (
   let variableToUpdate: Variable | undefined
 
   if (block.type === LogicBlockType.SET_VARIABLE) {
-    const existingVariable = state.typebotsQueue[0].typebot.variables.find(
+    const existingVariable = state.snipersQueue[0].sniper.variables.find(
       byId(block.options?.variableId)
     )
     if (existingVariable && reply && typeof reply === 'string') {
@@ -127,7 +127,7 @@ export const continueBotFlow = async (
       if (action) {
         if (action.run?.stream?.getStreamVariableId) {
           firstBubbleWasStreamed = true
-          variableToUpdate = state.typebotsQueue[0].typebot.variables.find(
+          variableToUpdate = state.snipersQueue[0].sniper.variables.find(
             (v) => v.id === action?.run?.stream?.getStreamVariableId(options)
           )
         }
@@ -135,7 +135,7 @@ export const continueBotFlow = async (
         if (
           action.run?.web?.displayEmbedBubble?.waitForEvent?.getSaveVariableId
         ) {
-          variableToUpdate = state.typebotsQueue[0].typebot.variables.find(
+          variableToUpdate = state.snipersQueue[0].sniper.variables.find(
             (v) =>
               v.id ===
               action?.run?.web?.displayEmbedBubble?.waitForEvent?.getSaveVariableId?.(
@@ -149,7 +149,7 @@ export const continueBotFlow = async (
     block.type === BubbleBlockType.EMBED &&
     block.content?.waitForEvent?.saveDataInVariableId
   ) {
-    variableToUpdate = state.typebotsQueue[0].typebot.variables.find(
+    variableToUpdate = state.snipersQueue[0].sniper.variables.find(
       (v) => v.id === block.content?.waitForEvent?.saveDataInVariableId
     )
   }
@@ -219,7 +219,7 @@ export const continueBotFlow = async (
     }
   }
 
-  if (!nextEdgeId && state.typebotsQueue.length === 1)
+  if (!nextEdgeId && state.snipersQueue.length === 1)
     return {
       messages: [],
       newSessionState,
@@ -277,7 +277,7 @@ const saveVariableValueIfAny =
   (state: SessionState, block: InputBlock) =>
   (reply: string): SessionState => {
     if (!block.options?.variableId) return state
-    const foundVariable = state.typebotsQueue[0].typebot.variables.find(
+    const foundVariable = state.snipersQueue[0].sniper.variables.find(
       (variable) => variable.id === block.options?.variableId
     )
     if (!foundVariable) return state
@@ -308,7 +308,7 @@ const parseRetryMessage =
       block.options &&
       'retryMessageContent' in block.options &&
       block.options.retryMessageContent
-        ? parseVariables(state.typebotsQueue[0].typebot.variables)(
+        ? parseVariables(state.snipersQueue[0].sniper.variables)(
             block.options.retryMessageContent
           )
         : parseDefaultRetryMessage(block)
@@ -359,7 +359,7 @@ const saveAnswerInDb =
 
     newSessionState = {
       ...saveVariableValueIfAny(newSessionState, block)(reply),
-      previewMetadata: state.typebotsQueue[0].resultId
+      previewMetadata: state.snipersQueue[0].resultId
         ? newSessionState.previewMetadata
         : {
             ...newSessionState.previewMetadata,
@@ -371,7 +371,7 @@ const saveAnswerInDb =
     }
 
     const key = block.options?.variableId
-      ? newSessionState.typebotsQueue[0].typebot.variables.find(
+      ? newSessionState.snipersQueue[0].sniper.variables.find(
           (variable) => variable.id === block.options?.variableId
         )?.name
       : parseGroupKey(block.id, { state: newSessionState })
@@ -383,7 +383,7 @@ const saveAnswerInDb =
   }
 
 const parseGroupKey = (blockId: string, { state }: { state: SessionState }) => {
-  const group = state.typebotsQueue[0].typebot.groups.find((group) =>
+  const group = state.snipersQueue[0].sniper.groups.find((group) =>
     group.blocks.find((b) => b.id === blockId)
   )
   if (!group) return
@@ -399,7 +399,7 @@ const parseGroupKey = (blockId: string, { state }: { state: SessionState }) => {
 
 const setNewAnswerInState =
   (state: SessionState) => (newAnswer: AnswerInSessionState) => {
-    const answers = state.typebotsQueue[0].answers
+    const answers = state.snipersQueue[0].answers
     const newAnswers = answers
       .filter((answer) => answer.key !== newAnswer.key)
       .concat(newAnswer)
@@ -409,24 +409,24 @@ const setNewAnswerInState =
       progressMetadata: state.progressMetadata
         ? { totalAnswers: state.progressMetadata.totalAnswers + 1 }
         : undefined,
-      typebotsQueue: state.typebotsQueue.map((typebot, index) =>
+      snipersQueue: state.snipersQueue.map((sniper, index) =>
         index === 0
           ? {
-              ...typebot,
+              ...sniper,
               answers: newAnswers,
             }
-          : typebot
+          : sniper
       ),
     } satisfies SessionState
   }
 
 const getOutgoingEdgeId =
-  (state: Pick<SessionState, 'typebotsQueue'>) =>
+  (state: Pick<SessionState, 'snipersQueue'>) =>
   (
     block: Block,
     reply: string | undefined
   ): { edgeId: string | undefined; isOffDefaultPath: boolean } => {
-    const variables = state.typebotsQueue[0].typebot.variables
+    const variables = state.snipersQueue[0].sniper.variables
     if (
       block.type === InputBlockType.CHOICE &&
       !(
@@ -472,7 +472,7 @@ const parseReply =
           status: 'success',
           reply:
             env.NEXTAUTH_URL +
-            `/api/typebots/${state.typebotsQueue[0].typebot.id}/whatsapp/media/${reply.mediaId}`,
+            `/api/snipers/${state.snipersQueue[0].sniper.id}/whatsapp/media/${reply.mediaId}`,
         }
       }
       const { file, mimeType } = await downloadMedia({
@@ -481,7 +481,7 @@ const parseReply =
       })
       const url = await uploadFileToBucket({
         file,
-        key: `public/workspaces/${reply.workspaceId}/typebots/${state.typebotsQueue[0].typebot.id}/results/${state.typebotsQueue[0].resultId}/${reply.mediaId}`,
+        key: `public/workspaces/${reply.workspaceId}/snipers/${state.snipersQueue[0].sniper.id}/results/${state.snipersQueue[0].resultId}/${reply.mediaId}`,
         mimeType,
       })
       return {
@@ -519,7 +519,7 @@ const parseReply =
         if (!reply) return { status: 'fail' }
         const isValid = validateNumber(reply, {
           options: block.options,
-          variables: state.typebotsQueue[0].typebot.variables,
+          variables: state.snipersQueue[0].sniper.variables,
         })
         if (!isValid) return { status: 'fail' }
         return { status: 'success', reply: parseNumber(reply) }

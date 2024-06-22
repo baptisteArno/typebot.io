@@ -1,12 +1,12 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
-import { freeWorkspaceId } from '@typebot.io/playwright/databaseSetup'
+import { importSniperInDatabase } from '@sniper.io/playwright/databaseActions'
+import { freeWorkspaceId } from '@sniper.io/playwright/databaseSetup'
 import {
   defaultContainerMaxHeight,
   defaultContainerMaxWidth,
-} from '@typebot.io/schemas/features/typebot/theme/constants'
+} from '@sniper.io/schemas/features/sniper/theme/constants'
 
 const hostAvatarUrl =
   'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80'
@@ -18,32 +18,32 @@ const backgroundImageUrl =
 test.describe.parallel('Theme page', () => {
   test.describe('General', () => {
     test('should reflect change in real-time', async ({ page }) => {
-      const typebotId = createId()
-      await importTypebotInDatabase(getTestAsset('typebots/theme.json'), {
-        id: typebotId,
+      const sniperId = createId()
+      await importSniperInDatabase(getTestAsset('snipers/theme.json'), {
+        id: sniperId,
       })
-      await page.goto(`/typebots/${typebotId}/theme`)
+      await page.goto(`/snipers/${sniperId}/theme`)
       await expect(page.getByRole('button', { name: 'Go' })).toBeVisible()
 
       // Branding
       await page.getByRole('button', { name: 'Global' }).click()
       await expect(
-        page.locator('a:has-text("Made with Typebot")')
-      ).toHaveAttribute('href', 'https://www.typebot.io/?utm_source=litebadge')
-      await page.click('text="Show Typebot brand"')
-      await expect(page.locator('a:has-text("Made with Typebot")')).toBeHidden()
+        page.locator('a:has-text("Made with Sniper")')
+      ).toHaveAttribute('href', 'https://www.sniper.io/?utm_source=litebadge')
+      await page.click('text="Show Sniper brand"')
+      await expect(page.locator('a:has-text("Made with Sniper")')).toBeHidden()
 
       // Font
       await page.getByRole('button', { name: 'Font' }).click()
       await page.getByRole('textbox').fill('Roboto Slab')
       await page.getByRole('menuitem', { name: 'Roboto Slab' }).click()
-      await expect(page.locator('.typebot-container')).toHaveCSS(
+      await expect(page.locator('.sniper-container')).toHaveCSS(
         'font-family',
         /Roboto Slab/
       )
 
       // BG color
-      await expect(page.locator('.typebot-container')).toHaveCSS(
+      await expect(page.locator('.sniper-container')).toHaveCSS(
         'background-color',
         'rgba(0, 0, 0, 0)'
       )
@@ -52,7 +52,7 @@ test.describe.parallel('Theme page', () => {
       await page.waitForTimeout(100)
       await page.getByRole('button', { name: 'Pick a color' }).click()
       await page.fill('[aria-label="Color value"] >> nth=-1', '#2a9d8f')
-      await expect(page.locator('.typebot-container')).toHaveCSS(
+      await expect(page.locator('.sniper-container')).toHaveCSS(
         'background-color',
         'rgb(42, 157, 143)'
       )
@@ -66,7 +66,7 @@ test.describe.parallel('Theme page', () => {
       await expect(
         page.getByRole('img', { name: 'Background image' })
       ).toHaveAttribute('src', backgroundImageUrl)
-      await expect(page.locator('.typebot-container')).toHaveCSS(
+      await expect(page.locator('.sniper-container')).toHaveCSS(
         'background-image',
         `url("${backgroundImageUrl}")`
       )
@@ -75,21 +75,21 @@ test.describe.parallel('Theme page', () => {
 
   test.describe('Chat', () => {
     test('should reflect change in real-time', async ({ page }) => {
-      const typebotId = 'chat-theme-typebot'
+      const sniperId = 'chat-theme-sniper'
       try {
-        await importTypebotInDatabase(getTestAsset('typebots/theme.json'), {
-          id: typebotId,
+        await importSniperInDatabase(getTestAsset('snipers/theme.json'), {
+          id: sniperId,
         })
       } catch {
         /* empty */
       }
 
-      await page.goto(`/typebots/${typebotId}/theme`)
+      await page.goto(`/snipers/${sniperId}/theme`)
       await expect(page.getByRole('button', { name: 'Go' })).toBeVisible()
       await page.click('button:has-text("Chat")')
 
       // Container
-      await expect(page.locator('.typebot-chat-view')).toHaveCSS(
+      await expect(page.locator('.sniper-chat-view')).toHaveCSS(
         'max-width',
         defaultContainerMaxWidth
       )
@@ -98,11 +98,11 @@ test.describe.parallel('Theme page', () => {
         .filter({ hasText: /^Max width:px$/ })
         .getByRole('spinbutton')
         .fill('600')
-      await expect(page.locator('.typebot-chat-view')).toHaveCSS(
+      await expect(page.locator('.sniper-chat-view')).toHaveCSS(
         'max-width',
         '600px'
       )
-      await expect(page.locator('.typebot-chat-view')).toHaveCSS(
+      await expect(page.locator('.sniper-chat-view')).toHaveCSS(
         'max-height',
         defaultContainerMaxHeight
       )
@@ -111,11 +111,11 @@ test.describe.parallel('Theme page', () => {
         .filter({ hasText: /^Max height:%$/ })
         .getByRole('spinbutton')
         .fill('80')
-      await expect(page.locator('.typebot-chat-view')).toHaveCSS(
+      await expect(page.locator('.sniper-chat-view')).toHaveCSS(
         'max-height',
         '80%'
       )
-      await expect(page.locator('.typebot-chat-view')).toHaveCSS(
+      await expect(page.locator('.sniper-chat-view')).toHaveCSS(
         'color',
         'rgb(48, 50, 53)'
       )
@@ -132,13 +132,13 @@ test.describe.parallel('Theme page', () => {
       )
       await page.getByRole('button', { name: 'Go' }).click()
 
-      await expect(page.locator('.typebot-container img')).toHaveAttribute(
+      await expect(page.locator('.sniper-container img')).toHaveAttribute(
         'src',
         hostAvatarUrl
       )
       await page.click('text=Bot avatar')
 
-      await expect(page.locator('.typebot-container img')).toBeHidden()
+      await expect(page.locator('.sniper-container img')).toBeHidden()
 
       // Host bubbles
       await page.click(
@@ -211,7 +211,7 @@ test.describe.parallel('Theme page', () => {
         '[data-testid="inputsTheme"] >> [aria-label="Pick a color"] >> nth=1'
       )
       await page.fill('input[value="#303235"]', '#023e8a')
-      const input = page.locator('.typebot-input')
+      const input = page.locator('.sniper-input')
       await expect(input).toHaveCSS('background-color', 'rgb(255, 232, 214)')
       await expect(input).toHaveCSS('color', 'rgb(2, 62, 138)')
     })
@@ -219,16 +219,16 @@ test.describe.parallel('Theme page', () => {
 
   test.describe('Custom CSS', () => {
     test('should reflect change in real-time', async ({ page }) => {
-      const typebotId = createId()
-      await importTypebotInDatabase(getTestAsset('typebots/theme.json'), {
-        id: typebotId,
+      const sniperId = createId()
+      await importSniperInDatabase(getTestAsset('snipers/theme.json'), {
+        id: sniperId,
       })
-      await page.goto(`/typebots/${typebotId}/theme`)
+      await page.goto(`/snipers/${sniperId}/theme`)
       await expect(page.getByRole('button', { name: 'Go' })).toBeVisible()
       await page.click('button:has-text("Custom CSS")')
       await page.fill(
         'div[role="textbox"]',
-        '.typebot-button {background-color: green}'
+        '.sniper-button {background-color: green}'
       )
       await expect(page.getByRole('button', { name: 'Go' })).toHaveCSS(
         'background-color',
@@ -239,11 +239,11 @@ test.describe.parallel('Theme page', () => {
 
   test.describe('Theme templates', () => {
     test('should reflect change in real-time', async ({ page }) => {
-      const typebotId = createId()
-      await importTypebotInDatabase(getTestAsset('typebots/theme.json'), {
-        id: typebotId,
+      const sniperId = createId()
+      await importSniperInDatabase(getTestAsset('snipers/theme.json'), {
+        id: sniperId,
       })
-      await page.goto(`/typebots/${typebotId}/theme`)
+      await page.goto(`/snipers/${sniperId}/theme`)
       await expect(page.getByRole('button', { name: 'Go' })).toBeVisible()
       await page.getByRole('button', { name: 'Templates' }).click()
       await page.getByRole('button', { name: 'Save current theme' }).click()
@@ -266,7 +266,7 @@ test.describe.parallel('Theme page', () => {
       await page.getByRole('menuitem', { name: 'Delete' }).click()
       await expect(page.getByText('My awesome theme 2')).toBeHidden()
       await page.getByRole('button', { name: 'Gallery' }).click()
-      await page.getByText('Typebot Dark').click()
+      await page.getByText('Sniper Dark').click()
       await expect(page.getByTestId('host-bubble')).toHaveCSS(
         'background-color',
         'rgb(30, 41, 59)'
@@ -277,16 +277,16 @@ test.describe.parallel('Theme page', () => {
 
 test.describe('Free workspace', () => {
   test("can't remove branding", async ({ page }) => {
-    const typebotId = createId()
-    await importTypebotInDatabase(getTestAsset('typebots/settings.json'), {
-      id: typebotId,
+    const sniperId = createId()
+    await importSniperInDatabase(getTestAsset('snipers/settings.json'), {
+      id: sniperId,
       workspaceId: freeWorkspaceId,
     })
-    await page.goto(`/typebots/${typebotId}/theme`)
+    await page.goto(`/snipers/${sniperId}/theme`)
     await expect(page.locator('text="What\'s your name?"')).toBeVisible()
     await page.getByRole('button', { name: 'Global' }).click()
     await expect(page.locator('[data-testid="starter-lock-tag"]')).toBeVisible()
-    await page.click('text=Show Typebot brand')
+    await page.click('text=Show Sniper brand')
     await expect(
       page.locator(
         'text="You need to upgrade your plan in order to remove branding"'

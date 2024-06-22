@@ -5,8 +5,8 @@ import {
   injectCustomHeadCode,
   isDefined,
   isNotEmpty,
-} from '@typebot.io/lib/utils'
-import { StartPropsToInject } from '@typebot.io/schemas'
+} from '@sniper.io/lib/utils'
+import { StartPropsToInject } from '@sniper.io/schemas'
 
 export const injectStartProps = async (
   startPropsToInject: StartPropsToInject

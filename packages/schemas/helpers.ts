@@ -1,4 +1,4 @@
-import { forgedBlockIds } from '@typebot.io/forge-repository/constants'
+import { forgedBlockIds } from '@sniper.io/forge-repository/constants'
 import {
   Block,
   InputBlock,
@@ -21,7 +21,7 @@ import { defaultChoiceInputOptions } from './features/blocks/inputs/choice/const
 import { InputBlockType } from './features/blocks/inputs/constants'
 import { IntegrationBlockType } from './features/blocks/integrations/constants'
 import { LogicBlockType } from './features/blocks/logic/constants'
-import { Group } from './features/typebot/types'
+import { Group } from './features/sniper/types'
 
 export const isInputBlock = (block: Block): block is InputBlock =>
   (Object.values(InputBlockType) as string[]).includes(block.type)

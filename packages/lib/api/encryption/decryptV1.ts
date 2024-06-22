@@ -1,4 +1,4 @@
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import { createDecipheriv } from 'crypto'
 
 const algorithm = 'aes-256-gcm'

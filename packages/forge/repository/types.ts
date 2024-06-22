@@ -1,4 +1,4 @@
-import { z } from '@typebot.io/forge/zod'
+import { z } from '@sniper.io/forge/zod'
 import { forgedBlocks } from './definitions'
 import { forgedBlockSchemas } from './schemas'
 

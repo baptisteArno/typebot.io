@@ -10,11 +10,11 @@ import {
   Block,
   UrlInputBlock,
   Variable,
-} from '@typebot.io/schemas'
-import { isDefined } from '@typebot.io/lib'
-import { isInputBlock } from '@typebot.io/schemas/helpers'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+} from '@sniper.io/schemas'
+import { isDefined } from '@sniper.io/lib'
+import { isInputBlock } from '@sniper.io/schemas/helpers'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
 
 export const isInputValid = (
   inputValue: string,

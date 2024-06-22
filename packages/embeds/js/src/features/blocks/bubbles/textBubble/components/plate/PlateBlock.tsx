@@ -1,7 +1,7 @@
 import type { TElement, TText, TDescendant } from '@udecode/plate-common'
 import { PlateText, PlateTextProps } from './PlateText'
 import { For, JSXElement, Match, Switch } from 'solid-js'
-import { isDefined } from '@typebot.io/lib/utils'
+import { isDefined } from '@sniper.io/lib/utils'
 
 type Props = {
   element: TElement | TText

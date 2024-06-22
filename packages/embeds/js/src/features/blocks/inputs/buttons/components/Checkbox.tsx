@@ -10,7 +10,7 @@ export const Checkbox = (props: Props) => {
   return (
     <div
       class={
-        'w-4 h-4 typebot-checkbox' +
+        'w-4 h-4 sniper-checkbox' +
         (props.isChecked ? ' checked' : '') +
         (props.class ? ` ${props.class}` : '')
       }

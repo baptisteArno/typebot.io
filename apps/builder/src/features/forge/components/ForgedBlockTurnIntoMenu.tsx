@@ -11,10 +11,10 @@ import { RepeatIcon, ChevronRightIcon } from '@/components/icons'
 import { useDebouncedCallback } from 'use-debounce'
 import { useForgedBlock } from '@/features/forge/hooks/useForgedBlock'
 import { ForgedBlockIcon } from '@/features/forge/ForgedBlockIcon'
-import { ForgedBlock } from '@typebot.io/forge-repository/types'
-import { TurnableIntoParam } from '@typebot.io/forge'
+import { ForgedBlock } from '@sniper.io/forge-repository/types'
+import { TurnableIntoParam } from '@sniper.io/forge'
 import { ZodObject } from 'zod'
-import { BlockV6 } from '@typebot.io/schemas'
+import { BlockV6 } from '@sniper.io/schemas'
 
 type Props = {
   block: BlockV6

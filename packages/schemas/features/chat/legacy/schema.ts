@@ -3,9 +3,9 @@ import {
   chatLogSchema,
   chatMessageSchema,
   runtimeOptionsSchema,
-  startTypebotSchema,
+  startSniperSchema,
 } from '../schema'
-import { typebotV5Schema, typebotV6Schema } from '../../typebot'
+import { sniperV5Schema, sniperV6Schema } from '../../sniper'
 import { dynamicThemeSchema } from '../shared'
 import { inputBlockSchemas } from '../../blocks'
 import { extendZodWithOpenApi } from 'zod-openapi'
@@ -32,10 +32,10 @@ export type StartElementId = z.infer<typeof startElementIdSchema>
 
 const startParamsSchema = z
   .object({
-    typebot: startTypebotSchema
+    sniper: startSniperSchema
       .or(z.string())
       .describe(
-        'Either a Typebot ID or a Typebot object. If you provide a Typebot object, it will be executed in preview mode. ([How can I find my typebot ID?](https://docs.typebot.io/api-reference#how-to-find-my-typebotid)).'
+        'Either a Sniper ID or a Sniper object. If you provide a Sniper object, it will be executed in preview mode. ([How can I find my sniper ID?](https://docs.sniper.io/api-reference#how-to-find-my-sniperid)).'
       ),
     isPreview: z
       .boolean()
@@ -52,7 +52,7 @@ const startParamsSchema = z
       .record(z.unknown())
       .optional()
       .describe(
-        '[More info about prefilled variables.](https://docs.typebot.io/editor/variables#prefilled-variables)'
+        '[More info about prefilled variables.](https://docs.sniper.io/editor/variables#prefilled-variables)'
       ),
     isStreamEnabled: z
       .boolean()
@@ -105,16 +105,16 @@ export const chatReplySchema = z.object({
     .optional(),
   clientSideActions: z.array(clientSideActionSchema).optional(),
   sessionId: z.string().optional(),
-  typebot: z
+  sniper: z
     .object({
       id: z.string(),
       theme: z.union([
-        typebotV5Schema._def.schema.shape.theme,
-        typebotV6Schema.shape.theme,
+        sniperV5Schema._def.schema.shape.theme,
+        sniperV6Schema.shape.theme,
       ]),
       settings: z.union([
-        typebotV5Schema._def.schema.shape.settings,
-        typebotV6Schema.shape.settings,
+        sniperV5Schema._def.schema.shape.settings,
+        sniperV6Schema.shape.settings,
       ]),
     })
     .optional(),

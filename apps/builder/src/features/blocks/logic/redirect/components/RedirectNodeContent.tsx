@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text } from '@chakra-ui/react'
-import { RedirectBlock } from '@typebot.io/schemas'
+import { RedirectBlock } from '@sniper.io/schemas'
 
 type Props = { url: NonNullable<RedirectBlock['options']>['url'] }
 

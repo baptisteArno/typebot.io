@@ -2,9 +2,9 @@ import { Button } from '@/components/Button'
 import { SearchInput } from '@/components/inputs/SearchInput'
 import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
-import type { ChoiceInputBlock } from '@typebot.io/schemas'
+import type { ChoiceInputBlock } from '@sniper.io/schemas'
 import { For, Show, createSignal, onMount } from 'solid-js'
-import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
+import { defaultChoiceInputOptions } from '@sniper.io/schemas/features/blocks/inputs/choice/constants'
 
 type Props = {
   chunkIndex: number
@@ -35,7 +35,7 @@ export const Buttons = (props: Props) => {
   return (
     <div class="flex flex-col gap-2 w-full">
       <Show when={props.options?.isSearchable}>
-        <div class="flex items-end typebot-input w-full">
+        <div class="flex items-end sniper-input w-full">
           <SearchInput
             ref={inputRef}
             onInput={filterItems}

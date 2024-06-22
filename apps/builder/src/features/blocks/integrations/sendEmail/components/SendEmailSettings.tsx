@@ -13,9 +13,9 @@ import {
   AccordionIcon,
 } from '@chakra-ui/react'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { SendEmailBlock, Variable } from '@typebot.io/schemas'
+import { SendEmailBlock, Variable } from '@sniper.io/schemas'
 import React from 'react'
-import { isNotEmpty } from '@typebot.io/lib'
+import { isNotEmpty } from '@sniper.io/lib'
 import { SmtpConfigModal } from './SmtpConfigModal'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
@@ -23,8 +23,8 @@ import { CredentialsDropdown } from '@/features/credentials/components/Credentia
 import { TextInput, Textarea } from '@/components/inputs'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
-import { env } from '@typebot.io/env'
-import { defaultSendEmailOptions } from '@typebot.io/schemas/features/blocks/integrations/sendEmail/constants'
+import { env } from '@sniper.io/env'
+import { defaultSendEmailOptions } from '@sniper.io/schemas/features/blocks/integrations/sendEmail/constants'
 
 type Props = {
   options: SendEmailBlock['options']

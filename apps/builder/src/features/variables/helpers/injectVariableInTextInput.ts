@@ -1,4 +1,4 @@
-import { Variable } from '@typebot.io/schemas'
+import { Variable } from '@sniper.io/schemas'
 
 type Props = {
   variable: Variable

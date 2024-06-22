@@ -1,12 +1,12 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
-import { env } from '@typebot.io/env'
-import { userId } from '@typebot.io/playwright/databaseSetup'
+import { env } from '@sniper.io/env'
+import { userId } from '@sniper.io/playwright/databaseSetup'
 
 test.describe.configure({ mode: 'parallel' })
 
 test('should display user info properly', async ({ page }) => {
-  await page.goto('/typebots')
+  await page.goto('/snipers')
   await page.click('text=Settings & Members')
   expect(
     page.locator('input[type="email"]').getAttribute('disabled')
@@ -27,7 +27,7 @@ test('should display user info properly', async ({ page }) => {
 })
 
 test('should be able to create and delete api tokens', async ({ page }) => {
-  await page.goto('/typebots')
+  await page.goto('/snipers')
   await page.click('text=Settings & Members')
   await expect(page.locator('text=Github')).toBeVisible()
   await page.click('text="Create"')

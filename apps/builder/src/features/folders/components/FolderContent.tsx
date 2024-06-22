@@ -1,4 +1,4 @@
-import { DashboardFolder, WorkspaceRole } from '@typebot.io/prisma'
+import { DashboardFolder, WorkspaceRole } from '@sniper.io/prisma'
 import {
   Flex,
   Heading,
@@ -9,7 +9,7 @@ import {
   useEventListener,
   Wrap,
 } from '@chakra-ui/react'
-import { useTypebotDnd } from '../TypebotDndProvider'
+import { useSniperDnd } from '../SniperDndProvider'
 import React, { useEffect, useState } from 'react'
 import { BackButton } from './BackButton'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
@@ -17,10 +17,10 @@ import { useToast } from '@/hooks/useToast'
 import { CreateBotButton } from './CreateBotButton'
 import { CreateFolderButton } from './CreateFolderButton'
 import FolderButton, { ButtonSkeleton } from './FolderButton'
-import TypebotButton from './TypebotButton'
-import { TypebotCardOverlay } from './TypebotButtonOverlay'
-import { useTypebots } from '@/features/dashboard/hooks/useTypebots'
-import { TypebotInDashboard } from '@/features/dashboard/types'
+import SniperButton from './SniperButton'
+import { SniperCardOverlay } from './SniperButtonOverlay'
+import { useSnipers } from '@/features/dashboard/hooks/useSnipers'
+import { SniperInDashboard } from '@/features/dashboard/types'
 import { trpc } from '@/lib/trpc'
 import { NodePosition } from '@/features/graph/providers/GraphDndProvider'
 
@@ -30,11 +30,11 @@ export const FolderContent = ({ folder }: Props) => {
   const { workspace, currentRole } = useWorkspace()
   const [isCreatingFolder, setIsCreatingFolder] = useState(false)
   const {
-    setDraggedTypebot,
-    draggedTypebot,
+    setDraggedSniper,
+    draggedSniper,
     mouseOverFolderId,
     setMouseOverFolderId,
-  } = useTypebotDnd()
+  } = useSniperDnd()
   const [draggablePosition, setDraggablePosition] = useState({ x: 0, y: 0 })
   const [mousePositionInElement, setMousePositionInElement] = useState({
     x: 0,
@@ -71,20 +71,20 @@ export const FolderContent = ({ folder }: Props) => {
     },
   })
 
-  const { mutate: updateTypebot } = trpc.typebot.updateTypebot.useMutation({
+  const { mutate: updateSniper } = trpc.sniper.updateSniper.useMutation({
     onError: (error) => {
       showToast({ description: error.message })
     },
     onSuccess: () => {
-      refetchTypebots()
+      refetchSnipers()
     },
   })
 
   const {
-    typebots,
-    isLoading: isTypebotLoading,
-    refetch: refetchTypebots,
-  } = useTypebots({
+    snipers,
+    isLoading: isSniperLoading,
+    refetch: refetchSnipers,
+  } = useSnipers({
     workspaceId: workspace?.id,
     folderId: folder === null ? 'root' : folder.id,
     onError: (error) => {
@@ -94,11 +94,11 @@ export const FolderContent = ({ folder }: Props) => {
     },
   })
 
-  const moveTypebotToFolder = async (typebotId: string, folderId: string) => {
-    if (!typebots) return
-    updateTypebot({
-      typebotId,
-      typebot: {
+  const moveSniperToFolder = async (sniperId: string, folderId: string) => {
+    if (!snipers) return
+    updateSniper({
+      sniperId,
+      sniper: {
         folderId: folderId === 'root' ? null : folderId,
       },
     })
@@ -115,27 +115,27 @@ export const FolderContent = ({ folder }: Props) => {
   }
 
   const handleMouseUp = async () => {
-    if (mouseOverFolderId !== undefined && draggedTypebot)
-      await moveTypebotToFolder(draggedTypebot.id, mouseOverFolderId ?? 'root')
+    if (mouseOverFolderId !== undefined && draggedSniper)
+      await moveSniperToFolder(draggedSniper.id, mouseOverFolderId ?? 'root')
     setMouseOverFolderId(undefined)
-    setDraggedTypebot(undefined)
+    setDraggedSniper(undefined)
   }
   useEventListener('mouseup', handleMouseUp)
 
-  const handleTypebotDrag =
-    (typebot: TypebotInDashboard) =>
+  const handleSniperDrag =
+    (sniper: SniperInDashboard) =>
     ({ absolute, relative }: NodePosition) => {
-      if (draggedTypebot) return
+      if (draggedSniper) return
       setMousePositionInElement(relative)
       setDraggablePosition({
         x: absolute.x - relative.x,
         y: absolute.y - relative.y,
       })
-      setDraggedTypebot(typebot)
+      setDraggedSniper(sniper)
     }
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (!draggedTypebot) return
+    if (!draggedSniper) return
     const { clientX, clientY } = e
     setDraggablePosition({
       x: clientX - mousePositionInElement.x,
@@ -145,7 +145,7 @@ export const FolderContent = ({ folder }: Props) => {
   useEventListener('mousemove', handleMouseMove)
 
   useEffect(() => {
-    if (!draggablePosition || !draggedTypebot) return
+    if (!draggablePosition || !draggedSniper) return
     const { innerHeight } = window
     const scrollSpeed = 10
     const scrollMargin = 50
@@ -164,7 +164,7 @@ export const FolderContent = ({ folder }: Props) => {
     return () => {
       clearInterval(interval)
     }
-  }, [draggablePosition, draggedTypebot, mousePositionInElement])
+  }, [draggablePosition, draggedSniper, mousePositionInElement])
 
   return (
     <Flex w="full" flex="1" justify="center">
@@ -186,7 +186,7 @@ export const FolderContent = ({ folder }: Props) => {
             {currentRole !== WorkspaceRole.GUEST && (
               <CreateBotButton
                 folderId={folder?.id}
-                isLoading={isTypebotLoading}
+                isLoading={isSniperLoading}
               />
             )}
             {isFolderLoading && <ButtonSkeleton />}
@@ -200,24 +200,24 @@ export const FolderContent = ({ folder }: Props) => {
                   onFolderRenamed={() => refetchFolders()}
                 />
               ))}
-            {isTypebotLoading && <ButtonSkeleton />}
-            {typebots &&
-              typebots.map((typebot) => (
-                <TypebotButton
-                  key={typebot.id}
-                  typebot={typebot}
-                  draggedTypebot={draggedTypebot}
-                  onTypebotUpdated={refetchTypebots}
-                  onDrag={handleTypebotDrag(typebot)}
+            {isSniperLoading && <ButtonSkeleton />}
+            {snipers &&
+              snipers.map((sniper) => (
+                <SniperButton
+                  key={sniper.id}
+                  sniper={sniper}
+                  draggedSniper={draggedSniper}
+                  onSniperUpdated={refetchSnipers}
+                  onDrag={handleSniperDrag(sniper)}
                 />
               ))}
           </Wrap>
         </Stack>
       </Stack>
-      {draggedTypebot && (
+      {draggedSniper && (
         <Portal>
-          <TypebotCardOverlay
-            typebot={draggedTypebot}
+          <SniperCardOverlay
+            sniper={draggedSniper}
             onMouseUp={handleMouseUp}
             pos="fixed"
             top="0"

@@ -6,12 +6,12 @@ import {
   Alert,
   AlertIcon,
 } from '@chakra-ui/react'
-import { Plan } from '@typebot.io/prisma'
+import { Plan } from '@sniper.io/prisma'
 import React from 'react'
 import { PlanTag } from './PlanTag'
 import { BillingPortalButton } from './BillingPortalButton'
 import { trpc } from '@/lib/trpc'
-import { Workspace } from '@typebot.io/schemas'
+import { Workspace } from '@sniper.io/schemas'
 import { useTranslate } from '@tolgee/react'
 
 type Props = {

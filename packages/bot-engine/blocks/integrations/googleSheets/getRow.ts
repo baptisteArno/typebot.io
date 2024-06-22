@@ -3,13 +3,13 @@ import {
   GoogleSheetsGetOptions,
   VariableWithValue,
   ChatLog,
-} from '@typebot.io/schemas'
-import { isNotEmpty, byId, isDefined } from '@typebot.io/lib'
+} from '@sniper.io/schemas'
+import { isNotEmpty, byId, isDefined } from '@sniper.io/lib'
 import { getAuthenticatedGoogleDoc } from './helpers/getAuthenticatedGoogleDoc'
 import { ExecuteIntegrationResponse } from '../../../types'
 import { matchFilter } from './helpers/matchFilter'
-import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
-import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
+import { deepParseVariables } from '@sniper.io/variables/deepParseVariables'
+import { updateVariablesInSession } from '@sniper.io/variables/updateVariablesInSession'
 
 export const getRow = async (
   state: SessionState,
@@ -24,7 +24,7 @@ export const getRow = async (
   }
 ): Promise<ExecuteIntegrationResponse> => {
   const logs: ChatLog[] = []
-  const { variables } = state.typebotsQueue[0].typebot
+  const { variables } = state.snipersQueue[0].sniper
   const { sheetId, cellsToExtract, filter, ...parsedOptions } =
     deepParseVariables(variables, { removeEmptyStrings: true })(options)
   if (!sheetId) return { outgoingEdgeId }

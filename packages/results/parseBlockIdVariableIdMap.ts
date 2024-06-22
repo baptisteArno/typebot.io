@@ -1,8 +1,8 @@
-import { PublicTypebotV6 } from '@typebot.io/schemas'
-import { isInputBlock } from '@typebot.io/schemas/helpers'
+import { PublicSniperV6 } from '@sniper.io/schemas'
+import { isInputBlock } from '@sniper.io/schemas/helpers'
 
 export const parseBlockIdVariableIdMap = (
-  groups?: PublicTypebotV6['groups']
+  groups?: PublicSniperV6['groups']
 ): {
   [key: string]: string
 } => {

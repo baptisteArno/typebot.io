@@ -1,4 +1,4 @@
-import { safeStringify } from '@typebot.io/lib/safeStringify'
+import { safeStringify } from '@sniper.io/lib/safeStringify'
 import { Variable, VariableWithUnknowValue } from './types'
 import { SessionState, SetVariableHistoryItem } from '../schemas'
 
@@ -16,7 +16,7 @@ export const updateVariablesInSession = ({
   newSetVariableHistory: SetVariableHistoryItem[]
 } => {
   const { updatedVariables, newSetVariableHistory, setVariableHistoryIndex } =
-    updateTypebotVariables({
+    updateSniperVariables({
       state,
       newVariables,
       currentBlockId,
@@ -26,18 +26,18 @@ export const updateVariablesInSession = ({
     updatedState: {
       ...state,
       currentSetVariableHistoryIndex: setVariableHistoryIndex,
-      typebotsQueue: state.typebotsQueue.map((typebotInQueue, index: number) =>
+      snipersQueue: state.snipersQueue.map((sniperInQueue, index: number) =>
         index === 0
           ? {
-              ...typebotInQueue,
-              typebot: {
-                ...typebotInQueue.typebot,
+              ...sniperInQueue,
+              sniper: {
+                ...sniperInQueue.sniper,
                 variables: updatedVariables,
               },
             }
-          : typebotInQueue
+          : sniperInQueue
       ),
-      previewMetadata: state.typebotsQueue[0].resultId
+      previewMetadata: state.snipersQueue[0].resultId
         ? state.previewMetadata
         : {
             ...state.previewMetadata,
@@ -50,7 +50,7 @@ export const updateVariablesInSession = ({
   }
 }
 
-const updateTypebotVariables = ({
+const updateSniperVariables = ({
   state,
   newVariables,
   currentBlockId,
@@ -77,7 +77,7 @@ const updateTypebotVariables = ({
       .filter((v) => state.setVariableIdsForHistory?.includes(v.id))
       .forEach((newVariable) => {
         setVariableHistory.push({
-          resultId: state.typebotsQueue[0].resultId as string,
+          resultId: state.snipersQueue[0].resultId as string,
           index: setVariableHistoryIndex,
           blockId: currentBlockId,
           variableId: newVariable.id,
@@ -89,7 +89,7 @@ const updateTypebotVariables = ({
 
   return {
     updatedVariables: [
-      ...state.typebotsQueue[0].typebot.variables.filter((existingVariable) =>
+      ...state.snipersQueue[0].sniper.variables.filter((existingVariable) =>
         serializedNewVariables.every(
           (newVariable) => existingVariable.id !== newVariable.id
         )

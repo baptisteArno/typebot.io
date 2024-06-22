@@ -46,7 +46,7 @@
             "messages": [
               {
                 "role": "system",
-                "content": "You are helpful assistant doing customer support for a software called Typebot.\n\nIf the user is asking a question about his account, please say \"ACCOUNT\".\n\nIf the user wants to talk to a human, please say \"HUMAN\".\n\nOtherwise, say \"OK\""
+                "content": "You are helpful assistant doing customer support for a software called Sniper.\n\nIf the user is asking a question about his account, please say \"ACCOUNT\".\n\nIf the user wants to talk to a human, please say \"HUMAN\".\n\nOtherwise, say \"OK\""
               },
               { "role": "user", "content": "Can I talk to a human?" },
               { "role": "assistant", "content": "HUMAN" },

@@ -9,7 +9,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import {
   Cell,
   ExtractingCell,
@@ -18,9 +18,9 @@ import {
   GoogleSheetsGetOptionsV6,
   GoogleSheetsInsertRowOptions,
   GoogleSheetsUpdateRowOptionsV6,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import React, { useMemo } from 'react'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 import { SheetsDropdown } from './SheetsDropdown'
 import { CellWithValueStack } from './CellWithValueStack'
 import { CellWithVariableIdStack } from './CellWithVariableIdStack'
@@ -35,7 +35,7 @@ import {
   GoogleSheetsAction,
   defaultGoogleSheetsOptions,
   totalRowsToExtractOptions,
-} from '@typebot.io/schemas/features/blocks/integrations/googleSheets/constants'
+} from '@sniper.io/schemas/features/blocks/integrations/googleSheets/constants'
 import { GoogleSpreadsheetPicker } from './GoogleSpreadsheetPicker'
 
 type Props = {
@@ -50,8 +50,8 @@ export const GoogleSheetsSettings = ({
   blockId,
 }: Props) => {
   const { workspace } = useWorkspace()
-  const { typebot } = useTypebot()
-  const { save } = useTypebot()
+  const { sniper } = useSniper()
+  const { save } = useSniper()
   const { sheets, isLoading } = useSheets({
     credentialsId: options?.credentialsId,
     spreadsheetId: options?.spreadsheetId,
@@ -96,9 +96,9 @@ export const GoogleSheetsSettings = ({
           credentialsName="Sheets account"
         />
       )}
-      {typebot && (
+      {sniper && (
         <GoogleSheetConnectModal
-          typebotId={typebot.id}
+          sniperId={sniper.id}
           blockId={blockId}
           isOpen={isOpen}
           onClose={onClose}

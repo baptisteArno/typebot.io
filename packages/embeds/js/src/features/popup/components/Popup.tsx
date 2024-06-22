@@ -8,7 +8,7 @@ import {
   createEffect,
 } from 'solid-js'
 import { CommandData } from '../../commands'
-import { isDefined, isNotDefined } from '@typebot.io/lib'
+import { isDefined, isNotDefined } from '@sniper.io/lib'
 import { PopupParams } from '../types'
 import { Bot, BotProps } from '../../../components/Bot'
 import { getPaymentInProgressInStorage } from '@/features/blocks/inputs/payment/helpers/paymentInProgressStorage'
@@ -81,7 +81,7 @@ export const Popup = (props: PopupProps) => {
 
   const processIncomingEvent = (event: MessageEvent<CommandData>) => {
     const { data } = event
-    if (!data.isFromTypebot) return
+    if (!data.isFromSniper) return
     if (data.command === 'open') openBot()
     if (data.command === 'close') closeBot()
     if (data.command === 'toggle') toggleBot()

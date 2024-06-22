@@ -1,18 +1,18 @@
-import prisma from '@typebot.io/lib/prisma'
-import { canReadTypebots } from '@/helpers/databaseRules'
+import prisma from '@sniper.io/lib/prisma'
+import { canReadSnipers } from '@/helpers/databaseRules'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { Typebot } from '@typebot.io/schemas'
+import { Sniper } from '@sniper.io/schemas'
 import { z } from 'zod'
-import { fetchLinkedTypebots } from '@/features/blocks/logic/typebotLink/helpers/fetchLinkedTypebots'
-import { parseSampleResult } from '@typebot.io/bot-engine/blocks/integrations/webhook/parseSampleResult'
-import { getBlockById } from '@typebot.io/schemas/helpers'
+import { fetchLinkedSnipers } from '@/features/blocks/logic/sniperLink/helpers/fetchLinkedSnipers'
+import { parseSampleResult } from '@sniper.io/bot-engine/blocks/integrations/webhook/parseSampleResult'
+import { getBlockById } from '@sniper.io/schemas/helpers'
 
 export const getResultExample = authenticatedProcedure
   .meta({
     openapi: {
       method: 'GET',
-      path: '/v1/typebots/{typebotId}/webhookBlocks/{blockId}/getResultExample',
+      path: '/v1/snipers/{sniperId}/webhookBlocks/{blockId}/getResultExample',
       protect: true,
       summary: 'Get result example',
       description:
@@ -22,7 +22,7 @@ export const getResultExample = authenticatedProcedure
   })
   .input(
     z.object({
-      typebotId: z.string(),
+      sniperId: z.string(),
       blockId: z.string(),
     })
   )
@@ -31,32 +31,32 @@ export const getResultExample = authenticatedProcedure
       resultExample: z.record(z.any()).describe('Can contain any fields.'),
     })
   )
-  .query(async ({ input: { typebotId, blockId }, ctx: { user } }) => {
-    const typebot = (await prisma.typebot.findFirst({
-      where: canReadTypebots(typebotId, user),
+  .query(async ({ input: { sniperId, blockId }, ctx: { user } }) => {
+    const sniper = (await prisma.sniper.findFirst({
+      where: canReadSnipers(sniperId, user),
       select: {
         groups: true,
         edges: true,
         variables: true,
         events: true,
       },
-    })) as Pick<Typebot, 'groups' | 'edges' | 'variables' | 'events'> | null
+    })) as Pick<Sniper, 'groups' | 'edges' | 'variables' | 'events'> | null
 
-    if (!typebot)
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+    if (!sniper)
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Sniper not found' })
 
-    const { group } = getBlockById(blockId, typebot.groups)
+    const { group } = getBlockById(blockId, sniper.groups)
 
     if (!group)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Block not found' })
 
-    const linkedTypebots = await fetchLinkedTypebots(typebot, user)
+    const linkedSnipers = await fetchLinkedSnipers(sniper, user)
 
     return {
       resultExample: await parseSampleResult(
-        typebot,
-        linkedTypebots,
+        sniper,
+        linkedSnipers,
         user.email ?? undefined
-      )(group.id, typebot.variables),
+      )(group.id, sniper.variables),
     }
   })

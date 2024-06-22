@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text } from '@chakra-ui/react'
-import { GoogleAnalyticsBlock } from '@typebot.io/schemas'
+import { GoogleAnalyticsBlock } from '@sniper.io/schemas'
 
 type Props = {
   action: NonNullable<GoogleAnalyticsBlock['options']>['action']

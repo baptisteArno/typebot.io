@@ -1,4 +1,4 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { PrismaClient } from '@sniper.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 import ky, { HTTPError } from 'ky'
 import { confirm, text, isCancel } from '@clack/prompts'

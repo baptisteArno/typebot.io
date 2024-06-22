@@ -1,5 +1,5 @@
 import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { Stack, Code, Text } from '@chakra-ui/react'
 import { useState } from 'react'
 import { StandardSettings } from '../../../settings/StandardSettings'
@@ -8,11 +8,11 @@ import { parseStandardElementCode } from '../../Javascript/JavascriptStandardSni
 import {
   parseApiHostValue,
   parseInlineScript,
-  typebotImportCode,
+  sniperImportCode,
 } from '../../../snippetParsers/shared'
 
 export const ScriptStandardInstructions = () => {
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
   const [inputValues, setInputValues] = useState<{
     heightLabel: string
     widthLabel?: string
@@ -26,11 +26,11 @@ export const ScriptStandardInstructions = () => {
     inputValues.heightLabel
   )
 
-  const scriptSnippet = parseInlineScript(`${typebotImportCode}
+  const scriptSnippet = parseInlineScript(`${sniperImportCode}
   
 ${parseInitStandardCode({
-  typebot: typebot?.publicId ?? '',
-  apiHost: parseApiHostValue(typebot?.customDomain),
+  sniper: sniper?.publicId ?? '',
+  apiHost: parseApiHostValue(sniper?.customDomain),
 })}`)
 
   return (
@@ -39,11 +39,11 @@ ${parseInitStandardCode({
         onUpdateWindowSettings={(settings) => setInputValues({ ...settings })}
       />
       <Text>
-        Make sure you have this <Code>typebot-standard</Code> element in your{' '}
+        Make sure you have this <Code>sniper-standard</Code> element in your{' '}
         <Code>{'<body>'}</Code>:
       </Text>
       <CodeEditor isReadOnly value={standardElementSnippet} lang="html" />
-      <Text>Then, run this script to initialize the typebot:</Text>
+      <Text>Then, run this script to initialize the sniper:</Text>
       <CodeEditor isReadOnly value={scriptSnippet} lang="javascript" />
     </Stack>
   )

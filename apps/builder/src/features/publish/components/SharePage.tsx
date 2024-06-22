@@ -12,48 +12,48 @@ import {
   Wrap,
   Text,
 } from '@chakra-ui/react'
-import { Plan } from '@typebot.io/prisma'
-import { isDefined, isNotDefined } from '@typebot.io/lib'
+import { Plan } from '@sniper.io/prisma'
+import { isDefined, isNotDefined } from '@sniper.io/lib'
 import { isPublicDomainAvailableQuery } from '../queries/isPublicDomainAvailableQuery'
 import { EditableUrl } from './EditableUrl'
 import { integrationsList } from './embeds/EmbedButton'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { LockTag } from '@/features/billing/components/LockTag'
 import { UpgradeButton } from '@/features/billing/components/UpgradeButton'
 import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
 import { CustomDomainsDropdown } from '@/features/customDomains/components/CustomDomainsDropdown'
-import { TypebotHeader } from '@/features/editor/components/TypebotHeader'
+import { SniperHeader } from '@/features/editor/components/SniperHeader'
 import { parseDefaultPublicId } from '../helpers/parseDefaultPublicId'
 import { useTranslate } from '@tolgee/react'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import DomainStatusIcon from '@/features/customDomains/components/DomainStatusIcon'
-import { TypebotNotFoundPage } from '@/features/editor/components/TypebotNotFoundPage'
+import { SniperNotFoundPage } from '@/features/editor/components/SniperNotFoundPage'
 
 export const SharePage = () => {
   const { t } = useTranslate()
   const { workspace } = useWorkspace()
-  const { typebot, updateTypebot, publishedTypebot, is404 } = useTypebot()
+  const { sniper, updateSniper, publishedSniper, is404 } = useSniper()
   const { showToast } = useToast()
 
   const handlePublicIdChange = async (publicId: string) => {
-    updateTypebot({ updates: { publicId }, save: true })
+    updateSniper({ updates: { publicId }, save: true })
   }
 
-  const publicId = typebot
-    ? typebot?.publicId ?? parseDefaultPublicId(typebot.name, typebot.id)
+  const publicId = sniper
+    ? sniper?.publicId ?? parseDefaultPublicId(sniper.name, sniper.id)
     : ''
-  const isPublished = isDefined(publishedTypebot)
+  const isPublished = isDefined(publishedSniper)
 
   const handlePathnameChange = (pathname: string) => {
-    if (!typebot?.customDomain) return
-    const existingHost = typebot.customDomain?.split('/')[0]
+    if (!sniper?.customDomain) return
+    const existingHost = sniper.customDomain?.split('/')[0]
     const newDomain =
       pathname === '' ? existingHost : existingHost + '/' + pathname
     handleCustomDomainChange(newDomain)
   }
 
   const handleCustomDomainChange = (customDomain: string | null) =>
-    updateTypebot({ updates: { customDomain }, save: true })
+    updateSniper({ updates: { customDomain }, save: true })
 
   const checkIfPathnameIsValid = (pathname: string) => {
     const isCorrectlyFormatted =
@@ -88,18 +88,18 @@ export const SharePage = () => {
     return true
   }
 
-  if (is404) return <TypebotNotFoundPage />
+  if (is404) return <SniperNotFoundPage />
   return (
     <Flex flexDir="column" pb="40">
-      <Seo title={typebot?.name ? `${typebot.name} | Share` : 'Share'} />
-      <TypebotHeader />
+      <Seo title={sniper?.name ? `${sniper.name} | Share` : 'Share'} />
+      <SniperHeader />
       <Flex h="full" w="full" justifyContent="center" align="flex-start">
         <Stack maxW="1000px" w="full" pt="10" spacing={10}>
           <Stack spacing={4} align="flex-start">
             <Heading fontSize="2xl" as="h1">
-              Your typebot link
+              Your sniper link
             </Heading>
-            {typebot && (
+            {sniper && (
               <EditableUrl
                 hostname={env.NEXT_PUBLIC_VIEWER_URL[0]}
                 pathname={publicId}
@@ -107,11 +107,11 @@ export const SharePage = () => {
                 onPathnameChange={handlePublicIdChange}
               />
             )}
-            {typebot?.customDomain && (
+            {sniper?.customDomain && (
               <HStack>
                 <EditableUrl
-                  hostname={'https://' + typebot.customDomain.split('/')[0]}
-                  pathname={typebot.customDomain.split('/')[1]}
+                  hostname={'https://' + sniper.customDomain.split('/')[0]}
+                  pathname={sniper.customDomain.split('/')[1]}
                   isValid={checkIfPathnameIsValid}
                   onPathnameChange={handlePathnameChange}
                 />
@@ -123,13 +123,13 @@ export const SharePage = () => {
                 />
                 {workspace?.id && (
                   <DomainStatusIcon
-                    domain={typebot.customDomain.split('/')[0]}
+                    domain={sniper.customDomain.split('/')[0]}
                     workspaceId={workspace.id}
                   />
                 )}
               </HStack>
             )}
-            {isNotDefined(typebot?.customDomain) &&
+            {isNotDefined(sniper?.customDomain) &&
             env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME ? (
               <>
                 {hasProPerks(workspace) ? (
@@ -152,7 +152,7 @@ export const SharePage = () => {
 
           <Stack spacing={4}>
             <Heading fontSize="2xl" as="h1">
-              Embed your typebot
+              Embed your sniper
             </Heading>
             <Wrap spacing={7}>
               {integrationsList.map((IntegrationButton, idx) => (

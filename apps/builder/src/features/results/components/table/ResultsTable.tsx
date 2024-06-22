@@ -13,7 +13,7 @@ import {
   ResultHeaderCell,
   ResultsTablePreferences,
   TableData,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { LoadingRows } from './LoadingRows'
 import {
@@ -23,14 +23,14 @@ import {
   Updater,
 } from '@tanstack/react-table'
 import { TableSettingsButton } from './TableSettingsButton'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { SelectionToolbar } from './SelectionToolbar'
 import { Row } from './Row'
 import { HeaderRow } from './HeaderRow'
 import { IndeterminateCheckbox } from './IndeterminateCheckbox'
 import { colors } from '@/lib/theme'
 import { HeaderIcon } from '../HeaderIcon'
-import { parseColumnsOrder } from '@typebot.io/results/parseColumnsOrder'
+import { parseColumnsOrder } from '@sniper.io/results/parseColumnsOrder'
 import { TimeFilterDropdown } from '@/features/analytics/components/TimeFilterDropdown'
 import { timeFilterValues } from '@/features/analytics/constants'
 
@@ -58,7 +58,7 @@ export const ResultsTable = ({
   onResultExpandIndex,
 }: ResultsTableProps) => {
   const background = useColorModeValue('white', colors.gray[900])
-  const { updateTypebot, currentUserMode } = useTypebot()
+  const { updateSniper, currentUserMode } = useSniper()
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({})
   const [isTableScrolled, setIsTableScrolled] = useState(false)
   const bottomElement = useRef<HTMLDivElement | null>(null)
@@ -75,7 +75,7 @@ export const ResultsTable = ({
 
   const changeColumnOrder = (newColumnOrder: string[]) => {
     if (typeof newColumnOrder === 'function') return
-    updateTypebot({
+    updateSniper({
       updates: {
         resultsTablePreferences: {
           columnsOrder: newColumnOrder,
@@ -90,7 +90,7 @@ export const ResultsTable = ({
     newColumnVisibility: Record<string, boolean>
   ) => {
     if (typeof newColumnVisibility === 'function') return
-    updateTypebot({
+    updateSniper({
       updates: {
         resultsTablePreferences: {
           columnsVisibility: newColumnVisibility,
@@ -105,7 +105,7 @@ export const ResultsTable = ({
     newColumnSizing: Updater<Record<string, number>>
   ) => {
     if (typeof newColumnSizing === 'object') return
-    updateTypebot({
+    updateSniper({
       updates: {
         resultsTablePreferences: {
           columnsWidth: newColumnSizing(columnsWidth),

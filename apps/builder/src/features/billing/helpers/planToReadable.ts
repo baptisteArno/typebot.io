@@ -1,4 +1,4 @@
-import { Plan } from '@typebot.io/prisma'
+import { Plan } from '@sniper.io/prisma'
 
 export const planToReadable = (plan?: Plan) => {
   if (!plan) return

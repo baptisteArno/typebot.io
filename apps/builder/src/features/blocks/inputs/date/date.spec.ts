@@ -1,22 +1,22 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots } from '@typebot.io/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from '@typebot.io/playwright/databaseHelpers'
+import { createSnipers } from '@sniper.io/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@sniper.io/playwright/databaseHelpers'
 import { createId } from '@paralleldrive/cuid2'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
 
 test.describe('Date input block', () => {
   test('options should work', async ({ page }) => {
-    const typebotId = createId()
-    await createTypebots([
+    const sniperId = createId()
+    await createSnipers([
       {
-        id: typebotId,
+        id: sniperId,
         ...parseDefaultGroupWithBlock({
           type: InputBlockType.DATE,
         }),
       },
     ])
 
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/snipers/${sniperId}/edit`)
 
     await page.click('text=Test')
     await expect(page.locator('[data-testid="from-date"]')).toHaveAttribute(

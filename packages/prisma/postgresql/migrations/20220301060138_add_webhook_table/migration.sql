@@ -6,10 +6,10 @@ CREATE TABLE "Webhook" (
     "queryParams" JSONB[],
     "headers" JSONB[],
     "body" TEXT,
-    "typebotId" TEXT NOT NULL,
+    "sniperId" TEXT NOT NULL,
 
     CONSTRAINT "Webhook_pkey" PRIMARY KEY ("id")
 );
 
 -- AddForeignKey
-ALTER TABLE "Webhook" ADD CONSTRAINT "Webhook_typebotId_fkey" FOREIGN KEY ("typebotId") REFERENCES "Typebot"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Webhook" ADD CONSTRAINT "Webhook_sniperId_fkey" FOREIGN KEY ("sniperId") REFERENCES "Sniper"("id") ON DELETE CASCADE ON UPDATE CASCADE;

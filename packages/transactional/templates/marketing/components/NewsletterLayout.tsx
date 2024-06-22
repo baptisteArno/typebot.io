@@ -9,7 +9,7 @@ import {
   Text,
 } from '@react-email/components'
 import { main, container, footer, link } from '../styles'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 type Props = {
   children: React.ReactNode
@@ -25,7 +25,7 @@ export const NewsletterLayout = ({ preview, children }: Props) => (
           src={`${env.NEXTAUTH_URL}/images/logo.png`}
           width="32"
           height="32"
-          alt="Typebot's Logo"
+          alt="Sniper's Logo"
           style={{
             margin: '24px 0',
           }}
@@ -35,13 +35,13 @@ export const NewsletterLayout = ({ preview, children }: Props) => (
           src={`${env.NEXTAUTH_URL}/images/logo.png`}
           width="32"
           height="32"
-          alt="Typebot's Logo"
+          alt="Sniper's Logo"
           style={{
             marginTop: '24px',
           }}
         />
 
-        <Text style={footer}>Typebot.io - Powering Conversations at Scale</Text>
+        <Text style={footer}>Sniper.io - Powering Conversations at Scale</Text>
         <Link
           href="{{unsubscribe}}"
           target="_blank"

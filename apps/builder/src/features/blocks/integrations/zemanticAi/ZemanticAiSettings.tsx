@@ -11,8 +11,8 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react'
-import { isEmpty } from '@typebot.io/lib'
-import { ZemanticAiBlock } from '@typebot.io/schemas'
+import { isEmpty } from '@sniper.io/lib'
+import { ZemanticAiBlock } from '@sniper.io/schemas'
 import { ZemanticAiCredentialsModal } from './ZemanticAiCredentialsModal'
 import { ProjectsDropdown } from './ProjectsDropdown'
 import { SearchResponseItem } from './SearchResponseItem'

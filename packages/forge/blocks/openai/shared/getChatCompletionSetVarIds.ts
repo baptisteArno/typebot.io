@@ -1,4 +1,4 @@
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 import { ChatCompletionOptions } from './parseChatCompletionOptions'
 
 export const getChatCompletionSetVarIds = (options: ChatCompletionOptions) =>

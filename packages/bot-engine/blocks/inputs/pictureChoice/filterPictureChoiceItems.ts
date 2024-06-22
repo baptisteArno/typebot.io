@@ -1,5 +1,5 @@
-import { executeCondition } from '@typebot.io/logic/executeCondition'
-import { PictureChoiceBlock, Variable } from '@typebot.io/schemas'
+import { executeCondition } from '@sniper.io/logic/executeCondition'
+import { PictureChoiceBlock, Variable } from '@sniper.io/schemas'
 
 export const filterPictureChoiceItems =
   (variables: Variable[]) =>

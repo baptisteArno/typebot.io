@@ -1,16 +1,16 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { openAICredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/openai'
-import { smtpCredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/sendEmail'
+import { openAICredentialsSchema } from '@sniper.io/schemas/features/blocks/integrations/openai'
+import { smtpCredentialsSchema } from '@sniper.io/schemas/features/blocks/integrations/sendEmail'
 import { z } from 'zod'
 import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
-import { whatsAppCredentialsSchema } from '@typebot.io/schemas/features/whatsapp'
-import { zemanticAiCredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/zemanticAi'
+import { whatsAppCredentialsSchema } from '@sniper.io/schemas/features/whatsapp'
+import { zemanticAiCredentialsSchema } from '@sniper.io/schemas/features/blocks/integrations/zemanticAi'
 import {
   googleSheetsCredentialsSchema,
   stripeCredentialsSchema,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 
 export const listCredentials = authenticatedProcedure
   .meta({

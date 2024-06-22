@@ -36,15 +36,15 @@ export const EasyEmbed = () => {
             fontSize={{ base: 'lg', xl: 'xl' }}
             data-aos="fade"
           >
-            Embedding your typebot in your applications is a walk in the park.
-            Typebot gives you several step-by-step platform-specific
-            instructions. Your typebot will always feel &quot;native&quot;.
+            Embedding your sniper in your applications is a walk in the park.
+            Sniper gives you several step-by-step platform-specific
+            instructions. Your sniper will always feel &quot;native&quot;.
           </Text>
           <Flex data-aos="fade">
             <Button
               as={Link}
               rightIcon={<ArrowRight />}
-              href={`https://app.typebot.io/register`}
+              href={`https://app.sniper.io/register`}
               variant="ghost"
               colorScheme="orange"
             >

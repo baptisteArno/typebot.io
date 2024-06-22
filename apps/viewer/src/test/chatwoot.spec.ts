@@ -1,17 +1,17 @@
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { createTypebots } from '@typebot.io/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from '@typebot.io/playwright/databaseHelpers'
-import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
+import { createSnipers } from '@sniper.io/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@sniper.io/playwright/databaseHelpers'
+import { IntegrationBlockType } from '@sniper.io/schemas/features/blocks/integrations/constants'
 
-const typebotId = createId()
+const sniperId = createId()
 
 const chatwootTestWebsiteToken = 'tueXiiqEmrWUCZ4NUyoR7nhE'
 
 test('should work as expected', async ({ page }) => {
-  await createTypebots([
+  await createSnipers([
     {
-      id: typebotId,
+      id: sniperId,
       ...parseDefaultGroupWithBlock(
         {
           type: IntegrationBlockType.CHATWOOT,
@@ -23,7 +23,7 @@ test('should work as expected', async ({ page }) => {
       ),
     },
   ])
-  await page.goto(`/${typebotId}-public`)
+  await page.goto(`/${sniperId}-public`)
   await page.getByRole('button', { name: 'Go' }).click()
   await expect(page.locator('#chatwoot_live_chat_widget')).toBeVisible()
 })

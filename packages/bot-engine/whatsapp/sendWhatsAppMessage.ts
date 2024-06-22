@@ -1,8 +1,8 @@
 import {
   WhatsAppCredentials,
   WhatsAppSendingMessage,
-} from '@typebot.io/schemas/features/whatsapp'
-import { env } from '@typebot.io/env'
+} from '@sniper.io/schemas/features/whatsapp'
+import { env } from '@sniper.io/env'
 import ky from 'ky'
 
 type Props = {

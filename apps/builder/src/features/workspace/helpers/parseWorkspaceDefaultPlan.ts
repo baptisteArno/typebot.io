@@ -1,5 +1,5 @@
-import { env } from '@typebot.io/env'
-import { Plan } from '@typebot.io/prisma'
+import { env } from '@sniper.io/env'
+import { Plan } from '@sniper.io/prisma'
 
 export const parseWorkspaceDefaultPlan = (userEmail: string) => {
   if (env.ADMIN_EMAIL?.some((email) => email === userEmail))

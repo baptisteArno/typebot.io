@@ -6,14 +6,14 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { byId } from '@typebot.io/lib'
-import { WorkspaceRole } from '@typebot.io/prisma'
+import { byId } from '@sniper.io/lib'
+import { WorkspaceRole } from '@sniper.io/prisma'
 import { useRouter } from 'next/router'
 import { trpc } from '@/lib/trpc'
-import { Workspace } from '@typebot.io/schemas'
+import { Workspace } from '@sniper.io/schemas'
 import { useToast } from '@/hooks/useToast'
 import { useUser } from '../account/hooks/useUser'
-import { useTypebot } from '../editor/providers/TypebotProvider'
+import { useSniper } from '../editor/providers/SniperProvider'
 import { setWorkspaceIdInLocalStorage } from './helpers/setWorkspaceIdInLocalStorage'
 import { parseNewName } from './helpers/parseNewName'
 
@@ -42,12 +42,12 @@ const workspaceContext = createContext<{
 }>({})
 
 type WorkspaceContextProps = {
-  typebotId?: string
+  sniperId?: string
   children: ReactNode
 }
 
 export const WorkspaceProvider = ({
-  typebotId,
+  sniperId,
   children,
 }: WorkspaceContextProps) => {
   const { pathname, query, push, isReady: isRouterReady, replace } = useRouter()
@@ -55,7 +55,7 @@ export const WorkspaceProvider = ({
   const userId = user?.id
   const [workspaceId, setWorkspaceId] = useState<string | undefined>()
 
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
 
   const trpcContext = trpc.useContext()
 
@@ -119,11 +119,11 @@ export const WorkspaceProvider = ({
       !workspaces ||
       workspaces.length === 0 ||
       workspaceId ||
-      (typebotId && !typebot?.workspaceId)
+      (sniperId && !sniper?.workspaceId)
     )
       return
     const lastWorspaceId =
-      typebot?.workspaceId ??
+      sniper?.workspaceId ??
       query.workspaceId?.toString() ??
       localStorage.getItem('workspaceId')
 
@@ -140,8 +140,8 @@ export const WorkspaceProvider = ({
     members,
     pathname,
     query.workspaceId,
-    typebot?.workspaceId,
-    typebotId,
+    sniper?.workspaceId,
+    sniperId,
     userId,
     workspaceId,
     workspaces,
@@ -163,7 +163,7 @@ export const WorkspaceProvider = ({
   const switchWorkspace = (workspaceId: string) => {
     setWorkspaceIdInLocalStorage(workspaceId)
     setWorkspaceId(workspaceId)
-    replace('/typebots')
+    replace('/snipers')
   }
 
   const createWorkspace = async (userFullName?: string) => {

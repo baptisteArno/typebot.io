@@ -1,5 +1,5 @@
 {
-  "name": "@typebot.io/schemas",
+  "name": "@sniper.io/schemas",
   "version": "1.0.0",
   "main": "./index.ts",
   "types": "./index.ts",
@@ -11,9 +11,9 @@
     "zod-openapi": "^2.11.0"
   },
   "devDependencies": {
-    "@typebot.io/forge-repository": "workspace:*",
-    "@typebot.io/prisma": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
+    "@sniper.io/forge-repository": "workspace:*",
+    "@sniper.io/prisma": "workspace:*",
+    "@sniper.io/tsconfig": "workspace:*",
     "typescript": "5.4.5"
   }
 }

@@ -1,9 +1,9 @@
 import { Stack } from '@chakra-ui/react'
 import React from 'react'
-import { isDefined } from '@typebot.io/lib'
-import { AbTestBlock } from '@typebot.io/schemas'
+import { isDefined } from '@sniper.io/lib'
+import { AbTestBlock } from '@sniper.io/schemas'
 import { NumberInput } from '@/components/inputs'
-import { defaultAbTestOptions } from '@typebot.io/schemas/features/blocks/logic/abTest/constants'
+import { defaultAbTestOptions } from '@sniper.io/schemas/features/blocks/logic/abTest/constants'
 
 type Props = {
   options: AbTestBlock['options']

@@ -1,5 +1,5 @@
 {
-  "name": "@typebot.io/forge",
+  "name": "@sniper.io/forge",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
@@ -10,7 +10,7 @@
     "zod": "3.22.4"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*",
+    "@sniper.io/tsconfig": "workspace:*",
     "@types/react": "18.2.15"
   }
 }

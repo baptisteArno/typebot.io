@@ -1,40 +1,40 @@
 import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import {
   createWebhook,
-  deleteTypebots,
+  deleteSnipers,
   deleteWebhooks,
-  importTypebotInDatabase,
-} from '@typebot.io/playwright/databaseActions'
-import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
-import { StartChatInput, StartPreviewChatInput } from '@typebot.io/schemas'
+  importSniperInDatabase,
+} from '@sniper.io/playwright/databaseActions'
+import { HttpMethod } from '@sniper.io/schemas/features/blocks/integrations/webhook/constants'
+import { StartChatInput, StartPreviewChatInput } from '@sniper.io/schemas'
 
 test.afterEach(async () => {
   await deleteWebhooks(['chat-webhook-id'])
-  await deleteTypebots(['chat-sub-bot'])
+  await deleteSnipers(['chat-sub-bot'])
 })
 
 test('API chat execution should work on preview bot', async ({ request }) => {
-  const typebotId = createId()
-  const publicId = `${typebotId}-public`
-  await importTypebotInDatabase(getTestAsset('typebots/chat/main.json'), {
-    id: typebotId,
+  const sniperId = createId()
+  const publicId = `${sniperId}-public`
+  await importSniperInDatabase(getTestAsset('snipers/chat/main.json'), {
+    id: sniperId,
     publicId,
   })
-  await importTypebotInDatabase(getTestAsset('typebots/chat/linkedBot.json'), {
+  await importSniperInDatabase(getTestAsset('snipers/chat/linkedBot.json'), {
     id: 'chat-sub-bot',
     publicId: 'chat-sub-bot-public',
   })
-  await importTypebotInDatabase(
-    getTestAsset('typebots/chat/startingWithInput.json'),
+  await importSniperInDatabase(
+    getTestAsset('snipers/chat/startingWithInput.json'),
     {
       id: 'starting-with-input',
       publicId: 'starting-with-input-public',
     }
   )
-  await createWebhook(typebotId, {
+  await createWebhook(sniperId, {
     id: 'chat-webhook-id',
     method: HttpMethod.GET,
     url: 'https://api.chucknorris.io/jokes/random',
@@ -44,12 +44,12 @@ test('API chat execution should work on preview bot', async ({ request }) => {
 
   await test.step('Can start and continue chat', async () => {
     const { sessionId, messages, input, resultId } = await (
-      await request.post(`/api/v1/typebots/${typebotId}/preview/startChat`, {
+      await request.post(`/api/v1/snipers/${sniperId}/preview/startChat`, {
         data: {
           isOnlyRegistering: false,
           isStreamEnabled: false,
           textBubbleContentFormat: 'richText',
-        } satisfies Omit<StartPreviewChatInput, 'typebotId'>,
+        } satisfies Omit<StartPreviewChatInput, 'sniperId'>,
       })
     ).json()
     chatSessionId = sessionId
@@ -98,17 +98,17 @@ test('API chat execution should work on preview bot', async ({ request }) => {
 })
 
 test('API chat execution should work on published bot', async ({ request }) => {
-  const typebotId = createId()
-  const publicId = `${typebotId}-public`
-  await importTypebotInDatabase(getTestAsset('typebots/chat/main.json'), {
-    id: typebotId,
+  const sniperId = createId()
+  const publicId = `${sniperId}-public`
+  await importSniperInDatabase(getTestAsset('snipers/chat/main.json'), {
+    id: sniperId,
     publicId,
   })
-  await importTypebotInDatabase(getTestAsset('typebots/chat/linkedBot.json'), {
+  await importSniperInDatabase(getTestAsset('snipers/chat/linkedBot.json'), {
     id: 'chat-sub-bot',
     publicId: 'chat-sub-bot-public',
   })
-  await createWebhook(typebotId, {
+  await createWebhook(sniperId, {
     id: 'chat-webhook-id',
     method: HttpMethod.GET,
     url: 'https://api.chucknorris.io/jokes/random',
@@ -117,7 +117,7 @@ test('API chat execution should work on published bot', async ({ request }) => {
 
   await test.step('Start the chat', async () => {
     const { sessionId, messages, input, resultId } = await (
-      await request.post(`/api/v1/typebots/${publicId}/startChat`, {
+      await request.post(`/api/v1/snipers/${publicId}/startChat`, {
         data: {
           isOnlyRegistering: false,
           isStreamEnabled: false,
@@ -250,7 +250,7 @@ test('API chat execution should work on published bot', async ({ request }) => {
   await test.step('Answer Email question with valid input', async () => {
     const { messages, input } = await (
       await request.post(`/api/v1/sessions/${chatSessionId}/continueChat`, {
-        data: { message: 'typebot@email.com' },
+        data: { message: 'sniper@email.com' },
       })
     ).json()
     expect(messages.length).toBe(0)
@@ -260,7 +260,7 @@ test('API chat execution should work on published bot', async ({ request }) => {
   await test.step('Answer URL question', async () => {
     const { messages, input } = await (
       await request.post(`/api/v1/sessions/${chatSessionId}/continueChat`, {
-        data: { message: 'https://typebot.io' },
+        data: { message: 'https://sniper.io' },
       })
     ).json()
     expect(messages.length).toBe(0)
@@ -295,10 +295,10 @@ test('API chat execution should work on published bot', async ({ request }) => {
     ])
     expect(messages[2].content.richText.length).toBeGreaterThan(0)
   })
-  await test.step('Starting with a message when typebot starts with input should proceed', async () => {
+  await test.step('Starting with a message when sniper starts with input should proceed', async () => {
     const { messages } = await (
       await request.post(
-        `/api/v1/typebots/starting-with-input-public/startChat`,
+        `/api/v1/snipers/starting-with-input-public/startChat`,
         {
           data: {
             message: 'Hey',
@@ -322,12 +322,12 @@ test('API chat execution should work on published bot', async ({ request }) => {
   })
   await test.step('Markdown text bubble format should work', async () => {
     const { messages } = await (
-      await request.post(`/api/v1/typebots/${typebotId}/preview/startChat`, {
+      await request.post(`/api/v1/snipers/${sniperId}/preview/startChat`, {
         data: {
           isOnlyRegistering: false,
           isStreamEnabled: false,
           textBubbleContentFormat: 'markdown',
-        } satisfies Omit<StartPreviewChatInput, 'typebotId'>,
+        } satisfies Omit<StartPreviewChatInput, 'sniperId'>,
       })
     ).json()
     expect(messages[0].content.markdown).toStrictEqual('Hi there! 👋')

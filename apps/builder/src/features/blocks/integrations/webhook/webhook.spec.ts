@@ -1,25 +1,25 @@
 import test, { expect, Page } from '@playwright/test'
 import {
   createWebhook,
-  importTypebotInDatabase,
-} from '@typebot.io/playwright/databaseActions'
+  importSniperInDatabase,
+} from '@sniper.io/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
-import { apiToken } from '@typebot.io/playwright/databaseSetup'
-import { env } from '@typebot.io/env'
-import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
+import { apiToken } from '@sniper.io/playwright/databaseSetup'
+import { env } from '@sniper.io/env'
+import { HttpMethod } from '@sniper.io/schemas/features/blocks/integrations/webhook/constants'
 
 test.describe('Builder', () => {
   test('easy configuration should work', async ({ page }) => {
-    const typebotId = createId()
-    await importTypebotInDatabase(
-      getTestAsset('typebots/integrations/easyConfigWebhook.json'),
+    const sniperId = createId()
+    await importSniperInDatabase(
+      getTestAsset('snipers/integrations/easyConfigWebhook.json'),
       {
-        id: typebotId,
+        id: sniperId,
       }
     )
-    await createWebhook(typebotId, { method: HttpMethod.POST })
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await createWebhook(sniperId, { method: HttpMethod.POST })
+    await page.goto(`/snipers/${sniperId}/edit`)
     await page.click('text=Configure...')
     await page.fill(
       'input[placeholder="Paste URL..."]',
@@ -33,16 +33,16 @@ test.describe('Builder', () => {
   })
 
   test('its configuration should work', async ({ page }) => {
-    const typebotId = createId()
-    await importTypebotInDatabase(
-      getTestAsset('typebots/integrations/webhook.json'),
+    const sniperId = createId()
+    await importSniperInDatabase(
+      getTestAsset('snipers/integrations/webhook.json'),
       {
-        id: typebotId,
+        id: sniperId,
       }
     )
-    await createWebhook(typebotId)
+    await createWebhook(sniperId)
 
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/snipers/${sniperId}/edit`)
     await page.click('text=Configure...')
     await page.fill(
       'input[placeholder="Paste URL..."]',
@@ -67,7 +67,7 @@ test.describe('Builder', () => {
     await page.click('text=Headers')
     await page.waitForTimeout(200)
     await page.getByRole('button', { name: 'Add a value' }).click()
-    await page.fill('input[placeholder="e.g. Content-Type"]', 'Custom-Typebot')
+    await page.fill('input[placeholder="e.g. Content-Type"]', 'Custom-Sniper')
     await page.fill(
       'input[placeholder="e.g. application/json"]',
       '{{secret 3}}'
@@ -103,14 +103,14 @@ const addTestVariable = async (page: Page, name: string, value: string) => {
 }
 
 test.describe('API', () => {
-  const typebotId = 'webhook-flow'
+  const sniperId = 'webhook-flow'
 
   test.beforeAll(async () => {
     try {
-      await importTypebotInDatabase(getTestAsset('typebots/api.json'), {
-        id: typebotId,
+      await importSniperInDatabase(getTestAsset('snipers/api.json'), {
+        id: sniperId,
       })
-      await createWebhook(typebotId)
+      await createWebhook(sniperId)
     } catch (err) {
       console.log(err)
     }
@@ -118,7 +118,7 @@ test.describe('API', () => {
 
   test('can get webhook blocks', async ({ request }) => {
     const response = await request.get(
-      `/api/v1/typebots/${typebotId}/webhookBlocks`,
+      `/api/v1/snipers/${sniperId}/webhookBlocks`,
       {
         headers: { Authorization: `Bearer ${apiToken}` },
       }
@@ -135,7 +135,7 @@ test.describe('API', () => {
   test('can subscribe webhook', async ({ request }) => {
     const url = 'https://test.com'
     const response = await request.post(
-      `/api/v1/typebots/${typebotId}/webhookBlocks/webhookBlock/subscribe`,
+      `/api/v1/snipers/${sniperId}/webhookBlocks/webhookBlock/subscribe`,
       {
         headers: {
           Authorization: `Bearer ${apiToken}`,
@@ -152,7 +152,7 @@ test.describe('API', () => {
 
   test('can unsubscribe webhook', async ({ request }) => {
     const response = await request.post(
-      `/api/v1/typebots/${typebotId}/webhookBlocks/webhookBlock/unsubscribe`,
+      `/api/v1/snipers/${sniperId}/webhookBlocks/webhookBlock/unsubscribe`,
       {
         headers: { Authorization: `Bearer ${apiToken}` },
       }
@@ -166,7 +166,7 @@ test.describe('API', () => {
 
   test('can get a sample result', async ({ request }) => {
     const response = await request.get(
-      `/api/v1/typebots/${typebotId}/webhookBlocks/webhookBlock/getResultExample`,
+      `/api/v1/snipers/${sniperId}/webhookBlocks/webhookBlock/getResultExample`,
       {
         headers: { Authorization: `Bearer ${apiToken}` },
       }

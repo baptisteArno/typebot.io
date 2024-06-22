@@ -1,4 +1,4 @@
-import { MemberInWorkspace } from '@typebot.io/prisma'
+import { MemberInWorkspace } from '@sniper.io/prisma'
 
 export const getUserRoleInWorkspace = (
   userId: string,

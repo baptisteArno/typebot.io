@@ -1,6 +1,6 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { PrismaClient } from '@sniper.io/prisma'
 import { select, text, isCancel } from '@clack/prompts'
-import { isEmpty } from '@typebot.io/lib'
+import { isEmpty } from '@sniper.io/lib'
 import { promptAndSetEnvironment } from './utils'
 
 const suspendWorkspace = async () => {
@@ -10,8 +10,8 @@ const suspendWorkspace = async () => {
   const type = await select<any, 'id' | 'publicId' | 'workspaceId'>({
     message: 'Select way',
     options: [
-      { label: 'Typebot ID', value: 'id' },
-      { label: 'Typebot public ID', value: 'publicId' },
+      { label: 'Sniper ID', value: 'id' },
+      { label: 'Sniper public ID', value: 'publicId' },
       { label: 'Workspace ID', value: 'workspaceId' },
     ],
   })
@@ -27,7 +27,7 @@ const suspendWorkspace = async () => {
   let workspaceId = type === 'workspaceId' ? val : undefined
 
   if (!workspaceId) {
-    const typebot = await prisma.typebot.findFirst({
+    const sniper = await prisma.sniper.findFirst({
       where: {
         [type]: val,
       },
@@ -36,12 +36,12 @@ const suspendWorkspace = async () => {
       },
     })
 
-    if (!typebot) {
-      console.log('Typebot not found')
+    if (!sniper) {
+      console.log('Sniper not found')
       return
     }
 
-    workspaceId = typebot.workspaceId
+    workspaceId = sniper.workspaceId
   }
 
   if (isEmpty(workspaceId)) {

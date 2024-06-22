@@ -8,17 +8,17 @@ const PrivacyPolicies = () => {
     <div className="flex flex-col items-center w-full overflow-x-hidden ">
       <Header />
       <SocialMetaTags
-        currentUrl={`https://www.typebot.io/privacy-policies`}
-        title="Typebot - Privacy & Policies"
+        currentUrl={`https://www.sniper.io/privacy-policies`}
+        title="Sniper - Privacy & Policies"
       />
       <Stack spacing={10} mx="auto" maxW="3xl" my="20">
-        <Heading as="h1">Privacy Policy for Typebot</Heading>
+        <Heading as="h1">Privacy Policy for Sniper</Heading>
 
         <p>
-          At typebot.io, accessible from https://www.typebot.io, one of our main
+          At sniper.io, accessible from https://www.sniper.io, one of our main
           priorities is the privacy of our visitors. This Privacy Policy
           document contains types of information that is collected and recorded
-          by typebot.io and how we use it.
+          by sniper.io and how we use it.
         </p>
 
         <p>
@@ -29,7 +29,7 @@ const PrivacyPolicies = () => {
         <p>
           This Privacy Policy applies only to our online activities and is valid
           for visitors to our website with regards to the information that they
-          shared and/or collect in typebot.io. This policy is not applicable to
+          shared and/or collect in sniper.io. This policy is not applicable to
           any information collected offline or via channels other than this
           website. Our Privacy Policy was created with the help of the{' '}
           <a href="https://www.privacypolicyonline.com/privacy-policy-generator/">
@@ -86,29 +86,28 @@ const PrivacyPolicies = () => {
         <Heading>Log Files</Heading>
 
         <p>
-          typebot.io follows a standard procedure of using log files. These
-          files log visitors when they visit websites. All hosting companies do
-          this and a part of hosting services analytics. The information
-          collected by log files include internet protocol (IP) addresses,
-          browser type, Internet Service Provider (ISP), date and time stamp,
-          referring/exit pages, and possibly the number of clicks. These are not
-          linked to any information that is personally identifiable. The purpose
-          of the information is for analyzing trends, administering the site,
-          tracking users movement on the website, and gathering demographic
-          information.
+          sniper.io follows a standard procedure of using log files. These files
+          log visitors when they visit websites. All hosting companies do this
+          and a part of hosting services analytics. The information collected by
+          log files include internet protocol (IP) addresses, browser type,
+          Internet Service Provider (ISP), date and time stamp, referring/exit
+          pages, and possibly the number of clicks. These are not linked to any
+          information that is personally identifiable. The purpose of the
+          information is for analyzing trends, administering the site, tracking
+          users movement on the website, and gathering demographic information.
         </p>
 
         <Heading>Advertising Partners Privacy Policies</Heading>
 
         <p>
           You may consult this list to find the Privacy Policy for each of the
-          advertising partners of typebot.io.
+          advertising partners of sniper.io.
         </p>
 
         <p>
           Third-party ad servers or ad networks uses technologies like cookies,
           JavaScript, or Web Beacons that are used in their respective
-          advertisements and links that appear on typebot.io, which are sent
+          advertisements and links that appear on sniper.io, which are sent
           directly to users browser. They automatically receive your IP address
           when this occurs. These technologies are used to measure the
           effectiveness of their advertising campaigns and/or to personalize the
@@ -116,16 +115,16 @@ const PrivacyPolicies = () => {
         </p>
 
         <p>
-          Note that typebot.io has no access to or control over these cookies
+          Note that sniper.io has no access to or control over these cookies
           that are used by third-party advertisers.
         </p>
 
         <Heading>Third Party Privacy Policies</Heading>
 
         <p>
-          typebot.io&apos;s Privacy Policy does not apply to other advertisers
-          or websites. Thus, we are advising you to consult the respective
-          Privacy Policies of these third-party ad servers for more detailed
+          sniper.io&apos;s Privacy Policy does not apply to other advertisers or
+          websites. Thus, we are advising you to consult the respective Privacy
+          Policies of these third-party ad servers for more detailed
           information. It may include their practices and instructions about how
           to opt-out of certain options.{' '}
         </p>
@@ -211,7 +210,7 @@ const PrivacyPolicies = () => {
         </p>
 
         <p>
-          typebot.io does not knowingly collect any Personal Identifiable
+          sniper.io does not knowingly collect any Personal Identifiable
           Information from children under the age of 13. If you think that your
           child provided this kind of information on our website, we strongly
           encourage you to contact us immediately and we will do our best

@@ -1,7 +1,7 @@
 import { PreviewMessageParams } from '../bubble/types'
 
 export type CommandData = {
-  isFromTypebot: boolean
+  isFromSniper: boolean
 } & (
   | {
       command: 'open' | 'toggle' | 'close' | 'hidePreviewMessage' | 'unmount'

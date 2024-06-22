@@ -1,11 +1,11 @@
 import { TypingBubble } from '@/components'
-import type { Settings, TextBubbleBlock } from '@typebot.io/schemas'
+import type { Settings, TextBubbleBlock } from '@sniper.io/schemas'
 import { For, createSignal, onCleanup, onMount } from 'solid-js'
 import { PlateElement } from './plate/PlateBlock'
 import { computePlainText } from '../helpers/convertRichTextToPlainText'
 import { clsx } from 'clsx'
 import { isMobile } from '@/utils/isMobileSignal'
-import { computeTypingDuration } from '@typebot.io/bot-engine/computeTypingDuration'
+import { computeTypingDuration } from '@sniper.io/bot-engine/computeTypingDuration'
 
 type Props = {
   content: TextBubbleBlock['content']
@@ -60,7 +60,7 @@ export const TextBubble = (props: Props) => {
       ref={ref}
     >
       <div class="flex w-full items-center">
-        <div class="flex relative items-start typebot-host-bubble max-w-full">
+        <div class="flex relative items-start sniper-host-bubble max-w-full">
           <div
             class="flex items-center absolute px-4 py-2 bubble-typing "
             style={{

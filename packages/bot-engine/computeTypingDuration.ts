@@ -1,5 +1,5 @@
-import { Settings } from '@typebot.io/schemas/features/typebot/settings'
-import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
+import { Settings } from '@sniper.io/schemas/features/sniper/settings'
+import { defaultSettings } from '@sniper.io/schemas/features/sniper/settings/constants'
 
 type Props = {
   bubbleContent: string

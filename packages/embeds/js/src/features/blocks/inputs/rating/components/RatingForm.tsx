@@ -1,10 +1,10 @@
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
-import type { RatingInputBlock } from '@typebot.io/schemas'
+import type { RatingInputBlock } from '@sniper.io/schemas'
 import { createSignal, For, Match, Switch, Show } from 'solid-js'
-import { isDefined, isEmpty, isNotDefined } from '@typebot.io/lib'
+import { isDefined, isEmpty, isNotDefined } from '@sniper.io/lib'
 import { Button } from '@/components/Button'
-import { defaultRatingInputOptions } from '@typebot.io/schemas/features/blocks/inputs/rating/constants'
+import { defaultRatingInputOptions } from '@sniper.io/schemas/features/blocks/inputs/rating/constants'
 
 type Props = {
   block: RatingInputBlock
@@ -116,7 +116,7 @@ const RatingButton = (props: RatingButtonProps) => {
             aria-checked={isDefined(props.rating) && props.idx <= props.rating}
             on:click={handleClick}
             class={
-              'py-2 px-4 font-semibold focus:outline-none cursor-pointer select-none typebot-selectable' +
+              'py-2 px-4 font-semibold focus:outline-none cursor-pointer select-none sniper-selectable' +
               (isDefined(props.rating) && props.idx <= props.rating
                 ? ' selected'
                 : '')

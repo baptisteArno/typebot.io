@@ -10,7 +10,7 @@ import {
   PopoverContent,
   Stack,
 } from '@chakra-ui/react'
-import { Variable } from '@typebot.io/schemas'
+import { Variable } from '@sniper.io/schemas'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { TextEditorToolBar } from './TextEditorToolBar'
 import { useTranslate } from '@tolgee/react'

@@ -1,7 +1,7 @@
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { z } from 'zod'
-import { invoiceSchema } from '@typebot.io/schemas/features/billing/invoice'
-import { listInvoices as listInvoicesHandler } from '@typebot.io/billing/api/listInvoices'
+import { invoiceSchema } from '@sniper.io/schemas/features/billing/invoice'
+import { listInvoices as listInvoicesHandler } from '@sniper.io/billing/api/listInvoices'
 
 export const listInvoices = authenticatedProcedure
   .meta({

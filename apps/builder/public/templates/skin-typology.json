@@ -30,9 +30,9 @@
         },
         {
           "id": "auaiu25dafv33l0ybyydcfhi",
-          "type": "Typebot link",
+          "type": "Sniper link",
           "options": {
-            "typebotId": "current",
+            "sniperId": "current",
             "groupId": "m7v9f7qpr94kgonkcidmc7c1"
           }
         },
@@ -284,9 +284,9 @@
         },
         {
           "id": "as64u7dfdb2a5nvvx66du2z0",
-          "type": "Typebot link",
+          "type": "Sniper link",
           "options": {
-            "typebotId": "current",
+            "sniperId": "current",
             "groupId": "m7v9f7qpr94kgonkcidmc7c1"
           }
         },
@@ -701,9 +701,9 @@
         },
         {
           "id": "iaoru5srzl2qq9u07la8oppi",
-          "type": "Typebot link",
+          "type": "Sniper link",
           "options": {
-            "typebotId": "current",
+            "sniperId": "current",
             "groupId": "m7v9f7qpr94kgonkcidmc7c1"
           }
         },
@@ -1440,7 +1440,7 @@
     "general": {
       "background": {
         "type": "Image",
-        "content": "https://s3.typebot.io/public/workspaces/cl35yesle00188gcpgqu70ia1/typebots/clv5eazpu000t352j1d8ycszj/background?v=1713457182851"
+        "content": "https://s3.sniper.io/public/workspaces/cl35yesle00188gcpgqu70ia1/snipers/clv5eazpu000t352j1d8ycszj/background?v=1713457182851"
       },
       "progressBar": {
         "isEnabled": true,
@@ -1469,7 +1469,7 @@
       }
     }
   },
-  "selectedThemeTemplateId": "typebot-light",
+  "selectedThemeTemplateId": "sniper-light",
   "settings": {},
   "createdAt": "2024-05-22T14:12:00.571Z",
   "updatedAt": "2024-05-22T14:29:58.092Z",

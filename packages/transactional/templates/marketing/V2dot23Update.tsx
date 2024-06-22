@@ -13,7 +13,7 @@ import {
   Section,
 } from '@react-email/components'
 import * as React from 'react'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import {
   main,
   container,
@@ -35,14 +35,14 @@ const imagesBaseUrl = `${env.NEXTAUTH_URL}/images/emails/V2dot23Update`
 export const V2dot23Update = ({}: Props) => (
   <Html>
     <Head />
-    <Preview>Unveiling Typebot's Latest Innovations - v2.23 Update! 🌟</Preview>
+    <Preview>Unveiling Sniper's Latest Innovations - v2.23 Update! 🌟</Preview>
     <Body style={main}>
       <Container style={container}>
         <Img
           src={`${env.NEXTAUTH_URL}/images/logo.png`}
           width="32"
           height="32"
-          alt="Typebot's Logo"
+          alt="Sniper's Logo"
           style={{
             margin: '24px 0',
           }}
@@ -50,7 +50,7 @@ export const V2dot23Update = ({}: Props) => (
         <Text style={text}>
           Hey, <br />
           <br />
-          I'm thrilled to announce the release of Typebot v2.23, packed with
+          I'm thrilled to announce the release of Sniper v2.23, packed with
           features that enrich your chatbot experience. This update introduces
           powerful new blocks and enhanced customizability.
           <br />
@@ -143,13 +143,13 @@ export const V2dot23Update = ({}: Props) => (
           src={`${env.NEXTAUTH_URL}/images/logo.png`}
           width="32"
           height="32"
-          alt="Typebot's Logo"
+          alt="Sniper's Logo"
           style={{
             marginTop: '24px',
           }}
         />
 
-        <Text style={footer}>Typebot.io - Powering Conversations at Scale</Text>
+        <Text style={footer}>Sniper.io - Powering Conversations at Scale</Text>
         <Link
           href="{{unsubscribe}}"
           target="_blank"

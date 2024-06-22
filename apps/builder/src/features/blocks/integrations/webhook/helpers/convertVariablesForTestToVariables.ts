@@ -1,6 +1,6 @@
-import { safeStringify } from '@typebot.io/lib/safeStringify'
-import { isDefined } from '@typebot.io/lib/utils'
-import { Variable, VariableForTest } from '@typebot.io/schemas'
+import { safeStringify } from '@sniper.io/lib/safeStringify'
+import { isDefined } from '@sniper.io/lib/utils'
+import { Variable, VariableForTest } from '@sniper.io/schemas'
 
 export const convertVariablesForTestToVariables = (
   variablesForTest: VariableForTest[],

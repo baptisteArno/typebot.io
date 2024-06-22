@@ -1,13 +1,13 @@
 import { publicProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
-import { generatePresignedPostPolicy } from '@typebot.io/lib/s3/generatePresignedPostPolicy'
-import { env } from '@typebot.io/env'
-import prisma from '@typebot.io/lib/prisma'
-import { getSession } from '@typebot.io/bot-engine/queries/getSession'
-import { parseGroups } from '@typebot.io/schemas'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { getBlockById } from '@typebot.io/schemas/helpers'
+import { generatePresignedPostPolicy } from '@sniper.io/lib/s3/generatePresignedPostPolicy'
+import { env } from '@sniper.io/env'
+import prisma from '@sniper.io/lib/prisma'
+import { getSession } from '@sniper.io/bot-engine/queries/getSession'
+import { parseGroups } from '@sniper.io/schemas'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { getBlockById } from '@sniper.io/schemas/helpers'
 
 export const generateUploadUrl = publicProcedure
   .meta({
@@ -22,7 +22,7 @@ export const generateUploadUrl = publicProcedure
     z.object({
       filePathProps: z
         .object({
-          typebotId: z.string(),
+          sniperId: z.string(),
           blockId: z.string(),
           resultId: z.string(),
           fileName: z.string(),
@@ -51,15 +51,15 @@ export const generateUploadUrl = publicProcedure
           'S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY',
       })
 
-    if ('typebotId' in filePathProps) {
-      const publicTypebot = await prisma.publicTypebot.findFirst({
+    if ('sniperId' in filePathProps) {
+      const publicSniper = await prisma.publicSniper.findFirst({
         where: {
-          typebotId: filePathProps.typebotId,
+          sniperId: filePathProps.sniperId,
         },
         select: {
           version: true,
           groups: true,
-          typebot: {
+          sniper: {
             select: {
               workspaceId: true,
             },
@@ -67,7 +67,7 @@ export const generateUploadUrl = publicProcedure
         },
       })
 
-      const workspaceId = publicTypebot?.typebot.workspaceId
+      const workspaceId = publicSniper?.sniper.workspaceId
 
       if (!workspaceId)
         throw new TRPCError({
@@ -75,10 +75,10 @@ export const generateUploadUrl = publicProcedure
           message: "Can't find workspaceId",
         })
 
-      const filePath = `public/workspaces/${workspaceId}/typebots/${filePathProps.typebotId}/results/${filePathProps.resultId}/${filePathProps.fileName}`
+      const filePath = `public/workspaces/${workspaceId}/snipers/${filePathProps.sniperId}/results/${filePathProps.resultId}/${filePathProps.fileName}`
 
-      const fileUploadBlock = parseGroups(publicTypebot.groups, {
-        typebotVersion: publicTypebot.version,
+      const fileUploadBlock = parseGroups(publicSniper.groups, {
+        sniperVersion: publicSniper.version,
       })
         .flatMap((group) => group.blocks)
         .find((block) => block.id === filePathProps.blockId)
@@ -114,16 +114,16 @@ export const generateUploadUrl = publicProcedure
         message: "Can't find session",
       })
 
-    const typebotId = session.state.typebotsQueue[0].typebot.id
+    const sniperId = session.state.snipersQueue[0].sniper.id
 
-    const publicTypebot = await prisma.publicTypebot.findFirst({
+    const publicSniper = await prisma.publicSniper.findFirst({
       where: {
-        typebotId,
+        sniperId,
       },
       select: {
         version: true,
         groups: true,
-        typebot: {
+        sniper: {
           select: {
             workspaceId: true,
           },
@@ -131,7 +131,7 @@ export const generateUploadUrl = publicProcedure
       },
     })
 
-    const workspaceId = publicTypebot?.typebot.workspaceId
+    const workspaceId = publicSniper?.sniper.workspaceId
 
     if (!workspaceId)
       throw new TRPCError({
@@ -147,8 +147,8 @@ export const generateUploadUrl = publicProcedure
 
     const { block: fileUploadBlock } = getBlockById(
       session.state.currentBlockId,
-      parseGroups(publicTypebot.groups, {
-        typebotVersion: publicTypebot.version,
+      parseGroups(publicSniper.groups, {
+        sniperVersion: publicSniper.version,
       })
     )
 
@@ -158,11 +158,11 @@ export const generateUploadUrl = publicProcedure
         message: "Can't find file upload block",
       })
 
-    const resultId = session.state.typebotsQueue[0].resultId
+    const resultId = session.state.snipersQueue[0].resultId
 
     const filePath = `${
       fileUploadBlock.options?.visibility === 'Private' ? 'private' : 'public'
-    }/workspaces/${workspaceId}/typebots/${typebotId}/results/${resultId}/${
+    }/workspaces/${workspaceId}/snipers/${sniperId}/results/${resultId}/${
       filePathProps.fileName
     }`
 
@@ -180,7 +180,7 @@ export const generateUploadUrl = publicProcedure
       formData: presignedPostPolicy.formData,
       fileUrl:
         fileUploadBlock.options?.visibility === 'Private'
-          ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/${filePathProps.fileName}`
+          ? `${env.NEXTAUTH_URL}/api/snipers/${sniperId}/results/${resultId}/${filePathProps.fileName}`
           : env.S3_PUBLIC_CUSTOM_DOMAIN
           ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
           : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,

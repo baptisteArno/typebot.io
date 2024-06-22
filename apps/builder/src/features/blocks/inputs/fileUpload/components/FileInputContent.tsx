@@ -1,7 +1,7 @@
 import { WithVariableContent } from '@/features/graph/components/nodes/block/WithVariableContent'
 import { Text } from '@chakra-ui/react'
 import { useTranslate } from '@tolgee/react'
-import { FileInputBlock } from '@typebot.io/schemas'
+import { FileInputBlock } from '@sniper.io/schemas'
 
 type Props = {
   options: FileInputBlock['options']

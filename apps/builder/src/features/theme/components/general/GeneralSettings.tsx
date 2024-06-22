@@ -10,11 +10,11 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from '@chakra-ui/react'
-import { Background, Font, ProgressBar, Theme } from '@typebot.io/schemas'
+import { Background, Font, ProgressBar, Theme } from '@sniper.io/schemas'
 import React from 'react'
 import { BackgroundSelector } from './BackgroundSelector'
 import { LockTag } from '@/features/billing/components/LockTag'
-import { Plan } from '@typebot.io/prisma'
+import { Plan } from '@sniper.io/prisma'
 import { isFreePlan } from '@/features/billing/helpers/isFreePlan'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
@@ -22,10 +22,10 @@ import { useTranslate } from '@tolgee/react'
 import {
   defaultFontType,
   fontTypes,
-} from '@typebot.io/schemas/features/typebot/theme/constants'
+} from '@sniper.io/schemas/features/sniper/theme/constants'
 import { trpc } from '@/lib/trpc'
-import { env } from '@typebot.io/env'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { env } from '@sniper.io/env'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { RadioButtons } from '@/components/inputs/RadioButtons'
 import { FontForm } from './FontForm'
 import { ProgressBarForm } from './ProgressBarForm'
@@ -46,7 +46,7 @@ export const GeneralSettings = ({
   const { t } = useTranslate()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { workspace } = useWorkspace()
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
   const isWorkspaceFreePlan = isFreePlan(workspace)
 
   const { mutate: trackClientEvents } =
@@ -75,7 +75,7 @@ export const GeneralSettings = ({
     if (isBrandingEnabled && isWorkspaceFreePlan) return
     if (
       env.NEXT_PUBLIC_POSTHOG_KEY &&
-      typebot &&
+      sniper &&
       workspace &&
       isBrandingEnabled
     ) {
@@ -83,7 +83,7 @@ export const GeneralSettings = ({
         events: [
           {
             name: 'Branding removed',
-            typebotId: typebot.id,
+            sniperId: sniper.id,
             workspaceId: workspace.id,
           },
         ],
@@ -110,7 +110,7 @@ export const GeneralSettings = ({
         onClick={isWorkspaceFreePlan ? onOpen : undefined}
       >
         <FormLabel htmlFor="branding" mb="0" cursor="pointer">
-          {t('theme.sideMenu.global.typebotBrand')}{' '}
+          {t('theme.sideMenu.global.sniperBrand')}{' '}
           {isWorkspaceFreePlan && <LockTag plan={Plan.STARTER} />}
         </FormLabel>
         <Switch

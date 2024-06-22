@@ -1,6 +1,6 @@
 import { guessApiHost } from '@/utils/guessApiHost'
-import { isNotEmpty } from '@typebot.io/lib'
-import { ContinueChatResponse } from '@typebot.io/schemas'
+import { isNotEmpty } from '@sniper.io/lib'
+import { ContinueChatResponse } from '@sniper.io/schemas'
 import ky from 'ky'
 
 export const continueChatQuery = async ({

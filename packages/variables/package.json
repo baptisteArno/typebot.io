@@ -1,11 +1,11 @@
 {
-  "name": "@typebot.io/variables",
+  "name": "@sniper.io/variables",
   "version": "1.0.0",
   "license": "AGPL-3.0-or-later",
   "private": true,
   "dependencies": {
-    "@typebot.io/lib": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
+    "@sniper.io/lib": "workspace:*",
+    "@sniper.io/tsconfig": "workspace:*",
     "isolated-vm": "4.7.2"
   }
 }

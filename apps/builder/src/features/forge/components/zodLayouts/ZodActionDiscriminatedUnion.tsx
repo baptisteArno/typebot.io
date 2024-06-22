@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DropdownList } from '@/components/DropdownList'
-import { z } from '@typebot.io/forge/zod'
+import { z } from '@sniper.io/forge/zod'
 import { useMemo } from 'react'
 import { ZodObjectLayout } from './ZodObjectLayout'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 import {
   ForgedBlockDefinition,
   ForgedBlock,
-} from '@typebot.io/forge-repository/types'
+} from '@sniper.io/forge-repository/types'
 
 type Props = {
   blockDef?: ForgedBlockDefinition

@@ -1,4 +1,4 @@
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import { Client } from 'minio'
 
 type GeneratePresignedUrlProps = {

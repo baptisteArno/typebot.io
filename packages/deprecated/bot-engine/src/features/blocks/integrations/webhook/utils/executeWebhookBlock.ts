@@ -6,9 +6,9 @@ import {
   MakeComBlock,
   PabblyConnectBlock,
   VariableWithUnknowValue,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import { stringify } from 'qs'
-import { sendRequest, byId } from '@typebot.io/lib'
+import { sendRequest, byId } from '@sniper.io/lib'
 
 export const executeWebhook = async (
   block: HttpRequestBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock,
@@ -17,22 +17,22 @@ export const executeWebhook = async (
     variables,
     updateVariableValue,
     updateVariables,
-    typebotId,
+    sniperId,
     apiHost,
     resultValues,
     onNewLog,
     resultId,
-    parentTypebotIds,
+    parentSniperIds,
   }: IntegrationState
 ) => {
   const params = stringify({ resultId })
   const { data, error } = await sendRequest({
-    url: `${apiHost}/api/typebots/${typebotId}/blocks/${blockId}/executeWebhook?${params}`,
+    url: `${apiHost}/api/snipers/${sniperId}/blocks/${blockId}/executeWebhook?${params}`,
     method: 'POST',
     body: {
       variables,
       resultValues,
-      parentTypebotIds,
+      parentSniperIds,
     },
   })
   const statusCode = (

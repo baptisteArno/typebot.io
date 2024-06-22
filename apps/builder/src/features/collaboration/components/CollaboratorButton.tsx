@@ -10,7 +10,7 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { CollaborationType } from '@typebot.io/prisma'
+import { CollaborationType } from '@sniper.io/prisma'
 import React from 'react'
 import { useTranslate } from '@tolgee/react'
 import { ReadableCollaborationType } from './ReadableCollaborationType'

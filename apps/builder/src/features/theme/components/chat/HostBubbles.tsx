@@ -1,12 +1,12 @@
 import { Stack, Flex, Text } from '@chakra-ui/react'
-import { ContainerTheme } from '@typebot.io/schemas'
+import { ContainerTheme } from '@sniper.io/schemas'
 import React from 'react'
 import { ColorPicker } from '../../../../components/ColorPicker'
 import { useTranslate } from '@tolgee/react'
 import {
   defaultHostBubblesBackgroundColor,
   defaultHostBubblesColor,
-} from '@typebot.io/schemas/features/typebot/theme/constants'
+} from '@sniper.io/schemas/features/sniper/theme/constants'
 
 type Props = {
   hostBubbles: ContainerTheme | undefined

@@ -1,7 +1,7 @@
 import { ClientSideActionContext } from '@/types'
 import { readDataStream } from '@/utils/ai/readDataStream'
 import { guessApiHost } from '@/utils/guessApiHost'
-import { isNotEmpty } from '@typebot.io/lib/utils'
+import { isNotEmpty } from '@sniper.io/lib/utils'
 import { createUniqueId } from 'solid-js'
 
 let abortController: AbortController | null = null

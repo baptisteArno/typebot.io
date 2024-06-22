@@ -16,9 +16,9 @@ import {
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React, { FormEvent, useState } from 'react'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 import { useTranslate } from '@tolgee/react'
-import { taxIdTypes } from '@typebot.io/billing/taxIdTypes'
+import { taxIdTypes } from '@sniper.io/billing/taxIdTypes'
 
 export type PreCheckoutModalProps = {
   selectedSubscription:

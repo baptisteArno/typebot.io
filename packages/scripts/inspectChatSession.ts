@@ -1,4 +1,4 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { PrismaClient } from '@sniper.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 import * as p from '@clack/prompts'
 
@@ -34,7 +34,7 @@ const inspectChatSession = async () => {
 
   const result = await prisma.result.findFirst({
     where: {
-      id: (chatSession.state as any).typebotsQueue[0].resultId,
+      id: (chatSession.state as any).snipersQueue[0].resultId,
     },
   })
 

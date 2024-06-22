@@ -1,32 +1,32 @@
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
-import { createTypebots } from '@typebot.io/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from '@typebot.io/playwright/databaseHelpers'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { createSnipers } from '@sniper.io/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@sniper.io/playwright/databaseHelpers'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
 
 test('should not be able to submit taken url ID', async ({ page }) => {
-  const takenTypebotId = createId()
-  const typebotId = createId()
-  await createTypebots([
+  const takenSniperId = createId()
+  const sniperId = createId()
+  await createSnipers([
     {
-      id: takenTypebotId,
+      id: takenSniperId,
       ...parseDefaultGroupWithBlock({
         type: InputBlockType.TEXT,
       }),
       publicId: 'taken-url-id',
     },
   ])
-  await createTypebots([
+  await createSnipers([
     {
-      id: typebotId,
+      id: sniperId,
       ...parseDefaultGroupWithBlock({
         type: InputBlockType.TEXT,
       }),
-      publicId: typebotId + '-public',
+      publicId: sniperId + '-public',
     },
   ])
-  await page.goto(`/typebots/${typebotId}/share`)
-  await page.getByText(`${typebotId}-public`).click()
+  await page.goto(`/snipers/${sniperId}/share`)
+  await page.getByText(`${sniperId}-public`).click()
   await page.getByRole('textbox').fill('id with spaces')
   await page.getByRole('textbox').press('Enter')
   await expect(
@@ -34,13 +34,13 @@ test('should not be able to submit taken url ID', async ({ page }) => {
       .getByText('Can only contain lowercase letters, numbers and dashes.')
       .nth(0)
   ).toBeVisible()
-  await page.getByText(`${typebotId}-public`).click()
+  await page.getByText(`${sniperId}-public`).click()
   await page.getByRole('textbox').fill('taken-url-id')
   await page.getByRole('textbox').press('Enter')
   await expect(page.getByText('ID is already taken').nth(0)).toBeVisible()
-  await page.getByText(`${typebotId}-public`).click()
+  await page.getByText(`${sniperId}-public`).click()
   await page.getByRole('textbox').fill('new-valid-id')
   await page.getByRole('textbox').press('Enter')
   await expect(page.getByText('new-valid-id')).toBeVisible()
-  await expect(page.getByText(`${typebotId}-public`)).toBeHidden()
+  await expect(page.getByText(`${sniperId}-public`)).toBeHidden()
 })

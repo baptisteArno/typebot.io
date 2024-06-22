@@ -1,7 +1,7 @@
-import { BlockIndices, ChoiceInputBlock } from '@typebot.io/schemas'
+import { BlockIndices, ChoiceInputBlock } from '@sniper.io/schemas'
 import React from 'react'
 import { Stack, Tag, Text, Wrap } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { SetVariableLabel } from '@/components/SetVariableLabel'
 import { ItemNodesList } from '@/features/graph/components/nodes/item/ItemNodesList'
 import { useTranslate } from '@tolgee/react'
@@ -12,9 +12,9 @@ type Props = {
 }
 
 export const ButtonsBlockNode = ({ block, indices }: Props) => {
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
   const { t } = useTranslate()
-  const dynamicVariableName = typebot?.variables.find(
+  const dynamicVariableName = sniper?.variables.find(
     (variable) => variable.id === block.options?.dynamicVariableId
   )?.name
 
@@ -34,7 +34,7 @@ export const ButtonsBlockNode = ({ block, indices }: Props) => {
       {block.options?.variableId ? (
         <SetVariableLabel
           variableId={block.options.variableId}
-          variables={typebot?.variables}
+          variables={sniper?.variables}
         />
       ) : null}
     </Stack>

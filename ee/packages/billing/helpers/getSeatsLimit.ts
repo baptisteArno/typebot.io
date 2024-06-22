@@ -1,6 +1,6 @@
-import { Workspace } from '@typebot.io/schemas'
+import { Workspace } from '@sniper.io/schemas'
 import { seatsLimits } from '../constants'
-import { Plan } from '@typebot.io/prisma'
+import { Plan } from '@sniper.io/prisma'
 
 export const getSeatsLimit = ({
   plan,

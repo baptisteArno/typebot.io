@@ -523,9 +523,9 @@
       "blocks": [
         {
           "id": "cl1r15f87005g2e6dp3srll8r",
-          "type": "Typebot link",
+          "type": "Sniper link",
           "options": {
-            "typebotId": "current",
+            "sniperId": "current",
             "groupId": "cl1r09bc6000h2e6dqml18p4p",
             "mergeResults": false
           }

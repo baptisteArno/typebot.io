@@ -1,4 +1,4 @@
-import { getMessageStream } from '@typebot.io/bot-engine/apiHandlers/getMessageStream'
+import { getMessageStream } from '@sniper.io/bot-engine/apiHandlers/getMessageStream'
 import { StreamingTextResponse } from 'ai'
 import { NextResponse } from 'next/server'
 

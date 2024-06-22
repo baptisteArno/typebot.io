@@ -1,15 +1,15 @@
-import { WorkspaceInvitation, WorkspaceRole } from '@typebot.io/prisma'
-import prisma from '@typebot.io/lib/prisma'
+import { WorkspaceInvitation, WorkspaceRole } from '@sniper.io/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import {
   forbidden,
   methodNotAllowed,
   notAuthenticated,
-} from '@typebot.io/lib/api'
+} from '@sniper.io/lib/api'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
-import { sendWorkspaceMemberInvitationEmail } from '@typebot.io/emails'
-import { getSeatsLimit } from '@typebot.io/billing/helpers/getSeatsLimit'
-import { env } from '@typebot.io/env'
+import { sendWorkspaceMemberInvitationEmail } from '@sniper.io/emails'
+import { getSeatsLimit } from '@sniper.io/billing/helpers/getSeatsLimit'
+import { env } from '@sniper.io/env'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res)
@@ -55,7 +55,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           to: data.email,
           workspaceName: workspace.name,
           guestEmail: data.email,
-          url: `${env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
+          url: `${env.NEXTAUTH_URL}/snipers?workspaceId=${workspace.id}`,
           hostEmail: user.email ?? '',
         })
       return res.send({
@@ -74,7 +74,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           to: data.email,
           workspaceName: workspace.name,
           guestEmail: data.email,
-          url: `${env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
+          url: `${env.NEXTAUTH_URL}/snipers?workspaceId=${workspace.id}`,
           hostEmail: user.email ?? '',
         })
       return res.send({ invitation })

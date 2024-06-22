@@ -1,5 +1,5 @@
 {
-  "name": "@typebot.io/emails",
+  "name": "@sniper.io/emails",
   "version": "1.0.0",
   "description": "",
   "private": true,
@@ -24,11 +24,11 @@
     "nodemailer": "6.9.8",
     "react": "18.2.0",
     "tsx": "4.6.2",
-    "@typebot.io/lib": "workspace:*",
+    "@sniper.io/lib": "workspace:*",
     "eslint": "8.44.0",
     "eslint-config-custom": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
-    "@typebot.io/env": "workspace:*"
+    "@sniper.io/tsconfig": "workspace:*",
+    "@sniper.io/env": "workspace:*"
   },
   "peerDependencies": {
     "@faire/mjml-react": "2.1.4",

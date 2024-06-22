@@ -5,23 +5,23 @@ import {
   useEditor,
   RightPanel as RightPanelEnum,
 } from '../providers/EditorProvider'
-import { useTypebot } from '../providers/TypebotProvider'
+import { useSniper } from '../providers/SniperProvider'
 import { BlocksSideBar } from './BlocksSideBar'
 import { BoardMenuButton } from './BoardMenuButton'
 import { PreviewDrawer } from '@/features/preview/components/PreviewDrawer'
-import { TypebotHeader } from './TypebotHeader'
+import { SniperHeader } from './SniperHeader'
 import { Graph } from '@/features/graph/components/Graph'
 import { GraphDndProvider } from '@/features/graph/providers/GraphDndProvider'
 import { GraphProvider } from '@/features/graph/providers/GraphProvider'
 import { EventsCoordinatesProvider } from '@/features/graph/providers/EventsCoordinateProvider'
-import { TypebotNotFoundPage } from './TypebotNotFoundPage'
-import { SuspectedTypebotBanner } from './SuspectedTypebotBanner'
+import { SniperNotFoundPage } from './SniperNotFoundPage'
+import { SuspectedSniperBanner } from './SuspectedSniperBanner'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { VariablesDrawer } from '@/features/preview/components/VariablesDrawer'
 import { VideoOnboardingFloatingWindow } from '@/features/onboarding/components/VideoOnboardingFloatingWindow'
 
 export const EditorPage = () => {
-  const { typebot, currentUserMode, is404 } = useTypebot()
+  const { sniper, currentUserMode, is404 } = useSniper()
   const { workspace } = useWorkspace()
   const backgroundImage = useColorModeValue(
     'radial-gradient(#c6d0e1 1px, transparent 0)',
@@ -29,17 +29,17 @@ export const EditorPage = () => {
   )
   const bgColor = useColorModeValue('#f4f5f8', 'gray.850')
 
-  const isSuspicious = typebot?.riskLevel === 100 && !workspace?.isVerified
+  const isSuspicious = sniper?.riskLevel === 100 && !workspace?.isVerified
 
-  if (is404) return <TypebotNotFoundPage />
+  if (is404) return <SniperNotFoundPage />
 
   return (
     <EditorProvider>
-      <Seo title={typebot?.name ? `${typebot.name} | Editor` : 'Editor'} />
+      <Seo title={sniper?.name ? `${sniper.name} | Editor` : 'Editor'} />
       <Flex overflow="clip" h="100vh" flexDir="column" id="editor-container">
         <VideoOnboardingFloatingWindow type="editor" />
-        {isSuspicious && <SuspectedTypebotBanner typebotId={typebot.id} />}
-        <TypebotHeader />
+        {isSuspicious && <SuspectedSniperBanner sniperId={sniper.id} />}
+        <SniperHeader />
         <Flex
           flex="1"
           pos="relative"
@@ -49,7 +49,7 @@ export const EditorPage = () => {
           backgroundSize="40px 40px"
           backgroundPosition="-19px -19px"
         >
-          {typebot ? (
+          {sniper ? (
             <GraphDndProvider>
               {currentUserMode === 'write' && <BlocksSideBar />}
               <GraphProvider
@@ -57,8 +57,8 @@ export const EditorPage = () => {
                   currentUserMode === 'read' || currentUserMode === 'guest'
                 }
               >
-                <EventsCoordinatesProvider events={typebot.events}>
-                  <Graph flex="1" typebot={typebot} key={typebot.id} />
+                <EventsCoordinatesProvider events={sniper.events}>
+                  <Graph flex="1" sniper={sniper} key={sniper.id} />
                   <BoardMenuButton
                     pos="absolute"
                     right="40px"

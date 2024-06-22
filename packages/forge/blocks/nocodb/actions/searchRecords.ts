@@ -1,8 +1,8 @@
-import { createAction, option } from '@typebot.io/forge'
+import { createAction, option } from '@sniper.io/forge'
 import { auth } from '../auth'
 import ky, { HTTPError } from 'ky'
 import { ListTableRecordsResponse } from '../types'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 import { parseSearchParams } from '../helpers/parseSearchParams'
 import { convertFilterToWhereClause } from '../helpers/convertFilterToWhereClause'
 import {

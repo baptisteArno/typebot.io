@@ -1,4 +1,4 @@
-import { createBlock } from '@typebot.io/forge'
+import { createBlock } from '@sniper.io/forge'
 import { MistralLogo } from './logo'
 import { auth } from './auth'
 import { createChatCompletion } from './actions/createChatCompletion'
@@ -11,5 +11,5 @@ export const mistralBlock = createBlock({
   LightLogo: MistralLogo,
   auth,
   actions: [createChatCompletion, generateVariables],
-  docsUrl: 'https://docs.typebot.io/forge/blocks/mistral',
+  docsUrl: 'https://docs.sniper.io/forge/blocks/mistral',
 })

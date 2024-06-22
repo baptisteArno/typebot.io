@@ -1,11 +1,11 @@
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 type Params = {
   debug: boolean
 }
 
-export const computeRiskLevel = (typebot: any, params?: Params) => {
-  const stringifiedTypebot = JSON.stringify(typebot)
+export const computeRiskLevel = (sniper: any, params?: Params) => {
+  const stringifiedSniper = JSON.stringify(sniper)
   if (
     env.RADAR_HIGH_RISK_KEYWORDS?.some((keyword) =>
       new RegExp(
@@ -13,7 +13,7 @@ export const computeRiskLevel = (typebot: any, params?: Params) => {
           keyword.includes('$') ? '' : `\\b`
         }`,
         'gi'
-      ).test(stringifiedTypebot)
+      ).test(stringifiedSniper)
     )
   ) {
     if (params?.debug) {
@@ -25,7 +25,7 @@ export const computeRiskLevel = (typebot: any, params?: Params) => {
               keyword.includes('$') ? '' : `\\b`
             }`,
             'gi'
-          ).test(stringifiedTypebot)
+          ).test(stringifiedSniper)
         )
       )
     }
@@ -39,7 +39,7 @@ export const computeRiskLevel = (typebot: any, params?: Params) => {
           new RegExp(
             `(?<!(https?://|@)[^\\s"]*)\\b${k}${k.includes('$') ? '' : `\\b`}`,
             'gi'
-          ).test(stringifiedTypebot)
+          ).test(stringifiedSniper)
         )
       )
     )
@@ -55,7 +55,7 @@ export const computeRiskLevel = (typebot: any, params?: Params) => {
                   k.includes('$') ? '' : `\\b`
                 }`,
                 'gi'
-              ).test(stringifiedTypebot)
+              ).test(stringifiedSniper)
             )
           )
         )
@@ -65,7 +65,7 @@ export const computeRiskLevel = (typebot: any, params?: Params) => {
   }
   if (
     env.RADAR_INTERMEDIATE_RISK_KEYWORDS?.some((keyword) =>
-      stringifiedTypebot.toLowerCase().includes(keyword)
+      stringifiedSniper.toLowerCase().includes(keyword)
     )
   )
     return 50

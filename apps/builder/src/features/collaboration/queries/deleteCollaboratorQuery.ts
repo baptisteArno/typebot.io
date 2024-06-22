@@ -1,7 +1,7 @@
-import { sendRequest } from '@typebot.io/lib'
+import { sendRequest } from '@sniper.io/lib'
 
-export const deleteCollaboratorQuery = (typebotId: string, userId: string) =>
+export const deleteCollaboratorQuery = (sniperId: string, userId: string) =>
   sendRequest({
     method: 'DELETE',
-    url: `/api/typebots/${typebotId}/collaborators/${userId}`,
+    url: `/api/snipers/${sniperId}/collaborators/${userId}`,
   })

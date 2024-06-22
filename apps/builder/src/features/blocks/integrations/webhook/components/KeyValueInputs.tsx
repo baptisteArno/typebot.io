@@ -1,7 +1,7 @@
 import { TextInput } from '@/components/inputs'
 import { TableListItemProps } from '@/components/TableList'
 import { Stack } from '@chakra-ui/react'
-import { KeyValue } from '@typebot.io/schemas'
+import { KeyValue } from '@sniper.io/schemas'
 
 export const QueryParamsInputs = (props: TableListItemProps<KeyValue>) => (
   <KeyValueInputs

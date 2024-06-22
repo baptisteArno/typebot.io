@@ -1,11 +1,11 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { encrypt } from '@typebot.io/lib/api/encryption/encrypt'
+import { encrypt } from '@sniper.io/lib/api/encryption/encrypt'
 import { z } from 'zod'
 import { isWriteWorkspaceForbidden } from '@/features/workspace/helpers/isWriteWorkspaceForbidden'
-import { forgedCredentialsSchemas } from '@typebot.io/forge-repository/credentials'
-import { isDefined } from '@typebot.io/lib'
+import { forgedCredentialsSchemas } from '@sniper.io/forge-repository/credentials'
+import { isDefined } from '@sniper.io/lib'
 
 const inputShape = {
   data: true,

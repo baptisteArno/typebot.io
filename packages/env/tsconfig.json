@@ -1,5 +1,9 @@
 {
-  "extends": "@typebot.io/tsconfig/base.json",
-  "include": ["**/*.ts"],
-  "exclude": ["node_modules"]
+  "extends": "@sniper.io/tsconfig/base.json",
+  "include": [
+    "**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -6,12 +6,12 @@ import {
   useColorModeValue,
   useEventListener,
 } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { BlockIndices, BlockWithItems } from '@typebot.io/schemas'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
+import { BlockIndices, BlockWithItems } from '@sniper.io/schemas'
 import React, { useEffect, useRef, useState } from 'react'
 import { ItemNode } from './ItemNode'
 import { PlaceholderNode } from '../PlaceholderNode'
-import { isDefined } from '@typebot.io/lib'
+import { isDefined } from '@sniper.io/lib'
 import {
   useBlockDnd,
   computeNearestPlaceholderIndex,
@@ -20,8 +20,8 @@ import {
 import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { Coordinates } from '@dnd-kit/utilities'
 import { BlockSourceEndpoint } from '../../endpoints/BlockSourceEndpoint'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { LogicBlockType } from '@sniper.io/schemas/features/blocks/logic/constants'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
 import { useTranslate } from '@tolgee/react'
 
 type Props = {
@@ -33,7 +33,7 @@ export const ItemNodesList = ({
   block,
   indices: { groupIndex, blockIndex },
 }: Props) => {
-  const { typebot, createItem, detachItemFromBlock } = useTypebot()
+  const { sniper, createItem, detachItemFromBlock } = useSniper()
   const { draggedItem, setDraggedItem, mouseOverBlock } = useBlockDnd()
   const placeholderRefs = useRef<HTMLDivElement[]>([])
   const { graphPosition } = useGraph()
@@ -43,8 +43,8 @@ export const ItemNodesList = ({
     draggedItem !== undefined && block.type === draggedItem.type
 
   const isLastBlock =
-    isDefined(typebot) &&
-    typebot.groups.at(groupIndex)?.blocks?.at(blockIndex + 1) === undefined
+    isDefined(sniper) &&
+    sniper.groups.at(groupIndex)?.blocks?.at(blockIndex + 1) === undefined
 
   const someChoiceItemsAreNotConnected =
     block.type === InputBlockType.CHOICE ||
@@ -114,7 +114,7 @@ export const ItemNodesList = ({
       { absolute, relative }: { absolute: Coordinates; relative: Coordinates },
       item: DraggableItem
     ) => {
-      if (!typebot || block.items.length <= 1) return
+      if (!sniper || block.items.length <= 1) return
       placeholderRefs.current.splice(itemIndex + 1, 1)
       detachItemFromBlock({ groupIndex, blockIndex, itemIndex })
       setPosition(absolute)
@@ -131,7 +131,7 @@ export const ItemNodesList = ({
       elem && (placeholderRefs.current[idx] = elem)
     }
 
-  const groupId = typebot?.groups.at(groupIndex)?.id
+  const groupId = sniper?.groups.at(groupIndex)?.id
 
   return (
     <Stack flex={1} spacing={1} maxW="full" onClick={stopPropagating}>

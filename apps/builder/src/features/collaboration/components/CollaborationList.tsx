@@ -15,9 +15,9 @@ import {
 } from '@chakra-ui/react'
 import { ChevronLeftIcon } from '@/components/icons'
 import { useToast } from '@/hooks/useToast'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { CollaborationType, WorkspaceRole } from '@typebot.io/prisma'
+import { CollaborationType, WorkspaceRole } from '@sniper.io/prisma'
 import React, { FormEvent, useState } from 'react'
 import { CollaboratorItem } from './CollaboratorButton'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
@@ -34,7 +34,7 @@ import { ReadableCollaborationType } from './ReadableCollaborationType'
 export const CollaborationList = () => {
   const { currentRole, workspace } = useWorkspace()
   const { t } = useTranslate()
-  const { typebot } = useTypebot()
+  const { sniper } = useSniper()
   const [invitationType, setInvitationType] = useState<CollaborationType>(
     CollaborationType.READ
   )
@@ -50,7 +50,7 @@ export const CollaborationList = () => {
     isLoading: isCollaboratorsLoading,
     mutate: mutateCollaborators,
   } = useCollaborators({
-    typebotId: typebot?.id,
+    sniperId: sniper?.id,
     onError: (e) =>
       showToast({
         title: t('share.button.popover.collaboratorsFetch.error.label'),
@@ -62,7 +62,7 @@ export const CollaborationList = () => {
     isLoading: isInvitationsLoading,
     mutate: mutateInvitations,
   } = useInvitations({
-    typebotId: typebot?.id,
+    sniperId: sniper?.id,
     onError: (e) =>
       showToast({
         title: t('share.button.popover.invitationsFetch.error.label'),
@@ -72,10 +72,10 @@ export const CollaborationList = () => {
 
   const handleChangeInvitationCollabType =
     (email: string) => async (type: CollaborationType) => {
-      if (!typebot || !hasFullAccess) return
-      const { error } = await updateInvitationQuery(typebot?.id, email, {
+      if (!sniper || !hasFullAccess) return
+      const { error } = await updateInvitationQuery(sniper?.id, email, {
         email,
-        typebotId: typebot.id,
+        sniperId: sniper.id,
         type,
       })
       if (error)
@@ -87,8 +87,8 @@ export const CollaborationList = () => {
       })
     }
   const handleDeleteInvitation = (email: string) => async () => {
-    if (!typebot || !hasFullAccess) return
-    const { error } = await deleteInvitationQuery(typebot?.id, email)
+    if (!sniper || !hasFullAccess) return
+    const { error } = await deleteInvitationQuery(sniper?.id, email)
     if (error)
       return showToast({ title: error.name, description: error.message })
     mutateInvitations({
@@ -98,11 +98,11 @@ export const CollaborationList = () => {
 
   const handleChangeCollaborationType =
     (userId: string) => async (type: CollaborationType) => {
-      if (!typebot || !hasFullAccess) return
-      const { error } = await updateCollaboratorQuery(typebot?.id, userId, {
+      if (!sniper || !hasFullAccess) return
+      const { error } = await updateCollaboratorQuery(sniper?.id, userId, {
         userId,
         type,
-        typebotId: typebot.id,
+        sniperId: sniper.id,
       })
       if (error)
         return showToast({ title: error.name, description: error.message })
@@ -113,8 +113,8 @@ export const CollaborationList = () => {
       })
     }
   const handleDeleteCollaboration = (userId: string) => async () => {
-    if (!typebot || !hasFullAccess) return
-    const { error } = await deleteCollaboratorQuery(typebot?.id, userId)
+    if (!sniper || !hasFullAccess) return
+    const { error } = await deleteCollaboratorQuery(sniper?.id, userId)
     if (error)
       return showToast({ title: error.name, description: error.message })
     mutateCollaborators({
@@ -124,9 +124,9 @@ export const CollaborationList = () => {
 
   const handleInvitationSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    if (!typebot || !hasFullAccess) return
+    if (!sniper || !hasFullAccess) return
     setIsSendingInvitation(true)
-    const { error } = await sendInvitationQuery(typebot.id, {
+    const { error } = await sendInvitationQuery(sniper.id, {
       email: invitationEmail,
       type: invitationType,
     })

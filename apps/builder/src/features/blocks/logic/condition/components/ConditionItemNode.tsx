@@ -11,15 +11,15 @@ import {
   useEventListener,
   PopoverAnchor,
 } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import {
   Comparison,
   ConditionItem,
   ItemIndices,
   Condition,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import React, { useRef } from 'react'
-import { isNotDefined } from '@typebot.io/lib'
+import { isNotDefined } from '@sniper.io/lib'
 import { PlusIcon } from '@/components/icons'
 import { ConditionForm } from './ConditionForm'
 import { useGraph } from '@/features/graph/providers/GraphProvider'
@@ -33,7 +33,7 @@ type Props = {
 }
 
 export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
-  const { typebot, createItem, updateItem } = useTypebot()
+  const { sniper, createItem, updateItem } = useSniper()
   const { openedItemId, setOpenedItemId } = useGraph()
   const ref = useRef<HTMLDivElement | null>(null)
 
@@ -80,7 +80,7 @@ export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
           ) : (
             <ConditionContent
               condition={item.content}
-              variables={typebot?.variables ?? []}
+              variables={sniper?.variables ?? []}
             />
           )}
           <Fade

@@ -7,7 +7,7 @@ import { publicRouter } from '@/helpers/server/routers/publicRouter'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res, {
-    origin: ['https://docs.typebot.io', 'http://localhost:3000'],
+    origin: ['https://docs.sniper.io', 'http://localhost:3000'],
   })
 
   return createOpenApiNextHandler({

@@ -1,13 +1,13 @@
-import { CollaboratorsOnTypebots } from '@typebot.io/prisma'
-import { sendRequest } from '@typebot.io/lib'
+import { CollaboratorsOnSnipers } from '@sniper.io/prisma'
+import { sendRequest } from '@sniper.io/lib'
 
 export const updateCollaboratorQuery = (
-  typebotId: string,
+  sniperId: string,
   userId: string,
-  collaborator: Omit<CollaboratorsOnTypebots, 'createdAt' | 'updatedAt'>
+  collaborator: Omit<CollaboratorsOnSnipers, 'createdAt' | 'updatedAt'>
 ) =>
   sendRequest({
     method: 'PATCH',
-    url: `/api/typebots/${typebotId}/collaborators/${userId}`,
+    url: `/api/snipers/${sniperId}/collaborators/${userId}`,
     body: collaborator,
   })

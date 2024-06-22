@@ -1,8 +1,8 @@
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
-import { DateInputBlock } from '@typebot.io/schemas'
+import { DateInputBlock } from '@sniper.io/schemas'
 import { createSignal } from 'solid-js'
-import { defaultDateInputOptions } from '@typebot.io/schemas/features/blocks/inputs/date/constants'
+import { defaultDateInputOptions } from '@sniper.io/schemas/features/blocks/inputs/date/constants'
 import clsx from 'clsx'
 
 type Props = {
@@ -21,7 +21,7 @@ export const DateForm = (props: Props) => {
       <div class="flex items-center">
         <form
           class={clsx(
-            'flex justify-between typebot-input pr-2',
+            'flex justify-between sniper-input pr-2',
             props.options?.isRange ? 'items-end' : 'items-center'
           )}
           onSubmit={(e) => {
@@ -48,7 +48,7 @@ export const DateForm = (props: Props) => {
                 </p>
               )}
               <input
-                class="focus:outline-none flex-1 w-full text-input typebot-date-input"
+                class="focus:outline-none flex-1 w-full text-input sniper-date-input"
                 style={{
                   'min-height': '32px',
                   'min-width': '100px',
@@ -76,7 +76,7 @@ export const DateForm = (props: Props) => {
                   </p>
                 )}
                 <input
-                  class="focus:outline-none flex-1 w-full text-input ml-2 typebot-date-input"
+                  class="focus:outline-none flex-1 w-full text-input ml-2 sniper-date-input"
                   style={{
                     'min-height': '32px',
                     'min-width': '100px',

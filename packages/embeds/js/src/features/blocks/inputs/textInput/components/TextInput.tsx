@@ -3,9 +3,9 @@ import { SendButton } from '@/components/SendButton'
 import { CommandData } from '@/features/commands'
 import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
-import type { TextInputBlock } from '@typebot.io/schemas'
+import type { TextInputBlock } from '@sniper.io/schemas'
 import { createSignal, onCleanup, onMount } from 'solid-js'
-import { defaultTextInputOptions } from '@typebot.io/schemas/features/blocks/inputs/text/constants'
+import { defaultTextInputOptions } from '@sniper.io/schemas/features/blocks/inputs/text/constants'
 import clsx from 'clsx'
 
 type Props = {
@@ -53,14 +53,14 @@ export const TextInput = (props: Props) => {
 
   const processIncomingEvent = (event: MessageEvent<CommandData>) => {
     const { data } = event
-    if (!data.isFromTypebot) return
+    if (!data.isFromSniper) return
     if (data.command === 'setInputValue') setInputValue(data.value)
   }
 
   return (
     <div
       class={clsx(
-        'flex justify-between pr-2 typebot-input w-full',
+        'flex justify-between pr-2 sniper-input w-full',
         props.block.options?.isLong ? 'items-end' : 'items-center'
       )}
       data-testid="input"

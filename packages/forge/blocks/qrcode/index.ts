@@ -1,4 +1,4 @@
-import { createBlock } from '@typebot.io/forge'
+import { createBlock } from '@sniper.io/forge'
 import { QrCodeLogo } from './logo'
 import { generateQrCode } from './actions/generateQrCodeImage'
 

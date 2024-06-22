@@ -1,9 +1,9 @@
-import { isNotEmpty } from '@typebot.io/lib'
-import { Font } from '@typebot.io/schemas'
-import { defaultFontFamily } from '@typebot.io/schemas/features/typebot/theme/constants'
+import { isNotEmpty } from '@sniper.io/lib'
+import { Font } from '@sniper.io/schemas'
+import { defaultFontFamily } from '@sniper.io/schemas/features/sniper/theme/constants'
 
 const googleFontCdnBaseUrl = 'https://fonts.bunny.net/css2'
-const elementId = 'typebot-font'
+const elementId = 'sniper-font'
 
 export const injectFont = (font: Font) => {
   const existingFont = document.getElementById(elementId)

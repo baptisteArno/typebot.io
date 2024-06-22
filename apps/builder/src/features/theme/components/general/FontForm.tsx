@@ -1,4 +1,4 @@
-import { Font } from '@typebot.io/schemas'
+import { Font } from '@sniper.io/schemas'
 import { GoogleFontForm } from './GoogleFontForm'
 import { CustomFontForm } from './CustomFontForm'
 

@@ -1,5 +1,5 @@
 {
-  "name": "@typebot.io/env",
+  "name": "@sniper.io/env",
   "version": "1.0.0",
   "license": "AGPL-3.0-or-later",
   "private": true,
@@ -10,7 +10,7 @@
     "zod": "3.22.4"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*",
+    "@sniper.io/tsconfig": "workspace:*",
     "@types/node": "20.4.2",
     "esbuild": "0.19.5"
   },

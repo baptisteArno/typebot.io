@@ -1,25 +1,25 @@
-import { isNotDefined } from '@typebot.io/lib'
-import { PublicTypebotV6 } from '@typebot.io/schemas'
-import { isInputBlock } from '@typebot.io/schemas/helpers'
+import { isNotDefined } from '@sniper.io/lib'
+import { PublicSniperV6 } from '@sniper.io/schemas'
+import { isInputBlock } from '@sniper.io/schemas/helpers'
 import {
   TotalAnswers,
   TotalVisitedEdges,
-} from '@typebot.io/schemas/features/analytics'
+} from '@sniper.io/schemas/features/analytics'
 
 export const computeTotalUsersAtBlock = (
   currentBlockId: string,
   {
-    publishedTypebot,
+    publishedSniper,
     totalVisitedEdges,
     totalAnswers,
   }: {
-    publishedTypebot: PublicTypebotV6
+    publishedSniper: PublicSniperV6
     totalVisitedEdges: TotalVisitedEdges[]
     totalAnswers: TotalAnswers[]
   }
 ): number => {
   let totalUsers = 0
-  const currentGroup = publishedTypebot.groups.find((group) =>
+  const currentGroup = publishedSniper.groups.find((group) =>
     group.blocks.find((block) => block.id === currentBlockId)
   )
   if (!currentGroup) return 0
@@ -30,7 +30,7 @@ export const computeTotalUsersAtBlock = (
   for (const block of previousBlocks.reverse()) {
     if (currentBlockId !== block.id && isInputBlock(block))
       return totalAnswers.find((t) => t.blockId === block.id)?.total ?? 0
-    const incomingEdges = publishedTypebot.edges.filter(
+    const incomingEdges = publishedSniper.edges.filter(
       (edge) => edge.to.blockId === block.id
     )
     if (!incomingEdges.length) continue
@@ -43,7 +43,7 @@ export const computeTotalUsersAtBlock = (
       0
     )
   }
-  const edgesConnectedToGroup = publishedTypebot.edges.filter(
+  const edgesConnectedToGroup = publishedSniper.edges.filter(
     (edge) =>
       edge.to.groupId === currentGroup.id && isNotDefined(edge.to.blockId)
   )

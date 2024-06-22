@@ -5,13 +5,13 @@ import { executeGoogleAnalyticsBlock } from './blocks/integrations/legacy/google
 import { executeGoogleSheetBlock } from './blocks/integrations/googleSheets/executeGoogleSheetBlock'
 import { executePixelBlock } from './blocks/integrations/pixel/executePixelBlock'
 import { executeZemanticAiBlock } from './blocks/integrations/zemanticAi/executeZemanticAiBlock'
-import { IntegrationBlock, SessionState } from '@typebot.io/schemas'
+import { IntegrationBlock, SessionState } from '@sniper.io/schemas'
 import { ExecuteIntegrationResponse } from './types'
-import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
+import { IntegrationBlockType } from '@sniper.io/schemas/features/blocks/integrations/constants'
 import { executeOpenAIBlock } from './blocks/integrations/legacy/openai/executeOpenAIBlock'
 import { executeForgedBlock } from './forge/executeForgedBlock'
-import { isNotDefined } from '@typebot.io/lib'
-import { env } from '@typebot.io/env'
+import { isNotDefined } from '@sniper.io/lib'
+import { env } from '@sniper.io/env'
 
 export const executeIntegration =
   (state: SessionState) =>

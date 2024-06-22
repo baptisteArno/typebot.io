@@ -1,40 +1,40 @@
-import { Typebot, PublicTypebot } from '@typebot.io/schemas'
+import { Sniper, PublicSniper } from '@sniper.io/schemas'
 import { diff } from 'deep-object-diff'
 import { dequal } from 'dequal'
 
 export const isPublished = (
-  typebot: Typebot,
-  publicTypebot: PublicTypebot,
+  sniper: Sniper,
+  publicSniper: PublicSniper,
   debug?: boolean
 ) => {
   if (debug)
     console.log(
       'diff:',
       diff(
-        JSON.parse(JSON.stringify(typebot.groups)),
-        JSON.parse(JSON.stringify(publicTypebot.groups))
+        JSON.parse(JSON.stringify(sniper.groups)),
+        JSON.parse(JSON.stringify(publicSniper.groups))
       )
     )
   return (
     dequal(
-      JSON.parse(JSON.stringify(typebot.groups)),
-      JSON.parse(JSON.stringify(publicTypebot.groups))
+      JSON.parse(JSON.stringify(sniper.groups)),
+      JSON.parse(JSON.stringify(publicSniper.groups))
     ) &&
     dequal(
-      JSON.parse(JSON.stringify(typebot.settings)),
-      JSON.parse(JSON.stringify(publicTypebot.settings))
+      JSON.parse(JSON.stringify(sniper.settings)),
+      JSON.parse(JSON.stringify(publicSniper.settings))
     ) &&
     dequal(
-      JSON.parse(JSON.stringify(typebot.theme)),
-      JSON.parse(JSON.stringify(publicTypebot.theme))
+      JSON.parse(JSON.stringify(sniper.theme)),
+      JSON.parse(JSON.stringify(publicSniper.theme))
     ) &&
     dequal(
-      JSON.parse(JSON.stringify(typebot.variables)),
-      JSON.parse(JSON.stringify(publicTypebot.variables))
+      JSON.parse(JSON.stringify(sniper.variables)),
+      JSON.parse(JSON.stringify(publicSniper.variables))
     ) &&
     dequal(
-      JSON.parse(JSON.stringify(typebot.events)),
-      JSON.parse(JSON.stringify(publicTypebot.events))
+      JSON.parse(JSON.stringify(sniper.events)),
+      JSON.parse(JSON.stringify(publicSniper.events))
     )
   )
 }

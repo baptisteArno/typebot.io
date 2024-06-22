@@ -4,7 +4,7 @@
   - You are about to drop the column `ownerId` on the `Credentials` table. All the data in the column will be lost.
   - You are about to drop the column `ownerId` on the `CustomDomain` table. All the data in the column will be lost.
   - You are about to drop the column `ownerId` on the `DashboardFolder` table. All the data in the column will be lost.
-  - You are about to drop the column `ownerId` on the `Typebot` table. All the data in the column will be lost.
+  - You are about to drop the column `ownerId` on the `Sniper` table. All the data in the column will be lost.
   - You are about to drop the column `plan` on the `User` table. All the data in the column will be lost.
   - You are about to drop the column `stripeId` on the `User` table. All the data in the column will be lost.
 
@@ -19,7 +19,7 @@ ALTER TABLE "CustomDomain" DROP CONSTRAINT "CustomDomain_ownerId_fkey";
 ALTER TABLE "DashboardFolder" DROP CONSTRAINT "DashboardFolder_ownerId_fkey";
 
 -- DropForeignKey
-ALTER TABLE "Typebot" DROP CONSTRAINT "Typebot_ownerId_fkey";
+ALTER TABLE "Sniper" DROP CONSTRAINT "Sniper_ownerId_fkey";
 
 -- DropIndex
 DROP INDEX "Credentials_name_type_ownerId_key";
@@ -28,7 +28,7 @@ DROP INDEX "Credentials_name_type_ownerId_key";
 DROP INDEX "DashboardFolder_id_ownerId_key";
 
 -- DropIndex
-DROP INDEX "Typebot_id_ownerId_key";
+DROP INDEX "Sniper_id_ownerId_key";
 
 -- DropIndex
 DROP INDEX "User_stripeId_key";
@@ -43,7 +43,7 @@ ALTER TABLE "CustomDomain" DROP COLUMN "ownerId";
 ALTER TABLE "DashboardFolder" DROP COLUMN "ownerId";
 
 -- AlterTable
-ALTER TABLE "Typebot" DROP COLUMN "ownerId";
+ALTER TABLE "Sniper" DROP COLUMN "ownerId";
 
 -- AlterTable
 ALTER TABLE "User" DROP COLUMN "plan",

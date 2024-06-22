@@ -6,11 +6,11 @@ import {
   DomainVerificationStatus,
   domainResponseSchema,
   domainVerificationStatusSchema,
-} from '@typebot.io/schemas/features/customDomains'
-import prisma from '@typebot.io/lib/prisma'
+} from '@sniper.io/schemas/features/customDomains'
+import prisma from '@sniper.io/lib/prisma'
 import { isWriteWorkspaceForbidden } from '@/features/workspace/helpers/isWriteWorkspaceForbidden'
 import { TRPCError } from '@trpc/server'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 export const verifyCustomDomain = authenticatedProcedure
   .meta({

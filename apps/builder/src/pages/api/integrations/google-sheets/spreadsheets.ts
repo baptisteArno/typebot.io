@@ -5,7 +5,7 @@ import {
   badRequest,
   methodNotAllowed,
   notAuthenticated,
-} from '@typebot.io/lib/api'
+} from '@sniper.io/lib/api'
 import { setUser } from '@sentry/nextjs'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 

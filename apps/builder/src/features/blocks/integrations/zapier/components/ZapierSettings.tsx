@@ -1,6 +1,6 @@
 import { Alert, AlertIcon, Button, Link, Stack, Text } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@/components/icons'
-import { HttpRequest, HttpRequestBlock, ZapierBlock } from '@typebot.io/schemas'
+import { HttpRequest, HttpRequestBlock, ZapierBlock } from '@sniper.io/schemas'
 import React from 'react'
 import { HttpRequestAdvancedConfigForm } from '../../webhook/components/HttpRequestAdvancedConfigForm'
 
@@ -34,7 +34,7 @@ export const ZapierSettings = ({
             <Text>Head up to Zapier to configure this block:</Text>
             <Button
               as={Link}
-              href="https://zapier.com/apps/typebot/integrations"
+              href="https://zapier.com/apps/sniper/integrations"
               isExternal
               colorScheme="blue"
             >

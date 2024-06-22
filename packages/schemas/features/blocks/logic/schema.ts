@@ -4,7 +4,7 @@ import { jumpBlockSchema } from './jump'
 import { redirectBlockSchema } from './redirect'
 import { scriptBlockSchema } from './script'
 import { setVariableBlockSchema } from './setVariable'
-import { typebotLinkBlockSchema } from './typebotLink'
+import { sniperLinkBlockSchema } from './sniperLink'
 import { waitBlockSchema } from './wait'
 import { abTestBlockSchemas } from './abTest'
 
@@ -14,7 +14,7 @@ export const logicBlockSchemas = {
     conditionBlockSchemas.v5,
     redirectBlockSchema,
     setVariableBlockSchema,
-    typebotLinkBlockSchema,
+    sniperLinkBlockSchema,
     waitBlockSchema,
     jumpBlockSchema,
     abTestBlockSchemas.v5,
@@ -24,7 +24,7 @@ export const logicBlockSchemas = {
     conditionBlockSchemas.v6,
     redirectBlockSchema,
     setVariableBlockSchema,
-    typebotLinkBlockSchema,
+    sniperLinkBlockSchema,
     waitBlockSchema,
     jumpBlockSchema,
     abTestBlockSchemas.v6,

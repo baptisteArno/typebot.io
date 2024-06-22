@@ -29,7 +29,7 @@ export const EnterprisePlanCard = () => (
       <Text fontSize="lg">
         <Button
           as={Link}
-          href="https://typebot.io/enterprise-lead-form"
+          href="https://sniper.io/enterprise-lead-form"
           isExternal
           variant="outline"
         >

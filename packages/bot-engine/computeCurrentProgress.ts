@@ -1,28 +1,28 @@
-import { isDefined, byId } from '@typebot.io/lib'
+import { isDefined, byId } from '@sniper.io/lib'
 import {
   getBlockById,
   blockHasItems,
   isInputBlock,
-} from '@typebot.io/schemas/helpers'
-import { Block, SessionState } from '@typebot.io/schemas'
+} from '@sniper.io/schemas/helpers'
+import { Block, SessionState } from '@sniper.io/schemas'
 
 type Props = {
-  typebotsQueue: SessionState['typebotsQueue']
+  snipersQueue: SessionState['snipersQueue']
   progressMetadata: NonNullable<SessionState['progressMetadata']>
   currentInputBlockId: string | undefined
 }
 
 export const computeCurrentProgress = ({
-  typebotsQueue,
+  snipersQueue,
   progressMetadata,
   currentInputBlockId,
 }: Props) => {
   if (!currentInputBlockId) return
   const paths = computePossibleNextInputBlocks({
-    typebotsQueue: typebotsQueue,
+    snipersQueue: snipersQueue,
     blockId: currentInputBlockId,
     visitedBlocks: {
-      [typebotsQueue[0].typebot.id]: [],
+      [snipersQueue[0].sniper.id]: [],
     },
     currentPath: [],
   })
@@ -36,25 +36,25 @@ export const computeCurrentProgress = ({
 
 const computePossibleNextInputBlocks = ({
   currentPath,
-  typebotsQueue,
+  snipersQueue,
   blockId,
   visitedBlocks,
 }: {
   currentPath: string[]
-  typebotsQueue: SessionState['typebotsQueue']
+  snipersQueue: SessionState['snipersQueue']
   blockId: string
   visitedBlocks: {
     [key: string]: string[]
   }
 }): string[][] => {
-  if (visitedBlocks[typebotsQueue[0].typebot.id].includes(blockId)) return []
-  visitedBlocks[typebotsQueue[0].typebot.id].push(blockId)
+  if (visitedBlocks[snipersQueue[0].sniper.id].includes(blockId)) return []
+  visitedBlocks[snipersQueue[0].sniper.id].push(blockId)
 
   const possibleNextInputBlocks: string[][] = []
 
   const { block, group, blockIndex } = getBlockById(
     blockId,
-    typebotsQueue[0].typebot.groups
+    snipersQueue[0].sniper.groups
   )
 
   if (isInputBlock(block)) currentPath.push(block.id)
@@ -62,18 +62,18 @@ const computePossibleNextInputBlocks = ({
   const outgoingEdgeIds = getBlockOutgoingEdgeIds(block)
 
   for (const outgoingEdgeId of outgoingEdgeIds) {
-    const to = typebotsQueue[0].typebot.edges.find(
+    const to = snipersQueue[0].sniper.edges.find(
       (e) => e.id === outgoingEdgeId
     )?.to
     if (!to) continue
     const blockId =
       to.blockId ??
-      typebotsQueue[0].typebot.groups.find((g) => g.id === to.groupId)
-        ?.blocks[0].id
+      snipersQueue[0].sniper.groups.find((g) => g.id === to.groupId)?.blocks[0]
+        .id
     if (!blockId) continue
     possibleNextInputBlocks.push(
       ...computePossibleNextInputBlocks({
-        typebotsQueue,
+        snipersQueue,
         blockId,
         visitedBlocks,
         currentPath,
@@ -84,7 +84,7 @@ const computePossibleNextInputBlocks = ({
   for (const block of group.blocks.slice(blockIndex + 1)) {
     possibleNextInputBlocks.push(
       ...computePossibleNextInputBlocks({
-        typebotsQueue,
+        snipersQueue,
         blockId: block.id,
         visitedBlocks,
         currentPath,
@@ -95,22 +95,22 @@ const computePossibleNextInputBlocks = ({
   if (outgoingEdgeIds.length > 0 || group.blocks.length !== blockIndex + 1)
     return possibleNextInputBlocks
 
-  if (typebotsQueue.length > 1) {
-    const nextEdgeId = typebotsQueue[0].edgeIdToTriggerWhenDone
-    const to = typebotsQueue[1].typebot.edges.find(byId(nextEdgeId))?.to
+  if (snipersQueue.length > 1) {
+    const nextEdgeId = snipersQueue[0].edgeIdToTriggerWhenDone
+    const to = snipersQueue[1].sniper.edges.find(byId(nextEdgeId))?.to
     if (!to) return possibleNextInputBlocks
     const blockId =
       to.blockId ??
-      typebotsQueue[0].typebot.groups.find((g) => g.id === to.groupId)
-        ?.blocks[0].id
+      snipersQueue[0].sniper.groups.find((g) => g.id === to.groupId)?.blocks[0]
+        .id
     if (blockId) {
       possibleNextInputBlocks.push(
         ...computePossibleNextInputBlocks({
-          typebotsQueue: typebotsQueue.slice(1),
+          snipersQueue: snipersQueue.slice(1),
           blockId,
           visitedBlocks: {
             ...visitedBlocks,
-            [typebotsQueue[1].typebot.id]: [],
+            [snipersQueue[1].sniper.id]: [],
           },
           currentPath,
         })

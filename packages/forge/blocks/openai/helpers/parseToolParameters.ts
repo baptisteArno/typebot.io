@@ -1,6 +1,6 @@
 import type { OpenAI } from 'openai'
 import { toolParametersSchema } from '../shared/parseChatCompletionOptions'
-import { z } from '@typebot.io/forge/zod'
+import { z } from '@sniper.io/forge/zod'
 
 export const parseToolParameters = (
   parameters: z.infer<typeof toolParametersSchema>

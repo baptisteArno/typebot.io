@@ -1,8 +1,8 @@
 import { z } from '../../zod'
 import { answerSchema } from '../answer'
 import { resultSchema, setVariableHistoryItemSchema } from '../result'
-import { typebotInSessionStateSchema, dynamicThemeSchema } from './shared'
-import { settingsSchema } from '../typebot/settings'
+import { sniperInSessionStateSchema, dynamicThemeSchema } from './shared'
+import { settingsSchema } from '../sniper/settings'
 import { isInputBlock } from '../../helpers'
 
 const answerInSessionStateSchemaV2 = z.object({
@@ -27,13 +27,13 @@ const sessionStateSchemaV1 = z.object({
   version: z.undefined().openapi({
     type: 'string',
   }),
-  typebot: typebotInSessionStateSchema,
+  sniper: sniperInSessionStateSchema,
   dynamicTheme: dynamicThemeSchema.optional(),
-  linkedTypebots: z.object({
-    typebots: z.array(typebotInSessionStateSchema),
-    queue: z.array(z.object({ edgeId: z.string(), typebotId: z.string() })),
+  linkedSnipers: z.object({
+    snipers: z.array(sniperInSessionStateSchema),
+    queue: z.array(z.object({ edgeId: z.string(), sniperId: z.string() })),
   }),
-  currentTypebotId: z.string(),
+  currentSniperId: z.string(),
   result: resultInSessionStateSchema,
   currentBlock: z
     .object({
@@ -45,13 +45,13 @@ const sessionStateSchemaV1 = z.object({
 
 const sessionStateSchemaV2 = z.object({
   version: z.literal('2'),
-  typebotsQueue: z.array(
+  snipersQueue: z.array(
     z.object({
       edgeIdToTriggerWhenDone: z.string().optional(),
       isMergingWithParent: z.boolean().optional(),
       resultId: z.string().optional(),
       answers: z.array(answerInSessionStateSchemaV2),
-      typebot: typebotInSessionStateSchema,
+      sniper: sniperInSessionStateSchema,
     })
   ),
   dynamicTheme: dynamicThemeSchema.optional(),
@@ -127,13 +127,13 @@ const migrateFromV1ToV2 = (
   state: z.infer<typeof sessionStateSchemaV1>
 ): z.infer<typeof sessionStateSchemaV2> => ({
   version: '2',
-  typebotsQueue: [
+  snipersQueue: [
     {
-      typebot: state.typebot,
+      sniper: state.sniper,
       resultId: state.result.id,
       answers: state.result.answers.map((answer) => {
         let answerVariableId: string | undefined
-        state.typebot.groups.forEach((group) => {
+        state.sniper.groups.forEach((group) => {
           group.blocks.forEach((block) => {
             if (isInputBlock(block) && block.id === answer.blockId) {
               answerVariableId = block.options?.variableId
@@ -143,10 +143,10 @@ const migrateFromV1ToV2 = (
         return {
           key:
             (answerVariableId
-              ? state.typebot.variables.find(
+              ? state.sniper.variables.find(
                   (variable) => variable.id === answerVariableId
                 )?.name
-              : state.typebot.groups.find((group) =>
+              : state.sniper.groups.find((group) =>
                   group.blocks.find((block) => block.id === answer.blockId)
                 )?.title) ?? '',
           value: answer.content,
@@ -154,18 +154,18 @@ const migrateFromV1ToV2 = (
       }),
       isMergingWithParent: true,
       edgeIdToTriggerWhenDone:
-        state.linkedTypebots.queue.length > 0
-          ? state.linkedTypebots.queue[0].edgeId
+        state.linkedSnipers.queue.length > 0
+          ? state.linkedSnipers.queue[0].edgeId
           : undefined,
     },
-    ...state.linkedTypebots.typebots.map(
-      (typebot, index) =>
+    ...state.linkedSnipers.snipers.map(
+      (sniper, index) =>
         ({
-          typebot,
+          sniper,
           resultId: state.result.id,
           answers: state.result.answers.map((answer) => {
             let answerVariableId: string | undefined
-            typebot.groups.forEach((group) => {
+            sniper.groups.forEach((group) => {
               group.blocks.forEach((block) => {
                 if (isInputBlock(block) && block.id === answer.blockId) {
                   answerVariableId = block.options?.variableId
@@ -175,18 +175,18 @@ const migrateFromV1ToV2 = (
             return {
               key:
                 (answerVariableId
-                  ? state.typebot.variables.find(
+                  ? state.sniper.variables.find(
                       (variable) => variable.id === answerVariableId
                     )?.name
-                  : state.typebot.groups.find((group) =>
+                  : state.sniper.groups.find((group) =>
                       group.blocks.find((block) => block.id === answer.blockId)
                     )?.title) ?? '',
               value: answer.content,
             }
           }),
-          edgeIdToTriggerWhenDone: state.linkedTypebots.queue.at(index + 1)
+          edgeIdToTriggerWhenDone: state.linkedSnipers.queue.at(index + 1)
             ?.edgeId,
-        } satisfies SessionState['typebotsQueue'][number])
+        } satisfies SessionState['snipersQueue'][number])
     ),
   ],
   dynamicTheme: state.dynamicTheme,

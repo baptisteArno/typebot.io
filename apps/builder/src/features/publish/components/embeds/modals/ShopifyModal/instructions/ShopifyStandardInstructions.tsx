@@ -54,7 +54,7 @@ export const ShopifyStandardInstructions = ({ publicId }: Props) => {
             }
           />
           <Text>
-            Place an element on which the typebot will go in any file in the{' '}
+            Place an element on which the sniper will go in any file in the{' '}
             <Code>{'<body>'}</Code>:
           </Text>
           <CodeEditor value={elementCode} lang="html" isReadOnly />

@@ -1,5 +1,5 @@
 import { createTransport, SendMailOptions } from 'nodemailer'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 export const sendEmail = (
   props: Pick<SendMailOptions, 'to' | 'html' | 'subject'>

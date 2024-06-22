@@ -1,5 +1,5 @@
-import prisma from '@typebot.io/lib/prisma'
-import { Answer, Result } from '@typebot.io/schemas'
+import prisma from '@sniper.io/lib/prisma'
+import { Answer, Result } from '@sniper.io/schemas'
 
 type Props = {
   id: string

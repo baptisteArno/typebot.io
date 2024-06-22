@@ -2,7 +2,7 @@ import { TextInput } from '@/components/inputs'
 import { TableListItemProps } from '@/components/TableList'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { Stack, FormControl, FormLabel } from '@chakra-ui/react'
-import { VariableForTest, Variable } from '@typebot.io/schemas'
+import { VariableForTest, Variable } from '@sniper.io/schemas'
 
 export const VariableForTestInputs = ({
   item,

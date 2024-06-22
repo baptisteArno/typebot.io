@@ -1,4 +1,4 @@
-import { isNotEmpty } from '@typebot.io/lib'
+import { isNotEmpty } from '@sniper.io/lib'
 
 export const toKebabCase = (value: string) => {
   const matched = value.match(

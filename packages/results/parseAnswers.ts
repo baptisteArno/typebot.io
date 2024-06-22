@@ -2,7 +2,7 @@ import {
   AnswerInSessionState,
   Variable,
   VariableWithValue,
-} from '@typebot.io/schemas'
+} from '@sniper.io/schemas'
 import { isDefined, isEmpty } from '../lib/utils'
 
 export const parseAnswers = ({

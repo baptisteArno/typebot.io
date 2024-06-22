@@ -1,6 +1,6 @@
 import { Text, Hr } from '@react-email/components'
 import * as React from 'react'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 import { text, hr } from './styles'
 import { NewsletterLayout } from './components/NewsletterLayout'
 import { NewsletterSection } from './components/NewsletterSection'
@@ -8,11 +8,11 @@ import { NewsletterSection } from './components/NewsletterSection'
 const imagesBaseUrl = `${env.NEXTAUTH_URL}/images/emails/V2dot26Update`
 
 export const V2dot26Update = () => (
-  <NewsletterLayout preview="Unveiling Typebot's Latest Innovations - v2.26 Update! 🌟">
+  <NewsletterLayout preview="Unveiling Sniper's Latest Innovations - v2.26 Update! 🌟">
     <Text style={text}>
       Heya, <br />
       <br />
-      Typebot v2.26 was just released. It comes with cool new stuff.
+      Sniper v2.26 was just released. It comes with cool new stuff.
       <br />
       <br />
       Let's dive into what's new! 🔥

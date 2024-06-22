@@ -1,19 +1,19 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { PrismaClient } from '@sniper.io/prisma'
 import * as p from '@clack/prompts'
 import { promptAndSetEnvironment } from './utils'
 import cliProgress from 'cli-progress'
 import { writeFileSync } from 'fs'
 import {
   ResultWithAnswers,
-  TypebotV6,
+  SniperV6,
   resultWithAnswersSchema,
-} from '@typebot.io/schemas'
-import { byId } from '@typebot.io/lib'
-import { parseResultHeader } from '@typebot.io/results/parseResultHeader'
-import { convertResultsToTableData } from '@typebot.io/results/convertResultsToTableData'
-import { parseBlockIdVariableIdMap } from '@typebot.io/results/parseBlockIdVariableIdMap'
-import { parseColumnsOrder } from '@typebot.io/results/parseColumnsOrder'
-import { parseUniqueKey } from '@typebot.io/lib/parseUniqueKey'
+} from '@sniper.io/schemas'
+import { byId } from '@sniper.io/lib'
+import { parseResultHeader } from '@sniper.io/results/parseResultHeader'
+import { convertResultsToTableData } from '@sniper.io/results/convertResultsToTableData'
+import { parseBlockIdVariableIdMap } from '@sniper.io/results/parseBlockIdVariableIdMap'
+import { parseColumnsOrder } from '@sniper.io/results/parseColumnsOrder'
+import { parseUniqueKey } from '@sniper.io/lib/parseUniqueKey'
 import { unparse } from 'papaparse'
 import { z } from 'zod'
 
@@ -22,11 +22,11 @@ const exportResults = async () => {
 
   const prisma = new PrismaClient()
 
-  const typebotId = (await p.text({
-    message: 'Typebot ID?',
+  const sniperId = (await p.text({
+    message: 'Sniper ID?',
   })) as string
 
-  if (!typebotId || typeof typebotId !== 'string') {
+  if (!sniperId || typeof sniperId !== 'string') {
     console.log('No id provided')
     return
   }
@@ -36,20 +36,20 @@ const exportResults = async () => {
     cliProgress.Presets.shades_classic
   )
 
-  const typebot = (await prisma.typebot.findUnique({
+  const sniper = (await prisma.sniper.findUnique({
     where: {
-      id: typebotId,
+      id: sniperId,
     },
-  })) as TypebotV6 | null
+  })) as SniperV6 | null
 
-  if (!typebot) {
-    console.log('No typebot found')
+  if (!sniper) {
+    console.log('No sniper found')
     return
   }
 
   const totalResultsToExport = await prisma.result.count({
     where: {
-      typebotId,
+      sniperId,
       hasStarted: true,
       isArchived: false,
     },
@@ -67,7 +67,7 @@ const exportResults = async () => {
             take: 50,
             skip,
             where: {
-              typebotId,
+              sniperId,
               hasStarted: true,
               isArchived: false,
             },
@@ -99,19 +99,19 @@ const exportResults = async () => {
 
   writeFileSync('logs/results.json', JSON.stringify(results))
 
-  const resultHeader = parseResultHeader(typebot, [])
+  const resultHeader = parseResultHeader(sniper, [])
 
   const dataToUnparse = convertResultsToTableData({
     results,
     headerCells: resultHeader,
-    blockIdVariableIdMap: parseBlockIdVariableIdMap(typebot?.groups),
+    blockIdVariableIdMap: parseBlockIdVariableIdMap(sniper?.groups),
   })
 
   const headerIds = parseColumnsOrder(
-    typebot?.resultsTablePreferences?.columnsOrder,
+    sniper?.resultsTablePreferences?.columnsOrder,
     resultHeader
   ).reduce<string[]>((currentHeaderIds, columnId) => {
-    if (typebot?.resultsTablePreferences?.columnsVisibility[columnId] === false)
+    if (sniper?.resultsTablePreferences?.columnsVisibility[columnId] === false)
       return currentHeaderIds
     const columnLabel = resultHeader.find(
       (headerCell) => headerCell.id === columnId

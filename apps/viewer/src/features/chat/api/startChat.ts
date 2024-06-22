@@ -2,14 +2,14 @@ import { publicProcedure } from '@/helpers/server/trpc'
 import {
   startChatInputSchema,
   startChatResponseSchema,
-} from '@typebot.io/schemas/features/chat/schema'
-import { startChat as startChatFn } from '@typebot.io/bot-engine/apiHandlers/startChat'
+} from '@sniper.io/schemas/features/chat/schema'
+import { startChat as startChatFn } from '@sniper.io/bot-engine/apiHandlers/startChat'
 
 export const startChat = publicProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/v1/typebots/{publicId}/startChat',
+      path: '/v1/snipers/{publicId}/startChat',
       summary: 'Start chat',
     },
   })

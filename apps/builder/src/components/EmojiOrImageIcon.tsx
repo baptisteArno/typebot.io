@@ -1,7 +1,7 @@
 import { ToolIcon } from '@/components/icons'
 import React from 'react'
 import { chakra, IconProps, Image } from '@chakra-ui/react'
-import { isSvgSrc } from '@typebot.io/lib/utils'
+import { isSvgSrc } from '@sniper.io/lib/utils'
 
 type Props = {
   icon?: string | null
@@ -24,7 +24,7 @@ export const EmojiOrImageIcon = ({
             src={icon}
             boxSize={boxSize}
             objectFit={isSvgSrc(icon) ? undefined : 'cover'}
-            alt="typebot icon"
+            alt="sniper icon"
             rounded="10%"
           />
         ) : (

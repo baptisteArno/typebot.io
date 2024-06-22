@@ -11,15 +11,15 @@ import {
   Textarea,
 } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
-import { PublicTypebot } from '@typebot.io/schemas'
-import { sendRequest } from '@typebot.io/lib'
+import { PublicSniper } from '@sniper.io/schemas'
+import { sendRequest } from '@sniper.io/lib'
 import { DontIcon } from 'assets/icons/DontIcon'
 import { DoIcon } from 'assets/icons/DoIcon'
 import { HandDrawnArrow } from 'assets/illustrations/HandDrawnArrow'
-import { Standard } from '@typebot.io/nextjs'
+import { Standard } from '@sniper.io/nextjs'
 
 export const IntroducingChatApps = () => {
-  const [typebot, setTypebot] = useState<PublicTypebot>()
+  const [sniper, setSniper] = useState<PublicSniper>()
 
   useEffect(() => {
     fetchTemplate()
@@ -27,9 +27,9 @@ export const IntroducingChatApps = () => {
   }, [])
 
   const fetchTemplate = async () => {
-    const { data, error } = await sendRequest(`/typebots/lead-gen-lp.json`)
+    const { data, error } = await sendRequest(`/snipers/lead-gen-lp.json`)
     if (error) return
-    setTypebot(data as PublicTypebot)
+    setSniper(data as PublicSniper)
   }
 
   return (
@@ -57,7 +57,7 @@ export const IntroducingChatApps = () => {
             color="gray.400"
             data-aos="fade"
           >
-            Typebot is a better way to ask for information. It leads to an
+            Sniper is a better way to ask for information. It leads to an
             increase in customer satisfaction and retention and multiply by 3
             your conversion rate compared to classical forms.
           </Text>
@@ -82,9 +82,9 @@ export const IntroducingChatApps = () => {
             align={['flex-start', 'center']}
           >
             <DoIcon />
-            {typebot && (
+            {sniper && (
               <Standard
-                typebot={typebot}
+                sniper={sniper}
                 style={{
                   borderRadius: '0.375rem',
                   borderWidth: '1px',

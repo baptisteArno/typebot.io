@@ -4,7 +4,7 @@ import { Grid } from '@giphy/react-components'
 import { GiphyLogo } from '../logos/GiphyLogo'
 import React, { useState } from 'react'
 import { TextInput } from '../inputs'
-import { env } from '@typebot.io/env'
+import { env } from '@sniper.io/env'
 
 type GiphySearchFormProps = {
   onSubmit: (url: string) => void

@@ -1,4 +1,4 @@
-import { ContinueChatResponse, StartChatResponse } from '@typebot.io/schemas'
+import { ContinueChatResponse, StartChatResponse } from '@sniper.io/schemas'
 
 export type InputSubmitContent = {
   label?: string
@@ -6,7 +6,7 @@ export type InputSubmitContent = {
 }
 
 export type BotContext = {
-  typebot: InitialChatReply['typebot']
+  sniper: InitialChatReply['sniper']
   resultId?: string
   isPreview: boolean
   apiHost?: string
@@ -15,7 +15,7 @@ export type BotContext = {
 }
 
 export type InitialChatReply = StartChatResponse & {
-  typebot: NonNullable<StartChatResponse['typebot']>
+  sniper: NonNullable<StartChatResponse['sniper']>
   sessionId: NonNullable<StartChatResponse['sessionId']>
 }
 

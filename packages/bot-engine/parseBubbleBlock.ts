@@ -1,25 +1,25 @@
-import { parseVideoUrl } from '@typebot.io/schemas/features/blocks/bubbles/video/helpers'
+import { parseVideoUrl } from '@sniper.io/schemas/features/blocks/bubbles/video/helpers'
 import {
   BubbleBlock,
   Variable,
   ContinueChatResponse,
-  Typebot,
-} from '@typebot.io/schemas'
-import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
-import { isDefined, isEmpty, isNotEmpty } from '@typebot.io/lib/utils'
+  Sniper,
+} from '@sniper.io/schemas'
+import { deepParseVariables } from '@sniper.io/variables/deepParseVariables'
+import { isDefined, isEmpty, isNotEmpty } from '@sniper.io/lib/utils'
 import {
   getVariablesToParseInfoInText,
   parseVariables,
-} from '@typebot.io/variables/parseVariables'
+} from '@sniper.io/variables/parseVariables'
 import { TDescendant, TElement } from '@udecode/plate-common'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
-import { defaultVideoBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
-import { convertMarkdownToRichText } from '@typebot.io/lib/markdown/convertMarkdownToRichText'
-import { convertRichTextToMarkdown } from '@typebot.io/lib/markdown/convertRichTextToMarkdown'
+import { BubbleBlockType } from '@sniper.io/schemas/features/blocks/bubbles/constants'
+import { defaultVideoBubbleContent } from '@sniper.io/schemas/features/blocks/bubbles/video/constants'
+import { convertMarkdownToRichText } from '@sniper.io/lib/markdown/convertMarkdownToRichText'
+import { convertRichTextToMarkdown } from '@sniper.io/lib/markdown/convertRichTextToMarkdown'
 
 type Params = {
   version: 1 | 2
-  typebotVersion: Typebot['version']
+  sniperVersion: Sniper['version']
   variables: Variable[]
   textBubbleContentFormat: 'richText' | 'markdown'
 }
@@ -30,7 +30,7 @@ export type BubbleBlockWithDefinedContent = BubbleBlock & {
 
 export const parseBubbleBlock = (
   block: BubbleBlockWithDefinedContent,
-  { version, variables, typebotVersion, textBubbleContentFormat }: Params
+  { version, variables, sniperVersion, textBubbleContentFormat }: Params
 ): ContinueChatResponse['messages'][0] => {
   switch (block.type) {
     case BubbleBlockType.TEXT: {
@@ -47,7 +47,7 @@ export const parseBubbleBlock = (
 
       const richText = parseVariablesInRichText(block.content?.richText ?? [], {
         variables,
-        takeLatestIfList: typebotVersion !== '6',
+        takeLatestIfList: sniperVersion !== '6',
       }).parsedElements
       return {
         ...block,

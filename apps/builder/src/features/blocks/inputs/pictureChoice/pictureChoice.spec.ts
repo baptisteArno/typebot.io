@@ -1,8 +1,8 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots } from '@typebot.io/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from '@typebot.io/playwright/databaseHelpers'
+import { createSnipers } from '@sniper.io/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@sniper.io/playwright/databaseHelpers'
 import { createId } from '@paralleldrive/cuid2'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
 
 const firstImageSrc =
   'https://images.unsplash.com/flagged/photo-1575517111839-3a3843ee7f5d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80'
@@ -15,10 +15,10 @@ const thirdImageSrc =
 
 test.describe.parallel('Picture choice input block', () => {
   test('can edit items', async ({ page }) => {
-    const typebotId = createId()
-    await createTypebots([
+    const sniperId = createId()
+    await createSnipers([
       {
-        id: typebotId,
+        id: sniperId,
         ...parseDefaultGroupWithBlock({
           type: InputBlockType.PICTURE_CHOICE,
           items: [
@@ -30,7 +30,7 @@ test.describe.parallel('Picture choice input block', () => {
       },
     ])
 
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/snipers/${sniperId}/edit`)
     await page.getByTestId('item-node').click()
     await page.getByRole('button', { name: 'Pick an image' }).click()
     await page.getByPlaceholder('Paste the image link...').fill(firstImageSrc)
@@ -72,7 +72,7 @@ test.describe.parallel('Picture choice input block', () => {
       .click()
     await expect(page.getByTestId('guest-bubble')).toBeVisible()
     await expect(
-      page.locator('typebot-standard').getByText('Third image')
+      page.locator('sniper-standard').getByText('Third image')
     ).toBeVisible()
 
     await page.getByTestId('block block2').click({ position: { x: 0, y: 0 } })
@@ -91,7 +91,7 @@ test.describe.parallel('Picture choice input block', () => {
       .click()
     await page.getByRole('button', { name: 'Go' }).click()
     await expect(
-      page.locator('typebot-standard').getByText('First image, Second image')
+      page.locator('sniper-standard').getByText('First image, Second image')
     ).toBeVisible()
 
     await page.getByTestId('block block2').click({ position: { x: 0, y: 0 } })
@@ -111,7 +111,7 @@ test.describe.parallel('Picture choice input block', () => {
       .click()
     await page.getByRole('button', { name: 'Go' }).click()
     await expect(
-      page.locator('typebot-standard').getByText('Second image')
+      page.locator('sniper-standard').getByText('Second image')
     ).toBeVisible()
   })
 })

@@ -1,5 +1,5 @@
 import test, { expect } from '@playwright/test'
-import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
+import { importSniperInDatabase } from '@sniper.io/playwright/databaseActions'
 import { createId } from '@paralleldrive/cuid2'
 import { getTestAsset } from '@/test/utils/playwright'
 
@@ -7,15 +7,15 @@ test.describe.configure({ mode: 'parallel' })
 
 test.describe('Set variable block', () => {
   test('its configuration should work', async ({ page }) => {
-    const typebotId = createId()
-    await importTypebotInDatabase(
-      getTestAsset('typebots/logic/setVariable.json'),
+    const sniperId = createId()
+    await importSniperInDatabase(
+      getTestAsset('snipers/logic/setVariable.json'),
       {
-        id: typebotId,
+        id: sniperId,
       }
     )
 
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/snipers/${sniperId}/edit`)
     await page.click('text=Type a number...')
     await page.fill('input[placeholder="Select a variable"] >> nth=-1', 'Num')
     await page.getByRole('menuitem', { name: 'Create Num' }).click()
@@ -57,33 +57,33 @@ test.describe('Set variable block', () => {
 
     await page.click('text=Test')
     await page
-      .locator('typebot-standard')
+      .locator('sniper-standard')
       .locator('input[placeholder="Type a number..."]')
       .fill('365')
-    await page.locator('typebot-standard').locator('text=Send').click()
+    await page.locator('sniper-standard').locator('text=Send').click()
     await expect(
-      page.locator('typebot-standard').locator('text=Multiplication: 365000')
+      page.locator('sniper-standard').locator('text=Multiplication: 365000')
     ).toBeVisible()
     await expect(
-      page.locator('typebot-standard').locator('text=Custom var: Custom value')
+      page.locator('sniper-standard').locator('text=Custom var: Custom value')
     ).toBeVisible()
     await expect(
-      page.locator('typebot-standard').locator('text=Addition: 366000')
+      page.locator('sniper-standard').locator('text=Addition: 366000')
     ).toBeVisible()
   })
 
   test('Transcription variable setting should work in preview', async ({
     page,
   }) => {
-    const typebotId = createId()
-    await importTypebotInDatabase(
-      getTestAsset('typebots/logic/setVariable2.json'),
+    const sniperId = createId()
+    await importSniperInDatabase(
+      getTestAsset('snipers/logic/setVariable2.json'),
       {
-        id: typebotId,
+        id: sniperId,
       }
     )
 
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/snipers/${sniperId}/edit`)
     await page.getByText('Transcription =').click()
     await expect(page.getByText('Save in results?')).toBeVisible()
     await page.locator('input[type="text"]').click()
@@ -96,7 +96,7 @@ test.describe('Set variable block', () => {
     await page.getByTestId('textarea').fill('Hello!!')
     await page.getByTestId('input').getByRole('button').click()
     await page
-      .locator('typebot-standard')
+      .locator('sniper-standard')
       .getByRole('button', { name: 'Restart' })
       .click()
     await page.getByRole('button', { name: 'I have a question 💭' }).click()

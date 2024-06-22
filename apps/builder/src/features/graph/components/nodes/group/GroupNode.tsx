@@ -7,9 +7,9 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
-import { GroupV6 } from '@typebot.io/schemas'
+import { GroupV6 } from '@sniper.io/schemas'
 import { BlockNodesList } from '../block/BlockNodesList'
-import { isEmpty, isNotDefined } from '@typebot.io/lib'
+import { isEmpty, isNotDefined } from '@sniper.io/lib'
 import { GroupNodeContextMenu } from './GroupNodeContextMenu'
 import { ContextMenu } from '@/components/ContextMenu'
 import { useDrag } from '@use-gesture/react'
@@ -18,7 +18,7 @@ import {
   RightPanel,
   useEditor,
 } from '@/features/editor/providers/EditorProvider'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { useBlockDnd } from '@/features/graph/providers/GraphDndProvider'
 import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { setMultipleRefs } from '@/helpers/setMultipleRefs'
@@ -44,7 +44,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
     isReadOnly,
     graphPosition,
   } = useGraph()
-  const { typebot, updateGroup, updateGroupsCoordinates } = useTypebot()
+  const { sniper, updateGroup, updateGroupsCoordinates } = useSniper()
   const { setMouseOverGroup, mouseOverGroup } = useBlockDnd()
   const { setRightPanel, setStartPreviewAtGroup } = useEditor()
 
@@ -216,7 +216,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
             />
             <EditableInput minW="0" px="1" className="prevent-group-drag" />
           </Editable>
-          {typebot && (
+          {sniper && (
             <BlockNodesList
               blocks={group.blocks}
               groupIndex={groupIndex}

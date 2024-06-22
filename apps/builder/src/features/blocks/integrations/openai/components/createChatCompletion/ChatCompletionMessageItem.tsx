@@ -3,13 +3,13 @@ import { Textarea } from '@/components/inputs'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { TableListItemProps } from '@/components/TableList'
 import { HStack, Stack, Text } from '@chakra-ui/react'
-import { Variable } from '@typebot.io/schemas'
-import { ChatCompletionOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai'
+import { Variable } from '@sniper.io/schemas'
+import { ChatCompletionOpenAIOptions } from '@sniper.io/schemas/features/blocks/integrations/openai'
 import {
   chatCompletionMessageCustomRoles,
   chatCompletionMessageRoles,
   deprecatedRoles,
-} from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
+} from '@sniper.io/schemas/features/blocks/integrations/openai/constants'
 
 type Props = TableListItemProps<
   NonNullable<ChatCompletionOpenAIOptions['messages']>[number]

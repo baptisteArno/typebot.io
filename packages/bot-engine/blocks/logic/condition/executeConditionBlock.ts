@@ -1,11 +1,11 @@
-import { ConditionBlock, SessionState } from '@typebot.io/schemas'
+import { ConditionBlock, SessionState } from '@sniper.io/schemas'
 import { ExecuteLogicResponse } from '../../../types'
-import { executeCondition } from '@typebot.io/logic/executeCondition'
+import { executeCondition } from '@sniper.io/logic/executeCondition'
 export const executeConditionBlock = (
   state: SessionState,
   block: ConditionBlock
 ): ExecuteLogicResponse => {
-  const { variables } = state.typebotsQueue[0].typebot
+  const { variables } = state.snipersQueue[0].sniper
   const passedCondition = block.items.find(
     (item) =>
       item.content && executeCondition({ variables, condition: item.content })

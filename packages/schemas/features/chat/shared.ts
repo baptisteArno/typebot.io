@@ -1,8 +1,8 @@
 import { z } from '../../zod'
-import { publicTypebotSchemaV5, publicTypebotSchemaV6 } from '../publicTypebot'
-import { preprocessTypebot } from '../typebot/helpers/preprocessTypebot'
+import { publicSniperSchemaV5, publicSniperSchemaV6 } from '../publicSniper'
+import { preprocessSniper } from '../sniper/helpers/preprocessSniper'
 
-const typebotInSessionStatePick = {
+const sniperInSessionStatePick = {
   version: true,
   id: true,
   groups: true,
@@ -10,14 +10,14 @@ const typebotInSessionStatePick = {
   edges: true,
   variables: true,
 } as const
-export const typebotInSessionStateSchema = z.preprocess(
-  preprocessTypebot,
+export const sniperInSessionStateSchema = z.preprocess(
+  preprocessSniper,
   z.discriminatedUnion('version', [
-    publicTypebotSchemaV5._def.schema.pick(typebotInSessionStatePick),
-    publicTypebotSchemaV6.pick(typebotInSessionStatePick),
+    publicSniperSchemaV5._def.schema.pick(sniperInSessionStatePick),
+    publicSniperSchemaV6.pick(sniperInSessionStatePick),
   ])
 )
-export type TypebotInSession = z.infer<typeof typebotInSessionStateSchema>
+export type SniperInSession = z.infer<typeof sniperInSessionStateSchema>
 
 export const dynamicThemeSchema = z.object({
   hostAvatarUrl: z.string().optional(),

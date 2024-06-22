@@ -1,22 +1,22 @@
 import test, { expect } from '@playwright/test'
-import { createTypebots } from '@typebot.io/playwright/databaseActions'
-import { parseDefaultGroupWithBlock } from '@typebot.io/playwright/databaseHelpers'
+import { createSnipers } from '@sniper.io/playwright/databaseActions'
+import { parseDefaultGroupWithBlock } from '@sniper.io/playwright/databaseHelpers'
 import { createId } from '@paralleldrive/cuid2'
-import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
+import { IntegrationBlockType } from '@sniper.io/schemas/features/blocks/integrations/constants'
 
 test.describe('Pixel block', () => {
   test('its configuration should work', async ({ page }) => {
-    const typebotId = createId()
-    await createTypebots([
+    const sniperId = createId()
+    await createSnipers([
       {
-        id: typebotId,
+        id: sniperId,
         ...parseDefaultGroupWithBlock({
           type: IntegrationBlockType.PIXEL,
         }),
       },
     ])
 
-    await page.goto(`/typebots/${typebotId}/edit`)
+    await page.goto(`/snipers/${sniperId}/edit`)
     await page.click('text=Configure...')
     await page.getByPlaceholder('Pixel ID (e.g. "123456789")').fill('pixelid')
     await expect(page.getByText('Init Pixel')).toBeVisible()

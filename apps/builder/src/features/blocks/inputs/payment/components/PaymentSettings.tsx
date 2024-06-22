@@ -11,7 +11,7 @@ import {
   AccordionPanel,
 } from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
-import { PaymentAddress, PaymentInputBlock } from '@typebot.io/schemas'
+import { PaymentAddress, PaymentInputBlock } from '@sniper.io/schemas'
 import React, { ChangeEvent } from 'react'
 import { currencies } from '../currencies'
 import { StripeConfigModal } from './StripeConfigModal'
@@ -22,7 +22,7 @@ import { PaymentAddressSettings } from './PaymentAddressSettings'
 import {
   PaymentProvider,
   defaultPaymentInputOptions,
-} from '@typebot.io/schemas/features/blocks/inputs/payment/constants'
+} from '@sniper.io/schemas/features/blocks/inputs/payment/constants'
 import { useTranslate } from '@tolgee/react'
 
 type Props = {

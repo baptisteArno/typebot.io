@@ -1,6 +1,6 @@
 import { BlockIcon } from '@/features/editor/components/BlockIcon'
 import { StackProps, HStack, useColorModeValue } from '@chakra-ui/react'
-import { BlockIndices, BlockV6 } from '@typebot.io/schemas'
+import { BlockIndices, BlockV6 } from '@sniper.io/schemas'
 import { BlockNodeContent } from './BlockNodeContent'
 
 export const BlockNodeOverlay = ({

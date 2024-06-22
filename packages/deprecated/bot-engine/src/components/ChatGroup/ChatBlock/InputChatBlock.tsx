@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { useAnswers } from '../../../providers/AnswersProvider'
-import { InputBlock } from '@typebot.io/schemas'
+import { InputBlock } from '@sniper.io/schemas'
 import { GuestBubble } from './bubbles/GuestBubble'
-import { byId } from '@typebot.io/lib'
+import { byId } from '@sniper.io/lib'
 import { InputSubmitContent } from '@/types'
-import { useTypebot } from '@/providers/TypebotProvider'
+import { useSniper } from '@/providers/SniperProvider'
 import { isInputValid } from '@/utils/inputs'
 import { parseVariables } from '@/features/variables'
 import { TextInput } from '@/features/blocks/inputs/textInput'
@@ -17,9 +17,9 @@ import { ChoiceForm } from '@/features/blocks/inputs/buttons'
 import { PaymentForm } from '@/features/blocks/inputs/payment'
 import { RatingForm } from '@/features/blocks/inputs/rating'
 import { FileUploadForm } from '@/features/blocks/inputs/fileUpload'
-import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { getBlockById } from '@typebot.io/schemas/helpers'
+import { defaultSettings } from '@sniper.io/schemas/features/sniper/settings/constants'
+import { InputBlockType } from '@sniper.io/schemas/features/blocks/inputs/constants'
+import { getBlockById } from '@sniper.io/schemas/helpers'
 
 export const InputChatBlock = ({
   block,
@@ -37,19 +37,19 @@ export const InputChatBlock = ({
   ) => void
   onSkip: () => void
 }) => {
-  const { typebot, isLoading } = useTypebot()
+  const { sniper, isLoading } = useSniper()
   const { addAnswer } = useAnswers()
   const [answer, setAnswer] = useState<string>()
   const [isEditting, setIsEditting] = useState(false)
 
   const { variableId } = block.options ?? {}
   const defaultValue =
-    (typebot.settings.general?.isInputPrefillEnabled ??
+    (sniper.settings.general?.isInputPrefillEnabled ??
       defaultSettings.general.isInputPrefillEnabled) &&
     variableId
-      ? typebot.variables.find(
+      ? sniper.variables.find(
           (variable) =>
-            variable.name === typebot.variables.find(byId(variableId))?.name
+            variable.name === sniper.variables.find(byId(variableId))?.name
         )?.value
       : undefined
 
@@ -57,8 +57,8 @@ export const InputChatBlock = ({
     setAnswer(label ?? value)
     const isRetry = !isInputValid(value, block.type)
     if (!isRetry && addAnswer) {
-      const { group } = getBlockById(block.id, typebot.groups)
-      await addAnswer(typebot.variables)({
+      const { group } = getBlockById(block.id, sniper.groups)
+      await addAnswer(sniper.variables)({
         blockId: block.id,
         groupId: group.id,
         content: value,
@@ -74,12 +74,12 @@ export const InputChatBlock = ({
   if (isLoading) return null
 
   if (answer) {
-    const avatarUrl = typebot.theme.chat?.guestAvatar?.url
+    const avatarUrl = sniper.theme.chat?.guestAvatar?.url
     return (
       <GuestBubble
         message={answer}
-        showAvatar={typebot.theme.chat?.guestAvatar?.isEnabled ?? false}
-        avatarSrc={avatarUrl && parseVariables(typebot.variables)(avatarUrl)}
+        showAvatar={sniper.theme.chat?.guestAvatar?.isEnabled ?? false}
+        avatarSrc={avatarUrl && parseVariables(sniper.variables)(avatarUrl)}
       />
     )
   }

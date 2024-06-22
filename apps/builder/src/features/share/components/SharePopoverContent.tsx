@@ -3,22 +3,22 @@ import React from 'react'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
 import { CopyButton } from '@/components/CopyButton'
 import { CollaborationList } from '@/features/collaboration/components/CollaborationList'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { useSniper } from '@/features/editor/providers/SniperProvider'
 import { useTranslate } from '@tolgee/react'
 
 export const SharePopoverContent = () => {
   const { t } = useTranslate()
-  const { typebot, updateTypebot } = useTypebot()
+  const { sniper, updateSniper } = useSniper()
 
-  const currentUrl = `${window.location.origin}/typebots/${typebot?.id}/edit`
+  const currentUrl = `${window.location.origin}/snipers/${sniper?.id}/edit`
 
   const updateIsPublicShareEnabled = async (isEnabled: boolean) => {
-    await updateTypebot({
+    await updateSniper({
       updates: {
         settings: {
-          ...typebot?.settings,
+          ...sniper?.settings,
           publicShare: {
-            ...typebot?.settings.publicShare,
+            ...sniper?.settings.publicShare,
             isEnabled,
           },
         },
@@ -33,7 +33,7 @@ export const SharePopoverContent = () => {
       <Stack p="4" borderTopWidth={1}>
         <SwitchWithRelatedSettings
           label={t('share.button.popover.publicFlow.label')}
-          initialValue={typebot?.settings.publicShare?.isEnabled ?? false}
+          initialValue={sniper?.settings.publicShare?.isEnabled ?? false}
           onCheckChange={updateIsPublicShareEnabled}
         >
           <Stack spacing={4}>

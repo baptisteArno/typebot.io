@@ -27,25 +27,25 @@
     "@types/react-scroll": "1.8.6",
     "@types/react-transition-group": "4.4.5",
     "autoprefixer": "10.4.14",
-    "@typebot.io/prisma": "workspace:*",
+    "@sniper.io/prisma": "workspace:*",
     "esbuild": "0.19.5",
     "eslint": "8.44.0",
     "eslint-config-custom": "workspace:*",
-    "@typebot.io/schemas": "workspace:*",
+    "@sniper.io/schemas": "workspace:*",
     "postcss": "8.4.26",
     "prettier": "2.8.8",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tailwindcss": "3.3.3",
-    "@typebot.io/tsconfig": "workspace:*",
+    "@sniper.io/tsconfig": "workspace:*",
     "tsup": "6.5.0",
-    "typebot-js": "workspace:*",
+    "sniper-js": "workspace:*",
     "typescript": "5.4.5",
-    "@typebot.io/lib": "workspace:*",
-    "@typebot.io/env": "workspace:*"
+    "@sniper.io/lib": "workspace:*",
+    "@sniper.io/env": "workspace:*"
   },
   "peerDependencies": {
-    "@typebot.io/prisma": "workspace:*",
+    "@sniper.io/prisma": "workspace:*",
     "react": "18.0.0",
     "react-dom": "18.0.0"
   }

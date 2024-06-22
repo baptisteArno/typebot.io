@@ -36,7 +36,7 @@ export default function OSSFriendsPage({ ossFriends }: Props) {
         bgGradient="linear(to-b, gray.900, gray.800)"
         pb={40}
       >
-        <SocialMetaTags currentUrl={`https://www.typebot.io/oss-friends`} />
+        <SocialMetaTags currentUrl={`https://www.sniper.io/oss-friends`} />
         <BackgroundPolygons />
         <DarkMode>
           <Header />
@@ -62,7 +62,7 @@ export default function OSSFriendsPage({ ossFriends }: Props) {
 
           <SimpleGrid columns={[1, 2, 3]} spacing="6" maxW="1200px">
             {ossFriends
-              .filter((friend) => friend.name !== 'Typebot')
+              .filter((friend) => friend.name !== 'Sniper')
               .map((friend, index) => (
                 <Stack
                   key={index}

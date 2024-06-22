@@ -1,13 +1,13 @@
-import prisma from '@typebot.io/lib/prisma'
+import prisma from '@sniper.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
-import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
-import { OpenAICredentials } from '@typebot.io/schemas/features/blocks/integrations/openai'
-import { isNotEmpty } from '@typebot.io/lib/utils'
+import { decrypt } from '@sniper.io/lib/api/encryption/decrypt'
+import { OpenAICredentials } from '@sniper.io/schemas/features/blocks/integrations/openai'
+import { isNotEmpty } from '@sniper.io/lib/utils'
 import { OpenAI, ClientOptions } from 'openai'
-import { defaultOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
+import { defaultOpenAIOptions } from '@sniper.io/schemas/features/blocks/integrations/openai/constants'
 
 export const listModels = authenticatedProcedure
   .input(

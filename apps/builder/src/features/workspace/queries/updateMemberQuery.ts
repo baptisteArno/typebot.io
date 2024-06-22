@@ -1,5 +1,5 @@
-import { MemberInWorkspace } from '@typebot.io/prisma'
-import { sendRequest } from '@typebot.io/lib'
+import { MemberInWorkspace } from '@sniper.io/prisma'
+import { sendRequest } from '@sniper.io/lib'
 
 export const updateMemberQuery = (
   workspaceId: string,
