@@ -5,7 +5,6 @@ import { stringify } from 'qs'
 import React from 'react'
 import { useTranslate } from '@tolgee/react'
 import { useSniperDnd } from '../SniperDndProvider'
-import { useSniperDnd } from '../SniperDndProvider'
 
 export const CreateBotButton = ({
   folderId,
@@ -13,7 +12,6 @@ export const CreateBotButton = ({
 }: { folderId?: string } & ButtonProps) => {
   const { t } = useTranslate()
   const router = useRouter()
-  const { draggedSniper } = useSniperDnd()
   const { draggedSniper } = useSniperDnd()
 
   const handleClick = () =>
