@@ -1,0 +1,22 @@
+{
+  "name": "@typebot.io/litellm-block",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "keywords": [],
+  "license": "AGPL-3.0-or-later",
+  "dependencies": {
+    "@ai-sdk/openai": "0.0.31",
+    "ai": "3.2.1",
+    "openai": "4.47.1"
+  },
+  "devDependencies": {
+    "@typebot.io/forge": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/tsconfig": "workspace:*",
+    "@typebot.io/variables": "workspace:*",
+    "@types/react": "18.2.15",
+    "ky": "1.2.4",
+    "typescript": "5.4.5"
+  }
+}
