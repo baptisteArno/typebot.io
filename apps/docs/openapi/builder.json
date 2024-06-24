@@ -236,6 +236,9 @@
                                                   },
                                                   "maxWidth": {
                                                     "type": "string"
+                                                  },
+                                                  "queryParamsStr": {
+                                                    "type": "string"
                                                   }
                                                 }
                                               }
@@ -4572,6 +4575,9 @@
                                               },
                                               "maxWidth": {
                                                 "type": "string"
+                                              },
+                                              "queryParamsStr": {
+                                                "type": "string"
                                               }
                                             }
                                           }
@@ -8044,6 +8050,9 @@
                                                 "type": "string"
                                               },
                                               "maxWidth": {
+                                                "type": "string"
+                                              },
+                                              "queryParamsStr": {
                                                 "type": "string"
                                               }
                                             }
@@ -16560,6 +16569,9 @@
                   },
                   "maxWidth": {
                     "type": "string"
+                  },
+                  "queryParamsStr": {
+                    "type": "string"
                   }
                 }
               }
@@ -22872,6 +22884,9 @@
                               },
                               "maxWidth": {
                                 "type": "string"
+                              },
+                              "queryParamsStr": {
+                                "type": "string"
                               }
                             }
                           }
@@ -25713,6 +25728,9 @@
                                 "type": "string"
                               },
                               "maxWidth": {
+                                "type": "string"
+                              },
+                              "queryParamsStr": {
                                 "type": "string"
                               }
                             }

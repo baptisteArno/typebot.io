@@ -206,7 +206,7 @@ const SetVariableValue = ({
               }
               onSelect={updateIsCode}
             />
-            {options?.isCode === undefined || options.isCode ? (
+            {options?.isCode ? (
               <CodeEditor
                 defaultValue={options?.expressionToEvaluate ?? ''}
                 onChange={updateExpression}

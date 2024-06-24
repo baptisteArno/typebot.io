@@ -16,6 +16,7 @@ import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/con
 import { defaultVideoBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
 import { convertMarkdownToRichText } from '@typebot.io/lib/markdown/convertMarkdownToRichText'
 import { convertRichTextToMarkdown } from '@typebot.io/lib/markdown/convertRichTextToMarkdown'
+import { isSingleVariable } from '@typebot.io/variables/isSingleVariable'
 
 type Params = {
   version: 1 | 2
@@ -144,7 +145,9 @@ export const parseVariablesInRichText = (
             : undefined
         lastTextEndIndex = variableInText.endIndex
         const isStandaloneElement =
-          isEmpty(textBeforeVariable) && isEmpty(textAfterVariable)
+          isEmpty(textBeforeVariable) &&
+          isEmpty(textAfterVariable) &&
+          variablesInText.length === 1
         const variableElements = convertMarkdownToRichText(
           isStandaloneElement
             ? variableInText.value
@@ -193,8 +196,7 @@ export const parseVariablesInRichText = (
     const type =
       element.children.length === 1 &&
       'text' in element.children[0] &&
-      (element.children[0].text as string).startsWith('{{') &&
-      (element.children[0].text as string).endsWith('}}') &&
+      isSingleVariable(element.children[0].text as string) &&
       element.type !== 'a'
         ? 'variable'
         : element.type
