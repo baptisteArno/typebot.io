@@ -23,3 +23,7 @@
 .prose > *:not(img) {
   width: 100%;
 }
+
+.prose > iframe {
+  border-radius: 0.5rem;
+}
