@@ -31,7 +31,11 @@ export const verticalVideoSuggestionSize = {
 
 const youtubeBaseUrl = 'https://www.youtube.com/embed'
 export const youtubeRegex =
-  /youtube\.com\/(watch\?v=|shorts\/)([\w-]+)|youtu\.be\/([\w-]+)/
+  /youtube\.com\/(watch\?v=|shorts\/)([\w-]+)|youtu\.be\/([\w-]+)(\?.+)/
+
+export const youtubeEmbedParamsMap = {
+  t: 'start',
+}
 
 const vimeoBaseUrl = 'https://player.vimeo.com/video'
 export const vimeoRegex = /vimeo\.com\/(\d+)/

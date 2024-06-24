@@ -24,3 +24,21 @@ The Video bubble block allows you to display a video to your user. You can paste
     ></video>
   </Tab>
 </Tabs>
+
+## Video service detection
+
+When you paste a video URL, Typbot will automatically detect the video service and parse it with the proper iframe settings. It currently works with:
+
+- YouTube (video and shorts)
+- Vimeo
+- TikTok
+- Gumlet
+- OneDrive
+
+Feel free to [suggest a missing service in the feedback board](https://feedback.typebot.io/).
+
+For missing services, you can instead add an Embed bubble and paste the iframe code.
+
+### Limitations
+
+- YouTube clips are not supported as we can't transform it to embed URL automatically. To embed a YouTube clip, you can use the [Embed bubble](/editor/blocks/bubbles/embed) and paste the iframe code that can be found in Youtube under the "Share" > "Embed" button.

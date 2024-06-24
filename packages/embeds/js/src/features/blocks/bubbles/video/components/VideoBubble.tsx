@@ -128,7 +128,9 @@ export const VideoBubble = (props: Props) => {
                     embedBaseUrls[
                       props.content?.type as EmbeddableVideoBubbleContentType
                     ]
-                  }/${props.content?.id}`}
+                  }/${props.content?.id ?? ''}${
+                    props.content?.queryParamsStr ?? ''
+                  }`}
                   class={'w-full h-full'}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowfullscreen
