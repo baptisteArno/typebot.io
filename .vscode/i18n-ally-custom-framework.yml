@@ -1,5 +1,5 @@
 # An array of strings which contain Language Ids defined by VS Code
-# You can check avaliable language ids here: https://code.visualstudio.com/docs/languages/overview#_language-id
+# You can check available language ids here: https://code.visualstudio.com/docs/languages/overview#_language-id
 languageIds:
   - javascript
   - typescript
