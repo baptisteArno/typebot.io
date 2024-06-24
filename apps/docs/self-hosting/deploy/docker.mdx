@@ -308,7 +308,7 @@ services:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
     volumes:
-      - s3_data:/data
+      - s3-data:/data
   # This service just make sure a bucket with the right policies is created
   createbuckets:
     image: minio/mc
