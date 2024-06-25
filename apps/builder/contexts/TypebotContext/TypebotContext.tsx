@@ -29,7 +29,7 @@ import {
 } from 'services/typebots/typebots'
 import { fetcher, preventUserFromRefreshing } from 'services/utils'
 import useSWR from 'swr'
-import { isDefined, isEmpty, isNotDefined } from 'utils'
+import { isDefined, isNotDefined } from 'utils'
 import { BlocksActions, blocksActions } from './actions/blocks'
 import { stepsAction, StepsActions } from './actions/steps'
 import { variablesAction, VariablesActions } from './actions/variables'
@@ -56,6 +56,8 @@ import useEmptyFields, {
 } from 'hooks/EmptyFields/useEmptyFields'
 import useCustomVariables from 'hooks/CustomVariables/useCustomVariables'
 import { ICustomVariable } from 'hooks/CustomVariables/interface'
+import { WOZService } from 'services/octadesk/woz/woz.service'
+import useWozProfiles from 'hooks/WozProfiles/useWozProfiles'
 
 type UpdateTypebotPayload = Partial<{
   theme: Theme
@@ -114,12 +116,13 @@ const typebotContext = createContext<
     octaGroups: Array<any>
     botFluxesList: Array<any>
     tagsList: Array<any>
+    wozProfiles: Array<any>
     currentTypebot?: Typebot
   } & BlocksActions &
-    StepsActions &
-    ItemsActions &
-    VariablesActions &
-    EdgesActions
+  StepsActions &
+  ItemsActions &
+  VariablesActions &
+  EdgesActions
 >({} as any)
 
 export const TypebotContext = ({
@@ -167,7 +170,7 @@ export const TypebotContext = ({
     .reduce<string[]>(
       (typebotIds, step) =>
         step.type === LogicStepType.TYPEBOT_LINK &&
-        isDefined(step.options.typebotId)
+          isDefined(step.options.typebotId)
           ? [...typebotIds, step.options.typebotId]
           : typebotIds,
       []
@@ -434,53 +437,53 @@ export const TypebotContext = ({
 
         const agentPromise = shouldGetAgents
           ? Agents()
-              .getAgents()
-              .then((res) => {
-                let agentsList = res
-                  .sort((a: any, b: any) => a.name.localeCompare(b.name))
-                  .map((agent: any) => ({
-                    ...agent,
-                    operationType: ASSIGN_TO.agent,
-                  }))
+            .getAgents()
+            .then((res) => {
+              let agentsList = res
+                .sort((a: any, b: any) => a.name.localeCompare(b.name))
+                .map((agent: any) => ({
+                  ...agent,
+                  operationType: ASSIGN_TO.agent,
+                }))
 
-                agentsList = [
-                  {
-                    name: 'Atribuir a conversa para um usuário',
-                    disabled: true,
-                    id: 'agent',
-                    isTitle: true,
-                  },
-                  ...agentsList,
-                ]
+              agentsList = [
+                {
+                  name: 'Atribuir a conversa para um usuário',
+                  disabled: true,
+                  id: 'agent',
+                  isTitle: true,
+                },
+                ...agentsList,
+              ]
 
-                agentsGroupsList.push(...agentsList)
-              })
+              agentsGroupsList.push(...agentsList)
+            })
           : undefined
 
         const groupPromise = shouldGetGroups
           ? Groups()
-              .getGroups()
-              .then((res) => {
-                let groupsList: Array<any> = []
-                const groups = res
-                  .sort((a: any, b: any) => a.name.localeCompare(b.name))
-                  .map((group: any) => ({
-                    ...group,
-                    operationType: ASSIGN_TO.group,
-                  }))
+            .getGroups()
+            .then((res) => {
+              let groupsList: Array<any> = []
+              const groups = res
+                .sort((a: any, b: any) => a.name.localeCompare(b.name))
+                .map((group: any) => ({
+                  ...group,
+                  operationType: ASSIGN_TO.group,
+                }))
 
-                groupsList = [
-                  {
-                    name: 'Atribuir a conversa para um grupo',
-                    id: 'group',
-                    disabled: true,
-                    isTitle: true,
-                  },
-                  ...groups,
-                ]
+              groupsList = [
+                {
+                  name: 'Atribuir a conversa para um grupo',
+                  id: 'group',
+                  disabled: true,
+                  isTitle: true,
+                },
+                ...groups,
+              ]
 
-                agentsGroupsList.push(...groupsList)
-              })
+              agentsGroupsList.push(...groupsList)
+            })
           : undefined
 
         const promises = [agentPromise, groupPromise]
@@ -631,6 +634,8 @@ export const TypebotContext = ({
 
   const { customVariables } = useCustomVariables()
 
+  const { wozProfiles } = useWozProfiles()
+
   const contextValue = useMemo(() => {
     return {
       typebot: localTypebot,
@@ -669,6 +674,7 @@ export const TypebotContext = ({
       octaGroups,
       botFluxesList,
       tagsList,
+      wozProfiles
     }
   }, [
     localTypebot,
@@ -697,6 +703,7 @@ export const TypebotContext = ({
     octaGroups,
     botFluxesList,
     tagsList,
+    wozProfiles
   ])
   return (
     <typebotContext.Provider value={contextValue}>

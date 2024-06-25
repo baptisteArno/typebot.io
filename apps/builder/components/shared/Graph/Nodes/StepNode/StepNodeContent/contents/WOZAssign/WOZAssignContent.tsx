@@ -4,6 +4,7 @@ import { Stack, Text, Tooltip } from '@chakra-ui/react'
 import { ItemNodesList } from 'components/shared/Graph/Nodes/ItemNode'
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
 import OctaTooltip from 'components/octaComponents/OctaTooltip/OctaTooltip'
+import { useTypebot } from 'contexts/TypebotContext'
 
 type Props = {
   step: WOZAssignStep
@@ -11,10 +12,13 @@ type Props = {
 }
 
 const WOZAssignContent = ({ step, indices }: Props) => {
+  const { wozProfiles } = useTypebot()
+  const agent = wozProfiles.find(d => d.id === step?.options?.virtualAgentId)
+
   return (
     <Stack>
       <Text noOfLines={0}>
-        Agente: {!step?.options?.virtualAgentId ? 'Woz' : `${step?.options?.virtualAgentId}`}
+        Agente: {!agent?.name ? 'Woz' : agent.name}
       </Text>
       <OctaDivider />
       <Text noOfLines={0}>

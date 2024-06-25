@@ -1,7 +1,8 @@
 import { Checkbox, HStack, Stack, Text } from '@chakra-ui/react'
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
-import { WOZAssignOptions, WOZAssignStep } from 'models'
+import { WOZAssignOptions } from 'models'
 import React, { useState } from 'react'
+import { WozAssignSelect } from './WozAssignSelect';
 
 type Props = {
   options: WOZAssignOptions
@@ -40,9 +41,23 @@ export const WOZAssignSettingBody = ({ options, onOptionsChange }: Props) => {
     return viewMoreInfo === 'redirection'
   }
 
+  const handleWozAssignSelect = (e: any) => {
+    onOptionsChange({
+      ...options,
+      virtualAgentId: e.profile
+    })
+  }
+
   return (
     <Stack spacing={4}>
       <Stack>
+        <Text>
+          Qual perfil deve ser chamado?
+        </Text>
+        <WozAssignSelect selectedProfile={options.virtualAgentId} onSelect={handleWozAssignSelect} />
+      </Stack>
+      <Stack>
+        <OctaDivider width='100%' />
         <HStack justify="space-between">
           <Checkbox isChecked={options.introduceAsIA} onChange={handleIntroduceChange}>
             Devo me apresentar como uma IA para o cliente?
