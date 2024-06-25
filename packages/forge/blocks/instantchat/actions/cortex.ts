@@ -43,7 +43,7 @@ export const cortex = createAction({
     responseMapping ? [responseMapping] : [],
   run: {
     server: async ({ credentials, options, variables }) => {
-      let { cortexToken, baseUrl, cortexUrl } = options
+      let { cortexToken, baseUrl, cortexUrl } = credentials || {}
       const { knowledgeBase, cortexUser } = options
       const initialMessage = options.initialMessage
         ? options.initialMessage
@@ -282,7 +282,7 @@ export const cortex = createAction({
       id: 'fetchCortexUsers',
       dependencies: ['cortexToken', 'cortexUrl', 'cortexAccountID'],
       fetch: async ({ credentials, options }) => {
-        let { cortexAccountID, cortexToken, cortexUrl } = options
+        let { cortexAccountID, cortexToken, cortexUrl } = credentials || {}
         if (cortexUrl && cortexToken && cortexAccountID) {
           const queryParams = {
             limit: '20',

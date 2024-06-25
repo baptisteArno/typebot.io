@@ -30,6 +30,7 @@ const authenticateByToken = async (
   const user = (await prisma.user.findFirst({
     where: { apiTokens: { some: { token: apiToken } } },
   })) as User
+  if (!user || !('id' in user)) return
   Sentry.setUser({ id: user.id })
   return user
 }
