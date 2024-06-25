@@ -5,24 +5,29 @@ import { defaultCortexOptions } from '../constants'
 import { auth } from '../auth'
 
 export const intent = createAction({
-  auth,
   name: 'Detectar Intenção',
   baseOptions,
   options: option.object({
     question: option.string.layout({
       label: 'Pergunta',
+      helperText:
+          'As intenções deve estar no formato: \n\nnome: descrição.\n\nExemplo:\n\n comercial: Útil quando o cliente deseja falar com a equipe comercial.',
     }),
     intents: option
       .array(
-        option.string.layout({
-          placeholder: 'Type a name...',
+        option.object({
+          intent: option.string.layout({
+            label: 'Intenção',
+            placeholder: 'Nome: descrição',
+            moreInfoTooltip:
+                'As intenções deve estar no formato: \n\nnome: descrição.\n\nExemplo:\n\n comercial: Útil quando o cliente deseja falar com a equipe comercial.',
+          }),
         })
       )
       .layout({
+        accordion: 'Intenções',
         label: 'Intenções',
         itemLabel: 'intenção',
-        helperText:
-          'As intenções deve estar no formato. \nnome: descrição.\n\nExemplo:\n comercial: Útil quando o cliente deseja falar com a equipe comercial.',
       }),
     responseMapping: option.string.layout({
       label: 'Salvar resultado',
@@ -44,7 +49,7 @@ export const intent = createAction({
       const intentList = []
       for (let i = 0; i < intents.length; i++) {
         if (intents[i]) {
-          const x = intents[i]!.split(':', 2)
+          const x = intents[i]['intent']!.split(':', 2)
           intentList.push({
             name: x[0],
             description: x[1],

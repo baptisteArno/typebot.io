@@ -4,7 +4,6 @@ import { baseOptions } from '../baseOptions'
 import { auth } from '../auth'
 
 export const checkTime = createAction({
-  auth,
   name: 'Horário',
   baseOptions,
   options: option.object({

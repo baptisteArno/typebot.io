@@ -5,9 +5,8 @@ import { defaultCortexOptions } from '../constants'
 import { auth } from '../auth'
 
 export const cortex = createAction({
-  auth,
-  name: 'Cortex',
   baseOptions,
+  name: 'Cortex',
   options: option.object({
     knowledgeBase: option.string.layout({
       label: 'Base de Conhecimento',

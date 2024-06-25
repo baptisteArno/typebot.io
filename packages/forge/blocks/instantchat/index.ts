@@ -15,6 +15,5 @@ export const instantchatBlock = createBlock({
   tags: [],
   LightLogo: InstantchatLogo,
   auth,
-  options: baseOptions,
   actions: [queueJoin, checkTime, cortex, chat, wppNotify, intent],
 })

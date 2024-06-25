@@ -4,7 +4,6 @@ import { baseOptions } from '../baseOptions'
 import { auth } from '../auth'
 
 export const chat = createAction({
-  auth,
   name: 'Infos',
   baseOptions,
   options: option.object({
