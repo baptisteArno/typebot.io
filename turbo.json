@@ -20,6 +20,8 @@
       "persistent": true
     },
     "build": {
+      "passThroughEnv": ["DATABASE_URL", "ENCRYPTION_SECRET"],
+      "env": ["VERCEL_*"],
       "dependsOn": ["^build", "@typebot.io/prisma#db:generate"],
       "outputs": [
         ".next/**",
