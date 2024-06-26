@@ -127,7 +127,7 @@ export const getVariablesToParseInfoInText = (
     if (isNotDefined(match.index) || !match[0].length) return
     const matchedVarName = match[1] ?? match[3]
     const variable = variables.find((variable) => {
-      return matchedVarName === variable.name && isDefined(variable.value)
+      return matchedVarName === variable.name
     }) as VariableWithValue | undefined
     variablesToParseInfo.push({
       startIndex: match.index,

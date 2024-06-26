@@ -23,7 +23,6 @@ import {
 } from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
 import { createCodeRunner } from '@typebot.io/variables/codeRunners'
 import { stringifyError } from '@typebot.io/lib/stringifyError'
-import { AnswerV2 } from '@typebot.io/prisma'
 
 export const executeSetVariable = async (
   state: SessionState,
