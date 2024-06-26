@@ -13,6 +13,7 @@ const answerV1Schema = z.object({
 export const answerSchema = z.object({
   blockId: z.string(),
   content: z.string(),
+  attachedFileUrls: z.array(z.string()).optional(),
 })
 
 export const answerInputSchema = answerV1Schema

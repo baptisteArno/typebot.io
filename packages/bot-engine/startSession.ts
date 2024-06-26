@@ -61,14 +61,12 @@ type StartParams =
 
 type Props = {
   version: 1 | 2
-  message: Reply
   startParams: StartParams
   initialSessionState?: Pick<SessionState, 'whatsApp' | 'expiryTimeout'>
 }
 
 export const startSession = async ({
   version,
-  message,
   startParams,
   initialSessionState,
 }: Props): Promise<
@@ -188,7 +186,7 @@ export const startSession = async ({
   })
 
   // If params has message and first block is an input block, we can directly continue the bot flow
-  if (message) {
+  if (startParams.message) {
     const firstEdgeId = getFirstEdgeId({
       typebot: chatReply.newSessionState.typebotsQueue[0].typebot,
       startEventId:
@@ -213,7 +211,7 @@ export const startSession = async ({
           resultId,
           typebot: newSessionState.typebotsQueue[0].typebot,
         })
-      chatReply = await continueBotFlow(message, {
+      chatReply = await continueBotFlow(startParams.message, {
         version,
         state: {
           ...newSessionState,

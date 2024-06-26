@@ -8,15 +8,17 @@ import {
   useColorModeValue,
   Portal,
 } from '@chakra-ui/react'
-import React from 'react'
+import React, { RefObject } from 'react'
 import { EmojiOrImageIcon } from './EmojiOrImageIcon'
 import { ImageUploadContent } from './ImageUploadContent'
 import { FilePathUploadProps } from '@/features/upload/api/generateUploadUrl'
 import { useTranslate } from '@tolgee/react'
+import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
 
 type Props = {
   uploadFileProps: FilePathUploadProps
   icon?: string | null
+  parentModalRef?: RefObject<HTMLElement | null> | undefined
   onChangeIcon: (icon: string) => void
   boxSize?: string
 }
@@ -28,6 +30,7 @@ export const EditableEmojiOrImageIcon = ({
   boxSize,
 }: Props) => {
   const { t } = useTranslate()
+  const { ref: parentModalRef } = useParentModal()
   const bg = useColorModeValue('gray.100', 'gray.700')
 
   return (
@@ -56,7 +59,7 @@ export const EditableEmojiOrImageIcon = ({
               </PopoverTrigger>
             </Flex>
           </Tooltip>
-          <Portal>
+          <Portal containerRef={parentModalRef}>
             <PopoverContent p="2">
               <ImageUploadContent
                 uploadFileProps={uploadFileProps}

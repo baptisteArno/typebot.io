@@ -27,7 +27,9 @@ test('options should work', async ({ page }) => {
   await page
     .locator(`input[type="file"]`)
     .setInputFiles([getTestAsset('avatar.jpg')])
-  await expect(page.locator(`text=File uploaded`)).toBeVisible()
+  await expect(
+    page.getByRole('img', { name: 'Attached image 1' })
+  ).toBeVisible()
   await page.click('text="Collect file"')
   await page.click('text="Required?"')
   await page.click('text="Allow multiple files?"')
@@ -46,9 +48,11 @@ test('options should work', async ({ page }) => {
       getTestAsset('avatar.jpg'),
       getTestAsset('avatar.jpg'),
     ])
-  await expect(page.locator(`text="3"`)).toBeVisible()
+  await expect(page.getByRole('img', { name: 'avatar.jpg' })).toHaveCount(3)
   await page.locator('text="Go"').click()
-  await expect(page.locator(`text="3 files uploaded"`)).toBeVisible()
+  await expect(
+    page.getByRole('img', { name: 'Attached image 1' })
+  ).toBeVisible()
 })
 
 test.describe('Free workspace', () => {

@@ -1,6 +1,7 @@
 import {
   ContinueChatResponse,
   CustomEmbedBubble,
+  Message,
   SessionState,
   SetVariableHistoryItem,
 } from '@typebot.io/schemas'
@@ -21,14 +22,7 @@ export type ExecuteIntegrationResponse = {
   newSetVariableHistory?: SetVariableHistoryItem[]
 } & Pick<ContinueChatResponse, 'clientSideActions' | 'logs'>
 
-type WhatsAppMediaMessage = {
-  type: 'whatsapp media'
-  mediaId: string
-  workspaceId?: string
-  accessToken: string
-}
-
-export type Reply = string | WhatsAppMediaMessage | undefined
+export type Reply = Message | undefined
 
 export type ParsedReply =
   | { status: 'success'; reply: string }

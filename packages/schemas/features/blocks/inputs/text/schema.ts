@@ -1,6 +1,7 @@
 import { z } from '../../../../zod'
 import { optionBaseSchema, blockBaseSchema } from '../../shared'
 import { InputBlockType } from '../constants'
+import { fileVisibilityOptions } from '../file/constants'
 
 export const textInputOptionsBaseSchema = z.object({
   labels: z
@@ -16,6 +17,13 @@ export const textInputOptionsSchema = textInputOptionsBaseSchema
   .merge(
     z.object({
       isLong: z.boolean().optional(),
+      attachments: z
+        .object({
+          isEnabled: z.boolean().optional(),
+          saveVariableId: z.string().optional(),
+          visibility: z.enum(fileVisibilityOptions).optional(),
+        })
+        .optional(),
     })
   )
 

@@ -24,7 +24,7 @@ test.describe('Date input block', () => {
       'date'
     )
     await page.locator('[data-testid="from-date"]').fill('2021-01-01')
-    await page.locator('form').getByRole('button').click()
+    await page.getByLabel('Send').click()
     await expect(page.locator('text="01/01/2021"')).toBeVisible()
 
     await page.click(`text=Pick a date`)

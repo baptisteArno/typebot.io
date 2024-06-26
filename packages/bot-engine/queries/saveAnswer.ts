@@ -4,7 +4,6 @@ import { SessionState } from '@typebot.io/schemas'
 
 type Props = {
   answer: Omit<Prisma.AnswerV2CreateManyInput, 'resultId'>
-  reply: string
   state: SessionState
 }
 export const saveAnswer = async ({ answer, state }: Props) => {

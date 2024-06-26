@@ -7,10 +7,11 @@ import { parseDynamicTheme } from '../parseDynamicTheme'
 import { saveStateToDatabase } from '../saveStateToDatabase'
 import { computeCurrentProgress } from '../computeCurrentProgress'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import { Message } from '@typebot.io/schemas'
 
 type Props = {
   origin: string | undefined
-  message?: string
+  message?: Message
   sessionId: string
   textBubbleContentFormat: 'richText' | 'markdown'
 }

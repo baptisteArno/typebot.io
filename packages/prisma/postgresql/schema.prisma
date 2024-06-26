@@ -300,12 +300,13 @@ model Answer {
 }
 
 model AnswerV2 {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  blockId   String
-  content   String
-  resultId  String
-  result    Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
+  id               Int      @id @default(autoincrement())
+  createdAt        DateTime @default(now())
+  blockId          String
+  content          String
+  attachedFileUrls Json?
+  resultId         String
+  result           Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
 
   @@index([blockId])
 }

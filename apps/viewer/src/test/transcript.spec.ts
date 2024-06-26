@@ -14,11 +14,11 @@ test('Transcript set variable should be correctly computed', async ({
 
   await page.goto(`/${typebotId}-public`)
   await page.getByPlaceholder('Type your answer...').fill('hey')
-  await page.getByRole('button').click()
+  await page.getByLabel('Send').click()
   await page.getByPlaceholder('Type your answer...').fill('hey 2')
-  await page.getByRole('button').click()
+  await page.getByLabel('Send').click()
   await page.getByPlaceholder('Type your answer...').fill('hey 3')
-  await page.getByRole('button').click()
+  await page.getByLabel('Send').click()
   await expect(
     page.getByText('Assistant: "How are you? You said "')
   ).toBeVisible()

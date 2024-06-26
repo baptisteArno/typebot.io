@@ -29,7 +29,6 @@ import {
   formattedMessages,
   setFormattedMessages,
 } from '@/utils/formattedMessagesSignal'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { saveClientLogsQuery } from '@/queries/saveClientLogsQuery'
 import { HTTPError } from 'ky'
 import { persist } from '@/utils/persist'
@@ -147,13 +146,6 @@ export const ConversationContainer = (props: Props) => {
     const currentInputBlock = [...chatChunks()].pop()?.input
     if (currentInputBlock?.id && props.onAnswer && message)
       props.onAnswer({ message, blockId: currentInputBlock.id })
-    if (currentInputBlock?.type === InputBlockType.FILE)
-      props.onNewLogs?.([
-        {
-          description: 'Files are not uploaded in preview mode',
-          status: 'info',
-        },
-      ])
     const longRequest = setTimeout(() => {
       setIsSending(true)
     }, 1000)
