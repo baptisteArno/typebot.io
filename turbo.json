@@ -21,7 +21,7 @@
     },
     "build": {
       "passThroughEnv": ["DATABASE_URL", "ENCRYPTION_SECRET"],
-      "env": ["VERCEL_*"],
+      "env": ["VERCEL_*", "NEXTAUTH_URL"],
       "dependsOn": ["^build", "@typebot.io/prisma#db:generate"],
       "outputs": [
         ".next/**",
