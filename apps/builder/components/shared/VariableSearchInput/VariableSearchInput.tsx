@@ -105,9 +105,9 @@ export const VariableSearchInput = ({
     domain: 'CHAT',
   }
 
-  const myVariable = (typebot?.variables.find(
-    (v) => v.id === initialVariableId || v.token === initialVariableId
-  ) ||
+  const myVariable = (typebot?.variables.find((v) => {
+    return (v.id && v.id === initialVariableId) || v.token === initialVariableId
+  }) ||
     (isSaveContext && !isApi && dontSave)) as Variable
 
   const initial = {
@@ -187,7 +187,7 @@ export const VariableSearchInput = ({
         return
       }
 
-      if (event.id) {
+      if (event.id || event.token) {
         if (event.token === '') {
           onSelectVariable({} as any)
           return

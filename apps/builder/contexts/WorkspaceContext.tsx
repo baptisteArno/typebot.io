@@ -195,18 +195,13 @@ const workspaceContext = createContext<IWorkspaceContextData>(
 
 export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
   const { query } = useRouter()
-
+  const { verifyFeatureToggle } = useUser()
   const { user } = useUser()
-
   const userId = user?.id
-
   const { typebot, setVariables } = useTypebot()
-
   const { workspaces, isLoading, mutate } = useWorkspaces({ userId })
-
   const [currentWorkspace, setCurrentWorkspace] =
     useState<WorkspaceWithMembers>()
-
   const canEdit =
     workspaces
       ?.find(byId(currentWorkspace?.id))
@@ -579,15 +574,51 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
         ...octaOrganizationItems,
       ]
 
-      if ((typebot?.variables?.length || 0) >= variables?.length) return
-      setVariables(variables)
+      const mergeArraysUniqueByToken = (array1: any[], array2: any[]) => {
+        const mergedArray = [...array1, ...array2]
+        const uniqueItems: any = {}
+
+        mergedArray.forEach((item) => {
+          uniqueItems[item.token] = item
+        })
+        return Object.values(uniqueItems)
+      }
+
+      let mergedItems = mergeArraysUniqueByToken(
+        typebot?.variables || [],
+        variables
+      )
+
+      const isResponsibleContactEnabled = verifyFeatureToggle(
+        'responsible-contact-enabled'
+      )
+
+      if (isResponsibleContactEnabled) {
+        if (!mergedItems.some((mi) => mi.token === '#responsavel-contato')) {
+          mergedItems.push({
+            token: '#responsavel-contato',
+            example: 'Agente responsável',
+            domain: 'PERSON',
+            type: 'responsavel-contato',
+            name: 'responsavel-contato',
+          })
+        }
+      } else {
+        mergedItems = mergedItems.filter(
+          (item) => item.token !== '#responsavel-contato'
+        )
+      }
+
+      if (mergedItems.length === typebot?.variables.length) return
+      setVariables(mergedItems)
     }
   }, [
     loaded,
+    typebot?.variables,
     octaPersonItems,
     octaChatItems,
     octaOrganizationItems,
-    typebot?.variables?.length,
+    verifyFeatureToggle,
   ])
 
   useEffect(() => {
