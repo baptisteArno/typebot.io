@@ -92,7 +92,7 @@ export const continueBotFlow = async (
     const existingVariable = state.typebotsQueue[0].typebot.variables.find(
       byId(block.options?.variableId)
     )
-    if (existingVariable && reply && typeof reply === 'string') {
+    if (existingVariable && reply) {
       variableToUpdate = {
         ...existingVariable,
       }
@@ -104,22 +104,18 @@ export const continueBotFlow = async (
     block.options?.task === 'Create chat completion'
   ) {
     firstBubbleWasStreamed = true
-    if (reply && typeof reply === 'string') {
+    if (reply) {
       const result = await resumeChatCompletion(state, {
         options: block.options,
         outgoingEdgeId: block.outgoingEdgeId,
-      })(reply)
+      })(reply.text)
       newSessionState = result.newSessionState
     }
-  } else if (
-    reply &&
-    block.type === IntegrationBlockType.WEBHOOK &&
-    typeof reply === 'string'
-  ) {
+  } else if (reply && block.type === IntegrationBlockType.WEBHOOK) {
     const result = resumeWebhookExecution({
       state,
       block,
-      response: JSON.parse(reply),
+      response: JSON.parse(reply.text),
     })
     if (result.newSessionState) newSessionState = result.newSessionState
   } else if (isForgedBlockType(block.type)) {
