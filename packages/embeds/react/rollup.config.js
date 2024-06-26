@@ -18,6 +18,9 @@ const indexConfig = {
     format: 'es',
   },
   external: ['react', 'react/jsx-runtime'],
+  watch: {
+    clearScreen: false,
+  },
   plugins: [
     resolve({ extensions }),
     babel({
