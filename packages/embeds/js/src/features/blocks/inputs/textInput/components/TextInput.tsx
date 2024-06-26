@@ -203,10 +203,18 @@ export const TextInput = (props: Props) => {
               }
             />
           )}
-          <TextInputAddFileButton
-            onNewFiles={onNewFiles}
-            class={clsx(props.block.options?.isLong ? 'ml-2' : undefined)}
-          />
+          <Show
+            when={
+              (props.block.options?.attachments?.isEnabled ??
+                defaultTextInputOptions.attachments.isEnabled) &&
+              props.block.options?.attachments?.saveVariableId
+            }
+          >
+            <TextInputAddFileButton
+              onNewFiles={onNewFiles}
+              class={clsx(props.block.options?.isLong ? 'ml-2' : undefined)}
+            />
+          </Show>
         </div>
       </div>
 

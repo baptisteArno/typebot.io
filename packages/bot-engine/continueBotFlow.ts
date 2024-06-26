@@ -303,6 +303,7 @@ const saveAttachmentsVarIfAny = ({
   if (
     block.type !== InputBlockType.TEXT ||
     !block.options?.attachments?.isEnabled ||
+    !block.options?.attachments?.saveVariableId ||
     !reply.attachedFileUrls ||
     reply.attachedFileUrls.length === 0
   )
