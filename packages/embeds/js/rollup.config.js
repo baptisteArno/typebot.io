@@ -6,6 +6,7 @@ import autoprefixer from 'autoprefixer'
 import tailwindcss from 'tailwindcss'
 import typescript from '@rollup/plugin-typescript'
 import { typescriptPaths } from 'rollup-plugin-typescript-paths'
+import replace from '@rollup/plugin-replace'
 import fs from 'fs'
 
 const extensions = ['.ts', '.tsx']
@@ -41,6 +42,10 @@ const indexConfig = {
     }),
     terser({
       format: { preamble },
+    }),
+    replace({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+      preventAssignment: true,
     }),
   ],
 }
