@@ -46,8 +46,8 @@ test('should be configurable', async ({ page }) => {
   await page.getByLabel('Clear').click()
 
   await page.click('text=Test')
-  await page.locator('typebot-standard').locator('input').fill('Hello there!')
-  await page.locator('typebot-standard').locator('input').press('Enter')
+  await page.getByPlaceholder('Type your answer...').fill('Hello there!')
+  await page.getByPlaceholder('Type your answer...').press('Enter')
   await expect(
     page.locator('typebot-standard').locator('text=Hello there!')
   ).toBeVisible()

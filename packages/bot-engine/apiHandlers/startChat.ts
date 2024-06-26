@@ -1,14 +1,14 @@
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import { Message } from '@typebot.io/schemas'
 import { computeCurrentProgress } from '../computeCurrentProgress'
 import { filterPotentiallySensitiveLogs } from '../logs/filterPotentiallySensitiveLogs'
 import { restartSession } from '../queries/restartSession'
 import { saveStateToDatabase } from '../saveStateToDatabase'
 import { startSession } from '../startSession'
-import { isNotEmpty } from '@typebot.io/lib'
 
 type Props = {
   origin: string | undefined
-  message?: string
+  message?: Message
   isOnlyRegistering: boolean
   publicId: string
   isStreamEnabled: boolean
@@ -48,8 +48,8 @@ export const startChat = async ({
       prefilledVariables,
       resultId: startResultId,
       textBubbleContentFormat,
+      message,
     },
-    message,
   })
 
   let corsOrigin

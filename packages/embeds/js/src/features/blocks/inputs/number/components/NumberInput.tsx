@@ -52,34 +52,32 @@ export const NumberInput = (props: NumberInputProps) => {
 
   return (
     <div
-      class={'flex items-end justify-between pr-2 typebot-input w-full'}
-      data-testid="input"
-      style={{
-        'max-width': '350px',
-      }}
+      class="typebot-input-form flex w-full gap-2 items-end max-w-[350px]"
       onKeyDown={submitWhenEnter}
     >
-      <input
-        ref={inputRef}
-        class="focus:outline-none bg-transparent px-4 py-4 flex-1 w-full text-input"
-        style={{ 'font-size': '16px', appearance: 'auto' }}
-        value={staticValue}
-        // @ts-expect-error not defined
-        // eslint-disable-next-line solid/jsx-no-undef
-        use:bindValue
-        placeholder={
-          props.block.options?.labels?.placeholder ??
-          defaultNumberInputOptions.labels.placeholder
-        }
-        onInput={(e) => {
-          setInputValue(targetValue(e.currentTarget))
-        }}
-        type="number"
-        min={props.block.options?.min}
-        max={props.block.options?.max}
-        step={props.block.options?.step ?? 'any'}
-      />
-      <SendButton type="button" class="my-2 ml-2" on:click={submit}>
+      <div class={'flex typebot-input w-full'}>
+        <input
+          ref={inputRef}
+          class="focus:outline-none bg-transparent px-4 py-4 flex-1 w-full text-input"
+          style={{ 'font-size': '16px', appearance: 'auto' }}
+          value={staticValue}
+          // @ts-expect-error not defined
+          // eslint-disable-next-line solid/jsx-no-undef
+          use:bindValue
+          placeholder={
+            props.block.options?.labels?.placeholder ??
+            defaultNumberInputOptions.labels.placeholder
+          }
+          onInput={(e) => {
+            setInputValue(targetValue(e.currentTarget))
+          }}
+          type="number"
+          min={props.block.options?.min}
+          max={props.block.options?.max}
+          step={props.block.options?.step ?? 'any'}
+        />
+      </div>
+      <SendButton type="button" class="h-[56px]" on:click={submit}>
         {props.block.options?.labels?.button}
       </SendButton>
     </div>

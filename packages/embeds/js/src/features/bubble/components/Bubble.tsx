@@ -19,6 +19,7 @@ import {
   removeBotOpenedStateInStorage,
   setBotOpenedStateInStorage,
 } from '@/utils/storage'
+import { EnvironmentProvider } from '@ark-ui/solid'
 
 export type BubbleProps = BotProps &
   BubbleParams & {
@@ -157,59 +158,65 @@ export const Bubble = (props: BubbleProps) => {
 
   return (
     <Show when={isMounted()}>
-      <style>{styles}</style>
-      <Show when={isPreviewMessageDisplayed()}>
-        <PreviewMessage
-          {...previewMessage()}
-          placement={bubbleProps.theme?.placement}
-          previewMessageTheme={bubbleProps.theme?.previewMessage}
-          buttonSize={buttonSize()}
-          onClick={handlePreviewMessageClick}
-          onCloseClick={hideMessage}
-        />
-      </Show>
-      <BubbleButton
-        {...bubbleProps.theme?.button}
-        placement={bubbleProps.theme?.placement}
-        toggleBot={toggleBot}
-        isBotOpened={isBotOpened()}
-        buttonSize={buttonSize()}
-      />
-      <div ref={progressBarContainerRef} />
-      <div
-        part="bot"
-        style={{
-          height: `calc(100% - ${buttonSize()} - 32px)`,
-          'max-height': props.theme?.chatWindow?.maxHeight ?? '704px',
-          'max-width': props.theme?.chatWindow?.maxWidth ?? '400px',
-          transition:
-            'transform 200ms cubic-bezier(0, 1.2, 1, 1), opacity 150ms ease-out',
-          'transform-origin':
-            props.theme?.placement === 'left' ? 'bottom left' : 'bottom right',
-          transform: isBotOpened() ? 'scale3d(1, 1, 1)' : 'scale3d(0, 0, 1)',
-          'box-shadow': 'rgb(0 0 0 / 16%) 0px 5px 40px',
-          'background-color': bubbleProps.theme?.chatWindow?.backgroundColor,
-          'z-index': 42424242,
-          bottom: `calc(${buttonSize()} + 32px)`,
-        }}
-        class={
-          'fixed rounded-lg w-full' +
-          (isBotOpened() ? ' opacity-1' : ' opacity-0 pointer-events-none') +
-          (props.theme?.placement === 'left'
-            ? ' left-5'
-            : ' sm:right-5 right-0')
-        }
+      <EnvironmentProvider
+        value={document.querySelector('typebot-bubble')?.shadowRoot as Node}
       >
-        <Show when={isBotStarted()}>
-          <Bot
-            {...botProps}
-            onChatStatePersisted={handleOnChatStatePersisted}
-            prefilledVariables={prefilledVariables()}
-            class="rounded-lg"
-            progressBarRef={progressBarContainerRef}
+        <style>{styles}</style>
+        <Show when={isPreviewMessageDisplayed()}>
+          <PreviewMessage
+            {...previewMessage()}
+            placement={bubbleProps.theme?.placement}
+            previewMessageTheme={bubbleProps.theme?.previewMessage}
+            buttonSize={buttonSize()}
+            onClick={handlePreviewMessageClick}
+            onCloseClick={hideMessage}
           />
         </Show>
-      </div>
+        <BubbleButton
+          {...bubbleProps.theme?.button}
+          placement={bubbleProps.theme?.placement}
+          toggleBot={toggleBot}
+          isBotOpened={isBotOpened()}
+          buttonSize={buttonSize()}
+        />
+        <div ref={progressBarContainerRef} />
+        <div
+          part="bot"
+          style={{
+            height: `calc(100% - ${buttonSize()} - 32px)`,
+            'max-height': props.theme?.chatWindow?.maxHeight ?? '704px',
+            'max-width': props.theme?.chatWindow?.maxWidth ?? '400px',
+            transition:
+              'transform 200ms cubic-bezier(0, 1.2, 1, 1), opacity 150ms ease-out',
+            'transform-origin':
+              props.theme?.placement === 'left'
+                ? 'bottom left'
+                : 'bottom right',
+            transform: isBotOpened() ? 'scale3d(1, 1, 1)' : 'scale3d(0, 0, 1)',
+            'box-shadow': 'rgb(0 0 0 / 16%) 0px 5px 40px',
+            'background-color': bubbleProps.theme?.chatWindow?.backgroundColor,
+            'z-index': 42424242,
+            bottom: `calc(${buttonSize()} + 32px)`,
+          }}
+          class={
+            'fixed rounded-lg w-full' +
+            (isBotOpened() ? ' opacity-1' : ' opacity-0 pointer-events-none') +
+            (props.theme?.placement === 'left'
+              ? ' left-5'
+              : ' sm:right-5 right-0')
+          }
+        >
+          <Show when={isBotStarted()}>
+            <Bot
+              {...botProps}
+              onChatStatePersisted={handleOnChatStatePersisted}
+              prefilledVariables={prefilledVariables()}
+              class="rounded-lg"
+              progressBarRef={progressBarContainerRef}
+            />
+          </Show>
+        </div>
+      </EnvironmentProvider>
     </Show>
   )
 }

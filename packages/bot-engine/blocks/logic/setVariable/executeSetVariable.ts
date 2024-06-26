@@ -23,6 +23,7 @@ import {
 } from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
 import { createCodeRunner } from '@typebot.io/variables/codeRunners'
 import { stringifyError } from '@typebot.io/lib/stringifyError'
+import { AnswerV2 } from '@typebot.io/prisma'
 
 export const executeSetVariable = async (
   state: SessionState,
@@ -246,7 +247,7 @@ const toISOWithTz = (date: Date, timeZone: string) => {
 }
 
 type ParsedTranscriptProps = {
-  answers: Pick<Answer, 'blockId' | 'content'>[]
+  answers: Pick<Answer, 'blockId' | 'content' | 'attachedFileUrls'>[]
   setVariableHistory: Pick<
     SetVariableHistoryItem,
     'blockId' | 'variableId' | 'value'
@@ -272,6 +273,10 @@ const parsePreviewTranscriptProps = async (
     visitedEdges: state.previewMetadata.visitedEdges ?? [],
   }
 }
+
+type UnifiedAnswersFromDB = (ParsedTranscriptProps['answers'][number] & {
+  createdAt: Date
+})[]
 
 const parseResultTranscriptProps = async (
   state: SessionState
@@ -299,6 +304,7 @@ const parseResultTranscriptProps = async (
           blockId: true,
           content: true,
           createdAt: true,
+          attachedFileUrls: true,
         },
       },
       setVariableHistory: {
@@ -313,8 +319,8 @@ const parseResultTranscriptProps = async (
   })
   if (!result) return
   return {
-    answers: result.answersV2
-      .concat(result.answers)
+    answers: (result.answersV2 as UnifiedAnswersFromDB)
+      .concat(result.answers as UnifiedAnswersFromDB)
       .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime()),
     setVariableHistory: (
       result.setVariableHistory as SetVariableHistoryItem[]

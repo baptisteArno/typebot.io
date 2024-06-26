@@ -115,13 +115,13 @@ export const incomingMessageSchema = z.discriminatedUnion('type', [
   z.object({
     from: z.string(),
     type: z.literal('image'),
-    image: z.object({ id: z.string() }),
+    image: z.object({ id: z.string(), caption: z.string().optional() }),
     timestamp: z.string(),
   }),
   z.object({
     from: z.string(),
     type: z.literal('video'),
-    video: z.object({ id: z.string() }),
+    video: z.object({ id: z.string(), caption: z.string().optional() }),
     timestamp: z.string(),
   }),
   z.object({
@@ -133,7 +133,7 @@ export const incomingMessageSchema = z.discriminatedUnion('type', [
   z.object({
     from: z.string(),
     type: z.literal('document'),
-    document: z.object({ id: z.string() }),
+    document: z.object({ id: z.string(), caption: z.string().optional() }),
     timestamp: z.string(),
   }),
   z.object({

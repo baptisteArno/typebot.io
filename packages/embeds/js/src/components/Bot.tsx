@@ -30,6 +30,9 @@ import {
   defaultProgressBarPosition,
 } from '@typebot.io/schemas/features/typebot/theme/constants'
 import { CorsError } from '@/utils/CorsError'
+import { Toaster, Toast } from '@ark-ui/solid'
+import { CloseIcon } from './icons/CloseIcon'
+import { toaster } from '@/utils/toaster'
 
 export type BotProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -335,6 +338,17 @@ const BotContent = (props: BotContentProps) => {
       >
         <LiteBadge botContainer={botContainer} />
       </Show>
+      <Toaster toaster={toaster}>
+        {(toast) => (
+          <Toast.Root>
+            <Toast.Title>{toast().title}</Toast.Title>
+            <Toast.Description>{toast().description}</Toast.Description>
+            <Toast.CloseTrigger class="absolute right-2 top-2">
+              <CloseIcon class="w-4 h-4" />
+            </Toast.CloseTrigger>
+          </Toast.Root>
+        )}
+      </Toaster>
     </div>
   )
 }

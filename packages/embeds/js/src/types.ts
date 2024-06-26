@@ -3,6 +3,7 @@ import { ContinueChatResponse, StartChatResponse } from '@typebot.io/schemas'
 export type InputSubmitContent = {
   label?: string
   value: string
+  attachments?: Answer['attachments']
 }
 
 export type BotContext = {
@@ -35,4 +36,12 @@ export type ChatChunk = Pick<
   'messages' | 'input' | 'clientSideActions'
 > & {
   streamingMessageId?: string
+}
+
+export type Answer = {
+  text: string
+  attachments?: {
+    type: string
+    url: string
+  }[]
 }

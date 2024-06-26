@@ -2,6 +2,7 @@ import styles from '../../../assets/index.css'
 import { Bot, BotProps } from '@/components/Bot'
 import { CommandData } from '@/features/commands/types'
 import { createSignal, onCleanup, onMount, Show } from 'solid-js'
+import { EnvironmentProvider } from '@ark-ui/solid'
 
 const hostElementCss = `
 :host {
@@ -42,7 +43,9 @@ export const Standard = (
   })
 
   return (
-    <>
+    <EnvironmentProvider
+      value={document.querySelector('typebot-standard')?.shadowRoot as Node}
+    >
       <style>
         {styles}
         {hostElementCss}
@@ -50,6 +53,6 @@ export const Standard = (
       <Show when={isBotDisplayed()}>
         <Bot {...props} />
       </Show>
-    </>
+    </EnvironmentProvider>
   )
 }

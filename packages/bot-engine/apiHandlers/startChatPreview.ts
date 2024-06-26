@@ -1,4 +1,4 @@
-import { StartFrom, StartTypebot } from '@typebot.io/schemas'
+import { Message, StartFrom, StartTypebot } from '@typebot.io/schemas'
 import { restartSession } from '../queries/restartSession'
 import { saveStateToDatabase } from '../saveStateToDatabase'
 import { startSession } from '../startSession'
@@ -6,7 +6,7 @@ import { computeCurrentProgress } from '../computeCurrentProgress'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 
 type Props = {
-  message?: string
+  message?: Message
   isOnlyRegistering: boolean
   isStreamEnabled: boolean
   startFrom?: StartFrom
@@ -53,8 +53,8 @@ export const startChatPreview = async ({
       prefilledVariables,
       sessionId,
       textBubbleContentFormat,
+      message,
     },
-    message,
   })
 
   const session = isOnlyRegistering

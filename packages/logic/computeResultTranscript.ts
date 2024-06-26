@@ -10,7 +10,6 @@ import {
 import { SetVariableHistoryItem } from '@typebot.io/schemas/features/result'
 import { isBubbleBlock, isInputBlock } from '@typebot.io/schemas/helpers'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
-import { convertRichTextToMarkdown } from '@typebot.io/lib/markdown/convertRichTextToMarkdown'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { createId } from '@typebot.io/lib/createId'
 import { executeCondition } from './executeCondition'
@@ -56,7 +55,7 @@ export const computeResultTranscript = ({
   stopAtBlockId,
 }: {
   typebot: TypebotInSession
-  answers: Pick<Answer, 'blockId' | 'content'>[]
+  answers: Pick<Answer, 'blockId' | 'content' | 'attachedFileUrls'>[]
   setVariableHistory: Pick<
     SetVariableHistoryItem,
     'blockId' | 'variableId' | 'value'
@@ -120,7 +119,7 @@ const executeGroup = ({
     typebot: TypebotInSession
     resumeEdgeId?: string
   }[]
-  answers: Pick<Answer, 'blockId' | 'content'>[]
+  answers: Pick<Answer, 'blockId' | 'content' | 'attachedFileUrls'>[]
   setVariableHistory: Pick<
     SetVariableHistoryItem,
     'blockId' | 'variableId' | 'value'
@@ -157,20 +156,50 @@ const executeGroup = ({
       const answer = answers.shift()
       if (!answer) break
       if (block.options?.variableId) {
-        const variable = typebotsQueue[0].typebot.variables.find(
+        const replyVariable = typebotsQueue[0].typebot.variables.find(
           (variable) => variable.id === block.options?.variableId
+        )
+        if (replyVariable) {
+          typebotsQueue[0].typebot.variables =
+            typebotsQueue[0].typebot.variables.map((v) =>
+              v.id === replyVariable.id ? { ...v, value: answer.content } : v
+            )
+        }
+      }
+      if (
+        block.type === InputBlockType.TEXT &&
+        block.options?.attachments?.isEnabled &&
+        block.options?.attachments?.saveVariableId &&
+        answer.attachedFileUrls &&
+        answer.attachedFileUrls?.length > 0
+      ) {
+        const variable = typebotsQueue[0].typebot.variables.find(
+          (variable) =>
+            variable.id === block.options?.attachments?.saveVariableId
         )
         if (variable) {
           typebotsQueue[0].typebot.variables =
             typebotsQueue[0].typebot.variables.map((v) =>
-              v.id === variable.id ? { ...v, value: answer.content } : v
+              v.id === variable.id
+                ? {
+                    ...v,
+                    value: Array.isArray(variable.value)
+                      ? variable.value.concat(answer.attachedFileUrls!)
+                      : answer.attachedFileUrls!.length === 1
+                      ? answer.attachedFileUrls![0]
+                      : answer.attachedFileUrls,
+                  }
+                : v
             )
         }
       }
       currentTranscript.push({
         role: 'user',
         type: 'text',
-        text: answer.content,
+        text:
+          (answer.attachedFileUrls?.length ?? 0) > 0
+            ? `${answer.attachedFileUrls?.join(', ')}\n\n${answer.content}`
+            : answer.content,
       })
       const outgoingEdge = getOutgoingEdgeId({
         block,

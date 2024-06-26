@@ -91,7 +91,9 @@ export const sendMessageV1 = publicProcedure
                     typeof startParams.typebot === 'string'
                       ? undefined
                       : startParams.typebot,
-                  message,
+                  message: message
+                    ? { type: 'text', text: message }
+                    : undefined,
                   userId: user?.id,
                   textBubbleContentFormat: 'richText',
                 }
@@ -102,10 +104,11 @@ export const sendMessageV1 = publicProcedure
                   publicId: startParams.typebot,
                   prefilledVariables: startParams.prefilledVariables,
                   resultId: startParams.resultId,
-                  message,
+                  message: message
+                    ? { type: 'text', text: message }
+                    : undefined,
                   textBubbleContentFormat: 'richText',
                 },
-          message,
         })
 
         if (startParams.isPreview || typeof startParams.typebot !== 'string') {
@@ -185,11 +188,14 @@ export const sendMessageV1 = publicProcedure
           lastMessageNewFormat,
           visitedEdges,
           setVariableHistory,
-        } = await continueBotFlow(message, {
-          version: 1,
-          state: session.state,
-          textBubbleContentFormat: 'richText',
-        })
+        } = await continueBotFlow(
+          message ? { type: 'text', text: message } : undefined,
+          {
+            version: 1,
+            state: session.state,
+            textBubbleContentFormat: 'richText',
+          }
+        )
 
         const allLogs = clientLogs ? [...(logs ?? []), ...clientLogs] : logs
 

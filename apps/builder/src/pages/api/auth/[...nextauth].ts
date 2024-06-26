@@ -16,20 +16,36 @@ import { mockedUser } from '@typebot.io/lib/mockedUser'
 import { getNewUserInvitations } from '@/features/auth/helpers/getNewUserInvitations'
 import { sendVerificationRequest } from '@/features/auth/helpers/sendVerificationRequest'
 import { Ratelimit } from '@upstash/ratelimit'
-import { Redis } from '@upstash/redis/nodejs'
 import ky from 'ky'
 import { env } from '@typebot.io/env'
 import * as Sentry from '@sentry/nextjs'
 import { getIp } from '@typebot.io/lib/getIp'
 import { trackEvents } from '@typebot.io/telemetry/trackEvents'
+import Redis from 'ioredis'
 
 const providers: Provider[] = []
 
-let rateLimit: Ratelimit | undefined
+let emailSignInRateLimiter: Ratelimit | undefined
 
-if (env.UPSTASH_REDIS_REST_URL && env.UPSTASH_REDIS_REST_TOKEN) {
-  rateLimit = new Ratelimit({
-    redis: Redis.fromEnv(),
+if (env.REDIS_URL) {
+  const redis = new Redis(env.REDIS_URL)
+  const rateLimitCompatibleRedis = {
+    sadd: <TData>(key: string, ...members: TData[]) =>
+      redis.sadd(key, ...members.map((m) => String(m))),
+    eval: async <TArgs extends unknown[], TData = unknown>(
+      script: string,
+      keys: string[],
+      args: TArgs
+    ) =>
+      redis.eval(
+        script,
+        keys.length,
+        ...keys,
+        ...(args ?? []).map((a) => String(a))
+      ) as Promise<TData>,
+  }
+  emailSignInRateLimiter = new Ratelimit({
+    redis: rateLimitCompatibleRedis,
     limiter: Ratelimit.slidingWindow(1, '60 s'),
   })
 }
@@ -229,13 +245,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let restricted: 'rate-limited' | undefined
 
   if (
-    rateLimit &&
+    emailSignInRateLimiter &&
     req.url?.startsWith('/api/auth/signin/email') &&
     req.method === 'POST'
   ) {
     const ip = getIp(req)
     if (ip) {
-      const { success } = await rateLimit.limit(ip)
+      const { success } = await emailSignInRateLimiter.limit(ip)
       if (!success) restricted = 'rate-limited'
     }
   }

@@ -1,4 +1,4 @@
-import { SessionState } from '@typebot.io/schemas'
+import { Block, SessionState } from '@typebot.io/schemas'
 import {
   WhatsAppCredentials,
   WhatsAppIncomingMessage,
@@ -15,6 +15,13 @@ import { isDefined } from '@typebot.io/lib/utils'
 import { Reply } from '../types'
 import { setIsReplyingInChatSession } from '../queries/setIsReplyingInChatSession'
 import { removeIsReplyingInChatSession } from '../queries/removeIsReplyingInChatSession'
+import redis from '@typebot.io/lib/redis'
+import { downloadMedia } from './downloadMedia'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { uploadFileToBucket } from '@typebot.io/lib/s3/uploadFileToBucket'
+import { getBlockById } from '@typebot.io/schemas/helpers'
+
+const incomingMessageDebounce = 3000
 
 type Props = {
   receivedMessage: WhatsAppIncomingMessage
@@ -61,32 +68,58 @@ export const resumeWhatsAppFlow = async ({
     }
   }
 
-  const reply = await getIncomingMessageContent({
-    message: receivedMessage,
-    workspaceId,
-    accessToken: credentials?.systemUserAccessToken,
-  })
-
   const session = await getSession(sessionId)
+
+  const { incomingMessages, isReplyingWasSet } =
+    await aggregateParallelMediaMessagesIfRedisEnabled({
+      receivedMessage,
+      existingSessionId: session?.id,
+      newSessionId: sessionId,
+    })
+
+  if (incomingMessages.length === 0) {
+    if (isReplyingWasSet) await removeIsReplyingInChatSession(sessionId)
+
+    return {
+      message: 'Message received',
+    }
+  }
 
   const isSessionExpired =
     session &&
     isDefined(session.state.expiryTimeout) &&
     session?.updatedAt.getTime() + session.state.expiryTimeout < Date.now()
 
-  if (session?.isReplying) {
-    if (!isSessionExpired) {
-      console.log('Is currently replying, skipping...')
-      return {
-        message: 'Message received',
+  if (!isReplyingWasSet) {
+    if (session?.isReplying) {
+      if (!isSessionExpired) {
+        console.log('Is currently replying, skipping...')
+        return {
+          message: 'Message received',
+        }
       }
+    } else {
+      await setIsReplyingInChatSession({
+        existingSessionId: session?.id,
+        newSessionId: sessionId,
+      })
     }
-  } else {
-    await setIsReplyingInChatSession({
-      existingSessionId: session?.id,
-      newSessionId: sessionId,
-    })
   }
+
+  const currentTypebot = session?.state.typebotsQueue[0].typebot
+  const { block } =
+    (currentTypebot && session?.state.currentBlockId
+      ? getBlockById(session.state.currentBlockId, currentTypebot.groups)
+      : undefined) ?? {}
+
+  const reply = await getIncomingMessageContent({
+    messages: incomingMessages,
+    workspaceId,
+    accessToken: credentials?.systemUserAccessToken,
+    typebotId: currentTypebot?.id,
+    resultId: session?.state.typebotsQueue[0].resultId,
+    block,
+  })
 
   const resumeResponse =
     session && !isSessionExpired
@@ -155,35 +188,107 @@ export const resumeWhatsAppFlow = async ({
 }
 
 const getIncomingMessageContent = async ({
-  message,
+  messages,
   workspaceId,
   accessToken,
+  typebotId,
+  resultId,
+  block,
 }: {
-  message: WhatsAppIncomingMessage
+  messages: WhatsAppIncomingMessage[]
   workspaceId?: string
   accessToken: string
+  typebotId?: string
+  resultId?: string
+  block?: Block
 }): Promise<Reply> => {
-  switch (message.type) {
-    case 'text':
-      return message.text.body
-    case 'button':
-      return message.button.text
-    case 'interactive': {
-      return message.interactive.button_reply.id
+  let text: string = ''
+  const attachedFileUrls: string[] = []
+  for (const message of messages) {
+    switch (message.type) {
+      case 'text': {
+        if (text !== '') text += `\n\n${message.text.body}`
+        else text = message.text.body
+        break
+      }
+      case 'button': {
+        if (text !== '') text += `\n\n${message.button.text}`
+        else text = message.button.text
+        break
+      }
+      case 'interactive': {
+        if (text !== '') text += `\n\n${message.interactive.button_reply.id}`
+        else text = message.interactive.button_reply.id
+        break
+      }
+      case 'document':
+      case 'audio':
+      case 'video':
+      case 'image': {
+        let mediaId: string | undefined
+        if (message.type === 'video') mediaId = message.video.id
+        if (message.type === 'image') mediaId = message.image.id
+        if (message.type === 'audio') mediaId = message.audio.id
+        if (message.type === 'document') mediaId = message.document.id
+        if (!mediaId) return
+        const fileVisibility =
+          block?.type === InputBlockType.FILE
+            ? block.options?.visibility
+            : block?.type === InputBlockType.TEXT
+            ? block.options?.attachments?.visibility
+            : undefined
+        let fileUrl
+        if (fileVisibility !== 'Public') {
+          fileUrl =
+            env.NEXTAUTH_URL +
+            `/api/typebots/${typebotId}/whatsapp/media/${
+              workspaceId ? `` : 'preview/'
+            }${mediaId}`
+        } else {
+          const { file, mimeType } = await downloadMedia({
+            mediaId,
+            systemUserAccessToken: accessToken,
+          })
+          const url = await uploadFileToBucket({
+            file,
+            key:
+              resultId && workspaceId && typebotId
+                ? `public/workspaces/${workspaceId}/typebots/${typebotId}/results/${resultId}/${mediaId}`
+                : `tmp/whatsapp/media/${mediaId}`,
+            mimeType,
+          })
+          fileUrl = url
+        }
+        if (block?.type === InputBlockType.FILE) {
+          if (text !== '') text += `, ${fileUrl}`
+          else text = fileUrl
+        } else if (block?.type === InputBlockType.TEXT) {
+          let caption: string | undefined
+          if (message.type === 'document' && message.document.caption) {
+            if (!/^[\w,\s-]+\.[A-Za-z]{3}$/.test(message.document.caption))
+              caption = message.document.caption
+          } else if (message.type === 'image' && message.image.caption)
+            caption = message.image.caption
+          else if (message.type === 'video' && message.video.caption)
+            caption = message.video.caption
+          if (caption) text = text === '' ? caption : `${text}\n\n${caption}`
+          attachedFileUrls.push(fileUrl)
+        }
+        break
+      }
+      case 'location': {
+        const location = `${message.location.latitude}, ${message.location.longitude}`
+        if (text !== '') text += `\n\n${location}`
+        else text = location
+        break
+      }
     }
-    case 'document':
-    case 'audio':
-    case 'video':
-    case 'image':
-      let mediaId: string | undefined
-      if (message.type === 'video') mediaId = message.video.id
-      if (message.type === 'image') mediaId = message.image.id
-      if (message.type === 'audio') mediaId = message.audio.id
-      if (message.type === 'document') mediaId = message.document.id
-      if (!mediaId) return
-      return { type: 'whatsapp media', mediaId, workspaceId, accessToken }
-    case 'location':
-      return `${message.location.latitude}, ${message.location.longitude}`
+  }
+
+  return {
+    type: 'text',
+    text,
+    attachedFileUrls,
   }
 }
 
@@ -225,5 +330,59 @@ const getCredentials = async ({
   return {
     systemUserAccessToken: data.systemUserAccessToken,
     phoneNumberId: data.phoneNumberId,
+  }
+}
+
+const aggregateParallelMediaMessagesIfRedisEnabled = async ({
+  receivedMessage,
+  existingSessionId,
+  newSessionId,
+}: {
+  receivedMessage: WhatsAppIncomingMessage
+  existingSessionId?: string
+  newSessionId: string
+}): Promise<{
+  isReplyingWasSet: boolean
+  incomingMessages: WhatsAppIncomingMessage[]
+}> => {
+  if (redis && ['document', 'video', 'image'].includes(receivedMessage.type)) {
+    const redisKey = `wasession:${newSessionId}`
+    try {
+      const len = await redis.rpush(redisKey, JSON.stringify(receivedMessage))
+
+      if (len === 1) {
+        await setIsReplyingInChatSession({
+          existingSessionId,
+          newSessionId,
+        })
+      }
+
+      await new Promise((resolve) =>
+        setTimeout(resolve, incomingMessageDebounce)
+      )
+
+      const newMessagesResponse = await redis.lrange(redisKey, 0, -1)
+
+      if (!newMessagesResponse || newMessagesResponse.length > len) {
+        // Current message was aggregated with other messages another webhook handler. Skipping...
+        return { isReplyingWasSet: true, incomingMessages: [] }
+      }
+
+      redis.del(redisKey).then()
+
+      return {
+        isReplyingWasSet: true,
+        incomingMessages: newMessagesResponse.map((msgStr) =>
+          JSON.parse(msgStr)
+        ),
+      }
+    } catch (error) {
+      console.error('Failed to process webhook event:', error, receivedMessage)
+    }
+  }
+
+  return {
+    isReplyingWasSet: false,
+    incomingMessages: [receivedMessage],
   }
 }

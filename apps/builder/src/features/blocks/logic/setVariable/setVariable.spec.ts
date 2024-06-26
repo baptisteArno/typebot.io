@@ -23,10 +23,7 @@ test.describe('Set variable block', () => {
     await page.click('text=Click to edit... >> nth = 0')
     await page.fill('input[placeholder="Select a variable"] >> nth=-1', 'Total')
     await page.getByRole('menuitem', { name: 'Create Total' }).click()
-    await page
-      .getByTestId('code-editor')
-      .getByRole('textbox')
-      .fill('1000 * {{Num}}')
+    await page.locator('textarea').fill('1000 * {{Num}}')
 
     await page.click('text=Click to edit...', { force: true })
     await expect(page.getByText('Save in results?')).toBeHidden()
@@ -39,10 +36,7 @@ test.describe('Set variable block', () => {
     await expect(
       page.getByRole('group').nth(1).locator('.chakra-switch')
     ).not.toHaveAttribute('data-checked')
-    await page
-      .getByTestId('code-editor')
-      .getByRole('textbox')
-      .fill('Custom value')
+    await page.locator('textarea').fill('Custom value')
 
     await page.click('text=Click to edit...', { force: true })
     await page.fill(
@@ -50,10 +44,7 @@ test.describe('Set variable block', () => {
       'Addition'
     )
     await page.getByRole('menuitem', { name: 'Create Addition' }).click()
-    await page
-      .getByTestId('code-editor')
-      .getByRole('textbox')
-      .fill('1000 + {{Total}}')
+    await page.locator('textarea').fill('1000 + {{Total}}')
 
     await page.click('text=Test')
     await page
@@ -94,14 +85,14 @@ test.describe('Set variable block', () => {
     await page.getByRole('button', { name: 'Test' }).click()
     await page.getByRole('button', { name: 'There is a bug 🐛' }).click()
     await page.getByTestId('textarea').fill('Hello!!')
-    await page.getByTestId('input').getByRole('button').click()
+    await page.getByLabel('Send').click()
     await page
       .locator('typebot-standard')
       .getByRole('button', { name: 'Restart' })
       .click()
     await page.getByRole('button', { name: 'I have a question 💭' }).click()
     await page.getByTestId('textarea').fill('How are you?')
-    await page.getByTestId('input').getByRole('button').click()
+    await page.getByLabel('Send').click()
     await page.getByRole('button', { name: 'Transcription' }).click()
 
     await expect(

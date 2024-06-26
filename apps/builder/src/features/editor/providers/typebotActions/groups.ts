@@ -171,15 +171,10 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
               const newBlock = { ...block }
               const blockId = createId()
               oldToNewIdsMapping.set(newBlock.id, blockId)
-              console.log(JSON.stringify(newBlock), blockHasOptions(newBlock))
               if (blockHasOptions(newBlock) && newBlock.options) {
                 const variableIdsToReplace = extractVariableIdsFromObject(
                   newBlock.options
                 ).filter((v) => oldToNewIdsMapping.has(v))
-                console.log(
-                  JSON.stringify(newBlock.options),
-                  variableIdsToReplace
-                )
                 if (variableIdsToReplace.length > 0) {
                   let optionsStr = JSON.stringify(newBlock.options)
                   variableIdsToReplace.forEach((variableId) => {
