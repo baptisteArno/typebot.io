@@ -10,7 +10,8 @@
     "@playwright/test": "1.43.1",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
-    "@typebot.io/schemas": "workspace:*"
+    "@typebot.io/schemas": "workspace:*",
+    "@typebot.io/env": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "20.4.2",

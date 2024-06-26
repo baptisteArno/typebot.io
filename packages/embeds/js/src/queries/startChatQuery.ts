@@ -1,4 +1,4 @@
-import { BotContext, InitialChatReply } from '@/types'
+import { BotContext } from '@/types'
 import { guessApiHost } from '@/utils/guessApiHost'
 import { isNotDefined, isNotEmpty } from '@typebot.io/lib'
 import {
@@ -6,7 +6,9 @@ import {
   removePaymentInProgressFromStorage,
 } from '@/features/blocks/inputs/payment/helpers/paymentInProgressStorage'
 import {
+  ContinueChatResponse,
   StartChatInput,
+  StartChatResponse,
   StartFrom,
   StartPreviewChatInput,
 } from '@typebot.io/schemas'
@@ -65,9 +67,14 @@ export async function startChatQuery({
             timeout: false,
           }
         )
-        .json<InitialChatReply>()
+        .json<ContinueChatResponse>()
 
-      return { data }
+      return {
+        data: {
+          ...data,
+          ...paymentInProgressState,
+        } satisfies StartChatResponse,
+      }
     } catch (error) {
       return { error }
     }
@@ -94,7 +101,7 @@ export async function startChatQuery({
             timeout: false,
           }
         )
-        .json<InitialChatReply>()
+        .json<StartChatResponse>()
 
       return { data }
     } catch (error) {
@@ -138,7 +145,7 @@ export async function startChatQuery({
     )
       throw new CorsError(corsAllowOrigin)
 
-    return { data: await response.json<InitialChatReply>() }
+    return { data: await response.json<StartChatResponse>() }
   } catch (error) {
     return { error }
   }

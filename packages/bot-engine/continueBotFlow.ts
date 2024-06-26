@@ -226,7 +226,7 @@ export const continueBotFlow = async (
     return {
       ...chatReply,
       lastMessageNewFormat:
-        formattedReply !== reply ? formattedReply : undefined,
+        formattedReply !== reply?.text ? formattedReply : undefined,
     }
   }
 
@@ -235,7 +235,7 @@ export const continueBotFlow = async (
       messages: [],
       newSessionState,
       lastMessageNewFormat:
-        formattedReply !== reply ? formattedReply : undefined,
+        formattedReply !== reply?.text ? formattedReply : undefined,
       visitedEdges,
       setVariableHistory,
     }
@@ -272,7 +272,8 @@ export const continueBotFlow = async (
 
   return {
     ...chatReply,
-    lastMessageNewFormat: formattedReply !== reply ? formattedReply : undefined,
+    lastMessageNewFormat:
+      formattedReply !== reply?.text ? formattedReply : undefined,
   }
 }
 

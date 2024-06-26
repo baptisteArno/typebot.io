@@ -1820,6 +1820,9 @@ importers:
       '@playwright/test':
         specifier: 1.43.1
         version: 1.43.1
+      '@typebot.io/env':
+        specifier: workspace:*
+        version: link:../env
       '@typebot.io/lib':
         specifier: workspace:*
         version: link:../lib

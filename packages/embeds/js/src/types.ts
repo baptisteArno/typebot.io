@@ -7,17 +7,12 @@ export type InputSubmitContent = {
 }
 
 export type BotContext = {
-  typebot: InitialChatReply['typebot']
+  typebot: StartChatResponse['typebot']
   resultId?: string
   isPreview: boolean
   apiHost?: string
   sessionId: string
   storage: 'local' | 'session' | undefined
-}
-
-export type InitialChatReply = StartChatResponse & {
-  typebot: NonNullable<StartChatResponse['typebot']>
-  sessionId: NonNullable<StartChatResponse['sessionId']>
 }
 
 export type OutgoingLog = {

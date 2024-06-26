@@ -3,6 +3,7 @@ import {
   InputBlock,
   Theme,
   ChatLog,
+  StartChatResponse,
 } from '@typebot.io/schemas'
 import {
   createEffect,
@@ -14,12 +15,7 @@ import {
 } from 'solid-js'
 import { continueChatQuery } from '@/queries/continueChatQuery'
 import { ChatChunk } from './ChatChunk'
-import {
-  BotContext,
-  ChatChunk as ChatChunkType,
-  InitialChatReply,
-  OutgoingLog,
-} from '@/types'
+import { BotContext, ChatChunk as ChatChunkType, OutgoingLog } from '@/types'
 import { isNotDefined } from '@typebot.io/lib'
 import { executeClientSideAction } from '@/utils/executeClientSideActions'
 import { LoadingChunk } from './LoadingChunk'
@@ -61,7 +57,7 @@ const parseDynamicTheme = (
 })
 
 type Props = {
-  initialChatReply: InitialChatReply
+  initialChatReply: StartChatResponse
   context: BotContext
   onNewInputBlock?: (inputBlock: InputBlock) => void
   onAnswer?: (answer: { message: string; blockId: string }) => void
