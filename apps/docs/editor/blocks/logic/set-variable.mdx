@@ -96,9 +96,41 @@ For example,
   [Valid value types](../../variables#valid-value-types) for more information.
 </Info>
 
+## Empty
+
+Resets your variable as if it was never initialized.
+
+## Append value(s)
+
+A conveniant value that automatically transform your variable into a list of strings. It will append the value(s) to the list.
+
+3 possible cases here:
+
+- If the variable is empty, it will create a new array with the provided value(s)
+- If the variable is not an array, it will create a new array with the existing value followed by the provided value(s).
+- If the variable is an array, it will concatenate the provided value(s) to the existing array.
+
+## Environment name
+
+This will set your variable with either `web` or `whatsapp` depending on the environment.
+
+## Transcript
+
+This preset value will save the entire conversation transcript in a variable. It is super useful to provide context to an AI block or to send it as a recap with the [Send email](../integrations/send-email) block.
+
+<YoutubeVideo id="OZLfiLp20f8" />
+
 ## Result ID
 
 This will set your variable with the current result ID. The result ID is the ID that corresponds to a row of your [Results](../../../results/overview.mdx) table. It can be considered like a User ID for the currently chatting user.
+
+## Yesterday, Now, Tomorrow
+
+This will set your variable with the specified date and time in ISO format. You can optionally provide a time zone to convert the date to the specified time zone.
+
+## Random ID
+
+This will set your variable with a random ID with the CUID algorithm.
 
 ## Moment of the day
 
@@ -128,11 +160,13 @@ This value block allows you to find the `Id` from `Ids` with the same index as `
   />
 </Frame>
 
-## Transcript
+## Phone number
 
-This preset value will save the entire conversation transcript in a variable. It is super useful to provide context to an AI block or to send it as a recap with the [Send email](../integrations/send-email) block.
+Only available in WhatsApp. This will set your variable with the user's phone number.
 
-<YoutubeVideo id="OZLfiLp20f8" />
+## Contact name
+
+Only available in WhatsApp. This will set your variable with the user's name.
 
 ## Save in results
 
