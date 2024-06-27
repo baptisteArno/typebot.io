@@ -62,7 +62,7 @@ export const executeFunction = async ({
   )
 
   context.evalClosure(
-    'globalThis.sign = (...args) => $0.apply(undefined, args, { arguments: { copy: true }, promise: true, result: { copy: true, promise: true } })',
+    'globalThis.jwtSign = (...args) => $0.apply(undefined, args, { arguments: { copy: true }, promise: true, result: { copy: true, promise: true } })',
     [
       new ivm.Reference((...args: any[]) => {
         // @ts-ignore
