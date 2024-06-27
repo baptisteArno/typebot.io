@@ -10,7 +10,7 @@ import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { stringify } from 'qs'
 import { BuiltInProviderType } from 'next-auth/providers'
-import { GoogleLogo } from '@/components/GoogleLogo'
+import { CloudLogo } from '@/components/logos/CloudLogo'
 import { omit } from '@typebot.io/lib'
 import { AzureAdLogo } from '@/components/logos/AzureAdLogo'
 import { FacebookLogo } from '@/components/logos/FacebookLogo'
@@ -73,17 +73,23 @@ export const SocialLoginButtons = ({ providers }: Props) => {
       )}
       {providers?.google && (
         <Button
-          leftIcon={<GoogleLogo />}
+          leftIcon={<CloudLogo fontSize={'6xl'} />}
           onClick={handleGoogleClick}
           data-testid="google"
           isLoading={
             ['loading', 'authenticated'].includes(status) ||
             authLoading === 'google'
           }
-          variant="outline"
-        >
-          {t('auth.socialLogin.googleButton.label')}
-        </Button>
+          variant="unstyled"
+          position={'absolute'}
+          size={'lg'}
+          top={'4'}
+          right={'4'}
+          padding={'0.5'}
+          display={'flex'}
+          alignItems={'center'}
+          justifyContent={'center'}
+        />
       )}
       {providers?.facebook && (
         <Button
