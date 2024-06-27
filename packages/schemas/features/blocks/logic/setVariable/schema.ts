@@ -25,6 +25,11 @@ const basicSetVariableOptionsSchema = baseOptions.extend({
   ]),
 })
 
+const popOrShiftSetVariableOptionsSchema = baseOptions.extend({
+  type: z.enum(['Pop', 'Shift']),
+  saveItemInVariableId: z.string().optional(),
+})
+
 const dateSetVariableOptionsSchema = baseOptions.extend({
   type: z.enum(['Now', 'Yesterday', 'Tomorrow']),
   timeZone: z.string().optional(),
@@ -65,6 +70,7 @@ export const setVariableOptionsSchema = z.discriminatedUnion('type', [
   customSetVariableOptionsSchema,
   mapListItemsOptionsSchema,
   appendItemToListOptionsSchema,
+  popOrShiftSetVariableOptionsSchema,
 ])
 
 export const setVariableBlockSchema = blockBaseSchema.merge(

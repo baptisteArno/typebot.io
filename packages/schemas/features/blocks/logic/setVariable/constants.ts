@@ -15,6 +15,8 @@ export const valueTypes = [
   'Random ID',
   'Moment of the day',
   'Map item with same index',
+  'Pop',
+  'Shift',
   'Phone number',
   'Contact name',
 ] as const

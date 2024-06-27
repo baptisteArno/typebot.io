@@ -4,6 +4,7 @@ import {
   SetVariableBlock,
   SetVariableHistoryItem,
   Variable,
+  VariableWithUnknowValue,
 } from '@typebot.io/schemas'
 import { byId, isEmpty } from '@typebot.io/lib'
 import { ExecuteLogicResponse } from '../../../types'
@@ -80,6 +81,7 @@ export const executeSetVariable = async (
   const { newSetVariableHistory, updatedState } = updateVariablesInSession({
     state,
     newVariables: [
+      ...parseColateralVariableChangeIfAny({ state, options: block.options }),
       {
         ...newVariable,
         isSessionVariable: sessionOnlySetVariableOptions.includes(
@@ -182,6 +184,12 @@ const getExpressionToEvaluate =
       case 'Map item with same index': {
         return `const itemIndex = ${options.mapListItemParams?.baseListVariableId}.indexOf(${options.mapListItemParams?.baseItemVariableId})
       return ${options.mapListItemParams?.targetListVariableId}.at(itemIndex)`
+      }
+      case 'Pop': {
+        return `${options.variableId} && Array.isArray(${options.variableId}) ? ${options.variableId}.slice(0, -1) : []`
+      }
+      case 'Shift': {
+        return `${options.variableId} && Array.isArray(${options.variableId}) ? ${options.variableId}.slice(1) : []`
       }
       case 'Append value(s)': {
         const item = parseVariables(state.typebotsQueue[0].typebot.variables)(
@@ -328,4 +336,31 @@ const parseResultTranscriptProps = async (
       .sort((a, b) => a.index - b.index)
       .map((edge) => edge.edgeId),
   }
+}
+
+const parseColateralVariableChangeIfAny = ({
+  state,
+  options,
+}: {
+  state: SessionState
+  options: SetVariableBlock['options']
+}): VariableWithUnknowValue[] => {
+  if (!options || (options.type !== 'Pop' && options.type !== 'Shift'))
+    return []
+  const listVariableValue = state.typebotsQueue[0].typebot.variables.find(
+    (v) => v.id === options.variableId
+  )?.value
+  const variable = state.typebotsQueue[0].typebot.variables.find(
+    (v) => v.id === options.saveItemInVariableId
+  )
+  if (!variable || !listVariableValue) return []
+  return [
+    {
+      ...variable,
+      value:
+        options.type === 'Pop'
+          ? listVariableValue.at(-1)
+          : listVariableValue.at(0),
+    },
+  ]
 }
