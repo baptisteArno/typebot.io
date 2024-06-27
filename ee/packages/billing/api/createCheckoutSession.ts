@@ -78,7 +78,10 @@ export const createCheckoutSession = async ({
     email,
   })
 
-  if (existingCustomer && email !== existingCustomer.data[0].email)
+  if (
+    existingCustomer.data.length > 0 &&
+    user.email !== existingCustomer.data.at(0)?.email
+  )
     throw new TRPCError({
       code: 'BAD_REQUEST',
       message: 'Make sure to log in with the same email as the one provided',
