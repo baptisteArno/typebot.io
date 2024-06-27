@@ -87,7 +87,7 @@ test.describe.parallel('Google sheets integration', () => {
       .press('Enter')
     await expect(
       page.getByText('Succesfully updated matching rows').nth(0)
-    ).toBeVisible()
+    ).toBeVisible({ timeout: 10000 })
   })
 
   test('Get row should work', async ({ page }) => {

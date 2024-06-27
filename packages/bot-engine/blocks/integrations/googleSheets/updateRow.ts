@@ -3,7 +3,7 @@ import {
   GoogleSheetsUpdateRowOptions,
   ChatLog,
 } from '@typebot.io/schemas'
-import { parseCellValues } from './helpers/parseCellValues'
+import { parseNewCellValuesObject } from './helpers/parseNewCellValuesObject'
 import { getAuthenticatedGoogleDoc } from './helpers/getAuthenticatedGoogleDoc'
 import { ExecuteIntegrationResponse } from '../../../types'
 import { matchFilter } from './helpers/matchFilter'
@@ -36,8 +36,6 @@ export const updateRow = async (
     spreadsheetId: options.spreadsheetId,
   })
 
-  const parsedValues = parseCellValues(variables)(options.cellsToUpsert)
-
   await doc.loadInfo()
   const sheet = doc.sheetsById[Number(sheetId)]
   const rows = await sheet.getRows()
@@ -55,13 +53,24 @@ export const updateRow = async (
     return { outgoingEdgeId, logs }
   }
 
+  const parsedValues = parseNewCellValuesObject(variables)(
+    options.cellsToUpsert,
+    sheet.headerValues
+  )
+
   try {
     for (const filteredRow of filteredRows) {
-      const rowIndex = filteredRow.rowNumber - 2 // -1 for 1-indexing, -1 for header row
+      const cellsRange = filteredRow.a1Range.split('!').pop()
+      await sheet.loadCells(cellsRange)
+      const rowIndex = filteredRow.rowNumber - 1
       for (const key in parsedValues) {
-        rows[rowIndex].set(key, parsedValues[key])
+        const cellToUpdate = sheet.getCell(
+          rowIndex,
+          parsedValues[key].columnIndex
+        )
+        cellToUpdate.value = parsedValues[key].value
       }
-      await rows[rowIndex].save()
+      await sheet.saveUpdatedCells()
     }
 
     logs.push({
