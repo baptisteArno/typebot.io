@@ -6,6 +6,7 @@ import { safeStringify } from '@typebot.io/lib/safeStringify'
 import { Variable } from './types'
 import ivm from 'isolated-vm'
 import { parseTransferrableValue } from './codeRunners'
+import jwt from 'jsonwebtoken'
 
 const defaultTimeout = 10 * 1000
 
@@ -59,6 +60,17 @@ export const executeFunction = async ({
       }),
     ]
   )
+
+  context.evalClosure(
+    'globalThis.jwtSign = (...args) => $0.apply(undefined, args, { arguments: { copy: true }, promise: true, result: { copy: true, promise: true } })',
+    [
+      new ivm.Reference((...args: any[]) => {
+        // @ts-ignore
+        return jwt.sign(...args)
+      }),
+    ]
+  )
+
   args.forEach(({ id, value }) => {
     jail.setSync(id, parseTransferrableValue(value))
   })
