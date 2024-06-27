@@ -177,6 +177,11 @@
             "deploy/whatsapp/overview",
             "deploy/whatsapp/create-meta-app"
           ]
+        },
+        {
+          "group": "API",
+          "icon": "code-simple",
+          "pages": ["deploy/api/overview"]
         }
       ]
     },

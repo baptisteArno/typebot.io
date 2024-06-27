@@ -1,7 +1,7 @@
 import { Variable, Cell } from '@typebot.io/schemas'
 import { parseVariables } from '@typebot.io/variables/parseVariables'
 
-export const parseCellValues =
+export const parseNewRowObject =
   (variables: Variable[]) =>
   (cells: Cell[]): { [key: string]: string } =>
     cells.reduce((row, cell) => {

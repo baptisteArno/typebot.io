@@ -1,6 +1,6 @@
 import { guessApiHost } from '@/utils/guessApiHost'
 import { isNotEmpty } from '@typebot.io/lib'
-import { ContinueChatResponse } from '@typebot.io/schemas'
+import { ContinueChatResponse, Message } from '@typebot.io/schemas'
 import ky from 'ky'
 
 export const continueChatQuery = async ({
@@ -9,7 +9,7 @@ export const continueChatQuery = async ({
   sessionId,
 }: {
   apiHost?: string
-  message: string | undefined
+  message?: Message
   sessionId: string
 }) => {
   try {

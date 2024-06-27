@@ -15,7 +15,12 @@ import {
 } from 'solid-js'
 import { continueChatQuery } from '@/queries/continueChatQuery'
 import { ChatChunk } from './ChatChunk'
-import { BotContext, ChatChunk as ChatChunkType, OutgoingLog } from '@/types'
+import {
+  Answer,
+  BotContext,
+  ChatChunk as ChatChunkType,
+  OutgoingLog,
+} from '@/types'
 import { isNotDefined } from '@typebot.io/lib'
 import { executeClientSideAction } from '@/utils/executeClientSideActions'
 import { LoadingChunk } from './LoadingChunk'
@@ -137,7 +142,10 @@ export const ConversationContainer = (props: Props) => {
     })
   }
 
-  const sendMessage = async (message: string | undefined) => {
+  const sendMessage = async (
+    message?: string,
+    attachments?: Answer['attachments']
+  ) => {
     setHasError(false)
     const currentInputBlock = [...chatChunks()].pop()?.input
     if (currentInputBlock?.id && props.onAnswer && message)
@@ -149,7 +157,13 @@ export const ConversationContainer = (props: Props) => {
     const { data, error } = await continueChatQuery({
       apiHost: props.context.apiHost,
       sessionId: props.initialChatReply.sessionId,
-      message,
+      message: message
+        ? {
+            type: 'text',
+            text: message,
+            attachedFileUrls: attachments?.map((attachment) => attachment.url),
+          }
+        : undefined,
     })
     clearTimeout(longRequest)
     setIsSending(false)
