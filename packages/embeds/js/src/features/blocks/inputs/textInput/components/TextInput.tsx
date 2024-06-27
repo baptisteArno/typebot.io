@@ -139,7 +139,10 @@ export const TextInput = (props: Props) => {
 
   return (
     <div
-      class="typebot-input-form flex w-full gap-2 items-end max-w-[350px]"
+      class={clsx(
+        'typebot-input-form flex w-full gap-2 items-end',
+        props.block.options?.isLong ? 'max-w-full' : 'max-w-[350px]'
+      )}
       onKeyDown={submitWhenEnter}
       onDrop={handleDropFile}
       onDragOver={handleDragOver}

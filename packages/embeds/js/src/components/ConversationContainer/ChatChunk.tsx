@@ -1,4 +1,4 @@
-import { BotContext, ChatChunk as ChatChunkType } from '@/types'
+import { Answer, BotContext, ChatChunk as ChatChunkType } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
 import { ContinueChatResponse, Settings, Theme } from '@typebot.io/schemas'
 import { createSignal, For, onMount, Show } from 'solid-js'
@@ -23,7 +23,7 @@ type Props = Pick<ContinueChatResponse, 'messages' | 'input'> & {
   isTransitionDisabled?: boolean
   onNewBubbleDisplayed: (blockId: string) => Promise<void>
   onScrollToBottom: (ref?: HTMLDivElement, offset?: number) => void
-  onSubmit: (input?: string) => void
+  onSubmit: (answer?: string, attachments?: Answer['attachments']) => void
   onSkip: () => void
   onAllBubblesDisplayed: () => void
 }
