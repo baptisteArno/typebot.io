@@ -36,7 +36,7 @@ const disabledLogic = [
 
 // Integrations to be disabled
 const disabledIntegrations = [
-  'Google Sheets',
+  // 'Google Sheets',
   // 'openai',
   'Google Analytics',
   // 'Webhook',
