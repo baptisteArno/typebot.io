@@ -77,9 +77,19 @@ export const VideoBubble = (props: Props) => {
               }
             >
               <video
-                autoplay={props.onTransitionEnd ? false : true}
+                autoplay={
+                  props.onTransitionEnd
+                    ? !(
+                        props.content?.areControlsDisplayed ??
+                        defaultVideoBubbleContent.areControlsDisplayed
+                      )
+                    : false
+                }
                 src={props.content?.url}
-                controls
+                controls={
+                  props.content?.areControlsDisplayed ??
+                  defaultVideoBubbleContent.areControlsDisplayed
+                }
                 class={
                   'p-4 focus:outline-none w-full z-10 text-fade-in rounded-md ' +
                   (isTyping() ? 'opacity-0' : 'opacity-100')
