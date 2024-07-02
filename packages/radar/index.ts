@@ -6,6 +6,18 @@ type Params = {
 
 export const computeRiskLevel = (typebot: any, params?: Params) => {
   const stringifiedTypebot = JSON.stringify(typebot)
+  console.log(
+    'debug cumulative',
+    env.RADAR_CUMULATIVE_KEYWORDS?.forEach((set) =>
+      set.forEach((keyword) =>
+        keyword.forEach((k) => {
+          console.log(
+            `(?<!(https?://|@)[^\\s"]*)\\b${k}${k.includes('$') ? '' : `\\b`}`
+          )
+        })
+      )
+    )
+  )
   if (
     env.RADAR_HIGH_RISK_KEYWORDS?.some((keyword) =>
       new RegExp(
