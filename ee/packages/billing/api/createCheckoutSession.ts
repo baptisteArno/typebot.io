@@ -74,31 +74,14 @@ export const createCheckoutSession = async ({
     },
   })
 
-  const existingCustomer = await stripe.customers.list({
-    email,
-  })
-
-  if (
-    existingCustomer.data.length > 0 &&
-    user.email !== existingCustomer.data.at(0)?.email
-  )
-    throw new TRPCError({
-      code: 'BAD_REQUEST',
-      message: 'Make sure to log in with the same email as the one provided',
-    })
-
-  const customerData = {
+  const customer = await stripe.customers.create({
     email,
     name: company,
     metadata: { workspaceId },
     tax_id_data: vat
       ? [vat as Stripe.CustomerCreateParams.TaxIdDatum]
       : undefined,
-  }
-  const customer =
-    existingCustomer.data.length > 0
-      ? await stripe.customers.update(existingCustomer.data[0].id, customerData)
-      : await stripe.customers.create(customerData)
+  })
 
   const checkoutUrl = await createCheckoutSessionUrl(stripe)({
     customerId: customer.id,
