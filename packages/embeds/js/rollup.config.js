@@ -22,6 +22,9 @@ const indexConfig = {
     format: 'es',
   },
   onwarn,
+  watch: {
+    clearScreen: false,
+  },
   plugins: [
     resolve({ extensions }),
     babel({

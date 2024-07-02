@@ -1,7 +1,9 @@
 {
-  "baseBranch": "origin/main",
-  "globalDotEnv": [".env"],
-  "pipeline": {
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "stream",
+  "globalDependencies": [".env"],
+  "globalEnv": ["DATABASE_URL", "SKIP_ENV_CHECK"],
+  "tasks": {
     "lint": {
       "outputs": []
     },
@@ -14,9 +16,12 @@
         "@typebot.io/prisma#db:generate",
         "@typebot.io/prisma#db:push"
       ],
-      "cache": false
+      "cache": false,
+      "persistent": true
     },
     "build": {
+      "passThroughEnv": ["ENCRYPTION_SECRET"],
+      "env": ["VERCEL_*", "NEXTAUTH_URL", "SENTRY_*"],
       "dependsOn": ["^build", "@typebot.io/prisma#db:generate"],
       "outputs": [
         ".next/**",
@@ -25,13 +30,13 @@
         "build/**",
         "public/__ENV.js"
       ],
-      "outputMode": "new-only",
-      "dotEnv": [".env"]
+      "inputs": ["$TURBO_DEFAULT$", ".env"],
+      "outputLogs": "new-only"
     },
     "docs#build": {
       "dependsOn": ["api:generate"],
       "outputs": ["build/**"],
-      "outputMode": "new-only"
+      "outputLogs": "new-only"
     },
     "api:generate": {
       "dependsOn": ["bot-engine#build", "@typebot.io/prisma#db:generate"],
@@ -48,6 +53,7 @@
       "cache": false
     },
     "checkAndReportChatsUsage": {
+      "env": ["STRIPE_*", "NEXTAUTH_URL", "SMTP_*"],
       "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     }

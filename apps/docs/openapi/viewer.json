@@ -1057,7 +1057,33 @@
                 "type": "object",
                 "properties": {
                   "message": {
-                    "type": "string",
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "text"
+                            ]
+                          },
+                          "text": {
+                            "type": "string"
+                          },
+                          "attachedFileUrls": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "description": "Can only be provided if current input block is a text input block that allows attachments"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "text"
+                        ]
+                      }
+                    ],
                     "description": "Only provide it if your flow starts with an input block and you'd like to directly provide an answer to it."
                   },
                   "isStreamEnabled": {
@@ -1448,7 +1474,33 @@
                 "type": "object",
                 "properties": {
                   "message": {
-                    "type": "string"
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "text"
+                            ]
+                          },
+                          "text": {
+                            "type": "string"
+                          },
+                          "attachedFileUrls": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "description": "Can only be provided if current input block is a text input block that allows attachments"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "text"
+                        ]
+                      }
+                    ]
                   },
                   "textBubbleContentFormat": {
                     "type": "string",
@@ -1792,7 +1844,33 @@
                     "default": false
                   },
                   "message": {
-                    "type": "string"
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "text"
+                            ]
+                          },
+                          "text": {
+                            "type": "string"
+                          },
+                          "attachedFileUrls": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "description": "Can only be provided if current input block is a text input block that allows attachments"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "text"
+                        ]
+                      }
+                    ]
                   },
                   "isOnlyRegistering": {
                     "type": "boolean",
@@ -2915,6 +2993,9 @@
                                               "properties": {
                                                 "id": {
                                                   "type": "string"
+                                                },
+                                                "caption": {
+                                                  "type": "string"
                                                 }
                                               },
                                               "required": [
@@ -2948,6 +3029,9 @@
                                               "type": "object",
                                               "properties": {
                                                 "id": {
+                                                  "type": "string"
+                                                },
+                                                "caption": {
                                                   "type": "string"
                                                 }
                                               },
@@ -3016,6 +3100,9 @@
                                               "type": "object",
                                               "properties": {
                                                 "id": {
+                                                  "type": "string"
+                                                },
+                                                "caption": {
                                                   "type": "string"
                                                 }
                                               },
@@ -5872,6 +5959,25 @@
               },
               "isLong": {
                 "type": "boolean"
+              },
+              "attachments": {
+                "type": "object",
+                "properties": {
+                  "isEnabled": {
+                    "type": "boolean"
+                  },
+                  "saveVariableId": {
+                    "type": "string"
+                  },
+                  "visibility": {
+                    "type": "string",
+                    "enum": [
+                      "Auto",
+                      "Public",
+                      "Private"
+                    ]
+                  }
+                }
               }
             }
           }

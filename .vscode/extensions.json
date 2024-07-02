@@ -5,7 +5,6 @@
     "bradlc.vscode-tailwindcss",
     "unifiedjs.vscode-mdx",
     "lokalise.i18n-ally",
-    "ms-playwright.playwright",
     "Prisma.prisma"
   ]
 }

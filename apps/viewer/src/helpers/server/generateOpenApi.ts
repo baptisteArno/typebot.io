@@ -10,3 +10,5 @@ const openApiDocument = generateOpenApiDocument(appRouter, {
 })
 
 writeFileSync('./openapi/viewer.json', JSON.stringify(openApiDocument, null, 2))
+
+process.exit()
