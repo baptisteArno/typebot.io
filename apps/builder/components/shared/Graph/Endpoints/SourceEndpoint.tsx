@@ -1,5 +1,6 @@
 import { BoxProps, Flex } from '@chakra-ui/react'
 import { useGraph } from 'contexts/GraphContext'
+import { useTypebot } from 'contexts/TypebotContext'
 import { Source } from 'models'
 import React, { MouseEvent, useEffect, useRef, useState } from 'react'
 
@@ -10,6 +11,7 @@ export const SourceEndpoint = ({
   source: Source
 }) => {
   const [ranOnce, setRanOnce] = useState(false)
+  const { setHideEdges } = useTypebot()
   const {
     setConnectingIds,
     addSourceEndpoint,
@@ -22,6 +24,7 @@ export const SourceEndpoint = ({
     e.stopPropagation()
     e.preventDefault()
     setConnectingIds({ source })
+    setHideEdges(false)
   }
 
   useEffect(() => {

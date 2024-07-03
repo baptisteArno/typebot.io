@@ -103,39 +103,37 @@ function TypebotEditPage() {
   return !typebot ? (
     <></>
   ) : (
-    <>
-      <EditorContext>
-        <Seo title="Editor" />
-        <Flex overflow="clip" h="100vh" flexDir="column" id="editor-container">
-          <GettingStartedModal />
+    <EditorContext>
+      <Seo title="Editor" />
+      <Flex overflow="clip" h="100vh" flexDir="column" id="editor-container">
+        <GettingStartedModal />
 
-          <Flex
-            flex="1"
-            pos="relative"
-            h="full"
-            background="#f4f5f8"
-            backgroundImage="radial-gradient(#c6d0e1 1px, transparent 0)"
-            backgroundSize="40px 40px"
-            backgroundPosition="-19px -19px"
-          >
-            <GraphDndContext>
-              <StepsSideBar />
+        <Flex
+          flex="1"
+          pos="relative"
+          h="full"
+          background="#f4f5f8"
+          backgroundImage="radial-gradient(#c6d0e1 1px, transparent 0)"
+          backgroundSize="40px 40px"
+          backgroundPosition="-19px -19px"
+        >
+          <GraphDndContext>
+            <StepsSideBar />
 
-              <GraphProvider
-                blocks={typebot?.blocks ?? []}
-                isReadOnly={isReadOnly}
-              >
-                {typebot && <Graph flex="1" typebot={typebot} />}
+            <GraphProvider
+              blocks={typebot?.blocks ?? []}
+              isReadOnly={isReadOnly}
+            >
+              {typebot && <Graph flex="1" typebot={typebot} />}
 
-                <BoardMenuButton pos="absolute" right="40px" top="20px" />
+              <BoardMenuButton pos="absolute" right="40px" top="20px" />
 
-                <RightPanel />
-              </GraphProvider>
-            </GraphDndContext>
-          </Flex>
+              <RightPanel />
+            </GraphProvider>
+          </GraphDndContext>
         </Flex>
-      </EditorContext>
-    </>
+      </Flex>
+    </EditorContext>
   )
 }
 

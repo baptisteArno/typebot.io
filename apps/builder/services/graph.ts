@@ -305,3 +305,31 @@ export const getEndpointTopOffset = ({
 
 export const getSourceEndpointId = (edge?: Edge) =>
   edge?.from.itemId ?? edge?.from.stepId
+
+export const isItemVisible = (
+  item,
+  graphPosition,
+  containerWidth,
+  containerHeight
+) => {
+  const { x, y, scale } = graphPosition
+
+  const bufferX = 100 / scale + 500
+  const bufferY = 100 / scale + 500
+
+  const scaledItemX = Math.abs(
+    item.graphCoordinates.x * scale + x - containerWidth / 2
+  )
+  const scaledItemY = Math.abs(
+    item.graphCoordinates.y * scale + y - containerHeight / 2
+  )
+
+  const itemWidth = (313 + bufferX) * scale // Considerando a largura do item
+  const itemHeight = (500 + bufferY) * scale // Considerando a altura do item
+
+  const isHorizontallyVisible = scaledItemX - itemWidth < containerWidth / 2
+
+  const isVerticallyVisible = scaledItemY - itemHeight < containerHeight / 2
+
+  return isHorizontallyVisible && isVerticallyVisible
+}

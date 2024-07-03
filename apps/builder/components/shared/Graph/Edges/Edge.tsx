@@ -19,7 +19,15 @@ export type AnchorsPositionProps = {
   totalSegments: number
 }
 
-export const Edge = ({ edge, block }: { edge: EdgeProps; block: Block }) => {
+export const Edge = ({
+  edge,
+  block,
+  visibleItems,
+}: {
+  edge: EdgeProps
+  block: Block
+  visibleItems: Block[]
+}) => {
   const { deleteEdge } = useTypebot()
   const {
     previewingEdge,
@@ -57,7 +65,14 @@ export const Edge = ({ edge, block }: { edge: EdgeProps; block: Block }) => {
   )
 
   useEffect(() => {
-    if (isRefreshing) return
+    if (
+      isRefreshing ||
+      Object.keys(block).length < 1 ||
+      !visibleItems.some((v: Block) => block.id === v.id)
+    ) {
+      return
+    }
+
     setIsRefreshing(true)
     const timer = setTimeout(() => {
       setRefreshEdge((v) => !v)
@@ -82,7 +97,7 @@ export const Edge = ({ edge, block }: { edge: EdgeProps; block: Block }) => {
       graphScale: graphPosition.scale,
     })
   )
-  useLayoutEffect(() => {
+  useEffect(() => {
     setTargetTop(
       getEndpointTopOffset({
         endpoints: targetEndpoints,

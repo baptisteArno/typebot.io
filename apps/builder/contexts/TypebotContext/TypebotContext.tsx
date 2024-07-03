@@ -10,7 +10,9 @@ import {
 import { Router, useRouter } from 'next/router'
 import {
   createContext,
+  Dispatch,
   ReactNode,
+  SetStateAction,
   useContext,
   useEffect,
   useMemo,
@@ -86,6 +88,8 @@ const typebotContext = createContext<
     emptyFields: EmptyFields[]
     customVariables: ICustomVariable[]
     setEmptyFields: SetEmptyFields
+    hideEdges: boolean
+    setHideEdges: Dispatch<SetStateAction<boolean>>
     publishedTypebot?: PublicTypebot
     linkedTypebots?: Typebot[]
     isReadOnly?: boolean
@@ -632,6 +636,7 @@ export const TypebotContext = ({
     }
   }, [])
 
+  const [hideEdges, setHideEdges] = useState(false)
   const { customVariables } = useCustomVariables()
 
   const { wozProfiles } = useWozProfiles()
@@ -642,6 +647,8 @@ export const TypebotContext = ({
       customVariables: customVariables,
       emptyFields,
       setEmptyFields,
+      hideEdges,
+      setHideEdges,
       currentTypebot: typebot,
       publishedTypebot,
       linkedTypebots,
@@ -681,6 +688,7 @@ export const TypebotContext = ({
     customVariables,
     emptyFields,
     setEmptyFields,
+    hideEdges,
     typebot,
     publishedTypebot,
     linkedTypebots,

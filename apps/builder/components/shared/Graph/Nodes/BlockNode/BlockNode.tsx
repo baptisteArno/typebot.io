@@ -7,7 +7,7 @@ import {
   Stack,
   useOutsideClick,
 } from '@chakra-ui/react'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { memo, useEffect, useRef, useState } from 'react'
 import { Block } from 'models'
 import { useGraph } from 'contexts/GraphContext'
 import { useStepDnd } from 'contexts/GraphDndContext'
@@ -27,7 +27,7 @@ type Props = {
   blockIndex: number
 }
 
-export const BlockNode = ({ block, blockIndex }: Props) => {
+export const BlockNode = memo(({ block, blockIndex }: Props) => {
   const {
     connectingIds,
     setConnectingIds,
@@ -51,8 +51,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
   const [isFocused, setIsFocused] = useState(false)
 
   const availableOnlyForEvent =
-    typebot?.availableFor?.length == 1 &&
-    typebot.availableFor.includes('event')
+    typebot?.availableFor?.length == 1 && typebot.availableFor.includes('event')
 
   const showWarning = !availableOnlyForEvent
 
@@ -68,7 +67,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
 
   const blockRef = useRef<HTMLDivElement | null>(null)
 
-  const [debouncedBlockPosition] = useDebounce(blockCoordinates, 100)
+  const [debouncedBlockPosition] = useDebounce(blockCoordinates, 500)
 
   useEffect(() => {
     if (!debouncedBlockPosition || isReadOnly) return
@@ -86,7 +85,7 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
   useEffect(() => {
     setIsConnecting(
       connectingIds?.target?.blockId === block.id &&
-      isNotDefined(connectingIds.target?.stepId)
+        isNotDefined(connectingIds.target?.stepId)
     )
   }, [block.id, connectingIds])
 
@@ -177,8 +176,9 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
               transition="border 300ms, box-shadow 200ms"
               pos="absolute"
               style={{
-                transform: `translate(${blockCoordinates?.x ?? 0}px, ${blockCoordinates?.y ?? 0
-                  }px)`,
+                transform: `translate(${blockCoordinates?.x ?? 0}px, ${
+                  blockCoordinates?.y ?? 0
+                }px)`,
               }}
               onMouseDown={handleMouseDown}
               onMouseEnter={handleMouseEnter}
@@ -248,4 +248,4 @@ export const BlockNode = ({ block, blockIndex }: Props) => {
       )}
     </ContextMenu>
   )
-}
+})
