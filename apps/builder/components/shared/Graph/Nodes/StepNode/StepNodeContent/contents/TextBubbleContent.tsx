@@ -3,6 +3,8 @@ import { useTypebot } from 'contexts/TypebotContext'
 import { EndConversationStep, TextBubbleStep } from 'models'
 import React from 'react'
 import { parseVariableHighlight } from 'services/utils'
+import DOMPurify from 'dompurify'
+import { textBubbleEditorContentConfig } from 'config/dompurify'
 
 type Props = {
   step: TextBubbleStep | EndConversationStep
@@ -10,6 +12,11 @@ type Props = {
 
 export const TextBubbleContent = ({ step }: Props) => {
   const { typebot } = useTypebot()
+  const sanitizedHtml = DOMPurify.sanitize(
+    step.content.html,
+    textBubbleEditorContentConfig
+  )
+
   if (!typebot) return <></>
   return (
     <Flex
@@ -19,9 +26,9 @@ export const TextBubbleContent = ({ step }: Props) => {
       className="slate-html-container"
       dangerouslySetInnerHTML={{
         __html:
-          step.content.html === ''
+          sanitizedHtml === ''
             ? `<p>Clique para editar...</p>`
-            : parseVariableHighlight(step.content.html, typebot),
+            : parseVariableHighlight(sanitizedHtml, typebot),
       }}
     />
   )
