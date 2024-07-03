@@ -286,6 +286,13 @@ export const UploadButton = ({
     return allExtensions
   }, [workspace?.channel])
 
+  const infosUpload = () => {
+    if (workspace?.channel === 'instagram') {
+      return `Use arquivos com extensão de áudios, imagens e vídeos`
+    }
+    return `Use arquivos com extensão de áudios, imagens, vídeos e documentos`
+  }
+
   return (
     <>
       <Flex justify="center" direction="column">
@@ -310,8 +317,7 @@ export const UploadButton = ({
         <ErrorMessage>{errorMessage && errorMessage}</ErrorMessage>
 
         <FooterMessage>
-          Use arquivos com até {maxFilesize}MB e extensão de áudios, imagens,
-          vídeos e documentos
+          {infosUpload()}
           <br />
           <MoreDetailsButton onClick={handleMoreDetailsClick}>
             Mais detalhes aqui.
