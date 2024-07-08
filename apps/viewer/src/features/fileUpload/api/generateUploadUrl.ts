@@ -101,7 +101,7 @@ export const generateUploadUrl = publicProcedure
         ? `${visibility === 'Private' ? 'private' : 'public'}/workspaces/${
             typebot.workspaceId
           }/typebots/${typebotId}/results/${resultId}/${fileName}`
-        : `/public/tmp/${typebotId}/${fileName}`
+        : `public/tmp/${typebotId}/${fileName}`
 
     const presignedPostPolicy = await generatePresignedPostPolicy({
       fileType,
