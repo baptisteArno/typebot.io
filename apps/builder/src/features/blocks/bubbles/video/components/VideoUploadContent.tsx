@@ -116,9 +116,6 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
             }
             isDisabled={content?.areControlsDisplayed === false}
             onCheckChange={updateAutoPlay}
-            // {...{
-            //   ...(!content?.areControlsDisplayed ? { isChecked: true } : {}),
-            // }}
           />
         </Stack>
       )}
