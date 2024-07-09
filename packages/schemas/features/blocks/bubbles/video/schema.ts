@@ -12,6 +12,8 @@ export const videoBubbleContentSchema = z.object({
   aspectRatio: z.string().optional(),
   maxWidth: z.string().optional(),
   queryParamsStr: z.string().optional(),
+  isAutoplayEnabled: z.boolean().optional(),
+  areControlsDisplayed: z.boolean().optional(),
 })
 
 export const videoBubbleBlockSchema = blockBaseSchema.merge(

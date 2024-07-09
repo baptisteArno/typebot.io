@@ -17,6 +17,8 @@ export const defaultVideoBubbleContent = {
   height: 400,
   aspectRatio: '16/9',
   maxWidth: '100%',
+  areControlsDisplayed: true,
+  isAutoplayEnabled: false,
 } as const
 
 export const horizontalVideoSuggestionSize = {
