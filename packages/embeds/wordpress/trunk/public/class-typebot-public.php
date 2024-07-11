@@ -94,23 +94,23 @@ class Typebot_Public
   {
     $lib_version = '0.2';
     if(array_key_exists('lib_version', $attributes)) {
-      $lib_version = sanitize_text_field($attributes['lib_version']);
+      $lib_version = custom_sanitize_text_field($attributes['lib_version']);
     }
     $lib_url = "https://cdn.jsdelivr.net/npm/@typebot.io/js@". $lib_version ."/dist/web.js";
     $width = '100%';
     $height = '500px';
     $api_host = 'https://typebot.io';
     if (array_key_exists('width', $attributes)) {
-      $width = sanitize_text_field($attributes['width']);
+      $width = custom_sanitize_text_field($attributes['width']);
     }
     if (array_key_exists('height', $attributes)) {
-      $height = sanitize_text_field($attributes['height']);
+      $height = custom_sanitize_text_field($attributes['height']);
     }
     if (array_key_exists('typebot', $attributes)) {
-      $typebot = sanitize_text_field($attributes['typebot']);
+      $typebot = custom_sanitize_text_field($attributes['typebot']);
     }
     if (array_key_exists('host', $attributes)) {
-      $api_host = sanitize_text_field($attributes['host']);
+      $api_host = custom_sanitize_text_field($attributes['host']);
     }
     if (!$typebot) {
       return;
@@ -142,4 +142,10 @@ class Typebot_Public
       $length
     );
   }
+}
+
+function custom_sanitize_text_field($str) {
+  $str = str_replace(array('"', "'", '\\'), '', $str);
+  $str = sanitize_text_field($str);
+  return $str;
 }
