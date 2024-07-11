@@ -60,6 +60,60 @@ export const VideoUploadContent = ({
         : {}),
     })
   }
+
+  return (
+    <Stack>
+      <HStack>
+        {displayedTabs.includes('link') && (
+          <Button
+            variant={currentTab === 'link' ? 'solid' : 'ghost'}
+            onClick={() => setCurrentTab('link')}
+            size="sm"
+          >
+            Link
+          </Button>
+        )}
+        {displayedTabs.includes('pexels') && (
+          <Button
+            variant={currentTab === 'pexels' ? 'solid' : 'ghost'}
+            onClick={() => setCurrentTab('pexels')}
+            size="sm"
+          >
+            Pexels
+          </Button>
+        )}
+      </HStack>
+
+      {/* Body content to be displayed below conditionally based on currentTab */}
+      {currentTab === 'link' && (
+        <VideoLinkEmbedContent
+          content={content}
+          updateUrl={updateUrl}
+          onSubmit={onSubmit}
+        />
+      )}
+      {currentTab === 'pexels' && (
+        <Stack py="2" spacing={4} align="center">
+          <Text fontSize="small" margin="auto" my="3">
+            Pexels Custom Video Picker
+          </Text>
+        </Stack>
+      )}
+    </Stack>
+  )
+}
+
+const VideoLinkEmbedContent = ({
+  content,
+  updateUrl,
+  onSubmit,
+}: {
+  content?: VideoBubbleBlock['content']
+  updateUrl: (url: string) => void
+  onSubmit: (content: VideoBubbleBlock['content']) => void
+}) => {
+  const { t } = useTranslate()
+
   const updateAspectRatio = (aspectRatio?: string) => {
     return onSubmit({
       ...content,
@@ -89,61 +143,6 @@ export const VideoUploadContent = ({
     }
     return onSubmit({ ...content, areControlsDisplayed })
   }
-
-  return (
-    <Stack>
-      <HStack>
-        {displayedTabs.includes('link') && (
-          <Button
-            variant={currentTab === 'link' ? 'solid' : 'ghost'}
-            onClick={() => setCurrentTab('link')}
-            size="sm"
-          >
-            Link
-          </Button>
-        )}
-        {displayedTabs.includes('pexels') && (
-          <Button
-            variant={currentTab === 'pexels' ? 'solid' : 'ghost'}
-            onClick={() => setCurrentTab('pexels')}
-            size="sm"
-          >
-            Pexels
-          </Button>
-        )}
-      </HStack>
-      {/* Body content to be displayed conditionally based on currentTab */}
-      {currentTab === 'link' && (
-        <VideoLinkEmbedContent
-          content={content}
-          updateUrl={updateUrl}
-          updateAspectRatio={updateAspectRatio}
-          updateMaxWidth={updateMaxWidth}
-          updateControlsDisplay={updateControlsDisplay}
-          updateAutoPlay={updateAutoPlay}
-        />
-      )}
-      {currentTab === 'pexels' && (
-        <Stack pt="2" spacing="4" align="center">
-          <Text fontSize="small" margin="auto" my="3">
-            Pexels Custom Video Picker
-          </Text>
-        </Stack>
-      )}
-    </Stack>
-  )
-}
-
-const VideoLinkEmbedContent = ({
-  content,
-  updateUrl,
-  updateAspectRatio,
-  updateMaxWidth,
-  updateControlsDisplay,
-  updateAutoPlay,
-}: // eslint-disable-next-line @typescript-eslint/no-explicit-any
-any) => {
-  const { t } = useTranslate()
 
   return (
     <>
