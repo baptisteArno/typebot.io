@@ -12,7 +12,7 @@ jobs:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - uses: actions/checkout@v2
-      - uses: pnpm/action-setup@v2.2.2
+      - uses: pnpm/action-setup@v4
       - run: pnpm i --frozen-lockfile
       - run: pnpm turbo build --filter=typebot-js...
       - name: Set NPM_TOKEN in config

@@ -197,13 +197,11 @@ export const executeWebhook = async (
 
   if (isFormData && isJson) body = parseFormDataBody(body as object)
 
-  const request = {
+  const baseRequest = {
     url,
     method,
     headers: headers ?? {},
     ...(basicAuth ?? {}),
-    json: !isFormData && body && isJson ? body : undefined,
-    body: (isFormData && body ? body : undefined) as any,
     timeout: isNotDefined(env.CHAT_API_TIMEOUT)
       ? false
       : params.timeout && params.timeout !== defaultTimeout
@@ -211,7 +209,13 @@ export const executeWebhook = async (
       : isLongRequest
       ? maxTimeout * 1000
       : defaultTimeout * 1000,
-  } satisfies Options & { url: string; body: any }
+  } satisfies Options & { url: string }
+
+  const request = body
+    ? !isFormData && isJson
+      ? { ...baseRequest, json: body }
+      : { ...baseRequest, body }
+    : baseRequest
 
   try {
     const response = await ky(request.url, omit(request, 'url'))

@@ -2,10 +2,10 @@
 Contributors: baptisteArno
 Tags: typebot, forms, surveys, quizzes, form builder, survey builder, quiz builder, custom forms, mobile forms, payment forms, order forms, feedback forms, enquiry forms, stripe, dropbox, google sheets, mailchimp, salesforce, hubspot, activecampaign, infusionsoft, asana, hipchat, slack, trello, zendesk
 Requires at least: 5.0
-Tested up to: 6.5
+Tested up to: 6.6
 License: GPL 2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
-Stable Tag: 3.6.0
+Stable Tag: 3.6.1
 
 == Description ==
 Collect 4x more responses with conversational apps using Typebot.
@@ -24,6 +24,9 @@ This plugin relies on Typebot which is a tool that allows you to create conversa
 3. Activate your Typebot with the "Typebot" admin button located in the sidebar
 
 == Changelog ==
+= 3.6.1 =
+* Fix XSS vulnerability with shortcode attributes
+
 = 3.6.0 =
 * Add the lib_version attribute to wp admin panel
 

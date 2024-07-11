@@ -17,6 +17,6 @@ jobs:
       NEXT_PUBLIC_VIEWER_URL: 'http://localhost:3001'
     steps:
       - uses: actions/checkout@v2
-      - uses: pnpm/action-setup@v2.2.2
+      - uses: pnpm/action-setup@v4
       - run: pnpm i --frozen-lockfile
       - run: pnpm turbo run db:cleanDatabase
