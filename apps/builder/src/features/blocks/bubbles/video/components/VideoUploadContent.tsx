@@ -4,6 +4,7 @@ import { TextInput } from '@/components/inputs'
 import { useTranslate } from '@tolgee/react'
 import { parseVideoUrl } from '@typebot.io/schemas/features/blocks/bubbles/video/helpers'
 import { defaultVideoBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 
 type Props = {
   content?: VideoBubbleBlock['content']
@@ -43,6 +44,22 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
     })
   }
 
+  const updateAutoPlay = (isAutoplayEnabled: boolean) => {
+    return onSubmit({ ...content, isAutoplayEnabled })
+  }
+
+  const updateControlsDisplay = (areControlsDisplayed: boolean) => {
+    if (areControlsDisplayed === false) {
+      // Make sure autoplay is enabled when video controls are disabled
+      return onSubmit({
+        ...content,
+        isAutoplayEnabled: true,
+        areControlsDisplayed,
+      })
+    }
+    return onSubmit({ ...content, areControlsDisplayed })
+  }
+
   return (
     <Stack p="2" spacing={4}>
       <Stack>
@@ -74,6 +91,31 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
             }
             onChange={updateMaxWidth}
             direction="row"
+          />
+        </Stack>
+      )}
+      {content?.url && content?.type === 'url' && (
+        <Stack>
+          <SwitchWithLabel
+            label={'Display controls'}
+            initialValue={
+              content?.areControlsDisplayed ??
+              defaultVideoBubbleContent.areControlsDisplayed
+            }
+            onCheckChange={updateControlsDisplay}
+          />
+          <SwitchWithLabel
+            label={t('editor.blocks.bubbles.audio.settings.autoplay.label')}
+            initialValue={
+              content?.isAutoplayEnabled ??
+              defaultVideoBubbleContent.isAutoplayEnabled
+            }
+            isChecked={
+              content?.isAutoplayEnabled ??
+              defaultVideoBubbleContent.isAutoplayEnabled
+            }
+            isDisabled={content?.areControlsDisplayed === false}
+            onCheckChange={() => updateAutoPlay(!content.isAutoplayEnabled)}
           />
         </Stack>
       )}

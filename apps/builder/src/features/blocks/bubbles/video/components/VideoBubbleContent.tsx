@@ -29,7 +29,7 @@ export const VideoBubbleContent = ({ block }: Props) => {
           ) : (
             <video
               key={block.content.url}
-              controls
+              controls={block.content?.areControlsDisplayed}
               style={{
                 width: '100%',
                 height: '100%',
