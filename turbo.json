@@ -3,6 +3,7 @@
   "ui": "stream",
   "globalDependencies": [".env"],
   "globalEnv": ["DATABASE_URL", "SKIP_ENV_CHECK"],
+  "globalPassThroughEnv": ["ENCRYPTION_SECRET"],
   "tasks": {
     "lint": {
       "outputs": []
@@ -20,7 +21,6 @@
       "persistent": true
     },
     "build": {
-      "passThroughEnv": ["ENCRYPTION_SECRET"],
       "env": ["VERCEL_*", "NEXTAUTH_URL", "SENTRY_*"],
       "dependsOn": ["^build", "@typebot.io/prisma#db:generate"],
       "outputs": [
