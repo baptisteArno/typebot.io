@@ -110,7 +110,10 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
               content?.isAutoplayEnabled ??
               defaultVideoBubbleContent.isAutoplayEnabled
             }
-            isChecked={content?.isAutoplayEnabled}
+            isChecked={
+              content?.isAutoplayEnabled ??
+              defaultVideoBubbleContent.isAutoplayEnabled
+            }
             isDisabled={content?.areControlsDisplayed === false}
             onCheckChange={() => updateAutoPlay(!content.isAutoplayEnabled)}
           />
