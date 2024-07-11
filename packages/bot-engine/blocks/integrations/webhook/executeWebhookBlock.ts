@@ -203,7 +203,7 @@ export const executeWebhook = async (
     headers: headers ?? {},
     ...(basicAuth ?? {}),
     json: !isFormData && body && isJson ? body : undefined,
-    body: (isFormData && body ? body : undefined) as any,
+    body: body && (isFormData || !isJson) ? body : undefined,
     timeout: isNotDefined(env.CHAT_API_TIMEOUT)
       ? false
       : params.timeout && params.timeout !== defaultTimeout
