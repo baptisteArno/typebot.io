@@ -1,18 +1,48 @@
-import { Stack, Text } from '@chakra-ui/react'
+import { Button, HStack, Stack, Text } from '@chakra-ui/react'
 import { VideoBubbleBlock } from '@typebot.io/schemas'
 import { TextInput } from '@/components/inputs'
 import { useTranslate } from '@tolgee/react'
 import { parseVideoUrl } from '@typebot.io/schemas/features/blocks/bubbles/video/helpers'
 import { defaultVideoBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
+import { useState } from 'react'
+
+type Tabs = 'link' | 'pexels'
 
 type Props = {
   content?: VideoBubbleBlock['content']
   onSubmit: (content: VideoBubbleBlock['content']) => void
-}
+  initialTab?: Tabs
+} & (
+  | {
+      includedTabs?: Tabs[]
+    }
+  | {
+      excludedTabs?: Tabs[]
+    }
+)
 
-export const VideoUploadContent = ({ content, onSubmit }: Props) => {
-  const { t } = useTranslate()
+const defaultDisplayedTabs: Tabs[] = ['link', 'pexels']
+
+export const VideoUploadContent = ({
+  content,
+  onSubmit,
+  initialTab,
+  ...props
+}: Props) => {
+  const includedTabs =
+    'includedTabs' in props
+      ? props.includedTabs ?? defaultDisplayedTabs
+      : defaultDisplayedTabs
+  const excludedTabs = 'excludedTabs' in props ? props.excludedTabs ?? [] : []
+  const displayedTabs = defaultDisplayedTabs.filter(
+    (tab) => !excludedTabs.includes(tab) && includedTabs.includes(tab)
+  )
+
+  const [currentTab, setCurrentTab] = useState<Tabs>(
+    initialTab ?? displayedTabs[0]
+  )
+
   const updateUrl = (url: string) => {
     const {
       type,
@@ -61,8 +91,63 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
   }
 
   return (
-    <Stack p="2" spacing={4}>
-      <Stack>
+    <Stack>
+      <HStack>
+        {displayedTabs.includes('link') && (
+          <Button
+            variant={currentTab === 'link' ? 'solid' : 'ghost'}
+            onClick={() => setCurrentTab('link')}
+            size="sm"
+          >
+            Link
+          </Button>
+        )}
+        {displayedTabs.includes('pexels') && (
+          <Button
+            variant={currentTab === 'pexels' ? 'solid' : 'ghost'}
+            onClick={() => setCurrentTab('pexels')}
+            size="sm"
+          >
+            Pexels
+          </Button>
+        )}
+      </HStack>
+      {/* Body content to be displayed conditionally based on currentTab */}
+      {currentTab === 'link' && (
+        <VideoLinkEmbedContent
+          content={content}
+          updateUrl={updateUrl}
+          updateAspectRatio={updateAspectRatio}
+          updateMaxWidth={updateMaxWidth}
+          updateControlsDisplay={updateControlsDisplay}
+          updateAutoPlay={updateAutoPlay}
+        />
+      )}
+      {currentTab === 'pexels' && (
+        <Stack pt="2" spacing="4" align="center">
+          <Text fontSize="small" margin="auto" my="3">
+            Pexels Custom Video Picker
+          </Text>
+        </Stack>
+      )}
+    </Stack>
+  )
+}
+
+const VideoLinkEmbedContent = ({
+  content,
+  updateUrl,
+  updateAspectRatio,
+  updateMaxWidth,
+  updateControlsDisplay,
+  updateAutoPlay,
+}: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+any) => {
+  const { t } = useTranslate()
+
+  return (
+    <>
+      <Stack py="2">
         <TextInput
           placeholder={t('video.urlInput.placeholder')}
           defaultValue={content?.url ?? ''}
@@ -119,6 +204,6 @@ export const VideoUploadContent = ({ content, onSubmit }: Props) => {
           />
         </Stack>
       )}
-    </Stack>
+    </>
   )
 }
