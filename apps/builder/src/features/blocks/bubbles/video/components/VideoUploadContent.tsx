@@ -6,6 +6,7 @@ import { parseVideoUrl } from '@typebot.io/schemas/features/blocks/bubbles/video
 import { defaultVideoBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { useState } from 'react'
+import { PexelsPicker } from '@/components/VideoUploadContent/PexelsPicker'
 
 type Tabs = 'link' | 'pexels'
 
@@ -50,6 +51,10 @@ export const VideoUploadContent = ({
       id,
       videoSizeSuggestion,
     } = parseVideoUrl(url)
+    if (currentTab !== 'link') {
+      // Allow user to update video settings after selection
+      setCurrentTab('link')
+    }
     return onSubmit({
       ...content,
       type,
@@ -93,11 +98,12 @@ export const VideoUploadContent = ({
         />
       )}
       {currentTab === 'pexels' && (
-        <Stack py="2" spacing={4} align="center">
-          <Text fontSize="small" margin="auto" my="3">
-            Pexels Custom Video Picker
-          </Text>
-        </Stack>
+        <PexelsPicker
+          imageSize="regular"
+          onImageSelect={updateUrl}
+          videoSize="small"
+          onVideoSelect={updateUrl}
+        />
       )}
     </Stack>
   )
