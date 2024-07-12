@@ -127,15 +127,8 @@ export const PexelsPicker = ({ videoSize, onVideoSelect }: Props) => {
     getInitialVideos()
   }, [])
 
-  if (!env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY)
-    return (
-      <Text>NEXT_PUBLIC_UNSPLASH_ACCESS_KEY is missing in environment</Text>
-    )
-
-  // if (!env.NEXT_PUBLIC_PEXELS_API_KEY)
-  //   return (
-  //     <Text>NEXT_PUBLIC_PEXELS_API_KEY is missing in environment</Text>
-  //   )
+  if (!env.NEXT_PUBLIC_PEXELS_API_KEY)
+    return <Text>NEXT_PUBLIC_PEXELS_API_KEY is missing in environment</Text>
 
   return (
     <Stack spacing={4} pt="2">
