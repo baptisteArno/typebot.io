@@ -21,7 +21,7 @@
       "persistent": true
     },
     "build": {
-      "env": ["VERCEL_*", "NEXTAUTH_URL", "SENTRY_*"],
+      "env": ["VERCEL_*", "NEXTAUTH_URL", "SENTRY_*", "LANDING_PAGE_URL"],
       "dependsOn": ["^build", "@typebot.io/prisma#db:generate"],
       "outputs": [
         ".next/**",
