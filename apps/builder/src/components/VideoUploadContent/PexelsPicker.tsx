@@ -12,13 +12,11 @@ import {
   Spinner,
   Stack,
   Text,
-  useColorModeValue,
 } from '@chakra-ui/react'
 import { isDefined } from '@typebot.io/lib'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createClient, Video, ErrorResponse, Videos } from 'pexels'
 import { TextInput } from '../inputs'
-import { UnsplashLogo } from '../logos/UnsplashLogo'
 import { TextLink } from '../TextLink'
 import { env } from '@typebot.io/env'
 import usePrefetchImages from '@/hooks/usePrefetchImages'
@@ -32,7 +30,6 @@ type Props = {
 }
 
 export const PexelsPicker = ({ videoSize, onVideoSelect }: Props) => {
-  const unsplashLogoFillColor = useColorModeValue('black', 'white')
   const [isFetching, setIsFetching] = useState(false)
   const [videos, setVideos] = useState<Video[]>([])
   const [error, setError] = useState<string | null>(null)
@@ -144,11 +141,14 @@ export const PexelsPicker = ({ videoSize, onVideoSelect }: Props) => {
           debounceTimeout={500}
           forceDebounce
         />
-        <Link
-          isExternal
-          href={`https://unsplash.com/?utm_source=${env.NEXT_PUBLIC_UNSPLASH_APP_NAME}&utm_medium=referral`}
-        >
-          <UnsplashLogo width="80px" fill={unsplashLogoFillColor} />
+        <Link isExternal href={`https://www.pexels.com`}>
+          <Image
+            src="/images/pexels_logo.png"
+            alt="Pexels"
+            w="16"
+            bg="#fff"
+            rounded="md"
+          />
         </Link>
       </HStack>
       {isDefined(error) && (
@@ -189,7 +189,7 @@ type PexelsVideoProps = {
 }
 
 const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
-  const { user, video_pictures } = video
+  const { user, url, video_pictures } = video
   const [isImageHovered, setIsImageHovered] = useState(false)
   const [thumbnailImage, setThumbnailImage] = useState(
     video_pictures[0].picture
@@ -251,7 +251,7 @@ const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
         <TextLink
           fontSize="xs"
           isExternal
-          href={user.url}
+          href={url}
           noOfLines={1}
           color="white"
         >
