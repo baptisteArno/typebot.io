@@ -50,7 +50,7 @@ export const PexelsPicker = ({ videoSize, onVideoSelect }: Props) => {
     try {
       const result = await client.videos.search({
         query,
-        per_page: 30,
+        per_page: 24,
         size: videoSize,
         orientation: 'landscape',
         page,
@@ -206,7 +206,7 @@ const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
       interval = setInterval(() => {
         setImageIndex((prevIndex) => (prevIndex + 1) % video_pictures.length)
         setThumbnailImage(video_pictures[imageIndex].picture)
-      }, 250)
+      }, 200)
     } else {
       setThumbnailImage(video_pictures[0].picture)
       setImageIndex(1)
@@ -234,6 +234,7 @@ const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
           onClick={onClick}
           rounded="md"
           h="100%"
+          aspectRatio={4 / 3}
           cursor="pointer"
         />
       }
