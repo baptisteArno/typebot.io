@@ -428,8 +428,7 @@ const PhoneNumber = ({
       <Stack>
         <Text>
           Select a phone number and paste the associated{' '}
-          <Code>Phone number ID</Code> and{' '}
-          <Code>WhatsApp Business Account ID</Code>:
+          <Code>Phone number ID</Code>
         </Text>
         <HStack>
           <TextInput
