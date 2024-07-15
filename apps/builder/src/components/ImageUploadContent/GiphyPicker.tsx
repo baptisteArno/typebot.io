@@ -31,6 +31,7 @@ export const GiphyPicker = ({ onSubmit }: GiphySearchFormProps) => {
           placeholder="Search..."
           onChange={setInputValue}
           withVariableButton={false}
+          width="full"
         />
         <GiphyLogo w="100px" />
       </Flex>

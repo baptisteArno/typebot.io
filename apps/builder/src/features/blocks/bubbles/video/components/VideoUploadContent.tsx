@@ -95,12 +95,7 @@ export const VideoUploadContent = ({
         />
       )}
       {currentTab === 'pexels' && (
-        <PexelsPicker
-          imageSize="regular"
-          onImageSelect={updateUrl}
-          videoSize="small"
-          onVideoSelect={updateUrl}
-        />
+        <PexelsPicker videoSize="medium" onVideoSelect={updateUrl} />
       )}
     </Stack>
   )

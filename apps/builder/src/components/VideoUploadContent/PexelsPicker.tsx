@@ -19,12 +19,11 @@ import { createClient, Video, ErrorResponse, Videos } from 'pexels'
 import { TextInput } from '../inputs'
 import { TextLink } from '../TextLink'
 import { env } from '@typebot.io/env'
-import usePrefetchImages from '@/hooks/usePrefetchImages'
+import { PexelsLogo } from '../logos/PexelsLogo'
+
 const client = createClient(process.env.NEXT_PUBLIC_PEXELS_API_KEY as string)
 
 type Props = {
-  imageSize: 'regular' | 'small' | 'thumb'
-  onImageSelect: (imageUrl: string) => void
   videoSize: 'large' | 'medium' | 'small'
   onVideoSelect: (videoUrl: string) => void
 }
@@ -40,8 +39,11 @@ export const PexelsPicker = ({ videoSize, onVideoSelect }: Props) => {
   const [nextPage, setNextPage] = useState(0)
 
   const fetchNewVideos = useCallback(async (query: string, page: number) => {
-    if (query === '') return getInitialVideos()
-    if (query.length <= 2) return
+    if (query === '') getInitialVideos()
+    if (query.length <= 2) {
+      setNextPage(0)
+      return
+    }
     setError(null)
     setIsFetching(true)
     try {
@@ -49,7 +51,6 @@ export const PexelsPicker = ({ videoSize, onVideoSelect }: Props) => {
         query,
         per_page: 24,
         size: videoSize,
-        orientation: 'landscape',
         page,
       })
       if ((result as ErrorResponse).error)
@@ -93,11 +94,9 @@ export const PexelsPicker = ({ videoSize, onVideoSelect }: Props) => {
     setError(null)
     setIsFetching(true)
     client.videos
-      .search({
-        query: 'Hello Cat Nature Business',
+      .popular({
         per_page: 24,
         size: videoSize,
-        orientation: 'landscape',
       })
       .then((res) => {
         if ((res as ErrorResponse).error) {
@@ -140,15 +139,10 @@ export const PexelsPicker = ({ videoSize, onVideoSelect }: Props) => {
           withVariableButton={false}
           debounceTimeout={500}
           forceDebounce
+          width="full"
         />
         <Link isExternal href={`https://www.pexels.com`}>
-          <Image
-            src="/images/pexels_logo.png"
-            alt="Pexels"
-            w="16"
-            bg="#fff"
-            rounded="md"
-          />
+          <PexelsLogo width="100px" height="40px" />
         </Link>
       </HStack>
       {isDefined(error) && (
@@ -195,9 +189,6 @@ const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
     video_pictures[0].picture
   )
   const [imageIndex, setImageIndex] = useState(1)
-
-  // Prefetch video pictures for smoother animation effect
-  usePrefetchImages(video_pictures.map((picture) => picture.picture))
 
   useEffect(() => {
     let interval: NodeJS.Timer
