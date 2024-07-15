@@ -1,5 +1,7 @@
+// Copied from https://github.com/vercel/ai/blob/f9db8fd6543202a8404a7a1a40f938d6270b08ef/packages/core/streams/assistant-response.ts
+// Because the stream is not exported from the package
 import { AssistantMessage, DataMessage, formatStreamPart } from 'ai'
-import { AssistantStream } from 'openai/lib/AssistantStream'
+import { AssistantStream as AssistantStreamType } from 'openai/lib/AssistantStream'
 import { Run } from 'openai/resources/beta/threads/runs/runs'
 
 /**
@@ -44,14 +46,19 @@ Send a data message to the client. You can use this to provide information for r
   /**
 Forwards the assistant response stream to the client. Returns the `Run` object after it completes, or when it requires an action.
    */
-  forwardStream: (stream: AssistantStream) => Promise<Run | undefined>
+  forwardStream: (stream: AssistantStreamType) => Promise<Run | undefined>
 }) => Promise<void>
 
-export const OpenAIAssistantStream = (
+/**
+The `AssistantResponse` allows you to send a stream of assistant update to `useAssistant`.
+It is designed to facilitate streaming assistant responses to the `useAssistant` hook.
+It receives an assistant thread and a current message, and can send messages and data messages to the client.
+ */
+export function AssistantStream(
   { threadId, messageId }: AssistantResponseSettings,
   process: AssistantResponseCallback
-) =>
-  new ReadableStream({
+) {
+  return new ReadableStream({
     async start(controller) {
       const textEncoder = new TextEncoder()
 
@@ -73,7 +80,7 @@ export const OpenAIAssistantStream = (
         )
       }
 
-      const forwardStream = async (stream: AssistantStream) => {
+      const forwardStream = async (stream: AssistantStreamType) => {
         let result: Run | undefined = undefined
 
         for await (const value of stream) {
@@ -143,3 +150,4 @@ export const OpenAIAssistantStream = (
     pull(controller) {},
     cancel() {},
   })
+}

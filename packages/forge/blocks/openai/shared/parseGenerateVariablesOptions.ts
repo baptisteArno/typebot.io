@@ -69,14 +69,12 @@ export const parseGenerateVariablesOptions = ({
         ? option.string.layout({
             placeholder: 'Select a model',
             label: 'Model',
-            defaultValue: defaultModel,
             fetcher: modelFetch,
             helperText: modelHelperText,
           })
         : option.enum(modelFetch).layout({
             placeholder: 'Select a model',
             label: 'Model',
-            defaultValue: defaultModel,
             helperText: modelHelperText,
           }),
     prompt: option.string.layout({

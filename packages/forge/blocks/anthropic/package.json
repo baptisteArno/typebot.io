@@ -15,10 +15,10 @@
     "typescript": "5.4.5"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "0.20.6",
-    "@ai-sdk/anthropic": "0.0.21",
+    "@ai-sdk/anthropic": "0.0.30",
     "@typebot.io/openai-block": "workspace:*",
-    "ai": "3.2.1",
+    "ai": "3.2.22",
+    "@typebot.io/ai": "workspace:*",
     "ky": "1.2.4"
   }
 }

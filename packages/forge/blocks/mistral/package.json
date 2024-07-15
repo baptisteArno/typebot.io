@@ -14,9 +14,10 @@
     "typescript": "5.4.5"
   },
   "dependencies": {
-    "@ai-sdk/mistral": "0.0.18",
+    "@ai-sdk/mistral": "0.0.22",
     "@typebot.io/openai-block": "workspace:*",
-    "ai": "3.2.1",
-    "ky": "1.2.4"
+    "ai": "3.2.22",
+    "ky": "1.2.4",
+    "@typebot.io/ai": "workspace:*"
   }
 }

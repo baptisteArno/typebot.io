@@ -3,8 +3,8 @@ import { auth } from '../auth'
 import { parseChatCompletionOptions } from '@typebot.io/openai-block/shared/parseChatCompletionOptions'
 import { getChatCompletionSetVarIds } from '@typebot.io/openai-block/shared/getChatCompletionSetVarIds'
 import { getChatCompletionStreamVarId } from '@typebot.io/openai-block/shared/getChatCompletionStreamVarId'
-import { runChatCompletion } from '@typebot.io/openai-block/shared/runChatCompletion'
-import { runChatCompletionStream } from '@typebot.io/openai-block/shared/runChatCompletionStream'
+import { runOpenAIChatCompletion } from '@typebot.io/openai-block/shared/runOpenAIChatCompletion'
+import { runOpenAIChatCompletionStream } from '@typebot.io/openai-block/shared/runOpenAIChatCompletionStream'
 import { defaultOpenRouterOptions } from '../constants'
 import ky from 'ky'
 import { ModelsResponse } from '../types'
@@ -24,7 +24,6 @@ export const createChatCompletion = createAction({
       blockId: 'anthropic',
       transform: (options) => ({
         ...options,
-        model: undefined,
         action: 'Create Chat Message',
         responseMapping: options.responseMapping?.map((res: any) =>
           res.item === 'Message content'
@@ -36,6 +35,7 @@ export const createChatCompletion = createAction({
   ],
   options: parseChatCompletionOptions({
     modelFetchId: 'fetchModels',
+    defaultTemperature: defaultOpenRouterOptions.temperature,
   }),
   getSetVariableIds: getChatCompletionSetVarIds,
   fetchers: [
@@ -56,18 +56,19 @@ export const createChatCompletion = createAction({
   ],
   run: {
     server: (params) =>
-      runChatCompletion({
+      runOpenAIChatCompletion({
         ...params,
         config: { baseUrl: defaultOpenRouterOptions.baseUrl },
       }),
     stream: {
       getStreamVariableId: getChatCompletionStreamVarId,
-      run: async (params) => ({
-        stream: await runChatCompletionStream({
+      run: async (params) =>
+        runOpenAIChatCompletionStream({
           ...params,
-          config: { baseUrl: defaultOpenRouterOptions.baseUrl },
+          config: {
+            baseUrl: defaultOpenRouterOptions.baseUrl,
+          },
         }),
-      }),
     },
   },
 })

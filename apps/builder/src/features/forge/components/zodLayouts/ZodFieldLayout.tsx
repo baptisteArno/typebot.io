@@ -30,6 +30,21 @@ import { getZodInnerSchema } from '../../helpers/getZodInnerSchema'
 import { TagsInput } from '@/components/TagsInput'
 import { PrimitiveList } from '@/components/PrimitiveList'
 
+const parseEnumItems = (
+  schema: z.ZodTypeAny,
+  layout?: ZodLayoutMetadata<ZodTypeAny>
+) => {
+  const values = layout?.hiddenItems
+    ? schema._def.values.filter((v: string) => !layout.hiddenItems?.includes(v))
+    : schema._def.values
+  if (layout?.toLabels)
+    return values.map((v: string) => ({
+      label: layout.toLabels!(v),
+      value: v,
+    }))
+  return values
+}
+
 const mdComponents = {
   a: ({ href, children }) => (
     <a
@@ -134,13 +149,7 @@ export const ZodFieldLayout = ({
         <DropdownList
           currentItem={data ?? layout?.defaultValue}
           onItemSelect={onDataChange}
-          items={
-            layout?.hiddenItems
-              ? innerSchema._def.values.filter(
-                  (v: any) => !layout.hiddenItems.includes(v)
-                )
-              : innerSchema._def.values
-          }
+          items={parseEnumItems(innerSchema, layout)}
           label={layout?.label}
           helperText={
             layout?.helperText ? (
