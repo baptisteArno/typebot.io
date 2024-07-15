@@ -55,6 +55,7 @@ export const options = option.object({
         ? anthropicModelLabels[val as (typeof anthropicModels)[number]]
         : undefined,
     hiddenItems: anthropicLegacyModels,
+    placeholder: 'Select a model',
   }),
   messages: option
     .array(
