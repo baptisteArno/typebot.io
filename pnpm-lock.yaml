@@ -722,6 +722,9 @@ importers:
       '@typebot.io/lib':
         specifier: workspace:*
         version: link:../lib
+      '@typebot.io/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       '@typebot.io/variables':
         specifier: workspace:*
         version: link:../variables

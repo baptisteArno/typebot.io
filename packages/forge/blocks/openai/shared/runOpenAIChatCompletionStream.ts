@@ -6,6 +6,8 @@ import { maxToolCalls } from '../constants'
 import { isModelCompatibleWithVision } from '../helpers/isModelCompatibleWithVision'
 import { parseChatCompletionMessages } from '@typebot.io/ai/parseChatCompletionMessages'
 import { parseTools } from '@typebot.io/ai/parseTools'
+import { pumpStreamUntilDone } from '@typebot.io/ai/pumpStreamUntilDone'
+import { appendToolResultsToMessages } from '@typebot.io/ai/appendToolResultsToMessages'
 
 type Props = {
   credentials: { apiKey?: string }
@@ -13,8 +15,6 @@ type Props = {
   variables: VariableStore
   config: { baseUrl: string; defaultModel?: string }
   compatibility?: 'strict' | 'compatible'
-  toolResults?: ToolResultPart[]
-  toolCalls?: ToolCallPart[]
 }
 
 export const runOpenAIChatCompletionStream = async ({
@@ -23,8 +23,6 @@ export const runOpenAIChatCompletionStream = async ({
   variables,
   config: openAIConfig,
   compatibility,
-  toolResults,
-  toolCalls,
 }: Props): Promise<{
   stream?: ReadableStream<any>
   httpError?: { status: number; message: string }
@@ -45,70 +43,55 @@ export const runOpenAIChatCompletionStream = async ({
     compatibility,
   })(modelName)
 
+  const streamConfig = {
+    model,
+    messages: await parseChatCompletionMessages({
+      messages: options.messages,
+      isVisionEnabled: isModelCompatibleWithVision(modelName),
+      shouldDownloadImages: false,
+      variables,
+    }),
+    temperature: options.temperature ? Number(options.temperature) : undefined,
+    tools: parseTools({ tools: options.tools, variables }),
+  }
+
   try {
-    const response = await streamText({
-      model,
-      temperature: options.temperature
-        ? Number(options.temperature)
-        : undefined,
-      messages: await parseChatCompletionMessages({
-        messages: options.messages,
-        isVisionEnabled: isModelCompatibleWithVision(modelName),
-        shouldDownloadImages: false,
-        variables,
-        toolCalls,
-        toolResults,
-      }),
-      tools: parseTools({ tools: options.tools, variables }),
-    })
+    const response = await streamText(streamConfig)
 
     let totalToolCalls = 0
+    let toolCalls: ToolCallPart[] = []
+    let toolResults: ToolResultPart[] = []
 
     return {
       stream: new ReadableStream({
         async start(controller) {
           const reader = response.toAIStream().getReader()
 
-          async function pump(reader: ReadableStreamDefaultReader<Uint8Array>) {
-            const { done, value } = await reader.read()
+          await pumpStreamUntilDone(controller, reader)
 
-            if (done) {
-              toolCalls = (await response.toolCalls) as ToolCallPart[]
-              toolResults = (await response.toolResults) as
-                | ToolResultPart[]
-                | undefined
-              return
-            }
+          toolCalls = await response.toolCalls
+          if (toolCalls.length > 0)
+            toolResults = (await response.toolResults) as ToolResultPart[]
 
-            controller.enqueue(value)
-            return pump(reader)
-          }
-
-          await pump(reader)
-
-          if (
+          while (
             toolCalls &&
             toolCalls.length > 0 &&
             totalToolCalls < maxToolCalls
           ) {
             totalToolCalls += 1
-            const streamResponse = await runOpenAIChatCompletionStream({
-              credentials: { apiKey },
-              options,
-              variables,
-              config: openAIConfig,
-              compatibility,
-              toolCalls,
-              toolResults,
+            const newResponse = await streamText({
+              ...streamConfig,
+              messages: appendToolResultsToMessages({
+                messages: streamConfig.messages,
+                toolCalls,
+                toolResults,
+              }),
             })
-            if (!streamResponse.stream)
-              throw new APICallError({
-                message: streamResponse.httpError?.message ?? 'Unknown error',
-                statusCode: streamResponse.httpError?.status,
-                url: '',
-                requestBodyValues: {},
-              })
-            await pump(streamResponse.stream.getReader())
+            const reader = newResponse.toAIStream().getReader()
+            await pumpStreamUntilDone(controller, reader)
+            toolCalls = await newResponse.toolCalls
+            if (toolCalls.length > 0)
+              toolResults = (await newResponse.toolResults) as ToolResultPart[]
           }
 
           controller.close()

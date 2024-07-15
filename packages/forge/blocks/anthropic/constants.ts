@@ -39,4 +39,4 @@ export const supportedImageTypes = [
   'image/webp',
 ] as const
 
-export const maxToolCalls = 10
+export const maxToolRoundtrips = 10

@@ -8,6 +8,7 @@
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "ai": "3.2.22",
-    "ky": "1.2.4"
+    "ky": "1.2.4",
+    "@typebot.io/tsconfig": "workspace:*"
   }
 }

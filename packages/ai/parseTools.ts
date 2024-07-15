@@ -13,27 +13,25 @@ export const parseTools = ({
   tools: Tools
   variables: VariableStore
   onNewVariabes?: (newVariables: Variable[]) => void
-}): Record<string, CoreTool> | undefined => {
-  if (!tools?.length) return
-  return tools.reduce<Record<string, CoreTool> | undefined>((acc, tool) => {
+}): Record<string, CoreTool> => {
+  if (!tools?.length) return {}
+  return tools.reduce<Record<string, CoreTool>>((acc, tool) => {
     if (!tool.code || !tool.name) return acc
-    return {
-      ...acc,
-      [tool.name]: {
-        description: tool.description,
-        parameters: parseParameters(tool.parameters),
-        execute: async (args) => {
-          const { output, newVariables } = await executeFunction({
-            variables: variables.list(),
-            args,
-            body: tool.code!,
-          })
-          newVariables?.forEach((v) => variables.set(v.id, v.value))
-          return output
-        },
-      } satisfies CoreTool,
-    }
-  }, undefined)
+    acc[tool.name] = {
+      description: tool.description,
+      parameters: parseParameters(tool.parameters),
+      execute: async (args) => {
+        const { output, newVariables } = await executeFunction({
+          variables: variables.list(),
+          args,
+          body: tool.code!,
+        })
+        newVariables?.forEach((v) => variables.set(v.id, v.value))
+        return output
+      },
+    } satisfies CoreTool
+    return acc
+  }, {})
 }
 
 const parseParameters = (

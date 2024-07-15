@@ -5,7 +5,7 @@ import {
   anthropicModelLabels,
   anthropicModels,
   defaultAnthropicOptions,
-  maxToolCalls,
+  maxToolRoundtrips,
 } from '../constants'
 import { isDefined } from '@typebot.io/lib'
 import { createAnthropic } from '@ai-sdk/anthropic'
@@ -140,7 +140,7 @@ export const createChatMessage = createAction({
           variables,
         }),
         tools: parseTools({ tools: options.tools, variables }),
-        maxToolRoundtrips: maxToolCalls,
+        maxToolRoundtrips: maxToolRoundtrips,
       })
 
       options.responseMapping?.forEach((mapping) => {
