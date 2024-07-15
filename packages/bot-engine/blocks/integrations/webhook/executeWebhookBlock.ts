@@ -142,7 +142,8 @@ export const parseWebhookAttributes = async ({
     typebot.variables
   ) as ExecutableHttpRequest['headers'] | undefined
   const queryParams = stringify(
-    convertKeyValueTableToObject(webhook.queryParams, typebot.variables)
+    convertKeyValueTableToObject(webhook.queryParams, typebot.variables, true),
+    { indices: false }
   )
   const bodyContent = await getBodyContent({
     body: webhook.body,
@@ -325,17 +326,19 @@ const getBodyContent = async ({
 
 export const convertKeyValueTableToObject = (
   keyValues: KeyValue[] | undefined,
-  variables: Variable[]
+  variables: Variable[],
+  concatDuplicateInArray = false
 ) => {
   if (!keyValues) return
-  return keyValues.reduce((object, item) => {
+  return keyValues.reduce<Record<string, string | string[]>>((object, item) => {
     const key = parseVariables(variables)(item.key)
     const value = parseVariables(variables)(item.value)
     if (isEmpty(key) || isEmpty(value)) return object
-    return {
-      ...object,
-      [key]: value,
-    }
+    if (object[key] && concatDuplicateInArray) {
+      if (Array.isArray(object[key])) object[key].push(value)
+      else object[key] = [object[key], value]
+    } else object[key] = value
+    return object
   }, {})
 }
 
