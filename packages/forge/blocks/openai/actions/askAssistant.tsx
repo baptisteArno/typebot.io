@@ -11,9 +11,9 @@ import { baseOptions } from '../baseOptions'
 import { executeFunction } from '@typebot.io/variables/executeFunction'
 import { readDataStream } from 'ai'
 import { deprecatedAskAssistantOptions } from '../deprecated'
-import { OpenAIAssistantStream } from '../helpers/OpenAIAssistantStream'
+import { AssistantStream } from '../helpers/AssistantStream'
 import { isModelCompatibleWithVision } from '../helpers/isModelCompatibleWithVision'
-import { splitUserTextMessageIntoBlocks } from '../helpers/splitUserTextMessageIntoBlocks'
+import { splitUserTextMessageIntoOpenAIBlocks } from '../helpers/splitUserTextMessageIntoOpenAIBlocks'
 
 export const askAssistant = createAction({
   auth,
@@ -294,19 +294,16 @@ const createAssistantStream = async ({
     {
       role: 'user',
       content: isModelCompatibleWithVision(assistant.model)
-        ? await splitUserTextMessageIntoBlocks(message)
+        ? await splitUserTextMessageIntoOpenAIBlocks(message)
         : message,
     }
   )
-  return OpenAIAssistantStream(
+  return AssistantStream(
     { threadId: currentThreadId, messageId: createdMessage.id },
     async ({ forwardStream }) => {
-      const runStream = openai.beta.threads.runs.createAndStream(
-        currentThreadId,
-        {
-          assistant_id: assistantId,
-        }
-      )
+      const runStream = openai.beta.threads.runs.stream(currentThreadId, {
+        assistant_id: assistantId,
+      })
 
       let runResult = await forwardStream(runStream)
 

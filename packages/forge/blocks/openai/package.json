@@ -7,9 +7,10 @@
   "author": "Baptiste Arnaud",
   "license": "AGPL-3.0-or-later",
   "dependencies": {
-    "@ai-sdk/openai": "0.0.31",
-    "ai": "3.2.1",
-    "openai": "4.47.1"
+    "@ai-sdk/openai": "0.0.36",
+    "ai": "3.2.22",
+    "openai": "4.52.7",
+    "@typebot.io/ai": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",

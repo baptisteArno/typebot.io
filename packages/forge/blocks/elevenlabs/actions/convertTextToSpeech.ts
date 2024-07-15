@@ -24,7 +24,6 @@ export const convertTextToSpeech = createAction({
       fetcher: 'fetchModels',
       label: 'Model',
       placeholder: 'Select a model',
-      defaultValue: 'eleven_monolingual_v1',
     }),
     saveUrlInVariableId: option.string.layout({
       label: 'Save audio URL in variable',

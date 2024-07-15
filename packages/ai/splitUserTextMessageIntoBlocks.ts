@@ -1,13 +1,18 @@
+import { ImagePart, TextPart, UserContent } from 'ai'
 import ky, { HTTPError } from 'ky'
-import OpenAI from 'openai'
 
-export const splitUserTextMessageIntoBlocks = async (
+type Props = {
   input: string
-): Promise<string | OpenAI.Chat.ChatCompletionContentPart[]> => {
+  shouldDownloadImages: boolean
+}
+export const splitUserTextMessageIntoBlocks = async ({
+  input,
+  shouldDownloadImages,
+}: Props): Promise<UserContent> => {
   const urlRegex = /(^|\n\n)(https?:\/\/[^\s]+)(\n\n|$)/g
   const match = input.match(urlRegex)
   if (!match) return input
-  let parts: OpenAI.Chat.ChatCompletionContentPart[] = []
+  let parts: (TextPart | ImagePart)[] = []
   let processedInput = input
 
   for (const url of match) {
@@ -26,11 +31,10 @@ export const splitUserTextMessageIntoBlocks = async (
         parts.push({ type: 'text', text: cleanUrl })
       } else {
         parts.push({
-          type: 'image_url',
-          image_url: {
-            url: url.trim(),
-            detail: 'auto',
-          },
+          type: 'image',
+          image: shouldDownloadImages
+            ? await response.arrayBuffer()
+            : url.trim(),
         })
       }
     } catch (err) {

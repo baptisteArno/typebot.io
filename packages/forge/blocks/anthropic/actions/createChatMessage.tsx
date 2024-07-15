@@ -1,10 +1,20 @@
 import { createAction, option } from '@typebot.io/forge'
 import { auth } from '../auth'
-import { Anthropic } from '@anthropic-ai/sdk'
-import { AnthropicStream } from 'ai'
-import { anthropicModels, defaultAnthropicOptions } from '../constants'
-import { parseChatMessages } from '../helpers/parseChatMessages'
+import {
+  anthropicLegacyModels,
+  anthropicModelLabels,
+  anthropicModels,
+  defaultAnthropicOptions,
+  maxToolRoundtrips,
+} from '../constants'
 import { isDefined } from '@typebot.io/lib'
+import { createAnthropic } from '@ai-sdk/anthropic'
+import { generateText } from 'ai'
+import { runChatCompletionStream } from '../helpers/runChatCompletionStream'
+import { toolsSchema } from '@typebot.io/ai/schemas'
+import { parseTools } from '@typebot.io/ai/parseTools'
+import { parseChatCompletionMessages } from '@typebot.io/ai/parseChatCompletionMessages'
+import { isModelCompatibleWithVision } from '../helpers/isModelCompatibleWithVision'
 
 const nativeMessageContentSchema = {
   content: option.string.layout({
@@ -40,7 +50,11 @@ const dialogueMessageItemSchema = option.object({
 
 export const options = option.object({
   model: option.enum(anthropicModels).layout({
-    defaultValue: defaultAnthropicOptions.model,
+    toLabels: (val) =>
+      val
+        ? anthropicModelLabels[val as (typeof anthropicModels)[number]]
+        : undefined,
+    hiddenItems: anthropicLegacyModels,
   }),
   messages: option
     .array(
@@ -51,6 +65,7 @@ export const options = option.object({
       ])
     )
     .layout({ accordion: 'Messages', itemLabel: 'message', isOrdered: true }),
+  tools: toolsSchema,
   systemMessage: option.string.layout({
     accordion: 'Advanced Settings',
     label: 'System prompt',
@@ -76,8 +91,12 @@ export const options = option.object({
     }),
 })
 
-const transformToChatCompletionOptions = (options: any) => ({
+const transformToChatCompletionOptions = (
+  options: any,
+  resetModel = false
+) => ({
   ...options,
+  model: resetModel ? undefined : options.model,
   action: 'Create chat completion',
   responseMapping: options.responseMapping?.map((res: any) =>
     res.item === 'Message Content' ? { ...res, item: 'Message content' } : res
@@ -91,11 +110,11 @@ export const createChatMessage = createAction({
   turnableInto: [
     {
       blockId: 'mistral',
-      transform: transformToChatCompletionOptions,
+      transform: (opts) => transformToChatCompletionOptions(opts, true),
     },
     {
       blockId: 'openai',
-      transform: transformToChatCompletionOptions,
+      transform: (opts) => transformToChatCompletionOptions(opts, true),
     },
     { blockId: 'open-router', transform: transformToChatCompletionOptions },
     { blockId: 'together-ai', transform: transformToChatCompletionOptions },
@@ -104,72 +123,43 @@ export const createChatMessage = createAction({
     responseMapping?.map((res) => res.variableId).filter(isDefined) ?? [],
   run: {
     server: async ({ credentials: { apiKey }, options, variables, logs }) => {
-      const client = new Anthropic({
-        apiKey: apiKey,
+      const modelName = options.model ?? defaultAnthropicOptions.model
+      const model = createAnthropic({
+        apiKey,
+      })(modelName)
+
+      const { text } = await generateText({
+        model,
+        temperature: options.temperature
+          ? Number(options.temperature)
+          : undefined,
+        messages: await parseChatCompletionMessages({
+          messages: options.messages,
+          isVisionEnabled: isModelCompatibleWithVision(modelName),
+          shouldDownloadImages: true,
+          variables,
+        }),
+        tools: parseTools({ tools: options.tools, variables }),
+        maxToolRoundtrips: maxToolRoundtrips,
       })
 
-      const messages = await parseChatMessages({ options, variables })
-
-      try {
-        const reply = await client.messages.create({
-          messages,
-          model: options.model ?? defaultAnthropicOptions.model,
-          system: options.systemMessage,
-          temperature: options.temperature
-            ? Number(options.temperature)
-            : undefined,
-          max_tokens: options.maxTokens
-            ? Number(options.maxTokens)
-            : defaultAnthropicOptions.maxTokens,
-        })
-
-        messages.push(reply)
-
-        options.responseMapping?.forEach((mapping) => {
-          if (!mapping.variableId) return
-
-          if (!mapping.item || mapping.item === 'Message Content')
-            variables.set(mapping.variableId, reply.content[0].text)
-        })
-      } catch (error) {
-        if (error instanceof Anthropic.APIError) {
-          logs.add({
-            status: 'error',
-            description: `${error.status} ${error.name}`,
-            details: error.message,
-          })
-        } else {
-          throw error
-        }
-      }
+      options.responseMapping?.forEach((mapping) => {
+        if (!mapping.variableId) return
+        if (!mapping.item || mapping.item === 'Message Content')
+          variables.set(mapping.variableId, text)
+      })
     },
     stream: {
       getStreamVariableId: (options) =>
         options.responseMapping?.find(
           (res) => res.item === 'Message Content' || !res.item
         )?.variableId,
-      run: async ({ credentials: { apiKey }, options, variables }) => {
-        const client = new Anthropic({
-          apiKey: apiKey,
-        })
-
-        const messages = await parseChatMessages({ options, variables })
-
-        const response = await client.messages.create({
-          messages,
-          model: options.model ?? defaultAnthropicOptions.model,
-          system: options.systemMessage,
-          temperature: options.temperature
-            ? Number(options.temperature)
-            : undefined,
-          max_tokens: options.maxTokens
-            ? Number(options.maxTokens)
-            : defaultAnthropicOptions.maxTokens,
-          stream: true,
-        })
-
-        return { stream: AnthropicStream(response) }
-      },
+      run: async ({ credentials: { apiKey }, options, variables }) =>
+        runChatCompletionStream({
+          credentials: { apiKey },
+          options,
+          variables,
+        }),
     },
   },
 })

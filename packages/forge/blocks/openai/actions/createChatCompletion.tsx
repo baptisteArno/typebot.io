@@ -4,8 +4,8 @@ import { auth } from '../auth'
 import { baseOptions } from '../baseOptions'
 import { parseChatCompletionOptions } from '../shared/parseChatCompletionOptions'
 import { getChatCompletionSetVarIds } from '../shared/getChatCompletionSetVarIds'
-import { runChatCompletion } from '../shared/runChatCompletion'
-import { runChatCompletionStream } from '../shared/runChatCompletionStream'
+import { runOpenAIChatCompletion } from '../shared/runOpenAIChatCompletion'
+import { runOpenAIChatCompletionStream } from '../shared/runOpenAIChatCompletionStream'
 import { getChatCompletionStreamVarId } from '../shared/getChatCompletionStreamVarId'
 import { fetchGPTModels } from '../helpers/fetchModels'
 
@@ -14,7 +14,6 @@ export const createChatCompletion = createAction({
   auth,
   baseOptions,
   options: parseChatCompletionOptions({
-    defaultModel: defaultOpenAIOptions.model,
     defaultTemperature: defaultOpenAIOptions.temperature,
     modelFetchId: 'fetchModels',
   }),
@@ -55,24 +54,25 @@ export const createChatCompletion = createAction({
   ],
   run: {
     server: (params) =>
-      runChatCompletion({
+      runOpenAIChatCompletion({
         ...params,
         config: {
           baseUrl: defaultOpenAIOptions.baseUrl,
           defaultModel: defaultOpenAIOptions.model,
         },
+        compatibility: 'strict',
       }),
     stream: {
       getStreamVariableId: getChatCompletionStreamVarId,
-      run: async (params) => ({
-        stream: await runChatCompletionStream({
+      run: async (params) =>
+        runOpenAIChatCompletionStream({
           ...params,
           config: {
             baseUrl: defaultOpenAIOptions.baseUrl,
             defaultModel: defaultOpenAIOptions.model,
           },
+          compatibility: 'strict',
         }),
-      }),
     },
   },
 })
