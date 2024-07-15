@@ -49,6 +49,7 @@
       "cache": false
     },
     "db:cleanDatabase": {
+      "env": ["NEXTAUTH_URL"],
       "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     },
