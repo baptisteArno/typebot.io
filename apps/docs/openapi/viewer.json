@@ -3523,6 +3523,12 @@
                               },
                               "queryParamsStr": {
                                 "type": "string"
+                              },
+                              "areControlsDisplayed": {
+                                "type": "boolean"
+                              },
+                              "isAutoplayEnabled": {
+                                "type": "boolean"
                               }
                             }
                           }
@@ -3973,6 +3979,30 @@
                                     ]
                                   },
                                   "item": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "type"
+                                ]
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "variableId": {
+                                    "type": "string"
+                                  },
+                                  "isExecutedOnClient": {
+                                    "type": "boolean"
+                                  },
+                                  "type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "Pop",
+                                      "Shift"
+                                    ]
+                                  },
+                                  "saveItemInVariableId": {
                                     "type": "string"
                                   }
                                 },
@@ -7706,6 +7736,12 @@
                   },
                   "queryParamsStr": {
                     "type": "string"
+                  },
+                  "areControlsDisplayed": {
+                    "type": "boolean"
+                  },
+                  "isAutoplayEnabled": {
+                    "type": "boolean"
                   }
                 }
               }
@@ -8153,6 +8189,30 @@
                         ]
                       },
                       "item": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "variableId": {
+                        "type": "string"
+                      },
+                      "isExecutedOnClient": {
+                        "type": "boolean"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "Pop",
+                          "Shift"
+                        ]
+                      },
+                      "saveItemInVariableId": {
                         "type": "string"
                       }
                     },
@@ -12892,6 +12952,12 @@
               },
               "queryParamsStr": {
                 "type": "string"
+              },
+              "areControlsDisplayed": {
+                "type": "boolean"
+              },
+              "isAutoplayEnabled": {
+                "type": "boolean"
               }
             }
           }

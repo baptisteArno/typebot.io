@@ -21,7 +21,7 @@ import { TextLink } from '../TextLink'
 import { env } from '@typebot.io/env'
 import { PexelsLogo } from '../logos/PexelsLogo'
 
-const client = createClient(process.env.NEXT_PUBLIC_PEXELS_API_KEY as string)
+const client = createClient(env.NEXT_PUBLIC_PEXELS_API_KEY ?? 'dummy')
 
 type Props = {
   videoSize: 'large' | 'medium' | 'small'
@@ -102,7 +102,6 @@ export const PexelsPicker = ({ videoSize, onVideoSelect }: Props) => {
         if ((res as ErrorResponse).error) {
           setError((res as ErrorResponse).error)
         }
-        console.log((res as Videos).videos)
         setVideos((res as Videos).videos)
         setIsFetching(false)
       })
@@ -120,6 +119,7 @@ export const PexelsPicker = ({ videoSize, onVideoSelect }: Props) => {
   }
 
   useEffect(() => {
+    if (!env.NEXT_PUBLIC_PEXELS_API_KEY) return
     getInitialVideos()
   }, [])
 
