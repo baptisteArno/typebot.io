@@ -1,9 +1,16 @@
 import { ForgedBlock } from '@typebot.io/forge-repository/types'
 import { useForgedBlock } from './hooks/useForgedBlock'
-import { Text } from '@chakra-ui/react'
+import { Text, TextProps } from '@chakra-ui/react'
 
-export const ForgedBlockLabel = ({ type }: { type: ForgedBlock['type'] }) => {
+export const ForgedBlockLabel = ({
+  type,
+  ...props
+}: { type: ForgedBlock['type'] } & TextProps) => {
   const { blockDef } = useForgedBlock(type)
 
-  return <Text fontSize="sm">{blockDef?.name}</Text>
+  return (
+    <Text fontSize="sm" {...props}>
+      {blockDef?.name}
+    </Text>
+  )
 }

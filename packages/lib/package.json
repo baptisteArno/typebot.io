@@ -7,7 +7,7 @@
   "types": "./index.ts",
   "devDependencies": {
     "@paralleldrive/cuid2": "2.2.1",
-    "@playwright/test": "1.43.1",
+    "@playwright/test": "1.45.2",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",

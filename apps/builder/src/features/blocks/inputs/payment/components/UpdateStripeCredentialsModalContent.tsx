@@ -1,123 +1,112 @@
+import { TextInput } from '@/components/inputs'
+import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
+import { TextLink } from '@/components/TextLink'
+import { useUser } from '@/features/account/hooks/useUser'
+import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
+import { trpc } from '@/lib/trpc'
 import {
-  Modal,
-  ModalOverlay,
+  Text,
   ModalContent,
   ModalHeader,
   ModalCloseButton,
   ModalBody,
+  Stack,
+  FormLabel,
+  HStack,
+  FormControl,
   ModalFooter,
   Button,
-  FormControl,
-  FormLabel,
-  Stack,
-  Text,
-  HStack,
 } from '@chakra-ui/react'
-import React, { useState } from 'react'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { useToast } from '@/hooks/useToast'
-import { TextInput } from '@/components/inputs'
-import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
-import { TextLink } from '@/components/TextLink'
-import { StripeCredentials } from '@typebot.io/schemas'
-import { trpc } from '@/lib/trpc'
-import { isNotEmpty } from '@typebot.io/lib'
-import { useUser } from '@/features/account/hooks/useUser'
 import { useTranslate } from '@tolgee/react'
+import { isNotEmpty } from '@typebot.io/lib'
+import { StripeCredentials } from '@typebot.io/schemas'
+import { useEffect, useState } from 'react'
 
 type Props = {
-  isOpen: boolean
-  onClose: () => void
-  onNewCredentials: (id: string) => void
+  credentialsId: string
+  onUpdate: () => void
 }
 
-export const StripeConfigModal = ({
-  isOpen,
-  onNewCredentials,
-  onClose,
+export const UpdateStripeCredentialsModalContent = ({
+  credentialsId,
+  onUpdate,
 }: Props) => {
-  return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <StripeCreateModalContent
-        onNewCredentials={onNewCredentials}
-        onClose={onClose}
-      />
-    </Modal>
-  )
-}
-
-export const StripeCreateModalContent = ({
-  onNewCredentials,
-  onClose,
-}: Pick<Props, 'onClose' | 'onNewCredentials'>) => {
   const { t } = useTranslate()
   const { user } = useUser()
   const { workspace } = useWorkspace()
   const [isCreating, setIsCreating] = useState(false)
-  const { showToast } = useToast()
   const [stripeConfig, setStripeConfig] = useState<
     StripeCredentials['data'] & { name: string }
-  >({
-    name: '',
-    live: { publicKey: '', secretKey: '' },
-    test: { publicKey: '', secretKey: '' },
-  })
-  const {
-    credentials: {
-      listCredentials: { refetch: refetchCredentials },
-    },
-  } = trpc.useContext()
-  const { mutate } = trpc.credentials.createCredentials.useMutation({
+  >()
+
+  const { data: existingCredentials } =
+    trpc.credentials.getCredentials.useQuery(
+      {
+        credentialsId,
+        workspaceId: workspace!.id,
+      },
+      {
+        enabled: !!workspace?.id,
+      }
+    )
+
+  useEffect(() => {
+    if (!existingCredentials || stripeConfig) return
+    setStripeConfig({
+      name: existingCredentials.name,
+      live: existingCredentials.data.live,
+      test: existingCredentials.data.test,
+    })
+  }, [existingCredentials, stripeConfig])
+
+  const { mutate } = trpc.credentials.updateCredentials.useMutation({
     onMutate: () => setIsCreating(true),
     onSettled: () => setIsCreating(false),
-    onError: (err) => {
-      showToast({
-        description: err.message,
-        status: 'error',
-      })
-    },
-    onSuccess: (data) => {
-      refetchCredentials()
-      onNewCredentials(data.credentialsId)
-      onClose()
+    onSuccess: () => {
+      onUpdate()
     },
   })
 
   const handleNameChange = (name: string) =>
+    stripeConfig &&
     setStripeConfig({
       ...stripeConfig,
       name,
     })
 
   const handlePublicKeyChange = (publicKey: string) =>
+    stripeConfig &&
     setStripeConfig({
       ...stripeConfig,
       live: { ...stripeConfig.live, publicKey },
     })
 
   const handleSecretKeyChange = (secretKey: string) =>
+    stripeConfig &&
     setStripeConfig({
       ...stripeConfig,
       live: { ...stripeConfig.live, secretKey },
     })
 
   const handleTestPublicKeyChange = (publicKey: string) =>
+    stripeConfig &&
     setStripeConfig({
       ...stripeConfig,
       test: { ...stripeConfig.test, publicKey },
     })
 
   const handleTestSecretKeyChange = (secretKey: string) =>
+    stripeConfig &&
     setStripeConfig({
       ...stripeConfig,
       test: { ...stripeConfig.test, secretKey },
     })
 
-  const createCredentials = async (e: React.FormEvent) => {
+  const updateCreds = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!user?.email || !workspace?.id) return
+    if (!user?.email || !workspace?.id || !stripeConfig) return
     mutate({
+      credentialsId,
       credentials: {
         data: {
           live: stripeConfig.live,
@@ -143,14 +132,15 @@ export const StripeCreateModalContent = ({
         {t('blocks.inputs.payment.settings.stripeConfig.title.label')}
       </ModalHeader>
       <ModalCloseButton />
-      <form onSubmit={createCredentials}>
+      <form onSubmit={updateCreds}>
         <ModalBody>
-          <Stack spacing={4}>
+          <Stack as="form" spacing={4}>
             <TextInput
               isRequired
               label={t(
                 'blocks.inputs.payment.settings.stripeConfig.accountName.label'
               )}
+              defaultValue={stripeConfig?.name}
               onChange={handleNameChange}
               placeholder="Typebot"
               withVariableButton={false}
@@ -172,6 +162,7 @@ export const StripeCreateModalContent = ({
                   onChange={handleTestPublicKeyChange}
                   placeholder="pk_test_..."
                   withVariableButton={false}
+                  defaultValue={stripeConfig?.test?.publicKey}
                   debounceTimeout={0}
                 />
                 <TextInput
@@ -179,6 +170,7 @@ export const StripeCreateModalContent = ({
                   placeholder="sk_test_..."
                   withVariableButton={false}
                   debounceTimeout={0}
+                  defaultValue={stripeConfig?.test?.secretKey}
                   type="password"
                 />
               </HStack>
@@ -195,6 +187,7 @@ export const StripeCreateModalContent = ({
                     onChange={handlePublicKeyChange}
                     placeholder="pk_live_..."
                     withVariableButton={false}
+                    defaultValue={stripeConfig?.live?.publicKey}
                     debounceTimeout={0}
                   />
                 </FormControl>
@@ -203,6 +196,7 @@ export const StripeCreateModalContent = ({
                     onChange={handleSecretKeyChange}
                     placeholder="sk_live_..."
                     withVariableButton={false}
+                    defaultValue={stripeConfig?.live?.secretKey}
                     debounceTimeout={0}
                     type="password"
                   />
@@ -227,9 +221,9 @@ export const StripeCreateModalContent = ({
             type="submit"
             colorScheme="blue"
             isDisabled={
-              stripeConfig.live.publicKey === '' ||
-              stripeConfig.name === '' ||
-              stripeConfig.live.secretKey === ''
+              stripeConfig?.live.publicKey === '' ||
+              stripeConfig?.name === '' ||
+              stripeConfig?.live.secretKey === ''
             }
             isLoading={isCreating}
           >

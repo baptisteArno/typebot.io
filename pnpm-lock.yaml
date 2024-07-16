@@ -291,8 +291,8 @@ importers:
         specifier: 2.9.2
         version: 2.9.2
       '@playwright/test':
-        specifier: 1.43.1
-        version: 1.43.1
+        specifier: 1.45.2
+        version: 1.45.2
       '@typebot.io/billing':
         specifier: workspace:*
         version: link:../../ee/packages/billing
@@ -481,8 +481,8 @@ importers:
         specifier: 2.2.1
         version: 2.2.1
       '@playwright/test':
-        specifier: 1.43.1
-        version: 1.43.1
+        specifier: 1.45.2
+        version: 1.45.2
       '@typebot.io/emails':
         specifier: workspace:*
         version: link:../../packages/emails
@@ -1788,8 +1788,8 @@ importers:
         specifier: 2.2.1
         version: 2.2.1
       '@playwright/test':
-        specifier: 1.43.1
-        version: 1.43.1
+        specifier: 1.45.2
+        version: 1.45.2
       '@typebot.io/env':
         specifier: workspace:*
         version: link:../env
@@ -1859,8 +1859,8 @@ importers:
   packages/playwright:
     dependencies:
       '@playwright/test':
-        specifier: 1.43.1
-        version: 1.43.1
+        specifier: 1.45.2
+        version: 1.45.2
       '@typebot.io/env':
         specifier: workspace:*
         version: link:../env
@@ -4692,9 +4692,9 @@ packages:
     resolution: {integrity: sha512-+zk04eXRiaJGaRnJZkCxXbBtBvQDQJXCoxqlXhLY3HzAovXfsBnh6DjXRujPRQQ7GKtT8/tOlyvZ9h6ReM+GLQ==}
     engines: {node: '>=16'}
 
-  '@playwright/test@1.43.1':
-    resolution: {integrity: sha512-HgtQzFgNEEo4TE22K/X7sYTYNqEMMTZmFS8kTq6m8hXj+m1D8TgwgIbumHddJa9h4yl4GkKb8/bgAl2+g7eDgA==}
-    engines: {node: '>=16'}
+  '@playwright/test@1.45.2':
+    resolution: {integrity: sha512-JxG9eq92ET75EbVi3s+4sYbcG7q72ECeZNbdBlaMkGcNbiDQ4cAi8U2QP5oKkOx+1gpaiL1LDStmzCaEM1Z6fQ==}
+    engines: {node: '>=18'}
     hasBin: true
 
   '@popperjs/core@2.11.8':
@@ -10656,14 +10656,14 @@ packages:
     resolution: {integrity: sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==}
     engines: {node: '>=8'}
 
-  playwright-core@1.43.1:
-    resolution: {integrity: sha512-EI36Mto2Vrx6VF7rm708qSnesVQKbxEWvPrfA1IPY6HgczBplDx7ENtx+K2n4kJ41sLLkuGfmb0ZLSSXlDhqPg==}
-    engines: {node: '>=16'}
+  playwright-core@1.45.2:
+    resolution: {integrity: sha512-ha175tAWb0dTK0X4orvBIqi3jGEt701SMxMhyujxNrgd8K0Uy5wMSwwcQHtyB4om7INUkfndx02XnQ2p6dvLDw==}
+    engines: {node: '>=18'}
     hasBin: true
 
-  playwright@1.43.1:
-    resolution: {integrity: sha512-V7SoH0ai2kNt1Md9E3Gwas5B9m8KR2GVvwZnAI6Pg0m3sh7UvgiYhRrhsziCmqMJNouPckiOhk8T+9bSAK0VIA==}
-    engines: {node: '>=16'}
+  playwright@1.45.2:
+    resolution: {integrity: sha512-ReywF2t/0teRvNBpfIgh5e4wnrI/8Su8ssdo5XsQKpjxJj+jspm00jSoz9BTg91TT0c9HRjXO7LBNVrgYj9X0g==}
+    engines: {node: '>=18'}
     hasBin: true
 
   pngjs@5.0.0:
@@ -16369,9 +16369,9 @@ snapshots:
 
   '@planetscale/database@1.8.0': {}
 
-  '@playwright/test@1.43.1':
+  '@playwright/test@1.45.2':
     dependencies:
-      playwright: 1.43.1
+      playwright: 1.45.2
 
   '@popperjs/core@2.11.8': {}
 
@@ -24225,11 +24225,11 @@ snapshots:
     dependencies:
       find-up: 4.1.0
 
-  playwright-core@1.43.1: {}
+  playwright-core@1.45.2: {}
 
-  playwright@1.43.1:
+  playwright@1.45.2:
     dependencies:
-      playwright-core: 1.43.1
+      playwright-core: 1.45.2
     optionalDependencies:
       fsevents: 2.3.2
 

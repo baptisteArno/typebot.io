@@ -335,8 +335,8 @@ export const convertKeyValueTableToObject = (
     const value = parseVariables(variables)(item.value)
     if (isEmpty(key) || isEmpty(value)) return object
     if (object[key] && concatDuplicateInArray) {
-      if (Array.isArray(object[key])) object[key].push(value)
-      else object[key] = [object[key], value]
+      if (Array.isArray(object[key])) (object[key] as string[]).push(value)
+      else object[key] = [object[key] as string, value]
     } else object[key] = value
     return object
   }, {})

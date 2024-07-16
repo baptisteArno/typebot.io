@@ -1,28 +1,20 @@
 {
-  "id": "chat-sub-bot",
-  "createdAt": "2022-11-24T09:06:52.903Z",
-  "updatedAt": "2022-11-24T09:13:16.782Z",
-  "icon": "👶",
+  "version": "6",
+  "id": "clyoehfmp0007grw9ubdop6u0",
   "name": "Sub bot",
-  "folderId": null,
-  "groups": [
+  "events": [
     {
       "id": "clauup2lh0002vs1a5ei32mmi",
-      "title": "Start",
-      "blocks": [
-        {
-          "id": "clauup2li0003vs1aas14fwpc",
-          "type": "start",
-          "label": "Start",
-          "groupId": "clauup2lh0002vs1a5ei32mmi",
-          "outgoingEdgeId": "clauupl9n001b3b6qdk4czgom"
-        }
-      ],
-      "graphCoordinates": { "x": 0, "y": 0 }
-    },
+      "outgoingEdgeId": "clauupl9n001b3b6qdk4czgom",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
     {
       "id": "clauupd6q00183b6qcm8qbz62",
       "title": "Group #1",
+      "graphCoordinates": { "x": 375.36328125, "y": 167.2578125 },
       "blocks": [
         {
           "id": "clauupd6q00193b6qhegmlnxj",
@@ -36,69 +28,69 @@
                 ]
               }
             ]
-          },
-          "groupId": "clauupd6q00183b6qcm8qbz62"
+          }
         },
         {
           "id": "clauupk97001a3b6q2w9qqkec",
           "type": "rating input",
-          "groupId": "clauupd6q00183b6qcm8qbz62",
           "options": {
-            "labels": { "button": "Send" },
-            "length": 10,
             "buttonType": "Numbers",
+            "length": 10,
+            "labels": { "button": "Send" },
             "customIcon": { "isEnabled": false }
           }
         }
-      ],
-      "graphCoordinates": { "x": 375.36328125, "y": 167.2578125 }
+      ]
     }
   ],
-  "variables": [],
   "edges": [
     {
       "id": "clauupl9n001b3b6qdk4czgom",
-      "to": { "groupId": "clauupd6q00183b6qcm8qbz62" },
-      "from": {
-        "blockId": "clauup2li0003vs1aas14fwpc",
-        "groupId": "clauup2lh0002vs1a5ei32mmi"
-      }
+      "from": { "eventId": "clauup2lh0002vs1a5ei32mmi" },
+      "to": { "groupId": "clauupd6q00183b6qcm8qbz62" }
     }
   ],
+  "variables": [],
   "theme": {
+    "general": { "font": "Open Sans", "background": { "type": "None" } },
     "chat": {
-      "inputs": {
-        "color": "#303235",
-        "backgroundColor": "#FFFFFF",
-        "placeholderColor": "#9095A0"
-      },
-      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
       "hostAvatar": {
-        "url": "https://avatars.githubusercontent.com/u/16015833?v=4",
-        "isEnabled": true
+        "isEnabled": true,
+        "url": "https://avatars.githubusercontent.com/u/16015833?v=4"
       },
-      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
-      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
-    },
-    "general": { "font": "Open Sans", "background": { "type": "None" } }
+      "hostBubbles": { "backgroundColor": "#F7F8FF", "color": "#303235" },
+      "guestBubbles": { "backgroundColor": "#FF8E21", "color": "#FFFFFF" },
+      "buttons": { "backgroundColor": "#0042DA", "color": "#FFFFFF" },
+      "inputs": {
+        "backgroundColor": "#FFFFFF",
+        "color": "#303235",
+        "placeholderColor": "#9095A0"
+      }
+    }
   },
+  "selectedThemeTemplateId": null,
   "settings": {
     "general": {
       "isBrandingEnabled": false,
       "isInputPrefillEnabled": true,
-      "isResultSavingEnabled": true,
       "isHideQueryParamsEnabled": true,
       "isNewResultOnRefreshEnabled": false
     },
+    "typingEmulation": { "enabled": true, "speed": 300, "maxDelay": 1.5 },
     "metadata": {
       "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
-    },
-    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
+    }
   },
+  "createdAt": "2024-07-16T12:39:21.697Z",
+  "updatedAt": "2024-07-16T12:39:21.697Z",
+  "icon": "👶",
+  "folderId": null,
   "publicId": null,
   "customDomain": null,
   "workspaceId": "proWorkspace",
   "resultsTablePreferences": null,
   "isArchived": false,
-  "isClosed": false
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
 }

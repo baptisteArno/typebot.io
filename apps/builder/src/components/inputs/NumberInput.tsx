@@ -49,12 +49,18 @@ export const NumberInput = <HasVariable extends boolean>({
   helperText,
   ...props
 }: Props<HasVariable>) => {
+  const [isTouched, setIsTouched] = useState(false)
   const [value, setValue] = useState(defaultValue?.toString() ?? '')
 
   const onValueChangeDebounced = useDebouncedCallback(
     onValueChange,
     env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
   )
+
+  useEffect(() => {
+    if (isTouched || value !== '' || !defaultValue) return
+    setValue(defaultValue?.toString() ?? '')
+  }, [defaultValue, isTouched, value])
 
   useEffect(
     () => () => {
@@ -64,6 +70,7 @@ export const NumberInput = <HasVariable extends boolean>({
   )
 
   const handleValueChange = (newValue: string) => {
+    if (!isTouched) setIsTouched(true)
     if (value.startsWith('{{') && value.endsWith('}}') && newValue !== '')
       return
     setValue(newValue)

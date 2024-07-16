@@ -10,13 +10,13 @@ export default defineConfig({
     timeout: process.env.CI ? 10 * 1000 : 5 * 1000,
   },
   forbidOnly: !!process.env.CI,
-  workers: process.env.CI ? 1 : 3,
-  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 1 : 4,
+  retries: process.env.CI ? 2 : 1,
   reporter: [
     [process.env.CI ? 'github' : 'list'],
     ['html', { outputFolder: 'src/test/reporters' }],
   ],
-  maxFailures: process.env.CI ? 10 : undefined,
+  maxFailures: 10,
   webServer: process.env.CI
     ? {
         command: 'pnpm run start',

@@ -151,25 +151,6 @@ export const updateUser = (data: Partial<User>) =>
     },
   })
 
-export const createWebhook = async (
-  typebotId: string,
-  webhookProps?: Partial<HttpRequest>
-) => {
-  try {
-    await prisma.webhook.delete({ where: { id: 'webhook1' } })
-  } catch {}
-  return prisma.webhook.create({
-    data: {
-      method: 'GET',
-      typebotId,
-      id: 'webhook1',
-      ...webhookProps,
-      queryParams: webhookProps?.queryParams ?? [],
-      headers: webhookProps?.headers ?? [],
-    },
-  })
-}
-
 export const createTypebots = async (partialTypebots: Partial<TypebotV6>[]) => {
   const typebotsWithId = partialTypebots.map((typebot) => {
     const typebotId = typebot.id ?? createId()

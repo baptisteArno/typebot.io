@@ -12,7 +12,7 @@ import { isDefined } from '@typebot.io/lib'
 
 export type SwitchWithLabelProps = {
   label: string
-  initialValue: boolean
+  initialValue: boolean | undefined
   moreInfoContent?: string
   onCheckChange?: (isChecked: boolean) => void
   justifyContent?: FormControlProps['justifyContent']

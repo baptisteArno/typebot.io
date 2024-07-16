@@ -1,32 +1,23 @@
 {
-  "id": "ckz8gli9e9842no1afuppdn0z",
-  "createdAt": "2022-02-04T13:44:30.386Z",
-  "updatedAt": "2022-02-04T13:44:30.386Z",
+  "version": "6",
+  "id": "clyoe6owl0003grw9k9hzc9qs",
   "name": "My typebot",
-  "folderId": null,
-  "groups": [
+  "events": [
     {
       "id": "p6GeeRXHgwiJeoJRBkKaMJ",
-      "blocks": [
-        {
-          "id": "iDS7jFemUsQ7Sp3eu3xg3w",
-          "type": "start",
-          "label": "Start",
-          "groupId": "p6GeeRXHgwiJeoJRBkKaMJ",
-          "outgoingEdgeId": "cyEJPaLU7AchnBSaeWoyiS"
-        }
-      ],
-      "title": "Start",
-      "graphCoordinates": { "x": 0, "y": 0 }
-    },
+      "outgoingEdgeId": "cyEJPaLU7AchnBSaeWoyiS",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
     {
       "id": "kBneEpKdMYrF65XxUQ5GS7",
-      "graphCoordinates": { "x": 260, "y": 186 },
       "title": "Group #1",
+      "graphCoordinates": { "x": 260, "y": 186 },
       "blocks": [
         {
           "id": "skSkZ4PNP7m1gYvu9Ew6ngM",
-          "groupId": "kBneEpKdMYrF65XxUQ5GS7",
           "type": "text",
           "content": {
             "richText": [{ "type": "p", "children": [{ "text": "Ready?" }] }]
@@ -34,39 +25,50 @@
         },
         {
           "id": "sh6ZVRA3o72y6BEiNKVcoma",
-          "groupId": "kBneEpKdMYrF65XxUQ5GS7",
           "type": "choice input",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "items": [
             {
               "id": "rr5mKKBPq73ZrfXZ3uuupz",
-              "blockId": "sh6ZVRA3o72y6BEiNKVcoma",
-              "type": 0,
-              "content": "Go",
-              "outgoingEdgeId": "1sLicz8gq2QxytFTwBd8ac"
+              "outgoingEdgeId": "1sLicz8gq2QxytFTwBd8ac",
+              "content": "Go"
             }
-          ]
+          ],
+          "options": { "isMultipleChoice": false, "buttonLabel": "Send" }
         }
       ]
     },
     {
       "id": "8XnDM1QsqPms4LQHh8q3Jo",
-      "graphCoordinates": { "x": 646, "y": 511 },
       "title": "Group #2",
+      "graphCoordinates": { "x": 646, "y": 511 },
       "blocks": [
         {
           "id": "soSmiE7zyb3WF77GxFxAjYX",
-          "groupId": "8XnDM1QsqPms4LQHh8q3Jo",
           "type": "Webhook",
           "options": {
-            "responseVariableMapping": [],
             "variablesForTest": [],
+            "responseVariableMapping": [],
             "isAdvancedConfig": false,
-            "isCustomBody": false
-          },
-          "webhookId": "webhook1"
+            "isCustomBody": false,
+            "webhook": { "method": "POST" }
+          }
         }
       ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "cyEJPaLU7AchnBSaeWoyiS",
+      "from": { "eventId": "p6GeeRXHgwiJeoJRBkKaMJ" },
+      "to": { "groupId": "kBneEpKdMYrF65XxUQ5GS7" }
+    },
+    {
+      "id": "1sLicz8gq2QxytFTwBd8ac",
+      "from": {
+        "blockId": "sh6ZVRA3o72y6BEiNKVcoma",
+        "itemId": "rr5mKKBPq73ZrfXZ3uuupz"
+      },
+      "to": { "groupId": "8XnDM1QsqPms4LQHh8q3Jo" }
     }
   ],
   "variables": [
@@ -75,44 +77,37 @@
     { "id": "var3", "name": "secret 3" },
     { "id": "var4", "name": "secret 4" }
   ],
-  "edges": [
-    {
-      "from": {
-        "groupId": "p6GeeRXHgwiJeoJRBkKaMJ",
-        "blockId": "iDS7jFemUsQ7Sp3eu3xg3w"
-      },
-      "to": { "groupId": "kBneEpKdMYrF65XxUQ5GS7" },
-      "id": "cyEJPaLU7AchnBSaeWoyiS"
-    },
-    {
-      "from": {
-        "groupId": "kBneEpKdMYrF65XxUQ5GS7",
-        "blockId": "sh6ZVRA3o72y6BEiNKVcoma",
-        "itemId": "rr5mKKBPq73ZrfXZ3uuupz"
-      },
-      "to": { "groupId": "8XnDM1QsqPms4LQHh8q3Jo" },
-      "id": "1sLicz8gq2QxytFTwBd8ac"
-    }
-  ],
   "theme": {
+    "general": { "font": "Open Sans", "background": { "type": "None" } },
     "chat": {
+      "hostBubbles": { "backgroundColor": "#F7F8FF", "color": "#303235" },
+      "guestBubbles": { "backgroundColor": "#FF8E21", "color": "#FFFFFF" },
+      "buttons": { "backgroundColor": "#0042DA", "color": "#FFFFFF" },
       "inputs": {
-        "color": "#303235",
         "backgroundColor": "#FFFFFF",
+        "color": "#303235",
         "placeholderColor": "#9095A0"
-      },
-      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
-      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
-      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
-    },
-    "general": { "font": "Open Sans", "background": { "type": "None" } }
+      }
+    }
   },
+  "selectedThemeTemplateId": null,
   "settings": {
     "general": { "isBrandingEnabled": true },
+    "typingEmulation": { "enabled": true, "speed": 300, "maxDelay": 1.5 },
     "metadata": {
       "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
-    },
-    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
+    }
   },
-  "publicId": null
+  "createdAt": "2024-07-16T12:31:00.501Z",
+  "updatedAt": "2024-07-16T12:31:00.501Z",
+  "icon": null,
+  "folderId": null,
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
 }
