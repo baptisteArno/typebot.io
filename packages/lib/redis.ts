@@ -1,5 +1,5 @@
 import { env } from '@typebot.io/env'
-import Redis from 'ioredis'
+import { Redis } from 'ioredis'
 
 declare const global: { redis: Redis | undefined }
 let redis: Redis | undefined

@@ -7,6 +7,7 @@ import tailwindcss from 'tailwindcss'
 import typescript from '@rollup/plugin-typescript'
 import { typescriptPaths } from 'rollup-plugin-typescript-paths'
 import replace from '@rollup/plugin-replace'
+import commonjs from '@rollup/plugin-commonjs'
 import fs from 'fs'
 
 const extensions = ['.ts', '.tsx']
@@ -27,6 +28,7 @@ const indexConfig = {
   },
   plugins: [
     resolve({ extensions }),
+    commonjs(),
     babel({
       babelHelpers: 'bundled',
       exclude: 'node_modules/**',

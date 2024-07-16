@@ -128,7 +128,10 @@ export const getMessageStream = async ({
             state: session.state,
             currentBlockId: session.state.currentBlockId,
           })
-        if (newSetVariableHistory.length > 0)
+        if (
+          newSetVariableHistory.length > 0 &&
+          session.state.typebotsQueue[0].resultId
+        )
           await saveSetVariableHistoryItems(newSetVariableHistory)
         await updateSession({
           id: session.id,

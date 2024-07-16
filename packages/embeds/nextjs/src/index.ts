@@ -3,7 +3,7 @@ import type {
   PopupProps,
   BubbleProps,
 } from '@typebot.io/js/dist/index'
-import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic.js'
 
 export const Standard: React.ComponentType<
   BotProps & {

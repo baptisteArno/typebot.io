@@ -3,13 +3,19 @@ import { For, createEffect, createSignal } from 'solid-js'
 import { marked } from 'marked'
 import domPurify from 'dompurify'
 import { isNotEmpty } from '@typebot.io/lib'
+import { persist } from '@/utils/persist'
+import { BotContext } from '@/types'
 
 type Props = {
   streamingMessageId: string
+  context: BotContext
 }
 
 export const StreamingBubble = (props: Props) => {
-  const [content, setContent] = createSignal<string[]>([])
+  const [content, setContent] = persist(createSignal<string[]>([]), {
+    key: `typebot-streaming-message-${props.streamingMessageId}`,
+    storage: props.context.storage,
+  })
 
   marked.use({
     renderer: {

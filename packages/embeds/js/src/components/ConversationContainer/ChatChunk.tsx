@@ -171,7 +171,10 @@ export const ChatChunk = (props: Props) => {
                     : '100%',
               }}
             >
-              <StreamingBubble streamingMessageId={streamingMessageId} />
+              <StreamingBubble
+                streamingMessageId={streamingMessageId}
+                context={props.context}
+              />
             </div>
           </div>
         )}

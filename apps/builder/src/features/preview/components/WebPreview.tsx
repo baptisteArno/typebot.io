@@ -1,4 +1,4 @@
-import { WebhookIcon } from '@/components/icons'
+import { ThunderIcon } from '@/components/icons'
 import { useUser } from '@/features/account/hooks/useUser'
 import { useEditor } from '@/features/editor/providers/EditorProvider'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
@@ -18,7 +18,7 @@ export const WebPreview = () => {
   const handleNewLogs = (logs: ContinueChatResponse['logs']) => {
     logs?.forEach((log) => {
       showToast({
-        icon: <WebhookIcon />,
+        icon: <ThunderIcon />,
         status: log.status as 'success' | 'error' | 'info',
         title: log.status === 'error' ? 'An error occured' : undefined,
         description: log.description,

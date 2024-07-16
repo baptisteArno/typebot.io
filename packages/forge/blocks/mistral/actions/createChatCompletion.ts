@@ -5,6 +5,11 @@ import { parseMessages } from '../helpers/parseMessages'
 import { createMistral } from '@ai-sdk/mistral'
 import { generateText, streamText } from 'ai'
 import { fetchModels } from '../helpers/fetchModels'
+import { toolsSchema } from '@typebot.io/ai/schemas'
+import { parseTools } from '@typebot.io/ai/parseTools'
+import { maxToolRoundtrips } from '../constants'
+import { parseChatCompletionMessages } from '@typebot.io/ai/parseChatCompletionMessages'
+import { runChatCompletionStream } from '../helpers/runChatCompletionStream'
 
 const nativeMessageContentSchema = {
   content: option.string.layout({
@@ -59,6 +64,7 @@ export const options = option.object({
       ])
     )
     .layout({ accordion: 'Messages', itemLabel: 'message', isOrdered: true }),
+  tools: toolsSchema,
   responseMapping: option.saveResponseArray(['Message content']).layout({
     accordion: 'Save response',
   }),
@@ -71,6 +77,10 @@ export const createChatCompletion = createAction({
   turnableInto: [
     {
       blockId: 'openai',
+      transform: (opts) => ({
+        ...opts,
+        model: undefined,
+      }),
     },
     {
       blockId: 'together-ai',
@@ -110,8 +120,14 @@ export const createChatCompletion = createAction({
 
       const { text } = await generateText({
         model,
-        messages: parseMessages({ options, variables }),
-        tools: {},
+        messages: await parseChatCompletionMessages({
+          messages: options.messages,
+          variables,
+          isVisionEnabled: false,
+          shouldDownloadImages: false,
+        }),
+        tools: parseTools({ tools: options.tools, variables }),
+        maxToolRoundtrips: maxToolRoundtrips,
       })
 
       options.responseMapping?.forEach((mapping) => {
@@ -125,19 +141,12 @@ export const createChatCompletion = createAction({
         options.responseMapping?.find(
           (res) => res.item === 'Message content' || !res.item
         )?.variableId,
-      run: async ({ credentials: { apiKey }, options, variables }) => {
-        if (!options.model) return {}
-        const model = createMistral({
-          apiKey,
-        })(options.model)
-
-        const response = await streamText({
-          model,
-          messages: parseMessages({ options, variables }),
-        })
-
-        return { stream: response.toAIStream() }
-      },
+      run: async ({ credentials: { apiKey }, options, variables }) =>
+        runChatCompletionStream({
+          credentials: { apiKey },
+          options,
+          variables,
+        }),
     },
   },
 })

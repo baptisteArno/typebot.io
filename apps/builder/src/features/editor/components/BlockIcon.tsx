@@ -1,6 +1,6 @@
 import { useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
-import { FlagIcon, SendEmailIcon, WebhookIcon } from '@/components/icons'
+import { FlagIcon, SendEmailIcon, ThunderIcon } from '@/components/icons'
 import { WaitIcon } from '@/features/blocks/logic/wait/components/WaitIcon'
 import { ScriptIcon } from '@/features/blocks/logic/script/components/ScriptIcon'
 import { JumpIcon } from '@/features/blocks/logic/jump/components/JumpIcon'
@@ -103,7 +103,7 @@ export const BlockIcon = ({ type, mt }: BlockIconProps): JSX.Element => {
     case IntegrationBlockType.GOOGLE_ANALYTICS:
       return <GoogleAnalyticsLogo mt={mt} />
     case IntegrationBlockType.WEBHOOK:
-      return <WebhookIcon mt={mt} />
+      return <ThunderIcon mt={mt} />
     case IntegrationBlockType.ZAPIER:
       return <ZapierLogo mt={mt} />
     case IntegrationBlockType.MAKE_COM:
