@@ -1,85 +1,61 @@
 {
-  "id": "cl9ip9u0l00001ad79a2lzm55",
-  "createdAt": "2022-10-21T16:22:07.414Z",
-  "updatedAt": "2022-10-21T16:30:57.642Z",
-  "icon": null,
+  "version": "6",
+  "id": "clyoep429000dgrw904vfzaez",
   "name": "My typebot",
-  "folderId": null,
-  "version": "4",
-  "groups": [
+  "events": [
     {
       "id": "cl9ip9u0j0000d71a5d98gwni",
-      "title": "Start",
-      "blocks": [
-        {
-          "id": "cl9ip9u0j0001d71a44dsd2p1",
-          "type": "start",
-          "label": "Start",
-          "groupId": "cl9ip9u0j0000d71a5d98gwni",
-          "outgoingEdgeId": "cl9ipkkb2001b3b6oh3vptq9k"
-        }
-      ],
-      "graphCoordinates": { "x": 0, "y": 0 }
-    },
+      "outgoingEdgeId": "cl9ipkkb2001b3b6oh3vptq9k",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
     {
       "id": "cl9ipa38j00083b6o69e90m4t",
-      "graphCoordinates": { "x": 340, "y": 341 },
       "title": "Group #1",
+      "graphCoordinates": { "x": 340, "y": 341 },
       "blocks": [
         {
           "id": "cl9ipaaut000a3b6ovrqlec3x",
-          "groupId": "cl9ipa38j00083b6o69e90m4t",
           "type": "text input",
           "options": {
-            "isLong": false,
-            "labels": { "button": "Send", "placeholder": "Type a name..." },
-            "variableId": "vcl9ipajth000c3b6okl97r81j"
+            "labels": { "placeholder": "Type a name...", "button": "Send" },
+            "variableId": "vcl9ipajth000c3b6okl97r81j",
+            "isLong": false
           }
         },
         {
           "id": "cl9ipan8f000d3b6oo2ovi3ac",
-          "groupId": "cl9ipa38j00083b6o69e90m4t",
           "type": "number input",
           "options": {
-            "labels": { "button": "Send", "placeholder": "Type an age..." },
-            "variableId": "vcl9ipaszl000e3b6ousjxuw7b"
+            "variableId": "vcl9ipaszl000e3b6ousjxuw7b",
+            "labels": { "placeholder": "Type an age...", "button": "Send" }
           }
         },
         {
           "id": "cl9ipb08n000f3b6ok3mi2p48",
-          "groupId": "cl9ipa38j00083b6o69e90m4t",
+          "outgoingEdgeId": "cl9ipcp83000o3b6odsn0a9a1",
           "type": "choice input",
-          "options": {
-            "buttonLabel": "Send",
-            "isMultipleChoice": false,
-            "variableId": "vcl9ipg4tb00103b6oue08w3nm"
-          },
           "items": [
-            {
-              "id": "cl9ipb08n000g3b6okr691uad",
-              "blockId": "cl9ipb08n000f3b6ok3mi2p48",
-              "type": 0,
-              "content": "Male"
-            },
-            {
-              "blockId": "cl9ipb08n000f3b6ok3mi2p48",
-              "type": 0,
-              "id": "cl9ipb2kk000h3b6oadwtonnz",
-              "content": "Female"
-            }
+            { "id": "cl9ipb08n000g3b6okr691uad", "content": "Male" },
+            { "id": "cl9ipb2kk000h3b6oadwtonnz", "content": "Female" }
           ],
-          "outgoingEdgeId": "cl9ipcp83000o3b6odsn0a9a1"
+          "options": {
+            "variableId": "vcl9ipg4tb00103b6oue08w3nm",
+            "isMultipleChoice": false,
+            "buttonLabel": "Send"
+          }
         }
       ]
     },
     {
       "id": "cl9ipbcjy000j3b6oqngo7luv",
-      "graphCoordinates": { "x": 781, "y": 91 },
       "title": "Group #2",
+      "graphCoordinates": { "x": 781, "y": 91 },
       "blocks": [
         {
           "id": "cl9ipbl6l000m3b6o3evn41kv",
-          "groupId": "cl9ipbcjy000j3b6oqngo7luv",
           "type": "Set variable",
           "options": {
             "variableId": "vcl9ipbokm000n3b6o06hvarrf",
@@ -88,9 +64,9 @@
         },
         {
           "id": "cl9ipbcjy000k3b6oe8lta5c1",
-          "groupId": "cl9ipbcjy000j3b6oqngo7luv",
           "type": "Webhook",
           "options": {
+            "variablesForTest": [],
             "responseVariableMapping": [
               {
                 "id": "cl9ipdspg000p3b6ognbfvmdx",
@@ -98,15 +74,17 @@
                 "bodyPath": "data"
               }
             ],
-            "variablesForTest": [],
             "isAdvancedConfig": true,
-            "isCustomBody": true
-          },
-          "webhookId": "full-body-webhook"
+            "isCustomBody": true,
+            "webhook": {
+              "url": "http://localhost:3000/api/mock/webhook-easy-config",
+              "body": "{\n          \"name\": \"{{Name}}\",\n          \"age\": {{Age}},\n          \"gender\": \"{{Gender}}\"\n        }"
+            }
+          }
         },
         {
           "id": "cl9ipe5t8000s3b6ocswre500",
-          "groupId": "cl9ipbcjy000j3b6oqngo7luv",
+          "outgoingEdgeId": "cl9ipet83000z3b6of6zfqota",
           "type": "text",
           "content": {
             "richText": [
@@ -117,21 +95,20 @@
               { "type": "p", "children": [{ "text": "" }] },
               { "type": "p", "children": [{ "text": "{{Data}}" }] }
             ]
-          },
-          "outgoingEdgeId": "cl9ipet83000z3b6of6zfqota"
+          }
         }
       ]
     },
     {
       "id": "cl9ipej6b000u3b6oeaz305l6",
-      "graphCoordinates": { "x": 1138, "y": 85 },
       "title": "Group #2 copy",
+      "graphCoordinates": { "x": 1138, "y": 85 },
       "blocks": [
         {
           "id": "cl9ipej6c000w3b6otzk247vl",
-          "groupId": "cl9ipej6b000u3b6oeaz305l6",
           "type": "Webhook",
           "options": {
+            "variablesForTest": [],
             "responseVariableMapping": [
               {
                 "id": "cl9ipdspg000p3b6ognbfvmdx",
@@ -139,15 +116,16 @@
                 "bodyPath": "data"
               }
             ],
-            "variablesForTest": [],
             "isAdvancedConfig": true,
-            "isCustomBody": true
-          },
-          "webhookId": "partial-body-webhook"
+            "isCustomBody": true,
+            "webhook": {
+              "url": "http://localhost:3000/api/mock/webhook-easy-config",
+              "body": "{{Full body}}"
+            }
+          }
         },
         {
           "id": "cl9ipej6c000y3b6oegzkgloq",
-          "groupId": "cl9ipej6b000u3b6oeaz305l6",
           "type": "text",
           "content": {
             "richText": [
@@ -164,97 +142,94 @@
     },
     {
       "id": "cl9ipkaer00153b6ov230yuv2",
-      "graphCoordinates": { "x": 333, "y": 26 },
       "title": "Group #4",
+      "graphCoordinates": { "x": 333, "y": 26 },
       "blocks": [
         {
           "id": "cl9ipkaer00163b6o0ohmmscn",
-          "groupId": "cl9ipkaer00153b6ov230yuv2",
           "type": "choice input",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "items": [
             {
               "id": "cl9ipkaer00173b6oxof4zrqn",
-              "blockId": "cl9ipkaer00163b6o0ohmmscn",
-              "type": 0,
               "content": "Send failing webhook"
             }
-          ]
+          ],
+          "options": { "isMultipleChoice": false, "buttonLabel": "Send" }
         },
         {
           "id": "cl9ipki9u00193b6okmhudo0f",
-          "groupId": "cl9ipkaer00153b6ov230yuv2",
+          "outgoingEdgeId": "cl9ipklm0001c3b6oy0a5nbhr",
           "type": "Webhook",
           "options": {
-            "responseVariableMapping": [],
             "variablesForTest": [],
+            "responseVariableMapping": [],
             "isAdvancedConfig": false,
-            "isCustomBody": false
-          },
-          "webhookId": "failing-webhook",
-          "outgoingEdgeId": "cl9ipklm0001c3b6oy0a5nbhr"
+            "isCustomBody": false,
+            "webhook": { "url": "http://localhost:3001/api/mock/fail" }
+          }
         }
       ]
     }
   ],
-  "variables": [
-    { "id": "vcl9ipajth000c3b6okl97r81j", "name": "Name" },
-    { "id": "vcl9ipaszl000e3b6ousjxuw7b", "name": "Age" },
-    { "id": "vcl9ipbokm000n3b6o06hvarrf", "name": "Full body" },
-    { "id": "vcl9ipdxnj000q3b6oy55th4xb", "name": "Data" },
-    { "id": "vcl9ipg4tb00103b6oue08w3nm", "name": "Gender" }
-  ],
   "edges": [
     {
-      "from": {
-        "groupId": "cl9ipa38j00083b6o69e90m4t",
-        "blockId": "cl9ipb08n000f3b6ok3mi2p48"
-      },
-      "to": { "groupId": "cl9ipbcjy000j3b6oqngo7luv" },
-      "id": "cl9ipcp83000o3b6odsn0a9a1"
+      "id": "cl9ipkkb2001b3b6oh3vptq9k",
+      "from": { "eventId": "cl9ip9u0j0000d71a5d98gwni" },
+      "to": { "groupId": "cl9ipkaer00153b6ov230yuv2" }
     },
     {
-      "from": {
-        "groupId": "cl9ipbcjy000j3b6oqngo7luv",
-        "blockId": "cl9ipe5t8000s3b6ocswre500"
-      },
-      "to": { "groupId": "cl9ipej6b000u3b6oeaz305l6" },
-      "id": "cl9ipet83000z3b6of6zfqota"
+      "id": "cl9ipcp83000o3b6odsn0a9a1",
+      "from": { "blockId": "cl9ipb08n000f3b6ok3mi2p48" },
+      "to": { "groupId": "cl9ipbcjy000j3b6oqngo7luv" }
     },
     {
-      "from": {
-        "groupId": "cl9ip9u0j0000d71a5d98gwni",
-        "blockId": "cl9ip9u0j0001d71a44dsd2p1"
-      },
-      "to": { "groupId": "cl9ipkaer00153b6ov230yuv2" },
-      "id": "cl9ipkkb2001b3b6oh3vptq9k"
+      "id": "cl9ipet83000z3b6of6zfqota",
+      "from": { "blockId": "cl9ipe5t8000s3b6ocswre500" },
+      "to": { "groupId": "cl9ipej6b000u3b6oeaz305l6" }
     },
     {
-      "from": {
-        "groupId": "cl9ipkaer00153b6ov230yuv2",
-        "blockId": "cl9ipki9u00193b6okmhudo0f"
-      },
-      "to": { "groupId": "cl9ipa38j00083b6o69e90m4t" },
-      "id": "cl9ipklm0001c3b6oy0a5nbhr"
+      "id": "cl9ipklm0001c3b6oy0a5nbhr",
+      "from": { "blockId": "cl9ipki9u00193b6okmhudo0f" },
+      "to": { "groupId": "cl9ipa38j00083b6o69e90m4t" }
+    }
+  ],
+  "variables": [
+    {
+      "id": "vcl9ipajth000c3b6okl97r81j",
+      "name": "Name",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vcl9ipaszl000e3b6ousjxuw7b",
+      "name": "Age",
+      "isSessionVariable": true
+    },
+    { "id": "vcl9ipbokm000n3b6o06hvarrf", "name": "Full body" },
+    { "id": "vcl9ipdxnj000q3b6oy55th4xb", "name": "Data" },
+    {
+      "id": "vcl9ipg4tb00103b6oue08w3nm",
+      "name": "Gender",
+      "isSessionVariable": true
     }
   ],
   "theme": {
+    "general": { "font": "Open Sans", "background": { "type": "None" } },
     "chat": {
-      "inputs": {
-        "color": "#303235",
-        "backgroundColor": "#FFFFFF",
-        "placeholderColor": "#9095A0"
-      },
-      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
       "hostAvatar": {
-        "url": "https://avatars.githubusercontent.com/u/16015833?v=4",
-        "isEnabled": true
+        "isEnabled": true,
+        "url": "https://avatars.githubusercontent.com/u/16015833?v=4"
       },
-      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
-      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
-    },
-    "general": { "font": "Open Sans", "background": { "type": "None" } }
+      "hostBubbles": { "backgroundColor": "#F7F8FF", "color": "#303235" },
+      "guestBubbles": { "backgroundColor": "#FF8E21", "color": "#FFFFFF" },
+      "buttons": { "backgroundColor": "#0042DA", "color": "#FFFFFF" },
+      "inputs": {
+        "backgroundColor": "#FFFFFF",
+        "color": "#303235",
+        "placeholderColor": "#9095A0"
+      }
+    }
   },
+  "selectedThemeTemplateId": null,
   "settings": {
     "general": {
       "isBrandingEnabled": false,
@@ -262,14 +237,21 @@
       "isHideQueryParamsEnabled": true,
       "isNewResultOnRefreshEnabled": false
     },
+    "typingEmulation": { "enabled": true, "speed": 300, "maxDelay": 1.5 },
     "metadata": {
       "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
-    },
-    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
+    }
   },
+  "createdAt": "2024-07-16T12:45:19.954Z",
+  "updatedAt": "2024-07-16T12:46:27.462Z",
+  "icon": null,
+  "folderId": null,
   "publicId": null,
   "customDomain": null,
   "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
   "isArchived": false,
-  "isClosed": false
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
 }

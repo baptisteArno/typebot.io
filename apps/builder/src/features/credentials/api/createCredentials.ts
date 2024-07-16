@@ -1,7 +1,6 @@
 import prisma from '@typebot.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { openAICredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { smtpCredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/sendEmail'
 import { encrypt } from '@typebot.io/lib/api/encryption/encrypt'
 import { z } from 'zod'
@@ -10,11 +9,11 @@ import {
   Credentials,
   googleSheetsCredentialsSchema,
   stripeCredentialsSchema,
-  zemanticAiCredentialsSchema,
 } from '@typebot.io/schemas'
 import { isDefined } from '@typebot.io/lib/utils'
 import { isWriteWorkspaceForbidden } from '@/features/workspace/helpers/isWriteWorkspaceForbidden'
 import { trackEvents } from '@typebot.io/telemetry/trackEvents'
+import { forgedCredentialsSchemas } from '@typebot.io/forge-repository/credentials'
 
 const inputShape = {
   data: true,
@@ -40,9 +39,10 @@ export const createCredentials = authenticatedProcedure
           stripeCredentialsSchema.pick(inputShape),
           smtpCredentialsSchema.pick(inputShape),
           googleSheetsCredentialsSchema.pick(inputShape),
-          openAICredentialsSchema.pick(inputShape),
           whatsAppCredentialsSchema.pick(inputShape),
-          zemanticAiCredentialsSchema.pick(inputShape),
+          ...Object.values(forgedCredentialsSchemas).map((i) =>
+            i.pick(inputShape)
+          ),
         ])
         .and(z.object({ id: z.string().cuid2().optional() })),
     })
@@ -53,7 +53,12 @@ export const createCredentials = authenticatedProcedure
     })
   )
   .mutation(async ({ input: { credentials }, ctx: { user } }) => {
-    if (await isNotAvailable(credentials.name, credentials.type))
+    if (
+      await isNotAvailable(
+        credentials.name,
+        credentials.type as Credentials['type']
+      )
+    )
       throw new TRPCError({
         code: 'CONFLICT',
         message: 'Credentials already exist.',
@@ -62,7 +67,7 @@ export const createCredentials = authenticatedProcedure
       where: {
         id: credentials.workspaceId,
       },
-      select: { id: true, members: true },
+      select: { id: true, members: { select: { userId: true, role: true } } },
     })
     if (!workspace || isWriteWorkspaceForbidden(workspace, user))
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Workspace not found' })

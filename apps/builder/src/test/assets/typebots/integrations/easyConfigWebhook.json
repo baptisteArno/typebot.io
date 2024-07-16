@@ -118,8 +118,7 @@
             "variablesForTest": [],
             "isAdvancedConfig": false,
             "isCustomBody": false
-          },
-          "webhookId": "webhook1"
+          }
         }
       ]
     }

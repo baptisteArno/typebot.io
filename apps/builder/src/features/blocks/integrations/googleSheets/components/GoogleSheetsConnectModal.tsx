@@ -21,8 +21,8 @@ import { getGoogleSheetsConsentScreenUrlQuery } from '../queries/getGoogleSheets
 
 type Props = {
   isOpen: boolean
-  typebotId: string
-  blockId: string
+  typebotId?: string
+  blockId?: string
   onClose: () => void
 }
 
@@ -32,30 +32,45 @@ export const GoogleSheetConnectModal = ({
   isOpen,
   onClose,
 }: Props) => {
-  const { workspace } = useWorkspace()
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg">
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Connect Spreadsheets</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody as={Stack} spacing="6">
-          <Text>
-            Make sure to check all the permissions so that the integration works
-            as expected:
-          </Text>
-          <Image
-            src="/images/google-spreadsheets-scopes.png"
-            alt="Google Spreadsheets checkboxes"
-            rounded="md"
-          />
-          <AlertInfo>
-            Google does not provide more granular permissions than
-            &quot;read&quot; or &quot;write&quot; access. That&apos;s why it
-            states that Typebot can also delete your spreadsheets which it
-            won&apos;t.
-          </AlertInfo>
-          <Flex>
+      <GoogleSheetConnectModalContent typebotId={typebotId} blockId={blockId} />
+    </Modal>
+  )
+}
+
+export const GoogleSheetConnectModalContent = ({
+  typebotId,
+  blockId,
+}: {
+  typebotId?: string
+  blockId?: string
+}) => {
+  const { workspace } = useWorkspace()
+
+  return (
+    <ModalContent>
+      <ModalHeader>Connect Spreadsheets</ModalHeader>
+      <ModalCloseButton />
+      <ModalBody as={Stack} spacing="6">
+        <Text>
+          Make sure to check all the permissions so that the integration works
+          as expected:
+        </Text>
+        <Image
+          src="/images/google-spreadsheets-scopes.png"
+          alt="Google Spreadsheets checkboxes"
+          rounded="md"
+        />
+        <AlertInfo>
+          Google does not provide more granular permissions than
+          &quot;read&quot; or &quot;write&quot; access. That&apos;s why it
+          states that Typebot can also delete your spreadsheets which it
+          won&apos;t.
+        </AlertInfo>
+        <Flex>
+          {workspace?.id && (
             <Button
               as={Link}
               leftIcon={<GoogleLogo />}
@@ -64,19 +79,18 @@ export const GoogleSheetConnectModal = ({
               variant="outline"
               href={getGoogleSheetsConsentScreenUrlQuery(
                 window.location.href,
+                workspace.id,
                 blockId,
-                workspace?.id,
                 typebotId
               )}
               mx="auto"
             >
               Continue with Google
             </Button>
-          </Flex>
-        </ModalBody>
-
-        <ModalFooter />
-      </ModalContent>
-    </Modal>
+          )}
+        </Flex>
+      </ModalBody>
+      <ModalFooter />
+    </ModalContent>
   )
 }

@@ -30,11 +30,8 @@ export const deleteCredentials = authenticatedProcedure
       const workspace = await prisma.workspace.findFirst({
         where: {
           id: workspaceId,
-          members: {
-            some: { userId: user.id, role: { in: ['ADMIN', 'MEMBER'] } },
-          },
         },
-        select: { id: true, members: true },
+        select: { id: true, members: { select: { userId: true, role: true } } },
       })
       if (!workspace || isWriteWorkspaceForbidden(workspace, user))
         throw new TRPCError({

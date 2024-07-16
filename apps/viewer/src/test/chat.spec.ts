@@ -2,18 +2,30 @@ import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
 import { createId } from '@paralleldrive/cuid2'
 import prisma from '@typebot.io/lib/prisma'
-import {
-  createWebhook,
-  deleteTypebots,
-  deleteWebhooks,
-  importTypebotInDatabase,
-} from '@typebot.io/playwright/databaseActions'
-import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
+import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
 import { StartChatInput, StartPreviewChatInput } from '@typebot.io/schemas'
 
-test.afterEach(async () => {
-  await deleteWebhooks(['chat-webhook-id'])
-  await deleteTypebots(['chat-sub-bot', 'starting-with-input'])
+test.describe.configure({ mode: 'parallel' })
+
+test.beforeEach(async () => {
+  try {
+    await importTypebotInDatabase(
+      getTestAsset('typebots/chat/linkedBot.json'),
+      {
+        id: 'chat-sub-bot',
+        publicId: 'chat-sub-bot-public',
+      }
+    )
+    await importTypebotInDatabase(
+      getTestAsset('typebots/chat/startingWithInput.json'),
+      {
+        id: 'starting-with-input',
+        publicId: 'starting-with-input-public',
+      }
+    )
+  } catch {
+    /* empty */
+  }
 })
 
 test('API chat execution should work on preview bot', async ({ request }) => {
@@ -22,22 +34,6 @@ test('API chat execution should work on preview bot', async ({ request }) => {
   await importTypebotInDatabase(getTestAsset('typebots/chat/main.json'), {
     id: typebotId,
     publicId,
-  })
-  await importTypebotInDatabase(getTestAsset('typebots/chat/linkedBot.json'), {
-    id: 'chat-sub-bot',
-    publicId: 'chat-sub-bot-public',
-  })
-  await importTypebotInDatabase(
-    getTestAsset('typebots/chat/startingWithInput.json'),
-    {
-      id: 'starting-with-input',
-      publicId: 'starting-with-input-public',
-    }
-  )
-  await createWebhook(typebotId, {
-    id: 'chat-webhook-id',
-    method: HttpMethod.GET,
-    url: 'https://api.chucknorris.io/jokes/random',
   })
 
   let chatSessionId: string
@@ -104,22 +100,7 @@ test('API chat execution should work on published bot', async ({ request }) => {
     id: typebotId,
     publicId,
   })
-  await importTypebotInDatabase(getTestAsset('typebots/chat/linkedBot.json'), {
-    id: 'chat-sub-bot',
-    publicId: 'chat-sub-bot-public',
-  })
-  await importTypebotInDatabase(
-    getTestAsset('typebots/chat/startingWithInput.json'),
-    {
-      id: 'starting-with-input',
-      publicId: 'starting-with-input-public',
-    }
-  )
-  await createWebhook(typebotId, {
-    id: 'chat-webhook-id',
-    method: HttpMethod.GET,
-    url: 'https://api.chucknorris.io/jokes/random',
-  })
+
   let chatSessionId: string
 
   await test.step('Start the chat', async () => {

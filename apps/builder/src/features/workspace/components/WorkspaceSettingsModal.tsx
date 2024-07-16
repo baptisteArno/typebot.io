@@ -13,6 +13,7 @@ import {
   HardDriveIcon,
   SettingsIcon,
   UsersIcon,
+  WalletIcon,
 } from '@/components/icons'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
 import { User, WorkspaceRole } from '@typebot.io/prisma'
@@ -26,11 +27,13 @@ import { MyAccountForm } from '@/features/account/components/MyAccountForm'
 import { BillingSettingsLayout } from '@/features/billing/components/BillingSettingsLayout'
 import { useTranslate } from '@tolgee/react'
 import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
+import { CredentialsSettingsForm } from '@/features/credentials/components/CredentialsSettingsForm'
 
 type Props = {
   isOpen: boolean
   user: User
   workspace: WorkspaceInApp
+  defaultTab?: SettingsTab
   onClose: () => void
 }
 
@@ -40,17 +43,19 @@ type SettingsTab =
   | 'workspace-settings'
   | 'members'
   | 'billing'
+  | 'credentials'
 
 export const WorkspaceSettingsModal = ({
   isOpen,
   user,
   workspace,
+  defaultTab = 'my-account',
   onClose,
 }: Props) => {
   const { t } = useTranslate()
   const { ref } = useParentModal()
   const { currentRole } = useWorkspace()
-  const [selectedTab, setSelectedTab] = useState<SettingsTab>('my-account')
+  const [selectedTab, setSelectedTab] = useState<SettingsTab>(defaultTab)
 
   const canEditWorkspace = currentRole === WorkspaceRole.ADMIN
 
@@ -121,6 +126,18 @@ export const WorkspaceSettingsModal = ({
                   {t('workspace.settings.modal.menu.settings.label')}
                 </Button>
               )}
+              {canEditWorkspace && (
+                <Button
+                  variant={selectedTab === 'credentials' ? 'solid' : 'ghost'}
+                  onClick={() => setSelectedTab('credentials')}
+                  leftIcon={<WalletIcon />}
+                  size="sm"
+                  justifyContent="flex-start"
+                  pl="4"
+                >
+                  Credentials
+                </Button>
+              )}
               {currentRole !== WorkspaceRole.GUEST && (
                 <Button
                   variant={selectedTab === 'members' ? 'solid' : 'ghost'}
@@ -186,6 +203,8 @@ const SettingsContent = ({
       return <MembersList />
     case 'billing':
       return <BillingSettingsLayout />
+    case 'credentials':
+      return <CredentialsSettingsForm />
     default:
       return null
   }

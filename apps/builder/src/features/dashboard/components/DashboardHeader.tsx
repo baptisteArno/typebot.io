@@ -10,13 +10,19 @@ import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { WorkspaceDropdown } from '@/features/workspace/components/WorkspaceDropdown'
 import { WorkspaceSettingsModal } from '@/features/workspace/components/WorkspaceSettingsModal'
 import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvider'
+import { useRouter } from 'next/router'
 
 export const DashboardHeader = () => {
   const { t } = useTranslate()
   const { user, logOut } = useUser()
   const { workspace, switchWorkspace, createWorkspace } = useWorkspace()
+  const { asPath } = useRouter()
 
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const isRedirectFromCredentialsCreation = asPath.includes('credentials')
+
+  const { isOpen, onOpen, onClose } = useDisclosure({
+    defaultIsOpen: isRedirectFromCredentialsCreation,
+  })
 
   const handleCreateNewWorkspace = () =>
     createWorkspace(user?.name ?? undefined)
@@ -45,6 +51,9 @@ export const DashboardHeader = () => {
                 onClose={onClose}
                 user={user}
                 workspace={workspace}
+                defaultTab={
+                  isRedirectFromCredentialsCreation ? 'credentials' : undefined
+                }
               />
             </ParentModalProvider>
           )}

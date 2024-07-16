@@ -1,6 +1,4 @@
 import {
-  Modal,
-  ModalOverlay,
   ModalContent,
   ModalHeader,
   ModalCloseButton,
@@ -9,56 +7,44 @@ import {
   Button,
 } from '@chakra-ui/react'
 import { useUser } from '@/features/account/hooks/useUser'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { isNotDefined } from '@typebot.io/lib'
 import { SmtpConfigForm } from './SmtpConfigForm'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'
 import { testSmtpConfig } from '../queries/testSmtpConfigQuery'
-import { SmtpCredentials } from '@typebot.io/schemas'
 import { trpc } from '@/lib/trpc'
+import { SmtpCredentials } from '@typebot.io/schemas/features/blocks/integrations/sendEmail/schema'
 
 type Props = {
-  isOpen: boolean
-  onClose: () => void
-  onNewCredentials: (id: string) => void
+  credentialsId: string
+  onUpdate: () => void
 }
 
-export const SmtpConfigModal = ({
-  isOpen,
-  onClose,
-  onNewCredentials,
-}: Props) => {
-  return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <SmtpCreateModalContent
-        onNewCredentials={(id) => {
-          onNewCredentials(id)
-          onClose()
-        }}
-      />
-    </Modal>
-  )
-}
-
-export const SmtpCreateModalContent = ({
-  onNewCredentials,
-}: Pick<Props, 'onNewCredentials'>) => {
+export const SmtpUpdateModalContent = ({ credentialsId, onUpdate }: Props) => {
   const { user } = useUser()
   const { workspace } = useWorkspace()
   const [isCreating, setIsCreating] = useState(false)
   const { showToast } = useToast()
-  const [smtpConfig, setSmtpConfig] = useState<SmtpCredentials['data']>({
-    from: {},
-    port: 25,
-  })
-  const {
-    credentials: {
-      listCredentials: { refetch: refetchCredentials },
-    },
-  } = trpc.useContext()
-  const { mutate } = trpc.credentials.createCredentials.useMutation({
+  const [smtpConfig, setSmtpConfig] = useState<SmtpCredentials['data']>()
+
+  const { data: existingCredentials } =
+    trpc.credentials.getCredentials.useQuery(
+      {
+        workspaceId: workspace!.id,
+        credentialsId: credentialsId,
+      },
+      {
+        enabled: !!workspace?.id,
+      }
+    )
+
+  useEffect(() => {
+    if (!existingCredentials || smtpConfig) return
+    setSmtpConfig(existingCredentials.data)
+  }, [existingCredentials, smtpConfig])
+
+  const { mutate } = trpc.credentials.updateCredentials.useMutation({
     onSettled: () => setIsCreating(false),
     onError: (err) => {
       showToast({
@@ -66,22 +52,20 @@ export const SmtpCreateModalContent = ({
         status: 'error',
       })
     },
-    onSuccess: (data) => {
-      refetchCredentials()
-      onNewCredentials(data.credentialsId)
+    onSuccess: () => {
+      onUpdate()
     },
   })
 
-  const handleCreateClick = async (e: React.FormEvent) => {
+  const handleUpdateClick = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!user?.email || !workspace?.id) return
+    if (!user?.email || !workspace?.id || !smtpConfig) return
     setIsCreating(true)
     const { error: testSmtpError } = await testSmtpConfig(
       smtpConfig,
       user.email
     )
     if (testSmtpError) {
-      console.error(testSmtpError)
       setIsCreating(false)
       return showToast({
         title: 'Invalid configuration',
@@ -89,6 +73,7 @@ export const SmtpCreateModalContent = ({
       })
     }
     mutate({
+      credentialsId,
       credentials: {
         data: smtpConfig,
         name: smtpConfig.from.email as string,
@@ -99,9 +84,9 @@ export const SmtpCreateModalContent = ({
   }
   return (
     <ModalContent>
-      <ModalHeader>Create SMTP config</ModalHeader>
+      <ModalHeader>Update SMTP config</ModalHeader>
       <ModalCloseButton />
-      <form onSubmit={handleCreateClick}>
+      <form onSubmit={handleUpdateClick}>
         <ModalBody>
           <SmtpConfigForm config={smtpConfig} onConfigChange={setSmtpConfig} />
         </ModalBody>
@@ -111,15 +96,15 @@ export const SmtpCreateModalContent = ({
             type="submit"
             colorScheme="blue"
             isDisabled={
-              isNotDefined(smtpConfig.from.email) ||
-              isNotDefined(smtpConfig.host) ||
-              isNotDefined(smtpConfig.username) ||
-              isNotDefined(smtpConfig.password) ||
-              isNotDefined(smtpConfig.port)
+              isNotDefined(smtpConfig?.from.email) ||
+              isNotDefined(smtpConfig?.host) ||
+              isNotDefined(smtpConfig?.username) ||
+              isNotDefined(smtpConfig?.password) ||
+              isNotDefined(smtpConfig?.port)
             }
             isLoading={isCreating}
           >
-            Create
+            Update
           </Button>
         </ModalFooter>
       </form>

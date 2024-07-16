@@ -2,8 +2,8 @@ import { stringify } from 'qs'
 
 export const getGoogleSheetsConsentScreenUrlQuery = (
   redirectUrl: string,
-  blockId: string,
-  workspaceId?: string,
+  workspaceId: string,
+  blockId?: string,
   typebotId?: string
 ) => {
   const queryParams = stringify({

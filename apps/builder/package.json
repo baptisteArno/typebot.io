@@ -100,7 +100,7 @@
   },
   "devDependencies": {
     "@chakra-ui/styled-system": "2.9.2",
-    "@playwright/test": "1.43.1",
+    "@playwright/test": "1.45.2",
     "@typebot.io/billing": "workspace:*",
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/forge-repository": "workspace:*",

@@ -1,6 +1,4 @@
 import { TextInput, Textarea, NumberInput } from '@/components/inputs'
-import { CredentialsDropdown } from '@/features/credentials/components/CredentialsDropdown'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import {
   Accordion,
   AccordionButton,
@@ -9,15 +7,12 @@ import {
   AccordionPanel,
   Stack,
   Text,
-  useDisclosure,
 } from '@chakra-ui/react'
 import { isEmpty } from '@typebot.io/lib'
 import { ZemanticAiBlock } from '@typebot.io/schemas'
-import { ZemanticAiCredentialsModal } from './ZemanticAiCredentialsModal'
 import { ProjectsDropdown } from './ProjectsDropdown'
 import { SearchResponseItem } from './SearchResponseItem'
 import { TableList } from '@/components/TableList'
-import { createId } from '@paralleldrive/cuid2'
 
 type Props = {
   block: ZemanticAiBlock
@@ -28,22 +23,6 @@ export const ZemanticAiSettings = ({
   block: { id: blockId, options },
   onOptionsChange,
 }: Props) => {
-  const { workspace } = useWorkspace()
-  const { isOpen, onOpen, onClose } = useDisclosure()
-
-  const updateCredentialsId = (credentialsId: string | undefined) => {
-    onOptionsChange({
-      ...options,
-      credentialsId,
-      responseMapping: [
-        {
-          id: createId(),
-          valueToExtract: 'Summary',
-        },
-      ],
-    })
-  }
-
   const updateProjectId = (projectId: string | undefined) => {
     onOptionsChange({
       ...options,
@@ -92,23 +71,6 @@ export const ZemanticAiSettings = ({
 
   return (
     <Stack spacing={4}>
-      {workspace && (
-        <>
-          <CredentialsDropdown
-            type="zemanticAi"
-            workspaceId={workspace.id}
-            currentCredentialsId={options?.credentialsId}
-            onCredentialsSelect={updateCredentialsId}
-            onCreateNewClick={onOpen}
-            credentialsName="Zemantic AI account"
-          />
-          <ZemanticAiCredentialsModal
-            isOpen={isOpen}
-            onClose={onClose}
-            onNewCredentials={updateCredentialsId}
-          />
-        </>
-      )}
       {options?.credentialsId && (
         <>
           <ProjectsDropdown

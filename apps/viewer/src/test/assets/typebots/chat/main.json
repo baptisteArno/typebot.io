@@ -1,28 +1,20 @@
 {
-  "id": "clauujawp00011avs2vj97zma",
-  "createdAt": "2022-11-24T09:02:23.737Z",
-  "updatedAt": "2022-11-24T09:12:57.036Z",
-  "icon": "🤖",
+  "version": "6",
+  "id": "clyoegjca0005grw9ek6h984v",
   "name": "Complete bot",
-  "folderId": null,
-  "groups": [
+  "events": [
     {
       "id": "clauujawn0000vs1a8z6k2k7d",
-      "title": "Start",
-      "blocks": [
-        {
-          "id": "clauujawn0001vs1a0mk8docp",
-          "type": "start",
-          "label": "Start",
-          "groupId": "clauujawn0000vs1a8z6k2k7d",
-          "outgoingEdgeId": "clauuk4o300083b6q7b2iowv3"
-        }
-      ],
-      "graphCoordinates": { "x": 0, "y": 0 }
-    },
+      "outgoingEdgeId": "clauuk4o300083b6q7b2iowv3",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
     {
       "id": "clauujxdc00063b6q42ca20gj",
       "title": "Welcome",
+      "graphCoordinates": { "x": 5.81640625, "y": 172.359375 },
       "blocks": [
         {
           "id": "clauujxdd00073b6qpejnkzcy",
@@ -31,8 +23,7 @@
             "richText": [
               { "type": "p", "children": [{ "text": "Hi there! 👋" }] }
             ]
-          },
-          "groupId": "clauujxdc00063b6q42ca20gj"
+          }
         },
         {
           "id": "clauukaad00093b6q07av51yc",
@@ -44,29 +35,27 @@
                 "children": [{ "text": "Welcome. What's your name?" }]
               }
             ]
-          },
-          "groupId": "clauujxdc00063b6q42ca20gj"
+          }
         },
         {
           "id": "clauukip8000a3b6qtzl288tu",
+          "outgoingEdgeId": "clauul0sk000f3b6q2tvy5wfi",
           "type": "text input",
-          "groupId": "clauujxdc00063b6q42ca20gj",
           "options": {
-            "isLong": false,
             "labels": {
-              "button": "Send",
-              "placeholder": "Type your answer..."
+              "placeholder": "Type your answer...",
+              "button": "Send"
             },
-            "variableId": "vclauuklnc000b3b6q7xchq4yf"
-          },
-          "outgoingEdgeId": "clauul0sk000f3b6q2tvy5wfi"
+            "variableId": "vclauuklnc000b3b6q7xchq4yf",
+            "isLong": false
+          }
         }
-      ],
-      "graphCoordinates": { "x": 5.81640625, "y": 172.359375 }
+      ]
     },
     {
       "id": "clauukoka000c3b6qe6chawis",
       "title": "Age",
+      "graphCoordinates": { "x": 361.17578125, "y": 170.10546875 },
       "blocks": [
         {
           "id": "clauukoka000d3b6qxqi38cmk",
@@ -78,16 +67,14 @@
                 "children": [{ "text": "Nice to meet you {{Name}}" }]
               }
             ]
-          },
-          "groupId": "clauukoka000c3b6qe6chawis"
+          }
         },
         {
           "id": "clauuku5o000e3b6q90rm30p1",
           "type": "image",
           "content": {
             "url": "https://media2.giphy.com/media/l0MYGb1LuZ3n7dRnO/giphy-downsized.gif?cid=fe3852a3yd2leg4yi8iual3wgyw893zzocuuqlp3wytt802h&rid=giphy-downsized.gif&ct=g"
-          },
-          "groupId": "clauukoka000c3b6qe6chawis"
+          }
         },
         {
           "id": "clauul4vg000g3b6qr0q2h0uy",
@@ -96,60 +83,56 @@
             "richText": [
               { "type": "p", "children": [{ "text": "How old are you?" }] }
             ]
-          },
-          "groupId": "clauukoka000c3b6qe6chawis"
+          }
         },
         {
           "id": "clauul90j000h3b6qjfrw9js4",
+          "outgoingEdgeId": "clauum41j000n3b6qpqu12icm",
           "type": "number input",
-          "groupId": "clauukoka000c3b6qe6chawis",
           "options": {
-            "labels": { "button": "Send", "placeholder": "Type a number..." },
-            "variableId": "vclauulfjk000i3b6qmujooweu"
-          },
-          "outgoingEdgeId": "clauum41j000n3b6qpqu12icm"
+            "variableId": "vclauulfjk000i3b6qmujooweu",
+            "labels": { "placeholder": "Type a number...", "button": "Send" }
+          }
         }
-      ],
-      "graphCoordinates": { "x": 361.17578125, "y": 170.10546875 }
+      ]
     },
     {
       "id": "clauulhqf000j3b6qm8y5oifc",
       "title": "Is major?",
+      "graphCoordinates": { "x": 726.2265625, "y": 240.80078125 },
       "blocks": [
         {
           "id": "clauulhqf000k3b6qsrc1hd74",
+          "outgoingEdgeId": "clauumm5v000t3b6qu62qcft8",
           "type": "Condition",
           "items": [
             {
               "id": "clauulhqg000l3b6qaxn4qli5",
-              "type": 1,
-              "blockId": "clauulhqf000k3b6qsrc1hd74",
+              "outgoingEdgeId": "clauumi0x000q3b6q9bwkqnmr",
               "content": {
+                "logicalOperator": "AND",
                 "comparisons": [
                   {
                     "id": "clauuliyn000m3b6q10gwx8ii",
-                    "value": "21",
                     "variableId": "vclauulfjk000i3b6qmujooweu",
-                    "comparisonOperator": "Greater than"
+                    "comparisonOperator": "Greater than",
+                    "value": "21"
                   }
-                ],
-                "logicalOperator": "AND"
-              },
-              "outgoingEdgeId": "clauumi0x000q3b6q9bwkqnmr"
+                ]
+              }
             }
-          ],
-          "groupId": "clauulhqf000j3b6qm8y5oifc",
-          "outgoingEdgeId": "clauumm5v000t3b6qu62qcft8"
+          ]
         }
-      ],
-      "graphCoordinates": { "x": 726.2265625, "y": 240.80078125 }
+      ]
     },
     {
       "id": "clauum8x7000o3b6qx8hqduf8",
       "title": "Group #4",
+      "graphCoordinates": { "x": 1073.38671875, "y": 232.25 },
       "blocks": [
         {
           "id": "clauum8x7000p3b6qxjud5hdc",
+          "outgoingEdgeId": "clauuom2y000y3b6qkcjy2ri7",
           "type": "text",
           "content": {
             "richText": [
@@ -158,39 +141,35 @@
                 "children": [{ "text": "Ok, you are an adult then 😁" }]
               }
             ]
-          },
-          "groupId": "clauum8x7000o3b6qx8hqduf8",
-          "outgoingEdgeId": "clauuom2y000y3b6qkcjy2ri7"
+          }
         }
-      ],
-      "graphCoordinates": { "x": 1073.38671875, "y": 232.25 }
+      ]
     },
     {
       "id": "clauumjq4000r3b6q8l6bi9ra",
       "title": "Group #4 copy",
+      "graphCoordinates": { "x": 1073.984375, "y": 408.6875 },
       "blocks": [
         {
           "id": "clauumjq5000s3b6qqjhrklv4",
+          "outgoingEdgeId": "clauuol8t000x3b6qcw1few70",
           "type": "text",
           "content": {
             "richText": [
               { "type": "p", "children": [{ "text": "Oh, you are a kid 😁" }] }
             ]
-          },
-          "groupId": "clauumjq4000r3b6q8l6bi9ra",
-          "outgoingEdgeId": "clauuol8t000x3b6qcw1few70"
+          }
         }
-      ],
-      "graphCoordinates": { "x": 1073.984375, "y": 408.6875 }
+      ]
     },
     {
       "id": "clauuoekh000u3b6q6zmlx7f9",
       "title": "Magic number",
+      "graphCoordinates": { "x": 1465.359375, "y": 299.25390625 },
       "blocks": [
         {
           "id": "clauuoeki000v3b6qvsh7kde1",
           "type": "Set variable",
-          "groupId": "clauuoekh000u3b6q6zmlx7f9",
           "options": {
             "variableId": "vclauuohyp000w3b6qbqrs6c6w",
             "expressionToEvaluate": "42"
@@ -198,6 +177,7 @@
         },
         {
           "id": "clauuontu000z3b6q3ydx6ao1",
+          "outgoingEdgeId": "clauuq8je001e3b6qksm4j11g",
           "type": "text",
           "content": {
             "richText": [
@@ -206,38 +186,33 @@
                 "children": [{ "text": "My magic number is {{Magic number}}" }]
               }
             ]
-          },
-          "groupId": "clauuoekh000u3b6q6zmlx7f9",
-          "outgoingEdgeId": "clauuq8je001e3b6qksm4j11g"
+          }
         }
-      ],
-      "graphCoordinates": { "x": 1465.359375, "y": 299.25390625 }
+      ]
     },
     {
       "id": "clauuq2l6001c3b6qpmq3ivwk",
-      "graphCoordinates": { "x": 1836.43359375, "y": 295.39453125 },
       "title": "Rate the experience",
+      "graphCoordinates": { "x": 1836.43359375, "y": 295.39453125 },
       "blocks": [
         {
           "id": "clauuq2l6001d3b6qyltfcvgb",
-          "groupId": "clauuq2l6001c3b6qpmq3ivwk",
+          "outgoingEdgeId": "clauureo3001h3b6qk6epabxq",
           "type": "Typebot link",
           "options": {
             "typebotId": "chat-sub-bot",
             "groupId": "clauupd6q00183b6qcm8qbz62"
-          },
-          "outgoingEdgeId": "clauureo3001h3b6qk6epabxq"
+          }
         }
       ]
     },
     {
       "id": "clauur7od001f3b6qq140oe55",
-      "graphCoordinates": { "x": 2201.45703125, "y": 299.1328125 },
       "title": "Multiple input in group",
+      "graphCoordinates": { "x": 2201.45703125, "y": 299.1328125 },
       "blocks": [
         {
           "id": "clauur7od001g3b6qkoeij3f7",
-          "groupId": "clauur7od001f3b6qq140oe55",
           "type": "text",
           "content": {
             "richText": [
@@ -252,53 +227,39 @@
         },
         {
           "id": "clauurluf001i3b6qjf78puug",
-          "groupId": "clauur7od001f3b6qq140oe55",
           "type": "email input",
           "options": {
-            "labels": { "button": "Send", "placeholder": "Type your email..." },
+            "labels": { "placeholder": "Type your email...", "button": "Send" },
             "retryMessageContent": "This email doesn't seem to be valid. Can you type it again?"
           }
         },
         {
           "id": "clauurokp001j3b6qyrw7boca",
-          "groupId": "clauur7od001f3b6qq140oe55",
           "type": "url input",
           "options": {
-            "labels": { "button": "Send", "placeholder": "Type a URL..." },
+            "labels": { "placeholder": "Type a URL...", "button": "Send" },
             "retryMessageContent": "This URL doesn't seem to be valid. Can you type it again?"
           }
         },
         {
           "id": "clauurs1o001k3b6qgrj0xf59",
-          "groupId": "clauur7od001f3b6qq140oe55",
+          "outgoingEdgeId": "clauushy3001p3b6qqnyrxgtb",
           "type": "choice input",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
           "items": [
-            {
-              "id": "clauurs1o001l3b6qu9hr712h",
-              "blockId": "clauurs1o001k3b6qgrj0xf59",
-              "type": 0,
-              "content": "Yes"
-            },
-            {
-              "id": "clauuru6t001m3b6qp8vkt23l",
-              "content": "No",
-              "blockId": "clauurs1o001k3b6qgrj0xf59",
-              "type": 0
-            }
+            { "id": "clauurs1o001l3b6qu9hr712h", "content": "Yes" },
+            { "id": "clauuru6t001m3b6qp8vkt23l", "content": "No" }
           ],
-          "outgoingEdgeId": "clauushy3001p3b6qqnyrxgtb"
+          "options": { "isMultipleChoice": false, "buttonLabel": "Send" }
         }
       ]
     },
     {
       "id": "clauusa9z001n3b6qys3xvz1l",
-      "graphCoordinates": { "x": 2558.609375, "y": 297.078125 },
       "title": "Get Chuck Norris joke",
+      "graphCoordinates": { "x": 2558.609375, "y": 297.078125 },
       "blocks": [
         {
           "id": "clauusaa0001o3b6qgddldaen",
-          "groupId": "clauusa9z001n3b6qys3xvz1l",
           "type": "text",
           "content": {
             "richText": [
@@ -308,7 +269,6 @@
         },
         {
           "id": "clauusrfh001q3b6q7xaapi4h",
-          "groupId": "clauusa9z001n3b6qys3xvz1l",
           "type": "text",
           "content": {
             "richText": [
@@ -321,33 +281,31 @@
         },
         {
           "id": "clauut2nq001r3b6qi437ixc7",
-          "groupId": "clauusa9z001n3b6qys3xvz1l",
+          "outgoingEdgeId": "clauuwjq2001x3b6qciu53855",
           "type": "Webhook",
           "options": {
+            "variablesForTest": [],
             "responseVariableMapping": [
               {
                 "id": "clauuvvdr001t3b6qqdxzc057",
-                "bodyPath": "data.value",
-                "variableId": "vclauuwchv001u3b6qepx6e0a9"
+                "variableId": "vclauuwchv001u3b6qepx6e0a9",
+                "bodyPath": "data.value"
               }
             ],
-            "variablesForTest": [],
             "isAdvancedConfig": true,
-            "isCustomBody": false
-          },
-          "webhookId": "chat-webhook-id",
-          "outgoingEdgeId": "clauuwjq2001x3b6qciu53855"
+            "isCustomBody": false,
+            "webhook": { "method": "POST" }
+          }
         }
       ]
     },
     {
       "id": "clauuwhyl001v3b6qarbpiqbv",
-      "graphCoordinates": { "x": 2900.9609375, "y": 288.29296875 },
       "title": "Display joke",
+      "graphCoordinates": { "x": 2900.9609375, "y": 288.29296875 },
       "blocks": [
         {
           "id": "clauuwhyl001w3b6q7ai0zeyt",
-          "groupId": "clauuwhyl001v3b6qarbpiqbv",
           "type": "text",
           "content": {
             "richText": [{ "type": "p", "children": [{ "text": "{{Joke}}" }] }]
@@ -356,137 +314,120 @@
       ]
     }
   ],
-  "variables": [
-    { "id": "vclauuklnc000b3b6q7xchq4yf", "name": "Name" },
-    { "id": "vclauulfjk000i3b6qmujooweu", "name": "Age" },
-    { "id": "vclauuohyp000w3b6qbqrs6c6w", "name": "Magic number" },
-    { "id": "vclauuwchv001u3b6qepx6e0a9", "name": "Joke" }
-  ],
   "edges": [
     {
       "id": "clauuk4o300083b6q7b2iowv3",
-      "to": { "groupId": "clauujxdc00063b6q42ca20gj" },
-      "from": {
-        "blockId": "clauujawn0001vs1a0mk8docp",
-        "groupId": "clauujawn0000vs1a8z6k2k7d"
-      }
+      "from": { "eventId": "clauujawn0000vs1a8z6k2k7d" },
+      "to": { "groupId": "clauujxdc00063b6q42ca20gj" }
     },
     {
       "id": "clauul0sk000f3b6q2tvy5wfi",
-      "to": { "groupId": "clauukoka000c3b6qe6chawis" },
-      "from": {
-        "blockId": "clauukip8000a3b6qtzl288tu",
-        "groupId": "clauujxdc00063b6q42ca20gj"
-      }
+      "from": { "blockId": "clauukip8000a3b6qtzl288tu" },
+      "to": { "groupId": "clauukoka000c3b6qe6chawis" }
     },
     {
       "id": "clauum41j000n3b6qpqu12icm",
-      "to": { "groupId": "clauulhqf000j3b6qm8y5oifc" },
-      "from": {
-        "blockId": "clauul90j000h3b6qjfrw9js4",
-        "groupId": "clauukoka000c3b6qe6chawis"
-      }
+      "from": { "blockId": "clauul90j000h3b6qjfrw9js4" },
+      "to": { "groupId": "clauulhqf000j3b6qm8y5oifc" }
     },
     {
       "id": "clauumi0x000q3b6q9bwkqnmr",
-      "to": { "groupId": "clauum8x7000o3b6qx8hqduf8" },
       "from": {
-        "itemId": "clauulhqg000l3b6qaxn4qli5",
         "blockId": "clauulhqf000k3b6qsrc1hd74",
-        "groupId": "clauulhqf000j3b6qm8y5oifc"
-      }
+        "itemId": "clauulhqg000l3b6qaxn4qli5"
+      },
+      "to": { "groupId": "clauum8x7000o3b6qx8hqduf8" }
     },
     {
       "id": "clauumm5v000t3b6qu62qcft8",
-      "to": { "groupId": "clauumjq4000r3b6q8l6bi9ra" },
-      "from": {
-        "blockId": "clauulhqf000k3b6qsrc1hd74",
-        "groupId": "clauulhqf000j3b6qm8y5oifc"
-      }
+      "from": { "blockId": "clauulhqf000k3b6qsrc1hd74" },
+      "to": { "groupId": "clauumjq4000r3b6q8l6bi9ra" }
     },
     {
       "id": "clauuol8t000x3b6qcw1few70",
-      "to": { "groupId": "clauuoekh000u3b6q6zmlx7f9" },
-      "from": {
-        "blockId": "clauumjq5000s3b6qqjhrklv4",
-        "groupId": "clauumjq4000r3b6q8l6bi9ra"
-      }
+      "from": { "blockId": "clauumjq5000s3b6qqjhrklv4" },
+      "to": { "groupId": "clauuoekh000u3b6q6zmlx7f9" }
     },
     {
       "id": "clauuom2y000y3b6qkcjy2ri7",
-      "to": { "groupId": "clauuoekh000u3b6q6zmlx7f9" },
-      "from": {
-        "blockId": "clauum8x7000p3b6qxjud5hdc",
-        "groupId": "clauum8x7000o3b6qx8hqduf8"
-      }
+      "from": { "blockId": "clauum8x7000p3b6qxjud5hdc" },
+      "to": { "groupId": "clauuoekh000u3b6q6zmlx7f9" }
     },
     {
-      "from": {
-        "groupId": "clauuoekh000u3b6q6zmlx7f9",
-        "blockId": "clauuontu000z3b6q3ydx6ao1"
-      },
-      "to": { "groupId": "clauuq2l6001c3b6qpmq3ivwk" },
-      "id": "clauuq8je001e3b6qksm4j11g"
+      "id": "clauuq8je001e3b6qksm4j11g",
+      "from": { "blockId": "clauuontu000z3b6q3ydx6ao1" },
+      "to": { "groupId": "clauuq2l6001c3b6qpmq3ivwk" }
     },
     {
-      "from": {
-        "groupId": "clauuq2l6001c3b6qpmq3ivwk",
-        "blockId": "clauuq2l6001d3b6qyltfcvgb"
-      },
-      "to": { "groupId": "clauur7od001f3b6qq140oe55" },
-      "id": "clauureo3001h3b6qk6epabxq"
+      "id": "clauureo3001h3b6qk6epabxq",
+      "from": { "blockId": "clauuq2l6001d3b6qyltfcvgb" },
+      "to": { "groupId": "clauur7od001f3b6qq140oe55" }
     },
     {
-      "from": {
-        "groupId": "clauur7od001f3b6qq140oe55",
-        "blockId": "clauurs1o001k3b6qgrj0xf59"
-      },
-      "to": { "groupId": "clauusa9z001n3b6qys3xvz1l" },
-      "id": "clauushy3001p3b6qqnyrxgtb"
+      "id": "clauushy3001p3b6qqnyrxgtb",
+      "from": { "blockId": "clauurs1o001k3b6qgrj0xf59" },
+      "to": { "groupId": "clauusa9z001n3b6qys3xvz1l" }
     },
     {
-      "from": {
-        "groupId": "clauusa9z001n3b6qys3xvz1l",
-        "blockId": "clauut2nq001r3b6qi437ixc7"
-      },
-      "to": { "groupId": "clauuwhyl001v3b6qarbpiqbv" },
-      "id": "clauuwjq2001x3b6qciu53855"
+      "id": "clauuwjq2001x3b6qciu53855",
+      "from": { "blockId": "clauut2nq001r3b6qi437ixc7" },
+      "to": { "groupId": "clauuwhyl001v3b6qarbpiqbv" }
     }
   ],
-  "theme": {
-    "chat": {
-      "inputs": {
-        "color": "#303235",
-        "backgroundColor": "#FFFFFF",
-        "placeholderColor": "#9095A0"
-      },
-      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
-      "hostAvatar": {
-        "url": "https://avatars.githubusercontent.com/u/16015833?v=4",
-        "isEnabled": true
-      },
-      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
-      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
+  "variables": [
+    {
+      "id": "vclauuklnc000b3b6q7xchq4yf",
+      "name": "Name",
+      "isSessionVariable": true
     },
-    "general": { "font": "Open Sans", "background": { "type": "None" } }
+    {
+      "id": "vclauulfjk000i3b6qmujooweu",
+      "name": "Age",
+      "isSessionVariable": true
+    },
+    { "id": "vclauuohyp000w3b6qbqrs6c6w", "name": "Magic number" },
+    { "id": "vclauuwchv001u3b6qepx6e0a9", "name": "Joke" }
+  ],
+  "theme": {
+    "general": { "font": "Open Sans", "background": { "type": "None" } },
+    "chat": {
+      "hostAvatar": {
+        "isEnabled": true,
+        "url": "https://avatars.githubusercontent.com/u/16015833?v=4"
+      },
+      "hostBubbles": { "backgroundColor": "#F7F8FF", "color": "#303235" },
+      "guestBubbles": { "backgroundColor": "#FF8E21", "color": "#FFFFFF" },
+      "buttons": { "backgroundColor": "#0042DA", "color": "#FFFFFF" },
+      "inputs": {
+        "backgroundColor": "#FFFFFF",
+        "color": "#303235",
+        "placeholderColor": "#9095A0"
+      }
+    }
   },
+  "selectedThemeTemplateId": null,
   "settings": {
     "general": {
       "isBrandingEnabled": false,
       "isInputPrefillEnabled": true,
-      "isResultSavingEnabled": true,
       "isHideQueryParamsEnabled": true,
       "isNewResultOnRefreshEnabled": false
     },
+    "typingEmulation": { "enabled": true, "speed": 300, "maxDelay": 1.5 },
     "metadata": {
       "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
-    },
-    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
+    }
   },
+  "createdAt": "2024-07-16T12:38:39.850Z",
+  "updatedAt": "2024-07-16T12:38:39.850Z",
+  "icon": "🤖",
+  "folderId": null,
   "publicId": null,
   "customDomain": null,
   "workspaceId": "proWorkspace",
   "resultsTablePreferences": null,
   "isArchived": false,
-  "isClosed": false
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
 }

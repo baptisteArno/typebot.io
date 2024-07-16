@@ -12886,40 +12886,6 @@
                               "data": {
                                 "type": "object",
                                 "properties": {
-                                  "apiKey": {
-                                    "type": "string"
-                                  }
-                                },
-                                "required": [
-                                  "apiKey"
-                                ]
-                              },
-                              "type": {
-                                "type": "string",
-                                "enum": [
-                                  "openai"
-                                ]
-                              },
-                              "workspaceId": {
-                                "type": "string"
-                              },
-                              "name": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "data",
-                              "type",
-                              "workspaceId",
-                              "name"
-                            ]
-                          },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "data": {
-                                "type": "object",
-                                "properties": {
                                   "systemUserAccessToken": {
                                     "type": "string"
                                   },
@@ -12961,15 +12927,297 @@
                                   "apiKey": {
                                     "type": "string"
                                   }
-                                },
-                                "required": [
-                                  "apiKey"
-                                ]
+                                }
                               },
                               "type": {
                                 "type": "string",
                                 "enum": [
-                                  "zemanticAi"
+                                  "openai"
+                                ]
+                              },
+                              "workspaceId": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "data",
+                              "type",
+                              "workspaceId",
+                              "name"
+                            ]
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "data": {
+                                "type": "object",
+                                "properties": {
+                                  "apiKey": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "zemantic-ai"
+                                ]
+                              },
+                              "workspaceId": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "data",
+                              "type",
+                              "workspaceId",
+                              "name"
+                            ]
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "data": {
+                                "type": "object",
+                                "properties": {
+                                  "apiKey": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "chat-node"
+                                ]
+                              },
+                              "workspaceId": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "data",
+                              "type",
+                              "workspaceId",
+                              "name"
+                            ]
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "data": {
+                                "type": "object",
+                                "properties": {
+                                  "apiEndpoint": {
+                                    "type": "string"
+                                  },
+                                  "apiKey": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "dify-ai"
+                                ]
+                              },
+                              "workspaceId": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "data",
+                              "type",
+                              "workspaceId",
+                              "name"
+                            ]
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "data": {
+                                "type": "object",
+                                "properties": {
+                                  "apiKey": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "mistral"
+                                ]
+                              },
+                              "workspaceId": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "data",
+                              "type",
+                              "workspaceId",
+                              "name"
+                            ]
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "data": {
+                                "type": "object",
+                                "properties": {
+                                  "apiKey": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "elevenlabs"
+                                ]
+                              },
+                              "workspaceId": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "data",
+                              "type",
+                              "workspaceId",
+                              "name"
+                            ]
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "data": {
+                                "type": "object",
+                                "properties": {
+                                  "apiKey": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "anthropic"
+                                ]
+                              },
+                              "workspaceId": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "data",
+                              "type",
+                              "workspaceId",
+                              "name"
+                            ]
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "data": {
+                                "type": "object",
+                                "properties": {
+                                  "apiKey": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "together-ai"
+                                ]
+                              },
+                              "workspaceId": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "data",
+                              "type",
+                              "workspaceId",
+                              "name"
+                            ]
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "data": {
+                                "type": "object",
+                                "properties": {
+                                  "apiKey": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "open-router"
+                                ]
+                              },
+                              "workspaceId": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "data",
+                              "type",
+                              "workspaceId",
+                              "name"
+                            ]
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "data": {
+                                "type": "object",
+                                "properties": {
+                                  "baseUrl": {
+                                    "type": "string"
+                                  },
+                                  "apiKey": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "nocodb"
                                 ]
                               },
                               "workspaceId": {
@@ -13091,62 +13339,24 @@
             "in": "query",
             "name": "type",
             "schema": {
-              "anyOf": [
-                {
-                  "anyOf": [
-                    {
-                      "anyOf": [
-                        {
-                          "anyOf": [
-                            {
-                              "anyOf": [
-                                {
-                                  "type": "string",
-                                  "enum": [
-                                    "stripe"
-                                  ]
-                                },
-                                {
-                                  "type": "string",
-                                  "enum": [
-                                    "smtp"
-                                  ]
-                                }
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
-                                "google sheets"
-                              ]
-                            }
-                          ]
-                        },
-                        {
-                          "type": "string",
-                          "enum": [
-                            "openai"
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "type": "string",
-                      "enum": [
-                        "whatsApp"
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "string",
-                  "enum": [
-                    "zemanticAi"
-                  ]
-                }
+              "type": "string",
+              "enum": [
+                "smtp",
+                "google sheets",
+                "stripe",
+                "whatsApp",
+                "openai",
+                "zemantic-ai",
+                "chat-node",
+                "dify-ai",
+                "mistral",
+                "elevenlabs",
+                "anthropic",
+                "together-ai",
+                "open-router",
+                "nocodb"
               ]
-            },
-            "required": true
+            }
           }
         ],
         "responses": {
@@ -13165,12 +13375,32 @@
                           "id": {
                             "type": "string"
                           },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "smtp",
+                              "google sheets",
+                              "stripe",
+                              "whatsApp",
+                              "openai",
+                              "zemantic-ai",
+                              "chat-node",
+                              "dify-ai",
+                              "mistral",
+                              "elevenlabs",
+                              "anthropic",
+                              "together-ai",
+                              "open-router",
+                              "nocodb"
+                            ]
+                          },
                           "name": {
                             "type": "string"
                           }
                         },
                         "required": [
                           "id",
+                          "type",
                           "name"
                         ]
                       }
@@ -13178,6 +13408,741 @@
                   },
                   "required": [
                     "credentials"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.BAD_REQUEST"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.NOT_FOUND"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.INTERNAL_SERVER_ERROR"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/credentials/{credentialsId}": {
+      "get": {
+        "operationId": "credentials-getCredentials",
+        "summary": "Get credentials data",
+        "tags": [
+          "Credentials"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "credentialsId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "workspaceId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "data": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.BAD_REQUEST"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.NOT_FOUND"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.INTERNAL_SERVER_ERROR"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "credentials-updateCredentials",
+        "summary": "Create credentials",
+        "tags": [
+          "Credentials"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "credentialsId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "credentials": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "live": {
+                                "type": "object",
+                                "properties": {
+                                  "secretKey": {
+                                    "type": "string"
+                                  },
+                                  "publicKey": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "secretKey",
+                                  "publicKey"
+                                ]
+                              },
+                              "test": {
+                                "type": "object",
+                                "properties": {
+                                  "secretKey": {
+                                    "type": "string"
+                                  },
+                                  "publicKey": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
+                            "required": [
+                              "live",
+                              "test"
+                            ]
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "stripe"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "data",
+                          "type",
+                          "workspaceId"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "host": {
+                                "type": "string"
+                              },
+                              "username": {
+                                "type": "string"
+                              },
+                              "password": {
+                                "type": "string"
+                              },
+                              "isTlsEnabled": {
+                                "type": "boolean"
+                              },
+                              "port": {
+                                "type": "number"
+                              },
+                              "from": {
+                                "type": "object",
+                                "properties": {
+                                  "email": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
+                            "required": [
+                              "port",
+                              "from"
+                            ]
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "smtp"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "data",
+                          "type",
+                          "workspaceId"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "refresh_token": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "expiry_date": {
+                                "type": "number",
+                                "nullable": true
+                              },
+                              "access_token": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "token_type": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "id_token": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "google sheets"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "data",
+                          "type",
+                          "workspaceId"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "systemUserAccessToken": {
+                                "type": "string"
+                              },
+                              "phoneNumberId": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "systemUserAccessToken",
+                              "phoneNumberId"
+                            ]
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "whatsApp"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "data",
+                          "type",
+                          "workspaceId"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "apiKey": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "openai"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "data",
+                          "type",
+                          "workspaceId"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "apiKey": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "zemantic-ai"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "data",
+                          "type",
+                          "workspaceId"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "apiKey": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "chat-node"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "data",
+                          "type",
+                          "workspaceId"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "apiEndpoint": {
+                                "type": "string"
+                              },
+                              "apiKey": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "dify-ai"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "data",
+                          "type",
+                          "workspaceId"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "apiKey": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "mistral"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "data",
+                          "type",
+                          "workspaceId"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "apiKey": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "elevenlabs"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "data",
+                          "type",
+                          "workspaceId"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "apiKey": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "anthropic"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "data",
+                          "type",
+                          "workspaceId"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "apiKey": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "together-ai"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "data",
+                          "type",
+                          "workspaceId"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "apiKey": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "open-router"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "data",
+                          "type",
+                          "workspaceId"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "baseUrl": {
+                                "type": "string"
+                              },
+                              "apiKey": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "nocodb"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "data",
+                          "type",
+                          "workspaceId"
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "credentials"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "credentialsId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "credentialsId"
                   ]
                 }
               }
