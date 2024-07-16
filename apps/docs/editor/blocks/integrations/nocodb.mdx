@@ -1,0 +1,35 @@
+---
+title: NocoDB
+---
+
+import { YoutubeVideo } from '/snippets/youtube-video.mdx'
+
+With the NocoDB block, you can create, update or get data from your NocoDB tables.
+
+<YoutubeVideo id="ViKETDQ8Sfg" />
+
+## How to find my `Table ID`?
+
+To find your `Table ID`, you need to go to your NocoDB dashboard and click on the 3 dots button next to your table name.
+
+<Frame>
+  <img
+    src="/images/blocks/integrations/nocodb-table-id.jpg"
+    alt="NocoDB table ID"
+  />
+</Frame>
+
+## Search Records
+
+This action allows you to search for existing records in a table. It requires your `Table ID` and can optionally take a `View ID` to search in a specific view.
+
+<Frame>
+  <img
+    src="/images/blocks/integrations/nocodb.jpg"
+    alt="NocoDB block example"
+  />
+</Frame>
+
+You can configure the filter to return `All`, `First`, `Last` or `Random` found records.
+
+Then all you need to do is to map the found fields to variables that you can re-use on your bot.

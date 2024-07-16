@@ -8,7 +8,7 @@ import {
 } from '@typebot.io/lib/api'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import { sendWorkspaceMemberInvitationEmail } from '@typebot.io/emails'
-import { getSeatsLimit } from '@typebot.io/billing/getSeatsLimit'
+import { getSeatsLimit } from '@typebot.io/billing/helpers/getSeatsLimit'
 import { env } from '@typebot.io/env'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

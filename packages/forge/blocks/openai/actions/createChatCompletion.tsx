@@ -1,20 +1,19 @@
 import { createAction } from '@typebot.io/forge'
-import OpenAI, { ClientOptions } from 'openai'
 import { defaultOpenAIOptions } from '../constants'
 import { auth } from '../auth'
 import { baseOptions } from '../baseOptions'
 import { parseChatCompletionOptions } from '../shared/parseChatCompletionOptions'
 import { getChatCompletionSetVarIds } from '../shared/getChatCompletionSetVarIds'
-import { runChatCompletion } from '../shared/runChatCompletion'
-import { runChatCompletionStream } from '../shared/runChatCompletionStream'
+import { runOpenAIChatCompletion } from '../shared/runOpenAIChatCompletion'
+import { runOpenAIChatCompletionStream } from '../shared/runOpenAIChatCompletionStream'
 import { getChatCompletionStreamVarId } from '../shared/getChatCompletionStreamVarId'
+import { fetchGPTModels } from '../helpers/fetchModels'
 
 export const createChatCompletion = createAction({
   name: 'Create chat completion',
   auth,
   baseOptions,
   options: parseChatCompletionOptions({
-    defaultModel: defaultOpenAIOptions.model,
     defaultTemperature: defaultOpenAIOptions.temperature,
     modelFetchId: 'fetchModels',
   }),
@@ -31,6 +30,7 @@ export const createChatCompletion = createAction({
       blockId: 'anthropic',
       transform: (options) => ({
         ...options,
+        model: undefined,
         action: 'Create Chat Message',
         responseMapping: options.responseMapping?.map((res: any) =>
           res.item === 'Message content'
@@ -44,52 +44,34 @@ export const createChatCompletion = createAction({
     {
       id: 'fetchModels',
       dependencies: ['baseUrl', 'apiVersion'],
-      fetch: async ({ credentials, options }) => {
-        const baseUrl = options?.baseUrl ?? defaultOpenAIOptions.baseUrl
-        const config = {
-          apiKey: credentials.apiKey,
-          baseURL: baseUrl ?? defaultOpenAIOptions.baseUrl,
-          defaultHeaders: {
-            'api-key': credentials.apiKey,
-          },
-          defaultQuery: options?.apiVersion
-            ? {
-                'api-version': options.apiVersion,
-              }
-            : undefined,
-        } satisfies ClientOptions
-
-        const openai = new OpenAI(config)
-
-        const models = await openai.models.list()
-
-        return (
-          models.data
-            .filter((model) => model.id.includes('gpt'))
-            .sort((a, b) => b.created - a.created)
-            .map((model) => model.id) ?? []
-        )
-      },
+      fetch: ({ credentials, options }) =>
+        fetchGPTModels({
+          apiKey: credentials?.apiKey,
+          baseUrl: options.baseUrl,
+          apiVersion: options.apiVersion,
+        }),
     },
   ],
   run: {
     server: (params) =>
-      runChatCompletion({
+      runOpenAIChatCompletion({
         ...params,
         config: {
           baseUrl: defaultOpenAIOptions.baseUrl,
           defaultModel: defaultOpenAIOptions.model,
         },
+        compatibility: 'strict',
       }),
     stream: {
       getStreamVariableId: getChatCompletionStreamVarId,
-      run: (params) =>
-        runChatCompletionStream({
+      run: async (params) =>
+        runOpenAIChatCompletionStream({
           ...params,
           config: {
             baseUrl: defaultOpenAIOptions.baseUrl,
             defaultModel: defaultOpenAIOptions.model,
           },
+          compatibility: 'strict',
         }),
     },
   },

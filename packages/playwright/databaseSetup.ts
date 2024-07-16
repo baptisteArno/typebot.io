@@ -5,6 +5,8 @@ import {
   WorkspaceRole,
 } from '@typebot.io/prisma'
 import { encrypt } from '@typebot.io/lib/api/encryption/encrypt'
+import { env } from '@typebot.io/env'
+import { StripeCredentials } from '@typebot.io/schemas'
 
 const prisma = new PrismaClient()
 
@@ -134,6 +136,16 @@ const setupCredentials = async () => {
     refresh_token:
       '1//039xWRt8YaYa3CgYIARAAGAMSNwF-L9Iru9FyuTrDSa7lkSceggPho83kJt2J29G69iEhT1C6XV1vmo6bQS9puL_R2t8FIwR3gek',
   })
+  const { encryptedData: stripeEncryptedData, iv: stripeIv } = await encrypt({
+    test: {
+      publicKey: env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY,
+      secretKey: env.STRIPE_SECRET_KEY,
+    },
+    live: {
+      publicKey: env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY ?? '',
+      secretKey: env.STRIPE_SECRET_KEY ?? '',
+    },
+  } satisfies StripeCredentials['data'])
   return prisma.credentials.createMany({
     data: [
       {
@@ -142,6 +154,14 @@ const setupCredentials = async () => {
         data: encryptedData,
         workspaceId: proWorkspaceId,
         iv,
+      },
+      {
+        id: 'stripe',
+        name: 'Test',
+        type: 'stripe',
+        data: stripeEncryptedData,
+        workspaceId: proWorkspaceId,
+        iv: stripeIv,
       },
     ],
   })

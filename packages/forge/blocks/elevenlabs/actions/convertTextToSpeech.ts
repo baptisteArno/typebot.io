@@ -24,7 +24,6 @@ export const convertTextToSpeech = createAction({
       fetcher: 'fetchModels',
       label: 'Model',
       placeholder: 'Select a model',
-      defaultValue: 'eleven_monolingual_v1',
     }),
     saveUrlInVariableId: option.string.layout({
       label: 'Save audio URL in variable',
@@ -38,6 +37,8 @@ export const convertTextToSpeech = createAction({
     {
       id: 'fetchVoices',
       fetch: async ({ credentials }) => {
+        if (!credentials?.apiKey) return []
+
         const response = await got
           .get(baseUrl + '/v1/voices', {
             headers: {
@@ -56,6 +57,8 @@ export const convertTextToSpeech = createAction({
     {
       id: 'fetchModels',
       fetch: async ({ credentials }) => {
+        if (!credentials?.apiKey) return []
+
         const response = await got
           .get(baseUrl + '/v1/models', {
             headers: {

@@ -6,12 +6,14 @@ import { ZodObjectLayout } from './zodLayouts/ZodObjectLayout'
 import { ZodActionDiscriminatedUnion } from './zodLayouts/ZodActionDiscriminatedUnion'
 import { useForgedBlock } from '../hooks/useForgedBlock'
 import { ForgedBlock } from '@typebot.io/forge-repository/types'
+import { useState } from 'react'
 
 type Props = {
   block: ForgedBlock
   onOptionsChange: (options: BlockOptions) => void
 }
 export const ForgedBlockSettings = ({ block, onOptionsChange }: Props) => {
+  const [keySuffix, setKeySuffix] = useState<number>(0)
   const { blockDef, blockSchema, actionDef } = useForgedBlock(
     block.type,
     block.options?.action
@@ -32,7 +34,10 @@ export const ForgedBlockSettings = ({ block, onOptionsChange }: Props) => {
     const actionOptions = actionOptionsKeys.reduce(
       (acc, key) => ({
         ...acc,
-        [key]: undefined,
+        [key]:
+          block.options[key] && typeof block.options[key] !== 'object'
+            ? block.options[key]
+            : undefined,
       }),
       {}
     )
@@ -40,6 +45,7 @@ export const ForgedBlockSettings = ({ block, onOptionsChange }: Props) => {
       ...updates,
       ...actionOptions,
     })
+    setKeySuffix((prev) => prev + 1)
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -85,6 +91,7 @@ export const ForgedBlockSettings = ({ block, onOptionsChange }: Props) => {
             />
           )}
           <ZodActionDiscriminatedUnion
+            key={block.id + keySuffix}
             schema={blockSchema.shape.options}
             blockDef={blockDef}
             blockOptions={block.options}

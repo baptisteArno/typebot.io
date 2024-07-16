@@ -13,10 +13,14 @@ import { useRef, useState } from 'react'
 import { useGroupsStore } from '../hooks/useGroupsStore'
 import { toast } from 'sonner'
 import { createId } from '@paralleldrive/cuid2'
-import { Edge, GroupV6 } from '@typebot.io/schemas'
+import { Edge, GroupV6, Variable } from '@typebot.io/schemas'
 import { Coordinates } from '../types'
 import { useShallow } from 'zustand/react/shallow'
 import { projectMouse } from '../helpers/projectMouse'
+import {
+  extractVariableIdReferencesInObject,
+  extractVariableIdsFromObject,
+} from '@typebot.io/variables/extractVariablesFromObject'
 
 type Props = {
   graphPosition: Coordinates & { scale: number }
@@ -62,10 +66,19 @@ export const GroupSelectionMenu = ({
     const edges = typebot.edges.filter((edge) =>
       groups.find((g) => g.id === edge.to.groupId)
     )
-    copyGroups(groups, edges)
+    const variables = extractVariablesFromCopiedGroups(
+      groups,
+      typebot.variables
+    )
+    copyGroups({
+      groups,
+      edges,
+      variables,
+    })
     return {
       groups,
       edges,
+      variables,
     }
   }
 
@@ -77,6 +90,7 @@ export const GroupSelectionMenu = ({
   const handlePaste = (overrideClipBoard?: {
     groups: GroupV6[]
     edges: Edge[]
+    variables: Omit<Variable, 'value'>[]
   }) => {
     if (!groupsInClipboard || isReadOnly || !mousePosition) return
     const clipboard = overrideClipBoard ?? groupsInClipboard
@@ -87,7 +101,12 @@ export const GroupSelectionMenu = ({
     groups.forEach((group) => {
       updateGroupCoordinates(group.id, group.graphCoordinates)
     })
-    pasteGroups(groups, clipboard.edges, oldToNewIdsMapping)
+    pasteGroups(
+      groups,
+      clipboard.edges,
+      clipboard.variables,
+      oldToNewIdsMapping
+    )
     setFocusedGroups(groups.map((g) => g.id))
   }
 
@@ -193,4 +212,34 @@ const parseGroupsToPaste = (
     groups: newGroups,
     oldToNewIdsMapping,
   }
+}
+
+export const extractVariablesFromCopiedGroups = (
+  groups: GroupV6[],
+  existingVariables: Variable[]
+): Omit<Variable, 'value'>[] => {
+  const groupsStr = JSON.stringify(groups)
+  if (!groupsStr) return []
+  const calledVariablesId = extractVariableIdReferencesInObject(
+    groups,
+    existingVariables
+  )
+  const variableIdsInOptions = extractVariableIdsFromObject(groups)
+
+  return [...variableIdsInOptions, ...calledVariablesId].reduce<
+    Omit<Variable, 'value'>[]
+  >((acc, id) => {
+    if (!id) return acc
+    if (acc.find((v) => v.id === id)) return acc
+    const variable = existingVariables.find((v) => v.id === id)
+    if (!variable) return acc
+    return [
+      ...acc,
+      {
+        id: variable.id,
+        name: variable.name,
+        isSessionVariable: variable.isSessionVariable,
+      },
+    ]
+  }, [])
 }

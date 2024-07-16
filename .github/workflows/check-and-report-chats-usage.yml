@@ -29,6 +29,6 @@ jobs:
       STRIPE_PRO_CHATS_PRICE_ID: '${{ secrets.STRIPE_PRO_CHATS_PRICE_ID }}'
     steps:
       - uses: actions/checkout@v2
-      - uses: pnpm/action-setup@v2.2.2
+      - uses: pnpm/action-setup@v4
       - run: pnpm i --frozen-lockfile
       - run: pnpm turbo run checkAndReportChatsUsage

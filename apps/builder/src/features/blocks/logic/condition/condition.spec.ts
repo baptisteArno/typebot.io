@@ -20,7 +20,7 @@ test.describe('Condition block', () => {
       'input[placeholder="Search for a variable"] >> nth=-1',
       'Age'
     )
-    await page.click('button:has-text("Age")')
+    await page.getByRole('menuitem', { name: 'Age' }).click()
     await page.click('button:has-text("Select an operator")')
     await page.click('button:has-text("Greater than")', { force: true })
     await page.fill('input[placeholder="Type a number..."]', '80')
@@ -31,7 +31,7 @@ test.describe('Condition block', () => {
       ':nth-match(input[placeholder="Search for a variable"], 2)',
       'Age'
     )
-    await page.click('button:has-text("Age")')
+    await page.getByRole('menuitem', { name: 'Age' }).click()
     await page.click('button:has-text("Select an operator")')
     await page.click('button:has-text("Less than")', { force: true })
     await page.fill(
@@ -44,7 +44,7 @@ test.describe('Condition block', () => {
       'input[placeholder="Search for a variable"] >> nth=-1',
       'Age'
     )
-    await page.click('button:has-text("Age")')
+    await page.getByRole('menuitem', { name: 'Age' }).click()
     await page.click('button:has-text("Select an operator")')
     await page.click('button:has-text("Greater than")', { force: true })
     await page.fill('input[placeholder="Type a number..."]', '20')

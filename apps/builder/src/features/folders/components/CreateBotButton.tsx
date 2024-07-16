@@ -8,9 +8,8 @@ import { useTypebotDnd } from '../TypebotDndProvider'
 
 export const CreateBotButton = ({
   folderId,
-  isFirstBot,
   ...props
-}: { folderId?: string; isFirstBot: boolean } & ButtonProps) => {
+}: { folderId?: string } & ButtonProps) => {
   const { t } = useTranslate()
   const router = useRouter()
   const { draggedTypebot } = useTypebotDnd()
@@ -18,7 +17,6 @@ export const CreateBotButton = ({
   const handleClick = () =>
     router.push(
       `/typebots/create?${stringify({
-        isFirstBot: !isFirstBot ? undefined : isFirstBot,
         folderId,
       })}`
     )

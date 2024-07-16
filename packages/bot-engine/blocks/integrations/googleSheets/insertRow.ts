@@ -3,7 +3,7 @@ import {
   GoogleSheetsInsertRowOptions,
   ChatLog,
 } from '@typebot.io/schemas'
-import { parseCellValues } from './helpers/parseCellValues'
+import { parseNewRowObject } from './helpers/parseNewRowObject'
 import { getAuthenticatedGoogleDoc } from './helpers/getAuthenticatedGoogleDoc'
 import { ExecuteIntegrationResponse } from '../../../types'
 
@@ -24,7 +24,7 @@ export const insertRow = async (
     spreadsheetId: options.spreadsheetId,
   })
 
-  const parsedValues = parseCellValues(variables)(options.cellsToInsert)
+  const parsedValues = parseNewRowObject(variables)(options.cellsToInsert)
 
   try {
     await doc.loadInfo()

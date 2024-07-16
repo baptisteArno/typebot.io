@@ -4,6 +4,7 @@ import { isDefined } from '@typebot.io/lib'
 
 export interface Actions<T extends { updatedAt: Date }> {
   set: (newPresent: T | ((current: T) => T) | undefined) => void
+  setUpdateDate: (updateDate: Date) => void
   undo: () => void
   redo: () => void
   flush: () => void
@@ -107,6 +108,20 @@ export const useUndo = <T extends { updatedAt: Date }>(
     [history, params?.isReadOnly]
   )
 
+  const setUpdateDate = useCallback(
+    (updatedAt: Date) => {
+      set((current) =>
+        current
+          ? {
+              ...current,
+              updatedAt,
+            }
+          : current
+      )
+    },
+    [set]
+  )
+
   const flush = useCallback(() => {
     if (params?.isReadOnly) return
     setHistory({
@@ -116,5 +131,8 @@ export const useUndo = <T extends { updatedAt: Date }>(
     })
   }, [params?.isReadOnly])
 
-  return [history.present, { set, undo, redo, flush, canUndo, canRedo }]
+  return [
+    history.present,
+    { set, undo, redo, flush, setUpdateDate, canUndo, canRedo },
+  ]
 }

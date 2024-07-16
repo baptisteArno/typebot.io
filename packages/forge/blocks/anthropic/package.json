@@ -5,16 +5,20 @@
   "main": "index.ts",
   "keywords": [],
   "author": "Enchatted P.C.",
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
+    "@types/node": "20.4.2",
     "@types/react": "18.2.15",
-    "typescript": "5.3.2"
+    "typescript": "5.4.5"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "0.18.0",
-    "ai": "3.0.12"
+    "@ai-sdk/anthropic": "0.0.30",
+    "@typebot.io/openai-block": "workspace:*",
+    "ai": "3.2.22",
+    "@typebot.io/ai": "workspace:*",
+    "ky": "1.2.4"
   }
 }

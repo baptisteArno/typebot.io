@@ -1,0 +1,94 @@
+{
+  "version": "6",
+  "id": "clxvjgawa0003lu4yp38homts",
+  "name": "Lead Generation",
+  "events": [
+    {
+      "id": "k6kY6gwRE6noPoYQNGzgUq",
+      "outgoingEdgeId": "oNvqaqNExdSH2kKEhKZHuE",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "kinRXxYop2X4d7F9qt8WNB",
+      "title": "Welcome",
+      "graphCoordinates": { "x": 1, "y": 148 },
+      "blocks": [
+        {
+          "id": "sc1y8VwDabNJgiVTBi4qtif",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "Welcome to " },
+                  { "bold": true, "text": "AA" },
+                  { "text": " (Awesome Agency)" }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "xccq75m3fe7l6ads4wcvian0",
+          "type": "payment input",
+          "options": {
+            "credentialsId": "stripe",
+            "amount": "10"
+          }
+        },
+        {
+          "id": "wo8xv8kqc8dpwadvoepv3bua",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Thank you!" }] }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "oNvqaqNExdSH2kKEhKZHuE",
+      "from": { "eventId": "k6kY6gwRE6noPoYQNGzgUq" },
+      "to": { "groupId": "kinRXxYop2X4d7F9qt8WNB" }
+    }
+  ],
+  "variables": [
+    {
+      "id": "vml1jtton0xpmnk2vkwog488g",
+      "name": "Attachments",
+      "isSessionVariable": true
+    },
+    {
+      "id": "giiLFGw5xXBCHzvp1qAbdX",
+      "name": "Name",
+      "isSessionVariable": true
+    },
+    {
+      "id": "v3VFChNVSCXQ2rXv4DrJ8Ah",
+      "name": "Email",
+      "isSessionVariable": true
+    }
+  ],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2024-06-26T07:53:07.882Z",
+  "updatedAt": "2024-06-26T08:12:50.867Z",
+  "icon": "🤝",
+  "folderId": null,
+  "publicId": "lead-generation-38homts",
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

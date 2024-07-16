@@ -7,7 +7,7 @@ import { defaultImageBubbleContent } from '@typebot.io/schemas/features/blocks/b
 
 type Props = {
   content: ImageBubbleBlock['content']
-  onTransitionEnd?: (offsetTop?: number) => void
+  onTransitionEnd?: (ref?: HTMLDivElement) => void
 }
 
 export const showAnimationDuration = 400
@@ -27,7 +27,7 @@ export const ImageBubble = (props: Props) => {
     if (!isTyping()) return
     setIsTyping(false)
     setTimeout(() => {
-      props.onTransitionEnd?.(ref?.offsetTop)
+      props.onTransitionEnd?.(ref)
     }, showAnimationDuration)
   }
 
@@ -53,7 +53,8 @@ export const ImageBubble = (props: Props) => {
       }
       class={clsx(
         isTyping() ? 'opacity-0' : 'opacity-100',
-        props.onTransitionEnd ? 'text-fade-in' : undefined
+        props.onTransitionEnd ? 'text-fade-in' : undefined,
+        props.content?.url?.endsWith('.svg') ? 'w-full' : undefined
       )}
       style={{
         'max-height': '512px',

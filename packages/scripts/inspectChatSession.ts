@@ -22,6 +22,9 @@ const inspectChatSession = async () => {
     where: {
       id,
     },
+    select: {
+      state: true,
+    },
   })
 
   if (!chatSession) {
@@ -29,7 +32,15 @@ const inspectChatSession = async () => {
     return
   }
 
-  console.log(JSON.stringify(chatSession, null, 2))
+  const result = await prisma.result.findFirst({
+    where: {
+      id: (chatSession.state as any).typebotsQueue[0].resultId,
+    },
+  })
+
+  console.log({
+    result,
+  })
 }
 
 inspectChatSession()

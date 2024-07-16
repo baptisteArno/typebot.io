@@ -1,13 +1,19 @@
 import { createWithEqualityFn } from 'zustand/traditional'
 import { Coordinates, CoordinatesMap } from '../types'
-import { Edge, Group, GroupV6 } from '@typebot.io/schemas'
+import { Edge, Group, GroupV6, Variable } from '@typebot.io/schemas'
 import { subscribeWithSelector } from 'zustand/middleware'
 import { share } from 'shared-zustand'
 
 type Store = {
   focusedGroups: string[]
   groupsCoordinates: CoordinatesMap | undefined
-  groupsInClipboard: { groups: GroupV6[]; edges: Edge[] } | undefined
+  groupsInClipboard:
+    | {
+        groups: GroupV6[]
+        edges: Edge[]
+        variables: Omit<Variable, 'value'>[]
+      }
+    | undefined
   isDraggingGraph: boolean
   // TO-DO: remove once Typebot provider is migrated to a Zustand store. We will be able to get it internally in the store (if mutualized).
   getGroupsCoordinates: () => CoordinatesMap | undefined
@@ -17,7 +23,11 @@ type Store = {
   setFocusedGroups: (groupIds: string[]) => void
   setGroupsCoordinates: (groups: Group[] | undefined) => void
   updateGroupCoordinates: (groupId: string, newCoord: Coordinates) => void
-  copyGroups: (groups: GroupV6[], edges: Edge[]) => void
+  copyGroups: (args: {
+    groups: GroupV6[]
+    edges: Edge[]
+    variables: Omit<Variable, 'value'>[]
+  }) => void
   setIsDraggingGraph: (isDragging: boolean) => void
 }
 
@@ -83,12 +93,9 @@ export const useGroupsStore = createWithEqualityFn<Store>()(
         },
       }))
     },
-    copyGroups: (groups, edges) =>
+    copyGroups: (groupsInClipboard) =>
       set({
-        groupsInClipboard: {
-          groups,
-          edges,
-        },
+        groupsInClipboard,
       }),
     setIsDraggingGraph: (isDragging) => set({ isDraggingGraph: isDragging }),
   }))

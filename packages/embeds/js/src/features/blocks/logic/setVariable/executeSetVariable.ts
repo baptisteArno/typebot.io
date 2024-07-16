@@ -1,5 +1,6 @@
-import type { ScriptToExecute } from '@typebot.io/schemas'
+import type { ChatLog, ScriptToExecute } from '@typebot.io/schemas'
 import { safeStringify } from '@typebot.io/lib/safeStringify'
+import { stringifyError } from '@typebot.io/lib/stringifyError'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
@@ -7,7 +8,11 @@ const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
 export const executeSetVariable = async ({
   content,
   args,
-}: ScriptToExecute): Promise<{ replyToSend: string | undefined }> => {
+  isCode,
+}: ScriptToExecute): Promise<{
+  replyToSend: string | undefined
+  logs?: ChatLog[]
+}> => {
   try {
     // To avoid octal number evaluation
     if (!isNaN(content as unknown as number) && /0[^.].+/.test(content))
@@ -26,6 +31,15 @@ export const executeSetVariable = async ({
     console.error(err)
     return {
       replyToSend: safeStringify(content) ?? undefined,
+      logs: isCode
+        ? [
+            {
+              status: 'error',
+              description: 'Failed to execute Set Variable code',
+              details: stringifyError(err),
+            },
+          ]
+        : undefined,
     }
   }
 }

@@ -34,17 +34,6 @@ export const destroyUser = async (userEmail?: string) => {
 
   console.log(`Found ${workspaces.length} workspaces`)
 
-  if (workspaces.some((w) => w.plan !== Plan.FREE)) {
-    console.log(
-      `Some workspaces have a plan other than FREE. Something is wrong. Logging and exiting...`
-    )
-    writeFileSync(
-      'logs/workspaces-issue.json',
-      JSON.stringify(workspaces, null, 2)
-    )
-    return
-  }
-
   if (
     workspaces.some((w) =>
       w.members.some((m) => m.user.email && m.user.email !== email)
@@ -60,7 +49,10 @@ export const destroyUser = async (userEmail?: string) => {
     return
   }
 
-  console.log('All workspaces have a FREE plan')
+  console.log(
+    'Workspaces plans:',
+    workspaces.map((w) => w.plan)
+  )
 
   const proceed = await confirm({ message: 'Proceed?' })
   if (!proceed || typeof proceed !== 'boolean') {

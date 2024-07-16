@@ -15,25 +15,23 @@ const defaultItem = {
   id: createId(),
 }
 
-type ItemWithId<T> = T & { id: string }
-
 export type TableListItemProps<T> = {
   item: T
   onItemChange: (item: T) => void
 }
 
-type Props<T> = {
-  initialItems?: ItemWithId<T>[]
+type Props<T extends object> = {
+  initialItems?: T[]
   isOrdered?: boolean
   addLabel?: string
   newItemDefaultProps?: Partial<T>
   hasDefaultItem?: boolean
   ComponentBetweenItems?: (props: unknown) => JSX.Element
-  onItemsChange: (items: ItemWithId<T>[]) => void
+  onItemsChange: (items: T[]) => void
   children: (props: TableListItemProps<T>) => JSX.Element
 }
 
-export const TableList = <T,>({
+export const TableList = <T extends object>({
   initialItems,
   isOrdered,
   addLabel = 'Add',
@@ -44,7 +42,8 @@ export const TableList = <T,>({
   onItemsChange,
 }: Props<T>) => {
   const [items, setItems] = useState(
-    initialItems ?? (hasDefaultItem ? ([defaultItem] as ItemWithId<T>[]) : [])
+    addIdsIfMissing(initialItems) ??
+      (hasDefaultItem ? ([defaultItem] as T[]) : [])
   )
   const [showDeleteIndex, setShowDeleteIndex] = useState<number | null>(null)
 
@@ -55,14 +54,14 @@ export const TableList = <T,>({
 
   const createItem = () => {
     const id = createId()
-    const newItem = { id, ...newItemDefaultProps } as ItemWithId<T>
+    const newItem = { id, ...newItemDefaultProps } as T
     setItems([...items, newItem])
     onItemsChange([...items, newItem])
   }
 
   const insertItem = (itemIndex: number) => () => {
     const id = createId()
-    const newItem = { id } as ItemWithId<T>
+    const newItem = { id } as T
     const newItems = [...items]
     newItems.splice(itemIndex + 1, 0, newItem)
     setItems(newItems)
@@ -95,7 +94,7 @@ export const TableList = <T,>({
   return (
     <Stack spacing={0}>
       {items.map((item, itemIndex) => (
-        <Box key={item.id}>
+        <Box key={'id' in item ? (item.id as string) : itemIndex}>
           {itemIndex !== 0 && ComponentBetweenItems && (
             <ComponentBetweenItems />
           )}
@@ -183,3 +182,9 @@ export const TableList = <T,>({
     </Stack>
   )
 }
+
+const addIdsIfMissing = <T,>(items?: T[]): T[] | undefined =>
+  items?.map((item) => ({
+    id: createId(),
+    ...item,
+  }))

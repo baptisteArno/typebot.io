@@ -30,8 +30,6 @@ export type FunctionToExecute = {
   content: string
 }
 
-export type ReadOnlyVariableStore = Omit<VariableStore, 'set'>
-
 export type TurnableIntoParam<T = {}> = {
   blockId: string
   /**
@@ -65,11 +63,20 @@ export type ActionDefinition<
       run: (params: {
         credentials: CredentialsFromAuthDef<A>
         options: z.infer<BaseOptions> & z.infer<Options>
-        variables: ReadOnlyVariableStore
-      }) => Promise<ReadableStream<any> | undefined>
+        variables: VariableStore
+      }) => Promise<{
+        stream?: ReadableStream<any>
+        httpError?: { status: number; message: string }
+      }>
     }
     web?: {
       displayEmbedBubble?: {
+        /**
+         * Used to determine the URL to be displayed as a text bubble in runtimes where the code can't be executed. (i.e. WhatsApp)
+         */
+        parseUrl: (params: {
+          options: z.infer<BaseOptions> & z.infer<Options>
+        }) => string | undefined
         waitForEvent?: {
           getSaveVariableId?: (
             options: z.infer<BaseOptions> & z.infer<Options>
@@ -81,7 +88,6 @@ export type ActionDefinition<
         parseInitFunction: (params: {
           options: z.infer<BaseOptions> & z.infer<Options>
         }) => FunctionToExecute
-        maxBubbleWidth?: number
       }
       parseFunction?: (params: {
         options: z.infer<BaseOptions> & z.infer<Options>
@@ -97,7 +103,7 @@ export type FetcherDefinition<A extends AuthDefinition, T = {}> = {
    */
   dependencies: (keyof T)[]
   fetch: (params: {
-    credentials: CredentialsFromAuthDef<A>
+    credentials: CredentialsFromAuthDef<A> | undefined
     options: T
   }) => Promise<(string | { label: string; value: string })[]>
 }
@@ -130,6 +136,10 @@ export type BlockDefinition<
   LightLogo: (props: SVGProps<SVGSVGElement>) => JSX.Element
   DarkLogo?: (props: SVGProps<SVGSVGElement>) => JSX.Element
   docsUrl?: string
+  onboarding?: {
+    deployedAt: Date
+    youtubeId: string
+  }
   auth?: Auth
   options?: Options | undefined
   fetchers?: FetcherDefinition<Auth, Options>[]

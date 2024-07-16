@@ -13,3 +13,5 @@ writeFileSync(
   './openapi/builder.json',
   JSON.stringify(openApiDocument, null, 2)
 )
+
+process.exit()

@@ -19,6 +19,7 @@ import {
   ForgedBlock,
 } from '@typebot.io/forge-repository/types'
 import { getZodInnerSchema } from '../../helpers/getZodInnerSchema'
+import { evaluateIsHidden } from '@typebot.io/forge/zod/helpers/evaluateIsHidden'
 
 export const ZodObjectLayout = ({
   schema,
@@ -37,20 +38,23 @@ export const ZodObjectLayout = ({
   blockOptions?: ForgedBlock['options']
   onDataChange: (value: any) => void
 }): ReactNode[] => {
-  const layout = getZodInnerSchema(schema)._def.layout
-  if (layout?.isHidden) return []
-  return Object.keys(schema.shape).reduce<{
+  const innerSchema = getZodInnerSchema(schema)
+  const shape =
+    'shape' in innerSchema ? innerSchema.shape : innerSchema._def.shape()
+  const layout = innerSchema._def.layout
+  if (evaluateIsHidden(layout?.isHidden, blockOptions)) return []
+  return Object.keys(shape).reduce<{
     nodes: ReactNode[]
     accordionsCreated: string[]
   }>(
     (nodes, key, index) => {
       if (ignoreKeys?.includes(key)) return nodes
-      const keySchema = getZodInnerSchema(schema.shape[key])
+      const keySchema = getZodInnerSchema(shape[key])
       const layout = keySchema._def.layout as
         | ZodLayoutMetadata<ZodTypeAny>
         | undefined
 
-      if (layout?.isHidden) return nodes
+      if (evaluateIsHidden(layout?.isHidden, blockOptions)) return nodes
       if (
         layout &&
         layout.accordion &&
@@ -60,7 +64,7 @@ export const ZodObjectLayout = ({
         if (nodes.accordionsCreated.includes(layout.accordion)) return nodes
         const accordionKeys = getObjectKeysWithSameAccordionAttr(
           layout.accordion,
-          schema
+          shape
         )
         return {
           nodes: [
@@ -77,7 +81,7 @@ export const ZodObjectLayout = ({
                   {accordionKeys.map((accordionKey, idx) => (
                     <ZodFieldLayout
                       key={accordionKey + idx}
-                      schema={schema.shape[accordionKey]}
+                      schema={shape[accordionKey]}
                       data={data?.[accordionKey]}
                       onDataChange={(val) =>
                         onDataChange({ ...data, [accordionKey]: val })
@@ -118,12 +122,9 @@ export const ZodObjectLayout = ({
   ).nodes
 }
 
-const getObjectKeysWithSameAccordionAttr = (
-  accordion: string,
-  schema: z.ZodObject<any>
-) =>
-  Object.keys(schema.shape).reduce<string[]>((keys, currentKey) => {
-    const l = schema.shape[currentKey]._def.layout as
+const getObjectKeysWithSameAccordionAttr = (accordion: string, shape: any) =>
+  Object.keys(shape).reduce<string[]>((keys, currentKey) => {
+    const l = shape[currentKey]._def.layout as
       | ZodLayoutMetadata<ZodTypeAny>
       | undefined
     return !l?.accordion || l.accordion !== accordion

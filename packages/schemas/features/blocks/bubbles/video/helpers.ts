@@ -7,6 +7,7 @@ import {
   tiktokRegex,
   gumletRegex,
   oneDriveRegex,
+  youtubeEmbedParamsMap,
 } from './constants'
 import { VideoBubbleBlock } from './schema'
 
@@ -16,6 +17,7 @@ export const parseVideoUrl = (
   type: VideoBubbleContentType
   url: string
   id?: string
+  queryParamsStr?: string
   videoSizeSuggestion?: Pick<
     NonNullable<VideoBubbleBlock['content']>,
     'aspectRatio' | 'maxWidth'
@@ -24,12 +26,22 @@ export const parseVideoUrl = (
   if (youtubeRegex.test(url)) {
     const match = url.match(youtubeRegex)
     const id = match?.at(2) ?? match?.at(3)
+    const queryParams = match?.at(4)
+      ? new URLSearchParams(match.at(4))
+      : undefined
+    Object.entries(youtubeEmbedParamsMap).forEach(([key, value]) => {
+      if (queryParams?.has(key)) {
+        queryParams.set(value, queryParams.get(key)!)
+        queryParams.delete(key)
+      }
+    })
     const parsedUrl = match?.at(0) ?? url
     if (!id) return { type: VideoBubbleContentType.URL, url: parsedUrl }
     return {
       type: VideoBubbleContentType.YOUTUBE,
       url: parsedUrl,
       id,
+      queryParamsStr: queryParams ? '?' + queryParams.toString() : undefined,
       videoSizeSuggestion: url.includes('shorts')
         ? verticalVideoSuggestionSize
         : horizontalVideoSuggestionSize,

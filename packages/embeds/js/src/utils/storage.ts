@@ -1,4 +1,4 @@
-import { InitialChatReply } from '@/types'
+import { StartChatResponse } from '@typebot.io/schemas/features/chat/schema'
 import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
 
 const storageResultIdKey = 'resultId'
@@ -38,13 +38,13 @@ export const getInitialChatReplyFromStorage = (
       sessionStorage.getItem(`typebot-${typebotId}-initialChatReply`) ??
       localStorage.getItem(`typebot-${typebotId}-initialChatReply`)
     if (!rawInitialChatReply) return
-    return JSON.parse(rawInitialChatReply) as InitialChatReply
+    return JSON.parse(rawInitialChatReply) as StartChatResponse
   } catch {
     /* empty */
   }
 }
 export const setInitialChatReplyInStorage = (
-  initialChatReply: InitialChatReply,
+  initialChatReply: StartChatResponse,
   {
     typebotId,
     storage,

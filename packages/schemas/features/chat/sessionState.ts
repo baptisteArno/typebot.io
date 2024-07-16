@@ -1,14 +1,9 @@
 import { z } from '../../zod'
 import { answerSchema } from '../answer'
-import { resultSchema } from '../result'
+import { resultSchema, setVariableHistoryItemSchema } from '../result'
 import { typebotInSessionStateSchema, dynamicThemeSchema } from './shared'
 import { settingsSchema } from '../typebot/settings'
-
-const answerInSessionStateSchema = answerSchema.pick({
-  content: true,
-  blockId: true,
-  variableId: true,
-})
+import { isInputBlock } from '../../helpers'
 
 const answerInSessionStateSchemaV2 = z.object({
   key: z.string(),
@@ -23,7 +18,7 @@ const resultInSessionStateSchema = resultSchema
   })
   .merge(
     z.object({
-      answers: z.array(answerInSessionStateSchema),
+      answers: z.array(answerSchema),
       id: z.string().optional(),
     })
   )
@@ -94,6 +89,23 @@ const sessionStateSchemaV3 = sessionStateSchemaV2
     version: z.literal('3'),
     currentBlockId: z.string().optional(),
     allowedOrigins: z.array(z.string()).optional(),
+    setVariableIdsForHistory: z.array(z.string()).optional(),
+    currentSetVariableHistoryIndex: z.number().optional(),
+    previewMetadata: z
+      .object({
+        answers: z.array(answerSchema).optional(),
+        visitedEdges: z.array(z.string()).optional(),
+        setVariableHistory: z
+          .array(
+            setVariableHistoryItemSchema.pick({
+              blockId: true,
+              variableId: true,
+              value: true,
+            })
+          )
+          .optional(),
+      })
+      .optional(),
   })
 
 export type SessionState = z.infer<typeof sessionStateSchemaV3>
@@ -119,17 +131,27 @@ const migrateFromV1ToV2 = (
     {
       typebot: state.typebot,
       resultId: state.result.id,
-      answers: state.result.answers.map((answer) => ({
-        key:
-          (answer.variableId
-            ? state.typebot.variables.find(
-                (variable) => variable.id === answer.variableId
-              )?.name
-            : state.typebot.groups.find((group) =>
-                group.blocks.find((block) => block.id === answer.blockId)
-              )?.title) ?? '',
-        value: answer.content,
-      })),
+      answers: state.result.answers.map((answer) => {
+        let answerVariableId: string | undefined
+        state.typebot.groups.forEach((group) => {
+          group.blocks.forEach((block) => {
+            if (isInputBlock(block) && block.id === answer.blockId) {
+              answerVariableId = block.options?.variableId
+            }
+          })
+        })
+        return {
+          key:
+            (answerVariableId
+              ? state.typebot.variables.find(
+                  (variable) => variable.id === answerVariableId
+                )?.name
+              : state.typebot.groups.find((group) =>
+                  group.blocks.find((block) => block.id === answer.blockId)
+                )?.title) ?? '',
+          value: answer.content,
+        }
+      }),
       isMergingWithParent: true,
       edgeIdToTriggerWhenDone:
         state.linkedTypebots.queue.length > 0
@@ -141,17 +163,27 @@ const migrateFromV1ToV2 = (
         ({
           typebot,
           resultId: state.result.id,
-          answers: state.result.answers.map((answer) => ({
-            key:
-              (answer.variableId
-                ? state.typebot.variables.find(
-                    (variable) => variable.id === answer.variableId
-                  )?.name
-                : state.typebot.groups.find((group) =>
-                    group.blocks.find((block) => block.id === answer.blockId)
-                  )?.title) ?? '',
-            value: answer.content,
-          })),
+          answers: state.result.answers.map((answer) => {
+            let answerVariableId: string | undefined
+            typebot.groups.forEach((group) => {
+              group.blocks.forEach((block) => {
+                if (isInputBlock(block) && block.id === answer.blockId) {
+                  answerVariableId = block.options?.variableId
+                }
+              })
+            })
+            return {
+              key:
+                (answerVariableId
+                  ? state.typebot.variables.find(
+                      (variable) => variable.id === answerVariableId
+                    )?.name
+                  : state.typebot.groups.find((group) =>
+                      group.blocks.find((block) => block.id === answer.blockId)
+                    )?.title) ?? '',
+              value: answer.content,
+            }
+          }),
           edgeIdToTriggerWhenDone: state.linkedTypebots.queue.at(index + 1)
             ?.edgeId,
         } satisfies SessionState['typebotsQueue'][number])

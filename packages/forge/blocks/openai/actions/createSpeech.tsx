@@ -37,6 +37,8 @@ export const createSpeech = createAction({
       id: 'fetchSpeechModels',
       dependencies: ['baseUrl', 'apiVersion'],
       fetch: async ({ credentials, options }) => {
+        if (!credentials?.apiKey) return []
+
         const baseUrl = options?.baseUrl ?? defaultOpenAIOptions.baseUrl
         const config = {
           apiKey: credentials.apiKey,

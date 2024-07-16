@@ -1,9 +1,8 @@
-import { BotContext } from '@/types'
+import { StartChatResponse } from '@typebot.io/schemas'
 
-export const setPaymentInProgressInStorage = (state: {
-  sessionId: string
-  typebot: BotContext['typebot']
-}) => {
+export const setPaymentInProgressInStorage = (
+  state: Pick<StartChatResponse, 'typebot' | 'sessionId' | 'resultId'>
+) => {
   sessionStorage.setItem('typebotPaymentInProgress', JSON.stringify(state))
 }
 

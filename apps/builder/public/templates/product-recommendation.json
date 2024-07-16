@@ -1148,12 +1148,36 @@
     }
   ],
   "variables": [
-    { "id": "vp1r2yrb6xgmi2aq3x6x73vaz", "name": "Name" },
-    { "id": "vhbd5800sc98l1lk8wf7fe742", "name": "Flavour" },
-    { "id": "vma96g9rw8oaosc0ei2iacqig", "name": "Continent" },
-    { "id": "vlgo7i0r514jkd9a9f24otm4m", "name": "Protein source" },
-    { "id": "vgz8fr5u7q0p4jdef1krz2vm3", "name": "Goals" },
-    { "id": "vz4fqc40gkk99h0qeus2tjwhx", "name": "Diet restrictions" }
+    {
+      "id": "vp1r2yrb6xgmi2aq3x6x73vaz",
+      "name": "Name",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vhbd5800sc98l1lk8wf7fe742",
+      "name": "Flavour",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vma96g9rw8oaosc0ei2iacqig",
+      "name": "Continent",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vlgo7i0r514jkd9a9f24otm4m",
+      "name": "Protein source",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vgz8fr5u7q0p4jdef1krz2vm3",
+      "name": "Goals",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vz4fqc40gkk99h0qeus2tjwhx",
+      "name": "Diet restrictions",
+      "isSessionVariable": true
+    }
   ],
   "theme": {
     "general": {

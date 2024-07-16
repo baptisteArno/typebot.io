@@ -1,6 +1,8 @@
 import { defineConfig, devices } from '@playwright/test'
+import { resolve } from 'path'
 
-process.env.SKIP_ENV_CHECK = 'true'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('dotenv').config({ path: resolve(__dirname, '../../.env') })
 
 export default defineConfig({
   timeout: process.env.CI ? 50 * 1000 : 40 * 1000,
@@ -27,7 +29,7 @@ export default defineConfig({
   use: {
     trace: 'on-first-retry',
     locale: 'en-US',
-    baseURL: process.env.NEXT_PUBLIC_VIEWER_URL,
+    baseURL: process.env.NEXT_PUBLIC_VIEWER_URL?.split(',')[0],
   },
   projects: [
     {

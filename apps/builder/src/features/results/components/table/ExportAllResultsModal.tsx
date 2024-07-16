@@ -27,6 +27,7 @@ import { parseUniqueKey } from '@typebot.io/lib/parseUniqueKey'
 import { useResults } from '../../ResultsProvider'
 import { byId, isDefined } from '@typebot.io/lib'
 import { Typebot } from '@typebot.io/schemas'
+import { parseBlockIdVariableIdMap } from '@typebot.io/results/parseBlockIdVariableIdMap'
 
 type Props = {
   isOpen: boolean
@@ -101,7 +102,11 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
         )
       : existingResultHeader
 
-    const dataToUnparse = convertResultsToTableData(results, resultHeader)
+    const dataToUnparse = convertResultsToTableData({
+      results,
+      headerCells: resultHeader,
+      blockIdVariableIdMap: parseBlockIdVariableIdMap(typebot?.groups),
+    })
 
     const headerIds = parseColumnsOrder(
       typebot?.resultsTablePreferences?.columnsOrder,

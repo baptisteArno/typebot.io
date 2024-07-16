@@ -5,34 +5,28 @@ import { generatePresignedPostPolicy } from '@typebot.io/lib/s3/generatePresigne
 import { env } from '@typebot.io/env'
 import prisma from '@typebot.io/lib/prisma'
 import { getSession } from '@typebot.io/bot-engine/queries/getSession'
-import { parseGroups } from '@typebot.io/schemas'
+import {
+  FileInputBlock,
+  parseGroups,
+  TextInputBlock,
+} from '@typebot.io/schemas'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { getBlockById } from '@typebot.io/schemas/helpers'
+import { PublicTypebot } from '@typebot.io/prisma'
 
 export const generateUploadUrl = publicProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/v1/generate-upload-url',
+      path: '/v2/generate-upload-url',
       summary: 'Generate upload URL',
       description: 'Used to upload anything from the client to S3 bucket',
     },
   })
   .input(
     z.object({
-      filePathProps: z
-        .object({
-          typebotId: z.string(),
-          blockId: z.string(),
-          resultId: z.string(),
-          fileName: z.string(),
-        })
-        .or(
-          z.object({
-            sessionId: z.string(),
-            fileName: z.string(),
-          })
-        ),
+      sessionId: z.string(),
+      fileName: z.string(),
       fileType: z.string().optional(),
     })
   )
@@ -43,7 +37,7 @@ export const generateUploadUrl = publicProcedure
       fileUrl: z.string(),
     })
   )
-  .mutation(async ({ input: { filePathProps, fileType } }) => {
+  .mutation(async ({ input: { fileName, sessionId, fileType } }) => {
     if (!env.S3_ENDPOINT || !env.S3_ACCESS_KEY || !env.S3_SECRET_KEY)
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
@@ -51,63 +45,7 @@ export const generateUploadUrl = publicProcedure
           'S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY',
       })
 
-    // TODO: Remove (deprecated)
-    if ('typebotId' in filePathProps) {
-      const publicTypebot = await prisma.publicTypebot.findFirst({
-        where: {
-          typebotId: filePathProps.typebotId,
-        },
-        select: {
-          version: true,
-          groups: true,
-          typebot: {
-            select: {
-              workspaceId: true,
-            },
-          },
-        },
-      })
-
-      const workspaceId = publicTypebot?.typebot.workspaceId
-
-      if (!workspaceId)
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: "Can't find workspaceId",
-        })
-
-      const filePath = `public/workspaces/${workspaceId}/typebots/${filePathProps.typebotId}/results/${filePathProps.resultId}/${filePathProps.fileName}`
-
-      const fileUploadBlock = parseGroups(publicTypebot.groups, {
-        typebotVersion: publicTypebot.version,
-      })
-        .flatMap((group) => group.blocks)
-        .find((block) => block.id === filePathProps.blockId)
-
-      if (fileUploadBlock?.type !== InputBlockType.FILE)
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: "Can't find file upload block",
-        })
-
-      const presignedPostPolicy = await generatePresignedPostPolicy({
-        fileType,
-        filePath,
-        maxFileSize:
-          fileUploadBlock.options?.sizeLimit ??
-          env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE,
-      })
-
-      return {
-        presignedUrl: presignedPostPolicy.postURL,
-        formData: presignedPostPolicy.formData,
-        fileUrl: env.S3_PUBLIC_CUSTOM_DOMAIN
-          ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
-          : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,
-      }
-    }
-
-    const session = await getSession(filePathProps.sessionId)
+    const session = await getSession(sessionId)
 
     if (!session)
       throw new TRPCError({
@@ -117,27 +55,18 @@ export const generateUploadUrl = publicProcedure
 
     const typebotId = session.state.typebotsQueue[0].typebot.id
 
-    const publicTypebot = await prisma.publicTypebot.findFirst({
-      where: {
-        typebotId,
-      },
-      select: {
-        version: true,
-        groups: true,
-        typebot: {
-          select: {
-            workspaceId: true,
-          },
-        },
-      },
-    })
+    const isPreview = session.state.typebotsQueue[0].resultId
 
-    const workspaceId = publicTypebot?.typebot.workspaceId
+    const typebot = session.state.typebotsQueue[0].resultId
+      ? await getAndParsePublicTypebot(
+          session.state.typebotsQueue[0].typebot.id
+        )
+      : session.state.typebotsQueue[0].typebot
 
-    if (!workspaceId)
+    if (!typebot?.version)
       throw new TRPCError({
         code: 'BAD_REQUEST',
-        message: "Can't find workspaceId",
+        message: "Can't find typebot",
       })
 
     if (session.state.currentBlockId === undefined)
@@ -146,44 +75,93 @@ export const generateUploadUrl = publicProcedure
         message: "Can't find currentBlockId in session state",
       })
 
-    const { block: fileUploadBlock } = getBlockById(
+    const { block } = getBlockById(
       session.state.currentBlockId,
-      parseGroups(publicTypebot.groups, {
-        typebotVersion: publicTypebot.version,
+      parseGroups(typebot.groups, {
+        typebotVersion: typebot.version,
       })
     )
 
-    if (fileUploadBlock?.type !== InputBlockType.FILE)
+    if (
+      block?.type !== InputBlockType.FILE &&
+      (block.type !== InputBlockType.TEXT ||
+        !block.options?.attachments?.isEnabled)
+    )
       throw new TRPCError({
         code: 'BAD_REQUEST',
-        message: "Can't find file upload block",
+        message: 'Current block does not expect file upload',
       })
+
+    const { visibility, maxFileSize } = parseFileUploadParams(block)
 
     const resultId = session.state.typebotsQueue[0].resultId
 
-    const filePath = `${
-      fileUploadBlock.options?.visibility === 'Private' ? 'private' : 'public'
-    }/workspaces/${workspaceId}/typebots/${typebotId}/results/${resultId}/${
-      filePathProps.fileName
-    }`
+    const filePath =
+      'workspaceId' in typebot && typebot.workspaceId
+        ? `${visibility === 'Private' ? 'private' : 'public'}/workspaces/${
+            typebot.workspaceId
+          }/typebots/${typebotId}/results/${resultId}/${fileName}`
+        : `public/tmp/${typebotId}/${fileName}`
 
     const presignedPostPolicy = await generatePresignedPostPolicy({
       fileType,
       filePath,
-      maxFileSize:
-        fileUploadBlock.options && 'sizeLimit' in fileUploadBlock.options
-          ? (fileUploadBlock.options.sizeLimit as number)
-          : env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE,
+      maxFileSize,
     })
 
     return {
       presignedUrl: presignedPostPolicy.postURL,
       formData: presignedPostPolicy.formData,
       fileUrl:
-        fileUploadBlock.options?.visibility === 'Private'
-          ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/${filePathProps.fileName}`
+        visibility === 'Private' && !isPreview
+          ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/${fileName}`
           : env.S3_PUBLIC_CUSTOM_DOMAIN
           ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
           : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,
     }
   })
+
+const getAndParsePublicTypebot = async (typebotId: string) => {
+  const publicTypebot = (await prisma.publicTypebot.findFirst({
+    where: {
+      typebotId,
+    },
+    select: {
+      version: true,
+      groups: true,
+      typebot: {
+        select: {
+          workspaceId: true,
+        },
+      },
+    },
+  })) as (PublicTypebot & { typebot: { workspaceId: string } }) | null
+
+  return {
+    ...publicTypebot,
+    workspaceId: publicTypebot?.typebot.workspaceId,
+  }
+}
+
+const parseFileUploadParams = (
+  block: FileInputBlock | TextInputBlock
+): { visibility: 'Public' | 'Private'; maxFileSize: number | undefined } => {
+  if (block.type === InputBlockType.FILE) {
+    return {
+      visibility:
+        block.options?.visibility === 'Private' ? 'Private' : 'Public',
+      maxFileSize:
+        block.options && 'sizeLimit' in block.options
+          ? (block.options.sizeLimit as number)
+          : env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE,
+    }
+  }
+
+  return {
+    visibility:
+      block.options?.attachments?.visibility === 'Private'
+        ? 'Private'
+        : 'Public',
+    maxFileSize: env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE,
+  }
+}

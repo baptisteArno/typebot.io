@@ -1,11 +1,12 @@
-import { StartFrom, StartTypebot } from '@typebot.io/schemas'
+import { Message, StartFrom, StartTypebot } from '@typebot.io/schemas'
 import { restartSession } from '../queries/restartSession'
 import { saveStateToDatabase } from '../saveStateToDatabase'
 import { startSession } from '../startSession'
 import { computeCurrentProgress } from '../computeCurrentProgress'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 
 type Props = {
-  message?: string
+  message?: Message
   isOnlyRegistering: boolean
   isStreamEnabled: boolean
   startFrom?: StartFrom
@@ -13,6 +14,8 @@ type Props = {
   typebot?: StartTypebot
   userId?: string
   prefilledVariables?: Record<string, unknown>
+  sessionId?: string
+  textBubbleContentFormat: 'richText' | 'markdown'
 }
 
 export const startChatPreview = async ({
@@ -24,6 +27,8 @@ export const startChatPreview = async ({
   typebot: startTypebot,
   userId,
   prefilledVariables,
+  sessionId,
+  textBubbleContentFormat,
 }: Props) => {
   const {
     typebot,
@@ -34,6 +39,7 @@ export const startChatPreview = async ({
     clientSideActions,
     newSessionState,
     visitedEdges,
+    setVariableHistory,
   } = await startSession({
     version: 2,
     startParams: {
@@ -45,8 +51,10 @@ export const startChatPreview = async ({
       typebot: startTypebot,
       userId,
       prefilledVariables,
+      sessionId,
+      textBubbleContentFormat,
+      message,
     },
-    message,
   })
 
   const session = isOnlyRegistering
@@ -61,9 +69,14 @@ export const startChatPreview = async ({
         logs,
         clientSideActions,
         visitedEdges,
-        hasCustomEmbedBubble: messages.some(
-          (message) => message.type === 'custom-embed'
+        setVariableHistory,
+        hasEmbedBubbleWithWaitEvent: messages.some(
+          (message) =>
+            message.type === 'custom-embed' ||
+            (message.type === BubbleBlockType.EMBED &&
+              message.content.waitForEvent?.isEnabled)
         ),
+        initialSessionId: sessionId,
       })
 
   const isEnded =

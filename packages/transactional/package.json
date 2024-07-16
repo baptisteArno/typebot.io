@@ -7,13 +7,13 @@
   },
   "keywords": [],
   "author": "Baptiste Arnaud",
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "dependencies": {
     "@react-email/components": "0.0.14",
     "react-email": "2.0.0",
     "@typebot.io/env": "workspace:*"
   },
   "devDependencies": {
-    "dotenv-cli": "7.2.1"
+    "dotenv-cli": "7.4.1"
   }
 }

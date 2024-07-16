@@ -21,7 +21,7 @@ type Props = {
   message: ChatMessage
   typingEmulation: Settings['typingEmulation']
   isTypingSkipped: boolean
-  onTransitionEnd?: (offsetTop?: number) => void
+  onTransitionEnd?: (ref?: HTMLDivElement) => void
   onCompleted: (reply?: string) => void
 }
 
@@ -51,6 +51,7 @@ export const HostBubble = (props: Props) => (
       <EmbedBubble
         content={props.message.content as EmbedBubbleBlock['content']}
         onTransitionEnd={props.onTransitionEnd}
+        onCompleted={props.onCompleted}
       />
     </Match>
     <Match when={props.message.type === 'custom-embed'}>

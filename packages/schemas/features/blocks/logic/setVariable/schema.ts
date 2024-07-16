@@ -21,7 +21,13 @@ const basicSetVariableOptionsSchema = baseOptions.extend({
     'Random ID',
     'Phone number',
     'Contact name',
+    'Transcript',
   ]),
+})
+
+const popOrShiftSetVariableOptionsSchema = baseOptions.extend({
+  type: z.enum(['Pop', 'Shift']),
+  saveItemInVariableId: z.string().optional(),
 })
 
 const dateSetVariableOptionsSchema = baseOptions.extend({
@@ -64,6 +70,7 @@ export const setVariableOptionsSchema = z.discriminatedUnion('type', [
   customSetVariableOptionsSchema,
   mapListItemsOptionsSchema,
   appendItemToListOptionsSchema,
+  popOrShiftSetVariableOptionsSchema,
 ])
 
 export const setVariableBlockSchema = blockBaseSchema.merge(

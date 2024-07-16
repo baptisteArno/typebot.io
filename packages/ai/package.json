@@ -1,0 +1,14 @@
+{
+  "name": "@typebot.io/ai",
+  "version": "1.0.0",
+  "license": "AGPL-3.0-or-later",
+  "private": true,
+  "dependencies": {
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/forge": "workspace:*",
+    "@typebot.io/variables": "workspace:*",
+    "ai": "3.2.22",
+    "ky": "1.2.4",
+    "@typebot.io/tsconfig": "workspace:*"
+  }
+}

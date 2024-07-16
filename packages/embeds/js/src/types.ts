@@ -3,20 +3,16 @@ import { ContinueChatResponse, StartChatResponse } from '@typebot.io/schemas'
 export type InputSubmitContent = {
   label?: string
   value: string
+  attachments?: Answer['attachments']
 }
 
 export type BotContext = {
-  typebot: InitialChatReply['typebot']
+  typebot: StartChatResponse['typebot']
   resultId?: string
   isPreview: boolean
   apiHost?: string
   sessionId: string
   storage: 'local' | 'session' | undefined
-}
-
-export type InitialChatReply = StartChatResponse & {
-  typebot: NonNullable<StartChatResponse['typebot']>
-  sessionId: NonNullable<StartChatResponse['sessionId']>
 }
 
 export type OutgoingLog = {
@@ -35,4 +31,12 @@ export type ChatChunk = Pick<
   'messages' | 'input' | 'clientSideActions'
 > & {
   streamingMessageId?: string
+}
+
+export type Answer = {
+  text: string
+  attachments?: {
+    type: string
+    url: string
+  }[]
 }

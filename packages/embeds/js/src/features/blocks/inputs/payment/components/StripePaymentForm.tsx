@@ -64,6 +64,7 @@ export const StripePaymentForm = (props: Props) => {
 
     setPaymentInProgressInStorage({
       sessionId: props.context.sessionId,
+      resultId: props.context.resultId,
       typebot: props.context.typebot,
     })
     const { postalCode, ...address } =

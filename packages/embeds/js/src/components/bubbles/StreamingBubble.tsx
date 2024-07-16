@@ -1,14 +1,21 @@
 import { streamingMessage } from '@/utils/streamingMessageSignal'
-import { createEffect, createSignal } from 'solid-js'
+import { For, createEffect, createSignal } from 'solid-js'
 import { marked } from 'marked'
 import domPurify from 'dompurify'
+import { isNotEmpty } from '@typebot.io/lib'
+import { persist } from '@/utils/persist'
+import { BotContext } from '@/types'
 
 type Props = {
   streamingMessageId: string
+  context: BotContext
 }
 
 export const StreamingBubble = (props: Props) => {
-  const [content, setContent] = createSignal<string>('')
+  const [content, setContent] = persist(createSignal<string[]>([]), {
+    key: `typebot-streaming-message-${props.streamingMessageId}`,
+    storage: props.context.storage,
+  })
 
   marked.use({
     renderer: {
@@ -19,16 +26,42 @@ export const StreamingBubble = (props: Props) => {
   })
 
   createEffect(() => {
-    if (streamingMessage()?.id === props.streamingMessageId)
-      setContent(
-        domPurify.sanitize(marked.parse(streamingMessage()?.content ?? ''), {
-          ADD_ATTR: ['target'],
+    if (streamingMessage()?.id !== props.streamingMessageId) return []
+    setContent(
+      streamingMessage()
+        ?.content.split('```')
+        .map((block, index) => {
+          if (index % 2 === 0) {
+            return block.split('\n\n').map((line) =>
+              domPurify.sanitize(
+                marked.parse(line.replace(/【.+】/g, ''), {
+                  breaks: true,
+                }),
+                {
+                  ADD_ATTR: ['target'],
+                }
+              )
+            )
+          } else {
+            return [
+              domPurify.sanitize(
+                marked.parse('```' + block + '```', {
+                  breaks: true,
+                }),
+                {
+                  ADD_ATTR: ['target'],
+                }
+              ),
+            ]
+          }
         })
-      )
+        .flat()
+        .filter(isNotEmpty) ?? []
+    )
   })
 
   return (
-    <div class="flex flex-col animate-fade-in">
+    <div class="flex flex-col animate-fade-in typebot-streaming-container">
       <div class="flex w-full items-center">
         <div class="flex relative items-start typebot-host-bubble max-w-full">
           <div
@@ -43,8 +76,9 @@ export const StreamingBubble = (props: Props) => {
             class={
               'flex flex-col overflow-hidden text-fade-in mx-4 my-2 relative text-ellipsis h-full gap-6'
             }
-            innerHTML={content()}
-          />
+          >
+            <For each={content()}>{(line) => <span innerHTML={line} />}</For>
+          </div>
         </div>
       </div>
     </div>

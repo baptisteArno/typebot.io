@@ -19,9 +19,9 @@ test.describe.parallel('Google sheets integration', () => {
 
     await page.click('text=Add a value')
     await page.click('text=Select a column')
-    await page.click('button >> text="Email"')
+    await page.getByRole('menuitem', { name: 'Email' }).click()
     await page.click('[aria-label="Insert a variable"]')
-    await page.click('button >> text="Email" >> nth=1')
+    await page.getByRole('menuitem', { name: 'Email' }).last().click()
 
     await page.click('text=Add a value')
     await page.click('text=Select a column')
@@ -61,11 +61,11 @@ test.describe.parallel('Google sheets integration', () => {
     await page.getByRole('button', { name: 'Row(s) to update' }).click()
     await page.getByRole('button', { name: 'Add filter rule' }).click()
     await page.click('text=Select a column')
-    await page.click('button >> text="Email"')
+    await page.getByRole('menuitem', { name: 'Email' }).click()
     await page.getByRole('button', { name: 'Select an operator' }).click()
     await page.getByRole('menuitem', { name: 'Equal to' }).click()
     await page.click('[aria-label="Insert a variable"]')
-    await page.click('button >> text="Email" >> nth=1')
+    await page.getByRole('menuitem', { name: 'Email' }).last().click()
 
     await page.getByRole('button', { name: 'Cells to update' }).click()
     await page.click('text=Add a value')
@@ -87,7 +87,7 @@ test.describe.parallel('Google sheets integration', () => {
       .press('Enter')
     await expect(
       page.getByText('Succesfully updated matching rows').nth(0)
-    ).toBeVisible()
+    ).toBeVisible({ timeout: 10000 })
   })
 
   test('Get row should work', async ({ page }) => {
@@ -106,11 +106,11 @@ test.describe.parallel('Google sheets integration', () => {
     await page.getByRole('button', { name: 'Select row(s)' }).click()
     await page.getByRole('button', { name: 'Add filter rule' }).click()
     await page.click('text=Select a column')
-    await page.click('button >> text="Email"')
+    await page.getByRole('menuitem', { name: 'Email' }).click()
     await page.getByRole('button', { name: 'Select an operator' }).click()
     await page.getByRole('menuitem', { name: 'Equal to' }).click()
     await page.click('[aria-label="Insert a variable"]')
-    await page.click('button >> text="Email" >> nth=1')
+    await page.getByRole('menuitem', { name: 'Email' }).last().click()
 
     await page.getByRole('button', { name: 'Add filter rule' }).click()
     await page.getByRole('button', { name: 'AND', exact: true }).click()

@@ -1,0 +1,620 @@
+{
+  "version": "6",
+  "id": "clxn14e0w0001b4nz8a9dpemb",
+  "name": "High ticket lead follow-up",
+  "events": [
+    {
+      "id": "mb3o7c0khkqp5mzf1zifdc65",
+      "outgoingEdgeId": "aauahl2wn37wghyr0ndd6v51",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "hemncfdck31b3l9urzs3djtm",
+      "title": "Welcome",
+      "graphCoordinates": { "x": 225, "y": 387.85 },
+      "blocks": [
+        {
+          "id": "j4i5syifxmq7650xfz8bnd1o",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Hey there 👋" }] }
+            ]
+          }
+        },
+        {
+          "id": "w0a7mlbjj0ryfbfpukf3yj89",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Baptiste from AgenZ here." }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "n9sc6rrsb49jqwzv7udqr4c9",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Thank you for downloading the ebook!" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "le64m3unjanvtuchvc8q5k2g",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "I have a few questions, do you have a minute?" }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "nq6t2hj5fnokmtjnse65hbtg",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "g1g24q5d198iv7gtqm5ics7k",
+              "outgoingEdgeId": "ybsw3vxq9dubcsfnlrf54a7p",
+              "content": "Sure!"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a3txw7jcd5qalxizrvqu0fqt",
+      "title": "Business",
+      "graphCoordinates": { "x": 602.78, "y": 382.85 },
+      "blocks": [
+        {
+          "id": "rowpy0lwuecc83xecbb8tzcn",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "Awesome!" }] }]
+          }
+        },
+        {
+          "id": "jucfgkm87gptw5fbqkq6qk7d",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "What's your current business?" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "aaxyzry2gknzkb3n1vy19vh3",
+          "type": "text input",
+          "options": {
+            "variableId": "vct90f8lq4uuyqupv6qco5jfq",
+            "isLong": true
+          }
+        },
+        {
+          "id": "ikvrw5cy41k18ql2pwvzesqt",
+          "type": "mistral",
+          "options": {
+            "action": "Generate variables",
+            "model": "mistral-large-latest",
+            "prompt": "Extract the information based on user's previous answer:\n\n\"{{last utterance}}\"",
+            "variablesToExtract": [
+              {
+                "type": "string",
+                "variableId": "vabp22hjq8st3roj9qo8lbub3",
+                "isRequired": false
+              }
+            ]
+          }
+        },
+        {
+          "id": "r860fira9zqst6vw5c83buh1",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "fa4zr4att2d2p2uz98l7c9nj",
+              "outgoingEdgeId": "kcj6a2ab3uzusl2adzl0xhsd",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "apfizejhjycfnwnrvrawknio",
+                    "variableId": "vabp22hjq8st3roj9qo8lbub3",
+                    "comparisonOperator": "Is set"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "fe9p6xxrj2lf2pg1675p35l3",
+          "type": "mistral",
+          "options": {
+            "action": "Create chat completion",
+            "model": "mistral-large-latest",
+            "messages": [
+              {
+                "role": "system",
+                "content": "Your only job is to collect user's business information. Nothing else.\n\nProvide short answers with a casual tone.\n\nTry to reassure the user and always end your message by asking what's the current user's business."
+              },
+              {
+                "role": "assistant",
+                "content": "What's your current business?"
+              },
+              { "role": "user", "content": "{{last utterance}}" }
+            ],
+            "responseMapping": [
+              {
+                "item": "Message content",
+                "variableId": "vaut2rkwqv5gwwihthbk7uhqd"
+              }
+            ]
+          }
+        },
+        {
+          "id": "x7jrbbl5ria15ru7fsdpagzm",
+          "outgoingEdgeId": "zzz5ucj2rzm24md4yvg80i0c",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "{{Assistant message}}" }] }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "iwhknwvhh53jbw83fu5wgfen",
+      "title": "Revenue",
+      "graphCoordinates": { "x": 995.88, "y": 377.98 },
+      "blocks": [
+        {
+          "id": "qwjk8w0249ijb9x6hvna5vgo",
+          "type": "mistral",
+          "options": {
+            "action": "Create chat completion",
+            "model": "mistral-large-latest",
+            "messages": [
+              {
+                "role": "system",
+                "content": "The user provides a short description of the business is in.\n\nReply enthusiastically, with a casual tone a single sentence, without a follow up question"
+              },
+              { "role": "user", "content": "{{last utterance}}" }
+            ],
+            "responseMapping": [
+              {
+                "item": "Message content",
+                "variableId": "vaut2rkwqv5gwwihthbk7uhqd"
+              }
+            ]
+          }
+        },
+        {
+          "id": "ytr05wecrwgwsikldha4qvf4",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "{{Assistant message}}" }] }
+            ]
+          }
+        },
+        {
+          "id": "io8uxdkwwetdj0pxhq17k5yl",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "To give me an idea, what's your average revenue per year?"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "az31puebiu8jqql6g6goigox",
+          "type": "text input",
+          "options": { "variableId": "vct90f8lq4uuyqupv6qco5jfq" }
+        },
+        {
+          "id": "tfpnyw09powo19vt0g0f3usk",
+          "type": "mistral",
+          "options": {
+            "action": "Generate variables",
+            "model": "mistral-large-latest",
+            "prompt": "Extract the information based on user's previous answer:\n\n\"{{last utterance}}\"",
+            "variablesToExtract": [
+              {
+                "type": "string",
+                "variableId": "vuffpsxxfqujokeyh10hfm65p",
+                "isRequired": false
+              }
+            ]
+          }
+        },
+        {
+          "id": "ptei3e0lcwfpo1q8umygnga8",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "t7k7vhajv1gxhthj5uike7eh",
+              "outgoingEdgeId": "clc05hfm03m58po917zf9mum",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "apfizejhjycfnwnrvrawknio",
+                    "variableId": "vuffpsxxfqujokeyh10hfm65p",
+                    "comparisonOperator": "Is set"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "q53wqzj3y8ep8al67si34w15",
+          "type": "mistral",
+          "options": {
+            "action": "Create chat completion",
+            "model": "mistral-large-latest",
+            "messages": [
+              {
+                "role": "system",
+                "content": "Your only job is to collect user's average revenue per year. Nothing else.\n\nProvide short answers with a casual tone.\n\nTry to reassure the user and always end your message by asking what's the current user's average yearly revenu."
+              },
+              {
+                "role": "assistant",
+                "content": "What's your average revenue per year?"
+              },
+              { "role": "user", "content": "{{last utterance}}" }
+            ],
+            "responseMapping": [
+              {
+                "item": "Message content",
+                "variableId": "vaut2rkwqv5gwwihthbk7uhqd"
+              }
+            ]
+          }
+        },
+        {
+          "id": "htbzhd7dzgh9ki2n2jzd6rf8",
+          "outgoingEdgeId": "wmtlz288tgacj1h8q4wb3r96",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "{{Assistant message}}" }] }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "w1fxjymnv9v6zdvleaa0wts6",
+      "title": "Interest in SEO",
+      "graphCoordinates": { "x": 1375.44, "y": 384.19 },
+      "blocks": [
+        {
+          "id": "w5x7e2m30y58586jpm1zra4j",
+          "type": "mistral",
+          "options": {
+            "action": "Create chat completion",
+            "model": "mistral-large-latest",
+            "messages": [
+              {
+                "role": "system",
+                "content": "The user provides his average yearly revenue with his business\n\nReply enthusiastically, with a casual tone a single sentence, without a follow up question"
+              },
+              { "role": "user", "content": "{{last utterance}}" }
+            ],
+            "responseMapping": [
+              {
+                "item": "Message content",
+                "variableId": "vaut2rkwqv5gwwihthbk7uhqd"
+              }
+            ]
+          }
+        },
+        {
+          "id": "zjq6mhd46kjltwrthqpdsn1a",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "{{Assistant message}}" }] }
+            ]
+          }
+        },
+        {
+          "id": "qr8arjing6afyxfbwgru2qv7",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "So why are you interested in SEO right now?" }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "cfrzcq8ik59r2ch1rn0vkacn",
+          "type": "text input",
+          "options": {
+            "variableId": "vct90f8lq4uuyqupv6qco5jfq",
+            "isLong": true
+          }
+        },
+        {
+          "id": "lnsv798yj73ai3mill4huwyq",
+          "outgoingEdgeId": "ohz6k1woo8y2g0ib5i4l8tyx",
+          "type": "mistral",
+          "options": {
+            "action": "Generate variables",
+            "model": "mistral-large-latest",
+            "prompt": "Extract the information based on user's previous answer:\n\n\"{{last utterance}}\"",
+            "variablesToExtract": [
+              {
+                "type": "string",
+                "variableId": "vvmh29a0tgn5ugzhnxzqth546",
+                "description": "Why the user is interested in SEO right now",
+                "isRequired": true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "bndagu5imd89vi5kdvlpi8py",
+      "title": "Booking",
+      "graphCoordinates": { "x": 1767.38, "y": 380.9 },
+      "blocks": [
+        {
+          "id": "ewu53md22e3izomzy7czqf4x",
+          "type": "mistral",
+          "options": {
+            "action": "Create chat completion",
+            "model": "mistral-large-latest",
+            "messages": [
+              {
+                "role": "system",
+                "content": "The user tells us the reason why he's interested in SEO\n\nReply enthusiastically, with a casual tone a single sentence, without a follow up question"
+              },
+              { "role": "user", "content": "{{last utterance}}" }
+            ],
+            "responseMapping": [
+              {
+                "item": "Message content",
+                "variableId": "vaut2rkwqv5gwwihthbk7uhqd"
+              }
+            ]
+          }
+        },
+        {
+          "id": "m8rkhpa1qqhy79jappfseu86",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "{{Assistant message}}" }] }
+            ]
+          }
+        },
+        {
+          "id": "n8i5dsuppyls7gry3vv1ruzu",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Would you be up for a quick meeting?" }]
+              },
+              { "type": "p", "children": [{ "text": "" }] },
+              {
+                "type": "p",
+                "children": [
+                  { "text": "I can offer you a free consulting call." }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "ouyz1d539vr5hck6cthmszg6",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "<INSERT YOUR CAL.COM BLOCK HERE>" }]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "obcf7n03hrbuz45hxudp7vyg",
+      "title": "",
+      "graphCoordinates": { "x": 269.38, "y": -8.11 },
+      "blocks": [
+        {
+          "id": "j87l3ef5tpji9lpqeb1x1jab",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "You need to add your Mistral AI credentials to make this bot work. 🪄"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "xsfpajnunr48xf9niv1zuoiv",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "You can also convert the Mistral blocks to any AI compatible blocks."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "fwrkxexujzmud7p02ehm8s79",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Once it's done, delete this group and connect the "
+                  },
+                  { "bold": true, "text": "Start" },
+                  { "text": " event with " },
+                  { "bold": true, "text": "Intro" },
+                  { "text": " 🚀" }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "ybsw3vxq9dubcsfnlrf54a7p",
+      "from": {
+        "blockId": "nq6t2hj5fnokmtjnse65hbtg",
+        "itemId": "g1g24q5d198iv7gtqm5ics7k"
+      },
+      "to": { "groupId": "a3txw7jcd5qalxizrvqu0fqt" }
+    },
+    {
+      "id": "kcj6a2ab3uzusl2adzl0xhsd",
+      "from": {
+        "blockId": "r860fira9zqst6vw5c83buh1",
+        "itemId": "fa4zr4att2d2p2uz98l7c9nj"
+      },
+      "to": { "groupId": "iwhknwvhh53jbw83fu5wgfen" }
+    },
+    {
+      "id": "wmtlz288tgacj1h8q4wb3r96",
+      "from": { "blockId": "htbzhd7dzgh9ki2n2jzd6rf8" },
+      "to": {
+        "groupId": "iwhknwvhh53jbw83fu5wgfen",
+        "blockId": "az31puebiu8jqql6g6goigox"
+      }
+    },
+    {
+      "id": "zzz5ucj2rzm24md4yvg80i0c",
+      "from": { "blockId": "x7jrbbl5ria15ru7fsdpagzm" },
+      "to": {
+        "groupId": "a3txw7jcd5qalxizrvqu0fqt",
+        "blockId": "aaxyzry2gknzkb3n1vy19vh3"
+      }
+    },
+    {
+      "id": "clc05hfm03m58po917zf9mum",
+      "from": {
+        "blockId": "ptei3e0lcwfpo1q8umygnga8",
+        "itemId": "t7k7vhajv1gxhthj5uike7eh"
+      },
+      "to": { "groupId": "w1fxjymnv9v6zdvleaa0wts6" }
+    },
+    {
+      "id": "ohz6k1woo8y2g0ib5i4l8tyx",
+      "from": { "blockId": "lnsv798yj73ai3mill4huwyq" },
+      "to": { "groupId": "bndagu5imd89vi5kdvlpi8py" }
+    },
+    {
+      "from": { "eventId": "mb3o7c0khkqp5mzf1zifdc65" },
+      "to": { "groupId": "obcf7n03hrbuz45hxudp7vyg" },
+      "id": "aauahl2wn37wghyr0ndd6v51"
+    }
+  ],
+  "variables": [
+    {
+      "id": "vct90f8lq4uuyqupv6qco5jfq",
+      "name": "last utterance",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vaut2rkwqv5gwwihthbk7uhqd",
+      "name": "Assistant message",
+      "isSessionVariable": true
+    },
+    {
+      "id": "voleiyma8rwvqi3hcn3axrij5",
+      "name": "Global system prompt",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vm8s6oxkp7k3ikf9cmq80688u",
+      "name": "JSON",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vabp22hjq8st3roj9qo8lbub3",
+      "name": "Business",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vuffpsxxfqujokeyh10hfm65p",
+      "name": "Average revenue",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vvmh29a0tgn5ugzhnxzqth546",
+      "name": "SEO interest",
+      "isSessionVariable": true
+    }
+  ],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2024-06-20T08:57:49.568Z",
+  "updatedAt": "2024-06-20T10:05:01.573Z",
+  "icon": "🤓",
+  "folderId": null,
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

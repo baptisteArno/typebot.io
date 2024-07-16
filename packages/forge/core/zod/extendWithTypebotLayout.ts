@@ -20,8 +20,11 @@ export interface ZodLayoutMetadata<
   itemLabel?: T extends OptionableZodType<ZodArray<any>> ? string : never
   isOrdered?: T extends OptionableZodType<ZodArray<any>> ? boolean : never
   moreInfoTooltip?: string
-  isHidden?: boolean
+  isHidden?: boolean | ((currentObj: Record<string, any>) => boolean)
   isDebounceDisabled?: boolean
+  hiddenItems?: string[]
+  mergeWithLastField?: boolean
+  toLabels?: (val?: string) => string | undefined
 }
 
 declare module 'zod' {

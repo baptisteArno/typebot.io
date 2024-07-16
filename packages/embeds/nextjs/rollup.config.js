@@ -17,7 +17,10 @@ const indexConfig = {
     dir: './dist',
     format: 'es',
   },
-  external: ['next/dynamic', 'react', 'react/jsx-runtime'],
+  external: ['next/dynamic.js', 'react', 'react/jsx-runtime'],
+  watch: {
+    clearScreen: false,
+  },
   plugins: [
     resolve({ extensions }),
     babel({

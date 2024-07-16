@@ -2,11 +2,6 @@
 title: Anthropic
 ---
 
-<Warning>
-  There is an ongoing issue with Anthropic block streaming capabilities. We are
-  working on a fix and will update this page once the issue is resolved.
-</Warning>
-
 ## Create Message
 
 With the Anthropic block, you can create chat messages based on your user queries and display the answer back to your typebot using Claude AI.
@@ -44,3 +39,15 @@ Finally, save the response of the assistant to a variable in order to append it 
     alt="Claude AI assistant message variable"
   />
 </Frame>
+
+## Vision support
+
+`Create Chat Message` and `Ask Assistant` blocks support vision. This means that Typebot automatically detects images URL in any user message provided to OpenAI and parse it. The URL needs to be isolated from the rest of the text message to be properly detected. Here is an example of a message with an image URL:
+
+If the selected model is [not compatible with vision](https://docs.anthropic.com/en/docs/vision), the image URL will be parsed as a plain text message.
+
+```
+What's in this picture?
+
+https://domain.com/image.png
+```

@@ -15,7 +15,7 @@ import {
 
 type Props = {
   content: VideoBubbleBlock['content']
-  onTransitionEnd?: (offsetTop?: number) => void
+  onTransitionEnd?: (ref?: HTMLDivElement) => void
 }
 
 export const showAnimationDuration = 400
@@ -39,7 +39,7 @@ export const VideoBubble = (props: Props) => {
       if (!isTyping()) return
       setIsTyping(false)
       setTimeout(() => {
-        props.onTransitionEnd?.(ref?.offsetTop)
+        props.onTransitionEnd?.(ref)
       }, showAnimationDuration)
     }, typingDuration)
   })
@@ -77,9 +77,17 @@ export const VideoBubble = (props: Props) => {
               }
             >
               <video
-                autoplay={props.onTransitionEnd ? false : true}
+                autoplay={
+                  props.onTransitionEnd
+                    ? props.content?.isAutoplayEnabled ??
+                      defaultVideoBubbleContent.isAutoplayEnabled
+                    : false
+                }
                 src={props.content?.url}
-                controls
+                controls={
+                  props.content?.areControlsDisplayed ??
+                  defaultVideoBubbleContent.areControlsDisplayed
+                }
                 class={
                   'p-4 focus:outline-none w-full z-10 text-fade-in rounded-md ' +
                   (isTyping() ? 'opacity-0' : 'opacity-100')
@@ -128,7 +136,9 @@ export const VideoBubble = (props: Props) => {
                     embedBaseUrls[
                       props.content?.type as EmbeddableVideoBubbleContentType
                     ]
-                  }/${props.content?.id}`}
+                  }/${props.content?.id ?? ''}${
+                    props.content?.queryParamsStr ?? ''
+                  }`}
                   class={'w-full h-full'}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowfullscreen

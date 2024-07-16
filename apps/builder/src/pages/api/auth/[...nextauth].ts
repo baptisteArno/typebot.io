@@ -5,6 +5,7 @@ import GitlabProvider from 'next-auth/providers/gitlab'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
 import AzureADProvider from 'next-auth/providers/azure-ad'
+import KeycloakProvider from 'next-auth/providers/keycloak'
 import prisma from '@typebot.io/lib/prisma'
 import { Provider } from 'next-auth/providers'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -15,20 +16,36 @@ import { mockedUser } from '@typebot.io/lib/mockedUser'
 import { getNewUserInvitations } from '@/features/auth/helpers/getNewUserInvitations'
 import { sendVerificationRequest } from '@/features/auth/helpers/sendVerificationRequest'
 import { Ratelimit } from '@upstash/ratelimit'
-import { Redis } from '@upstash/redis/nodejs'
 import ky from 'ky'
 import { env } from '@typebot.io/env'
 import * as Sentry from '@sentry/nextjs'
 import { getIp } from '@typebot.io/lib/getIp'
 import { trackEvents } from '@typebot.io/telemetry/trackEvents'
+import Redis from 'ioredis'
 
 const providers: Provider[] = []
 
-let rateLimit: Ratelimit | undefined
+let emailSignInRateLimiter: Ratelimit | undefined
 
-if (env.UPSTASH_REDIS_REST_URL && env.UPSTASH_REDIS_REST_TOKEN) {
-  rateLimit = new Ratelimit({
-    redis: Redis.fromEnv(),
+if (env.REDIS_URL) {
+  const redis = new Redis(env.REDIS_URL)
+  const rateLimitCompatibleRedis = {
+    sadd: <TData>(key: string, ...members: TData[]) =>
+      redis.sadd(key, ...members.map((m) => String(m))),
+    eval: async <TArgs extends unknown[], TData = unknown>(
+      script: string,
+      keys: string[],
+      args: TArgs
+    ) =>
+      redis.eval(
+        script,
+        keys.length,
+        ...keys,
+        ...(args ?? []).map((a) => String(a))
+      ) as Promise<TData>,
+  }
+  emailSignInRateLimiter = new Ratelimit({
+    redis: rateLimitCompatibleRedis,
     limiter: Ratelimit.slidingWindow(1, '60 s'),
   })
 }
@@ -48,10 +65,13 @@ if (env.NEXT_PUBLIC_SMTP_FROM && !env.SMTP_AUTH_DISABLED)
         host: env.SMTP_HOST,
         port: env.SMTP_PORT,
         secure: env.SMTP_SECURE,
-        auth: {
-          user: env.SMTP_USERNAME,
-          pass: env.SMTP_PASSWORD,
-        },
+        auth:
+          env.SMTP_USERNAME || env.SMTP_PASSWORD
+            ? {
+                user: env.SMTP_USERNAME,
+                pass: env.SMTP_PASSWORD,
+              }
+            : undefined,
       },
       from: env.NEXT_PUBLIC_SMTP_FROM,
       sendVerificationRequest,
@@ -98,6 +118,21 @@ if (
       clientId: env.AZURE_AD_CLIENT_ID,
       clientSecret: env.AZURE_AD_CLIENT_SECRET,
       tenantId: env.AZURE_AD_TENANT_ID,
+    })
+  )
+}
+
+if (
+  env.KEYCLOAK_CLIENT_ID &&
+  env.KEYCLOAK_BASE_URL &&
+  env.KEYCLOAK_CLIENT_SECRET &&
+  env.KEYCLOAK_REALM
+) {
+  providers.push(
+    KeycloakProvider({
+      clientId: env.KEYCLOAK_CLIENT_ID,
+      clientSecret: env.KEYCLOAK_CLIENT_SECRET,
+      issuer: `${env.KEYCLOAK_BASE_URL}/${env.KEYCLOAK_REALM}`,
     })
   )
 }
@@ -163,7 +198,11 @@ export const getAuthOptions = ({
       if (restricted === 'rate-limited') throw new Error('rate-limited')
       if (!account) return false
       const isNewUser = !('createdAt' in user && isDefined(user.createdAt))
-      if (isNewUser && user.email) {
+      if (
+        isNewUser &&
+        user.email &&
+        (!env.ADMIN_EMAIL || !env.ADMIN_EMAIL.includes(user.email))
+      ) {
         const data = await ky
           .get(
             'https://raw.githubusercontent.com/disposable-email-domains/disposable-email-domains/master/disposable_email_blocklist.conf'
@@ -173,7 +212,12 @@ export const getAuthOptions = ({
         if (disposableEmailDomains.includes(user.email.split('@')[1]))
           return false
       }
-      if (env.DISABLE_SIGNUP && isNewUser && user.email) {
+      if (
+        env.DISABLE_SIGNUP &&
+        isNewUser &&
+        user.email &&
+        !env.ADMIN_EMAIL?.includes(user.email)
+      ) {
         const { invitations, workspaceInvitations } =
           await getNewUserInvitations(prisma, user.email)
         if (invitations.length === 0 && workspaceInvitations.length === 0)
@@ -201,13 +245,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let restricted: 'rate-limited' | undefined
 
   if (
-    rateLimit &&
+    emailSignInRateLimiter &&
     req.url?.startsWith('/api/auth/signin/email') &&
     req.method === 'POST'
   ) {
     const ip = getIp(req)
     if (ip) {
-      const { success } = await rateLimit.limit(ip)
+      const { success } = await emailSignInRateLimiter.limit(ip)
       if (!success) restricted = 'rate-limited'
     }
   }

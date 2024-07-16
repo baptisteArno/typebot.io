@@ -1,0 +1,35 @@
+---
+sidebarTitle: Overview
+title: API
+---
+
+Your bot can also be executed with HTTP requests. This is useful if you want to integrate your bot with another service or if you want to use it in a different programming language.
+
+## Test
+
+1. All your requests need to be authenticated with an API token. [See instructions](/api-reference/authentication).
+2. To start the chat, send a POST request to `https://typebot.io/api/v1/typebots/<typebot ID>/preview/startChat` The first response will contain a sessionId that you will need for subsequent requests.
+3. To send replies, send POST requests to `https://typebot.io/api/v1/sessions/<session ID>/continueChat`
+   With the following JSON body:
+
+   ```json
+   {
+     "message": "This is my reply"
+   }
+   ```
+
+Check out the [Start preview chat API reference](/api-reference/chat/start-preview-chat) for more information
+
+## Live
+
+1. To start the chat, send a POST request to `https://typebot.io/api/v1/typebots/<public ID>/startChat` The first response will contain a sessionId that you will need for subsequent requests.
+2. To send replies, send POST requests to `https://typebot.io/api/v1/sessions/<session ID>/continueChat`
+   With the following JSON body:
+
+   ```json
+   {
+     "message": "This is my reply"
+   }
+   ```
+
+Check out the [Start chat API reference](/api-reference/chat/start-chat) for more information

@@ -19,7 +19,7 @@ import { updateInvitationQuery } from '../queries/updateInvitationQuery'
 import { updateMemberQuery } from '../queries/updateMemberQuery'
 import { Member } from '../types'
 import { useWorkspace } from '../WorkspaceProvider'
-import { getSeatsLimit } from '@typebot.io/billing/getSeatsLimit'
+import { getSeatsLimit } from '@typebot.io/billing/helpers/getSeatsLimit'
 import { useTranslate } from '@tolgee/react'
 
 export const MembersList = () => {

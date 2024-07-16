@@ -9,6 +9,7 @@ import { useTranslate } from '@tolgee/react'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { WorkspaceDropdown } from '@/features/workspace/components/WorkspaceDropdown'
 import { WorkspaceSettingsModal } from '@/features/workspace/components/WorkspaceSettingsModal'
+import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvider'
 
 export const DashboardHeader = () => {
   const { t } = useTranslate()
@@ -38,12 +39,14 @@ export const DashboardHeader = () => {
         </Link>
         <HStack>
           {user && workspace && !workspace.isPastDue && (
-            <WorkspaceSettingsModal
-              isOpen={isOpen}
-              onClose={onClose}
-              user={user}
-              workspace={workspace}
-            />
+            <ParentModalProvider>
+              <WorkspaceSettingsModal
+                isOpen={isOpen}
+                onClose={onClose}
+                user={user}
+                workspace={workspace}
+              />
+            </ParentModalProvider>
           )}
           {!workspace?.isPastDue && (
             <Button

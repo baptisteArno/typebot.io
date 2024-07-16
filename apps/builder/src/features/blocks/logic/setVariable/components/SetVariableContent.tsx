@@ -62,7 +62,19 @@ const Expression = ({
       )
     }
     case 'Empty':
-      return <Text as="span">Reset {variableName}</Text>
+      return <Text as="span">Reset {variableName} </Text>
+    case 'Shift':
+    case 'Pop': {
+      const itemVariableName = variables.find(
+        byId(options.saveItemInVariableId)
+      )?.name
+      return (
+        <Text as="span">
+          {options.type} {variableName}
+          {itemVariableName ? ` into ${itemVariableName}` : ''}
+        </Text>
+      )
+    }
     case 'Random ID':
     case 'Today':
     case 'Now':
@@ -71,6 +83,7 @@ const Expression = ({
     case 'Result ID':
     case 'Moment of the day':
     case 'Environment name':
+    case 'Transcript':
     case 'Yesterday': {
       return (
         <Text as="span">

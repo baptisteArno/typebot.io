@@ -16,9 +16,9 @@ type Params = {
 export function persist<T>(
   signal: Signal<T>,
   params: Params
-): [...Signal<T>, () => boolean] {
+): [...Signal<T>, () => boolean, Setter<boolean>] {
   const [isRecovered, setIsRecovered] = createSignal(false)
-  if (!params.storage) return [...signal, () => false]
+  if (!params.storage) return [...signal, isRecovered, setIsRecovered]
 
   const storage = parseRememberUserStorage(
     params.storage || defaultSettings.general.rememberUser.storage
@@ -55,7 +55,8 @@ export function persist<T>(
           storage.setItem(params.key, value)
         },
     isRecovered,
-  ] as [...typeof signal, () => boolean]
+    setIsRecovered,
+  ] as [...typeof signal, typeof isRecovered, typeof setIsRecovered]
 }
 
 const parseRememberUserStorage = (

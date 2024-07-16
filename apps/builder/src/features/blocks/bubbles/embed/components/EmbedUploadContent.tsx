@@ -1,9 +1,11 @@
 import { TextInput, NumberInput } from '@/components/inputs'
 import { Stack, Text } from '@chakra-ui/react'
-import { EmbedBubbleBlock } from '@typebot.io/schemas'
+import { EmbedBubbleBlock, Variable } from '@typebot.io/schemas'
 import { sanitizeUrl } from '@typebot.io/lib'
 import { useTranslate } from '@tolgee/react'
 import { defaultEmbedBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/embed/constants'
+import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
+import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 
 type Props = {
   content: EmbedBubbleBlock['content']
@@ -22,6 +24,24 @@ export const EmbedUploadContent = ({ content, onSubmit }: Props) => {
   const handleHeightChange = (
     height?: NonNullable<EmbedBubbleBlock['content']>['height']
   ) => height && onSubmit({ ...content, height })
+
+  const updateWaitEventName = (name: string) =>
+    onSubmit({ ...content, waitForEvent: { ...content?.waitForEvent, name } })
+
+  const updateWaitForEventEnabled = (isEnabled: boolean) =>
+    onSubmit({
+      ...content,
+      waitForEvent: { ...content?.waitForEvent, isEnabled },
+    })
+
+  const updateSaveDataInVariableId = (variable?: Pick<Variable, 'id'>) =>
+    onSubmit({
+      ...content,
+      waitForEvent: {
+        ...content?.waitForEvent,
+        saveDataInVariableId: variable?.id,
+      },
+    })
 
   return (
     <Stack p="2" spacing={6}>
@@ -43,8 +63,25 @@ export const EmbedUploadContent = ({ content, onSubmit }: Props) => {
         defaultValue={content?.height ?? defaultEmbedBubbleContent.height}
         onValueChange={handleHeightChange}
         suffix={t('editor.blocks.bubbles.embed.settings.numberInput.unit')}
-        width="150px"
+        direction="row"
       />
+      <SwitchWithRelatedSettings
+        label="Wait for event?"
+        initialValue={content?.waitForEvent?.isEnabled ?? false}
+        onCheckChange={updateWaitForEventEnabled}
+      >
+        <TextInput
+          direction="row"
+          label="Name:"
+          defaultValue={content?.waitForEvent?.name}
+          onChange={updateWaitEventName}
+        />
+        <VariableSearchInput
+          onSelectVariable={updateSaveDataInVariableId}
+          initialVariableId={content?.waitForEvent?.saveDataInVariableId}
+          label="Save data in variable"
+        />
+      </SwitchWithRelatedSettings>
     </Stack>
   )
 }

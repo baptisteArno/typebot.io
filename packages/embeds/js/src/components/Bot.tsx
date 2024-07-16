@@ -4,7 +4,7 @@ import { isDefined, isNotDefined, isNotEmpty } from '@typebot.io/lib'
 import { startChatQuery } from '@/queries/startChatQuery'
 import { ConversationContainer } from './ConversationContainer'
 import { setIsMobile } from '@/utils/isMobileSignal'
-import { BotContext, InitialChatReply, OutgoingLog } from '@/types'
+import { BotContext, OutgoingLog } from '@/types'
 import { ErrorMessage } from './ErrorMessage'
 import {
   getExistingResultIdFromStorage,
@@ -15,8 +15,12 @@ import {
 } from '@/utils/storage'
 import { setCssVariablesValue } from '@/utils/setCssVariablesValue'
 import immutableCss from '../assets/immutable.css'
-import { Font, InputBlock, StartFrom } from '@typebot.io/schemas'
-import { defaultTheme } from '@typebot.io/schemas/features/typebot/theme/constants'
+import {
+  Font,
+  InputBlock,
+  StartChatResponse,
+  StartFrom,
+} from '@typebot.io/schemas'
 import { clsx } from 'clsx'
 import { HTTPError } from 'ky'
 import { injectFont } from '@/utils/injectFont'
@@ -25,6 +29,15 @@ import { Portal } from 'solid-js/web'
 import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
 import { persist } from '@/utils/persist'
 import { setBotContainerHeight } from '@/utils/botContainerHeightSignal'
+import {
+  defaultFontFamily,
+  defaultFontType,
+  defaultProgressBarPosition,
+} from '@typebot.io/schemas/features/typebot/theme/constants'
+import { CorsError } from '@/utils/CorsError'
+import { Toaster, Toast } from '@ark-ui/solid'
+import { CloseIcon } from './icons/CloseIcon'
+import { toaster } from '@/utils/toaster'
 
 export type BotProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -35,18 +48,19 @@ export type BotProps = {
   apiHost?: string
   font?: Font
   progressBarRef?: HTMLDivElement
+  startFrom?: StartFrom
+  sessionId?: string
   onNewInputBlock?: (inputBlock: InputBlock) => void
   onAnswer?: (answer: { message: string; blockId: string }) => void
   onInit?: () => void
   onEnd?: () => void
   onNewLogs?: (logs: OutgoingLog[]) => void
   onChatStatePersisted?: (isEnabled: boolean) => void
-  startFrom?: StartFrom
 }
 
 export const Bot = (props: BotProps & { class?: string }) => {
   const [initialChatReply, setInitialChatReply] = createSignal<
-    InitialChatReply | undefined
+    StartChatResponse | undefined
   >()
   const [customCss, setCustomCss] = createSignal('')
   const [isInitialized, setIsInitialized] = createSignal(false)
@@ -77,6 +91,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
         ...props.prefilledVariables,
       },
       startFrom: props.startFrom,
+      sessionId: props.sessionId,
     })
     if (error instanceof HTTPError) {
       if (isPreview) {
@@ -98,6 +113,10 @@ export const Bot = (props: BotProps & { class?: string }) => {
           `Error! Couldn't initiate the chat. (${error.response.statusText})`
         )
       )
+    }
+
+    if (error instanceof CorsError) {
+      return setError(new Error(error.message))
     }
 
     if (!data) {
@@ -142,6 +161,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
       }
       props.onChatStatePersisted?.(true)
     } else {
+      wipeExistingChatStateInStorage(data.typebot.id)
       setInitialChatReply(data)
       if (data.input?.id && props.onNewInputBlock)
         props.onNewInputBlock(data.input)
@@ -230,7 +250,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
 }
 
 type BotContentProps = {
-  initialChatReply: InitialChatReply
+  initialChatReply: StartChatResponse
   context: BotContext
   class?: string
   progressBarRef?: HTMLDivElement
@@ -262,8 +282,10 @@ const BotContent = (props: BotContentProps) => {
 
   createEffect(() => {
     injectFont(
-      props.initialChatReply.typebot.theme.general?.font ??
-        defaultTheme.general.font
+      props.initialChatReply.typebot.theme.general?.font ?? {
+        type: defaultFontType,
+        family: defaultFontFamily,
+      }
     )
     if (!botContainer) return
     setCssVariablesValue(
@@ -282,7 +304,7 @@ const BotContent = (props: BotContentProps) => {
     <div
       ref={botContainer}
       class={clsx(
-        'relative flex w-full h-full text-base overflow-hidden bg-cover bg-center flex-col items-center typebot-container @container',
+        'relative flex w-full h-full text-base overflow-hidden flex-col justify-center items-center typebot-container',
         props.class
       )}
     >
@@ -296,8 +318,7 @@ const BotContent = (props: BotContentProps) => {
           when={
             props.progressBarRef &&
             (props.initialChatReply.typebot.theme.general?.progressBar
-              ?.position ?? defaultTheme.general.progressBar.position) ===
-              'fixed'
+              ?.position ?? defaultProgressBarPosition) === 'fixed'
           }
           fallback={<ProgressBar value={progressValue() as number} />}
         >
@@ -306,17 +327,15 @@ const BotContent = (props: BotContentProps) => {
           </Portal>
         </Show>
       </Show>
-      <div class="flex w-full h-full justify-center">
-        <ConversationContainer
-          context={props.context}
-          initialChatReply={props.initialChatReply}
-          onNewInputBlock={props.onNewInputBlock}
-          onAnswer={props.onAnswer}
-          onEnd={props.onEnd}
-          onNewLogs={props.onNewLogs}
-          onProgressUpdate={setProgressValue}
-        />
-      </div>
+      <ConversationContainer
+        context={props.context}
+        initialChatReply={props.initialChatReply}
+        onNewInputBlock={props.onNewInputBlock}
+        onAnswer={props.onAnswer}
+        onEnd={props.onEnd}
+        onNewLogs={props.onNewLogs}
+        onProgressUpdate={setProgressValue}
+      />
       <Show
         when={
           props.initialChatReply.typebot.settings.general?.isBrandingEnabled
@@ -324,6 +343,17 @@ const BotContent = (props: BotContentProps) => {
       >
         <LiteBadge botContainer={botContainer} />
       </Show>
+      <Toaster toaster={toaster}>
+        {(toast) => (
+          <Toast.Root>
+            <Toast.Title>{toast().title}</Toast.Title>
+            <Toast.Description>{toast().description}</Toast.Description>
+            <Toast.CloseTrigger class="absolute right-2 top-2">
+              <CloseIcon class="w-4 h-4" />
+            </Toast.CloseTrigger>
+          </Toast.Root>
+        )}
+      </Toaster>
     </div>
   )
 }

@@ -155,7 +155,7 @@ export const BlockNodeContent = ({
       return <ZemanticAiNodeBody options={block.options} />
     }
     default: {
-      return <ForgedBlockNodeContent block={block} />
+      return <ForgedBlockNodeContent block={block} indices={indices} />
     }
   }
 }

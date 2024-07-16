@@ -3,6 +3,7 @@ import {
   ContinueChatResponse,
   PublicTypebot,
   SessionState,
+  SetVariableHistoryItem,
   Settings,
   Typebot,
 } from '@typebot.io/schemas'
@@ -35,6 +36,7 @@ export const startWhatsAppSession = async ({
   | (ContinueChatResponse & {
       newSessionState: SessionState
       visitedEdges: VisitedEdge[]
+      setVariableHistory: SetVariableHistoryItem[]
     })
   | { error: string }
 > => {
@@ -66,7 +68,7 @@ export const startWhatsAppSession = async ({
       (publicTypebot.settings.whatsApp?.startCondition?.comparisons.length ??
         0) > 0 &&
       messageMatchStartCondition(
-        incomingMessage ?? '',
+        incomingMessage ?? { type: 'text', text: '' },
         publicTypebot.settings.whatsApp?.startCondition
       )
   )
@@ -88,12 +90,13 @@ export const startWhatsAppSession = async ({
 
   return startSession({
     version: 2,
-    message: incomingMessage,
     startParams: {
       type: 'live',
       publicId: publicTypebot.typebot.publicId as string,
       isOnlyRegistering: false,
       isStreamEnabled: false,
+      textBubbleContentFormat: 'richText',
+      message: incomingMessage,
     },
     initialSessionState: {
       whatsApp: {

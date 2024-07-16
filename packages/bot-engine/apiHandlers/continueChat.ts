@@ -1,18 +1,26 @@
 import { TRPCError } from '@trpc/server'
-import { isDefined, isNotDefined } from '@typebot.io/lib/utils'
+import { isDefined, isNotDefined, isNotEmpty } from '@typebot.io/lib/utils'
 import { getSession } from '../queries/getSession'
 import { continueBotFlow } from '../continueBotFlow'
 import { filterPotentiallySensitiveLogs } from '../logs/filterPotentiallySensitiveLogs'
 import { parseDynamicTheme } from '../parseDynamicTheme'
 import { saveStateToDatabase } from '../saveStateToDatabase'
 import { computeCurrentProgress } from '../computeCurrentProgress'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import { Message } from '@typebot.io/schemas'
 
 type Props = {
   origin: string | undefined
-  message?: string
+  message?: Message
   sessionId: string
+  textBubbleContentFormat: 'richText' | 'markdown'
 }
-export const continueChat = async ({ origin, sessionId, message }: Props) => {
+export const continueChat = async ({
+  origin,
+  sessionId,
+  message,
+  textBubbleContentFormat,
+}: Props) => {
   const session = await getSession(sessionId)
 
   if (!session) {
@@ -52,10 +60,12 @@ export const continueChat = async ({ origin, sessionId, message }: Props) => {
     logs,
     lastMessageNewFormat,
     visitedEdges,
+    setVariableHistory,
   } = await continueBotFlow(message, {
     version: 2,
     state: session.state,
     startTime: Date.now(),
+    textBubbleContentFormat,
   })
 
   if (newSessionState)
@@ -68,8 +78,12 @@ export const continueChat = async ({ origin, sessionId, message }: Props) => {
       logs,
       clientSideActions,
       visitedEdges,
-      hasCustomEmbedBubble: messages.some(
-        (message) => message.type === 'custom-embed'
+      setVariableHistory,
+      hasEmbedBubbleWithWaitEvent: messages.some(
+        (message) =>
+          message.type === 'custom-embed' ||
+          (message.type === BubbleBlockType.EMBED &&
+            message.content.waitForEvent?.isEnabled)
       ),
     })
 

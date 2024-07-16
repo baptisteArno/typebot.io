@@ -9,20 +9,24 @@ type UploadFileProps = {
       fileName: string
     }
   }[]
-  onUploadProgress?: (percent: number) => void
+  onUploadProgress?: (props: { fileIndex: number; progress: number }) => void
 }
 
-type UrlList = (string | null)[]
+type UrlList = ({
+  url: string
+  type: string
+} | null)[]
 
 export const uploadFiles = async ({
   apiHost,
   files,
   onUploadProgress,
 }: UploadFileProps): Promise<UrlList> => {
-  const urls = []
+  const urls: UrlList = []
   let i = 0
   for (const { input, file } of files) {
-    onUploadProgress && onUploadProgress((i / files.length) * 100)
+    onUploadProgress &&
+      onUploadProgress({ progress: (i / files.length) * 100, fileIndex: i })
     i += 1
     const { data } = await sendRequest<{
       presignedUrl: string
@@ -30,9 +34,10 @@ export const uploadFiles = async ({
       fileUrl: string
     }>({
       method: 'POST',
-      url: `${apiHost}/api/v1/generate-upload-url`,
+      url: `${apiHost}/api/v2/generate-upload-url`,
       body: {
-        filePathProps: input,
+        fileName: input.fileName,
+        sessionId: input.sessionId,
         fileType: file.type,
       },
     })
@@ -51,7 +56,7 @@ export const uploadFiles = async ({
 
       if (!upload.ok) continue
 
-      urls.push(data.fileUrl)
+      urls.push({ url: data.fileUrl, type: file.type })
     }
   }
   return urls

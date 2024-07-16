@@ -13,7 +13,7 @@ import { StartChatInput, StartPreviewChatInput } from '@typebot.io/schemas'
 
 test.afterEach(async () => {
   await deleteWebhooks(['chat-webhook-id'])
-  await deleteTypebots(['chat-sub-bot'])
+  await deleteTypebots(['chat-sub-bot', 'starting-with-input'])
 })
 
 test('API chat execution should work on preview bot', async ({ request }) => {
@@ -48,6 +48,7 @@ test('API chat execution should work on preview bot', async ({ request }) => {
         data: {
           isOnlyRegistering: false,
           isStreamEnabled: false,
+          textBubbleContentFormat: 'richText',
         } satisfies Omit<StartPreviewChatInput, 'typebotId'>,
       })
     ).json()
@@ -107,6 +108,13 @@ test('API chat execution should work on published bot', async ({ request }) => {
     id: 'chat-sub-bot',
     publicId: 'chat-sub-bot-public',
   })
+  await importTypebotInDatabase(
+    getTestAsset('typebots/chat/startingWithInput.json'),
+    {
+      id: 'starting-with-input',
+      publicId: 'starting-with-input-public',
+    }
+  )
   await createWebhook(typebotId, {
     id: 'chat-webhook-id',
     method: HttpMethod.GET,
@@ -120,6 +128,7 @@ test('API chat execution should work on published bot', async ({ request }) => {
         data: {
           isOnlyRegistering: false,
           isStreamEnabled: false,
+          textBubbleContentFormat: 'richText',
         } satisfies Omit<StartChatInput, 'publicId'>,
       })
     ).json()
@@ -294,19 +303,21 @@ test('API chat execution should work on published bot', async ({ request }) => {
     expect(messages[2].content.richText.length).toBeGreaterThan(0)
   })
   await test.step('Starting with a message when typebot starts with input should proceed', async () => {
-    const { messages } = await (
+    const response = await (
       await request.post(
         `/api/v1/typebots/starting-with-input-public/startChat`,
         {
           data: {
+            //@ts-expect-error We want to test if message is correctly preprocessed by zod
             message: 'Hey',
             isStreamEnabled: false,
             isOnlyRegistering: false,
+            textBubbleContentFormat: 'richText',
           } satisfies Omit<StartChatInput, 'publicId'>,
         }
       )
     ).json()
-    expect(messages[0].content.richText).toStrictEqual([
+    expect(response.messages[0].content.richText).toStrictEqual([
       {
         children: [
           {
@@ -316,5 +327,20 @@ test('API chat execution should work on published bot', async ({ request }) => {
         type: 'p',
       },
     ])
+  })
+  await test.step('Markdown text bubble format should work', async () => {
+    const { messages } = await (
+      await request.post(`/api/v1/typebots/${typebotId}/preview/startChat`, {
+        data: {
+          isOnlyRegistering: false,
+          isStreamEnabled: false,
+          textBubbleContentFormat: 'markdown',
+        } satisfies Omit<StartPreviewChatInput, 'typebotId'>,
+      })
+    ).json()
+    expect(messages[0].content.markdown).toStrictEqual('Hi there! 👋')
+    expect(messages[1].content.markdown).toStrictEqual(
+      'Welcome. What&#39;s your name?'
+    )
   })
 })

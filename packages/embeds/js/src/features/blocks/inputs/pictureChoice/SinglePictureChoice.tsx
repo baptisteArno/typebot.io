@@ -18,7 +18,7 @@ export const SinglePictureChoice = (props: Props) => {
   const [totalLoadedImages, setTotalLoadedImages] = createSignal(0)
 
   onMount(() => {
-    if (!isMobile() && inputRef) inputRef.focus()
+    if (!isMobile() && inputRef) inputRef.focus({ preventScroll: true })
   })
 
   const handleClick = (itemIndex: number) => {
