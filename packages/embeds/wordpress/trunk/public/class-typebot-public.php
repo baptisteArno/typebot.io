@@ -40,7 +40,7 @@ class Typebot_Public
 
   function typebot_script()
   {
-    $lib_version = get_option('lib_version') !== null && get_option('lib_version') !== ''  ? get_option('lib_version') : '0.2';
+    $lib_version = get_option('lib_version') !== null && get_option('lib_version') !== ''  ? get_option('lib_version') : '0.3';
     echo '<script type="module">import Typebot from "https://cdn.jsdelivr.net/npm/@typebot.io/js@'.$lib_version.'/dist/web.js";';
     if (
       get_option('excluded_pages') !== null &&
@@ -90,27 +90,52 @@ class Typebot_Public
     echo '</script>';
   }
 
-  public function add_typebot_container($attributes = [])
-  {
-    $lib_version = '0.2';
-    if(array_key_exists('lib_version', $attributes)) {
-      $lib_version = custom_sanitize_text_field($attributes['lib_version']);
+  public function add_typebot_container($attributes = []) {
+    $lib_version = '0.3';
+    if (array_key_exists('lib_version', $attributes)) {
+      $lib_version = $attributes['lib_version'];
+      if (strlen($lib_version) > 10 || !preg_match('/^\d+\.\d+(\.\d+)?$/', $lib_version)) {
+          $lib_version = '0.3';
+      } else {
+          $lib_version = sanitize_text_field($lib_version);
+      }
     }
-    $lib_url = "https://cdn.jsdelivr.net/npm/@typebot.io/js@". $lib_version ."/dist/web.js";
+    $lib_url = esc_url_raw("https://cdn.jsdelivr.net/npm/@typebot.io/js@". $lib_version ."/dist/web.js");
     $width = '100%';
     $height = '500px';
-    $api_host = 'https://typebot.io';
+    $api_host = 'https://typebot.co';
     if (array_key_exists('width', $attributes)) {
-      $width = custom_sanitize_text_field($attributes['width']);
+      $width = $attributes['width'];
+      if (strlen($width) > 10 || !preg_match('/^\d+(%|px)$/', $width)) {
+        $width = '100%';
+      } else {
+        $width = sanitize_text_field($width);
+      }
     }
     if (array_key_exists('height', $attributes)) {
-      $height = custom_sanitize_text_field($attributes['height']);
+      $height = $attributes['height'];
+      if (strlen($height) > 10 || !preg_match('/^\d+(%|px)$/', $height)) {
+        $height = '500px';
+      } else {
+        $height = sanitize_text_field($height);
+      }
     }
     if (array_key_exists('typebot', $attributes)) {
-      $typebot = custom_sanitize_text_field($attributes['typebot']);
+      $typebot = $attributes['typebot'];
+      if (strlen($typebot) > 50 || empty($typebot) || !preg_match('/^[a-zA-Z0-9_-]+$/', $typebot)) {
+        return;
+      } else {
+        $typebot = sanitize_text_field($typebot);
+      }
     }
     if (array_key_exists('host', $attributes)) {
-      $api_host = custom_sanitize_text_field($attributes['host']);
+      $api_host = $attributes['host'];
+      // Limit the length and sanitize
+      if (strlen($api_host) > 100 || !filter_var($api_host, FILTER_VALIDATE_URL)) {
+        $api_host = 'https://typebot.co'; // fallback to default host
+      } else {
+        $api_host = sanitize_text_field($api_host);
+      }
     }
     if (!$typebot) {
       return;
@@ -119,14 +144,14 @@ class Typebot_Public
     $id = $this->generateRandomString();
 
     $bot_initializer = '<script type="module">
-    import Typebot from "' . $lib_url . '"
+    import Typebot from "' . esc_url($lib_url) . '"
 
     const urlParams = new URLSearchParams(window.location.search);
     const queryParams = Object.fromEntries(urlParams.entries());
 
-    Typebot.initStandard({ apiHost: "' . $api_host . '", id: "' . $id . '", typebot: "' . $typebot . '", prefilledVariables: { ...window.typebotWpUser, ...queryParams } });</script>';
+    Typebot.initStandard({ apiHost: "' . esc_js($api_host) . '", id: "' . esc_js($id) . '", typebot: "' . esc_js($typebot) . '", prefilledVariables: { ...window.typebotWpUser, ...queryParams } });</script>';
 
-    return  '<typebot-standard id="' . $id . '" style="width: ' . $width . '; height: ' . $height . ';"></typebot-standard>' . $bot_initializer;
+    return  '<typebot-standard id="' . esc_attr($id) . '" style="width: ' . esc_attr($width) . '; height: ' . esc_attr($height) . ';"></typebot-standard>' . $bot_initializer;
   }
 
   private function generateRandomString($length = 10)
