@@ -115,12 +115,7 @@ npm install @typebot.io/js @typebot.io/react
 import { Bubble } from '@typebot.io/react'
 
 const ChatbotComponent = () => {
-  return (
-    <Bubble
-      typebot="YOUR_TYPEBOT_ID"
-      theme={{ button: { backgroundColor: '#0042DA' } }}
-    />
-  )
+  return <Bubble typebot="YOUR_TYPEBOT_ID" />
 }
 
 export default ChatbotComponent
@@ -146,9 +141,9 @@ function App() {
 2. Customize the chatbot's appearance:
 
 ```jsx
-<Standard
+<Bubble
   typebot="your-typebot-id"
-  style={{ width: '100%', height: '600px' }}
+  theme={{ button: { backgroundColor: '#0042DA' } }}
   prefilledVariables={{
     'User Name': 'John Doe',
     'Page URL': window.location.href,
