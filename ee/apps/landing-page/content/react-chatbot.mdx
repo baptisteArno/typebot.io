@@ -112,13 +112,13 @@ npm install @typebot.io/js @typebot.io/react
 5. Create a new component in your React app:
 
 ```jsx
-import { Standard } from '@typebot.io/react'
+import { Bubble } from '@typebot.io/react'
 
 const ChatbotComponent = () => {
   return (
-    <Standard
-      typebot="your-typebot-id"
-      style={{ width: '100%', height: '600px' }}
+    <Bubble
+      typebot="YOUR_TYPEBOT_ID"
+      theme={{ button: { backgroundColor: '#0042DA' } }}
     />
   )
 }
