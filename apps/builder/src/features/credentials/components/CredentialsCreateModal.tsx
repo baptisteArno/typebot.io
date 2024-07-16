@@ -62,6 +62,8 @@ const CredentialsCreateModalContent = ({
           onClose={onClose}
         />
       )
+    case 'zemanticAi':
+      return null
     default:
       return (
         <CreateForgedCredentialsModalContent

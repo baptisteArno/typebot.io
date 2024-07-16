@@ -14,7 +14,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { ZodObjectLayout } from '../zodLayouts/ZodObjectLayout'
 import { ForgedBlockDefinition } from '@typebot.io/forge-repository/types'
-import { Credentials } from '@typebot.io/schemas'
+import { CredentialsWithoutLegacy } from '@typebot.io/schemas'
 
 type Props = {
   credentialsId: string
@@ -76,7 +76,7 @@ export const UpdateForgedCredentialsModalContent = ({
         workspaceId: workspace.id,
         name,
         data,
-      } as Credentials,
+      } as CredentialsWithoutLegacy,
     })
   }
 
