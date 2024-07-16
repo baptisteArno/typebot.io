@@ -11,7 +11,7 @@
         ?>
         <div style="display: flex; flex-direction: column">
           <label>Library version:</label>
-          <input name="lib_version" value="<?php echo esc_attr(get_option('lib_version') !== null && get_option('lib_version') !== ''  ? get_option('lib_version') : '0.2'); ?>" style="padding: .5rem" />
+          <input name="lib_version" value="<?php echo esc_attr(get_option('lib_version') !== null && get_option('lib_version') !== ''  ? get_option('lib_version') : '0.3'); ?>" style="padding: .5rem" />
         </div>
 
         <div style="display: flex; flex-direction: column">
