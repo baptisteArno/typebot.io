@@ -57,6 +57,7 @@ const CredentialsUpdateModalContent = ({
           onUpdate={onSubmit}
         />
       )
+    case 'zemanticAi':
     case 'whatsApp':
       return null
     default:

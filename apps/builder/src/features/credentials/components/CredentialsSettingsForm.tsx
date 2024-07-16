@@ -211,6 +211,8 @@ const CredentialsIcon = ({
       return <StripeLogo rounded="sm" {...props} />
     case 'whatsApp':
       return <WhatsAppLogo {...props} />
+    case 'zemanticAi':
+      return null
     default:
       return <BlockIcon type={type} {...props} />
   }
@@ -245,6 +247,8 @@ const CredentialsLabel = ({
           WhatsApp
         </Text>
       )
+    case 'zemanticAi':
+      return null
     default:
       return <BlockLabel type={type} {...props} />
   }
