@@ -1,4 +1,4 @@
-import { VariableStore } from '@typebot.io/forge/types'
+import { AsyncVariableStore, VariableStore } from '@typebot.io/forge/types'
 import { ChatCompletionOptions } from './parseChatCompletionOptions'
 import { APICallError, streamText, ToolCallPart, ToolResultPart } from 'ai'
 import { createOpenAI } from '@ai-sdk/openai'
@@ -12,7 +12,7 @@ import { appendToolResultsToMessages } from '@typebot.io/ai/appendToolResultsToM
 type Props = {
   credentials: { apiKey?: string }
   options: ChatCompletionOptions
-  variables: VariableStore
+  variables: AsyncVariableStore
   config: { baseUrl: string; defaultModel?: string }
   compatibility?: 'strict' | 'compatible'
 }
@@ -59,6 +59,7 @@ export const runOpenAIChatCompletionStream = async ({
     const response = await streamText(streamConfig)
 
     let totalToolCalls = 0
+    let totalTokens = 0
     let toolCalls: ToolCallPart[] = []
     let toolResults: ToolResultPart[] = []
 
@@ -68,6 +69,8 @@ export const runOpenAIChatCompletionStream = async ({
           const reader = response.toAIStream().getReader()
 
           await pumpStreamUntilDone(controller, reader)
+
+          totalTokens = (await response.usage).totalTokens
 
           toolCalls = await response.toolCalls
           if (toolCalls.length > 0)
@@ -89,10 +92,18 @@ export const runOpenAIChatCompletionStream = async ({
             })
             const reader = newResponse.toAIStream().getReader()
             await pumpStreamUntilDone(controller, reader)
+            totalTokens += (await newResponse.usage).totalTokens
             toolCalls = await newResponse.toolCalls
             if (toolCalls.length > 0)
               toolResults = (await newResponse.toolResults) as ToolResultPart[]
           }
+
+          const totalTokenVariableId = options.responseMapping?.find(
+            (mapping) => mapping.item === 'Total tokens'
+          )?.variableId
+
+          if (totalTokenVariableId)
+            await variables.set(totalTokenVariableId, totalTokens)
 
           controller.close()
         },

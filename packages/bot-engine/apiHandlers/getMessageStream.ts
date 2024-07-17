@@ -3,7 +3,7 @@ import { ChatCompletionOpenAIOptions } from '@typebot.io/schemas/features/blocks
 import { OpenAI } from 'openai'
 import { decryptV2 } from '@typebot.io/lib/api/encryption/decryptV2'
 import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
-import { VariableStore } from '@typebot.io/forge'
+import { AsyncVariableStore } from '@typebot.io/forge'
 import {
   ParseVariablesOptions,
   parseVariables,
@@ -104,7 +104,7 @@ export const getMessageStream = async ({
       credentials.iv
     )
 
-    const variables: VariableStore = {
+    const variables: AsyncVariableStore = {
       list: () => session.state.typebotsQueue[0].typebot.variables,
       get: (id: string) => {
         const variable = session.state.typebotsQueue[0].typebot.variables.find(
