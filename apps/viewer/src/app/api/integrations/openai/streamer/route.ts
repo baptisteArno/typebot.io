@@ -7,7 +7,6 @@ import { NextResponse } from 'next/dist/server/web/spec-extension/response'
 import { getBlockById } from '@typebot.io/schemas/helpers'
 import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
 import { decryptV2 } from '@typebot.io/lib/api/encryption/decryptV2'
-import { VariableStore } from '@typebot.io/forge'
 import {
   ParseVariablesOptions,
   parseVariables,
@@ -16,6 +15,7 @@ import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integr
 import { getChatCompletionStream } from '@typebot.io/bot-engine/blocks/integrations/legacy/openai/getChatCompletionStream'
 import { ChatCompletionOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai/schema'
 import { isForgedBlockType } from '@typebot.io/schemas/features/blocks/forged/helpers'
+import { AsyncVariableStore } from '@typebot.io/forge/types'
 
 export const preferredRegion = 'lhr1'
 export const dynamic = 'force-dynamic'
@@ -140,7 +140,7 @@ export async function POST(req: Request) {
       credentials.data,
       credentials.iv
     )
-    const variables: VariableStore = {
+    const variables: AsyncVariableStore = {
       list: () => state.typebotsQueue[0].typebot.variables,
       get: (id: string) => {
         const variable = state.typebotsQueue[0].typebot.variables.find(
@@ -151,7 +151,7 @@ export async function POST(req: Request) {
       parse: (text: string, params?: ParseVariablesOptions) =>
         parseVariables(state.typebotsQueue[0].typebot.variables, params)(text),
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      set: (_1: string, _2: unknown) => {},
+      set: async (_1: string, _2: unknown) => {},
     }
     const { stream } = await action.run.stream.run({
       credentials: decryptedCredentials,

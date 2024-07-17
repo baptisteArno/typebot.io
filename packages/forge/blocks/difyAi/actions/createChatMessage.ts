@@ -125,28 +125,34 @@ export const createChatMessage = createAction({
                         )
                       )
                     },
-                    onMessageEnd({ totalTokens, conversationId }) {
+                    async onMessageEnd({ totalTokens, conversationId }) {
                       if (
                         conversationVariableId &&
                         isNotEmpty(conversationId) &&
                         isEmpty(existingDifyConversationId?.toString())
                       )
-                        variables.set(conversationVariableId, conversationId)
+                        await variables.set(
+                          conversationVariableId,
+                          conversationId
+                        )
 
                       if ((responseMapping?.length ?? 0) === 0) return
-                      responseMapping?.forEach((mapping) => {
-                        if (!mapping.variableId) return
+                      for (const mapping of responseMapping ?? []) {
+                        if (!mapping.variableId) continue
 
                         if (
                           mapping.item === 'Conversation ID' &&
                           isNotEmpty(conversationId) &&
                           isEmpty(existingDifyConversationId?.toString())
                         )
-                          variables.set(mapping.variableId, conversationId)
+                          await variables.set(
+                            mapping.variableId,
+                            conversationId
+                          )
 
                         if (mapping.item === 'Total Tokens')
-                          variables.set(mapping.variableId, totalTokens)
-                      })
+                          await variables.set(mapping.variableId, totalTokens)
+                      }
                     },
                   })
                 } catch (e) {
@@ -235,7 +241,10 @@ export const createChatMessage = createAction({
               onMessage: (message) => {
                 answer += message
               },
-              onMessageEnd: ({ totalTokens: tokens, conversationId: id }) => {
+              onMessageEnd: async ({
+                totalTokens: tokens,
+                conversationId: id,
+              }) => {
                 totalTokens = tokens
                 conversationId = id
               },
@@ -302,7 +311,7 @@ const processDifyStream = async (
     }: {
       totalTokens?: number
       conversationId: string
-    }) => void
+    }) => Promise<void>
   }
 ) => {
   let jsonChunk = ''
@@ -317,27 +326,27 @@ const processDifyStream = async (
     const chunk = new TextDecoder().decode(value)
 
     const lines = chunk.toString().split('\n') as string[]
-    lines
-      .filter((line) => line.length > 0 && line !== '\n')
-      .forEach((line) => {
-        jsonChunk += line
-        if (jsonChunk.startsWith('event: ')) {
-          jsonChunk = ''
-          return
-        }
-        if (!jsonChunk.startsWith('data: ') || !jsonChunk.endsWith('}')) return
-
-        const data = JSON.parse(jsonChunk.slice(6)) as Chunk
+    for (const line of lines.filter(
+      (line) => line.length > 0 && line !== '\n'
+    )) {
+      jsonChunk += line
+      if (jsonChunk.startsWith('event: ')) {
         jsonChunk = ''
-        if (data.event === 'message' || data.event === 'agent_message') {
-          callbacks.onMessage(data.answer)
-        }
-        if (data.event === 'message_end') {
-          callbacks.onMessageEnd?.({
-            totalTokens: data.metadata.usage?.total_tokens,
-            conversationId: data.conversation_id,
-          })
-        }
-      })
+        continue
+      }
+      if (!jsonChunk.startsWith('data: ') || !jsonChunk.endsWith('}')) continue
+
+      const data = JSON.parse(jsonChunk.slice(6)) as Chunk
+      jsonChunk = ''
+      if (data.event === 'message' || data.event === 'agent_message') {
+        callbacks.onMessage(data.answer)
+      }
+      if (data.event === 'message_end') {
+        await callbacks.onMessageEnd?.({
+          totalTokens: data.metadata.usage?.total_tokens,
+          conversationId: data.conversation_id,
+        })
+      }
+    }
   }
 }
