@@ -28,6 +28,7 @@ import { useTranslate } from '@tolgee/react'
 import { env } from '@sniper.io/env'
 import DomainStatusIcon from '@/features/customDomains/components/DomainStatusIcon'
 import { SniperNotFoundPage } from '@/features/editor/components/SniperNotFoundPage'
+import { VideoEmbed } from '@/features/onboarding/components/VideoEmbed'
 
 export const SharePage = () => {
   const { t } = useTranslate()
@@ -97,7 +98,7 @@ export const SharePage = () => {
         <Stack maxW="1000px" w="full" pt="10" spacing={10}>
           <Stack spacing={4} align="flex-start">
             <Heading fontSize="2xl" as="h1">
-              Your sniper link
+              {t('share.heading.link')}
             </Heading>
             {sniper && (
               <EditableUrl
@@ -149,10 +150,17 @@ export const SharePage = () => {
               </>
             ) : null}
           </Stack>
-
+          <Stack spacing={4} align="flex-start">
+            <Heading fontSize="2xl" as="h1">
+              {t('share.heading.integration.qiplus')}
+            </Heading>
+            <Wrap spacing={7}>
+              <VideoEmbed type="editor" />
+            </Wrap>
+          </Stack>
           <Stack spacing={4}>
             <Heading fontSize="2xl" as="h1">
-              Embed your sniper
+              {t('share.heading.embed')}
             </Heading>
             <Wrap spacing={7}>
               {integrationsList.map((IntegrationButton, idx) => (

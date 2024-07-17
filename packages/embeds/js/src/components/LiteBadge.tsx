@@ -1,5 +1,5 @@
 import { onCleanup, onMount } from 'solid-js'
-import { SniperLogo } from './icons/SniperLogo'
+// import { SniperLogo } from './icons/SniperLogo'
 
 type Props = {
   botContainer: HTMLDivElement | undefined
@@ -40,14 +40,15 @@ export const LiteBadge = (props: Props) => {
   return (
     <a
       ref={liteBadge}
-      href={'https://www.sniper.io/?utm_source=litebadge'}
+      href={'https://dev.qiplus.com.br/app'}
       target="_blank"
       rel="noopener noreferrer"
       class="lite-badge"
       id="lite-badge"
     >
-      <SniperLogo />
-      <span>Made with Sniper</span>
+      {/* TODO: Reabilitar ao criar um svg da QIPLUS */}
+      {/* <SniperLogo /> */}
+      <span>Made with Sniper QIPLUS</span>
     </a>
   )
 }

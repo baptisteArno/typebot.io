@@ -16,7 +16,7 @@ export const onboardingVideos: Partial<
 > = {
   editor: {
     key: 'editor',
-    youtubeId: 'jp3ggg_42-M',
+    youtubeId: 'vlbtd47OQdI',
     deployedAt: new Date('2024-06-04'),
   },
   [IntegrationBlockType.ZAPIER]: {
