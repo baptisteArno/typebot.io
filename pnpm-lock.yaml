@@ -11,8 +11,8 @@ importers:
   .:
     devDependencies:
       '@tolgee/cli':
-        specifier: 1.3.2
-        version: 1.3.2(typescript@5.4.5)
+        specifier: 2.1.5
+        version: 2.1.5(typescript@5.4.5)
       cross-env:
         specifier: 7.0.3
         version: 7.0.3
@@ -92,11 +92,11 @@ importers:
         specifier: 8.9.3
         version: 8.9.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@tolgee/format-icu':
-        specifier: 5.19.0
-        version: 5.19.0
+        specifier: 5.28.6
+        version: 5.28.6
       '@tolgee/react':
-        specifier: 5.19.0
-        version: 5.19.0(react@18.2.0)
+        specifier: 5.28.6
+        version: 5.28.6(react@18.2.0)
       '@trpc/client':
         specifier: 10.40.0
         version: 10.40.0(@trpc/server@10.40.0)
@@ -4050,10 +4050,6 @@ packages:
       react: ^16.0.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
 
-  '@fastify/busboy@2.1.1':
-    resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
-    engines: {node: '>=14'}
-
   '@floating-ui/core@1.6.0':
     resolution: {integrity: sha512-PcF++MykgmTj3CIyOQbKA/hDzOAiqI3mhuoN44WRCopIs1sgoDoU4oty4Jtqaj/y3oDU6fnVSm4QG0a3t5i0+g==}
 
@@ -5497,24 +5493,24 @@ packages:
     resolution: {integrity: sha512-NpHZBoHTfqyJk0m/s/+CSuAiwtebhYK90mDuf5eylTvgViNOujiaOaxNDxJkQQAsVvHWZftUGAx1EfO1rkKtLg==}
     engines: {node: '>=12'}
 
-  '@tolgee/cli@1.3.2':
-    resolution: {integrity: sha512-7Vf+BFGmQ9jLfDiRrhsgg+h494k0V8BacSdKVZV83PqhibI6/+H9boJvB1oSA+IEwAO9BoBFxy87Y1LN0NI1Cg==}
+  '@tolgee/cli@2.1.5':
+    resolution: {integrity: sha512-9K0xgp0Pyzp13k7be6Kdgu4Jhx44qfpqAXPc4r/n1jxdqh5dl9b18KlaAdaGzFQoMaKxTICmbbQWIxzPa9M0+Q==}
     engines: {node: '>= 18'}
     hasBin: true
 
-  '@tolgee/core@5.19.0':
-    resolution: {integrity: sha512-5zOkxjtxUBEC8xTWtYU5r6bvwHK80s95zH4Y4uLkTcIYTRvn4kY7Z5/Hg5/hyIApA6P8taOrNy/m5favxCmREQ==}
+  '@tolgee/core@5.28.6':
+    resolution: {integrity: sha512-L74YuSmd3dogKj13ks/j/qRORrdK/tx8eCmLlQPnvS512rRLxaBmu5k91ZxgUFy+ZnwWGDkOqezgqWkFXrcuRQ==}
 
-  '@tolgee/format-icu@5.19.0':
-    resolution: {integrity: sha512-hV8MJEFrN90nAWNWHsz7RZy7S/23cIuETZ3exKGlu7m397BTtqT/52eE3bh4lcAeKwvhfF+v/hWT+vZrkNxmwA==}
+  '@tolgee/format-icu@5.28.6':
+    resolution: {integrity: sha512-2bSQW4UUl6ts3A9quooGDIMR2yqpMnpXIZEwmEg5KZDroMEFnMWKLGCIv3pt4SpTR3gtVqheWHSHezv816UR0A==}
 
-  '@tolgee/react@5.19.0':
-    resolution: {integrity: sha512-FYQyymza7NQ/aqPZqpm/7ErHI7T8QeptbjKDSekomaN6nxifumSzYpuvjhBX+y2o/z1HGdqWZR9sc1IJU0VAwQ==}
+  '@tolgee/react@5.28.6':
+    resolution: {integrity: sha512-UorHj4eCWO2Nl5VR8+H+pMxLEHNsElUNP3hmCY1oJAgCm6IFjg+xT25WIvM3wJyRl/JvgvioA52moAA6uBa/cw==}
     peerDependencies:
       react: ^16.14.0 || ^17.0.1 || ^18.1.0
 
-  '@tolgee/web@5.19.0':
-    resolution: {integrity: sha512-a57howuvHz6KGDg8wu6K1KxuBlTUD/AV0+1UKj+2xiFECNQSqwP8/bGO+9Hb9xkNqVxx+l1R13xK9XSZMGXNhw==}
+  '@tolgee/web@5.28.6':
+    resolution: {integrity: sha512-9+FrXhYHryp2/WXSOiY9n9XAjeZxIixx9FBjx8z2GBsUhIM9VFDAA4/9bb884Gk5fmk3shQ+tehSSAvLLnihgQ==}
 
   '@tootallnate/once@2.0.0':
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
@@ -7203,6 +7199,10 @@ packages:
   commander@11.1.0:
     resolution: {integrity: sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==}
     engines: {node: '>=16'}
+
+  commander@12.1.0:
+    resolution: {integrity: sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA==}
+    engines: {node: '>=18'}
 
   commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
@@ -9416,6 +9416,9 @@ packages:
   jsonfile@6.1.0:
     resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==}
 
+  jsonschema@1.4.1:
+    resolution: {integrity: sha512-S6cATIPVv1z0IlxdN+zUk5EPjkGCdnhN4wVSBlvoUO1tOLJootbo9CquNJmbIh4yikWHiUedhRYrNPn1arpEmQ==}
+
   jsonwebtoken@9.0.1:
     resolution: {integrity: sha512-K8wx7eJ5TPvEjuiVSkv167EVboBDv9PZdDoF7BgeQnBLVvZWW9clr2PsQHVJDTKaEIH5JBIwHujGcHp7GgI2eg==}
     engines: {node: '>=12', npm: '>=6'}
@@ -10456,8 +10459,14 @@ packages:
     resolution: {integrity: sha512-dgxA6UZHary6NXUHEDj5TWt8ogv0+ibH+b4pT5RrWMjiRZVylNwLcw/2ubDrX5n0oUmHX/ZgudMJeemxzOvz7A==}
     hasBin: true
 
+  openapi-fetch@0.9.8:
+    resolution: {integrity: sha512-zM6elH0EZStD/gSiNlcPrzXcVQ/pZo3BDvC6CDwRDUt1dDzxlshpmQnpD6cZaJ39THaSmwVCxxRrPKNM1hHrDg==}
+
   openapi-types@12.1.3:
     resolution: {integrity: sha512-N4YtSYJqghVu4iek2ZUvcN/0aqH1kRDuNqzcycDxhOUpg7GdvLa2F3DgS6yBNhInhv2r/6I0Flkn7CqL8+nIcw==}
+
+  openapi-typescript-helpers@0.0.8:
+    resolution: {integrity: sha512-1eNjQtbfNi5Z/kFhagDIaIRj6qqDzhjNJKz8cmMW0CVdGwT6e1GLbAfgI0d28VTJa1A8jz82jm/4dG8qNoNS8g==}
 
   openapi3-ts@4.2.2:
     resolution: {integrity: sha512-+9g4actZKeb3czfi9gVQ4Br2Ju3KwhCAQJBNaKgye5KggqcBLIhFHH+nIkcm0BUX00TrAJl6dH4JWgM4G4JWrw==}
@@ -11847,6 +11856,9 @@ packages:
     resolution: {integrity: sha512-HnLOCR3vjcY8beoNLtcjZ5/nxn2afmME6lhrDrebokqMap+XbeW8n9TXpPDOqdGK5qcI3oT0GKTW6wC7EMiVqA==}
     engines: {node: '>=12'}
 
+  string.fromcodepoint@0.2.1:
+    resolution: {integrity: sha512-n69H31OnxSGSZyZbgBlvYIXlrMhJQ0dQAX1js1QDhpaUH6zmU3QYlj07bCwCNlPOu3oRXIubGPl2gDGnHsiCqg==}
+
   string.prototype.matchall@4.0.10:
     resolution: {integrity: sha512-rGXbGmOEosIQi6Qva94HUjgPs9vKW+dkG7Y8Q5O2OYkWL6wFaTRZO8zM4mhP94uX55wgyrXzfS2aGtGzUL7EJQ==}
 
@@ -12386,12 +12398,11 @@ packages:
   undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
 
-  undici@5.28.3:
-    resolution: {integrity: sha512-3ItfzbrhDlINjaP0duwnNsKpDQk3acHI3gVJ1z4fmwMK31k5G9OVIAMLSIaP6w4FaGkaAkN6zaQO9LUvZ1t7VA==}
-    engines: {node: '>=14.0'}
-
   unenv@1.9.0:
     resolution: {integrity: sha512-QKnFNznRxmbOF1hDgzpqrlIf6NC5sbZ2OJ+5Wl3OX8uM+LUJXbj4TXvLJCtwbPTmbMHCLIz6JLKNinNsMShK9g==}
+
+  unescape-js@1.1.4:
+    resolution: {integrity: sha512-42SD8NOQEhdYntEiUQdYq/1V/YHwr1HLwlHuTJB5InVVdOSbgI6xu8jK5q65yIzuFCfczzyDF/7hbGzVbyCw0g==}
 
   unicode-canonical-property-names-ecmascript@2.0.0:
     resolution: {integrity: sha512-yY5PpDlfVIU5+y/BSCxAJRBIS1Zc2dDG3Ujq+sR0U+JjUevW2JhocOF+soROYDSaAezOzOKuyyixhD6mBknSmQ==}
@@ -12859,9 +12870,6 @@ packages:
   xmlhttprequest-ssl@2.0.0:
     resolution: {integrity: sha512-QKxVRxiRACQcVuQEYFsI1hhkrMlrXHPegbbd1yn9UHOmRxY+si12nQYzri3vbzt8VdTTRviqcKxcyllFas5z2A==}
     engines: {node: '>=0.4.0'}
-
-  xstate@4.38.3:
-    resolution: {integrity: sha512-SH7nAaaPQx57dx6qvfcIgqKRXIh4L0A1iYEqim4s1u7c9VoCgzZc+63FY90AKU4ZzOC2cfJzTnpO4zK7fCUzzw==}
 
   y18n@4.0.3:
     resolution: {integrity: sha512-JKhqTOwSrqNA1NY5lSztJ1GrBiUodLMmIZuLiDaMRJ+itFd+ABVE8XBjOvIWL+rSqNDC74LCSFmlb/U4UZ4hJQ==}
@@ -15469,8 +15477,6 @@ snapshots:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
-  '@fastify/busboy@2.1.1': {}
-
   '@floating-ui/core@1.6.0':
     dependencies:
       '@floating-ui/utils': 0.2.1
@@ -17204,35 +17210,36 @@ snapshots:
 
   '@tanstack/table-core@8.9.3': {}
 
-  '@tolgee/cli@1.3.2(typescript@5.4.5)':
+  '@tolgee/cli@2.1.5(typescript@5.4.5)':
     dependencies:
       ansi-colors: 4.1.3
       base32-decode: 1.0.0
-      commander: 11.1.0
+      commander: 12.1.0
       cosmiconfig: 8.3.6(typescript@5.4.5)
       form-data: 4.0.0
-      glob: 10.3.10
+      glob: 10.4.5
       json5: 2.2.3
-      undici: 5.28.3
+      jsonschema: 1.4.1
+      openapi-fetch: 0.9.8
+      unescape-js: 1.1.4
       vscode-oniguruma: 1.7.0
       vscode-textmate: 9.0.0
-      xstate: 4.38.3
       yauzl: 2.10.0
     transitivePeerDependencies:
       - typescript
 
-  '@tolgee/core@5.19.0': {}
+  '@tolgee/core@5.28.6': {}
 
-  '@tolgee/format-icu@5.19.0': {}
+  '@tolgee/format-icu@5.28.6': {}
 
-  '@tolgee/react@5.19.0(react@18.2.0)':
+  '@tolgee/react@5.28.6(react@18.2.0)':
     dependencies:
-      '@tolgee/web': 5.19.0
+      '@tolgee/web': 5.28.6
       react: 18.2.0
 
-  '@tolgee/web@5.19.0':
+  '@tolgee/web@5.28.6':
     dependencies:
-      '@tolgee/core': 5.19.0
+      '@tolgee/core': 5.28.6
 
   '@tootallnate/once@2.0.0': {}
 
@@ -19555,6 +19562,8 @@ snapshots:
   commander@10.0.1: {}
 
   commander@11.1.0: {}
+
+  commander@12.1.0: {}
 
   commander@2.20.3: {}
 
@@ -22329,6 +22338,8 @@ snapshots:
     optionalDependencies:
       graceful-fs: 4.2.11
 
+  jsonschema@1.4.1: {}
+
   jsonwebtoken@9.0.1:
     dependencies:
       jws: 3.2.2
@@ -24010,7 +24021,13 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
+  openapi-fetch@0.9.8:
+    dependencies:
+      openapi-typescript-helpers: 0.0.8
+
   openapi-types@12.1.3: {}
+
+  openapi-typescript-helpers@0.0.8: {}
 
   openapi3-ts@4.2.2:
     dependencies:
@@ -25614,6 +25631,8 @@ snapshots:
       emoji-regex: 9.2.2
       strip-ansi: 7.1.0
 
+  string.fromcodepoint@0.2.1: {}
+
   string.prototype.matchall@4.0.10:
     dependencies:
       call-bind: 1.0.7
@@ -26232,10 +26251,6 @@ snapshots:
 
   undici-types@5.26.5: {}
 
-  undici@5.28.3:
-    dependencies:
-      '@fastify/busboy': 2.1.1
-
   unenv@1.9.0:
     dependencies:
       consola: 3.2.3
@@ -26243,6 +26258,10 @@ snapshots:
       mime: 3.0.0
       node-fetch-native: 1.6.2
       pathe: 1.1.2
+
+  unescape-js@1.1.4:
+    dependencies:
+      string.fromcodepoint: 0.2.1
 
   unicode-canonical-property-names-ecmascript@2.0.0: {}
 
@@ -26774,8 +26793,6 @@ snapshots:
   xmlchars@2.2.0: {}
 
   xmlhttprequest-ssl@2.0.0: {}
-
-  xstate@4.38.3: {}
 
   y18n@4.0.3: {}
 

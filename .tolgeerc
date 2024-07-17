@@ -1,5 +1,8 @@
 {
-  "apiUrl": "https://tolgee.server.baptistearno.com",
-  "projectId": "1",
-  "delimiter": null
+  "$schema": "https://tolgee.io/cli-schema.json",
+  "projectId": 8454,
+  "pull": {
+    "path": "./apps/builder/src/i18n",
+    "delimiter": null
+  }
 }
