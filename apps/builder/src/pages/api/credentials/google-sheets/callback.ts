@@ -79,13 +79,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return {
         ...group,
         blocks: group.blocks.map((block) => {
-          if (block.id !== blockId || !('options' in block)) return block
+          if (block.id !== blockId) return block
           return {
             ...block,
-            options: {
-              ...block.options,
-              credentialsId,
-            },
+            options:
+              'options' in block
+                ? { ...block.options, credentialsId }
+                : {
+                    credentialsId,
+                  },
           }
         }),
       }
