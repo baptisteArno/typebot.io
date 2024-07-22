@@ -2469,78 +2469,6 @@
                                               "id",
                                               "type"
                                             ]
-                                          },
-                                          {
-                                            "type": "object",
-                                            "properties": {
-                                              "id": {
-                                                "type": "string"
-                                              },
-                                              "outgoingEdgeId": {
-                                                "type": "string"
-                                              },
-                                              "type": {
-                                                "type": "string",
-                                                "enum": [
-                                                  "Zemantic AI"
-                                                ]
-                                              },
-                                              "blockId": {
-                                                "type": "string"
-                                              },
-                                              "options": {
-                                                "type": "object",
-                                                "properties": {
-                                                  "credentialsId": {
-                                                    "type": "string"
-                                                  },
-                                                  "projectId": {
-                                                    "type": "string"
-                                                  },
-                                                  "systemPrompt": {
-                                                    "type": "string"
-                                                  },
-                                                  "prompt": {
-                                                    "type": "string"
-                                                  },
-                                                  "query": {
-                                                    "type": "string"
-                                                  },
-                                                  "maxResults": {
-                                                    "type": "integer"
-                                                  },
-                                                  "responseMapping": {
-                                                    "type": "array",
-                                                    "items": {
-                                                      "type": "object",
-                                                      "properties": {
-                                                        "id": {
-                                                          "type": "string"
-                                                        },
-                                                        "valueToExtract": {
-                                                          "type": "string",
-                                                          "enum": [
-                                                            "Summary",
-                                                            "Results"
-                                                          ]
-                                                        },
-                                                        "variableId": {
-                                                          "type": "string"
-                                                        }
-                                                      },
-                                                      "required": [
-                                                        "id",
-                                                        "valueToExtract"
-                                                      ]
-                                                    }
-                                                  }
-                                                }
-                                              }
-                                            },
-                                            "required": [
-                                              "id",
-                                              "type"
-                                            ]
                                           }
                                         ]
                                       }
@@ -6838,78 +6766,6 @@
                                           "id",
                                           "type"
                                         ]
-                                      },
-                                      {
-                                        "type": "object",
-                                        "properties": {
-                                          "id": {
-                                            "type": "string"
-                                          },
-                                          "outgoingEdgeId": {
-                                            "type": "string"
-                                          },
-                                          "type": {
-                                            "type": "string",
-                                            "enum": [
-                                              "Zemantic AI"
-                                            ]
-                                          },
-                                          "blockId": {
-                                            "type": "string"
-                                          },
-                                          "options": {
-                                            "type": "object",
-                                            "properties": {
-                                              "credentialsId": {
-                                                "type": "string"
-                                              },
-                                              "projectId": {
-                                                "type": "string"
-                                              },
-                                              "systemPrompt": {
-                                                "type": "string"
-                                              },
-                                              "prompt": {
-                                                "type": "string"
-                                              },
-                                              "query": {
-                                                "type": "string"
-                                              },
-                                              "maxResults": {
-                                                "type": "integer"
-                                              },
-                                              "responseMapping": {
-                                                "type": "array",
-                                                "items": {
-                                                  "type": "object",
-                                                  "properties": {
-                                                    "id": {
-                                                      "type": "string"
-                                                    },
-                                                    "valueToExtract": {
-                                                      "type": "string",
-                                                      "enum": [
-                                                        "Summary",
-                                                        "Results"
-                                                      ]
-                                                    },
-                                                    "variableId": {
-                                                      "type": "string"
-                                                    }
-                                                  },
-                                                  "required": [
-                                                    "id",
-                                                    "valueToExtract"
-                                                  ]
-                                                }
-                                              }
-                                            }
-                                          }
-                                        },
-                                        "required": [
-                                          "id",
-                                          "type"
-                                        ]
                                       }
                                     ]
                                   }
@@ -10344,78 +10200,6 @@
                                           "id",
                                           "type"
                                         ]
-                                      },
-                                      {
-                                        "type": "object",
-                                        "properties": {
-                                          "id": {
-                                            "type": "string"
-                                          },
-                                          "outgoingEdgeId": {
-                                            "type": "string"
-                                          },
-                                          "type": {
-                                            "type": "string",
-                                            "enum": [
-                                              "Zemantic AI"
-                                            ]
-                                          },
-                                          "blockId": {
-                                            "type": "string"
-                                          },
-                                          "options": {
-                                            "type": "object",
-                                            "properties": {
-                                              "credentialsId": {
-                                                "type": "string"
-                                              },
-                                              "projectId": {
-                                                "type": "string"
-                                              },
-                                              "systemPrompt": {
-                                                "type": "string"
-                                              },
-                                              "prompt": {
-                                                "type": "string"
-                                              },
-                                              "query": {
-                                                "type": "string"
-                                              },
-                                              "maxResults": {
-                                                "type": "integer"
-                                              },
-                                              "responseMapping": {
-                                                "type": "array",
-                                                "items": {
-                                                  "type": "object",
-                                                  "properties": {
-                                                    "id": {
-                                                      "type": "string"
-                                                    },
-                                                    "valueToExtract": {
-                                                      "type": "string",
-                                                      "enum": [
-                                                        "Summary",
-                                                        "Results"
-                                                      ]
-                                                    },
-                                                    "variableId": {
-                                                      "type": "string"
-                                                    }
-                                                  },
-                                                  "required": [
-                                                    "id",
-                                                    "valueToExtract"
-                                                  ]
-                                                }
-                                              }
-                                            }
-                                          }
-                                        },
-                                        "required": [
-                                          "id",
-                                          "type"
-                                        ]
                                       }
                                     ]
                                   }
@@ -12963,37 +12747,6 @@
                               "type": {
                                 "type": "string",
                                 "enum": [
-                                  "zemantic-ai"
-                                ]
-                              },
-                              "workspaceId": {
-                                "type": "string"
-                              },
-                              "name": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "data",
-                              "type",
-                              "workspaceId",
-                              "name"
-                            ]
-                          },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "data": {
-                                "type": "object",
-                                "properties": {
-                                  "apiKey": {
-                                    "type": "string"
-                                  }
-                                }
-                              },
-                              "type": {
-                                "type": "string",
-                                "enum": [
                                   "chat-node"
                                 ]
                               },
@@ -13345,9 +13098,7 @@
                 "google sheets",
                 "stripe",
                 "whatsApp",
-                "zemanticAi",
                 "openai",
-                "zemantic-ai",
                 "chat-node",
                 "dify-ai",
                 "mistral",
@@ -13383,9 +13134,7 @@
                               "google sheets",
                               "stripe",
                               "whatsApp",
-                              "zemanticAi",
                               "openai",
-                              "zemantic-ai",
                               "chat-node",
                               "dify-ai",
                               "mistral",
@@ -13823,37 +13572,6 @@
                             "type": "string",
                             "enum": [
                               "openai"
-                            ]
-                          },
-                          "workspaceId": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "name",
-                          "data",
-                          "type",
-                          "workspaceId"
-                        ]
-                      },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "name": {
-                            "type": "string"
-                          },
-                          "data": {
-                            "type": "object",
-                            "properties": {
-                              "apiKey": {
-                                "type": "string"
-                              }
-                            }
-                          },
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "zemantic-ai"
                             ]
                           },
                           "workspaceId": {
@@ -19833,78 +19551,6 @@
               "type": {
                 "type": "string",
                 "enum": [
-                  "Zemantic AI"
-                ]
-              },
-              "blockId": {
-                "type": "string"
-              },
-              "options": {
-                "type": "object",
-                "properties": {
-                  "credentialsId": {
-                    "type": "string"
-                  },
-                  "projectId": {
-                    "type": "string"
-                  },
-                  "systemPrompt": {
-                    "type": "string"
-                  },
-                  "prompt": {
-                    "type": "string"
-                  },
-                  "query": {
-                    "type": "string"
-                  },
-                  "maxResults": {
-                    "type": "integer"
-                  },
-                  "responseMapping": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "valueToExtract": {
-                          "type": "string",
-                          "enum": [
-                            "Summary",
-                            "Results"
-                          ]
-                        },
-                        "variableId": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "id",
-                        "valueToExtract"
-                      ]
-                    }
-                  }
-                }
-              }
-            },
-            "required": [
-              "id",
-              "type"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "outgoingEdgeId": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
                   "openai"
                 ]
               },
@@ -20448,99 +20094,6 @@
                       },
                       "saveUrlInVariableId": {
                         "type": "string"
-                      }
-                    },
-                    "required": [
-                      "action"
-                    ]
-                  }
-                ]
-              }
-            },
-            "required": [
-              "id",
-              "type"
-            ]
-          },
-          {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "outgoingEdgeId": {
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "zemantic-ai"
-                ]
-              },
-              "options": {
-                "oneOf": [
-                  {
-                    "type": "object",
-                    "properties": {
-                      "projectId": {
-                        "type": "string"
-                      },
-                      "credentialsId": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "projectId": {
-                        "type": "string"
-                      },
-                      "credentialsId": {
-                        "type": "string"
-                      },
-                      "action": {
-                        "type": "string",
-                        "enum": [
-                          "Search documents"
-                        ]
-                      },
-                      "query": {
-                        "type": "string"
-                      },
-                      "maxResults": {
-                        "anyOf": [
-                          {
-                            "type": "number"
-                          },
-                          {}
-                        ]
-                      },
-                      "systemPrompt": {
-                        "type": "string"
-                      },
-                      "prompt": {
-                        "type": "string"
-                      },
-                      "responseMapping": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "item": {
-                              "type": "string",
-                              "enum": [
-                                "Summary",
-                                "Document IDs",
-                                "Texts",
-                                "Scores"
-                              ]
-                            },
-                            "variableId": {
-                              "type": "string"
-                            }
-                          }
-                        }
                       }
                     },
                     "required": [
@@ -26532,78 +26085,6 @@
                           "id",
                           "type"
                         ]
-                      },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "string"
-                          },
-                          "outgoingEdgeId": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "Zemantic AI"
-                            ]
-                          },
-                          "blockId": {
-                            "type": "string"
-                          },
-                          "options": {
-                            "type": "object",
-                            "properties": {
-                              "credentialsId": {
-                                "type": "string"
-                              },
-                              "projectId": {
-                                "type": "string"
-                              },
-                              "systemPrompt": {
-                                "type": "string"
-                              },
-                              "prompt": {
-                                "type": "string"
-                              },
-                              "query": {
-                                "type": "string"
-                              },
-                              "maxResults": {
-                                "type": "integer"
-                              },
-                              "responseMapping": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "id": {
-                                      "type": "string"
-                                    },
-                                    "valueToExtract": {
-                                      "type": "string",
-                                      "enum": [
-                                        "Summary",
-                                        "Results"
-                                      ]
-                                    },
-                                    "variableId": {
-                                      "type": "string"
-                                    }
-                                  },
-                                  "required": [
-                                    "id",
-                                    "valueToExtract"
-                                  ]
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "required": [
-                          "id",
-                          "type"
-                        ]
                       }
                     ]
                   }
@@ -29401,78 +28882,6 @@
                                 ]
                               }
                             ]
-                          }
-                        },
-                        "required": [
-                          "id",
-                          "type"
-                        ]
-                      },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "string"
-                          },
-                          "outgoingEdgeId": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "Zemantic AI"
-                            ]
-                          },
-                          "blockId": {
-                            "type": "string"
-                          },
-                          "options": {
-                            "type": "object",
-                            "properties": {
-                              "credentialsId": {
-                                "type": "string"
-                              },
-                              "projectId": {
-                                "type": "string"
-                              },
-                              "systemPrompt": {
-                                "type": "string"
-                              },
-                              "prompt": {
-                                "type": "string"
-                              },
-                              "query": {
-                                "type": "string"
-                              },
-                              "maxResults": {
-                                "type": "integer"
-                              },
-                              "responseMapping": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "id": {
-                                      "type": "string"
-                                    },
-                                    "valueToExtract": {
-                                      "type": "string",
-                                      "enum": [
-                                        "Summary",
-                                        "Results"
-                                      ]
-                                    },
-                                    "variableId": {
-                                      "type": "string"
-                                    }
-                                  },
-                                  "required": [
-                                    "id",
-                                    "valueToExtract"
-                                  ]
-                                }
-                              }
-                            }
                           }
                         },
                         "required": [

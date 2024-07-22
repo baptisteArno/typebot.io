@@ -1615,27 +1615,6 @@ importers:
         specifier: 5.4.5
         version: 5.4.5
 
-  packages/forge/blocks/zemanticAi:
-    devDependencies:
-      '@typebot.io/forge':
-        specifier: workspace:*
-        version: link:../../core
-      '@typebot.io/lib':
-        specifier: workspace:*
-        version: link:../../../lib
-      '@typebot.io/tsconfig':
-        specifier: workspace:*
-        version: link:../../../tsconfig
-      '@types/react':
-        specifier: 18.2.15
-        version: 18.2.15
-      ky:
-        specifier: 1.2.4
-        version: 1.2.4
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-
   packages/forge/cli:
     devDependencies:
       '@clack/prompts':
@@ -1705,9 +1684,6 @@ importers:
       '@typebot.io/together-ai-block':
         specifier: workspace:*
         version: link:../blocks/togetherAi
-      '@typebot.io/zemantic-ai-block':
-        specifier: workspace:*
-        version: link:../blocks/zemanticAi
 
   packages/lib:
     dependencies:
