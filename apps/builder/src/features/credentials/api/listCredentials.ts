@@ -6,6 +6,8 @@ import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWork
 import { credentialsTypeSchema } from '@typebot.io/schemas'
 import { isDefined } from '@udecode/plate-common'
 
+const deletedCredentialsTypes = ['zemanticAi', 'zemantic-ai']
+
 const outputCredentialsSchema = z.array(
   z.object({
     id: z.string(),
@@ -62,7 +64,9 @@ export const listCredentials = authenticatedProcedure
       credentials: outputCredentialsSchema.parse(
         isDefined(type)
           ? workspace.credentials
-          : workspace.credentials.sort((a, b) => a.type.localeCompare(b.type))
+          : workspace.credentials
+              .filter((c) => !deletedCredentialsTypes.includes(c.type))
+              .sort((a, b) => a.type.localeCompare(b.type))
       ),
     }
   })
