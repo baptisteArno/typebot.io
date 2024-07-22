@@ -10,9 +10,7 @@ export const parseDateInput =
     return {
       ...block,
       options: {
-        ...deepParseVariables(variables, { removeEmptyStrings: true })(
-          block.options
-        ),
+        ...deepParseVariables(variables)(block.options),
         min: parseDateLimit(
           block.options.min,
           block.options.hasTime,
