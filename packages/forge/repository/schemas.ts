@@ -19,14 +19,11 @@ import { qrCodeBlock } from '@typebot.io/qrcode-block'
 import { qrCodeBlockSchema } from '@typebot.io/qrcode-block/schemas'
 import { togetherAiBlock } from '@typebot.io/together-ai-block'
 import { togetherAiBlockSchema } from '@typebot.io/together-ai-block/schemas'
-import { zemanticAiBlock } from '@typebot.io/zemantic-ai-block'
-import { zemanticAiBlockSchema } from '@typebot.io/zemantic-ai-block/schemas'
 import { nocodbBlock } from '@typebot.io/nocodb-block'
 import { nocodbBlockSchema } from '@typebot.io/nocodb-block/schemas'
 
 export const forgedBlockSchemas = {
   [openAIBlock.id]: openAIBlockSchema,
-  [zemanticAiBlock.id]: zemanticAiBlockSchema,
   [calComBlock.id]: calComBlockSchema,
   [chatNodeBlock.id]: chatNodeBlockSchema,
   [qrCodeBlock.id]: qrCodeBlockSchema,

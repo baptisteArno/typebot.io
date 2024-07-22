@@ -14,14 +14,11 @@ import { openAIBlock } from '@typebot.io/openai-block'
 import { openAICredentialsSchema } from '@typebot.io/openai-block/schemas'
 import { togetherAiBlock } from '@typebot.io/together-ai-block'
 import { togetherAiCredentialsSchema } from '@typebot.io/together-ai-block/schemas'
-import { zemanticAiBlock } from '@typebot.io/zemantic-ai-block'
-import { zemanticAiCredentialsSchema } from '@typebot.io/zemantic-ai-block/schemas'
 import { nocodbBlock } from '@typebot.io/nocodb-block'
 import { nocodbCredentialsSchema } from '@typebot.io/nocodb-block/schemas'
 
 export const forgedCredentialsSchemas = {
   [openAIBlock.id]: openAICredentialsSchema,
-  [zemanticAiBlock.id]: zemanticAiCredentialsSchema,
   [chatNodeBlock.id]: chatNodeCredentialsSchema,
   [difyAiBlock.id]: difyAiCredentialsSchema,
   [mistralBlock.id]: mistralCredentialsSchema,

@@ -219,12 +219,6 @@ export const BlockLabel = ({ type, ...props }: Props): JSX.Element => {
           {t('editor.sidebarBlock.pixel.label')}
         </Text>
       )
-    case IntegrationBlockType.ZEMANTIC_AI:
-      return (
-        <Text fontSize="sm" {...props}>
-          {t('editor.sidebarBlock.zemanticAi.label')}
-        </Text>
-      )
     default:
       return <ForgedBlockLabel type={type} {...props} />
   }

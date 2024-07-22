@@ -65,8 +65,6 @@ export const getHelpDocUrl = (
       return 'https://docs.typebot.io/editor/blocks/logic/jump'
     case IntegrationBlockType.PIXEL:
       return 'https://docs.typebot.io/editor/blocks/integrations/pixel'
-    case IntegrationBlockType.ZEMANTIC_AI:
-      return 'https://docs.typebot.io/editor/blocks/integrations/zemantic-ai'
     case LogicBlockType.CONDITION:
       return 'https://docs.typebot.io/editor/blocks/logic/condition'
     default:

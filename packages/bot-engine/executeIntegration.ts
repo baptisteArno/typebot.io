@@ -4,7 +4,6 @@ import { executeChatwootBlock } from './blocks/integrations/chatwoot/executeChat
 import { executeGoogleAnalyticsBlock } from './blocks/integrations/legacy/googleAnalytics/executeGoogleAnalyticsBlock'
 import { executeGoogleSheetBlock } from './blocks/integrations/googleSheets/executeGoogleSheetBlock'
 import { executePixelBlock } from './blocks/integrations/pixel/executePixelBlock'
-import { executeZemanticAiBlock } from './blocks/integrations/zemanticAi/executeZemanticAiBlock'
 import { IntegrationBlock, SessionState } from '@typebot.io/schemas'
 import { ExecuteIntegrationResponse } from './types'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
@@ -50,11 +49,6 @@ export const executeIntegration =
         }
       case IntegrationBlockType.PIXEL:
         return executePixelBlock(state, block)
-      case IntegrationBlockType.ZEMANTIC_AI:
-        return {
-          ...(await executeZemanticAiBlock(state, block)),
-          startTimeShouldBeUpdated: true,
-        }
       default:
         return {
           ...(await executeForgedBlock(state, block)),
