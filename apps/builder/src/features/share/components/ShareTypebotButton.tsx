@@ -4,6 +4,7 @@ import {
   PopoverContent,
   Button,
   chakra,
+  Portal,
 } from '@chakra-ui/react'
 import { UsersIcon } from '@/components/icons'
 import React from 'react'
@@ -28,13 +29,15 @@ export const ShareTypebotButton = ({ isLoading }: { isLoading: boolean }) => {
           </chakra.span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent
-        shadow="lg"
-        width="430px"
-        rootProps={{ style: { transform: 'scale(0)' } }}
-      >
-        <SharePopoverContent />
-      </PopoverContent>
+      <Portal>
+        <PopoverContent
+          shadow="lg"
+          width="430px"
+          rootProps={{ style: { transform: 'scale(0)' } }}
+        >
+          <SharePopoverContent />
+        </PopoverContent>
+      </Portal>
     </Popover>
   )
 }
