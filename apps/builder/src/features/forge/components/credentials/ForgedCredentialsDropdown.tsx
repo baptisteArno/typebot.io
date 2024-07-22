@@ -16,6 +16,7 @@ import { trpc } from '@/lib/trpc'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { ForgedBlockDefinition } from '@typebot.io/forge-repository/types'
 import { useToast } from '@/hooks/useToast'
+import { Credentials } from '@typebot.io/schemas/features/credentials'
 
 type Props = Omit<ButtonProps, 'type'> & {
   blockDef: ForgedBlockDefinition
@@ -34,13 +35,14 @@ export const ForgedCredentialsDropdown = ({
   const router = useRouter()
   const { showToast } = useToast()
   const { workspace, currentRole } = useWorkspace()
-  const { data, refetch, isLoading } = trpc.forge.listCredentials.useQuery(
-    {
-      workspaceId: workspace?.id as string,
-      type: blockDef.id,
-    },
-    { enabled: !!workspace?.id }
-  )
+  const { data, refetch, isLoading } =
+    trpc.credentials.listCredentials.useQuery(
+      {
+        workspaceId: workspace?.id as string,
+        type: blockDef.id as Credentials['type'],
+      },
+      { enabled: !!workspace?.id }
+    )
   const [isDeleting, setIsDeleting] = useState<string>()
 
   const { mutate } = trpc.credentials.deleteCredentials.useMutation({

@@ -16,7 +16,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!state) return badRequest(res)
   const { typebotId, redirectUrl, blockId, workspaceId } = JSON.parse(
     Buffer.from(state, 'base64').toString()
-  )
+  ) as {
+    redirectUrl: string
+    workspaceId: string
+    typebotId?: string
+    blockId?: string
+  }
   if (req.method === 'GET') {
     const code = req.query.code as string | undefined
     if (!workspaceId) return badRequest(res)
@@ -55,6 +60,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { id: credentialsId } = await prisma.credentials.create({
       data: credentials,
     })
+    if (!typebotId) return res.redirect(`${redirectUrl.split('?')[0]}`)
     const typebot = await prisma.typebot.findFirst({
       where: {
         id: typebotId,
@@ -73,13 +79,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return {
         ...group,
         blocks: group.blocks.map((block) => {
-          if (block.id !== blockId || !('options' in block)) return block
+          if (block.id !== blockId) return block
           return {
             ...block,
-            options: {
-              ...block.options,
-              credentialsId,
-            },
+            options:
+              'options' in block
+                ? { ...block.options, credentialsId }
+                : {
+                    credentialsId,
+                  },
           }
         }),
       }

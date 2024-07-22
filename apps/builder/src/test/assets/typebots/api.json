@@ -1,31 +1,24 @@
 {
-  "id": "qujHPjZ44xbrHb1hS1d8qC",
-  "createdAt": "2022-02-05T06:21:16.522Z",
-  "updatedAt": "2022-02-05T06:21:16.522Z",
+  "version": "6",
+  "id": "clyoe5iot0001grw96sdkhsfo",
   "name": "My typebot",
-  "folderId": null,
-  "groups": [
+  "events": [
     {
       "id": "k6kY6gwRE6noPoYQNGzgUq",
-      "blocks": [
-        {
-          "id": "22HP69iipkLjJDTUcc1AWW",
-          "type": "start",
-          "label": "Start",
-          "groupId": "k6kY6gwRE6noPoYQNGzgUq",
-          "outgoingEdgeId": "oNvqaqNExdSH2kKEhKZHuE"
-        }
-      ],
-      "title": "Start",
-      "graphCoordinates": { "x": 0, "y": 0 }
-    },
+      "outgoingEdgeId": "oNvqaqNExdSH2kKEhKZHuE",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
     {
       "id": "kinRXxYop2X4d7F9qt8WNB",
+      "title": "Welcome",
+      "graphCoordinates": { "x": 1, "y": 148 },
       "blocks": [
         {
           "id": "sc1y8VwDabNJgiVTBi4qtif",
           "type": "text",
-          "groupId": "kinRXxYop2X4d7F9qt8WNB",
           "content": {
             "richText": [
               {
@@ -42,37 +35,27 @@
         {
           "id": "s7YqZTBeyCa4Hp3wN2j922c",
           "type": "image",
-          "groupId": "kinRXxYop2X4d7F9qt8WNB",
           "content": {
             "url": "https://media2.giphy.com/media/XD9o33QG9BoMis7iM4/giphy.gif?cid=fe3852a3ihg8rvipzzky5lybmdyq38fhke2tkrnshwk52c7d&rid=giphy.gif&ct=g"
           }
         },
         {
           "id": "sbjZWLJGVkHAkDqS4JQeGow",
+          "outgoingEdgeId": "i51YhHpk1dtSyduFNf5Wim",
           "type": "choice input",
-          "items": [
-            {
-              "id": "hQw2zbp7FDX7XYK9cFpbgC",
-              "type": 0,
-              "blockId": "sbjZWLJGVkHAkDqS4JQeGow",
-              "content": "Hi!"
-            }
-          ],
-          "groupId": "kinRXxYop2X4d7F9qt8WNB",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false },
-          "outgoingEdgeId": "i51YhHpk1dtSyduFNf5Wim"
+          "items": [{ "id": "hQw2zbp7FDX7XYK9cFpbgC", "content": "Hi!" }],
+          "options": { "isMultipleChoice": false, "buttonLabel": "Send" }
         }
-      ],
-      "title": "Welcome",
-      "graphCoordinates": { "x": 1, "y": 148 }
+      ]
     },
     {
       "id": "o4SH1UtKANnW5N5D67oZUz",
+      "title": "Email",
+      "graphCoordinates": { "x": 669, "y": 141 },
       "blocks": [
         {
           "id": "sxeYubYN6XzhAfG7m9Fivhc",
           "type": "text",
-          "groupId": "o4SH1UtKANnW5N5D67oZUz",
           "content": {
             "richText": [
               {
@@ -85,7 +68,6 @@
         {
           "id": "scQ5kduafAtfP9T8SHUJnGi",
           "type": "text",
-          "groupId": "o4SH1UtKANnW5N5D67oZUz",
           "content": {
             "richText": [
               {
@@ -99,25 +81,23 @@
         },
         {
           "id": "snbsad18Bgry8yZ8DZCfdFD",
+          "outgoingEdgeId": "w3MiN1Ct38jT5NykVsgmb5",
           "type": "email input",
-          "groupId": "o4SH1UtKANnW5N5D67oZUz",
           "options": {
-            "labels": { "button": "Send", "placeholder": "Type your email..." },
-            "variableId": "3VFChNVSCXQ2rXv4DrJ8Ah"
-          },
-          "outgoingEdgeId": "w3MiN1Ct38jT5NykVsgmb5"
+            "variableId": "3VFChNVSCXQ2rXv4DrJ8Ah",
+            "labels": { "placeholder": "Type your email...", "button": "Send" }
+          }
         }
-      ],
-      "title": "Email",
-      "graphCoordinates": { "x": 669, "y": 141 }
+      ]
     },
     {
       "id": "q5dAhqSTCaNdiGSJm9B9Rw",
+      "title": "Name",
+      "graphCoordinates": { "x": 340, "y": 143 },
       "blocks": [
         {
           "id": "sgtE2Sy7cKykac9B223Kq9R",
           "type": "text",
-          "groupId": "q5dAhqSTCaNdiGSJm9B9Rw",
           "content": {
             "richText": [
               { "type": "p", "children": [{ "text": "What's your name?" }] }
@@ -126,29 +106,27 @@
         },
         {
           "id": "sqEsMo747LTDnY9FjQcEwUv",
+          "outgoingEdgeId": "4tYbERpi5Po4goVgt6rWXg",
           "type": "text input",
-          "groupId": "q5dAhqSTCaNdiGSJm9B9Rw",
           "options": {
-            "isLong": false,
             "labels": {
-              "button": "Send",
-              "placeholder": "Type your answer..."
+              "placeholder": "Type your answer...",
+              "button": "Send"
             },
-            "variableId": "giiLFGw5xXBCHzvp1qAbdX"
-          },
-          "outgoingEdgeId": "4tYbERpi5Po4goVgt6rWXg"
+            "variableId": "giiLFGw5xXBCHzvp1qAbdX",
+            "isLong": false
+          }
         }
-      ],
-      "title": "Name",
-      "graphCoordinates": { "x": 340, "y": 143 }
+      ]
     },
     {
       "id": "fKqRz7iswk7ULaj5PJocZL",
+      "title": "Services",
+      "graphCoordinates": { "x": 1002, "y": 144 },
       "blocks": [
         {
           "id": "su7HceVXWyTCzi2vv3m4QbK",
           "type": "text",
-          "groupId": "fKqRz7iswk7ULaj5PJocZL",
           "content": {
             "richText": [
               {
@@ -160,48 +138,26 @@
         },
         {
           "id": "s5VQGsVF4hQgziQsXVdwPDW",
+          "outgoingEdgeId": "ohTRakmcYJ7GdFWRZrWRjk",
           "type": "choice input",
           "items": [
-            {
-              "id": "fnLCBF4NdraSwcubnBhk8H",
-              "type": 0,
-              "blockId": "s5VQGsVF4hQgziQsXVdwPDW",
-              "content": "Website dev"
-            },
-            {
-              "id": "a782h8ynMouY84QjH7XSnR",
-              "type": 0,
-              "blockId": "s5VQGsVF4hQgziQsXVdwPDW",
-              "content": "Content Marketing"
-            },
-            {
-              "id": "jGvh94zBByvVFpSS3w97zY",
-              "type": 0,
-              "blockId": "s5VQGsVF4hQgziQsXVdwPDW",
-              "content": "Social Media"
-            },
-            {
-              "id": "6PRLbKUezuFmwWtLVbvAQ7",
-              "type": 0,
-              "blockId": "s5VQGsVF4hQgziQsXVdwPDW",
-              "content": "UI / UX Design"
-            }
+            { "id": "fnLCBF4NdraSwcubnBhk8H", "content": "Website dev" },
+            { "id": "a782h8ynMouY84QjH7XSnR", "content": "Content Marketing" },
+            { "id": "jGvh94zBByvVFpSS3w97zY", "content": "Social Media" },
+            { "id": "6PRLbKUezuFmwWtLVbvAQ7", "content": "UI / UX Design" }
           ],
-          "groupId": "fKqRz7iswk7ULaj5PJocZL",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": true },
-          "outgoingEdgeId": "ohTRakmcYJ7GdFWRZrWRjk"
+          "options": { "isMultipleChoice": true, "buttonLabel": "Send" }
         }
-      ],
-      "title": "Services",
-      "graphCoordinates": { "x": 1002, "y": 144 }
+      ]
     },
     {
       "id": "7qHBEyCMvKEJryBHzPmHjV",
+      "title": "Additional information",
+      "graphCoordinates": { "x": 1337, "y": 145 },
       "blocks": [
         {
           "id": "sqR8Sz9gW21aUYKtUikq7qZ",
           "type": "text",
-          "groupId": "7qHBEyCMvKEJryBHzPmHjV",
           "content": {
             "richText": [
               {
@@ -215,33 +171,34 @@
         },
         {
           "id": "sqFy2G3C1mh9p6s3QBdSS5x",
+          "outgoingEdgeId": "sH5nUssG2XQbm6ZidGv9BY",
           "type": "text input",
-          "groupId": "7qHBEyCMvKEJryBHzPmHjV",
           "options": {
-            "isLong": true,
-            "labels": { "button": "Send", "placeholder": "Type your answer..." }
-          },
-          "outgoingEdgeId": "sH5nUssG2XQbm6ZidGv9BY"
+            "labels": {
+              "placeholder": "Type your answer...",
+              "button": "Send"
+            },
+            "isLong": true
+          }
         }
-      ],
-      "title": "Additional information",
-      "graphCoordinates": { "x": 1337, "y": 145 }
+      ]
     },
     {
       "id": "vF7AD7zSAj7SNvN3gr9N94",
+      "title": "Bye",
+      "graphCoordinates": { "x": 1668, "y": 143 },
       "blocks": [
         {
           "id": "seLegenCgUwMopRFeAefqZ7",
           "type": "text",
-          "groupId": "vF7AD7zSAj7SNvN3gr9N94",
           "content": {
             "richText": [{ "type": "p", "children": [{ "text": "Perfect!" }] }]
           }
         },
         {
           "id": "s779Q1y51aVaDUJVrFb16vv",
+          "outgoingEdgeId": "fTVo43AG97eKcaTrZf9KyV",
           "type": "text",
-          "groupId": "vF7AD7zSAj7SNvN3gr9N94",
           "content": {
             "richText": [
               {
@@ -249,110 +206,107 @@
                 "children": [{ "text": "We'll get back to you at {{Email}}" }]
               }
             ]
-          },
-          "outgoingEdgeId": "fTVo43AG97eKcaTrZf9KyV"
+          }
         }
-      ],
-      "title": "Bye",
-      "graphCoordinates": { "x": 1668, "y": 143 }
+      ]
     },
     {
       "id": "webhookGroup",
-      "graphCoordinates": { "x": 1996, "y": 134 },
       "title": "Webhook",
+      "graphCoordinates": { "x": 1996, "y": 134 },
       "blocks": [
         {
           "id": "webhookBlock",
-          "groupId": "webhookGroup",
           "type": "Webhook",
-          "options": { "responseVariableMapping": [], "variablesForTest": [] },
-          "webhookId": "webhook1"
+          "options": {
+            "variablesForTest": [],
+            "responseVariableMapping": [],
+            "webhook": { "method": "POST" }
+          }
         }
       ]
     }
   ],
-  "variables": [
-    { "id": "giiLFGw5xXBCHzvp1qAbdX", "name": "Name" },
-    { "id": "3VFChNVSCXQ2rXv4DrJ8Ah", "name": "Email" }
-  ],
   "edges": [
     {
       "id": "oNvqaqNExdSH2kKEhKZHuE",
-      "to": { "groupId": "kinRXxYop2X4d7F9qt8WNB" },
-      "from": {
-        "blockId": "22HP69iipkLjJDTUcc1AWW",
-        "groupId": "k6kY6gwRE6noPoYQNGzgUq"
-      }
+      "from": { "eventId": "k6kY6gwRE6noPoYQNGzgUq" },
+      "to": { "groupId": "kinRXxYop2X4d7F9qt8WNB" }
     },
     {
       "id": "i51YhHpk1dtSyduFNf5Wim",
-      "to": { "groupId": "q5dAhqSTCaNdiGSJm9B9Rw" },
-      "from": {
-        "blockId": "sbjZWLJGVkHAkDqS4JQeGow",
-        "groupId": "kinRXxYop2X4d7F9qt8WNB"
-      }
+      "from": { "blockId": "sbjZWLJGVkHAkDqS4JQeGow" },
+      "to": { "groupId": "q5dAhqSTCaNdiGSJm9B9Rw" }
     },
     {
       "id": "4tYbERpi5Po4goVgt6rWXg",
-      "to": { "groupId": "o4SH1UtKANnW5N5D67oZUz" },
-      "from": {
-        "blockId": "sqEsMo747LTDnY9FjQcEwUv",
-        "groupId": "q5dAhqSTCaNdiGSJm9B9Rw"
-      }
+      "from": { "blockId": "sqEsMo747LTDnY9FjQcEwUv" },
+      "to": { "groupId": "o4SH1UtKANnW5N5D67oZUz" }
     },
     {
       "id": "w3MiN1Ct38jT5NykVsgmb5",
-      "to": { "groupId": "fKqRz7iswk7ULaj5PJocZL" },
-      "from": {
-        "blockId": "snbsad18Bgry8yZ8DZCfdFD",
-        "groupId": "o4SH1UtKANnW5N5D67oZUz"
-      }
+      "from": { "blockId": "snbsad18Bgry8yZ8DZCfdFD" },
+      "to": { "groupId": "fKqRz7iswk7ULaj5PJocZL" }
     },
     {
       "id": "ohTRakmcYJ7GdFWRZrWRjk",
-      "to": { "groupId": "7qHBEyCMvKEJryBHzPmHjV" },
-      "from": {
-        "blockId": "s5VQGsVF4hQgziQsXVdwPDW",
-        "groupId": "fKqRz7iswk7ULaj5PJocZL"
-      }
+      "from": { "blockId": "s5VQGsVF4hQgziQsXVdwPDW" },
+      "to": { "groupId": "7qHBEyCMvKEJryBHzPmHjV" }
     },
     {
       "id": "sH5nUssG2XQbm6ZidGv9BY",
-      "to": { "groupId": "vF7AD7zSAj7SNvN3gr9N94" },
-      "from": {
-        "blockId": "sqFy2G3C1mh9p6s3QBdSS5x",
-        "groupId": "7qHBEyCMvKEJryBHzPmHjV"
-      }
+      "from": { "blockId": "sqFy2G3C1mh9p6s3QBdSS5x" },
+      "to": { "groupId": "vF7AD7zSAj7SNvN3gr9N94" }
     },
     {
-      "from": {
-        "groupId": "vF7AD7zSAj7SNvN3gr9N94",
-        "blockId": "s779Q1y51aVaDUJVrFb16vv"
-      },
-      "to": { "groupId": "webhookGroup" },
-      "id": "fTVo43AG97eKcaTrZf9KyV"
+      "id": "fTVo43AG97eKcaTrZf9KyV",
+      "from": { "blockId": "s779Q1y51aVaDUJVrFb16vv" },
+      "to": { "groupId": "webhookGroup" }
+    }
+  ],
+  "variables": [
+    {
+      "id": "giiLFGw5xXBCHzvp1qAbdX",
+      "name": "Name",
+      "isSessionVariable": true
+    },
+    {
+      "id": "3VFChNVSCXQ2rXv4DrJ8Ah",
+      "name": "Email",
+      "isSessionVariable": true
     }
   ],
   "theme": {
+    "general": { "font": "Open Sans", "background": { "type": "None" } },
     "chat": {
+      "hostBubbles": { "backgroundColor": "#F7F8FF", "color": "#303235" },
+      "guestBubbles": { "backgroundColor": "#FF8E21", "color": "#FFFFFF" },
+      "buttons": { "backgroundColor": "#0042DA", "color": "#FFFFFF" },
       "inputs": {
-        "color": "#303235",
         "backgroundColor": "#FFFFFF",
+        "color": "#303235",
         "placeholderColor": "#9095A0"
-      },
-      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
-      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
-      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
-    },
-    "general": { "font": "Open Sans", "background": { "type": "None" } }
+      }
+    }
   },
+  "selectedThemeTemplateId": null,
   "settings": {
     "general": { "isBrandingEnabled": true },
+    "typingEmulation": { "enabled": true, "speed": 300, "maxDelay": 1.5 },
     "metadata": {
       "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
-    },
-    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
+    }
   },
+  "createdAt": "2024-07-16T12:30:05.790Z",
+  "updatedAt": "2024-07-16T12:30:05.790Z",
+  "icon": null,
+  "folderId": null,
   "publicId": null,
-  "customDomain": null
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
 }

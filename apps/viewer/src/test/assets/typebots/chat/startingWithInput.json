@@ -1,22 +1,16 @@
 {
-  "version": "5",
-  "id": "clnbugp6a00011ackz0k3zfkp",
+  "version": "6",
+  "id": "clyoehs240009grw9vcxfw1ku",
   "name": "My typebot",
-  "groups": [
+  "events": [
     {
       "id": "k2nokn9v0zyhae0wqcxsbqa7",
-      "title": "Start",
+      "outgoingEdgeId": "fj2ga89lctnuwcdsshwtxmhp",
       "graphCoordinates": { "x": 0, "y": 0 },
-      "blocks": [
-        {
-          "id": "sx4xmdbosubnxkhcg6x521p1",
-          "groupId": "k2nokn9v0zyhae0wqcxsbqa7",
-          "outgoingEdgeId": "fj2ga89lctnuwcdsshwtxmhp",
-          "type": "start",
-          "label": "Start"
-        }
-      ]
-    },
+      "type": "start"
+    }
+  ],
+  "groups": [
     {
       "id": "g8kdars2ahr3cyz2qf1f7w4i",
       "title": "Group #1",
@@ -24,7 +18,6 @@
       "blocks": [
         {
           "id": "prh6snup7cbmoxtf5vox8kjw",
-          "groupId": "g8kdars2ahr3cyz2qf1f7w4i",
           "type": "text input",
           "options": {
             "labels": {
@@ -36,7 +29,6 @@
         },
         {
           "id": "dpyyb38amnwwl4q461el2uf6",
-          "groupId": "g8kdars2ahr3cyz2qf1f7w4i",
           "type": "text",
           "content": {
             "richText": [
@@ -50,10 +42,7 @@
   "edges": [
     {
       "id": "fj2ga89lctnuwcdsshwtxmhp",
-      "from": {
-        "groupId": "k2nokn9v0zyhae0wqcxsbqa7",
-        "blockId": "sx4xmdbosubnxkhcg6x521p1"
-      },
+      "from": { "eventId": "k2nokn9v0zyhae0wqcxsbqa7" },
       "to": { "groupId": "g8kdars2ahr3cyz2qf1f7w4i" }
     }
   ],
@@ -88,8 +77,8 @@
       "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
     }
   },
-  "createdAt": "2023-10-04T14:28:55.282Z",
-  "updatedAt": "2023-10-04T14:29:11.949Z",
+  "createdAt": "2024-07-16T12:39:37.804Z",
+  "updatedAt": "2024-07-16T12:39:37.804Z",
   "icon": null,
   "folderId": null,
   "publicId": null,
@@ -98,5 +87,6 @@
   "resultsTablePreferences": null,
   "isArchived": false,
   "isClosed": false,
-  "whatsAppCredentialsId": null
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
 }

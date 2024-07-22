@@ -1,6 +1,5 @@
-import { useColorModeValue } from '@chakra-ui/react'
+import { IconProps, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
-import { FlagIcon, SendEmailIcon, ThunderIcon } from '@/components/icons'
 import { WaitIcon } from '@/features/blocks/logic/wait/components/WaitIcon'
 import { ScriptIcon } from '@/features/blocks/logic/script/components/ScriptIcon'
 import { JumpIcon } from '@/features/blocks/logic/jump/components/JumpIcon'
@@ -32,7 +31,6 @@ import { TypebotLinkIcon } from '@/features/blocks/logic/typebotLink/components/
 import { AbTestIcon } from '@/features/blocks/logic/abTest/components/AbTestIcon'
 import { PictureChoiceIcon } from '@/features/blocks/inputs/pictureChoice/components/PictureChoiceIcon'
 import { PixelLogo } from '@/features/blocks/integrations/pixel/components/PixelLogo'
-import { ZemanticAiLogo } from '@/features/blocks/integrations/zemanticAi/ZemanticAiLogo'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
@@ -40,10 +38,12 @@ import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/consta
 import { Block } from '@typebot.io/schemas'
 import { OpenAILogo } from '@/features/blocks/integrations/openai/components/OpenAILogo'
 import { ForgedBlockIcon } from '@/features/forge/ForgedBlockIcon'
+import { SendEmailIcon } from '@/features/blocks/integrations/sendEmail/components/SendEmailIcon'
+import { FlagIcon, ThunderIcon } from '@/components/icons'
 
-type BlockIconProps = { type: Block['type']; mt?: string }
+type BlockIconProps = { type: Block['type'] } & IconProps
 
-export const BlockIcon = ({ type, mt }: BlockIconProps): JSX.Element => {
+export const BlockIcon = ({ type, ...props }: BlockIconProps): JSX.Element => {
   const blue = useColorModeValue('blue.500', 'blue.300')
   const orange = useColorModeValue('orange.500', 'orange.300')
   const purple = useColorModeValue('purple.500', 'purple.300')
@@ -51,78 +51,76 @@ export const BlockIcon = ({ type, mt }: BlockIconProps): JSX.Element => {
 
   switch (type) {
     case BubbleBlockType.TEXT:
-      return <TextBubbleIcon color={blue} mt={mt} />
+      return <TextBubbleIcon color={blue} {...props} />
     case BubbleBlockType.IMAGE:
-      return <ImageBubbleIcon color={blue} mt={mt} />
+      return <ImageBubbleIcon color={blue} {...props} />
     case BubbleBlockType.VIDEO:
-      return <VideoBubbleIcon color={blue} mt={mt} />
+      return <VideoBubbleIcon color={blue} {...props} />
     case BubbleBlockType.EMBED:
-      return <EmbedBubbleIcon color={blue} mt={mt} />
+      return <EmbedBubbleIcon color={blue} {...props} />
     case BubbleBlockType.AUDIO:
-      return <AudioBubbleIcon color={blue} mt={mt} />
+      return <AudioBubbleIcon color={blue} {...props} />
     case InputBlockType.TEXT:
-      return <TextInputIcon color={orange} mt={mt} />
+      return <TextInputIcon color={orange} {...props} />
     case InputBlockType.NUMBER:
-      return <NumberInputIcon color={orange} mt={mt} />
+      return <NumberInputIcon color={orange} {...props} />
     case InputBlockType.EMAIL:
-      return <EmailInputIcon color={orange} mt={mt} />
+      return <EmailInputIcon color={orange} {...props} />
     case InputBlockType.URL:
-      return <UrlInputIcon color={orange} mt={mt} />
+      return <UrlInputIcon color={orange} {...props} />
     case InputBlockType.DATE:
-      return <DateInputIcon color={orange} mt={mt} />
+      return <DateInputIcon color={orange} {...props} />
     case InputBlockType.PHONE:
-      return <PhoneInputIcon color={orange} mt={mt} />
+      return <PhoneInputIcon color={orange} {...props} />
     case InputBlockType.CHOICE:
-      return <ButtonsInputIcon color={orange} mt={mt} />
+      return <ButtonsInputIcon color={orange} {...props} />
     case InputBlockType.PICTURE_CHOICE:
-      return <PictureChoiceIcon color={orange} mt={mt} />
+      return <PictureChoiceIcon color={orange} {...props} />
     case InputBlockType.PAYMENT:
-      return <PaymentInputIcon color={orange} mt={mt} />
+      return <PaymentInputIcon color={orange} {...props} />
     case InputBlockType.RATING:
-      return <RatingInputIcon color={orange} mt={mt} />
+      return <RatingInputIcon color={orange} {...props} />
     case InputBlockType.FILE:
-      return <FileInputIcon color={orange} mt={mt} />
+      return <FileInputIcon color={orange} {...props} />
     case LogicBlockType.SET_VARIABLE:
-      return <SetVariableIcon color={purple} mt={mt} />
+      return <SetVariableIcon color={purple} {...props} />
     case LogicBlockType.CONDITION:
-      return <ConditionIcon color={purple} mt={mt} />
+      return <ConditionIcon color={purple} {...props} />
     case LogicBlockType.REDIRECT:
-      return <RedirectIcon color={purple} mt={mt} />
+      return <RedirectIcon color={purple} {...props} />
     case LogicBlockType.SCRIPT:
-      return <ScriptIcon mt={mt} />
+      return <ScriptIcon {...props} />
     case LogicBlockType.WAIT:
-      return <WaitIcon color={purple} mt={mt} />
+      return <WaitIcon color={purple} {...props} />
     case LogicBlockType.JUMP:
-      return <JumpIcon color={purple} mt={mt} />
+      return <JumpIcon color={purple} {...props} />
     case LogicBlockType.TYPEBOT_LINK:
-      return <TypebotLinkIcon color={purple} mt={mt} />
+      return <TypebotLinkIcon color={purple} {...props} />
     case LogicBlockType.AB_TEST:
-      return <AbTestIcon color={purple} mt={mt} />
+      return <AbTestIcon color={purple} {...props} />
     case IntegrationBlockType.GOOGLE_SHEETS:
-      return <GoogleSheetsLogo mt={mt} />
+      return <GoogleSheetsLogo {...props} />
     case IntegrationBlockType.GOOGLE_ANALYTICS:
-      return <GoogleAnalyticsLogo mt={mt} />
+      return <GoogleAnalyticsLogo {...props} />
     case IntegrationBlockType.WEBHOOK:
-      return <ThunderIcon mt={mt} />
+      return <ThunderIcon {...props} />
     case IntegrationBlockType.ZAPIER:
-      return <ZapierLogo mt={mt} />
+      return <ZapierLogo {...props} />
     case IntegrationBlockType.MAKE_COM:
-      return <MakeComLogo mt={mt} />
+      return <MakeComLogo {...props} />
     case IntegrationBlockType.PABBLY_CONNECT:
-      return <PabblyConnectLogo mt={mt} />
+      return <PabblyConnectLogo {...props} />
     case IntegrationBlockType.EMAIL:
-      return <SendEmailIcon mt={mt} />
+      return <SendEmailIcon {...props} />
     case IntegrationBlockType.CHATWOOT:
-      return <ChatwootLogo mt={mt} />
+      return <ChatwootLogo {...props} />
     case IntegrationBlockType.PIXEL:
-      return <PixelLogo mt={mt} />
-    case IntegrationBlockType.ZEMANTIC_AI:
-      return <ZemanticAiLogo mt={mt} />
+      return <PixelLogo {...props} />
     case 'start':
-      return <FlagIcon mt={mt} />
+      return <FlagIcon {...props} />
     case IntegrationBlockType.OPEN_AI:
-      return <OpenAILogo mt={mt} fill={openAIColor} />
+      return <OpenAILogo {...props} fill={openAIColor} />
     default:
-      return <ForgedBlockIcon type={type} mt={mt} />
+      return <ForgedBlockIcon type={type} {...props} />
   }
 }

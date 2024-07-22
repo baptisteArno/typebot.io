@@ -275,7 +275,6 @@ export const ConversationContainer = (props: Props) => {
   const processClientSideActions = async (
     actions: NonNullable<ContinueChatResponse['clientSideActions']>
   ) => {
-    console.log('YES')
     if (isRecovered()) return
     for (const action of actions) {
       if (

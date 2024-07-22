@@ -32,7 +32,6 @@ import { ChatwootNodeBody } from '@/features/blocks/integrations/chatwoot/compon
 import { AbTestNodeBody } from '@/features/blocks/logic/abTest/components/AbTestNodeBody'
 import { PictureChoiceNode } from '@/features/blocks/inputs/pictureChoice/components/PictureChoiceNode'
 import { PixelNodeBody } from '@/features/blocks/integrations/pixel/components/PixelNodeBody'
-import { ZemanticAiNodeBody } from '@/features/blocks/integrations/zemanticAi/ZemanticAiNodeBody'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
@@ -150,9 +149,6 @@ export const BlockNodeContent = ({
     }
     case IntegrationBlockType.PIXEL: {
       return <PixelNodeBody options={block.options} />
-    }
-    case IntegrationBlockType.ZEMANTIC_AI: {
-      return <ZemanticAiNodeBody options={block.options} />
     }
     default: {
       return <ForgedBlockNodeContent block={block} indices={indices} />

@@ -1,4 +1,5 @@
 import {
+  AsyncVariableStore,
   LogsStore,
   VariableStore,
   createAction,
@@ -237,7 +238,7 @@ const createAssistantStream = async ({
     variableId?: string | undefined
   }[]
   logs?: LogsStore
-  variables: VariableStore
+  variables: AsyncVariableStore | VariableStore
 }): Promise<ReadableStream | undefined> => {
   if (isEmpty(assistantId)) {
     logs?.add('Assistant ID is empty')
@@ -277,8 +278,9 @@ const createAssistantStream = async ({
       (mapping) => mapping.item === 'Thread ID'
     )
     if (threadIdResponseMapping?.variableId)
-      variables.set(threadIdResponseMapping.variableId, currentThreadId)
-    else if (threadVariableId) variables.set(threadVariableId, currentThreadId)
+      await variables.set(threadIdResponseMapping.variableId, currentThreadId)
+    else if (threadVariableId)
+      await variables.set(threadVariableId, currentThreadId)
   }
 
   if (!currentThreadId) {
@@ -331,9 +333,9 @@ const createAssistantStream = async ({
                   args: parameters,
                 })
 
-                newVariables?.forEach((variable) => {
-                  variables.set(variable.id, variable.value)
-                })
+                for (const variable of newVariables ?? []) {
+                  await variables.set(variable.id, variable.value)
+                }
 
                 return {
                   tool_call_id: toolCall.id,

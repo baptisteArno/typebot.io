@@ -82,22 +82,18 @@ export const parseBlockSchema = <
   })
 }
 
-export const parseBlockCredentials = <
-  I extends string,
-  A extends AuthDefinition,
-  O extends z.ZodObject<any>
->(
-  blockDefinition: BlockDefinition<I, A, O>
+export const parseBlockCredentials = <I extends string>(
+  blockId: I,
+  authSchema: z.ZodObject<any>
 ) => {
-  if (!blockDefinition.auth) return null
   return z.object({
     id: z.string(),
-    type: z.literal(blockDefinition.id),
+    type: z.literal(blockId),
     createdAt: z.date(),
     workspaceId: z.string(),
     name: z.string(),
     iv: z.string(),
-    data: blockDefinition.auth.schema,
+    data: authSchema,
   })
 }
 

@@ -36,6 +36,21 @@ export const StripeConfigModal = ({
   onNewCredentials,
   onClose,
 }: Props) => {
+  return (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <StripeCreateModalContent
+        onNewCredentials={onNewCredentials}
+        onClose={onClose}
+      />
+    </Modal>
+  )
+}
+
+export const StripeCreateModalContent = ({
+  onNewCredentials,
+  onClose,
+}: Pick<Props, 'onClose' | 'onNewCredentials'>) => {
   const { t } = useTranslate()
   const { user } = useUser()
   const { workspace } = useWorkspace()
@@ -99,7 +114,8 @@ export const StripeConfigModal = ({
       test: { ...stripeConfig.test, secretKey },
     })
 
-  const createCredentials = async () => {
+  const createCredentials = async (e: React.FormEvent) => {
+    e.preventDefault()
     if (!user?.email || !workspace?.id) return
     mutate({
       credentials: {
@@ -120,16 +136,16 @@ export const StripeConfigModal = ({
       },
     })
   }
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>
-          {t('blocks.inputs.payment.settings.stripeConfig.title.label')}
-        </ModalHeader>
-        <ModalCloseButton />
+    <ModalContent>
+      <ModalHeader>
+        {t('blocks.inputs.payment.settings.stripeConfig.title.label')}
+      </ModalHeader>
+      <ModalCloseButton />
+      <form onSubmit={createCredentials}>
         <ModalBody>
-          <Stack as="form" spacing={4}>
+          <Stack spacing={4}>
             <TextInput
               isRequired
               label={t(
@@ -208,8 +224,8 @@ export const StripeConfigModal = ({
 
         <ModalFooter>
           <Button
+            type="submit"
             colorScheme="blue"
-            onClick={createCredentials}
             isDisabled={
               stripeConfig.live.publicKey === '' ||
               stripeConfig.name === '' ||
@@ -220,7 +236,7 @@ export const StripeConfigModal = ({
             {t('connect')}
           </Button>
         </ModalFooter>
-      </ModalContent>
-    </Modal>
+      </form>
+    </ModalContent>
   )
 }

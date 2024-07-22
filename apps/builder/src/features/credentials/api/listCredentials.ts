@@ -1,16 +1,20 @@
 import prisma from '@typebot.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
-import { openAICredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/openai'
-import { smtpCredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/sendEmail'
 import { z } from 'zod'
 import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
-import { whatsAppCredentialsSchema } from '@typebot.io/schemas/features/whatsapp'
-import { zemanticAiCredentialsSchema } from '@typebot.io/schemas/features/blocks/integrations/zemanticAi'
-import {
-  googleSheetsCredentialsSchema,
-  stripeCredentialsSchema,
-} from '@typebot.io/schemas'
+import { credentialsTypeSchema } from '@typebot.io/schemas'
+import { isDefined } from '@udecode/plate-common'
+
+const deletedCredentialsTypes = ['zemanticAi', 'zemantic-ai']
+
+const outputCredentialsSchema = z.array(
+  z.object({
+    id: z.string(),
+    type: credentialsTypeSchema,
+    name: z.string(),
+  })
+)
 
 export const listCredentials = authenticatedProcedure
   .meta({
@@ -25,17 +29,12 @@ export const listCredentials = authenticatedProcedure
   .input(
     z.object({
       workspaceId: z.string(),
-      type: stripeCredentialsSchema.shape.type
-        .or(smtpCredentialsSchema.shape.type)
-        .or(googleSheetsCredentialsSchema.shape.type)
-        .or(openAICredentialsSchema.shape.type)
-        .or(whatsAppCredentialsSchema.shape.type)
-        .or(zemanticAiCredentialsSchema.shape.type),
+      type: credentialsTypeSchema.optional(),
     })
   )
   .output(
     z.object({
-      credentials: z.array(z.object({ id: z.string(), name: z.string() })),
+      credentials: outputCredentialsSchema,
     })
   )
   .query(async ({ input: { workspaceId, type }, ctx: { user } }) => {
@@ -52,6 +51,7 @@ export const listCredentials = authenticatedProcedure
           },
           select: {
             id: true,
+            type: true,
             name: true,
           },
         },
@@ -60,5 +60,13 @@ export const listCredentials = authenticatedProcedure
     if (!workspace || isReadWorkspaceFobidden(workspace, user))
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Workspace not found' })
 
-    return { credentials: workspace.credentials }
+    return {
+      credentials: outputCredentialsSchema.parse(
+        isDefined(type)
+          ? workspace.credentials
+          : workspace.credentials
+              .filter((c) => !deletedCredentialsTypes.includes(c.type))
+              .sort((a, b) => a.type.localeCompare(b.type))
+      ),
+    }
   })

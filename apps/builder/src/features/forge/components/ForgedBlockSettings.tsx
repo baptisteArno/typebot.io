@@ -1,7 +1,7 @@
 import { Stack, useDisclosure } from '@chakra-ui/react'
 import { BlockOptions } from '@typebot.io/schemas'
 import { ForgedCredentialsDropdown } from './credentials/ForgedCredentialsDropdown'
-import { ForgedCredentialsModal } from './credentials/ForgedCredentialsModal'
+import { CreateForgedCredentialsModal } from './credentials/CreateForgedCredentialsModal'
 import { ZodObjectLayout } from './zodLayouts/ZodObjectLayout'
 import { ZodActionDiscriminatedUnion } from './zodLayouts/ZodActionDiscriminatedUnion'
 import { useForgedBlock } from '../hooks/useForgedBlock'
@@ -64,7 +64,7 @@ export const ForgedBlockSettings = ({ block, onOptionsChange }: Props) => {
     <Stack spacing={4}>
       {blockDef.auth && (
         <>
-          <ForgedCredentialsModal
+          <CreateForgedCredentialsModal
             blockDef={blockDef}
             isOpen={isOpen}
             onClose={onClose}

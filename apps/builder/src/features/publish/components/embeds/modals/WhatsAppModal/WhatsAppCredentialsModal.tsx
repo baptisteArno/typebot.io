@@ -64,6 +64,21 @@ export const WhatsAppCredentialsModal = ({
   onClose,
   onNewCredentials,
 }: Props) => {
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} size="3xl">
+      <ModalOverlay />
+      <WhatsAppCreateModalContent
+        onNewCredentials={onNewCredentials}
+        onClose={onClose}
+      />
+    </Modal>
+  )
+}
+
+export const WhatsAppCreateModalContent = ({
+  onNewCredentials,
+  onClose,
+}: Pick<Props, 'onNewCredentials' | 'onClose'>) => {
   const { workspace } = useWorkspace()
   const { showToast } = useToast()
   const { activeStep, goToNext, goToPrevious, setActiveStep } = useSteps({
@@ -226,82 +241,78 @@ export const WhatsAppCredentialsModal = ({
 
     goToNext()
   }
-
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="3xl">
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>
-          <HStack h="40px">
-            {activeStep > 0 && (
-              <IconButton
-                icon={<ChevronLeftIcon />}
-                aria-label={'Go back'}
-                variant="ghost"
-                onClick={goToPrevious}
-              />
-            )}
-            <Heading size="md">Add a WhatsApp phone number</Heading>
-          </HStack>
-        </ModalHeader>
-        <ModalCloseButton />
-        <ModalBody as={Stack} spacing="10">
-          <Stepper index={activeStep} size="sm" pt="4">
-            {steps.map((step, index) => (
-              <Step key={index}>
-                <StepIndicator>
-                  <StepStatus
-                    complete={<StepIcon />}
-                    incomplete={<StepNumber />}
-                    active={<StepNumber />}
-                  />
-                </StepIndicator>
+    <ModalContent>
+      <ModalHeader>
+        <HStack h="40px">
+          {activeStep > 0 && (
+            <IconButton
+              icon={<ChevronLeftIcon />}
+              aria-label={'Go back'}
+              variant="ghost"
+              onClick={goToPrevious}
+            />
+          )}
+          <Heading size="md">Add a WhatsApp phone number</Heading>
+        </HStack>
+      </ModalHeader>
+      <ModalCloseButton />
+      <ModalBody as={Stack} spacing="10">
+        <Stepper index={activeStep} size="sm" pt="4">
+          {steps.map((step, index) => (
+            <Step key={index}>
+              <StepIndicator>
+                <StepStatus
+                  complete={<StepIcon />}
+                  incomplete={<StepNumber />}
+                  active={<StepNumber />}
+                />
+              </StepIndicator>
 
-                <Box flexShrink="0">
-                  <StepTitle>{step.title}</StepTitle>
-                </Box>
+              <Box flexShrink="0">
+                <StepTitle>{step.title}</StepTitle>
+              </Box>
 
-                <StepSeparator />
-              </Step>
-            ))}
-          </Stepper>
-          {activeStep === 0 && <Requirements />}
-          {activeStep === 1 && (
-            <SystemUserToken
-              initialToken={systemUserAccessToken}
-              setToken={setSystemUserAccessToken}
-            />
-          )}
-          {activeStep === 2 && (
-            <PhoneNumber
-              appId={tokenInfoData?.appId}
-              initialPhoneNumberId={phoneNumberId}
-              setPhoneNumberId={setPhoneNumberId}
-            />
-          )}
-          {activeStep === 3 && (
-            <Webhook
-              appId={tokenInfoData?.appId}
-              verificationToken={verificationToken}
-              credentialsId={credentialsId}
-            />
-          )}
-        </ModalBody>
-        <ModalFooter>
-          <Button
-            onClick={goToNextStep}
-            colorScheme="blue"
-            isDisabled={
-              (activeStep === 1 && isEmpty(systemUserAccessToken)) ||
-              (activeStep === 2 && isEmpty(phoneNumberId))
-            }
-            isLoading={isVerifying || isCreating}
-          >
-            {activeStep === steps.length - 1 ? 'Submit' : 'Continue'}
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+              <StepSeparator />
+            </Step>
+          ))}
+        </Stepper>
+        {activeStep === 0 && <Requirements />}
+        {activeStep === 1 && (
+          <SystemUserToken
+            initialToken={systemUserAccessToken}
+            setToken={setSystemUserAccessToken}
+          />
+        )}
+        {activeStep === 2 && (
+          <PhoneNumber
+            appId={tokenInfoData?.appId}
+            initialPhoneNumberId={phoneNumberId}
+            setPhoneNumberId={setPhoneNumberId}
+          />
+        )}
+        {activeStep === 3 && (
+          <Webhook
+            appId={tokenInfoData?.appId}
+            verificationToken={verificationToken}
+            credentialsId={credentialsId}
+          />
+        )}
+      </ModalBody>
+      <ModalFooter>
+        <Button
+          onClick={goToNextStep}
+          colorScheme="blue"
+          isDisabled={
+            (activeStep === 1 && isEmpty(systemUserAccessToken)) ||
+            (activeStep === 2 && isEmpty(phoneNumberId))
+          }
+          isLoading={isVerifying || isCreating}
+        >
+          {activeStep === steps.length - 1 ? 'Submit' : 'Continue'}
+        </Button>
+      </ModalFooter>
+    </ModalContent>
   )
 }
 
@@ -428,8 +439,7 @@ const PhoneNumber = ({
       <Stack>
         <Text>
           Select a phone number and paste the associated{' '}
-          <Code>Phone number ID</Code> and{' '}
-          <Code>WhatsApp Business Account ID</Code>:
+          <Code>Phone number ID</Code>
         </Text>
         <HStack>
           <TextInput

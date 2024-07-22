@@ -26,9 +26,25 @@ type Props = {
 
 export const SmtpConfigModal = ({
   isOpen,
-  onNewCredentials,
   onClose,
+  onNewCredentials,
 }: Props) => {
+  return (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <SmtpCreateModalContent
+        onNewCredentials={(id) => {
+          onNewCredentials(id)
+          onClose()
+        }}
+      />
+    </Modal>
+  )
+}
+
+export const SmtpCreateModalContent = ({
+  onNewCredentials,
+}: Pick<Props, 'onNewCredentials'>) => {
   const { user } = useUser()
   const { workspace } = useWorkspace()
   const [isCreating, setIsCreating] = useState(false)
@@ -53,11 +69,11 @@ export const SmtpConfigModal = ({
     onSuccess: (data) => {
       refetchCredentials()
       onNewCredentials(data.credentialsId)
-      onClose()
     },
   })
 
-  const handleCreateClick = async () => {
+  const handleCreateClick = async (e: React.FormEvent) => {
+    e.preventDefault()
     if (!user?.email || !workspace?.id) return
     setIsCreating(true)
     const { error: testSmtpError } = await testSmtpConfig(
@@ -82,19 +98,18 @@ export const SmtpConfigModal = ({
     })
   }
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Create SMTP config</ModalHeader>
-        <ModalCloseButton />
+    <ModalContent>
+      <ModalHeader>Create SMTP config</ModalHeader>
+      <ModalCloseButton />
+      <form onSubmit={handleCreateClick}>
         <ModalBody>
           <SmtpConfigForm config={smtpConfig} onConfigChange={setSmtpConfig} />
         </ModalBody>
 
         <ModalFooter>
           <Button
+            type="submit"
             colorScheme="blue"
-            onClick={handleCreateClick}
             isDisabled={
               isNotDefined(smtpConfig.from.email) ||
               isNotDefined(smtpConfig.host) ||
@@ -107,7 +122,7 @@ export const SmtpConfigModal = ({
             Create
           </Button>
         </ModalFooter>
-      </ModalContent>
-    </Modal>
+      </form>
+    </ModalContent>
   )
 }

@@ -13,6 +13,10 @@ export type VariableStore = {
   }[]
 }
 
+export type AsyncVariableStore = Omit<VariableStore, 'set'> & {
+  set: (variableId: string, value: unknown) => Promise<void>
+}
+
 export type LogsStore = {
   add: (
     log:
@@ -63,7 +67,7 @@ export type ActionDefinition<
       run: (params: {
         credentials: CredentialsFromAuthDef<A>
         options: z.infer<BaseOptions> & z.infer<Options>
-        variables: VariableStore
+        variables: AsyncVariableStore
       }) => Promise<{
         stream?: ReadableStream<any>
         httpError?: { status: number; message: string }
