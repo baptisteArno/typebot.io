@@ -194,9 +194,9 @@ const getExpressionToEvaluate =
       case 'Append value(s)': {
         const item = parseVariables(state.typebotsQueue[0].typebot.variables)(
           options.item
-        )
-        return `if(\`${item}\` === '') return ${options.variableId};
-        if(!${options.variableId}) return [\`${item}\`];
+        ).replaceAll('`', '\\`')
+        if (isEmpty(item)) return `return ${options.variableId}`
+        return `if(!${options.variableId}) return [\`${item}\`];
         if(!Array.isArray(${options.variableId})) return [${options.variableId}, \`${item}\`];
         return (${options.variableId}).concat(\`${item}\`);`
       }
