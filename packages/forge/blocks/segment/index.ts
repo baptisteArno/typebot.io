@@ -4,6 +4,8 @@ import { auth } from './auth'
 import { identify } from './actions/identify'
 import { track } from './actions/track'
 import { genUUID } from './actions/genuuid'
+import { alias } from './actions/alias'
+import { page } from './actions/page'
 
 export const segmentBlock = createBlock({
   id: 'segment',
@@ -11,5 +13,5 @@ export const segmentBlock = createBlock({
   tags: ['events', 'analytics'],
   LightLogo: SegmentLogo,
   auth,
-  actions: [identify, genUUID, track], // add page
+  actions: [alias, genUUID, identify, page, track]
 })

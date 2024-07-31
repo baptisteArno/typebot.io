@@ -2,19 +2,24 @@ import { createAction, option } from '@typebot.io/forge'
 import { Analytics } from '@segment/analytics-node'
 import { auth } from '../auth'
 
-export const track = createAction({
+export const page = createAction({
   auth,
-  name: 'Track Event',
+  name: 'Track Chatbot View',
   options: option.object({
-    eventName: option.string.layout({
-      label: 'Event Name',
-      isRequired: true,
-      helperText: 'Name of the event to track.',
-    }),
     userId: option.string.layout({
       label: 'User ID',
       isRequired: true,
-      helperText: 'Identifier of the user to track the event for.',
+      helperText: 'Identifier of the user.',
+    }),
+    name: option.string.layout({
+      label: 'Name',
+      isRequired: true,
+      helperText: 'Name of the chatbot.',
+    }),
+    category: option.string.layout({
+      label: 'Category',
+      isRequired: false,
+      helperText: 'Category of the chatbot.',
     }),
     properties: option.array(option.object({
       key: option.string.layout({
@@ -32,27 +37,28 @@ export const track = createAction({
   run: {
     server: async ({
       credentials: { apiKey },
-      options: { eventName, userId, properties },
+      options: { userId, name, category, properties },
     }) => {
-      if (!eventName || eventName.length === 0
+      if (!name || name.length === 0
         || !userId || userId.length === 0
         || apiKey === undefined) return
 
       const analytics = new Analytics({ writeKey: apiKey })
 
       if (properties === undefined || properties.length === 0) {
-        analytics.track({
+        analytics.page({
           userId: userId,
-          event: eventName
-        })
+          name: name,
+          category: category != undefined ? category : ''
+        });
       } else {
-        analytics.track({
+        analytics.page({
           userId: userId,
-          event: eventName,
+          name: name,
+          category: category != undefined ? category : '',
           properties: createProperties(properties)
-        })
+        });
       }
-
     }
   },
 })
