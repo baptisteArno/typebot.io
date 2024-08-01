@@ -31,11 +31,15 @@ export const checkTime = createAction({
         .list()
         .find((v) => v.name === 'is_accountcode')?.value
 
+      const uniqueid =
+        variables.list().find((v) => v.name === 'is_uniqueid')?.value || ''
+
       let result = false
       if (accountcode && checktime) {
         const params = new URLSearchParams({
           accountcode: accountcode.toString(),
           checktime: checktime,
+          uniqueid: uniqueid.toString(),
         })
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
