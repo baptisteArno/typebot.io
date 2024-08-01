@@ -377,6 +377,7 @@ export const startChatResponseSchema = z
     sessionId: z
       .string()
       .describe('To save and use for /continueChat requests.'),
+    sessionUpdatedAt: z.date().optional(),
     resultId: z.string().optional(),
     typebot: z.object({
       id: z.string(),
