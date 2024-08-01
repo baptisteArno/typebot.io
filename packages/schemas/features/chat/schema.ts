@@ -170,6 +170,7 @@ const startTypebotPick = {
   variables: true,
   settings: true,
   theme: true,
+  updatedAt: true,
 } as const
 export const startTypebotSchema = z.preprocess(
   preprocessTypebot,
@@ -381,6 +382,7 @@ export const startChatResponseSchema = z
       id: z.string(),
       theme: themeSchema,
       settings: settingsSchema,
+      updatedAt: z.date().optional(),
     }),
   })
   .merge(chatResponseBaseSchema)
