@@ -1,7 +1,7 @@
 // Bubbles to be disabled
 const disabledBubbles = [
   // 'text',
-  'image',
+  // 'image',
   'video',
   'embed',
   'audio',
