@@ -1,12 +1,12 @@
 {
   "functions": {
     "src/pages/api/[...trpc].ts": {
-      "maxDuration": 60,
+      "maxDuration": 150,
       
       "memory": 500
     },
     "src/pages/api/snipers/[sniperId]/blocks/[blockId]/executeWebhook.ts": {
-      "maxDuration": 60,
+      "maxDuration": 150,
       "memory": 500
     }
   },
