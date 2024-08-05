@@ -62,7 +62,7 @@ export const SharePage = () => {
 
     if (!isCorrectlyFormatted) {
       showToast({
-        description: 'Can only contain lowercase letters, numbers and dashes.',
+        description: t('share.errors.invalidPathname'),
       })
       return false
     }
@@ -73,7 +73,7 @@ export const SharePage = () => {
     const isLongerThanAllowed = publicId.length >= 4
     if (!isLongerThanAllowed && isCloudProdInstance()) {
       showToast({
-        description: 'Should be longer than 4 characters',
+        description: t('share.errors.invalidPublicId'),
       })
       return false
     }
@@ -82,7 +82,7 @@ export const SharePage = () => {
 
     const { data } = await isPublicDomainAvailableQuery(publicId)
     if (!data?.isAvailable) {
-      showToast({ description: 'ID is already taken' })
+      showToast({ description: t('share.errors.domainTaken') })
       return false
     }
 
@@ -118,7 +118,7 @@ export const SharePage = () => {
                 />
                 <IconButton
                   icon={<TrashIcon />}
-                  aria-label="Remove custom URL"
+                  aria-label={t('share.removeCustomDomain')}
                   size="xs"
                   onClick={() => handleCustomDomainChange(null)}
                 />
@@ -143,7 +143,7 @@ export const SharePage = () => {
                     limitReachedType={t('billing.limitMessage.customDomain')}
                     excludedPlans={[Plan.STARTER]}
                   >
-                    <Text mr="2">Add my domain</Text>{' '}
+                    <Text mr="2">{t('share.heading.addCustomDomain')}</Text>{' '}
                     <LockTag plan={Plan.PRO} />
                   </UpgradeButton>
                 )}
