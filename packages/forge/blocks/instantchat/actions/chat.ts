@@ -32,6 +32,7 @@ export const chat = createAction({
         'Email do cliente',
         'Empresa do cliente',
         'CPF/CNPJ do cliente',
+        'ID Externo',
       ] as const)
       .layout({
         accordion: 'Salvar resultado',
@@ -113,6 +114,9 @@ export const chat = createAction({
               break
             case 'CPF/CNPJ do cliente':
               variables.set(r.variableId, res.Client?.enterprise_cnpj)
+              break
+            case 'ID Externo':
+              variables.set(r.variableId, res.Client?.external_id)
               break
             default:
               break
