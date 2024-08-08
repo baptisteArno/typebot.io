@@ -150,7 +150,7 @@ export const SharePage = () => {
             ) : null}
           </Stack>
 
-          <Stack spacing={4}>
+          {/* <Stack spacing={4}>
             <Heading fontSize="2xl" as="h1">
               Embed your typebot
             </Heading>
@@ -163,7 +163,7 @@ export const SharePage = () => {
                 />
               ))}
             </Wrap>
-          </Stack>
+          </Stack> */}
         </Stack>
       </Flex>
     </Flex>
