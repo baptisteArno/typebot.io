@@ -87,7 +87,10 @@ export const SmtpCreateModalContent = ({
         title: 'Invalid configuration',
         description: "We couldn't send the test email with your configuration",
         details: {
-          content: testSmtpError.message,
+          content:
+            'response' in testSmtpError
+              ? (testSmtpError.response as string)
+              : testSmtpError.message,
           lang: 'json',
         },
       })
