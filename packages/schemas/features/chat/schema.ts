@@ -170,6 +170,7 @@ const startTypebotPick = {
   variables: true,
   settings: true,
   theme: true,
+  updatedAt: true,
 } as const
 export const startTypebotSchema = z.preprocess(
   preprocessTypebot,
@@ -376,11 +377,13 @@ export const startChatResponseSchema = z
     sessionId: z
       .string()
       .describe('To save and use for /continueChat requests.'),
+    sessionUpdatedAt: z.date().optional(),
     resultId: z.string().optional(),
     typebot: z.object({
       id: z.string(),
       theme: themeSchema,
       settings: settingsSchema,
+      updatedAt: z.date().optional(),
     }),
   })
   .merge(chatResponseBaseSchema)

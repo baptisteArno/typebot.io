@@ -278,6 +278,7 @@ export const startSession = async ({
         theme: sanitizeAndParseTheme(typebot.theme, {
           variables: initialState.typebotsQueue[0].typebot.variables,
         }),
+        updatedAt: typebot.updatedAt,
       },
       dynamicTheme: parseDynamicTheme(newSessionState),
       logs: startLogs.length > 0 ? startLogs : undefined,
@@ -296,6 +297,7 @@ export const startSession = async ({
       theme: sanitizeAndParseTheme(typebot.theme, {
         variables: initialState.typebotsQueue[0].typebot.variables,
       }),
+      updatedAt: typebot.updatedAt,
     },
     messages,
     input,

@@ -92,10 +92,12 @@ export const startChat = async ({
 
   return {
     sessionId: session.id,
+    sessionUpdatedAt: session.updatedAt,
     typebot: {
       id: typebot.id,
       theme: typebot.theme,
       settings: typebot.settings,
+      updatedAt: typebot.updatedAt,
     },
     messages,
     input,

@@ -31,5 +31,6 @@ export const findPublicTypebot = ({ publicId }: Props) =>
           },
         },
       },
+      updatedAt: true,
     },
   })
