@@ -37,18 +37,17 @@ export const LiteBadge = (props: Props) => {
     if (observer) observer.disconnect()
   })
 
-  return null
-  // return (
-  //   <a
-  //     ref={liteBadge}
-  //     href={'https://www.typebot.io/?utm_source=litebadge'}
-  //     target="_blank"
-  //     rel="noopener noreferrer"
-  //     class="lite-badge"
-  //     id="lite-badge"
-  //   >
-  //     <TypebotLogo />
-  //     <span>Made with Typebot</span>
-  //   </a>
-  // )
+  return (
+    <a
+      ref={liteBadge}
+      href={'https://www.typebot.io/?utm_source=litebadge'}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="lite-badge"
+      id="lite-badge"
+    >
+      <TypebotLogo />
+      <span>Made with Typebot</span>
+    </a>
+  )
 }

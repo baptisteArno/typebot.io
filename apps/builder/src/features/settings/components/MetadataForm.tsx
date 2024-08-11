@@ -55,7 +55,7 @@ export const MetadataForm = ({
 
   return (
     <Stack spacing="6">
-      <Stack>
+      {/* <Stack>
         <FormLabel mb="0" htmlFor="icon">
           Icon:
         </FormLabel>
@@ -85,7 +85,7 @@ export const MetadataForm = ({
             />
           </PopoverContent>
         </Popover>
-      </Stack>
+      </Stack>*/}
       <Stack>
         <FormLabel mb="0" htmlFor="image">
           Image:
