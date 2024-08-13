@@ -21,11 +21,11 @@ import { headerHeight } from '../constants'
 import { useTranslate } from '@tolgee/react'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { BlockV6 } from '@typebot.io/schemas'
 import { useDebouncedCallback } from 'use-debounce'
 import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
-import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 
 // Integration blocks migrated to forged blocks
 const legacyIntegrationBlocks = [IntegrationBlockType.OPEN_AI]
