@@ -73,8 +73,8 @@ export const computeResultTranscript = ({
     typebotsQueue: [{ typebot }],
     nextGroup: firstGroup,
     currentTranscript: [],
-    answers,
-    setVariableHistory,
+    answers: [...answers],
+    setVariableHistory: [...setVariableHistory],
     visitedEdges,
     stopAtBlockId,
   })
