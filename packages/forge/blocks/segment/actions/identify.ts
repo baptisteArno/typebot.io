@@ -9,11 +9,10 @@ export const identify = createAction({
     userId: option.string.layout({
       label: 'User ID',
       isRequired: true,
-      helperText: 'Identifier of the user to track the event for.',
     }),
     email: option.string.layout({
       label: 'Email',
-      isRequired: true,
+      isRequired: false,
     }),
     traits: option.array(option.object({
       key: option.string.layout({

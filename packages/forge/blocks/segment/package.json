@@ -13,8 +13,6 @@
     "typescript": "5.4.5"
   },
   "dependencies": {
-    "@segment/analytics-node": "^2.1.2",
-    "@types/uuid": "^10.0.0",
-    "uuid": "^10.0.0"
+    "@segment/analytics-node": "^2.1.2"
   }
 }

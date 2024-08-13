@@ -2,7 +2,7 @@ import { createAction, option } from '@typebot.io/forge'
 import { Analytics } from '@segment/analytics-node'
 import { auth } from '../auth'
 
-export const page = createAction({
+export const trackPage = createAction({
   auth,
   name: 'Track Chatbot View',
   options: option.object({

@@ -2,10 +2,9 @@ import { createBlock } from '@typebot.io/forge'
 import { SegmentLogo } from './logo'
 import { auth } from './auth'
 import { identify } from './actions/identify'
-import { track } from './actions/track'
-import { genUUID } from './actions/genuuid'
+import { trackEvent } from './actions/trackEvent'
 import { alias } from './actions/alias'
-import { page } from './actions/page'
+import { trackPage } from './actions/trackPage'
 
 export const segmentBlock = createBlock({
   id: 'segment',
@@ -13,5 +12,5 @@ export const segmentBlock = createBlock({
   tags: ['events', 'analytics'],
   LightLogo: SegmentLogo,
   auth,
-  actions: [alias, genUUID, identify, page, track]
+  actions: [alias, identify, trackPage, trackEvent]
 })
