@@ -25,6 +25,10 @@ import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/consta
 import { BlockV6 } from '@typebot.io/schemas'
 import { useDebouncedCallback } from 'use-debounce'
 import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
+import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
+
+// Integration blocks migrated to forged blocks
+const legacyIntegrationBlocks = [IntegrationBlockType.OPEN_AI]
 
 export const BlocksSideBar = () => {
   const { t } = useTranslate()
@@ -36,6 +40,7 @@ export const BlocksSideBar = () => {
   const [relativeCoordinates, setRelativeCoordinates] = useState({ x: 0, y: 0 })
   const [isLocked, setIsLocked] = useState(true)
   const [isExtended, setIsExtended] = useState(true)
+  const [searchInput, setSearchInput] = useState('')
 
   const closeSideBar = useDebouncedCallback(() => setIsExtended(false), 200)
 
@@ -81,7 +86,6 @@ export const BlocksSideBar = () => {
     if (isLocked) return
     closeSideBar()
   }
-  const [searchInput, setSearchInput] = useState('')
 
   const handleSearchInputChange = (event: {
     target: { value: React.SetStateAction<string> }
@@ -90,16 +94,19 @@ export const BlocksSideBar = () => {
   }
   const blocksArray = Object.values(forgedBlocks)
 
-  const filteredBlocks = blocksArray.filter((block) => {
-    return (
-      block.id.toLowerCase().includes(searchInput.toLowerCase()) ||
-      (block.tags &&
-        block.tags.some((tag: string) =>
-          tag.toLowerCase().includes(searchInput.toLowerCase())
-        )) ||
-      block.name.toLowerCase().includes(searchInput.toLowerCase())
-    )
-  })
+  const filteredForgedBlockIds = blocksArray
+    .filter((block) => {
+      return (
+        block.id.toLowerCase().includes(searchInput.toLowerCase()) ||
+        (block.tags &&
+          block.tags.some((tag: string) =>
+            tag.toLowerCase().includes(searchInput.toLowerCase())
+          )) ||
+        block.name.toLowerCase().includes(searchInput.toLowerCase())
+      )
+    })
+    .map((block) => block.id)
+
   return (
     <Flex
       w="360px"
@@ -219,13 +226,19 @@ export const BlocksSideBar = () => {
             {t('editor.sidebarBlocks.blockType.integrations.heading')}
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {filteredBlocks.map((block) => (
-              <BlockCard
-                key={block.id}
-                type={block.id}
-                onMouseDown={handleMouseDown}
-              />
-            ))}
+            {Object.values(IntegrationBlockType)
+              .filter((type) =>
+                type.toLowerCase().includes(searchInput.toLowerCase())
+              )
+              .concat(filteredForgedBlockIds as any)
+              .filter((type) => !legacyIntegrationBlocks.includes(type))
+              .map((type) => (
+                <BlockCard
+                  key={type}
+                  type={type}
+                  onMouseDown={handleMouseDown}
+                />
+              ))}
           </SimpleGrid>
         </Stack>
 
