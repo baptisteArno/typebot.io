@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Stack,
   Text,
@@ -8,8 +7,6 @@ import {
   Portal,
   Flex,
   IconButton,
-  InputGroup,
-  InputLeftElement,
   Input,
   Tooltip,
   Fade,
@@ -24,15 +21,10 @@ import { headerHeight } from '../constants'
 import { useTranslate } from '@tolgee/react'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { BlockV6 } from '@typebot.io/schemas'
 import { useDebouncedCallback } from 'use-debounce'
-import { forgedBlockIds } from '@typebot.io/forge-repository/constants'
 import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
-
-// Integration blocks migrated to forged blocks
-const legacyIntegrationBlocks = [IntegrationBlockType.OPEN_AI]
 
 export const BlocksSideBar = () => {
   const { t } = useTranslate()
@@ -105,8 +97,7 @@ export const BlocksSideBar = () => {
         block.tags.some((tag: string) =>
           tag.toLowerCase().includes(searchInput.toLowerCase())
         )) ||
-      (block.description &&
-        block.description.toLowerCase().includes(searchInput.toLowerCase()))
+      block.name.toLowerCase().includes(searchInput.toLowerCase())
     )
   })
   return (
