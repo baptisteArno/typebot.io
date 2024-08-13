@@ -6,7 +6,7 @@ import {
   SessionState,
   SetVariableHistoryItem,
 } from '@typebot.io/schemas'
-import { isEmpty, isNotEmpty } from '@typebot.io/lib'
+import { isNotEmpty } from '@typebot.io/lib'
 import {
   isBubbleBlock,
   isInputBlock,
@@ -139,7 +139,7 @@ export const executeGroup = async (
       }
     const executionResponse = (
       isLogicBlock(block)
-        ? await executeLogic(newSessionState)(block)
+        ? await executeLogic(newSessionState)(block, setVariableHistory)
         : isIntegrationBlock(block)
         ? await executeIntegration(newSessionState)(block)
         : null

@@ -1,5 +1,9 @@
 import { executeWait } from './blocks/logic/wait/executeWait'
-import { LogicBlock, SessionState } from '@typebot.io/schemas'
+import {
+  LogicBlock,
+  SessionState,
+  SetVariableHistoryItem,
+} from '@typebot.io/schemas'
 import { ExecuteLogicResponse } from './types'
 import { executeScript } from './blocks/logic/script/executeScript'
 import { executeJumpBlock } from './blocks/logic/jump/executeJumpBlock'
@@ -12,10 +16,13 @@ import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/consta
 
 export const executeLogic =
   (state: SessionState) =>
-  async (block: LogicBlock): Promise<ExecuteLogicResponse> => {
+  async (
+    block: LogicBlock,
+    setVariableHistory: SetVariableHistoryItem[]
+  ): Promise<ExecuteLogicResponse> => {
     switch (block.type) {
       case LogicBlockType.SET_VARIABLE:
-        return executeSetVariable(state, block)
+        return executeSetVariable(state, block, setVariableHistory)
       case LogicBlockType.CONDITION:
         return executeConditionBlock(state, block)
       case LogicBlockType.REDIRECT:
