@@ -7,7 +7,10 @@ import {
   useEventListener,
   Portal,
   Flex,
-  IconButton, InputGroup, InputLeftElement, Input,
+  IconButton,
+  InputGroup,
+  InputLeftElement,
+  Input,
   Tooltip,
   Fade,
   useColorModeValue,
@@ -86,22 +89,26 @@ export const BlocksSideBar = () => {
     if (isLocked) return
     closeSideBar()
   }
-  const [searchInput, setSearchInput] = useState('');
+  const [searchInput, setSearchInput] = useState('')
 
-  const handleSearchInputChange = (event: { target: { value: React.SetStateAction<string> } }) => {
-    setSearchInput(event.target.value);
-  };
-  const blocksArray = Object.values(forgedBlocks);
+  const handleSearchInputChange = (event: {
+    target: { value: React.SetStateAction<string> }
+  }) => {
+    setSearchInput(event.target.value)
+  }
+  const blocksArray = Object.values(forgedBlocks)
 
   const filteredBlocks = blocksArray.filter((block) => {
     return (
       block.id.toLowerCase().includes(searchInput.toLowerCase()) ||
-      (block.tags && block.tags.some((tag: string) =>
-        tag.toLowerCase().includes(searchInput.toLowerCase())
-      )) ||
-      (block.description && block.description.toLowerCase().includes(searchInput.toLowerCase()))
-    );
-  });
+      (block.tags &&
+        block.tags.some((tag: string) =>
+          tag.toLowerCase().includes(searchInput.toLowerCase())
+        )) ||
+      (block.description &&
+        block.description.toLowerCase().includes(searchInput.toLowerCase()))
+    )
+  })
   return (
     <Flex
       w="360px"
@@ -120,7 +127,7 @@ export const BlocksSideBar = () => {
         rounded="lg"
         shadow="xl"
         borderWidth="1px"
-        pt="2"
+        pt="4"
         pb="10"
         px="4"
         bgColor={useColorModeValue('white', 'gray.900')}
@@ -128,14 +135,17 @@ export const BlocksSideBar = () => {
         userSelect="none"
         overflowY="auto"
       >
-        <Flex justifyContent="space-between" w="full" alignItems='center'>
-          <InputGroup mr='4'>
-            <Input
-              placeholder='Search'
-              value={searchInput}
-              onChange={handleSearchInputChange}
-            />
-          </InputGroup>
+        <Flex
+          justifyContent="space-between"
+          w="full"
+          alignItems="center"
+          gap="3"
+        >
+          <Input
+            placeholder="Search"
+            value={searchInput}
+            onChange={handleSearchInputChange}
+          />
           <Tooltip
             label={
               isLocked
@@ -166,7 +176,11 @@ export const BlocksSideBar = () => {
                 type.toLowerCase().includes(searchInput.toLowerCase())
               )
               .map((type) => (
-                <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
+                <BlockCard
+                  key={type}
+                  type={type}
+                  onMouseDown={handleMouseDown}
+                />
               ))}
           </SimpleGrid>
         </Stack>
@@ -181,7 +195,11 @@ export const BlocksSideBar = () => {
                 type.toLowerCase().includes(searchInput.toLowerCase())
               )
               .map((type) => (
-                <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
+                <BlockCard
+                  key={type}
+                  type={type}
+                  onMouseDown={handleMouseDown}
+                />
               ))}
           </SimpleGrid>
         </Stack>
@@ -196,7 +214,11 @@ export const BlocksSideBar = () => {
                 type.toLowerCase().includes(searchInput.toLowerCase())
               )
               .map((type) => (
-                <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
+                <BlockCard
+                  key={type}
+                  type={type}
+                  onMouseDown={handleMouseDown}
+                />
               ))}
           </SimpleGrid>
         </Stack>
@@ -207,7 +229,11 @@ export const BlocksSideBar = () => {
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {filteredBlocks.map((block) => (
-              <BlockCard key={block.id} type={block.id} onMouseDown={handleMouseDown} />
+              <BlockCard
+                key={block.id}
+                type={block.id}
+                onMouseDown={handleMouseDown}
+              />
             ))}
           </SimpleGrid>
         </Stack>
