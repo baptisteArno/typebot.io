@@ -7,6 +7,7 @@ import {
   Portal,
   Flex,
   IconButton,
+  Input,
   Tooltip,
   Fade,
   useColorModeValue,
@@ -24,7 +25,7 @@ import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integr
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { BlockV6 } from '@typebot.io/schemas'
 import { useDebouncedCallback } from 'use-debounce'
-import { forgedBlockIds } from '@typebot.io/forge-repository/constants'
+import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
 
 // Integration blocks migrated to forged blocks
 const legacyIntegrationBlocks = [IntegrationBlockType.OPEN_AI]
@@ -39,6 +40,7 @@ export const BlocksSideBar = () => {
   const [relativeCoordinates, setRelativeCoordinates] = useState({ x: 0, y: 0 })
   const [isLocked, setIsLocked] = useState(true)
   const [isExtended, setIsExtended] = useState(true)
+  const [searchInput, setSearchInput] = useState('')
 
   const closeSideBar = useDebouncedCallback(() => setIsExtended(false), 200)
 
@@ -85,6 +87,26 @@ export const BlocksSideBar = () => {
     closeSideBar()
   }
 
+  const handleSearchInputChange = (event: {
+    target: { value: React.SetStateAction<string> }
+  }) => {
+    setSearchInput(event.target.value)
+  }
+  const blocksArray = Object.values(forgedBlocks)
+
+  const filteredForgedBlockIds = blocksArray
+    .filter((block) => {
+      return (
+        block.id.toLowerCase().includes(searchInput.toLowerCase()) ||
+        (block.tags &&
+          block.tags.some((tag: string) =>
+            tag.toLowerCase().includes(searchInput.toLowerCase())
+          )) ||
+        block.name.toLowerCase().includes(searchInput.toLowerCase())
+      )
+    })
+    .map((block) => block.id)
+
   return (
     <Flex
       w="360px"
@@ -103,7 +125,7 @@ export const BlocksSideBar = () => {
         rounded="lg"
         shadow="xl"
         borderWidth="1px"
-        pt="2"
+        pt="4"
         pb="10"
         px="4"
         bgColor={useColorModeValue('white', 'gray.900')}
@@ -111,7 +133,17 @@ export const BlocksSideBar = () => {
         userSelect="none"
         overflowY="auto"
       >
-        <Flex justifyContent="flex-end">
+        <Flex
+          justifyContent="space-between"
+          w="full"
+          alignItems="center"
+          gap="3"
+        >
+          <Input
+            placeholder="Search"
+            value={searchInput}
+            onChange={handleSearchInputChange}
+          />
           <Tooltip
             label={
               isLocked
@@ -137,9 +169,17 @@ export const BlocksSideBar = () => {
             {t('editor.sidebarBlocks.blockType.bubbles.heading')}
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(BubbleBlockType).map((type) => (
-              <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
-            ))}
+            {Object.values(BubbleBlockType)
+              .filter((type) =>
+                type.toLowerCase().includes(searchInput.toLowerCase())
+              )
+              .map((type) => (
+                <BlockCard
+                  key={type}
+                  type={type}
+                  onMouseDown={handleMouseDown}
+                />
+              ))}
           </SimpleGrid>
         </Stack>
 
@@ -148,9 +188,17 @@ export const BlocksSideBar = () => {
             {t('editor.sidebarBlocks.blockType.inputs.heading')}
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(InputBlockType).map((type) => (
-              <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
-            ))}
+            {Object.values(InputBlockType)
+              .filter((type) =>
+                type.toLowerCase().includes(searchInput.toLowerCase())
+              )
+              .map((type) => (
+                <BlockCard
+                  key={type}
+                  type={type}
+                  onMouseDown={handleMouseDown}
+                />
+              ))}
           </SimpleGrid>
         </Stack>
 
@@ -159,9 +207,17 @@ export const BlocksSideBar = () => {
             {t('editor.sidebarBlocks.blockType.logic.heading')}
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(LogicBlockType).map((type) => (
-              <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
-            ))}
+            {Object.values(LogicBlockType)
+              .filter((type) =>
+                type.toLowerCase().includes(searchInput.toLowerCase())
+              )
+              .map((type) => (
+                <BlockCard
+                  key={type}
+                  type={type}
+                  onMouseDown={handleMouseDown}
+                />
+              ))}
           </SimpleGrid>
         </Stack>
 
@@ -171,7 +227,10 @@ export const BlocksSideBar = () => {
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(IntegrationBlockType)
-              .concat(forgedBlockIds as any)
+              .filter((type) =>
+                type.toLowerCase().includes(searchInput.toLowerCase())
+              )
+              .concat(filteredForgedBlockIds as any)
               .filter((type) => !legacyIntegrationBlocks.includes(type))
               .map((type) => (
                 <BlockCard
