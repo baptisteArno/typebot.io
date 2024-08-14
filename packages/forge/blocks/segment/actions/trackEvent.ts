@@ -9,7 +9,7 @@ export const trackEvent = createAction({
     eventName: option.string.layout({
       label: 'Name',
       isRequired: true,
-      helperText: 'Name of the event to track.',
+      moreInfoTooltip: 'Name of the event to track.',
     }),
     userId: option.string.layout({
       label: 'User ID',
