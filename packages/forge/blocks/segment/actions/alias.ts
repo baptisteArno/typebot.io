@@ -9,11 +9,11 @@ export const alias = createAction({
     userId: option.string.layout({
       label: 'User ID',
       isRequired: true,
-      helperText: 'New ID of the user.',
+      moreInfoTooltip: 'New ID of the user.',
     }),
     previousId: option.string.layout({
       label: 'Previous ID',
-      helperText: 'Previous ID of the user to alias.',
+      moreInfoTooltip: 'Previous ID of the user to alias.',
     }),
   }),
   run: {
