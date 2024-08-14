@@ -14,7 +14,6 @@ export const trackEvent = createAction({
     userId: option.string.layout({
       label: 'User ID',
       isRequired: true,
-      helperText: 'Identifier of the user to track the event for.',
     }),
     properties: option.array(option.object({
       key: option.string.layout({

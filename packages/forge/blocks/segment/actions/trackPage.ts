@@ -9,17 +9,14 @@ export const trackPage = createAction({
     userId: option.string.layout({
       label: 'User ID',
       isRequired: true,
-      helperText: 'Identifier of the user.',
     }),
     name: option.string.layout({
       label: 'Name',
       isRequired: true,
-      helperText: 'Name of the chatbot.',
     }),
     category: option.string.layout({
       label: 'Category',
       isRequired: false,
-      helperText: 'Category of the chatbot.',
     }),
     properties: option.array(option.object({
       key: option.string.layout({
