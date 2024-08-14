@@ -4,10 +4,10 @@ import { auth } from '../auth'
 
 export const trackEvent = createAction({
   auth,
-  name: 'Track Event',
+  name: 'Track',
   options: option.object({
     eventName: option.string.layout({
-      label: 'Event Name',
+      label: 'Name',
       isRequired: true,
       helperText: 'Name of the event to track.',
     }),
@@ -52,7 +52,7 @@ export const trackEvent = createAction({
           properties: createProperties(properties)
         })
       }
-
+      await analytics.closeAndFlush()
     }
   },
 })

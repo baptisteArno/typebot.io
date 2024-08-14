@@ -4,7 +4,7 @@ import { auth } from '../auth'
 
 export const alias = createAction({
   auth,
-  name: 'Alias User',
+  name: 'Alias',
   options: option.object({
     userId: option.string.layout({
       label: 'User ID',
@@ -31,6 +31,8 @@ export const alias = createAction({
         userId: userId,
         previousId: previousId
       })
+
+      await analytics.closeAndFlush()
     }
   },
 })

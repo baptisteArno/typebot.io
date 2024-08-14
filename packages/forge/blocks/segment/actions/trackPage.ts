@@ -4,7 +4,7 @@ import { auth } from '../auth'
 
 export const trackPage = createAction({
   auth,
-  name: 'Track Chatbot View',
+  name: 'Page',
   options: option.object({
     userId: option.string.layout({
       label: 'User ID',
@@ -59,6 +59,7 @@ export const trackPage = createAction({
           properties: createProperties(properties)
         });
       }
+      await analytics.closeAndFlush()
     }
   },
 })

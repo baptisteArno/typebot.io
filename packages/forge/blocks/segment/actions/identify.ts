@@ -51,6 +51,7 @@ export const identify = createAction({
           traits: createTraits(traits, email)
         })
       }
+      await analytics.closeAndFlush()
     }
   },
 })
