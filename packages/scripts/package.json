@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "playground": "SKIP_ENV_CHECK=true dotenv -e ./.env.local -- tsx playground.ts",
-    "db:cleanDatabase": "tsx cleanDatabase.ts",
+    "db:cleanDatabase": "SKIP_ENV_CHECK=true tsx cleanDatabase.ts",
     "db:backup": "tsx backupDatabase.ts",
     "db:restore": "tsx restoreDatabase.ts",
     "db:setCustomPlan": "tsx setCustomPlan.ts",

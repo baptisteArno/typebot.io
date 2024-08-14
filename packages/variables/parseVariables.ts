@@ -97,7 +97,7 @@ export const getVariablesToParseInfoInText = (
     takeLatestIfList,
   }: { variables: Variable[]; takeLatestIfList?: boolean }
 ): VariableToParseInformation[] => {
-  const variablesToParseInfo: VariableToParseInformation[] = []
+  const inlineVarsParseInfo: VariableToParseInformation[] = []
   const inlineCodeMatches = [...text.matchAll(inlineCodeRegex)]
   inlineCodeMatches.forEach((match) => {
     if (isNotDefined(match.index) || !match[0].length) return
@@ -105,7 +105,7 @@ export const getVariablesToParseInfoInText = (
     const evaluatedValue = evaluateInlineCode(inlineCodeToEvaluate, {
       variables,
     })
-    variablesToParseInfo.push({
+    inlineVarsParseInfo.push({
       startIndex: match.index,
       endIndex: match.index + match[0].length,
       textToReplace: match[0],
@@ -117,19 +117,20 @@ export const getVariablesToParseInfoInText = (
         ) ?? '',
     })
   })
-  const textWithInlineCodeParsed = text.replace(
-    inlineCodeRegex,
-    (_full, inlineCodeToEvaluate) =>
-      evaluateInlineCode(inlineCodeToEvaluate, { variables })
-  )
-  const variableMatches = [...textWithInlineCodeParsed.matchAll(variableRegex)]
+  const variablesParseInfo: VariableToParseInformation[] = []
+  const variableMatches = [...text.matchAll(variableRegex)]
   variableMatches.forEach((match) => {
     if (isNotDefined(match.index) || !match[0].length) return
+    const isPartOfInlineCode = inlineVarsParseInfo.some(
+      (inVar) =>
+        match.index >= inVar.startIndex && match.index <= inVar.endIndex
+    )
+    if (isPartOfInlineCode) return
     const matchedVarName = match[1] ?? match[3]
     const variable = variables.find((variable) => {
       return matchedVarName === variable.name
     }) as VariableWithValue | undefined
-    variablesToParseInfo.push({
+    variablesParseInfo.push({
       startIndex: match.index,
       endIndex: match.index + match[0].length,
       textToReplace: match[0],
@@ -142,7 +143,9 @@ export const getVariablesToParseInfoInText = (
       variableId: variable?.id,
     })
   })
-  return variablesToParseInfo.sort((a, b) => a.startIndex - b.startIndex)
+  return inlineVarsParseInfo
+    .concat(variablesParseInfo)
+    .sort((a, b) => a.startIndex - b.startIndex)
 }
 
 const parseVariableValueInJson = (value: VariableWithValue['value']) => {
