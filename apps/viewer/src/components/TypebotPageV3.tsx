@@ -9,6 +9,7 @@ import { useMemo } from 'react'
 
 export type TypebotV3PageProps = {
   url: string
+  isMatchingViewerUrl?: boolean
   name: string
   publicId: string | null
   font: Font | null
@@ -19,6 +20,7 @@ export type TypebotV3PageProps = {
 
 export const TypebotPageV3 = ({
   font,
+  isMatchingViewerUrl,
   publicId,
   name,
   url,
@@ -41,7 +43,10 @@ export const TypebotPageV3 = ({
     push(asPath.split('?')[0], undefined, { shallow: true })
   }
 
-  const apiOrigin = useMemo(() => new URL(url).origin, [url])
+  const apiOrigin = useMemo(() => {
+    if (isMatchingViewerUrl) return
+    return new URL(url).origin
+  }, [isMatchingViewerUrl, url])
 
   return (
     <div

@@ -78,6 +78,7 @@ export const getServerSideProps: GetServerSideProps = async (
       props: {
         publishedTypebot,
         incompatibleBrowser,
+        isMatchingViewerUrl,
         url: `${protocol}://${forwardedHost ?? host}${pathname}`,
       },
     }
@@ -203,6 +204,7 @@ const App = ({
   isIE: boolean
   customHeadCode: string | null
   url: string
+  isMatchingViewerUrl?: boolean
   publishedTypebot:
     | TypebotPageProps['publishedTypebot']
     | Pick<
@@ -238,6 +240,7 @@ const App = ({
   ) : (
     <TypebotPageV3
       url={props.url}
+      isMatchingViewerUrl={props.isMatchingViewerUrl}
       name={publishedTypebot.name}
       publicId={publishedTypebot.publicId}
       isHideQueryParamsEnabled={
