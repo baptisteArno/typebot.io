@@ -135,13 +135,15 @@ Example:
 export const shoutName = createAction({
   // ...
   run: {
-    web: ({ options }) => {
-      return {
-        args: {
-          name: options.name ?? null,
-        },
-        content: `alert('Hello ' + name)`,
-      }
+    web: {
+      parseFunction: ({ options }) => {
+        return {
+          args: {
+            name: options.name ?? null,
+          },
+          content: `alert('Hello ' + name)`,
+        }
+      },
     },
   },
 })
@@ -158,94 +160,6 @@ The web function needs to return an object with `args` and `content`.
 If you want to display a custom embed bubble, you can use the `displayEmbedBubble` object. See [Cal.com
 block](https://github.com/baptisteArno/typebot.io/blob/main/packages/forge/blocks/calCom/actions/bookEvent.ts)
 as an example.
-
-Example:
-
-```ts
-export const bookEvent = createAction({
-  // ...
-  run: {
-    web: {
-      displayEmbedBubble: {
-        parseInitFunction: ({ options }) => {
-          if (!options.link) throw new Error('Missing link')
-          const baseUrl = options.baseUrl ?? defaultBaseUrl
-          const link = options.link?.startsWith('http')
-            ? options.link.replace(/http.+:\/\/[^\/]+\//, '')
-            : options.link
-          return {
-            args: {
-              baseUrl,
-              link: link ?? '',
-              name: options.name ?? null,
-              email: options.email ?? null,
-              layout: parseLayoutAttr(options.layout),
-            },
-            content: `(function (C, A, L) {
-                let p = function (a, ar) {
-                  a.q.push(ar);
-                };
-                let d = C.document;
-                C.Cal =
-                  C.Cal ||
-                  function () {
-                    let cal = C.Cal;
-                    let ar = arguments;
-                    if (!cal.loaded) {
-                      cal.ns = {};
-                      cal.q = cal.q || [];
-                      d.head.appendChild(d.createElement("script")).src = A;
-                      cal.loaded = true;
-                    }
-                    if (ar[0] === L) {
-                      const api = function () {
-                        p(api, arguments);
-                      };
-                      const namespace = ar[1];
-                      api.q = api.q || [];
-                      typeof namespace === "string"
-                        ? (cal.ns[namespace] = api) && p(api, ar)
-                        : p(cal, ar);
-                      return;
-                    }
-                    p(cal, ar);
-                  };
-              })(window, baseUrl + "/embed/embed.js", "init");
-              Cal("init", { origin: baseUrl });
-
-              Cal("inline", {
-                elementOrSelector: typebotElement,
-                calLink: link,
-                layout,
-                config: {
-                  name: name ?? undefined,
-                  email: email ?? undefined,
-                }
-              });
-
-              Cal("ui", {"hideEventTypeDetails":false,layout});`,
-          }
-        },
-      },
-      waitForEvent: {
-        getSaveVariableId: ({ saveBookedDateInVariableId }) =>
-          saveBookedDateInVariableId,
-        parseFunction: () => {
-          return {
-            args: {},
-            content: `Cal("on", {
-                action: "bookingSuccessful",
-                callback: (e) => {
-                  continueFlow(e.detail.data.date)
-                }
-              })`,
-          }
-        },
-      },
-    },
-  },
-})
-```
 
 The `displayEmbedBubble` accepts a `parseInitFunction` function. This function needs to return the same object as the [`web` function](./run#client-function). The function content can use the `typebotElement` variable to get the DOM element where the block is rendered.
 
