@@ -172,7 +172,6 @@ export const sanitizeVariables = ({
     .flatMap((group) => group.blocks as Block[])
     .filter((b) => isInputBlock(b) || b.type === LogicBlockType.SET_VARIABLE)
   return variables.map((variable) => {
-    if (variable.isSessionVariable) return variable
     const isVariableLinkedToInputBlock = blocks.some(
       (block) =>
         isInputBlock(block) && block.options?.variableId === variable.id
@@ -180,7 +179,7 @@ export const sanitizeVariables = ({
     if (isVariableLinkedToInputBlock)
       return {
         ...variable,
-        isSessionVariable: true,
+        isSessionVariable: false,
       }
     const isVariableSetToForbiddenResultVar = blocks.some(
       (block) =>

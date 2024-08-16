@@ -111,14 +111,12 @@ export const PublishButton = ({
   const handlePublishClick = async () => {
     if (!typebot?.id) return
     if (isFreePlan(workspace) && hasInputFile) return onOpen()
-    if (!typebot.publicId) {
-      await updateTypebot({
-        updates: {
-          publicId: parseDefaultPublicId(typebot.name, typebot.id),
-        },
-        save: true,
-      })
-    } else await save()
+    await save(
+      !typebot.publicId
+        ? { publicId: parseDefaultPublicId(typebot.name, typebot.id) }
+        : undefined,
+      true
+    )
     publishTypebotMutate({
       typebotId: typebot.id,
     })
