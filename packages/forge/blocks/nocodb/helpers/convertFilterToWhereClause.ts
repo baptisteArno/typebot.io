@@ -19,8 +19,6 @@ export const convertFilterToWhereClause = (
 
   const where = filter.comparisons
     .map((comparison) => {
-      if (!comparison.value) return ''
-
       switch (comparison.operator) {
         case 'Not equal':
           return `(${comparison.input},ne,${comparison.value})`
