@@ -126,7 +126,8 @@
                 "editor/blocks/integrations/elevenlabs",
                 "editor/blocks/integrations/anthropic",
                 "editor/blocks/integrations/dify-ai",
-                "editor/blocks/integrations/nocodb"
+                "editor/blocks/integrations/nocodb",
+                "editor/blocks/integrations/segment"
               ]
             }
           ]

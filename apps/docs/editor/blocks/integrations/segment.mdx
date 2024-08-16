@@ -1,0 +1,25 @@
+---
+title: Segment
+---
+
+With the Segment block, you can send events to Twilio's Segment and trigger your Segment workflows. It uses the Segment Analytics Node.js library to send server side events to Segment, so that it works on non web browser devices.
+
+## How to find my `Write Key`?
+
+To find your `Write Key`, you need to go to your Segment dashboard and click on the `Sources` tab. Then click on the `API Keys` button of the source you want to use.
+
+## Identify User
+
+This action allows you to identify a user in Segment. It requires the `User ID` and `Email` and can optionally take a set of `Traits`.
+
+## Alias
+
+This action allows you to alias a user in Segment. It requires the `Previous ID` and the `User ID`.
+
+## Event
+
+This action allows you to track an event in Segment. It requires the `Event Name` and `User ID`, and can optionally take a set of `Properties`.
+
+## Page
+
+This action allows you to send a page view event to Segment. It requires the Chatbot `Name` and can optionally take a `Category` name and also a set of `Properties`.
