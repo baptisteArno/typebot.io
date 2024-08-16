@@ -26,7 +26,7 @@ test('Transcript set variable should be correctly computed', async ({
     page.getByText('Assistant: "How are you? You said hey"')
   ).toBeVisible()
   await expect(
-    page.getByText('Assistant: "How are you? You said hey 3"')
+    page.getByText('Assistant: "How are you? You said hey 2"')
   ).toBeVisible()
   await expect(page.getByText('User: "hey"')).toBeVisible()
   await expect(page.getByText('User: "hey 2"')).toBeVisible()
