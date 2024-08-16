@@ -150,8 +150,25 @@ export const Bot = (props: BotProps & { class?: string }) => {
       const initialChatInStorage = getInitialChatReplyFromStorage(
         data.typebot.id
       )
-      if (initialChatInStorage) {
-        setInitialChatReply(initialChatInStorage)
+      if (
+        initialChatInStorage &&
+        initialChatInStorage.typebot.publishedAt &&
+        data.typebot.publishedAt
+      ) {
+        if (
+          new Date(initialChatInStorage.typebot.publishedAt).getTime() ===
+          new Date(data.typebot.publishedAt).getTime()
+        ) {
+          setInitialChatReply(initialChatInStorage)
+        } else {
+          // Restart chat by resetting remembered state
+          wipeExistingChatStateInStorage(data.typebot.id)
+          setInitialChatReply(data)
+          setInitialChatReplyInStorage(data, {
+            typebotId: data.typebot.id,
+            storage,
+          })
+        }
       } else {
         setInitialChatReply(data)
         setInitialChatReplyInStorage(data, {

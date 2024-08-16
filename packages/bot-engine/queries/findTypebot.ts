@@ -18,5 +18,6 @@ export const findTypebot = ({ id, userId }: Props) =>
       theme: true,
       variables: true,
       isArchived: true,
+      updatedAt: true,
     },
   })

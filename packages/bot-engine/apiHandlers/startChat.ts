@@ -96,6 +96,7 @@ export const startChat = async ({
       id: typebot.id,
       theme: typebot.theme,
       settings: typebot.settings,
+      publishedAt: typebot.publishedAt,
     },
     messages,
     input,
