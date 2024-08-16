@@ -57,7 +57,7 @@ test('should be configurable', async ({ page }) => {
   await page.waitForTimeout(1000)
   await page.getByTestId('selected-item-label').first().click({ force: true })
   await page.click('button >> text=Current typebot')
-  await page.getByRole('textbox').nth(1).click()
+  await page.getByRole('textbox').nth(2).click()
   await page.click('button >> text=Hello')
 
   await page.click('text=Test')
