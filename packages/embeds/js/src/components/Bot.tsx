@@ -152,16 +152,13 @@ export const Bot = (props: BotProps & { class?: string }) => {
       )
       if (
         initialChatInStorage &&
-        initialChatInStorage.typebot.updatedAt &&
-        data.typebot.updatedAt
+        initialChatInStorage.typebot.publishedAt &&
+        data.typebot.publishedAt
       ) {
-        const storedTypebotUpdatedAt = new Date(
-          initialChatInStorage.typebot.updatedAt
-        ).getTime()
-        const currentTypebotUpdatedAt = new Date(
-          data.typebot.updatedAt
-        ).getTime()
-        if (storedTypebotUpdatedAt === currentTypebotUpdatedAt) {
+        if (
+          new Date(initialChatInStorage.typebot.publishedAt).getTime() ===
+          new Date(data.typebot.publishedAt).getTime()
+        ) {
           setInitialChatReply(initialChatInStorage)
         } else {
           // Restart chat by resetting remembered state

@@ -382,7 +382,7 @@ export const startChatResponseSchema = z
       id: z.string(),
       theme: themeSchema,
       settings: settingsSchema,
-      updatedAt: z.date().optional(),
+      publishedAt: z.coerce.date().optional(),
     }),
   })
   .merge(chatResponseBaseSchema)

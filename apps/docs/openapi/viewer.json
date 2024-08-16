@@ -1148,6 +1148,9 @@
                         },
                         "settings": {
                           "$ref": "#/components/schemas/settings"
+                        },
+                        "publishedAt": {
+                          "type": "string"
                         }
                       },
                       "required": [
@@ -1986,6 +1989,9 @@
                         },
                         "settings": {
                           "$ref": "#/components/schemas/settings"
+                        },
+                        "publishedAt": {
+                          "type": "string"
                         }
                       },
                       "required": [
@@ -5869,6 +5875,9 @@
           },
           "theme": {
             "$ref": "#/components/schemas/theme"
+          },
+          "updatedAt": {
+            "type": "string"
           }
         },
         "required": [
@@ -5879,7 +5888,8 @@
           "edges",
           "variables",
           "settings",
-          "theme"
+          "theme",
+          "updatedAt"
         ],
         "title": "Typebot V5"
       },
@@ -7483,6 +7493,9 @@
           },
           "theme": {
             "$ref": "#/components/schemas/theme"
+          },
+          "updatedAt": {
+            "type": "string"
           }
         },
         "required": [
@@ -7493,7 +7506,8 @@
           "edges",
           "variables",
           "settings",
-          "theme"
+          "theme",
+          "updatedAt"
         ],
         "title": "Typebot V6"
       },
