@@ -9,7 +9,7 @@ export const splitUserTextMessageIntoBlocks = async ({
   input,
   shouldDownloadImages,
 }: Props): Promise<UserContent> => {
-  const urlRegex = /(^|\n\n)(https?:\/\/[^\s]+)(\n\n|$)/g
+  const urlRegex = /(^|\n\n)(https?:\/\/.+)(\n\n|$)/g
   const match = input.match(urlRegex)
   if (!match) return input
   let parts: (TextPart | ImagePart)[] = []

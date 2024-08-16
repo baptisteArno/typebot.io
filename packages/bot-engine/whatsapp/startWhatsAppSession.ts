@@ -112,18 +112,18 @@ export const messageMatchStartCondition = (
   startCondition: NonNullable<Settings['whatsApp']>['startCondition']
 ) => {
   if (!startCondition) return true
-  if (typeof message !== 'string') return false
+  if (!message?.text) return false
   return startCondition.logicalOperator === LogicalOperator.AND
     ? startCondition.comparisons.every((comparison) =>
         matchComparison(
-          message,
+          message.text,
           comparison.comparisonOperator,
           comparison.value
         )
       )
     : startCondition.comparisons.some((comparison) =>
         matchComparison(
-          message,
+          message.text,
           comparison.comparisonOperator,
           comparison.value
         )

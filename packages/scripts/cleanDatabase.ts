@@ -26,6 +26,7 @@ const deleteArchivedTypebots = async () => {
   lastDayTwoMonthsAgo.setMonth(lastDayTwoMonthsAgo.getMonth() - 1)
   lastDayTwoMonthsAgo.setDate(0)
 
+  console.log(`Fetching archived typebots...`)
   const typebots = await prisma.typebot.findMany({
     where: {
       updatedAt: {
@@ -54,21 +55,20 @@ const deleteArchivedTypebots = async () => {
 }
 
 const deleteArchivedResults = async () => {
+  const resultsBatch = 10000
   const lastDayTwoMonthsAgo = new Date()
   lastDayTwoMonthsAgo.setMonth(lastDayTwoMonthsAgo.getMonth() - 1)
   lastDayTwoMonthsAgo.setDate(0)
   let totalResults
   do {
-    const results = await prisma.result.findMany({
-      where: {
-        createdAt: {
-          lte: lastDayTwoMonthsAgo,
-        },
-        isArchived: true,
-      },
-      select: { id: true },
-      take: 80000,
-    })
+    console.log(`Fetching ${resultsBatch} archived results...`)
+    const results = (await prisma.$queryRaw`
+      SELECT id
+      FROM Result
+      WHERE createdAt <= ${lastDayTwoMonthsAgo}
+        AND isArchived = true
+      LIMIT ${resultsBatch}
+    `) as { id: string }[]
     totalResults = results.length
     console.log(`Deleting ${results.length} archived results...`)
     const chunkSize = 1000
@@ -82,7 +82,7 @@ const deleteArchivedResults = async () => {
         },
       })
     }
-  } while (totalResults === 80000)
+  } while (totalResults === resultsBatch)
 
   console.log('Done!')
 }

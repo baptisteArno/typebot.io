@@ -27,16 +27,19 @@ import { stringifyError } from '@typebot.io/lib/stringifyError'
 
 export const executeSetVariable = async (
   state: SessionState,
-  block: SetVariableBlock
+  block: SetVariableBlock,
+  setVariableHistory: SetVariableHistoryItem[]
 ): Promise<ExecuteLogicResponse> => {
   const { variables } = state.typebotsQueue[0].typebot
   if (!block.options?.variableId)
     return {
       outgoingEdgeId: block.outgoingEdgeId,
     }
+
   const expressionToEvaluate = await getExpressionToEvaluate(state)(
     block.options,
-    block.id
+    block.id,
+    setVariableHistory
   )
   const isCustomValue = !block.options.type || block.options.type === 'Custom'
   const isCode =
@@ -139,7 +142,8 @@ const getExpressionToEvaluate =
   (state: SessionState) =>
   async (
     options: SetVariableBlock['options'],
-    blockId: string
+    blockId: string,
+    setVariableHistory: SetVariableHistoryItem[]
   ): Promise<string | null> => {
     switch (options?.type) {
       case 'Contact name':
@@ -194,9 +198,9 @@ const getExpressionToEvaluate =
       case 'Append value(s)': {
         const item = parseVariables(state.typebotsQueue[0].typebot.variables)(
           options.item
-        )
-        return `if(\`${item}\` === '') return ${options.variableId};
-        if(!${options.variableId}) return [\`${item}\`];
+        ).replaceAll('`', '\\`')
+        if (isEmpty(item)) return `return ${options.variableId}`
+        return `if(!${options.variableId}) return [\`${item}\`];
         if(!Array.isArray(${options.variableId})) return [${options.variableId}, \`${item}\`];
         return (${options.variableId}).concat(\`${item}\`);`
       }
@@ -227,6 +231,8 @@ const getExpressionToEvaluate =
           typebot: typebotWithEmptyVariables,
           stopAtBlockId: blockId,
           ...props,
+          setVariableHistory:
+            props.setVariableHistory.concat(setVariableHistory),
         })
         return (
           'return `' +

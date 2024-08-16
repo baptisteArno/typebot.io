@@ -73,8 +73,8 @@ export const computeResultTranscript = ({
     typebotsQueue: [{ typebot }],
     nextGroup: firstGroup,
     currentTranscript: [],
-    answers,
-    setVariableHistory,
+    answers: [...answers],
+    setVariableHistory: [...setVariableHistory],
     visitedEdges,
     stopAtBlockId,
   })
@@ -132,7 +132,7 @@ const executeGroup = ({
     nextGroup.blockIndex ?? 0
   )) {
     if (stopAtBlockId && block.id === stopAtBlockId) return currentTranscript
-    if (setVariableHistory.at(0)?.blockId === block.id)
+    while (setVariableHistory.at(0)?.blockId === block.id)
       typebotsQueue[0].typebot.variables = applySetVariable(
         setVariableHistory.shift(),
         typebotsQueue[0].typebot
