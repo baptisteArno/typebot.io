@@ -2,7 +2,10 @@ import { Stack, Wrap, Tag, Text, useColorModeValue } from '@chakra-ui/react'
 import { useTranslate } from '@tolgee/react'
 import { byId } from '@typebot.io/lib'
 import { Condition, Variable } from '@typebot.io/schemas'
-import { ComparisonOperators } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
+import {
+  ComparisonOperators,
+  defaultConditionItemContent,
+} from '@typebot.io/schemas/features/blocks/logic/condition/constants'
 
 type Props = {
   condition: Condition | undefined
@@ -30,7 +33,10 @@ export const ConditionContent = ({
               </Text>
             )}
             {idx > 0 && (
-              <Text fontSize={size}>{condition.logicalOperator ?? ''}</Text>
+              <Text fontSize={size}>
+                {condition.logicalOperator ??
+                  defaultConditionItemContent.logicalOperator}
+              </Text>
             )}
             {variable?.name && (
               <Tag bgColor="orange.400" color="white" size="sm">
