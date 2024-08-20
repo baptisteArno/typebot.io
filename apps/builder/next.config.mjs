@@ -1,6 +1,6 @@
 import { withSentryConfig } from '@sentry/nextjs'
 import { join, dirname } from 'path'
-import '@typebot.io/env/dist/env.mjs'
+// import '@typebot.io/env/dist/env.mjs'
 import { configureRuntimeEnv } from 'next-runtime-env/build/configure.js'
 import { fileURLToPath } from 'url'
 
