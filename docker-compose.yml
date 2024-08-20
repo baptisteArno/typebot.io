@@ -16,7 +16,7 @@ services:
     networks:
         - typebot-network
   typebot-builder:
-    image: twerlo/typebot-builder:latest
+    image: twerlo/typebot-builder:dev
     container_name: typebot-builder
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
@@ -30,7 +30,7 @@ services:
     env_file: .env
 
   typebot-viewer:
-    image: twerlo/typebot-viewer:latest
+    image: twerlo/typebot-viewer:dev
     container_name: typebot-viewer
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
