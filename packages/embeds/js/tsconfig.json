@@ -16,7 +16,6 @@
     "outDir": "dist",
     "noEmit": false,
     "emitDeclarationOnly": true,
-    "noEmitOnError": true,
-    "sourceMap": true
+    "noEmitOnError": true
   }
 }

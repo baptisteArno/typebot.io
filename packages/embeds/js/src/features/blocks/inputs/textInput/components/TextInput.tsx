@@ -41,7 +41,9 @@ export const TextInput = (props: Props) => {
     { fileIndex: number; progress: number } | undefined
   >(undefined)
   const [isDraggingOver, setIsDraggingOver] = createSignal(false)
-  const [isRecording, setIsRecording] = createSignal(false)
+  const [recordingStatus, setRecordingStatus] = createSignal<
+    'started' | 'asking' | 'stopped'
+  >('stopped')
   let inputRef: HTMLInputElement | HTMLTextAreaElement | undefined
   let mediaRecorder: MediaRecorder | undefined
   let recordedChunks: Blob[] = []
@@ -52,7 +54,7 @@ export const TextInput = (props: Props) => {
     inputRef?.value !== '' && inputRef?.reportValidity()
 
   const submit = async () => {
-    if (isRecording() && mediaRecorder) {
+    if (recordingStatus() === 'started' && mediaRecorder) {
       mediaRecorder.stop()
       return
     }
@@ -157,17 +159,17 @@ export const TextInput = (props: Props) => {
   }
 
   const recordVoice = () => {
-    setIsRecording(true)
+    setRecordingStatus('asking')
   }
 
-  const handleRecordingStart = (stream: MediaStream) => {
+  const handleRecordingConfirmed = (stream: MediaStream) => {
     mediaRecorder = new MediaRecorder(stream)
     mediaRecorder.ondataavailable = (event) => {
       if (event.data.size === 0) return
       recordedChunks.push(event.data)
     }
     mediaRecorder.onstop = async () => {
-      if (!isRecording() || recordedChunks.length === 0) return
+      if (recordingStatus() !== 'started' || recordedChunks.length === 0) return
       const audioFile = new File(
         recordedChunks,
         `rec-${props.block.id}-${Date.now()}.mp3`,
@@ -200,11 +202,12 @@ export const TextInput = (props: Props) => {
       })
     }
     mediaRecorder.start()
+    setRecordingStatus('started')
   }
 
   const handleRecordingAbort = () => {
-    setIsRecording(false)
     mediaRecorder?.stop()
+    setRecordingStatus('stopped')
     mediaRecorder = undefined
     recordedChunks = []
   }
@@ -227,12 +230,12 @@ export const TextInput = (props: Props) => {
         )}
       >
         <VoiceRecorder
-          isRecording={isRecording()}
+          recordingStatus={recordingStatus()}
           buttonsTheme={props.context.typebot.theme.chat?.buttons}
-          onRecordingStart={handleRecordingStart}
+          onRecordingConfirmed={handleRecordingConfirmed}
           onAbortRecording={handleRecordingAbort}
         />
-        <Show when={!isRecording()}>
+        <Show when={recordingStatus() !== 'started'}>
           <Show when={selectedFiles().length}>
             <div
               class="p-2 flex gap-2 border-gray-100 overflow-auto"
@@ -304,7 +307,7 @@ export const TextInput = (props: Props) => {
         <Match
           when={
             !inputValue() &&
-            !isRecording() &&
+            recordingStatus() !== 'started' &&
             props.block.options?.audioClip?.isEnabled
           }
         >

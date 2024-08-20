@@ -13,10 +13,10 @@ let offset = 0
 const initBarsHeightPercent = 10
 
 type Props = {
-  isRecording: boolean
+  recordingStatus: 'asking' | 'started' | 'stopped'
   buttonsTheme: NonNullable<Theme['chat']>['buttons']
   onAbortRecording: () => void
-  onRecordingStart: (stream: MediaStream) => void
+  onRecordingConfirmed: (stream: MediaStream) => void
 }
 
 export const VoiceRecorder = (props: Props) => {
@@ -89,7 +89,7 @@ export const VoiceRecorder = (props: Props) => {
 
     stream = await navigator.mediaDevices.getUserMedia({ audio: true })
 
-    props.onRecordingStart(stream)
+    props.onRecordingConfirmed(stream)
 
     audioContext = new AudioContext()
     volumeNode = await loadVolumeProcessorWorklet(audioContext)
@@ -126,9 +126,9 @@ export const VoiceRecorder = (props: Props) => {
   }
 
   createEffect(() => {
-    if (props.isRecording) {
+    if (props.recordingStatus === 'asking') {
       startRecording()
-    } else {
+    } else if (props.recordingStatus === 'stopped') {
       stopRecording()
     }
   })
@@ -141,7 +141,9 @@ export const VoiceRecorder = (props: Props) => {
     <div
       class={clsx(
         'w-full gap-2 items-center transition-opacity px-2 typebot-recorder',
-        props.isRecording ? 'opacity-1 flex' : 'opacity-0 hidden'
+        props.recordingStatus === 'started'
+          ? 'opacity-1 flex'
+          : 'opacity-0 hidden'
       )}
     >
       <button
