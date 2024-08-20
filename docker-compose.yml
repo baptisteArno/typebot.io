@@ -2,6 +2,7 @@ version: '3.3'
 
 volumes:
   db-data:
+  caddy_certs:
 
 services:
   typebot-db:
@@ -12,9 +13,13 @@ services:
     environment:
       - POSTGRES_DB=typebot
       - POSTGRES_PASSWORD=typebot
-
+    networks:
+        - typebot-network
   typebot-builder:
-    image: baptistearno/typebot-builder:latest
+    image: twerlo/typebot-builder:latest
+    container_name: typebot-builder
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     restart: always
     depends_on:
       - typebot-db
@@ -25,8 +30,49 @@ services:
     env_file: .env
 
   typebot-viewer:
-    image: baptistearno/typebot-viewer:latest
+    image: twerlo/typebot-viewer:latest
+    container_name: typebot-viewer
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     restart: always
     ports:
       - '8081:3000'
     env_file: .env
+    networks:
+      - typebot-network
+
+  caddy:
+    image: caddy/caddy
+    container_name: caddy
+    depends_on:
+      - "typebot-db"
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DOMAIN_NAME_BUILDER=${NEXTAUTH_URL}
+      - DOMAIN_NAME_VIEWER=${NEXT_PUBLIC_VIEWER_URL}
+      - DOMAIN_NAME_RABBITMQ_MGMT=${DOMAIN_NAME_RABBITMQ_MGMT}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_certs:/root/.caddy
+  watchtower:
+    image: containrrr/watchtower
+    command:
+      - "--cleanup"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    env_file:
+      - .env
+    environment:
+      - REPO_USER=${DOCKERHUB_USER}
+      - REPO_PASS=${DOCKERHUB_PASS}
+      - WATCHTOWER_POLL_INTERVAL=60
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    container_name: "watchtower"
+
+networks:
+    typebot-network:
+        driver: bridge
