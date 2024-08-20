@@ -62,12 +62,12 @@ export const WorkspaceDropdown = ({
     }
   }
 
-  const handleClose = () => {
+  const handleOpen = () => {
     setSearch('')
-    menu.onClose()
+    menu.onOpen()
   }
 
-  const handleMenu = { ...menu, onClose: handleClose }
+  const handleMenu = { ...menu, onOpen: handleOpen }
 
   return (
     <Menu {...handleMenu} placement="bottom-end">
