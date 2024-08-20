@@ -107,14 +107,16 @@ export const continueBotFlow = async (
       }
 
     formattedReply =
-      'reply' in parsedReplyResult ? parsedReplyResult.reply : undefined
+      'reply' in parsedReplyResult && reply?.type === 'text'
+        ? parsedReplyResult.reply
+        : undefined
     newSessionState = await processAndSaveAnswer(
       state,
       block
     )(
       isDefined(formattedReply)
         ? { ...reply, type: 'text', text: formattedReply }
-        : undefined
+        : reply
     )
   }
 
@@ -312,9 +314,12 @@ const processAndSaveAnswer =
 const saveVariablesValueIfAny =
   (state: SessionState, block: InputBlock) =>
   (reply: Message): SessionState => {
-    if (!block.options?.variableId) return state
     let newSessionState = saveAttachmentsVarIfAny({ block, reply, state })
-    newSessionState = saveAudioClipVarIfAny({ block, reply, state })
+    newSessionState = saveAudioClipVarIfAny({
+      block,
+      reply,
+      state: newSessionState,
+    })
     return saveInputVarIfAny({ block, reply, state: newSessionState })
   }
 
@@ -379,7 +384,7 @@ const saveAudioClipVarIfAny = ({
     return state
 
   const variable = state.typebotsQueue[0].typebot.variables.find(
-    (variable) => variable.id === block.options?.attachments?.saveVariableId
+    (variable) => variable.id === block.options?.audioClip?.saveVariableId
   )
 
   if (!variable) return state
@@ -408,7 +413,7 @@ const saveInputVarIfAny = ({
   reply: Message
   state: SessionState
 }): SessionState => {
-  if (reply.type !== 'text') return state
+  if (reply.type !== 'text' || !block.options?.variableId) return state
 
   const foundVariable = state.typebotsQueue[0].typebot.variables.find(
     (variable) => variable.id === block.options?.variableId
