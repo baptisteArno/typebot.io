@@ -15,7 +15,7 @@ import type {
   DateInputBlock,
 } from '@typebot.io/schemas'
 import { GuestBubble } from './bubbles/GuestBubble'
-import { Answer, BotContext, InputSubmitContent } from '@/types'
+import { BotContext, InputSubmitContent } from '@/types'
 import { TextInput } from '@/features/blocks/inputs/textInput'
 import { NumberInput } from '@/features/blocks/inputs/number'
 import { EmailInput } from '@/features/blocks/inputs/email'
@@ -48,33 +48,24 @@ type Props = {
   isInputPrefillEnabled: boolean
   hasError: boolean
   onTransitionEnd: () => void
-  onSubmit: (answer: string, attachments?: Answer['attachments']) => void
+  onSubmit: (content: InputSubmitContent) => void
   onSkip: () => void
 }
 
 export const InputChatBlock = (props: Props) => {
-  const [answer, setAnswer] = persist(createSignal<Answer>(), {
+  const [answer, setAnswer] = persist(createSignal<InputSubmitContent>(), {
     key: `typebot-${props.context.typebot.id}-input-${props.chunkIndex}`,
     storage: props.context.storage,
   })
 
-  const handleSubmit = async ({
-    label,
-    value,
-    attachments,
-  }: InputSubmitContent & Pick<Answer, 'attachments'>) => {
-    setAnswer({
-      text: props.block.type !== InputBlockType.FILE ? label ?? value : '',
-      attachments,
-    })
-    props.onSubmit(
-      value ?? label,
-      props.block.type === InputBlockType.FILE ? undefined : attachments
-    )
+  const handleSubmit = async (content: InputSubmitContent) => {
+    console.log(content)
+    setAnswer(content)
+    props.onSubmit(content)
   }
 
   const handleSkip = (label: string) => {
-    setAnswer({ text: label })
+    setAnswer({ type: 'text', value: label })
     props.onSkip()
   }
 
@@ -83,14 +74,18 @@ export const InputChatBlock = (props: Props) => {
       (message) => props.chunkIndex === message.inputIndex
     )?.formattedMessage
     if (formattedMessage && props.block.type !== InputBlockType.FILE)
-      setAnswer((answer) => ({ ...answer, text: formattedMessage }))
+      setAnswer((answer) =>
+        answer?.type === 'text'
+          ? { ...answer, label: formattedMessage }
+          : answer
+      )
   })
 
   return (
     <Switch>
       <Match when={answer() && !props.hasError}>
         <GuestBubble
-          message={answer() as Answer}
+          answer={answer()}
           showAvatar={
             props.guestAvatar?.isEnabled ?? defaultGuestAvatarIsEnabled
           }
@@ -117,7 +112,9 @@ export const InputChatBlock = (props: Props) => {
             block={props.block}
             chunkIndex={props.chunkIndex}
             isInputPrefillEnabled={props.isInputPrefillEnabled}
-            existingAnswer={props.hasError ? answer()?.text : undefined}
+            existingAnswer={
+              props.hasError ? getAnswerValue(answer()!) : undefined
+            }
             onTransitionEnd={props.onTransitionEnd}
             onSubmit={handleSubmit}
             onSkip={handleSkip}
@@ -126,6 +123,11 @@ export const InputChatBlock = (props: Props) => {
       </Match>
     </Switch>
   )
+}
+
+const getAnswerValue = (answer?: InputSubmitContent) => {
+  if (!answer) return
+  return answer.type === 'text' ? answer.value : answer.url
 }
 
 const Input = (props: {
@@ -146,6 +148,7 @@ const Input = (props: {
 
   const submitPaymentSuccess = () =>
     props.onSubmit({
+      type: 'text',
       value:
         (props.block.options as PaymentInputBlock['options'])?.labels
           ?.success ?? defaultPaymentInputOptions.labels.success,

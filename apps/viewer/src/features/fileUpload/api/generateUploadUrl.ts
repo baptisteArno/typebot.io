@@ -85,7 +85,9 @@ export const generateUploadUrl = publicProcedure
     if (
       block?.type !== InputBlockType.FILE &&
       (block.type !== InputBlockType.TEXT ||
-        !block.options?.attachments?.isEnabled)
+        !block.options?.attachments?.isEnabled) &&
+      (block.type !== InputBlockType.TEXT ||
+        !block.options?.audioClip?.isEnabled)
     )
       throw new TRPCError({
         code: 'BAD_REQUEST',

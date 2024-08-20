@@ -42,6 +42,7 @@ export const MultiplePictureChoice = (props: Props) => {
 
   const handleSubmit = () =>
     props.onSubmit({
+      type: 'text',
       value: selectedItemIds()
         .map((selectedItemId) => {
           const item = props.defaultItems.find(

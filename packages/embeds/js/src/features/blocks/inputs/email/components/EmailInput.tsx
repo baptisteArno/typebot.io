@@ -24,7 +24,7 @@ export const EmailInput = (props: Props) => {
 
   const submit = () => {
     if (checkIfInputIsValid())
-      props.onSubmit({ value: inputRef?.value ?? inputValue() })
+      props.onSubmit({ type: 'text', value: inputRef?.value ?? inputValue() })
     else inputRef?.focus()
   }
 

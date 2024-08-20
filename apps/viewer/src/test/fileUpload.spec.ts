@@ -27,7 +27,10 @@ test('should work as expected', async ({ page, browser }) => {
   await page.goto(`${env.NEXTAUTH_URL}/typebots/${typebotId}/results`)
   await expect(page.getByRole('link', { name: 'api.json' })).toHaveAttribute(
     'href',
-    /.+\/api\.json/
+    /.+\/api\.json/,
+    {
+      timeout: 10000,
+    }
   )
   await expect(
     page.getByRole('link', { name: 'fileUpload.json' })

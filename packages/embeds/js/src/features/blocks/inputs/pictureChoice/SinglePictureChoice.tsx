@@ -24,6 +24,7 @@ export const SinglePictureChoice = (props: Props) => {
   const handleClick = (itemIndex: number) => {
     const item = filteredItems()[itemIndex]
     return props.onSubmit({
+      type: 'text',
       label: isNotEmpty(item.title) ? item.title : item.pictureSrc ?? item.id,
       value: item.id,
     })

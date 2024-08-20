@@ -28,7 +28,7 @@ export const UrlInput = (props: Props) => {
     if (inputRef && !inputRef?.value.startsWith('http'))
       inputRef.value = `https://${inputRef.value}`
     if (checkIfInputIsValid())
-      props.onSubmit({ value: inputRef?.value ?? inputValue() })
+      props.onSubmit({ type: 'text', value: inputRef?.value ?? inputValue() })
     else inputRef?.focus()
   }
 

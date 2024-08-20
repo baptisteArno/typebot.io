@@ -16,6 +16,10 @@ export const TextInputNodeContent = ({ options }: Props) => {
     typebot &&
     options?.attachments?.isEnabled &&
     options?.attachments.saveVariableId
+  const audioClipVariableId =
+    typebot &&
+    options?.audioClip?.isEnabled &&
+    options?.audioClip.saveVariableId
   if (options?.variableId)
     return (
       <Stack w="calc(100% - 25px)">
@@ -27,6 +31,12 @@ export const TextInputNodeContent = ({ options }: Props) => {
           <SetVariableLabel
             variables={typebot.variables}
             variableId={attachmentVariableId}
+          />
+        )}
+        {audioClipVariableId && (
+          <SetVariableLabel
+            variables={typebot.variables}
+            variableId={audioClipVariableId}
           />
         )}
       </Stack>
@@ -41,6 +51,12 @@ export const TextInputNodeContent = ({ options }: Props) => {
         <SetVariableLabel
           variables={typebot.variables}
           variableId={attachmentVariableId}
+        />
+      )}
+      {audioClipVariableId && (
+        <SetVariableLabel
+          variables={typebot.variables}
+          variableId={audioClipVariableId}
         />
       )}
     </Stack>

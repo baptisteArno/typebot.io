@@ -39,6 +39,7 @@ export const MultipleChoicesForm = (props: Props) => {
 
   const handleSubmit = () =>
     props.onSubmit({
+      type: 'text',
       value: selectedItemIds()
         .map(
           (selectedItemId) =>

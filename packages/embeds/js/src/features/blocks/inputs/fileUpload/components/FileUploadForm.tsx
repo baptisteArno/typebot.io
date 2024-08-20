@@ -78,6 +78,7 @@ export const FileUploadForm = (props: Props) => {
     setIsUploading(false)
     if (urls.length && urls[0])
       return props.onSubmit({
+        type: 'text',
         label:
           props.block.options?.labels?.success?.single ??
           defaultFileInputOptions.labels.success.single,
@@ -107,6 +108,7 @@ export const FileUploadForm = (props: Props) => {
         description: 'An error occured while uploading the files',
       })
     props.onSubmit({
+      type: 'text',
       label:
         urls.length > 1
           ? (

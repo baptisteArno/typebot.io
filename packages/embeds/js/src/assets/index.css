@@ -456,6 +456,27 @@ select option {
   transition: width 0.25s ease;
 }
 
+.typebot-recorder .left-gradient {
+  background-image: linear-gradient(
+    to right,
+    rgba(var(--typebot-input-bg-rgb), 1),
+    rgba(var(--typebot-input-bg-rgb), 0)
+  );
+}
+
+.typebot-recorder .right-gradient {
+  background-image: linear-gradient(
+    to left,
+    rgba(var(--typebot-input-bg-rgb), 1),
+    rgba(var(--typebot-input-bg-rgb), 0)
+  );
+}
+
+.typebot-recorder button {
+  color: rgba(var(--typebot-button-bg-rgb));
+  background-color: rgba(var(--typebot-button-bg-rgb), 0.3);
+}
+
 @keyframes fadeInFromTop {
   0% {
     opacity: 0;

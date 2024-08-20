@@ -232,7 +232,11 @@ const getIncomingMessageContent = async ({
         if (message.type === 'document') mediaId = message.document.id
         if (!mediaId) return
         const fileVisibility =
-          block?.type === InputBlockType.FILE
+          block?.type === InputBlockType.TEXT &&
+          block.options?.audioClip?.isEnabled &&
+          message.type === 'audio'
+            ? block.options?.audioClip.visibility
+            : block?.type === InputBlockType.FILE
             ? block.options?.visibility
             : block?.type === InputBlockType.TEXT
             ? block.options?.attachments?.visibility
@@ -259,6 +263,11 @@ const getIncomingMessageContent = async ({
           })
           fileUrl = url
         }
+        if (message.type === 'audio')
+          return {
+            type: 'audio',
+            url: fileUrl,
+          }
         if (block?.type === InputBlockType.FILE) {
           if (text !== '') text += `, ${fileUrl}`
           else text = fileUrl

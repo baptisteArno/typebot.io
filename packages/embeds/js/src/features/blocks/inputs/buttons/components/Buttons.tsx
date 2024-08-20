@@ -22,7 +22,10 @@ export const Buttons = (props: Props) => {
   })
 
   const handleClick = (itemIndex: number) =>
-    props.onSubmit({ value: filteredItems()[itemIndex].content ?? '' })
+    props.onSubmit({
+      type: 'text',
+      value: filteredItems()[itemIndex].content ?? '',
+    })
 
   const filterItems = (inputValue: string) => {
     setFilteredItems(

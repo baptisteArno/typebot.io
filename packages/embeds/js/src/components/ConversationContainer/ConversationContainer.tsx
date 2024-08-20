@@ -4,6 +4,7 @@ import {
   Theme,
   ChatLog,
   StartChatResponse,
+  Message,
 } from '@typebot.io/schemas'
 import {
   createEffect,
@@ -16,9 +17,9 @@ import {
 import { continueChatQuery } from '@/queries/continueChatQuery'
 import { ChatChunk } from './ChatChunk'
 import {
-  Answer,
   BotContext,
   ChatChunk as ChatChunkType,
+  InputSubmitContent,
   OutgoingLog,
 } from '@/types'
 import { isNotDefined } from '@typebot.io/lib'
@@ -33,6 +34,7 @@ import {
 import { saveClientLogsQuery } from '@/queries/saveClientLogsQuery'
 import { HTTPError } from 'ky'
 import { persist } from '@/utils/persist'
+import { getAnswerContent } from '@/utils/getAnswerContent'
 
 const autoScrollBottomToleranceScreenPercent = 0.6
 const bottomSpacerHeight = 128
@@ -142,15 +144,15 @@ export const ConversationContainer = (props: Props) => {
     })
   }
 
-  const sendMessage = async (
-    message?: string,
-    attachments?: Answer['attachments']
-  ) => {
+  const sendMessage = async (answer?: InputSubmitContent) => {
     setIsRecovered(false)
     setHasError(false)
     const currentInputBlock = [...chatChunks()].pop()?.input
-    if (currentInputBlock?.id && props.onAnswer && message)
-      props.onAnswer({ message, blockId: currentInputBlock.id })
+    if (currentInputBlock?.id && props.onAnswer && answer)
+      props.onAnswer({
+        message: getAnswerContent(answer),
+        blockId: currentInputBlock.id,
+      })
     const longRequest = setTimeout(() => {
       setIsSending(true)
     }, 1000)
@@ -158,13 +160,7 @@ export const ConversationContainer = (props: Props) => {
     const { data, error } = await continueChatQuery({
       apiHost: props.context.apiHost,
       sessionId: props.initialChatReply.sessionId,
-      message: message
-        ? {
-            type: 'text',
-            text: message,
-            attachedFileUrls: attachments?.map((attachment) => attachment.url),
-          }
-        : undefined,
+      message: convertSubmitContentToMessage(answer),
     })
     clearTimeout(longRequest)
     setIsSending(false)
@@ -294,7 +290,11 @@ export const ConversationContainer = (props: Props) => {
       if (response && 'logs' in response) saveLogs(response.logs)
       if (response && 'replyToSend' in response) {
         setIsSending(false)
-        sendMessage(response.replyToSend)
+        sendMessage(
+          response.replyToSend
+            ? { type: 'text', value: response.replyToSend }
+            : undefined
+        )
         return
       }
       if (response && 'blockedPopupUrl' in response)
@@ -364,3 +364,16 @@ const BottomSpacer = () => (
     style={{ height: bottomSpacerHeight + 'px' }}
   />
 )
+
+const convertSubmitContentToMessage = (
+  answer: InputSubmitContent | undefined
+): Message | undefined => {
+  if (!answer) return
+  if (answer.type === 'text')
+    return {
+      type: 'text',
+      text: answer.value,
+      attachedFileUrls: answer.attachments?.map((attachment) => attachment.url),
+    }
+  if (answer.type === 'recording') return { type: 'audio', url: answer.url }
+}

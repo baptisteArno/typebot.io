@@ -49,6 +49,26 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
       attachments: { ...options?.attachments, visibility },
     })
 
+  const updateAudioClipEnabled = (isEnabled: boolean) =>
+    onOptionsChange({
+      ...options,
+      audioClip: { ...options?.audioClip, isEnabled },
+    })
+
+  const updateAudioClipSaveVariableId = (variable?: Pick<Variable, 'id'>) =>
+    onOptionsChange({
+      ...options,
+      audioClip: { ...options?.audioClip, saveVariableId: variable?.id },
+    })
+
+  const updateAudioClipVisibility = (
+    visibility: (typeof fileVisibilityOptions)[number]
+  ) =>
+    onOptionsChange({
+      ...options,
+      audioClip: { ...options?.audioClip, visibility },
+    })
+
   return (
     <Stack spacing={4}>
       <SwitchWithLabel
@@ -71,6 +91,34 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
         }
         onChange={updateButtonLabel}
       />
+      <SwitchWithRelatedSettings
+        label={'Allow audio clip'}
+        initialValue={
+          options?.audioClip?.isEnabled ??
+          defaultTextInputOptions.audioClip.isEnabled
+        }
+        onCheckChange={updateAudioClipEnabled}
+      >
+        <Stack>
+          <FormLabel mb="0" htmlFor="variable">
+            Save the URL in a variable:
+          </FormLabel>
+          <VariableSearchInput
+            initialVariableId={options?.audioClip?.saveVariableId}
+            onSelectVariable={updateAudioClipSaveVariableId}
+          />
+        </Stack>
+        <DropdownList
+          label="Visibility:"
+          moreInfoTooltip='This setting determines who can see the uploaded files. "Public" means that anyone who has the link can see the files. "Private" means that only a members of this workspace can see the files.'
+          currentItem={
+            options?.audioClip?.visibility ??
+            defaultTextInputOptions.audioClip.visibility
+          }
+          onItemSelect={updateAudioClipVisibility}
+          items={fileVisibilityOptions}
+        />
+      </SwitchWithRelatedSettings>
       <SwitchWithRelatedSettings
         label={'Allow attachments'}
         initialValue={

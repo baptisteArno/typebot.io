@@ -39,7 +39,7 @@ test.describe.parallel('Text input block', () => {
     await expect(page.getByRole('button', { name: 'Go' })).toBeVisible()
   })
 
-  test('hey boy', async ({ page }) => {
+  test('attachments should work', async ({ page }) => {
     const typebotId = createId()
     await createTypebots([
       {
@@ -81,5 +81,32 @@ test.describe.parallel('Text input block', () => {
       page.getByRole('img', { name: 'Attached image 1' })
     ).toBeVisible()
     await expect(page.getByText('Help me with these')).toBeVisible()
+  })
+
+  test('audio clips should work', async ({ page }) => {
+    const typebotId = createId()
+    await createTypebots([
+      {
+        id: typebotId,
+        ...parseDefaultGroupWithBlock({
+          type: InputBlockType.TEXT,
+        }),
+      },
+    ])
+
+    await page.goto(`/typebots/${typebotId}/edit`)
+
+    await page.click(`text=${defaultTextInputOptions.labels.placeholder}`)
+    await page.getByText('Allow audio clip').click()
+    await page.locator('[data-testid="variables-input"]').first().click()
+    await page.getByText('var1').click()
+    await page.getByRole('button', { name: 'Test' }).click()
+    await page.getByRole('button', { name: 'Record voice' }).click()
+    await page.waitForTimeout(1000)
+    await page.getByRole('button', { name: 'Send' }).click()
+    await expect(page.locator('audio')).toHaveAttribute(
+      'src',
+      /http:\/\/localhost:9000/
+    )
   })
 })

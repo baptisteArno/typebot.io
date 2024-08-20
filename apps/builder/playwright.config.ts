@@ -31,6 +31,13 @@ export default defineConfig({
     locale: 'en-US',
     baseURL: process.env.NEXTAUTH_URL,
     storageState: './src/test/storageState.json',
+    permissions: ['microphone'],
+    launchOptions: {
+      args: [
+        '--use-fake-ui-for-media-stream',
+        '--use-fake-device-for-media-stream',
+      ],
+    },
   },
   projects: [
     {

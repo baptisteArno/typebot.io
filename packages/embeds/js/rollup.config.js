@@ -21,6 +21,7 @@ const indexConfig = {
   output: {
     file: 'dist/index.js',
     format: 'es',
+    sourcemap: true,
   },
   onwarn,
   watch: {
@@ -63,6 +64,7 @@ const configs = [
     output: {
       file: 'dist/web.js',
       format: 'es',
+      sourcemap: true,
     },
   },
 ]

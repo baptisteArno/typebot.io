@@ -5,11 +5,12 @@ import { clsx } from 'clsx'
 import { EmbedBubbleBlock } from '@typebot.io/schemas'
 import { defaultEmbedBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/embed/constants'
 import { isNotEmpty } from '@typebot.io/lib/utils'
+import { InputSubmitContent } from '@/types'
 
 type Props = {
   content: EmbedBubbleBlock['content']
   onTransitionEnd?: (ref?: HTMLDivElement) => void
-  onCompleted?: (data?: string) => void
+  onCompleted?: (data?: InputSubmitContent) => void
 }
 
 let typingTimeout: NodeJS.Timeout
@@ -32,7 +33,10 @@ export const EmbedBubble = (props: Props) => {
     ) {
       props.onCompleted?.(
         props.content.waitForEvent.saveDataInVariableId && event.data.data
-          ? event.data.data
+          ? {
+              type: 'text',
+              value: event.data.data,
+            }
           : undefined
       )
       window.removeEventListener('message', handleMessage)

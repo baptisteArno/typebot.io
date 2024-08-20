@@ -16,6 +16,7 @@ const indexConfig = {
   output: {
     dir: './dist',
     format: 'es',
+    sourcemap: true,
   },
   external: ['next/dynamic.js', 'react', 'react/jsx-runtime'],
   watch: {

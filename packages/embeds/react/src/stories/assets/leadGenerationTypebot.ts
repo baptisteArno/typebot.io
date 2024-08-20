@@ -12,7 +12,7 @@ export const leadGenerationTypebot: StartTypebot = {
   version: '3',
   id: 'clckrl4q5000t3b6sabwokaar',
   events: null,
-  publishedAt: new Date(),
+  updatedAt: new Date(),
   groups: [
     {
       id: 'clckrl4q5000g3b6skizhd262',

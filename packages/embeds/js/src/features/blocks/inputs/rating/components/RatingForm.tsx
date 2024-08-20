@@ -21,12 +21,13 @@ export const RatingForm = (props: Props) => {
     e.preventDefault()
     const selectedRating = rating()
     if (isNotDefined(selectedRating)) return
-    props.onSubmit({ value: selectedRating.toString() })
+    props.onSubmit({ type: 'text', value: selectedRating.toString() })
   }
 
   const handleClick = (rating: number) => {
     if (props.block.options?.isOneClickSubmitEnabled)
-      props.onSubmit({ value: rating.toString() })
+      props.onSubmit({ type: 'text', value: rating.toString() })
+
     setRating(rating)
   }
 

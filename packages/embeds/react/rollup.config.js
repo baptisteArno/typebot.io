@@ -16,6 +16,7 @@ const indexConfig = {
   output: {
     file: './dist/index.js',
     format: 'es',
+    sourcemap: true,
   },
   external: ['react', 'react/jsx-runtime'],
   watch: {

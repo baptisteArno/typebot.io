@@ -42,6 +42,14 @@ export const messageSchema = z.preprocess(
           'Can only be provided if current input block is a text input block that allows attachments'
         ),
     }),
+    z
+      .object({
+        type: z.literal('audio'),
+        url: z.string(),
+      })
+      .describe(
+        'Can only be provided if current input block is a text input that allows audio clips'
+      ),
   ])
 )
 export type Message = z.infer<typeof messageSchema>

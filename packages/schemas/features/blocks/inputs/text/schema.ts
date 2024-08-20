@@ -17,6 +17,13 @@ export const textInputOptionsSchema = textInputOptionsBaseSchema
   .merge(
     z.object({
       isLong: z.boolean().optional(),
+      audioClip: z
+        .object({
+          isEnabled: z.boolean().optional(),
+          saveVariableId: z.string().optional(),
+          visibility: z.enum(fileVisibilityOptions).optional(),
+        })
+        .optional(),
       attachments: z
         .object({
           isEnabled: z.boolean().optional(),

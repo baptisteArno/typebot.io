@@ -1,10 +1,18 @@
 import { Textarea, ShortTextInput } from '@/components'
 import { SendButton } from '@/components/SendButton'
 import { CommandData } from '@/features/commands'
-import { Answer, BotContext, InputSubmitContent } from '@/types'
+import { Attachment, BotContext, InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/isMobileSignal'
 import type { TextInputBlock } from '@typebot.io/schemas'
-import { For, Show, createSignal, onCleanup, onMount } from 'solid-js'
+import {
+  For,
+  Match,
+  Show,
+  Switch,
+  createSignal,
+  onCleanup,
+  onMount,
+} from 'solid-js'
 import { defaultTextInputOptions } from '@typebot.io/schemas/features/blocks/inputs/text/constants'
 import clsx from 'clsx'
 import { TextInputAddFileButton } from '@/components/TextInputAddFileButton'
@@ -15,6 +23,9 @@ import { toaster } from '@/utils/toaster'
 import { isDefined } from '@typebot.io/lib'
 import { uploadFiles } from '../../fileUpload/helpers/uploadFiles'
 import { guessApiHost } from '@/utils/guessApiHost'
+import { VoiceRecorder } from './VoiceRecorder'
+import { Button } from '@/components/Button'
+import { MicrophoneIcon } from '@/components/icons/MicrophoneIcon'
 
 type Props = {
   block: TextInputBlock
@@ -30,7 +41,10 @@ export const TextInput = (props: Props) => {
     { fileIndex: number; progress: number } | undefined
   >(undefined)
   const [isDraggingOver, setIsDraggingOver] = createSignal(false)
+  const [isRecording, setIsRecording] = createSignal(false)
   let inputRef: HTMLInputElement | HTMLTextAreaElement | undefined
+  let mediaRecorder: MediaRecorder | undefined
+  let recordedChunks: Blob[] = []
 
   const handleInput = (inputValue: string) => setInputValue(inputValue)
 
@@ -38,8 +52,12 @@ export const TextInput = (props: Props) => {
     inputRef?.value !== '' && inputRef?.reportValidity()
 
   const submit = async () => {
+    if (isRecording() && mediaRecorder) {
+      mediaRecorder.stop()
+      return
+    }
     if (checkIfInputIsValid()) {
-      let attachments: Answer['attachments']
+      let attachments: Attachment[] | undefined
       if (selectedFiles().length > 0) {
         setUploadProgress(undefined)
         const urls = await uploadFiles({
@@ -57,6 +75,7 @@ export const TextInput = (props: Props) => {
         attachments = urls?.filter(isDefined)
       }
       props.onSubmit({
+        type: 'text',
         value: inputRef?.value ?? inputValue(),
         attachments,
       })
@@ -137,6 +156,59 @@ export const TextInput = (props: Props) => {
     )
   }
 
+  const recordVoice = () => {
+    setIsRecording(true)
+  }
+
+  const handleRecordingStart = (stream: MediaStream) => {
+    mediaRecorder = new MediaRecorder(stream)
+    mediaRecorder.ondataavailable = (event) => {
+      if (event.data.size === 0) return
+      recordedChunks.push(event.data)
+    }
+    mediaRecorder.onstop = async () => {
+      if (!isRecording() || recordedChunks.length === 0) return
+      const audioFile = new File(
+        recordedChunks,
+        `rec-${props.block.id}-${Date.now()}.mp3`,
+        {
+          type: 'audio/mp3',
+        }
+      )
+      setUploadProgress(undefined)
+      const urls = (
+        await uploadFiles({
+          apiHost:
+            props.context.apiHost ?? guessApiHost({ ignoreChatApiUrl: true }),
+          files: [
+            {
+              file: audioFile,
+              input: {
+                sessionId: props.context.sessionId,
+                fileName: audioFile.name,
+              },
+            },
+          ],
+          onUploadProgress: setUploadProgress,
+        })
+      )
+        .filter(isDefined)
+        .map((url) => url.url)
+      props.onSubmit({
+        type: 'recording',
+        url: urls[0],
+      })
+    }
+    mediaRecorder.start()
+  }
+
+  const handleRecordingAbort = () => {
+    setIsRecording(false)
+    mediaRecorder?.stop()
+    mediaRecorder = undefined
+    recordedChunks = []
+  }
+
   return (
     <div
       class={clsx(
@@ -150,85 +222,111 @@ export const TextInput = (props: Props) => {
     >
       <div
         class={clsx(
-          'typebot-input flex-col w-full',
+          'relative typebot-input flex-col w-full',
           isDraggingOver() && 'filter brightness-95'
         )}
       >
-        <Show when={selectedFiles().length}>
+        <VoiceRecorder
+          isRecording={isRecording()}
+          buttonsTheme={props.context.typebot.theme.chat?.buttons}
+          onRecordingStart={handleRecordingStart}
+          onAbortRecording={handleRecordingAbort}
+        />
+        <Show when={!isRecording()}>
+          <Show when={selectedFiles().length}>
+            <div
+              class="p-2 flex gap-2 border-gray-100 overflow-auto"
+              style={{ 'border-bottom-width': '1px' }}
+            >
+              <For each={selectedFiles()}>
+                {(file, index) => (
+                  <SelectedFile
+                    file={file}
+                    uploadProgressPercent={
+                      uploadProgress()
+                        ? uploadProgress()?.fileIndex === index()
+                          ? 20
+                          : index() < (uploadProgress()?.fileIndex ?? 0)
+                          ? 100
+                          : 0
+                        : undefined
+                    }
+                    onRemoveClick={() => removeSelectedFile(index())}
+                  />
+                )}
+              </For>
+            </div>
+          </Show>
           <div
-            class="p-2 flex gap-2 border-gray-100 overflow-auto"
-            style={{ 'border-bottom-width': '1px' }}
+            class={clsx(
+              'flex justify-between px-2',
+              props.block.options?.isLong ? 'items-end' : 'items-center'
+            )}
           >
-            <For each={selectedFiles()}>
-              {(file, index) => (
-                <SelectedFile
-                  file={file}
-                  uploadProgressPercent={
-                    uploadProgress()
-                      ? uploadProgress()?.fileIndex === index()
-                        ? 20
-                        : index() < (uploadProgress()?.fileIndex ?? 0)
-                        ? 100
-                        : 0
-                      : undefined
-                  }
-                  onRemoveClick={() => removeSelectedFile(index())}
-                />
-              )}
-            </For>
+            {props.block.options?.isLong ? (
+              <Textarea
+                ref={inputRef as HTMLTextAreaElement}
+                onInput={handleInput}
+                onKeyDown={submitIfCtrlEnter}
+                value={inputValue()}
+                placeholder={
+                  props.block.options?.labels?.placeholder ??
+                  defaultTextInputOptions.labels.placeholder
+                }
+              />
+            ) : (
+              <ShortTextInput
+                ref={inputRef as HTMLInputElement}
+                onInput={handleInput}
+                value={inputValue()}
+                placeholder={
+                  props.block.options?.labels?.placeholder ??
+                  defaultTextInputOptions.labels.placeholder
+                }
+              />
+            )}
+            <Show
+              when={
+                (props.block.options?.attachments?.isEnabled ??
+                  defaultTextInputOptions.attachments.isEnabled) &&
+                props.block.options?.attachments?.saveVariableId
+              }
+            >
+              <TextInputAddFileButton
+                onNewFiles={onNewFiles}
+                class={clsx(props.block.options?.isLong ? 'ml-2' : undefined)}
+              />
+            </Show>
           </div>
         </Show>
-        <div
-          class={clsx(
-            'flex justify-between px-2',
-            props.block.options?.isLong ? 'items-end' : 'items-center'
-          )}
-        >
-          {props.block.options?.isLong ? (
-            <Textarea
-              ref={inputRef as HTMLTextAreaElement}
-              onInput={handleInput}
-              onKeyDown={submitIfCtrlEnter}
-              value={inputValue()}
-              placeholder={
-                props.block.options?.labels?.placeholder ??
-                defaultTextInputOptions.labels.placeholder
-              }
-            />
-          ) : (
-            <ShortTextInput
-              ref={inputRef as HTMLInputElement}
-              onInput={handleInput}
-              value={inputValue()}
-              placeholder={
-                props.block.options?.labels?.placeholder ??
-                defaultTextInputOptions.labels.placeholder
-              }
-            />
-          )}
-          <Show
-            when={
-              (props.block.options?.attachments?.isEnabled ??
-                defaultTextInputOptions.attachments.isEnabled) &&
-              props.block.options?.attachments?.saveVariableId
-            }
-          >
-            <TextInputAddFileButton
-              onNewFiles={onNewFiles}
-              class={clsx(props.block.options?.isLong ? 'ml-2' : undefined)}
-            />
-          </Show>
-        </div>
       </div>
-
-      <SendButton
-        type="button"
-        on:click={submit}
-        isDisabled={Boolean(uploadProgress())}
-        class="h-[56px]"
-      >
-        {props.block.options?.labels?.button}
-      </SendButton>
+      <Switch>
+        <Match
+          when={
+            !inputValue() &&
+            !isRecording() &&
+            props.block.options?.audioClip?.isEnabled
+          }
+        >
+          <Button
+            class="h-[56px] flex items-center"
+            on:click={recordVoice}
+            aria-label="Record voice"
+          >
+            <MicrophoneIcon class="flex w-6 h-6" />
+          </Button>
+        </Match>
+        <Match when={true}>
+          <SendButton
+            type="button"
+            on:click={submit}
+            isDisabled={Boolean(uploadProgress())}
+            class="h-[56px]"
+          >
+            {props.block.options?.labels?.button}
+          </SendButton>
+        </Match>
+      </Switch>
     </div>
   )
 }

@@ -19,6 +19,7 @@ export const DateForm = (props: Props) => {
   const submit = () => {
     if (inputValues().from === '' && inputValues().to === '') return
     props.onSubmit({
+      type: 'text',
       value: `${inputValues().from}${
         props.options?.isRange ? ` to ${inputValues().to}` : ''
       }`,

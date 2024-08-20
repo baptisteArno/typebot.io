@@ -66,6 +66,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
     if (checkIfInputIsValid()) {
       const val = inputRef?.value ?? inputValue()
       props.onSubmit({
+        type: 'text',
         value: val.startsWith('+')
           ? val
           : `${selectedCountryDialCode ?? ''}${val}`,

@@ -5,11 +5,12 @@ import { clsx } from 'clsx'
 import { CustomEmbedBubble as CustomEmbedBubbleProps } from '@typebot.io/schemas'
 import { executeCode } from '@/features/blocks/logic/script/executeScript'
 import { botContainerHeight } from '@/utils/botContainerHeightSignal'
+import { InputSubmitContent } from '@/types'
 
 type Props = {
   content: CustomEmbedBubbleProps['content']
   onTransitionEnd?: (ref?: HTMLDivElement) => void
-  onCompleted: (reply?: string) => void
+  onCompleted: (reply?: InputSubmitContent) => void
 }
 
 let typingTimeout: NodeJS.Timeout
@@ -36,7 +37,8 @@ export const CustomEmbedBubble = (props: Props) => {
       executeCode({
         args: {
           ...props.content.waitForEventFunction.args,
-          continueFlow: props.onCompleted,
+          continueFlow: (text: string) =>
+            props.onCompleted(text ? { type: 'text', value: text } : undefined),
         },
         content: props.content.waitForEventFunction.content,
       })

@@ -63,20 +63,15 @@ export const continueBotFlow = async (
     setVariableHistory: SetVariableHistoryItem[]
   }
 > => {
-  let firstBubbleWasStreamed = false
-  let newSessionState = { ...state }
-  const visitedEdges: VisitedEdge[] = []
-  const setVariableHistory: SetVariableHistoryItem[] = []
-
-  if (!newSessionState.currentBlockId)
+  if (!state.currentBlockId)
     return startBotFlow({
-      state: resetSessionState(newSessionState),
+      state: resetSessionState(state),
       version,
       textBubbleContentFormat,
     })
 
   const { block, group, blockIndex } = getBlockById(
-    newSessionState.currentBlockId,
+    state.currentBlockId,
     state.typebotsQueue[0].typebot.groups
   )
 
@@ -86,7 +81,138 @@ export const continueBotFlow = async (
       message: 'Group / block not found',
     })
 
+  const nonInputProcessResult = await processNonInputBlock({
+    block,
+    state,
+    reply,
+  })
+
+  let newSessionState = nonInputProcessResult.newSessionState
+  const { setVariableHistory, firstBubbleWasStreamed } = nonInputProcessResult
+
+  let formattedReply: string | undefined
+
+  if (isInputBlock(block)) {
+    const parsedReplyResult = await parseReply(newSessionState)(reply, block)
+
+    if (parsedReplyResult.status === 'fail')
+      return {
+        ...(await parseRetryMessage(newSessionState)(
+          block,
+          textBubbleContentFormat
+        )),
+        newSessionState,
+        visitedEdges: [],
+        setVariableHistory: [],
+      }
+
+    formattedReply =
+      'reply' in parsedReplyResult ? parsedReplyResult.reply : undefined
+    newSessionState = await processAndSaveAnswer(
+      state,
+      block
+    )(
+      isDefined(formattedReply)
+        ? { ...reply, type: 'text', text: formattedReply }
+        : undefined
+    )
+  }
+
+  const groupHasMoreBlocks = blockIndex < group.blocks.length - 1
+
+  const { edgeId: nextEdgeId, isOffDefaultPath } = getOutgoingEdgeId(
+    newSessionState
+  )(block, formattedReply)
+
+  const lastMessageNewFormat =
+    reply?.type === 'text' && formattedReply !== reply?.text
+      ? formattedReply
+      : undefined
+
+  if (groupHasMoreBlocks && !nextEdgeId) {
+    const chatReply = await executeGroup(
+      {
+        ...group,
+        blocks: group.blocks.slice(blockIndex + 1),
+      } as Group,
+      {
+        version,
+        state: newSessionState,
+        visitedEdges: [],
+        setVariableHistory,
+        firstBubbleWasStreamed,
+        startTime,
+        textBubbleContentFormat,
+      }
+    )
+    return {
+      ...chatReply,
+      lastMessageNewFormat,
+    }
+  }
+
+  if (!nextEdgeId && state.typebotsQueue.length === 1)
+    return {
+      messages: [],
+      newSessionState,
+      lastMessageNewFormat,
+      visitedEdges: [],
+      setVariableHistory,
+    }
+
+  const nextGroup = await getNextGroup({
+    state: newSessionState,
+    edgeId: nextEdgeId,
+    isOffDefaultPath,
+  })
+
+  newSessionState = nextGroup.newSessionState
+
+  if (!nextGroup.group)
+    return {
+      messages: [],
+      newSessionState,
+      lastMessageNewFormat,
+      visitedEdges: nextGroup.visitedEdge ? [nextGroup.visitedEdge] : [],
+      setVariableHistory,
+    }
+
+  const chatReply = await executeGroup(nextGroup.group, {
+    version,
+    state: newSessionState,
+    firstBubbleWasStreamed,
+    visitedEdges: nextGroup.visitedEdge ? [nextGroup.visitedEdge] : [],
+    setVariableHistory,
+    startTime,
+    textBubbleContentFormat,
+  })
+
+  return {
+    ...chatReply,
+    lastMessageNewFormat,
+  }
+}
+
+const processNonInputBlock = async ({
+  block,
+  state,
+  reply,
+}: {
+  block: Block
+  state: SessionState
+  reply: Reply
+}) => {
+  if (reply?.type !== 'text')
+    return {
+      newSessionState: state,
+      setVariableHistory: [],
+      firstBubbleWasStreamed: false,
+    }
+
+  const setVariableHistory: SetVariableHistoryItem[] = []
   let variableToUpdate: Variable | undefined
+  let newSessionState = state
+  let firstBubbleWasStreamed = false
 
   if (block.type === LogicBlockType.SET_VARIABLE) {
     const existingVariable = state.typebotsQueue[0].typebot.variables.find(
@@ -169,107 +295,10 @@ export const continueBotFlow = async (
     setVariableHistory.push(...newSetVariableHistory)
   }
 
-  let formattedReply: string | undefined
-
-  if (isInputBlock(block)) {
-    const parsedReplyResult = await parseReply(newSessionState)(reply, block)
-
-    if (parsedReplyResult.status === 'fail')
-      return {
-        ...(await parseRetryMessage(newSessionState)(
-          block,
-          textBubbleContentFormat
-        )),
-        newSessionState,
-        visitedEdges: [],
-        setVariableHistory: [],
-      }
-
-    formattedReply =
-      'reply' in parsedReplyResult ? parsedReplyResult.reply : undefined
-    newSessionState = await processAndSaveAnswer(
-      state,
-      block
-    )(
-      isDefined(formattedReply)
-        ? { ...reply, type: 'text', text: formattedReply }
-        : undefined
-    )
-  }
-
-  const groupHasMoreBlocks = blockIndex < group.blocks.length - 1
-
-  const { edgeId: nextEdgeId, isOffDefaultPath } = getOutgoingEdgeId(
-    newSessionState
-  )(block, formattedReply)
-
-  if (groupHasMoreBlocks && !nextEdgeId) {
-    const chatReply = await executeGroup(
-      {
-        ...group,
-        blocks: group.blocks.slice(blockIndex + 1),
-      } as Group,
-      {
-        version,
-        state: newSessionState,
-        visitedEdges,
-        setVariableHistory,
-        firstBubbleWasStreamed,
-        startTime,
-        textBubbleContentFormat,
-      }
-    )
-    return {
-      ...chatReply,
-      lastMessageNewFormat:
-        formattedReply !== reply?.text ? formattedReply : undefined,
-    }
-  }
-
-  if (!nextEdgeId && state.typebotsQueue.length === 1)
-    return {
-      messages: [],
-      newSessionState,
-      lastMessageNewFormat:
-        formattedReply !== reply?.text ? formattedReply : undefined,
-      visitedEdges,
-      setVariableHistory,
-    }
-
-  const nextGroup = await getNextGroup({
-    state: newSessionState,
-    edgeId: nextEdgeId,
-    isOffDefaultPath,
-  })
-
-  if (nextGroup.visitedEdge) visitedEdges.push(nextGroup.visitedEdge)
-
-  newSessionState = nextGroup.newSessionState
-
-  if (!nextGroup.group)
-    return {
-      messages: [],
-      newSessionState,
-      lastMessageNewFormat:
-        formattedReply !== reply ? formattedReply : undefined,
-      visitedEdges,
-      setVariableHistory,
-    }
-
-  const chatReply = await executeGroup(nextGroup.group, {
-    version,
-    state: newSessionState,
-    firstBubbleWasStreamed,
-    visitedEdges,
-    setVariableHistory,
-    startTime,
-    textBubbleContentFormat,
-  })
-
   return {
-    ...chatReply,
-    lastMessageNewFormat:
-      formattedReply !== reply?.text ? formattedReply : undefined,
+    newSessionState,
+    setVariableHistory,
+    firstBubbleWasStreamed,
   }
 }
 
@@ -284,7 +313,8 @@ const saveVariablesValueIfAny =
   (state: SessionState, block: InputBlock) =>
   (reply: Message): SessionState => {
     if (!block.options?.variableId) return state
-    const newSessionState = saveAttachmentsVarIfAny({ block, reply, state })
+    let newSessionState = saveAttachmentsVarIfAny({ block, reply, state })
+    newSessionState = saveAudioClipVarIfAny({ block, reply, state })
     return saveInputVarIfAny({ block, reply, state: newSessionState })
   }
 
@@ -298,6 +328,7 @@ const saveAttachmentsVarIfAny = ({
   state: SessionState
 }): SessionState => {
   if (
+    reply.type !== 'text' ||
     block.type !== InputBlockType.TEXT ||
     !block.options?.attachments?.isEnabled ||
     !block.options?.attachments?.saveVariableId ||
@@ -330,6 +361,44 @@ const saveAttachmentsVarIfAny = ({
   return updatedState
 }
 
+const saveAudioClipVarIfAny = ({
+  block,
+  reply,
+  state,
+}: {
+  block: InputBlock
+  reply: Message
+  state: SessionState
+}): SessionState => {
+  if (
+    reply.type !== 'audio' ||
+    block.type !== InputBlockType.TEXT ||
+    !block.options?.audioClip?.isEnabled ||
+    !block.options?.audioClip?.saveVariableId
+  )
+    return state
+
+  const variable = state.typebotsQueue[0].typebot.variables.find(
+    (variable) => variable.id === block.options?.attachments?.saveVariableId
+  )
+
+  if (!variable) return state
+
+  const { updatedState } = updateVariablesInSession({
+    newVariables: [
+      {
+        id: variable.id,
+        name: variable.name,
+        value: reply.url,
+      },
+    ],
+    currentBlockId: undefined,
+    state,
+  })
+
+  return updatedState
+}
+
 const saveInputVarIfAny = ({
   block,
   reply,
@@ -339,6 +408,8 @@ const saveInputVarIfAny = ({
   reply: Message
   state: SessionState
 }): SessionState => {
+  if (reply.type !== 'text') return state
+
   const foundVariable = state.typebotsQueue[0].typebot.variables.find(
     (variable) => variable.id === block.options?.variableId
   )
@@ -411,11 +482,14 @@ const saveAnswerInDb =
   (state: SessionState, block: InputBlock) =>
   async (reply: Message): Promise<SessionState> => {
     let newSessionState = state
+    const replyContent = reply.type === 'audio' ? reply.url : reply.text
+    const attachedFileUrls =
+      reply.type === 'text' ? reply.attachedFileUrls : undefined
     await saveAnswer({
       answer: {
         blockId: block.id,
-        content: reply.text,
-        attachedFileUrls: reply.attachedFileUrls,
+        content: replyContent,
+        attachedFileUrls,
       },
       state,
     })
@@ -428,8 +502,8 @@ const saveAnswerInDb =
             ...newSessionState.previewMetadata,
             answers: (newSessionState.previewMetadata?.answers ?? []).concat({
               blockId: block.id,
-              content: reply.text,
-              attachedFileUrls: reply.attachedFileUrls,
+              content: replyContent,
+              attachedFileUrls,
             }),
           },
     }
@@ -443,9 +517,9 @@ const saveAnswerInDb =
     return setNewAnswerInState(newSessionState)({
       key: key ?? block.id,
       value:
-        (reply.attachedFileUrls ?? []).length > 0
-          ? `${reply.attachedFileUrls!.join(', ')}\n\n${reply.text}`
-          : reply.text,
+        (attachedFileUrls ?? []).length > 0
+          ? `${attachedFileUrls!.join(', ')}\n\n${replyContent}`
+          : replyContent,
     })
   }
 
@@ -534,13 +608,13 @@ const parseReply =
   async (reply: Reply, block: InputBlock): Promise<ParsedReply> => {
     switch (block.type) {
       case InputBlockType.EMAIL: {
-        if (!reply) return { status: 'fail' }
+        if (!reply || reply.type !== 'text') return { status: 'fail' }
         const formattedEmail = formatEmail(reply.text)
         if (!formattedEmail) return { status: 'fail' }
         return { status: 'success', reply: formattedEmail }
       }
       case InputBlockType.PHONE: {
-        if (!reply) return { status: 'fail' }
+        if (!reply || reply.type !== 'text') return { status: 'fail' }
         const formattedPhone = formatPhoneNumber(
           reply.text,
           block.options?.defaultCountryCode
@@ -549,17 +623,17 @@ const parseReply =
         return { status: 'success', reply: formattedPhone }
       }
       case InputBlockType.URL: {
-        if (!reply) return { status: 'fail' }
+        if (!reply || reply.type !== 'text') return { status: 'fail' }
         const isValid = isURL(reply.text, { require_protocol: false })
         if (!isValid) return { status: 'fail' }
         return { status: 'success', reply: reply.text }
       }
       case InputBlockType.CHOICE: {
-        if (!reply) return { status: 'fail' }
+        if (!reply || reply.type !== 'text') return { status: 'fail' }
         return parseButtonsReply(state)(reply.text, block)
       }
       case InputBlockType.NUMBER: {
-        if (!reply) return { status: 'fail' }
+        if (!reply || reply.type !== 'text') return { status: 'fail' }
         const isValid = validateNumber(reply.text, {
           options: block.options,
           variables: state.typebotsQueue[0].typebot.variables,
@@ -568,7 +642,7 @@ const parseReply =
         return { status: 'success', reply: parseNumber(reply.text) }
       }
       case InputBlockType.DATE: {
-        if (!reply) return { status: 'fail' }
+        if (!reply || reply.type !== 'text') return { status: 'fail' }
         return parseDateReply(reply.text, block)
       }
       case InputBlockType.FILE: {
@@ -576,34 +650,38 @@ const parseReply =
           return block.options?.isRequired ?? defaultFileInputOptions.isRequired
             ? { status: 'fail' }
             : { status: 'skip' }
-        const urls = reply.text.split(', ')
+        const replyValue = reply.type === 'audio' ? reply.url : reply.text
+        const urls = replyValue.split(', ')
         const status = urls.some((url) =>
           isURL(url, { require_tld: env.S3_ENDPOINT !== 'localhost' })
         )
           ? 'success'
           : 'fail'
         if (!block.options?.isMultipleAllowed && urls.length > 1)
-          return { status, reply: reply.text.split(',')[0] }
-        return { status, reply: reply.text }
+          return { status, reply: replyValue.split(',')[0] }
+        return { status, reply: replyValue }
       }
       case InputBlockType.PAYMENT: {
-        if (!reply) return { status: 'fail' }
+        if (!reply || reply.type !== 'text') return { status: 'fail' }
         if (reply.text === 'fail') return { status: 'fail' }
         return { status: 'success', reply: reply.text }
       }
       case InputBlockType.RATING: {
-        if (!reply) return { status: 'fail' }
+        if (!reply || reply.type !== 'text') return { status: 'fail' }
         const isValid = validateRatingReply(reply.text, block)
         if (!isValid) return { status: 'fail' }
         return { status: 'success', reply: reply.text }
       }
       case InputBlockType.PICTURE_CHOICE: {
-        if (!reply) return { status: 'fail' }
+        if (!reply || reply.type !== 'text') return { status: 'fail' }
         return parsePictureChoicesReply(state)(reply.text, block)
       }
       case InputBlockType.TEXT: {
         if (!reply) return { status: 'fail' }
-        return { status: 'success', reply: reply.text }
+        return {
+          status: 'success',
+          reply: reply.type === 'audio' ? reply.url : reply.text,
+        }
       }
     }
   }
