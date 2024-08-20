@@ -4,6 +4,7 @@ import { PictureChoiceBlock } from './schema'
 export const defaultPictureChoiceOptions = {
   buttonLabel: defaultButtonLabel,
   searchInputPlaceholder: 'Filter the options...',
+  carouselMode: false,
   isMultipleChoice: false,
   isSearchable: false,
   dynamicItems: {

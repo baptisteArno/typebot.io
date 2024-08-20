@@ -4,6 +4,7 @@ import { isMobile } from '@/utils/isMobileSignal'
 import { isDefined, isNotEmpty, isSvgSrc } from '@typebot.io/lib/utils'
 import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
 import { For, Show, createEffect, createSignal, onMount } from 'solid-js'
+import { PictureCarousel } from './PictureCarousel'
 
 type Props = {
   defaultItems: PictureChoiceBlock['items']
@@ -56,58 +57,71 @@ export const SinglePictureChoice = (props: Props) => {
   }
 
   return (
-    <div class="flex flex-col gap-2 w-full">
-      <Show when={props.options?.isSearchable}>
-        <div class="flex items-end typebot-input w-full">
-          <SearchInput
-            ref={inputRef}
-            onInput={filterItems}
-            placeholder={props.options?.searchInputPlaceholder ?? ''}
-            onClear={() => setFilteredItems(props.defaultItems)}
+    <>
+      <Show when={props.options?.carouselMode === true}>
+        <div class="flex flex-col gap-2 w-full">
+          <PictureCarousel
+            items={filteredItems()}
+            handleClick={handleClick}
+            onImageLoad={onImageLoad}
           />
         </div>
       </Show>
-      <div
-        class={
-          'gap-2 flex flex-wrap justify-end' +
-          (props.options?.isSearchable
-            ? ' overflow-y-scroll max-h-[464px] rounded-md'
-            : '')
-        }
-      >
-        <For each={filteredItems()}>
-          {(item, index) => (
-            <button
-              on:click={() => handleClick(index())}
-              data-itemid={item.id}
-              class={
-                'flex flex-col typebot-picture-button focus:outline-none filter hover:brightness-90 active:brightness-75 justify-between  ' +
-                (isSvgSrc(item.pictureSrc) ? 'has-svg' : '')
-              }
-            >
-              <img
-                src={item.pictureSrc}
-                alt={item.title ?? `Picture ${index() + 1}`}
-                elementtiming={`Picture choice ${index() + 1}`}
-                fetchpriority={'high'}
-                class="m-auto"
-                onLoad={onImageLoad}
+      <Show when={props.options?.carouselMode === false}>
+        <div class="flex flex-col gap-2 w-full">
+          <Show when={props.options?.isSearchable}>
+            <div class="flex items-end typebot-input w-full">
+              <SearchInput
+                ref={inputRef}
+                onInput={filterItems}
+                placeholder={props.options?.searchInputPlaceholder ?? ''}
+                onClear={() => setFilteredItems(props.defaultItems)}
               />
-              <div
-                class={
-                  'flex flex-col gap-1 py-2 flex-shrink-0 px-4 w-full' +
-                  (item.description ? ' items-start' : '')
-                }
-              >
-                <span class="font-semibold">{item.title}</span>
-                <span class="text-sm whitespace-pre-wrap text-left">
-                  {item.description}
-                </span>
-              </div>
-            </button>
-          )}
-        </For>
-      </div>
-    </div>
+            </div>
+          </Show>
+          <div
+            class={
+              'gap-2 flex flex-wrap justify-end' +
+              (props.options?.isSearchable
+                ? ' overflow-y-scroll max-h-[464px] rounded-md'
+                : '')
+            }
+          >
+            <For each={filteredItems()}>
+              {(item, index) => (
+                <button
+                  on:click={() => handleClick(index())}
+                  data-itemid={item.id}
+                  class={
+                    'flex flex-col typebot-picture-button focus:outline-none filter hover:brightness-90 active:brightness-75 justify-between  ' +
+                    (isSvgSrc(item.pictureSrc) ? 'has-svg' : '')
+                  }
+                >
+                  <img
+                    src={item.pictureSrc}
+                    alt={item.title ?? `Picture ${index() + 1}`}
+                    elementtiming={`Picture choice ${index() + 1}`}
+                    fetchpriority={'high'}
+                    class="m-auto"
+                    onLoad={onImageLoad}
+                  />
+                  <div
+                    class={
+                      'flex flex-col gap-1 py-2 flex-shrink-0 px-4 w-full' +
+                      (item.description ? ' items-start' : '')
+                    }
+                  >
+                    <span class="font-semibold">{item.title}</span>
+                    <span class="text-sm whitespace-pre-wrap text-left">
+                      {item.description}
+                    </span>
+                  </div>
+                </button>
+              )}
+            </For>
+          </div>
+        </div>
+      </Show>
+    </>
   )
 }
