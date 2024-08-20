@@ -4,6 +4,7 @@ import {
   ChevronLeftIcon,
   PlusIcon,
   LogOutIcon,
+  SearchIcon,
 } from '@/components/icons'
 import { PlanTag } from '@/features/billing/components/PlanTag'
 import { trpc } from '@/lib/trpc'
@@ -16,8 +17,15 @@ import {
   MenuList,
   MenuItem,
   Text,
+  Box,
+  Input,
+  MenuDivider,
+  InputGroup,
+  InputLeftElement,
+  useDisclosure,
 } from '@chakra-ui/react'
 import { WorkspaceInApp } from '../WorkspaceProvider'
+import { useRef, useState } from 'react'
 
 type Props = {
   currentWorkspace?: WorkspaceInApp
@@ -32,13 +40,37 @@ export const WorkspaceDropdown = ({
   onLogoutClick,
   onCreateNewWorkspaceClick,
 }: Props) => {
+  const [search, setSearch] = useState('')
   const { t } = useTranslate()
   const { data } = trpc.workspace.listWorkspaces.useQuery()
 
+  const menu = useDisclosure()
+
   const workspaces = data?.workspaces ?? []
 
+  const filteredWorkspaces = workspaces.filter(
+    (workspace) =>
+      workspace.name.toLowerCase().includes(search.toLowerCase()) &&
+      workspace.id !== currentWorkspace?.id
+  )
+
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const handleFocus = () => {
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }
+
+  const handleOpen = () => {
+    setSearch('')
+    menu.onOpen()
+  }
+
+  const handleMenu = { ...menu, onOpen: handleOpen }
+
   return (
-    <Menu placement="bottom-end">
+    <Menu {...handleMenu} placement="bottom-end">
       <MenuButton as={Button} variant="outline" px="2">
         <HStack>
           {currentWorkspace && (
@@ -52,10 +84,25 @@ export const WorkspaceDropdown = ({
           <ChevronLeftIcon transform="rotate(-90deg)" />
         </HStack>
       </MenuButton>
-      <MenuList>
-        {workspaces
-          ?.filter((workspace) => workspace.id !== currentWorkspace?.id)
-          .map((workspace) => (
+      <MenuList onFocus={handleFocus}>
+        <Box px="2">
+          <InputGroup>
+            <InputLeftElement pointerEvents="none">
+              <SearchIcon color="gray.300" />
+            </InputLeftElement>
+            <Input
+              ref={inputRef}
+              placeholder={t('workspace.dropdown.search')}
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value)
+              }}
+            />
+          </InputGroup>
+        </Box>
+        <MenuDivider mb="0" />
+        <Box overflowY="auto" maxHeight="480">
+          {filteredWorkspaces.map((workspace) => (
             <MenuItem
               key={workspace.id}
               onClick={() => onWorkspaceSelected(workspace.id)}
@@ -71,6 +118,13 @@ export const WorkspaceDropdown = ({
               </HStack>
             </MenuItem>
           ))}
+          {filteredWorkspaces.length === 0 && (
+            <Box p="4" textAlign="center">
+              {t('workspace.dropdown.empty')}
+            </Box>
+          )}
+        </Box>
+        <MenuDivider m="0" />
         <MenuItem onClick={onCreateNewWorkspaceClick} icon={<PlusIcon />}>
           {t('workspace.dropdown.newButton.label')}
         </MenuItem>
