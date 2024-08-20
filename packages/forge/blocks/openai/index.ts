@@ -6,6 +6,7 @@ import { auth } from './auth'
 import { baseOptions } from './baseOptions'
 import { askAssistant } from './actions/askAssistant'
 import { generateVariables } from './actions/generateVariables'
+import { createTranscription } from './actions/createTranscription'
 
 export const openAIBlock = createBlock({
   id: 'openai' as const,
@@ -20,6 +21,7 @@ export const openAIBlock = createBlock({
     askAssistant,
     generateVariables,
     createSpeech,
+    createTranscription,
   ],
   docsUrl: 'https://docs.typebot.io/forge/blocks/openai',
 })
