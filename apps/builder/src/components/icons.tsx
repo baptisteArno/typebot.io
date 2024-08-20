@@ -10,6 +10,12 @@ export const featherIconsBaseProps: IconProps = {
 
 // 99% of these icons are from Feather icons (https://feathericons.com/)
 
+export const SearchIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <circle cx="11" cy="11" r="8" />
+    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+  </Icon>
+)
 export const SettingsIcon = (props: IconProps) => (
   <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
     <circle cx="12" cy="12" r="3"></circle>
