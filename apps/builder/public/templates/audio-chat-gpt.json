@@ -1,11 +1,11 @@
 {
   "version": "6",
-  "id": "clpntvmje00031aboan4plzzx",
+  "id": "cm03xmv9a000ioksx75vxmzas",
   "name": "Audio ChatGPT",
   "events": [
     {
       "id": "ewnfbo0exlu7ihfu2lu2lusm",
-      "outgoingEdgeId": "f2hmh9jelbqb889l6lx5e1u5",
+      "outgoingEdgeId": "f7s54kawqbiqr0gf17h62gbk",
       "graphCoordinates": { "x": -228.25, "y": -123.31 },
       "type": "start"
     }
@@ -19,16 +19,41 @@
         {
           "id": "ovgk70u0kfxrbtz9dy4e040o",
           "type": "text input",
-          "options": { "variableId": "vudksu3zyrat6s1bq6qne0rx3" }
+          "options": {
+            "variableId": "vudksu3zyrat6s1bq6qne0rx3",
+            "audioClip": {
+              "isEnabled": true,
+              "saveVariableId": "vwtuc6cw30xzl9i18usgxbszc"
+            }
+          }
         },
         {
-          "id": "m4jadtknjb3za3gvxj1xdn1k",
-          "outgoingEdgeId": "fpj0xacppqd1s5slyljzhzc9",
-          "type": "Set variable",
+          "id": "riqtiysqklu64fiw8f3sspx4",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "s2v8eax93tjvwlfrrt89a60c",
+              "outgoingEdgeId": "zhff5l5hsh1yl2v9n0f88fsx",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "p18se3e9hy6w8r58p51cmafu",
+                    "variableId": "vwtuc6cw30xzl9i18usgxbszc",
+                    "comparisonOperator": "Is empty"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "h1la4o375pyat199ix02bqel",
+          "outgoingEdgeId": "vzvx2pyhsz00plwxemavzfol",
+          "type": "openai",
           "options": {
-            "variableId": "vabkycu0qqff5d6ar2ama16pf",
-            "type": "Append value(s)",
-            "item": "{{User Message}}"
+            "action": "Create transcription",
+            "url": "{{Audio clip}}",
+            "transcriptionVariableId": "vudksu3zyrat6s1bq6qne0rx3"
           }
         }
       ]
@@ -36,8 +61,17 @@
     {
       "id": "a6ymhjwtkqwp8t127plz8qmk",
       "title": "ChatGPT reply",
-      "graphCoordinates": { "x": 445.12, "y": -56.2 },
+      "graphCoordinates": { "x": 475.42, "y": -56.66 },
       "blocks": [
+        {
+          "id": "m4jadtknjb3za3gvxj1xdn1k",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vabkycu0qqff5d6ar2ama16pf",
+            "type": "Append value(s)",
+            "item": "{{User Message}}"
+          }
+        },
         {
           "id": "e57nnbkl97h49jaaslxkg3u0",
           "type": "openai",
@@ -49,7 +83,6 @@
                 "dialogueVariableId": "vabkycu0qqff5d6ar2ama16pf"
               }
             ],
-            "credentialsId": "clpjnjrbt00051aliw6610w1z",
             "responseMapping": [
               {
                 "item": "Message content",
@@ -71,10 +104,9 @@
           "id": "av59rg9zeqtl73o8icnrr2xd",
           "type": "openai",
           "options": {
+            "action": "Create speech",
             "input": "{{Assistant Message}}",
             "voice": "alloy",
-            "action": "Create speech",
-            "credentialsId": "clpjnjrbt00051aliw6610w1z",
             "saveUrlInVariableId": "vgr0iwg95npp7pztkmdyn89m1"
           }
         },
@@ -95,10 +127,9 @@
           "id": "yuiyeh0czhpymzwuzrm3af5r",
           "type": "openai",
           "options": {
+            "action": "Create speech",
             "input": "Hi there! How can I help?",
             "voice": "alloy",
-            "action": "Create speech",
-            "credentialsId": "clpjnjrbt00051aliw6610w1z",
             "saveUrlInVariableId": "vxw4quja426402hvhtm33tsp3"
           }
         },
@@ -156,11 +187,6 @@
   ],
   "edges": [
     {
-      "id": "fpj0xacppqd1s5slyljzhzc9",
-      "from": { "blockId": "m4jadtknjb3za3gvxj1xdn1k" },
-      "to": { "groupId": "a6ymhjwtkqwp8t127plz8qmk" }
-    },
-    {
       "id": "xnao10ucc1hbynv3pmk1t4by",
       "from": { "blockId": "dmab8kc35uh84vvw1a53xbjn" },
       "to": { "groupId": "qfrz5nwm63g12dajsjxothb5" }
@@ -171,12 +197,30 @@
       "to": { "groupId": "qfrz5nwm63g12dajsjxothb5" }
     },
     {
+      "id": "zhff5l5hsh1yl2v9n0f88fsx",
+      "from": {
+        "blockId": "riqtiysqklu64fiw8f3sspx4",
+        "itemId": "s2v8eax93tjvwlfrrt89a60c"
+      },
+      "to": { "groupId": "a6ymhjwtkqwp8t127plz8qmk" }
+    },
+    {
+      "id": "vzvx2pyhsz00plwxemavzfol",
+      "from": { "blockId": "h1la4o375pyat199ix02bqel" },
+      "to": { "groupId": "a6ymhjwtkqwp8t127plz8qmk" }
+    },
+    {
       "from": { "eventId": "ewnfbo0exlu7ihfu2lu2lusm" },
       "to": { "groupId": "yswu9fml4zflxaqlujb94ir8" },
-      "id": "f2hmh9jelbqb889l6lx5e1u5"
+      "id": "f7s54kawqbiqr0gf17h62gbk"
     }
   ],
   "variables": [
+    {
+      "id": "vwtuc6cw30xzl9i18usgxbszc",
+      "name": "Audio clip",
+      "isSessionVariable": true
+    },
     {
       "id": "vni6kwbch8zlq92dclgcivzyr",
       "name": "Assistant Message",
@@ -185,7 +229,7 @@
     {
       "id": "vudksu3zyrat6s1bq6qne0rx3",
       "name": "User Message",
-      "isSessionVariable": true
+      "isSessionVariable": false
     },
     {
       "id": "vabkycu0qqff5d6ar2ama16pf",
@@ -206,15 +250,16 @@
   "theme": {},
   "selectedThemeTemplateId": null,
   "settings": {},
-  "createdAt": "2023-12-02T09:05:10.874Z",
-  "updatedAt": "2023-12-02T09:08:20.451Z",
+  "createdAt": "2024-08-21T14:11:42.911Z",
+  "updatedAt": "2024-08-21T14:14:06.661Z",
   "icon": "🔈",
   "folderId": null,
   "publicId": null,
   "customDomain": null,
-  "workspaceId": "proWorkspace",
+  "workspaceId": "cl35yesle00188gcpgqu70ia1",
   "resultsTablePreferences": null,
   "isArchived": false,
   "isClosed": false,
-  "whatsAppCredentialsId": null
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
 }
