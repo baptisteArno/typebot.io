@@ -3,7 +3,6 @@
   "include": ["**/*.ts"],
   "exclude": ["node_modules"],
   "compilerOptions": {
-    "lib": ["ES2021", "DOM"],
-    "importHelpers": true
+    "lib": ["ES2021", "DOM"]
   }
 }
