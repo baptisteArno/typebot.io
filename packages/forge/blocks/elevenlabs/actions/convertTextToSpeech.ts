@@ -95,6 +95,7 @@ export const convertTextToSpeech = createAction({
               model_id: options.modelId,
               text: options.text,
             },
+            timeout: false,
           })
           .arrayBuffer()
 
@@ -113,6 +114,11 @@ export const convertTextToSpeech = createAction({
             details: await err.response.text(),
           })
         }
+        logs.add({
+          status: 'error',
+          description: 'An error occured while converting the text to speech',
+          details: JSON.stringify(err, null, 2),
+        })
       }
     },
   },
