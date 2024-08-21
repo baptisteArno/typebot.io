@@ -13,7 +13,7 @@ type Props = {
   credentials: { apiKey?: string }
   options: ChatCompletionOptions
   variables: AsyncVariableStore
-  config: { baseUrl: string; defaultModel?: string }
+  config: { baseUrl?: string; defaultModel?: string }
   compatibility?: 'strict' | 'compatible'
 }
 
@@ -34,11 +34,6 @@ export const runOpenAIChatCompletionStream = async ({
 
   const model = createOpenAI({
     baseURL: openAIConfig.baseUrl ?? options.baseUrl,
-    headers: options.baseUrl
-      ? {
-          'api-key': apiKey,
-        }
-      : undefined,
     apiKey,
     compatibility,
   })(modelName)

@@ -1,5 +1,4 @@
 import OpenAI, { ClientOptions } from 'openai'
-import { defaultOpenAIOptions } from '../constants'
 
 type Props = {
   apiKey?: string
@@ -9,14 +8,14 @@ type Props = {
 
 export const fetchGPTModels = async ({
   apiKey,
-  baseUrl = defaultOpenAIOptions.baseUrl,
+  baseUrl,
   apiVersion,
 }: Props) => {
   if (!apiKey) return []
 
   const config = {
     apiKey: apiKey,
-    baseURL: baseUrl ?? defaultOpenAIOptions.baseUrl,
+    baseURL: baseUrl,
     defaultHeaders: {
       'api-key': apiKey,
     },

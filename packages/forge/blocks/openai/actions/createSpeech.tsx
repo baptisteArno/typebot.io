@@ -39,10 +39,10 @@ export const createSpeech = createAction({
       fetch: async ({ credentials, options }) => {
         if (!credentials?.apiKey) return []
 
-        const baseUrl = options?.baseUrl ?? defaultOpenAIOptions.baseUrl
+        const baseUrl = options?.baseUrl
         const config = {
           apiKey: credentials.apiKey,
-          baseURL: baseUrl ?? defaultOpenAIOptions.baseUrl,
+          baseURL: baseUrl,
           defaultHeaders: {
             'api-key': credentials.apiKey,
           },
@@ -75,7 +75,7 @@ export const createSpeech = createAction({
 
       const config = {
         apiKey,
-        baseURL: options.baseUrl ?? defaultOpenAIOptions.baseUrl,
+        baseURL: options.baseUrl,
         defaultHeaders: {
           'api-key': apiKey,
         },

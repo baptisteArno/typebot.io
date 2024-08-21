@@ -29,7 +29,7 @@ export const createTranscription = createAction({
 
       const config = {
         apiKey,
-        baseURL: options.baseUrl ?? defaultOpenAIOptions.baseUrl,
+        baseURL: options.baseUrl,
         defaultHeaders: {
           'api-key': apiKey,
         },

@@ -8,7 +8,7 @@ import { parseTools } from '@typebot.io/ai/parseTools'
 import { parseChatCompletionMessages } from '@typebot.io/ai/parseChatCompletionMessages'
 
 type OpenAIConfig = {
-  baseUrl: string
+  baseUrl?: string
   defaultModel?: string
 }
 
@@ -37,11 +37,6 @@ export const runOpenAIChatCompletion = async ({
 
   const model = createOpenAI({
     baseURL: openAIConfig.baseUrl ?? options.baseUrl,
-    headers: options.baseUrl
-      ? {
-          'api-key': apiKey,
-        }
-      : undefined,
     apiKey,
     compatibility,
   })(modelName)

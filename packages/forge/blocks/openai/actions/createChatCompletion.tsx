@@ -57,7 +57,7 @@ export const createChatCompletion = createAction({
       runOpenAIChatCompletion({
         ...params,
         config: {
-          baseUrl: defaultOpenAIOptions.baseUrl,
+          baseUrl: params.credentials.baseUrl,
           defaultModel: defaultOpenAIOptions.model,
         },
         compatibility: 'strict',
@@ -68,7 +68,7 @@ export const createChatCompletion = createAction({
         runOpenAIChatCompletionStream({
           ...params,
           config: {
-            baseUrl: defaultOpenAIOptions.baseUrl,
+            baseUrl: params.credentials.baseUrl,
             defaultModel: defaultOpenAIOptions.model,
           },
           compatibility: 'strict',

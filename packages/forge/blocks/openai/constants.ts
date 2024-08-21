@@ -16,8 +16,7 @@ export const modelsWithImageUrlSupport = [
 export const excludedModelsFromImageUrlSupport = ['gpt-4-turbo-preview']
 
 export const defaultOpenAIOptions = {
-  baseUrl: 'https://api.openai.com/v1',
-  model: 'gpt-3.5-turbo',
+  model: 'gpt-4o-mini',
   voiceModel: 'tts-1',
   temperature: 1,
 } as const
