@@ -127,12 +127,12 @@ const TextGuestBubble = (props: { answer: TextInputSubmitContent }) => {
 
 const AudioGuestBubble = (props: { answer: RecordingInputSubmitContent }) => {
   return (
-    <div class="flex flex-col gap-1 items-end w-full">
+    <div class="flex flex-col gap-1 items-end">
       <div
-        class="p-2 w-full whitespace-pre-wrap typebot-guest-bubble flex flex-col max-w-[316px]"
+        class="p-2 w-full whitespace-pre-wrap typebot-guest-bubble flex flex-col"
         data-testid="guest-bubble"
       >
-        <audio controls src={props.answer.url} class="w-full h-[54px]" />
+        <audio controls src={props.answer.url} />
       </div>
     </div>
   )

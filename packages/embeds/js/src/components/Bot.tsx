@@ -294,7 +294,6 @@ const BotContent = (props: BotContentProps) => {
 
   onMount(() => {
     if (!botContainerElement) return
-    console.log('yes')
     setBotContainer(botContainerElement)
     resizeObserver.observe(botContainerElement)
     setBotContainerHeight(`${botContainerElement.clientHeight}px`)

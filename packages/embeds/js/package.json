@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/js",
-  "version": "0.3.10",
+  "version": "0.3.11",
   "description": "Javascript library to display typebots on your website",
   "type": "module",
   "main": "dist/index.js",

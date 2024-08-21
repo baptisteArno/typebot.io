@@ -216,7 +216,9 @@ export const TextInput = (props: Props) => {
     <div
       class={clsx(
         'typebot-input-form flex w-full gap-2 items-end',
-        props.block.options?.isLong ? 'max-w-full' : 'max-w-[350px]'
+        props.block.options?.isLong && recordingStatus() !== 'started'
+          ? 'max-w-full'
+          : 'max-w-[350px]'
       )}
       onKeyDown={submitWhenEnter}
       onDrop={handleDropFile}

@@ -59,7 +59,6 @@ export const InputChatBlock = (props: Props) => {
   })
 
   const handleSubmit = async (content: InputSubmitContent) => {
-    console.log(content)
     setAnswer(content)
     props.onSubmit(content)
   }

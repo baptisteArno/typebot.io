@@ -8,9 +8,10 @@ import { defaultButtonsBackgroundColor } from '@typebot.io/schemas/features/type
 
 const barWidth = 3
 const barGap = 3
-const dx = 53.5
-let offset = 0
+const dx = 60
 const initBarsHeightPercent = 10
+const minDetectedVolumePercent = 5
+const maxDetectedVolumePercent = 90
 
 type Props = {
   recordingStatus: 'asking' | 'started' | 'stopped'
@@ -30,13 +31,14 @@ export const VoiceRecorder = (props: Props) => {
   let stream: MediaStream | undefined
   let bars: number[] = []
   let recordTimeInterval: NodeJS.Timer | undefined
-  let lastFrameTime: DOMHighResTimeStamp | undefined
+  let lastFrameTime: DOMHighResTimeStamp | undefined = undefined
+  let offset = 0
 
   const fillRgb = hexToRgb(
     props.buttonsTheme?.backgroundColor ?? defaultButtonsBackgroundColor
   ).join(', ')
 
-  const animate = () => {
+  const draw = () => {
     if (!ctx || !canvasElement || !lastFrameTime) return
 
     const currentTime = performance.now()
@@ -72,24 +74,21 @@ export const VoiceRecorder = (props: Props) => {
 
     offset += dx * (deltaTime / 1000)
 
-    animationFrameId = requestAnimationFrame(animate)
+    animationFrameId = requestAnimationFrame(draw)
   }
 
   const startRecording = async () => {
     if (!canvasElement) return
-    if (!ctx) ctx = canvasElement.getContext('2d') ?? undefined
-
-    lastFrameTime = performance.now()
-
-    animate()
-
-    recordTimeInterval = setInterval(() => {
-      setRecordingTime((prev) => (prev += 1))
-    }, 1000)
 
     stream = await navigator.mediaDevices.getUserMedia({ audio: true })
 
     props.onRecordingConfirmed(stream)
+
+    if (!ctx) ctx = canvasElement.getContext('2d') ?? undefined
+
+    recordTimeInterval = setInterval(() => {
+      setRecordingTime((prev) => (prev += 1))
+    }, 1000)
 
     audioContext = new AudioContext()
     volumeNode = await loadVolumeProcessorWorklet(audioContext)
@@ -100,8 +99,21 @@ export const VoiceRecorder = (props: Props) => {
     volumeNode.connect(audioContext.destination)
 
     volumeNode.port.onmessage = (event) => {
-      bars.push(event.data)
+      const initBars = (canvasElement.width + barGap) / (barWidth + barGap)
+      const shouldAddNewBar =
+        (initBars + bars.length) * (barWidth + barGap) <
+        canvasElement.width + offset
+      if (shouldAddNewBar)
+        bars.push(
+          Math.min(
+            Math.max(event.data, minDetectedVolumePercent),
+            maxDetectedVolumePercent
+          )
+        )
     }
+
+    lastFrameTime = performance.now()
+    animationFrameId = requestAnimationFrame(draw)
   }
 
   const stopRecording = () => {
@@ -156,9 +168,11 @@ export const VoiceRecorder = (props: Props) => {
       <div class="relative flex w-full">
         <canvas ref={canvasElement} class="w-full h-[56px]" />
         <div class="absolute left-gradient w-2 left-0 h-[56px]" />
-        <div class="absolute right-gradient w-2 right-0 h-[56px]" />
+        <div class="absolute right-gradient w-3 right-0 h-[56px]" />
       </div>
-      <span class="font-bold text-sm">{formatTimeLabel(recordingTime())}</span>
+      <span class="time-container flex-none w-[35px] font-bold text-sm">
+        {formatTimeLabel(recordingTime())}
+      </span>
     </div>
   )
 }
