@@ -28,6 +28,7 @@ export const WhatsAppButtonsNodeContent = ({
   const [initialContent] = useState(item.content ?? '')
   const [itemValue, setItemValue] = useState(item.content ?? 'Editar botão')
   const editableRef = useRef<HTMLDivElement | null>(null)
+  const MAX_BUTTON_LIMIT = 3
 
   useEffect(() => {
     if (itemValue !== item.content) setItemValue(item.content ?? 'Editar botão')
@@ -50,14 +51,17 @@ export const WhatsAppButtonsNodeContent = ({
   }
 
   const handlePlusClick = () => {
-    const itemIndex = indices.itemIndex + 1
-    createItem(
-      {
-        stepId: item.stepId,
-        type: ItemType.WHATSAPP_BUTTONS_LIST as ItemType.BUTTON,
-      },
-      { ...indices, itemIndex }
-    )
+    const itemCount = indices.itemsCount ?? 0
+    if (itemCount < MAX_BUTTON_LIMIT) {
+      const itemIndex = indices.itemIndex + 1
+      createItem(
+        {
+          stepId: item.stepId,
+          type: ItemType.WHATSAPP_BUTTONS_LIST as ItemType.BUTTON,
+        },
+        { ...indices, itemIndex }
+      )
+    }
   }
 
   const handleDeleteClick = () => {
@@ -111,6 +115,7 @@ export const WhatsAppButtonsNodeContent = ({
           shadow="md"
           colorScheme="gray"
           onClick={handlePlusClick}
+          isDisabled={(indices.itemsCount ?? 0) >= MAX_BUTTON_LIMIT}
         />
         {hasMoreThanOneItem() && (
           <IconButton
