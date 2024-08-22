@@ -84,7 +84,8 @@ Used for sending email notifications and authentication
 
 4. Create a OAuth client ID. This will be your `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`
 
-   Make sure to set the following scopes: `userinfo.email`, `spreadsheets`, `drive.file`
+   Make sure to set the following scopes located in your OAuth Consent Screen: `userinfo.email`, `spreadsheets`, `drive.file`
+   https://developers.google.com/identity/protocols/oauth2/scopes
 
    The "Authorized redirect URIs" used when creating the credentials must include your full domain and end in the callback path:
 
