@@ -36,7 +36,9 @@ const indexConfig = {
       extensions,
     }),
     typescriptPaths({ preserveExtensions: true }),
-    typescript(),
+    typescript({
+      noEmitOnError: !process.env.ROLLUP_WATCH,
+    }),
     postcss({
       plugins: [autoprefixer(), tailwindcss()],
       extract: false,

@@ -10,7 +10,6 @@
     "declaration": true,
     "declarationMap": true,
     "noEmit": false,
-    "emitDeclarationOnly": true,
-    "noEmitOnError": true
+    "emitDeclarationOnly": true
   }
 }

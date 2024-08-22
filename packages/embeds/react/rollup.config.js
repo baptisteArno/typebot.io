@@ -30,7 +30,9 @@ const indexConfig = {
       extensions,
     }),
     typescriptPaths({ preserveExtensions: true }),
-    typescript(),
+    typescript({
+      noEmitOnError: !process.env.ROLLUP_WATCH,
+    }),
     terser({ format: { preamble } }),
   ],
 }
