@@ -78,6 +78,20 @@ The generated audio URLs are temporary and expire after 7 days. If you need to s
 
 This action allows you to transcribe a audio URL into text.
 
+## Generate variables
+
+This action allows you to set variables based on a prompt.
+
+Let's you want to want to extract a specific bit of information based on user's last message. You could use this block action to extract for example his name. To do that you could add the following prompt:
+
+```txt
+Extract user's information from user's last message: "{{Last message}}"
+```
+
+This you could provide for example the following variables: `Name`, `Email`
+
+If the `Last Message` variable is set to "My name is John and my email is john@gmail.com", then the `Name` and `Email` variables will be set to `John` and `john@gmail.com` respectively.
+
 ## Using Multiple Open AI Blocks: Tips and Tricks
 
 In this video, I discuss some important things to keep in mind when using multiple Open AI blocks consecutively. I provide an example where we ask the user for a topic, generate a summary, and display a list of authors.
