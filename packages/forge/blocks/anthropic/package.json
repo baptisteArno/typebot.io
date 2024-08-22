@@ -16,9 +16,9 @@
   },
   "dependencies": {
     "@ai-sdk/anthropic": "0.0.30",
-    "@typebot.io/openai-block": "workspace:*",
-    "ai": "3.2.22",
     "@typebot.io/ai": "workspace:*",
+    "@typebot.io/openai-block": "workspace:*",
+    "ai": "3.3.15",
     "ky": "1.2.4"
   }
 }

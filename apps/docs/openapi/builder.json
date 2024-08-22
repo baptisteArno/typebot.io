@@ -12710,6 +12710,9 @@
                                 "properties": {
                                   "apiKey": {
                                     "type": "string"
+                                  },
+                                  "baseUrl": {
+                                    "type": "string"
                                   }
                                 }
                               },
@@ -13597,6 +13600,9 @@
                             "type": "object",
                             "properties": {
                               "apiKey": {
+                                "type": "string"
+                              },
+                              "baseUrl": {
                                 "type": "string"
                               }
                             }
@@ -20176,6 +20182,35 @@
                         ]
                       },
                       "saveUrlInVariableId": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "baseUrl": {
+                        "type": "string"
+                      },
+                      "apiVersion": {
+                        "type": "string"
+                      },
+                      "credentialsId": {
+                        "type": "string"
+                      },
+                      "action": {
+                        "type": "string",
+                        "enum": [
+                          "Create transcription"
+                        ]
+                      },
+                      "url": {
+                        "type": "string"
+                      },
+                      "transcriptionVariableId": {
                         "type": "string"
                       }
                     },

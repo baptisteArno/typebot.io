@@ -10466,6 +10466,35 @@
                     "required": [
                       "action"
                     ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "baseUrl": {
+                        "type": "string"
+                      },
+                      "apiVersion": {
+                        "type": "string"
+                      },
+                      "credentialsId": {
+                        "type": "string"
+                      },
+                      "action": {
+                        "type": "string",
+                        "enum": [
+                          "Create transcription"
+                        ]
+                      },
+                      "url": {
+                        "type": "string"
+                      },
+                      "transcriptionVariableId": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ]
                   }
                 ]
               }

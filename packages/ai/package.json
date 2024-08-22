@@ -4,11 +4,11 @@
   "license": "AGPL-3.0-or-later",
   "private": true,
   "dependencies": {
-    "@typebot.io/lib": "workspace:*",
     "@typebot.io/forge": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/tsconfig": "workspace:*",
     "@typebot.io/variables": "workspace:*",
-    "ai": "3.2.22",
-    "ky": "1.2.4",
-    "@typebot.io/tsconfig": "workspace:*"
+    "ai": "3.3.15",
+    "ky": "1.2.4"
   }
 }
