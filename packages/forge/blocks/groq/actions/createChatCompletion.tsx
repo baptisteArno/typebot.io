@@ -5,16 +5,37 @@ import { getChatCompletionSetVarIds } from '@typebot.io/openai-block/shared/getC
 import { getChatCompletionStreamVarId } from '@typebot.io/openai-block/shared/getChatCompletionStreamVarId'
 import { runOpenAIChatCompletion } from '@typebot.io/openai-block/shared/runOpenAIChatCompletion'
 import { runOpenAIChatCompletionStream } from '@typebot.io/openai-block/shared/runOpenAIChatCompletionStream'
-import { defaultTogetherOptions } from '../constants'
+import { defaultBaseUrl, defaultTemperature } from '../constants'
+import ky from 'ky'
 
 export const createChatCompletion = createAction({
   name: 'Create chat completion',
   auth,
   options: parseChatCompletionOptions({
-    modelHelperText:
-      'You can find the list of all the models available [here](https://docs.together.ai/docs/inference-models#chat-models). Copy the model string for API.',
-    defaultTemperature: defaultTogetherOptions.temperature,
+    modelFetchId: 'fetchModels',
+    defaultTemperature,
   }),
+  fetchers: [
+    {
+      id: 'fetchModels',
+      fetch: async ({ credentials }) => {
+        if (!credentials?.apiKey) return []
+
+        const response = await ky
+          .get(`${defaultBaseUrl}/models`, {
+            headers: {
+              authorization: `Bearer ${credentials.apiKey}`,
+            },
+          })
+          .json<{ data: { id: string; created: number }[] }>()
+
+        return response.data
+          .sort((a, b) => b.created - a.created)
+          .map((model) => model.id)
+      },
+      dependencies: [],
+    },
+  ],
   turnableInto: [
     {
       blockId: 'openai',
@@ -35,14 +56,16 @@ export const createChatCompletion = createAction({
         ),
       }),
     },
-    { blockId: 'groq' },
+    {
+      blockId: 'together-ai',
+    },
   ],
   getSetVariableIds: getChatCompletionSetVarIds,
   run: {
     server: (params) =>
       runOpenAIChatCompletion({
         ...params,
-        config: { baseUrl: defaultTogetherOptions.baseUrl },
+        config: { baseUrl: defaultBaseUrl },
       }),
     stream: {
       getStreamVariableId: getChatCompletionStreamVarId,
@@ -50,7 +73,7 @@ export const createChatCompletion = createAction({
         runOpenAIChatCompletionStream({
           ...params,
           config: {
-            baseUrl: defaultTogetherOptions.baseUrl,
+            baseUrl: defaultBaseUrl,
           },
         }),
     },

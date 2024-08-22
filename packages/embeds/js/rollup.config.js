@@ -68,10 +68,7 @@ const configs = [
 ]
 
 function onwarn(warning, warn) {
-  if (
-    warning.code === 'CIRCULAR_DEPENDENCY' &&
-    warning.ids.some((id) => id.includes('@internationalized+date'))
-  ) {
+  if (warning.code === 'CIRCULAR_DEPENDENCY') {
     return
   }
 

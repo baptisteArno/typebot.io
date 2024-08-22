@@ -18,6 +18,7 @@
     "@typebot.io/together-ai-block": "workspace:*",
     "@typebot.io/open-router-block": "workspace:*",
     "@typebot.io/nocodb-block": "workspace:*",
-    "@typebot.io/segment-block": "workspace:*"
+    "@typebot.io/segment-block": "workspace:*",
+    "@typebot.io/groq-block": "workspace:*"
   }
 }

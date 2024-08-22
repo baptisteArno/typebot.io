@@ -26,6 +26,7 @@ export const createChatCompletion = createAction({
       blockId: 'together-ai',
     },
     { blockId: 'mistral' },
+    { blockId: 'groq' },
     {
       blockId: 'anthropic',
       transform: (options) => ({

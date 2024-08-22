@@ -19,6 +19,8 @@ export const auth = createAuth({
       defaultValue: 'https://api.openai.com/v1',
       moreInfoTooltip:
         'Use a different URL prefix for API calls, e.g. to use proxy servers.',
+      withVariableButton: false,
+      isDebounceDisabled: true,
     }),
   }),
 })

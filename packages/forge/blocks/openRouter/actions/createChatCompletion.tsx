@@ -17,6 +17,9 @@ export const createChatCompletion = createAction({
       blockId: 'openai',
     },
     {
+      blockId: 'groq',
+    },
+    {
       blockId: 'together-ai',
     },
     { blockId: 'mistral' },

@@ -1,9 +1,8 @@
 import { option, createAction } from '@typebot.io/forge'
 import { isDefined } from '@typebot.io/lib'
 import { auth } from '../auth'
-import { parseMessages } from '../helpers/parseMessages'
 import { createMistral } from '@ai-sdk/mistral'
-import { generateText, streamText } from 'ai'
+import { generateText } from 'ai'
 import { fetchModels } from '../helpers/fetchModels'
 import { toolsSchema } from '@typebot.io/ai/schemas'
 import { parseTools } from '@typebot.io/ai/parseTools'
@@ -77,6 +76,13 @@ export const createChatCompletion = createAction({
   turnableInto: [
     {
       blockId: 'openai',
+      transform: (opts) => ({
+        ...opts,
+        model: undefined,
+      }),
+    },
+    {
+      blockId: 'groq',
       transform: (opts) => ({
         ...opts,
         model: undefined,
