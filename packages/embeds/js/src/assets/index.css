@@ -172,6 +172,17 @@ pre {
   transition: all 0.3s ease;
 }
 
+.typebot-carousel-button {
+  color: var(--typebot-button-color);
+  background-color: rgba(
+    var(--typebot-button-bg-rgb),
+    var(--typebot-button-opacity)
+  );
+  border-radius: var(--typebot-button-border-radius);
+  backdrop-filter: blur(var(--typebot-button-blur));
+  transition: all 0.3s ease;
+}
+
 .typebot-selectable {
   border-width: var(--typebot-button-border-width);
   border-color: rgba(
