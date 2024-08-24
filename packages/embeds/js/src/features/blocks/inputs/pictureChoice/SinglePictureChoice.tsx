@@ -14,6 +14,7 @@ type Props = {
 
 export const SinglePictureChoice = (props: Props) => {
   let inputRef: HTMLInputElement | undefined
+  let sliderRef: HTMLDivElement | undefined
   const [filteredItems, setFilteredItems] = createSignal(props.defaultItems)
   const [totalLoadedImages, setTotalLoadedImages] = createSignal(0)
 
@@ -70,11 +71,14 @@ export const SinglePictureChoice = (props: Props) => {
       </Show>
       <div
         class={
-          'gap-2 flex flex-wrap justify-end' +
+          'gap-2 flex ' +
           (props.options?.isSearchable
-            ? ' overflow-y-scroll max-h-[464px] rounded-md'
-            : '')
+            ? 'flex-wrap justify-end overflow-y-scroll max-h-[464px] rounded-md'
+            : props.options?.useSlider
+            ? 'flex-nowrap overflow-x-auto'
+            : 'flex-wrap justify-end')
         }
+        ref={sliderRef}
       >
         <For each={filteredItems()}>
           {(item, index) => (
@@ -82,8 +86,9 @@ export const SinglePictureChoice = (props: Props) => {
               on:click={() => handleClick(index())}
               data-itemid={item.id}
               class={
-                'flex flex-col typebot-picture-button focus:outline-none filter hover:brightness-90 active:brightness-75 justify-between  ' +
-                (isSvgSrc(item.pictureSrc) ? 'has-svg' : '')
+                'flex flex-col typebot-picture-button focus:outline-none filter hover:brightness-90 active:brightness-75 justify-between ' +
+                (isSvgSrc(item.pictureSrc) ? 'has-svg' : '') +
+                (props.options?.useSlider ? ' flex-shrink-0' : '')
               }
             >
               <img

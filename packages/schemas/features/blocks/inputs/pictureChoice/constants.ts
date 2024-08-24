@@ -5,6 +5,7 @@ export const defaultPictureChoiceOptions = {
   buttonLabel: defaultButtonLabel,
   searchInputPlaceholder: 'Filter the options...',
   isMultipleChoice: false,
+  useSlider: false,
   isSearchable: false,
   dynamicItems: {
     isEnabled: false,
