@@ -1,0 +1,9 @@
+
+${DOMAIN_NAME_BUILDER} {
+    reverse_proxy odoo-16:8080
+}
+
+${DOMAIN_NAME_VIEWER} {
+    reverse_proxy odoo-17:8081
+}
+
