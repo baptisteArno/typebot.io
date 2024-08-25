@@ -1,0 +1,9 @@
+
+${DOMAIN_NAME_BUILDER} {
+    reverse_proxy typebot-builder:8080
+}
+
+${DOMAIN_NAME_VIEWER} {
+    reverse_proxy typebot-viewer:8081
+}
+

@@ -28,6 +28,9 @@ services:
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     env_file: .env
+    networks:
+      - typebot-network
+      - caddy-proxy
 
   typebot-viewer:
     image: twerlo/typebot-viewer:dev
@@ -40,12 +43,14 @@ services:
     env_file: .env
     networks:
       - typebot-network
+      - caddy-proxy
 
   caddy:
     image: caddy/caddy
     container_name: caddy
     depends_on:
-      - "typebot-db"
+      - typebot-builder
+      - typebot-viewer
     restart: always
     ports:
       - "80:80"
@@ -53,10 +58,12 @@ services:
     environment:
       - DOMAIN_NAME_BUILDER=${NEXTAUTH_URL}
       - DOMAIN_NAME_VIEWER=${NEXT_PUBLIC_VIEWER_URL}
-      - DOMAIN_NAME_RABBITMQ_MGMT=${DOMAIN_NAME_RABBITMQ_MGMT}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_certs:/root/.caddy
+    networks:
+        - caddy-proxy
+
   watchtower:
     image: containrrr/watchtower
     command:
@@ -74,5 +81,7 @@ services:
     container_name: "watchtower"
 
 networks:
+    caddy-proxy:
+        external: true
     typebot-network:
         driver: bridge
