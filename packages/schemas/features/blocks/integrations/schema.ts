@@ -12,28 +12,28 @@ import { pabblyConnectBlockSchemas } from './pabblyConnect'
 
 export const integrationBlockSchemas = {
   v5: [
-    chatwootBlockSchema,
-    googleAnalyticsBlockSchema,
+    // chatwootBlockSchema,
+    // googleAnalyticsBlockSchema,
     googleSheetsBlockSchemas.v5,
-    makeComBlockSchemas.v5,
+    // makeComBlockSchemas.v5,
     openAIBlockSchema,
-    pabblyConnectBlockSchemas.v5,
+    // pabblyConnectBlockSchemas.v5,
     sendEmailBlockSchema,
     httpBlockSchemas.v5,
     zapierBlockSchemas.v5,
-    pixelBlockSchema,
+    // pixelBlockSchema,
   ],
   v6: [
-    chatwootBlockSchema,
-    googleAnalyticsBlockSchema,
+    // chatwootBlockSchema,
+    // googleAnalyticsBlockSchema,
     googleSheetsBlockSchemas.v6,
-    makeComBlockSchemas.v6,
+    // makeComBlockSchemas.v6,
     openAIBlockSchema,
-    pabblyConnectBlockSchemas.v6,
+    // pabblyConnectBlockSchemas.v6,
     sendEmailBlockSchema,
     httpBlockSchemas.v6,
     zapierBlockSchemas.v6,
-    pixelBlockSchema,
+    // pixelBlockSchema,
   ],
 } as const
 

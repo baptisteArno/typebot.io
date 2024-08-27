@@ -57,7 +57,7 @@ export const DashboardHeader = () => {
               />
             </ParentModalProvider>
           )}
-          {!workspace?.isPastDue && (
+          {/* {!workspace?.isPastDue && (
             <Button
               leftIcon={<SettingsIcon />}
               onClick={onOpen}
@@ -65,7 +65,7 @@ export const DashboardHeader = () => {
             >
               {t('dashboard.header.settingsButton.label')}
             </Button>
-          )}
+          )} */}
           <WorkspaceDropdown
             currentWorkspace={workspace}
             onLogoutClick={logOut}

@@ -224,7 +224,7 @@ const LeftElements = ({
             </Tooltip>
           </HStack>
         )}
-        <Button
+        {/*<Button
           leftIcon={<BuoyIcon />}
           onClick={onHelpClick}
           size="sm"
@@ -234,6 +234,7 @@ const LeftElements = ({
             {t('editor.header.helpButton.label')}
           </chakra.span>
         </Button>
+        */}
       </HStack>
       {isSavingLoading && (
         <HStack>
@@ -275,9 +276,9 @@ const RightElements = ({
         typebotId={typebot?.id}
         isResultsDisplayed={isResultsDisplayed}
       />
-      <Flex pos="relative">
+      {/* <Flex pos="relative">
         <ShareTypebotButton isLoading={isNotDefined(typebot)} />
-      </Flex>
+      </Flex> */}
       {router.pathname.includes('/edit') &&
         rightPanel !== RightPanel.PREVIEW && (
           <Button
