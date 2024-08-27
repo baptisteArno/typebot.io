@@ -8,13 +8,22 @@ services:
   typebot-db:
     image: postgres:14-alpine
     restart: always
+    container_name: typebot-db
+    ports:
+      - '5432:5432'
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=typebot
       - POSTGRES_PASSWORD=typebot
+      - POSTGRES_USER=typebot
     networks:
-        - typebot-network
+      - typebot-network
+    profiles:
+      - db
+      - app
+      - typebot
+
   typebot-builder:
     image: twerlo/typebot-builder:dev
     container_name: typebot-builder
@@ -31,6 +40,9 @@ services:
     networks:
       - typebot-network
       - caddy-proxy
+    profiles:
+      - app
+      - typebot
 
   typebot-viewer:
     image: twerlo/typebot-viewer:dev
@@ -44,10 +56,14 @@ services:
     networks:
       - typebot-network
       - caddy-proxy
+    profiles:
+      - app
+      - typebot
 
   caddy:
     image: caddy/caddy
     container_name: caddy
+    env_file: .env
     depends_on:
       - typebot-builder
       - typebot-viewer
@@ -56,13 +72,16 @@ services:
       - "80:80"
       - "443:443"
     environment:
-      - DOMAIN_NAME_BUILDER=${NEXTAUTH_URL}
-      - DOMAIN_NAME_VIEWER=${NEXT_PUBLIC_VIEWER_URL}
+      - DOMAIN_NAME_BUILDER=${BUILDER_DOMAIN}
+      - DOMAIN_NAME_VIEWER=${VIEWER_DOMAIN}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_certs:/root/.caddy
     networks:
-        - caddy-proxy
+      - caddy-proxy
+    profiles:
+      - caddy
+      - app
 
   watchtower:
     image: containrrr/watchtower
@@ -73,15 +92,17 @@ services:
     env_file:
       - .env
     environment:
-      - REPO_USER=${DOCKERHUB_USER}
-      - REPO_PASS=${DOCKERHUB_PASS}
+      - REPO_USER=${DOCKER_USERNAME}
+      - REPO_PASS=${DOCKER_PASSWORD}
       - WATCHTOWER_POLL_INTERVAL=60
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     container_name: "watchtower"
+    profiles:
+      - app
 
 networks:
-    caddy-proxy:
-        external: true
-    typebot-network:
-        driver: bridge
+  caddy-proxy:
+    driver: bridge
+  typebot-network:
+    driver: bridge

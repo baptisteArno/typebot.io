@@ -41,3 +41,4 @@ snapshots
 .typebot-build
 
 .tolgee
+.act-secrets.env
