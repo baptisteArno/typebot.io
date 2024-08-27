@@ -19,6 +19,9 @@ services:
       - POSTGRES_USER=typebot
     networks:
       - typebot-network
+    profiles:
+      - db
+      - app
 
   typebot-builder:
     image: twerlo/typebot-builder:dev
@@ -36,6 +39,9 @@ services:
     networks:
       - typebot-network
       - caddy-proxy
+    profiles:
+      - app
+      - typebot
 
   typebot-viewer:
     image: twerlo/typebot-viewer:dev
@@ -49,10 +55,14 @@ services:
     networks:
       - typebot-network
       - caddy-proxy
+    profiles:
+      - app
+      - typebot
 
   caddy:
     image: caddy/caddy
     container_name: caddy
+    env_file: .env
     depends_on:
       - typebot-builder
       - typebot-viewer
@@ -68,6 +78,9 @@ services:
       - caddy_certs:/root/.caddy
     networks:
       - caddy-proxy
+    profiles:
+      - caddy
+      - app
 
   watchtower:
     image: containrrr/watchtower
@@ -84,6 +97,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     container_name: "watchtower"
+    profiles:
+      - app
 
 networks:
   caddy-proxy:
