@@ -40,6 +40,11 @@ export const listTypebotsClaudia = authenticatedProcedure
           equals: workspaceName,
           mode: 'insensitive',
         },
+        members: {
+          some: {
+            userId: user.id,
+          },
+        },
       },
       select: { members: true, id: true },
     })
