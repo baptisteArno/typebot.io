@@ -1,11 +1,10 @@
 import React from 'react'
-import { HStack, Flex, Button, useDisclosure } from '@chakra-ui/react'
-import { HardDriveIcon, SettingsIcon } from '@/components/icons'
+import { HStack, Flex, useDisclosure } from '@chakra-ui/react'
+import { HardDriveIcon } from '@/components/icons'
 import { useUser } from '@/features/account/hooks/useUser'
-import { isNotDefined } from '@typebot.io/lib'
 import Link from 'next/link'
 import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
-import { useTranslate } from '@tolgee/react'
+
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { WorkspaceDropdown } from '@/features/workspace/components/WorkspaceDropdown'
 import { WorkspaceSettingsModal } from '@/features/workspace/components/WorkspaceSettingsModal'
@@ -13,14 +12,13 @@ import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvi
 import { useRouter } from 'next/router'
 
 export const DashboardHeader = () => {
-  const { t } = useTranslate()
   const { user, logOut } = useUser()
   const { workspace, switchWorkspace, createWorkspace } = useWorkspace()
   const { asPath } = useRouter()
 
   const isRedirectFromCredentialsCreation = asPath.includes('credentials')
 
-  const { isOpen, onOpen, onClose } = useDisclosure({
+  const { isOpen, onClose } = useDisclosure({
     defaultIsOpen: isRedirectFromCredentialsCreation,
   })
 
@@ -57,15 +55,7 @@ export const DashboardHeader = () => {
               />
             </ParentModalProvider>
           )}
-          {/* {!workspace?.isPastDue && (
-            <Button
-              leftIcon={<SettingsIcon />}
-              onClick={onOpen}
-              isLoading={isNotDefined(workspace)}
-            >
-              {t('dashboard.header.settingsButton.label')}
-            </Button>
-          )} */}
+
           <WorkspaceDropdown
             currentWorkspace={workspace}
             onLogoutClick={logOut}
