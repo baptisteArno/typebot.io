@@ -12,7 +12,6 @@ import {
   chakra,
 } from '@chakra-ui/react'
 import {
-  BuoyIcon,
   ChevronLeftIcon,
   CopyIcon,
   PlayIcon,
@@ -26,7 +25,6 @@ import { EditableTypebotName } from './EditableTypebotName'
 import Link from 'next/link'
 import { EditableEmojiOrImageIcon } from '@/components/EditableEmojiOrImageIcon'
 import { useDebouncedCallback } from 'use-debounce'
-import { ShareTypebotButton } from '@/features/share/components/ShareTypebotButton'
 import { PublishButton } from '@/features/publish/components/PublishButton'
 import { headerHeight } from '../constants'
 import { RightPanel, useEditor } from '../providers/EditorProvider'
@@ -84,7 +82,6 @@ export const TypebotHeader = () => {
 }
 
 const LeftElements = ({
-  onHelpClick,
   ...props
 }: StackProps & { onHelpClick: () => void }) => {
   const { t } = useTranslate()
@@ -224,17 +221,6 @@ const LeftElements = ({
             </Tooltip>
           </HStack>
         )}
-        {/*<Button
-          leftIcon={<BuoyIcon />}
-          onClick={onHelpClick}
-          size="sm"
-          iconSpacing={{ base: 0, xl: 2 }}
-        >
-          <chakra.span display={{ base: 'none', xl: 'inline' }}>
-            {t('editor.header.helpButton.label')}
-          </chakra.span>
-        </Button>
-        */}
       </HStack>
       {isSavingLoading && (
         <HStack>
@@ -276,9 +262,7 @@ const RightElements = ({
         typebotId={typebot?.id}
         isResultsDisplayed={isResultsDisplayed}
       />
-      {/* <Flex pos="relative">
-        <ShareTypebotButton isLoading={isNotDefined(typebot)} />
-      </Flex> */}
+
       {router.pathname.includes('/edit') &&
         rightPanel !== RightPanel.PREVIEW && (
           <Button
