@@ -24,7 +24,6 @@ import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integr
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { BlockV6 } from '@typebot.io/schemas'
 import { useDebouncedCallback } from 'use-debounce'
-import { forgedBlockIds } from '@typebot.io/forge-repository/constants'
 
 // Integration blocks migrated to forged blocks
 const legacyIntegrationBlocks = [
@@ -178,7 +177,6 @@ export const BlocksSideBar = () => {
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(IntegrationBlockType)
-              .concat(forgedBlockIds as any)
               .filter((type) => !legacyIntegrationBlocks.includes(type))
               .map((type) => (
                 <BlockCard
