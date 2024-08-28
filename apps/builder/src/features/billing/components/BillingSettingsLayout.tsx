@@ -1,6 +1,5 @@
 import { Stack } from '@chakra-ui/react'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import React from 'react'
 import { InvoicesList } from './InvoicesList'
 import { ChangePlanForm } from './ChangePlanForm'
 import { UsageProgressBars } from './UsageProgressBars'

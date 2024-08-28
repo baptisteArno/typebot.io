@@ -113,7 +113,6 @@
     "@typebot.io/results": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/telemetry": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "@types/canvas-confetti": "1.6.0",
     "@types/jsonwebtoken": "9.0.2",
@@ -124,7 +123,7 @@
     "@types/papaparse": "5.3.7",
     "@types/prettier": "2.7.3",
     "@types/qs": "6.9.7",
-    "@types/react": "18.2.15",
+    "@types/react": "18.3.4",
     "@types/tinycolor2": "1.4.3",
     "dotenv": "16.4.5",
     "dotenv-cli": "7.4.1",
@@ -132,7 +131,6 @@
     "eslint-config-custom": "workspace:*",
     "next-runtime-env": "1.6.2",
     "superjson": "1.12.4",
-    "typescript": "5.4.5",
     "zod": "3.22.4"
   }
 }

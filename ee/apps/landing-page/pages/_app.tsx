@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import 'assets/style.css'
 import { ChakraProvider } from '@chakra-ui/react'
 import 'focus-visible/dist/focus-visible'

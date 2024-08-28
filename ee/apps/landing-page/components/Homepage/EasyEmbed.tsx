@@ -1,5 +1,4 @@
 import { Flex, Stack, Heading, Box, Text, Button } from '@chakra-ui/react'
-import React from 'react'
 import Image from 'next/image'
 import nativeFeelingSrc from 'public/images/native-feeling.png'
 import { ArrowRight } from 'assets/icons/ArrowRight'

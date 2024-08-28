@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ChatGroup } from './ChatGroup'
 import { useAnswers } from '../providers/AnswersProvider'
 import {

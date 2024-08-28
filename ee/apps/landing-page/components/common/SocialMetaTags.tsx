@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import React from 'react'
 
 export const SocialMetaTags = ({
   title = 'Typebot - Open-source conversational apps builder',

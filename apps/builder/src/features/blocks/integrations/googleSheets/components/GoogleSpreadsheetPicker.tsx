@@ -2,7 +2,7 @@ import { FileIcon } from '@/components/icons'
 import { trpc } from '@/lib/trpc'
 import { Button, Flex, HStack, IconButton, Text } from '@chakra-ui/react'
 import { env } from '@typebot.io/env'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { GoogleSheetsLogo } from './GoogleSheetsLogo'
 import { isDefined } from '@typebot.io/lib'
 

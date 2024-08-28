@@ -2,7 +2,7 @@ import { Button } from '@chakra-ui/react'
 import { ChevronLeftIcon } from '@/components/icons'
 import { useTypebotDnd } from '../TypebotDndProvider'
 import Link from 'next/link'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { useTranslate } from '@tolgee/react'
 
 export const BackButton = ({ id }: { id: string | null }) => {

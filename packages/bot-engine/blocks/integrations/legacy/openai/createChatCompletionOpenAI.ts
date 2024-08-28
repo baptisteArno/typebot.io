@@ -1,9 +1,4 @@
-import {
-  Block,
-  Credentials,
-  SessionState,
-  TypebotInSession,
-} from '@typebot.io/schemas'
+import { Block, SessionState, TypebotInSession } from '@typebot.io/schemas'
 import {
   ChatCompletionOpenAIOptions,
   OpenAICredentials,
@@ -176,6 +171,3 @@ const getNextBlock =
         )
       : connectedGroup?.blocks.at(0)
   }
-
-const isCredentialsV2 = (credentials: Pick<Credentials, 'iv'>) =>
-  credentials.iv.length === 24

@@ -11,7 +11,6 @@ import {
   AccordionIcon,
 } from '@chakra-ui/react'
 import { Background, Font, ProgressBar, Theme } from '@typebot.io/schemas'
-import React from 'react'
 import { BackgroundSelector } from './BackgroundSelector'
 import { LockTag } from '@/features/billing/components/LockTag'
 import { Plan } from '@typebot.io/prisma'

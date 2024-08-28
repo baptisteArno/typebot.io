@@ -227,7 +227,7 @@ module.exports = {
 Create a `ChatComponent.tsx` file:
 
 ```tsx
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 const ChatComponent: React.FC = () => {
   const [messages, setMessages] = useState<
@@ -501,7 +501,7 @@ app.post('/api/chat', (req, res) => {
 Create a `ChatComponent.tsx` in your React src directory:
 
 ```tsx
-import React, { useState } from 'react'
+import { useState } from 'react'
 import axios from 'axios'
 
 const ChatComponent: React.FC = () => {

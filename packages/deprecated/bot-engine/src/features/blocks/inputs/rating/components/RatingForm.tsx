@@ -1,6 +1,6 @@
 import { InputSubmitContent } from '@/types'
 import { RatingInputBlock } from '@typebot.io/schemas'
-import React, { FormEvent, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { isDefined, isEmpty, isNotDefined } from '@typebot.io/lib'
 import { SendButton } from '../../../../../components/SendButton'
 import { defaultRatingInputOptions } from '@typebot.io/schemas/features/blocks/inputs/rating/constants'

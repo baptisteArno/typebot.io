@@ -19,7 +19,7 @@ import {
   GoogleSheetsInsertRowOptions,
   GoogleSheetsUpdateRowOptionsV6,
 } from '@typebot.io/schemas'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { isDefined } from '@typebot.io/lib'
 import { SheetsDropdown } from './SheetsDropdown'
 import { CellWithValueStack } from './CellWithValueStack'

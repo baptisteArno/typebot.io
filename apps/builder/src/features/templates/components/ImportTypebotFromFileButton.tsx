@@ -1,7 +1,7 @@
 import { useToast } from '@/hooks/useToast'
 import { Button, ButtonProps, chakra } from '@chakra-ui/react'
 import { Typebot } from '@typebot.io/schemas'
-import React, { ChangeEvent } from 'react'
+import { ChangeEvent } from 'react'
 import { useTranslate } from '@tolgee/react'
 
 type Props = {

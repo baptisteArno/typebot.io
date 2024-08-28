@@ -1,15 +1,28 @@
 {
-  "extends": "@typebot.io/tsconfig/react-library.json",
+  "extends": "../../tsconfig/react.json",
   "include": ["src/**/*"],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     },
-    "outDir": "dist",
-    "declaration": true,
-    "declarationMap": true,
-    "noEmit": false,
-    "emitDeclarationOnly": true
-  }
+    "outDir": "dist"
+  },
+  "references": [
+    {
+      "path": "../../lib"
+    },
+    {
+      "path": "../../prisma"
+    },
+    {
+      "path": "../../schemas"
+    },
+    {
+      "path": "../js"
+    },
+    {
+      "path": "../react"
+    }
+  ]
 }

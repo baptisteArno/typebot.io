@@ -10,7 +10,7 @@ import {
 import { useEditor } from '../../editor/providers/EditorProvider'
 import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { useTypebot } from '../../editor/providers/TypebotProvider'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { headerHeight } from '../../editor/constants'
 import { RuntimeMenu } from './RuntimeMenu'
 import { runtimes } from '../data'

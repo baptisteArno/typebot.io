@@ -5,7 +5,6 @@ import {
   GeneralTheme,
   Theme,
 } from '@typebot.io/schemas'
-import React from 'react'
 import { AvatarForm } from './AvatarForm'
 import { useTranslate } from '@tolgee/react'
 import { ChatContainerForm } from './ChatContainerForm'

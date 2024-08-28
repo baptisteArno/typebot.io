@@ -1,11 +1,11 @@
 import { isMobile } from '@/utils/helpers'
-import React from 'react'
+import { forwardRef } from 'react'
 
 type ShortTextInputProps = {
   onChange: (value: string) => void
 } & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>
 
-export const ShortTextInput = React.forwardRef(function ShortTextInput(
+export const ShortTextInput = forwardRef(function ShortTextInput(
   { onChange, ...props }: ShortTextInputProps,
   ref: React.ForwardedRef<HTMLInputElement>
 ) {

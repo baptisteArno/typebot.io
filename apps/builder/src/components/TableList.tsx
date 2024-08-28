@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { TrashIcon, PlusIcon } from '@/components/icons'
 import { createId } from '@paralleldrive/cuid2'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const defaultItem = {
   id: createId(),

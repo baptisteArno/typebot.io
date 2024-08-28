@@ -1,4 +1,3 @@
-import React from 'react'
 import { Settings } from '@typebot.io/schemas'
 import {
   FormLabel,

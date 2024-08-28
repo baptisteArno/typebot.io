@@ -13,7 +13,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { useBlockDnd } from '@/features/graph/providers/GraphDndProvider'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { BlockCard } from './BlockCard'
 import { LockedIcon, UnlockedIcon } from '@/components/icons'
 import { BlockCardOverlay } from './BlockCardOverlay'

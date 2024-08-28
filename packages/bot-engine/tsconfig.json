@@ -1,9 +1,43 @@
 {
-  "extends": "@typebot.io/tsconfig/base.json",
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"],
+  "extends": "../tsconfig/base.json",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ],
   "compilerOptions": {
     "jsx": "preserve",
-    "lib": ["ES2021"]
-  }
+    "outDir": "dist"
+  },
+  "references": [
+    {
+      "path": "../emails"
+    },
+    {
+      "path": "../env"
+    },
+    {
+      "path": "../forge/core"
+    },
+    {
+      "path": "../forge/repository"
+    },
+    {
+      "path": "../lib"
+    },
+    {
+      "path": "../logic"
+    },
+    {
+      "path": "../prisma"
+    },
+    {
+      "path": "../results"
+    },
+    {
+      "path": "../schemas"
+    },
+    {
+      "path": "../variables"
+    }
+  ]
 }

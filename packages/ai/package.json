@@ -6,7 +6,6 @@
   "dependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "ai": "3.3.15",
     "ky": "1.2.4"

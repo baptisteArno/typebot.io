@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react'
 import { UserIcon } from '@/components/icons'
 import { Variable } from '@typebot.io/schemas'
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { useOutsideClick } from '@/hooks/useOutsideClick'
 import { useParentModal } from '@/features/graph/providers/ParentModalProvider'

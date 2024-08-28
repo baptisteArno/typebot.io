@@ -10,7 +10,7 @@ import {
   Checkbox,
   Textarea,
 } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { PublicTypebot } from '@typebot.io/schemas'
 import { sendRequest } from '@typebot.io/lib'
 import { DontIcon } from 'assets/icons/DontIcon'

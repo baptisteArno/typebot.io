@@ -1,6 +1,5 @@
 import { featherIconsBaseProps } from '@/components/icons'
 import { Icon, IconProps } from '@chakra-ui/react'
-import React from 'react'
 
 export const JumpIcon = (props: IconProps) => (
   <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>

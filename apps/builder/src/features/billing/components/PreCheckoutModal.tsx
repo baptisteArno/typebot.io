@@ -15,7 +15,7 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import React, { FormEvent, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { isDefined } from '@typebot.io/lib'
 import { useTranslate } from '@tolgee/react'
 import { taxIdTypes } from '@typebot.io/billing/taxIdTypes'

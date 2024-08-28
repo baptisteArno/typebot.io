@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
 import { PaymentAddress, PaymentInputBlock } from '@typebot.io/schemas'
-import React, { ChangeEvent } from 'react'
+import { ChangeEvent } from 'react'
 import { currencies } from '../currencies'
 import { StripeConfigModal } from './StripeConfigModal'
 import { CredentialsDropdown } from '@/features/credentials/components/CredentialsDropdown'

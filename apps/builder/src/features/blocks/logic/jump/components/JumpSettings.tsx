@@ -2,7 +2,6 @@ import { Select } from '@/components/inputs/Select'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { Stack } from '@chakra-ui/react'
 import { JumpBlock } from '@typebot.io/schemas/features/blocks/logic/jump'
-import React from 'react'
 import { byId, isNotEmpty } from '@typebot.io/lib'
 import { BlockIcon } from '@/features/editor/components/BlockIcon'
 

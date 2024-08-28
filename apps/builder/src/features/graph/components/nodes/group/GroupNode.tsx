@@ -6,7 +6,7 @@ import {
   Stack,
   useColorModeValue,
 } from '@chakra-ui/react'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { GroupV6 } from '@typebot.io/schemas'
 import { BlockNodesList } from '../block/BlockNodesList'
 import { isEmpty, isNotDefined } from '@typebot.io/lib'

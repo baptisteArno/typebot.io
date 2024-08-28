@@ -2,8 +2,6 @@
   "name": "@typebot.io/prisma",
   "license": "AGPL-3.0-or-later",
   "version": "0.1.0",
-  "main": "./index.ts",
-  "types": "./index.ts",
   "private": true,
   "scripts": {
     "dev": "dotenv -e ./.env -e ../../.env -- tsx scripts/studio.ts",
@@ -21,8 +19,6 @@
     "@types/node": "20.4.2",
     "dotenv-cli": "7.4.1",
     "prisma": "5.12.1",
-    "@typebot.io/tsconfig": "workspace:*",
-    "tsx": "4.6.2",
-    "typescript": "5.4.5"
+    "tsx": "4.6.2"
   }
 }

@@ -1,6 +1,6 @@
 import { Select } from '@chakra-ui/react'
 import { useTranslate } from '@tolgee/react'
-import React, { ChangeEvent } from 'react'
+import { ChangeEvent } from 'react'
 
 type Props = {
   countryCode?: string

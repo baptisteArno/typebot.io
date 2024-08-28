@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Row as RowProps } from '@tanstack/react-table'
 import Cell from './Cell'
 import { TableData } from '@typebot.io/schemas'

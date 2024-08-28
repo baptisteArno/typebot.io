@@ -1,16 +1,71 @@
 {
-  "extends": "@typebot.io/tsconfig/nextjs.json",
+  "extends": "../../packages/tsconfig/nextjs.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "src/*"
+      ]
     },
     "plugins": [
       {
         "name": "next"
       }
     ],
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "noEmit": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "references": [
+    {
+      "path": "../../packages/bot-engine"
+    },
+    {
+      "path": "../../packages/deprecated/bot-engine"
+    },
+    {
+      "path": "../../packages/emails"
+    },
+    {
+      "path": "../../packages/embeds/js"
+    },
+    {
+      "path": "../../packages/embeds/nextjs"
+    },
+    {
+      "path": "../../packages/env"
+    },
+    {
+      "path": "../../packages/forge/core"
+    },
+    {
+      "path": "../../packages/forge/repository"
+    },
+    {
+      "path": "../../packages/lib"
+    },
+    {
+      "path": "../../packages/playwright"
+    },
+    {
+      "path": "../../packages/prisma"
+    },
+    {
+      "path": "../../packages/results"
+    },
+    {
+      "path": "../../packages/schemas"
+    },
+    {
+      "path": "../../packages/variables"
+    }
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

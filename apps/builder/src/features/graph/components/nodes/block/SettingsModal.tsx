@@ -9,7 +9,6 @@ import {
   ModalFooter,
   ModalBodyProps,
 } from '@chakra-ui/react'
-import React from 'react'
 
 type Props = {
   isOpen: boolean

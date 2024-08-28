@@ -1,6 +1,5 @@
 import { featherIconsBaseProps } from '@/components/icons'
 import { Icon, IconProps } from '@chakra-ui/react'
-import React from 'react'
 
 export const AudioBubbleIcon = (props: IconProps) => (
   <Icon color="blue.500" {...featherIconsBaseProps} {...props}>

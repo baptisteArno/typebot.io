@@ -4,7 +4,12 @@ configureRuntimeEnv()
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['utils', 'models'],
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   async redirects() {
     return [
       {

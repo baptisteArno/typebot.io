@@ -1,6 +1,5 @@
 import { Stack, Text } from '@chakra-ui/react'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
-import React from 'react'
 import { TextInput } from '@/components/inputs'
 import { ScriptBlock } from '@typebot.io/schemas'
 import { defaultScriptOptions } from '@typebot.io/schemas/features/blocks/logic/script/constants'

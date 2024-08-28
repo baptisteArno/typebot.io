@@ -1,9 +1,15 @@
 {
-  "extends": "@typebot.io/tsconfig/base.json",
-  "include": ["**/*.ts"],
-  "exclude": ["node_modules"],
+  "extends": "../tsconfig/base.json",
+  "include": ["features/**/*", "*.js", "*.ts"],
   "compilerOptions": {
-    "lib": ["ESNext"],
-    "noEmit": true
-  }
+    "outDir": "dist"
+  },
+  "references": [
+    {
+      "path": "../forge/repository"
+    },
+    {
+      "path": "../prisma"
+    }
+  ]
 }

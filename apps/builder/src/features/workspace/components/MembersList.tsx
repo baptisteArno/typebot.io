@@ -7,7 +7,6 @@ import {
 } from '@chakra-ui/react'
 import { UnlockPlanAlertInfo } from '@/components/UnlockPlanAlertInfo'
 import { WorkspaceInvitation, WorkspaceRole } from '@typebot.io/prisma'
-import React from 'react'
 import { AddMemberForm } from './AddMemberForm'
 import { MemberItem } from './MemberItem'
 import { isDefined } from '@typebot.io/lib'

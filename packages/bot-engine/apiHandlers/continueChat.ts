@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import { isDefined, isNotDefined, isNotEmpty } from '@typebot.io/lib/utils'
+import { isDefined, isNotDefined } from '@typebot.io/lib/utils'
 import { getSession } from '../queries/getSession'
 import { continueBotFlow } from '../continueBotFlow'
 import { filterPotentiallySensitiveLogs } from '../logs/filterPotentiallySensitiveLogs'

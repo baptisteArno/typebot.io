@@ -4,7 +4,6 @@ import { TableListItemProps } from '@/components/TableList'
 import { Stack } from '@chakra-ui/react'
 import { RowsFilterComparison } from '@typebot.io/schemas'
 import { ComparisonOperators } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
-import React from 'react'
 
 export const RowsFilterComparisonItem = ({
   item,

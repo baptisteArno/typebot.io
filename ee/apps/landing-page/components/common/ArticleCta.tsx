@@ -1,5 +1,4 @@
 import { VStack, Heading, Button, Text } from '@chakra-ui/react'
-import React from 'react'
 
 export const ArticleCallToAction = () => (
   <VStack spacing={6}>

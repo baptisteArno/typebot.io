@@ -11,7 +11,7 @@ import {
   AlertIcon,
   SlideFade,
 } from '@chakra-ui/react'
-import React, { ChangeEvent, FormEvent, useEffect } from 'react'
+import { ChangeEvent, FormEvent, useEffect } from 'react'
 import { useState } from 'react'
 import {
   ClientSafeProvider,

@@ -10,7 +10,6 @@ import {
 } from '@typebot.io/schemas'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
-import React from 'react'
 
 type Props = {
   item: Item

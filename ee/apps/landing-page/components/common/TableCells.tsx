@@ -1,7 +1,7 @@
 import { CheckCircleIcon } from 'assets/icons/CheckCircleIcon'
 import { CloseIcon } from 'assets/icons/CloseIcon'
 import { Td, Text } from '@chakra-ui/react'
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 export const Yes = (props: { children?: ReactNode }) => (
   <Td display={props.children ? 'flex' : ''}>

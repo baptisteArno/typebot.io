@@ -12,7 +12,6 @@ import {
 } from '@chakra-ui/react'
 import { isNotEmpty } from '@typebot.io/lib'
 import { Background } from '@typebot.io/schemas'
-import React from 'react'
 import { ColorPicker } from '../../../../components/ColorPicker'
 import {
   BackgroundType,

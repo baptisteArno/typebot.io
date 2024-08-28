@@ -8,7 +8,7 @@ import {
   useColorModeValue,
   Portal,
 } from '@chakra-ui/react'
-import React, { RefObject } from 'react'
+import { RefObject } from 'react'
 import { EmojiOrImageIcon } from './EmojiOrImageIcon'
 import { ImageUploadContent } from './ImageUploadContent'
 import { FilePathUploadProps } from '@/features/upload/api/generateUploadUrl'

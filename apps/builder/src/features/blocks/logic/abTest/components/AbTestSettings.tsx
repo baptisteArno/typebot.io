@@ -1,5 +1,4 @@
 import { Stack } from '@chakra-ui/react'
-import React from 'react'
 import { isDefined } from '@typebot.io/lib'
 import { AbTestBlock } from '@typebot.io/schemas'
 import { NumberInput } from '@/components/inputs'

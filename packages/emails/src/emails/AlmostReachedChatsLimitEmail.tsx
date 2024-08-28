@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 import { Mjml, MjmlBody, MjmlSection, MjmlColumn } from '@faire/mjml-react'
 import { render } from '@faire/mjml-react/utils/render'
 import { Head, HeroImage, Text } from '../components'

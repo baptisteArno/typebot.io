@@ -12,7 +12,5 @@
     "posthog-node": "3.1.1",
     "@typebot.io/env": "workspace:*"
   },
-  "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
-  }
+  "devDependencies": {}
 }

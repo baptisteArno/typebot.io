@@ -7,7 +7,6 @@ import {
   Portal,
 } from '@chakra-ui/react'
 import { UsersIcon } from '@/components/icons'
-import React from 'react'
 import { SharePopoverContent } from './SharePopoverContent'
 import { useTranslate } from '@tolgee/react'
 

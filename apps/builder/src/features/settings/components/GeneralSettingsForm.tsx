@@ -8,7 +8,6 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { Settings } from '@typebot.io/schemas'
-import React from 'react'
 import { isDefined } from '@typebot.io/lib'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'

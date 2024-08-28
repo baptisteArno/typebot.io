@@ -41,7 +41,6 @@ import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integr
 import { VisitedEdge } from '@typebot.io/prisma'
 import { env } from '@typebot.io/env'
 import { getFirstEdgeId } from './getFirstEdgeId'
-import { Reply } from './types'
 import {
   defaultGuestAvatarIsEnabled,
   defaultHostAvatarIsEnabled,

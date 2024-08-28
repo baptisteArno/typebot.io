@@ -1,6 +1,6 @@
 import { BubbleBlock, InputBlock, Block } from '@typebot.io/schemas'
 import { isInputBlock, isBubbleBlock } from '@typebot.io/schemas/helpers'
-import type { TypebotPostMessageData } from 'typebot-js'
+import type { TypebotPostMessageData } from 'typebot-js/src/types'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 

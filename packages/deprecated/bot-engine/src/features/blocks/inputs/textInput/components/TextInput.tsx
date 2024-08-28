@@ -3,7 +3,7 @@ import { Textarea } from '@/components/inputs/Textarea'
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
 import { TextInputBlock } from '@typebot.io/schemas'
-import React, { MutableRefObject, useRef, useState } from 'react'
+import { MutableRefObject, useRef, useState } from 'react'
 
 type TextInputProps = {
   block: TextInputBlock

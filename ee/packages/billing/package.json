@@ -2,7 +2,6 @@
   "name": "@typebot.io/billing",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
@@ -22,7 +21,5 @@
     "next": "14.1.0",
     "micro": "10.0.1"
   },
-  "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
-  }
+  "devDependencies": {}
 }

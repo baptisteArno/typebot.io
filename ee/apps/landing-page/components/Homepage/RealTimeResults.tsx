@@ -4,7 +4,7 @@ import { ArrowRight } from 'assets/icons/ArrowRight'
 import { HandDrawnArrow } from 'assets/illustrations/HandDrawnArrow'
 import { PublicTypebot, Typebot } from '@typebot.io/schemas'
 import Link from 'next/link'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { sendRequest } from '@typebot.io/lib'
 
 const nameBlockId = 'shuUtMDMw9P4iAHbz7B5SqJ'

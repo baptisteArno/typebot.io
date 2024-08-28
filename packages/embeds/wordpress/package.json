@@ -1,7 +1,6 @@
 {
   "name": "@typebot.io/wordpress",
   "version": "4.0.0",
-  "main": "index.js",
   "repository": "https://github.com/baptisteArno/typebot.io",
   "author": "baptisteArno",
   "license": "AGPL-3.0-or-later",

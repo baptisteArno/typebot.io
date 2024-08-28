@@ -12,3 +12,13 @@ export type VariableWithValue = Omit<Variable, 'value'> & {
 export type VariableWithUnknowValue = Omit<Variable, 'value'> & {
   value?: unknown
 }
+
+export type SetVariableHistoryItem = {
+  resultId: string
+  index: number
+  blockId: string
+  variableId: string
+  value: string | (string | null)[] | null
+}
+
+export type SessionState = any

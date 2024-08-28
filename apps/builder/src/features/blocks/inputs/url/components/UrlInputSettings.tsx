@@ -4,7 +4,6 @@ import { FormLabel, Stack } from '@chakra-ui/react'
 import { useTranslate } from '@tolgee/react'
 import { UrlInputBlock, Variable } from '@typebot.io/schemas'
 import { defaultUrlInputOptions } from '@typebot.io/schemas/features/blocks/inputs/url/constants'
-import React from 'react'
 
 type Props = {
   options: UrlInputBlock['options']

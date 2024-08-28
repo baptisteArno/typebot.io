@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { BlockIndices, BlockWithItems } from '@typebot.io/schemas'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ItemNode } from './ItemNode'
 import { PlaceholderNode } from '../PlaceholderNode'
 import { isDefined } from '@typebot.io/lib'

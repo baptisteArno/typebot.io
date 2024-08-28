@@ -1,5 +1,4 @@
 import { Icon, IconProps } from '@chakra-ui/icon'
-import React from 'react'
 
 export const QuoteLeftIcon = (props: IconProps) => (
   <Icon

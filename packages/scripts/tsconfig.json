@@ -1,14 +1,31 @@
 {
+  "extends": "../tsconfig/base.json",
   "compilerOptions": {
-    "target": "es5",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
     "outDir": "dist",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
     "jsx": "preserve"
-  }
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "references": [
+    {
+      "path": "../../ee/packages/billing"
+    },
+    {
+      "path": "../emails"
+    },
+    {
+      "path": "../lib"
+    },
+    {
+      "path": "../prisma"
+    },
+    {
+      "path": "../results"
+    },
+    {
+      "path": "../schemas"
+    },
+    {
+      "path": "../telemetry"
+    }
+  ]
 }

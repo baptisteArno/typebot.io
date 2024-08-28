@@ -10,7 +10,7 @@ import {
   Wrap,
 } from '@chakra-ui/react'
 import { useTypebotDnd } from '../TypebotDndProvider'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BackButton } from './BackButton'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'

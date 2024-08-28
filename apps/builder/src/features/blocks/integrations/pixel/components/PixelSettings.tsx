@@ -14,7 +14,6 @@ import {
   pixelEventTypes,
   pixelObjectProperties,
 } from '@typebot.io/schemas/features/blocks/integrations/pixel/constants'
-import React from 'react'
 
 const pixelReferenceUrl =
   'https://developers.facebook.com/docs/meta-pixel/reference#standard-events'

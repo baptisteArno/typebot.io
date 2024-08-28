@@ -1,5 +1,4 @@
 import { BlockIndices } from '@typebot.io/schemas'
-import React from 'react'
 import { Stack, Tag, Wrap, Text } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { SetVariableLabel } from '@/components/SetVariableLabel'

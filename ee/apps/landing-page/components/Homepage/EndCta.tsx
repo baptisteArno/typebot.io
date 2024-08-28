@@ -9,7 +9,6 @@ import {
   StackProps,
 } from '@chakra-ui/react'
 import Link from 'next/link'
-import React from 'react'
 import { BackgroundPolygons } from './Hero/BackgroundPolygons'
 
 type Props = {

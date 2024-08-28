@@ -1,7 +1,6 @@
 import { Stack, Heading } from '@chakra-ui/react'
 import { Header } from 'components/common/Header/Header'
 import { SocialMetaTags } from 'components/common/SocialMetaTags'
-import React from 'react'
 
 const PrivacyPolicies = () => {
   return (

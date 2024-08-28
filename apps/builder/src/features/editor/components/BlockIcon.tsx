@@ -1,5 +1,4 @@
 import { IconProps, useColorModeValue } from '@chakra-ui/react'
-import React from 'react'
 import { WaitIcon } from '@/features/blocks/logic/wait/components/WaitIcon'
 import { ScriptIcon } from '@/features/blocks/logic/script/components/ScriptIcon'
 import { JumpIcon } from '@/features/blocks/logic/jump/components/JumpIcon'

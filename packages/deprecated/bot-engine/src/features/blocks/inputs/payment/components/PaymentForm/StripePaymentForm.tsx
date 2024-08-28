@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
 import { PaymentInputBlock, Variable } from '@typebot.io/schemas'

@@ -6,7 +6,7 @@ import { useTranslate } from '@tolgee/react'
 import { Stack } from '@chakra-ui/react'
 import { isDefined, isNotEmpty } from '@typebot.io/lib'
 import { ImageBubbleBlock } from '@typebot.io/schemas'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { defaultImageBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/image/constants'
 
 type Props = {

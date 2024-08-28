@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { isDefined } from '@typebot.io/lib'
 import { DefaultAvatar } from './DefaultAvatar'
 

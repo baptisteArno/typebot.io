@@ -15,7 +15,7 @@ import {
   InputGroup,
   InputRightElement,
 } from '@chakra-ui/react'
-import React, { FormEvent, useRef, useState } from 'react'
+import { FormEvent, useRef, useState } from 'react'
 import { createApiTokenQuery } from '../queries/createApiTokenQuery'
 import { ApiTokenFromServer } from '../types'
 

@@ -10,7 +10,6 @@ import {
 } from '@chakra-ui/react'
 import { ChatIcon, CodeIcon, DropletIcon, TableIcon } from '@/components/icons'
 import { ChatTheme, GeneralTheme, ThemeTemplate } from '@typebot.io/schemas'
-import React from 'react'
 import { CustomCssSettings } from './CustomCssSettings'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { ChatThemeSettings } from './chat/ChatThemeSettings'

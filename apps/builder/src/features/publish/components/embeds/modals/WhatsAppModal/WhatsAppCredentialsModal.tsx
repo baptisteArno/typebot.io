@@ -41,7 +41,7 @@ import {
 } from '@chakra-ui/react'
 import { env } from '@typebot.io/env'
 import { isEmpty, isNotEmpty } from '@typebot.io/lib/utils'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { createId } from '@paralleldrive/cuid2'
 
 const steps = [

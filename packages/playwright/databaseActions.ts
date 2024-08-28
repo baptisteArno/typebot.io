@@ -2,12 +2,11 @@ import {
   Plan,
   Prisma,
   PrismaClient,
-  User,
   Workspace,
   WorkspaceRole,
 } from '@typebot.io/prisma'
 import { createId } from '@typebot.io/lib/createId'
-import { Typebot, TypebotV6, HttpRequest } from '@typebot.io/schemas'
+import { Typebot, TypebotV6 } from '@typebot.io/schemas'
 import { readFileSync } from 'fs'
 import { proWorkspaceId, userId } from './databaseSetup'
 import {
@@ -137,19 +136,6 @@ export const createWorkspaces = async (workspaces: Partial<Workspace>[]) => {
   })
   return workspaceIds
 }
-
-export const updateUser = (data: Partial<User>) =>
-  prisma.user.update({
-    data: {
-      ...data,
-      onboardingCategories: data.onboardingCategories ?? [],
-      displayedInAppNotifications:
-        data.displayedInAppNotifications ?? Prisma.DbNull,
-    },
-    where: {
-      id: userId,
-    },
-  })
 
 export const createTypebots = async (partialTypebots: Partial<TypebotV6>[]) => {
   const typebotsWithId = partialTypebots.map((typebot) => {

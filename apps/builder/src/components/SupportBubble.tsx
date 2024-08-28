@@ -1,7 +1,7 @@
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { useUser } from '@/features/account/hooks/useUser'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Bubble, BubbleProps } from '@typebot.io/nextjs'
 import { planToReadable } from '@/features/billing/helpers/planToReadable'
 import { Plan } from '@typebot.io/prisma'

@@ -2,7 +2,7 @@ import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
 import { isMobile } from '@/utils/helpers'
 import { PhoneNumberInputBlock } from '@typebot.io/schemas'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import ReactPhoneNumberInput, { Value, Country } from 'react-phone-number-input'
 
 type PhoneInputProps = {

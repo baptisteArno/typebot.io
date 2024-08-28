@@ -8,7 +8,6 @@ import { useTranslate } from '@tolgee/react'
 import { TextInputBlock, Variable } from '@typebot.io/schemas'
 import { fileVisibilityOptions } from '@typebot.io/schemas/features/blocks/inputs/file/constants'
 import { defaultTextInputOptions } from '@typebot.io/schemas/features/blocks/inputs/text/constants'
-import React from 'react'
 
 type Props = {
   options: TextInputBlock['options']

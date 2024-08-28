@@ -1,4 +1,3 @@
-import React from 'react'
 import { IMjmlButtonProps, MjmlButton } from '@faire/mjml-react'
 import { blue, grayLight } from '../theme'
 import { leadingTight, textBase, borderBase } from '../theme'

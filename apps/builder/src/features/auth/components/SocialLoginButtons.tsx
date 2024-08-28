@@ -7,7 +7,7 @@ import {
   useSession,
 } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { stringify } from 'qs'
 import { BuiltInProviderType } from 'next-auth/providers'
 import { GoogleLogo } from '@/components/GoogleLogo'

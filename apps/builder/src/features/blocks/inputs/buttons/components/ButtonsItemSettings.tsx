@@ -1,4 +1,3 @@
-import React from 'react'
 import { Stack } from '@chakra-ui/react'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
 import { ConditionForm } from '@/features/blocks/logic/condition/components/ConditionForm'

@@ -11,7 +11,7 @@ import {
   ModalFooter,
   Button,
 } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ZodObjectLayout } from '../zodLayouts/ZodObjectLayout'
 import { ForgedBlockDefinition } from '@typebot.io/forge-repository/types'
 import { Credentials } from '@typebot.io/schemas'

@@ -1,6 +1,10 @@
 import { safeStringify } from '@typebot.io/lib/safeStringify'
-import { Variable, VariableWithUnknowValue } from './types'
-import { SessionState, SetVariableHistoryItem } from '../schemas'
+import {
+  SessionState,
+  SetVariableHistoryItem,
+  Variable,
+  VariableWithUnknowValue,
+} from './types'
 
 type Props = {
   state: SessionState
@@ -26,16 +30,17 @@ export const updateVariablesInSession = ({
     updatedState: {
       ...state,
       currentSetVariableHistoryIndex: setVariableHistoryIndex,
-      typebotsQueue: state.typebotsQueue.map((typebotInQueue, index: number) =>
-        index === 0
-          ? {
-              ...typebotInQueue,
-              typebot: {
-                ...typebotInQueue.typebot,
-                variables: updatedVariables,
-              },
-            }
-          : typebotInQueue
+      typebotsQueue: state.typebotsQueue.map(
+        (typebotInQueue: any, index: number) =>
+          index === 0
+            ? {
+                ...typebotInQueue,
+                typebot: {
+                  ...typebotInQueue.typebot,
+                  variables: updatedVariables,
+                },
+              }
+            : typebotInQueue
       ),
       previewMetadata: state.typebotsQueue[0].resultId
         ? state.previewMetadata
@@ -89,10 +94,11 @@ const updateTypebotVariables = ({
 
   return {
     updatedVariables: [
-      ...state.typebotsQueue[0].typebot.variables.filter((existingVariable) =>
-        serializedNewVariables.every(
-          (newVariable) => existingVariable.id !== newVariable.id
-        )
+      ...state.typebotsQueue[0].typebot.variables.filter(
+        (existingVariable: any) =>
+          serializedNewVariables.every(
+            (newVariable) => existingVariable.id !== newVariable.id
+          )
       ),
       ...serializedNewVariables,
     ],

@@ -12,7 +12,7 @@ import {
   TotalAnswers,
   TotalVisitedEdges,
 } from '@typebot.io/schemas'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { StatsCards } from './StatsCards'
 import { ChangePlanModal } from '@/features/billing/components/ChangePlanModal'
 import { Graph } from '@/features/graph/components/Graph'

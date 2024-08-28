@@ -1,4 +1,3 @@
-import React from 'react'
 import { Text } from '@chakra-ui/react'
 import { WithVariableContent } from '@/features/graph/components/nodes/block/WithVariableContent'
 import { UrlInputBlock } from '@typebot.io/schemas'

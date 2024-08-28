@@ -1,5 +1,5 @@
 import { Fade, Flex, FlexProps, useEventListener } from '@chakra-ui/react'
-import React, { useRef, useMemo, useEffect, useState } from 'react'
+import { useRef, useMemo, useEffect, useState } from 'react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { BlockV6, PublicTypebotV6, TypebotV6 } from '@typebot.io/schemas'
 import { useDebounce } from 'use-debounce'

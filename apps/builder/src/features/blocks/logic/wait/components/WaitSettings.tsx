@@ -6,7 +6,6 @@ import {
   AccordionPanel,
   Stack,
 } from '@chakra-ui/react'
-import React from 'react'
 import { TextInput } from '@/components/inputs'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { WaitBlock } from '@typebot.io/schemas'

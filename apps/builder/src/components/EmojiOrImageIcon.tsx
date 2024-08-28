@@ -1,5 +1,4 @@
 import { ToolIcon } from '@/components/icons'
-import React from 'react'
 import { chakra, IconProps, Image } from '@chakra-ui/react'
 import { isSvgSrc } from '@typebot.io/lib/utils'
 

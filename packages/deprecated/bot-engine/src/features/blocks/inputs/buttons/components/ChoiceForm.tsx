@@ -3,7 +3,7 @@ import { useAnswers } from '@/providers/AnswersProvider'
 import { useTypebot } from '@/providers/TypebotProvider'
 import { InputSubmitContent } from '@/types'
 import { ChoiceInputBlock } from '@typebot.io/schemas'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { SendButton } from '../../../../../components/SendButton'
 
 type ChoiceFormProps = {

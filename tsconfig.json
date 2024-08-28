@@ -1,0 +1,135 @@
+{
+  "extends": "./packages/tsconfig/base.json",
+  "files": [],
+  "references": [
+    {
+      "path": "packages/ai"
+    },
+    {
+      "path": "packages/bot-engine"
+    },
+    {
+      "path": "packages/db-rules"
+    },
+    {
+      "path": "packages/emails"
+    },
+    {
+      "path": "packages/env"
+    },
+    {
+      "path": "packages/lib"
+    },
+    {
+      "path": "packages/logic"
+    },
+    {
+      "path": "packages/migrations"
+    },
+    {
+      "path": "packages/playwright"
+    },
+    {
+      "path": "packages/prisma"
+    },
+    {
+      "path": "packages/radar"
+    },
+    {
+      "path": "packages/results"
+    },
+    {
+      "path": "packages/schemas"
+    },
+    {
+      "path": "packages/scripts"
+    },
+    {
+      "path": "packages/telemetry"
+    },
+    {
+      "path": "packages/theme"
+    },
+    {
+      "path": "packages/transactional"
+    },
+    {
+      "path": "packages/variables"
+    },
+    {
+      "path": "packages/deprecated/bot-engine"
+    },
+    {
+      "path": "packages/deprecated/typebot-js"
+    },
+    {
+      "path": "packages/embeds/js"
+    },
+    {
+      "path": "packages/embeds/nextjs"
+    },
+    {
+      "path": "packages/embeds/react"
+    },
+    {
+      "path": "packages/forge/cli"
+    },
+    {
+      "path": "packages/forge/core"
+    },
+    {
+      "path": "packages/forge/repository"
+    },
+    {
+      "path": "packages/forge/blocks/anthropic"
+    },
+    {
+      "path": "packages/forge/blocks/calCom"
+    },
+    {
+      "path": "packages/forge/blocks/chatNode"
+    },
+    {
+      "path": "packages/forge/blocks/difyAi"
+    },
+    {
+      "path": "packages/forge/blocks/elevenlabs"
+    },
+    {
+      "path": "packages/forge/blocks/groq"
+    },
+    {
+      "path": "packages/forge/blocks/mistral"
+    },
+    {
+      "path": "packages/forge/blocks/nocodb"
+    },
+    {
+      "path": "packages/forge/blocks/openai"
+    },
+    {
+      "path": "packages/forge/blocks/openRouter"
+    },
+    {
+      "path": "packages/forge/blocks/qrcode"
+    },
+    {
+      "path": "packages/forge/blocks/segment"
+    },
+    {
+      "path": "packages/forge/blocks/togetherAi"
+    },
+    {
+      "path": "apps/builder"
+    },
+    {
+      "path": "apps/viewer"
+    },
+    {
+      "path": "ee/packages/billing"
+    },
+    {
+      "path": "ee/apps/landing-page"
+    }
+  ]
+}

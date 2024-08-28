@@ -5,7 +5,6 @@ import {
   Skeleton,
   useColorModeValue,
 } from '@chakra-ui/react'
-import React from 'react'
 
 type LoadingRowsProps = {
   totalColumns: number

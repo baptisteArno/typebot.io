@@ -1,6 +1,6 @@
 import { Stack, HStack, Avatar, Text, Tooltip } from '@chakra-ui/react'
 import { UploadIcon } from '@/components/icons'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { ApiTokensList } from './ApiTokensList'
 import { UploadButton } from '@/components/ImageUploadContent/UploadButton'
 import { useUser } from '../hooks/useUser'

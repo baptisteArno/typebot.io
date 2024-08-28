@@ -14,7 +14,6 @@
     "@typebot.io/env": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "20.4.2",
-    "@typebot.io/tsconfig": "workspace:*"
+    "@types/node": "20.4.2"
   }
 }

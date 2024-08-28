@@ -1,8 +1,15 @@
 {
-  "extends": "@typebot.io/tsconfig/base.json",
+  "extends": "../tsconfig/base.json",
   "include": ["**/*.ts"],
-  "exclude": ["node_modules"],
   "compilerOptions": {
-    "lib": ["ES2021", "DOM"]
-  }
+    "outDir": "dist"
+  },
+  "references": [
+    {
+      "path": "../env"
+    },
+    {
+      "path": "../schemas"
+    }
+  ]
 }

@@ -206,6 +206,3 @@ const getNextBlock =
         )
       : connectedGroup?.blocks.at(0)
   }
-
-const isCredentialsV2 = (credentials: { iv: string }) =>
-  credentials.iv.length === 24

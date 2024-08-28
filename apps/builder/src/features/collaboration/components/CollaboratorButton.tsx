@@ -11,7 +11,6 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { CollaborationType } from '@typebot.io/prisma'
-import React from 'react'
 import { useTranslate } from '@tolgee/react'
 import { ReadableCollaborationType } from './ReadableCollaborationType'
 

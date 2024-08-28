@@ -17,7 +17,7 @@ import {
 import { PlusIcon, SettingsIcon } from '@/components/icons'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { ButtonItem, Item, ItemIndices } from '@typebot.io/schemas'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { isEmpty } from '@typebot.io/lib'
 import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { ButtonsItemSettings } from './ButtonsItemSettings'

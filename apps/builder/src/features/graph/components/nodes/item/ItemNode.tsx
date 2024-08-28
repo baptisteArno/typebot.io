@@ -1,7 +1,7 @@
 import { Flex, useColorModeValue, Stack } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { BlockWithItems, Item, ItemIndices } from '@typebot.io/schemas'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { BlockSourceEndpoint } from '../../endpoints/BlockSourceEndpoint'
 import { ItemNodeContent } from './ItemNodeContent'
 import { ItemNodeContextMenu } from './ItemNodeContextMenu'

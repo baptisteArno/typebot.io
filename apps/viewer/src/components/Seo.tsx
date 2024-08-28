@@ -1,7 +1,6 @@
 import { gtmHeadSnippet } from '@/lib/google-tag-manager'
 import Head from 'next/head'
 import Script from 'next/script'
-import React from 'react'
 import { isNotEmpty } from '@typebot.io/lib'
 import { Settings } from '@typebot.io/schemas'
 import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'

@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react'
 import { ToolIcon, TemplateIcon, DownloadIcon } from '@/components/icons'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { ImportTypebotFromFileButton } from './ImportTypebotFromFileButton'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useUser } from '@/features/account/hooks/useUser'

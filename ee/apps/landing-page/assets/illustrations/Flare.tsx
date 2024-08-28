@@ -1,5 +1,4 @@
 import { Icon, IconProps } from '@chakra-ui/react'
-import React from 'react'
 
 export const Flare = (props: IconProps & { color: 'blue' | 'orange' }) => (
   <Icon

@@ -18,7 +18,7 @@ import {
   ItemIndices,
   Condition,
 } from '@typebot.io/schemas'
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import { isNotDefined } from '@typebot.io/lib'
 import { PlusIcon } from '@/components/icons'
 import { ConditionForm } from './ConditionForm'

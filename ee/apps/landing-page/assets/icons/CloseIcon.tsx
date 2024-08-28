@@ -1,5 +1,4 @@
 import { Icon, IconProps } from '@chakra-ui/react'
-import React from 'react'
 import { featherIconsBaseProps } from './HamburgerIcon'
 
 export const CloseIcon = (props: IconProps) => (

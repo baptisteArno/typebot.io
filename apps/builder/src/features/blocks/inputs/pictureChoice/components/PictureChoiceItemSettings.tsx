@@ -1,4 +1,3 @@
-import React from 'react'
 import { TextInput, Textarea } from '@/components/inputs'
 import { PictureChoiceItem } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
 import {

@@ -1,5 +1,4 @@
 import { Icon, IconProps } from '@chakra-ui/react'
-import React from 'react'
 
 export const GoogleCalendarLogo = (props: IconProps) => (
   <Icon xmlns="http://www.w3.org/2000/svg" viewBox="186 38 76 76" {...props}>

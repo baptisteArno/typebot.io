@@ -10,7 +10,6 @@ import {
   HStack,
 } from '@chakra-ui/react'
 import { useResults } from '../ResultsProvider'
-import React from 'react'
 import { byId, isDefined } from '@typebot.io/lib'
 import { HeaderIcon } from './HeaderIcon'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'

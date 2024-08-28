@@ -1,10 +1,8 @@
 import { option, createAction } from '@typebot.io/forge'
-import { defaultOpenAIOptions } from '../constants'
-import OpenAI, { ClientOptions, toFile } from 'openai'
+import OpenAI, { ClientOptions } from 'openai'
 import { isNotEmpty } from '@typebot.io/lib'
 import { auth } from '../auth'
 import { baseOptions } from '../baseOptions'
-import ky from 'ky'
 
 export const createTranscription = createAction({
   name: 'Create transcription',

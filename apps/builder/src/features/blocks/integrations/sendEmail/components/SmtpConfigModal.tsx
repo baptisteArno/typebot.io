@@ -9,7 +9,7 @@ import {
   Button,
 } from '@chakra-ui/react'
 import { useUser } from '@/features/account/hooks/useUser'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { isNotDefined } from '@typebot.io/lib'
 import { SmtpConfigForm } from './SmtpConfigForm'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'

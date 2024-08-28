@@ -11,7 +11,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { ChevronLeftIcon, PlusIcon, TrashIcon } from '@/components/icons'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { CreateCustomDomainModal } from './CreateCustomDomainModal'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'

@@ -1,5 +1,5 @@
 import { IconProps, Text, Flex, VStack } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 type FeatureCardProps = {
   Icon: (props: IconProps) => JSX.Element

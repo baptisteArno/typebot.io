@@ -7,7 +7,6 @@ import { isDefined } from '@typebot.io/lib'
 import { filterChoiceItems } from './filterChoiceItems'
 import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
 import { transformVariablesToList } from '@typebot.io/variables/transformVariablesToList'
-import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
 
 export const injectVariableValuesInButtonsInputBlock =
   (state: SessionState) =>

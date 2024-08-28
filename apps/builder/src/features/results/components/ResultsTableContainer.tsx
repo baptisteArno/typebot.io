@@ -1,5 +1,5 @@
 import { Stack } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { LogsModal } from './LogsModal'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { useResults } from '../ResultsProvider'

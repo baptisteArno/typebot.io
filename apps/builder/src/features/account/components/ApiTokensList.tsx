@@ -18,7 +18,7 @@ import {
 import { ConfirmModal } from '@/components/ConfirmModal'
 import { useToast } from '@/hooks/useToast'
 import { User } from '@typebot.io/prisma'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { byId, isDefined } from '@typebot.io/lib'
 import { CreateTokenModal } from './CreateTokenModal'
 import { useApiTokens } from '../hooks/useApiTokens'

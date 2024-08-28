@@ -15,7 +15,6 @@ import {
 } from '@chakra-ui/react'
 import { DownloadIcon, FileIcon } from '@/components/icons'
 import Link from 'next/link'
-import React from 'react'
 import { trpc } from '@/lib/trpc'
 import { useToast } from '@/hooks/useToast'
 import { useTranslate } from '@tolgee/react'

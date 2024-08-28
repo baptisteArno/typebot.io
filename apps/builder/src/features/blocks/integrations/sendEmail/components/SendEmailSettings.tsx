@@ -14,7 +14,6 @@ import {
 } from '@chakra-ui/react'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { SendEmailBlock, Variable } from '@typebot.io/schemas'
-import React from 'react'
 import { isNotEmpty } from '@typebot.io/lib'
 import { SmtpConfigModal } from './SmtpConfigModal'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'

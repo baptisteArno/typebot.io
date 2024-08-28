@@ -5,7 +5,6 @@ import {
   GoogleSheetsGetOptions,
   RowsFilterComparison,
 } from '@typebot.io/schemas'
-import React from 'react'
 import { RowsFilterComparisonItem } from './RowsFilterComparisonItem'
 import { LogicalOperator } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
 

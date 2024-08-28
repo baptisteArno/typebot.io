@@ -1,11 +1,11 @@
 import { isMobile } from '@/utils/helpers'
-import React from 'react'
+import { forwardRef } from 'react'
 
 type TextareaProps = {
   onChange: (value: string) => void
 } & Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'onChange'>
 
-export const Textarea = React.forwardRef(function Textarea(
+export const Textarea = forwardRef(function Textarea(
   { onChange, ...props }: TextareaProps,
   ref: React.ForwardedRef<HTMLTextAreaElement>
 ) {

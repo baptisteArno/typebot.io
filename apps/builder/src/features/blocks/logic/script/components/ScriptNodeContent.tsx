@@ -1,4 +1,3 @@
-import React from 'react'
 import { Text } from '@chakra-ui/react'
 import { ScriptBlock } from '@typebot.io/schemas'
 import { defaultScriptOptions } from '@typebot.io/schemas/features/blocks/logic/script/constants'

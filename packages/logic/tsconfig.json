@@ -1,12 +1,20 @@
 {
-  "extends": "@typebot.io/tsconfig/base.json",
+  "extends": "../tsconfig/base.json",
   "include": [
-    "**/*.ts",
-    "../variables/parseVariables.ts",
-    "../bot-engine/parseBubbleBlock.ts"
+    "**/*.ts"
   ],
-  "exclude": ["node_modules"],
   "compilerOptions": {
-    "lib": ["ES2021", "DOM"]
-  }
+    "outDir": "dist"
+  },
+  "references": [
+    {
+      "path": "../lib"
+    },
+    {
+      "path": "../schemas"
+    },
+    {
+      "path": "../variables"
+    }
+  ]
 }

@@ -14,7 +14,7 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { ChevronLeftIcon } from '@/components/icons'
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { MoreInfoTooltip } from './MoreInfoTooltip'
 
 type Item =

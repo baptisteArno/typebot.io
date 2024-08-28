@@ -2,18 +2,9 @@
   "version": "2.27.0",
   "name": "typebot-os",
   "private": true,
-  "workspaces": [
-    "ee/apps/*",
-    "ee/packages/*",
-    "packages/*",
-    "packages/deprecated/*",
-    "packages/embeds/*",
-    "packages/forge/*",
-    "packages/forge/blocks/*",
-    "apps/*"
-  ],
   "scripts": {
     "prepare": "husky install",
+    "postinstall": "update-ts-references",
     "docker:up": "docker compose -f docker-compose.dev.yml up -d && node -e \"setTimeout(() => {}, 5000)\"",
     "docker:nuke": "docker compose -f docker-compose.dev.yml down --volumes --remove-orphans",
     "lint": "turbo run lint",
@@ -34,12 +25,17 @@
     "cz-emoji": "1.3.2-canary.2",
     "husky": "8.0.3",
     "prettier": "2.8.8",
-    "turbo": "2.0.5"
+    "turbo": "2.1.0",
+    "typescript": "5.5.2",
+    "update-ts-references": "3.3.0"
   },
   "config": {
     "commitizen": {
       "path": "node_modules/cz-emoji"
     }
   },
-  "packageManager": "pnpm@9.5.0"
+  "packageManager": "pnpm@9.9.0",
+  "engines": {
+    "node": "20.17"
+  }
 }

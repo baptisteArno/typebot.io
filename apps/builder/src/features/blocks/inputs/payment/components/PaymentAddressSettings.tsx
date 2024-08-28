@@ -6,7 +6,6 @@ import {
   AccordionItem,
   AccordionPanel,
 } from '@chakra-ui/react'
-import React from 'react'
 import { TextInput } from '@/components/inputs'
 import { PaymentAddress } from '@typebot.io/schemas'
 import { useTranslate } from '@tolgee/react'

@@ -22,7 +22,7 @@ import {
   Skeleton,
   SkeletonCircle,
 } from '@chakra-ui/react'
-import React, { useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { Credentials, credentialsTypes } from '@typebot.io/schemas'
 import { BlockIcon } from '@/features/editor/components/BlockIcon'
 import { BlockLabel } from '@/features/editor/components/BlockLabel'

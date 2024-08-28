@@ -57,11 +57,12 @@ const optionalQueryParams = `(\\/?\\?.*)?`
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: [
-    '@typebot.io/lib',
-    '@typebot.io/schemas',
-    '@typebot.io/emails',
-  ],
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   output: 'standalone',
   experimental: {
     outputFileTracingRoot: join(__dirname, '../../'),

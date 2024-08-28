@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import type { BotProps } from '@typebot.io/js'
 import '@typebot.io/js/dist/web'
 

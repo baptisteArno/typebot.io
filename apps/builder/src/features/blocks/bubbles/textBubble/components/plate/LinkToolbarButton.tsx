@@ -1,4 +1,3 @@
-import React from 'react'
 import { IconButton, IconButtonProps } from '@chakra-ui/react'
 import {
   useLinkToolbarButton,

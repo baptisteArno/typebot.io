@@ -1,6 +1,6 @@
 import { Box, Button, Fade, Flex, IconButton, Stack } from '@chakra-ui/react'
 import { TrashIcon, PlusIcon } from '@/components/icons'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createId } from '@paralleldrive/cuid2'
 
 type ItemWithId<T extends number | string | boolean> = { id: string; value?: T }

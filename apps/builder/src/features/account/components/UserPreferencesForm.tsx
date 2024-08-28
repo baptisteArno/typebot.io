@@ -9,7 +9,7 @@ import {
   HStack,
 } from '@chakra-ui/react'
 import { GraphNavigation } from '@typebot.io/prisma'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { AppearanceRadioGroup } from './AppearanceRadioGroup'
 import { useUser } from '../hooks/useUser'
 import { ChevronDownIcon } from '@/components/icons'

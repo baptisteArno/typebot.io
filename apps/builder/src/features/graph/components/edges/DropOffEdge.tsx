@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { useEndpoints } from '../../providers/EndpointsProvider'
 import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
 import { computeDropOffPath } from '../../helpers/computeDropOffPath'

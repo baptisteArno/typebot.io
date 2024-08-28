@@ -49,14 +49,13 @@
     "@typebot.io/playwright": "workspace:*",
     "@typebot.io/results": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "@types/cors": "2.8.13",
     "@types/node": "20.4.2",
     "@types/nodemailer": "6.4.14",
     "@types/papaparse": "5.3.7",
     "@types/qs": "6.9.7",
-    "@types/react": "18.2.15",
+    "@types/react": "18.3.4",
     "dotenv": "16.4.5",
     "dotenv-cli": "7.4.1",
     "eslint": "8.44.0",
@@ -65,7 +64,6 @@
     "next-runtime-env": "1.6.2",
     "papaparse": "5.4.1",
     "superjson": "1.12.4",
-    "typescript": "5.4.5",
     "zod": "3.22.4"
   }
 }

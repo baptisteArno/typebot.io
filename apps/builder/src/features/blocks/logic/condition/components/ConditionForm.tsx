@@ -1,7 +1,6 @@
 import { Flex } from '@chakra-ui/react'
 import { DropdownList } from '@/components/DropdownList'
 import { Comparison, Condition } from '@typebot.io/schemas'
-import React from 'react'
 import { ComparisonItem } from './ComparisonItem'
 import { TableList } from '@/components/TableList'
 import {

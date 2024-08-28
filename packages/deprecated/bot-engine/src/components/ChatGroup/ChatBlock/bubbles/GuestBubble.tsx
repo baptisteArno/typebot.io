@@ -1,5 +1,5 @@
 import { Avatar } from '@/components/avatars/Avatar'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { CSSTransition } from 'react-transition-group'
 
 interface Props {

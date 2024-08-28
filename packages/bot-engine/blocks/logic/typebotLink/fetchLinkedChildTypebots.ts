@@ -1,4 +1,3 @@
-import { User } from '@typebot.io/prisma'
 import {
   Block,
   PublicTypebot,

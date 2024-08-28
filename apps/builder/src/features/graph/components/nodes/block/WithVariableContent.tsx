@@ -1,5 +1,4 @@
 import { chakra, Text, TextProps } from '@chakra-ui/react'
-import React from 'react'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { byId } from '@typebot.io/lib'
 

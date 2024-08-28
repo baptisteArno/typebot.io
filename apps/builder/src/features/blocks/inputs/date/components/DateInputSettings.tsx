@@ -4,7 +4,6 @@ import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
 import { FormLabel, Stack } from '@chakra-ui/react'
 import { DateInputBlock, Variable } from '@typebot.io/schemas'
-import React from 'react'
 import { defaultDateInputOptions } from '@typebot.io/schemas/features/blocks/inputs/date/constants'
 import { useTranslate } from '@tolgee/react'
 

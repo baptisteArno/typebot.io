@@ -1,6 +1,5 @@
 import { FormLabel, HStack, Stack } from '@chakra-ui/react'
 import { ChatTheme, GeneralTheme } from '@typebot.io/schemas'
-import React from 'react'
 import {
   defaultBlur,
   defaultContainerBackgroundColor,

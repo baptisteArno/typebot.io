@@ -17,7 +17,6 @@ import {
   WebflowLogo,
   IframeLogo,
 } from './logos'
-import React from 'react'
 import {
   WordpressModal,
   ShopifyModal,

@@ -1,7 +1,6 @@
 import { Alert, AlertIcon, Button, Link, Stack, Text } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@/components/icons'
 import { HttpRequest, HttpRequestBlock, ZapierBlock } from '@typebot.io/schemas'
-import React from 'react'
 import { HttpRequestAdvancedConfigForm } from '../../webhook/components/HttpRequestAdvancedConfigForm'
 
 type Props = {

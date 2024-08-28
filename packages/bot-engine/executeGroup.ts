@@ -28,11 +28,11 @@ import { env } from '@typebot.io/env'
 import { TRPCError } from '@trpc/server'
 import { ExecuteIntegrationResponse, ExecuteLogicResponse } from './types'
 import { createId } from '@paralleldrive/cuid2'
-import {
-  BubbleBlockWithDefinedContent,
-  parseBubbleBlock,
-} from './parseBubbleBlock'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import {
+  parseBubbleBlock,
+  BubbleBlockWithDefinedContent,
+} from '@typebot.io/logic/parseBubbleBlock'
 
 type ContextProps = {
   version: 1 | 2

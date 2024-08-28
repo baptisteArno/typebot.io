@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import { Standard } from '@typebot.io/nextjs'
 import { Typebot } from '@typebot.io/schemas'
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useTemplates } from '../hooks/useTemplates'
 import { TemplateProps } from '../types'
 import { useToast } from '@/hooks/useToast'

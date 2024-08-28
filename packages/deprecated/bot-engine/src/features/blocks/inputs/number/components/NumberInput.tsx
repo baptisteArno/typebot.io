@@ -2,7 +2,7 @@ import { ShortTextInput } from '@/components/inputs/ShortTextInput'
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
 import { NumberInputBlock } from '@typebot.io/schemas'
-import React, { MutableRefObject, useRef, useState } from 'react'
+import { MutableRefObject, useRef, useState } from 'react'
 
 type NumberInputProps = {
   block: NumberInputBlock

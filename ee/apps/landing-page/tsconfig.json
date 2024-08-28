@@ -1,16 +1,47 @@
 {
-  "extends": "@typebot.io/tsconfig/nextjs.json",
+  "extends": "../../../packages/tsconfig/nextjs.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     },
     "plugins": [
       {
         "name": "next"
       }
     ],
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "noEmit": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "references": [
+    {
+      "path": "../../../packages/embeds/nextjs"
+    },
+    {
+      "path": "../../../packages/env"
+    },
+    {
+      "path": "../../../packages/lib"
+    },
+    {
+      "path": "../../../packages/prisma"
+    },
+    {
+      "path": "../../../packages/schemas"
+    },
+    {
+      "path": "../../packages/billing"
+    }
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

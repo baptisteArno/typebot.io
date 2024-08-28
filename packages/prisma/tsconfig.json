@@ -1,8 +1,7 @@
 {
-  "extends": "@typebot.io/tsconfig/base.json",
+  "extends": "../tsconfig/base.json",
   "include": ["**/*.ts"],
-  "exclude": ["node_modules"],
   "compilerOptions": {
-    "declaration": false
+    "outDir": "dist"
   }
 }

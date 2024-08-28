@@ -11,7 +11,5 @@
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*"
   },
-  "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
-  }
+  "devDependencies": {}
 }

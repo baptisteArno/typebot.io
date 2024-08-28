@@ -1,8 +1,27 @@
 {
-  "extends": "@typebot.io/tsconfig/base.json",
+  "extends": "../../../packages/tsconfig/base.json",
   "include": ["**/*.ts"],
-  "exclude": ["node_modules"],
   "compilerOptions": {
-    "lib": ["ES2021", "DOM"]
-  }
+    "outDir": "dist"
+  },
+  "references": [
+    {
+      "path": "../../../packages/db-rules"
+    },
+    {
+      "path": "../../../packages/env"
+    },
+    {
+      "path": "../../../packages/lib"
+    },
+    {
+      "path": "../../../packages/prisma"
+    },
+    {
+      "path": "../../../packages/schemas"
+    },
+    {
+      "path": "../../../packages/telemetry"
+    }
+  ]
 }

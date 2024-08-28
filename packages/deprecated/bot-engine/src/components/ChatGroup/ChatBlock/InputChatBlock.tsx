@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useAnswers } from '../../../providers/AnswersProvider'
 import { InputBlock } from '@typebot.io/schemas'
 import { GuestBubble } from './bubbles/GuestBubble'

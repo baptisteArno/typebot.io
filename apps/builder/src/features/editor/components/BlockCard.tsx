@@ -1,5 +1,4 @@
 import { HStack } from '@chakra-ui/react'
-import React from 'react'
 import { BlockIcon } from './BlockIcon'
 import { isFreePlan } from '@/features/billing/helpers/isFreePlan'
 import { Plan } from '@typebot.io/prisma'

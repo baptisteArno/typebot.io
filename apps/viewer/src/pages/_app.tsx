@@ -1,4 +1,3 @@
-import React from 'react'
 import '../assets/styles.css'
 
 type Props = {

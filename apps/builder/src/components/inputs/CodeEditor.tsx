@@ -9,7 +9,7 @@ import {
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react'
-import React, { ReactNode, useEffect, useRef, useState } from 'react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { VariablesButton } from '@/features/variables/components/VariablesButton'
 import { Variable } from '@typebot.io/schemas'

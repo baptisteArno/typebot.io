@@ -4,7 +4,6 @@ import { FormLabel, Stack } from '@chakra-ui/react'
 import { useTranslate } from '@tolgee/react'
 import { EmailInputBlock, Variable } from '@typebot.io/schemas'
 import { defaultEmailInputOptions } from '@typebot.io/schemas/features/blocks/inputs/email/constants'
-import React from 'react'
 
 type Props = {
   options: EmailInputBlock['options']

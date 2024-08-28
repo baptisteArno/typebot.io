@@ -1,11 +1,26 @@
 {
-  "extends": "@typebot.io/tsconfig/base.json",
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"],
+  "extends": "../../../tsconfig/base.json",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ],
   "compilerOptions": {
-    "lib": ["ESNext", "DOM"],
-    "noEmit": true,
     "jsx": "preserve",
-    "jsxImportSource": "react"
-  }
+    "jsxImportSource": "react",
+    "outDir": "dist"
+  },
+  "references": [
+    {
+      "path": "../../../ai"
+    },
+    {
+      "path": "../../../lib"
+    },
+    {
+      "path": "../../../variables"
+    },
+    {
+      "path": "../../core"
+    }
+  ]
 }

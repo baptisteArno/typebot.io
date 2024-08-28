@@ -4,7 +4,6 @@ import { FormLabel, Stack } from '@chakra-ui/react'
 import { useTranslate } from '@tolgee/react'
 import { NumberInputBlock, Variable } from '@typebot.io/schemas'
 import { defaultNumberInputOptions } from '@typebot.io/schemas/features/blocks/inputs/number/constants'
-import React from 'react'
 
 type Props = {
   options: NumberInputBlock['options']

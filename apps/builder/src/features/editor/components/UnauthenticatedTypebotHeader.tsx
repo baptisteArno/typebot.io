@@ -8,7 +8,6 @@ import {
 } from '@chakra-ui/react'
 import { CopyIcon, PlayIcon } from '@/components/icons'
 import { useRouter } from 'next/router'
-import React from 'react'
 import { isNotDefined } from '@typebot.io/lib'
 import Link from 'next/link'
 import { headerHeight } from '../constants'

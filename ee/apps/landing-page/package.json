@@ -36,20 +36,17 @@
     "@chakra-ui/styled-system": "2.9.2",
     "@tailwindcss/typography": "0.5.12",
     "@typebot.io/env": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
     "@types/aos": "3.0.4",
     "@types/node": "20.4.2",
-    "@types/react": "18.2.15",
+    "@types/react": "18.3.4",
     "autoprefixer": "10.4.14",
     "cross-env": "7.0.3",
     "dotenv-cli": "7.4.1",
     "eslint": "8.44.0",
     "eslint-config-custom": "workspace:*",
     "next-runtime-env": "1.6.2",
-    "next-transpile-modules": "10.0.0",
     "postcss": "8.4.26",
     "prettier": "3.0.0",
-    "tailwindcss": "3.3.3",
-    "typescript": "5.4.5"
+    "tailwindcss": "3.3.3"
   }
 }

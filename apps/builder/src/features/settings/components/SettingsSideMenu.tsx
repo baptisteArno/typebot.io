@@ -15,7 +15,6 @@ import {
   MoreVerticalIcon,
 } from '@/components/icons'
 import { Settings } from '@typebot.io/schemas'
-import React from 'react'
 import { GeneralSettingsForm } from './GeneralSettingsForm'
 import { MetadataForm } from './MetadataForm'
 import { TypingEmulationForm } from './TypingEmulationForm'

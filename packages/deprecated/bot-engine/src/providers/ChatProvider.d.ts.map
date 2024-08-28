@@ -1,0 +1,1 @@
+{"version":3,"file":"ChatProvider.d.ts","sourceRoot":"","sources":["ChatProvider.tsx"],"names":[],"mappings":"AAAA,OAAO,EAAiB,SAAS,EAAc,MAAM,OAAO,CAAA;AAQ5D,eAAO,MAAM,YAAY,4BAGtB;IACD,QAAQ,EAAE,SAAS,CAAA;IACnB,QAAQ,EAAE,MAAM,IAAI,CAAA;CACrB,4CAWA,CAAA;AAED,eAAO,MAAM,OAAO;YAxBV,MAAM,IAAI;CAwBgC,CAAA"}

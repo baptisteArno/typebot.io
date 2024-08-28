@@ -1,6 +1,5 @@
 import { HStack, Stack, Text } from '@chakra-ui/react'
 import { Settings } from '@typebot.io/schemas'
-import React from 'react'
 import { NumberInput } from '@/components/inputs'
 import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'

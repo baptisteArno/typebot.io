@@ -16,7 +16,7 @@ import {
   Alert,
   AlertIcon,
 } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 const openAITokensPage = 'https://platform.openai.com/account/api-keys'
 

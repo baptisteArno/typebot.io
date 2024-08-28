@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react'
 import { EditIcon } from '@/components/icons'
 import { CopyButton } from '@/components/CopyButton'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 type EditableUrlProps = {
   hostname: string

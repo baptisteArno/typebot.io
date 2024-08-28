@@ -1,5 +1,4 @@
 import { Checkbox, Flex } from '@chakra-ui/react'
-import React from 'react'
 
 const TableCheckBox = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -3,7 +3,7 @@ import { useAnswers } from '@/providers/AnswersProvider'
 import { useTypebot } from '@/providers/TypebotProvider'
 import { InputSubmitContent } from '@/types'
 import { FileInputBlock } from '@typebot.io/schemas'
-import React, { ChangeEvent, FormEvent, useState, DragEvent } from 'react'
+import { ChangeEvent, FormEvent, useState, DragEvent } from 'react'
 import { uploadFiles } from '../helpers/uploadFiles'
 import { defaultFileInputOptions } from '@typebot.io/schemas/features/blocks/inputs/file/constants'
 

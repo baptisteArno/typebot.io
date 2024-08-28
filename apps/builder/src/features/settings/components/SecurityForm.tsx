@@ -1,6 +1,5 @@
 import { FormControl, FormLabel, Stack } from '@chakra-ui/react'
 import { Settings } from '@typebot.io/schemas'
-import React from 'react'
 import { isDefined } from '@typebot.io/lib'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
 import { TagsInput } from '@/components/TagsInput'

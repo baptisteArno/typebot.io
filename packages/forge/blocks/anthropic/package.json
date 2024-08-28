@@ -2,17 +2,14 @@
   "name": "@typebot.io/anthropic-block",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
   "keywords": [],
   "author": "Enchatted P.C.",
   "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
     "@types/node": "20.4.2",
-    "@types/react": "18.2.15",
-    "typescript": "5.4.5"
+    "@types/react": "18.3.4"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "0.0.30",

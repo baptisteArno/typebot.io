@@ -1,0 +1,54 @@
+{
+  "extends": "../../tsconfig/base.json",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "references": [
+    {
+      "path": "../blocks/anthropic"
+    },
+    {
+      "path": "../blocks/calCom"
+    },
+    {
+      "path": "../blocks/chatNode"
+    },
+    {
+      "path": "../blocks/difyAi"
+    },
+    {
+      "path": "../blocks/elevenlabs"
+    },
+    {
+      "path": "../blocks/groq"
+    },
+    {
+      "path": "../blocks/mistral"
+    },
+    {
+      "path": "../blocks/nocodb"
+    },
+    {
+      "path": "../blocks/openRouter"
+    },
+    {
+      "path": "../blocks/openai"
+    },
+    {
+      "path": "../blocks/qrcode"
+    },
+    {
+      "path": "../blocks/segment"
+    },
+    {
+      "path": "../blocks/togetherAi"
+    },
+    {
+      "path": "../core"
+    }
+  ]
+}

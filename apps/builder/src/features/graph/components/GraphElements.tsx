@@ -3,7 +3,7 @@ import {
   TotalAnswers,
   TotalVisitedEdges,
 } from '@typebot.io/schemas/features/analytics'
-import React, { memo } from 'react'
+import { memo } from 'react'
 import { EndpointsProvider } from '../providers/EndpointsProvider'
 import { Edges } from './edges/Edges'
 import { GroupNode } from './nodes/group/GroupNode'

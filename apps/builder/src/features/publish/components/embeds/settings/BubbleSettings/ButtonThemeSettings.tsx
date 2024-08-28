@@ -18,7 +18,6 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { ButtonTheme } from '@typebot.io/nextjs'
-import React from 'react'
 
 type Props = {
   buttonTheme: ButtonTheme | undefined

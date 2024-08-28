@@ -1,6 +1,5 @@
 import { Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react'
 import { TrashIcon } from '@/components/icons'
-import React from 'react'
 
 type Props = {
   isOpen: boolean

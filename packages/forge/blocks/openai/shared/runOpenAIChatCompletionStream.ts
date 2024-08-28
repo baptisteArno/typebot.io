@@ -1,4 +1,4 @@
-import { AsyncVariableStore, VariableStore } from '@typebot.io/forge/types'
+import { AsyncVariableStore } from '@typebot.io/forge/types'
 import { ChatCompletionOptions } from './parseChatCompletionOptions'
 import { APICallError, streamText, ToolCallPart, ToolResultPart } from 'ai'
 import { createOpenAI } from '@ai-sdk/openai'

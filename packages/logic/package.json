@@ -12,7 +12,6 @@
     "@typebot.io/variables": "workspace:*"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*",
     "@udecode/plate-common": "30.4.5"
   }
 }

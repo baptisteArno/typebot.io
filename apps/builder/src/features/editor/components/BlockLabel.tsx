@@ -1,5 +1,4 @@
 import { Text, TextProps } from '@chakra-ui/react'
-import React from 'react'
 import { useTranslate } from '@tolgee/react'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'

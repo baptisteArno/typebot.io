@@ -8,7 +8,6 @@ import {
   useDisclosure,
   Text,
 } from '@chakra-ui/react'
-import React from 'react'
 import { CredentialsDropdown } from '@/features/credentials/components/CredentialsDropdown'
 import {
   ChatCompletionOpenAIOptions,

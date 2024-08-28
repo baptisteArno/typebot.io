@@ -14,7 +14,7 @@ import {
   ResultsTablePreferences,
   TableData,
 } from '@typebot.io/schemas'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { LoadingRows } from './LoadingRows'
 import {
   useReactTable,

@@ -1,5 +1,5 @@
 import { SlideFade, Stack, useColorModeValue } from '@chakra-ui/react'
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { EventNodeContextMenu } from './EventNodeContextMenu'
 import { useDebounce } from 'use-debounce'
 import { ContextMenu } from '@/components/ContextMenu'

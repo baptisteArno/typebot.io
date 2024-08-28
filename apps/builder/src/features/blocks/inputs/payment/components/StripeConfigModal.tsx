@@ -13,7 +13,7 @@ import {
   Text,
   HStack,
 } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'
 import { TextInput } from '@/components/inputs'

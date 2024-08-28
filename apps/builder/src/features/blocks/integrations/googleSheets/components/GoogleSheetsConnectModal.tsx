@@ -14,7 +14,6 @@ import {
 } from '@chakra-ui/react'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import Link from 'next/link'
-import React from 'react'
 import { AlertInfo } from '@/components/AlertInfo'
 import { GoogleLogo } from '@/components/GoogleLogo'
 import { getGoogleSheetsConsentScreenUrlQuery } from '../queries/getGoogleSheetsConsentScreenUrlQuery'

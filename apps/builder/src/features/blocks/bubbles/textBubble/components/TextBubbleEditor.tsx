@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { Plate } from '@udecode/plate-core'
 import { platePlugins } from '@/lib/plate'
 import { TElement } from '@udecode/plate-common'

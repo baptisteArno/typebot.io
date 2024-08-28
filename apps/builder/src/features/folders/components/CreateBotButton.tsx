@@ -2,7 +2,6 @@ import { Button, ButtonProps, Text, VStack } from '@chakra-ui/react'
 import { PlusIcon } from '@/components/icons'
 import { useRouter } from 'next/router'
 import { stringify } from 'qs'
-import React from 'react'
 import { useTranslate } from '@tolgee/react'
 import { useTypebotDnd } from '../TypebotDndProvider'
 

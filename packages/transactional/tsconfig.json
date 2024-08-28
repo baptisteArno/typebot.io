@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig/base.json",
+  "include": [
+    "**/*.ts"
+  ],
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "references": [
+    {
+      "path": "../env"
+    }
+  ]
+}

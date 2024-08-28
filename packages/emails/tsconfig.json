@@ -1,5 +1,15 @@
 {
-  "extends": "@typebot.io/tsconfig/react-library.json",
+  "extends": "../tsconfig/react.json",
   "include": ["src/**/*"],
-  "exclude": ["dist", "node_modules"]
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "references": [
+    {
+      "path": "../env"
+    },
+    {
+      "path": "../lib"
+    }
+  ]
 }

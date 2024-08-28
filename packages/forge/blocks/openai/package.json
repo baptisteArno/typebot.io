@@ -2,7 +2,6 @@
   "name": "@typebot.io/openai-block",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
   "keywords": [],
   "author": "Baptiste Arnaud",
   "license": "AGPL-3.0-or-later",
@@ -15,10 +14,8 @@
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
     "@typebot.io/variables": "workspace:*",
-    "@types/react": "18.2.15",
-    "ky": "1.2.4",
-    "typescript": "5.4.5"
+    "@types/react": "18.3.4",
+    "ky": "1.2.4"
   }
 }

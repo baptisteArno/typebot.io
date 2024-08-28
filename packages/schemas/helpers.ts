@@ -13,7 +13,6 @@ import {
   ConditionBlock,
   IntegrationBlock,
   HttpRequestBlock,
-  BlockWithOptionsType,
   BlockWithOptions,
 } from './features/blocks'
 import { BubbleBlockType } from './features/blocks/bubbles/constants'

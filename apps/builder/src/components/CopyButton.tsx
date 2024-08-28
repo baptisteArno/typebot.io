@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { ButtonProps, Button, useClipboard } from '@chakra-ui/react'
 import { useTranslate } from '@tolgee/react'
 

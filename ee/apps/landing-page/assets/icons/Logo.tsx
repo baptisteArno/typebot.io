@@ -1,5 +1,4 @@
 import { Icon, IconProps } from '@chakra-ui/icon'
-import React from 'react'
 
 export const Logo = (props: IconProps) => (
   <Icon w="50px" h="50px" viewBox="0 0 800 800" {...props}>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import type { PopupProps } from '@typebot.io/js'
 import '@typebot.io/js/dist/web'
 

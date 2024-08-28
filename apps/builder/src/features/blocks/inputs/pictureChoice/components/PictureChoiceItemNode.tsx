@@ -15,7 +15,7 @@ import {
 import { ImageIcon, PlusIcon } from '@/components/icons'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { ItemIndices } from '@typebot.io/schemas'
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import { PictureChoiceItem } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
 import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { PictureChoiceItemSettings } from './PictureChoiceItemSettings'

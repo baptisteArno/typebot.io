@@ -1,5 +1,4 @@
 import { Icon, IconProps } from '@chakra-ui/react'
-import React from 'react'
 
 export const GoogleDriveLogo = (props: IconProps) => (
   <Icon viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg" {...props}>

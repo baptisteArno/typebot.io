@@ -2,7 +2,6 @@ import { colors } from '@/lib/theme'
 import { Box, BoxProps, chakra, useColorModeValue } from '@chakra-ui/react'
 import { flexRender, HeaderGroup } from '@tanstack/react-table'
 import { TableData } from '@typebot.io/schemas'
-import React from 'react'
 
 type Props = {
   headerGroup: HeaderGroup<TableData>

@@ -1,20 +1,34 @@
 {
-  "extends": "@typebot.io/tsconfig/base.json",
-  "include": ["src/**/*"],
-  "exclude": ["dist", "node_modules"],
+  "extends": "../../tsconfig/base.json",
+  "include": [
+    "src/**/*"
+  ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "src/*"
+      ]
     },
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "module": "ESNext",
-    "target": "ESNext",
-    "declaration": true,
-    "declarationMap": true,
-    "outDir": "dist",
-    "noEmit": false,
-    "emitDeclarationOnly": true
-  }
+    "outDir": "dist"
+  },
+  "references": [
+    {
+      "path": "../../bot-engine"
+    },
+    {
+      "path": "../../env"
+    },
+    {
+      "path": "../../lib"
+    },
+    {
+      "path": "../../schemas"
+    },
+    {
+      "path": "../../theme"
+    }
+  ]
 }

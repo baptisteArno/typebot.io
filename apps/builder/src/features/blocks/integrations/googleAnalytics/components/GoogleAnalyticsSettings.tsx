@@ -9,7 +9,6 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { GoogleAnalyticsBlock } from '@typebot.io/schemas'
-import React from 'react'
 
 type Props = {
   options?: GoogleAnalyticsBlock['options']

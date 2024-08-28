@@ -13,7 +13,6 @@ import {
   chatwootTasks,
   defaultChatwootOptions,
 } from '@typebot.io/schemas/features/blocks/integrations/chatwoot/constants'
-import React from 'react'
 
 type Props = {
   options: ChatwootBlock['options']

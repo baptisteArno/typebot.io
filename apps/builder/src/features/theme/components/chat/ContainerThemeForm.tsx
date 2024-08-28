@@ -14,7 +14,6 @@ import {
   ContainerBorderTheme,
   InputTheme,
 } from '@typebot.io/schemas'
-import React from 'react'
 import { ColorPicker } from '../../../../components/ColorPicker'
 import { useTranslate } from '@tolgee/react'
 import { NumberInput } from '@/components/inputs'

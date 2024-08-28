@@ -1,10 +1,77 @@
 {
-  "extends": "@typebot.io/tsconfig/nextjs.json",
+  "extends": "../../packages/tsconfig/nextjs.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
-    }
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "noEmit": true
   },
-  "include": ["next-env.d.ts", "tolgee.d.ts", "**/*.ts", "**/*.tsx"]
+  "include": [
+    "next-env.d.ts",
+    "tolgee.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "references": [
+    {
+      "path": "../../ee/packages/billing"
+    },
+    {
+      "path": "../../packages/bot-engine"
+    },
+    {
+      "path": "../../packages/emails"
+    },
+    {
+      "path": "../../packages/embeds/js"
+    },
+    {
+      "path": "../../packages/embeds/nextjs"
+    },
+    {
+      "path": "../../packages/env"
+    },
+    {
+      "path": "../../packages/forge/core"
+    },
+    {
+      "path": "../../packages/forge/repository"
+    },
+    {
+      "path": "../../packages/lib"
+    },
+    {
+      "path": "../../packages/migrations"
+    },
+    {
+      "path": "../../packages/playwright"
+    },
+    {
+      "path": "../../packages/prisma"
+    },
+    {
+      "path": "../../packages/radar"
+    },
+    {
+      "path": "../../packages/results"
+    },
+    {
+      "path": "../../packages/schemas"
+    },
+    {
+      "path": "../../packages/telemetry"
+    },
+    {
+      "path": "../../packages/theme"
+    },
+    {
+      "path": "../../packages/variables"
+    }
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -1,6 +1,5 @@
 import { featherIconsBaseProps } from '@/components/icons'
 import { Icon, IconProps, useColorModeValue } from '@chakra-ui/react'
-import React from 'react'
 
 export const ScriptIcon = (props: IconProps) => (
   <Icon

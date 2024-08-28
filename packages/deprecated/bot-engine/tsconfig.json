@@ -1,5 +1,5 @@
 {
-  "extends": "@typebot.io/tsconfig/react-library.json",
+  "extends": "../../tsconfig/react.json",
   "include": ["src/**/*"],
   "compilerOptions": {
     "baseUrl": ".",
@@ -7,5 +7,22 @@
       "@/*": ["src/*"],
       "react": ["./node_modules/@types/react"]
     }
-  }
+  },
+  "references": [
+    {
+      "path": "../../env"
+    },
+    {
+      "path": "../../lib"
+    },
+    {
+      "path": "../../prisma"
+    },
+    {
+      "path": "../../schemas"
+    },
+    {
+      "path": "../typebot-js"
+    }
+  ]
 }

@@ -1,4 +1,3 @@
-import React from 'react'
 import { HStack, Flex, Button, useDisclosure } from '@chakra-ui/react'
 import { HardDriveIcon, SettingsIcon } from '@/components/icons'
 import { useUser } from '@/features/account/hooks/useUser'

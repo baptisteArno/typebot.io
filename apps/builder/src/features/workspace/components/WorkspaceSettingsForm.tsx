@@ -12,7 +12,6 @@ import {
   FormHelperText,
 } from '@chakra-ui/react'
 import { ConfirmModal } from '@/components/ConfirmModal'
-import React from 'react'
 import { EditableEmojiOrImageIcon } from '@/components/EditableEmojiOrImageIcon'
 import { useWorkspace } from '../WorkspaceProvider'
 import { TextInput } from '@/components/inputs'

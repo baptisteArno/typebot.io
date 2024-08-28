@@ -11,7 +11,7 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { Variable } from '@typebot.io/schemas'
-import React, {
+import {
   forwardRef,
   ReactNode,
   useEffect,

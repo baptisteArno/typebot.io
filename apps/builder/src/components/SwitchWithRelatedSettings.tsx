@@ -1,4 +1,3 @@
-import React from 'react'
 import { SwitchWithLabel, SwitchWithLabelProps } from './inputs/SwitchWithLabel'
 import { Stack } from '@chakra-ui/react'
 

@@ -5,7 +5,7 @@ import {
   Tooltip,
   useColorModeValue,
 } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useTranslate } from '@tolgee/react'
 
 type EditableProps = {

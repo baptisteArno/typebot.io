@@ -13,14 +13,14 @@ import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/con
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { createId } from '@typebot.io/lib/createId'
 import { executeCondition } from './executeCondition'
-import {
-  parseBubbleBlock,
-  BubbleBlockWithDefinedContent,
-} from '../bot-engine/parseBubbleBlock'
 import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
 import { defaultPictureChoiceOptions } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice/constants'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { parseVariables } from '@typebot.io/variables/parseVariables'
+import {
+  BubbleBlockWithDefinedContent,
+  parseBubbleBlock,
+} from './parseBubbleBlock'
 
 type TranscriptMessage =
   | {

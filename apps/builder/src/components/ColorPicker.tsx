@@ -15,7 +15,7 @@ import {
   Box,
 } from '@chakra-ui/react'
 import { useTranslate } from '@tolgee/react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import tinyColor from 'tinycolor2'
 import { useDebouncedCallback } from 'use-debounce'
 

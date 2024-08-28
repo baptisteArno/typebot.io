@@ -1,7 +1,6 @@
 {
   "name": "@typebot.io/scripts",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "AGPL-3.0-or-later",
   "private": true,
   "scripts": {
@@ -46,16 +45,15 @@
     "prompts": "2.4.2",
     "stripe": "12.13.0",
     "tsx": "4.6.2",
-    "typescript": "5.4.5",
     "zod": "3.22.4"
   },
   "dependencies": {
     "@clack/prompts": "^0.7.0",
     "@paralleldrive/cuid2": "2.2.1",
-    "cli-progress": "^3.12.0",
-    "papaparse": "5.4.1",
-    "@typebot.io/results": "workspace:*",
     "@typebot.io/billing": "workspace:*",
-    "@typebot.io/telemetry": "workspace:*"
+    "@typebot.io/results": "workspace:*",
+    "@typebot.io/telemetry": "workspace:*",
+    "cli-progress": "^3.12.0",
+    "papaparse": "5.4.1"
   }
 }

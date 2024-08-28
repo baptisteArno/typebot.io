@@ -16,7 +16,6 @@ import {
   GoogleDriveLogo,
   N8nLogo,
 } from 'assets/logos'
-import React from 'react'
 
 const firstRowIcons = [
   GmailLogo,

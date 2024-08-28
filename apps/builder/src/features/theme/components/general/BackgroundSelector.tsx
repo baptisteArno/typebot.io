@@ -1,7 +1,6 @@
 import { RadioButtons } from '@/components/inputs/RadioButtons'
 import { Stack } from '@chakra-ui/react'
 import { Background } from '@typebot.io/schemas'
-import React from 'react'
 import { BackgroundContent } from './BackgroundContent'
 import {
   BackgroundType,

@@ -2,7 +2,6 @@ import { chakra, Tooltip, Text, HStack, Button, Stack } from '@chakra-ui/react'
 import { HelpCircleIcon } from 'assets/icons/HelpCircleIcon'
 import { Plan } from '@typebot.io/prisma'
 import Link from 'next/link'
-import React from 'react'
 import { PricingCard } from './PricingCard'
 import { prices, seatsLimits } from '@typebot.io/billing/constants'
 

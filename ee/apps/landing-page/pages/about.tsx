@@ -1,7 +1,6 @@
 import { Stack, Text, Flex, Heading, List, ListItem } from '@chakra-ui/react'
 import { Header } from 'components/common/Header/Header'
 import { SocialMetaTags } from 'components/common/SocialMetaTags'
-import React from 'react'
 import { Footer } from 'components/common/Footer'
 import { EndCta } from 'components/Homepage/EndCta'
 

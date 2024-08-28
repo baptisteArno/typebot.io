@@ -37,12 +37,12 @@ configureRuntimeEnv()
 const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
-  transpilePackages: [
-    '@typebot.io/lib',
-    '@typebot.io/schemas',
-    '@typebot.io/emails',
-    '@typebot.io/env',
-  ],
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'fr', 'pt', 'pt-BR', 'de', 'ro', 'es', 'it', 'el'],

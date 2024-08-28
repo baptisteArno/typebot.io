@@ -9,7 +9,6 @@ import {
 } from '@chakra-ui/react'
 import { HelpCircleIcon } from 'assets/icons/HelpCircleIcon'
 import { Plan } from '@typebot.io/prisma'
-import React from 'react'
 import { PricingCard } from './PricingCard'
 import { prices, seatsLimits } from '@typebot.io/billing/constants'
 

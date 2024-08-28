@@ -1,5 +1,4 @@
 import { Stack, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
-import React from 'react'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
 import { CopyButton } from '@/components/CopyButton'
 import { CollaborationList } from '@/features/collaboration/components/CollaborationList'

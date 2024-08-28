@@ -1,4 +1,3 @@
-import React from 'react'
 import { AvatarProps } from '@typebot.io/schemas'
 import {
   Heading,

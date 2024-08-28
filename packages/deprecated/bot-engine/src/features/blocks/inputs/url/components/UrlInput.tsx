@@ -2,7 +2,7 @@ import { ShortTextInput } from '@/components/inputs/ShortTextInput'
 import { SendButton } from '@/components/SendButton'
 import { InputSubmitContent } from '@/types'
 import { UrlInputBlock } from '@typebot.io/schemas'
-import React, { MutableRefObject, useRef, useState } from 'react'
+import { MutableRefObject, useRef, useState } from 'react'
 
 type UrlInputProps = {
   block: UrlInputBlock

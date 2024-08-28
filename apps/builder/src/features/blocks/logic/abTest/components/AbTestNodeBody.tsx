@@ -1,4 +1,3 @@
-import React from 'react'
 import { Flex, Stack, useColorModeValue, Text, Tag } from '@chakra-ui/react'
 import { AbTestBlock } from '@typebot.io/schemas'
 import { BlockSourceEndpoint } from '@/features/graph/components/endpoints/BlockSourceEndpoint'
