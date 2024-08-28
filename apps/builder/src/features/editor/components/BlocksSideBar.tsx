@@ -27,7 +27,14 @@ import { useDebouncedCallback } from 'use-debounce'
 import { forgedBlockIds } from '@typebot.io/forge-repository/constants'
 
 // Integration blocks migrated to forged blocks
-const legacyIntegrationBlocks = [IntegrationBlockType.OPEN_AI]
+const legacyIntegrationBlocks = [
+  IntegrationBlockType.OPEN_AI,
+  IntegrationBlockType.GOOGLE_ANALYTICS,
+  IntegrationBlockType.MAKE_COM,
+  IntegrationBlockType.PABBLY_CONNECT,
+  IntegrationBlockType.CHATWOOT,
+  IntegrationBlockType.PIXEL,
+]
 
 export const BlocksSideBar = () => {
   const { t } = useTranslate()
