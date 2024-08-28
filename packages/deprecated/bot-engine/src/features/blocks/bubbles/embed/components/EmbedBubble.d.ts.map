@@ -1,1 +1,0 @@
-{"version":3,"file":"EmbedBubble.d.ts","sourceRoot":"","sources":["EmbedBubble.tsx"],"names":[],"mappings":"AACA,OAAO,EAAE,gBAAgB,EAAE,MAAM,qBAAqB,CAAA;AAKtD,KAAK,KAAK,GAAG;IACX,KAAK,EAAE,gBAAgB,CAAA;IACvB,eAAe,EAAE,MAAM,IAAI,CAAA;CAC5B,CAAA;AAED,eAAO,MAAM,qBAAqB,MAAM,CAAA;AAExC,eAAO,MAAM,WAAW,+BAAgC,KAAK,4CAgE5D,CAAA"}

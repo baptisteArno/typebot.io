@@ -1,1 +1,0 @@
-{"version":3,"file":"TextBubble.d.ts","sourceRoot":"","sources":["TextBubble.tsx"],"names":[],"mappings":"AAEA,OAAO,EAAE,eAAe,EAAE,MAAM,qBAAqB,CAAA;AAMrD,KAAK,KAAK,GAAG;IACX,KAAK,EAAE,eAAe,CAAA;IACtB,eAAe,EAAE,MAAM,IAAI,CAAA;CAC5B,CAAA;AAED,eAAO,MAAM,qBAAqB,MAAM,CAAA;AAExC,eAAO,MAAM,UAAU,+BAAgC,KAAK,4CAsE3D,CAAA"}

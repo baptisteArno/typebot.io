@@ -1,1 +1,0 @@
-{"version":3,"file":"StripePaymentForm.d.ts","sourceRoot":"","sources":["StripePaymentForm.tsx"],"names":[],"mappings":"AAGA,OAAO,EAAE,iBAAiB,EAAY,MAAM,qBAAqB,CAAA;AASjE,KAAK,KAAK,GAAG;IACX,OAAO,EAAE,iBAAiB,CAAC,SAAS,CAAC,CAAA;IACrC,SAAS,EAAE,MAAM,IAAI,CAAA;CACtB,CAAA;AAED,eAAO,MAAM,iBAAiB,2BAA4B,KAAK,4CAgD9D,CAAA"}
