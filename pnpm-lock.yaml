@@ -1033,6 +1033,9 @@ importers:
       '@ark-ui/solid':
         specifier: 3.3.0
         version: 3.3.0(@internationalized/date@3.5.4)(solid-js@1.7.8)
+      '@fix-webm-duration/fix':
+        specifier: ^1.0.1
+        version: 1.0.1
       '@stripe/stripe-js':
         specifier: 1.54.1
         version: 1.54.1
@@ -4083,6 +4086,12 @@ packages:
       mjml: ^4.13.0
       react: ^16.0.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
+
+  '@fix-webm-duration/fix@1.0.1':
+    resolution: {integrity: sha512-rRN4CpWQaXRbCXYqKIxnsUq8OSWSGq/SVlnxxkx0HxMZZ1u0qnB24P766o8QS5YaMMqAOFAzmsMmfZ2OWucOLQ==}
+
+  '@fix-webm-duration/parser@1.0.1':
+    resolution: {integrity: sha512-Z6el7ohBBpym4iOmxDxumN715cHzLcAbtOtYfIbvoyToVtAuxvHt3ELXGff83iAXEU1Yj7g+obQBdiKJYVhbWw==}
 
   '@floating-ui/core@1.6.7':
     resolution: {integrity: sha512-yDzVT/Lm101nQ5TCVeK65LtdN7Tj4Qpr9RTXJ2vPFLqtLxwOrpoxAHAJI8J3yYWUc40J0BDBheaitK5SJmno2g==}
@@ -15885,6 +15894,15 @@ snapshots:
       mjml: 4.15.3
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+
+  '@fix-webm-duration/fix@1.0.1':
+    dependencies:
+      '@fix-webm-duration/parser': 1.0.1
+      tslib: 2.6.0
+
+  '@fix-webm-duration/parser@1.0.1':
+    dependencies:
+      tslib: 2.6.0
 
   '@floating-ui/core@1.6.7':
     dependencies:

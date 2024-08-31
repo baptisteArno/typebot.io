@@ -26,6 +26,7 @@ import { guessApiHost } from '@/utils/guessApiHost'
 import { VoiceRecorder } from './VoiceRecorder'
 import { Button } from '@/components/Button'
 import { MicrophoneIcon } from '@/components/icons/MicrophoneIcon'
+import { fixWebmDuration } from '@fix-webm-duration/fix'
 
 type Props = {
   block: TextInputBlock
@@ -163,20 +164,39 @@ export const TextInput = (props: Props) => {
   }
 
   const handleRecordingConfirmed = (stream: MediaStream) => {
-    mediaRecorder = new MediaRecorder(stream)
+    let startTime: number
+    const mimeType = MediaRecorder.isTypeSupported('audio/webm')
+      ? 'audio/webm'
+      : 'video/mp4'
+
+    mediaRecorder = new MediaRecorder(stream, { mimeType })
     mediaRecorder.ondataavailable = (event) => {
       if (event.data.size === 0) return
       recordedChunks.push(event.data)
     }
+    mediaRecorder.onstart = () => {
+      startTime = Date.now()
+    }
     mediaRecorder.onstop = async () => {
       if (recordingStatus() !== 'started' || recordedChunks.length === 0) return
+
+      const duration = Date.now() - startTime
+
+      const blob = await fixWebmDuration(
+        new Blob(recordedChunks, { type: mimeType }),
+        duration
+      )
+
       const audioFile = new File(
-        recordedChunks,
-        `rec-${props.block.id}-${Date.now()}.mp3`,
+        [blob],
+        `rec-${props.block.id}-${Date.now()}.${
+          mimeType === 'audio/webm' ? 'webm' : 'mp4'
+        }`,
         {
-          type: 'audio/mp3',
+          type: mimeType,
         }
       )
+
       setUploadProgress(undefined)
       const urls = (
         await uploadFiles({
