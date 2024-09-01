@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/js",
-  "version": "0.3.11",
+  "version": "0.3.12",
   "description": "Javascript library to display typebots on your website",
   "type": "module",
   "main": "dist/index.js",
@@ -15,6 +15,7 @@
   "dependencies": {
     "@ai-sdk/ui-utils": "0.0.36",
     "@ark-ui/solid": "3.3.0",
+    "@fix-webm-duration/fix": "1.0.1",
     "@stripe/stripe-js": "1.54.1",
     "@udecode/plate-common": "30.4.5",
     "dompurify": "3.0.6",

@@ -5,8 +5,9 @@ import {
   SetVariableHistoryItem,
   Variable,
   VariableWithUnknowValue,
+  VariableWithValue,
 } from '@typebot.io/schemas'
-import { byId, isEmpty } from '@typebot.io/lib'
+import { byId, isEmpty, isNotDefined } from '@typebot.io/lib'
 import { ExecuteLogicResponse } from '../../../types'
 import { parseScriptToExecuteClientSideAction } from '../script/executeScript'
 import { parseVariables } from '@typebot.io/variables/parseVariables'
@@ -41,19 +42,19 @@ export const executeSetVariable = async (
     block.id,
     setVariableHistory
   )
-  const isCustomValue = !block.options.type || block.options.type === 'Custom'
   const isCode =
     (!block.options.type || block.options.type === 'Custom') &&
     (block.options.isCode ?? defaultSetVariableOptions.isCode)
   if (
     expressionToEvaluate &&
+    expressionToEvaluate.type === 'code' &&
     !state.whatsApp &&
-    ((isCustomValue && block.options.isExecutedOnClient) ||
+    (block.options.isExecutedOnClient ||
       block.options.type === 'Moment of the day')
   ) {
     const scriptToExecute = parseScriptToExecuteClientSideAction(
       variables,
-      expressionToEvaluate
+      expressionToEvaluate.code
     )
     return {
       outgoingEdgeId: block.outgoingEdgeId,
@@ -116,15 +117,31 @@ export const executeSetVariable = async (
 
 const evaluateSetVariableExpression =
   (variables: Variable[]) =>
-  (str: string): { value: unknown; error?: string } => {
+  (
+    expression:
+      | {
+          type: 'code'
+          code: string
+        }
+      | { type: 'value'; value: VariableWithValue['value'] }
+  ): { value: unknown; error?: string } => {
+    if (expression.type === 'value') return { value: expression.value }
     const isSingleVariable =
-      str.startsWith('{{') && str.endsWith('}}') && str.split('{{').length === 2
-    if (isSingleVariable) return { value: parseVariables(variables)(str) }
+      expression.code.startsWith('{{') &&
+      expression.code.endsWith('}}') &&
+      expression.code.split('{{').length === 2
+    if (isSingleVariable)
+      return { value: parseVariables(variables)(expression.code) }
     // To avoid octal number evaluation
-    if (!isNaN(str as unknown as number) && /0[^.].+/.test(str))
-      return { value: str }
+    if (
+      !isNaN(expression.code as unknown as number) &&
+      /0[^.].+/.test(expression.code)
+    )
+      return { value: expression.code }
     try {
-      const body = parseVariables(variables, { fieldToParse: 'id' })(str)
+      const body = parseVariables(variables, { fieldToParse: 'id' })(
+        expression.code
+      )
       return {
         value: createCodeRunner({ variables })(
           body.includes('return ') ? body : `return ${body}`
@@ -132,7 +149,7 @@ const evaluateSetVariableExpression =
       }
     } catch (err) {
       return {
-        value: parseVariables(variables)(str),
+        value: parseVariables(variables)(expression.code),
         error: stringifyError(err),
       }
     }
@@ -144,82 +161,176 @@ const getExpressionToEvaluate =
     options: SetVariableBlock['options'],
     blockId: string,
     setVariableHistory: SetVariableHistoryItem[]
-  ): Promise<string | null> => {
+  ): Promise<
+    | { type: 'code'; code: string }
+    | { type: 'value'; value: VariableWithValue['value'] }
+    | null
+  > => {
     switch (options?.type) {
       case 'Contact name':
-        return state.whatsApp?.contact.name ?? null
+        return state.whatsApp?.contact.name
+          ? { type: 'value', value: state.whatsApp.contact.name }
+          : null
       case 'Phone number': {
-        const phoneNumber = state.whatsApp?.contact.phoneNumber
-        return phoneNumber ? `"${state.whatsApp?.contact.phoneNumber}"` : null
+        return state.whatsApp?.contact.phoneNumber
+          ? { type: 'value', value: state.whatsApp.contact.phoneNumber }
+          : null
       }
       case 'Now': {
         const timeZone = parseVariables(
           state.typebotsQueue[0].typebot.variables
         )(options.timeZone)
-        if (isEmpty(timeZone)) return 'new Date().toISOString()'
-        return toISOWithTz(new Date(), timeZone)
+        if (isEmpty(timeZone))
+          return { type: 'value', value: new Date().toISOString() }
+        return { type: 'value', value: toISOWithTz(new Date(), timeZone) }
       }
 
       case 'Today':
-        return 'new Date().toISOString()'
+        return { type: 'value', value: new Date().toISOString() }
       case 'Tomorrow': {
         const timeZone = parseVariables(
           state.typebotsQueue[0].typebot.variables
         )(options.timeZone)
         if (isEmpty(timeZone))
-          return 'new Date(Date.now() + 86400000).toISOString()'
-        return toISOWithTz(new Date(Date.now() + 86400000), timeZone)
+          return {
+            type: 'value',
+            value: new Date(Date.now() + 86400000).toISOString(),
+          }
+        return {
+          type: 'value',
+          value: toISOWithTz(new Date(Date.now() + 86400000), timeZone),
+        }
       }
       case 'Yesterday': {
         const timeZone = parseVariables(
           state.typebotsQueue[0].typebot.variables
         )(options.timeZone)
         if (isEmpty(timeZone))
-          return 'new Date(Date.now() - 86400000).toISOString()'
-        return toISOWithTz(new Date(Date.now() - 86400000), timeZone)
+          return {
+            type: 'value',
+            value: new Date(Date.now() - 86400000).toISOString(),
+          }
+        return {
+          type: 'value',
+          value: toISOWithTz(new Date(Date.now() - 86400000), timeZone),
+        }
       }
       case 'Random ID': {
-        return `"${createId()}"`
+        return { type: 'value', value: createId() }
       }
       case 'Result ID':
       case 'User ID': {
-        return state.typebotsQueue[0].resultId ?? `"${createId()}"`
+        return {
+          type: 'value',
+          value: state.typebotsQueue[0].resultId ?? createId(),
+        }
       }
       case 'Map item with same index': {
-        return `const itemIndex = ${options.mapListItemParams?.baseListVariableId}.indexOf(${options.mapListItemParams?.baseItemVariableId})
-      return ${options.mapListItemParams?.targetListVariableId}.at(itemIndex)`
+        const baseListVariableValue =
+          state.typebotsQueue[0].typebot.variables.find(
+            byId(options.mapListItemParams?.baseListVariableId)
+          )?.value
+        const baseItemVariableValue =
+          state.typebotsQueue[0].typebot.variables.find(
+            byId(options.mapListItemParams?.baseItemVariableId)
+          )?.value
+        const targetListVariableValue =
+          state.typebotsQueue[0].typebot.variables.find(
+            byId(options.mapListItemParams?.targetListVariableId)
+          )?.value
+
+        if (
+          !Array.isArray(baseListVariableValue) ||
+          !baseItemVariableValue ||
+          typeof baseItemVariableValue !== 'string'
+        )
+          return null
+        const itemIndex = baseListVariableValue.indexOf(baseItemVariableValue)
+        if (itemIndex === -1 || !Array.isArray(targetListVariableValue))
+          return null
+        const value = targetListVariableValue.at(itemIndex)
+        if (isEmpty(value)) return null
+        return {
+          type: 'value',
+          value,
+        }
       }
       case 'Pop': {
-        return `${options.variableId} && Array.isArray(${options.variableId}) ? ${options.variableId}.slice(0, -1) : []`
+        const variableValue = state.typebotsQueue[0].typebot.variables.find(
+          byId(options.variableId)
+        )?.value
+        if (isNotDefined(variableValue)) return null
+        if (!Array.isArray(variableValue))
+          return {
+            type: 'value',
+            value: variableValue,
+          }
+        return {
+          type: 'value',
+          value: variableValue.slice(0, -1),
+        }
       }
       case 'Shift': {
-        return `${options.variableId} && Array.isArray(${options.variableId}) ? ${options.variableId}.slice(1) : []`
+        const variableValue = state.typebotsQueue[0].typebot.variables.find(
+          byId(options.variableId)
+        )?.value
+        if (isNotDefined(variableValue)) return null
+        if (!Array.isArray(variableValue))
+          return {
+            type: 'value',
+            value: variableValue,
+          }
+        return {
+          type: 'value',
+          value: variableValue.slice(1),
+        }
       }
       case 'Append value(s)': {
+        if (!options.variableId) return null
         const item = parseVariables(state.typebotsQueue[0].typebot.variables)(
           options.item
-        ).replaceAll('`', '\\`')
-        if (isEmpty(item)) return `return ${options.variableId}`
-        return `if(!${options.variableId}) return [\`${item}\`];
-        if(!Array.isArray(${options.variableId})) return [${options.variableId}, \`${item}\`];
-        return (${options.variableId}).concat(\`${item}\`);`
+        )
+        const variableValue = state.typebotsQueue[0].typebot.variables.find(
+          byId(options.variableId)
+        )?.value
+        if (isNotDefined(variableValue))
+          return {
+            type: 'value',
+            value: [item],
+          }
+        if (isEmpty(item))
+          return {
+            type: 'value',
+            value: Array.isArray(variableValue)
+              ? variableValue
+              : [variableValue],
+          }
+        if (!Array.isArray(variableValue))
+          return { type: 'value', value: [variableValue, item] }
+        return { type: 'value', value: variableValue.concat(item) }
       }
       case 'Empty': {
         return null
       }
       case 'Moment of the day': {
-        return `const now = new Date()
+        return {
+          type: 'code',
+          code: `const now = new Date()
         if(now.getHours() < 12) return 'morning'
         if(now.getHours() >= 12 && now.getHours() < 18) return 'afternoon'
         if(now.getHours() >= 18) return 'evening'
-        if(now.getHours() >= 22 || now.getHours() < 6) return 'night'`
+        if(now.getHours() >= 22 || now.getHours() < 6) return 'night'`,
+        }
       }
       case 'Environment name': {
-        return state.whatsApp ? 'whatsapp' : 'web'
+        return {
+          type: 'value',
+          value: state.whatsApp ? 'whatsapp' : 'web',
+        }
       }
       case 'Transcript': {
         const props = await parseTranscriptProps(state)
-        if (!props) return ''
+        if (!props) return null
         const typebotWithEmptyVariables = {
           ...state.typebotsQueue[0].typebot,
           variables: state.typebotsQueue[0].typebot.variables.map((v) => ({
@@ -234,22 +345,23 @@ const getExpressionToEvaluate =
           setVariableHistory:
             props.setVariableHistory.concat(setVariableHistory),
         })
-        return (
-          'return `' +
-          transcript
+        return {
+          type: 'value',
+          value: transcript
             .map(
               (message) =>
                 `${
                   message.role === 'bot' ? 'Assistant:' : 'User:'
                 } "${parseTranscriptMessageText(message)}"`
             )
-            .join('\n\n') +
-          '`'
-        )
+            .join('\n\n'),
+        }
       }
       case 'Custom':
       case undefined: {
-        return options?.expressionToEvaluate ?? null
+        return options?.expressionToEvaluate
+          ? { type: 'code', code: options.expressionToEvaluate }
+          : null
       }
     }
   }
