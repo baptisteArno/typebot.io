@@ -1,4 +1,4 @@
-name: Build Docker images
+name: Release new Typebot version
 
 on:
   push:
@@ -152,3 +152,22 @@ jobs:
       - name: Inspect image
         run: |
           docker buildx imagetools inspect baptistearno/typebot-${{ matrix.app }}:${{ steps.meta.outputs.version }}
+
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: merge-and-push
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Extract body from changelog
+        run: |
+          NEW_VERSION=$(echo '${{ github.ref }}' | sed 's/refs\/tags\/v//')
+          echo $NEW_VERSION
+          sed -n -e "/## ${NEW_VERSION}/,/<a/ p" ./CHANGELOG.md | sed -e '1,2d' | sed -e '$d' | sed -e '$d' > extractedBody.md
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          bodyFile: 'extractedBody.md'
