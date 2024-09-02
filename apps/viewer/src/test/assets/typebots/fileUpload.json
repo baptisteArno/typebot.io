@@ -1,32 +1,24 @@
 {
-  "id": "cl45ojo7z01383q1av699t0qj",
-  "createdAt": "2022-06-08T14:22:14.879Z",
-  "updatedAt": "2022-06-08T16:19:32.893Z",
-  "icon": null,
+  "version": "6",
+  "id": "cm0kr4xle00014e0mrmqvyp1x",
   "name": "My typebot",
-  "folderId": null,
-  "groups": [
+  "events": [
     {
       "id": "cl45ojo7y00013q1aaysi2o6i",
-      "blocks": [
-        {
-          "id": "cl45ojo7y00023q1aavrwd411",
-          "type": "start",
-          "label": "Start",
-          "groupId": "cl45ojo7y00013q1aaysi2o6i",
-          "outgoingEdgeId": "cl45ojxvc00082e6gw1xqnxpp"
-        }
-      ],
-      "title": "Start",
-      "graphCoordinates": { "x": 0, "y": 0 }
-    },
+      "outgoingEdgeId": "cl45ojxvc00082e6gw1xqnxpp",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
     {
       "id": "cl45ojrrd00062e6g17tuu9t0",
+      "title": "Group #1",
+      "graphCoordinates": { "x": 416, "y": 98 },
       "blocks": [
         {
           "id": "cl45ojrre00072e6gk91592pj",
           "type": "text",
-          "groupId": "cl45ojrrd00062e6g17tuu9t0",
           "content": {
             "richText": [
               {
@@ -38,76 +30,73 @@
         },
         {
           "id": "cl45ojzs300092e6gkno525c4",
+          "outgoingEdgeId": "cl45okfgz000d2e6g7z3wnqgq",
           "type": "file input",
-          "groupId": "cl45ojrrd00062e6g17tuu9t0",
           "options": {
-            "labels": {
-              "button": "Upload",
-              "placeholder": "<strong>\n      Click to upload\n    </strong> or drag and drop<br>\n    (size limit: 10MB)"
-            },
             "variableId": "vcl45ok77i000a2e6g79ye53a2",
-            "isMultipleAllowed": true
-          },
-          "outgoingEdgeId": "cl45okfgz000d2e6g7z3wnqgq"
+            "isMultipleAllowed": true,
+            "labels": {
+              "placeholder": "<strong>\n      Click to upload\n    </strong> or drag and drop<br>\n    (size limit: 10MB)",
+              "button": "Upload"
+            }
+          }
         }
-      ],
-      "title": "Group #1",
-      "graphCoordinates": { "x": 416, "y": 98 }
+      ]
     },
     {
       "id": "cl45ok963000b2e6g2ky0wkvx",
+      "title": "Group #2",
+      "graphCoordinates": { "x": 863, "y": 249 },
       "blocks": [
         {
           "id": "cl45ok963000c2e6g9snvbhw4",
           "type": "text",
-          "groupId": "cl45ok963000b2e6g2ky0wkvx",
           "content": {
             "richText": [
               { "type": "p", "children": [{ "text": "Thank you!" }] }
             ]
           }
         }
-      ],
-      "title": "Group #2",
-      "graphCoordinates": { "x": 863, "y": 249 }
+      ]
     }
   ],
-  "variables": [{ "id": "vcl45ok77i000a2e6g79ye53a2", "name": "Files" }],
   "edges": [
     {
       "id": "cl45ojxvc00082e6gw1xqnxpp",
-      "to": { "groupId": "cl45ojrrd00062e6g17tuu9t0" },
-      "from": {
-        "blockId": "cl45ojo7y00023q1aavrwd411",
-        "groupId": "cl45ojo7y00013q1aaysi2o6i"
-      }
+      "from": { "eventId": "cl45ojo7y00013q1aaysi2o6i" },
+      "to": { "groupId": "cl45ojrrd00062e6g17tuu9t0" }
     },
     {
       "id": "cl45okfgz000d2e6g7z3wnqgq",
-      "to": { "groupId": "cl45ok963000b2e6g2ky0wkvx" },
-      "from": {
-        "blockId": "cl45ojzs300092e6gkno525c4",
-        "groupId": "cl45ojrrd00062e6g17tuu9t0"
-      }
+      "from": { "blockId": "cl45ojzs300092e6gkno525c4" },
+      "to": { "groupId": "cl45ok963000b2e6g2ky0wkvx" }
+    }
+  ],
+  "variables": [
+    {
+      "id": "vcl45ok77i000a2e6g79ye53a2",
+      "name": "Files",
+      "isSessionVariable": false
     }
   ],
   "theme": {
+    "general": { "font": "Open Sans", "background": { "type": "None" } },
     "chat": {
-      "inputs": {
-        "color": "#303235",
-        "backgroundColor": "#FFFFFF",
-        "placeholderColor": "#9095A0"
-      },
-      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
       "hostAvatar": {
-        "url": "https://avatars.githubusercontent.com/u/16015833?v=4",
-        "isEnabled": true
+        "isEnabled": true,
+        "url": "https://avatars.githubusercontent.com/u/16015833?v=4"
       },
-      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
-      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
-    },
-    "general": { "font": "Open Sans", "background": { "type": "None" } }
+      "hostBubbles": { "backgroundColor": "#F7F8FF", "color": "#303235" },
+      "guestBubbles": { "backgroundColor": "#FF8E21", "color": "#FFFFFF" },
+      "buttons": { "backgroundColor": "#0042DA", "color": "#FFFFFF" },
+      "inputs": {
+        "backgroundColor": "#FFFFFF",
+        "color": "#303235",
+        "placeholderColor": "#9095A0"
+      }
+    }
   },
+  "selectedThemeTemplateId": null,
   "settings": {
     "general": {
       "isBrandingEnabled": true,
@@ -115,12 +104,21 @@
       "isHideQueryParamsEnabled": true,
       "isNewResultOnRefreshEnabled": false
     },
+    "typingEmulation": { "enabled": true, "speed": 300, "maxDelay": 1.5 },
     "metadata": {
       "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
-    },
-    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
+    }
   },
-  "publicId": "my-typebot-699t0qj",
+  "createdAt": "2024-09-02T08:41:53.426Z",
+  "updatedAt": "2024-09-02T08:41:53.426Z",
+  "icon": null,
+  "folderId": null,
+  "publicId": null,
   "customDomain": null,
-  "workspaceId": "proWorkspace"
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
 }

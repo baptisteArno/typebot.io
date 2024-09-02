@@ -5,6 +5,7 @@ import { Typebot } from '@typebot.io/schemas'
 import { z } from 'zod'
 import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
 import { archiveResults } from '@typebot.io/results/archiveResults'
+import { removeObjectsFromTypebot } from '@typebot.io/lib/s3/removeObjectsRecursively'
 
 export const deleteTypebot = authenticatedProcedure
   .meta({
@@ -40,6 +41,7 @@ export const deleteTypebot = authenticatedProcedure
         groups: true,
         workspace: {
           select: {
+            id: true,
             isSuspended: true,
             isPastDue: true,
             members: {
@@ -66,8 +68,10 @@ export const deleteTypebot = authenticatedProcedure
 
     const { success } = await archiveResults(prisma)({
       typebot: {
-        groups: existingTypebot.groups,
-      } as Pick<Typebot, 'groups'>,
+        id: typebotId,
+        workspaceId: existingTypebot.workspace.id,
+        groups: existingTypebot.groups as Typebot['groups'],
+      },
       resultsFilter: { typebotId },
     })
     if (!success)
@@ -81,6 +85,10 @@ export const deleteTypebot = authenticatedProcedure
     await prisma.typebot.updateMany({
       where: { id: typebotId },
       data: { isArchived: true, publicId: null, customDomain: null },
+    })
+    await removeObjectsFromTypebot({
+      workspaceId: existingTypebot.workspace.id,
+      typebotId,
     })
     return {
       message: 'success',

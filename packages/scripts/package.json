@@ -20,7 +20,7 @@
     "insertUsersInBrevoList": "tsx insertUsersInBrevoList.ts",
     "getUsage": "tsx getUsage.ts",
     "suspendWorkspace": "tsx suspendWorkspace.ts",
-    "destroyUser": "tsx destroyUser.ts",
+    "destroyUser": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx destroyUser.ts",
     "updateTypebot": "tsx updateTypebot.ts",
     "updateWorkspace": "tsx updateWorkspace.ts",
     "inspectTypebot": "tsx inspectTypebot.ts",

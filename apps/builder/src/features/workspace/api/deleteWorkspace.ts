@@ -6,6 +6,7 @@ import { TRPCError } from '@trpc/server'
 import { isNotEmpty } from '@typebot.io/lib/utils'
 import Stripe from 'stripe'
 import { env } from '@typebot.io/env'
+import { removeObjectsFromWorkspace } from '@typebot.io/lib/s3/removeObjectsRecursively'
 
 export const deleteWorkspace = authenticatedProcedure
   .meta({
@@ -43,6 +44,8 @@ export const deleteWorkspace = authenticatedProcedure
     await prisma.workspace.deleteMany({
       where: { id: workspaceId },
     })
+
+    await removeObjectsFromWorkspace(workspaceId)
 
     if (isNotEmpty(workspace.stripeId) && env.STRIPE_SECRET_KEY) {
       const stripe = new Stripe(env.STRIPE_SECRET_KEY, {

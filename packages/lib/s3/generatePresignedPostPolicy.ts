@@ -1,5 +1,6 @@
 import { env } from '@typebot.io/env'
-import { Client, PostPolicyResult } from 'minio'
+import { PostPolicyResult } from 'minio'
+import { initClient } from './initClient'
 
 type Props = {
   filePath: string
@@ -14,19 +15,7 @@ export const generatePresignedPostPolicy = async ({
   fileType,
   maxFileSize,
 }: Props): Promise<PostPolicyResult> => {
-  if (!env.S3_ENDPOINT || !env.S3_ACCESS_KEY || !env.S3_SECRET_KEY)
-    throw new Error(
-      'S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY'
-    )
-
-  const minioClient = new Client({
-    endPoint: env.S3_ENDPOINT,
-    port: env.S3_PORT,
-    useSSL: env.S3_SSL,
-    accessKey: env.S3_ACCESS_KEY,
-    secretKey: env.S3_SECRET_KEY,
-    region: env.S3_REGION,
-  })
+  const minioClient = initClient()
 
   const postPolicy = minioClient.newPostPolicy()
   if (maxFileSize)
