@@ -13,7 +13,7 @@ import Mail from 'nodemailer/lib/mailer'
 import { byId, isDefined, isEmpty, isNotDefined, omit } from '@typebot.io/lib'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { defaultFrom, defaultTransportOptions } from './constants'
-import { findUniqueVariableValue } from '@typebot.io/variables/findUniqueVariableValue'
+import { findUniqueVariable } from '@typebot.io/variables/findUniqueVariableValue'
 import { env } from '@typebot.io/env'
 import { ExecuteIntegrationResponse } from '../../../types'
 import prisma from '@typebot.io/lib/prisma'
@@ -43,9 +43,9 @@ export const executeSendEmailBlock = async (
       ],
     }
 
-  const bodyUniqueVariable = findUniqueVariableValue(typebot.variables)(
+  const bodyUniqueVariable = findUniqueVariable(typebot.variables)(
     options?.body
-  )
+  )?.value
   const body = bodyUniqueVariable
     ? stringifyUniqueVariableValueAsHtml(bodyUniqueVariable)
     : parseVariables(typebot.variables, { isInsideHtml: !options?.isBodyCode })(

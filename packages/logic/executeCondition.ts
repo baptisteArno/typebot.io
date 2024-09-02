@@ -1,6 +1,6 @@
 import { isNotDefined, isDefined } from '@typebot.io/lib'
 import { Comparison, Condition, Variable } from '@typebot.io/schemas'
-import { findUniqueVariableValue } from '@typebot.io/variables/findUniqueVariableValue'
+import { findUniqueVariable } from '@typebot.io/variables/findUniqueVariableValue'
 import { parseVariables } from '@typebot.io/variables/parseVariables'
 import {
   LogicalOperator,
@@ -30,7 +30,7 @@ const executeComparison =
     const value =
       comparison.value === 'undefined' || comparison.value === 'null'
         ? null
-        : findUniqueVariableValue(variables)(comparison.value) ??
+        : findUniqueVariable(variables)(comparison.value)?.value ??
           parseVariables(variables)(comparison.value)
     if (isNotDefined(comparison.comparisonOperator)) return false
     switch (comparison.comparisonOperator) {
