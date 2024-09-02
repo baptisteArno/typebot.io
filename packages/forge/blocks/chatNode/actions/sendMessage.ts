@@ -49,6 +49,7 @@ export const sendMessage = createAction({
               message,
               chat_session_id: isEmpty(threadId) ? undefined : threadId,
             },
+            timeout: false,
           })
           .json()
 
