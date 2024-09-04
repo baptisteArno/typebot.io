@@ -4,49 +4,43 @@ import OpenAI from 'openai'
 export const splitUserTextMessageIntoOpenAIBlocks = async (
   input: string
 ): Promise<string | OpenAI.Chat.ChatCompletionContentPart[]> => {
-  const urlRegex = /(^|\n\n)(https?:\/\/[^\s]+)(\n\n|$)/g
-  const match = input.match(urlRegex)
-  if (!match) return input
+  const splittedInput = input.split('\n\n')
   let parts: OpenAI.Chat.ChatCompletionContentPart[] = []
-  let processedInput = input
-
-  for (const url of match) {
-    const textBeforeUrl = processedInput.slice(0, processedInput.indexOf(url))
-    if (textBeforeUrl.trim().length > 0) {
-      parts.push({ type: 'text', text: textBeforeUrl })
-    }
-    const cleanUrl = url.trim()
-
-    try {
-      const response = await ky.get(cleanUrl)
-      if (
-        !response.ok ||
-        !response.headers.get('content-type')?.startsWith('image/')
-      ) {
-        parts.push({ type: 'text', text: cleanUrl })
-      } else {
-        parts.push({
-          type: 'image_url',
-          image_url: {
-            url: url.trim(),
-            detail: 'auto',
-          },
-        })
+  for (const part of splittedInput) {
+    if (part.startsWith('http') || part.startsWith('["http')) {
+      const urls = part.startsWith('[') ? JSON.parse(part) : [part]
+      for (const url of urls) {
+        const cleanUrl = url.trim()
+        try {
+          const response = await ky.get(cleanUrl)
+          if (
+            !response.ok ||
+            !response.headers.get('content-type')?.startsWith('image/')
+          ) {
+            parts.push({ type: 'text', text: cleanUrl })
+          } else {
+            parts.push({
+              type: 'image_url',
+              image_url: url.trim(),
+            })
+          }
+        } catch (err) {
+          if (err instanceof HTTPError) {
+            console.log(err.response.status, await err.response.text())
+          } else {
+            console.error(err)
+          }
+        }
       }
-    } catch (err) {
-      if (err instanceof HTTPError) {
-        console.log(err.response.status, await err.response.text())
+    } else {
+      if (parts.at(-1)?.type === 'text') {
+        const lastText = parts.at(-1) as OpenAI.ChatCompletionContentPartText
+        parts = parts.slice(0, -1)
+        parts.push({ type: 'text', text: lastText.text + '\n\n' + part })
       } else {
-        console.error(err)
+        parts.push({ type: 'text', text: part })
       }
     }
-    processedInput = processedInput.slice(
-      processedInput.indexOf(url) + url.length
-    )
-  }
-
-  if (processedInput.trim().length > 0) {
-    parts.push({ type: 'text', text: processedInput })
   }
 
   return parts
