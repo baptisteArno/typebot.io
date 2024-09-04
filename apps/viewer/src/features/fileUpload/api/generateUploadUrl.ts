@@ -55,7 +55,7 @@ export const generateUploadUrl = publicProcedure
 
     const typebotId = session.state.typebotsQueue[0].typebot.id
 
-    const isPreview = session.state.typebotsQueue[0].resultId
+    const isPreview = !session.state.typebotsQueue[0].resultId
 
     const typebot = session.state.typebotsQueue[0].resultId
       ? await getAndParsePublicTypebot(
@@ -99,7 +99,7 @@ export const generateUploadUrl = publicProcedure
     const resultId = session.state.typebotsQueue[0].resultId
 
     const filePath =
-      'workspaceId' in typebot && typebot.workspaceId
+      'workspaceId' in typebot && typebot.workspaceId && resultId
         ? `${visibility === 'Private' ? 'private' : 'public'}/workspaces/${
             typebot.workspaceId
           }/typebots/${typebotId}/results/${resultId}/${fileName}`

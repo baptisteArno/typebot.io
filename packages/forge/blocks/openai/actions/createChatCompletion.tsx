@@ -48,7 +48,7 @@ export const createChatCompletion = createAction({
       fetch: ({ credentials, options }) =>
         fetchGPTModels({
           apiKey: credentials?.apiKey,
-          baseUrl: options.baseUrl,
+          baseUrl: credentials?.baseUrl ?? options.baseUrl,
           apiVersion: options.apiVersion,
         }),
     },
