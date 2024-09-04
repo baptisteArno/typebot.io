@@ -6,6 +6,7 @@ import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWork
 import { forgedBlocks } from '@typebot.io/forge-repository/definitions'
 import { forgedBlockIds } from '@typebot.io/forge-repository/constants'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
+import { getFetchers } from '../helpers/getFetchers'
 
 export const fetchSelectItems = authenticatedProcedure
   .input(
@@ -58,10 +59,9 @@ export const fetchSelectItems = authenticatedProcedure
 
       const blockDef = forgedBlocks[integrationId]
 
-      const fetchers = (blockDef?.fetchers ?? []).concat(
-        blockDef?.actions.flatMap((action) => action.fetchers ?? []) ?? []
+      const fetcher = getFetchers(blockDef).find(
+        (fetcher) => fetcher.id === fetcherId
       )
-      const fetcher = fetchers.find((fetcher) => fetcher.id === fetcherId)
 
       if (!fetcher) return { items: [] }
 
