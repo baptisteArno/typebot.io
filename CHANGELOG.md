@@ -1,5 +1,22 @@
 # Changelog
 
+<a name="2.28.1"></a>
+## 2.28.1 (2024-09-04)
+
+### Added
+
+- 👷‍♂️ Only trigger Github release creation after images are deployed [[653ef4e](https://github.com/baptisteArno/typebot.io/commit/653ef4edb44a28e96f564e457d248916b2d999b5)]
+
+### Fixed
+
+- 🐛 Allow scripts to be executed in WA env [[a7c83af](https://github.com/baptisteArno/typebot.io/commit/a7c83af5bce00efc74a78c063cc8526e88ab624a)]
+- 🐛 (ai) Enable multi urls for vision [[3b87801](https://github.com/baptisteArno/typebot.io/commit/3b87801c922bcdc53ddbab2e5435f885b717f692)]
+- 🐛 (s3) Skip object removals when S3 not configured [[fa14029](https://github.com/baptisteArno/typebot.io/commit/fa14029fed1e63ce2e2df93abdab42042f6e5b47)]
+- 🐛 (openai) Fix custom base url model fetching [[5fa946c](https://github.com/baptisteArno/typebot.io/commit/5fa946c0eb99ed5aa087fdaa5596374518b9580b)]
+- 🐛 (forge) Fix incompatible auth schemas when finding fetchers [[18c6381](https://github.com/baptisteArno/typebot.io/commit/18c6381a77c2fc7ba35e3a0ea971c9e2fc04d289)]
+- 🐛 (fileUpload) Fix private file upload URLs [[2a767e0](https://github.com/baptisteArno/typebot.io/commit/2a767e02b0c7696f077b3980f301e8d33566ded9)]
+
+
 <a name="2.28.0"></a>
 ## 2.28.0 (2024-09-02)
 
