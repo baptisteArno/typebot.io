@@ -59,7 +59,16 @@ export const parseButtonsReply =
           ...matchedItemsByIndex.matchedItemIds,
         ].includes(item.id)
       )
-      if (matchedItems.length === 0) return { status: 'fail' }
+
+      if (matchedItems.length === 0) {
+        if (block?.options?.ignoreButtonValidation) {
+          return {
+            status: 'success',
+            reply: inputValue,
+          }
+        }
+        return { status: 'fail' }
+      }
       return {
         status: 'success',
         reply: matchedItems.map((item) => item.content).join(', '),
@@ -73,7 +82,15 @@ export const parseButtonsReply =
         item.id === inputValue ||
         (item.content && inputValue.trim() === item.content.trim())
     )
-    if (!matchedItem) return { status: 'fail' }
+    if (!matchedItem) {
+      if (block?.options?.ignoreButtonValidation) {
+        return {
+          status: 'success',
+          reply: inputValue,
+        }
+      }
+      return { status: 'fail' }
+    }
     return {
       status: 'success',
       reply: matchedItem.content ?? '',

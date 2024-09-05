@@ -205,6 +205,8 @@
   "blocks.inputs.settings.max.label": "Massimo:",
   "blocks.inputs.settings.min.label": "Minimo:",
   "blocks.inputs.settings.multipleChoice.label": "Scelta multipla?",
+  "blocks.inputs.settings.disableButtonValidation.label": "Disable Button Retry",
+
   "blocks.inputs.settings.placeholder.label": "Segnaposto:",
   "blocks.inputs.settings.retryMessage.label": "Messaggio di riprova:",
   "blocks.inputs.settings.saveAnswer.label": "Salvare la risposta in una variabile:",

@@ -5,5 +5,6 @@ export const defaultChoiceInputOptions = {
   buttonLabel: defaultButtonLabel,
   searchInputPlaceholder: 'Filter the options...',
   isMultipleChoice: false,
+  ignoreButtonValidation: false,
   isSearchable: false,
 } as const satisfies ChoiceInputBlock['options']

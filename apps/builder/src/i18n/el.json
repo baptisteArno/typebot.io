@@ -205,6 +205,7 @@
   "blocks.inputs.settings.max.label": "Μέγιστο:",
   "blocks.inputs.settings.min.label": "Ελάχιστο:",
   "blocks.inputs.settings.multipleChoice.label": "Πολλαπλή επιλογή;",
+  "blocks.inputs.settings.disableButtonValidation.label": "Disable Button Retry",
   "blocks.inputs.settings.placeholder.label": "Placeholder:",
   "blocks.inputs.settings.retryMessage.label": "Επανάληψη μηνύματος:",
   "blocks.inputs.settings.saveAnswer.label": "Αποθηκεύστε την απάντηση σε μια μεταβλητή:",
