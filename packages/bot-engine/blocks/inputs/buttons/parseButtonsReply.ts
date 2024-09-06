@@ -61,13 +61,13 @@ export const parseButtonsReply =
       )
 
       if (matchedItems.length === 0) {
-        if (block?.options?.ignoreButtonValidation) {
-          return {
-            status: 'success',
-            reply: inputValue,
-          }
+        if (block?.options?.enableValidateButton) {
+          return { status: 'fail' }
         }
-        return { status: 'fail' }
+        return {
+          status: 'success',
+          reply: inputValue,
+        }
       }
       return {
         status: 'success',
@@ -83,13 +83,14 @@ export const parseButtonsReply =
         (item.content && inputValue.trim() === item.content.trim())
     )
     if (!matchedItem) {
-      if (block?.options?.ignoreButtonValidation) {
-        return {
-          status: 'success',
-          reply: inputValue,
-        }
+      console.log(block?.options?.enableValidateButton)
+      if (block?.options?.enableValidateButton) {
+        return { status: 'fail' }
       }
-      return { status: 'fail' }
+      return {
+        status: 'success',
+        reply: inputValue,
+      }
     }
     return {
       status: 'success',

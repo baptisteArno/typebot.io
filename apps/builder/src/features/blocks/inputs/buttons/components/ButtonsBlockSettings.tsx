@@ -17,8 +17,10 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
   const { t } = useTranslate()
   const updateIsMultiple = (isMultipleChoice: boolean) =>
     onOptionsChange({ ...options, isMultipleChoice })
-  const updateDisableRetryButton = (ignoreButtonValidation: boolean) =>
-    onOptionsChange({ ...options, ignoreButtonValidation })
+  const updateDisableRetryButton = (enableValidateButton: boolean) =>
+    onOptionsChange({ ...options, enableValidateButton })
+  const updateTextRetryButton = (buttonValidationMessage: string) =>
+    onOptionsChange({ ...options, buttonValidationMessage })
 
   const updateIsSearchable = (isSearchable: boolean) =>
     onOptionsChange({ ...options, isSearchable })
@@ -50,13 +52,22 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
         />
       </SwitchWithRelatedSettings>
       <SwitchWithRelatedSettings
-        label={t('blocks.inputs.settings.disableButtonValidation.label')}
+        label={t('blocks.inputs.settings.enableButtonValidation.label')}
         initialValue={
-          options?.ignoreButtonValidation ??
-          defaultChoiceInputOptions.ignoreButtonValidation
+          options?.enableValidateButton ??
+          defaultChoiceInputOptions.enableValidateButton
         }
         onCheckChange={updateDisableRetryButton}
-      ></SwitchWithRelatedSettings>
+      >
+        <TextInput
+          label={t('blocks.inputs.settings.enableButtonValidationText.label')}
+          defaultValue={
+            options?.buttonValidationMessage ??
+            defaultChoiceInputOptions.buttonValidationMessage
+          }
+          onChange={updateTextRetryButton}
+        />
+      </SwitchWithRelatedSettings>
       <SwitchWithRelatedSettings
         label={t('blocks.inputs.settings.isSearchable.label')}
         initialValue={

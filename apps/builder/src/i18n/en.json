@@ -205,7 +205,8 @@
   "blocks.inputs.settings.max.label": "Max:",
   "blocks.inputs.settings.min.label": "Min:",
   "blocks.inputs.settings.multipleChoice.label": "Multiple choice?",
-  "blocks.inputs.settings.disableButtonValidation.label": "Disable Button Retry",
+  "blocks.inputs.settings.enableButtonValidation.label": "Enable Button Retry",
+  "blocks.inputs.settings.enableButtonValidationText.label": "Retry Message",
 
   "blocks.inputs.settings.placeholder.label": "Placeholder:",
   "blocks.inputs.settings.retryMessage.label": "Retry message:",

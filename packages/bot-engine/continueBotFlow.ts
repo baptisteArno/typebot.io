@@ -478,6 +478,11 @@ const parseDefaultRetryMessage = (block: InputBlock): string => {
       return defaultEmailInputOptions.retryMessageContent
     case InputBlockType.PAYMENT:
       return defaultPaymentInputOptions.retryMessageContent
+    case InputBlockType.CHOICE:
+      return (
+        block?.options?.buttonValidationMessage ??
+        defaultChoiceInputOptions.buttonValidationMessage
+      )
     default:
       return 'Invalid message. Please, try again.'
   }

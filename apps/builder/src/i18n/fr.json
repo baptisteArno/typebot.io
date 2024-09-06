@@ -205,7 +205,9 @@
   "blocks.inputs.settings.max.label": "Max :",
   "blocks.inputs.settings.min.label": "Min :",
   "blocks.inputs.settings.multipleChoice.label": "Choix multiple ?",
-  "blocks.inputs.settings.disableButtonValidation.label": "Disable Button Retry",
+
+  "blocks.inputs.settings.enableButtonValidation.label": "Activer la Validation du Bouton",
+  "blocks.inputs.settings.enableButtonValidationText.label": "Message de Réessai",
 
   "blocks.inputs.settings.placeholder.label": "Espace réservé :",
   "blocks.inputs.settings.retryMessage.label": "Message de réessai:",

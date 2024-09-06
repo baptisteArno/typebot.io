@@ -7,7 +7,8 @@ import { conditionSchema } from '../../logic'
 export const choiceInputOptionsSchema = optionBaseSchema.merge(
   z.object({
     isMultipleChoice: z.boolean().optional(),
-    ignoreButtonValidation: z.boolean().optional(),
+    enableValidateButton: z.boolean().optional(),
+    buttonValidationMessage: z.string().optional(),
     buttonLabel: z.string().optional(),
     dynamicVariableId: z.string().optional(),
     isSearchable: z.boolean().optional(),

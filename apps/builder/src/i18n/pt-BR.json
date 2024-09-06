@@ -205,7 +205,8 @@
   "blocks.inputs.settings.max.label": "Máx:",
   "blocks.inputs.settings.min.label": "Mín:",
   "blocks.inputs.settings.multipleChoice.label": "Múltipla escolha?",
-  "blocks.inputs.settings.disableButtonValidation.label": "Desativar Revalidação de opções",
+  "blocks.inputs.settings.enableButtonValidation.label": "Ativar Revalidação de opções",
+  "blocks.inputs.settings.enableButtonValidationText.label": "Retry Message",
 
   "blocks.inputs.settings.placeholder.label": "Placeholder:",
   "blocks.inputs.settings.retryMessage.label": "Mensagem de nova tentativa:",
