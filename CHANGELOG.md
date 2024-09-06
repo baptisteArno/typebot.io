@@ -1,5 +1,13 @@
 # Changelog
 
+<a name="2.28.2"></a>
+## 2.28.2 (2024-09-06)
+
+### Fixed
+
+- 🚑 (forge) Fix select inputs [[06bf188](https://github.com/baptisteArno/typebot.io/commit/06bf18805220f0b4a22a64351f610ad47695b377)]
+
+
 <a name="2.28.1"></a>
 ## 2.28.1 (2024-09-04)
 
