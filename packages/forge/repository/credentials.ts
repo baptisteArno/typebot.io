@@ -20,6 +20,8 @@ import { segmentBlock } from '@typebot.io/segment-block'
 import { segmentCredentialsSchema } from '@typebot.io/segment-block/schemas'
 import { groqBlock } from '@typebot.io/groq-block'
 import { groqCredentialsSchema } from '@typebot.io/groq-block/schemas'
+import { zendeskChatBlock } from '@typebot.io/zendesk-chat-block'
+import { zendeskChatCredentialsSchema } from '@typebot.io/zendesk-chat-block/schemas'
 
 export const forgedCredentialsSchemas = {
   [openAIBlock.id]: openAICredentialsSchema,
@@ -33,4 +35,5 @@ export const forgedCredentialsSchemas = {
   [nocodbBlock.id]: nocodbCredentialsSchema,
   [segmentBlock.id]: segmentCredentialsSchema,
   [groqBlock.id]: groqCredentialsSchema,
+  [zendeskChatBlock.id]: zendeskChatCredentialsSchema,
 }

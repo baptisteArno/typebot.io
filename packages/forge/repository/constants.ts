@@ -15,4 +15,5 @@ export const forgedBlockIds = [
   'nocodb',
   'segment',
   'groq',
+  'zendesk-chat',
 ] as const satisfies ForgedBlock['type'][]

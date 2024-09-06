@@ -25,6 +25,8 @@ import { segmentBlock } from '@typebot.io/segment-block'
 import { segmentBlockSchema } from '@typebot.io/segment-block/schemas'
 import { groqBlock } from '@typebot.io/groq-block'
 import { groqBlockSchema } from '@typebot.io/groq-block/schemas'
+import { zendeskChatBlock } from '@typebot.io/zendesk-chat-block'
+import { zendeskChatBlockSchema } from '@typebot.io/zendesk-chat-block/schemas'
 
 export const forgedBlockSchemas = {
   [openAIBlock.id]: openAIBlockSchema,
@@ -40,4 +42,5 @@ export const forgedBlockSchemas = {
   [nocodbBlock.id]: nocodbBlockSchema,
   [segmentBlock.id]: segmentBlockSchema,
   [groqBlock.id]: groqBlockSchema,
+  [zendeskChatBlock.id]: zendeskChatBlockSchema,
 }
