@@ -298,13 +298,6 @@ const getExpressionToEvaluate =
             type: 'value',
             value: [item],
           }
-        if (isEmpty(item))
-          return {
-            type: 'value',
-            value: Array.isArray(variableValue)
-              ? variableValue
-              : [variableValue],
-          }
         if (!Array.isArray(variableValue))
           return { type: 'value', value: [variableValue, item] }
         return { type: 'value', value: variableValue.concat(item) }

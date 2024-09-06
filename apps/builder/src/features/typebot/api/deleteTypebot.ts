@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
 import { archiveResults } from '@typebot.io/results/archiveResults'
 import { removeObjectsFromTypebot } from '@typebot.io/lib/s3/removeObjectsRecursively'
+import { env } from '@typebot.io/env'
 
 export const deleteTypebot = authenticatedProcedure
   .meta({
@@ -86,10 +87,11 @@ export const deleteTypebot = authenticatedProcedure
       where: { id: typebotId },
       data: { isArchived: true, publicId: null, customDomain: null },
     })
-    await removeObjectsFromTypebot({
-      workspaceId: existingTypebot.workspace.id,
-      typebotId,
-    })
+    if (env.S3_BUCKET)
+      await removeObjectsFromTypebot({
+        workspaceId: existingTypebot.workspace.id,
+        typebotId,
+      })
     return {
       message: 'success',
     }

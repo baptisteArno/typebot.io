@@ -5,6 +5,7 @@ import {
   removeAllObjectsFromResult,
   removeObjectsFromResult,
 } from '@typebot.io/lib/s3/removeObjectsRecursively'
+import { env } from '../env/env'
 
 type ArchiveResultsProps = {
   typebot: Pick<Typebot, 'groups' | 'workspaceId' | 'id'>
@@ -99,7 +100,7 @@ export const archiveResults =
           },
         }),
       ])
-      if (!isDeletingAllResults) {
+      if (!isDeletingAllResults && env.S3_BUCKET) {
         await removeObjectsFromResult({
           workspaceId: typebot.workspaceId,
           resultIds: resultIds,
@@ -108,7 +109,7 @@ export const archiveResults =
       }
     } while (currentTotalResults >= batchSize)
 
-    if (isDeletingAllResults) {
+    if (isDeletingAllResults && env.S3_BUCKET) {
       await removeAllObjectsFromResult({
         workspaceId: typebot.workspaceId,
         typebotId: typebot.id,
