@@ -10,6 +10,13 @@ To configure your Web Widget or mobile SDK for visitor authentication, you first
 
 You can view, create, and delete signing keys by clicking the Account icon in the Admin Center sidebar, and then selecting End user authentication under the Security heading ( you will need to be a Zendesk Admin). The shared secret will only be displayed in its entirety when the signing key is first created.
 
+<Frame>
+  <img
+    src="/images/blocks/integrations/zendesk-chat/zendesk-end-user-auth.png"
+    alt="End User Authentication"
+  />
+</Frame>
+
 Learn more here: https://developer.zendesk.com/documentation/zendesk-web-widget-sdks/sdks/web/enabling_auth_visitors/#generating-a-signing-key
 
 ## Authenticate User
@@ -20,4 +27,13 @@ Learn more here: https://developer.zendesk.com/documentation/zendesk-web-widget-
 
 ## Open Messenger
 
-This action opens the Messenger window. It requires the Zendesk `Key` to be set. If `Enable User Authentication` is enabled, and a token is set in the `User Auth Token` field, the user will be authenticated in Zendesk.
+This action opens the Messenger window. It requires the Web Widget `Key` to be set. You can find the key by going to `Channels -> Messaging`, then click on the Web Widget you wish to configure. Scroll down to 'Installation' and expand that section. In the script code block, copy the `key` value and use that for the `Key` setting.
+
+<Frame>
+  <img
+    src="/images/blocks/integrations/zendesk-chat/web-widget-config.png"
+    alt="Web Widget Key"
+  />
+</Frame>
+
+If `Enable User Authentication` is enabled, and a token is set in the `User Auth Token` field, the user will be authenticated in Zendesk.
