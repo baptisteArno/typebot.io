@@ -19,7 +19,7 @@ export const authenticate = createAction({
       isRequired: true,
     }),
     emailVerified: option.string.layout({
-      label: 'Email is verified',
+      label: 'Email Is Verified',
       defaultValue: "false"
     }),
     tokenVariableId: option.string.layout({

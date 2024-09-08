@@ -1,0 +1,23 @@
+---
+title: Zendesk Chat
+---
+
+With the Zendesk Chat block, you can open a Zendesk Messeneger live chat window to allow a user to chat with a Zendesk agent. Note, this only works on web clients.
+
+## How to find my Zendesk `Key ID` and `Secret Key`?
+
+To configure your Web Widget or mobile SDK for visitor authentication, you first need a signing key. A signing key is a type of credential which is comprised of a key id (kid) and a shared secret.
+
+You can view, create, and delete signing keys by clicking the Account icon in the Admin Center sidebar, and then selecting End user authentication under the Security heading ( you will need to be a Zendesk Admin). The shared secret will only be displayed in its entirety when the signing key is first created.
+
+Learn more here: https://developer.zendesk.com/documentation/zendesk-web-widget-sdks/sdks/web/enabling_auth_visitors/#generating-a-signing-key
+
+## Authenticate
+
+This action will generate a JWT token that can be passed as a variable to Open Messeneger you to authenticate a user in Zendesk. It requires the `User ID`, `Name` `Email`. Optionally, you can also set `Email Is Verified` if the email address has been verified. This is recommended to be set if appropriate.
+
+Learn more here: https://developer.zendesk.com/documentation/zendesk-web-widget-sdks/sdks/web/enabling_auth_visitors/#email-verification.
+
+## Open Messenger
+
+This action opens the Messenger window. It requires the Zendesk `Key` to be set. If `Enable User Authentication` is enabled, and a token is set in the `User Auth Token` field, the user will be authenticated in Zendesk.
