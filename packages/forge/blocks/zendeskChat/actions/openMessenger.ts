@@ -6,7 +6,7 @@ export const openMessenger = createAction({
   name: 'Open Messenger',
   options: option.object({
     key: option.string.layout({
-      label: "Key",
+      label: "Web Widget Key",
       isRequired: true,
     }),
     enableAuth: option.boolean.layout({
