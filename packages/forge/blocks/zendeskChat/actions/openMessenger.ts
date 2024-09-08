@@ -41,9 +41,6 @@ const parseOpenMessenger = () => {
   return `(function (d, t) {
     var ZD_URL = "https://static.zdassets.com/ekr/snippet.js?key=" + key;
 
-    console.log(token);
-    console.log(enableAuth);
-
     var ze_script = d.createElement(t);
     var s = d.getElementsByTagName(t)[0];
 
