@@ -11,6 +11,7 @@ export type TableListItemProps<T> = {
   debounceTimeout?: number
   onItemChange: (item: T) => void
   onRemoveItem: (item: T) => void
+  required?: boolean | { errorMsg?: string }
 }
 
 type Props<T> = {

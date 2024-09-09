@@ -1,4 +1,4 @@
-import { Stack, IconButton, Fade, Select } from '@chakra-ui/react'
+import { Stack, IconButton, Fade, Select, Flex } from '@chakra-ui/react'
 import { TrashIcon } from 'assets/icons'
 import { DropdownList } from 'components/shared/DropdownList'
 import { Input } from 'components/shared/Textbox/Input'
@@ -12,6 +12,7 @@ export const ComparisonItem = ({
   item,
   onItemChange,
   onRemoveItem,
+  required
 }: TableListItemProps<Comparison>) => {
   const { typebot, customVariables } = useTypebot()
   let myVariable = typebot?.variables?.find(
@@ -39,7 +40,7 @@ export const ComparisonItem = ({
   }
 
   const handleSelectComparisonOperator = (
-    comparisonOperator: ComparisonOperators
+    comparisonOperator: ComparisonOperators,
   ) => {
     const indexOf =
       Object.values(ComparisonOperators).indexOf(comparisonOperator)
@@ -172,12 +173,26 @@ export const ComparisonItem = ({
         placeholder="Pesquise sua variável"
         labelDefault="Se"
       />
+      {!item.variableId && (
+        <Flex color="red.400" fontSize="sm" mt={2}>
+          {typeof required === 'object'
+            ? required?.errorMsg
+            : 'É obrigatório selecionar uma variável'}
+        </Flex>
+      )}
       <DropdownList<ComparisonOperators>
         currentItem={showCorrectInput(item.comparisonOperator)}
         onItemSelect={handleSelectComparisonOperator}
         items={resolveOperators()}
         placeholder="Selecione um operador"
       />
+      {!item.comparisonOperator && (
+        <Flex color="red.400" fontSize="sm" mt={2}>
+          {typeof required === 'object'
+            ? required?.errorMsg
+            : 'É obrigatório selecionar um operador'}
+        </Flex>
+      )}
       {typeOfInputValue()}
       {needSecondaryValue && (
         <div>

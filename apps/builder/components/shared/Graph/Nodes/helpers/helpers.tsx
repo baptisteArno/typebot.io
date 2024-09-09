@@ -1,6 +1,7 @@
 import {
   BubbleStepType,
   InputStepType,
+  LogicStepType,
   OctaBubbleStepType,
   OctaStepType,
   OctaWabaStepType,
@@ -110,6 +111,23 @@ export const getValidationMessages = (step: Step): Array<ValidationMessage> => {
         message: step?.content?.plainText,
         min: { value: -1 },
       })
+    }
+
+    if (LogicStepType.CONDITION === step.type) {
+      step?.items?.forEach((item) => {
+        if (item?.content?.comparisons) {
+          item.content.comparisons.forEach((comparison) => {
+            data.push(
+              {
+                message: comparison?.comparisonOperator
+              },
+              {
+                message: comparison?.variableId
+              },
+            );
+          });
+        }
+      });
     }
 
     if (inpuStepsWithFallbackMessages.includes(step.type)) {
