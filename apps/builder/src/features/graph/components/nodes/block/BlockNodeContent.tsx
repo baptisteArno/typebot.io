@@ -3,6 +3,8 @@ import { WaitNodeContent } from '@/features/blocks/logic/wait/components/WaitNod
 import { ScriptNodeContent } from '@/features/blocks/logic/script/components/ScriptNodeContent'
 import { ButtonsBlockNode } from '@/features/blocks/inputs/buttons/components/ButtonsBlockNode'
 import { JumpNodeBody } from '@/features/blocks/logic/jump/components/JumpNodeBody'
+import { AssignChatNodeContent } from '@/features/blocks/logic/assignChat/components/AssignChatNodeContent'
+import { CloseChatNodeBody } from '@/features/blocks/logic/closeChat/components/CloseChatNodeBody'
 import { AudioBubbleNode } from '@/features/blocks/bubbles/audio/components/AudioBubbleNode'
 import { EmbedBubbleContent } from '@/features/blocks/bubbles/embed/components/EmbedBubbleContent'
 import { ImageBubbleContent } from '@/features/blocks/bubbles/image/components/ImageBubbleContent'
@@ -112,6 +114,12 @@ export const BlockNodeContent = ({
     }
     case LogicBlockType.JUMP: {
       return <JumpNodeBody options={block.options} />
+    }
+    case LogicBlockType.ASSIGN_CHAT: {
+      return <AssignChatNodeContent email={block.options?.email} />
+    }
+    case LogicBlockType.CLOSE_CHAT: {
+      return <CloseChatNodeBody />
     }
     case LogicBlockType.AB_TEST: {
       return <AbTestNodeBody block={block} groupId={groupId} />

@@ -277,6 +277,8 @@
   "editor.sidebarBlock.file.label": "File",
   "editor.sidebarBlock.image.label": "Image",
   "editor.sidebarBlock.jump.label": "Jump",
+  "editor.sidebarBlock.assignChat.label": "Assign Chat",
+  "editor.sidebarBlock.closeChat.label": "Close Chat",
   "editor.sidebarBlock.makecom.label": "Make.com",
   "editor.sidebarBlock.number.label": "Number",
   "editor.sidebarBlock.openai.label": "OpenAI",

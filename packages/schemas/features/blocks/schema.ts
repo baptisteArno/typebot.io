@@ -47,7 +47,7 @@ export type Block = z.infer<typeof blockSchema>
 
 export type BlockOptions =
   | InputBlock['options']
-  | LogicBlock['options']
+  // | LogicBlock['options']
   | IntegrationBlock['options']
 
 export type BlockWithItems = Extract<BlockV6, { items: ItemV6[] }>
