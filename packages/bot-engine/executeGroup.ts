@@ -102,6 +102,10 @@ export const executeGroup = async (
         typebotVersion: newSessionState.typebotsQueue[0].typebot.version,
         textBubbleContentFormat,
       })
+      message['group'] = {
+        groupId: group.id,
+        groupTitle: group.title,
+      }
       messages.push(message)
       if (
         message.type === BubbleBlockType.EMBED &&
@@ -124,10 +128,17 @@ export const executeGroup = async (
       continue
     }
 
-    if (isInputBlock(block))
+    if (isInputBlock(block)) {
+      const input = await parseInput(newSessionState)(block)
+      if (input) {
+        input['group'] = {
+          groupId: group.id,
+          groupTitle: group.title,
+        }
+      }
       return {
         messages,
-        input: await parseInput(newSessionState)(block),
+        input,
         newSessionState: {
           ...newSessionState,
           currentBlockId: block.id,
@@ -137,6 +148,7 @@ export const executeGroup = async (
         visitedEdges,
         setVariableHistory,
       }
+    }
     const executionResponse = (
       isLogicBlock(block)
         ? await executeLogic(newSessionState)(block)
@@ -187,6 +199,10 @@ export const executeGroup = async (
         ...executionResponse.clientSideActions.map((action) => ({
           ...action,
           lastBubbleBlockId,
+          group: {
+            groupId: group.id,
+            groupTitle: group.title,
+          },
         })),
       ]
       if (
