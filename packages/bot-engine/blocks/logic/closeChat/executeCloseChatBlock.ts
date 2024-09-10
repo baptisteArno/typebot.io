@@ -5,10 +5,18 @@ import { SessionState } from '@typebot.io/schemas'
 import { CloseChatBlock } from '@typebot.io/schemas/features/blocks/logic/closeChat'
 
 export const executeCloseChatBlock = (
-  state: SessionState
-): any => {
-  console.log('Chat is Closed')
+  state: SessionState,
+  block: CloseChatBlock
+): ExecuteLogicResponse => {
   return {
-    message: "Close Chat"
+    outgoingEdgeId: block.outgoingEdgeId,
+    clientSideActions: [
+      {
+        type: 'wait',
+        wait: {
+          secondsToWaitFor: 1,
+        },
+      },
+    ],
   }
 }

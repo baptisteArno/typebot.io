@@ -33,7 +33,7 @@ export const executeLogic =
       case LogicBlockType.ASSIGN_CHAT:
         return executeAssignChat(state, block)
       case LogicBlockType.CLOSE_CHAT:
-        return executeCloseChatBlock(state)
+        return executeCloseChatBlock(state, block)
       case LogicBlockType.AB_TEST:
         return executeAbTest(state, block)
     }
