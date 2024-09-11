@@ -23,6 +23,9 @@ const inlineCodeRegex = /\{\{=(.+?)=\}\}/g
 // {{variable}} and ${{{variable}}}
 const variableRegex = /\{\{([^{}]+)\}\}|(\$)\{\{([^{}]+)\}\}/g
 
+// {{variable}}
+const textVariableRegex = /\{\{([^{}]+)\}\}/g
+
 export const parseVariables =
   (
     variables: Variable[],
@@ -118,7 +121,7 @@ export const getVariablesToParseInfoInText = (
     })
   })
   const variablesParseInfo: VariableToParseInformation[] = []
-  const variableMatches = [...text.matchAll(variableRegex)]
+  const variableMatches = [...text.matchAll(textVariableRegex)]
   variableMatches.forEach((match) => {
     if (isNotDefined(match.index) || !match[0].length) return
     const isPartOfInlineCode = inlineVarsParseInfo.some(
