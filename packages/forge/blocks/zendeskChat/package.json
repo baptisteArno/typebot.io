@@ -10,10 +10,10 @@
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
     "@types/react": "18.2.15",
-    "typescript": "5.4.5"
+    "typescript": "5.4.5",
+    "@types/jsonwebtoken": "9.0.2"
   },
   "dependencies": {
-    "@types/jsonwebtoken": "9.0.2",
     "jsonwebtoken": "9.0.1"
   }
 }

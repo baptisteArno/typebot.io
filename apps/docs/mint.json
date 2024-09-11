@@ -128,7 +128,7 @@
                 "editor/blocks/integrations/dify-ai",
                 "editor/blocks/integrations/nocodb",
                 "editor/blocks/integrations/segment",
-                "editor/blocks/integrations/zendesk-chat"
+                "editor/blocks/integrations/zendesk-messaging"
               ]
             }
           ]

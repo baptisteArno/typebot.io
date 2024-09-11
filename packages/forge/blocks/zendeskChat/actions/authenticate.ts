@@ -1,5 +1,5 @@
 import { createAction, option } from '@typebot.io/forge'
-import jwt from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken';
 import { auth } from '../auth'
 
 export const authenticate = createAction({
@@ -19,8 +19,7 @@ export const authenticate = createAction({
       isRequired: true,
     }),
     emailVerified: option.string.layout({
-      label: 'Email Is Verified',
-      defaultValue: "false"
+      label: 'Email Was Verified'
     }),
     tokenVariableId: option.string.layout({
       label: 'Token Variable',
@@ -42,8 +41,7 @@ export const authenticate = createAction({
         || tokenVariableId === undefined
       ) return
 
-      var token = jwt.sign({ scope: 'user', external_id: userId, name: name, email: email, email_verified: emailVerified }, secretKey, { algorithm: "HS256", keyid: keyId });
-      variables.set(tokenVariableId, token);
+      variables.set(tokenVariableId, sign({ scope: 'user', external_id: userId, name: name, email: email, email_verified: emailVerified }, secretKey, { algorithm: "HS256", keyid: keyId }));
     }
   },
 })

@@ -1,14 +1,14 @@
 import { createBlock } from '@typebot.io/forge'
-import { ZendeskChatLogo } from './logo'
+import { ZendeskLogo } from './logo'
 import { auth } from './auth'
-import { openMessenger } from './actions/openMessenger'
+import { openWebWidget } from './actions/openWebWidget'
 import { authenticate } from './actions/authenticate'
 
 export const zendeskChatBlock = createBlock({
-  id: 'zendesk-chat',
-  name: 'Zendesk Chat',
+  id: 'zendesk-messaging',
+  name: 'Zendesk Messaging',
   tags: ['live chat'],
-  LightLogo: ZendeskChatLogo,
+  LightLogo: ZendeskLogo,
   auth,
-  actions: [authenticate, openMessenger],
+  actions: [authenticate, openWebWidget],
 })

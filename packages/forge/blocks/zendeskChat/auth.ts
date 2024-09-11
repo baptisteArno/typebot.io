@@ -2,7 +2,7 @@ import { option, AuthDefinition } from '@typebot.io/forge'
 
 export const auth = {
   type: 'encryptedCredentials',
-  name: 'Zendesk Messaging account',
+  name: 'Zendesk Conversations API',
   schema: option.object({
     secretKey: option.string.layout({
       label: 'Secret Key',

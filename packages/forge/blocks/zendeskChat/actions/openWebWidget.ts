@@ -1,15 +1,15 @@
 import { createAction, option } from '@typebot.io/forge'
 import { auth } from '../auth'
 
-export const openMessenger = createAction({
+export const openWebWidget = createAction({
   auth,
-  name: 'Open Messenger',
+  name: 'Open WebWidget',
   options: option.object({
     key: option.string.layout({
-      label: "Web Widget Key",
+      label: "Web widget key",
       isRequired: true,
     }),
-    enableAuth: option.boolean.layout({
+    isAuthEnabled: option.boolean.layout({
       accordion: "Authentication",
       label: "Enable User Authentication",
       defaultValue: false,
@@ -25,7 +25,7 @@ export const openMessenger = createAction({
       parseFunction: ({ options }) => {
         return {
           args: {
-            enableAuth: options.enableAuth ? options.enableAuth?.toString() : "false",
+            enableAuth: options.isAuthEnabled ? options.isAuthEnabled?.toString() : "false",
             token: options.token ?? null,
             key: options.key ?? null
           },
