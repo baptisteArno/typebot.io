@@ -3,7 +3,7 @@ import { auth } from '../auth'
 
 export const openWebWidget = createAction({
   auth,
-  name: 'Open WebWidget',
+  name: 'Open Web Widget',
   options: option.object({
     key: option.string.layout({
       label: "Web widget key",
