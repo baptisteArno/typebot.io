@@ -227,9 +227,14 @@ export const BlocksSideBar = () => {
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(IntegrationBlockType)
-              .filter((type) =>
-                type.toLowerCase().includes(searchInput.toLowerCase())
-              )
+              .filter((type) => {
+                let modifiedSearchInput = searchInput.toLowerCase()
+
+                if (modifiedSearchInput.includes('http')) {
+                  modifiedSearchInput = 'webhook'
+                }
+                return type.toLowerCase().includes(modifiedSearchInput)
+              })
               .concat(filteredForgedBlockIds as any)
               .filter((type) => !legacyIntegrationBlocks.includes(type))
               .map((type) => (
