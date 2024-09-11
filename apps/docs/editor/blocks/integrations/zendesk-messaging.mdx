@@ -1,8 +1,8 @@
 ---
-title: Zendesk Chat
+title: Zendesk Messaging
 ---
 
-With the Zendesk Chat block, you can open a Zendesk Messeneger live chat window to allow a user to chat with a Zendesk agent. Note, this only works on web clients.
+With the Zendesk Chat block, you can open a Zendesk Messaging live chat window to allow a user to chat with a Zendesk agent.
 
 ## How to find my Zendesk `Key ID` and `Secret Key`?
 
@@ -12,7 +12,7 @@ You can view, create, and delete signing keys by clicking the Account icon in th
 
 <Frame>
   <img
-    src="/images/blocks/integrations/zendesk-chat/zendesk-end-user-auth.png"
+    src="/images/blocks/integrations/zendesk-messaging/zendesk-end-user-auth.png"
     alt="End User Authentication"
   />
 </Frame>
@@ -21,17 +21,19 @@ Learn more here: https://developer.zendesk.com/documentation/zendesk-web-widget-
 
 ## Authenticate User
 
-This action will generate a JWT token that can be passed as a variable to Open Messeneger you to authenticate a user in Zendesk. It requires the `User ID`, `Name` `Email`. Optionally, you can also set `Email Is Verified` if the email address has been verified. This is recommended to be set if appropriate.
+This action will generate a JWT token that can be passed as a variable to Open Web Widget you to authenticate a user in Zendesk. It requires the `User ID`, `Name` `Email`. Optionally, you can also set `Email Is Verified` if the email address has been verified. This is recommended to be set if appropriate.
 
 Learn more here: https://developer.zendesk.com/documentation/zendesk-web-widget-sdks/sdks/web/enabling_auth_visitors/#email-verification.
 
-## Open Messenger
+## Open Web Widget
 
-This action opens the Messenger window. It requires the Web Widget `Key` to be set. You can find the key by going to `Channels -> Messaging`, then click on the Web Widget you wish to configure. Scroll down to 'Installation' and expand that section. In the script code block, copy the `key` value and use that for the `Key` setting.
+This action opens the Messenging Web Widget. It requires the Web Widget `Key` to be set. You can find the key by going to `Channels -> Messaging`, then click on the Web Widget you wish to configure. Scroll down to 'Installation' and expand that section. In the script code block, copy the `key` value and use that for the `Key` setting.
+
+Note, this only works on web clients.
 
 <Frame>
   <img
-    src="/images/blocks/integrations/zendesk-chat/web-widget-config.png"
+    src="/images/blocks/integrations/zendesk-messaging/web-widget-config.png"
     alt="Web Widget Key"
   />
 </Frame>
