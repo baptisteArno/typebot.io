@@ -23,3 +23,8 @@ export const dynamicThemeSchema = z.object({
   hostAvatarUrl: z.string().optional(),
   guestAvatarUrl: z.string().optional(),
 })
+
+export const groupSchema = z.object({
+  groupId: z.string(),
+  groupTitle: z.string(),
+})
