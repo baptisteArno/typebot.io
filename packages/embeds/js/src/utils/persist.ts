@@ -23,7 +23,23 @@ export function persist<T>(
   const storage = parseRememberUserStorage(
     params.storage || defaultSettings.general.rememberUser.storage
   )
-  const serialize: (data: T) => string = JSON.stringify.bind(JSON)
+  const serialize: (data: T) => string = (data: T) => {
+    const clonedData = JSON.parse(JSON.stringify(data))
+
+    if ('blobUrl' in clonedData) {
+      clonedData.blobUrl = undefined
+    }
+
+    if ('attachments' in clonedData && Array.isArray(clonedData.attachments)) {
+      clonedData.attachments.forEach((attachment: any) => {
+        if (attachment && 'blobUrl' in attachment) {
+          attachment.blobUrl = undefined
+        }
+      })
+    }
+
+    return JSON.stringify(clonedData)
+  }
   const deserialize: (data: string) => T = JSON.parse.bind(JSON)
   const init = storage.getItem(params.key)
   const set =

@@ -67,7 +67,7 @@ const TextGuestBubble = (props: { answer: TextInputSubmitContent }) => {
           >
             {(attachment, idx) => (
               <img
-                src={attachment.url}
+                src={attachment.blobUrl ?? attachment.url}
                 alt={`Attached image ${idx() + 1}`}
                 class={clsx(
                   'typebot-guest-bubble-image-attachment cursor-pointer',
@@ -75,7 +75,9 @@ const TextGuestBubble = (props: { answer: TextInputSubmitContent }) => {
                     attachment.type.startsWith('image')
                   ).length > 1 && 'max-w-[90%]'
                 )}
-                onClick={() => setClickedImageSrc(attachment.url)}
+                onClick={() =>
+                  setClickedImageSrc(attachment.blobUrl ?? attachment.url)
+                }
               />
             )}
           </For>
@@ -132,7 +134,7 @@ const AudioGuestBubble = (props: { answer: RecordingInputSubmitContent }) => {
         class="p-2 w-full whitespace-pre-wrap typebot-guest-bubble flex flex-col"
         data-testid="guest-bubble"
       >
-        <audio controls src={props.answer.url} />
+        <audio controls src={props.answer.blobUrl ?? props.answer.url} />
       </div>
     </div>
   )

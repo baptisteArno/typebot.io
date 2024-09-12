@@ -83,7 +83,13 @@ export const FileUploadForm = (props: Props) => {
           props.block.options?.labels?.success?.single ??
           defaultFileInputOptions.labels.success.single,
         value: urls[0] ? encodeUrl(urls[0].url) : '',
-        attachments: [{ type: file.type, url: urls[0]!.url }],
+        attachments: [
+          {
+            type: file.type,
+            url: urls[0]!.url,
+            blobUrl: URL.createObjectURL(file),
+          },
+        ],
       })
     toaster.create({ description: 'An error occured while uploading the file' })
   }
@@ -121,7 +127,16 @@ export const FileUploadForm = (props: Props) => {
         .filter(isDefined)
         .map(({ url }) => encodeUrl(url))
         .join(', '),
-      attachments: urls.filter(isDefined),
+      attachments: urls
+        .map((urls, index) =>
+          urls
+            ? {
+                ...urls,
+                blobUrl: URL.createObjectURL(selectedFiles()[index]),
+              }
+            : null
+        )
+        .filter(isDefined),
     })
   }
 
