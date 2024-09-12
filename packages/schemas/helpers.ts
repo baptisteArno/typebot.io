@@ -13,7 +13,6 @@ import {
   ConditionBlock,
   IntegrationBlock,
   HttpRequestBlock,
-  BlockWithOptionsType,
   BlockWithOptions,
 } from './features/blocks'
 import { BubbleBlockType } from './features/blocks/bubbles/constants'
@@ -78,6 +77,17 @@ export const isBubbleBlockType = (
   type: Block['type']
 ): type is BubbleBlockType =>
   (Object.values(BubbleBlockType) as string[]).includes(type)
+
+export const isInputBlockType = (type: Block['type']): type is InputBlockType =>
+  (Object.values(InputBlockType) as string[]).includes(type)
+
+export const isIntegrationBlockType = (
+  type: Block['type']
+): type is IntegrationBlockType =>
+  (Object.values(IntegrationBlockType) as string[]).includes(type)
+
+export const isLogicBlockType = (type: Block['type']): type is LogicBlockType =>
+  (Object.values(LogicBlockType) as string[]).includes(type)
 
 export const blockHasOptions = (block: Block): block is BlockWithOptions =>
   'options' in block
