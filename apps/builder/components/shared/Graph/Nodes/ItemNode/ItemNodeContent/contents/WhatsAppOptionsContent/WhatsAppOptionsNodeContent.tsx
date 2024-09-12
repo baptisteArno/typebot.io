@@ -11,6 +11,7 @@ import { PlusIcon, TrashIcon } from 'assets/icons'
 import { Item, ItemIndices, ItemType } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
 import { isNotDefined } from 'utils'
+import { stripEmoji } from 'util/string'
 
 type Props = {
   item: Item
@@ -43,7 +44,12 @@ export const WhatsAppOptionsNodeContent = ({
   const hasMoreThanOneItem = () => indices.itemsCount && indices.itemsCount > 1
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Escape' && itemValue === 'Editar opção' && hasMoreThanOneItem()) deleteItem(indices)
+    if (
+      e.key === 'Escape' &&
+      itemValue === 'Editar opção' &&
+      hasMoreThanOneItem()
+    )
+      deleteItem(indices)
     if (e.key === 'Enter' && itemValue !== '' && initialContent === '')
       handlePlusClick()
   }
@@ -66,8 +72,11 @@ export const WhatsAppOptionsNodeContent = ({
   const handleEdit = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (e.button === 0) {
       const target = e.target as HTMLInputElement
-
     }
+  }
+
+  const handleSetItemValue = (value: string) => {
+    setItemValue(stripEmoji(value) as string)
   }
 
   return (
@@ -76,7 +85,7 @@ export const WhatsAppOptionsNodeContent = ({
         ref={editableRef}
         startWithEditView={isNotDefined(item.content)}
         value={itemValue}
-        onChange={setItemValue}
+        onChange={handleSetItemValue}
         onSubmit={handleInputSubmit}
         onKeyDownCapture={handleKeyPress}
         flex="2"
@@ -118,7 +127,8 @@ export const WhatsAppOptionsNodeContent = ({
             shadow="md"
             colorScheme="gray"
             onClick={handleDeleteClick}
-          />)}
+          />
+        )}
       </Fade>
     </Flex>
   )
