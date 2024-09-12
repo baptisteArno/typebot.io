@@ -1,5 +1,5 @@
 import { safeStringify } from '@typebot.io/lib/safeStringify'
-import { isDefined, isNotDefined } from '@typebot.io/lib/utils'
+import { isDefined, isNotDefined, isNotEmpty } from '@typebot.io/lib/utils'
 import { Variable, VariableWithValue } from './types'
 import { createCodeRunner } from './codeRunners'
 
@@ -126,13 +126,15 @@ export const getVariablesToParseInfoInText = (
         match.index >= inVar.startIndex && match.index <= inVar.endIndex
     )
     if (isPartOfInlineCode) return
+    const hasDollarSign = isNotEmpty(match[2] ?? '')
     const matchedVarName = match[1] ?? match[3]
     const variable = variables.find((variable) => {
       return matchedVarName === variable.name
     }) as VariableWithValue | undefined
+    const startIndex = match.index + (hasDollarSign ? 1 : 0)
     variablesParseInfo.push({
-      startIndex: match.index,
-      endIndex: match.index + match[0].length,
+      startIndex,
+      endIndex: startIndex + match[0].length,
       textToReplace: match[0],
       value:
         safeStringify(
