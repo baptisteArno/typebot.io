@@ -116,7 +116,7 @@ export const BlockNodeContent = ({
       return <JumpNodeBody options={block.options} />
     }
     case LogicBlockType.ASSIGN_CHAT: {
-      return <AssignChatNodeContent email={block.options?.email} />
+      return <AssignChatNodeContent options={block.options} />
     }
     case LogicBlockType.CLOSE_CHAT: {
       return <CloseChatNodeBody />

@@ -1,11 +1,25 @@
 import React from 'react'
-import { Text } from '@chakra-ui/react'
+import { Tag, Text } from '@chakra-ui/react'
 import { AssignChatBlock } from '@typebot.io/schemas'
 
-type Props = { email: NonNullable<AssignChatBlock['options']>['email'] }
+type Props = {
+  options: AssignChatBlock['options']
+}
 
-export const AssignChatNodeContent = ({ email }: Props) => (
-  <Text color={email ? 'currentcolor' : 'gray.500'} noOfLines={2}>
-    {email ? `Assign chat to ${email}` : 'Configure assignee email...'}
-  </Text>
-)
+export const AssignChatNodeContent = ({ options }: Props) => {
+  const assignType = options?.assignType || 'Agent'
+  const email = options?.email || ''
+
+  if (assignType === 'Handover')
+    return (
+      <Text color="currentcolor" noOfLines={2}>
+        Handover Chat
+      </Text>
+    )
+
+  return (
+    <Text color="currentcolor" noOfLines={2}>
+      Assign Chat to {assignType && <Tag>{assignType}</Tag>} {email && email}
+    </Text>
+  )
+}

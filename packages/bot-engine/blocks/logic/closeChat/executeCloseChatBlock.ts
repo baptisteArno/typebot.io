@@ -12,10 +12,7 @@ export const executeCloseChatBlock = (
     outgoingEdgeId: block.outgoingEdgeId,
     clientSideActions: [
       {
-        type: 'wait',
-        wait: {
-          secondsToWaitFor: 1,
-        },
+        type: 'close',
       },
     ],
   }

@@ -9,6 +9,7 @@ import {
 } from '../blocks'
 import { nativeMessageSchema } from '../blocks/integrations/openai'
 import { groupSchema } from './shared'
+import { assignChatTypeOptions } from '../blocks/logic/constants'
 
 extendZodWithOpenApi(z)
 
@@ -95,6 +96,28 @@ export const clientSideActionSchema = z.discriminatedUnion('type', [
     .openapi({
       ref: 'csaWait',
       title: 'Wait',
+    }),
+  z
+    .object({
+      type: z.literal('assign'),
+      assign: z.object({
+        assignType: z.enum(assignChatTypeOptions).optional(),
+        email: z.string().optional(),
+      }),
+    })
+    .merge(clientSideActionBaseSchema)
+    .openapi({
+      ref: 'csaAssign',
+      title: 'Assign',
+    }),
+  z
+    .object({
+      type: z.literal('close'),
+    })
+    .merge(clientSideActionBaseSchema)
+    .openapi({
+      ref: 'csaClose',
+      title: 'Close Chat',
     }),
   z
     .object({

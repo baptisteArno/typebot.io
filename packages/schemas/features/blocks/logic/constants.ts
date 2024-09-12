@@ -10,3 +10,5 @@ export enum LogicBlockType {
   ASSIGN_CHAT = 'Assign Chat',
   CLOSE_CHAT = 'Close Chat',
 }
+
+export const assignChatTypeOptions = ['Agent', 'Team', 'Handover'] as const
