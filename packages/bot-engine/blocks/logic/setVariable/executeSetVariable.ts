@@ -384,7 +384,12 @@ const parseTranscriptProps = async (
 const parsePreviewTranscriptProps = async (
   state: SessionState
 ): Promise<ParsedTranscriptProps | undefined> => {
-  if (!state.previewMetadata) return
+  if (!state.previewMetadata)
+    return {
+      answers: [],
+      setVariableHistory: [],
+      visitedEdges: [],
+    }
   return {
     answers: state.previewMetadata.answers ?? [],
     setVariableHistory: state.previewMetadata.setVariableHistory ?? [],
