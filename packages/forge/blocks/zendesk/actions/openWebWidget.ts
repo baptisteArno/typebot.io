@@ -105,22 +105,15 @@ const parseOpenMessenger = () => {
 
     ze_script.onload = function () {
 
-     // zE("messenger:set", "cookies", false);
-     // zE("messenger:set", "cookies", true);
+      // zE("messenger:set", "cookies", false);
+      // zE("messenger:set", "cookies", true);
 
       if ( enableAuth === "true" ) {
         zE("messenger", "loginUser", function (callback) {
           //console.log("Authenticating user");
           callback(token);
         });
-      } 
-      //zE("messenger", "open");
-
-      
-      var fieldArr = JSON.parse(fields);
-      fieldArr.forEach(function(field) {
-        zE("messenger:set", "conversationFields", [{ id: field.key, value: field.value }]);
-      });
+      }
 
       const fieldArr = JSON.parse(fields);
       fieldArr.forEach(({ key, value }) => {
@@ -132,9 +125,7 @@ const parseOpenMessenger = () => {
         zE("messenger:set", "conversationTags", tagList);
       }
 
-       zE("messenger", "open");
-      
-
+      zE("messenger", "open");
     };
   })(document, "script");
   `
