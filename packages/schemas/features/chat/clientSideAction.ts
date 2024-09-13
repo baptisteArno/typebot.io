@@ -8,6 +8,7 @@ import {
   redirectOptionsSchema,
 } from '../blocks'
 import { nativeMessageSchema } from '../blocks/integrations/openai'
+import { groupSchema } from './shared'
 
 extendZodWithOpenApi(z)
 
@@ -39,6 +40,7 @@ export type ScriptToExecute = z.infer<typeof scriptToExecuteSchema>
 const clientSideActionBaseSchema = z.object({
   lastBubbleBlockId: z.string().optional(),
   expectsDedicatedReply: z.boolean().optional(),
+  group: groupSchema.optional(),
 })
 
 export const clientSideActionSchema = z.discriminatedUnion('type', [
