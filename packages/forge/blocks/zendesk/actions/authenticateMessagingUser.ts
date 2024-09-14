@@ -18,8 +18,10 @@ export const authenticateMessagingUser = createAction({
       label: 'Email',
       isRequired: true,
     }),
-    emailVerified: option.string.layout({
-      label: 'Email is verified'
+    isEmailVerified: option.string.layout({
+      label: 'Is email verified',
+      inputType: 'variableDropdown',
+      isRequired: true
     }),
     tokenVariableId: option.string.layout({
       label: 'Token variable',
@@ -30,7 +32,7 @@ export const authenticateMessagingUser = createAction({
   run: {
     server: async ({
       credentials: { conversationsSecretKey, conversationsKeyId },
-      options: { userId, name, email, emailVerified, tokenVariableId },
+      options: { userId, name, email, isEmailVerified, tokenVariableId },
       variables,
     }) => {
       if (!email || email.length === 0
@@ -40,7 +42,7 @@ export const authenticateMessagingUser = createAction({
         || conversationsKeyId === undefined
         || tokenVariableId === undefined
       ) return
-      variables.set(tokenVariableId, sign({ scope: 'user', external_id: userId, name: name, email: email, email_verified: emailVerified }, conversationsSecretKey, { algorithm: "HS256", keyid: conversationsKeyId }));
+      variables.set(tokenVariableId, sign({ scope: 'user', external_id: userId, name: name, email: email, email_verified: "true" }, conversationsSecretKey, { algorithm: "HS256", keyid: conversationsKeyId }));
     }
   },
 })
