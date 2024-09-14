@@ -117,10 +117,7 @@ export const VariablesDrawer = ({ onClose }: Props) => {
             onChange={(e) => setSearchValue(e.target.value)}
           />
           <SlideFade
-            in={
-              isVariableCreated ||
-              (filteredVariables && filteredVariables.length === 0)
-            }
+            in={isNotEmpty(searchValue)}
             unmountOnExit
             offsetY={0}
             offsetX={10}
