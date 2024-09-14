@@ -20,6 +20,8 @@ import prisma from '@typebot.io/lib/prisma'
 import { parseVariables } from '@typebot.io/variables/parseVariables'
 import { defaultSendEmailOptions } from '@typebot.io/schemas/features/blocks/integrations/sendEmail/constants'
 import { parseAnswers } from '@typebot.io/results/parseAnswers'
+import { getFileTempUrl } from '@typebot.io/lib/s3/getFileTempUrl'
+import { getTypebotWorkspaceId } from '../../../queries/getTypebotWorkspaceId'
 
 export const sendEmailSuccessDescription = 'Email successfully sent'
 export const sendEmailErrorDescription = 'Email not sent'
@@ -169,11 +171,7 @@ const sendEmail = async ({
     to: recipients,
     replyTo,
     subject,
-    attachments: fileUrls
-      ? (typeof fileUrls === 'string' ? fileUrls.split(', ') : fileUrls).map(
-          (url) => ({ path: url })
-        )
-      : undefined,
+    attachments: await parseAttachments(fileUrls, typebot.id),
     ...emailBody,
   }
   try {
@@ -292,4 +290,40 @@ const stringifyUniqueVariableValueAsHtml = (
   if (!value) return ''
   if (typeof value === 'string') return value.replace(/\n/g, '<br />')
   return value.map(stringifyUniqueVariableValueAsHtml).join('<br />')
+}
+
+const parseAttachments = (
+  fileUrls: string | string[] | undefined,
+  typebotId: string
+): Promise<{ path: string }[]> | undefined => {
+  if (!fileUrls) return undefined
+  const urls = Array.isArray(fileUrls) ? fileUrls : fileUrls.split(', ')
+  return Promise.all(
+    urls.map(async (url) => {
+      if (!url.startsWith(env.NEXTAUTH_URL)) return { path: url }
+      const {
+        typebotId: urlTypebotId,
+        resultId,
+        fileName,
+      } = extractDataFromPrivateUrl(url)
+      if (typebotId !== urlTypebotId) return { path: url }
+      const workspaceId = await getTypebotWorkspaceId(typebotId)
+      return {
+        path: await getFileTempUrl({
+          key: `private/workspaces/${workspaceId}/typebots/${typebotId}/results/${resultId}/${fileName}`,
+          expires: 600,
+        }),
+      }
+    })
+  )
+}
+
+const extractDataFromPrivateUrl = (url: string) => {
+  const pathSegments = url.split('/').filter((segment) => segment !== '')
+
+  const typebotId = pathSegments[4]
+  const resultId = pathSegments[6]
+  const fileName = pathSegments[7]
+
+  return { typebotId, resultId, fileName }
 }
