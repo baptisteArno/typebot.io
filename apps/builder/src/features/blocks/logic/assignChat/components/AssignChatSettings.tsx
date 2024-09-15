@@ -1,10 +1,12 @@
 import { DropdownList } from '@/components/DropdownList'
 import { TextInput } from '@/components/inputs'
 import { Stack } from '@chakra-ui/react'
+import { useTranslate } from '@tolgee/react'
 import { AssignChatBlock } from '@typebot.io/schemas'
-import { defaultAssignChatOptions } from '@typebot.io/schemas/features/blocks/logic/assignChat/constants'
-
-import { assignChatTypeOptions } from '@typebot.io/schemas/features/blocks/logic/constants'
+import {
+  assignChatType,
+  assignChatTypeOptions,
+} from '@typebot.io/schemas/features/blocks/logic/assignChat/constants'
 
 type Props = {
   options: AssignChatBlock['options']
@@ -12,30 +14,52 @@ type Props = {
 }
 
 export const AssignChatSettings = ({ options, onOptionsChange }: Props) => {
-  const handleEmailChange = (email?: string) =>
-    onOptionsChange({ assignType: options?.assignType || 'Agent', email })
+  const { t } = useTranslate()
+  const handleEmailChange = (email: string) =>
+    onOptionsChange({
+      assignType: options?.assignType || assignChatType.AGENT,
+      email,
+    })
 
-  const updateAssignChatType = (type: (typeof assignChatTypeOptions)[number]) =>
+  const handleTeamChange = (name: string) => {
+    onOptionsChange({
+      assignType: options?.assignType || assignChatType.TEAM,
+      name,
+    })
+  }
+
+  const updateAssignChatType = (type: assignChatType) =>
     onOptionsChange({
       assignType: type,
-      email: type === 'Handover' ? '' : options?.email,
     })
 
   return (
     <Stack spacing={4}>
       <DropdownList
-        label="Visibility:"
-        moreInfoTooltip='This setting determines who can see the uploaded files. "Public" means that anyone who has the link can see the files. "Private" means that only a members of this workspace can see the files.'
-        currentItem={options?.assignType || defaultAssignChatOptions.assignType}
-        onItemSelect={updateAssignChatType}
-        items={assignChatTypeOptions}
+        label={t('blocks.logic.assignChat.assignType')}
+        moreInfoTooltip={t('blocks.logic.assignChat.assignType.tooltip')}
+        currentItem={options?.assignType}
+        onItemSelect={(_, item) => item && updateAssignChatType(item.value)}
+        items={assignChatTypeOptions.map((option: assignChatType) => ({
+          value: option,
+          label: t('blocks.logic.assignChat.' + option),
+        }))}
       />
-      {options?.assignType !== 'Handover' && (
+      {options?.assignType === assignChatType.AGENT && (
         <TextInput
-          label="Assignee Email:"
+          label={t('blocks.logic.assignChat.assigneeEmail')}
           defaultValue={options?.email}
-          placeholder="Type an Assignee Email"
+          placeholder={t('blocks.logic.assignChat.assigneeEmail.placeholder')}
+          type="email"
           onChange={handleEmailChange}
+        />
+      )}
+      {options?.assignType === assignChatType.TEAM && (
+        <TextInput
+          label={t('blocks.logic.assignChat.teamName')}
+          defaultValue={options?.name}
+          placeholder={t('blocks.logic.assignChat.teamName.placeholder')}
+          onChange={handleTeamChange}
         />
       )}
     </Stack>

@@ -6,10 +6,10 @@ import {
   executableHttpRequestSchema,
   pixelOptionsSchema,
   redirectOptionsSchema,
+  assignChatOptionsSchema,
 } from '../blocks'
 import { nativeMessageSchema } from '../blocks/integrations/openai'
 import { groupSchema } from './shared'
-import { assignChatTypeOptions } from '../blocks/logic/constants'
 
 extendZodWithOpenApi(z)
 
@@ -100,10 +100,7 @@ export const clientSideActionSchema = z.discriminatedUnion('type', [
   z
     .object({
       type: z.literal('assign'),
-      assign: z.object({
-        assignType: z.enum(assignChatTypeOptions).optional(),
-        email: z.string().optional(),
-      }),
+      assign: assignChatOptionsSchema,
     })
     .merge(clientSideActionBaseSchema)
     .openapi({

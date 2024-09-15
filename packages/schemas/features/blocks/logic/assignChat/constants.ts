@@ -1,6 +1,11 @@
-import { AssignChatBlock } from './schema'
+export enum assignChatType {
+  AGENT = 'agent',
+  TEAM = 'team',
+  HANDOVER = 'handover',
+}
 
-export const defaultAssignChatOptions = {
-  assignType: 'Agent',
-  email: '',
-} as const satisfies AssignChatBlock['options']
+export const assignChatTypeOptions = [
+  assignChatType.AGENT,
+  assignChatType.TEAM,
+  assignChatType.HANDOVER,
+] as const satisfies assignChatType[]

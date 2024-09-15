@@ -15,7 +15,6 @@ import { WaitSettings } from '@/features/blocks/logic/wait/components/WaitSettin
 import { ScriptSettings } from '@/features/blocks/logic/script/components/ScriptSettings'
 import { JumpSettings } from '@/features/blocks/logic/jump/components/JumpSettings'
 import { AssignChatSettings } from '@/features/blocks/logic/assignChat/components/AssignChatSettings'
-import { CloseChatSettings } from '@/features/blocks/logic/closeChat/components/CloseChatSettings'
 import { MakeComSettings } from '@/features/blocks/integrations/makeCom/components/MakeComSettings'
 import { PabblyConnectSettings } from '@/features/blocks/integrations/pabbly/components/PabblyConnectSettings'
 import { ButtonsBlockSettings } from '@/features/blocks/inputs/buttons/components/ButtonsBlockSettings'
