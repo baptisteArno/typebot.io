@@ -304,7 +304,8 @@ export const BlockNode = ({
                   (pathname.endsWith('analytics') && isInputBlock(block))) &&
                   hasDefaultConnector(block) &&
                   groupId &&
-                  block.type !== LogicBlockType.JUMP && (
+                  block.type !== LogicBlockType.JUMP &&
+                  block.type !== LogicBlockType.CLOSE_CHAT && (
                     <BlockSourceEndpoint
                       source={{
                         blockId: block.id,
@@ -356,7 +357,9 @@ export const BlockNode = ({
 }
 
 const hasSettingsPopover = (block: BlockV6): block is BlockWithOptions =>
-  !isBubbleBlock(block) && block.type !== LogicBlockType.CONDITION
+  !isBubbleBlock(block) &&
+  block.type !== LogicBlockType.CONDITION &&
+  block.type !== LogicBlockType.CLOSE_CHAT
 
 const isMediaBubbleBlock = (
   block: BlockV6
