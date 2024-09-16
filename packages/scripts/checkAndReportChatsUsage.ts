@@ -361,6 +361,9 @@ const autoUpgradeToPro = async (
       },
     ],
     proration_behavior: 'always_invoice',
+    metadata: {
+      reason: 'auto upgrade',
+    },
   })
 
   await prisma.workspace.update({
