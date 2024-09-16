@@ -181,6 +181,7 @@ const VariableItem = ({
       <Editable
         defaultValue={variable.name}
         onSubmit={(name) => onChange({ name })}
+        minWidth={0}
       >
         <EditablePreview
           px="2"
