@@ -63,7 +63,6 @@ export const SmtpConfigForm = ({ config, onConfigChange }: Props) => {
       <TextInput
         isRequired
         label="Username"
-        type="email"
         defaultValue={config?.username}
         onChange={handleUsernameChange}
         withVariableButton={false}
