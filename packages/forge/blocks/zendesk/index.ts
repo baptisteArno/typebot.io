@@ -11,4 +11,5 @@ export const zendeskBlock = createBlock({
   LightLogo: ZendeskLogo,
   auth,
   actions: [authenticateMessagingUser, openWebWidget],
+  docsUrl: 'https://docs.typebot.io/editor/blocks/integrations/zendesk',
 })
