@@ -119,7 +119,8 @@ export const VariablesDrawer = ({ onClose }: Props) => {
           <SlideFade
             in={
               isVariableCreated ||
-              (filteredVariables && filteredVariables.length === 0)
+              (filteredVariables &&
+                !filteredVariables.some((v) => v.name === searchValue))
             }
             unmountOnExit
             offsetY={0}
