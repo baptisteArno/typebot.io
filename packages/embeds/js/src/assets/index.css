@@ -306,7 +306,10 @@ pre {
   width: 42px;
   height: 42px;
   stroke: rgb(var(--typebot-button-bg-rgb));
-  fill: var(--typebot-host-bubble-bg-color);
+  fill: rgba(
+    var(--typebot-host-bubble-bg-rgb),
+    var(--typebot-host-bubble-opacity)
+  );
   transition: fill 100ms ease-out;
 }
 
@@ -343,7 +346,10 @@ pre {
 }
 
 .secondary-button {
-  background-color: var(--typebot-host-bubble-bg-color);
+  background-color: rgba(
+    var(--typebot-host-bubble-bg-rgb),
+    var(--typebot-host-bubble-opacity)
+  );
   color: var(--typebot-host-bubble-color);
   border-radius: var(--typebot-button-border-radius);
 }

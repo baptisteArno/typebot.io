@@ -298,13 +298,6 @@ const getExpressionToEvaluate =
             type: 'value',
             value: [item],
           }
-        if (isEmpty(item))
-          return {
-            type: 'value',
-            value: Array.isArray(variableValue)
-              ? variableValue
-              : [variableValue],
-          }
         if (!Array.isArray(variableValue))
           return { type: 'value', value: [variableValue, item] }
         return { type: 'value', value: variableValue.concat(item) }
@@ -391,7 +384,12 @@ const parseTranscriptProps = async (
 const parsePreviewTranscriptProps = async (
   state: SessionState
 ): Promise<ParsedTranscriptProps | undefined> => {
-  if (!state.previewMetadata) return
+  if (!state.previewMetadata)
+    return {
+      answers: [],
+      setVariableHistory: [],
+      visitedEdges: [],
+    }
   return {
     answers: state.previewMetadata.answers ?? [],
     setVariableHistory: state.previewMetadata.setVariableHistory ?? [],

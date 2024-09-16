@@ -30,6 +30,7 @@ export type ChatChunk = Pick<
 export type Attachment = {
   type: string
   url: string
+  blobUrl?: string
 }
 
 export type TextInputSubmitContent = {
@@ -42,6 +43,7 @@ export type TextInputSubmitContent = {
 export type RecordingInputSubmitContent = {
   type: 'recording'
   url: string
+  blobUrl?: string
 }
 
 export type InputSubmitContent =

@@ -35,6 +35,15 @@ For this, you will need to set a new variable with the value "Now" before the Go
   />
 </div>
 
+## Limitations
+
+Google Sheets API is subject to hard limits set by Google:
+
+- 60 read requests per minute
+- 60 write requests per minute
+
+Knowing that, we suggest that you limit the number of Google Sheets blocks you use in your bot. If you need to get the data from multiple sheets, we suggest that you first aggregate the data in a single sheet and then use the Google Sheets block to get the data from that single sheet.
+
 ## Troubleshooting
 
 The Google sheets block didn't insert or update a row but was supposed to? Make sure to check the [logs](/results/overview#logs). If you still can't figure out what went wrong, shoot me a message using the chat button directly in the tool 👍

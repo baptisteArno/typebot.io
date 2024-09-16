@@ -131,7 +131,14 @@ const executeGroup = ({
   for (const block of nextGroup?.group.blocks.slice(
     nextGroup.blockIndex ?? 0
   )) {
-    if (stopAtBlockId && block.id === stopAtBlockId) return currentTranscript
+    if (
+      stopAtBlockId &&
+      block.id === stopAtBlockId &&
+      answers.length === 0 &&
+      setVariableHistory.length === 0 &&
+      visitedEdges.length === 0
+    )
+      return currentTranscript
     if (setVariableHistory.at(0)?.blockId === block.id)
       typebotsQueue[0].typebot.variables = applySetVariable(
         setVariableHistory.shift(),

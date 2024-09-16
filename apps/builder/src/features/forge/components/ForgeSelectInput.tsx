@@ -17,6 +17,7 @@ import {
   ForgedBlock,
 } from '@typebot.io/forge-repository/types'
 import { ReactNode, useMemo } from 'react'
+import { findFetcher } from '../helpers/findFetcher'
 
 type Props = {
   blockDef: ForgedBlockDefinition
@@ -51,32 +52,25 @@ export const ForgeSelectInput = ({
   const { workspace } = useWorkspace()
   const { showToast } = useToast()
 
-  const baseFetcher = useMemo(() => {
-    const fetchers = blockDef.fetchers ?? []
-    return fetchers.find((fetcher) => fetcher.id === fetcherId)
-  }, [blockDef.fetchers, fetcherId])
-
-  const actionFetcher = useMemo(() => {
-    if (baseFetcher) return
-    const fetchers = blockDef.actions.flatMap((action) => action.fetchers ?? [])
-    return fetchers.find((fetcher) => fetcher.id === fetcherId)
-  }, [baseFetcher, blockDef.actions, fetcherId])
+  const fetcher = useMemo(
+    () => findFetcher(blockDef, fetcherId),
+    [blockDef, fetcherId]
+  )
 
   const { data } = trpc.forge.fetchSelectItems.useQuery(
     {
       integrationId: blockDef.id,
-      options: pick(options, [
-        ...(actionFetcher ? ['action'] : []),
-        ...(blockDef.auth ? ['credentialsId'] : []),
-        ...((baseFetcher
-          ? baseFetcher.dependencies
-          : actionFetcher?.dependencies) ?? []),
-      ]),
+      options: pick(
+        options,
+        (blockDef.auth ? ['credentialsId'] : []).concat(
+          fetcher?.dependencies ?? []
+        )
+      ),
       workspaceId: workspace?.id as string,
       fetcherId,
     },
     {
-      enabled: !!workspace?.id && (!!baseFetcher || !!actionFetcher),
+      enabled: !!workspace?.id && !!fetcher,
       onError: (error) => {
         showToast({
           description: error.message,

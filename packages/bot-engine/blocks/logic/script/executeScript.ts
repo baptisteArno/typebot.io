@@ -12,8 +12,7 @@ export const executeScript = async (
   block: ScriptBlock
 ): Promise<ExecuteLogicResponse> => {
   const { variables } = state.typebotsQueue[0].typebot
-  if (!block.options?.content || state.whatsApp)
-    return { outgoingEdgeId: block.outgoingEdgeId }
+  if (!block.options?.content) return { outgoingEdgeId: block.outgoingEdgeId }
 
   const isExecutedOnClient =
     block.options.isExecutedOnClient ?? defaultScriptOptions.isExecutedOnClient

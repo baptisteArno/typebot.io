@@ -14,7 +14,9 @@ export const validateNumber = (
 ) => {
   if (inputValue === '') return false
 
-  const parsedNumber = Number(inputValue)
+  const parsedNumber = Number(
+    inputValue.includes(',') ? inputValue.replace(',', '.') : inputValue
+  )
   if (isNaN(parsedNumber)) return false
 
   const min =

@@ -75,7 +75,16 @@ export const TextInput = (props: Props) => {
           })),
           onUploadProgress: setUploadProgress,
         })
-        attachments = urls?.filter(isDefined)
+        attachments = urls
+          ?.map((urls, index) =>
+            urls
+              ? {
+                  ...urls,
+                  blobUrl: URL.createObjectURL(selectedFiles()[index]),
+                }
+              : null
+          )
+          .filter(isDefined)
       }
       props.onSubmit({
         type: 'text',
@@ -219,6 +228,7 @@ export const TextInput = (props: Props) => {
       props.onSubmit({
         type: 'recording',
         url: urls[0],
+        blobUrl: URL.createObjectURL(audioFile),
       })
     }
     mediaRecorder.start()

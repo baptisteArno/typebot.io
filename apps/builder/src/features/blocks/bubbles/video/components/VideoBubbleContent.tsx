@@ -1,31 +1,34 @@
 import { useTranslate } from '@tolgee/react'
-import { Box, Text, Image } from '@chakra-ui/react'
+import { Box, Text } from '@chakra-ui/react'
 import { VideoBubbleBlock } from '@typebot.io/schemas'
 import {
   VideoBubbleContentType,
   embedBaseUrls,
 } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
+import { VariableTag } from '@/features/graph/components/nodes/block/VariableTag'
+import { findUniqueVariable } from '@typebot.io/variables/findUniqueVariableValue'
+import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 
 type Props = {
   block: VideoBubbleBlock
 }
 
 export const VideoBubbleContent = ({ block }: Props) => {
+  const { typebot } = useTypebot()
   const { t } = useTranslate()
   if (!block.content?.url || !block.content.type)
     return <Text color="gray.500">{t('clickToEdit')}</Text>
-  const containsVariables =
-    block.content?.url?.includes('{{') && block.content.url.includes('}}')
+  const variable = typebot
+    ? findUniqueVariable(typebot?.variables)(block.content?.url)
+    : null
   switch (block.content.type) {
     case VideoBubbleContentType.URL:
       return (
-        <Box w="full" h="120px" pos="relative">
-          {containsVariables ? (
-            <Image
-              src="/images/dynamic-image.png"
-              alt="Dynamic video thumbnail"
-              rounded="md"
-            />
+        <Box w="full" h={variable ? undefined : ' 120px'} pos="relative">
+          {variable ? (
+            <Text>
+              Display <VariableTag variableName={variable.name} />
+            </Text>
           ) : (
             <video
               key={block.content.url}

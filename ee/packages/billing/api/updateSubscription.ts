@@ -116,6 +116,9 @@ export const updateSubscription = async ({
     await stripe.subscriptions.update(subscription.id, {
       items,
       proration_behavior: 'always_invoice',
+      metadata: {
+        reason: 'explicit update',
+      },
     })
   } else {
     const checkoutUrl = await createCheckoutSessionUrl(stripe)({
