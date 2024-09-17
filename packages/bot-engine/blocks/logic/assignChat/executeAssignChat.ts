@@ -5,18 +5,16 @@ import { assignChatType } from '@typebot.io/schemas/features/blocks/logic/assign
 export const executeAssignChat = (
   _: SessionState,
   block: AssignChatBlock
-): ExecuteLogicResponse => {
-  let assignType: assignChatType = block.options.assignType
+): ExecuteLogicResponse | void => {
+  let assignType: assignChatType | undefined = block.options?.assignType
+  if (!assignType) return
+
   const assign: AssignChatBlock['options'] = {
     assignType: assignType,
   }
 
-  if (assignType === assignChatType.AGENT) {
-    assign['email'] = block.options?.email
-  }
-
-  if (assignType === assignChatType.TEAM) {
-    assign['name'] = block.options?.name
+  if (block.options?.email) {
+    assign['email'] = block.options.email
   }
 
   return {

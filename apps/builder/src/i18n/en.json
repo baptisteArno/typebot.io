@@ -218,8 +218,6 @@
   "blocks.logic.assignChat.assignType.tooltip": "This setting determines the type of the assignation. \"Agent\" means that the chat will be assigned to a specific agent. \"Team\" means that the chat will be assigned to a team of agents. \"Handover\" means that the chat will be...",
   "blocks.logic.assignChat.assigneeEmail": "Assignee Email:",
   "blocks.logic.assignChat.assigneeEmail.placeholder": "Type an assignee email",
-  "blocks.logic.assignChat.teamName": "Team Name:",
-  "blocks.logic.assignChat.teamName.placeholder": "Type an team name",
   "blocks.logic.closeChat.closeChat": "Close Chat",
   "blocks.integrations.googleAnalytics.blockCard.tooltip": "Google Analytics",
   "blocks.integrations.googleSheets.blockCard.tooltip": "Google Sheets",

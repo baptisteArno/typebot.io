@@ -10,15 +10,14 @@ type Props = {
 
 export const AssignChatNodeContent = ({ options }: Props) => {
   const { t } = useTranslate()
-  const assignType: assignChatType = options?.assignType
+  const assignType: assignChatType | undefined = options?.assignType
   const email: string = options?.email || ''
-  const name: string = options?.name || ''
 
   return (
     <Text color="currentcolor" noOfLines={2}>
       {t('blocks.logic.assignChat.assignTo')}{' '}
       {assignType && <Tag>{t('blocks.logic.assignChat.' + assignType)}</Tag>}{' '}
-      {email && email} {name && name}
+      {email && email}
     </Text>
   )
 }

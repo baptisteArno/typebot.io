@@ -17,16 +17,9 @@ export const AssignChatSettings = ({ options, onOptionsChange }: Props) => {
   const { t } = useTranslate()
   const handleEmailChange = (email: string) =>
     onOptionsChange({
-      assignType: options?.assignType || assignChatType.AGENT,
+      assignType: options?.assignType,
       email,
     })
-
-  const handleTeamChange = (name: string) => {
-    onOptionsChange({
-      assignType: options?.assignType || assignChatType.TEAM,
-      name,
-    })
-  }
 
   const updateAssignChatType = (type: assignChatType) =>
     onOptionsChange({
@@ -45,21 +38,14 @@ export const AssignChatSettings = ({ options, onOptionsChange }: Props) => {
           label: t('blocks.logic.assignChat.' + option),
         }))}
       />
-      {options?.assignType === assignChatType.AGENT && (
+      {(options?.assignType === assignChatType.AGENT ||
+        options?.assignType === assignChatType.TEAM) && (
         <TextInput
           label={t('blocks.logic.assignChat.assigneeEmail')}
           defaultValue={options?.email}
           placeholder={t('blocks.logic.assignChat.assigneeEmail.placeholder')}
           type="email"
           onChange={handleEmailChange}
-        />
-      )}
-      {options?.assignType === assignChatType.TEAM && (
-        <TextInput
-          label={t('blocks.logic.assignChat.teamName')}
-          defaultValue={options?.name}
-          placeholder={t('blocks.logic.assignChat.teamName.placeholder')}
-          onChange={handleTeamChange}
         />
       )}
     </Stack>
