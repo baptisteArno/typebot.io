@@ -34,8 +34,8 @@ spec:
               cpu: 100m
               memory: 256Mi
             limits:
-              cpu: 800m
-              memory: 3Gi
+              cpu: 400m
+              memory: 2Gi
         - name: typebot-viewer
           envFrom:
             - configMapRef:
@@ -51,8 +51,8 @@ spec:
               cpu: 100m
               memory: 256Mi
             limits:
-              cpu: 800m
-              memory: 3Gi
+              cpu: 1200m
+              memory: 4Gi
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
