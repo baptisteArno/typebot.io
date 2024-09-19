@@ -79,22 +79,34 @@ export type ActionDefinition<
          * Used to determine the URL to be displayed as a text bubble in runtimes where the code can't be executed. (i.e. WhatsApp)
          */
         parseUrl: (params: {
+          credentials: CredentialsFromAuthDef<A>
           options: z.infer<BaseOptions> & z.infer<Options>
+          variables: VariableStore
+          logs: LogsStore
         }) => string | undefined
         waitForEvent?: {
           getSaveVariableId?: (
             options: z.infer<BaseOptions> & z.infer<Options>
           ) => string | undefined
           parseFunction: (params: {
+            credentials: CredentialsFromAuthDef<A>
             options: z.infer<BaseOptions> & z.infer<Options>
+            variables: VariableStore
+            logs: LogsStore
           }) => FunctionToExecute
         }
         parseInitFunction: (params: {
+          credentials: CredentialsFromAuthDef<A>
           options: z.infer<BaseOptions> & z.infer<Options>
+          variables: VariableStore
+          logs: LogsStore
         }) => FunctionToExecute
       }
       parseFunction?: (params: {
+        credentials: CredentialsFromAuthDef<A>
         options: z.infer<BaseOptions> & z.infer<Options>
+        variables: VariableStore
+        logs: LogsStore
       }) => FunctionToExecute
     }
   }

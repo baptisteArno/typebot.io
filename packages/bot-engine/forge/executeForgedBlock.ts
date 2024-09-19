@@ -136,7 +136,10 @@ export const executeForgedBlock = async (
     clientSideActions.push({
       type: 'codeToExecute',
       codeToExecute: action?.run?.web?.parseFunction({
+        credentials: credentialsData ?? {},
         options: parsedOptions,
+        variables,
+        logs: logsStore,
       }),
     })
   }
@@ -151,14 +154,23 @@ export const executeForgedBlock = async (
           type: 'custom-embed',
           content: {
             url: action.run.web.displayEmbedBubble.parseUrl({
+              credentials: credentialsData ?? {},
               options: parsedOptions,
+              variables,
+              logs: logsStore,
             }),
             initFunction: action.run.web.displayEmbedBubble.parseInitFunction({
+              credentials: credentialsData ?? {},
               options: parsedOptions,
+              variables,
+              logs: logsStore,
             }),
             waitForEventFunction:
               action.run.web.displayEmbedBubble.waitForEvent?.parseFunction?.({
+                credentials: credentialsData ?? {},
                 options: parsedOptions,
+                variables,
+                logs: logsStore,
               }),
           },
         }
