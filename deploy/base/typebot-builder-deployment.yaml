@@ -36,6 +36,23 @@ spec:
             limits:
               cpu: 400m
               memory: 2Gi
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 100
+            periodSeconds: 10
+            timeoutSeconds: 3
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 3000
+            periodSeconds: 20
+            timeoutSeconds: 3
+            successThreshold: 2
+            initialDelaySeconds: 35                 
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
