@@ -25,7 +25,7 @@ export const auth = {
       withVariableButton: false,
       isDebounceDisabled: true,
       helperText:
-        '[Finding web widget key?](http://localhost:3004/editor/blocks/integrations/zendesk#open-web-widget)',
+        '[Finding web widget key](http://localhost:3004/editor/blocks/integrations/zendesk#open-web-widget)',
     })
   }),
 } satisfies AuthDefinition
