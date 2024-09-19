@@ -123,7 +123,7 @@ export const createChatMessage = createAction({
   getSetVariableIds: ({ responseMapping }) =>
     responseMapping?.map((res) => res.variableId).filter(isDefined) ?? [],
   run: {
-    server: async ({ credentials: { apiKey }, options, variables, logs }) => {
+    server: async ({ credentials: { apiKey }, options, variables }) => {
       const modelName = options.model ?? defaultAnthropicOptions.model
       const model = createAnthropic({
         apiKey,
