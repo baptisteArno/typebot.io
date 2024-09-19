@@ -1,33 +1,41 @@
 import { createAction, option } from '@typebot.io/forge'
+import { sign } from 'jsonwebtoken';
 import { auth } from '../auth'
 
 export const openWebWidget = createAction({
   auth,
   name: 'Open Web Widget',
   options: option.object({
-    key: option.string.layout({
-      label: "Web widget key",
+    userId: option.string.layout({
+      label: 'User ID',
+      isRequired: true,
+    }),
+    name: option.string.layout({
+      label: 'Name',
+      isRequired: true,
+    }),
+    email: option.string.layout({
+      label: 'Email',
       isRequired: true,
     }),
     isAuthEnabled: option.boolean.layout({
       accordion: "Authentication",
       label: "Enable user authentication",
       defaultValue: false,
-    }),
-    token: option.string.layout({
-      accordion: "Authentication",
-      label: "User auth token",
-      isRequired: false
     })
   }),
   run: {
     web: {
-      parseFunction: ({ options }) => {
+      parseFunction: ({
+        credentials: { conversationsSecretKey, conversationsKeyId, webWidgetKey },
+        options: { userId, name, email, isAuthEnabled },
+      }) => {
+        const token = sign({ scope: 'user', external_id: userId, name: name, email: email, email_verified: "true" }, conversationsSecretKey ?? '', { algorithm: "HS256", keyid: conversationsKeyId ?? '' });
         return {
           args: {
-            isAuthEnabled: options.isAuthEnabled ? options.isAuthEnabled?.toString() : "false",
-            token: options.token ?? null,
-            key: options.key ?? null
+            isAuthEnabled: isAuthEnabled ? isAuthEnabled?.toString() : "false",
+            token: token,
+            key: webWidgetKey ?? ''
           },
           content: parseOpenMessenger()
         }

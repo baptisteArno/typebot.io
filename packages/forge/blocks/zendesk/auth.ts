@@ -19,5 +19,13 @@ export const auth = {
       helperText:
         '[How to find my Zendesk Key ID and Secret Key?](https://docs.typebot.io/editor/blocks/integrations/zendesk#how-to-find-my-zendesk-key-id-and-secret-key)',
     }),
+    webWidgetKey: option.string.layout({
+      label: 'Web Widget Key',
+      isRequired: false,
+      withVariableButton: false,
+      isDebounceDisabled: true,
+      helperText:
+        '[Finding web widget key?](http://localhost:3004/editor/blocks/integrations/zendesk#open-web-widget)',
+    })
   }),
 } satisfies AuthDefinition
