@@ -7,8 +7,12 @@ commonLabels:
 
 resources:
   - namespace.yaml
-  - config.yaml
-  - deployment.yaml
-  - service.yaml
-  - builder-ingress.yaml
-  - viewer-ingress.yaml
+  - typebot-builder-configmap.yaml
+  - typebot-builder-deployment.yaml
+  - typebot-builder-ingress.yaml
+  - typebot-builder-service.yaml
+  - typebot-viewer-configmap.yaml
+  - typebot-viewer-deployment.yaml
+  - typebot-viewer-ingress.yaml
+  - typebot-viewer-service.yaml
+  - typebot-viewer-hpa.yaml

@@ -1,23 +1,23 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: typebot-builder-ingress
+  name: typebot-viewer-ingress
   annotations:
     kubernetes.io/ingress.class: kong
     cert-manager.io/cluster-issuer: letsencrypt
 spec:
   rules:
-    - host: eddie.us-east-1.dev.cloudhumans.io
+    - host: eddie.us-east-1.prd.cloudhumans.io
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: typebot
+                name: typebot-viewer
                 port:
-                  name: http-builder
+                  name: http-viewer
   tls:
     - hosts:
-        - eddie.us-east-1.dev.cloudhumans.io
-      secretName: typebot-builder-tls-secret
+        - eddie.us-east-1.prd.cloudhumans.io
+      secretName: typebot-viewer-tls-secret

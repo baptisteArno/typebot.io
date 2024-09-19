@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: typebot
-data:
-  NODE_ENV: development
-  NEXTAUTH_URL: http://localhost:3000
-  NEXT_PUBLIC_VIEWER_URL: http://localhost:3001

@@ -2,19 +2,15 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: typebot
-  name: typebot
+    app: typebot-builder
+  name: typebot-builder
 spec:
   ports:
     - name: http-builder
       port: 80
       protocol: TCP
       targetPort: 3000
-    - name: http-viewer
-      port: 81
-      protocol: TCP
-      targetPort: 3001
   selector:
-    app: typebot
+    app: typebot-builder
   sessionAffinity: None
   type: ClusterIP

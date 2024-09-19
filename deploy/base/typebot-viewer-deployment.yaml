@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: typebot
+  name: typebot-viewer
 spec:
   replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: typebot
+      app: typebot-viewer
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -16,32 +16,15 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        app: typebot
+        app: typebot-viewer
     spec:
       containers:
-        - name: typebot
-          envFrom:
-            - configMapRef:
-                name: typebot
-            - secretRef:
-                name: typebot
-          image: typebot-builder-image
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 3000
-          resources:
-            requests:
-              cpu: 100m
-              memory: 256Mi
-            limits:
-              cpu: 400m
-              memory: 2Gi
         - name: typebot-viewer
           envFrom:
             - configMapRef:
-                name: typebot
+                name: typebot-viewer
             - secretRef:
-                name: typebot
+                name: typebot-viewer
           image: typebot-viewer-image
           imagePullPolicy: IfNotPresent
           ports:
