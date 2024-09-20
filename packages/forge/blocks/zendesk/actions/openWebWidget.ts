@@ -8,32 +8,34 @@ export const openWebWidget = createAction({
   options: option.object({
     userId: option.string.layout({
       label: 'User ID',
-      isRequired: true,
+      isRequired: false,
     }),
     name: option.string.layout({
       label: 'Name',
-      isRequired: true,
+      isRequired: false,
     }),
     email: option.string.layout({
       label: 'Email',
-      isRequired: true,
+      isRequired: false,
     }),
-    isAuthEnabled: option.boolean.layout({
-      accordion: "Authentication",
-      label: "Enable user authentication",
-      defaultValue: false,
-    })
   }),
   run: {
     web: {
       parseFunction: ({
         credentials: { conversationsSecretKey, conversationsKeyId, webWidgetKey },
-        options: { userId, name, email, isAuthEnabled },
+        options: { userId, name, email },
       }) => {
-        const token = sign({ scope: 'user', external_id: userId, name: name, email: email, email_verified: "true" }, conversationsSecretKey ?? '', { algorithm: "HS256", keyid: conversationsKeyId ?? '' });
+        let token = ''
+
+        if (userId && email) {
+          token = sign({ scope: 'user', external_id: userId ?? '', name: name ?? '', email: email, email_verified: "true" }, conversationsSecretKey ?? '', { algorithm: "HS256", keyid: conversationsKeyId ?? '' });
+        } else if (userId) {
+          token = sign({ scope: 'user', external_id: userId ?? '', name: name ?? '' }, conversationsSecretKey ?? '', { algorithm: "HS256", keyid: conversationsKeyId ?? '' });
+        }
+
         return {
           args: {
-            isAuthEnabled: isAuthEnabled ? isAuthEnabled?.toString() : "false",
+            isAuthEnabled: (userId !== undefined && userId != '') ? "true" : "false",
             token: token,
             key: webWidgetKey ?? ''
           },
@@ -59,7 +61,7 @@ const parseOpenMessenger = () => {
     s.parentNode.insertBefore(ze_script, s);
 
     ze_script.onload = function () {
-      if ( isAuthEnabled === "true" ) {
+      if ( isAuthEnabled === "true" && token != "") {
         zE("messenger", "loginUser", function (callback) {
           callback(token);
           zE("messenger", "open");
