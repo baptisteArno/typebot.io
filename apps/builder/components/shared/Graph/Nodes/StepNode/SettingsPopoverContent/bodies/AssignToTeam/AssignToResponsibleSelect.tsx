@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import OctaSelect from 'components/octaComponents/OctaSelect/OctaSelect'
 import { useTypebot } from 'contexts/TypebotContext'
 import { OptionType } from 'components/octaComponents/OctaSelect/OctaSelect.type'
@@ -87,6 +87,10 @@ export const AssignToResponsibleSelect = ({
     '@AGENT': (agent: IParsedAgents, options: IOptions) =>
       generateAgentValue(agent),
     '@GROUP': (agent: IParsedAgents, options: IOptions) =>
+      generateAgentValue(agent),
+    'interactive-list@AGENT': (agent: IParsedAgents, options: IOptions) =>
+      generateAgentValue(agent),
+    'interactive-buttons@AGENT': (agent: IParsedAgents, options: IOptions) =>
       generateAgentValue(agent),
   }
 
