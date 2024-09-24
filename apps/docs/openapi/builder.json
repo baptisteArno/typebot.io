@@ -13054,6 +13054,40 @@
                               "workspaceId",
                               "name"
                             ]
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "data": {
+                                "type": "object",
+                                "properties": {
+                                  "conversationsSecretKey": {
+                                    "type": "string"
+                                  },
+                                  "conversationsKeyId": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "zendesk"
+                                ]
+                              },
+                              "workspaceId": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "data",
+                              "type",
+                              "workspaceId",
+                              "name"
+                            ]
                           }
                         ]
                       },
@@ -13176,7 +13210,8 @@
                 "open-router",
                 "nocodb",
                 "segment",
-                "groq"
+                "groq",
+                "zendesk"
               ]
             }
           }
@@ -13214,7 +13249,8 @@
                               "open-router",
                               "nocodb",
                               "segment",
-                              "groq"
+                              "groq",
+                              "zendesk"
                             ]
                           },
                           "name": {
@@ -13966,6 +14002,40 @@
                             "type": "string",
                             "enum": [
                               "groq"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "data",
+                          "type",
+                          "workspaceId"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "conversationsSecretKey": {
+                                "type": "string"
+                              },
+                              "conversationsKeyId": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "zendesk"
                             ]
                           },
                           "workspaceId": {
@@ -22867,6 +22937,68 @@
                             }
                           }
                         }
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "type"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "outgoingEdgeId": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "zendesk"
+                ]
+              },
+              "options": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "credentialsId": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "credentialsId": {
+                        "type": "string"
+                      },
+                      "action": {
+                        "type": "string",
+                        "enum": [
+                          "Open Web Widget"
+                        ]
+                      },
+                      "userId": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "webWidgetKey": {
+                        "type": "string"
                       }
                     },
                     "required": [

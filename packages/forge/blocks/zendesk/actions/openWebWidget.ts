@@ -1,5 +1,5 @@
 import { createAction, option } from '@typebot.io/forge'
-import { sign } from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken'
 import { auth } from '../auth'
 
 export const openWebWidget = createAction({
@@ -8,22 +8,24 @@ export const openWebWidget = createAction({
   options: option.object({
     userId: option.string.layout({
       label: 'User ID',
-      isRequired: false,
     }),
     name: option.string.layout({
       label: 'Name',
-      isRequired: false,
     }),
     email: option.string.layout({
       label: 'Email',
-      isRequired: false,
+    }),
+    webWidgetKey: option.string.layout({
+      label: 'Web Widget Key',
+      helperText:
+        '[Finding web widget key](https://docs.typebot.io/editor/blocks/integrations/zendesk#open-web-widget)',
     }),
   }),
   run: {
     web: {
-      parseFunction: ({
-        credentials: { conversationsSecretKey, conversationsKeyId, webWidgetKey },
-        options: { userId, name, email },
+      parseFunction: ({ 
+        credentials: { conversationsSecretKey, conversationsKeyId,  },
+        options: { userId, name, email, webWidgetKey },
       }) => {
         let token = ''
 
@@ -73,4 +75,3 @@ const parseOpenMessenger = () => {
   })(document, "script");
   `
 }
-
