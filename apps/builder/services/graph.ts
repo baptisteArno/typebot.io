@@ -310,7 +310,7 @@ const computedItemHeight = (item) => {
   const base = (item.steps.length - 1) * 269 + 500
   const items = item.steps.filter((item) => item.hasOwnProperty('items'))
   const itemsLenght = items.reduce((a, c) => {
-    return a + c.items.length
+    return a + c.items?.length
   }, 0)
 
   if (itemsLenght > 4) {
