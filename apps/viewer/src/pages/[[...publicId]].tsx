@@ -1,78 +1,84 @@
-import { IncomingMessage } from 'http'
-import { ErrorPage } from '@/components/ErrorPage'
-import { NotFoundPage } from '@/components/NotFoundPage'
-import { GetServerSideProps, GetServerSidePropsContext } from 'next'
-import { isNotDefined } from '@typebot.io/lib'
-import { TypebotPageProps, TypebotPageV2 } from '@/components/TypebotPageV2'
-import { TypebotPageV3, TypebotV3PageProps } from '@/components/TypebotPageV3'
-import { env } from '@typebot.io/env'
-import prisma from '@typebot.io/lib/prisma'
-import { defaultSettings } from '@typebot.io/schemas/features/typebot/settings/constants'
+import type { IncomingMessage } from "http";
+import { ErrorPage } from "@/components/ErrorPage";
+import { NotFoundPage } from "@/components/NotFoundPage";
+import {
+  type TypebotPageProps,
+  TypebotPageV2,
+} from "@/components/TypebotPageV2";
+import {
+  TypebotPageV3,
+  type TypebotV3PageProps,
+} from "@/components/TypebotPageV3";
+import { env } from "@typebot.io/env";
+import { isNotDefined } from "@typebot.io/lib/utils";
+import prisma from "@typebot.io/prisma";
+import { defaultSettings } from "@typebot.io/settings/constants";
 import {
   defaultBackgroundColor,
   defaultBackgroundType,
-} from '@typebot.io/schemas/features/typebot/theme/constants'
+} from "@typebot.io/theme/constants";
+import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 // Browsers that doesn't support ES modules and/or web components
 const incompatibleBrowsers = [
   {
-    name: 'UC Browser',
+    name: "UC Browser",
     regex: /ucbrowser/i,
   },
   {
-    name: 'Internet Explorer',
+    name: "Internet Explorer",
     regex: /msie|trident/i,
   },
   {
-    name: 'Opera Mini',
+    name: "Opera Mini",
     regex: /opera mini/i,
   },
-]
+];
 
 const log = (message: string) => {
-  if (!env.DEBUG) return
-  console.log(`[DEBUG] ${message}`)
-}
+  if (!env.DEBUG) return;
+  console.log(`[DEBUG] ${message}`);
+};
 
 export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
 ) => {
   const incompatibleBrowser =
     incompatibleBrowsers.find((browser) =>
-      browser.regex.test(context.req.headers['user-agent'] ?? '')
-    )?.name ?? null
-  const pathname = context.resolvedUrl.split('?')[0]
-  const { host, forwardedHost } = getHost(context.req)
-  log(`host: ${host}`)
-  log(`forwardedHost: ${forwardedHost}`)
+      browser.regex.test(context.req.headers["user-agent"] ?? ""),
+    )?.name ?? null;
+  const pathname = context.resolvedUrl.split("?")[0];
+  const { host, forwardedHost } = getHost(context.req);
+  log(`host: ${host}`);
+  log(`forwardedHost: ${forwardedHost}`);
   const protocol =
-    context.req.headers['x-forwarded-proto'] === 'https' ||
+    context.req.headers["x-forwarded-proto"] === "https" ||
     (context.req.socket as unknown as { encrypted: boolean }).encrypted
-      ? 'https'
-      : 'http'
+      ? "https"
+      : "http";
 
-  log(`Request protocol: ${protocol}`)
+  log(`Request protocol: ${protocol}`);
   try {
-    if (!host) return { props: {} }
-    const viewerUrls = env.NEXT_PUBLIC_VIEWER_URL
-    log(`viewerUrls: ${viewerUrls}`)
+    if (!host) return { props: {} };
+    const viewerUrls = env.NEXT_PUBLIC_VIEWER_URL;
+    log(`viewerUrls: ${viewerUrls}`);
     const isMatchingViewerUrl = env.NEXT_PUBLIC_E2E_TEST
       ? true
       : viewerUrls.some(
           (url) =>
-            host.split(':')[0].includes(url.split('//')[1].split(':')[0]) ||
+            host.split(":")[0].includes(url.split("//")[1].split(":")[0]) ||
             (forwardedHost &&
               forwardedHost
-                .split(':')[0]
-                .includes(url.split('//')[1].split(':')[0]))
-        )
-    log(`isMatchingViewerUrl: ${isMatchingViewerUrl}`)
+                .split(":")[0]
+                .includes(url.split("//")[1].split(":")[0])),
+        );
+    log(`isMatchingViewerUrl: ${isMatchingViewerUrl}`);
     const customDomain = `${forwardedHost ?? host}${
-      pathname === '/' ? '' : pathname
-    }`
+      pathname === "/" ? "" : pathname
+    }`;
     const publishedTypebot = isMatchingViewerUrl
       ? await getTypebotFromPublicId(context.query.publicId?.toString())
-      : await getTypebotFromCustomDomain(customDomain)
+      : await getTypebotFromCustomDomain(customDomain);
 
     return {
       props: {
@@ -81,21 +87,21 @@ export const getServerSideProps: GetServerSideProps = async (
         isMatchingViewerUrl,
         url: `${protocol}://${forwardedHost ?? host}${pathname}`,
       },
-    }
+    };
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
   return {
     props: {
       incompatibleBrowser,
       url: `${protocol}://${forwardedHost ?? host}${pathname}`,
     },
-  }
-}
+  };
+};
 
 const getTypebotFromPublicId = async (publicId?: string) => {
   const publishedTypebot = (await prisma.publicTypebot.findFirst({
-    where: { typebot: { publicId: publicId ?? '' } },
+    where: { typebot: { publicId: publicId ?? "" } },
     select: {
       variables: true,
       settings: true,
@@ -114,8 +120,8 @@ const getTypebotFromPublicId = async (publicId?: string) => {
         },
       },
     },
-  })) as TypebotPageProps['publishedTypebot'] | null
-  if (isNotDefined(publishedTypebot)) return null
+  })) as TypebotPageProps["publishedTypebot"] | null;
+  if (isNotDefined(publishedTypebot)) return null;
   return publishedTypebot.version
     ? ({
         name: publishedTypebot.typebot.name,
@@ -131,15 +137,15 @@ const getTypebotFromPublicId = async (publicId?: string) => {
         font: publishedTypebot.theme.general?.font ?? null,
       } satisfies Pick<
         TypebotV3PageProps,
-        | 'name'
-        | 'publicId'
-        | 'background'
-        | 'isHideQueryParamsEnabled'
-        | 'metadata'
-        | 'font'
+        | "name"
+        | "publicId"
+        | "background"
+        | "isHideQueryParamsEnabled"
+        | "metadata"
+        | "font"
       >)
-    : publishedTypebot
-}
+    : publishedTypebot;
+};
 
 const getTypebotFromCustomDomain = async (customDomain: string) => {
   const publishedTypebot = (await prisma.publicTypebot.findFirst({
@@ -162,8 +168,8 @@ const getTypebotFromCustomDomain = async (customDomain: string) => {
         },
       },
     },
-  })) as TypebotPageProps['publishedTypebot'] | null
-  if (isNotDefined(publishedTypebot)) return null
+  })) as TypebotPageProps["publishedTypebot"] | null;
+  if (isNotDefined(publishedTypebot)) return null;
   return publishedTypebot.version
     ? ({
         name: publishedTypebot.typebot.name,
@@ -179,63 +185,63 @@ const getTypebotFromCustomDomain = async (customDomain: string) => {
         font: publishedTypebot.theme.general?.font ?? null,
       } satisfies Pick<
         TypebotV3PageProps,
-        | 'name'
-        | 'publicId'
-        | 'background'
-        | 'isHideQueryParamsEnabled'
-        | 'metadata'
-        | 'font'
+        | "name"
+        | "publicId"
+        | "background"
+        | "isHideQueryParamsEnabled"
+        | "metadata"
+        | "font"
       >)
-    : publishedTypebot
-}
+    : publishedTypebot;
+};
 
 const getHost = (
-  req?: IncomingMessage
+  req?: IncomingMessage,
 ): { host?: string; forwardedHost?: string } => ({
   host: req?.headers ? req.headers.host : window.location.host,
-  forwardedHost: req?.headers['x-forwarded-host'] as string | undefined,
-})
+  forwardedHost: req?.headers["x-forwarded-host"] as string | undefined,
+});
 
 const App = ({
   publishedTypebot,
   incompatibleBrowser,
   ...props
 }: {
-  isIE: boolean
-  customHeadCode: string | null
-  url: string
-  isMatchingViewerUrl?: boolean
+  isIE: boolean;
+  customHeadCode: string | null;
+  url: string;
+  isMatchingViewerUrl?: boolean;
   publishedTypebot:
-    | TypebotPageProps['publishedTypebot']
+    | TypebotPageProps["publishedTypebot"]
     | Pick<
         TypebotV3PageProps,
-        | 'name'
-        | 'publicId'
-        | 'background'
-        | 'isHideQueryParamsEnabled'
-        | 'metadata'
-        | 'font'
-      >
-  incompatibleBrowser: string | null
+        | "name"
+        | "publicId"
+        | "background"
+        | "isHideQueryParamsEnabled"
+        | "metadata"
+        | "font"
+      >;
+  incompatibleBrowser: string | null;
 }) => {
   if (incompatibleBrowser)
     return (
       <ErrorPage
         error={
           new Error(
-            `Your web browser: ${incompatibleBrowser}, is not supported.`
+            `Your web browser: ${incompatibleBrowser}, is not supported.`,
           )
         }
       />
-    )
+    );
   if (
     !publishedTypebot ||
-    ('typebot' in publishedTypebot && publishedTypebot.typebot.isArchived)
+    ("typebot" in publishedTypebot && publishedTypebot.typebot.isArchived)
   )
-    return <NotFoundPage />
-  if ('typebot' in publishedTypebot && publishedTypebot.typebot.isClosed)
-    return <ErrorPage error={new Error('This bot is now closed')} />
-  return 'typebot' in publishedTypebot ? (
+    return <NotFoundPage />;
+  if ("typebot" in publishedTypebot && publishedTypebot.typebot.isClosed)
+    return <ErrorPage error={new Error("This bot is now closed")} />;
+  return "typebot" in publishedTypebot ? (
     <TypebotPageV2 publishedTypebot={publishedTypebot} {...props} />
   ) : (
     <TypebotPageV3
@@ -256,7 +262,7 @@ const App = ({
       metadata={publishedTypebot.metadata ?? {}}
       font={publishedTypebot.font}
     />
-  )
-}
+  );
+};
 
-export default App
+export default App;

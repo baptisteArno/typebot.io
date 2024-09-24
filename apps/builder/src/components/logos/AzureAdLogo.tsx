@@ -1,4 +1,4 @@
-import { Icon, IconProps } from '@chakra-ui/react'
+import { Icon, type IconProps } from "@chakra-ui/react";
 
 export const AzureAdLogo = (props: IconProps) => {
   return (
@@ -27,5 +27,5 @@ export const AzureAdLogo = (props: IconProps) => {
         </g>
       </g>
     </Icon>
-  )
-}
+  );
+};

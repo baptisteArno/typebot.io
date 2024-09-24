@@ -1,7 +1,7 @@
-import { roundCorners } from 'svg-round-corners'
-import { pathRadius } from '../constants'
-import { Coordinates } from '../types'
-import { computeThreeSegments } from './segments'
+import { roundCorners } from "svg-round-corners";
+import { pathRadius } from "../constants";
+import type { Coordinates } from "../types";
+import { computeThreeSegments } from "./segments";
 
 export const computeEdgePathToMouse = ({
   sourceGroupCoordinates,
@@ -9,10 +9,10 @@ export const computeEdgePathToMouse = ({
   sourceTop,
   elementWidth,
 }: {
-  sourceGroupCoordinates: Coordinates
-  mousePosition: Coordinates
-  sourceTop: number
-  elementWidth: number
+  sourceGroupCoordinates: Coordinates;
+  mousePosition: Coordinates;
+  sourceTop: number;
+  elementWidth: number;
 }): string => {
   const sourcePosition = {
     x:
@@ -20,18 +20,18 @@ export const computeEdgePathToMouse = ({
         ? sourceGroupCoordinates.x + elementWidth
         : sourceGroupCoordinates.x,
     y: sourceTop,
-  }
+  };
   const sourceType =
     mousePosition.x - sourceGroupCoordinates.x > elementWidth / 2
-      ? 'right'
-      : 'left'
+      ? "right"
+      : "left";
   const segments = computeThreeSegments(
     sourcePosition,
     mousePosition,
-    sourceType
-  )
+    sourceType,
+  );
   return roundCorners(
     `M${sourcePosition.x},${sourcePosition.y} ${segments}`,
-    pathRadius
-  ).path
-}
+    pathRadius,
+  ).path;
+};

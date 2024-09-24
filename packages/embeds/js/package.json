@@ -1,23 +1,40 @@
 {
   "name": "@typebot.io/js",
-  "version": "0.3.14",
+  "version": "0.3.15",
   "description": "Javascript library to display typebots on your website",
+  "license": "AGPL-3.0-or-later",
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./web": {
+      "types": "./dist/web.d.ts",
+      "default": "./dist/web.js"
+    }
+  },
   "scripts": {
     "dev": "rollup --watch --config rollup.config.js",
-    "build": "rollup --config rollup.config.js",
-    "lint": "eslint --fix \"src/**/*.ts*\"",
-    "format:check": "prettier --check ./src"
+    "build": "rollup --config rollup.config.js"
   },
-  "license": "AGPL-3.0-or-later",
   "dependencies": {
     "@ai-sdk/ui-utils": "0.0.36",
-    "@ark-ui/solid": "3.3.0",
+    "@ark-ui/solid": "3.9.0",
     "@fix-webm-duration/fix": "1.0.1",
     "@stripe/stripe-js": "1.54.1",
-    "@udecode/plate-common": "30.4.5",
+    "@typebot.io/blocks-bubbles": "workspace:*",
+    "@typebot.io/blocks-inputs": "workspace:*",
+    "@typebot.io/blocks-logic": "workspace:*",
+    "@typebot.io/bot-engine": "workspace:*",
+    "@typebot.io/env": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/rich-text": "workspace:*",
+    "@typebot.io/settings": "workspace:*",
+    "@typebot.io/theme": "workspace:*",
+    "clsx": "2.0.0",
     "dompurify": "3.0.6",
     "ky": "1.2.4",
     "marked": "9.0.3",
@@ -25,32 +42,22 @@
     "solid-js": "1.7.8"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "7.22.5",
-    "@rollup/plugin-babel": "6.0.3",
+    "@babel/preset-typescript": "7.24.7",
+    "@rollup/plugin-babel": "6.0.4",
     "@rollup/plugin-commonjs": "26.0.1",
-    "@rollup/plugin-node-resolve": "15.1.0",
+    "@rollup/plugin-node-resolve": "15.2.3",
     "@rollup/plugin-replace": "5.0.7",
-    "@rollup/plugin-terser": "0.4.3",
-    "@rollup/plugin-typescript": "11.1.2",
-    "@typebot.io/bot-engine": "workspace:*",
-    "@typebot.io/env": "workspace:*",
-    "@typebot.io/lib": "workspace:*",
-    "@typebot.io/schemas": "workspace:*",
-    "@typebot.io/theme": "workspace:*",
+    "@rollup/plugin-terser": "0.4.4",
+    "@rollup/plugin-typescript": "12.1.0",
+    "typescript": "5.6.2",
     "@typebot.io/tsconfig": "workspace:*",
     "@types/dompurify": "3.0.3",
     "autoprefixer": "10.4.14",
-    "babel-preset-solid": "1.7.7",
-    "clsx": "2.0.0",
-    "eslint": "8.44.0",
-    "eslint-config-custom": "workspace:*",
-    "eslint-plugin-solid": "0.12.1",
+    "babel-preset-solid": "1.8.22",
     "postcss": "8.4.26",
-    "react": "18.2.0",
-    "rollup": "3.26.2",
+    "rollup": "4.22.4",
     "rollup-plugin-postcss": "4.0.2",
-    "rollup-plugin-typescript-paths": "1.4.0",
-    "tailwindcss": "3.3.3",
-    "typescript": "5.4.5"
+    "rollup-plugin-typescript-paths": "1.5.0",
+    "tailwindcss": "3.3.3"
   }
 }

@@ -1,15 +1,15 @@
-import { useToast } from '@/hooks/useToast'
-import { trpc } from '@/lib/trpc'
-import { useTranslate } from '@tolgee/react'
-import { Button, ButtonProps, Link } from '@chakra-ui/react'
+import { useToast } from "@/hooks/useToast";
+import { trpc } from "@/lib/trpc";
+import { Button, type ButtonProps, Link } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
 
 type Props = {
-  workspaceId: string
-} & Pick<ButtonProps, 'colorScheme'>
+  workspaceId: string;
+} & Pick<ButtonProps, "colorScheme">;
 
 export const BillingPortalButton = ({ workspaceId, colorScheme }: Props) => {
-  const { t } = useTranslate()
-  const { showToast } = useToast()
+  const { t } = useTranslate();
+  const { showToast } = useToast();
   const { data } = trpc.billing.getBillingPortalUrl.useQuery(
     {
       workspaceId,
@@ -18,10 +18,10 @@ export const BillingPortalButton = ({ workspaceId, colorScheme }: Props) => {
       onError: (error) => {
         showToast({
           description: error.message,
-        })
+        });
       },
-    }
-  )
+    },
+  );
   return (
     <Button
       as={Link}
@@ -29,7 +29,7 @@ export const BillingPortalButton = ({ workspaceId, colorScheme }: Props) => {
       isLoading={!data}
       colorScheme={colorScheme}
     >
-      {t('billing.billingPortalButton.label')}
+      {t("billing.billingPortalButton.label")}
     </Button>
-  )
-}
+  );
+};

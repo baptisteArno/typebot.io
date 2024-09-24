@@ -1,37 +1,36 @@
-import { useMemo } from 'react'
-import { TypebotProvider } from '../providers/TypebotProvider'
-import styles from '../assets/style.css'
-import importantStyles from '../assets/importantStyles.css'
-import phoneSyle from '../assets/phone.css'
-import { ConversationContainer } from './ConversationContainer'
-import { AnswersProvider } from '../providers/AnswersProvider'
-import {
-  AnswerInput,
-  Edge,
-  PublicTypebot,
-  VariableWithValue,
-} from '@typebot.io/schemas'
-import { Log } from '@typebot.io/prisma'
-import { LiteBadge } from './LiteBadge'
-import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/constants'
-import { env } from '@typebot.io/env'
+import { env } from "@typebot.io/env";
+import type { Prisma } from "@typebot.io/prisma/types";
+import type { AnswerInput } from "@typebot.io/results/schemas/answers";
+import type { Log } from "@typebot.io/results/schemas/results";
+import { BackgroundType } from "@typebot.io/theme/constants";
+import type { Edge } from "@typebot.io/typebot/schemas/edge";
+import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
+import type { VariableWithValue } from "@typebot.io/variables/schemas";
+import { useMemo } from "react";
+import importantStyles from "../assets/importantStyles.css";
+import phoneSyle from "../assets/phone.css";
+import styles from "../assets/style.css";
+import { AnswersProvider } from "../providers/AnswersProvider";
+import { TypebotProvider } from "../providers/TypebotProvider";
+import { ConversationContainer } from "./ConversationContainer";
+import { LiteBadge } from "./LiteBadge";
 
 export type TypebotViewerProps = {
-  typebot: Omit<PublicTypebot, 'updatedAt' | 'createdAt'>
-  isPreview?: boolean
-  apiHost?: string
-  predefinedVariables?: { [key: string]: string | undefined }
-  resultId?: string
-  startGroupId?: string
-  isLoading?: boolean
-  onNewGroupVisible?: (edge: Edge) => void
+  typebot: Omit<PublicTypebot, "updatedAt" | "createdAt">;
+  isPreview?: boolean;
+  apiHost?: string;
+  predefinedVariables?: { [key: string]: string | undefined };
+  resultId?: string;
+  startGroupId?: string;
+  isLoading?: boolean;
+  onNewGroupVisible?: (edge: Edge) => void;
   onNewAnswer?: (
-    answer: AnswerInput & { uploadedFiles: boolean }
-  ) => Promise<void>
-  onNewLog?: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
-  onCompleted?: () => void
-  onVariablesUpdated?: (variables: VariableWithValue[]) => void
-}
+    answer: AnswerInput & { uploadedFiles: boolean },
+  ) => Promise<void>;
+  onNewLog?: (log: Omit<Log, "id" | "createdAt" | "resultId">) => void;
+  onCompleted?: () => void;
+  onVariablesUpdated?: (variables: VariableWithValue[]) => void;
+};
 
 export const TypebotViewer = ({
   typebot,
@@ -51,19 +50,19 @@ export const TypebotViewer = ({
     () =>
       typebot?.theme?.general?.background?.type === BackgroundType.COLOR
         ? typebot.theme.general.background.content
-        : 'transparent',
-    [typebot?.theme?.general?.background]
-  )
+        : "transparent",
+    [typebot?.theme?.general?.background],
+  );
   const handleNewGroupVisible = (edge: Edge) =>
-    onNewGroupVisible && onNewGroupVisible(edge)
+    onNewGroupVisible && onNewGroupVisible(edge);
 
   const handleNewAnswer = (answer: AnswerInput & { uploadedFiles: boolean }) =>
-    onNewAnswer && onNewAnswer(answer)
+    onNewAnswer && onNewAnswer(answer);
 
-  const handleNewLog = (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) =>
-    onNewLog && onNewLog(log)
+  const handleNewLog = (log: Omit<Log, "id" | "createdAt" | "resultId">) =>
+    onNewLog && onNewLog(log);
 
-  const handleCompleted = () => onCompleted && onCompleted()
+  const handleCompleted = () => onCompleted && onCompleted();
 
   return (
     <>
@@ -77,7 +76,7 @@ export const TypebotViewer = ({
         <style
           dangerouslySetInnerHTML={{
             __html: `@import url('https://fonts.googleapis.com/css2?family=${
-              typebot.theme.general?.font ?? 'Open Sans'
+              typebot.theme.general?.font ?? "Open Sans"
             }:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');`,
           }}
         />
@@ -98,7 +97,7 @@ export const TypebotViewer = ({
             className="flex text-base overflow-hidden bg-cover h-screen w-screen flex-col items-center typebot-container"
             style={{
               // We set this as inline style to avoid color flash for SSR
-              backgroundColor: containerBgColor ?? 'transparent',
+              backgroundColor: containerBgColor ?? "transparent",
             }}
             data-testid="container"
           >
@@ -116,5 +115,5 @@ export const TypebotViewer = ({
         </AnswersProvider>
       </TypebotProvider>
     </>
-  )
-}
+  );
+};

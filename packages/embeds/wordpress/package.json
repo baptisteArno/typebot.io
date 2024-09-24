@@ -6,7 +6,7 @@
   "author": "baptisteArno",
   "license": "AGPL-3.0-or-later",
   "scripts": {
-    "deploy": "pnpm copy && pnpm commit",
+    "deploy": "bun copy && bun commit",
     "copy": "svn copy ./trunk ./tags/4.0.0",
     "commit": "svn ci -m 'Use embed v0.3 by default'"
   }

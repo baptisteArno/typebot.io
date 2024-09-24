@@ -1,47 +1,47 @@
-import React, {
-  ForwardedRef,
+import {
+  type ForwardedRef,
   forwardRef,
   useEffect,
   useImperativeHandle,
   useRef,
   useState,
-} from 'react'
-import { Avatar } from '../avatars/Avatar'
-import { CSSTransition } from 'react-transition-group'
-import { ResizeObserver } from 'resize-observer'
+} from "react";
+import { CSSTransition } from "react-transition-group";
+import { ResizeObserver } from "resize-observer";
+import { Avatar } from "../avatars/Avatar";
 
-type Props = { hostAvatarSrc?: string; keepShowing: boolean }
+type Props = { hostAvatarSrc?: string; keepShowing: boolean };
 
 export const AvatarSideContainer = forwardRef(function AvatarSideContainer(
   { hostAvatarSrc, keepShowing }: Props,
-  ref: ForwardedRef<unknown>
+  ref: ForwardedRef<unknown>,
 ) {
-  const [show, setShow] = useState(false)
-  const [avatarTopOffset, setAvatarTopOffset] = useState(0)
+  const [show, setShow] = useState(false);
+  const [avatarTopOffset, setAvatarTopOffset] = useState(0);
 
   const refreshTopOffset = () => {
-    if (!scrollingSideGroupRef.current || !avatarContainer.current) return
-    const { height } = scrollingSideGroupRef.current.getBoundingClientRect()
+    if (!scrollingSideGroupRef.current || !avatarContainer.current) return;
+    const { height } = scrollingSideGroupRef.current.getBoundingClientRect();
     const { height: avatarHeight } =
-      avatarContainer.current.getBoundingClientRect()
-    setAvatarTopOffset(height - avatarHeight)
-  }
-  const scrollingSideGroupRef = useRef<HTMLDivElement>(null)
-  const avatarContainer = useRef<HTMLDivElement>(null)
+      avatarContainer.current.getBoundingClientRect();
+    setAvatarTopOffset(height - avatarHeight);
+  };
+  const scrollingSideGroupRef = useRef<HTMLDivElement>(null);
+  const avatarContainer = useRef<HTMLDivElement>(null);
   useImperativeHandle(ref, () => ({
     refreshTopOffset,
-  }))
+  }));
 
   useEffect(() => {
-    if (!document) return
-    setShow(true)
-    const resizeObserver = new ResizeObserver(refreshTopOffset)
-    resizeObserver.observe(document.body)
+    if (!document) return;
+    setShow(true);
+    const resizeObserver = new ResizeObserver(refreshTopOffset);
+    resizeObserver.observe(document.body);
     return () => {
-      resizeObserver.disconnect()
-    }
+      resizeObserver.disconnect();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
   return (
     <div
@@ -59,12 +59,12 @@ export const AvatarSideContainer = forwardRef(function AvatarSideContainer(
           ref={avatarContainer}
           style={{
             top: `${avatarTopOffset}px`,
-            transition: 'top 350ms ease-out, opacity 500ms',
+            transition: "top 350ms ease-out, opacity 500ms",
           }}
         >
           <Avatar avatarSrc={hostAvatarSrc} />
         </div>
       </CSSTransition>
     </div>
-  )
-})
+  );
+});

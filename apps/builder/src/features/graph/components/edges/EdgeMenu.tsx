@@ -1,13 +1,13 @@
-import { Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react'
-import { TrashIcon } from '@/components/icons'
-import React from 'react'
+import { TrashIcon } from "@/components/icons";
+import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import React from "react";
 
 type Props = {
-  isOpen: boolean
-  position: { x: number; y: number }
-  onDeleteEdge: () => void
-  onClose: () => void
-}
+  isOpen: boolean;
+  position: { x: number; y: number };
+  onDeleteEdge: () => void;
+  onClose: () => void;
+};
 
 export const EdgeMenu = ({
   isOpen,
@@ -33,5 +33,5 @@ export const EdgeMenu = ({
         </MenuItem>
       </MenuList>
     </Menu>
-  )
-}
+  );
+};

@@ -1,3 +1,7 @@
+import { DropdownList } from "@/components/DropdownList";
+import { TextInput } from "@/components/inputs";
+import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import {
   Accordion,
   AccordionButton,
@@ -5,71 +9,67 @@ import {
   AccordionItem,
   AccordionPanel,
   Stack,
-  useDisclosure,
   Text,
-} from '@chakra-ui/react'
-import React from 'react'
-import { CredentialsDropdown } from '@/features/credentials/components/CredentialsDropdown'
+  useDisclosure,
+} from "@chakra-ui/react";
 import {
+  defaultOpenAIOptions,
+  openAITasks,
+} from "@typebot.io/blocks-integrations/openai/constants";
+import type {
   ChatCompletionOpenAIOptions,
   CreateImageOpenAIOptions,
   CreateSpeechOpenAIOptions,
   OpenAIBlock,
-} from '@typebot.io/schemas/features/blocks/integrations/openai'
-import { OpenAICredentialsModal } from './OpenAICredentialsModal'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { DropdownList } from '@/components/DropdownList'
-import { OpenAIChatCompletionSettings } from './createChatCompletion/OpenAIChatCompletionSettings'
-import { TextInput } from '@/components/inputs'
-import {
-  defaultOpenAIOptions,
-  openAITasks,
-} from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
-import { OpenAICreateSpeechSettings } from './audio/OpenAICreateSpeechSettings'
+} from "@typebot.io/blocks-integrations/openai/schema";
+import React from "react";
+import { OpenAICredentialsModal } from "./OpenAICredentialsModal";
+import { OpenAICreateSpeechSettings } from "./audio/OpenAICreateSpeechSettings";
+import { OpenAIChatCompletionSettings } from "./createChatCompletion/OpenAIChatCompletionSettings";
 
-type OpenAITask = (typeof openAITasks)[number]
+type OpenAITask = (typeof openAITasks)[number];
 
 type Props = {
-  block: OpenAIBlock
-  onOptionsChange: (options: OpenAIBlock['options']) => void
-}
+  block: OpenAIBlock;
+  onOptionsChange: (options: OpenAIBlock["options"]) => void;
+};
 
 export const OpenAISettings = ({
   block: { options },
   onOptionsChange,
 }: Props) => {
-  const { workspace } = useWorkspace()
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { workspace } = useWorkspace();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const updateCredentialsId = (credentialsId: string | undefined) => {
     onOptionsChange({
       ...options,
       credentialsId,
-    })
-  }
+    });
+  };
 
   const updateTask = (task: OpenAITask) => {
     onOptionsChange({
       credentialsId: options?.credentialsId,
       task,
-    } as OpenAIBlock['options'])
-  }
+    } as OpenAIBlock["options"]);
+  };
 
   const updateBaseUrl = (baseUrl: string) => {
     onOptionsChange({
       ...options,
       baseUrl,
-    })
-  }
+    });
+  };
 
   const updateApiVersion = (apiVersion: string) => {
     onOptionsChange({
       ...options,
       apiVersion,
-    })
-  }
+    });
+  };
 
-  const baseUrl = options?.baseUrl ?? defaultOpenAIOptions.baseUrl
+  const baseUrl = options?.baseUrl ?? defaultOpenAIOptions.baseUrl;
 
   return (
     <Stack>
@@ -132,8 +132,8 @@ export const OpenAISettings = ({
         </>
       )}
     </Stack>
-  )
-}
+  );
+};
 
 const OpenAITaskSettings = ({
   options,
@@ -142,28 +142,28 @@ const OpenAITaskSettings = ({
   options:
     | ChatCompletionOpenAIOptions
     | CreateImageOpenAIOptions
-    | CreateSpeechOpenAIOptions
-  onOptionsChange: (options: OpenAIBlock['options']) => void
+    | CreateSpeechOpenAIOptions;
+  onOptionsChange: (options: OpenAIBlock["options"]) => void;
 }): JSX.Element | null => {
   switch (options.task) {
-    case 'Create chat completion': {
+    case "Create chat completion": {
       return (
         <OpenAIChatCompletionSettings
           options={options}
           onOptionsChange={onOptionsChange}
         />
-      )
+      );
     }
-    case 'Create speech': {
+    case "Create speech": {
       return (
         <OpenAICreateSpeechSettings
           options={options}
           onOptionsChange={onOptionsChange}
         />
-      )
+      );
     }
-    case 'Create image': {
-      return null
+    case "Create image": {
+      return null;
     }
   }
-}
+};

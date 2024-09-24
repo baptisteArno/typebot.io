@@ -1,39 +1,39 @@
 export type BubbleParams = {
-  theme?: BubbleTheme
-  previewMessage?: PreviewMessageParams
-  autoShowDelay?: number
-}
+  theme?: BubbleTheme;
+  previewMessage?: PreviewMessageParams;
+  autoShowDelay?: number;
+};
 
 export type BubbleTheme = {
-  chatWindow?: ChatWindowTheme
-  button?: ButtonTheme
-  previewMessage?: PreviewMessageTheme
-  placement?: 'left' | 'right'
-}
+  chatWindow?: ChatWindowTheme;
+  button?: ButtonTheme;
+  previewMessage?: PreviewMessageTheme;
+  placement?: "left" | "right";
+};
 
 export type ChatWindowTheme = {
-  backgroundColor?: string
-  maxWidth?: string
-  maxHeight?: string
-}
+  backgroundColor?: string;
+  maxWidth?: string;
+  maxHeight?: string;
+};
 
 export type ButtonTheme = {
-  size?: 'medium' | 'large' | `${number}px`
-  backgroundColor?: string
-  iconColor?: string
-  customIconSrc?: string
-  customCloseIconSrc?: string
-}
+  size?: "medium" | "large" | `${number}px`;
+  backgroundColor?: string;
+  iconColor?: string;
+  customIconSrc?: string;
+  customCloseIconSrc?: string;
+};
 
 export type PreviewMessageParams = {
-  avatarUrl?: string
-  message: string
-  autoShowDelay?: number
-}
+  avatarUrl?: string;
+  message: string;
+  autoShowDelay?: number;
+};
 
 export type PreviewMessageTheme = {
-  backgroundColor?: string
-  textColor?: string
-  closeButtonBackgroundColor?: string
-  closeButtonIconColor?: string
-}
+  backgroundColor?: string;
+  textColor?: string;
+  closeButtonBackgroundColor?: string;
+  closeButtonIconColor?: string;
+};

@@ -1,31 +1,31 @@
-import { TextInput } from '@/components/inputs'
-import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
-import { FormLabel, Stack } from '@chakra-ui/react'
-import { Variable } from '@typebot.io/schemas'
-import React from 'react'
-import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
-import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
-import { defaultPictureChoiceOptions } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice/constants'
-import { useTranslate } from '@tolgee/react'
+import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
+import { TextInput } from "@/components/inputs";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { FormLabel, Stack } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import { defaultPictureChoiceOptions } from "@typebot.io/blocks-inputs/pictureChoice/constants";
+import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice/schema";
+import type { Variable } from "@typebot.io/variables/schemas";
+import React from "react";
 
 type Props = {
-  options?: PictureChoiceBlock['options']
-  onOptionsChange: (options: PictureChoiceBlock['options']) => void
-}
+  options?: PictureChoiceBlock["options"];
+  onOptionsChange: (options: PictureChoiceBlock["options"]) => void;
+};
 
 export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
-  const { t } = useTranslate()
+  const { t } = useTranslate();
 
   const updateIsMultiple = (isMultipleChoice: boolean) =>
-    onOptionsChange({ ...options, isMultipleChoice })
+    onOptionsChange({ ...options, isMultipleChoice });
   const updateButtonLabel = (buttonLabel: string) =>
-    onOptionsChange({ ...options, buttonLabel })
+    onOptionsChange({ ...options, buttonLabel });
   const updateSaveVariable = (variable?: Variable) =>
-    onOptionsChange({ ...options, variableId: variable?.id })
+    onOptionsChange({ ...options, variableId: variable?.id });
   const updateSearchInputPlaceholder = (searchInputPlaceholder: string) =>
-    onOptionsChange({ ...options, searchInputPlaceholder })
+    onOptionsChange({ ...options, searchInputPlaceholder });
   const updateIsSearchable = (isSearchable: boolean) =>
-    onOptionsChange({ ...options, isSearchable })
+    onOptionsChange({ ...options, isSearchable });
 
   const updateIsDynamicItemsEnabled = (isEnabled: boolean) =>
     onOptionsChange({
@@ -34,7 +34,7 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
         ...options?.dynamicItems,
         isEnabled,
       },
-    })
+    });
 
   const updateDynamicItemsPictureSrcsVariable = (variable?: Variable) =>
     onOptionsChange({
@@ -43,7 +43,7 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
         ...options?.dynamicItems,
         pictureSrcsVariableId: variable?.id,
       },
-    })
+    });
 
   const updateDynamicItemsTitlesVariable = (variable?: Variable) =>
     onOptionsChange({
@@ -52,7 +52,7 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
         ...options?.dynamicItems,
         titlesVariableId: variable?.id,
       },
-    })
+    });
 
   const updateDynamicItemsDescriptionsVariable = (variable?: Variable) =>
     onOptionsChange({
@@ -61,19 +61,19 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
         ...options?.dynamicItems,
         descriptionsVariableId: variable?.id,
       },
-    })
+    });
 
   return (
     <Stack spacing={4}>
       <SwitchWithRelatedSettings
-        label={t('blocks.inputs.settings.isSearchable.label')}
+        label={t("blocks.inputs.settings.isSearchable.label")}
         initialValue={
           options?.isSearchable ?? defaultPictureChoiceOptions.isSearchable
         }
         onCheckChange={updateIsSearchable}
       >
         <TextInput
-          label={t('blocks.inputs.settings.input.placeholder.label')}
+          label={t("blocks.inputs.settings.input.placeholder.label")}
           defaultValue={
             options?.searchInputPlaceholder ??
             defaultPictureChoiceOptions.searchInputPlaceholder
@@ -82,7 +82,7 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
         />
       </SwitchWithRelatedSettings>
       <SwitchWithRelatedSettings
-        label={t('blocks.inputs.settings.multipleChoice.label')}
+        label={t("blocks.inputs.settings.multipleChoice.label")}
         initialValue={
           options?.isMultipleChoice ??
           defaultPictureChoiceOptions.isMultipleChoice
@@ -90,7 +90,7 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
         onCheckChange={updateIsMultiple}
       >
         <TextInput
-          label={t('blocks.inputs.settings.submitButton.label')}
+          label={t("blocks.inputs.settings.submitButton.label")}
           defaultValue={
             options?.buttonLabel ?? defaultPictureChoiceOptions.buttonLabel
           }
@@ -99,7 +99,7 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
       </SwitchWithRelatedSettings>
 
       <SwitchWithRelatedSettings
-        label={t('blocks.inputs.picture.settings.dynamicItems.label')}
+        label={t("blocks.inputs.picture.settings.dynamicItems.label")}
         initialValue={
           options?.dynamicItems?.isEnabled ??
           defaultPictureChoiceOptions.dynamicItems.isEnabled
@@ -108,7 +108,7 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
       >
         <Stack>
           <FormLabel mb="0" htmlFor="variable">
-            {t('blocks.inputs.picture.settings.dynamicItems.images.label')}
+            {t("blocks.inputs.picture.settings.dynamicItems.images.label")}
           </FormLabel>
           <VariableSearchInput
             initialVariableId={options?.dynamicItems?.pictureSrcsVariableId}
@@ -117,7 +117,7 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
         </Stack>
         <Stack>
           <FormLabel mb="0" htmlFor="variable">
-            {t('blocks.inputs.picture.settings.dynamicItems.titles.label')}
+            {t("blocks.inputs.picture.settings.dynamicItems.titles.label")}
           </FormLabel>
           <VariableSearchInput
             initialVariableId={options?.dynamicItems?.titlesVariableId}
@@ -127,7 +127,7 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
         <Stack>
           <FormLabel mb="0" htmlFor="variable">
             {t(
-              'blocks.inputs.picture.settings.dynamicItems.descriptions.label'
+              "blocks.inputs.picture.settings.dynamicItems.descriptions.label",
             )}
           </FormLabel>
           <VariableSearchInput
@@ -139,7 +139,7 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
 
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          {t('blocks.inputs.settings.saveAnswer.label')}
+          {t("blocks.inputs.settings.saveAnswer.label")}
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}
@@ -147,5 +147,5 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
         />
       </Stack>
     </Stack>
-  )
-}
+  );
+};

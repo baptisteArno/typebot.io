@@ -1,35 +1,34 @@
-import { Stack, Wrap, Tag, Text, useColorModeValue } from '@chakra-ui/react'
-import { useTranslate } from '@tolgee/react'
-import { byId } from '@typebot.io/lib'
-import { Condition, Variable } from '@typebot.io/schemas'
-import {
-  ComparisonOperators,
-  defaultConditionItemContent,
-} from '@typebot.io/schemas/features/blocks/logic/condition/constants'
+import { Stack, Tag, Text, Wrap, useColorModeValue } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import { defaultConditionItemContent } from "@typebot.io/blocks-logic/condition/constants";
+import { ComparisonOperators } from "@typebot.io/conditions/constants";
+import type { Condition } from "@typebot.io/conditions/schemas";
+import { byId } from "@typebot.io/lib/utils";
+import type { Variable } from "@typebot.io/variables/schemas";
 
 type Props = {
-  condition: Condition | undefined
-  variables: Variable[]
-  size?: 'xs' | 'sm'
-  displaySemicolon?: boolean
-}
+  condition: Condition | undefined;
+  variables: Variable[];
+  size?: "xs" | "sm";
+  displaySemicolon?: boolean;
+};
 export const ConditionContent = ({
   condition,
   variables,
-  size = 'sm',
+  size = "sm",
   displaySemicolon,
 }: Props) => {
-  const { t } = useTranslate()
-  const comparisonValueBg = useColorModeValue('gray.200', 'gray.700')
+  const { t } = useTranslate();
+  const comparisonValueBg = useColorModeValue("gray.200", "gray.700");
   return (
     <Stack>
       {condition?.comparisons?.map((comparison, idx) => {
-        const variable = variables.find(byId(comparison.variableId))
+        const variable = variables.find(byId(comparison.variableId));
         return (
           <Wrap key={comparison.id} spacing={1} noOfLines={1}>
             {idx === 0 && (
               <Text fontSize={size}>
-                {t('blocks.inputs.button.conditionContent.if.label')}
+                {t("blocks.inputs.button.conditionContent.if.label")}
               </Text>
             )}
             {idx > 0 && (
@@ -59,39 +58,39 @@ export const ConditionContent = ({
             {idx === (condition.comparisons?.length ?? 0) - 1 &&
               displaySemicolon && <Text fontSize={size}>:</Text>}
           </Wrap>
-        )
+        );
       })}
     </Stack>
-  )
-}
+  );
+};
 
 const parseComparisonOperatorSymbol = (
-  operator: ComparisonOperators
+  operator: ComparisonOperators,
 ): string => {
   switch (operator) {
     case ComparisonOperators.CONTAINS:
-      return 'contains'
+      return "contains";
     case ComparisonOperators.EQUAL:
-      return '='
+      return "=";
     case ComparisonOperators.GREATER:
-      return '>'
+      return ">";
     case ComparisonOperators.IS_SET:
-      return 'is set'
+      return "is set";
     case ComparisonOperators.LESS:
-      return '<'
+      return "<";
     case ComparisonOperators.NOT_EQUAL:
-      return '!='
+      return "!=";
     case ComparisonOperators.ENDS_WITH:
-      return 'ends with'
+      return "ends with";
     case ComparisonOperators.STARTS_WITH:
-      return 'starts with'
+      return "starts with";
     case ComparisonOperators.IS_EMPTY:
-      return 'is empty'
+      return "is empty";
     case ComparisonOperators.NOT_CONTAINS:
-      return 'not contains'
+      return "not contains";
     case ComparisonOperators.MATCHES_REGEX:
-      return 'matches'
+      return "matches";
     case ComparisonOperators.NOT_MATCH_REGEX:
-      return 'not matches'
+      return "not matches";
   }
-}
+};

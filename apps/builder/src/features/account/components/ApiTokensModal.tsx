@@ -5,18 +5,18 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-} from '@chakra-ui/react'
-import { ApiTokensList } from './ApiTokensList'
-import { useUser } from '../hooks/useUser'
+} from "@chakra-ui/react";
+import { useUser } from "../hooks/useUser";
+import { ApiTokensList } from "./ApiTokensList";
 
 type Props = {
-  isOpen: boolean
-  onClose: () => void
-}
+  isOpen: boolean;
+  onClose: () => void;
+};
 export const ApiTokensModal = ({ isOpen, onClose }: Props) => {
-  const { user } = useUser()
+  const { user } = useUser();
 
-  if (!user) return
+  if (!user) return;
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay />
@@ -28,5 +28,5 @@ export const ApiTokensModal = ({ isOpen, onClose }: Props) => {
         <ModalFooter />
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};

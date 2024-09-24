@@ -1,8 +1,9 @@
-import { AutocompleteInput } from '@/components/inputs/AutocompleteInput'
-import { TableListItemProps } from '@/components/TableList'
-import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
-import { Stack, FormControl, FormLabel } from '@chakra-ui/react'
-import { Variable, ResponseVariableMapping } from '@typebot.io/schemas'
+import type { TableListItemProps } from "@/components/TableList";
+import { AutocompleteInput } from "@/components/inputs/AutocompleteInput";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { FormControl, FormLabel, Stack } from "@chakra-ui/react";
+import type { ResponseVariableMapping } from "@typebot.io/blocks-integrations/webhook/schema";
+import type { Variable } from "@typebot.io/variables/schemas";
 
 export const DataVariableInputs = ({
   item,
@@ -10,9 +11,9 @@ export const DataVariableInputs = ({
   dataItems,
 }: TableListItemProps<ResponseVariableMapping> & { dataItems: string[] }) => {
   const handleBodyPathChange = (bodyPath: string) =>
-    onItemChange({ ...item, bodyPath })
+    onItemChange({ ...item, bodyPath });
   const handleVariableChange = (variable?: Variable) =>
-    onItemChange({ ...item, variableId: variable?.id })
+    onItemChange({ ...item, variableId: variable?.id });
 
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
@@ -35,5 +36,5 @@ export const DataVariableInputs = ({
         />
       </FormControl>
     </Stack>
-  )
-}
+  );
+};

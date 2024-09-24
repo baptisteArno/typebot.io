@@ -1,0 +1,25 @@
+{
+  "name": "@typebot.io/billing",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "dependencies": {
+    "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/schemas": "workspace:*",
+    "stripe": "12.13.0",
+    "@typebot.io/lib": "workspace:*",
+    "@trpc/server": "10.40.0",
+    "@typebot.io/env": "workspace:*",
+    "@typebot.io/telemetry": "workspace:*",
+    "@typebot.io/workspaces": "workspace:*",
+    "@typebot.io/zod": "workspace:*",
+    "@typebot.io/settings": "workspace:*",
+    "next": "14.2.13",
+    "micro": "10.0.1"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
+  }
+}

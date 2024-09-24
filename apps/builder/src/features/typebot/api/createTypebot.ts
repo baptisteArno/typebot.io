@@ -1,20 +1,23 @@
-import prisma from '@typebot.io/lib/prisma'
-import { authenticatedProcedure } from '@/helpers/server/trpc'
-import { TRPCError } from '@trpc/server'
-import { Plan, WorkspaceRole } from '@typebot.io/prisma'
-import { TypebotV6, typebotV6Schema } from '@typebot.io/schemas'
-import { z } from 'zod'
-import { getUserRoleInWorkspace } from '@/features/workspace/helpers/getUserRoleInWorkspace'
+import { getUserRoleInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
+import { createId } from "@paralleldrive/cuid2";
+import { TRPCError } from "@trpc/server";
+import prisma from "@typebot.io/prisma";
+import { Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
+import { trackEvents } from "@typebot.io/telemetry/trackEvents";
+import { EventType } from "@typebot.io/typebot/schemas/events/constants";
+import {
+  type TypebotV6,
+  typebotV6Schema,
+} from "@typebot.io/typebot/schemas/typebot";
+import { z } from "@typebot.io/zod";
 import {
   isCustomDomainNotAvailable,
   isPublicIdNotAvailable,
   sanitizeGroups,
   sanitizeSettings,
   sanitizeVariables,
-} from '../helpers/sanitizers'
-import { createId } from '@paralleldrive/cuid2'
-import { EventType } from '@typebot.io/schemas/features/events/constants'
-import { trackEvents } from '@typebot.io/telemetry/trackEvents'
+} from "../helpers/sanitizers";
 
 const typebotCreateSchemaPick = {
   name: true,
@@ -30,41 +33,44 @@ const typebotCreateSchemaPick = {
   resultsTablePreferences: true,
   publicId: true,
   customDomain: true,
-} as const
+} as const;
 
 export const createTypebot = authenticatedProcedure
   .meta({
     openapi: {
-      method: 'POST',
-      path: '/v1/typebots',
+      method: "POST",
+      path: "/v1/typebots",
       protect: true,
-      summary: 'Create a typebot',
-      tags: ['Typebot'],
+      summary: "Create a typebot",
+      tags: ["Typebot"],
     },
   })
   .input(
     z.object({
       workspaceId: z.string(),
       typebot: typebotV6Schema.pick(typebotCreateSchemaPick).partial(),
-    })
+    }),
   )
   .output(
     z.object({
       typebot: typebotV6Schema,
-    })
+    }),
   )
   .mutation(async ({ input: { typebot, workspaceId }, ctx: { user } }) => {
     const workspace = await prisma.workspace.findUnique({
       where: { id: workspaceId },
       select: { id: true, members: true, plan: true },
-    })
-    const userRole = getUserRoleInWorkspace(user.id, workspace?.members)
+    });
+    const userRole = getUserRoleInWorkspace(user.id, workspace?.members);
     if (
       userRole === undefined ||
       userRole === WorkspaceRole.GUEST ||
       !workspace
     )
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'Workspace not found' })
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Workspace not found",
+      });
 
     if (
       typebot.customDomain &&
@@ -74,33 +80,33 @@ export const createTypebot = authenticatedProcedure
       }))
     )
       throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: 'Custom domain not available',
-      })
+        code: "BAD_REQUEST",
+        message: "Custom domain not available",
+      });
 
     if (typebot.publicId && (await isPublicIdNotAvailable(typebot.publicId)))
       throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: 'Public id not available',
-      })
+        code: "BAD_REQUEST",
+        message: "Public id not available",
+      });
 
     if (typebot.folderId) {
       const existingFolder = await prisma.dashboardFolder.findUnique({
         where: {
           id: typebot.folderId,
         },
-      })
-      if (!existingFolder) typebot.folderId = null
+      });
+      if (!existingFolder) typebot.folderId = null;
     }
 
     const groups = (
       typebot.groups ? await sanitizeGroups(workspaceId)(typebot.groups) : []
-    ) as TypebotV6['groups']
+    ) as TypebotV6["groups"];
     const newTypebot = await prisma.typebot.create({
       data: {
-        version: '6',
+        version: "6",
         workspaceId,
-        name: typebot.name ?? 'My typebot',
+        name: typebot.name ?? "My typebot",
         icon: typebot.icon,
         selectedThemeTemplateId: typebot.selectedThemeTemplateId,
         groups,
@@ -113,12 +119,12 @@ export const createTypebot = authenticatedProcedure
         ],
         theme: typebot.theme ? typebot.theme : {},
         settings: typebot.settings
-          ? sanitizeSettings(typebot.settings, workspace.plan, 'create')
+          ? sanitizeSettings(typebot.settings, workspace.plan, "create")
           : workspace.plan === Plan.FREE
-          ? {
-              general: { isBrandingEnabled: true },
-            }
-          : {},
+            ? {
+                general: { isBrandingEnabled: true },
+              }
+            : {},
         folderId: typebot.folderId,
         variables: typebot.variables
           ? sanitizeVariables({ variables: typebot.variables, groups })
@@ -128,13 +134,13 @@ export const createTypebot = authenticatedProcedure
         publicId: typebot.publicId ?? undefined,
         customDomain: typebot.customDomain ?? undefined,
       } satisfies Partial<TypebotV6>,
-    })
+    });
 
-    const parsedNewTypebot = typebotV6Schema.parse(newTypebot)
+    const parsedNewTypebot = typebotV6Schema.parse(newTypebot);
 
     await trackEvents([
       {
-        name: 'Typebot created',
+        name: "Typebot created",
         workspaceId: parsedNewTypebot.workspaceId,
         typebotId: parsedNewTypebot.id,
         userId: user.id,
@@ -142,7 +148,7 @@ export const createTypebot = authenticatedProcedure
           name: newTypebot.name,
         },
       },
-    ])
+    ]);
 
-    return { typebot: parsedNewTypebot }
-  })
+    return { typebot: parsedNewTypebot };
+  });

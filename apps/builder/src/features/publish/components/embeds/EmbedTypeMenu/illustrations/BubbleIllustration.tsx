@@ -1,10 +1,10 @@
-import { colors } from '@/lib/theme'
-import { useColorModeValue } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
-import { animationVariants } from './animationVariants'
+import { colors } from "@/lib/theme";
+import { useColorModeValue } from "@chakra-ui/react";
+import { motion } from "framer-motion";
+import { animationVariants } from "./animationVariants";
 
 export const BubbleIllustration = () => {
-  const bubbleColor = useColorModeValue('white', colors.blue[100])
+  const bubbleColor = useColorModeValue("white", colors.blue[100]);
   return (
     <svg
       width="100"
@@ -16,7 +16,7 @@ export const BubbleIllustration = () => {
         width="500"
         height="500"
         rx="20"
-        fill={useColorModeValue(colors.gray['200'], colors.gray['900'])}
+        fill={useColorModeValue(colors.gray["200"], colors.gray["900"])}
       />
       <rect x="164" y="59" width="287" height="305" rx="10" fill="#0042DA" />
       <motion.rect
@@ -73,5 +73,5 @@ export const BubbleIllustration = () => {
 
       <circle cx="411" cy="430" r="40" fill="#0042DA" />
     </svg>
-  )
-}
+  );
+};

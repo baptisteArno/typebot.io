@@ -1,13 +1,13 @@
-import prisma from '@typebot.io/lib/prisma'
-import { authenticatedProcedure } from '@/helpers/server/trpc'
-import { TRPCError } from '@trpc/server'
-import { z } from 'zod'
-import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
-import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
-import { OpenAICredentials } from '@typebot.io/schemas/features/blocks/integrations/openai'
-import { isNotEmpty } from '@typebot.io/lib/utils'
-import { OpenAI, ClientOptions } from 'openai'
-import { defaultOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
+import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
+import { TRPCError } from "@trpc/server";
+import { defaultOpenAIOptions } from "@typebot.io/blocks-integrations/openai/constants";
+import type { OpenAICredentials } from "@typebot.io/blocks-integrations/openai/schema";
+import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
+import { isNotEmpty } from "@typebot.io/lib/utils";
+import prisma from "@typebot.io/prisma";
+import { z } from "@typebot.io/zod";
+import { type ClientOptions, OpenAI } from "openai";
 
 export const listModels = authenticatedProcedure
   .input(
@@ -16,8 +16,8 @@ export const listModels = authenticatedProcedure
       workspaceId: z.string(),
       baseUrl: z.string(),
       apiVersion: z.string().optional(),
-      type: z.enum(['gpt', 'tts']),
-    })
+      type: z.enum(["gpt", "tts"]),
+    }),
   )
   .query(
     async ({
@@ -43,43 +43,43 @@ export const listModels = authenticatedProcedure
             },
           },
         },
-      })
+      });
 
       if (!workspace || isReadWorkspaceFobidden(workspace, user))
         throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'No workspace found',
-        })
+          code: "NOT_FOUND",
+          message: "No workspace found",
+        });
 
-      const credentials = workspace.credentials.at(0)
+      const credentials = workspace.credentials.at(0);
 
       if (!credentials)
         throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'No credentials found',
-        })
+          code: "NOT_FOUND",
+          message: "No credentials found",
+        });
 
       const data = (await decrypt(
         credentials.data,
-        credentials.iv
-      )) as OpenAICredentials['data']
+        credentials.iv,
+      )) as OpenAICredentials["data"];
 
       const config = {
         apiKey: data.apiKey,
         baseURL: baseUrl ?? defaultOpenAIOptions.baseUrl,
         defaultHeaders: {
-          'api-key': data.apiKey,
+          "api-key": data.apiKey,
         },
         defaultQuery: isNotEmpty(apiVersion)
           ? {
-              'api-version': apiVersion,
+              "api-version": apiVersion,
             }
           : undefined,
-      } satisfies ClientOptions
+      } satisfies ClientOptions;
 
-      const openai = new OpenAI(config)
+      const openai = new OpenAI(config);
 
-      const models = await openai.models.list()
+      const models = await openai.models.list();
 
       return {
         models:
@@ -87,6 +87,6 @@ export const listModels = authenticatedProcedure
             .filter((model) => model.id.includes(type))
             .sort((a, b) => b.created - a.created)
             .map((model) => model.id) ?? [],
-      }
-    }
-  )
+      };
+    },
+  );

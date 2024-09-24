@@ -1,44 +1,44 @@
-import { InfoIcon, PlayIcon, TrashIcon } from '@/components/icons'
+import { InfoIcon, PlayIcon, TrashIcon } from "@/components/icons";
 import {
   HStack,
   IconButton,
   Tooltip,
   useClipboard,
   useColorModeValue,
-} from '@chakra-ui/react'
+} from "@chakra-ui/react";
 
 type Props = {
-  eventId: string
-  onPlayClick: () => void
-  onDeleteClick?: () => void
-}
+  eventId: string;
+  onPlayClick: () => void;
+  onDeleteClick?: () => void;
+};
 
 export const EventFocusToolbar = ({
   eventId,
   onPlayClick,
   onDeleteClick,
 }: Props) => {
-  const { hasCopied, onCopy } = useClipboard(eventId)
+  const { hasCopied, onCopy } = useClipboard(eventId);
 
   return (
     <HStack
       rounded="md"
       spacing={0}
       borderWidth="1px"
-      bgColor={useColorModeValue('white', 'gray.800')}
+      bgColor={useColorModeValue("white", "gray.800")}
       shadow="md"
     >
       <IconButton
         icon={<PlayIcon />}
         borderRightWidth="1px"
         borderRightRadius="none"
-        aria-label={'Preview bot from this group'}
+        aria-label={"Preview bot from this group"}
         variant="ghost"
         onClick={onPlayClick}
         size="sm"
       />
       <Tooltip
-        label={hasCopied ? 'Copied!' : eventId}
+        label={hasCopied ? "Copied!" : eventId}
         closeOnClick={false}
         placement="top"
       >
@@ -47,7 +47,7 @@ export const EventFocusToolbar = ({
           borderRightWidth="1px"
           borderRightRadius="none"
           borderLeftRadius="none"
-          aria-label={'Show group info'}
+          aria-label={"Show group info"}
           variant="ghost"
           size="sm"
           onClick={onCopy}
@@ -64,5 +64,5 @@ export const EventFocusToolbar = ({
         />
       ) : null}
     </HStack>
-  )
-}
+  );
+};

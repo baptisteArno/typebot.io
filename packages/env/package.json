@@ -1,20 +1,22 @@
 {
   "name": "@typebot.io/env",
-  "version": "1.0.0",
-  "license": "AGPL-3.0-or-later",
   "private": true,
-  "main": "./env.ts",
-  "types": "./env.ts",
-  "dependencies": {
-    "@t3-oss/env-nextjs": "^0.7.0",
-    "zod": "3.22.4"
-  },
-  "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*",
-    "@types/node": "20.4.2",
-    "esbuild": "0.19.5"
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*.ts",
+    "./compiled": "./dist/index.js"
   },
   "scripts": {
-    "build": "esbuild env.ts --bundle --packages=external --format=esm --outfile=dist/env.mjs"
+    "dev": "tsup src/index.ts --format esm --watch",
+    "build": "tsup src/index.ts --format esm"
+  },
+  "dependencies": {
+    "@t3-oss/env-nextjs": "0.7.0",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "tsup": "8.3.0",
+    "@typebot.io/tsconfig": "workspace:*"
   }
 }

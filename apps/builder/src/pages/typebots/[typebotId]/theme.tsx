@@ -1,5 +1,5 @@
-import { ThemePage } from '@/features/theme/components/ThemePage'
+import { ThemePage } from "@/features/theme/components/ThemePage";
 
 export default function Page() {
-  return <ThemePage />
+  return <ThemePage />;
 }

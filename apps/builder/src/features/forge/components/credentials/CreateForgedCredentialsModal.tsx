@@ -1,31 +1,32 @@
-import { TextInput } from '@/components/inputs/TextInput'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { useToast } from '@/hooks/useToast'
-import { trpc } from '@/lib/trpc'
+import { TextInput } from "@/components/inputs/TextInput";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { useToast } from "@/hooks/useToast";
+import { trpc } from "@/lib/trpc";
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  Stack,
-  ModalFooter,
   Button,
-} from '@chakra-ui/react'
-import React, { useState } from 'react'
-import { ZodObjectLayout } from '../zodLayouts/ZodObjectLayout'
-import { ForgedBlockDefinition } from '@typebot.io/forge-repository/types'
-import { Credentials } from '@typebot.io/schemas'
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Stack,
+} from "@chakra-ui/react";
+import type { Credentials } from "@typebot.io/credentials/schemas";
+import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
+import type React from "react";
+import { useState } from "react";
+import { ZodObjectLayout } from "../zodLayouts/ZodObjectLayout";
 
 type Props = {
-  blockDef: ForgedBlockDefinition
-  isOpen: boolean
+  blockDef: ForgedBlockDefinition;
+  isOpen: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  defaultData?: any
-  onClose: () => void
-  onNewCredentials: (id: string) => void
-}
+  defaultData?: any;
+  onClose: () => void;
+  onNewCredentials: (id: string) => void;
+};
 
 export const CreateForgedCredentialsModal = ({
   blockDef,
@@ -34,7 +35,7 @@ export const CreateForgedCredentialsModal = ({
   onClose,
   onNewCredentials,
 }: Props) => {
-  if (!blockDef.auth) return null
+  if (!blockDef.auth) return null;
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg">
       <ModalOverlay />
@@ -42,30 +43,30 @@ export const CreateForgedCredentialsModal = ({
         defaultData={defaultData}
         blockDef={blockDef}
         onNewCredentials={(id) => {
-          onClose()
-          onNewCredentials(id)
+          onClose();
+          onNewCredentials(id);
         }}
       />
     </Modal>
-  )
-}
+  );
+};
 
 export const CreateForgedCredentialsModalContent = ({
   blockDef,
   onNewCredentials,
-}: Pick<Props, 'blockDef' | 'onNewCredentials' | 'defaultData'>) => {
-  const { workspace } = useWorkspace()
-  const { showToast } = useToast()
-  const [name, setName] = useState('')
-  const [data, setData] = useState({})
+}: Pick<Props, "blockDef" | "onNewCredentials" | "defaultData">) => {
+  const { workspace } = useWorkspace();
+  const { showToast } = useToast();
+  const [name, setName] = useState("");
+  const [data, setData] = useState({});
 
-  const [isCreating, setIsCreating] = useState(false)
+  const [isCreating, setIsCreating] = useState(false);
 
   const {
     credentials: {
       listCredentials: { refetch: refetchCredentials },
     },
-  } = trpc.useContext()
+  } = trpc.useContext();
 
   const { mutate } = trpc.credentials.createCredentials.useMutation({
     onMutate: () => setIsCreating(true),
@@ -73,18 +74,18 @@ export const CreateForgedCredentialsModalContent = ({
     onError: (err) => {
       showToast({
         description: err.message,
-        status: 'error',
-      })
+        status: "error",
+      });
     },
     onSuccess: (data) => {
-      refetchCredentials()
-      onNewCredentials(data.credentialsId)
+      refetchCredentials();
+      onNewCredentials(data.credentialsId);
     },
-  })
+  });
 
   const createOpenAICredentials = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!workspace || !blockDef.auth) return
+    e.preventDefault();
+    if (!workspace || !blockDef.auth) return;
     mutate({
       credentials: {
         type: blockDef.id,
@@ -92,10 +93,10 @@ export const CreateForgedCredentialsModalContent = ({
         name,
         data,
       } as Credentials,
-    })
-  }
+    });
+  };
 
-  if (!blockDef.auth) return null
+  if (!blockDef.auth) return null;
   return (
     <ModalContent>
       <ModalHeader>Add {blockDef.auth.name}</ModalHeader>
@@ -129,5 +130,5 @@ export const CreateForgedCredentialsModalContent = ({
         </ModalFooter>
       </form>
     </ModalContent>
-  )
-}
+  );
+};

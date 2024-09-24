@@ -1,36 +1,37 @@
+import { ChevronLeftIcon, PlusIcon, TrashIcon } from "@/components/icons";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { useToast } from "@/hooks/useToast";
+import { trpc } from "@/lib/trpc";
 import {
   Button,
   IconButton,
   Menu,
   MenuButton,
-  MenuButtonProps,
+  type MenuButtonProps,
   MenuItem,
   MenuList,
   Stack,
   Text,
   useDisclosure,
-} from '@chakra-ui/react'
-import { ChevronLeftIcon, PlusIcon, TrashIcon } from '@/components/icons'
-import React, { useState } from 'react'
-import { CreateCustomDomainModal } from './CreateCustomDomainModal'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { useToast } from '@/hooks/useToast'
-import { trpc } from '@/lib/trpc'
+} from "@chakra-ui/react";
+import type React from "react";
+import { useState } from "react";
+import { CreateCustomDomainModal } from "./CreateCustomDomainModal";
 
-type Props = Omit<MenuButtonProps, 'type'> & {
-  currentCustomDomain?: string
-  onCustomDomainSelect: (domain: string) => void
-}
+type Props = Omit<MenuButtonProps, "type"> & {
+  currentCustomDomain?: string;
+  onCustomDomainSelect: (domain: string) => void;
+};
 
 export const CustomDomainsDropdown = ({
   currentCustomDomain,
   onCustomDomainSelect,
   ...props
 }: Props) => {
-  const [isDeleting, setIsDeleting] = useState('')
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const { workspace } = useWorkspace()
-  const { showToast } = useToast()
+  const [isDeleting, setIsDeleting] = useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { workspace } = useWorkspace();
+  const { showToast } = useToast();
   const { data, refetch } = trpc.customDomains.listCustomDomains.useQuery(
     {
       workspaceId: workspace?.id as string,
@@ -39,46 +40,46 @@ export const CustomDomainsDropdown = ({
       enabled: !!workspace?.id,
       onError: (error) => {
         showToast({
-          title: 'Error while fetching custom domains',
+          title: "Error while fetching custom domains",
           description: error.message,
-        })
+        });
       },
-    }
-  )
+    },
+  );
   const { mutate } = trpc.customDomains.deleteCustomDomain.useMutation({
     onMutate: ({ name }) => {
-      setIsDeleting(name)
+      setIsDeleting(name);
     },
     onError: (error) => {
       showToast({
-        title: 'Error while deleting custom domain',
+        title: "Error while deleting custom domain",
         description: error.message,
-      })
+      });
     },
     onSettled: () => {
-      setIsDeleting('')
+      setIsDeleting("");
     },
     onSuccess: () => {
-      refetch()
+      refetch();
     },
-  })
+  });
 
   const handleMenuItemClick = (customDomain: string) => () =>
-    onCustomDomainSelect(customDomain)
+    onCustomDomainSelect(customDomain);
 
   const handleDeleteDomainClick =
     (domainName: string) => async (e: React.MouseEvent) => {
-      if (!workspace) return
-      e.stopPropagation()
+      if (!workspace) return;
+      e.stopPropagation();
       mutate({
         name: domainName,
         workspaceId: workspace.id,
-      })
-    }
+      });
+    };
 
   const handleNewDomain = (name: string) => {
-    onCustomDomainSelect(name)
-  }
+    onCustomDomainSelect(name);
+  };
 
   return (
     <Menu isLazy placement="bottom-start">
@@ -92,18 +93,18 @@ export const CustomDomainsDropdown = ({
       )}
       <MenuButton
         as={Button}
-        rightIcon={<ChevronLeftIcon transform={'rotate(-90deg)'} />}
+        rightIcon={<ChevronLeftIcon transform={"rotate(-90deg)"} />}
         colorScheme="gray"
         justifyContent="space-between"
         textAlign="left"
         {...props}
       >
         <Text noOfLines={1} overflowY="visible" h="20px">
-          {currentCustomDomain ?? 'Add my domain'}
+          {currentCustomDomain ?? "Add my domain"}
         </Text>
       </MenuButton>
       <MenuList maxW="500px" shadow="lg">
-        <Stack maxH={'35vh'} overflowY="auto" spacing="0">
+        <Stack maxH={"35vh"} overflowY="auto" spacing="0">
           {(data?.customDomains ?? []).map((customDomain) => (
             <Button
               role="menuitem"
@@ -141,5 +142,5 @@ export const CustomDomainsDropdown = ({
         </Stack>
       </MenuList>
     </Menu>
-  )
-}
+  );
+};

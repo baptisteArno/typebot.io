@@ -1,28 +1,28 @@
-import prisma from '@typebot.io/lib/prisma'
-import { authenticatedProcedure } from '@/helpers/server/trpc'
-import { TRPCError } from '@trpc/server'
-import { resultWithAnswersSchema } from '@typebot.io/schemas'
-import { z } from 'zod'
-import { isReadTypebotForbidden } from '@/features/typebot/helpers/isReadTypebotForbidden'
 import {
-  timeFilterValues,
   defaultTimeFilter,
-} from '@/features/analytics/constants'
+  timeFilterValues,
+} from "@/features/analytics/constants";
 import {
   parseFromDateFromTimeFilter,
   parseToDateFromTimeFilter,
-} from '@/features/analytics/helpers/parseDateFromTimeFilter'
+} from "@/features/analytics/helpers/parseDateFromTimeFilter";
+import { isReadTypebotForbidden } from "@/features/typebot/helpers/isReadTypebotForbidden";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
+import { TRPCError } from "@trpc/server";
+import prisma from "@typebot.io/prisma";
+import { resultWithAnswersSchema } from "@typebot.io/results/schemas/results";
+import { z } from "@typebot.io/zod";
 
-const maxLimit = 100
+const maxLimit = 100;
 
 export const getResults = authenticatedProcedure
   .meta({
     openapi: {
-      method: 'GET',
-      path: '/v1/typebots/{typebotId}/results',
+      method: "GET",
+      path: "/v1/typebots/{typebotId}/results",
       protect: true,
-      summary: 'List results ordered by descending creation date',
-      tags: ['Results'],
+      summary: "List results ordered by descending creation date",
+      tags: ["Results"],
     },
   })
   .input(
@@ -30,28 +30,28 @@ export const getResults = authenticatedProcedure
       typebotId: z
         .string()
         .describe(
-          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
         ),
       limit: z.coerce.number().min(1).max(maxLimit).default(50),
       cursor: z.string().optional(),
       timeFilter: z.enum(timeFilterValues).default(defaultTimeFilter),
       timeZone: z.string().optional(),
-    })
+    }),
   )
   .output(
     z.object({
       results: z.array(resultWithAnswersSchema),
       nextCursor: z.string().nullish(),
-    })
+    }),
   )
   .query(async ({ input, ctx: { user } }) => {
-    const limit = Number(input.limit)
+    const limit = Number(input.limit);
     if (limit < 1 || limit > maxLimit)
       throw new TRPCError({
-        code: 'BAD_REQUEST',
+        code: "BAD_REQUEST",
         message: `limit must be between 1 and ${maxLimit}`,
-      })
-    const { cursor } = input
+      });
+    const { cursor } = input;
     const typebot = await prisma.typebot.findUnique({
       where: {
         id: input.typebotId,
@@ -77,15 +77,15 @@ export const getResults = authenticatedProcedure
           },
         },
       },
-    })
+    });
     if (!typebot || (await isReadTypebotForbidden(typebot, user)))
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+      throw new TRPCError({ code: "NOT_FOUND", message: "Typebot not found" });
 
     const fromDate = parseFromDateFromTimeFilter(
       input.timeFilter,
-      input.timeZone
-    )
-    const toDate = parseToDateFromTimeFilter(input.timeFilter, input.timeZone)
+      input.timeZone,
+    );
+    const toDate = parseToDateFromTimeFilter(input.timeFilter, input.timeZone);
 
     const results = await prisma.result.findMany({
       take: limit + 1,
@@ -102,7 +102,7 @@ export const getResults = authenticatedProcedure
           : undefined,
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: "desc",
       },
       include: {
         answers: {
@@ -120,12 +120,12 @@ export const getResults = authenticatedProcedure
           },
         },
       },
-    })
+    });
 
-    let nextCursor: typeof cursor | undefined
+    let nextCursor: typeof cursor | undefined;
     if (results.length > limit) {
-      const nextResult = results.pop()
-      nextCursor = nextResult?.id
+      const nextResult = results.pop();
+      nextCursor = nextResult?.id;
     }
 
     return {
@@ -135,8 +135,8 @@ export const getResults = authenticatedProcedure
           answers: r.answersV2
             .concat(r.answers)
             .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime()),
-        }))
+        })),
       ),
       nextCursor,
-    }
-  })
+    };
+  });

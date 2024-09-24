@@ -1,32 +1,32 @@
-import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { trpc } from '@/lib/trpc'
-import { Text, HStack, Button, Stack } from '@chakra-ui/react'
-import { PlanTag } from '@/features/billing/components/PlanTag'
-import { HardDriveIcon } from '@/components/icons'
-import { useRouter } from 'next/router'
-import { RadioButtons } from '@/components/inputs/RadioButtons'
-import { useState } from 'react'
+import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
+import { HardDriveIcon } from "@/components/icons";
+import { RadioButtons } from "@/components/inputs/RadioButtons";
+import { PlanTag } from "@/features/billing/components/PlanTag";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { trpc } from "@/lib/trpc";
+import { Button, HStack, Stack, Text } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 const Page = () => {
-  const { push } = useRouter()
-  const { typebot } = useTypebot()
-  const { workspaces } = useWorkspace()
-  const [selectedWorkspaceId, setSelectedWorkspaceId] = useState<string>()
+  const { push } = useRouter();
+  const { typebot } = useTypebot();
+  const { workspaces } = useWorkspace();
+  const [selectedWorkspaceId, setSelectedWorkspaceId] = useState<string>();
   const { mutate, isLoading } = trpc.typebot.importTypebot.useMutation({
     onSuccess: (data) => {
-      push(`/typebots/${data.typebot.id}/edit`)
+      push(`/typebots/${data.typebot.id}/edit`);
     },
-  })
+  });
 
   const duplicateTypebot = (workspaceId: string) => {
-    mutate({ workspaceId, typebot })
-  }
+    mutate({ workspaceId, typebot });
+  };
 
   const updateSelectedWorkspaceId = (workspaceId: string) => {
-    setSelectedWorkspaceId(workspaceId)
-  }
+    setSelectedWorkspaceId(workspaceId);
+  };
 
   return (
     <Stack
@@ -70,7 +70,7 @@ const Page = () => {
         Duplicate
       </Button>
     </Stack>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;

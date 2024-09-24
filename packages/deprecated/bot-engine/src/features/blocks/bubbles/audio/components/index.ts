@@ -1,1 +1,1 @@
-export * from './AudioBubble'
+export * from "./AudioBubble";

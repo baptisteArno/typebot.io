@@ -1,49 +1,52 @@
-import { Seo } from '@/components/Seo'
-import { AnalyticsGraphContainer } from '@/features/analytics/components/AnalyticsGraphContainer'
-import { TypebotHeader } from '@/features/editor/components/TypebotHeader'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { useToast } from '@/hooks/useToast'
+import { Seo } from "@/components/Seo";
+import { AnalyticsGraphContainer } from "@/features/analytics/components/AnalyticsGraphContainer";
 import {
+  defaultTimeFilter,
+  type timeFilterValues,
+} from "@/features/analytics/constants";
+import { TypebotHeader } from "@/features/editor/components/TypebotHeader";
+import { TypebotNotFoundPage } from "@/features/editor/components/TypebotNotFoundPage";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { useToast } from "@/hooks/useToast";
+import { trpc } from "@/lib/trpc";
+import {
+  Button,
   Flex,
   HStack,
-  Button,
   Tag,
   Text,
   useColorModeValue,
-} from '@chakra-ui/react'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { useMemo, useState } from 'react'
-import { ResultsProvider } from '../ResultsProvider'
-import { ResultsTableContainer } from './ResultsTableContainer'
-import { TypebotNotFoundPage } from '@/features/editor/components/TypebotNotFoundPage'
-import { trpc } from '@/lib/trpc'
-import {
-  defaultTimeFilter,
-  timeFilterValues,
-} from '@/features/analytics/constants'
+} from "@chakra-ui/react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useMemo, useState } from "react";
+import { ResultsProvider } from "../ResultsProvider";
+import { ResultsTableContainer } from "./ResultsTableContainer";
 
-const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 export const ResultsPage = () => {
-  const router = useRouter()
-  const { workspace } = useWorkspace()
-  const { typebot, publishedTypebot, is404 } = useTypebot()
+  const router = useRouter();
+  const { workspace } = useWorkspace();
+  const { typebot, publishedTypebot, is404 } = useTypebot();
   const isAnalytics = useMemo(
-    () => router.pathname.endsWith('analytics'),
-    [router.pathname]
-  )
+    () => router.pathname.endsWith("analytics"),
+    [router.pathname],
+  );
   const bgColor = useColorModeValue(
-    router.pathname.endsWith('analytics') ? '#f4f5f8' : 'white',
-    router.pathname.endsWith('analytics') ? 'gray.850' : 'gray.900'
-  )
+    router.pathname.endsWith("analytics") ? "#f4f5f8" : "white",
+    router.pathname.endsWith("analytics") ? "gray.850" : "gray.900",
+  );
   const [timeFilter, setTimeFilter] =
-    useState<(typeof timeFilterValues)[number]>(defaultTimeFilter)
+    useState<(typeof timeFilterValues)[number]>(defaultTimeFilter);
 
-  const { showToast } = useToast()
+  const { showToast } = useToast();
 
-  const { data: { stats } = {}, refetch } = trpc.analytics.getStats.useQuery(
+  const {
+    data: { stats } = {},
+    refetch,
+  } = trpc.analytics.getStats.useQuery(
     {
       typebotId: publishedTypebot?.typebotId as string,
       timeFilter,
@@ -52,26 +55,26 @@ export const ResultsPage = () => {
     {
       enabled: !!publishedTypebot,
       onError: (err) => showToast({ description: err.message }),
-    }
-  )
+    },
+  );
 
   const handleDeletedResults = () => {
-    if (!stats) return
-    refetch()
-  }
+    if (!stats) return;
+    refetch();
+  };
 
-  if (is404) return <TypebotNotFoundPage />
+  if (is404) return <TypebotNotFoundPage />;
   return (
     <Flex overflow="hidden" h="100vh" flexDir="column">
       <Seo
         title={
-          router.pathname.endsWith('analytics')
+          router.pathname.endsWith("analytics")
             ? typebot?.name
               ? `${typebot.name} | Analytics`
-              : 'Analytics'
+              : "Analytics"
             : typebot?.name
-            ? `${typebot.name} | Results`
-            : 'Results'
+              ? `${typebot.name} | Results`
+              : "Results"
         }
       />
       <TypebotHeader />
@@ -82,13 +85,13 @@ export const ResultsPage = () => {
           w="full"
           justifyContent="center"
           h="60px"
-          display={['none', 'flex']}
+          display={["none", "flex"]}
         >
           <HStack maxW="1600px" w="full" px="4">
             <Button
               as={Link}
-              colorScheme={!isAnalytics ? 'blue' : 'gray'}
-              variant={!isAnalytics ? 'outline' : 'ghost'}
+              colorScheme={!isAnalytics ? "blue" : "gray"}
+              variant={!isAnalytics ? "outline" : "ghost"}
               size="sm"
               href={`/typebots/${typebot?.id}/results`}
             >
@@ -101,8 +104,8 @@ export const ResultsPage = () => {
             </Button>
             <Button
               as={Link}
-              colorScheme={isAnalytics ? 'blue' : 'gray'}
-              variant={isAnalytics ? 'outline' : 'ghost'}
+              colorScheme={isAnalytics ? "blue" : "gray"}
+              variant={isAnalytics ? "outline" : "ghost"}
               href={`/typebots/${typebot?.id}/results/analytics`}
               size="sm"
             >
@@ -110,7 +113,7 @@ export const ResultsPage = () => {
             </Button>
           </HStack>
         </Flex>
-        <Flex pt={['10px', '60px']} w="full" justify="center">
+        <Flex pt={["10px", "60px"]} w="full" justify="center">
           {workspace &&
             publishedTypebot &&
             (isAnalytics ? (
@@ -135,5 +138,5 @@ export const ResultsPage = () => {
         </Flex>
       </Flex>
     </Flex>
-  )
-}
+  );
+};

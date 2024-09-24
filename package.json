@@ -1,6 +1,6 @@
 {
+  "name": "root",
   "version": "2.28.2",
-  "name": "typebot-os",
   "private": true,
   "workspaces": [
     "ee/apps/*",
@@ -10,37 +10,46 @@
     "packages/embeds/*",
     "packages/forge/*",
     "packages/forge/blocks/*",
+    "packages/blocks/*",
     "apps/*"
   ],
   "scripts": {
-    "prepare": "husky install",
-    "docker:up": "docker compose -f docker-compose.dev.yml up -d && node -e \"setTimeout(() => {}, 5000)\"",
-    "docker:nuke": "docker compose -f docker-compose.dev.yml down --volumes --remove-orphans",
-    "clean": "git clean -xdf -e '*.env*' -e .DS_Store",
-    "lint": "turbo run lint",
-    "dev": "pnpm docker:up && turbo build --filter=@typebot.io/nextjs... && turbo run dev --filter=builder... --filter=viewer... --parallel --no-cache",
-    "build": "pnpm docker:up && turbo run build",
-    "build:apps": "turbo run build --filter=builder... --filter=viewer...",
-    "db:migrate": "cd packages/prisma && pnpm run db:migrate",
-    "generate-change-log": "git fetch --all && pnpx gitmoji-changelog",
-    "locales:sync": "tolgee sync --continue-on-warning --remove-unused --patterns './apps/builder/src/**/*.ts?(x)' --backup './.tolgee/backup'",
-    "locales:pull": "tolgee pull && prettier --write ./apps/builder/src/i18n",
-    "create-new-block": "cd packages/forge/cli && pnpm start",
-    "format:check": "turbo run format:check",
-    "patch-embed-libs": "bun scripts/patch-embed-libs.ts"
+    "format-and-lint": "biome check .",
+    "format-and-lint:fix": "biome check . --write",
+    "lint-repo": "sherif",
+    "lint-repo:fix": "sherif --fix",
+    "patch-embed-libs": "bun packages/scripts/src/patchEmbedLibs.ts",
+    "start-docker-compose-dev": "docker compose -f docker-compose.dev.yml up",
+    "build-docker-compose-prod": "docker compose -f docker-compose.build.yml build",
+    "start-docker-compose-prod": "docker compose -f docker-compose.yml up",
+    "dev": "turbo dev --filter=builder... --filter=viewer...",
+    "generate-change-log": "git fetch --all && gitmoji-changelog",
+    "sync-locales": "tolgee sync --continue-on-warning --remove-unused --patterns './apps/builder/src/**/*.ts?(x)' --backup './.tolgee/backup'",
+    "pull-locales": "tolgee pull && prettier --write ./apps/builder/src/i18n",
+    "create-new-block": "cd packages/forge/cli && bun start"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@tolgee/cli": "2.1.5",
-    "cross-env": "7.0.3",
-    "cz-emoji": "1.3.2-canary.2",
-    "husky": "8.0.3",
-    "prettier": "2.8.8",
-    "turbo": "2.0.5"
+    "sherif": "1.0.0",
+    "turbo": "2.1.2",
+    "gitmoji-changelog": "2.3.0",
+    "typescript": "5.6.2"
   },
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-emoji"
-    }
+  "packageManager": "bun@1.1.29",
+  "engines": {
+    "node": "20.17.0"
   },
-  "packageManager": "pnpm@9.5.0"
+  "trustedDependencies": [
+    "@biomejs/biome",
+    "@prisma/client",
+    "@prisma/engines",
+    "@sentry/cli",
+    "@swc/core",
+    "core-js",
+    "esbuild",
+    "isolated-vm",
+    "prisma",
+    "sharp"
+  ]
 }

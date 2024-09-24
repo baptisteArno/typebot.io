@@ -1,60 +1,60 @@
+import { AlertInfo } from "@/components/AlertInfo";
+import { DropdownList } from "@/components/DropdownList";
+import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
+import { TableList } from "@/components/TableList";
+import { TextLink } from "@/components/TextLink";
+import { UnlockPlanAlertInfo } from "@/components/UnlockPlanAlertInfo";
+import { NumberInput } from "@/components/inputs";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { PlanTag } from "@/features/billing/components/PlanTag";
+import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
+import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useParentModal } from "@/features/graph/providers/ParentModalProvider";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { trpc } from "@/lib/trpc";
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  Heading,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  Stack,
-  Text,
-  OrderedList,
-  ListItem,
-  HStack,
-  useDisclosure,
   Accordion,
   AccordionButton,
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
   Flex,
-} from '@chakra-ui/react'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { CredentialsDropdown } from '@/features/credentials/components/CredentialsDropdown'
-import { ModalProps } from '../../EmbedButton'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { WhatsAppCredentialsModal } from './WhatsAppCredentialsModal'
-import { TextLink } from '@/components/TextLink'
-import { PublishButton } from '../../../PublishButton'
-import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
-import { trpc } from '@/lib/trpc'
-import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
-import { TableList } from '@/components/TableList'
-import { Comparison } from '@typebot.io/schemas'
-import { DropdownList } from '@/components/DropdownList'
-import { WhatsAppComparisonItem } from './WhatsAppComparisonItem'
-import { AlertInfo } from '@/components/AlertInfo'
-import { NumberInput } from '@/components/inputs'
-import { defaultSessionExpiryTimeout } from '@typebot.io/schemas/features/whatsapp'
-import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
-import { isDefined } from '@typebot.io/lib/utils'
-import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
-import { UnlockPlanAlertInfo } from '@/components/UnlockPlanAlertInfo'
-import { PlanTag } from '@/features/billing/components/PlanTag'
-import { LogicalOperator } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
+  HStack,
+  Heading,
+  ListItem,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  OrderedList,
+  Stack,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { LogicalOperator } from "@typebot.io/conditions/constants";
+import type { Comparison } from "@typebot.io/conditions/schemas";
+import { isDefined } from "@typebot.io/lib/utils";
+import { defaultSessionExpiryTimeout } from "@typebot.io/settings/constants";
+import { PublishButton } from "../../../PublishButton";
+import type { ModalProps } from "../../EmbedButton";
+import { WhatsAppComparisonItem } from "./WhatsAppComparisonItem";
+import { WhatsAppCredentialsModal } from "./WhatsAppCredentialsModal";
 
 export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
-  const { typebot, updateTypebot, isPublished } = useTypebot()
-  const { ref } = useParentModal()
-  const { workspace } = useWorkspace()
+  const { typebot, updateTypebot, isPublished } = useTypebot();
+  const { ref } = useParentModal();
+  const { workspace } = useWorkspace();
   const {
     isOpen: isCredentialsModalOpen,
     onOpen,
     onClose: onCredentialsModalClose,
-  } = useDisclosure()
+  } = useDisclosure();
 
-  const whatsAppSettings = typebot?.settings.whatsApp
+  const whatsAppSettings = typebot?.settings.whatsApp;
 
   const { data: phoneNumberData } =
     trpc.whatsAppInternal.getPhoneNumber.useQuery(
@@ -63,11 +63,11 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
       },
       {
         enabled: !!typebot?.whatsAppCredentialsId,
-      }
-    )
+      },
+    );
 
   const toggleEnableWhatsApp = (isChecked: boolean) => {
-    if (!phoneNumberData?.id || !typebot) return
+    if (!phoneNumberData?.id || !typebot) return;
     updateTypebot({
       updates: {
         settings: {
@@ -78,20 +78,20 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
           },
         },
       },
-    })
-  }
+    });
+  };
 
   const updateCredentialsId = (credentialsId: string | undefined) => {
-    if (!typebot) return
+    if (!typebot) return;
     updateTypebot({
       updates: {
         whatsAppCredentialsId: credentialsId,
       },
-    })
-  }
+    });
+  };
 
   const updateStartConditionComparisons = (comparisons: Comparison[]) => {
-    if (!typebot) return
+    if (!typebot) return;
     updateTypebot({
       updates: {
         settings: {
@@ -107,13 +107,13 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
           },
         },
       },
-    })
-  }
+    });
+  };
 
   const updateStartConditionLogicalOperator = (
-    logicalOperator: LogicalOperator
+    logicalOperator: LogicalOperator,
   ) => {
-    if (!typebot) return
+    if (!typebot) return;
     updateTypebot({
       updates: {
         settings: {
@@ -128,11 +128,11 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
           },
         },
       },
-    })
-  }
+    });
+  };
 
   const updateIsStartConditionEnabled = (isEnabled: boolean) => {
-    if (!typebot) return
+    if (!typebot) return;
     updateTypebot({
       updates: {
         settings: {
@@ -148,8 +148,8 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
           },
         },
       },
-    })
-  }
+    });
+  };
 
   const updateSessionExpiryTimeout = (sessionExpiryTimeout?: number) => {
     if (
@@ -157,7 +157,7 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
       (sessionExpiryTimeout &&
         (sessionExpiryTimeout <= 0 || sessionExpiryTimeout > 48))
     )
-      return
+      return;
     updateTypebot({
       updates: {
         settings: {
@@ -168,8 +168,8 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
           },
         },
       },
-    })
-  }
+    });
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
@@ -181,7 +181,7 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
         <ModalCloseButton />
         <ModalBody as={Stack} spacing="6">
           {!hasProPerks(workspace) && (
-            <UnlockPlanAlertInfo excludedPlans={['STARTER']}>
+            <UnlockPlanAlertInfo excludedPlans={["STARTER"]}>
               Upgrade your workspace to <PlanTag plan="PRO" /> to be able to
               enable WhatsApp integration.
             </UnlockPlanAlertInfo>
@@ -242,9 +242,9 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
                           />
                         </HStack>
                         <SwitchWithRelatedSettings
-                          label={'Start bot condition'}
+                          label={"Start bot condition"}
                           initialValue={isDefined(
-                            whatsAppSettings?.startCondition
+                            whatsAppSettings?.startCondition,
                           )}
                           onCheckChange={updateIsStartConditionEnabled}
                         >
@@ -313,5 +313,5 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
         <ModalFooter />
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};

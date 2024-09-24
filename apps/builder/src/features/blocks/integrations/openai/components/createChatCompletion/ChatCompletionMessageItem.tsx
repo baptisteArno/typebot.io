@@ -1,24 +1,24 @@
-import { DropdownList } from '@/components/DropdownList'
-import { Textarea } from '@/components/inputs'
-import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
-import { TableListItemProps } from '@/components/TableList'
-import { HStack, Stack, Text } from '@chakra-ui/react'
-import { Variable } from '@typebot.io/schemas'
-import { ChatCompletionOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai'
+import { DropdownList } from "@/components/DropdownList";
+import type { TableListItemProps } from "@/components/TableList";
+import { Textarea } from "@/components/inputs";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { HStack, Stack, Text } from "@chakra-ui/react";
 import {
   chatCompletionMessageCustomRoles,
   chatCompletionMessageRoles,
   deprecatedRoles,
-} from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
+} from "@typebot.io/blocks-integrations/openai/constants";
+import type { ChatCompletionOpenAIOptions } from "@typebot.io/blocks-integrations/openai/schema";
+import type { Variable } from "@typebot.io/variables/schemas";
 
 type Props = TableListItemProps<
-  NonNullable<ChatCompletionOpenAIOptions['messages']>[number]
->
+  NonNullable<ChatCompletionOpenAIOptions["messages"]>[number]
+>;
 
 const roles = [
   ...chatCompletionMessageCustomRoles,
   ...chatCompletionMessageRoles,
-]
+];
 
 export const ChatCompletionMessageItem = ({ item, onItemChange }: Props) => {
   const changeRole = (role: (typeof roles)[number]) => {
@@ -26,25 +26,26 @@ export const ChatCompletionMessageItem = ({ item, onItemChange }: Props) => {
       ...item,
       role,
       content: undefined,
-    })
-  }
+    });
+  };
 
   const changeSingleMessageContent = (content: string) => {
-    if (item.role === 'Messages sequence ✨' || item.role === 'Dialogue') return
-    onItemChange({ ...item, content })
-  }
+    if (item.role === "Messages sequence ✨" || item.role === "Dialogue")
+      return;
+    onItemChange({ ...item, content });
+  };
 
   const updateDialogueVariableId = (
-    variable: Pick<Variable, 'id'> | undefined
+    variable: Pick<Variable, "id"> | undefined,
   ) => {
-    if (item.role !== 'Dialogue') return
-    onItemChange({ ...item, dialogueVariableId: variable?.id })
-  }
+    if (item.role !== "Dialogue") return;
+    onItemChange({ ...item, dialogueVariableId: variable?.id });
+  };
 
-  const updateStartsBy = (startsBy: 'user' | 'assistant') => {
-    if (item.role !== 'Dialogue') return
-    onItemChange({ ...item, startsBy })
-  }
+  const updateStartsBy = (startsBy: "user" | "assistant") => {
+    if (item.role !== "Dialogue") return;
+    onItemChange({ ...item, startsBy });
+  };
 
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
@@ -52,7 +53,7 @@ export const ChatCompletionMessageItem = ({ item, onItemChange }: Props) => {
         currentItem={item.role}
         items={roles.filter(
           (role) =>
-            !deprecatedRoles.includes(role as (typeof deprecatedRoles)[number])
+            !deprecatedRoles.includes(role as (typeof deprecatedRoles)[number]),
         )}
         onItemSelect={changeRole}
         placeholder="Select type"
@@ -64,8 +65,8 @@ export const ChatCompletionMessageItem = ({ item, onItemChange }: Props) => {
         onStartsByChange={updateStartsBy}
       />
     </Stack>
-  )
-}
+  );
+};
 
 const ChatCompletionMessageItemContent = ({
   onChangeSingleMessageContent,
@@ -73,17 +74,17 @@ const ChatCompletionMessageItemContent = ({
   onStartsByChange,
   item,
 }: {
-  onChangeSingleMessageContent: (content: string) => void
+  onChangeSingleMessageContent: (content: string) => void;
   onChangeDialogueVariableId: (
-    variable: Pick<Variable, 'id'> | undefined
-  ) => void
-  onStartsByChange: (startsBy: 'user' | 'assistant') => void
-  item: NonNullable<ChatCompletionOpenAIOptions['messages']>[number]
+    variable: Pick<Variable, "id"> | undefined,
+  ) => void;
+  onStartsByChange: (startsBy: "user" | "assistant") => void;
+  item: NonNullable<ChatCompletionOpenAIOptions["messages"]>[number];
 }) => {
   switch (item.role) {
-    case 'assistant':
-    case 'user':
-    case 'system':
+    case "assistant":
+    case "user":
+    case "system":
       return (
         <Textarea
           defaultValue={item.content}
@@ -91,8 +92,8 @@ const ChatCompletionMessageItemContent = ({
           placeholder="Content"
           minH="150px"
         />
-      )
-    case 'Dialogue':
+      );
+    case "Dialogue":
       return (
         <Stack alignItems="flex-end">
           <VariableSearchInput
@@ -104,14 +105,14 @@ const ChatCompletionMessageItemContent = ({
             <Text>starts by</Text>
             <DropdownList
               size="sm"
-              currentItem={item.startsBy ?? 'user'}
+              currentItem={item.startsBy ?? "user"}
               onItemSelect={onStartsByChange}
-              items={['user', 'assistant'] as const}
+              items={["user", "assistant"] as const}
             />
           </HStack>
         </Stack>
-      )
-    case 'Messages sequence ✨':
-      return null
+      );
+    case "Messages sequence ✨":
+      return null;
   }
-}
+};

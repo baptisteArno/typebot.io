@@ -1,18 +1,5 @@
-import React, { useRef } from 'react'
-import {
-  flip,
-  offset,
-  UseVirtualFloatingOptions,
-} from '@udecode/plate-floating'
-import {
-  LinkFloatingToolbarState,
-  useFloatingLinkEdit,
-  useFloatingLinkEditState,
-  useFloatingLinkInsert,
-  useFloatingLinkInsertState,
-  useFloatingLinkUrlInput,
-} from '@udecode/plate-link'
-import { LinkIcon, UnlinkIcon } from '@/components/icons'
+import { LinkIcon, UnlinkIcon } from "@/components/icons";
+import { TextInputIcon } from "@/features/blocks/inputs/textInput/components/TextInputIcon";
 import {
   Button,
   Divider,
@@ -23,44 +10,57 @@ import {
   InputLeftElement,
   Stack,
   useColorModeValue,
-} from '@chakra-ui/react'
-import { TextInputIcon } from '@/features/blocks/inputs/textInput/components/TextInputIcon'
+} from "@chakra-ui/react";
+import {
+  type UseVirtualFloatingOptions,
+  flip,
+  offset,
+} from "@udecode/plate-floating";
+import {
+  type LinkFloatingToolbarState,
+  useFloatingLinkEdit,
+  useFloatingLinkEditState,
+  useFloatingLinkInsert,
+  useFloatingLinkInsertState,
+  useFloatingLinkUrlInput,
+} from "@udecode/plate-link";
+import React, { useRef } from "react";
 
 const floatingOptions: UseVirtualFloatingOptions = {
-  placement: 'bottom-start',
+  placement: "bottom-start",
   middleware: [
     offset(12),
     flip({
       padding: 12,
-      fallbackPlacements: ['bottom-end', 'top-start', 'top-end'],
+      fallbackPlacements: ["bottom-end", "top-start", "top-end"],
     }),
   ],
-}
+};
 
 export interface LinkFloatingToolbarProps {
-  state?: LinkFloatingToolbarState
+  state?: LinkFloatingToolbarState;
 }
 
 export function LinkFloatingToolbar({ state }: LinkFloatingToolbarProps) {
-  const bgColor = useColorModeValue('white', 'gray.800')
-  const urlInputRef = useRef<HTMLInputElement>(null)
+  const bgColor = useColorModeValue("white", "gray.800");
+  const urlInputRef = useRef<HTMLInputElement>(null);
   const insertState = useFloatingLinkInsertState({
     ...state,
     floatingOptions: {
       ...floatingOptions,
       ...state?.floatingOptions,
     },
-  })
+  });
   const {
     props: insertProps,
     ref: insertRef,
     hidden,
     textInputProps,
-  } = useFloatingLinkInsert(insertState)
+  } = useFloatingLinkInsert(insertState);
 
   const { props } = useFloatingLinkUrlInput({
     ref: urlInputRef,
-  })
+  });
 
   const editState = useFloatingLinkEditState({
     ...state,
@@ -68,15 +68,15 @@ export function LinkFloatingToolbar({ state }: LinkFloatingToolbarProps) {
       ...floatingOptions,
       ...state?.floatingOptions,
     },
-  })
+  });
   const {
     props: editProps,
     ref: editRef,
     editButtonProps,
     unlinkButtonProps,
-  } = useFloatingLinkEdit(editState)
+  } = useFloatingLinkEdit(editState);
 
-  if (hidden) return null
+  if (hidden) return null;
 
   const input = (
     <Stack
@@ -109,7 +109,7 @@ export function LinkFloatingToolbar({ state }: LinkFloatingToolbarProps) {
         <Input placeholder="Text to display" {...textInputProps} />
       </InputGroup>
     </Stack>
-  )
+  );
 
   const editContent = editState.isEditing ? (
     input
@@ -135,7 +135,7 @@ export function LinkFloatingToolbar({ state }: LinkFloatingToolbarProps) {
         {...unlinkButtonProps}
       />
     </HStack>
-  )
+  );
 
   return (
     <>
@@ -147,5 +147,5 @@ export function LinkFloatingToolbar({ state }: LinkFloatingToolbarProps) {
         {editContent}
       </div>
     </>
-  )
+  );
 }

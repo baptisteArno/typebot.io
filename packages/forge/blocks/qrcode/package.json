@@ -1,19 +1,19 @@
 {
   "name": "@typebot.io/qrcode-block",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.ts",
-  "keywords": [],
-  "license": "AGPL-3.0-or-later",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schemas": "./src/schemas.ts"
+  },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/react": "18.2.15",
-    "@types/qrcode": "^1.5.3",
-    "typescript": "5.4.5"
+    "@types/qrcode": "1.5.3"
   },
   "dependencies": {
-    "qrcode": "^1.5.3"
+    "qrcode": "1.5.3"
   }
 }

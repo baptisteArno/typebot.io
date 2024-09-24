@@ -1,4 +1,4 @@
-import { IconProps, Icon } from '@chakra-ui/react'
+import { Icon, type IconProps } from "@chakra-ui/react";
 
 export const FacebookLogo = (props: IconProps) => (
   <Icon viewBox="0 0 14222 14222" {...props}>
@@ -8,4 +8,4 @@ export const FacebookLogo = (props: IconProps) => (
       fill="#fff"
     />
   </Icon>
-)
+);

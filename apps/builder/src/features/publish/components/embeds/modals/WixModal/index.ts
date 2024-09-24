@@ -1,1 +1,1 @@
-export * from './WixModal'
+export * from "./WixModal";

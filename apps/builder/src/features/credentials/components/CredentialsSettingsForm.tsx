@@ -1,53 +1,56 @@
-import { trpc } from '@/lib/trpc'
+import { EditIcon, PlusIcon, TrashIcon } from "@/components/icons";
+import { StripeLogo } from "@/components/logos/StripeLogo";
+import { WhatsAppLogo } from "@/components/logos/WhatsAppLogo";
+import { BlockIcon } from "@/features/editor/components/BlockIcon";
+import { BlockLabel } from "@/features/editor/components/BlockLabel";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { trpc } from "@/lib/trpc";
 import {
-  Heading,
-  HStack,
-  Stack,
-  IconButton,
-  Divider,
   Button,
+  Divider,
+  Flex,
+  HStack,
+  Heading,
+  IconButton,
+  type IconProps,
   Menu,
   MenuButton,
-  MenuList,
   MenuItem,
-  IconProps,
-  TextProps,
+  MenuList,
   Popover,
-  PopoverTrigger,
-  PopoverFooter,
   PopoverArrow,
   PopoverBody,
   PopoverContent,
-  Flex,
+  PopoverFooter,
+  PopoverTrigger,
   Skeleton,
   SkeletonCircle,
-} from '@chakra-ui/react'
-import React, { useMemo, useRef, useState } from 'react'
-import { Credentials, credentialsTypes } from '@typebot.io/schemas'
-import { BlockIcon } from '@/features/editor/components/BlockIcon'
-import { BlockLabel } from '@/features/editor/components/BlockLabel'
-import { Text } from '@chakra-ui/react'
-import { WhatsAppLogo } from '@/components/logos/WhatsAppLogo'
-import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
-import { StripeLogo } from '@/components/logos/StripeLogo'
-import { EditIcon, PlusIcon, TrashIcon } from '@/components/icons'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { toast } from 'sonner'
-import { CredentialsCreateModal } from './CredentialsCreateModal'
-import { CredentialsUpdateModal } from './CredentialsUpdateModal'
+  Stack,
+  Text,
+  type TextProps,
+} from "@chakra-ui/react";
+import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
+import {
+  type Credentials,
+  credentialsTypes,
+} from "@typebot.io/credentials/schemas";
+import React, { useMemo, useRef, useState } from "react";
+import { toast } from "sonner";
+import { CredentialsCreateModal } from "./CredentialsCreateModal";
+import { CredentialsUpdateModal } from "./CredentialsUpdateModal";
 
-const nonEditableTypes = ['whatsApp', 'google sheets'] as const
+const nonEditableTypes = ["whatsApp", "google sheets"] as const;
 
-type CredentialsInfo = Pick<Credentials, 'id' | 'type' | 'name'>
+type CredentialsInfo = Pick<Credentials, "id" | "type" | "name">;
 
 export const CredentialsSettingsForm = () => {
-  const [creatingType, setCreatingType] = useState<Credentials['type']>()
+  const [creatingType, setCreatingType] = useState<Credentials["type"]>();
   const [editingCredentials, setEditingCredentials] = useState<{
-    id: string
-    type: Credentials['type']
-  }>()
-  const [deletingCredentialsId, setDeletingCredentialsId] = useState<string>()
-  const { workspace } = useWorkspace()
+    id: string;
+    type: Credentials["type"];
+  }>();
+  const [deletingCredentialsId, setDeletingCredentialsId] = useState<string>();
+  const { workspace } = useWorkspace();
   const { data, isLoading, refetch } =
     trpc.credentials.listCredentials.useQuery(
       {
@@ -55,45 +58,45 @@ export const CredentialsSettingsForm = () => {
       },
       {
         enabled: !!workspace?.id,
-      }
-    )
+      },
+    );
 
   const { mutate: deleteCredentials } =
     trpc.credentials.deleteCredentials.useMutation({
       onMutate: ({ credentialsId }) =>
         setDeletingCredentialsId(credentialsId as string),
       onSettled: () => {
-        setDeletingCredentialsId(undefined)
+        setDeletingCredentialsId(undefined);
       },
       onError: (error) => {
-        toast.error(error.message)
+        toast.error(error.message);
       },
       onSuccess: () => {
-        refetch()
+        refetch();
       },
-    })
+    });
 
   const credentials = useMemo(
     () =>
       data?.credentials ? groupCredentialsByType(data.credentials) : undefined,
-    [data?.credentials]
-  )
+    [data?.credentials],
+  );
 
   return (
     <Stack spacing="6" w="full">
       <CredentialsCreateModal
         creatingType={creatingType}
         onSubmit={() => {
-          refetch()
-          setCreatingType(undefined)
+          refetch();
+          setCreatingType(undefined);
         }}
         onClose={() => setCreatingType(undefined)}
       />
       <CredentialsUpdateModal
         editingCredentials={editingCredentials}
         onSubmit={() => {
-          refetch()
-          setEditingCredentials(undefined)
+          refetch();
+          setEditingCredentials(undefined);
         }}
         onClose={() => setEditingCredentials(undefined)}
       />
@@ -118,7 +121,7 @@ export const CredentialsSettingsForm = () => {
       </HStack>
 
       {credentials && !isLoading ? (
-        (Object.keys(credentials) as Credentials['type'][]).map((type) => (
+        (Object.keys(credentials) as Credentials["type"][]).map((type) => (
           <Stack
             key={type}
             borderWidth="1px"
@@ -140,7 +143,7 @@ export const CredentialsSettingsForm = () => {
                     isDeleting={deletingCredentialsId === cred.id}
                     onEditClick={
                       nonEditableTypes.includes(
-                        cred.type as (typeof nonEditableTypes)[number]
+                        cred.type as (typeof nonEditableTypes)[number],
                       )
                         ? undefined
                         : () =>
@@ -195,72 +198,72 @@ export const CredentialsSettingsForm = () => {
         </Stack>
       )}
     </Stack>
-  )
-}
+  );
+};
 
 const CredentialsIcon = ({
   type,
   ...props
-}: { type: Credentials['type'] } & IconProps) => {
+}: { type: Credentials["type"] } & IconProps) => {
   switch (type) {
-    case 'google sheets':
-      return <BlockIcon type={IntegrationBlockType.GOOGLE_SHEETS} {...props} />
-    case 'smtp':
-      return <BlockIcon type={IntegrationBlockType.EMAIL} {...props} />
-    case 'stripe':
-      return <StripeLogo rounded="sm" {...props} />
-    case 'whatsApp':
-      return <WhatsAppLogo {...props} />
+    case "google sheets":
+      return <BlockIcon type={IntegrationBlockType.GOOGLE_SHEETS} {...props} />;
+    case "smtp":
+      return <BlockIcon type={IntegrationBlockType.EMAIL} {...props} />;
+    case "stripe":
+      return <StripeLogo rounded="sm" {...props} />;
+    case "whatsApp":
+      return <WhatsAppLogo {...props} />;
     default:
-      return <BlockIcon type={type} {...props} />
+      return <BlockIcon type={type} {...props} />;
   }
-}
+};
 
 const CredentialsLabel = ({
   type,
   ...props
-}: { type: Credentials['type'] } & TextProps) => {
+}: { type: Credentials["type"] } & TextProps) => {
   switch (type) {
-    case 'google sheets':
+    case "google sheets":
       return (
         <Text fontSize="sm" {...props}>
           Google Sheets
         </Text>
-      )
-    case 'smtp':
+      );
+    case "smtp":
       return (
         <Text fontSize="sm" {...props}>
           SMTP
         </Text>
-      )
-    case 'stripe':
+      );
+    case "stripe":
       return (
         <Text fontSize="sm" {...props}>
           Stripe
         </Text>
-      )
-    case 'whatsApp':
+      );
+    case "whatsApp":
       return (
         <Text fontSize="sm" {...props}>
           WhatsApp
         </Text>
-      )
+      );
     default:
-      return <BlockLabel type={type} {...props} />
+      return <BlockLabel type={type} {...props} />;
   }
-}
+};
 
 const CredentialsItem = ({
   isDeleting,
   onEditClick,
   onDeleteClick,
   ...cred
-}: Pick<Credentials, 'name' | 'type'> & {
-  isDeleting: boolean
-  onEditClick?: () => void
-  onDeleteClick: () => void
+}: Pick<Credentials, "name" | "type"> & {
+  isDeleting: boolean;
+  onEditClick?: () => void;
+  onDeleteClick: () => void;
 }) => {
-  const initialFocusRef = useRef<HTMLButtonElement>(null)
+  const initialFocusRef = useRef<HTMLButtonElement>(null);
 
   return (
     <HStack justifyContent="space-between" py="2">
@@ -318,19 +321,19 @@ const CredentialsItem = ({
         </Popover>
       </HStack>
     </HStack>
-  )
-}
+  );
+};
 
 const groupCredentialsByType = (
-  credentials: CredentialsInfo[]
-): Record<CredentialsInfo['type'], CredentialsInfo[]> => {
+  credentials: CredentialsInfo[],
+): Record<CredentialsInfo["type"], CredentialsInfo[]> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const groupedCredentials: any = {}
+  const groupedCredentials: any = {};
   credentials.forEach((cred) => {
     if (!groupedCredentials[cred.type]) {
-      groupedCredentials[cred.type] = []
+      groupedCredentials[cred.type] = [];
     }
-    groupedCredentials[cred.type].push(cred)
-  })
-  return groupedCredentials
-}
+    groupedCredentials[cred.type].push(cred);
+  });
+  return groupedCredentials;
+};

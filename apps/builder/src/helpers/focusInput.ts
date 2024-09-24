@@ -1,12 +1,12 @@
 type Props = {
-  at: number
-  input?: HTMLInputElement | HTMLTextAreaElement | null
-}
+  at: number;
+  input?: HTMLInputElement | HTMLTextAreaElement | null;
+};
 
 export const focusInput = ({ at, input }: Props) => {
-  if (!input) return
-  input.focus()
+  if (!input) return;
+  input.focus();
   setTimeout(() => {
-    input.selectionStart = input.selectionEnd = at
-  }, 100)
-}
+    input.selectionStart = input.selectionEnd = at;
+  }, 100);
+};

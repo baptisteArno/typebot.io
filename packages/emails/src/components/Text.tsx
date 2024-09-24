@@ -1,6 +1,6 @@
-import React from 'react'
-import { MjmlText, IMjmlTextProps } from '@faire/mjml-react'
-import { leadingRelaxed, textBase } from '../theme'
+import type { IMjmlTextProps } from "@faire/mjml-react";
+import { MjmlText } from "@faire/mjml-react";
+import { leadingRelaxed, textBase } from "../theme";
 
 export const Text = (props: IMjmlTextProps) => (
   <MjmlText
@@ -12,4 +12,4 @@ export const Text = (props: IMjmlTextProps) => (
   >
     {props.children}
   </MjmlText>
-)
+);

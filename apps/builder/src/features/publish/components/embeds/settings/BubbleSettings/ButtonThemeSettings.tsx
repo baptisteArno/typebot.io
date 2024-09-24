@@ -1,12 +1,12 @@
-import { ColorPicker } from '@/components/ColorPicker'
-import { ImageUploadContent } from '@/components/ImageUploadContent'
-import { ChevronDownIcon } from '@/components/icons'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
+import { ColorPicker } from "@/components/ColorPicker";
+import { ImageUploadContent } from "@/components/ImageUploadContent";
+import { ChevronDownIcon } from "@/components/icons";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import {
   Button,
-  Heading,
   HStack,
+  Heading,
   Menu,
   MenuButton,
   MenuItem,
@@ -16,37 +16,38 @@ import {
   PopoverTrigger,
   Stack,
   Text,
-} from '@chakra-ui/react'
-import { ButtonTheme } from '@typebot.io/nextjs'
-import React from 'react'
+} from "@chakra-ui/react";
+import type { ButtonTheme } from "@typebot.io/js";
+
+import React from "react";
 
 type Props = {
-  buttonTheme: ButtonTheme | undefined
-  onChange: (newButtonTheme?: ButtonTheme) => void
-}
+  buttonTheme: ButtonTheme | undefined;
+  onChange: (newButtonTheme?: ButtonTheme) => void;
+};
 
 export const ButtonThemeSettings = ({ buttonTheme, onChange }: Props) => {
-  const { workspace } = useWorkspace()
-  const { typebot } = useTypebot()
+  const { workspace } = useWorkspace();
+  const { typebot } = useTypebot();
   const updateBackgroundColor = (backgroundColor: string) => {
     onChange({
       ...buttonTheme,
       backgroundColor,
-    })
-  }
+    });
+  };
 
   const updateCustomIconSrc = (customIconSrc: string) => {
     onChange({
       ...buttonTheme,
       customIconSrc,
-    })
-  }
+    });
+  };
 
-  const updateSize = (size: ButtonTheme['size']) =>
+  const updateSize = (size: ButtonTheme["size"]) =>
     onChange({
       ...buttonTheme,
       size,
-    })
+    });
 
   return (
     <Stack spacing={4} borderWidth="1px" rounded="md" p="4">
@@ -56,11 +57,11 @@ export const ButtonThemeSettings = ({ buttonTheme, onChange }: Props) => {
           <Text>Size</Text>
           <Menu>
             <MenuButton as={Button} size="sm" rightIcon={<ChevronDownIcon />}>
-              {buttonTheme?.size ?? 'medium'}
+              {buttonTheme?.size ?? "medium"}
             </MenuButton>
             <MenuList>
-              <MenuItem onClick={() => updateSize('medium')}>medium</MenuItem>
-              <MenuItem onClick={() => updateSize('large')}>large</MenuItem>
+              <MenuItem onClick={() => updateSize("medium")}>medium</MenuItem>
+              <MenuItem onClick={() => updateSize("large")}>large</MenuItem>
             </MenuList>
           </Menu>
         </HStack>
@@ -83,13 +84,13 @@ export const ButtonThemeSettings = ({ buttonTheme, onChange }: Props) => {
                   {workspace?.id && typebot?.id && (
                     <ImageUploadContent
                       onSubmit={(url) => {
-                        updateCustomIconSrc(url)
-                        onClose()
+                        updateCustomIconSrc(url);
+                        onClose();
                       }}
                       uploadFileProps={{
                         workspaceId: workspace.id,
                         typebotId: typebot.id,
-                        fileName: 'bubble-icon',
+                        fileName: "bubble-icon",
                       }}
                     />
                   )}
@@ -100,5 +101,5 @@ export const ButtonThemeSettings = ({ buttonTheme, onChange }: Props) => {
         </HStack>
       </Stack>
     </Stack>
-  )
-}
+  );
+};

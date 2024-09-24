@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-sync-scripts */
-import { Html, Head, Main, NextScript } from 'next/document'
+import { Head, Html, Main, NextScript } from "next/document";
 
 const Document = () => (
   <Html translate="no">
@@ -11,6 +11,6 @@ const Document = () => (
       <NextScript />
     </body>
   </Html>
-)
+);
 
-export default Document
+export default Document;

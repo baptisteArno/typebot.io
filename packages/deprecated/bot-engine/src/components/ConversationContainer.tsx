@@ -1,27 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { ChatGroup } from './ChatGroup'
-import { useAnswers } from '../providers/AnswersProvider'
-import {
-  Group,
-  Edge,
-  PublicTypebot,
-  Theme,
-  VariableWithValue,
-} from '@typebot.io/schemas'
-import { byId, isDefined, isNotDefined } from '@typebot.io/lib'
-import { isInputBlock } from '@typebot.io/schemas/helpers'
-import { animateScroll as scroll } from 'react-scroll'
-import { LinkedTypebot, useTypebot } from '@/providers/TypebotProvider'
-import { setCssVariablesValue } from '@/features/theme'
-import { ChatProvider } from '@/providers/ChatProvider'
+import { setCssVariablesValue } from "@/features/theme";
+import { ChatProvider } from "@/providers/ChatProvider";
+import { type LinkedTypebot, useTypebot } from "@/providers/TypebotProvider";
+import { isInputBlock } from "@typebot.io/blocks-core/helpers";
+import type { Group } from "@typebot.io/groups/schemas";
+import { byId, isDefined, isNotDefined } from "@typebot.io/lib/utils";
+import type { Theme } from "@typebot.io/theme/schemas";
+import type { Edge } from "@typebot.io/typebot/schemas/edge";
+import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
+import type { VariableWithValue } from "@typebot.io/variables/schemas";
+import React, { useEffect, useRef, useState } from "react";
+import { animateScroll as scroll } from "react-scroll";
+import { useAnswers } from "../providers/AnswersProvider";
+import { ChatGroup } from "./ChatGroup";
 
 type Props = {
-  theme: Theme
-  predefinedVariables?: { [key: string]: string | undefined }
-  startGroupId?: string
-  onNewGroupVisible: (edge: Edge) => void
-  onCompleted: () => void
-}
+  theme: Theme;
+  predefinedVariables?: { [key: string]: string | undefined };
+  startGroupId?: string;
+  onNewGroupVisible: (edge: Edge) => void;
+  onCompleted: () => void;
+};
 export const ConversationContainer = ({
   theme,
   predefinedVariables,
@@ -34,112 +32,112 @@ export const ConversationContainer = ({
     updateVariableValue,
     linkedBotQueue,
     popEdgeIdFromLinkedTypebotQueue,
-  } = useTypebot()
+  } = useTypebot();
   const [displayedGroups, setDisplayedGroups] = useState<
     { group: Group; startBlockIndex: number }[]
-  >([])
-  const { updateVariables } = useAnswers()
-  const bottomAnchor = useRef<HTMLDivElement | null>(null)
-  const scrollableContainer = useRef<HTMLDivElement | null>(null)
-  const [hasStarted, setHasStarted] = useState(false)
+  >([]);
+  const { updateVariables } = useAnswers();
+  const bottomAnchor = useRef<HTMLDivElement | null>(null);
+  const scrollableContainer = useRef<HTMLDivElement | null>(null);
+  const [hasStarted, setHasStarted] = useState(false);
 
   const displayNextGroup = ({
     edgeId,
     updatedTypebot,
     groupId,
   }: {
-    edgeId?: string
-    groupId?: string
-    updatedTypebot?: PublicTypebot | LinkedTypebot
+    edgeId?: string;
+    groupId?: string;
+    updatedTypebot?: PublicTypebot | LinkedTypebot;
   }) => {
-    const currentTypebot = updatedTypebot ?? typebot
+    const currentTypebot = updatedTypebot ?? typebot;
     if (groupId) {
-      const nextGroup = currentTypebot.groups.find(byId(groupId))
-      if (!nextGroup) return
+      const nextGroup = currentTypebot.groups.find(byId(groupId));
+      if (!nextGroup) return;
       onNewGroupVisible({
-        id: 'edgeId',
-        from: { blockId: 'block' },
+        id: "edgeId",
+        from: { blockId: "block" },
         to: { groupId },
-      })
+      });
       return setDisplayedGroups([
         ...displayedGroups,
         { group: nextGroup, startBlockIndex: 0 },
-      ])
+      ]);
     }
-    const nextEdge = currentTypebot.edges.find(byId(edgeId))
+    const nextEdge = currentTypebot.edges.find(byId(edgeId));
     if (!nextEdge) {
       if (linkedBotQueue.length > 0) {
-        const nextEdgeId = linkedBotQueue[0].edgeId
-        popEdgeIdFromLinkedTypebotQueue()
-        displayNextGroup({ edgeId: nextEdgeId })
+        const nextEdgeId = linkedBotQueue[0].edgeId;
+        popEdgeIdFromLinkedTypebotQueue();
+        displayNextGroup({ edgeId: nextEdgeId });
       }
-      return onCompleted()
+      return onCompleted();
     }
-    const nextGroup = currentTypebot.groups.find(byId(nextEdge.to.groupId))
-    if (!nextGroup) return onCompleted()
+    const nextGroup = currentTypebot.groups.find(byId(nextEdge.to.groupId));
+    if (!nextGroup) return onCompleted();
     const startBlockIndex = nextEdge.to.blockId
       ? nextGroup.blocks.findIndex(byId(nextEdge.to.blockId))
-      : 0
-    onNewGroupVisible(nextEdge)
+      : 0;
+    onNewGroupVisible(nextEdge);
     setDisplayedGroups([
       ...displayedGroups,
       {
         group: nextGroup,
         startBlockIndex: startBlockIndex === -1 ? 0 : startBlockIndex,
       },
-    ])
-  }
+    ]);
+  };
 
   useEffect(() => {
-    if (hasStarted) return
+    if (hasStarted) return;
     if (
       isDefined(predefinedVariables) &&
       Object.keys(predefinedVariables).length > 0
     ) {
-      const prefilledVariables = injectPredefinedVariables(predefinedVariables)
-      updateVariables(prefilledVariables)
+      const prefilledVariables = injectPredefinedVariables(predefinedVariables);
+      updateVariables(prefilledVariables);
     }
-    setHasStarted(true)
-    const startEdge = typebot.groups[0].blocks[0].outgoingEdgeId
-    if (!startEdge && !startGroupId) return
+    setHasStarted(true);
+    const startEdge = typebot.groups[0].blocks[0].outgoingEdgeId;
+    if (!startEdge && !startGroupId) return;
     displayNextGroup({
       edgeId: startGroupId ? undefined : startEdge,
       groupId: startGroupId,
-    })
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [predefinedVariables])
+  }, [predefinedVariables]);
 
   const injectPredefinedVariables = (predefinedVariables: {
-    [key: string]: string | undefined
+    [key: string]: string | undefined;
   }) => {
-    const prefilledVariables: VariableWithValue[] = []
+    const prefilledVariables: VariableWithValue[] = [];
     Object.keys(predefinedVariables).forEach((key) => {
       const matchingVariable = typebot.variables.find(
-        (v) => v.name.toLowerCase() === key.toLowerCase()
-      )
-      if (!predefinedVariables || isNotDefined(matchingVariable)) return
-      const value = predefinedVariables[key]
-      if (!value) return
-      updateVariableValue(matchingVariable?.id, value)
-      prefilledVariables.push({ ...matchingVariable, value })
-    })
-    return prefilledVariables
-  }
+        (v) => v.name.toLowerCase() === key.toLowerCase(),
+      );
+      if (!predefinedVariables || isNotDefined(matchingVariable)) return;
+      const value = predefinedVariables[key];
+      if (!value) return;
+      updateVariableValue(matchingVariable?.id, value);
+      prefilledVariables.push({ ...matchingVariable, value });
+    });
+    return prefilledVariables;
+  };
 
   useEffect(() => {
-    if (!document) return
-    setCssVariablesValue(theme, document.body.style)
-  }, [theme])
+    if (!document) return;
+    setCssVariablesValue(theme, document.body.style);
+  }, [theme]);
 
   const autoScrollToBottom = () => {
-    if (!scrollableContainer.current) return
+    if (!scrollableContainer.current) return;
     setTimeout(() => {
       scroll.scrollToBottom({
         duration: 500,
         container: scrollableContainer.current,
-      })
-    }, 1)
-  }
+      });
+    }, 1);
+  };
 
   return (
     <div
@@ -148,10 +146,10 @@ export const ConversationContainer = ({
     >
       <ChatProvider onScroll={autoScrollToBottom}>
         {displayedGroups.map((displayedGroup, idx) => {
-          const groupAfter = displayedGroups[idx + 1]
+          const groupAfter = displayedGroups[idx + 1];
           const groupAfterStartsWithInput =
             groupAfter &&
-            isInputBlock(groupAfter.group.blocks[groupAfter.startBlockIndex])
+            isInputBlock(groupAfter.group.blocks[groupAfter.startBlockIndex]);
           return (
             <ChatGroup
               key={displayedGroup.group.id + idx}
@@ -163,12 +161,12 @@ export const ConversationContainer = ({
                 idx === displayedGroups.length - 1 || groupAfterStartsWithInput
               }
             />
-          )
+          );
         })}
       </ChatProvider>
 
       {/* We use a block to simulate padding because it makes iOS scroll flicker */}
       <div className="w-full h-32" ref={bottomAnchor} />
     </div>
-  )
-}
+  );
+};

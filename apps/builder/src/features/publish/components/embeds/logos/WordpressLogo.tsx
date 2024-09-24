@@ -1,8 +1,8 @@
-import { colors } from '@/lib/theme'
-import * as react from '@chakra-ui/react'
+import { colors } from "@/lib/theme";
+import * as react from "@chakra-ui/react";
 
 export const WordpressLogo = (props: react.IconProps) => {
-  const fill = react.useColorModeValue('#464342', colors.gray[400])
+  const fill = react.useColorModeValue("#464342", colors.gray[400]);
   return (
     <react.Icon
       width="123"
@@ -33,5 +33,5 @@ export const WordpressLogo = (props: react.IconProps) => {
         fill={fill}
       />
     </react.Icon>
-  )
-}
+  );
+};

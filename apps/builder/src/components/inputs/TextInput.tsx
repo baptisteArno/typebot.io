@@ -1,53 +1,54 @@
-import { VariablesButton } from '@/features/variables/components/VariablesButton'
-import { injectVariableInText } from '@/features/variables/helpers/injectVariableInTextInput'
-import { focusInput } from '@/helpers/focusInput'
+import { VariablesButton } from "@/features/variables/components/VariablesButton";
+import { injectVariableInText } from "@/features/variables/helpers/injectVariableInTextInput";
+import { focusInput } from "@/helpers/focusInput";
 import {
+  Input as ChakraInput,
   FormControl,
   FormHelperText,
   FormLabel,
   HStack,
-  Input as ChakraInput,
-  InputProps,
+  type InputProps,
   Stack,
-} from '@chakra-ui/react'
-import { Variable } from '@typebot.io/schemas'
-import React, {
+} from "@chakra-ui/react";
+import { env } from "@typebot.io/env";
+import type { Variable } from "@typebot.io/variables/schemas";
+import type { ReactNode } from "react";
+import type React from "react";
+import {
   forwardRef,
-  ReactNode,
   useEffect,
   useImperativeHandle,
   useRef,
   useState,
-} from 'react'
-import { useDebouncedCallback } from 'use-debounce'
-import { env } from '@typebot.io/env'
-import { MoreInfoTooltip } from '../MoreInfoTooltip'
+} from "react";
+import { useDebouncedCallback } from "use-debounce";
+import { MoreInfoTooltip } from "../MoreInfoTooltip";
 
 export type TextInputProps = {
-  forceDebounce?: boolean
-  defaultValue?: string
-  onChange?: (value: string) => void
-  debounceTimeout?: number
-  label?: ReactNode
-  helperText?: ReactNode
-  moreInfoTooltip?: string
-  withVariableButton?: boolean
-  isRequired?: boolean
-  placeholder?: string
-  isDisabled?: boolean
-  direction?: 'row' | 'column'
-  width?: 'full'
+  forceDebounce?: boolean;
+  defaultValue?: string;
+  onChange?: (value: string) => void;
+  debounceTimeout?: number;
+  label?: ReactNode;
+  helperText?: ReactNode;
+  moreInfoTooltip?: string;
+  withVariableButton?: boolean;
+  isRequired?: boolean;
+  placeholder?: string;
+  isDisabled?: boolean;
+  direction?: "row" | "column";
+  width?: "full";
 } & Pick<
   InputProps,
-  | 'autoComplete'
-  | 'onFocus'
-  | 'onKeyUp'
-  | 'type'
-  | 'autoFocus'
-  | 'size'
-  | 'maxWidth'
-  | 'flexShrink'
->
+  | "autoComplete"
+  | "onFocus"
+  | "onKeyUp"
+  | "type"
+  | "autoFocus"
+  | "size"
+  | "maxWidth"
+  | "flexShrink"
+>;
 
 export const TextInput = forwardRef(function TextInput(
   {
@@ -69,60 +70,60 @@ export const TextInput = forwardRef(function TextInput(
     onKeyUp,
     size,
     maxWidth,
-    direction = 'column',
+    direction = "column",
     width,
     flexShrink,
   }: TextInputProps,
-  ref
+  ref,
 ) {
-  const inputRef = useRef<HTMLInputElement | null>(null)
-  useImperativeHandle(ref, () => inputRef.current)
-  const [isTouched, setIsTouched] = useState(false)
-  const [localValue, setLocalValue] = useState<string>(defaultValue ?? '')
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  useImperativeHandle(ref, () => inputRef.current);
+  const [isTouched, setIsTouched] = useState(false);
+  const [localValue, setLocalValue] = useState<string>(defaultValue ?? "");
   const [carretPosition, setCarretPosition] = useState<number>(
-    localValue.length ?? 0
-  )
+    localValue.length ?? 0,
+  );
   const onChange = useDebouncedCallback(
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     _onChange ?? (() => {}),
-    env.NEXT_PUBLIC_E2E_TEST && !forceDebounce ? 0 : debounceTimeout
-  )
+    env.NEXT_PUBLIC_E2E_TEST && !forceDebounce ? 0 : debounceTimeout,
+  );
 
   useEffect(() => {
-    if (isTouched || localValue !== '' || !defaultValue || defaultValue === '')
-      return
-    setLocalValue(defaultValue ?? '')
-  }, [defaultValue, isTouched, localValue])
+    if (isTouched || localValue !== "" || !defaultValue || defaultValue === "")
+      return;
+    setLocalValue(defaultValue ?? "");
+  }, [defaultValue, isTouched, localValue]);
 
   useEffect(
     () => () => {
-      onChange.flush()
+      onChange.flush();
     },
-    [onChange]
-  )
+    [onChange],
+  );
 
   const changeValue = (value: string) => {
-    if (!isTouched) setIsTouched(true)
-    setLocalValue(value)
-    onChange(value)
-  }
+    if (!isTouched) setIsTouched(true);
+    setLocalValue(value);
+    onChange(value);
+  };
 
   const handleVariableSelected = (variable?: Variable) => {
-    if (!variable) return
+    if (!variable) return;
     const { text, carretPosition: newCarretPosition } = injectVariableInText({
       variable,
       text: localValue,
       at: carretPosition,
-    })
-    changeValue(text)
-    focusInput({ at: newCarretPosition, input: inputRef.current })
-  }
+    });
+    changeValue(text);
+    focusInput({ at: newCarretPosition, input: inputRef.current });
+  };
 
   const updateCarretPosition = (e: React.FocusEvent<HTMLInputElement>) => {
-    const carretPosition = e.target.selectionStart
-    if (!carretPosition) return
-    setCarretPosition(carretPosition)
-  }
+    const carretPosition = e.target.selectionStart;
+    if (!carretPosition) return;
+    setCarretPosition(carretPosition);
+  };
 
   const Input = (
     <ChakraInput
@@ -140,27 +141,27 @@ export const TextInput = forwardRef(function TextInput(
       size={size}
       maxWidth={maxWidth}
     />
-  )
+  );
 
   return (
     <FormControl
       isRequired={isRequired}
-      as={direction === 'column' ? Stack : HStack}
+      as={direction === "column" ? Stack : HStack}
       justifyContent="space-between"
-      width={label || width === 'full' ? 'full' : 'auto'}
-      spacing={direction === 'column' ? 2 : 3}
+      width={label || width === "full" ? "full" : "auto"}
+      spacing={direction === "column" ? 2 : 3}
       flexShrink={flexShrink}
     >
       {label && (
         <FormLabel display="flex" flexShrink={0} gap="1" mb="0" mr="0">
-          {label}{' '}
+          {label}{" "}
           {moreInfoTooltip && (
             <MoreInfoTooltip>{moreInfoTooltip}</MoreInfoTooltip>
           )}
         </FormLabel>
       )}
       {withVariableButton ? (
-        <HStack spacing={0} align={'flex-end'}>
+        <HStack spacing={0} align={"flex-end"}>
           {Input}
           <VariablesButton onSelectVariable={handleVariableSelected} />
         </HStack>
@@ -169,5 +170,5 @@ export const TextInput = forwardRef(function TextInput(
       )}
       {helperText && <FormHelperText mt="0">{helperText}</FormHelperText>}
     </FormControl>
-  )
-})
+  );
+});

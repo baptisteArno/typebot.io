@@ -1,82 +1,77 @@
-import * as React from 'react'
 import {
-  MutableRefObject,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
-import {
-  useEventListener,
-  Portal,
   Menu,
   MenuButton,
-  PortalProps,
-  MenuButtonProps,
-  MenuProps,
-} from '@chakra-ui/react'
+  type MenuButtonProps,
+  type MenuProps,
+  Portal,
+  type PortalProps,
+  useEventListener,
+} from "@chakra-ui/react";
+import type { MutableRefObject } from "react";
+import * as React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export interface ContextMenuProps<T extends HTMLElement> {
-  onOpen?: () => void
-  renderMenu: ({ onClose }: { onClose: () => void }) => JSX.Element | null
+  onOpen?: () => void;
+  renderMenu: ({ onClose }: { onClose: () => void }) => JSX.Element | null;
   children: (
     ref: MutableRefObject<T | null>,
-    isOpened: boolean
-  ) => JSX.Element | null
-  menuProps?: MenuProps
-  portalProps?: PortalProps
-  menuButtonProps?: MenuButtonProps
-  isDisabled?: boolean
+    isOpened: boolean,
+  ) => JSX.Element | null;
+  menuProps?: MenuProps;
+  portalProps?: PortalProps;
+  menuButtonProps?: MenuButtonProps;
+  isDisabled?: boolean;
 }
 
 export function ContextMenu<T extends HTMLElement = HTMLElement>(
-  props: ContextMenuProps<T>
+  props: ContextMenuProps<T>,
 ) {
-  const [isOpened, setIsOpened] = useState(false)
-  const [isRendered, setIsRendered] = useState(false)
-  const [isDeferredOpen, setIsDeferredOpen] = useState(false)
-  const [position, setPosition] = useState<[number, number]>([0, 0])
-  const targetRef = useRef<T>(null)
+  const [isOpened, setIsOpened] = useState(false);
+  const [isRendered, setIsRendered] = useState(false);
+  const [isDeferredOpen, setIsDeferredOpen] = useState(false);
+  const [position, setPosition] = useState<[number, number]>([0, 0]);
+  const targetRef = useRef<T>(null);
 
   useEffect(() => {
     if (isOpened) {
       setTimeout(() => {
-        setIsRendered(true)
+        setIsRendered(true);
         setTimeout(() => {
-          setIsDeferredOpen(true)
-        })
-      })
+          setIsDeferredOpen(true);
+        });
+      });
     } else {
-      setIsDeferredOpen(false)
+      setIsDeferredOpen(false);
       const timeout = setTimeout(() => {
-        setIsRendered(isOpened)
-      }, 1000)
-      return () => clearTimeout(timeout)
+        setIsRendered(isOpened);
+      }, 1000);
+      return () => clearTimeout(timeout);
     }
-  }, [isOpened])
+  }, [isOpened]);
 
   useEventListener(
-    'contextmenu',
+    "contextmenu",
     (e) => {
-      if (props.isDisabled) return
+      if (props.isDisabled) return;
       if (e.currentTarget === targetRef.current) {
-        e.preventDefault()
-        e.stopPropagation()
-        props.onOpen?.()
-        setIsOpened(true)
-        setPosition([e.pageX, e.pageY])
+        e.preventDefault();
+        e.stopPropagation();
+        props.onOpen?.();
+        setIsOpened(true);
+        setPosition([e.pageX, e.pageY]);
       } else {
-        setIsOpened(false)
+        setIsOpened(false);
       }
     },
-    targetRef.current
-  )
+    targetRef.current,
+  );
 
   const onCloseHandler = useCallback(() => {
-    props.menuProps?.onClose?.()
-    setIsOpened(false)
+    props.menuProps?.onClose?.();
+    setIsOpened(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.menuProps?.onClose, setIsOpened])
+  }, [props.menuProps?.onClose, setIsOpened]);
 
   return (
     <>
@@ -94,10 +89,10 @@ export function ContextMenu<T extends HTMLElement = HTMLElement>(
               w={1}
               h={1}
               style={{
-                position: 'absolute',
+                position: "absolute",
                 left: position[0],
                 top: position[1],
-                cursor: 'default',
+                cursor: "default",
               }}
               {...props.menuButtonProps}
             />
@@ -106,5 +101,5 @@ export function ContextMenu<T extends HTMLElement = HTMLElement>(
         </Portal>
       )}
     </>
-  )
+  );
 }

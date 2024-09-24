@@ -1,6 +1,10 @@
+import { ChevronLeftIcon, PlusIcon, TrashIcon } from "@/components/icons";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { useToast } from "@/hooks/useToast";
+import { trpc } from "@/lib/trpc";
 import {
   Button,
-  ButtonProps,
+  type ButtonProps,
   IconButton,
   Menu,
   MenuButton,
@@ -8,22 +12,19 @@ import {
   MenuList,
   Stack,
   Text,
-} from '@chakra-ui/react'
-import { ChevronLeftIcon, PlusIcon, TrashIcon } from '@/components/icons'
-import React, { useCallback, useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
-import { trpc } from '@/lib/trpc'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { ForgedBlockDefinition } from '@typebot.io/forge-repository/types'
-import { useToast } from '@/hooks/useToast'
-import { Credentials } from '@typebot.io/schemas/features/credentials'
+} from "@chakra-ui/react";
+import type { Credentials } from "@typebot.io/credentials/schemas";
+import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
+import { useRouter } from "next/router";
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
 
-type Props = Omit<ButtonProps, 'type'> & {
-  blockDef: ForgedBlockDefinition
-  currentCredentialsId: string | undefined
-  onAddClick: () => void
-  onCredentialsSelect: (credentialId?: string) => void
-}
+type Props = Omit<ButtonProps, "type"> & {
+  blockDef: ForgedBlockDefinition;
+  currentCredentialsId: string | undefined;
+  onAddClick: () => void;
+  onCredentialsSelect: (credentialId?: string) => void;
+};
 
 export const ForgedCredentialsDropdown = ({
   currentCredentialsId,
@@ -32,73 +33,74 @@ export const ForgedCredentialsDropdown = ({
   onAddClick,
   ...props
 }: Props) => {
-  const router = useRouter()
-  const { showToast } = useToast()
-  const { workspace, currentRole } = useWorkspace()
+  const router = useRouter();
+  const { showToast } = useToast();
+  const { workspace, currentRole } = useWorkspace();
   const { data, refetch, isLoading } =
     trpc.credentials.listCredentials.useQuery(
       {
         workspaceId: workspace?.id as string,
-        type: blockDef.id as Credentials['type'],
+        type: blockDef.id as Credentials["type"],
       },
-      { enabled: !!workspace?.id }
-    )
-  const [isDeleting, setIsDeleting] = useState<string>()
+      { enabled: !!workspace?.id },
+    );
+  const [isDeleting, setIsDeleting] = useState<string>();
 
   const { mutate } = trpc.credentials.deleteCredentials.useMutation({
     onMutate: ({ credentialsId }) => {
-      setIsDeleting(credentialsId)
+      setIsDeleting(credentialsId);
     },
     onError: (error) => {
       showToast({
         description: error.message,
-      })
+      });
     },
     onSuccess: ({ credentialsId }) => {
-      if (credentialsId === currentCredentialsId) onCredentialsSelect(undefined)
-      refetch()
+      if (credentialsId === currentCredentialsId)
+        onCredentialsSelect(undefined);
+      refetch();
     },
     onSettled: () => {
-      setIsDeleting(undefined)
+      setIsDeleting(undefined);
     },
-  })
+  });
 
   const currentCredential = data?.credentials.find(
-    (c) => c.id === currentCredentialsId
-  )
+    (c) => c.id === currentCredentialsId,
+  );
 
   const handleMenuItemClick = useCallback(
     (credentialsId: string) => () => {
-      onCredentialsSelect(credentialsId)
+      onCredentialsSelect(credentialsId);
     },
-    [onCredentialsSelect]
-  )
+    [onCredentialsSelect],
+  );
 
   const clearQueryParams = useCallback(() => {
-    const hasQueryParams = router.asPath.includes('?')
+    const hasQueryParams = router.asPath.includes("?");
     if (hasQueryParams)
-      router.push(router.asPath.split('?')[0], undefined, { shallow: true })
-  }, [router])
+      router.push(router.asPath.split("?")[0], undefined, { shallow: true });
+  }, [router]);
 
   useEffect(() => {
-    if (!router.isReady) return
+    if (!router.isReady) return;
     if (router.query.credentialsId) {
-      handleMenuItemClick(router.query.credentialsId.toString())()
-      clearQueryParams()
+      handleMenuItemClick(router.query.credentialsId.toString())();
+      clearQueryParams();
     }
   }, [
     clearQueryParams,
     handleMenuItemClick,
     router.isReady,
     router.query.credentialsId,
-  ])
+  ]);
 
   const deleteCredentials =
     (credentialsId: string) => async (e: React.MouseEvent) => {
-      if (!workspace) return
-      e.stopPropagation()
-      mutate({ workspaceId: workspace.id, credentialsId })
-    }
+      if (!workspace) return;
+      e.stopPropagation();
+      mutate({ workspaceId: workspace.id, credentialsId });
+    };
 
   if (!data || data?.credentials.length === 0) {
     return (
@@ -107,19 +109,19 @@ export const ForgedCredentialsDropdown = ({
         textAlign="left"
         leftIcon={<PlusIcon />}
         onClick={onAddClick}
-        isDisabled={currentRole === 'GUEST'}
+        isDisabled={currentRole === "GUEST"}
         isLoading={isLoading}
         {...props}
       >
         Add {blockDef.auth?.name}
       </Button>
-    )
+    );
   }
   return (
     <Menu isLazy>
       <MenuButton
         as={Button}
-        rightIcon={<ChevronLeftIcon transform={'rotate(-90deg)'} />}
+        rightIcon={<ChevronLeftIcon transform={"rotate(-90deg)"} />}
         colorScheme="gray"
         justifyContent="space-between"
         textAlign="left"
@@ -128,7 +130,7 @@ export const ForgedCredentialsDropdown = ({
         <Text
           noOfLines={1}
           overflowY="visible"
-          h={props.size === 'sm' ? '18px' : '20px'}
+          h={props.size === "sm" ? "18px" : "20px"}
         >
           {currentCredential
             ? currentCredential.name
@@ -136,7 +138,7 @@ export const ForgedCredentialsDropdown = ({
         </Text>
       </MenuButton>
       <MenuList>
-        <Stack maxH={'35vh'} overflowY="auto" spacing="0">
+        <Stack maxH={"35vh"} overflowY="auto" spacing="0">
           {data?.credentials.map((credentials) => (
             <MenuItem
               role="menuitem"
@@ -158,7 +160,7 @@ export const ForgedCredentialsDropdown = ({
               />
             </MenuItem>
           ))}
-          {currentRole === 'GUEST' ? null : (
+          {currentRole === "GUEST" ? null : (
             <MenuItem
               maxW="500px"
               overflow="hidden"
@@ -173,5 +175,5 @@ export const ForgedCredentialsDropdown = ({
         </Stack>
       </MenuList>
     </Menu>
-  )
-}
+  );
+};

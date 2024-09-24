@@ -1,9 +1,9 @@
-import { CommandData } from '../types'
+import type { CommandData } from "../types";
 
 export const hidePreviewMessage = () => {
   const message: CommandData = {
     isFromTypebot: true,
-    command: 'hidePreviewMessage',
-  }
-  window.postMessage(message)
-}
+    command: "hidePreviewMessage",
+  };
+  window.postMessage(message);
+};

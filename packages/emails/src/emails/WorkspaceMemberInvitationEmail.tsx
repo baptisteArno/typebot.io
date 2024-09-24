@@ -1,23 +1,26 @@
-import React, { ComponentProps } from 'react'
 import {
   Mjml,
   MjmlBody,
-  MjmlSection,
   MjmlColumn,
+  MjmlSection,
   MjmlSpacer,
-} from '@faire/mjml-react'
-import { render } from '@faire/mjml-react/utils/render'
-import { HeroImage, Text, Button, Head } from '../components'
-import { SendMailOptions } from 'nodemailer'
-import { sendEmail } from '../sendEmail'
-import { env } from '@typebot.io/env'
+} from "@faire/mjml-react";
+import { render } from "@faire/mjml-react/utils/render";
+import { env } from "@typebot.io/env";
+import type { SendMailOptions } from "nodemailer";
+import type { ComponentProps } from "react";
+import { Button } from "../components/Button";
+import { Head } from "../components/Head";
+import { HeroImage } from "../components/HeroImage";
+import { Text } from "../components/Text";
+import { sendEmail } from "../sendEmail";
 
 type WorkspaceMemberInvitationProps = {
-  workspaceName: string
-  url: string
-  hostEmail: string
-  guestEmail: string
-}
+  workspaceName: string;
+  url: string;
+  hostEmail: string;
+  guestEmail: string;
+};
 
 export const WorkspaceMemberInvitation = ({
   workspaceName,
@@ -36,7 +39,7 @@ export const WorkspaceMemberInvitation = ({
       <MjmlSection padding="0 24px" cssClass="smooth">
         <MjmlColumn>
           <Text>
-            You have been invited by {hostEmail} to collaborate on his workspace{' '}
+            You have been invited by {hostEmail} to collaborate on his workspace{" "}
             <strong>{workspaceName}</strong> as a team member.
           </Text>
           <Text>
@@ -51,15 +54,15 @@ export const WorkspaceMemberInvitation = ({
       </MjmlSection>
     </MjmlBody>
   </Mjml>
-)
+);
 
 export const sendWorkspaceMemberInvitationEmail = ({
   to,
   ...props
-}: Pick<SendMailOptions, 'to'> &
+}: Pick<SendMailOptions, "to"> &
   ComponentProps<typeof WorkspaceMemberInvitation>) =>
   sendEmail({
     to,
     subject: "You've been invited to collaborate 🤝",
     html: render(<WorkspaceMemberInvitation {...props} />).html,
-  })
+  });

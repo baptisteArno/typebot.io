@@ -1,1 +1,1 @@
-export * from './WebflowModal'
+export * from "./WebflowModal";

@@ -1,14 +1,14 @@
-import { StartEventNode } from '@/features/events/start/StartEventNode'
-import { TEvent } from '@typebot.io/schemas'
+import { StartEventNode } from "@/features/events/start/StartEventNode";
+import type { TEvent } from "@typebot.io/typebot/schemas/types";
 
 type Props = {
-  event: TEvent
-}
+  event: TEvent;
+};
 export const EventNodeContent = ({ event }: Props) => {
   switch (event.type) {
-    case 'start':
-      return <StartEventNode />
+    case "start":
+      return <StartEventNode />;
     default:
-      return null
+      return null;
   }
-}
+};

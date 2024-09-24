@@ -1,4 +1,4 @@
-import { useContext } from 'react'
-import { userContext } from '../UserProvider'
+import { useContext } from "react";
+import { userContext } from "../UserProvider";
 
-export const useUser = () => useContext(userContext)
+export const useUser = () => useContext(userContext);

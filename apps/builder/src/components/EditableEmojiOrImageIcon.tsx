@@ -1,27 +1,28 @@
+import { useParentModal } from "@/features/graph/providers/ParentModalProvider";
+import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
 import {
+  Flex,
   Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Portal,
   Tooltip,
   chakra,
-  PopoverTrigger,
-  PopoverContent,
-  Flex,
   useColorModeValue,
-  Portal,
-} from '@chakra-ui/react'
-import React, { RefObject } from 'react'
-import { EmojiOrImageIcon } from './EmojiOrImageIcon'
-import { ImageUploadContent } from './ImageUploadContent'
-import { FilePathUploadProps } from '@/features/upload/api/generateUploadUrl'
-import { useTranslate } from '@tolgee/react'
-import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
+} from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import type { RefObject } from "react";
+import React from "react";
+import { EmojiOrImageIcon } from "./EmojiOrImageIcon";
+import { ImageUploadContent } from "./ImageUploadContent";
 
 type Props = {
-  uploadFileProps: FilePathUploadProps
-  icon?: string | null
-  parentModalRef?: RefObject<HTMLElement | null> | undefined
-  onChangeIcon: (icon: string) => void
-  boxSize?: string
-}
+  uploadFileProps: FilePathUploadProps;
+  icon?: string | null;
+  parentModalRef?: RefObject<HTMLElement | null> | undefined;
+  onChangeIcon: (icon: string) => void;
+  boxSize?: string;
+};
 
 export const EditableEmojiOrImageIcon = ({
   uploadFileProps,
@@ -29,15 +30,15 @@ export const EditableEmojiOrImageIcon = ({
   onChangeIcon,
   boxSize,
 }: Props) => {
-  const { t } = useTranslate()
-  const { ref: parentModalRef } = useParentModal()
-  const bg = useColorModeValue('gray.100', 'gray.700')
+  const { t } = useTranslate();
+  const { ref: parentModalRef } = useParentModal();
+  const bg = useColorModeValue("gray.100", "gray.700");
 
   return (
     <Popover isLazy>
       {({ onClose }: { onClose: () => void }) => (
         <>
-          <Tooltip label={t('editor.header.tooltip.changeIcon.label')}>
+          <Tooltip label={t("editor.header.tooltip.changeIcon.label")}>
             <Flex
               cursor="pointer"
               p="2"
@@ -63,9 +64,9 @@ export const EditableEmojiOrImageIcon = ({
             <PopoverContent p="2">
               <ImageUploadContent
                 uploadFileProps={uploadFileProps}
-                defaultUrl={icon ?? ''}
+                defaultUrl={icon ?? ""}
                 onSubmit={onChangeIcon}
-                excludedTabs={['giphy', 'unsplash']}
+                excludedTabs={["giphy", "unsplash"]}
                 onClose={onClose}
                 initialTab="icon"
                 linkWithVariableButton={false}
@@ -75,5 +76,5 @@ export const EditableEmojiOrImageIcon = ({
         </>
       )}
     </Popover>
-  )
-}
+  );
+};

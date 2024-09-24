@@ -1,6 +1,6 @@
-import { createSignal } from 'solid-js'
+import { createSignal } from "solid-js";
 
 export const [streamingMessage, setStreamingMessage] = createSignal<{
-  id: string
-  content: string
-}>()
+  id: string;
+  content: string;
+}>();

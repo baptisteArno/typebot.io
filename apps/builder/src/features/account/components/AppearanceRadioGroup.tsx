@@ -1,39 +1,39 @@
 import {
-  RadioGroup,
   HStack,
-  VStack,
-  Stack,
-  Radio,
-  Text,
   Image,
-} from '@chakra-ui/react'
-import { useTranslate } from '@tolgee/react'
+  Radio,
+  RadioGroup,
+  Stack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
 
 type Props = {
-  defaultValue: string
-  onChange: (value: string) => void
-}
+  defaultValue: string;
+  onChange: (value: string) => void;
+};
 
 export const AppearanceRadioGroup = ({ defaultValue, onChange }: Props) => {
-  const { t } = useTranslate()
+  const { t } = useTranslate();
 
   const appearanceData = [
     {
-      value: 'light',
-      label: t('account.preferences.appearance.lightLabel'),
-      image: '/images/light-mode.png',
+      value: "light",
+      label: t("account.preferences.appearance.lightLabel"),
+      image: "/images/light-mode.png",
     },
     {
-      value: 'dark',
-      label: t('account.preferences.appearance.darkLabel'),
-      image: '/images/dark-mode.png',
+      value: "dark",
+      label: t("account.preferences.appearance.darkLabel"),
+      image: "/images/dark-mode.png",
     },
     {
-      value: 'system',
-      label: t('account.preferences.appearance.systemLabel'),
-      image: '/images/system-mode.png',
+      value: "system",
+      label: t("account.preferences.appearance.systemLabel"),
+      image: "/images/system-mode.png",
     },
-  ]
+  ];
   return (
     <RadioGroup onChange={onChange} defaultValue={defaultValue}>
       <HStack spacing={4} w="full" align="stretch">
@@ -54,7 +54,7 @@ export const AppearanceRadioGroup = ({ defaultValue, onChange }: Props) => {
               <Image
                 src={option.image}
                 alt="Theme preview"
-                style={{ borderRadius: '0.250rem' }}
+                style={{ borderRadius: "0.250rem" }}
                 placeholder="blur"
               />
               <Stack>
@@ -67,5 +67,5 @@ export const AppearanceRadioGroup = ({ defaultValue, onChange }: Props) => {
         ))}
       </HStack>
     </RadioGroup>
-  )
-}
+  );
+};

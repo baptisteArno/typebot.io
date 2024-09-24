@@ -1,16 +1,16 @@
-import { authenticatedProcedure } from '@/helpers/server/trpc'
-import { z } from 'zod'
-import { createCustomCheckoutSession as createCustomCheckoutSessionHandler } from '@typebot.io/billing/api/createCustomCheckoutSession'
+import { authenticatedProcedure } from "@/helpers/server/trpc";
+import { createCustomCheckoutSession as createCustomCheckoutSessionHandler } from "@typebot.io/billing/api/createCustomCheckoutSession";
+import { z } from "@typebot.io/zod";
 
 export const createCustomCheckoutSession = authenticatedProcedure
   .meta({
     openapi: {
-      method: 'POST',
-      path: '/v1/billing/subscription/custom-checkout',
+      method: "POST",
+      path: "/v1/billing/subscription/custom-checkout",
       protect: true,
       summary:
-        'Create custom checkout session to make a workspace pay for a custom plan',
-      tags: ['Billing'],
+        "Create custom checkout session to make a workspace pay for a custom plan",
+      tags: ["Billing"],
     },
   })
   .input(
@@ -18,16 +18,16 @@ export const createCustomCheckoutSession = authenticatedProcedure
       email: z.string(),
       workspaceId: z.string(),
       returnUrl: z.string(),
-    })
+    }),
   )
   .output(
     z.object({
       checkoutUrl: z.string(),
-    })
+    }),
   )
   .mutation(async ({ input, ctx: { user } }) =>
     createCustomCheckoutSessionHandler({
       ...input,
       user,
-    })
-  )
+    }),
+  );

@@ -1,51 +1,51 @@
-import { DropdownList } from '@/components/DropdownList'
-import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
-import { TableList, TableListItemProps } from '@/components/TableList'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { useToast } from '@/hooks/useToast'
+import { DropdownList } from "@/components/DropdownList";
+import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
+import { TableList, type TableListItemProps } from "@/components/TableList";
+import { NumberInput } from "@/components/inputs";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useToast } from "@/hooks/useToast";
 import {
-  Stack,
-  HStack,
   Accordion,
-  AccordionItem,
   AccordionButton,
   AccordionIcon,
+  AccordionItem,
   AccordionPanel,
   Button,
+  HStack,
+  Stack,
   Text,
-} from '@chakra-ui/react'
-import {
-  KeyValue,
-  VariableForTest,
-  ResponseVariableMapping,
-  HttpRequest,
-  HttpRequestBlock,
-} from '@typebot.io/schemas'
-import { useState, useMemo } from 'react'
-import { executeWebhook } from '../queries/executeWebhookQuery'
-import { convertVariablesForTestToVariables } from '../helpers/convertVariablesForTestToVariables'
-import { getDeepKeys } from '../helpers/getDeepKeys'
-import { QueryParamsInputs, HeadersInputs } from './KeyValueInputs'
-import { DataVariableInputs } from './ResponseMappingInputs'
-import { VariableForTestInputs } from './VariableForTestInputs'
-import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
+} from "@chakra-ui/react";
 import {
   HttpMethod,
   defaultTimeout,
   defaultWebhookAttributes,
   defaultWebhookBlockOptions,
   maxTimeout,
-} from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
-import { NumberInput } from '@/components/inputs'
+} from "@typebot.io/blocks-integrations/webhook/constants";
+import type {
+  HttpRequest,
+  HttpRequestBlock,
+  KeyValue,
+  ResponseVariableMapping,
+  VariableForTest,
+} from "@typebot.io/blocks-integrations/webhook/schema";
+import { useMemo, useState } from "react";
+import { convertVariablesForTestToVariables } from "../helpers/convertVariablesForTestToVariables";
+import { getDeepKeys } from "../helpers/getDeepKeys";
+import { executeWebhook } from "../queries/executeWebhookQuery";
+import { HeadersInputs, QueryParamsInputs } from "./KeyValueInputs";
+import { DataVariableInputs } from "./ResponseMappingInputs";
+import { VariableForTestInputs } from "./VariableForTestInputs";
 
 type Props = {
-  blockId: string
-  webhook: HttpRequest | undefined
-  options: HttpRequestBlock['options']
-  onWebhookChange: (webhook: HttpRequest) => void
-  onOptionsChange: (options: HttpRequestBlock['options']) => void
-}
+  blockId: string;
+  webhook: HttpRequest | undefined;
+  options: HttpRequestBlock["options"];
+  onWebhookChange: (webhook: HttpRequest) => void;
+  onOptionsChange: (options: HttpRequestBlock["options"]) => void;
+};
 
 export const HttpRequestAdvancedConfigForm = ({
   blockId,
@@ -54,72 +54,72 @@ export const HttpRequestAdvancedConfigForm = ({
   onWebhookChange,
   onOptionsChange,
 }: Props) => {
-  const { typebot, save } = useTypebot()
-  const [isTestResponseLoading, setIsTestResponseLoading] = useState(false)
-  const [testResponse, setTestResponse] = useState<string>()
-  const [responseKeys, setResponseKeys] = useState<string[]>([])
-  const { showToast } = useToast()
+  const { typebot, save } = useTypebot();
+  const [isTestResponseLoading, setIsTestResponseLoading] = useState(false);
+  const [testResponse, setTestResponse] = useState<string>();
+  const [responseKeys, setResponseKeys] = useState<string[]>([]);
+  const { showToast } = useToast();
 
   const updateMethod = (method: HttpMethod) =>
-    onWebhookChange({ ...webhook, method })
+    onWebhookChange({ ...webhook, method });
 
   const updateQueryParams = (queryParams: KeyValue[]) =>
-    onWebhookChange({ ...webhook, queryParams })
+    onWebhookChange({ ...webhook, queryParams });
 
   const updateHeaders = (headers: KeyValue[]) =>
-    onWebhookChange({ ...webhook, headers })
+    onWebhookChange({ ...webhook, headers });
 
-  const updateBody = (body: string) => onWebhookChange({ ...webhook, body })
+  const updateBody = (body: string) => onWebhookChange({ ...webhook, body });
 
   const updateVariablesForTest = (variablesForTest: VariableForTest[]) =>
-    onOptionsChange({ ...options, variablesForTest })
+    onOptionsChange({ ...options, variablesForTest });
 
   const updateResponseVariableMapping = (
-    responseVariableMapping: ResponseVariableMapping[]
-  ) => onOptionsChange({ ...options, responseVariableMapping })
+    responseVariableMapping: ResponseVariableMapping[],
+  ) => onOptionsChange({ ...options, responseVariableMapping });
 
   const updateAdvancedConfig = (isAdvancedConfig: boolean) =>
-    onOptionsChange({ ...options, isAdvancedConfig })
+    onOptionsChange({ ...options, isAdvancedConfig });
 
   const updateIsCustomBody = (isCustomBody: boolean) =>
-    onOptionsChange({ ...options, isCustomBody })
+    onOptionsChange({ ...options, isCustomBody });
 
   const updateTimeout = (timeout: number | undefined) =>
-    onOptionsChange({ ...options, timeout })
+    onOptionsChange({ ...options, timeout });
 
   const executeTestRequest = async () => {
-    if (!typebot) return
-    setIsTestResponseLoading(true)
-    if (!options?.webhook) await save()
-    else await save()
+    if (!typebot) return;
+    setIsTestResponseLoading(true);
+    if (!options?.webhook) await save();
+    else await save();
     const { data, error } = await executeWebhook(
       typebot.id,
       convertVariablesForTestToVariables(
         options?.variablesForTest ?? [],
-        typebot.variables
+        typebot.variables,
       ),
-      { blockId }
-    )
+      { blockId },
+    );
     if (error)
-      return showToast({ title: error.name, description: error.message })
-    setTestResponse(JSON.stringify(data, undefined, 2))
-    setResponseKeys(getDeepKeys(data))
-    setIsTestResponseLoading(false)
-  }
+      return showToast({ title: error.name, description: error.message });
+    setTestResponse(JSON.stringify(data, undefined, 2));
+    setResponseKeys(getDeepKeys(data));
+    setIsTestResponseLoading(false);
+  };
 
   const updateIsExecutedOnClient = (isExecutedOnClient: boolean) =>
-    onOptionsChange({ ...options, isExecutedOnClient })
+    onOptionsChange({ ...options, isExecutedOnClient });
 
   const ResponseMappingInputs = useMemo(
     () =>
       function Component(props: TableListItemProps<ResponseVariableMapping>) {
-        return <DataVariableInputs {...props} dataItems={responseKeys} />
+        return <DataVariableInputs {...props} dataItems={responseKeys} />;
       },
-    [responseKeys]
-  )
+    [responseKeys],
+  );
 
   const isCustomBody =
-    options?.isCustomBody ?? defaultWebhookBlockOptions.isCustomBody
+    options?.isCustomBody ?? defaultWebhookBlockOptions.isCustomBody;
 
   return (
     <>
@@ -269,5 +269,5 @@ export const HttpRequestAdvancedConfigForm = ({
         </Accordion>
       )}
     </>
-  )
-}
+  );
+};

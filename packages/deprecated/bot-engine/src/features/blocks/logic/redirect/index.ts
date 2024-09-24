@@ -1,1 +1,1 @@
-export { executeRedirect } from './utils/executeRedirect'
+export { executeRedirect } from "./utils/executeRedirect";

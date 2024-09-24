@@ -1,53 +1,55 @@
-import { parseVariables } from '@/features/variables'
-import { IntegrationState } from '@/types'
-import { parseLog } from '@/utils/helpers'
-import {
+import { parseVariables } from "@/features/variables";
+import type { IntegrationState } from "@/types";
+import { parseLog } from "@/utils/helpers";
+import { GoogleSheetsAction } from "@typebot.io/blocks-integrations/googleSheets/constants";
+import type {
+  Cell,
   GoogleSheetsBlock,
+  GoogleSheetsGetOptions,
   GoogleSheetsInsertRowOptions,
   GoogleSheetsUpdateRowOptions,
-  GoogleSheetsGetOptions,
-  VariableWithValue,
-  Cell,
+} from "@typebot.io/blocks-integrations/googleSheets/schema";
+import { byId, sendRequest } from "@typebot.io/lib/utils";
+import type {
   Variable,
-} from '@typebot.io/schemas'
-import { sendRequest, byId } from '@typebot.io/lib'
-import { GoogleSheetsAction } from '@typebot.io/schemas/features/blocks/integrations/googleSheets/constants'
+  VariableWithValue,
+} from "@typebot.io/variables/schemas";
 
 export const executeGoogleSheetBlock = async (
   block: GoogleSheetsBlock,
-  context: IntegrationState
+  context: IntegrationState,
 ) => {
-  if (!block.options || !('action' in block.options))
-    return block.outgoingEdgeId
+  if (!block.options || !("action" in block.options))
+    return block.outgoingEdgeId;
   switch (block.options.action) {
     case GoogleSheetsAction.INSERT_ROW:
-      insertRowInGoogleSheets(block.options, context)
-      break
+      insertRowInGoogleSheets(block.options, context);
+      break;
     case GoogleSheetsAction.UPDATE_ROW:
-      updateRowInGoogleSheets(block.options, context)
-      break
+      updateRowInGoogleSheets(block.options, context);
+      break;
     case GoogleSheetsAction.GET:
-      await getRowFromGoogleSheets(block.options, context)
-      break
+      await getRowFromGoogleSheets(block.options, context);
+      break;
   }
-  return block.outgoingEdgeId
-}
+  return block.outgoingEdgeId;
+};
 
 const insertRowInGoogleSheets = (
   options: GoogleSheetsInsertRowOptions,
-  { variables, apiHost, onNewLog, resultId }: IntegrationState
+  { variables, apiHost, onNewLog, resultId }: IntegrationState,
 ) => {
   if (!options.cellsToInsert) {
     onNewLog({
-      status: 'warning',
-      description: 'Cells to insert are undefined',
+      status: "warning",
+      description: "Cells to insert are undefined",
       details: null,
-    })
-    return
+    });
+    return;
   }
   sendRequest({
     url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}`,
-    method: 'POST',
+    method: "POST",
     body: {
       action: GoogleSheetsAction.INSERT_ROW,
       credentialsId: options.credentialsId,
@@ -58,21 +60,21 @@ const insertRowInGoogleSheets = (
     onNewLog(
       parseLog(
         error,
-        'Succesfully inserted a row in the sheet',
-        'Failed to insert a row in the sheet'
-      )
-    )
-  })
-}
+        "Succesfully inserted a row in the sheet",
+        "Failed to insert a row in the sheet",
+      ),
+    );
+  });
+};
 
 const updateRowInGoogleSheets = (
   options: GoogleSheetsUpdateRowOptions,
-  { variables, apiHost, onNewLog, resultId }: IntegrationState
+  { variables, apiHost, onNewLog, resultId }: IntegrationState,
 ) => {
-  if (!options.cellsToUpsert || !('referenceCell' in options)) return
+  if (!options.cellsToUpsert || !("referenceCell" in options)) return;
   sendRequest({
     url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}`,
-    method: 'POST',
+    method: "POST",
     body: {
       action: GoogleSheetsAction.UPDATE_ROW,
       credentialsId: options.credentialsId,
@@ -80,19 +82,19 @@ const updateRowInGoogleSheets = (
       resultId,
       referenceCell: {
         column: options.referenceCell?.column,
-        value: parseVariables(variables)(options.referenceCell?.value ?? ''),
+        value: parseVariables(variables)(options.referenceCell?.value ?? ""),
       },
     },
   }).then(({ error }) => {
     onNewLog(
       parseLog(
         error,
-        'Succesfully updated a row in the sheet',
-        'Failed to update a row in the sheet'
-      )
-    )
-  })
-}
+        "Succesfully updated a row in the sheet",
+        "Failed to update a row in the sheet",
+      ),
+    );
+  });
+};
 
 const getRowFromGoogleSheets = async (
   options: GoogleSheetsGetOptions,
@@ -103,23 +105,23 @@ const getRowFromGoogleSheets = async (
     apiHost,
     onNewLog,
     resultId,
-  }: IntegrationState
+  }: IntegrationState,
 ) => {
-  if (!options.cellsToExtract) return
+  if (!options.cellsToExtract) return;
   const { data, error } = await sendRequest<{
-    rows: { [key: string]: string }[]
+    rows: { [key: string]: string }[];
   }>({
     url: `${apiHost}/api/integrations/google-sheets/spreadsheets/${options.spreadsheetId}/sheets/${options.sheetId}`,
-    method: 'POST',
+    method: "POST",
     body: {
       action: GoogleSheetsAction.GET,
       credentialsId: options.credentialsId,
       referenceCell:
-        'referenceCell' in options
+        "referenceCell" in options
           ? {
               column: options.referenceCell?.column,
               value: parseVariables(variables)(
-                options.referenceCell?.value ?? ''
+                options.referenceCell?.value ?? "",
               ),
             }
           : undefined,
@@ -129,45 +131,45 @@ const getRowFromGoogleSheets = async (
               ...comparison,
               value: parseVariables(variables)(comparison.value),
             })),
-            logicalOperator: options.filter?.logicalOperator ?? 'AND',
+            logicalOperator: options.filter?.logicalOperator ?? "AND",
           }
         : undefined,
       columns: options.cellsToExtract.map((cell) => cell.column),
       resultId,
     },
-  })
+  });
   onNewLog(
     parseLog(
       error,
-      'Succesfully fetched data from sheet',
-      'Failed to fetch data from sheet'
-    )
-  )
-  if (!data) return
+      "Succesfully fetched data from sheet",
+      "Failed to fetch data from sheet",
+    ),
+  );
+  if (!data) return;
   const newVariables = options.cellsToExtract.reduce<VariableWithValue[]>(
     (newVariables, cell) => {
-      const existingVariable = variables.find(byId(cell.variableId))
-      const rows = data.rows
-      const randomRow = rows[Math.floor(Math.random() * rows.length)]
-      const value = randomRow[cell.column ?? ''] ?? null
-      if (!existingVariable) return newVariables
-      updateVariableValue(existingVariable.id, value)
+      const existingVariable = variables.find(byId(cell.variableId));
+      const rows = data.rows;
+      const randomRow = rows[Math.floor(Math.random() * rows.length)];
+      const value = randomRow[cell.column ?? ""] ?? null;
+      if (!existingVariable) return newVariables;
+      updateVariableValue(existingVariable.id, value);
       return [
         ...newVariables,
         {
           ...existingVariable,
           value,
         },
-      ]
+      ];
     },
-    []
-  )
-  updateVariables(newVariables)
-}
+    [],
+  );
+  updateVariables(newVariables);
+};
 
 const parseCellValues = (
   cells: Cell[],
-  variables: Variable[]
+  variables: Variable[],
 ): { [key: string]: string } =>
   cells.reduce((row, cell) => {
     return !cell.column || !cell.value
@@ -175,5 +177,5 @@ const parseCellValues = (
       : {
           ...row,
           [cell.column]: parseVariables(variables)(cell.value),
-        }
-  }, {})
+        };
+  }, {});

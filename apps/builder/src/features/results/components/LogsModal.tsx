@@ -1,33 +1,34 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  Stack,
-  Spinner,
-  ModalFooter,
   Accordion,
-  AccordionItem,
   AccordionButton,
-  HStack,
   AccordionIcon,
+  AccordionItem,
   AccordionPanel,
-  Text,
+  HStack,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Spinner,
+  Stack,
   Tag,
-} from '@chakra-ui/react'
-import { Log } from '@typebot.io/prisma'
-import { isDefined } from '@typebot.io/lib'
-import { useLogs } from '../hooks/useLogs'
+  Text,
+} from "@chakra-ui/react";
+import { isDefined } from "@typebot.io/lib/utils";
+import type { Prisma } from "@typebot.io/prisma/types";
+import type { Log } from "@typebot.io/results/schemas/results";
+import { useLogs } from "../hooks/useLogs";
 
 type Props = {
-  typebotId: string
-  resultId: string | null
-  onClose: () => void
-}
+  typebotId: string;
+  resultId: string | null;
+  onClose: () => void;
+};
 export const LogsModal = ({ typebotId, resultId, onClose }: Props) => {
-  const { isLoading, logs } = useLogs(typebotId, resultId)
+  const { isLoading, logs } = useLogs(typebotId, resultId);
 
   return (
     <Modal isOpen={isDefined(resultId)} onClose={onClose} size="xl">
@@ -48,8 +49,8 @@ export const LogsModal = ({ typebotId, resultId, onClose }: Props) => {
         <ModalFooter />
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};
 
 const LogCard = ({ log }: { log: Log }) => {
   if (log.details)
@@ -79,24 +80,24 @@ const LogCard = ({ log }: { log: Log }) => {
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
-    )
+    );
   return (
     <HStack p="4">
       <StatusTag status={log.status} />
       <Text>{log.description}</Text>
     </HStack>
-  )
-}
+  );
+};
 
 const StatusTag = ({ status }: { status: string }) => {
   switch (status) {
-    case 'error':
-      return <Tag colorScheme={'red'}>Fail</Tag>
-    case 'warning':
-      return <Tag colorScheme={'orange'}>Warn</Tag>
-    case 'info':
-      return <Tag colorScheme={'blue'}>Info</Tag>
+    case "error":
+      return <Tag colorScheme={"red"}>Fail</Tag>;
+    case "warning":
+      return <Tag colorScheme={"orange"}>Warn</Tag>;
+    case "info":
+      return <Tag colorScheme={"blue"}>Info</Tag>;
     default:
-      return <Tag colorScheme={'green'}>Ok</Tag>
+      return <Tag colorScheme={"green"}>Ok</Tag>;
   }
-}
+};

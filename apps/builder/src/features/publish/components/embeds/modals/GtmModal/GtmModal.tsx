@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import { ModalProps } from '../../EmbedButton'
-import { EmbedModal } from '../../EmbedModal'
-import { isDefined } from '@udecode/plate-common'
-import { GtmInstructions } from './instructions/GtmInstructions'
+import { isDefined } from "@udecode/plate-common";
+import React, { useState } from "react";
+import type { ModalProps } from "../../EmbedButton";
+import { EmbedModal } from "../../EmbedModal";
+import { GtmInstructions } from "./instructions/GtmInstructions";
 
 export const GtmModal = ({
   isOpen,
@@ -11,8 +11,8 @@ export const GtmModal = ({
   publicId,
 }: ModalProps) => {
   const [selectedEmbedType, setSelectedEmbedType] = useState<
-    'standard' | 'popup' | 'bubble' | undefined
-  >()
+    "standard" | "popup" | "bubble" | undefined
+  >();
   return (
     <EmbedModal
       titlePrefix="GTM"
@@ -26,5 +26,5 @@ export const GtmModal = ({
         <GtmInstructions type={selectedEmbedType} publicId={publicId} />
       )}
     </EmbedModal>
-  )
-}
+  );
+};

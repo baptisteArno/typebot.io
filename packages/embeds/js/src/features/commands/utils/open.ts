@@ -1,9 +1,9 @@
-import { CommandData } from '../types'
+import type { CommandData } from "../types";
 
 export const open = () => {
   const message: CommandData = {
     isFromTypebot: true,
-    command: 'open',
-  }
-  window.postMessage(message)
-}
+    command: "open",
+  };
+  window.postMessage(message);
+};

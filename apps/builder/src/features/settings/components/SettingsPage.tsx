@@ -1,20 +1,20 @@
-import { Seo } from '@/components/Seo'
-import { Flex } from '@chakra-ui/react'
-import { Standard } from '@typebot.io/nextjs'
-import { SettingsSideMenu } from './SettingsSideMenu'
-import { TypebotHeader } from '@/features/editor/components/TypebotHeader'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { TypebotNotFoundPage } from '@/features/editor/components/TypebotNotFoundPage'
-import { env } from '@typebot.io/env'
-import { headerHeight } from '@/features/editor/constants'
+import { Seo } from "@/components/Seo";
+import { TypebotHeader } from "@/features/editor/components/TypebotHeader";
+import { TypebotNotFoundPage } from "@/features/editor/components/TypebotNotFoundPage";
+import { headerHeight } from "@/features/editor/constants";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { Flex } from "@chakra-ui/react";
+import { env } from "@typebot.io/env";
+import { Standard } from "@typebot.io/nextjs";
+import { SettingsSideMenu } from "./SettingsSideMenu";
 
 export const SettingsPage = () => {
-  const { typebot, is404 } = useTypebot()
+  const { typebot, is404 } = useTypebot();
 
-  if (is404) return <TypebotNotFoundPage />
+  if (is404) return <TypebotNotFoundPage />;
   return (
     <Flex overflow="hidden" h="100vh" flexDir="column">
-      <Seo title={typebot?.name ? `${typebot.name} | Settings` : 'Settings'} />
+      <Seo title={typebot?.name ? `${typebot.name} | Settings` : "Settings"} />
       <TypebotHeader />
       <Flex height={`calc(100vh - ${headerHeight}px)`} w="full">
         <SettingsSideMenu />
@@ -28,5 +28,5 @@ export const SettingsPage = () => {
         </Flex>
       </Flex>
     </Flex>
-  )
-}
+  );
+};

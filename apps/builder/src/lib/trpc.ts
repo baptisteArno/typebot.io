@@ -1,10 +1,11 @@
-import { createTRPCProxyClient, httpBatchLink, loggerLink } from '@trpc/client'
-import { createTRPCNext } from '@trpc/next'
-import superjson from 'superjson'
-import { env } from '@typebot.io/env'
-import type { AppRouter } from '@/helpers/server/routers/appRouter'
+import type { AppRouter } from "@/helpers/server/routers/appRouter";
+import { createTRPCProxyClient, httpBatchLink, loggerLink } from "@trpc/client";
+import { createTRPCNext } from "@trpc/next";
+import { env } from "@typebot.io/env";
+import superjson from "superjson";
 
-const getBaseUrl = () => (typeof window !== 'undefined' ? '' : env.NEXTAUTH_URL)
+const getBaseUrl = () =>
+  typeof window !== "undefined" ? "" : env.NEXTAUTH_URL;
 
 export const trpc = createTRPCNext<AppRouter>({
   config() {
@@ -12,18 +13,18 @@ export const trpc = createTRPCNext<AppRouter>({
       links: [
         loggerLink({
           enabled: (opts) =>
-            process.env.NODE_ENV === 'development' ||
-            (opts.direction === 'down' && opts.result instanceof Error),
+            process.env.NODE_ENV === "development" ||
+            (opts.direction === "down" && opts.result instanceof Error),
         }),
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
         }),
       ],
       transformer: superjson,
-    }
+    };
   },
   ssr: false,
-})
+});
 
 export const trpcVanilla = createTRPCProxyClient<AppRouter>({
   links: [
@@ -32,8 +33,8 @@ export const trpcVanilla = createTRPCProxyClient<AppRouter>({
     }),
   ],
   transformer: superjson,
-})
+});
 
 export const defaultQueryOptions = {
   refetchOnMount: env.NEXT_PUBLIC_E2E_TEST,
-}
+};

@@ -1,51 +1,51 @@
 import {
+  ChatIcon,
+  CodeIcon,
+  LockedIcon,
+  MoreVerticalIcon,
+} from "@/components/icons";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import {
   Accordion,
   AccordionButton,
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Heading,
   HStack,
+  Heading,
   Stack,
-} from '@chakra-ui/react'
-import {
-  ChatIcon,
-  CodeIcon,
-  LockedIcon,
-  MoreVerticalIcon,
-} from '@/components/icons'
-import { Settings } from '@typebot.io/schemas'
-import React from 'react'
-import { GeneralSettingsForm } from './GeneralSettingsForm'
-import { MetadataForm } from './MetadataForm'
-import { TypingEmulationForm } from './TypingEmulationForm'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { SecurityForm } from './SecurityForm'
+} from "@chakra-ui/react";
+import type { Settings } from "@typebot.io/settings/schemas";
+import React from "react";
+import { GeneralSettingsForm } from "./GeneralSettingsForm";
+import { MetadataForm } from "./MetadataForm";
+import { SecurityForm } from "./SecurityForm";
+import { TypingEmulationForm } from "./TypingEmulationForm";
 
 export const SettingsSideMenu = () => {
-  const { typebot, updateTypebot } = useTypebot()
+  const { typebot, updateTypebot } = useTypebot();
 
   const updateTypingEmulation = (
-    typingEmulation: Settings['typingEmulation']
+    typingEmulation: Settings["typingEmulation"],
   ) =>
     typebot &&
     updateTypebot({
       updates: { settings: { ...typebot.settings, typingEmulation } },
-    })
+    });
 
-  const updateSecurity = (security: Settings['security']) =>
+  const updateSecurity = (security: Settings["security"]) =>
     typebot &&
     updateTypebot({
       updates: { settings: { ...typebot.settings, security } },
-    })
+    });
 
-  const handleGeneralSettingsChange = (general: Settings['general']) =>
+  const handleGeneralSettingsChange = (general: Settings["general"]) =>
     typebot &&
-    updateTypebot({ updates: { settings: { ...typebot.settings, general } } })
+    updateTypebot({ updates: { settings: { ...typebot.settings, general } } });
 
-  const handleMetadataChange = (metadata: Settings['metadata']) =>
+  const handleMetadataChange = (metadata: Settings["metadata"]) =>
     typebot &&
-    updateTypebot({ updates: { settings: { ...typebot.settings, metadata } } })
+    updateTypebot({ updates: { settings: { ...typebot.settings, metadata } } });
 
   return (
     <Stack
@@ -65,7 +65,7 @@ export const SettingsSideMenu = () => {
         <AccordionItem>
           <AccordionButton py={6}>
             <HStack flex="1" pl={2}>
-              <MoreVerticalIcon transform={'rotate(90deg)'} />
+              <MoreVerticalIcon transform={"rotate(90deg)"} />
               <Heading fontSize="lg">General</Heading>
             </HStack>
             <AccordionIcon />
@@ -135,5 +135,5 @@ export const SettingsSideMenu = () => {
         </AccordionItem>
       </Accordion>
     </Stack>
-  )
-}
+  );
+};

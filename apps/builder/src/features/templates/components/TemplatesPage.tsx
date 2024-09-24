@@ -1,7 +1,7 @@
-import { Seo } from '@/components/Seo'
-import { DashboardHeader } from '@/features/dashboard/components/DashboardHeader'
-import { VStack } from '@chakra-ui/react'
-import { CreateNewTypebotButtons } from './CreateNewTypebotButtons'
+import { Seo } from "@/components/Seo";
+import { DashboardHeader } from "@/features/dashboard/components/DashboardHeader";
+import { VStack } from "@chakra-ui/react";
+import { CreateNewTypebotButtons } from "./CreateNewTypebotButtons";
 
 export const TemplatesPage = () => (
   <VStack h="100vh">
@@ -9,4 +9,4 @@ export const TemplatesPage = () => (
     <DashboardHeader />
     <CreateNewTypebotButtons />
   </VStack>
-)
+);

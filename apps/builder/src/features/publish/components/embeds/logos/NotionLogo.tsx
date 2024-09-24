@@ -1,4 +1,4 @@
-import { Icon, IconProps } from '@chakra-ui/react'
+import { Icon, type IconProps } from "@chakra-ui/react";
 
 export const NotionLogo = (props: IconProps) => (
   <Icon
@@ -20,4 +20,4 @@ export const NotionLogo = (props: IconProps) => (
       fill="#000"
     />
   </Icon>
-)
+);

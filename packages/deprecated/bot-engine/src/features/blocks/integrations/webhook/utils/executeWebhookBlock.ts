@@ -1,14 +1,12 @@
-import { parseVariables } from '@/features/variables'
-import { IntegrationState } from '@/types'
-import {
-  HttpRequestBlock,
-  ZapierBlock,
-  MakeComBlock,
-  PabblyConnectBlock,
-  VariableWithUnknowValue,
-} from '@typebot.io/schemas'
-import { stringify } from 'qs'
-import { sendRequest, byId } from '@typebot.io/lib'
+import { parseVariables } from "@/features/variables";
+import type { IntegrationState } from "@/types";
+import type { MakeComBlock } from "@typebot.io/blocks-integrations/makeCom/schema";
+import type { PabblyConnectBlock } from "@typebot.io/blocks-integrations/pabblyConnect/schema";
+import type { HttpRequestBlock } from "@typebot.io/blocks-integrations/webhook/schema";
+import type { ZapierBlock } from "@typebot.io/blocks-integrations/zapier/schema";
+import { byId, sendRequest } from "@typebot.io/lib/utils";
+import type { VariableWithUnknowValue } from "@typebot.io/variables/schemas";
+import { stringify } from "qs";
 
 export const executeWebhook = async (
   block: HttpRequestBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock,
@@ -23,49 +21,49 @@ export const executeWebhook = async (
     onNewLog,
     resultId,
     parentTypebotIds,
-  }: IntegrationState
+  }: IntegrationState,
 ) => {
-  const params = stringify({ resultId })
+  const params = stringify({ resultId });
   const { data, error } = await sendRequest({
     url: `${apiHost}/api/typebots/${typebotId}/blocks/${blockId}/executeWebhook?${params}`,
-    method: 'POST',
+    method: "POST",
     body: {
       variables,
       resultValues,
       parentTypebotIds,
     },
-  })
+  });
   const statusCode = (
     data as Record<string, string> | undefined
-  )?.statusCode.toString()
+  )?.statusCode.toString();
   const isError = statusCode
-    ? statusCode?.startsWith('4') || statusCode?.startsWith('5')
-    : true
+    ? statusCode?.startsWith("4") || statusCode?.startsWith("5")
+    : true;
   onNewLog({
-    status: error ? 'error' : isError ? 'warning' : 'success',
+    status: error ? "error" : isError ? "warning" : "success",
     description: isError
-      ? 'Webhook returned an error'
-      : 'Webhook successfuly executed',
+      ? "Webhook returned an error"
+      : "Webhook successfuly executed",
     details: JSON.stringify(error ?? data, null, 2).substring(0, 1000),
-  })
+  });
   const newVariables = block.options?.responseVariableMapping?.reduce<
     VariableWithUnknowValue[]
   >((newVariables, varMapping) => {
-    if (!varMapping?.bodyPath || !varMapping.variableId) return newVariables
-    const existingVariable = variables.find(byId(varMapping.variableId))
-    if (!existingVariable) return newVariables
+    if (!varMapping?.bodyPath || !varMapping.variableId) return newVariables;
+    const existingVariable = variables.find(byId(varMapping.variableId));
+    if (!existingVariable) return newVariables;
     const func = Function(
-      'data',
-      `return data.${parseVariables(variables)(varMapping?.bodyPath)}`
-    )
+      "data",
+      `return data.${parseVariables(variables)(varMapping?.bodyPath)}`,
+    );
     try {
-      const value: unknown = func(data)
-      updateVariableValue(existingVariable?.id, value)
-      return [...newVariables, { ...existingVariable, value }]
+      const value: unknown = func(data);
+      updateVariableValue(existingVariable?.id, value);
+      return [...newVariables, { ...existingVariable, value }];
     } catch (err) {
-      return newVariables
+      return newVariables;
     }
-  }, [])
-  if (newVariables) updateVariables(newVariables)
-  return block.outgoingEdgeId
-}
+  }, []);
+  if (newVariables) updateVariables(newVariables);
+  return block.outgoingEdgeId;
+};

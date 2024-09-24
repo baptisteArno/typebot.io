@@ -1,0 +1,23 @@
+{
+  "name": "@typebot.io/blocks-core",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "dependencies": {
+    "@typebot.io/zod": "workspace:*",
+    "@typebot.io/forge-repository": "workspace:*",
+    "@typebot.io/conditions": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/blocks-base": "workspace:*",
+    "@typebot.io/blocks-bubbles": "workspace:*",
+    "@typebot.io/blocks-inputs": "workspace:*",
+    "@typebot.io/blocks-logic": "workspace:*",
+    "@typebot.io/blocks-integrations": "workspace:*"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
+  }
+}

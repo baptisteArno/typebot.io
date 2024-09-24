@@ -1,5 +1,7 @@
 {
   "name": "@typebot.io/tsconfig",
   "private": true,
-  "version": "0.0.1"
+  "dependencies": {
+    "ts-plugin-sort-import-suggestions": "1.0.4"
+  }
 }

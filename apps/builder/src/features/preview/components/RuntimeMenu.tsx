@@ -1,22 +1,22 @@
-import { ChevronDownIcon } from '@/components/icons'
+import { ChevronDownIcon } from "@/components/icons";
 import {
+  Button,
+  HStack,
   Menu,
   MenuButton,
-  Button,
-  MenuList,
   MenuItem,
+  MenuList,
   Tag,
-  HStack,
   Text,
-} from '@chakra-ui/react'
-import { runtimes } from '../data'
+} from "@chakra-ui/react";
+import { runtimes } from "../data";
 
-type Runtime = (typeof runtimes)[number]
+type Runtime = (typeof runtimes)[number];
 
 type Props = {
-  selectedRuntime: Runtime
-  onSelectRuntime: (runtime: Runtime) => void
-}
+  selectedRuntime: Runtime;
+  onSelectRuntime: (runtime: Runtime) => void;
+};
 
 export const RuntimeMenu = ({ selectedRuntime, onSelectRuntime }: Props) => {
   return (
@@ -28,8 +28,8 @@ export const RuntimeMenu = ({ selectedRuntime, onSelectRuntime }: Props) => {
       >
         <HStack justifyContent="space-between">
           <Text>{selectedRuntime.name}</Text>
-          {'status' in selectedRuntime &&
-          typeof selectedRuntime.status === 'string' ? (
+          {"status" in selectedRuntime &&
+          typeof selectedRuntime.status === "string" ? (
             <Tag colorScheme="orange">{selectedRuntime.status}</Tag>
           ) : null}
         </HStack>
@@ -45,7 +45,7 @@ export const RuntimeMenu = ({ selectedRuntime, onSelectRuntime }: Props) => {
             >
               <HStack justifyContent="space-between">
                 <Text>{runtime.name}</Text>
-                {'status' in runtime && typeof runtime.status === 'string' ? (
+                {"status" in runtime && typeof runtime.status === "string" ? (
                   <Tag colorScheme="orange">{runtime.status}</Tag>
                 ) : null}
               </HStack>
@@ -53,5 +53,5 @@ export const RuntimeMenu = ({ selectedRuntime, onSelectRuntime }: Props) => {
           ))}
       </MenuList>
     </Menu>
-  )
-}
+  );
+};

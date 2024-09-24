@@ -1,29 +1,29 @@
-import { SendButton } from '@/components/SendButton'
-import { BotContext, InputSubmitContent } from '@/types'
-import { FileInputBlock } from '@typebot.io/schemas'
-import { createSignal, Match, Show, Switch, For } from 'solid-js'
-import { Button } from '@/components/Button'
-import { Spinner } from '@/components/Spinner'
-import { uploadFiles } from '../helpers/uploadFiles'
-import { guessApiHost } from '@/utils/guessApiHost'
-import { defaultFileInputOptions } from '@typebot.io/schemas/features/blocks/inputs/file/constants'
-import { isDefined } from '@typebot.io/lib'
-import { SelectedFile } from './SelectedFile'
-import { sanitizeNewFile } from '../helpers/sanitizeSelectedFiles'
-import { toaster } from '@/utils/toaster'
+import { Button } from "@/components/Button";
+import { SendButton } from "@/components/SendButton";
+import { Spinner } from "@/components/Spinner";
+import type { BotContext, InputSubmitContent } from "@/types";
+import { guessApiHost } from "@/utils/guessApiHost";
+import { toaster } from "@/utils/toaster";
+import { defaultFileInputOptions } from "@typebot.io/blocks-inputs/file/constants";
+import type { FileInputBlock } from "@typebot.io/blocks-inputs/file/schema";
+import { isDefined } from "@typebot.io/lib/utils";
+import { For, Match, Show, Switch, createSignal } from "solid-js";
+import { sanitizeNewFile } from "../helpers/sanitizeSelectedFiles";
+import { uploadFiles } from "../helpers/uploadFiles";
+import { SelectedFile } from "./SelectedFile";
 
 type Props = {
-  context: BotContext
-  block: FileInputBlock
-  onSubmit: (url: InputSubmitContent) => void
-  onSkip: (label: string) => void
-}
+  context: BotContext;
+  block: FileInputBlock;
+  onSubmit: (url: InputSubmitContent) => void;
+  onSkip: (label: string) => void;
+};
 
 export const FileUploadForm = (props: Props) => {
-  const [selectedFiles, setSelectedFiles] = createSignal<File[]>([])
-  const [isUploading, setIsUploading] = createSignal(false)
-  const [uploadProgressPercent, setUploadProgressPercent] = createSignal(0)
-  const [isDraggingOver, setIsDraggingOver] = createSignal(false)
+  const [selectedFiles, setSelectedFiles] = createSignal<File[]>([]);
+  const [isUploading, setIsUploading] = createSignal(false);
+  const [uploadProgressPercent, setUploadProgressPercent] = createSignal(0);
+  const [isDraggingOver, setIsDraggingOver] = createSignal(false);
 
   const onNewFiles = (files: FileList) => {
     const newFiles = Array.from(files)
@@ -33,7 +33,7 @@ export const FileUploadForm = (props: Props) => {
           newFile: file,
           params: {
             sizeLimit:
-              props.block.options && 'sizeLimit' in props.block.options
+              props.block.options && "sizeLimit" in props.block.options
                 ? props.block.options.sizeLimit
                 : undefined,
           },
@@ -42,26 +42,26 @@ export const FileUploadForm = (props: Props) => {
               title,
               description,
             }),
-        })
+        }),
       )
-      .filter(isDefined)
+      .filter(isDefined);
 
-    if (newFiles.length === 0) return
+    if (newFiles.length === 0) return;
 
     if (!props.block.options?.isMultipleAllowed)
-      return startSingleFileUpload(newFiles[0])
+      return startSingleFileUpload(newFiles[0]);
 
-    setSelectedFiles([...selectedFiles(), ...newFiles])
-  }
+    setSelectedFiles([...selectedFiles(), ...newFiles]);
+  };
 
   const handleSubmit = async (e: SubmitEvent) => {
-    e.preventDefault()
-    if (selectedFiles().length === 0) return
-    startFilesUpload(selectedFiles())
-  }
+    e.preventDefault();
+    if (selectedFiles().length === 0) return;
+    startFilesUpload(selectedFiles());
+  };
 
   const startSingleFileUpload = async (file: File) => {
-    setIsUploading(true)
+    setIsUploading(true);
     const urls = await uploadFiles({
       apiHost:
         props.context.apiHost ?? guessApiHost({ ignoreChatApiUrl: true }),
@@ -74,15 +74,15 @@ export const FileUploadForm = (props: Props) => {
           },
         },
       ],
-    })
-    setIsUploading(false)
+    });
+    setIsUploading(false);
     if (urls.length && urls[0])
       return props.onSubmit({
-        type: 'text',
+        type: "text",
         label:
           props.block.options?.labels?.success?.single ??
           defaultFileInputOptions.labels.success.single,
-        value: urls[0] ? encodeUrl(urls[0].url) : '',
+        value: urls[0] ? encodeUrl(urls[0].url) : "",
         attachments: [
           {
             type: file.type,
@@ -90,11 +90,13 @@ export const FileUploadForm = (props: Props) => {
             blobUrl: URL.createObjectURL(file),
           },
         ],
-      })
-    toaster.create({ description: 'An error occured while uploading the file' })
-  }
+      });
+    toaster.create({
+      description: "An error occured while uploading the file",
+    });
+  };
   const startFilesUpload = async (files: File[]) => {
-    setIsUploading(true)
+    setIsUploading(true);
     const urls = await uploadFiles({
       apiHost:
         props.context.apiHost ?? guessApiHost({ ignoreChatApiUrl: true }),
@@ -106,27 +108,27 @@ export const FileUploadForm = (props: Props) => {
         },
       })),
       onUploadProgress: setUploadProgressPercent,
-    })
-    setIsUploading(false)
-    setUploadProgressPercent(0)
+    });
+    setIsUploading(false);
+    setUploadProgressPercent(0);
     if (urls.length !== files.length)
       return toaster.create({
-        description: 'An error occured while uploading the files',
-      })
+        description: "An error occured while uploading the files",
+      });
     props.onSubmit({
-      type: 'text',
+      type: "text",
       label:
         urls.length > 1
           ? (
               props.block.options?.labels?.success?.multiple ??
               defaultFileInputOptions.labels.success.multiple
-            ).replaceAll('{total}', urls.length.toString())
+            ).replaceAll("{total}", urls.length.toString())
           : props.block.options?.labels?.success?.single ??
             defaultFileInputOptions.labels.success.single,
       value: urls
         .filter(isDefined)
         .map(({ url }) => encodeUrl(url))
-        .join(', '),
+        .join(", "),
       attachments: urls
         .map((urls, index) =>
           urls
@@ -134,46 +136,46 @@ export const FileUploadForm = (props: Props) => {
                 ...urls,
                 blobUrl: URL.createObjectURL(selectedFiles()[index]),
               }
-            : null
+            : null,
         )
         .filter(isDefined),
-    })
-  }
+    });
+  };
 
   const handleDragOver = (e: DragEvent) => {
-    e.preventDefault()
-    setIsDraggingOver(true)
-  }
+    e.preventDefault();
+    setIsDraggingOver(true);
+  };
 
-  const handleDragLeave = () => setIsDraggingOver(false)
+  const handleDragLeave = () => setIsDraggingOver(false);
 
   const handleDropFile = (e: DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (!e.dataTransfer?.files) return
-    onNewFiles(e.dataTransfer.files)
-  }
+    e.preventDefault();
+    e.stopPropagation();
+    if (!e.dataTransfer?.files) return;
+    onNewFiles(e.dataTransfer.files);
+  };
 
-  const clearFiles = () => setSelectedFiles([])
+  const clearFiles = () => setSelectedFiles([]);
 
   const skip = () =>
     props.onSkip(
-      props.block.options?.labels?.skip ?? defaultFileInputOptions.labels.skip
-    )
+      props.block.options?.labels?.skip ?? defaultFileInputOptions.labels.skip,
+    );
 
   const removeSelectedFile = (index: number) => {
     setSelectedFiles((selectedFiles) =>
-      selectedFiles.filter((_, i) => i !== index)
-    )
-  }
+      selectedFiles.filter((_, i) => i !== index),
+    );
+  };
 
   return (
     <form class="flex flex-col w-full gap-2" onSubmit={handleSubmit}>
       <label
         for="dropzone-file"
         class={
-          'typebot-upload-input py-6 flex flex-col justify-center items-center w-full bg-gray-50 border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-100 px-8 ' +
-          (isDraggingOver() ? 'dragging-over' : '')
+          "typebot-upload-input py-6 flex flex-col justify-center items-center w-full bg-gray-50 border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-100 px-8 " +
+          (isDraggingOver() ? "dragging-over" : "")
         }
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -189,7 +191,7 @@ export const FileUploadForm = (props: Props) => {
                     width: `${
                       uploadProgressPercent() > 0 ? uploadProgressPercent : 10
                     }%`,
-                    transition: 'width 150ms cubic-bezier(0.4, 0, 0.2, 1)',
+                    transition: "width 150ms cubic-bezier(0.4, 0, 0.2, 1)",
                   }}
                 />
               </div>
@@ -202,8 +204,8 @@ export const FileUploadForm = (props: Props) => {
                   <div
                     class="p-4 flex gap-2 border-gray-200 border overflow-auto bg-white rounded-md w-full"
                     on:click={(e) => {
-                      e.preventDefault()
-                      e.stopPropagation()
+                      e.preventDefault();
+                      e.stopPropagation();
                     }}
                   >
                     <For each={selectedFiles()}>
@@ -233,8 +235,8 @@ export const FileUploadForm = (props: Props) => {
                   defaultFileInputOptions.isMultipleAllowed
                 }
                 onChange={(e) => {
-                  if (!e.currentTarget.files) return
-                  onNewFiles(e.currentTarget.files)
+                  if (!e.currentTarget.files) return;
+                  onNewFiles(e.currentTarget.files);
                 }}
               />
             </>
@@ -274,7 +276,7 @@ export const FileUploadForm = (props: Props) => {
                 defaultFileInputOptions.labels.button) ===
               defaultFileInputOptions.labels.button
                 ? `Upload ${selectedFiles().length} file${
-                    selectedFiles().length > 1 ? 's' : ''
+                    selectedFiles().length > 1 ? "s" : ""
                   }`
                 : props.block.options?.labels?.button}
             </SendButton>
@@ -282,8 +284,8 @@ export const FileUploadForm = (props: Props) => {
         </div>
       </Show>
     </form>
-  )
-}
+  );
+};
 
 const UploadIcon = () => (
   <svg
@@ -303,11 +305,11 @@ const UploadIcon = () => (
     <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" />
     <polyline points="16 16 12 12 8 16" />
   </svg>
-)
+);
 
 const encodeUrl = (url: string): string => {
-  const fileName = url.split('/').pop()
-  if (!fileName) return url
-  const encodedFileName = encodeURIComponent(fileName)
-  return url.replace(fileName, encodedFileName)
-}
+  const fileName = url.split("/").pop();
+  if (!fileName) return url;
+  const encodedFileName = encodeURIComponent(fileName);
+  return url.replace(fileName, encodedFileName);
+};

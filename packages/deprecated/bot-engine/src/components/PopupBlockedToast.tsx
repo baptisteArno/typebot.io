@@ -1,7 +1,7 @@
 type Props = {
-  url: string
-  onLinkClick: () => void
-}
+  url: string;
+  onLinkClick: () => void;
+};
 
 export const PopupBlockedToast = ({ url, onLinkClick }: Props) => {
   return (
@@ -26,5 +26,5 @@ export const PopupBlockedToast = ({ url, onLinkClick }: Props) => {
         Continue in new tab
       </a>
     </div>
-  )
-}
+  );
+};

@@ -1,1 +1,1 @@
-export * from './utils/setCssVariablesValue'
+export * from "./utils/setCssVariablesValue";

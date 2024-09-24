@@ -1,12 +1,14 @@
 {
   "name": "@typebot.io/forge-repository",
   "version": "1.0.0",
-  "description": "",
-  "keywords": [],
-  "author": "Baptiste Arnaud",
   "license": "AGPL-3.0-or-later",
-  "devDependencies": {
-    "@typebot.io/forge": "workspace:*",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "dependencies": {
+    "@typebot.io/zod": "workspace:*",
     "@typebot.io/openai-block": "workspace:*",
     "@typebot.io/cal-com-block": "workspace:*",
     "@typebot.io/chat-node-block": "workspace:*",
@@ -20,5 +22,8 @@
     "@typebot.io/nocodb-block": "workspace:*",
     "@typebot.io/segment-block": "workspace:*",
     "@typebot.io/groq-block": "workspace:*"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
   }
 }

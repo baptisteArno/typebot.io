@@ -1,4 +1,4 @@
-import { IconProps, Icon } from '@chakra-ui/react'
+import { Icon, type IconProps } from "@chakra-ui/react";
 
 export const GitlabLogo = (props: IconProps) => (
   <Icon viewBox="0 0 256 236" {...props}>
@@ -31,4 +31,4 @@ export const GitlabLogo = (props: IconProps) => (
       fill="#E24329"
     />
   </Icon>
-)
+);

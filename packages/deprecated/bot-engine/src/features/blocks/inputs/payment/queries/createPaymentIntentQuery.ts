@@ -1,5 +1,6 @@
-import { PaymentInputBlock, Variable } from '@typebot.io/schemas'
-import { sendRequest } from '@typebot.io/lib'
+import type { PaymentInputBlock } from "@typebot.io/blocks-inputs/payment/schema";
+import { sendRequest } from "@typebot.io/lib/utils";
+import type { Variable } from "@typebot.io/variables/schemas";
 
 export const createPaymentIntentQuery = ({
   apiHost,
@@ -7,15 +8,15 @@ export const createPaymentIntentQuery = ({
   inputOptions,
   variables,
 }: {
-  inputOptions: PaymentInputBlock['options']
-  apiHost: string
-  variables: Variable[]
-  isPreview: boolean
+  inputOptions: PaymentInputBlock["options"];
+  apiHost: string;
+  variables: Variable[];
+  isPreview: boolean;
 }) =>
   sendRequest<{ clientSecret: string; publicKey: string; amountLabel: string }>(
     {
       url: `${apiHost}/api/integrations/stripe/createPaymentIntent`,
-      method: 'POST',
+      method: "POST",
       body: { inputOptions, isPreview, variables },
-    }
-  )
+    },
+  );

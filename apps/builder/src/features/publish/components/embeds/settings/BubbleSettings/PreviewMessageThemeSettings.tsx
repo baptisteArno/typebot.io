@@ -1,12 +1,12 @@
-import { ColorPicker } from '@/components/ColorPicker'
-import { Heading, HStack, Stack, Text } from '@chakra-ui/react'
-import { PreviewMessageTheme } from '@typebot.io/nextjs'
-import React from 'react'
+import { ColorPicker } from "@/components/ColorPicker";
+import { HStack, Heading, Stack, Text } from "@chakra-ui/react";
+import type { PreviewMessageTheme } from "@typebot.io/js";
+import React from "react";
 
 type Props = {
-  previewMessageTheme?: PreviewMessageTheme
-  onChange: (newPreviewMessageTheme?: PreviewMessageTheme) => void
-}
+  previewMessageTheme?: PreviewMessageTheme;
+  onChange: (newPreviewMessageTheme?: PreviewMessageTheme) => void;
+};
 
 export const PreviewMessageThemeSettings = ({
   previewMessageTheme,
@@ -16,31 +16,31 @@ export const PreviewMessageThemeSettings = ({
     onChange({
       ...previewMessageTheme,
       backgroundColor,
-    })
-  }
+    });
+  };
 
   const updateTextColor = (textColor: string) => {
     onChange({
       ...previewMessageTheme,
       textColor,
-    })
-  }
+    });
+  };
 
   const updateCloseButtonBackgroundColor = (
-    closeButtonBackgroundColor: string
+    closeButtonBackgroundColor: string,
   ) => {
     onChange({
       ...previewMessageTheme,
       closeButtonBackgroundColor,
-    })
-  }
+    });
+  };
 
   const updateCloseButtonIconColor = (closeButtonIconColor: string) => {
     onChange({
       ...previewMessageTheme,
       closeButtonIconColor,
-    })
-  }
+    });
+  };
 
   return (
     <Stack spacing={4} borderWidth="1px" rounded="md" p="4">
@@ -76,5 +76,5 @@ export const PreviewMessageThemeSettings = ({
         </HStack>
       </Stack>
     </Stack>
-  )
-}
+  );
+};

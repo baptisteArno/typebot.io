@@ -1,80 +1,85 @@
-import {
+import { useGroupsStore } from "@/features/graph/hooks/useGroupsStore";
+import { areTypebotsEqual } from "@/features/publish/helpers/areTypebotsEqual";
+import { convertPublicTypebotToTypebot } from "@/features/publish/helpers/convertPublicTypebotToTypebot";
+import { isPublished as isPublishedHelper } from "@/features/publish/helpers/isPublished";
+import { preventUserFromRefreshing } from "@/helpers/preventUserFromRefreshing";
+import { useAutoSave } from "@/hooks/useAutoSave";
+import { useToast } from "@/hooks/useToast";
+import { trpc } from "@/lib/trpc";
+import { isDefined, omit } from "@typebot.io/lib/utils";
+import type {
   PublicTypebot,
   PublicTypebotV6,
-  TypebotV6,
-  typebotV6Schema,
-} from '@typebot.io/schemas'
-import { Router } from 'next/router'
+} from "@typebot.io/typebot/schemas/publicTypebot";
 import {
+  type TypebotV6,
+  typebotV6Schema,
+} from "@typebot.io/typebot/schemas/typebot";
+import { dequal } from "dequal";
+import { Router } from "next/router";
+import {
+  type ReactNode,
   createContext,
-  ReactNode,
   useCallback,
   useContext,
   useEffect,
   useMemo,
   useState,
-} from 'react'
-import { isDefined, omit } from '@typebot.io/lib'
-import { edgesAction, EdgesActions } from './typebotActions/edges'
-import { itemsAction, ItemsActions } from './typebotActions/items'
-import { GroupsActions, groupsActions } from './typebotActions/groups'
-import { blocksAction, BlocksActions } from './typebotActions/blocks'
-import { variablesAction, VariablesActions } from './typebotActions/variables'
-import { dequal } from 'dequal'
-import { useToast } from '@/hooks/useToast'
-import { useUndo } from '../hooks/useUndo'
-import { useAutoSave } from '@/hooks/useAutoSave'
-import { preventUserFromRefreshing } from '@/helpers/preventUserFromRefreshing'
-import { areTypebotsEqual } from '@/features/publish/helpers/areTypebotsEqual'
-import { isPublished as isPublishedHelper } from '@/features/publish/helpers/isPublished'
-import { convertPublicTypebotToTypebot } from '@/features/publish/helpers/convertPublicTypebotToTypebot'
-import { trpc } from '@/lib/trpc'
-import { EventsActions, eventsActions } from './typebotActions/events'
-import { useGroupsStore } from '@/features/graph/hooks/useGroupsStore'
+} from "react";
+import { useUndo } from "../hooks/useUndo";
+import { type BlocksActions, blocksAction } from "./typebotActions/blocks";
+import { type EdgesActions, edgesAction } from "./typebotActions/edges";
+import { type EventsActions, eventsActions } from "./typebotActions/events";
+import { type GroupsActions, groupsActions } from "./typebotActions/groups";
+import { type ItemsActions, itemsAction } from "./typebotActions/items";
+import {
+  type VariablesActions,
+  variablesAction,
+} from "./typebotActions/variables";
 
-const autoSaveTimeout = 15000
+const autoSaveTimeout = 15000;
 
 type UpdateTypebotPayload = Partial<
   Pick<
     TypebotV6,
-    | 'theme'
-    | 'selectedThemeTemplateId'
-    | 'settings'
-    | 'publicId'
-    | 'name'
-    | 'icon'
-    | 'customDomain'
-    | 'resultsTablePreferences'
-    | 'isClosed'
-    | 'whatsAppCredentialsId'
-    | 'riskLevel'
+    | "theme"
+    | "selectedThemeTemplateId"
+    | "settings"
+    | "publicId"
+    | "name"
+    | "icon"
+    | "customDomain"
+    | "resultsTablePreferences"
+    | "isClosed"
+    | "whatsAppCredentialsId"
+    | "riskLevel"
   >
->
+>;
 
 export type SetTypebot = (
-  newPresent: TypebotV6 | ((current: TypebotV6) => TypebotV6)
-) => void
+  newPresent: TypebotV6 | ((current: TypebotV6) => TypebotV6),
+) => void;
 
 const typebotContext = createContext<
   {
-    typebot?: TypebotV6
-    publishedTypebot?: PublicTypebotV6
-    publishedTypebotVersion?: PublicTypebot['version']
-    currentUserMode: 'guest' | 'read' | 'write'
-    is404: boolean
-    isPublished: boolean
-    isSavingLoading: boolean
-    save: (updates?: Partial<TypebotV6>, overwrite?: boolean) => Promise<void>
-    undo: () => void
-    redo: () => void
-    canRedo: boolean
-    canUndo: boolean
+    typebot?: TypebotV6;
+    publishedTypebot?: PublicTypebotV6;
+    publishedTypebotVersion?: PublicTypebot["version"];
+    currentUserMode: "guest" | "read" | "write";
+    is404: boolean;
+    isPublished: boolean;
+    isSavingLoading: boolean;
+    save: (updates?: Partial<TypebotV6>, overwrite?: boolean) => Promise<void>;
+    undo: () => void;
+    redo: () => void;
+    canRedo: boolean;
+    canUndo: boolean;
     updateTypebot: (props: {
-      updates: UpdateTypebotPayload
-      save?: boolean
-      overwrite?: boolean
-    }) => Promise<TypebotV6 | undefined>
-    restorePublishedTypebot: () => void
+      updates: UpdateTypebotPayload;
+      save?: boolean;
+      overwrite?: boolean;
+    }) => Promise<TypebotV6 | undefined>;
+    restorePublishedTypebot: () => void;
   } & GroupsActions &
     BlocksActions &
     ItemsActions &
@@ -83,20 +88,20 @@ const typebotContext = createContext<
     EventsActions
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
->({})
+>({});
 
 export const TypebotProvider = ({
   children,
   typebotId,
 }: {
-  children: ReactNode
-  typebotId?: string
+  children: ReactNode;
+  typebotId?: string;
 }) => {
-  const { showToast } = useToast()
-  const [is404, setIs404] = useState(false)
+  const { showToast } = useToast();
+  const [is404, setIs404] = useState(false);
   const setGroupsCoordinates = useGroupsStore(
-    (state) => state.setGroupsCoordinates
-  )
+    (state) => state.setGroupsCoordinates,
+  );
 
   const {
     data: typebotData,
@@ -109,24 +114,24 @@ export const TypebotProvider = ({
       retry: 0,
       onError: (error) => {
         if (error.data?.httpStatus === 404) {
-          setIs404(true)
-          return
+          setIs404(true);
+          return;
         }
-        setIs404(false)
+        setIs404(false);
         showToast({
-          title: 'Could not fetch typebot',
+          title: "Could not fetch typebot",
           description: error.message,
           details: {
             content: JSON.stringify(error.data?.zodError?.fieldErrors, null, 2),
-            lang: 'json',
+            lang: "json",
           },
-        })
+        });
       },
       onSuccess: () => {
-        setIs404(false)
+        setIs404(false);
       },
-    }
-  )
+    },
+  );
 
   const { data: publishedTypebotData } =
     trpc.typebot.getPublishedTypebot.useQuery(
@@ -134,44 +139,44 @@ export const TypebotProvider = ({
       {
         enabled:
           isDefined(typebotId) &&
-          (typebotData?.currentUserMode === 'read' ||
-            typebotData?.currentUserMode === 'write'),
+          (typebotData?.currentUserMode === "read" ||
+            typebotData?.currentUserMode === "write"),
         onError: (error) => {
           showToast({
-            title: 'Could not fetch published typebot',
+            title: "Could not fetch published typebot",
             description: error.message,
             details: {
               content: JSON.stringify(
                 error.data?.zodError?.fieldErrors,
                 null,
-                2
+                2,
               ),
-              lang: 'json',
+              lang: "json",
             },
-          })
+          });
         },
-      }
-    )
+      },
+    );
 
   const { mutateAsync: updateTypebot, isLoading: isSaving } =
     trpc.typebot.updateTypebot.useMutation({
       onError: (error) =>
         showToast({
-          title: 'Error while updating typebot',
+          title: "Error while updating typebot",
           description: error.message,
         }),
       onSuccess: () => {
-        if (!typebotId) return
-        refetchTypebot()
+        if (!typebotId) return;
+        refetchTypebot();
       },
-    })
+    });
 
-  const typebot = typebotData?.typebot as TypebotV6
+  const typebot = typebotData?.typebot as TypebotV6;
   const publishedTypebot = (publishedTypebotData?.publishedTypebot ??
-    undefined) as PublicTypebotV6 | undefined
+    undefined) as PublicTypebotV6 | undefined;
   const isReadOnly =
     typebotData &&
-    ['read', 'guest'].includes(typebotData?.currentUserMode ?? 'guest')
+    ["read", "guest"].includes(typebotData?.currentUserMode ?? "guest");
 
   const [
     localTypebot,
@@ -187,27 +192,27 @@ export const TypebotProvider = ({
   ] = useUndo<TypebotV6>(undefined, {
     isReadOnly,
     onUndo: (t) => {
-      setGroupsCoordinates(t.groups)
+      setGroupsCoordinates(t.groups);
     },
     onRedo: (t) => {
-      setGroupsCoordinates(t.groups)
+      setGroupsCoordinates(t.groups);
     },
-  })
+  });
 
   useEffect(() => {
     if (!typebot && isDefined(localTypebot)) {
-      setLocalTypebot(undefined)
-      setGroupsCoordinates(undefined)
+      setLocalTypebot(undefined);
+      setGroupsCoordinates(undefined);
     }
-    if (isFetchingTypebot || !typebot) return
+    if (isFetchingTypebot || !typebot) return;
     if (
       typebot.id !== localTypebot?.id ||
       new Date(typebot.updatedAt).getTime() >
         new Date(localTypebot.updatedAt).getTime()
     ) {
-      setLocalTypebot({ ...typebot })
-      setGroupsCoordinates(typebot.groups)
-      flush()
+      setLocalTypebot({ ...typebot });
+      setGroupsCoordinates(typebot.groups);
+      flush();
     }
   }, [
     flush,
@@ -217,37 +222,37 @@ export const TypebotProvider = ({
     setLocalTypebot,
     showToast,
     typebot,
-  ])
+  ]);
 
   const saveTypebot = useCallback(
     async (updates?: Partial<TypebotV6>, overwrite?: boolean) => {
-      if (!localTypebot || !typebot || isReadOnly) return
+      if (!localTypebot || !typebot || isReadOnly) return;
       const typebotToSave = {
         ...localTypebot,
         ...updates,
-      }
+      };
       if (
         dequal(
-          JSON.parse(JSON.stringify(omit(typebot, 'updatedAt'))),
-          JSON.parse(JSON.stringify(omit(typebotToSave, 'updatedAt')))
+          JSON.parse(JSON.stringify(omit(typebot, "updatedAt"))),
+          JSON.parse(JSON.stringify(omit(typebotToSave, "updatedAt"))),
         )
       )
-        return
-      const newParsedTypebot = typebotV6Schema.parse({ ...typebotToSave })
-      setLocalTypebot(newParsedTypebot)
+        return;
+      const newParsedTypebot = typebotV6Schema.parse({ ...typebotToSave });
+      setLocalTypebot(newParsedTypebot);
       try {
         const { typebot } = await updateTypebot({
           typebotId: newParsedTypebot.id,
           typebot: newParsedTypebot,
-        })
-        setUpdateDate(typebot.updatedAt)
+        });
+        setUpdateDate(typebot.updatedAt);
         if (overwrite) {
-          setLocalTypebot(typebot)
+          setLocalTypebot(typebot);
         }
       } catch {
         setLocalTypebot({
           ...localTypebot,
-        })
+        });
       }
     },
     [
@@ -257,8 +262,8 @@ export const TypebotProvider = ({
       setUpdateDate,
       typebot,
       updateTypebot,
-    ]
-  )
+    ],
+  );
 
   useAutoSave(
     {
@@ -266,18 +271,18 @@ export const TypebotProvider = ({
       item: localTypebot,
       debounceTimeout: autoSaveTimeout,
     },
-    [saveTypebot, localTypebot]
-  )
+    [saveTypebot, localTypebot],
+  );
 
   useEffect(() => {
     const handleSaveTypebot = () => {
-      saveTypebot()
-    }
-    Router.events.on('routeChangeStart', handleSaveTypebot)
+      saveTypebot();
+    };
+    Router.events.on("routeChangeStart", handleSaveTypebot);
     return () => {
-      Router.events.off('routeChangeStart', handleSaveTypebot)
-    }
-  }, [saveTypebot])
+      Router.events.off("routeChangeStart", handleSaveTypebot);
+    };
+  }, [saveTypebot]);
 
   const isPublished = useMemo(
     () =>
@@ -285,42 +290,42 @@ export const TypebotProvider = ({
       isDefined(localTypebot.publicId) &&
       isDefined(publishedTypebot) &&
       isPublishedHelper(localTypebot, publishedTypebot),
-    [localTypebot, publishedTypebot]
-  )
+    [localTypebot, publishedTypebot],
+  );
 
   useEffect(() => {
-    if (!localTypebot || !typebot || isReadOnly) return
+    if (!localTypebot || !typebot || isReadOnly) return;
     if (!areTypebotsEqual(localTypebot, typebot)) {
-      window.addEventListener('beforeunload', preventUserFromRefreshing)
+      window.addEventListener("beforeunload", preventUserFromRefreshing);
     }
 
     return () => {
-      window.removeEventListener('beforeunload', preventUserFromRefreshing)
-    }
-  }, [localTypebot, typebot, isReadOnly])
+      window.removeEventListener("beforeunload", preventUserFromRefreshing);
+    };
+  }, [localTypebot, typebot, isReadOnly]);
 
   const updateLocalTypebot = async ({
     updates,
     save,
     overwrite,
   }: {
-    updates: UpdateTypebotPayload
-    save?: boolean
-    overwrite?: boolean
+    updates: UpdateTypebotPayload;
+    save?: boolean;
+    overwrite?: boolean;
   }) => {
-    if (!localTypebot || isReadOnly) return
-    const newTypebot = { ...localTypebot, ...updates }
-    setLocalTypebot(newTypebot)
-    if (save) await saveTypebot(newTypebot, overwrite)
-    return newTypebot
-  }
+    if (!localTypebot || isReadOnly) return;
+    const newTypebot = { ...localTypebot, ...updates };
+    setLocalTypebot(newTypebot);
+    if (save) await saveTypebot(newTypebot, overwrite);
+    return newTypebot;
+  };
 
   const restorePublishedTypebot = () => {
-    if (!publishedTypebot || !localTypebot) return
+    if (!publishedTypebot || !localTypebot) return;
     setLocalTypebot(
-      convertPublicTypebotToTypebot(publishedTypebot, localTypebot)
-    )
-  }
+      convertPublicTypebotToTypebot(publishedTypebot, localTypebot),
+    );
+  };
 
   return (
     <typebotContext.Provider
@@ -328,7 +333,7 @@ export const TypebotProvider = ({
         typebot: localTypebot,
         publishedTypebot,
         publishedTypebotVersion: publishedTypebotData?.version,
-        currentUserMode: typebotData?.currentUserMode ?? 'guest',
+        currentUserMode: typebotData?.currentUserMode ?? "guest",
         isSavingLoading: isSaving,
         is404,
         save: saveTypebot,
@@ -349,7 +354,7 @@ export const TypebotProvider = ({
     >
       {children}
     </typebotContext.Provider>
-  )
-}
+  );
+};
 
-export const useTypebot = () => useContext(typebotContext)
+export const useTypebot = () => useContext(typebotContext);

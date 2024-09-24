@@ -1,23 +1,23 @@
-import prisma from '@typebot.io/lib/prisma'
-import { authenticatedProcedure } from '@/helpers/server/trpc'
-import { TRPCError } from '@trpc/server'
-import { z } from 'zod'
-import { canReadTypebots } from '@/helpers/databaseRules'
-import { totalVisitedEdgesSchema } from '@typebot.io/schemas'
-import { defaultTimeFilter, timeFilterValues } from '../constants'
+import { canReadTypebots } from "@/helpers/databaseRules";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
+import { TRPCError } from "@trpc/server";
+import prisma from "@typebot.io/prisma";
+import { totalVisitedEdgesSchema } from "@typebot.io/schemas/features/analytics";
+import { z } from "@typebot.io/zod";
+import { defaultTimeFilter, timeFilterValues } from "../constants";
 import {
   parseFromDateFromTimeFilter,
   parseToDateFromTimeFilter,
-} from '../helpers/parseDateFromTimeFilter'
+} from "../helpers/parseDateFromTimeFilter";
 
 export const getTotalVisitedEdges = authenticatedProcedure
   .meta({
     openapi: {
-      method: 'GET',
-      path: '/v1/typebots/{typebotId}/analytics/totalVisitedEdges',
+      method: "GET",
+      path: "/v1/typebots/{typebotId}/analytics/totalVisitedEdges",
       protect: true,
-      summary: 'List total edges used in results',
-      tags: ['Analytics'],
+      summary: "List total edges used in results",
+      tags: ["Analytics"],
     },
   })
   .input(
@@ -25,30 +25,30 @@ export const getTotalVisitedEdges = authenticatedProcedure
       typebotId: z.string(),
       timeFilter: z.enum(timeFilterValues).default(defaultTimeFilter),
       timeZone: z.string().optional(),
-    })
+    }),
   )
   .output(
     z.object({
       totalVisitedEdges: z.array(totalVisitedEdgesSchema),
-    })
+    }),
   )
   .query(
     async ({ input: { typebotId, timeFilter, timeZone }, ctx: { user } }) => {
       const typebot = await prisma.typebot.findFirst({
         where: canReadTypebots(typebotId, user),
         select: { id: true },
-      })
+      });
       if (!typebot?.id)
         throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Published typebot not found',
-        })
+          code: "NOT_FOUND",
+          message: "Published typebot not found",
+        });
 
-      const fromDate = parseFromDateFromTimeFilter(timeFilter, timeZone)
-      const toDate = parseToDateFromTimeFilter(timeFilter, timeZone)
+      const fromDate = parseFromDateFromTimeFilter(timeFilter, timeZone);
+      const toDate = parseToDateFromTimeFilter(timeFilter, timeZone);
 
       const edges = await prisma.visitedEdge.groupBy({
-        by: ['edgeId'],
+        by: ["edgeId"],
         where: {
           result: {
             typebotId: typebot.id,
@@ -61,13 +61,13 @@ export const getTotalVisitedEdges = authenticatedProcedure
           },
         },
         _count: { resultId: true },
-      })
+      });
 
       return {
         totalVisitedEdges: edges.map((e) => ({
           edgeId: e.edgeId,
           total: e._count.resultId,
         })),
-      }
-    }
-  )
+      };
+    },
+  );

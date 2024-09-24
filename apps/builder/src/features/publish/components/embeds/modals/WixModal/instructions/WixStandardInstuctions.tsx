@@ -1,5 +1,5 @@
-import { OrderedList, ListItem, Code, Stack, Text } from '@chakra-ui/react'
-import { JavascriptStandardSnippet } from '../../Javascript/JavascriptStandardSnippet'
+import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
+import { JavascriptStandardSnippet } from "../../Javascript/JavascriptStandardSnippet";
 
 export const WixStandardInstructions = () => {
   return (
@@ -7,7 +7,7 @@ export const WixStandardInstructions = () => {
       <ListItem>
         In the Wix Website Editor:
         <Code>
-          Add {'>'} Embed Code {'>'} Embed HTML
+          Add {">"} Embed Code {">"} Embed HTML
         </Code>
       </ListItem>
       <ListItem>
@@ -19,5 +19,5 @@ export const WixStandardInstructions = () => {
         </Stack>
       </ListItem>
     </OrderedList>
-  )
-}
+  );
+};

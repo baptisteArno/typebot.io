@@ -1,7 +1,7 @@
-import { Icon, IconProps, useColorModeValue } from '@chakra-ui/react'
+import { Icon, type IconProps, useColorModeValue } from "@chakra-ui/react";
 
 export const WixLogo = (props: IconProps) => {
-  const fill = useColorModeValue('black', 'white')
+  const fill = useColorModeValue("black", "white");
   return (
     <Icon
       width="311"
@@ -28,5 +28,5 @@ export const WixLogo = (props: IconProps) => {
         fill={fill}
       />
     </Icon>
-  )
-}
+  );
+};

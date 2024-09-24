@@ -1,10 +1,10 @@
-import { OrderedList, ListItem, Code, Stack, Text } from '@chakra-ui/react'
-import { useState } from 'react'
-import { PopupSettings } from '../../../settings/PopupSettings'
-import { JavascriptPopupSnippet } from '../../Javascript/JavascriptPopupSnippet'
+import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
+import { useState } from "react";
+import { PopupSettings } from "../../../settings/PopupSettings";
+import { JavascriptPopupSnippet } from "../../Javascript/JavascriptPopupSnippet";
 
 export const GtmPopupInstructions = () => {
-  const [inputValue, setInputValue] = useState<number>()
+  const [inputValue, setInputValue] = useState<number>();
 
   return (
     <OrderedList spacing={4} pl={5}>
@@ -29,5 +29,5 @@ export const GtmPopupInstructions = () => {
         </Stack>
       </ListItem>
     </OrderedList>
-  )
-}
+  );
+};

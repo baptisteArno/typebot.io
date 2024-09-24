@@ -1,12 +1,12 @@
-import { PrismaClient, WorkspaceInvitation } from '@typebot.io/prisma'
-import { InvitationWithWorkspaceId } from './convertInvitationsToCollaborations'
+import type { Prisma } from "@typebot.io/prisma/types";
+import type { InvitationWithWorkspaceId } from "./convertInvitationsToCollaborations";
 
 export const getNewUserInvitations = async (
-  p: PrismaClient,
-  email: string
+  p: Prisma.PrismaClient,
+  email: string,
 ): Promise<{
-  invitations: InvitationWithWorkspaceId[]
-  workspaceInvitations: WorkspaceInvitation[]
+  invitations: InvitationWithWorkspaceId[];
+  workspaceInvitations: Prisma.WorkspaceInvitation[];
 }> => {
   const [invitations, workspaceInvitations] = await p.$transaction([
     p.invitation.findMany({
@@ -16,7 +16,7 @@ export const getNewUserInvitations = async (
     p.workspaceInvitation.findMany({
       where: { email },
     }),
-  ])
+  ]);
 
-  return { invitations, workspaceInvitations }
-}
+  return { invitations, workspaceInvitations };
+};

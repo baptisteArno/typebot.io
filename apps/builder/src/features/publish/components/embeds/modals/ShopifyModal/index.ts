@@ -1,1 +1,1 @@
-export * from './ShopifyModal'
+export * from "./ShopifyModal";

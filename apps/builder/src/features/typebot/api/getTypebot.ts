@@ -1,21 +1,21 @@
-import prisma from '@typebot.io/lib/prisma'
-import { publicProcedure } from '@/helpers/server/trpc'
-import { TRPCError } from '@trpc/server'
-import { typebotSchema } from '@typebot.io/schemas'
-import { z } from 'zod'
-import { isReadTypebotForbidden } from '../helpers/isReadTypebotForbidden'
-import { migrateTypebot } from '@typebot.io/migrations/migrateTypebot'
-import { CollaborationType } from '@typebot.io/prisma'
-import { env } from '@typebot.io/env'
+import { publicProcedure } from "@/helpers/server/trpc";
+import { TRPCError } from "@trpc/server";
+import { env } from "@typebot.io/env";
+import prisma from "@typebot.io/prisma";
+import type { CollaborationType } from "@typebot.io/prisma/enum";
+import { migrateTypebot } from "@typebot.io/typebot/migrations/migrateTypebot";
+import { typebotSchema } from "@typebot.io/typebot/schemas/typebot";
+import { z } from "@typebot.io/zod";
+import { isReadTypebotForbidden } from "../helpers/isReadTypebotForbidden";
 
 export const getTypebot = publicProcedure
   .meta({
     openapi: {
-      method: 'GET',
-      path: '/v1/typebots/{typebotId}',
+      method: "GET",
+      path: "/v1/typebots/{typebotId}",
       protect: true,
-      summary: 'Get a typebot',
-      tags: ['Typebot'],
+      summary: "Get a typebot",
+      tags: ["Typebot"],
     },
   })
   .input(
@@ -23,22 +23,22 @@ export const getTypebot = publicProcedure
       typebotId: z
         .string()
         .describe(
-          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
         ),
       migrateToLatestVersion: z
         .boolean()
         .optional()
         .default(false)
         .describe(
-          'If enabled, the typebot will be converted to the latest schema version'
+          "If enabled, the typebot will be converted to the latest schema version",
         ),
-    })
+    }),
   )
   .output(
     z.object({
       typebot: typebotSchema,
-      currentUserMode: z.enum(['guest', 'read', 'write']),
-    })
+      currentUserMode: z.enum(["guest", "read", "write"]),
+    }),
   )
   .query(
     async ({ input: { typebotId, migrateToLatestVersion }, ctx: { user } }) => {
@@ -60,50 +60,53 @@ export const getTypebot = publicProcedure
             },
           },
         },
-      })
+      });
       if (
         !existingTypebot?.id ||
         (await isReadTypebotForbidden(existingTypebot, user))
       )
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Typebot not found",
+        });
 
       try {
         const parsedTypebot = migrateToLatestVersion
           ? await migrateTypebot(typebotSchema.parse(existingTypebot))
-          : typebotSchema.parse(existingTypebot)
+          : typebotSchema.parse(existingTypebot);
 
         return {
           typebot: parsedTypebot,
           currentUserMode: getCurrentUserMode(user, existingTypebot),
-        }
+        };
       } catch (err) {
         throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to parse typebot',
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to parse typebot",
           cause: err,
-        })
+        });
       }
-    }
-  )
+    },
+  );
 
 const getCurrentUserMode = (
   user: { email: string | null; id: string } | undefined,
   typebot: { collaborators: { userId: string; type: CollaborationType }[] } & {
-    workspace: { members: { userId: string }[] }
-  }
+    workspace: { members: { userId: string }[] };
+  },
 ) => {
-  const collaborator = typebot.collaborators.find((c) => c.userId === user?.id)
+  const collaborator = typebot.collaborators.find((c) => c.userId === user?.id);
   const isMemberOfWorkspace = typebot.workspace.members.some(
-    (m) => m.userId === user?.id
-  )
+    (m) => m.userId === user?.id,
+  );
   if (
-    collaborator?.type === 'WRITE' ||
-    collaborator?.type === 'FULL_ACCESS' ||
+    collaborator?.type === "WRITE" ||
+    collaborator?.type === "FULL_ACCESS" ||
     isMemberOfWorkspace
   )
-    return 'write'
+    return "write";
 
-  if (collaborator) return 'read'
-  if (user?.email && env.ADMIN_EMAIL?.includes(user.email)) return 'read'
-  return 'guest'
-}
+  if (collaborator) return "read";
+  if (user?.email && env.ADMIN_EMAIL?.includes(user.email)) return "read";
+  return "guest";
+};

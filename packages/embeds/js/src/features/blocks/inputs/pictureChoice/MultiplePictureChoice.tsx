@@ -1,57 +1,62 @@
-import { InputSubmitContent } from '@/types'
-import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
-import { For, Show, createEffect, createSignal, onMount } from 'solid-js'
-import { Checkbox } from '../buttons/components/Checkbox'
-import { SendButton } from '@/components'
-import { isDefined, isEmpty, isNotEmpty, isSvgSrc } from '@typebot.io/lib'
-import { SearchInput } from '@/components/inputs/SearchInput'
-import { isMobile } from '@/utils/isMobileSignal'
-import { defaultPictureChoiceOptions } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice/constants'
+import { SendButton } from "@/components/SendButton";
+import { SearchInput } from "@/components/inputs/SearchInput";
+import type { InputSubmitContent } from "@/types";
+import { isMobile } from "@/utils/isMobileSignal";
+import { defaultPictureChoiceOptions } from "@typebot.io/blocks-inputs/pictureChoice/constants";
+import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice/schema";
+import {
+  isDefined,
+  isEmpty,
+  isNotEmpty,
+  isSvgSrc,
+} from "@typebot.io/lib/utils";
+import { For, Show, createEffect, createSignal, onMount } from "solid-js";
+import { Checkbox } from "../buttons/components/Checkbox";
 
 type Props = {
-  defaultItems: PictureChoiceBlock['items']
-  options: PictureChoiceBlock['options']
-  onSubmit: (value: InputSubmitContent) => void
-  onTransitionEnd: () => void
-}
+  defaultItems: PictureChoiceBlock["items"];
+  options: PictureChoiceBlock["options"];
+  onSubmit: (value: InputSubmitContent) => void;
+  onTransitionEnd: () => void;
+};
 
 export const MultiplePictureChoice = (props: Props) => {
-  let inputRef: HTMLInputElement | undefined
-  const [filteredItems, setFilteredItems] = createSignal(props.defaultItems)
-  const [selectedItemIds, setSelectedItemIds] = createSignal<string[]>([])
-  const [totalLoadedImages, setTotalLoadedImages] = createSignal(0)
+  let inputRef: HTMLInputElement | undefined;
+  const [filteredItems, setFilteredItems] = createSignal(props.defaultItems);
+  const [selectedItemIds, setSelectedItemIds] = createSignal<string[]>([]);
+  const [totalLoadedImages, setTotalLoadedImages] = createSignal(0);
 
   onMount(() => {
-    if (!isMobile() && inputRef) inputRef.focus({ preventScroll: true })
-  })
+    if (!isMobile() && inputRef) inputRef.focus({ preventScroll: true });
+  });
 
   const handleClick = (itemId: string) => {
-    toggleSelectedItemId(itemId)
-  }
+    toggleSelectedItemId(itemId);
+  };
 
   const toggleSelectedItemId = (itemId: string) => {
-    const existingIndex = selectedItemIds().indexOf(itemId)
+    const existingIndex = selectedItemIds().indexOf(itemId);
     if (existingIndex !== -1) {
       setSelectedItemIds((selectedItemIds) =>
-        selectedItemIds.filter((selectedItemId) => selectedItemId !== itemId)
-      )
+        selectedItemIds.filter((selectedItemId) => selectedItemId !== itemId),
+      );
     } else {
-      setSelectedItemIds((selectedIndices) => [...selectedIndices, itemId])
+      setSelectedItemIds((selectedIndices) => [...selectedIndices, itemId]);
     }
-  }
+  };
 
   const handleSubmit = () =>
     props.onSubmit({
-      type: 'text',
+      type: "text",
       value: selectedItemIds()
         .map((selectedItemId) => {
           const item = props.defaultItems.find(
-            (item) => item.id === selectedItemId
-          )
-          return isNotEmpty(item?.title) ? item.title : item?.pictureSrc
+            (item) => item.id === selectedItemId,
+          );
+          return isNotEmpty(item?.title) ? item.title : item?.pictureSrc;
         })
-        .join(', '),
-    })
+        .join(", "),
+    });
 
   const filterItems = (inputValue: string) => {
     setFilteredItems(
@@ -59,25 +64,25 @@ export const MultiplePictureChoice = (props: Props) => {
         (item) =>
           item.title
             ?.toLowerCase()
-            .includes((inputValue ?? '').toLowerCase()) ||
+            .includes((inputValue ?? "").toLowerCase()) ||
           item.description
             ?.toLowerCase()
-            .includes((inputValue ?? '').toLowerCase())
-      )
-    )
-  }
+            .includes((inputValue ?? "").toLowerCase()),
+      ),
+    );
+  };
 
   createEffect(() => {
     if (
       totalLoadedImages() ===
       props.defaultItems.filter((item) => isDefined(item.pictureSrc)).length
     )
-      props.onTransitionEnd()
-  })
+      props.onTransitionEnd();
+  });
 
   const onImageLoad = () => {
-    setTotalLoadedImages((acc) => acc + 1)
-  }
+    setTotalLoadedImages((acc) => acc + 1);
+  };
 
   return (
     <form class="flex flex-col gap-2 w-full items-end" onSubmit={handleSubmit}>
@@ -96,10 +101,10 @@ export const MultiplePictureChoice = (props: Props) => {
       </Show>
       <div
         class={
-          'flex flex-wrap justify-end gap-2' +
+          "flex flex-wrap justify-end gap-2" +
           (props.options?.isSearchable
-            ? ' overflow-y-scroll max-h-[464px] rounded-md'
-            : '')
+            ? " overflow-y-scroll max-h-[464px] rounded-md"
+            : "")
         }
       >
         <For each={filteredItems()}>
@@ -107,17 +112,17 @@ export const MultiplePictureChoice = (props: Props) => {
             <div
               role="checkbox"
               aria-checked={selectedItemIds().some(
-                (selectedItemId) => selectedItemId === item.id
+                (selectedItemId) => selectedItemId === item.id,
               )}
               on:click={() => handleClick(item.id)}
               class={
-                'flex flex-col focus:outline-none cursor-pointer select-none typebot-selectable-picture' +
+                "flex flex-col focus:outline-none cursor-pointer select-none typebot-selectable-picture" +
                 (selectedItemIds().some(
-                  (selectedItemId) => selectedItemId === item.id
+                  (selectedItemId) => selectedItemId === item.id,
                 )
-                  ? ' selected'
-                  : '') +
-                (isSvgSrc(item.pictureSrc) ? ' has-svg' : '')
+                  ? " selected"
+                  : "") +
+                (isSvgSrc(item.pictureSrc) ? " has-svg" : "")
               }
               data-itemid={item.id}
             >
@@ -125,25 +130,25 @@ export const MultiplePictureChoice = (props: Props) => {
                 src={item.pictureSrc}
                 alt={item.title ?? `Picture ${index() + 1}`}
                 elementtiming={`Picture choice ${index() + 1}`}
-                fetchpriority={'high'}
+                fetchpriority={"high"}
                 class="m-auto"
                 onLoad={onImageLoad}
               />
               <div
                 class={
-                  'flex gap-3 py-2 flex-shrink-0' +
+                  "flex gap-3 py-2 flex-shrink-0" +
                   (isEmpty(item.title) && isEmpty(item.description)
-                    ? ' justify-center'
-                    : ' px-3')
+                    ? " justify-center"
+                    : " px-3")
                 }
               >
                 <Checkbox
                   isChecked={selectedItemIds().some(
-                    (selectedItemId) => selectedItemId === item.id
+                    (selectedItemId) => selectedItemId === item.id,
                   )}
                   class={
-                    'flex-shrink-0' +
-                    (item.title || item.description ? ' mt-1' : undefined)
+                    "flex-shrink-0" +
+                    (item.title || item.description ? " mt-1" : undefined)
                   }
                 />
                 <Show when={item.title || item.description}>
@@ -165,10 +170,10 @@ export const MultiplePictureChoice = (props: Props) => {
         <For
           each={selectedItemIds()
             .filter((selectedItemId) =>
-              filteredItems().every((item) => item.id !== selectedItemId)
+              filteredItems().every((item) => item.id !== selectedItemId),
             )
             .map((selectedItemId) =>
-              props.defaultItems.find((item) => item.id === selectedItemId)
+              props.defaultItems.find((item) => item.id === selectedItemId),
             )
             .filter(isDefined)}
         >
@@ -178,7 +183,7 @@ export const MultiplePictureChoice = (props: Props) => {
               aria-checked
               on:click={() => handleClick(selectedItem.id)}
               class={
-                'flex flex-col focus:outline-none cursor-pointer select-none typebot-selectable-picture selected'
+                "flex flex-col focus:outline-none cursor-pointer select-none typebot-selectable-picture selected"
               }
               data-itemid={selectedItem.id}
             >
@@ -189,25 +194,25 @@ export const MultiplePictureChoice = (props: Props) => {
                 }
                 alt={selectedItem.title ?? `Selected picture ${index() + 1}`}
                 elementtiming={`Selected picture choice ${index() + 1}`}
-                fetchpriority={'high'}
+                fetchpriority={"high"}
               />
               <div
                 class={
-                  'flex gap-3 py-2 flex-shrink-0' +
+                  "flex gap-3 py-2 flex-shrink-0" +
                   (isEmpty(selectedItem.title) &&
                   isEmpty(selectedItem.description)
-                    ? ' justify-center'
-                    : ' pl-4')
+                    ? " justify-center"
+                    : " pl-4")
                 }
               >
                 <Checkbox
                   isChecked={selectedItemIds().some(
-                    (selectedItemId) => selectedItemId === selectedItem.id
+                    (selectedItemId) => selectedItemId === selectedItem.id,
                   )}
                   class={
-                    'flex-shrink-0' +
+                    "flex-shrink-0" +
                     (selectedItem.title || selectedItem.description
-                      ? ' mt-1'
+                      ? " mt-1"
                       : undefined)
                   }
                 />
@@ -235,5 +240,5 @@ export const MultiplePictureChoice = (props: Props) => {
         </SendButton>
       )}
     </form>
-  )
-}
+  );
+};

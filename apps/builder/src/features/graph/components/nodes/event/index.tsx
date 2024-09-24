@@ -1,1 +1,1 @@
-export { EventNode } from './EventNode'
+export { EventNode } from "./EventNode";

@@ -1,4 +1,4 @@
-import { IconProps, Icon } from '@chakra-ui/react'
+import { Icon, type IconProps } from "@chakra-ui/react";
 
 export const GoogleAnalyticsLogo = (props: IconProps) => (
   <Icon viewBox="0 0 353 353" {...props}>
@@ -98,4 +98,4 @@ export const GoogleAnalyticsLogo = (props: IconProps) => (
       </clipPath>
     </defs>
   </Icon>
-)
+);

@@ -1,17 +1,17 @@
-import { Stack, Text } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { HttpRequestBlock } from '@typebot.io/schemas'
-import { SetVariableLabel } from '@/components/SetVariableLabel'
+import { SetVariableLabel } from "@/components/SetVariableLabel";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { Stack, Text } from "@chakra-ui/react";
+import type { HttpRequestBlock } from "@typebot.io/blocks-integrations/webhook/schema";
 
 type Props = {
-  block: HttpRequestBlock
-}
+  block: HttpRequestBlock;
+};
 
 export const WebhookContent = ({ block: { options } }: Props) => {
-  const { typebot } = useTypebot()
-  const webhook = options?.webhook
+  const { typebot } = useTypebot();
+  const webhook = options?.webhook;
 
-  if (!webhook?.url) return <Text color="gray.500">Configure...</Text>
+  if (!webhook?.url) return <Text color="gray.500">Configure...</Text>;
   return (
     <Stack w="full">
       <Text noOfLines={2} pr="6">
@@ -27,5 +27,5 @@ export const WebhookContent = ({ block: { options } }: Props) => {
           />
         ))}
     </Stack>
-  )
-}
+  );
+};

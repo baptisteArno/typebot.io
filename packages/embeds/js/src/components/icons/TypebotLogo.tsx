@@ -33,5 +33,5 @@ export const TypebotLogo = () => {
         fill="white"
       />
     </svg>
-  )
-}
+  );
+};

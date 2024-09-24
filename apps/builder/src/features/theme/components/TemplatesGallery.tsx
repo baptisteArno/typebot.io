@@ -1,16 +1,16 @@
-import { SimpleGrid, Stack } from '@chakra-ui/react'
-import { ThemeTemplate } from '@typebot.io/schemas'
-import { galleryTemplates } from '../galleryTemplates'
-import { ThemeTemplateCard } from './ThemeTemplateCard'
+import { SimpleGrid, Stack } from "@chakra-ui/react";
+import type { ThemeTemplate } from "@typebot.io/theme/schemas";
+import { galleryTemplates } from "../galleryTemplates";
+import { ThemeTemplateCard } from "./ThemeTemplateCard";
 
 type Props = {
-  selectedTemplateId: string | undefined
-  currentTheme: ThemeTemplate['theme']
-  workspaceId: string
+  selectedTemplateId: string | undefined;
+  currentTheme: ThemeTemplate["theme"];
+  workspaceId: string;
   onTemplateSelect: (
-    template: Partial<Pick<ThemeTemplate, 'id' | 'theme'>>
-  ) => void
-}
+    template: Partial<Pick<ThemeTemplate, "id" | "theme">>,
+  ) => void;
+};
 
 export const TemplatesGallery = ({
   selectedTemplateId,
@@ -30,4 +30,4 @@ export const TemplatesGallery = ({
       ))}
     </SimpleGrid>
   </Stack>
-)
+);

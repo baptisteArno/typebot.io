@@ -66,7 +66,10 @@
             { "id": "omopw9oy3srowddb0o3f4xs5", "content": "Swim 🏊‍♂️" },
             { "id": "anpwbn8hvolyod2vsh06et68", "content": "Ride 🚴‍♂️" },
             { "id": "uto1ghh5c6icwygszercxybz", "content": "Run 🏃" },
-            { "id": "sau0amab8nmeqfqyhhzle03v", "content": "Triathlon 🏊‍♂️🚴‍♂️🏃" },
+            {
+              "id": "sau0amab8nmeqfqyhhzle03v",
+              "content": "Triathlon 🏊‍♂️🚴‍♂️🏃"
+            },
             { "id": "tqvjhk0qmvn43h5hyc9ibdd3", "content": "Swimrun 🏊‍♂️🏃" },
             {
               "id": "mu0m5v7m55vfikbs29lpcm3h",

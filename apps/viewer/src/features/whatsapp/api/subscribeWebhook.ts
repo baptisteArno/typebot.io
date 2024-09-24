@@ -1,15 +1,15 @@
-import { publicProcedure } from '@/helpers/server/trpc'
-import prisma from '@typebot.io/lib/prisma'
-import { TRPCError } from '@trpc/server'
-import { z } from 'zod'
+import { publicProcedure } from "@/helpers/server/trpc";
+import { TRPCError } from "@trpc/server";
+import prisma from "@typebot.io/prisma";
+import { z } from "@typebot.io/zod";
 
 export const subscribeWebhook = publicProcedure
   .meta({
     openapi: {
-      method: 'GET',
-      path: '/v1/workspaces/{workspaceId}/whatsapp/{credentialsId}/webhook',
-      summary: 'Subscribe webhook',
-      tags: ['WhatsApp'],
+      method: "GET",
+      path: "/v1/workspaces/{workspaceId}/whatsapp/{credentialsId}/webhook",
+      summary: "Subscribe webhook",
+      tags: ["WhatsApp"],
       protect: true,
     },
   })
@@ -17,30 +17,30 @@ export const subscribeWebhook = publicProcedure
     z.object({
       workspaceId: z.string(),
       credentialsId: z.string(),
-      'hub.challenge': z.string(),
-      'hub.verify_token': z.string(),
-    })
+      "hub.challenge": z.string(),
+      "hub.verify_token": z.string(),
+    }),
   )
   .output(z.number())
   .query(
     async ({
-      input: { 'hub.challenge': challenge, 'hub.verify_token': token },
+      input: { "hub.challenge": challenge, "hub.verify_token": token },
     }) => {
       const verificationToken = await prisma.verificationToken.findUnique({
         where: {
           token,
         },
-      })
+      });
       if (!verificationToken)
         throw new TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'Unauthorized',
-        })
+          code: "UNAUTHORIZED",
+          message: "Unauthorized",
+        });
       await prisma.verificationToken.delete({
         where: {
           token,
         },
-      })
-      return Number(challenge)
-    }
-  )
+      });
+      return Number(challenge);
+    },
+  );

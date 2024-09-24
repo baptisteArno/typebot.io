@@ -1,49 +1,49 @@
+import { ChevronRightIcon, RepeatIcon } from "@/components/icons";
+import { ForgedBlockIcon } from "@/features/forge/ForgedBlockIcon";
+import { useForgedBlock } from "@/features/forge/hooks/useForgedBlock";
 import {
-  MenuList,
-  MenuItem,
-  useDisclosure,
+  HStack,
   Menu,
   MenuButton,
-  HStack,
+  MenuItem,
+  MenuList,
   Text,
-} from '@chakra-ui/react'
-import { RepeatIcon, ChevronRightIcon } from '@/components/icons'
-import { useDebouncedCallback } from 'use-debounce'
-import { useForgedBlock } from '@/features/forge/hooks/useForgedBlock'
-import { ForgedBlockIcon } from '@/features/forge/ForgedBlockIcon'
-import { ForgedBlock } from '@typebot.io/forge-repository/types'
-import { TurnableIntoParam } from '@typebot.io/forge'
-import { ZodObject } from 'zod'
-import { BlockV6 } from '@typebot.io/schemas'
+  useDisclosure,
+} from "@chakra-ui/react";
+import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
+import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
+import type { TurnableIntoParam } from "@typebot.io/forge/types";
+import { useDebouncedCallback } from "use-debounce";
+import type { ZodObject } from "zod";
 
 type Props = {
-  block: BlockV6
+  block: BlockV6;
   onTurnIntoClick: (
     params: TurnableIntoParam,
     /* eslint-disable @typescript-eslint/no-explicit-any */
-    blockSchema: ZodObject<any>
-  ) => void
-}
+    blockSchema: ZodObject<any>,
+  ) => void;
+};
 
 export const ForgedBlockTurnIntoMenu = ({ block, onTurnIntoClick }: Props) => {
   const { actionDef } = useForgedBlock(
     block.type,
-    'options' in block ? block.options?.action : undefined
-  )
-  const { onClose, onOpen, isOpen } = useDisclosure()
-  const debounceSubMenuClose = useDebouncedCallback(onClose, 200)
+    "options" in block ? block.options?.action : undefined,
+  );
+  const { onClose, onOpen, isOpen } = useDisclosure();
+  const debounceSubMenuClose = useDebouncedCallback(onClose, 200);
 
   const handleMouseEnter = () => {
-    debounceSubMenuClose.cancel()
-    onOpen()
-  }
+    debounceSubMenuClose.cancel();
+    onOpen();
+  };
 
   if (
     !actionDef ||
     !actionDef?.turnableInto ||
     actionDef?.turnableInto.length === 0
   )
-    return null
+    return null;
   return (
     <Menu isOpen={isOpen} placement="right" offset={[0, 0]} onClose={onClose}>
       <MenuButton
@@ -65,25 +65,25 @@ export const ForgedBlockTurnIntoMenu = ({ block, onTurnIntoClick }: Props) => {
         {actionDef.turnableInto.map((params) => (
           <TurnIntoMenuItem
             key={params.blockId}
-            blockType={params.blockId as ForgedBlock['type']}
+            blockType={params.blockId as ForgedBlock["type"]}
             onClick={(blockSchema) => onTurnIntoClick(params, blockSchema)}
           />
         ))}
       </MenuList>
     </Menu>
-  )
-}
+  );
+};
 
 const TurnIntoMenuItem = ({
   blockType,
   onClick,
 }: {
-  blockType: ForgedBlock['type']
-  onClick: (blockSchema: ZodObject<any>) => void
+  blockType: ForgedBlock["type"];
+  onClick: (blockSchema: ZodObject<any>) => void;
 }) => {
-  const { blockDef, blockSchema } = useForgedBlock(blockType)
+  const { blockDef, blockSchema } = useForgedBlock(blockType);
 
-  if (!blockDef || !blockSchema) return null
+  if (!blockDef || !blockSchema) return null;
   return (
     <MenuItem
       icon={<ForgedBlockIcon type={blockType} />}
@@ -91,5 +91,5 @@ const TurnIntoMenuItem = ({
     >
       {blockDef.name}
     </MenuItem>
-  )
-}
+  );
+};

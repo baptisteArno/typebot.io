@@ -1,4 +1,4 @@
-import { IconProps, Icon } from '@chakra-ui/react'
+import { Icon, type IconProps } from "@chakra-ui/react";
 
 export const GoogleSheetsLogo = (props: IconProps) => (
   <Icon viewBox="0 0 49 67" {...props}>
@@ -141,4 +141,4 @@ export const GoogleSheetsLogo = (props: IconProps) => (
       </g>
     </g>
   </Icon>
-)
+);

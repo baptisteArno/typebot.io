@@ -1,18 +1,18 @@
-import { OrderedList, ListItem, Code, Stack, Text } from '@chakra-ui/react'
-import { useState } from 'react'
-import { PopupSettings } from '../../../settings/PopupSettings'
-import { JavascriptPopupSnippet } from '../../Javascript/JavascriptPopupSnippet'
-import { TextLink } from '@/components/TextLink'
+import { TextLink } from "@/components/TextLink";
+import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
+import { useState } from "react";
+import { PopupSettings } from "../../../settings/PopupSettings";
+import { JavascriptPopupSnippet } from "../../Javascript/JavascriptPopupSnippet";
 
 export const FramerPopupInstructions = () => {
-  const [inputValue, setInputValue] = useState<number>()
+  const [inputValue, setInputValue] = useState<number>();
 
   return (
     <>
       <OrderedList spacing={4} pl={5}>
         <ListItem>
-          Head over to the <Code>Site Settings</Code> {'>'} <Code>General</Code>{' '}
-          {'>'} <Code>Custom Code</Code> section
+          Head over to the <Code>Site Settings</Code> {">"} <Code>General</Code>{" "}
+          {">"} <Code>Custom Code</Code> section
         </ListItem>
         <ListItem>
           <Stack spacing={4}>
@@ -22,10 +22,10 @@ export const FramerPopupInstructions = () => {
               }
             />
             <Text>
-              Paste this in the{' '}
+              Paste this in the{" "}
               <Code>
-                End of {'<'}body{'>'} tag
-              </Code>{' '}
+                End of {"<"}body{">"} tag
+              </Code>{" "}
               input:
             </Text>
             <JavascriptPopupSnippet autoShowDelay={inputValue} />
@@ -33,15 +33,15 @@ export const FramerPopupInstructions = () => {
         </ListItem>
       </OrderedList>
       <Text fontSize="sm" colorScheme="gray" pl="5">
-        Check out the{' '}
+        Check out the{" "}
         <TextLink
           href="https://www.framer.com/academy/lessons/custom-code"
           isExternal
         >
           Custom Code Framer doc
-        </TextLink>{' '}
+        </TextLink>{" "}
         for more information.
       </Text>
     </>
-  )
-}
+  );
+};

@@ -1,1 +1,1 @@
-export { executeWait } from './utils/executeWait'
+export { executeWait } from "./utils/executeWait";
