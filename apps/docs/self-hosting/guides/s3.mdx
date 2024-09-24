@@ -22,16 +22,14 @@ To function properly, your S3 bucket must have the following configuration:
 - CORS policy:
 
   ```json
-  {
-    "CORSRules": [
+  [
       {
         "AllowedHeaders": ["*"],
         "AllowedMethods": ["PUT", "POST"],
         "AllowedOrigins": ["*"],
         "ExposeHeaders": ["ETag"]
       }
-    ]
-  }
+  ]
   ```
 
 - Access policy (replace `<bucket-name>` with the name of your S3 bucket):
@@ -61,16 +59,14 @@ Some S3 providers like AWS provide a user interface that allows you to directly 
 3. Create a JSON file (e.g., cors-policy.json) that contains the desired CORS policy. Here's an example CORS policy that allows GET requests from all origins (\*):
 
    ```json
-   {
-     "CORSRules": [
+   [
        {
          "AllowedHeaders": ["*"],
          "AllowedMethods": ["PUT", "POST"],
          "AllowedOrigins": ["*"],
          "ExposeHeaders": ["ETag"]
        }
-     ]
-   }
+   ]
    ```
 
 4. Run the following command, replacing `<bucket-name>` with the name of your S3 bucket and `<path-to-policy>` with the file path to your JSON CORS policy file:
