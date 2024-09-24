@@ -7,4 +7,6 @@ export enum LogicBlockType {
   WAIT = 'Wait',
   JUMP = 'Jump',
   AB_TEST = 'AB test',
+  ASSIGN_CHAT = 'Assign Chat',
+  CLOSE_CHAT = 'Close Chat',
 }

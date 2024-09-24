@@ -3,7 +3,9 @@ import { LogicBlock, SessionState } from '@typebot.io/schemas'
 import { ExecuteLogicResponse } from './types'
 import { executeScript } from './blocks/logic/script/executeScript'
 import { executeJumpBlock } from './blocks/logic/jump/executeJumpBlock'
+import { executeCloseChatBlock } from './blocks/logic/closeChat/executeCloseChatBlock'
 import { executeRedirect } from './blocks/logic/redirect/executeRedirect'
+import { executeAssignChat } from './blocks/logic/assignChat/executeAssignChat'
 import { executeConditionBlock } from './blocks/logic/condition/executeConditionBlock'
 import { executeSetVariable } from './blocks/logic/setVariable/executeSetVariable'
 import { executeTypebotLink } from './blocks/logic/typebotLink/executeTypebotLink'
@@ -28,6 +30,10 @@ export const executeLogic =
         return executeWait(state, block)
       case LogicBlockType.JUMP:
         return executeJumpBlock(state, block.options)
+      case LogicBlockType.ASSIGN_CHAT:
+        return executeAssignChat(state, block)
+      case LogicBlockType.CLOSE_CHAT:
+        return executeCloseChatBlock(state, block)
       case LogicBlockType.AB_TEST:
         return executeAbTest(state, block)
     }

@@ -1,5 +1,6 @@
 import { z } from '../../zod'
 import {
+  assignChatBlockSchema,
   buttonsInputSchemas,
   dateInputSchema,
   emailInputSchema,
@@ -28,6 +29,7 @@ import { typebotV5Schema, typebotV6Schema } from '../typebot/typebot'
 import { BubbleBlockType } from '../blocks/bubbles/constants'
 import { clientSideActionSchema } from './clientSideAction'
 import { ChatSession as ChatSessionFromPrisma } from '@typebot.io/prisma'
+import { closeChatBlockSchema } from '../blocks/logic/closeChat'
 
 export const messageSchema = z.preprocess(
   (val) => (typeof val === 'string' ? { type: 'text', text: val } : val),
@@ -339,11 +341,15 @@ const chatResponseBaseSchema = z.object({
         ratingInputBlockSchema,
         fileInputBlockSchemas.v6,
         pictureChoiceBlockSchemas.v6,
+        assignChatBlockSchema,
+        closeChatBlockSchema,
       ]),
       z.discriminatedUnion('type', [
         buttonsInputSchemas.v5,
         fileInputBlockSchemas.v5,
         pictureChoiceBlockSchemas.v5,
+        assignChatBlockSchema,
+        closeChatBlockSchema,
       ]),
     ])
     .and(
