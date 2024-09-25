@@ -109,7 +109,7 @@ export const DropdownList = <T extends Item>({
             <Stack maxH={"35vh"} overflowY="auto" spacing="0">
               {items.map((item) => (
                 <MenuItem
-                  key={item as unknown as string}
+                  key={getItemValue(item)}
                   maxW="500px"
                   overflow="hidden"
                   whiteSpace="nowrap"
@@ -131,5 +131,10 @@ export const DropdownList = <T extends Item>({
 const getItemLabel = (item?: Item) => {
   if (!item) return "";
   if (typeof item === "object") return item.label;
+  return item;
+};
+
+const getItemValue = (item: Item) => {
+  if (typeof item === "object") return item.value;
   return item;
 };
