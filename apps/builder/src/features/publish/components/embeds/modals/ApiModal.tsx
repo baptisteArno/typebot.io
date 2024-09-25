@@ -1,24 +1,24 @@
-import { AlertInfo } from '@/components/AlertInfo'
-import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { TextLink } from '@/components/TextLink'
+import { AlertInfo } from "@/components/AlertInfo";
+import { TextLink } from "@/components/TextLink";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  Heading,
-  ModalCloseButton,
-  ModalBody,
-  OrderedList,
-  ListItem,
   Code,
+  Heading,
+  ListItem,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
   ModalFooter,
-  Text,
+  ModalHeader,
+  ModalOverlay,
+  OrderedList,
   Stack,
-} from '@chakra-ui/react'
-import { ModalProps } from '../EmbedButton'
-import { parseApiHost } from '../snippetParsers/shared'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+  Text,
+} from "@chakra-ui/react";
+import type { ModalProps } from "../EmbedButton";
+import { parseApiHost } from "../snippetParsers/shared";
 
 export const ApiModal = ({
   isPublished,
@@ -26,11 +26,11 @@ export const ApiModal = ({
   isOpen,
   onClose,
 }: ModalProps): JSX.Element => {
-  const { typebot } = useTypebot()
+  const { typebot } = useTypebot();
 
   const replyBody = `{
   "message": "This is my reply"
-}`
+}`;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
@@ -52,9 +52,9 @@ export const ApiModal = ({
                 </Text>
                 <CodeEditor
                   isReadOnly
-                  lang={'shell'}
+                  lang={"shell"}
                   value={`${parseApiHost(
-                    typebot?.customDomain
+                    typebot?.customDomain,
                   )}/api/v1/typebots/${publicId}/startChat`}
                 />
               </Stack>
@@ -70,33 +70,33 @@ export const ApiModal = ({
                 </Text>
                 <CodeEditor
                   isReadOnly
-                  lang={'shell'}
+                  lang={"shell"}
                   value={`${parseApiHost(
-                    typebot?.customDomain
+                    typebot?.customDomain,
                   )}/api/v1/sessions/<ID_FROM_FIRST_RESPONSE>/continueChat`}
                 />
                 <Text>With the following JSON body:</Text>
-                <CodeEditor isReadOnly lang={'json'} value={replyBody} />
+                <CodeEditor isReadOnly lang={"json"} value={replyBody} />
                 <Text>
-                  Replace <Code>{'<ID_FROM_FIRST_RESPONSE>'}</Code> with{' '}
+                  Replace <Code>{"<ID_FROM_FIRST_RESPONSE>"}</Code> with{" "}
                   <Code>sessionId</Code>.
                 </Text>
               </Stack>
             </ListItem>
           </OrderedList>
           <Text fontSize="sm" colorScheme="gray">
-            Check out the{' '}
+            Check out the{" "}
             <TextLink
               href="https://docs.typebot.io/api-reference/chat/start-chat"
               isExternal
             >
               API reference
-            </TextLink>{' '}
+            </TextLink>{" "}
             for more information
           </Text>
         </ModalBody>
         <ModalFooter />
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};

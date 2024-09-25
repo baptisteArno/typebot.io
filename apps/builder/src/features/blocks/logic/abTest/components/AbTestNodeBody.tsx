@@ -1,17 +1,17 @@
-import React from 'react'
-import { Flex, Stack, useColorModeValue, Text, Tag } from '@chakra-ui/react'
-import { AbTestBlock } from '@typebot.io/schemas'
-import { BlockSourceEndpoint } from '@/features/graph/components/endpoints/BlockSourceEndpoint'
-import { defaultAbTestOptions } from '@typebot.io/schemas/features/blocks/logic/abTest/constants'
+import { BlockSourceEndpoint } from "@/features/graph/components/endpoints/BlockSourceEndpoint";
+import { Flex, Stack, Tag, Text, useColorModeValue } from "@chakra-ui/react";
+import { defaultAbTestOptions } from "@typebot.io/blocks-logic/abTest/constants";
+import type { AbTestBlock } from "@typebot.io/blocks-logic/abTest/schema";
+import React from "react";
 
 type Props = {
-  block: AbTestBlock
-  groupId: string
-}
+  block: AbTestBlock;
+  groupId: string;
+};
 
 export const AbTestNodeBody = ({ block, groupId }: Props) => {
-  const borderColor = useColorModeValue('gray.200', 'gray.700')
-  const bg = useColorModeValue('white', undefined)
+  const borderColor = useColorModeValue("gray.200", "gray.700");
+  const bg = useColorModeValue("white", undefined);
 
   return (
     <Stack spacing={2} w="full">
@@ -21,12 +21,12 @@ export const AbTestNodeBody = ({ block, groupId }: Props) => {
         shadow="sm"
         rounded="md"
         bg={bg}
-        borderWidth={'1px'}
+        borderWidth={"1px"}
         borderColor={borderColor}
         w="full"
       >
         <Text p="3">
-          A{' '}
+          A{" "}
           <Tag>{block.options?.aPercent ?? defaultAbTestOptions.aPercent}%</Tag>
         </Text>
         <BlockSourceEndpoint
@@ -46,12 +46,12 @@ export const AbTestNodeBody = ({ block, groupId }: Props) => {
         shadow="sm"
         rounded="md"
         bg={bg}
-        borderWidth={'1px'}
+        borderWidth={"1px"}
         borderColor={borderColor}
         w="full"
       >
         <Text p="3">
-          B{' '}
+          B{" "}
           <Tag>
             {100 - (block.options?.aPercent ?? defaultAbTestOptions.aPercent)}%
           </Tag>
@@ -68,5 +68,5 @@ export const AbTestNodeBody = ({ block, groupId }: Props) => {
         />
       </Flex>
     </Stack>
-  )
-}
+  );
+};

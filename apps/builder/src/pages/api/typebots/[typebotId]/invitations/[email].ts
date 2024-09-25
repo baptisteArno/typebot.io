@@ -1,37 +1,37 @@
-import { Invitation } from '@typebot.io/prisma'
-import prisma from '@typebot.io/lib/prisma'
-import { NextApiRequest, NextApiResponse } from 'next'
-import { canEditGuests } from '@/helpers/databaseRules'
-import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
-import { methodNotAllowed, notAuthenticated } from '@typebot.io/lib/api'
+import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
+import { canEditGuests } from "@/helpers/databaseRules";
+import { methodNotAllowed, notAuthenticated } from "@typebot.io/lib/api/utils";
+import prisma from "@typebot.io/prisma";
+import type { Prisma } from "@typebot.io/prisma/types";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req, res)
-  if (!user) return notAuthenticated(res)
-  const typebotId = req.query.typebotId as string
-  const email = req.query.email as string
-  if (req.method === 'PATCH') {
-    const data = req.body as Invitation
+  const user = await getAuthenticatedUser(req, res);
+  if (!user) return notAuthenticated(res);
+  const typebotId = req.query.typebotId as string;
+  const email = req.query.email as string;
+  if (req.method === "PATCH") {
+    const data = req.body as Prisma.Invitation;
     await prisma.invitation.updateMany({
       where: { email, typebot: canEditGuests(user, typebotId) },
       data: { type: data.type },
-    })
+    });
     return res.send({
-      message: 'success',
-    })
+      message: "success",
+    });
   }
-  if (req.method === 'DELETE') {
+  if (req.method === "DELETE") {
     await prisma.invitation.deleteMany({
       where: {
         email,
         typebot: canEditGuests(user, typebotId),
       },
-    })
+    });
     return res.send({
-      message: 'success',
-    })
+      message: "success",
+    });
   }
-  methodNotAllowed(res)
-}
+  methodNotAllowed(res);
+};
 
-export default handler
+export default handler;

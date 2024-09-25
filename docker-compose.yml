@@ -5,19 +5,24 @@ volumes:
 
 services:
   typebot-db:
-    image: postgres:14-alpine
+    image: postgres:16
     restart: always
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=typebot
       - POSTGRES_PASSWORD=typebot
-
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U postgres"]
+        interval: 5s
+        timeout: 5s
+        retries: 5
   typebot-builder:
     image: baptistearno/typebot-builder:latest
     restart: always
     depends_on:
-      - typebot-db
+      typebot-db:
+        condition: service_healthy
     ports:
       - '8080:3000'
     extra_hosts:
@@ -26,6 +31,9 @@ services:
 
   typebot-viewer:
     image: baptistearno/typebot-viewer:latest
+    depends_on:
+      typebot-db:
+        condition: service_healthy
     restart: always
     ports:
       - '8081:3000'

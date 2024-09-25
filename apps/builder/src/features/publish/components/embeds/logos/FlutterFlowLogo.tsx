@@ -1,4 +1,4 @@
-import { Icon, IconProps } from '@chakra-ui/react'
+import { Icon, type IconProps } from "@chakra-ui/react";
 
 export const FlutterFlowLogo = (props: IconProps) => (
   <Icon
@@ -16,4 +16,4 @@ export const FlutterFlowLogo = (props: IconProps) => (
       fill="#4B39EF"
     />
   </Icon>
-)
+);

@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import {
   Alert,
   AlertIcon,
@@ -13,122 +12,123 @@ import {
   Stack,
   Text,
   useColorModeValue,
-} from '@chakra-ui/react'
-import { isDefined } from '@typebot.io/lib'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { createApi } from 'unsplash-js'
-import { Basic as UnsplashImageType } from 'unsplash-js/dist/methods/photos/types'
-import { TextInput } from '../inputs'
-import { UnsplashLogo } from '../logos/UnsplashLogo'
-import { TextLink } from '../TextLink'
-import { env } from '@typebot.io/env'
+} from "@chakra-ui/react";
+import { env } from "@typebot.io/env";
+import { isDefined } from "@typebot.io/lib/utils";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createApi } from "unsplash-js";
+import type { Basic as UnsplashPhoto } from "unsplash-js/dist/methods/photos/types";
+import { TextLink } from "../TextLink";
+import { TextInput } from "../inputs";
+import { UnsplashLogo } from "../logos/UnsplashLogo";
 
+/* eslint-disable @next/next/no-img-element */
 const api = createApi({
-  accessKey: env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY ?? '',
-})
+  accessKey: env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY ?? "",
+});
 
 type Props = {
-  imageSize: 'regular' | 'small' | 'thumb'
-  onImageSelect: (imageUrl: string) => void
-}
+  imageSize: "regular" | "small" | "thumb";
+  onImageSelect: (imageUrl: string) => void;
+};
 
 export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
-  const unsplashLogoFillColor = useColorModeValue('black', 'white')
-  const [isFetching, setIsFetching] = useState(false)
-  const [images, setImages] = useState<UnsplashImageType[]>([])
-  const [error, setError] = useState<string | null>(null)
-  const [searchQuery, setSearchQuery] = useState('')
-  const scrollContainer = useRef<HTMLDivElement>(null)
-  const bottomAnchor = useRef<HTMLDivElement>(null)
+  const unsplashLogoFillColor = useColorModeValue("black", "white");
+  const [isFetching, setIsFetching] = useState(false);
+  const [images, setImages] = useState<UnsplashPhoto[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const scrollContainer = useRef<HTMLDivElement>(null);
+  const bottomAnchor = useRef<HTMLDivElement>(null);
 
-  const [nextPage, setNextPage] = useState(0)
+  const [nextPage, setNextPage] = useState(0);
 
   const fetchNewImages = useCallback(async (query: string, page: number) => {
-    if (query === '') return searchRandomImages()
-    if (query.length <= 2) return
-    setError(null)
-    setIsFetching(true)
+    if (query === "") return searchRandomImages();
+    if (query.length <= 2) return;
+    setError(null);
+    setIsFetching(true);
     try {
       const result = await api.search.getPhotos({
         query,
         perPage: 30,
-        orientation: 'landscape',
+        orientation: "landscape",
         page,
-      })
-      if (result.errors) setError(result.errors[0])
+      });
+      if (result.errors) setError(result.errors[0]);
       if (isDefined(result.response)) {
-        if (page === 0) setImages(result.response.results)
+        if (page === 0) setImages(result.response.results);
         else
           setImages((images) => [
             ...images,
             ...(result.response?.results ?? []),
-          ])
-        setNextPage((page) => page + 1)
+          ]);
+        setNextPage((page) => page + 1);
       }
     } catch (err) {
-      if (err && typeof err === 'object' && 'message' in err)
-        setError(err.message as string)
-      setError('Something went wrong')
+      if (err && typeof err === "object" && "message" in err)
+        setError(err.message as string);
+      setError("Something went wrong");
     }
-    setIsFetching(false)
-  }, [])
+    setIsFetching(false);
+  }, []);
 
   useEffect(() => {
-    if (!bottomAnchor.current) return
+    if (!bottomAnchor.current) return;
     const observer = new IntersectionObserver(
       (entities: IntersectionObserverEntry[]) => {
-        const target = entities[0]
-        if (target.isIntersecting) fetchNewImages(searchQuery, nextPage + 1)
+        const target = entities[0];
+        if (target.isIntersecting) fetchNewImages(searchQuery, nextPage + 1);
       },
       {
         root: scrollContainer.current,
-      }
-    )
+      },
+    );
     if (bottomAnchor.current && nextPage > 0)
-      observer.observe(bottomAnchor.current)
+      observer.observe(bottomAnchor.current);
     return () => {
-      observer.disconnect()
-    }
-  }, [fetchNewImages, nextPage, searchQuery])
+      observer.disconnect();
+    };
+  }, [fetchNewImages, nextPage, searchQuery]);
 
   const searchRandomImages = async () => {
-    setError(null)
-    setIsFetching(true)
+    setError(null);
+    setIsFetching(true);
     try {
       const result = await api.photos.getRandom({
         count: 30,
-        orientation: 'landscape',
-      })
+        orientation: "landscape",
+      });
 
-      if (result.errors) setError(result.errors[0])
+      if (result.errors) setError(result.errors[0]);
       if (isDefined(result.response))
         setImages(
-          Array.isArray(result.response) ? result.response : [result.response]
-        )
+          Array.isArray(result.response) ? result.response : [result.response],
+        );
     } catch (err) {
-      if (err && typeof err === 'object' && 'message' in err)
-        setError(err.message as string)
-      setError('Something went wrong')
+      if (err && typeof err === "object" && "message" in err)
+        setError(err.message as string);
+      setError("Something went wrong");
     }
-    setIsFetching(false)
-  }
+    setIsFetching(false);
+  };
 
-  const selectImage = (image: UnsplashImageType) => {
-    const url = image.urls[imageSize]
+  const selectImage = (image: UnsplashPhoto) => {
+    const url = image.urls[imageSize];
     api.photos.trackDownload({
       downloadLocation: image.links.download_location,
-    })
-    if (isDefined(url)) onImageSelect(url)
-  }
+    });
+    if (isDefined(url)) onImageSelect(url);
+  };
 
   useEffect(() => {
-    searchRandomImages()
-  }, [])
+    searchRandomImages();
+  }, []);
 
   if (!env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY)
     return (
       <Text>NEXT_PUBLIC_UNSPLASH_ACCESS_KEY is missing in environment</Text>
-    )
+    );
 
   return (
     <Stack spacing={4} pt="2">
@@ -137,8 +137,8 @@ export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
           autoFocus
           placeholder="Search..."
           onChange={(query) => {
-            setSearchQuery(query)
-            fetchNewImages(query, 0)
+            setSearchQuery(query);
+            fetchNewImages(query, 0);
           }}
           withVariableButton={false}
           debounceTimeout={500}
@@ -183,18 +183,18 @@ export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
         )}
       </Stack>
     </Stack>
-  )
-}
+  );
+};
 
 type UnsplashImageProps = {
-  image: UnsplashImageType
-  onClick: () => void
-}
+  image: UnsplashPhoto;
+  onClick: () => void;
+};
 
 const UnsplashImage = ({ image, onClick }: UnsplashImageProps) => {
-  const [isImageHovered, setIsImageHovered] = useState(false)
+  const [isImageHovered, setIsImageHovered] = useState(false);
 
-  const { user, urls, alt_description } = image
+  const { user, urls, alt_description } = image;
 
   return (
     <Box
@@ -206,7 +206,7 @@ const UnsplashImage = ({ image, onClick }: UnsplashImageProps) => {
       <Image
         objectFit="cover"
         src={urls.thumb}
-        alt={alt_description ?? 'Unsplash image'}
+        alt={alt_description ?? "Unsplash image"}
         onClick={onClick}
         rounded="md"
         h="100%"
@@ -233,5 +233,5 @@ const UnsplashImage = ({ image, onClick }: UnsplashImageProps) => {
         </TextLink>
       </Box>
     </Box>
-  )
-}
+  );
+};

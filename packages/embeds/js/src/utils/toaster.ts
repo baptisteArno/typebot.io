@@ -1,6 +1,6 @@
-import { createToaster } from '@ark-ui/solid'
+import { createToaster } from "@ark-ui/solid";
 
 export const toaster = createToaster({
-  placement: 'bottom-end',
+  placement: "bottom-end",
   gap: 24,
-})
+});

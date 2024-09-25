@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
-import { Row as RowProps } from '@tanstack/react-table'
-import Cell from './Cell'
-import { TableData } from '@typebot.io/schemas'
+import type { Row as RowProps } from "@tanstack/react-table";
+import type { TableData } from "@typebot.io/results/schemas/results";
+import type React from "react";
+import { useState } from "react";
+import Cell from "./Cell";
 
 type Props = {
-  row: RowProps<TableData>
-  isSelected: boolean
-  bottomElement?: React.MutableRefObject<HTMLDivElement | null>
-  onExpandButtonClick: () => void
-}
+  row: RowProps<TableData>;
+  isSelected: boolean;
+  bottomElement?: React.MutableRefObject<HTMLDivElement | null>;
+  onExpandButtonClick: () => void;
+};
 
 export const Row = ({
   row,
@@ -16,17 +17,17 @@ export const Row = ({
   onExpandButtonClick,
   isSelected,
 }: Props) => {
-  const [isExpandButtonVisible, setIsExpandButtonVisible] = useState(false)
+  const [isExpandButtonVisible, setIsExpandButtonVisible] = useState(false);
 
-  const showExpandButton = () => setIsExpandButtonVisible(true)
-  const hideExpandButton = () => setIsExpandButtonVisible(false)
+  const showExpandButton = () => setIsExpandButtonVisible(true);
+  const hideExpandButton = () => setIsExpandButtonVisible(false);
   return (
     <tr
       key={row.id}
       data-rowid={row.id}
       ref={(ref) => {
         if (bottomElement && bottomElement.current?.dataset.rowid !== row.id)
-          bottomElement.current = ref
+          bottomElement.current = ref;
       }}
       onMouseEnter={showExpandButton}
       onClick={showExpandButton}
@@ -45,5 +46,5 @@ export const Row = ({
         />
       ))}
     </tr>
-  )
-}
+  );
+};

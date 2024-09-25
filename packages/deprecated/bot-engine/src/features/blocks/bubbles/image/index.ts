@@ -1,1 +1,1 @@
-export { ImageBubble } from './components/ImageBubble'
+export { ImageBubble } from "./components/ImageBubble";

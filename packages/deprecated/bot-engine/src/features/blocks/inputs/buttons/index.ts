@@ -1,1 +1,1 @@
-export { ChoiceForm } from './components/ChoiceForm'
+export { ChoiceForm } from "./components/ChoiceForm";

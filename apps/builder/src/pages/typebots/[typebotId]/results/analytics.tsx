@@ -1,21 +1,21 @@
-import { GetServerSidePropsContext } from 'next'
-import ResultsPage from '../results'
-import { env } from '@typebot.io/env'
-import { trackAnalyticsPageView } from '@/features/telemetry/helpers/trackAnalyticsPageView'
+import { trackAnalyticsPageView } from "@/features/telemetry/helpers/trackAnalyticsPageView";
+import { env } from "@typebot.io/env";
+import type { GetServerSidePropsContext } from "next";
+import ResultsPage from "../results";
 
-const AnalyticsPage = ResultsPage
+const AnalyticsPage = ResultsPage;
 
 export const getServerSideProps = async (
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
 ) => {
   if (!env.NEXT_PUBLIC_POSTHOG_KEY || env.NEXT_PUBLIC_E2E_TEST)
     return {
       props: {},
-    }
-  await trackAnalyticsPageView(context)
+    };
+  await trackAnalyticsPageView(context);
   return {
     props: {},
-  }
-}
+  };
+};
 
-export default AnalyticsPage
+export default AnalyticsPage;

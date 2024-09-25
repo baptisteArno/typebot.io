@@ -1,6 +1,7 @@
-import React from 'react'
-import { TextInput, Textarea } from '@/components/inputs'
-import { PictureChoiceItem } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice'
+import { ImageUploadContent } from "@/components/ImageUploadContent";
+import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
+import { TextInput, Textarea } from "@/components/inputs";
+import { ConditionForm } from "@/features/blocks/logic/condition/components/ConditionForm";
 import {
   Button,
   HStack,
@@ -9,21 +10,20 @@ import {
   PopoverTrigger,
   Stack,
   Text,
-} from '@chakra-ui/react'
-import { ImageUploadContent } from '@/components/ImageUploadContent'
-import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
-import { ConditionForm } from '@/features/blocks/logic/condition/components/ConditionForm'
-import { Condition } from '@typebot.io/schemas'
-import { LogicalOperator } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
-import { useTranslate } from '@tolgee/react'
+} from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import type { PictureChoiceItem } from "@typebot.io/blocks-inputs/pictureChoice/schema";
+import { LogicalOperator } from "@typebot.io/conditions/constants";
+import type { Condition } from "@typebot.io/conditions/schemas";
+import React from "react";
 
 type Props = {
-  workspaceId: string
-  typebotId: string
-  blockId: string
-  item: PictureChoiceItem
-  onItemChange: (updates: Partial<PictureChoiceItem>) => void
-}
+  workspaceId: string;
+  typebotId: string;
+  blockId: string;
+  item: PictureChoiceItem;
+  onItemChange: (updates: Partial<PictureChoiceItem>) => void;
+};
 
 export const PictureChoiceItemSettings = ({
   workspaceId,
@@ -32,16 +32,16 @@ export const PictureChoiceItemSettings = ({
   item,
   onItemChange,
 }: Props) => {
-  const { t } = useTranslate()
+  const { t } = useTranslate();
 
-  const updateTitle = (title: string) => onItemChange({ ...item, title })
+  const updateTitle = (title: string) => onItemChange({ ...item, title });
 
   const updateImage = (pictureSrc: string) => {
-    onItemChange({ ...item, pictureSrc })
-  }
+    onItemChange({ ...item, pictureSrc });
+  };
 
   const updateDescription = (description: string) =>
-    onItemChange({ ...item, description })
+    onItemChange({ ...item, description });
 
   const updateIsDisplayConditionEnabled = (isEnabled: boolean) =>
     onItemChange({
@@ -50,7 +50,7 @@ export const PictureChoiceItemSettings = ({
         ...item.displayCondition,
         isEnabled,
       },
-    })
+    });
 
   const updateDisplayCondition = (condition: Condition) =>
     onItemChange({
@@ -59,13 +59,13 @@ export const PictureChoiceItemSettings = ({
         ...item.displayCondition,
         condition,
       },
-    })
+    });
 
   return (
     <Stack spacing={4}>
       <HStack>
         <Text fontWeight="medium">
-          {t('blocks.inputs.picture.itemSettings.image.label')}
+          {t("blocks.inputs.picture.itemSettings.image.label")}
         </Text>
         <Popover isLazy>
           {({ onClose }) => (
@@ -73,8 +73,8 @@ export const PictureChoiceItemSettings = ({
               <PopoverTrigger>
                 <Button size="sm">
                   {item.pictureSrc
-                    ? t('blocks.inputs.picture.itemSettings.image.change.label')
-                    : t('blocks.inputs.picture.itemSettings.image.pick.label')}
+                    ? t("blocks.inputs.picture.itemSettings.image.change.label")
+                    : t("blocks.inputs.picture.itemSettings.image.pick.label")}
                 </Button>
               </PopoverTrigger>
               <PopoverContent p="4" w="500px">
@@ -87,10 +87,10 @@ export const PictureChoiceItemSettings = ({
                   }}
                   defaultUrl={item.pictureSrc}
                   onSubmit={(url) => {
-                    updateImage(url)
-                    onClose()
+                    updateImage(url);
+                    onClose();
                   }}
-                  excludedTabs={['emoji']}
+                  excludedTabs={["emoji"]}
                 />
               </PopoverContent>
             </>
@@ -98,17 +98,17 @@ export const PictureChoiceItemSettings = ({
         </Popover>
       </HStack>
       <TextInput
-        label={t('blocks.inputs.picture.itemSettings.title.label')}
+        label={t("blocks.inputs.picture.itemSettings.title.label")}
         defaultValue={item.title}
         onChange={updateTitle}
       />
       <Textarea
-        label={t('blocks.inputs.settings.description.label')}
+        label={t("blocks.inputs.settings.description.label")}
         defaultValue={item.description}
         onChange={updateDescription}
       />
       <SwitchWithRelatedSettings
-        label={t('blocks.inputs.settings.displayCondition.label')}
+        label={t("blocks.inputs.settings.displayCondition.label")}
         initialValue={item.displayCondition?.isEnabled ?? false}
         onCheckChange={updateIsDisplayConditionEnabled}
       >
@@ -123,5 +123,5 @@ export const PictureChoiceItemSettings = ({
         />
       </SwitchWithRelatedSettings>
     </Stack>
-  )
-}
+  );
+};

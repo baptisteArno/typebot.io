@@ -1,40 +1,40 @@
-import { SlideFade, Stack, useColorModeValue } from '@chakra-ui/react'
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
-import { EventNodeContextMenu } from './EventNodeContextMenu'
-import { useDebounce } from 'use-debounce'
-import { ContextMenu } from '@/components/ContextMenu'
-import { useDrag } from '@use-gesture/react'
-import { EventFocusToolbar } from './EventFocusToolbar'
-import { useOutsideClick } from '@/hooks/useOutsideClick'
+import { ContextMenu } from "@/components/ContextMenu";
 import {
   RightPanel,
   useEditor,
-} from '@/features/editor/providers/EditorProvider'
-import { useGraph } from '@/features/graph/providers/GraphProvider'
-import { useEventsCoordinates } from '@/features/graph/providers/EventsCoordinateProvider'
-import { setMultipleRefs } from '@/helpers/setMultipleRefs'
-import { Coordinates } from '@/features/graph/types'
-import { TEvent } from '@typebot.io/schemas'
-import { EventNodeContent } from './EventNodeContent'
-import { EventSourceEndpoint } from '../../endpoints/EventSourceEndpoint'
-import { eventWidth } from '@/features/graph/constants'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { useGroupsStore } from '@/features/graph/hooks/useGroupsStore'
+} from "@/features/editor/providers/EditorProvider";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { eventWidth } from "@/features/graph/constants";
+import { useGroupsStore } from "@/features/graph/hooks/useGroupsStore";
+import { useEventsCoordinates } from "@/features/graph/providers/EventsCoordinateProvider";
+import { useGraph } from "@/features/graph/providers/GraphProvider";
+import type { Coordinates } from "@/features/graph/types";
+import { setMultipleRefs } from "@/helpers/setMultipleRefs";
+import { useOutsideClick } from "@/hooks/useOutsideClick";
+import { SlideFade, Stack, useColorModeValue } from "@chakra-ui/react";
+import type { TEvent } from "@typebot.io/typebot/schemas/types";
+import { useDrag } from "@use-gesture/react";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
+import { useDebounce } from "use-debounce";
+import { EventSourceEndpoint } from "../../endpoints/EventSourceEndpoint";
+import { EventFocusToolbar } from "./EventFocusToolbar";
+import { EventNodeContent } from "./EventNodeContent";
+import { EventNodeContextMenu } from "./EventNodeContextMenu";
 
 type Props = {
-  event: TEvent
-  eventIndex: number
-}
+  event: TEvent;
+  eventIndex: number;
+};
 
 export const EventNode = ({ event, eventIndex }: Props) => {
-  const { updateEventCoordinates } = useEventsCoordinates()
+  const { updateEventCoordinates } = useEventsCoordinates();
 
   const handleEventDrag = useCallback(
     (newCoord: Coordinates) => {
-      updateEventCoordinates(event.id, newCoord)
+      updateEventCoordinates(event.id, newCoord);
     },
-    [event.id, updateEventCoordinates]
-  )
+    [event.id, updateEventCoordinates],
+  );
 
   return (
     <DraggableEventNode
@@ -42,8 +42,8 @@ export const EventNode = ({ event, eventIndex }: Props) => {
       eventIndex={eventIndex}
       onEventDrag={handleEventDrag}
     />
-  )
-}
+  );
+};
 
 const NonMemoizedDraggableEventNode = ({
   event,
@@ -51,82 +51,82 @@ const NonMemoizedDraggableEventNode = ({
   eventIndex,
   onEventDrag,
 }: Props & { onEventDrag: (newCoord: Coordinates) => void }) => {
-  const elementBgColor = useColorModeValue('white', 'gray.900')
-  const previewingBorderColor = useColorModeValue('blue.400', 'blue.300')
-  const { previewingEdge, isReadOnly, graphPosition } = useGraph()
-  const { updateEvent } = useTypebot()
-  const { setRightPanel, setStartPreviewAtEvent } = useEditor()
+  const elementBgColor = useColorModeValue("white", "gray.900");
+  const previewingBorderColor = useColorModeValue("blue.400", "blue.300");
+  const { previewingEdge, isReadOnly, graphPosition } = useGraph();
+  const { updateEvent } = useTypebot();
+  const { setRightPanel, setStartPreviewAtEvent } = useEditor();
 
-  const [isMouseDown, setIsMouseDown] = useState(false)
+  const [isMouseDown, setIsMouseDown] = useState(false);
   const [currentCoordinates, setCurrentCoordinates] = useState(
-    event.graphCoordinates
-  )
+    event.graphCoordinates,
+  );
 
   const isPreviewing = previewingEdge
-    ? 'eventId' in previewingEdge.from
+    ? "eventId" in previewingEdge.from
       ? previewingEdge.from.eventId === event.id
       : false
-    : false
+    : false;
 
-  const eventRef = useRef<HTMLDivElement | null>(null)
-  const [debouncedEventPosition] = useDebounce(currentCoordinates, 100)
-  const [isFocused, setIsFocused] = useState(false)
-  const isDraggingGraph = useGroupsStore((state) => state.isDraggingGraph)
+  const eventRef = useRef<HTMLDivElement | null>(null);
+  const [debouncedEventPosition] = useDebounce(currentCoordinates, 100);
+  const [isFocused, setIsFocused] = useState(false);
+  const isDraggingGraph = useGroupsStore((state) => state.isDraggingGraph);
 
   useOutsideClick({
     handler: () => setIsFocused(false),
     ref: eventRef,
     capture: true,
     isEnabled: isFocused,
-  })
+  });
 
   // When the event is moved from external action (e.g. undo/redo), update the current coordinates
   useEffect(() => {
     setCurrentCoordinates({
       x: event.graphCoordinates.x,
       y: event.graphCoordinates.y,
-    })
-  }, [event.graphCoordinates.x, event.graphCoordinates.y])
+    });
+  }, [event.graphCoordinates.x, event.graphCoordinates.y]);
 
   useEffect(() => {
-    if (!currentCoordinates || isReadOnly) return
+    if (!currentCoordinates || isReadOnly) return;
     if (
       currentCoordinates?.x === event.graphCoordinates.x &&
       currentCoordinates.y === event.graphCoordinates.y
     )
-      return
-    updateEvent(eventIndex, { graphCoordinates: currentCoordinates })
+      return;
+    updateEvent(eventIndex, { graphCoordinates: currentCoordinates });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedEventPosition])
+  }, [debouncedEventPosition]);
 
   const startPreviewAtThisEvent = () => {
-    setStartPreviewAtEvent(event.id)
-    setRightPanel(RightPanel.PREVIEW)
-  }
+    setStartPreviewAtEvent(event.id);
+    setRightPanel(RightPanel.PREVIEW);
+  };
 
   useDrag(
     ({ first, last, offset: [offsetX, offsetY], event, target }) => {
-      event.stopPropagation()
+      event.stopPropagation();
       if (
         (target as HTMLElement)
-          .closest('.prevent-event-drag')
-          ?.classList.contains('prevent-event-drag')
+          .closest(".prevent-event-drag")
+          ?.classList.contains("prevent-event-drag")
       )
-        return
+        return;
 
       if (first) {
-        setIsFocused(true)
-        setIsMouseDown(true)
+        setIsFocused(true);
+        setIsMouseDown(true);
       }
       if (last) {
-        setIsMouseDown(false)
+        setIsMouseDown(false);
       }
       const newCoord = {
         x: Number((offsetX / graphPosition.scale).toFixed(2)),
         y: Number((offsetY / graphPosition.scale).toFixed(2)),
-      }
-      setCurrentCoordinates(newCoord)
-      onEventDrag(newCoord)
+      };
+      setCurrentCoordinates(newCoord);
+      onEventDrag(newCoord);
     },
     {
       target: eventRef,
@@ -135,13 +135,13 @@ const NonMemoizedDraggableEventNode = ({
         currentCoordinates.x * graphPosition.scale,
         currentCoordinates.y * graphPosition.scale,
       ],
-    }
-  )
+    },
+  );
 
   return (
     <ContextMenu<HTMLDivElement>
       renderMenu={() => <EventNodeContextMenu />}
-      isDisabled={isReadOnly || event.type === 'start'}
+      isDisabled={isReadOnly || event.type === "start"}
     >
       {(ref, isContextMenuOpened) => (
         <Stack
@@ -168,13 +168,13 @@ const NonMemoizedDraggableEventNode = ({
             transform: `translate(${currentCoordinates?.x ?? 0}px, ${
               currentCoordinates?.y ?? 0
             }px)`,
-            touchAction: 'none',
+            touchAction: "none",
           }}
-          cursor={isMouseDown ? 'grabbing' : 'pointer'}
+          cursor={isMouseDown ? "grabbing" : "pointer"}
           shadow="md"
-          _hover={{ shadow: 'lg' }}
+          _hover={{ shadow: "lg" }}
           zIndex={isFocused ? 10 : 1}
-          pointerEvents={isDraggingGraph ? 'none' : 'auto'}
+          pointerEvents={isDraggingGraph ? "none" : "auto"}
         >
           <EventNodeContent event={event} />
           <EventSourceEndpoint
@@ -190,8 +190,8 @@ const NonMemoizedDraggableEventNode = ({
             <SlideFade
               in={isFocused}
               style={{
-                position: 'absolute',
-                top: '-45px',
+                position: "absolute",
+                top: "-45px",
                 right: 0,
               }}
               unmountOnExit
@@ -199,14 +199,14 @@ const NonMemoizedDraggableEventNode = ({
               <EventFocusToolbar
                 eventId={event.id}
                 onPlayClick={startPreviewAtThisEvent}
-                onDeleteClick={event.type !== 'start' ? () => {} : undefined}
+                onDeleteClick={event.type !== "start" ? () => {} : undefined}
               />
             </SlideFade>
           )}
         </Stack>
       )}
     </ContextMenu>
-  )
-}
+  );
+};
 
-export const DraggableEventNode = memo(NonMemoizedDraggableEventNode)
+export const DraggableEventNode = memo(NonMemoizedDraggableEventNode);

@@ -1,1 +1,1 @@
-export { NumberInput } from './components/NumberInput'
+export { NumberInput } from "./components/NumberInput";

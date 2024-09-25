@@ -1,15 +1,14 @@
 {
-  "name": "docs-mint",
-  "version": "0.0.0",
+  "name": "docs",
   "private": true,
   "scripts": {
     "dev": "mintlify dev --port 3004",
-    "build": "pnpm api:generate && mintlify broken-links",
+    "build": "mintlify broken-links",
     "api:generate": "dotenv -e ./.env -e ../../.env -- tsx --tsconfig ../builder/tsconfig.json ../builder/src/helpers/server/generateOpenApi.ts && dotenv -e ./.env -e ../../.env -- tsx --tsconfig ../viewer/openapi.tsconfig.json ../viewer/src/helpers/server/generateOpenApi.ts"
   },
   "devDependencies": {
-    "mintlify": "4.0.75",
-    "tsx": "4.6.2",
+    "mintlify": "4.0.228",
+    "tsx": "4.19.1",
     "dotenv-cli": "7.4.1"
   }
 }

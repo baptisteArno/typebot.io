@@ -1,2 +1,2 @@
-export { EmailInput } from './components/EmailInput'
-export { validateEmail } from './utils/validateEmail'
+export { EmailInput } from "./components/EmailInput";
+export { validateEmail } from "./utils/validateEmail";

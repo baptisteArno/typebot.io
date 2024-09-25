@@ -1,46 +1,46 @@
-import { TypingBubble } from '@/components'
-import { isMobile } from '@/utils/isMobileSignal'
-import { AudioBubbleBlock } from '@typebot.io/schemas'
-import { createSignal, onCleanup, onMount } from 'solid-js'
-import { defaultAudioBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/audio/constants'
-import clsx from 'clsx'
+import { TypingBubble } from "@/components/TypingBubble";
+import { isMobile } from "@/utils/isMobileSignal";
+import { defaultAudioBubbleContent } from "@typebot.io/blocks-bubbles/audio/constants";
+import type { AudioBubbleBlock } from "@typebot.io/blocks-bubbles/audio/schema";
+import clsx from "clsx";
+import { createSignal, onCleanup, onMount } from "solid-js";
 
 type Props = {
-  content: AudioBubbleBlock['content']
-  onTransitionEnd?: (ref?: HTMLDivElement) => void
-}
+  content: AudioBubbleBlock["content"];
+  onTransitionEnd?: (ref?: HTMLDivElement) => void;
+};
 
-const showAnimationDuration = 400
-const typingDuration = 100
+const showAnimationDuration = 400;
+const typingDuration = 100;
 
-let typingTimeout: NodeJS.Timeout
+let typingTimeout: NodeJS.Timeout;
 
 export const AudioBubble = (props: Props) => {
-  let isPlayed = false
-  let ref: HTMLDivElement | undefined
-  let audioElement: HTMLAudioElement | undefined
+  let isPlayed = false;
+  let ref: HTMLDivElement | undefined;
+  let audioElement: HTMLAudioElement | undefined;
   const [isTyping, setIsTyping] = createSignal(
-    props.onTransitionEnd ? true : false
-  )
+    props.onTransitionEnd ? true : false,
+  );
 
   onMount(() => {
     typingTimeout = setTimeout(() => {
-      if (isPlayed) return
-      isPlayed = true
-      setIsTyping(false)
-      setTimeout(() => props.onTransitionEnd?.(ref), showAnimationDuration)
-    }, typingDuration)
-  })
+      if (isPlayed) return;
+      isPlayed = true;
+      setIsTyping(false);
+      setTimeout(() => props.onTransitionEnd?.(ref), showAnimationDuration);
+    }, typingDuration);
+  });
 
   onCleanup(() => {
-    if (typingTimeout) clearTimeout(typingTimeout)
-  })
+    if (typingTimeout) clearTimeout(typingTimeout);
+  });
 
   return (
     <div
       class={clsx(
-        'flex flex-col',
-        props.onTransitionEnd ? 'animate-fade-in' : undefined
+        "flex flex-col",
+        props.onTransitionEnd ? "animate-fade-in" : undefined,
       )}
       ref={ref}
     >
@@ -49,8 +49,8 @@ export const AudioBubble = (props: Props) => {
           <div
             class="flex items-center absolute px-4 py-2 bubble-typing z-10 "
             style={{
-              width: isTyping() ? '64px' : '100%',
-              height: isTyping() ? '32px' : '100%',
+              width: isTyping() ? "64px" : "100%",
+              height: isTyping() ? "32px" : "100%",
             }}
           >
             {isTyping() && <TypingBubble />}
@@ -60,21 +60,21 @@ export const AudioBubble = (props: Props) => {
             src={props.content?.url}
             autoplay={
               props.onTransitionEnd
-                ? props.content?.isAutoplayEnabled ??
-                  defaultAudioBubbleContent.isAutoplayEnabled
+                ? (props.content?.isAutoplayEnabled ??
+                  defaultAudioBubbleContent.isAutoplayEnabled)
                 : false
             }
             class={
-              'z-10 text-fade-in ' +
-              (isTyping() ? 'opacity-0' : 'opacity-100 m-2')
+              "z-10 text-fade-in " +
+              (isTyping() ? "opacity-0" : "opacity-100 m-2")
             }
             style={{
-              height: isTyping() ? (isMobile() ? '32px' : '36px') : 'revert',
+              height: isTyping() ? (isMobile() ? "32px" : "36px") : "revert",
             }}
             controls
           />
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

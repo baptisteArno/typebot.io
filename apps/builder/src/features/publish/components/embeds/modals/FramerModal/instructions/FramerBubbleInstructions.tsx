@@ -1,44 +1,44 @@
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { OrderedList, ListItem, Code, Stack, Text } from '@chakra-ui/react'
-import { BubbleProps } from '@typebot.io/nextjs'
-import { useState } from 'react'
-import { BubbleSettings } from '../../../settings/BubbleSettings/BubbleSettings'
-import { parseDefaultBubbleTheme } from '../../Javascript/instructions/JavascriptBubbleInstructions'
-import { JavascriptBubbleSnippet } from '../../Javascript/JavascriptBubbleSnippet'
-import { TextLink } from '@/components/TextLink'
+import { TextLink } from "@/components/TextLink";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
+import type { BubbleProps } from "@typebot.io/js";
+import { useState } from "react";
+import { BubbleSettings } from "../../../settings/BubbleSettings/BubbleSettings";
+import { JavascriptBubbleSnippet } from "../../Javascript/JavascriptBubbleSnippet";
+import { parseDefaultBubbleTheme } from "../../Javascript/instructions/JavascriptBubbleInstructions";
 
 export const FramerBubbleInstructions = () => {
-  const { typebot } = useTypebot()
+  const { typebot } = useTypebot();
 
-  const [theme, setTheme] = useState<BubbleProps['theme']>(
-    parseDefaultBubbleTheme(typebot)
-  )
+  const [theme, setTheme] = useState<BubbleProps["theme"]>(
+    parseDefaultBubbleTheme(typebot),
+  );
   const [previewMessage, setPreviewMessage] =
-    useState<BubbleProps['previewMessage']>()
+    useState<BubbleProps["previewMessage"]>();
 
   return (
     <>
       <OrderedList spacing={4} pl={5}>
         <ListItem>
-          Head over to the <Code>Site Settings</Code> {'>'} <Code>General</Code>{' '}
-          {'>'} <Code>Custom Code</Code> section
+          Head over to the <Code>Site Settings</Code> {">"} <Code>General</Code>{" "}
+          {">"} <Code>Custom Code</Code> section
         </ListItem>
         <ListItem>
           <Stack spacing={4}>
             <BubbleSettings
               previewMessage={previewMessage}
               defaultPreviewMessageAvatar={
-                typebot?.theme.chat?.hostAvatar?.url ?? ''
+                typebot?.theme.chat?.hostAvatar?.url ?? ""
               }
               theme={theme}
               onPreviewMessageChange={setPreviewMessage}
               onThemeChange={setTheme}
             />
             <Text>
-              Paste this in the{' '}
+              Paste this in the{" "}
               <Code>
-                End of {'<'}body{'>'} tag
-              </Code>{' '}
+                End of {"<"}body{">"} tag
+              </Code>{" "}
               input:
             </Text>
             <JavascriptBubbleSnippet
@@ -49,15 +49,15 @@ export const FramerBubbleInstructions = () => {
         </ListItem>
       </OrderedList>
       <Text fontSize="sm" colorScheme="gray" pl="5">
-        Check out the{' '}
+        Check out the{" "}
         <TextLink
           href="https://www.framer.com/academy/lessons/custom-code"
           isExternal
         >
           Custom Code Framer doc
-        </TextLink>{' '}
+        </TextLink>{" "}
         for more information.
       </Text>
     </>
-  )
-}
+  );
+};

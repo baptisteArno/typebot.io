@@ -1,18 +1,18 @@
-import { chakra, Fade, Button, useColorModeValue } from '@chakra-ui/react'
-import { Cell as CellProps, flexRender } from '@tanstack/react-table'
-import { ExpandIcon } from '@/components/icons'
-import { memo } from 'react'
-import { TableData } from '@typebot.io/schemas'
+import { ExpandIcon } from "@/components/icons";
+import { Button, Fade, chakra, useColorModeValue } from "@chakra-ui/react";
+import { type Cell as CellProps, flexRender } from "@tanstack/react-table";
+import type { TableData } from "@typebot.io/results/schemas/results";
+import { memo } from "react";
 
 type Props = {
-  cell: CellProps<TableData, unknown>
-  size: number
-  isExpandButtonVisible: boolean
-  rowIndex: number
-  cellIndex: number
-  isSelected: boolean
-  onExpandButtonClick: () => void
-}
+  cell: CellProps<TableData, unknown>;
+  size: number;
+  isExpandButtonVisible: boolean;
+  rowIndex: number;
+  cellIndex: number;
+  isSelected: boolean;
+  onExpandButtonClick: () => void;
+};
 
 const Cell = ({
   cell,
@@ -27,8 +27,8 @@ const Cell = ({
       key={cell.id}
       px="4"
       py="2"
-      borderWidth={rowIndex === 0 ? '0 1px 1px 1px' : '1px'}
-      borderColor={useColorModeValue('gray.200', 'gray.700')}
+      borderWidth={rowIndex === 0 ? "0 1px 1px 1px" : "1px"}
+      borderColor={useColorModeValue("gray.200", "gray.700")}
       whiteSpace="pre-wrap"
       pos="relative"
       style={{
@@ -57,13 +57,13 @@ const Cell = ({
         </Fade>
       </chakra.span>
     </chakra.td>
-  )
-}
+  );
+};
 
 export default memo(
   Cell,
   (prev, next) =>
     prev.size === next.size &&
     prev.isExpandButtonVisible === next.isExpandButtonVisible &&
-    prev.isSelected === next.isSelected
-)
+    prev.isSelected === next.isSelected,
+);

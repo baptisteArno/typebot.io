@@ -1,18 +1,18 @@
-import prisma from '@typebot.io/lib/prisma'
-import { authenticatedProcedure } from '@/helpers/server/trpc'
-import { TRPCError } from '@trpc/server'
-import { workspaceMemberSchema } from '@typebot.io/schemas'
-import { z } from 'zod'
-import { isReadWorkspaceFobidden } from '../helpers/isReadWorkspaceFobidden'
+import { authenticatedProcedure } from "@/helpers/server/trpc";
+import { TRPCError } from "@trpc/server";
+import prisma from "@typebot.io/prisma";
+import { workspaceMemberSchema } from "@typebot.io/workspaces/schemas";
+import { z } from "@typebot.io/zod";
+import { isReadWorkspaceFobidden } from "../helpers/isReadWorkspaceFobidden";
 
 export const listMembersInWorkspace = authenticatedProcedure
   .meta({
     openapi: {
-      method: 'GET',
-      path: '/v1/workspaces/{workspaceId}/members',
+      method: "GET",
+      path: "/v1/workspaces/{workspaceId}/members",
       protect: true,
-      summary: 'List members in workspace',
-      tags: ['Workspace'],
+      summary: "List members in workspace",
+      tags: ["Workspace"],
     },
   })
   .input(
@@ -20,14 +20,14 @@ export const listMembersInWorkspace = authenticatedProcedure
       workspaceId: z
         .string()
         .describe(
-          '[Where to find my workspace ID?](../how-to#how-to-find-my-workspaceid)'
+          "[Where to find my workspace ID?](../how-to#how-to-find-my-workspaceid)",
         ),
-    })
+    }),
   )
   .output(
     z.object({
       members: z.array(workspaceMemberSchema),
-    })
+    }),
   )
   .query(async ({ input: { workspaceId }, ctx: { user } }) => {
     const workspace = await prisma.workspace.findFirst({
@@ -39,10 +39,13 @@ export const listMembersInWorkspace = authenticatedProcedure
           },
         },
       },
-    })
+    });
 
     if (!workspace || isReadWorkspaceFobidden(workspace, user))
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'No workspaces found' })
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "No workspaces found",
+      });
 
     return {
       members: workspace.members.map((member) => ({
@@ -50,5 +53,5 @@ export const listMembersInWorkspace = authenticatedProcedure
         user: member.user,
         workspaceId,
       })),
-    }
-  })
+    };
+  });

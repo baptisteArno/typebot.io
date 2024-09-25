@@ -1,16 +1,16 @@
-import { TextInput } from '@/components/inputs'
-import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { Stack } from '@chakra-ui/react'
-import { CustomFont } from '@typebot.io/schemas'
+import { TextInput } from "@/components/inputs";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { Stack } from "@chakra-ui/react";
+import type { CustomFont } from "@typebot.io/theme/schemas";
 
 type Props = {
-  font: CustomFont
-  onFontChange: (font: CustomFont) => void
-}
+  font: CustomFont;
+  onFontChange: (font: CustomFont) => void;
+};
 
 export const CustomFontForm = ({ font, onFontChange }: Props) => {
-  const updateFamily = (family: string) => onFontChange({ ...font, family })
-  const updateCss = (css: string) => onFontChange({ ...font, css })
+  const updateFamily = (family: string) => onFontChange({ ...font, family });
+  const updateCss = (css: string) => onFontChange({ ...font, css });
   return (
     <Stack>
       <TextInput
@@ -33,5 +33,5 @@ export const CustomFontForm = ({ font, onFontChange }: Props) => {
         maxHeight="200px"
       />
     </Stack>
-  )
-}
+  );
+};

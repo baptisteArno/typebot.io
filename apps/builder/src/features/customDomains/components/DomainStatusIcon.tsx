@@ -1,16 +1,16 @@
-import { XCircleIcon } from '@/components/icons'
-import { trpc } from '@/lib/trpc'
-import { useToast } from '@/hooks/useToast'
-import { Flex, Tooltip, useDisclosure } from '@chakra-ui/react'
-import { CustomDomainConfigModal } from './CustomDomainConfigModal'
+import { XCircleIcon } from "@/components/icons";
+import { useToast } from "@/hooks/useToast";
+import { trpc } from "@/lib/trpc";
+import { Flex, Tooltip, useDisclosure } from "@chakra-ui/react";
+import { CustomDomainConfigModal } from "./CustomDomainConfigModal";
 
 type Props = {
-  domain: string
-  workspaceId: string
-}
+  domain: string;
+  workspaceId: string;
+};
 export default function DomainStatusIcon({ domain, workspaceId }: Props) {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const { showToast } = useToast()
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { showToast } = useToast();
   const { data, isLoading } = trpc.customDomains.verifyCustomDomain.useQuery(
     {
       name: domain,
@@ -18,12 +18,12 @@ export default function DomainStatusIcon({ domain, workspaceId }: Props) {
     },
     {
       onError: (err) => {
-        showToast({ description: err.message })
+        showToast({ description: err.message });
       },
-    }
-  )
+    },
+  );
 
-  if (isLoading || data?.status === 'Valid Configuration') return null
+  if (isLoading || data?.status === "Valid Configuration") return null;
 
   return (
     <>
@@ -39,5 +39,5 @@ export default function DomainStatusIcon({ domain, workspaceId }: Props) {
         onClose={onClose}
       />
     </>
-  )
+  );
 }

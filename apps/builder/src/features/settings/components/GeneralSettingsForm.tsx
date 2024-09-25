@@ -1,3 +1,7 @@
+import { DropdownList } from "@/components/DropdownList";
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import {
   FormControl,
   FormLabel,
@@ -6,29 +10,25 @@ import {
   Tag,
   Text,
   useColorModeValue,
-} from '@chakra-ui/react'
-import { Settings } from '@typebot.io/schemas'
-import React from 'react'
-import { isDefined } from '@typebot.io/lib'
-import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
-import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
-import { DropdownList } from '@/components/DropdownList'
-import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
+} from "@chakra-ui/react";
+import { isDefined } from "@typebot.io/lib/utils";
 import {
   defaultSettings,
   rememberUserStorages,
-} from '@typebot.io/schemas/features/typebot/settings/constants'
+} from "@typebot.io/settings/constants";
+import type { Settings } from "@typebot.io/settings/schemas";
+import React from "react";
 
 type Props = {
-  generalSettings: Settings['general'] | undefined
-  onGeneralSettingsChange: (generalSettings: Settings['general']) => void
-}
+  generalSettings: Settings["general"] | undefined;
+  onGeneralSettingsChange: (generalSettings: Settings["general"]) => void;
+};
 
 export const GeneralSettingsForm = ({
   generalSettings,
   onGeneralSettingsChange,
 }: Props) => {
-  const keyBg = useColorModeValue(undefined, 'gray.600')
+  const keyBg = useColorModeValue(undefined, "gray.600");
   const toggleRememberUser = (isEnabled: boolean) =>
     onGeneralSettingsChange({
       ...generalSettings,
@@ -36,24 +36,24 @@ export const GeneralSettingsForm = ({
         ...generalSettings?.rememberUser,
         isEnabled,
       },
-    })
+    });
 
   const handleInputPrefillChange = (isInputPrefillEnabled: boolean) =>
     onGeneralSettingsChange({
       ...generalSettings,
       isInputPrefillEnabled,
-    })
+    });
 
   const handleHideQueryParamsChange = (isHideQueryParamsEnabled: boolean) =>
     onGeneralSettingsChange({
       ...generalSettings,
       isHideQueryParamsEnabled,
-    })
+    });
 
   const updateRememberUserStorage = (
     storage: NonNullable<
-      NonNullable<Settings['general']>['rememberUser']
-    >['storage']
+      NonNullable<Settings["general"]>["rememberUser"]
+    >["storage"],
   ) =>
     onGeneralSettingsChange({
       ...generalSettings,
@@ -61,7 +61,7 @@ export const GeneralSettingsForm = ({
         ...generalSettings?.rememberUser,
         storage,
       },
-    })
+    });
 
   return (
     <Stack spacing={6}>
@@ -84,7 +84,7 @@ export const GeneralSettingsForm = ({
         moreInfoContent="If your URL contains query params, they will be automatically hidden when the bot starts."
       />
       <SwitchWithRelatedSettings
-        label={'Remember user'}
+        label={"Remember user"}
         moreInfoContent="If enabled, the chat state will be restored if the user comes back after exiting."
         initialValue={
           generalSettings?.rememberUser?.isEnabled ??
@@ -100,30 +100,30 @@ export const GeneralSettingsForm = ({
             <MoreInfoTooltip>
               <Stack>
                 <Text>
-                  Choose{' '}
+                  Choose{" "}
                   <Tag size="sm" bgColor={keyBg}>
                     session
-                  </Tag>{' '}
+                  </Tag>{" "}
                   to remember the user as long as he does not closes the tab or
                   the browser.
                 </Text>
                 <Text>
-                  Choose{' '}
+                  Choose{" "}
                   <Tag size="sm" bgColor={keyBg}>
                     local
-                  </Tag>{' '}
+                  </Tag>{" "}
                   to remember the user forever on the same device.
                 </Text>
               </Stack>
             </MoreInfoTooltip>
           </FormLabel>
           <DropdownList
-            currentItem={generalSettings?.rememberUser?.storage ?? 'session'}
+            currentItem={generalSettings?.rememberUser?.storage ?? "session"}
             onItemSelect={updateRememberUserStorage}
             items={rememberUserStorages}
           ></DropdownList>
         </FormControl>
       </SwitchWithRelatedSettings>
     </Stack>
-  )
-}
+  );
+};

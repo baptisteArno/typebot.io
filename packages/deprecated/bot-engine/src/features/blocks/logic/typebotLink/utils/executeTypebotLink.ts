@@ -1,14 +1,16 @@
-import { LinkedTypebot } from '@/providers/TypebotProvider'
-import { EdgeId, LogicState } from '@/types'
-import { TypebotLinkBlock, Edge, PublicTypebot } from '@typebot.io/schemas'
-import { fetchAndInjectTypebot } from '../queries/fetchAndInjectTypebotQuery'
+import type { LinkedTypebot } from "@/providers/TypebotProvider";
+import type { EdgeId, LogicState } from "@/types";
+import type { TypebotLinkBlock } from "@typebot.io/blocks-logic/typebotLink/schema";
+import type { Edge } from "@typebot.io/typebot/schemas/edge";
+import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
+import { fetchAndInjectTypebot } from "../queries/fetchAndInjectTypebotQuery";
 
 export const executeTypebotLink = async (
   block: TypebotLinkBlock,
-  context: LogicState
+  context: LogicState,
 ): Promise<{
-  nextEdgeId?: EdgeId
-  linkedTypebot?: PublicTypebot | LinkedTypebot
+  nextEdgeId?: EdgeId;
+  linkedTypebot?: PublicTypebot | LinkedTypebot;
 }> => {
   const {
     typebot,
@@ -19,51 +21,51 @@ export const executeTypebotLink = async (
     pushEdgeIdInLinkedTypebotQueue,
     pushParentTypebotId,
     currentTypebotId,
-  } = context
+  } = context;
   const linkedTypebot = (
-    block.options?.typebotId === 'current'
+    block.options?.typebotId === "current"
       ? typebot
-      : [typebot, ...linkedTypebots].find((typebot) =>
-          'typebotId' in typebot
+      : ([typebot, ...linkedTypebots].find((typebot) =>
+          "typebotId" in typebot
             ? typebot.typebotId === block.options?.typebotId
-            : typebot.id === block.options?.typebotId
-        ) ?? (await fetchAndInjectTypebot(block, context))
-  ) as PublicTypebot | LinkedTypebot | undefined
+            : typebot.id === block.options?.typebotId,
+        ) ?? (await fetchAndInjectTypebot(block, context)))
+  ) as PublicTypebot | LinkedTypebot | undefined;
   if (!linkedTypebot) {
     onNewLog({
-      status: 'error',
-      description: 'Failed to link typebot',
-      details: '',
-    })
-    return { nextEdgeId: block.outgoingEdgeId }
+      status: "error",
+      description: "Failed to link typebot",
+      details: "",
+    });
+    return { nextEdgeId: block.outgoingEdgeId };
   }
   if (block.outgoingEdgeId)
     pushEdgeIdInLinkedTypebotQueue({
       edgeId: block.outgoingEdgeId,
       typebotId: currentTypebotId,
-    })
-  pushParentTypebotId(currentTypebotId)
+    });
+  pushParentTypebotId(currentTypebotId);
   setCurrentTypebotId(
-    'typebotId' in linkedTypebot ? linkedTypebot.typebotId : linkedTypebot.id
-  )
+    "typebotId" in linkedTypebot ? linkedTypebot.typebotId : linkedTypebot.id,
+  );
   const nextGroupId =
     block.options?.groupId ??
-    linkedTypebot.groups.find((b) => b.blocks.some((s) => s.type === 'start'))
-      ?.id
-  if (!nextGroupId) return { nextEdgeId: block.outgoingEdgeId }
+    linkedTypebot.groups.find((b) => b.blocks.some((s) => s.type === "start"))
+      ?.id;
+  if (!nextGroupId) return { nextEdgeId: block.outgoingEdgeId };
   const newEdge: Edge = {
     id: (Math.random() * 1000).toString(),
-    from: { blockId: '' },
+    from: { blockId: "" },
     to: {
       groupId: nextGroupId,
     },
-  }
-  createEdge(newEdge)
+  };
+  createEdge(newEdge);
   return {
     nextEdgeId: newEdge.id,
     linkedTypebot: {
       ...linkedTypebot,
       edges: [...linkedTypebot.edges, newEdge],
     },
-  }
-}
+  };
+};

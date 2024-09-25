@@ -1,6 +1,6 @@
 type Props = {
-  value: number
-}
+  value: number;
+};
 
 export const ProgressBar = (props: Props) => (
   <div class="typebot-progress-bar-container">
@@ -11,4 +11,4 @@ export const ProgressBar = (props: Props) => (
       }}
     />
   </div>
-)
+);

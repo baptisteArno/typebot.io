@@ -1,17 +1,17 @@
-const sessionStorageKey = 'resultId'
+const sessionStorageKey = "resultId";
 
 export const getExistingResultFromSession = () => {
   try {
-    return sessionStorage.getItem(sessionStorageKey)
+    return sessionStorage.getItem(sessionStorageKey);
   } catch {
     /* empty */
   }
-}
+};
 
 export const setResultInSession = (resultId: string) => {
   try {
-    return sessionStorage.setItem(sessionStorageKey, resultId)
+    return sessionStorage.setItem(sessionStorageKey, resultId);
   } catch {
     /* empty */
   }
-}
+};

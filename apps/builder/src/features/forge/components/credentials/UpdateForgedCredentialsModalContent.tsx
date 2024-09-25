@@ -1,39 +1,40 @@
-import { TextInput } from '@/components/inputs/TextInput'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { useToast } from '@/hooks/useToast'
-import { trpc } from '@/lib/trpc'
+import { TextInput } from "@/components/inputs/TextInput";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { useToast } from "@/hooks/useToast";
+import { trpc } from "@/lib/trpc";
 import {
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  Stack,
-  ModalFooter,
   Button,
-} from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
-import { ZodObjectLayout } from '../zodLayouts/ZodObjectLayout'
-import { ForgedBlockDefinition } from '@typebot.io/forge-repository/types'
-import { Credentials } from '@typebot.io/schemas'
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Stack,
+} from "@chakra-ui/react";
+import type { Credentials } from "@typebot.io/credentials/schemas";
+import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
+import type React from "react";
+import { useEffect, useState } from "react";
+import { ZodObjectLayout } from "../zodLayouts/ZodObjectLayout";
 
 type Props = {
-  credentialsId: string
-  blockDef: ForgedBlockDefinition
-  onUpdate: () => void
-}
+  credentialsId: string;
+  blockDef: ForgedBlockDefinition;
+  onUpdate: () => void;
+};
 
 export const UpdateForgedCredentialsModalContent = ({
   credentialsId,
   blockDef,
   onUpdate,
 }: Props) => {
-  const { workspace } = useWorkspace()
-  const { showToast } = useToast()
-  const [name, setName] = useState('')
+  const { workspace } = useWorkspace();
+  const { showToast } = useToast();
+  const [name, setName] = useState("");
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [data, setData] = useState<any>()
+  const [data, setData] = useState<any>();
 
-  const [isUpdating, setIsUpdating] = useState(false)
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const { data: existingCredentials } =
     trpc.credentials.getCredentials.useQuery(
@@ -43,14 +44,14 @@ export const UpdateForgedCredentialsModalContent = ({
       },
       {
         enabled: !!workspace?.id,
-      }
-    )
+      },
+    );
 
   useEffect(() => {
-    if (!existingCredentials || data) return
-    setName(existingCredentials.name)
-    setData(existingCredentials.data)
-  }, [data, existingCredentials])
+    if (!existingCredentials || data) return;
+    setName(existingCredentials.name);
+    setData(existingCredentials.data);
+  }, [data, existingCredentials]);
 
   const { mutate } = trpc.credentials.updateCredentials.useMutation({
     onMutate: () => setIsUpdating(true),
@@ -58,17 +59,17 @@ export const UpdateForgedCredentialsModalContent = ({
     onError: (err) => {
       showToast({
         description: err.message,
-        status: 'error',
-      })
+        status: "error",
+      });
     },
     onSuccess: () => {
-      onUpdate()
+      onUpdate();
     },
-  })
+  });
 
   const updateCredentials = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!workspace || !blockDef.auth) return
+    e.preventDefault();
+    if (!workspace || !blockDef.auth) return;
     mutate({
       credentialsId,
       credentials: {
@@ -77,10 +78,10 @@ export const UpdateForgedCredentialsModalContent = ({
         name,
         data,
       } as Credentials,
-    })
-  }
+    });
+  };
 
-  if (!blockDef.auth) return null
+  if (!blockDef.auth) return null;
   return (
     <ModalContent>
       <ModalHeader>Update {blockDef.auth.name}</ModalHeader>
@@ -115,5 +116,5 @@ export const UpdateForgedCredentialsModalContent = ({
         </ModalFooter>
       </form>
     </ModalContent>
-  )
-}
+  );
+};

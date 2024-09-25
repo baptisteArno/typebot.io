@@ -1,4 +1,4 @@
-import { JSX } from 'solid-js/jsx-runtime'
+import type { JSX } from "solid-js/jsx-runtime";
 
 export const PlusIcon = (props: JSX.SvgSVGAttributes<SVGSVGElement>) => (
   <svg
@@ -14,4 +14,4 @@ export const PlusIcon = (props: JSX.SvgSVGAttributes<SVGSVGElement>) => (
     <path d="M5 12h14" />
     <path d="M12 5v14" />
   </svg>
-)
+);

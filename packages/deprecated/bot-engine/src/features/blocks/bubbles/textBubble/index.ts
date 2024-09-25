@@ -1,1 +1,1 @@
-export { TextBubble } from './components/TextBubble'
+export { TextBubble } from "./components/TextBubble";

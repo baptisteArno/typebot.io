@@ -1,25 +1,25 @@
-import { parseVariables } from '@/features/variables'
-import { IntegrationState } from '@/types'
-import { sendEventToParent } from '@/utils/chat'
-import { isEmbedded } from '@/utils/helpers'
-import { ChatwootBlock } from '@typebot.io/schemas'
+import { parseVariables } from "@/features/variables";
+import type { IntegrationState } from "@/types";
+import { sendEventToParent } from "@/utils/chat";
+import { isEmbedded } from "@/utils/helpers";
+import type { ChatwootBlock } from "@typebot.io/blocks-integrations/chatwoot/schema";
 
 const parseSetUserCode = (
-  user: NonNullable<ChatwootBlock['options']>['user']
+  user: NonNullable<ChatwootBlock["options"]>["user"],
 ) => `
-window.$chatwoot.setUser("${user?.id ?? ''}", {
-  email: ${user?.email ? `"${user.email}"` : 'undefined'},
-  name: ${user?.name ? `"${user.name}"` : 'undefined'},
-  avatar_url: ${user?.avatarUrl ? `"${user.avatarUrl}"` : 'undefined'},
-  phone_number: ${user?.phoneNumber ? `"${user.phoneNumber}"` : 'undefined'},
+window.$chatwoot.setUser("${user?.id ?? ""}", {
+  email: ${user?.email ? `"${user.email}"` : "undefined"},
+  name: ${user?.name ? `"${user.name}"` : "undefined"},
+  avatar_url: ${user?.avatarUrl ? `"${user.avatarUrl}"` : "undefined"},
+  phone_number: ${user?.phoneNumber ? `"${user.phoneNumber}"` : "undefined"},
 });
 
-`
+`;
 const parseChatwootOpenCode = ({
   baseUrl,
   websiteToken,
   user,
-}: ChatwootBlock['options'] = {}) => `
+}: ChatwootBlock["options"] = {}) => `
 if (window.$chatwoot) {
   if(${Boolean(user)}) {
     ${parseSetUserCode(user)}
@@ -30,7 +30,7 @@ if (window.$chatwoot) {
     var BASE_URL = "${baseUrl}";
     var g = d.createElement(t),
       s = d.getElementsByTagName(t)[0];
-    g.src = BASE_URL + "/packs/js/sdk.js";
+    g.src = BASE_URL + "/packs/js/sdk";
     g.defer = true;
     g.async = true;
     s.parentNode.insertBefore(g, s);
@@ -47,37 +47,37 @@ if (window.$chatwoot) {
       });
     };
   })(document, "script");
-}`
+}`;
 
 export const executeChatwootBlock = (
   block: ChatwootBlock,
-  { variables, isPreview, onNewLog }: IntegrationState
+  { variables, isPreview, onNewLog }: IntegrationState,
 ) => {
   if (isPreview) {
     onNewLog({
-      status: 'info',
+      status: "info",
       description: "Chatwoot won't open in preview mode",
       details: null,
-    })
+    });
   } else if (isEmbedded) {
     sendEventToParent({
       closeChatBubble: true,
-    })
+    });
     sendEventToParent({
       codeToExecute: parseVariables(variables)(
-        parseChatwootOpenCode(block.options)
+        parseChatwootOpenCode(block.options),
       ),
-    })
+    });
   } else {
     const func = Function(
-      parseVariables(variables)(parseChatwootOpenCode(block.options))
-    )
+      parseVariables(variables)(parseChatwootOpenCode(block.options)),
+    );
     try {
-      func()
+      func();
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
   }
 
-  return block.outgoingEdgeId
-}
+  return block.outgoingEdgeId;
+};

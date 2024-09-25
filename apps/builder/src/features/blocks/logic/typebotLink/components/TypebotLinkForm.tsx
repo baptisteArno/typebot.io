@@ -1,24 +1,24 @@
-import { Stack } from '@chakra-ui/react'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { GroupsDropdown } from './GroupsDropdown'
-import { TypebotsDropdown } from './TypebotsDropdown'
-import { trpc } from '@/lib/trpc'
-import { isNotEmpty } from '@typebot.io/lib'
-import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
-import { TypebotLinkBlock } from '@typebot.io/schemas'
-import { defaultTypebotLinkOptions } from '@typebot.io/schemas/features/blocks/logic/typebotLink/constants'
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { trpc } from "@/lib/trpc";
+import { Stack } from "@chakra-ui/react";
+import { defaultTypebotLinkOptions } from "@typebot.io/blocks-logic/typebotLink/constants";
+import type { TypebotLinkBlock } from "@typebot.io/blocks-logic/typebotLink/schema";
+import { isNotEmpty } from "@typebot.io/lib/utils";
+import { GroupsDropdown } from "./GroupsDropdown";
+import { TypebotsDropdown } from "./TypebotsDropdown";
 
 type Props = {
-  options: TypebotLinkBlock['options']
-  onOptionsChange: (options: TypebotLinkBlock['options']) => void
-}
+  options: TypebotLinkBlock["options"];
+  onOptionsChange: (options: TypebotLinkBlock["options"]) => void;
+};
 
 export const TypebotLinkForm = ({ options, onOptionsChange }: Props) => {
-  const { typebot } = useTypebot()
+  const { typebot } = useTypebot();
 
   const handleTypebotIdChange = async (
-    typebotId: string | 'current' | undefined
-  ) => onOptionsChange({ ...options, typebotId, groupId: undefined })
+    typebotId: string | "current" | undefined,
+  ) => onOptionsChange({ ...options, typebotId, groupId: undefined });
 
   const { data: linkedTypebotData } = trpc.typebot.getTypebot.useQuery(
     {
@@ -26,19 +26,19 @@ export const TypebotLinkForm = ({ options, onOptionsChange }: Props) => {
     },
     {
       enabled:
-        isNotEmpty(options?.typebotId) && options?.typebotId !== 'current',
-    }
-  )
+        isNotEmpty(options?.typebotId) && options?.typebotId !== "current",
+    },
+  );
 
   const handleGroupIdChange = (groupId: string | undefined) =>
-    onOptionsChange({ ...options, groupId })
+    onOptionsChange({ ...options, groupId });
 
   const updateMergeResults = (mergeResults: boolean) =>
-    onOptionsChange({ ...options, mergeResults })
+    onOptionsChange({ ...options, mergeResults });
 
   const isCurrentTypebotSelected =
     (typebot && options?.typebotId === typebot.id) ||
-    options?.typebotId === 'current'
+    options?.typebotId === "current";
 
   return (
     <Stack>
@@ -56,13 +56,13 @@ export const TypebotLinkForm = ({ options, onOptionsChange }: Props) => {
           groups={
             typebot && isCurrentTypebotSelected
               ? typebot.groups
-              : linkedTypebotData?.typebot?.groups ?? []
+              : (linkedTypebotData?.typebot?.groups ?? [])
           }
           groupId={options.groupId}
           onGroupIdSelected={handleGroupIdChange}
           isLoading={
             linkedTypebotData?.typebot === undefined &&
-            options.typebotId !== 'current' &&
+            options.typebotId !== "current" &&
             typebot &&
             typebot.id !== options.typebotId
           }
@@ -79,5 +79,5 @@ export const TypebotLinkForm = ({ options, onOptionsChange }: Props) => {
         />
       )}
     </Stack>
-  )
-}
+  );
+};

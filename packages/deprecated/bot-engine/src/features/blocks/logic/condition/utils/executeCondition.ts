@@ -1,63 +1,67 @@
-import { parseVariables } from '@/features/variables'
-import { EdgeId, LogicState } from '@/types'
-import { Comparison, ConditionBlock, Variable } from '@typebot.io/schemas'
-import { isNotDefined, isDefined } from '@typebot.io/lib'
+import { parseVariables } from "@/features/variables";
+import type { EdgeId, LogicState } from "@/types";
+import type { ConditionBlock } from "@typebot.io/blocks-logic/condition/schema";
 import {
-  LogicalOperator,
   ComparisonOperators,
-} from '@typebot.io/schemas/features/blocks/logic/condition/constants'
+  LogicalOperator,
+} from "@typebot.io/conditions/constants";
+import type { Comparison } from "@typebot.io/conditions/schemas";
+import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
+import type { Variable } from "@typebot.io/variables/schemas";
 
 export const executeCondition = (
   block: ConditionBlock,
-  { typebot: { variables } }: LogicState
+  { typebot: { variables } }: LogicState,
 ): EdgeId | undefined => {
   const passedCondition = block.items.find((item) => {
-    const { content } = item
+    const { content } = item;
     const isConditionPassed =
       content?.logicalOperator === LogicalOperator.AND
         ? content.comparisons?.every(executeComparison(variables))
-        : content?.comparisons?.some(executeComparison(variables))
-    return isConditionPassed
-  })
-  return passedCondition ? passedCondition.outgoingEdgeId : block.outgoingEdgeId
-}
+        : content?.comparisons?.some(executeComparison(variables));
+    return isConditionPassed;
+  });
+  return passedCondition
+    ? passedCondition.outgoingEdgeId
+    : block.outgoingEdgeId;
+};
 
 const executeComparison =
   (variables: Variable[]) => (comparison: Comparison) => {
-    if (!comparison?.variableId) return false
+    if (!comparison?.variableId) return false;
     const inputValue = (
-      variables.find((v) => v.id === comparison.variableId)?.value ?? ''
+      variables.find((v) => v.id === comparison.variableId)?.value ?? ""
     )
       .toString()
-      .trim()
-    const value = parseVariables(variables)(comparison.value).trim()
-    if (isNotDefined(value) || !comparison.comparisonOperator) return false
-    return matchComparison(inputValue, comparison.comparisonOperator, value)
-  }
+      .trim();
+    const value = parseVariables(variables)(comparison.value).trim();
+    if (isNotDefined(value) || !comparison.comparisonOperator) return false;
+    return matchComparison(inputValue, comparison.comparisonOperator, value);
+  };
 
 const matchComparison = (
   inputValue: string,
   comparisonOperator: ComparisonOperators,
-  value: string
+  value: string,
 ) => {
   switch (comparisonOperator) {
     case ComparisonOperators.CONTAINS: {
-      return inputValue.toLowerCase().includes(value.toLowerCase())
+      return inputValue.toLowerCase().includes(value.toLowerCase());
     }
     case ComparisonOperators.EQUAL: {
-      return inputValue === value
+      return inputValue === value;
     }
     case ComparisonOperators.NOT_EQUAL: {
-      return inputValue !== value
+      return inputValue !== value;
     }
     case ComparisonOperators.GREATER: {
-      return parseFloat(inputValue) > parseFloat(value)
+      return Number.parseFloat(inputValue) > Number.parseFloat(value);
     }
     case ComparisonOperators.LESS: {
-      return parseFloat(inputValue) < parseFloat(value)
+      return Number.parseFloat(inputValue) < Number.parseFloat(value);
     }
     case ComparisonOperators.IS_SET: {
-      return isDefined(inputValue) && inputValue.length > 0
+      return isDefined(inputValue) && inputValue.length > 0;
     }
   }
-}
+};

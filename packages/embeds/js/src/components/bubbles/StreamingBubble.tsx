@@ -1,64 +1,63 @@
-import { streamingMessage } from '@/utils/streamingMessageSignal'
-import { For, createEffect, createSignal } from 'solid-js'
-import { marked } from 'marked'
-import domPurify from 'dompurify'
-import { isNotEmpty } from '@typebot.io/lib'
-import { persist } from '@/utils/persist'
-import { BotContext } from '@/types'
+import type { BotContext } from "@/types";
+import { persist } from "@/utils/persist";
+import { streamingMessage } from "@/utils/streamingMessageSignal";
+import { isNotEmpty } from "@typebot.io/lib/utils";
+import domPurify from "dompurify";
+import { marked } from "marked";
+import { For, createEffect, createSignal } from "solid-js";
 
 type Props = {
-  streamingMessageId: string
-  context: BotContext
-}
+  streamingMessageId: string;
+  context: BotContext;
+};
 
 export const StreamingBubble = (props: Props) => {
   const [content, setContent] = persist(createSignal<string[]>([]), {
     key: `typebot-streaming-message-${props.streamingMessageId}`,
     storage: props.context.storage,
-  })
+  });
 
   marked.use({
     renderer: {
       link: (href, _title, text) => {
-        return `<a href="${href}" target="_blank" rel="noopener noreferrer">${text}</a>`
+        return `<a href="${href}" target="_blank" rel="noopener noreferrer">${text}</a>`;
       },
     },
-  })
+  });
 
   createEffect(() => {
-    if (streamingMessage()?.id !== props.streamingMessageId) return []
+    if (streamingMessage()?.id !== props.streamingMessageId) return [];
     setContent(
       streamingMessage()
-        ?.content.split('```')
-        .map((block, index) => {
+        ?.content.split("```")
+        .flatMap((block, index) => {
           if (index % 2 === 0) {
-            return block.split('\n\n').map((line) =>
+            return block.split("\n\n").map((line) =>
               domPurify.sanitize(
-                marked.parse(line.replace(/【.+】/g, ''), {
+                marked.parse(line.replace(/【.+】/g, ""), {
                   breaks: true,
                 }),
                 {
-                  ADD_ATTR: ['target'],
-                }
-              )
-            )
+                  ADD_ATTR: ["target"],
+                },
+              ),
+            );
           } else {
             return [
               domPurify.sanitize(
-                marked.parse('```' + block + '```', {
+                marked.parse("```" + block + "```", {
                   breaks: true,
                 }),
                 {
-                  ADD_ATTR: ['target'],
-                }
+                  ADD_ATTR: ["target"],
+                },
               ),
-            ]
+            ];
           }
         })
-        .flat()
-        .filter(isNotEmpty) ?? []
-    )
-  })
+        .filter(isNotEmpty) ?? [],
+    );
+  });
 
   return (
     <div class="flex flex-col animate-fade-in typebot-streaming-container">
@@ -67,14 +66,14 @@ export const StreamingBubble = (props: Props) => {
           <div
             class="flex items-center absolute px-4 py-2 bubble-typing "
             style={{
-              width: '100%',
-              height: '100%',
+              width: "100%",
+              height: "100%",
             }}
             data-testid="host-bubble"
           />
           <div
             class={
-              'flex flex-col overflow-hidden text-fade-in mx-4 my-2 relative text-ellipsis h-full gap-6'
+              "flex flex-col overflow-hidden text-fade-in mx-4 my-2 relative text-ellipsis h-full gap-6"
             }
           >
             <For each={content()}>{(line) => <span innerHTML={line} />}</For>
@@ -82,5 +81,5 @@ export const StreamingBubble = (props: Props) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

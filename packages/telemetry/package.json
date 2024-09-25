@@ -1,16 +1,16 @@
 {
   "name": "@typebot.io/telemetry",
-  "version": "1.0.0",
-  "description": "",
-  "scripts": {},
-  "keywords": [],
-  "author": "Baptiste Arnaud",
-  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./*": "./src/*.ts"
+  },
   "dependencies": {
-    "@typebot.io/schemas": "workspace:*",
+    "@typebot.io/env": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/zod": "workspace:*",
     "ky": "1.2.4",
-    "posthog-node": "3.1.1",
-    "@typebot.io/env": "workspace:*"
+    "posthog-node": "3.1.1"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

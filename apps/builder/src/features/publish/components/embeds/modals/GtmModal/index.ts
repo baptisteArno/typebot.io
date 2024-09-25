@@ -1,1 +1,1 @@
-export * from './GtmModal'
+export * from "./GtmModal";

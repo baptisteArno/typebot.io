@@ -1,23 +1,25 @@
-import { Edge, GroupV6, TEvent } from '@typebot.io/schemas'
-import {
+import { isInputBlock } from "@typebot.io/blocks-core/helpers";
+import type { GroupV6 } from "@typebot.io/groups/schemas";
+import type {
   TotalAnswers,
   TotalVisitedEdges,
-} from '@typebot.io/schemas/features/analytics'
-import React, { memo } from 'react'
-import { EndpointsProvider } from '../providers/EndpointsProvider'
-import { Edges } from './edges/Edges'
-import { GroupNode } from './nodes/group/GroupNode'
-import { isInputBlock } from '@typebot.io/schemas/helpers'
-import { EventNode } from './nodes/event'
+} from "@typebot.io/schemas/features/analytics";
+import type { Edge } from "@typebot.io/typebot/schemas/edge";
+import type { TEvent } from "@typebot.io/typebot/schemas/types";
+import React, { memo } from "react";
+import { EndpointsProvider } from "../providers/EndpointsProvider";
+import { Edges } from "./edges/Edges";
+import { EventNode } from "./nodes/event";
+import { GroupNode } from "./nodes/group/GroupNode";
 
 type Props = {
-  edges: Edge[]
-  groups: GroupV6[]
-  events: TEvent[]
-  totalVisitedEdges?: TotalVisitedEdges[]
-  totalAnswers?: TotalAnswers[]
-  onUnlockProPlanClick?: () => void
-}
+  edges: Edge[];
+  groups: GroupV6[];
+  events: TEvent[];
+  totalVisitedEdges?: TotalVisitedEdges[];
+  totalAnswers?: TotalAnswers[];
+  onUnlockProPlanClick?: () => void;
+};
 const GroupNodes = ({
   edges,
   groups,
@@ -29,7 +31,7 @@ const GroupNodes = ({
   const inputBlockIds = groups
     .flatMap((g) => g.blocks)
     .filter(isInputBlock)
-    .map((b) => b.id)
+    .map((b) => b.id);
 
   return (
     <EndpointsProvider>
@@ -48,7 +50,7 @@ const GroupNodes = ({
         <GroupNode group={group} groupIndex={idx} key={group.id} />
       ))}
     </EndpointsProvider>
-  )
-}
+  );
+};
 
-export default memo(GroupNodes)
+export default memo(GroupNodes);

@@ -1,13 +1,13 @@
-import { Select } from '@/components/inputs/Select'
-import { Input } from '@chakra-ui/react'
-import { Group } from '@typebot.io/schemas'
+import { Select } from "@/components/inputs/Select";
+import { Input } from "@chakra-ui/react";
+import type { Group } from "@typebot.io/groups/schemas";
 
 type Props = {
-  groups: Group[]
-  groupId?: string
-  onGroupIdSelected: (groupId: string | undefined) => void
-  isLoading?: boolean
-}
+  groups: Group[];
+  groupId?: string;
+  onGroupIdSelected: (groupId: string | undefined) => void;
+  isLoading?: boolean;
+};
 
 export const GroupsDropdown = ({
   groups,
@@ -15,9 +15,9 @@ export const GroupsDropdown = ({
   onGroupIdSelected,
   isLoading,
 }: Props) => {
-  if (isLoading) return <Input value="Loading..." isDisabled />
+  if (isLoading) return <Input value="Loading..." isDisabled />;
   if (!groups || groups.length === 0)
-    return <Input value="No groups found" isDisabled />
+    return <Input value="No groups found" isDisabled />;
   return (
     <Select
       selectedItem={groupId}
@@ -26,7 +26,7 @@ export const GroupsDropdown = ({
         value: group.id,
       }))}
       onSelect={onGroupIdSelected}
-      placeholder={'Select a group'}
+      placeholder={"Select a group"}
     />
-  )
-}
+  );
+};

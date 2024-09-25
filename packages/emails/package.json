@@ -1,37 +1,28 @@
 {
   "name": "@typebot.io/emails",
-  "version": "1.0.0",
-  "description": "",
   "private": true,
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
-  "scripts": {
-    "preview": "concurrently \"pnpm run watch\" \"sleep 5 && pnpm run serve\" -n \"watch,serve\" -c \"bgBlue.bold,bgMagenta.bold\"",
-    "watch": "tsx watch ./src/preview.tsx --clear-screen=false",
-    "serve": "http-server dist -a localhost -p 3223 -o -c-1",
-    "lint": "eslint \"src/**/*.ts*\""
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./emails/*": "./src/emails/*.tsx"
   },
-  "keywords": [],
-  "author": "Baptiste Arnaud",
-  "license": "AGPL-3.0-or-later",
-  "devDependencies": {
+  "scripts": {
+    "watch": "tsx watch ./src/preview.tsx --clear-screen=false",
+    "serve": "http-server dist -a localhost -p 3223 -o -c-1"
+  },
+  "dependencies": {
     "@faire/mjml-react": "3.3.0",
+    "nodemailer": "6.9.8",
+    "react": "18.2.0",
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/env": "workspace:*"
+  },
+  "devDependencies": {
     "@types/node": "20.4.2",
     "@types/nodemailer": "6.4.14",
     "@types/react": "18.2.15",
-    "concurrently": "8.2.0",
     "http-server": "14.1.1",
-    "nodemailer": "6.9.8",
-    "react": "18.2.0",
-    "tsx": "4.6.2",
-    "@typebot.io/lib": "workspace:*",
-    "eslint": "8.44.0",
-    "eslint-config-custom": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
-    "@typebot.io/env": "workspace:*"
-  },
-  "peerDependencies": {
-    "@faire/mjml-react": "2.1.4",
-    "nodemailer": "6.7.8"
+    "tsx": "4.19.1",
+    "@typebot.io/tsconfig": "workspace:*"
   }
 }

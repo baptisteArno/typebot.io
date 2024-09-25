@@ -1,117 +1,118 @@
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { TextInput, Textarea } from "@/components/inputs";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import {
-  Stack,
-  useDisclosure,
-  Text,
-  Flex,
-  HStack,
-  Switch,
-  FormLabel,
   Accordion,
   AccordionButton,
+  AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  AccordionIcon,
-} from '@chakra-ui/react'
-import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { SendEmailBlock, Variable } from '@typebot.io/schemas'
-import React from 'react'
-import { isNotEmpty } from '@typebot.io/lib'
-import { SmtpConfigModal } from './SmtpConfigModal'
-import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
-import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
-import { CredentialsDropdown } from '@/features/credentials/components/CredentialsDropdown'
-import { TextInput, Textarea } from '@/components/inputs'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
-import { env } from '@typebot.io/env'
-import { defaultSendEmailOptions } from '@typebot.io/schemas/features/blocks/integrations/sendEmail/constants'
+  Flex,
+  FormLabel,
+  HStack,
+  Stack,
+  Switch,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { defaultSendEmailOptions } from "@typebot.io/blocks-integrations/sendEmail/constants";
+import type { SendEmailBlock } from "@typebot.io/blocks-integrations/sendEmail/schema";
+import { env } from "@typebot.io/env";
+import { isNotEmpty } from "@typebot.io/lib/utils";
+import type { Variable } from "@typebot.io/variables/schemas";
+import React from "react";
+import { SmtpConfigModal } from "./SmtpConfigModal";
 
 type Props = {
-  options: SendEmailBlock['options']
-  onOptionsChange: (options: SendEmailBlock['options']) => void
-}
+  options: SendEmailBlock["options"];
+  onOptionsChange: (options: SendEmailBlock["options"]) => void;
+};
 
 export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
-  const { workspace } = useWorkspace()
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { workspace } = useWorkspace();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleCredentialsSelect = (credentialsId?: string) => {
     onOptionsChange({
       ...options,
-      credentialsId: credentialsId === undefined ? 'default' : credentialsId,
-    })
-  }
+      credentialsId: credentialsId === undefined ? "default" : credentialsId,
+    });
+  };
 
   const handleToChange = (recipientsStr: string) => {
     const recipients: string[] = recipientsStr
-      .split(',')
+      .split(",")
       .map((str) => str.trim())
-      .filter(isNotEmpty)
+      .filter(isNotEmpty);
     onOptionsChange({
       ...options,
       recipients,
-    })
-  }
+    });
+  };
 
   const handleCcChange = (ccStr: string) => {
     const cc: string[] = ccStr
-      .split(',')
+      .split(",")
       .map((str) => str.trim())
-      .filter(isNotEmpty)
+      .filter(isNotEmpty);
     onOptionsChange({
       ...options,
       cc,
-    })
-  }
+    });
+  };
 
   const handleBccChange = (bccStr: string) => {
     const bcc: string[] = bccStr
-      .split(',')
+      .split(",")
       .map((str) => str.trim())
-      .filter(isNotEmpty)
+      .filter(isNotEmpty);
     onOptionsChange({
       ...options,
       bcc,
-    })
-  }
+    });
+  };
 
   const handleSubjectChange = (subject: string) =>
     onOptionsChange({
       ...options,
       subject,
-    })
+    });
 
   const handleBodyChange = (body: string) =>
     onOptionsChange({
       ...options,
       body,
-    })
+    });
 
   const handleReplyToChange = (replyTo: string) =>
     onOptionsChange({
       ...options,
       replyTo,
-    })
+    });
 
   const handleIsCustomBodyChange = (isCustomBody: boolean) =>
     onOptionsChange({
       ...options,
       isCustomBody,
-    })
+    });
 
   const handleIsBodyCodeChange = () =>
     onOptionsChange({
       ...options,
       isBodyCode: options?.isBodyCode ? !options.isBodyCode : true,
-    })
+    });
 
   const handleChangeAttachmentVariable = (
-    variable: Pick<Variable, 'id' | 'name'> | undefined
+    variable: Pick<Variable, "id" | "name"> | undefined,
   ) =>
     onOptionsChange({
       ...options,
       attachmentsVariableId: variable?.id,
-    })
+    });
 
   return (
     <Stack spacing={4}>
@@ -127,7 +128,7 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
             onCredentialsSelect={handleCredentialsSelect}
             onCreateNewClick={onOpen}
             defaultCredentialLabel={env.NEXT_PUBLIC_SMTP_FROM?.match(
-              /<(.*)>/
+              /<(.*)>/,
             )?.pop()}
             credentialsName="SMTP account"
           />
@@ -136,7 +137,7 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
       <TextInput
         label="To:"
         onChange={handleToChange}
-        defaultValue={options?.recipients?.join(', ')}
+        defaultValue={options?.recipients?.join(", ")}
         placeholder="email1@gmail.com, email2@gmail.com"
       />
       <Accordion allowToggle>
@@ -152,18 +153,18 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
               label="Reply to:"
               onChange={handleReplyToChange}
               defaultValue={options?.replyTo}
-              placeholder={'email@gmail.com'}
+              placeholder={"email@gmail.com"}
             />
             <TextInput
               label="Cc:"
               onChange={handleCcChange}
-              defaultValue={options?.cc?.join(', ') ?? ''}
+              defaultValue={options?.cc?.join(", ") ?? ""}
               placeholder="email1@gmail.com, email2@gmail.com"
             />
             <TextInput
               label="Bcc:"
               onChange={handleBccChange}
-              defaultValue={options?.bcc?.join(', ') ?? ''}
+              defaultValue={options?.bcc?.join(", ") ?? ""}
               placeholder="email1@gmail.com, email2@gmail.com"
             />
           </AccordionPanel>
@@ -173,10 +174,10 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
       <TextInput
         label="Subject:"
         onChange={handleSubjectChange}
-        defaultValue={options?.subject ?? ''}
+        defaultValue={options?.subject ?? ""}
       />
       <SwitchWithLabel
-        label={'Custom content?'}
+        label={"Custom content?"}
         moreInfoContent="By default, the email body will be a recap of what has been collected so far. You can override it with this option."
         initialValue={
           options?.isCustomBody ?? defaultSendEmailOptions.isCustomBody
@@ -201,7 +202,7 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
           </Flex>
           {options.isBodyCode ? (
             <CodeEditor
-              defaultValue={options.body ?? ''}
+              defaultValue={options.body ?? ""}
               onChange={handleBodyChange}
               lang="html"
             />
@@ -210,7 +211,7 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
               data-testid="body-input"
               minH="300px"
               onChange={handleBodyChange}
-              defaultValue={options.body ?? ''}
+              defaultValue={options.body ?? ""}
             />
           )}
           <Stack pb="4">
@@ -238,5 +239,5 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
         onNewCredentials={handleCredentialsSelect}
       />
     </Stack>
-  )
-}
+  );
+};

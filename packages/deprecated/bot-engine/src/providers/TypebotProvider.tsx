@@ -1,50 +1,54 @@
-import { TypebotViewerProps } from '@/components/TypebotViewer'
-import { safeStringify } from '@/features/variables'
-import { sendEventToParent } from '@/utils/chat'
-import { Log } from '@typebot.io/prisma'
-import { Edge, PublicTypebot, Typebot, Variable } from '@typebot.io/schemas'
+import type { TypebotViewerProps } from "@/components/TypebotViewer";
+import { safeStringify } from "@/features/variables";
+import { sendEventToParent } from "@/utils/chat";
+
+import { isDefined } from "@typebot.io/lib/utils";
+import type { Log } from "@typebot.io/results/schemas/results";
+import type { Edge } from "@typebot.io/typebot/schemas/edge";
+import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
+import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
+import type { Variable } from "@typebot.io/variables/schemas";
 import {
+  type ReactNode,
   createContext,
-  ReactNode,
   useContext,
   useEffect,
   useState,
-} from 'react'
-import { isDefined } from '@typebot.io/lib'
+} from "react";
 
 export type LinkedTypebot = Pick<
   PublicTypebot | Typebot,
-  'id' | 'groups' | 'variables' | 'edges'
->
+  "id" | "groups" | "variables" | "edges"
+>;
 
 export type LinkedTypebotQueue = {
-  typebotId: string
-  edgeId: string
-}[]
+  typebotId: string;
+  edgeId: string;
+}[];
 
 const typebotContext = createContext<{
-  currentTypebotId: string
-  typebot: TypebotViewerProps['typebot']
-  linkedTypebots: LinkedTypebot[]
-  apiHost: string
-  isPreview: boolean
-  linkedBotQueue: LinkedTypebotQueue
-  isLoading: boolean
-  parentTypebotIds: string[]
-  setCurrentTypebotId: (id: string) => void
-  updateVariableValue: (variableId: string, value: unknown) => void
-  createEdge: (edge: Edge) => void
-  injectLinkedTypebot: (typebot: Typebot | PublicTypebot) => LinkedTypebot
-  pushParentTypebotId: (typebotId: string) => void
-  popEdgeIdFromLinkedTypebotQueue: () => void
+  currentTypebotId: string;
+  typebot: TypebotViewerProps["typebot"];
+  linkedTypebots: LinkedTypebot[];
+  apiHost: string;
+  isPreview: boolean;
+  linkedBotQueue: LinkedTypebotQueue;
+  isLoading: boolean;
+  parentTypebotIds: string[];
+  setCurrentTypebotId: (id: string) => void;
+  updateVariableValue: (variableId: string, value: unknown) => void;
+  createEdge: (edge: Edge) => void;
+  injectLinkedTypebot: (typebot: Typebot | PublicTypebot) => LinkedTypebot;
+  pushParentTypebotId: (typebotId: string) => void;
+  popEdgeIdFromLinkedTypebotQueue: () => void;
   pushEdgeIdInLinkedTypebotQueue: (bot: {
-    typebotId: string
-    edgeId: string
-  }) => void
-  onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
+    typebotId: string;
+    edgeId: string;
+  }) => void;
+  onNewLog: (log: Omit<Log, "id" | "createdAt" | "resultId">) => void;
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
-}>({})
+}>({});
 
 export const TypebotProvider = ({
   children,
@@ -54,119 +58,119 @@ export const TypebotProvider = ({
   isLoading,
   onNewLog,
 }: {
-  children: ReactNode
-  typebot: TypebotViewerProps['typebot']
-  apiHost: string
-  isLoading: boolean
-  isPreview: boolean
-  onNewLog: (log: Omit<Log, 'id' | 'createdAt' | 'resultId'>) => void
+  children: ReactNode;
+  typebot: TypebotViewerProps["typebot"];
+  apiHost: string;
+  isLoading: boolean;
+  isPreview: boolean;
+  onNewLog: (log: Omit<Log, "id" | "createdAt" | "resultId">) => void;
 }) => {
   const [localTypebot, setLocalTypebot] =
-    useState<TypebotViewerProps['typebot']>(typebot)
-  const [linkedTypebots, setLinkedTypebots] = useState<LinkedTypebot[]>([])
-  const [currentTypebotId, setCurrentTypebotId] = useState(typebot.typebotId)
-  const [linkedBotQueue, setLinkedBotQueue] = useState<LinkedTypebotQueue>([])
-  const [parentTypebotIds, setParentTypebotIds] = useState<string[]>([])
+    useState<TypebotViewerProps["typebot"]>(typebot);
+  const [linkedTypebots, setLinkedTypebots] = useState<LinkedTypebot[]>([]);
+  const [currentTypebotId, setCurrentTypebotId] = useState(typebot.typebotId);
+  const [linkedBotQueue, setLinkedBotQueue] = useState<LinkedTypebotQueue>([]);
+  const [parentTypebotIds, setParentTypebotIds] = useState<string[]>([]);
 
   useEffect(() => {
     setLocalTypebot((localTypebot) => ({
       ...localTypebot,
       theme: typebot.theme,
       settings: typebot.settings,
-    }))
+    }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [typebot.theme, typebot.settings])
+  }, [typebot.theme, typebot.settings]);
 
   const updateVariableValue = (variableId: string, value: unknown) => {
-    const formattedValue = safeStringify(value)
+    const formattedValue = safeStringify(value);
 
     sendEventToParent({
       newVariableValue: {
         name:
           localTypebot.variables.find((variable) => variable.id === variableId)
-            ?.name ?? '',
-        value: formattedValue ?? '',
+            ?.name ?? "",
+        value: formattedValue ?? "",
       },
-    })
+    });
 
-    const variable = localTypebot.variables.find((v) => v.id === variableId)
+    const variable = localTypebot.variables.find((v) => v.id === variableId);
     const otherVariablesWithSameName = localTypebot.variables.filter(
-      (v) => v.name === variable?.name && v.id !== variableId
-    )
+      (v) => v.name === variable?.name && v.id !== variableId,
+    );
     const variablesToUpdate = [variable, ...otherVariablesWithSameName].filter(
-      isDefined
-    )
+      isDefined,
+    );
 
     setLocalTypebot((typebot) => ({
       ...typebot,
       variables: typebot.variables.map((variable) =>
         variablesToUpdate.some(
-          (variableToUpdate) => variableToUpdate.id === variable.id
+          (variableToUpdate) => variableToUpdate.id === variable.id,
         )
           ? { ...variable, value: formattedValue }
-          : variable
+          : variable,
       ),
-    }))
-  }
+    }));
+  };
 
   const createEdge = (edge: Edge) => {
     setLocalTypebot((typebot) => ({
       ...typebot,
       edges: [...typebot.edges, edge],
-    }))
-  }
+    }));
+  };
 
   const injectLinkedTypebot = (typebot: Typebot | PublicTypebot) => {
     const newVariables = fillVariablesWithExistingValues(
       typebot.variables,
-      localTypebot.variables
-    )
+      localTypebot.variables,
+    );
     const typebotToInject = {
-      id: 'typebotId' in typebot ? typebot.typebotId : typebot.id,
+      id: "typebotId" in typebot ? typebot.typebotId : typebot.id,
       groups: typebot.groups,
       edges: typebot.edges,
       variables: newVariables,
-    }
-    setLinkedTypebots((typebots) => [...typebots, typebotToInject])
+    };
+    setLinkedTypebots((typebots) => [...typebots, typebotToInject]);
     const updatedTypebot = {
       ...localTypebot,
       groups: [...localTypebot.groups, ...typebotToInject.groups],
       variables: [...localTypebot.variables, ...typebotToInject.variables],
       edges: [...localTypebot.edges, ...typebotToInject.edges],
-    } as TypebotViewerProps['typebot']
-    setLocalTypebot(updatedTypebot)
-    return typebotToInject
-  }
+    } as TypebotViewerProps["typebot"];
+    setLocalTypebot(updatedTypebot);
+    return typebotToInject;
+  };
 
   const fillVariablesWithExistingValues = (
     variables: Variable[],
-    variablesWithValues: Variable[]
+    variablesWithValues: Variable[],
   ): Variable[] =>
     variables.map((variable) => {
       const matchedVariable = variablesWithValues.find(
-        (variableWithValue) => variableWithValue.name === variable.name
-      )
+        (variableWithValue) => variableWithValue.name === variable.name,
+      );
 
       return {
         ...variable,
         value: matchedVariable?.value ?? variable.value,
-      }
-    })
+      };
+    });
 
   const pushParentTypebotId = (typebotId: string) => {
-    setParentTypebotIds((ids) => [...ids, typebotId])
-  }
+    setParentTypebotIds((ids) => [...ids, typebotId]);
+  };
 
   const pushEdgeIdInLinkedTypebotQueue = (bot: {
-    typebotId: string
-    edgeId: string
-  }) => setLinkedBotQueue((queue) => [...queue, bot])
+    typebotId: string;
+    edgeId: string;
+  }) => setLinkedBotQueue((queue) => [...queue, bot]);
 
   const popEdgeIdFromLinkedTypebotQueue = () => {
-    setLinkedBotQueue((queue) => queue.slice(1))
-    setParentTypebotIds((ids) => ids.slice(1))
-    setCurrentTypebotId(linkedBotQueue[0].typebotId)
-  }
+    setLinkedBotQueue((queue) => queue.slice(1));
+    setParentTypebotIds((ids) => ids.slice(1));
+    setCurrentTypebotId(linkedBotQueue[0].typebotId);
+  };
 
   return (
     <typebotContext.Provider
@@ -191,7 +195,7 @@ export const TypebotProvider = ({
     >
       {children}
     </typebotContext.Provider>
-  )
-}
+  );
+};
 
-export const useTypebot = () => useContext(typebotContext)
+export const useTypebot = () => useContext(typebotContext);

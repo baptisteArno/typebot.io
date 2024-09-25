@@ -1,54 +1,54 @@
-import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { ExternalLinkIcon } from '@/components/icons'
+import { ExternalLinkIcon } from "@/components/icons";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
 import {
-  OrderedList,
-  ListItem,
-  useColorModeValue,
+  Code,
   Link,
+  ListItem,
+  OrderedList,
   Stack,
   Text,
-  Code,
-} from '@chakra-ui/react'
-import { useState } from 'react'
-import { PopupSettings } from '../../../settings/PopupSettings'
-import { parseInitPopupCode } from '../../../snippetParsers/popup'
-import { parseApiHostValue } from '../../../snippetParsers'
-import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
-import packageJson from '../../../../../../../../../../packages/embeds/js/package.json'
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { useState } from "react";
+import packageJson from "../../../../../../../../../../packages/embeds/js/package.json";
+import { PopupSettings } from "../../../settings/PopupSettings";
+import { parseApiHostValue } from "../../../snippetParsers";
+import { parseInitPopupCode } from "../../../snippetParsers/popup";
 
-const typebotCloudLibraryVersion = '0.2'
+const typebotCloudLibraryVersion = "0.2";
 
 type Props = {
-  publicId: string
-  customDomain?: string
-}
+  publicId: string;
+  customDomain?: string;
+};
 export const WordpressPopupInstructions = ({
   publicId,
   customDomain,
 }: Props) => {
-  const [autoShowDelay, setAutoShowDelay] = useState<number>()
+  const [autoShowDelay, setAutoShowDelay] = useState<number>();
 
   const initCode = parseInitPopupCode({
     typebot: publicId,
     apiHost: parseApiHostValue(customDomain),
     autoShowDelay,
-  })
+  });
 
   return (
     <OrderedList spacing={4} pl={5}>
       <ListItem>
-        Install{' '}
+        Install{" "}
         <Link
           href="https://wordpress.org/plugins/typebot/"
           isExternal
-          color={useColorModeValue('blue.500', 'blue.300')}
+          color={useColorModeValue("blue.500", "blue.300")}
         >
           the official Typebot WordPress plugin
           <ExternalLinkIcon mx="2px" />
         </Link>
       </ListItem>
       <ListItem>
-        Set <Code>Library version</Code> to{' '}
+        Set <Code>Library version</Code> to{" "}
         <Code>
           {isCloudProdInstance()
             ? typebotCloudLibraryVersion
@@ -70,5 +70,5 @@ export const WordpressPopupInstructions = ({
         </Stack>
       </ListItem>
     </OrderedList>
-  )
-}
+  );
+};

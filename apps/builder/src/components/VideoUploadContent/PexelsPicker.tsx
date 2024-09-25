@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Alert,
   AlertIcon,
@@ -12,87 +11,93 @@ import {
   Spinner,
   Stack,
   Text,
-} from '@chakra-ui/react'
-import { isDefined } from '@typebot.io/lib'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { createClient, Video, ErrorResponse, Videos } from 'pexels'
-import { TextInput } from '../inputs'
-import { TextLink } from '../TextLink'
-import { env } from '@typebot.io/env'
-import { PexelsLogo } from '../logos/PexelsLogo'
+} from "@chakra-ui/react";
+import { env } from "@typebot.io/env";
+import { isDefined } from "@typebot.io/lib/utils";
+import {
+  type ErrorResponse,
+  type Video,
+  type Videos,
+  createClient,
+} from "pexels";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { TextLink } from "../TextLink";
+import { TextInput } from "../inputs";
+import { PexelsLogo } from "../logos/PexelsLogo";
 
-const client = createClient(env.NEXT_PUBLIC_PEXELS_API_KEY ?? 'dummy')
+/* eslint-disable react-hooks/exhaustive-deps */
+const client = createClient(env.NEXT_PUBLIC_PEXELS_API_KEY ?? "dummy");
 
 type Props = {
-  videoSize: 'large' | 'medium' | 'small'
-  onVideoSelect: (videoUrl: string) => void
-}
+  videoSize: "large" | "medium" | "small";
+  onVideoSelect: (videoUrl: string) => void;
+};
 
 export const PexelsPicker = ({ videoSize, onVideoSelect }: Props) => {
-  const [isFetching, setIsFetching] = useState(false)
-  const [videos, setVideos] = useState<Video[]>([])
-  const [error, setError] = useState<string | null>(null)
-  const [searchQuery, setSearchQuery] = useState('')
-  const scrollContainer = useRef<HTMLDivElement>(null)
-  const bottomAnchor = useRef<HTMLDivElement>(null)
+  const [isFetching, setIsFetching] = useState(false);
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const scrollContainer = useRef<HTMLDivElement>(null);
+  const bottomAnchor = useRef<HTMLDivElement>(null);
 
-  const [nextPage, setNextPage] = useState(0)
+  const [nextPage, setNextPage] = useState(0);
 
   const fetchNewVideos = useCallback(async (query: string, page: number) => {
-    if (query === '') getInitialVideos()
+    if (query === "") getInitialVideos();
     if (query.length <= 2) {
-      setNextPage(0)
-      return
+      setNextPage(0);
+      return;
     }
-    setError(null)
-    setIsFetching(true)
+    setError(null);
+    setIsFetching(true);
     try {
       const result = await client.videos.search({
         query,
         per_page: 24,
         size: videoSize,
         page,
-      })
+      });
       if ((result as ErrorResponse).error)
-        setError((result as ErrorResponse).error)
+        setError((result as ErrorResponse).error);
       if (isDefined((result as Videos).videos)) {
-        if (page === 0) setVideos((result as Videos).videos)
+        if (page === 0) setVideos((result as Videos).videos);
         else
           setVideos((videos) => [
             ...videos,
             ...((result as Videos)?.videos ?? []),
-          ])
-        setNextPage((page) => page + 1)
+          ]);
+        setNextPage((page) => page + 1);
       }
     } catch (err) {
-      if (err && typeof err === 'object' && 'message' in err)
-        setError(err.message as string)
-      setError('Something went wrong')
+      if (err && typeof err === "object" && "message" in err)
+        setError(err.message as string);
+      setError("Something went wrong");
     }
-    setIsFetching(false)
-  }, [])
+    setIsFetching(false);
+  }, []);
 
   useEffect(() => {
-    if (!bottomAnchor.current) return
+    if (!bottomAnchor.current) return;
     const observer = new IntersectionObserver(
       (entities: IntersectionObserverEntry[]) => {
-        const target = entities[0]
-        if (target.isIntersecting) fetchNewVideos(searchQuery, nextPage + 1)
+        const target = entities[0];
+        if (target.isIntersecting) fetchNewVideos(searchQuery, nextPage + 1);
       },
       {
         root: scrollContainer.current,
-      }
-    )
+      },
+    );
     if (bottomAnchor.current && nextPage > 0)
-      observer.observe(bottomAnchor.current)
+      observer.observe(bottomAnchor.current);
     return () => {
-      observer.disconnect()
-    }
-  }, [fetchNewVideos, nextPage, searchQuery])
+      observer.disconnect();
+    };
+  }, [fetchNewVideos, nextPage, searchQuery]);
 
   const getInitialVideos = async () => {
-    setError(null)
-    setIsFetching(true)
+    setError(null);
+    setIsFetching(true);
     client.videos
       .popular({
         per_page: 24,
@@ -100,31 +105,31 @@ export const PexelsPicker = ({ videoSize, onVideoSelect }: Props) => {
       })
       .then((res) => {
         if ((res as ErrorResponse).error) {
-          setError((res as ErrorResponse).error)
+          setError((res as ErrorResponse).error);
         }
-        setVideos((res as Videos).videos)
-        setIsFetching(false)
+        setVideos((res as Videos).videos);
+        setIsFetching(false);
       })
       .catch((err) => {
-        if (err && typeof err === 'object' && 'message' in err)
-          setError(err.message as string)
-        setError('Something went wrong')
-        setIsFetching(false)
-      })
-  }
+        if (err && typeof err === "object" && "message" in err)
+          setError(err.message as string);
+        setError("Something went wrong");
+        setIsFetching(false);
+      });
+  };
 
   const selectVideo = (video: Video) => {
-    const videoUrl = video.video_files[0].link
-    if (isDefined(videoUrl)) onVideoSelect(videoUrl)
-  }
+    const videoUrl = video.video_files[0].link;
+    if (isDefined(videoUrl)) onVideoSelect(videoUrl);
+  };
 
   useEffect(() => {
-    if (!env.NEXT_PUBLIC_PEXELS_API_KEY) return
-    getInitialVideos()
-  }, [])
+    if (!env.NEXT_PUBLIC_PEXELS_API_KEY) return;
+    getInitialVideos();
+  }, []);
 
   if (!env.NEXT_PUBLIC_PEXELS_API_KEY)
-    return <Text>NEXT_PUBLIC_PEXELS_API_KEY is missing in environment</Text>
+    return <Text>NEXT_PUBLIC_PEXELS_API_KEY is missing in environment</Text>;
 
   return (
     <Stack spacing={4} pt="2">
@@ -133,8 +138,8 @@ export const PexelsPicker = ({ videoSize, onVideoSelect }: Props) => {
           autoFocus
           placeholder="Search..."
           onChange={(query) => {
-            setSearchQuery(query)
-            fetchNewVideos(query, 0)
+            setSearchQuery(query);
+            fetchNewVideos(query, 0);
           }}
           withVariableButton={false}
           debounceTimeout={500}
@@ -174,41 +179,41 @@ export const PexelsPicker = ({ videoSize, onVideoSelect }: Props) => {
         )}
       </Stack>
     </Stack>
-  )
-}
+  );
+};
 
 type PexelsVideoProps = {
-  video: Video
-  onClick: () => void
-}
+  video: Video;
+  onClick: () => void;
+};
 
 const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
-  const { user, url, video_pictures } = video
-  const [isImageHovered, setIsImageHovered] = useState(false)
+  const { user, url, video_pictures } = video;
+  const [isImageHovered, setIsImageHovered] = useState(false);
   const [thumbnailImage, setThumbnailImage] = useState(
-    video_pictures[0].picture
-  )
-  const [imageIndex, setImageIndex] = useState(1)
+    video_pictures[0].picture,
+  );
+  const [imageIndex, setImageIndex] = useState(1);
 
   useEffect(() => {
-    let interval: NodeJS.Timer
+    let interval: NodeJS.Timer;
 
     if (isImageHovered && video_pictures.length > 0) {
       interval = setInterval(() => {
-        setImageIndex((prevIndex) => (prevIndex + 1) % video_pictures.length)
-        setThumbnailImage(video_pictures[imageIndex].picture)
-      }, 200)
+        setImageIndex((prevIndex) => (prevIndex + 1) % video_pictures.length);
+        setThumbnailImage(video_pictures[imageIndex].picture);
+      }, 200);
     } else {
-      setThumbnailImage(video_pictures[0].picture)
-      setImageIndex(1)
+      setThumbnailImage(video_pictures[0].picture);
+      setImageIndex(1);
     }
 
     return () => {
       if (interval) {
-        clearInterval(interval)
+        clearInterval(interval);
       }
-    }
-  }, [isImageHovered, imageIndex, video_pictures])
+    };
+  }, [isImageHovered, imageIndex, video_pictures]);
 
   return (
     <Box
@@ -250,5 +255,5 @@ const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
         </TextLink>
       </Box>
     </Box>
-  )
-}
+  );
+};

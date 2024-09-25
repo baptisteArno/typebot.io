@@ -1,10 +1,10 @@
-import { MenuList, MenuItem } from '@chakra-ui/react'
-import { CopyIcon, TrashIcon } from '@/components/icons'
+import { CopyIcon, TrashIcon } from "@/components/icons";
+import { MenuItem, MenuList } from "@chakra-ui/react";
 
 type Props = {
-  onDuplicateClick?: () => void
-  onDeleteClick?: () => void
-}
+  onDuplicateClick?: () => void;
+  onDeleteClick?: () => void;
+};
 export const EventNodeContextMenu = ({
   onDuplicateClick,
   onDeleteClick,
@@ -21,4 +21,4 @@ export const EventNodeContextMenu = ({
       </MenuItem>
     )}
   </MenuList>
-)
+);

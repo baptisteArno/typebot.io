@@ -1,30 +1,30 @@
+import { AlertInfo } from "@/components/AlertInfo";
+import { GoogleLogo } from "@/components/GoogleLogo";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import {
+  Button,
+  Flex,
+  Image,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
   ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Stack,
   Text,
-  Image,
-  Button,
-  ModalFooter,
-  Flex,
-} from '@chakra-ui/react'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import Link from 'next/link'
-import React from 'react'
-import { AlertInfo } from '@/components/AlertInfo'
-import { GoogleLogo } from '@/components/GoogleLogo'
-import { getGoogleSheetsConsentScreenUrlQuery } from '../queries/getGoogleSheetsConsentScreenUrlQuery'
+} from "@chakra-ui/react";
+import Link from "next/link";
+import React from "react";
+import { getGoogleSheetsConsentScreenUrlQuery } from "../queries/getGoogleSheetsConsentScreenUrlQuery";
 
 type Props = {
-  isOpen: boolean
-  typebotId?: string
-  blockId?: string
-  onClose: () => void
-}
+  isOpen: boolean;
+  typebotId?: string;
+  blockId?: string;
+  onClose: () => void;
+};
 
 export const GoogleSheetConnectModal = ({
   typebotId,
@@ -37,17 +37,17 @@ export const GoogleSheetConnectModal = ({
       <ModalOverlay />
       <GoogleSheetConnectModalContent typebotId={typebotId} blockId={blockId} />
     </Modal>
-  )
-}
+  );
+};
 
 export const GoogleSheetConnectModalContent = ({
   typebotId,
   blockId,
 }: {
-  typebotId?: string
-  blockId?: string
+  typebotId?: string;
+  blockId?: string;
 }) => {
-  const { workspace } = useWorkspace()
+  const { workspace } = useWorkspace();
 
   return (
     <ModalContent>
@@ -75,13 +75,13 @@ export const GoogleSheetConnectModalContent = ({
               as={Link}
               leftIcon={<GoogleLogo />}
               data-testid="google"
-              isLoading={['loading', 'authenticated'].includes(status)}
+              isLoading={["loading", "authenticated"].includes(status)}
               variant="outline"
               href={getGoogleSheetsConsentScreenUrlQuery(
                 window.location.href,
                 workspace.id,
                 blockId,
-                typebotId
+                typebotId,
               )}
               mx="auto"
             >
@@ -92,5 +92,5 @@ export const GoogleSheetConnectModalContent = ({
       </ModalBody>
       <ModalFooter />
     </ModalContent>
-  )
-}
+  );
+};

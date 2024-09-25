@@ -1,5 +1,5 @@
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { trpc } from '@/lib/trpc'
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { trpc } from "@/lib/trpc";
 import {
   Button,
   DarkMode,
@@ -8,31 +8,31 @@ import {
   SlideFade,
   Stack,
   Text,
-} from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
-import { PackageIcon } from './icons'
+} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { PackageIcon } from "./icons";
 
 export const NewVersionPopup = () => {
-  const { typebot, save } = useTypebot()
-  const [isReloading, setIsReloading] = useState(false)
-  const { data } = trpc.getAppVersionProcedure.useQuery()
-  const [currentVersion, setCurrentVersion] = useState<string>()
-  const [isNewVersionAvailable, setIsNewVersionAvailable] = useState(false)
+  const { typebot, save } = useTypebot();
+  const [isReloading, setIsReloading] = useState(false);
+  const { data } = trpc.getAppVersionProcedure.useQuery();
+  const [currentVersion, setCurrentVersion] = useState<string>();
+  const [isNewVersionAvailable, setIsNewVersionAvailable] = useState(false);
 
   useEffect(() => {
-    if (!data?.commitSha) return
-    if (currentVersion === data.commitSha) return
-    setCurrentVersion(data.commitSha)
-    if (currentVersion === undefined) return
-    setIsNewVersionAvailable(true)
-  }, [data, currentVersion])
+    if (!data?.commitSha) return;
+    if (currentVersion === data.commitSha) return;
+    setCurrentVersion(data.commitSha);
+    if (currentVersion === undefined) return;
+    setIsNewVersionAvailable(true);
+  }, [data, currentVersion]);
 
   const saveAndReload = async () => {
-    if (isReloading) return
-    setIsReloading(true)
-    if (save) await save()
-    window.location.reload()
-  }
+    if (isReloading) return;
+    setIsReloading(true);
+    if (save) await save();
+    window.location.reload();
+  };
 
   return (
     <DarkMode>
@@ -40,9 +40,9 @@ export const NewVersionPopup = () => {
         in={isNewVersionAvailable}
         offsetY="20px"
         style={{
-          position: 'fixed',
-          bottom: '18px',
-          left: '18px',
+          position: "fixed",
+          bottom: "18px",
+          left: "18px",
           zIndex: 42,
         }}
         unmountOnExit
@@ -61,7 +61,7 @@ export const NewVersionPopup = () => {
             <Stack spacing={4} color="white">
               <Stack spacing={1}>
                 <HStack>
-                  <PackageIcon />{' '}
+                  <PackageIcon />{" "}
                   <Text fontWeight="bold">New version available!</Text>
                 </HStack>
 
@@ -72,7 +72,7 @@ export const NewVersionPopup = () => {
               </Stack>
               <Flex justifyContent="flex-end">
                 <Button size="sm" onClick={saveAndReload}>
-                  {typebot?.id ? 'Save and reload' : 'Reload'}
+                  {typebot?.id ? "Save and reload" : "Reload"}
                 </Button>
               </Flex>
             </Stack>
@@ -80,5 +80,5 @@ export const NewVersionPopup = () => {
         </Stack>
       </SlideFade>
     </DarkMode>
-  )
-}
+  );
+};

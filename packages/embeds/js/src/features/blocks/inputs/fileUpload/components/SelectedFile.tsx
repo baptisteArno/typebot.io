@@ -1,25 +1,25 @@
+import { CloseIcon } from "@/components/icons/CloseIcon";
+import { Progress } from "@ark-ui/solid";
+import { isDefined } from "@typebot.io/lib/utils";
 import {
-  Switch,
   Match,
   Show,
-  createSignal,
+  Switch,
   createEffect,
+  createSignal,
   onCleanup,
-} from 'solid-js'
-import { CloseIcon } from '@/components/icons/CloseIcon'
-import { FilePreview } from './FilePreview'
-import { Progress } from '@ark-ui/solid'
-import { isDefined } from '@typebot.io/lib'
+} from "solid-js";
+import { FilePreview } from "./FilePreview";
 
 export const SelectedFile = (props: {
-  file: File
-  uploadProgressPercent?: number
-  onRemoveClick: () => void
+  file: File;
+  uploadProgressPercent?: number;
+  onRemoveClick: () => void;
 }) => {
   return (
     <div class="relative group flex-shrink-0">
       <Switch>
-        <Match when={props.file.type.startsWith('image')}>
+        <Match when={props.file.type.startsWith("image")}>
           <img
             src={URL.createObjectURL(props.file)}
             alt={props.file.name}
@@ -47,33 +47,33 @@ export const SelectedFile = (props: {
         <UploadOverlay progressPercent={props.uploadProgressPercent} />
       </Show>
     </div>
-  )
-}
+  );
+};
 
 const UploadOverlay = (props: { progressPercent?: number }) => {
   const [progressPercent, setProgressPercent] = createSignal(
-    props.progressPercent ?? 0
-  )
+    props.progressPercent ?? 0,
+  );
 
-  let interval: NodeJS.Timer | undefined
+  let interval: NodeJS.Timer | undefined;
 
   createEffect(() => {
     if (props.progressPercent === 20) {
       const incrementProgress = () => {
         if (progressPercent() < 100) {
           setProgressPercent(
-            (prev) => prev + (Math.floor(Math.random() * 10) + 1)
-          )
+            (prev) => prev + (Math.floor(Math.random() * 10) + 1),
+          );
         }
-      }
+      };
 
-      interval = setInterval(incrementProgress, 1000)
+      interval = setInterval(incrementProgress, 1000);
     }
-  })
+  });
 
   onCleanup(() => {
-    clearInterval(interval)
-  })
+    clearInterval(interval);
+  });
 
   return (
     <div class="absolute w-full h-full inset-0 bg-black/20 rounded-md">
@@ -87,5 +87,5 @@ const UploadOverlay = (props: { progressPercent?: number }) => {
         </Progress.Circle>
       </Progress.Root>
     </div>
-  )
-}
+  );
+};

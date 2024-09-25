@@ -1,9 +1,9 @@
-import { Vector2 } from '@use-gesture/react'
+import type { Vector2 } from "@use-gesture/react";
 
 type Props = {
-  initial: Vector2
-  movement: Vector2
-}
+  initial: Vector2;
+  movement: Vector2;
+};
 export const computeSelectBoxDimensions = ({ initial, movement }: Props) => {
   if (movement[0] < 0 && movement[1] < 0)
     return {
@@ -15,7 +15,7 @@ export const computeSelectBoxDimensions = ({ initial, movement }: Props) => {
         width: Math.abs(movement[0]),
         height: Math.abs(movement[1]),
       },
-    }
+    };
   else if (movement[0] < 0)
     return {
       origin: {
@@ -26,7 +26,7 @@ export const computeSelectBoxDimensions = ({ initial, movement }: Props) => {
         width: Math.abs(movement[0]),
         height: movement[1],
       },
-    }
+    };
   else if (movement[1] < 0)
     return {
       origin: {
@@ -37,7 +37,7 @@ export const computeSelectBoxDimensions = ({ initial, movement }: Props) => {
         width: movement[0],
         height: Math.abs(movement[1]),
       },
-    }
+    };
   else
     return {
       origin: {
@@ -48,5 +48,5 @@ export const computeSelectBoxDimensions = ({ initial, movement }: Props) => {
         width: movement[0],
         height: movement[1],
       },
-    }
-}
+    };
+};

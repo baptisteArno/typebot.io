@@ -10,7 +10,7 @@
 <br />
 
 <p align="center">
-Typebot is an open-source chatbot builder. It allows you to create advanced chatbots visually, embed them anywhere on your web/mobile apps, and collect results in real-time
+Typebot is an Fair Source chatbot builder. It allows you to create advanced chatbots visually, embed them anywhere on your web/mobile apps, and collect results in real-time
 </p>
 
 <p align="center">
@@ -79,7 +79,7 @@ Built for **developers**:
 The easiest way to get started with Typebot is with [the official managed service in the Cloud](https://app.typebot.io). You'll have high availability, backups, security, and maintenance all managed for you by me, [Baptiste, Typebot's founder](https://twitter.com/baptisteArno).
 
 The cloud version can save a substantial amount of developer time and resources. For most sites this ends up being the best value option and the revenue goes to funding the maintenance and further development of Typebot.
-So you’ll be supporting open source software and getting a great service! 💙
+So you’ll be supporting fair source software and getting a great service! 💙
 
 ## Support & Community
 
@@ -110,4 +110,4 @@ Made with [contrib.rocks](https://contrib.rocks).
 
 ## License
 
-Most of Typebot's code is open-source under the GNU Affero General Public License Version 3 (AGPLv3). You will find more information about the license and how to comply with it [here](https://docs.typebot.io/self-hosting#license-requirements).
+Typebot's code is protected under a Functional Source License. You will find more information about the license and how to comply with it [here](https://docs.typebot.io/self-hosting#license-requirements).

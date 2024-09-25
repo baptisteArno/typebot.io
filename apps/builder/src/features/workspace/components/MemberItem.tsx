@@ -9,23 +9,23 @@ import {
   Tag,
   Text,
   useColorModeValue,
-} from '@chakra-ui/react'
-import { WorkspaceRole } from '@typebot.io/prisma'
-import React from 'react'
-import { convertWorkspaceRoleToReadable } from './AddMemberForm'
-import { useTranslate } from '@tolgee/react'
+} from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import { WorkspaceRole } from "@typebot.io/prisma/enum";
+import React from "react";
+import { convertWorkspaceRoleToReadable } from "./AddMemberForm";
 
 type Props = {
-  image?: string
-  name?: string
-  email: string
-  role: WorkspaceRole
-  isGuest?: boolean
-  isMe?: boolean
-  canEdit: boolean
-  onDeleteClick: () => void
-  onSelectNewRole: (role: WorkspaceRole) => void
-}
+  image?: string;
+  name?: string;
+  email: string;
+  role: WorkspaceRole;
+  isGuest?: boolean;
+  isMe?: boolean;
+  canEdit: boolean;
+  onDeleteClick: () => void;
+  onSelectNewRole: (role: WorkspaceRole) => void;
+};
 
 export const MemberItem = ({
   email,
@@ -38,15 +38,15 @@ export const MemberItem = ({
   onDeleteClick,
   onSelectNewRole,
 }: Props) => {
-  const { t } = useTranslate()
-  const handleAdminClick = () => onSelectNewRole(WorkspaceRole.ADMIN)
-  const handleMemberClick = () => onSelectNewRole(WorkspaceRole.MEMBER)
+  const { t } = useTranslate();
+  const handleAdminClick = () => onSelectNewRole(WorkspaceRole.ADMIN);
+  const handleMemberClick = () => onSelectNewRole(WorkspaceRole.MEMBER);
 
   return (
     <Menu placement="bottom-end" isLazy>
       <MenuButton
         _hover={{
-          bg: useColorModeValue('gray.100', 'gray.700'),
+          bg: useColorModeValue("gray.100", "gray.700"),
         }}
         borderRadius="md"
       >
@@ -67,13 +67,13 @@ export const MemberItem = ({
             {convertWorkspaceRoleToReadable(WorkspaceRole.MEMBER)}
           </MenuItem>
           <MenuItem color="red.500" onClick={onDeleteClick}>
-            {t('remove')}
+            {t("remove")}
           </MenuItem>
         </MenuList>
       )}
     </Menu>
-  )
-}
+  );
+};
 
 export const MemberIdentityContent = ({
   name,
@@ -82,13 +82,13 @@ export const MemberIdentityContent = ({
   image,
   email,
 }: {
-  name?: string
-  tag?: string
-  image?: string
-  isGuest?: boolean
-  email: string
+  name?: string;
+  tag?: string;
+  image?: string;
+  isGuest?: boolean;
+  email: string;
 }) => {
-  const { t } = useTranslate()
+  const { t } = useTranslate();
 
   return (
     <HStack justifyContent="space-between" maxW="full" p="2">
@@ -102,7 +102,7 @@ export const MemberIdentityContent = ({
           )}
           <Text
             color="gray.500"
-            fontSize={name ? '14px' : 'inherit'}
+            fontSize={name ? "14px" : "inherit"}
             noOfLines={1}
           >
             {email}
@@ -112,11 +112,11 @@ export const MemberIdentityContent = ({
       <HStack flexShrink={0}>
         {isGuest && (
           <Tag color="gray.400" data-testid="tag">
-            {t('pending')}
+            {t("pending")}
           </Tag>
         )}
         <Tag data-testid="tag">{tag}</Tag>
       </HStack>
     </HStack>
-  )
-}
+  );
+};

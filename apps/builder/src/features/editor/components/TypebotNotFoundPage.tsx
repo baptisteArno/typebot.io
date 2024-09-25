@@ -1,30 +1,30 @@
-import { ChevronLeftIcon } from '@/components/icons'
-import { useUser } from '@/features/account/hooks/useUser'
+import { ChevronLeftIcon } from "@/components/icons";
+import { useUser } from "@/features/account/hooks/useUser";
 import {
   Button,
   Flex,
   Heading,
   Link,
-  VStack,
-  Text,
   Spinner,
-} from '@chakra-ui/react'
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export const TypebotNotFoundPage = () => {
-  const { replace, asPath } = useRouter()
-  const { user, isLoading } = useUser()
+  const { replace, asPath } = useRouter();
+  const { user, isLoading } = useUser();
 
   useEffect(() => {
-    if (user || isLoading) return
+    if (user || isLoading) return;
     replace({
-      pathname: '/signin',
+      pathname: "/signin",
       query: {
         redirectPath: asPath,
       },
-    })
-  }, [asPath, isLoading, replace, user])
+    });
+  }, [asPath, isLoading, replace, user]);
 
   return (
     <Flex justify="center" align="center" w="full" h="100vh">
@@ -47,5 +47,5 @@ export const TypebotNotFoundPage = () => {
         <Spinner />
       )}
     </Flex>
-  )
-}
+  );
+};

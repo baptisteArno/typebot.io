@@ -1,1 +1,1 @@
-export { executeWebhook } from './utils/executeWebhookBlock'
+export { executeWebhook } from "./utils/executeWebhookBlock";

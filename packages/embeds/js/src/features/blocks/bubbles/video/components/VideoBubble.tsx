@@ -1,58 +1,58 @@
-import { TypingBubble } from '@/components'
-import { isMobile } from '@/utils/isMobileSignal'
-import { createSignal, Match, onCleanup, onMount, Switch } from 'solid-js'
-import { clsx } from 'clsx'
+import { TypingBubble } from "@/components/TypingBubble";
+import { isMobile } from "@/utils/isMobileSignal";
 import {
+  VideoBubbleContentType,
   defaultVideoBubbleContent,
   embedBaseUrls,
   embeddableVideoTypes,
-  VideoBubbleContentType,
-} from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
-import {
+} from "@typebot.io/blocks-bubbles/video/constants";
+import type {
   EmbeddableVideoBubbleContentType,
   VideoBubbleBlock,
-} from '@typebot.io/schemas'
+} from "@typebot.io/blocks-bubbles/video/schema";
+import { clsx } from "clsx";
+import { Match, Switch, createSignal, onCleanup, onMount } from "solid-js";
 
 type Props = {
-  content: VideoBubbleBlock['content']
-  onTransitionEnd?: (ref?: HTMLDivElement) => void
-}
+  content: VideoBubbleBlock["content"];
+  onTransitionEnd?: (ref?: HTMLDivElement) => void;
+};
 
-export const showAnimationDuration = 400
-let typingTimeout: NodeJS.Timeout
+export const showAnimationDuration = 400;
+let typingTimeout: NodeJS.Timeout;
 
 export const VideoBubble = (props: Props) => {
-  let ref: HTMLDivElement | undefined
+  let ref: HTMLDivElement | undefined;
   const [isTyping, setIsTyping] = createSignal(
-    props.onTransitionEnd ? true : false
-  )
+    props.onTransitionEnd ? true : false,
+  );
 
   onMount(() => {
     const typingDuration =
       props.content?.type &&
       embeddableVideoTypes.includes(
-        props.content?.type as EmbeddableVideoBubbleContentType
+        props.content?.type as EmbeddableVideoBubbleContentType,
       )
         ? 2000
-        : 100
+        : 100;
     typingTimeout = setTimeout(() => {
-      if (!isTyping()) return
-      setIsTyping(false)
+      if (!isTyping()) return;
+      setIsTyping(false);
       setTimeout(() => {
-        props.onTransitionEnd?.(ref)
-      }, showAnimationDuration)
-    }, typingDuration)
-  })
+        props.onTransitionEnd?.(ref);
+      }, showAnimationDuration);
+    }, typingDuration);
+  });
 
   onCleanup(() => {
-    if (typingTimeout) clearTimeout(typingTimeout)
-  })
+    if (typingTimeout) clearTimeout(typingTimeout);
+  });
 
   return (
     <div
       class={clsx(
-        'flex flex-col w-full',
-        props.onTransitionEnd ? 'animate-fade-in' : undefined
+        "flex flex-col w-full",
+        props.onTransitionEnd ? "animate-fade-in" : undefined,
       )}
       ref={ref}
     >
@@ -61,9 +61,9 @@ export const VideoBubble = (props: Props) => {
           <div
             class="flex items-center absolute px-4 py-2 bubble-typing z-10 "
             style={{
-              width: isTyping() ? '64px' : '100%',
-              height: isTyping() ? '32px' : '100%',
-              'max-width':
+              width: isTyping() ? "64px" : "100%",
+              height: isTyping() ? "32px" : "100%",
+              "max-width":
                 props.content?.maxWidth ?? defaultVideoBubbleContent.maxWidth,
             }}
           >
@@ -79,8 +79,8 @@ export const VideoBubble = (props: Props) => {
               <video
                 autoplay={
                   props.onTransitionEnd
-                    ? props.content?.isAutoplayEnabled ??
-                      defaultVideoBubbleContent.isAutoplayEnabled
+                    ? (props.content?.isAutoplayEnabled ??
+                      defaultVideoBubbleContent.isAutoplayEnabled)
                     : false
                 }
                 src={props.content?.url}
@@ -89,13 +89,13 @@ export const VideoBubble = (props: Props) => {
                   defaultVideoBubbleContent.areControlsDisplayed
                 }
                 class={
-                  'p-4 focus:outline-none w-full z-10 text-fade-in rounded-md ' +
-                  (isTyping() ? 'opacity-0' : 'opacity-100')
+                  "p-4 focus:outline-none w-full z-10 text-fade-in rounded-md " +
+                  (isTyping() ? "opacity-0" : "opacity-100")
                 }
                 style={{
-                  height: isTyping() ? (isMobile() ? '32px' : '36px') : 'auto',
-                  'aspect-ratio': props.content?.aspectRatio,
-                  'max-width':
+                  height: isTyping() ? (isMobile() ? "32px" : "36px") : "auto",
+                  "aspect-ratio": props.content?.aspectRatio,
+                  "max-width":
                     props.content?.maxWidth ??
                     defaultVideoBubbleContent.maxWidth,
                 }}
@@ -105,28 +105,28 @@ export const VideoBubble = (props: Props) => {
               when={
                 props.content?.type &&
                 embeddableVideoTypes.includes(
-                  props.content.type as EmbeddableVideoBubbleContentType
+                  props.content.type as EmbeddableVideoBubbleContentType,
                 )
               }
             >
               <div
                 class={clsx(
-                  'p-4 z-10 text-fade-in w-full',
-                  isTyping() ? 'opacity-0' : 'opacity-100 p-4'
+                  "p-4 z-10 text-fade-in w-full",
+                  isTyping() ? "opacity-0" : "opacity-100 p-4",
                 )}
                 style={{
                   height: isTyping()
                     ? isMobile()
-                      ? '32px'
-                      : '36px'
+                      ? "32px"
+                      : "36px"
                     : !props.content?.aspectRatio
-                    ? `${
-                        props.content?.height ??
-                        defaultVideoBubbleContent.height
-                      }px`
-                    : undefined,
-                  'aspect-ratio': props.content?.aspectRatio,
-                  'max-width':
+                      ? `${
+                          props.content?.height ??
+                          defaultVideoBubbleContent.height
+                        }px`
+                      : undefined,
+                  "aspect-ratio": props.content?.aspectRatio,
+                  "max-width":
                     props.content?.maxWidth ??
                     defaultVideoBubbleContent.maxWidth,
                 }}
@@ -136,10 +136,10 @@ export const VideoBubble = (props: Props) => {
                     embedBaseUrls[
                       props.content?.type as EmbeddableVideoBubbleContentType
                     ]
-                  }/${props.content?.id ?? ''}${
-                    props.content?.queryParamsStr ?? ''
+                  }/${props.content?.id ?? ""}${
+                    props.content?.queryParamsStr ?? ""
                   }`}
-                  class={'w-full h-full'}
+                  class={"w-full h-full"}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowfullscreen
                 />
@@ -149,5 +149,5 @@ export const VideoBubble = (props: Props) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

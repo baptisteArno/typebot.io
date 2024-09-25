@@ -1,30 +1,32 @@
+import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import {
-  ReactNode,
-  useState,
-  useEffect,
-  useContext,
+  type ReactNode,
   createContext,
   useCallback,
-} from 'react'
-import { Coordinates, CoordinatesMap } from '../types'
-import { TypebotV6 } from '@typebot.io/schemas'
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import type { Coordinates, CoordinatesMap } from "../types";
 
 const eventsCoordinatesContext = createContext<{
-  eventsCoordinates: CoordinatesMap
-  updateEventCoordinates: (groupId: string, newCoord: Coordinates) => void
+  eventsCoordinates: CoordinatesMap;
+  updateEventCoordinates: (groupId: string, newCoord: Coordinates) => void;
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
-}>({})
+}>({});
 
 export const EventsCoordinatesProvider = ({
   children,
   events,
 }: {
-  children: ReactNode
-  events: TypebotV6['events'][number][]
-  isReadOnly?: boolean
+  children: ReactNode;
+  events: TypebotV6["events"][number][];
+  isReadOnly?: boolean;
 }) => {
-  const [eventsCoordinates, setEventsCoordinates] = useState<CoordinatesMap>({})
+  const [eventsCoordinates, setEventsCoordinates] = useState<CoordinatesMap>(
+    {},
+  );
 
   useEffect(() => {
     setEventsCoordinates(
@@ -33,10 +35,10 @@ export const EventsCoordinatesProvider = ({
           ...coords,
           [group.id]: group.graphCoordinates,
         }),
-        {}
-      )
-    )
-  }, [events])
+        {},
+      ),
+    );
+  }, [events]);
 
   const updateEventCoordinates = useCallback(
     (groupId: string, newCoord: Coordinates) =>
@@ -44,8 +46,8 @@ export const EventsCoordinatesProvider = ({
         ...eventsCoordinates,
         [groupId]: newCoord,
       })),
-    []
-  )
+    [],
+  );
 
   return (
     <eventsCoordinatesContext.Provider
@@ -53,7 +55,7 @@ export const EventsCoordinatesProvider = ({
     >
       {children}
     </eventsCoordinatesContext.Provider>
-  )
-}
+  );
+};
 
-export const useEventsCoordinates = () => useContext(eventsCoordinatesContext)
+export const useEventsCoordinates = () => useContext(eventsCoordinatesContext);

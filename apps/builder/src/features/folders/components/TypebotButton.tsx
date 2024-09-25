@@ -1,4 +1,15 @@
-import React, { memo } from 'react'
+import { ConfirmModal } from "@/components/ConfirmModal";
+import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
+import { GripIcon } from "@/components/icons";
+import type { TypebotInDashboard } from "@/features/dashboard/types";
+import {
+  type NodePosition,
+  useDragDistance,
+} from "@/features/graph/providers/GraphDndProvider";
+import { duplicateName } from "@/features/typebot/helpers/duplicateName";
+import { isMobile } from "@/helpers/isMobile";
+import { useToast } from "@/hooks/useToast";
+import { trpc, trpcVanilla } from "@/lib/trpc";
 import {
   Alert,
   AlertIcon,
@@ -9,34 +20,23 @@ import {
   Stack,
   Tag,
   Text,
-  useDisclosure,
   VStack,
   WrapItem,
-} from '@chakra-ui/react'
-import { useRouter } from 'next/router'
-import { ConfirmModal } from '@/components/ConfirmModal'
-import { GripIcon } from '@/components/icons'
-import { useDebounce } from 'use-debounce'
-import { useToast } from '@/hooks/useToast'
-import { MoreButton } from './MoreButton'
-import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
-import { T, useTranslate } from '@tolgee/react'
-import { TypebotInDashboard } from '@/features/dashboard/types'
-import { isMobile } from '@/helpers/isMobile'
-import { trpc, trpcVanilla } from '@/lib/trpc'
-import { duplicateName } from '@/features/typebot/helpers/duplicateName'
-import {
-  NodePosition,
-  useDragDistance,
-} from '@/features/graph/providers/GraphDndProvider'
+  useDisclosure,
+} from "@chakra-ui/react";
+import { T, useTranslate } from "@tolgee/react";
+import { useRouter } from "next/router";
+import React, { memo } from "react";
+import { useDebounce } from "use-debounce";
+import { MoreButton } from "./MoreButton";
 
 type Props = {
-  typebot: TypebotInDashboard
-  isReadOnly?: boolean
-  draggedTypebot: TypebotInDashboard | undefined
-  onTypebotUpdated: () => void
-  onDrag: (position: NodePosition) => void
-}
+  typebot: TypebotInDashboard;
+  isReadOnly?: boolean;
+  draggedTypebot: TypebotInDashboard | undefined;
+  onTypebotUpdated: () => void;
+  onDrag: (position: NodePosition) => void;
+};
 
 const TypebotButton = ({
   typebot,
@@ -45,94 +45,94 @@ const TypebotButton = ({
   onTypebotUpdated,
   onDrag,
 }: Props) => {
-  const { t } = useTranslate()
-  const router = useRouter()
-  const [draggedTypebotDebounced] = useDebounce(draggedTypebot, 200)
+  const { t } = useTranslate();
+  const router = useRouter();
+  const [draggedTypebotDebounced] = useDebounce(draggedTypebot, 200);
   const {
     isOpen: isDeleteOpen,
     onOpen: onDeleteOpen,
     onClose: onDeleteClose,
-  } = useDisclosure()
-  const buttonRef = React.useRef<HTMLDivElement>(null)
+  } = useDisclosure();
+  const buttonRef = React.useRef<HTMLDivElement>(null);
 
   useDragDistance({
     ref: buttonRef,
     onDrag,
     deps: [],
-  })
+  });
 
-  const { showToast } = useToast()
+  const { showToast } = useToast();
 
   const { mutate: importTypebot } = trpc.typebot.importTypebot.useMutation({
     onError: (error) => {
-      showToast({ description: error.message })
+      showToast({ description: error.message });
     },
     onSuccess: ({ typebot }) => {
-      router.push(`/typebots/${typebot.id}/edit`)
+      router.push(`/typebots/${typebot.id}/edit`);
     },
-  })
+  });
 
   const { mutate: deleteTypebot } = trpc.typebot.deleteTypebot.useMutation({
     onError: (error) => {
-      showToast({ description: error.message })
+      showToast({ description: error.message });
     },
     onSuccess: () => {
-      onTypebotUpdated()
+      onTypebotUpdated();
     },
-  })
+  });
 
   const { mutate: unpublishTypebot } =
     trpc.typebot.unpublishTypebot.useMutation({
       onError: (error) => {
-        showToast({ description: error.message })
+        showToast({ description: error.message });
       },
       onSuccess: () => {
-        onTypebotUpdated()
+        onTypebotUpdated();
       },
-    })
+    });
 
   const handleTypebotClick = () => {
-    if (draggedTypebotDebounced) return
+    if (draggedTypebotDebounced) return;
     router.push(
       isMobile
         ? `/typebots/${typebot.id}/results`
-        : `/typebots/${typebot.id}/edit`
-    )
-  }
+        : `/typebots/${typebot.id}/edit`,
+    );
+  };
 
   const handleDeleteTypebotClick = async () => {
-    if (isReadOnly) return
+    if (isReadOnly) return;
     deleteTypebot({
       typebotId: typebot.id,
-    })
-  }
+    });
+  };
 
   const handleDuplicateClick = async (e: React.MouseEvent) => {
-    e.stopPropagation()
+    e.stopPropagation();
     const { typebot: typebotToDuplicate } =
       await trpcVanilla.typebot.getTypebot.query({
         typebotId: typebot.id,
-      })
-    if (!typebotToDuplicate) return
+      });
+    if (!typebotToDuplicate) return;
     importTypebot({
       workspaceId: typebotToDuplicate.workspaceId,
       typebot: {
         ...typebotToDuplicate,
         name: duplicateName(typebotToDuplicate.name),
       },
-    })
-  }
+    });
+  };
 
   const handleDeleteClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    onDeleteOpen()
-  }
+    e.stopPropagation();
+    onDeleteOpen();
+  };
 
   const handleUnpublishClick = async (e: React.MouseEvent) => {
-    e.stopPropagation()
-    if (!typebot.publishedTypebotId) return
-    unpublishTypebot({ typebotId: typebot.id })
-  }
+    e.stopPropagation();
+    if (!typebot.publishedTypebotId) return;
+    unpublishTypebot({ typebotId: typebot.id });
+  };
 
   return (
     <Button
@@ -158,7 +158,7 @@ const TypebotButton = ({
           top="27px"
           size="sm"
         >
-          {t('folders.typebotButton.live')}
+          {t("folders.typebotButton.live")}
         </Tag>
       )}
       {!isReadOnly && (
@@ -178,18 +178,18 @@ const TypebotButton = ({
             pos="absolute"
             top="20px"
             right="20px"
-            aria-label={t('folders.typebotButton.showMoreOptions')}
+            aria-label={t("folders.typebotButton.showMoreOptions")}
           >
             {typebot.publishedTypebotId && (
               <MenuItem onClick={handleUnpublishClick}>
-                {t('folders.typebotButton.unpublish')}
+                {t("folders.typebotButton.unpublish")}
               </MenuItem>
             )}
             <MenuItem onClick={handleDuplicateClick}>
-              {t('folders.typebotButton.duplicate')}
+              {t("folders.typebotButton.duplicate")}
             </MenuItem>
             <MenuItem color="red.400" onClick={handleDeleteClick}>
-              {t('folders.typebotButton.delete')}
+              {t("folders.typebotButton.delete")}
             </MenuItem>
           </MoreButton>
         </>
@@ -199,9 +199,9 @@ const TypebotButton = ({
           rounded="full"
           justifyContent="center"
           alignItems="center"
-          fontSize={'4xl'}
+          fontSize={"4xl"}
         >
-          {<EmojiOrImageIcon icon={typebot.icon} boxSize={'35px'} />}
+          {<EmojiOrImageIcon icon={typebot.icon} boxSize={"35px"} />}
         </Flex>
         <Text textAlign="center" noOfLines={4} maxW="180px">
           {typebot.name}
@@ -221,19 +221,19 @@ const TypebotButton = ({
               </Text>
               <Alert status="warning">
                 <AlertIcon />
-                {t('folders.typebotButton.deleteConfirmationMessageWarning')}
+                {t("folders.typebotButton.deleteConfirmationMessageWarning")}
               </Alert>
             </Stack>
           }
-          confirmButtonLabel={t('delete')}
+          confirmButtonLabel={t("delete")}
           onConfirm={handleDeleteTypebotClick}
           isOpen={isDeleteOpen}
           onClose={onDeleteClose}
         />
       )}
     </Button>
-  )
-}
+  );
+};
 
 export default memo(
   TypebotButton,
@@ -243,5 +243,5 @@ export default memo(
     prev.isReadOnly === next.isReadOnly &&
     prev.typebot.name === next.typebot.name &&
     prev.typebot.icon === next.typebot.icon &&
-    prev.typebot.publishedTypebotId === next.typebot.publishedTypebotId
-)
+    prev.typebot.publishedTypebotId === next.typebot.publishedTypebotId,
+);

@@ -1,1 +1,1 @@
-export { executeGoogleAnalyticsBlock } from './utils/executeGoogleAnalyticsBlock'
+export { executeGoogleAnalyticsBlock } from "./utils/executeGoogleAnalyticsBlock";

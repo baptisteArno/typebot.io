@@ -1,4 +1,4 @@
-import { CodeEditor } from '@/components/inputs/CodeEditor'
+import { CodeEditor } from "@/components/inputs/CodeEditor";
 
 export const InstallReactPackageSnippet = () => {
   return (
@@ -7,5 +7,5 @@ export const InstallReactPackageSnippet = () => {
       isReadOnly
       lang="shell"
     />
-  )
-}
+  );
+};

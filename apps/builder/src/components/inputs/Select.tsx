@@ -1,43 +1,44 @@
+import { useParentModal } from "@/features/graph/providers/ParentModalProvider";
+import { useOutsideClick } from "@/hooks/useOutsideClick";
 import {
-  useDisclosure,
-  Flex,
-  Popover,
-  Input,
-  PopoverContent,
+  Box,
   Button,
-  useColorModeValue,
-  PopoverAnchor,
-  Portal,
+  Flex,
+  HStack,
+  IconButton,
+  Input,
   InputGroup,
   InputRightElement,
+  Popover,
+  PopoverAnchor,
+  PopoverContent,
+  Portal,
   Text,
-  Box,
-  IconButton,
-  HStack,
-} from '@chakra-ui/react'
-import { useState, useRef, ChangeEvent, useEffect } from 'react'
-import { isDefined } from '@typebot.io/lib'
-import { useOutsideClick } from '@/hooks/useOutsideClick'
-import { useParentModal } from '@/features/graph/providers/ParentModalProvider'
-import { ChevronDownIcon, CloseIcon } from '../icons'
+  useColorModeValue,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { isDefined } from "@typebot.io/lib/utils";
+import type { ChangeEvent } from "react";
+import { useEffect, useRef, useState } from "react";
+import { ChevronDownIcon, CloseIcon } from "../icons";
 
-const dropdownCloseAnimationDuration = 300
+const dropdownCloseAnimationDuration = 300;
 
 type RichItem = {
-  icon?: JSX.Element
-  label: string
-  value: string
-  extras?: Record<string, unknown>
-}
+  icon?: JSX.Element;
+  label: string;
+  value: string;
+  extras?: Record<string, unknown>;
+};
 
-type Item = string | RichItem
+type Item = string | RichItem;
 
 type Props<T extends Item> = {
-  selectedItem?: string
-  items: readonly T[] | undefined
-  placeholder?: string
-  onSelect?: (value: string | undefined, item?: T) => void
-}
+  selectedItem?: string;
+  items: readonly T[] | undefined;
+  placeholder?: string;
+  onSelect?: (value: string | undefined, item?: T) => void;
+};
 
 export const Select = <T extends Item>({
   selectedItem,
@@ -45,115 +46,115 @@ export const Select = <T extends Item>({
   items,
   onSelect,
 }: Props<T>) => {
-  const focusedItemBgColor = useColorModeValue('gray.200', 'gray.700')
-  const selectedItemBgColor = useColorModeValue('blue.50', 'blue.400')
-  const [isTouched, setIsTouched] = useState(false)
-  const { onOpen, onClose, isOpen } = useDisclosure()
+  const focusedItemBgColor = useColorModeValue("gray.200", "gray.700");
+  const selectedItemBgColor = useColorModeValue("blue.50", "blue.400");
+  const [isTouched, setIsTouched] = useState(false);
+  const { onOpen, onClose, isOpen } = useDisclosure();
   const [inputValue, setInputValue] = useState(
     getItemLabel(
       items?.find((item) =>
-        typeof item === 'string'
+        typeof item === "string"
           ? selectedItem === item
-          : selectedItem === item.value
-      ) ?? selectedItem
-    )
-  )
+          : selectedItem === item.value,
+      ) ?? selectedItem,
+    ),
+  );
 
   useEffect(() => {
-    if (!items || typeof items[0] === 'string' || !selectedItem || isTouched)
-      return
+    if (!items || typeof items[0] === "string" || !selectedItem || isTouched)
+      return;
     setInputValue(
       getItemLabel(
         (items as readonly RichItem[]).find(
-          (item) => selectedItem === item.value
-        ) ?? selectedItem
-      )
-    )
-  }, [isTouched, items, selectedItem])
+          (item) => selectedItem === item.value,
+        ) ?? selectedItem,
+      ),
+    );
+  }, [isTouched, items, selectedItem]);
 
   const [keyboardFocusIndex, setKeyboardFocusIndex] = useState<
     number | undefined
-  >()
-  const dropdownRef = useRef(null)
-  const itemsRef = useRef<(HTMLButtonElement | null)[]>([])
-  const inputRef = useRef<HTMLInputElement>(null)
-  const { ref: parentModalRef } = useParentModal()
+  >();
+  const dropdownRef = useRef(null);
+  const itemsRef = useRef<(HTMLButtonElement | null)[]>([]);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { ref: parentModalRef } = useParentModal();
 
   const filteredItems = isTouched
     ? [
         ...(items ?? []).filter((item) =>
           getItemLabel(item)
             .toLowerCase()
-            .includes((inputValue ?? '').toLowerCase())
+            .includes((inputValue ?? "").toLowerCase()),
         ),
       ]
-    : items ?? []
+    : (items ?? []);
 
   const closeDropdown = () => {
-    onClose()
+    onClose();
     setTimeout(() => {
-      setIsTouched(false)
-    }, dropdownCloseAnimationDuration)
-  }
+      setIsTouched(false);
+    }, dropdownCloseAnimationDuration);
+  };
 
   useOutsideClick({
     ref: dropdownRef,
     handler: closeDropdown,
     isEnabled: isOpen,
-  })
+  });
 
   const updateInputValue = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!isOpen) onOpen()
-    if (!isTouched) setIsTouched(true)
-    setInputValue(e.target.value)
-  }
+    if (!isOpen) onOpen();
+    if (!isTouched) setIsTouched(true);
+    setInputValue(e.target.value);
+  };
 
   const handleItemClick = (item: T) => () => {
-    if (!isTouched) setIsTouched(true)
-    setInputValue(getItemLabel(item))
-    onSelect?.(getItemValue(item), item)
-    setKeyboardFocusIndex(undefined)
-    closeDropdown()
-  }
+    if (!isTouched) setIsTouched(true);
+    setInputValue(getItemLabel(item));
+    onSelect?.(getItemValue(item), item);
+    setKeyboardFocusIndex(undefined);
+    closeDropdown();
+  };
 
   const updateFocusedDropdownItem = (
-    e: React.KeyboardEvent<HTMLInputElement>
+    e: React.KeyboardEvent<HTMLInputElement>,
   ) => {
-    if (e.key === 'Enter' && isDefined(keyboardFocusIndex)) {
-      e.preventDefault()
-      handleItemClick(filteredItems[keyboardFocusIndex])()
-      return setKeyboardFocusIndex(undefined)
+    if (e.key === "Enter" && isDefined(keyboardFocusIndex)) {
+      e.preventDefault();
+      handleItemClick(filteredItems[keyboardFocusIndex])();
+      return setKeyboardFocusIndex(undefined);
     }
-    if (e.key === 'ArrowDown') {
-      e.preventDefault()
-      if (keyboardFocusIndex === undefined) return setKeyboardFocusIndex(0)
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (keyboardFocusIndex === undefined) return setKeyboardFocusIndex(0);
       if (keyboardFocusIndex === filteredItems.length - 1)
-        return setKeyboardFocusIndex(0)
+        return setKeyboardFocusIndex(0);
       itemsRef.current[keyboardFocusIndex + 1]?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-      })
-      return setKeyboardFocusIndex(keyboardFocusIndex + 1)
+        behavior: "smooth",
+        block: "nearest",
+      });
+      return setKeyboardFocusIndex(keyboardFocusIndex + 1);
     }
-    if (e.key === 'ArrowUp') {
-      e.preventDefault()
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
       if (keyboardFocusIndex === 0 || keyboardFocusIndex === undefined)
-        return setKeyboardFocusIndex(filteredItems.length - 1)
+        return setKeyboardFocusIndex(filteredItems.length - 1);
       itemsRef.current[keyboardFocusIndex - 1]?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-      })
-      setKeyboardFocusIndex(keyboardFocusIndex - 1)
+        behavior: "smooth",
+        block: "nearest",
+      });
+      setKeyboardFocusIndex(keyboardFocusIndex - 1);
     }
-  }
+  };
 
   const clearSelection = (e: React.MouseEvent) => {
-    e.preventDefault()
-    setInputValue('')
-    onSelect?.(undefined)
-    setKeyboardFocusIndex(undefined)
-    closeDropdown()
-  }
+    e.preventDefault();
+    setInputValue("");
+    onSelect?.(undefined);
+    setKeyboardFocusIndex(undefined);
+    closeDropdown();
+  };
 
   return (
     <Flex ref={dropdownRef} w="full">
@@ -186,13 +187,13 @@ export const Select = <T extends Item>({
               autoComplete="off"
               ref={inputRef}
               className="select-input"
-              value={isTouched ? inputValue : ''}
+              value={isTouched ? inputValue : ""}
               placeholder={
                 !items
-                  ? 'Loading...'
-                  : !isTouched && inputValue !== ''
-                  ? undefined
-                  : placeholder
+                  ? "Loading..."
+                  : !isTouched && inputValue !== ""
+                    ? undefined
+                    : placeholder
               }
               onChange={updateInputValue}
               onFocus={onOpen}
@@ -202,7 +203,7 @@ export const Select = <T extends Item>({
             />
 
             <InputRightElement
-              width={selectedItem && isOpen ? '5rem' : undefined}
+              width={selectedItem && isOpen ? "5rem" : undefined}
               pointerEvents="none"
             >
               <HStack>
@@ -210,7 +211,7 @@ export const Select = <T extends Item>({
                   <IconButton
                     onClick={clearSelection}
                     icon={<CloseIcon />}
-                    aria-label={'Clear'}
+                    aria-label={"Clear"}
                     size="sm"
                     variant="ghost"
                     pointerEvents="all"
@@ -232,54 +233,49 @@ export const Select = <T extends Item>({
             onMouseDown={(e) => e.stopPropagation()}
             onPointerDown={(e) => e.stopPropagation()}
           >
-            {filteredItems.length > 0 && (
-              <>
-                {filteredItems.map((item, idx) => {
-                  return (
-                    <Button
-                      ref={(el) => (itemsRef.current[idx] = el)}
-                      minH="40px"
-                      key={idx}
-                      onClick={handleItemClick(item)}
-                      fontSize="16px"
-                      fontWeight="normal"
-                      rounded="none"
-                      colorScheme="gray"
-                      role="menuitem"
-                      variant="ghost"
-                      bg={
-                        keyboardFocusIndex === idx
-                          ? focusedItemBgColor
-                          : selectedItem === getItemValue(item)
+            {filteredItems.length > 0 &&
+              filteredItems.map((item, idx) => {
+                return (
+                  <Button
+                    ref={(el) => (itemsRef.current[idx] = el)}
+                    minH="40px"
+                    key={idx}
+                    onClick={handleItemClick(item)}
+                    fontSize="16px"
+                    fontWeight="normal"
+                    rounded="none"
+                    colorScheme="gray"
+                    role="menuitem"
+                    variant="ghost"
+                    bg={
+                      keyboardFocusIndex === idx
+                        ? focusedItemBgColor
+                        : selectedItem === getItemValue(item)
                           ? selectedItemBgColor
-                          : 'transparent'
-                      }
-                      justifyContent="flex-start"
-                      transition="none"
-                      leftIcon={
-                        typeof item === 'object' ? item.icon : undefined
-                      }
-                    >
-                      {getItemLabel(item)}
-                    </Button>
-                  )
-                })}
-              </>
-            )}
+                          : "transparent"
+                    }
+                    justifyContent="flex-start"
+                    transition="none"
+                    leftIcon={typeof item === "object" ? item.icon : undefined}
+                  >
+                    {getItemLabel(item)}
+                  </Button>
+                );
+              })}
           </PopoverContent>
         </Portal>
       </Popover>
     </Flex>
-  )
-}
+  );
+};
 
 const getItemLabel = (item?: Item) => {
-  if (!item) return ''
-  if (typeof item === 'object') return item.label
-  return item
-}
+  if (!item) return "";
+  if (typeof item === "object") return item.label;
+  return item;
+};
 
 const getItemValue = (item: Item) => {
-  if (typeof item === 'object') return item.value
-  return item
-}
+  if (typeof item === "object") return item.value;
+  return item;
+};

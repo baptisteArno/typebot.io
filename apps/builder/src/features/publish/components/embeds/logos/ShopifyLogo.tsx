@@ -1,4 +1,4 @@
-import { Icon, IconProps } from '@chakra-ui/react'
+import { Icon, type IconProps } from "@chakra-ui/react";
 
 export const ShopifyLogo = (props: IconProps) => (
   <Icon
@@ -22,4 +22,4 @@ export const ShopifyLogo = (props: IconProps) => (
       fill="white"
     />
   </Icon>
-)
+);

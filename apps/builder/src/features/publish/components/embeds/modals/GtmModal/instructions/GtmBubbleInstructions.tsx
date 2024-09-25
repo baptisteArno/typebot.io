@@ -1,18 +1,18 @@
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { OrderedList, ListItem, Stack, Text, Code } from '@chakra-ui/react'
-import { BubbleProps } from '@typebot.io/nextjs'
-import { useState } from 'react'
-import { BubbleSettings } from '../../../settings/BubbleSettings/BubbleSettings'
-import { parseDefaultBubbleTheme } from '../../Javascript/instructions/JavascriptBubbleInstructions'
-import { JavascriptBubbleSnippet } from '../../Javascript/JavascriptBubbleSnippet'
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
+import type { BubbleProps } from "@typebot.io/js";
+import { useState } from "react";
+import { BubbleSettings } from "../../../settings/BubbleSettings/BubbleSettings";
+import { JavascriptBubbleSnippet } from "../../Javascript/JavascriptBubbleSnippet";
+import { parseDefaultBubbleTheme } from "../../Javascript/instructions/JavascriptBubbleInstructions";
 
 export const GtmBubbleInstructions = () => {
-  const { typebot } = useTypebot()
-  const [theme, setTheme] = useState<BubbleProps['theme']>(
-    parseDefaultBubbleTheme(typebot)
-  )
+  const { typebot } = useTypebot();
+  const [theme, setTheme] = useState<BubbleProps["theme"]>(
+    parseDefaultBubbleTheme(typebot),
+  );
   const [previewMessage, setPreviewMessage] =
-    useState<BubbleProps['previewMessage']>()
+    useState<BubbleProps["previewMessage"]>();
 
   return (
     <OrderedList spacing={4} pl={5}>
@@ -31,7 +31,7 @@ export const GtmBubbleInstructions = () => {
             theme={theme}
             previewMessage={previewMessage}
             defaultPreviewMessageAvatar={
-              typebot?.theme.chat?.hostAvatar?.url ?? ''
+              typebot?.theme.chat?.hostAvatar?.url ?? ""
             }
             onThemeChange={setTheme}
             onPreviewMessageChange={setPreviewMessage}
@@ -44,5 +44,5 @@ export const GtmBubbleInstructions = () => {
         </Stack>
       </ListItem>
     </OrderedList>
-  )
-}
+  );
+};

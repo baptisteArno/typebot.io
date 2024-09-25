@@ -1,30 +1,30 @@
-import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { OrderedList, ListItem, Code, Stack, Text } from '@chakra-ui/react'
-import { Typebot } from '@typebot.io/schemas'
-import { useState } from 'react'
-import { StandardSettings } from '../../../settings/StandardSettings'
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
+import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
+import { useState } from "react";
+import { StandardSettings } from "../../../settings/StandardSettings";
 import {
   parseStandardElementCode,
   parseStandardHeadCode,
-} from '../../Javascript/JavascriptStandardSnippet'
+} from "../../Javascript/JavascriptStandardSnippet";
 
 export const GtmStandardInstructions = ({
   publicId,
-}: Pick<Typebot, 'publicId'>) => {
+}: Pick<Typebot, "publicId">) => {
   const [windowSizes, setWindowSizes] = useState<{
-    height: string
-    width?: string
+    height: string;
+    width?: string;
   }>({
-    height: '100%',
-    width: '100%',
-  })
+    height: "100%",
+    width: "100%",
+  });
 
-  const headCode = parseStandardHeadCode(publicId)
+  const headCode = parseStandardHeadCode(publicId);
 
   const elementCode = parseStandardElementCode(
     windowSizes.width,
-    windowSizes.height
-  )
+    windowSizes.height,
+  );
 
   return (
     <OrderedList spacing={4} pl={5}>
@@ -61,5 +61,5 @@ export const GtmStandardInstructions = ({
         </Stack>
       </ListItem>
     </OrderedList>
-  )
-}
+  );
+};

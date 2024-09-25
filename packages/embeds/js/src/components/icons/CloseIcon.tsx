@@ -1,4 +1,4 @@
-import { JSX } from 'solid-js/jsx-runtime'
+import type { JSX } from "solid-js/jsx-runtime";
 
 export const CloseIcon = (props: JSX.SvgSVGAttributes<SVGSVGElement>) => (
   <svg
@@ -14,4 +14,4 @@ export const CloseIcon = (props: JSX.SvgSVGAttributes<SVGSVGElement>) => (
     <line x1="18" y1="6" x2="6" y2="18" />
     <line x1="6" y1="6" x2="18" y2="18" />
   </svg>
-)
+);

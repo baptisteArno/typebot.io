@@ -1,4 +1,4 @@
-import { IconProps, Icon } from '@chakra-ui/react'
+import { Icon, type IconProps } from "@chakra-ui/react";
 
 export const PixelLogo = (props: IconProps) => (
   <Icon viewBox="0 0 288 191" fill="none" {...props}>
@@ -41,4 +41,4 @@ export const PixelLogo = (props: IconProps) => (
       </linearGradient>
     </defs>
   </Icon>
-)
+);

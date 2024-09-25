@@ -1,5 +1,5 @@
-import { ResultsPage } from '@/features/results/components/ResultsPage'
+import { ResultsPage } from "@/features/results/components/ResultsPage";
 
 export default function Page() {
-  return <ResultsPage />
+  return <ResultsPage />;
 }

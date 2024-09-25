@@ -1,14 +1,14 @@
-import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
-import { Select } from '@/components/inputs/Select'
-import { HStack, Input } from '@chakra-ui/react'
-import { Sheet } from '../types'
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { Select } from "@/components/inputs/Select";
+import { HStack, Input } from "@chakra-ui/react";
+import type { Sheet } from "../types";
 
 type Props = {
-  sheets: Sheet[]
-  isLoading: boolean
-  sheetId?: string
-  onSelectSheetId: (id: string | undefined) => void
-}
+  sheets: Sheet[];
+  isLoading: boolean;
+  sheetId?: string;
+  onSelectSheetId: (id: string | undefined) => void;
+};
 
 export const SheetsDropdown = ({
   sheets,
@@ -16,7 +16,7 @@ export const SheetsDropdown = ({
   sheetId,
   onSelectSheetId,
 }: Props) => {
-  if (isLoading) return <Input value="Loading..." isDisabled />
+  if (isLoading) return <Input value="Loading..." isDisabled />;
   if (!sheets || sheets.length === 0)
     return (
       <HStack>
@@ -26,13 +26,13 @@ export const SheetsDropdown = ({
           row. Also make sure your header row does not contain duplicates.
         </MoreInfoTooltip>
       </HStack>
-    )
+    );
   return (
     <Select
       selectedItem={sheetId}
       items={(sheets ?? []).map((s) => ({ label: s.name, value: s.id }))}
       onSelect={onSelectSheetId}
-      placeholder={'Select the sheet'}
+      placeholder={"Select the sheet"}
     />
-  )
-}
+  );
+};

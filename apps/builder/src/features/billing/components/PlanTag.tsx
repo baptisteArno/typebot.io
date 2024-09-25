@@ -1,15 +1,15 @@
-import { Tag, TagProps, ThemeTypings } from '@chakra-ui/react'
-import { Plan } from '@typebot.io/prisma'
+import { Tag, type TagProps, type ThemeTypings } from "@chakra-ui/react";
+import { Plan } from "@typebot.io/prisma/enum";
 
-export const planColorSchemes: Record<Plan, ThemeTypings['colorSchemes']> = {
-  [Plan.LIFETIME]: 'purple',
-  [Plan.PRO]: 'blue',
-  [Plan.OFFERED]: 'orange',
-  [Plan.STARTER]: 'orange',
-  [Plan.FREE]: 'gray',
-  [Plan.CUSTOM]: 'yellow',
-  [Plan.UNLIMITED]: 'yellow',
-}
+export const planColorSchemes: Record<Plan, ThemeTypings["colorSchemes"]> = {
+  [Plan.LIFETIME]: "purple",
+  [Plan.PRO]: "blue",
+  [Plan.OFFERED]: "orange",
+  [Plan.STARTER]: "orange",
+  [Plan.FREE]: "gray",
+  [Plan.CUSTOM]: "yellow",
+  [Plan.UNLIMITED]: "yellow",
+};
 
 export const PlanTag = ({
   plan,
@@ -25,7 +25,7 @@ export const PlanTag = ({
         >
           Lifetime
         </Tag>
-      )
+      );
     }
     case Plan.PRO: {
       return (
@@ -36,7 +36,7 @@ export const PlanTag = ({
         >
           Pro
         </Tag>
-      )
+      );
     }
     case Plan.OFFERED:
     case Plan.STARTER: {
@@ -48,7 +48,7 @@ export const PlanTag = ({
         >
           Starter
         </Tag>
-      )
+      );
     }
     case Plan.FREE: {
       return (
@@ -59,7 +59,7 @@ export const PlanTag = ({
         >
           Free
         </Tag>
-      )
+      );
     }
     case Plan.CUSTOM: {
       return (
@@ -70,7 +70,7 @@ export const PlanTag = ({
         >
           Custom
         </Tag>
-      )
+      );
     }
     case Plan.UNLIMITED: {
       return (
@@ -81,7 +81,7 @@ export const PlanTag = ({
         >
           Unlimited
         </Tag>
-      )
+      );
     }
   }
-}
+};

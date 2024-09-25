@@ -1,10 +1,10 @@
-import { HStack, Text } from '@chakra-ui/react'
-import { ResultHeaderCell } from '@typebot.io/schemas'
-import { HeaderIcon } from '../components/HeaderIcon'
-import { HeaderCell } from '../types'
+import { HStack, Text } from "@chakra-ui/react";
+import type { ResultHeaderCell } from "@typebot.io/results/schemas/results";
+import { HeaderIcon } from "../components/HeaderIcon";
+import type { HeaderCell } from "../types";
 
 export const parseHeaderCells = (
-  resultHeader: ResultHeaderCell[]
+  resultHeader: ResultHeaderCell[],
 ): HeaderCell[] =>
   resultHeader.map((header) => ({
     Header: (
@@ -14,4 +14,4 @@ export const parseHeaderCells = (
       </HStack>
     ),
     accessor: header.id,
-  }))
+  }));

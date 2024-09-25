@@ -1,8 +1,4 @@
 {
   "extends": "@typebot.io/tsconfig/base.json",
-  "include": ["**/*.ts"],
-  "exclude": ["node_modules"],
-  "compilerOptions": {
-    "declaration": false
-  }
+  "include": ["src/**/*.ts", "scripts/**/*.ts"]
 }

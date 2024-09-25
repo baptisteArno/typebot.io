@@ -1,13 +1,13 @@
-import { Tag, Text, Wrap, WrapItem } from '@chakra-ui/react'
-import { SendEmailBlock } from '@typebot.io/schemas'
+import { Tag, Text, Wrap, WrapItem } from "@chakra-ui/react";
+import type { SendEmailBlock } from "@typebot.io/blocks-integrations/sendEmail/schema";
 
 type Props = {
-  block: SendEmailBlock
-}
+  block: SendEmailBlock;
+};
 
 export const SendEmailContent = ({ block }: Props) => {
   if ((block.options?.recipients?.length ?? 0) === 0)
-    return <Text color="gray.500">Configure...</Text>
+    return <Text color="gray.500">Configure...</Text>;
   return (
     <Wrap noOfLines={2} pr="6">
       <WrapItem>
@@ -19,5 +19,5 @@ export const SendEmailContent = ({ block }: Props) => {
         </WrapItem>
       ))}
     </Wrap>
-  )
-}
+  );
+};

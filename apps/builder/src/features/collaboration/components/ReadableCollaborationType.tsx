@@ -1,14 +1,14 @@
-import { T } from '@tolgee/react'
-import { CollaborationType } from '@typebot.io/prisma'
+import { T } from "@tolgee/react";
+import { CollaborationType } from "@typebot.io/prisma/enum";
 
-type Props = { type: CollaborationType }
+type Props = { type: CollaborationType };
 export const ReadableCollaborationType = ({ type }: Props) => {
   switch (type) {
     case CollaborationType.READ:
-      return <T keyName="collaboration.roles.view.label" />
+      return <T keyName="collaboration.roles.view.label" />;
     case CollaborationType.WRITE:
-      return <T keyName="collaboration.roles.edit.label" />
+      return <T keyName="collaboration.roles.edit.label" />;
     case CollaborationType.FULL_ACCESS:
-      return <T keyName="collaboration.roles.full.label" />
+      return <T keyName="collaboration.roles.full.label" />;
   }
-}
+};

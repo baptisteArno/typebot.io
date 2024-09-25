@@ -1,49 +1,129 @@
-// Forked from https://github.com/nextauthjs/adapters/blob/main/packages/prisma/src/index.ts
-import {
-  PrismaClient,
-  Prisma,
-  WorkspaceRole,
-  Session,
-} from '@typebot.io/prisma'
-import type { Adapter, AdapterUser } from 'next-auth/adapters'
-import { createId } from '@paralleldrive/cuid2'
-import { generateId } from '@typebot.io/lib'
-import { TelemetryEvent } from '@typebot.io/schemas/features/telemetry'
-import { convertInvitationsToCollaborations } from '@/features/auth/helpers/convertInvitationsToCollaborations'
-import { getNewUserInvitations } from '@/features/auth/helpers/getNewUserInvitations'
-import { joinWorkspaces } from '@/features/auth/helpers/joinWorkspaces'
-import { parseWorkspaceDefaultPlan } from '@/features/workspace/helpers/parseWorkspaceDefaultPlan'
-import { env } from '@typebot.io/env'
-import { trackEvents } from '@typebot.io/telemetry/trackEvents'
+import { convertInvitationsToCollaborations } from "@/features/auth/helpers/convertInvitationsToCollaborations";
+import { getNewUserInvitations } from "@/features/auth/helpers/getNewUserInvitations";
+import { joinWorkspaces } from "@/features/auth/helpers/joinWorkspaces";
+import { parseWorkspaceDefaultPlan } from "@/features/workspace/helpers/parseWorkspaceDefaultPlan";
+import { createId } from "@paralleldrive/cuid2";
+import { env } from "@typebot.io/env";
+import { generateId } from "@typebot.io/lib/utils";
+import { WorkspaceRole } from "@typebot.io/prisma/enum";
+import type { Prisma } from "@typebot.io/prisma/types";
+import type { TelemetryEvent } from "@typebot.io/telemetry/schemas";
+import { trackEvents } from "@typebot.io/telemetry/trackEvents";
+import type { Account, Awaitable, User } from "next-auth";
 
-export function customAdapter(p: PrismaClient): Adapter {
+// Forked from https://github.com/nextauthjs/adapters/blob/main/packages/prisma/src/index.ts
+
+interface AdapterUser extends User {
+  id: string;
+  email: string;
+  emailVerified: Date | null;
+}
+
+interface AdapterAccount extends Account {
+  userId: string;
+}
+interface AdapterSession {
+  sessionToken: string;
+  userId: string;
+  expires: Date;
+}
+interface VerificationToken {
+  identifier: string;
+  expires: Date;
+  token: string;
+}
+
+type Adapter<WithVerificationToken = boolean> = DefaultAdapter &
+  (WithVerificationToken extends true
+    ? {
+        createVerificationToken: (
+          verificationToken: VerificationToken,
+        ) => Awaitable<VerificationToken | null | undefined>;
+        /**
+         * Return verification token from the database
+         * and delete it so it cannot be used again.
+         */
+        useVerificationToken: (params: {
+          identifier: string;
+          token: string;
+        }) => Awaitable<VerificationToken | null>;
+      }
+    : {});
+interface DefaultAdapter {
+  createUser: (user: Omit<AdapterUser, "id">) => Awaitable<AdapterUser>;
+  getUser: (id: string) => Awaitable<AdapterUser | null>;
+  getUserByEmail: (email: string) => Awaitable<AdapterUser | null>;
+  /** Using the provider id and the id of the user for a specific account, get the user. */
+  getUserByAccount: (
+    providerAccountId: Pick<AdapterAccount, "provider" | "providerAccountId">,
+  ) => Awaitable<AdapterUser | null>;
+  updateUser: (
+    user: Partial<AdapterUser> & Pick<AdapterUser, "id">,
+  ) => Awaitable<AdapterUser>;
+  /** @todo Implement */
+  deleteUser?: (
+    userId: string,
+  ) => Promise<void> | Awaitable<AdapterUser | null | undefined>;
+  linkAccount: (
+    account: AdapterAccount,
+  ) => Promise<void> | Awaitable<AdapterAccount | null | undefined>;
+  /** @todo Implement */
+  unlinkAccount?: (
+    providerAccountId: Pick<AdapterAccount, "provider" | "providerAccountId">,
+  ) => Promise<void> | Awaitable<AdapterAccount | undefined>;
+  /** Creates a session for the user and returns it. */
+  createSession: (session: {
+    sessionToken: string;
+    userId: string;
+    expires: Date;
+  }) => Awaitable<AdapterSession>;
+  getSessionAndUser: (sessionToken: string) => Awaitable<{
+    session: AdapterSession;
+    user: AdapterUser;
+  } | null>;
+  updateSession: (
+    session: Partial<AdapterSession> & Pick<AdapterSession, "sessionToken">,
+  ) => Awaitable<AdapterSession | null | undefined>;
+  deleteSession: (
+    sessionToken: string,
+  ) => Promise<void> | Awaitable<AdapterSession | null | undefined>;
+  createVerificationToken?: (
+    verificationToken: VerificationToken,
+  ) => Awaitable<VerificationToken | null | undefined>;
+  useVerificationToken?: (params: {
+    identifier: string;
+    token: string;
+  }) => Awaitable<VerificationToken | null>;
+}
+
+export function customAdapter(p: Prisma.PrismaClient): Adapter {
   return {
-    createUser: async (data: Omit<AdapterUser, 'id'>) => {
+    createUser: async (data) => {
       if (!data.email)
-        throw Error('Provider did not forward email but it is required')
-      const user = { id: createId(), email: data.email as string }
+        throw Error("Provider did not forward email but it is required");
+      const user = { id: createId(), email: data.email as string };
       const { invitations, workspaceInvitations } = await getNewUserInvitations(
         p,
-        user.email
-      )
+        user.email,
+      );
       if (
         env.DISABLE_SIGNUP &&
         env.ADMIN_EMAIL?.every((email) => email !== user.email) &&
         invitations.length === 0 &&
         workspaceInvitations.length === 0
       )
-        throw Error('New users are forbidden')
+        throw Error("New users are forbidden");
 
       const newWorkspaceData = {
         name: data.name ? `${data.name}'s workspace` : `My workspace`,
         plan: parseWorkspaceDefaultPlan(data.email),
-      }
+      };
       const createdUser = await p.user.create({
         data: {
           ...data,
           id: user.id,
           apiTokens: {
-            create: { name: 'Default', token: generateId(24) },
+            create: { name: "Default", token: generateId(24) },
           },
           workspaces:
             workspaceInvitations.length > 0
@@ -61,31 +141,31 @@ export function customAdapter(p: PrismaClient): Adapter {
         include: {
           workspaces: { select: { workspaceId: true } },
         },
-      })
-      const newWorkspaceId = createdUser.workspaces.pop()?.workspaceId
-      const events: TelemetryEvent[] = []
+      });
+      const newWorkspaceId = createdUser.workspaces.pop()?.workspaceId;
+      const events: TelemetryEvent[] = [];
       if (newWorkspaceId) {
         events.push({
-          name: 'Workspace created',
+          name: "Workspace created",
           workspaceId: newWorkspaceId,
           userId: createdUser.id,
           data: newWorkspaceData,
-        })
+        });
       }
       events.push({
-        name: 'User created',
+        name: "User created",
         userId: createdUser.id,
         data: {
           email: data.email,
-          name: data.name ? (data.name as string).split(' ')[0] : undefined,
+          name: data.name ? (data.name as string).split(" ")[0] : undefined,
         },
-      })
-      await trackEvents(events)
+      });
+      await trackEvents(events);
       if (invitations.length > 0)
-        await convertInvitationsToCollaborations(p, user, invitations)
+        await convertInvitationsToCollaborations(p, user, invitations);
       if (workspaceInvitations.length > 0)
-        await joinWorkspaces(p, user, workspaceInvitations)
-      return createdUser as AdapterUser
+        await joinWorkspaces(p, user, workspaceInvitations);
+      return createdUser as AdapterUser;
     },
     getUser: async (id) =>
       (await p.user.findUnique({ where: { id } })) as AdapterUser,
@@ -95,8 +175,8 @@ export function customAdapter(p: PrismaClient): Adapter {
       const account = await p.account.findUnique({
         where: { provider_providerAccountId },
         select: { user: true },
-      })
-      return (account?.user ?? null) as AdapterUser | null
+      });
+      return (account?.user ?? null) as AdapterUser | null;
     },
     updateUser: async (data) =>
       (await p.user.update({ where: { id: data.id }, data })) as AdapterUser,
@@ -120,19 +200,22 @@ export function customAdapter(p: PrismaClient): Adapter {
           oauth_token: data.oauth_token as string,
           refresh_token_expires_in: data.refresh_token_expires_in as number,
         },
-      })
+      });
     },
     unlinkAccount: async (provider_providerAccountId) => {
-      await p.account.delete({ where: { provider_providerAccountId } })
+      await p.account.delete({ where: { provider_providerAccountId } });
     },
     async getSessionAndUser(sessionToken) {
       const userAndSession = await p.session.findUnique({
         where: { sessionToken },
         include: { user: true },
-      })
-      if (!userAndSession) return null
-      const { user, ...session } = userAndSession
-      return { user, session } as { user: AdapterUser; session: Session }
+      });
+      if (!userAndSession) return null;
+      const { user, ...session } = userAndSession;
+      return { user, session } as {
+        user: AdapterUser;
+        session: AdapterSession;
+      };
     },
     createSession: (data) => p.session.create({ data }),
     updateSession: (data) =>
@@ -142,12 +225,17 @@ export function customAdapter(p: PrismaClient): Adapter {
     createVerificationToken: (data) => p.verificationToken.create({ data }),
     async useVerificationToken(identifier_token) {
       try {
-        return await p.verificationToken.delete({ where: { identifier_token } })
+        return await p.verificationToken.delete({
+          where: { identifier_token },
+        });
       } catch (error) {
-        if ((error as Prisma.PrismaClientKnownRequestError).code === 'P2025')
-          return null
-        throw error
+        if (
+          (error as Prisma.Prisma.PrismaClientKnownRequestError).code ===
+          "P2025"
+        )
+          return null;
+        throw error;
       }
     },
-  }
+  };
 }

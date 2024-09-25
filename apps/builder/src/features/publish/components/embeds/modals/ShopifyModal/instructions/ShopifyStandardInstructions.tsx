@@ -1,43 +1,43 @@
-import { CodeEditor } from '@/components/inputs/CodeEditor'
-import { OrderedList, ListItem, Stack, Text, Code } from '@chakra-ui/react'
-import { useState } from 'react'
-import { StandardSettings } from '../../../settings/StandardSettings'
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
+import { useState } from "react";
+import { StandardSettings } from "../../../settings/StandardSettings";
 import {
   parseStandardElementCode,
   parseStandardHeadCode,
-} from '../../Javascript/JavascriptStandardSnippet'
+} from "../../Javascript/JavascriptStandardSnippet";
 
 type Props = {
-  publicId: string
-}
+  publicId: string;
+};
 
 export const ShopifyStandardInstructions = ({ publicId }: Props) => {
   const [windowSizes, setWindowSizes] = useState<{
-    width?: string
-    height: string
+    width?: string;
+    height: string;
   }>({
-    height: '100%',
-    width: '100%',
-  })
+    height: "100%",
+    width: "100%",
+  });
 
-  const headCode = parseStandardHeadCode(publicId)
+  const headCode = parseStandardHeadCode(publicId);
 
   const elementCode = parseStandardElementCode(
     windowSizes.width,
-    windowSizes.height
-  )
+    windowSizes.height,
+  );
 
   return (
     <OrderedList spacing={4} pl={5}>
       <ListItem>
-        On your shop dashboard in the <Code>Themes</Code> page, click on{' '}
-        <Code>Actions {'>'} Edit code</Code>
+        On your shop dashboard in the <Code>Themes</Code> page, click on{" "}
+        <Code>Actions {">"} Edit code</Code>
       </ListItem>
       <ListItem>
         <Stack spacing={4}>
           <Text>
-            In <Code>Layout {'>'} theme.liquid</Code> file, paste this code just
-            before the closing <Code>{'<head>'}</Code> tag:
+            In <Code>Layout {">"} theme.liquid</Code> file, paste this code just
+            before the closing <Code>{"<head>"}</Code> tag:
           </Text>
 
           <CodeEditor value={headCode} lang="html" isReadOnly />
@@ -54,12 +54,12 @@ export const ShopifyStandardInstructions = ({ publicId }: Props) => {
             }
           />
           <Text>
-            Place an element on which the typebot will go in any file in the{' '}
-            <Code>{'<body>'}</Code>:
+            Place an element on which the typebot will go in any file in the{" "}
+            <Code>{"<body>"}</Code>:
           </Text>
           <CodeEditor value={elementCode} lang="html" isReadOnly />
         </Stack>
       </ListItem>
     </OrderedList>
-  )
-}
+  );
+};

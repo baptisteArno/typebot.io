@@ -3,12 +3,18 @@
   "display": "Next.js",
   "extends": "./base.json",
   "compilerOptions": {
+    "plugins": [
+      { "name": "next" },
+      {
+        "name": "ts-plugin-sort-import-suggestions",
+        "moveUpPatterns": ["@typebot.io/"]
+      }
+    ],
+    "jsx": "preserve",
     "allowJs": true,
     "incremental": true,
-    "jsx": "preserve",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "esnext",
     "resolveJsonModule": true,
-    "target": "es5"
+    "strictNullChecks": true
   }
 }

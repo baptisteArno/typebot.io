@@ -1,10 +1,10 @@
-import { colors } from '@/lib/theme'
-import { useColorModeValue } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
-import { animationVariants } from './animationVariants'
+import { colors } from "@/lib/theme";
+import { useColorModeValue } from "@chakra-ui/react";
+import { motion } from "framer-motion";
+import { animationVariants } from "./animationVariants";
 
 export const PopupIllustration = () => {
-  const bubbleColor = useColorModeValue('white', colors.blue[100])
+  const bubbleColor = useColorModeValue("white", colors.blue[100]);
   return (
     <svg
       width="100"
@@ -16,7 +16,7 @@ export const PopupIllustration = () => {
         width="500"
         height="500"
         rx="20"
-        fill={useColorModeValue(colors.gray['400'], colors.gray['900'])}
+        fill={useColorModeValue(colors.gray["400"], colors.gray["900"])}
       />
       <rect x="105" y="77" width="290" height="352" rx="10" fill="#0042DA" />
       <motion.rect
@@ -71,5 +71,5 @@ export const PopupIllustration = () => {
         variants={animationVariants}
       />
     </svg>
-  )
-}
+  );
+};

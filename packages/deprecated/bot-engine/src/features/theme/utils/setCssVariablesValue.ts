@@ -1,143 +1,143 @@
-import {
+import { BackgroundType } from "@typebot.io/theme/constants";
+import type {
   Background,
   ChatTheme,
   ContainerTheme,
   GeneralTheme,
   InputTheme,
   Theme,
-} from '@typebot.io/schemas'
-import { BackgroundType } from '@typebot.io/schemas/features/typebot/theme/constants'
+} from "@typebot.io/theme/schemas";
 
 const cssVariableNames = {
   general: {
-    bgImage: '--typebot-container-bg-image',
-    bgColor: '--typebot-container-bg-color',
-    fontFamily: '--typebot-container-font-family',
+    bgImage: "--typebot-container-bg-image",
+    bgColor: "--typebot-container-bg-color",
+    fontFamily: "--typebot-container-font-family",
   },
   chat: {
     hostBubbles: {
-      bgColor: '--typebot-host-bubble-bg-color',
-      color: '--typebot-host-bubble-color',
+      bgColor: "--typebot-host-bubble-bg-color",
+      color: "--typebot-host-bubble-color",
     },
     guestBubbles: {
-      bgColor: '--typebot-guest-bubble-bg-color',
-      color: '--typebot-guest-bubble-color',
+      bgColor: "--typebot-guest-bubble-bg-color",
+      color: "--typebot-guest-bubble-color",
     },
     inputs: {
-      bgColor: '--typebot-input-bg-color',
-      color: '--typebot-input-color',
-      placeholderColor: '--typebot-input-placeholder-color',
+      bgColor: "--typebot-input-bg-color",
+      color: "--typebot-input-color",
+      placeholderColor: "--typebot-input-placeholder-color",
     },
     buttons: {
-      bgColor: '--typebot-button-bg-color',
-      color: '--typebot-button-color',
+      bgColor: "--typebot-button-bg-color",
+      color: "--typebot-button-color",
     },
   },
-}
+};
 
 export const setCssVariablesValue = (
   theme: Theme | undefined,
-  documentStyle: CSSStyleDeclaration
+  documentStyle: CSSStyleDeclaration,
 ) => {
-  if (!theme) return
-  if (theme.general) setGeneralTheme(theme.general, documentStyle)
-  if (theme.chat) setChatTheme(theme.chat, documentStyle)
-}
+  if (!theme) return;
+  if (theme.general) setGeneralTheme(theme.general, documentStyle);
+  if (theme.chat) setChatTheme(theme.chat, documentStyle);
+};
 
 const setGeneralTheme = (
   generalTheme: GeneralTheme,
-  documentStyle: CSSStyleDeclaration
+  documentStyle: CSSStyleDeclaration,
 ) => {
-  const { background, font } = generalTheme
-  if (background) setTypebotBackground
-  if (font && typeof font === 'string')
-    documentStyle.setProperty(cssVariableNames.general.fontFamily, font)
-}
+  const { background, font } = generalTheme;
+  if (background) setTypebotBackground;
+  if (font && typeof font === "string")
+    documentStyle.setProperty(cssVariableNames.general.fontFamily, font);
+};
 
 const setChatTheme = (
   chatTheme: ChatTheme,
-  documentStyle: CSSStyleDeclaration
+  documentStyle: CSSStyleDeclaration,
 ) => {
-  const { hostBubbles, guestBubbles, buttons, inputs } = chatTheme
-  if (hostBubbles) setHostBubbles(hostBubbles, documentStyle)
-  if (guestBubbles) setGuestBubbles(guestBubbles, documentStyle)
-  if (buttons) setButtons(buttons, documentStyle)
-  if (inputs) setInputs(inputs, documentStyle)
-}
+  const { hostBubbles, guestBubbles, buttons, inputs } = chatTheme;
+  if (hostBubbles) setHostBubbles(hostBubbles, documentStyle);
+  if (guestBubbles) setGuestBubbles(guestBubbles, documentStyle);
+  if (buttons) setButtons(buttons, documentStyle);
+  if (inputs) setInputs(inputs, documentStyle);
+};
 
 const setHostBubbles = (
   hostBubbles: ContainerTheme,
-  documentStyle: CSSStyleDeclaration
+  documentStyle: CSSStyleDeclaration,
 ) => {
   if (hostBubbles.backgroundColor)
     documentStyle.setProperty(
       cssVariableNames.chat.hostBubbles.bgColor,
-      hostBubbles.backgroundColor
-    )
+      hostBubbles.backgroundColor,
+    );
   if (hostBubbles.color)
     documentStyle.setProperty(
       cssVariableNames.chat.hostBubbles.color,
-      hostBubbles.color
-    )
-}
+      hostBubbles.color,
+    );
+};
 
 const setGuestBubbles = (
   guestBubbles: any,
-  documentStyle: CSSStyleDeclaration
+  documentStyle: CSSStyleDeclaration,
 ) => {
   if (guestBubbles.backgroundColor)
     documentStyle.setProperty(
       cssVariableNames.chat.guestBubbles.bgColor,
-      guestBubbles.backgroundColor
-    )
+      guestBubbles.backgroundColor,
+    );
   if (guestBubbles.color)
     documentStyle.setProperty(
       cssVariableNames.chat.guestBubbles.color,
-      guestBubbles.color
-    )
-}
+      guestBubbles.color,
+    );
+};
 
 const setButtons = (
   buttons: ContainerTheme,
-  documentStyle: CSSStyleDeclaration
+  documentStyle: CSSStyleDeclaration,
 ) => {
   if (buttons.backgroundColor)
     documentStyle.setProperty(
       cssVariableNames.chat.buttons.bgColor,
-      buttons.backgroundColor
-    )
+      buttons.backgroundColor,
+    );
   if (buttons.color)
     documentStyle.setProperty(
       cssVariableNames.chat.buttons.color,
-      buttons.color
-    )
-}
+      buttons.color,
+    );
+};
 
 const setInputs = (inputs: InputTheme, documentStyle: CSSStyleDeclaration) => {
   if (inputs.backgroundColor)
     documentStyle.setProperty(
       cssVariableNames.chat.inputs.bgColor,
-      inputs.backgroundColor
-    )
+      inputs.backgroundColor,
+    );
   if (inputs.color)
-    documentStyle.setProperty(cssVariableNames.chat.inputs.color, inputs.color)
+    documentStyle.setProperty(cssVariableNames.chat.inputs.color, inputs.color);
   if (inputs.placeholderColor)
     documentStyle.setProperty(
       cssVariableNames.chat.inputs.placeholderColor,
-      inputs.placeholderColor
-    )
-}
+      inputs.placeholderColor,
+    );
+};
 
 const setTypebotBackground = (
   background: Background,
-  documentStyle: CSSStyleDeclaration
+  documentStyle: CSSStyleDeclaration,
 ) => {
   documentStyle.setProperty(
     background?.type === BackgroundType.IMAGE
       ? cssVariableNames.general.bgImage
       : cssVariableNames.general.bgColor,
     background.type === BackgroundType.NONE
-      ? 'transparent'
-      : background.content ?? '#ffffff'
-  )
-}
+      ? "transparent"
+      : (background.content ?? "#ffffff"),
+  );
+};

@@ -15,15 +15,15 @@ title: Manual
   Typebot's founder. The cloud version can save a substantial amount of
   developer time and resources. For most sites this ends up being the best value
   option and the revenue goes to funding the maintenance and further development
-  of Typebot. So you'll be supporting open source software and getting a great
+  of Typebot. So you'll be supporting fair source software and getting a great
   service!
 </Note>
 
 ## Requirements
 
 - A PostgresDB database hosted somewhere. [Supabase](https://supabase.com/) offer great free options. But you can also setup your own database on your server.
-- A server with Node.js 20+, Nginx, and PM2 installed.
-- Experience deploying Next.js applications with PM2. Check out [this guide](https://www.coderrocketfuel.com/article/how-to-deploy-a-next-js-website-to-a-digital-ocean-server/) for more information.
+- A server with Node.js 20+, [bun](https://bun.sh/docs/installation), Nginx, and PM2 installed.
+- Experience in deploying Next.js applications with PM2. Check out [this guide](https://www.coderrocketfuel.com/article/how-to-deploy-a-next-js-website-to-a-digital-ocean-server/) for more information.
 
 ## Getting Started
 
@@ -43,19 +43,19 @@ cp .env.example .env
 
 <Note>
   The database user should have the `SUPERUSER` role. You can setup and migrate
-  the database with the `pnpm db:migrate` command.
+  the database with the `bun db:migrate` command.
 </Note>
 
 3. Install dependencies
 
 ```sh
-pnpm install
+bun install
 ```
 
 4. Build the builder and viewer
 
 ```sh
-pnpm run build:apps
+bunx turbo build --filter=builder... --filter=viewer...
 ```
 
 <Note>
@@ -70,40 +70,24 @@ pnpm run build:apps
 
 ### Deploy the builder
 
-1. Cd into the builder directory and make sure it can be started with `pnpm start`
+Go into the builder directory and deploy the start script with PM2
 
 ```sh
 cd apps/builder
-pnpm start
-# You may have to set the port if it's already in use
-pnpm start -p 3001
-```
-
-2. Deploy the builder with PM2
-
-```sh
-pm2 start --name=typebot pnpm -- start
+pm2 start --name=typebot bun -- start
 # or select a different port
-pm2 start --name=typebot pnpm -- start -p 3001
+pm2 start --name=typebot bun -- start -p 3001
 ```
 
 ### Deploy the viewer
 
-1. Cd into the viewer directory and make sure it can be started with `pnpm start`
+Go into the builder directory and deploy the start script with PM2
 
 ```sh
 cd apps/viewer
-pnpm start
-# You may have to set the port if it's already in use
-pnpm start -p 3002
-```
-
-2. Deploy the viewer with PM2
-
-```sh
-pm2 start --name=typebot pnpm -- start
+pm2 start --name=typebot bun -- start
 # or select a different port
-pm2 start --name=typebot pnpm -- start -p 3002
+pm2 start --name=typebot bun -- start -p 3002
 ```
 
 ## Nginx configuration

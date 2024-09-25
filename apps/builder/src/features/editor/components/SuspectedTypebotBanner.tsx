@@ -1,17 +1,17 @@
-import { TextLink } from '@/components/TextLink'
-import { useUser } from '@/features/account/hooks/useUser'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { HStack, Text } from '@chakra-ui/react'
-import { Plan } from '@typebot.io/prisma'
+import { TextLink } from "@/components/TextLink";
+import { useUser } from "@/features/account/hooks/useUser";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { HStack, Text } from "@chakra-ui/react";
+import { Plan } from "@typebot.io/prisma/enum";
 
 type Props = {
-  typebotId: string
-}
+  typebotId: string;
+};
 export const SuspectedTypebotBanner = ({ typebotId }: Props) => {
-  const { user } = useUser()
-  const { workspace } = useWorkspace()
+  const { user } = useUser();
+  const { workspace } = useWorkspace();
 
-  if (!user?.email || !workspace) return null
+  if (!user?.email || !workspace) return null;
 
   return (
     <HStack
@@ -30,10 +30,10 @@ export const SuspectedTypebotBanner = ({ typebotId }: Props) => {
         {workspace?.plan !== Plan.FREE ? (
           <>
             <br />
-            If you think that&apos;s a mistake,{' '}
+            If you think that&apos;s a mistake,{" "}
             <TextLink
               href={`https://typebot.co/claim-non-scam?Email=${encodeURIComponent(
-                user.email
+                user.email,
               )}&typebotId=${typebotId}`}
             >
               contact us
@@ -43,5 +43,5 @@ export const SuspectedTypebotBanner = ({ typebotId }: Props) => {
         ) : null}
       </Text>
     </HStack>
-  )
-}
+  );
+};

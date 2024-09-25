@@ -1,47 +1,47 @@
 import {
-  BoxProps,
+  type BoxProps,
   Flex,
   useColorModeValue,
   useEventListener,
-} from '@chakra-ui/react'
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { useEndpoints } from '../../providers/EndpointsProvider'
-import { useGraph } from '../../providers/GraphProvider'
-import { TEventSource } from '@typebot.io/schemas'
+} from "@chakra-ui/react";
+import type { TEventSource } from "@typebot.io/typebot/schemas/edge";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEndpoints } from "../../providers/EndpointsProvider";
+import { useGraph } from "../../providers/GraphProvider";
 
-const endpointHeight = 32
+const endpointHeight = 32;
 
 export const EventSourceEndpoint = ({
   source,
   isHidden,
   ...props
 }: BoxProps & {
-  source: TEventSource
-  isHidden?: boolean
+  source: TEventSource;
+  isHidden?: boolean;
 }) => {
-  const color = useColorModeValue('blue.200', 'blue.100')
-  const connectedColor = useColorModeValue('blue.300', 'blue.200')
-  const bg = useColorModeValue('gray.100', 'gray.700')
-  const { setConnectingIds, previewingEdge, graphPosition } = useGraph()
+  const color = useColorModeValue("blue.200", "blue.100");
+  const connectedColor = useColorModeValue("blue.300", "blue.200");
+  const bg = useColorModeValue("gray.100", "gray.700");
+  const { setConnectingIds, previewingEdge, graphPosition } = useGraph();
   const { setSourceEndpointYOffset, deleteSourceEndpointYOffset } =
-    useEndpoints()
-  const [eventTransformProp, setEventTransformProp] = useState<string>()
-  const ref = useRef<HTMLDivElement | null>(null)
+    useEndpoints();
+  const [eventTransformProp, setEventTransformProp] = useState<string>();
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useLayoutEffect(() => {
     const mutationObserver = new MutationObserver((entries) => {
-      setEventTransformProp((entries[0].target as HTMLElement).style.transform)
-    })
-    const groupElement = document.getElementById(`event-${source.eventId}`)
-    if (!groupElement) return
+      setEventTransformProp((entries[0].target as HTMLElement).style.transform);
+    });
+    const groupElement = document.getElementById(`event-${source.eventId}`);
+    if (!groupElement) return;
     mutationObserver.observe(groupElement, {
       attributes: true,
-      attributeFilter: ['style'],
-    })
+      attributeFilter: ["style"],
+    });
     return () => {
-      mutationObserver.disconnect()
-    }
-  }, [source.eventId])
+      mutationObserver.disconnect();
+    };
+  }, [source.eventId]);
 
   useEffect(() => {
     const y = ref.current
@@ -51,45 +51,45 @@ export const EventSourceEndpoint = ({
               (endpointHeight * graphPosition.scale) / 2 -
               graphPosition.y) /
             graphPosition.scale
-          ).toFixed(2)
+          ).toFixed(2),
         )
-      : undefined
-    if (y === undefined) return
+      : undefined;
+    if (y === undefined) return;
     setSourceEndpointYOffset?.({
       id: source.eventId,
       y,
-    })
+    });
   }, [
     graphPosition.scale,
     graphPosition.y,
     setSourceEndpointYOffset,
     source.eventId,
     eventTransformProp,
-  ])
+  ]);
 
   useEffect(
     () => () => {
-      deleteSourceEndpointYOffset?.(source.eventId)
+      deleteSourceEndpointYOffset?.(source.eventId);
     },
-    [deleteSourceEndpointYOffset, source.eventId]
-  )
+    [deleteSourceEndpointYOffset, source.eventId],
+  );
 
   useEventListener(
-    'pointerdown',
+    "pointerdown",
     (e) => {
-      e.stopPropagation()
-      setConnectingIds({ source })
+      e.stopPropagation();
+      setConnectingIds({ source });
     },
-    ref.current
-  )
+    ref.current,
+  );
 
   useEventListener(
-    'mousedown',
+    "mousedown",
     (e) => {
-      e.stopPropagation()
+      e.stopPropagation();
     },
-    ref.current
-  )
+    ref.current,
+  );
 
   return (
     <Flex
@@ -101,7 +101,7 @@ export const EventSourceEndpoint = ({
       justify="center"
       align="center"
       pointerEvents="all"
-      visibility={isHidden ? 'hidden' : 'visible'}
+      visibility={isHidden ? "hidden" : "visible"}
       {...props}
     >
       <Flex
@@ -118,7 +118,7 @@ export const EventSourceEndpoint = ({
           shadow={`sm`}
           borderColor={
             previewingEdge &&
-            'eventId' in previewingEdge.from &&
+            "eventId" in previewingEdge.from &&
             previewingEdge.from.eventId === source.eventId
               ? connectedColor
               : color
@@ -126,5 +126,5 @@ export const EventSourceEndpoint = ({
         />
       </Flex>
     </Flex>
-  )
-}
+  );
+};

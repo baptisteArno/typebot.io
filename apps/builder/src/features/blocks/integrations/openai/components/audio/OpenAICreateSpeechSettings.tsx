@@ -1,20 +1,20 @@
-import { CreateSpeechOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai'
-import { FormControl, FormLabel, Stack, Text } from '@chakra-ui/react'
-import { TextLink } from '@/components/TextLink'
-import { ModelsDropdown } from '../ModelsDropdown'
-import { Textarea } from '@/components/inputs'
-import { DropdownList } from '@/components/DropdownList'
-import { openAIVoices } from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
-import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
-import { Variable } from '@typebot.io/schemas'
+import { DropdownList } from "@/components/DropdownList";
+import { TextLink } from "@/components/TextLink";
+import { Textarea } from "@/components/inputs";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { FormControl, FormLabel, Stack, Text } from "@chakra-ui/react";
+import { openAIVoices } from "@typebot.io/blocks-integrations/openai/constants";
+import type { CreateSpeechOpenAIOptions } from "@typebot.io/blocks-integrations/openai/schema";
+import type { Variable } from "@typebot.io/variables/schemas";
+import { ModelsDropdown } from "../ModelsDropdown";
 
 const apiReferenceUrl =
-  'https://platform.openai.com/docs/api-reference/audio/createSpeech'
+  "https://platform.openai.com/docs/api-reference/audio/createSpeech";
 
 type Props = {
-  options: CreateSpeechOpenAIOptions
-  onOptionsChange: (options: CreateSpeechOpenAIOptions) => void
-}
+  options: CreateSpeechOpenAIOptions;
+  onOptionsChange: (options: CreateSpeechOpenAIOptions) => void;
+};
 
 export const OpenAICreateSpeechSettings = ({
   options,
@@ -24,39 +24,39 @@ export const OpenAICreateSpeechSettings = ({
     onOptionsChange({
       ...options,
       model,
-    })
-  }
+    });
+  };
 
   const updateInput = (input: string | undefined) => {
     onOptionsChange({
       ...options,
       input,
-    })
-  }
+    });
+  };
 
   const updateVoice = (voice: (typeof openAIVoices)[number]) => {
     onOptionsChange({
       ...options,
       voice,
-    })
-  }
+    });
+  };
 
   const updateSaveUrlInVariableId = (
-    variable: Pick<Variable, 'id' | 'name'> | undefined
+    variable: Pick<Variable, "id" | "name"> | undefined,
   ) => {
     onOptionsChange({
       ...options,
       saveUrlInVariableId: variable?.id,
-    })
-  }
+    });
+  };
 
   return (
     <Stack spacing={4} pt="2">
       <Text fontSize="sm" color="gray.500">
-        Read the{' '}
+        Read the{" "}
         <TextLink href={apiReferenceUrl} isExternal>
           API reference
-        </TextLink>{' '}
+        </TextLink>{" "}
         to better understand the available options.
       </Text>
       {options.credentialsId && (
@@ -94,5 +94,5 @@ export const OpenAICreateSpeechSettings = ({
         </>
       )}
     </Stack>
-  )
-}
+  );
+};

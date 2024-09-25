@@ -1,13 +1,17 @@
-import { Alert, AlertIcon, Button, Link, Stack, Text } from '@chakra-ui/react'
-import { ExternalLinkIcon } from '@/components/icons'
-import { HttpRequest, HttpRequestBlock, ZapierBlock } from '@typebot.io/schemas'
-import React from 'react'
-import { HttpRequestAdvancedConfigForm } from '../../webhook/components/HttpRequestAdvancedConfigForm'
+import { ExternalLinkIcon } from "@/components/icons";
+import { Alert, AlertIcon, Button, Link, Stack, Text } from "@chakra-ui/react";
+import type {
+  HttpRequest,
+  HttpRequestBlock,
+} from "@typebot.io/blocks-integrations/webhook/schema";
+import type { ZapierBlock } from "@typebot.io/blocks-integrations/zapier/schema";
+import React from "react";
+import { HttpRequestAdvancedConfigForm } from "../../webhook/components/HttpRequestAdvancedConfigForm";
 
 type Props = {
-  block: ZapierBlock
-  onOptionsChange: (options: HttpRequestBlock['options']) => void
-}
+  block: ZapierBlock;
+  onOptionsChange: (options: HttpRequestBlock["options"]) => void;
+};
 
 export const ZapierSettings = ({
   block: { id: blockId, options },
@@ -17,15 +21,15 @@ export const ZapierSettings = ({
     onOptionsChange({
       ...options,
       webhook: newLocalWebhook,
-    })
-    return
-  }
+    });
+    return;
+  };
 
-  const url = options?.webhook?.url
+  const url = options?.webhook?.url;
 
   return (
     <Stack spacing={4}>
-      <Alert status={url ? 'success' : 'info'} rounded="md">
+      <Alert status={url ? "success" : "info"} rounded="md">
         <AlertIcon />
         {url ? (
           <>Your zap is correctly configured 🚀</>
@@ -51,5 +55,5 @@ export const ZapierSettings = ({
         onOptionsChange={onOptionsChange}
       />
     </Stack>
-  )
-}
+  );
+};

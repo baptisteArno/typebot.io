@@ -1,1 +1,1 @@
-export { EmbedBubble } from './components/EmbedBubble'
+export { EmbedBubble } from "./components/EmbedBubble";

@@ -1,9 +1,4 @@
 {
   "extends": "@typebot.io/tsconfig/base.json",
-  "include": ["./**/*.ts"],
-  "exclude": ["node_modules"],
-  "compilerOptions": {
-    "lib": ["ESNext"],
-    "resolveJsonModule": true
-  }
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

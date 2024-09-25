@@ -1,19 +1,19 @@
-import { LinkFloatingToolbar } from '@/features/blocks/bubbles/textBubble/components/plate/LinkFloatingInput'
+import { LinkFloatingToolbar } from "@/features/blocks/bubbles/textBubble/components/plate/LinkFloatingInput";
 import {
   createBoldPlugin,
   createItalicPlugin,
   createUnderlinePlugin,
-} from '@udecode/plate-basic-marks'
-import { createPlugins } from '@udecode/plate-core'
-import { createLinkPlugin, ELEMENT_LINK } from '@udecode/plate-link'
+} from "@udecode/plate-basic-marks";
+import { createPlugins } from "@udecode/plate-core";
+import { ELEMENT_LINK, createLinkPlugin } from "@udecode/plate-link";
 
 export const editorStyle = (backgroundColor: string): React.CSSProperties => ({
   flex: 1,
-  padding: '1rem',
+  padding: "1rem",
   backgroundColor,
-  borderRadius: '0.25rem',
-  outline: 'none',
-})
+  borderRadius: "0.25rem",
+  outline: "none",
+});
 
 export const platePlugins = createPlugins(
   [
@@ -25,11 +25,11 @@ export const platePlugins = createPlugins(
       renderAfterEditable: LinkFloatingToolbar as any,
       options: {
         isUrl: (url: string) =>
-          url.startsWith('http:') ||
-          url.startsWith('https:') ||
-          url.startsWith('mailto:') ||
-          url.startsWith('tel:') ||
-          url.startsWith('sms:'),
+          url.startsWith("http:") ||
+          url.startsWith("https:") ||
+          url.startsWith("mailto:") ||
+          url.startsWith("tel:") ||
+          url.startsWith("sms:"),
         forceSubmit: true,
       },
     }),
@@ -47,5 +47,5 @@ export const platePlugins = createPlugins(
         </a>
       ),
     },
-  }
-)
+  },
+);

@@ -1,38 +1,38 @@
-import { Stack, Text } from '@chakra-ui/react'
-import { useTranslate } from '@tolgee/react'
-import { VideoBubbleBlock } from '@typebot.io/schemas'
-import { TextInput } from '@/components/inputs'
-import { defaultVideoBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/video/constants'
-import { SwitchWithLabel } from '../inputs/SwitchWithLabel'
+import { TextInput } from "@/components/inputs";
+import { Stack, Text } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import { defaultVideoBubbleContent } from "@typebot.io/blocks-bubbles/video/constants";
+import type { VideoBubbleBlock } from "@typebot.io/blocks-bubbles/video/schema";
+import { SwitchWithLabel } from "../inputs/SwitchWithLabel";
 
 export const VideoLinkEmbedContent = ({
   content,
   updateUrl,
   onSubmit,
 }: {
-  content?: VideoBubbleBlock['content']
-  updateUrl: (url: string) => void
-  onSubmit: (content: VideoBubbleBlock['content']) => void
+  content?: VideoBubbleBlock["content"];
+  updateUrl: (url: string) => void;
+  onSubmit: (content: VideoBubbleBlock["content"]) => void;
 }) => {
-  const { t } = useTranslate()
+  const { t } = useTranslate();
 
   const updateAspectRatio = (aspectRatio?: string) => {
     return onSubmit({
       ...content,
       aspectRatio,
-    })
-  }
+    });
+  };
 
   const updateMaxWidth = (maxWidth?: string) => {
     return onSubmit({
       ...content,
       maxWidth,
-    })
-  }
+    });
+  };
 
   const updateAutoPlay = (isAutoplayEnabled: boolean) => {
-    return onSubmit({ ...content, isAutoplayEnabled })
-  }
+    return onSubmit({ ...content, isAutoplayEnabled });
+  };
 
   const updateControlsDisplay = (areControlsDisplayed: boolean) => {
     if (areControlsDisplayed === false) {
@@ -41,28 +41,28 @@ export const VideoLinkEmbedContent = ({
         ...content,
         isAutoplayEnabled: true,
         areControlsDisplayed,
-      })
+      });
     }
-    return onSubmit({ ...content, areControlsDisplayed })
-  }
+    return onSubmit({ ...content, areControlsDisplayed });
+  };
 
   return (
     <>
       <Stack py="2">
         <TextInput
-          placeholder={t('video.urlInput.placeholder')}
-          defaultValue={content?.url ?? ''}
+          placeholder={t("video.urlInput.placeholder")}
+          defaultValue={content?.url ?? ""}
           onChange={updateUrl}
         />
         <Text fontSize="xs" color="gray.400" textAlign="center">
-          {t('video.urlInput.helperText')}
+          {t("video.urlInput.helperText")}
         </Text>
       </Stack>
       {content?.url && (
         <Stack>
           <TextInput
-            label={t('video.aspectRatioInput.label')}
-            moreInfoTooltip={t('video.aspectRatioInput.moreInfoTooltip')}
+            label={t("video.aspectRatioInput.label")}
+            moreInfoTooltip={t("video.aspectRatioInput.moreInfoTooltip")}
             defaultValue={
               content?.aspectRatio ?? defaultVideoBubbleContent.aspectRatio
             }
@@ -70,8 +70,8 @@ export const VideoLinkEmbedContent = ({
             direction="row"
           />
           <TextInput
-            label={t('video.maxWidthInput.label')}
-            moreInfoTooltip={t('video.maxWidthInput.moreInfoTooltip')}
+            label={t("video.maxWidthInput.label")}
+            moreInfoTooltip={t("video.maxWidthInput.moreInfoTooltip")}
             defaultValue={
               content?.maxWidth ?? defaultVideoBubbleContent.maxWidth
             }
@@ -80,10 +80,10 @@ export const VideoLinkEmbedContent = ({
           />
         </Stack>
       )}
-      {content?.url && content?.type === 'url' && (
+      {content?.url && content?.type === "url" && (
         <Stack>
           <SwitchWithLabel
-            label={'Display controls'}
+            label={"Display controls"}
             initialValue={
               content?.areControlsDisplayed ??
               defaultVideoBubbleContent.areControlsDisplayed
@@ -91,7 +91,7 @@ export const VideoLinkEmbedContent = ({
             onCheckChange={updateControlsDisplay}
           />
           <SwitchWithLabel
-            label={t('editor.blocks.bubbles.audio.settings.autoplay.label')}
+            label={t("editor.blocks.bubbles.audio.settings.autoplay.label")}
             initialValue={
               content?.isAutoplayEnabled ??
               defaultVideoBubbleContent.isAutoplayEnabled
@@ -106,5 +106,5 @@ export const VideoLinkEmbedContent = ({
         </Stack>
       )}
     </>
-  )
-}
+  );
+};

@@ -1,19 +1,10 @@
-import { Heading, Stack } from '@chakra-ui/react'
+import { Heading, Stack } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
 import {
-  AvatarProps,
-  ChatTheme,
-  GeneralTheme,
-  Theme,
-} from '@typebot.io/schemas'
-import React from 'react'
-import { AvatarForm } from './AvatarForm'
-import { useTranslate } from '@tolgee/react'
-import { ChatContainerForm } from './ChatContainerForm'
-import { ContainerThemeForm } from './ContainerThemeForm'
-import {
+  defaultBlur,
   defaultButtonsBackgroundColor,
-  defaultButtonsColor,
   defaultButtonsBorderThickness,
+  defaultButtonsColor,
   defaultGuestBubblesBackgroundColor,
   defaultGuestBubblesColor,
   defaultHostBubblesBackgroundColor,
@@ -23,17 +14,26 @@ import {
   defaultInputsPlaceholderColor,
   defaultInputsShadow,
   defaultOpacity,
-  defaultBlur,
   defaultRoundness,
-} from '@typebot.io/schemas/features/typebot/theme/constants'
+} from "@typebot.io/theme/constants";
+import type {
+  AvatarProps,
+  ChatTheme,
+  GeneralTheme,
+  Theme,
+} from "@typebot.io/theme/schemas";
+import React from "react";
+import { AvatarForm } from "./AvatarForm";
+import { ChatContainerForm } from "./ChatContainerForm";
+import { ContainerThemeForm } from "./ContainerThemeForm";
 
 type Props = {
-  workspaceId: string
-  typebotId: string
-  generalBackground: GeneralTheme['background']
-  chatTheme: Theme['chat']
-  onChatThemeChange: (chatTheme: ChatTheme) => void
-}
+  workspaceId: string;
+  typebotId: string;
+  generalBackground: GeneralTheme["background"];
+  chatTheme: Theme["chat"];
+  onChatThemeChange: (chatTheme: ChatTheme) => void;
+};
 
 export const ChatThemeSettings = ({
   workspaceId,
@@ -42,37 +42,37 @@ export const ChatThemeSettings = ({
   generalBackground,
   onChatThemeChange,
 }: Props) => {
-  const { t } = useTranslate()
+  const { t } = useTranslate();
 
   const updateHostBubbles = (
-    hostBubbles: NonNullable<Theme['chat']>['hostBubbles']
-  ) => onChatThemeChange({ ...chatTheme, hostBubbles })
+    hostBubbles: NonNullable<Theme["chat"]>["hostBubbles"],
+  ) => onChatThemeChange({ ...chatTheme, hostBubbles });
 
   const updateGuestBubbles = (
-    guestBubbles: NonNullable<Theme['chat']>['guestBubbles']
-  ) => onChatThemeChange({ ...chatTheme, guestBubbles })
+    guestBubbles: NonNullable<Theme["chat"]>["guestBubbles"],
+  ) => onChatThemeChange({ ...chatTheme, guestBubbles });
 
-  const updateButtons = (buttons: NonNullable<Theme['chat']>['buttons']) =>
-    onChatThemeChange({ ...chatTheme, buttons })
+  const updateButtons = (buttons: NonNullable<Theme["chat"]>["buttons"]) =>
+    onChatThemeChange({ ...chatTheme, buttons });
 
-  const updateInputs = (inputs: NonNullable<Theme['chat']>['inputs']) =>
-    onChatThemeChange({ ...chatTheme, inputs })
+  const updateInputs = (inputs: NonNullable<Theme["chat"]>["inputs"]) =>
+    onChatThemeChange({ ...chatTheme, inputs });
 
   const updateChatContainer = (
-    container: NonNullable<Theme['chat']>['container']
-  ) => onChatThemeChange({ ...chatTheme, container })
+    container: NonNullable<Theme["chat"]>["container"],
+  ) => onChatThemeChange({ ...chatTheme, container });
 
   const updateInputsPlaceholderColor = (placeholderColor: string) =>
     onChatThemeChange({
       ...chatTheme,
       inputs: { ...chatTheme?.inputs, placeholderColor },
-    })
+    });
 
   const updateHostAvatar = (hostAvatar: AvatarProps) =>
-    onChatThemeChange({ ...chatTheme, hostAvatar })
+    onChatThemeChange({ ...chatTheme, hostAvatar });
 
   const updateGuestAvatar = (guestAvatar: AvatarProps) =>
-    onChatThemeChange({ ...chatTheme, guestAvatar })
+    onChatThemeChange({ ...chatTheme, guestAvatar });
 
   return (
     <Stack spacing={6}>
@@ -88,9 +88,9 @@ export const ChatThemeSettings = ({
         uploadFileProps={{
           workspaceId,
           typebotId,
-          fileName: 'hostAvatar',
+          fileName: "hostAvatar",
         }}
-        title={t('theme.sideMenu.chat.botAvatar')}
+        title={t("theme.sideMenu.chat.botAvatar")}
         avatarProps={chatTheme?.hostAvatar}
         isDefaultCheck
         onAvatarChange={updateHostAvatar}
@@ -99,14 +99,14 @@ export const ChatThemeSettings = ({
         uploadFileProps={{
           workspaceId,
           typebotId,
-          fileName: 'guestAvatar',
+          fileName: "guestAvatar",
         }}
-        title={t('theme.sideMenu.chat.userAvatar')}
+        title={t("theme.sideMenu.chat.userAvatar")}
         avatarProps={chatTheme?.guestAvatar}
         onAvatarChange={updateGuestAvatar}
       />
       <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
-        <Heading fontSize="lg">{t('theme.sideMenu.chat.botBubbles')}</Heading>
+        <Heading fontSize="lg">{t("theme.sideMenu.chat.botBubbles")}</Heading>
         <ContainerThemeForm
           testId="hostBubblesTheme"
           theme={chatTheme?.hostBubbles}
@@ -124,7 +124,7 @@ export const ChatThemeSettings = ({
       </Stack>
 
       <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
-        <Heading fontSize="lg">{t('theme.sideMenu.chat.userBubbles')}</Heading>
+        <Heading fontSize="lg">{t("theme.sideMenu.chat.userBubbles")}</Heading>
         <ContainerThemeForm
           testId="guestBubblesTheme"
           theme={chatTheme?.guestBubbles}
@@ -141,7 +141,7 @@ export const ChatThemeSettings = ({
         />
       </Stack>
       <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
-        <Heading fontSize="lg">{t('theme.sideMenu.chat.buttons')}</Heading>
+        <Heading fontSize="lg">{t("theme.sideMenu.chat.buttons")}</Heading>
         <ContainerThemeForm
           testId="buttonsTheme"
           theme={chatTheme?.buttons}
@@ -162,7 +162,7 @@ export const ChatThemeSettings = ({
         />
       </Stack>
       <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
-        <Heading fontSize="lg">{t('theme.sideMenu.chat.inputs')}</Heading>
+        <Heading fontSize="lg">{t("theme.sideMenu.chat.inputs")}</Heading>
         <ContainerThemeForm
           testId="inputsTheme"
           theme={chatTheme?.inputs}
@@ -182,5 +182,5 @@ export const ChatThemeSettings = ({
         />
       </Stack>
     </Stack>
-  )
-}
+  );
+};

@@ -1,40 +1,44 @@
-import { VariablesButton } from '@/features/variables/components/VariablesButton'
+import { VariablesButton } from "@/features/variables/components/VariablesButton";
 import {
-  NumberInputProps,
   NumberInput as ChakraNumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  HStack,
   FormControl,
+  FormHelperText,
   FormLabel,
+  HStack,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInputField,
+  type NumberInputProps,
+  NumberInputStepper,
   Stack,
   Text,
-  FormHelperText,
-} from '@chakra-ui/react'
-import { Variable, VariableString } from '@typebot.io/schemas'
-import { ReactNode, useEffect, useState } from 'react'
-import { useDebouncedCallback } from 'use-debounce'
-import { env } from '@typebot.io/env'
-import { MoreInfoTooltip } from '../MoreInfoTooltip'
+} from "@chakra-ui/react";
+import { env } from "@typebot.io/env";
+import type { Variable, VariableString } from "@typebot.io/variables/schemas";
+import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
+import { MoreInfoTooltip } from "../MoreInfoTooltip";
 
 type Value<HasVariable> = HasVariable extends true | undefined
   ? number | VariableString
-  : number
+  : number;
 
 type Props<HasVariable extends boolean> = {
-  defaultValue: Value<HasVariable> | undefined
-  debounceTimeout?: number
-  withVariableButton?: HasVariable
-  label?: string
-  moreInfoTooltip?: string
-  isRequired?: boolean
-  direction?: 'row' | 'column'
-  suffix?: string
-  helperText?: ReactNode
-  onValueChange: (value?: Value<HasVariable>) => void
-} & Omit<NumberInputProps, 'defaultValue' | 'value' | 'onChange' | 'isRequired'>
+  defaultValue: Value<HasVariable> | undefined;
+  debounceTimeout?: number;
+  withVariableButton?: HasVariable;
+  label?: string;
+  moreInfoTooltip?: string;
+  isRequired?: boolean;
+  direction?: "row" | "column";
+  suffix?: string;
+  helperText?: ReactNode;
+  onValueChange: (value?: Value<HasVariable>) => void;
+} & Omit<
+  NumberInputProps,
+  "defaultValue" | "value" | "onChange" | "isRequired"
+>;
 
 export const NumberInput = <HasVariable extends boolean>({
   defaultValue,
@@ -44,57 +48,57 @@ export const NumberInput = <HasVariable extends boolean>({
   label,
   moreInfoTooltip,
   isRequired,
-  direction = 'column',
+  direction = "column",
   suffix,
   helperText,
   ...props
 }: Props<HasVariable>) => {
-  const [isTouched, setIsTouched] = useState(false)
-  const [value, setValue] = useState(defaultValue?.toString() ?? '')
+  const [isTouched, setIsTouched] = useState(false);
+  const [value, setValue] = useState(defaultValue?.toString() ?? "");
 
   const onValueChangeDebounced = useDebouncedCallback(
     onValueChange,
-    env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
-  )
+    env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout,
+  );
 
   useEffect(() => {
-    if (isTouched || value !== '' || !defaultValue) return
-    setValue(defaultValue?.toString() ?? '')
-  }, [defaultValue, isTouched, value])
+    if (isTouched || value !== "" || !defaultValue) return;
+    setValue(defaultValue?.toString() ?? "");
+  }, [defaultValue, isTouched, value]);
 
   useEffect(
     () => () => {
-      onValueChangeDebounced.flush()
+      onValueChangeDebounced.flush();
     },
-    [onValueChangeDebounced]
-  )
+    [onValueChangeDebounced],
+  );
 
   const handleValueChange = (newValue: string) => {
-    if (!isTouched) setIsTouched(true)
-    if (value.startsWith('{{') && value.endsWith('}}') && newValue !== '')
-      return
-    setValue(newValue)
-    if (newValue.endsWith('.') || newValue.endsWith(',')) return
-    if (newValue === '') return onValueChangeDebounced(undefined)
+    if (!isTouched) setIsTouched(true);
+    if (value.startsWith("{{") && value.endsWith("}}") && newValue !== "")
+      return;
+    setValue(newValue);
+    if (newValue.endsWith(".") || newValue.endsWith(",")) return;
+    if (newValue === "") return onValueChangeDebounced(undefined);
     if (
-      newValue.startsWith('{{') &&
-      newValue.endsWith('}}') &&
+      newValue.startsWith("{{") &&
+      newValue.endsWith("}}") &&
       newValue.length > 4 &&
       (withVariableButton ?? true)
     ) {
-      onValueChangeDebounced(newValue as Value<HasVariable>)
-      return
+      onValueChangeDebounced(newValue as Value<HasVariable>);
+      return;
     }
-    const numberedValue = parseFloat(newValue)
-    if (isNaN(numberedValue)) return
-    onValueChangeDebounced(numberedValue)
-  }
+    const numberedValue = Number.parseFloat(newValue);
+    if (isNaN(numberedValue)) return;
+    onValueChangeDebounced(numberedValue);
+  };
 
   const handleVariableSelected = (variable?: Variable) => {
-    if (!variable) return
-    const newValue = `{{${variable.name}}}`
-    handleValueChange(newValue)
-  }
+    if (!variable) return;
+    const newValue = `{{${variable.name}}}`;
+    handleValueChange(newValue);
+  };
 
   const Input = (
     <ChakraNumberInput
@@ -109,26 +113,26 @@ export const NumberInput = <HasVariable extends boolean>({
         <NumberDecrementStepper />
       </NumberInputStepper>
     </ChakraNumberInput>
-  )
+  );
 
   return (
     <FormControl
-      as={direction === 'column' ? Stack : HStack}
+      as={direction === "column" ? Stack : HStack}
       isRequired={isRequired}
       justifyContent="space-between"
-      width={label || props.width === 'full' ? 'full' : 'auto'}
-      spacing={direction === 'column' ? 2 : 3}
+      width={label || props.width === "full" ? "full" : "auto"}
+      spacing={direction === "column" ? 2 : 3}
     >
       {label && (
         <FormLabel display="flex" flexShrink={0} gap="1" mb="0" mr="0">
-          {label}{' '}
+          {label}{" "}
           {moreInfoTooltip && (
             <MoreInfoTooltip>{moreInfoTooltip}</MoreInfoTooltip>
           )}
         </FormLabel>
       )}
-      <HStack w={direction === 'row' ? undefined : 'full'}>
-        {withVariableButton ?? true ? (
+      <HStack w={direction === "row" ? undefined : "full"}>
+        {(withVariableButton ?? true) ? (
           <HStack spacing="0" w="full">
             {Input}
             <VariablesButton onSelectVariable={handleVariableSelected} />
@@ -140,5 +144,5 @@ export const NumberInput = <HasVariable extends boolean>({
       </HStack>
       {helperText ? <FormHelperText mt="0">{helperText}</FormHelperText> : null}
     </FormControl>
-  )
-}
+  );
+};

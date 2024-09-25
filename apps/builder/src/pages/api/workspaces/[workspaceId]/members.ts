@@ -1,17 +1,17 @@
-import prisma from '@typebot.io/lib/prisma'
-import { NextApiRequest, NextApiResponse } from 'next'
-import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
+import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 import {
   methodNotAllowed,
   notAuthenticated,
   notFound,
-} from '@typebot.io/lib/api'
+} from "@typebot.io/lib/api/utils";
+import prisma from "@typebot.io/prisma";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req, res)
-  if (!user) return notAuthenticated(res)
-  if (req.method === 'GET') {
-    const id = req.query.workspaceId as string
+  const user = await getAuthenticatedUser(req, res);
+  if (!user) return notAuthenticated(res);
+  if (req.method === "GET") {
+    const id = req.query.workspaceId as string;
     const workspace = await prisma.workspace.findFirst({
       where: {
         id,
@@ -25,8 +25,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
         invitations: true,
       },
-    })
-    if (!workspace) return notFound(res)
+    });
+    if (!workspace) return notFound(res);
     return res.send({
       members: workspace.members.map((member) => ({
         userId: member.userId,
@@ -37,9 +37,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         name: member.user.name,
       })),
       invitations: workspace.invitations,
-    })
+    });
   }
-  methodNotAllowed(res)
-}
+  methodNotAllowed(res);
+};
 
-export default handler
+export default handler;

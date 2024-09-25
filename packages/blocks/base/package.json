@@ -1,0 +1,15 @@
+{
+  "name": "@typebot.io/blocks-base",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "dependencies": {
+    "@typebot.io/zod": "workspace:*",
+    "@typebot.io/prisma": "workspace:*"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
+  }
+}

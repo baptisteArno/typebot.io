@@ -1,17 +1,17 @@
+import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
+import type { TypebotInDashboard } from "@/features/dashboard/types";
 import {
   Box,
-  BoxProps,
+  type BoxProps,
   Flex,
   Text,
-  useColorModeValue,
   VStack,
-} from '@chakra-ui/react'
-import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
-import { TypebotInDashboard } from '@/features/dashboard/types'
+  useColorModeValue,
+} from "@chakra-ui/react";
 
 type Props = {
-  typebot: TypebotInDashboard
-} & BoxProps
+  typebot: TypebotInDashboard;
+} & BoxProps;
 
 export const TypebotCardOverlay = ({ typebot, ...props }: Props) => {
   return (
@@ -27,7 +27,7 @@ export const TypebotCardOverlay = ({ typebot, ...props }: Props) => {
       pointerEvents="none"
       borderWidth={1}
       rounded="md"
-      bgColor={useColorModeValue('white', 'gray.700')}
+      bgColor={useColorModeValue("white", "gray.700")}
       shadow="lg"
       opacity={0.7}
       {...props}
@@ -37,12 +37,12 @@ export const TypebotCardOverlay = ({ typebot, ...props }: Props) => {
           rounded="full"
           justifyContent="center"
           alignItems="center"
-          fontSize={'4xl'}
+          fontSize={"4xl"}
         >
-          <EmojiOrImageIcon icon={typebot.icon} boxSize={'35px'} />
+          <EmojiOrImageIcon icon={typebot.icon} boxSize={"35px"} />
         </Flex>
         <Text>{typebot.name}</Text>
       </VStack>
     </Box>
-  )
-}
+  );
+};

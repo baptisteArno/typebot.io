@@ -1,36 +1,36 @@
-import { EyeOffIcon, GripIcon, EyeIcon } from '@/components/icons'
-import { Stack, Portal, Flex, HStack, IconButton } from '@chakra-ui/react'
+import { EyeIcon, EyeOffIcon, GripIcon } from "@/components/icons";
+import { Flex, HStack, IconButton, Portal, Stack } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import {
   DndContext,
-  closestCenter,
+  type DragEndEvent,
   DragOverlay,
-  useSensors,
-  PointerSensor,
+  type DragStartEvent,
   KeyboardSensor,
+  PointerSensor,
+  closestCenter,
   useSensor,
-  DragEndEvent,
-  DragStartEvent,
-} from '@dnd-kit/core'
+  useSensors,
+} from "@dnd-kit/core";
 import {
   SortableContext,
-  verticalListSortingStrategy,
-  useSortable,
-  sortableKeyboardCoordinates,
   arrayMove,
-} from '@dnd-kit/sortable'
-import { Text } from '@chakra-ui/react'
-import { ResultHeaderCell } from '@typebot.io/schemas'
-import { useState } from 'react'
-import { CSS } from '@dnd-kit/utilities'
-import { HeaderIcon } from '../HeaderIcon'
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import type { ResultHeaderCell } from "@typebot.io/results/schemas/results";
+import { useState } from "react";
+import { HeaderIcon } from "../HeaderIcon";
 
 type Props = {
-  resultHeader: ResultHeaderCell[]
-  columnVisibility: { [key: string]: boolean }
-  columnOrder: string[]
-  onColumnOrderChange: (columnOrder: string[]) => void
-  setColumnVisibility: (columnVisibility: { [key: string]: boolean }) => void
-}
+  resultHeader: ResultHeaderCell[];
+  columnVisibility: { [key: string]: boolean };
+  columnOrder: string[];
+  onColumnOrderChange: (columnOrder: string[]) => void;
+  setColumnVisibility: (columnVisibility: { [key: string]: boolean }) => void;
+};
 
 export const ColumnSettings = ({
   resultHeader,
@@ -43,38 +43,38 @@ export const ColumnSettings = ({
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
-  )
-  const [draggingColumnId, setDraggingColumnId] = useState<string | null>(null)
+    }),
+  );
+  const [draggingColumnId, setDraggingColumnId] = useState<string | null>(null);
 
   const onEyeClick = (id: string) => () => {
     columnVisibility[id] === false
       ? setColumnVisibility({ ...columnVisibility, [id]: true })
-      : setColumnVisibility({ ...columnVisibility, [id]: false })
-  }
+      : setColumnVisibility({ ...columnVisibility, [id]: false });
+  };
   const sortedHeader = resultHeader.sort(
-    (a, b) => columnOrder.indexOf(a.id) - columnOrder.indexOf(b.id)
-  )
+    (a, b) => columnOrder.indexOf(a.id) - columnOrder.indexOf(b.id),
+  );
   const hiddenHeaders = resultHeader.filter(
-    (header) => columnVisibility[header.id] === false
-  )
+    (header) => columnVisibility[header.id] === false,
+  );
 
   const handleDragStart = (event: DragStartEvent) => {
-    const { active } = event
-    setDraggingColumnId(active.id as string)
-  }
+    const { active } = event;
+    setDraggingColumnId(active.id as string);
+  };
 
   const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event
+    const { active, over } = event;
 
     if (active.id !== over?.id) {
-      const oldIndex = columnOrder.indexOf(active.id as string)
-      const newIndex = columnOrder.indexOf(over?.id as string)
-      if (newIndex === -1 || oldIndex === -1) return
-      const newColumnOrder = arrayMove(columnOrder, oldIndex, newIndex)
-      onColumnOrderChange(newColumnOrder)
+      const oldIndex = columnOrder.indexOf(active.id as string);
+      const newIndex = columnOrder.indexOf(over?.id as string);
+      if (newIndex === -1 || oldIndex === -1) return;
+      const newColumnOrder = arrayMove(columnOrder, oldIndex, newIndex);
+      onColumnOrderChange(newColumnOrder);
     }
-  }
+  };
 
   return (
     <Stack>
@@ -107,17 +107,17 @@ export const ColumnSettings = ({
         </Portal>
       </DndContext>
     </Stack>
-  )
-}
+  );
+};
 
 const SortableColumns = ({
   header,
   hiddenHeaders,
   onEyeClick,
 }: {
-  header: ResultHeaderCell
-  hiddenHeaders: ResultHeaderCell[]
-  onEyeClick: (key: string) => () => void
+  header: ResultHeaderCell;
+  hiddenHeaders: ResultHeaderCell[];
+  onEyeClick: (key: string) => () => void;
 }) => {
   const {
     attributes,
@@ -126,16 +126,16 @@ const SortableColumns = ({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: header.id })
+  } = useSortable({ id: header.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-  }
+  };
 
   const isHidden = hiddenHeaders.some(
-    (hiddenHeader) => hiddenHeader.id === header.id
-  )
+    (hiddenHeader) => hiddenHeader.id === header.id,
+  );
 
   return (
     <Flex
@@ -150,7 +150,7 @@ const SortableColumns = ({
           size="sm"
           cursor="grab"
           icon={<GripIcon transform="rotate(90deg)" />}
-          aria-label={'Drag'}
+          aria-label={"Drag"}
           variant="ghost"
           {...listeners}
         />
@@ -160,9 +160,9 @@ const SortableColumns = ({
       <IconButton
         icon={isHidden ? <EyeOffIcon /> : <EyeIcon />}
         size="sm"
-        aria-label={'Hide column'}
+        aria-label={"Hide column"}
         onClick={onEyeClick(header.id)}
       />
     </Flex>
-  )
-}
+  );
+};

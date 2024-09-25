@@ -1,4 +1,4 @@
-import { executePrismaCommand } from './executeCommand'
+import { executePrismaCommand } from "./executeCommand";
 
-if (process.env.DATABASE_URL?.startsWith('postgres'))
-  executePrismaCommand('prisma migrate dev --create-only')
+if (process.env.DATABASE_URL?.startsWith("postgres"))
+  executePrismaCommand("prisma migrate dev --create-only");

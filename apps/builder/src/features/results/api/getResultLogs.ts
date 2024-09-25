@@ -1,17 +1,17 @@
-import prisma from '@typebot.io/lib/prisma'
-import { authenticatedProcedure } from '@/helpers/server/trpc'
-import { logSchema } from '@typebot.io/schemas'
-import { z } from 'zod'
-import { isReadTypebotForbidden } from '@/features/typebot/helpers/isReadTypebotForbidden'
+import { isReadTypebotForbidden } from "@/features/typebot/helpers/isReadTypebotForbidden";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
+import prisma from "@typebot.io/prisma";
+import { logSchema } from "@typebot.io/results/schemas/results";
+import { z } from "@typebot.io/zod";
 
 export const getResultLogs = authenticatedProcedure
   .meta({
     openapi: {
-      method: 'GET',
-      path: '/v1/typebots/{typebotId}/results/{resultId}/logs',
+      method: "GET",
+      path: "/v1/typebots/{typebotId}/results/{resultId}/logs",
       protect: true,
-      summary: 'List result logs',
-      tags: ['Results'],
+      summary: "List result logs",
+      tags: ["Results"],
     },
   })
   .input(
@@ -19,10 +19,10 @@ export const getResultLogs = authenticatedProcedure
       typebotId: z
         .string()
         .describe(
-          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+          "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
         ),
       resultId: z.string(),
-    })
+    }),
   )
   .output(z.object({ logs: z.array(logSchema) }))
   .query(async ({ input: { typebotId, resultId }, ctx: { user } }) => {
@@ -51,14 +51,14 @@ export const getResultLogs = authenticatedProcedure
           },
         },
       },
-    })
+    });
     if (!typebot || (await isReadTypebotForbidden(typebot, user)))
-      throw new Error('Typebot not found')
+      throw new Error("Typebot not found");
     const logs = await prisma.log.findMany({
       where: {
         resultId,
       },
-    })
+    });
 
-    return { logs }
-  })
+    return { logs };
+  });

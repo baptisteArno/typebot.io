@@ -1,22 +1,22 @@
-import { useTranslate } from '@tolgee/react'
-import { Box, Text, Image } from '@chakra-ui/react'
-import { ImageBubbleBlock } from '@typebot.io/schemas'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { findUniqueVariable } from '@typebot.io/variables/findUniqueVariableValue'
-import { VariableTag } from '@/features/graph/components/nodes/block/VariableTag'
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { VariableTag } from "@/features/graph/components/nodes/block/VariableTag";
+import { Box, Image, Text } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import type { ImageBubbleBlock } from "@typebot.io/blocks-bubbles/image/schema";
+import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariableValue";
 
 type Props = {
-  block: ImageBubbleBlock
-}
+  block: ImageBubbleBlock;
+};
 
 export const ImageBubbleContent = ({ block }: Props) => {
-  const { typebot } = useTypebot()
-  const { t } = useTranslate()
+  const { typebot } = useTypebot();
+  const { t } = useTranslate();
   const variable = typebot
     ? findUniqueVariable(typebot?.variables)(block.content?.url)
-    : null
+    : null;
   return !block.content?.url ? (
-    <Text color={'gray.500'}>{t('clickToEdit')}</Text>
+    <Text color={"gray.500"}>{t("clickToEdit")}</Text>
   ) : variable ? (
     <Text>
       Display <VariableTag variableName={variable.name} />
@@ -31,5 +31,5 @@ export const ImageBubbleContent = ({ block }: Props) => {
         objectFit="cover"
       />
     </Box>
-  )
-}
+  );
+};

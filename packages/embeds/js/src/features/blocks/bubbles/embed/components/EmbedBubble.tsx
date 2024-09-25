@@ -1,30 +1,30 @@
-import { TypingBubble } from '@/components'
-import { isMobile } from '@/utils/isMobileSignal'
-import { createSignal, onCleanup, onMount } from 'solid-js'
-import { clsx } from 'clsx'
-import { EmbedBubbleBlock } from '@typebot.io/schemas'
-import { defaultEmbedBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/embed/constants'
-import { isNotEmpty } from '@typebot.io/lib/utils'
-import { InputSubmitContent } from '@/types'
+import { TypingBubble } from "@/components/TypingBubble";
+import type { InputSubmitContent } from "@/types";
+import { isMobile } from "@/utils/isMobileSignal";
+import { defaultEmbedBubbleContent } from "@typebot.io/blocks-bubbles/embed/constants";
+import type { EmbedBubbleBlock } from "@typebot.io/blocks-bubbles/embed/schema";
+import { isNotEmpty } from "@typebot.io/lib/utils";
+import clsx from "clsx";
+import { createSignal, onCleanup, onMount } from "solid-js";
 
 type Props = {
-  content: EmbedBubbleBlock['content']
-  onTransitionEnd?: (ref?: HTMLDivElement) => void
-  onCompleted?: (data?: InputSubmitContent) => void
-}
+  content: EmbedBubbleBlock["content"];
+  onTransitionEnd?: (ref?: HTMLDivElement) => void;
+  onCompleted?: (data?: InputSubmitContent) => void;
+};
 
-let typingTimeout: NodeJS.Timeout
+let typingTimeout: NodeJS.Timeout;
 
-export const showAnimationDuration = 400
+export const showAnimationDuration = 400;
 
 export const EmbedBubble = (props: Props) => {
-  let ref: HTMLDivElement | undefined
+  let ref: HTMLDivElement | undefined;
   const [isTyping, setIsTyping] = createSignal(
-    props.onTransitionEnd ? true : false
-  )
+    props.onTransitionEnd ? true : false,
+  );
 
   const handleMessage = (
-    event: MessageEvent<{ name?: string; data?: string }>
+    event: MessageEvent<{ name?: string; data?: string }>,
   ) => {
     if (
       props.content?.waitForEvent?.isEnabled &&
@@ -34,37 +34,37 @@ export const EmbedBubble = (props: Props) => {
       props.onCompleted?.(
         props.content.waitForEvent.saveDataInVariableId && event.data.data
           ? {
-              type: 'text',
+              type: "text",
               value: event.data.data,
             }
-          : undefined
-      )
-      window.removeEventListener('message', handleMessage)
+          : undefined,
+      );
+      window.removeEventListener("message", handleMessage);
     }
-  }
+  };
 
   onMount(() => {
     typingTimeout = setTimeout(() => {
-      setIsTyping(false)
+      setIsTyping(false);
       if (props.content?.waitForEvent?.isEnabled) {
-        window.addEventListener('message', handleMessage)
+        window.addEventListener("message", handleMessage);
       }
       setTimeout(() => {
-        props.onTransitionEnd?.(ref)
-      }, showAnimationDuration)
-    }, 2000)
-  })
+        props.onTransitionEnd?.(ref);
+      }, showAnimationDuration);
+    }, 2000);
+  });
 
   onCleanup(() => {
-    if (typingTimeout) clearTimeout(typingTimeout)
-    window.removeEventListener('message', handleMessage)
-  })
+    if (typingTimeout) clearTimeout(typingTimeout);
+    window.removeEventListener("message", handleMessage);
+  });
 
   return (
     <div
       class={clsx(
-        'flex flex-col w-full',
-        props.onTransitionEnd ? 'animate-fade-in' : undefined
+        "flex flex-col w-full",
+        props.onTransitionEnd ? "animate-fade-in" : undefined,
       )}
       ref={ref}
     >
@@ -73,22 +73,22 @@ export const EmbedBubble = (props: Props) => {
           <div
             class="flex items-center absolute px-4 py-2 bubble-typing z-10 "
             style={{
-              width: isTyping() ? '64px' : '100%',
-              height: isTyping() ? '32px' : '100%',
+              width: isTyping() ? "64px" : "100%",
+              height: isTyping() ? "32px" : "100%",
             }}
           >
             {isTyping() && <TypingBubble />}
           </div>
           <div
             class={clsx(
-              'p-4 z-20 text-fade-in w-full',
-              isTyping() ? 'opacity-0' : 'opacity-100 p-4'
+              "p-4 z-20 text-fade-in w-full",
+              isTyping() ? "opacity-0" : "opacity-100 p-4",
             )}
             style={{
               height: isTyping()
                 ? isMobile()
-                  ? '32px'
-                  : '36px'
+                  ? "32px"
+                  : "36px"
                 : `${
                     props.content?.height ?? defaultEmbedBubbleContent.height
                   }px`,
@@ -97,11 +97,11 @@ export const EmbedBubble = (props: Props) => {
             <iframe
               id="embed-bubble-content"
               src={props.content?.url}
-              class={'w-full h-full '}
+              class={"w-full h-full "}
             />
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

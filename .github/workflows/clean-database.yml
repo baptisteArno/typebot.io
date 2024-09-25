@@ -2,7 +2,7 @@ name: Daily database cleanup
 
 on:
   schedule:
-    - cron: '0 6 * * *'
+    - cron: "0 6 * * *"
 
 jobs:
   clean:
@@ -11,12 +11,12 @@ jobs:
       run:
         working-directory: ./packages/scripts
     env:
-      DATABASE_URL: '${{ secrets.DATABASE_URL }}'
-      ENCRYPTION_SECRET: '${{ secrets.ENCRYPTION_SECRET }}'
-      NEXTAUTH_URL: 'http://localhost:3000'
-      NEXT_PUBLIC_VIEWER_URL: 'http://localhost:3001'
+      DATABASE_URL: "${{ secrets.DATABASE_URL }}"
+      ENCRYPTION_SECRET: "${{ secrets.ENCRYPTION_SECRET }}"
+      NEXTAUTH_URL: "http://localhost:3000"
+      NEXT_PUBLIC_VIEWER_URL: "http://localhost:3001"
     steps:
       - uses: actions/checkout@v2
-      - uses: pnpm/action-setup@v4
-      - run: pnpm i --frozen-lockfile
-      - run: pnpm turbo run db:cleanDatabase
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
+      - run: bunx turbo run db:cleanDatabase

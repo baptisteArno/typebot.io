@@ -1,12 +1,12 @@
-import { Result } from '@typebot.io/schemas'
-import { sendRequest } from '@typebot.io/lib'
+import { sendRequest } from "@typebot.io/lib/utils";
+import type { Prisma } from "@typebot.io/prisma/types";
 
 export const updateResultQuery = async (
   resultId: string,
-  result: Partial<Result>
+  result: Partial<Prisma.Result>,
 ) =>
-  sendRequest<Result>({
+  sendRequest<Prisma.Result>({
     url: `/api/typebots/t/results/${resultId}`,
-    method: 'PATCH',
+    method: "PATCH",
     body: result,
-  })
+  });

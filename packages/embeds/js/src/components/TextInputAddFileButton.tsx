@@ -1,15 +1,15 @@
-import { Match, Switch } from 'solid-js'
-import { Menu } from '@ark-ui/solid'
-import { FileIcon } from './icons/FileIcon'
-import { PictureIcon } from './icons/PictureIcon'
-import { isMobile } from '@/utils/isMobileSignal'
-import { PaperClipIcon } from './icons/PaperClipIcon'
-import clsx from 'clsx'
+import { isMobile } from "@/utils/isMobileSignal";
+import { Menu } from "@ark-ui/solid";
+import clsx from "clsx";
+import { Match, Switch } from "solid-js";
+import { FileIcon } from "./icons/FileIcon";
+import { PaperClipIcon } from "./icons/PaperClipIcon";
+import { PictureIcon } from "./icons/PictureIcon";
 
 type Props = {
-  onNewFiles: (files: FileList) => void
-  class?: string
-}
+  onNewFiles: (files: FileList) => void;
+  class?: string;
+};
 export const TextInputAddFileButton = (props: Props) => {
   return (
     <>
@@ -19,8 +19,8 @@ export const TextInputAddFileButton = (props: Props) => {
         multiple
         class="hidden"
         onChange={(e) => {
-          if (!e.currentTarget.files) return
-          props.onNewFiles(e.currentTarget.files)
+          if (!e.currentTarget.files) return;
+          props.onNewFiles(e.currentTarget.files);
         }}
       />
       <input
@@ -30,8 +30,8 @@ export const TextInputAddFileButton = (props: Props) => {
         multiple
         class="hidden"
         onChange={(e) => {
-          if (!e.currentTarget.files) return
-          props.onNewFiles(e.currentTarget.files)
+          if (!e.currentTarget.files) return;
+          props.onNewFiles(e.currentTarget.files);
         }}
       />
 
@@ -41,8 +41,8 @@ export const TextInputAddFileButton = (props: Props) => {
             aria-label="Add attachments"
             for="document-upload"
             class={clsx(
-              'filter data-[state=open]:backdrop-brightness-90 hover:backdrop-brightness-95 transition rounded-md p-2 focus:outline-none',
-              props.class
+              "filter data-[state=open]:backdrop-brightness-90 hover:backdrop-brightness-95 transition rounded-md p-2 focus:outline-none",
+              props.class,
             )}
           >
             <PaperClipIcon class="w-5" />
@@ -52,8 +52,8 @@ export const TextInputAddFileButton = (props: Props) => {
           <Menu.Root>
             <Menu.Trigger
               class={clsx(
-                'filter data-[state=open]:backdrop-brightness-90 hover:backdrop-brightness-95 transition rounded-md p-2 focus:outline-none',
-                props.class
+                "filter data-[state=open]:backdrop-brightness-90 hover:backdrop-brightness-95 transition rounded-md p-2 focus:outline-none",
+                props.class,
               )}
               aria-label="Add attachments"
             >
@@ -91,5 +91,5 @@ export const TextInputAddFileButton = (props: Props) => {
         </Match>
       </Switch>
     </>
-  )
-}
+  );
+};

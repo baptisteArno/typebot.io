@@ -1,14 +1,15 @@
-import { WorkspaceInvitation, WorkspaceRole } from '@typebot.io/prisma'
-import prisma from '@typebot.io/lib/prisma'
-import { NextApiRequest, NextApiResponse } from 'next'
-import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
-import { methodNotAllowed, notAuthenticated } from '@typebot.io/lib/api'
+import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
+import { methodNotAllowed, notAuthenticated } from "@typebot.io/lib/api/utils";
+import prisma from "@typebot.io/prisma";
+import { WorkspaceRole } from "@typebot.io/prisma/enum";
+import type { Prisma } from "@typebot.io/prisma/types";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req, res)
-  if (!user) return notAuthenticated(res)
-  if (req.method === 'PATCH') {
-    const data = req.body as Omit<WorkspaceInvitation, 'createdAt'>
+  const user = await getAuthenticatedUser(req, res);
+  if (!user) return notAuthenticated(res);
+  if (req.method === "PATCH") {
+    const data = req.body as Omit<Prisma.WorkspaceInvitation, "createdAt">;
     const invitation = await prisma.workspaceInvitation.updateMany({
       where: {
         id: data.id,
@@ -17,11 +18,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       },
       data,
-    })
-    return res.send({ invitation })
+    });
+    return res.send({ invitation });
   }
-  if (req.method === 'DELETE') {
-    const id = req.query.id as string
+  if (req.method === "DELETE") {
+    const id = req.query.id as string;
     await prisma.workspaceInvitation.deleteMany({
       where: {
         id,
@@ -29,10 +30,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           members: { some: { userId: user.id, role: WorkspaceRole.ADMIN } },
         },
       },
-    })
-    return res.send({ message: 'success' })
+    });
+    return res.send({ message: "success" });
   }
-  methodNotAllowed(res)
-}
+  methodNotAllowed(res);
+};
 
-export default handler
+export default handler;

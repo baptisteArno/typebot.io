@@ -1,8 +1,14 @@
-import { MotionStack } from '@/components/MotionStack'
-import { Stack, Button, StackProps, Text, ButtonProps } from '@chakra-ui/react'
-import { BubbleIllustration } from './illustrations/BubbleIllustration'
+import { MotionStack } from "@/components/MotionStack";
+import {
+  Button,
+  type ButtonProps,
+  Stack,
+  type StackProps,
+  Text,
+} from "@chakra-ui/react";
+import { BubbleIllustration } from "./illustrations/BubbleIllustration";
 
-type Props = StackProps & Pick<ButtonProps, 'isDisabled'>
+type Props = StackProps & Pick<ButtonProps, "isDisabled">;
 
 export const BubbleMenuButton = (props: Props) => {
   return (
@@ -12,7 +18,7 @@ export const BubbleMenuButton = (props: Props) => {
       alignItems="center"
       variant="outline"
       colorScheme="gray"
-      whiteSpace={'normal'}
+      whiteSpace={"normal"}
       spacing="6"
       flex="1"
       height="250px"
@@ -29,5 +35,5 @@ export const BubbleMenuButton = (props: Props) => {
         <Text textColor="gray.500">Embed in a chat bubble</Text>
       </Stack>
     </MotionStack>
-  )
-}
+  );
+};

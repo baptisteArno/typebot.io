@@ -1,3 +1,3 @@
-import { createSignal } from 'solid-js'
+import { createSignal } from "solid-js";
 
-export const [botContainer, setBotContainer] = createSignal<HTMLDivElement>()
+export const [botContainer, setBotContainer] = createSignal<HTMLDivElement>();

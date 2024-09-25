@@ -1,11 +1,11 @@
-import { DropdownList } from '@/components/DropdownList'
-import { timeFilterLabels, timeFilterValues } from '../constants'
-import { ButtonProps } from '@chakra-ui/react'
+import { DropdownList } from "@/components/DropdownList";
+import type { ButtonProps } from "@chakra-ui/react";
+import { timeFilterLabels, type timeFilterValues } from "../constants";
 
 type Props = {
-  timeFilter: (typeof timeFilterValues)[number]
-  onTimeFilterChange: (timeFilter: (typeof timeFilterValues)[number]) => void
-} & ButtonProps
+  timeFilter: (typeof timeFilterValues)[number];
+  onTimeFilterChange: (timeFilter: (typeof timeFilterValues)[number]) => void;
+} & ButtonProps;
 
 export const TimeFilterDropdown = ({
   timeFilter,
@@ -23,4 +23,4 @@ export const TimeFilterDropdown = ({
     }
     {...props}
   />
-)
+);

@@ -1,47 +1,48 @@
-import { DashboardFolder, WorkspaceRole } from '@typebot.io/prisma'
+import { useTypebots } from "@/features/dashboard/hooks/useTypebots";
+import type { TypebotInDashboard } from "@/features/dashboard/types";
+import type { NodePosition } from "@/features/graph/providers/GraphDndProvider";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { useToast } from "@/hooks/useToast";
+import { trpc } from "@/lib/trpc";
 import {
   Flex,
-  Heading,
   HStack,
+  Heading,
   Portal,
   Skeleton,
   Stack,
-  useEventListener,
   Wrap,
-} from '@chakra-ui/react'
-import { useTypebotDnd } from '../TypebotDndProvider'
-import React, { useEffect, useState } from 'react'
-import { BackButton } from './BackButton'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { useToast } from '@/hooks/useToast'
-import { CreateBotButton } from './CreateBotButton'
-import { CreateFolderButton } from './CreateFolderButton'
-import FolderButton, { ButtonSkeleton } from './FolderButton'
-import TypebotButton from './TypebotButton'
-import { TypebotCardOverlay } from './TypebotButtonOverlay'
-import { useTypebots } from '@/features/dashboard/hooks/useTypebots'
-import { TypebotInDashboard } from '@/features/dashboard/types'
-import { trpc } from '@/lib/trpc'
-import { NodePosition } from '@/features/graph/providers/GraphDndProvider'
+  useEventListener,
+} from "@chakra-ui/react";
+import { WorkspaceRole } from "@typebot.io/prisma/enum";
+import type { Prisma } from "@typebot.io/prisma/types";
+import React, { useEffect, useState } from "react";
+import { useTypebotDnd } from "../TypebotDndProvider";
+import { BackButton } from "./BackButton";
+import { CreateBotButton } from "./CreateBotButton";
+import { CreateFolderButton } from "./CreateFolderButton";
+import FolderButton, { ButtonSkeleton } from "./FolderButton";
+import TypebotButton from "./TypebotButton";
+import { TypebotCardOverlay } from "./TypebotButtonOverlay";
 
-type Props = { folder: DashboardFolder | null }
+type Props = { folder: Prisma.DashboardFolder | null };
 
 export const FolderContent = ({ folder }: Props) => {
-  const { workspace, currentRole } = useWorkspace()
-  const [isCreatingFolder, setIsCreatingFolder] = useState(false)
+  const { workspace, currentRole } = useWorkspace();
+  const [isCreatingFolder, setIsCreatingFolder] = useState(false);
   const {
     setDraggedTypebot,
     draggedTypebot,
     mouseOverFolderId,
     setMouseOverFolderId,
-  } = useTypebotDnd()
-  const [draggablePosition, setDraggablePosition] = useState({ x: 0, y: 0 })
+  } = useTypebotDnd();
+  const [draggablePosition, setDraggablePosition] = useState({ x: 0, y: 0 });
   const [mousePositionInElement, setMousePositionInElement] = useState({
     x: 0,
     y: 0,
-  })
+  });
 
-  const { showToast } = useToast()
+  const { showToast } = useToast();
 
   const {
     data: { folders } = {},
@@ -57,28 +58,28 @@ export const FolderContent = ({ folder }: Props) => {
       onError: (error) => {
         showToast({
           description: error.message,
-        })
+        });
       },
-    }
-  )
+    },
+  );
 
   const { mutate: createFolder } = trpc.folders.createFolder.useMutation({
     onError: (error) => {
-      showToast({ description: error.message })
+      showToast({ description: error.message });
     },
     onSuccess: () => {
-      refetchFolders()
+      refetchFolders();
     },
-  })
+  });
 
   const { mutate: updateTypebot } = trpc.typebot.updateTypebot.useMutation({
     onError: (error) => {
-      showToast({ description: error.message })
+      showToast({ description: error.message });
     },
     onSuccess: () => {
-      refetchTypebots()
+      refetchTypebots();
     },
-  })
+  });
 
   const {
     typebots,
@@ -86,85 +87,85 @@ export const FolderContent = ({ folder }: Props) => {
     refetch: refetchTypebots,
   } = useTypebots({
     workspaceId: workspace?.id,
-    folderId: folder === null ? 'root' : folder.id,
+    folderId: folder === null ? "root" : folder.id,
     onError: (error) => {
       showToast({
         description: error.message,
-      })
+      });
     },
-  })
+  });
 
   const moveTypebotToFolder = async (typebotId: string, folderId: string) => {
-    if (!typebots) return
+    if (!typebots) return;
     updateTypebot({
       typebotId,
       typebot: {
-        folderId: folderId === 'root' ? null : folderId,
+        folderId: folderId === "root" ? null : folderId,
       },
-    })
-  }
+    });
+  };
 
   const handleCreateFolder = () => {
-    if (!folders || !workspace) return
-    setIsCreatingFolder(true)
+    if (!folders || !workspace) return;
+    setIsCreatingFolder(true);
     createFolder({
       workspaceId: workspace.id,
       parentFolderId: folder?.id,
-    })
-    setIsCreatingFolder(false)
-  }
+    });
+    setIsCreatingFolder(false);
+  };
 
   const handleMouseUp = async () => {
     if (mouseOverFolderId !== undefined && draggedTypebot)
-      await moveTypebotToFolder(draggedTypebot.id, mouseOverFolderId ?? 'root')
-    setMouseOverFolderId(undefined)
-    setDraggedTypebot(undefined)
-  }
-  useEventListener('mouseup', handleMouseUp)
+      await moveTypebotToFolder(draggedTypebot.id, mouseOverFolderId ?? "root");
+    setMouseOverFolderId(undefined);
+    setDraggedTypebot(undefined);
+  };
+  useEventListener("mouseup", handleMouseUp);
 
   const handleTypebotDrag =
     (typebot: TypebotInDashboard) =>
     ({ absolute, relative }: NodePosition) => {
-      if (draggedTypebot) return
-      setMousePositionInElement(relative)
+      if (draggedTypebot) return;
+      setMousePositionInElement(relative);
       setDraggablePosition({
         x: absolute.x - relative.x,
         y: absolute.y - relative.y,
-      })
-      setDraggedTypebot(typebot)
-    }
+      });
+      setDraggedTypebot(typebot);
+    };
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (!draggedTypebot) return
-    const { clientX, clientY } = e
+    if (!draggedTypebot) return;
+    const { clientX, clientY } = e;
     setDraggablePosition({
       x: clientX - mousePositionInElement.x,
       y: clientY - mousePositionInElement.y,
-    })
-  }
-  useEventListener('mousemove', handleMouseMove)
+    });
+  };
+  useEventListener("mousemove", handleMouseMove);
 
   useEffect(() => {
-    if (!draggablePosition || !draggedTypebot) return
-    const { innerHeight } = window
-    const scrollSpeed = 10
-    const scrollMargin = 50
-    const clientY = draggablePosition.y + mousePositionInElement.y
+    if (!draggablePosition || !draggedTypebot) return;
+    const { innerHeight } = window;
+    const scrollSpeed = 10;
+    const scrollMargin = 50;
+    const clientY = draggablePosition.y + mousePositionInElement.y;
     const scrollY =
       clientY < scrollMargin
         ? -scrollSpeed
         : clientY > innerHeight - scrollMargin
-        ? scrollSpeed
-        : 0
-    window.scrollBy(0, scrollY)
+          ? scrollSpeed
+          : 0;
+    window.scrollBy(0, scrollY);
     const interval = setInterval(() => {
-      window.scrollBy(0, scrollY)
-    }, 5)
+      window.scrollBy(0, scrollY);
+    }, 5);
 
     return () => {
-      clearInterval(interval)
-    }
-  }, [draggablePosition, draggedTypebot, mousePositionInElement])
+      clearInterval(interval);
+    };
+  }, [draggablePosition, draggedTypebot, mousePositionInElement]);
 
   return (
     <Flex w="full" flex="1" justify="center">
@@ -230,5 +231,5 @@ export const FolderContent = ({ folder }: Props) => {
         </Portal>
       )}
     </Flex>
-  )
-}
+  );
+};

@@ -1,0 +1,27 @@
+{
+  "name": "stories",
+  "type": "module",
+  "scripts": {
+    "dev": "ladle serve -p 3006",
+    "build": "ladle build"
+  },
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "dependencies": {
+    "@ladle/react": "2.5.1",
+    "@typebot.io/bot-engine": "workspace:*",
+    "@typebot.io/conditions": "workspace:*",
+    "@typebot.io/react": "workspace:*",
+    "@typebot.io/theme": "workspace:*",
+    "@typebot.io/blocks-bubbles": "workspace:*",
+    "@typebot.io/blocks-inputs": "workspace:*",
+    "@typebot.io/blocks-logic": "workspace:*",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*",
+    "@types/react": "18.2.15"
+  }
+}

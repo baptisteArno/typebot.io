@@ -1,29 +1,29 @@
+import { XCircleIcon } from "@/components/icons";
+import { trpc } from "@/lib/trpc";
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  HStack,
-  ModalFooter,
-  Button,
-  Text,
-  Box,
-  Code,
-  Stack,
   Alert,
   AlertIcon,
-} from '@chakra-ui/react'
-import { XCircleIcon } from '@/components/icons'
-import { trpc } from '@/lib/trpc'
+  Box,
+  Button,
+  Code,
+  HStack,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 
 type Props = {
-  workspaceId: string
-  isOpen: boolean
-  domain: string
-  onClose: () => void
-}
+  workspaceId: string;
+  isOpen: boolean;
+  domain: string;
+  onClose: () => void;
+};
 
 export const CustomDomainConfigModal = ({
   workspaceId,
@@ -34,22 +34,22 @@ export const CustomDomainConfigModal = ({
   const { data, error } = trpc.customDomains.verifyCustomDomain.useQuery({
     name: domain,
     workspaceId,
-  })
+  });
 
-  const { domainJson, status } = data ?? {}
+  const { domainJson, status } = data ?? {};
 
-  if (!status || status === 'Valid Configuration' || !domainJson) return null
+  if (!status || status === "Valid Configuration" || !domainJson) return null;
 
-  if ('error' in domainJson) return null
+  if ("error" in domainJson) return null;
 
-  const subdomain = getSubdomain(domainJson.name, domainJson.apexName)
+  const subdomain = getSubdomain(domainJson.name, domainJson.apexName);
 
-  const recordType = subdomain ? 'CNAME' : 'A'
+  const recordType = subdomain ? "CNAME" : "A";
 
   const txtVerification =
-    (status === 'Pending Verification' &&
-      domainJson.verification?.find((x) => x.type === 'TXT')) ||
-    null
+    (status === "Pending Verification" &&
+      domainJson.verification?.find((x) => x.type === "TXT")) ||
+    null;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
@@ -68,11 +68,11 @@ export const CustomDomainConfigModal = ({
           {txtVerification ? (
             <Stack spacing="4">
               <Text>
-                Please set the following <Code>TXT</Code> record on{' '}
+                Please set the following <Code>TXT</Code> record on{" "}
                 <Text as="span" fontWeight="bold">
                   {domainJson.apexName}
-                </Text>{' '}
-                to prove ownership of{' '}
+                </Text>{" "}
+                to prove ownership of{" "}
                 <Text as="span" fontWeight="bold">
                   {domainJson.name}
                 </Text>
@@ -96,7 +96,7 @@ export const CustomDomainConfigModal = ({
                       0,
                       txtVerification.domain.length -
                         domainJson.apexName.length -
-                        1
+                        1,
                     )}
                   </Text>
                 </Stack>
@@ -119,17 +119,17 @@ export const CustomDomainConfigModal = ({
                 </Text>
               </Alert>
             </Stack>
-          ) : status === 'Unknown Error' ? (
+          ) : status === "Unknown Error" ? (
             <Text mb="5" fontSize="sm">
               {error?.message}
             </Text>
           ) : (
             <Stack spacing={4}>
               <Text>
-                To configure your{' '}
-                {recordType === 'A' ? 'apex domain' : 'subdomain'} (
+                To configure your{" "}
+                {recordType === "A" ? "apex domain" : "subdomain"} (
                 <Box as="span" fontWeight="bold">
-                  {recordType === 'A' ? domainJson.apexName : domainJson.name}
+                  {recordType === "A" ? domainJson.apexName : domainJson.name}
                 </Box>
                 ), set the following {recordType} record on your DNS provider to
                 continue:
@@ -144,14 +144,14 @@ export const CustomDomainConfigModal = ({
                 <Stack>
                   <Text fontWeight="bold">Name</Text>
                   <Text fontFamily="mono" fontSize="sm">
-                    {recordType === 'A' ? '@' : subdomain ?? 'www'}
+                    {recordType === "A" ? "@" : (subdomain ?? "www")}
                   </Text>
                 </Stack>
                 <Stack>
                   <Text fontWeight="bold">Value</Text>
                   <Text fontFamily="mono" fontSize="sm">
-                    {recordType === 'A'
-                      ? '76.76.21.21'
+                    {recordType === "A"
+                      ? "76.76.21.21"
                       : `cname.vercel-dns.com`}
                   </Text>
                 </Stack>
@@ -178,10 +178,10 @@ export const CustomDomainConfigModal = ({
         </ModalFooter>
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};
 
 const getSubdomain = (name: string, apexName: string) => {
-  if (name === apexName) return null
-  return name.slice(0, name.length - apexName.length - 1)
-}
+  if (name === apexName) return null;
+  return name.slice(0, name.length - apexName.length - 1);
+};

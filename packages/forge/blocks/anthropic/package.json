@@ -1,24 +1,21 @@
 {
   "name": "@typebot.io/anthropic-block",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.ts",
-  "keywords": [],
-  "author": "Enchatted P.C.",
-  "license": "AGPL-3.0-or-later",
-  "devDependencies": {
-    "@typebot.io/forge": "workspace:*",
-    "@typebot.io/lib": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
-    "@types/node": "20.4.2",
-    "@types/react": "18.2.15",
-    "typescript": "5.4.5"
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schemas": "./src/schemas.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "0.0.30",
     "@typebot.io/ai": "workspace:*",
+    "@typebot.io/forge": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
     "@typebot.io/openai-block": "workspace:*",
-    "ai": "3.3.15",
-    "ky": "1.2.4"
+    "ai": "3.3.15"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
   }
 }

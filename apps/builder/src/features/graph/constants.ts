@@ -1,7 +1,7 @@
-import { Coordinates } from './types'
+import type { Coordinates } from "./types";
 
-export const stubLength = 20
-export const groupWidth = 300
+export const stubLength = 20;
+export const groupWidth = 300;
 export const groupAnchorsOffset = {
   left: {
     x: 0,
@@ -15,15 +15,15 @@ export const groupAnchorsOffset = {
     x: groupWidth,
     y: stubLength,
   },
-}
-export const eventWidth = 200
+};
+export const eventWidth = 200;
 
 export const graphPositionDefaultValue = (
-  firstGroupCoordinates: Coordinates
+  firstGroupCoordinates: Coordinates,
 ) => ({
   x: 400 - firstGroupCoordinates.x,
   y: 100 - firstGroupCoordinates.y,
   scale: 1,
-})
+});
 
-export const pathRadius = 20
+export const pathRadius = 20;

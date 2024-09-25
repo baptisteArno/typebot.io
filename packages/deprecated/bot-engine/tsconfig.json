@@ -1,11 +1,10 @@
 {
-  "extends": "@typebot.io/tsconfig/react-library.json",
-  "include": ["src/**/*"],
+  "extends": "@typebot.io/tsconfig/react.json",
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "react": ["./node_modules/@types/react"]
+      "@/*": ["src/*"]
     }
   }
 }

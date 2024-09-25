@@ -1,4 +1,4 @@
-import { IconProps, Icon } from '@chakra-ui/react'
+import { Icon, type IconProps } from "@chakra-ui/react";
 
 export const KeycloackLogo = (props: IconProps) => (
   <Icon viewBox="0 0 1024 1024" {...props}>
@@ -8,4 +8,4 @@ export const KeycloackLogo = (props: IconProps) => (
       fill="#fff"
     />
   </Icon>
-)
+);
