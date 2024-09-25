@@ -2,7 +2,6 @@
   "recommendations": [
     "bradlc.vscode-tailwindcss",
     "unifiedjs.vscode-mdx",
-    "lokalise.i18n-ally",
     "Prisma.prisma",
     "biomejs.biome"
   ]

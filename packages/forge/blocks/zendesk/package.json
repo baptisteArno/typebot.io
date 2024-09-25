@@ -1,0 +1,17 @@
+{
+  "name": "@typebot.io/zendesk-block",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schemas": "./src/schemas.ts"
+  },
+  "dependencies": {
+    "@typebot.io/forge": "workspace:*",
+    "jsonwebtoken": "9.0.1"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*",
+    "@types/jsonwebtoken": "9.0.2"
+  }
+}

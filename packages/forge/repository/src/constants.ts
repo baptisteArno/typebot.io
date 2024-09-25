@@ -15,4 +15,5 @@ export const forgedBlockIds = [
   "nocodb",
   "segment",
   "groq",
+  "zendesk",
 ] as const satisfies readonly ForgedBlock["type"][];

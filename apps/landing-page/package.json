@@ -1,12 +1,9 @@
 {
   "name": "landing-page",
-  "version": "1.0.0",
-  "license": "UNLICENSED",
-  "private": "true",
   "scripts": {
-    "dev": "dotenv -e ./.env -e ../../../.env -- next dev -p 3003",
-    "start": "dotenv -e ./.env -e ../../../.env -- next start",
-    "build": "dotenv -e ./.env -e ../../../.env -- next build",
+    "dev": "dotenv -e ./.env -e ../../.env -- next dev -p 3003",
+    "start": "dotenv -e ./.env -e ../../.env -- next start",
+    "build": "dotenv -e ./.env -e ../../.env -- next build",
     "analyze": "cross-env ANALYZE=true next build",
     "clean": "git clean -xdf .next .turbo node_modules",
     "lint": "biome lint",

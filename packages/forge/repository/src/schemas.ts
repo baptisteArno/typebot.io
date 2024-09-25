@@ -25,6 +25,8 @@ import { segmentBlock } from "@typebot.io/segment-block";
 import { segmentBlockSchema } from "@typebot.io/segment-block/schemas";
 import { togetherAiBlock } from "@typebot.io/together-ai-block";
 import { togetherAiBlockSchema } from "@typebot.io/together-ai-block/schemas";
+import { zendeskBlock } from "@typebot.io/zendesk-block";
+import { zendeskBlockSchema } from "@typebot.io/zendesk-block/schemas";
 import { z } from "@typebot.io/zod";
 
 export const forgedBlockSchemas = {
@@ -41,6 +43,7 @@ export const forgedBlockSchemas = {
   [nocodbBlock.id]: nocodbBlockSchema,
   [segmentBlock.id]: segmentBlockSchema,
   [groqBlock.id]: groqBlockSchema,
+  [zendeskBlock.id]: zendeskBlockSchema,
 } as const;
 
 export const forgedBlockSchema = z.discriminatedUnion("type", [
@@ -57,5 +60,6 @@ export const forgedBlockSchema = z.discriminatedUnion("type", [
   nocodbBlockSchema,
   segmentBlockSchema,
   groqBlockSchema,
+  zendeskBlockSchema,
 ]);
 export type ForgedBlock = z.infer<typeof forgedBlockSchema>;

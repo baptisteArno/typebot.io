@@ -1,7 +1,5 @@
 {
   "name": "@typebot.io/forge-repository",
-  "version": "1.0.0",
-  "license": "AGPL-3.0-or-later",
   "type": "module",
   "private": true,
   "exports": {
@@ -21,7 +19,8 @@
     "@typebot.io/open-router-block": "workspace:*",
     "@typebot.io/nocodb-block": "workspace:*",
     "@typebot.io/segment-block": "workspace:*",
-    "@typebot.io/groq-block": "workspace:*"
+    "@typebot.io/groq-block": "workspace:*",
+    "@typebot.io/zendesk-block": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

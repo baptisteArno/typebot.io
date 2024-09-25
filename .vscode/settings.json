@@ -1,9 +1,4 @@
 {
-  "i18n-ally.localesPaths": ["apps/builder/src/i18n"],
-  "i18n-ally.keystyle": "flat",
-  "i18n-ally.displayLanguage": "en",
-  "i18n-ally.enabledFrameworks": ["custom"],
-  "i18n-ally.sortKeys": true,
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
   "typescript.updateImportsOnFileMove.enabled": "always",
@@ -25,5 +20,7 @@
   "editor.codeActionsOnSave": {
     "quickfix.biome": "explicit",
     "source.organizeImports.biome": "explicit"
-  }
+  },
+  "eslint.enable": false,
+  "prettier.enable": false
 }
