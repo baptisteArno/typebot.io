@@ -1,10 +1,10 @@
 import { createId } from "@paralleldrive/cuid2";
-import { getChatsLimit } from "@typebot.io/billing/helpers/getChatsLimit";
+import { getChatsLimit } from "@typebot.io/billing/src/helpers/getChatsLimit";
 import { sendAlmostReachedChatsLimitEmail } from "@typebot.io/emails/emails/AlmostReachedChatsLimitEmail";
 import { isDefined, isEmpty } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
-import type { TelemetryEvent } from "@typebot.io/telemetry/schemas";
+import type { TelemetryEvent } from "@typebot.io/schemas/features/telemetry";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
 import Stripe from "stripe";
@@ -364,10 +364,7 @@ const autoUpgradeToPro = async (
     },
   });
 
-  await prisma.workspace.update({
-    where: { id: workspaceId },
-    data: { plan: "PRO" },
-  });
+  await prisma.workspace.update({ id: workspaceId, plan: "PRO" });
 
   return newSubscription;
 };

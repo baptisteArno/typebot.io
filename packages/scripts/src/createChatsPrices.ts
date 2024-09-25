@@ -1,4 +1,7 @@
-import { proChatTiers, starterChatTiers } from "@typebot.io/billing/constants";
+import {
+  proChatTiers,
+  starterChatTiers,
+} from "@typebot.io/billing/src/constants";
 import Stripe from "stripe";
 import { promptAndSetEnvironment } from "./utils";
 
