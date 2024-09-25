@@ -32,9 +32,14 @@ export const httpRequestV5Schema = z.object({
 
 const httpRequestSchemas = {
   v5: httpRequestV5Schema,
-  v6: httpRequestV5Schema.omit({
-    id: true,
-  }),
+  v6: httpRequestV5Schema
+    .omit({
+      id: true,
+    })
+    .openapi({
+      title: "HTTP Request",
+      ref: "httpRequestBlock",
+    }),
 };
 
 const httpRequestSchema = z.union([

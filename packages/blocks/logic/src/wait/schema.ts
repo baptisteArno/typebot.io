@@ -7,11 +7,16 @@ export const waitOptionsSchema = z.object({
   shouldPause: z.boolean().optional(),
 });
 
-export const waitBlockSchema = blockBaseSchema.merge(
-  z.object({
-    type: z.enum([LogicBlockType.WAIT]),
-    options: waitOptionsSchema.optional(),
-  }),
-);
+export const waitBlockSchema = blockBaseSchema
+  .merge(
+    z.object({
+      type: z.enum([LogicBlockType.WAIT]),
+      options: waitOptionsSchema.optional(),
+    }),
+  )
+  .openapi({
+    title: "Wait",
+    ref: "waitLogic",
+  });
 
 export type WaitBlock = z.infer<typeof waitBlockSchema>;

@@ -16,12 +16,17 @@ export const videoBubbleContentSchema = z.object({
   isAutoplayEnabled: z.boolean().optional(),
 });
 
-export const videoBubbleBlockSchema = blockBaseSchema.merge(
-  z.object({
-    type: z.enum([BubbleBlockType.VIDEO]),
-    content: videoBubbleContentSchema.optional(),
-  }),
-);
+export const videoBubbleBlockSchema = blockBaseSchema
+  .merge(
+    z.object({
+      type: z.enum([BubbleBlockType.VIDEO]),
+      content: videoBubbleContentSchema.optional(),
+    }),
+  )
+  .openapi({
+    title: "Video",
+    ref: `videoBlock`,
+  });
 
 export type VideoBubbleBlock = z.infer<typeof videoBubbleBlockSchema>;
 export type EmbeddableVideoBubbleContentType = Exclude<

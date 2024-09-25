@@ -8,11 +8,16 @@ export const zapierBlockSchemas = {
       type: z.enum([IntegrationBlockType.ZAPIER]),
     }),
   ),
-  v6: httpBlockSchemas.v6.merge(
-    z.object({
-      type: z.enum([IntegrationBlockType.ZAPIER]),
+  v6: httpBlockSchemas.v6
+    .merge(
+      z.object({
+        type: z.enum([IntegrationBlockType.ZAPIER]),
+      }),
+    )
+    .openapi({
+      title: "Zapier",
+      ref: "zapierBlock",
     }),
-  ),
 } as const;
 
 const zapierBlockSchema = z.union([

@@ -15,11 +15,16 @@ export const embedBubbleContentSchema = z.object({
     .optional(),
 });
 
-export const embedBubbleBlockSchema = blockBaseSchema.merge(
-  z.object({
-    type: z.enum([BubbleBlockType.EMBED]),
-    content: embedBubbleContentSchema.optional(),
-  }),
-);
+export const embedBubbleBlockSchema = blockBaseSchema
+  .merge(
+    z.object({
+      type: z.enum([BubbleBlockType.EMBED]),
+      content: embedBubbleContentSchema.optional(),
+    }),
+  )
+  .openapi({
+    title: "Embed",
+    ref: `embedBlock`,
+  });
 
 export type EmbedBubbleBlock = z.infer<typeof embedBubbleBlockSchema>;

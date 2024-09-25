@@ -42,11 +42,16 @@ export const pixelOptionsSchema = z.discriminatedUnion("eventType", [
   customPixelOptionSchema,
 ]);
 
-export const pixelBlockSchema = blockBaseSchema.merge(
-  z.object({
-    type: z.enum([IntegrationBlockType.PIXEL]),
-    options: pixelOptionsSchema.optional(),
-  }),
-);
+export const pixelBlockSchema = blockBaseSchema
+  .merge(
+    z.object({
+      type: z.enum([IntegrationBlockType.PIXEL]),
+      options: pixelOptionsSchema.optional(),
+    }),
+  )
+  .openapi({
+    title: "Pixel",
+    ref: "pixelBlock",
+  });
 
 export type PixelBlock = z.infer<typeof pixelBlockSchema>;

@@ -18,12 +18,17 @@ export const sendEmailOptionsSchema = z.object({
   attachmentsVariableId: z.string().optional(),
 });
 
-export const sendEmailBlockSchema = blockBaseSchema.merge(
-  z.object({
-    type: z.enum([IntegrationBlockType.EMAIL]),
-    options: sendEmailOptionsSchema.optional(),
-  }),
-);
+export const sendEmailBlockSchema = blockBaseSchema
+  .merge(
+    z.object({
+      type: z.enum([IntegrationBlockType.EMAIL]),
+      options: sendEmailOptionsSchema.optional(),
+    }),
+  )
+  .openapi({
+    title: "Send email",
+    ref: "sendEmailBlock",
+  });
 
 export const smtpCredentialsSchema = z
   .object({

@@ -18,11 +18,16 @@ export const chatwootOptionsSchema = z.object({
     .optional(),
 });
 
-export const chatwootBlockSchema = blockBaseSchema.merge(
-  z.object({
-    type: z.enum([IntegrationBlockType.CHATWOOT]),
-    options: chatwootOptionsSchema.optional(),
-  }),
-);
+export const chatwootBlockSchema = blockBaseSchema
+  .merge(
+    z.object({
+      type: z.enum([IntegrationBlockType.CHATWOOT]),
+      options: chatwootOptionsSchema.optional(),
+    }),
+  )
+  .openapi({
+    title: "Chatwoot",
+    ref: "chatwootBlock",
+  });
 
 export type ChatwootBlock = z.infer<typeof chatwootBlockSchema>;

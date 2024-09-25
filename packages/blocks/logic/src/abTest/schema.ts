@@ -37,9 +37,14 @@ const abTestBlockV5Schema = blockBaseSchema.merge(
 
 export const abTestBlockSchemas = {
   v5: abTestBlockV5Schema,
-  v6: abTestBlockV5Schema.extend({
-    items: z.tuple([aItemSchemas.v6, bItemSchemas.v6]),
-  }),
+  v6: abTestBlockV5Schema
+    .extend({
+      items: z.tuple([aItemSchemas.v6, bItemSchemas.v6]),
+    })
+    .openapi({
+      title: "AB Test",
+      ref: "abTestLogic",
+    }),
 } as const;
 
 export const abTestBlockSchema = z.union([

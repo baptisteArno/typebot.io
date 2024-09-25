@@ -34,20 +34,29 @@ import { dynamicThemeSchema } from "./dynamicTheme";
 export const messageSchema = z.preprocess(
   (val) => (typeof val === "string" ? { type: "text", text: val } : val),
   z.discriminatedUnion("type", [
-    z.object({
-      type: z.literal("text"),
-      text: z.string(),
-      attachedFileUrls: z
-        .array(z.string())
-        .optional()
-        .describe(
-          "Can only be provided if current input block is a text input block that allows attachments",
-        ),
-    }),
+    z
+      .object({
+        type: z.literal("text"),
+        text: z.string(),
+        attachedFileUrls: z
+          .array(z.string())
+          .optional()
+          .describe(
+            "Can only be provided if current input block is a text input block that allows attachments",
+          ),
+      })
+      .openapi({
+        title: "Text",
+        ref: "textSentMessage",
+      }),
     z
       .object({
         type: z.literal("audio"),
         url: z.string(),
+      })
+      .openapi({
+        title: "Audio",
+        ref: "audioSentMessage",
       })
       .describe(
         "Can only be provided if current input block is a text input that allows audio clips",

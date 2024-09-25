@@ -9,11 +9,16 @@ export const scriptOptionsSchema = z.object({
   shouldExecuteInParentContext: z.boolean().optional(),
 });
 
-export const scriptBlockSchema = blockBaseSchema.merge(
-  z.object({
-    type: z.enum([LogicBlockType.SCRIPT]),
-    options: scriptOptionsSchema.optional(),
-  }),
-);
+export const scriptBlockSchema = blockBaseSchema
+  .merge(
+    z.object({
+      type: z.enum([LogicBlockType.SCRIPT]),
+      options: scriptOptionsSchema.optional(),
+    }),
+  )
+  .openapi({
+    title: "Script",
+    ref: "scriptLogic",
+  });
 
 export type ScriptBlock = z.infer<typeof scriptBlockSchema>;

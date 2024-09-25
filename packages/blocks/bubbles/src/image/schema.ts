@@ -12,11 +12,16 @@ export const imageBubbleContentSchema = z.object({
     .optional(),
 });
 
-export const imageBubbleBlockSchema = blockBaseSchema.merge(
-  z.object({
-    type: z.enum([BubbleBlockType.IMAGE]),
-    content: imageBubbleContentSchema.optional(),
-  }),
-);
+export const imageBubbleBlockSchema = blockBaseSchema
+  .merge(
+    z.object({
+      type: z.enum([BubbleBlockType.IMAGE]),
+      content: imageBubbleContentSchema.optional(),
+    }),
+  )
+  .openapi({
+    title: "Image",
+    ref: `imageBlock`,
+  });
 
 export type ImageBubbleBlock = z.infer<typeof imageBubbleBlockSchema>;

@@ -82,12 +82,17 @@ export const parseBlockSchema = <
             .merge(action.options ?? z.object({})),
     ),
   ]);
-  return z.object({
-    id: z.string(),
-    outgoingEdgeId: z.string().optional(),
-    type: z.literal(blockDefinition.id),
-    options: options.optional(),
-  });
+  return z
+    .object({
+      id: z.string(),
+      outgoingEdgeId: z.string().optional(),
+      type: z.literal(blockDefinition.id),
+      options: options.optional(),
+    })
+    .openapi({
+      title: blockDefinition.name,
+      ref: `${blockDefinition.id}Block`,
+    });
 };
 
 export const parseBlockCredentials = <

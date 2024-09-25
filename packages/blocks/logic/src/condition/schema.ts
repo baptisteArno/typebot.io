@@ -32,13 +32,18 @@ export const conditionBlockSchemas = {
       options: z.undefined(),
     }),
   ),
-  v6: blockBaseSchema.merge(
-    z.object({
-      type: z.enum([LogicBlockType.CONDITION]),
-      items: z.array(conditionItemSchemas.v6),
-      options: z.undefined(),
+  v6: blockBaseSchema
+    .merge(
+      z.object({
+        type: z.enum([LogicBlockType.CONDITION]),
+        items: z.array(conditionItemSchemas.v6),
+        options: z.undefined(),
+      }),
+    )
+    .openapi({
+      title: "Condition",
+      ref: "conditionLogic",
     }),
-  ),
 };
 
 export const conditionBlockSchema = z.union([

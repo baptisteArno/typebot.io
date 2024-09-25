@@ -8,11 +8,16 @@ export const makeComBlockSchemas = {
       type: z.enum([IntegrationBlockType.MAKE_COM]),
     }),
   ),
-  v6: httpBlockSchemas.v6.merge(
-    z.object({
-      type: z.enum([IntegrationBlockType.MAKE_COM]),
+  v6: httpBlockSchemas.v6
+    .merge(
+      z.object({
+        type: z.enum([IntegrationBlockType.MAKE_COM]),
+      }),
+    )
+    .openapi({
+      title: "Make.com",
+      ref: "makeComBlock",
     }),
-  ),
 } as const;
 
 const makeComBlockSchema = z.union([

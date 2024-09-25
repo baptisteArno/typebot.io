@@ -20,13 +20,13 @@ export const startElementIdSchema = z.union([
   z.object({
     startGroupId: z.string().describe("Start chat from a specific group."),
     startEventId: z.never().optional().openapi({
-      type: "null",
+      type: "string",
     }),
   }),
   z.object({
     startEventId: z.string().describe("Start chat from a specific event."),
     startGroupId: z.never().optional().openapi({
-      type: "null",
+      type: "string",
     }),
   }),
   z.object({}),

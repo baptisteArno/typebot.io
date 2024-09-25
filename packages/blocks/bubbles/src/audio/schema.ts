@@ -7,12 +7,17 @@ export const audioBubbleContentSchema = z.object({
   isAutoplayEnabled: z.boolean().optional(),
 });
 
-export const audioBubbleBlockSchema = blockBaseSchema.merge(
-  z.object({
-    type: z.enum([BubbleBlockType.AUDIO]),
-    content: audioBubbleContentSchema.optional(),
-  }),
-);
+export const audioBubbleBlockSchema = blockBaseSchema
+  .merge(
+    z.object({
+      type: z.enum([BubbleBlockType.AUDIO]),
+      content: audioBubbleContentSchema.optional(),
+    }),
+  )
+  .openapi({
+    title: "Audio",
+    ref: `audioBlock`,
+  });
 
 export type AudioBubbleBlock = z.infer<typeof audioBubbleBlockSchema>;
 export type AudioBubbleContent = z.infer<typeof audioBubbleContentSchema>;
