@@ -7,6 +7,7 @@ import { itemBaseSchemas } from '../../../items/shared'
 export const pictureChoiceOptionsSchema = optionBaseSchema.merge(
   z.object({
     isMultipleChoice: z.boolean().optional(),
+    useSlider: z.boolean().optional(),
     isSearchable: z.boolean().optional(),
     buttonLabel: z.string().optional(),
     searchInputPlaceholder: z.string().optional(),

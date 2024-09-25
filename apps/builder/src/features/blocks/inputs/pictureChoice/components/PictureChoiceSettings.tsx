@@ -7,6 +7,7 @@ import { PictureChoiceBlock } from '@typebot.io/schemas/features/blocks/inputs/p
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
 import { defaultPictureChoiceOptions } from '@typebot.io/schemas/features/blocks/inputs/pictureChoice/constants'
 import { useTranslate } from '@tolgee/react'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 
 type Props = {
   options?: PictureChoiceBlock['options']
@@ -18,6 +19,8 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
 
   const updateIsMultiple = (isMultipleChoice: boolean) =>
     onOptionsChange({ ...options, isMultipleChoice })
+  const updateUseSlider = (useSlider: boolean) =>
+    onOptionsChange({ ...options, useSlider })
   const updateButtonLabel = (buttonLabel: string) =>
     onOptionsChange({ ...options, buttonLabel })
   const updateSaveVariable = (variable?: Variable) =>
@@ -97,6 +100,14 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
           onChange={updateButtonLabel}
         />
       </SwitchWithRelatedSettings>
+
+      <SwitchWithLabel
+        label={t('blocks.inputs.picture.settings.useSlider.label')}
+        initialValue={
+          options?.useSlider ?? defaultPictureChoiceOptions.useSlider
+        }
+        onCheckChange={updateUseSlider}
+      />
 
       <SwitchWithRelatedSettings
         label={t('blocks.inputs.picture.settings.dynamicItems.label')}

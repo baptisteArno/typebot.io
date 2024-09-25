@@ -184,6 +184,7 @@
   "blocks.inputs.picture.settings.dynamicItems.titles.label": "Titles:",
   "blocks.inputs.picture.settings.dynamicVariables.display.label": "Display",
   "blocks.inputs.picture.settings.dynamicVariables.pictures.label": "pictures",
+  "blocks.inputs.picture.settings.useSlider.label": "Display as slider",
   "blocks.inputs.rating.from.label": "Rate from",
   "blocks.inputs.rating.settings.customIcon.label": "Custom icon?",
   "blocks.inputs.rating.settings.extremelyLikely.placeholder.label": "Extremely likely",
