@@ -31,7 +31,7 @@
       "cache": false
     },
     "db:generate": {
-      "outputs": ["node_modules/@prisma/client/**"]
+      "cache": false
     },
     "db:push": {
       "cache": false
