@@ -1,33 +1,33 @@
 import {
   Editable,
-  EditablePreview,
   EditableInput,
+  EditablePreview,
   Tooltip,
   useColorModeValue,
-} from '@chakra-ui/react'
-import React, { useState } from 'react'
-import { useTranslate } from '@tolgee/react'
+} from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import React, { useState } from "react";
 
 type EditableProps = {
-  defaultName: string
-  onNewName: (newName: string) => void
-}
+  defaultName: string;
+  onNewName: (newName: string) => void;
+};
 export const EditableTypebotName = ({
   defaultName,
   onNewName,
 }: EditableProps) => {
-  const { t } = useTranslate()
-  const emptyNameBg = useColorModeValue('gray.100', 'gray.700')
-  const [currentName, setCurrentName] = useState(defaultName)
+  const { t } = useTranslate();
+  const emptyNameBg = useColorModeValue("gray.100", "gray.700");
+  const [currentName, setCurrentName] = useState(defaultName);
 
   const submitNewName = (newName: string) => {
-    if (newName === '') return setCurrentName(defaultName)
-    if (newName === defaultName) return
-    onNewName(newName)
-  }
+    if (newName === "") return setCurrentName(defaultName);
+    if (newName === defaultName) return;
+    onNewName(newName);
+  };
 
   return (
-    <Tooltip label={t('rename')}>
+    <Tooltip label={t("rename")}>
       <Editable
         value={currentName}
         onChange={setCurrentName}
@@ -41,10 +41,10 @@ export const EditableTypebotName = ({
           fontSize="14px"
           minW="30px"
           minH="20px"
-          bgColor={currentName === '' ? emptyNameBg : 'inherit'}
+          bgColor={currentName === "" ? emptyNameBg : "inherit"}
         />
         <EditableInput fontSize="14px" />
       </Editable>
     </Tooltip>
-  )
-}
+  );
+};

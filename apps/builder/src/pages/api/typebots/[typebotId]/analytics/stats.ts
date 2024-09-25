@@ -1,23 +1,23 @@
-import prisma from '@typebot.io/lib/prisma'
-import { Stats } from '@typebot.io/schemas'
-import { NextApiRequest, NextApiResponse } from 'next'
-import { canReadTypebots } from '@/helpers/databaseRules'
-import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
-import { methodNotAllowed, notAuthenticated } from '@typebot.io/lib/api'
+import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
+import { canReadTypebots } from "@/helpers/databaseRules";
+import { methodNotAllowed, notAuthenticated } from "@typebot.io/lib/api/utils";
+import prisma from "@typebot.io/prisma";
+import type { Stats } from "@typebot.io/results/schemas/answers";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 // TODO: Delete, as it has been migrated to tRPC
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = await getAuthenticatedUser(req, res)
-  if (!user) return notAuthenticated(res)
-  if (req.method === 'GET') {
-    const typebotId = req.query.typebotId as string
+  const user = await getAuthenticatedUser(req, res);
+  if (!user) return notAuthenticated(res);
+  if (req.method === "GET") {
+    const typebotId = req.query.typebotId as string;
 
     const typebot = await prisma.typebot.findFirst({
       where: canReadTypebots(typebotId, user),
       select: { id: true },
-    })
+    });
 
-    if (!typebot) return res.status(404).send({ message: 'Typebot not found' })
+    if (!typebot) return res.status(404).send({ message: "Typebot not found" });
 
     const [totalViews, totalStarts, totalCompleted] = await prisma.$transaction(
       [
@@ -41,17 +41,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             isCompleted: true,
           },
         }),
-      ]
-    )
+      ],
+    );
 
     const stats: Stats = {
       totalViews,
       totalStarts,
       totalCompleted,
-    }
-    return res.status(200).send({ stats })
+    };
+    return res.status(200).send({ stats });
   }
-  return methodNotAllowed(res)
-}
+  return methodNotAllowed(res);
+};
 
-export default handler
+export default handler;

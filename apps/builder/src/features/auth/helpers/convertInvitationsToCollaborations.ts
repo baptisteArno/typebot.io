@@ -1,15 +1,16 @@
-import { Invitation, PrismaClient, WorkspaceRole } from '@typebot.io/prisma'
+import { WorkspaceRole } from "@typebot.io/prisma/enum";
+import type { Prisma } from "@typebot.io/prisma/types";
 
-export type InvitationWithWorkspaceId = Invitation & {
+export type InvitationWithWorkspaceId = Prisma.Invitation & {
   typebot: {
-    workspaceId: string | null
-  }
-}
+    workspaceId: string | null;
+  };
+};
 
 export const convertInvitationsToCollaborations = async (
-  p: PrismaClient,
+  p: Prisma.PrismaClient,
   { id, email }: { id: string; email: string },
-  invitations: InvitationWithWorkspaceId[]
+  invitations: InvitationWithWorkspaceId[],
 ) => {
   await p.collaboratorsOnTypebots.createMany({
     data: invitations.map((invitation) => ({
@@ -17,18 +18,18 @@ export const convertInvitationsToCollaborations = async (
       type: invitation.type,
       userId: id,
     })),
-  })
+  });
   const workspaceInvitations = invitations.reduce<InvitationWithWorkspaceId[]>(
     (acc, invitation) =>
       acc.some(
-        (inv) => inv.typebot.workspaceId === invitation.typebot.workspaceId
+        (inv) => inv.typebot.workspaceId === invitation.typebot.workspaceId,
       )
         ? acc
         : [...acc, invitation],
-    []
-  )
+    [],
+  );
   for (const invitation of workspaceInvitations) {
-    if (!invitation.typebot.workspaceId) continue
+    if (!invitation.typebot.workspaceId) continue;
     await p.memberInWorkspace.createMany({
       data: [
         {
@@ -38,11 +39,11 @@ export const convertInvitationsToCollaborations = async (
         },
       ],
       skipDuplicates: true,
-    })
+    });
   }
   return p.invitation.deleteMany({
     where: {
       email,
     },
-  })
-}
+  });
+};

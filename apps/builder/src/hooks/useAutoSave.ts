@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
-import { useDebounce } from 'use-debounce'
+import { useEffect } from "react";
+import { useDebounce } from "use-debounce";
 
 export const useAutoSave = <T>(
   {
@@ -8,25 +8,25 @@ export const useAutoSave = <T>(
     debounceTimeout,
   }: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    handler: () => Promise<any>
-    item?: T
-    debounceTimeout: number
+    handler: () => Promise<any>;
+    item?: T;
+    debounceTimeout: number;
   },
-  dependencies: unknown[]
+  dependencies: unknown[],
 ) => {
-  const [debouncedItem] = useDebounce(item, debounceTimeout)
+  const [debouncedItem] = useDebounce(item, debounceTimeout);
 
   useEffect(() => {
-    const save = () => handler()
-    document.addEventListener('visibilitychange', save)
+    const save = () => handler();
+    document.addEventListener("visibilitychange", save);
     return () => {
-      document.removeEventListener('visibilitychange', save)
-    }
+      document.removeEventListener("visibilitychange", save);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, dependencies)
+  }, dependencies);
 
   return useEffect(() => {
-    handler()
+    handler();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedItem])
-}
+  }, [debouncedItem]);
+};

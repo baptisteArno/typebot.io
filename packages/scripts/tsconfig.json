@@ -1,14 +1,4 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "outDir": "dist",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "jsx": "preserve"
-  }
+  "extends": "@typebot.io/tsconfig/base.json",
+  "include": ["src/**/*.ts"]
 }

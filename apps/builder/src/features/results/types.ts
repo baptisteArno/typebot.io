@@ -1,4 +1,4 @@
 export type HeaderCell = {
-  Header: JSX.Element
-  accessor: string
-}
+  Header: JSX.Element;
+  accessor: string;
+};

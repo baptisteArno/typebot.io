@@ -1,10 +1,10 @@
-import prisma from '@typebot.io/lib/prisma'
-import { authenticatedProcedure } from '@/helpers/server/trpc'
-import { TRPCError } from '@trpc/server'
-import { z } from 'zod'
-import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
-import { getAuthenticatedGoogleClient } from '@typebot.io/lib/google'
-import { GoogleSpreadsheet } from 'google-spreadsheet'
+import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
+import { TRPCError } from "@trpc/server";
+import { getAuthenticatedGoogleClient } from "@typebot.io/lib/google";
+import prisma from "@typebot.io/prisma";
+import { z } from "@typebot.io/zod";
+import { GoogleSpreadsheet } from "google-spreadsheet";
 
 export const getSpreadsheetName = authenticatedProcedure
   .input(
@@ -12,7 +12,7 @@ export const getSpreadsheetName = authenticatedProcedure
       workspaceId: z.string(),
       credentialsId: z.string(),
       spreadsheetId: z.string(),
-    })
+    }),
   )
   .query(
     async ({
@@ -37,36 +37,36 @@ export const getSpreadsheetName = authenticatedProcedure
             },
           },
         },
-      })
+      });
       if (!workspace || isReadWorkspaceFobidden(workspace, user))
         throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Workspace not found',
-        })
+          code: "NOT_FOUND",
+          message: "Workspace not found",
+        });
 
-      const credentials = workspace.credentials[0]
+      const credentials = workspace.credentials[0];
       if (!credentials)
         throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Credentials not found',
-        })
+          code: "NOT_FOUND",
+          message: "Credentials not found",
+        });
 
-      const client = await getAuthenticatedGoogleClient(credentials.id)
+      const client = await getAuthenticatedGoogleClient(credentials.id);
 
       if (!client)
         throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Google client could not be initialized',
-        })
+          code: "NOT_FOUND",
+          message: "Google client could not be initialized",
+        });
 
       try {
-        const googleSheet = new GoogleSpreadsheet(spreadsheetId, client)
+        const googleSheet = new GoogleSpreadsheet(spreadsheetId, client);
 
-        await googleSheet.loadInfo()
+        await googleSheet.loadInfo();
 
-        return { name: googleSheet.title }
+        return { name: googleSheet.title };
       } catch (e) {
-        return { name: '' }
+        return { name: "" };
       }
-    }
-  )
+    },
+  );

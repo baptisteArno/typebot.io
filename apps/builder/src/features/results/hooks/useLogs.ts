@@ -1,21 +1,21 @@
-import { trpc } from '@/lib/trpc'
-import { isDefined } from '@udecode/plate-common'
+import { trpc } from "@/lib/trpc";
+import { isDefined } from "@udecode/plate-common";
 
 export const useLogs = (
   typebotId: string,
   resultId: string | null,
-  onError?: (error: string) => void
+  onError?: (error: string) => void,
 ) => {
   const { data, error } = trpc.results.getResultLogs.useQuery(
     {
-      resultId: resultId ?? '',
+      resultId: resultId ?? "",
       typebotId,
     },
-    { enabled: isDefined(resultId) }
-  )
-  if (error && onError) onError(error.message)
+    { enabled: isDefined(resultId) },
+  );
+  if (error && onError) onError(error.message);
   return {
     logs: data?.logs,
     isLoading: !error && !data,
-  }
-}
+  };
+};

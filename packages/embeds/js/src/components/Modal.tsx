@@ -1,12 +1,12 @@
-import { Dialog } from '@ark-ui/solid'
-import { JSX } from 'solid-js'
-import { CloseIcon } from './icons/CloseIcon'
+import { Dialog } from "@ark-ui/solid";
+import type { JSX } from "solid-js";
+import { CloseIcon } from "./icons/CloseIcon";
 
 type Props = {
-  isOpen?: boolean
-  onClose?: () => void
-  children: JSX.Element
-}
+  isOpen?: boolean;
+  onClose?: () => void;
+  children: JSX.Element;
+};
 export const Modal = (props: Props) => {
   return (
     <Dialog.Root
@@ -23,5 +23,5 @@ export const Modal = (props: Props) => {
         </Dialog.CloseTrigger>
       </Dialog.Positioner>
     </Dialog.Root>
-  )
-}
+  );
+};

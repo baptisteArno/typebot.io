@@ -1,19 +1,24 @@
-import React, { FormEvent, useEffect, useState } from 'react'
-import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
-import { Elements } from '@stripe/react-stripe-js'
-import { PaymentInputBlock, Variable } from '@typebot.io/schemas'
-import { SendButton, Spinner } from '@/components/SendButton'
-import { initStripe } from '@/lib/stripe'
-import { parseVariables } from '@/features/variables'
-import { useChat } from '@/providers/ChatProvider'
-import { useTypebot } from '@/providers/TypebotProvider'
-import { createPaymentIntentQuery } from '../../queries/createPaymentIntentQuery'
-import { Stripe } from '@stripe/stripe-js'
+import { SendButton, Spinner } from "@/components/SendButton";
+import { parseVariables } from "@/features/variables";
+import { initStripe } from "@/lib/stripe";
+import { useChat } from "@/providers/ChatProvider";
+import { useTypebot } from "@/providers/TypebotProvider";
+import {
+  PaymentElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import type { Stripe } from "@stripe/stripe-js";
+import type { PaymentInputBlock } from "@typebot.io/blocks-inputs/payment/schema";
+import type { Variable } from "@typebot.io/variables/schemas";
+import React, { type FormEvent, useEffect, useState } from "react";
+import { createPaymentIntentQuery } from "../../queries/createPaymentIntentQuery";
 
 type Props = {
-  options: PaymentInputBlock['options']
-  onSuccess: () => void
-}
+  options: PaymentInputBlock["options"];
+  onSuccess: () => void;
+};
 
 export const StripePaymentForm = ({ options, onSuccess }: Props) => {
   const {
@@ -21,36 +26,36 @@ export const StripePaymentForm = ({ options, onSuccess }: Props) => {
     isPreview,
     typebot: { variables },
     onNewLog,
-  } = useTypebot()
-  const [stripe, setStripe] = useState<Stripe | null>(null)
-  const [clientSecret, setClientSecret] = useState('')
-  const [amountLabel, setAmountLabel] = useState('')
+  } = useTypebot();
+  const [stripe, setStripe] = useState<Stripe | null>(null);
+  const [clientSecret, setClientSecret] = useState("");
+  const [amountLabel, setAmountLabel] = useState("");
 
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       const { data, error } = await createPaymentIntentQuery({
         apiHost,
         isPreview,
         variables,
         inputOptions: options,
-      })
+      });
       if (error)
         return onNewLog({
-          status: 'error',
-          description: error.name + ' ' + error.message,
+          status: "error",
+          description: error.name + " " + error.message,
           details: error.message,
-        })
-      if (!data || !document) return
-      await initStripe(document)
-      if (!window?.Stripe) return
-      setStripe(window.Stripe(data.publicKey))
-      setClientSecret(data.clientSecret)
-      setAmountLabel(data.amountLabel)
-    })()
+        });
+      if (!data || !document) return;
+      await initStripe(document);
+      if (!window?.Stripe) return;
+      setStripe(window.Stripe(data.publicKey));
+      setClientSecret(data.clientSecret);
+      setAmountLabel(data.amountLabel);
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
-  if (!stripe || !clientSecret) return <Spinner className="text-blue-500" />
+  if (!stripe || !clientSecret) return <Spinner className="text-blue-500" />;
   return (
     <Elements stripe={stripe} options={{ clientSecret }}>
       <CheckoutForm
@@ -62,8 +67,8 @@ export const StripePaymentForm = ({ options, onSuccess }: Props) => {
         viewerHost={apiHost}
       />
     </Elements>
-  )
-}
+  );
+};
 
 const CheckoutForm = ({
   onSuccess,
@@ -73,56 +78,56 @@ const CheckoutForm = ({
   variables,
   viewerHost,
 }: {
-  onSuccess: () => void
-  clientSecret: string
-  amountLabel: string
-  options: PaymentInputBlock['options']
-  variables: Variable[]
-  viewerHost: string
+  onSuccess: () => void;
+  clientSecret: string;
+  amountLabel: string;
+  options: PaymentInputBlock["options"];
+  variables: Variable[];
+  viewerHost: string;
 }) => {
-  const { scroll } = useChat()
+  const { scroll } = useChat();
   const [ignoreFirstPaymentIntentCall, setIgnoreFirstPaymentIntentCall] =
-    useState(true)
+    useState(true);
 
-  const stripe = useStripe()
-  const elements = useElements()
+  const stripe = useStripe();
+  const elements = useElements();
 
-  const [message, setMessage] = useState<string>()
-  const [isLoading, setIsLoading] = useState(false)
+  const [message, setMessage] = useState<string>();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [isPayButtonVisible, setIsPayButtonVisible] = useState(false)
+  const [isPayButtonVisible, setIsPayButtonVisible] = useState(false);
 
   useEffect(() => {
-    if (!stripe || !clientSecret) return
+    if (!stripe || !clientSecret) return;
 
     if (ignoreFirstPaymentIntentCall)
-      return setIgnoreFirstPaymentIntentCall(false)
+      return setIgnoreFirstPaymentIntentCall(false);
 
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
       switch (paymentIntent?.status) {
-        case 'succeeded':
-          setMessage('Payment succeeded!')
-          break
-        case 'processing':
-          setMessage('Your payment is processing.')
-          break
-        case 'requires_payment_method':
-          setMessage('Your payment was not successful, please try again.')
-          break
+        case "succeeded":
+          setMessage("Payment succeeded!");
+          break;
+        case "processing":
+          setMessage("Your payment is processing.");
+          break;
+        case "requires_payment_method":
+          setMessage("Your payment was not successful, please try again.");
+          break;
         default:
-          setMessage('Something went wrong.')
-          break
+          setMessage("Something went wrong.");
+          break;
       }
-    })
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stripe, clientSecret])
+  }, [stripe, clientSecret]);
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (!stripe || !elements) return
+    if (!stripe || !elements) return;
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
@@ -139,25 +144,25 @@ const CheckoutForm = ({
               : undefined,
             phone: options?.additionalInformation?.phoneNumber
               ? parseVariables(variables)(
-                  options.additionalInformation?.phoneNumber
+                  options.additionalInformation?.phoneNumber,
                 )
               : undefined,
           },
         },
       },
-      redirect: 'if_required',
-    })
+      redirect: "if_required",
+    });
 
-    setIsLoading(false)
-    if (error?.type === 'validation_error') return
-    if (error?.type === 'card_error') return setMessage(error.message)
-    if (!error && paymentIntent.status === 'succeeded') return onSuccess()
-  }
+    setIsLoading(false);
+    if (error?.type === "validation_error") return;
+    if (error?.type === "card_error") return setMessage(error.message);
+    if (!error && paymentIntent.status === "succeeded") return onSuccess();
+  };
 
   const showPayButton = () => {
-    setIsPayButtonVisible(true)
-    scroll()
-  }
+    setIsPayButtonVisible(true);
+    scroll();
+  };
 
   return (
     <form
@@ -189,5 +194,5 @@ const CheckoutForm = ({
         </div>
       )}
     </form>
-  )
-}
+  );
+};

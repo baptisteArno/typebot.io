@@ -1,26 +1,26 @@
-import resolve from '@rollup/plugin-node-resolve'
-import terser from '@rollup/plugin-terser'
-import { babel } from '@rollup/plugin-babel'
-import postcss from 'rollup-plugin-postcss'
-import autoprefixer from 'autoprefixer'
-import tailwindcss from 'tailwindcss'
-import typescript from '@rollup/plugin-typescript'
-import { typescriptPaths } from 'rollup-plugin-typescript-paths'
-import replace from '@rollup/plugin-replace'
-import commonjs from '@rollup/plugin-commonjs'
-import fs from 'fs'
+import fs from "fs";
+import { babel } from "@rollup/plugin-babel";
+import commonjs from "@rollup/plugin-commonjs";
+import resolve from "@rollup/plugin-node-resolve";
+import replace from "@rollup/plugin-replace";
+import terser from "@rollup/plugin-terser";
+import typescript from "@rollup/plugin-typescript";
+import autoprefixer from "autoprefixer";
+import postcss from "rollup-plugin-postcss";
+import { typescriptPaths } from "rollup-plugin-typescript-paths";
+import tailwindcss from "tailwindcss";
 
-const extensions = ['.ts', '.tsx']
+const extensions = [".ts", ".tsx"];
 
-const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'))
-const packageVersion = packageJson.version
-const preamble = `// v${packageVersion}`
+const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
+const packageVersion = packageJson.version;
+const preamble = `// v${packageVersion}`;
 
 const indexConfig = {
-  input: './src/index.ts',
+  input: "./src/index.ts",
   output: {
-    file: 'dist/index.js',
-    format: 'es',
+    file: "dist/index.js",
+    format: "es",
   },
   onwarn,
   watch: {
@@ -30,9 +30,9 @@ const indexConfig = {
     resolve({ extensions }),
     commonjs(),
     babel({
-      babelHelpers: 'bundled',
-      exclude: 'node_modules/**',
-      presets: ['solid', '@babel/preset-typescript'],
+      babelHelpers: "bundled",
+      exclude: "node_modules/**",
+      presets: ["solid", "@babel/preset-typescript"],
       extensions,
     }),
     typescriptPaths({ preserveExtensions: true }),
@@ -51,30 +51,30 @@ const indexConfig = {
       format: { preamble },
     }),
     replace({
-      'process.env.NODE_ENV': JSON.stringify('production'),
+      "process.env.NODE_ENV": JSON.stringify("production"),
       preventAssignment: true,
     }),
   ],
-}
+};
 
 const configs = [
   indexConfig,
   {
     ...indexConfig,
-    input: './src/web.ts',
+    input: "./src/web.ts",
     output: {
-      file: 'dist/web.js',
-      format: 'es',
+      file: "dist/web.js",
+      format: "es",
     },
   },
-]
+];
 
 function onwarn(warning, warn) {
-  if (warning.code === 'CIRCULAR_DEPENDENCY') {
-    return
+  if (warning.code === "CIRCULAR_DEPENDENCY") {
+    return;
   }
 
-  warn(warning.message)
+  warn(warning.message);
 }
 
-export default configs
+export default configs;

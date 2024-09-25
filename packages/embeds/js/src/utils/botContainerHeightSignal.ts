@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js'
+import { createSignal } from "solid-js";
 
 export const [botContainerHeight, setBotContainerHeight] =
-  createSignal<string>('100%')
+  createSignal<string>("100%");

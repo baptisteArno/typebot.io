@@ -1,7 +1,7 @@
-import { roundCorners } from 'svg-round-corners'
-import { pathRadius } from '../constants'
-import { AnchorsPositionProps } from '../types'
-import { getSegments } from './segments'
+import { roundCorners } from "svg-round-corners";
+import { pathRadius } from "../constants";
+import type { AnchorsPositionProps } from "../types";
+import { getSegments } from "./segments";
 
 export const computeEdgePath = ({
   sourcePosition,
@@ -14,9 +14,9 @@ export const computeEdgePath = ({
     targetPosition,
     sourceType,
     totalSegments,
-  })
+  });
   return roundCorners(
     `M${sourcePosition.x},${sourcePosition.y} ${segments}`,
-    pathRadius
-  ).path
-}
+    pathRadius,
+  ).path;
+};

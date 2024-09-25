@@ -23,4 +23,4 @@ class VolumeProcessor extends AudioWorkletProcessor {
 
 registerProcessor("volume-processor", VolumeProcessor);
 
-`
+`;

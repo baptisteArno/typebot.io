@@ -1,43 +1,43 @@
-import { TextInput } from '@/components/inputs'
-import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
-import { TextLink } from '@/components/TextLink'
-import { useUser } from '@/features/account/hooks/useUser'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { trpc } from '@/lib/trpc'
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { TextLink } from "@/components/TextLink";
+import { TextInput } from "@/components/inputs";
+import { useUser } from "@/features/account/hooks/useUser";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { trpc } from "@/lib/trpc";
 import {
-  Text,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  Stack,
+  Button,
+  FormControl,
   FormLabel,
   HStack,
-  FormControl,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
   ModalFooter,
-  Button,
-} from '@chakra-ui/react'
-import { useTranslate } from '@tolgee/react'
-import { isNotEmpty } from '@typebot.io/lib'
-import { StripeCredentials } from '@typebot.io/schemas'
-import { useEffect, useState } from 'react'
+  ModalHeader,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import type { StripeCredentials } from "@typebot.io/blocks-inputs/payment/schema";
+import { isNotEmpty } from "@typebot.io/lib/utils";
+import { useEffect, useState } from "react";
 
 type Props = {
-  credentialsId: string
-  onUpdate: () => void
-}
+  credentialsId: string;
+  onUpdate: () => void;
+};
 
 export const UpdateStripeCredentialsModalContent = ({
   credentialsId,
   onUpdate,
 }: Props) => {
-  const { t } = useTranslate()
-  const { user } = useUser()
-  const { workspace } = useWorkspace()
-  const [isCreating, setIsCreating] = useState(false)
+  const { t } = useTranslate();
+  const { user } = useUser();
+  const { workspace } = useWorkspace();
+  const [isCreating, setIsCreating] = useState(false);
   const [stripeConfig, setStripeConfig] = useState<
-    StripeCredentials['data'] & { name: string }
-  >()
+    StripeCredentials["data"] & { name: string }
+  >();
 
   const { data: existingCredentials } =
     trpc.credentials.getCredentials.useQuery(
@@ -47,64 +47,64 @@ export const UpdateStripeCredentialsModalContent = ({
       },
       {
         enabled: !!workspace?.id,
-      }
-    )
+      },
+    );
 
   useEffect(() => {
-    if (!existingCredentials || stripeConfig) return
+    if (!existingCredentials || stripeConfig) return;
     setStripeConfig({
       name: existingCredentials.name,
       live: existingCredentials.data.live,
       test: existingCredentials.data.test,
-    })
-  }, [existingCredentials, stripeConfig])
+    });
+  }, [existingCredentials, stripeConfig]);
 
   const { mutate } = trpc.credentials.updateCredentials.useMutation({
     onMutate: () => setIsCreating(true),
     onSettled: () => setIsCreating(false),
     onSuccess: () => {
-      onUpdate()
+      onUpdate();
     },
-  })
+  });
 
   const handleNameChange = (name: string) =>
     stripeConfig &&
     setStripeConfig({
       ...stripeConfig,
       name,
-    })
+    });
 
   const handlePublicKeyChange = (publicKey: string) =>
     stripeConfig &&
     setStripeConfig({
       ...stripeConfig,
       live: { ...stripeConfig.live, publicKey },
-    })
+    });
 
   const handleSecretKeyChange = (secretKey: string) =>
     stripeConfig &&
     setStripeConfig({
       ...stripeConfig,
       live: { ...stripeConfig.live, secretKey },
-    })
+    });
 
   const handleTestPublicKeyChange = (publicKey: string) =>
     stripeConfig &&
     setStripeConfig({
       ...stripeConfig,
       test: { ...stripeConfig.test, publicKey },
-    })
+    });
 
   const handleTestSecretKeyChange = (secretKey: string) =>
     stripeConfig &&
     setStripeConfig({
       ...stripeConfig,
       test: { ...stripeConfig.test, secretKey },
-    })
+    });
 
   const updateCreds = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!user?.email || !workspace?.id || !stripeConfig) return
+    e.preventDefault();
+    if (!user?.email || !workspace?.id || !stripeConfig) return;
     mutate({
       credentialsId,
       credentials: {
@@ -120,16 +120,16 @@ export const UpdateStripeCredentialsModalContent = ({
           },
         },
         name: stripeConfig.name,
-        type: 'stripe',
+        type: "stripe",
         workspaceId: workspace.id,
       },
-    })
-  }
+    });
+  };
 
   return (
     <ModalContent>
       <ModalHeader>
-        {t('blocks.inputs.payment.settings.stripeConfig.title.label')}
+        {t("blocks.inputs.payment.settings.stripeConfig.title.label")}
       </ModalHeader>
       <ModalCloseButton />
       <form onSubmit={updateCreds}>
@@ -138,7 +138,7 @@ export const UpdateStripeCredentialsModalContent = ({
             <TextInput
               isRequired
               label={t(
-                'blocks.inputs.payment.settings.stripeConfig.accountName.label'
+                "blocks.inputs.payment.settings.stripeConfig.accountName.label",
               )}
               defaultValue={stripeConfig?.name}
               onChange={handleNameChange}
@@ -149,11 +149,11 @@ export const UpdateStripeCredentialsModalContent = ({
             <Stack>
               <FormLabel>
                 {t(
-                  'blocks.inputs.payment.settings.stripeConfig.testKeys.label'
-                )}{' '}
+                  "blocks.inputs.payment.settings.stripeConfig.testKeys.label",
+                )}{" "}
                 <MoreInfoTooltip>
                   {t(
-                    'blocks.inputs.payment.settings.stripeConfig.testKeys.infoText.label'
+                    "blocks.inputs.payment.settings.stripeConfig.testKeys.infoText.label",
                   )}
                 </MoreInfoTooltip>
               </FormLabel>
@@ -178,7 +178,7 @@ export const UpdateStripeCredentialsModalContent = ({
             <Stack>
               <FormLabel>
                 {t(
-                  'blocks.inputs.payment.settings.stripeConfig.liveKeys.label'
+                  "blocks.inputs.payment.settings.stripeConfig.liveKeys.label",
                 )}
               </FormLabel>
               <HStack>
@@ -205,10 +205,10 @@ export const UpdateStripeCredentialsModalContent = ({
             </Stack>
 
             <Text>
-              ({t('blocks.inputs.payment.settings.stripeConfig.findKeys.label')}{' '}
+              ({t("blocks.inputs.payment.settings.stripeConfig.findKeys.label")}{" "}
               <TextLink href="https://dashboard.stripe.com/apikeys" isExternal>
                 {t(
-                  'blocks.inputs.payment.settings.stripeConfig.findKeys.here.label'
+                  "blocks.inputs.payment.settings.stripeConfig.findKeys.here.label",
                 )}
               </TextLink>
               )
@@ -221,16 +221,16 @@ export const UpdateStripeCredentialsModalContent = ({
             type="submit"
             colorScheme="blue"
             isDisabled={
-              stripeConfig?.live.publicKey === '' ||
-              stripeConfig?.name === '' ||
-              stripeConfig?.live.secretKey === ''
+              stripeConfig?.live.publicKey === "" ||
+              stripeConfig?.name === "" ||
+              stripeConfig?.live.secretKey === ""
             }
             isLoading={isCreating}
           >
-            {t('connect')}
+            {t("connect")}
           </Button>
         </ModalFooter>
       </form>
     </ModalContent>
-  )
-}
+  );
+};

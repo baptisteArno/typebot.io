@@ -1,4 +1,4 @@
-import { Icon, IconProps } from '@chakra-ui/react'
+import { Icon, type IconProps } from "@chakra-ui/react";
 
 export const NextjsLogo = (props: IconProps) => (
   <Icon
@@ -13,7 +13,7 @@ export const NextjsLogo = (props: IconProps) => (
       height="180"
       id=":R0:mask0_408_134"
       maskUnits="userSpaceOnUse"
-      style={{ maskType: 'alpha' }}
+      style={{ maskType: "alpha" }}
       width="180"
       x="0"
       y="0"
@@ -59,4 +59,4 @@ export const NextjsLogo = (props: IconProps) => (
       </linearGradient>
     </defs>
   </Icon>
-)
+);

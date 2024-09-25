@@ -1,19 +1,17 @@
 {
   "name": "forge-cli",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "tsx ./index.ts"
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./*": "./src/*.ts"
   },
-  "keywords": [],
-  "author": "Baptiste Arnaud",
-  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "start": "bun ./src/index.ts"
+  },
+  "dependencies": {
+    "@clack/prompts": "0.7.0"
+  },
   "devDependencies": {
-    "@clack/prompts": "^0.7.0",
-    "@typebot.io/tsconfig": "workspace:*",
-    "@types/node": "20.4.2",
-    "tsx": "4.6.2",
-    "prettier": "2.8.8"
+    "@typebot.io/tsconfig": "workspace:*"
   }
 }

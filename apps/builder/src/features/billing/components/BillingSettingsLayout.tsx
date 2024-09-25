@@ -1,15 +1,15 @@
-import { Stack } from '@chakra-ui/react'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import React from 'react'
-import { InvoicesList } from './InvoicesList'
-import { ChangePlanForm } from './ChangePlanForm'
-import { UsageProgressBars } from './UsageProgressBars'
-import { CurrentSubscriptionSummary } from './CurrentSubscriptionSummary'
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { Stack } from "@chakra-ui/react";
+import React from "react";
+import { ChangePlanForm } from "./ChangePlanForm";
+import { CurrentSubscriptionSummary } from "./CurrentSubscriptionSummary";
+import { InvoicesList } from "./InvoicesList";
+import { UsageProgressBars } from "./UsageProgressBars";
 
 export const BillingSettingsLayout = () => {
-  const { workspace, currentRole } = useWorkspace()
+  const { workspace, currentRole } = useWorkspace();
 
-  if (!workspace) return null
+  if (!workspace) return null;
   return (
     <Stack spacing="10" w="full">
       <UsageProgressBars workspace={workspace} />
@@ -20,5 +20,5 @@ export const BillingSettingsLayout = () => {
 
       {workspace.stripeId && <InvoicesList workspaceId={workspace.id} />}
     </Stack>
-  )
-}
+  );
+};

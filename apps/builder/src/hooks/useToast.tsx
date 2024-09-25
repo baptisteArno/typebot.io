@@ -1,23 +1,24 @@
-import { Toast, ToastProps } from '@/components/Toast'
-import { useToast as useChakraToast } from '@chakra-ui/react'
-import { useCallback } from 'react'
+import type { ToastProps } from "@/components/Toast";
+import { Toast } from "@/components/Toast";
+import { useToast as useChakraToast } from "@chakra-ui/react";
+import { useCallback } from "react";
 
 export const useToast = () => {
-  const toast = useChakraToast()
+  const toast = useChakraToast();
 
   const showToast = useCallback(
     ({
       title,
       description,
-      status = 'error',
+      status = "error",
       icon,
       details,
       primaryButton,
       secondaryButton,
-    }: Omit<ToastProps, 'onClose'>) => {
+    }: Omit<ToastProps, "onClose">) => {
       toast({
-        position: 'top-right',
-        duration: details && status === 'error' ? null : undefined,
+        position: "top-right",
+        duration: details && status === "error" ? null : undefined,
         render: ({ onClose }) => (
           <Toast
             title={title}
@@ -30,10 +31,10 @@ export const useToast = () => {
             secondaryButton={secondaryButton}
           />
         ),
-      })
+      });
     },
-    [toast]
-  )
+    [toast],
+  );
 
-  return { showToast }
-}
+  return { showToast };
+};

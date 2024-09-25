@@ -1,56 +1,59 @@
-import React, { useCallback, useEffect, useRef } from 'react'
-import type { PopupProps } from '@typebot.io/js'
-import '@typebot.io/js/dist/web'
+import type { PopupProps } from "@typebot.io/js";
+import type React from "react";
+import { useCallback, useEffect, useRef } from "react";
+import "@typebot.io/js/web";
 
-type Props = PopupProps
+type Props = PopupProps;
 
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      'typebot-popup': React.DetailedHTMLProps<
+      "typebot-popup": React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,
         HTMLElement
-      > & { class?: string }
+      > & { class?: string };
     }
   }
 }
 
-type PopupElement = HTMLElement & Props
+type PopupElement = HTMLElement & Props;
 
 export const Popup = (props: Props) => {
-  const containerRef = useRef<HTMLDivElement | null>(null)
-  const popupRef = useRef<PopupElement | null>(null)
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const popupRef = useRef<PopupElement | null>(null);
 
   const attachPopupToContainer = useCallback((props: Props) => {
-    const popupElement = document.createElement('typebot-popup') as PopupElement
-    popupRef.current = popupElement
-    injectPropsToElement(popupRef.current, props)
+    const popupElement = document.createElement(
+      "typebot-popup",
+    ) as PopupElement;
+    popupRef.current = popupElement;
+    injectPropsToElement(popupRef.current, props);
     if (!containerRef.current) {
       console.warn(
-        'Could not attach popup to container because containerRef.current is null'
-      )
-      return
+        "Could not attach popup to container because containerRef.current is null",
+      );
+      return;
     }
-    containerRef.current?.append(popupRef.current)
-  }, [])
+    containerRef.current?.append(popupRef.current);
+  }, []);
 
   useEffect(() => {
-    if (!popupRef.current) attachPopupToContainer(props)
-    injectPropsToElement(popupRef.current as PopupElement, props)
-  }, [attachPopupToContainer, props])
+    if (!popupRef.current) attachPopupToContainer(props);
+    injectPropsToElement(popupRef.current as PopupElement, props);
+  }, [attachPopupToContainer, props]);
 
   useEffect(() => {
     return () => {
-      popupRef.current?.remove()
-      popupRef.current = null
-    }
-  }, [])
+      popupRef.current?.remove();
+      popupRef.current = null;
+    };
+  }, []);
 
   const injectPropsToElement = (element: PopupElement, props: Props) => {
-    Object.assign(element, props)
-  }
+    Object.assign(element, props);
+  };
 
-  return <div ref={containerRef} />
-}
+  return <div ref={containerRef} />;
+};
 
-export default Popup
+export default Popup;

@@ -1,17 +1,17 @@
-import { Plan } from '@typebot.io/prisma'
+import { Plan } from "@typebot.io/prisma/enum";
 
 export const planToReadable = (plan?: Plan) => {
-  if (!plan) return
+  if (!plan) return;
   switch (plan) {
     case Plan.FREE:
-      return 'Free'
+      return "Free";
     case Plan.LIFETIME:
-      return 'Lifetime'
+      return "Lifetime";
     case Plan.OFFERED:
-      return 'Offered'
+      return "Offered";
     case Plan.PRO:
-      return 'Pro'
+      return "Pro";
     case Plan.UNLIMITED:
-      return 'Unlimited'
+      return "Unlimited";
   }
-}
+};

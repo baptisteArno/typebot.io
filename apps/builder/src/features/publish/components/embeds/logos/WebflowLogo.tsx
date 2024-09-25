@@ -1,4 +1,4 @@
-import { Icon, IconProps } from '@chakra-ui/react'
+import { Icon, type IconProps } from "@chakra-ui/react";
 
 export const WebflowLogo = (props: IconProps) => (
   <Icon
@@ -18,4 +18,4 @@ export const WebflowLogo = (props: IconProps) => (
       fill="white"
     />
   </Icon>
-)
+);

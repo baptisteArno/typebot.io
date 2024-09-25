@@ -17,8 +17,8 @@
   height: 60px;
   border-radius: 100%;
   background-color: rgb(230, 114, 0);
-  box-shadow: rgba(0, 0, 0, 0.06) 0px 1px 6px 0px,
-    rgba(0, 0, 0, 0.16) 0px 2px 32px 0px;
+  box-shadow: rgba(0, 0, 0, 0.06) 0px 1px 6px 0px, rgba(0, 0, 0, 0.16) 0px 2px
+    32px 0px;
   border: medium none;
 }
 
@@ -133,8 +133,8 @@
   position: fixed;
   max-width: 280px;
   background-color: white;
-  box-shadow: 0 3px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px
+    rgba(0, 0, 0, 0.05);
   padding: 16px;
   display: flex;
   align-items: center;

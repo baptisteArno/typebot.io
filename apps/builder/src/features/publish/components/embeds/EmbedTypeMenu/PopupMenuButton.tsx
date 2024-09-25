@@ -1,8 +1,14 @@
-import { MotionStack } from '@/components/MotionStack'
-import { Stack, Button, StackProps, Text, ButtonProps } from '@chakra-ui/react'
-import { PopupIllustration } from './illustrations/PopupIllustration'
+import { MotionStack } from "@/components/MotionStack";
+import {
+  Button,
+  type ButtonProps,
+  Stack,
+  type StackProps,
+  Text,
+} from "@chakra-ui/react";
+import { PopupIllustration } from "./illustrations/PopupIllustration";
 
-type Props = StackProps & Pick<ButtonProps, 'isDisabled'>
+type Props = StackProps & Pick<ButtonProps, "isDisabled">;
 
 export const PopupMenuButton = (props: Props) => {
   return (
@@ -12,7 +18,7 @@ export const PopupMenuButton = (props: Props) => {
       alignItems="center"
       variant="outline"
       colorScheme="gray"
-      whiteSpace={'normal'}
+      whiteSpace={"normal"}
       spacing="6"
       height="250px"
       flex="1"
@@ -31,5 +37,5 @@ export const PopupMenuButton = (props: Props) => {
         </Text>
       </Stack>
     </MotionStack>
-  )
-}
+  );
+};

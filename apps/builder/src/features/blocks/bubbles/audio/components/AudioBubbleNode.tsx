@@ -1,19 +1,19 @@
-import { chakra, Text } from '@chakra-ui/react'
-import { isDefined } from '@typebot.io/lib'
-import { useTranslate } from '@tolgee/react'
-import { AudioBubbleBlock } from '@typebot.io/schemas'
-import { findUniqueVariable } from '@typebot.io/variables/findUniqueVariableValue'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { VariableTag } from '@/features/graph/components/nodes/block/VariableTag'
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { VariableTag } from "@/features/graph/components/nodes/block/VariableTag";
+import { Text, chakra } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import type { AudioBubbleBlock } from "@typebot.io/blocks-bubbles/audio/schema";
+import { isDefined } from "@typebot.io/lib/utils";
+import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariableValue";
 
 type Props = {
-  url: NonNullable<AudioBubbleBlock['content']>['url']
-}
+  url: NonNullable<AudioBubbleBlock["content"]>["url"];
+};
 
 export const AudioBubbleNode = ({ url }: Props) => {
-  const { typebot } = useTypebot()
-  const { t } = useTranslate()
-  const variable = typebot ? findUniqueVariable(typebot?.variables)(url) : null
+  const { typebot } = useTypebot();
+  const { t } = useTranslate();
+  const variable = typebot ? findUniqueVariable(typebot?.variables)(url) : null;
   return isDefined(url) ? (
     variable ? (
       <Text>
@@ -23,6 +23,6 @@ export const AudioBubbleNode = ({ url }: Props) => {
       <chakra.audio src={url} controls maxW="calc(100% - 25px)" rounded="md" />
     )
   ) : (
-    <Text color={'gray.500'}>{t('clickToEdit')}</Text>
-  )
-}
+    <Text color={"gray.500"}>{t("clickToEdit")}</Text>
+  );
+};

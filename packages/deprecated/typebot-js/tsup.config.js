@@ -1,11 +1,11 @@
-import { defineConfig } from 'tsup'
+import { defineConfig } from "tsup";
 
 export default defineConfig((options) => ({
-  entry: ['src/index.ts'],
+  entry: ["src/index.ts"],
   sourcemap: true,
   minify: !options.watch,
   dts: true,
-  format: ['esm', 'cjs', 'iife'],
-  globalName: 'Typebot',
+  format: ["esm", "cjs", "iife"],
+  globalName: "Typebot",
   injectStyle: true,
-}))
+}));

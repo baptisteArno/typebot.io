@@ -1,16 +1,19 @@
-import { guessApiHost } from '@/utils/guessApiHost'
-import { isNotEmpty } from '@typebot.io/lib'
-import { ContinueChatResponse, Message } from '@typebot.io/schemas'
-import ky from 'ky'
+import { guessApiHost } from "@/utils/guessApiHost";
+import type {
+  ContinueChatResponse,
+  Message,
+} from "@typebot.io/bot-engine/schemas/api";
+import { isNotEmpty } from "@typebot.io/lib/utils";
+import ky from "ky";
 
 export const continueChatQuery = async ({
   apiHost,
   message,
   sessionId,
 }: {
-  apiHost?: string
-  message?: Message
-  sessionId: string
+  apiHost?: string;
+  message?: Message;
+  sessionId: string;
 }) => {
   try {
     const data = await ky
@@ -23,12 +26,12 @@ export const continueChatQuery = async ({
             message,
           },
           timeout: false,
-        }
+        },
       )
-      .json<ContinueChatResponse>()
+      .json<ContinueChatResponse>();
 
-    return { data }
+    return { data };
   } catch (error) {
-    return { error }
+    return { error };
   }
-}
+};

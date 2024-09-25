@@ -1,1 +1,1 @@
-export { RatingForm } from './components/RatingForm'
+export { RatingForm } from "./components/RatingForm";

@@ -1,18 +1,18 @@
-import { authenticatedProcedure } from '@/helpers/server/trpc'
-import prisma from '@typebot.io/lib/prisma'
-import { createId } from '@paralleldrive/cuid2'
+import { authenticatedProcedure } from "@/helpers/server/trpc";
+import { createId } from "@paralleldrive/cuid2";
+import prisma from "@typebot.io/prisma";
 
 export const generateVerificationToken = authenticatedProcedure.mutation(
   async () => {
-    const oneHourLater = new Date(Date.now() + 1000 * 60 * 60)
+    const oneHourLater = new Date(Date.now() + 1000 * 60 * 60);
     const verificationToken = await prisma.verificationToken.create({
       data: {
         token: createId(),
         expires: oneHourLater,
-        identifier: 'whatsapp webhook',
+        identifier: "whatsapp webhook",
       },
-    })
+    });
 
-    return { verificationToken: verificationToken.token }
-  }
-)
+    return { verificationToken: verificationToken.token };
+  },
+);

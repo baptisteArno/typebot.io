@@ -1,11 +1,11 @@
-import { colors } from '@/lib/theme'
-import { useColorModeValue } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
-import { animationVariants } from './animationVariants'
+import { colors } from "@/lib/theme";
+import { useColorModeValue } from "@chakra-ui/react";
+import { motion } from "framer-motion";
+import { animationVariants } from "./animationVariants";
 
 export const StandardIllustration = () => {
-  const gray = useColorModeValue(colors.gray[400], colors.gray[700])
-  const bubbleColor = useColorModeValue('white', colors.blue[100])
+  const gray = useColorModeValue(colors.gray[400], colors.gray[700]);
+  const bubbleColor = useColorModeValue("white", colors.blue[100]);
   return (
     <svg
       viewBox="0 0 500 500"
@@ -17,7 +17,7 @@ export const StandardIllustration = () => {
         width="500"
         height="500"
         rx="20"
-        fill={useColorModeValue(colors.gray['200'], colors.gray['900'])}
+        fill={useColorModeValue(colors.gray["200"], colors.gray["900"])}
       />
       <rect x="49" y="49" width="108" height="109" rx="10" fill={gray} />
       <rect x="188" y="74" width="263" height="25" rx="5" fill={gray} />
@@ -75,5 +75,5 @@ export const StandardIllustration = () => {
         fill={bubbleColor}
       />
     </svg>
-  )
-}
+  );
+};

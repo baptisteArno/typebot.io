@@ -1,7 +1,7 @@
-import { TextInput } from '@/components/inputs'
-import { TableListItemProps } from '@/components/TableList'
-import { Stack } from '@chakra-ui/react'
-import { KeyValue } from '@typebot.io/schemas'
+import type { TableListItemProps } from "@/components/TableList";
+import { TextInput } from "@/components/inputs";
+import { Stack } from "@chakra-ui/react";
+import type { KeyValue } from "@typebot.io/blocks-integrations/webhook/schema";
 
 export const QueryParamsInputs = (props: TableListItemProps<KeyValue>) => (
   <KeyValueInputs
@@ -9,7 +9,7 @@ export const QueryParamsInputs = (props: TableListItemProps<KeyValue>) => (
     keyPlaceholder="e.g. email"
     valuePlaceholder="e.g. {{Email}}"
   />
-)
+);
 
 export const HeadersInputs = (props: TableListItemProps<KeyValue>) => (
   <KeyValueInputs
@@ -17,7 +17,7 @@ export const HeadersInputs = (props: TableListItemProps<KeyValue>) => (
     keyPlaceholder="e.g. Content-Type"
     valuePlaceholder="e.g. application/json"
   />
-)
+);
 
 export const KeyValueInputs = ({
   item,
@@ -25,31 +25,31 @@ export const KeyValueInputs = ({
   keyPlaceholder,
   valuePlaceholder,
 }: TableListItemProps<KeyValue> & {
-  keyPlaceholder?: string
-  valuePlaceholder?: string
+  keyPlaceholder?: string;
+  valuePlaceholder?: string;
 }) => {
   const handleKeyChange = (key: string) => {
-    if (key === item.key) return
-    onItemChange({ ...item, key })
-  }
+    if (key === item.key) return;
+    onItemChange({ ...item, key });
+  };
   const handleValueChange = (value: string) => {
-    if (value === item.value) return
-    onItemChange({ ...item, value })
-  }
+    if (value === item.value) return;
+    onItemChange({ ...item, value });
+  };
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
       <TextInput
         label="Key:"
-        defaultValue={item.key ?? ''}
+        defaultValue={item.key ?? ""}
         onChange={handleKeyChange}
         placeholder={keyPlaceholder}
       />
       <TextInput
         label="Value:"
-        defaultValue={item.value ?? ''}
+        defaultValue={item.value ?? ""}
         onChange={handleValueChange}
         placeholder={valuePlaceholder}
       />
     </Stack>
-  )
-}
+  );
+};

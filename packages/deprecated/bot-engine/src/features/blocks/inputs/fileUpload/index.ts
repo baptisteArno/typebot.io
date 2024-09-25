@@ -1,1 +1,1 @@
-export { FileUploadForm } from './components/FileUploadForm'
+export { FileUploadForm } from "./components/FileUploadForm";

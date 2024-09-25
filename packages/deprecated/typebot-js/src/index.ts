@@ -1,14 +1,14 @@
-import { initContainer } from './embedTypes/container'
-import { initPopup, getPopupActions } from './embedTypes/popup'
-import { initBubble, getBubbleActions } from './embedTypes/chat'
 import {
-  open,
   close,
-  toggle,
-  showMessage,
   hideMessage,
+  open,
   setHiddenVariables,
-} from './commands'
+  showMessage,
+  toggle,
+} from "./commands";
+import { getBubbleActions, initBubble } from "./embedTypes/chat";
+import { initContainer } from "./embedTypes/container";
+import { getPopupActions, initPopup } from "./embedTypes/popup";
 
 export {
   initContainer,
@@ -22,7 +22,7 @@ export {
   showMessage,
   hideMessage,
   setHiddenVariables,
-}
+};
 
 const defaultExports = {
   initContainer,
@@ -36,8 +36,8 @@ const defaultExports = {
   showMessage,
   hideMessage,
   setHiddenVariables,
-}
+};
 
-export default defaultExports
+export default defaultExports;
 
-export * from './types'
+export * from "./types";

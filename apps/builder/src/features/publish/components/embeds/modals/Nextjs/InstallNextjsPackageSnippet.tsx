@@ -1,4 +1,4 @@
-import { CodeEditor } from '@/components/inputs/CodeEditor'
+import { CodeEditor } from "@/components/inputs/CodeEditor";
 
 export const InstallNextjsPackageSnippet = () => {
   return (
@@ -7,5 +7,5 @@ export const InstallNextjsPackageSnippet = () => {
       isReadOnly
       lang="shell"
     />
-  )
-}
+  );
+};

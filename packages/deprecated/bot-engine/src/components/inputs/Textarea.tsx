@@ -1,13 +1,13 @@
-import { isMobile } from '@/utils/helpers'
-import React from 'react'
+import { isMobile } from "@/utils/helpers";
+import React from "react";
 
 type TextareaProps = {
-  onChange: (value: string) => void
-} & Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'onChange'>
+  onChange: (value: string) => void;
+} & Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "onChange">;
 
 export const Textarea = React.forwardRef(function Textarea(
   { onChange, ...props }: TextareaProps,
-  ref: React.ForwardedRef<HTMLTextAreaElement>
+  ref: React.ForwardedRef<HTMLTextAreaElement>,
 ) {
   return (
     <textarea
@@ -16,10 +16,10 @@ export const Textarea = React.forwardRef(function Textarea(
       rows={6}
       data-testid="textarea"
       required
-      style={{ fontSize: '16px' }}
+      style={{ fontSize: "16px" }}
       autoFocus={!isMobile}
       onChange={(e) => onChange(e.target.value)}
       {...props}
     />
-  )
-})
+  );
+});

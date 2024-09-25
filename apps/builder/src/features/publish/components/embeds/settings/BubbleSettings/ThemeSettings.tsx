@@ -1,3 +1,4 @@
+import { ChevronDownIcon } from "@/components/icons";
 import {
   Accordion,
   AccordionButton,
@@ -12,22 +13,21 @@ import {
   MenuList,
   Stack,
   Text,
-} from '@chakra-ui/react'
-import { BubbleProps } from '@typebot.io/nextjs'
-import {
+} from "@chakra-ui/react";
+import type { BubbleProps } from "@typebot.io/js";
+import type {
   BubbleTheme,
   ButtonTheme,
   PreviewMessageTheme,
-} from '@typebot.io/nextjs'
-import { ButtonThemeSettings } from './ButtonThemeSettings'
-import { PreviewMessageThemeSettings } from './PreviewMessageThemeSettings'
-import { ChevronDownIcon } from '@/components/icons'
+} from "@typebot.io/js";
+import { ButtonThemeSettings } from "./ButtonThemeSettings";
+import { PreviewMessageThemeSettings } from "./PreviewMessageThemeSettings";
 
 type Props = {
-  isPreviewMessageEnabled: boolean
-  theme: BubbleProps['theme']
-  onChange: (newBubbleTheme: BubbleProps['theme']) => void
-}
+  isPreviewMessageEnabled: boolean;
+  theme: BubbleProps["theme"];
+  onChange: (newBubbleTheme: BubbleProps["theme"]) => void;
+};
 
 export const ThemeSettings = ({
   isPreviewMessageEnabled,
@@ -38,22 +38,22 @@ export const ThemeSettings = ({
     onChange({
       ...theme,
       button,
-    })
-  }
+    });
+  };
 
   const updatePreviewMessageTheme = (previewMessage?: PreviewMessageTheme) => {
     onChange({
       ...theme,
       previewMessage,
-    })
-  }
+    });
+  };
 
-  const updatePlacement = (placement: BubbleTheme['placement']) => {
+  const updatePlacement = (placement: BubbleTheme["placement"]) => {
     onChange({
       ...theme,
       placement,
-    })
-  }
+    });
+  };
 
   return (
     <Accordion allowMultiple>
@@ -69,13 +69,13 @@ export const ThemeSettings = ({
             <Text>Placement</Text>
             <Menu>
               <MenuButton as={Button} size="sm" rightIcon={<ChevronDownIcon />}>
-                {theme?.placement ?? 'right'}
+                {theme?.placement ?? "right"}
               </MenuButton>
               <MenuList>
-                <MenuItem onClick={() => updatePlacement('right')}>
+                <MenuItem onClick={() => updatePlacement("right")}>
                   right
                 </MenuItem>
-                <MenuItem onClick={() => updatePlacement('left')}>
+                <MenuItem onClick={() => updatePlacement("left")}>
                   left
                 </MenuItem>
               </MenuList>
@@ -94,5 +94,5 @@ export const ThemeSettings = ({
         </AccordionPanel>
       </AccordionItem>
     </Accordion>
-  )
-}
+  );
+};

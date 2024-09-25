@@ -1,17 +1,16 @@
 {
   "name": "@typebot.io/groq-block",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.ts",
-  "keywords": [],
-  "license": "AGPL-3.0-or-later",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schemas": "./src/schemas.ts"
+  },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
-    "@typebot.io/lib": "workspace:*",
     "@typebot.io/openai-block": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
-    "@types/react": "18.2.15",
-    "typescript": "5.4.5"
+    "@typebot.io/tsconfig": "workspace:*"
   },
   "dependencies": {
     "ky": "1.2.4"

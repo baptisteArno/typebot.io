@@ -1,1 +1,1 @@
-export * from './WordpressModal'
+export * from "./WordpressModal";

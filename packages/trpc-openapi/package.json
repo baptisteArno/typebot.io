@@ -1,0 +1,23 @@
+{
+  "name": "@typebot.io/trpc-openapi",
+  "private": true,
+  "exports": {
+    "./generator": "./src/generator/index.ts",
+    "./adapters": "./src/adapters/next.ts",
+    "./types": "./src/types.ts"
+  },
+  "dependencies": {
+    "@trpc/server": "10.40.0",
+    "co-body": "6.2.0",
+    "lodash.clonedeep": "4.5.0",
+    "next": "14.2.13",
+    "openapi3-ts": "4.4.0",
+    "zod-openapi": "3.0.1",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*",
+    "@types/co-body": "6.1.3",
+    "@types/lodash.clonedeep": "4.5.9"
+  }
+}

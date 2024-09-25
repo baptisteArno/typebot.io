@@ -1,3 +1,4 @@
+import { PlusIcon, TrashIcon } from "@/components/icons";
 import {
   Box,
   Button,
@@ -6,35 +7,34 @@ import {
   IconButton,
   SlideFade,
   Stack,
-} from '@chakra-ui/react'
-import { TrashIcon, PlusIcon } from '@/components/icons'
-import { createId } from '@paralleldrive/cuid2'
-import React, { useEffect, useState } from 'react'
+} from "@chakra-ui/react";
+import { createId } from "@paralleldrive/cuid2";
+import React, { useEffect, useState } from "react";
 
 const defaultItem = {
   id: createId(),
-}
+};
 
 export type TableListItemProps<T> = {
-  item: T
-  onItemChange: (item: T) => void
-}
+  item: T;
+  onItemChange: (item: T) => void;
+};
 
 type Props<T extends object> = {
-  initialItems?: T[]
-  isOrdered?: boolean
-  addLabel?: string
-  newItemDefaultProps?: Partial<T>
-  hasDefaultItem?: boolean
-  ComponentBetweenItems?: (props: unknown) => JSX.Element
-  onItemsChange: (items: T[]) => void
-  children: (props: TableListItemProps<T>) => JSX.Element
-}
+  initialItems?: T[];
+  isOrdered?: boolean;
+  addLabel?: string;
+  newItemDefaultProps?: Partial<T>;
+  hasDefaultItem?: boolean;
+  ComponentBetweenItems?: (props: unknown) => JSX.Element;
+  onItemsChange: (items: T[]) => void;
+  children: (props: TableListItemProps<T>) => JSX.Element;
+};
 
 export const TableList = <T extends object>({
   initialItems,
   isOrdered,
-  addLabel = 'Add',
+  addLabel = "Add",
   newItemDefaultProps,
   hasDefaultItem,
   children,
@@ -43,58 +43,58 @@ export const TableList = <T extends object>({
 }: Props<T>) => {
   const [items, setItems] = useState(
     addIdsIfMissing(initialItems) ??
-      (hasDefaultItem ? ([defaultItem] as T[]) : [])
-  )
-  const [showDeleteIndex, setShowDeleteIndex] = useState<number | null>(null)
+      (hasDefaultItem ? ([defaultItem] as T[]) : []),
+  );
+  const [showDeleteIndex, setShowDeleteIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (items.length && initialItems && initialItems?.length === 0)
-      setItems(initialItems)
-  }, [initialItems, items.length])
+      setItems(initialItems);
+  }, [initialItems, items.length]);
 
   const createItem = () => {
-    const id = createId()
-    const newItem = { id, ...newItemDefaultProps } as T
-    setItems([...items, newItem])
-    onItemsChange([...items, newItem])
-  }
+    const id = createId();
+    const newItem = { id, ...newItemDefaultProps } as T;
+    setItems([...items, newItem]);
+    onItemsChange([...items, newItem]);
+  };
 
   const insertItem = (itemIndex: number) => () => {
-    const id = createId()
-    const newItem = { id } as T
-    const newItems = [...items]
-    newItems.splice(itemIndex + 1, 0, newItem)
-    setItems(newItems)
-    onItemsChange(newItems)
-  }
+    const id = createId();
+    const newItem = { id } as T;
+    const newItems = [...items];
+    newItems.splice(itemIndex + 1, 0, newItem);
+    setItems(newItems);
+    onItemsChange(newItems);
+  };
 
   const updateItem = (itemIndex: number, updates: Partial<T>) => {
     const newItems = items.map((item, idx) =>
-      idx === itemIndex ? { ...item, ...updates } : item
-    )
-    setItems(newItems)
-    onItemsChange(newItems)
-  }
+      idx === itemIndex ? { ...item, ...updates } : item,
+    );
+    setItems(newItems);
+    onItemsChange(newItems);
+  };
 
   const deleteItem = (itemIndex: number) => () => {
-    const newItems = [...items]
-    newItems.splice(itemIndex, 1)
-    setItems([...newItems])
-    onItemsChange([...newItems])
-  }
+    const newItems = [...items];
+    newItems.splice(itemIndex, 1);
+    setItems([...newItems]);
+    onItemsChange([...newItems]);
+  };
 
   const handleMouseEnter = (itemIndex: number) => () =>
-    setShowDeleteIndex(itemIndex)
+    setShowDeleteIndex(itemIndex);
 
   const handleCellChange = (itemIndex: number) => (item: T) =>
-    updateItem(itemIndex, item)
+    updateItem(itemIndex, item);
 
-  const handleMouseLeave = () => setShowDeleteIndex(null)
+  const handleMouseLeave = () => setShowDeleteIndex(null);
 
   return (
     <Stack spacing={0}>
       {items.map((item, itemIndex) => (
-        <Box key={'id' in item ? (item.id as string) : itemIndex}>
+        <Box key={"id" in item ? (item.id as string) : itemIndex}>
           {itemIndex !== 0 && ComponentBetweenItems && (
             <ComponentBetweenItems />
           )}
@@ -110,9 +110,9 @@ export const TableList = <T extends object>({
             <Fade
               in={showDeleteIndex === itemIndex}
               style={{
-                position: 'absolute',
-                left: '-15px',
-                top: '-15px',
+                position: "absolute",
+                left: "-15px",
+                top: "-15px",
               }}
               unmountOnExit
             >
@@ -131,8 +131,8 @@ export const TableList = <T extends object>({
                     offsetY="-5px"
                     in={showDeleteIndex === itemIndex}
                     style={{
-                      position: 'absolute',
-                      top: '-15px',
+                      position: "absolute",
+                      top: "-15px",
                     }}
                     unmountOnExit
                   >
@@ -150,8 +150,8 @@ export const TableList = <T extends object>({
                   offsetY="5px"
                   in={showDeleteIndex === itemIndex}
                   style={{
-                    position: 'absolute',
-                    bottom: '5px',
+                    position: "absolute",
+                    bottom: "5px",
                   }}
                   unmountOnExit
                 >
@@ -180,11 +180,11 @@ export const TableList = <T extends object>({
         </Button>
       )}
     </Stack>
-  )
-}
+  );
+};
 
 const addIdsIfMissing = <T,>(items?: T[]): T[] | undefined =>
   items?.map((item) => ({
     id: createId(),
     ...item,
-  }))
+  }));

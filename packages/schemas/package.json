@@ -1,21 +1,15 @@
 {
   "name": "@typebot.io/schemas",
-  "version": "1.0.0",
-  "main": "./index.ts",
-  "types": "./index.ts",
-  "license": "AGPL-3.0-or-later",
+  "type": "module",
   "private": true,
+  "exports": {
+    "./*": "./src/*.ts"
+  },
   "dependencies": {
-    "@udecode/plate-common": "30.4.5",
-    "zod": "3.22.4",
-    "zod-openapi": "^2.11.0"
+    "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/zod": "workspace:*"
   },
   "devDependencies": {
-    "@typebot.io/forge-repository": "workspace:*",
-    "@typebot.io/prisma": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
-    "typescript": "5.4.5",
-    "eslint": "8.44.0",
-    "eslint-config-custom": "workspace:*"
+    "@typebot.io/tsconfig": "workspace:*"
   }
 }

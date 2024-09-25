@@ -1,23 +1,23 @@
-import { FormControl, FormLabel, Stack } from '@chakra-ui/react'
-import { Settings } from '@typebot.io/schemas'
-import React from 'react'
-import { isDefined } from '@typebot.io/lib'
-import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
-import { TagsInput } from '@/components/TagsInput'
-import { env } from '@typebot.io/env'
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { TagsInput } from "@/components/TagsInput";
+import { FormControl, FormLabel, Stack } from "@chakra-ui/react";
+import { env } from "@typebot.io/env";
+import { isDefined } from "@typebot.io/lib/utils";
+import type { Settings } from "@typebot.io/settings/schemas";
+import React from "react";
 
 type Props = {
-  security: Settings['security']
-  onUpdate: (security: Settings['security']) => void
-}
+  security: Settings["security"];
+  onUpdate: (security: Settings["security"]) => void;
+};
 
 export const SecurityForm = ({ security, onUpdate }: Props) => {
   const updateItems = (items: string[]) => {
-    if (items.length === 0) onUpdate(undefined)
+    if (items.length === 0) onUpdate(undefined);
     onUpdate({
       allowedOrigins: items.filter(isDefined),
-    })
-  }
+    });
+  };
 
   return (
     <Stack spacing={6}>
@@ -36,5 +36,5 @@ export const SecurityForm = ({ security, onUpdate }: Props) => {
         />
       </FormControl>
     </Stack>
-  )
-}
+  );
+};

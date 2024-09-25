@@ -1,3 +1,3 @@
-import { executePrismaCommand } from './executeCommand'
+import { executePrismaCommand } from "./executeCommand";
 
-executePrismaCommand('cross-env BROWSER=none prisma studio')
+executePrismaCommand("cross-env BROWSER=none prisma studio");

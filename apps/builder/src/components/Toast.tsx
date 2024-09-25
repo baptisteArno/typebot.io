@@ -10,27 +10,27 @@ import {
   Stack,
   Text,
   useColorModeValue,
-} from '@chakra-ui/react'
-import { AlertIcon, CloseIcon, InfoIcon, SmileIcon } from './icons'
-import { CodeEditor } from './inputs/CodeEditor'
-import { LanguageName } from '@uiw/codemirror-extensions-langs'
+} from "@chakra-ui/react";
+import type { LanguageName } from "@uiw/codemirror-extensions-langs";
+import { AlertIcon, CloseIcon, InfoIcon, SmileIcon } from "./icons";
+import { CodeEditor } from "./inputs/CodeEditor";
 
 export type ToastProps = {
-  title?: string
-  description?: string
+  title?: string;
+  description?: string;
   details?: {
-    content: string
-    lang: LanguageName
-  }
-  status?: 'info' | 'error' | 'success'
-  icon?: React.ReactNode
-  primaryButton?: React.ReactNode
-  secondaryButton?: React.ReactNode
-  onClose: () => void
-}
+    content: string;
+    lang: LanguageName;
+  };
+  status?: "info" | "error" | "success";
+  icon?: React.ReactNode;
+  primaryButton?: React.ReactNode;
+  secondaryButton?: React.ReactNode;
+  onClose: () => void;
+};
 
 export const Toast = ({
-  status = 'error',
+  status = "error",
   title,
   description,
   details,
@@ -39,8 +39,8 @@ export const Toast = ({
   secondaryButton,
   onClose,
 }: ToastProps) => {
-  const bgColor = useColorModeValue('white', 'gray.800')
-  const detailsLabelColor = useColorModeValue('gray.600', 'gray.400')
+  const bgColor = useColorModeValue("white", "gray.800");
+  const detailsLabelColor = useColorModeValue("gray.600", "gray.400");
 
   return (
     <Flex
@@ -51,10 +51,10 @@ export const Toast = ({
       shadow="sm"
       fontSize="sm"
       pos="relative"
-      maxW={details ? '450px' : '300px'}
+      maxW={details ? "450px" : "300px"}
     >
       <HStack alignItems="flex-start" pr="7" spacing="3" w="full">
-        <Icon customIcon={icon} status={status} />{' '}
+        <Icon customIcon={icon} status={status} />{" "}
         <Stack spacing={3} flex="1" justify="center" h="full">
           <Stack spacing={1}>
             {title && <Text fontWeight="semibold">{title}</Text>}
@@ -106,19 +106,19 @@ export const Toast = ({
         right={1}
       />
     </Flex>
-  )
-}
+  );
+};
 
 const Icon = ({
   customIcon,
   status,
 }: {
-  customIcon?: React.ReactNode
-  status: ToastProps['status']
+  customIcon?: React.ReactNode;
+  status: ToastProps["status"];
 }) => {
-  const accentColor = useColorModeValue('50', '0')
-  const color = parseColor(status)
-  const icon = parseIcon(status, customIcon)
+  const accentColor = useColorModeValue("50", "0");
+  const color = parseColor(status);
+  const icon = parseIcon(status, customIcon);
   return (
     <Flex
       bgColor={`${color}.${accentColor}`}
@@ -140,32 +140,32 @@ const Icon = ({
         {icon}
       </Flex>
     </Flex>
-  )
-}
+  );
+};
 
-const parseColor = (status: ToastProps['status']) => {
-  if (!status) return 'red'
+const parseColor = (status: ToastProps["status"]) => {
+  if (!status) return "red";
   switch (status) {
-    case 'error':
-      return 'red'
-    case 'success':
-      return 'green'
-    case 'info':
-      return 'blue'
+    case "error":
+      return "red";
+    case "success":
+      return "green";
+    case "info":
+      return "blue";
   }
-}
+};
 
 const parseIcon = (
-  status: ToastProps['status'],
-  customIcon?: React.ReactNode
+  status: ToastProps["status"],
+  customIcon?: React.ReactNode,
 ) => {
-  if (customIcon) return customIcon
+  if (customIcon) return customIcon;
   switch (status) {
-    case 'error':
-      return <AlertIcon />
-    case 'success':
-      return <SmileIcon />
-    case 'info':
-      return <InfoIcon />
+    case "error":
+      return <AlertIcon />;
+    case "success":
+      return <SmileIcon />;
+    case "info":
+      return <InfoIcon />;
   }
-}
+};

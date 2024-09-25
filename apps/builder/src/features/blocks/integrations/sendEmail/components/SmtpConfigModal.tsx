@@ -1,28 +1,29 @@
+import { useUser } from "@/features/account/hooks/useUser";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { useToast } from "@/hooks/useToast";
+import { trpc } from "@/lib/trpc";
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Button,
-} from '@chakra-ui/react'
-import { useUser } from '@/features/account/hooks/useUser'
-import React, { useState } from 'react'
-import { isNotDefined } from '@typebot.io/lib'
-import { SmtpConfigForm } from './SmtpConfigForm'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { useToast } from '@/hooks/useToast'
-import { testSmtpConfig } from '../queries/testSmtpConfigQuery'
-import { SmtpCredentials } from '@typebot.io/schemas'
-import { trpc } from '@/lib/trpc'
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+} from "@chakra-ui/react";
+import type { SmtpCredentials } from "@typebot.io/blocks-integrations/sendEmail/schema";
+import { isNotDefined } from "@typebot.io/lib/utils";
+import type React from "react";
+import { useState } from "react";
+import { testSmtpConfig } from "../queries/testSmtpConfigQuery";
+import { SmtpConfigForm } from "./SmtpConfigForm";
 
 type Props = {
-  isOpen: boolean
-  onClose: () => void
-  onNewCredentials: (id: string) => void
-}
+  isOpen: boolean;
+  onClose: () => void;
+  onNewCredentials: (id: string) => void;
+};
 
 export const SmtpConfigModal = ({
   isOpen,
@@ -34,77 +35,77 @@ export const SmtpConfigModal = ({
       <ModalOverlay />
       <SmtpCreateModalContent
         onNewCredentials={(id) => {
-          onNewCredentials(id)
-          onClose()
+          onNewCredentials(id);
+          onClose();
         }}
       />
     </Modal>
-  )
-}
+  );
+};
 
 export const SmtpCreateModalContent = ({
   onNewCredentials,
-}: Pick<Props, 'onNewCredentials'>) => {
-  const { user } = useUser()
-  const { workspace } = useWorkspace()
-  const [isCreating, setIsCreating] = useState(false)
-  const { showToast } = useToast()
-  const [smtpConfig, setSmtpConfig] = useState<SmtpCredentials['data']>({
+}: Pick<Props, "onNewCredentials">) => {
+  const { user } = useUser();
+  const { workspace } = useWorkspace();
+  const [isCreating, setIsCreating] = useState(false);
+  const { showToast } = useToast();
+  const [smtpConfig, setSmtpConfig] = useState<SmtpCredentials["data"]>({
     from: {},
     port: 25,
-  })
+  });
   const {
     credentials: {
       listCredentials: { refetch: refetchCredentials },
     },
-  } = trpc.useContext()
+  } = trpc.useContext();
   const { mutate } = trpc.credentials.createCredentials.useMutation({
     onSettled: () => setIsCreating(false),
     onError: (err) => {
       showToast({
         description: err.message,
-        status: 'error',
-      })
+        status: "error",
+      });
     },
     onSuccess: (data) => {
-      refetchCredentials()
-      onNewCredentials(data.credentialsId)
+      refetchCredentials();
+      onNewCredentials(data.credentialsId);
     },
-  })
+  });
 
   const handleCreateClick = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!user?.email || !workspace?.id) return
-    setIsCreating(true)
+    e.preventDefault();
+    if (!user?.email || !workspace?.id) return;
+    setIsCreating(true);
     const { error: testSmtpError } = await testSmtpConfig(
       smtpConfig,
-      user.email
-    )
+      user.email,
+    );
     if (testSmtpError) {
-      console.error(testSmtpError)
-      setIsCreating(false)
+      console.error(testSmtpError);
+      setIsCreating(false);
       showToast({
-        title: 'Invalid configuration',
+        title: "Invalid configuration",
         description: "We couldn't send the test email with your configuration",
         details: {
           content:
-            'response' in testSmtpError
+            "response" in testSmtpError
               ? (testSmtpError.response as string)
               : testSmtpError.message,
-          lang: 'json',
+          lang: "json",
         },
-      })
-      return
+      });
+      return;
     }
     mutate({
       credentials: {
         data: smtpConfig,
         name: smtpConfig.from.email as string,
-        type: 'smtp',
+        type: "smtp",
         workspaceId: workspace.id,
       },
-    })
-  }
+    });
+  };
   return (
     <ModalContent>
       <ModalHeader>Create SMTP config</ModalHeader>
@@ -132,5 +133,5 @@ export const SmtpCreateModalContent = ({
         </ModalFooter>
       </form>
     </ModalContent>
-  )
-}
+  );
+};

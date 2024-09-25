@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
-import { ModalProps } from '../../EmbedButton'
-import { EmbedModal } from '../../EmbedModal'
-import { isDefined } from '@udecode/plate-common'
-import { NextjsInstructions } from './instructions/NextjsInstructions'
+import { isDefined } from "@udecode/plate-common";
+import React, { useState } from "react";
+import type { ModalProps } from "../../EmbedButton";
+import { EmbedModal } from "../../EmbedModal";
+import { NextjsInstructions } from "./instructions/NextjsInstructions";
 
 export const NextjsModal = ({ isOpen, onClose, isPublished }: ModalProps) => {
   const [selectedEmbedType, setSelectedEmbedType] = useState<
-    'standard' | 'popup' | 'bubble' | undefined
-  >()
+    "standard" | "popup" | "bubble" | undefined
+  >();
   return (
     <EmbedModal
       titlePrefix="Next.js"
@@ -21,5 +21,5 @@ export const NextjsModal = ({ isOpen, onClose, isPublished }: ModalProps) => {
         <NextjsInstructions type={selectedEmbedType} />
       )}
     </EmbedModal>
-  )
-}
+  );
+};

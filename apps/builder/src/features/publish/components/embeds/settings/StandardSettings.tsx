@@ -1,34 +1,34 @@
+import { DropdownList } from "@/components/DropdownList";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import {
-  StackProps,
-  Stack,
   Flex,
+  HStack,
   Heading,
   Input,
-  HStack,
+  Stack,
+  type StackProps,
   Text,
-} from '@chakra-ui/react'
-import { DropdownList } from '@/components/DropdownList'
-import { useState, useEffect } from 'react'
-import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
+} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
 type Props = {
   onUpdateWindowSettings: (windowSettings: {
-    heightLabel: string
-    widthLabel?: string
-  }) => void
-} & StackProps
+    heightLabel: string;
+    widthLabel?: string;
+  }) => void;
+} & StackProps;
 
 export const StandardSettings = ({
   onUpdateWindowSettings,
   ...props
 }: Props) => {
-  const [isFullscreenChecked, setIsFullscreenChecked] = useState(false)
+  const [isFullscreenChecked, setIsFullscreenChecked] = useState(false);
   const [inputValues, setInputValues] = useState({
-    widthValue: '100',
-    widthType: '%',
-    heightValue: '600',
-    heightType: 'px',
-  })
+    widthValue: "100",
+    widthType: "%",
+    heightValue: "600",
+    heightType: "px",
+  });
 
   useEffect(() => {
     onUpdateWindowSettings({
@@ -36,16 +36,16 @@ export const StandardSettings = ({
         ? undefined
         : inputValues.widthValue + inputValues.widthType,
       heightLabel: isFullscreenChecked
-        ? '100vh'
+        ? "100vh"
         : inputValues.heightValue + inputValues.heightType,
-    })
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inputValues, isFullscreenChecked])
+  }, [inputValues, isFullscreenChecked]);
 
   const handleWidthTypeSelect = (widthType: string) =>
-    setInputValues({ ...inputValues, widthType })
+    setInputValues({ ...inputValues, widthType });
   const handleHeightTypeSelect = (heightType: string) =>
-    setInputValues({ ...inputValues, heightType })
+    setInputValues({ ...inputValues, heightType });
 
   return (
     <Stack {...props} spacing={4}>
@@ -73,7 +73,7 @@ export const StandardSettings = ({
                   value={inputValues.widthValue}
                 />
                 <DropdownList
-                  items={['px', '%']}
+                  items={["px", "%"]}
                   onItemSelect={handleWidthTypeSelect}
                   currentItem={inputValues.widthType}
                 />
@@ -93,7 +93,7 @@ export const StandardSettings = ({
                   value={inputValues.heightValue}
                 />
                 <DropdownList
-                  items={['px', '%']}
+                  items={["px", "%"]}
                   onItemSelect={handleHeightTypeSelect}
                   currentItem={inputValues.heightType}
                 />
@@ -103,5 +103,5 @@ export const StandardSettings = ({
         )}
       </Stack>
     </Stack>
-  )
-}
+  );
+};

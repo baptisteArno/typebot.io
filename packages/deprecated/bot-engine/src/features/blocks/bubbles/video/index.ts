@@ -1,1 +1,1 @@
-export { VideoBubble } from './components/VideoBubble'
+export { VideoBubble } from "./components/VideoBubble";

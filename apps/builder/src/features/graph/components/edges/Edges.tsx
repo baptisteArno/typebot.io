@@ -1,24 +1,26 @@
-import { chakra, useColorMode } from '@chakra-ui/react'
-import { colors } from '@/lib/theme'
-import { BlockSource, Edge as EdgeProps, GroupV6 } from '@typebot.io/schemas'
-import React from 'react'
-import { DrawingEdge } from './DrawingEdge'
-import { DropOffEdge } from './DropOffEdge'
-import { Edge } from './Edge'
-import {
+import { colors } from "@/lib/theme";
+import { chakra, useColorMode } from "@chakra-ui/react";
+import type { GroupV6 } from "@typebot.io/groups/schemas";
+import type {
   TotalAnswers,
   TotalVisitedEdges,
-} from '@typebot.io/schemas/features/analytics'
-import { useGraph } from '../../providers/GraphProvider'
+} from "@typebot.io/schemas/features/analytics";
+import type { BlockSource } from "@typebot.io/typebot/schemas/edge";
+import type { Edge as EdgeProps } from "@typebot.io/typebot/schemas/edge";
+import React from "react";
+import { useGraph } from "../../providers/GraphProvider";
+import { DrawingEdge } from "./DrawingEdge";
+import { DropOffEdge } from "./DropOffEdge";
+import { Edge } from "./Edge";
 
 type Props = {
-  edges: EdgeProps[]
-  groups: GroupV6[]
-  inputBlockIds: string[]
-  totalVisitedEdges?: TotalVisitedEdges[]
-  totalAnswers?: TotalAnswers[]
-  onUnlockProPlanClick?: () => void
-}
+  edges: EdgeProps[];
+  groups: GroupV6[];
+  inputBlockIds: string[];
+  totalVisitedEdges?: TotalVisitedEdges[];
+  totalAnswers?: TotalAnswers[];
+  onUnlockProPlanClick?: () => void;
+};
 
 export const Edges = ({
   edges,
@@ -28,8 +30,8 @@ export const Edges = ({
   totalAnswers,
   onUnlockProPlanClick,
 }: Props) => {
-  const { connectingIds } = useGraph()
-  const isDark = useColorMode().colorMode === 'dark'
+  const { connectingIds } = useGraph();
+  const isDark = useColorMode().colorMode === "dark";
   return (
     <chakra.svg
       width="full"
@@ -46,11 +48,11 @@ export const Edges = ({
           key={edge.id}
           edge={edge}
           fromGroupId={
-            'blockId' in edge.from
+            "blockId" in edge.from
               ? groups.find((g) =>
                   g.blocks.some(
-                    (b) => b.id === (edge.from as BlockSource).blockId
-                  )
+                    (b) => b.id === (edge.from as BlockSource).blockId,
+                  ),
                 )?.id
               : undefined
           }
@@ -68,7 +70,7 @@ export const Edges = ({
           />
         ))}
       <marker
-        id={'arrow'}
+        id={"arrow"}
         refX="8"
         refY="4"
         orient="auto"
@@ -83,7 +85,7 @@ export const Edges = ({
         />
       </marker>
       <marker
-        id={'blue-arrow'}
+        id={"blue-arrow"}
         refX="8"
         refY="4"
         orient="auto"
@@ -98,5 +100,5 @@ export const Edges = ({
         />
       </marker>
     </chakra.svg>
-  )
-}
+  );
+};

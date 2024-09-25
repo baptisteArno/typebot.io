@@ -1,0 +1,90 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "organizeImports": {
+    "ignore": [
+      "emojiList.json",
+      "iconNames.ts",
+      ".last-run.json",
+      "openapi/*.json"
+    ],
+    "enabled": true
+  },
+  "linter": {
+    "ignore": ["node_modules", ".next", "dist", "openapi/*.json"],
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "security": {
+        "noDangerouslySetInnerHtml": "off",
+        "noGlobalEval": "off"
+      },
+      "a11y": {
+        "noSvgWithoutTitle": "off",
+        "useMediaCaption": "off",
+        "useIframeTitle": "off",
+        "useKeyWithClickEvents": "off",
+        "useButtonType": "off",
+        "noRedundantAlt": "off",
+        "noAutofocus": "off",
+        "useSemanticElements": "off",
+        "useFocusableInteractive": "off"
+      },
+      "performance": {
+        "noAccumulatingSpread": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "off",
+        "useNodejsImportProtocol": "off",
+        "noUnusedTemplateLiteral": "off",
+        "useTemplate": "off",
+        "useSelfClosingElements": "off",
+        "noUselessElse": "off",
+        "noParameterAssign": "off",
+        "useShorthandFunctionType": "off",
+        "useExponentiationOperator": "off",
+        "useSingleVarDeclarator": "off"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "off",
+        "noSwitchDeclarations": "off",
+        "noEmptyPattern": "off",
+        "noUnsafeOptionalChaining": "off",
+        "useJsxKeyInIterable": "off"
+      },
+      "complexity": {
+        "noForEach": "off",
+        "noUselessTernary": "off",
+        "useLiteralKeys": "off",
+        "useOptionalChain": "off",
+        "noBannedTypes": "off"
+      },
+      "suspicious": {
+        "noArrayIndexKey": "off",
+        "noAssignInExpressions": "off",
+        "noImplicitAnyLet": "off",
+        "noExplicitAny": "off",
+        "noExportsInTest": "off",
+        "noConfusingVoidType": "off",
+        "noGlobalIsNan": "off",
+        "useIsArray": "off",
+        "noThenProperty": "off",
+        "noAsyncPromiseExecutor": "off",
+        "noMisleadingCharacterClass": "off"
+      }
+    }
+  },
+  "formatter": {
+    "ignore": [
+      "emojiList.json",
+      "iconNames.ts",
+      ".last-run.json",
+      "openapi/*.json"
+    ],
+    "indentStyle": "space"
+  },
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  }
+}

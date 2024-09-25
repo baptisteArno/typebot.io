@@ -1,38 +1,38 @@
-import { CloseIcon, VideoPopoverIcon } from '@/components/icons'
+import { CloseIcon, VideoPopoverIcon } from "@/components/icons";
+import { useUser } from "@/features/account/hooks/useUser";
 import {
-  PopoverContent,
+  IconButton,
+  type IconButtonProps,
+  Popover,
   PopoverArrow,
   PopoverBody,
-  IconButton,
-  Popover,
+  PopoverContent,
   PopoverTrigger,
-  IconButtonProps,
-} from '@chakra-ui/react'
-import { useOnboardingDisclosure } from '../hooks/useOnboardingDisclosure'
-import { onboardingVideos } from '../data'
-import { useUser } from '@/features/account/hooks/useUser'
-import { ForgedBlockDefinition } from '@typebot.io/forge-repository/types'
-import { YoutubeIframe } from './YoutubeIframe'
+} from "@chakra-ui/react";
+import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
+import { onboardingVideos } from "../data";
+import { useOnboardingDisclosure } from "../hooks/useOnboardingDisclosure";
+import { YoutubeIframe } from "./YoutubeIframe";
 
 type Props = {
-  type: keyof typeof onboardingVideos
-  defaultIsOpen?: boolean
-  blockDef?: ForgedBlockDefinition
-  children: ({ onToggle }: { onToggle: () => void }) => JSX.Element
-}
+  type: keyof typeof onboardingVideos;
+  defaultIsOpen?: boolean;
+  blockDef?: ForgedBlockDefinition;
+  children: ({ onToggle }: { onToggle: () => void }) => JSX.Element;
+};
 
 const Root = ({ type, blockDef, children }: Props) => {
-  const { user, updateUser } = useUser()
+  const { user, updateUser } = useUser();
   const youtubeId =
-    onboardingVideos[type]?.youtubeId ?? blockDef?.onboarding?.youtubeId
+    onboardingVideos[type]?.youtubeId ?? blockDef?.onboarding?.youtubeId;
   const { isOpen, onClose, onToggle } = useOnboardingDisclosure({
     key: type,
     updateUser,
     user,
     blockDef,
-  })
+  });
 
-  if (!youtubeId) return children({ onToggle })
+  if (!youtubeId) return children({ onToggle });
 
   return (
     <Popover isOpen={isOpen} placement="right" isLazy>
@@ -44,7 +44,7 @@ const Root = ({ type, blockDef, children }: Props) => {
           <YoutubeIframe id={youtubeId} />
           <IconButton
             icon={<CloseIcon />}
-            aria-label={'Close'}
+            aria-label={"Close"}
             pos="absolute"
             top="-3"
             right="-3"
@@ -56,21 +56,21 @@ const Root = ({ type, blockDef, children }: Props) => {
         </PopoverBody>
       </PopoverContent>
     </Popover>
-  )
-}
+  );
+};
 
-const TriggerIconButton = (props: Omit<IconButtonProps, 'aria-label'>) => (
+const TriggerIconButton = (props: Omit<IconButtonProps, "aria-label">) => (
   <IconButton
     size="sm"
     icon={<VideoPopoverIcon />}
-    aria-label={'Open Bubbles help video'}
+    aria-label={"Open Bubbles help video"}
     variant="ghost"
     colorScheme="blue"
     {...props}
   />
-)
+);
 
 export const VideoOnboardingPopover = {
   Root,
   TriggerIconButton,
-}
+};

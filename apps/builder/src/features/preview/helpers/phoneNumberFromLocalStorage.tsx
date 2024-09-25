@@ -1,8 +1,8 @@
-export const phoneNumberKey = 'whatsapp-phone'
+export const phoneNumberKey = "whatsapp-phone";
 
 export const getPhoneNumberFromLocalStorage = () =>
-  localStorage.getItem(phoneNumberKey)
+  localStorage.getItem(phoneNumberKey);
 
 export const setPhoneNumberInLocalStorage = (phoneNumber: string) => {
-  localStorage.setItem(phoneNumberKey, phoneNumber)
-}
+  localStorage.setItem(phoneNumberKey, phoneNumber);
+};

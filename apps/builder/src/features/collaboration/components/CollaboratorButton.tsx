@@ -9,22 +9,22 @@ import {
   Tag,
   Text,
   useColorModeValue,
-} from '@chakra-ui/react'
-import { CollaborationType } from '@typebot.io/prisma'
-import React from 'react'
-import { useTranslate } from '@tolgee/react'
-import { ReadableCollaborationType } from './ReadableCollaborationType'
+} from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import { CollaborationType } from "@typebot.io/prisma/enum";
+import React from "react";
+import { ReadableCollaborationType } from "./ReadableCollaborationType";
 
 type Props = {
-  image?: string
-  name?: string
-  email: string
-  type: CollaborationType
-  isGuest?: boolean
-  isOwner: boolean
-  onDeleteClick: () => void
-  onChangeCollaborationType: (type: CollaborationType) => void
-}
+  image?: string;
+  name?: string;
+  email: string;
+  type: CollaborationType;
+  isGuest?: boolean;
+  isOwner: boolean;
+  onDeleteClick: () => void;
+  onChangeCollaborationType: (type: CollaborationType) => void;
+};
 
 export const CollaboratorItem = ({
   email,
@@ -36,12 +36,12 @@ export const CollaboratorItem = ({
   onDeleteClick,
   onChangeCollaborationType,
 }: Props) => {
-  const { t } = useTranslate()
-  const hoverBgColor = useColorModeValue('gray.100', 'gray.700')
+  const { t } = useTranslate();
+  const hoverBgColor = useColorModeValue("gray.100", "gray.700");
   const handleEditClick = () =>
-    onChangeCollaborationType(CollaborationType.WRITE)
+    onChangeCollaborationType(CollaborationType.WRITE);
   const handleViewClick = () =>
-    onChangeCollaborationType(CollaborationType.READ)
+    onChangeCollaborationType(CollaborationType.READ);
   return (
     <Menu placement="bottom-end">
       <MenuButton _hover={{ backgroundColor: hoverBgColor }} borderRadius="md">
@@ -62,13 +62,13 @@ export const CollaboratorItem = ({
             <ReadableCollaborationType type={CollaborationType.READ} />
           </MenuItem>
           <MenuItem color="red.500" onClick={onDeleteClick}>
-            {t('remove')}
+            {t("remove")}
           </MenuItem>
         </MenuList>
       )}
     </Menu>
-  )
-}
+  );
+};
 
 export const CollaboratorIdentityContent = ({
   name,
@@ -77,13 +77,13 @@ export const CollaboratorIdentityContent = ({
   image,
   email,
 }: {
-  name?: string
-  type: CollaborationType
-  image?: string
-  isGuest?: boolean
-  email: string
+  name?: string;
+  type: CollaborationType;
+  image?: string;
+  isGuest?: boolean;
+  email: string;
 }) => {
-  const { t } = useTranslate()
+  const { t } = useTranslate();
 
   return (
     <HStack justifyContent="space-between" maxW="full" py="2" px="4">
@@ -97,7 +97,7 @@ export const CollaboratorIdentityContent = ({
           )}
           <Text
             color="gray.500"
-            fontSize={name ? '14px' : 'inherit'}
+            fontSize={name ? "14px" : "inherit"}
             noOfLines={1}
           >
             {email}
@@ -105,11 +105,11 @@ export const CollaboratorIdentityContent = ({
         </Stack>
       </HStack>
       <HStack flexShrink={0}>
-        {isGuest && <Tag color="gray.400">{t('pending')}</Tag>}
+        {isGuest && <Tag color="gray.400">{t("pending")}</Tag>}
         <Tag>
           <ReadableCollaborationType type={type} />
         </Tag>
       </HStack>
     </HStack>
-  )
-}
+  );
+};

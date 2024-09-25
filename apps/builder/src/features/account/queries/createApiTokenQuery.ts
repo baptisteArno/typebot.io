@@ -1,14 +1,14 @@
-import { sendRequest } from '@typebot.io/lib'
-import { ApiTokenFromServer } from '../types'
+import { sendRequest } from "@typebot.io/lib/utils";
+import type { ApiTokenFromServer } from "../types";
 
 export const createApiTokenQuery = (
   userId: string,
-  { name }: { name: string }
+  { name }: { name: string },
 ) =>
   sendRequest<{ apiToken: ApiTokenFromServer & { token: string } }>({
     url: `/api/users/${userId}/api-tokens`,
-    method: 'POST',
+    method: "POST",
     body: {
       name,
     },
-  })
+  });

@@ -7,18 +7,15 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
-    "test": "pnpm jest"
+    "test": "bun jest"
   },
   "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*",
     "@types/jest": "29.4.0",
-    "tsup": "6.5.0",
-    "eslint": "8.44.0",
-    "eslint-config-custom": "workspace:*",
     "jest": "29.4.1",
     "jest-environment-jsdom": "29.4.1",
     "prettier": "2.8.8",
     "ts-jest": "29.0.5",
-    "typescript": "5.4.5",
-    "@typebot.io/tsconfig": "workspace:*"
+    "tsup": "8.3.0"
   }
 }

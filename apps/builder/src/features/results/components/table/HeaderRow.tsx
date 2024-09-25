@@ -1,17 +1,22 @@
-import { colors } from '@/lib/theme'
-import { Box, BoxProps, chakra, useColorModeValue } from '@chakra-ui/react'
-import { flexRender, HeaderGroup } from '@tanstack/react-table'
-import { TableData } from '@typebot.io/schemas'
-import React from 'react'
+import { colors } from "@/lib/theme";
+import {
+  Box,
+  type BoxProps,
+  chakra,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { type HeaderGroup, flexRender } from "@tanstack/react-table";
+import type { TableData } from "@typebot.io/results/schemas/results";
+import React from "react";
 
 type Props = {
-  headerGroup: HeaderGroup<TableData>
-  isTableScrolled: boolean
-}
+  headerGroup: HeaderGroup<TableData>;
+  isTableScrolled: boolean;
+};
 
 export const HeaderRow = ({ headerGroup, isTableScrolled }: Props) => {
-  const borderColor = useColorModeValue(colors.gray[200], colors.gray[700])
-  const backgroundColor = useColorModeValue('white', colors.gray[900])
+  const borderColor = useColorModeValue(colors.gray[200], colors.gray[700]);
+  const backgroundColor = useColorModeValue("white", colors.gray[900]);
 
   return (
     <tr key={headerGroup.id}>
@@ -47,11 +52,11 @@ export const HeaderRow = ({ headerGroup, isTableScrolled }: Props) => {
               />
             )}
           </chakra.th>
-        )
+        );
       })}
     </tr>
-  )
-}
+  );
+};
 
 const ResizeHandle = (props: BoxProps) => {
   return (
@@ -67,5 +72,5 @@ const ResizeHandle = (props: BoxProps) => {
       data-testid="resize-handle"
       {...props}
     />
-  )
-}
+  );
+};

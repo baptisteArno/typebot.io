@@ -1,7 +1,7 @@
-import { MemberInWorkspace } from '@typebot.io/prisma'
+import type { Prisma } from "@typebot.io/prisma/types";
 
-export type Member = MemberInWorkspace & {
-  name: string | null
-  image: string | null
-  email: string | null
-}
+export type Member = Prisma.MemberInWorkspace & {
+  name: string | null;
+  image: string | null;
+  email: string | null;
+};

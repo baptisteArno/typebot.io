@@ -1,32 +1,33 @@
+import { useUser } from "@/features/account/hooks/useUser";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { useToast } from "@/hooks/useToast";
+import { trpc } from "@/lib/trpc";
 import {
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Button,
-} from '@chakra-ui/react'
-import { useUser } from '@/features/account/hooks/useUser'
-import React, { useEffect, useState } from 'react'
-import { isNotDefined } from '@typebot.io/lib'
-import { SmtpConfigForm } from './SmtpConfigForm'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { useToast } from '@/hooks/useToast'
-import { testSmtpConfig } from '../queries/testSmtpConfigQuery'
-import { trpc } from '@/lib/trpc'
-import { SmtpCredentials } from '@typebot.io/schemas/features/blocks/integrations/sendEmail/schema'
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from "@chakra-ui/react";
+import type { SmtpCredentials } from "@typebot.io/blocks-integrations/sendEmail/schema";
+import { isNotDefined } from "@typebot.io/lib/utils";
+import type React from "react";
+import { useEffect, useState } from "react";
+import { testSmtpConfig } from "../queries/testSmtpConfigQuery";
+import { SmtpConfigForm } from "./SmtpConfigForm";
 
 type Props = {
-  credentialsId: string
-  onUpdate: () => void
-}
+  credentialsId: string;
+  onUpdate: () => void;
+};
 
 export const SmtpUpdateModalContent = ({ credentialsId, onUpdate }: Props) => {
-  const { user } = useUser()
-  const { workspace } = useWorkspace()
-  const [isCreating, setIsCreating] = useState(false)
-  const { showToast } = useToast()
-  const [smtpConfig, setSmtpConfig] = useState<SmtpCredentials['data']>()
+  const { user } = useUser();
+  const { workspace } = useWorkspace();
+  const [isCreating, setIsCreating] = useState(false);
+  const { showToast } = useToast();
+  const [smtpConfig, setSmtpConfig] = useState<SmtpCredentials["data"]>();
 
   const { data: existingCredentials } =
     trpc.credentials.getCredentials.useQuery(
@@ -36,52 +37,52 @@ export const SmtpUpdateModalContent = ({ credentialsId, onUpdate }: Props) => {
       },
       {
         enabled: !!workspace?.id,
-      }
-    )
+      },
+    );
 
   useEffect(() => {
-    if (!existingCredentials || smtpConfig) return
-    setSmtpConfig(existingCredentials.data)
-  }, [existingCredentials, smtpConfig])
+    if (!existingCredentials || smtpConfig) return;
+    setSmtpConfig(existingCredentials.data);
+  }, [existingCredentials, smtpConfig]);
 
   const { mutate } = trpc.credentials.updateCredentials.useMutation({
     onSettled: () => setIsCreating(false),
     onError: (err) => {
       showToast({
         description: err.message,
-        status: 'error',
-      })
+        status: "error",
+      });
     },
     onSuccess: () => {
-      onUpdate()
+      onUpdate();
     },
-  })
+  });
 
   const handleUpdateClick = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!user?.email || !workspace?.id || !smtpConfig) return
-    setIsCreating(true)
+    e.preventDefault();
+    if (!user?.email || !workspace?.id || !smtpConfig) return;
+    setIsCreating(true);
     const { error: testSmtpError } = await testSmtpConfig(
       smtpConfig,
-      user.email
-    )
+      user.email,
+    );
     if (testSmtpError) {
-      setIsCreating(false)
+      setIsCreating(false);
       return showToast({
-        title: 'Invalid configuration',
+        title: "Invalid configuration",
         description: "We couldn't send the test email with your configuration",
-      })
+      });
     }
     mutate({
       credentialsId,
       credentials: {
         data: smtpConfig,
         name: smtpConfig.from.email as string,
-        type: 'smtp',
+        type: "smtp",
         workspaceId: workspace.id,
       },
-    })
-  }
+    });
+  };
   return (
     <ModalContent>
       <ModalHeader>Update SMTP config</ModalHeader>
@@ -109,5 +110,5 @@ export const SmtpUpdateModalContent = ({ credentialsId, onUpdate }: Props) => {
         </ModalFooter>
       </form>
     </ModalContent>
-  )
-}
+  );
+};

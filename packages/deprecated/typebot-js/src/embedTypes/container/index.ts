@@ -1,9 +1,9 @@
 import { createIframe } from "../../iframe";
-import { IframeParams } from "../../types";
+import type { IframeParams } from "../../types";
 
 export const initContainer = (
   containerId: string,
-  iframeParams: IframeParams
+  iframeParams: IframeParams,
 ): HTMLElement | undefined => {
   const { loadWhenVisible } = iframeParams;
   const containerElement = document.getElementById(containerId);
@@ -25,7 +25,7 @@ const observeOnScroll = (iframeElement: HTMLIFrameElement) => {
     (entries) => {
       if (entries.pop()?.isIntersecting === true) lazyLoadSrc(iframeElement);
     },
-    { threshold: [0] }
+    { threshold: [0] },
   );
   observer.observe(iframeElement);
 };

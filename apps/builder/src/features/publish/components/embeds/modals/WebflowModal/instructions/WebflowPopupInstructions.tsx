@@ -1,11 +1,11 @@
-import { OrderedList, ListItem, Code, Stack, Text } from '@chakra-ui/react'
-import { useState } from 'react'
-import { PopupSettings } from '../../../settings/PopupSettings'
-import { JavascriptPopupSnippet } from '../../Javascript/JavascriptPopupSnippet'
-import { TextLink } from '@/components/TextLink'
+import { TextLink } from "@/components/TextLink";
+import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
+import { useState } from "react";
+import { PopupSettings } from "../../../settings/PopupSettings";
+import { JavascriptPopupSnippet } from "../../Javascript/JavascriptPopupSnippet";
 
 export const WebflowPopupInstructions = () => {
-  const [inputValue, setInputValue] = useState<number>()
+  const [inputValue, setInputValue] = useState<number>();
 
   return (
     <>
@@ -21,7 +21,7 @@ export const WebflowPopupInstructions = () => {
               }
             />
             <Text>
-              Add an <Code>Embed</Code> element from the <Code>components</Code>{' '}
+              Add an <Code>Embed</Code> element from the <Code>components</Code>{" "}
               section and paste this code:
             </Text>
             <JavascriptPopupSnippet autoShowDelay={inputValue} />
@@ -29,15 +29,15 @@ export const WebflowPopupInstructions = () => {
         </ListItem>
       </OrderedList>
       <Text fontSize="sm" colorScheme="gray" pl="5">
-        Check out the{' '}
+        Check out the{" "}
         <TextLink
           href="https://docs.typebot.io/deploy/web/webflow#popup"
           isExternal
         >
           Webflow embed documentation
-        </TextLink>{' '}
+        </TextLink>{" "}
         for more options.
       </Text>
     </>
-  )
-}
+  );
+};

@@ -1,20 +1,23 @@
-import React, { ComponentProps } from 'react'
 import {
   Mjml,
   MjmlBody,
-  MjmlSection,
   MjmlColumn,
+  MjmlSection,
   MjmlSpacer,
-} from '@faire/mjml-react'
-import { render } from '@faire/mjml-react/utils/render'
-import { HeroImage, Text, Button, Head } from '../components'
-import { SendMailOptions } from 'nodemailer'
-import { sendEmail } from '../sendEmail'
-import { env } from '@typebot.io/env'
+} from "@faire/mjml-react";
+import { render } from "@faire/mjml-react/utils/render";
+import { env } from "@typebot.io/env";
+import type { SendMailOptions } from "nodemailer";
+import type { ComponentProps } from "react";
+import { Button } from "../components/Button";
+import { Head } from "../components/Head";
+import { HeroImage } from "../components/HeroImage";
+import { Text } from "../components/Text";
+import { sendEmail } from "../sendEmail";
 
 type Props = {
-  url: string
-}
+  url: string;
+};
 
 export const MagicLinkEmail = ({ url }: Props) => (
   <Mjml>
@@ -45,14 +48,14 @@ export const MagicLinkEmail = ({ url }: Props) => (
       </MjmlSection>
     </MjmlBody>
   </Mjml>
-)
+);
 
 export const sendMagicLinkEmail = ({
   to,
   ...props
-}: Pick<SendMailOptions, 'to'> & ComponentProps<typeof MagicLinkEmail>) =>
+}: Pick<SendMailOptions, "to"> & ComponentProps<typeof MagicLinkEmail>) =>
   sendEmail({
     to,
-    subject: 'Sign in to Typebot',
+    subject: "Sign in to Typebot",
     html: render(<MagicLinkEmail {...props} />).html,
-  })
+  });

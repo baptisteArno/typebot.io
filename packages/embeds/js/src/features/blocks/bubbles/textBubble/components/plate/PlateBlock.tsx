@@ -1,13 +1,13 @@
-import type { TElement, TText, TDescendant } from '@udecode/plate-common'
-import { PlateText, PlateTextProps } from './PlateText'
-import { For, JSXElement, Match, Switch } from 'solid-js'
-import { isDefined } from '@typebot.io/lib/utils'
+import { isDefined } from "@typebot.io/lib/utils";
+import type { TDescendant, TElement, TText } from "@typebot.io/rich-text/types";
+import { For, type JSXElement, Match, Switch } from "solid-js";
+import { PlateText, type PlateTextProps } from "./PlateText";
 
 type Props = {
-  element: TElement | TText
-  isUniqueChild?: boolean
-  insideInlineVariable?: boolean
-}
+  element: TElement | TText;
+  isUniqueChild?: boolean;
+  insideInlineVariable?: boolean;
+};
 
 export const PlateElement = (props: Props) => (
   <Switch>
@@ -19,7 +19,7 @@ export const PlateElement = (props: Props) => (
     </Match>
     <Match when={true}>
       <Switch>
-        <Match when={props.element.type === 'a'}>
+        <Match when={props.element.type === "a"}>
           <a
             href={props.element.url as string}
             target="_blank"
@@ -37,7 +37,7 @@ export const PlateElement = (props: Props) => (
             </For>
           </a>
         </Match>
-        <Match when={props.element.type === 'ol'}>
+        <Match when={props.element.type === "ol"}>
           <ol>
             <For each={props.element.children as TDescendant[]}>
               {(child) => (
@@ -51,7 +51,7 @@ export const PlateElement = (props: Props) => (
             </For>
           </ol>
         </Match>
-        <Match when={props.element.type === 'ul'}>
+        <Match when={props.element.type === "ul"}>
           <ul>
             <For each={props.element.children as TDescendant[]}>
               {(child) => (
@@ -65,7 +65,7 @@ export const PlateElement = (props: Props) => (
             </For>
           </ul>
         </Match>
-        <Match when={props.element.type === 'li'}>
+        <Match when={props.element.type === "li"}>
           <li>
             <For each={props.element.children as TDescendant[]}>
               {(child) => (
@@ -92,7 +92,7 @@ export const PlateElement = (props: Props) => (
                     (props.element.children as TDescendant[])?.length === 1
                   }
                   insideInlineVariable={
-                    props.element.type === 'inline-variable'
+                    props.element.type === "inline-variable"
                   }
                 />
               )}
@@ -102,20 +102,20 @@ export const PlateElement = (props: Props) => (
       </Switch>
     </Match>
   </Switch>
-)
+);
 
 type ElementRootProps = {
-  element: TElement
-  children: JSXElement
-  insideInlineVariable?: boolean
-}
+  element: TElement;
+  children: JSXElement;
+  insideInlineVariable?: boolean;
+};
 
 const ElementRoot = (props: ElementRootProps) => {
   return (
     <Switch>
       <Match
         when={
-          props.element.type === 'inline-variable' || props.insideInlineVariable
+          props.element.type === "inline-variable" || props.insideInlineVariable
         }
       >
         <span data-element-type={props.element.type}>{props.children}</span>
@@ -124,5 +124,5 @@ const ElementRoot = (props: ElementRootProps) => {
         <div data-element-type={props.element.type}>{props.children}</div>
       </Match>
     </Switch>
-  )
-}
+  );
+};

@@ -1,19 +1,19 @@
-import { DashboardPage } from '@/features/dashboard/components/DashboardPage'
-import { GetServerSidePropsContext } from 'next'
+import { DashboardPage } from "@/features/dashboard/components/DashboardPage";
+import type { GetServerSidePropsContext } from "next";
 
 export default function Page() {
-  return <DashboardPage />
+  return <DashboardPage />;
 }
 
 export const getServerSideProps = async (
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
 ) => {
-  const callbackUrl = context.query.callbackUrl?.toString()
+  const callbackUrl = context.query.callbackUrl?.toString();
   const redirectPath =
     context.query.redirectPath?.toString() ??
     (callbackUrl
-      ? new URL(callbackUrl).searchParams.get('redirectPath')
-      : undefined)
+      ? new URL(callbackUrl).searchParams.get("redirectPath")
+      : undefined);
   return redirectPath
     ? {
         redirect: {
@@ -21,5 +21,5 @@ export const getServerSideProps = async (
           destination: redirectPath,
         },
       }
-    : { props: {} }
-}
+    : { props: {} };
+};

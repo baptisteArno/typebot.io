@@ -1,14 +1,14 @@
+import { MoreVerticalIcon } from "@/components/icons";
 import {
-  ButtonProps,
+  type ButtonProps,
   IconButton,
   Menu,
   MenuButton,
   MenuList,
-} from '@chakra-ui/react'
-import { MoreVerticalIcon } from '@/components/icons'
-import { ReactNode } from 'react'
+} from "@chakra-ui/react";
+import type { ReactNode } from "react";
 
-type Props = { children: ReactNode } & ButtonProps
+type Props = { children: ReactNode } & ButtonProps;
 
 export const MoreButton = ({ children, ...props }: Props) => {
   return (
@@ -25,5 +25,5 @@ export const MoreButton = ({ children, ...props }: Props) => {
       />
       <MenuList>{children}</MenuList>
     </Menu>
-  )
-}
+  );
+};

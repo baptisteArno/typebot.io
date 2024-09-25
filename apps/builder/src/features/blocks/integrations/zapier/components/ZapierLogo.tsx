@@ -1,4 +1,4 @@
-import { Icon, IconProps } from '@chakra-ui/react'
+import { Icon, type IconProps } from "@chakra-ui/react";
 
 export const ZapierLogo = (props: IconProps) => (
   <Icon
@@ -12,4 +12,4 @@ export const ZapierLogo = (props: IconProps) => (
       fill="#FF4A00"
     />
   </Icon>
-)
+);

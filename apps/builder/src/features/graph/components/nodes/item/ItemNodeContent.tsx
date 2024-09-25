@@ -1,23 +1,21 @@
-import { ButtonsItemNode } from '@/features/blocks/inputs/buttons/components/ButtonsItemNode'
-import { PictureChoiceItemNode } from '@/features/blocks/inputs/pictureChoice/components/PictureChoiceItemNode'
-import { ConditionItemNode } from '@/features/blocks/logic/condition/components/ConditionItemNode'
-import {
-  BlockWithItems,
-  ButtonItem,
-  ConditionItem,
-  Item,
-  ItemIndices,
-} from '@typebot.io/schemas'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
-import React from 'react'
+import { ButtonsItemNode } from "@/features/blocks/inputs/buttons/components/ButtonsItemNode";
+import { PictureChoiceItemNode } from "@/features/blocks/inputs/pictureChoice/components/PictureChoiceItemNode";
+import { ConditionItemNode } from "@/features/blocks/logic/condition/components/ConditionItemNode";
+import type { Item } from "@typebot.io/blocks-core/schemas/items/schema";
+import type { ItemIndices } from "@typebot.io/blocks-core/schemas/items/types";
+import type { BlockWithItems } from "@typebot.io/blocks-core/schemas/schema";
+import type { ButtonItem } from "@typebot.io/blocks-inputs/choice/schema";
+import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
+import type { ConditionItem } from "@typebot.io/blocks-logic/condition/schema";
+import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import React from "react";
 
 type Props = {
-  item: Item
-  blockType: BlockWithItems['type']
-  indices: ItemIndices
-  isMouseOver: boolean
-}
+  item: Item;
+  blockType: BlockWithItems["type"];
+  indices: ItemIndices;
+  isMouseOver: boolean;
+};
 
 export const ItemNodeContent = ({
   item,
@@ -34,7 +32,7 @@ export const ItemNodeContent = ({
           isMouseOver={isMouseOver}
           indices={indices}
         />
-      )
+      );
     case InputBlockType.PICTURE_CHOICE:
       return (
         <PictureChoiceItemNode
@@ -42,7 +40,7 @@ export const ItemNodeContent = ({
           isMouseOver={isMouseOver}
           indices={indices}
         />
-      )
+      );
     case LogicBlockType.CONDITION:
       return (
         <ConditionItemNode
@@ -50,8 +48,8 @@ export const ItemNodeContent = ({
           isMouseOver={isMouseOver}
           indices={indices}
         />
-      )
+      );
     case LogicBlockType.AB_TEST:
-      return <></>
+      return <></>;
   }
-}
+};

@@ -1,43 +1,43 @@
 import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverHeader,
-  Center,
-  PopoverBody,
-  SimpleGrid,
-  Input,
-  Button,
-  Stack,
-  ButtonProps,
   Box,
-} from '@chakra-ui/react'
-import { useTranslate } from '@tolgee/react'
-import React, { useState } from 'react'
-import tinyColor from 'tinycolor2'
-import { useDebouncedCallback } from 'use-debounce'
+  Button,
+  type ButtonProps,
+  Center,
+  Input,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
+  SimpleGrid,
+  Stack,
+} from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import React, { useState } from "react";
+import tinyColor from "tinycolor2";
+import { useDebouncedCallback } from "use-debounce";
 
 const colorsSelection: `#${string}`[] = [
-  '#666460',
-  '#FFFFFF',
-  '#A87964',
-  '#D09C46',
-  '#DE8031',
-  '#598E71',
-  '#4A8BB2',
-  '#9B74B7',
-  '#C75F96',
-  '#0042DA',
-]
+  "#666460",
+  "#FFFFFF",
+  "#A87964",
+  "#D09C46",
+  "#DE8031",
+  "#598E71",
+  "#4A8BB2",
+  "#9B74B7",
+  "#C75F96",
+  "#0042DA",
+];
 
 type Props = {
-  value?: string
-  defaultValue?: string
-  isDisabled?: boolean
-  onColorChange: (color: string) => void
-}
+  value?: string;
+  defaultValue?: string;
+  isDisabled?: boolean;
+  onColorChange: (color: string) => void;
+};
 
 export const ColorPicker = ({
   value,
@@ -45,25 +45,25 @@ export const ColorPicker = ({
   isDisabled,
   onColorChange,
 }: Props) => {
-  const { t } = useTranslate()
-  const [color, setColor] = useState(defaultValue ?? '')
-  const displayedValue = value ?? color
+  const { t } = useTranslate();
+  const [color, setColor] = useState(defaultValue ?? "");
+  const displayedValue = value ?? color;
 
   const handleColorChange = (color: string) => {
-    setColor(color)
-    onColorChange(color)
-  }
+    setColor(color);
+    onColorChange(color);
+  };
 
   const handleClick = (color: string) => () => {
-    setColor(color)
-    onColorChange(color)
-  }
+    setColor(color);
+    onColorChange(color);
+  };
 
   return (
     <Popover variant="picker" placement="right" isLazy>
       <PopoverTrigger>
         <Button
-          aria-label={t('colorPicker.pickColor.ariaLabel')}
+          aria-label={t("colorPicker.pickColor.ariaLabel")}
           height="22px"
           width="22px"
           padding={0}
@@ -82,7 +82,7 @@ export const ColorPicker = ({
           backgroundColor={displayedValue}
           borderTopLeftRadius={5}
           borderTopRightRadius={5}
-          color={tinyColor(displayedValue).isLight() ? 'gray.800' : 'white'}
+          color={tinyColor(displayedValue).isLight() ? "gray.800" : "white"}
         >
           <Center height="100%">{displayedValue}</Center>
         </PopoverHeader>
@@ -98,7 +98,7 @@ export const ColorPicker = ({
                 padding={0}
                 minWidth="unset"
                 borderRadius={3}
-                borderWidth={color === '#FFFFFF' ? 1 : undefined}
+                borderWidth={color === "#FFFFFF" ? 1 : undefined}
                 _hover={{ background: color }}
                 onClick={handleClick(color)}
               />
@@ -108,7 +108,7 @@ export const ColorPicker = ({
             borderRadius={3}
             marginTop={3}
             placeholder="#2a9d8f"
-            aria-label={t('colorPicker.colorValue.ariaLabel')}
+            aria-label={t("colorPicker.colorValue.ariaLabel")}
             size="sm"
             value={displayedValue}
             onChange={(e) => handleColorChange(e.target.value)}
@@ -118,25 +118,25 @@ export const ColorPicker = ({
             color={displayedValue}
             onColorChange={handleColorChange}
           >
-            {t('colorPicker.advancedColors')}
+            {t("colorPicker.advancedColors")}
           </NativeColorPicker>
         </PopoverBody>
       </PopoverContent>
     </Popover>
-  )
-}
+  );
+};
 
 const NativeColorPicker = ({
   color,
   onColorChange,
   ...props
 }: {
-  color: string
-  onColorChange: (color: string) => void
+  color: string;
+  onColorChange: (color: string) => void;
 } & ButtonProps) => {
   const debouncedOnColorChange = useDebouncedCallback((color: string) => {
-    onColorChange(color)
-  }, 200)
+    onColorChange(color);
+  }, 200);
 
   return (
     <>
@@ -151,5 +151,5 @@ const NativeColorPicker = ({
         onChange={(e) => debouncedOnColorChange(e.target.value)}
       />
     </>
-  )
-}
+  );
+};

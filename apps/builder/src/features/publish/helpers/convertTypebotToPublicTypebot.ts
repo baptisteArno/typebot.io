@@ -1,8 +1,9 @@
-import { createId } from '@paralleldrive/cuid2'
-import { PublicTypebot, TypebotV6 } from '@typebot.io/schemas'
+import { createId } from "@paralleldrive/cuid2";
+import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
+import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 
 export const convertTypebotToPublicTypebot = (
-  typebot: TypebotV6
+  typebot: TypebotV6,
 ): PublicTypebot => ({
   id: createId(),
   version: typebot.version,
@@ -15,4 +16,4 @@ export const convertTypebotToPublicTypebot = (
   variables: typebot.variables,
   createdAt: new Date(),
   updatedAt: new Date(),
-})
+});

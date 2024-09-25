@@ -1,10 +1,10 @@
-import { DropdownList } from '@/components/DropdownList'
-import { TextInput } from '@/components/inputs'
-import { TableListItemProps } from '@/components/TableList'
-import { Stack } from '@chakra-ui/react'
-import { RowsFilterComparison } from '@typebot.io/schemas'
-import { ComparisonOperators } from '@typebot.io/schemas/features/blocks/logic/condition/constants'
-import React from 'react'
+import { DropdownList } from "@/components/DropdownList";
+import type { TableListItemProps } from "@/components/TableList";
+import { TextInput } from "@/components/inputs";
+import { Stack } from "@chakra-ui/react";
+import type { RowsFilterComparison } from "@typebot.io/blocks-integrations/googleSheets/schema";
+import { ComparisonOperators } from "@typebot.io/conditions/constants";
+import React from "react";
 
 export const RowsFilterComparisonItem = ({
   item,
@@ -12,21 +12,21 @@ export const RowsFilterComparisonItem = ({
   onItemChange,
 }: TableListItemProps<RowsFilterComparison> & { columns: string[] }) => {
   const handleColumnSelect = (column: string) => {
-    if (column === item.column) return
-    onItemChange({ ...item, column })
-  }
+    if (column === item.column) return;
+    onItemChange({ ...item, column });
+  };
 
   const handleSelectComparisonOperator = (
-    comparisonOperator: ComparisonOperators
+    comparisonOperator: ComparisonOperators,
   ) => {
-    if (comparisonOperator === item.comparisonOperator) return
-    onItemChange({ ...item, comparisonOperator })
-  }
+    if (comparisonOperator === item.comparisonOperator) return;
+    onItemChange({ ...item, comparisonOperator });
+  };
 
   const handleChangeValue = (value: string) => {
-    if (value === item.value) return
-    onItemChange({ ...item, value })
-  }
+    if (value === item.value) return;
+    onItemChange({ ...item, value });
+  };
 
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
@@ -45,11 +45,11 @@ export const RowsFilterComparisonItem = ({
       {item.comparisonOperator !== ComparisonOperators.IS_SET &&
         item.comparisonOperator !== ComparisonOperators.IS_EMPTY && (
           <TextInput
-            defaultValue={item.value ?? ''}
+            defaultValue={item.value ?? ""}
             onChange={handleChangeValue}
             placeholder="Type a value..."
           />
         )}
     </Stack>
-  )
-}
+  );
+};

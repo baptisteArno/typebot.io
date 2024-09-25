@@ -1,31 +1,31 @@
-import { Stack, HStack, Avatar, Text, Tooltip } from '@chakra-ui/react'
-import { UploadIcon } from '@/components/icons'
-import React, { useState } from 'react'
-import { ApiTokensList } from './ApiTokensList'
-import { UploadButton } from '@/components/ImageUploadContent/UploadButton'
-import { useUser } from '../hooks/useUser'
-import { TextInput } from '@/components/inputs/TextInput'
-import { useTranslate } from '@tolgee/react'
+import { UploadButton } from "@/components/ImageUploadContent/UploadButton";
+import { UploadIcon } from "@/components/icons";
+import { TextInput } from "@/components/inputs/TextInput";
+import { Avatar, HStack, Stack, Text, Tooltip } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import React, { useState } from "react";
+import { useUser } from "../hooks/useUser";
+import { ApiTokensList } from "./ApiTokensList";
 
 export const MyAccountForm = () => {
-  const { t } = useTranslate()
-  const { user, updateUser } = useUser()
-  const [name, setName] = useState(user?.name ?? '')
-  const [email, setEmail] = useState(user?.email ?? '')
+  const { t } = useTranslate();
+  const { user, updateUser } = useUser();
+  const [name, setName] = useState(user?.name ?? "");
+  const [email, setEmail] = useState(user?.email ?? "");
 
   const handleFileUploaded = async (url: string) => {
-    updateUser({ image: url })
-  }
+    updateUser({ image: url });
+  };
 
   const handleNameChange = (newName: string) => {
-    setName(newName)
-    updateUser({ name: newName })
-  }
+    setName(newName);
+    updateUser({ name: newName });
+  };
 
   const handleEmailChange = (newEmail: string) => {
-    setEmail(newEmail)
-    updateUser({ email: newEmail })
-  }
+    setEmail(newEmail);
+    updateUser({ email: newEmail });
+  };
 
   return (
     <Stack spacing="6" w="full" overflowY="auto">
@@ -42,16 +42,16 @@ export const MyAccountForm = () => {
               fileType="image"
               filePathProps={{
                 userId: user.id,
-                fileName: 'avatar',
+                fileName: "avatar",
               }}
               leftIcon={<UploadIcon />}
               onFileUploaded={handleFileUploaded}
             >
-              {t('account.myAccount.changePhotoButton.label')}
+              {t("account.myAccount.changePhotoButton.label")}
             </UploadButton>
           )}
           <Text color="gray.500" fontSize="sm">
-            {t('account.myAccount.changePhotoButton.specification')}
+            {t("account.myAccount.changePhotoButton.specification")}
           </Text>
         </Stack>
       </HStack>
@@ -59,17 +59,17 @@ export const MyAccountForm = () => {
       <TextInput
         defaultValue={name}
         onChange={handleNameChange}
-        label={t('account.myAccount.nameInput.label')}
+        label={t("account.myAccount.nameInput.label")}
         withVariableButton={false}
         debounceTimeout={0}
       />
-      <Tooltip label={t('account.myAccount.emailInput.disabledTooltip')}>
+      <Tooltip label={t("account.myAccount.emailInput.disabledTooltip")}>
         <span>
           <TextInput
             type="email"
             defaultValue={email}
             onChange={handleEmailChange}
-            label={t('account.myAccount.emailInput.label')}
+            label={t("account.myAccount.emailInput.label")}
             withVariableButton={false}
             debounceTimeout={0}
             isDisabled
@@ -79,5 +79,5 @@ export const MyAccountForm = () => {
 
       {user && <ApiTokensList user={user} />}
     </Stack>
-  )
-}
+  );
+};

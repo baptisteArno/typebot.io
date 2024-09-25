@@ -1,7 +1,7 @@
-import { executePrismaCommand } from './executeCommand'
+import { executePrismaCommand } from "./executeCommand";
 
-const commandToExecute = process.argv.pop()
+const commandToExecute = process.argv.pop();
 
-if (!commandToExecute) process.exit(1)
+if (!commandToExecute) process.exit(1);
 
-executePrismaCommand(commandToExecute, { force: true })
+executePrismaCommand(commandToExecute, { force: true });

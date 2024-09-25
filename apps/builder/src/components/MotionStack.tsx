@@ -1,12 +1,12 @@
-import { forwardRef, Stack, StackProps } from '@chakra-ui/react'
-import { motion, MotionProps, isValidMotionProp } from 'framer-motion'
+import { Stack, type StackProps, forwardRef } from "@chakra-ui/react";
+import { type MotionProps, isValidMotionProp, motion } from "framer-motion";
 
 export const MotionStack = motion(
-  forwardRef<MotionProps & StackProps, 'div'>((props, ref) => {
+  forwardRef<MotionProps & StackProps, "div">((props, ref) => {
     const chakraProps = Object.fromEntries(
-      Object.entries(props).filter(([key]) => !isValidMotionProp(key))
-    )
+      Object.entries(props).filter(([key]) => !isValidMotionProp(key)),
+    );
 
-    return <Stack ref={ref} {...chakraProps} />
-  })
-)
+    return <Stack ref={ref} {...chakraProps} />;
+  }),
+);

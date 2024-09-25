@@ -1,3 +1,5 @@
+import { TextInput } from "@/components/inputs";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import {
   Accordion,
   AccordionButton,
@@ -5,26 +7,24 @@ import {
   AccordionItem,
   AccordionPanel,
   Stack,
-} from '@chakra-ui/react'
-import React from 'react'
-import { TextInput } from '@/components/inputs'
-import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
-import { WaitBlock } from '@typebot.io/schemas'
-import { defaultWaitOptions } from '@typebot.io/schemas/features/blocks/logic/wait/constants'
+} from "@chakra-ui/react";
+import { defaultWaitOptions } from "@typebot.io/blocks-logic/wait/constants";
+import type { WaitBlock } from "@typebot.io/blocks-logic/wait/schema";
+import React from "react";
 
 type Props = {
-  options: WaitBlock['options']
-  onOptionsChange: (options: WaitBlock['options']) => void
-}
+  options: WaitBlock["options"];
+  onOptionsChange: (options: WaitBlock["options"]) => void;
+};
 
 export const WaitSettings = ({ options, onOptionsChange }: Props) => {
   const handleSecondsChange = (secondsToWaitFor: string | undefined) => {
-    onOptionsChange({ ...options, secondsToWaitFor })
-  }
+    onOptionsChange({ ...options, secondsToWaitFor });
+  };
 
   const updateShouldPause = (shouldPause: boolean) => {
-    onOptionsChange({ ...options, shouldPause })
-  }
+    onOptionsChange({ ...options, shouldPause });
+  };
 
   return (
     <Stack spacing={4}>
@@ -52,5 +52,5 @@ export const WaitSettings = ({ options, onOptionsChange }: Props) => {
         </AccordionItem>
       </Accordion>
     </Stack>
-  )
-}
+  );
+};

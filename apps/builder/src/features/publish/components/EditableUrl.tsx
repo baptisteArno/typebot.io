@@ -1,24 +1,24 @@
+import { CopyButton } from "@/components/CopyButton";
+import { EditIcon } from "@/components/icons";
 import {
-  HStack,
-  Tooltip,
-  EditablePreview,
-  EditableInput,
-  Text,
-  Editable,
   Button,
-  ButtonProps,
+  type ButtonProps,
+  Editable,
+  EditableInput,
+  EditablePreview,
+  HStack,
+  Text,
+  Tooltip,
   useEditableControls,
-} from '@chakra-ui/react'
-import { EditIcon } from '@/components/icons'
-import { CopyButton } from '@/components/CopyButton'
-import React, { useState } from 'react'
+} from "@chakra-ui/react";
+import React, { useState } from "react";
 
 type EditableUrlProps = {
-  hostname: string
-  pathname?: string
-  isValid: (newPathname: string) => Promise<boolean> | boolean
-  onPathnameChange: (pathname: string) => void
-}
+  hostname: string;
+  pathname?: string;
+  isValid: (newPathname: string) => Promise<boolean> | boolean;
+  onPathnameChange: (pathname: string) => void;
+};
 
 export const EditableUrl = ({
   hostname,
@@ -26,13 +26,13 @@ export const EditableUrl = ({
   isValid,
   onPathnameChange,
 }: EditableUrlProps) => {
-  const [value, setValue] = useState(pathname)
+  const [value, setValue] = useState(pathname);
 
   const handleSubmit = async (newPathname: string) => {
-    if (newPathname === pathname) return
-    if (await isValid(newPathname)) return onPathnameChange(newPathname)
-    setValue(pathname)
-  }
+    if (newPathname === pathname) return;
+    if (await isValid(newPathname)) return onPathnameChange(newPathname);
+    setValue(pathname);
+  };
 
   return (
     <Editable
@@ -60,18 +60,18 @@ export const EditableUrl = ({
 
       <HStack>
         <EditButton size="xs" />
-        <CopyButton size="xs" textToCopy={`${hostname}/${value ?? ''}`} />
+        <CopyButton size="xs" textToCopy={`${hostname}/${value ?? ""}`} />
       </HStack>
     </Editable>
-  )
-}
+  );
+};
 
 const EditButton = (props: ButtonProps) => {
-  const { isEditing, getEditButtonProps } = useEditableControls()
+  const { isEditing, getEditButtonProps } = useEditableControls();
 
   return isEditing ? null : (
     <Button leftIcon={<EditIcon />} {...props} {...getEditButtonProps()}>
       Edit
     </Button>
-  )
-}
+  );
+};

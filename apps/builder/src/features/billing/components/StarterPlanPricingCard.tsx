@@ -1,25 +1,25 @@
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import {
-  Stack,
-  Heading,
-  chakra,
-  HStack,
   Button,
+  HStack,
+  Heading,
+  Stack,
   Text,
+  chakra,
   useColorModeValue,
-} from '@chakra-ui/react'
-import { Plan } from '@typebot.io/prisma'
-import { FeaturesList } from './FeaturesList'
-import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
-import { formatPrice } from '@typebot.io/billing/helpers/formatPrice'
-import { prices } from '@typebot.io/billing/constants'
-import { T, useTranslate } from '@tolgee/react'
+} from "@chakra-ui/react";
+import { T, useTranslate } from "@tolgee/react";
+import { prices } from "@typebot.io/billing/constants";
+import { formatPrice } from "@typebot.io/billing/helpers/formatPrice";
+import { Plan } from "@typebot.io/prisma/enum";
+import { FeaturesList } from "./FeaturesList";
 
 type Props = {
-  currentPlan: Plan
-  currency?: 'eur' | 'usd'
-  isLoading?: boolean
-  onPayClick: () => void
-}
+  currentPlan: Plan;
+  currency?: "eur" | "usd";
+  isLoading?: boolean;
+  onPayClick: () => void;
+};
 
 export const StarterPlanPricingCard = ({
   currentPlan,
@@ -27,14 +27,14 @@ export const StarterPlanPricingCard = ({
   currency,
   onPayClick,
 }: Props) => {
-  const { t } = useTranslate()
+  const { t } = useTranslate();
 
   const getButtonLabel = () => {
-    if (currentPlan === Plan.PRO) return t('downgrade')
+    if (currentPlan === Plan.PRO) return t("downgrade");
     if (currentPlan === Plan.STARTER)
-      return t('billing.pricingCard.upgradeButton.current')
-    return t('upgrade')
-  }
+      return t("billing.pricingCard.upgradeButton.current");
+    return t("upgrade");
+  };
 
   return (
     <Stack
@@ -58,37 +58,37 @@ export const StarterPlanPricingCard = ({
                 }}
               />
             </Heading>
-            <Text>{t('billing.pricingCard.starter.description')}</Text>
+            <Text>{t("billing.pricingCard.starter.description")}</Text>
           </Stack>
           <Heading>
             {formatPrice(prices.STARTER, { currency })}
             <chakra.span fontSize="md">
-              {t('billing.pricingCard.perMonth')}
+              {t("billing.pricingCard.perMonth")}
             </chakra.span>
           </Heading>
         </Stack>
 
         <FeaturesList
           features={[
-            t('billing.pricingCard.starter.includedSeats'),
+            t("billing.pricingCard.starter.includedSeats"),
             <Stack key="starter-chats" spacing={0}>
               <HStack>
-                <Text>2,000 {t('billing.pricingCard.chatsPerMonth')}</Text>
+                <Text>2,000 {t("billing.pricingCard.chatsPerMonth")}</Text>
                 <MoreInfoTooltip>
-                  {t('billing.pricingCard.chatsTooltip')}
+                  {t("billing.pricingCard.chatsTooltip")}
                 </MoreInfoTooltip>
               </HStack>
               <Text
                 fontSize="sm"
-                color={useColorModeValue('gray.500', 'gray.400')}
+                color={useColorModeValue("gray.500", "gray.400")}
               >
                 Extra chats: $10 per 500
               </Text>
             </Stack>,
-            t('billing.pricingCard.starter.brandingRemoved'),
-            t('billing.pricingCard.starter.fileUploadBlock'),
-            t('billing.pricingCard.starter.createFolders'),
-            'Direct priority support',
+            t("billing.pricingCard.starter.brandingRemoved"),
+            t("billing.pricingCard.starter.fileUploadBlock"),
+            t("billing.pricingCard.starter.createFolders"),
+            "Direct priority support",
           ]}
         />
       </Stack>
@@ -102,5 +102,5 @@ export const StarterPlanPricingCard = ({
         {getButtonLabel()}
       </Button>
     </Stack>
-  )
-}
+  );
+};

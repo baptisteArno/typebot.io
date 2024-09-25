@@ -1,1 +1,1 @@
-export { ChatGroup } from './ChatGroup'
+export { ChatGroup } from "./ChatGroup";

@@ -1,15 +1,16 @@
-import { useToast } from '@/hooks/useToast'
-import { Button, ButtonProps, chakra } from '@chakra-ui/react'
-import { ChangeEvent, useState } from 'react'
-import { FilePathUploadProps } from '@/features/upload/api/generateUploadUrl'
-import { trpc } from '@/lib/trpc'
-import { compressFile } from '@/helpers/compressFile'
+import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
+import { compressFile } from "@/helpers/compressFile";
+import { useToast } from "@/hooks/useToast";
+import { trpc } from "@/lib/trpc";
+import { Button, type ButtonProps, chakra } from "@chakra-ui/react";
+import type { ChangeEvent } from "react";
+import { useState } from "react";
 
 type UploadButtonProps = {
-  fileType: 'image' | 'audio'
-  filePathProps: FilePathUploadProps
-  onFileUploaded: (url: string) => void
-} & ButtonProps
+  fileType: "image" | "audio";
+  filePathProps: FilePathUploadProps;
+  onFileUploaded: (url: string) => void;
+} & ButtonProps;
 
 export const UploadButton = ({
   fileType,
@@ -17,47 +18,50 @@ export const UploadButton = ({
   onFileUploaded,
   ...props
 }: UploadButtonProps) => {
-  const [isUploading, setIsUploading] = useState(false)
-  const { showToast } = useToast()
-  const [file, setFile] = useState<File>()
+  const [isUploading, setIsUploading] = useState(false);
+  const { showToast } = useToast();
+  const [file, setFile] = useState<File>();
 
   const { mutate } = trpc.generateUploadUrl.useMutation({
     onSettled: () => {
-      setIsUploading(false)
+      setIsUploading(false);
     },
     onSuccess: async (data) => {
-      if (!file) return
-      const formData = new FormData()
+      if (!file) return;
+      const formData = new FormData();
       Object.entries(data.formData).forEach(([key, value]) => {
-        formData.append(key, value)
-      })
-      formData.append('file', file)
+        formData.append(key, value);
+      });
+      formData.append("file", file);
       const upload = await fetch(data.presignedUrl, {
-        method: 'POST',
+        method: "POST",
         body: formData,
-      })
+      });
 
       if (!upload.ok) {
-        showToast({ description: 'Error while trying to upload the file.' })
-        return
+        showToast({ description: "Error while trying to upload the file." });
+        return;
       }
 
-      onFileUploaded(data.fileUrl + '?v=' + Date.now())
+      onFileUploaded(data.fileUrl + "?v=" + Date.now());
     },
-  })
+  });
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target?.files) return
-    setIsUploading(true)
-    const file = e.target.files[0] as File | undefined
+    if (!e.target?.files) return;
+    setIsUploading(true);
+    const file = e.target.files[0] as File | undefined;
     if (!file)
-      return showToast({ description: 'Could not read file.', status: 'error' })
-    setFile(await compressFile(file))
+      return showToast({
+        description: "Could not read file.",
+        status: "error",
+      });
+    setFile(await compressFile(file));
     mutate({
       filePathProps,
       fileType: file.type,
-    })
-  }
+    });
+  };
 
   return (
     <>
@@ -67,7 +71,7 @@ export const UploadButton = ({
         id="file-input"
         display="none"
         onChange={handleInputChange}
-        accept={fileType === 'image' ? 'image/*' : 'audio/*'}
+        accept={fileType === "image" ? "image/*" : "audio/*"}
       />
       <Button
         as="label"
@@ -80,5 +84,5 @@ export const UploadButton = ({
         {props.children}
       </Button>
     </>
-  )
-}
+  );
+};

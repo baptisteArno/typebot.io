@@ -1,0 +1,16 @@
+{
+  "name": "@typebot.io/conditions",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "dependencies": {
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/variables": "workspace:*",
+    "@typebot.io/zod": "workspace:*"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
+  }
+}

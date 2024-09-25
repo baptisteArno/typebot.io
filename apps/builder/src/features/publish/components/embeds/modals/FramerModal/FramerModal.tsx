@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
-import { ModalProps } from '../../EmbedButton'
-import { EmbedModal } from '../../EmbedModal'
-import { isDefined } from '@udecode/plate-common'
-import { FramerInstructions } from './instructions/FramerInstructions'
+import { isDefined } from "@udecode/plate-common";
+import React, { useState } from "react";
+import type { ModalProps } from "../../EmbedButton";
+import { EmbedModal } from "../../EmbedModal";
+import { FramerInstructions } from "./instructions/FramerInstructions";
 
 export const FramerModal = ({ isOpen, onClose, isPublished }: ModalProps) => {
   const [selectedEmbedType, setSelectedEmbedType] = useState<
-    'standard' | 'popup' | 'bubble' | undefined
-  >()
+    "standard" | "popup" | "bubble" | undefined
+  >();
 
   return (
     <EmbedModal
@@ -22,5 +22,5 @@ export const FramerModal = ({ isOpen, onClose, isPublished }: ModalProps) => {
         <FramerInstructions type={selectedEmbedType} />
       )}
     </EmbedModal>
-  )
-}
+  );
+};

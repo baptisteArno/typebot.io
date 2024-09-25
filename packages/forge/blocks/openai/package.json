@@ -1,24 +1,25 @@
 {
   "name": "@typebot.io/openai-block",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.ts",
-  "keywords": [],
-  "author": "Baptiste Arnaud",
-  "license": "AGPL-3.0-or-later",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schemas": "./src/schemas.ts",
+    "./shared/*": "./src/shared/*.ts"
+  },
   "dependencies": {
     "@ai-sdk/openai": "0.0.36",
     "@typebot.io/ai": "workspace:*",
     "ai": "3.3.15",
-    "openai": "4.52.7"
+    "openai": "4.52.7",
+    "@typebot.io/forge": "workspace:*",
+    "@typebot.io/zod": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/variables": "workspace:*",
+    "ky": "1.2.4"
   },
   "devDependencies": {
-    "@typebot.io/forge": "workspace:*",
-    "@typebot.io/lib": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
-    "@typebot.io/variables": "workspace:*",
-    "@types/react": "18.2.15",
-    "ky": "1.2.4",
-    "typescript": "5.4.5"
+    "@typebot.io/tsconfig": "workspace:*"
   }
 }

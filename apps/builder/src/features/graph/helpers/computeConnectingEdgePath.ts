@@ -1,8 +1,8 @@
-import { computeEdgePath } from './computeEdgePath'
+import { computeEdgePath } from "./computeEdgePath";
 import {
+  type GetAnchorsPositionProps,
   getAnchorsPosition,
-  GetAnchorsPositionProps,
-} from './getAnchorsPosition'
+} from "./getAnchorsPosition";
 
 export const computeConnectingEdgePath = ({
   sourceGroupCoordinates,
@@ -19,6 +19,6 @@ export const computeConnectingEdgePath = ({
     sourceTop,
     targetTop,
     graphScale,
-  })
-  return computeEdgePath(anchorsPosition)
-}
+  });
+  return computeEdgePath(anchorsPosition);
+};

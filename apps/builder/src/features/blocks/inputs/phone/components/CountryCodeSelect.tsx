@@ -1,21 +1,21 @@
-import { Select } from '@chakra-ui/react'
-import { useTranslate } from '@tolgee/react'
-import React, { ChangeEvent } from 'react'
+import { Select } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import React, { type ChangeEvent } from "react";
 
 type Props = {
-  countryCode?: string
-  onSelect: (countryCode: string) => void
-}
+  countryCode?: string;
+  onSelect: (countryCode: string) => void;
+};
 
 export const CountryCodeSelect = ({ countryCode, onSelect }: Props) => {
-  const { t } = useTranslate()
+  const { t } = useTranslate();
   const handleOnChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    onSelect(e.target.value)
-  }
+    onSelect(e.target.value);
+  };
   return (
     <Select
       placeholder={t(
-        'blocks.inputs.phone.settings.international.placeholder.label'
+        "blocks.inputs.phone.settings.international.placeholder.label",
       )}
       value={countryCode}
       onChange={handleOnChange}
@@ -236,5 +236,5 @@ export const CountryCodeSelect = ({ countryCode, onSelect }: Props) => {
       <option value="ZM">Zambia (+260)</option>
       <option value="ZW">Zimbabwe (+263)</option>
     </Select>
-  )
-}
+  );
+};

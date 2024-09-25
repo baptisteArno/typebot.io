@@ -1,49 +1,49 @@
+import { AlertIcon } from "@/components/icons";
+import type { WorkspaceInApp } from "@/features/workspace/WorkspaceProvider";
+import { defaultQueryOptions, trpc } from "@/lib/trpc";
 import {
-  Stack,
   Flex,
+  HStack,
   Heading,
   Progress,
-  Text,
   Skeleton,
-  HStack,
+  Stack,
+  Text,
   Tooltip,
-} from '@chakra-ui/react'
-import { AlertIcon } from '@/components/icons'
-import { WorkspaceInApp } from '@/features/workspace/WorkspaceProvider'
-import { parseNumberWithCommas } from '@typebot.io/lib'
-import { defaultQueryOptions, trpc } from '@/lib/trpc'
-import { getChatsLimit } from '@typebot.io/billing/helpers/getChatsLimit'
-import { useTranslate } from '@tolgee/react'
+} from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import { getChatsLimit } from "@typebot.io/billing/helpers/getChatsLimit";
+import { parseNumberWithCommas } from "@typebot.io/lib/utils";
 
 type Props = {
-  workspace: WorkspaceInApp
-}
+  workspace: WorkspaceInApp;
+};
 
 export const UsageProgressBars = ({ workspace }: Props) => {
-  const { t } = useTranslate()
+  const { t } = useTranslate();
   const { data, isLoading } = trpc.billing.getUsage.useQuery(
     {
       workspaceId: workspace.id,
     },
-    defaultQueryOptions
-  )
-  const totalChatsUsed = data?.totalChatsUsed ?? 0
+    defaultQueryOptions,
+  );
+  const totalChatsUsed = data?.totalChatsUsed ?? 0;
 
-  const workspaceChatsLimit = getChatsLimit(workspace)
+  const workspaceChatsLimit = getChatsLimit(workspace);
 
   const chatsPercentage =
-    workspaceChatsLimit === 'inf'
+    workspaceChatsLimit === "inf"
       ? 0
-      : Math.round((totalChatsUsed / workspaceChatsLimit) * 100)
+      : Math.round((totalChatsUsed / workspaceChatsLimit) * 100);
 
   return (
     <Stack spacing={6}>
-      <Heading fontSize="3xl">{t('billing.usage.heading')}</Heading>
+      <Heading fontSize="3xl">{t("billing.usage.heading")}</Heading>
       <Stack spacing={3}>
         <Flex justifyContent="space-between">
           <HStack>
             <Heading fontSize="xl" as="h3">
-              {t('billing.usage.chats.heading')}
+              {t("billing.usage.chats.heading")}
             </Heading>
             {chatsPercentage >= 80 && (
               <Tooltip
@@ -52,10 +52,10 @@ export const UsageProgressBars = ({ workspace }: Props) => {
                 p="3"
                 label={
                   <Text>
-                    {t('billing.usage.chats.alert.soonReach')}
+                    {t("billing.usage.chats.alert.soonReach")}
                     <br />
                     <br />
-                    {t('billing.usage.chats.alert.updatePlan')}
+                    {t("billing.usage.chats.alert.updatePlan")}
                   </Text>
                 }
               >
@@ -73,14 +73,14 @@ export const UsageProgressBars = ({ workspace }: Props) => {
             <Skeleton
               fontWeight="bold"
               isLoaded={!isLoading}
-              h={isLoading ? '5px' : 'auto'}
+              h={isLoading ? "5px" : "auto"}
             >
               {parseNumberWithCommas(totalChatsUsed)}
             </Skeleton>
             <Text>
-              /{' '}
-              {workspaceChatsLimit === 'inf'
-                ? t('billing.usage.unlimited')
+              /{" "}
+              {workspaceChatsLimit === "inf"
+                ? t("billing.usage.unlimited")
                 : parseNumberWithCommas(workspaceChatsLimit)}
             </Text>
           </HStack>
@@ -91,9 +91,9 @@ export const UsageProgressBars = ({ workspace }: Props) => {
           value={chatsPercentage}
           rounded="full"
           isIndeterminate={isLoading}
-          colorScheme={'blue'}
+          colorScheme={"blue"}
         />
       </Stack>
     </Stack>
-  )
-}
+  );
+};

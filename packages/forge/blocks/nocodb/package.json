@@ -1,18 +1,18 @@
 {
   "name": "@typebot.io/nocodb-block",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.ts",
-  "keywords": [],
-  "license": "AGPL-3.0-or-later",
-  "devDependencies": {
-    "@typebot.io/forge": "workspace:*",
-    "@typebot.io/lib": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
-    "@types/react": "18.2.15",
-    "typescript": "5.4.5"
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schemas": "./src/schemas.ts"
   },
   "dependencies": {
-    "ky": "1.2.4"
+    "ky": "1.2.4",
+    "@typebot.io/forge": "workspace:*",
+    "@typebot.io/lib": "workspace:*"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
   }
 }

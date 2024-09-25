@@ -1,23 +1,21 @@
+import type { ChangePlanModalProps } from "@/features/billing/components/ChangePlanModal";
+import { ChangePlanModal } from "@/features/billing/components/ChangePlanModal";
 import {
   Alert,
   AlertIcon,
-  AlertProps,
+  type AlertProps,
   Button,
   HStack,
   Text,
   useDisclosure,
-} from '@chakra-ui/react'
-import React from 'react'
-import {
-  ChangePlanModal,
-  ChangePlanModalProps,
-} from '@/features/billing/components/ChangePlanModal'
-import { useTranslate } from '@tolgee/react'
+} from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import React from "react";
 
 type Props = {
-  buttonLabel?: string
+  buttonLabel?: string;
 } & AlertProps &
-  Pick<ChangePlanModalProps, 'type' | 'excludedPlans'>
+  Pick<ChangePlanModalProps, "type" | "excludedPlans">;
 
 export const UnlockPlanAlertInfo = ({
   buttonLabel,
@@ -25,8 +23,8 @@ export const UnlockPlanAlertInfo = ({
   excludedPlans,
   ...props
 }: Props) => {
-  const { t } = useTranslate()
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { t } = useTranslate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Alert
       status="info"
@@ -40,12 +38,12 @@ export const UnlockPlanAlertInfo = ({
         <Text>{props.children}</Text>
       </HStack>
       <Button
-        colorScheme={props.status === 'warning' ? 'orange' : 'blue'}
+        colorScheme={props.status === "warning" ? "orange" : "blue"}
         onClick={onOpen}
         flexShrink={0}
         ml="2"
       >
-        {buttonLabel ?? t('billing.upgradeAlert.buttonDefaultLabel')}
+        {buttonLabel ?? t("billing.upgradeAlert.buttonDefaultLabel")}
       </Button>
       <ChangePlanModal
         isOpen={isOpen}
@@ -54,5 +52,5 @@ export const UnlockPlanAlertInfo = ({
         excludedPlans={excludedPlans}
       />
     </Alert>
-  )
-}
+  );
+};

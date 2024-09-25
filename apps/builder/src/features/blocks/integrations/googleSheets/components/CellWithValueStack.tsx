@@ -1,8 +1,8 @@
-import { Stack } from '@chakra-ui/react'
-import { DropdownList } from '@/components/DropdownList'
-import { Cell } from '@typebot.io/schemas'
-import { TableListItemProps } from '@/components/TableList'
-import { TextInput } from '@/components/inputs'
+import { DropdownList } from "@/components/DropdownList";
+import type { TableListItemProps } from "@/components/TableList";
+import { TextInput } from "@/components/inputs";
+import { Stack } from "@chakra-ui/react";
+import type { Cell } from "@typebot.io/blocks-integrations/googleSheets/schema";
 
 export const CellWithValueStack = ({
   item,
@@ -10,13 +10,13 @@ export const CellWithValueStack = ({
   columns,
 }: TableListItemProps<Cell> & { columns: string[] }) => {
   const handleColumnSelect = (column: string) => {
-    if (item.column === column) return
-    onItemChange({ ...item, column })
-  }
+    if (item.column === column) return;
+    onItemChange({ ...item, column });
+  };
   const handleValueChange = (value: string) => {
-    if (item.value === value) return
-    onItemChange({ ...item, value })
-  }
+    if (item.value === value) return;
+    onItemChange({ ...item, value });
+  };
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px" w="full">
       <DropdownList
@@ -26,10 +26,10 @@ export const CellWithValueStack = ({
         placeholder="Select a column"
       />
       <TextInput
-        defaultValue={item.value ?? ''}
+        defaultValue={item.value ?? ""}
         onChange={handleValueChange}
         placeholder="Type a value..."
       />
     </Stack>
-  )
-}
+  );
+};

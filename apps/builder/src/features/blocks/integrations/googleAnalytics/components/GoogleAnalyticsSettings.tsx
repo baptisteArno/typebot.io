@@ -1,4 +1,4 @@
-import { NumberInput, TextInput } from '@/components/inputs'
+import { NumberInput, TextInput } from "@/components/inputs";
 import {
   Accordion,
   AccordionButton,
@@ -7,41 +7,41 @@ import {
   AccordionPanel,
   Box,
   Stack,
-} from '@chakra-ui/react'
-import { GoogleAnalyticsBlock } from '@typebot.io/schemas'
-import React from 'react'
+} from "@chakra-ui/react";
+import type { GoogleAnalyticsBlock } from "@typebot.io/blocks-integrations/googleAnalytics/schema";
+import React from "react";
 
 type Props = {
-  options?: GoogleAnalyticsBlock['options']
-  onOptionsChange: (options: GoogleAnalyticsBlock['options']) => void
-}
+  options?: GoogleAnalyticsBlock["options"];
+  onOptionsChange: (options: GoogleAnalyticsBlock["options"]) => void;
+};
 
 export const GoogleAnalyticsSettings = ({
   options,
   onOptionsChange,
 }: Props) => {
   const updateTrackingId = (trackingId: string) =>
-    onOptionsChange({ ...options, trackingId })
+    onOptionsChange({ ...options, trackingId });
 
   const updateCategory = (category: string) =>
-    onOptionsChange({ ...options, category })
+    onOptionsChange({ ...options, category });
 
   const updateAction = (action: string) =>
-    onOptionsChange({ ...options, action })
+    onOptionsChange({ ...options, action });
 
-  const updateLabel = (label: string) => onOptionsChange({ ...options, label })
+  const updateLabel = (label: string) => onOptionsChange({ ...options, label });
 
   const updateValue = (value: number | `{{${string}}}` | undefined) =>
     onOptionsChange({
       ...options,
       value,
-    })
+    });
 
   const updateSendTo = (sendTo?: string) =>
     onOptionsChange({
       ...options,
       sendTo,
-    })
+    });
 
   return (
     <Stack spacing={4}>
@@ -99,5 +99,5 @@ export const GoogleAnalyticsSettings = ({
         </AccordionItem>
       </Accordion>
     </Stack>
-  )
-}
+  );
+};

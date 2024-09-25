@@ -1,52 +1,52 @@
-import { ImageUploadContent } from '@/components/ImageUploadContent'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
+import { ImageUploadContent } from "@/components/ImageUploadContent";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useOutsideClick } from "@/hooks/useOutsideClick";
 import {
-  Flex,
-  Popover,
-  PopoverContent,
-  Text,
-  Image,
   Button,
-  Portal,
+  Flex,
+  Image,
+  Popover,
   PopoverAnchor,
+  PopoverContent,
+  Portal,
+  Text,
   useDisclosure,
-} from '@chakra-ui/react'
-import { isNotEmpty } from '@typebot.io/lib'
-import { Background } from '@typebot.io/schemas'
-import React from 'react'
-import { ColorPicker } from '../../../../components/ColorPicker'
+} from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import { isNotEmpty } from "@typebot.io/lib/utils";
 import {
   BackgroundType,
   defaultBackgroundColor,
   defaultBackgroundType,
-} from '@typebot.io/schemas/features/typebot/theme/constants'
-import { useTranslate } from '@tolgee/react'
-import { useOutsideClick } from '@/hooks/useOutsideClick'
+} from "@typebot.io/theme/constants";
+import type { Background } from "@typebot.io/theme/schemas";
+import React from "react";
+import { ColorPicker } from "../../../../components/ColorPicker";
 
 type BackgroundContentProps = {
-  background?: Background
-  onBackgroundContentChange: (content: string) => void
-}
+  background?: Background;
+  onBackgroundContentChange: (content: string) => void;
+};
 
 export const BackgroundContent = ({
   background,
   onBackgroundContentChange,
 }: BackgroundContentProps) => {
-  const { isOpen, onClose, onOpen } = useDisclosure()
-  const { t } = useTranslate()
-  const { typebot } = useTypebot()
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { t } = useTranslate();
+  const { typebot } = useTypebot();
   const handleContentChange = (content: string) =>
-    onBackgroundContentChange(content)
-  const popoverContainerRef = React.useRef<HTMLDivElement>(null)
+    onBackgroundContentChange(content);
+  const popoverContainerRef = React.useRef<HTMLDivElement>(null);
 
   useOutsideClick({
     ref: popoverContainerRef,
     handler: onClose,
     isEnabled: isOpen,
-  })
+  });
 
   if ((background?.type ?? defaultBackgroundType) === BackgroundType.IMAGE) {
-    if (!typebot) return null
+    if (!typebot) return null;
     return (
       <Flex ref={popoverContainerRef}>
         <Popover isLazy isOpen={isOpen} placement="top">
@@ -54,10 +54,10 @@ export const BackgroundContent = ({
             {isNotEmpty(background?.content) ? (
               <Image
                 src={background?.content}
-                alt={t('theme.sideMenu.global.background.image.alt')}
+                alt={t("theme.sideMenu.global.background.image.alt")}
                 onClick={onOpen}
                 cursor="pointer"
-                _hover={{ filter: 'brightness(.9)' }}
+                _hover={{ filter: "brightness(.9)" }}
                 transition="filter 200ms"
                 rounded="md"
                 w="full"
@@ -66,7 +66,7 @@ export const BackgroundContent = ({
               />
             ) : (
               <Button onClick={onOpen} w="full">
-                {t('theme.sideMenu.global.background.image.button')}
+                {t("theme.sideMenu.global.background.image.button")}
               </Button>
             )}
           </PopoverAnchor>
@@ -81,28 +81,28 @@ export const BackgroundContent = ({
                 uploadFileProps={{
                   workspaceId: typebot.workspaceId,
                   typebotId: typebot.id,
-                  fileName: 'background',
+                  fileName: "background",
                 }}
                 defaultUrl={background?.content}
                 onSubmit={handleContentChange}
-                excludedTabs={['giphy', 'icon']}
+                excludedTabs={["giphy", "icon"]}
               />
             </PopoverContent>
           </Portal>
         </Popover>
       </Flex>
-    )
+    );
   }
   if ((background?.type ?? defaultBackgroundType) === BackgroundType.COLOR) {
     return (
       <Flex justify="space-between" align="center">
-        <Text>{t('theme.sideMenu.global.background.color')}</Text>
+        <Text>{t("theme.sideMenu.global.background.color")}</Text>
         <ColorPicker
           value={background?.content ?? defaultBackgroundColor}
           onColorChange={handleContentChange}
         />
       </Flex>
-    )
+    );
   }
-  return null
-}
+  return null;
+};

@@ -1,6 +1,6 @@
-import { IconProps, Icon } from '@chakra-ui/react'
+import { Icon, type IconProps } from "@chakra-ui/react";
 
-export const whatsAppBrandColor = '#25D366'
+export const whatsAppBrandColor = "#25D366";
 
 export const WhatsAppLogo = (props: IconProps) => (
   <Icon viewBox="0 0 510 513" {...props}>
@@ -11,4 +11,4 @@ export const WhatsAppLogo = (props: IconProps) => (
       fill="currentColor"
     />
   </Icon>
-)
+);

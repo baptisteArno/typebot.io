@@ -1,20 +1,21 @@
-import { hasProPerks } from '@/features/billing/helpers/hasProPerks'
-import prisma from '@typebot.io/lib/prisma'
-import { Plan } from '@typebot.io/prisma'
-import { Block, Typebot } from '@typebot.io/schemas'
-import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
-import { defaultSendEmailOptions } from '@typebot.io/schemas/features/blocks/integrations/sendEmail/constants'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
-import { sessionOnlySetVariableOptions } from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
-import { isInputBlock } from '@typebot.io/schemas/helpers'
+import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
+import { isInputBlock } from "@typebot.io/blocks-core/helpers";
+import type { Block } from "@typebot.io/blocks-core/schemas/schema";
+import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
+import { defaultSendEmailOptions } from "@typebot.io/blocks-integrations/sendEmail/constants";
+import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import { sessionOnlySetVariableOptions } from "@typebot.io/blocks-logic/setVariable/constants";
+import prisma from "@typebot.io/prisma";
+import { Plan } from "@typebot.io/prisma/enum";
+import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 
 export const sanitizeSettings = (
-  settings: Typebot['settings'],
+  settings: Typebot["settings"],
   workspacePlan: Plan,
-  mode: 'create' | 'update'
-): Typebot['settings'] => ({
+  mode: "create" | "update",
+): Typebot["settings"] => ({
   ...settings,
-  publicShare: mode === 'create' ? undefined : settings.publicShare,
+  publicShare: mode === "create" ? undefined : settings.publicShare,
   general:
     workspacePlan === Plan.FREE || settings.general
       ? {
@@ -29,32 +30,32 @@ export const sanitizeSettings = (
     ? {
         ...settings.whatsApp,
         isEnabled:
-          mode === 'create'
+          mode === "create"
             ? false
             : hasProPerks({ plan: workspacePlan })
-            ? settings.whatsApp.isEnabled
-            : false,
+              ? settings.whatsApp.isEnabled
+              : false,
       }
     : undefined,
-})
+});
 
 export const sanitizeGroups =
   (workspaceId: string) =>
-  async (groups: Typebot['groups']): Promise<Typebot['groups']> =>
+  async (groups: Typebot["groups"]): Promise<Typebot["groups"]> =>
     Promise.all(
       groups.map(async (group) => ({
         ...group,
         blocks: await Promise.all(group.blocks.map(sanitizeBlock(workspaceId))),
-      }))
-    ) as Promise<Typebot['groups']>
+      })),
+    ) as Promise<Typebot["groups"]>;
 
 const sanitizeBlock =
   (workspaceId: string) =>
   async (block: Block): Promise<Block> => {
-    if (!('options' in block) || !block.options) return block
+    if (!("options" in block) || !block.options) return block;
 
-    if (!('credentialsId' in block.options) || !block.options.credentialsId)
-      return block
+    if (!("credentialsId" in block.options) || !block.options.credentialsId)
+      return block;
 
     switch (block.type) {
       case IntegrationBlockType.EMAIL:
@@ -64,27 +65,27 @@ const sanitizeBlock =
             ...block.options,
             credentialsId:
               (await sanitizeCredentialsId(workspaceId)(
-                block.options?.credentialsId
+                block.options?.credentialsId,
               )) ?? defaultSendEmailOptions.credentialsId,
           },
-        }
+        };
       default:
         return {
           ...block,
           options: {
             ...block.options,
             credentialsId: await sanitizeCredentialsId(workspaceId)(
-              block.options?.credentialsId
+              block.options?.credentialsId,
             ),
           },
-        }
+        };
     }
-  }
+  };
 
 const sanitizeCredentialsId =
   (workspaceId: string) =>
   async (credentialsId?: string): Promise<string | undefined> => {
-    if (!credentialsId) return
+    if (!credentialsId) return;
     const credentials = await prisma.credentials.findFirst({
       where: {
         id: credentialsId,
@@ -93,107 +94,107 @@ const sanitizeCredentialsId =
       select: {
         id: true,
       },
-    })
-    return credentials?.id
-  }
+    });
+    return credentials?.id;
+  };
 
 export const isPublicIdNotAvailable = async (publicId: string) => {
   const typebotWithSameIdCount = await prisma.typebot.count({
     where: {
       publicId,
     },
-  })
-  return typebotWithSameIdCount > 0
-}
+  });
+  return typebotWithSameIdCount > 0;
+};
 
 export const isCustomDomainNotAvailable = async ({
   customDomain,
   workspaceId,
 }: {
-  customDomain: string
-  workspaceId: string
+  customDomain: string;
+  workspaceId: string;
 }) => {
   const domainCount = await prisma.customDomain.count({
     where: {
       workspaceId,
-      name: customDomain.split('/')[0],
+      name: customDomain.split("/")[0],
     },
-  })
-  if (domainCount === 0) return true
+  });
+  if (domainCount === 0) return true;
 
   const typebotWithSameDomainCount = await prisma.typebot.count({
     where: {
       customDomain,
     },
-  })
+  });
 
-  return typebotWithSameDomainCount > 0
-}
+  return typebotWithSameDomainCount > 0;
+};
 
 export const sanitizeFolderId = async ({
   folderId,
   workspaceId,
 }: {
-  folderId: string | null
-  workspaceId: string
+  folderId: string | null;
+  workspaceId: string;
 }) => {
-  if (!folderId) return
+  if (!folderId) return;
   const folderCount = await prisma.dashboardFolder.count({
     where: {
       id: folderId,
       workspaceId,
     },
-  })
-  return folderCount !== 0 ? folderId : undefined
-}
+  });
+  return folderCount !== 0 ? folderId : undefined;
+};
 
 export const sanitizeCustomDomain = async ({
   customDomain,
   workspaceId,
 }: {
-  customDomain?: string | null
-  workspaceId: string
+  customDomain?: string | null;
+  workspaceId: string;
 }) => {
-  if (!customDomain) return customDomain
+  if (!customDomain) return customDomain;
   const domainCount = await prisma.customDomain.count({
     where: {
-      name: customDomain?.split('/')[0],
+      name: customDomain?.split("/")[0],
       workspaceId,
     },
-  })
-  return domainCount === 0 ? null : customDomain
-}
+  });
+  return domainCount === 0 ? null : customDomain;
+};
 
 export const sanitizeVariables = ({
   variables,
   groups,
-}: Pick<Typebot, 'variables' | 'groups'>): Typebot['variables'] => {
+}: Pick<Typebot, "variables" | "groups">): Typebot["variables"] => {
   const blocks = groups
     .flatMap((group) => group.blocks as Block[])
-    .filter((b) => isInputBlock(b) || b.type === LogicBlockType.SET_VARIABLE)
+    .filter((b) => isInputBlock(b) || b.type === LogicBlockType.SET_VARIABLE);
   return variables.map((variable) => {
     const isVariableLinkedToInputBlock = blocks.some(
       (block) =>
-        isInputBlock(block) && block.options?.variableId === variable.id
-    )
+        isInputBlock(block) && block.options?.variableId === variable.id,
+    );
     if (isVariableLinkedToInputBlock)
       return {
         ...variable,
         isSessionVariable: false,
-      }
+      };
     const isVariableSetToForbiddenResultVar = blocks.some(
       (block) =>
         block.type === LogicBlockType.SET_VARIABLE &&
         block.options?.variableId === variable.id &&
         sessionOnlySetVariableOptions.includes(
-          block.options.type as (typeof sessionOnlySetVariableOptions)[number]
-        )
-    )
+          block.options.type as (typeof sessionOnlySetVariableOptions)[number],
+        ),
+    );
     if (isVariableSetToForbiddenResultVar)
       return {
         ...variable,
         isSessionVariable: true,
-      }
-    return variable
-  })
-}
+      };
+    return variable;
+  });
+};

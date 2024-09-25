@@ -1,30 +1,31 @@
-import { CopyButton } from '@/components/CopyButton'
-import { useTranslate } from '@tolgee/react'
+import { CopyButton } from "@/components/CopyButton";
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  Stack,
-  Input,
-  ModalFooter,
   Button,
-  Text,
+  Input,
   InputGroup,
   InputRightElement,
-} from '@chakra-ui/react'
-import React, { FormEvent, useRef, useState } from 'react'
-import { createApiTokenQuery } from '../queries/createApiTokenQuery'
-import { ApiTokenFromServer } from '../types'
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import type { FormEvent } from "react";
+import React, { useRef, useState } from "react";
+import { createApiTokenQuery } from "../queries/createApiTokenQuery";
+import type { ApiTokenFromServer } from "../types";
 
 type Props = {
-  userId: string
-  isOpen: boolean
-  onNewToken: (token: ApiTokenFromServer) => void
-  onClose: () => void
-}
+  userId: string;
+  isOpen: boolean;
+  onNewToken: (token: ApiTokenFromServer) => void;
+  onClose: () => void;
+};
 
 export const CreateTokenModal = ({
   userId,
@@ -32,22 +33,22 @@ export const CreateTokenModal = ({
   onClose,
   onNewToken,
 }: Props) => {
-  const inputRef = useRef<HTMLInputElement>(null)
-  const { t } = useTranslate()
-  const [name, setName] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [newTokenValue, setNewTokenValue] = useState<string>()
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { t } = useTranslate();
+  const [name, setName] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [newTokenValue, setNewTokenValue] = useState<string>();
 
   const createToken = async (e: FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    const { data } = await createApiTokenQuery(userId, { name })
+    e.preventDefault();
+    setIsSubmitting(true);
+    const { data } = await createApiTokenQuery(userId, { name });
     if (data?.apiToken) {
-      setNewTokenValue(data.apiToken.token)
-      onNewToken(data.apiToken)
+      setNewTokenValue(data.apiToken.token);
+      onNewToken(data.apiToken);
     }
-    setIsSubmitting(false)
-  }
+    setIsSubmitting(false);
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={inputRef}>
@@ -55,16 +56,16 @@ export const CreateTokenModal = ({
       <ModalContent>
         <ModalHeader>
           {newTokenValue
-            ? t('account.apiTokens.createModal.createdHeading')
-            : t('account.apiTokens.createModal.createHeading')}
+            ? t("account.apiTokens.createModal.createdHeading")
+            : t("account.apiTokens.createModal.createHeading")}
         </ModalHeader>
         <ModalCloseButton />
         {newTokenValue ? (
           <ModalBody as={Stack} spacing="4">
             <Text>
-              {t('account.apiTokens.createModal.copyInstruction')}{' '}
+              {t("account.apiTokens.createModal.copyInstruction")}{" "}
               <strong>
-                {t('account.apiTokens.createModal.securityWarning')}
+                {t("account.apiTokens.createModal.securityWarning")}
               </strong>
             </Text>
             <InputGroup size="md">
@@ -77,12 +78,12 @@ export const CreateTokenModal = ({
         ) : (
           <ModalBody as="form" onSubmit={createToken}>
             <Text mb="4">
-              {t('account.apiTokens.createModal.nameInput.label')}
+              {t("account.apiTokens.createModal.nameInput.label")}
             </Text>
             <Input
               ref={inputRef}
               placeholder={t(
-                'account.apiTokens.createModal.nameInput.placeholder'
+                "account.apiTokens.createModal.nameInput.placeholder",
               )}
               onChange={(e) => setName(e.target.value)}
             />
@@ -92,7 +93,7 @@ export const CreateTokenModal = ({
         <ModalFooter>
           {newTokenValue ? (
             <Button onClick={onClose} colorScheme="blue">
-              {t('account.apiTokens.createModal.doneButton.label')}
+              {t("account.apiTokens.createModal.doneButton.label")}
             </Button>
           ) : (
             <Button
@@ -101,11 +102,11 @@ export const CreateTokenModal = ({
               isLoading={isSubmitting}
               onClick={createToken}
             >
-              {t('account.apiTokens.createModal.createButton.label')}
+              {t("account.apiTokens.createModal.createButton.label")}
             </Button>
           )}
         </ModalFooter>
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};

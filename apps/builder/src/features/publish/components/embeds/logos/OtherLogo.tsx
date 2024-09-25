@@ -1,8 +1,8 @@
-import { colors } from '@/lib/theme'
-import { Icon, IconProps, useColorModeValue } from '@chakra-ui/react'
+import { colors } from "@/lib/theme";
+import { Icon, type IconProps, useColorModeValue } from "@chakra-ui/react";
 
 export const OtherLogo = (props: IconProps) => {
-  const stroke = useColorModeValue('black', colors.gray[200])
+  const stroke = useColorModeValue("black", colors.gray[200]);
   return (
     <Icon
       width="512"
@@ -31,5 +31,5 @@ export const OtherLogo = (props: IconProps) => {
         strokeMiterlimit="10"
       />
     </Icon>
-  )
-}
+  );
+};

@@ -1,9 +1,9 @@
-import { router } from '@/helpers/server/trpc'
-import { createFolder } from './createFolder'
-import { updateFolder } from './updateFolder'
-import { deleteFolder } from './deleteFolder'
-import { listFolders } from './listFolders'
-import { getFolder } from './getFolder'
+import { router } from "@/helpers/server/trpc";
+import { createFolder } from "./createFolder";
+import { deleteFolder } from "./deleteFolder";
+import { getFolder } from "./getFolder";
+import { listFolders } from "./listFolders";
+import { updateFolder } from "./updateFolder";
 
 export const folderRouter = router({
   getFolder,
@@ -11,4 +11,4 @@ export const folderRouter = router({
   updateFolder,
   deleteFolder,
   listFolders,
-})
+});

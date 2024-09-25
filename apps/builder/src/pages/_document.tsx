@@ -1,6 +1,6 @@
-import { customTheme } from '@/lib/theme'
-import { ColorModeScript } from '@chakra-ui/react'
-import { Html, Head, Main, NextScript } from 'next/document'
+import { customTheme } from "@/lib/theme";
+import { ColorModeScript } from "@chakra-ui/react";
+import { Head, Html, Main, NextScript } from "next/document";
 
 const Document = () => (
   <Html translate="no">
@@ -20,6 +20,6 @@ const Document = () => (
       <NextScript />
     </body>
   </Html>
-)
+);
 
-export default Document
+export default Document;

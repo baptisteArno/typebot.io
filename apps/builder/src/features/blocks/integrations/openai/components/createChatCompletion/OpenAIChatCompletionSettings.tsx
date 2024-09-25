@@ -1,6 +1,6 @@
-import { TableList } from '@/components/TableList'
-import { ChatCompletionOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai'
-import { ChatCompletionMessageItem } from './ChatCompletionMessageItem'
+import { TableList } from "@/components/TableList";
+import { TextLink } from "@/components/TextLink";
+import { NumberInput } from "@/components/inputs";
 import {
   Accordion,
   AccordionButton,
@@ -9,41 +9,41 @@ import {
   AccordionPanel,
   Stack,
   Text,
-} from '@chakra-ui/react'
-import { TextLink } from '@/components/TextLink'
-import { ChatCompletionResponseItem } from './ChatCompletionResponseItem'
-import { NumberInput } from '@/components/inputs'
-import { ModelsDropdown } from '../ModelsDropdown'
+} from "@chakra-ui/react";
+import type { ChatCompletionOpenAIOptions } from "@typebot.io/blocks-integrations/openai/schema";
+import { ModelsDropdown } from "../ModelsDropdown";
+import { ChatCompletionMessageItem } from "./ChatCompletionMessageItem";
+import { ChatCompletionResponseItem } from "./ChatCompletionResponseItem";
 
 const apiReferenceUrl =
-  'https://platform.openai.com/docs/api-reference/chat/create'
+  "https://platform.openai.com/docs/api-reference/chat/create";
 
 type Props = {
-  options: ChatCompletionOpenAIOptions
-  onOptionsChange: (options: ChatCompletionOpenAIOptions) => void
-}
+  options: ChatCompletionOpenAIOptions;
+  onOptionsChange: (options: ChatCompletionOpenAIOptions) => void;
+};
 
 export const OpenAIChatCompletionSettings = ({
   options,
   onOptionsChange,
 }: Props) => {
   const updateModel = (model: string | undefined) => {
-    if (!model) return
+    if (!model) return;
     onOptionsChange({
       ...options,
       model,
-    })
-  }
+    });
+  };
 
   const updateMessages = (messages: typeof options.messages) => {
     onOptionsChange({
       ...options,
       messages,
-    })
-  }
+    });
+  };
 
   const updateTemperature = (
-    temperature: number | `{{${string}}}` | undefined
+    temperature: number | `{{${string}}}` | undefined,
   ) => {
     onOptionsChange({
       ...options,
@@ -51,25 +51,25 @@ export const OpenAIChatCompletionSettings = ({
         ...options.advancedSettings,
         temperature,
       },
-    })
-  }
+    });
+  };
 
   const updateResponseMapping = (
-    responseMapping: typeof options.responseMapping
+    responseMapping: typeof options.responseMapping,
   ) => {
     onOptionsChange({
       ...options,
       responseMapping,
-    })
-  }
+    });
+  };
 
   return (
     <Stack spacing={4} pt="2">
       <Text fontSize="sm" color="gray.500">
-        Read the{' '}
+        Read the{" "}
         <TextLink href={apiReferenceUrl} isExternal>
           API reference
-        </TextLink>{' '}
+        </TextLink>{" "}
         to better understand the available options.
       </Text>
       {options.credentialsId && (
@@ -133,7 +133,7 @@ export const OpenAIChatCompletionSettings = ({
                 <TableList
                   initialItems={options.responseMapping}
                   onItemsChange={updateResponseMapping}
-                  newItemDefaultProps={{ valueToExtract: 'Message content' }}
+                  newItemDefaultProps={{ valueToExtract: "Message content" }}
                   hasDefaultItem
                 >
                   {(props) => <ChatCompletionResponseItem {...props} />}
@@ -144,5 +144,5 @@ export const OpenAIChatCompletionSettings = ({
         </>
       )}
     </Stack>
-  )
-}
+  );
+};

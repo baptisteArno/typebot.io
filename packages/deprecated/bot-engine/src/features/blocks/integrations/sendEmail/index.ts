@@ -1,1 +1,1 @@
-export { executeSendEmailBlock } from './utils/executeSendEmailBlock'
+export { executeSendEmailBlock } from "./utils/executeSendEmailBlock";

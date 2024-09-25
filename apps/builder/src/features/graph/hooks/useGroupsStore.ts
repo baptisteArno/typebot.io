@@ -1,35 +1,37 @@
-import { createWithEqualityFn } from 'zustand/traditional'
-import { Coordinates, CoordinatesMap } from '../types'
-import { Edge, Group, GroupV6, Variable } from '@typebot.io/schemas'
-import { subscribeWithSelector } from 'zustand/middleware'
-import { share } from 'shared-zustand'
+import type { Group, GroupV6 } from "@typebot.io/groups/schemas";
+import type { Edge } from "@typebot.io/typebot/schemas/edge";
+import type { Variable } from "@typebot.io/variables/schemas";
+import { share } from "shared-zustand";
+import { subscribeWithSelector } from "zustand/middleware";
+import { createWithEqualityFn } from "zustand/traditional";
+import type { Coordinates, CoordinatesMap } from "../types";
 
 type Store = {
-  focusedGroups: string[]
-  groupsCoordinates: CoordinatesMap | undefined
+  focusedGroups: string[];
+  groupsCoordinates: CoordinatesMap | undefined;
   groupsInClipboard:
     | {
-        groups: GroupV6[]
-        edges: Edge[]
-        variables: Omit<Variable, 'value'>[]
+        groups: GroupV6[];
+        edges: Edge[];
+        variables: Omit<Variable, "value">[];
       }
-    | undefined
-  isDraggingGraph: boolean
+    | undefined;
+  isDraggingGraph: boolean;
   // TO-DO: remove once Typebot provider is migrated to a Zustand store. We will be able to get it internally in the store (if mutualized).
-  getGroupsCoordinates: () => CoordinatesMap | undefined
-  focusGroup: (groupId: string, isAppending?: boolean) => void
-  blurGroups: () => void
-  moveFocusedGroups: (delta: Coordinates) => void
-  setFocusedGroups: (groupIds: string[]) => void
-  setGroupsCoordinates: (groups: Group[] | undefined) => void
-  updateGroupCoordinates: (groupId: string, newCoord: Coordinates) => void
+  getGroupsCoordinates: () => CoordinatesMap | undefined;
+  focusGroup: (groupId: string, isAppending?: boolean) => void;
+  blurGroups: () => void;
+  moveFocusedGroups: (delta: Coordinates) => void;
+  setFocusedGroups: (groupIds: string[]) => void;
+  setGroupsCoordinates: (groups: Group[] | undefined) => void;
+  updateGroupCoordinates: (groupId: string, newCoord: Coordinates) => void;
   copyGroups: (args: {
-    groups: GroupV6[]
-    edges: Edge[]
-    variables: Omit<Variable, 'value'>[]
-  }) => void
-  setIsDraggingGraph: (isDragging: boolean) => void
-}
+    groups: GroupV6[];
+    edges: Edge[];
+    variables: Omit<Variable, "value">[];
+  }) => void;
+  setIsDraggingGraph: (isDragging: boolean) => void;
+};
 
 export const useGroupsStore = createWithEqualityFn<Store>()(
   subscribeWithSelector((set, get) => ({
@@ -57,14 +59,14 @@ export const useGroupsStore = createWithEqualityFn<Store>()(
                   ...coords,
                   [groupId]: {
                     x: Number(
-                      (groupsCoordinates[groupId].x + delta.x).toFixed(2)
+                      (groupsCoordinates[groupId].x + delta.x).toFixed(2),
                     ),
                     y: Number(
-                      (groupsCoordinates[groupId].y + delta.y).toFixed(2)
+                      (groupsCoordinates[groupId].y + delta.y).toFixed(2),
                     ),
                   },
                 }),
-                groupsCoordinates
+                groupsCoordinates,
               ),
             }
           : undefined,
@@ -81,7 +83,7 @@ export const useGroupsStore = createWithEqualityFn<Store>()(
                   y: group.graphCoordinates.y,
                 },
               }),
-              {}
+              {},
             )
           : undefined,
       }),
@@ -91,16 +93,16 @@ export const useGroupsStore = createWithEqualityFn<Store>()(
           ...state.groupsCoordinates,
           [groupId]: newCoord,
         },
-      }))
+      }));
     },
     copyGroups: (groupsInClipboard) =>
       set({
         groupsInClipboard,
       }),
     setIsDraggingGraph: (isDragging) => set({ isDraggingGraph: isDragging }),
-  }))
-)
+  })),
+);
 
-if ('BroadcastChannel' in globalThis) {
-  share('groupsInClipboard', useGroupsStore)
+if ("BroadcastChannel" in globalThis) {
+  share("groupsInClipboard", useGroupsStore);
 }

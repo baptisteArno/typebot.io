@@ -1,48 +1,30 @@
 {
   "name": "@typebot.io/react",
-  "version": "0.3.14",
+  "version": "0.3.15",
   "description": "Convenient library to display typebots on your React app",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "type": "module",
-  "scripts": {
-    "stories:dev": "ladle serve -p 3006",
-    "stories:build": "ladle build",
-    "dev": "rollup --watch --config rollup.config.js",
-    "build": "rollup --config rollup.config.js",
-    "lint": "eslint --fix \"src/**/*.ts*\"",
-    "format:check": "prettier --check ./src"
-  },
-  "keywords": [],
-  "author": "Baptiste Arnaud",
   "license": "AGPL-3.0-or-later",
-  "dependencies": {
-    "@ladle/react": "2.5.1"
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup"
   },
   "devDependencies": {
-    "@babel/preset-react": "7.22.5",
-    "@babel/preset-typescript": "7.22.5",
-    "@rollup/plugin-babel": "6.0.3",
-    "@rollup/plugin-node-resolve": "15.1.0",
-    "@rollup/plugin-terser": "0.4.3",
-    "@typebot.io/js": "workspace:*",
-    "@typebot.io/lib": "workspace:*",
-    "@typebot.io/prisma": "workspace:*",
-    "@typebot.io/schemas": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/node": "20.4.2",
     "@types/react": "18.2.15",
-    "eslint": "8.44.0",
-    "eslint-config-custom": "workspace:*",
+    "tsup": "8.3.0",
     "react": "18.2.0",
-    "rollup": "3.26.2",
-    "rollup-plugin-typescript-paths": "1.4.0",
-    "tslib": "2.6.0",
-    "tsx": "4.6.2",
-    "typescript": "5.4.5",
-    "@rollup/plugin-typescript": "11.1.2"
+    "@typebot.io/js": "workspace:*"
   },
   "peerDependencies": {
-    "react": "^16.0.0 || ^17.0.0 || ^18.0.0"
+    "react": "^16.0.0 || ^17.0.0 || ^18.0.0",
+    "@typebot.io/js": "workspace:*"
   }
 }

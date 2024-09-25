@@ -1,0 +1,16 @@
+{
+  "name": "@typebot.io/zod",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*.ts"
+  },
+  "dependencies": {
+    "zod": "3.23.8",
+    "zod-openapi": "3.0.1"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
+  }
+}

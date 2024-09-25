@@ -1,0 +1,48 @@
+{
+  "name": "landing-page",
+  "scripts": {
+    "dev": "dotenv -e ./.env -e ../../.env -- next dev -p 3003",
+    "start": "dotenv -e ./.env -e ../../.env -- next start",
+    "build": "dotenv -e ./.env -e ../../.env -- next build",
+    "analyze": "cross-env ANALYZE=true next build",
+    "clean": "git clean -xdf .next .turbo node_modules",
+    "lint": "biome lint",
+    "format": "biome format --write ."
+  },
+  "dependencies": {
+    "@chakra-ui/icon": "3.2.0",
+    "@chakra-ui/next-js": "2.2.0",
+    "@chakra-ui/react": "2.8.2",
+    "@emotion/react": "11.11.4",
+    "@emotion/styled": "11.11.5",
+    "@typebot.io/billing": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/nextjs": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/typebot": "workspace:*",
+    "@typebot.io/env": "workspace:*",
+    "aos": "2.3.4",
+    "focus-visible": "5.2.0",
+    "framer-motion": "11.1.7",
+    "next": "14.2.13",
+    "next-mdx-remote": "4.4.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-tweet": "3.2.1",
+    "sugar-high": "0.6.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "0.5.12",
+    "@typebot.io/env": "workspace:*",
+    "@typebot.io/tsconfig": "workspace:*",
+    "@types/aos": "3.0.4",
+    "@types/node": "20.4.2",
+    "@types/react": "18.2.15",
+    "autoprefixer": "10.4.14",
+    "cross-env": "7.0.3",
+    "dotenv-cli": "7.4.1",
+    "next-runtime-env": "1.6.2",
+    "postcss": "8.4.26",
+    "tailwindcss": "3.3.3"
+  }
+}

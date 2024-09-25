@@ -1,3 +1,3 @@
-import { executePrismaCommand } from './executeCommand'
+import { executePrismaCommand } from "./executeCommand";
 
-executePrismaCommand('prisma generate', { force: true })
+executePrismaCommand("prisma generate", { force: true });

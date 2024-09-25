@@ -1,13 +1,13 @@
-import { MenuList, MenuItem } from '@chakra-ui/react'
-import { CopyIcon, TrashIcon } from '@/components/icons'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { ItemIndices } from '@typebot.io/schemas'
+import { CopyIcon, TrashIcon } from "@/components/icons";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { MenuItem, MenuList } from "@chakra-ui/react";
+import type { ItemIndices } from "@typebot.io/blocks-core/schemas/items/types";
 
 type Props = {
-  indices: ItemIndices
-}
+  indices: ItemIndices;
+};
 export const ItemNodeContextMenu = ({ indices }: Props) => {
-  const { deleteItem, duplicateItem } = useTypebot()
+  const { deleteItem, duplicateItem } = useTypebot();
 
   return (
     <MenuList>
@@ -18,5 +18,5 @@ export const ItemNodeContextMenu = ({ indices }: Props) => {
         Delete
       </MenuItem>
     </MenuList>
-  )
-}
+  );
+};

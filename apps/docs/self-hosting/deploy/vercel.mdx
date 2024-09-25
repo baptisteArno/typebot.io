@@ -9,7 +9,7 @@ title: Vercel
   Typebot's founder. The cloud version can save a substantial amount of
   developer time and resources. For most sites this ends up being the best value
   option and the revenue goes to funding the maintenance and further development
-  of Typebot. So you'll be supporting open source software and getting a great
+  of Typebot. So you'll be supporting fair source software and getting a great
   service!
 </Note>
 
@@ -45,7 +45,7 @@ If you deploy on a Vercel Hobby plan, you will need to reduce the `maxDuration` 
 5. Change the build command to:
 
    ```sh
-   cd ../.. && pnpm turbo build --filter=builder... && pnpm db:migrate
+   bunx turbo build --filter=builder... && bunx turbo db:migrate
    ```
 
 6. Add the required environment variables ([Check out the configuration guide](/self-hosting/configuration))
@@ -60,7 +60,7 @@ If you deploy on a Vercel Hobby plan, you will need to reduce the `maxDuration` 
 5. Change the build command to:
 
    ```sh
-   cd ../.. && pnpm turbo build --filter=viewer... && pnpm db:migrate
+   bunx turbo build --filter=viewer... && bunx turbo db:migrate
    ```
 
 6. Add the required environment variables ([Check out the configuration guide](/self-hosting/configuration))

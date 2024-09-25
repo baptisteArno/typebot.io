@@ -1,12 +1,12 @@
-import React from 'react'
-import { Text } from '@chakra-ui/react'
-import { NumberInputBlock } from '@typebot.io/schemas'
-import { WithVariableContent } from '@/features/graph/components/nodes/block/WithVariableContent'
-import { defaultNumberInputOptions } from '@typebot.io/schemas/features/blocks/inputs/number/constants'
+import { WithVariableContent } from "@/features/graph/components/nodes/block/WithVariableContent";
+import { Text } from "@chakra-ui/react";
+import { defaultNumberInputOptions } from "@typebot.io/blocks-inputs/number/constants";
+import type { NumberInputBlock } from "@typebot.io/blocks-inputs/number/schema";
+import React from "react";
 
 type Props = {
-  options: NumberInputBlock['options']
-}
+  options: NumberInputBlock["options"];
+};
 
 export const NumberNodeContent = ({
   options: { variableId, labels } = {},
@@ -14,7 +14,7 @@ export const NumberNodeContent = ({
   variableId ? (
     <WithVariableContent variableId={variableId} />
   ) : (
-    <Text color={'gray.500'}>
+    <Text color={"gray.500"}>
       {labels?.placeholder ?? defaultNumberInputOptions.labels.placeholder}
     </Text>
-  )
+  );
