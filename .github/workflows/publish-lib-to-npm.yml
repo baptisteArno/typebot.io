@@ -13,10 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: oven-sh/setup-bun@v2
-      - run: bun i
+      - run: bun install
       - run: bunx turbo build --filter=typebot-js...
       - name: Set NPM_TOKEN in config
-        run: bun config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+        run: bun run npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
         working-directory: ./packages/typebot-js
       - name: Publish
         run: bun run npm publish --no-git-checks --access public
