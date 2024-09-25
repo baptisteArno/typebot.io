@@ -1,6 +1,5 @@
 {
   "name": "@typebot.io/scripts",
-  "type": "module",
   "scripts": {
     "playground": "SKIP_ENV_CHECK=true dotenv -e ./.env.local -- tsx src/playground.ts",
     "db:cleanDatabase": "SKIP_ENV_CHECK=true tsx src/cleanDatabase.ts",
