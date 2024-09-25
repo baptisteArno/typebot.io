@@ -1,17 +1,15 @@
 {
   "name": "@typebot.io/prisma",
-  "type": "module",
-  "private": true,
   "exports": {
     ".": "./src/index.ts",
     "./*": "./src/*.ts"
   },
   "scripts": {
-    "studio:start": "dotenv -e ./.env -e ../../.env -- node dist/scripts/studio.js",
-    "db:generate": "dotenv -e ./.env -e ../../.env -- node dist/scripts/db-generate.js",
-    "db:generate:mysql": "DATABASE_URL=mysql:// dotenv -e ./.env -e ../../.env -- node dist/scripts/db-generate.js",
-    "db:push": "dotenv -e ./.env -e ../../.env -- node dist/scripts/db-push.js",
-    "migrate:deploy": "dotenv -e ./.env -e ../../.env -- node dist/scripts/migrate-deploy.js",
+    "studio:start": "dotenv -e ./.env -e ../../.env -- tsx scripts/studio.ts",
+    "db:generate": "dotenv -e ./.env -e ../../.env -- tsx scripts/db-generate.ts",
+    "db:generate:mysql": "DATABASE_URL=mysql:// dotenv -e ./.env -e ../../.env -- tsx scripts/db-generate.ts",
+    "db:push": "dotenv -e ./.env -e ../../.env -- tsx scripts/db-push.ts",
+    "migrate:deploy": "dotenv -e ./.env -e ../../.env -- tsx scripts/migrate-deploy.ts",
     "migrate:dev": "otenv -e ./.env -e ../../.env -- prisma migrate dev --create-only --schema postgresql/schema.prisma",
     "db:migrate": "bun migrate:deploy"
   },
@@ -21,6 +19,7 @@
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
-    "dotenv-cli": "7.4.1"
+    "dotenv-cli": "7.4.1",
+    "tsx": "4.19.1"
   }
 }

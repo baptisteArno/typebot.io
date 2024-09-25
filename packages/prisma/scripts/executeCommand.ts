@@ -1,18 +1,14 @@
 import { exec } from "child_process";
-import { dirname, join, relative } from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { join, relative } from "path";
 
 const postgesqlSchemaPath = relative(
   process.cwd(),
-  join(__dirname, `../../postgresql/schema.prisma`),
+  join(__dirname, `../postgresql/schema.prisma`),
 );
 
 const mysqlSchemaPath = relative(
   process.cwd(),
-  join(__dirname, `../../mysql/schema.prisma`),
+  join(__dirname, `../mysql/schema.prisma`),
 );
 
 type Options = {

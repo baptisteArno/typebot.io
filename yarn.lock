@@ -5940,6 +5940,7 @@
   devDependencies:
     "@typebot.io/tsconfig" "packages/tsconfig"
     dotenv-cli "7.4.1"
+    tsx ""
   dependencies:
     "@prisma/client" "5.12.1"
     prisma "5.12.1"
@@ -12015,7 +12016,7 @@ humanize-ms@^1.2.1:
   dependencies:
     ms "^2.0.0"
 
-husky@^9.1.6:
+husky@9.1.6:
   version "9.1.6"
   resolved "https://registry.npmjs.org/husky/-/husky-9.1.6.tgz"
   integrity sha512-sqbjZKK7kf44hfdE94EoX8MZNk0n7HeW37O4YrVGCF4wzgQjp+akPAkfUK5LZ6KuR/6sqeAVuXHji+RzQgOn5A==
@@ -18608,7 +18609,7 @@ tsup@8.3.0:
     tinyglobby "^0.2.1"
     tree-kill "^1.2.2"
 
-tsx@4.19.1:
+tsx@4.19.1, tsx@^4.19.1:
   version "4.19.1"
   resolved "https://registry.npmjs.org/tsx/-/tsx-4.19.1.tgz"
   integrity sha512-0flMz1lh74BR4wOvBjuh9olbnwqCPc35OOlfyzHba0Dc+QNUeWX/Gq2YTbnwcWPO3BMd8fkzRVrHcsR+a7z7rA==
