@@ -1,11 +1,9 @@
+# ================= INSTALL BUN ===================
 ARG BUN_VERSION=1.1.29
-
 ARG YARN_PKG_MANAGER="this.packageManager=\"yarn@1.22.22\""
 ARG BUN_PKG_MANAGER="this.packageManager=\"bun@${BUN_VERSION}\""
-
 FROM debian:bullseye-slim AS build-bun
 ARG BUN_VERSION
-
 RUN apt-get update -qq \
     && apt-get install -qq --no-install-recommends \
     ca-certificates \
@@ -58,16 +56,14 @@ RUN apt-get update -qq \
     && which bun \
     && bun --version
 
-FROM node:20-bullseye-slim AS bun
+# ================= ADD BUN IN NODE 20 IMAGE ===================
 
+FROM node:20-bullseye-slim AS bun
 ARG BUN_RUNTIME_TRANSPILER_CACHE_PATH=0
 ENV BUN_RUNTIME_TRANSPILER_CACHE_PATH=${BUN_RUNTIME_TRANSPILER_CACHE_PATH}
-
 ARG BUN_INSTALL_BIN=/usr/local/bin
 ENV BUN_INSTALL_BIN=${BUN_INSTALL_BIN}
-
 COPY --from=build-bun /usr/local/bin/bun /usr/local/bin/bun
-
 RUN groupadd bun \
     --gid 2000 \
     && useradd bun \
@@ -79,8 +75,6 @@ RUN groupadd bun \
     && which bun \
     && which bunx \
     && bun --version
-
-WORKDIR /app
 RUN apt-get -qy update && apt-get -qy --no-install-recommends install openssl git python3 g++ build-essential
 
 # ================= TURBO PRUNE ===================
@@ -99,8 +93,7 @@ ARG BUN_PKG_MANAGER
 ARG SCOPE
 COPY --from=pruned /app/out/full/ .
 RUN bunx json -I -f package.json -e ${BUN_PKG_MANAGER}
-ENV SENTRYCLI_SKIP_DOWNLOAD=1
-RUN bun install --production
+RUN SENTRYCLI_SKIP_DOWNLOAD=1 bun install
 RUN bunx clean-modules -y "**/*.ts" "**/@types/**"
 RUN SKIP_ENV_CHECK=true bunx turbo build --filter="${SCOPE}..."
 
@@ -112,11 +105,9 @@ USER bun
 COPY --from=builder /app .
 EXPOSE 3000
 ENV PORT 3000
-
 COPY --from=builder /app/apps/${SCOPE}/.next/standalone ./
 COPY --from=builder /app/apps/${SCOPE}/.next/static ./apps/${SCOPE}/.next/static
 COPY --from=builder /app/apps/${SCOPE}/public ./apps/${SCOPE}/public
-
 COPY scripts/${SCOPE}-entrypoint.sh ./
 RUN chmod +x ./${SCOPE}-entrypoint.sh
 ENTRYPOINT ./${SCOPE}-entrypoint.sh
