@@ -248,32 +248,30 @@ const ActionOptions = ({
       return (
         <Accordion allowMultiple>
           <Stack>
-            <>
-              <AccordionItem>
-                <AccordionButton>
-                  <Text w="full" textAlign="left">
-                    Select row(s)
-                  </Text>
-                  <AccordionIcon />
-                </AccordionButton>
+            <AccordionItem>
+              <AccordionButton>
+                <Text w="full" textAlign="left">
+                  Select row(s)
+                </Text>
+                <AccordionIcon />
+              </AccordionButton>
 
-                <AccordionPanel pt="4" as={Stack}>
-                  <DropdownList
-                    items={totalRowsToExtractOptions}
-                    currentItem={
-                      options.totalRowsToExtract ??
-                      defaultGoogleSheetsOptions.totalRowsToExtract
-                    }
-                    onItemSelect={updateTotalRowsToExtract}
-                  />
-                  <RowsFilterTableList
-                    columns={sheet?.columns ?? []}
-                    filter={options.filter}
-                    onFilterChange={handleFilterChange}
-                  />
-                </AccordionPanel>
-              </AccordionItem>
-            </>
+              <AccordionPanel pt="4" as={Stack}>
+                <DropdownList
+                  items={totalRowsToExtractOptions}
+                  currentItem={
+                    options.totalRowsToExtract ??
+                    defaultGoogleSheetsOptions.totalRowsToExtract
+                  }
+                  onItemSelect={updateTotalRowsToExtract}
+                />
+                <RowsFilterTableList
+                  columns={sheet?.columns ?? []}
+                  filter={options.filter}
+                  onFilterChange={handleFilterChange}
+                />
+              </AccordionPanel>
+            </AccordionItem>
 
             <AccordionItem>
               <AccordionButton>

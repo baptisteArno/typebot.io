@@ -406,11 +406,11 @@ const getResult = async ({
 
 const parseDynamicThemeInState = (theme: Theme) => {
   const hostAvatarUrl =
-    theme.chat?.hostAvatar?.isEnabled ?? defaultHostAvatarIsEnabled
+    (theme.chat?.hostAvatar?.isEnabled ?? defaultHostAvatarIsEnabled)
       ? theme.chat?.hostAvatar?.url
       : undefined;
   const guestAvatarUrl =
-    theme.chat?.guestAvatar?.isEnabled ?? defaultGuestAvatarIsEnabled
+    (theme.chat?.guestAvatar?.isEnabled ?? defaultGuestAvatarIsEnabled)
       ? theme.chat?.guestAvatar?.url
       : undefined;
   if (!hostAvatarUrl?.startsWith("{{") && !guestAvatarUrl?.startsWith("{{"))

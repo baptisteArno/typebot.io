@@ -32,7 +32,7 @@ export const migrateWebhookBlock =
             }
           : {
               ...defaultWebhookAttributes,
-              id: "webhookId" in block ? block.webhookId ?? "" : "",
+              id: "webhookId" in block ? (block.webhookId ?? "") : "",
             },
       },
     };

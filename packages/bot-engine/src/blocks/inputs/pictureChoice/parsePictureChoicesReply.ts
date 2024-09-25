@@ -67,7 +67,7 @@ export const parsePictureChoicesReply =
         status: "success",
         reply: matchedItems
           .map((item) =>
-            isNotEmpty(item.title) ? item.title : item.pictureSrc ?? "",
+            isNotEmpty(item.title) ? item.title : (item.pictureSrc ?? ""),
           )
           .join(", "),
       };
@@ -87,6 +87,6 @@ export const parsePictureChoicesReply =
       status: "success",
       reply: isNotEmpty(matchedItem.title)
         ? matchedItem.title
-        : matchedItem.pictureSrc ?? "",
+        : (matchedItem.pictureSrc ?? ""),
     };
   };

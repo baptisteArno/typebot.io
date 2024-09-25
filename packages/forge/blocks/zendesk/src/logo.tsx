@@ -7,4 +7,4 @@ export const ZendeskLogo = (props: React.SVGProps<SVGSVGElement>) => (
       fill="#03363D"
     />
   </svg>
-)
+);

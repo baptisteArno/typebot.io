@@ -40,7 +40,7 @@ export const useOnboardingDisclosure = ({
       new Date(user.createdAt) >=
         (onboardingVideos[key]
           ? onboardingVideos[key]!.deployedAt
-          : blockDef?.onboarding?.deployedAt ?? new Date()) &&
+          : (blockDef?.onboarding?.deployedAt ?? new Date())) &&
       user.displayedInAppNotifications?.[key] === undefined
     ) {
       if (defaultOpenDelay) {

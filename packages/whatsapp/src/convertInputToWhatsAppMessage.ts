@@ -120,7 +120,7 @@ export const convertInputToWhatsAppMessages = (
         interactive: {
           type: "button",
           body: {
-            text: idx === 0 ? lastMessageText ?? "..." : "...",
+            text: idx === 0 ? (lastMessageText ?? "...") : "...",
           },
           action: {
             buttons: items.map((item) => ({

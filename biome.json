@@ -25,7 +25,9 @@
         "useKeyWithClickEvents": "off",
         "useButtonType": "off",
         "noRedundantAlt": "off",
-        "noAutofocus": "off"
+        "noAutofocus": "off",
+        "useSemanticElements": "off",
+        "useFocusableInteractive": "off"
       },
       "performance": {
         "noAccumulatingSpread": "off"

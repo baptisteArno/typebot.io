@@ -132,7 +132,7 @@ export const NumberInput = <HasVariable extends boolean>({
         </FormLabel>
       )}
       <HStack w={direction === "row" ? undefined : "full"}>
-        {withVariableButton ?? true ? (
+        {(withVariableButton ?? true) ? (
           <HStack spacing="0" w="full">
             {Input}
             <VariablesButton onSelectVariable={handleVariableSelected} />

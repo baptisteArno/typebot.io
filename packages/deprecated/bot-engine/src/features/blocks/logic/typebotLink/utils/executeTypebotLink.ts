@@ -25,11 +25,11 @@ export const executeTypebotLink = async (
   const linkedTypebot = (
     block.options?.typebotId === "current"
       ? typebot
-      : [typebot, ...linkedTypebots].find((typebot) =>
+      : ([typebot, ...linkedTypebots].find((typebot) =>
           "typebotId" in typebot
             ? typebot.typebotId === block.options?.typebotId
             : typebot.id === block.options?.typebotId,
-        ) ?? (await fetchAndInjectTypebot(block, context))
+        ) ?? (await fetchAndInjectTypebot(block, context)))
   ) as PublicTypebot | LinkedTypebot | undefined;
   if (!linkedTypebot) {
     onNewLog({

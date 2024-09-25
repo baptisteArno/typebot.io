@@ -3,8 +3,6 @@
   "version": "2.28.2",
   "private": true,
   "workspaces": [
-    "ee/apps/*",
-    "ee/packages/*",
     "packages/*",
     "packages/deprecated/*",
     "packages/embeds/*",
@@ -14,10 +12,12 @@
     "apps/*"
   ],
   "scripts": {
+    "prepare": "husky",
+    "pre-commit": "bun format-and-lint && bun lint-repo",
     "format-and-lint": "biome check .",
     "format-and-lint:fix": "biome check . --write",
-    "lint-repo": "sherif",
-    "lint-repo:fix": "sherif --fix",
+    "lint-repo": "sherif -r unordered-dependencies -r packages-without-package-json",
+    "lint-repo:fix": "bun lint-repo --fix",
     "patch-embed-libs": "bun packages/scripts/src/patchEmbedLibs.ts",
     "start-docker-compose-dev": "docker compose -f docker-compose.dev.yml up",
     "build-docker-compose-prod": "docker compose -f docker-compose.build.yml build",
@@ -27,11 +27,13 @@
     "generate-change-log": "git fetch --all && bunx gitmoji-changelog",
     "sync-locales": "tolgee sync --continue-on-warning --remove-unused --patterns './apps/builder/src/**/*.ts?(x)' --backup './.tolgee/backup'",
     "pull-locales": "tolgee pull && prettier --write ./apps/builder/src/i18n",
-    "create-new-block": "cd packages/forge/cli && bun start"
+    "create-new-block": "cd packages/forge/cli && bun start",
+    "check-unused-dependencies": "bun packages/scripts/src/checkDependencies.ts"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
-    "@tolgee/cli": "2.1.5",
+    "@biomejs/biome": "1.9.2",
+    "@tolgee/cli": "2.1.7",
+    "husky": "9.1.6",
     "sherif": "1.0.0",
     "turbo": "2.1.2",
     "typescript": "5.6.2"

@@ -138,6 +138,6 @@ const setTypebotBackground = (
       : cssVariableNames.general.bgColor,
     background.type === BackgroundType.NONE
       ? "transparent"
-      : background.content ?? "#ffffff",
+      : (background.content ?? "#ffffff"),
   );
 };

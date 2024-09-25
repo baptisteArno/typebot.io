@@ -17,12 +17,10 @@
   },
   "dependencies": {
     "prisma": "5.12.1",
-    "@prisma/client": "5.12.1",
-    "@typebot.io/env": "workspace:*"
+    "@prisma/client": "5.12.1"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
-    "dotenv-cli": "7.4.1",
-    "tsup": "8.3.0"
+    "dotenv-cli": "7.4.1"
   }
 }

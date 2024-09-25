@@ -19,7 +19,7 @@ export const RatingInputContent = ({ variableId, block }: Props) => {
       {t("blocks.inputs.rating.from.label")}{" "}
       {block.options?.buttonType === "Icons"
         ? 1
-        : block.options?.startsAt ?? defaultRatingInputOptions.startsAt}{" "}
+        : (block.options?.startsAt ?? defaultRatingInputOptions.startsAt)}{" "}
       {t("blocks.inputs.rating.to.label")}{" "}
       {block.options?.length ?? defaultRatingInputOptions.length}
     </Text>

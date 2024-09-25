@@ -80,7 +80,8 @@ export const listWebhookBlocks = authenticatedProcedure
           label: `${group.title} > ${block.id}`,
           url:
             "webhookId" in block && !block.options?.webhook
-              ? typebot?.webhooks.find(byId(block.webhookId))?.url ?? undefined
+              ? (typebot?.webhooks.find(byId(block.webhookId))?.url ??
+                undefined)
               : block.options?.webhook?.url,
         })),
       ];

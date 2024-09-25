@@ -49,9 +49,10 @@ export const ImageUploadContent = ({
 }: Props) => {
   const includedTabs =
     "includedTabs" in props
-      ? props.includedTabs ?? defaultDisplayedTabs
+      ? (props.includedTabs ?? defaultDisplayedTabs)
       : defaultDisplayedTabs;
-  const excludedTabs = "excludedTabs" in props ? props.excludedTabs ?? [] : [];
+  const excludedTabs =
+    "excludedTabs" in props ? (props.excludedTabs ?? []) : [];
   const displayedTabs = defaultDisplayedTabs.filter(
     (tab) => !excludedTabs.includes(tab) && includedTabs.includes(tab),
   );

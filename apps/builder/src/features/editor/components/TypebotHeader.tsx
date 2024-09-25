@@ -157,7 +157,7 @@ const LeftElements = ({
                 : [],
               typebotId: Array.isArray(router.query.parentId)
                 ? [...router.query.parentId].pop()
-                : router.query.parentId ?? [],
+                : (router.query.parentId ?? []),
             },
           }}
           size="sm"

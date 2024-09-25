@@ -323,7 +323,7 @@ const getBodyContent = async ({
           variables,
         }),
       )
-    : body ?? undefined;
+    : (body ?? undefined);
 };
 
 export const convertKeyValueTableToObject = (

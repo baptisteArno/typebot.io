@@ -183,7 +183,7 @@ export const createOpenApiNodeHttpHandler = <
         ...errorShape, // Pass the error through
         message: isInputValidationError
           ? "Input validation failed"
-          : errorShape?.message ?? error.message ?? "An error occurred",
+          : (errorShape?.message ?? error.message ?? "An error occurred"),
         code: error.code,
         issues: isInputValidationError
           ? (error.cause as ZodError).errors

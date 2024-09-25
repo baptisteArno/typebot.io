@@ -69,7 +69,7 @@ export const TypebotsDropdown = ({
                 ? Array.isArray(query.parentId)
                   ? query.parentId.concat(query.typebotId?.toString() ?? "")
                   : [query.parentId, query.typebotId?.toString() ?? ""]
-                : query.typebotId ?? [],
+                : (query.typebotId ?? []),
             },
           }}
         />

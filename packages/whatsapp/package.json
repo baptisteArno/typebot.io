@@ -13,7 +13,6 @@
     "@typebot.io/bot-engine": "workspace:*",
     "@typebot.io/conditions": "workspace:*",
     "@typebot.io/env": "workspace:*",
-    "@typebot.io/forge": "workspace:*",
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/rich-text": "workspace:*",
@@ -21,7 +20,9 @@
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "@typebot.io/zod": "workspace:*",
-    "bot-engine": "workspace:*",
+    "@typebot.io/blocks-bubbles": "workspace:*",
+    "@typebot.io/blocks-inputs": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
     "ky": "1.2.4"
   },
   "devDependencies": {

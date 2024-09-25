@@ -30,8 +30,8 @@ export const CopyButton = (props: CopyButtonProps) => {
       {...buttonProps}
     >
       {!hasCopied
-        ? props.text?.copy ?? t("copy")
-        : props.text?.copied ?? t("copied")}
+        ? (props.text?.copy ?? t("copy"))
+        : (props.text?.copied ?? t("copied"))}
     </Button>
   );
 };

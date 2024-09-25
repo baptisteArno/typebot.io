@@ -50,7 +50,7 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
     const endpointId =
       "eventId" in connectingIds.source
         ? connectingIds.source.eventId
-        : connectingIds.source.itemId ?? connectingIds.source.blockId;
+        : (connectingIds.source.itemId ?? connectingIds.source.blockId);
     return sourceEndpoints.get(endpointId)?.y;
   }, [connectingIds, sourceEndpoints]);
 

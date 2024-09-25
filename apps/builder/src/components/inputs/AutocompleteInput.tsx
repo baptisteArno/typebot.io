@@ -72,7 +72,7 @@ export const AutocompleteInput = ({
 
   const filteredItems = (
     inputValue === ""
-      ? items ?? []
+      ? (items ?? [])
       : [
           ...(items ?? []).filter(
             (item) =>
@@ -189,29 +189,27 @@ export const AutocompleteInput = ({
                 onMouseDown={(e) => e.stopPropagation()}
                 onPointerDown={(e) => e.stopPropagation()}
               >
-                <>
-                  {filteredItems.map((item, idx) => {
-                    return (
-                      <Button
-                        ref={(el) => (itemsRef.current[idx] = el)}
-                        minH="40px"
-                        key={idx}
-                        onClick={handleItemClick(item)}
-                        fontSize="16px"
-                        fontWeight="normal"
-                        rounded="none"
-                        colorScheme="gray"
-                        role="menuitem"
-                        variant="ghost"
-                        bg={keyboardFocusIndex === idx ? bg : "transparent"}
-                        justifyContent="flex-start"
-                        transition="none"
-                      >
-                        {item}
-                      </Button>
-                    );
-                  })}
-                </>
+                {filteredItems.map((item, idx) => {
+                  return (
+                    <Button
+                      ref={(el) => (itemsRef.current[idx] = el)}
+                      minH="40px"
+                      key={idx}
+                      onClick={handleItemClick(item)}
+                      fontSize="16px"
+                      fontWeight="normal"
+                      rounded="none"
+                      colorScheme="gray"
+                      role="menuitem"
+                      variant="ghost"
+                      bg={keyboardFocusIndex === idx ? bg : "transparent"}
+                      justifyContent="flex-start"
+                      transition="none"
+                    >
+                      {item}
+                    </Button>
+                  );
+                })}
               </PopoverContent>
             </Portal>
           )}

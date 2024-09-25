@@ -9,9 +9,9 @@
   --tweet-bg-color-hover: var(--tweet-bg-color);
   --tweet-quoted-bg-color-hover: rgba(255, 255, 255, 0.03);
   --tweet-border: 1px solid #333;
-  --tweet-color-blue-secondary: theme('colors.white');
+  --tweet-color-blue-secondary: #fff;
   --tweet-color-blue-secondary-hover: #333;
-  --tweet-font-color-secondary: theme('colors.gray.400');
+  --tweet-font-color-secondary: #9ca3af;
 
   /* Common properties for both themes */
   --tweet-quoted-bg-color-hover: rgba(0, 0, 0, 0.03);
@@ -54,7 +54,7 @@
   @apply font-medium tracking-tight;
 }
 
-.tweet div[class*='mediaWrapper'] {
+.tweet div[class*="mediaWrapper"] {
   max-height: 250px;
 }
 

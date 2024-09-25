@@ -12,7 +12,6 @@
     "@clack/prompts": "0.7.0"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*",
-    "@types/prettier": "2.7.3"
+    "@typebot.io/tsconfig": "workspace:*"
   }
 }

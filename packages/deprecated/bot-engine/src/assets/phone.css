@@ -38,7 +38,7 @@
 .PhoneInputCountryIcon {
   width: calc(
     var(--PhoneInputCountryFlag-height) *
-      var(--PhoneInputCountryFlag-aspectRatio)
+    var(--PhoneInputCountryFlag-aspectRatio)
   );
   height: var(--PhoneInputCountryFlag-height);
 }
@@ -58,9 +58,9 @@
 	   and sometime there can be seen white pixels of the background at top and bottom,
 	   so an additional "inset" border is added. */
   box-shadow: 0 0 0 var(--PhoneInputCountryFlag-borderWidth)
-      var(--PhoneInputCountryFlag-borderColor),
-    inset 0 0 0 var(--PhoneInputCountryFlag-borderWidth)
-      var(--PhoneInputCountryFlag-borderColor);
+    var(--PhoneInputCountryFlag-borderColor), inset 0 0 0
+    var(--PhoneInputCountryFlag-borderWidth)
+    var(--PhoneInputCountryFlag-borderColor);
 }
 
 .PhoneInputCountryIconImg {
@@ -110,7 +110,7 @@
 
 .PhoneInputCountrySelectArrow {
   display: block;
-  content: '';
+  content: "";
   width: var(--PhoneInputCountrySelectArrow-width);
   height: var(--PhoneInputCountrySelectArrow-width);
   margin-left: var(--PhoneInputCountrySelectArrow-marginLeft);
@@ -133,9 +133,9 @@
 
 .PhoneInputCountrySelect:focus + .PhoneInputCountryIcon--border {
   box-shadow: 0 0 0 var(--PhoneInputCountryFlag-borderWidth)
-      var(--PhoneInputCountryFlag-borderColor--focus),
-    inset 0 0 0 var(--PhoneInputCountryFlag-borderWidth)
-      var(--PhoneInputCountryFlag-borderColor--focus);
+    var(--PhoneInputCountryFlag-borderColor--focus), inset 0 0 0
+    var(--PhoneInputCountryFlag-borderWidth)
+    var(--PhoneInputCountryFlag-borderColor--focus);
 }
 
 .PhoneInputCountrySelect:focus

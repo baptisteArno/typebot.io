@@ -269,57 +269,54 @@ export const VariableSearchInput = ({
                   </Tag>
                 </Button>
               )}
-              {filteredItems.length > 0 && (
-                <>
-                  {filteredItems.map((item, idx) => {
-                    const indexInList = isCreateVariableButtonDisplayed
-                      ? idx + 1
-                      : idx;
-                    return (
-                      <Button
-                        as="li"
-                        cursor="pointer"
-                        ref={(el) => (itemsRef.current[idx] = el)}
-                        role="menuitem"
-                        minH="40px"
-                        key={idx}
-                        onClick={handleVariableNameClick(item)}
-                        fontSize="16px"
-                        fontWeight="normal"
-                        rounded="none"
-                        colorScheme="gray"
-                        variant="ghost"
-                        justifyContent="space-between"
-                        bgColor={
-                          keyboardFocusIndex === indexInList
-                            ? focusedItemBgColor
-                            : "transparent"
-                        }
-                        transition="none"
-                      >
-                        <Text noOfLines={0} display="block" pr="2">
-                          {item.name}
-                        </Text>
+              {filteredItems.length > 0 &&
+                filteredItems.map((item, idx) => {
+                  const indexInList = isCreateVariableButtonDisplayed
+                    ? idx + 1
+                    : idx;
+                  return (
+                    <Button
+                      as="li"
+                      cursor="pointer"
+                      ref={(el) => (itemsRef.current[idx] = el)}
+                      role="menuitem"
+                      minH="40px"
+                      key={idx}
+                      onClick={handleVariableNameClick(item)}
+                      fontSize="16px"
+                      fontWeight="normal"
+                      rounded="none"
+                      colorScheme="gray"
+                      variant="ghost"
+                      justifyContent="space-between"
+                      bgColor={
+                        keyboardFocusIndex === indexInList
+                          ? focusedItemBgColor
+                          : "transparent"
+                      }
+                      transition="none"
+                    >
+                      <Text noOfLines={0} display="block" pr="2">
+                        {item.name}
+                      </Text>
 
-                        <HStack>
-                          <IconButton
-                            icon={<EditIcon />}
-                            aria-label={t("variables.rename")}
-                            size="xs"
-                            onClick={handleRenameVariableClick(item)}
-                          />
-                          <IconButton
-                            icon={<TrashIcon />}
-                            aria-label={t("variables.remove")}
-                            size="xs"
-                            onClick={handleDeleteVariableClick(item)}
-                          />
-                        </HStack>
-                      </Button>
-                    );
-                  })}
-                </>
-              )}
+                      <HStack>
+                        <IconButton
+                          icon={<EditIcon />}
+                          aria-label={t("variables.rename")}
+                          size="xs"
+                          onClick={handleRenameVariableClick(item)}
+                        />
+                        <IconButton
+                          icon={<TrashIcon />}
+                          aria-label={t("variables.remove")}
+                          size="xs"
+                          onClick={handleDeleteVariableClick(item)}
+                        />
+                      </HStack>
+                    </Button>
+                  );
+                })}
             </PopoverContent>
           </Portal>
         </Popover>

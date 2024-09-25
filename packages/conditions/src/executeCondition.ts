@@ -26,8 +26,8 @@ const executeComparison =
     const value =
       comparison.value === "undefined" || comparison.value === "null"
         ? null
-        : findUniqueVariable(variables)(comparison.value)?.value ??
-          parseVariables(variables)(comparison.value);
+        : (findUniqueVariable(variables)(comparison.value)?.value ??
+          parseVariables(variables)(comparison.value));
     if (isNotDefined(comparison.comparisonOperator)) return false;
     switch (comparison.comparisonOperator) {
       case ComparisonOperators.CONTAINS: {

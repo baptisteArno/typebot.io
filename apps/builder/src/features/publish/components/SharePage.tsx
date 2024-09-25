@@ -40,7 +40,7 @@ export const SharePage = () => {
   };
 
   const publicId = typebot
-    ? typebot?.publicId ?? parseDefaultPublicId(typebot.name, typebot.id)
+    ? (typebot?.publicId ?? parseDefaultPublicId(typebot.name, typebot.id))
     : "";
   const isPublished = isDefined(publishedTypebot);
 

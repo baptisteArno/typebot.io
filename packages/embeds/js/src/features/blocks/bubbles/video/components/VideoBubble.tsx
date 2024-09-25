@@ -79,8 +79,8 @@ export const VideoBubble = (props: Props) => {
               <video
                 autoplay={
                   props.onTransitionEnd
-                    ? props.content?.isAutoplayEnabled ??
-                      defaultVideoBubbleContent.isAutoplayEnabled
+                    ? (props.content?.isAutoplayEnabled ??
+                      defaultVideoBubbleContent.isAutoplayEnabled)
                     : false
                 }
                 src={props.content?.url}

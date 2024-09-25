@@ -217,7 +217,7 @@ const SetVariableValue = ({
               size="sm"
               options={["Text", "Code"]}
               defaultValue={
-                options?.isCode ?? defaultSetVariableOptions.isCode
+                (options?.isCode ?? defaultSetVariableOptions.isCode)
                   ? "Code"
                   : "Text"
               }

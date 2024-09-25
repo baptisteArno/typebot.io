@@ -133,7 +133,7 @@ const addLinkedTypebotToState = async (
 
   const shouldMergeResults =
     currentTypebotInQueue.typebot.version === "6"
-      ? block.options?.mergeResults ?? defaultTypebotLinkOptions.mergeResults
+      ? (block.options?.mergeResults ?? defaultTypebotLinkOptions.mergeResults)
       : block.options?.mergeResults !== false;
 
   if (

@@ -35,7 +35,7 @@ export const ResultModal = ({ resultId, onClose }: Props) => {
 
   const getHeaderValue = (
     val: string | { plainText: string; element?: JSX.Element | undefined },
-  ) => (typeof val === "string" ? val : val.element ?? val.plainText);
+  ) => (typeof val === "string" ? val : (val.element ?? val.plainText));
 
   return (
     <Modal isOpen={isDefined(result)} onClose={onClose} size="2xl">

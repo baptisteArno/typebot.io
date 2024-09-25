@@ -35,12 +35,12 @@
   },
   "dependencies": {
     "ky": "1.2.4",
-    "@clack/prompts": "^0.7.0",
+    "@clack/prompts": "0.7.0",
     "@paralleldrive/cuid2": "2.2.1",
     "@typebot.io/billing": "workspace:*",
     "@typebot.io/results": "workspace:*",
     "@typebot.io/telemetry": "workspace:*",
-    "cli-progress": "^3.12.0",
+    "cli-progress": "3.12.0",
     "papaparse": "5.4.1",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
@@ -59,6 +59,6 @@
     "@types/node": "20.4.2",
     "@types/papaparse": "5.3.7",
     "@types/prompts": "2.4.4",
-    "tsx": "4.6.2"
+    "tsx": "4.19.1"
   }
 }

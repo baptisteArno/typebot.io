@@ -116,7 +116,7 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
           rate:
             buttonType === "Icons"
               ? "1"
-              : options?.startsAt ?? defaultRatingInputOptions.startsAt,
+              : (options?.startsAt ?? defaultRatingInputOptions.startsAt),
         })}
         defaultValue={options?.labels?.left}
         onChange={handleLeftLabelChange}

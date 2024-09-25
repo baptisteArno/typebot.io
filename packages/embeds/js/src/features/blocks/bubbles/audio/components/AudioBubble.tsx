@@ -60,8 +60,8 @@ export const AudioBubble = (props: Props) => {
             src={props.content?.url}
             autoplay={
               props.onTransitionEnd
-                ? props.content?.isAutoplayEnabled ??
-                  defaultAudioBubbleContent.isAutoplayEnabled
+                ? (props.content?.isAutoplayEnabled ??
+                  defaultAudioBubbleContent.isAutoplayEnabled)
                 : false
             }
             class={

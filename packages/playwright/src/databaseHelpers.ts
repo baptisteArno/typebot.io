@@ -50,7 +50,7 @@ export const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => {
       },
     ],
     groups: (version === "6"
-      ? partialTypebot.groups ?? []
+      ? (partialTypebot.groups ?? [])
       : [
           {
             id: "group0",

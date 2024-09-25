@@ -211,7 +211,7 @@ export const FileUploadForm = ({
                   ? `${labels.button} ${selectedFiles.length} file${
                       selectedFiles.length > 1 ? "s" : ""
                     }`
-                  : labels?.button ?? ""
+                  : (labels?.button ?? "")
               }
               disableIcon
             />

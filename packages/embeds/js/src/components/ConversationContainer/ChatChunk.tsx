@@ -99,8 +99,8 @@ export const ChatChunk = (props: Props) => {
             class="flex flex-col flex-1 gap-2"
             style={{
               "max-width":
-                props.theme.chat?.guestAvatar?.isEnabled ??
-                defaultGuestAvatarIsEnabled
+                (props.theme.chat?.guestAvatar?.isEnabled ??
+                defaultGuestAvatarIsEnabled)
                   ? isMobile()
                     ? "calc(100% - 60px)"
                     : "calc(100% - 48px - 48px)"
@@ -169,8 +169,8 @@ export const ChatChunk = (props: Props) => {
               class="flex flex-col flex-1 gap-2"
               style={{
                 "max-width":
-                  props.theme.chat?.guestAvatar?.isEnabled ??
-                  defaultGuestAvatarIsEnabled
+                  (props.theme.chat?.guestAvatar?.isEnabled ??
+                  defaultGuestAvatarIsEnabled)
                     ? isMobile()
                       ? "calc(100% - 60px)"
                       : "calc(100% - 48px - 48px)"

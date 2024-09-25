@@ -122,7 +122,7 @@ const getSampleValue = (block: InputBlock, userEmail?: string): string => {
     case InputBlockType.CHOICE:
       return block.options?.isMultipleChoice
         ? block.items.map((item) => item.content).join(", ")
-        : block.items[0]?.content ?? "Item";
+        : (block.items[0]?.content ?? "Item");
     case InputBlockType.DATE:
       return new Date().toUTCString();
     case InputBlockType.EMAIL:
@@ -144,7 +144,7 @@ const getSampleValue = (block: InputBlock, userEmail?: string): string => {
     case InputBlockType.PICTURE_CHOICE:
       return block.options?.isMultipleChoice
         ? block.items.map((item) => item.title ?? item.pictureSrc).join(", ")
-        : block.items[0]?.title ?? block.items[0]?.pictureSrc ?? "Item";
+        : (block.items[0]?.title ?? block.items[0]?.pictureSrc ?? "Item");
   }
 };
 

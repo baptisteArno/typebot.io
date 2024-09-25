@@ -88,7 +88,7 @@ export const Select = <T extends Item>({
             .includes((inputValue ?? "").toLowerCase()),
         ),
       ]
-    : items ?? [];
+    : (items ?? []);
 
   const closeDropdown = () => {
     onClose();
@@ -233,40 +233,35 @@ export const Select = <T extends Item>({
             onMouseDown={(e) => e.stopPropagation()}
             onPointerDown={(e) => e.stopPropagation()}
           >
-            {filteredItems.length > 0 && (
-              <>
-                {filteredItems.map((item, idx) => {
-                  return (
-                    <Button
-                      ref={(el) => (itemsRef.current[idx] = el)}
-                      minH="40px"
-                      key={idx}
-                      onClick={handleItemClick(item)}
-                      fontSize="16px"
-                      fontWeight="normal"
-                      rounded="none"
-                      colorScheme="gray"
-                      role="menuitem"
-                      variant="ghost"
-                      bg={
-                        keyboardFocusIndex === idx
-                          ? focusedItemBgColor
-                          : selectedItem === getItemValue(item)
-                            ? selectedItemBgColor
-                            : "transparent"
-                      }
-                      justifyContent="flex-start"
-                      transition="none"
-                      leftIcon={
-                        typeof item === "object" ? item.icon : undefined
-                      }
-                    >
-                      {getItemLabel(item)}
-                    </Button>
-                  );
-                })}
-              </>
-            )}
+            {filteredItems.length > 0 &&
+              filteredItems.map((item, idx) => {
+                return (
+                  <Button
+                    ref={(el) => (itemsRef.current[idx] = el)}
+                    minH="40px"
+                    key={idx}
+                    onClick={handleItemClick(item)}
+                    fontSize="16px"
+                    fontWeight="normal"
+                    rounded="none"
+                    colorScheme="gray"
+                    role="menuitem"
+                    variant="ghost"
+                    bg={
+                      keyboardFocusIndex === idx
+                        ? focusedItemBgColor
+                        : selectedItem === getItemValue(item)
+                          ? selectedItemBgColor
+                          : "transparent"
+                    }
+                    justifyContent="flex-start"
+                    transition="none"
+                    leftIcon={typeof item === "object" ? item.icon : undefined}
+                  >
+                    {getItemLabel(item)}
+                  </Button>
+                );
+              })}
           </PopoverContent>
         </Portal>
       </Popover>

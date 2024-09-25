@@ -62,8 +62,8 @@ export const RatingForm = (props: Props) => {
                 idx() +
                 ((props.block.options?.buttonType ??
                   defaultRatingInputOptions.buttonType) === "Numbers"
-                  ? (props.block.options?.startsAt as number | undefined) ??
-                    defaultRatingInputOptions.startsAt
+                  ? ((props.block.options?.startsAt as number | undefined) ??
+                    defaultRatingInputOptions.startsAt)
                   : 1)
               }
               onClick={handleClick}

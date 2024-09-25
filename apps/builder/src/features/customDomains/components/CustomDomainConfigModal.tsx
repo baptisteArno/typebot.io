@@ -144,7 +144,7 @@ export const CustomDomainConfigModal = ({
                 <Stack>
                   <Text fontWeight="bold">Name</Text>
                   <Text fontFamily="mono" fontSize="sm">
-                    {recordType === "A" ? "@" : subdomain ?? "www"}
+                    {recordType === "A" ? "@" : (subdomain ?? "www")}
                   </Text>
                 </Stack>
                 <Stack>

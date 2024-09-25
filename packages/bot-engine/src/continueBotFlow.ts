@@ -656,7 +656,8 @@ const parseReply =
       }
       case InputBlockType.FILE: {
         if (!reply)
-          return block.options?.isRequired ?? defaultFileInputOptions.isRequired
+          return (block.options?.isRequired ??
+            defaultFileInputOptions.isRequired)
             ? { status: "fail" }
             : { status: "skip" };
         const replyValue = reply.type === "audio" ? reply.url : reply.text;

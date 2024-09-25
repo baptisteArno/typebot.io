@@ -37,7 +37,7 @@
     "libphonenumber-js": "1.10.37",
     "node-html-parser": "6.1.5",
     "nodemailer": "6.9.8",
-    "openai": "4.47.1",
+    "openai": "4.52.7",
     "qs": "6.11.2",
     "stripe": "12.13.0"
   },

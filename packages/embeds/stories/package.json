@@ -14,7 +14,9 @@
     "@typebot.io/conditions": "workspace:*",
     "@typebot.io/react": "workspace:*",
     "@typebot.io/theme": "workspace:*",
-    "bot-engine": "workspace:*",
+    "@typebot.io/blocks-bubbles": "workspace:*",
+    "@typebot.io/blocks-inputs": "workspace:*",
+    "@typebot.io/blocks-logic": "workspace:*",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },

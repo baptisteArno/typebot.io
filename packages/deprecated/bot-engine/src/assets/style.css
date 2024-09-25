@@ -5,7 +5,7 @@
 :root {
   --typebot-container-bg-image: none;
   --typebot-container-bg-color: transparent;
-  --typebot-container-font-family: 'Open Sans';
+  --typebot-container-font-family: "Open Sans";
 
   --typebot-button-bg-color: #0042da;
   --typebot-button-color: #ffffff;

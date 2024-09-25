@@ -8,7 +8,6 @@
   "dependencies": {
     "@typebot.io/env": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
-    "@typebot.io/schemas": "workspace:*",
     "@typebot.io/zod": "workspace:*",
     "ky": "1.2.4",
     "posthog-node": "3.1.1"

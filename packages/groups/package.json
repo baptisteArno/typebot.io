@@ -7,7 +7,6 @@
   },
   "dependencies": {
     "@typebot.io/blocks-core": "workspace:*",
-    "@typebot.io/forge": "workspace:*",
     "@typebot.io/zod": "workspace:*"
   },
   "devDependencies": {

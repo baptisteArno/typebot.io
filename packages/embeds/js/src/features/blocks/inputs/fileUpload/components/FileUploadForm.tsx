@@ -123,8 +123,8 @@ export const FileUploadForm = (props: Props) => {
               props.block.options?.labels?.success?.multiple ??
               defaultFileInputOptions.labels.success.multiple
             ).replaceAll("{total}", urls.length.toString())
-          : props.block.options?.labels?.success?.single ??
-            defaultFileInputOptions.labels.success.single,
+          : (props.block.options?.labels?.success?.single ??
+            defaultFileInputOptions.labels.success.single),
       value: urls
         .filter(isDefined)
         .map(({ url }) => encodeUrl(url))
