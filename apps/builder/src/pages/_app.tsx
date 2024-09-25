@@ -17,6 +17,10 @@ import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import "@/assets/styles/routerProgressBar.css";
+import "@/assets/styles/plate.css";
+import "@/assets/styles/resultsTable.css";
+import "@/assets/styles/custom.css";
 
 const { ToastContainer, toast } = createStandaloneToast(customTheme);
 
