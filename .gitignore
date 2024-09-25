@@ -45,3 +45,5 @@ snapshots
 *.tsbuildinfo
 
 .tsup
+
+.env.docker

@@ -76,6 +76,7 @@ RUN groupadd bun \
     && which bunx \
     && bun --version
 RUN apt-get -qy update && apt-get -qy --no-install-recommends install openssl git python3 g++ build-essential
+WORKDIR /app
 
 # ================= TURBO PRUNE ===================
 
@@ -94,20 +95,25 @@ ARG SCOPE
 COPY --from=pruned /app/out/full/ .
 RUN bunx json -I -f package.json -e ${BUN_PKG_MANAGER}
 RUN SENTRYCLI_SKIP_DOWNLOAD=1 bun install
-RUN bunx clean-modules -y "**/*.ts" "**/@types/**"
 RUN SKIP_ENV_CHECK=true bunx turbo build --filter="${SCOPE}..."
 
 # ================== RELEASE ======================
 
 FROM bun AS release
 ARG SCOPE
-USER bun
-COPY --from=builder /app .
-EXPOSE 3000
-ENV PORT 3000
-COPY --from=builder /app/apps/${SCOPE}/.next/standalone ./
-COPY --from=builder /app/apps/${SCOPE}/.next/static ./apps/${SCOPE}/.next/static
-COPY --from=builder /app/apps/${SCOPE}/public ./apps/${SCOPE}/public
+ENV SCOPE=${SCOPE}
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/packages/prisma/postgresql ./packages/prisma/postgresql
+COPY --from=builder --chown=node:node /app/apps/${SCOPE}/.next/standalone ./
+COPY --from=builder --chown=node:node /app/apps/${SCOPE}/.next/static ./apps/${SCOPE}/.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/apps/${SCOPE}/public ./apps/${SCOPE}/public
+
+RUN ./node_modules/.bin/prisma generate --schema=packages/prisma/postgresql/schema.prisma;
+
+
 COPY scripts/${SCOPE}-entrypoint.sh ./
 RUN chmod +x ./${SCOPE}-entrypoint.sh
 ENTRYPOINT ./${SCOPE}-entrypoint.sh
+
+EXPOSE 3000
+ENV PORT 3000
