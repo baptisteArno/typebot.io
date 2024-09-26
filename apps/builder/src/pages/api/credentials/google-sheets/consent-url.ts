@@ -11,8 +11,8 @@ export const googleSheetsScopes = [
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     const oauth2Client = new OAuth2Client(
-      env.GOOGLE_CLIENT_ID,
-      env.GOOGLE_CLIENT_SECRET,
+      env.GOOGLE_SHEETS_CLIENT_ID,
+      env.GOOGLE_SHEETS_CLIENT_SECRET,
       `${env.NEXTAUTH_URL}/api/credentials/google-sheets/callback`,
     );
     const url = oauth2Client.generateAuthUrl({

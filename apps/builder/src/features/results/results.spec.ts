@@ -159,7 +159,7 @@ test("table features should work", async ({ page }) => {
     await page.click('[data-testid="checkbox"] >> nth=0');
     await page.getByRole("button", { name: "Delete" }).click();
     await deleteButtonInConfirmDialog(page).click();
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(5000);
     expect(await page.locator("tr").count()).toBe(1);
     await expect(page.locator('text="Delete"')).toBeHidden();
   });

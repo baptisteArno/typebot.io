@@ -223,17 +223,35 @@ const customOAuthEnv = {
   },
 };
 
-const googleEnv = {
+const googleAuthEnv = {
   server: {
-    GOOGLE_CLIENT_ID: z.string().min(1).optional(),
-    GOOGLE_CLIENT_SECRET: z.string().min(1).optional(),
+    GOOGLE_AUTH_CLIENT_ID: z.string().min(1).optional(),
+    GOOGLE_AUTH_CLIENT_SECRET: z.string().min(1).optional(),
+  },
+};
+
+const googleSheetsEnv = {
+  server: {
+    GOOGLE_SHEETS_CLIENT_ID: z.string().min(1).optional(),
+    GOOGLE_SHEETS_CLIENT_SECRET: z.string().min(1).optional(),
   },
   client: {
-    NEXT_PUBLIC_GOOGLE_API_KEY: z.string().min(1).optional(),
+    NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY: z.string().min(1).optional(),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_GOOGLE_API_KEY: getRuntimeVariable(
-      "NEXT_PUBLIC_GOOGLE_API_KEY",
+    NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY: getRuntimeVariable(
+      "NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY",
+    ),
+  },
+};
+
+const googleFontsEnv = {
+  client: {
+    NEXT_PUBLIC_GOOGLE_FONTS_API_KEY: z.string().min(1).optional(),
+  },
+  runtimeEnv: {
+    NEXT_PUBLIC_GOOGLE_FONTS_API_KEY: getRuntimeVariable(
+      "NEXT_PUBLIC_GOOGLE_FONTS_API_KEY",
     ),
   },
 };
@@ -431,7 +449,8 @@ export const env = createEnv({
     ...githubEnv.server,
     ...facebookEnv.server,
     ...smtpEnv.server,
-    ...googleEnv.server,
+    ...googleAuthEnv.server,
+    ...googleSheetsEnv.server,
     ...stripeEnv.server,
     ...s3Env.server,
     ...vercelEnv.server,
@@ -448,7 +467,8 @@ export const env = createEnv({
   client: {
     ...baseEnv.client,
     ...smtpEnv.client,
-    ...googleEnv.client,
+    ...googleSheetsEnv.client,
+    ...googleFontsEnv.client,
     ...stripeEnv.client,
     ...giphyEnv.client,
     ...vercelEnv.client,
@@ -461,7 +481,8 @@ export const env = createEnv({
   experimental__runtimeEnv: {
     ...baseEnv.runtimeEnv,
     ...smtpEnv.runtimeEnv,
-    ...googleEnv.runtimeEnv,
+    ...googleSheetsEnv.runtimeEnv,
+    ...googleFontsEnv.runtimeEnv,
     ...stripeEnv.runtimeEnv,
     ...giphyEnv.runtimeEnv,
     ...vercelEnv.runtimeEnv,

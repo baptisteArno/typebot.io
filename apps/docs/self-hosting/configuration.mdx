@@ -49,9 +49,7 @@ Used for sending email notifications and authentication
 
 1. Head over the Credentials tab: https://console.developers.google.com/apis/credentials
 
-2. Create an API key. This will be your `NEXT_PUBLIC_GOOGLE_API_KEY`
-
-3. Create a OAuth client ID. This will be your `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`
+2. Create a OAuth client ID. This will be your `GOOGLE_AUTH_CLIENT_ID` and `GOOGLE_AUTH_CLIENT_SECRET`
 
    Make sure to set the following scopes: `userinfo.email`
 
@@ -59,18 +57,15 @@ Used for sending email notifications and authentication
 
    - For production:
      - https://\<YOUR_DOMAIN\>/api/auth/callback/google
-     - https://\<YOUR_DOMAIN\>/api/credentials/google-sheets/callback
    - For development:
      - http://localhost:3000/api/auth/callback/google
-     - http://localhost:3000/api/credentials/google-sheets/callback
 
 </Accordion>
 
-| Parameter                  | Default | Description                                   |
-| -------------------------- | ------- | --------------------------------------------- |
-| GOOGLE_CLIENT_ID           |         | The Client ID from the Google API Console     |
-| GOOGLE_CLIENT_SECRET       |         | The Client secret from the Google API Console |
-| NEXT_PUBLIC_GOOGLE_API_KEY |         | The API Key from the Google API Console       |
+| Parameter                 | Default | Description                                   |
+| ------------------------- | ------- | --------------------------------------------- |
+| GOOGLE_AUTH_CLIENT_ID     |         | The Client ID from the Google API Console     |
+| GOOGLE_AUTH_CLIENT_SECRET |         | The Client secret from the Google API Console |
 
 ## Google Sheets
 
@@ -80,31 +75,29 @@ Used for sending email notifications and authentication
 
 2. Head over the Credentials tab: https://console.developers.google.com/apis/credentials
 
-3. Create an API key with access to the Google Picker API. This will be your `NEXT_PUBLIC_GOOGLE_API_KEY`
+3. Create an API key with access to the Google Picker API. This will be your `NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY`
 
-4. Create a OAuth client ID. This will be your `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`
+4. Create a OAuth client ID. This will be your `GOOGLE_SHEETS_CLIENT_ID` and `GOOGLE_SHEETS_CLIENT_SECRET`
 
-   Make sure to set the following scopes located in your OAuth Consent Screen: `userinfo.email`, `spreadsheets`, `drive.file`
+   Make sure to set the following scopes located in your OAuth Consent Screen: `spreadsheets`, `drive.file`
    https://developers.google.com/identity/protocols/oauth2/scopes
 
    The "Authorized redirect URIs" used when creating the credentials must include your full domain and end in the callback path:
 
    - For production:
-     - https://\<YOUR_DOMAIN\>/api/auth/callback/google
      - https://\<YOUR_DOMAIN\>/api/credentials/google-sheets/callback
    - For development:
-     - http://localhost:3000/api/auth/callback/google
      - http://localhost:3000/api/credentials/google-sheets/callback
 
 5. To avoid having to always reconnect a Google Sheets credentials every 7 days, you need to promote your OAuth client to production (https://developers.google.com/nest/device-access/reference/errors/authorization#refresh_token_keeps_expiring)
 
 </Accordion>
 
-| Parameter                  | Default | Description                                   |
-| -------------------------- | ------- | --------------------------------------------- |
-| GOOGLE_CLIENT_ID           |         | The Client ID from the Google API Console     |
-| GOOGLE_CLIENT_SECRET       |         | The Client secret from the Google API Console |
-| NEXT_PUBLIC_GOOGLE_API_KEY |         | The API Key from the Google API Console       |
+| Parameter                         | Default | Description                                   |
+| --------------------------------- | ------- | --------------------------------------------- |
+| GOOGLE_SHEETS_CLIENT_ID           |         | The Client ID from the Google API Console     |
+| GOOGLE_SHEETS_CLIENT_SECRET       |         | The Client secret from the Google API Console |
+| NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY |         | The API Key from the Google API Console       |
 
 ## Google Fonts
 
@@ -116,13 +109,13 @@ Used authentication in the builder and for the Google Sheets integration step.
 
 2. Head over the Credentials tab: https://console.developers.google.com/apis/credentials
 
-3. Create an API key with access to the Web Fonts Developer API. This will be your `NEXT_PUBLIC_GOOGLE_API_KEY`
+3. Create an API key with access to the Web Fonts Developer API. This will be your `NEXT_PUBLIC_GOOGLE_FONTS_API_KEY`
 
 </Accordion>
 
-| Parameter                  | Default | Description                             |
-| -------------------------- | ------- | --------------------------------------- |
-| NEXT_PUBLIC_GOOGLE_API_KEY |         | The API Key from the Google API Console |
+| Parameter                        | Default | Description                             |
+| -------------------------------- | ------- | --------------------------------------- |
+| NEXT_PUBLIC_GOOGLE_FONTS_API_KEY |         | The API Key from the Google API Console |
 
 ## GitHub (Auth)
 

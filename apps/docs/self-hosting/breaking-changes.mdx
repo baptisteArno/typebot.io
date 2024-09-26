@@ -1,0 +1,25 @@
+---
+title: Breaking changes
+---
+
+This lists all the breaking changes introduced in each version of Typebot.
+
+Make sure to check all the intermediate versions as well. For example, if you are on **v2.21** and would like to upgrade to **v2.29**, you should apply all the breaking changes from **v2.21** to **v2.29**.
+
+## v3.0
+
+### Google variables renamed
+
+`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `NEXT_PUBLIC_GOOGLE_API_KEY` have been removed in favor of:
+
+- Auth: `GOOGLE_AUTH_CLIENT_ID`, `GOOGLE_AUTH_CLIENT_SECRET`
+- Sheets: `GOOGLE_SHEETS_CLIENT_ID`, `GOOGLE_SHEETS_CLIENT_SECRET`, `NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY`
+- Fonts: `NEXT_PUBLIC_GOOGLE_FONTS_API_KEY`
+
+It allows for more granular control over the Google APIs you are using. Instead of enabling all of them.
+
+If you still want to use the same keys for all Google APIs, you just have to set the same value for all of them.
+
+### New license
+
+The license was changed from AGPLv3 to FSL. It ultimately means that you can't fork the project to commercialize a Typebot competitor anymore.

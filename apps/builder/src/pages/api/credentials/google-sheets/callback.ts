@@ -30,8 +30,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .status(400)
         .send({ message: "Bad request, couldn't get code" });
     const oauth2Client = new OAuth2Client(
-      env.GOOGLE_CLIENT_ID,
-      env.GOOGLE_CLIENT_SECRET,
+      env.GOOGLE_SHEETS_CLIENT_ID,
+      env.GOOGLE_SHEETS_CLIENT_SECRET,
       `${env.NEXTAUTH_URL}/api/credentials/google-sheets/callback`,
     );
     const { tokens } = await oauth2Client.getToken(code);
