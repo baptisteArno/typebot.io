@@ -22,6 +22,82 @@ There, you can change the container dimensions. Here is a code example:
 
 This code is creating a container with a 100% width (will match parent width) and 600px height.
 
+<Accordion title="See all possible settings">
+
+ ```ts
+ type BotProps = {
+   typebot: string | any;
+   isPreview?: boolean;
+   resultId?: string;
+   prefilledVariables?: Record<string, unknown>;
+   apiHost?: string;
+   font?:
+     | string
+     | {
+         type: "Google";
+         family?: string | undefined;
+       }
+     | {
+         type: "Custom";
+         url?: string | undefined;
+         family?: string | undefined;
+         css?: string | undefined;
+       };
+   progressBarRef?: HTMLDivElement;
+   startFrom?:
+     | {
+         type: "group";
+         groupId: string;
+       }
+     | {
+         type: "event";
+         eventId: string;
+       };
+   sessionId?: string;
+   theme?: {
+     chatWindow?: {
+       backgroundColor?: string;
+       maxWidth?: string;
+       maxHeight?: string;
+     };
+     button?: {
+       size?: "medium" | "large" | `${number}px`;
+       backgroundColor?: string;
+       iconColor?: string;
+       customIconSrc?: string;
+       customCloseIconSrc?: string;
+     };
+     previewMessage?: {
+       backgroundColor?: string;
+       textColor?: string;
+       closeButtonBackgroundColor?: string;
+       closeButtonIconColor?: string;
+     };
+     placement?: "left" | "right";
+   };
+   previewMessage?: {
+     avatarUrl?: string;
+     message: string;
+     autoShowDelay?: number;
+   };
+   autoShowDelay?: number;
+   onNewInputBlock?: (inputBlock: any) => void;
+   onAnswer?: (answer: { message: string; blockId: string }) => void;
+   onInit?: () => void;
+   onEnd?: () => void;
+   onNewLogs?: (
+     logs: {
+       status: string;
+       description: string;
+       details?: unknown;
+     }[],
+   ) => void;
+   onChatStatePersisted?: (isEnabled: boolean) => void;
+ };
+ ```
+
+</Accordion>
+
 ### Multiple bots
 
 If you have different bots on the same page you will have to make them distinct with an additional `id` prop:
@@ -72,6 +148,92 @@ Here is an example:
 
 This code will automatically trigger the popup window after 3 seconds.
 
+<Accordion title="See all possible settings">
+
+ ```ts
+ type PopupProps = {
+   typebot: string | any;
+   isPreview?: boolean;
+   resultId?: string;
+   prefilledVariables?: Record<string, unknown>;
+   apiHost?: string;
+   font?:
+     | string
+     | {
+         type: "Google";
+         family?: string | undefined;
+       }
+     | {
+         type: "Custom";
+         url?: string | undefined;
+         family?: string | undefined;
+         css?: string | undefined;
+       };
+   progressBarRef?: HTMLDivElement;
+   startFrom?:
+     | {
+         type: "group";
+         groupId: string;
+       }
+     | {
+         type: "event";
+         eventId: string;
+       };
+   sessionId?: string;
+   theme?: {
+     chatWindow?: {
+       backgroundColor?: string;
+       maxWidth?: string;
+       maxHeight?: string;
+     };
+     button?: {
+       size?: "medium" | "large" | `${number}px`;
+       backgroundColor?: string;
+       iconColor?: string;
+       customIconSrc?: string;
+       customCloseIconSrc?: string;
+     };
+     previewMessage?: {
+       backgroundColor?: string;
+       textColor?: string;
+       closeButtonBackgroundColor?: string;
+       closeButtonIconColor?: string;
+     };
+     placement?: "left" | "right";
+   };
+   previewMessage?: {
+     avatarUrl?: string;
+     message: string;
+     autoShowDelay?: number;
+   };
+   autoShowDelay?: number;
+   onNewInputBlock?: (inputBlock: any) => void;
+   onAnswer?: (answer: { message: string; blockId: string }) => void;
+   onInit?: () => void;
+   onEnd?: () => void;
+   onNewLogs?: (
+     logs: {
+       status: string;
+       description: string;
+       details?: unknown;
+     }[],
+   ) => void;
+   onChatStatePersisted?: (isEnabled: boolean) => void;
+   autoShowDelay?: number;
+   theme?: {
+     width?: string;
+     backgroundColor?: string;
+     zIndex?: number;
+   };
+   defaultOpen?: boolean;
+   isOpen?: boolean;
+   onOpen?: () => void;
+   onClose?: () => void;
+ };
+ ```
+
+</Accordion>
+
 ## Bubble
 
 You can get the bubble HTML and Javascript code by clicking on the "HTML & Javascript" button in the "Share" tab of your typebot.
@@ -88,7 +250,7 @@ Here is an example:
       message: 'I have a question for you!',
       autoShowDelay: 5000,
       avatarUrl: 'https://avatars.githubusercontent.com/u/16015833?v=4',
-    },
+    }, // Defaults to undefined
     theme: {
       button: { backgroundColor: '#0042DA', iconColor: '#FFFFFF' },
       previewMessage: { backgroundColor: '#ffffff', textColor: 'black' },
@@ -99,6 +261,87 @@ Here is an example:
 ```
 
 This code will show the bubble and let a preview message appear after 5 seconds.
+
+<Accordion title="See all possible settings">
+
+ ```ts
+ type BubbleProps = {
+   typebot: string | any;
+   isPreview?: boolean;
+   resultId?: string;
+   prefilledVariables?: Record<string, unknown>;
+   apiHost?: string;
+   font?:
+     | string
+     | {
+         type: "Google";
+         family?: string | undefined;
+       }
+     | {
+         type: "Custom";
+         url?: string | undefined;
+         family?: string | undefined;
+         css?: string | undefined;
+       };
+   progressBarRef?: HTMLDivElement;
+   startFrom?:
+     | {
+         type: "group";
+         groupId: string;
+       }
+     | {
+         type: "event";
+         eventId: string;
+       };
+   sessionId?: string;
+   theme?: {
+     chatWindow?: {
+       backgroundColor?: string;
+       maxWidth?: string;
+       maxHeight?: string;
+     };
+     button?: {
+       size?: "medium" | "large" | `${number}px`;
+       backgroundColor?: string;
+       iconColor?: string;
+       customIconSrc?: string;
+       customCloseIconSrc?: string;
+     };
+     previewMessage?: {
+       backgroundColor?: string;
+       textColor?: string;
+       closeButtonBackgroundColor?: string;
+       closeButtonIconColor?: string;
+     };
+     placement?: "left" | "right";
+   };
+   previewMessage?: {
+     avatarUrl?: string;
+     message: string;
+     autoShowDelay?: number;
+   };
+   autoShowDelay?: number;
+   onNewInputBlock?: (inputBlock: any) => void;
+   onAnswer?: (answer: { message: string; blockId: string }) => void;
+   onInit?: () => void;
+   onEnd?: () => void;
+   onNewLogs?: (
+     logs: {
+       status: string;
+       description: string;
+       details?: unknown;
+     }[],
+   ) => void;
+   onChatStatePersisted?: (isEnabled: boolean) => void;
+   onOpen?: () => void;
+   onClose?: () => void;
+   onPreviewMessageClick?: () => void;
+ };
+ ```
+
+</Accordion>
+
+
 
 ### Custom button position
 
