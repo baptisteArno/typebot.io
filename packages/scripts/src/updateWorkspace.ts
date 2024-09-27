@@ -14,7 +14,7 @@ const updateTypebot = async () => {
       id: workspaceId,
     },
     data: {
-      isVerified: true,
+      plan: "PRO",
     },
   });
 

@@ -26,6 +26,6 @@ export const promptAndSetEnvironment = async (
 
   require("dotenv").config({
     override: true,
-    path: join(__dirname, `.env.${response.env}`),
+    path: join(__dirname, "..", `.env.${response.env}`),
   });
 };

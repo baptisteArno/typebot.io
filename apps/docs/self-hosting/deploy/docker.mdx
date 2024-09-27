@@ -135,6 +135,9 @@ services:
       virtual.host: 'bot.domain.com' # change to your domain name
       virtual.port: '3000'
       virtual.tls-email: 'admin@example.com' # change to your email
+      # Necessary to enable message streaming
+      virtual.proxy.directives: |
+        flush_interval -1
 ```
 
 This config requires you to add the following DNS entry:
@@ -293,6 +296,9 @@ services:
       virtual.host: 'bot.domain.com' # change to your domain
       virtual.port: '3000'
       virtual.tls-email: 'admin@example.com' # change to your email
+      # Necessary to enable message streaming
+      virtual.proxy.directives: |
+        flush_interval -1
     image: baptistearno/typebot-viewer:latest
     depends_on:
       typebot-db:

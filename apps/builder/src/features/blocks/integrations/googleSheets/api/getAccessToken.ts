@@ -52,8 +52,8 @@ export const getAccessToken = authenticatedProcedure
     )) as GoogleSheetsCredentials["data"];
 
     const client = new OAuth2Client({
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
+      clientId: env.GOOGLE_SHEETS_CLIENT_ID,
+      clientSecret: env.GOOGLE_SHEETS_CLIENT_SECRET,
       redirectUri: `${env.NEXTAUTH_URL}/api/credentials/google-sheets/callback`,
     });
 

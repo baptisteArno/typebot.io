@@ -16,8 +16,8 @@ export const getAuthenticatedGoogleClient = async (
   const data = await decrypt(credentials.data, credentials.iv);
 
   const oauth2Client = new OAuth2Client(
-    env.GOOGLE_CLIENT_ID,
-    env.GOOGLE_CLIENT_SECRET,
+    env.GOOGLE_SHEETS_CLIENT_ID,
+    env.GOOGLE_SHEETS_CLIENT_SECRET,
     `${env.NEXTAUTH_URL}/api/credentials/google-sheets/callback`,
   );
   oauth2Client.setCredentials(data);

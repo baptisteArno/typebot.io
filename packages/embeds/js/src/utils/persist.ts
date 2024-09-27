@@ -26,6 +26,8 @@ export function persist<T>(
   const serialize: (data: T) => string = (data: T) => {
     const clonedData = JSON.parse(JSON.stringify(data));
 
+    if (typeof clonedData !== "object") return JSON.stringify(clonedData);
+
     if ("blobUrl" in clonedData) {
       clonedData.blobUrl = undefined;
     }

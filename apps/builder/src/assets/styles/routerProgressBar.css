@@ -1,6 +1,7 @@
-/* Make clicks pass-through */
 #nprogress {
   pointer-events: none;
+  position: fixed;
+  z-index: 1;
 }
 
 #nprogress .bar {
@@ -15,7 +16,6 @@
   height: 2px;
 }
 
-/* Fancy blur effect */
 #nprogress .peg {
   display: block;
   position: absolute;

@@ -1,6 +1,5 @@
 {
   "name": "@typebot.io/scripts",
-  "type": "module",
   "scripts": {
     "playground": "SKIP_ENV_CHECK=true dotenv -e ./.env.local -- tsx src/playground.ts",
     "db:cleanDatabase": "SKIP_ENV_CHECK=true tsx src/cleanDatabase.ts",
@@ -56,7 +55,6 @@
     "@typebot.io/tsconfig": "workspace:*",
     "@types/bun": "^1.1.9",
     "@types/cli-progress": "^3.11.5",
-    "@types/node": "20.4.2",
     "@types/papaparse": "5.3.7",
     "@types/prompts": "2.4.4",
     "tsx": "4.19.1"

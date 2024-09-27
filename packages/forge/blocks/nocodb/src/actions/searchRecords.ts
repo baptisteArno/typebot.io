@@ -1,5 +1,5 @@
 import { createAction, option } from "@typebot.io/forge";
-import { isDefined } from "@typebot.io/lib/utils";
+import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import ky, { HTTPError } from "ky";
 import { auth } from "../auth";
 import {
@@ -109,7 +109,7 @@ export const searchRecords = createAction({
 
         responseMapping?.forEach((mapping) => {
           if (!mapping.fieldName || !mapping.variableId) return;
-          if (!filteredList[0]![mapping.fieldName]) {
+          if (isNotDefined(filteredList[0]![mapping.fieldName])) {
             logs.add(`Field ${mapping.fieldName} does not exist in the table`);
             return;
           }

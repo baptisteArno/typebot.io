@@ -235,6 +235,10 @@
       "pages": ["self-hosting/guides/s3", "self-hosting/guides/planetscale"]
     },
     {
+      "group": "Misc",
+      "pages": ["self-hosting/breaking-changes"]
+    },
+    {
       "group": "Get started",
       "pages": ["api-reference/authentication", "api-reference/how-to"]
     },

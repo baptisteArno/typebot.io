@@ -5,7 +5,7 @@
   "globalPassThroughEnv": ["ENCRYPTION_SECRET"],
   "tasks": {
     "dev": {
-      "dependsOn": ["^db:generate", "@typebot.io/react#build"],
+      "dependsOn": ["^db:generate", "^db:push", "@typebot.io/react#build"],
       "persistent": true
     },
     "build": {

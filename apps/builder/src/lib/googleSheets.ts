@@ -14,8 +14,8 @@ export const getAuthenticatedGoogleClient = async (
   { client: OAuth2Client; credentials: Prisma.Credentials } | undefined
 > => {
   const oauth2Client = new OAuth2Client(
-    env.GOOGLE_CLIENT_ID,
-    env.GOOGLE_CLIENT_SECRET,
+    env.GOOGLE_SHEETS_CLIENT_ID,
+    env.GOOGLE_SHEETS_CLIENT_SECRET,
     `${env.NEXTAUTH_URL}/api/credentials/google-sheets/callback`,
   );
   const credentials = (await prisma.credentials.findFirst({

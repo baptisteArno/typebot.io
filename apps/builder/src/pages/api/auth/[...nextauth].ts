@@ -78,11 +78,11 @@ if (env.NEXT_PUBLIC_SMTP_FROM && !env.SMTP_AUTH_DISABLED)
     }),
   );
 
-if (env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET)
+if (env.GOOGLE_AUTH_CLIENT_ID && env.GOOGLE_AUTH_CLIENT_SECRET)
   providers.push(
     GoogleProvider({
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
+      clientId: env.GOOGLE_AUTH_CLIENT_ID,
+      clientSecret: env.GOOGLE_AUTH_CLIENT_SECRET,
     }),
   );
 
