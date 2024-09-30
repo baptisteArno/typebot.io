@@ -21,6 +21,78 @@ import "@/assets/styles/routerProgressBar.css";
 import "@/assets/styles/plate.css";
 import "@/assets/styles/resultsTable.css";
 import "@/assets/styles/custom.css";
+import "@/assets/styles/globals.css";
+import localFont from "next/font/local";
+
+const untitledSans = localFont({
+  src: [
+    {
+      path: "../assets/fonts/untitledSans/untitledSansRegular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/untitledSans/untitledSansRegularItalic.woff2",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "../assets/fonts/untitledSans/untitledSansMedium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/untitledSans/untitledSansMediumItalic.woff2",
+      weight: "500",
+      style: "italic",
+    },
+    {
+      path: "../assets/fonts/untitledSans/untitledSansBold.woff2",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/untitledSans/untitledSansBoldItalic.woff2",
+      weight: "700",
+      style: "italic",
+    },
+  ],
+});
+
+const uxumGrotesque = localFont({
+  src: [
+    {
+      path: "../assets/fonts/uxumGrotesque/uxumGrotesqueRegular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/uxumGrotesque/uxumGrotesqueRegularItalic.woff2",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "../assets/fonts/uxumGrotesque/uxumGrotesqueMedium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/uxumGrotesque/uxumGrotesqueMediumItalic.woff2",
+      weight: "500",
+      style: "italic",
+    },
+    {
+      path: "../assets/fonts/uxumGrotesque/uxumGrotesqueBold.woff2",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/uxumGrotesque/uxumGrotesqueBoldItalic.woff2",
+      weight: "700",
+      style: "italic",
+    },
+  ],
+});
 
 const { ToastContainer, toast } = createStandaloneToast(customTheme);
 
