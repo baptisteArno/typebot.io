@@ -11,7 +11,7 @@ import { env } from '@typebot.io/env'
 export const convertInputToWhatsAppMessages = (
   input: NonNullable<ContinueChatResponse['input']>,
   lastMessage: ContinueChatResponse['messages'][number] | undefined
-): WhatsAppSendingMessage[] => {
+): WhatsAppSendingMessage[] | undefined => {
   const lastMessageText =
     lastMessage?.type === BubbleBlockType.TEXT &&
     lastMessage.content.type === 'richText'
