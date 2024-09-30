@@ -515,7 +515,8 @@ const Webhook = ({
         <ListItem>
           <HStack>
             <Text flexShrink={0}>
-              Webhook fields: check <Code>messages</Code>
+              Webhook fields: Next to <Code>messages</Code>, click on
+              "Subscribe"
             </Text>
           </HStack>
         </ListItem>
