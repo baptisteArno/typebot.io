@@ -1,5 +1,17 @@
 # Changelog
 
+<a name="3.0.1"></a>
+## 3.0.1 (2024-10-01)
+
+### Changed
+
+- 🔧 Add back the db:migrate turbo task [[9928388](https://github.com/baptisteArno/typebot.io/commit/9928388a4b12f6354a7d70eaa172bfb7501da4cf)]
+
+### Miscellaneous
+
+- 📝 Update local installation instructions [[088678b](https://github.com/baptisteArno/typebot.io/commit/088678bd26326814304a80a71d50a88a96558263)]
+
+
 <a name="3.0.0"></a>
 ## 3.0.0 (2024-10-01)
 
