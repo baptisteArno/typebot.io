@@ -13,6 +13,15 @@ export const computeRiskLevel = (typebot: any, params?: Params) => {
         new RegExp(`(?<!(https?://|@)[^\\s"]*)\\b${keyword}\\b`).test(
           stringifiedTypebot,
         ),
+        new RegExp(`(?<!(https?://|@)[^\\s"]*)\\b${keyword}\\b`, "gi").test(
+          stringifiedTypebot,
+        ),
+        new RegExp(
+          `(?<!(https?://|@)[^\\s"]*)\\b${keyword}${
+            keyword.includes("$") ? "" : `\\b`
+          }`,
+          "gi",
+        ).test(stringifiedTypebot),
       );
     }),
     /(?<!(https?:\/\/|@)[^\s"]*)\btest\b/.test("test"),
@@ -27,7 +36,7 @@ export const computeRiskLevel = (typebot: any, params?: Params) => {
       ).test(stringifiedTypebot),
     )
   ) {
-    console.log(true);
+    console.log("IN", true);
     if (params?.debug) {
       console.log(
         "High risk keywords detected:",
