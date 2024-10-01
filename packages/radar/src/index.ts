@@ -22,6 +22,10 @@ export const computeRiskLevel = (typebot: any, params?: Params) => {
           }`,
           "gi",
         ).test(stringifiedTypebot),
+        `(?<!(https?://|@)[^\\s"]*)\\b${keyword}${
+          keyword.includes("$") ? "" : `\\b`
+        }`,
+        `(?<!(https?://|@)[^\\s"]*)\\b${keyword}\\b`,
       );
     }),
     /(?<!(https?:\/\/|@)[^\s"]*)\btest\b/.test("test"),
