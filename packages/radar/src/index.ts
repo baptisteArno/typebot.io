@@ -6,7 +6,17 @@ type Params = {
 
 export const computeRiskLevel = (typebot: any, params?: Params) => {
   const stringifiedTypebot = JSON.stringify(typebot);
-  console.log("high risk?", stringifiedTypebot, env.RADAR_HIGH_RISK_KEYWORDS);
+  console.log(
+    env.RADAR_HIGH_RISK_KEYWORDS?.forEach((keyword) => {
+      console.log(
+        `(?<!(https?://|@)[^\\s"]*)\\b${keyword}\\b`,
+        new RegExp(`(?<!(https?://|@)[^\\s"]*)\\b${keyword}\\b`).test(
+          stringifiedTypebot,
+        ),
+      );
+    }),
+    /(?<!(https?:\/\/|@)[^\s"]*)\btest\b/.test("test"),
+  );
   if (
     env.RADAR_HIGH_RISK_KEYWORDS?.some((keyword) =>
       new RegExp(
