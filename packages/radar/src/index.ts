@@ -5,8 +5,8 @@ type Params = {
 };
 
 export const computeRiskLevel = (typebot: any, params?: Params) => {
-  console.log(env.RADAR_CUMULATIVE_KEYWORDS?.forEach(console.log));
   const stringifiedTypebot = JSON.stringify(typebot);
+  console.log("high risk?", stringifiedTypebot, env.RADAR_HIGH_RISK_KEYWORDS);
   if (
     env.RADAR_HIGH_RISK_KEYWORDS?.some((keyword) =>
       new RegExp(
@@ -17,6 +17,7 @@ export const computeRiskLevel = (typebot: any, params?: Params) => {
       ).test(stringifiedTypebot),
     )
   ) {
+    console.log(true);
     if (params?.debug) {
       console.log(
         "High risk keywords detected:",
