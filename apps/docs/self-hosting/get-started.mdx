@@ -22,6 +22,9 @@ Typebot is fair source and can be self-hosted on your own server. This guide wil
 | Hosting | Easy and convenient. It takes 1 minute to start building your bots and share them with a worldwide high availability, backups, security and maintenance all done for you by me, [Baptiste, Typebot's founder](https://twitter.com/baptisteArno). I manage everything so you don’t have to worry about anything and can focus on creating great bot experiences. | You do it all yourself. You need to get a server and you need to manage your infrastructure. You are responsible for installation, maintenance, upgrades, server capacity, uptime, backup, security, stability, consistency, loading time and so on. |
 | Storage | All visitor data is exclusively processed on EU-owned cloud infrastructure. This ensures that your bots data processing complies with GDPR.                                                                                                                                                                                                                     | You have full control and can host your instance on any server in any country that you wish. Host it on a server in your basement or host it with any cloud provider wherever you want.                                                              |
 | Costs   | I charge a subscription fee. Whether you're a solo business owner, a growing startup or a large company, Typebot is here to help you build high-performing chat forms for the right price. Pay for as little or as much usage as you need.                                                                                                                      | You need to pay for your server, your database, your S3 storage, backups and whatever other cost there is associated with running the infrastructure. You never have to pay any fees to us.                                                          |
+| Features | Almost all features are available in the Free plan so that you can easily try it all out. More info available [here](https://typebot.io/pricing). | You have access to all the features. See how to configure default attributed workspace plan and admin user [here](./configuration). |
+| Releases | Instant access to new features | New releases are published each beginning of the month. |
+| Support | Premium direct support available on STARTER and PRO plans | We don't offer support for your self-hosting issues that are not related to Typebot. You may reach out to the [Discord community](https://typebot.io/discord) for support. |
 
 ## License requirements
 
@@ -39,6 +42,46 @@ This license allows you to do anything with Typebot except undermine its produce
   workshops. ❤️
 </Note>
 
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="What does the license allow me to do?">
+    You can do anything with Typebot except undermine its producer. Here is a non-exhaustive list of things you can do with a self-hosted instance:
+
+    ✅ As a company, create and publish your bot into your client-facing products
+
+    ✅ As a freelancer, create bots for your clients
+
+    ✅ Create (commercial) education / content about Typebot
+
+    ✅ Do (commercial) research
+
+    Here is a non-exhaustive list of things you cannot do:
+
+    ❌ Commercialize the access to your instance
+
+    ❌ Offer services for hosting Typebot instances
+
+  </Accordion>
+
+  <Accordion title="Can I integrate the Typebot editor in my existing software?">
+    ❌ **You legally cannot do this**. If you are selling your software, integrating the Typebot editor would mean competing against Typebot Cloud, which violates the project's license. However, you can use the code from two years ago, which is available under the Apache 2.0 license.
+  </Accordion>
+
+  <Accordion title="Can I commericalize my own Typebot instance?">
+    ❌ **You legally cannot do this**. This would mean you are competing against Typebot Cloud, which violates the project's license. However, you can use the code from two years ago, which is available under the Apache 2.0 license.
+  </Accordion>
+  <Accordion title="How can you be sustainable if you’re giving your software for free?">
+    Typebot is fair source not because it is good business even though I tink it creates instant trusts with prospects since the code is 100% public, it can be audited.
+
+    I personnally love when a software is open source. I get the chance to contribute to the code if I ever find a bug or need a new feature. When I benchmark 2 similar softwares, I almost always choose the one that is open source for that reason.
+
+    Everything I do with Typebot is to make it like a software I would personally love using.
+
+    Since I run Typebot as a solo entrepreneur, I also feel like making Typebot fair source is more sustainable as I can get the help from the community.
+  </Accordion>
+</AccordionGroup>
+
 ## Releases
 
 The self-hosted version is somewhat of a LTS, you only get new release once a month. If you want features as soon as they are available, consider becoming a [cloud user](https://app.typebot.io). New versions are published on the [releases page](https://github.com/baptisteArno/typebot.io/releases).
@@ -52,8 +95,8 @@ Typebot is composed of 2 Next.js applications you need to deploy:
 
 I've written guides on how to deploy Typebot using:
 
-- [Docker](/self-hosting/deploy/docker)
-- [Vercel](/self-hosting/deploy/vercel)
-- [Manual](/self-hosting/deploy/manual)
+- [Docker](./deploy/docker)
+- [Vercel](./deploy/vercel)
+- [Manual](./deploy/manual)
 
 If you have any questions, feel free to reach out on the [Discord server](https://typebot.io/discord) 🔥
