@@ -13,47 +13,41 @@ icon: 'laptop'
 
 ## Running the project locally
 
-1. Install dependencies
+1. Make sure you have node, [bun](https://bun.sh/docs/installation) and [docker](https://docs.docker.com/compose/install/) installed. For node, I suggest you use [`proto`](https://moonrepo.dev/proto) or [`nvm`](https://github.com/nvm-sh/nvm) allowing you to manage different versions. It should then autodetect which version need to be installed before running any command.
+
+2. Install dependencies
 
    ```sh
    cd typebot.io
-   bun i
+   bun install
    ```
 
-2. Set up environment variables
+3. Set up environment variables
 
    Copy `.env.dev.example` to `.env`
 
    Check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration) if you want to enable more options
 
-3. Make sure you have [Docker](https://docs.docker.com/compose/install/) running
+4. If you use the default DATABASE_URL, you need a matching database running. You can do that easily with the provided `docker-compose.dev.yml` file:
 
-4. Make sure you have Node.js installed. I suggest you use [`nvm`](https://github.com/nvm-sh/nvm) allowing you to manage different versions. Once you installed nvm, you can install and use the latest version of Node.js: `nvm install && nvm use`
+   ```sh
+   docker compose -f docker-compose.dev.yml -d up
+   ```
 
 5. Start the builder and viewer
 
    ```sh
-   bun dev
+   bunx turbo dev --filter=builder... --filter=viewer...
    ```
 
    Builder is available at [`http://localhost:3000`](http://localhost:3000)
 
    Viewer is available at [`http://localhost:3001`](http://localhost:3001)
 
-   Database inspector is available at [`http://localhost:5555`](http://localhost:5555)
-
    By default, you can easily authenticate in the builder using the "Github Sign In" button. For other options, check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration)
 
-6. (Optional) Start the landing page
+6. Optionnally you can also run the other available apps:
 
-   ```sh
-   cd ee/apps/landing-page
-   bun dev
-   ```
-
-7. (Optional) Start the docs
-
-   ```sh
-   cd apps/docs
-   bun start
-   ```
+    ```sh
+    bunx turbo dev --filter=builder... --filter=viewer... --filter=@typebot.io/prisma... --filter=landing-page... --filter=docs...
+    ```
