@@ -10,7 +10,7 @@ export const computeRiskLevel = (typebot: any, params?: Params) => {
     env.RADAR_HIGH_RISK_KEYWORDS?.some((keyword) =>
       new RegExp(
         `(?<!(https?://|@)[^\\s"]*)\\b${keyword}${
-          keyword.includes("$") ? "" : `\\b`
+          keyword.includes("$") ? "" : "\\b"
         }`,
         "gi",
       ).test(stringifiedTypebot),
@@ -22,7 +22,7 @@ export const computeRiskLevel = (typebot: any, params?: Params) => {
         env.RADAR_HIGH_RISK_KEYWORDS?.find((keyword) =>
           new RegExp(
             `(?<!(https?://|@)[^\\s"]*)\\b${keyword}${
-              keyword.includes("$") ? "" : `\\b`
+              keyword.includes("$") ? "" : "\\b"
             }`,
             "gi",
           ).test(stringifiedTypebot),
@@ -37,7 +37,7 @@ export const computeRiskLevel = (typebot: any, params?: Params) => {
       set.every((keyword) =>
         keyword.some((k) =>
           new RegExp(
-            `(?<!(https?://|@)[^\\s"]*)\\b${k}${k.includes("$") ? "" : `\\b`}`,
+            `(?<!(https?://|@)[^\\s"]*)\\b${k}${k.includes("$") ? "" : "\\b"}`,
             "gi",
           ).test(stringifiedTypebot),
         ),
@@ -52,7 +52,7 @@ export const computeRiskLevel = (typebot: any, params?: Params) => {
             keyword.some((k) =>
               new RegExp(
                 `(?<!(https?://|@)[^\\s"]*)\\b${k}${
-                  k.includes("$") ? "" : `\\b`
+                  k.includes("$") ? "" : "\\b"
                 }`,
                 "gi",
               ).test(stringifiedTypebot),
