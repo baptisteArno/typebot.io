@@ -8,7 +8,7 @@ import { upsertResult } from "./queries/upsertResult";
 import type { ChatSession, ContinueChatResponse } from "./schemas/api";
 
 type Props = {
-  session: Pick<ChatSession, "state" | "isReplying"> & { id?: string };
+  session: Pick<ChatSession, "state"> & { id?: string; isReplying?: boolean };
   input: ContinueChatResponse["input"];
   logs: ContinueChatResponse["logs"];
   clientSideActions: ContinueChatResponse["clientSideActions"];

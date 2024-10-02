@@ -127,7 +127,6 @@ export const startWhatsAppPreview = authenticatedProcedure
     if (canSendDirectMessagesToUser) {
       await sendChatReplyToWhatsApp({
         to,
-        typingEmulation: newSessionState.typingEmulation,
         messages,
         input,
         clientSideActions,

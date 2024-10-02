@@ -49,9 +49,9 @@ export const ZapierSettings = ({
       </Alert>
       <HttpRequestAdvancedConfigForm
         blockId={blockId}
-        webhook={options?.webhook}
+        httpRequest={options?.webhook}
         options={options}
-        onWebhookChange={setLocalWebhook}
+        onHttpRequestChange={setLocalWebhook}
         onOptionsChange={onOptionsChange}
       />
     </Stack>

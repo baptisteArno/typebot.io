@@ -3148,6 +3148,40 @@
                                             "location",
                                             "timestamp"
                                           ]
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string"
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
+                                                "webhook"
+                                              ]
+                                            },
+                                            "webhook": {
+                                              "type": "object",
+                                              "properties": {
+                                                "data": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "data"
+                                              ]
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": [
+                                            "from",
+                                            "type",
+                                            "webhook",
+                                            "timestamp"
+                                          ]
                                         }
                                       ]
                                     }
