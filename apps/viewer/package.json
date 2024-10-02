@@ -10,6 +10,7 @@
     "test:ui": "dotenv -e ./.env -e ../../.env -- playwright test --ui"
   },
   "dependencies": {
+    "partysocket": "1.0.2",
     "@typebot.io/trpc-openapi": "workspace:*",
     "@planetscale/database": "1.8.0",
     "@sentry/nextjs": "7.77.0",

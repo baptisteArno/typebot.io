@@ -1,11 +1,11 @@
 import {
+  webhookErrorDescription,
+  webhookSuccessDescription,
+} from "../blocks/integrations/httpRequest/executeHttpRequestBlock";
+import {
   sendEmailErrorDescription,
   sendEmailSuccessDescription,
 } from "../blocks/integrations/sendEmail/executeSendEmailBlock";
-import {
-  webhookErrorDescription,
-  webhookSuccessDescription,
-} from "../blocks/integrations/webhook/executeWebhookBlock";
 
 export const filterPotentiallySensitiveLogs = (log: {
   status: string;

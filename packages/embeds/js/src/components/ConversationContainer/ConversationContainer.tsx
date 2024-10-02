@@ -284,6 +284,7 @@ export const ConversationContainer = (props: Props) => {
         context: {
           apiHost: props.context.apiHost,
           sessionId: props.initialChatReply.sessionId,
+          resultId: props.initialChatReply.resultId,
         },
         onMessageStream: streamMessage,
       });

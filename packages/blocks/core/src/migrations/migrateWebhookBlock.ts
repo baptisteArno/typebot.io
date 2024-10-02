@@ -1,16 +1,16 @@
 import {
   HttpMethod,
-  defaultWebhookAttributes,
-} from "@typebot.io/blocks-integrations/webhook/constants";
-import type { HttpRequest } from "@typebot.io/blocks-integrations/webhook/schema";
+  defaultHttpRequestAttributes,
+} from "@typebot.io/blocks-integrations/httpRequest/constants";
+import type { HttpRequest } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import type { Prisma } from "@typebot.io/prisma/types";
-import { isWebhookBlock } from "../helpers";
+import { isHttpRequestBlock } from "../helpers";
 import type { BlockV5 } from "../schemas/schema";
 
 export const migrateWebhookBlock =
   (webhooks: Prisma.Webhook[]) =>
   (block: BlockV5): BlockV5 => {
-    if (!isWebhookBlock(block)) return block;
+    if (!isHttpRequestBlock(block)) return block;
     const webhook = webhooks.find(
       (webhook) => "webhookId" in block && webhook.id === block.webhookId,
     );
@@ -31,7 +31,7 @@ export const migrateWebhookBlock =
               body: webhook.body ?? undefined,
             }
           : {
-              ...defaultWebhookAttributes,
+              ...defaultHttpRequestAttributes,
               id: "webhookId" in block ? (block.webhookId ?? "") : "",
             },
       },

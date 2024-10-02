@@ -1,8 +1,8 @@
 import { parseVariables } from "@/features/variables";
 import type { IntegrationState } from "@/types";
+import type { HttpRequestBlock } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import type { MakeComBlock } from "@typebot.io/blocks-integrations/makeCom/schema";
 import type { PabblyConnectBlock } from "@typebot.io/blocks-integrations/pabblyConnect/schema";
-import type { HttpRequestBlock } from "@typebot.io/blocks-integrations/webhook/schema";
 import type { ZapierBlock } from "@typebot.io/blocks-integrations/zapier/schema";
 import { byId, sendRequest } from "@typebot.io/lib/utils";
 import type { VariableWithUnknowValue } from "@typebot.io/variables/schemas";

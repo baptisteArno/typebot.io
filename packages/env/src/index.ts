@@ -443,6 +443,15 @@ const keycloakEnv = {
   },
 };
 
+const partykitEnv = {
+  client: {
+    NEXT_PUBLIC_PARTYKIT_HOST: z.string().min(1).optional(),
+  },
+  runtimeEnv: {
+    NEXT_PUBLIC_PARTYKIT_HOST: getRuntimeVariable("NEXT_PUBLIC_PARTYKIT_HOST"),
+  },
+};
+
 export const env = createEnv({
   server: {
     ...baseEnv.server,
@@ -477,6 +486,7 @@ export const env = createEnv({
     ...sentryEnv.client,
     ...posthogEnv.client,
     ...tolgeeEnv.client,
+    ...partykitEnv.client,
   },
   experimental__runtimeEnv: {
     ...baseEnv.runtimeEnv,
@@ -491,6 +501,7 @@ export const env = createEnv({
     ...sentryEnv.runtimeEnv,
     ...posthogEnv.runtimeEnv,
     ...tolgeeEnv.runtimeEnv,
+    ...partykitEnv.runtimeEnv,
   },
   skipValidation:
     process.env.SKIP_ENV_CHECK === "true" ||

@@ -2,12 +2,12 @@ import { z } from "@typebot.io/zod";
 import { chatwootBlockSchema } from "./chatwoot/schema";
 import { googleAnalyticsBlockSchema } from "./googleAnalytics/schema";
 import { googleSheetsBlockSchemas } from "./googleSheets/schema";
+import { httpBlockSchemas } from "./httpRequest/schema";
 import { makeComBlockSchemas } from "./makeCom/schema";
 import { openAIBlockSchema } from "./openai/schema";
 import { pabblyConnectBlockSchemas } from "./pabblyConnect/schema";
 import { pixelBlockSchema } from "./pixel/schema";
 import { sendEmailBlockSchema } from "./sendEmail/schema";
-import { httpBlockSchemas } from "./webhook/schema";
 import { zapierBlockSchemas } from "./zapier/schema";
 
 const integrationBlockSchemas = [

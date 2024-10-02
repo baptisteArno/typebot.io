@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/js",
-  "version": "0.3.17",
+  "version": "0.3.18",
   "description": "Javascript library to display typebots on your website",
   "license": "AGPL-3.0-or-later",
   "type": "module",
@@ -39,7 +39,8 @@
     "ky": "1.2.4",
     "marked": "9.0.3",
     "solid-element": "1.7.1",
-    "solid-js": "1.7.8"
+    "solid-js": "1.7.8",
+    "partysocket": "1.0.2"
   },
   "devDependencies": {
     "@babel/preset-typescript": "7.24.7",

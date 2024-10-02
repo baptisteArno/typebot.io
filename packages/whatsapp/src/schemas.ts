@@ -142,6 +142,14 @@ export const incomingMessageSchema = z.discriminatedUnion("type", [
     }),
     timestamp: z.string(),
   }),
+  z.object({
+    from: z.string(),
+    type: z.literal("webhook"),
+    webhook: z.object({
+      data: z.string(),
+    }),
+    timestamp: z.string(),
+  }),
 ]);
 
 export const whatsAppWebhookRequestBodySchema = z.object({

@@ -20,21 +20,19 @@ const messageAfterMediaTimeout = 5000;
 type Props = {
   to: string;
   isFirstChatChunk: boolean;
-  typingEmulation: SessionState["typingEmulation"];
   credentials: WhatsAppCredentials["data"];
   state: SessionState;
 } & Pick<ContinueChatResponse, "messages" | "input" | "clientSideActions">;
 
 export const sendChatReplyToWhatsApp = async ({
   to,
-  typingEmulation,
   isFirstChatChunk,
   messages,
   input,
   clientSideActions,
   credentials,
   state,
-}: Props): Promise<void> => {
+}: Props): Promise<{ shouldWaitForWebhook: boolean }> => {
   const messagesBeforeInput = isLastMessageIncludedInInput(
     input,
     messages.at(-1),
@@ -69,7 +67,6 @@ export const sendChatReplyToWhatsApp = async ({
       messages,
       input,
       isFirstChatChunk: false,
-      typingEmulation: newSessionState.typingEmulation,
       clientSideActions,
       credentials,
       state: newSessionState,
@@ -81,13 +78,13 @@ export const sendChatReplyToWhatsApp = async ({
     i += 1;
     if (
       i > 0 &&
-      (typingEmulation?.delayBetweenBubbles ??
+      (state.typingEmulation?.delayBetweenBubbles ??
         defaultSettings.typingEmulation.delayBetweenBubbles) > 0
     ) {
       await new Promise((resolve) =>
         setTimeout(
           resolve,
-          (typingEmulation?.delayBetweenBubbles ??
+          (state.typingEmulation?.delayBetweenBubbles ??
             defaultSettings.typingEmulation.delayBetweenBubbles) * 1000,
         ),
       );
@@ -102,12 +99,12 @@ export const sendChatReplyToWhatsApp = async ({
       ? messageAfterMediaTimeout
       : isFirstChatChunk &&
           i === 0 &&
-          (typingEmulation?.isDisabledOnFirstMessage ??
+          (state.typingEmulation?.isDisabledOnFirstMessage ??
             defaultSettings.typingEmulation.isDisabledOnFirstMessage)
         ? 0
         : getTypingDuration({
             message: whatsAppMessage,
-            typingEmulation,
+            typingEmulation: state.typingEmulation,
           });
     if ((typingDuration ?? 0) > 0)
       await new Promise((resolve) => setTimeout(resolve, typingDuration));
@@ -123,6 +120,10 @@ export const sendChatReplyToWhatsApp = async ({
           (action) => action.lastBubbleBlockId === message.id,
         ) ?? [];
       for (const action of clientSideActionsAfterMessage) {
+        if (action.type === "listenForWebhook")
+          return {
+            shouldWaitForWebhook: true,
+          };
         const result = await executeClientSideAction({ to, credentials })(
           action,
         );
@@ -144,7 +145,6 @@ export const sendChatReplyToWhatsApp = async ({
           messages,
           input,
           isFirstChatChunk: false,
-          typingEmulation: newSessionState.typingEmulation,
           clientSideActions,
           credentials,
           state: newSessionState,
@@ -176,7 +176,7 @@ export const sendChatReplyToWhatsApp = async ({
           ? messageAfterMediaTimeout
           : getTypingDuration({
               message,
-              typingEmulation,
+              typingEmulation: state.typingEmulation,
             });
         if (typingDuration)
           await new Promise((resolve) => setTimeout(resolve, typingDuration));
@@ -200,6 +200,7 @@ export const sendChatReplyToWhatsApp = async ({
       }
     }
   }
+  return { shouldWaitForWebhook: false };
 };
 
 const getTypingDuration = ({

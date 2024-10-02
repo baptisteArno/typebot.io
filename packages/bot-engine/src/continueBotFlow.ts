@@ -36,8 +36,8 @@ import { validateNumber } from "./blocks/inputs/number/validateNumber";
 import { formatPhoneNumber } from "./blocks/inputs/phone/formatPhoneNumber";
 import { parsePictureChoicesReply } from "./blocks/inputs/pictureChoice/parsePictureChoicesReply";
 import { validateRatingReply } from "./blocks/inputs/rating/validateRatingReply";
+import { saveDataInResponseVariableMapping } from "./blocks/integrations/httpRequest/saveDataInResponseVariableMapping";
 import { resumeChatCompletion } from "./blocks/integrations/legacy/openai/resumeChatCompletion";
-import { resumeWebhookExecution } from "./blocks/integrations/webhook/resumeWebhookExecution";
 import { executeGroup, parseInput } from "./executeGroup";
 import { getNextGroup } from "./getNextGroup";
 import { saveAnswer } from "./queries/saveAnswer";
@@ -240,10 +240,16 @@ const processNonInputBlock = async ({
       })(reply.text);
       newSessionState = result.newSessionState;
     }
-  } else if (reply && block.type === IntegrationBlockType.WEBHOOK) {
-    const result = resumeWebhookExecution({
+  } else if (
+    reply &&
+    (block.type === IntegrationBlockType.HTTP_REQUEST ||
+      block.type === LogicBlockType.WEBHOOK)
+  ) {
+    const result = saveDataInResponseVariableMapping({
       state,
-      block,
+      blockId: block.id,
+      responseVariableMapping: block.options?.responseVariableMapping,
+      outgoingEdgeId: block.outgoingEdgeId,
       response: JSON.parse(reply.text),
     });
     if (result.newSessionState) newSessionState = result.newSessionState;

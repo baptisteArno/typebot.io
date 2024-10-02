@@ -49,65 +49,22 @@ export async function startChatQuery({
       })
     : undefined;
   if (paymentInProgressState) {
-    removePaymentInProgressFromStorage();
-
-    try {
-      const data = await ky
-        .post(
-          `${isNotEmpty(apiHost) ? apiHost : guessApiHost()}/api/v1/sessions/${
-            paymentInProgressState.sessionId
-          }/continueChat`,
-          {
-            json: {
-              message: paymentInProgressState
-                ? stripeRedirectStatus === "failed"
-                  ? "fail"
-                  : "Success"
-                : undefined,
-            },
-            timeout: false,
-          },
-        )
-        .json<ContinueChatResponse>();
-
-      return {
-        data: {
-          ...data,
-          ...paymentInProgressState,
-        } satisfies StartChatResponse,
-      };
-    } catch (error) {
-      return { error };
-    }
+    return resumeChatAfterPaymentRedirect({
+      apiHost,
+      stripeRedirectStatus,
+      paymentInProgressState,
+    });
   }
   const typebotId = typeof typebot === "string" ? typebot : typebot.id;
   if (isPreview) {
-    try {
-      const data = await ky
-        .post(
-          `${
-            isNotEmpty(apiHost) ? apiHost : guessApiHost()
-          }/api/v1/typebots/${typebotId}/preview/startChat`,
-          {
-            json: {
-              isStreamEnabled: true,
-              startFrom,
-              typebot,
-              prefilledVariables,
-              sessionId,
-            } satisfies Omit<
-              StartPreviewChatInput,
-              "typebotId" | "isOnlyRegistering" | "textBubbleContentFormat"
-            >,
-            timeout: false,
-          },
-        )
-        .json<StartChatResponse>();
-
-      return { data };
-    } catch (error) {
-      return { error };
-    }
+    return startPreviewChat({
+      apiHost,
+      typebotId,
+      startFrom,
+      typebot,
+      prefilledVariables,
+      sessionId,
+    });
   }
 
   try {
@@ -151,3 +108,90 @@ export async function startChatQuery({
     return { error };
   }
 }
+
+const resumeChatAfterPaymentRedirect = async ({
+  apiHost,
+  stripeRedirectStatus,
+  paymentInProgressState,
+}: {
+  apiHost?: string;
+  stripeRedirectStatus?: string;
+  paymentInProgressState: {
+    sessionId: string;
+    typebot: BotContext["typebot"];
+  };
+}) => {
+  removePaymentInProgressFromStorage();
+
+  try {
+    const data = await ky
+      .post(
+        `${isNotEmpty(apiHost) ? apiHost : guessApiHost()}/api/v1/sessions/${
+          paymentInProgressState.sessionId
+        }/continueChat`,
+        {
+          json: {
+            message: paymentInProgressState
+              ? stripeRedirectStatus === "failed"
+                ? "fail"
+                : "Success"
+              : undefined,
+          },
+          timeout: false,
+        },
+      )
+      .json<ContinueChatResponse>();
+
+    return {
+      data: {
+        ...data,
+        ...paymentInProgressState,
+      } as StartChatResponse,
+    };
+  } catch (error) {
+    return { error };
+  }
+};
+
+const startPreviewChat = async ({
+  apiHost,
+  typebotId,
+  startFrom,
+  typebot,
+  prefilledVariables,
+  sessionId,
+}: {
+  apiHost?: string;
+  typebotId: string;
+  startFrom?: StartFrom;
+  typebot: StartPreviewChatInput["typebot"];
+  prefilledVariables?: Record<string, unknown>;
+  sessionId?: string;
+}) => {
+  try {
+    const data = await ky
+      .post(
+        `${
+          isNotEmpty(apiHost) ? apiHost : guessApiHost()
+        }/api/v1/typebots/${typebotId}/preview/startChat`,
+        {
+          json: {
+            isStreamEnabled: true,
+            startFrom,
+            typebot,
+            prefilledVariables,
+            sessionId,
+          } satisfies Omit<
+            StartPreviewChatInput,
+            "typebotId" | "isOnlyRegistering" | "textBubbleContentFormat"
+          >,
+          timeout: false,
+        },
+      )
+      .json<StartChatResponse>();
+
+    return { data };
+  } catch (error) {
+    return { error };
+  }
+};

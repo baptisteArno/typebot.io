@@ -1,10 +1,10 @@
 import { ExternalLinkIcon } from "@/components/icons";
 import { TextInput } from "@/components/inputs";
 import { Alert, AlertIcon, Button, Link, Stack, Text } from "@chakra-ui/react";
+import type { HttpRequest } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import type { PabblyConnectBlock } from "@typebot.io/blocks-integrations/pabblyConnect/schema";
-import type { HttpRequest } from "@typebot.io/blocks-integrations/webhook/schema";
 import React from "react";
-import { HttpRequestAdvancedConfigForm } from "../../webhook/components/HttpRequestAdvancedConfigForm";
+import { HttpRequestAdvancedConfigForm } from "../../httpRequest/components/HttpRequestAdvancedConfigForm";
 
 type Props = {
   block: PabblyConnectBlock;

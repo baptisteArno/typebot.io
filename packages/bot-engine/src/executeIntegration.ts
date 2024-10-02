@@ -4,11 +4,11 @@ import { env } from "@typebot.io/env";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import { executeChatwootBlock } from "./blocks/integrations/chatwoot/executeChatwootBlock";
 import { executeGoogleSheetBlock } from "./blocks/integrations/googleSheets/executeGoogleSheetBlock";
+import { executeHttpRequestBlock } from "./blocks/integrations/httpRequest/executeHttpRequestBlock";
 import { executeGoogleAnalyticsBlock } from "./blocks/integrations/legacy/googleAnalytics/executeGoogleAnalyticsBlock";
 import { executeOpenAIBlock } from "./blocks/integrations/legacy/openai/executeOpenAIBlock";
 import { executePixelBlock } from "./blocks/integrations/pixel/executePixelBlock";
 import { executeSendEmailBlock } from "./blocks/integrations/sendEmail/executeSendEmailBlock";
-import { executeWebhookBlock } from "./blocks/integrations/webhook/executeWebhookBlock";
 import { executeForgedBlock } from "./forge/executeForgedBlock";
 import type { SessionState } from "./schemas/chatSession";
 import type { ExecuteIntegrationResponse } from "./types";
@@ -32,14 +32,14 @@ export const executeIntegration =
       case IntegrationBlockType.MAKE_COM:
       case IntegrationBlockType.PABBLY_CONNECT:
         return {
-          ...(await executeWebhookBlock(state, block, {
+          ...(await executeHttpRequestBlock(state, block, {
             disableRequestTimeout: true,
           })),
           startTimeShouldBeUpdated: true,
         };
-      case IntegrationBlockType.WEBHOOK:
+      case IntegrationBlockType.HTTP_REQUEST:
         return {
-          ...(await executeWebhookBlock(state, block, {
+          ...(await executeHttpRequestBlock(state, block, {
             disableRequestTimeout: isNotDefined(env.CHAT_API_TIMEOUT),
           })),
         };

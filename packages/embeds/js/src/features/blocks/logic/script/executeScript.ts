@@ -15,7 +15,6 @@ export const executeScript = async ({
       parseContent(content),
     );
     await func(...args.map((arg) => arg.value));
-    console.log(parseContent(content));
   } catch (err) {
     console.log(err);
     return {

@@ -1,8 +1,8 @@
 import { executeChatwoot } from "@/features/blocks/integrations/chatwoot/utils/executeChatwoot";
 import { executeGoogleAnalyticsBlock } from "@/features/blocks/integrations/googleAnalytics/utils/executeGoogleAnalytics";
+import { executeHttpRequest } from "@/features/blocks/integrations/httpRequest/executeHttpRequest";
 import { streamChat } from "@/features/blocks/integrations/openai/streamChat";
 import { executePixel } from "@/features/blocks/integrations/pixel/executePixel";
-import { executeWebhook } from "@/features/blocks/integrations/webhook/executeWebhook";
 import { executeRedirect } from "@/features/blocks/logic/redirect/utils/executeRedirect";
 import {
   executeCode,
@@ -10,6 +10,7 @@ import {
 } from "@/features/blocks/logic/script/executeScript";
 import { executeSetVariable } from "@/features/blocks/logic/setVariable/executeSetVariable";
 import { executeWait } from "@/features/blocks/logic/wait/utils/executeWait";
+import { listenForWebhook } from "@/features/blocks/logic/webhook/listenForWebhook";
 import type { ClientSideActionContext } from "@/types";
 import type {
   ChatLog,
@@ -78,8 +79,10 @@ export const executeClientSideAction = async ({
       };
     return { replyToSend: message };
   }
-  if ("webhookToExecute" in clientSideAction) {
-    const response = await executeWebhook(clientSideAction.webhookToExecute);
+  if ("httpRequestToExecute" in clientSideAction) {
+    const response = await executeHttpRequest(
+      clientSideAction.httpRequestToExecute,
+    );
     return { replyToSend: response };
   }
   if ("startPropsToInject" in clientSideAction) {
@@ -90,5 +93,11 @@ export const executeClientSideAction = async ({
   }
   if ("codeToExecute" in clientSideAction) {
     return executeCode(clientSideAction.codeToExecute);
+  }
+  if (clientSideAction.type === "listenForWebhook") {
+    return listenForWebhook({
+      sessionId: context.sessionId,
+      resultId: context.resultId,
+    });
   }
 };

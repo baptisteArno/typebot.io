@@ -1,12 +1,12 @@
 import { authenticateUser } from "@/helpers/authenticateUser";
-import { isWebhookBlock } from "@typebot.io/blocks-core/helpers";
+import { isHttpRequestBlock } from "@typebot.io/blocks-core/helpers";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
-import type { HttpRequest } from "@typebot.io/blocks-integrations/webhook/schema";
+import type { HttpRequest } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import {
-  executeWebhook,
+  executeHttpRequest,
   parseWebhookAttributes,
-} from "@typebot.io/bot-engine/blocks/integrations/webhook/executeWebhookBlock";
-import { parseSampleResult } from "@typebot.io/bot-engine/blocks/integrations/webhook/parseSampleResult";
+} from "@typebot.io/bot-engine/blocks/integrations/httpRequest/executeHttpRequestBlock";
+import { parseSampleResult } from "@typebot.io/bot-engine/blocks/integrations/httpRequest/parseSampleResult";
 import { fetchLinkedChildTypebots } from "@typebot.io/bot-engine/blocks/logic/typebotLink/fetchLinkedChildTypebots";
 import { fetchLinkedParentTypebots } from "@typebot.io/bot-engine/blocks/logic/typebotLink/fetchLinkedParentTypebots";
 import { saveLog } from "@typebot.io/bot-engine/logs/saveLog";
@@ -51,7 +51,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const block = typebot.groups
       .flatMap<Block>((g) => g.blocks)
       .find(byId(blockId));
-    if (!block || !isWebhookBlock(block))
+    if (!block || !isHttpRequestBlock(block))
       return notFound(res, "Webhook block not found");
     const webhookId = "webhookId" in block ? block.webhookId : undefined;
     const webhook =
@@ -117,7 +117,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         data: { message: `Couldn't parse webhook attributes` },
       });
 
-    const { response, logs } = await executeWebhook(parsedWebhook, {
+    const { response, logs } = await executeHttpRequest(parsedWebhook, {
       timeout: block.options?.timeout,
     });
 

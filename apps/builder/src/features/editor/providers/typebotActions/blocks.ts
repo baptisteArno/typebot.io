@@ -6,7 +6,7 @@ import type {
   BlockIndices,
   BlockV6,
 } from "@typebot.io/blocks-core/schemas/schema";
-import type { HttpRequest } from "@typebot.io/blocks-integrations/webhook/schema";
+import type { HttpRequest } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import { byId } from "@typebot.io/lib/utils";
 import type { Typebot, TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { type Draft, produce } from "immer";

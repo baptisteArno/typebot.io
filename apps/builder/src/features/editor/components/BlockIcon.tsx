@@ -32,6 +32,7 @@ import { ScriptIcon } from "@/features/blocks/logic/script/components/ScriptIcon
 import { SetVariableIcon } from "@/features/blocks/logic/setVariable/components/SetVariableIcon";
 import { TypebotLinkIcon } from "@/features/blocks/logic/typebotLink/components/TypebotLinkIcon";
 import { WaitIcon } from "@/features/blocks/logic/wait/components/WaitIcon";
+import { WebhookIcon } from "@/features/blocks/logic/webhook/components/WebhookIcon";
 import { ForgedBlockIcon } from "@/features/forge/ForgedBlockIcon";
 import { type IconProps, useColorModeValue } from "@chakra-ui/react";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
@@ -98,11 +99,13 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps): JSX.Element => {
       return <TypebotLinkIcon color={purple} {...props} />;
     case LogicBlockType.AB_TEST:
       return <AbTestIcon color={purple} {...props} />;
+    case LogicBlockType.WEBHOOK:
+      return <WebhookIcon {...props} />;
     case IntegrationBlockType.GOOGLE_SHEETS:
       return <GoogleSheetsLogo {...props} />;
     case IntegrationBlockType.GOOGLE_ANALYTICS:
       return <GoogleAnalyticsLogo {...props} />;
-    case IntegrationBlockType.WEBHOOK:
+    case IntegrationBlockType.HTTP_REQUEST:
       return <ThunderIcon {...props} />;
     case IntegrationBlockType.ZAPIER:
       return <ZapierLogo {...props} />;

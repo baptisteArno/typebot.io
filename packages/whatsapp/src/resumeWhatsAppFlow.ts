@@ -27,7 +27,8 @@ type Props = {
   credentialsId?: string;
   phoneNumberId?: string;
   workspaceId?: string;
-  contact: NonNullable<SessionState["whatsApp"]>["contact"];
+  contact?: NonNullable<SessionState["whatsApp"]>["contact"];
+  force?: boolean;
 };
 
 export const resumeWhatsAppFlow = async ({
@@ -37,6 +38,7 @@ export const resumeWhatsAppFlow = async ({
   credentialsId,
   phoneNumberId,
   contact,
+  force,
 }: Props): Promise<{ message: string }> => {
   const messageSendDate = new Date(Number(receivedMessage.timestamp) * 1000);
   const messageSentBefore3MinutesAgo =
@@ -59,7 +61,11 @@ export const resumeWhatsAppFlow = async ({
     };
   }
 
-  if (credentials.phoneNumberId !== phoneNumberId && !isPreview) {
+  if (
+    phoneNumberId &&
+    credentials.phoneNumberId !== phoneNumberId &&
+    !isPreview
+  ) {
     console.error("Credentials point to another phone ID, skipping...");
     return {
       message: "Message received",
@@ -89,7 +95,7 @@ export const resumeWhatsAppFlow = async ({
     session?.updatedAt.getTime() + session.state.expiryTimeout < Date.now();
 
   if (!isReplyingWasSet) {
-    if (session?.isReplying) {
+    if (session?.isReplying && !force) {
       if (!isSessionExpired) {
         console.log("Is currently replying, skipping...");
         return {
@@ -123,10 +129,12 @@ export const resumeWhatsAppFlow = async ({
     session && !isSessionExpired
       ? await continueBotFlow(reply, {
           version: 2,
-          state: { ...session.state, whatsApp: { contact } },
+          state: contact
+            ? { ...session.state, whatsApp: { contact } }
+            : session.state,
           textBubbleContentFormat: "richText",
         })
-      : workspaceId
+      : workspaceId && contact
         ? await startWhatsAppSession({
             incomingMessage: reply,
             workspaceId,
@@ -146,23 +154,22 @@ export const resumeWhatsAppFlow = async ({
   const {
     input,
     logs,
-    newSessionState,
     messages,
     clientSideActions,
     visitedEdges,
     setVariableHistory,
+    newSessionState,
   } = resumeResponse;
 
   const isFirstChatChunk = (!session || isSessionExpired) ?? false;
-  await sendChatReplyToWhatsApp({
+  const { shouldWaitForWebhook } = await sendChatReplyToWhatsApp({
     to: receivedMessage.from,
     messages,
     input,
     isFirstChatChunk,
-    typingEmulation: newSessionState.typingEmulation,
     clientSideActions,
     credentials,
-    state: newSessionState,
+    state: resumeResponse.newSessionState,
   });
 
   await saveStateToDatabase({
@@ -171,9 +178,13 @@ export const resumeWhatsAppFlow = async ({
     logs,
     session: {
       id: sessionId,
+      isReplying: shouldWaitForWebhook,
       state: {
         ...newSessionState,
-        currentBlockId: !input ? undefined : newSessionState.currentBlockId,
+        currentBlockId:
+          !input && !shouldWaitForWebhook
+            ? undefined
+            : newSessionState.currentBlockId,
       },
     },
     visitedEdges,
@@ -288,6 +299,9 @@ const getIncomingMessageContent = async ({
         if (text !== "") text += `\n\n${location}`;
         else text = location;
         break;
+      }
+      case "webhook": {
+        text = message.webhook.data;
       }
     }
   }

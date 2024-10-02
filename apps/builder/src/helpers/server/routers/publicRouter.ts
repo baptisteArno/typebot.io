@@ -1,6 +1,6 @@
 import { analyticsRouter } from "@/features/analytics/api/router";
 import { billingRouter } from "@/features/billing/api/router";
-import { webhookRouter } from "@/features/blocks/integrations/webhook/api/router";
+import { httpRequestRouter } from "@/features/blocks/integrations/httpRequest/api/router";
 import { getLinkedTypebots } from "@/features/blocks/logic/typebotLink/api/getLinkedTypebots";
 import { collaboratorsRouter } from "@/features/collaboration/api/router";
 import { credentialsRouter } from "@/features/credentials/api/router";
@@ -18,7 +18,7 @@ export const publicRouter = router({
   analytics: analyticsRouter,
   workspace: workspaceRouter,
   typebot: typebotRouter,
-  webhook: webhookRouter,
+  httpRequest: httpRequestRouter,
   results: resultsRouter,
   billing: billingRouter,
   credentials: credentialsRouter,
