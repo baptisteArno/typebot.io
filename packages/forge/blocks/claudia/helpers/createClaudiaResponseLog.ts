@@ -1,6 +1,10 @@
 import { LogsStore } from '@typebot.io/forge'
 
-type ClaudiaAction = 'END_FLOW' | 'FORWARD_TO_HUMAN' | 'CLOSE_TICKET'
+type ClaudiaAction =
+  | 'END_FLOW'
+  | 'FORWARD_TO_HUMAN'
+  | 'CLOSE_TICKET'
+  | 'ANSWER_TICKET'
 
 type ClaudiaResponse = {
   action: ClaudiaAction

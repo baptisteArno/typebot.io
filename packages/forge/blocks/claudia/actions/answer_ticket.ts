@@ -1,12 +1,12 @@
 import { createAction, option } from '@typebot.io/forge'
 import { createClaudiaResponseLog } from '../helpers/createClaudiaResponseLog'
 
-export const endFlow = createAction({
-  name: 'End Flow [N1]',
+export const answerTicket = createAction({
+  name: 'Answer Ticket [N1]',
   run: {
     server: ({ logs, options }) => {
       const log = createClaudiaResponseLog({
-        action: 'END_FLOW',
+        action: 'ANSWER_TICKET',
         topic: options.topic,
       })
       logs.add(log)
