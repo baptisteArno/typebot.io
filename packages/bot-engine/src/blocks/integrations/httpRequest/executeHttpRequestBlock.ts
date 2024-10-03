@@ -100,6 +100,7 @@ export const executeHttpRequestBlock = async (
   return {
     ...saveDataInResponseVariableMapping({
       state,
+      blockType: block.type,
       blockId: block.id,
       responseVariableMapping: block.options?.responseVariableMapping,
       outgoingEdgeId: block.outgoingEdgeId,

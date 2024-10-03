@@ -76,17 +76,12 @@ export const sendChatReplyToWhatsApp = async ({
   let i = -1;
   for (const message of messagesBeforeInput) {
     i += 1;
-    if (
-      i > 0 &&
-      (state.typingEmulation?.delayBetweenBubbles ??
-        defaultSettings.typingEmulation.delayBetweenBubbles) > 0
-    ) {
+    const delayBetweenBubbles =
+      state.typingEmulation?.delayBetweenBubbles ??
+      defaultSettings.typingEmulation.delayBetweenBubbles;
+    if (i > 0 && delayBetweenBubbles > 0) {
       await new Promise((resolve) =>
-        setTimeout(
-          resolve,
-          (state.typingEmulation?.delayBetweenBubbles ??
-            defaultSettings.typingEmulation.delayBetweenBubbles) * 1000,
-        ),
+        setTimeout(resolve, delayBetweenBubbles * 1000),
       );
     }
     const whatsAppMessage = convertMessageToWhatsAppMessage(message);
@@ -95,12 +90,13 @@ export const sendChatReplyToWhatsApp = async ({
       sentMessages.at(-1)?.type ?? "",
     );
 
+    const isTypingEmulationDisabled =
+      state.typingEmulation?.isDisabledOnFirstMessage ??
+      defaultSettings.typingEmulation.isDisabledOnFirstMessage;
+
     const typingDuration = lastSentMessageIsMedia
       ? messageAfterMediaTimeout
-      : isFirstChatChunk &&
-          i === 0 &&
-          (state.typingEmulation?.isDisabledOnFirstMessage ??
-            defaultSettings.typingEmulation.isDisabledOnFirstMessage)
+      : isFirstChatChunk && i === 0 && isTypingEmulationDisabled
         ? 0
         : getTypingDuration({
             message: whatsAppMessage,

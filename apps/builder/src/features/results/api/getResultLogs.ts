@@ -1,7 +1,7 @@
-import { isReadTypebotForbidden } from "@/features/typebot/helpers/isReadTypebotForbidden";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import prisma from "@typebot.io/prisma";
 import { logSchema } from "@typebot.io/results/schemas/results";
+import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import { z } from "@typebot.io/zod";
 
 export const getResultLogs = authenticatedProcedure

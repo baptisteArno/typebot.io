@@ -73,9 +73,7 @@ export async function startChatQuery({
         ? new URL(document.referrer).origin
         : undefined;
     const response = await ky.post(
-      `${
-        isNotEmpty(apiHost) ? apiHost : guessApiHost()
-      }/api/v1/typebots/${typebotId}/startChat`,
+      `${getApiHost(apiHost)}/api/v1/typebots/${typebotId}/startChat`,
       {
         headers: {
           "x-typebot-iframe-referrer-origin": iframeReferrerOrigin,
@@ -126,16 +124,12 @@ const resumeChatAfterPaymentRedirect = async ({
   try {
     const data = await ky
       .post(
-        `${isNotEmpty(apiHost) ? apiHost : guessApiHost()}/api/v1/sessions/${
+        `${getApiHost(apiHost)}/api/v1/sessions/${
           paymentInProgressState.sessionId
         }/continueChat`,
         {
           json: {
-            message: paymentInProgressState
-              ? stripeRedirectStatus === "failed"
-                ? "fail"
-                : "Success"
-              : undefined,
+            message: stripeRedirectStatus === "failed" ? "fail" : "Success",
           },
           timeout: false,
         },
@@ -171,9 +165,7 @@ const startPreviewChat = async ({
   try {
     const data = await ky
       .post(
-        `${
-          isNotEmpty(apiHost) ? apiHost : guessApiHost()
-        }/api/v1/typebots/${typebotId}/preview/startChat`,
+        `${getApiHost(apiHost)}/api/v1/typebots/${typebotId}/preview/startChat`,
         {
           json: {
             isStreamEnabled: true,
@@ -195,3 +187,6 @@ const startPreviewChat = async ({
     return { error };
   }
 };
+
+const getApiHost = (apiHost?: string): string =>
+  isNotEmpty(apiHost) ? apiHost : guessApiHost();

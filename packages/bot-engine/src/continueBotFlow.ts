@@ -20,6 +20,7 @@ import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers";
 import type { Group } from "@typebot.io/groups/schemas";
 import { isURL } from "@typebot.io/lib/isURL";
+import { stringifyError } from "@typebot.io/lib/stringifyError";
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import type { Prisma } from "@typebot.io/prisma/types";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
@@ -245,12 +246,26 @@ const processNonInputBlock = async ({
     (block.type === IntegrationBlockType.HTTP_REQUEST ||
       block.type === LogicBlockType.WEBHOOK)
   ) {
+    let response: {
+      statusCode?: number;
+      data?: unknown;
+    };
+    try {
+      response = JSON.parse(reply.text);
+    } catch (err) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Provided response is not valid JSON",
+        cause: stringifyError(err),
+      });
+    }
     const result = saveDataInResponseVariableMapping({
       state,
+      blockType: block.type,
       blockId: block.id,
       responseVariableMapping: block.options?.responseVariableMapping,
       outgoingEdgeId: block.outgoingEdgeId,
-      response: JSON.parse(reply.text),
+      response,
     });
     if (result.newSessionState) newSessionState = result.newSessionState;
   } else if (isForgedBlockType(block.type)) {

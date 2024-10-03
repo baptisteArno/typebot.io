@@ -4,13 +4,14 @@ import { getSession } from "@typebot.io/bot-engine/queries/getSession";
 import { env } from "@typebot.io/env";
 import { parseGroups } from "@typebot.io/groups/schemas";
 import {
-  badRequest,
   forbidden,
+  internalServerError,
   methodNotAllowed,
   notFound,
 } from "@typebot.io/lib/api/utils";
 import { byId } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
+import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import { resumeWhatsAppFlow } from "@typebot.io/whatsapp/resumeWhatsAppFlow";
 import type { NextApiRequest, NextApiResponse } from "next";
 import PartySocket from "partysocket";
@@ -31,10 +32,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         groups: true,
         settings: true,
         whatsAppCredentialsId: true,
+        workspace: {
+          select: {
+            isSuspended: true,
+            isPastDue: true,
+            members: {
+              select: {
+                userId: true,
+              },
+            },
+          },
+        },
+        collaborators: {
+          select: {
+            userId: true,
+          },
+        },
       },
     });
+    if (!typebot || (await isReadTypebotForbidden(typebot, user)))
+      return notFound(res, "Typebot not found");
     if (!typebot) return notFound(res);
-    if (typebot.version !== "6") return badRequest(res);
+    if (typebot.version !== "6") return internalServerError(res);
     const block = parseGroups(typebot.groups, {
       typebotVersion: typebot.version,
     })
@@ -59,13 +78,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (chatSession?.state.whatsApp) {
       if (!typebot.whatsAppCredentialsId)
-        return badRequest(
+        return internalServerError(
           res,
           "Found WA session but no credentialsId in typebot",
         );
+      const from = chatSession.id.split("-").at(-1);
+      if (!from)
+        return internalServerError(
+          res,
+          "Expected session ID to be in format: wa-{phoneNumberId}-{receivedMessage.from}",
+        );
       await resumeWhatsAppFlow({
         receivedMessage: {
-          from: chatSession.id.split("-").at(-1)!,
+          from,
           timestamp: new Date().toISOString(),
           type: "webhook",
           webhook: {
@@ -82,16 +107,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).send("OK");
     }
 
-    PartySocket.fetch(
-      { host: env.NEXT_PUBLIC_PARTYKIT_HOST, room: `${resultId}/webhooks` },
-      {
-        method: "POST",
-        body:
-          typeof req.body === "string"
-            ? req.body
-            : JSON.stringify(req.body, null, 2),
-      },
-    );
+    try {
+      await PartySocket.fetch(
+        { host: env.NEXT_PUBLIC_PARTYKIT_HOST, room: `${resultId}/webhooks` },
+        {
+          method: "POST",
+          body:
+            typeof req.body === "string"
+              ? req.body
+              : JSON.stringify(req.body, null, 2),
+        },
+      );
+    } catch (error) {
+      console.error("PartySocket.fetch error:", error);
+      return internalServerError(res, "PartySocket.fetch error");
+    }
 
     return res.status(200).send("OK");
   }

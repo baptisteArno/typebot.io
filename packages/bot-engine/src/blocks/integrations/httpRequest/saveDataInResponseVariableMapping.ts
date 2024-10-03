@@ -1,3 +1,5 @@
+import type { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
+import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { byId } from "@typebot.io/lib/utils";
 import { createHttpReqResponseMappingRunner } from "@typebot.io/variables/codeRunners";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
@@ -9,6 +11,12 @@ import { updateVariablesInSession } from "../../../updateVariablesInSession";
 
 type Props = {
   state: SessionState;
+  blockType:
+    | LogicBlockType.WEBHOOK
+    | IntegrationBlockType.HTTP_REQUEST
+    | IntegrationBlockType.ZAPIER
+    | IntegrationBlockType.MAKE_COM
+    | IntegrationBlockType.PABBLY_CONNECT;
   blockId: string;
   responseVariableMapping?: {
     bodyPath?: string;
@@ -24,6 +32,7 @@ type Props = {
 
 export const saveDataInResponseVariableMapping = ({
   state,
+  blockType,
   blockId,
   responseVariableMapping,
   outgoingEdgeId,
@@ -38,22 +47,25 @@ export const saveDataInResponseVariableMapping = ({
 
   const responseFromClient = logs.length === 0;
 
-  if (responseFromClient)
+  if (responseFromClient) {
+    const blockLabel =
+      blockType === LogicBlockType.WEBHOOK ? "Webhook" : "HTTP request";
     logs.push(
       isError
         ? {
             status: "error",
-            description: `HTTP request returned error`,
+            description: `${blockLabel} returned error`,
             details: response.data,
           }
         : {
             status: "success",
-            description: `HTTP request executed successfully!`,
+            description: `${blockLabel} executed successfully!`,
             details: response.data,
           },
     );
+  }
 
-  let run: (varMapping: string) => unknown;
+  let run: ((varMapping: string) => unknown) | undefined;
   if (responseVariableMapping) {
     run = createHttpReqResponseMappingRunner(response);
   }

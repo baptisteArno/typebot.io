@@ -172,7 +172,7 @@ export const clientSideActionSchema = z.discriminatedUnion("type", [
     })
     .merge(clientSideActionBaseSchema)
     .openapi({
-      ref: "csalistenForWebhook",
+      ref: "csaListenForWebhook",
       title: "Listen to webhook",
     }),
 ]);

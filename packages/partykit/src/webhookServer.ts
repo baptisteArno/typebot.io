@@ -9,8 +9,19 @@ export default class Server implements Party.Server {
 
   async onRequest(request: Party.Request) {
     if (request.method === "POST") {
-      const payload = await request.json<unknown>();
-      if (typeof payload !== "object")
+      let payload: unknown;
+      try {
+        payload = await request.json<unknown>();
+      } catch (err) {
+        return new Response("Invalid payload, please send JSON body", {
+          status: 400,
+        });
+      }
+      if (
+        payload === null ||
+        typeof payload !== "object" ||
+        Array.isArray(payload)
+      )
         return new Response("Invalid payload, please send JSON body", {
           status: 400,
         });

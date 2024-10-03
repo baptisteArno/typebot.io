@@ -400,7 +400,7 @@
                             "$ref": "#/components/schemas/csaCodeToExecute"
                           },
                           {
-                            "$ref": "#/components/schemas/csalistenForWebhook"
+                            "$ref": "#/components/schemas/csaListenForWebhook"
                           }
                         ],
                         "discriminator": {
@@ -418,7 +418,7 @@
                             "pixel": "#/components/schemas/csaPixel",
                             "stream": "#/components/schemas/csaStream",
                             "codeToExecute": "#/components/schemas/csaCodeToExecute",
-                            "listenForWebhook": "#/components/schemas/csalistenForWebhook"
+                            "listenForWebhook": "#/components/schemas/csaListenForWebhook"
                           }
                         }
                       }
@@ -914,7 +914,7 @@
                             "$ref": "#/components/schemas/csaCodeToExecute"
                           },
                           {
-                            "$ref": "#/components/schemas/csalistenForWebhook"
+                            "$ref": "#/components/schemas/csaListenForWebhook"
                           }
                         ],
                         "discriminator": {
@@ -932,7 +932,7 @@
                             "pixel": "#/components/schemas/csaPixel",
                             "stream": "#/components/schemas/csaStream",
                             "codeToExecute": "#/components/schemas/csaCodeToExecute",
-                            "listenForWebhook": "#/components/schemas/csalistenForWebhook"
+                            "listenForWebhook": "#/components/schemas/csaListenForWebhook"
                           }
                         }
                       }
@@ -1360,7 +1360,7 @@
                             "$ref": "#/components/schemas/csaCodeToExecute"
                           },
                           {
-                            "$ref": "#/components/schemas/csalistenForWebhook"
+                            "$ref": "#/components/schemas/csaListenForWebhook"
                           }
                         ],
                         "discriminator": {
@@ -1378,7 +1378,7 @@
                             "pixel": "#/components/schemas/csaPixel",
                             "stream": "#/components/schemas/csaStream",
                             "codeToExecute": "#/components/schemas/csaCodeToExecute",
-                            "listenForWebhook": "#/components/schemas/csalistenForWebhook"
+                            "listenForWebhook": "#/components/schemas/csaListenForWebhook"
                           }
                         }
                       },
@@ -1719,7 +1719,7 @@
                             "$ref": "#/components/schemas/csaCodeToExecute"
                           },
                           {
-                            "$ref": "#/components/schemas/csalistenForWebhook"
+                            "$ref": "#/components/schemas/csaListenForWebhook"
                           }
                         ],
                         "discriminator": {
@@ -1737,7 +1737,7 @@
                             "pixel": "#/components/schemas/csaPixel",
                             "stream": "#/components/schemas/csaStream",
                             "codeToExecute": "#/components/schemas/csaCodeToExecute",
-                            "listenForWebhook": "#/components/schemas/csalistenForWebhook"
+                            "listenForWebhook": "#/components/schemas/csaListenForWebhook"
                           }
                         }
                       },
@@ -2185,7 +2185,7 @@
                             "$ref": "#/components/schemas/csaCodeToExecute"
                           },
                           {
-                            "$ref": "#/components/schemas/csalistenForWebhook"
+                            "$ref": "#/components/schemas/csaListenForWebhook"
                           }
                         ],
                         "discriminator": {
@@ -2203,7 +2203,7 @@
                             "pixel": "#/components/schemas/csaPixel",
                             "stream": "#/components/schemas/csaStream",
                             "codeToExecute": "#/components/schemas/csaCodeToExecute",
-                            "listenForWebhook": "#/components/schemas/csalistenForWebhook"
+                            "listenForWebhook": "#/components/schemas/csaListenForWebhook"
                           }
                         }
                       },
@@ -13776,7 +13776,7 @@
         ],
         "title": "Execute code"
       },
-      "csalistenForWebhook": {
+      "csaListenForWebhook": {
         "type": "object",
         "properties": {
           "type": {
