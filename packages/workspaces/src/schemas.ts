@@ -39,6 +39,7 @@ export const workspaceSchema = z.object({
   chatsLimitSecondEmailSentAt: z.date().nullable(),
   storageLimitFirstEmailSentAt: z.date().nullable(),
   storageLimitSecondEmailSentAt: z.date().nullable(),
+  inEditorAiFeaturesEnabled: z.boolean().default(false),
   customChatsLimit: z.number().nullable(),
   customStorageLimit: z.number().nullable(),
   customSeatsLimit: z.number().nullable(),

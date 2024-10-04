@@ -89,6 +89,7 @@ model Workspace {
   storageLimitFirstEmailSentAt  DateTime?
   chatsLimitSecondEmailSentAt   DateTime?
   storageLimitSecondEmailSentAt DateTime?
+  inEditorAiFeaturesEnabled     Boolean               @default(false)
   claimableCustomPlan           ClaimableCustomPlan?
   customChatsLimit              Int?
   customStorageLimit            Int?

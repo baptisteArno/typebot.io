@@ -29,7 +29,11 @@ const workspaceContext = createContext<{
   currentRole?: WorkspaceRole;
   switchWorkspace: (workspaceId: string) => void;
   createWorkspace: (name?: string) => Promise<void>;
-  updateWorkspace: (updates: { icon?: string; name?: string }) => void;
+  updateWorkspace: (updates: {
+    icon?: string;
+    name?: string;
+    inEditorAiFeaturesEnabled?: boolean;
+  }) => void;
   deleteCurrentWorkspace: () => Promise<void>;
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
@@ -173,7 +177,11 @@ export const WorkspaceProvider = ({
     setWorkspaceId(workspace.id);
   };
 
-  const updateWorkspace = (updates: { icon?: string; name?: string }) => {
+  const updateWorkspace = (updates: {
+    icon?: string;
+    name?: string;
+    inEditorAiFeaturesEnabled?: boolean;
+  }) => {
     if (!workspaceId) return;
     updateWorkspaceMutation.mutate({
       workspaceId,
