@@ -31,7 +31,7 @@
     "openai": "4.52.7",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "stripe": "12.13.0",
+    "stripe": "17.1.0",
     "@faire/mjml-react": "3.3.0",
     "@paralleldrive/cuid2": "2.2.1",
     "@typebot.io/emails": "workspace:*",

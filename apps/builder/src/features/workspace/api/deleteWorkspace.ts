@@ -52,7 +52,7 @@ export const deleteWorkspace = authenticatedProcedure
 
     if (isNotEmpty(workspace.stripeId) && env.STRIPE_SECRET_KEY) {
       const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-        apiVersion: "2022-11-15",
+        apiVersion: "2024-09-30.acacia",
       });
 
       const subscriptions = await stripe.subscriptions.list({

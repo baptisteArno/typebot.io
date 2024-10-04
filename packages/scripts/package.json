@@ -44,7 +44,7 @@
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "prompts": "2.4.2",
-    "stripe": "12.13.0",
+    "stripe": "17.1.0",
     "@typebot.io/workspaces": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/zod": "workspace:*",

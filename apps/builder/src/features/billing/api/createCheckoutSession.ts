@@ -15,18 +15,10 @@ export const createCheckoutSession = authenticatedProcedure
   })
   .input(
     z.object({
-      email: z.string(),
-      company: z.string(),
       workspaceId: z.string(),
       currency: z.enum(["usd", "eur"]),
       plan: z.enum([Plan.STARTER, Plan.PRO]),
       returnUrl: z.string(),
-      vat: z
-        .object({
-          type: z.string(),
-          value: z.string(),
-        })
-        .optional(),
     }),
   )
   .output(

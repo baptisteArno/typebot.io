@@ -2,26 +2,21 @@ import { env } from "@typebot.io/env";
 import type Stripe from "stripe";
 
 type Props = {
-  customerId: string;
+  email: string;
   workspaceId: string;
   currency: "usd" | "eur";
   plan: "STARTER" | "PRO";
   returnUrl: string;
-  userId: string;
 };
 
 export const createCheckoutSessionUrl =
   (stripe: Stripe) =>
-  async ({ customerId, workspaceId, currency, plan, returnUrl }: Props) => {
+  async ({ email, workspaceId, currency, plan, returnUrl }: Props) => {
     const session = await stripe.checkout.sessions.create({
       success_url: `${returnUrl}?stripe=${plan}&success=true`,
       cancel_url: `${returnUrl}?stripe=cancel`,
       allow_promotion_codes: true,
-      customer: customerId,
-      customer_update: {
-        address: "auto",
-        name: "never",
-      },
+      customer_email: email,
       mode: "subscription",
       metadata: {
         workspaceId,
@@ -29,6 +24,10 @@ export const createCheckoutSessionUrl =
       },
       currency,
       billing_address_collection: "required",
+      tax_id_collection: {
+        enabled: true,
+        required: "if_supported",
+      },
       automatic_tax: { enabled: true },
       line_items: [
         {

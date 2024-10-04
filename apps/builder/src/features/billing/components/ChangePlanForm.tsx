@@ -1,6 +1,5 @@
 import { TextLink } from "@/components/TextLink";
 import { useUser } from "@/features/account/hooks/useUser";
-import { ParentModalProvider } from "@/features/graph/providers/ParentModalProvider";
 import type { WorkspaceInApp } from "@/features/workspace/WorkspaceProvider";
 import { useToast } from "@/hooks/useToast";
 import { trpc } from "@/lib/trpc";
@@ -8,9 +7,7 @@ import { HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { guessIfUserIsEuropean } from "@typebot.io/billing/helpers/guessIfUserIsEuropean";
 import { Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
-import { useState } from "react";
-import type { PreCheckoutModalProps } from "./PreCheckoutModal";
-import { PreCheckoutModal } from "./PreCheckoutModal";
+import { useRouter } from "next/navigation";
 import { ProPlanPricingCard } from "./ProPlanPricingCard";
 import { StarterPlanPricingCard } from "./StarterPlanPricingCard";
 import { StripeClimateLogo } from "./StripeClimateLogo";
@@ -26,18 +23,29 @@ export const ChangePlanForm = ({
   currentRole,
   excludedPlans,
 }: Props) => {
+  const router = useRouter();
   const { t } = useTranslate();
 
   const { user } = useUser();
   const { showToast } = useToast();
-  const [preCheckoutPlan, setPreCheckoutPlan] =
-    useState<PreCheckoutModalProps["selectedSubscription"]>();
 
   const trpcContext = trpc.useContext();
 
   const { data, refetch } = trpc.billing.getSubscription.useQuery({
     workspaceId: workspace.id,
   });
+
+  const { mutate: createCheckoutSession, isLoading: isCreatingCheckout } =
+    trpc.billing.createCheckoutSession.useMutation({
+      onError: (error) => {
+        showToast({
+          description: error.message,
+        });
+      },
+      onSuccess: ({ checkoutUrl }) => {
+        router.push(checkoutUrl);
+      },
+    });
 
   const { mutate: updateSubscription, isLoading: isUpdatingSubscription } =
     trpc.billing.updateSubscription.useMutation({
@@ -78,7 +86,10 @@ export const ChangePlanForm = ({
         returnUrl: window.location.href,
       });
     } else {
-      setPreCheckoutPlan(newSubscription);
+      createCheckoutSession({
+        ...newSubscription,
+        returnUrl: window.location.href,
+      });
     }
   };
 
@@ -113,16 +124,6 @@ export const ChangePlanForm = ({
           </TextLink>
         </Text>
       </HStack>
-      {!workspace.stripeId && (
-        <ParentModalProvider>
-          <PreCheckoutModal
-            selectedSubscription={preCheckoutPlan}
-            existingEmail={user?.email ?? undefined}
-            existingCompany={user?.company ?? undefined}
-            onClose={() => setPreCheckoutPlan(undefined)}
-          />
-        </ParentModalProvider>
-      )}
       {data && (
         <Stack align="flex-end" spacing={6}>
           <HStack alignItems="stretch" spacing="4" w="full">
@@ -130,7 +131,7 @@ export const ChangePlanForm = ({
               <StarterPlanPricingCard
                 currentPlan={workspace.plan}
                 onPayClick={() => handlePayClick(Plan.STARTER)}
-                isLoading={isUpdatingSubscription}
+                isLoading={isUpdatingSubscription || isCreatingCheckout}
                 currency={data.subscription?.currency}
               />
             )}
@@ -139,7 +140,7 @@ export const ChangePlanForm = ({
               <ProPlanPricingCard
                 currentPlan={workspace.plan}
                 onPayClick={() => handlePayClick(Plan.PRO)}
-                isLoading={isUpdatingSubscription}
+                isLoading={isUpdatingSubscription || isCreatingCheckout}
                 currency={data.subscription?.currency}
               />
             )}

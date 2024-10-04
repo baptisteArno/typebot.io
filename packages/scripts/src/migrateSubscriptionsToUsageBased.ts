@@ -63,7 +63,7 @@ const migrateSubscriptionsToUsageBased = async () => {
   );
 
   const stripe = new Stripe(secretKey, {
-    apiVersion: "2022-11-15",
+    apiVersion: "2024-09-30.acacia",
   });
 
   const todayMidnight = new Date();

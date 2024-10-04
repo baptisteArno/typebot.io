@@ -8,7 +8,7 @@
   "dependencies": {
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
-    "stripe": "12.13.0",
+    "stripe": "17.1.0",
     "@typebot.io/lib": "workspace:*",
     "@trpc/server": "10.40.0",
     "@typebot.io/env": "workspace:*",

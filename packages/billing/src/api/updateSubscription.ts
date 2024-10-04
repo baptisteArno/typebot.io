@@ -56,7 +56,7 @@ export const updateSubscription = async ({
     });
 
   const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-    apiVersion: "2022-11-15",
+    apiVersion: "2024-09-30.acacia",
   });
   const { data } = await stripe.subscriptions.list({
     customer: workspace.stripeId,
@@ -121,9 +121,13 @@ export const updateSubscription = async ({
       },
     });
   } else {
+    if (!user.email)
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "User email is missing",
+      });
     const checkoutUrl = await createCheckoutSessionUrl(stripe)({
-      customerId: workspace.stripeId,
-      userId: user.id,
+      email: user.email,
       workspaceId,
       currency,
       plan,
