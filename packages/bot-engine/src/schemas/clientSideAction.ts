@@ -176,3 +176,4 @@ export const clientSideActionSchema = z.discriminatedUnion("type", [
       title: "Listen to webhook",
     }),
 ]);
+export type ClientSideAction = z.infer<typeof clientSideActionSchema>;

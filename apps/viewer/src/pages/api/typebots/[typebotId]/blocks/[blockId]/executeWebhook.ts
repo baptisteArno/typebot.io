@@ -24,7 +24,6 @@ import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { Variable } from "@typebot.io/variables/schemas";
 import Cors from "cors";
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const cors = initMiddleware(Cors());

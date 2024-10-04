@@ -14,7 +14,7 @@ type Props = {
   clientSideActions: ContinueChatResponse["clientSideActions"];
   visitedEdges: Prisma.VisitedEdge[];
   setVariableHistory: SetVariableHistoryItem[];
-  hasEmbedBubbleWithWaitEvent?: boolean;
+  isWaitingForExternalEvent?: boolean;
   initialSessionId?: string;
 };
 
@@ -25,7 +25,7 @@ export const saveStateToDatabase = async ({
   clientSideActions,
   visitedEdges,
   setVariableHistory,
-  hasEmbedBubbleWithWaitEvent,
+  isWaitingForExternalEvent,
   initialSessionId,
 }: Props) => {
   const containsSetVariableClientSideAction = clientSideActions?.some(
@@ -35,7 +35,7 @@ export const saveStateToDatabase = async ({
   const isCompleted = Boolean(
     !input &&
       !containsSetVariableClientSideAction &&
-      !hasEmbedBubbleWithWaitEvent,
+      !isWaitingForExternalEvent,
   );
 
   const queries: Prisma.PrismaPromise<any>[] = [];

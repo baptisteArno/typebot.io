@@ -28,12 +28,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       where: { id: typebotId },
       select: {
         version: true,
-        workspaceId: true,
         groups: true,
         settings: true,
         whatsAppCredentialsId: true,
         workspace: {
           select: {
+            id: true,
             isSuspended: true,
             isPastDue: true,
             members: {
@@ -100,9 +100,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 : JSON.stringify({ data: req.body }, null, 2),
           },
         },
+        workspaceId: typebot.workspace.id,
         sessionId: chatSession.id,
         credentialsId: typebot.whatsAppCredentialsId,
-        force: true,
+        origin: "webhook",
       });
       return res.status(200).send("OK");
     }

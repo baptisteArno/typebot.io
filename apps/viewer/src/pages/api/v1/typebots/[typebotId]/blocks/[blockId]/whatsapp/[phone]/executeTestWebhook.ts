@@ -69,8 +69,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               : JSON.stringify({ data: req.body }, null, 2),
         },
       },
-      force: true,
       sessionId: chatSession.id,
+      origin: "webhook",
     });
     return res.status(200).send("OK");
   }
