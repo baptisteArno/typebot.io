@@ -73,7 +73,12 @@ if (env.NEXT_PUBLIC_SMTP_FROM && !env.SMTP_AUTH_DISABLED)
               }
             : undefined,
       },
+      maxAge: 5 * 60,
       from: env.NEXT_PUBLIC_SMTP_FROM,
+      generateVerificationToken() {
+        const code = Math.floor(100000 + Math.random() * 900000); // random 6-digit code
+        return code.toString();
+      },
       sendVerificationRequest,
     }),
   );
@@ -234,6 +239,8 @@ export const getAuthOptions = ({
 });
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  // Ignore email link openers (common in enterprise setups)
+  if (req.method === "HEAD") return res.status(200).end();
   const isMockingSession =
     req.method === "GET" &&
     req.url === "/api/auth/session" &&
