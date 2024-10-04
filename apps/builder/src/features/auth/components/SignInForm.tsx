@@ -5,14 +5,18 @@ import {
   Alert,
   AlertIcon,
   Button,
-  Flex,
+  FormControl,
+  FormLabel,
   HStack,
   type HTMLChakraProps,
   Input,
+  PinInput,
+  PinInputField,
   SlideFade,
   Spinner,
   Stack,
   Text,
+  VStack,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { BuiltInProviderType } from "next-auth/providers/index";
@@ -44,7 +48,7 @@ export const SignInForm = ({
   const [isLoadingProviders, setIsLoadingProviders] = useState(true);
 
   const [emailValue, setEmailValue] = useState(defaultEmail ?? "");
-  const [isMagicLinkSent, setIsMagicLinkSent] = useState(false);
+  const [isMagicCodeSent, setIsMagicCodeSent] = useState(false);
 
   const { showToast } = useToast();
   const [providers, setProviders] =
@@ -84,7 +88,7 @@ export const SignInForm = ({
 
   const handleEmailSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (isMagicLinkSent) return;
+    if (isMagicCodeSent) return;
     setAuthLoading(true);
     try {
       const response = await signIn("email", {
@@ -112,7 +116,7 @@ export const SignInForm = ({
             },
           });
       } else {
-        setIsMagicLinkSent(true);
+        setIsMagicCodeSent(true);
       }
     } catch (e) {
       showToast({
@@ -121,6 +125,17 @@ export const SignInForm = ({
       });
     }
     setAuthLoading(false);
+  };
+
+  const checkCodeAndRedirect = async (token: string) => {
+    const url = new URL(`${window.location.origin}/api/auth/callback/email`);
+    url.searchParams.set("token", token);
+    url.searchParams.set("email", emailValue);
+    const redirectPath = router.query.redirectPath?.toString();
+    url.searchParams.set(
+      "callbackUrl",
+      `${window.location.origin}${redirectPath ?? "/typebots"}`,
+    );
   };
 
   if (isLoadingProviders) return <Spinner />;
@@ -138,7 +153,7 @@ export const SignInForm = ({
     );
   return (
     <Stack spacing="4" w="330px">
-      {!isMagicLinkSent && (
+      {!isMagicCodeSent && (
         <>
           <SocialLoginButtons providers={providers} />
           {providers?.email && (
@@ -159,7 +174,7 @@ export const SignInForm = ({
                   isLoading={
                     ["loading", "authenticated"].includes(status) || authLoading
                   }
-                  isDisabled={isMagicLinkSent}
+                  isDisabled={isMagicCodeSent}
                 >
                   {t("auth.emailSubmitButton.label")}
                 </Button>
@@ -171,8 +186,8 @@ export const SignInForm = ({
       {router.query.error && (
         <SignInError error={router.query.error.toString()} />
       )}
-      <SlideFade offsetY="20px" in={isMagicLinkSent} unmountOnExit>
-        <Flex>
+      <SlideFade offsetY="20px" in={isMagicCodeSent} unmountOnExit>
+        <Stack spacing={3}>
           <Alert status="success" w="100%">
             <HStack>
               <AlertIcon />
@@ -182,7 +197,20 @@ export const SignInForm = ({
               </Stack>
             </HStack>
           </Alert>
-        </Flex>
+          <FormControl as={VStack} spacing={0}>
+            <FormLabel>Login code:</FormLabel>
+            <HStack>
+              <PinInput onComplete={checkCodeAndRedirect}>
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+              </PinInput>
+            </HStack>
+          </FormControl>
+        </Stack>
       </SlideFade>
     </Stack>
   );
