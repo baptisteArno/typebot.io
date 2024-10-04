@@ -11,8 +11,8 @@ import {
   Preview,
   Section,
   Text,
-  render,
 } from "@react-email/components";
+import { render } from "@react-email/render";
 import { env } from "@typebot.io/env";
 import type { SendMailOptions } from "nodemailer";
 import type { ComponentProps } from "react";

@@ -136,6 +136,7 @@ export const SignInForm = ({
       "callbackUrl",
       `${window.location.origin}${redirectPath ?? "/typebots"}`,
     );
+    window.location.assign(url.toString());
   };
 
   if (isLoadingProviders) return <Spinner />;
