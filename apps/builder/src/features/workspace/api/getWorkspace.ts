@@ -26,22 +26,43 @@ export const getWorkspace = authenticatedProcedure
   )
   .output(
     z.object({
-      workspace: workspaceSchema.omit({
-        chatsLimitFirstEmailSentAt: true,
-        chatsLimitSecondEmailSentAt: true,
-        storageLimitFirstEmailSentAt: true,
-        storageLimitSecondEmailSentAt: true,
-        customStorageLimit: true,
-        additionalChatsIndex: true,
-        additionalStorageIndex: true,
-        isQuarantined: true,
-      }),
+      workspace: workspaceSchema
+        .omit({
+          chatsLimitFirstEmailSentAt: true,
+          chatsLimitSecondEmailSentAt: true,
+          storageLimitFirstEmailSentAt: true,
+          storageLimitSecondEmailSentAt: true,
+          customStorageLimit: true,
+          additionalChatsIndex: true,
+          additionalStorageIndex: true,
+          isQuarantined: true,
+        })
+        .extend({
+          aiFeatures: z
+            .array(
+              z.object({
+                id: z.string(),
+                prompt: z.string(),
+                credentialId: z.string().nullable(),
+              }),
+            )
+            .optional(),
+        }),
     }),
   )
   .query(async ({ input: { workspaceId }, ctx: { user } }) => {
     const workspace = await prisma.workspace.findFirst({
       where: { id: workspaceId },
-      include: { members: true },
+      include: {
+        members: true,
+        aiFeatures: {
+          select: {
+            id: true,
+            prompt: true,
+            credentialId: true,
+          },
+        },
+      },
     });
 
     if (!workspace || isReadWorkspaceFobidden(workspace, user))

@@ -2,7 +2,10 @@ import { useToast } from "@/hooks/useToast";
 import { trpc } from "@/lib/trpc";
 import { byId } from "@typebot.io/lib/utils";
 import { WorkspaceRole } from "@typebot.io/prisma/enum";
-import type { Workspace } from "@typebot.io/workspaces/schemas";
+import type {
+  Workspace,
+  WorkspaceAiFeature,
+} from "@typebot.io/workspaces/schemas";
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
@@ -33,6 +36,7 @@ const workspaceContext = createContext<{
     icon?: string;
     name?: string;
     inEditorAiFeaturesEnabled?: boolean;
+    aiFeatures?: WorkspaceAiFeature[];
   }) => void;
   deleteCurrentWorkspace: () => Promise<void>;
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -181,6 +185,7 @@ export const WorkspaceProvider = ({
     icon?: string;
     name?: string;
     inEditorAiFeaturesEnabled?: boolean;
+    aiFeatures?: WorkspaceAiFeature[];
   }) => {
     if (!workspaceId) return;
     updateWorkspaceMutation.mutate({
