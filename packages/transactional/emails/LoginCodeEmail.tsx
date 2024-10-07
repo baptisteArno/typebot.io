@@ -39,20 +39,15 @@ export const LoginCodeEmail = ({ url, code }: Props) => (
           }}
         />
         <Heading style={heading}>Your login code for Typebot</Heading>
-        <Section style={buttonContainer}>
-          <Button style={button} href={url}>
-            Login to Typebot
-          </Button>
-        </Section>
-        <Text style={paragraph}>
-          This link and code will only be valid for the next 5 minutes. If the
-          link does not work, you can use the login verification code directly:
-        </Text>
         <code style={codeStyle}>{code}</code>
+        <Text style={paragraph}>
+          This code will only be valid for the next 5 minutes.
+        </Text>
+        <Text style={paragraph}>
+          You can also sign in by <Link href={url}>clicking here</Link>.
+        </Text>
         <Hr style={hr} />
-        <Link href="https://typebot.io" style={reportLink}>
-          Typebot
-        </Link>
+        <Text style={footerText}>Typebot - Build faster, Chat smarter</Text>
       </Container>
     </Body>
   </Html>
@@ -64,12 +59,6 @@ LoginCodeEmail.PreviewProps = {
 } as Props;
 
 export default LoginCodeEmail;
-
-const logo = {
-  borderRadius: 21,
-  width: 42,
-  height: 42,
-};
 
 const main = {
   backgroundColor: "#ffffff",
@@ -93,31 +82,15 @@ const heading = {
 };
 
 const paragraph = {
-  margin: "0 0 15px",
+  margin: "15px 0 15px",
   fontSize: "15px",
   lineHeight: "1.4",
   color: "#3c4149",
 };
 
-const buttonContainer = {
-  padding: "27px 0 27px",
-};
-
-const button = {
-  backgroundColor: "#0042DA",
-  borderRadius: "3px",
-  fontWeight: "600",
-  color: "#fff",
-  fontSize: "15px",
-  textDecoration: "none",
-  textAlign: "center" as const,
-  display: "block",
-  padding: "11px 23px",
-};
-
-const reportLink = {
+const footerText = {
+  color: "#3c4149",
   fontSize: "14px",
-  color: "#b4becc",
 };
 
 const hr = {

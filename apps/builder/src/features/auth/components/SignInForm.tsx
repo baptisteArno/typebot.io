@@ -27,9 +27,11 @@ import {
   signIn,
   useSession,
 } from "next-auth/react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import { useQueryState } from "nuqs";
 import type { ChangeEvent, FormEvent } from "react";
 import React, { useEffect, useState } from "react";
+import { createEmailMagicLink } from "../helpers/createEmailMagicLink";
 import { DividerWithText } from "./DividerWithText";
 import { SignInError } from "./SignInError";
 import { SocialLoginButtons } from "./SocialLoginButtons";
@@ -43,6 +45,8 @@ export const SignInForm = ({
 }: Props & HTMLChakraProps<"form">) => {
   const { t } = useTranslate();
   const router = useRouter();
+  const [authError, setAuthError] = useQueryState("error");
+  const [redirectPath] = useQueryState("redirectPath");
   const { status } = useSession();
   const [authLoading, setAuthLoading] = useState(false);
   const [isLoadingProviders, setIsLoadingProviders] = useState(true);
@@ -61,7 +65,6 @@ export const SignInForm = ({
 
   useEffect(() => {
     if (status === "authenticated") {
-      const redirectPath = router.query.redirectPath?.toString();
       router.replace(redirectPath ? sanitizeUrl(redirectPath) : "/typebots");
       return;
     }
@@ -73,21 +76,21 @@ export const SignInForm = ({
   }, [status, router]);
 
   useEffect(() => {
-    if (!router.isReady) return;
-    if (router.query.error === "ip-banned") {
+    if (authError === "ip-banned") {
       showToast({
         status: "info",
         description:
           "Your account has suspicious activity and is being reviewed by our team. Feel free to contact us.",
       });
     }
-  }, [router.isReady, router.query.error, showToast]);
+  }, [authError, showToast]);
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) =>
     setEmailValue(e.target.value);
 
   const handleEmailSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setAuthError(null);
     if (isMagicCodeSent) return;
     setAuthLoading(true);
     try {
@@ -127,16 +130,10 @@ export const SignInForm = ({
     setAuthLoading(false);
   };
 
-  const checkCodeAndRedirect = async (token: string) => {
-    const url = new URL(`${window.location.origin}/api/auth/callback/email`);
-    url.searchParams.set("token", token);
-    url.searchParams.set("email", emailValue);
-    const redirectPath = router.query.redirectPath?.toString();
-    url.searchParams.set(
-      "callbackUrl",
-      `${window.location.origin}${redirectPath ?? "/typebots"}`,
+  const redirectToMagicLink = (token: string) => {
+    window.location.assign(
+      createEmailMagicLink(token, emailValue, redirectPath ?? undefined),
     );
-    window.location.assign(url.toString());
   };
 
   if (isLoadingProviders) return <Spinner />;
@@ -184,9 +181,6 @@ export const SignInForm = ({
           )}
         </>
       )}
-      {router.query.error && (
-        <SignInError error={router.query.error.toString()} />
-      )}
       <SlideFade offsetY="20px" in={isMagicCodeSent} unmountOnExit>
         <Stack spacing={3}>
           <Alert status="success" w="100%">
@@ -201,7 +195,7 @@ export const SignInForm = ({
           <FormControl as={VStack} spacing={0}>
             <FormLabel>Login code:</FormLabel>
             <HStack>
-              <PinInput onComplete={checkCodeAndRedirect}>
+              <PinInput onComplete={redirectToMagicLink}>
                 <PinInputField />
                 <PinInputField />
                 <PinInputField />
@@ -213,6 +207,7 @@ export const SignInForm = ({
           </FormControl>
         </Stack>
       </SlideFade>
+      {authError && <SignInError error={authError} />}
     </Stack>
   );
 };
