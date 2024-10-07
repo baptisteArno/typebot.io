@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       - uses: oven-sh/setup-bun@v2
       # https://github.com/vercel/turborepo/issues/6348
       - name: Run Turbo ignore
