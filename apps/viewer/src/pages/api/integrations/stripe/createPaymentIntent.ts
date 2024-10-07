@@ -54,7 +54,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       isPreview && stripeKeys?.test?.secretKey
         ? stripeKeys.test.secretKey
         : stripeKeys.live.secretKey,
-      { apiVersion: "2022-11-15" },
+      { apiVersion: "2024-09-30.acacia" },
     );
 
     const currency =

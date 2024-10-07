@@ -13,7 +13,7 @@ if (!env.STRIPE_SECRET_KEY || !env.STRIPE_WEBHOOK_SECRET)
   throw new Error("STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET missing");
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-  apiVersion: "2022-11-15",
+  apiVersion: "2024-09-30.acacia",
 });
 
 const webhookSecret = env.STRIPE_WEBHOOK_SECRET as string;

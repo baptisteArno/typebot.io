@@ -35,7 +35,7 @@ export const getBillingPortalUrl = async ({ workspaceId, user }: Props) => {
       message: "Workspace not found",
     });
   const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-    apiVersion: "2022-11-15",
+    apiVersion: "2024-09-30.acacia",
   });
   const portalSession = await stripe.billingPortal.sessions.create({
     customer: workspace.stripeId,

@@ -68,7 +68,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (!router.isReady) return;
     if (status === "loading") return;
-    const isSignInPath = ["/signin", "/register"].includes(router.pathname);
+    const isSignInPath = [
+      "/signin",
+      "/register",
+      "/signin/email-redirect",
+    ].includes(router.pathname);
     const isPathPublicFriendly = /\/typebots\/.+\/(edit|theme|settings)/.test(
       router.pathname,
     );

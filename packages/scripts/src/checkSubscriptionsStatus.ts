@@ -14,7 +14,7 @@ const checkSubscriptionsStatus = async () => {
   });
 
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: "2022-11-15",
+    apiVersion: "2024-09-30.acacia",
   });
 
   let totalActiveSubscriptions = 0;

@@ -7,7 +7,7 @@ import type { Workspace } from "@typebot.io/workspaces/schemas";
 import Stripe from "stripe";
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY ?? "", {
-  apiVersion: "2022-11-15",
+  apiVersion: "2024-09-30.acacia",
 });
 
 export const addSubscriptionToWorkspace = async (

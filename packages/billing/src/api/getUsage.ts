@@ -62,7 +62,7 @@ export const getUsage = async ({ workspaceId, user }: Props) => {
   }
 
   const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-    apiVersion: "2022-11-15",
+    apiVersion: "2024-09-30.acacia",
   });
 
   const subscriptions = await stripe.subscriptions.list({

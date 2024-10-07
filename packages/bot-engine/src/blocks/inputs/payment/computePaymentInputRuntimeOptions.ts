@@ -40,7 +40,7 @@ const createStripePaymentIntent =
       isPreview && stripeKeys?.test?.secretKey
         ? stripeKeys.test.secretKey
         : stripeKeys.live.secretKey,
-      { apiVersion: "2022-11-15" },
+      { apiVersion: "2024-09-30.acacia" },
     );
     const currency = options?.currency ?? defaultPaymentInputOptions.currency;
     const amount = Math.round(

@@ -134,7 +134,7 @@ export const BlockSettings = ({
   onBlockChange: (block: Partial<Block>) => void;
 }): JSX.Element | null => {
   const updateOptions = (options: BlockOptions) => {
-    onBlockChange({ options } as Partial<Block>);
+    onBlockChange({ options });
   };
 
   switch (block.type) {
