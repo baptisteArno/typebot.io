@@ -1,5 +1,4 @@
 import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
-import { isReadTypebotForbidden } from "@/features/typebot/helpers/isReadTypebotForbidden";
 import {
   badRequest,
   methodNotAllowed,
@@ -8,6 +7,7 @@ import {
 } from "@typebot.io/lib/api/utils";
 import { getFileTempUrl } from "@typebot.io/lib/s3/getFileTempUrl";
 import prisma from "@typebot.io/prisma";
+import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

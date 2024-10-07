@@ -140,7 +140,7 @@ export const sendMessageV1 = publicProcedure
               logs: allLogs,
               clientSideActions,
               visitedEdges,
-              hasEmbedBubbleWithWaitEvent: messages.some(
+              isWaitingForExternalEvent: messages.some(
                 (message) =>
                   message.type === "custom-embed" ||
                   (message.type === BubbleBlockType.EMBED &&
@@ -209,7 +209,7 @@ export const sendMessageV1 = publicProcedure
             logs: allLogs,
             clientSideActions,
             visitedEdges,
-            hasEmbedBubbleWithWaitEvent: messages.some(
+            isWaitingForExternalEvent: messages.some(
               (message) =>
                 message.type === "custom-embed" ||
                 (message.type === BubbleBlockType.EMBED &&

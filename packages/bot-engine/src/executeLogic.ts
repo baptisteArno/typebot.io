@@ -9,6 +9,7 @@ import { executeScript } from "./blocks/logic/script/executeScript";
 import { executeSetVariable } from "./blocks/logic/setVariable/executeSetVariable";
 import { executeTypebotLink } from "./blocks/logic/typebotLink/executeTypebotLink";
 import { executeWait } from "./blocks/logic/wait/executeWait";
+import { executeWebhookBlock } from "./blocks/logic/webhook/executeWebhookBlock";
 import type { SessionState } from "./schemas/chatSession";
 import type { ExecuteLogicResponse } from "./types";
 
@@ -35,5 +36,7 @@ export const executeLogic =
         return executeJumpBlock(state, block.options);
       case LogicBlockType.AB_TEST:
         return executeAbTest(state, block);
+      case LogicBlockType.WEBHOOK:
+        return executeWebhookBlock(block);
     }
   };

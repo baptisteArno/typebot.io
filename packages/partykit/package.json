@@ -1,0 +1,11 @@
+{
+  "name": "@typebot.io/partykit",
+  "scripts": {
+    "dev": "partykit dev --live",
+    "deploy": "partykit deploy"
+  },
+  "devDependencies": {
+    "partykit": "0.0.110",
+    "@typebot.io/tsconfig": "workspace:*"
+  }
+}

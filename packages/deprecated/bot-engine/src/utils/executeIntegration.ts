@@ -22,7 +22,7 @@ export const executeIntegration = ({
     case IntegrationBlockType.ZAPIER:
     case IntegrationBlockType.MAKE_COM:
     case IntegrationBlockType.PABBLY_CONNECT:
-    case IntegrationBlockType.WEBHOOK:
+    case IntegrationBlockType.HTTP_REQUEST:
       return executeWebhook(block, context);
     case IntegrationBlockType.EMAIL:
       return executeSendEmailBlock(block, context);

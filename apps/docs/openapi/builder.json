@@ -7952,11 +7952,11 @@
     },
     "/v1/typebots/{typebotId}/webhookBlocks": {
       "get": {
-        "operationId": "webhook-listWebhookBlocks",
-        "summary": "List webhook blocks",
-        "description": "Returns a list of all the webhook blocks that you can subscribe to.",
+        "operationId": "httpRequest-listHttpRequestBlocks",
+        "summary": "List HTTP request blocks",
+        "description": "Returns a list of all the HTTP request blocks that you can subscribe to.",
         "tags": [
-          "Webhook"
+          "HTTP request"
         ],
         "security": [
           {
@@ -8075,11 +8075,11 @@
     },
     "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/getResultExample": {
       "get": {
-        "operationId": "webhook-getResultExample",
+        "operationId": "httpRequest-getResultExample",
         "summary": "Get result example",
-        "description": "Returns \"fake\" result for webhook block to help you anticipate how the webhook will behave.",
+        "description": "Returns \"fake\" result for http request block to help you anticipate how the webhook will behave.",
         "tags": [
-          "Webhook"
+          "HTTP request"
         ],
         "security": [
           {
@@ -8180,10 +8180,10 @@
     },
     "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/subscribe": {
       "post": {
-        "operationId": "webhook-subscribeWebhook",
-        "summary": "Subscribe to webhook block",
+        "operationId": "httpRequest-subscribeHttpRequest",
+        "summary": "Subscribe to HTTP request block",
         "tags": [
-          "Webhook"
+          "HTTP request"
         ],
         "security": [
           {
@@ -8295,10 +8295,10 @@
     },
     "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/unsubscribe": {
       "post": {
-        "operationId": "webhook-unsubscribeWebhook",
-        "summary": "Unsubscribe from webhook block",
+        "operationId": "httpRequest-unsubscribeHttpRequest",
+        "summary": "Unsubscribe from HTTP request block",
         "tags": [
-          "Webhook"
+          "HTTP request"
         ],
         "security": [
           {
@@ -13310,6 +13310,40 @@
                                             "location",
                                             "timestamp"
                                           ]
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string"
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
+                                                "webhook"
+                                              ]
+                                            },
+                                            "webhook": {
+                                              "type": "object",
+                                              "properties": {
+                                                "data": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "data"
+                                              ]
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": [
+                                            "from",
+                                            "type",
+                                            "webhook",
+                                            "timestamp"
+                                          ]
                                         }
                                       ]
                                     }
@@ -16026,6 +16060,9 @@
                     },
                     {
                       "$ref": "#/components/schemas/abTestLogic"
+                    },
+                    {
+                      "$ref": "#/components/schemas/webhookLogic"
                     }
                   ],
                   "discriminator": {
@@ -16038,7 +16075,8 @@
                       "Wait": "#/components/schemas/waitLogic",
                       "Jump": "#/components/schemas/jumpLogic",
                       "Condition": "#/components/schemas/conditionLogic",
-                      "AB test": "#/components/schemas/abTestLogic"
+                      "AB test": "#/components/schemas/abTestLogic",
+                      "webhook": "#/components/schemas/webhookLogic"
                     }
                   }
                 },
@@ -17041,6 +17079,53 @@
           "items"
         ],
         "title": "AB Test"
+      },
+      "webhookLogic": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "outgoingEdgeId": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "webhook"
+            ]
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "responseVariableMapping": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "variableId": {
+                      "type": "string"
+                    },
+                    "bodyPath": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ],
+        "title": "Webhook"
       },
       "googleSheetsBlock": {
         "type": "object",

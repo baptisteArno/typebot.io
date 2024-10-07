@@ -17,12 +17,12 @@ import { UrlNodeContent } from "@/features/blocks/inputs/url/components/UrlNodeC
 import { ChatwootNodeBody } from "@/features/blocks/integrations/chatwoot/components/ChatwootNodeBody";
 import { GoogleAnalyticsNodeBody } from "@/features/blocks/integrations/googleAnalytics/components/GoogleAnalyticsNodeBody";
 import { GoogleSheetsNodeContent } from "@/features/blocks/integrations/googleSheets/components/GoogleSheetsNodeContent";
+import { HttpRequestNodeContent } from "@/features/blocks/integrations/httpRequest/components/HttpRequestNodeContent";
 import { MakeComContent } from "@/features/blocks/integrations/makeCom/components/MakeComContent";
 import { OpenAINodeBody } from "@/features/blocks/integrations/openai/components/OpenAINodeBody";
 import { PabblyConnectContent } from "@/features/blocks/integrations/pabbly/components/PabblyConnectContent";
 import { PixelNodeBody } from "@/features/blocks/integrations/pixel/components/PixelNodeBody";
 import { SendEmailContent } from "@/features/blocks/integrations/sendEmail/components/SendEmailContent";
-import { WebhookContent } from "@/features/blocks/integrations/webhook/components/HttpRequestContent";
 import { ZapierContent } from "@/features/blocks/integrations/zapier/components/ZapierContent";
 import { AbTestNodeBody } from "@/features/blocks/logic/abTest/components/AbTestNodeBody";
 import { JumpNodeBody } from "@/features/blocks/logic/jump/components/JumpNodeBody";
@@ -31,6 +31,7 @@ import { ScriptNodeContent } from "@/features/blocks/logic/script/components/Scr
 import { SetVariableContent } from "@/features/blocks/logic/setVariable/components/SetVariableContent";
 import { TypebotLinkNode } from "@/features/blocks/logic/typebotLink/components/TypebotLinkNode";
 import { WaitNodeContent } from "@/features/blocks/logic/wait/components/WaitNodeContent";
+import { WebhookNodeContent } from "@/features/blocks/logic/webhook/components/WebhookNodeContent";
 import { ForgedBlockNodeContent } from "@/features/forge/components/ForgedBlockNodeContent";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import type {
@@ -123,14 +124,16 @@ export const BlockNodeContent = ({
       return <TypebotLinkNode block={block} />;
     case LogicBlockType.CONDITION:
       return <ItemNodesList block={block} indices={indices} />;
+    case LogicBlockType.WEBHOOK:
+      return <WebhookNodeContent options={block.options} />;
     case IntegrationBlockType.GOOGLE_SHEETS: {
       return <GoogleSheetsNodeContent options={block.options} />;
     }
     case IntegrationBlockType.GOOGLE_ANALYTICS: {
       return <GoogleAnalyticsNodeBody action={block.options?.action} />;
     }
-    case IntegrationBlockType.WEBHOOK: {
-      return <WebhookContent block={block} />;
+    case IntegrationBlockType.HTTP_REQUEST: {
+      return <HttpRequestNodeContent block={block} />;
     }
     case IntegrationBlockType.ZAPIER: {
       return <ZapierContent block={block} />;

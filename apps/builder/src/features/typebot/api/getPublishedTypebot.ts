@@ -1,6 +1,7 @@
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import prisma from "@typebot.io/prisma";
+import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import { migratePublicTypebot } from "@typebot.io/typebot/migrations/migrateTypebot";
 import {
   publicTypebotSchema,
@@ -9,7 +10,6 @@ import {
 } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
-import { isReadTypebotForbidden } from "../helpers/isReadTypebotForbidden";
 
 export const getPublishedTypebot = authenticatedProcedure
   .meta({

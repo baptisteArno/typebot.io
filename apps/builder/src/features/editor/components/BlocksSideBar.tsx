@@ -20,7 +20,9 @@ import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import { env } from "@typebot.io/env";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
+import { isDefined } from "@typebot.io/lib/utils";
 import type React from "react";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
@@ -129,11 +131,17 @@ export const BlocksSideBar = () => {
       .includes(searchInput.toLowerCase()),
   );
 
-  const filteredLogicBlockTypes = Object.values(LogicBlockType).filter((type) =>
-    getLogicBlockLabel(t)
-      [type].toLowerCase()
-      .includes(searchInput.toLowerCase()),
-  );
+  const filteredLogicBlockTypes = Object.values(LogicBlockType)
+    .filter((type) =>
+      type === LogicBlockType.WEBHOOK
+        ? isDefined(env.NEXT_PUBLIC_PARTYKIT_HOST)
+        : true,
+    )
+    .filter((type) =>
+      getLogicBlockLabel(t)
+        [type].toLowerCase()
+        .includes(searchInput.toLowerCase()),
+    );
 
   const filteredIntegrationBlockTypes = Object.values(
     IntegrationBlockType,

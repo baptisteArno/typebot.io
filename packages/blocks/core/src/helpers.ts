@@ -10,8 +10,8 @@ import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice
 import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
 import type { TextInputBlock } from "@typebot.io/blocks-inputs/text/schema";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
+import type { HttpRequestBlock } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import type { IntegrationBlock } from "@typebot.io/blocks-integrations/schema";
-import type { HttpRequestBlock } from "@typebot.io/blocks-integrations/webhook/schema";
 import type { ConditionBlock } from "@typebot.io/blocks-logic/condition/schema";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import type { LogicBlock } from "@typebot.io/blocks-logic/schema";
@@ -65,9 +65,9 @@ export const isIntegrationBlock = (block: Block): block is IntegrationBlock =>
     ) as any[]
   ).includes(block.type);
 
-export const isWebhookBlock = (block: Block): block is HttpRequestBlock =>
+export const isHttpRequestBlock = (block: Block): block is HttpRequestBlock =>
   [
-    IntegrationBlockType.WEBHOOK,
+    IntegrationBlockType.HTTP_REQUEST,
     IntegrationBlockType.PABBLY_CONNECT,
     IntegrationBlockType.ZAPIER,
     IntegrationBlockType.MAKE_COM,

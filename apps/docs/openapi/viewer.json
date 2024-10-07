@@ -385,7 +385,7 @@
                             "$ref": "#/components/schemas/csaStreamOpenAiChatCompletion"
                           },
                           {
-                            "$ref": "#/components/schemas/csaExecWebhook"
+                            "$ref": "#/components/schemas/csaHttpRequestToExecute"
                           },
                           {
                             "$ref": "#/components/schemas/csaInjectStartProps"
@@ -398,6 +398,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/csaCodeToExecute"
+                          },
+                          {
+                            "$ref": "#/components/schemas/csaListenForWebhook"
                           }
                         ],
                         "discriminator": {
@@ -410,11 +413,12 @@
                             "wait": "#/components/schemas/csaWait",
                             "setVariable": "#/components/schemas/csaSetVariable",
                             "streamOpenAiChatCompletion": "#/components/schemas/csaStreamOpenAiChatCompletion",
-                            "webhookToExecute": "#/components/schemas/csaExecWebhook",
+                            "httpRequestToExecute": "#/components/schemas/csaHttpRequestToExecute",
                             "startPropsToInject": "#/components/schemas/csaInjectStartProps",
                             "pixel": "#/components/schemas/csaPixel",
                             "stream": "#/components/schemas/csaStream",
-                            "codeToExecute": "#/components/schemas/csaCodeToExecute"
+                            "codeToExecute": "#/components/schemas/csaCodeToExecute",
+                            "listenForWebhook": "#/components/schemas/csaListenForWebhook"
                           }
                         }
                       }
@@ -895,7 +899,7 @@
                             "$ref": "#/components/schemas/csaStreamOpenAiChatCompletion"
                           },
                           {
-                            "$ref": "#/components/schemas/csaExecWebhook"
+                            "$ref": "#/components/schemas/csaHttpRequestToExecute"
                           },
                           {
                             "$ref": "#/components/schemas/csaInjectStartProps"
@@ -908,6 +912,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/csaCodeToExecute"
+                          },
+                          {
+                            "$ref": "#/components/schemas/csaListenForWebhook"
                           }
                         ],
                         "discriminator": {
@@ -920,11 +927,12 @@
                             "wait": "#/components/schemas/csaWait",
                             "setVariable": "#/components/schemas/csaSetVariable",
                             "streamOpenAiChatCompletion": "#/components/schemas/csaStreamOpenAiChatCompletion",
-                            "webhookToExecute": "#/components/schemas/csaExecWebhook",
+                            "httpRequestToExecute": "#/components/schemas/csaHttpRequestToExecute",
                             "startPropsToInject": "#/components/schemas/csaInjectStartProps",
                             "pixel": "#/components/schemas/csaPixel",
                             "stream": "#/components/schemas/csaStream",
-                            "codeToExecute": "#/components/schemas/csaCodeToExecute"
+                            "codeToExecute": "#/components/schemas/csaCodeToExecute",
+                            "listenForWebhook": "#/components/schemas/csaListenForWebhook"
                           }
                         }
                       }
@@ -1337,7 +1345,7 @@
                             "$ref": "#/components/schemas/csaStreamOpenAiChatCompletion"
                           },
                           {
-                            "$ref": "#/components/schemas/csaExecWebhook"
+                            "$ref": "#/components/schemas/csaHttpRequestToExecute"
                           },
                           {
                             "$ref": "#/components/schemas/csaInjectStartProps"
@@ -1350,6 +1358,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/csaCodeToExecute"
+                          },
+                          {
+                            "$ref": "#/components/schemas/csaListenForWebhook"
                           }
                         ],
                         "discriminator": {
@@ -1362,11 +1373,12 @@
                             "wait": "#/components/schemas/csaWait",
                             "setVariable": "#/components/schemas/csaSetVariable",
                             "streamOpenAiChatCompletion": "#/components/schemas/csaStreamOpenAiChatCompletion",
-                            "webhookToExecute": "#/components/schemas/csaExecWebhook",
+                            "httpRequestToExecute": "#/components/schemas/csaHttpRequestToExecute",
                             "startPropsToInject": "#/components/schemas/csaInjectStartProps",
                             "pixel": "#/components/schemas/csaPixel",
                             "stream": "#/components/schemas/csaStream",
-                            "codeToExecute": "#/components/schemas/csaCodeToExecute"
+                            "codeToExecute": "#/components/schemas/csaCodeToExecute",
+                            "listenForWebhook": "#/components/schemas/csaListenForWebhook"
                           }
                         }
                       },
@@ -1692,7 +1704,7 @@
                             "$ref": "#/components/schemas/csaStreamOpenAiChatCompletion"
                           },
                           {
-                            "$ref": "#/components/schemas/csaExecWebhook"
+                            "$ref": "#/components/schemas/csaHttpRequestToExecute"
                           },
                           {
                             "$ref": "#/components/schemas/csaInjectStartProps"
@@ -1705,6 +1717,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/csaCodeToExecute"
+                          },
+                          {
+                            "$ref": "#/components/schemas/csaListenForWebhook"
                           }
                         ],
                         "discriminator": {
@@ -1717,11 +1732,12 @@
                             "wait": "#/components/schemas/csaWait",
                             "setVariable": "#/components/schemas/csaSetVariable",
                             "streamOpenAiChatCompletion": "#/components/schemas/csaStreamOpenAiChatCompletion",
-                            "webhookToExecute": "#/components/schemas/csaExecWebhook",
+                            "httpRequestToExecute": "#/components/schemas/csaHttpRequestToExecute",
                             "startPropsToInject": "#/components/schemas/csaInjectStartProps",
                             "pixel": "#/components/schemas/csaPixel",
                             "stream": "#/components/schemas/csaStream",
-                            "codeToExecute": "#/components/schemas/csaCodeToExecute"
+                            "codeToExecute": "#/components/schemas/csaCodeToExecute",
+                            "listenForWebhook": "#/components/schemas/csaListenForWebhook"
                           }
                         }
                       },
@@ -2154,7 +2170,7 @@
                             "$ref": "#/components/schemas/csaStreamOpenAiChatCompletion"
                           },
                           {
-                            "$ref": "#/components/schemas/csaExecWebhook"
+                            "$ref": "#/components/schemas/csaHttpRequestToExecute"
                           },
                           {
                             "$ref": "#/components/schemas/csaInjectStartProps"
@@ -2167,6 +2183,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/csaCodeToExecute"
+                          },
+                          {
+                            "$ref": "#/components/schemas/csaListenForWebhook"
                           }
                         ],
                         "discriminator": {
@@ -2179,11 +2198,12 @@
                             "wait": "#/components/schemas/csaWait",
                             "setVariable": "#/components/schemas/csaSetVariable",
                             "streamOpenAiChatCompletion": "#/components/schemas/csaStreamOpenAiChatCompletion",
-                            "webhookToExecute": "#/components/schemas/csaExecWebhook",
+                            "httpRequestToExecute": "#/components/schemas/csaHttpRequestToExecute",
                             "startPropsToInject": "#/components/schemas/csaInjectStartProps",
                             "pixel": "#/components/schemas/csaPixel",
                             "stream": "#/components/schemas/csaStream",
-                            "codeToExecute": "#/components/schemas/csaCodeToExecute"
+                            "codeToExecute": "#/components/schemas/csaCodeToExecute",
+                            "listenForWebhook": "#/components/schemas/csaListenForWebhook"
                           }
                         }
                       },
@@ -3128,6 +3148,40 @@
                                             "location",
                                             "timestamp"
                                           ]
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string"
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
+                                                "webhook"
+                                              ]
+                                            },
+                                            "webhook": {
+                                              "type": "object",
+                                              "properties": {
+                                                "data": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "data"
+                                              ]
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": [
+                                            "from",
+                                            "type",
+                                            "webhook",
+                                            "timestamp"
+                                          ]
                                         }
                                       ]
                                     }
@@ -3606,6 +3660,9 @@
                     },
                     {
                       "$ref": "#/components/schemas/abTestLogic"
+                    },
+                    {
+                      "$ref": "#/components/schemas/webhookLogic"
                     }
                   ],
                   "discriminator": {
@@ -3618,7 +3675,8 @@
                       "Wait": "#/components/schemas/waitLogic",
                       "Jump": "#/components/schemas/jumpLogic",
                       "Condition": "#/components/schemas/conditionLogic",
-                      "AB test": "#/components/schemas/abTestLogic"
+                      "AB test": "#/components/schemas/abTestLogic",
+                      "webhook": "#/components/schemas/webhookLogic"
                     }
                   }
                 },
@@ -5753,6 +5811,53 @@
           "items"
         ],
         "title": "AB Test"
+      },
+      "webhookLogic": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "outgoingEdgeId": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "webhook"
+            ]
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "responseVariableMapping": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "variableId": {
+                      "type": "string"
+                    },
+                    "bodyPath": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ],
+        "title": "Webhook"
       },
       "chatwootBlock": {
         "type": "object",
@@ -13359,16 +13464,16 @@
         ],
         "title": "Stream OpenAI"
       },
-      "csaExecWebhook": {
+      "csaHttpRequestToExecute": {
         "type": "object",
         "properties": {
           "type": {
             "type": "string",
             "enum": [
-              "webhookToExecute"
+              "httpRequestToExecute"
             ]
           },
-          "webhookToExecute": {
+          "httpRequestToExecute": {
             "type": "object",
             "properties": {
               "url": {
@@ -13409,9 +13514,9 @@
         },
         "required": [
           "type",
-          "webhookToExecute"
+          "httpRequestToExecute"
         ],
-        "title": "Execute webhook"
+        "title": "Execute HTTP request"
       },
       "csaInjectStartProps": {
         "type": "object",
@@ -13670,6 +13775,27 @@
           "codeToExecute"
         ],
         "title": "Execute code"
+      },
+      "csaListenForWebhook": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "listenForWebhook"
+            ]
+          },
+          "lastBubbleBlockId": {
+            "type": "string"
+          },
+          "expectsDedicatedReply": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "title": "Listen to webhook"
       },
       "error.BAD_REQUEST": {
         "type": "object",

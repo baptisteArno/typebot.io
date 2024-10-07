@@ -42,7 +42,7 @@ export const BlockLabel = ({ type, ...props }: Props): JSX.Element => {
 
 export const getBubbleBlockLabel = (
   t: TFnType,
-): Record<BubbleBlockType, string> => ({
+): { [key in BubbleBlockType]: string } => ({
   [BubbleBlockType.TEXT]: t("editor.sidebarBlock.text.label"),
   [BubbleBlockType.IMAGE]: t("editor.sidebarBlock.image.label"),
   [BubbleBlockType.VIDEO]: t("editor.sidebarBlock.video.label"),
@@ -52,7 +52,7 @@ export const getBubbleBlockLabel = (
 
 export const getInputBlockLabel = (
   t: TFnType,
-): Record<InputBlockType, string> => ({
+): { [key in InputBlockType]: string } => ({
   [InputBlockType.NUMBER]: t("editor.sidebarBlock.number.label"),
   [InputBlockType.EMAIL]: t("editor.sidebarBlock.email.label"),
   [InputBlockType.TEXT]: t("editor.sidebarBlock.text.label"),
@@ -68,7 +68,7 @@ export const getInputBlockLabel = (
 
 export const getLogicBlockLabel = (
   t: TFnType,
-): Record<LogicBlockType, string> => ({
+): { [key in LogicBlockType]: string } => ({
   [LogicBlockType.SET_VARIABLE]: t("editor.sidebarBlock.setVariable.label"),
   [LogicBlockType.CONDITION]: t("editor.sidebarBlock.condition.label"),
   [LogicBlockType.REDIRECT]: t("editor.sidebarBlock.redirect.label"),
@@ -77,16 +77,17 @@ export const getLogicBlockLabel = (
   [LogicBlockType.WAIT]: t("editor.sidebarBlock.wait.label"),
   [LogicBlockType.JUMP]: t("editor.sidebarBlock.jump.label"),
   [LogicBlockType.AB_TEST]: t("editor.sidebarBlock.abTest.label"),
+  [LogicBlockType.WEBHOOK]: "Webhook",
 });
 
 export const getIntegrationBlockLabel = (
   t: TFnType,
-): Record<IntegrationBlockType, string> => ({
+): { [key in IntegrationBlockType]: string } => ({
   [IntegrationBlockType.GOOGLE_SHEETS]: t("editor.sidebarBlock.sheets.label"),
   [IntegrationBlockType.GOOGLE_ANALYTICS]: t(
     "editor.sidebarBlock.analytics.label",
   ),
-  [IntegrationBlockType.WEBHOOK]: "HTTP request",
+  [IntegrationBlockType.HTTP_REQUEST]: "HTTP request",
   [IntegrationBlockType.ZAPIER]: t("editor.sidebarBlock.zapier.label"),
   [IntegrationBlockType.MAKE_COM]: t("editor.sidebarBlock.makecom.label"),
   [IntegrationBlockType.PABBLY_CONNECT]: t("editor.sidebarBlock.pabbly.label"),

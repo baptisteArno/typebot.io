@@ -1,8 +1,12 @@
 import { publicProcedure } from "@/helpers/server/trpc";
-import { isNotDefined } from "@typebot.io/lib/utils";
 import { resumeWhatsAppFlow } from "@typebot.io/whatsapp/resumeWhatsAppFlow";
-import { whatsAppWebhookRequestBodySchema } from "@typebot.io/whatsapp/schemas";
+import {
+  type WhatsAppWebhookRequestBody,
+  whatsAppWebhookRequestBodySchema,
+} from "@typebot.io/whatsapp/schemas";
 import { z } from "@typebot.io/zod";
+
+const whatsAppSessionIdPrefix = "wa-";
 
 export const receiveMessage = publicProcedure
   .meta({
@@ -24,18 +28,14 @@ export const receiveMessage = publicProcedure
     }),
   )
   .mutation(async ({ input: { entry, credentialsId, workspaceId } }) => {
-    const receivedMessage = entry.at(0)?.changes.at(0)?.value.messages?.at(0);
-    if (isNotDefined(receivedMessage)) return { message: "No message found" };
-    const contactName =
-      entry.at(0)?.changes.at(0)?.value?.contacts?.at(0)?.profile?.name ?? "";
-    const contactPhoneNumber =
-      entry.at(0)?.changes.at(0)?.value?.messages?.at(0)?.from ?? "";
-    const phoneNumberId = entry.at(0)?.changes.at(0)?.value
-      .metadata.phone_number_id;
-    if (!phoneNumberId) return { message: "No phone number id found" };
-    return resumeWhatsAppFlow({
+    const { receivedMessage, contactName, contactPhoneNumber, phoneNumberId } =
+      extractMessageDetails(entry);
+    if (!receivedMessage) return { message: "No message found" };
+    if (!phoneNumberId) return { message: "No phone number found" };
+
+    await resumeWhatsAppFlow({
       receivedMessage,
-      sessionId: `wa-${phoneNumberId}-${receivedMessage.from}`,
+      sessionId: `${whatsAppSessionIdPrefix}${phoneNumberId}-${receivedMessage.from}`,
       phoneNumberId,
       credentialsId,
       workspaceId,
@@ -44,4 +44,19 @@ export const receiveMessage = publicProcedure
         phoneNumber: contactPhoneNumber,
       },
     });
+
+    return {
+      message: "Message received",
+    };
   });
+
+const extractMessageDetails = (entry: WhatsAppWebhookRequestBody["entry"]) => {
+  const receivedMessage = entry.at(0)?.changes.at(0)?.value.messages?.at(0);
+  const contactName =
+    entry.at(0)?.changes.at(0)?.value?.contacts?.at(0)?.profile?.name ?? "";
+  const contactPhoneNumber =
+    entry.at(0)?.changes.at(0)?.value?.messages?.at(0)?.from ?? "";
+  const phoneNumberId = entry.at(0)?.changes.at(0)?.value
+    .metadata.phone_number_id;
+  return { receivedMessage, contactName, contactPhoneNumber, phoneNumberId };
+};

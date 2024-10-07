@@ -8,24 +8,24 @@ import { upsertResult } from "./queries/upsertResult";
 import type { ChatSession, ContinueChatResponse } from "./schemas/api";
 
 type Props = {
-  session: Pick<ChatSession, "state"> & { id?: string };
+  session: Pick<ChatSession, "state"> & { id?: string; isReplying?: boolean };
   input: ContinueChatResponse["input"];
   logs: ContinueChatResponse["logs"];
   clientSideActions: ContinueChatResponse["clientSideActions"];
   visitedEdges: Prisma.VisitedEdge[];
   setVariableHistory: SetVariableHistoryItem[];
-  hasEmbedBubbleWithWaitEvent?: boolean;
+  isWaitingForExternalEvent?: boolean;
   initialSessionId?: string;
 };
 
 export const saveStateToDatabase = async ({
-  session: { state, id },
+  session: { state, id, isReplying },
   input,
   logs,
   clientSideActions,
   visitedEdges,
   setVariableHistory,
-  hasEmbedBubbleWithWaitEvent,
+  isWaitingForExternalEvent,
   initialSessionId,
 }: Props) => {
   const containsSetVariableClientSideAction = clientSideActions?.some(
@@ -35,7 +35,7 @@ export const saveStateToDatabase = async ({
   const isCompleted = Boolean(
     !input &&
       !containsSetVariableClientSideAction &&
-      !hasEmbedBubbleWithWaitEvent,
+      !isWaitingForExternalEvent,
   );
 
   const queries: Prisma.PrismaPromise<any>[] = [];
@@ -44,12 +44,19 @@ export const saveStateToDatabase = async ({
 
   if (id) {
     if (isCompleted && resultId) queries.push(deleteSession(id));
-    else queries.push(updateSession({ id, state, isReplying: false }));
+    else
+      queries.push(
+        updateSession({ id, state, isReplying: isReplying ?? false }),
+      );
   }
 
   const session = id
     ? { state, id }
-    : await createSession({ id: initialSessionId, state, isReplying: false });
+    : await createSession({
+        id: initialSessionId,
+        state,
+        isReplying: isReplying ?? false,
+      });
 
   if (!resultId) {
     if (queries.length > 0) await prisma.$transaction(queries);

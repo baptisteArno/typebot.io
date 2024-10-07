@@ -9,6 +9,7 @@
     "test:ui": "dotenv -e ./.env -e ../../.env -- playwright test --ui"
   },
   "dependencies": {
+    "partysocket": "1.0.2",
     "@braintree/sanitize-url": "7.0.1",
     "@chakra-ui/anatomy": "2.2.2",
     "@chakra-ui/react": "2.8.2",

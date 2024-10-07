@@ -1,0 +1,40 @@
+---
+title: Webhook
+icon: webhook
+---
+
+The Webhook block allows you to pause the conversation until a provided webhook URL is called.
+
+This can be useful if you want to execute a long-running action that can take several minutes to complete.
+
+## URLs
+
+### Test
+
+- Web:
+
+```
+https://typebot.io/api/v1/typebots/{typebotId}/blocks/{blockId}/web/executeTestWebhook
+```
+
+- WhatsApp:
+
+```
+https://typebot.io/api/v1/typebots/{typebotId}/blocks/{blockId}/whatsapp/{phone}/executeTestWebhook
+```
+
+Where `{phone}` is your phone number on which you test the bot. For example, if you provided `+33 601 020304`, `{phone}` should be `33601020304`, no spaces, no `+`.
+
+### Production
+
+No matter the environment, the webhook URL will be the same:
+
+```
+https://typebot.io/api/v1/typebots/{typebotId}/blocks/{blockId}/results/{resultId}/executeWebhook
+```
+
+Where `{resultId}` is the current user result ID. You can get this ID directly in your typebot flow using a [Set variable](/editor/blocks/logic/set-variable) block with the `Result ID` value.
+
+## Authentication
+
+The Webhook URL needs to be authenticated in order to work. See [API authentication](/api-reference/authentication) for more information.

@@ -20,6 +20,7 @@ import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers";
 import type { Group } from "@typebot.io/groups/schemas";
 import { isURL } from "@typebot.io/lib/isURL";
+import { stringifyError } from "@typebot.io/lib/stringifyError";
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import type { Prisma } from "@typebot.io/prisma/types";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
@@ -36,8 +37,8 @@ import { validateNumber } from "./blocks/inputs/number/validateNumber";
 import { formatPhoneNumber } from "./blocks/inputs/phone/formatPhoneNumber";
 import { parsePictureChoicesReply } from "./blocks/inputs/pictureChoice/parsePictureChoicesReply";
 import { validateRatingReply } from "./blocks/inputs/rating/validateRatingReply";
+import { saveDataInResponseVariableMapping } from "./blocks/integrations/httpRequest/saveDataInResponseVariableMapping";
 import { resumeChatCompletion } from "./blocks/integrations/legacy/openai/resumeChatCompletion";
-import { resumeWebhookExecution } from "./blocks/integrations/webhook/resumeWebhookExecution";
 import { executeGroup, parseInput } from "./executeGroup";
 import { getNextGroup } from "./getNextGroup";
 import { saveAnswer } from "./queries/saveAnswer";
@@ -240,11 +241,31 @@ const processNonInputBlock = async ({
       })(reply.text);
       newSessionState = result.newSessionState;
     }
-  } else if (reply && block.type === IntegrationBlockType.WEBHOOK) {
-    const result = resumeWebhookExecution({
+  } else if (
+    reply &&
+    (block.type === IntegrationBlockType.HTTP_REQUEST ||
+      block.type === LogicBlockType.WEBHOOK)
+  ) {
+    let response: {
+      statusCode?: number;
+      data?: unknown;
+    };
+    try {
+      response = JSON.parse(reply.text);
+    } catch (err) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Provided response is not valid JSON",
+        cause: stringifyError(err),
+      });
+    }
+    const result = saveDataInResponseVariableMapping({
       state,
-      block,
-      response: JSON.parse(reply.text),
+      blockType: block.type,
+      blockId: block.id,
+      responseVariableMapping: block.options?.responseVariableMapping,
+      outgoingEdgeId: block.outgoingEdgeId,
+      response,
     });
     if (result.newSessionState) newSessionState = result.newSessionState;
   } else if (isForgedBlockType(block.type)) {

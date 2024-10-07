@@ -1,7 +1,7 @@
 import { googleAnalyticsOptionsSchema } from "@typebot.io/blocks-integrations/googleAnalytics/schema";
+import { executableHttpRequestSchema } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import { nativeMessageSchema } from "@typebot.io/blocks-integrations/openai/schema";
 import { pixelOptionsSchema } from "@typebot.io/blocks-integrations/pixel/schema";
-import { executableHttpRequestSchema } from "@typebot.io/blocks-integrations/webhook/schema";
 import { redirectOptionsSchema } from "@typebot.io/blocks-logic/redirect/schema";
 import { listVariableValue } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
@@ -115,13 +115,13 @@ export const clientSideActionSchema = z.discriminatedUnion("type", [
     }),
   z
     .object({
-      type: z.literal("webhookToExecute"),
-      webhookToExecute: executableHttpRequestSchema,
+      type: z.literal("httpRequestToExecute"),
+      httpRequestToExecute: executableHttpRequestSchema,
     })
     .merge(clientSideActionBaseSchema)
     .openapi({
-      ref: "csaExecWebhook",
-      title: "Execute webhook",
+      ref: "csaHttpRequestToExecute",
+      title: "Execute HTTP request",
     }),
   z
     .object({
@@ -166,4 +166,14 @@ export const clientSideActionSchema = z.discriminatedUnion("type", [
       ref: "csaCodeToExecute",
       title: "Execute code",
     }),
+  z
+    .object({
+      type: z.literal("listenForWebhook"),
+    })
+    .merge(clientSideActionBaseSchema)
+    .openapi({
+      ref: "csaListenForWebhook",
+      title: "Listen to webhook",
+    }),
 ]);
+export type ClientSideAction = z.infer<typeof clientSideActionSchema>;

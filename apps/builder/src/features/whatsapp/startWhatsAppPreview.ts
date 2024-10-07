@@ -7,11 +7,11 @@ import type { SessionState } from "@typebot.io/bot-engine/schemas/chatSession";
 import { startSession } from "@typebot.io/bot-engine/startSession";
 import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";
+import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import { sendChatReplyToWhatsApp } from "@typebot.io/whatsapp/sendChatReplyToWhatsApp";
 import { sendWhatsAppMessage } from "@typebot.io/whatsapp/sendWhatsAppMessage";
 import { z } from "@typebot.io/zod";
 import { HTTPError } from "ky";
-import { isReadTypebotForbidden } from "../typebot/helpers/isReadTypebotForbidden";
 
 export const startWhatsAppPreview = authenticatedProcedure
   .meta({
@@ -127,7 +127,6 @@ export const startWhatsAppPreview = authenticatedProcedure
     if (canSendDirectMessagesToUser) {
       await sendChatReplyToWhatsApp({
         to,
-        typingEmulation: newSessionState.typingEmulation,
         messages,
         input,
         clientSideActions,

@@ -51,8 +51,8 @@ export const getHelpDocUrl = (
       return "https://docs.typebot.io/editor/blocks/integrations/zapier";
     case IntegrationBlockType.PABBLY_CONNECT:
       return "https://docs.typebot.io/editor/blocks/integrations/pabbly";
-    case IntegrationBlockType.WEBHOOK:
-      return "https://docs.typebot.io/editor/blocks/integrations/webhook";
+    case IntegrationBlockType.HTTP_REQUEST:
+      return "https://docs.typebot.io/editor/blocks/integrations/http-request";
     case InputBlockType.PICTURE_CHOICE:
       return "https://docs.typebot.io/editor/blocks/inputs/picture-choice";
     case IntegrationBlockType.OPEN_AI:
@@ -67,6 +67,8 @@ export const getHelpDocUrl = (
       return "https://docs.typebot.io/editor/blocks/integrations/pixel";
     case LogicBlockType.CONDITION:
       return "https://docs.typebot.io/editor/blocks/logic/condition";
+    case LogicBlockType.WEBHOOK:
+      return "https://docs.typebot.io/editor/blocks/logic/webhook";
     default:
       return blockDef?.docsUrl;
   }

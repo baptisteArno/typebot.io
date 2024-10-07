@@ -1,0 +1,92 @@
+{
+  "version": "6",
+  "id": "cm1qmfbmd0001otew1vegx05q",
+  "name": "My typebot‍‍‌‌‌‌‍‌‌‍‌‌‌‌‍‌‌‌",
+  "events": [
+    {
+      "id": "aevmtgzc9rxzvxs2q5hvpwct",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start",
+      "outgoingEdgeId": "l4t0scp44brhsaev2shrz1ww"
+    }
+  ],
+  "groups": [
+    {
+      "id": "ad35ipsnb48e6ezkgdir18ti",
+      "graphCoordinates": { "x": 214.53, "y": 90.88 },
+      "title": "Group #1",
+      "blocks": [
+        {
+          "id": "ti3emvkuw16pno8hfoqhwohy",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Ok let's look into that..." }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "webhook-block-id",
+          "type": "webhook",
+          "outgoingEdgeId": "zmc9shyqackqkxqyjok5adip"
+        }
+      ]
+    },
+    {
+      "id": "wt0gw2gk1bw8x7ajch6ppkkm",
+      "graphCoordinates": { "x": 607.12, "y": 92 },
+      "title": "Group #2",
+      "blocks": [
+        {
+          "id": "ysc1dd8tydgn810jzn5xkhep",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Hi {{Name}}, nice to see you again!" }]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": { "eventId": "aevmtgzc9rxzvxs2q5hvpwct" },
+      "to": { "groupId": "ad35ipsnb48e6ezkgdir18ti" },
+      "id": "l4t0scp44brhsaev2shrz1ww"
+    },
+    {
+      "from": { "blockId": "n0i5queut7m0wa5am2gqa0ra" },
+      "to": { "groupId": "wt0gw2gk1bw8x7ajch6ppkkm" },
+      "id": "zmc9shyqackqkxqyjok5adip"
+    }
+  ],
+  "variables": [
+    {
+      "id": "vzq187kjoyn9nt7283dkbs59n",
+      "name": "Name",
+      "isSessionVariable": true
+    }
+  ],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": { "general": { "isBrandingEnabled": true } },
+  "createdAt": "2024-10-01T15:56:19.477Z",
+  "updatedAt": "2024-10-01T15:56:19.477Z",
+  "icon": null,
+  "folderId": null,
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "freeWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}
