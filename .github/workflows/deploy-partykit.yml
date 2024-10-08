@@ -19,28 +19,25 @@ jobs:
         run: |
           echo "Running script..."
 
-          # Enable error handling
           set +e
-
           bunx turbo-ignore @typebot.io/partykit -task=build exit_code=$?
-
-          # Disable error handling
           set -e
 
           echo "Exit code: $exit_code"
 
-          if I $exit_code -eq 0 ]; then
+          if [ $exit_code -eq 0 ]; then
             echo "hasClientApiHostChanged=0" >> $GITHUB_OUTPUT
-            # echo "::save-state name=project_changed: :0"
-            # # echo "::set-output name=project_changed:: 0"
           else
-            echo "hasClientApiHostChanged=1" » $GITHUB_OUTPUT
-            # echo "::set-output name=project_changed: : 1"
+            echo "hasClientApiHostChanged=1" >> $GITHUB_OUTPUT
           fi
       - run: bun install
+        if: steps.check_changes.outputs.hasClientApiHostChanged == '1'
       - run: bunx partykit deploy --domain ${PARTYKIT_DOMAIN}
+        if: steps.check_changes.outputs.hasClientApiHostChanged == '1'
         working-directory: ./packages/partykit
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN  }}
           PARTYKIT_DOMAIN: ${{ secrets.PARTYKIT_DOMAIN }}
+          PARTYKIT_LOGIN: ${{ secrets.PARTYKIT_LOGIN  }}
+          PARTYKIT_TOKEN: ${{ secrets.PARTYKIT_TOKEN }}
