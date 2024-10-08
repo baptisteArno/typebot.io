@@ -20,7 +20,8 @@ jobs:
           echo "Running script..."
 
           set +e
-          bunx turbo-ignore @typebot.io/partykit -task=build exit_code=$?
+          bunx turbo-ignore @typebot.io/partykit
+          exit_code=$?
           set -e
 
           echo "Exit code: $exit_code"
