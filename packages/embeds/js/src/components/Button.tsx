@@ -1,31 +1,35 @@
+import clsx from "clsx";
 import { type JSX, Show, children, splitProps } from "solid-js";
 import { Spinner } from "./Spinner";
 
-type Props = {
+export type ButtonProps = {
   variant?: "primary" | "secondary";
-  children: JSX.Element;
   isDisabled?: boolean;
   isLoading?: boolean;
-} & JSX.ButtonHTMLAttributes<HTMLButtonElement>;
+} & Pick<
+  JSX.ButtonHTMLAttributes<HTMLButtonElement>,
+  "class" | "children" | "type" | "on:click"
+>;
 
-export const Button = (props: Props) => {
+export const Button = (props: ButtonProps) => {
   const childrenReturn = children(() => props.children);
-  const [local, buttonProps] = splitProps(props, ["disabled", "class"]);
+  const [local, buttonProps] = splitProps(props, [
+    "variant",
+    "isDisabled",
+    "isLoading",
+  ]);
 
   return (
     <button
       {...buttonProps}
-      disabled={props.isDisabled || props.isLoading}
-      class={
-        "py-2 px-4 font-semibold focus:outline-none filter hover:brightness-90 active:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 flex justify-center" +
-        (props.variant === "secondary"
-          ? " secondary-button"
-          : " typebot-button") +
-        " " +
-        local.class
-      }
+      disabled={local.isDisabled || local.isLoading}
+      class={clsx(
+        "py-2 px-4 font-semibold focus:outline-none filter hover:brightness-90 active:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 flex justify-center flex-shrink-0",
+        local.variant === "secondary" ? " secondary-button" : " typebot-button",
+        buttonProps.class,
+      )}
     >
-      <Show when={!props.isLoading} fallback={<Spinner />}>
+      <Show when={!local.isLoading} fallback={<Spinner />}>
         {childrenReturn()}
       </Show>
     </button>
