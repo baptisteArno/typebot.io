@@ -1,7 +1,5 @@
 {
   "name": "@typebot.io/ai",
-  "version": "1.0.0",
-  "license": "AGPL-3.0-or-later",
   "private": true,
   "type": "module",
   "exports": {

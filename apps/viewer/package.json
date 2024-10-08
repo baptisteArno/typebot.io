@@ -1,6 +1,6 @@
 {
   "name": "viewer",
-  "license": "AGPL-3.0-or-later",
+  "private": true,
   "scripts": {
     "dev": "dotenv -e ./.env -e ../../.env  -- next dev -p 3001",
     "build": "dotenv -e ./.env -e ../../.env -- next build",
