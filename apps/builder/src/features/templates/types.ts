@@ -3,7 +3,7 @@ export type TemplateProps = {
   emoji: string
   fileName: string
   description: string
-  category?: 'marketing' | 'product'
+  category?: 'marketing' | 'product' | 'instagram' | 'whatsapp'
   isComingSoon?: boolean
   isNew?: boolean
   backgroundColor?: string

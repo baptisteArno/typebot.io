@@ -6,10 +6,17 @@ export const useTemplates = (): TemplateProps[] => {
 
   return [
     {
-      name: t('templates.modal.marketing.qiplusExample.name'),
+      name: t('templates.modal.whatsapp.leadGeneration.name'),
       emoji: '🚀',
-      fileName: 'qiplus-example.json',
-      category: 'marketing',
+      fileName: 'lead-gen-instagram.json',
+      category: 'whatsapp',
+      description: t('templates.modal.marketing.leadGeneration.description'),
+    },
+    {
+      name: t('templates.modal.instagram.leadGeneration.name'),
+      emoji: '🚀',
+      fileName: 'lead-gen-whatsapp.json',
+      category: 'instagram',
       description: t('templates.modal.marketing.leadGeneration.description'),
     },
     {
