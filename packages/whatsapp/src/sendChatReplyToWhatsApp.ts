@@ -1,4 +1,3 @@
-import * as Sentry from "@sentry/nextjs";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { computeTypingDuration } from "@typebot.io/bot-engine/computeTypingDuration";
@@ -8,7 +7,6 @@ import type { ClientSideAction } from "@typebot.io/bot-engine/schemas/clientSide
 import { isNotDefined } from "@typebot.io/lib/utils";
 import { defaultSettings } from "@typebot.io/settings/constants";
 import type { Settings } from "@typebot.io/settings/schemas";
-import { HTTPError } from "ky";
 import { convertInputToWhatsAppMessages } from "./convertInputToWhatsAppMessage";
 import { convertMessageToWhatsAppMessage } from "./convertMessageToWhatsAppMessage";
 import type { WhatsAppCredentials, WhatsAppSendingMessage } from "./schemas";
@@ -86,27 +84,12 @@ export const sendChatReplyToWhatsApp = async ({
           });
     if ((typingDuration ?? 0) > 0)
       await new Promise((resolve) => setTimeout(resolve, typingDuration));
-    try {
-      await sendWhatsAppMessage({
-        to,
-        message: whatsAppMessage,
-        credentials,
-      });
-      sentMessages.push(whatsAppMessage);
-      const clientSideActionsAfterMessage =
-        clientSideActions?.filter(
-          (action) => action.lastBubbleBlockId === message.id,
-        ) ?? [];
-    } catch (err) {
-      Sentry.captureException(err, { extra: { message } });
-      console.log("Failed to send message:", JSON.stringify(message, null, 2));
-      if (err instanceof HTTPError)
-        console.log(
-          "HTTPError",
-          err.response.status,
-          await err.response.text(),
-        );
-    }
+    await sendWhatsAppMessage({
+      to,
+      message: whatsAppMessage,
+      credentials,
+    });
+    sentMessages.push(whatsAppMessage);
     const clientSideActionsAfterMessage =
       clientSideActions?.filter(
         (action) => action.lastBubbleBlockId === message.id,
@@ -125,36 +108,22 @@ export const sendChatReplyToWhatsApp = async ({
       messages.at(-1),
     );
     for (const message of inputWhatsAppMessages) {
-      try {
-        const lastSentMessageIsMedia = ["audio", "video", "image"].includes(
-          sentMessages.at(-1)?.type ?? "",
-        );
-        const typingDuration = lastSentMessageIsMedia
-          ? messageAfterMediaTimeout
-          : getTypingDuration({
-              message,
-              typingEmulation: state.typingEmulation,
-            });
-        if (typingDuration)
-          await new Promise((resolve) => setTimeout(resolve, typingDuration));
-        await sendWhatsAppMessage({
-          to,
-          message,
-          credentials,
-        });
-      } catch (err) {
-        Sentry.captureException(err, { extra: { message } });
-        console.log(
-          "Failed to send message:",
-          JSON.stringify(message, null, 2),
-        );
-        if (err instanceof HTTPError)
-          console.log(
-            "HTTPError",
-            err.response.status,
-            await err.response.text(),
-          );
-      }
+      const lastSentMessageIsMedia = ["audio", "video", "image"].includes(
+        sentMessages.at(-1)?.type ?? "",
+      );
+      const typingDuration = lastSentMessageIsMedia
+        ? messageAfterMediaTimeout
+        : getTypingDuration({
+            message,
+            typingEmulation: state.typingEmulation,
+          });
+      if (typingDuration)
+        await new Promise((resolve) => setTimeout(resolve, typingDuration));
+      await sendWhatsAppMessage({
+        to,
+        message,
+        credentials,
+      });
     }
   }
 };
@@ -244,25 +213,11 @@ const executeClientSideAction =
           preview_url: true,
         },
       } satisfies WhatsAppSendingMessage;
-      try {
-        await sendWhatsAppMessage({
-          to: context.to,
-          message,
-          credentials: context.credentials,
-        });
-      } catch (err) {
-        Sentry.captureException(err, { extra: { message } });
-        console.log(
-          "Failed to send message:",
-          JSON.stringify(message, null, 2),
-        );
-        if (err instanceof HTTPError)
-          console.log(
-            "HTTPError",
-            err.response.status,
-            await err.response.text(),
-          );
-      }
+      await sendWhatsAppMessage({
+        to: context.to,
+        message,
+        credentials: context.credentials,
+      });
     }
     if (clientSideAction.type === "listenForWebhook")
       return {

@@ -23,7 +23,7 @@ const t = initTRPC
   });
 
 const sentryMiddleware = t.middleware(
-  Sentry.Handlers.trpcMiddleware({
+  Sentry.trpcMiddleware({
     attachRpcInput: true,
   }),
 );

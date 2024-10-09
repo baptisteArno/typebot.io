@@ -3185,6 +3185,50 @@
                                         }
                                       ]
                                     }
+                                  },
+                                  "statuses": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "recipient_id": {
+                                          "type": "string"
+                                        },
+                                        "errors": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "code": {
+                                                "type": "number"
+                                              },
+                                              "title": {
+                                                "type": "string"
+                                              },
+                                              "error_data": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "details": {
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "required": [
+                                                  "details"
+                                                ]
+                                              }
+                                            },
+                                            "required": [
+                                              "code",
+                                              "title",
+                                              "error_data"
+                                            ]
+                                          }
+                                        }
+                                      },
+                                      "required": [
+                                        "recipient_id"
+                                      ]
+                                    }
                                   }
                                 },
                                 "required": [

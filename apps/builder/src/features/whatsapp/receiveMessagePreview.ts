@@ -1,6 +1,10 @@
 import { publicProcedure } from "@/helpers/server/trpc";
+import * as Sentry from "@sentry/nextjs";
 import { TRPCError } from "@trpc/server";
+import { deleteSession } from "@typebot.io/bot-engine/queries/deleteSession";
 import { env } from "@typebot.io/env";
+import { WhatsAppError } from "@typebot.io/whatsapp/WhatsAppError";
+import { incomingWebhookErrorCodes } from "@typebot.io/whatsapp/constants";
 import { resumeWhatsAppFlow } from "@typebot.io/whatsapp/resumeWhatsAppFlow";
 import {
   type WhatsAppWebhookRequestBody,
@@ -28,19 +32,29 @@ export const receiveMessagePreview = publicProcedure
   .mutation(async ({ input: { entry } }) => {
     assertEnv();
 
-    const { receivedMessage, contactName, contactPhoneNumber } =
-      extractMessageData(entry);
-    if (!receivedMessage) return { message: "No message found" };
+    try {
+      processErrors(entry);
+      const { receivedMessage, contactName, contactPhoneNumber } =
+        extractMessageData(entry);
+      await resumeWhatsAppFlow({
+        receivedMessage,
+        sessionId: `${whatsAppPreviewSessionIdPrefix}${receivedMessage.from}`,
+        contact: {
+          name: contactName,
+          phoneNumber: contactPhoneNumber,
+        },
+      });
+    } catch (err) {
+      if (err instanceof WhatsAppError) {
+        console.log("Known WhatsApp error:", err.message, err.details);
+        Sentry.captureMessage(err.message, err.details);
+      } else {
+        console.error("Unknown WhatsApp error:", err);
+        Sentry.captureException(err);
+      }
+    }
 
-    await resumeWhatsAppFlow({
-      receivedMessage,
-      sessionId: `${whatsAppPreviewSessionIdPrefix}${receivedMessage.from}`,
-      contact: {
-        name: contactName,
-        phoneNumber: contactPhoneNumber,
-      },
-    });
-
+    await Sentry.flush();
     return {
       message: "Message received",
     };
@@ -56,10 +70,29 @@ const assertEnv = () => {
 
 const extractMessageData = (entry: WhatsAppWebhookRequestBody["entry"]) => {
   const receivedMessage = entry.at(0)?.changes.at(0)?.value.messages?.at(0);
+  if (!receivedMessage) throw new WhatsAppError("No message found");
   const contactName =
     entry.at(0)?.changes.at(0)?.value?.contacts?.at(0)?.profile?.name ?? "";
   const contactPhoneNumber =
     entry.at(0)?.changes.at(0)?.value?.messages?.at(0)?.from ?? "";
 
   return { receivedMessage, contactName, contactPhoneNumber };
+};
+
+const processErrors = async (entry: WhatsAppWebhookRequestBody["entry"]) => {
+  const status = entry.at(0)?.changes.at(0)?.value.statuses?.at(0);
+  if (status?.errors) {
+    const error = status.errors.at(0);
+    if (!error) return;
+    if (
+      error?.code ===
+      incomingWebhookErrorCodes["Could not send message to unengaged user"]
+    ) {
+      await deleteSession(
+        `${whatsAppPreviewSessionIdPrefix}${status.recipient_id}`,
+      );
+      throw new WhatsAppError("Could not send message to unengaged user");
+    }
+    throw new WhatsAppError(`Received unknown error from WA`, error);
+  }
 };

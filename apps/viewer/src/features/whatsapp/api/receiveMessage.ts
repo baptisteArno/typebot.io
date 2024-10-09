@@ -1,4 +1,6 @@
 import { publicProcedure } from "@/helpers/server/trpc";
+import * as Sentry from "@sentry/nextjs";
+import { WhatsAppError } from "@typebot.io/whatsapp/WhatsAppError";
 import { resumeWhatsAppFlow } from "@typebot.io/whatsapp/resumeWhatsAppFlow";
 import {
   type WhatsAppWebhookRequestBody,
@@ -33,17 +35,29 @@ export const receiveMessage = publicProcedure
     if (!receivedMessage) return { message: "No message found" };
     if (!phoneNumberId) return { message: "No phone number found" };
 
-    await resumeWhatsAppFlow({
-      receivedMessage,
-      sessionId: `${whatsAppSessionIdPrefix}${phoneNumberId}-${receivedMessage.from}`,
-      phoneNumberId,
-      credentialsId,
-      workspaceId,
-      contact: {
-        name: contactName,
-        phoneNumber: contactPhoneNumber,
-      },
-    });
+    try {
+      await resumeWhatsAppFlow({
+        receivedMessage,
+        sessionId: `${whatsAppSessionIdPrefix}${phoneNumberId}-${receivedMessage.from}`,
+        phoneNumberId,
+        credentialsId,
+        workspaceId,
+        contact: {
+          name: contactName,
+          phoneNumber: contactPhoneNumber,
+        },
+      });
+    } catch (err) {
+      if (err instanceof WhatsAppError) {
+        console.log("Known WhatsApp error:", err.message, err.details);
+        Sentry.captureMessage(err.message, err.details);
+      } else {
+        console.error("Unknown WhatsApp error:", err);
+        Sentry.captureException(err);
+      }
+    }
+
+    await Sentry.flush();
 
     return {
       message: "Message received",

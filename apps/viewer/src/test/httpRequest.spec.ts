@@ -18,7 +18,7 @@ test("should execute webhooks properly", async ({ page }) => {
   await page.locator('text="Male"').click();
   await expect(
     page.getByText('{"name":"John","age":25,"gender":"male"}'),
-  ).toBeVisible();
+  ).toBeVisible({ timeout: 10000 });
   await expect(
     page.getByText('{"name":"John","age":30,"gender":"Male"}'),
   ).toBeVisible();

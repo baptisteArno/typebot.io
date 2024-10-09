@@ -9,7 +9,7 @@ const t = initTRPC.context<Context>().meta<OpenApiMeta>().create({
 });
 
 const sentryMiddleware = t.middleware(
-  Sentry.Handlers.trpcMiddleware({
+  Sentry.trpcMiddleware({
     attachRpcInput: true,
   }),
 );

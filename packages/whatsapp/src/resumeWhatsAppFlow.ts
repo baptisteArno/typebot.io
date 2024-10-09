@@ -2,7 +2,6 @@ import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { continueBotFlow } from "@typebot.io/bot-engine/continueBotFlow";
 import { getSession } from "@typebot.io/bot-engine/queries/getSession";
-import { removeIsReplyingInChatSession } from "@typebot.io/bot-engine/queries/removeIsReplyingInChatSession";
 import { setIsReplyingInChatSession } from "@typebot.io/bot-engine/queries/setIsReplyingInChatSession";
 import { saveStateToDatabase } from "@typebot.io/bot-engine/saveStateToDatabase";
 import type { Message } from "@typebot.io/bot-engine/schemas/api";
@@ -17,6 +16,7 @@ import redis from "@typebot.io/lib/redis";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
 import { isDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
+import { WhatsAppError } from "./WhatsAppError";
 import { downloadMedia } from "./downloadMedia";
 import type { WhatsAppCredentials, WhatsAppIncomingMessage } from "./schemas";
 import { sendChatReplyToWhatsApp } from "./sendChatReplyToWhatsApp";
@@ -47,23 +47,21 @@ export const resumeWhatsAppFlow = async ({
   phoneNumberId,
   contact,
 }: Props) => {
-  if (isMessageTooOld(receivedMessage)) {
-    console.log("Message is too old");
-    return;
-  }
+  if (isMessageTooOld(receivedMessage))
+    throw new WhatsAppError("Message is too old", {
+      timestamp: receivedMessage.timestamp,
+    });
 
   const isPreview = workspaceId === undefined || credentialsId === undefined;
 
   const credentials = await getCredentials({ credentialsId, isPreview });
-  if (!credentials) {
-    console.error("Could not find credentials");
-    return;
-  }
+  if (!credentials) throw new WhatsAppError("Could not find credentials");
 
-  if (phoneNumberId && credentials.phoneNumberId !== phoneNumberId) {
-    console.error("Credentials point to another phone ID, skipping...");
-    return;
-  }
+  if (phoneNumberId && credentials.phoneNumberId !== phoneNumberId)
+    throw new WhatsAppError("Credentials point to another phone ID", {
+      credentialsPhoneNumberId: credentials.phoneNumberId,
+      receivedPhoneNumberId: phoneNumberId,
+    });
 
   const session = await getSession(sessionId);
 
@@ -74,10 +72,8 @@ export const resumeWhatsAppFlow = async ({
       newSessionId: sessionId,
     });
 
-  if (aggregationResponse.status === "found newer message") {
-    console.log("Found newer message, skipping this one");
-    return;
-  }
+  if (aggregationResponse.status === "found newer message")
+    throw new WhatsAppError("Found newer message, skipping this one");
 
   const isSessionExpired =
     session &&
@@ -86,10 +82,7 @@ export const resumeWhatsAppFlow = async ({
 
   if (aggregationResponse.status === "treat as unique message") {
     if (session?.isReplying && origin !== "webhook") {
-      if (!isSessionExpired) {
-        console.log("Is currently replying, skipping...");
-        return;
-      }
+      if (!isSessionExpired) throw new WhatsAppError("Is in reply state");
     } else {
       await setIsReplyingInChatSession({
         existingSessionId: session?.id,
@@ -119,19 +112,17 @@ export const resumeWhatsAppFlow = async ({
     setVariableHistory,
     newSessionState,
     isWaitingForWebhook,
-  } =
-    (await resumeFlowAndSendWhatsAppMessages({
-      to: receivedMessage.from,
-      credentials,
-      isSessionExpired,
-      reply,
-      session,
-      sessionId,
-      contact,
-      workspaceId,
-      credentialsId,
-    })) ?? {};
-  if (!newSessionState || !visitedEdges || !setVariableHistory) return;
+  } = await resumeFlowAndSendWhatsAppMessages({
+    to: receivedMessage.from,
+    credentials,
+    isSessionExpired,
+    reply,
+    session,
+    sessionId,
+    contact,
+    workspaceId,
+    credentialsId,
+  });
 
   await saveStateToDatabase({
     clientSideActions: [],
@@ -152,10 +143,6 @@ export const resumeWhatsAppFlow = async ({
     visitedEdges,
     setVariableHistory,
   });
-
-  return {
-    message: "Message received",
-  };
 };
 
 const convertWhatsAppMessageToTypebotMessage = async ({
@@ -389,11 +376,6 @@ const resumeFlowAndSendWhatsAppMessages = async (props: {
   workspaceId?: string;
 }) => {
   const resumeResponse = await resumeFlow(props);
-  if ("error" in resumeResponse) {
-    await removeIsReplyingInChatSession(props.sessionId);
-    console.error(resumeResponse.error);
-    return;
-  }
 
   const {
     input,
@@ -462,9 +444,9 @@ const resumeFlow = ({
       textBubbleContentFormat: "richText",
     });
   if (!workspaceId || !contact)
-    return {
-      error: "Can't start WhatsApp session without workspaceId or contact",
-    };
+    throw new WhatsAppError(
+      "Can't start WhatsApp session without workspaceId or contact",
+    );
   return startWhatsAppSession({
     incomingMessage: reply,
     workspaceId,

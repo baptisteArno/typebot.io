@@ -27,6 +27,7 @@ import {
   Tag,
   Text,
 } from "@chakra-ui/react";
+import * as Sentry from "@sentry/nextjs";
 import type { ResponseVariableMapping } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import type { WebhookBlock } from "@typebot.io/blocks-logic/webhook/schema";
 import { env } from "@typebot.io/env";
@@ -76,7 +77,8 @@ export const WebhookSettings = ({
       }
     },
     onError(e) {
-      console.log("error", e);
+      console.error(e);
+      Sentry.captureException(e);
     },
     startClosed: true,
   });

@@ -1,4 +1,5 @@
 import { publicProcedure } from "@/helpers/server/trpc";
+import * as Sentry from "@sentry/nextjs";
 import { TRPCError } from "@trpc/server";
 import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";

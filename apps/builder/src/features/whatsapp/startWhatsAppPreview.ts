@@ -11,7 +11,6 @@ import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebo
 import { sendChatReplyToWhatsApp } from "@typebot.io/whatsapp/sendChatReplyToWhatsApp";
 import { sendWhatsAppMessage } from "@typebot.io/whatsapp/sendWhatsAppMessage";
 import { z } from "@typebot.io/zod";
-import { HTTPError } from "ky";
 
 export const startWhatsAppPreview = authenticatedProcedure
   .meta({
@@ -148,38 +147,33 @@ export const startWhatsAppPreview = authenticatedProcedure
         visitedEdges,
         setVariableHistory,
       });
+
+      return {
+        message: "Sent direct WA message",
+      };
     } else {
       await restartSession({
         state: newSessionState,
         id: sessionId,
       });
-      try {
-        await sendWhatsAppMessage({
-          to,
-          message: {
-            type: "template",
-            template: {
-              language: {
-                code: env.WHATSAPP_PREVIEW_TEMPLATE_LANG,
-              },
-              name: env.WHATSAPP_PREVIEW_TEMPLATE_NAME,
+      await sendWhatsAppMessage({
+        to,
+        message: {
+          type: "template",
+          template: {
+            language: {
+              code: env.WHATSAPP_PREVIEW_TEMPLATE_LANG,
             },
+            name: env.WHATSAPP_PREVIEW_TEMPLATE_NAME,
           },
-          credentials: {
-            phoneNumberId: env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID,
-            systemUserAccessToken: env.META_SYSTEM_USER_TOKEN,
-          },
-        });
-      } catch (err) {
-        if (err instanceof HTTPError) console.log(await err.response.text());
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Request to Meta to send preview message failed",
-          cause: err,
-        });
-      }
+        },
+        credentials: {
+          phoneNumberId: env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID,
+          systemUserAccessToken: env.META_SYSTEM_USER_TOKEN,
+        },
+      });
+      return {
+        message: "Sent WA template",
+      };
     }
-    return {
-      message: "success",
-    };
   });
