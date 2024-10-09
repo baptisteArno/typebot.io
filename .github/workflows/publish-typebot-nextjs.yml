@@ -16,4 +16,4 @@ jobs:
       - run: bun install
       - run: bunx turbo build --filter=@typebot.io/nextjs...
       - run: bun run npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
-      - run: cd packages/embeds/nextjs && bun run npm publish --no-git-checks --access public
+      - run: cd packages/embeds/nextjs && bun publish --access public

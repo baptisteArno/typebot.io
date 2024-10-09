@@ -19,5 +19,5 @@ jobs:
         run: bun run npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
         working-directory: ./packages/typebot-js
       - name: Publish
-        run: bun run npm publish --no-git-checks --access public
+        run: bun publish --access public
         working-directory: ./packages/typebot-js

@@ -16,4 +16,4 @@ jobs:
       - run: bun install
       - run: bunx turbo build --filter=@typebot.io/react...
       - run: bun run npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
-      - run: cd packages/embeds/react && bunx @morlay/bunpublish
+      - run: cd packages/embeds/react && bun publish --access public
