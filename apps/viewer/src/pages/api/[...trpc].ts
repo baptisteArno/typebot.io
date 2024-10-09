@@ -8,13 +8,9 @@ import cors from "nextjs-cors";
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res);
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //@ts-ignore Not sure why the type is not properly inferred
   return createOpenApiNextHandler({
     router: appRouter,
     createContext,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore Not sure why the type is not properly inferred
     onError({ error }) {
       if (error.code === "INTERNAL_SERVER_ERROR") {
         Sentry.captureException(error);
