@@ -1,5 +1,6 @@
 {
   "name": "@typebot.io/trpc-openapi",
+  "version": "0.0.1",
   "private": true,
   "exports": {
     "./generator": "./src/generator/index.ts",

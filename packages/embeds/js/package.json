@@ -59,5 +59,8 @@
     "rollup-plugin-postcss": "4.0.2",
     "rollup-plugin-typescript-paths": "1.5.0",
     "tailwindcss": "3.3.3"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
