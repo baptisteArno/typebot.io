@@ -25,12 +25,14 @@ type Props = {
   editor: PlateEditor<Value>
   onVariablesButtonClick: (showDialog: boolean) => void
   onEmojiSelected: (emojiText: string) => void
+  wabaHeader?: boolean
 } & StackProps
 
 export const ToolBar = ({
   editor,
   onVariablesButtonClick,
   onEmojiSelected,
+  wabaHeader = false,
   ...props
 }: Props) => {
   const [showPicker, setShowPicker] = useState(false)
@@ -83,24 +85,30 @@ export const ToolBar = ({
       <Button size="sm" onMouseDown={handleVariablesButtonMouseDown}>
         Variáveis
       </Button>
-      <span data-testid="bold-button">
-        <MarkToolbarButton
-          type={getPluginType(editor, MARK_BOLD)}
-          icon={<BoldIcon fontSize="20px" />}
-        />
-      </span>
-      <span data-testid="italic-button">
-        <MarkToolbarButton
-          type={getPluginType(editor, MARK_ITALIC)}
-          icon={<ItalicIcon fontSize="20px" />}
-        />
-      </span>
-      <span data-testid="strikethrough-button">
-        <MarkToolbarButton
-          type={getPluginType(editor, MARK_STRIKETHROUGH)}
-          icon={<StrikethroughIcon fontSize="20px" />}
-        />
-      </span>
+      {!wabaHeader && (
+        <>
+          <span data-testid="bold-button">
+            <MarkToolbarButton
+              type={getPluginType(editor, MARK_BOLD)}
+              icon={<BoldIcon fontSize="20px" />}
+            />
+          </span>
+
+          <span data-testid="italic-button">
+            <MarkToolbarButton
+              type={getPluginType(editor, MARK_ITALIC)}
+              icon={<ItalicIcon fontSize="20px" />}
+            />
+          </span>
+
+          <span data-testid="strikethrough-button">
+            <MarkToolbarButton
+              type={getPluginType(editor, MARK_STRIKETHROUGH)}
+              icon={<StrikethroughIcon fontSize="20px" />}
+            />
+          </span>
+        </>
+      )}
       {workspace?.channel === 'web' && (
         <>
           <span data-testid="underline-button">
