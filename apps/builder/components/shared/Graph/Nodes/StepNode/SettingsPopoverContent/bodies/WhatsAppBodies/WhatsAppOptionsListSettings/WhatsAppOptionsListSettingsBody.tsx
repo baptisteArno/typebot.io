@@ -9,7 +9,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { WhatsAppOptionsListOptions, Variable, TextBubbleContent } from 'models'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { TextBubbleEditor } from 'components/shared/Graph/Nodes/StepNode/TextBubbleEditor'
 import { VariableSearchInput } from 'components/shared/VariableSearchInput/VariableSearchInput'
 import { SlArrowDown, SlArrowUp } from 'react-icons/sl'
@@ -165,6 +165,7 @@ export const WhatsAppOptionsListSettingsBody = ({
           }
           onKeyUp={handleHeaderText}
           maxLength={MAX_LENGHT_HEADER_AND_FOOTER}
+          wabaHeader={true}
         />
       </Stack>
       <Stack>
