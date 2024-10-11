@@ -48,6 +48,7 @@ import { OpenAISettings } from '@/features/blocks/integrations/openai/components
 import { useForgedBlock } from '@/features/forge/hooks/useForgedBlock'
 import { VideoOnboardingPopover } from '@/features/onboarding/components/VideoOnboardingPopover'
 import { hasOnboardingVideo } from '@/features/onboarding/helpers/hasOnboardingVideo'
+import { GlobalJumpSettings } from '../../../../blocks/logic/globalJump/components/GlobalJumpSettings'
 
 type Props = {
   block: BlockWithOptions
@@ -257,6 +258,17 @@ export const BlockSettings = ({
     case LogicBlockType.WAIT: {
       return (
         <WaitSettings options={block.options} onOptionsChange={updateOptions} />
+      )
+    }
+    case LogicBlockType.GLOBAL_JUMP: {
+      return groupId ? (
+        <GlobalJumpSettings
+          groupId={groupId}
+          options={block.options}
+          onOptionsChange={updateOptions}
+        />
+      ) : (
+        <></>
       )
     }
     case LogicBlockType.JUMP: {

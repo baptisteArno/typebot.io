@@ -42,6 +42,7 @@ import { OpenAILogo } from '@/features/blocks/integrations/openai/components/Ope
 import { ForgedBlockIcon } from '@/features/forge/ForgedBlockIcon'
 import { SendEmailIcon } from '@/features/blocks/integrations/sendEmail/components/SendEmailIcon'
 import { FlagIcon, ThunderIcon } from '@/components/icons'
+import { GlobalJumpIcon } from '../../blocks/logic/globalJump/components/GlobalJumpIcon'
 
 type BlockIconProps = { type: Block['type'] } & IconProps
 
@@ -104,6 +105,8 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps): JSX.Element => {
       return <TypebotLinkIcon color={purple} {...props} />
     case LogicBlockType.AB_TEST:
       return <AbTestIcon color={purple} {...props} />
+    case LogicBlockType.GLOBAL_JUMP:
+      return <GlobalJumpIcon color={purple} {...props} />
     case IntegrationBlockType.GOOGLE_SHEETS:
       return <GoogleSheetsLogo {...props} />
     case IntegrationBlockType.GOOGLE_ANALYTICS:

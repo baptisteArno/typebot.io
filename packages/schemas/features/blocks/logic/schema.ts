@@ -9,6 +9,7 @@ import { typebotLinkBlockSchema } from './typebotLink'
 import { waitBlockSchema } from './wait'
 import { abTestBlockSchemas } from './abTest'
 import { closeChatBlockSchema } from './closeChat'
+import { globalJumpBlockSchema } from './globalJump'
 
 export const logicBlockSchemas = {
   v5: [
@@ -22,6 +23,7 @@ export const logicBlockSchemas = {
     jumpBlockSchema,
     closeChatBlockSchema,
     abTestBlockSchemas.v5,
+    globalJumpBlockSchema,
   ],
   v6: [
     scriptBlockSchema,
@@ -34,6 +36,7 @@ export const logicBlockSchemas = {
     jumpBlockSchema,
     closeChatBlockSchema,
     abTestBlockSchemas.v6,
+    globalJumpBlockSchema,
   ],
 } as const
 
