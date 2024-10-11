@@ -67,12 +67,19 @@ export const executeSendEmailBlock = async (
   if (!options?.recipients)
     return { outgoingEdgeId: block.outgoingEdgeId, logs };
 
+  if (!options.credentialsId) {
+    logs.push({
+      status: "error",
+      description:
+        "No credentials found, make sure to configure your SMTP provider properly",
+    });
+    return { outgoingEdgeId: block.outgoingEdgeId, logs };
+  }
   try {
     const sendEmailLogs = await sendEmail({
       typebot,
       answers,
-      credentialsId:
-        options.credentialsId ?? defaultSendEmailOptions.credentialsId,
+      credentialsId: options.credentialsId,
       recipients: options.recipients.map(parseVariables(typebot.variables)),
       subject: options.subject
         ? parseVariables(typebot.variables)(options?.subject)

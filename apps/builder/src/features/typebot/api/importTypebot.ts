@@ -128,7 +128,7 @@ export const importTypebot = authenticatedProcedure
 
     const groups = (
       migratedTypebot.groups
-        ? await sanitizeGroups(workspaceId)(migratedTypebot.groups)
+        ? await sanitizeGroups(workspace)(migratedTypebot.groups)
         : []
     ) as TypebotV6["groups"];
 
