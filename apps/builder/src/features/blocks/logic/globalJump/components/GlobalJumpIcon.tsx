@@ -1,5 +1,5 @@
-import { featherIconsBaseProps, GlobeIcon } from '@/components/icons'
-import { Icon, IconProps } from '@chakra-ui/react'
+import { GlobeIcon } from '@/components/icons'
+import { IconProps } from '@chakra-ui/react'
 import React from 'react'
 
 export const GlobalJumpIcon = (props: IconProps) => (
