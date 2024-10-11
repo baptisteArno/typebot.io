@@ -9,4 +9,5 @@ export enum LogicBlockType {
   AB_TEST = 'AB test',
   ASSIGN_CHAT = 'Assign Chat',
   CLOSE_CHAT = 'Close Chat',
+  GLOBAL_JUMP = 'Global Jump',
 }

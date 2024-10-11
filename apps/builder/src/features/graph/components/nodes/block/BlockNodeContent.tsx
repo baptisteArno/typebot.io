@@ -40,6 +40,7 @@ import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/consta
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { ForgedBlockNodeContent } from '@/features/forge/components/ForgedBlockNodeContent'
 import { OpenAINodeBody } from '@/features/blocks/integrations/openai/components/OpenAINodeBody'
+import { GlobalJumpNodeBody } from '../../../../blocks/logic/globalJump/components/GlobalJumpNodeBody'
 
 type Props = {
   block: BlockV6
@@ -111,6 +112,9 @@ export const BlockNodeContent = ({
     }
     case LogicBlockType.WAIT: {
       return <WaitNodeContent options={block.options} />
+    }
+    case LogicBlockType.GLOBAL_JUMP: {
+      return <GlobalJumpNodeBody options={block.options} />
     }
     case LogicBlockType.JUMP: {
       return <JumpNodeBody options={block.options} />

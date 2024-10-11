@@ -11,6 +11,7 @@ import { executeSetVariable } from './blocks/logic/setVariable/executeSetVariabl
 import { executeTypebotLink } from './blocks/logic/typebotLink/executeTypebotLink'
 import { executeAbTest } from './blocks/logic/abTest/executeAbTest'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { executeGlobalJumpBlock } from './blocks/logic/globalJump/executeGlobalJumpBlock'
 
 export const executeLogic =
   (state: SessionState) =>
@@ -36,5 +37,7 @@ export const executeLogic =
         return executeCloseChatBlock(state, block)
       case LogicBlockType.AB_TEST:
         return executeAbTest(state, block)
+      case LogicBlockType.GLOBAL_JUMP:
+        return executeGlobalJumpBlock(state, block.options)
     }
   }

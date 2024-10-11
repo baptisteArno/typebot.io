@@ -305,7 +305,8 @@ export const BlockNode = ({
                   hasDefaultConnector(block) &&
                   groupId &&
                   block.type !== LogicBlockType.JUMP &&
-                  block.type !== LogicBlockType.CLOSE_CHAT && (
+                  block.type !== LogicBlockType.CLOSE_CHAT &&
+                  block.type !== LogicBlockType.GLOBAL_JUMP && (
                     <BlockSourceEndpoint
                       source={{
                         blockId: block.id,

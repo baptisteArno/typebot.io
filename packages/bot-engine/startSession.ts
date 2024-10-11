@@ -16,6 +16,7 @@ import {
 import {
   StartChatInput,
   StartChatResponse,
+  StartFrom,
   StartPreviewChatInput,
   StartTypebot,
   startTypebotSchema,
@@ -49,6 +50,7 @@ import {
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { parseVariablesInRichText } from './parseBubbleBlock'
+import { getGlobalJumpGroup } from './getGlobalJumpGroup'
 
 type StartParams =
   | ({
@@ -175,11 +177,24 @@ export const startSession = async ({
     }
   }
 
+  let startFrom: StartFrom | undefined =
+    startParams.type === 'preview' ? startParams.startFrom : undefined
+
+  if (startParams.message && startParams.message.type === 'text') {
+    let result = getGlobalJumpGroup(initialState, startParams.message?.text)
+
+    if (result?.groupId) {
+      startFrom = {
+        type: 'group',
+        groupId: result.groupId,
+      }
+    }
+  }
+
   let chatReply = await startBotFlow({
     version,
     state: initialState,
-    startFrom:
-      startParams.type === 'preview' ? startParams.startFrom : undefined,
+    startFrom,
     startTime: Date.now(),
     textBubbleContentFormat: startParams.textBubbleContentFormat,
   })
