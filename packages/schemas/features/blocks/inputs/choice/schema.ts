@@ -3,6 +3,10 @@ import { InputBlockType } from '../constants'
 import { itemBaseSchemas } from '../../../items/shared'
 import { optionBaseSchema, blockBaseSchema } from '../../shared'
 import { conditionSchema } from '../../logic'
+import {
+  interactiveButtonTypes,
+  interactiveReplyHeaderTypes,
+} from './constants'
 
 export const choiceInputOptionsSchema = optionBaseSchema.merge(
   z.object({
@@ -11,6 +15,18 @@ export const choiceInputOptionsSchema = optionBaseSchema.merge(
     dynamicVariableId: z.string().optional(),
     isSearchable: z.boolean().optional(),
     searchInputPlaceholder: z.string().optional(),
+    // Interactive buttons options
+    isInteractive: z.boolean().optional(),
+    interactiveButtonType: z.enum(interactiveButtonTypes).optional(),
+    interactiveData: z
+      .object({
+        menuTitle: z.string().max(24).optional(),
+        headerType: z.enum(interactiveReplyHeaderTypes).optional(),
+        header: z.string().max(1024).optional(),
+        body: z.string().max(1024).optional(),
+        footer: z.string().max(60).optional(),
+      })
+      .optional(),
   })
 )
 
@@ -23,6 +39,13 @@ export const buttonItemSchemas = {
         condition: conditionSchema.optional(),
       })
       .optional(),
+    interactiveData: z
+      .object({
+        description: z.string().max(72).optional(),
+        payload: z.string().max(256).optional(),
+        section: z.string().max(24).optional(),
+      })
+      .optional(),
   }),
   v6: itemBaseSchemas.v6.extend({
     content: z.string().optional(),
@@ -30,6 +53,13 @@ export const buttonItemSchemas = {
       .object({
         isEnabled: z.boolean().optional(),
         condition: conditionSchema.optional(),
+      })
+      .optional(),
+    interactiveData: z
+      .object({
+        description: z.string().max(72).optional(),
+        payload: z.string().max(256).optional(),
+        section: z.string().max(24).optional(),
       })
       .optional(),
   }),

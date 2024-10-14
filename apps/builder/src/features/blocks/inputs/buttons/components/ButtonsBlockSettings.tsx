@@ -5,8 +5,14 @@ import { FormControl, FormLabel, Stack } from '@chakra-ui/react'
 import { ChoiceInputBlock, Variable } from '@typebot.io/schemas'
 import React from 'react'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
-import { defaultChoiceInputOptions } from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
+import {
+  defaultChoiceInputOptions,
+  interactiveButtonType,
+  interactiveButtonTypes,
+} from '@typebot.io/schemas/features/blocks/inputs/choice/constants'
 import { useTranslate } from '@tolgee/react'
+import { ButtonsBlockInteractiveSettings } from './ButtonsBlockInteractiveSettings'
+import { RadioButtons } from '../../../../../components/inputs/RadioButtons'
 
 type Props = {
   options?: ChoiceInputBlock['options']
@@ -19,6 +25,11 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({ ...options, isMultipleChoice })
   const updateIsSearchable = (isSearchable: boolean) =>
     onOptionsChange({ ...options, isSearchable })
+  const updateIsInteractive = (isInteractive: boolean) =>
+    onOptionsChange({ ...options, isInteractive })
+  const updateInteractiveButtonType = (
+    interactiveButtonType: interactiveButtonType
+  ) => onOptionsChange({ ...options, interactiveButtonType })
   const updateButtonLabel = (buttonLabel: string) =>
     onOptionsChange({ ...options, buttonLabel })
   const updateSearchInputPlaceholder = (searchInputPlaceholder: string) =>
@@ -60,6 +71,31 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
             t('blocks.inputs.settings.input.filterOptions.label')
           }
           onChange={updateSearchInputPlaceholder}
+        />
+      </SwitchWithRelatedSettings>
+      <SwitchWithRelatedSettings
+        label={t('blocks.inputs.settings.interactiveButton.label')}
+        initialValue={
+          options?.isInteractive ?? defaultChoiceInputOptions.isInteractive
+        }
+        onCheckChange={updateIsInteractive}
+      >
+        <RadioButtons
+          size="sm"
+          defaultValue={defaultChoiceInputOptions.interactiveButtonType}
+          options={interactiveButtonTypes.map(
+            (type: interactiveButtonType) => ({
+              value: type,
+              label: t(
+                'blocks.inputs.settings.interactive.interactiveType.' + type
+              ),
+            })
+          )}
+          onSelect={updateInteractiveButtonType}
+        />
+        <ButtonsBlockInteractiveSettings
+          options={options}
+          onOptionsChange={onOptionsChange}
         />
       </SwitchWithRelatedSettings>
       <FormControl>
