@@ -1,8 +1,16 @@
----
-title: "Transform your Real Estate Agency with AI Chatbots"
-summary: "Transform your real estate business with AI chatbots. Learn how to automate lead generation, provide 24/7 customer support, and boost conversions. Get started now!"
-publishedAt: "2024-10-09"
----
+import Post from "@/features/blog/components/Post";
+import { generateMetadata } from "@/features/blog/helpers";
+
+export const post = {
+  title: "Transform your Real Estate Agency with AI Chatbots",
+  description:
+    "Transform your real estate business with AI chatbots. Learn how to automate lead generation, provide 24/7 customer support, and boost conversions. Get started now!",
+  postedAt: new Date("2024-10-09"),
+};
+
+export const metadata = generateMetadata(post);
+
+export default (props) => <Post post={post} {...props} />;
 
 Are you a real estate professional looking to boost lead generation and provide exceptional customer service? Picture having a tireless assistant working 24/7. This assistant engages with potential clients, answers their questions, and guides them through the property search process.
 
