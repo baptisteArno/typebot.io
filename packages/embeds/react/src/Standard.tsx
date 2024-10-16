@@ -1,3 +1,5 @@
+"use client";
+
 import type { BotProps } from "@typebot.io/js";
 import type React from "react";
 import { useEffect, useRef } from "react";

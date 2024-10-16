@@ -1,4 +1,4 @@
-import { defaultSendEmailOptions } from "@typebot.io/blocks-integrations/sendEmail/constants";
+import { TRPCError } from "@trpc/server";
 import type {
   SendEmailBlock,
   SmtpCredentials,
@@ -35,6 +35,10 @@ import { defaultFrom, defaultTransportOptions } from "./constants";
 export const sendEmailSuccessDescription = "Email successfully sent";
 export const sendEmailErrorDescription = "Email not sent";
 
+let prevHash: string | undefined;
+let emailSendingCount = 0;
+const maxEmailSending = 5;
+
 export const executeSendEmailBlock = async (
   state: SessionState,
   block: SendEmailBlock,
@@ -42,7 +46,11 @@ export const executeSendEmailBlock = async (
   const logs: ChatLog[] = [];
   const { options } = block;
   if (!state.typebotsQueue[0]) throw new Error("No typebot in queue");
-  const { typebot, resultId, answers } = state.typebotsQueue[0];
+  const {
+    typebot: { id, variables },
+    resultId,
+    answers,
+  } = state.typebotsQueue[0];
   const isPreview = !resultId;
   if (isPreview)
     return {
@@ -55,39 +63,48 @@ export const executeSendEmailBlock = async (
       ],
     };
 
-  const bodyUniqueVariable = findUniqueVariable(typebot.variables)(
+  const bodyUniqueVariable = findUniqueVariable(variables)(
     options?.body,
   )?.value;
   const body = bodyUniqueVariable
     ? stringifyUniqueVariableValueAsHtml(bodyUniqueVariable)
-    : parseVariables(typebot.variables, { isInsideHtml: !options?.isBodyCode })(
+    : parseVariables(variables, { isInsideHtml: !options?.isBodyCode })(
         options?.body ?? "",
       );
 
   if (!options?.recipients)
     return { outgoingEdgeId: block.outgoingEdgeId, logs };
 
+  if (!options.credentialsId) {
+    logs.push({
+      status: "error",
+      description:
+        "No credentials found, make sure to configure your SMTP provider properly",
+    });
+    return { outgoingEdgeId: block.outgoingEdgeId, logs };
+  }
+
+  if (emailSendingCount >= maxEmailSending)
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "Attempt to send more than 5 emails",
+    });
   try {
     const sendEmailLogs = await sendEmail({
-      typebot,
+      typebot: { id, variables },
       answers,
-      credentialsId:
-        options.credentialsId ?? defaultSendEmailOptions.credentialsId,
-      recipients: options.recipients.map(parseVariables(typebot.variables)),
+      credentialsId: options.credentialsId,
+      recipients: options.recipients.map(parseVariables(variables)),
       subject: options.subject
-        ? parseVariables(typebot.variables)(options?.subject)
+        ? parseVariables(variables)(options?.subject)
         : undefined,
       body,
-      cc: options.cc
-        ? options.cc.map(parseVariables(typebot.variables))
-        : undefined,
-      bcc: options.bcc
-        ? options.bcc.map(parseVariables(typebot.variables))
-        : undefined,
+      cc: options.cc ? options.cc.map(parseVariables(variables)) : undefined,
+      bcc: options.bcc ? options.bcc.map(parseVariables(variables)) : undefined,
       replyTo: options.replyTo
-        ? parseVariables(typebot.variables)(options.replyTo)
+        ? parseVariables(variables)(options.replyTo)
         : undefined,
-      fileUrls: getFileUrls(typebot.variables)(options.attachmentsVariableId),
+      fileUrls: getFileUrls(variables)(options.attachmentsVariableId),
       isCustomBody: options.isCustomBody,
       isBodyCode: options.isBodyCode,
     });
@@ -99,6 +116,8 @@ export const executeSendEmailBlock = async (
       description: `Email not sent`,
     });
   }
+
+  emailSendingCount += 1;
 
   return { outgoingEdgeId: block.outgoingEdgeId, logs };
 };
@@ -126,7 +145,7 @@ const sendEmail = async ({
   replyTo: string | undefined;
   isBodyCode: boolean | undefined;
   isCustomBody: boolean | undefined;
-  typebot: TypebotInSession;
+  typebot: Pick<TypebotInSession, "id" | "variables">;
   answers: AnswerInSessionState[];
   fileUrls?: string | string[];
 }): Promise<ChatLog[] | undefined> => {
@@ -184,6 +203,15 @@ const sendEmail = async ({
     attachments: await parseAttachments(fileUrls, typebot.id),
     ...emailBody,
   };
+
+  const hash = JSON.stringify(email);
+  if (prevHash && prevHash === hash)
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "Attempt to send the same email twice",
+    });
+  prevHash = hash;
+
   try {
     await transporter.sendMail(email);
     logs.push({
@@ -244,7 +272,7 @@ const getEmailBody = async ({
   typebot,
   answersInSession,
 }: {
-  typebot: TypebotInSession;
+  typebot: Pick<TypebotInSession, "id" | "variables">;
   answersInSession: AnswerInSessionState[];
 } & Pick<
   NonNullable<SendEmailBlock["options"]>,

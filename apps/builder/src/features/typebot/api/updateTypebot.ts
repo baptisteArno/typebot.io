@@ -155,7 +155,7 @@ export const updateTypebot = authenticatedProcedure
     }
 
     const groups = typebot.groups
-      ? await sanitizeGroups(existingTypebot.workspace.id)(typebot.groups)
+      ? await sanitizeGroups(existingTypebot.workspace)(typebot.groups)
       : undefined;
 
     const newTypebot = await prisma.typebot.update({

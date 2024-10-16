@@ -2,12 +2,12 @@ import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
-import { defaultSendEmailOptions } from "@typebot.io/blocks-integrations/sendEmail/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { sessionOnlySetVariableOptions } from "@typebot.io/blocks-logic/setVariable/constants";
 import prisma from "@typebot.io/prisma";
 import { Plan } from "@typebot.io/prisma/enum";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
+import type { Workspace } from "@typebot.io/workspaces/schemas";
 
 export const sanitizeSettings = (
   settings: Typebot["settings"],
@@ -40,17 +40,17 @@ export const sanitizeSettings = (
 });
 
 export const sanitizeGroups =
-  (workspaceId: string) =>
+  (workspace: Pick<Workspace, "id" | "plan">) =>
   async (groups: Typebot["groups"]): Promise<Typebot["groups"]> =>
     Promise.all(
       groups.map(async (group) => ({
         ...group,
-        blocks: await Promise.all(group.blocks.map(sanitizeBlock(workspaceId))),
+        blocks: await Promise.all(group.blocks.map(sanitizeBlock(workspace))),
       })),
     ) as Promise<Typebot["groups"]>;
 
 const sanitizeBlock =
-  (workspaceId: string) =>
+  (workspace: Pick<Workspace, "id" | "plan">) =>
   async (block: Block): Promise<Block> => {
     if (!("options" in block) || !block.options) return block;
 
@@ -64,9 +64,9 @@ const sanitizeBlock =
           options: {
             ...block.options,
             credentialsId:
-              (await sanitizeCredentialsId(workspaceId)(
+              (await sanitizeCredentialsId(workspace.id)(
                 block.options?.credentialsId,
-              )) ?? defaultSendEmailOptions.credentialsId,
+              )) ?? getDefaultEmailCredentialsId(workspace.plan),
           },
         };
       default:
@@ -74,7 +74,7 @@ const sanitizeBlock =
           ...block,
           options: {
             ...block.options,
-            credentialsId: await sanitizeCredentialsId(workspaceId)(
+            credentialsId: await sanitizeCredentialsId(workspace.id)(
               block.options?.credentialsId,
             ),
           },
@@ -197,4 +197,11 @@ export const sanitizeVariables = ({
       };
     return variable;
   });
+};
+
+const getDefaultEmailCredentialsId = (
+  workspacePlan: Plan,
+): "default" | undefined => {
+  if (workspacePlan === Plan.FREE) return;
+  return "default";
 };
