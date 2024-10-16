@@ -4,7 +4,7 @@ metadata:
   name: typebot-viewer
 spec:
   maxReplicas: 6
-  minReplicas: 3
+  minReplicas: 1
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
