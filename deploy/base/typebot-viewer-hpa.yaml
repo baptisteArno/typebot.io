@@ -3,8 +3,8 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: typebot-viewer
 spec:
-  maxReplicas: 4
-  minReplicas: 1
+  maxReplicas: 6
+  minReplicas: 3
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
