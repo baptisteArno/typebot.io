@@ -93,6 +93,7 @@ This code is creating a container with a 100% width (will match parent width) an
      }[],
    ) => void;
    onChatStatePersisted?: (isEnabled: boolean) => void;
+   onScriptExecutionSuccess?: (message: string) => void;
  };
  ```
 
@@ -219,6 +220,7 @@ This code will automatically trigger the popup window after 3 seconds.
      }[],
    ) => void;
    onChatStatePersisted?: (isEnabled: boolean) => void;
+   onScriptExecutionSuccess?: (message: string) => void;
    autoShowDelay?: number;
    theme?: {
      width?: string;
@@ -333,6 +335,7 @@ This code will show the bubble and let a preview message appear after 5 seconds.
      }[],
    ) => void;
    onChatStatePersisted?: (isEnabled: boolean) => void;
+   onScriptExecutionSuccess?: (message: string) => void;
    onOpen?: () => void;
    onClose?: () => void;
    onPreviewMessageClick?: () => void;
