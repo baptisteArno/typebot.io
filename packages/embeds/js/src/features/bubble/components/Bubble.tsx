@@ -1,5 +1,6 @@
 import { Bot, type BotProps } from "@/components/Bot";
 import { getPaymentInProgressInStorage } from "@/features/blocks/inputs/payment/helpers/paymentInProgressStorage";
+import { chatwootWebWidgetOpenedMessage } from "@/features/blocks/integrations/chatwoot/constants";
 import type { CommandData } from "@/features/commands/types";
 import {
   getBotOpenedStateFromStorage,
@@ -8,6 +9,7 @@ import {
 } from "@/utils/storage";
 import { EnvironmentProvider } from "@ark-ui/solid";
 import { isDefined } from "@typebot.io/lib/utils";
+import { zendeskWebWidgetOpenedMessage } from "@typebot.io/zendesk-block/constants";
 import {
   Show,
   createEffect,
@@ -156,6 +158,15 @@ export const Bubble = (props: BubbleProps) => {
     if (isPersisted) setBotOpenedStateInStorage();
   };
 
+  const handleScriptExecutionSuccessMessage = (message: string) => {
+    if (
+      message === zendeskWebWidgetOpenedMessage ||
+      message === chatwootWebWidgetOpenedMessage
+    )
+      unmount();
+    props.onScriptExecutionSuccess?.(message);
+  };
+
   return (
     <Show when={isMounted()}>
       <EnvironmentProvider
@@ -209,6 +220,7 @@ export const Bubble = (props: BubbleProps) => {
           <Show when={isBotStarted()}>
             <Bot
               {...botProps}
+              onScriptExecutionSuccess={handleScriptExecutionSuccessMessage}
               onChatStatePersisted={handleOnChatStatePersisted}
               prefilledVariables={prefilledVariables()}
               class="rounded-lg"

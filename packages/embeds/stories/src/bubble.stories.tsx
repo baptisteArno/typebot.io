@@ -1,5 +1,4 @@
 import {
-  Bubble,
   close,
   hidePreviewMessage,
   open,
@@ -7,7 +6,8 @@ import {
   setPrefilledVariables,
   showPreviewMessage,
   toggle,
-} from "@typebot.io/react";
+} from "@typebot.io/js";
+import { Bubble } from "@typebot.io/react";
 import { useState } from "react";
 import { leadGenerationTypebot } from "./assets/leadGenerationTypebot";
 
@@ -35,7 +35,7 @@ export const Default = () => {
       </div>
 
       <Bubble
-        typebot={leadGenerationTypebot}
+        typebot={"my-typebot-2b532x1"}
         apiHost="http://localhost:3001"
         prefilledVariables={{
           Name: ["John"],
@@ -51,7 +51,7 @@ export const Default = () => {
             iconColor: "white",
           },
         }}
-        isPreview
+        // isPreview
       />
     </div>
   );

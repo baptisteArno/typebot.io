@@ -1,6 +1,7 @@
 import { createAction, option } from "@typebot.io/forge";
 import { sign } from "jsonwebtoken";
 import { auth } from "../auth";
+import { zendeskWebWidgetOpenedMessage } from "../constants";
 
 export const openWebWidget = createAction({
   auth,
@@ -88,5 +89,7 @@ const parseOpenMessenger = () => {
       }
     };
   })(document, "script");
+
+  return "${zendeskWebWidgetOpenedMessage}"
   `;
 };

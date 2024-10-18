@@ -71,6 +71,7 @@ type Props = {
   onEnd?: () => void;
   onNewLogs?: (logs: OutgoingLog[]) => void;
   onProgressUpdate?: (progress: number) => void;
+  onScriptExecutionSuccess?: (message: string) => void;
 };
 
 export const ConversationContainer = (props: Props) => {
@@ -300,6 +301,8 @@ export const ConversationContainer = (props: Props) => {
       }
       if (response && "blockedPopupUrl" in response)
         setBlockedPopupUrl(response.blockedPopupUrl);
+      if (response && "scriptCallbackMessage" in response)
+        props.onScriptExecutionSuccess?.(response.scriptCallbackMessage);
     }
   };
 

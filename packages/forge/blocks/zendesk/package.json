@@ -5,7 +5,8 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./schemas": "./src/schemas.ts"
+    "./schemas": "./src/schemas.ts",
+    "./constants": "./src/constants.ts"
   },
   "dependencies": {
     "@typebot.io/forge": "workspace:*",

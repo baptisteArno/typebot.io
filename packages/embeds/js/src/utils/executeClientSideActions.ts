@@ -32,6 +32,7 @@ export const executeClientSideAction = async ({
   | { blockedPopupUrl: string }
   | { replyToSend: string | undefined; logs?: ChatLog[] }
   | { logs: ChatLog[] }
+  | { scriptCallbackMessage: string }
   | void
 > => {
   if ("chatwoot" in clientSideAction) {

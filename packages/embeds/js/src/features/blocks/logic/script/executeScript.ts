@@ -45,7 +45,11 @@ export const executeCode = async ({
 }) => {
   try {
     const func = AsyncFunction(...Object.keys(args), content);
-    await func(...Object.keys(args).map((key) => args[key]));
+    const result = await func(...Object.keys(args).map((key) => args[key]));
+    if (result && typeof result === "string")
+      return {
+        scriptCallbackMessage: result,
+      };
   } catch (err) {
     console.warn("Script threw an error:", err);
   }
