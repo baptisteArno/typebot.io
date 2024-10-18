@@ -221,7 +221,7 @@ export const PublishButton = ({
       </Tooltip>
 
       {!isMoreMenuDisabled && publishedTypebot && (
-        <Menu>
+        <Menu isLazy>
           <MenuButton
             as={IconButton}
             colorScheme={"blue"}
