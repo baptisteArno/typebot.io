@@ -1,8 +1,16 @@
----
-title: "Webflow Free Templates: Top 20 Picks for Every Need"
-summary: "Discover top free Webflow templates for every industry: SaaS, agency, portfolio, and e-commerce templates"
-publishedAt: "2024-10-16"
----
+import Post from "@/features/blog/components/Post";
+import { generateMetadata } from "@/features/blog/helpers";
+
+export const post = {
+  title: "Webflow Free Templates: Top 20 Picks for Every Need",
+  description:
+    "Discover top free Webflow templates for every industry: SaaS, agency, portfolio, and e-commerce templates",
+  postedAt: new Date("2024-10-16"),
+};
+
+export const metadata = generateMetadata(post);
+
+export default (props) => <Post post={post} {...props} />;
 
 Finding the perfect Webflow template can be challenging. **The right template is crucial for a strong online presence**. Whether you're a startup founder, freelance designer, or e-commerce entrepreneur, you need a template that fits your needs.
 
