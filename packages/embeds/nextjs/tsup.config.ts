@@ -9,5 +9,4 @@ export default defineConfig(() => ({
   banner: {
     js: '"use client"',
   },
-  external: process.env.CI ? undefined : ["@typebot.io/js"],
 }));

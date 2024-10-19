@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/react",
-  "version": "0.3.22",
+  "version": "0.3.23",
   "description": "Convenient library to display typebots on your React app",
   "license": "FSL-1.1-ALv2",
   "type": "module",
@@ -16,15 +16,18 @@
     "dev": "tsup --watch",
     "build": "tsup"
   },
+  "dependencies": {
+    "@typebot.io/js": "workspace:*"
+  },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
     "@types/react": "18.2.15",
     "tsup": "8.3.0",
-    "react": "18.2.0",
-    "@typebot.io/js": "workspace:*"
+    "react": "18.2.0"
   },
   "peerDependencies": {
-    "react": "^16.0.0 || ^17.0.0 || ^18.0.0"
+    "react": "^16.0.0 || ^17.0.0 || ^18.0.0",
+    "@typebot.io/js": "0.3.22"
   },
   "publishConfig": {
     "access": "public"
