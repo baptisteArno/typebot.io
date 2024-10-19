@@ -20,3 +20,5 @@ export const Popup = dynamic(
     ssr: false,
   },
 );
+
+export type * from "@typebot.io/js";

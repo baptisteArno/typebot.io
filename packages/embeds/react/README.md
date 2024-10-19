@@ -1,22 +1,22 @@
 ## Install
 
 ```bash
-npm install @typebot.io/js @typebot.io/react
+npm install @typebot.io/react
 ```
 
 ## Standard
 
 ```tsx
-import { Standard } from '@typebot.io/react'
+import { Standard } from "@typebot.io/react";
 
 const App = () => {
   return (
     <Standard
       typebot="lead-generation-copy-3luzm6b"
-      style={{ width: '100%', height: '600px' }}
+      style={{ width: "100%", height: "600px" }}
     />
-  )
-}
+  );
+};
 ```
 
 This code is creating a container with a 100% width (will match parent width) and 600px height.
@@ -24,11 +24,11 @@ This code is creating a container with a 100% width (will match parent width) an
 ## Popup
 
 ```tsx
-import { Popup } from '@typebot.io/react'
+import { Popup } from "@typebot.io/react";
 
 const App = () => {
-  return <Popup typebot="lead-generation-copy-3luzm6b" autoShowDelay={3000} />
-}
+  return <Popup typebot="lead-generation-copy-3luzm6b" autoShowDelay={3000} />;
+};
 ```
 
 This code will automatically trigger the popup window after 3 seconds.
@@ -38,44 +38,44 @@ This code will automatically trigger the popup window after 3 seconds.
 You can use these commands:
 
 ```js
-import { open } from '@typebot.io/react'
+import { open } from "@typebot.io/react";
 
-open()
+open();
 ```
 
 ```js
-import { close } from '@typebot.io/react'
+import { close } from "@typebot.io/react";
 
-close()
+close();
 ```
 
 ```js
-import { toggle } from '@typebot.io/react'
+import { toggle } from "@typebot.io/react";
 
-toggle()
+toggle();
 ```
 
 ## Bubble
 
 ```tsx
-import { Bubble } from '@typebot.io/react'
+import { Bubble } from "@typebot.io/react";
 
 const App = () => {
   return (
     <Bubble
       typebot="lead-generation-copy-3luzm6b"
       previewMessage={{
-        message: 'I have a question for you!',
+        message: "I have a question for you!",
         autoShowDelay: 5000,
-        avatarUrl: 'https://avatars.githubusercontent.com/u/16015833?v=4',
+        avatarUrl: "https://avatars.githubusercontent.com/u/16015833?v=4",
       }}
       theme={{
-        button: { backgroundColor: '#0042DA', iconColor: '#FFFFFF' },
-        previewMessage: { backgroundColor: '#ffffff', textColor: 'black' },
+        button: { backgroundColor: "#0042DA", iconColor: "#FFFFFF" },
+        previewMessage: { backgroundColor: "#ffffff", textColor: "black" },
       }}
     />
-  )
-}
+  );
+};
 ```
 
 This code will show the bubble and let a preview message appear after 5 seconds.
@@ -85,15 +85,15 @@ This code will show the bubble and let a preview message appear after 5 seconds.
 You can use these commands:
 
 ```js
-import { showPreviewMessage } from '@typebot.io/react'
+import { showPreviewMessage } from "@typebot.io/react";
 
-Typebot.showPreviewMessage()
+Typebot.showPreviewMessage();
 ```
 
 ```js
-import { hidePreviewMessage } from '@typebot.io/react'
+import { hidePreviewMessage } from "@typebot.io/react";
 
-Typebot.hidePreviewMessage()
+Typebot.hidePreviewMessage();
 ```
 
 ### Open or close the chat window
@@ -101,21 +101,21 @@ Typebot.hidePreviewMessage()
 You can use these commands:
 
 ```js
-import { open } from '@typebot.io/react'
+import { open } from "@typebot.io/react";
 
-open()
+open();
 ```
 
 ```js
-import { close } from '@typebot.io/react'
+import { close } from "@typebot.io/react";
 
-close()
+close();
 ```
 
 ```js
-import { toggle } from '@typebot.io/react'
+import { toggle } from "@typebot.io/react";
 
-toggle()
+toggle();
 ```
 
 ## Additional configuration
@@ -123,20 +123,20 @@ toggle()
 You can prefill the bot variable values in your embed code by adding the `prefilledVariables` option. Here is an example:
 
 ```tsx
-import { Standard } from '@typebot.io/react'
+import { Standard } from "@typebot.io/react";
 
 const App = () => {
   return (
     <Standard
       typebot="lead-generation-copy-3luzm6b"
-      style={{ width: '100%', height: '600px' }}
+      style={{ width: "100%", height: "600px" }}
       prefilledVariables={{
-        'Current URL': 'https://my-site/account',
-        'User name': 'John Doe',
+        "Current URL": "https://my-site/account",
+        "User name": "John Doe",
       }}
     />
-  )
-}
+  );
+};
 ```
 
 It will prefill the `Current URL` variable with "https://my-site/account" and the `User name` variable with "John Doe". More info about variables: [here](/editor/variables).

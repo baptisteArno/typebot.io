@@ -6,4 +6,5 @@ export default defineConfig((options) => ({
   format: "esm",
   platform: "browser",
   dts: true,
+  external: process.env.CI ? undefined : ["@typebot.io/js"],
 }));

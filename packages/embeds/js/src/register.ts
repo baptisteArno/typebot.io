@@ -10,7 +10,6 @@ import { Standard } from "./features/standard/components/Standard";
 
 export const registerWebComponents = () => {
   if (typeof window === "undefined") return;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
   customElement("typebot-standard", defaultBotProps, Standard);
   customElement("typebot-bubble", defaultBubbleProps, Bubble);

@@ -1,4 +1,5 @@
 import {
+  Bubble,
   close,
   hidePreviewMessage,
   open,
@@ -6,8 +7,7 @@ import {
   setPrefilledVariables,
   showPreviewMessage,
   toggle,
-} from "@typebot.io/js";
-import { Bubble } from "@typebot.io/react";
+} from "@typebot.io/react";
 import { useState } from "react";
 import { leadGenerationTypebot } from "./assets/leadGenerationTypebot";
 

@@ -34,11 +34,11 @@ There, you can change the container dimensions. Here is a code example:
 
 ```html
 <script type="module">
-  import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0.3/dist/web.js'
+  import Typebot from "https://cdn.jsdelivr.net/npm/@typebot.io/js@0.3/dist/web.js";
 
   Typebot.initStandard({
-    typebot: 'my-typebot',
-  })
+    typebot: "my-typebot",
+  });
 </script>
 
 <typebot-standard style="width: 100%; height: 600px; "></typebot-standard>
@@ -54,13 +54,13 @@ Here is an example:
 
 ```html
 <script type="module">
-  import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0.3/dist/web.js'
+  import Typebot from "https://cdn.jsdelivr.net/npm/@typebot.io/js@0.3/dist/web.js";
 
   Typebot.initPopup({
-    typebot: 'my-typebot',
-    apiHost: 'http://localhost:3001',
+    typebot: "my-typebot",
+    apiHost: "http://localhost:3001",
     autoShowDelay: 3000,
-  })
+  });
 </script>
 ```
 
@@ -71,15 +71,15 @@ This code will automatically trigger the popup window after 3 seconds.
 You can use these commands:
 
 ```js
-Typebot.open()
+Typebot.open();
 ```
 
 ```js
-Typebot.close()
+Typebot.close();
 ```
 
 ```js
-Typebot.toggle()
+Typebot.toggle();
 ```
 
 You can bind these commands on a button element, for example:
@@ -96,21 +96,21 @@ Here is an example:
 
 ```html
 <script type="module">
-  import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0.3/dist/web.js'
+  import Typebot from "https://cdn.jsdelivr.net/npm/@typebot.io/js@0.3/dist/web.js";
 
   Typebot.initBubble({
-    typebot: 'my-typebot',
+    typebot: "my-typebot",
     previewMessage: {
-      message: 'I have a question for you!',
+      message: "I have a question for you!",
       autoShowDelay: 5000,
-      avatarUrl: 'https://avatars.githubusercontent.com/u/16015833?v=4',
+      avatarUrl: "https://avatars.githubusercontent.com/u/16015833?v=4",
     },
     theme: {
-      button: { backgroundColor: '#0042DA', iconColor: '#FFFFFF' },
-      previewMessage: { backgroundColor: '#ffffff', textColor: 'black' },
-      chatWindow: { backgroundColor: '#ffffff' },
+      button: { backgroundColor: "#0042DA", iconColor: "#FFFFFF" },
+      previewMessage: { backgroundColor: "#ffffff", textColor: "black" },
+      chatWindow: { backgroundColor: "#ffffff" },
     },
-  })
+  });
 </script>
 ```
 
@@ -121,11 +121,11 @@ This code will show the bubble and let a preview message appear after 5 seconds.
 You can use these commands:
 
 ```js
-Typebot.showPreviewMessage()
+Typebot.showPreviewMessage();
 ```
 
 ```js
-Typebot.hidePreviewMessage()
+Typebot.hidePreviewMessage();
 ```
 
 ### Open or close the typebot
@@ -133,15 +133,15 @@ Typebot.hidePreviewMessage()
 You can use these commands:
 
 ```js
-Typebot.open()
+Typebot.open();
 ```
 
 ```js
-Typebot.close()
+Typebot.close();
 ```
 
 ```js
-Typebot.toggle()
+Typebot.toggle();
 ```
 
 You can bind these commands on a button element, for example:
@@ -156,12 +156,12 @@ You can prefill the bot variable values in your embed code by adding the `prefil
 
 ```js
 Typebot.initStandard({
-  typebot: 'my-typebot',
+  typebot: "my-typebot",
   prefilledVariables: {
-    'Current URL': 'https://my-site/account',
-    'User name': 'John Doe',
+    "Current URL": "https://my-site/account",
+    "User name": "John Doe",
   },
-})
+});
 ```
 
 It will prefill the `Current URL` variable with "https://my-site/account" and the `User name` variable with "John Doe". More info about variables: [here](/editor/variables).
