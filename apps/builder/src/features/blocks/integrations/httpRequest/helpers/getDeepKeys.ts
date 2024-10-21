@@ -1,10 +1,13 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getDeepKeys = (obj: any): string[] => {
   let keys: string[] = [];
   for (const key in obj) {
     if (typeof obj[key] === "object" && !Array.isArray(obj[key])) {
       const subkeys = getDeepKeys(obj[key]);
-      keys = keys.concat(subkeys.map((subkey) => key + parseKey(subkey)));
+      keys = keys.concat(
+        subkeys.map(
+          (subkey) => `${parsePrevKey(key, subkey)}${parseNextKey(subkey)}`,
+        ),
+      );
     } else if (Array.isArray(obj[key])) {
       if (obj[key].length === 0) continue;
 
@@ -20,12 +23,16 @@ export const getDeepKeys = (obj: any): string[] => {
       if (obj[key].length > 1) {
         keys = keys.concat(
           subkeys.map(
-            (subkey) => `${key}.flatMap(item => item${parseKey(subkey)})`,
+            (subkey) =>
+              `${key}.flatMap(item => ${parsePrevKey("item", subkey)}${parseNextKey(subkey)})`,
           ),
         );
       }
       keys = keys.concat(
-        subkeys.map((subkey) => `${key}[0]${parseKey(subkey)}`),
+        subkeys.map(
+          (subkey) =>
+            `${key}${parsePrevKey("0", subkey)}${parseNextKey(subkey)}`,
+        ),
       );
     } else {
       keys.push(key);
@@ -34,7 +41,18 @@ export const getDeepKeys = (obj: any): string[] => {
   return keys;
 };
 
-const parseKey = (key: string) => {
+const parsePrevKey = (key: string, suffix: string) => {
+  if (
+    key.includes(" ") ||
+    key.includes("-") ||
+    !isNaN(key as unknown as number)
+  ) {
+    return `['${key}'].`;
+  }
+  return suffix.startsWith("[") ? key : `${key}.`;
+};
+
+const parseNextKey = (key: string) => {
   if (
     (key.includes(" ") ||
       key.includes("-") ||
@@ -45,5 +63,5 @@ const parseKey = (key: string) => {
   ) {
     return `['${key}']`;
   }
-  return `.${key}`;
+  return `${key}`;
 };
