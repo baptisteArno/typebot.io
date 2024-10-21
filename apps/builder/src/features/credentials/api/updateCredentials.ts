@@ -64,7 +64,7 @@ export const updateCredentials = authenticatedProcedure
         });
 
       const { encryptedData, iv } = await encrypt(credentials.data);
-      const createdCredentials = await prisma.credentials.update({
+      const updatedCredentials = await prisma.credentials.update({
         where: {
           id: credentialsId,
         },
@@ -74,6 +74,6 @@ export const updateCredentials = authenticatedProcedure
           iv,
         },
       });
-      return { credentialsId: createdCredentials.id };
+      return { credentialsId: updatedCredentials.id };
     },
   );
