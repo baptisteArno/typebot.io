@@ -31,7 +31,6 @@ const workspaceContext = createContext<{
   createWorkspace: (name?: string) => Promise<void>;
   updateWorkspace: (updates: { icon?: string; name?: string }) => void;
   deleteCurrentWorkspace: () => Promise<void>;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({});
 

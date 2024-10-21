@@ -55,11 +55,6 @@ export const FolderContent = ({ folder }: Props) => {
     },
     {
       enabled: !!workspace,
-      onError: (error) => {
-        showToast({
-          description: error.message,
-        });
-      },
     },
   );
 
