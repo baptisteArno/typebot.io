@@ -34,9 +34,15 @@ export const StreamingBubble = (props: Props) => {
           if (index % 2 === 0) {
             return block.split("\n\n").map((line) =>
               domPurify.sanitize(
-                marked.parse(line.replace(/【.+】/g, ""), {
-                  breaks: true,
-                }),
+                marked.parse(
+                  line
+                    .replace(/【.+】/g, "")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;"),
+                  {
+                    breaks: true,
+                  },
+                ),
                 {
                   ADD_ATTR: ["target"],
                 },
@@ -45,9 +51,14 @@ export const StreamingBubble = (props: Props) => {
           } else {
             return [
               domPurify.sanitize(
-                marked.parse("```" + block + "```", {
-                  breaks: true,
-                }),
+                marked.parse(
+                  "```" +
+                    block +
+                    "```".replace(/</g, "&lt;").replace(/>/g, "&gt;"),
+                  {
+                    breaks: true,
+                  },
+                ),
                 {
                   ADD_ATTR: ["target"],
                 },
