@@ -1,6 +1,8 @@
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import { useEventListener } from "./useEventListener";
 
+const typebotWindowTagName = "TYPEBOT-STANDARD";
+
 type Props = {
   undo?: () => void;
   redo?: () => void;
@@ -10,6 +12,7 @@ type Props = {
   duplicate?: () => void;
   backspace?: () => void;
 };
+
 export const useKeyboardShortcuts = ({
   undo,
   redo,
@@ -50,7 +53,7 @@ export const useKeyboardShortcuts = ({
       target?.role === "textbox" ||
       target instanceof HTMLTextAreaElement ||
       target instanceof HTMLInputElement;
-    if (isTyping) return;
+    if (isTyping || target?.tagName === typebotWindowTagName) return;
     if (undo && isUndoShortcut(event)) {
       event.preventDefault();
       undo();
