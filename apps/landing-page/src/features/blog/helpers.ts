@@ -2,7 +2,10 @@ import { env } from "@typebot.io/env";
 import type { BlogPost } from "./types";
 
 export const generateMetadata = (post: BlogPost) => {
-  const ogImage = "";
+  const ogImage = post.image
+    ? `${env.LANDING_PAGE_URL}${post.image}`
+    : `${env.LANDING_PAGE_URL}/og?title=${post.title}`;
+
   return {
     title: post.title,
     description: post.description,
