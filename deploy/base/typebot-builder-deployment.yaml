@@ -2,6 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: typebot-builder
+  labels:
+    tags.datadoghq.com/env: <env>
+    tags.datadoghq.com/service: <service>
+    tags.datadoghq.com/version: <version>
 spec:
   replicas: 1
   revisionHistoryLimit: 10
@@ -17,9 +21,24 @@ spec:
       creationTimestamp: null
       labels:
         app: typebot-builder
+        tags.datadoghq.com/env: <env>
+        tags.datadoghq.com/service: <service>
+        tags.datadoghq.com/version: <version>
+        admission.datadoghq.com/enabled: "true"
+      annotations:
+        admission.datadoghq.com/js-lib.version: v5.24.0
     spec:
       containers:
         - name: typebot-builder
+          env:
+            - name: DD_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: DD_PROFILING_ENABLED
+              value: "true"
+            - name: DD_LOGS_INJECTION
+              value: "true"
           envFrom:
             - configMapRef:
                 name: typebot-builder
