@@ -3,9 +3,9 @@ kind: Deployment
 metadata:
   name: typebot-viewer
   labels:
-    tags.datadoghq.com/env: <env>
-    tags.datadoghq.com/service: <service>
-    tags.datadoghq.com/version: <version>
+    tags.datadoghq.com/env: production
+    tags.datadoghq.com/service: typebot-viewer
+    tags.datadoghq.com/version: "1.0"
 spec:
   replicas: 1
   revisionHistoryLimit: 10
@@ -21,9 +21,9 @@ spec:
       creationTimestamp: null
       labels:
         app: typebot-viewer
-        tags.datadoghq.com/env: <env>
-        tags.datadoghq.com/service: <service>
-        tags.datadoghq.com/version: <version>
+        tags.datadoghq.com/env: production
+        tags.datadoghq.com/service: typebot-viewer
+        tags.datadoghq.com/version: "1.0"
         admission.datadoghq.com/enabled: "true"
       annotations:
         admission.datadoghq.com/js-lib.version: v5.24.0        
