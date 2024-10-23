@@ -151,11 +151,8 @@ const evaluateSetVariableExpression =
     return { value: output };
   };
 
-const injectReturnKeywordIfNeeded = (code: string) => {
-  const isOneLineCode = code.split("\n").length === 1;
-  if (!isOneLineCode) return code;
-  return code.startsWith("return ") ? code : `return ${code}`;
-};
+const injectReturnKeywordIfNeeded = (code: string) =>
+  code.includes("return ") ? code : `return ${code}`;
 
 const getExpressionToEvaluate =
   (state: SessionState) =>
