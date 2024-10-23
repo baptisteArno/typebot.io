@@ -1,4 +1,5 @@
 import type { VariableStore } from "@typebot.io/forge/types";
+import { safeStringify } from "@typebot.io/lib/safeStringify";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import { executeFunction } from "@typebot.io/variables/executeFunction";
 import type { Variable } from "@typebot.io/variables/schemas";
@@ -27,7 +28,7 @@ export const parseTools = ({
           body: tool.code!,
         });
         newVariables?.forEach((v) => variables.set(v.id, v.value));
-        return output;
+        return safeStringify(output) ?? "";
       },
     } satisfies CoreTool;
     return acc;

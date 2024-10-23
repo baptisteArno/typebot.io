@@ -1,4 +1,3 @@
-import { safeStringify } from "@typebot.io/lib/safeStringify";
 import { stringifyError } from "@typebot.io/lib/stringifyError";
 import { isDefined } from "@typebot.io/lib/utils";
 import ivm from "isolated-vm";
@@ -74,9 +73,9 @@ export const executeFunction = async ({
     );
 
   try {
-    const output = await run(parsedBody);
+    const output: unknown = await run(parsedBody);
     return {
-      output: safeStringify(output) ?? "",
+      output,
       newVariables: Object.entries(updatedVariables)
         .map(([name, value]) => {
           const existingVariable = variables.find((v) => v.name === name);
