@@ -20,6 +20,7 @@
     "updateTypebot": "tsx src/updateTypebot.ts",
     "updateWorkspace": "tsx src/updateWorkspace.ts",
     "inspectTypebot": "tsx src/inspectTypebot.ts",
+    "inspectPublishedTypebot": "tsx src/inspectPublishedTypebot.ts",
     "inspectWorkspace": "tsx src/inspectWorkspace.ts",
     "getCoupon": "tsx src/getCoupon.ts",
     "redeemCoupon": "tsx src/redeemCoupon.ts",
