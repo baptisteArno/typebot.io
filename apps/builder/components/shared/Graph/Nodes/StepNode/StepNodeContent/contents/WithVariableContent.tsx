@@ -23,7 +23,7 @@ export const WithVariableContent = ({ variableId, property }: Props) => {
 
       if (!variable && property?.token) createChatField(property, variableId)
 
-      const variableName = variable?.token || property?.token || 'não salvar'
+      const variableName = variable?.token || property?.token || '...'
       setVariableName(variableName)
     }
     return () => {

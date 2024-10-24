@@ -36,6 +36,7 @@ import {
   fixedOrganizationProperties,
   fixedPersonProperties,
 } from 'helpers/presets/variables-presets'
+import { v4 as uuid } from 'uuid'
 
 import { OctaProperty } from 'models'
 
@@ -601,9 +602,17 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
             domain: 'PERSON',
             type: 'responsavel-contato',
             name: 'responsavel-contato',
-            id: 'responsavel-contato',
           })
         }
+
+        mergedItems = mergedItems.map((item) => {
+          if (item.token === '#responsavel-contato') {
+            const itemId = uuid()
+            item.id = itemId
+            item.variableId = itemId
+          }
+          return item
+        })
       } else {
         mergedItems = mergedItems.filter(
           (item) => item.token !== '#responsavel-contato'
