@@ -601,6 +601,7 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
             domain: 'PERSON',
             type: 'responsavel-contato',
             name: 'responsavel-contato',
+            id: 'responsavel-contato',
           })
         }
       } else {
