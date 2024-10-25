@@ -25,8 +25,8 @@ export const validateNumber = (
       ? Number(parseVariables(variables)(options.min))
       : undefined;
   const max =
-    options?.min && typeof options.min === "string"
-      ? Number(parseVariables(variables)(options.min))
+    options?.max && typeof options.max === "string"
+      ? Number(parseVariables(variables)(options.max))
       : undefined;
   return (
     (isNotDefined(min) || parsedNumber >= min) &&
