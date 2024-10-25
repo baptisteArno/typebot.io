@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import type React from "react";
-import { type ChangeEvent, useEffect, useState } from "react";
+import { type ChangeEvent, useState } from "react";
 import { pricingData } from "./pricingData";
 
 const messageTypes = [
@@ -33,14 +33,12 @@ export const WhatsAppPricingCalculator = () => {
   const [price, setPrice] = useState<number>();
 
   const updatePrice = () => {
-    console.log(selectedCountry, selectedMessageType);
     if (isNotDefined(selectedCountry) || isNotDefined(selectedMessageType))
       return;
 
     const countryData = pricingData.markets.find(
       (market) => market.market === selectedCountry,
     );
-    console.log(countryData);
     if (!countryData) return;
 
     const typePrice =
@@ -65,7 +63,6 @@ export const WhatsAppPricingCalculator = () => {
   };
 
   const updateMessageCount = (_: string, value: number) => {
-    console.log(value);
     setMessageCount(Math.max(1, value));
     updatePrice();
   };
