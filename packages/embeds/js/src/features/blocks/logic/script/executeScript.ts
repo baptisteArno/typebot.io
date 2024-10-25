@@ -1,20 +1,19 @@
-import type { ChatLog } from "@typebot.io/bot-engine/schemas/api";
 import type { ScriptToExecute } from "@typebot.io/bot-engine/schemas/clientSideAction";
 import { stringifyError } from "@typebot.io/lib/stringifyError";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
 const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor;
 
-export const executeScript = async ({
-  content,
-  args,
-}: ScriptToExecute): Promise<void | { logs: ChatLog[] }> => {
+export const executeScript = async ({ content, args }: ScriptToExecute) => {
   try {
     const func = AsyncFunction(
       ...args.map((arg) => arg.id),
       parseContent(content),
     );
-    await func(...args.map((arg) => arg.value));
+    const result = await func(...args.map((arg) => arg.value));
+    if (result && typeof result === "string")
+      return {
+        scriptCallbackMessage: result,
+      };
   } catch (err) {
     console.log(err);
     return {

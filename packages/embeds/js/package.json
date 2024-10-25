@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/js",
-  "version": "0.3.25",
+  "version": "0.3.26",
   "description": "Javascript library to display typebots on your website",
   "license": "FSL-1.1-ALv2",
   "type": "module",
