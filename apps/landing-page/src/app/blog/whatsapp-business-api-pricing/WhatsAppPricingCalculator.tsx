@@ -3,7 +3,6 @@
 import {
   Box,
   Flex,
-  Heading,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -17,7 +16,7 @@ import type React from "react";
 import { useEffect, useState } from "react";
 import pricingData from "./whatsapp-business-api-pricing-data.json";
 
-const WhatsAppPricingCalculator: React.FC = () => {
+export const WhatsAppPricingCalculator = () => {
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [messageCount, setMessageCount] = useState(1);
@@ -82,6 +81,7 @@ const WhatsAppPricingCalculator: React.FC = () => {
             value={messageCount}
             onChange={(_, value) => setMessageCount(Math.max(1, value))}
             min={1}
+            step={50}
           >
             <NumberInputField />
             <NumberInputStepper>
@@ -102,5 +102,3 @@ const WhatsAppPricingCalculator: React.FC = () => {
     </Box>
   );
 };
-
-export default WhatsAppPricingCalculator;
