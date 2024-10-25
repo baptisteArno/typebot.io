@@ -12,32 +12,63 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { isNotDefined } from "@typebot.io/lib/utils";
 import type React from "react";
-import { useEffect, useState } from "react";
-import pricingData from "./whatsapp-business-api-pricing-data.json";
+import { type ChangeEvent, useEffect, useState } from "react";
+import { pricingData } from "./pricingData";
+
+const messageTypes = [
+  "Marketing",
+  "Utility",
+  "Authentication",
+  "Service",
+] as const;
 
 export const WhatsAppPricingCalculator = () => {
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const [selectedType, setSelectedType] = useState("");
+  const [selectedCountry, setSelectedCountry] =
+    useState<(typeof pricingData)["markets"][number]["market"]>();
+  const [selectedMessageType, setSelectedMessageType] =
+    useState<(typeof messageTypes)[number]>();
   const [messageCount, setMessageCount] = useState(1);
-  const [price, setPrice] = useState<number | null>(null);
+  const [price, setPrice] = useState<number>();
 
-  useEffect(() => {
-    if (selectedCountry && selectedType) {
-      const countryData = pricingData.markets.find(
-        (market) => market.market === selectedCountry,
-      );
-      if (countryData) {
-        const typePrice =
-          countryData[selectedType.toLowerCase() as keyof typeof countryData];
-        if (typeof typePrice === "number") {
-          setPrice(typePrice * messageCount);
-        } else {
-          setPrice(null);
-        }
-      }
-    }
-  }, [selectedCountry, selectedType, messageCount]);
+  const updatePrice = () => {
+    console.log(selectedCountry, selectedMessageType);
+    if (isNotDefined(selectedCountry) || isNotDefined(selectedMessageType))
+      return;
+
+    const countryData = pricingData.markets.find(
+      (market) => market.market === selectedCountry,
+    );
+    console.log(countryData);
+    if (!countryData) return;
+
+    const typePrice =
+      countryData[
+        selectedMessageType.toLowerCase() as keyof typeof countryData
+      ];
+    setPrice(
+      typeof typePrice === "number" ? typePrice * messageCount : undefined,
+    );
+  };
+
+  const updateCountry = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCountry(
+      event.target.value as (typeof pricingData)["markets"][number]["market"],
+    );
+    updatePrice();
+  };
+
+  const updateMessageType = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedMessageType(event.target.value as (typeof messageTypes)[number]);
+    updatePrice();
+  };
+
+  const updateMessageCount = (_: string, value: number) => {
+    console.log(value);
+    setMessageCount(Math.max(1, value));
+    updatePrice();
+  };
 
   return (
     <Box bg="gray.800" p={6} borderRadius="lg" shadow="xl">
@@ -48,7 +79,7 @@ export const WhatsAppPricingCalculator = () => {
           </Text>
           <Select
             value={selectedCountry}
-            onChange={(e) => setSelectedCountry(e.target.value)}
+            onChange={updateCountry}
             placeholder="Select a country"
           >
             {pricingData.markets.map((market) => (
@@ -63,14 +94,15 @@ export const WhatsAppPricingCalculator = () => {
             Select Message Type:
           </Text>
           <Select
-            value={selectedType}
-            onChange={(e) => setSelectedType(e.target.value)}
+            value={selectedMessageType}
+            onChange={updateMessageType}
             placeholder="Select a type"
           >
-            <option value="Marketing">Marketing</option>
-            <option value="Utility">Utility</option>
-            <option value="Authentication">Authentication</option>
-            <option value="Service">Service</option>
+            {messageTypes.map((type) => (
+              <option key={type} value={type}>
+                {type}
+              </option>
+            ))}
           </Select>
         </Box>
         <Box>
@@ -79,9 +111,10 @@ export const WhatsAppPricingCalculator = () => {
           </Text>
           <NumberInput
             value={messageCount}
-            onChange={(_, value) => setMessageCount(Math.max(1, value))}
+            onChange={updateMessageCount}
             min={1}
-            step={50}
+            step={100}
+            clampValueOnBlur={true}
           >
             <NumberInputField />
             <NumberInputStepper>
@@ -90,11 +123,16 @@ export const WhatsAppPricingCalculator = () => {
             </NumberInputStepper>
           </NumberInput>
         </Box>
-        {price !== null && (
+        {price && (
           <Flex justify="space-between" align="center" mt={4}>
             <Text fontWeight="bold">Estimated Price:</Text>
             <Text fontSize="xl" fontWeight="bold" color="blue.300">
-              ${price.toFixed(4)} USD
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+                minimumFractionDigits: 4,
+                maximumFractionDigits: 4,
+              }).format(price)}
             </Text>
           </Flex>
         )}
