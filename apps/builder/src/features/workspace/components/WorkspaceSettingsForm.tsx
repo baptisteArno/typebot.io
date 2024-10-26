@@ -11,6 +11,8 @@ import { ForgedBlockLabel } from "@/features/forge/ForgedBlockLabel";
 import { trpc } from "@/lib/trpc";
 import {
   Button,
+  Card,
+  Divider,
   Flex,
   FormControl,
   FormHelperText,
@@ -44,19 +46,16 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
     aiProvidersType | undefined
   >(undefined);
 
-  const {
-    data: credentials,
-    isLoading,
-    refetch,
-  } = trpc.credentials.listCredentials.useQuery(
-    {
-      workspaceId: workspace!.id,
-      type: selectedAiProvider,
-    },
-    {
-      enabled: !!workspace?.id,
-    },
-  );
+  const { data, isLoading, refetch } =
+    trpc.credentials.listCredentials.useQuery(
+      {
+        workspaceId: workspace!.id,
+        type: selectedAiProvider,
+      },
+      {
+        enabled: !!workspace?.id && !!selectedAiProvider,
+      },
+    );
 
   const handleNameChange = (name: string) => {
     if (!workspace?.id) return;
@@ -130,116 +129,60 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
               justifyContent="start"
             />
             {!!workspace.inEditorAiFeaturesEnabled && (
-              <HStack>
-                <FormLabel>AI Provider:</FormLabel>
-                <Menu isLazy>
-                  <MenuButton
-                    as={Button}
-                    size="sm"
-                    rightIcon={<ChevronDownIcon />}
-                  >
-                    {selectedAiProvider ? (
-                      <Flex gap={2}>
-                        <ForgedBlockIcon type={selectedAiProvider} />
-                        <ForgedBlockLabel type={selectedAiProvider} />
-                      </Flex>
-                    ) : (
-                      "Select Provider"
-                    )}
-                  </MenuButton>
-                  <MenuList>
-                    {aiProviders.map((type) => (
-                      <MenuItem
-                        key={type}
-                        icon={<BlockIcon type={type} boxSize="16px" />}
-                        onClick={() => setSelectedAiProvider(type)}
-                      >
-                        <BlockLabel type={type} />
-                      </MenuItem>
-                    ))}
-                  </MenuList>
-                </Menu>
-              </HStack>
+              <>
+                <HStack>
+                  <FormLabel>AI Provider:</FormLabel>
+                  <Menu isLazy>
+                    <MenuButton
+                      as={Button}
+                      size="sm"
+                      rightIcon={<ChevronDownIcon />}
+                    >
+                      {selectedAiProvider ? (
+                        <Flex gap={2}>
+                          <ForgedBlockIcon type={selectedAiProvider} />
+                          <ForgedBlockLabel type={selectedAiProvider} />
+                        </Flex>
+                      ) : (
+                        "Choose Provider"
+                      )}
+                    </MenuButton>
+                    <MenuList>
+                      {aiProviders.map((type) => (
+                        <MenuItem
+                          key={type}
+                          icon={<BlockIcon type={type} boxSize="16px" />}
+                          onClick={() => {
+                            setSelectedAiProvider(type);
+                            refetch();
+                          }}
+                        >
+                          <BlockLabel type={type} />
+                        </MenuItem>
+                      ))}
+                    </MenuList>
+                  </Menu>
+                </HStack>
+
+                {!!selectedAiProvider &&
+                  !!data &&
+                  !!data.credentials &&
+                  !isLoading && (
+                    <Stack>
+                      {data?.credentials.map((cred: any) => (
+                        <Stack key={cred.id}>
+                          <Card padding="1rem">
+                            <Text>{cred.name}</Text>
+                          </Card>
+                          {/* <Text>{JSON.stringify(cred)}</Text> */}
+                          <Divider />
+                        </Stack>
+                      ))}
+                    </Stack>
+                  )}
+              </>
             )}
           </Stack>
-
-          {/* {credentials && !isLoading ? (
-            (Object.keys(credentials) as Credentials["type"][]).map((type) => (
-              <Stack
-                key={type}
-                borderWidth="1px"
-                borderRadius="md"
-                p="4"
-                spacing={4}
-                data-testid={type}
-              >
-                <HStack spacing="3">
-                  <CredentialsIcon type={type} boxSize="24px" />
-                  <CredentialsLabel type={type} fontWeight="semibold" />
-                </HStack>
-                <Stack>
-                  {credentials[type].map((cred) => (
-                    <Stack key={cred.id}>
-                      <CredentialsItem
-                        type={cred.type}
-                        name={cred.name}
-                        isDeleting={deletingCredentialsId === cred.id}
-                        onEditClick={
-                          nonEditableTypes.includes(
-                            cred.type as (typeof nonEditableTypes)[number],
-                          )
-                            ? undefined
-                            : () =>
-                                setEditingCredentials({
-                                  id: cred.id,
-                                  type: cred.type,
-                                })
-                        }
-                        onDeleteClick={() =>
-                          deleteCredentials({
-                            workspaceId: workspace!.id,
-                            credentialsId: cred.id,
-                          })
-                        }
-                      />
-                      <Divider />
-                    </Stack>
-                  ))}
-                </Stack>
-              </Stack>
-            ))
-          ) : (
-            <Stack borderRadius="md" spacing="6">
-              <Stack spacing={4}>
-                <SkeletonCircle />
-                <Stack>
-                  <Skeleton height="20px" />
-                  <Skeleton height="20px" />
-                </Stack>
-              </Stack>
-              <Stack spacing={4}>
-                <SkeletonCircle />
-                <Stack>
-                  <Skeleton height="20px" />
-                  <Skeleton height="20px" />
-                </Stack>
-              </Stack>
-              <Stack spacing={4}>
-                <SkeletonCircle />
-                <Stack>
-                  <Skeleton height="20px" />
-                  <Skeleton height="20px" />
-                </Stack>
-              </Stack>
-              <Stack spacing={4}>
-                <SkeletonCircle />
-                <Stack>
-                  <Skeleton height="20px" />
-                  <Skeleton height="20px" />
-                </Stack>
-              </Stack>
-            </Stack>
-          )} */}
         </>
       )}
       {workspace && workspaces && workspaces.length > 1 && (
