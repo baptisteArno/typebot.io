@@ -142,7 +142,26 @@ export const incomingMessageSchema = z.discriminatedUnion("type", [
     }),
     timestamp: z.string(),
   }),
+  z.object({
+    from: z.string(),
+    type: z.literal("webhook"),
+    webhook: z.object({
+      data: z.string(),
+    }),
+    timestamp: z.string(),
+  }),
 ]);
+
+const incomingErrors = z.object({
+  code: z.number(),
+  title: z.string(),
+  error_data: z.object({ details: z.string() }),
+});
+
+const incomingStatuses = z.object({
+  recipient_id: z.string(),
+  errors: z.array(incomingErrors).optional(),
+});
 
 export const whatsAppWebhookRequestBodySchema = z.object({
   entry: z.array(
@@ -163,6 +182,7 @@ export const whatsAppWebhookRequestBodySchema = z.object({
               )
               .optional(),
             messages: z.array(incomingMessageSchema).optional(),
+            statuses: z.array(incomingStatuses).optional(),
           }),
         }),
       ),

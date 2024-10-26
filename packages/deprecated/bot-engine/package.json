@@ -1,7 +1,7 @@
 {
   "name": "bot-engine",
   "private": true,
-  "license": "AGPL-3.0-or-later",
+  "license": "FSL-1.1-ALv2",
   "version": "0.1.0",
   "type": "module",
   "scripts": {
@@ -57,7 +57,6 @@
   },
   "peerDependencies": {
     "@typebot.io/prisma": "workspace:*",
-    "react": "18.0.0",
-    "react-dom": "18.0.0"
+    "react": "^16.0.0 || ^17.0.0 || ^18.0.0"
   }
 }

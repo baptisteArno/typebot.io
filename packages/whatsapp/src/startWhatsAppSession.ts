@@ -16,6 +16,7 @@ import type { Settings } from "@typebot.io/settings/schemas";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
+import { WhatsAppError } from "./WhatsAppError";
 import type { WhatsAppCredentials } from "./schemas";
 
 type Props = {
@@ -31,12 +32,11 @@ export const startWhatsAppSession = async ({
   credentials,
   contact,
 }: Props): Promise<
-  | (ContinueChatResponse & {
-      newSessionState: SessionState;
-      visitedEdges: Prisma.VisitedEdge[];
-      setVariableHistory: SetVariableHistoryItem[];
-    })
-  | { error: string }
+  ContinueChatResponse & {
+    newSessionState: SessionState;
+    visitedEdges: Prisma.VisitedEdge[];
+    setVariableHistory: SetVariableHistoryItem[];
+  }
 > => {
   const publicTypebotsWithWhatsAppEnabled =
     (await prisma.publicTypebot.findMany({
@@ -77,10 +77,13 @@ export const startWhatsAppSession = async ({
       (publicTypebot) => !publicTypebot.settings.whatsApp?.startCondition,
     );
 
-  if (isNotDefined(publicTypebot))
-    return botsWithWhatsAppEnabled.length > 0
-      ? { error: "Message did not matched any condition" }
-      : { error: "No public typebot with WhatsApp integration found" };
+  if (isNotDefined(publicTypebot)) {
+    if (botsWithWhatsAppEnabled.length > 0)
+      throw new WhatsAppError("Message did not matched any condition");
+    throw new WhatsAppError(
+      "No public typebot with WhatsApp integration found",
+    );
+  }
 
   const sessionExpiryTimeoutHours =
     publicTypebot.settings.whatsApp?.sessionExpiryTimeout ??

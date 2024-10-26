@@ -1,0 +1,106 @@
+---
+title: HTTP Request
+---
+
+import { LoomVideo } from '/snippets/loom-video.mdx'
+
+The HTTP Request block allows you to send an HTTP request to a 3rd party service. This is useful to send information from the bot to another service or to fetch information from another service and use it in the bot.
+
+## Make an API request and fetch data
+
+This gets more technical as you'll need to know more about HTTP request parameters.
+
+Lots of services offer an API. They also, most likely have an API documentation. Depending on the parameters you are giving the HTTP request block, it should return different info from the 3rd party service.
+
+## Custom body
+
+You can set a custom body with your collected variables. Here is a working example:
+
+```json
+{
+  "name": "{{Name}}",
+  "email": "{{Email}}"
+}
+```
+
+### Example with a dummy API: CREATE and GET
+
+This video provides a step-by-step guide to successfully configure HTTP request blocks in Typebot.
+
+I demonstrate how to configure the HTTP request block, including the URL, method, and custom body. I also show you how to test the request and save the newly created employee ID. Finally, I explain how to implement the find employee by ID endpoint and map the employee name to a variable.
+
+<LoomVideo id="d9aef6a37e0c43759b31be7d69c4dd6d" />
+
+### Example: fetch movie information
+
+Let's create a bot that ask for a movie and retrieve its informations (By sending an HTTP request to the [OMDB API](http://www.omdbapi.com/)).
+
+From the documentation, I know that by calling this specific URL: http://www.omdbapi.com/?t=Star%20Wars&apikey=1eb4670b, it will search for "Star Wars" movie information and return JSON data.
+
+What I need in my case is instead of inserting "Star Wars", I'd like to insert a Typebot variable:
+
+<Frame>
+  <img
+    src="/images/blocks/integrations/http-request/variable-url.png"
+    alt="Variable in URL"
+  />
+</Frame>
+
+Then, we can set a test value for our variable (it will replace the variable with this value only for the "Test the request" button):
+
+<Frame style={{ maxWidth: '300px' }}>
+  <img
+    src="/images/blocks/integrations/http-request/variable-test-value.png"
+    alt="Variable test values"
+  />
+</Frame>
+
+Hit the "Test the request" button and then we can save the result in multiple variables:
+
+<Frame style={{ maxWidth: '400px' }}>
+  <img
+    src="/images/blocks/integrations/http-request/save-in-variable.png"
+    alt="Test request"
+  />
+</Frame>
+
+Then we can use these variables to display dynamic content in the next bubbles:
+
+<Frame>
+  <img src="/images/blocks/integrations/http-request/preview.png" alt="Preview" />
+</Frame>
+
+Possibilities are endless when it comes to API calls, you can litteraly call any API and fetch any data you want.
+
+Feel free to ask the [community](https://typebot.io/discord) for help if you struggle setting up a Webhook block.
+
+## Call a Webhook URL
+
+Your 3rd party service (Make.com, Zapier, etc) is giving you a Webhook URL.
+
+You only have to paste this URL in the Webhook block and click on "Test the request". By default the 3rd party service will receive a snapshot of what the bot could send.
+
+<Frame>
+  <img
+    src="/images/blocks/integrations/http-request/simple-post.png"
+    alt="Simple Webhook POST"
+  />
+</Frame>
+
+You can also decide to customize the request sent to the 3rd party service.
+
+## Timeout
+
+By default, the Webhook block will wait 10 seconds for the 3rd party service to respond. If it doesn't respond in time, the block will fail. You can customize this timeout value in the "Advanced params" section of your Webhook block settings.
+
+## Troubleshooting
+
+The Webhook block request fail or didn't seem to trigger? Make sure to check the [logs](/results/overview#logs). If you still can't figure out what went wrong, shoot me a message using the chat button directly in the tool 👍
+
+You can use tools like [Webhook Tester](https://webhook-test.com/) to see payloads of webhooks for debugging and troubleshooting.
+
+### Webhook is not executed in the right order?
+
+That is expected, Typebot actually computes all the blocks between each input blocks from a server before displaying anything.
+
+<LoomVideo id="9cc00a9a8c8245709d6322f197c9fb45" />

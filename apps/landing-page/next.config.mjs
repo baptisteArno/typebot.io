@@ -1,3 +1,4 @@
+import createMDX from "@next/mdx";
 import { configureRuntimeEnv } from "next-runtime-env/build/configure.js";
 
 configureRuntimeEnv();
@@ -7,7 +8,8 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  transpilePackages: ["utils", "models"],
+  transpilePackages: ["@typebot.io/lib"],
+  pageExtensions: ["mdx", "ts", "tsx"],
   async redirects() {
     return [
       {
@@ -38,4 +40,6 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+const withMDX = createMDX({});
+
+export default withMDX(nextConfig);

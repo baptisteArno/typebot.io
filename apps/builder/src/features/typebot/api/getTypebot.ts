@@ -1,12 +1,13 @@
 import { publicProcedure } from "@/helpers/server/trpc";
+import * as Sentry from "@sentry/nextjs";
 import { TRPCError } from "@trpc/server";
 import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";
 import type { CollaborationType } from "@typebot.io/prisma/enum";
+import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import { migrateTypebot } from "@typebot.io/typebot/migrations/migrateTypebot";
 import { typebotSchema } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
-import { isReadTypebotForbidden } from "../helpers/isReadTypebotForbidden";
 
 export const getTypebot = publicProcedure
   .meta({

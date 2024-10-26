@@ -12,12 +12,12 @@ import { UrlInputSettings } from "@/features/blocks/inputs/url/components/UrlInp
 import { ChatwootSettings } from "@/features/blocks/integrations/chatwoot/components/ChatwootSettings";
 import { GoogleAnalyticsSettings } from "@/features/blocks/integrations/googleAnalytics/components/GoogleAnalyticsSettings";
 import { GoogleSheetsSettings } from "@/features/blocks/integrations/googleSheets/components/GoogleSheetsSettings";
+import { HttpRequestSettings } from "@/features/blocks/integrations/httpRequest/components/HttpRequestSettings";
 import { MakeComSettings } from "@/features/blocks/integrations/makeCom/components/MakeComSettings";
 import { OpenAISettings } from "@/features/blocks/integrations/openai/components/OpenAISettings";
 import { PabblyConnectSettings } from "@/features/blocks/integrations/pabbly/components/PabblyConnectSettings";
 import { PixelSettings } from "@/features/blocks/integrations/pixel/components/PixelSettings";
 import { SendEmailSettings } from "@/features/blocks/integrations/sendEmail/components/SendEmailSettings";
-import { HttpRequestSettings } from "@/features/blocks/integrations/webhook/components/HttpRequestSettings";
 import { ZapierSettings } from "@/features/blocks/integrations/zapier/components/ZapierSettings";
 import { AbTestSettings } from "@/features/blocks/logic/abTest/components/AbTestSettings";
 import { JumpSettings } from "@/features/blocks/logic/jump/components/JumpSettings";
@@ -26,6 +26,7 @@ import { ScriptSettings } from "@/features/blocks/logic/script/components/Script
 import { SetVariableSettings } from "@/features/blocks/logic/setVariable/components/SetVariableSettings";
 import { TypebotLinkForm } from "@/features/blocks/logic/typebotLink/components/TypebotLinkForm";
 import { WaitSettings } from "@/features/blocks/logic/wait/components/WaitSettings";
+import { WebhookSettings } from "@/features/blocks/logic/webhook/components/WebhookSettings";
 import { useForgedBlock } from "@/features/forge/hooks/useForgedBlock";
 import { VideoOnboardingPopover } from "@/features/onboarding/components/VideoOnboardingPopover";
 import { hasOnboardingVideo } from "@/features/onboarding/helpers/hasOnboardingVideo";
@@ -133,7 +134,7 @@ export const BlockSettings = ({
   onBlockChange: (block: Partial<Block>) => void;
 }): JSX.Element | null => {
   const updateOptions = (options: BlockOptions) => {
-    onBlockChange({ options } as Partial<Block>);
+    onBlockChange({ options });
   };
 
   switch (block.type) {
@@ -309,7 +310,7 @@ export const BlockSettings = ({
         <PabblyConnectSettings block={block} onOptionsChange={updateOptions} />
       );
     }
-    case IntegrationBlockType.WEBHOOK: {
+    case IntegrationBlockType.HTTP_REQUEST: {
       return (
         <HttpRequestSettings block={block} onOptionsChange={updateOptions} />
       );
@@ -343,6 +344,14 @@ export const BlockSettings = ({
     }
     case LogicBlockType.CONDITION:
       return null;
+    case LogicBlockType.WEBHOOK:
+      return (
+        <WebhookSettings
+          blockId={block.id}
+          options={block.options}
+          onOptionsChange={updateOptions}
+        />
+      );
     default: {
       return (
         <ForgedBlockSettings block={block} onOptionsChange={updateOptions} />

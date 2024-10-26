@@ -8,7 +8,7 @@ import { stringifyError } from "@typebot.io/lib/stringifyError";
 import { byId, isEmpty, isNotDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import type { Answer } from "@typebot.io/results/schemas/answers";
-import { createCodeRunner } from "@typebot.io/variables/codeRunners";
+import { executeFunction } from "@typebot.io/variables/executeFunction";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type {
   SetVariableHistoryItem,
@@ -74,7 +74,7 @@ export const executeSetVariable = async (
   }
   const { value, error } =
     (expressionToEvaluate
-      ? evaluateSetVariableExpression(variables)(expressionToEvaluate)
+      ? await evaluateSetVariableExpression(variables)(expressionToEvaluate)
       : undefined) ?? {};
   const existingVariable = variables.find(byId(block.options.variableId));
   if (!existingVariable) return { outgoingEdgeId: block.outgoingEdgeId };
@@ -117,14 +117,14 @@ export const executeSetVariable = async (
 
 const evaluateSetVariableExpression =
   (variables: Variable[]) =>
-  (
+  async (
     expression:
       | {
           type: "code";
           code: string;
         }
       | { type: "value"; value: VariableWithValue["value"] },
-  ): { value: unknown; error?: string } => {
+  ): Promise<{ value: unknown; error?: string }> => {
     if (expression.type === "value") return { value: expression.value };
     const isSingleVariable =
       expression.code.startsWith("{{") &&
@@ -138,22 +138,21 @@ const evaluateSetVariableExpression =
       /0[^.].+/.test(expression.code)
     )
       return { value: expression.code };
-    try {
-      const body = parseVariables(variables, { fieldToParse: "id" })(
-        expression.code,
-      );
-      return {
-        value: createCodeRunner({ variables })(
-          body.includes("return ") ? body : `return ${body}`,
-        ),
-      };
-    } catch (err) {
+    const { output, error } = await executeFunction({
+      body: injectReturnKeywordIfNeeded(expression.code),
+      variables,
+    });
+    if (error) {
       return {
         value: parseVariables(variables)(expression.code),
-        error: stringifyError(err),
+        error: stringifyError(error),
       };
     }
+    return { value: output };
   };
+
+const injectReturnKeywordIfNeeded = (code: string) =>
+  code.includes("return ") ? code : `return ${code}`;
 
 const getExpressionToEvaluate =
   (state: SessionState) =>

@@ -5,11 +5,8 @@
     "dev": "ladle serve -p 3006",
     "build": "ladle build"
   },
-  "exports": {
-    "./*": "./src/*.ts"
-  },
   "dependencies": {
-    "@ladle/react": "2.5.1",
+    "@ladle/react": "4.1.2",
     "@typebot.io/bot-engine": "workspace:*",
     "@typebot.io/conditions": "workspace:*",
     "@typebot.io/react": "workspace:*",

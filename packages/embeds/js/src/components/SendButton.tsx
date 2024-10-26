@@ -1,28 +1,32 @@
 import { isMobile } from "@/utils/isMobileSignal";
 import { isEmpty } from "@typebot.io/lib/utils";
 import clsx from "clsx";
-import { type JSX, Match, Switch, splitProps } from "solid-js";
-import { Button } from "./Button";
+import { Match, Switch, splitProps } from "solid-js";
+import { Button, type ButtonProps } from "./Button";
 import { SendIcon } from "./icons/SendIcon";
 
 type SendButtonProps = {
   isDisabled?: boolean;
   isLoading?: boolean;
   disableIcon?: boolean;
-  class?: string;
-} & JSX.ButtonHTMLAttributes<HTMLButtonElement>;
+} & ButtonProps;
 
 export const SendButton = (props: SendButtonProps) => {
-  const [local, others] = splitProps(props, ["disableIcon"]);
+  const [local, buttonProps] = splitProps(props, [
+    "isDisabled",
+    "isLoading",
+    "disableIcon",
+  ]);
+
   const showIcon =
     (isMobile() && !local.disableIcon) ||
-    !props.children ||
-    (typeof props.children === "string" && isEmpty(props.children));
+    !buttonProps.children ||
+    (typeof buttonProps.children === "string" && isEmpty(buttonProps.children));
   return (
     <Button
+      {...buttonProps}
       type="submit"
-      {...others}
-      class={clsx("flex items-center", props.class)}
+      class={clsx(buttonProps.class, "flex items-center")}
       aria-label={showIcon ? "Send" : undefined}
     >
       <Switch>

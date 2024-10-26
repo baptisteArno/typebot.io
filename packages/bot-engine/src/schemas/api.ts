@@ -76,7 +76,7 @@ const chatSessionSchema = z.object({
     .describe(
       "Used in WhatsApp runtime to avoid concurrent replies from the bot",
     ),
-}) satisfies z.ZodType<Prisma.ChatSession, z.ZodTypeDef, unknown>;
+});
 export type ChatSession = z.infer<typeof chatSessionSchema>;
 
 const textMessageSchema = z

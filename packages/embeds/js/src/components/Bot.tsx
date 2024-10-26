@@ -41,7 +41,6 @@ import { ProgressBar } from "./ProgressBar";
 import { CloseIcon } from "./icons/CloseIcon";
 
 export type BotProps = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   typebot: string | any;
   isPreview?: boolean;
   resultId?: string;
@@ -57,6 +56,7 @@ export type BotProps = {
   onEnd?: () => void;
   onNewLogs?: (logs: OutgoingLog[]) => void;
   onChatStatePersisted?: (isEnabled: boolean) => void;
+  onScriptExecutionSuccess?: (message: string) => void;
 };
 
 export const Bot = (props: BotProps & { class?: string }) => {
@@ -262,6 +262,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
             onNewLogs={props.onNewLogs}
             onAnswer={props.onAnswer}
             onEnd={props.onEnd}
+            onScriptExecutionSuccess={props.onScriptExecutionSuccess}
           />
         )}
       </Show>
@@ -278,6 +279,7 @@ type BotContentProps = {
   onAnswer?: (answer: { message: string; blockId: string }) => void;
   onEnd?: () => void;
   onNewLogs?: (logs: OutgoingLog[]) => void;
+  onScriptExecutionSuccess?: (message: string) => void;
 };
 
 const BotContent = (props: BotContentProps) => {
@@ -356,6 +358,7 @@ const BotContent = (props: BotContentProps) => {
         onEnd={props.onEnd}
         onNewLogs={props.onNewLogs}
         onProgressUpdate={setProgressValue}
+        onScriptExecutionSuccess={props.onScriptExecutionSuccess}
       />
       <Show
         when={

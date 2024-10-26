@@ -1,6 +1,6 @@
 {
   "name": "viewer",
-  "license": "AGPL-3.0-or-later",
+  "private": true,
   "scripts": {
     "dev": "dotenv -e ./.env -e ../../.env  -- next dev -p 3001",
     "build": "dotenv -e ./.env -e ../../.env -- next build",
@@ -10,9 +10,10 @@
     "test:ui": "dotenv -e ./.env -e ../../.env -- playwright test --ui"
   },
   "dependencies": {
+    "partysocket": "1.0.2",
     "@typebot.io/trpc-openapi": "workspace:*",
     "@planetscale/database": "1.8.0",
-    "@sentry/nextjs": "7.77.0",
+    "@sentry/nextjs": "8.33.1",
     "@trpc/server": "10.40.0",
     "@typebot.io/bot-engine": "workspace:*",
     "@typebot.io/nextjs": "workspace:*",
@@ -27,11 +28,11 @@
     "google-spreadsheet": "4.1.1",
     "next": "14.2.13",
     "nextjs-cors": "2.1.2",
-    "nodemailer": "6.9.8",
+    "nodemailer": "6.9.15",
     "openai": "4.52.7",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "stripe": "12.13.0",
+    "stripe": "17.1.0",
     "@faire/mjml-react": "3.3.0",
     "@paralleldrive/cuid2": "2.2.1",
     "@typebot.io/emails": "workspace:*",

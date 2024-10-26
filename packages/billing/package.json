@@ -1,5 +1,6 @@
 {
   "name": "@typebot.io/billing",
+  "version": "0.0.1",
   "type": "module",
   "private": true,
   "exports": {
@@ -8,7 +9,7 @@
   "dependencies": {
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
-    "stripe": "12.13.0",
+    "stripe": "17.1.0",
     "@typebot.io/lib": "workspace:*",
     "@trpc/server": "10.40.0",
     "@typebot.io/env": "workspace:*",

@@ -35,7 +35,7 @@ export const Default = () => {
       </div>
 
       <Bubble
-        typebot={leadGenerationTypebot}
+        typebot={"my-typebot-2b532x1"}
         apiHost="http://localhost:3001"
         prefilledVariables={{
           Name: ["John"],
@@ -51,7 +51,7 @@ export const Default = () => {
             iconColor: "white",
           },
         }}
-        isPreview
+        // isPreview
       />
     </div>
   );

@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/forge",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "type": "module",
   "private": true,
   "exports": {

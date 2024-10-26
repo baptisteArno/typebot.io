@@ -182,41 +182,26 @@ export const startSession = async ({
     textBubbleContentFormat: startParams.textBubbleContentFormat,
   });
 
-  // If params has message and first block is an input block, we can directly continue the bot flow
-  if (startParams.message) {
-    const firstEdgeId = getFirstEdgeId({
-      typebot: chatReply.newSessionState.typebotsQueue[0].typebot,
-      startEventId:
-        startParams.type === "preview" &&
-        startParams.startFrom?.type === "event"
-          ? startParams.startFrom.eventId
-          : undefined,
-    });
-    const nextGroup = await getNextGroup({
-      state: chatReply.newSessionState,
-      edgeId: firstEdgeId,
-      isOffDefaultPath: false,
-    });
-    const newSessionState = nextGroup.newSessionState;
-    const firstBlock = nextGroup.group?.blocks.at(0);
-    if (firstBlock && isInputBlock(firstBlock)) {
-      const resultId = newSessionState.typebotsQueue[0].resultId;
-      if (resultId)
-        await upsertResult({
-          hasStarted: true,
-          isCompleted: false,
-          resultId,
-          typebot: newSessionState.typebotsQueue[0].typebot,
-        });
-      chatReply = await continueBotFlow(startParams.message, {
-        version,
-        state: {
-          ...newSessionState,
-          currentBlockId: firstBlock.id,
-        },
-        textBubbleContentFormat: startParams.textBubbleContentFormat,
+  // Has start message and has no messages to display first
+  if (
+    startParams.message &&
+    chatReply.messages.length === 0 &&
+    (chatReply.clientSideActions?.filter((c) => c.expectsDedicatedReply)
+      .length ?? 0) === 0
+  ) {
+    const resultId = chatReply.newSessionState.typebotsQueue[0].resultId;
+    if (resultId)
+      await upsertResult({
+        hasStarted: true,
+        isCompleted: false,
+        resultId,
+        typebot: chatReply.newSessionState.typebotsQueue[0].typebot,
       });
-    }
+    chatReply = await continueBotFlow(startParams.message, {
+      version,
+      state: chatReply.newSessionState,
+      textBubbleContentFormat: startParams.textBubbleContentFormat,
+    });
   }
 
   const {

@@ -1,12 +1,13 @@
 {
   "name": "@typebot.io/whatsapp",
+  "version": "0.0.1",
   "type": "module",
   "private": true,
   "exports": {
     "./*": "./src/*.ts"
   },
   "dependencies": {
-    "@sentry/nextjs": "7.77.0",
+    "@sentry/nextjs": "8.33.1",
     "@trpc/server": "10.40.0",
     "@typebot.io/blocks-base": "workspace:*",
     "@typebot.io/blocks-core": "workspace:*",

@@ -12,7 +12,8 @@ type Props = {
 
 export const executeCondition = ({ condition, variables }: Props): boolean => {
   if (!condition.comparisons) return false;
-  return condition.logicalOperator === LogicalOperator.AND
+  return (condition.logicalOperator ?? LogicalOperator.AND) ===
+    LogicalOperator.AND
     ? condition.comparisons.every(executeComparison(variables))
     : condition.comparisons.some(executeComparison(variables));
 };

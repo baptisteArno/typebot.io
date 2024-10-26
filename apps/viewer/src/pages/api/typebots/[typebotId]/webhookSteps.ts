@@ -1,5 +1,5 @@
 import { authenticateUser } from "@/helpers/authenticateUser";
-import { isWebhookBlock } from "@typebot.io/blocks-core/helpers";
+import { isHttpRequestBlock } from "@typebot.io/blocks-core/helpers";
 import type { Group } from "@typebot.io/groups/schemas";
 import { methodNotAllowed } from "@typebot.io/lib/api/utils";
 import { isNotDefined } from "@typebot.io/lib/utils";
@@ -23,7 +23,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     >((emptyWebhookBlocks, group) => {
       const blocks = group.blocks.filter(
         (block) =>
-          isWebhookBlock(block) &&
+          isHttpRequestBlock(block) &&
           isNotDefined(
             typebot?.webhooks.find((w) => {
               if ("id" in w && "webhookId" in block)

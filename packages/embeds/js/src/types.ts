@@ -21,6 +21,7 @@ export type OutgoingLog = {
 export type ClientSideActionContext = {
   apiHost?: string;
   sessionId: string;
+  resultId?: string;
 };
 
 export type ChatChunk = Pick<

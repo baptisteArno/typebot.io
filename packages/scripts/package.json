@@ -20,6 +20,7 @@
     "updateTypebot": "tsx src/updateTypebot.ts",
     "updateWorkspace": "tsx src/updateWorkspace.ts",
     "inspectTypebot": "tsx src/inspectTypebot.ts",
+    "inspectPublishedTypebot": "tsx src/inspectPublishedTypebot.ts",
     "inspectWorkspace": "tsx src/inspectWorkspace.ts",
     "getCoupon": "tsx src/getCoupon.ts",
     "redeemCoupon": "tsx src/redeemCoupon.ts",
@@ -27,7 +28,8 @@
     "updateUserEmail": "tsx src/updateUserEmail.ts",
     "inspectChatSession": "tsx src/inspectChatSession.ts",
     "deleteChatSession": "tsx src/deleteChatSession.ts",
-    "checkDependencies": "tsx src/checkDependencies.ts"
+    "checkDependencies": "tsx src/checkDependencies.ts",
+    "readCsvAndDoSomething": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx src/readCsvAndDoSomething.ts"
   },
   "exports": {
     "./*": "./src/*.ts"
@@ -44,7 +46,7 @@
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "prompts": "2.4.2",
-    "stripe": "12.13.0",
+    "stripe": "17.1.0",
     "@typebot.io/workspaces": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/zod": "workspace:*",

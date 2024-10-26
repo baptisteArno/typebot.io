@@ -1,6 +1,6 @@
 import { authenticateUser } from "@/helpers/authenticateUser";
-import { isWebhookBlock } from "@typebot.io/blocks-core/helpers";
-import type { HttpRequestBlock } from "@typebot.io/blocks-integrations/webhook/schema";
+import { isHttpRequestBlock } from "@typebot.io/blocks-core/helpers";
+import type { HttpRequestBlock } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import type { Group } from "@typebot.io/groups/schemas";
 import { methodNotAllowed } from "@typebot.io/lib/api/utils";
 import prisma from "@typebot.io/prisma";
@@ -22,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       { blockId: string; name: string; url: string | undefined }[]
     >((emptyWebhookBlocks, group) => {
       const blocks = group.blocks.filter((block) =>
-        isWebhookBlock(block),
+        isHttpRequestBlock(block),
       ) as HttpRequestBlock[];
       return [
         ...emptyWebhookBlocks,

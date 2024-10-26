@@ -1,10 +1,10 @@
-import { isReadTypebotForbidden } from "@/features/typebot/helpers/isReadTypebotForbidden";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { parseGroups } from "@typebot.io/groups/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
+import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import { preprocessTypebot } from "@typebot.io/typebot/preprocessTypebot";
 import {
   typebotV5Schema,

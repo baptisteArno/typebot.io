@@ -3,6 +3,7 @@ import { TextInput, Textarea } from "@/components/inputs";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { isFreePlan } from "@/features/billing/helpers/isFreePlan";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import {
@@ -24,6 +25,7 @@ import type { SendEmailBlock } from "@typebot.io/blocks-integrations/sendEmail/s
 import { env } from "@typebot.io/env";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
+import type { Workspace } from "@typebot.io/workspaces/schemas";
 import React from "react";
 import { SmtpConfigModal } from "./SmtpConfigModal";
 
@@ -36,7 +38,7 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
   const { workspace } = useWorkspace();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const handleCredentialsSelect = (credentialsId?: string) => {
+  const updateCredentialsId = (credentialsId?: string) => {
     onOptionsChange({
       ...options,
       credentialsId: credentialsId === undefined ? "default" : credentialsId,
@@ -122,14 +124,17 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
           <CredentialsDropdown
             type="smtp"
             workspaceId={workspace.id}
-            currentCredentialsId={
-              options?.credentialsId ?? defaultSendEmailOptions.credentialsId
-            }
-            onCredentialsSelect={handleCredentialsSelect}
+            currentCredentialsId={getCredentialsIdOrDefault({
+              workspace,
+              credentialsId: options?.credentialsId,
+            })}
+            onCredentialsSelect={updateCredentialsId}
             onCreateNewClick={onOpen}
-            defaultCredentialLabel={env.NEXT_PUBLIC_SMTP_FROM?.match(
-              /<(.*)>/,
-            )?.pop()}
+            defaultCredentialLabel={
+              isFreePlan(workspace)
+                ? undefined
+                : env.NEXT_PUBLIC_SMTP_FROM?.match(/<(.*)>/)?.pop()
+            }
             credentialsName="SMTP account"
           />
         )}
@@ -236,8 +241,20 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
       <SmtpConfigModal
         isOpen={isOpen}
         onClose={onClose}
-        onNewCredentials={handleCredentialsSelect}
+        onNewCredentials={updateCredentialsId}
       />
     </Stack>
   );
+};
+
+const getCredentialsIdOrDefault = ({
+  workspace,
+  credentialsId,
+}: {
+  workspace: Pick<Workspace, "plan">;
+  credentialsId: string | undefined;
+}): string | undefined => {
+  if (credentialsId) return credentialsId;
+  if (isFreePlan(workspace)) return;
+  return defaultSendEmailOptions.credentialsId;
 };

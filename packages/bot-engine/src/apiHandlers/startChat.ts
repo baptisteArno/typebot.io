@@ -76,7 +76,7 @@ export const startChat = async ({
         clientSideActions,
         visitedEdges,
         setVariableHistory,
-        hasEmbedBubbleWithWaitEvent: messages.some(
+        isWaitingForExternalEvent: messages.some(
           (message) =>
             message.type === "custom-embed" ||
             (message.type === BubbleBlockType.EMBED &&

@@ -1,0 +1,44 @@
+name: Deploy Partykit server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: oven-sh/setup-bun@v2
+      # https://github.com/vercel/turborepo/issues/6348
+      - name: Run Turbo ignore
+        id: check_changes
+        run: |
+          echo "Running script..."
+
+          set +e
+          bunx turbo-ignore @typebot.io/partykit
+          exit_code=$?
+          set -e
+
+          echo "Exit code: $exit_code"
+
+          if [ $exit_code -eq 0 ]; then
+            echo "hasClientApiHostChanged=0" >> $GITHUB_OUTPUT
+          else
+            echo "hasClientApiHostChanged=1" >> $GITHUB_OUTPUT
+          fi
+      - run: bun install
+        if: steps.check_changes.outputs.hasClientApiHostChanged == '1'
+      - run: bunx partykit deploy --domain ${PARTYKIT_DOMAIN}
+        if: steps.check_changes.outputs.hasClientApiHostChanged == '1'
+        working-directory: ./packages/partykit
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN  }}
+          PARTYKIT_DOMAIN: ${{ secrets.PARTYKIT_DOMAIN }}
+          PARTYKIT_LOGIN: ${{ secrets.PARTYKIT_LOGIN  }}
+          PARTYKIT_TOKEN: ${{ secrets.PARTYKIT_TOKEN }}

@@ -1,6 +1,6 @@
 import { z } from "@typebot.io/zod";
 import { IntegrationBlockType } from "../constants";
-import { httpBlockSchemas } from "../webhook/schema";
+import { httpBlockSchemas } from "../httpRequest/schema";
 
 export const pabblyConnectBlockSchemas = {
   v5: httpBlockSchemas.v5.merge(

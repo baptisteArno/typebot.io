@@ -8,12 +8,6 @@ const t = initTRPC.context<Context>().meta<OpenApiMeta>().create({
   transformer: superjson,
 });
 
-const sentryMiddleware = t.middleware(
-  Sentry.Handlers.trpcMiddleware({
-    attachRpcInput: true,
-  }),
-);
-
 const injectUser = t.middleware(({ next, ctx }) => {
   return next({
     ctx: {
@@ -22,10 +16,8 @@ const injectUser = t.middleware(({ next, ctx }) => {
   });
 });
 
-const finalMiddleware = sentryMiddleware.unstable_pipe(injectUser);
-
 export const middleware = t.middleware;
 
 export const router = t.router;
 
-export const publicProcedure = t.procedure.use(finalMiddleware);
+export const publicProcedure = t.procedure.use(injectUser);

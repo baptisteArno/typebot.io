@@ -15,5 +15,4 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - run: bun install
       - run: bunx turbo build --filter=@typebot.io/react...
-      - run: bun run npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
-      - run: cd packages/embeds/react && bun run npm publish --no-git-checks --access public
+      - run: cd packages/embeds/react && bun publish --access public

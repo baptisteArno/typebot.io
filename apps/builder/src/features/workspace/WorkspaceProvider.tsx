@@ -39,7 +39,6 @@ const workspaceContext = createContext<{
     aiFeatures?: WorkspaceAiFeature[];
   }) => void;
   deleteCurrentWorkspace: () => Promise<void>;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({});
 

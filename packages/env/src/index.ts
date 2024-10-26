@@ -379,16 +379,11 @@ const redisEnv = {
 };
 
 const sentryEnv = {
-  client: {
-    NEXT_PUBLIC_SENTRY_DSN: z.string().min(1).optional(),
-  },
   server: {
+    SENTRY_DSN: z.string().min(1).optional(),
     SENTRY_AUTH_TOKEN: z.string().min(1).optional(),
     SENTRY_PROJECT: z.string().min(1).optional(),
     SENTRY_ORG: z.string().min(1).optional(),
-  },
-  runtimeEnv: {
-    NEXT_PUBLIC_SENTRY_DSN: getRuntimeVariable("NEXT_PUBLIC_SENTRY_DSN"),
   },
 };
 
@@ -443,6 +438,15 @@ const keycloakEnv = {
   },
 };
 
+const partykitEnv = {
+  client: {
+    NEXT_PUBLIC_PARTYKIT_HOST: z.string().min(1).optional(),
+  },
+  runtimeEnv: {
+    NEXT_PUBLIC_PARTYKIT_HOST: getRuntimeVariable("NEXT_PUBLIC_PARTYKIT_HOST"),
+  },
+};
+
 export const env = createEnv({
   server: {
     ...baseEnv.server,
@@ -474,9 +478,9 @@ export const env = createEnv({
     ...vercelEnv.client,
     ...unsplashEnv.client,
     ...pexelsEnv.client,
-    ...sentryEnv.client,
     ...posthogEnv.client,
     ...tolgeeEnv.client,
+    ...partykitEnv.client,
   },
   experimental__runtimeEnv: {
     ...baseEnv.runtimeEnv,
@@ -488,9 +492,9 @@ export const env = createEnv({
     ...vercelEnv.runtimeEnv,
     ...unsplashEnv.runtimeEnv,
     ...pexelsEnv.runtimeEnv,
-    ...sentryEnv.runtimeEnv,
     ...posthogEnv.runtimeEnv,
     ...tolgeeEnv.runtimeEnv,
+    ...partykitEnv.runtimeEnv,
   },
   skipValidation:
     process.env.SKIP_ENV_CHECK === "true" ||

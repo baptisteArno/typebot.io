@@ -20,7 +20,13 @@ export const createCodeRunner = ({ variables }: { variables: Variable[] }) => {
     );
 };
 
-export const createHttpReqResponseMappingRunner = (response: any) => {
+export const createHttpReqResponseMappingRunner = (response: unknown) => {
+  if (
+    response === null ||
+    typeof response !== "object" ||
+    Array.isArray(response)
+  )
+    return;
   const isolate = new ivm.Isolate();
   const context = isolate.createContextSync();
   const jail = context.global;

@@ -1,2 +1,5 @@
 [install.lockfile]
 print = "yarn"
+
+[install]
+registry = { url = "https://registry.npmjs.org", token = "$NPM_TOKEN" }

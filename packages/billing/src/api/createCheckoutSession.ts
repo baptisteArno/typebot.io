@@ -10,31 +10,29 @@ type Props = {
   workspaceId: string;
   user: Pick<User, "email" | "id">;
   returnUrl: string;
-  email: string;
-  company: string;
   plan: "STARTER" | "PRO";
   currency: "usd" | "eur";
-  vat?: {
-    type: string;
-    value: string;
-  };
 };
 
 export const createCheckoutSession = async ({
   workspaceId,
   user,
   returnUrl,
-  email,
-  company,
   plan,
   currency,
-  vat,
 }: Props) => {
   if (!env.STRIPE_SECRET_KEY)
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Stripe environment variables are missing",
     });
+
+  if (!user.email)
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "User email is missing",
+    });
+
   const workspace = await prisma.workspace.findFirst({
     where: {
       id: workspaceId,
@@ -62,30 +60,11 @@ export const createCheckoutSession = async ({
     });
 
   const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-    apiVersion: "2022-11-15",
-  });
-
-  await prisma.user.updateMany({
-    where: {
-      id: user.id,
-    },
-    data: {
-      company,
-    },
-  });
-
-  const customer = await stripe.customers.create({
-    email,
-    name: company,
-    metadata: { workspaceId },
-    tax_id_data: vat
-      ? [vat as Stripe.CustomerCreateParams.TaxIdDatum]
-      : undefined,
+    apiVersion: "2024-09-30.acacia",
   });
 
   const checkoutUrl = await createCheckoutSessionUrl(stripe)({
-    customerId: customer.id,
-    userId: user.id,
+    email: user.email,
     workspaceId,
     currency,
     plan,

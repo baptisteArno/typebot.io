@@ -20,3 +20,14 @@ export const Popup = dynamic(
     ssr: false,
   },
 );
+
+export {
+  unmount,
+  toggle,
+  showPreviewMessage,
+  setInputValue,
+  setPrefilledVariables,
+  open,
+  hidePreviewMessage,
+  close,
+} from "@typebot.io/js";

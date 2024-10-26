@@ -1,4 +1,4 @@
-import { isWebhookBlock } from "@typebot.io/blocks-core/helpers";
+import { isHttpRequestBlock } from "@typebot.io/blocks-core/helpers";
 import { migrateWebhookBlock } from "@typebot.io/blocks-core/migrations/migrateWebhookBlock";
 import { isDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
@@ -12,7 +12,7 @@ export const migrateTypebotFromV3ToV4 = async (
     return typebot as Omit<TypebotV5, "version"> & { version: "4" };
   const webhookBlocks = typebot.groups
     .flatMap((group) => group.blocks)
-    .filter(isWebhookBlock);
+    .filter(isHttpRequestBlock);
   const webhooks = await prisma.webhook.findMany({
     where: {
       id: {

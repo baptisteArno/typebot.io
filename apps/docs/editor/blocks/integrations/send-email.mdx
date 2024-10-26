@@ -4,11 +4,20 @@ title: Send email
 
 If you want to receive an email notification each time a user completes the bot or if you want to send a recap to the user, the Email block is made for you:
 
-<Frame style={{ maxWidth: '400px' }}>
+<Frame style={{ maxWidth: "400px" }}>
   <img src="/images/blocks/integrations/email.png" alt="Email block example" />
 </Frame>
 
-By default, the email will be sent from `notifications@get-typebot.com` with default content based on what your new lead has replied to. It will look like this:
+If you are on the Free plan, you will have to configure your own SMTP account first. This is to prevent spam and abuse of the in-built Typebot email sender. You can find a bunch of SMTP providers with generous Free tiers that will provide SMTP credentials to use within Typebot. Here are a few examples:
+
+- [SendGrid](https://sendgrid.com/)
+- [Mailgun](https://www.mailgun.com/)
+- [Amazon SES](https://aws.amazon.com/ses/)
+- [Resend](https://resend.com/)
+
+If you subscribed to a paid plan, you can easily send emails from `notifications@get-typebot.com` without additional configuration.
+
+The default email content is based on what your new lead has replied to. It will look like this:
 
 <Frame>
   <img
@@ -17,8 +26,7 @@ By default, the email will be sent from `notifications@get-typebot.com` with def
   />
 </Frame>
 
-You can choose to use your email (SMTP) account, using the "From:" dropdown and filling in your credentials.
-You can also customize the email content with your text/HTML.
+But you can also write your own text/html email content.
 
 ## Attachments
 

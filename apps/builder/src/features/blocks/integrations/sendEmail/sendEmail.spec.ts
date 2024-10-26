@@ -48,13 +48,6 @@ test.describe("Send email block", () => {
       '[placeholder="email1@gmail.com, email2@gmail.com"]',
       "email1@gmail.com, email2@gmail.com",
     );
-    await expect(page.locator("span >> text=email1@gmail.com")).toBeVisible();
-    await expect(page.locator("span >> text=email2@gmail.com")).toBeVisible();
-
-    await page.fill(
-      '[placeholder="email1@gmail.com, email2@gmail.com"]',
-      "email1@gmail.com, email2@gmail.com",
-    );
     await page.getByLabel("Subject:").fill("Email subject");
     await page.click('text="Custom content?"');
     await page.locator("textarea").last().fill("Here is my email");

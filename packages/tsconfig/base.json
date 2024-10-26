@@ -2,12 +2,6 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Default",
   "compilerOptions": {
-    "plugins": [
-      {
-        "name": "ts-plugin-sort-import-suggestions",
-        "moveUpPatterns": ["@typebot.io/"]
-      }
-    ],
     "esModuleInterop": true,
     "skipLibCheck": true,
     "target": "es2022",

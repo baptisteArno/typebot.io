@@ -7,6 +7,7 @@ import { scriptBlockSchema } from "./script/schema";
 import { setVariableBlockSchema } from "./setVariable/schema";
 import { typebotLinkBlockSchema } from "./typebotLink/schema";
 import { waitBlockSchema } from "./wait/schema";
+import { webhookBlockSchema } from "./webhook/schema";
 
 const logicBlockSchemas = [
   scriptBlockSchema,
@@ -28,6 +29,7 @@ export const logicBlockV6Schema = z.discriminatedUnion("type", [
   ...logicBlockSchemas,
   conditionBlockSchemas.v6,
   abTestBlockSchemas.v6,
+  webhookBlockSchema,
 ]);
 export type LogicBlockV6 = z.infer<typeof logicBlockV6Schema>;
 

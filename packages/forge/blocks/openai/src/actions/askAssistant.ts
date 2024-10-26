@@ -4,6 +4,7 @@ import type {
   LogsStore,
   VariableStore,
 } from "@typebot.io/forge/types";
+import { safeStringify } from "@typebot.io/lib/safeStringify";
 import { isDefined, isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import { executeFunction } from "@typebot.io/variables/executeFunction";
 import { readDataStream } from "ai";
@@ -339,7 +340,7 @@ const createAssistantStream = async ({
 
                 return {
                   tool_call_id: toolCall.id,
-                  output,
+                  output: safeStringify(output) ?? "",
                 };
               },
             ),

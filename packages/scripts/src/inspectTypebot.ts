@@ -40,6 +40,15 @@ const inspectTypebot = async () => {
           id: true,
         },
       },
+      collaborators: {
+        select: {
+          user: {
+            select: {
+              email: true,
+            },
+          },
+        },
+      },
       workspace: {
         select: {
           id: true,

@@ -1,5 +1,6 @@
 {
   "name": "@typebot.io/emails",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "exports": {
@@ -12,7 +13,7 @@
   },
   "dependencies": {
     "@faire/mjml-react": "3.3.0",
-    "nodemailer": "6.9.8",
+    "nodemailer": "6.9.15",
     "react": "18.2.0",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/env": "workspace:*"

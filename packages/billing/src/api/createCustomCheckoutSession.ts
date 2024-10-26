@@ -49,7 +49,7 @@ export const createCustomCheckoutSession = async ({
       message: "Custom plan not found",
     });
   const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-    apiVersion: "2022-11-15",
+    apiVersion: "2024-09-30.acacia",
   });
 
   const vat =

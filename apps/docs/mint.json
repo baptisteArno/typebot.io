@@ -106,7 +106,8 @@
                 "editor/blocks/logic/typebot-link",
                 "editor/blocks/logic/wait",
                 "editor/blocks/logic/jump",
-                "editor/blocks/logic/ab-test"
+                "editor/blocks/logic/ab-test",
+                "editor/blocks/logic/webhook"
               ]
             },
             {
@@ -114,7 +115,7 @@
               "pages": [
                 "editor/blocks/integrations/google-sheets",
                 "editor/blocks/integrations/google-analytics",
-                "editor/blocks/integrations/webhook",
+                "editor/blocks/integrations/http-request",
                 "editor/blocks/integrations/send-email",
                 "editor/blocks/integrations/zapier",
                 "editor/blocks/integrations/make-com",
@@ -207,7 +208,8 @@
         "guides/multi-avatars",
         "guides/rtl",
         "guides/utm-in-results",
-        "guides/how-to-create-loops"
+        "guides/how-to-create-loops",
+        "guides/how-to-split-ai-messages-in-multi-blocks"
       ]
     },
     {
@@ -341,5 +343,11 @@
     "discord": "https://typebot.io/discord",
     "twitter": "https://twitter.com/Typebot_io",
     "github": "https://github.com/baptisteArno/typebot.io"
-  }
+  },
+  "redirects": [
+    {
+      "source": "/editor/blocks/integrations/webhook",
+      "destination": "/editor/blocks/integrations/http-request"
+    }
+  ]
 }

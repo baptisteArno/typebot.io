@@ -1,5 +1,6 @@
 {
   "name": "@typebot.io/bot-engine",
+  "version": "0.0.1",
   "type": "module",
   "private": true,
   "exports": {
@@ -36,10 +37,10 @@
     "ky": "1.2.4",
     "libphonenumber-js": "1.10.37",
     "node-html-parser": "6.1.5",
-    "nodemailer": "6.9.8",
+    "nodemailer": "6.9.15",
     "openai": "4.52.7",
     "qs": "6.11.2",
-    "stripe": "12.13.0"
+    "stripe": "17.1.0"
   },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",

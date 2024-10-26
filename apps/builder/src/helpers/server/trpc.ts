@@ -22,12 +22,6 @@ const t = initTRPC
     },
   });
 
-const sentryMiddleware = t.middleware(
-  Sentry.Handlers.trpcMiddleware({
-    attachRpcInput: true,
-  }),
-);
-
 const isAuthed = t.middleware(({ next, ctx }) => {
   if (!ctx.user?.id) {
     throw new TRPCError({
@@ -41,13 +35,11 @@ const isAuthed = t.middleware(({ next, ctx }) => {
   });
 });
 
-const finalMiddleware = sentryMiddleware.unstable_pipe(isAuthed);
-
 export const middleware = t.middleware;
 
 export const router = t.router;
 export const mergeRouters = t.mergeRouters;
 
-export const publicProcedure = t.procedure.use(sentryMiddleware);
+export const publicProcedure = t.procedure;
 
-export const authenticatedProcedure = t.procedure.use(finalMiddleware);
+export const authenticatedProcedure = t.procedure.use(isAuthed);

@@ -7,4 +7,5 @@ export enum LogicBlockType {
   WAIT = "Wait",
   JUMP = "Jump",
   AB_TEST = "AB test",
+  WEBHOOK = "webhook",
 }

@@ -2,11 +2,13 @@ import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { continueBotFlow } from "@typebot.io/bot-engine/continueBotFlow";
 import { getSession } from "@typebot.io/bot-engine/queries/getSession";
-import { removeIsReplyingInChatSession } from "@typebot.io/bot-engine/queries/removeIsReplyingInChatSession";
 import { setIsReplyingInChatSession } from "@typebot.io/bot-engine/queries/setIsReplyingInChatSession";
 import { saveStateToDatabase } from "@typebot.io/bot-engine/saveStateToDatabase";
 import type { Message } from "@typebot.io/bot-engine/schemas/api";
-import type { SessionState } from "@typebot.io/bot-engine/schemas/chatSession";
+import type {
+  ChatSession,
+  SessionState,
+} from "@typebot.io/bot-engine/schemas/chatSession";
 import { env } from "@typebot.io/env";
 import { getBlockById } from "@typebot.io/groups/helpers";
 import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
@@ -14,6 +16,7 @@ import redis from "@typebot.io/lib/redis";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
 import { isDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
+import { WhatsAppError } from "./WhatsAppError";
 import { downloadMedia } from "./downloadMedia";
 import type { WhatsAppCredentials, WhatsAppIncomingMessage } from "./schemas";
 import { sendChatReplyToWhatsApp } from "./sendChatReplyToWhatsApp";
@@ -27,7 +30,13 @@ type Props = {
   credentialsId?: string;
   phoneNumberId?: string;
   workspaceId?: string;
-  contact: NonNullable<SessionState["whatsApp"]>["contact"];
+  contact?: NonNullable<SessionState["whatsApp"]>["contact"];
+  origin?: "webhook";
+};
+
+const isMessageTooOld = (receivedMessage: WhatsAppIncomingMessage) => {
+  const messageSendDate = new Date(Number(receivedMessage.timestamp) * 1000);
+  return messageSendDate.getTime() < Date.now() - 180000;
 };
 
 export const resumeWhatsAppFlow = async ({
@@ -37,65 +46,43 @@ export const resumeWhatsAppFlow = async ({
   credentialsId,
   phoneNumberId,
   contact,
-}: Props): Promise<{ message: string }> => {
-  const messageSendDate = new Date(Number(receivedMessage.timestamp) * 1000);
-  const messageSentBefore3MinutesAgo =
-    messageSendDate.getTime() < Date.now() - 180000;
-  if (messageSentBefore3MinutesAgo) {
-    console.log("Message is too old", messageSendDate.getTime());
-    return {
-      message: "Message received",
-    };
-  }
+}: Props) => {
+  if (isMessageTooOld(receivedMessage))
+    throw new WhatsAppError("Message is too old", {
+      timestamp: receivedMessage.timestamp,
+    });
 
   const isPreview = workspaceId === undefined || credentialsId === undefined;
 
   const credentials = await getCredentials({ credentialsId, isPreview });
+  if (!credentials) throw new WhatsAppError("Could not find credentials");
 
-  if (!credentials) {
-    console.error("Could not find credentials");
-    return {
-      message: "Message received",
-    };
-  }
-
-  if (credentials.phoneNumberId !== phoneNumberId && !isPreview) {
-    console.error("Credentials point to another phone ID, skipping...");
-    return {
-      message: "Message received",
-    };
-  }
+  if (phoneNumberId && credentials.phoneNumberId !== phoneNumberId)
+    throw new WhatsAppError("Credentials point to another phone ID", {
+      credentialsPhoneNumberId: credentials.phoneNumberId,
+      receivedPhoneNumberId: phoneNumberId,
+    });
 
   const session = await getSession(sessionId);
 
-  const { incomingMessages, isReplyingWasSet } =
+  const aggregationResponse =
     await aggregateParallelMediaMessagesIfRedisEnabled({
       receivedMessage,
       existingSessionId: session?.id,
       newSessionId: sessionId,
     });
 
-  if (incomingMessages.length === 0) {
-    if (isReplyingWasSet) await removeIsReplyingInChatSession(sessionId);
-
-    return {
-      message: "Message received",
-    };
-  }
+  if (aggregationResponse.status === "found newer message")
+    throw new WhatsAppError("Found newer message, skipping this one");
 
   const isSessionExpired =
     session &&
     isDefined(session.state.expiryTimeout) &&
     session?.updatedAt.getTime() + session.state.expiryTimeout < Date.now();
 
-  if (!isReplyingWasSet) {
-    if (session?.isReplying) {
-      if (!isSessionExpired) {
-        console.log("Is currently replying, skipping...");
-        return {
-          message: "Message received",
-        };
-      }
+  if (aggregationResponse.status === "treat as unique message") {
+    if (session?.isReplying && origin !== "webhook") {
+      if (!isSessionExpired) throw new WhatsAppError("Is in reply state");
     } else {
       await setIsReplyingInChatSession({
         existingSessionId: session?.id,
@@ -109,9 +96,8 @@ export const resumeWhatsAppFlow = async ({
     (currentTypebot && session?.state.currentBlockId
       ? getBlockById(session.state.currentBlockId, currentTypebot.groups)
       : undefined) ?? {};
-
-  const reply = await getIncomingMessageContent({
-    messages: incomingMessages,
+  const reply = await convertWhatsAppMessageToTypebotMessage({
+    messages: aggregationResponse.incomingMessages,
     workspaceId,
     accessToken: credentials?.systemUserAccessToken,
     typebotId: currentTypebot?.id,
@@ -119,50 +105,23 @@ export const resumeWhatsAppFlow = async ({
     block,
   });
 
-  const resumeResponse =
-    session && !isSessionExpired
-      ? await continueBotFlow(reply, {
-          version: 2,
-          state: { ...session.state, whatsApp: { contact } },
-          textBubbleContentFormat: "richText",
-        })
-      : workspaceId
-        ? await startWhatsAppSession({
-            incomingMessage: reply,
-            workspaceId,
-            credentials: { ...credentials, id: credentialsId as string },
-            contact,
-          })
-        : { error: "workspaceId not found" };
-
-  if ("error" in resumeResponse) {
-    await removeIsReplyingInChatSession(sessionId);
-    console.log("Chat not starting:", resumeResponse.error);
-    return {
-      message: "Message received",
-    };
-  }
-
   const {
     input,
     logs,
-    newSessionState,
-    messages,
-    clientSideActions,
     visitedEdges,
     setVariableHistory,
-  } = resumeResponse;
-
-  const isFirstChatChunk = (!session || isSessionExpired) ?? false;
-  await sendChatReplyToWhatsApp({
+    newSessionState,
+    isWaitingForWebhook,
+  } = await resumeFlowAndSendWhatsAppMessages({
     to: receivedMessage.from,
-    messages,
-    input,
-    isFirstChatChunk,
-    typingEmulation: newSessionState.typingEmulation,
-    clientSideActions,
     credentials,
-    state: newSessionState,
+    isSessionExpired,
+    reply,
+    session,
+    sessionId,
+    contact,
+    workspaceId,
+    credentialsId,
   });
 
   await saveStateToDatabase({
@@ -171,21 +130,22 @@ export const resumeWhatsAppFlow = async ({
     logs,
     session: {
       id: sessionId,
+      isReplying: isWaitingForWebhook,
       state: {
         ...newSessionState,
-        currentBlockId: !input ? undefined : newSessionState.currentBlockId,
+        currentBlockId:
+          !input && !isWaitingForWebhook
+            ? undefined
+            : newSessionState.currentBlockId,
       },
     },
+    isWaitingForExternalEvent: isWaitingForWebhook,
     visitedEdges,
     setVariableHistory,
   });
-
-  return {
-    message: "Message received",
-  };
 };
 
-const getIncomingMessageContent = async ({
+const convertWhatsAppMessageToTypebotMessage = async ({
   messages,
   workspaceId,
   accessToken,
@@ -289,6 +249,9 @@ const getIncomingMessageContent = async ({
         else text = location;
         break;
       }
+      case "webhook": {
+        text = message.webhook.data;
+      }
     }
   }
 
@@ -348,10 +311,19 @@ const aggregateParallelMediaMessagesIfRedisEnabled = async ({
   receivedMessage: WhatsAppIncomingMessage;
   existingSessionId?: string;
   newSessionId: string;
-}): Promise<{
-  isReplyingWasSet: boolean;
-  incomingMessages: WhatsAppIncomingMessage[];
-}> => {
+}): Promise<
+  | {
+      status: "treat as unique message";
+      incomingMessages: [WhatsAppIncomingMessage];
+    }
+  | {
+      status: "found newer message";
+    }
+  | {
+      status: "ready to reply";
+      incomingMessages: WhatsAppIncomingMessage[];
+    }
+> => {
   if (redis && ["document", "video", "image"].includes(receivedMessage.type)) {
     const redisKey = `wasession:${newSessionId}`;
     try {
@@ -370,15 +342,13 @@ const aggregateParallelMediaMessagesIfRedisEnabled = async ({
 
       const newMessagesResponse = await redis.lrange(redisKey, 0, -1);
 
-      if (!newMessagesResponse || newMessagesResponse.length > len) {
-        // Current message was aggregated with other messages another webhook handler. Skipping...
-        return { isReplyingWasSet: true, incomingMessages: [] };
-      }
+      if (!newMessagesResponse || newMessagesResponse.length > len)
+        return { status: "found newer message" };
 
       redis.del(redisKey).then();
 
       return {
-        isReplyingWasSet: true,
+        status: "ready to reply",
         incomingMessages: newMessagesResponse.map((msgStr) =>
           JSON.parse(msgStr),
         ),
@@ -389,7 +359,98 @@ const aggregateParallelMediaMessagesIfRedisEnabled = async ({
   }
 
   return {
-    isReplyingWasSet: false,
+    status: "treat as unique message",
     incomingMessages: [receivedMessage],
   };
+};
+
+const resumeFlowAndSendWhatsAppMessages = async (props: {
+  to: string;
+  session: Pick<ChatSession, "state"> | null;
+  sessionId: string;
+  reply: Message | undefined;
+  contact?: NonNullable<SessionState["whatsApp"]>["contact"];
+  credentials: WhatsAppCredentials["data"];
+  isSessionExpired: boolean | null;
+  credentialsId?: string;
+  workspaceId?: string;
+}) => {
+  const resumeResponse = await resumeFlow(props);
+
+  const {
+    input,
+    logs,
+    messages,
+    clientSideActions,
+    visitedEdges,
+    setVariableHistory,
+    newSessionState,
+  } = resumeResponse;
+
+  const isFirstChatChunk = (!props.session || props.isSessionExpired) ?? false;
+  const result = await sendChatReplyToWhatsApp({
+    to: props.to,
+    messages,
+    input,
+    isFirstChatChunk,
+    clientSideActions,
+    credentials: props.credentials,
+    state: resumeResponse.newSessionState,
+  });
+  if (result?.type === "replyToSend")
+    return resumeFlowAndSendWhatsAppMessages({
+      ...props,
+      reply: result.replyToSend
+        ? {
+            type: "text",
+            text: result.replyToSend,
+          }
+        : undefined,
+    });
+
+  return {
+    input,
+    logs,
+    visitedEdges,
+    setVariableHistory,
+    newSessionState,
+    isWaitingForWebhook: result?.type === "shouldWaitForWebhook",
+  };
+};
+
+const resumeFlow = ({
+  session,
+  isSessionExpired,
+  reply,
+  contact,
+  credentials,
+  credentialsId,
+  workspaceId,
+}: {
+  reply: Message | undefined;
+  contact?: NonNullable<SessionState["whatsApp"]>["contact"];
+  session: Pick<ChatSession, "state"> | null;
+  credentials: WhatsAppCredentials["data"];
+  isSessionExpired: boolean | null;
+  credentialsId?: string;
+  workspaceId?: string;
+}) => {
+  if (session?.state && !isSessionExpired)
+    return continueBotFlow(reply, {
+      version: 2,
+      state: contact
+        ? { ...session.state, whatsApp: { contact } }
+        : session.state,
+      textBubbleContentFormat: "richText",
+    });
+  if (!workspaceId || !contact)
+    throw new WhatsAppError(
+      "Can't start WhatsApp session without workspaceId or contact",
+    );
+  return startWhatsAppSession({
+    incomingMessage: reply,
+    workspaceId,
+    credentials: { ...credentials, id: credentialsId as string },
+    contact,
+  });
 };

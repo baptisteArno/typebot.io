@@ -5,14 +5,18 @@ import {
   Alert,
   AlertIcon,
   Button,
-  Flex,
+  FormControl,
+  FormLabel,
   HStack,
   type HTMLChakraProps,
   Input,
+  PinInput,
+  PinInputField,
   SlideFade,
   Spinner,
   Stack,
   Text,
+  VStack,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { BuiltInProviderType } from "next-auth/providers/index";
@@ -23,9 +27,11 @@ import {
   signIn,
   useSession,
 } from "next-auth/react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import { useQueryState } from "nuqs";
 import type { ChangeEvent, FormEvent } from "react";
 import React, { useEffect, useState } from "react";
+import { createEmailMagicLink } from "../helpers/createEmailMagicLink";
 import { DividerWithText } from "./DividerWithText";
 import { SignInError } from "./SignInError";
 import { SocialLoginButtons } from "./SocialLoginButtons";
@@ -39,12 +45,14 @@ export const SignInForm = ({
 }: Props & HTMLChakraProps<"form">) => {
   const { t } = useTranslate();
   const router = useRouter();
+  const [authError, setAuthError] = useQueryState("error");
+  const [redirectPath] = useQueryState("redirectPath");
   const { status } = useSession();
   const [authLoading, setAuthLoading] = useState(false);
   const [isLoadingProviders, setIsLoadingProviders] = useState(true);
 
   const [emailValue, setEmailValue] = useState(defaultEmail ?? "");
-  const [isMagicLinkSent, setIsMagicLinkSent] = useState(false);
+  const [isMagicCodeSent, setIsMagicCodeSent] = useState(false);
 
   const { showToast } = useToast();
   const [providers, setProviders] =
@@ -57,7 +65,6 @@ export const SignInForm = ({
 
   useEffect(() => {
     if (status === "authenticated") {
-      const redirectPath = router.query.redirectPath?.toString();
       router.replace(redirectPath ? sanitizeUrl(redirectPath) : "/typebots");
       return;
     }
@@ -69,22 +76,22 @@ export const SignInForm = ({
   }, [status, router]);
 
   useEffect(() => {
-    if (!router.isReady) return;
-    if (router.query.error === "ip-banned") {
+    if (authError === "ip-banned") {
       showToast({
         status: "info",
         description:
           "Your account has suspicious activity and is being reviewed by our team. Feel free to contact us.",
       });
     }
-  }, [router.isReady, router.query.error, showToast]);
+  }, [authError, showToast]);
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) =>
     setEmailValue(e.target.value);
 
   const handleEmailSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (isMagicLinkSent) return;
+    setAuthError(null);
+    if (isMagicCodeSent) return;
     setAuthLoading(true);
     try {
       const response = await signIn("email", {
@@ -112,7 +119,7 @@ export const SignInForm = ({
             },
           });
       } else {
-        setIsMagicLinkSent(true);
+        setIsMagicCodeSent(true);
       }
     } catch (e) {
       showToast({
@@ -121,6 +128,12 @@ export const SignInForm = ({
       });
     }
     setAuthLoading(false);
+  };
+
+  const redirectToMagicLink = (token: string) => {
+    window.location.assign(
+      createEmailMagicLink(token, emailValue, redirectPath ?? undefined),
+    );
   };
 
   if (isLoadingProviders) return <Spinner />;
@@ -138,7 +151,7 @@ export const SignInForm = ({
     );
   return (
     <Stack spacing="4" w="330px">
-      {!isMagicLinkSent && (
+      {!isMagicCodeSent && (
         <>
           <SocialLoginButtons providers={providers} />
           {providers?.email && (
@@ -159,7 +172,7 @@ export const SignInForm = ({
                   isLoading={
                     ["loading", "authenticated"].includes(status) || authLoading
                   }
-                  isDisabled={isMagicLinkSent}
+                  isDisabled={isMagicCodeSent}
                 >
                   {t("auth.emailSubmitButton.label")}
                 </Button>
@@ -168,11 +181,8 @@ export const SignInForm = ({
           )}
         </>
       )}
-      {router.query.error && (
-        <SignInError error={router.query.error.toString()} />
-      )}
-      <SlideFade offsetY="20px" in={isMagicLinkSent} unmountOnExit>
-        <Flex>
+      <SlideFade offsetY="20px" in={isMagicCodeSent} unmountOnExit>
+        <Stack spacing={3}>
           <Alert status="success" w="100%">
             <HStack>
               <AlertIcon />
@@ -182,8 +192,22 @@ export const SignInForm = ({
               </Stack>
             </HStack>
           </Alert>
-        </Flex>
+          <FormControl as={VStack} spacing={0}>
+            <FormLabel>Login code:</FormLabel>
+            <HStack>
+              <PinInput onComplete={redirectToMagicLink}>
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+              </PinInput>
+            </HStack>
+          </FormControl>
+        </Stack>
       </SlideFade>
+      {authError && <SignInError error={authError} />}
     </Stack>
   );
 };
