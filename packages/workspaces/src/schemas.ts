@@ -26,12 +26,9 @@ export const workspaceInvitationSchema = z.object({
 >;
 
 export const workspaceAiFeatureSchema = z.object({
-  id: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
   prompt: z.string(),
   credentialId: z.string().nullable(),
-}) satisfies z.ZodType<Omit<Prisma.WorkspaceAiFeature, "workspaceId">>;
+});
 
 export const workspaceSchema = z.object({
   id: z.string(),
@@ -48,6 +45,7 @@ export const workspaceSchema = z.object({
   storageLimitFirstEmailSentAt: z.date().nullable(),
   storageLimitSecondEmailSentAt: z.date().nullable(),
   inEditorAiFeaturesEnabled: z.boolean(),
+  aiFeatures: z.array(workspaceAiFeatureSchema).optional(),
   customChatsLimit: z.number().nullable(),
   customStorageLimit: z.number().nullable(),
   customSeatsLimit: z.number().nullable(),

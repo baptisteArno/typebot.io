@@ -1,7 +1,10 @@
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import prisma from "@typebot.io/prisma";
-import { workspaceSchema } from "@typebot.io/workspaces/schemas";
+import {
+  workspaceAiFeatureSchema,
+  workspaceSchema,
+} from "@typebot.io/workspaces/schemas";
 import { z } from "@typebot.io/zod";
 import { isReadWorkspaceFobidden } from "../helpers/isReadWorkspaceFobidden";
 
@@ -38,15 +41,7 @@ export const getWorkspace = authenticatedProcedure
           isQuarantined: true,
         })
         .extend({
-          aiFeatures: z
-            .array(
-              z.object({
-                id: z.string(),
-                prompt: z.string(),
-                credentialId: z.string().nullable(),
-              }),
-            )
-            .optional(),
+          aiFeatures: z.array(workspaceAiFeatureSchema).optional(),
         }),
     }),
   )

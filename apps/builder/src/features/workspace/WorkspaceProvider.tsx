@@ -88,6 +88,7 @@ export const WorkspaceProvider = ({
   );
 
   const workspace = workspaceData?.workspace;
+
   const members = membersData?.members;
 
   const { showToast } = useToast();
