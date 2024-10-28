@@ -35,7 +35,7 @@ export const UpdateForgedCredentialsModalContent = ({
 
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const { data: existingCredentials } =
+  const { data: existingCredentials, refetch: refetchCredentials } =
     trpc.credentials.getCredentials.useQuery(
       {
         workspaceId: workspace?.id as string,
@@ -63,6 +63,7 @@ export const UpdateForgedCredentialsModalContent = ({
     },
     onSuccess: () => {
       onUpdate();
+      refetchCredentials();
     },
   });
 
