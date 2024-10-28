@@ -596,23 +596,17 @@ export const WorkspaceContext = ({ children }: { children: ReactNode }) => {
 
       if (isResponsibleContactEnabled) {
         if (!mergedItems.some((mi) => mi.token === '#responsavel-contato')) {
+          const variableId = uuid();
           mergedItems.push({
             token: '#responsavel-contato',
             example: 'Agente responsável',
             domain: 'PERSON',
             type: 'responsavel-contato',
             name: 'responsavel-contato',
+            id: variableId,
+            variableId,
           })
         }
-
-        mergedItems = mergedItems.map((item) => {
-          if (item.token === '#responsavel-contato') {
-            const itemId = uuid()
-            item.id = itemId
-            item.variableId = itemId
-          }
-          return item
-        })
       } else {
         mergedItems = mergedItems.filter(
           (item) => item.token !== '#responsavel-contato'
