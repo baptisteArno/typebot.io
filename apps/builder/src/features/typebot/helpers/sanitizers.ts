@@ -54,9 +54,6 @@ const sanitizeBlock =
   async (block: Block): Promise<Block> => {
     if (!("options" in block) || !block.options) return block;
 
-    if (!("credentialsId" in block.options) || !block.options.credentialsId)
-      return block;
-
     switch (block.type) {
       case IntegrationBlockType.EMAIL:
         return {
