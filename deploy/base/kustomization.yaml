@@ -16,3 +16,4 @@ resources:
   - typebot-viewer-ingress.yaml
   - typebot-viewer-service.yaml
   - typebot-viewer-hpa.yaml
+  - typebot-builder-hpa.yaml
