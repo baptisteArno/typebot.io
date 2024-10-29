@@ -24,5 +24,6 @@ export type DepartmentCardData = {
   image: {
     src: StaticImageData;
     alt: string;
+    gradientPlacement: "right" | "left";
   };
 };

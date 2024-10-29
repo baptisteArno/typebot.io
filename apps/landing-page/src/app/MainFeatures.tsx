@@ -107,8 +107,7 @@ export const MainFeatures = () => {
           }}
           transition={{
             type: "spring",
-            duration: 0.5,
-            bounce: 0.2,
+            bounce: 0,
           }}
         >
           {features.map((feature) => (
@@ -150,7 +149,7 @@ const FeatureCard = ({
   feature: FeatureCardData;
 } & CardRootProps) => {
   return (
-    <Card.Root {...props}>
+    <Card.Root {...props} borderRadius="2xl">
       <Card.Header>
         <Heading>
           <Span fontWeight="bold">{feature.title.main}</Span>:{" "}

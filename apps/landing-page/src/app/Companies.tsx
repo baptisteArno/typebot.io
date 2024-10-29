@@ -7,6 +7,7 @@ import {
   MakerLead,
   Obole,
   PinpointInteractive,
+  Shadow,
   SocialHackrs,
   Webisharp,
 } from "./Brands";
@@ -19,10 +20,11 @@ export const Companies = () => (
     <Flex pos="relative" w="full">
       <Marquee>
         <IbanFirst width="100px" height="60px" />
-        <Lemlist width="100px" height="60px" />
         <MakerLead width="100px" height="60px" />
         <Webisharp width="100px" height="60px" />
+        <Shadow width="100px" height="60px" />
         <SocialHackrs width="100px" height="60px" />
+        <Lemlist width="100px" height="60px" />
         <PinpointInteractive width="100px" height="60px" />
         <Obole width="80px" height="60px" />
         <Awwwsome width="100px" height="60px" />

@@ -45,6 +45,7 @@ const departments = [
     image: {
       src: marketingSrc,
       alt: "marketing illustration",
+      gradientPlacement: "right",
     },
   },
   {
@@ -67,6 +68,7 @@ const departments = [
     image: {
       src: productSrc,
       alt: "Product illustration",
+      gradientPlacement: "left",
     },
   },
   {
@@ -89,6 +91,7 @@ const departments = [
     image: {
       src: salesSrc,
       alt: "sales illustration",
+      gradientPlacement: "left",
     },
   },
 ] as const satisfies DepartmentCardData[];
@@ -102,14 +105,18 @@ export const ForEveryDepartment = () => {
     : undefined;
 
   useClickAway(dialogContentRef, () => {
-    setOpenedDepartmentIndex(undefined);
+    setTimeout(() => {
+      setOpenedDepartmentIndex(undefined);
+    }, 100);
   });
 
   return (
     <Theme appearance="dark">
       <VStack w="full" py="16" px="4" gap="12">
         <Stack>
-          <Heading textAlign="center">Designed for every department</Heading>
+          <Heading textAlign="center" textStyle="4xl">
+            Designed for every department
+          </Heading>
           <Text color="gray.400" fontWeight={400} textAlign="center">
             Automate conversations throughout the entire customer journey.
           </Text>
@@ -121,13 +128,16 @@ export const ForEveryDepartment = () => {
             color="white"
             bgColor="#1A1A1A"
             borderColor="gray.800"
-            onClick={() => setOpenedDepartmentIndex(index)}
+            onClick={() => {
+              if (openedDepartment) return;
+              setOpenedDepartmentIndex(index);
+            }}
             rounded="2xl"
           >
             <motion.div layoutId={`dep-${index}`}>
               <CardBody p="2">
                 <Stack gap={4}>
-                  <motion.figure layoutId={`dep-${openedDepartmentIndex}-img`}>
+                  <motion.figure layoutId={`dep-${index}-img`}>
                     <Image
                       src={department.image.src}
                       alt={department.image.alt}
@@ -135,14 +145,12 @@ export const ForEveryDepartment = () => {
                   </motion.figure>
                   <Stack px="2" pb="4" gap="3">
                     <Heading textStyle="3xl" fontWeight="medium" asChild>
-                      <motion.h2
-                        layoutId={`dep-${openedDepartmentIndex}-heading`}
-                      >
+                      <motion.h2 layoutId={`dep-${index}-heading`}>
                         {department.title}
                       </motion.h2>
                     </Heading>
-                    <Text asChild>
-                      <motion.p layoutId={`dep-${openedDepartmentIndex}-desc`}>
+                    <Text asChild pr="10">
+                      <motion.p layoutId={`dep-${index}-desc`}>
                         {department.sub}
                       </motion.p>
                     </Text>
@@ -150,7 +158,6 @@ export const ForEveryDepartment = () => {
                 </Stack>
                 <IconButton
                   rounded="full"
-                  size="xs"
                   variant="outline"
                   pos="absolute"
                   bottom="1rem"
@@ -183,7 +190,16 @@ export const ForEveryDepartment = () => {
                   <IconButton
                     pos="absolute"
                     top="1rem"
-                    right="1rem"
+                    right={
+                      openedDepartment.image.gradientPlacement === "right"
+                        ? "1rem"
+                        : undefined
+                    }
+                    left={
+                      openedDepartment.image.gradientPlacement === "left"
+                        ? "1rem"
+                        : undefined
+                    }
                     color="white"
                     bgColor="gray.950"
                     opacity={0}
