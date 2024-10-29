@@ -1,5 +1,7 @@
 import type { BubbleProps } from "./features/bubble/components/Bubble";
+import { close } from "./features/commands/utils/close";
 import { hidePreviewMessage } from "./features/commands/utils/hidePreviewMessage";
+import { open } from "./features/commands/utils/open";
 import { setInputValue } from "./features/commands/utils/setInputValue";
 import { setPrefilledVariables } from "./features/commands/utils/setPrefilledVariables";
 import { showPreviewMessage } from "./features/commands/utils/showPreviewMessage";

@@ -9,7 +9,6 @@ import {
   toggle,
 } from "@typebot.io/react";
 import { useState } from "react";
-import { leadGenerationTypebot } from "./assets/leadGenerationTypebot";
 
 export const Default = () => {
   const [name, setName] = useState("John");
