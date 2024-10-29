@@ -84,12 +84,19 @@ const nextConfig = {
         {
           source: '/health',
           destination: '/api/health',
+        }, {
+          source: '/healthsql',
+          destination: '/api/healthsql',
         },
       ]
       : [
         {
           source: '/health',
           destination: '/api/health',
+        },
+        {
+          source: '/healthsql',
+          destination: '/api/healthsql',
         },
       ]
   },

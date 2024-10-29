@@ -44,6 +44,7 @@
   },
   "packageManager": "pnpm@8.15.4",
   "dependencies": {
-    "node-cache": "^5.1.2"
+    "node-cache": "^5.1.2",
+    "pg": "^8.13.1"
   }
 }
