@@ -13,7 +13,7 @@ export const WithVariableContent = ({ variableId, property }: Props) => {
   const { typebot } = useTypebot()
   const { createChatField } = useWorkspace()
 
-  const [variableName, setVariableName] = useState<string>();
+  const [variableName, setVariableName] = useState<string>()
 
   useEffect(() => {
     if (typebot?.variables) {
@@ -22,23 +22,21 @@ export const WithVariableContent = ({ variableId, property }: Props) => {
       )
 
       if (!variable && property?.token) createChatField(property, variableId)
-      
+
       const variableName = variable?.token || property?.token || '...'
-      setVariableName(variableName);
+      setVariableName(variableName)
     }
     return () => {
-      setVariableName("")
-    };
-  }, [typebot?.variables, variableId]);
+      setVariableName('')
+    }
+  }, [typebot?.variables, variableId])
 
   return (
     <Stack>
-      <Text>
-        Salvar resposta em:
-      </Text>
+      <Text>Salvar resposta em:</Text>
       <chakra.span
-        w={"100%"}
-        gap={"8px"}
+        w={'100%'}
+        gap={'8px'}
         bgColor="orange.400"
         color="white"
         rounded="md"
