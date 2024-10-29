@@ -59,7 +59,7 @@ export const MemberItem = ({
         />
       </MenuButton>
       {!isMe && canEdit && (
-        <MenuList shadow="lg">
+        <MenuList shadow="md">
           <MenuItem onClick={handleAdminClick}>
             {convertWorkspaceRoleToReadable(WorkspaceRole.ADMIN)}
           </MenuItem>

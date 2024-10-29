@@ -1,9 +1,9 @@
 import assert from "assert";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { colors } from "@/lib/theme";
 import { useEventListener } from "@chakra-ui/react";
 import type { Coordinates } from "@dnd-kit/utilities";
 import { omit } from "@typebot.io/lib/utils";
+import { colors } from "@typebot.io/theme/chakraTheme";
 import React, { useMemo, useState } from "react";
 import { eventWidth, groupWidth } from "../../constants";
 import { computeConnectingEdgePath } from "../../helpers/computeConnectingEdgePath";
@@ -129,9 +129,9 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
   return (
     <path
       d={path}
-      stroke={colors.blue[400]}
+      stroke={colors.orange[400]}
       strokeWidth="2px"
-      markerEnd="url(#blue-arrow)"
+      markerEnd="url(#orange-arrow)"
       fill="none"
     />
   );

@@ -35,7 +35,7 @@ export const TemplatesModal = ({
   isLoading,
 }: Props) => {
   const { t } = useTranslate();
-  const templateCardBackgroundColor = useColorModeValue("white", "gray.800");
+  const templateCardBackgroundColor = useColorModeValue("white", "gray.900");
   const [typebot, setTypebot] = useState<Typebot>();
   const templates = useTemplates();
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateProps>(
@@ -90,12 +90,7 @@ export const TemplatesModal = ({
           >
             <Stack spacing={5}>
               <Stack spacing={2}>
-                <Text
-                  fontSize="xs"
-                  fontWeight="semibold"
-                  pl="1"
-                  color="gray.500"
-                >
+                <Text fontSize="xs" fontWeight="medium" pl="1" color="gray.500">
                   {t("templates.modal.menuHeading.marketing")}
                 </Text>
                 {templates
@@ -126,12 +121,7 @@ export const TemplatesModal = ({
                   ))}
               </Stack>
               <Stack spacing={2}>
-                <Text
-                  fontSize="xs"
-                  fontWeight="semibold"
-                  pl="1"
-                  color="gray.500"
-                >
+                <Text fontSize="xs" fontWeight="medium" pl="1" color="gray.500">
                   {t("templates.modal.menuHeading.product")}
                 </Text>
                 {templates
@@ -162,12 +152,7 @@ export const TemplatesModal = ({
                   ))}
               </Stack>
               <Stack spacing={2}>
-                <Text
-                  fontSize="xs"
-                  fontWeight="semibold"
-                  pl="1"
-                  color="gray.500"
-                >
+                <Text fontSize="xs" fontWeight="medium" pl="1" color="gray.500">
                   {t("templates.modal.menuHeading.other")}
                 </Text>
                 {templates
@@ -233,7 +218,7 @@ export const TemplatesModal = ({
                 <Text>{selectedTemplate.description}</Text>
               </Stack>
               <Button
-                colorScheme="blue"
+                colorScheme="orange"
                 onClick={onUseThisTemplateClick}
                 isLoading={isLoading}
               >

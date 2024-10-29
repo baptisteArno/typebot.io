@@ -9,10 +9,10 @@ export type PostViewProps = PropsWithChildren<{
 
 export default function Post(props: PostViewProps) {
   return (
-    <Stack spacing={10} my="20" w="full">
+    <Stack gap={10} my="20" w="full">
       <Stack
         mx="auto"
-        spacing={0}
+        gap={0}
         as="article"
         px={3}
         w="full"
@@ -28,17 +28,15 @@ export default function Post(props: PostViewProps) {
           <Heading as="h1" mb="0">
             {props.post.title}
           </Heading>
-          <Text
-            as="time"
-            dateTime={props.post.postedAt?.toISOString()}
-            color="gray.500"
-          >
-            {props.post.postedAt?.toLocaleDateString("en-US", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-              timeZone: "UTC",
-            })}
+          <Text asChild color="gray.500">
+            <time dateTime={props.post.postedAt?.toISOString()}>
+              {props.post.postedAt?.toLocaleDateString("en-US", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+                timeZone: "UTC",
+              })}
+            </time>
           </Text>
         </Stack>
         {props.children}

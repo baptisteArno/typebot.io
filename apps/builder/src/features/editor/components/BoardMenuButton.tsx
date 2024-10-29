@@ -57,7 +57,7 @@ export const BoardMenuButton = (props: StackProps) => {
         icon={<BracesIcon />}
         aria-label="Open variables drawer"
         size="sm"
-        shadow="lg"
+        shadow="md"
         bgColor={useColorModeValue("white", undefined)}
         onClick={() => setRightPanel(RightPanel.VARIABLES)}
       />
@@ -67,7 +67,7 @@ export const BoardMenuButton = (props: StackProps) => {
           icon={<MoreVerticalIcon transform={"rotate(90deg)"} />}
           isLoading={isDownloading}
           size="sm"
-          shadow="lg"
+          shadow="md"
           bgColor={useColorModeValue("white", undefined)}
         />
         <MenuList>

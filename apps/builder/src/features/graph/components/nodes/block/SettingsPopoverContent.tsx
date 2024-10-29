@@ -62,7 +62,7 @@ type Props = {
 
 export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
   const [isHovering, setIsHovering] = useState(false);
-  const arrowColor = useColorModeValue("white", "gray.800");
+  const arrowColor = useColorModeValue("white", "gray.900");
   const { blockDef } = useForgedBlock(props.block.type);
   const ref = useRef<HTMLDivElement | null>(null);
   const handleMouseDown = (e: React.MouseEvent) => e.stopPropagation();
@@ -87,7 +87,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
               overflowY="auto"
               maxH="400px"
               ref={ref}
-              shadow="lg"
+              shadow="md"
               onMouseEnter={() => setIsHovering(true)}
               onMouseLeave={() => setIsHovering(false)}
             >

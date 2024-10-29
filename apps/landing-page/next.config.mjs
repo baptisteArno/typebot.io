@@ -1,12 +1,12 @@
 import createMDX from "@next/mdx";
-import { configureRuntimeEnv } from "next-runtime-env/build/configure.js";
-
-configureRuntimeEnv();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
+  },
+  experimental: {
+    optimizePackageImports: ["@chakra-ui/react"],
   },
   transpilePackages: ["@typebot.io/lib"],
   pageExtensions: ["mdx", "ts", "tsx"],

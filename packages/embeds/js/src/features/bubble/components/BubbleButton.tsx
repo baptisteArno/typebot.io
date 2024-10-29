@@ -1,7 +1,7 @@
-import { isLight } from "@typebot.io/lib/hexToRgb";
 import { isNotDefined, isSvgSrc } from "@typebot.io/lib/utils";
+import { defaultButtonsBackgroundColor } from "@typebot.io/theme/constants";
 import { clsx } from "clsx";
-import { Show } from "solid-js";
+import { Match, Switch } from "solid-js";
 import type { BubbleTheme, ButtonTheme } from "../types";
 
 type Props = Pick<BubbleTheme, "placement"> &
@@ -11,8 +11,6 @@ type Props = Pick<BubbleTheme, "placement"> &
     buttonSize: `${number}px`;
   };
 
-const defaultButtonColor = "#0042DA";
-const defaultDarkIconColor = "#27272A";
 const defaultLightIconColor = "#fff";
 
 const isImageSrc = (src: string) =>
@@ -23,38 +21,43 @@ export const BubbleButton = (props: Props) => (
     part="button"
     onClick={() => props.toggleBot()}
     class={clsx(
-      `fixed bottom-5 shadow-md  rounded-full hover:scale-110 active:scale-95 transition-transform duration-200 flex justify-center items-center animate-fade-in`,
+      `fixed bottom-5 shadow-md rounded-2xl hover:scale-110 active:scale-95 transition-transform duration-200 flex justify-center items-center animate-fade-in`,
       props.placement === "left" ? " left-5" : " right-5",
     )}
     style={{
-      "background-color": props.backgroundColor ?? defaultButtonColor,
+      "background-color":
+        props.backgroundColor ?? defaultButtonsBackgroundColor,
       "z-index": 42424242,
       width: props.buttonSize,
       height: props.buttonSize,
     }}
     aria-label="Open chatbot"
   >
-    <Show when={isNotDefined(props.customIconSrc)} keyed>
+    <OpenIcon {...props} />
+    <CloseIcon {...props} />
+  </button>
+);
+
+const OpenIcon = (props: Props) => (
+  <Switch>
+    <Match when={isNotDefined(props.customIconSrc)}>
       <svg
-        //@ts-expect-error part exists
         part="button-icon"
-        viewBox="0 0 24 24"
-        style={{
-          stroke:
-            props.iconColor ??
-            (isLight(props.backgroundColor ?? defaultButtonColor)
-              ? defaultDarkIconColor
-              : defaultLightIconColor),
-        }}
+        viewBox="0 0 16 16"
+        width="18"
+        height="18"
         class={clsx(
-          "stroke-2 fill-transparent absolute duration-200 transition w-[60%]",
+          "fill-transparent absolute duration-200 transition text-white",
           props.isBotOpened ? "scale-0 opacity-0" : "scale-100 opacity-100",
         )}
       >
-        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+        <path
+          d="M8 15C12.418 15 16 11.866 16 8C16 4.134 12.418 1 8 1C3.582 1 0 4.134 0 8C0 9.76 0.743 11.37 1.97 12.6C1.873 13.616 1.553 14.73 1.199 15.566C1.12 15.752 1.273 15.96 1.472 15.928C3.728 15.558 5.069 14.99 5.652 14.694C6.41791 14.8983 7.20732 15.0012 8 15Z"
+          fill="currentColor"
+        />
       </svg>
-    </Show>
-    <Show when={props.customIconSrc && isImageSrc(props.customIconSrc)}>
+    </Match>
+    <Match when={props.customIconSrc && isImageSrc(props.customIconSrc)}>
       <img
         part="button-icon"
         src={props.customIconSrc}
@@ -66,8 +69,8 @@ export const BubbleButton = (props: Props) => (
         )}
         alt="Bubble button icon"
       />
-    </Show>
-    <Show when={props.customIconSrc && !isImageSrc(props.customIconSrc)}>
+    </Match>
+    <Match when={props.customIconSrc && !isImageSrc(props.customIconSrc)}>
       <span
         part="button-icon"
         class={clsx(
@@ -81,18 +84,18 @@ export const BubbleButton = (props: Props) => (
       >
         {props.customIconSrc}
       </span>
-    </Show>
-    <Show when={isNotDefined(props.customCloseIconSrc)}>
+    </Match>
+  </Switch>
+);
+
+const CloseIcon = (props: Props) => (
+  <Switch>
+    <Match when={isNotDefined(props.customCloseIconSrc)}>
       <svg
-        //@ts-expect-error part exists
         part="button-icon"
         viewBox="0 0 24 24"
         style={{
-          fill:
-            props.iconColor ??
-            (isLight(props.backgroundColor ?? defaultButtonColor)
-              ? defaultDarkIconColor
-              : defaultLightIconColor),
+          fill: defaultLightIconColor,
         }}
         class={clsx(
           "absolute duration-200 transition w-[60%]",
@@ -107,8 +110,8 @@ export const BubbleButton = (props: Props) => (
           d="M18.601 8.39897C18.269 8.06702 17.7309 8.06702 17.3989 8.39897L12 13.7979L6.60099 8.39897C6.26904 8.06702 5.73086 8.06702 5.39891 8.39897C5.06696 8.73091 5.06696 9.2691 5.39891 9.60105L11.3989 15.601C11.7309 15.933 12.269 15.933 12.601 15.601L18.601 9.60105C18.9329 9.2691 18.9329 8.73091 18.601 8.39897Z"
         />
       </svg>
-    </Show>
-    <Show
+    </Match>
+    <Match
       when={props.customCloseIconSrc && isImageSrc(props.customCloseIconSrc)}
     >
       <img
@@ -124,8 +127,8 @@ export const BubbleButton = (props: Props) => (
         )}
         alt="Bubble button close icon"
       />
-    </Show>
-    <Show
+    </Match>
+    <Match
       when={props.customCloseIconSrc && !isImageSrc(props.customCloseIconSrc)}
     >
       <span
@@ -143,6 +146,6 @@ export const BubbleButton = (props: Props) => (
       >
         {props.customCloseIconSrc}
       </span>
-    </Show>
-  </button>
+    </Match>
+  </Switch>
 );

@@ -2,7 +2,6 @@ import { AlignLeftTextIcon } from "@/components/icons";
 import { TimeFilterDropdown } from "@/features/analytics/components/TimeFilterDropdown";
 import type { timeFilterValues } from "@/features/analytics/constants";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { colors } from "@/lib/theme";
 import {
   Box,
   Button,
@@ -24,6 +23,7 @@ import type {
   ResultHeaderCell,
   TableData,
 } from "@typebot.io/results/schemas/results";
+import { colors } from "@typebot.io/theme/chakraTheme";
 import type { ResultsTablePreferences } from "@typebot.io/typebot/schemas/typebot";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { HeaderIcon } from "../HeaderIcon";

@@ -92,12 +92,12 @@ export const CreateTokenModal = ({
 
         <ModalFooter>
           {newTokenValue ? (
-            <Button onClick={onClose} colorScheme="blue">
+            <Button onClick={onClose} colorScheme="orange">
               {t("account.apiTokens.createModal.doneButton.label")}
             </Button>
           ) : (
             <Button
-              colorScheme="blue"
+              colorScheme="orange"
               isDisabled={name.length === 0}
               isLoading={isSubmitting}
               onClick={createToken}

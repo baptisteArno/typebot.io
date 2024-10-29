@@ -82,7 +82,7 @@ export const ColorPicker = ({
           backgroundColor={displayedValue}
           borderTopLeftRadius={5}
           borderTopRightRadius={5}
-          color={tinyColor(displayedValue).isLight() ? "gray.800" : "white"}
+          color={tinyColor(displayedValue).isLight() ? "gray.900" : "white"}
         >
           <Center height="100%">{displayedValue}</Center>
         </PopoverHeader>

@@ -6,7 +6,7 @@ export const ResizeHandle = (props: FlexProps) => {
       w="15px"
       h="50px"
       borderWidth={"1px"}
-      bgColor={useColorModeValue("white", "gray.800")}
+      bgColor={useColorModeValue("white", "gray.900")}
       cursor={"col-resize"}
       justifyContent={"center"}
       align={"center"}

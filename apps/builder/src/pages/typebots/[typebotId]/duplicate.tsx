@@ -64,7 +64,7 @@ const Page = () => {
         isDisabled={!selectedWorkspaceId}
         onClick={() => duplicateTypebot(selectedWorkspaceId as string)}
         isLoading={isLoading}
-        colorScheme="blue"
+        colorScheme="orange"
         size="sm"
       >
         Duplicate

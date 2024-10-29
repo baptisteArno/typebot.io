@@ -29,7 +29,7 @@ export const StandardMenuButton = (props: Props) => {
     >
       <StandardIllustration />
       <Stack>
-        <Text fontSize="lg" fontWeight="semibold">
+        <Text fontSize="lg" fontWeight="medium">
           Standard
         </Text>
         <Text textColor="gray.500">Embed in a container on your site</Text>

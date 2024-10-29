@@ -109,7 +109,7 @@ export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
             py="6"
             overflowY="auto"
             maxH="400px"
-            shadow="lg"
+            shadow="md"
             ref={ref}
           >
             <ConditionForm

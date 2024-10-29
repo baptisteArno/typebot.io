@@ -302,7 +302,7 @@ export const WhatsAppCreateModalContent = ({
       <ModalFooter>
         <Button
           onClick={goToNextStep}
-          colorScheme="blue"
+          colorScheme="orange"
           isDisabled={
             (activeStep === 1 && isEmpty(systemUserAccessToken)) ||
             (activeStep === 2 && isEmpty(phoneNumberId))

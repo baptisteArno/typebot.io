@@ -36,7 +36,7 @@ export const ResultsPage = () => {
   );
   const bgColor = useColorModeValue(
     router.pathname.endsWith("analytics") ? "#f4f5f8" : "white",
-    router.pathname.endsWith("analytics") ? "gray.850" : "gray.900",
+    router.pathname.endsWith("analytics") ? "gray.900" : "gray.950",
   );
   const [timeFilter, setTimeFilter] =
     useState<(typeof timeFilterValues)[number]>(defaultTimeFilter);
@@ -97,7 +97,7 @@ export const ResultsPage = () => {
             >
               <Text>Submissions</Text>
               {(stats?.totalStarts ?? 0) > 0 && (
-                <Tag size="sm" colorScheme="blue" ml="1">
+                <Tag size="sm" colorScheme="orange" ml="1">
                   {stats?.totalStarts}
                 </Tag>
               )}

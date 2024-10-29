@@ -1,12 +1,4 @@
-import {
-  Table as ChakraTable,
-  TableContainer,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-} from "@chakra-ui/react";
+import { Table as ChakraTable } from "@chakra-ui/react";
 
 type Props = {
   headers: string[];
@@ -14,24 +6,24 @@ type Props = {
 };
 
 export const Table = ({ headers, rows }: Props) => (
-  <TableContainer maxW="60rem">
-    <ChakraTable>
-      <Thead>
-        <Tr>
-          {headers.map((header, index) => (
-            <Th key={index}>{header}</Th>
-          ))}
-        </Tr>
-      </Thead>
-      <Tbody>
-        {rows.map((row, index) => (
-          <Tr key={index}>
-            {row.map((cell, cellIndex) => (
-              <Td key={cellIndex}>{cell}</Td>
-            ))}
-          </Tr>
+  <ChakraTable.Root maxW="60rem">
+    <ChakraTable.Header>
+      <ChakraTable.Row>
+        {headers.map((header, index) => (
+          <ChakraTable.ColumnHeader key={index}>
+            {header}
+          </ChakraTable.ColumnHeader>
         ))}
-      </Tbody>
-    </ChakraTable>
-  </TableContainer>
+      </ChakraTable.Row>
+    </ChakraTable.Header>
+    <ChakraTable.Body>
+      {rows.map((row, index) => (
+        <ChakraTable.Row key={index}>
+          {row.map((cell, cellIndex) => (
+            <ChakraTable.Cell key={cellIndex}>{cell}</ChakraTable.Cell>
+          ))}
+        </ChakraTable.Row>
+      ))}
+    </ChakraTable.Body>
+  </ChakraTable.Root>
 );

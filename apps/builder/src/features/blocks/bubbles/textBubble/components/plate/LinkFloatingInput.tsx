@@ -42,7 +42,7 @@ export interface LinkFloatingToolbarProps {
 }
 
 export function LinkFloatingToolbar({ state }: LinkFloatingToolbarProps) {
-  const bgColor = useColorModeValue("white", "gray.800");
+  const bgColor = useColorModeValue("white", "gray.900");
   const urlInputRef = useRef<HTMLInputElement>(null);
   const insertState = useFloatingLinkInsertState({
     ...state,

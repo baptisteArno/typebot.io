@@ -84,7 +84,7 @@ export const AnalyticsGraphContainer = ({
     <Flex
       w="full"
       pos="relative"
-      bgColor={useColorModeValue("#f4f5f8", "gray.850")}
+      bgColor={useColorModeValue("#f4f5f8", "gray.900")}
       backgroundImage={useColorModeValue(
         "radial-gradient(#c6d0e1 1px, transparent 0)",
         "radial-gradient(#2f2f39 1px, transparent 0)",

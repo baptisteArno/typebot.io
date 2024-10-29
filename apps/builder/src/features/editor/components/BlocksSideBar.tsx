@@ -4,12 +4,12 @@ import { useBlockDnd } from "@/features/graph/providers/GraphDndProvider";
 import {
   Fade,
   Flex,
+  Heading,
   IconButton,
   Input,
   Portal,
   SimpleGrid,
   Stack,
-  Text,
   Tooltip,
   useColorModeValue,
   useEventListener,
@@ -169,12 +169,11 @@ export const BlocksSideBar = () => {
       <Stack
         w="full"
         rounded="lg"
-        shadow="xl"
         borderWidth="1px"
         pt="4"
         pb="10"
         px="4"
-        bgColor={useColorModeValue("white", "gray.900")}
+        bgColor={useColorModeValue("white", "gray.950")}
         spacing={6}
         userSelect="none"
         overflowY="auto"
@@ -211,9 +210,9 @@ export const BlocksSideBar = () => {
         </Flex>
 
         <Stack>
-          <Text fontSize="sm" fontWeight="semibold">
+          <Heading as="h4" fontSize="sm">
             {t("editor.sidebarBlocks.blockType.bubbles.heading")}
-          </Text>
+          </Heading>
           <SimpleGrid columns={2} spacing="3">
             {filteredBubbleBlockTypes.map((type) => (
               <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
@@ -222,9 +221,9 @@ export const BlocksSideBar = () => {
         </Stack>
 
         <Stack>
-          <Text fontSize="sm" fontWeight="semibold">
+          <Heading fontSize="sm">
             {t("editor.sidebarBlocks.blockType.inputs.heading")}
-          </Text>
+          </Heading>
           <SimpleGrid columns={2} spacing="3">
             {filteredInputBlockTypes.map((type) => (
               <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
@@ -233,9 +232,9 @@ export const BlocksSideBar = () => {
         </Stack>
 
         <Stack>
-          <Text fontSize="sm" fontWeight="semibold">
+          <Heading fontSize="sm">
             {t("editor.sidebarBlocks.blockType.logic.heading")}
-          </Text>
+          </Heading>
           <SimpleGrid columns={2} spacing="3">
             {filteredLogicBlockTypes.map((type) => (
               <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
@@ -244,9 +243,9 @@ export const BlocksSideBar = () => {
         </Stack>
 
         <Stack>
-          <Text fontSize="sm" fontWeight="semibold">
+          <Heading fontSize="sm">
             {t("editor.sidebarBlocks.blockType.integrations.heading")}
-          </Text>
+          </Heading>
           <SimpleGrid columns={2} spacing="3">
             {filteredIntegrationBlockTypes
               .concat(filteredForgedBlockIds as any)

@@ -1,5 +1,5 @@
 import type { ChatLog } from "@typebot.io/bot-engine/schemas/api";
-import { getRuntimeVariable } from "@typebot.io/env/getRuntimeVariable";
+import { getRuntimeEnv } from "@typebot.io/env/runtime";
 import PartySocket from "partysocket";
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const listenForWebhook = ({ sessionId, resultId }: Props) => {
-  const host = getRuntimeVariable("NEXT_PUBLIC_PARTYKIT_HOST");
+  const host = getRuntimeEnv("NEXT_PUBLIC_PARTYKIT_HOST");
   if (!host) return;
 
   const ws = new PartySocket({

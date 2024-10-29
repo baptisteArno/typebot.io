@@ -1,4 +1,4 @@
-import { getRuntimeVariable } from "@typebot.io/env/getRuntimeVariable";
+import { getRuntimeEnv } from "@typebot.io/env/runtime";
 
 type Props = {
   newFile: File;
@@ -15,10 +15,9 @@ export const sanitizeNewFile = ({
   onError,
 }: Props): File | undefined => {
   const sizeLimit =
-    params.sizeLimit ??
-    getRuntimeVariable("NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE");
+    params.sizeLimit ?? getRuntimeEnv("NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE");
 
-  if (sizeLimit && newFile.size > sizeLimit * 1024 * 1024) {
+  if (sizeLimit && newFile.size > Number(sizeLimit) * 1024 * 1024) {
     onError({
       title: "File too large",
       description: `${newFile.name} is larger than ${sizeLimit}MB`,

@@ -1,7 +1,7 @@
 "use client";
-import { Link } from "@chakra-ui/next-js";
 import { Heading, Stack, Text } from "@chakra-ui/react";
 import { isDefined } from "@typebot.io/lib/utils";
+import Link from "next/link";
 import type { BlogPost } from "../types";
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 
 export const Posts = ({ posts }: Props) => (
   <Stack
-    spacing={10}
+    gap={10}
     mx="auto"
     maxW="3xl"
     my="20"

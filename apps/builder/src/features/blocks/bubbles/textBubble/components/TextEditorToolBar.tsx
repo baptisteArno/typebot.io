@@ -38,7 +38,7 @@ export const TextEditorToolBar = ({
   };
   return (
     <HStack
-      bgColor={useColorModeValue("white", "gray.850")}
+      bgColor={useColorModeValue("white", "gray.900")}
       borderTopRadius="md"
       p={2}
       w="full"

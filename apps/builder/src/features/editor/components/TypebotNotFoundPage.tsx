@@ -37,7 +37,7 @@ export const TypebotNotFoundPage = () => {
           <Button
             as={Link}
             href="/typebots"
-            colorScheme="blue"
+            colorScheme="orange"
             leftIcon={<ChevronLeftIcon />}
           >
             Dashboard

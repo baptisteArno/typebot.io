@@ -24,10 +24,10 @@ export const EditorPage = () => {
   const { typebot, currentUserMode, is404 } = useTypebot();
   const { workspace } = useWorkspace();
   const backgroundImage = useColorModeValue(
-    "radial-gradient(#c6d0e1 1px, transparent 0)",
+    "radial-gradient(var(--chakra-colors-gray-300), 1px, transparent 0)",
     "radial-gradient(#2f2f39 1px, transparent 0)",
   );
-  const bgColor = useColorModeValue("#f4f5f8", "gray.850");
+  const bgColor = useColorModeValue("gray.100", "gray.900");
 
   const isSuspicious = typebot?.riskLevel === 100 && !workspace?.isVerified;
 

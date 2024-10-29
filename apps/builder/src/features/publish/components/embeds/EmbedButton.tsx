@@ -226,7 +226,7 @@ export const integrationsList = [
         <ScriptIcon
           height={100}
           width="70px"
-          color={useColorModeValue("gray.800", "gray.300")}
+          color={useColorModeValue("gray.900", "gray.300")}
         />
       }
       label="Script"

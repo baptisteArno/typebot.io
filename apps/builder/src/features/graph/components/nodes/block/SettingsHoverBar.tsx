@@ -34,7 +34,7 @@ export const SettingsHoverBar = ({
       rounded="md"
       spacing={0}
       borderWidth="1px"
-      bgColor={useColorModeValue("white", "gray.800")}
+      bgColor={useColorModeValue("white", "gray.900")}
       shadow="md"
     >
       <IconButton

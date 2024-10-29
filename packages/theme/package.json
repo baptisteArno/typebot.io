@@ -4,12 +4,18 @@
   "type": "module",
   "private": true,
   "exports": {
-    "./*": "./src/*.ts"
+    "./*": "./src/*.ts",
+    "./icons/*": "./src/icons/*.tsx"
   },
   "dependencies": {
+    "@chakra-ui/anatomy": "2.3.4",
+    "@chakra-ui/icon": "3.2.0",
+    "@chakra-ui/react": "3.0.0",
+    "@chakra-ui/theme-tools": "2.2.5",
     "@typebot.io/lib": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
     "@typebot.io/zod": "workspace:*",
-    "@typebot.io/prisma": "workspace:*"
+    "next": "14.2.16"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

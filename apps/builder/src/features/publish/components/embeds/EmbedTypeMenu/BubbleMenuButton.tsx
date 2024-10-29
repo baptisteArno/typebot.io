@@ -29,7 +29,7 @@ export const BubbleMenuButton = (props: Props) => {
     >
       <BubbleIllustration />
       <Stack>
-        <Text fontSize="lg" fontWeight="semibold">
+        <Text fontSize="lg" fontWeight="medium">
           Bubble
         </Text>
         <Text textColor="gray.500">Embed in a chat bubble</Text>

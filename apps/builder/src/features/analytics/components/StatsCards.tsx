@@ -31,7 +31,7 @@ export const StatsCards = ({
   onTimeFilterChange: (timeFilter: (typeof timeFilterValues)[number]) => void;
 } & GridProps) => {
   const { t } = useTranslate();
-  const bg = useColorModeValue("white", "gray.900");
+  const bg = useColorModeValue("white", "gray.950");
 
   return (
     <SimpleGrid

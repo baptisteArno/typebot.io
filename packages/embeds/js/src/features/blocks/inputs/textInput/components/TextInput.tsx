@@ -12,7 +12,7 @@ import { toaster } from "@/utils/toaster";
 import { fixWebmDuration } from "@fix-webm-duration/fix";
 import { defaultTextInputOptions } from "@typebot.io/blocks-inputs/text/constants";
 import type { TextInputBlock } from "@typebot.io/blocks-inputs/text/schema";
-import { getRuntimeVariable } from "@typebot.io/env/getRuntimeVariable";
+import { getRuntimeEnv } from "@typebot.io/env/runtime";
 import { isDefined } from "@typebot.io/lib/utils";
 import clsx from "clsx";
 import {
@@ -145,9 +145,9 @@ export const TextInput = (props: Props) => {
           existingFiles: selectedFiles(),
           newFile: file,
           params: {
-            sizeLimit: getRuntimeVariable(
-              "NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE",
-            ),
+            sizeLimit: getRuntimeEnv("NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE")
+              ? Number(getRuntimeEnv("NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE"))
+              : undefined,
           },
           onError: ({ description, title }) => {
             toaster.create({

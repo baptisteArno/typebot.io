@@ -34,7 +34,7 @@ export const MediaBubblePopoverContent = (props: Props) => {
         w={props.block.type === BubbleBlockType.IMAGE ? "500px" : "400px"}
       >
         <PopoverArrow />
-        <PopoverBody ref={ref} shadow="lg">
+        <PopoverBody ref={ref} shadow="md">
           <MediaBubbleContent {...props} />
         </PopoverBody>
       </PopoverContent>

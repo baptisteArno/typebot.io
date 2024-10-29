@@ -151,7 +151,7 @@ const TypebotButton = ({
     >
       {typebot.publishedTypebotId && (
         <Tag
-          colorScheme="blue"
+          colorScheme="orange"
           variant="solid"
           rounded="full"
           pos="absolute"
@@ -171,7 +171,7 @@ const TypebotButton = ({
             aria-label="Drag"
             cursor="grab"
             variant="ghost"
-            colorScheme="blue"
+            colorScheme="orange"
             size="sm"
           />
           <MoreButton

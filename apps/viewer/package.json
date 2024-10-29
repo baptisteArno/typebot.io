@@ -26,12 +26,12 @@
     "bot-engine": "workspace:*",
     "cors": "2.8.5",
     "google-spreadsheet": "4.1.1",
-    "next": "14.2.13",
+    "next": "14.2.16",
     "nextjs-cors": "2.1.2",
     "nodemailer": "6.9.15",
     "openai": "4.52.7",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "stripe": "17.1.0",
     "@faire/mjml-react": "3.3.0",
     "@paralleldrive/cuid2": "2.2.1",
@@ -62,9 +62,8 @@
     "@types/node": "20.4.2",
     "@types/nodemailer": "6.4.14",
     "@types/papaparse": "5.3.7",
-    "@types/react": "18.2.15",
+    "@types/react": "18.3.12",
     "dotenv": "16.4.5",
-    "dotenv-cli": "7.4.1",
-    "next-runtime-env": "1.6.2"
+    "dotenv-cli": "7.4.1"
   }
 }

@@ -54,7 +54,7 @@ export const CollaboratorItem = ({
         />
       </MenuButton>
       {isOwner && (
-        <MenuList shadow="lg">
+        <MenuList shadow="md">
           <MenuItem onClick={handleEditClick}>
             <ReadableCollaborationType type={CollaborationType.WRITE} />
           </MenuItem>

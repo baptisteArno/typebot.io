@@ -2,6 +2,7 @@ import { hexToRgb, isLight } from "@typebot.io/lib/hexToRgb";
 import { isDefined, isEmpty } from "@typebot.io/lib/utils";
 import {
   BackgroundType,
+  botCssVariableNames,
   defaultBackgroundColor,
   defaultBackgroundType,
   defaultBlur,
@@ -18,9 +19,10 @@ import {
   defaultHostBubblesBackgroundColor,
   defaultHostBubblesColor,
   defaultInputsBackgroundColor,
+  defaultInputsBorderColor,
+  defaultInputsBorderThickness,
   defaultInputsColor,
   defaultInputsPlaceholderColor,
-  defaultInputsShadow,
   defaultLightTextColor,
   defaultOpacity,
   defaultProgressBarBackgroundColor,
@@ -41,86 +43,6 @@ import type {
   Theme,
 } from "@typebot.io/theme/schemas";
 
-const cssVariableNames = {
-  general: {
-    bgImage: "--typebot-container-bg-image",
-    bgColor: "--typebot-container-bg-color",
-    fontFamily: "--typebot-container-font-family",
-    progressBar: {
-      position: "--typebot-progress-bar-position",
-      color: "--typebot-progress-bar-color",
-      colorRgb: "--typebot-progress-bar-bg-rgb",
-      height: "--typebot-progress-bar-height",
-      top: "--typebot-progress-bar-top",
-      bottom: "--typebot-progress-bar-bottom",
-    },
-  },
-  chat: {
-    container: {
-      maxWidth: "--typebot-chat-container-max-width",
-      maxHeight: "--typebot-chat-container-max-height",
-      bgColor: "--typebot-chat-container-bg-rgb",
-      color: "--typebot-chat-container-color",
-      borderRadius: "--typebot-chat-container-border-radius",
-      borderWidth: "--typebot-chat-container-border-width",
-      borderColor: "--typebot-chat-container-border-rgb",
-      borderOpacity: "--typebot-chat-container-border-opacity",
-      opacity: "--typebot-chat-container-opacity",
-      blur: "--typebot-chat-container-blur",
-      boxShadow: "--typebot-chat-container-box-shadow",
-    },
-    hostBubbles: {
-      bgColor: "--typebot-host-bubble-bg-rgb",
-      color: "--typebot-host-bubble-color",
-      borderRadius: "--typebot-host-bubble-border-radius",
-      borderWidth: "--typebot-host-bubble-border-width",
-      borderColor: "--typebot-host-bubble-border-rgb",
-      borderOpacity: "--typebot-host-bubble-border-opacity",
-      opacity: "--typebot-host-bubble-opacity",
-      blur: "--typebot-host-bubble-blur",
-      boxShadow: "--typebot-host-bubble-box-shadow",
-    },
-    guestBubbles: {
-      bgColor: "--typebot-guest-bubble-bg-rgb",
-      color: "--typebot-guest-bubble-color",
-      borderRadius: "--typebot-guest-bubble-border-radius",
-      borderWidth: "--typebot-guest-bubble-border-width",
-      borderColor: "--typebot-guest-bubble-border-rgb",
-      borderOpacity: "--typebot-guest-bubble-border-opacity",
-      opacity: "--typebot-guest-bubble-opacity",
-      blur: "--typebot-guest-bubble-blur",
-      boxShadow: "--typebot-guest-bubble-box-shadow",
-    },
-    inputs: {
-      bgColor: "--typebot-input-bg-rgb",
-      color: "--typebot-input-color",
-      placeholderColor: "--typebot-input-placeholder-color",
-      borderRadius: "--typebot-input-border-radius",
-      borderWidth: "--typebot-input-border-width",
-      borderColor: "--typebot-input-border-rgb",
-      borderOpacity: "--typebot-input-border-opacity",
-      opacity: "--typebot-input-opacity",
-      blur: "--typebot-input-blur",
-      boxShadow: "--typebot-input-box-shadow",
-    },
-    buttons: {
-      bgRgb: "--typebot-button-bg-rgb",
-      color: "--typebot-button-color",
-      borderRadius: "--typebot-button-border-radius",
-      borderWidth: "--typebot-button-border-width",
-      borderColor: "--typebot-button-border-rgb",
-      borderOpacity: "--typebot-button-border-opacity",
-      opacity: "--typebot-button-opacity",
-      blur: "--typebot-button-blur",
-      boxShadow: "--typebot-button-box-shadow",
-    },
-    checkbox: {
-      bgRgb: "--typebot-checkbox-bg-rgb",
-      alphaRatio: "--selectable-alpha-ratio",
-    },
-  },
-} as const;
-
 export const setCssVariablesValue = (
   theme: Theme | undefined,
   container: HTMLDivElement,
@@ -140,7 +62,7 @@ const setGeneralTheme = (
 ) => {
   setGeneralBackground(generalTheme?.background, documentStyle);
   documentStyle.setProperty(
-    cssVariableNames.general.fontFamily,
+    botCssVariableNames.general.fontFamily,
     (typeof generalTheme?.font === "string"
       ? generalTheme.font
       : generalTheme?.font?.family) ?? defaultFontFamily,
@@ -156,33 +78,33 @@ const setProgressBar = (
   const position = progressBar?.position ?? defaultProgressBarPosition;
 
   documentStyle.setProperty(
-    cssVariableNames.general.progressBar.position,
+    botCssVariableNames.general.progressBar.position,
     position === "fixed" ? (isPreview ? "absolute" : "fixed") : position,
   );
   documentStyle.setProperty(
-    cssVariableNames.general.progressBar.color,
+    botCssVariableNames.general.progressBar.color,
     progressBar?.color ?? defaultProgressBarColor,
   );
   documentStyle.setProperty(
-    cssVariableNames.general.progressBar.colorRgb,
+    botCssVariableNames.general.progressBar.colorRgb,
     hexToRgb(
       progressBar?.backgroundColor ?? defaultProgressBarBackgroundColor,
     ).join(", "),
   );
   documentStyle.setProperty(
-    cssVariableNames.general.progressBar.height,
+    botCssVariableNames.general.progressBar.height,
     `${progressBar?.thickness ?? defaultProgressBarThickness}px`,
   );
 
   const placement = progressBar?.placement ?? defaultProgressBarPlacement;
 
   documentStyle.setProperty(
-    cssVariableNames.general.progressBar.top,
+    botCssVariableNames.general.progressBar.top,
     placement === "Top" ? "0" : "auto",
   );
 
   documentStyle.setProperty(
-    cssVariableNames.general.progressBar.bottom,
+    botCssVariableNames.general.progressBar.bottom,
     placement === "Bottom" ? "0" : "auto",
   );
 };
@@ -216,12 +138,12 @@ const setChatContainer = (
   const isBgDisabled =
     chatContainerBgColor === "transparent" || isEmpty(chatContainerBgColor);
   documentStyle.setProperty(
-    cssVariableNames.chat.container.bgColor,
+    botCssVariableNames.chat.container.bgColor,
     isBgDisabled ? "0, 0, 0" : hexToRgb(chatContainerBgColor).join(", "),
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.container.color,
+    botCssVariableNames.chat.container.color,
     hexToRgb(
       container?.color ??
         (isChatContainerLight({
@@ -234,22 +156,22 @@ const setChatContainer = (
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.container.maxWidth,
+    botCssVariableNames.chat.container.maxWidth,
     container?.maxWidth ?? defaultContainerMaxWidth,
   );
   documentStyle.setProperty(
-    cssVariableNames.chat.container.maxHeight,
+    botCssVariableNames.chat.container.maxHeight,
     container?.maxHeight ?? defaultContainerMaxHeight,
   );
   const opacity = isBgDisabled
     ? "1"
     : (container?.opacity ?? defaultOpacity).toString();
   documentStyle.setProperty(
-    cssVariableNames.chat.container.opacity,
+    botCssVariableNames.chat.container.opacity,
     isBgDisabled ? "0" : (container?.opacity ?? defaultOpacity).toString(),
   );
   documentStyle.setProperty(
-    cssVariableNames.chat.container.blur,
+    botCssVariableNames.chat.container.blur,
     opacity === "1" || isBgDisabled
       ? "0xp"
       : `${container?.blur ?? defaultBlur}px`,
@@ -257,7 +179,7 @@ const setChatContainer = (
   setShadow(
     container?.shadow,
     documentStyle,
-    cssVariableNames.chat.container.boxShadow,
+    botCssVariableNames.chat.container.boxShadow,
   );
 
   setBorderRadius(
@@ -265,25 +187,25 @@ const setChatContainer = (
       roundeness: legacyRoundness ?? defaultRoundness,
     },
     documentStyle,
-    cssVariableNames.chat.container.borderRadius,
+    botCssVariableNames.chat.container.borderRadius,
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.container.borderWidth,
+    botCssVariableNames.chat.container.borderWidth,
     isDefined(container?.border?.thickness)
       ? `${container?.border?.thickness}px`
       : "0",
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.container.borderOpacity,
+    botCssVariableNames.chat.container.borderOpacity,
     isDefined(container?.border?.opacity)
       ? container.border.opacity.toString()
       : defaultOpacity.toString(),
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.container.borderColor,
+    botCssVariableNames.chat.container.borderColor,
     hexToRgb(container?.border?.color ?? "").join(", "),
   );
 };
@@ -294,13 +216,13 @@ const setHostBubbles = (
   legacyRoundness?: ChatTheme["roundness"],
 ) => {
   documentStyle.setProperty(
-    cssVariableNames.chat.hostBubbles.bgColor,
+    botCssVariableNames.chat.hostBubbles.bgColor,
     hexToRgb(
       hostBubbles?.backgroundColor ?? defaultHostBubblesBackgroundColor,
     ).join(", "),
   );
   documentStyle.setProperty(
-    cssVariableNames.chat.hostBubbles.color,
+    botCssVariableNames.chat.hostBubbles.color,
     hostBubbles?.color ?? defaultHostBubblesColor,
   );
   setBorderRadius(
@@ -308,23 +230,23 @@ const setHostBubbles = (
       roundeness: legacyRoundness ?? defaultRoundness,
     },
     documentStyle,
-    cssVariableNames.chat.hostBubbles.borderRadius,
+    botCssVariableNames.chat.hostBubbles.borderRadius,
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.hostBubbles.borderWidth,
+    botCssVariableNames.chat.hostBubbles.borderWidth,
     isDefined(hostBubbles?.border?.thickness)
       ? `${hostBubbles?.border?.thickness}px`
       : "0",
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.hostBubbles.borderColor,
+    botCssVariableNames.chat.hostBubbles.borderColor,
     hexToRgb(hostBubbles?.border?.color ?? "").join(", "),
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.hostBubbles.opacity,
+    botCssVariableNames.chat.hostBubbles.opacity,
     hostBubbles?.backgroundColor === "transparent"
       ? "0"
       : isDefined(hostBubbles?.opacity)
@@ -333,21 +255,21 @@ const setHostBubbles = (
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.hostBubbles.borderOpacity,
+    botCssVariableNames.chat.hostBubbles.borderOpacity,
     isDefined(hostBubbles?.border?.opacity)
       ? hostBubbles.border.opacity.toString()
       : defaultOpacity.toString(),
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.hostBubbles.blur,
+    botCssVariableNames.chat.hostBubbles.blur,
     isDefined(hostBubbles?.blur) ? `${hostBubbles.blur ?? 0}px` : "none",
   );
 
   setShadow(
     hostBubbles?.shadow,
     documentStyle,
-    cssVariableNames.chat.hostBubbles.boxShadow,
+    botCssVariableNames.chat.hostBubbles.boxShadow,
   );
 };
 
@@ -357,14 +279,14 @@ const setGuestBubbles = (
   legacyRoundness?: ChatTheme["roundness"],
 ) => {
   documentStyle.setProperty(
-    cssVariableNames.chat.guestBubbles.bgColor,
+    botCssVariableNames.chat.guestBubbles.bgColor,
     hexToRgb(
       guestBubbles?.backgroundColor ?? defaultGuestBubblesBackgroundColor,
     ).join(", "),
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.guestBubbles.color,
+    botCssVariableNames.chat.guestBubbles.color,
     guestBubbles?.color ?? defaultGuestBubblesColor,
   );
 
@@ -373,30 +295,30 @@ const setGuestBubbles = (
       roundeness: legacyRoundness ?? defaultRoundness,
     },
     documentStyle,
-    cssVariableNames.chat.guestBubbles.borderRadius,
+    botCssVariableNames.chat.guestBubbles.borderRadius,
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.guestBubbles.borderWidth,
+    botCssVariableNames.chat.guestBubbles.borderWidth,
     isDefined(guestBubbles?.border?.thickness)
       ? `${guestBubbles?.border?.thickness}px`
       : "0",
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.guestBubbles.borderColor,
+    botCssVariableNames.chat.guestBubbles.borderColor,
     hexToRgb(guestBubbles?.border?.color ?? "").join(", "),
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.guestBubbles.borderOpacity,
+    botCssVariableNames.chat.guestBubbles.borderOpacity,
     isDefined(guestBubbles?.border?.opacity)
       ? guestBubbles.border.opacity.toString()
       : defaultOpacity.toString(),
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.guestBubbles.opacity,
+    botCssVariableNames.chat.guestBubbles.opacity,
     guestBubbles?.backgroundColor === "transparent"
       ? "0"
       : isDefined(guestBubbles?.opacity)
@@ -405,14 +327,14 @@ const setGuestBubbles = (
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.guestBubbles.blur,
+    botCssVariableNames.chat.guestBubbles.blur,
     isDefined(guestBubbles?.blur) ? `${guestBubbles.blur ?? 0}px` : "none",
   );
 
   setShadow(
     guestBubbles?.shadow,
     documentStyle,
-    cssVariableNames.chat.guestBubbles.boxShadow,
+    botCssVariableNames.chat.guestBubbles.boxShadow,
   );
 };
 
@@ -424,17 +346,17 @@ const setButtons = (
   const bgColor = buttons?.backgroundColor ?? defaultButtonsBackgroundColor;
 
   documentStyle.setProperty(
-    cssVariableNames.chat.buttons.bgRgb,
+    botCssVariableNames.chat.buttons.bgRgb,
     hexToRgb(bgColor).join(", "),
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.buttons.bgRgb,
+    botCssVariableNames.chat.buttons.bgRgb,
     hexToRgb(bgColor).join(", "),
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.buttons.color,
+    botCssVariableNames.chat.buttons.color,
     buttons?.color ?? defaultButtonsColor,
   );
 
@@ -443,18 +365,18 @@ const setButtons = (
       roundeness: legacyRoundness ?? defaultRoundness,
     },
     documentStyle,
-    cssVariableNames.chat.buttons.borderRadius,
+    botCssVariableNames.chat.buttons.borderRadius,
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.buttons.borderWidth,
+    botCssVariableNames.chat.buttons.borderWidth,
     isDefined(buttons?.border?.thickness)
       ? `${buttons?.border?.thickness}px`
       : `${defaultButtonsBorderThickness}px`,
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.buttons.borderColor,
+    botCssVariableNames.chat.buttons.borderColor,
     hexToRgb(
       buttons?.border?.color ??
         buttons?.backgroundColor ??
@@ -463,14 +385,14 @@ const setButtons = (
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.buttons.borderOpacity,
+    botCssVariableNames.chat.buttons.borderOpacity,
     isDefined(buttons?.border?.opacity)
       ? buttons.border.opacity.toString()
       : defaultOpacity.toString(),
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.buttons.opacity,
+    botCssVariableNames.chat.buttons.opacity,
     buttons?.backgroundColor === "transparent"
       ? "0"
       : isDefined(buttons?.opacity)
@@ -479,14 +401,14 @@ const setButtons = (
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.buttons.blur,
+    botCssVariableNames.chat.buttons.blur,
     isDefined(buttons?.blur) ? `${buttons.blur ?? 0}px` : "none",
   );
 
   setShadow(
     buttons?.shadow,
     documentStyle,
-    cssVariableNames.chat.buttons.boxShadow,
+    botCssVariableNames.chat.buttons.boxShadow,
   );
 };
 
@@ -496,19 +418,19 @@ const setInputs = (
   legacyRoundness?: ChatTheme["roundness"],
 ) => {
   documentStyle.setProperty(
-    cssVariableNames.chat.inputs.bgColor,
+    botCssVariableNames.chat.inputs.bgColor,
     hexToRgb(inputs?.backgroundColor ?? defaultInputsBackgroundColor).join(
       ", ",
     ),
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.inputs.color,
+    botCssVariableNames.chat.inputs.color,
     inputs?.color ?? defaultInputsColor,
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.inputs.placeholderColor,
+    botCssVariableNames.chat.inputs.placeholderColor,
     inputs?.placeholderColor ?? defaultInputsPlaceholderColor,
   );
 
@@ -517,30 +439,28 @@ const setInputs = (
       roundeness: legacyRoundness ?? defaultRoundness,
     },
     documentStyle,
-    cssVariableNames.chat.inputs.borderRadius,
+    botCssVariableNames.chat.inputs.borderRadius,
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.inputs.borderWidth,
-    isDefined(inputs?.border?.thickness)
-      ? `${inputs?.border?.thickness}px`
-      : "0",
+    botCssVariableNames.chat.inputs.borderWidth,
+    `${inputs?.border?.thickness ?? defaultInputsBorderThickness}px`,
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.inputs.borderColor,
-    hexToRgb(inputs?.border?.color ?? "").join(", "),
+    botCssVariableNames.chat.inputs.borderColor,
+    hexToRgb(inputs?.border?.color ?? defaultInputsBorderColor).join(", "),
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.inputs.borderOpacity,
+    botCssVariableNames.chat.inputs.borderOpacity,
     isDefined(inputs?.border?.opacity)
       ? inputs.border.opacity.toString()
       : defaultOpacity.toString(),
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.inputs.opacity,
+    botCssVariableNames.chat.inputs.opacity,
     inputs?.backgroundColor === "transparent"
       ? "0"
       : isDefined(inputs?.opacity)
@@ -549,14 +469,14 @@ const setInputs = (
   );
 
   documentStyle.setProperty(
-    cssVariableNames.chat.inputs.blur,
+    botCssVariableNames.chat.inputs.blur,
     isDefined(inputs?.blur) ? `${inputs.blur ?? 0}px` : "none",
   );
 
   setShadow(
-    inputs?.shadow ?? defaultInputsShadow,
+    inputs?.shadow,
     documentStyle,
-    cssVariableNames.chat.inputs.boxShadow,
+    botCssVariableNames.chat.inputs.boxShadow,
   );
 };
 
@@ -575,7 +495,7 @@ const setCheckbox = (
   if (isChatBgTransparent) {
     const bgType = generalBackground?.type ?? defaultBackgroundType;
     documentStyle.setProperty(
-      cssVariableNames.chat.checkbox.bgRgb,
+      botCssVariableNames.chat.checkbox.bgRgb,
       bgType === BackgroundType.IMAGE
         ? "rgba(255, 255, 255, 0.75)"
         : hexToRgb(
@@ -585,10 +505,13 @@ const setCheckbox = (
           ).join(", "),
     );
     if (bgType === BackgroundType.IMAGE) {
-      documentStyle.setProperty(cssVariableNames.chat.checkbox.alphaRatio, "3");
+      documentStyle.setProperty(
+        botCssVariableNames.chat.checkbox.alphaRatio,
+        "3",
+      );
     } else {
       documentStyle.setProperty(
-        cssVariableNames.chat.checkbox.alphaRatio,
+        botCssVariableNames.chat.checkbox.alphaRatio,
         generalBackground?.content && isLight(generalBackground?.content)
           ? "1"
           : "2",
@@ -596,13 +519,13 @@ const setCheckbox = (
     }
   } else {
     documentStyle.setProperty(
-      cssVariableNames.chat.checkbox.bgRgb,
+      botCssVariableNames.chat.checkbox.bgRgb,
       hexToRgb(chatContainerBgColor)
         .concat(container?.opacity ?? 1)
         .join(", "),
     );
     documentStyle.setProperty(
-      cssVariableNames.chat.checkbox.alphaRatio,
+      botCssVariableNames.chat.checkbox.alphaRatio,
       isLight(chatContainerBgColor) ? "1" : "2",
     );
   }
@@ -612,12 +535,12 @@ const setGeneralBackground = (
   background: Background | undefined,
   documentStyle: CSSStyleDeclaration,
 ) => {
-  documentStyle.setProperty(cssVariableNames.general.bgImage, null);
-  documentStyle.setProperty(cssVariableNames.general.bgColor, null);
+  documentStyle.setProperty(botCssVariableNames.general.bgImage, null);
+  documentStyle.setProperty(botCssVariableNames.general.bgColor, null);
   documentStyle.setProperty(
     (background?.type ?? defaultBackgroundType) === BackgroundType.IMAGE
-      ? cssVariableNames.general.bgImage
-      : cssVariableNames.general.bgColor,
+      ? botCssVariableNames.general.bgImage
+      : botCssVariableNames.general.bgColor,
     parseBackgroundValue({
       type: background?.type ?? defaultBackgroundType,
       content: background?.content ?? defaultBackgroundColor,

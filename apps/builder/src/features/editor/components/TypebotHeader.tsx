@@ -44,7 +44,7 @@ export const TypebotHeader = () => {
   const { workspace } = useWorkspace();
 
   const { isOpen, onOpen } = useDisclosure();
-  const headerBgColor = useColorModeValue("white", "gray.900");
+  const headerBgColor = useColorModeValue("white", "gray.950");
 
   const handleHelpClick = () => {
     isCloudProdInstance() && workspace?.plan && workspace.plan !== Plan.FREE
@@ -143,7 +143,7 @@ const LeftElements = ({
         <IconButton
           as={Link}
           aria-label="Navigate back"
-          icon={<ChevronLeftIcon fontSize={25} />}
+          icon={<ChevronLeftIcon fontSize="md" />}
           href={{
             pathname: router.query.parentId
               ? "/typebots/[typebotId]/edit"
@@ -196,7 +196,7 @@ const LeftElements = ({
             >
               <IconButton
                 display={["none", "flex"]}
-                icon={<UndoIcon />}
+                icon={<UndoIcon fontSize="16px" />}
                 size="sm"
                 aria-label={t("editor.header.undoButton.label")}
                 onClick={undo}
@@ -215,7 +215,7 @@ const LeftElements = ({
             >
               <IconButton
                 display={["none", "flex"]}
-                icon={<RedoIcon />}
+                icon={<RedoIcon fontSize="16px" />}
                 size="sm"
                 aria-label={t("editor.header.redoButton.label")}
                 onClick={redo}
@@ -325,7 +325,7 @@ const TypebotNav = ({
       <Button
         as={Link}
         href={`/typebots/${typebotId}/edit`}
-        colorScheme={router.pathname.includes("/edit") ? "blue" : "gray"}
+        colorScheme={router.pathname.includes("/edit") ? "orange" : "gray"}
         variant={router.pathname.includes("/edit") ? "outline" : "ghost"}
         size="sm"
       >
@@ -334,7 +334,7 @@ const TypebotNav = ({
       <Button
         as={Link}
         href={`/typebots/${typebotId}/theme`}
-        colorScheme={router.pathname.endsWith("theme") ? "blue" : "gray"}
+        colorScheme={router.pathname.endsWith("theme") ? "orange" : "gray"}
         variant={router.pathname.endsWith("theme") ? "outline" : "ghost"}
         size="sm"
       >
@@ -343,7 +343,7 @@ const TypebotNav = ({
       <Button
         as={Link}
         href={`/typebots/${typebotId}/settings`}
-        colorScheme={router.pathname.endsWith("settings") ? "blue" : "gray"}
+        colorScheme={router.pathname.endsWith("settings") ? "orange" : "gray"}
         variant={router.pathname.endsWith("settings") ? "outline" : "ghost"}
         size="sm"
       >
@@ -352,7 +352,7 @@ const TypebotNav = ({
       <Button
         as={Link}
         href={`/typebots/${typebotId}/share`}
-        colorScheme={router.pathname.endsWith("share") ? "blue" : "gray"}
+        colorScheme={router.pathname.endsWith("share") ? "orange" : "gray"}
         variant={router.pathname.endsWith("share") ? "outline" : "ghost"}
         size="sm"
       >
@@ -362,7 +362,7 @@ const TypebotNav = ({
         <Button
           as={Link}
           href={`/typebots/${typebotId}/results`}
-          colorScheme={router.pathname.includes("results") ? "blue" : "gray"}
+          colorScheme={router.pathname.includes("results") ? "orange" : "gray"}
           variant={router.pathname.includes("results") ? "outline" : "ghost"}
           size="sm"
         >

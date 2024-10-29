@@ -103,7 +103,7 @@ export const CustomDomainsDropdown = ({
           {currentCustomDomain ?? "Add my domain"}
         </Text>
       </MenuButton>
-      <MenuList maxW="500px" shadow="lg">
+      <MenuList maxW="500px" shadow="md">
         <Stack maxH={"35vh"} overflowY="auto" spacing="0">
           {(data?.customDomains ?? []).map((customDomain) => (
             <Button

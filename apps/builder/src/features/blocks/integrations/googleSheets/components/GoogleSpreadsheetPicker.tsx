@@ -93,7 +93,7 @@ export const GoogleSpreadsheetPicker = ({
       <Flex justifyContent="space-between">
         <HStack spacing={2}>
           <GoogleSheetsLogo />
-          <Text fontWeight="semibold">{spreadsheetData.name}</Text>
+          <Text fontWeight="medium">{spreadsheetData.name}</Text>
         </HStack>
         <IconButton
           size="sm"

@@ -199,7 +199,7 @@ export const PublishButton = ({
         isDisabled={isNotDefined(publishedTypebot) || isPublished}
       >
         <Button
-          colorScheme="blue"
+          colorScheme="orange"
           isLoading={isPublishing || isUnpublishing}
           isDisabled={isPublished || isSavingLoading}
           onClick={() => {

@@ -15,7 +15,7 @@ export const SelectBox = ({ origin, dimension }: Props) => (
     pos="absolute"
     rounded="md"
     borderWidth={1}
-    borderColor="blue.200"
+    borderColor="orange.200"
     bgColor="rgba(0, 66, 218, 0.1)"
     style={{
       left: origin.x,

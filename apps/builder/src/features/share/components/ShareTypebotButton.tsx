@@ -19,7 +19,7 @@ export const ShareTypebotButton = ({ isLoading }: { isLoading: boolean }) => {
       <PopoverTrigger>
         <Button
           isLoading={isLoading}
-          leftIcon={<UsersIcon />}
+          leftIcon={<UsersIcon fontSize="md" />}
           aria-label={t("share.button.popover.ariaLabel")}
           size="sm"
           iconSpacing={{ base: 0, xl: 2 }}
@@ -31,7 +31,7 @@ export const ShareTypebotButton = ({ isLoading }: { isLoading: boolean }) => {
       </PopoverTrigger>
       <Portal>
         <PopoverContent
-          shadow="lg"
+          shadow="md"
           width="430px"
           rootProps={{ style: { transform: "scale(0)" } }}
         >

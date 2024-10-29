@@ -48,13 +48,13 @@ export const NewVersionPopup = () => {
         unmountOnExit
       >
         <Stack
-          bgColor="blue.400"
+          bgColor="orange.400"
           p="4"
           px="4"
           rounded="lg"
-          shadow="lg"
+          shadow="md"
           borderWidth="1px"
-          borderColor="blue.300"
+          borderColor="orange.300"
           maxW="320px"
         >
           <HStack spacing={3}>
@@ -62,7 +62,7 @@ export const NewVersionPopup = () => {
               <Stack spacing={1}>
                 <HStack>
                   <PackageIcon />{" "}
-                  <Text fontWeight="bold">New version available!</Text>
+                  <Text fontWeight="medium">New version available!</Text>
                 </HStack>
 
                 <Text fontSize="sm" color="gray.100">

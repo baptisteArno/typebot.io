@@ -120,7 +120,7 @@ export const IconPicker = ({ onIconSelected }: Props) => {
       <Stack overflowY="auto" maxH="350px" ref={scrollContainer} spacing={4}>
         {recentIconNames.length > 0 && (
           <Stack>
-            <Text fontSize="xs" color="gray.400" fontWeight="semibold" pl="2">
+            <Text fontSize="xs" color="gray.400" fontWeight="medium" pl="2">
               RECENT
             </Text>
             <SimpleGrid
@@ -148,7 +148,7 @@ export const IconPicker = ({ onIconSelected }: Props) => {
         )}
         <Stack>
           {recentIconNames.length > 0 && (
-            <Text fontSize="xs" color="gray.400" fontWeight="semibold" pl="2">
+            <Text fontSize="xs" color="gray.400" fontWeight="medium" pl="2">
               ICONS
             </Text>
           )}

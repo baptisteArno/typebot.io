@@ -39,7 +39,7 @@ export const Toast = ({
   secondaryButton,
   onClose,
 }: ToastProps) => {
-  const bgColor = useColorModeValue("white", "gray.800");
+  const bgColor = useColorModeValue("white", "gray.900");
   const detailsLabelColor = useColorModeValue("gray.600", "gray.400");
 
   return (
@@ -57,7 +57,7 @@ export const Toast = ({
         <Icon customIcon={icon} status={status} />{" "}
         <Stack spacing={3} flex="1" justify="center" h="full">
           <Stack spacing={1}>
-            {title && <Text fontWeight="semibold">{title}</Text>}
+            {title && <Text fontWeight="medium">{title}</Text>}
             {description && <Text>{description}</Text>}
           </Stack>
 
