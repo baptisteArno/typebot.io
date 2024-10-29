@@ -185,15 +185,24 @@ export const getPublishedTypebotCached = authenticatedProcedure
           !existingTypebot ||
           (await isReadTypebotForbidden(existingTypebot, user))
         ) {
-          console.log('Typebot not found or access forbidden for ID:', typebotId)
-          throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+          console.log(
+            'Typebot not found or access forbidden for ID:',
+            typebotId
+          )
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Typebot not found',
+          })
         }
 
         if (
           !existingTypebot?.id ||
           (await isReadTypebotForbidden(existingTypebot, user))
         ) {
-          throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Typebot not found',
+          })
         }
 
         if (!existingTypebot.publishedTypebot) {
@@ -202,29 +211,29 @@ export const getPublishedTypebotCached = authenticatedProcedure
           }
         }
 
-          const parsedTypebot = migrateToLatestVersion
-            ? await migratePublicTypebot(
+        const parsedTypebot = migrateToLatestVersion
+          ? await migratePublicTypebot(
               publicTypebotSchema.parse(existingTypebot.publishedTypebot)
             )
-            : publicTypebotSchema.parse(existingTypebot.publishedTypebot)
+          : publicTypebotSchema.parse(existingTypebot.publishedTypebot)
 
-          const result = {
-            publishedTypebot: parsedTypebot,
-            version: migrateToLatestVersion
-              ? ((existingTypebot.version ?? '3') as Typebot['version'])
-              : undefined,
-          }
-
-          cache.set(cacheKey, result)
-
-          return result
-        } catch (err) {
-              console.error('Error in getPublishedTypebotCached:', err)
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: 'Failed to parse published typebot',
-            cause: err,
-          })
+        const result = {
+          publishedTypebot: parsedTypebot,
+          version: migrateToLatestVersion
+            ? ((existingTypebot.version ?? '3') as Typebot['version'])
+            : undefined,
         }
+
+        cache.set(cacheKey, result)
+
+        return result
+      } catch (err) {
+        console.error('Error in getPublishedTypebotCached:', err)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to parse published typebot',
+          cause: err,
+        })
+      }
     }
   )
