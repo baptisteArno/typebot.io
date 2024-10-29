@@ -42,5 +42,8 @@
       "path": "node_modules/cz-emoji"
     }
   },
-  "packageManager": "pnpm@8.15.4"
+  "packageManager": "pnpm@8.15.4",
+  "dependencies": {
+    "node-cache": "^5.1.2"
+  }
 }
