@@ -44,9 +44,10 @@ export default function Home() {
           pt="20"
           px="4"
           gap={20}
-          _open={{
-            animation: "fade-in 300ms ease-out",
-          }}
+          opacity={0}
+          animation="slide-fade-in 200ms ease-out"
+          animationDelay="2s"
+          animationFillMode="forwards"
         >
           <Stack gap={10}>
             <UseCases />
