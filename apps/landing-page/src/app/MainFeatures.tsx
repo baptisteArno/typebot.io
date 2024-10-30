@@ -1,5 +1,6 @@
 "use client";
 import {
+  AspectRatio,
   Box,
   Card,
   type CardRootProps,
@@ -10,14 +11,14 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { isDefined } from "@typebot.io/lib/utils";
 import { ArrowUpRightIcon } from "@typebot.io/ui/icons/ArrowUpRightIcon";
-import { type PanInfo, motion } from "framer-motion";
+import { AnimatePresence, type PanInfo, motion } from "framer-motion";
 import NextLink from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { FeatureCardData } from "./types";
 
 const swipeDistance = 50;
+const carouselItemClassName = "carousel-item";
 
 const features = [
   {
@@ -65,79 +66,84 @@ const features = [
 
 export const MainFeatures = () => {
   const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoHeight, setVideoHeight] = useState<number>();
-
-  const updateIndex = (
-    _: MouseEvent | TouchEvent | PointerEvent,
-    panInfo: PanInfo,
-  ) => {
-    if (panInfo.offset.x < -swipeDistance) {
-      if (currentFeatureIndex === features.length - 1) return;
-      setCurrentFeatureIndex(currentFeatureIndex + 1);
-    }
-
-    if (panInfo.offset.x > swipeDistance) {
-      if (currentFeatureIndex === 0) return;
-      setCurrentFeatureIndex(currentFeatureIndex - 1);
-    }
-  };
-
-  useEffect(() => {
-    const updateVideoHeight = () => {
-      if (isDefined(videoHeight)) return;
-      setVideoHeight(videoRef.current?.clientHeight);
-    };
-    updateVideoHeight();
-    window.addEventListener("resize", updateVideoHeight);
-    return () => window.removeEventListener("resize", updateVideoHeight);
-  }, [videoHeight]);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   const currentFeature = features[currentFeatureIndex];
 
+  useEffect(() => {
+    const container = carouselRef.current;
+    if (!container) return;
+
+    const items = container.getElementsByClassName(carouselItemClassName);
+
+    const handleScroll = () => {
+      let currentIndex = 0;
+      let minDistance = Number.POSITIVE_INFINITY;
+
+      [...items].forEach((item, index) => {
+        const rect = item.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+
+        const distance = Math.abs(rect.left - containerRect.left);
+
+        if (distance < minDistance) {
+          minDistance = distance;
+          currentIndex = index;
+        }
+      });
+
+      setCurrentFeatureIndex(currentIndex);
+    };
+
+    container.addEventListener("scroll", handleScroll);
+
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <Stack w="full" pb="20">
-      <Box asChild display="flex" gap="2" alignItems="flex-end">
-        <motion.div
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          onDragEnd={updateIndex}
-          animate={{
-            translateX: `calc(${-currentFeatureIndex * 100}% - ${currentFeatureIndex * 8}px)`,
-          }}
-          transition={{
-            type: "spring",
-            bounce: 0,
-          }}
-        >
-          {features.map((feature) => (
-            <FeatureCard
-              key={feature.title.main}
-              feature={feature}
-              minW="full"
-            />
-          ))}
-        </motion.div>
-      </Box>
       <Box
-        bgColor="gray.950"
-        rounded="2xl"
-        height={`calc(${videoHeight ?? 200}px + 16px)`}
-        p="2"
+        ref={carouselRef}
+        display="flex"
+        gap="2"
+        alignItems="flex-end"
+        overflow="auto"
+        scrollSnapType="x mandatory"
+        scrollPadding="0 1rem"
+        scrollSnapStop="always"
+        className="hide-scrollbar"
+        px="4"
       >
-        <motion.video
-          ref={videoRef}
-          key={currentFeature.video.src}
-          src={currentFeature.video.src}
-          autoPlay
-          muted
-          loop
-          playsInline
-          style={{ borderRadius: "0.5rem" }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-        />
+        {features.map((feature) => (
+          <FeatureCard
+            className={carouselItemClassName}
+            key={feature.title.main}
+            feature={feature}
+            minW="full"
+            scrollSnapAlign="start"
+          />
+        ))}
       </Box>
+      <AspectRatio maxW="100%" ratio={1} mx="4">
+        <Box bgColor="gray.950" rounded="2xl" p="2">
+          <AnimatePresence mode="popLayout">
+            <motion.video
+              key={currentFeature.video.src}
+              src={currentFeature.video.src}
+              autoPlay
+              muted
+              loop
+              playsInline
+              style={{ borderRadius: "0.5rem" }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            />
+          </AnimatePresence>
+        </Box>
+      </AspectRatio>
     </Stack>
   );
 };

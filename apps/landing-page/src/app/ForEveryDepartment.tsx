@@ -1,9 +1,8 @@
 "use client";
 
 import {
+  Box,
   Card,
-  CardBody,
-  Dialog,
   Heading,
   IconButton,
   Span,
@@ -135,7 +134,7 @@ export const ForEveryDepartment = () => {
             rounded="2xl"
           >
             <motion.div layoutId={`dep-${index}`}>
-              <CardBody p="2">
+              <Card.Body p="2">
                 <Stack gap={4}>
                   <motion.figure layoutId={`dep-${index}-img`}>
                     <Image
@@ -167,16 +166,21 @@ export const ForEveryDepartment = () => {
                 >
                   <PlusIcon />
                 </IconButton>
-              </CardBody>
+              </Card.Body>
             </motion.div>
           </Card.Root>
         ))}
       </VStack>
       {openedDepartment && (
-        <Dialog.Root open={true} lazyMount>
-          <Dialog.Backdrop bgColor="blackAlpha.800" />
-          <Dialog.Positioner>
-            <Dialog.Content
+        <Box
+          pos="fixed"
+          boxSize="full"
+          inset="0"
+          bgColor="blackAlpha.800"
+          zIndex="1"
+        >
+          <Box pos="absolute" top="5%">
+            <Card.Root
               ref={dialogContentRef}
               color="white"
               bgColor="#1A1A1A"
@@ -185,43 +189,42 @@ export const ForEveryDepartment = () => {
               mx="4"
               rounded="2xl"
             >
-              <Dialog.Body asChild p="2">
-                <motion.div layoutId={`dep-${openedDepartmentIndex}`}>
-                  <IconButton
-                    pos="absolute"
-                    top="1rem"
-                    right={
-                      openedDepartment.image.gradientPlacement === "right"
-                        ? "1rem"
-                        : undefined
-                    }
-                    left={
-                      openedDepartment.image.gradientPlacement === "left"
-                        ? "1rem"
-                        : undefined
-                    }
-                    color="white"
-                    bgColor="gray.950"
-                    opacity={0}
-                    animation="slide-fade-in 200ms ease-out"
-                    animationDelay="0.5s"
-                    animationFillMode="forwards"
-                    onClick={() => setOpenedDepartmentIndex(undefined)}
-                  >
-                    <CloseIcon />
-                  </IconButton>
-
-                  {openedDepartment && (
+              <motion.div layoutId={`dep-${openedDepartmentIndex}`}>
+                {openedDepartment && (
+                  <Card.Body p="2">
                     <Stack gap={4}>
                       <motion.figure
                         layoutId={`dep-${openedDepartmentIndex}-img`}
                       >
+                        <IconButton
+                          pos="absolute"
+                          top="1rem"
+                          right={
+                            openedDepartment.image.gradientPlacement === "right"
+                              ? "1rem"
+                              : undefined
+                          }
+                          left={
+                            openedDepartment.image.gradientPlacement === "left"
+                              ? "1rem"
+                              : undefined
+                          }
+                          color="white"
+                          bgColor="gray.950"
+                          opacity={0}
+                          animation="slide-fade-in 200ms ease-out"
+                          animationDelay="0.5s"
+                          animationFillMode="forwards"
+                          onClick={() => setOpenedDepartmentIndex(undefined)}
+                        >
+                          <CloseIcon />
+                        </IconButton>
                         <Image
                           src={openedDepartment.image.src}
                           alt={openedDepartment.image.alt}
                         />
                       </motion.figure>
-                      <Stack gap="8" px="2" pb="4">
+                      <Stack gap="8" pb="4" px="2">
                         <Stack gap="3">
                           <Heading textStyle="3xl" fontWeight="medium" asChild>
                             <motion.h2
@@ -258,12 +261,12 @@ export const ForEveryDepartment = () => {
                         </Stack>
                       </Stack>
                     </Stack>
-                  )}
-                </motion.div>
-              </Dialog.Body>
-            </Dialog.Content>
-          </Dialog.Positioner>
-        </Dialog.Root>
+                  </Card.Body>
+                )}
+              </motion.div>
+            </Card.Root>
+          </Box>
+        </Box>
       )}
     </Theme>
   );

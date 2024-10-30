@@ -42,14 +42,13 @@ export default function Home() {
           backgroundSize="100%"
           backgroundRepeat="no-repeat"
           pt="20"
-          px="4"
           gap={20}
           opacity={0}
           animation="slide-fade-in 200ms ease-out"
           animationDelay="2s"
           animationFillMode="forwards"
         >
-          <Stack gap={10}>
+          <Stack gap={10} px="4">
             <UseCases />
             <CallToActionSection />
           </Stack>
