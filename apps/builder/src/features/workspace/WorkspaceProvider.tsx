@@ -2,10 +2,7 @@ import { useToast } from "@/hooks/useToast";
 import { trpc } from "@/lib/trpc";
 import { byId } from "@typebot.io/lib/utils";
 import { WorkspaceRole } from "@typebot.io/prisma/enum";
-import type {
-  Workspace,
-  WorkspaceAiFeature,
-} from "@typebot.io/workspaces/schemas";
+import type { Workspace } from "@typebot.io/workspaces/schemas";
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
@@ -36,7 +33,8 @@ const workspaceContext = createContext<{
     icon?: string;
     name?: string;
     inEditorAiFeaturesEnabled?: boolean;
-    aiFeatures?: WorkspaceAiFeature[];
+    aiFeaturePrompt?: string;
+    aiFeatureCredentialId?: string;
   }) => void;
   deleteCurrentWorkspace: () => Promise<void>;
   //@ts-ignore
@@ -185,7 +183,8 @@ export const WorkspaceProvider = ({
     icon?: string;
     name?: string;
     inEditorAiFeaturesEnabled?: boolean;
-    aiFeatures?: WorkspaceAiFeature[];
+    aiFeaturePrompt?: string;
+    aiFeatureCredentialId?: string;
   }) => {
     if (!workspaceId) return;
     updateWorkspaceMutation.mutate({

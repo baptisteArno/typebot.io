@@ -90,7 +90,8 @@ model Workspace {
   chatsLimitSecondEmailSentAt   DateTime?
   storageLimitSecondEmailSentAt DateTime?
   inEditorAiFeaturesEnabled     Boolean               @default(false)
-  aiFeatures                    WorkspaceAiFeature[]
+  aiFeaturePrompt               String?
+  aiFeatureCredentialId         String?               @unique
   claimableCustomPlan           ClaimableCustomPlan?
   customChatsLimit              Int?
   customStorageLimit            Int?
@@ -124,17 +125,6 @@ model WorkspaceInvitation {
   workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }
 
-model WorkspaceAiFeature {
-  id           String       @id @default(cuid())
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @default(now()) @updatedAt
-  workspace    Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId  String
-  prompt       String
-  credential   Credentials? @relation(fields: [credentialId], references: [id], onDelete: SetNull)
-  credentialId String?
-}
-
 model CustomDomain {
   name        String    @id
   createdAt   DateTime  @default(now())
@@ -143,15 +133,14 @@ model CustomDomain {
 }
 
 model Credentials {
-  id                 String               @id @default(cuid())
-  createdAt          DateTime             @default(now())
-  workspaceId        String
-  data               String
-  name               String
-  type               String
-  iv                 String
-  workspace          Workspace            @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  WorkspaceAiFeature WorkspaceAiFeature[]
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  workspaceId String
+  data        String
+  name        String
+  type        String
+  iv          String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {

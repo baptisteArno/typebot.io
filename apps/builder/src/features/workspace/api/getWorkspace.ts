@@ -1,10 +1,7 @@
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import prisma from "@typebot.io/prisma";
-import {
-  workspaceAiFeatureSchema,
-  workspaceSchema,
-} from "@typebot.io/workspaces/schemas";
+import { workspaceSchema } from "@typebot.io/workspaces/schemas";
 import { z } from "@typebot.io/zod";
 import { isReadWorkspaceFobidden } from "../helpers/isReadWorkspaceFobidden";
 
@@ -29,35 +26,22 @@ export const getWorkspace = authenticatedProcedure
   )
   .output(
     z.object({
-      workspace: workspaceSchema
-        .omit({
-          chatsLimitFirstEmailSentAt: true,
-          chatsLimitSecondEmailSentAt: true,
-          storageLimitFirstEmailSentAt: true,
-          storageLimitSecondEmailSentAt: true,
-          customStorageLimit: true,
-          additionalChatsIndex: true,
-          additionalStorageIndex: true,
-          isQuarantined: true,
-        })
-        .extend({
-          aiFeatures: z.array(workspaceAiFeatureSchema).optional(),
-        }),
+      workspace: workspaceSchema.omit({
+        chatsLimitFirstEmailSentAt: true,
+        chatsLimitSecondEmailSentAt: true,
+        storageLimitFirstEmailSentAt: true,
+        storageLimitSecondEmailSentAt: true,
+        customStorageLimit: true,
+        additionalChatsIndex: true,
+        additionalStorageIndex: true,
+        isQuarantined: true,
+      }),
     }),
   )
   .query(async ({ input: { workspaceId }, ctx: { user } }) => {
     const workspace = await prisma.workspace.findFirst({
       where: { id: workspaceId },
-      include: {
-        members: true,
-        aiFeatures: {
-          select: {
-            id: true,
-            prompt: true,
-            credentialId: true,
-          },
-        },
-      },
+      include: { members: true },
     });
 
     if (!workspace || isReadWorkspaceFobidden(workspace, user))

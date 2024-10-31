@@ -96,6 +96,7 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
               onCheckChange={updateInEditorAiFeaturesEnabled}
               moreInfoContent="To enable AI features within this workspace"
               justifyContent="start"
+              defaultChecked={!!workspace.inEditorAiFeaturesEnabled}
             />
 
             <InEditorAIFeatures />

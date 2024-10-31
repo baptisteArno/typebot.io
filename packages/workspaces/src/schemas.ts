@@ -25,11 +25,6 @@ export const workspaceInvitationSchema = z.object({
   Omit<Prisma.WorkspaceInvitation, "workspaceId" | "userId" | "id">
 >;
 
-export const workspaceAiFeatureSchema = z.object({
-  prompt: z.string(),
-  credentialId: z.string().nullable(),
-});
-
 export const workspaceSchema = z.object({
   id: z.string(),
   createdAt: z.date(),
@@ -45,7 +40,8 @@ export const workspaceSchema = z.object({
   storageLimitFirstEmailSentAt: z.date().nullable(),
   storageLimitSecondEmailSentAt: z.date().nullable(),
   inEditorAiFeaturesEnabled: z.boolean(),
-  aiFeatures: z.array(workspaceAiFeatureSchema).optional(),
+  aiFeaturePrompt: z.string().nullable(),
+  aiFeatureCredentialId: z.string().nullable(),
   customChatsLimit: z.number().nullable(),
   customStorageLimit: z.number().nullable(),
   customSeatsLimit: z.number().nullable(),
@@ -58,4 +54,3 @@ export const workspaceSchema = z.object({
 export type Workspace = z.infer<typeof workspaceSchema>;
 export type WorkspaceMember = z.infer<typeof workspaceMemberSchema>;
 export type WorkspaceInvitation = z.infer<typeof workspaceInvitationSchema>;
-export type WorkspaceAiFeature = z.infer<typeof workspaceAiFeatureSchema>;
