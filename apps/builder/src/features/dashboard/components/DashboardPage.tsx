@@ -1,9 +1,13 @@
 import { Seo } from "@/components/Seo";
 import { useUser } from "@/features/account/hooks/useUser";
+import {
+  PreCheckoutModal,
+  type PreCheckoutModalProps,
+} from "@/features/billing/components/PreCheckoutModal";
 import { TypebotDndProvider } from "@/features/folders/TypebotDndProvider";
 import { FolderContent } from "@/features/folders/components/FolderContent";
+import { ParentModalProvider } from "@/features/graph/providers/ParentModalProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
 import { trpc } from "@/lib/trpc";
 import { Spinner, Stack, Text, VStack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
@@ -19,24 +23,12 @@ export const DashboardPage = () => {
   const router = useRouter();
   const { user } = useUser();
   const { workspace } = useWorkspace();
-  const { showToast } = useToast();
-
+  const [preCheckoutPlan, setPreCheckoutPlan] =
+    useState<PreCheckoutModalProps["selectedSubscription"]>();
   const { mutate: createCustomCheckoutSession } =
     trpc.billing.createCustomCheckoutSession.useMutation({
       onSuccess: (data) => {
         router.push(data.checkoutUrl);
-      },
-    });
-
-  const { mutate: createCheckoutSession, isLoading: isCreatingCheckout } =
-    trpc.billing.createCheckoutSession.useMutation({
-      onError: (error) => {
-        showToast({
-          description: error.message,
-        });
-      },
-      onSuccess: ({ checkoutUrl }) => {
-        router.push(checkoutUrl);
       },
     });
 
@@ -56,11 +48,10 @@ export const DashboardPage = () => {
     }
     if (workspace && subscribePlan && user && workspace.plan === "FREE") {
       setIsLoading(true);
-      createCheckoutSession({
+      setPreCheckoutPlan({
         plan: subscribePlan as "PRO" | "STARTER",
         workspaceId: workspace.id,
         currency: guessIfUserIsEuropean() ? "eur" : "usd",
-        returnUrl: window.location.href,
       });
     }
   }, [createCustomCheckoutSession, router.query, user, workspace]);
@@ -69,6 +60,16 @@ export const DashboardPage = () => {
     <Stack minH="100vh">
       <Seo title={workspace?.name ?? t("dashboard.title")} />
       <DashboardHeader />
+      {!workspace?.stripeId && (
+        <ParentModalProvider>
+          <PreCheckoutModal
+            selectedSubscription={preCheckoutPlan}
+            existingEmail={user?.email ?? undefined}
+            existingCompany={workspace?.name ?? undefined}
+            onClose={() => setPreCheckoutPlan(undefined)}
+          />
+        </ParentModalProvider>
+      )}
       <TypebotDndProvider>
         {isLoading ? (
           <VStack w="full" justifyContent="center" pt="10" spacing={6}>

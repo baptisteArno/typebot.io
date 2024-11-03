@@ -121,13 +121,9 @@ export const updateSubscription = async ({
       },
     });
   } else {
-    if (!user.email)
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "User email is missing",
-      });
     const checkoutUrl = await createCheckoutSessionUrl(stripe)({
-      email: user.email,
+      customerId: workspace.stripeId,
+      userId: user.id,
       workspaceId,
       currency,
       plan,
