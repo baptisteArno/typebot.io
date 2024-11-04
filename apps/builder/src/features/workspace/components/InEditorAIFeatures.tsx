@@ -21,7 +21,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { defaultPromptToGenerateGroupTitles } from "../../../../../../packages/workspaces/src/defaultAiPrompts";
 import { useWorkspace } from "../WorkspaceProvider";
 
@@ -45,28 +45,31 @@ export const InEditorAIFeatures = () => {
     onClose: onAIModalClose,
   } = useDisclosure();
 
-  const { data, isLoading, refetch } =
-    trpc.credentials.listCredentials.useQuery(
-      {
-        workspaceId: workspace!.id,
-        type: selectedAiProvider,
-      },
-      {
-        enabled: !!workspace?.id && !!selectedAiProvider,
-      },
-    );
+  const {
+    data: credentialsList,
+    isLoading: loadingCredentialsList,
+    refetch: refetchCredentialsList,
+  } = trpc.credentials.listCredentials.useQuery(
+    {
+      workspaceId: workspace!.id,
+      type: selectedAiProvider,
+    },
+    {
+      enabled: !!workspace?.id && !!selectedAiProvider,
+    },
+  );
 
   const {
-    data: existingCredentials,
-    isLoading: loadingExistingCredentials,
-    refetch: refetchCredentials,
+    data: existingCredential,
+    isLoading: loadingExistingCredential,
+    refetch: refetchExistingCredential,
   } = trpc.credentials.getCredentials.useQuery(
     {
       workspaceId: workspace?.id as string,
       credentialsId: workspace?.aiFeatureCredentialId as string,
     },
     {
-      enabled: !!workspace?.aiFeatureCredentialId,
+      enabled: !!workspace?.id && !!workspace?.aiFeatureCredentialId,
     },
   );
 
@@ -91,13 +94,23 @@ export const InEditorAIFeatures = () => {
     updateWorkspace({ aiFeaturePrompt: prompt });
   };
 
-  // if (!loadingExistingCredentials) {
-  //   setSelectedAiProvider(existingCredentials.type as aiProvidersType);
-  //   setSelectedAiCredential({
-  //     id: workspace.aiFeatureCredentialId,
-  //     name: existingCredentials.name,
-  //   });
-  // }
+  useEffect(() => {
+    // Load existing credential if already set
+    if (
+      !!workspace?.id &&
+      !!workspace?.aiFeatureCredentialId &&
+      !loadingExistingCredential &&
+      !!existingCredential &&
+      (selectedAiProvider !== (existingCredential.type as aiProvidersType) ||
+        selectedAiCredential?.id !== workspace.aiFeatureCredentialId)
+    ) {
+      setSelectedAiProvider(existingCredential.type as aiProvidersType);
+      setSelectedAiCredential({
+        id: workspace.aiFeatureCredentialId,
+        name: existingCredential.name,
+      });
+    }
+  }, [existingCredential]);
 
   return (
     <>
@@ -129,7 +142,7 @@ export const InEditorAIFeatures = () => {
                       onClick={() => {
                         setSelectedAiProvider(type);
                         setSelectedAiCredential(null);
-                        refetch();
+                        refetchCredentialsList();
                       }}
                     >
                       <BlockLabel type={type} />
@@ -139,12 +152,12 @@ export const InEditorAIFeatures = () => {
               </Menu>
             </Flex>
             {!!selectedAiProvider &&
-              !!data &&
-              !!data.credentials &&
-              !isLoading && (
+              !!credentialsList &&
+              !!credentialsList.credentials &&
+              !loadingCredentialsList && (
                 <Flex>
                   <>
-                    {data.credentials.length > 0 && (
+                    {credentialsList.credentials.length > 0 && (
                       <Menu isLazy>
                         <MenuButton
                           as={Button}
@@ -160,7 +173,7 @@ export const InEditorAIFeatures = () => {
                           )}
                         </MenuButton>
                         <MenuList>
-                          {data?.credentials.map((cred) => (
+                          {credentialsList?.credentials.map((cred) => (
                             <MenuItem
                               key={cred.id}
                               onClick={() => {
@@ -186,7 +199,7 @@ export const InEditorAIFeatures = () => {
                         </MenuList>
                       </Menu>
                     )}
-                    {data.credentials.length === 0 && (
+                    {credentialsList.credentials.length === 0 && (
                       <Button
                         size={"sm"}
                         leftIcon={<PlusIcon />}
