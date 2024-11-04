@@ -9300,6 +9300,12 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "company": {
+                    "type": "string"
+                  },
                   "workspaceId": {
                     "type": "string"
                   },
@@ -9319,9 +9325,26 @@
                   },
                   "returnUrl": {
                     "type": "string"
+                  },
+                  "vat": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "value"
+                    ]
                   }
                 },
                 "required": [
+                  "email",
+                  "company",
                   "workspaceId",
                   "currency",
                   "plan",

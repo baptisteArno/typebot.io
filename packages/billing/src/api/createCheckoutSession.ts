@@ -5,34 +5,37 @@ import type { User } from "@typebot.io/schemas/features/user/schema";
 import { isAdminWriteWorkspaceForbidden } from "@typebot.io/workspaces/isAdminWriteWorkspaceForbidden";
 import Stripe from "stripe";
 import { createCheckoutSessionUrl } from "../helpers/createCheckoutSessionUrl";
+import type { taxIdTypes } from "../taxIdTypes";
 
 type Props = {
   workspaceId: string;
   user: Pick<User, "email" | "id">;
   returnUrl: string;
+  email: string;
+  company: string;
   plan: "STARTER" | "PRO";
   currency: "usd" | "eur";
+  vat?: {
+    type: string;
+    value: string;
+  };
 };
 
 export const createCheckoutSession = async ({
   workspaceId,
   user,
   returnUrl,
+  email,
+  company,
   plan,
   currency,
+  vat,
 }: Props) => {
   if (!env.STRIPE_SECRET_KEY)
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Stripe environment variables are missing",
     });
-
-  if (!user.email)
-    throw new TRPCError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "User email is missing",
-    });
-
   const workspace = await prisma.workspace.findFirst({
     where: {
       id: workspaceId,
@@ -63,8 +66,31 @@ export const createCheckoutSession = async ({
     apiVersion: "2024-09-30.acacia",
   });
 
+  await prisma.user.updateMany({
+    where: {
+      id: user.id,
+    },
+    data: {
+      company,
+    },
+  });
+
+  const customer = await stripe.customers.create({
+    email,
+    name: company,
+    metadata: { workspaceId },
+    tax_exempt:
+      !vat || vat.value.startsWith("FR") || vat?.type !== "eu_vat"
+        ? undefined
+        : "exempt",
+    tax_id_data: vat
+      ? [vat as Stripe.CustomerCreateParams.TaxIdDatum]
+      : undefined,
+  });
+
   const checkoutUrl = await createCheckoutSessionUrl(stripe)({
-    email: user.email,
+    customerId: customer.id,
+    userId: user.id,
     workspaceId,
     currency,
     plan,

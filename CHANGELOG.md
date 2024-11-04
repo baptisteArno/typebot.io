@@ -1,5 +1,79 @@
 # Changelog
 
+<a name="3.1.0"></a>
+## 3.1.0 (2024-10-29)
+
+### Added
+
+- ✨ (lp) Update Tailwind CSS configuration to include blog feature files [[2834f2e](https://github.com/baptisteArno/typebot.io/commit/2834f2e85a3b10155974d278980b1b9fb27ee899)]
+- ✨ Add script template that reads CSV file and process things [[5fb10d2](https://github.com/baptisteArno/typebot.io/commit/5fb10d2ffbecb1d4cbab64204d0cda8274e6a14f)]
+- 🔊 Improve whatsapp runtime logging [[7d1c9e6](https://github.com/baptisteArno/typebot.io/commit/7d1c9e664b13139bb1258316d4d5d1176cbcc994)]
+- ✨ Add Webhook block ([#1815](https://github.com/baptisteArno/typebot.io/issues/1815)) [[59c0ea0](https://github.com/baptisteArno/typebot.io/commit/59c0ea03cfbf0d1cab0d21881206b3ee7534a98f)]
+
+### Changed
+
+- 🚸 Make sure bubble is closing when other chat widget opens up [[b31f305](https://github.com/baptisteArno/typebot.io/commit/b31f30528b3c263bec5a804c88c19b7e45821df4)]
+- ⚡ Update session handling to continue bot flow when start message is present and no messages to display [[5ab08b5](https://github.com/baptisteArno/typebot.io/commit/5ab08b50fb72a3df0c655485085d36369d237ffd)]
+- 🔧 Configure bunfig instead of individual npmrc files [[d2e4ad8](https://github.com/baptisteArno/typebot.io/commit/d2e4ad8b24c431fbd90a0ac25ee827f4e9843a1f)]
+- 🔧 Add npmrc file to authenticate properly for publishing [[13c2dd5](https://github.com/baptisteArno/typebot.io/commit/13c2dd51b6e316a9c83bca9dc64d19e6288d2314)]
+- 🔧 Add version filed in package json files [[698eda7](https://github.com/baptisteArno/typebot.io/commit/698eda70792b66627f6623afef7c46fc6f60fb4b)]
+- ⬆️ Bump embed libs [[a551f77](https://github.com/baptisteArno/typebot.io/commit/a551f7785bd6bc0ac8fc0725b392f22763262863)]
+- ⚡ (auth) Attempt to fix issue with link openers in corporate setups ([#1819](https://github.com/baptisteArno/typebot.io/issues/1819)) [[d3a8694](https://github.com/baptisteArno/typebot.io/commit/d3a869498eae47af2cefeac4e0d24dbf37337f52)]
+- 🔧 Upgrade Stripe API version and dependencies [[6ec8f71](https://github.com/baptisteArno/typebot.io/commit/6ec8f71cac9506c0ae05f565b635200cf664e7be)]
+
+### Removed
+
+- 🔇 Remove Sentry trpc middleware, too noisy [[27013ce](https://github.com/baptisteArno/typebot.io/commit/27013ceba638db93d42b46647b9a70151282c656)]
+- 🔥 Remove as const on updateOptions [[9d3537e](https://github.com/baptisteArno/typebot.io/commit/9d3537ef5d224f9b6d0e7bb6c8727419f1ecdea4)]
+
+### Fixed
+
+- 🐛 Import open and close command from embed lib [[b734c60](https://github.com/baptisteArno/typebot.io/commit/b734c60287d31e530fbd3cb4b63240b476987c04)]
+- 🐛 Fix issue in credentials modal to properly update value ([#1866](https://github.com/baptisteArno/typebot.io/issues/1866)) [[e642c0c](https://github.com/baptisteArno/typebot.io/commit/e642c0c3b8bfa8b9c89a562a7c356d607f108567)]
+- 🐛 Remove unnecessary credentialsId check in sanitizeBlock function [[6a02942](https://github.com/baptisteArno/typebot.io/commit/6a029424ae5a0b09ae973087ad65f2c3c3192c60)]
+- 🐛 Make onScriptExecutionSuccess work on script block [[96af708](https://github.com/baptisteArno/typebot.io/commit/96af708bc20e9c58ba386d298a14fe46319012bd)]
+- 🐛 Fix validateNumber to correctly parse max option [[305e711](https://github.com/baptisteArno/typebot.io/commit/305e711c8f85243bf0aa3c4b433cd6efb7f0713b)]
+- 🚑 Make executeFunction return any type of output to make it work with setVariable [[2d876ad](https://github.com/baptisteArno/typebot.io/commit/2d876ad16060fb85bb2d208f112e888614e3dee6)]
+- 🚑 Fix set variable return injection for multi line statements [[caa397d](https://github.com/baptisteArno/typebot.io/commit/caa397d2553d8bd9fa5a0f36fe547f7782ddc5c4)]
+- 🐛 Refactor getDeepKeys to improve key parsing logic [[4fdc80f](https://github.com/baptisteArno/typebot.io/commit/4fdc80f528ac725da189f197884e8583bbcde694)]
+- 🐛 Fix credentials data not updated [[b3c43b1](https://github.com/baptisteArno/typebot.io/commit/b3c43b1551bb2af426d2322bd466d9a01337f023)]
+- 🐛 Fix blog og image parsing [[37948b2](https://github.com/baptisteArno/typebot.io/commit/37948b2db0415ceaee75cf5a1aa65530de0852e4)]
+- 🐛 Remove unwanted error toast for guests in dashboard [[6b6283f](https://github.com/baptisteArno/typebot.io/commit/6b6283fac4ac0196282c36256a79fe039d8efc3e)]
+- 🐛 Escape HTML brackets before sanitizing in Streaming bubble [[91fc9eb](https://github.com/baptisteArno/typebot.io/commit/91fc9eb7c18f812ed9e85d516fd1496dd96f58f5)]
+- 🐛 Prevent keyboard shortcut to be triggered when typebot viewer is focused [[b33e2ee](https://github.com/baptisteArno/typebot.io/commit/b33e2eeab0b3bdb7383a738724db03f4bfa14b45)]
+- 🐛 Update executeSetVariable to use executeFunction and accept async [[d08b6d5](https://github.com/baptisteArno/typebot.io/commit/d08b6d5cab727bbd73b7854f34f18543def31e00)]
+- 🐛 Move all packages to to devDependencies to bundle them in embed lib [[24d6b51](https://github.com/baptisteArno/typebot.io/commit/24d6b5168b9291ac1c4815c7cd6e9a369404612c)]
+- 🐛 Fix Share page X overflow [[a241772](https://github.com/baptisteArno/typebot.io/commit/a2417729cfafffc4331b167b04d33bccda46d3a0)]
+- 🐛 (blog) Migrating to @next/mdx [[4c0d3fb](https://github.com/baptisteArno/typebot.io/commit/4c0d3fb7cb941d21b50ee22c9a52a34c4cf6c5f1)]
+- ✏️ Update Fair Source link in landing page content [[bf09ce0](https://github.com/baptisteArno/typebot.io/commit/bf09ce09256e97668646fa98c72cb5fdc8757501)]
+- 🚑 Fix default condition operator evaluation [[3e73fba](https://github.com/baptisteArno/typebot.io/commit/3e73fbafc477dde52d4ce5a28e687cfc07cd4960)]
+- 💚 Update bun to version 1.1.30 and use bun publish [[cc7367f](https://github.com/baptisteArno/typebot.io/commit/cc7367f78803a15f3b1d66d6ef1ef76272841547)]
+- 🐛 Fix button shrink in some embed setup [[f51258a](https://github.com/baptisteArno/typebot.io/commit/f51258a79616bb565b945735e6866ab398a30399)]
+- 💚 Consistent package.json fields accross workspace [[72e64ae](https://github.com/baptisteArno/typebot.io/commit/72e64aec00cd487dbe08146e7b8c4861481846f9)]
+- 💚 Fix exit code handling in partykit deploy action [[e47cffa](https://github.com/baptisteArno/typebot.io/commit/e47cffad58471f314d3f0679dbe05f0c6cd93c3f)]
+- 💚 Fix error handling in deploy workflow and update condition for deploying PartyKit [[606a68c](https://github.com/baptisteArno/typebot.io/commit/606a68ce20c607e5124c89e1c71f6fd4d0e61cb8)]
+- 💚 Fix partykit deploy ci [[19a67a5](https://github.com/baptisteArno/typebot.io/commit/19a67a592df6f369b6b959bad847bb2ed4b5ccf8)]
+
+### Miscellaneous
+
+- 📝 Add &#x27;WhatsApp business API pricing&#x27; blog post ([#1858](https://github.com/baptisteArno/typebot.io/issues/1858)) [[14833d5](https://github.com/baptisteArno/typebot.io/commit/14833d5830691067a34b11fa048b4474fc7132f0)]
+- 🔨 Add inspectPublishedTypebot script to query published Typebots [[2fe1c31](https://github.com/baptisteArno/typebot.io/commit/2fe1c316aeb79ede170dbaae89af96834ca64ecd)]
+- 📝 Update installation commands to remove unnecessary peer dep install [[84edf64](https://github.com/baptisteArno/typebot.io/commit/84edf64cee5f575dc6339fd90ad7eedd8a4e34d7)]
+-  👷 Revert to using js lib as peer dep for proper types resolving [[569b19c](https://github.com/baptisteArno/typebot.io/commit/569b19c3e176b3b05176649e8976f7b5cdb8d734)]
+-  👷 Build js embed lib with tsup [[c6e8594](https://github.com/baptisteArno/typebot.io/commit/c6e85942ceb42186eebdbb46c063b76f161d2cff)]
+- 📝 Add onScriptExecutionSuccess callback to chat widget documentation [[bce9141](https://github.com/baptisteArno/typebot.io/commit/bce9141224bd070cf20d03b99ad817683d873afc)]
+- 📝 Add &#x27;Free Webflow Templates&#x27; blog post ([#1847](https://github.com/baptisteArno/typebot.io/issues/1847)) [[c0aa3a9](https://github.com/baptisteArno/typebot.io/commit/c0aa3a986cbd42d30d50edb6ae577cd2dd387094)]
+- 📝 Add &quot;Real estate AI chabot&quot; blog post ([#1830](https://github.com/baptisteArno/typebot.io/issues/1830)) [[2e6d758](https://github.com/baptisteArno/typebot.io/commit/2e6d758e28904f8778e4872e65bebb55a6d1c32a)]
+- 🛂 Prevent duplicate email sends and limit to 5 max email sending in one go [[a6db54c](https://github.com/baptisteArno/typebot.io/commit/a6db54c441ca9d82d4dd94afe8a2f0cb87f284f3)]
+- 🛂 Remove default SMTP creds for free workspaces [[cda7f2d](https://github.com/baptisteArno/typebot.io/commit/cda7f2d456468c2b9e590d991002622a6e5a1300)]
+- 📝 Add guide on splitting AI messages into multiple blocks [[2bfb836](https://github.com/baptisteArno/typebot.io/commit/2bfb836e78cca7be6c42a4d384b05f644513721e)]
+- 📝 (webhook) Add PartyKit configuration instructions [[1f6a72b](https://github.com/baptisteArno/typebot.io/commit/1f6a72ba800887bc8c411e136b8f0527715ed94f)]
+- 📝 (auth) Enhance email authentication flow with a redirect page [[7b22e3f](https://github.com/baptisteArno/typebot.io/commit/7b22e3fe91c83aa693342ab256b5d8c4d3db5431)]
+- 📝 Add &#x27;ManyChat alternatives&#x27; blog post ([#1818](https://github.com/baptisteArno/typebot.io/issues/1818)) [[c55655a](https://github.com/baptisteArno/typebot.io/commit/c55655a7f2bbf59912b3bf1307a1f606e07d16a4)]
+- 📝 Add Webhook test app suggestion ([#1813](https://github.com/baptisteArno/typebot.io/issues/1813)) [[45a586e](https://github.com/baptisteArno/typebot.io/commit/45a586e752c401d104bad36a42b3eb90169fc583)]
+- 📝 Fix typo docker-compose command ([#1816](https://github.com/baptisteArno/typebot.io/issues/1816)) [[18e882a](https://github.com/baptisteArno/typebot.io/commit/18e882a4d075bb4175068efa9f71f3593b569ef7)]
+
+
 <a name="3.0.1"></a>
 ## 3.0.1 (2024-10-01)
 
