@@ -30,6 +30,7 @@ type aiProvidersType = "openai" | "open-router" | "anthropic";
 const aiProviders: aiProvidersType[] = ["openai", "open-router", "anthropic"];
 
 export const InEditorAIFeatures = () => {
+  const { workspace, updateWorkspace } = useWorkspace();
   const [selectedAiProvider, setSelectedAiProvider] = useState<
     aiProvidersType | undefined
   >(undefined);
@@ -37,7 +38,9 @@ export const InEditorAIFeatures = () => {
     id: string;
     name: string;
   } | null>(null);
-  const { workspace, updateWorkspace } = useWorkspace();
+  const [aiFeaturePrompt, setAiFeaturePrompt] = useState<string>(
+    workspace?.aiFeaturePrompt ?? "",
+  );
 
   const {
     isOpen: isAIModalOpen,
@@ -80,7 +83,9 @@ export const InEditorAIFeatures = () => {
     if (!workspace?.id || !selectedAiProvider) return;
 
     updateWorkspace({
-      aiFeaturePrompt: defaultPromptToGenerateGroupTitles,
+      aiFeaturePrompt: workspace.aiFeaturePrompt
+        ? workspace.aiFeaturePrompt
+        : defaultPromptToGenerateGroupTitles,
       aiFeatureCredentialId: credentialId,
     });
   };
@@ -90,7 +95,13 @@ export const InEditorAIFeatures = () => {
   };
 
   const handlePromptChange = (prompt: string) => {
+    setAiFeaturePrompt(prompt);
+    saveAiFeaturesPrompt(prompt);
+  };
+
+  const saveAiFeaturesPrompt = (prompt: string) => {
     if (!workspace?.id) return;
+
     updateWorkspace({ aiFeaturePrompt: prompt });
   };
 
@@ -111,6 +122,15 @@ export const InEditorAIFeatures = () => {
       });
     }
   }, [existingCredential]);
+
+  useEffect(() => {
+    if (
+      workspace?.aiFeaturePrompt &&
+      aiFeaturePrompt !== workspace.aiFeaturePrompt
+    ) {
+      setAiFeaturePrompt(workspace.aiFeaturePrompt);
+    }
+  }, [workspace?.aiFeaturePrompt]);
 
   return (
     <>
@@ -218,7 +238,7 @@ export const InEditorAIFeatures = () => {
               <Textarea
                 label={"System Prompt"}
                 withVariableButton={false}
-                defaultValue={workspace?.aiFeaturePrompt}
+                defaultValue={aiFeaturePrompt}
                 onChange={handlePromptChange}
                 moreInfoTooltip="Prompt to generate group titles in the block editor"
               />

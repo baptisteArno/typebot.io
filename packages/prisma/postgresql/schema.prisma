@@ -91,7 +91,7 @@ model Workspace {
   storageLimitSecondEmailSentAt DateTime?
   inEditorAiFeaturesEnabled     Boolean               @default(false)
   aiFeaturePrompt               String?
-  aiFeatureCredentialId         String?               @unique
+  aiFeatureCredentialId         String?
   claimableCustomPlan           ClaimableCustomPlan?
   customChatsLimit              Int?
   customStorageLimit            Int?
