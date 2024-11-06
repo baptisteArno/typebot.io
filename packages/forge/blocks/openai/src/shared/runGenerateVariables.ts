@@ -89,7 +89,7 @@ const convertVariablesToExtractToSchema = ({
       }
     }
     if (variableToExtract.isRequired === false)
-      shape[matchingVariable.name] = shape[matchingVariable.name]!.optional();
+      shape[matchingVariable.name] = shape[matchingVariable.name]!.nullish();
 
     if (isNotEmpty(variableToExtract.description))
       shape[matchingVariable.name] = shape[matchingVariable.name]!.describe(
