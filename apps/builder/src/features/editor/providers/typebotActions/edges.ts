@@ -62,6 +62,10 @@ export const edgesAction = (setTypebot: SetTypebot): EdgesActions => ({
                 blockIndex,
               });
 
+          // Check if auto-generate group title is enabled in the workspace settings
+          typebot.groups[groupIndex].generatingTitle = true;
+          updateGroupTitle(typebot, groupIndex, setTypebot);
+
           const block = typebot.groups[groupIndex].blocks[blockIndex];
           if (isDefined(itemIndex) && isDefined(block.outgoingEdgeId)) {
             const areAllItemsConnected = (block as BlockWithItems).items.every(
@@ -122,6 +126,24 @@ const addEdgeIdToItem = (
   ((typebot.groups[groupIndex].blocks[blockIndex] as BlockWithItems).items[
     itemIndex
   ].outgoingEdgeId = edgeId);
+
+const updateGroupTitle = (
+  typebot: Draft<Typebot>,
+  groupIndex: BlockIndices["groupIndex"],
+  setTypebot: SetTypebot,
+) => {
+  // Async API call to generate group title using AI
+  // const groupContent = JSON.parse(JSON.stringify(typebot.groups[groupIndex]));
+
+  setTimeout(() => {
+    setTypebot((typebot) =>
+      produce(typebot, (typebot) => {
+        typebot.groups[groupIndex].title = `#${groupIndex + 1} Group`;
+        typebot.groups[groupIndex].generatingTitle = false;
+      }),
+    );
+  }, 5000);
+};
 
 export const deleteEdgeDraft = ({
   typebot,

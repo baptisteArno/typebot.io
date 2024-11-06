@@ -1,4 +1,5 @@
 import { ContextMenu } from "@/components/ContextMenu";
+import { SparklesIcon } from "@/components/icons";
 import {
   RightPanel,
   useEditor,
@@ -51,6 +52,9 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [groupTitle, setGroupTitle] = useState(group.title);
+  const [generatingGroupTitle, setGeneratingGroupTitle] = useState(
+    group.generatingTitle || false,
+  );
 
   const isPreviewing =
     previewingBlock?.groupId === group.id ||
@@ -87,6 +91,14 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
         isNotDefined(connectingIds.target?.blockId),
     );
   }, [connectingIds, group.id]);
+
+  useEffect(() => {
+    setGroupTitle(group.title);
+  }, [group.title]);
+
+  useEffect(() => {
+    setGeneratingGroupTitle(group.generatingTitle || false);
+  }, [group.generatingTitle]);
 
   const handleTitleSubmit = (title: string) =>
     updateGroup(groupIndex, { title });
@@ -196,13 +208,15 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
             onChange={setGroupTitle}
             onSubmit={handleTitleSubmit}
             fontWeight="semibold"
-            pr="8"
+            display="flex"
+            justifyContent="space-between"
           >
             <EditablePreview
               _hover={{
                 bg: editableHoverBg,
               }}
               px="1"
+              mr="8"
               userSelect={"none"}
               style={
                 isEmpty(groupTitle)
@@ -215,7 +229,31 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
                   : undefined
               }
             />
-            <EditableInput minW="0" px="1" className="prevent-group-drag" />
+            <EditableInput
+              minW="0"
+              px="1"
+              className="prevent-group-drag"
+              flexGrow={1}
+              mr="8"
+            />
+            {!!generatingGroupTitle && (
+              <Stack
+                display="inline"
+                marginLeft="auto"
+                sx={{
+                  animation: "pulse 1s ease-in-out infinite",
+                  "@keyframes pulse": {
+                    "0%": { opacity: 0.6 },
+                    "50%": { opacity: 1 },
+                    "100%": { opacity: 0.6 },
+                  },
+                  WebkitAnimation: "pulse 1s ease-in-out infinite",
+                  MozAnimation: "pulse 1s ease-in-out infinite",
+                }}
+              >
+                <SparklesIcon height={3} width={4} />
+              </Stack>
+            )}
           </Editable>
           {typebot && (
             <BlockNodesList
