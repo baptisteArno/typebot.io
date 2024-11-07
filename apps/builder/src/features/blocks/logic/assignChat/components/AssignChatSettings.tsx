@@ -41,9 +41,11 @@ export const AssignChatSettings = ({ options, onOptionsChange }: Props) => {
       {(options?.assignType === assignChatType.AGENT ||
         options?.assignType === assignChatType.TEAM) && (
         <TextInput
-          label={t('blocks.logic.assignChat.assigneeEmail')}
+          label={t('blocks.logic.assignChat.assigneeEmailName')}
           defaultValue={options?.email}
-          placeholder={t('blocks.logic.assignChat.assigneeEmail.placeholder')}
+          placeholder={t(
+            'blocks.logic.assignChat.assigneeEmailName.placeholder'
+          )}
           type="email"
           onChange={handleEmailChange}
         />
