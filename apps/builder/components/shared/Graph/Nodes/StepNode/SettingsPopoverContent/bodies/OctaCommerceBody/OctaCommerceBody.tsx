@@ -1,6 +1,6 @@
 import OctaLoading from 'components/octaComponents/OctaLoading/OctaLoading'
 import { CommerceOptions, TextBubbleContent, Variable } from 'models'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { CommerceService } from 'services/octadesk/commerce/commerce'
 import {
   ListCatalogType,
@@ -21,8 +21,11 @@ const MAX_LENGHT_TEXT = 500
 
 export const OctaCommerceBody = ({ options, onOptionsChange }: Props) => {
   const [catalog, setCatalog] = useState<Array<ListCatalogType>>()
-  const [products, setProducts] = useState<Array<ProductType>>()
+  const [products, setProducts] = useState<Array<ProductType>>([])
   const [loading, setLoading] = useState<boolean>(true)
+  const [page, setPage] = useState<number>(1)
+  const [totalProducts, setTotalProducts] = useState<number>(0)
+  const scrollContainerId = 'scroll-container'
 
   useEffect(() => {
     const getCatalogs = async (): Promise<void> => {
@@ -41,19 +44,44 @@ export const OctaCommerceBody = ({ options, onOptionsChange }: Props) => {
   }, [])
 
   useEffect(() => {
-    const getProducts = async (catalogId: string): Promise<void> => {
-      CommerceService.getProductsInCatalog(catalogId).then((data) => {
-        setProducts(data)
-        setLoading(false)
-      })
-    }
-    if (catalog && catalog.length > 0) {
-      getProducts(catalog[0].id)
-    }
-    return () => {
-      setProducts(undefined)
-    }
+    loadProducts(page)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [catalog])
+
+  const loadProducts = useCallback(
+    async (page: number) => {
+      if (loading) return
+      if (catalog && catalog.length > 0) {
+        setLoading(true)
+        const { products: newProducts, total } =
+          await CommerceService.getProductsInCatalog(catalog[0].id, page)
+        setProducts((prevProducts) => [...prevProducts, ...newProducts])
+        setTotalProducts(total)
+        setLoading(false)
+      }
+    },
+    [catalog, loading]
+  )
+
+  const handleScroll = useCallback(() => {
+    const container = document.getElementById(scrollContainerId)
+    if (
+      container &&
+      container.scrollHeight - container.scrollTop === container.clientHeight &&
+      !loading &&
+      products.length < totalProducts
+    ) {
+      const nextPage = page + 1
+      setPage(nextPage)
+      loadProducts(nextPage)
+    }
+  }, [loadProducts, loading, page, products.length, totalProducts])
+
+  useEffect(() => {
+    const container = document.getElementById(scrollContainerId)
+    container?.addEventListener('scroll', handleScroll)
+    return () => container?.removeEventListener('scroll', handleScroll)
+  }, [handleScroll])
 
   const handleSelectProducts = (products: ProductType[], add = false) => {
     const newProducts = [...options.products]
@@ -122,6 +150,7 @@ export const OctaCommerceBody = ({ options, onOptionsChange }: Props) => {
           selectedProducts={options.products}
           products={products}
           onSelect={handleSelectProducts}
+          scrollContainerId={scrollContainerId}
         />
       )}
       <VariableSearchInput

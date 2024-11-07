@@ -11,9 +11,10 @@ type Props = {
   products: Array<ProductType>;
   selectedProducts: Array<string>;
   onSelect: (products: Array<ProductType>, add: boolean) => void;
+  scrollContainerId: string;
 }
 
-const SelectProducts = ({ products, selectedProducts, onSelect }: Props) => {
+const SelectProducts = ({ products, selectedProducts, onSelect, scrollContainerId }: Props) => {
   const [screen, setScreen] = useState<"LIST" | "VARIATION">("LIST");
   const [variationProduct, setVariationProduct] = useState<ProductType>();
   const [selectedVariations, setSelectedVariations] = useState<Array<VariationWithSelection>>([]);
@@ -77,7 +78,7 @@ const SelectProducts = ({ products, selectedProducts, onSelect }: Props) => {
         {
           (screen === "LIST" && products) &&
           <>
-            <ListProducts>
+            <ListProducts id={scrollContainerId}>
               {
                 products.map((product) => (
                   <>

@@ -1,6 +1,9 @@
 export type CommerceServicesType = {
   getList: () => Promise<Array<ListCatalogType>>;
-  getProductsInCatalog: (id: string) => Promise<Array<ProductType>>;
+  getProductsInCatalog: (
+    id: string,
+    page: number
+  ) => Promise<{ products: Array<ProductType>; total: number }>;
   getVariants: (catalogId: string, productId: string) => Promise<Array<ProductType>>
 }
 
