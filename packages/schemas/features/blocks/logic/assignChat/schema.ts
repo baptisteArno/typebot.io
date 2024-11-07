@@ -5,7 +5,7 @@ import { assignChatType, assignChatTypeOptions } from './constants'
 
 export const assignChatOptionsSchema = z.object({
   assignType: z.enum(assignChatTypeOptions).optional(),
-  email: z.string().email().optional(),
+  email: z.string().optional(),
 })
 
 export const assignChatBlockSchema = blockBaseSchema.merge(
